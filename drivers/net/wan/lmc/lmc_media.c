@@ -15,9 +15,9 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;             /* Processor type for cache alignment. */
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

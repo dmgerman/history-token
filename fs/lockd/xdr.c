@@ -141,7 +141,7 @@ c_cond
 (paren
 id|len
 op_le
-l_int|8
+id|NLM_MAXCOOKIELEN
 )paren
 (brace
 id|c-&gt;len
@@ -160,13 +160,11 @@ id|len
 suffix:semicolon
 id|p
 op_add_assign
+id|XDR_QUADLEN
+c_func
 (paren
 id|len
-op_plus
-l_int|3
 )paren
-op_rshift
-l_int|2
 suffix:semicolon
 )brace
 r_else
@@ -175,9 +173,11 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;lockd: bad cookie size %d (only cookies under 8 bytes are supported.)&bslash;n&quot;
+l_string|&quot;lockd: bad cookie size %d (only cookies under %d bytes are supported.)&bslash;n&quot;
 comma
 id|len
+comma
+id|NLM_MAXCOOKIELEN
 )paren
 suffix:semicolon
 r_return
@@ -228,13 +228,11 @@ id|c-&gt;len
 suffix:semicolon
 id|p
 op_add_assign
+id|XDR_QUADLEN
+c_func
 (paren
 id|c-&gt;len
-op_plus
-l_int|3
 )paren
-op_rshift
-l_int|2
 suffix:semicolon
 r_return
 id|p
@@ -284,7 +282,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;lockd: bad fhandle size %x (should be %d)&bslash;n&quot;
+l_string|&quot;lockd: bad fhandle size %d (should be %d)&bslash;n&quot;
 comma
 id|len
 comma
@@ -2771,14 +2769,14 @@ multiline_comment|/*&n; * Buffer requirements for NLM&n; */
 DECL|macro|NLM_void_sz
 mdefine_line|#define NLM_void_sz&t;&t;0
 DECL|macro|NLM_cookie_sz
-mdefine_line|#define NLM_cookie_sz&t;&t;3&t;/* 1 len , 2 data */
+mdefine_line|#define NLM_cookie_sz&t;&t;1+XDR_QUADLEN(NLM_MAXCOOKIELEN)
 DECL|macro|NLM_caller_sz
-mdefine_line|#define NLM_caller_sz&t;&t;1+QUADLEN(sizeof(system_utsname.nodename))
+mdefine_line|#define NLM_caller_sz&t;&t;1+XDR_QUADLEN(sizeof(system_utsname.nodename))
 DECL|macro|NLM_netobj_sz
-mdefine_line|#define NLM_netobj_sz&t;&t;1+QUADLEN(XDR_MAX_NETOBJ)
-multiline_comment|/* #define NLM_owner_sz&t;&t;1+QUADLEN(NLM_MAXOWNER) */
+mdefine_line|#define NLM_netobj_sz&t;&t;1+XDR_QUADLEN(XDR_MAX_NETOBJ)
+multiline_comment|/* #define NLM_owner_sz&t;&t;1+XDR_QUADLEN(NLM_MAXOWNER) */
 DECL|macro|NLM_fhandle_sz
-mdefine_line|#define NLM_fhandle_sz&t;&t;1+QUADLEN(NFS2_FHSIZE)
+mdefine_line|#define NLM_fhandle_sz&t;&t;1+XDR_QUADLEN(NFS2_FHSIZE)
 DECL|macro|NLM_lock_sz
 mdefine_line|#define NLM_lock_sz&t;&t;3+NLM_caller_sz+NLM_netobj_sz+NLM_fhandle_sz
 DECL|macro|NLM_holder_sz
@@ -3150,4 +3148,130 @@ id|nlm_stats
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef RPC_DEBUG
+DECL|function|nlmdbg_cookie2a
+r_const
+r_char
+op_star
+id|nlmdbg_cookie2a
+c_func
+(paren
+r_const
+r_struct
+id|nlm_cookie
+op_star
+id|cookie
+)paren
+(brace
+multiline_comment|/*&n;&t; * We can get away with a static buffer because we&squot;re only&n;&t; * called with BKL held.&n;&t; */
+r_static
+r_char
+id|buf
+(braket
+l_int|2
+op_star
+id|NLM_MAXCOOKIELEN
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|len
+op_assign
+r_sizeof
+(paren
+id|buf
+)paren
+suffix:semicolon
+r_char
+op_star
+id|p
+op_assign
+id|buf
+suffix:semicolon
+id|len
+op_decrement
+suffix:semicolon
+multiline_comment|/* allow for trailing &bslash;0 */
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|3
+)paren
+r_return
+l_string|&quot;???&quot;
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|cookie-&gt;len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|2
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|p
+op_minus
+l_int|3
+comma
+l_string|&quot;...&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%02x&quot;
+comma
+id|cookie-&gt;data
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+l_int|2
+suffix:semicolon
+id|len
+op_sub_assign
+l_int|2
+suffix:semicolon
+)brace
+op_star
+id|p
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+r_return
+id|buf
+suffix:semicolon
+)brace
+macro_line|#endif
 eof

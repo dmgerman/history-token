@@ -472,10 +472,10 @@ id|res.classid
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unlike normal &quot;enqueue&quot; functions, ingress_enqueue returns a&n;&t; * firewall FW_* code.&n;&t; */
 macro_line|#ifdef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -492,7 +492,7 @@ id|result
 op_assign
 id|TC_ACT_SHOT
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_break
@@ -552,7 +552,7 @@ id|result
 op_assign
 id|NF_DROP
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_break
@@ -569,10 +569,10 @@ id|TC_POLICE_UNSPEC
 suffix:colon
 r_default
 suffix:colon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -595,10 +595,10 @@ id|result
 op_assign
 id|NF_ACCEPT
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon

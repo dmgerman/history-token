@@ -1243,12 +1243,6 @@ id|childregs-&gt;esp
 op_assign
 id|esp
 suffix:semicolon
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 id|p-&gt;thread.esp
 op_assign
 (paren

@@ -35,7 +35,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;hp100.h&quot;
 multiline_comment|/*&n; *  defines&n; */

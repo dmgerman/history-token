@@ -553,7 +553,15 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;278
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;279
-multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 282, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 283 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-282 range.&n; */
+DECL|macro|__NR_sys_setaltroot
+mdefine_line|#define __NR_sys_setaltroot&t;280
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;281
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;282
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;283
+multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 283, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 283 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-282 range.&n; */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x10&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;bcc 1f&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;mov %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &lt; -255 || __res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 DECL|macro|_syscall1

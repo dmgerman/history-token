@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Bt8xx based DVB adapter driver &n; *&n; * Copyright (C
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
+macro_line|#include &quot;bttv.h&quot;
 DECL|struct|dvb_bt8xx_card
 r_struct
 id|dvb_bt8xx_card

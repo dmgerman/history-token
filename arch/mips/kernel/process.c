@@ -454,12 +454,6 @@ comma
 id|TIF_USEDFPU
 )paren
 suffix:semicolon
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

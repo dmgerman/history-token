@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -134,7 +134,7 @@ OG
 id|q-&gt;max_size
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
@@ -186,7 +186,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -196,11 +196,11 @@ suffix:semicolon
 id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
@@ -313,7 +313,7 @@ l_int|0
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -601,7 +601,7 @@ multiline_comment|/* When requeue fails skb is dropped */
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 )brace
@@ -609,7 +609,7 @@ id|sch-&gt;flags
 op_or_assign
 id|TCQ_F_THROTTLED
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 )brace

@@ -24,9 +24,9 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt; 
 macro_line|#include &quot;sk_g16.h&quot;
 multiline_comment|/* &n; * Schneider &amp; Koch Card Definitions &n; * =================================&n; */
 DECL|macro|SK_NAME

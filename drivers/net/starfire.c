@@ -231,10 +231,6 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
-DECL|macro|COMPAT_MOD_INC_USE_COUNT
-mdefine_line|#define COMPAT_MOD_INC_USE_COUNT
-DECL|macro|COMPAT_MOD_DEC_USE_COUNT
-mdefine_line|#define COMPAT_MOD_DEC_USE_COUNT
 DECL|macro|init_tx_timer
 mdefine_line|#define init_tx_timer(dev, func, timeout) &bslash;&n;&t;dev-&gt;tx_timeout = func; &bslash;&n;&t;dev-&gt;watchdog_timeo = timeout;
 DECL|macro|kick_tx_timer
@@ -3743,8 +3739,6 @@ comma
 id|rx_ring_size
 suffix:semicolon
 multiline_comment|/* Do we ever need to reset the chip??? */
-id|COMPAT_MOD_INC_USE_COUNT
-suffix:semicolon
 id|retval
 op_assign
 id|request_irq
@@ -3767,13 +3761,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
-id|COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
 multiline_comment|/* Disable the Rx and Tx, and reset the chip. */
 id|writel
 c_func
@@ -3926,14 +3916,10 @@ id|np-&gt;queue_mem
 op_eq
 l_int|0
 )paren
-(brace
-id|COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|np-&gt;tx_done_q
 op_assign
 id|np-&gt;queue_mem
@@ -9753,8 +9739,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

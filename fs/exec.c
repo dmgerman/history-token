@@ -2262,34 +2262,6 @@ comma
 op_star
 id|active_mm
 suffix:semicolon
-multiline_comment|/* Add it to the list of mm&squot;s */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mmlist_lock
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|mm-&gt;mmlist
-comma
-op_amp
-id|init_mm.mmlist
-)paren
-suffix:semicolon
-id|mmlist_nr
-op_increment
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mmlist_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Notify parent that we&squot;re no longer interested in the old VM */
 id|tsk
 op_assign

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
@@ -10,21 +11,28 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn on/off debugging (default:off).&quot;
+)paren
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk

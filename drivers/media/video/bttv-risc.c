@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    bttv-risc.c  --  interfaces to other kernel modules&n;&n;    bttv risc code handling&n;&t;- memory management&n;&t;- generation&n;&n;    (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-risc.c,v 1.8 2004/10/06 17:30:51 kraxel Exp $&n;&n;    bttv-risc.c  --  interfaces to other kernel modules&n;&n;    bttv risc code handling&n;&t;- memory management&n;&t;- generation&n;&n;    (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -107,24 +107,6 @@ l_int|0
 )paren
 r_return
 id|rc
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;bttv%d: risc packed: bpl %d lines %d instr %d size %d ptr %p&bslash;n&quot;
-comma
-id|btv-&gt;c.nr
-comma
-id|bpl
-comma
-id|lines
-comma
-id|instructions
-comma
-id|risc-&gt;size
-comma
-id|risc-&gt;cpu
-)paren
 suffix:semicolon
 multiline_comment|/* sync instruction */
 id|rp
@@ -445,40 +427,27 @@ id|offset
 op_add_assign
 id|padding
 suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;bttv%d: risc packed:   line %d ptr %p&bslash;n&quot;
-comma
-id|btv-&gt;c.nr
-comma
-id|line
-comma
-id|rp
-)paren
-suffix:semicolon
 )brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;bttv%d: risc packed: %d sglist elems&bslash;n&quot;
-comma
-id|btv-&gt;c.nr
-comma
-(paren
-r_int
-)paren
-(paren
-id|sg
-op_minus
-id|sglist
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* save pointer to jmp instruction address */
 id|risc-&gt;jmp
 op_assign
 id|rp
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+(paren
+id|risc-&gt;jmp
+op_minus
+id|risc-&gt;cpu
+op_plus
+l_int|2
+)paren
+op_div
+l_int|4
+OG
+id|risc-&gt;size
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -735,16 +704,19 @@ id|topfield
 id|chroma
 op_assign
 (paren
+(paren
 id|line
 op_amp
 l_int|1
 )paren
 op_eq
 l_int|0
+)paren
 suffix:semicolon
 r_else
 id|chroma
 op_assign
+(paren
 (paren
 id|line
 op_amp
@@ -752,6 +724,7 @@ l_int|1
 )paren
 op_eq
 l_int|1
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -766,16 +739,19 @@ id|topfield
 id|chroma
 op_assign
 (paren
+(paren
 id|line
 op_amp
 l_int|3
 )paren
 op_eq
 l_int|0
+)paren
 suffix:semicolon
 r_else
 id|chroma
 op_assign
+(paren
 (paren
 id|line
 op_amp
@@ -783,6 +759,7 @@ l_int|3
 )paren
 op_eq
 l_int|2
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1163,6 +1140,22 @@ multiline_comment|/* save pointer to jmp instruction address */
 id|risc-&gt;jmp
 op_assign
 id|rp
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+(paren
+id|risc-&gt;jmp
+op_minus
+id|risc-&gt;cpu
+op_plus
+l_int|2
+)paren
+op_div
+l_int|4
+OG
+id|risc-&gt;size
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1661,6 +1654,22 @@ multiline_comment|/* save pointer to jmp instruction address */
 id|risc-&gt;jmp
 op_assign
 id|rp
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+(paren
+id|risc-&gt;jmp
+op_minus
+id|risc-&gt;cpu
+op_plus
+l_int|2
+)paren
+op_div
+l_int|4
+OG
+id|risc-&gt;size
+)paren
 suffix:semicolon
 id|kfree
 c_func
@@ -2199,9 +2208,6 @@ id|btv
 comma
 r_int
 id|override
-comma
-r_int
-id|irqflags
 )paren
 (brace
 r_int
@@ -2288,13 +2294,13 @@ id|d2printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;bttv%d: capctl=%x irq=%d top=%08Lx/%08Lx even=%08Lx/%08Lx&bslash;n&quot;
+l_string|&quot;bttv%d: capctl=%x lirq=%d top=%08Lx/%08Lx even=%08Lx/%08Lx&bslash;n&quot;
 comma
 id|btv-&gt;c.nr
 comma
 id|capctl
 comma
-id|irqflags
+id|btv-&gt;loop_irq
 comma
 id|btv-&gt;cvbi
 ques
@@ -2352,7 +2358,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irqflags
+id|btv-&gt;loop_irq
 )paren
 (brace
 id|cmd
@@ -2362,7 +2368,7 @@ suffix:semicolon
 id|cmd
 op_or_assign
 (paren
-id|irqflags
+id|btv-&gt;loop_irq
 op_amp
 l_int|0x0f
 )paren
@@ -2373,7 +2379,7 @@ id|cmd
 op_or_assign
 (paren
 op_complement
-id|irqflags
+id|btv-&gt;loop_irq
 op_amp
 l_int|0x0f
 )paren
@@ -2384,7 +2390,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irqflags
+id|btv-&gt;curr.frame_irq
+op_logical_or
+id|btv-&gt;loop_irq
 op_logical_or
 id|btv-&gt;cvbi
 )paren
@@ -3243,7 +3251,7 @@ comma
 op_amp
 id|set-&gt;top-&gt;top
 comma
-id|set-&gt;topirq
+id|set-&gt;top_irq
 )paren
 suffix:semicolon
 id|bttv_risc_hook
@@ -3256,7 +3264,7 @@ comma
 op_amp
 id|set-&gt;bottom-&gt;bottom
 comma
-l_int|0
+id|set-&gt;frame_irq
 )paren
 suffix:semicolon
 id|btaor
@@ -3359,7 +3367,7 @@ comma
 op_amp
 id|set-&gt;top-&gt;top
 comma
-l_int|0
+id|set-&gt;frame_irq
 )paren
 suffix:semicolon
 id|bttv_risc_hook
@@ -3470,7 +3478,7 @@ comma
 op_amp
 id|set-&gt;bottom-&gt;bottom
 comma
-l_int|0
+id|set-&gt;frame_irq
 )paren
 suffix:semicolon
 id|btaor

@@ -496,8 +496,6 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* common page table functions */
-DECL|macro|SAA7146_PGTABLE_SIZE
-mdefine_line|#define SAA7146_PGTABLE_SIZE 4096
 DECL|function|saa7146_vmalloc_build_pgtable
 r_char
 op_star
@@ -748,7 +746,7 @@ c_func
 (paren
 id|pci
 comma
-id|SAA7146_PGTABLE_SIZE
+id|PAGE_SIZE
 comma
 op_amp
 id|dma_addr
@@ -769,7 +767,7 @@ suffix:semicolon
 )brace
 id|pt-&gt;size
 op_assign
-id|SAA7146_PGTABLE_SIZE
+id|PAGE_SIZE
 suffix:semicolon
 id|pt-&gt;cpu
 op_assign
@@ -831,27 +829,14 @@ op_eq
 id|sglen
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|list-&gt;offset
 OG
 id|PAGE_SIZE
 )paren
-(brace
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;offset &gt; PAGE_SIZE. this should not happen.&quot;
-)paren
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 multiline_comment|/* if we have a user buffer, the first page may not be&n;&t;   aligned to a page boundary. */
 id|pt-&gt;offset
 op_assign
@@ -903,6 +888,9 @@ op_increment
 op_star
 id|ptr
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|sg_dma_address
 c_func
 (paren
@@ -912,6 +900,7 @@ op_plus
 id|p
 op_star
 l_int|4096
+)paren
 suffix:semicolon
 id|nr_pages
 op_increment

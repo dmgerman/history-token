@@ -44,11 +44,6 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|amijoy_nargs
-r_static
-r_int
-id|amijoy_nargs
-suffix:semicolon
 id|module_param_array_named
 c_func
 (paren
@@ -58,7 +53,7 @@ id|amijoy
 comma
 id|uint
 comma
-id|amijoy_nargs
+l_int|NULL
 comma
 l_int|0
 )paren

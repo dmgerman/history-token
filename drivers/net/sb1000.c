@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/delay.h&gt;&t;/* for udelay() */
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -1355,7 +1355,24 @@ DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)
+id|remap_pfn_range
+c_func
+(paren
+id|vma
+comma
+id|vaddr
+comma
+(paren
+id|paddr
+)paren
+op_rshift
+id|PAGE_SHIFT
+comma
+id|size
+comma
+id|prot
+)paren
 multiline_comment|/* We provide our own get_unmapped_area to provide cache coherency */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA

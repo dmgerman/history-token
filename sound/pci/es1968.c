@@ -230,11 +230,6 @@ id|SNDRV_CARDS
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -242,7 +237,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -264,7 +259,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -286,7 +281,7 @@ id|enable
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -308,7 +303,7 @@ id|total_bufsize
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -328,7 +323,7 @@ id|pcm_substreams_p
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -350,7 +345,7 @@ id|pcm_substreams_c
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -372,7 +367,7 @@ id|clock
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -394,7 +389,7 @@ id|use_pm
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -414,7 +409,7 @@ id|enable_mpu
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -435,7 +430,7 @@ id|joystick
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

@@ -570,7 +570,7 @@ r_struct
 id|list_head
 id|mmlist
 suffix:semicolon
-multiline_comment|/* List of all active mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* List of maybe swapped mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|start_code
 DECL|member|end_code
 DECL|member|start_data
@@ -706,10 +706,6 @@ id|kioctx
 id|default_kioctx
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_int
-id|mmlist_nr
 suffix:semicolon
 DECL|struct|sighand_struct
 r_struct
@@ -972,100 +968,6 @@ id|backing_dev_info
 suffix:semicolon
 r_struct
 id|reclaim_state
-suffix:semicolon
-multiline_comment|/* POSIX.1b interval timer structure. */
-DECL|struct|k_itimer
-r_struct
-id|k_itimer
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* free/ allocate list */
-DECL|member|it_lock
-id|spinlock_t
-id|it_lock
-suffix:semicolon
-DECL|member|it_clock
-id|clockid_t
-id|it_clock
-suffix:semicolon
-multiline_comment|/* which timer type */
-DECL|member|it_id
-id|timer_t
-id|it_id
-suffix:semicolon
-multiline_comment|/* timer id */
-DECL|member|it_overrun
-r_int
-id|it_overrun
-suffix:semicolon
-multiline_comment|/* overrun on pending signal  */
-DECL|member|it_overrun_last
-r_int
-id|it_overrun_last
-suffix:semicolon
-multiline_comment|/* overrun on last delivered signal */
-DECL|member|it_requeue_pending
-r_int
-id|it_requeue_pending
-suffix:semicolon
-multiline_comment|/* waiting to requeue this timer */
-DECL|member|it_sigev_notify
-r_int
-id|it_sigev_notify
-suffix:semicolon
-multiline_comment|/* notify word of sigevent struct */
-DECL|member|it_sigev_signo
-r_int
-id|it_sigev_signo
-suffix:semicolon
-multiline_comment|/* signo word of sigevent struct */
-DECL|member|it_sigev_value
-id|sigval_t
-id|it_sigev_value
-suffix:semicolon
-multiline_comment|/* value word of sigevent struct */
-DECL|member|it_incr
-r_int
-r_int
-id|it_incr
-suffix:semicolon
-multiline_comment|/* interval specified in jiffies */
-DECL|member|it_process
-r_struct
-id|task_struct
-op_star
-id|it_process
-suffix:semicolon
-multiline_comment|/* process to send signal to */
-DECL|member|it_timer
-r_struct
-id|timer_list
-id|it_timer
-suffix:semicolon
-DECL|member|sigq
-r_struct
-id|sigqueue
-op_star
-id|sigq
-suffix:semicolon
-multiline_comment|/* signal queue entry. */
-DECL|member|abs_timer_entry
-r_struct
-id|list_head
-id|abs_timer_entry
-suffix:semicolon
-multiline_comment|/* clock abs_timer_list */
-DECL|member|wall_to_prev
-r_struct
-id|timespec
-id|wall_to_prev
-suffix:semicolon
-multiline_comment|/* wall_to_monotonic used when set */
-)brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_SCHEDSTATS
 DECL|struct|sched_info
@@ -2131,6 +2033,8 @@ DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean memory */
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
+DECL|macro|PF_BORROWED_MM
+mdefine_line|#define PF_BORROWED_MM&t;0x00400000&t;/* I am a kthread doing use_mm */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int

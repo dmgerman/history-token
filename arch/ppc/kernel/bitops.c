@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/*&n; * If the bitops are not inlined in bitops.h, they are defined here.&n; *  -- paulus&n; */
 macro_line|#if !__INLINE_BITOPS
 DECL|function|set_bit

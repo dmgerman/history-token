@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|proc_net
 DECL|variable|proc_net_stat

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -1299,19 +1300,8 @@ r_struct
 id|timespec
 id|myTimeval
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_TIME
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -1335,6 +1325,25 @@ suffix:semicolon
 id|myTimeval.tv_nsec
 op_assign
 l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|security_settime
+c_func
+(paren
+op_amp
+id|myTimeval
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|do_settimeofday
 c_func
@@ -1366,19 +1375,8 @@ r_struct
 id|timespec
 id|myTimeval
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_TIME
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -1402,6 +1400,25 @@ suffix:semicolon
 id|myTimeval.tv_nsec
 op_assign
 l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|security_settime
+c_func
+(paren
+op_amp
+id|myTimeval
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|do_settimeofday
 c_func

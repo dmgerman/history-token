@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
@@ -22,7 +23,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;

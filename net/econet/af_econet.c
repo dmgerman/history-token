@@ -29,9 +29,9 @@ macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 DECL|variable|econet_ops
 r_static
 r_struct

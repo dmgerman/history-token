@@ -31,10 +31,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;lanstreamer.h&quot;
 macro_line|#if (BITS_PER_LONG == 64)
 macro_line|#error broken on 64-bit: stores pointer to rx_ring-&gt;buffer in 32-bit int

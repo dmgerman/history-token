@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &quot;zorro.h&quot;
 multiline_comment|/*&n;     *  Zorro Expansion Devices&n;     */

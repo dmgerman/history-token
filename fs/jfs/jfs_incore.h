@@ -4,7 +4,7 @@ DECL|macro|_H_JFS_INCORE
 mdefine_line|#define _H_JFS_INCORE
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;jfs_types.h&quot;
 macro_line|#include &quot;jfs_xtree.h&quot;
 macro_line|#include &quot;jfs_dtree.h&quot;

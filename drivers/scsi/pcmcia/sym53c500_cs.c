@@ -91,13 +91,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|num_irqs
-r_static
-r_int
-id|num_irqs
-op_assign
-l_int|1
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -123,7 +116,7 @@ id|irq_list
 comma
 r_int
 comma
-id|num_irqs
+l_int|NULL
 comma
 l_int|0
 )paren

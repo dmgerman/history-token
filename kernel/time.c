@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */
@@ -96,19 +97,8 @@ r_struct
 id|timespec
 id|tv
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_TIME
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -128,6 +118,25 @@ suffix:semicolon
 id|tv.tv_nsec
 op_assign
 l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|security_settime
+c_func
+(paren
+op_amp
+id|tv
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|do_settimeofday
 c_func
@@ -314,19 +323,28 @@ id|firsttime
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+id|error
+op_assign
+id|security_settime
+c_func
+(paren
+id|tv
+comma
+id|tz
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_TIME
-)paren
+id|error
 )paren
 r_return
-op_minus
-id|EPERM
+id|error
 suffix:semicolon
 r_if
 c_cond

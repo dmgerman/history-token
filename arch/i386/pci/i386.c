@@ -1074,7 +1074,7 @@ multiline_comment|/* Write-combine setting is ignored, it is changed via the mtr
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -1082,8 +1082,6 @@ comma
 id|vma-&gt;vm_start
 comma
 id|vma-&gt;vm_pgoff
-op_lshift
-id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus

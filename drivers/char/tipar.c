@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;&t;/* DevFs support */
 macro_line|#include &lt;linux/parport.h&gt;&t;/* Our code depend on parport */
 macro_line|#include &lt;linux/device.h&gt;

@@ -277,11 +277,6 @@ l_int|8
 )brace
 suffix:semicolon
 singleline_comment|//static int midi_devs[SNDRV_CARDS] = {[0 ... (SNDRV_CARDS - 1)] = 2};
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -289,7 +284,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -309,7 +304,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -329,7 +324,7 @@ id|enable
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -349,7 +344,7 @@ id|pcm_devs
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -369,7 +364,7 @@ id|pcm_substreams
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -382,7 +377,7 @@ comma
 l_string|&quot;PCM substreams # (1-16) for dummy driver.&quot;
 )paren
 suffix:semicolon
-singleline_comment|//module_param_array(midi_devs, int, boot_devs, 0444);
+singleline_comment|//module_param_array(midi_devs, int, NULL, 0444);
 singleline_comment|//MODULE_PARM_DESC(midi_devs, &quot;MIDI devices # (0-2) for dummy driver.&quot;);
 DECL|macro|MIXER_ADDR_MASTER
 mdefine_line|#define MIXER_ADDR_MASTER&t;0

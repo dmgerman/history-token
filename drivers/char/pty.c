@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/devpts_fs.h&gt;
 multiline_comment|/* These are global because they are accessed in tty_io.c */
 macro_line|#ifdef CONFIG_UNIX98_PTYS

@@ -2072,12 +2072,6 @@ id|_TIF_USEDFPU
 suffix:semicolon
 macro_line|#endif
 )brace
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; *  p-&gt;thread_info         new_stack   childregs&n;&t; *  !                      !           !             {if(PSR_PS) }&n;&t; *  V                      V (stk.fr.) V  (pt_regs)  { (stk.fr.) }&n;&t; *  +----- - - - - - ------+===========+============={+==========}+&n;&t; */
 id|new_stack
 op_assign

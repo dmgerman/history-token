@@ -72,8 +72,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
@@ -10938,11 +10938,6 @@ id|dev-&gt;poll
 op_assign
 id|typhoon_poll
 suffix:semicolon
-id|dev-&gt;ethtool_ops
-op_assign
-op_amp
-id|typhoon_ethtool_ops
-suffix:semicolon
 id|dev-&gt;weight
 op_assign
 l_int|16
@@ -10973,7 +10968,7 @@ c_func
 id|dev
 comma
 op_amp
-id|ops
+id|typhoon_ethtool_ops
 )paren
 suffix:semicolon
 multiline_comment|/* We can handle scatter gather, up to 16 entries, and&n;&t; * we can do IP checksumming (only version 4, doh...)&n;&t; */

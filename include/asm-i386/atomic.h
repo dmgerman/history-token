@@ -2,6 +2,8 @@ macro_line|#ifndef __ARCH_I386_ATOMIC__
 DECL|macro|__ARCH_I386_ATOMIC__
 mdefine_line|#define __ARCH_I386_ATOMIC__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|LOCK
@@ -379,6 +381,145 @@ r_return
 id|c
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * atomic_add_return - add and return&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns @i + @v&n; */
+DECL|function|atomic_add_return
+r_static
+id|__inline__
+r_int
+id|atomic_add_return
+c_func
+(paren
+r_int
+id|i
+comma
+id|atomic_t
+op_star
+id|v
+)paren
+(brace
+r_int
+id|__i
+suffix:semicolon
+macro_line|#ifdef CONFIG_M386
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|boot_cpu_data.x86
+op_eq
+l_int|3
+)paren
+)paren
+(brace
+r_goto
+id|no_xadd
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* Modern 486+ processor */
+id|__i
+op_assign
+id|i
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+id|LOCK
+l_string|&quot;xaddl %0, %1;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|i
+)paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|v-&gt;counter
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+r_return
+id|i
+op_plus
+id|__i
+suffix:semicolon
+macro_line|#ifdef CONFIG_M386
+id|no_xadd
+suffix:colon
+multiline_comment|/* Legacy 386 processor */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__i
+op_assign
+id|atomic_read
+c_func
+(paren
+id|v
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+id|v
+comma
+id|i
+op_plus
+id|__i
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
+op_plus
+id|__i
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|atomic_sub_return
+r_static
+id|__inline__
+r_int
+id|atomic_sub_return
+c_func
+(paren
+r_int
+id|i
+comma
+id|atomic_t
+op_star
+id|v
+)paren
+(brace
+r_return
+id|atomic_add_return
+c_func
+(paren
+op_minus
+id|i
+comma
+id|v
+)paren
+suffix:semicolon
+)brace
+DECL|macro|atomic_inc_return
+mdefine_line|#define atomic_inc_return(v)  (atomic_add_return(1,v))
+DECL|macro|atomic_dec_return
+mdefine_line|#define atomic_dec_return(v)  (atomic_sub_return(1,v))
 multiline_comment|/* These are x86-specific, used by some header files */
 DECL|macro|atomic_clear_mask
 mdefine_line|#define atomic_clear_mask(mask, addr) &bslash;&n;__asm__ __volatile__(LOCK &quot;andl %0,%1&quot; &bslash;&n;: : &quot;r&quot; (~(mask)),&quot;m&quot; (*addr) : &quot;memory&quot;)

@@ -1860,6 +1860,11 @@ c_func
 id|firmware
 )paren
 suffix:semicolon
+op_star
+id|firmware_p
+op_assign
+l_int|NULL
+suffix:semicolon
 id|out
 suffix:colon
 r_return

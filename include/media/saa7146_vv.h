@@ -71,6 +71,10 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
+DECL|member|swap
+id|u8
+id|swap
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|saa7146_standard
@@ -601,6 +605,7 @@ c_func
 r_struct
 id|video_device
 op_star
+op_star
 id|vid
 comma
 r_struct
@@ -622,6 +627,7 @@ c_func
 (paren
 r_struct
 id|video_device
+op_star
 op_star
 id|vid
 comma
