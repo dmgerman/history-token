@@ -1752,6 +1752,13 @@ id|skb
 )paren
 )paren
 (brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|ipip_lock
+)paren
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren
