@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -56,86 +57,54 @@ id|__u64
 id|todval
 comma
 r_struct
-id|timeval
+id|timespec
 op_star
 id|xtime
 )paren
 (brace
-r_const
 r_int
-id|high_bit
-op_assign
-l_int|0x80000000L
-suffix:semicolon
-r_const
 r_int
-id|c_f4240
-op_assign
-l_int|0xf4240L
-suffix:semicolon
-r_const
 r_int
-id|c_7a120
-op_assign
-l_int|0x7a120
+id|sec
 suffix:semicolon
-multiline_comment|/* We have to divide the 64 bit value todval by 4096&n;&t; * (because the 2^12 bit is the one that changes every &n;         * microsecond) and then split it into seconds and&n;         * microseconds. A value of max (2^52-1) divided by&n;         * the value 0xF4240 can yield a max result of approx&n;         * (2^32.068). Thats to big to fit into a signed int&n;&t; *   ... hacking time!&n;         */
-id|asm
-r_volatile
+id|sec
+op_assign
+id|todval
+op_rshift
+l_int|12
+suffix:semicolon
+id|do_div
+c_func
 (paren
-l_string|&quot;L     2,%1&bslash;n&bslash;t&quot;
-l_string|&quot;LR    3,2&bslash;n&bslash;t&quot;
-l_string|&quot;SRL   2,12&bslash;n&bslash;t&quot;
-l_string|&quot;SLL   3,20&bslash;n&bslash;t&quot;
-l_string|&quot;L     4,%O1+4(%R1)&bslash;n&bslash;t&quot;
-l_string|&quot;SRL   4,12&bslash;n&bslash;t&quot;
-l_string|&quot;OR    3,4&bslash;n&bslash;t&quot;
-multiline_comment|/* now R2/R3 contain (todval &gt;&gt; 12) */
-l_string|&quot;SR    4,4&bslash;n&bslash;t&quot;
-l_string|&quot;CL    2,%2&bslash;n&bslash;t&quot;
-l_string|&quot;JL    .+12&bslash;n&bslash;t&quot;
-l_string|&quot;S     2,%2&bslash;n&bslash;t&quot;
-l_string|&quot;L     4,%3&bslash;n&bslash;t&quot;
-l_string|&quot;D     2,%4&bslash;n&bslash;t&quot;
-l_string|&quot;OR    3,4&bslash;n&bslash;t&quot;
-l_string|&quot;ST    2,%O0+4(%R0)&bslash;n&bslash;t&quot;
-l_string|&quot;ST    3,%0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|xtime
+id|sec
+comma
+l_int|1000000
 )paren
-suffix:colon
-l_string|&quot;m&quot;
+suffix:semicolon
+id|xtime-&gt;tv_sec
+op_assign
+id|sec
+suffix:semicolon
+id|todval
+op_sub_assign
+(paren
+id|sec
+op_star
+l_int|1000000
+)paren
+op_lshift
+l_int|12
+suffix:semicolon
+id|xtime-&gt;tv_nsec
+op_assign
+(paren
 (paren
 id|todval
+op_star
+l_int|1000
 )paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|c_7a120
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|high_bit
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|c_f4240
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
+op_rshift
+l_int|12
 )paren
 suffix:semicolon
 )brace
@@ -154,6 +123,7 @@ id|__u64
 id|now
 suffix:semicolon
 id|asm
+r_volatile
 (paren
 l_string|&quot;STCK 0(%0)&quot;
 suffix:colon
@@ -234,7 +204,9 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_assign
-id|xtime.tv_usec
+id|xtime.tv_nsec
+op_div
+l_int|1000
 op_plus
 id|do_gettimeoffset
 c_func
@@ -293,7 +265,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
+multiline_comment|/* This is revolting. We need to set the xtime.tv_nsec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|do_gettimeoffset
@@ -317,10 +289,15 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -380,9 +357,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set clock comparator for next tick&n;&t; */
@@ -460,9 +434,6 @@ macro_line|#endif
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace

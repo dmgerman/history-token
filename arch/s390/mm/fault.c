@@ -54,13 +54,6 @@ r_int
 id|yes
 )paren
 (brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|timerlist_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

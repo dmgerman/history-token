@@ -2096,7 +2096,10 @@ l_string|&quot;vendor_id       : IBM/S390&bslash;n&quot;
 l_string|&quot;# processors    : %i&bslash;n&quot;
 l_string|&quot;bogomips per cpu: %lu.%02lu&bslash;n&quot;
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 comma
 id|loops_per_jiffy
 op_div

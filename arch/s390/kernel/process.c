@@ -1,8 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/kernel/process.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Hartmut Penner (hp@de.ibm.com),&n; *               Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995, Linus Torvalds&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -281,6 +278,28 @@ l_int|15
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|kernel_thread_starter
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;kernel_thread_starter:&bslash;n&quot;
+l_string|&quot;    l     15,0(8)&bslash;n&quot;
+l_string|&quot;    sr    15,7&bslash;n&quot;
+l_string|&quot;    stosm 24(15),3&bslash;n&quot;
+l_string|&quot;    lr    2,10&bslash;n&quot;
+l_string|&quot;    basr  14,9&bslash;n&quot;
+l_string|&quot;    sr    2,2&bslash;n&quot;
+l_string|&quot;    br    11&bslash;n&quot;
+)paren
+suffix:semicolon
 DECL|function|kernel_thread
 r_int
 id|kernel_thread
@@ -305,95 +324,129 @@ r_int
 id|flags
 )paren
 (brace
-r_int
-id|clone_arg
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|regs
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+id|regs.psw.mask
 op_assign
+id|_SVC_PSW_MASK
+suffix:semicolon
+id|regs.psw.addr
+op_assign
+(paren
+id|__u32
+)paren
+id|kernel_thread_starter
+op_or
+id|_ADDR_31
+suffix:semicolon
+id|regs.gprs
+(braket
+l_int|7
+)braket
+op_assign
+id|STACK_FRAME_OVERHEAD
+suffix:semicolon
+id|regs.gprs
+(braket
+l_int|8
+)braket
+op_assign
+id|__LC_KERNEL_STACK
+suffix:semicolon
+id|regs.gprs
+(braket
+l_int|9
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|fn
+suffix:semicolon
+id|regs.gprs
+(braket
+l_int|10
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|arg
+suffix:semicolon
+id|regs.gprs
+(braket
+l_int|11
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|do_exit
+suffix:semicolon
+id|regs.orig_gpr2
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Ok, create the new process.. */
+id|p
+op_assign
+id|do_fork
+c_func
+(paren
 id|flags
 op_or
 id|CLONE_VM
-suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;     sr    2,2&bslash;n&quot;
-l_string|&quot;     lr    3,%1&bslash;n&quot;
-l_string|&quot;     l     4,%6&bslash;n&quot;
-multiline_comment|/* load kernel stack ptr of parent */
-l_string|&quot;     svc   %b2&bslash;n&quot;
-multiline_comment|/* Linux system call*/
-l_string|&quot;     cl    4,%6&bslash;n&quot;
-multiline_comment|/* compare ksp&squot;s: child or parent ? */
-l_string|&quot;     je    0f&bslash;n&quot;
-multiline_comment|/* parent - jump*/
-l_string|&quot;     l     15,%6&bslash;n&quot;
-multiline_comment|/* fix kernel stack pointer*/
-l_string|&quot;     ahi   15,%7&bslash;n&quot;
-l_string|&quot;     xc    0(96,15),0(15)&bslash;n&quot;
-multiline_comment|/* clear save area */
-l_string|&quot;     lr    2,%4&bslash;n&quot;
-multiline_comment|/* load argument*/
-l_string|&quot;     lr    14,%5&bslash;n&quot;
-multiline_comment|/* get fn-pointer*/
-l_string|&quot;     basr  14,14&bslash;n&quot;
-multiline_comment|/* call fn*/
-l_string|&quot;     svc   %b3&bslash;n&quot;
-multiline_comment|/* Linux system call*/
-l_string|&quot;0:   lr    %0,2&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|retval
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|clone_arg
-)paren
 comma
-l_string|&quot;i&quot;
-(paren
-id|__NR_clone
-)paren
+l_int|0
 comma
-l_string|&quot;i&quot;
-(paren
-id|__NR_exit
-)paren
+op_amp
+id|regs
 comma
-l_string|&quot;d&quot;
-(paren
-id|arg
-)paren
+l_int|0
 comma
-l_string|&quot;d&quot;
-(paren
-id|fn
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|__LC_KERNEL_STACK
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-op_minus
-id|STACK_FRAME_OVERHEAD
-)paren
-suffix:colon
-l_string|&quot;2&quot;
-comma
-l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
+ques
+c_cond
+id|PTR_ERR
+c_func
+(paren
+id|p
+)paren
+suffix:colon
+id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
@@ -556,21 +609,19 @@ r_int
 )paren
 id|frame
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-op_amp
 id|frame-&gt;childregs
-comma
+op_assign
+op_star
 id|regs
-comma
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-)paren
 suffix:semicolon
+id|frame-&gt;childregs.gprs
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* child returns 0 on fork. */
 id|frame-&gt;childregs.gprs
 (braket
 l_int|15
@@ -584,22 +635,17 @@ id|frame-&gt;eos
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* new return point is ret_from_sys_call */
+multiline_comment|/* new return point is ret_from_fork */
 id|frame-&gt;gprs
 (braket
 l_int|8
 )braket
 op_assign
 (paren
-(paren
 r_int
 r_int
 )paren
-op_amp
 id|ret_from_fork
-)paren
-op_or
-l_int|0x80000000
 suffix:semicolon
 multiline_comment|/* start disabled because of schedule_tick and rq-&gt;lock being held */
 id|frame-&gt;childregs.psw.mask
@@ -640,6 +686,16 @@ id|p-&gt;mm-&gt;pgd
 )paren
 op_or
 id|_SEGMENT_TABLE
+suffix:semicolon
+multiline_comment|/* start process with ar4 pointing to the correct address space */
+id|p-&gt;thread.ar4
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+dot
+id|ar4
 suffix:semicolon
 multiline_comment|/* Don&squot;t copy debug registers */
 id|memset
@@ -692,6 +748,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -735,6 +793,10 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+r_int
+op_star
+id|user_tid
+suffix:semicolon
 id|clone_flags
 op_assign
 id|regs.gprs
@@ -745,6 +807,17 @@ suffix:semicolon
 id|newsp
 op_assign
 id|regs.orig_gpr2
+suffix:semicolon
+id|user_tid
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|regs.gprs
+(braket
+l_int|4
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -775,6 +848,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+id|user_tid
 )paren
 suffix:semicolon
 r_return
@@ -831,6 +906,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
