@@ -884,7 +884,6 @@ suffix:semicolon
 multiline_comment|/* key2index calculation, -1 on invalid index */
 DECL|function|sysrq_key_table_key2index
 r_static
-id|__inline__
 r_int
 id|sysrq_key_table_key2index
 c_func
@@ -904,7 +903,7 @@ id|key
 op_ge
 l_char|&squot;0&squot;
 )paren
-op_amp
+op_logical_and
 (paren
 id|key
 op_le
@@ -928,7 +927,7 @@ id|key
 op_ge
 l_char|&squot;a&squot;
 )paren
-op_amp
+op_logical_and
 (paren
 id|key
 op_le
