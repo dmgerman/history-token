@@ -369,39 +369,5 @@ suffix:semicolon
 )brace
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte) BUG()
-multiline_comment|/* Reserved PMEGs. */
-r_extern
-r_char
-id|sun3_reserved_pmeg
-(braket
-id|SUN3_PMEGS_NUM
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|pmeg_vaddr
-(braket
-id|SUN3_PMEGS_NUM
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|pmeg_alloc
-(braket
-id|SUN3_PMEGS_NUM
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|pmeg_ctx
-(braket
-id|SUN3_PMEGS_NUM
-)braket
-suffix:semicolon
-DECL|macro|check_pgt_cache
-mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* SUN3_PGALLOC_H */
 eof
