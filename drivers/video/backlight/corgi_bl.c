@@ -130,6 +130,9 @@ l_int|0x0020
 id|set_scoop_gpio
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|CORGI_SCP_BACKLIGHT_CONT
 )paren
 suffix:semicolon
@@ -137,6 +140,9 @@ r_else
 id|reset_scoop_gpio
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|CORGI_SCP_BACKLIGHT_CONT
 )paren
 suffix:semicolon

@@ -73,7 +73,6 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|colliescoop_device
-r_static
 r_struct
 id|platform_device
 id|colliescoop_device
