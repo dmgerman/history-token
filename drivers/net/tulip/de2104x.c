@@ -5719,18 +5719,10 @@ id|pmctl
 )paren
 suffix:semicolon
 multiline_comment|/* de4x5.c delays, so we do too */
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|10
-)paren
 )paren
 suffix:semicolon
 )brace
