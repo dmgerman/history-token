@@ -12028,6 +12028,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|serial167_console_init
+r_static
 r_void
 id|__init
 id|serial167_console_init
@@ -12067,6 +12068,13 @@ id|sercons
 suffix:semicolon
 )brace
 )brace
+DECL|variable|serial167_console_init
+id|console_initcall
+c_func
+(paren
+id|serial167_console_init
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
 DECL|function|putDebugChar
 r_void

@@ -14137,6 +14137,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|mac_scc_console_init
+r_static
 r_void
 id|__init
 id|mac_scc_console_init
@@ -14153,6 +14154,13 @@ id|sercons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mac_scc_console_init
+id|console_initcall
+c_func
+(paren
+id|mac_scc_console_init
+)paren
+suffix:semicolon
 macro_line|#endif /* ifdef CONFIG_SERIAL_CONSOLE */
 macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/* These are for receiving and sending characters under the kgdb&n; * source level kernel debugger.&n; */
