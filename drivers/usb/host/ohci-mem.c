@@ -404,11 +404,22 @@ op_assign
 id|td-&gt;td_hash
 suffix:semicolon
 r_else
-id|dev_dbg
+r_if
+c_cond
 (paren
-id|hc-&gt;hcd.controller
+(paren
+id|td-&gt;hwINFO
+op_amp
+id|TD_DONE
+)paren
+op_ne
+l_int|0
+)paren
+id|ohci_dbg
+(paren
+id|hc
 comma
-l_string|&quot;bad hash for td %p&bslash;n&quot;
+l_string|&quot;no hash for td %p&bslash;n&quot;
 comma
 id|td
 )paren

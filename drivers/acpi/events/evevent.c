@@ -120,7 +120,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_handler_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install handlers for the SCI, Global Lock, and GPEs.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_handler_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install interrupt handlers for the SCI and Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_handler_initialize
 id|acpi_ev_handler_initialize
@@ -156,40 +156,6 @@ id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Unable to install System Control Interrupt Handler, %s&bslash;n&quot;
-comma
-id|acpi_format_exception
-(paren
-id|status
-)paren
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Install handlers for control method GPE handlers (_Lxx, _Exx) */
-id|status
-op_assign
-id|acpi_ev_init_gpe_control_methods
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Unable to initialize GPE control methods, %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren

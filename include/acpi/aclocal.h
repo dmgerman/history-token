@@ -482,24 +482,43 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event typedefs and structs&n; *&n; ****************************************************************************/
-multiline_comment|/* Information about each GPE register block */
-DECL|struct|acpi_gpe_block_info
+multiline_comment|/* Information about each particular GPE level */
+DECL|struct|acpi_gpe_event_info
 r_struct
-id|acpi_gpe_block_info
+id|acpi_gpe_event_info
 (brace
-DECL|member|block_address
+DECL|member|method_node
 r_struct
-id|acpi_generic_address
+id|acpi_namespace_node
 op_star
-id|block_address
+id|method_node
 suffix:semicolon
-DECL|member|register_count
-id|u16
-id|register_count
+multiline_comment|/* Method node for this GPE level */
+DECL|member|handler
+id|acpi_gpe_handler
+id|handler
 suffix:semicolon
-DECL|member|block_base_number
+multiline_comment|/* Address of handler, if any */
+DECL|member|context
+r_void
+op_star
+id|context
+suffix:semicolon
+multiline_comment|/* Context to be passed to handler */
+DECL|member|register_info
+r_struct
+id|acpi_gpe_register_info
+op_star
+id|register_info
+suffix:semicolon
+DECL|member|type
 id|u8
-id|block_base_number
+id|type
+suffix:semicolon
+multiline_comment|/* Level or Edge */
+DECL|member|bit_mask
+id|u8
+id|bit_mask
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -546,47 +565,53 @@ DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
 mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        1
 DECL|macro|ACPI_GPE_EDGE_TRIGGERED
 mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         2
-multiline_comment|/* Information about each particular GPE level */
-DECL|struct|acpi_gpe_number_info
+multiline_comment|/* Information about each GPE register block */
+DECL|struct|acpi_gpe_block_info
 r_struct
-id|acpi_gpe_number_info
+id|acpi_gpe_block_info
 (brace
-DECL|member|method_node
+DECL|member|previous
 r_struct
-id|acpi_namespace_node
+id|acpi_gpe_block_info
 op_star
-id|method_node
+id|previous
 suffix:semicolon
-multiline_comment|/* Method node for this GPE level */
-DECL|member|handler
-id|acpi_gpe_handler
-id|handler
-suffix:semicolon
-multiline_comment|/* Address of handler, if any */
-DECL|member|context
-r_void
-op_star
-id|context
-suffix:semicolon
-multiline_comment|/* Context to be passed to handler */
-DECL|member|type
-id|u8
-id|type
-suffix:semicolon
-multiline_comment|/* Level or Edge */
-DECL|member|bit_mask
-id|u8
-id|bit_mask
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|acpi_gpe_index_info
+DECL|member|next
 r_struct
-id|acpi_gpe_index_info
-(brace
-DECL|member|number_index
+id|acpi_gpe_block_info
+op_star
+id|next
+suffix:semicolon
+DECL|member|next_on_interrupt
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|next_on_interrupt
+suffix:semicolon
+DECL|member|register_info
+r_struct
+id|acpi_gpe_register_info
+op_star
+id|register_info
+suffix:semicolon
+DECL|member|event_info
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|event_info
+suffix:semicolon
+DECL|member|block_address
+r_struct
+id|acpi_generic_address
+id|block_address
+suffix:semicolon
+DECL|member|register_count
+id|u32
+id|register_count
+suffix:semicolon
+DECL|member|block_base_number
 id|u8
-id|number_index
+id|block_base_number
 suffix:semicolon
 )brace
 suffix:semicolon

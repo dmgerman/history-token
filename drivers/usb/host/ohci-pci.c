@@ -12,57 +12,6 @@ macro_line|#ifndef CONFIG_PCI
 macro_line|#error &quot;This file is PCI bus glue.  CONFIG_PCI must be defined.&quot;
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|dev_to_ohci
-r_struct
-id|ohci_hcd
-op_star
-id|dev_to_ohci
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|pci_dev
-op_star
-id|pdev
-op_assign
-id|container_of
-(paren
-id|dev
-comma
-r_struct
-id|pci_dev
-comma
-id|dev
-)paren
-suffix:semicolon
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-op_assign
-id|container_of
-(paren
-id|pci_get_drvdata
-(paren
-id|pdev
-)paren
-comma
-r_struct
-id|ohci_hcd
-comma
-id|hcd
-)paren
-suffix:semicolon
-r_return
-id|ohci
-suffix:semicolon
-)brace
-multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
 r_int
 id|__devinit
@@ -124,7 +73,7 @@ c_cond
 (paren
 id|hcd-&gt;pdev-&gt;vendor
 op_eq
-l_int|0x1022
+id|PCI_VENDOR_ID_AMD
 op_logical_and
 id|hcd-&gt;pdev-&gt;device
 op_eq
@@ -135,14 +84,15 @@ id|ohci-&gt;flags
 op_assign
 id|OHCI_QUIRK_AMD756
 suffix:semicolon
-id|info
+id|ohci_info
 (paren
-l_string|&quot;%s: AMD756 erratum 4 workaround&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;AMD756 erratum 4 workaround&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME for some of the early AMD 760 southbridges, OHCI&n;&t;&t; * won&squot;t work at all.  blacklist them.&n;&t;&t; */
 multiline_comment|/* Apple&squot;s OHCI driver has a lot of bizarre workarounds&n;&t;&t; * for this chip.  Evidently control and bulk lists&n;&t;&t; * can get confused.  (B&amp;W G3 models, and ...)&n;&t;&t; */
 r_else
 r_if
@@ -150,20 +100,86 @@ c_cond
 (paren
 id|hcd-&gt;pdev-&gt;vendor
 op_eq
-l_int|0x1045
+id|PCI_VENDOR_ID_OPTI
 op_logical_and
 id|hcd-&gt;pdev-&gt;device
 op_eq
 l_int|0xc861
 )paren
 (brace
-id|info
+id|ohci_info
 (paren
-l_string|&quot;%s: WARNING: OPTi workarounds unavailable&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;WARNING: OPTi workarounds unavailable&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Check for NSC87560. We have to look at the bridge (fn1) to&n;&t;&t; * identify the USB (fn2). This quirk might apply to more or&n;&t;&t; * even all NSC stuff.&n;&t;&t; */
+r_else
+r_if
+c_cond
+(paren
+id|hcd-&gt;pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_NS
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|b
+comma
+op_star
+id|hc
+suffix:semicolon
+id|hc
+op_assign
+id|hcd-&gt;pdev
+suffix:semicolon
+id|b
+op_assign
+id|pci_find_slot
+(paren
+id|hc-&gt;bus-&gt;number
+comma
+id|PCI_DEVFN
+(paren
+id|PCI_SLOT
+(paren
+id|hc-&gt;devfn
+)paren
+comma
+l_int|1
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|b
+op_logical_and
+id|b-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NS_87560_LIO
+op_logical_and
+id|b-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_NS
+)paren
+(brace
+id|ohci-&gt;flags
+op_or_assign
+id|OHCI_QUIRK_SUPERIO
+suffix:semicolon
+id|ohci_info
+(paren
+id|ohci
+comma
+l_string|&quot;Using NSC SuperIO setup&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 id|memset
@@ -239,11 +255,11 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;can&squot;t start %s&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;can&squot;t start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ohci_stop
@@ -313,11 +329,11 @@ op_ne
 id|OHCI_USB_OPER
 )paren
 (brace
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;can&squot;t suspend %s (state is %s)&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;can&squot;t suspend (state is %s)&bslash;n&quot;
 comma
 id|hcfs2string
 (paren
@@ -333,11 +349,11 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* act as if usb suspend can always be used */
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s: suspend to %d&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend to %d&bslash;n&quot;
 comma
 id|state
 )paren
@@ -497,11 +513,11 @@ id|OHCI_CTRL_HCFS
 r_case
 id|OHCI_USB_RESET
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;reset ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;reset ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -509,11 +525,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_RESUME
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;resume ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;resume ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -521,11 +537,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_OPER
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;operational ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;operational ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -533,11 +549,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_SUSPEND
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspended&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspended&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -692,6 +708,10 @@ multiline_comment|/* the registers may look crazy here */
 id|ohci_dump_status
 (paren
 id|ohci
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -711,11 +731,11 @@ r_case
 id|OHCI_USB_RESET
 suffix:colon
 singleline_comment|// lost power
-id|info
+id|ohci_info
 (paren
-l_string|&quot;USB restart: %s&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;USB restart&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -735,11 +755,11 @@ r_case
 id|OHCI_USB_RESUME
 suffix:colon
 singleline_comment|// remote wakeup
-id|info
+id|ohci_info
 (paren
-l_string|&quot;USB continue: %s from %s wakeup&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;USB continue from %s wakeup&bslash;n&quot;
 comma
 (paren
 id|temp
@@ -808,11 +828,11 @@ op_ne
 id|OHCI_USB_RESUME
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;controller %s won&squot;t resume&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;controller won&squot;t resume&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ohci-&gt;disabled
@@ -1005,9 +1025,11 @@ id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
 singleline_comment|// ohci_dump_status (ohci);
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;sleeping = %d, disabled = %d&quot;
+id|ohci
+comma
+l_string|&quot;sleeping = %d, disabled = %d&bslash;n&quot;
 comma
 id|ohci-&gt;sleeping
 comma
@@ -1018,11 +1040,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|warn
+id|ohci_warn
 (paren
-l_string|&quot;odd PCI resume for %s&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;odd PCI resume&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1258,10 +1280,14 @@ id|ohci_hcd_pci_init
 r_void
 )paren
 (brace
-id|dbg
+id|printk
 (paren
+id|KERN_DEBUG
+l_string|&quot;%s: &quot;
 id|DRIVER_INFO
-l_string|&quot; (PCI)&quot;
+l_string|&quot; (PCI)&bslash;n&quot;
+comma
+id|hcd_name
 )paren
 suffix:semicolon
 r_if
@@ -1276,9 +1302,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|dbg
+id|printk
 (paren
-l_string|&quot;block sizes: ed %d td %d&quot;
+id|KERN_DEBUG
+l_string|&quot;%s: block sizes: ed %d td %d&bslash;n&quot;
+comma
+id|hcd_name
 comma
 r_sizeof
 (paren

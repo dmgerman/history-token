@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: speedstep.c,v 1.68 2003/01/20 17:31:47 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: speedstep.c,v 1.70 2003/02/22 10:23:46 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 multiline_comment|/*********************************************************************&n; *                        SPEEDSTEP - DEFINITIONS                    *&n; *********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -7,12 +7,6 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
-DECL|variable|speedstep_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|speedstep_driver
-suffix:semicolon
 multiline_comment|/* speedstep_chipset:&n; *   It is necessary to know which chipset is used. As accesses to &n; * this device occur at various places in this module, we need a &n; * static struct pci_dev * pointing to that device.&n; */
 DECL|variable|speedstep_chipset
 r_static
@@ -1927,15 +1921,10 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|CPUFREQ_ETERNAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|speedstep_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|speed
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func
@@ -2088,7 +2077,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.68 $&bslash;n&quot;
+l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.70 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* activate speedstep support */

@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.4 2002/03/27 20:40:40 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; *&n; * This file is licenced under the GPL.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef DEBUG
 DECL|macro|edstring
-mdefine_line|#define edstring(ed_type) ({ char *temp; &bslash;&n;&t;switch (ed_type) { &bslash;&n;&t;case PIPE_CONTROL:&t;temp = &quot;CTRL&quot;; break; &bslash;&n;&t;case PIPE_BULK:&t;&t;temp = &quot;BULK&quot;; break; &bslash;&n;&t;case PIPE_INTERRUPT:&t;temp = &quot;INTR&quot;; break; &bslash;&n;&t;default: &t;&t;temp = &quot;ISOC&quot;; break; &bslash;&n;&t;}; temp;})
+mdefine_line|#define edstring(ed_type) ({ char *temp; &bslash;&n;&t;switch (ed_type) { &bslash;&n;&t;case PIPE_CONTROL:&t;temp = &quot;ctrl&quot;; break; &bslash;&n;&t;case PIPE_BULK:&t;&t;temp = &quot;bulk&quot;; break; &bslash;&n;&t;case PIPE_INTERRUPT:&t;temp = &quot;intr&quot;; break; &bslash;&n;&t;default: &t;&t;temp = &quot;isoc&quot;; break; &bslash;&n;&t;}; temp;})
 DECL|macro|pipestring
 mdefine_line|#define pipestring(pipe) edstring(usb_pipetype(pipe))
-multiline_comment|/* debug| print the main components of an URB     &n; * small: 0) header + data packets 1) just header&n; */
+multiline_comment|/* debug| print the main components of an URB&n; * small: 0) header + data packets 1) just header&n; */
 r_static
 r_void
 id|__attribute__
@@ -70,7 +70,7 @@ macro_line|#endif
 id|dbg
 c_func
 (paren
-l_string|&quot;%s %p dev:%d,ep=%d-%c,%s,flags:%x,len:%d/%d,stat:%d&quot;
+l_string|&quot;%s %p dev=%d ep=%d%s-%s flags=%x len=%d/%d stat=%d&quot;
 comma
 id|str
 comma
@@ -92,9 +92,9 @@ id|pipe
 )paren
 ques
 c_cond
-l_char|&squot;O&squot;
+l_string|&quot;out&quot;
 suffix:colon
-l_char|&squot;I&squot;
+l_string|&quot;in&quot;
 comma
 id|pipestring
 (paren
@@ -262,29 +262,44 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|macro|ohci_dbg_sw
+mdefine_line|#define ohci_dbg_sw(ohci, next, size, format, arg...) &bslash;&n;&t;do { &bslash;&n;&t;if (next) { &bslash;&n;&t;&t;unsigned s_len; &bslash;&n;&t;&t;s_len = snprintf (*next, *size, format, ## arg ); &bslash;&n;&t;&t;*size -= s_len; *next += s_len; &bslash;&n;&t;} else &bslash;&n;&t;&t;ohci_dbg(ohci,format, ## arg ); &bslash;&n;&t;} while (0);
 DECL|function|ohci_dump_intr_mask
 r_static
 r_void
 id|ohci_dump_intr_mask
 (paren
 r_struct
-id|device
+id|ohci_hcd
 op_star
-id|dev
+id|ohci
 comma
 r_char
 op_star
 id|label
 comma
-id|__u32
+id|u32
 id|mask
+comma
+r_char
+op_star
+op_star
+id|next
+comma
+r_int
+op_star
+id|size
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|dev
+id|ohci
 comma
-l_string|&quot;%s: 0x%08x%s%s%s%s%s%s%s%s%s&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;%s 0x%08x%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -397,16 +412,25 @@ r_void
 id|maybe_print_eds
 (paren
 r_struct
-id|device
+id|ohci_hcd
 op_star
-id|dev
+id|ohci
 comma
 r_char
 op_star
 id|label
 comma
-id|__u32
+id|u32
 id|value
+comma
+r_char
+op_star
+op_star
+id|next
+comma
+r_int
+op_star
+id|size
 )paren
 (brace
 r_if
@@ -414,9 +438,13 @@ c_cond
 (paren
 id|value
 )paren
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|dev
+id|ohci
+comma
+id|next
+comma
+id|size
 comma
 l_string|&quot;%s %08x&bslash;n&quot;
 comma
@@ -472,15 +500,24 @@ l_string|&quot;?&quot;
 suffix:semicolon
 )brace
 singleline_comment|// dump control and status registers
-DECL|function|ohci_dump_status
 r_static
 r_void
+DECL|function|ohci_dump_status
 id|ohci_dump_status
 (paren
 r_struct
 id|ohci_hcd
 op_star
 id|controller
+comma
+r_char
+op_star
+op_star
+id|next
+comma
+r_int
+op_star
+id|size
 )paren
 (brace
 r_struct
@@ -490,14 +527,7 @@ id|regs
 op_assign
 id|controller-&gt;regs
 suffix:semicolon
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-id|controller-&gt;hcd.controller
-suffix:semicolon
-id|__u32
+id|u32
 id|temp
 suffix:semicolon
 id|temp
@@ -510,9 +540,13 @@ id|regs-&gt;revision
 op_amp
 l_int|0xff
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|dev
+id|controller
+comma
+id|next
+comma
+id|size
 comma
 l_string|&quot;OHCI %d.%d, %s legacy support registers&bslash;n&quot;
 comma
@@ -550,11 +584,15 @@ op_amp
 id|regs-&gt;control
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|dev
+id|controller
 comma
-l_string|&quot;control: 0x%08x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;control 0x%03x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&bslash;n&quot;
 comma
 id|temp
 comma
@@ -655,11 +693,15 @@ op_amp
 id|regs-&gt;cmdstatus
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|dev
+id|controller
 comma
-l_string|&quot;cmdstatus: 0x%08x SOC=%d%s%s%s%s&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;cmdstatus 0x%05x SOC=%d%s%s%s%s&bslash;n&quot;
 comma
 id|temp
 comma
@@ -718,7 +760,7 @@ l_string|&quot;&quot;
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;intrstatus&quot;
 comma
@@ -727,11 +769,15 @@ id|readl
 op_amp
 id|regs-&gt;intrstatus
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;intrenable&quot;
 comma
@@ -740,13 +786,16 @@ id|readl
 op_amp
 id|regs-&gt;intrenable
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 singleline_comment|// intrdisable always same as intrenable
-singleline_comment|// ohci_dump_intr_mask (dev, &quot;intrdisable&quot;, readl (&amp;regs-&gt;intrdisable));
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_periodcurrent&quot;
 comma
@@ -755,11 +804,15 @@ id|readl
 op_amp
 id|regs-&gt;ed_periodcurrent
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_controlhead&quot;
 comma
@@ -768,11 +821,15 @@ id|readl
 op_amp
 id|regs-&gt;ed_controlhead
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_controlcurrent&quot;
 comma
@@ -781,11 +838,15 @@ id|readl
 op_amp
 id|regs-&gt;ed_controlcurrent
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_bulkhead&quot;
 comma
@@ -794,11 +855,15 @@ id|readl
 op_amp
 id|regs-&gt;ed_bulkhead
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_bulkcurrent&quot;
 comma
@@ -807,11 +872,15 @@ id|readl
 op_amp
 id|regs-&gt;ed_bulkcurrent
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;donehead&quot;
 comma
@@ -820,12 +889,18 @@ id|readl
 op_amp
 id|regs-&gt;donehead
 )paren
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 )brace
-DECL|function|ohci_dump_roothub
+DECL|macro|dbg_port_sw
+mdefine_line|#define dbg_port_sw(hc,num,value,next,size) &bslash;&n;&t;ohci_dbg_sw (hc, next, size, &bslash;&n;&t;&t;&quot;roothub.portstatus [%d] &quot; &bslash;&n;&t;&t;&quot;0x%08x%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;, &bslash;&n;&t;&t;num, temp, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRSC) ? &quot; PRSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_OCIC) ? &quot; OCIC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSSC) ? &quot; PSSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PESC) ? &quot; PESC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CSC) ? &quot; CSC&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_LSDA) ? &quot; LSDA&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PPS) ? &quot; PPS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRS) ? &quot; PRS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_POCI) ? &quot; POCI&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSS) ? &quot; PSS&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_PES) ? &quot; PES&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CCS) ? &quot; CCS&quot; : &quot;&quot; &bslash;&n;&t;&t;);
 r_static
 r_void
+DECL|function|ohci_dump_roothub
 id|ohci_dump_roothub
 (paren
 r_struct
@@ -835,9 +910,18 @@ id|controller
 comma
 r_int
 id|verbose
+comma
+r_char
+op_star
+op_star
+id|next
+comma
+r_int
+op_star
+id|size
 )paren
 (brace
-id|__u32
+id|u32
 id|temp
 comma
 id|ndp
@@ -878,11 +962,15 @@ c_cond
 id|verbose
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
-l_string|&quot;roothub.a: %08x POTPGT=%d%s%s%s%s%s NDP=%d&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;roothub.a %08x POTPGT=%d%s%s%s%s%s NDP=%d&bslash;n&quot;
 comma
 id|temp
 comma
@@ -963,11 +1051,15 @@ id|roothub_b
 id|controller
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
-l_string|&quot;roothub.b: %08x PPCM=%04x DR=%04x&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;roothub.b %08x PPCM=%04x DR=%04x&bslash;n&quot;
 comma
 id|temp
 comma
@@ -993,11 +1085,15 @@ id|roothub_status
 id|controller
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg_sw
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
-l_string|&quot;roothub.status: %08x%s%s%s%s%s%s&bslash;n&quot;
+id|next
+comma
+id|size
+comma
+l_string|&quot;roothub.status %08x%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|temp
 comma
@@ -1093,15 +1189,17 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|dbg_port
+id|dbg_port_sw
 (paren
 id|controller
-comma
-l_string|&quot;&quot;
 comma
 id|i
 comma
 id|temp
+comma
+id|next
+comma
+id|size
 )paren
 suffix:semicolon
 )brace
@@ -1120,9 +1218,9 @@ r_int
 id|verbose
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;OHCI controller state&bslash;n&quot;
 )paren
@@ -1131,6 +1229,10 @@ singleline_comment|// dumps some of the state we know about
 id|ohci_dump_status
 (paren
 id|controller
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1138,9 +1240,9 @@ c_cond
 (paren
 id|controller-&gt;hcca
 )paren
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;hcca frame #%04x&bslash;n&quot;
 comma
@@ -1152,6 +1254,10 @@ id|ohci_dump_roothub
 id|controller
 comma
 l_int|1
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1180,6 +1286,11 @@ r_static
 r_void
 id|ohci_dump_td
 (paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
 r_char
 op_star
 id|label
@@ -1199,8 +1310,10 @@ op_amp
 id|td-&gt;hwINFO
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;%s td %p%s; urb %p index %d; hw next td %08x&quot;
 comma
 id|label
@@ -1342,8 +1455,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     info %08x CC=%x %s DI=%d %s %s&quot;
 comma
 id|tmp
@@ -1395,8 +1510,10 @@ op_amp
 id|td-&gt;hwBE
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     cbp %08x be %08x (len %d)&quot;
 comma
 id|cbp
@@ -1423,8 +1540,10 @@ r_else
 r_int
 id|i
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     info %08x CC=%x FC=%d DI=%d SF=%04x&quot;
 comma
 id|tmp
@@ -1456,8 +1575,10 @@ op_amp
 l_int|0x0000ffff
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     bp0 %08x be %08x&quot;
 comma
 id|le32_to_cpup
@@ -1514,8 +1635,10 @@ l_int|12
 op_amp
 l_int|0x0f
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;       psw [%d] = %2x, CC=%x %s=%d&quot;
 comma
 id|i
@@ -1585,11 +1708,11 @@ id|type
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s: %s, ed %p state 0x%x type %s; next ed %08x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;%s, ed %p state 0x%x type %s; next ed %08x&quot;
 comma
 id|label
 comma
@@ -1641,8 +1764,10 @@ r_break
 suffix:semicolon
 multiline_comment|/* else from TDs ... control */
 )brace
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;  info %08x MAX=%d%s%s%s%s EP=%d%s DEV=%d&quot;
 comma
 id|le32_to_cpu
@@ -1726,8 +1851,10 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;  tds: head %08x %s%s tail %08x%s&quot;
 comma
 id|tmp
@@ -1813,6 +1940,8 @@ id|td_list
 suffix:semicolon
 id|ohci_dump_td
 (paren
+id|ohci
+comma
 l_string|&quot;  -&gt;&quot;
 comma
 id|td
@@ -1821,8 +1950,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|macro|DRIVERFS_DEBUG_FILES
-mdefine_line|#define DRIVERFS_DEBUG_FILES &t;&t;/* only on 2.5 versions */
 macro_line|#else
 DECL|function|ohci_dump
 r_static
@@ -1840,9 +1967,69 @@ id|verbose
 )paren
 (brace
 )brace
+DECL|macro|OHCI_VERBOSE_DEBUG
+macro_line|#undef OHCI_VERBOSE_DEBUG
 macro_line|#endif /* DEBUG */
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef DRIVERFS_DEBUG_FILES
+macro_line|#ifdef STUB_DEBUG_FILES
+DECL|function|create_debug_files
+r_static
+r_inline
+r_void
+id|create_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|remove_debug_files
+r_static
+r_inline
+r_void
+id|remove_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+macro_line|#else
+DECL|function|dev_to_ohci
+r_static
+r_inline
+r_struct
+id|ohci_hcd
+op_star
+id|dev_to_ohci
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+op_assign
+id|dev_get_drvdata
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|hcd_to_ohci
+(paren
+id|hcd
+)paren
+suffix:semicolon
+)brace
 r_static
 id|ssize_t
 DECL|function|show_list
@@ -1931,7 +2118,7 @@ id|buf
 comma
 id|size
 comma
-l_string|&quot;ed/%p %cs dev%d ep%d-%s max %d %08x%s%s %s&quot;
+l_string|&quot;ed/%p %cs dev%d ep%d%s max %d %08x%s%s %s&quot;
 comma
 id|ed
 comma
@@ -2557,7 +2744,7 @@ id|next
 comma
 id|size
 comma
-l_string|&quot; (%cs dev%d%s ep%d-%s&quot;
+l_string|&quot; (%cs dev%d%s ep%d%s&quot;
 l_string|&quot; max %d %08x%s%s)&quot;
 comma
 (paren
@@ -2739,6 +2926,325 @@ l_int|NULL
 suffix:semicolon
 DECL|macro|DBG_SCHED_LIMIT
 macro_line|#undef DBG_SCHED_LIMIT
+r_static
+id|ssize_t
+DECL|function|show_registers
+id|show_registers
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+suffix:semicolon
+r_struct
+id|ohci_regs
+op_star
+id|regs
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|temp
+comma
+id|size
+suffix:semicolon
+r_char
+op_star
+id|next
+suffix:semicolon
+id|u32
+id|rdata
+suffix:semicolon
+id|ohci
+op_assign
+id|dev_to_ohci
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|regs
+op_assign
+id|ohci-&gt;regs
+suffix:semicolon
+id|next
+op_assign
+id|buf
+suffix:semicolon
+id|size
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* dump driver info, then registers in spec order */
+id|ohci_dbg_sw
+(paren
+id|ohci
+comma
+op_amp
+id|next
+comma
+op_amp
+id|size
+comma
+l_string|&quot;%s version &quot;
+id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
+comma
+id|hcd_name
+)paren
+suffix:semicolon
+id|ohci_dump_status
+c_func
+(paren
+id|ohci
+comma
+op_amp
+id|next
+comma
+op_amp
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* hcca */
+r_if
+c_cond
+(paren
+id|ohci-&gt;hcca
+)paren
+id|ohci_dbg_sw
+(paren
+id|ohci
+comma
+op_amp
+id|next
+comma
+op_amp
+id|size
+comma
+l_string|&quot;hcca frame 0x%04x&bslash;n&quot;
+comma
+id|ohci-&gt;hcca-&gt;frame_no
+)paren
+suffix:semicolon
+multiline_comment|/* other registers mostly affect frame timings */
+id|rdata
+op_assign
+id|readl
+(paren
+op_amp
+id|regs-&gt;fminterval
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;fmintvl 0x%08x %sFSMPS=0x%04x FI=0x%04x&bslash;n&quot;
+comma
+id|rdata
+comma
+(paren
+id|rdata
+op_rshift
+l_int|31
+)paren
+ques
+c_cond
+l_string|&quot; FIT&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|rdata
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xefff
+comma
+id|rdata
+op_amp
+l_int|0xffff
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+id|rdata
+op_assign
+id|readl
+(paren
+op_amp
+id|regs-&gt;fmremaining
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;fmremaining 0x%08x %sFR=0x%04x&bslash;n&quot;
+comma
+id|rdata
+comma
+(paren
+id|rdata
+op_rshift
+l_int|31
+)paren
+ques
+c_cond
+l_string|&quot; FRT&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|rdata
+op_amp
+l_int|0x3fff
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+id|rdata
+op_assign
+id|readl
+(paren
+op_amp
+id|regs-&gt;periodicstart
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;periodicstart 0x%04x&bslash;n&quot;
+comma
+id|rdata
+op_amp
+l_int|0x3fff
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+id|rdata
+op_assign
+id|readl
+(paren
+op_amp
+id|regs-&gt;lsthresh
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;lsthresh 0x%04x&bslash;n&quot;
+comma
+id|rdata
+op_amp
+l_int|0x3fff
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+multiline_comment|/* roothub */
+id|ohci_dump_roothub
+(paren
+id|ohci
+comma
+l_int|1
+comma
+op_amp
+id|next
+comma
+op_amp
+id|size
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|PAGE_SIZE
+op_minus
+id|size
+suffix:semicolon
+)brace
+r_static
+id|DEVICE_ATTR
+(paren
+id|registers
+comma
+id|S_IRUGO
+comma
+id|show_registers
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 DECL|function|create_debug_files
 r_static
 r_inline
@@ -2767,10 +3273,17 @@ op_amp
 id|dev_attr_periodic
 )paren
 suffix:semicolon
-singleline_comment|// registers
-id|dev_dbg
+id|device_create_file
 (paren
 id|bus-&gt;hcd.controller
+comma
+op_amp
+id|dev_attr_registers
+)paren
+suffix:semicolon
+id|ohci_dbg
+(paren
+id|bus
 comma
 l_string|&quot;created debug files&bslash;n&quot;
 )paren
@@ -2804,34 +3317,15 @@ op_amp
 id|dev_attr_periodic
 )paren
 suffix:semicolon
-)brace
-macro_line|#else /* empty stubs for creating those files */
-DECL|function|create_debug_files
-r_static
-r_inline
-r_void
-id|create_debug_files
+id|device_remove_file
 (paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
+id|bus-&gt;hcd.controller
+comma
+op_amp
+id|dev_attr_registers
 )paren
-(brace
+suffix:semicolon
 )brace
-DECL|function|remove_debug_files
-r_static
-r_inline
-r_void
-id|remove_debug_files
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
-)paren
-(brace
-)brace
-macro_line|#endif /* DRIVERFS_DEBUG_FILES */
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 eof

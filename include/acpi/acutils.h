@@ -917,6 +917,10 @@ DECL|macro|METHOD_NAME__BBN
 mdefine_line|#define METHOD_NAME__BBN        &quot;_BBN&quot;
 DECL|macro|METHOD_NAME__PRT
 mdefine_line|#define METHOD_NAME__PRT        &quot;_PRT&quot;
+DECL|macro|METHOD_NAME__CRS
+mdefine_line|#define METHOD_NAME__CRS        &quot;_CRS&quot;
+DECL|macro|METHOD_NAME__PRS
+mdefine_line|#define METHOD_NAME__PRS        &quot;_PRS&quot;
 id|acpi_status
 id|acpi_ut_evaluate_object
 (paren

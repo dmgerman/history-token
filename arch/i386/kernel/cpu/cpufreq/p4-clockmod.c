@@ -57,12 +57,6 @@ r_static
 r_int
 id|stock_freq
 suffix:semicolon
-DECL|variable|p4clockmod_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|p4clockmod_driver
-suffix:semicolon
 DECL|function|cpufreq_p4_setdc
 r_static
 r_int
@@ -881,15 +875,10 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 l_int|1000
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|p4clockmod_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|stock_freq
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func

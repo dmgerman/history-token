@@ -333,6 +333,16 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|FSC_VENDOR_ID
+comma
+id|FSC_LOOX_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|HP_VENDOR_ID
 comma
 id|HP_JORNADA_548_ID

@@ -99,6 +99,12 @@ r_int
 id|max
 suffix:semicolon
 multiline_comment|/* in kHz */
+DECL|member|cur
+r_int
+r_int
+id|cur
+suffix:semicolon
+multiline_comment|/* in kHz, only needed if cpufreq&n;&t;&t;&t;&t;&t; * governors are used */
 DECL|member|policy
 r_int
 r_int
@@ -443,17 +449,6 @@ op_star
 id|policy
 )paren
 suffix:semicolon
-multiline_comment|/* 2.4. compatible API */
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-DECL|member|cpu_cur_freq
-r_int
-r_int
-id|cpu_cur_freq
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_int
@@ -628,8 +623,20 @@ op_star
 id|governor
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.4. INTERFACE                     *&n; *********************************************************************/
+macro_line|#if defined(CONFIG_CPU_FREQ_GOV_USERSPACE) || defined(CONFIG_CPU_FREQ_GOV_USERSPACE_MODULE)
+multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
+r_extern
+r_struct
+id|cpufreq_governor
+id|cpufreq_gov_userspace
+suffix:semicolon
+r_int
+id|cpufreq_gov_userspace_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|cpufreq_setmax
 c_func
@@ -662,6 +669,7 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 multiline_comment|/* /proc/sys/cpu */
 r_enum
 (brace
@@ -853,18 +861,8 @@ l_int|3
 comma
 )brace
 suffix:semicolon
-DECL|macro|CTL_CPU_VARS_SPEED_MAX
-mdefine_line|#define CTL_CPU_VARS_SPEED_MAX(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MAX, &bslash;&n;                .data&t;&t;= &amp;cpu_max_freq[cpunr], &bslash;&n;                .procname&t;= &quot;speed-max&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_max_freq[cpunr]),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
-DECL|macro|CTL_CPU_VARS_SPEED_MIN
-mdefine_line|#define CTL_CPU_VARS_SPEED_MIN(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MIN, &bslash;&n;                .data&t;&t;= &amp;cpu_min_freq[cpunr], &bslash;&n;                .procname&t;= &quot;speed-min&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_min_freq[cpunr]),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
-DECL|macro|CTL_CPU_VARS_SPEED
-mdefine_line|#define CTL_CPU_VARS_SPEED(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ, &bslash;&n;                .procname&t;= &quot;speed&quot;, &bslash;&n;                .mode&t;&t;= 0644, &bslash;&n;                .proc_handler&t;= cpufreq_procctl, &bslash;&n;                .strategy&t;= cpufreq_sysctl, &bslash;&n;                .extra1&t;&t;= (void*) (cpunr), }
-DECL|macro|CTL_TABLE_CPU_VARS
-mdefine_line|#define CTL_TABLE_CPU_VARS(cpunr) static ctl_table ctl_cpu_vars_##cpunr[] = {&bslash;&n;                CTL_CPU_VARS_SPEED_MAX(cpunr), &bslash;&n;                CTL_CPU_VARS_SPEED_MIN(cpunr), &bslash;&n;                CTL_CPU_VARS_SPEED(cpunr),  &bslash;&n;                { .ctl_name = 0, }, }
-multiline_comment|/* the ctl_table entry for each CPU */
-DECL|macro|CPU_ENUM
-mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                .ctl_name&t;= (CPU_NR + s), &bslash;&n;                .procname&t;= #s, &bslash;&n;                .mode&t;&t;= 0555, &bslash;&n;                .child&t;&t;= ctl_cpu_vars_##s }
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
+macro_line|#endif /* CONFIG_CPU_FREQ_GOV_USERSPACE */
 multiline_comment|/*********************************************************************&n; *                     FREQUENCY TABLE HELPERS                       *&n; *********************************************************************/
 DECL|macro|CPUFREQ_ENTRY_INVALID
 mdefine_line|#define CPUFREQ_ENTRY_INVALID ~0
