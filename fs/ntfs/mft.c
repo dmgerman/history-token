@@ -791,12 +791,12 @@ r_goto
 id|map_err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Verify the sequence number. */
+multiline_comment|/* Verify the sequence number if it is present. */
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
+id|seq_no
+op_logical_and
 (paren
 id|le16_to_cpu
 c_func
