@@ -88,7 +88,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|smbiod_start
 c_func
 (paren
@@ -132,7 +132,7 @@ suffix:semicolon
 multiline_comment|/*&n; * start smbiod if none is running&n; */
 DECL|function|smbiod_start
 r_static
-r_void
+r_int
 id|smbiod_start
 c_func
 (paren
@@ -149,10 +149,17 @@ op_ne
 id|SMBIOD_DEAD
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|smbiod_state
 op_assign
 id|SMBIOD_STARTING
+suffix:semicolon
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -173,6 +180,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pid
+OL
+l_int|0
+)paren
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -182,16 +202,26 @@ id|servers_lock
 suffix:semicolon
 id|smbiod_state
 op_assign
+id|pid
+OL
+l_int|0
+ques
+c_cond
+id|SMBIOD_DEAD
+suffix:colon
 id|SMBIOD_RUNNING
 suffix:semicolon
 id|smbiod_pid
 op_assign
 id|pid
 suffix:semicolon
+r_return
+id|pid
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * register a server &amp; start smbiod if necessary&n; */
 DECL|function|smbiod_register_server
-r_void
+r_int
 id|smbiod_register_server
 c_func
 (paren
@@ -201,6 +231,9 @@ op_star
 id|server
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -226,6 +259,8 @@ comma
 id|server
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|smbiod_start
 c_func
 (paren
@@ -237,6 +272,9 @@ c_func
 op_amp
 id|servers_lock
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unregister a server&n; * Must be called with the server lock held.&n; */
@@ -967,8 +1005,6 @@ op_star
 id|unused
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|daemonize
 c_func
 (paren
@@ -1187,10 +1223,11 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
+id|module_put_and_exit
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 eof
