@@ -2818,10 +2818,6 @@ r_void
 )paren
 (brace
 r_int
-r_int
-id|nr_needed_pages
-suffix:semicolon
-r_int
 id|error
 suffix:semicolon
 id|pr_debug
@@ -2873,12 +2869,6 @@ l_string|&quot;swsusp: Need to copy %u pages&bslash;n&quot;
 comma
 id|nr_copy_pages
 )paren
-suffix:semicolon
-id|nr_needed_pages
-op_assign
-id|nr_copy_pages
-op_plus
-id|PAGES_FOR_IO
 suffix:semicolon
 id|error
 op_assign
