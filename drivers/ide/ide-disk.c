@@ -1120,6 +1120,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4879,12 +4881,14 @@ r_void
 )paren
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|ide_dma_verbose
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
