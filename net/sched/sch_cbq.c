@@ -3671,13 +3671,6 @@ r_if
 c_cond
 (paren
 id|q-&gt;wd_expires
-op_logical_and
-op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|sch-&gt;dev
-)paren
 )paren
 (brace
 r_int

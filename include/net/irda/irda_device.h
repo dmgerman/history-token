@@ -3,11 +3,13 @@ multiline_comment|/*&n; * This header contains all the IrDA definitions a driver
 macro_line|#ifndef IRDA_DEVICE_H
 DECL|macro|IRDA_DEVICE_H
 mdefine_line|#define IRDA_DEVICE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;&t;&t;/* struct sk_buff */
 macro_line|#include &lt;linux/irda.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;&t;&t;/* struct qos_info */
@@ -791,8 +793,7 @@ c_func
 r_int
 id|channel
 comma
-r_char
-op_star
+id|dma_addr_t
 id|buffer
 comma
 r_int

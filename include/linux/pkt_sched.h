@@ -1032,6 +1032,10 @@ DECL|member|limit
 id|__u32
 id|limit
 suffix:semicolon
+DECL|member|loss
+id|__u32
+id|loss
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -1111,8 +1111,7 @@ id|p-&gt;dev-&gt;class_dev.kobj
 suffix:semicolon
 id|p-&gt;kobj.kset
 op_assign
-op_amp
-id|bridge_subsys.kset
+l_int|NULL
 suffix:semicolon
 id|err
 op_assign

@@ -1035,27 +1035,6 @@ id|p
 suffix:semicolon
 multiline_comment|/* br_sysfs_br.c */
 r_extern
-r_struct
-id|subsystem
-id|bridge_subsys
-suffix:semicolon
-r_extern
-r_void
-id|br_sysfs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|br_sysfs_fini
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|br_sysfs_addbr
 c_func
@@ -1084,10 +1063,6 @@ DECL|macro|br_sysfs_removeif
 mdefine_line|#define br_sysfs_removeif(p)&t;do { } while(0)
 DECL|macro|br_sysfs_freeif
 mdefine_line|#define br_sysfs_freeif(p)&t;kfree(p)
-DECL|macro|br_sysfs_init
-mdefine_line|#define br_sysfs_init()&t;&t;do { } while(0)
-DECL|macro|br_sysfs_fini
-mdefine_line|#define br_sysfs_fini()&t;&t;do { } while(0)
 DECL|macro|br_sysfs_addbr
 mdefine_line|#define br_sysfs_addbr(dev)&t;(0)
 DECL|macro|br_sysfs_delbr

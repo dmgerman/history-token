@@ -41,11 +41,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|br_sysfs_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
@@ -143,11 +138,6 @@ macro_line|#endif
 id|br_handle_frame_hook
 op_assign
 l_int|NULL
-suffix:semicolon
-id|br_sysfs_fini
-c_func
-(paren
-)paren
 suffix:semicolon
 id|br_fdb_fini
 c_func

@@ -7029,16 +7029,6 @@ l_int|NULL
 id|sch-&gt;stats.overlimits
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|sch-&gt;dev
-)paren
-)paren
 id|hfsc_schedule_watchdog
 c_func
 (paren

@@ -411,6 +411,8 @@ id|now
 suffix:semicolon
 r_int
 id|toks
+comma
+id|delay
 suffix:semicolon
 r_int
 id|ptoks
@@ -544,18 +546,6 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|sch-&gt;dev
-)paren
-)paren
-(brace
-r_int
 id|delay
 op_assign
 id|PSCHED_US2JIFFIE
@@ -596,7 +586,6 @@ op_plus
 id|delay
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Maybe we have a shorter packet in the queue,&n;&t;&t;   which can be sent now. It sounds cool,&n;&t;&t;   but, however, this is wrong in principle.&n;&t;&t;   We MUST NOT reorder packets under these circumstances.&n;&n;&t;&t;   Really, if we split the flow into independent&n;&t;&t;   subflows, it would be a very good solution.&n;&t;&t;   This is the main idea of all FQ algorithms&n;&t;&t;   (cf. CSZ, HPFQ, HFSC)&n;&t;&t; */
 r_if
 c_cond
