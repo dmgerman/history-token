@@ -10045,6 +10045,41 @@ id|ap-&gt;qactive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_qc_free - free unused ata_queued_cmd&n; *&t;@qc: Command to complete&n; *&n; *&t;Designed to free unused ata_queued_cmd object&n; *&t;in case something prevents using it.&n; *&n; *&t;LOCKING:&n; *&n; */
+DECL|function|ata_qc_free
+r_void
+id|ata_qc_free
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+m_assert
+(paren
+id|qc
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* ata_qc_from_tag _might_ return NULL */
+m_assert
+(paren
+id|qc-&gt;waiting
+op_eq
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* nothing should be waiting */
+id|__ata_qc_complete
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;ata_qc_complete - Complete an active ATA command&n; *&t;@qc: Command to complete&n; *&t;@drv_stat: ATA status register contents&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_qc_complete
 r_void
