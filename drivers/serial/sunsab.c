@@ -2661,6 +2661,8 @@ op_amp
 id|up-&gt;regs-&gt;rw.mode
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX FIXME&n;&t; *&n;&t; * If the chip is powered down here the system hangs/crashes during&n;&t; * reboot or shutdown.  This needs to be investigated further,&n;&t; * similar behaviour occurs in 2.4 when the driver is configured&n;&t; * as a module only.  One hint may be that data is sometimes&n;&t; * transmitted at 9600 baud during shutdown (regardless of the&n;&t; * speed the chip was configured for when the port was open).&n;&t; */
+macro_line|#if 0
 multiline_comment|/* Power Down */
 id|tmp
 op_assign
@@ -2685,6 +2687,7 @@ op_amp
 id|up-&gt;regs-&gt;rw.ccr0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
