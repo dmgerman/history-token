@@ -2429,7 +2429,7 @@ l_int|6
 dot
 dot
 dot
-l_int|8
+l_int|9
 suffix:colon
 r_return
 id|cpufreq_register_driver
@@ -2438,19 +2438,6 @@ c_func
 op_amp
 id|longhaul_driver
 )paren
-suffix:semicolon
-r_case
-l_int|9
-suffix:colon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Nehemiah unsupported: Waiting on working silicon &quot;
-l_string|&quot;from VIA before this is usable.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_default
 suffix:colon
