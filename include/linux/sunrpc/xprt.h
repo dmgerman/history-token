@@ -514,16 +514,8 @@ id|rpc_xprt
 op_star
 )paren
 suffix:semicolon
-DECL|macro|XPRT_WSPACE
-mdefine_line|#define XPRT_WSPACE&t;0
 DECL|macro|XPRT_CONNECT
-mdefine_line|#define XPRT_CONNECT&t;1
-DECL|macro|xprt_wspace
-mdefine_line|#define xprt_wspace(xp)&t;&t;&t;(test_bit(XPRT_WSPACE, &amp;(xp)-&gt;sockstate))
-DECL|macro|xprt_test_and_set_wspace
-mdefine_line|#define xprt_test_and_set_wspace(xp)&t;(test_and_set_bit(XPRT_WSPACE, &amp;(xp)-&gt;sockstate))
-DECL|macro|xprt_clear_wspace
-mdefine_line|#define xprt_clear_wspace(xp)&t;&t;(clear_bit(XPRT_WSPACE, &amp;(xp)-&gt;sockstate))
+mdefine_line|#define XPRT_CONNECT&t;0
 DECL|macro|xprt_connected
 mdefine_line|#define xprt_connected(xp)&t;&t;(!(xp)-&gt;stream || test_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_set_connected
