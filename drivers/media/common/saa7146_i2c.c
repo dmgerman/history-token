@@ -1997,12 +1997,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-id|i2c_adapter-&gt;data
-op_assign
-id|dev
-suffix:semicolon
-macro_line|#else
 id|i2c_set_adapdata
 c_func
 (paren
@@ -2011,7 +2005,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
+id|i2c_adapter
+op_member_access_from_pointer
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+suffix:semicolon
 id|i2c_adapter-&gt;algo
 op_assign
 op_amp

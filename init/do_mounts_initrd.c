@@ -578,7 +578,7 @@ c_cond
 id|rd_load_image
 c_func
 (paren
-l_string|&quot;/dev/initrd&quot;
+l_string|&quot;/initrd.image&quot;
 )paren
 op_logical_and
 id|ROOT_DEV
@@ -589,7 +589,7 @@ id|Root_RAM0
 id|sys_unlink
 c_func
 (paren
-l_string|&quot;/dev/initrd&quot;
+l_string|&quot;/initrd.image&quot;
 )paren
 suffix:semicolon
 id|handle_initrd
@@ -605,7 +605,7 @@ suffix:semicolon
 id|sys_unlink
 c_func
 (paren
-l_string|&quot;/dev/initrd&quot;
+l_string|&quot;/initrd.image&quot;
 )paren
 suffix:semicolon
 r_return

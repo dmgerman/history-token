@@ -711,7 +711,7 @@ c_func
 (paren
 id|from
 comma
-l_string|&quot;/dev/initrd&quot;
+l_string|&quot;/initrd.image&quot;
 )paren
 op_eq
 l_int|0
