@@ -6943,6 +6943,7 @@ DECL|function|write_cache
 r_static
 r_int
 id|write_cache
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -8106,6 +8107,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: max request size: %dKiB&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -8236,6 +8238,7 @@ l_int|28
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: cannot use LBA48 - full capacity &quot;
 l_string|&quot;%llu sectors (%llu MB)&bslash;n&quot;
 comma
@@ -8563,15 +8566,20 @@ id|drive-&gt;wcache
 op_assign
 l_int|1
 suffix:semicolon
-id|write_cache
+multiline_comment|/*&n;&t; * We must avoid issuing commands a drive does not understand&n;&t; * or we may crash it. We check flush cache is supported. We also&n;&t; * check we have the LBA48 flush cache if the drive capacity is&n;&t; * too large. By this time we have trimmed the drive capacity if&n;&t; * LBA48 is not available so we don&squot;t need to recheck that.&n;&t; */
+id|barrier
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_id_has_flush_cache
 c_func
 (paren
-id|drive
-comma
-l_int|1
+id|id
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * decide if we can sanely support flushes and barriers on&n;&t; * this drive. unfortunately not all drives advertise FLUSH_CACHE&n;&t; * support even if they support it. So assume FLUSH_CACHE is there&n;&t; * always. LBA48 drives are newer, so expect it to flag support&n;&t; * properly. We can safely support FLUSH_CACHE on lba48, if capacity&n;&t; * doesn&squot;t exceed lba28&n;&t; */
+)paren
 id|barrier
 op_assign
 l_int|1
@@ -8584,6 +8592,7 @@ op_eq
 l_int|1
 )paren
 (brace
+multiline_comment|/* Can&squot;t issue the correct flush ? */
 r_if
 c_cond
 (paren
@@ -8607,9 +8616,19 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Now we have barrier awareness we can be properly conservative&n;&t;   by default with other drives. We turn off write caching when&n;&t;   barrier is not available. Users can adjust this at runtime if&n;&t;   they need unsafe but fast filesystems. This will reduce the&n;&t;   performance of non cache flush supporting disks but it means&n;&t;   you get the data order guarantees the journalling fs&squot;s require */
+id|write_cache
+c_func
+(paren
+id|drive
+comma
+id|barrier
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: cache flushes %ssupported&bslash;n&quot;
 comma
 id|drive-&gt;name
