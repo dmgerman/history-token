@@ -669,7 +669,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Overriding _OS definition %s&bslash;n&quot;
+l_string|&quot;Overriding _OS definition to &squot;%s&squot;&bslash;n&quot;
 comma
 id|acpi_os_name
 )paren
@@ -3351,27 +3351,9 @@ suffix:semicolon
 r_case
 id|ACPI_SIGNAL_BREAKPOINT
 suffix:colon
-(brace
-r_char
-op_star
-id|bp_info
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|info
+multiline_comment|/*&n;&t;&t; * AML Breakpoint&n;&t;&t; * ACPI spec. says to treat it as a NOP unless&n;&t;&t; * you are debugging.  So if/when we integrate&n;&t;&t; * AML debugger into the kernel debugger its&n;&t;&t; * hook will go here.  But until then it is&n;&t;&t; * not useful to print anything on breakpoints.&n;&t;&t; */
+r_break
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI breakpoint: %s&bslash;n&quot;
-comma
-id|bp_info
-)paren
-suffix:semicolon
-)brace
 r_default
 suffix:colon
 r_break
