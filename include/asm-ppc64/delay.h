@@ -84,6 +84,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|__HMT_medium
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|udelay
 r_static
@@ -109,11 +114,6 @@ id|__delay
 c_func
 (paren
 id|loops
-)paren
-suffix:semicolon
-id|__HMT_medium
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
