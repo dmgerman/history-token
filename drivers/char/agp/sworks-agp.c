@@ -1068,6 +1068,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;Posted write buffer flush took more&quot;
 l_string|&quot;then 3 seconds&bslash;n&quot;
 )paren
@@ -1125,6 +1126,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;TLB flush took more&quot;
 l_string|&quot;then 3 seconds&bslash;n&quot;
 )paren
@@ -2072,8 +2074,7 @@ c_func
 id|KERN_INFO
 id|PFX
 l_string|&quot;agpgart: Detected a Serverworks &quot;
-l_string|&quot;Chipset, but could not find the secondary &quot;
-l_string|&quot;device.&bslash;n&quot;
+l_string|&quot;Chipset, but could not find the secondary device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2166,8 +2167,10 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Detected 64 bit aperture address, but top &quot;
-l_string|&quot;bits are not zero.  Disabling agp&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected 64 bit aperture address, &quot;
+l_string|&quot;but top bits are not zero.  Disabling agp&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2228,8 +2231,10 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Detected 64 bit MMIO address, but top &quot;
-l_string|&quot;bits are not zero.  Disabling agp&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected 64 bit MMIO address, &quot;
+l_string|&quot;but top bits are not zero.  Disabling agp&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
