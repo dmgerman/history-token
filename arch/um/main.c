@@ -747,12 +747,10 @@ c_cond
 (paren
 id|size
 op_le
-l_int|128
-op_star
-l_int|1024
+id|PAGE_SIZE
 )paren
 (brace
-multiline_comment|/* kmalloc is good for only 128K */
+multiline_comment|/* finding contiguos pages can be hard*/
 id|ret
 op_assign
 id|um_kmalloc
