@@ -19,16 +19,16 @@ DECL|macro|GPTE_COHERENT
 mdefine_line|#define GPTE_COHERENT&t;2
 multiline_comment|/* Aperture control register bits. */
 DECL|macro|GARTEN
-mdefine_line|#define GARTEN&t;&t;1&lt;&lt;0
+mdefine_line|#define GARTEN&t;&t;(1&lt;&lt;0)
 DECL|macro|DISGARTCPU
-mdefine_line|#define DISGARTCPU&t;1&lt;&lt;4
+mdefine_line|#define DISGARTCPU&t;(1&lt;&lt;4)
 DECL|macro|DISGARTIO
-mdefine_line|#define DISGARTIO&t;1&lt;&lt;5
+mdefine_line|#define DISGARTIO&t;(1&lt;&lt;5)
 multiline_comment|/* GART cache control register bits. */
 DECL|macro|INVGART
-mdefine_line|#define INVGART&t;&t;1&lt;&lt;0
+mdefine_line|#define INVGART&t;&t;(1&lt;&lt;0)
 DECL|macro|GARTPTEERR
-mdefine_line|#define GARTPTEERR&t;1&lt;&lt;1
+mdefine_line|#define GARTPTEERR&t;(1&lt;&lt;1)
 DECL|variable|nr_garts
 r_static
 r_int
