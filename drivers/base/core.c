@@ -298,8 +298,6 @@ id|remove
 c_func
 (paren
 id|dev
-comma
-id|REMOVE_NOTIFY
 )paren
 suffix:semicolon
 )brace
@@ -459,8 +457,6 @@ id|remove
 c_func
 (paren
 id|dev
-comma
-id|REMOVE_NOTIFY
 )paren
 suffix:semicolon
 )brace
