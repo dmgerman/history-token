@@ -6,7 +6,7 @@ multiline_comment|/*&n; * 32-bit code is always OK.  Some cpus can do 26-bit, so
 DECL|macro|ELF_PROC_OK
 mdefine_line|#define ELF_PROC_OK(x)&t;(ELF_THUMB_OK(x) &amp;&amp; ELF_26BIT_OK(x))
 DECL|macro|ELF_THUMB_OK
-mdefine_line|#define ELF_THUMB_OK(x) &bslash;&n;&t;(( (elf_hwcap &amp; HWCAP_THUMB) &amp;&amp; ((x)-&gt;e_entry &amp; 1) == 1) || &bslash;&n;&t; (!(elf_hwcap &amp; HWCAP_THUMB) &amp;&amp; ((x)-&gt;e_entry &amp; 3) == 0))
+mdefine_line|#define ELF_THUMB_OK(x) &bslash;&n;&t;(( (elf_hwcap &amp; HWCAP_THUMB) &amp;&amp; ((x)-&gt;e_entry &amp; 1) == 1) || &bslash;&n;&t; ((x)-&gt;e_entry &amp; 3) == 0)
 DECL|macro|ELF_26BIT_OK
 mdefine_line|#define ELF_26BIT_OK(x) &bslash;&n;&t;(( (elf_hwcap &amp; HWCAP_26BIT) &amp;&amp; (x)-&gt;e_flags &amp; EF_ARM_APCS26) || &bslash;&n;&t;  ((x)-&gt;e_flags &amp; EF_ARM_APCS26) == 0)
 multiline_comment|/* Old NetWinder binaries were compiled in such a way that the iBCS&n;   heuristic always trips on them.  Until these binaries become uncommon&n;   enough not to care, don&squot;t trust the `ibcs&squot; flag here.  In any case&n;   there is no other ELF system currently supported by iBCS.&n;   @@ Could print a warning message to encourage users to upgrade.  */

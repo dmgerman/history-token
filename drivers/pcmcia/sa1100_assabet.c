@@ -1,12 +1,13 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_assabet.c&n; *&n; * PCMCIA implementation routines for Assabet&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 DECL|struct|irqs
