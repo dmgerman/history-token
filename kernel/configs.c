@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * kernel/configs.c&n; * Echo the kernel .config file used to build the kernel&n; *&n; * Copyright (C) 2002 Khalid Aziz &lt;khalid_aziz@hp.com&gt;&n; * Copyright (C) 2002 Randy Dunlap &lt;rddunlap@osdl.org&gt;&n; * Copyright (C) 2002 Al Stone &lt;ahs3@fc.hp.com&gt;&n; * Copyright (C) 2002 Hewlett-Packard Company&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -9,20 +10,13 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/**************************************************/
 multiline_comment|/* the actual current config file                 */
+multiline_comment|/* This one is for extraction from the kernel binary file image. */
 macro_line|#include &quot;ikconfig.h&quot;
 macro_line|#ifdef CONFIG_IKCONFIG_PROC
+multiline_comment|/* This is the data that can be read from /proc/config.gz. */
+macro_line|#include &quot;config_data.h&quot;
 multiline_comment|/**************************************************/
 multiline_comment|/* globals and useful constants                   */
-DECL|variable|IKCONFIG_NAME
-r_static
-r_const
-r_char
-id|IKCONFIG_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ikconfig&quot;
-suffix:semicolon
 DECL|variable|IKCONFIG_VERSION
 r_static
 r_const
@@ -33,22 +27,10 @@ id|IKCONFIG_VERSION
 op_assign
 l_string|&quot;0.6&quot;
 suffix:semicolon
-DECL|variable|ikconfig_size
-r_static
-r_int
-id|ikconfig_size
-suffix:semicolon
-DECL|variable|ikconfig_dir
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|ikconfig_dir
-suffix:semicolon
 r_static
 id|ssize_t
-DECL|function|ikconfig_read
-id|ikconfig_read
+DECL|function|ikconfig_read_current
+id|ikconfig_read_current
 c_func
 (paren
 r_struct
@@ -83,7 +65,7 @@ c_cond
 (paren
 id|pos
 op_ge
-id|ikconfig_size
+id|kernel_config_data_size
 )paren
 r_return
 l_int|0
@@ -99,7 +81,7 @@ comma
 r_int
 )paren
 (paren
-id|ikconfig_size
+id|kernel_config_data_size
 op_minus
 id|pos
 )paren
@@ -113,7 +95,7 @@ c_func
 (paren
 id|buf
 comma
-id|ikconfig_config
+id|kernel_config_data
 op_plus
 id|pos
 comma
@@ -135,11 +117,11 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|variable|config_fops
+DECL|variable|ikconfig_file_ops
 r_static
 r_struct
 id|file_operations
-id|config_fops
+id|ikconfig_file_ops
 op_assign
 (brace
 dot
@@ -150,17 +132,17 @@ comma
 dot
 id|read
 op_assign
-id|ikconfig_read
+id|ikconfig_read_current
 comma
 )brace
 suffix:semicolon
 multiline_comment|/***************************************************/
-multiline_comment|/* built_with_show: let people read the info  */
+multiline_comment|/* build_info_show: let people read the info       */
 multiline_comment|/* we have on the tools used to build this kernel  */
-DECL|function|builtwith_show
+DECL|function|build_info_show
 r_static
 r_int
-id|builtwith_show
+id|build_info_show
 c_func
 (paren
 r_struct
@@ -180,7 +162,7 @@ id|seq
 comma
 l_string|&quot;Kernel:    %s&bslash;nCompiler:  %s&bslash;nVersion_in_Makefile: %s&bslash;n&quot;
 comma
-id|ikconfig_built_with
+id|ikconfig_build_info
 comma
 id|LINUX_COMPILER
 comma
@@ -191,10 +173,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|built_with_open
+DECL|function|build_info_open
 r_static
 r_int
-id|built_with_open
+id|build_info_open
 c_func
 (paren
 r_struct
@@ -214,7 +196,7 @@ c_func
 (paren
 id|file
 comma
-id|builtwith_show
+id|build_info_show
 comma
 id|PDE
 c_func
@@ -226,11 +208,11 @@ id|data
 )paren
 suffix:semicolon
 )brace
-DECL|variable|builtwith_fops
+DECL|variable|build_info_file_ops
 r_static
 r_struct
 id|file_operations
-id|builtwith_fops
+id|build_info_file_ops
 op_assign
 (brace
 dot
@@ -241,7 +223,7 @@ comma
 dot
 id|open
 op_assign
-id|built_with_open
+id|build_info_open
 comma
 dot
 id|read
@@ -262,9 +244,10 @@ comma
 suffix:semicolon
 multiline_comment|/***************************************************/
 multiline_comment|/* ikconfig_init: start up everything we need to */
+DECL|function|ikconfig_init
+r_static
 r_int
 id|__init
-DECL|function|ikconfig_init
 id|ikconfig_init
 c_func
 (paren
@@ -280,35 +263,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ikconfig %s with /proc/ikconfig&bslash;n&quot;
+l_string|&quot;ikconfig %s with /proc/config*&bslash;n&quot;
 comma
 id|IKCONFIG_VERSION
 )paren
-suffix:semicolon
-multiline_comment|/* create the ikconfig directory */
-id|ikconfig_dir
-op_assign
-id|proc_mkdir
-c_func
-(paren
-id|IKCONFIG_NAME
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ikconfig_dir
-op_eq
-l_int|NULL
-)paren
-r_goto
-id|leave
-suffix:semicolon
-id|ikconfig_dir-&gt;owner
-op_assign
-id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/* create the current config file */
 id|entry
@@ -316,13 +274,14 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;config&quot;
+l_string|&quot;config.gz&quot;
 comma
 id|S_IFREG
 op_or
 id|S_IRUGO
 comma
-id|ikconfig_dir
+op_amp
+id|proc_root
 )paren
 suffix:semicolon
 r_if
@@ -332,36 +291,31 @@ op_logical_neg
 id|entry
 )paren
 r_goto
-id|leave2
+id|leave
 suffix:semicolon
 id|entry-&gt;proc_fops
 op_assign
 op_amp
-id|config_fops
+id|ikconfig_file_ops
 suffix:semicolon
 id|entry-&gt;size
 op_assign
-id|ikconfig_size
-op_assign
-id|strlen
-c_func
-(paren
-id|ikconfig_config
-)paren
+id|kernel_config_data_size
 suffix:semicolon
-multiline_comment|/* create the &quot;built with&quot; file */
+multiline_comment|/* create the &quot;build_info&quot; file */
 id|entry
 op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;built_with&quot;
+l_string|&quot;config_build_info&quot;
 comma
 id|S_IFREG
 op_or
 id|S_IRUGO
 comma
-id|ikconfig_dir
+op_amp
+id|proc_root
 )paren
 suffix:semicolon
 r_if
@@ -371,36 +325,26 @@ op_logical_neg
 id|entry
 )paren
 r_goto
-id|leave3
+id|leave_gz
 suffix:semicolon
 id|entry-&gt;proc_fops
 op_assign
 op_amp
-id|builtwith_fops
+id|build_info_file_ops
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|leave3
+id|leave_gz
 suffix:colon
 multiline_comment|/* remove the file from proc */
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;config&quot;
+l_string|&quot;config.gz&quot;
 comma
-id|ikconfig_dir
-)paren
-suffix:semicolon
-id|leave2
-suffix:colon
-multiline_comment|/* remove the ikconfig directory */
-id|remove_proc_entry
-c_func
-(paren
-id|IKCONFIG_NAME
-comma
-l_int|NULL
+op_amp
+id|proc_root
 )paren
 suffix:semicolon
 id|leave
@@ -411,11 +355,12 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************/
-multiline_comment|/* cleanup_ikconfig: clean up our mess           */
+multiline_comment|/* ikconfig_cleanup: clean up our mess           */
+DECL|function|ikconfig_cleanup
 r_static
 r_void
-DECL|function|cleanup_ikconfig
-id|cleanup_ikconfig
+id|__exit
+id|ikconfig_cleanup
 c_func
 (paren
 r_void
@@ -425,26 +370,19 @@ multiline_comment|/* remove the files */
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;config&quot;
+l_string|&quot;config.gz&quot;
 comma
-id|ikconfig_dir
+op_amp
+id|proc_root
 )paren
 suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;built_with&quot;
+l_string|&quot;config_build_info&quot;
 comma
-id|ikconfig_dir
-)paren
-suffix:semicolon
-multiline_comment|/* remove the ikconfig directory */
-id|remove_proc_entry
-c_func
-(paren
-id|IKCONFIG_NAME
-comma
-l_int|NULL
+op_amp
+id|proc_root
 )paren
 suffix:semicolon
 )brace
@@ -455,11 +393,11 @@ c_func
 id|ikconfig_init
 )paren
 suffix:semicolon
-DECL|variable|cleanup_ikconfig
+DECL|variable|ikconfig_cleanup
 id|module_exit
 c_func
 (paren
-id|cleanup_ikconfig
+id|ikconfig_cleanup
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
