@@ -4771,7 +4771,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* net_device_stats */
 multiline_comment|/* ----------------------------------------------------------------------------&n;updateCRC&n;&t;Modified from Am79C90 data sheet.&n;---------------------------------------------------------------------------- */
-macro_line|#if BROKEN_MULTICAST
+macro_line|#ifdef BROKEN_MULTICAST
 DECL|function|updateCRC
 r_static
 r_void
