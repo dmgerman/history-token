@@ -2798,22 +2798,6 @@ op_ge
 id|SWAP_CLUSTER_MAX
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Don&squot;t try to bring down too many pages in one attempt.&n;&t;&t; * If this fails, the caller will increase `priority&squot; and&n;&t;&t; * we&squot;ll try again, with an increased chance of reclaiming&n;&t;&t; * mapped memory.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|count
-OG
-id|SWAP_CLUSTER_MAX
-op_star
-l_int|4
-)paren
-id|count
-op_assign
-id|SWAP_CLUSTER_MAX
-op_star
-l_int|4
-suffix:semicolon
 id|atomic_set
 c_func
 (paren
