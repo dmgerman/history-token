@@ -420,6 +420,8 @@ op_or
 id|CPU_FTR_COHERENT_ICACHE
 op_or
 id|CPU_FTR_LOCKLESS_TLBIE
+op_or
+id|CPU_FTR_MMCRA_SIHV
 comma
 id|COMMON_USER_PPC64
 comma
@@ -455,6 +457,8 @@ op_or
 id|CPU_FTR_COHERENT_ICACHE
 op_or
 id|CPU_FTR_LOCKLESS_TLBIE
+op_or
+id|CPU_FTR_MMCRA_SIHV
 comma
 id|COMMON_USER_PPC64
 comma
