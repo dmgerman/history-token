@@ -246,7 +246,7 @@ multiline_comment|/* genksyms doesn&squot;t handle GPL-only symbols yet */
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL EXPORT_SYMBOL
 macro_line|#else
-macro_line|#ifdef CONFIG_MODVERSIONING
+macro_line|#ifdef CONFIG_MODVERSIONS
 multiline_comment|/* Mark the CRC weak since genksyms apparently decides not to&n; * generate a checksums for some symbols */
 DECL|macro|__CRC_SYMBOL
 mdefine_line|#define __CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__crc_##sym __attribute__((weak));&t;&t;&bslash;&n;&t;static const unsigned long __kcrctab_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__kcrctab&quot; sec), unused))&t;&bslash;&n;&t;= (unsigned long) &amp;__crc_##sym;

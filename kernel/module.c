@@ -3171,7 +3171,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_OBSOLETE_MODPARM */
-macro_line|#ifdef CONFIG_MODVERSIONING
+macro_line|#ifdef CONFIG_MODVERSIONS
 DECL|function|check_version
 r_static
 r_int
@@ -3424,7 +3424,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_MODVERSIONING */
+macro_line|#endif /* CONFIG_MODVERSIONS */
 multiline_comment|/* Resolve a symbol for this module.  I.e. if we find one, record usage.&n;   Must be holding module_mutex. */
 DECL|function|resolve_symbol
 r_static
