@@ -105,24 +105,11 @@ id|self
 op_assign
 id|instance
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)paren
-suffix:semicolon
 id|sk
 op_assign
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|sk
@@ -447,7 +434,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: max_sdu_size must be 0&bslash;n&quot;
@@ -479,7 +466,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
@@ -656,7 +643,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: max_sdu_size must be 0&bslash;n&quot;
@@ -694,7 +681,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
@@ -802,7 +789,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -905,22 +892,11 @@ id|self
 op_assign
 id|instance
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
 id|sk
 op_assign
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|sk
@@ -1046,7 +1022,7 @@ op_logical_neg
 id|self
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: lost myself!&bslash;n&quot;
@@ -1185,7 +1161,7 @@ op_logical_neg
 id|self
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: lost myself!&bslash;n&quot;
@@ -1245,7 +1221,7 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1308,7 +1284,7 @@ c_cond
 id|self-&gt;tsap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: busy!&bslash;n&quot;
@@ -1438,7 +1414,7 @@ c_cond
 id|self-&gt;lsap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), busy!&bslash;n&quot;
@@ -1549,7 +1525,7 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1568,7 +1544,7 @@ c_cond
 id|self-&gt;iriap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(): busy with a previous query&bslash;n&quot;
@@ -1832,7 +1808,7 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2366,7 +2342,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2605,7 +2581,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2851,7 +2827,7 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 r_new
@@ -3699,7 +3675,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: protocol not supported!&bslash;n&quot;
@@ -3789,7 +3765,7 @@ comma
 id|self
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4116,7 +4092,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4383,7 +4359,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4620,7 +4596,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5168,7 +5144,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5455,7 +5431,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5778,7 +5754,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6464,7 +6440,7 @@ multiline_comment|/* Attribute in IAS object */
 r_int
 id|opt
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7139,7 +7115,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: not allowed to set MAXSDUSIZE for this socket type!&bslash;n&quot;
@@ -8136,7 +8112,7 @@ c_cond
 id|self-&gt;iriap
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: busy with a previous query&bslash;n&quot;

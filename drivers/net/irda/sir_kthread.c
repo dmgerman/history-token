@@ -854,7 +854,7 @@ l_int|0
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - undefined state&bslash;n&quot;
@@ -1421,7 +1421,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - undefined state&bslash;n&quot;
@@ -1438,7 +1438,7 @@ multiline_comment|/* fall thru */
 r_case
 id|SIRDEV_STATE_ERROR
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - error: %d&bslash;n&quot;
@@ -1618,7 +1618,7 @@ id|SIRDEV_STATE_DEAD
 )paren
 (brace
 multiline_comment|/* race with sirdev_close should never happen */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), instance staled!&bslash;n&quot;

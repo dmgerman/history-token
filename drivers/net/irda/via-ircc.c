@@ -1911,7 +1911,7 @@ id|err
 r_goto
 id|err_out4
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s (via-ircc)&bslash;n&quot;
@@ -2016,7 +2016,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2434,7 +2434,7 @@ op_assign
 l_int|9
 suffix:semicolon
 multiline_comment|/* Default to IBM */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;via-ircc: dongle probing not supported, please specify dongle_id module parameter.&bslash;n&quot;
@@ -3106,7 +3106,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: Error: dongle_id %d unsupported !&bslash;n&quot;
@@ -3543,7 +3543,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5898,7 +5898,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: irq %d for unknown device.&bslash;n&quot;
@@ -6687,7 +6687,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6771,7 +6771,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -6797,7 +6797,7 @@ id|self-&gt;stats.rx_packets
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6831,7 +6831,7 @@ id|dev
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s, unable to allocate irq=%d&bslash;n&quot;
@@ -6859,7 +6859,7 @@ id|dev-&gt;name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s, unable to allocate dma=%d&bslash;n&quot;
@@ -6902,7 +6902,7 @@ id|dev-&gt;name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s, unable to allocate dma2=%d&bslash;n&quot;
@@ -7028,7 +7028,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -7050,7 +7050,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7185,7 +7185,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -7202,7 +7202,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self

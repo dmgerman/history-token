@@ -870,7 +870,7 @@ op_ne
 id|MSTRPAGE_VALUE
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: pci busaddr inconsistency!&bslash;n&quot;

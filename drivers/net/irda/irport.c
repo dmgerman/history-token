@@ -402,7 +402,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t allocate memory for &quot;
@@ -514,7 +514,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t allocate memory for &quot;
@@ -589,7 +589,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t allocate memory for &quot;
@@ -686,7 +686,7 @@ id|dev
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
@@ -698,7 +698,7 @@ r_goto
 id|err_out5
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s (irport io=0x%X irq=%d)&bslash;n&quot;
@@ -772,7 +772,7 @@ op_star
 id|self
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1105,7 +1105,7 @@ multiline_comment|/* Line control reg */
 r_int
 id|divisor
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1116,7 +1116,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|speed
@@ -1308,7 +1308,7 @@ op_star
 )paren
 id|task-&gt;instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1480,7 +1480,7 @@ suffix:semicolon
 r_case
 id|IRDA_TASK_CHILD_WAIT
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), changing speed of dongle timed out!&bslash;n&quot;
@@ -1521,7 +1521,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), unknown state %d&bslash;n&quot;
@@ -1605,7 +1605,7 @@ op_star
 )paren
 id|task-&gt;instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1618,7 +1618,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -1682,7 +1682,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1697,7 +1697,7 @@ id|iobase
 op_assign
 id|self-&gt;io.sir_base
 suffix:semicolon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: transmit timed out, jiffies = %ld, trans_start = %ld&bslash;n&quot;
@@ -1946,7 +1946,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -1967,7 +1967,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2241,7 +2241,7 @@ r_int
 r_int
 id|fcr
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2423,7 +2423,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2562,7 +2562,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s() irq %d for unknown device.&bslash;n&quot;
@@ -2685,7 +2685,7 @@ OG
 l_int|10
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s() irq handler looping : lsr=%02x&bslash;n&quot;
@@ -2796,7 +2796,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -2976,7 +2976,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -2998,7 +2998,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3125,7 +3125,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3217,7 +3217,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3349,7 +3349,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -3366,7 +3366,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self

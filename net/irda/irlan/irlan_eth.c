@@ -511,18 +511,39 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
 id|skb-&gt;len
-OG
-l_int|1
+OL
+id|ETH_HLEN
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
 comma
+l_string|&quot;%s() : IrLAN frame too short (%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+op_increment
+id|self-&gt;stats.rx_dropped
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)paren
-suffix:semicolon
+)brace
 multiline_comment|/* &n;&t; * Adopt this frame! Important to set all these fields since they &n;&t; * might have been previously set by the low level IrDA network&n;&t; * device driver &n;&t; */
 id|skb-&gt;dev
 op_assign
@@ -594,7 +615,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -605,7 +626,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -620,7 +641,7 @@ id|dev
 op_assign
 id|self-&gt;dev
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -842,7 +863,7 @@ id|IFF_PROMISC
 )paren
 (brace
 multiline_comment|/* Enable promiscuous mode */
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;Promiscous mode not implemented by IrLAN!&bslash;n&quot;
