@@ -379,6 +379,31 @@ r_int
 id|bEndpointAddress
 )paren
 suffix:semicolon
+multiline_comment|/* global suspend/resume of bus */
+DECL|member|hub_suspend
+r_int
+(paren
+op_star
+id|hub_suspend
+)paren
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+DECL|member|hub_resume
+r_int
+(paren
+op_star
+id|hub_resume
+)paren
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* each driver provides one of these, and hardware init support */
@@ -452,6 +477,7 @@ op_star
 id|hcd
 )paren
 suffix:semicolon
+multiline_comment|/* NOTE:  these suspend/resume calls relate to the HC as&n;&t; * a whole, not just the root hub; they&squot;re for bus glue.&n;&t; */
 multiline_comment|/* called after all devices were suspended */
 DECL|member|suspend
 r_int
@@ -644,6 +670,30 @@ id|buf
 comma
 id|u16
 id|wLength
+)paren
+suffix:semicolon
+DECL|member|hub_suspend
+r_int
+(paren
+op_star
+id|hub_suspend
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+)paren
+suffix:semicolon
+DECL|member|hub_resume
+r_int
+(paren
+op_star
+id|hub_resume
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
 )paren
 suffix:semicolon
 )brace

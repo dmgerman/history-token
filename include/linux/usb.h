@@ -363,6 +363,25 @@ op_star
 id|bus_name
 suffix:semicolon
 multiline_comment|/* stable id (PCI slot_name etc) */
+DECL|member|otg_port
+id|u8
+id|otg_port
+suffix:semicolon
+multiline_comment|/* 0, or number of OTG/HNP port */
+DECL|member|is_b_host
+r_int
+id|is_b_host
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* true during some HNP roleswitches */
+DECL|member|b_hnp_enable
+r_int
+id|b_hnp_enable
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* OTG: did A-Host enable HNP? */
 DECL|member|devnum_next
 r_int
 id|devnum_next
@@ -1878,6 +1897,32 @@ id|actual_length
 comma
 r_int
 id|timeout
+)paren
+suffix:semicolon
+multiline_comment|/* selective suspend/resume */
+r_extern
+r_int
+id|usb_suspend_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_resume_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* wrappers around usb_control_msg() for the most common standard requests */
