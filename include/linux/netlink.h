@@ -13,6 +13,8 @@ DECL|macro|NETLINK_TCPDIAG
 mdefine_line|#define NETLINK_TCPDIAG&t;&t;4&t;/* TCP socket monitoring&t;&t;&t;*/
 DECL|macro|NETLINK_NFLOG
 mdefine_line|#define NETLINK_NFLOG&t;&t;5&t;/* netfilter/iptables ULOG */
+DECL|macro|NETLINK_XFRM
+mdefine_line|#define NETLINK_XFRM&t;&t;6&t;/* ipsec */
 DECL|macro|NETLINK_ARPD
 mdefine_line|#define NETLINK_ARPD&t;&t;8
 DECL|macro|NETLINK_ROUTE6
@@ -153,6 +155,7 @@ suffix:semicolon
 DECL|macro|NET_MAJOR
 mdefine_line|#define NET_MAJOR 36&t;&t;/* Major 36 is reserved for networking &t;&t;&t;&t;&t;&t;*/
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/capability.h&gt;
 DECL|struct|netlink_skb_parms
 r_struct
 id|netlink_skb_parms

@@ -1628,9 +1628,12 @@ id|fl
 comma
 id|sk
 comma
+op_logical_neg
+(paren
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
+)paren
 )paren
 suffix:semicolon
 )brace
