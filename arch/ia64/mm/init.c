@@ -380,6 +380,8 @@ suffix:semicolon
 id|vma-&gt;vm_start
 op_assign
 id|current-&gt;thread.rbs_bot
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 id|vma-&gt;vm_end
 op_assign
