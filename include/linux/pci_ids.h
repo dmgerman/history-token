@@ -456,6 +456,72 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N1
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N1&t;0x5159
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N2
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N2&t;0x515a
+multiline_comment|/* Radeon R100 */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QD
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QD&t;0x5144
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QE
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QE&t;0x5145
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QF
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QF&t;0x5146
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QG
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QG&t;0x5147
+multiline_comment|/* Radeon RV100 (VE) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QY
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QY&t;0x5159
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QZ
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QZ&t;0x515a
+multiline_comment|/* Radeon R200 (8500) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QL
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QL&t;0x514c
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QN
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QN&t;0x514e
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QO
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QO&t;0x514f
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Ql
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ql&t;0x516c
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_BB
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_BB&t;0x4242
+multiline_comment|/* Radeon RV200 (7500) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QW
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QW&t;0x5157
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QX
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QX&t;0x5158
+multiline_comment|/* Radeon RV250 (9000) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Id
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Id&t;0x4964
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Ie
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ie&t;0x4965
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_If
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_If&t;0x4966
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Ig
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ig&t;0x4967
+multiline_comment|/* Radeon R300 (9700) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_ND
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_ND&t;0x4e44
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_NE
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_NE&t;0x4e45
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_NF
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_NF&t;0x4e46
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_NG
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_NG&t;0x4e47
+multiline_comment|/* Radeon M6 */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LY
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LY&t;0x4c59
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LZ
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LZ&t;0x4c5a
+multiline_comment|/* Radeon M7 */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LW
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LW&t;0x4c57
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LX
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LX&t;0x4c58
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Ld
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ld&t;0x4964
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Le
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Le&t;0x4965
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Lf
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Lf&t;0x4966
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Lg
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Lg&t;0x4967
 multiline_comment|/* Radeon */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_RA
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_RA&t;0x5144
