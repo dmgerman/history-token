@@ -18,7 +18,7 @@ mdefine_line|#define PFX &quot;powernow-k8: &quot;
 DECL|macro|BFX
 mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;version 1.00.08a&quot;
+mdefine_line|#define VERSION &quot;version 1.00.08b&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
 multiline_comment|/* serialize freq changes  */
 r_static
