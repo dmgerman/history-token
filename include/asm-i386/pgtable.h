@@ -703,6 +703,9 @@ id|ptep-&gt;pte_low
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.  On processors which do not support&n; * it, this is a no-op.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;((boot_cpu_data.x86 &gt; 3)&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;&t; ? (__pgprot(pgprot_val(prot) | _PAGE_PCD | _PAGE_PWT)) : (prot))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))

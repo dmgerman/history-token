@@ -1145,6 +1145,9 @@ id|ptep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_PCD | _PAGE_PWT))
 DECL|macro|__LARGE_PTE
 mdefine_line|#define __LARGE_PTE (_PAGE_PSE|_PAGE_PRESENT) 
 DECL|function|pmd_large
