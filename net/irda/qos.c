@@ -19,12 +19,19 @@ id|sysctl_max_noreply_time
 op_assign
 l_int|12
 suffix:semicolon
-multiline_comment|/*&n; * Minimum turn time to be applied before transmitting to the peer.&n; * Nonzero values (usec) are used as lower limit to the per-connection&n; * mtt value which was announced by the other end during negotiation.&n; * Might be helpful if the peer device provides too short mtt.&n; * Default is 10 which means using the unmodified value given by the peer&n; * except if it&squot;s 0 (0 is likely a bug in the other stack).&n; */
+multiline_comment|/*&n; * Minimum turn time to be applied before transmitting to the peer.&n; * Nonzero values (usec) are used as lower limit to the per-connection&n; * mtt value which was announced by the other end during negotiation.&n; * Might be helpful if the peer device provides too short mtt.&n; * Default is 10us which means using the unmodified value given by the&n; * peer except if it&squot;s 0 (0 is likely a bug in the other stack).&n; */
 DECL|variable|sysctl_min_tx_turn_time
 r_int
 id|sysctl_min_tx_turn_time
 op_assign
 l_int|10
+suffix:semicolon
+multiline_comment|/*&n; * Maximum data size to be used in transmission in payload of LAP frame.&n; * There is a bit of confusion in the IrDA spec :&n; * The LAP spec defines the payload of a LAP frame (I field) to be&n; * 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * On the other hand, the PHY mention frames of 2048 bytes max (IrPHY&n; * 1.2, chapt 5.3.2.1, p41). But, this number includes the LAP header&n; * (2 bytes), and CRC (32 bits at 4 Mb/s). So, for the I field (LAP&n; * payload), that&squot;s only 2042 bytes. Oups !&n; * I&squot;ve had trouble trouble transmitting 2048 bytes frames with USB&n; * dongles and nsc-ircc at 4 Mb/s, so adjust to 2042... I don&squot;t know&n; * if this bug applies only for 2048 bytes frames or all negociated&n; * frame sizes, but all hardware seem to support &quot;2048 bytes&quot; frames.&n; * You can use the sysctl to play with this value anyway.&n; * Jean II */
+DECL|variable|sysctl_max_tx_data_size
+r_int
+id|sysctl_max_tx_data_size
+op_assign
+l_int|2042
 suffix:semicolon
 r_static
 r_int
@@ -1293,13 +1300,13 @@ c_func
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;(), redusing data size to %d&bslash;n&quot;
+l_string|&quot;(), reducing data size to %d&bslash;n&quot;
 comma
 id|qos-&gt;data_size.value
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* Use method descibed in section 6.6.11 of IrLAP */
+macro_line|#else /* Use method described in section 6.6.11 of IrLAP */
 r_while
 c_loop
 (paren
@@ -1341,7 +1348,7 @@ c_func
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;(), redusing window size to %d&bslash;n&quot;
+l_string|&quot;(), reducing window size to %d&bslash;n&quot;
 comma
 id|qos-&gt;window_size.value
 )paren
@@ -1370,7 +1377,7 @@ c_func
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;(), redusing data size to %d&bslash;n&quot;
+l_string|&quot;(), reducing data size to %d&bslash;n&quot;
 comma
 id|qos-&gt;data_size.value
 )paren
@@ -1388,6 +1395,19 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
+multiline_comment|/*&n;&t; * Fix tx data size according to user limits - Jean II&n;&t; */
+r_if
+c_cond
+(paren
+id|qos-&gt;data_size.value
+OG
+id|sysctl_max_tx_data_size
+)paren
+multiline_comment|/* Allow non discrete adjustement to avoid loosing capacity */
+id|qos-&gt;data_size.value
+op_assign
+id|sysctl_max_tx_data_size
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_negotiate (qos_device, qos_session, skb)&n; *&n; *    Negotiate QoS values, not really that much negotiation :-)&n; *    We just set the QoS capabilities for the peer station&n; *&n; */
 DECL|function|irlap_qos_negotiate
