@@ -151,10 +151,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
-op_eq
-l_int|NULL
-op_logical_or
 id|tb
 (braket
 id|TCA_PEDIT_PARMS
@@ -414,26 +410,6 @@ id|u8
 op_star
 id|pptr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BUG: tcf_pedit called with NULL params&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* change to something symbolic */
-)brace
 r_if
 c_cond
 (paren
@@ -756,24 +732,6 @@ suffix:semicolon
 r_int
 id|s
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BUG: tcf_pedit_dump called with NULL params&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|rtattr_failure
-suffix:semicolon
-)brace
 id|s
 op_assign
 r_sizeof

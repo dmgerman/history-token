@@ -253,10 +253,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|a
-op_eq
-l_int|NULL
-op_logical_or
 id|rta
 op_eq
 l_int|NULL
@@ -1073,21 +1069,6 @@ op_assign
 op_star
 id|pskb
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-l_int|NULL
-op_logical_or
-id|skb
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1288,24 +1269,6 @@ comma
 id|ipt
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BUG: tcf_ipt_dump called with NULL params&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|rtattr_failure
-suffix:semicolon
-)brace
 multiline_comment|/* for simple targets kernel size == user size&n;&t;** user name = target name&n;&t;** for foolproof you need to not assume this&n;&t;*/
 id|t
 op_assign
