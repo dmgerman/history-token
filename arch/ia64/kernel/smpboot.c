@@ -96,7 +96,7 @@ id|task_t
 op_star
 id|task_for_booting_cpu
 suffix:semicolon
-multiline_comment|/* Bitmask of currently online CPUs */
+multiline_comment|/* Bitmasks of currently online, and possible CPUs */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -108,15 +108,15 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
-DECL|variable|phys_cpu_present_map
+DECL|variable|cpu_possible_map
 id|cpumask_t
-id|phys_cpu_present_map
+id|cpu_possible_map
 suffix:semicolon
-DECL|variable|phys_cpu_present_map
+DECL|variable|cpu_possible_map
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
@@ -181,6 +181,11 @@ id|str
 id|no_int_routing
 op_assign
 l_int|1
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;no_int_routing on&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -1422,7 +1427,7 @@ suffix:semicolon
 id|cpus_clear
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_present_map
 )paren
 suffix:semicolon
 id|cpu_set
@@ -1430,7 +1435,15 @@ c_func
 (paren
 l_int|0
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_for
@@ -1473,7 +1486,15 @@ c_func
 (paren
 id|cpu
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|ia64_cpu_to_sapicid
@@ -1753,7 +1774,13 @@ suffix:semicolon
 id|cpus_clear
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpus_clear
+c_func
+(paren
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|cpu_set
@@ -1769,7 +1796,15 @@ c_func
 (paren
 l_int|0
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_return

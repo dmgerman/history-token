@@ -86,7 +86,7 @@ id|total
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|cpu
