@@ -2532,13 +2532,12 @@ id|send_llinfo
 op_assign
 id|dev-&gt;addr_len
 op_logical_and
-id|ipv6_addr_type
+op_logical_neg
+id|ipv6_addr_any
 c_func
 (paren
 id|saddr
 )paren
-op_ne
-id|IPV6_ADDR_ANY
 suffix:semicolon
 r_if
 c_cond
