@@ -12,7 +12,6 @@ macro_line|#ifndef TEST_FRAME
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#endif /* TEST_FRAME (not defined) */
 macro_line|#include &lt;linux/socket.h&gt; /* for sa_family_t */
-macro_line|#include &lt;linux/types.h&gt; /* For NULL, etc... */
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
