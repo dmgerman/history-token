@@ -145,7 +145,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -1508,7 +1512,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 r_struct
 id|net_device_stats
