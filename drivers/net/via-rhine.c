@@ -473,6 +473,9 @@ macro_line|#else
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
 macro_line|#endif
+multiline_comment|/* Beware of PCI posted writes */
+DECL|macro|IOSYNC
+mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
 multiline_comment|/* directly indexed by enum via_rhine_chips, above */
 DECL|variable|__devinitdata
 r_static
@@ -1486,11 +1489,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
+r_int
+id|boguscnt
+op_assign
+l_int|20
+suffix:semicolon
+id|IOSYNC
 suffix:semicolon
 r_if
 c_cond
@@ -1510,7 +1514,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Reset did not complete in 5 us. &quot;
+l_string|&quot;%s: Reset not complete yet. &quot;
 l_string|&quot;Trying harder.&bslash;n&quot;
 comma
 id|name
@@ -1536,10 +1540,29 @@ id|MiscCmd
 suffix:semicolon
 multiline_comment|/* VT86C100A may need long delay after reset (dlink) */
 multiline_comment|/* Seen on Rhine-II as well (rl) */
+r_while
+c_loop
+(paren
+(paren
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+op_amp
+id|CmdReset
+)paren
+op_logical_and
+op_decrement
+id|boguscnt
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|100
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -1558,22 +1581,12 @@ l_string|&quot;%s: Reset %s.&bslash;n&quot;
 comma
 id|name
 comma
-(paren
-id|readw
-c_func
-(paren
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-op_amp
-id|CmdReset
-)paren
+id|boguscnt
 ques
 c_cond
-l_string|&quot;failed&quot;
-suffix:colon
 l_string|&quot;succeeded&quot;
+suffix:colon
+l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 )brace
