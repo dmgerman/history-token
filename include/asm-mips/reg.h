@@ -76,7 +76,7 @@ mdefine_line|#define EF_CP0_BADVADDR&t;&t;41
 DECL|macro|EF_CP0_STATUS
 mdefine_line|#define EF_CP0_STATUS&t;&t;42
 DECL|macro|EF_CP0_CAUSE
-mdefine_line|#define EF_CP0_CAUSE&t;&t;44
+mdefine_line|#define EF_CP0_CAUSE&t;&t;43
 DECL|macro|EF_SIZE
 mdefine_line|#define EF_SIZE&t;&t;&t;180&t;/* size in bytes */
 macro_line|#endif /* __ASM_MIPS_REG_H */

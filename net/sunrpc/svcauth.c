@@ -498,6 +498,9 @@ id|h.refcnt
 )paren
 comma
 multiline_comment|/* no update */
+comma
+l_int|0
+multiline_comment|/* no inplace updates */
 )paren
 DECL|function|auth_domain_find
 r_struct

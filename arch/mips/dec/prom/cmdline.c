@@ -2,32 +2,16 @@ multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the P
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &quot;prom.h&quot;
+macro_line|#include &lt;asm/dec/prom.h&gt;
 DECL|macro|PROM_DEBUG
 macro_line|#undef PROM_DEBUG
-macro_line|#ifdef PROM_DEBUG
-r_extern
-r_int
-(paren
-op_star
-id|prom_printf
-)paren
-(paren
-r_char
-op_star
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|COMMAND_LINE_SIZE
+id|CL_SIZE
 )braket
 suffix:semicolon
 DECL|function|prom_init_cmdline
@@ -36,19 +20,21 @@ id|__init
 id|prom_init_cmdline
 c_func
 (paren
-r_int
+id|s32
 id|argc
 comma
-r_char
-op_star
+id|s32
 op_star
 id|argv
 comma
-r_int
-r_int
+id|u32
 id|magic
 )paren
 (brace
+r_char
+op_star
+id|arg
+suffix:semicolon
 r_int
 id|start_arg
 comma
@@ -58,9 +44,12 @@ multiline_comment|/*&n;&t; * collect args and prepare cmd_line&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|prom_is_rex
+c_func
+(paren
 id|magic
-op_ne
-id|REX_PROM_MAGIC
+)paren
 )paren
 id|start_arg
 op_assign
@@ -86,15 +75,28 @@ id|i
 op_increment
 )paren
 (brace
+id|arg
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+)paren
+(paren
+id|argv
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 id|strcat
 c_func
 (paren
 id|arcs_cmdline
 comma
-id|argv
-(braket
-id|i
-)braket
+id|arg
 )paren
 suffix:semicolon
 r_if

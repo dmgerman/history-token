@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * memory.c: PROM library functions for acquiring/using memory descriptors&n; *           given to us from the ARCS firmware.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * memory.c: PROM library functions for acquiring/using memory descriptors&n; *           given to us from the ARCS firmware.&n; *&n; * Copyright (C) 1996 by David S. Miller&n; * Copyright (C) 1999, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000 by Silicon Graphics, Inc.&n; *&n; * PROM library functions for acquiring/using memory descriptors given to us&n; * from the ARCS firmware.  This is only used when CONFIG_ARC_MEMORY is set&n; * because on some machines like SGI IP27 the ARC memory configuration data&n; * completly bogus and alternate easier to use mechanisms are available.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -12,11 +12,11 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+DECL|function|ArcGetMemoryDescriptor
 r_struct
 id|linux_mdesc
 op_star
 id|__init
-DECL|function|ArcGetMemoryDescriptor
 id|ArcGetMemoryDescriptor
 c_func
 (paren
@@ -27,11 +27,16 @@ id|Current
 )paren
 (brace
 r_return
-id|romvec
-op_member_access_from_pointer
-id|get_mdesc
+(paren
+r_struct
+id|linux_mdesc
+op_star
+)paren
+id|ARC_CALL1
 c_func
 (paren
+id|get_mdesc
+comma
 id|Current
 )paren
 suffix:semicolon
@@ -92,7 +97,7 @@ l_string|&quot;FreeContiguous&quot;
 )brace
 suffix:semicolon
 DECL|macro|mtypes
-mdefine_line|#define mtypes(a) (prom_flags &amp; PROM_FLAG_ARCS) ? arcs_mtypes[a.arcs] : arc_mtypes[a.arc]
+mdefine_line|#define mtypes(a) (prom_flags &amp; PROM_FLAG_ARCS) ? arcs_mtypes[a.arcs] &bslash;&n;&t;&t;&t;&t;&t;&t;: arc_mtypes[a.arc]
 macro_line|#endif
 DECL|function|memtype_classify_arcs
 r_static
@@ -248,7 +253,7 @@ id|prom_flags
 op_amp
 id|PROM_FLAG_ARCS
 )paren
-multiline_comment|/* SGI is ``different&squot;&squot; ...  */
+multiline_comment|/* SGI is ``different&squot;&squot; ... */
 r_return
 id|memtype_classify_arcs
 c_func
@@ -396,9 +401,9 @@ id|type
 suffix:semicolon
 )brace
 )brace
+DECL|function|prom_free_prom_memory
 r_void
 id|__init
-DECL|function|prom_free_prom_memory
 id|prom_free_prom_memory
 (paren
 r_void
@@ -532,6 +537,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing prom memory: %ldkb freed&bslash;n&quot;
 comma
 id|freed

@@ -7,7 +7,7 @@ DECL|macro|ATLASINT_UART
 mdefine_line|#define ATLASINT_UART      0
 DECL|macro|ATLASINT_END
 mdefine_line|#define ATLASINT_END      32
-multiline_comment|/* &n; * Atlas registers are memory mapped on 64-bit aligned boundaries and &n; * only word access are allowed.&n; */
+multiline_comment|/*&n; * Atlas registers are memory mapped on 64-bit aligned boundaries and&n; * only word access are allowed.&n; */
 DECL|struct|atlas_ictrl_regs
 r_struct
 id|atlas_ictrl_regs

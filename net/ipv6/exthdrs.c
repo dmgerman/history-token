@@ -1669,8 +1669,8 @@ r_if
 c_cond
 (paren
 id|pkt_len
-OL
-l_int|0x10000
+op_le
+id|IPV6_MAXPLEN
 )paren
 (brace
 id|icmpv6_param_prob

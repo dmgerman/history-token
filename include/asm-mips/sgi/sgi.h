@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: sgi.h,v 1.1.1.1 1997/06/01 03:17:12 ralf Exp $&n; * sgi.h: Definitions specific to SGI machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@sgi.com)&n; */
-macro_line|#ifndef _MIPS_SGI_H
-DECL|macro|_MIPS_SGI_H
-mdefine_line|#define _MIPS_SGI_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgi.h: Definitions specific to SGI machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@sgi.com)&n; */
+macro_line|#ifndef _ASM_SGI_SGI_H
+DECL|macro|_ASM_SGI_SGI_H
+mdefine_line|#define _ASM_SGI_SGI_H
 multiline_comment|/* UP=UniProcessor MP=MultiProcessor(capable) */
 DECL|enum|sgi_mach
 r_enum
@@ -63,6 +63,10 @@ DECL|enumerator|ip26
 id|ip26
 comma
 multiline_comment|/* TFP UP, Indigo2 */
+DECL|enumerator|ip27
+id|ip27
+comma
+multiline_comment|/* R10k MP, R12k MP, Origin */
 DECL|enumerator|ip28
 id|ip28
 comma
@@ -96,5 +100,5 @@ macro_line|#else
 DECL|macro|SGI_MSB
 mdefine_line|#define SGI_MSB(regaddr)   ((regaddr) | 0x3)
 macro_line|#endif
-macro_line|#endif /* !(_MIPS_SGI_H) */
+macro_line|#endif /* _ASM_SGI_SGI_H */
 eof

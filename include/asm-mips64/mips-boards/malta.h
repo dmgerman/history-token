@@ -4,10 +4,86 @@ DECL|macro|_MIPS_MALTA_H
 mdefine_line|#define _MIPS_MALTA_H
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* &n; * Malta I/O ports base address. &n;*/
-DECL|macro|MALTA_PORT_BASE
-mdefine_line|#define MALTA_PORT_BASE      (KSEG1ADDR(0x18000000))
-multiline_comment|/* &n; * Malta RTC-device indirect register access.&n; */
+multiline_comment|/*&n; * Malta I/O ports base address for the Galileo GT64120 and Algorithmics&n; * Bonito system controllers.&n; */
+DECL|macro|MALTA_GT_PORT_BASE
+mdefine_line|#define MALTA_GT_PORT_BASE      get_gt_port_base(GT_PCI0IOLD_OFS)
+DECL|macro|MALTA_BONITO_PORT_BASE
+mdefine_line|#define MALTA_BONITO_PORT_BASE  (KSEG1ADDR(0x1fd00000))
+DECL|macro|MALTA_MSC_PORT_BASE
+mdefine_line|#define MALTA_MSC_PORT_BASE     get_msc_port_base(MSC01_PCI_SC2PIOBASL)
+DECL|function|get_gt_port_base
+r_static
+r_inline
+r_int
+r_int
+id|get_gt_port_base
+c_func
+(paren
+r_int
+r_int
+id|reg
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|GT_READ
+c_func
+(paren
+id|reg
+comma
+id|addr
+)paren
+suffix:semicolon
+r_return
+id|KSEG1ADDR
+c_func
+(paren
+(paren
+id|addr
+op_amp
+l_int|0xffff
+)paren
+op_lshift
+l_int|21
+)paren
+suffix:semicolon
+)brace
+DECL|function|get_msc_port_base
+r_static
+r_inline
+r_int
+r_int
+id|get_msc_port_base
+c_func
+(paren
+r_int
+r_int
+id|reg
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|MSC_READ
+c_func
+(paren
+id|reg
+comma
+id|addr
+)paren
+suffix:semicolon
+r_return
+id|KSEG1ADDR
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Malta RTC-device indirect register access.&n; */
 DECL|macro|MALTA_RTC_ADR_REG
 mdefine_line|#define MALTA_RTC_ADR_REG       0x70
 DECL|macro|MALTA_RTC_DAT_REG
@@ -31,5 +107,7 @@ DECL|macro|SMSC_CONFIG_ACTIVATE_ENABLE
 mdefine_line|#define SMSC_CONFIG_ACTIVATE_ENABLE   1
 DECL|macro|SMSC_WRITE
 mdefine_line|#define SMSC_WRITE(x,a)     outb(x,a)
+DECL|macro|MALTA_JMPRS_REG
+mdefine_line|#define MALTA_JMPRS_REG&t;&t;(KSEG1ADDR(0x1f000210))
 macro_line|#endif /* !(_MIPS_MALTA_H) */
 eof

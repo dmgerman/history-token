@@ -2,8 +2,10 @@ multiline_comment|/* &n; * dvb_demux.h - DVB kernel demux API&n; *&n; * Copyrigh
 macro_line|#ifndef _DVB_DEMUX_H_
 DECL|macro|_DVB_DEMUX_H_
 mdefine_line|#define _DVB_DEMUX_H_
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;demux.h&quot;
 DECL|macro|DMX_TYPE_TS
 mdefine_line|#define DMX_TYPE_TS  0
@@ -28,7 +30,8 @@ r_struct
 id|dvb_demux_filter
 (brace
 DECL|member|filter
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 id|filter
 suffix:semicolon
 DECL|member|maskandmode
@@ -105,11 +108,13 @@ id|dvb_demux_feed
 r_union
 (brace
 DECL|member|ts
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 id|ts
 suffix:semicolon
 DECL|member|sec
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 id|sec
 suffix:semicolon
 DECL|member|feed
@@ -186,7 +191,8 @@ r_int
 id|ts_type
 suffix:semicolon
 DECL|member|pes_type
-id|dmx_ts_pes_t
+r_enum
+id|dmx_ts_pes
 id|pes_type
 suffix:semicolon
 DECL|member|cc
@@ -209,7 +215,8 @@ r_struct
 id|dvb_demux
 (brace
 DECL|member|dmx
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 id|dmx
 suffix:semicolon
 DECL|member|priv
@@ -463,6 +470,31 @@ id|buf
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_int
+id|dvbdmx_connect_frontend
+c_func
+(paren
+r_struct
+id|dmx_demux
+op_star
+id|demux
+comma
+r_struct
+id|dmx_frontend
+op_star
+id|frontend
+)paren
+suffix:semicolon
+r_int
+id|dvbdmx_disconnect_frontend
+c_func
+(paren
+r_struct
+id|dmx_demux
+op_star
+id|demux
 )paren
 suffix:semicolon
 macro_line|#endif /* _DVB_DEMUX_H_ */

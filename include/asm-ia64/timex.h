@@ -10,7 +10,7 @@ r_int
 r_int
 id|cycles_t
 suffix:semicolon
-multiline_comment|/*&n; * Something low processor frequency like 100Mhz but &n; * yet multiple of HZ to avoid truncation in some formulas.&n; */
+multiline_comment|/*&n; * For performance reasons, we don&squot;t want to define CLOCK_TICK_TRATE as&n; * local_cpu_data-&gt;itc_rate.  Fortunately, we don&squot;t have to, either: according to George&n; * Anzinger, 1/CLOCK_TICK_RATE is taken as the resolution of the timer clock.  The time&n; * calculation assumes that you will use enough of these so that your tick size &lt;= 1/HZ.&n; * If the calculation shows that your CLOCK_TICK_RATE can not supply exactly 1/HZ ticks,&n; * the actual value is calculated and used to update the wall clock each jiffie.  Setting&n; * the CLOCK_TICK_RATE to x*HZ insures that the calculation will find no errors.  Hence we&n; * pick a multiple of HZ which gives us a (totally virtual) CLOCK_TICK_RATE of about&n; * 100MHz.&n; */
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;&t;(HZ * 100000UL)
 r_static

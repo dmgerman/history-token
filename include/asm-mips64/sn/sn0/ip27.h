@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 multiline_comment|/*&n; * Simple definitions for the masks which remove SW bits from pte.&n; */
 DECL|macro|TLBLO_HWBITSHIFT
 mdefine_line|#define TLBLO_HWBITSHIFT&t;0&t;&t;/* Shift value, for masking */
-macro_line|#if !_LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|CAUSE_BERRINTR
 mdefine_line|#define CAUSE_BERRINTR &t;&t;IE_IRQ5
 DECL|macro|ECCF_CACHE_ERR
@@ -21,12 +21,12 @@ DECL|macro|ECCF_PADDR
 mdefine_line|#define ECCF_PADDR      4
 DECL|macro|ECCF_SIZE
 mdefine_line|#define ECCF_SIZE       (5 * sizeof(long))
-macro_line|#endif /* !_LANGUAGE_ASSEMBLY */
-macro_line|#if _LANGUAGE_ASSEMBLY
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#ifdef __ASSEMBLY__
 multiline_comment|/*&n; * KL_GET_CPUNUM (similar to EV_GET_SPNUM for EVEREST platform) reads&n; * the processor number of the calling processor.  The proc parameters&n; * must be a register.&n; */
 DECL|macro|KL_GET_CPUNUM
 mdefine_line|#define KL_GET_CPUNUM(proc) &t;&t;&t;&t;&bslash;&n;&t;dli&t;proc, LOCAL_HUB(0); &t;&t;&t;&bslash;&n;&t;ld&t;proc, PI_CPU_NUM(proc)
-macro_line|#endif /* _LANGUAGE_ASSEMBLY */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * R10000 status register interrupt bit mask usage for IP27.&n; */
 DECL|macro|SRB_SWTIMO
 mdefine_line|#define SRB_SWTIMO&t;IE_SW0&t;&t;/* 0x0100 */

@@ -1,11 +1,11 @@
-multiline_comment|/* $Id$&n; * baget.h: Definitions specific to Baget/MIPS machines.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+multiline_comment|/*&n; * baget.h: Definitions specific to Baget/MIPS machines.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#ifndef _MIPS_BAGET_H
 DECL|macro|_MIPS_BAGET_H
 mdefine_line|#define _MIPS_BAGET_H
 macro_line|#include &quot;vic.h&quot;
 macro_line|#include &quot;vac.h&quot;
 DECL|macro|VIC_BASE
-mdefine_line|#define VIC_BASE         0xBFFC0000 
+mdefine_line|#define VIC_BASE         0xBFFC0000
 DECL|macro|VAC_BASE
 mdefine_line|#define VAC_BASE         0xBFFD0000
 multiline_comment|/* Baget interrupt registers and their sizes */
@@ -57,9 +57,9 @@ mdefine_line|#define BAGET_IRQ_MASK(x)       ((NR_IRQS-1) &amp; (x))
 DECL|macro|BAGET_FPU_IRQ
 mdefine_line|#define BAGET_FPU_IRQ           0x26
 DECL|macro|BAGET_VIC_TIMER_IRQ
-mdefine_line|#define BAGET_VIC_TIMER_IRQ     0x32 
+mdefine_line|#define BAGET_VIC_TIMER_IRQ     0x32
 DECL|macro|BAGET_VAC_TIMER_IRQ
-mdefine_line|#define BAGET_VAC_TIMER_IRQ     0x36 
+mdefine_line|#define BAGET_VAC_TIMER_IRQ     0x36
 DECL|macro|BAGET_BSM_IRQ
 mdefine_line|#define BAGET_BSM_IRQ           0x3C
 DECL|macro|BAGET_LANCE_MEM_BASE

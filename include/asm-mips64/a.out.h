@@ -57,7 +57,7 @@ DECL|macro|N_SYMSIZE
 mdefine_line|#define N_SYMSIZE(a)&t;((a).a_syms)
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP (current-&gt;thread.mflags &amp; MF_32BIT ? 0x7fff8000 : TASK_SIZE)
+mdefine_line|#define STACK_TOP (current-&gt;thread.mflags &amp; MF_32BIT_ADDR ? TASK_SIZE32 : TASK_SIZE)
 macro_line|#endif
 macro_line|#endif /* _ASM_A_OUT_H */
 eof

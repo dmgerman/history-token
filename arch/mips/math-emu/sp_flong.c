@@ -6,8 +6,7 @@ id|ieee754sp
 id|ieee754sp_flong
 c_func
 (paren
-r_int
-r_int
+id|s64
 id|x
 )paren
 (brace
@@ -140,7 +139,7 @@ l_int|3
 )paren
 )paren
 (brace
-multiline_comment|/* shunt out overflow bits &n;&t;&t; */
+multiline_comment|/* shunt out overflow bits&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -210,9 +209,7 @@ id|ieee754sp
 id|ieee754sp_fulong
 c_func
 (paren
-r_int
-r_int
-r_int
+id|u64
 id|u
 )paren
 (brace
@@ -220,8 +217,7 @@ r_if
 c_cond
 (paren
 (paren
-r_int
-r_int
+id|s64
 )paren
 id|u
 OL

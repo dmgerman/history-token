@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * vac.h: Various VIC controller defines.  The VIC is a VME controller&n; *        used in Baget/MIPS series.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
-macro_line|#ifndef _MIPS_VAC_H
-DECL|macro|_MIPS_VAC_H
-mdefine_line|#define _MIPS_VAC_H
+multiline_comment|/*&n; * vac.h: Various VIC controller defines.  The VIC is a VME controller&n; *        used in Baget/MIPS series.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+macro_line|#ifndef _ASM_VAC_H
+DECL|macro|_ASM_VAC_H
+mdefine_line|#define _ASM_VAC_H
 DECL|macro|VAC_SLSEL1_MASK
 mdefine_line|#define VAC_SLSEL1_MASK      0x000
 DECL|macro|VAC_SLSEL1_BASE
@@ -31,9 +31,9 @@ mdefine_line|#define    VAC_A24_D32_ENABLE    (1&lt;&lt;8)
 DECL|macro|VAC_A24_A24_CACHINH
 mdefine_line|#define    VAC_A24_A24_CACHINH   (1&lt;&lt;7)
 DECL|macro|VAC_A24_A16D32_ENABLE
-mdefine_line|#define    VAC_A24_A16D32_ENABLE (1&lt;&lt;6)  
+mdefine_line|#define    VAC_A24_A16D32_ENABLE (1&lt;&lt;6)
 DECL|macro|VAC_A24_A16D32
-mdefine_line|#define    VAC_A24_A16D32        (1&lt;&lt;5)  
+mdefine_line|#define    VAC_A24_A16D32        (1&lt;&lt;5)
 DECL|macro|VAC_A24_DATAPATH
 mdefine_line|#define    VAC_A24_DATAPATH      (1&lt;&lt;4)
 DECL|macro|VAC_A24_IO_CACHINH
@@ -366,7 +366,7 @@ DECL|macro|VAC_TIMER_PRESCALE
 mdefine_line|#define    VAC_TIMER_PRESCALE(x) (((x)&amp;0x3F)&lt;&lt;8)
 DECL|macro|VAC_ID
 mdefine_line|#define VAC_ID               0x2900
-macro_line|#ifndef __LANGUAGE_ASSEMBLY__
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|vac_inb
 mdefine_line|#define vac_inb(p)    (*(volatile unsigned char *)(VAC_BASE + (p)))
 DECL|macro|vac_outb
@@ -375,6 +375,6 @@ DECL|macro|vac_inw
 mdefine_line|#define vac_inw(p)    (*(volatile unsigned short*)(VAC_BASE + (p)))
 DECL|macro|vac_outw
 mdefine_line|#define vac_outw(v,p) (*((volatile unsigned short*)(VAC_BASE + (p))) = v)
-macro_line|#endif /* __LANGUAGE_ASSEMBLY__ */
-macro_line|#endif /* !(_MIPS_VAC_H) */
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* _ASM_VAC_H */
 eof

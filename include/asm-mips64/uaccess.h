@@ -3,39 +3,39 @@ macro_line|#ifndef _ASM_UACCESS_H
 DECL|macro|_ASM_UACCESS_H
 mdefine_line|#define _ASM_UACCESS_H
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 DECL|macro|STR
 mdefine_line|#define STR(x)  __STR(x)
 DECL|macro|__STR
 mdefine_line|#define __STR(x)  #x
 multiline_comment|/*&n; * The fs value determines whether argument validity checking should be&n; * performed or not.  If get_fs() == USER_DS, checking is performed, with&n; * get_fs() == KERNEL_DS, checking is bypassed.&n; *&n; * For historical reasons, these macros are grossly misnamed.&n; */
 DECL|macro|KERNEL_DS
-mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { (unsigned long) 0L })
+mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { 0UL })
 DECL|macro|USER_DS
-mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { (unsigned long) -1L })
+mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { -TASK_SIZE })
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ    0
 DECL|macro|VERIFY_WRITE
 mdefine_line|#define VERIFY_WRITE   1
-DECL|macro|get_fs
-mdefine_line|#define get_fs()        (current-&gt;thread.current_ds)
 DECL|macro|get_ds
 mdefine_line|#define get_ds()&t;(KERNEL_DS)
+DECL|macro|get_fs
+mdefine_line|#define get_fs()&t;(current_thread_info()-&gt;addr_limit)
 DECL|macro|set_fs
-mdefine_line|#define set_fs(x)       (current-&gt;thread.current_ds=(x))
+mdefine_line|#define set_fs(x)&t;(current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * Is a address valid? This does a straighforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */
 DECL|macro|__ua_size
-mdefine_line|#define __ua_size(size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(size) &amp;&amp; (signed long) (size) &gt; 0 ? 0 : (size))
+mdefine_line|#define __ua_size(size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(size) &amp;&amp; (size)) &gt; 0 ? 0 : (size))
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size,mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((signed long)((mask)&amp;(addr | (addr + size) | __ua_size(size)))) &gt;= 0)
+mdefine_line|#define __access_ok(addr, size, mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((mask) &amp; ((addr) | ((addr) + (size)) | __ua_size(size))) == 0)
 DECL|macro|__access_mask
-mdefine_line|#define __access_mask ((long)(get_fs().seg))
+mdefine_line|#define __access_mask get_fs().seg
 DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size) &bslash;&n;&t;__access_ok(((unsigned long)(addr)),(size),__access_mask)
+mdefine_line|#define access_ok(type, addr, size)&t;&t;&t;&t;&t;&bslash;&n;&t;__access_ok((unsigned long)(addr), (size), __access_mask)
 DECL|function|verify_area
-r_extern
+r_static
 r_inline
 r_int
 id|verify_area
@@ -152,15 +152,19 @@ r_int
 id|__n
 )paren
 suffix:semicolon
+DECL|macro|__invoke_copy_to_user
+mdefine_line|#define __invoke_copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register void *__cu_to_r __asm__ (&quot;$4&quot;);&t;&t;&t;&bslash;&n;&t;register const void *__cu_from_r __asm__ (&quot;$5&quot;);&t;&t;&bslash;&n;&t;register long __cu_len_r __asm__ (&quot;$6&quot;);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to_r = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from_r = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot; (__cu_to_r), &quot;+r&quot; (__cu_from_r), &quot;+r&quot; (__cu_len_r)&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&t;&t;&bslash;&n;&t;  &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$4, %1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$6, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__cu_len)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__cu_to), &quot;r&quot; (__cu_from), &quot;r&quot; (__cu_len)&t;&bslash;&n;&t;: &quot;$4&quot;, &quot;$5&quot;, &quot;$6&quot;, &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;,&t;&bslash;&n;&t;  &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&quot;memory&quot;);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$4, %1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t$6, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$1, %2, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__cu_len)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__cu_to), &quot;r&quot; (__cu_from), &quot;r&quot; (__cu_len)&t;&bslash;&n;&t;: &quot;$4&quot;, &quot;$5&quot;, &quot;$6&quot;, &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;,&t;&bslash;&n;&t;  &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&quot;memory&quot;);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __cu_to, __cu_len))&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$4, %1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$6, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__cu_len)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (__cu_to), &quot;r&quot; (__cu_from), &quot;r&quot; (__cu_len) &bslash;&n;&t;&t;: &quot;$4&quot;, &quot;$5&quot;, &quot;$6&quot;, &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;,&t;&bslash;&n;&t;&t;  &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&quot;memory&quot;);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __cu_to, __cu_len))&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__invoke_copy_from_user
+mdefine_line|#define __invoke_copy_from_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register void *__cu_to_r __asm__ (&quot;$4&quot;);&t;&t;&t;&bslash;&n;&t;register const void *__cu_from_r __asm__ (&quot;$5&quot;);&t;&t;&bslash;&n;&t;register long __cu_len_r __asm__ (&quot;$6&quot;);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to_r = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from_r = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$1, %1, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot; (__cu_to_r), &quot;+r&quot; (__cu_from_r), &quot;+r&quot; (__cu_len_r)&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&t;&t;&bslash;&n;&t;  &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__copy_from_user
+mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&t;&bslash;&n;&t;                                   __cu_len);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __cu_from, __cu_len))&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$4, %1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t$6, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;daddu&bslash;t$1, %2, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__cu_len)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (__cu_to), &quot;r&quot; (__cu_from), &quot;r&quot; (__cu_len) &bslash;&n;&t;&t;: &quot;$4&quot;, &quot;$5&quot;, &quot;$6&quot;, &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;,&t;&bslash;&n;&t;&t;  &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&quot;memory&quot;);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-r_extern
+mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __cu_from, __cu_len))&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                   __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+r_static
 r_inline
 id|__kernel_size_t
 DECL|function|__clear_user
@@ -225,9 +229,9 @@ id|res
 suffix:semicolon
 )brace
 DECL|macro|clear_user
-mdefine_line|#define clear_user(addr,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void * __cl_addr = (addr);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cl_size = (n);&t;&t;&t;&t;&bslash;&n;&t;if (__cl_size &amp;&amp; __access_ok(VERIFY_WRITE,&t;&t;&bslash;&n;&t;       ((unsigned long)(__cl_addr)), __cl_size))&t;&bslash;&n;&t;&t;__cl_size = __clear_user(__cl_addr, __cl_size);&t;&bslash;&n;&t;__cl_size;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define clear_user(addr,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void * __cl_addr = (addr);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cl_size = (n);&t;&t;&t;&t;&bslash;&n;&t;if (__cl_size &amp;&amp; access_ok(VERIFY_WRITE,&t;&t;&bslash;&n;&t;&t;((unsigned long)(__cl_addr)), __cl_size))&t;&bslash;&n;&t;&t;__cl_size = __clear_user(__cl_addr, __cl_size);&t;&bslash;&n;&t;__cl_size;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Returns: -EFAULT if exception before terminator, N if the entire&n; * buffer filled, else strlen.&n; */
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|__strncpy_from_user
@@ -305,7 +309,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|strncpy_from_user
@@ -385,7 +389,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns: 0 if bad, string length+1 (memory size) of string if ok */
 DECL|function|__strlen_user
-r_extern
+r_static
 r_inline
 r_int
 id|__strlen_user
@@ -436,7 +440,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|strlen_user
-r_extern
+r_static
 r_inline
 r_int
 id|strlen_user
@@ -488,7 +492,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns: 0 if bad, string length+1 (memory size) of string if ok */
 DECL|function|__strnlen_user
-r_extern
+r_static
 r_inline
 r_int
 id|__strnlen_user
@@ -515,7 +519,7 @@ l_string|&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;
 id|__MODULE_JAL
 c_func
 (paren
-id|__strlen_user_nocheck_asm
+id|__strnlen_user_nocheck_asm
 )paren
 l_string|&quot;move&bslash;t%0, $2&quot;
 suffix:colon
@@ -550,7 +554,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|strnlen_user
-r_extern
+r_static
 r_inline
 r_int
 id|strnlen_user
@@ -577,7 +581,7 @@ l_string|&quot;move&bslash;t$5, %2&bslash;n&bslash;t&quot;
 id|__MODULE_JAL
 c_func
 (paren
-id|__strlen_user_asm
+id|__strnlen_user_asm
 )paren
 l_string|&quot;move&bslash;t%0, $2&quot;
 suffix:colon

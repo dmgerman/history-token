@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -19,12 +18,11 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/baget/baget.h&gt;
-DECL|variable|spurious_count
+DECL|variable|irq_err_count
+r_volatile
 r_int
 r_int
-id|spurious_count
-op_assign
-l_int|0
+id|irq_err_count
 suffix:semicolon
 multiline_comment|/*&n; * This table is a correspondence between IRQ numbers and CPU PILs&n; */
 DECL|variable|irq_to_pil_map
@@ -293,10 +291,9 @@ r_int
 r_int
 id|status
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_status
 c_func
 (paren
-id|CP0_STATUS
 )paren
 suffix:semicolon
 id|status
@@ -322,16 +319,14 @@ l_int|0xFF
 op_lshift
 l_int|8
 suffix:semicolon
-id|write_32bit_cp0_register
+id|write_c0_status
 c_func
 (paren
-id|CP0_STATUS
-comma
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *  These two functions may be used for unconditional IRQ&n; *  masking via their PIL protection.&n; */
+multiline_comment|/*&n; *  These two functions may be used for unconditional IRQ&n; *  masking via their PIL protection.&n; */
 DECL|function|mask_irq
 r_static
 r_inline
@@ -420,7 +415,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -442,7 +437,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -471,7 +466,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -493,7 +488,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -515,7 +510,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -527,7 +522,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -548,7 +543,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -560,7 +555,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -583,23 +578,22 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-DECL|function|show_interrupts
+DECL|function|get_irq_list
 r_int
-id|show_interrupts
+id|get_irq_list
 c_func
 (paren
-r_struct
-id|seq_file
+r_char
 op_star
-id|p
-comma
-r_void
-op_star
-id|v
+id|buf
 )paren
 (brace
 r_int
 id|i
+comma
+id|len
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|irqaction
@@ -644,13 +638,17 @@ c_cond
 op_logical_neg
 id|action
 )paren
-r_goto
+id|gotos
 id|skip
 suffix:semicolon
-id|seq_printf
+id|len
+op_add_assign
+id|sprintf
 c_func
 (paren
-id|p
+id|buf
+op_plus
+id|len
 comma
 l_string|&quot;%2d: %8d %c %s&quot;
 comma
@@ -695,10 +693,14 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|seq_printf
+id|len
+op_add_assign
+id|sprintf
 c_func
 (paren
-id|p
+id|buf
+op_plus
+id|len
 comma
 l_string|&quot;,%s %s&quot;
 comma
@@ -717,12 +719,16 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|seq_putc
+id|len
+op_add_assign
+id|sprintf
 c_func
 (paren
-id|p
+id|buf
+op_plus
+id|len
 comma
-l_char|&squot;&bslash;n&squot;
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skip
@@ -735,7 +741,7 @@ id|flags
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * do_IRQ handles IRQ&squot;s that have been installed without the&n; * SA_INTERRUPT flag: it uses the full signal-handling return&n; * and runs with other interrupts enabled. All relatively slow&n; * IRQ&squot;s should use this format: notably the keyboard/timer&n; * routines.&n; */
@@ -774,18 +780,13 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
-id|kstat_cpu
+id|kstat_cpus
 c_func
 (paren
 id|cpu
 )paren
-dot
-id|irqs
 (braket
 id|irq
 )braket
@@ -908,9 +909,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* unmasking and bottom half handling is done magically for us. */
@@ -946,10 +944,9 @@ comma
 l_int|0xff
 op_amp
 (paren
-id|read_32bit_cp0_register
+id|read_c0_cause
 c_func
 (paren
-id|CP0_CAUSE
 )paren
 op_rshift
 l_int|8
@@ -1040,10 +1037,9 @@ c_loop
 (paren
 id|active_pils
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_cause
 c_func
 (paren
-id|CP0_CAUSE
 )paren
 op_rshift
 l_int|8
@@ -1299,7 +1295,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1310,7 +1306,7 @@ id|p
 op_assign
 r_new
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1570,7 +1566,7 @@ id|dev_id
 r_continue
 suffix:semicolon
 multiline_comment|/* Found it - now free it */
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1596,7 +1592,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -1950,7 +1950,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ide_cs&quot;
+l_string|&quot;ide-cs&quot;
 comma
 )brace
 comma

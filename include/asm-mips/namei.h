@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * linux/include/asm-mips/namei.h&n; *&n; * Included from linux/fs/namei.c&n; *&n; * $Id: namei.h,v 1.6 1999/01/04 16:09:23 ralf Exp $&n; */
-macro_line|#ifndef __ASM_MIPS_NAMEI_H
-DECL|macro|__ASM_MIPS_NAMEI_H
-mdefine_line|#define __ASM_MIPS_NAMEI_H
+multiline_comment|/*&n; * linux/include/asm-mips/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
+macro_line|#ifndef __ASM_NAMEI_H
+DECL|macro|__ASM_NAMEI_H
+mdefine_line|#define __ASM_NAMEI_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Only one at this time. */
 DECL|macro|IRIX32_EMUL
@@ -36,5 +36,5 @@ macro_line|#else /* !defined(CONFIG_BINFMT_IRIX) */
 DECL|macro|__emul_prefix
 mdefine_line|#define __emul_prefix() NULL
 macro_line|#endif /* !defined(CONFIG_BINFMT_IRIX) */
-macro_line|#endif /* __ASM_MIPS_NAMEI_H */
+macro_line|#endif /* __ASM_NAMEI_H */
 eof

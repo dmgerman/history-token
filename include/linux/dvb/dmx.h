@@ -2,10 +2,10 @@ multiline_comment|/* &n; * dmx.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt
 macro_line|#ifndef _DVBDMX_H_
 DECL|macro|_DVBDMX_H_
 mdefine_line|#define _DVBDMX_H_
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#else
-macro_line|#include &lt;stdint.h&gt;
 macro_line|#include &lt;time.h&gt;
 macro_line|#endif
 DECL|macro|DMX_FILTER_SIZE
@@ -154,21 +154,21 @@ r_struct
 id|dmx_filter
 (brace
 DECL|member|filter
-r_uint8
+id|__u8
 id|filter
 (braket
 id|DMX_FILTER_SIZE
 )braket
 suffix:semicolon
 DECL|member|mask
-r_uint8
+id|__u8
 id|mask
 (braket
 id|DMX_FILTER_SIZE
 )braket
 suffix:semicolon
 DECL|member|mode
-r_uint8
+id|__u8
 id|mode
 (braket
 id|DMX_FILTER_SIZE
@@ -183,7 +183,7 @@ r_struct
 id|dmx_sct_filter_params
 (brace
 DECL|member|pid
-r_uint16
+id|__u16
 id|pid
 suffix:semicolon
 DECL|member|filter
@@ -191,11 +191,11 @@ id|dmx_filter_t
 id|filter
 suffix:semicolon
 DECL|member|timeout
-r_uint32
+id|__u32
 id|timeout
 suffix:semicolon
 DECL|member|flags
-r_uint32
+id|__u32
 id|flags
 suffix:semicolon
 DECL|macro|DMX_CHECK_CRC
@@ -213,7 +213,7 @@ r_struct
 id|dmx_pes_filter_params
 (brace
 DECL|member|pid
-r_uint16
+id|__u16
 id|pid
 suffix:semicolon
 DECL|member|input
@@ -229,7 +229,7 @@ id|dmx_pes_type_t
 id|pes_type
 suffix:semicolon
 DECL|member|flags
-r_uint32
+id|__u32
 id|flags
 suffix:semicolon
 )brace
@@ -264,7 +264,7 @@ r_struct
 id|dmx_caps
 (brace
 DECL|member|caps
-r_uint32
+id|__u32
 id|caps
 suffix:semicolon
 DECL|member|num_decoders
@@ -326,7 +326,7 @@ id|base
 suffix:semicolon
 multiline_comment|/* output: divisor for stc to get 90 kHz clock */
 DECL|member|stc
-r_uint64
+id|__u64
 id|stc
 suffix:semicolon
 multiline_comment|/* output: stc in &squot;base&squot;*90 kHz units */
@@ -345,7 +345,7 @@ mdefine_line|#define DMX_SET_BUFFER_SIZE      _IO(&squot;o&squot;,45)
 DECL|macro|DMX_GET_EVENT
 mdefine_line|#define DMX_GET_EVENT            _IOR(&squot;o&squot;,46,struct dmx_event)
 DECL|macro|DMX_GET_PES_PIDS
-mdefine_line|#define DMX_GET_PES_PIDS         _IOR(&squot;o&squot;,47,uint16_t[5])
+mdefine_line|#define DMX_GET_PES_PIDS         _IOR(&squot;o&squot;, 47, __u16[5])
 DECL|macro|DMX_GET_CAPS
 mdefine_line|#define DMX_GET_CAPS             _IOR(&squot;o&squot;,48,dmx_caps_t)
 DECL|macro|DMX_SET_SOURCE

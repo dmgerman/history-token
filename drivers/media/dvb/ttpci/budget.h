@@ -1,6 +1,7 @@
 macro_line|#ifndef __BUDGET_DVB__
 DECL|macro|__BUDGET_DVB__
 mdefine_line|#define __BUDGET_DVB__
+macro_line|#include &lt;media/saa7146.h&gt;
 macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
@@ -9,7 +10,6 @@ macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
-macro_line|#include &lt;media/saa7146.h&gt;
 r_extern
 r_int
 id|budget_debug
@@ -41,7 +41,8 @@ id|dvb_device
 id|dvb_dev
 suffix:semicolon
 DECL|member|dvb_net
-id|dvb_net_t
+r_struct
+id|dvb_net
 id|dvb_net
 suffix:semicolon
 DECL|member|dev
@@ -84,7 +85,8 @@ id|tasklet_struct
 id|vpe_tasklet
 suffix:semicolon
 DECL|member|dmxdev
-id|dmxdev_t
+r_struct
+id|dmxdev
 id|dmxdev
 suffix:semicolon
 DECL|member|demux
@@ -92,19 +94,14 @@ r_struct
 id|dvb_demux
 id|demux
 suffix:semicolon
-DECL|member|demux_id
-r_char
-id|demux_id
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|hw_frontend
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 id|hw_frontend
 suffix:semicolon
 DECL|member|mem_frontend
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 id|mem_frontend
 suffix:semicolon
 DECL|member|fe_synced

@@ -21,7 +21,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HOTPLUG
 DECL|function|pci_hotplug
 r_int
 id|pci_hotplug
@@ -905,38 +904,6 @@ c_func
 id|pci_remove_device_safe
 )paren
 suffix:semicolon
-macro_line|#else /* CONFIG_HOTPLUG */
-DECL|function|pci_hotplug
-r_int
-id|pci_hotplug
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-id|num_envp
-comma
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|buffer_size
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_HOTPLUG */
 r_static
 r_void
 DECL|function|pci_free_resources
@@ -1122,7 +1089,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_HOTPLUG
 DECL|variable|pci_remove_bus_device
 id|EXPORT_SYMBOL
 c_func
@@ -1137,5 +1103,4 @@ c_func
 id|pci_remove_behind_bridge
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

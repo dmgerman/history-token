@@ -3,9 +3,30 @@ macro_line|#ifndef _ASM_IO_H
 DECL|macro|_ASM_IO_H
 mdefine_line|#define _ASM_IO_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/pgtable-bits.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#ifdef CONFIG_SGI_IP27
+r_extern
+r_int
+r_int
+id|bus_to_baddr
+(braket
+l_int|256
+)braket
+suffix:semicolon
+DECL|macro|bus_to_baddr
+mdefine_line|#define bus_to_baddr(bus, addr)&t;(bus_to_baddr[(bus)-&gt;number] + (addr))
+DECL|macro|baddr_to_bus
+mdefine_line|#define baddr_to_bus(bus, addr)&t;((addr) - bus_to_baddr[(bus)-&gt;number])
+macro_line|#else
+DECL|macro|bus_to_baddr
+mdefine_line|#define bus_to_baddr(bus, addr)&t;(addr)
+DECL|macro|baddr_to_bus
+mdefine_line|#define baddr_to_bus(bus, addr)&t;(addr)
+macro_line|#endif
 multiline_comment|/*&n; * Slowdown I/O port space accesses for antique hardware.&n; */
 DECL|macro|CONF_SLOWDOWN_IO
 macro_line|#undef CONF_SLOWDOWN_IO
@@ -13,8 +34,14 @@ multiline_comment|/*&n; * Sane hardware offers swapping of I/O space accesses in
 macro_line|#if defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)
 DECL|macro|__ioswab8
 mdefine_line|#define __ioswab8(x) (x)
+macro_line|#ifdef CONFIG_SGI_IP22
+multiline_comment|/* IP22 seems braindead enough to swap 16bits values in hardware, but&n;   not 32bits.  Go figure... Can&squot;t tell without documentation. */
+DECL|macro|__ioswab16
+mdefine_line|#define __ioswab16(x) (x)
+macro_line|#else
 DECL|macro|__ioswab16
 mdefine_line|#define __ioswab16(x) swab16(x)
+macro_line|#endif
 DECL|macro|__ioswab32
 mdefine_line|#define __ioswab32(x) swab32(x)
 macro_line|#else
@@ -25,13 +52,18 @@ mdefine_line|#define __ioswab16(x) (x)
 DECL|macro|__ioswab32
 mdefine_line|#define __ioswab32(x) (x)
 macro_line|#endif
-multiline_comment|/*&n; * This file contains the definitions for the MIPS counterpart of the&n; * x86 in/out instructions. This heap of macros and C results in much&n; * better code than the approach of doing it in plain C.  The macros&n; * result in code that is to fast for certain hardware.  On the other&n; * side the performance of the string functions should be improved for&n; * sake of certain devices like EIDE disks that do highspeed polled I/O.&n; *&n; *   Ralf&n; *&n; * This file contains the definitions for the x86 IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated&n; * to (a) handle it all in a way that makes gcc able to optimize it&n; * as well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; */
+multiline_comment|/*&n; * &lt;Bacchus&gt; Historically I wrote this stuff the same way as Linus did&n; * because I was young and clueless.  And now it&squot;s so jucky that I&n; * don&squot;t want to put my eyes on it again to get rid of it :-)&n; *&n; * I&squot;ll do it then, because this code offends both me and my compiler&n; * - particularly the bits of inline asm which end up doing crap like&n; * &squot;lb $2,$2($5)&squot; -- dwmw2&n; */
+DECL|macro|IO_SPACE_LIMIT
+mdefine_line|#define IO_SPACE_LIMIT 0xffff
 multiline_comment|/*&n; * On MIPS I/O ports are memory mapped, so we access them using normal&n; * load/store instructions. mips_io_port_base is the virtual address to&n; * which all ports are being mapped.  For sake of efficiency some code&n; * assumes that this is an address that can be loaded with a single lui&n; * instruction, so the lower 16 bits must be zero.  Should be true on&n; * on any sane architecture; generic code does not use this assumption.&n; */
 r_extern
+r_const
 r_int
 r_int
 id|mips_io_port_base
 suffix:semicolon
+DECL|macro|set_io_port_base
+mdefine_line|#define set_io_port_base(base)&t;&bslash;&n;&t;do { * (unsigned long *) &amp;mips_io_port_base = (base); } while (0)
 multiline_comment|/*&n; * Thanks to James van Artsdalen for a better timing-fix than&n; * the two short jumps: using outb&squot;s to a nonexistent port seems&n; * to guarantee better timings even on fast machines.&n; *&n; * On the other hand, I&squot;d like to be sure of a non-existent port:&n; * I feel a bit unsafe about using 0x80 (should be safe, though)&n; *&n; *&t;&t;Linus&n; *&n; */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO &bslash;&n;&t;__asm__ __volatile__( &bslash;&n;&t;&t;&quot;sb&bslash;t$0,0x80(%0)&quot; &bslash;&n;&t;&t;: : &quot;r&quot; (mips_io_port_base));
@@ -47,9 +79,9 @@ macro_line|#else
 DECL|macro|SLOW_DOWN_IO
 mdefine_line|#define SLOW_DOWN_IO
 macro_line|#endif
-multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are trivial on the 1:1 Linux/MIPS mapping&n; */
+multiline_comment|/*&n; *     virt_to_phys    -       map virtual addresses to physical&n; *     @address: address to remap&n; *&n; *     The returned physical address is the physical (CPU) mapping for&n; *     the memory address given. It is only valid to use this function on&n; *     addresses directly mapped or allocated via kmalloc.&n; *&n; *     This function does not give bus mappings for DMA transfers. In&n; *     almost all conceivable cases a device driver should not be using&n; *     this function&n; */
 DECL|function|virt_to_phys
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -70,8 +102,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *     phys_to_virt    -       map physical address to virtual&n; *     @address: address to remap&n; *&n; *     The returned virtual address is a current CPU mapping for&n; *     the memory address given. It is only valid to use this function on&n; *     addresses that have a kernel mapping&n; *&n; *     This function does not handle bus mappings for DMA transfers. In&n; *     almost all conceivable cases a device driver should not be using&n; *     this function&n; */
 DECL|function|phys_to_virt
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -95,13 +128,13 @@ id|address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * IO bus memory addresses are also 1:1 with the physical address&n; */
-DECL|function|virt_to_bus
-r_extern
+multiline_comment|/*&n; * ISA I/O bus memory addresses are 1:1 with the physical address.&n; */
+DECL|function|isa_virt_to_bus
+r_static
 r_inline
 r_int
 r_int
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 r_volatile
@@ -118,12 +151,12 @@ id|address
 )paren
 suffix:semicolon
 )brace
-DECL|function|bus_to_virt
-r_extern
+DECL|function|isa_bus_to_virt
+r_static
 r_inline
 r_void
 op_star
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 r_int
@@ -143,24 +176,32 @@ id|address
 )paren
 suffix:semicolon
 )brace
+DECL|macro|isa_page_to_bus
+mdefine_line|#define isa_page_to_bus page_to_phys
+multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; *&n; * Allow them for x86 for legacy drivers, though.&n; */
+DECL|macro|virt_to_bus
+mdefine_line|#define virt_to_bus virt_to_phys
+DECL|macro|bus_to_virt
+mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped&n; * for the processor.&n; */
 r_extern
 r_int
 r_int
 id|isa_slot_offset
 suffix:semicolon
+multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((dma_addr_t)page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 r_extern
 r_void
 op_star
 id|__ioremap
 c_func
 (paren
-r_int
-r_int
+id|phys_t
 id|offset
 comma
-r_int
-r_int
+id|phys_t
 id|size
 comma
 r_int
@@ -168,64 +209,16 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|function|ioremap
-r_extern
-r_inline
-r_void
-op_star
-id|ioremap
-c_func
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-id|__ioremap
-c_func
-(paren
-id|offset
-comma
-id|size
-comma
-id|_CACHE_UNCACHED
-)paren
-suffix:semicolon
-)brace
-DECL|function|ioremap_nocache
-r_extern
-r_inline
-r_void
-op_star
-id|ioremap_nocache
-c_func
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-id|__ioremap
-c_func
-(paren
-id|offset
-comma
-id|size
-comma
-id|_CACHE_UNCACHED
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * ioremap     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; */
+DECL|macro|ioremap
+mdefine_line|#define ioremap(offset, size)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ioremap((offset), (size), _CACHE_UNCACHED)
+multiline_comment|/*&n; * ioremap_nocache     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap_nocache performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; *&n; * This version of ioremap ensures that the memory is marked uncachable&n; * on the CPU as well as honouring existing caching rules from things like&n; * the PCI bus. Note that there are other caches and buffers on many&n; * busses. In paticular driver authors should read up on PCI writes&n; *&n; * It&squot;s useful if some control registers are in such an area and&n; * write combining or read caching is not desirable:&n; */
+DECL|macro|ioremap_nocache
+mdefine_line|#define ioremap_nocache(offset, size)&t;&t;&t;&t;&t;&bslash;&n;&t;__ioremap((offset), (size), _CACHE_UNCACHED)
+DECL|macro|ioremap_cacheable_cow
+mdefine_line|#define ioremap_cacheable_cow(offset, size)&t;&t;&t;&t;&bslash;&n;&t;__ioremap((offset), (size), _CACHE_CACHABLE_COW)
+DECL|macro|ioremap_uncached_accelerated
+mdefine_line|#define ioremap_uncached_accelerated(offset, size)&t;&t;&t;&bslash;&n;&t;__ioremap((offset), (size), _CACHE_UNCACHED_ACCELERATED)
 r_extern
 r_void
 id|iounmap
@@ -238,62 +231,62 @@ id|addr
 suffix:semicolon
 multiline_comment|/*&n; * XXX We need system specific versions of these to handle EISA address bits&n; * 24-31 on SNI.&n; * XXX more SNI hacks.&n; */
 DECL|macro|readb
-mdefine_line|#define readb(addr) (*(volatile unsigned char *)(addr))
+mdefine_line|#define readb(addr)&t;&t;(*(volatile unsigned char *)(addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr) __ioswab16((*(volatile unsigned short *)(addr)))
+mdefine_line|#define readw(addr)&t;&t;__ioswab16((*(volatile unsigned short *)(addr)))
 DECL|macro|readl
-mdefine_line|#define readl(addr) __ioswab32((*(volatile unsigned int *)(addr)))
+mdefine_line|#define readl(addr)&t;&t;__ioswab32((*(volatile unsigned int *)(addr)))
 DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb readb
+mdefine_line|#define __raw_readb(addr)&t;(*(volatile unsigned char *)(addr))
 DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw readw
+mdefine_line|#define __raw_readw(addr)&t;(*(volatile unsigned short *)(addr))
 DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl readl
+mdefine_line|#define __raw_readl(addr)&t;(*(volatile unsigned int *)(addr))
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *)(addr)) = (b)
+mdefine_line|#define writeb(b,addr) ((*(volatile unsigned char *)(addr)) = (__ioswab8(b)))
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *)(addr)) = (__ioswab16(b))
+mdefine_line|#define writew(b,addr) ((*(volatile unsigned short *)(addr)) = (__ioswab16(b)))
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (*(volatile unsigned int *)(addr)) = (__ioswab32(b))
+mdefine_line|#define writel(b,addr) ((*(volatile unsigned int *)(addr)) = (__ioswab32(b)))
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb writeb
+mdefine_line|#define __raw_writeb(b,addr)&t;((*(volatile unsigned char *)(addr)) = (b))
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew writew
+mdefine_line|#define __raw_writew(w,addr)&t;((*(volatile unsigned short *)(addr)) = (w))
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel writel
+mdefine_line|#define __raw_writel(l,addr)&t;((*(volatile unsigned int *)(addr)) = (l))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
-multiline_comment|/* END SNI HACKS ... */
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on currently supported MIPS systems, no need&n; * to explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
-mdefine_line|#define __ISA_IO_base ((char *)(PAGE_OFFSET))
+mdefine_line|#define __ISA_IO_base ((char *)(isa_slot_offset))
 DECL|macro|isa_readb
-mdefine_line|#define isa_readb(a) readb(a)
+mdefine_line|#define isa_readb(a) readb(__ISA_IO_base + (a))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(a) readw(a)
+mdefine_line|#define isa_readw(a) readw(__ISA_IO_base + (a))
 DECL|macro|isa_readl
-mdefine_line|#define isa_readl(a) readl(a)
+mdefine_line|#define isa_readl(a) readl(__ISA_IO_base + (a))
 DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(b,a) writeb(b,a)
+mdefine_line|#define isa_writeb(b,a) writeb(b,__ISA_IO_base + (a))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(w,a) writew(w,a)
+mdefine_line|#define isa_writew(w,a) writew(w,__ISA_IO_base + (a))
 DECL|macro|isa_writel
-mdefine_line|#define isa_writel(l,a) writel(l,a)
+mdefine_line|#define isa_writel(l,a) writel(l,__ISA_IO_base + (a))
 DECL|macro|isa_memset_io
-mdefine_line|#define isa_memset_io(a,b,c)     memset_io((a),(b),(c))
+mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ISA_IO_base + (a),(b),(c))
 DECL|macro|isa_memcpy_fromio
-mdefine_line|#define isa_memcpy_fromio(a,b,c) memcpy_fromio((a),(b),(c))
+mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ISA_IO_base + (b),(c))
 DECL|macro|isa_memcpy_toio
-mdefine_line|#define isa_memcpy_toio(a,b,c)   memcpy_toio((a),(b),(c))
+mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
 multiline_comment|/*&n; * We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and&n; * just copy it. The net code will then do the checksum later.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) memcpy_fromio((skb)-&gt;data,(src),(len))
 DECL|macro|isa_eth_io_copy_and_sum
 mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d) eth_copy_and_sum((a),(b),(c),(d))
+multiline_comment|/*&n; *     check_signature         -       find BIOS signatures&n; *     @io_addr: mmio address to check&n; *     @signature:  signature block&n; *     @length: length of signature&n; *&n; *     Perform a signature comparison with the mmio address io_addr. This&n; *     address should have been obtained by ioremap.&n; *     Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
 r_inline
@@ -363,191 +356,534 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *     isa_check_signature             -       find BIOS signatures&n; *     @io_addr: mmio address to check&n; *     @signature:  signature block&n; *     @length: length of signature&n; *&n; *     Perform a signature comparison with the ISA mmio address io_addr.&n; *     Returns 1 on a match.&n; *&n; *     This function is deprecated. New drivers should use ioremap and&n; *     check_signature.&n; */
 DECL|macro|isa_check_signature
 mdefine_line|#define isa_check_signature(io, s, l) check_signature(i,s,l)
-multiline_comment|/*&n; * Talk about misusing macros..&n; */
-DECL|macro|__OUT1
-mdefine_line|#define __OUT1(s) &bslash;&n;extern inline void __out##s(unsigned int value, unsigned int port) {
-DECL|macro|__OUT2
-mdefine_line|#define __OUT2(m) &bslash;&n;__asm__ __volatile__ (&quot;s&quot; #m &quot;&bslash;t%0,%1(%2)&quot;
-DECL|macro|__OUT
-mdefine_line|#define __OUT(m,s,w) &bslash;&n;__OUT1(s) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); } &bslash;&n;__OUT1(s##c) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); } &bslash;&n;__OUT1(s##_p) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); &bslash;&n;&t;SLOW_DOWN_IO; } &bslash;&n;__OUT1(s##c_p) __OUT2(m) : : &quot;r&quot; (__ioswab##w(value)), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); &bslash;&n;&t;SLOW_DOWN_IO; }
-DECL|macro|__IN1
-mdefine_line|#define __IN1(t,s) &bslash;&n;extern __inline__ t __in##s(unsigned int port) { t _v;
-multiline_comment|/*&n; * Required nops will be inserted by the assembler&n; */
-DECL|macro|__IN2
-mdefine_line|#define __IN2(m) &bslash;&n;__asm__ __volatile__ (&quot;l&quot; #m &quot;&bslash;t%0,%1(%2)&quot;
-DECL|macro|__IN
-mdefine_line|#define __IN(t,m,s,w) &bslash;&n;__IN1(t,s) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##c) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port)); SLOW_DOWN_IO; return __ioswab##w(_v); } &bslash;&n;__IN1(t,s##c_p) __IN2(m) : &quot;=r&quot; (_v) : &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base)); SLOW_DOWN_IO; return __ioswab##w(_v); }
-DECL|macro|__INS1
-mdefine_line|#define __INS1(s) &bslash;&n;extern inline void __ins##s(unsigned int port, void * addr, unsigned long count) {
-DECL|macro|__INS2
-mdefine_line|#define __INS2(m) &bslash;&n;if (count) &bslash;&n;__asm__ __volatile__ ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&quot; &bslash;&n;&t;&quot;1:&bslash;tl&quot; #m &quot;&bslash;t$1,%4(%5)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;subu&bslash;t%1,1&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;s&quot; #m &quot;&bslash;t$1,(%0)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;bne&bslash;t$0,%1,1b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;addiu&bslash;t%0,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot;
-DECL|macro|__INS
-mdefine_line|#define __INS(m,s,i) &bslash;&n;__INS1(s) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;i&quot; (0), &bslash;&n;&t;  &quot;r&quot; (mips_io_port_base+port), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);} &bslash;&n;__INS1(s##c) __INS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;ir&quot; (port), &bslash;&n;&t;  &quot;r&quot; (mips_io_port_base), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);}
-DECL|macro|__OUTS1
-mdefine_line|#define __OUTS1(s) &bslash;&n;extern inline void __outs##s(unsigned int port, const void * addr, unsigned long count) {
-DECL|macro|__OUTS2
-mdefine_line|#define __OUTS2(m) &bslash;&n;if (count) &bslash;&n;__asm__ __volatile__ ( &bslash;&n;        &quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;        &quot;.set&bslash;tnoat&bslash;n&quot; &bslash;&n;        &quot;1:&bslash;tl&quot; #m &quot;&bslash;t$1,(%0)&bslash;n&bslash;t&quot; &bslash;&n;        &quot;subu&bslash;t%1,1&bslash;n&bslash;t&quot; &bslash;&n;        &quot;s&quot; #m &quot;&bslash;t$1,%4(%5)&bslash;n&bslash;t&quot; &bslash;&n;        &quot;bne&bslash;t$0,%1,1b&bslash;n&bslash;t&quot; &bslash;&n;        &quot;addiu&bslash;t%0,%6&bslash;n&bslash;t&quot; &bslash;&n;        &quot;.set&bslash;tat&bslash;n&bslash;t&quot; &bslash;&n;        &quot;.set&bslash;treorder&quot;
-DECL|macro|__OUTS
-mdefine_line|#define __OUTS(m,s,i) &bslash;&n;__OUTS1(s) __OUTS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;i&quot; (0), &quot;r&quot; (mips_io_port_base+port), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);} &bslash;&n;__OUTS1(s##c) __OUTS2(m) &bslash;&n;&t;: &quot;=r&quot; (addr), &quot;=r&quot; (count) &bslash;&n;&t;: &quot;0&quot; (addr), &quot;1&quot; (count), &quot;ir&quot; (port), &quot;r&quot; (mips_io_port_base), &quot;I&quot; (i) &bslash;&n;&t;: &quot;$1&quot;);}
-id|__IN
-c_func
-(paren
+DECL|macro|outb
+mdefine_line|#define outb(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u8 *)(mips_io_port_base + (port)) = __ioswab8(val);&t;&bslash;&n;} while(0)
+DECL|macro|outw
+mdefine_line|#define outw(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u16 *)(mips_io_port_base + (port)) = __ioswab16(val);&t;&bslash;&n;} while(0)
+DECL|macro|outl
+mdefine_line|#define outl(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u32 *)(mips_io_port_base + (port)) = __ioswab32(val);&bslash;&n;} while(0)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(val,port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u8 *)(mips_io_port_base + (port)) = __ioswab8(val);&t;&bslash;&n;&t;SLOW_DOWN_IO;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+DECL|macro|outw_p
+mdefine_line|#define outw_p(val,port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u16 *)(mips_io_port_base + (port)) = __ioswab16(val);&bslash;&n;&t;SLOW_DOWN_IO;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+DECL|macro|outl_p
+mdefine_line|#define outl_p(val,port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u32 *)(mips_io_port_base + (port)) = __ioswab32(val);&bslash;&n;&t;SLOW_DOWN_IO;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+DECL|macro|inb
+mdefine_line|#define inb(port) __inb(port)
+DECL|macro|inw
+mdefine_line|#define inw(port) __inw(port)
+DECL|macro|inl
+mdefine_line|#define inl(port) __inl(port)
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port) __inb_p(port)
+DECL|macro|inw_p
+mdefine_line|#define inw_p(port) __inw_p(port)
+DECL|macro|inl_p
+mdefine_line|#define inl_p(port) __inl_p(port)
+DECL|function|__inb
+r_static
+r_inline
 r_int
 r_char
-comma
-id|b
-comma
-id|b
-comma
-l_int|8
-)paren
-id|__IN
+id|__inb
 c_func
 (paren
 r_int
 r_int
-comma
-id|h
-comma
-id|w
-comma
-l_int|16
+id|port
 )paren
-id|__IN
+(brace
+r_return
+id|__ioswab8
+c_func
+(paren
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|__inw
+r_static
+r_inline
+r_int
+r_int
+id|__inw
 c_func
 (paren
 r_int
 r_int
-comma
-id|w
-comma
-id|l
-comma
-l_int|32
+id|port
 )paren
-id|__OUT
+(brace
+r_return
+id|__ioswab16
 c_func
 (paren
-id|b
-comma
-id|b
-comma
-l_int|8
+op_star
+(paren
+r_volatile
+id|u16
+op_star
 )paren
-id|__OUT
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|__inl
+r_static
+r_inline
+r_int
+r_int
+id|__inl
 c_func
 (paren
-id|h
-comma
-id|w
-comma
-l_int|16
+r_int
+r_int
+id|port
 )paren
-id|__OUT
+(brace
+r_return
+id|__ioswab32
 c_func
 (paren
-id|w
-comma
-id|l
-comma
-l_int|32
+op_star
+(paren
+r_volatile
+id|u32
+op_star
 )paren
-id|__INS
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|__inb_p
+r_static
+r_inline
+r_int
+r_char
+id|__inb_p
 c_func
 (paren
-id|b
-comma
-id|b
-comma
-l_int|1
+r_int
+r_int
+id|port
 )paren
-id|__INS
+(brace
+id|u8
+id|__val
+suffix:semicolon
+id|__val
+op_assign
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+suffix:semicolon
+id|SLOW_DOWN_IO
+suffix:semicolon
+r_return
+id|__ioswab8
 c_func
 (paren
-id|h
-comma
-id|w
-comma
-l_int|2
+id|__val
 )paren
-id|__INS
+suffix:semicolon
+)brace
+DECL|function|__inw_p
+r_static
+r_inline
+r_int
+r_int
+id|__inw_p
 c_func
 (paren
-id|w
-comma
-id|l
-comma
-l_int|4
+r_int
+r_int
+id|port
 )paren
-id|__OUTS
+(brace
+id|u16
+id|__val
+suffix:semicolon
+id|__val
+op_assign
+op_star
+(paren
+r_volatile
+id|u16
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+suffix:semicolon
+id|SLOW_DOWN_IO
+suffix:semicolon
+r_return
+id|__ioswab16
 c_func
 (paren
-id|b
-comma
-id|b
-comma
-l_int|1
+id|__val
 )paren
-id|__OUTS
+suffix:semicolon
+)brace
+DECL|function|__inl_p
+r_static
+r_inline
+r_int
+r_int
+id|__inl_p
 c_func
 (paren
-id|h
-comma
-id|w
-comma
-l_int|2
+r_int
+r_int
+id|port
 )paren
-id|__OUTS
+(brace
+id|u32
+id|__val
+suffix:semicolon
+id|__val
+op_assign
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|port
+)paren
+suffix:semicolon
+id|SLOW_DOWN_IO
+suffix:semicolon
+r_return
+id|__ioswab32
 c_func
 (paren
-id|w
-comma
-id|l
-comma
-l_int|4
+id|__val
 )paren
-multiline_comment|/*&n; * Note that due to the way __builtin_constant_p() works, you&n; *  - can&squot;t use it inside an inline function (it will never be true)&n; *  - you don&squot;t have to worry about side effects within the __builtin..&n; */
-DECL|macro|outb
-mdefine_line|#define outb(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outbc((val),(port)) : &bslash;&n;&t;__outb((val),(port)))
-DECL|macro|inb
-mdefine_line|#define inb(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inbc(port) : &bslash;&n;&t;__inb(port))
-DECL|macro|outb_p
-mdefine_line|#define outb_p(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outbc_p((val),(port)) : &bslash;&n;&t;__outb_p((val),(port)))
-DECL|macro|inb_p
-mdefine_line|#define inb_p(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inbc_p(port) : &bslash;&n;&t;__inb_p(port))
-DECL|macro|outw
-mdefine_line|#define outw(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outwc((val),(port)) : &bslash;&n;&t;__outw((val),(port)))
-DECL|macro|inw
-mdefine_line|#define inw(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inwc(port) : &bslash;&n;&t;__inw(port))
-DECL|macro|outw_p
-mdefine_line|#define outw_p(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outwc_p((val),(port)) : &bslash;&n;&t;__outw_p((val),(port)))
-DECL|macro|inw_p
-mdefine_line|#define inw_p(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inwc_p(port) : &bslash;&n;&t;__inw_p(port))
-DECL|macro|outl
-mdefine_line|#define outl(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outlc((val),(port)) : &bslash;&n;&t;__outl((val),(port)))
-DECL|macro|inl
-mdefine_line|#define inl(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inlc(port) : &bslash;&n;&t;__inl(port))
-DECL|macro|outl_p
-mdefine_line|#define outl_p(val,port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outlc_p((val),(port)) : &bslash;&n;&t;__outl_p((val),(port)))
-DECL|macro|inl_p
-mdefine_line|#define inl_p(port) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inlc_p(port) : &bslash;&n;&t;__inl_p(port))
+suffix:semicolon
+)brace
 DECL|macro|outsb
-mdefine_line|#define outsb(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outsbc((port),(addr),(count)) : &bslash;&n;&t;__outsb ((port),(addr),(count)))
+mdefine_line|#define outsb(port, addr, count) __outsb(port, addr, count)
 DECL|macro|insb
-mdefine_line|#define insb(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__insbc((port),(addr),(count)) : &bslash;&n;&t;__insb((port),(addr),(count)))
+mdefine_line|#define insb(port, addr, count) __insb(port, addr, count)
 DECL|macro|outsw
-mdefine_line|#define outsw(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outswc((port),(addr),(count)) : &bslash;&n;&t;__outsw ((port),(addr),(count)))
+mdefine_line|#define outsw(port, addr, count) __outsw(port, addr, count)
 DECL|macro|insw
-mdefine_line|#define insw(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inswc((port),(addr),(count)) : &bslash;&n;&t;__insw((port),(addr),(count)))
+mdefine_line|#define insw(port, addr, count) __insw(port, addr, count)
 DECL|macro|outsl
-mdefine_line|#define outsl(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__outslc((port),(addr),(count)) : &bslash;&n;&t;__outsl ((port),(addr),(count)))
+mdefine_line|#define outsl(port, addr, count) __outsl(port, addr, count)
 DECL|macro|insl
-mdefine_line|#define insl(port,addr,count) &bslash;&n;((__builtin_constant_p((port)) &amp;&amp; (port) &lt; 32768) ? &bslash;&n;&t;__inslc((port),(addr),(count)) : &bslash;&n;&t;__insl((port),(addr),(count)))
-DECL|macro|IO_SPACE_LIMIT
-mdefine_line|#define IO_SPACE_LIMIT 0xffff
+mdefine_line|#define insl(port, addr, count) __insl(port, addr, count)
+DECL|function|__outsb
+r_static
+r_inline
+r_void
+id|__outsb
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+id|outb
+c_func
+(paren
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|addr
+comma
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_increment
+suffix:semicolon
+)brace
+)brace
+DECL|function|__insb
+r_static
+r_inline
+r_void
+id|__insb
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|addr
+op_assign
+id|inb
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_increment
+suffix:semicolon
+)brace
+)brace
+DECL|function|__outsw
+r_static
+r_inline
+r_void
+id|__outsw
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+id|outw
+c_func
+(paren
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|addr
+comma
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+)brace
+DECL|function|__insw
+r_static
+r_inline
+r_void
+id|__insw
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|addr
+op_assign
+id|inw
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+)brace
+DECL|function|__outsl
+r_static
+r_inline
+r_void
+id|__outsl
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+id|outl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|addr
+comma
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+)brace
+DECL|function|__insl
+r_static
+r_inline
+r_void
+id|__insl
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|addr
+op_assign
+id|inl
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+id|addr
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * The caches on some architectures aren&squot;t dma-coherent and have need to&n; * handle this in software.  There are three types of operations that&n; * can be applied to dma buffers.&n; *&n; *  - dma_cache_wback_inv(start, size) makes caches and coherent by&n; *    writing the content of the caches back to memory, if necessary.&n; *    The function also invalidates the affected part of the caches as&n; *    necessary before DMA transfers from outside to memory.&n; *  - dma_cache_wback(start, size) makes caches and coherent by&n; *    writing the content of the caches back to memory, if necessary.&n; *    The function also invalidates the affected part of the caches as&n; *    necessary before DMA transfers from outside to memory.&n; *  - dma_cache_inv(start, size) invalidates the affected parts of the&n; *    caches.  Dirty lines of the caches may be written back or simply&n; *    be discarded.  This operation is necessary before dma operations&n; *    to the memory.&n; */
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 r_extern
 r_void
 (paren
@@ -597,10 +933,18 @@ id|size
 )paren
 suffix:semicolon
 DECL|macro|dma_cache_wback_inv
-mdefine_line|#define dma_cache_wback_inv(start,size)&t;_dma_cache_wback_inv(start,size)
+mdefine_line|#define dma_cache_wback_inv(start, size)_dma_cache_wback_inv(start,size)
 DECL|macro|dma_cache_wback
-mdefine_line|#define dma_cache_wback(start,size)&t;_dma_cache_wback(start,size)
+mdefine_line|#define dma_cache_wback(start, size)&t;_dma_cache_wback(start,size)
 DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(start,size)&t;_dma_cache_inv(start,size)
+mdefine_line|#define dma_cache_inv(start, size)&t;_dma_cache_inv(start,size)
+macro_line|#else /* Sane hardware */
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(start,size)&t;&bslash;&n;&t;do { (void) (start); (void) (size); } while (0)
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(start,size)&t;&bslash;&n;&t;do { (void) (start); (void) (size); } while (0)
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(start,size)&t;&bslash;&n;&t;do { (void) (start); (void) (size); } while (0)
+macro_line|#endif /* CONFIG_NONCOHERENT_IO */
 macro_line|#endif /* _ASM_IO_H */
 eof

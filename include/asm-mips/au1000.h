@@ -1,291 +1,461 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Include file for Alchemy Semiconductor&squot;s Au1000 CPU.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Include file for Alchemy Semiconductor&squot;s Au1k CPU.&n; *&n; * Copyright 2000,2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n;  * some definitions add by takuzo@sm.sony.co.jp and sato@sm.sony.co.jp&n;  */
 macro_line|#ifndef _AU1000_H_
 DECL|macro|_AU1000_H_
 mdefine_line|#define _AU1000_H_
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* cpu pipeline flush */
+DECL|function|au_sync
+r_void
+r_static
+r_inline
+id|au_sync
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;sync&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|au_sync_udelay
+r_void
+r_static
+r_inline
+id|au_sync_udelay
+c_func
+(paren
+r_int
+id|us
+)paren
+(brace
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;sync&quot;
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+)brace
+DECL|function|au_sync_delay
+r_void
+r_static
+r_inline
+id|au_sync_delay
+c_func
+(paren
+r_int
+id|ms
+)paren
+(brace
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;sync&quot;
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+id|ms
+)paren
+suffix:semicolon
+)brace
+DECL|function|au_writeb
+r_void
+r_static
+r_inline
+id|au_writeb
+c_func
+(paren
+id|u8
+id|val
+comma
+r_int
+id|reg
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+(paren
+id|reg
+)paren
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|au_writew
+r_void
+r_static
+r_inline
+id|au_writew
+c_func
+(paren
+id|u16
+id|val
+comma
+r_int
+id|reg
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u16
+op_star
+)paren
+(paren
+id|reg
+)paren
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|au_writel
+r_void
+r_static
+r_inline
+id|au_writel
+c_func
+(paren
+id|u32
+id|val
+comma
+r_int
+id|reg
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+(paren
+id|reg
+)paren
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|au_readb
+r_static
+r_inline
+id|u8
+id|au_readb
+c_func
+(paren
+r_int
+r_int
+id|port
+)paren
+(brace
+r_return
+(paren
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|port
+)paren
+suffix:semicolon
+)brace
+DECL|function|au_readw
+r_static
+r_inline
+id|u16
+id|au_readw
+c_func
+(paren
+r_int
+r_int
+id|port
+)paren
+(brace
+r_return
+(paren
+op_star
+(paren
+r_volatile
+id|u16
+op_star
+)paren
+id|port
+)paren
+suffix:semicolon
+)brace
+DECL|function|au_readl
+r_static
+r_inline
+id|u32
+id|au_readl
+c_func
+(paren
+r_int
+r_int
+id|port
+)paren
+(brace
+r_return
+(paren
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|port
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* arch/mips/au1000/common/clocks.c */
+r_extern
+r_void
+id|set_au1x00_speed
+c_func
+(paren
+r_int
+r_int
+id|new_freq
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_au1x00_speed
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|set_au1x00_uart_baud_base
+c_func
+(paren
+r_int
+r_int
+id|new_baud_base
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_au1x00_uart_baud_base
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|set_au1x00_lcd_clock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_au1x00_lcd_clock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+multiline_comment|/* no CP0 timer irq */
+DECL|macro|ALLINTS
+mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4)
+macro_line|#else
+DECL|macro|ALLINTS
+mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
+macro_line|#endif
 multiline_comment|/* SDRAM Controller */
-DECL|macro|CS_MODE_0
-mdefine_line|#define CS_MODE_0                0x14000000
-DECL|macro|CS_MODE_1
-mdefine_line|#define CS_MODE_1                0x14000004
-DECL|macro|CS_MODE_2
-mdefine_line|#define CS_MODE_2                0x14000008
-DECL|macro|CS_CONFIG_0
-mdefine_line|#define CS_CONFIG_0              0x1400000C
-DECL|macro|CS_CONFIG_1
-mdefine_line|#define CS_CONFIG_1              0x14000010
-DECL|macro|CS_CONFIG_2
-mdefine_line|#define CS_CONFIG_2              0x14000014
-DECL|macro|REFRESH_CONFIG
-mdefine_line|#define REFRESH_CONFIG           0x14000018
-DECL|macro|PRECHARGE_CMD
-mdefine_line|#define PRECHARGE_CMD            0x1400001C
-DECL|macro|AUTO_REFRESH_CMD
-mdefine_line|#define AUTO_REFRESH_CMD         0x14000020
-DECL|macro|WRITE_EXTERN_0
-mdefine_line|#define WRITE_EXTERN_0           0x14000024
-DECL|macro|WRITE_EXTERN_1
-mdefine_line|#define WRITE_EXTERN_1           0x14000028
-DECL|macro|WRITE_EXTERN_2
-mdefine_line|#define WRITE_EXTERN_2           0x1400002C
-DECL|macro|SDRAM_SLEEP
-mdefine_line|#define SDRAM_SLEEP              0x14000030
-DECL|macro|TOGGLE_CKE
-mdefine_line|#define TOGGLE_CKE               0x14000034
+DECL|macro|MEM_SDMODE0
+mdefine_line|#define MEM_SDMODE0                0xB4000000
+DECL|macro|MEM_SDMODE1
+mdefine_line|#define MEM_SDMODE1                0xB4000004
+DECL|macro|MEM_SDMODE2
+mdefine_line|#define MEM_SDMODE2                0xB4000008
+DECL|macro|MEM_SDADDR0
+mdefine_line|#define MEM_SDADDR0                0xB400000C
+DECL|macro|MEM_SDADDR1
+mdefine_line|#define MEM_SDADDR1                0xB4000010
+DECL|macro|MEM_SDADDR2
+mdefine_line|#define MEM_SDADDR2                0xB4000014
+DECL|macro|MEM_SDREFCFG
+mdefine_line|#define MEM_SDREFCFG               0xB4000018
+DECL|macro|MEM_SDPRECMD
+mdefine_line|#define MEM_SDPRECMD               0xB400001C
+DECL|macro|MEM_SDAUTOREF
+mdefine_line|#define MEM_SDAUTOREF              0xB4000020
+DECL|macro|MEM_SDWRMD0
+mdefine_line|#define MEM_SDWRMD0                0xB4000024
+DECL|macro|MEM_SDWRMD1
+mdefine_line|#define MEM_SDWRMD1                0xB4000028
+DECL|macro|MEM_SDWRMD2
+mdefine_line|#define MEM_SDWRMD2                0xB400002C
+DECL|macro|MEM_SDSLEEP
+mdefine_line|#define MEM_SDSLEEP                0xB4000030
+DECL|macro|MEM_SDSMCKE
+mdefine_line|#define MEM_SDSMCKE                0xB4000034
 multiline_comment|/* Static Bus Controller */
-DECL|macro|STATIC_CONFIG_0
-mdefine_line|#define STATIC_CONFIG_0          0x14001000
-DECL|macro|STATIC_TIMING_0
-mdefine_line|#define STATIC_TIMING_0          0x14001004
-DECL|macro|STATIC_ADDRESS_0
-mdefine_line|#define STATIC_ADDRESS_0         0x14001008
-DECL|macro|STATIC_CONFIG_1
-mdefine_line|#define STATIC_CONFIG_1          0x14001010
-DECL|macro|STATIC_TIMING_1
-mdefine_line|#define STATIC_TIMING_1          0x14001014
-DECL|macro|STATIC_ADDRESS_1
-mdefine_line|#define STATIC_ADDRESS_1         0x14001018
-DECL|macro|STATIC_CONFIG_2
-mdefine_line|#define STATIC_CONFIG_2          0x14001020
-DECL|macro|STATIC_TIMING_2
-mdefine_line|#define STATIC_TIMING_2          0x14001024
-DECL|macro|STATIC_ADDRESS_2
-mdefine_line|#define STATIC_ADDRESS_2         0x14001028
-DECL|macro|STATIC_CONFIG_3
-mdefine_line|#define STATIC_CONFIG_3          0x14001030
-DECL|macro|STATIC_TIMING_3
-mdefine_line|#define STATIC_TIMING_3          0x14001034
-DECL|macro|STATIC_ADDRESS_3
-mdefine_line|#define STATIC_ADDRESS_3         0x14001038
-multiline_comment|/* DMA Controller 0 */
-DECL|macro|DMA0_MODE_SET
-mdefine_line|#define DMA0_MODE_SET            0x14002000
-DECL|macro|DMA0_MODE_CLEAR
-mdefine_line|#define DMA0_MODE_CLEAR          0x14002004
-DECL|macro|DMA0_PERIPHERAL_ADDR
-mdefine_line|#define DMA0_PERIPHERAL_ADDR     0x14002008
-DECL|macro|DMA0_BUFFER0_START
-mdefine_line|#define DMA0_BUFFER0_START       0x1400200C
-DECL|macro|DMA0_BUFFER0_COUNT
-mdefine_line|#define DMA0_BUFFER0_COUNT       0x14002010
-DECL|macro|DMA0_BUFFER1_START
-mdefine_line|#define DMA0_BUFFER1_START       0x14002014
-DECL|macro|DMA0_BUFFER1_COUNT
-mdefine_line|#define DMA0_BUFFER1_COUNT       0x14002018
-multiline_comment|/* DMA Controller 1 */
-DECL|macro|DMA1_MODE_SET
-mdefine_line|#define DMA1_MODE_SET            0x14002100
-DECL|macro|DMA1_MODE_CLEAR
-mdefine_line|#define DMA1_MODE_CLEAR          0x14002104
-DECL|macro|DMA1_PERIPHERAL_ADDR
-mdefine_line|#define DMA1_PERIPHERAL_ADDR     0x14002108
-DECL|macro|DMA1_BUFFER0_START
-mdefine_line|#define DMA1_BUFFER0_START       0x1400210C
-DECL|macro|DMA1_BUFFER0_COUNT
-mdefine_line|#define DMA1_BUFFER0_COUNT       0x14002110
-DECL|macro|DMA1_BUFFER1_START
-mdefine_line|#define DMA1_BUFFER1_START       0x14002114
-DECL|macro|DMA1_BUFFER1_COUNT
-mdefine_line|#define DMA1_BUFFER1_COUNT       0x14002118
-multiline_comment|/* DMA Controller 2 */
-DECL|macro|DMA2_MODE_SET
-mdefine_line|#define DMA2_MODE_SET            0x14002200
-DECL|macro|DMA2_MODE_CLEAR
-mdefine_line|#define DMA2_MODE_CLEAR          0x14002204
-DECL|macro|DMA2_PERIPHERAL_ADDR
-mdefine_line|#define DMA2_PERIPHERAL_ADDR     0x14002208
-DECL|macro|DMA2_BUFFER0_START
-mdefine_line|#define DMA2_BUFFER0_START       0x1400220C
-DECL|macro|DMA2_BUFFER0_COUNT
-mdefine_line|#define DMA2_BUFFER0_COUNT       0x14002210
-DECL|macro|DMA2_BUFFER1_START
-mdefine_line|#define DMA2_BUFFER1_START       0x14002214
-DECL|macro|DMA2_BUFFER1_COUNT
-mdefine_line|#define DMA2_BUFFER1_COUNT       0x14002218
-multiline_comment|/* DMA Controller 3 */
-DECL|macro|DMA3_MODE_SET
-mdefine_line|#define DMA3_MODE_SET            0x14002300
-DECL|macro|DMA3_MODE_CLEAR
-mdefine_line|#define DMA3_MODE_CLEAR          0x14002304
-DECL|macro|DMA3_PERIPHERAL_ADDR
-mdefine_line|#define DMA3_PERIPHERAL_ADDR     0x14002308
-DECL|macro|DMA3_BUFFER0_START
-mdefine_line|#define DMA3_BUFFER0_START       0x1400230C
-DECL|macro|DMA3_BUFFER0_COUNT
-mdefine_line|#define DMA3_BUFFER0_COUNT       0x14002310
-DECL|macro|DMA3_BUFFER1_START
-mdefine_line|#define DMA3_BUFFER1_START       0x14002314
-DECL|macro|DMA3_BUFFER1_COUNT
-mdefine_line|#define DMA3_BUFFER1_COUNT       0x14002318
-multiline_comment|/* DMA Controller 4 */
-DECL|macro|DMA4_MODE_SET
-mdefine_line|#define DMA4_MODE_SET            0x14002400
-DECL|macro|DMA4_MODE_CLEAR
-mdefine_line|#define DMA4_MODE_CLEAR          0x14002404
-DECL|macro|DMA4_PERIPHERAL_ADDR
-mdefine_line|#define DMA4_PERIPHERAL_ADDR     0x14002408
-DECL|macro|DMA4_BUFFER0_START
-mdefine_line|#define DMA4_BUFFER0_START       0x1400240C
-DECL|macro|DMA4_BUFFER0_COUNT
-mdefine_line|#define DMA4_BUFFER0_COUNT       0x14002410
-DECL|macro|DMA4_BUFFER1_START
-mdefine_line|#define DMA4_BUFFER1_START       0x14002414
-DECL|macro|DMA4_BUFFER1_COUNT
-mdefine_line|#define DMA4_BUFFER1_COUNT       0x14002418
-multiline_comment|/* DMA Controller 5 */
-DECL|macro|DMA5_MODE_SET
-mdefine_line|#define DMA5_MODE_SET            0x14002500
-DECL|macro|DMA5_MODE_CLEAR
-mdefine_line|#define DMA5_MODE_CLEAR          0x14002504
-DECL|macro|DMA5_PERIPHERAL_ADDR
-mdefine_line|#define DMA5_PERIPHERAL_ADDR     0x14002508
-DECL|macro|DMA5_BUFFER0_START
-mdefine_line|#define DMA5_BUFFER0_START       0x1400250C
-DECL|macro|DMA5_BUFFER0_COUNT
-mdefine_line|#define DMA5_BUFFER0_COUNT       0x14002510
-DECL|macro|DMA5_BUFFER1_START
-mdefine_line|#define DMA5_BUFFER1_START       0x14002514
-DECL|macro|DMA5_BUFFER1_COUNT
-mdefine_line|#define DMA5_BUFFER1_COUNT       0x14002518
-multiline_comment|/* DMA Controller 6 */
-DECL|macro|DMA6_MODE_SET
-mdefine_line|#define DMA6_MODE_SET            0x14002600
-DECL|macro|DMA6_MODE_CLEAR
-mdefine_line|#define DMA6_MODE_CLEAR          0x14002604
-DECL|macro|DMA6_PERIPHERAL_ADDR
-mdefine_line|#define DMA6_PERIPHERAL_ADDR     0x14002608
-DECL|macro|DMA6_BUFFER0_START
-mdefine_line|#define DMA6_BUFFER0_START       0x1400260C
-DECL|macro|DMA6_BUFFER0_COUNT
-mdefine_line|#define DMA6_BUFFER0_COUNT       0x14002610
-DECL|macro|DMA6_BUFFER1_START
-mdefine_line|#define DMA6_BUFFER1_START       0x14002614
-DECL|macro|DMA6_BUFFER1_COUNT
-mdefine_line|#define DMA6_BUFFER1_COUNT       0x14002618
-multiline_comment|/* DMA Controller 7 */
-DECL|macro|DMA7_MODE_SET
-mdefine_line|#define DMA7_MODE_SET            0x14002700
-DECL|macro|DMA7_MODE_CLEAR
-mdefine_line|#define DMA7_MODE_CLEAR          0x14002704
-DECL|macro|DMA7_PERIPHERAL_ADDR
-mdefine_line|#define DMA7_PERIPHERAL_ADDR     0x14002708
-DECL|macro|DMA7_BUFFER0_START
-mdefine_line|#define DMA7_BUFFER0_START       0x1400270C
-DECL|macro|DMA7_BUFFER0_COUNT
-mdefine_line|#define DMA7_BUFFER0_COUNT       0x14002710
-DECL|macro|DMA7_BUFFER1_START
-mdefine_line|#define DMA7_BUFFER1_START       0x14002714
-DECL|macro|DMA7_BUFFER1_COUNT
-mdefine_line|#define DMA7_BUFFER1_COUNT       0x14002718
+DECL|macro|MEM_STCFG0
+mdefine_line|#define MEM_STCFG0                 0xB4001000
+DECL|macro|MEM_STTIME0
+mdefine_line|#define MEM_STTIME0                0xB4001004
+DECL|macro|MEM_STADDR0
+mdefine_line|#define MEM_STADDR0                0xB4001008
+DECL|macro|MEM_STCFG1
+mdefine_line|#define MEM_STCFG1                 0xB4001010
+DECL|macro|MEM_STTIME1
+mdefine_line|#define MEM_STTIME1                0xB4001014
+DECL|macro|MEM_STADDR1
+mdefine_line|#define MEM_STADDR1                0xB4001018
+DECL|macro|MEM_STCFG2
+mdefine_line|#define MEM_STCFG2                 0xB4001020
+DECL|macro|MEM_STTIME2
+mdefine_line|#define MEM_STTIME2                0xB4001024
+DECL|macro|MEM_STADDR2
+mdefine_line|#define MEM_STADDR2                0xB4001028
+DECL|macro|MEM_STCFG3
+mdefine_line|#define MEM_STCFG3                 0xB4001030
+DECL|macro|MEM_STTIME3
+mdefine_line|#define MEM_STTIME3                0xB4001034
+DECL|macro|MEM_STADDR3
+mdefine_line|#define MEM_STADDR3                0xB4001038
 multiline_comment|/* Interrupt Controller 0 */
-DECL|macro|INTC0_CONFIG0_READ
-mdefine_line|#define INTC0_CONFIG0_READ        0x10400040
-DECL|macro|INTC0_CONFIG0_SET
-mdefine_line|#define INTC0_CONFIG0_SET         0x10400040
-DECL|macro|INTC0_CONFIG0_CLEAR
-mdefine_line|#define INTC0_CONFIG0_CLEAR       0x10400044
-DECL|macro|INTC0_CONFIG1_READ
-mdefine_line|#define INTC0_CONFIG1_READ        0x10400048
-DECL|macro|INTC0_CONFIG1_SET
-mdefine_line|#define INTC0_CONFIG1_SET         0x10400048
-DECL|macro|INTC0_CONFIG1_CLEAR
-mdefine_line|#define INTC0_CONFIG1_CLEAR       0x1040004C
-DECL|macro|INTC0_CONFIG2_READ
-mdefine_line|#define INTC0_CONFIG2_READ        0x10400050
-DECL|macro|INTC0_CONFIG2_SET
-mdefine_line|#define INTC0_CONFIG2_SET         0x10400050
-DECL|macro|INTC0_CONFIG2_CLEAR
-mdefine_line|#define INTC0_CONFIG2_CLEAR       0x10400054
-DECL|macro|INTC0_REQ0_INT
-mdefine_line|#define INTC0_REQ0_INT            0x10400054
-DECL|macro|INTC0_SOURCE_READ
-mdefine_line|#define INTC0_SOURCE_READ         0x10400058
-DECL|macro|INTC0_SOURCE_SET
-mdefine_line|#define INTC0_SOURCE_SET          0x10400058
-DECL|macro|INTC0_SOURCE_CLEAR
-mdefine_line|#define INTC0_SOURCE_CLEAR        0x1040005C
-DECL|macro|INTC0_REQ1_INT
-mdefine_line|#define INTC0_REQ1_INT            0x1040005C
-DECL|macro|INTC0_ASSIGN_REQ_READ
-mdefine_line|#define INTC0_ASSIGN_REQ_READ     0x10400060
-DECL|macro|INTC0_ASSIGN_REQ_SET
-mdefine_line|#define INTC0_ASSIGN_REQ_SET      0x10400060
-DECL|macro|INTC0_ASSIGN_REQ_CLEAR
-mdefine_line|#define INTC0_ASSIGN_REQ_CLEAR    0x10400064
-DECL|macro|INTC0_WAKEUP_READ
-mdefine_line|#define INTC0_WAKEUP_READ         0x10400068
-DECL|macro|INTC0_WAKEUP_SET
-mdefine_line|#define INTC0_WAKEUP_SET          0x10400068
-DECL|macro|INTC0_WAKEUP_CLEAR
-mdefine_line|#define INTC0_WAKEUP_CLEAR        0x1040006C
-DECL|macro|INTC0_MASK_READ
-mdefine_line|#define INTC0_MASK_READ           0x10400070
-DECL|macro|INTC0_MASK_SET
-mdefine_line|#define INTC0_MASK_SET            0x10400070
-DECL|macro|INTC0_MASK_CLEAR
-mdefine_line|#define INTC0_MASK_CLEAR          0x10400074
-DECL|macro|INTC0_R_EDGE_DETECT
-mdefine_line|#define INTC0_R_EDGE_DETECT       0x10400078
-DECL|macro|INTC0_R_EDGE_DETECT_CLEAR
-mdefine_line|#define INTC0_R_EDGE_DETECT_CLEAR 0x10400078
-DECL|macro|INTC0_F_EDGE_DETECT_CLEAR
-mdefine_line|#define INTC0_F_EDGE_DETECT_CLEAR 0x1040007C
-DECL|macro|INTC0_TEST_BIT
-mdefine_line|#define INTC0_TEST_BIT            0x10400080
+DECL|macro|IC0_CFG0RD
+mdefine_line|#define IC0_CFG0RD                 0xB0400040
+DECL|macro|IC0_CFG0SET
+mdefine_line|#define IC0_CFG0SET                0xB0400040
+DECL|macro|IC0_CFG0CLR
+mdefine_line|#define IC0_CFG0CLR                0xB0400044
+DECL|macro|IC0_CFG1RD
+mdefine_line|#define IC0_CFG1RD                 0xB0400048
+DECL|macro|IC0_CFG1SET
+mdefine_line|#define IC0_CFG1SET                0xB0400048
+DECL|macro|IC0_CFG1CLR
+mdefine_line|#define IC0_CFG1CLR                0xB040004C
+DECL|macro|IC0_CFG2RD
+mdefine_line|#define IC0_CFG2RD                 0xB0400050
+DECL|macro|IC0_CFG2SET
+mdefine_line|#define IC0_CFG2SET                0xB0400050
+DECL|macro|IC0_CFG2CLR
+mdefine_line|#define IC0_CFG2CLR                0xB0400054
+DECL|macro|IC0_REQ0INT
+mdefine_line|#define IC0_REQ0INT                0xB0400054
+DECL|macro|IC0_SRCRD
+mdefine_line|#define IC0_SRCRD                  0xB0400058
+DECL|macro|IC0_SRCSET
+mdefine_line|#define IC0_SRCSET                 0xB0400058
+DECL|macro|IC0_SRCCLR
+mdefine_line|#define IC0_SRCCLR                 0xB040005C
+DECL|macro|IC0_REQ1INT
+mdefine_line|#define IC0_REQ1INT                0xB040005C
+DECL|macro|IC0_ASSIGNRD
+mdefine_line|#define IC0_ASSIGNRD               0xB0400060
+DECL|macro|IC0_ASSIGNSET
+mdefine_line|#define IC0_ASSIGNSET              0xB0400060
+DECL|macro|IC0_ASSIGNCLR
+mdefine_line|#define IC0_ASSIGNCLR              0xB0400064
+DECL|macro|IC0_WAKERD
+mdefine_line|#define IC0_WAKERD                 0xB0400068
+DECL|macro|IC0_WAKESET
+mdefine_line|#define IC0_WAKESET                0xB0400068
+DECL|macro|IC0_WAKECLR
+mdefine_line|#define IC0_WAKECLR                0xB040006C
+DECL|macro|IC0_MASKRD
+mdefine_line|#define IC0_MASKRD                 0xB0400070
+DECL|macro|IC0_MASKSET
+mdefine_line|#define IC0_MASKSET                0xB0400070
+DECL|macro|IC0_MASKCLR
+mdefine_line|#define IC0_MASKCLR                0xB0400074
+DECL|macro|IC0_RISINGRD
+mdefine_line|#define IC0_RISINGRD               0xB0400078
+DECL|macro|IC0_RISINGCLR
+mdefine_line|#define IC0_RISINGCLR              0xB0400078
+DECL|macro|IC0_FALLINGRD
+mdefine_line|#define IC0_FALLINGRD              0xB040007C
+DECL|macro|IC0_FALLINGCLR
+mdefine_line|#define IC0_FALLINGCLR             0xB040007C
+DECL|macro|IC0_TESTBIT
+mdefine_line|#define IC0_TESTBIT                0xB0400080
 multiline_comment|/* Interrupt Controller 1 */
-DECL|macro|INTC1_CONFIG0_READ
-mdefine_line|#define INTC1_CONFIG0_READ        0x11800040
-DECL|macro|INTC1_CONFIG0_SET
-mdefine_line|#define INTC1_CONFIG0_SET         0x11800040
-DECL|macro|INTC1_CONFIG0_CLEAR
-mdefine_line|#define INTC1_CONFIG0_CLEAR       0x11800044
-DECL|macro|INTC1_CONFIG1_READ
-mdefine_line|#define INTC1_CONFIG1_READ        0x11800048
-DECL|macro|INTC1_CONFIG1_SET
-mdefine_line|#define INTC1_CONFIG1_SET         0x11800048
-DECL|macro|INTC1_CONFIG1_CLEAR
-mdefine_line|#define INTC1_CONFIG1_CLEAR       0x1180004C
-DECL|macro|INTC1_CONFIG2_READ
-mdefine_line|#define INTC1_CONFIG2_READ        0x11800050
-DECL|macro|INTC1_CONFIG2_SET
-mdefine_line|#define INTC1_CONFIG2_SET         0x11800050
-DECL|macro|INTC1_CONFIG2_CLEAR
-mdefine_line|#define INTC1_CONFIG2_CLEAR       0x11800054
-DECL|macro|INTC1_REQ0_INT
-mdefine_line|#define INTC1_REQ0_INT            0x11800054
-DECL|macro|INTC1_SOURCE_READ
-mdefine_line|#define INTC1_SOURCE_READ         0x11800058
-DECL|macro|INTC1_SOURCE_SET
-mdefine_line|#define INTC1_SOURCE_SET          0x11800058
-DECL|macro|INTC1_SOURCE_CLEAR
-mdefine_line|#define INTC1_SOURCE_CLEAR        0x1180005C
-DECL|macro|INTC1_REQ1_INT
-mdefine_line|#define INTC1_REQ1_INT            0x1180005C
-DECL|macro|INTC1_ASSIGN_REQ_READ
-mdefine_line|#define INTC1_ASSIGN_REQ_READ     0x11800060
-DECL|macro|INTC1_ASSIGN_REQ_SET
-mdefine_line|#define INTC1_ASSIGN_REQ_SET      0x11800060
-DECL|macro|INTC1_ASSIGN_REQ_CLEAR
-mdefine_line|#define INTC1_ASSIGN_REQ_CLEAR    0x11800064
-DECL|macro|INTC1_WAKEUP_READ
-mdefine_line|#define INTC1_WAKEUP_READ         0x11800068
-DECL|macro|INTC1_WAKEUP_SET
-mdefine_line|#define INTC1_WAKEUP_SET          0x11800068
-DECL|macro|INTC1_WAKEUP_CLEAR
-mdefine_line|#define INTC1_WAKEUP_CLEAR        0x1180006C
-DECL|macro|INTC1_MASK_READ
-mdefine_line|#define INTC1_MASK_READ           0x11800070
-DECL|macro|INTC1_MASK_SET
-mdefine_line|#define INTC1_MASK_SET            0x11800070
-DECL|macro|INTC1_MASK_CLEAR
-mdefine_line|#define INTC1_MASK_CLEAR          0x11800074
-DECL|macro|INTC1_R_EDGE_DETECT
-mdefine_line|#define INTC1_R_EDGE_DETECT       0x11800078
-DECL|macro|INTC1_R_EDGE_DETECT_CLEAR
-mdefine_line|#define INTC1_R_EDGE_DETECT_CLEAR 0x11800078
-DECL|macro|INTC1_F_EDGE_DETECT_CLEAR
-mdefine_line|#define INTC1_F_EDGE_DETECT_CLEAR 0x1180007C
-DECL|macro|INTC1_TEST_BIT
-mdefine_line|#define INTC1_TEST_BIT            0x11800080
+DECL|macro|IC1_CFG0RD
+mdefine_line|#define IC1_CFG0RD                 0xB1800040
+DECL|macro|IC1_CFG0SET
+mdefine_line|#define IC1_CFG0SET                0xB1800040
+DECL|macro|IC1_CFG0CLR
+mdefine_line|#define IC1_CFG0CLR                0xB1800044
+DECL|macro|IC1_CFG1RD
+mdefine_line|#define IC1_CFG1RD                 0xB1800048
+DECL|macro|IC1_CFG1SET
+mdefine_line|#define IC1_CFG1SET                0xB1800048
+DECL|macro|IC1_CFG1CLR
+mdefine_line|#define IC1_CFG1CLR                0xB180004C
+DECL|macro|IC1_CFG2RD
+mdefine_line|#define IC1_CFG2RD                 0xB1800050
+DECL|macro|IC1_CFG2SET
+mdefine_line|#define IC1_CFG2SET                0xB1800050
+DECL|macro|IC1_CFG2CLR
+mdefine_line|#define IC1_CFG2CLR                0xB1800054
+DECL|macro|IC1_REQ0INT
+mdefine_line|#define IC1_REQ0INT                0xB1800054
+DECL|macro|IC1_SRCRD
+mdefine_line|#define IC1_SRCRD                  0xB1800058
+DECL|macro|IC1_SRCSET
+mdefine_line|#define IC1_SRCSET                 0xB1800058
+DECL|macro|IC1_SRCCLR
+mdefine_line|#define IC1_SRCCLR                 0xB180005C
+DECL|macro|IC1_REQ1INT
+mdefine_line|#define IC1_REQ1INT                0xB180005C
+DECL|macro|IC1_ASSIGNRD
+mdefine_line|#define IC1_ASSIGNRD               0xB1800060
+DECL|macro|IC1_ASSIGNSET
+mdefine_line|#define IC1_ASSIGNSET              0xB1800060
+DECL|macro|IC1_ASSIGNCLR
+mdefine_line|#define IC1_ASSIGNCLR              0xB1800064
+DECL|macro|IC1_WAKERD
+mdefine_line|#define IC1_WAKERD                 0xB1800068
+DECL|macro|IC1_WAKESET
+mdefine_line|#define IC1_WAKESET                0xB1800068
+DECL|macro|IC1_WAKECLR
+mdefine_line|#define IC1_WAKECLR                0xB180006C
+DECL|macro|IC1_MASKRD
+mdefine_line|#define IC1_MASKRD                 0xB1800070
+DECL|macro|IC1_MASKSET
+mdefine_line|#define IC1_MASKSET                0xB1800070
+DECL|macro|IC1_MASKCLR
+mdefine_line|#define IC1_MASKCLR                0xB1800074
+DECL|macro|IC1_RISINGRD
+mdefine_line|#define IC1_RISINGRD               0xB1800078
+DECL|macro|IC1_RISINGCLR
+mdefine_line|#define IC1_RISINGCLR              0xB1800078
+DECL|macro|IC1_FALLINGRD
+mdefine_line|#define IC1_FALLINGRD              0xB180007C
+DECL|macro|IC1_FALLINGCLR
+mdefine_line|#define IC1_FALLINGCLR             0xB180007C
+DECL|macro|IC1_TESTBIT
+mdefine_line|#define IC1_TESTBIT                0xB1800080
 multiline_comment|/* Interrupt Configuration Modes */
 DECL|macro|INTC_INT_DISABLED
 mdefine_line|#define INTC_INT_DISABLED                0
@@ -305,51 +475,45 @@ multiline_comment|/* Interrupt Numbers */
 DECL|macro|AU1000_UART0_INT
 mdefine_line|#define AU1000_UART0_INT          0
 DECL|macro|AU1000_UART1_INT
-mdefine_line|#define AU1000_UART1_INT          1
+mdefine_line|#define AU1000_UART1_INT          1 /* au1000 */
 DECL|macro|AU1000_UART2_INT
-mdefine_line|#define AU1000_UART2_INT          2
+mdefine_line|#define AU1000_UART2_INT          2 /* au1000 */
+DECL|macro|AU1000_PCI_INTA
+mdefine_line|#define AU1000_PCI_INTA           1 /* au1500 */
+DECL|macro|AU1000_PCI_INTB
+mdefine_line|#define AU1000_PCI_INTB           2 /* au1500 */
 DECL|macro|AU1000_UART3_INT
 mdefine_line|#define AU1000_UART3_INT          3
 DECL|macro|AU1000_SSI0_INT
-mdefine_line|#define AU1000_SSI0_INT           4
+mdefine_line|#define AU1000_SSI0_INT           4 /* au1000 */
 DECL|macro|AU1000_SSI1_INT
-mdefine_line|#define AU1000_SSI1_INT           5
-DECL|macro|AU1000_DMA0_INT
-mdefine_line|#define AU1000_DMA0_INT           6
-DECL|macro|AU1000_DMA1_INT
-mdefine_line|#define AU1000_DMA1_INT           7
-DECL|macro|AU1000_DMA2_INT
-mdefine_line|#define AU1000_DMA2_INT           8
-DECL|macro|AU1000_DMA3_INT
-mdefine_line|#define AU1000_DMA3_INT           9
-DECL|macro|AU1000_DMA4_INT
-mdefine_line|#define AU1000_DMA4_INT           10
-DECL|macro|AU1000_DMA5_INT
-mdefine_line|#define AU1000_DMA5_INT           11
-DECL|macro|AU1000_DMA6_INT
-mdefine_line|#define AU1000_DMA6_INT           12
-DECL|macro|AU1000_DMA7_INT
-mdefine_line|#define AU1000_DMA7_INT           13
-DECL|macro|AU1000_PC0_INT
-mdefine_line|#define AU1000_PC0_INT            14
-DECL|macro|AU1000_PC0_MATCH0_INT
-mdefine_line|#define AU1000_PC0_MATCH0_INT     15
-DECL|macro|AU1000_PC0_MATCH1_INT
-mdefine_line|#define AU1000_PC0_MATCH1_INT     16
-DECL|macro|AU1000_PC0_MATCH2_INT
-mdefine_line|#define AU1000_PC0_MATCH2_INT     17
-DECL|macro|AU1000_PC1_INT
-mdefine_line|#define AU1000_PC1_INT            18
-DECL|macro|AU1000_PC1_MATCH0_INT
-mdefine_line|#define AU1000_PC1_MATCH0_INT     19
-DECL|macro|AU1000_PC1_MATCH1_INT
-mdefine_line|#define AU1000_PC1_MATCH1_INT     20
-DECL|macro|AU1000_PC1_MATCH2_INT
-mdefine_line|#define AU1000_PC1_MATCH2_INT     21
+mdefine_line|#define AU1000_SSI1_INT           5 /* au1000 */
+DECL|macro|AU1000_PCI_INTC
+mdefine_line|#define AU1000_PCI_INTC           4 /* au1500 */
+DECL|macro|AU1000_PCI_INTD
+mdefine_line|#define AU1000_PCI_INTD           5 /* au1500 */
+DECL|macro|AU1000_DMA_INT_BASE
+mdefine_line|#define AU1000_DMA_INT_BASE       6
+DECL|macro|AU1000_TOY_INT
+mdefine_line|#define AU1000_TOY_INT            14
+DECL|macro|AU1000_TOY_MATCH0_INT
+mdefine_line|#define AU1000_TOY_MATCH0_INT     15
+DECL|macro|AU1000_TOY_MATCH1_INT
+mdefine_line|#define AU1000_TOY_MATCH1_INT     16
+DECL|macro|AU1000_TOY_MATCH2_INT
+mdefine_line|#define AU1000_TOY_MATCH2_INT     17
+DECL|macro|AU1000_RTC_INT
+mdefine_line|#define AU1000_RTC_INT            18
+DECL|macro|AU1000_RTC_MATCH0_INT
+mdefine_line|#define AU1000_RTC_MATCH0_INT     19
+DECL|macro|AU1000_RTC_MATCH1_INT
+mdefine_line|#define AU1000_RTC_MATCH1_INT     20
+DECL|macro|AU1000_RTC_MATCH2_INT
+mdefine_line|#define AU1000_RTC_MATCH2_INT     21
 DECL|macro|AU1000_IRDA_TX_INT
-mdefine_line|#define AU1000_IRDA_TX_INT        22
+mdefine_line|#define AU1000_IRDA_TX_INT        22 /* au1000 */
 DECL|macro|AU1000_IRDA_RX_INT
-mdefine_line|#define AU1000_IRDA_RX_INT        23
+mdefine_line|#define AU1000_IRDA_RX_INT        23 /* au1000 */
 DECL|macro|AU1000_USB_DEV_REQ_INT
 mdefine_line|#define AU1000_USB_DEV_REQ_INT    24
 DECL|macro|AU1000_USB_DEV_SUS_INT
@@ -367,11 +531,11 @@ mdefine_line|#define AU1000_ETH0_IRQ           AU1000_MAC0_DMA_INT
 DECL|macro|AU1000_ETH1_IRQ
 mdefine_line|#define AU1000_ETH1_IRQ           AU1000_MAC1_DMA_INT
 DECL|macro|AU1000_I2S_UO_INT
-mdefine_line|#define AU1000_I2S_UO_INT         30
-DECL|macro|AU1000_AC97_INT
-mdefine_line|#define AU1000_AC97_INT           31
+mdefine_line|#define AU1000_I2S_UO_INT         30 /* au1000 */
+DECL|macro|AU1000_AC97C_INT
+mdefine_line|#define AU1000_AC97C_INT          31
 DECL|macro|AU1000_LAST_INTC0_INT
-mdefine_line|#define AU1000_LAST_INTC0_INT     AU1000_AC97_INT
+mdefine_line|#define AU1000_LAST_INTC0_INT     AU1000_AC97C_INT
 DECL|macro|AU1000_GPIO_0
 mdefine_line|#define AU1000_GPIO_0             32
 DECL|macro|AU1000_GPIO_1
@@ -404,6 +568,7 @@ DECL|macro|AU1000_GPIO_14
 mdefine_line|#define AU1000_GPIO_14            46
 DECL|macro|AU1000_GPIO_15
 mdefine_line|#define AU1000_GPIO_15            47
+multiline_comment|/* Au1000 only */
 DECL|macro|AU1000_GPIO_16
 mdefine_line|#define AU1000_GPIO_16            48
 DECL|macro|AU1000_GPIO_17
@@ -436,96 +601,281 @@ DECL|macro|AU1000_GPIO_30
 mdefine_line|#define AU1000_GPIO_30            62
 DECL|macro|AU1000_GPIO_31
 mdefine_line|#define AU1000_GPIO_31            63
+multiline_comment|/* Au1500 only */
+DECL|macro|AU1500_GPIO_200
+mdefine_line|#define AU1500_GPIO_200           48
+DECL|macro|AU1500_GPIO_201
+mdefine_line|#define AU1500_GPIO_201           49
+DECL|macro|AU1500_GPIO_202
+mdefine_line|#define AU1500_GPIO_202           50
+DECL|macro|AU1500_GPIO_203
+mdefine_line|#define AU1500_GPIO_203           51
+DECL|macro|AU1500_GPIO_20
+mdefine_line|#define AU1500_GPIO_20            52
+DECL|macro|AU1500_GPIO_204
+mdefine_line|#define AU1500_GPIO_204           53
+DECL|macro|AU1500_GPIO_205
+mdefine_line|#define AU1500_GPIO_205           54
+DECL|macro|AU1500_GPIO_23
+mdefine_line|#define AU1500_GPIO_23            55
+DECL|macro|AU1500_GPIO_24
+mdefine_line|#define AU1500_GPIO_24            56
+DECL|macro|AU1500_GPIO_25
+mdefine_line|#define AU1500_GPIO_25            57
+DECL|macro|AU1500_GPIO_26
+mdefine_line|#define AU1500_GPIO_26            58
+DECL|macro|AU1500_GPIO_27
+mdefine_line|#define AU1500_GPIO_27            59
+DECL|macro|AU1500_GPIO_28
+mdefine_line|#define AU1500_GPIO_28            60
+DECL|macro|AU1500_GPIO_206
+mdefine_line|#define AU1500_GPIO_206           61
+DECL|macro|AU1500_GPIO_207
+mdefine_line|#define AU1500_GPIO_207           62
+DECL|macro|AU1500_GPIO_208_215
+mdefine_line|#define AU1500_GPIO_208_215       63
+DECL|macro|AU1000_MAX_INTR
+mdefine_line|#define AU1000_MAX_INTR           63
+DECL|macro|AU1100_SD
+mdefine_line|#define AU1100_SD&t;&t;2
+DECL|macro|AU1100_GPIO_208_215
+mdefine_line|#define&t;AU1100_GPIO_208_215&t;29
+singleline_comment|// REDEFINE SECONDARY GPIO BLOCK INTO IC1 CONTROLLER HERE
 multiline_comment|/* Programmable Counters 0 and 1 */
-DECL|macro|PC_BASE
-mdefine_line|#define PC_BASE                   0x11900000
-DECL|macro|PC_COUNTER_CNTRL
-mdefine_line|#define PC_COUNTER_CNTRL          (PC_BASE + 0x14)
-DECL|macro|PC_CNTRL_E1S
-mdefine_line|#define PC_CNTRL_E1S            (1&lt;&lt;23)
-DECL|macro|PC_CNTRL_T1S
-mdefine_line|#define PC_CNTRL_T1S            (1&lt;&lt;20)
-DECL|macro|PC_CNTRL_M21
-mdefine_line|#define PC_CNTRL_M21            (1&lt;&lt;19)
-DECL|macro|PC_CNTRL_M11
-mdefine_line|#define PC_CNTRL_M11            (1&lt;&lt;18)
-DECL|macro|PC_CNTRL_M01
-mdefine_line|#define PC_CNTRL_M01            (1&lt;&lt;17)
-DECL|macro|PC_CNTRL_C1S
-mdefine_line|#define PC_CNTRL_C1S            (1&lt;&lt;16)
-DECL|macro|PC_CNTRL_BP
-mdefine_line|#define PC_CNTRL_BP             (1&lt;&lt;14)
-DECL|macro|PC_CNTRL_EN1
-mdefine_line|#define PC_CNTRL_EN1            (1&lt;&lt;13)
-DECL|macro|PC_CNTRL_BT1
-mdefine_line|#define PC_CNTRL_BT1            (1&lt;&lt;12)
-DECL|macro|PC_CNTRL_EN0
-mdefine_line|#define PC_CNTRL_EN0            (1&lt;&lt;11)
-DECL|macro|PC_CNTRL_BT0
-mdefine_line|#define PC_CNTRL_BT0            (1&lt;&lt;10)
-DECL|macro|PC_CNTRL_E0
-mdefine_line|#define PC_CNTRL_E0             (1&lt;&lt;8)
-DECL|macro|PC_CNTRL_E0S
-mdefine_line|#define PC_CNTRL_E0S            (1&lt;&lt;7)
-DECL|macro|PC_CNTRL_32S
-mdefine_line|#define PC_CNTRL_32S            (1&lt;&lt;5)
-DECL|macro|PC_CNTRL_T0S
-mdefine_line|#define PC_CNTRL_T0S            (1&lt;&lt;4)
-DECL|macro|PC_CNTRL_M20
-mdefine_line|#define PC_CNTRL_M20            (1&lt;&lt;3)
-DECL|macro|PC_CNTRL_M10
-mdefine_line|#define PC_CNTRL_M10            (1&lt;&lt;2)
-DECL|macro|PC_CNTRL_M00
-mdefine_line|#define PC_CNTRL_M00            (1&lt;&lt;1)
-DECL|macro|PC_CNTRL_C0S
-mdefine_line|#define PC_CNTRL_C0S            (1&lt;&lt;0)
+DECL|macro|SYS_BASE
+mdefine_line|#define SYS_BASE                   0xB1900000
+DECL|macro|SYS_COUNTER_CNTRL
+mdefine_line|#define SYS_COUNTER_CNTRL          (SYS_BASE + 0x14)
+DECL|macro|SYS_CNTRL_E1S
+mdefine_line|#define SYS_CNTRL_E1S            (1&lt;&lt;23)
+DECL|macro|SYS_CNTRL_T1S
+mdefine_line|#define SYS_CNTRL_T1S            (1&lt;&lt;20)
+DECL|macro|SYS_CNTRL_M21
+mdefine_line|#define SYS_CNTRL_M21            (1&lt;&lt;19)
+DECL|macro|SYS_CNTRL_M11
+mdefine_line|#define SYS_CNTRL_M11            (1&lt;&lt;18)
+DECL|macro|SYS_CNTRL_M01
+mdefine_line|#define SYS_CNTRL_M01            (1&lt;&lt;17)
+DECL|macro|SYS_CNTRL_C1S
+mdefine_line|#define SYS_CNTRL_C1S            (1&lt;&lt;16)
+DECL|macro|SYS_CNTRL_BP
+mdefine_line|#define SYS_CNTRL_BP             (1&lt;&lt;14)
+DECL|macro|SYS_CNTRL_EN1
+mdefine_line|#define SYS_CNTRL_EN1            (1&lt;&lt;13)
+DECL|macro|SYS_CNTRL_BT1
+mdefine_line|#define SYS_CNTRL_BT1            (1&lt;&lt;12)
+DECL|macro|SYS_CNTRL_EN0
+mdefine_line|#define SYS_CNTRL_EN0            (1&lt;&lt;11)
+DECL|macro|SYS_CNTRL_BT0
+mdefine_line|#define SYS_CNTRL_BT0            (1&lt;&lt;10)
+DECL|macro|SYS_CNTRL_E0
+mdefine_line|#define SYS_CNTRL_E0             (1&lt;&lt;8)
+DECL|macro|SYS_CNTRL_E0S
+mdefine_line|#define SYS_CNTRL_E0S            (1&lt;&lt;7)
+DECL|macro|SYS_CNTRL_32S
+mdefine_line|#define SYS_CNTRL_32S            (1&lt;&lt;5)
+DECL|macro|SYS_CNTRL_T0S
+mdefine_line|#define SYS_CNTRL_T0S            (1&lt;&lt;4)
+DECL|macro|SYS_CNTRL_M20
+mdefine_line|#define SYS_CNTRL_M20            (1&lt;&lt;3)
+DECL|macro|SYS_CNTRL_M10
+mdefine_line|#define SYS_CNTRL_M10            (1&lt;&lt;2)
+DECL|macro|SYS_CNTRL_M00
+mdefine_line|#define SYS_CNTRL_M00            (1&lt;&lt;1)
+DECL|macro|SYS_CNTRL_C0S
+mdefine_line|#define SYS_CNTRL_C0S            (1&lt;&lt;0)
 multiline_comment|/* Programmable Counter 0 Registers */
-DECL|macro|PC0_TRIM
-mdefine_line|#define PC0_TRIM                  (PC_BASE + 0)
-DECL|macro|PC0_COUNTER_WRITE
-mdefine_line|#define PC0_COUNTER_WRITE         (PC_BASE + 4)
-DECL|macro|PC0_MATCH0
-mdefine_line|#define PC0_MATCH0                (PC_BASE + 8)
-DECL|macro|PC0_MATCH1
-mdefine_line|#define PC0_MATCH1                (PC_BASE + 0xC)
-DECL|macro|PC0_MATCH2
-mdefine_line|#define PC0_MATCH2                (PC_BASE + 0x10)
-DECL|macro|PC0_COUNTER_READ
-mdefine_line|#define PC0_COUNTER_READ          (PC_BASE + 0x40)
+DECL|macro|SYS_TOYTRIM
+mdefine_line|#define SYS_TOYTRIM                 (SYS_BASE + 0)
+DECL|macro|SYS_TOYWRITE
+mdefine_line|#define SYS_TOYWRITE                (SYS_BASE + 4)
+DECL|macro|SYS_TOYMATCH0
+mdefine_line|#define SYS_TOYMATCH0               (SYS_BASE + 8)
+DECL|macro|SYS_TOYMATCH1
+mdefine_line|#define SYS_TOYMATCH1               (SYS_BASE + 0xC)
+DECL|macro|SYS_TOYMATCH2
+mdefine_line|#define SYS_TOYMATCH2               (SYS_BASE + 0x10)
+DECL|macro|SYS_TOYREAD
+mdefine_line|#define SYS_TOYREAD                 (SYS_BASE + 0x40)
 multiline_comment|/* Programmable Counter 1 Registers */
-DECL|macro|PC1_TRIM
-mdefine_line|#define PC1_TRIM                  (PC_BASE + 0x44)
-DECL|macro|PC1_COUNTER_WRITE
-mdefine_line|#define PC1_COUNTER_WRITE         (PC_BASE + 0x48)
-DECL|macro|PC1_MATCH0
-mdefine_line|#define PC1_MATCH0                (PC_BASE + 0x4C)
-DECL|macro|PC1_MATCH1
-mdefine_line|#define PC1_MATCH1                (PC_BASE + 0x50)
-DECL|macro|PC1_MATCH2
-mdefine_line|#define PC1_MATCH2                (PC_BASE + 0x54)
-DECL|macro|PC1_COUNTER_READ
-mdefine_line|#define PC1_COUNTER_READ          (PC_BASE + 0x58)
+DECL|macro|SYS_RTCTRIM
+mdefine_line|#define SYS_RTCTRIM                 (SYS_BASE + 0x44)
+DECL|macro|SYS_RTCWRITE
+mdefine_line|#define SYS_RTCWRITE                (SYS_BASE + 0x48)
+DECL|macro|SYS_RTCMATCH0
+mdefine_line|#define SYS_RTCMATCH0               (SYS_BASE + 0x4C)
+DECL|macro|SYS_RTCMATCH1
+mdefine_line|#define SYS_RTCMATCH1               (SYS_BASE + 0x50)
+DECL|macro|SYS_RTCMATCH2
+mdefine_line|#define SYS_RTCMATCH2               (SYS_BASE + 0x54)
+DECL|macro|SYS_RTCREAD
+mdefine_line|#define SYS_RTCREAD                 (SYS_BASE + 0x58)
 multiline_comment|/* I2S Controller */
 DECL|macro|I2S_DATA
-mdefine_line|#define I2S_DATA                  0x11000000
-DECL|macro|I2S_CONFIG_STATUS
-mdefine_line|#define I2S_CONFIG_STATUS         0x11000001
+mdefine_line|#define I2S_DATA                    0xB1000000
+DECL|macro|I2S_DATA_MASK
+mdefine_line|#define I2S_DATA_MASK        (0xffffff)
+DECL|macro|I2S_CONFIG
+mdefine_line|#define I2S_CONFIG                0xB1000004
+DECL|macro|I2S_CONFIG_XU
+mdefine_line|#define I2S_CONFIG_XU        (1&lt;&lt;25)
+DECL|macro|I2S_CONFIG_XO
+mdefine_line|#define I2S_CONFIG_XO        (1&lt;&lt;24)
+DECL|macro|I2S_CONFIG_RU
+mdefine_line|#define I2S_CONFIG_RU        (1&lt;&lt;23)
+DECL|macro|I2S_CONFIG_RO
+mdefine_line|#define I2S_CONFIG_RO        (1&lt;&lt;22)
+DECL|macro|I2S_CONFIG_TR
+mdefine_line|#define I2S_CONFIG_TR        (1&lt;&lt;21)
+DECL|macro|I2S_CONFIG_TE
+mdefine_line|#define I2S_CONFIG_TE        (1&lt;&lt;20)
+DECL|macro|I2S_CONFIG_TF
+mdefine_line|#define I2S_CONFIG_TF        (1&lt;&lt;19)
+DECL|macro|I2S_CONFIG_RR
+mdefine_line|#define I2S_CONFIG_RR        (1&lt;&lt;18)
+DECL|macro|I2S_CONFIG_RE
+mdefine_line|#define I2S_CONFIG_RE        (1&lt;&lt;17)
+DECL|macro|I2S_CONFIG_RF
+mdefine_line|#define I2S_CONFIG_RF        (1&lt;&lt;16)
+DECL|macro|I2S_CONFIG_PD
+mdefine_line|#define I2S_CONFIG_PD        (1&lt;&lt;11)
+DECL|macro|I2S_CONFIG_LB
+mdefine_line|#define I2S_CONFIG_LB        (1&lt;&lt;10)
+DECL|macro|I2S_CONFIG_IC
+mdefine_line|#define I2S_CONFIG_IC        (1&lt;&lt;9)
+DECL|macro|I2S_CONFIG_FM_BIT
+mdefine_line|#define I2S_CONFIG_FM_BIT    7
+DECL|macro|I2S_CONFIG_FM_MASK
+mdefine_line|#define I2S_CONFIG_FM_MASK     (0x3 &lt;&lt; I2S_CONFIG_FM_BIT)
+DECL|macro|I2S_CONFIG_FM_I2S
+mdefine_line|#define I2S_CONFIG_FM_I2S    (0x0 &lt;&lt; I2S_CONFIG_FM_BIT)
+DECL|macro|I2S_CONFIG_FM_LJ
+mdefine_line|#define I2S_CONFIG_FM_LJ     (0x1 &lt;&lt; I2S_CONFIG_FM_BIT)
+DECL|macro|I2S_CONFIG_FM_RJ
+mdefine_line|#define I2S_CONFIG_FM_RJ     (0x2 &lt;&lt; I2S_CONFIG_FM_BIT)
+DECL|macro|I2S_CONFIG_TN
+mdefine_line|#define I2S_CONFIG_TN        (1&lt;&lt;6)
+DECL|macro|I2S_CONFIG_RN
+mdefine_line|#define I2S_CONFIG_RN        (1&lt;&lt;5)
+DECL|macro|I2S_CONFIG_SZ_BIT
+mdefine_line|#define I2S_CONFIG_SZ_BIT    0
+DECL|macro|I2S_CONFIG_SZ_MASK
+mdefine_line|#define I2S_CONFIG_SZ_MASK     (0x1F &lt;&lt; I2S_CONFIG_SZ_BIT)
 DECL|macro|I2S_CONTROL
-mdefine_line|#define I2S_CONTROL               0x11000002
+mdefine_line|#define I2S_CONTROL                0xB1000008
+DECL|macro|I2S_CONTROL_D
+mdefine_line|#define I2S_CONTROL_D         (1&lt;&lt;1)
+DECL|macro|I2S_CONTROL_CE
+mdefine_line|#define I2S_CONTROL_CE        (1&lt;&lt;0)
+multiline_comment|/* USB Host Controller */
+singleline_comment|// We pass USB_OHCI_BASE to ioremap, so it needs to be a physical address
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x10100000
+DECL|macro|USB_OHCI_LEN
+mdefine_line|#define USB_OHCI_LEN              0x00100000
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB017fffc
+multiline_comment|/* USB Device Controller */
+DECL|macro|USBD_EP0RD
+mdefine_line|#define USBD_EP0RD                0xB0200000
+DECL|macro|USBD_EP0WR
+mdefine_line|#define USBD_EP0WR                0xB0200004
+DECL|macro|USBD_EP2WR
+mdefine_line|#define USBD_EP2WR                0xB0200008
+DECL|macro|USBD_EP3WR
+mdefine_line|#define USBD_EP3WR                0xB020000C
+DECL|macro|USBD_EP4RD
+mdefine_line|#define USBD_EP4RD                0xB0200010
+DECL|macro|USBD_EP5RD
+mdefine_line|#define USBD_EP5RD                0xB0200014
+DECL|macro|USBD_INTEN
+mdefine_line|#define USBD_INTEN                0xB0200018
+DECL|macro|USBD_INTSTAT
+mdefine_line|#define USBD_INTSTAT              0xB020001C
+DECL|macro|USBDEV_INT_SOF
+mdefine_line|#define USBDEV_INT_SOF       (1&lt;&lt;12)
+DECL|macro|USBDEV_INT_HF_BIT
+mdefine_line|#define USBDEV_INT_HF_BIT    6
+DECL|macro|USBDEV_INT_HF_MASK
+mdefine_line|#define USBDEV_INT_HF_MASK   (0x3f &lt;&lt; USBDEV_INT_HF_BIT)
+DECL|macro|USBDEV_INT_CMPLT_BIT
+mdefine_line|#define USBDEV_INT_CMPLT_BIT  0
+DECL|macro|USBDEV_INT_CMPLT_MASK
+mdefine_line|#define USBDEV_INT_CMPLT_MASK (0x3f &lt;&lt; USBDEV_INT_CMPLT_BIT)
+DECL|macro|USBD_CONFIG
+mdefine_line|#define USBD_CONFIG               0xB0200020
+DECL|macro|USBD_EP0CS
+mdefine_line|#define USBD_EP0CS                0xB0200024
+DECL|macro|USBD_EP2CS
+mdefine_line|#define USBD_EP2CS                0xB0200028
+DECL|macro|USBD_EP3CS
+mdefine_line|#define USBD_EP3CS                0xB020002C
+DECL|macro|USBD_EP4CS
+mdefine_line|#define USBD_EP4CS                0xB0200030
+DECL|macro|USBD_EP5CS
+mdefine_line|#define USBD_EP5CS                0xB0200034
+DECL|macro|USBDEV_CS_SU
+mdefine_line|#define USBDEV_CS_SU         (1&lt;&lt;14)
+DECL|macro|USBDEV_CS_NAK
+mdefine_line|#define USBDEV_CS_NAK        (1&lt;&lt;13)
+DECL|macro|USBDEV_CS_ACK
+mdefine_line|#define USBDEV_CS_ACK        (1&lt;&lt;12)
+DECL|macro|USBDEV_CS_BUSY
+mdefine_line|#define USBDEV_CS_BUSY       (1&lt;&lt;11)
+DECL|macro|USBDEV_CS_TSIZE_BIT
+mdefine_line|#define USBDEV_CS_TSIZE_BIT  1
+DECL|macro|USBDEV_CS_TSIZE_MASK
+mdefine_line|#define USBDEV_CS_TSIZE_MASK (0x3ff &lt;&lt; USBDEV_CS_TSIZE_BIT)
+DECL|macro|USBDEV_CS_STALL
+mdefine_line|#define USBDEV_CS_STALL      (1&lt;&lt;0)
+DECL|macro|USBD_EP0RDSTAT
+mdefine_line|#define USBD_EP0RDSTAT            0xB0200040
+DECL|macro|USBD_EP0WRSTAT
+mdefine_line|#define USBD_EP0WRSTAT            0xB0200044
+DECL|macro|USBD_EP2WRSTAT
+mdefine_line|#define USBD_EP2WRSTAT            0xB0200048
+DECL|macro|USBD_EP3WRSTAT
+mdefine_line|#define USBD_EP3WRSTAT            0xB020004C
+DECL|macro|USBD_EP4RDSTAT
+mdefine_line|#define USBD_EP4RDSTAT            0xB0200050
+DECL|macro|USBD_EP5RDSTAT
+mdefine_line|#define USBD_EP5RDSTAT            0xB0200054
+DECL|macro|USBDEV_FSTAT_FLUSH
+mdefine_line|#define USBDEV_FSTAT_FLUSH     (1&lt;&lt;6)
+DECL|macro|USBDEV_FSTAT_UF
+mdefine_line|#define USBDEV_FSTAT_UF        (1&lt;&lt;5)
+DECL|macro|USBDEV_FSTAT_OF
+mdefine_line|#define USBDEV_FSTAT_OF        (1&lt;&lt;4)
+DECL|macro|USBDEV_FSTAT_FCNT_BIT
+mdefine_line|#define USBDEV_FSTAT_FCNT_BIT  0
+DECL|macro|USBDEV_FSTAT_FCNT_MASK
+mdefine_line|#define USBDEV_FSTAT_FCNT_MASK (0x0f &lt;&lt; USBDEV_FSTAT_FCNT_BIT)
+DECL|macro|USBD_ENABLE
+mdefine_line|#define USBD_ENABLE               0xB0200058
+DECL|macro|USBDEV_ENABLE
+mdefine_line|#define USBDEV_ENABLE (1&lt;&lt;1)
+DECL|macro|USBDEV_CE
+mdefine_line|#define USBDEV_CE     (1&lt;&lt;0)
 multiline_comment|/* Ethernet Controllers  */
 DECL|macro|AU1000_ETH0_BASE
-mdefine_line|#define AU1000_ETH0_BASE          0x10500000
+mdefine_line|#define AU1000_ETH0_BASE          0xB0500000
 DECL|macro|AU1000_ETH1_BASE
-mdefine_line|#define AU1000_ETH1_BASE          0x10510000
+mdefine_line|#define AU1000_ETH1_BASE          0xB0510000
+DECL|macro|AU1500_ETH0_BASE
+mdefine_line|#define AU1500_ETH0_BASE&t;  0xB1500000
+DECL|macro|AU1500_ETH1_BASE
+mdefine_line|#define AU1500_ETH1_BASE&t;  0xB1510000
+DECL|macro|AU1100_ETH0_BASE
+mdefine_line|#define AU1100_ETH0_BASE&t;  0xB0500000
 multiline_comment|/* 4 byte offsets from AU1000_ETH_BASE */
 DECL|macro|MAC_CONTROL
 mdefine_line|#define MAC_CONTROL                     0x0
 DECL|macro|MAC_RX_ENABLE
-mdefine_line|#define MAC_RX_ENABLE               (1&lt;&lt;2) 
+mdefine_line|#define MAC_RX_ENABLE               (1&lt;&lt;2)
 DECL|macro|MAC_TX_ENABLE
 mdefine_line|#define MAC_TX_ENABLE               (1&lt;&lt;3)
 DECL|macro|MAC_DEF_CHECK
-mdefine_line|#define MAC_DEF_CHECK               (1&lt;&lt;5) 
+mdefine_line|#define MAC_DEF_CHECK               (1&lt;&lt;5)
 DECL|macro|MAC_SET_BL
 mdefine_line|#define MAC_SET_BL(X)       (((X)&amp;0x3)&lt;&lt;6)
 DECL|macro|MAC_AUTO_PAD
@@ -575,7 +925,7 @@ mdefine_line|#define MAC_MII_CNTRL                  0x14
 DECL|macro|MAC_MII_BUSY
 mdefine_line|#define MAC_MII_BUSY                (1&lt;&lt;0)
 DECL|macro|MAC_MII_READ
-mdefine_line|#define MAC_MII_READ                     0 
+mdefine_line|#define MAC_MII_READ                     0
 DECL|macro|MAC_MII_WRITE
 mdefine_line|#define MAC_MII_WRITE               (1&lt;&lt;1)
 DECL|macro|MAC_SET_MII_SELECT_REG
@@ -599,16 +949,22 @@ mdefine_line|#define MAC_VLAN1_TAG                  0x20
 DECL|macro|MAC_VLAN2_TAG
 mdefine_line|#define MAC_VLAN2_TAG                  0x24
 multiline_comment|/* Ethernet Controller Enable */
-DECL|macro|MAC0_ENABLE
-mdefine_line|#define MAC0_ENABLE               0x10520000
-DECL|macro|MAC1_ENABLE
-mdefine_line|#define MAC1_ENABLE               0x10520004
+DECL|macro|AU1000_MAC0_ENABLE
+mdefine_line|#define AU1000_MAC0_ENABLE       0xB0520000
+DECL|macro|AU1000_MAC1_ENABLE
+mdefine_line|#define AU1000_MAC1_ENABLE       0xB0520004
+DECL|macro|AU1500_MAC0_ENABLE
+mdefine_line|#define AU1500_MAC0_ENABLE       0xB1520000
+DECL|macro|AU1500_MAC1_ENABLE
+mdefine_line|#define AU1500_MAC1_ENABLE       0xB1520004
+DECL|macro|AU1100_MAC0_ENABLE
+mdefine_line|#define AU1100_MAC0_ENABLE       0xB0520000
 DECL|macro|MAC_EN_CLOCK_ENABLE
 mdefine_line|#define MAC_EN_CLOCK_ENABLE         (1&lt;&lt;0)
 DECL|macro|MAC_EN_RESET0
 mdefine_line|#define MAC_EN_RESET0               (1&lt;&lt;1)
 DECL|macro|MAC_EN_TOSS
-mdefine_line|#define MAC_EN_TOSS                 (1&lt;&lt;2)
+mdefine_line|#define MAC_EN_TOSS                 (0&lt;&lt;2)
 DECL|macro|MAC_EN_CACHEABLE
 mdefine_line|#define MAC_EN_CACHEABLE            (1&lt;&lt;3)
 DECL|macro|MAC_EN_RESET1
@@ -619,9 +975,9 @@ DECL|macro|MAC_DMA_RESET
 mdefine_line|#define MAC_DMA_RESET               (1&lt;&lt;6)
 multiline_comment|/* Ethernet Controller DMA Channels */
 DECL|macro|MAC0_TX_DMA_ADDR
-mdefine_line|#define MAC0_TX_DMA_ADDR         0x14004000
+mdefine_line|#define MAC0_TX_DMA_ADDR         0xB4004000
 DECL|macro|MAC1_TX_DMA_ADDR
-mdefine_line|#define MAC1_TX_DMA_ADDR         0x14004200
+mdefine_line|#define MAC1_TX_DMA_ADDR         0xB4004200
 multiline_comment|/* offsets from MAC_TX_RING_ADDR address */
 DECL|macro|MAC_TX_BUFF0_STATUS
 mdefine_line|#define MAC_TX_BUFF0_STATUS             0x0
@@ -678,9 +1034,9 @@ mdefine_line|#define MAC_TX_BUFF3_ADDR               0x34
 DECL|macro|MAC_TX_BUFF3_LEN
 mdefine_line|#define MAC_TX_BUFF3_LEN                0x38
 DECL|macro|MAC0_RX_DMA_ADDR
-mdefine_line|#define MAC0_RX_DMA_ADDR         0x14004100
+mdefine_line|#define MAC0_RX_DMA_ADDR         0xB4004100
 DECL|macro|MAC1_RX_DMA_ADDR
-mdefine_line|#define MAC1_RX_DMA_ADDR         0x14004300
+mdefine_line|#define MAC1_RX_DMA_ADDR         0xB4004300
 multiline_comment|/* offsets from MAC_RX_RING_ADDR */
 DECL|macro|MAC_RX_BUFF0_STATUS
 mdefine_line|#define MAC_RX_BUFF0_STATUS              0x0
@@ -748,13 +1104,17 @@ DECL|macro|MAC_RX_BUFF3_ADDR
 mdefine_line|#define MAC_RX_BUFF3_ADDR                0x34
 multiline_comment|/* UARTS 0-3 */
 DECL|macro|UART0_ADDR
-mdefine_line|#define UART0_ADDR                0x11100000
+mdefine_line|#define UART0_ADDR                0xB1100000
 DECL|macro|UART1_ADDR
-mdefine_line|#define UART1_ADDR                0x11200000
+mdefine_line|#define UART1_ADDR                0xB1200000
 DECL|macro|UART2_ADDR
-mdefine_line|#define UART2_ADDR                0x11300000
+mdefine_line|#define UART2_ADDR                0xB1300000
 DECL|macro|UART3_ADDR
-mdefine_line|#define UART3_ADDR                0x11400000
+mdefine_line|#define UART3_ADDR                0xB1400000
+DECL|macro|UART_BASE
+mdefine_line|#define UART_BASE                 UART0_ADDR
+DECL|macro|UART_DEBUG_BASE
+mdefine_line|#define UART_DEBUG_BASE           UART2_ADDR
 DECL|macro|UART_RX
 mdefine_line|#define UART_RX&t;&t;0&t;/* Receive buffer */
 DECL|macro|UART_TX
@@ -774,7 +1134,7 @@ mdefine_line|#define UART_LSR&t;0x1C&t;/* Line Status Register */
 DECL|macro|UART_MSR
 mdefine_line|#define UART_MSR&t;0x20&t;/* Modem Status Register */
 DECL|macro|UART_CLK
-mdefine_line|#define UART_CLK&t;0x28&t;/* Baud Rat4e Clock Divider */
+mdefine_line|#define UART_CLK&t;0x28&t;/* Baud Rate Clock Divider */
 DECL|macro|UART_MOD_CNTRL
 mdefine_line|#define UART_MOD_CNTRL&t;0x100&t;/* Module Control */
 DECL|macro|UART_FCR_ENABLE_FIFO
@@ -891,116 +1251,577 @@ DECL|macro|UART_MSR_ANY_DELTA
 mdefine_line|#define UART_MSR_ANY_DELTA 0x0F&t;/* Any of the delta bits! */
 multiline_comment|/* SSIO */
 DECL|macro|SSI0_STATUS
-mdefine_line|#define SSI0_STATUS                0x11600000
+mdefine_line|#define SSI0_STATUS                0xB1600000
+DECL|macro|SSI_STATUS_BF
+mdefine_line|#define SSI_STATUS_BF              (1&lt;&lt;4)
+DECL|macro|SSI_STATUS_OF
+mdefine_line|#define SSI_STATUS_OF              (1&lt;&lt;3)
+DECL|macro|SSI_STATUS_UF
+mdefine_line|#define SSI_STATUS_UF              (1&lt;&lt;2)
+DECL|macro|SSI_STATUS_D
+mdefine_line|#define SSI_STATUS_D               (1&lt;&lt;1)
+DECL|macro|SSI_STATUS_B
+mdefine_line|#define SSI_STATUS_B               (1&lt;&lt;0)
 DECL|macro|SSI0_INT
-mdefine_line|#define SSI0_INT                   0x11600004
+mdefine_line|#define SSI0_INT                   0xB1600004
+DECL|macro|SSI_INT_OI
+mdefine_line|#define SSI_INT_OI                 (1&lt;&lt;3)
+DECL|macro|SSI_INT_UI
+mdefine_line|#define SSI_INT_UI                 (1&lt;&lt;2)
+DECL|macro|SSI_INT_DI
+mdefine_line|#define SSI_INT_DI                 (1&lt;&lt;1)
 DECL|macro|SSI0_INT_ENABLE
-mdefine_line|#define SSI0_INT_ENABLE            0x11600008
+mdefine_line|#define SSI0_INT_ENABLE            0xB1600008
+DECL|macro|SSI_INTE_OIE
+mdefine_line|#define SSI_INTE_OIE               (1&lt;&lt;3)
+DECL|macro|SSI_INTE_UIE
+mdefine_line|#define SSI_INTE_UIE               (1&lt;&lt;2)
+DECL|macro|SSI_INTE_DIE
+mdefine_line|#define SSI_INTE_DIE               (1&lt;&lt;1)
 DECL|macro|SSI0_CONFIG
-mdefine_line|#define SSI0_CONFIG                0x11600020
+mdefine_line|#define SSI0_CONFIG                0xB1600020
+DECL|macro|SSI_CONFIG_AO
+mdefine_line|#define SSI_CONFIG_AO              (1&lt;&lt;24)
+DECL|macro|SSI_CONFIG_DO
+mdefine_line|#define SSI_CONFIG_DO              (1&lt;&lt;23)
+DECL|macro|SSI_CONFIG_ALEN_BIT
+mdefine_line|#define SSI_CONFIG_ALEN_BIT        20
+DECL|macro|SSI_CONFIG_ALEN_MASK
+mdefine_line|#define SSI_CONFIG_ALEN_MASK       (0x7&lt;&lt;20)
+DECL|macro|SSI_CONFIG_DLEN_BIT
+mdefine_line|#define SSI_CONFIG_DLEN_BIT        16
+DECL|macro|SSI_CONFIG_DLEN_MASK
+mdefine_line|#define SSI_CONFIG_DLEN_MASK       (0x7&lt;&lt;16)
+DECL|macro|SSI_CONFIG_DD
+mdefine_line|#define SSI_CONFIG_DD              (1&lt;&lt;11)
+DECL|macro|SSI_CONFIG_AD
+mdefine_line|#define SSI_CONFIG_AD              (1&lt;&lt;10)
+DECL|macro|SSI_CONFIG_BM_BIT
+mdefine_line|#define SSI_CONFIG_BM_BIT          8
+DECL|macro|SSI_CONFIG_BM_MASK
+mdefine_line|#define SSI_CONFIG_BM_MASK         (0x3&lt;&lt;8)
+DECL|macro|SSI_CONFIG_CE
+mdefine_line|#define SSI_CONFIG_CE              (1&lt;&lt;7)
+DECL|macro|SSI_CONFIG_DP
+mdefine_line|#define SSI_CONFIG_DP              (1&lt;&lt;6)
+DECL|macro|SSI_CONFIG_DL
+mdefine_line|#define SSI_CONFIG_DL              (1&lt;&lt;5)
+DECL|macro|SSI_CONFIG_EP
+mdefine_line|#define SSI_CONFIG_EP              (1&lt;&lt;4)
 DECL|macro|SSI0_ADATA
-mdefine_line|#define SSI0_ADATA                 0x11600024
+mdefine_line|#define SSI0_ADATA                 0xB1600024
+DECL|macro|SSI_AD_D
+mdefine_line|#define SSI_AD_D                   (1&lt;&lt;24)
+DECL|macro|SSI_AD_ADDR_BIT
+mdefine_line|#define SSI_AD_ADDR_BIT            16
+DECL|macro|SSI_AD_ADDR_MASK
+mdefine_line|#define SSI_AD_ADDR_MASK           (0xff&lt;&lt;16)
+DECL|macro|SSI_AD_DATA_BIT
+mdefine_line|#define SSI_AD_DATA_BIT            0
+DECL|macro|SSI_AD_DATA_MASK
+mdefine_line|#define SSI_AD_DATA_MASK           (0xfff&lt;&lt;0)
 DECL|macro|SSI0_CLKDIV
-mdefine_line|#define SSI0_CLKDIV                0x11600028
+mdefine_line|#define SSI0_CLKDIV                0xB1600028
 DECL|macro|SSI0_CONTROL
-mdefine_line|#define SSI0_CONTROL               0x11600100
+mdefine_line|#define SSI0_CONTROL               0xB1600100
+DECL|macro|SSI_CONTROL_CD
+mdefine_line|#define SSI_CONTROL_CD             (1&lt;&lt;1)
+DECL|macro|SSI_CONTROL_E
+mdefine_line|#define SSI_CONTROL_E              (1&lt;&lt;0)
 multiline_comment|/* SSI1 */
 DECL|macro|SSI1_STATUS
-mdefine_line|#define SSI1_STATUS                0x11680000
+mdefine_line|#define SSI1_STATUS                0xB1680000
 DECL|macro|SSI1_INT
-mdefine_line|#define SSI1_INT                   0x11680004
+mdefine_line|#define SSI1_INT                   0xB1680004
 DECL|macro|SSI1_INT_ENABLE
-mdefine_line|#define SSI1_INT_ENABLE            0x11680008
+mdefine_line|#define SSI1_INT_ENABLE            0xB1680008
 DECL|macro|SSI1_CONFIG
-mdefine_line|#define SSI1_CONFIG                0x11680020
+mdefine_line|#define SSI1_CONFIG                0xB1680020
 DECL|macro|SSI1_ADATA
-mdefine_line|#define SSI1_ADATA                 0x11680024
+mdefine_line|#define SSI1_ADATA                 0xB1680024
 DECL|macro|SSI1_CLKDIV
-mdefine_line|#define SSI1_CLKDIV                0x11680028
-DECL|macro|SSI1_CONTROL
-mdefine_line|#define SSI1_CONTROL               0x11680100
+mdefine_line|#define SSI1_CLKDIV                0xB1680028
+DECL|macro|SSI1_ENABLE
+mdefine_line|#define SSI1_ENABLE                0xB1680100
+multiline_comment|/*&n; * Register content definitions&n; */
+DECL|macro|SSI_STATUS_BF
+mdefine_line|#define SSI_STATUS_BF&t;&t;&t;&t;(1&lt;&lt;4)
+DECL|macro|SSI_STATUS_OF
+mdefine_line|#define SSI_STATUS_OF&t;&t;&t;&t;(1&lt;&lt;3)
+DECL|macro|SSI_STATUS_UF
+mdefine_line|#define SSI_STATUS_UF&t;&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|SSI_STATUS_D
+mdefine_line|#define SSI_STATUS_D&t;&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|SSI_STATUS_B
+mdefine_line|#define SSI_STATUS_B&t;&t;&t;&t;(1&lt;&lt;0)
+multiline_comment|/* SSI_INT */
+DECL|macro|SSI_INT_OI
+mdefine_line|#define SSI_INT_OI&t;&t;&t;&t;&t;(1&lt;&lt;3)
+DECL|macro|SSI_INT_UI
+mdefine_line|#define SSI_INT_UI&t;&t;&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|SSI_INT_DI
+mdefine_line|#define SSI_INT_DI&t;&t;&t;&t;&t;(1&lt;&lt;1)
+multiline_comment|/* SSI_INTEN */
+DECL|macro|SSI_INTEN_OIE
+mdefine_line|#define SSI_INTEN_OIE&t;&t;&t;&t;(1&lt;&lt;3)
+DECL|macro|SSI_INTEN_UIE
+mdefine_line|#define SSI_INTEN_UIE&t;&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|SSI_INTEN_DIE
+mdefine_line|#define SSI_INTEN_DIE&t;&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|SSI_CONFIG_AO
+mdefine_line|#define SSI_CONFIG_AO&t;&t;&t;&t;(1&lt;&lt;24)
+DECL|macro|SSI_CONFIG_DO
+mdefine_line|#define SSI_CONFIG_DO&t;&t;&t;&t;(1&lt;&lt;23)
+DECL|macro|SSI_CONFIG_ALEN
+mdefine_line|#define SSI_CONFIG_ALEN&t;&t;&t;&t;(7&lt;&lt;20)
+DECL|macro|SSI_CONFIG_DLEN
+mdefine_line|#define SSI_CONFIG_DLEN&t;&t;&t;&t;(15&lt;&lt;16)
+DECL|macro|SSI_CONFIG_DD
+mdefine_line|#define SSI_CONFIG_DD&t;&t;&t;&t;(1&lt;&lt;11)
+DECL|macro|SSI_CONFIG_AD
+mdefine_line|#define SSI_CONFIG_AD&t;&t;&t;&t;(1&lt;&lt;10)
+DECL|macro|SSI_CONFIG_BM
+mdefine_line|#define SSI_CONFIG_BM&t;&t;&t;&t;(3&lt;&lt;8)
+DECL|macro|SSI_CONFIG_CE
+mdefine_line|#define SSI_CONFIG_CE&t;&t;&t;&t;(1&lt;&lt;7)
+DECL|macro|SSI_CONFIG_DP
+mdefine_line|#define SSI_CONFIG_DP&t;&t;&t;&t;(1&lt;&lt;6)
+DECL|macro|SSI_CONFIG_DL
+mdefine_line|#define SSI_CONFIG_DL&t;&t;&t;&t;(1&lt;&lt;5)
+DECL|macro|SSI_CONFIG_EP
+mdefine_line|#define SSI_CONFIG_EP&t;&t;&t;&t;(1&lt;&lt;4)
+DECL|macro|SSI_CONFIG_ALEN_N
+mdefine_line|#define SSI_CONFIG_ALEN_N(N)&t;&t;((N-1)&lt;&lt;20)
+DECL|macro|SSI_CONFIG_DLEN_N
+mdefine_line|#define SSI_CONFIG_DLEN_N(N)&t;&t;((N-1)&lt;&lt;16)
+DECL|macro|SSI_CONFIG_BM_HI
+mdefine_line|#define SSI_CONFIG_BM_HI&t;&t;&t;(0&lt;&lt;8)
+DECL|macro|SSI_CONFIG_BM_LO
+mdefine_line|#define SSI_CONFIG_BM_LO&t;&t;&t;(1&lt;&lt;8)
+DECL|macro|SSI_CONFIG_BM_CY
+mdefine_line|#define SSI_CONFIG_BM_CY&t;&t;&t;(2&lt;&lt;8)
+DECL|macro|SSI_ADATA_D
+mdefine_line|#define SSI_ADATA_D&t;&t;&t;&t;&t;(1&lt;&lt;24)
+DECL|macro|SSI_ADATA_ADDR
+mdefine_line|#define SSI_ADATA_ADDR&t;&t;&t;&t;(0xFF&lt;&lt;16)
+DECL|macro|SSI_ADATA_DATA
+mdefine_line|#define SSI_ADATA_DATA&t;&t;&t;&t;(0x0FFF)
+DECL|macro|SSI_ADATA_ADDR_N
+mdefine_line|#define SSI_ADATA_ADDR_N(N)&t;&t;&t;(N&lt;&lt;16)
+DECL|macro|SSI_ENABLE_CD
+mdefine_line|#define SSI_ENABLE_CD&t;&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|SSI_ENABLE_E
+mdefine_line|#define SSI_ENABLE_E&t;&t;&t;&t;(1&lt;&lt;0)
 multiline_comment|/* IrDA Controller */
+DECL|macro|IRDA_BASE
+mdefine_line|#define IRDA_BASE                 0xB0300000
 DECL|macro|IR_RING_PTR_STATUS
-mdefine_line|#define IR_RING_PTR_STATUS        0x11500000
+mdefine_line|#define IR_RING_PTR_STATUS        (IRDA_BASE+0x00)
 DECL|macro|IR_RING_BASE_ADDR_H
-mdefine_line|#define IR_RING_BASE_ADDR_H       0x11500004
+mdefine_line|#define IR_RING_BASE_ADDR_H       (IRDA_BASE+0x04)
 DECL|macro|IR_RING_BASE_ADDR_L
-mdefine_line|#define IR_RING_BASE_ADDR_L       0x11500008
+mdefine_line|#define IR_RING_BASE_ADDR_L       (IRDA_BASE+0x08)
 DECL|macro|IR_RING_SIZE
-mdefine_line|#define IR_RING_SIZE              0x1150000C
+mdefine_line|#define IR_RING_SIZE              (IRDA_BASE+0x0C)
 DECL|macro|IR_RING_PROMPT
-mdefine_line|#define IR_RING_PROMPT            0x11500010
+mdefine_line|#define IR_RING_PROMPT            (IRDA_BASE+0x10)
 DECL|macro|IR_RING_ADDR_CMPR
-mdefine_line|#define IR_RING_ADDR_CMPR         0x11500014
+mdefine_line|#define IR_RING_ADDR_CMPR         (IRDA_BASE+0x14)
+DECL|macro|IR_INT_CLEAR
+mdefine_line|#define IR_INT_CLEAR              (IRDA_BASE+0x18)
 DECL|macro|IR_CONFIG_1
-mdefine_line|#define IR_CONFIG_1               0x11500020
+mdefine_line|#define IR_CONFIG_1               (IRDA_BASE+0x20)
+DECL|macro|IR_RX_INVERT_LED
+mdefine_line|#define IR_RX_INVERT_LED        (1&lt;&lt;0)
+DECL|macro|IR_TX_INVERT_LED
+mdefine_line|#define IR_TX_INVERT_LED        (1&lt;&lt;1)
+DECL|macro|IR_ST
+mdefine_line|#define IR_ST                   (1&lt;&lt;2)
+DECL|macro|IR_SF
+mdefine_line|#define IR_SF                   (1&lt;&lt;3)
+DECL|macro|IR_SIR
+mdefine_line|#define IR_SIR                  (1&lt;&lt;4)
+DECL|macro|IR_MIR
+mdefine_line|#define IR_MIR                  (1&lt;&lt;5)
+DECL|macro|IR_FIR
+mdefine_line|#define IR_FIR                  (1&lt;&lt;6)
+DECL|macro|IR_16CRC
+mdefine_line|#define IR_16CRC                (1&lt;&lt;7)
+DECL|macro|IR_TD
+mdefine_line|#define IR_TD                   (1&lt;&lt;8)
+DECL|macro|IR_RX_ALL
+mdefine_line|#define IR_RX_ALL               (1&lt;&lt;9)
+DECL|macro|IR_DMA_ENABLE
+mdefine_line|#define IR_DMA_ENABLE           (1&lt;&lt;10)
+DECL|macro|IR_RX_ENABLE
+mdefine_line|#define IR_RX_ENABLE            (1&lt;&lt;11)
+DECL|macro|IR_TX_ENABLE
+mdefine_line|#define IR_TX_ENABLE            (1&lt;&lt;12)
+DECL|macro|IR_LOOPBACK
+mdefine_line|#define IR_LOOPBACK             (1&lt;&lt;14)
+DECL|macro|IR_SIR_MODE
+mdefine_line|#define IR_SIR_MODE&t;          (IR_SIR | IR_DMA_ENABLE | &bslash;&n;&t;&t;                   IR_RX_ALL | IR_RX_ENABLE | IR_SF | IR_16CRC)
 DECL|macro|IR_SIR_FLAGS
-mdefine_line|#define IR_SIR_FLAGS              0x11500024
+mdefine_line|#define IR_SIR_FLAGS              (IRDA_BASE+0x24)
 DECL|macro|IR_ENABLE
-mdefine_line|#define IR_ENABLE                 0x11500028
+mdefine_line|#define IR_ENABLE                 (IRDA_BASE+0x28)
+DECL|macro|IR_RX_STATUS
+mdefine_line|#define IR_RX_STATUS            (1&lt;&lt;9)
+DECL|macro|IR_TX_STATUS
+mdefine_line|#define IR_TX_STATUS            (1&lt;&lt;10)
 DECL|macro|IR_READ_PHY_CONFIG
-mdefine_line|#define IR_READ_PHY_CONFIG        0x1150002C
+mdefine_line|#define IR_READ_PHY_CONFIG        (IRDA_BASE+0x2C)
 DECL|macro|IR_WRITE_PHY_CONFIG
-mdefine_line|#define IR_WRITE_PHY_CONFIG       0x11500030
+mdefine_line|#define IR_WRITE_PHY_CONFIG       (IRDA_BASE+0x30)
 DECL|macro|IR_MAX_PKT_LEN
-mdefine_line|#define IR_MAX_PKT_LEN            0x11500034
+mdefine_line|#define IR_MAX_PKT_LEN            (IRDA_BASE+0x34)
 DECL|macro|IR_RX_BYTE_CNT
-mdefine_line|#define IR_RX_BYTE_CNT            0x11500038
+mdefine_line|#define IR_RX_BYTE_CNT            (IRDA_BASE+0x38)
 DECL|macro|IR_CONFIG_2
-mdefine_line|#define IR_CONFIG_2               0x1150003C
+mdefine_line|#define IR_CONFIG_2               (IRDA_BASE+0x3C)
+DECL|macro|IR_MODE_INV
+mdefine_line|#define IR_MODE_INV             (1&lt;&lt;0)
+DECL|macro|IR_ONE_PIN
+mdefine_line|#define IR_ONE_PIN              (1&lt;&lt;1)
 DECL|macro|IR_INTERFACE_CONFIG
-mdefine_line|#define IR_INTERFACE_CONFIG       0x11500040
+mdefine_line|#define IR_INTERFACE_CONFIG       (IRDA_BASE+0x40)
 multiline_comment|/* GPIO */
-DECL|macro|TSTATE_STATE_READ
-mdefine_line|#define TSTATE_STATE_READ         0x11900100
-DECL|macro|TSTATE_STATE_SET
-mdefine_line|#define TSTATE_STATE_SET          0x11900100
-DECL|macro|OUTPUT_STATE_READ
-mdefine_line|#define OUTPUT_STATE_READ         0x11900108
-DECL|macro|OUTPUT_STATE_SET
-mdefine_line|#define OUTPUT_STATE_SET          0x11900108
-DECL|macro|OUTPUT_STATE_CLEAR
-mdefine_line|#define OUTPUT_STATE_CLEAR        0x1190010C
-DECL|macro|PIN_STATE
-mdefine_line|#define PIN_STATE                 0x11900110
+DECL|macro|SYS_PINFUNC
+mdefine_line|#define SYS_PINFUNC               0xB190002C
+DECL|macro|SYS_PF_USB
+mdefine_line|#define SYS_PF_USB&t;&t;&t;(1&lt;&lt;15)&t;/* 2nd USB device/host */
+DECL|macro|SYS_PF_U3
+mdefine_line|#define SYS_PF_U3&t;&t;&t;(1&lt;&lt;14)&t;/* GPIO23/U3TXD */
+DECL|macro|SYS_PF_U2
+mdefine_line|#define SYS_PF_U2&t;&t;&t;(1&lt;&lt;13) /* GPIO22/U2TXD */
+DECL|macro|SYS_PF_U1
+mdefine_line|#define SYS_PF_U1&t;&t;&t;(1&lt;&lt;12) /* GPIO21/U1TXD */
+DECL|macro|SYS_PF_SRC
+mdefine_line|#define SYS_PF_SRC&t;&t;&t;(1&lt;&lt;11)&t;/* GPIO6/SROMCKE */
+DECL|macro|SYS_PF_CK5
+mdefine_line|#define SYS_PF_CK5&t;&t;&t;(1&lt;&lt;10)&t;/* GPIO3/CLK5 */
+DECL|macro|SYS_PF_CK4
+mdefine_line|#define SYS_PF_CK4&t;&t;&t;(1&lt;&lt;9)&t;/* GPIO2/CLK4 */
+DECL|macro|SYS_PF_IRF
+mdefine_line|#define SYS_PF_IRF&t;&t;&t;(1&lt;&lt;8)&t;/* GPIO15/IRFIRSEL */
+DECL|macro|SYS_PF_UR3
+mdefine_line|#define SYS_PF_UR3&t;&t;&t;(1&lt;&lt;7)&t;/* GPIO[14:9]/UART3 */
+DECL|macro|SYS_PF_I2D
+mdefine_line|#define SYS_PF_I2D&t;&t;&t;(1&lt;&lt;6)&t;/* GPIO8/I2SDI */
+DECL|macro|SYS_PF_I2S
+mdefine_line|#define SYS_PF_I2S&t;&t;&t;(1&lt;&lt;5)&t;/* I2S/GPIO[29:31] */
+DECL|macro|SYS_PF_NI2
+mdefine_line|#define SYS_PF_NI2&t;&t;&t;(1&lt;&lt;4)&t;/* NI2/GPIO[24:28] */
+DECL|macro|SYS_PF_U0
+mdefine_line|#define SYS_PF_U0&t;&t;&t;(1&lt;&lt;3)&t;/* U0TXD/GPIO20 */
+DECL|macro|SYS_PF_RD
+mdefine_line|#define SYS_PF_RD&t;&t;&t;(1&lt;&lt;2)&t;/* IRTXD/GPIO19 */
+DECL|macro|SYS_PF_A97
+mdefine_line|#define SYS_PF_A97&t;&t;&t;(1&lt;&lt;1)&t;/* AC97/SSL1 */
+DECL|macro|SYS_PF_S0
+mdefine_line|#define SYS_PF_S0&t;&t;&t;(1&lt;&lt;0)&t;/* SSI_0/GPIO[16:18] */
+DECL|macro|SYS_TRIOUTRD
+mdefine_line|#define SYS_TRIOUTRD              0xB1900100
+DECL|macro|SYS_TRIOUTCLR
+mdefine_line|#define SYS_TRIOUTCLR             0xB1900100
+DECL|macro|SYS_OUTPUTRD
+mdefine_line|#define SYS_OUTPUTRD              0xB1900108
+DECL|macro|SYS_OUTPUTSET
+mdefine_line|#define SYS_OUTPUTSET             0xB1900108
+DECL|macro|SYS_OUTPUTCLR
+mdefine_line|#define SYS_OUTPUTCLR             0xB190010C
+DECL|macro|SYS_PINSTATERD
+mdefine_line|#define SYS_PINSTATERD            0xB1900110
+DECL|macro|SYS_PININPUTEN
+mdefine_line|#define SYS_PININPUTEN            0xB1900110
+multiline_comment|/* GPIO2, Au1500 only */
+DECL|macro|GPIO2_BASE
+mdefine_line|#define GPIO2_BASE                0xB1700000
+DECL|macro|GPIO2_DIR
+mdefine_line|#define GPIO2_DIR                 (GPIO2_BASE + 0)
+DECL|macro|GPIO2_DATA_EN
+mdefine_line|#define GPIO2_DATA_EN             (GPIO2_BASE + 8)
+DECL|macro|GPIO2_PIN_STATE
+mdefine_line|#define GPIO2_PIN_STATE           (GPIO2_BASE + 0xC)
+DECL|macro|GPIO2_INT_ENABLE
+mdefine_line|#define GPIO2_INT_ENABLE          (GPIO2_BASE + 0x10)
+DECL|macro|GPIO2_ENABLE
+mdefine_line|#define GPIO2_ENABLE              (GPIO2_BASE + 0x14)
 multiline_comment|/* Power Management */
-DECL|macro|PM_SCRATCH_0
-mdefine_line|#define PM_SCRATCH_0                 0x11900018
-DECL|macro|PM_SCRATCH_1
-mdefine_line|#define PM_SCRATCH_1                 0x1190001C
-DECL|macro|PM_WAKEUP_SOURCE_MASK
-mdefine_line|#define PM_WAKEUP_SOURCE_MASK        0x11900034
-DECL|macro|PM_ENDIANESS
-mdefine_line|#define PM_ENDIANESS                 0x11900038
-DECL|macro|PM_POWERUP_CONTROL
-mdefine_line|#define PM_POWERUP_CONTROL           0x1190003C
-DECL|macro|PM_WAKEUP_CAUSE
-mdefine_line|#define PM_WAKEUP_CAUSE              0x1190005C
-DECL|macro|PM_SLEEP_POWER
-mdefine_line|#define PM_SLEEP_POWER               0x11900078
-DECL|macro|PM_SLEEP
-mdefine_line|#define PM_SLEEP                     0x1190007C
+DECL|macro|SYS_SCRATCH0
+mdefine_line|#define SYS_SCRATCH0              0xB1900018
+DECL|macro|SYS_SCRATCH1
+mdefine_line|#define SYS_SCRATCH1              0xB190001C
+DECL|macro|SYS_WAKEMSK
+mdefine_line|#define SYS_WAKEMSK               0xB1900034
+DECL|macro|SYS_ENDIAN
+mdefine_line|#define SYS_ENDIAN                0xB1900038
+DECL|macro|SYS_POWERCTRL
+mdefine_line|#define SYS_POWERCTRL             0xB190003C
+DECL|macro|SYS_WAKESRC
+mdefine_line|#define SYS_WAKESRC               0xB190005C
+DECL|macro|SYS_SLPPWR
+mdefine_line|#define SYS_SLPPWR                0xB1900078
+DECL|macro|SYS_SLEEP
+mdefine_line|#define SYS_SLEEP                 0xB190007C
 multiline_comment|/* Clock Controller */
-DECL|macro|FQ_CNTRL_1
-mdefine_line|#define FQ_CNTRL_1                0x11900020
-DECL|macro|FQ_CNTRL_2
-mdefine_line|#define FQ_CNTRL_2                0x11900024
-DECL|macro|CLOCK_SOURCE_CNTRL
-mdefine_line|#define CLOCK_SOURCE_CNTRL        0x11900028
-DECL|macro|CPU_PLL_CNTRL
-mdefine_line|#define CPU_PLL_CNTRL             0x11900060
-DECL|macro|AUX_PLL_CNTRL
-mdefine_line|#define AUX_PLL_CNTRL             0x11900064
+DECL|macro|SYS_FREQCTRL0
+mdefine_line|#define SYS_FREQCTRL0             0xB1900020
+DECL|macro|SYS_FC_FRDIV2_BIT
+mdefine_line|#define SYS_FC_FRDIV2_BIT         22
+DECL|macro|SYS_FC_FRDIV2_MASK
+mdefine_line|#define SYS_FC_FRDIV2_MASK        (0xff &lt;&lt; FQC2_FRDIV2_BIT)
+DECL|macro|SYS_FC_FE2
+mdefine_line|#define SYS_FC_FE2                (1&lt;&lt;21)
+DECL|macro|SYS_FC_FS2
+mdefine_line|#define SYS_FC_FS2                (1&lt;&lt;20)
+DECL|macro|SYS_FC_FRDIV1_BIT
+mdefine_line|#define SYS_FC_FRDIV1_BIT         12
+DECL|macro|SYS_FC_FRDIV1_MASK
+mdefine_line|#define SYS_FC_FRDIV1_MASK        (0xff &lt;&lt; FQC2_FRDIV1_BIT)
+DECL|macro|SYS_FC_FE1
+mdefine_line|#define SYS_FC_FE1                (1&lt;&lt;11)
+DECL|macro|SYS_FC_FS1
+mdefine_line|#define SYS_FC_FS1                (1&lt;&lt;10)
+DECL|macro|SYS_FC_FRDIV0_BIT
+mdefine_line|#define SYS_FC_FRDIV0_BIT         2
+DECL|macro|SYS_FC_FRDIV0_MASK
+mdefine_line|#define SYS_FC_FRDIV0_MASK        (0xff &lt;&lt; FQC2_FRDIV0_BIT)
+DECL|macro|SYS_FC_FE0
+mdefine_line|#define SYS_FC_FE0                (1&lt;&lt;1)
+DECL|macro|SYS_FC_FS0
+mdefine_line|#define SYS_FC_FS0                (1&lt;&lt;0)
+DECL|macro|SYS_FREQCTRL1
+mdefine_line|#define SYS_FREQCTRL1             0xB1900024
+DECL|macro|SYS_FC_FRDIV5_BIT
+mdefine_line|#define SYS_FC_FRDIV5_BIT         22
+DECL|macro|SYS_FC_FRDIV5_MASK
+mdefine_line|#define SYS_FC_FRDIV5_MASK        (0xff &lt;&lt; FQC2_FRDIV5_BIT)
+DECL|macro|SYS_FC_FE5
+mdefine_line|#define SYS_FC_FE5                (1&lt;&lt;21)
+DECL|macro|SYS_FC_FS5
+mdefine_line|#define SYS_FC_FS5                (1&lt;&lt;20)
+DECL|macro|SYS_FC_FRDIV4_BIT
+mdefine_line|#define SYS_FC_FRDIV4_BIT         12
+DECL|macro|SYS_FC_FRDIV4_MASK
+mdefine_line|#define SYS_FC_FRDIV4_MASK        (0xff &lt;&lt; FQC2_FRDIV4_BIT)
+DECL|macro|SYS_FC_FE4
+mdefine_line|#define SYS_FC_FE4                (1&lt;&lt;11)
+DECL|macro|SYS_FC_FS4
+mdefine_line|#define SYS_FC_FS4                (1&lt;&lt;10)
+DECL|macro|SYS_FC_FRDIV3_BIT
+mdefine_line|#define SYS_FC_FRDIV3_BIT         2
+DECL|macro|SYS_FC_FRDIV3_MASK
+mdefine_line|#define SYS_FC_FRDIV3_MASK        (0xff &lt;&lt; FQC2_FRDIV3_BIT)
+DECL|macro|SYS_FC_FE3
+mdefine_line|#define SYS_FC_FE3                (1&lt;&lt;1)
+DECL|macro|SYS_FC_FS3
+mdefine_line|#define SYS_FC_FS3                (1&lt;&lt;0)
+DECL|macro|SYS_CLKSRC
+mdefine_line|#define SYS_CLKSRC                0xB1900028
+DECL|macro|SYS_CS_ME1_BIT
+mdefine_line|#define SYS_CS_ME1_BIT            27
+DECL|macro|SYS_CS_ME1_MASK
+mdefine_line|#define SYS_CS_ME1_MASK           (0x7&lt;&lt;CSC_ME1_BIT)
+DECL|macro|SYS_CS_DE1
+mdefine_line|#define SYS_CS_DE1                (1&lt;&lt;26)
+DECL|macro|SYS_CS_CE1
+mdefine_line|#define SYS_CS_CE1                (1&lt;&lt;25)
+DECL|macro|SYS_CS_ME0_BIT
+mdefine_line|#define SYS_CS_ME0_BIT            22
+DECL|macro|SYS_CS_ME0_MASK
+mdefine_line|#define SYS_CS_ME0_MASK           (0x7&lt;&lt;CSC_ME0_BIT)
+DECL|macro|SYS_CS_DE0
+mdefine_line|#define SYS_CS_DE0                (1&lt;&lt;21)
+DECL|macro|SYS_CS_CE0
+mdefine_line|#define SYS_CS_CE0                (1&lt;&lt;20)
+DECL|macro|SYS_CS_MI2_BIT
+mdefine_line|#define SYS_CS_MI2_BIT            17
+DECL|macro|SYS_CS_MI2_MASK
+mdefine_line|#define SYS_CS_MI2_MASK           (0x7&lt;&lt;CSC_MI2_BIT)
+DECL|macro|SYS_CS_DI2
+mdefine_line|#define SYS_CS_DI2                (1&lt;&lt;16)
+DECL|macro|SYS_CS_CI2
+mdefine_line|#define SYS_CS_CI2                (1&lt;&lt;15)
+DECL|macro|SYS_CS_MUH_BIT
+mdefine_line|#define SYS_CS_MUH_BIT            12
+DECL|macro|SYS_CS_MUH_MASK
+mdefine_line|#define SYS_CS_MUH_MASK           (0x7&lt;&lt;CSC_MUH_BIT)
+DECL|macro|SYS_CS_DUH
+mdefine_line|#define SYS_CS_DUH                (1&lt;&lt;11)
+DECL|macro|SYS_CS_CUH
+mdefine_line|#define SYS_CS_CUH                (1&lt;&lt;10)
+DECL|macro|SYS_CS_MUD_BIT
+mdefine_line|#define SYS_CS_MUD_BIT            7
+DECL|macro|SYS_CS_MUD_MASK
+mdefine_line|#define SYS_CS_MUD_MASK           (0x7&lt;&lt;CSC_MUD_BIT)
+DECL|macro|SYS_CS_DUD
+mdefine_line|#define SYS_CS_DUD                (1&lt;&lt;6)
+DECL|macro|SYS_CS_CUD
+mdefine_line|#define SYS_CS_CUD                (1&lt;&lt;5)
+DECL|macro|SYS_CS_MIR_BIT
+mdefine_line|#define SYS_CS_MIR_BIT            2
+DECL|macro|SYS_CS_MIR_MASK
+mdefine_line|#define SYS_CS_MIR_MASK           (0x7&lt;&lt;CSC_MIR_BIT)
+DECL|macro|SYS_CS_DIR
+mdefine_line|#define SYS_CS_DIR                (1&lt;&lt;1)
+DECL|macro|SYS_CS_CIR
+mdefine_line|#define SYS_CS_CIR                (1&lt;&lt;0)
+DECL|macro|SYS_CS_MUX_AUX
+mdefine_line|#define SYS_CS_MUX_AUX            0x1
+DECL|macro|SYS_CS_MUX_FQ0
+mdefine_line|#define SYS_CS_MUX_FQ0            0x2
+DECL|macro|SYS_CS_MUX_FQ1
+mdefine_line|#define SYS_CS_MUX_FQ1            0x3
+DECL|macro|SYS_CS_MUX_FQ2
+mdefine_line|#define SYS_CS_MUX_FQ2            0x4
+DECL|macro|SYS_CS_MUX_FQ3
+mdefine_line|#define SYS_CS_MUX_FQ3            0x5
+DECL|macro|SYS_CS_MUX_FQ4
+mdefine_line|#define SYS_CS_MUX_FQ4            0x6
+DECL|macro|SYS_CS_MUX_FQ5
+mdefine_line|#define SYS_CS_MUX_FQ5            0x7
+DECL|macro|SYS_CPUPLL
+mdefine_line|#define SYS_CPUPLL                0xB1900060
+DECL|macro|SYS_AUXPLL
+mdefine_line|#define SYS_AUXPLL                0xB1900064
 multiline_comment|/* AC97 Controller */
-DECL|macro|AC97_CONFIG
-mdefine_line|#define AC97_CONFIG               0x10000000
-DECL|macro|AC97_STATUS
-mdefine_line|#define AC97_STATUS               0x10000004
-DECL|macro|AC97_DATA
-mdefine_line|#define AC97_DATA                 0x10000008
-DECL|macro|AC97_CMD
-mdefine_line|#define AC97_CMD                  0x1000000C
-DECL|macro|AC97_CNTRL
-mdefine_line|#define AC97_CNTRL                0x10000010
+DECL|macro|AC97C_CONFIG
+mdefine_line|#define AC97C_CONFIG              0xB0000000
+DECL|macro|AC97C_RECV_SLOTS_BIT
+mdefine_line|#define AC97C_RECV_SLOTS_BIT  13
+DECL|macro|AC97C_RECV_SLOTS_MASK
+mdefine_line|#define AC97C_RECV_SLOTS_MASK (0x3ff &lt;&lt; AC97C_RECV_SLOTS_BIT)
+DECL|macro|AC97C_XMIT_SLOTS_BIT
+mdefine_line|#define AC97C_XMIT_SLOTS_BIT  3
+DECL|macro|AC97C_XMIT_SLOTS_MASK
+mdefine_line|#define AC97C_XMIT_SLOTS_MASK (0x3ff &lt;&lt; AC97C_XMIT_SLOTS_BIT)
+DECL|macro|AC97C_SG
+mdefine_line|#define AC97C_SG              (1&lt;&lt;2)
+DECL|macro|AC97C_SYNC
+mdefine_line|#define AC97C_SYNC            (1&lt;&lt;1)
+DECL|macro|AC97C_RESET
+mdefine_line|#define AC97C_RESET           (1&lt;&lt;0)
+DECL|macro|AC97C_STATUS
+mdefine_line|#define AC97C_STATUS              0xB0000004
+DECL|macro|AC97C_XU
+mdefine_line|#define AC97C_XU              (1&lt;&lt;11)
+DECL|macro|AC97C_XO
+mdefine_line|#define AC97C_XO              (1&lt;&lt;10)
+DECL|macro|AC97C_RU
+mdefine_line|#define AC97C_RU              (1&lt;&lt;9)
+DECL|macro|AC97C_RO
+mdefine_line|#define AC97C_RO              (1&lt;&lt;8)
+DECL|macro|AC97C_READY
+mdefine_line|#define AC97C_READY           (1&lt;&lt;7)
+DECL|macro|AC97C_CP
+mdefine_line|#define AC97C_CP              (1&lt;&lt;6)
+DECL|macro|AC97C_TR
+mdefine_line|#define AC97C_TR              (1&lt;&lt;5)
+DECL|macro|AC97C_TE
+mdefine_line|#define AC97C_TE              (1&lt;&lt;4)
+DECL|macro|AC97C_TF
+mdefine_line|#define AC97C_TF              (1&lt;&lt;3)
+DECL|macro|AC97C_RR
+mdefine_line|#define AC97C_RR              (1&lt;&lt;2)
+DECL|macro|AC97C_RE
+mdefine_line|#define AC97C_RE              (1&lt;&lt;1)
+DECL|macro|AC97C_RF
+mdefine_line|#define AC97C_RF              (1&lt;&lt;0)
+DECL|macro|AC97C_DATA
+mdefine_line|#define AC97C_DATA                0xB0000008
+DECL|macro|AC97C_CMD
+mdefine_line|#define AC97C_CMD                 0xB000000C
+DECL|macro|AC97C_WD_BIT
+mdefine_line|#define AC97C_WD_BIT          16
+DECL|macro|AC97C_READ
+mdefine_line|#define AC97C_READ            (1&lt;&lt;7)
+DECL|macro|AC97C_INDEX_MASK
+mdefine_line|#define AC97C_INDEX_MASK      0x7f
+DECL|macro|AC97C_CNTRL
+mdefine_line|#define AC97C_CNTRL               0xB0000010
+DECL|macro|AC97C_RS
+mdefine_line|#define AC97C_RS              (1&lt;&lt;1)
+DECL|macro|AC97C_CE
+mdefine_line|#define AC97C_CE              (1&lt;&lt;0)
+macro_line|#ifdef CONFIG_SOC_AU1500
+multiline_comment|/* Au1500 PCI Controller */
+DECL|macro|Au1500_CFG_BASE
+mdefine_line|#define Au1500_CFG_BASE           0xB4005000 
+singleline_comment|// virtual, kseg0 addr
+DECL|macro|Au1500_PCI_CMEM
+mdefine_line|#define Au1500_PCI_CMEM           (Au1500_CFG_BASE + 0)
+DECL|macro|Au1500_PCI_CFG
+mdefine_line|#define Au1500_PCI_CFG            (Au1500_CFG_BASE + 4)
+DECL|macro|PCI_ERROR
+mdefine_line|#define PCI_ERROR ((1&lt;&lt;22) | (1&lt;&lt;23) | (1&lt;&lt;24) | (1&lt;&lt;25) | (1&lt;&lt;26) | (1&lt;&lt;27))
+DECL|macro|Au1500_PCI_B2BMASK_CCH
+mdefine_line|#define Au1500_PCI_B2BMASK_CCH    (Au1500_CFG_BASE + 8)
+DECL|macro|Au1500_PCI_B2B0_VID
+mdefine_line|#define Au1500_PCI_B2B0_VID       (Au1500_CFG_BASE + 0xC)
+DECL|macro|Au1500_PCI_B2B1_ID
+mdefine_line|#define Au1500_PCI_B2B1_ID        (Au1500_CFG_BASE + 0x10)
+DECL|macro|Au1500_PCI_MWMASK_DEV
+mdefine_line|#define Au1500_PCI_MWMASK_DEV     (Au1500_CFG_BASE + 0x14)
+DECL|macro|Au1500_PCI_MWBASE_REV_CCL
+mdefine_line|#define Au1500_PCI_MWBASE_REV_CCL (Au1500_CFG_BASE + 0x18)
+DECL|macro|Au1500_PCI_ERR_ADDR
+mdefine_line|#define Au1500_PCI_ERR_ADDR       (Au1500_CFG_BASE + 0x1C)
+DECL|macro|Au1500_PCI_SPEC_INTACK
+mdefine_line|#define Au1500_PCI_SPEC_INTACK    (Au1500_CFG_BASE + 0x20)
+DECL|macro|Au1500_PCI_ID
+mdefine_line|#define Au1500_PCI_ID             (Au1500_CFG_BASE + 0x100)
+DECL|macro|Au1500_PCI_STATCMD
+mdefine_line|#define Au1500_PCI_STATCMD        (Au1500_CFG_BASE + 0x104)
+DECL|macro|Au1500_PCI_CLASSREV
+mdefine_line|#define Au1500_PCI_CLASSREV       (Au1500_CFG_BASE + 0x108)
+DECL|macro|Au1500_PCI_HDRTYPE
+mdefine_line|#define Au1500_PCI_HDRTYPE        (Au1500_CFG_BASE + 0x10C)
+DECL|macro|Au1500_PCI_MBAR
+mdefine_line|#define Au1500_PCI_MBAR           (Au1500_CFG_BASE + 0x110)
+DECL|macro|Au1500_PCI_HDR
+mdefine_line|#define Au1500_PCI_HDR            0xB4005100 
+singleline_comment|// virtual, kseg0 addr
+multiline_comment|/* All of our structures, like pci resource, have 32 bit members.&n; * Drivers are expected to do an ioremap on the PCI MEM resource, but it&squot;s&n; * hard to store 0x4 0000 0000 in a 32 bit type.  We require a small patch&n; * to __ioremap to check for addresses between (u32)Au1500_PCI_MEM_START and&n; * (u32)Au1500_PCI_MEM_END and change those to the full 36 bit PCI MEM&n; * addresses.  For PCI IO, it&squot;s simpler because we get to do the ioremap&n; * ourselves and then adjust the device&squot;s resources.&n; */
+DECL|macro|Au1500_EXT_CFG
+mdefine_line|#define Au1500_EXT_CFG            0x600000000
+DECL|macro|Au1500_EXT_CFG_TYPE1
+mdefine_line|#define Au1500_EXT_CFG_TYPE1      0x680000000
+DECL|macro|Au1500_PCI_IO_START
+mdefine_line|#define Au1500_PCI_IO_START       0x500000000
+DECL|macro|Au1500_PCI_IO_END
+mdefine_line|#define Au1500_PCI_IO_END         0x5000FFFFF
+DECL|macro|Au1500_PCI_MEM_START
+mdefine_line|#define Au1500_PCI_MEM_START      0x440000000
+DECL|macro|Au1500_PCI_MEM_END
+mdefine_line|#define Au1500_PCI_MEM_END        0x443FFFFFF
+DECL|macro|PCI_IO_START
+mdefine_line|#define PCI_IO_START    (Au1500_PCI_IO_START + 0x300)
+DECL|macro|PCI_IO_END
+mdefine_line|#define PCI_IO_END      (Au1500_PCI_IO_END)
+DECL|macro|PCI_MEM_START
+mdefine_line|#define PCI_MEM_START   (Au1500_PCI_MEM_START)
+DECL|macro|PCI_MEM_END
+mdefine_line|#define PCI_MEM_END     (Au1500_PCI_MEM_END)
+DECL|macro|PCI_FIRST_DEVFN
+mdefine_line|#define PCI_FIRST_DEVFN (0&lt;&lt;3)
+DECL|macro|PCI_LAST_DEVFN
+mdefine_line|#define PCI_LAST_DEVFN  (19&lt;&lt;3)
+macro_line|#endif
+macro_line|#if defined(CONFIG_SOC_AU1100) || (defined(CONFIG_SOC_AU1000) &amp;&amp; !defined(CONFIG_MIPS_PB1000))
+multiline_comment|/* no PCI bus controller */
+DECL|macro|PCI_IO_START
+mdefine_line|#define PCI_IO_START    0
+DECL|macro|PCI_IO_END
+mdefine_line|#define PCI_IO_END      0
+DECL|macro|PCI_MEM_START
+mdefine_line|#define PCI_MEM_START   0
+DECL|macro|PCI_MEM_END
+mdefine_line|#define PCI_MEM_END     0 
+DECL|macro|PCI_FIRST_DEVFN
+mdefine_line|#define PCI_FIRST_DEVFN 0
+DECL|macro|PCI_LAST_DEVFN
+mdefine_line|#define PCI_LAST_DEVFN  0
+macro_line|#endif
 macro_line|#endif
 eof

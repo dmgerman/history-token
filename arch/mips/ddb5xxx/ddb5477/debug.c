@@ -1,7 +1,5 @@
 multiline_comment|/***********************************************************************&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/ddb5477/debug.c&n; *     vrc5477 specific debug routines.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; ***********************************************************************&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;&t;&t;/* SA_INTERRUPT */
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 r_typedef
@@ -233,10 +231,9 @@ c_func
 (paren
 l_string|&quot;CPU CAUSE = %08x&bslash;n&quot;
 comma
-id|read_32bit_cp0_register
+id|read_c0_cause
 c_func
 (paren
-id|CP0_CAUSE
 )paren
 )paren
 suffix:semicolon
@@ -245,10 +242,9 @@ c_func
 (paren
 l_string|&quot;CPU STATUS = %08x&bslash;n&quot;
 comma
-id|read_32bit_cp0_register
+id|read_c0_status
 c_func
 (paren
-id|CP0_STATUS
 )paren
 )paren
 suffix:semicolon
@@ -278,27 +274,27 @@ id|DDB_SDRAM1
 )brace
 comma
 (brace
-l_string|&quot;DDB_LDCS0&quot;
+l_string|&quot;DDB_LCS0&quot;
 comma
 id|DDB_BASE
 op_plus
-id|DDB_LDCS0
+id|DDB_LCS0
 )brace
 comma
 (brace
-l_string|&quot;DDB_LDCS1&quot;
+l_string|&quot;DDB_LCS1&quot;
 comma
 id|DDB_BASE
 op_plus
-id|DDB_LDCS1
+id|DDB_LCS1
 )brace
 comma
 (brace
-l_string|&quot;DDB_LDCS2&quot;
+l_string|&quot;DDB_LCS2&quot;
 comma
 id|DDB_BASE
 op_plus
-id|DDB_LDCS2
+id|DDB_LCS2
 )brace
 comma
 (brace

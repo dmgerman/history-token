@@ -2,7 +2,15 @@ multiline_comment|/*&n; * asmmacro.h: Assembler macros to make things easier to 
 macro_line|#ifndef _ASM_ASMMACRO_H
 DECL|macro|_ASM_ASMMACRO_H
 mdefine_line|#define _ASM_ASMMACRO_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/offset.h&gt;
+macro_line|#ifdef CONFIG_CPU_SB1
+DECL|macro|FPU_ENABLE_HAZARD
+mdefine_line|#define FPU_ENABLE_HAZARD&t;&t;&bslash;&n;&t;.set&t;push;&t;&t;&t;&bslash;&n;&t;.set&t;noreorder;&t;&t;&bslash;&n;&t;.set&t;mips2;&t;&t;&t;&bslash;&n;&t;SSNOP;&t;&t;&t;&t;&bslash;&n;&t;bnezl&t;$0, .+4;&t;&t;&bslash;&n;&t; SSNOP;&t;&t;&t;&t;&bslash;&n;&t;.set&t;pop
+macro_line|#else
+DECL|macro|FPU_ENABLE_HAZARD
+mdefine_line|#define FPU_ENABLE_HAZARD
+macro_line|#endif
 dot
 id|macro
 id|fpu_save_16even

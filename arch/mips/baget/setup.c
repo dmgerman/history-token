@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.4 1999/10/09 00:00:57 ralf Exp $&n; *&n; * setup.c: Baget/MIPS specific setup, including init of the feature struct.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; *&n; */
+multiline_comment|/*&n; * setup.c: Baget/MIPS specific setup, including init of the feature struct.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1909,7 +1909,7 @@ comma
 id|VAC_INT_CTRL
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Set quadro speed for both UARTs.&n;&t; *  To do it we need use formulae from VIC/VAC manual,&n;&t; *  keeping in mind Baget&squot;s 50MHz frequency...&n;&t; */
+multiline_comment|/*&n;&t; *  Set quadro speed for both UARTs.&n;&t; *  To do it we need use formulae from VIC/VAC manual,&n;&t; *  keeping in mind Baget&squot;s 50MHz frequency...&n;&t; */
 id|vac_outw
 c_func
 (paren
@@ -2400,7 +2400,7 @@ comma
 id|VIC_VME_INT4
 )paren
 suffix:semicolon
-multiline_comment|/*&t; &n;&t; vic_outb(VIC_INT_IPL(3)|VIC_INT_DISABLE, VIC_VME_INT5);&n;*/
+multiline_comment|/*&n;&t; vic_outb(VIC_INT_IPL(3)|VIC_INT_DISABLE, VIC_VME_INT5);&n;*/
 id|vic_outb
 c_func
 (paren
@@ -2523,7 +2523,7 @@ comma
 id|VIC_LINT4
 )paren
 suffix:semicolon
-multiline_comment|/*&t; &n;&t; vic_outb(VIC_INT_IPL(3)|VIC_INT_NOAUTO|VIC_INT_LEVEL|&n;&t;&t;  VIC_INT_LOW|VIC_INT_DISABLE, VIC_LINT5);&n;*/
+multiline_comment|/*&n;&t; vic_outb(VIC_INT_IPL(3)|VIC_INT_NOAUTO|VIC_INT_LEVEL|&n;&t;&t;  VIC_INT_LOW|VIC_INT_DISABLE, VIC_LINT5);&n;*/
 id|vic_outb
 c_func
 (paren

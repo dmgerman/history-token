@@ -2479,6 +2479,13 @@ id|isa_bridge
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|pci_enable_device_bars
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_enable_device_bars
+)paren
+suffix:semicolon
 DECL|variable|pci_enable_device
 id|EXPORT_SYMBOL
 c_func

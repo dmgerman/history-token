@@ -1,11 +1,13 @@
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;av7110_ipack.h&quot;
 macro_line|#include &lt;linux/string.h&gt;&t;/* for memcpy() */
+macro_line|#include &lt;linux/vmalloc.h&gt;
 DECL|function|av7110_ipack_reset
 r_void
 id|av7110_ipack_reset
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -61,6 +63,7 @@ r_void
 id|av7110_ipack_init
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -137,6 +140,7 @@ r_void
 id|av7110_ipack_free
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -154,12 +158,13 @@ id|p-&gt;buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|send_ipack
+r_static
 r_void
 id|send_ipack
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -168,7 +173,8 @@ id|p
 r_int
 id|off
 suffix:semicolon
-id|AudioInfo
+r_struct
+id|dvb_audio_info
 id|ai
 suffix:semicolon
 r_int
@@ -612,6 +618,7 @@ r_void
 id|av7110_ipack_flush
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -655,12 +662,13 @@ id|p
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|write_ipack
+r_static
 r_void
 id|write_ipack
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -806,6 +814,7 @@ comma
 r_int
 id|count
 comma
+r_struct
 id|ipack
 op_star
 id|p

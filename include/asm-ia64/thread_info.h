@@ -70,8 +70,6 @@ id|restart_block
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|INIT_THREAD_SIZE
-mdefine_line|#define INIT_THREAD_SIZE&t;&t;/* tell sched.h not to declare the thread_union */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;&t;KERNEL_STACK_SIZE
 DECL|macro|INIT_THREAD_INFO

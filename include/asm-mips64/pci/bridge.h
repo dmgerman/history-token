@@ -33,7 +33,7 @@ mdefine_line|#define BRIDGE_SSRAM_64K&t;0x00010000&t;/* 64kB */
 DECL|macro|BRIDGE_SSRAM_0K
 mdefine_line|#define BRIDGE_SSRAM_0K&t;&t;0x00000000&t;/* 0kB */
 multiline_comment|/* ========================================================================&n; *    Bridge address map&n; */
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * All accesses to bridge hardware registers must be done&n; * using 32-bit loads and stores.&n; */
 DECL|typedef|bridgereg_t
 r_typedef
@@ -914,7 +914,7 @@ id|bridge_err_cmdword_t
 suffix:semicolon
 DECL|macro|berr_field
 mdefine_line|#define berr_field&t;berr_un.berr_st
-macro_line|#endif&t;/* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * The values of these macros can and should be crosschecked&n; * regularly against the offsets of the like-named fields&n; * within the &quot;bridge_t&quot; structure above.&n; */
 multiline_comment|/* Byte offset macros for Bridge internal registers */
 DECL|macro|BRIDGE_WID_ID
@@ -1349,7 +1349,7 @@ mdefine_line|#define BRIDGE_INT_DEV_SHFT(n)&t;&t;((n)*3)
 DECL|macro|BRIDGE_INT_DEV_MASK
 mdefine_line|#define BRIDGE_INT_DEV_MASK(n)&t;&t;(0x7 &lt;&lt; BRIDGE_INT_DEV_SHFT(n))
 DECL|macro|BRIDGE_INT_DEV_SET
-mdefine_line|#define BRIDGE_INT_DEV_SET(_dev, _line) (_dev &lt;&lt; BRIDGE_INT_DEV_SHFT(_line))&t;
+mdefine_line|#define BRIDGE_INT_DEV_SET(_dev, _line) (_dev &lt;&lt; BRIDGE_INT_DEV_SHFT(_line))
 multiline_comment|/* Bridge interrupt(x) register bits definition */
 DECL|macro|BRIDGE_INT_ADDR_HOST
 mdefine_line|#define BRIDGE_INT_ADDR_HOST&t;&t;0x0003FF00
@@ -1569,7 +1569,7 @@ DECL|macro|PCI64_ATTR_RMF_MASK
 mdefine_line|#define PCI64_ATTR_RMF_MASK&t;0x00ff000000000000
 DECL|macro|PCI64_ATTR_RMF_SHFT
 mdefine_line|#define PCI64_ATTR_RMF_SHFT&t;48
-macro_line|#if LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Address translation entry for mapped pci32 accesses */
 DECL|union|ate_u
 r_typedef
@@ -1646,7 +1646,7 @@ DECL|typedef|ate_t
 )brace
 id|ate_t
 suffix:semicolon
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|ATE_V
 mdefine_line|#define ATE_V&t;&t;0x01
 DECL|macro|ATE_CO

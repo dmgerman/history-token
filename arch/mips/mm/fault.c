@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 2000 by Ralf Baechle&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,23 +13,76 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|macro|development_version
 mdefine_line|#define development_version (LINUX_VERSION_CODE &amp; 0x100)
-DECL|variable|asid_cache
-r_int
-r_int
-id|asid_cache
-op_assign
-id|ASID_FIRST_VERSION
-suffix:semicolon
 multiline_comment|/*&n; * Macro for exception fixup code to access integer registers.&n; */
 DECL|macro|dpf_reg
 mdefine_line|#define dpf_reg(r) (regs-&gt;regs[r])
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the out&n; */
+DECL|function|bust_spinlocks
+r_void
+id|bust_spinlocks
+c_func
+(paren
+r_int
+id|yes
+)paren
+(brace
+r_int
+id|loglevel_save
+op_assign
+id|console_loglevel
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|yes
+)paren
+(brace
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_VT
+id|unblank_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|oops_in_progress
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * OK, the message is on the console.  Now we call printk()&n;&t; * without oops_in_progress set so that printk will give klogd&n;&t; * a poke.  Hold onto your hats...&n;&t; */
+id|console_loglevel
+op_assign
+l_int|15
+suffix:semicolon
+multiline_comment|/* NMI oopser may have shut the console up */
+id|printk
+c_func
+(paren
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|loglevel_save
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; */
 DECL|function|do_page_fault
 id|asmlinkage
@@ -69,48 +123,25 @@ id|mm
 op_assign
 id|tsk-&gt;mm
 suffix:semicolon
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
-multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; */
-r_if
-c_cond
-(paren
-id|address
-op_ge
-id|TASK_SIZE
-)paren
-r_goto
-id|vmalloc_fault
-suffix:semicolon
-id|info.si_code
-op_assign
-id|SEGV_MAPERR
-suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-op_logical_or
-op_logical_neg
-id|mm
-)paren
-r_goto
-id|no_context
-suffix:semicolon
 macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;[%s:%d:%08lx:%ld:%08lx]&bslash;n&quot;
+l_string|&quot;Cpu%d[%s:%d:%08lx:%ld:%08lx]&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|current-&gt;comm
 comma
@@ -124,6 +155,36 @@ id|regs-&gt;cp0_epc
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; */
+r_if
+c_cond
+(paren
+id|address
+op_ge
+id|VMALLOC_START
+)paren
+r_goto
+id|vmalloc_fault
+suffix:semicolon
+id|info.si_code
+op_assign
+id|SEGV_MAPERR
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
+r_if
+c_cond
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
+op_logical_or
+op_logical_neg
+id|mm
+)paren
+r_goto
+id|no_context
+suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -234,6 +295,8 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+id|survive
+suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
 r_switch
 c_cond
@@ -252,7 +315,7 @@ id|write
 )paren
 (brace
 r_case
-l_int|1
+id|VM_FAULT_MINOR
 suffix:colon
 id|tsk-&gt;min_flt
 op_increment
@@ -260,7 +323,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:colon
 id|tsk-&gt;maj_flt
 op_increment
@@ -268,15 +331,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:colon
 r_goto
 id|do_sigbus
 suffix:semicolon
-r_default
+r_case
+id|VM_FAULT_OOM
 suffix:colon
 r_goto
 id|out_of_memory
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|up_read
@@ -298,8 +369,6 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-id|bad_area_nosemaphore
-suffix:colon
 multiline_comment|/* User mode accesses just cause a SIGSEGV */
 r_if
 c_cond
@@ -390,10 +459,14 @@ suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
-id|regs-&gt;cp0_epc
+id|exception_epc
+c_func
+(paren
+id|regs
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -403,23 +476,14 @@ id|fixup
 )paren
 (brace
 r_int
+r_int
 id|new_epc
+op_assign
+id|fixup-&gt;nextinsn
 suffix:semicolon
 id|tsk-&gt;thread.cp0_baduaddr
 op_assign
 id|address
-suffix:semicolon
-id|new_epc
-op_assign
-id|fixup_exception
-c_func
-(paren
-id|dpf_reg
-comma
-id|fixup
-comma
-id|regs-&gt;cp0_epc
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -447,6 +511,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n;&t; * terminate things with extreme prejudice.&n;&t; */
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -472,12 +542,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|do_exit
-c_func
-(paren
-id|SIGKILL
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
 id|out_of_memory
 suffix:colon
@@ -488,6 +552,30 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -578,11 +666,11 @@ suffix:semicolon
 id|vmalloc_fault
 suffix:colon
 (brace
-multiline_comment|/*&n;&t;&t; * Synchronize this task&squot;s top level page-table&n;&t;&t; * with the &squot;reference&squot; page table.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Synchronize this task&squot;s top level page-table&n;&t;&t; * with the &squot;reference&squot; page table.&n;&t;&t; *&n;&t;&t; * Do _not_ use &quot;tsk&quot; here. We might be inside&n;&t;&t; * an interrupt in the middle of a task switch..&n;&t;&t; */
 r_int
 id|offset
 op_assign
-id|pgd_index
+id|__pgd_offset
 c_func
 (paren
 id|address
@@ -602,9 +690,23 @@ comma
 op_star
 id|pmd_k
 suffix:semicolon
+id|pte_t
+op_star
+id|pte_k
+suffix:semicolon
 id|pgd
 op_assign
-id|tsk-&gt;active_mm-&gt;pgd
+(paren
+id|pgd_t
+op_star
+)paren
+id|pgd_current
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
 op_plus
 id|offset
 suffix:semicolon
@@ -622,23 +724,11 @@ id|pgd_present
 c_func
 (paren
 op_star
-id|pgd
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pgd_present
-c_func
-(paren
-op_star
 id|pgd_k
 )paren
 )paren
 r_goto
-id|bad_area_nosemaphore
+id|no_context
 suffix:semicolon
 id|set_pgd
 c_func
@@ -649,9 +739,6 @@ op_star
 id|pgd_k
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|pmd
 op_assign
 id|pmd_offset
@@ -675,13 +762,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmd_present
-c_func
-(paren
-op_star
-id|pmd
-)paren
-op_logical_or
 op_logical_neg
 id|pmd_present
 c_func
@@ -691,7 +771,7 @@ id|pmd_k
 )paren
 )paren
 r_goto
-id|bad_area_nosemaphore
+id|no_context
 suffix:semicolon
 id|set_pmd
 c_func
@@ -701,6 +781,32 @@ comma
 op_star
 id|pmd_k
 )paren
+suffix:semicolon
+id|pte_k
+op_assign
+id|pte_offset_kernel
+c_func
+(paren
+id|pmd_k
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_present
+c_func
+(paren
+op_star
+id|pte_k
+)paren
+)paren
+r_goto
+id|no_context
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace

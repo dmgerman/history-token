@@ -2,19 +2,20 @@ multiline_comment|/* &n; * dmxdev.h&n; *&n; * Copyright (C) 2000 Ralph  Metzler 
 macro_line|#ifndef _DMXDEV_H_
 DECL|macro|_DMXDEV_H_
 mdefine_line|#define _DMXDEV_H_
-macro_line|#ifndef __KERNEL__ 
-DECL|macro|__KERNEL__
-mdefine_line|#define __KERNEL__ 
-macro_line|#endif 
-macro_line|#include &lt;linux/dvb/dmx.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/dvb/dmx.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;demux.h&quot;
-r_typedef
+DECL|enum|dmxdevype
 r_enum
+id|dmxdevype
 (brace
 DECL|enumerator|DMXDEV_TYPE_NONE
 id|DMXDEV_TYPE_NONE
@@ -25,12 +26,11 @@ comma
 DECL|enumerator|DMXDEV_TYPE_PES
 id|DMXDEV_TYPE_PES
 comma
-DECL|typedef|dmxdev_type_t
 )brace
-id|dmxdev_type_t
 suffix:semicolon
-r_typedef
+DECL|enum|dmxdev_state
 r_enum
+id|dmxdev_state
 (brace
 DECL|enumerator|DMXDEV_STATE_FREE
 id|DMXDEV_STATE_FREE
@@ -49,30 +49,27 @@ id|DMXDEV_STATE_DONE
 comma
 DECL|enumerator|DMXDEV_STATE_TIMEDOUT
 id|DMXDEV_STATE_TIMEDOUT
-DECL|typedef|dmxdev_state_t
 )brace
-id|dmxdev_state_t
 suffix:semicolon
-DECL|struct|dmxdev_buffer_s
-r_typedef
+DECL|struct|dmxdev_buffer
 r_struct
-id|dmxdev_buffer_s
+id|dmxdev_buffer
 (brace
 DECL|member|data
-r_uint8
+id|u8
 op_star
 id|data
 suffix:semicolon
 DECL|member|size
-r_uint32
+r_int
 id|size
 suffix:semicolon
 DECL|member|pread
-r_int32
+r_int
 id|pread
 suffix:semicolon
 DECL|member|pwrite
-r_int32
+r_int
 id|pwrite
 suffix:semicolon
 DECL|member|queue
@@ -83,14 +80,11 @@ DECL|member|error
 r_int
 id|error
 suffix:semicolon
-DECL|typedef|dmxdev_buffer_t
 )brace
-id|dmxdev_buffer_t
 suffix:semicolon
-DECL|struct|dmxdev_filter_s
-r_typedef
+DECL|struct|dmxdev_filter
 r_struct
-id|dmxdev_filter_s
+id|dmxdev_filter
 (brace
 DECL|member|dvbdev
 r_struct
@@ -101,7 +95,8 @@ suffix:semicolon
 r_union
 (brace
 DECL|member|sec
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|sec
 suffix:semicolon
@@ -112,12 +107,14 @@ suffix:semicolon
 r_union
 (brace
 DECL|member|ts
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 id|ts
 suffix:semicolon
 DECL|member|sec
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 op_star
 id|sec
 suffix:semicolon
@@ -146,17 +143,19 @@ r_int
 id|type
 suffix:semicolon
 DECL|member|state
-id|dmxdev_state_t
+r_enum
+id|dmxdev_state
 id|state
 suffix:semicolon
 DECL|member|dev
 r_struct
-id|dmxdev_s
+id|dmxdev
 op_star
 id|dev
 suffix:semicolon
 DECL|member|buffer
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 id|buffer
 suffix:semicolon
 DECL|member|mutex
@@ -164,7 +163,7 @@ r_struct
 id|semaphore
 id|mutex
 suffix:semicolon
-singleline_comment|// only for sections
+multiline_comment|/* only for sections */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -175,7 +174,7 @@ r_int
 id|todo
 suffix:semicolon
 DECL|member|secheader
-r_uint8
+id|u8
 id|secheader
 (braket
 l_int|3
@@ -185,14 +184,11 @@ DECL|member|pid
 id|u16
 id|pid
 suffix:semicolon
-DECL|typedef|dmxdev_filter_t
 )brace
-id|dmxdev_filter_t
 suffix:semicolon
-DECL|struct|dmxdev_dvr_s
-r_typedef
+DECL|struct|dmxdev_dvr
 r_struct
-id|dmxdev_dvr_s
+id|dmxdev_dvr
 (brace
 DECL|member|state
 r_int
@@ -200,22 +196,20 @@ id|state
 suffix:semicolon
 DECL|member|dev
 r_struct
-id|dmxdev_s
+id|dmxdev
 op_star
 id|dev
 suffix:semicolon
 DECL|member|buffer
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 id|buffer
 suffix:semicolon
-DECL|typedef|dmxdev_dvr_t
 )brace
-id|dmxdev_dvr_t
 suffix:semicolon
-DECL|struct|dmxdev_s
-r_typedef
+DECL|struct|dmxdev
 r_struct
-id|dmxdev_s
+id|dmxdev
 (brace
 DECL|member|dvbdev
 r_struct
@@ -230,17 +224,20 @@ op_star
 id|dvr_dvbdev
 suffix:semicolon
 DECL|member|filter
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|filter
 suffix:semicolon
 DECL|member|dvr
-id|dmxdev_dvr_t
+r_struct
+id|dmxdev_dvr
 op_star
 id|dvr
 suffix:semicolon
 DECL|member|demux
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 suffix:semicolon
@@ -255,12 +252,14 @@ suffix:semicolon
 DECL|macro|DMXDEV_CAP_DUPLEX
 mdefine_line|#define DMXDEV_CAP_DUPLEX 1
 DECL|member|dvr_orig_fe
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|dvr_orig_fe
 suffix:semicolon
 DECL|member|dvr_buffer
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 id|dvr_buffer
 suffix:semicolon
 DECL|macro|DVR_BUFFER_SIZE
@@ -274,15 +273,14 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|typedef|dmxdev_t
 )brace
-id|dmxdev_t
 suffix:semicolon
 r_int
 id|dvb_dmxdev_init
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
@@ -295,7 +293,8 @@ r_void
 id|dvb_dmxdev_release
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 )paren

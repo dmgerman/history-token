@@ -1,8 +1,7 @@
-multiline_comment|/***********************************************************************&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/ddb5477/setup.c&n; *     Setup file for DDB5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; ***********************************************************************&n; */
+multiline_comment|/*&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/ddb5477/setup.c&n; *     Setup file for DDB5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,28 +10,39 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
+macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
+macro_line|#ifdef CONFIG_PC_KEYB
+macro_line|#include &lt;asm/keyboard.h&gt; 
+macro_line|#endif 
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
+macro_line|#include &quot;lcd44780.h&quot;
 DECL|macro|USE_CPU_COUNTER_TIMER
 mdefine_line|#define&t;USE_CPU_COUNTER_TIMER&t;/* whether we use cpu counter */
-macro_line|#ifdef USE_CPU_COUNTER_TIMER
-DECL|macro|CPU_COUNTER_FREQUENCY
-mdefine_line|#define&t;CPU_COUNTER_FREQUENCY&t;&t;83000000
-macro_line|#else
-multiline_comment|/* otherwise we use special timer 1 */
-DECL|macro|SP_TIMER_FREQUENCY
-mdefine_line|#define&t;SP_TIMER_FREQUENCY&t;&t;83000000
 DECL|macro|SP_TIMER_BASE
 mdefine_line|#define&t;SP_TIMER_BASE&t;&t;&t;DDB_SPT1CTRL_L
 DECL|macro|SP_TIMER_IRQ
-mdefine_line|#define&t;SP_TIMER_IRQ&t;&t;&t;(8 + 6)
-macro_line|#endif
+mdefine_line|#define&t;SP_TIMER_IRQ&t;&t;&t;VRC5477_IRQ_SPT1
+DECL|variable|bus_frequency
+r_static
+r_int
+id|bus_frequency
+op_assign
+id|CONFIG_DDB5477_BUS_FREQUENCY
+op_star
+l_int|1000
+suffix:semicolon
 DECL|function|ddb_machine_restart
 r_static
 r_void
@@ -83,7 +93,7 @@ c_func
 id|DDB_CPUSTAT
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren
@@ -162,6 +172,256 @@ r_int
 id|base
 )paren
 suffix:semicolon
+DECL|function|detect_bus_frequency
+r_static
+r_int
+r_int
+id|__init
+id|detect_bus_frequency
+c_func
+(paren
+r_int
+r_int
+id|rtc_base
+)paren
+(brace
+r_int
+r_int
+id|freq
+suffix:semicolon
+r_int
+r_char
+id|c
+suffix:semicolon
+r_int
+r_int
+id|t1
+comma
+id|t2
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|SP_TIMER_BASE
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|SP_TIMER_BASE
+op_plus
+l_int|4
+comma
+l_int|0x1
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|SP_TIMER_BASE
+op_plus
+l_int|8
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+multiline_comment|/* check if rtc is running */
+id|c
+op_assign
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|c
+op_eq
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+)paren
+op_logical_and
+(paren
+id|i
+OL
+l_int|100000000
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|c
+op_eq
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to detect bus frequency.  Use default 83.3MHz.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|83333000
+suffix:semicolon
+)brace
+id|c
+op_assign
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|c
+op_eq
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+)paren
+suffix:semicolon
+multiline_comment|/* we are now at the turn of 1/100th second, if no error. */
+id|t1
+op_assign
+id|ddb_in32
+c_func
+(paren
+id|SP_TIMER_BASE
+op_plus
+l_int|8
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|10
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|c
+op_assign
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|c
+op_eq
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rtc_base
+)paren
+suffix:semicolon
+multiline_comment|/* we are now at the turn of another 1/100th second */
+id|t2
+op_assign
+id|ddb_in32
+c_func
+(paren
+id|SP_TIMER_BASE
+op_plus
+l_int|8
+)paren
+suffix:semicolon
+)brace
+id|ddb_out32
+c_func
+(paren
+id|SP_TIMER_BASE
+op_plus
+l_int|4
+comma
+l_int|0x0
+)paren
+suffix:semicolon
+multiline_comment|/* disable it again */
+id|freq
+op_assign
+(paren
+id|t1
+op_minus
+id|t2
+)paren
+op_star
+l_int|10
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;DDB bus frequency detection : %u &bslash;n&quot;
+comma
+id|freq
+)paren
+suffix:semicolon
+r_return
+id|freq
+suffix:semicolon
+)brace
 DECL|function|ddb_time_init
 r_static
 r_void
@@ -172,32 +432,118 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(USE_CPU_COUNTER_TIMER)
-id|mips_counter_frequency
-op_assign
-id|CPU_COUNTER_FREQUENCY
+r_int
+r_int
+id|rtc_base
 suffix:semicolon
-macro_line|#endif
+r_int
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* we have ds1396 RTC chip */
-id|rtc_ds1386_init
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPER
+op_logical_or
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+id|rtc_base
+op_assign
+id|KSEG1ADDR
 c_func
 (paren
+id|DDB_LCS2_BASE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rtc_base
+op_assign
 id|KSEG1ADDR
 c_func
 (paren
 id|DDB_LCS1_BASE
 )paren
+suffix:semicolon
+)brace
+id|rtc_ds1386_init
+c_func
+(paren
+id|rtc_base
+)paren
+suffix:semicolon
+multiline_comment|/* do we need to do run-time detection of bus speed? */
+r_if
+c_cond
+(paren
+id|bus_frequency
+op_eq
+l_int|0
+)paren
+(brace
+id|bus_frequency
+op_assign
+id|detect_bus_frequency
+c_func
+(paren
+id|rtc_base
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_LL_DEBUG)
-DECL|variable|board_init_done_flag
-r_int
-id|board_init_done_flag
+multiline_comment|/* mips_counter_frequency is 1/2 of the cpu core freq */
+id|i
 op_assign
-l_int|0
+(paren
+id|read_32bit_cp0_register
+c_func
+(paren
+id|CP0_CONFIG
+)paren
+op_rshift
+l_int|28
+)paren
+op_amp
+l_int|7
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|current_cpu_data.cputype
+op_eq
+id|CPU_R5432
+)paren
+op_logical_and
+(paren
+id|i
+op_eq
+l_int|3
+)paren
+)paren
+id|i
+op_assign
+l_int|4
+suffix:semicolon
+id|mips_counter_frequency
+op_assign
+id|bus_frequency
+op_star
+(paren
+id|i
+op_plus
+l_int|4
+)paren
+op_div
+l_int|4
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|setup_irq
@@ -235,38 +581,21 @@ multiline_comment|/* we are using the cpu counter for timer interrupts */
 id|setup_irq
 c_func
 (paren
+id|CPU_IRQ_BASE
+op_plus
 l_int|7
 comma
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/* to generate the first timer interrupt */
-id|count
-op_assign
-id|read_32bit_cp0_register
-c_func
-(paren
-id|CP0_COUNT
-)paren
-suffix:semicolon
-id|write_32bit_cp0_register
-c_func
-(paren
-id|CP0_COMPARE
-comma
-id|count
-op_plus
-l_int|1000
-)paren
-suffix:semicolon
 macro_line|#else
-multiline_comment|/* if we don&squot;t use Special purpose timer 1 */
+multiline_comment|/* if we use Special purpose timer 1 */
 id|ddb_out32
 c_func
 (paren
 id|SP_TIMER_BASE
 comma
-id|SP_TIMER_FREQUENCY
+id|bus_frequency
 op_div
 id|HZ
 )paren
@@ -290,15 +619,6 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* this is the last board dependent code */
-id|MIPS_DEBUG
-c_func
-(paren
-id|board_init_done_flag
-op_assign
-l_int|1
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -328,7 +648,7 @@ id|initrd_start
 comma
 id|initrd_end
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 DECL|function|ddb_setup
 r_void
 id|__init
@@ -342,16 +662,31 @@ r_extern
 r_int
 id|panic_timeout
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
+r_extern
+r_struct
+id|ide_ops
+id|std_ide_ops
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* initialize board - we don&squot;t trust the loader */
+id|ddb5477_board_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|irq_setup
 op_assign
 id|ddb5477_irq_setup
 suffix:semicolon
-id|mips_io_port_base
-op_assign
+id|set_io_port_base
+c_func
+(paren
 id|KSEG1ADDR
 c_func
 (paren
 id|DDB_PCI_IO_BASE
+)paren
 )paren
 suffix:semicolon
 id|board_time_init
@@ -392,12 +727,20 @@ id|panic_timeout
 op_assign
 l_int|180
 suffix:semicolon
-multiline_comment|/* initialize board - we don&squot;t trust the loader */
-id|ddb5477_board_init
-c_func
-(paren
-)paren
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
+id|ide_ops
+op_assign
+op_amp
+id|std_ide_ops
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
 id|ROOT_DEV
 op_assign
@@ -430,11 +773,19 @@ id|__init
 id|ddb5477_board_init
 c_func
 (paren
+r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PC_KEYB
+r_extern
+r_struct
+id|kbd_ops
+id|std_kbd_ops
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* ----------- setup PDARs ------------ */
 multiline_comment|/* SDRAM should have been set */
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -448,7 +799,7 @@ c_func
 (paren
 id|DDB_SDRAM_BASE
 comma
-id|DDB_SDRAM_SIZE
+id|board_ram_size
 comma
 l_int|32
 comma
@@ -459,7 +810,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* SDRAM1 should be turned off.  What is this for anyway ? */
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren
@@ -475,8 +826,8 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Set LDCSs */
-multiline_comment|/* flash */
+multiline_comment|/* Setup local bus. */
+multiline_comment|/* Flash U12 PDAR and timing. */
 id|ddb_set_pdar
 c_func
 (paren
@@ -493,6 +844,68 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_LCST0
+comma
+l_int|0x00090842
+)paren
+suffix:semicolon
+multiline_comment|/* We need to setup LCS1 and LCS2 differently based on the&n;&t;   board_version */
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPER
+)paren
+(brace
+multiline_comment|/* Flash U13 PDAR and timing. */
+id|ddb_set_pdar
+c_func
+(paren
+id|DDB_LCS1
+comma
+id|DDB_LCS1_BASE
+comma
+id|DDB_LCS1_SIZE
+comma
+l_int|16
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_LCST1
+comma
+l_int|0x00090842
+)paren
+suffix:semicolon
+multiline_comment|/* EPLD (NVRAM, switch, LCD, and mezzanie). */
+id|ddb_set_pdar
+c_func
+(paren
+id|DDB_LCS2
+comma
+id|DDB_LCS2_BASE
+comma
+id|DDB_LCS2_SIZE
+comma
+l_int|8
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* misc */
 id|ddb_set_pdar
 c_func
@@ -527,8 +940,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* verify VRC5477 base addr */
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -553,7 +967,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* verify BOOT ROM addr */
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -808,7 +1222,7 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * We use pci master register 0  for memory space / config space&n;&t; * And we use register 1 for IO space.&n;&t; * Note that for memory space, we bump up the pci base address&n;&t; * so that we have 1:1 mapping between PCI memory and cpu physical.&n;&t; * For PCI IO space, it starts from 0 in PCI IO space but with&n;&t; * DDB_xx_IO_BASE in CPU physical address space.&n;&t; */
+multiline_comment|/*&n;&t; * We use pci master register 0  for memory space / config space&n;&t; * And we use register 1 for IO space.&n;&t; * Note that for memory space, we bump up the pci base address&n;&t; * so that we have 1:1 mapping between PCI memory and cpu physical.&n;&t; * For PCI IO space, it starts from 0 in PCI IO space but with&n;&t; * DDB_xx_IO_BASE in CPU physical address space.&n;&t; */
 id|ddb_set_pmr
 c_func
 (paren
@@ -922,6 +1336,134 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPER
+op_logical_or
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+multiline_comment|/* Disable bus diagnostics. */
+id|ddb_out32
+c_func
+(paren
+id|DDB_PCICTL0_L
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_PCICTL0_H
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_PCICTL1_L
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_PCICTL1_H
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPER
+)paren
+(brace
+id|u16
+id|vid
+suffix:semicolon
+r_struct
+id|pci_bus
+id|bus
+suffix:semicolon
+r_struct
+id|pci_dev
+id|dev_m1533
+suffix:semicolon
+r_extern
+r_struct
+id|pci_ops
+id|ddb5477_ext_pci_ops
+suffix:semicolon
+id|bus.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* we scan the top level only */
+id|bus.ops
+op_assign
+op_amp
+id|ddb5477_ext_pci_ops
+suffix:semicolon
+id|dev_m1533.bus
+op_assign
+op_amp
+id|bus
+suffix:semicolon
+id|dev_m1533.sysdata
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dev_m1533.devfn
+op_assign
+l_int|7
+op_star
+l_int|8
+suffix:semicolon
+singleline_comment|// slot 7: M1533 SouthBridge.
+id|pci_read_config_word
+c_func
+(paren
+op_amp
+id|dev_m1533
+comma
+l_int|0
+comma
+op_amp
+id|vid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vid
+op_eq
+id|PCI_VENDOR_ID_AL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Changing mips_machtype to MACH_NEC_ROCKHOPPERII&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mips_machtype
+op_assign
+id|MACH_NEC_ROCKHOPPERII
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* enable USB input buffers */
 id|ddb_out32
 c_func
@@ -941,5 +1483,257 @@ l_int|0x0
 )paren
 suffix:semicolon
 singleline_comment|// ddb_out32(DDB_GIUFUNSEL, 0xfe0fcfff);  /* NEC recommanded value */
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+macro_line|#ifdef CONFIG_PC_KEYB
+id|printk
+c_func
+(paren
+l_string|&quot;kdb_ops is std&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kbd_ops
+op_assign
+op_amp
+id|std_kbd_ops
+suffix:semicolon
+macro_line|#endif                     
+)brace
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+multiline_comment|/* enable IDE controller on Ali chip (south bridge) */
+id|u8
+id|temp8
+suffix:semicolon
+r_struct
+id|pci_bus
+id|bus
+suffix:semicolon
+r_struct
+id|pci_dev
+id|dev_m1533
+suffix:semicolon
+r_struct
+id|pci_dev
+id|dev_m5229
+suffix:semicolon
+r_extern
+r_struct
+id|pci_ops
+id|ddb5477_ext_pci_ops
+suffix:semicolon
+multiline_comment|/* Setup M1535 registers */
+id|bus.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* we scan the top level only */
+id|bus.ops
+op_assign
+op_amp
+id|ddb5477_ext_pci_ops
+suffix:semicolon
+id|dev_m1533.bus
+op_assign
+op_amp
+id|bus
+suffix:semicolon
+id|dev_m1533.sysdata
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dev_m1533.devfn
+op_assign
+l_int|7
+op_star
+l_int|8
+suffix:semicolon
+singleline_comment|// slot 7: M1533 SouthBridge.
+multiline_comment|/* setup IDE controller&n;&t;&t; * enable IDE controller (bit 6 - 1)&n;&t;&t; * IDE IDSEL to be addr:A15 (bit 4:5 - 11)&n;&t;&t; * disable IDE ATA Secondary Bus Signal Pad Control (bit 3 - 0)&n;&t;&t; * enable IDE ATA Primary Bus Signal Pad Control (bit 2 - 1)&n;&t;&t; */
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m1533
+comma
+l_int|0x58
+comma
+l_int|0x74
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * positive decode (bit6 -0)&n;&t;&t; * enable IDE controler interrupt (bit 4 -1)&n;&t;&t; * setup SIRQ to point to IRQ 14 (bit 3:0 - 1101)&n;&t;&t; */
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m1533
+comma
+l_int|0x44
+comma
+l_int|0x1d
+)paren
+suffix:semicolon
+multiline_comment|/* Setup M5229 registers */
+id|dev_m5229.bus
+op_assign
+op_amp
+id|bus
+suffix:semicolon
+id|dev_m5229.sysdata
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dev_m5229.devfn
+op_assign
+l_int|4
+op_star
+l_int|8
+suffix:semicolon
+singleline_comment|// slot 4 (AD15): M5229 IDE 
+multiline_comment|/*&n;&t;&t; * enable IDE in the M5229 config register 0x50 (bit 0 - 1)&n;&t;&t; * M5229 IDSEL is addr:15; see above setting &n;&t;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x50
+comma
+op_amp
+id|temp8
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x50
+comma
+id|temp8
+op_or
+l_int|0x1
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * enable bus master (bit 2)  and IO decoding  (bit 0) &n;&t;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x04
+comma
+op_amp
+id|temp8
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x04
+comma
+id|temp8
+op_or
+l_int|0x5
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * enable native, copied from arch/ppc/k2boot/head.S&n;&t;&t; * TODO - need volatile, need to be portable &n;&t;&t; */
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x09
+comma
+l_int|0xef
+)paren
+suffix:semicolon
+multiline_comment|/* Set Primary Channel Command Block Timing */
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x59
+comma
+l_int|0x31
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * Enable primary channel 40-pin cable&n;&t;&t; * M5229 register 0x4a (bit 0)&n;&t;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x4a
+comma
+op_amp
+id|temp8
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+op_amp
+id|dev_m5229
+comma
+l_int|0x4a
+comma
+id|temp8
+op_or
+l_int|0x1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPER
+op_logical_or
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;lcd44780: initializing&bslash;n&quot;
+)paren
+suffix:semicolon
+id|lcd44780_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|lcd44780_puts
+c_func
+(paren
+l_string|&quot;MontaVista Linux&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

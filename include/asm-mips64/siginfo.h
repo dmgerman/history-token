@@ -2,19 +2,24 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_SIGINFO_H
 DECL|macro|_ASM_SIGINFO_H
 mdefine_line|#define _ASM_SIGINFO_H
+multiline_comment|/* This structure matches IRIX 32/n32 ABIs for binary compatibility but&n;   has Linux extensions.  */
 DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 4)
+DECL|macro|SI_PAD_SIZE
+mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 4)
+DECL|macro|SI_PAD_SIZE32
+mdefine_line|#define SI_PAD_SIZE32   ((SI_MAX_SIZE/sizeof(int)) - 3)
 DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
 DECL|macro|HAVE_ARCH_SIGEVENT_T
 mdefine_line|#define HAVE_ARCH_SIGEVENT_T
+multiline_comment|/*&n; * We duplicate the generic versions - &lt;asm-generic/siginfo.h&gt; is just borked&n; * by design ...&n; */
 DECL|macro|HAVE_ARCH_COPY_SIGINFO
 mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
-DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
-mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
+r_struct
+id|siginfo
+suffix:semicolon
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
-multiline_comment|/* The sigval union matches IRIX 32/n32 ABIs for binary compatibility. */
-multiline_comment|/* This structure matches IRIX 32/n32 ABIs for binary compatibility but&n;   has Linux extensions.  */
 DECL|struct|siginfo
 r_typedef
 r_struct
@@ -145,16 +150,41 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
+DECL|member|_tid
+id|timer_t
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_pad
+r_char
+id|_pad
+(braket
+r_sizeof
+(paren
+id|__ARCH_SI_UID_T
+)paren
+op_minus
+r_sizeof
+(paren
+r_int
+)paren
+)braket
+suffix:semicolon
+DECL|member|_sigval
+id|sigval_t
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
 DECL|member|_timer
 )brace
 id|_timer
@@ -188,6 +218,197 @@ DECL|typedef|siginfo_t
 )brace
 id|siginfo_t
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|union|sigval32
+r_typedef
+r_union
+id|sigval32
+(brace
+DECL|member|sival_int
+r_int
+id|sival_int
+suffix:semicolon
+DECL|member|sival_ptr
+id|s32
+id|sival_ptr
+suffix:semicolon
+DECL|typedef|sigval_t32
+)brace
+id|sigval_t32
+suffix:semicolon
+DECL|struct|siginfo32
+r_typedef
+r_struct
+id|siginfo32
+(brace
+DECL|member|si_signo
+r_int
+id|si_signo
+suffix:semicolon
+DECL|member|si_code
+r_int
+id|si_code
+suffix:semicolon
+DECL|member|si_errno
+r_int
+id|si_errno
+suffix:semicolon
+r_union
+(brace
+DECL|member|_pad
+r_int
+id|_pad
+(braket
+id|SI_PAD_SIZE32
+)braket
+suffix:semicolon
+multiline_comment|/* kill() */
+r_struct
+(brace
+DECL|member|_pid
+id|__kernel_pid_t32
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|__kernel_uid_t32
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_kill
+)brace
+id|_kill
+suffix:semicolon
+multiline_comment|/* SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|__kernel_pid_t32
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_uid
+id|__kernel_uid_t32
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_utime
+id|__kernel_clock_t32
+id|_utime
+suffix:semicolon
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_stime
+id|__kernel_clock_t32
+id|_stime
+suffix:semicolon
+DECL|member|_sigchld
+)brace
+id|_sigchld
+suffix:semicolon
+multiline_comment|/* IRIX SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|__kernel_pid_t32
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_utime
+id|__kernel_clock_t32
+id|_utime
+suffix:semicolon
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_stime
+id|__kernel_clock_t32
+id|_stime
+suffix:semicolon
+DECL|member|_irix_sigchld
+)brace
+id|_irix_sigchld
+suffix:semicolon
+multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+r_struct
+(brace
+DECL|member|_addr
+id|s32
+id|_addr
+suffix:semicolon
+multiline_comment|/* faulting insn/memory ref. */
+DECL|member|_sigfault
+)brace
+id|_sigfault
+suffix:semicolon
+multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
+r_struct
+(brace
+DECL|member|_band
+r_int
+id|_band
+suffix:semicolon
+multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
+DECL|member|_fd
+r_int
+id|_fd
+suffix:semicolon
+DECL|member|_sigpoll
+)brace
+id|_sigpoll
+suffix:semicolon
+multiline_comment|/* POSIX.1b timers */
+r_struct
+(brace
+DECL|member|_timer1
+r_int
+r_int
+id|_timer1
+suffix:semicolon
+DECL|member|_timer2
+r_int
+r_int
+id|_timer2
+suffix:semicolon
+DECL|member|_timer
+)brace
+id|_timer
+suffix:semicolon
+multiline_comment|/* POSIX.1b signals */
+r_struct
+(brace
+DECL|member|_pid
+id|__kernel_pid_t32
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|__kernel_uid_t32
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_sigval
+id|sigval_t32
+id|_sigval
+suffix:semicolon
+DECL|member|_rt
+)brace
+id|_rt
+suffix:semicolon
+DECL|member|_sifields
+)brace
+id|_sifields
+suffix:semicolon
+DECL|typedef|siginfo_t32
+)brace
+id|siginfo_t32
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * si_code values&n; * Again these have been choosen to be IRIX compatible.&n; */
 DECL|macro|SI_ASYNCIO
 macro_line|#undef SI_ASYNCIO
@@ -201,7 +422,7 @@ DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-3) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
 mdefine_line|#define SI_MESGQ&t;-4&t;/* sent by real time mesq state change */
-multiline_comment|/*&n; * sigevent definitions&n; * &n; * It seems likely that SIGEV_THREAD will have to be handled from &n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
+multiline_comment|/*&n; * sigevent definitions&n; *&n; * It seems likely that SIGEV_THREAD will have to be handled from&n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
 DECL|macro|SIGEV_NONE
 macro_line|#undef SIGEV_NONE
 DECL|macro|SIGEV_SIGNAL
@@ -243,6 +464,10 @@ id|_pad
 id|SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
+DECL|member|_tid
+r_int
+id|_tid
+suffix:semicolon
 r_struct
 (brace
 DECL|member|_function
@@ -274,6 +499,7 @@ DECL|typedef|sigevent_t
 id|sigevent_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Duplicated here because of &lt;asm-generic/siginfo.h&gt; braindamage ...&n; */
 macro_line|#include &lt;linux/string.h&gt;
 DECL|function|copy_siginfo
 r_static

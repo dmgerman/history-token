@@ -10,54 +10,64 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* depending on module parameter sct deliver different infos&n; */
-r_static
 DECL|variable|dvb_s_dummyfe_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|dvb_s_dummyfe_info
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;DVB-S dummy frontend&quot;
 comma
+dot
 id|type
-suffix:colon
+op_assign
 id|FE_QPSK
 comma
+dot
 id|frequency_min
-suffix:colon
+op_assign
 l_int|950000
 comma
+dot
 id|frequency_max
-suffix:colon
+op_assign
 l_int|2150000
 comma
+dot
 id|frequency_stepsize
-suffix:colon
+op_assign
 l_int|250
 comma
 multiline_comment|/* kHz for QPSK frontends */
+dot
 id|frequency_tolerance
-suffix:colon
+op_assign
 l_int|29500
 comma
+dot
 id|symbol_rate_min
-suffix:colon
+op_assign
 l_int|1000000
 comma
+dot
 id|symbol_rate_max
-suffix:colon
+op_assign
 l_int|45000000
 comma
-multiline_comment|/*      symbol_rate_tolerance: ???,*/
+multiline_comment|/*      .symbol_rate_tolerance &t;= ???,*/
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 l_int|50
 comma
 multiline_comment|/* 1/20 s */
+dot
 id|caps
-suffix:colon
+op_assign
 id|FE_CAN_INVERSION_AUTO
 op_or
 id|FE_CAN_FEC_1_2
@@ -75,8 +85,8 @@ op_or
 id|FE_CAN_QPSK
 )brace
 suffix:semicolon
-r_static
 DECL|variable|dvb_c_dummyfe_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|dvb_c_dummyfe_info
@@ -132,8 +142,9 @@ l_int|4
 comma
 multiline_comment|/* SACLK/4 */
 macro_line|#if 0
+dot
 id|frequency_tolerance
-suffix:colon
+op_assign
 ques
 c_cond
 ques
@@ -141,8 +152,9 @@ c_cond
 ques
 c_cond
 comma
+dot
 id|symbol_rate_tolerance
-suffix:colon
+op_assign
 ques
 c_cond
 ques
@@ -152,8 +164,9 @@ c_cond
 comma
 multiline_comment|/* ppm */
 multiline_comment|/* == 8% (spec p. 5) */
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 ques
 c_cond
 comma
@@ -310,8 +323,8 @@ id|dvb_s_dummyfe_info
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|dvbdummyfe_ioctl
+r_static
 r_int
 id|dvbdummyfe_ioctl
 (paren
@@ -526,8 +539,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvbdummyfe_attach
+r_static
 r_int
 id|dvbdummyfe_attach
 (paren
@@ -555,8 +568,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvbdummyfe_detach
+r_static
 r_void
 id|dvbdummyfe_detach
 (paren
@@ -574,8 +587,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_dvbdummyfe
+r_static
 r_int
 id|__init
 id|init_dvbdummyfe
@@ -597,8 +610,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_dvbdummyfe
+r_static
 r_void
 id|__exit
 id|exit_dvbdummyfe

@@ -1398,7 +1398,7 @@ id|data
 )paren
 suffix:semicolon
 r_void
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 r_struct
@@ -2046,11 +2046,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|pnp_init_resources
+DECL|function|pnp_init_resource_table
 r_static
 r_inline
 r_void
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 r_struct

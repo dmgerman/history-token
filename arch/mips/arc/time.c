@@ -1,42 +1,45 @@
-multiline_comment|/*&n; * time.c: Extracting time information from ARCS prom.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: time.c,v 1.1 1998/10/18 13:32:10 tsbogend Exp $&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Extracting time information from ARCS prom.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/arc/types.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
-DECL|function|prom_gettinfo
 r_struct
 id|linux_tinfo
 op_star
 id|__init
-id|prom_gettinfo
+DECL|function|ArcGetTime
+id|ArcGetTime
 c_func
 (paren
-r_void
+id|VOID
 )paren
 (brace
 r_return
-id|romvec
-op_member_access_from_pointer
-id|get_tinfo
+(paren
+r_struct
+id|linux_tinfo
+op_star
+)paren
+id|ARC_CALL0
 c_func
 (paren
+id|get_tinfo
 )paren
 suffix:semicolon
 )brace
-DECL|function|prom_getrtime
-r_int
-r_int
+id|ULONG
 id|__init
-id|prom_getrtime
+DECL|function|ArcGetRelativeTime
+id|ArcGetRelativeTime
 c_func
 (paren
-r_void
+id|VOID
 )paren
 (brace
 r_return
-id|romvec
-op_member_access_from_pointer
-id|get_rtime
+id|ARC_CALL0
 c_func
 (paren
+id|get_rtime
 )paren
 suffix:semicolon
 )brace

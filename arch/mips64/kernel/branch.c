@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -570,7 +571,19 @@ multiline_comment|/*&n;&t; * And now the FPA/cp1 branch instructions.&n;&t; */
 r_case
 id|cop1_op
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_fpu
+)paren
+id|fcr31
+op_assign
+id|current-&gt;thread.fpu.soft.sr
+suffix:semicolon
+r_else
 id|asm
+r_volatile
 (paren
 l_string|&quot;cfc1&bslash;t%0,$31&quot;
 suffix:colon

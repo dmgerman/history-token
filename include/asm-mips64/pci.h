@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_PCI_H
 DECL|macro|_ASM_PCI_H
 mdefine_line|#define _ASM_PCI_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 macro_line|#ifdef CONFIG_PCI
@@ -24,7 +25,7 @@ mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
 DECL|function|pcibios_set_master
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_set_master
@@ -39,7 +40,7 @@ id|dev
 multiline_comment|/* No special bus mastering setup handling */
 )brace
 DECL|function|pcibios_penalize_isa_irq
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_penalize_isa_irq
@@ -52,15 +53,27 @@ id|irq
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
 multiline_comment|/*&n; * Dynamic DMA mapping stuff.&n; * MIPS has everything mapped statically.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#if defined(CONFIG_DDB5074) || defined(CONFIG_DDB5476)
+DECL|macro|PCIBIOS_MIN_IO
+macro_line|#undef PCIBIOS_MIN_IO
+DECL|macro|PCIBIOS_MIN_MEM
+macro_line|#undef PCIBIOS_MIN_MEM
+DECL|macro|PCIBIOS_MIN_IO
+mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x0100000
+DECL|macro|PCIBIOS_MIN_MEM
+mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x1000000
+macro_line|#endif
 r_struct
 id|pci_dev
 suffix:semicolon
+multiline_comment|/*&n; * The PCI address space does equal the physical memory address space.  The&n; * networking and block device layers use this boolean for bounce buffer&n; * decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(1)
 multiline_comment|/*&n; * Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void
@@ -233,17 +246,17 @@ id|direction
 suffix:semicolon
 multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
 DECL|macro|DECLARE_PCI_UNMAP_ADDR
-mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;&bslash;&n;&t;dma_addr_t ADDR_NAME;
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;dma_addr_t ADDR_NAME;
 DECL|macro|DECLARE_PCI_UNMAP_LEN
-mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)&t;&t;&bslash;&n;&t;__u32 LEN_NAME;
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)&t;&t;__u32 LEN_NAME;
 DECL|macro|pci_unmap_addr
-mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;ADDR_NAME)
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;((PTR)-&gt;ADDR_NAME)
 DECL|macro|pci_unmap_addr_set
-mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;ADDR_NAME) = (VAL))
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;(((PTR)-&gt;ADDR_NAME) = (VAL))
 DECL|macro|pci_unmap_len
-mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
-mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;(((PTR)-&gt;LEN_NAME) = (VAL))
 macro_line|#else /* CONFIG_MAPPED_PCI_IO  */
 multiline_comment|/*&n; * Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
 DECL|function|pci_map_single
@@ -269,6 +282,16 @@ r_int
 id|direction
 )paren
 (brace
+r_int
+r_int
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ptr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -281,25 +304,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_COHERENT_IO
 id|dma_cache_wback_inv
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|ptr
+id|addr
 comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
-id|virt_to_bus
+id|bus_to_baddr
+c_func
+(paren
+id|hwdev-&gt;bus
+comma
+id|__pa
 c_func
 (paren
 id|ptr
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -338,7 +361,39 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+r_if
+c_cond
+(paren
+id|direction
+op_ne
+id|PCI_DMA_TODEVICE
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
+id|baddr_to_bus
+c_func
+(paren
+id|hwdev-&gt;bus
+comma
+id|dma_addr
+)paren
+op_plus
+id|PAGE_OFFSET
+suffix:semicolon
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* pci_unmap_{page,single} is a nop so... */
 DECL|macro|DECLARE_PCI_UNMAP_ADDR
@@ -353,6 +408,157 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
+multiline_comment|/*&n; * pci_{map,unmap}_single_page maps a kernel page to a dma_addr_t. identical&n; * to pci_map_single, but takes a struct page instead of a virtual address&n; */
+DECL|function|pci_map_page
+r_static
+r_inline
+id|dma_addr_t
+id|pci_map_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+op_plus
+id|offset
+suffix:semicolon
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+id|bus_to_baddr
+c_func
+(paren
+id|hwdev-&gt;bus
+comma
+id|page_to_phys
+c_func
+(paren
+id|page
+)paren
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+DECL|function|pci_unmap_page
+r_static
+r_inline
+r_void
+id|pci_unmap_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_address
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|direction
+op_ne
+id|PCI_DMA_TODEVICE
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
+id|baddr_to_bus
+c_func
+(paren
+id|hwdev-&gt;bus
+comma
+id|dma_address
+)paren
+op_plus
+id|PAGE_OFFSET
+suffix:semicolon
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 DECL|function|pci_map_sg
 r_static
@@ -393,7 +599,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure that gcc doesn&squot;t leave the empty loop body.  */
 r_for
 c_loop
 (paren
@@ -412,37 +617,54 @@ id|sg
 op_increment
 )paren
 (brace
-macro_line|#ifndef CONFIG_COHERENT_IO
-id|dma_cache_wback_inv
-c_func
-(paren
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
 (paren
 r_int
 r_int
 )paren
-id|sg-&gt;address
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+op_plus
+id|sg-&gt;offset
 comma
 id|sg-&gt;length
 )paren
 suffix:semicolon
-macro_line|#endif
-id|sg-&gt;address
+id|sg-&gt;dma_address
 op_assign
 (paren
-r_char
-op_star
+id|dma_addr_t
 )paren
-(paren
 id|bus_to_baddr
-(braket
-id|hwdev-&gt;bus-&gt;number
-)braket
-op_or
-id|__pa
 c_func
 (paren
-id|sg-&gt;address
+id|hwdev-&gt;bus
+comma
+id|page_to_phys
+c_func
+(paren
+id|sg-&gt;page
 )paren
+op_plus
+id|sg-&gt;offset
 )paren
 suffix:semicolon
 )brace
@@ -475,6 +697,9 @@ r_int
 id|direction
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -487,7 +712,76 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_TODEVICE
+)paren
+r_return
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nents
+suffix:semicolon
+id|i
+op_increment
+comma
+id|sg
+op_increment
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sg-&gt;page
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+op_plus
+id|sg-&gt;offset
+comma
+id|sg-&gt;length
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, the&n; * device again owns the buffer.&n; */
 DECL|function|pci_dma_sync_single
@@ -512,6 +806,10 @@ r_int
 id|direction
 )paren
 (brace
+r_int
+r_int
+id|addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -524,29 +822,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_COHERENT_IO
+id|addr
+op_assign
+id|baddr_to_bus
+c_func
+(paren
+id|hwdev-&gt;bus
+comma
+id|dma_handle
+)paren
+op_plus
+id|PAGE_OFFSET
+suffix:semicolon
 id|dma_cache_wback_inv
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
-(paren
-id|dma_handle
-op_minus
-id|bus_to_baddr
-(braket
-id|hwdev-&gt;bus-&gt;number
-)braket
-)paren
+id|addr
 comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
@@ -573,7 +868,7 @@ r_int
 id|direction
 )paren
 (brace
-macro_line|#ifndef CONFIG_COHERENT_IO
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 r_int
 id|i
 suffix:semicolon
@@ -590,8 +885,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Make sure that gcc doesn&squot;t leave the empty loop body.  */
-macro_line|#ifndef CONFIG_COHERENT_IO
+multiline_comment|/* Make sure that gcc doesn&squot;t leave the empty loop body.  */
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 r_for
 c_loop
 (paren
@@ -616,7 +911,11 @@ c_func
 r_int
 r_int
 )paren
-id|sg-&gt;address
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
 comma
 id|sg-&gt;length
 )paren
@@ -624,6 +923,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_MAPPED_PCI_IO  */
+multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported
 r_static
 r_inline
@@ -641,6 +941,7 @@ id|mask
 )paren
 (brace
 multiline_comment|/*&n;&t; * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;&t; * so we can&squot;t guarantee allocations that must be&n;&t; * within a tighter range than GFP_DMA..&n;&t; */
+macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -651,13 +952,187 @@ l_int|0x00ffffff
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* This is always fine. */
+DECL|macro|pci_dac_dma_supported
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
+DECL|function|pci_dac_page_to_dma
+r_static
+r_inline
+id|dma64_addr_t
+id|pci_dac_page_to_dma
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|direction
+)paren
+(brace
+id|dma64_addr_t
+id|addr
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|page
+)paren
+op_plus
+id|offset
+suffix:semicolon
+r_return
+(paren
+id|dma64_addr_t
+)paren
+id|bus_to_baddr
+c_func
+(paren
+id|pdev-&gt;bus
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|pci_dac_dma_to_page
+r_static
+r_inline
+r_struct
+id|page
+op_star
+id|pci_dac_dma_to_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_int
+r_int
+id|poff
+op_assign
+id|baddr_to_bus
+c_func
+(paren
+id|pdev-&gt;bus
+comma
+id|dma_addr
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_return
+id|mem_map
+op_plus
+id|poff
+suffix:semicolon
+)brace
+DECL|function|pci_dac_dma_to_offset
+r_static
+r_inline
+r_int
+r_int
+id|pci_dac_dma_to_offset
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+id|dma_addr
+op_amp
+op_complement
+id|PAGE_MASK
+suffix:semicolon
+)brace
+DECL|function|pci_dac_dma_sync_single
+r_static
+r_inline
+r_void
+id|pci_dac_dma_sync_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+comma
+r_int
+id|len
+comma
+r_int
+id|direction
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|addr
+op_assign
+id|baddr_to_bus
+c_func
+(paren
+id|pdev-&gt;bus
+comma
+id|dma_addr
+)paren
+op_plus
+id|PAGE_OFFSET
+suffix:semicolon
+id|dma_cache_wback_inv
+c_func
+(paren
+id|addr
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg)&t;((unsigned long)((sg)-&gt;address))
+mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 macro_line|#endif /* __KERNEL__ */

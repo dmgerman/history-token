@@ -1905,8 +1905,6 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-id|dev_t
-comma
 r_int
 )paren
 suffix:semicolon

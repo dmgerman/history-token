@@ -80,8 +80,6 @@ c_func
 id|vfsp
 )paren
 comma
-id|vfsp-&gt;vfs_super-&gt;s_bdev-&gt;bd_dev
-comma
 id|flags
 )paren
 suffix:semicolon

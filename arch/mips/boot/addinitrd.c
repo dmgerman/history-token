@@ -3,6 +3,8 @@ macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;unistd.h&gt;
+macro_line|#include &lt;stdio.h&gt;
+macro_line|#include &lt;netinet/in.h&gt;
 macro_line|#include &quot;ecoff.h&quot;
 DECL|macro|MIPS_PAGE_SIZE
 mdefine_line|#define MIPS_PAGE_SIZE&t;4096
@@ -90,6 +92,8 @@ l_int|2
 suffix:semicolon
 r_int
 id|i
+comma
+id|cnt
 suffix:semicolon
 r_int
 id|swab
@@ -531,8 +535,94 @@ id|die
 l_string|&quot;write section headers&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* skip padding */
+r_if
+c_cond
+(paren
+id|lseek
+c_func
+(paren
+id|fd_vmlinux
+comma
+id|SWAB
+c_func
+(paren
+id|esecs
+(braket
+l_int|0
+)braket
+dot
+id|s_scnptr
+)paren
+comma
+id|SEEK_SET
+)paren
+op_eq
+(paren
+id|off_t
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|die
+(paren
+l_string|&quot;lseek vmlinux&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lseek
+c_func
+(paren
+id|fd_outfile
+comma
+id|SWAB
+c_func
+(paren
+id|esecs
+(braket
+l_int|0
+)braket
+dot
+id|s_scnptr
+)paren
+comma
+id|SEEK_SET
+)paren
+op_eq
+(paren
+id|off_t
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|die
+(paren
+l_string|&quot;lseek outfile&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* copy text segment */
+id|cnt
+op_assign
+id|SWAB
+c_func
+(paren
+id|eaout.tsize
+)paren
+suffix:semicolon
 r_while
 c_loop
+(paren
+id|cnt
+)paren
+(brace
+r_if
+c_cond
 (paren
 (paren
 id|i
@@ -547,9 +637,14 @@ r_sizeof
 id|buf
 )paren
 )paren
-OG
+op_le
 l_int|0
 )paren
+id|die
+(paren
+l_string|&quot;read vmlinux&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -569,6 +664,11 @@ id|die
 l_string|&quot;write vmlinux&quot;
 )paren
 suffix:semicolon
+id|cnt
+op_sub_assign
+id|i
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

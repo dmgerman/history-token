@@ -11,7 +11,6 @@ macro_line|#include &quot;dvbdev.h&quot;
 DECL|macro|DVB_NET_DEVICES_MAX
 mdefine_line|#define DVB_NET_DEVICES_MAX 10
 DECL|struct|dvb_net
-r_typedef
 r_struct
 id|dvb_net
 (brace
@@ -45,13 +44,12 @@ id|DVB_NET_DEVICES_MAX
 )braket
 suffix:semicolon
 DECL|member|demux
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 suffix:semicolon
-DECL|typedef|dvb_net_t
 )brace
-id|dvb_net_t
 suffix:semicolon
 r_void
 id|dvb_net_release
@@ -74,7 +72,8 @@ r_struct
 id|dvb_net
 op_star
 comma
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 )paren
 suffix:semicolon

@@ -1,14 +1,10 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
 DECL|macro|my_min
 mdefine_line|#define my_min(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &lt; __y ? __x: __y; })
 DECL|macro|my_max
 mdefine_line|#define my_max(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &gt; __y ? __x: __y; })
-r_static
 DECL|function|calculate_output_format_register
+r_static
 r_void
 id|calculate_output_format_register
 c_func
@@ -77,8 +73,8 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_bcs_ctrl_register
+r_static
 r_void
 id|calculate_bcs_ctrl_register
 c_func
@@ -126,8 +122,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_hps_source_and_sync
+r_static
 r_void
 id|calculate_hps_source_and_sync
 c_func
@@ -176,8 +172,8 @@ l_int|28
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_hxo_and_hyo
+r_static
 r_void
 id|calculate_hxo_and_hyo
 c_func
@@ -685,8 +681,8 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* calculate horizontal scale registers */
-r_static
 DECL|function|calculate_h_scale_registers
+r_static
 r_int
 id|calculate_h_scale_registers
 c_func
@@ -1631,8 +1627,8 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* calculate vertical scale registers */
-r_static
 DECL|function|calculate_v_scale_registers
+r_static
 r_int
 id|calculate_v_scale_registers
 c_func
@@ -2070,8 +2066,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* simple bubble-sort algorithm with duplicate elimination */
-r_static
 DECL|function|sort_and_eliminate
+r_static
 r_int
 id|sort_and_eliminate
 c_func
@@ -2273,8 +2269,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_clipping_registers_rect
+r_static
 r_void
 id|calculate_clipping_registers_rect
 c_func
@@ -2318,7 +2314,7 @@ id|u32
 op_star
 id|clipping
 op_assign
-id|vv-&gt;clipping
+id|vv-&gt;d_clipping.cpu_addr
 suffix:semicolon
 r_int
 id|width
@@ -3143,27 +3139,15 @@ l_int|0x00001c00
 suffix:semicolon
 id|vdma2-&gt;base_even
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|clipping
-)paren
+id|vv-&gt;d_clipping.dma_handle
 suffix:semicolon
 id|vdma2-&gt;base_odd
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|clipping
-)paren
+id|vv-&gt;d_clipping.dma_handle
 suffix:semicolon
 id|vdma2-&gt;prot_addr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|clipping
-)paren
+id|vv-&gt;d_clipping.dma_handle
 op_plus
 (paren
 (paren
@@ -3261,8 +3245,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* disable clipping */
-r_static
 DECL|function|saa7146_disable_clipping
+r_static
 r_void
 id|saa7146_disable_clipping
 c_func
@@ -3328,8 +3312,8 @@ id|MASK_21
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_clipping_rect
+r_static
 r_void
 id|saa7146_set_clipping_rect
 c_func
@@ -3554,8 +3538,8 @@ id|MASK_21
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_window
+r_static
 r_void
 id|saa7146_set_window
 c_func
@@ -3779,8 +3763,8 @@ id|MASK_22
 suffix:semicolon
 )brace
 multiline_comment|/* calculate the new memory offsets for a desired position */
-r_static
 DECL|function|saa7146_set_position
+r_static
 r_void
 id|saa7146_set_position
 c_func
@@ -4049,8 +4033,8 @@ id|vdma1
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_output_format
+r_static
 r_void
 id|saa7146_set_output_format
 c_func
@@ -4655,8 +4639,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&t;&t;&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_even);&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, which,vdma-&gt;base_odd);&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, which,vdma-&gt;prot_addr);&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_page);&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, which,vdma-&gt;pitch);&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, which,vdma-&gt;num_line_byte);&n;*/
 )brace
-r_static
 DECL|function|calculate_video_dma_grab_packed
+r_static
 r_int
 id|calculate_video_dma_grab_packed
 c_func
@@ -4933,8 +4917,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calc_planar_422
+r_static
 r_int
 id|calc_planar_422
 c_func
@@ -5142,8 +5126,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calc_planar_420
+r_static
 r_int
 id|calc_planar_420
 c_func
@@ -5351,8 +5335,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_video_dma_grab_planar
+r_static
 r_int
 id|calculate_video_dma_grab_planar
 c_func
@@ -5865,8 +5849,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|program_capture_engine
+r_static
 r_void
 id|program_capture_engine
 c_func
@@ -5886,11 +5870,6 @@ op_star
 id|vv
 op_assign
 id|dev-&gt;vv_data
-suffix:semicolon
-r_int
-id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -5918,18 +5897,37 @@ id|CMD_O_FID_A
 suffix:colon
 id|CMD_O_FID_B
 suffix:semicolon
-multiline_comment|/* write beginning of rps-program */
-id|count
-op_assign
+r_if
+c_cond
+(paren
 l_int|0
-suffix:semicolon
-multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle only if bit 0 is not set*/
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
+op_ne
+(paren
+id|dev-&gt;ext-&gt;ext_vv_data-&gt;flags
+op_amp
+id|SAA7146_EXT_SWAP_ODD_EVEN
+)paren
+)paren
+(brace
+r_int
+r_int
+id|tmp
 op_assign
+id|e_wait
+suffix:semicolon
+id|e_wait
+op_assign
+id|o_wait
+suffix:semicolon
+id|o_wait
+op_assign
+id|tmp
+suffix:semicolon
+)brace
+multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle only if bit 0 is not set*/
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|CMD_OAN
@@ -5937,13 +5935,11 @@ op_or
 id|CMD_SIG0
 op_or
 id|e_wait
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|CMD_OAN
@@ -5951,14 +5947,12 @@ op_or
 id|CMD_SIG0
 op_or
 id|o_wait
+)paren
 suffix:semicolon
 multiline_comment|/* set bit 0 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -5972,24 +5966,20 @@ id|MC2
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_27
 op_or
 id|MASK_11
+)paren
 suffix:semicolon
 multiline_comment|/* turn on video-dma1 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -5997,27 +5987,24 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_06
 op_or
 id|MASK_22
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_06
 op_or
 id|MASK_22
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 r_if
@@ -6029,12 +6016,9 @@ id|planar
 )paren
 (brace
 multiline_comment|/* turn on video-dma2 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -6042,36 +6026,30 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_05
 op_or
 id|MASK_21
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_05
 op_or
 id|MASK_21
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 multiline_comment|/* turn on video-dma3 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -6079,58 +6057,48 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_04
 op_or
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_04
 op_or
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 )brace
 multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|e_wait
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|o_wait
+)paren
 suffix:semicolon
 multiline_comment|/* turn off video-dma1 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -6138,25 +6106,22 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_22
 op_or
 id|MASK_06
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_22
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 r_if
@@ -6168,12 +6133,9 @@ id|planar
 )paren
 (brace
 multiline_comment|/* turn off video-dma2 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -6181,34 +6143,28 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_05
 op_or
 id|MASK_21
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_21
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 multiline_comment|/* turn off video-dma3 */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -6216,45 +6172,38 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_04
 op_or
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 )brace
 multiline_comment|/* generate interrupt */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_INTERRUPT
+)paren
 suffix:semicolon
 multiline_comment|/* stop */
-id|dev-&gt;rps0
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS0
+c_func
+(paren
 id|CMD_STOP
+)paren
 suffix:semicolon
 )brace
 DECL|function|saa7146_set_capture
@@ -6385,15 +6334,7 @@ id|dev
 comma
 id|RPS_ADDR0
 comma
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|dev-&gt;rps0
-(braket
-l_int|0
-)braket
-)paren
+id|dev-&gt;d_rps0.dma_handle
 )paren
 suffix:semicolon
 multiline_comment|/* turn on rps */

@@ -21,7 +21,7 @@ DECL|member|km_confidence
 id|confidence_t
 id|km_confidence
 suffix:semicolon
-multiline_comment|/* confidence level that the memory is bad &n;&t;&t;&t;&t;     * is this necessary ? &n;&t;&t;&t;&t;     */
+multiline_comment|/* confidence level that the memory is bad&n;&t;&t;&t;&t;     * is this necessary ?&n;&t;&t;&t;&t;     */
 DECL|member|km_dimm
 id|confidence_t
 id|km_dimm
@@ -29,7 +29,7 @@ id|km_dimm
 id|MAX_DIMMS
 )braket
 suffix:semicolon
-multiline_comment|/* confidence level that dimm[i] is bad &n;&t;&t;&t;&t;     *I think this is the right number&n;&t;&t;&t;&t;     */
+multiline_comment|/* confidence level that dimm[i] is bad&n;&t;&t;&t;&t;     *I think this is the right number&n;&t;&t;&t;&t;     */
 DECL|typedef|kf_mem_t
 )brace
 id|kf_mem_t

@@ -24485,35 +24485,22 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef DEBUG
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;hashlist inode 0x%p blkno %Ld buf 0x%p&quot;
+l_string|&quot;hashlist inode 0x%p blkno %lld buf 0x%p&quot;
 comma
 id|chl-&gt;chl_ip
 comma
+(paren
+r_int
+r_int
+)paren
 id|chl-&gt;chl_blkno
 comma
 id|chl-&gt;chl_buf
 )paren
 suffix:semicolon
-macro_line|#else
-id|kdb_printf
-c_func
-(paren
-l_string|&quot;hashlist inode 0x%p blkno %lld&quot;
-comma
-id|chl-&gt;chl_ip
-comma
-(paren
-r_int
-r_int
-)paren
-id|chl-&gt;chl_blkno
-)paren
-suffix:semicolon
-macro_line|#endif
 id|kdb_printf
 c_func
 (paren

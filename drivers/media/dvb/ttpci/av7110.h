@@ -38,10 +38,9 @@ macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &quot;dvb_ringbuffer.h&quot;
-DECL|enum|BOOTSTATES
-r_typedef
+DECL|enum|av7110_bootstate
 r_enum
-id|BOOTSTATES
+id|av7110_bootstate
 (brace
 DECL|enumerator|BOOTSTATE_BUFFER_EMPTY
 id|BOOTSTATE_BUFFER_EMPTY
@@ -57,12 +56,11 @@ DECL|enumerator|BOOTSTATE_BOOT_COMPLETE
 id|BOOTSTATE_BOOT_COMPLETE
 op_assign
 l_int|2
-DECL|typedef|BOOTSTATES
 )brace
-id|BOOTSTATES
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_type_rec_play_format
 r_enum
+id|av7110_type_rec_play_format
 DECL|enumerator|RP_None
 (brace
 id|RP_None
@@ -81,44 +79,11 @@ id|VideoPES
 comma
 DECL|enumerator|AV_PES
 id|AV_PES
-DECL|typedef|TYPE_REC_PLAY_FORMAT
 )brace
-id|TYPE_REC_PLAY_FORMAT
 suffix:semicolon
-DECL|struct|PARAMSTRUCT
-r_typedef
-r_struct
-id|PARAMSTRUCT
-(brace
-DECL|member|wCommand
-r_int
-r_int
-id|wCommand
-suffix:semicolon
-DECL|member|error
-r_int
-id|error
-suffix:semicolon
-DECL|member|pdwData
-r_int
-r_int
-id|pdwData
-(braket
-l_int|100
-)braket
-suffix:semicolon
-DECL|typedef|PARAMSTRUCT
-DECL|typedef|PPARAMSTRUCT
-)brace
-id|PARAMSTRUCT
-comma
-op_star
-id|PPARAMSTRUCT
-suffix:semicolon
-DECL|enum|OSDPALTYPE
-r_typedef
+DECL|enum|av7110_osd_palette_type
 r_enum
-id|OSDPALTYPE
+id|av7110_osd_palette_type
 (brace
 DECL|enumerator|NoPalet
 id|NoPalet
@@ -149,16 +114,11 @@ id|Pal8Bit
 op_assign
 l_int|256
 multiline_comment|/* 256 colors for 16 bit palette */
-DECL|typedef|OSDPALTYPE
-DECL|typedef|POSDPALTYPE
 )brace
-id|OSDPALTYPE
-comma
-op_star
-id|POSDPALTYPE
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_window_display_type
 r_enum
+id|av7110_window_display_type
 (brace
 DECL|enumerator|BITMAP1
 id|BITMAP1
@@ -239,12 +199,9 @@ multiline_comment|/* Full Size MPEG Video Display */
 DECL|enumerator|CURSOR
 id|CURSOR
 multiline_comment|/* Cursor */
-DECL|typedef|DISPTYPE
 )brace
-id|DISPTYPE
 suffix:semicolon
-multiline_comment|/* Window display type           */
-singleline_comment|// switch defines
+multiline_comment|/* switch defines */
 DECL|macro|SB_GPIO
 mdefine_line|#define SB_GPIO 3
 DECL|macro|SB_OFF
@@ -267,10 +224,9 @@ singleline_comment|//FastBlank an  (RGB-Mode)
 DECL|macro|FB_LOOP
 mdefine_line|#define FB_LOOP&t;SAA7146_GPIO_INPUT  
 singleline_comment|//FastBlank der PC-Grafik durchschleifen
-DECL|enum|VIDEOOUTPUTMODE
-r_typedef
+DECL|enum|av7110_video_output_mode
 r_enum
-id|VIDEOOUTPUTMODE
+id|av7110_video_output_mode
 (brace
 DECL|enumerator|NO_OUT
 id|NO_OUT
@@ -292,13 +248,7 @@ DECL|enumerator|YC_OUT
 id|YC_OUT
 op_assign
 l_int|3
-DECL|typedef|VIDEOOUTPUTMODE
-DECL|typedef|PVIDEOOUTPUTMODE
 )brace
-id|VIDEOOUTPUTMODE
-comma
-op_star
-id|PVIDEOOUTPUTMODE
 suffix:semicolon
 DECL|macro|GPMQFull
 mdefine_line|#define GPMQFull        0x0001                  
@@ -328,13 +278,13 @@ DECL|macro|SECTION_MODE
 mdefine_line|#define&t;SECTION_MODE&t;&t;0x06
 DECL|macro|SECTION_IPMPE
 mdefine_line|#define SECTION_IPMPE&t;&t;0x0C&t;
-singleline_comment|// bis zu 4k gro_
+singleline_comment|// bis zu 4k gro&#xfffd;
 DECL|macro|SECTION_HIGH_SPEED
 mdefine_line|#define SECTION_HIGH_SPEED&t;0x1C&t;
-singleline_comment|// vergrv_erter Puffer f|r High Speed Filter
+singleline_comment|// vergr&#xfffd;&#xfffd;erter Puffer f&#xfffd;r High Speed Filter
 DECL|macro|DATA_PIPING_FLAG
 mdefine_line|#define DATA_PIPING_FLAG&t;0x20&t;
-singleline_comment|// f|r Data Piping Filter
+singleline_comment|// f&#xfffd;r Data Piping Filter
 DECL|macro|PBUFSIZE_NONE
 mdefine_line|#define&t;PBUFSIZE_NONE 0x0000
 DECL|macro|PBUFSIZE_1P
@@ -353,8 +303,9 @@ DECL|macro|PBUFSIZE_16K
 mdefine_line|#define PBUFSIZE_16K  0x0700
 DECL|macro|PBUFSIZE_32K
 mdefine_line|#define PBUFSIZE_32K  0x0800
-r_typedef
+DECL|enum|av7110_osd_command
 r_enum
+id|av7110_osd_command
 (brace
 DECL|enumerator|WCreate
 id|WCreate
@@ -415,12 +366,11 @@ id|SetWTrans
 comma
 DECL|enumerator|SetWNoTrans
 id|SetWNoTrans
-DECL|typedef|OSDCOM
 )brace
-id|OSDCOM
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_pid_command
 r_enum
+id|av7110_pid_command
 (brace
 DECL|enumerator|MultiPID
 id|MultiPID
@@ -457,21 +407,19 @@ id|SetDescr
 comma
 DECL|enumerator|SetIR
 id|SetIR
-DECL|typedef|PIDCOM
 )brace
-id|PIDCOM
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_mpeg_command
 r_enum
+id|av7110_mpeg_command
 (brace
 DECL|enumerator|SelAudChannels
 id|SelAudChannels
-DECL|typedef|MPEGCOM
 )brace
-id|MPEGCOM
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_audio_command
 r_enum
+id|av7110_audio_command
 (brace
 DECL|enumerator|AudioDAC
 id|AudioDAC
@@ -496,12 +444,11 @@ id|SendDiSEqC
 comma
 DECL|enumerator|SetRegister
 id|SetRegister
-DECL|typedef|AUDCOM
 )brace
-id|AUDCOM
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_request_command
 r_enum
+id|av7110_request_command
 (brace
 DECL|enumerator|AudioState
 id|AudioState
@@ -529,12 +476,17 @@ id|ReqVCXO
 comma
 DECL|enumerator|ReqRegister
 id|ReqRegister
-DECL|typedef|REQCOM
+comma
+DECL|enumerator|ReqSecFilterError
+id|ReqSecFilterError
+comma
+DECL|enumerator|ReqSTC
+id|ReqSTC
 )brace
-id|REQCOM
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_encoder_command
 r_enum
+id|av7110_encoder_command
 (brace
 DECL|enumerator|SetVidMode
 id|SetVidMode
@@ -553,12 +505,11 @@ id|SetPanScanType
 comma
 DECL|enumerator|SetFreezeMode
 id|SetFreezeMode
-DECL|typedef|ENC
 )brace
-id|ENC
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_rec_play_state
 r_enum
+id|av7110_rec_play_state
 (brace
 DECL|enumerator|__Record
 id|__Record
@@ -583,12 +534,11 @@ id|__Scan_I
 comma
 DECL|enumerator|__Continue
 id|__Continue
-DECL|typedef|REC_PLAY
 )brace
-id|REC_PLAY
 suffix:semicolon
-r_typedef
+DECL|enum|av7110_command_type
 r_enum
+id|av7110_command_type
 (brace
 DECL|enumerator|COMTYPE_NOCOM
 id|COMTYPE_NOCOM
@@ -641,31 +591,7 @@ comma
 DECL|enumerator|COMTYPE_CI_LL
 id|COMTYPE_CI_LL
 comma
-DECL|typedef|COMTYPE
 )brace
-id|COMTYPE
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-DECL|enumerator|AV7110_VIDEO_FREEZE
-id|AV7110_VIDEO_FREEZE
-comma
-DECL|enumerator|AV7110_VIDEO_CONTINUE
-id|AV7110_VIDEO_CONTINUE
-DECL|typedef|VIDEOCOM
-)brace
-id|VIDEOCOM
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-DECL|enumerator|DVB_AUDIO_PAUSE
-id|DVB_AUDIO_PAUSE
-comma
-DECL|typedef|AUDIOCOM
-)brace
-id|AUDIOCOM
 suffix:semicolon
 DECL|macro|VID_NONE_PREF
 mdefine_line|#define VID_NONE_PREF           0x00    /* No aspect ration processing preferred */
@@ -703,6 +629,8 @@ DECL|macro|DATA_CI_GET
 mdefine_line|#define DATA_CI_GET              0x0b
 DECL|macro|DATA_CI_PUT
 mdefine_line|#define DATA_CI_PUT              0x0c
+DECL|macro|DATA_MPEG_VIDEO_EVENT
+mdefine_line|#define DATA_MPEG_VIDEO_EVENT    0x0d
 DECL|macro|DATA_PES_RECORD
 mdefine_line|#define DATA_PES_RECORD          0x10
 DECL|macro|DATA_PES_PLAY
@@ -853,36 +781,6 @@ DECL|macro|MAX_PLENGTH
 mdefine_line|#define MAX_PLENGTH      0xFFFF
 DECL|macro|MAX_VID_PES
 mdefine_line|#define MAX_VID_PES      0x1FFF
-DECL|struct|section_s
-r_typedef
-r_struct
-id|section_s
-(brace
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
-DECL|member|length
-r_int
-id|length
-suffix:semicolon
-DECL|member|found
-r_int
-id|found
-suffix:semicolon
-DECL|member|payload
-id|u8
-id|payload
-(braket
-l_int|4096
-op_plus
-l_int|3
-)braket
-suffix:semicolon
-DECL|typedef|section_t
-)brace
-id|section_t
-suffix:semicolon
 DECL|macro|MY_STATE_PES_START
 mdefine_line|#define MY_STATE_PES_START     1
 DECL|macro|MY_STATE_PES_STARTED
@@ -948,217 +846,9 @@ comma
 id|PES_STREAM
 )brace
 suffix:semicolon
-DECL|struct|ps_packet_s
-r_typedef
+DECL|struct|av7110_p2t
 r_struct
-id|ps_packet_s
-(brace
-DECL|member|scr
-id|u8
-id|scr
-(braket
-l_int|6
-)braket
-suffix:semicolon
-DECL|member|mux_rate
-id|u8
-id|mux_rate
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|stuff_length
-id|u8
-id|stuff_length
-suffix:semicolon
-DECL|member|data
-id|u8
-id|data
-(braket
-l_int|20
-)braket
-suffix:semicolon
-DECL|member|sheader_llength
-id|u8
-id|sheader_llength
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|sheader_length
-r_int
-id|sheader_length
-suffix:semicolon
-DECL|member|rate_bound
-id|u8
-id|rate_bound
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|audio_bound
-id|u8
-id|audio_bound
-suffix:semicolon
-DECL|member|video_bound
-id|u8
-id|video_bound
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:semicolon
-DECL|member|npes
-r_int
-id|npes
-suffix:semicolon
-DECL|member|mpeg
-r_int
-id|mpeg
-suffix:semicolon
-DECL|typedef|ps_packet_t
-)brace
-id|ps_packet_t
-suffix:semicolon
-DECL|struct|a2p_s
-r_typedef
-r_struct
-id|a2p_s
-(brace
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|found
-r_int
-id|found
-suffix:semicolon
-DECL|member|length
-r_int
-id|length
-suffix:semicolon
-DECL|member|headr
-r_int
-id|headr
-suffix:semicolon
-DECL|member|cid
-id|u8
-id|cid
-suffix:semicolon
-DECL|member|flags
-id|u8
-id|flags
-suffix:semicolon
-DECL|member|abuf
-id|u8
-id|abuf
-(braket
-id|MAX_PLENGTH
-)braket
-suffix:semicolon
-DECL|member|alength
-r_int
-id|alength
-suffix:semicolon
-DECL|member|vbuf
-id|u8
-id|vbuf
-(braket
-id|MAX_PLENGTH
-)braket
-suffix:semicolon
-DECL|member|vlength
-r_int
-id|vlength
-suffix:semicolon
-DECL|member|plength
-r_int
-id|plength
-suffix:semicolon
-DECL|member|last_av_pts
-id|u8
-id|last_av_pts
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|av_pts
-id|u8
-id|av_pts
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|scr
-id|u8
-id|scr
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|count0
-id|u16
-id|count0
-suffix:semicolon
-DECL|member|count1
-id|u16
-id|count1
-suffix:semicolon
-DECL|member|pidv
-id|u16
-id|pidv
-suffix:semicolon
-DECL|member|pida
-id|u16
-id|pida
-suffix:semicolon
-DECL|member|countv
-id|u16
-id|countv
-suffix:semicolon
-DECL|member|counta
-id|u16
-id|counta
-suffix:semicolon
-DECL|member|dataA
-r_void
-op_star
-id|dataA
-suffix:semicolon
-DECL|member|dataV
-r_void
-op_star
-id|dataV
-suffix:semicolon
-DECL|member|write_cb
-r_void
-(paren
-op_star
-id|write_cb
-)paren
-(paren
-id|u8
-r_const
-op_star
-id|buf
-comma
-r_int
-r_int
-id|count
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-DECL|typedef|a2p_t
-)brace
-id|a2p_t
-suffix:semicolon
-DECL|struct|p2t_s
-r_typedef
-r_struct
-id|p2t_s
+id|av7110_p2t
 (brace
 DECL|member|pes
 id|u8
@@ -1186,15 +876,50 @@ id|dvb_demux_feed
 op_star
 id|feed
 suffix:semicolon
-DECL|typedef|p2t_t
 )brace
-id|p2t_t
+suffix:semicolon
+multiline_comment|/* video MPEG decoder events: */
+multiline_comment|/* (code copied from dvb_frontend.c, should maybe be factored out...) */
+DECL|macro|MAX_VIDEO_EVENT
+mdefine_line|#define MAX_VIDEO_EVENT 8
+DECL|struct|dvb_video_events
+r_struct
+id|dvb_video_events
+(brace
+DECL|member|events
+r_struct
+id|video_event
+id|events
+(braket
+id|MAX_VIDEO_EVENT
+)braket
+suffix:semicolon
+DECL|member|eventw
+r_int
+id|eventw
+suffix:semicolon
+DECL|member|eventr
+r_int
+id|eventr
+suffix:semicolon
+DECL|member|overflow
+r_int
+id|overflow
+suffix:semicolon
+DECL|member|wait_queue
+id|wait_queue_head_t
+id|wait_queue
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/* place to store all the necessary device information */
-DECL|struct|av7110_s
-r_typedef
+DECL|struct|av7110
 r_struct
-id|av7110_s
+id|av7110
 (brace
 multiline_comment|/* devices */
 DECL|member|dvb_dev
@@ -1203,7 +928,8 @@ id|dvb_device
 id|dvb_dev
 suffix:semicolon
 DECL|member|dvb_net
-id|dvb_net_t
+r_struct
+id|dvb_net
 id|dvb_net
 suffix:semicolon
 DECL|member|vd
@@ -1247,6 +973,8 @@ DECL|macro|DVB_ADAC_TI
 mdefine_line|#define DVB_ADAC_TI       0
 DECL|macro|DVB_ADAC_CRYSTAL
 mdefine_line|#define DVB_ADAC_CRYSTAL  1
+DECL|macro|DVB_ADAC_MSP
+mdefine_line|#define DVB_ADAC_MSP      2
 DECL|macro|DVB_ADAC_NONE
 mdefine_line|#define DVB_ADAC_NONE    -1
 multiline_comment|/* buffers */
@@ -1257,14 +985,16 @@ id|iobuf
 suffix:semicolon
 multiline_comment|/* memory for all buffers */
 DECL|member|avout
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 id|avout
 suffix:semicolon
 multiline_comment|/* buffer for video or A/V mux */
 DECL|macro|AVOUTLEN
 mdefine_line|#define AVOUTLEN (128*1024)
 DECL|member|aout
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 id|aout
 suffix:semicolon
 multiline_comment|/* buffer for audio */
@@ -1382,7 +1112,8 @@ r_int
 id|vidmode
 suffix:semicolon
 DECL|member|dmxdev
-id|dmxdev_t
+r_struct
+id|dmxdev
 id|dmxdev
 suffix:semicolon
 DECL|member|demux
@@ -1390,19 +1121,14 @@ r_struct
 id|dvb_demux
 id|demux
 suffix:semicolon
-DECL|member|demux_id
-r_char
-id|demux_id
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|hw_frontend
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 id|hw_frontend
 suffix:semicolon
 DECL|member|mem_frontend
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 id|mem_frontend
 suffix:semicolon
 DECL|member|fe_synced
@@ -1454,14 +1180,16 @@ l_int|32
 )braket
 suffix:semicolon
 DECL|member|p2t_filter
-id|p2t_t
+r_struct
+id|av7110_p2t
 id|p2t_filter
 (braket
 id|MAXFILT
 )braket
 suffix:semicolon
 DECL|member|p2t
-id|dvb_filter_pes2ts_t
+r_struct
+id|dvb_filter_pes2ts
 id|p2t
 (braket
 l_int|2
@@ -1469,7 +1197,7 @@ l_int|2
 suffix:semicolon
 DECL|member|ipack
 r_struct
-id|ipack_s
+id|ipack
 id|ipack
 (braket
 l_int|2
@@ -1559,11 +1287,13 @@ id|DMX_PES_OTHER
 )braket
 suffix:semicolon
 DECL|member|ci_rbuffer
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 id|ci_rbuffer
 suffix:semicolon
 DECL|member|ci_wbuffer
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 id|ci_wbuffer
 suffix:semicolon
 DECL|member|dvb_adapter
@@ -1596,13 +1326,24 @@ id|dvb_device
 op_star
 id|osd_dev
 suffix:semicolon
+DECL|member|video_events
+r_struct
+id|dvb_video_events
+id|video_events
+suffix:semicolon
+DECL|member|video_size
+id|video_size_t
+id|video_size
+suffix:semicolon
 DECL|member|dsp_dev
 r_int
 id|dsp_dev
 suffix:semicolon
-DECL|typedef|av7110_t
+DECL|member|ir_config
+id|u32
+id|ir_config
+suffix:semicolon
 )brace
-id|av7110_t
 suffix:semicolon
 DECL|macro|DPRAM_BASE
 mdefine_line|#define&t;DPRAM_BASE 0x4000
@@ -1655,34 +1396,6 @@ DECL|macro|Reserved
 mdefine_line|#define Reserved&t;(DPRAM_BASE + 0x1E00)
 DECL|macro|Reserved_SIZE
 mdefine_line|#define Reserved_SIZE&t;0x1C0
-DECL|macro|DEBUG_WINDOW
-mdefine_line|#define DEBUG_WINDOW&t;(DPRAM_BASE + 0x1FC0)
-DECL|macro|DBG_LOOP_CNT
-mdefine_line|#define&t;DBG_LOOP_CNT&t;(DEBUG_WINDOW + 0x00)
-DECL|macro|DBG_SEC_CNT
-mdefine_line|#define DBG_SEC_CNT&t;(DEBUG_WINDOW + 0x02)
-DECL|macro|DBG_AVRP_BUFF
-mdefine_line|#define DBG_AVRP_BUFF&t;(DEBUG_WINDOW + 0x04)
-DECL|macro|DBG_AVRP_PEAK
-mdefine_line|#define DBG_AVRP_PEAK&t;(DEBUG_WINDOW + 0x06)
-DECL|macro|DBG_MSG_CNT
-mdefine_line|#define DBG_MSG_CNT&t;(DEBUG_WINDOW + 0x08)
-DECL|macro|DBG_CODE_REG
-mdefine_line|#define DBG_CODE_REG&t;(DEBUG_WINDOW + 0x0a)
-DECL|macro|DBG_TTX_Q
-mdefine_line|#define DBG_TTX_Q&t;(DEBUG_WINDOW + 0x0c)
-DECL|macro|DBG_AUD_EN
-mdefine_line|#define DBG_AUD_EN&t;(DEBUG_WINDOW + 0x0e)
-DECL|macro|DBG_WRONG_COM
-mdefine_line|#define DBG_WRONG_COM&t;(DEBUG_WINDOW + 0x10)
-DECL|macro|DBG_ARR_OVFL
-mdefine_line|#define DBG_ARR_OVFL&t;(DEBUG_WINDOW + 0x12)
-DECL|macro|DBG_BUFF_OVFL
-mdefine_line|#define DBG_BUFF_OVFL&t;(DEBUG_WINDOW + 0x14)
-DECL|macro|DBG_OVFL_CNT
-mdefine_line|#define DBG_OVFL_CNT&t;(DEBUG_WINDOW + 0x16)
-DECL|macro|DBG_SEC_OVFL
-mdefine_line|#define DBG_SEC_OVFL&t;(DEBUG_WINDOW + 0x18)
 DECL|macro|STATUS_BASE
 mdefine_line|#define STATUS_BASE&t;(DPRAM_BASE + 0x1FC0)
 DECL|macro|STATUS_SCR
@@ -1691,6 +1404,11 @@ DECL|macro|STATUS_MODES
 mdefine_line|#define STATUS_MODES    (STATUS_BASE + 0x04)
 DECL|macro|STATUS_LOOPS
 mdefine_line|#define STATUS_LOOPS    (STATUS_BASE + 0x08)
+DECL|macro|STATUS_MPEG_WIDTH
+mdefine_line|#define STATUS_MPEG_WIDTH     (STATUS_BASE + 0x0C)
+multiline_comment|/* ((aspect_ratio &amp; 0xf) &lt;&lt; 12) | (height &amp; 0xfff) */
+DECL|macro|STATUS_MPEG_HEIGHT_AR
+mdefine_line|#define STATUS_MPEG_HEIGHT_AR (STATUS_BASE + 0x0E)
 DECL|macro|RX_TYPE
 mdefine_line|#define RX_TYPE         (DPRAM_BASE + 0x1FE8)
 DECL|macro|RX_LEN
@@ -1774,7 +1492,8 @@ r_extern
 r_void
 id|av7110_setup_irc_config
 (paren
-id|av7110_t
+r_struct
+id|av7110
 op_star
 id|av7110
 comma

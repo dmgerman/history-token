@@ -17,7 +17,11 @@ comma
 multiline_comment|/* Select 4:3 format */
 DECL|enumerator|VIDEO_FORMAT_16_9
 id|VIDEO_FORMAT_16_9
+comma
 multiline_comment|/* Select 16:9 format. */
+DECL|enumerator|VIDEO_FORMAT_221_1
+id|VIDEO_FORMAT_221_1
+multiline_comment|/* 2.21:1 */
 DECL|typedef|video_format_t
 )brace
 id|video_format_t
@@ -71,6 +75,25 @@ DECL|typedef|video_displayformat_t
 id|video_displayformat_t
 suffix:semicolon
 r_typedef
+r_struct
+(brace
+DECL|member|w
+r_int
+id|w
+suffix:semicolon
+DECL|member|h
+r_int
+id|h
+suffix:semicolon
+DECL|member|aspect_ratio
+id|video_format_t
+id|aspect_ratio
+suffix:semicolon
+DECL|typedef|video_size_t
+)brace
+id|video_size_t
+suffix:semicolon
+r_typedef
 r_enum
 (brace
 DECL|enumerator|VIDEO_SOURCE_DEMUX
@@ -110,15 +133,17 @@ DECL|member|type
 r_int32
 id|type
 suffix:semicolon
+DECL|macro|VIDEO_EVENT_SIZE_CHANGED
+mdefine_line|#define VIDEO_EVENT_SIZE_CHANGED 1
 DECL|member|timestamp
 id|time_t
 id|timestamp
 suffix:semicolon
 r_union
 (brace
-DECL|member|video_format
-id|video_format_t
-id|video_format
+DECL|member|size
+id|video_size_t
+id|size
 suffix:semicolon
 DECL|member|u
 )brace
@@ -361,5 +386,7 @@ DECL|macro|VIDEO_GET_NAVI
 mdefine_line|#define VIDEO_GET_NAVI             _IOR(&squot;o&squot;, 52, video_navi_pack_t)
 DECL|macro|VIDEO_SET_ATTRIBUTES
 mdefine_line|#define VIDEO_SET_ATTRIBUTES       _IO(&squot;o&squot;, 53)
+DECL|macro|VIDEO_GET_SIZE
+mdefine_line|#define VIDEO_GET_SIZE             _IOR(&squot;o&squot;, 55, video_size_t)
 macro_line|#endif /*_DVBVIDEO_H_*/
 eof

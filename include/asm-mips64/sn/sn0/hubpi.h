@@ -186,9 +186,9 @@ mdefine_line|#define PI_ERR_INT_MASK_A&t;0x000408 /* Error Interrupt mask for CP
 DECL|macro|PI_ERR_INT_MASK_B
 mdefine_line|#define PI_ERR_INT_MASK_B&t;0x000410 /* Error Interrupt mask for CPU B  */
 DECL|macro|PI_ERR_STACK_ADDR_A
-mdefine_line|#define PI_ERR_STACK_ADDR_A&t;0x000418 /* Error stack address for CPU A   */ 
+mdefine_line|#define PI_ERR_STACK_ADDR_A&t;0x000418 /* Error stack address for CPU A   */
 DECL|macro|PI_ERR_STACK_ADDR_B
-mdefine_line|#define PI_ERR_STACK_ADDR_B&t;0x000420 /* Error stack address for CPU B   */ 
+mdefine_line|#define PI_ERR_STACK_ADDR_B&t;0x000420 /* Error stack address for CPU B   */
 DECL|macro|PI_ERR_STACK_SIZE
 mdefine_line|#define PI_ERR_STACK_SIZE&t;0x000428 /* Error Stack Size &t;&t;    */
 DECL|macro|PI_ERR_STATUS0_A
@@ -288,7 +288,7 @@ DECL|macro|PI_ERR_CLEAR_ALL_A
 mdefine_line|#define PI_ERR_CLEAR_ALL_A&t;0x00aaaaaa
 DECL|macro|PI_ERR_CLEAR_ALL_B
 mdefine_line|#define PI_ERR_CLEAR_ALL_B&t;0x00555555
-multiline_comment|/*&n; * The following three macros define all possible error int pends. &n; */
+multiline_comment|/*&n; * The following three macros define all possible error int pends.&n; */
 DECL|macro|PI_FATAL_ERR_CPU_A
 mdefine_line|#define PI_FATAL_ERR_CPU_A&t;(PI_ERR_SYSSTATE_TAG_A &t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_BAD_SPOOL_A &t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_SYSCMD_ADDR_A &t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_SYSCMD_DATA_A &t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_SYSAD_ADDR_A &t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_SYSAD_DATA_A&t;| &bslash;&n;&t;&t;&t;&t; PI_ERR_SYSSTATE_A)
 DECL|macro|PI_MISC_ERR_CPU_A
@@ -423,7 +423,7 @@ DECL|macro|PI_STACK_SIZE_SHFT
 mdefine_line|#define PI_STACK_SIZE_SHFT&t;12&t;/* 4k */
 DECL|macro|ERR_STACK_SIZE_BYTES
 mdefine_line|#define ERR_STACK_SIZE_BYTES(_sz) &bslash;&n;       ((_sz) ? (PI_MIN_STACK_SIZE &lt;&lt; ((_sz) - 1)) : 0)
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * format of error stack and error status registers.&n; */
 DECL|struct|err_stack_format
 r_struct
@@ -637,7 +637,7 @@ r_typedef
 id|u64
 id|rtc_time_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Bits in PI_SYSAD_ERRCHK_EN */
 DECL|macro|PI_SYSAD_ERRCHK_ECCGEN
 mdefine_line|#define PI_SYSAD_ERRCHK_ECCGEN&t;0x01&t;/* Enable ECC generation&t;    */

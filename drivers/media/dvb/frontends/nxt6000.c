@@ -1,11 +1,9 @@
 multiline_comment|/* &n;&n;&t;NxtWave Communications - NXT6000 demodulator driver&n;&t;&n;&t;This driver currently supports:&n;&t;&n;&t;Alps TDME7 (Tuner: MITEL SP5659)&n;&t;Alps TDED4 (Tuner: TI ALP510, external Nxt6000)&n;&n;    Copyright (C) 2002-2003 Florian Schirmer &lt;schirmer@taytron.net&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;nxt6000.h&quot;
 DECL|variable|debug
@@ -203,22 +201,26 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 suffix:semicolon
@@ -250,7 +252,7 @@ l_int|1
 id|dprintk
 c_func
 (paren
-l_string|&quot;nxt6000: nxt6000_write error (addr: 0x%02X, reg: 0x%02X, data: 0x%02X, ret: %d)&bslash;n&quot;
+l_string|&quot;nxt6000: nxt6000_write error (.addr = 0x%02X, reg: 0x%02X, data: 0x%02X, ret: %d)&bslash;n&quot;
 comma
 id|addr
 comma
@@ -365,42 +367,50 @@ id|msgs
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b0
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|I2C_M_RD
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b1
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 )brace
@@ -429,7 +439,7 @@ l_int|2
 id|dprintk
 c_func
 (paren
-l_string|&quot;nxt6000: nxt6000_read error (addr: 0x%02X, reg: 0x%02X, ret: %d)&bslash;n&quot;
+l_string|&quot;nxt6000: nxt6000_read error (.addr = 0x%02X, reg: 0x%02X, ret: %d)&bslash;n&quot;
 comma
 id|addr
 comma
@@ -513,22 +523,26 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|tuner_addr
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 id|len
 )brace
 suffix:semicolon

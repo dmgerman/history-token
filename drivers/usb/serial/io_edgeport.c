@@ -433,6 +433,12 @@ id|divisor_table
 op_assign
 (brace
 (brace
+l_int|50
+comma
+l_int|4608
+)brace
+comma
+(brace
 l_int|75
 comma
 l_int|3072
@@ -9203,10 +9209,6 @@ singleline_comment|// Make sure the baud rate is reasonable
 r_if
 c_cond
 (paren
-id|baudrate
-OG
-l_int|75
-op_logical_and
 id|baudrate
 OL
 l_int|230400

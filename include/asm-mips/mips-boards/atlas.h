@@ -3,7 +3,7 @@ macro_line|#ifndef _MIPS_ATLAS_H
 DECL|macro|_MIPS_ATLAS_H
 mdefine_line|#define _MIPS_ATLAS_H
 macro_line|#include &lt;asm/addrspace.h&gt;
-multiline_comment|/* &n; * Atlas RTC-device indirect register access.&n; */
+multiline_comment|/*&n; * Atlas RTC-device indirect register access.&n; */
 DECL|macro|ATLAS_RTC_ADR_REG
 mdefine_line|#define ATLAS_RTC_ADR_REG       (KSEG1ADDR(0x1f000800))
 DECL|macro|ATLAS_RTC_DAT_REG
@@ -15,13 +15,13 @@ multiline_comment|/*&n; * Atlas UART register base.&n; */
 DECL|macro|ATLAS_UART_REGS_BASE
 mdefine_line|#define ATLAS_UART_REGS_BASE    (0x1f000900)
 DECL|macro|ATLAS_BASE_BAUD
-mdefine_line|#define ATLAS_BASE_BAUD ( 3686400 / 16 ) 
+mdefine_line|#define ATLAS_BASE_BAUD ( 3686400 / 16 )
 multiline_comment|/*&n; * Atlas PSU standby register.&n; */
 DECL|macro|ATLAS_PSUSTBY_REG
 mdefine_line|#define ATLAS_PSUSTBY_REG       (KSEG1ADDR(0x1f000600))
 DECL|macro|ATLAS_GOSTBY
 mdefine_line|#define ATLAS_GOSTBY            0x4d
-multiline_comment|/*&n; * We make a universal assumption about the way the bootloader (YAMON)&n; * have located the Philips SAA9730 chip.&n; * This is not ideal, but is needed for setting up remote debugging as &n; * soon as possible.&n; */
+multiline_comment|/*&n; * We make a universal assumption about the way the bootloader (YAMON)&n; * have located the Philips SAA9730 chip.&n; * This is not ideal, but is needed for setting up remote debugging as&n; * soon as possible.&n; */
 DECL|macro|ATLAS_SAA9730_REG
 mdefine_line|#define ATLAS_SAA9730_REG  (KSEG1ADDR(0x08800000))
 macro_line|#endif /* !(_MIPS_ATLAS_H) */

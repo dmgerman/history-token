@@ -1,5 +1,6 @@
-multiline_comment|/*&n; *  arch/mips/kernel/gdb-stub.c&n; *&n; *  Originally written by Glenn Engel, Lake Stevens Instrument Division&n; *&n; *  Contributed by HP Systems&n; *&n; *  Modified for SPARC by Stu Grossman, Cygnus Support.&n; *&n; *  Modified for Linux/MIPS (and MIPS in general) by Andreas Busse&n; *  Send complaints, suggestions etc. to &lt;andy@waldorf-gmbh.de&gt;&n; *&n; *  Copyright (C) 1995 Andreas Busse&n; *&n; * $Id: gdb-stub.c,v 1.6 1999/05/01 22:40:35 ralf Exp $&n; */
-multiline_comment|/*&n; *  To enable debugger support, two things need to happen.  One, a&n; *  call to set_debug_traps() is necessary in order to allow any breakpoints&n; *  or error conditions to be properly intercepted and reported to gdb.&n; *  Two, a breakpoint needs to be generated to begin communication.  This&n; *  is most easily accomplished by a call to breakpoint().  Breakpoint()&n; *  simulates a breakpoint by executing a BREAK instruction.&n; *&n; *&n; *    The following gdb commands are supported:&n; *&n; * command          function                               Return value&n; *&n; *    g             return the value of the CPU registers  hex data or ENN&n; *    G             set the value of the CPU registers     OK or ENN&n; *&n; *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN&n; *    MAA..AA,LLLL: Write LLLL bytes at address AA.AA      OK or ENN&n; *&n; *    c             Resume at current address              SNN   ( signal NN)&n; *    cAA..AA       Continue at address AA..AA             SNN&n; *&n; *    s             Step one instruction                   SNN&n; *    sAA..AA       Step one instruction from AA..AA       SNN&n; *&n; *    k             kill&n; *&n; *    ?             What was the last sigval ?             SNN   (signal NN)&n; *&n; *    bBB..BB&t;    Set baud rate to BB..BB&t;&t;   OK or BNN, then sets&n; *&t;&t;&t;&t;&t;&t;&t;   baud rate&n; *&n; * All commands and responses are sent with a packet which includes a&n; * checksum.  A packet consists of&n; *&n; * $&lt;packet info&gt;#&lt;checksum&gt;.&n; *&n; * where&n; * &lt;packet info&gt; :: &lt;characters representing the command or response&gt;&n; * &lt;checksum&gt;    :: &lt; two hex digits computed as modulo 256 sum of &lt;packetinfo&gt;&gt;&n; *&n; * When a packet is received, it is first acknowledged with either &squot;+&squot; or &squot;-&squot;.&n; * &squot;+&squot; indicates a successful transfer.  &squot;-&squot; indicates a failed transfer.&n; *&n; * Example:&n; *&n; * Host:                  Reply:&n; * $m0,10#2a               +$00010203040506070809101112131415#42&n; *&n; * &n; *  ==============&n; *  MORE EXAMPLES:&n; *  ==============&n; *&n; *  For reference -- the following are the steps that one&n; *  company took (RidgeRun Inc) to get remote gdb debugging&n; *  going. In this scenario the host machine was a PC and the&n; *  target platform was a Galileo EVB64120A MIPS evaluation&n; *  board.&n; *   &n; *  Step 1:&n; *  First download gdb-5.0.tar.gz from the internet.&n; *  and then build/install the package.&n; * &n; *  Example:&n; *    $ tar zxf gdb-5.0.tar.gz&n; *    $ cd gdb-5.0&n; *    $ ./configure --target=mips-linux-elf&n; *    $ make&n; *    $ install&n; *    $ which mips-linux-elf-gdb&n; *    /usr/local/bin/mips-linux-elf-gdb&n; * &n; *  Step 2:&n; *  Configure linux for remote debugging and build it.&n; * &n; *  Example:&n; *    $ cd ~/linux&n; *    $ make menuconfig &lt;go to &quot;Kernel Hacking&quot; and turn on remote debugging&gt;&n; *    $ make dep; make vmlinux&n; * &n; *  Step 3:&n; *  Download the kernel to the remote target and start&n; *  the kernel running. It will promptly halt and wait &n; *  for the host gdb session to connect. It does this&n; *  since the &quot;Kernel Hacking&quot; option has defined &n; *  CONFIG_REMOTE_DEBUG which in turn enables your calls&n; *  to:&n; *     set_debug_traps();&n; *     breakpoint();&n; * &n; *  Step 4:&n; *  Start the gdb session on the host.&n; * &n; *  Example:&n; *    $ mips-linux-elf-gdb vmlinux&n; *    (gdb) set remotebaud 115200&n; *    (gdb) target remote /dev/ttyS1&n; *    ...at this point you are connected to &n; *       the remote target and can use gdb&n; *       in the normal fasion. Setting &n; *       breakpoints, single stepping,&n; *       printing variables, etc.&n; *&n; */
+multiline_comment|/*&n; *  arch/mips/kernel/gdb-stub.c&n; *&n; *  Originally written by Glenn Engel, Lake Stevens Instrument Division&n; *&n; *  Contributed by HP Systems&n; *&n; *  Modified for SPARC by Stu Grossman, Cygnus Support.&n; *&n; *  Modified for Linux/MIPS (and MIPS in general) by Andreas Busse&n; *  Send complaints, suggestions etc. to &lt;andy@waldorf-gmbh.de&gt;&n; *&n; *  Copyright (C) 1995 Andreas Busse&n; */
+multiline_comment|/*&n; *  To enable debugger support, two things need to happen.  One, a&n; *  call to set_debug_traps() is necessary in order to allow any breakpoints&n; *  or error conditions to be properly intercepted and reported to gdb.&n; *  Two, a breakpoint needs to be generated to begin communication.  This&n; *  is most easily accomplished by a call to breakpoint().  Breakpoint()&n; *  simulates a breakpoint by executing a BREAK instruction.&n; *&n; *&n; *    The following gdb commands are supported:&n; *&n; * command          function                               Return value&n; *&n; *    g             return the value of the CPU registers  hex data or ENN&n; *    G             set the value of the CPU registers     OK or ENN&n; *&n; *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN&n; *    MAA..AA,LLLL: Write LLLL bytes at address AA.AA      OK or ENN&n; *&n; *    c             Resume at current address              SNN   ( signal NN)&n; *    cAA..AA       Continue at address AA..AA             SNN&n; *&n; *    s             Step one instruction                   SNN&n; *    sAA..AA       Step one instruction from AA..AA       SNN&n; *&n; *    k             kill&n; *&n; *    ?             What was the last sigval ?             SNN   (signal NN)&n; *&n; *    bBB..BB&t;    Set baud rate to BB..BB&t;&t;   OK or BNN, then sets&n; *&t;&t;&t;&t;&t;&t;&t;   baud rate&n; *&n; * All commands and responses are sent with a packet which includes a&n; * checksum.  A packet consists of&n; *&n; * $&lt;packet info&gt;#&lt;checksum&gt;.&n; *&n; * where&n; * &lt;packet info&gt; :: &lt;characters representing the command or response&gt;&n; * &lt;checksum&gt;    :: &lt; two hex digits computed as modulo 256 sum of &lt;packetinfo&gt;&gt;&n; *&n; * When a packet is received, it is first acknowledged with either &squot;+&squot; or &squot;-&squot;.&n; * &squot;+&squot; indicates a successful transfer.  &squot;-&squot; indicates a failed transfer.&n; *&n; * Example:&n; *&n; * Host:                  Reply:&n; * $m0,10#2a               +$00010203040506070809101112131415#42&n; *&n; *&n; *  ==============&n; *  MORE EXAMPLES:&n; *  ==============&n; *&n; *  For reference -- the following are the steps that one&n; *  company took (RidgeRun Inc) to get remote gdb debugging&n; *  going. In this scenario the host machine was a PC and the&n; *  target platform was a Galileo EVB64120A MIPS evaluation&n; *  board.&n; *&n; *  Step 1:&n; *  First download gdb-5.0.tar.gz from the internet.&n; *  and then build/install the package.&n; *&n; *  Example:&n; *    $ tar zxf gdb-5.0.tar.gz&n; *    $ cd gdb-5.0&n; *    $ ./configure --target=mips-linux-elf&n; *    $ make&n; *    $ install&n; *    $ which mips-linux-elf-gdb&n; *    /usr/local/bin/mips-linux-elf-gdb&n; *&n; *  Step 2:&n; *  Configure linux for remote debugging and build it.&n; *&n; *  Example:&n; *    $ cd ~/linux&n; *    $ make menuconfig &lt;go to &quot;Kernel Hacking&quot; and turn on remote debugging&gt;&n; *    $ make dep; make vmlinux&n; *&n; *  Step 3:&n; *  Download the kernel to the remote target and start&n; *  the kernel running. It will promptly halt and wait&n; *  for the host gdb session to connect. It does this&n; *  since the &quot;Kernel Hacking&quot; option has defined&n; *  CONFIG_KGDB which in turn enables your calls&n; *  to:&n; *     set_debug_traps();&n; *     breakpoint();&n; *&n; *  Step 4:&n; *  Start the gdb session on the host.&n; *&n; *  Example:&n; *    $ mips-linux-elf-gdb vmlinux&n; *    (gdb) set remotebaud 115200&n; *    (gdb) target remote /dev/ttyS1&n; *    ...at this point you are connected to&n; *       the remote target and can use gdb&n; *       in the normal fasion. Setting&n; *       breakpoints, single stepping,&n; *       printing variables, etc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -7,6 +8,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -194,10 +197,12 @@ id|kgdb_read_byte
 c_func
 (paren
 r_int
+r_char
 op_star
 id|address
 comma
 r_int
+r_char
 op_star
 id|dest
 )paren
@@ -207,9 +212,11 @@ id|kgdb_write_byte
 c_func
 (paren
 r_int
+r_char
 id|val
 comma
 r_int
+r_char
 op_star
 id|dest
 )paren
@@ -983,7 +990,7 @@ r_int
 r_char
 id|c
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1085,7 +1092,7 @@ id|initialized
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1710,7 +1717,7 @@ id|BP
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  If asynchronously interrupted by gdb, then we need to set a breakpoint&n; *  at the interrupted instruction so that we wind up stopped with a &n; *  reasonable stack frame.&n; */
+multiline_comment|/*&n; *  If asynchronously interrupted by gdb, then we need to set a breakpoint&n; *  at the interrupted instruction so that we wind up stopped with a&n; *  reasonable stack frame.&n; */
 DECL|variable|async_bp
 r_static
 r_struct
@@ -1749,7 +1756,7 @@ id|epc
 op_assign
 id|BP
 suffix:semicolon
-id|flush_cache_all
+id|__flush_cache_all
 c_func
 (paren
 )paren
@@ -1788,21 +1795,7 @@ r_int
 op_star
 id|stack
 suffix:semicolon
-macro_line|#if 0&t;
-id|printk
-c_func
-(paren
-l_string|&quot;in handle_exception()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|show_gdbregs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * First check trap type. If this is CPU_UNUSABLE and CPU_ID is 1,&n;&t; * the simply switch the FPU on and return since this is no error&n;&t; * condition. kernel/traps.c does the same.&n;&t; * FIXME: This doesn&squot;t work yet, so we don&squot;t catch CPU_UNUSABLE&n;&t; * traps for now.&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re in breakpoint() increment the PC&n;&t; */
 id|trap
 op_assign
 (paren
@@ -1813,40 +1806,6 @@ l_int|0x7c
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/*&t;printk(&quot;trap=%d&bslash;n&quot;,trap); */
-r_if
-c_cond
-(paren
-id|trap
-op_eq
-l_int|11
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|regs-&gt;cp0_cause
-op_rshift
-id|CAUSEB_CE
-)paren
-op_amp
-l_int|3
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|regs-&gt;cp0_status
-op_or_assign
-id|ST0_CU1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * If we&squot;re in breakpoint() increment the PC&n;&t; */
 r_if
 c_cond
 (paren
@@ -2267,6 +2226,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_char|&squot;D&squot;
+suffix:colon
+multiline_comment|/* detach; let CPU run */
+id|putpacket
+c_func
+(paren
+id|output_buffer
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_case
 l_char|&squot;d&squot;
 suffix:colon
 multiline_comment|/* toggle debug flag */
@@ -2414,19 +2385,11 @@ suffix:semicolon
 multiline_comment|/* cp0 */
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * set the value of the CPU registers - return OK&n;&t;&t; * FIXME: Needs to be written&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * set the value of the CPU registers - return OK&n;&t;&t; */
 r_case
 l_char|&squot;G&squot;
 suffix:colon
 (brace
-macro_line|#if 0
-r_int
-r_int
-op_star
-id|newsp
-comma
-id|psr
-suffix:semicolon
 id|ptr
 op_assign
 op_amp
@@ -2444,7 +2407,133 @@ comma
 r_char
 op_star
 )paren
-id|registers
+op_amp
+id|regs-&gt;reg0
+comma
+l_int|32
+op_star
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|32
+op_star
+l_int|8
+suffix:semicolon
+id|hex2mem
+c_func
+(paren
+id|ptr
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|regs-&gt;cp0_status
+comma
+l_int|6
+op_star
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|6
+op_star
+l_int|8
+suffix:semicolon
+id|hex2mem
+c_func
+(paren
+id|ptr
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|regs-&gt;fpr0
+comma
+l_int|32
+op_star
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|32
+op_star
+l_int|8
+suffix:semicolon
+id|hex2mem
+c_func
+(paren
+id|ptr
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|regs-&gt;cp1_fsr
+comma
+l_int|2
+op_star
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|2
+op_star
+l_int|8
+suffix:semicolon
+id|hex2mem
+c_func
+(paren
+id|ptr
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|regs-&gt;frame_ptr
+comma
+l_int|2
+op_star
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|2
+op_star
+l_int|8
+suffix:semicolon
+id|hex2mem
+c_func
+(paren
+id|ptr
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|regs-&gt;cp0_index
 comma
 l_int|16
 op_star
@@ -2453,42 +2542,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* G &amp; O regs */
-multiline_comment|/*&n;&t;&t;&t; * See if the stack pointer has moved. If so, then copy the&n;&t;&t;&t; * saved locals and ins to the new location.&n;&t;&t;&t; */
-id|newsp
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|registers
-(braket
-id|SP
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sp
-op_ne
-id|newsp
-)paren
-id|sp
-op_assign
-id|memcpy
-c_func
-(paren
-id|newsp
-comma
-id|sp
-comma
-l_int|16
-op_star
-l_int|4
-)paren
-suffix:semicolon
-macro_line|#endif
 id|strcpy
 c_func
 (paren
@@ -2709,7 +2762,7 @@ op_assign
 id|addr
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Need to flush the instruction cache here, as we may&n;&t;&t;&t; * have deposited a breakpoint, and the icache probably&n;&t;&t;&t; * has no way of knowing that a data ref to some location&n;&t;&t;&t; * may have changed something that is in the instruction&n;&t;&t;&t; * cache.&n;&t;&t;&t; * NB: We flush both caches, just to be sure...&n;&t;&t;&t; */
-id|flush_cache_all
+id|__flush_cache_all
 c_func
 (paren
 )paren
@@ -2719,17 +2772,19 @@ suffix:semicolon
 multiline_comment|/* NOTREACHED */
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * kill the program&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * kill the program; let us try to restart the machine&n;&t;&t; * Reset the whole machine.&n;&t;&t; */
 r_case
 l_char|&squot;k&squot;
 suffix:colon
-r_break
-suffix:semicolon
-multiline_comment|/* do nothing */
-multiline_comment|/*&n;&t;&t; * Reset the whole machine (FIXME: system dependent)&n;&t;&t; */
 r_case
 l_char|&squot;r&squot;
 suffix:colon
+id|machine_restart
+c_func
+(paren
+l_string|&quot;kgdb restarts machine&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Step to next instruction&n;&t;&t; */
@@ -2743,7 +2798,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|flush_cache_all
+id|__flush_cache_all
 c_func
 (paren
 )paren
@@ -2756,7 +2811,7 @@ r_case
 l_char|&squot;b&squot;
 suffix:colon
 (brace
-macro_line|#if 0&t;&t;&t;&t;
+macro_line|#if 0
 r_int
 id|baudrate
 suffix:semicolon
@@ -2911,22 +2966,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|breakinst
-dot
-id|set
-id|noreorder
-id|nop
-id|breakinst
-suffix:colon
-r_break
-id|nop
-dot
-id|set
-id|reorder
-"&quot;"
+l_string|&quot;.globl&t;breakinst&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;breakinst:&bslash;tbreak&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;treorder&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2942,49 +2987,67 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|adel
-id|la
-"$"
-l_int|8
-comma
-l_int|0x80000001
-id|lw
-"$"
-l_int|9
-comma
-l_int|0
-(paren
-"$"
-l_int|8
+l_string|&quot;.globl&bslash;tadel&bslash;n&bslash;t&quot;
+l_string|&quot;la&bslash;t$8,0x80000001&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t$9,0($8)&bslash;n&bslash;t&quot;
 )paren
-"&quot;"
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * malloc is needed by gdb client in &quot;call func()&quot;, even a private one&n; * will make gdb happy&n; */
+DECL|function|malloc
+r_static
+r_void
+op_star
+id|malloc
+c_func
+(paren
+r_int
+id|size
+)paren
+(brace
+r_return
+id|kmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+)brace
+DECL|function|free
+r_static
+r_void
+id|free
+c_func
+(paren
+r_void
+op_star
+id|where
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|where
 )paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_GDB_CONSOLE
-DECL|function|gdb_puts
+DECL|function|gdb_putsn
 r_void
-id|gdb_puts
+id|gdb_putsn
 c_func
 (paren
 r_const
 r_char
 op_star
 id|str
-)paren
-(brace
+comma
 r_int
 id|l
-op_assign
-id|strlen
-c_func
-(paren
-id|str
 )paren
-suffix:semicolon
+(brace
 r_char
 id|outbuf
 (braket
@@ -3087,10 +3150,12 @@ r_int
 id|n
 )paren
 (brace
-id|gdb_puts
+id|gdb_putsn
 c_func
 (paren
 id|s
+comma
+id|n
 )paren
 suffix:semicolon
 )brace

@@ -3,6 +3,24 @@ macro_line|#ifndef _ASM_PACCESS_H
 DECL|macro|_ASM_PACCESS_H
 mdefine_line|#define _ASM_PACCESS_H
 macro_line|#include &lt;linux/errno.h&gt;
+r_extern
+id|asmlinkage
+r_void
+id|handle_ibe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|handle_dbe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|put_dbe
 mdefine_line|#define put_dbe(x,ptr) __put_dbe((x),(ptr),sizeof(*(ptr)))
 DECL|macro|get_dbe
@@ -45,6 +63,35 @@ id|__put_dbe_unknown
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|handle_ibe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|handle_dbe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|search_dbe_table
+c_func
+(paren
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_PACCESS_H */

@@ -3,15 +3,14 @@ macro_line|#ifndef __ASM_DDB5XXX_DDB5477_H
 DECL|macro|__ASM_DDB5XXX_DDB5477_H
 mdefine_line|#define __ASM_DDB5XXX_DDB5477_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 multiline_comment|/*&n; * This contains macros that are specific to DDB5477 or renamed from&n; * DDB5476.&n; */
 multiline_comment|/*&n; * renamed PADRs&n; */
 DECL|macro|DDB_LCS0
-mdefine_line|#define&t;DDB_LCS0&t;DDB_LDCS0
+mdefine_line|#define&t;DDB_LCS0&t;DDB_DCS2
 DECL|macro|DDB_LCS1
-mdefine_line|#define&t;DDB_LCS1&t;DDB_LDCS1
+mdefine_line|#define&t;DDB_LCS1&t;DDB_DCS3
 DECL|macro|DDB_LCS2
-mdefine_line|#define&t;DDB_LCS2&t;DDB_LDCS2
+mdefine_line|#define&t;DDB_LCS2&t;DDB_DCS4
 DECL|macro|DDB_VRC5477
 mdefine_line|#define&t;DDB_VRC5477&t;DDB_INTCS
 multiline_comment|/*&n; * New CPU interface registers&n; */
@@ -196,10 +195,11 @@ mdefine_line|#define DDB_GIUFUNSEL&t;0x4040  /* select dual-func pins */
 DECL|macro|DDB_PIBMISC
 mdefine_line|#define DDB_PIBMISC&t;0x0750&t;/* USB buffer enable / power saving */
 multiline_comment|/*&n; *  Memory map (physical address)&n; *&n; *  Note most of the following address must be properly aligned by the&n; *  corresponding size.  For example, if PCI_IO_SIZE is 16MB, then&n; *  PCI_IO_BASE must be aligned along 16MB boundary.&n; */
+multiline_comment|/* the actual ram size is detected at run-time */
 DECL|macro|DDB_SDRAM_BASE
 mdefine_line|#define&t;DDB_SDRAM_BASE&t;&t;0x00000000
-DECL|macro|DDB_SDRAM_SIZE
-mdefine_line|#define&t;DDB_SDRAM_SIZE&t;&t;0x08000000&t;/* 128MB, for sure? */
+DECL|macro|DDB_MAX_SDRAM_SIZE
+mdefine_line|#define&t;DDB_MAX_SDRAM_SIZE&t;0x08000000&t;/* less than 128MB */
 DECL|macro|DDB_PCI0_MEM_BASE
 mdefine_line|#define&t;DDB_PCI0_MEM_BASE&t;0x08000000
 DECL|macro|DDB_PCI0_MEM_SIZE
@@ -249,6 +249,7 @@ mdefine_line|#define&t;DDB_BOOTCS_SIZE&t;&t;0x00200000&t;/* 2 MB - doc says 4MB 
 DECL|macro|DDB_LED
 mdefine_line|#define&t;DDB_LED&t;&t;&t;DDB_LCS1_BASE + 0x10000
 multiline_comment|/*&n; * DDB5477 specific functions&n; */
+macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
 id|ddb5477_irq_setup
@@ -289,8 +290,132 @@ r_int
 id|vrc5477_irq
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * debug routines&n; */
-macro_line|#if defined(CONFIG_LL_DEBUG)
+macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* PCI intr ack share PCIW0 with PCI IO */
+DECL|macro|DDB_PCI_IACK_BASE
+mdefine_line|#define&t;DDB_PCI_IACK_BASE&t;DDB_PCI_IO_BASE
+multiline_comment|/*&n; * Interrupt mapping&n; *&n; * We have three interrupt controllers:&n; *&n; *   . CPU itself - 8 sources&n; *   . i8259 - 16 sources&n; *   . vrc5477 - 32 sources&n; *&n; *  They connected as follows:&n; *    all vrc5477 interrupts are routed to cpu IP2 (by software setting)&n; *    all i8359 are routed to INTC in vrc5477 (by hardware connection)&n; *&n; *  All VRC5477 PCI interrupts are level-triggered (no ack needed).&n; *  All PCI irq but INTC are active low.&n; */
+multiline_comment|/* &n; * irq number block assignment&n; */
+DECL|macro|NUM_CPU_IRQ
+mdefine_line|#define&t;NUM_CPU_IRQ&t;&t;8
+DECL|macro|NUM_I8259_IRQ
+mdefine_line|#define&t;NUM_I8259_IRQ&t;&t;16
+DECL|macro|NUM_VRC5477_IRQ
+mdefine_line|#define&t;NUM_VRC5477_IRQ&t;&t;32
+DECL|macro|DDB_IRQ_BASE
+mdefine_line|#define&t;DDB_IRQ_BASE&t;&t;0
+DECL|macro|I8259_IRQ_BASE
+mdefine_line|#define&t;I8259_IRQ_BASE&t;&t;DDB_IRQ_BASE
+DECL|macro|VRC5477_IRQ_BASE
+mdefine_line|#define&t;VRC5477_IRQ_BASE&t;(I8259_IRQ_BASE + NUM_I8259_IRQ)
+DECL|macro|CPU_IRQ_BASE
+mdefine_line|#define&t;CPU_IRQ_BASE&t;&t;(VRC5477_IRQ_BASE + NUM_VRC5477_IRQ)
+multiline_comment|/*&n; * vrc5477 irq defs&n; */
+DECL|macro|VRC5477_IRQ_CPCE
+mdefine_line|#define VRC5477_IRQ_CPCE&t;(0 + VRC5477_IRQ_BASE)&t;/* cpu parity error */
+DECL|macro|VRC5477_IRQ_CNTD
+mdefine_line|#define VRC5477_IRQ_CNTD&t;(1 + VRC5477_IRQ_BASE)&t;/* cpu no target */
+DECL|macro|VRC5477_IRQ_I2C
+mdefine_line|#define VRC5477_IRQ_I2C&t;&t;(2 + VRC5477_IRQ_BASE)&t;/* I2C */
+DECL|macro|VRC5477_IRQ_DMA
+mdefine_line|#define VRC5477_IRQ_DMA&t;&t;(3 + VRC5477_IRQ_BASE)&t;/* DMA */
+DECL|macro|VRC5477_IRQ_UART0
+mdefine_line|#define VRC5477_IRQ_UART0&t;(4 + VRC5477_IRQ_BASE)
+DECL|macro|VRC5477_IRQ_WDOG
+mdefine_line|#define VRC5477_IRQ_WDOG&t;(5 + VRC5477_IRQ_BASE)&t;/* watchdog timer */
+DECL|macro|VRC5477_IRQ_SPT1
+mdefine_line|#define VRC5477_IRQ_SPT1&t;(6 + VRC5477_IRQ_BASE)    /* special purpose timer 1 */
+DECL|macro|VRC5477_IRQ_LBRT
+mdefine_line|#define VRC5477_IRQ_LBRT&t;(7 + VRC5477_IRQ_BASE)&t;/* local bus read timeout */
+DECL|macro|VRC5477_IRQ_INTA
+mdefine_line|#define VRC5477_IRQ_INTA&t;(8 + VRC5477_IRQ_BASE)&t;/* PCI INT #A */
+DECL|macro|VRC5477_IRQ_INTB
+mdefine_line|#define VRC5477_IRQ_INTB&t;(9 + VRC5477_IRQ_BASE)&t;/* PCI INT #B */
+DECL|macro|VRC5477_IRQ_INTC
+mdefine_line|#define VRC5477_IRQ_INTC&t;(10 + VRC5477_IRQ_BASE)&t;/* PCI INT #C */
+DECL|macro|VRC5477_IRQ_INTD
+mdefine_line|#define VRC5477_IRQ_INTD&t;(11 + VRC5477_IRQ_BASE)&t;/* PCI INT #D */
+DECL|macro|VRC5477_IRQ_INTE
+mdefine_line|#define VRC5477_IRQ_INTE&t;(12 + VRC5477_IRQ_BASE)&t;/* PCI INT #E */
+DECL|macro|VRC5477_IRQ_RESERVED_13
+mdefine_line|#define VRC5477_IRQ_RESERVED_13&t;(13 + VRC5477_IRQ_BASE)&t;/* reserved  */
+DECL|macro|VRC5477_IRQ_PCIS
+mdefine_line|#define VRC5477_IRQ_PCIS&t;(14 + VRC5477_IRQ_BASE)&t;/* PCI SERR #  */
+DECL|macro|VRC5477_IRQ_PCI
+mdefine_line|#define VRC5477_IRQ_PCI&t;&t;(15 + VRC5477_IRQ_BASE)&t;/* PCI internal error */
+DECL|macro|VRC5477_IRQ_IOPCI_INTA
+mdefine_line|#define VRC5477_IRQ_IOPCI_INTA&t;(16 + VRC5477_IRQ_BASE)      /* USB-H */
+DECL|macro|VRC5477_IRQ_IOPCI_INTB
+mdefine_line|#define VRC5477_IRQ_IOPCI_INTB&t;(17 + VRC5477_IRQ_BASE)      /* USB-P */
+DECL|macro|VRC5477_IRQ_IOPCI_INTC
+mdefine_line|#define VRC5477_IRQ_IOPCI_INTC&t;(18 + VRC5477_IRQ_BASE)      /* AC97 */
+DECL|macro|VRC5477_IRQ_IOPCI_INTD
+mdefine_line|#define VRC5477_IRQ_IOPCI_INTD&t;(19 + VRC5477_IRQ_BASE)      /* Reserved */
+DECL|macro|VRC5477_IRQ_UART1
+mdefine_line|#define VRC5477_IRQ_UART1&t;(20 + VRC5477_IRQ_BASE)     
+DECL|macro|VRC5477_IRQ_SPT0
+mdefine_line|#define VRC5477_IRQ_SPT0&t;(21 + VRC5477_IRQ_BASE)      /* special purpose timer 0 */
+DECL|macro|VRC5477_IRQ_GPT0
+mdefine_line|#define VRC5477_IRQ_GPT0&t;(22 + VRC5477_IRQ_BASE)      /* general purpose timer 0 */
+DECL|macro|VRC5477_IRQ_GPT1
+mdefine_line|#define VRC5477_IRQ_GPT1&t;(23 + VRC5477_IRQ_BASE)      /* general purpose timer 1 */
+DECL|macro|VRC5477_IRQ_GPT2
+mdefine_line|#define VRC5477_IRQ_GPT2&t;(24 + VRC5477_IRQ_BASE)      /* general purpose timer 2 */
+DECL|macro|VRC5477_IRQ_GPT3
+mdefine_line|#define VRC5477_IRQ_GPT3&t;(25 + VRC5477_IRQ_BASE)      /* general purpose timer 3 */
+DECL|macro|VRC5477_IRQ_GPIO
+mdefine_line|#define VRC5477_IRQ_GPIO&t;(26 + VRC5477_IRQ_BASE)
+DECL|macro|VRC5477_IRQ_SIO0
+mdefine_line|#define VRC5477_IRQ_SIO0&t;(27 + VRC5477_IRQ_BASE)
+DECL|macro|VRC5477_IRQ_SIO1
+mdefine_line|#define VRC5477_IRQ_SIO1        (28 + VRC5477_IRQ_BASE)
+DECL|macro|VRC5477_IRQ_RESERVED_29
+mdefine_line|#define VRC5477_IRQ_RESERVED_29 (29 + VRC5477_IRQ_BASE)      /* reserved */
+DECL|macro|VRC5477_IRQ_IOPCISERR
+mdefine_line|#define VRC5477_IRQ_IOPCISERR&t;(30 + VRC5477_IRQ_BASE)      /* IO PCI SERR # */
+DECL|macro|VRC5477_IRQ_IOPCI
+mdefine_line|#define VRC5477_IRQ_IOPCI&t;(31 + VRC5477_IRQ_BASE)
+multiline_comment|/*&n; * i2859 irq assignment&n; */
+DECL|macro|I8259_IRQ_RESERVED_0
+mdefine_line|#define I8259_IRQ_RESERVED_0&t;(0 + I8259_IRQ_BASE)&t;
+DECL|macro|I8259_IRQ_KEYBOARD
+mdefine_line|#define I8259_IRQ_KEYBOARD&t;(1 + I8259_IRQ_BASE)&t;/* M1543 default */
+DECL|macro|I8259_IRQ_CASCADE
+mdefine_line|#define I8259_IRQ_CASCADE&t;(2 + I8259_IRQ_BASE)
+DECL|macro|I8259_IRQ_UART_B
+mdefine_line|#define I8259_IRQ_UART_B&t;(3 + I8259_IRQ_BASE)&t;/* M1543 default, may conflict with RTC according to schematic diagram  */
+DECL|macro|I8259_IRQ_UART_A
+mdefine_line|#define I8259_IRQ_UART_A&t;(4 + I8259_IRQ_BASE)&t;/* M1543 default */
+DECL|macro|I8259_IRQ_PARALLEL
+mdefine_line|#define I8259_IRQ_PARALLEL&t;(5 + I8259_IRQ_BASE)&t;/* M1543 default */
+DECL|macro|I8259_IRQ_RESERVED_6
+mdefine_line|#define I8259_IRQ_RESERVED_6&t;(6 + I8259_IRQ_BASE)
+DECL|macro|I8259_IRQ_RESERVED_7
+mdefine_line|#define I8259_IRQ_RESERVED_7&t;(7 + I8259_IRQ_BASE)
+DECL|macro|I8259_IRQ_RTC
+mdefine_line|#define I8259_IRQ_RTC&t;&t;(8 + I8259_IRQ_BASE)&t;/* who set this? */
+DECL|macro|I8259_IRQ_USB
+mdefine_line|#define I8259_IRQ_USB&t;&t;(9 + I8259_IRQ_BASE)&t;/* ddb_setup */
+DECL|macro|I8259_IRQ_PMU
+mdefine_line|#define I8259_IRQ_PMU&t;&t;(10 + I8259_IRQ_BASE)&t;/* ddb_setup */
+DECL|macro|I8259_IRQ_RESERVED_11
+mdefine_line|#define I8259_IRQ_RESERVED_11&t;(11 + I8259_IRQ_BASE)
+DECL|macro|I8259_IRQ_RESERVED_12
+mdefine_line|#define I8259_IRQ_RESERVED_12&t;(12 + I8259_IRQ_BASE)&t;/* m1543_irq_setup */
+DECL|macro|I8259_IRQ_RESERVED_13
+mdefine_line|#define I8259_IRQ_RESERVED_13&t;(13 + I8259_IRQ_BASE)
+DECL|macro|I8259_IRQ_HDC1
+mdefine_line|#define I8259_IRQ_HDC1&t;&t;(14 + I8259_IRQ_BASE)&t;/* default and ddb_setup */
+DECL|macro|I8259_IRQ_HDC2
+mdefine_line|#define I8259_IRQ_HDC2&t;&t;(15 + I8259_IRQ_BASE)&t;/* default */
+multiline_comment|/*&n; * misc&n; */
+DECL|macro|VRC5477_I8259_CASCADE
+mdefine_line|#define&t;VRC5477_I8259_CASCADE&t;(VRC5477_IRQ_INTC - VRC5477_IRQ_BASE)
+DECL|macro|CPU_VRC5477_CASCADE
+mdefine_line|#define&t;CPU_VRC5477_CASCADE&t;2
+multiline_comment|/*&n; * debug routines&n; */
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#if defined(CONFIG_RUNTIME_DEBUG)
 r_extern
 r_void
 id|vrc5477_show_pdar_regs
@@ -332,5 +457,11 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * RAM size&n; */
+r_extern
+r_int
+id|board_ram_size
+suffix:semicolon
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_DDB5XXX_DDB5477_H */
 eof

@@ -1,10 +1,10 @@
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/*&n; * FIXME the user should be able to select the&n; * uart to be used for debugging.&n; */
 DECL|macro|DEBUG_BASE
-mdefine_line|#define&t;DEBUG_BASE  UART2_ADDR
+mdefine_line|#define DEBUG_BASE  UART_DEBUG_BASE
 multiline_comment|/**/
 multiline_comment|/* we need uint32 uint8 */
 multiline_comment|/* #include &quot;types.h&quot; */
@@ -80,9 +80,27 @@ DECL|macro|UART_MOD_CNTRL
 mdefine_line|#define UART_MOD_CNTRL&t;0x100&t;/* Module Control */
 multiline_comment|/* memory-mapped read/write of the port */
 DECL|macro|UART16550_READ
-mdefine_line|#define UART16550_READ(y)    (inl(DEBUG_BASE + y) &amp; 0xff)
+mdefine_line|#define UART16550_READ(y)    (au_readl(DEBUG_BASE + y) &amp; 0xff)
 DECL|macro|UART16550_WRITE
-mdefine_line|#define UART16550_WRITE(y,z) (outl(z&amp;0xff, DEBUG_BASE + y))
+mdefine_line|#define UART16550_WRITE(y,z) (au_writel(z&amp;0xff, DEBUG_BASE + y))
+r_extern
+r_int
+r_int
+id|get_au1x00_uart_baud_base
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|cal_r4koff
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|debugInit
 r_void
 id|debugInit
@@ -144,7 +162,7 @@ suffix:semicolon
 multiline_comment|/* set divisor */
 id|divisor
 op_assign
-id|get_au1000_uart_baud
+id|get_au1x00_uart_baud_base
 c_func
 (paren
 )paren
@@ -168,11 +186,13 @@ c_func
 (paren
 id|UART_LCR
 comma
+(paren
 id|data
 op_or
 id|parity
 op_or
 id|stop
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -250,9 +270,7 @@ id|uint8
 id|byte
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
+singleline_comment|//&t;int i;
 r_if
 c_cond
 (paren

@@ -1964,7 +1964,7 @@ id|dev-&gt;capabilities
 op_or_assign
 id|PNP_DISABLE
 suffix:semicolon
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 op_amp
@@ -5050,7 +5050,7 @@ id|res
 r_int
 id|ret
 suffix:semicolon
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 id|res

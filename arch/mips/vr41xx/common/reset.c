@@ -1,0 +1,103 @@
+multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 1997, 2001 Ralf Baechle&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reboot.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|function|vr41xx_restart
+r_void
+id|vr41xx_restart
+c_func
+(paren
+r_char
+op_star
+id|command
+)paren
+(brace
+id|change_c0_status
+c_func
+(paren
+(paren
+id|ST0_BEV
+op_or
+id|ST0_ERL
+)paren
+comma
+(paren
+id|ST0_BEV
+op_or
+id|ST0_ERL
+)paren
+)paren
+suffix:semicolon
+id|change_c0_config
+c_func
+(paren
+id|CONF_CM_CMASK
+comma
+id|CONF_CM_UNCACHED
+)paren
+suffix:semicolon
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|write_c0_wired
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;jr&bslash;t%0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+l_int|0xbfc00000
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|vr41xx_halt
+r_void
+id|vr41xx_halt
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;&bslash;n** You can safely turn off the power&bslash;n&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|function|vr41xx_power_off
+r_void
+id|vr41xx_power_off
+c_func
+(paren
+r_void
+)paren
+(brace
+id|vr41xx_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+eof

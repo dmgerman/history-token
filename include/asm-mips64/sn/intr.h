@@ -14,19 +14,19 @@ mdefine_line|#define&t;N_INTPENDJUNK_BITS&t;8
 DECL|macro|INTPENDJUNK_CLRBIT
 mdefine_line|#define&t;INTPENDJUNK_CLRBIT&t;0x80
 macro_line|#include &lt;asm/sn/intr_public.h&gt;
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Macros to manipulate the interrupt register on the calling hub chip.&n; */
 DECL|macro|LOCAL_HUB_SEND_INTR
 mdefine_line|#define LOCAL_HUB_SEND_INTR(_level)&t;LOCAL_HUB_S(PI_INT_PEND_MOD, &bslash;&n;&t;&t;&t;&t;&t;&t;    (0x100|(_level)))
 DECL|macro|REMOTE_HUB_SEND_INTR
 mdefine_line|#define REMOTE_HUB_SEND_INTR(_hub, _level) &bslash;&n;&t;&t;REMOTE_HUB_S((_hub), PI_INT_PEND_MOD, (0x100|(_level)))
-multiline_comment|/*&n; * When clearing the interrupt, make sure this clear does make it &n; * to the hub. Otherwise we could end up losing interrupts.&n; * We do an uncached load of the int_pend0 register to ensure this.&n; */
+multiline_comment|/*&n; * When clearing the interrupt, make sure this clear does make it&n; * to the hub. Otherwise we could end up losing interrupts.&n; * We do an uncached load of the int_pend0 register to ensure this.&n; */
 DECL|macro|LOCAL_HUB_CLR_INTR
 mdefine_line|#define LOCAL_HUB_CLR_INTR(_level)&t;  &bslash;&n;                LOCAL_HUB_S(PI_INT_PEND_MOD, (_level)),&t;&bslash;&n;                LOCAL_HUB_L(PI_INT_PEND0)
 DECL|macro|REMOTE_HUB_CLR_INTR
 mdefine_line|#define REMOTE_HUB_CLR_INTR(_hub, _level) &bslash;&n;&t;&t;REMOTE_HUB_S((_hub), PI_INT_PEND_MOD, (_level)),&t;&bslash;&n;                REMOTE_HUB_L((_hub), PI_INT_PEND0)
-macro_line|#else /* LANGUAGE_ASSEMBLY */
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#else /* __ASSEMBLY__ */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Hard-coded interrupt levels:&n; */
 multiline_comment|/*&n; *&t;L0 = SW1&n; *&t;L1 = SW2&n; *&t;L2 = INT_PEND0&n; *&t;L3 = INT_PEND1&n; *&t;L4 = RTC&n; *&t;L5 = Profiling Timer&n; *&t;L6 = Hub Errors&n; *&t;L7 = Count/Compare (T5 counters)&n; */
 multiline_comment|/* INT_PEND0 hard-coded bits. */

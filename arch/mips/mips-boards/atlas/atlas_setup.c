@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Atlas specific setup.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -9,8 +10,10 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#include &lt;asm/mips-boards/prom.h&gt;
-macro_line|#include &lt;asm/gt64120.h&gt;
 macro_line|#include &lt;asm/mips-boards/atlasint.h&gt;
+macro_line|#include &lt;asm/gt64120.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
 r_extern
 r_void
@@ -32,7 +35,7 @@ l_int|20
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void
 id|rs_kgdb_hook
@@ -77,6 +80,48 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_string|&quot;MIPS Atlas&quot;
+suffix:semicolon
+)brace
+r_extern
+r_void
+id|mips_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mips_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mips_rtc_get_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|atlas_setup
 r_void
 id|__init
@@ -86,7 +131,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 r_int
 id|rs_putDebugChar
 c_func
@@ -244,8 +289,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;  
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#endif
+macro_line|#ifdef CONFIG_KGDB
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -414,7 +459,12 @@ l_string|&quot;nofpu&quot;
 op_ne
 l_int|NULL
 )paren
-id|mips_cpu.options
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|options
 op_and_assign
 op_complement
 id|MIPS_CPU_FPU
@@ -423,6 +473,18 @@ id|rtc_ops
 op_assign
 op_amp
 id|atlas_rtc_ops
+suffix:semicolon
+id|board_time_init
+op_assign
+id|mips_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|mips_timer_setup
+suffix:semicolon
+id|rtc_get_time
+op_assign
+id|mips_rtc_get_time
 suffix:semicolon
 id|mips_reboot_setup
 c_func

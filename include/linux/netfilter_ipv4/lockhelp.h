@@ -53,13 +53,12 @@ mdefine_line|#define MUST_BE_LOCKED(l)&t;&t;&t;&t;&t;&t;&bslash;&n;do { if (atom
 DECL|macro|MUST_BE_UNLOCKED
 mdefine_line|#define MUST_BE_UNLOCKED(l)&t;&t;&t;&t;&t;&t;&bslash;&n;do { if (atomic_read(&amp;(l)-&gt;locked_by) == smp_processor_id())&t;&t;&bslash;&n;&t;printk(&quot;ASSERT %s:%u %s locked&bslash;n&quot;, __FILE__, __LINE__, #l);&t;&bslash;&n;} while(0)
 multiline_comment|/* Write locked OK as well. */
-"&bslash;"
 DECL|macro|MUST_BE_READ_LOCKED
-mdefine_line|#define MUST_BE_READ_LOCKED(l)&t;&t;&t;&t;&t;&t;    &bslash;&n;do { if (!((l)-&gt;read_locked_map &amp; (1 &lt;&lt; smp_processor_id()))&t;&t;    &bslash;&n;&t; &amp;&amp; !((l)-&gt;write_locked_map &amp; (1 &lt;&lt; smp_processor_id())))&t;    &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s not readlocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
+mdefine_line|#define MUST_BE_READ_LOCKED(l)&t;&t;&t;&t;&t;&t;    &bslash;&n;do { if (!((l)-&gt;read_locked_map &amp; (1UL &lt;&lt; smp_processor_id()))&t;&t;    &bslash;&n;&t; &amp;&amp; !((l)-&gt;write_locked_map &amp; (1UL &lt;&lt; smp_processor_id())))&t;    &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s not readlocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
 DECL|macro|MUST_BE_WRITE_LOCKED
-mdefine_line|#define MUST_BE_WRITE_LOCKED(l)&t;&t;&t;&t;&t;&t;     &bslash;&n;do { if (!((l)-&gt;write_locked_map &amp; (1 &lt;&lt; smp_processor_id())))&t;&t;     &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s not writelocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
+mdefine_line|#define MUST_BE_WRITE_LOCKED(l)&t;&t;&t;&t;&t;&t;     &bslash;&n;do { if (!((l)-&gt;write_locked_map &amp; (1UL &lt;&lt; smp_processor_id())))&t;     &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s not writelocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
 DECL|macro|MUST_BE_READ_WRITE_UNLOCKED
-mdefine_line|#define MUST_BE_READ_WRITE_UNLOCKED(l)&t;&t;&t;&t;&t;  &bslash;&n;do { if ((l)-&gt;read_locked_map &amp; (1 &lt;&lt; smp_processor_id()))&t;&t;  &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s readlocked&bslash;n&quot;, __FILE__, __LINE__, #l);&t;  &bslash;&n; else if ((l)-&gt;write_locked_map &amp; (1 &lt;&lt; smp_processor_id()))&t;&t;  &bslash;&n;&t; printk(&quot;ASSERT %s:%u %s writelocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
+mdefine_line|#define MUST_BE_READ_WRITE_UNLOCKED(l)&t;&t;&t;&t;&t;  &bslash;&n;do { if ((l)-&gt;read_locked_map &amp; (1UL &lt;&lt; smp_processor_id()))&t;&t;  &bslash;&n;&t;printk(&quot;ASSERT %s:%u %s readlocked&bslash;n&quot;, __FILE__, __LINE__, #l);&t;  &bslash;&n; else if ((l)-&gt;write_locked_map &amp; (1UL &lt;&lt; smp_processor_id()))&t;&t;  &bslash;&n;&t; printk(&quot;ASSERT %s:%u %s writelocked&bslash;n&quot;, __FILE__, __LINE__, #l); &bslash;&n;} while(0)
 DECL|macro|LOCK_BH
 mdefine_line|#define LOCK_BH(lk)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;MUST_BE_UNLOCKED(lk);&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_bh(&amp;(lk)-&gt;l);&t;&t;&t;&t;&t;&bslash;&n;&t;atomic_set(&amp;(lk)-&gt;locked_by, smp_processor_id());&t;&bslash;&n;} while(0)
 DECL|macro|UNLOCK_BH
@@ -69,7 +68,7 @@ mdefine_line|#define READ_LOCK(lk) &t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;
 DECL|macro|WRITE_LOCK
 mdefine_line|#define WRITE_LOCK(lk)&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;MUST_BE_READ_WRITE_UNLOCKED(lk);&t;&t;&t;&t;  &bslash;&n;&t;write_lock_bh(&amp;(lk)-&gt;l);&t;&t;&t;&t;&t;  &bslash;&n;&t;set_bit(smp_processor_id(), &amp;(lk)-&gt;write_locked_map);&t;&t;  &bslash;&n;} while(0)
 DECL|macro|READ_UNLOCK
-mdefine_line|#define READ_UNLOCK(lk)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!((lk)-&gt;read_locked_map &amp; (1 &lt;&lt; smp_processor_id())))&t;&bslash;&n;&t;&t;printk(&quot;ASSERT: %s:%u %s not readlocked&bslash;n&quot;, &t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, #lk);&t;&t;&t;&bslash;&n;&t;clear_bit(smp_processor_id(), &amp;(lk)-&gt;read_locked_map);&t;&t;&bslash;&n;&t;read_unlock_bh(&amp;(lk)-&gt;l);&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define READ_UNLOCK(lk)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!((lk)-&gt;read_locked_map &amp; (1UL &lt;&lt; smp_processor_id())))&t;&bslash;&n;&t;&t;printk(&quot;ASSERT: %s:%u %s not readlocked&bslash;n&quot;, &t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, #lk);&t;&t;&t;&bslash;&n;&t;clear_bit(smp_processor_id(), &amp;(lk)-&gt;read_locked_map);&t;&t;&bslash;&n;&t;read_unlock_bh(&amp;(lk)-&gt;l);&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|WRITE_UNLOCK
 mdefine_line|#define WRITE_UNLOCK(lk)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;MUST_BE_WRITE_LOCKED(lk);&t;&t;&t;&t;&bslash;&n;&t;clear_bit(smp_processor_id(), &amp;(lk)-&gt;write_locked_map);&t;&bslash;&n;&t;write_unlock_bh(&amp;(lk)-&gt;l);&t;&t;&t;&t;&bslash;&n;} while(0)
 macro_line|#else

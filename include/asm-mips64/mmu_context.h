@@ -3,14 +3,16 @@ macro_line|#ifndef _ASM_MMU_CONTEXT_H
 DECL|macro|_ASM_MMU_CONTEXT_H
 mdefine_line|#define _ASM_MMU_CONTEXT_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-multiline_comment|/*&n; * For the fast tlb miss handlers, we currently keep a per cpu array&n; * of pointers to the current pgd for each processor. Also, the proc.&n; * id is stuffed into the context register. This should be changed to &n; * use the processor id via current-&gt;processor, where current is stored&n; * in watchhi/lo. The context register should be used to contiguously&n; * map the page tables.&n; */
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+multiline_comment|/*&n; * For the fast tlb miss handlers, we currently keep a per cpu array&n; * of pointers to the current pgd for each processor. Also, the proc.&n; * id is stuffed into the context register. This should be changed to&n; * use the processor id via current-&gt;processor, where current is stored&n; * in watchhi/lo. The context register should be used to contiguously&n; * map the page tables.&n; */
 DECL|macro|TLBMISS_HANDLER_SETUP_PGD
 mdefine_line|#define TLBMISS_HANDLER_SETUP_PGD(pgd) &bslash;&n;&t;pgd_current[smp_processor_id()] = (unsigned long)(pgd)
 DECL|macro|TLBMISS_HANDLER_SETUP
-mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;set_context((unsigned long) smp_processor_id() &lt;&lt; (23 + 3)); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context(((long)(&amp;pgd_current[smp_processor_id()])) &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
 r_extern
 r_int
 r_int
@@ -18,19 +20,16 @@ id|pgd_current
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|CPU_CONTEXT
-mdefine_line|#define CPU_CONTEXT(cpu, mm)&t;(mm)-&gt;context
-macro_line|#else
-DECL|macro|CPU_CONTEXT
-mdefine_line|#define CPU_CONTEXT(cpu, mm)&t;(*((unsigned long *)((mm)-&gt;context) + cpu))
-macro_line|#endif
-DECL|macro|ASID_CACHE
-mdefine_line|#define ASID_CACHE(cpu)&t;&t;cpu_data[cpu].asid_cache
 DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x1
 DECL|macro|ASID_MASK
 mdefine_line|#define ASID_MASK&t;0xff
+DECL|macro|cpu_context
+mdefine_line|#define cpu_context(cpu, mm)&t;((mm)-&gt;context[cpu])
+DECL|macro|cpu_asid
+mdefine_line|#define cpu_asid(cpu, mm)&t;(cpu_context((cpu), (mm)) &amp; ASID_MASK)
+DECL|macro|asid_cache
+mdefine_line|#define asid_cache(cpu)&t;&t;(cpu_data[cpu].asid_cache)
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -58,11 +57,11 @@ DECL|macro|ASID_VERSION_MASK
 mdefine_line|#define ASID_VERSION_MASK  ((unsigned long)~(ASID_MASK|(ASID_MASK-1)))
 DECL|macro|ASID_FIRST_VERSION
 mdefine_line|#define ASID_FIRST_VERSION ((unsigned long)(~ASID_VERSION_MASK) + 1)
-r_extern
+r_static
 r_inline
 r_void
-DECL|function|get_new_cpu_mmu_context
-id|get_new_cpu_mmu_context
+DECL|function|get_new_mmu_context
+id|get_new_mmu_context
 c_func
 (paren
 r_struct
@@ -79,7 +78,7 @@ r_int
 r_int
 id|asid
 op_assign
-id|ASID_CACHE
+id|asid_cache
 c_func
 (paren
 id|cpu
@@ -100,7 +99,14 @@ id|ASID_MASK
 )paren
 )paren
 (brace
-id|_flush_tlb_all
+macro_line|#ifdef CONFIG_VTAG_ICACHE
+id|flush_icache_all
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|local_flush_tlb_all
 c_func
 (paren
 )paren
@@ -118,7 +124,7 @@ op_assign
 id|ASID_FIRST_VERSION
 suffix:semicolon
 )brace
-id|CPU_CONTEXT
+id|cpu_context
 c_func
 (paren
 id|cpu
@@ -126,7 +132,7 @@ comma
 id|mm
 )paren
 op_assign
-id|ASID_CACHE
+id|asid_cache
 c_func
 (paren
 id|cpu
@@ -136,7 +142,7 @@ id|asid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|init_new_context
@@ -154,71 +160,42 @@ op_star
 id|mm
 )paren
 (brace
-macro_line|#ifndef CONFIG_SMP
-id|mm-&gt;context
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else
-id|mm-&gt;context
+id|i
+OL
+id|num_online_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|cpu_context
+c_func
+(paren
+id|i
+comma
+id|mm
+)paren
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|kmalloc
-c_func
-(paren
-id|smp_num_cpus
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-multiline_comment|/*&n; &t; * Init the &quot;context&quot; values so that a tlbpid allocation &n;&t; * happens on the first switch.&n; &t; */
-r_if
-c_cond
-(paren
-id|mm-&gt;context
-op_eq
 l_int|0
-)paren
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
-id|memset
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|mm-&gt;context
-comma
-l_int|0
-comma
-id|smp_num_cpus
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|switch_mm
-r_extern
+r_static
 r_inline
 r_void
 id|switch_mm
@@ -243,12 +220,22 @@ r_int
 id|cpu
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if our ASID is of an older version and thus invalid */
 r_if
 c_cond
 (paren
 (paren
-id|CPU_CONTEXT
+id|cpu_context
 c_func
 (paren
 id|cpu
@@ -256,7 +243,7 @@ comma
 id|next
 )paren
 op_xor
-id|ASID_CACHE
+id|asid_cache
 c_func
 (paren
 id|cpu
@@ -265,7 +252,7 @@ id|cpu
 op_amp
 id|ASID_VERSION_MASK
 )paren
-id|get_new_cpu_mmu_context
+id|get_new_mmu_context
 c_func
 (paren
 id|next
@@ -273,18 +260,16 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
-id|CPU_CONTEXT
+id|cpu_context
 c_func
 (paren
 id|cpu
 comma
 id|next
 )paren
-op_amp
-l_int|0xff
 )paren
 suffix:semicolon
 id|TLBMISS_HANDLER_SETUP_PGD
@@ -293,10 +278,35 @@ c_func
 id|next-&gt;pgd
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Mark current-&gt;active_mm as not &quot;active&quot; anymore.&n;&t; * We don&squot;t want to mislead possible IPI tlb flush routines.&n;&t; */
+id|clear_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|prev-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|next-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Destroy context related info for an mm_struct that is about&n; * to be put to rest.&n; */
 DECL|function|destroy_context
-r_extern
+r_static
 r_inline
 r_void
 id|destroy_context
@@ -308,28 +318,11 @@ op_star
 id|mm
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|mm-&gt;context
-)paren
-id|kfree
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|mm-&gt;context
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|activate_mm
@@ -347,39 +340,156 @@ op_star
 id|next
 )paren
 (brace
-multiline_comment|/* Unconditionally get a new ASID.  */
-id|get_new_cpu_mmu_context
-c_func
-(paren
-id|next
-comma
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|cpu
+op_assign
 id|smp_processor_id
 c_func
 (paren
-)paren
 )paren
 suffix:semicolon
-id|set_entryhi
+id|local_irq_save
 c_func
 (paren
-id|CPU_CONTEXT
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
+id|flags
 )paren
+suffix:semicolon
+multiline_comment|/* Unconditionally get a new ASID.  */
+id|get_new_mmu_context
+c_func
+(paren
+id|next
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|write_c0_entryhi
+c_func
+(paren
+id|cpu_context
+c_func
+(paren
+id|cpu
 comma
 id|next
 )paren
-op_amp
-l_int|0xff
 )paren
 suffix:semicolon
 id|TLBMISS_HANDLER_SETUP_PGD
 c_func
 (paren
 id|next-&gt;pgd
+)paren
+suffix:semicolon
+multiline_comment|/* mark mmu ownership change */
+id|clear_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|prev-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|next-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * If mm is currently active_mm, we can&squot;t really drop it.  Instead,&n; * we will get a new one for it.&n; */
+r_static
+r_inline
+r_void
+DECL|function|drop_mmu_context
+id|drop_mmu_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+id|cpu
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|mm-&gt;cpu_vm_mask
+)paren
+)paren
+(brace
+id|get_new_mmu_context
+c_func
+(paren
+id|mm
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|write_c0_entryhi
+c_func
+(paren
+id|cpu_asid
+c_func
+(paren
+id|cpu
+comma
+id|mm
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* will get a new context next time */
+id|cpu_context
+c_func
+(paren
+id|cpu
+comma
+id|mm
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace

@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASM_ISADEP_H
 DECL|macro|__ASM_ISADEP_H
 mdefine_line|#define __ASM_ISADEP_H
-macro_line|#if defined(CONFIG_CPU_R3000)
+macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
 multiline_comment|/*&n; * R2000 or R3000&n; */
 multiline_comment|/*&n; * kernel or user mode? (CP0_STATUS)&n; */
 DECL|macro|KU_MASK

@@ -2,17 +2,48 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef __ASM_ELF_H
 DECL|macro|__ASM_ELF_H
 mdefine_line|#define __ASM_ELF_H
+multiline_comment|/* ELF header e_flags defines. */
+multiline_comment|/* MIPS architecture level. */
+DECL|macro|EF_MIPS_ARCH_1
+mdefine_line|#define EF_MIPS_ARCH_1&t;&t;0x00000000&t;/* -mips1 code.  */
+DECL|macro|EF_MIPS_ARCH_2
+mdefine_line|#define EF_MIPS_ARCH_2&t;&t;0x10000000&t;/* -mips2 code.  */
+DECL|macro|EF_MIPS_ARCH_3
+mdefine_line|#define EF_MIPS_ARCH_3&t;&t;0x20000000&t;/* -mips3 code.  */
+DECL|macro|EF_MIPS_ARCH_4
+mdefine_line|#define EF_MIPS_ARCH_4&t;&t;0x30000000&t;/* -mips4 code.  */
+DECL|macro|EF_MIPS_ARCH_5
+mdefine_line|#define EF_MIPS_ARCH_5&t;&t;0x40000000&t;/* -mips5 code.  */
+DECL|macro|EF_MIPS_ARCH_32
+mdefine_line|#define EF_MIPS_ARCH_32&t;&t;0x50000000&t;/* MIPS32 code.  */
+DECL|macro|EF_MIPS_ARCH_64
+mdefine_line|#define EF_MIPS_ARCH_64&t;&t;0x60000000&t;/* MIPS64 code.  */
+multiline_comment|/* The ABI of a file. */
+DECL|macro|EF_MIPS_ABI_O32
+mdefine_line|#define EF_MIPS_ABI_O32&t;&t;0x00001000&t;/* O32 ABI.  */
+DECL|macro|EF_MIPS_ABI_O64
+mdefine_line|#define EF_MIPS_ABI_O64&t;&t;0x00002000&t;/* O32 extended for 64 bit.  */
 DECL|macro|PT_MIPS_REGINFO
 mdefine_line|#define PT_MIPS_REGINFO&t;&t;0x70000000
+DECL|macro|PT_MIPS_OPTIONS
+mdefine_line|#define PT_MIPS_OPTIONS&t;&t;0x70000001
 multiline_comment|/* Flags in the e_flags field of the header */
 DECL|macro|EF_MIPS_NOREORDER
-mdefine_line|#define EF_MIPS_NOREORDER 0x00000001
+mdefine_line|#define EF_MIPS_NOREORDER&t;0x00000001
 DECL|macro|EF_MIPS_PIC
-mdefine_line|#define EF_MIPS_PIC       0x00000002
+mdefine_line|#define EF_MIPS_PIC&t;&t;0x00000002
 DECL|macro|EF_MIPS_CPIC
-mdefine_line|#define EF_MIPS_CPIC      0x00000004
+mdefine_line|#define EF_MIPS_CPIC&t;&t;0x00000004
+DECL|macro|EF_MIPS_ABI2
+mdefine_line|#define EF_MIPS_ABI2&t;&t;0x00000020
+DECL|macro|EF_MIPS_OPTIONS_FIRST
+mdefine_line|#define EF_MIPS_OPTIONS_FIRST&t;0x00000080
+DECL|macro|EF_MIPS_32BITMODE
+mdefine_line|#define EF_MIPS_32BITMODE&t;0x00000100
+DECL|macro|EF_MIPS_ABI
+mdefine_line|#define EF_MIPS_ABI&t;&t;0x0000f000
 DECL|macro|EF_MIPS_ARCH
-mdefine_line|#define EF_MIPS_ARCH      0xf0000000
+mdefine_line|#define EF_MIPS_ARCH&t;&t;0xf0000000
 DECL|macro|DT_MIPS_RLD_VERSION
 mdefine_line|#define DT_MIPS_RLD_VERSION&t;0x70000001
 DECL|macro|DT_MIPS_TIME_STAMP
@@ -167,9 +198,9 @@ id|elf_fpregset_t
 id|ELF_NFPREG
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture&n; * and also rejects IRIX binaries.&n; */
+multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_flags &amp; EF_MIPS_ARCH)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS32)&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_flags &amp; EF_MIPS_ABI2) != 0)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((__h-&gt;e_flags &amp; EF_MIPS_ABI) != 0) &amp;&amp;&t;&t;&t;&bslash;&n;&t;    ((__h-&gt;e_flags &amp; EF_MIPS_ABI) != EF_MIPS_ABI_O32))&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* This one accepts IRIX binaries.  */
 DECL|macro|irix_elf_check_arch
 mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_machine == EM_MIPS)

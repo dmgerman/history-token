@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_USER_H
 DECL|macro|_ASM_USER_H
 mdefine_line|#define _ASM_USER_H
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 multiline_comment|/*&n; * Core file format: The core file is written in such a way that gdb&n; * can understand it and provide useful information to the user (under&n; * linux we use the `trad-core&squot; bfd, NOT the irix-core).  The file&n; * contents are as follows:&n; *&n; *  upage: 1 page consisting of a user struct that tells gdb&n; *&t;what is present in the file.  Directly after this is a&n; *&t;copy of the task_struct, which is currently not used by gdb,&n; *&t;but it may come in handy at some point.  All of the registers&n; *&t;are stored as part of the upage.  The upage should always be&n; *&t;only one page long.&n; *  data: The data segment follows next.  We use current-&gt;end_text to&n; *&t;current-&gt;brk to pick up all of the user variables, plus any memory&n; *&t;that may have been sbrk&squot;ed.  No attempt is made to determine if a&n; *&t;page is demand-zero or if a page is totally unused, we just cover&n; *&t;the entire range.  All of the addresses are rounded in such a way&n; *&t;that an integral number of pages is written.&n; *  stack: We need the stack information in order to get a meaningful&n; *&t;backtrace.  We need to write the data from usp to&n; *&t;current-&gt;start_stack, so we round each of these in order to be able&n; *&t;to write an integer number of pages.&n; */
@@ -17,7 +16,7 @@ id|regs
 (braket
 id|EF_SIZE
 op_div
-l_int|4
+l_int|8
 op_plus
 l_int|64
 )braket

@@ -1215,7 +1215,7 @@ id|irq_desc_t
 op_star
 id|idesc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -1640,7 +1640,7 @@ id|irq_type_iosapic_level
 suffix:semicolon
 id|idesc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|vector
@@ -2634,7 +2634,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If vector was previously initialized to a different&n;&t;&t; * handler, re-initialize.&n;&t;&t; */
 id|idesc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|vector

@@ -1,12 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@sgi.com)&n; * Compability with board caches, Ulf Carlsson&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 multiline_comment|/*&n; * IP22 boardcache is not compatible with board caches.  Thus we disable it&n; * during romvec action.  Since r4xx0.c is always compiled and linked with your&n; * kernel, this shouldn&squot;t cause any harm regardless what MIPS processor you&n; * have.&n; *&n; * The ARC write and read functions seem to interfere with the serial lines&n; * in some way. You should be careful with them.&n; */
 DECL|function|prom_putchar
 r_void
@@ -17,10 +12,10 @@ r_char
 id|c
 )paren
 (brace
-r_int
+id|ULONG
 id|cnt
 suffix:semicolon
-r_char
+id|CHAR
 id|it
 op_assign
 id|c
@@ -30,9 +25,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|romvec
-op_member_access_from_pointer
-id|write
+id|ArcWrite
 c_func
 (paren
 l_int|1
@@ -54,17 +47,16 @@ suffix:semicolon
 )brace
 DECL|function|prom_getchar
 r_char
-id|__init
 id|prom_getchar
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
+id|ULONG
 id|cnt
 suffix:semicolon
-r_char
+id|CHAR
 id|c
 suffix:semicolon
 id|bc_disable
@@ -72,9 +64,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|romvec
-op_member_access_from_pointer
-id|read
+id|ArcRead
 c_func
 (paren
 l_int|0
@@ -97,14 +87,6 @@ r_return
 id|c
 suffix:semicolon
 )brace
-DECL|variable|ppbuf
-r_static
-r_char
-id|ppbuf
-(braket
-l_int|1024
-)braket
-suffix:semicolon
 DECL|function|prom_printf
 r_void
 id|prom_printf
@@ -123,13 +105,14 @@ id|va_list
 id|args
 suffix:semicolon
 r_char
-id|ch
-comma
+id|ppbuf
+(braket
+l_int|1024
+)braket
+suffix:semicolon
+r_char
 op_star
 id|bptr
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|va_start
 c_func
@@ -139,8 +122,6 @@ comma
 id|fmt
 )paren
 suffix:semicolon
-id|i
-op_assign
 id|vsprintf
 c_func
 (paren
@@ -158,15 +139,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
-id|ch
-op_assign
 op_star
-(paren
 id|bptr
-op_increment
-)paren
-)paren
 op_ne
 l_int|0
 )paren
@@ -174,7 +148,8 @@ l_int|0
 r_if
 c_cond
 (paren
-id|ch
+op_star
+id|bptr
 op_eq
 l_char|&squot;&bslash;n&squot;
 )paren
@@ -187,7 +162,9 @@ suffix:semicolon
 id|prom_putchar
 c_func
 (paren
-id|ch
+op_star
+id|bptr
+op_increment
 )paren
 suffix:semicolon
 )brace

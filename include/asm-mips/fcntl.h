@@ -28,9 +28,9 @@ mdefine_line|#define O_NOCTTY&t;0x0800&t;/* not fcntl */
 DECL|macro|FASYNC
 mdefine_line|#define FASYNC&t;&t;0x1000&t;/* fcntl, for BSD compatibility */
 DECL|macro|O_LARGEFILE
-mdefine_line|#define O_LARGEFILE&t;0x2000&t;/* allow large file opens - currently ignored */
+mdefine_line|#define O_LARGEFILE&t;0x2000&t;/* allow large file opens */
 DECL|macro|O_DIRECT
-mdefine_line|#define O_DIRECT&t;0x8000&t;/* direct disk access hint - currently ignored */
+mdefine_line|#define O_DIRECT&t;0x8000&t;/* direct disk access hint */
 DECL|macro|O_DIRECTORY
 mdefine_line|#define O_DIRECTORY&t;0x10000&t;/* must be a directory */
 DECL|macro|O_NOFOLLOW
@@ -91,7 +91,7 @@ mdefine_line|#define LOCK_SH&t;&t;1&t;/* shared lock */
 DECL|macro|LOCK_EX
 mdefine_line|#define LOCK_EX&t;&t;2&t;/* exclusive lock */
 DECL|macro|LOCK_NB
-mdefine_line|#define LOCK_NB&t;&t;4&t;/* or&squot;d with one of the above to prevent&t;&t;XXXXXXXXXXXXXXXXXX&n;&t;&t;&t;&t;   blocking */
+mdefine_line|#define LOCK_NB&t;&t;4&t;/* or&squot;d with one of the above to prevent&n;&t;&t;&t;&t;   blocking */
 DECL|macro|LOCK_UN
 mdefine_line|#define LOCK_UN&t;&t;8&t;/* remove lock */
 DECL|macro|LOCK_MAND
@@ -102,6 +102,7 @@ DECL|macro|LOCK_WRITE
 mdefine_line|#define LOCK_WRITE&t;128&t;/* ... Which allows concurrent write operations */
 DECL|macro|LOCK_RW
 mdefine_line|#define LOCK_RW&t;&t;192&t;/* ... Which allows concurrent read &amp; write ops */
+multiline_comment|/*&n; * The flavours of struct flock.  &quot;struct flock&quot; is the ABI compliant&n; * variant.  Finally struct flock64 is the LFS variant of struct flock.  As&n; * a historic accident and inconsistence with the ABI definition it doesn&squot;t&n; * contain all the same fields as struct flock.&n; */
 DECL|struct|flock
 r_typedef
 r_struct
@@ -127,7 +128,6 @@ DECL|member|l_sysid
 r_int
 id|l_sysid
 suffix:semicolon
-multiline_comment|/* ABI junk, unused on Linux */
 DECL|member|l_pid
 id|__kernel_pid_t
 id|l_pid
@@ -139,7 +139,6 @@ id|pad
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* ABI junk, unused on Linux */
 DECL|typedef|flock_t
 )brace
 id|flock_t

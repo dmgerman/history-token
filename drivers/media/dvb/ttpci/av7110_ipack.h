@@ -6,6 +6,7 @@ r_void
 id|av7110_ipack_init
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -37,6 +38,7 @@ r_void
 id|av7110_ipack_reset
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -55,6 +57,7 @@ comma
 r_int
 id|count
 comma
+r_struct
 id|ipack
 op_star
 id|p
@@ -65,6 +68,7 @@ r_void
 id|av7110_ipack_free
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
@@ -75,6 +79,7 @@ r_void
 id|av7110_ipack_flush
 c_func
 (paren
+r_struct
 id|ipack
 op_star
 id|p
