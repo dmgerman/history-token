@@ -2160,6 +2160,11 @@ id|ev
 r_goto
 id|err
 suffix:semicolon
+id|llc_build_offset_table
+c_func
+(paren
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2210,15 +2215,6 @@ l_int|3
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* initialize the station component */
-id|llc_register_sap
-c_func
-(paren
-l_int|0
-comma
-id|mac_indicate
-)paren
-suffix:semicolon
 id|llc_main_station.maximum_retry
 op_assign
 l_int|1
@@ -2246,11 +2242,6 @@ comma
 id|ev
 )paren
 suffix:semicolon
-id|llc_build_offset_table
-c_func
-(paren
-)paren
-suffix:semicolon
 id|llc_ind_prim.data
 op_assign
 op_amp
@@ -2269,6 +2260,15 @@ comma
 l_int|0
 comma
 id|llc_proc_get_info
+)paren
+suffix:semicolon
+multiline_comment|/* initialize the station component */
+id|llc_register_sap
+c_func
+(paren
+l_int|0
+comma
+id|mac_indicate
 )paren
 suffix:semicolon
 id|llc_ui_init
