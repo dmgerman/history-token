@@ -8,9 +8,9 @@ suffix:semicolon
 r_struct
 id|attribute
 suffix:semicolon
-DECL|struct|driverfs_ops
+DECL|struct|sysfs_ops
 r_struct
-id|driverfs_ops
+id|sysfs_ops
 (brace
 DECL|member|open
 r_int
@@ -106,7 +106,7 @@ id|mode
 suffix:semicolon
 DECL|member|ops
 r_struct
-id|driverfs_ops
+id|sysfs_ops
 op_star
 id|ops
 suffix:semicolon
@@ -129,7 +129,7 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_int
-id|driverfs_create_dir
+id|sysfs_create_dir
 c_func
 (paren
 r_struct
@@ -143,7 +143,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|driverfs_remove_dir
+id|sysfs_remove_dir
 c_func
 (paren
 r_struct
@@ -154,7 +154,7 @@ id|entry
 suffix:semicolon
 r_extern
 r_int
-id|driverfs_create_file
+id|sysfs_create_file
 c_func
 (paren
 r_struct
@@ -170,7 +170,7 @@ id|parent
 suffix:semicolon
 r_extern
 r_int
-id|driverfs_create_symlink
+id|sysfs_create_symlink
 c_func
 (paren
 r_struct
@@ -189,7 +189,7 @@ id|target
 suffix:semicolon
 r_extern
 r_void
-id|driverfs_remove_file
+id|sysfs_remove_file
 c_func
 (paren
 r_struct
@@ -200,14 +200,6 @@ r_const
 r_char
 op_star
 id|name
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|init_driverfs_fs
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _DDFS_H_ */

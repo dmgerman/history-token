@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * driverfs.c - The device driver file system&n; *&n; * Copyright (c) 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * This is a simple, ram-based filesystem, which allows kernel&n; * callbacks for read/write of files.&n; *&n; * Please see Documentation/filesystems/driverfs.txt for more information.&n; */
+multiline_comment|/*&n; * sysfs.c - The filesystem to export kernel objects.&n; *&n; * Copyright (c) 2001, 2002 Patrick Mochel&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * This is a simple, ramfs-based filesystem, designed to export kernel &n; * objects, their attributes, and the linkgaes between each other.&n; *&n; * Please see Documentation/filesystems/sysfs.txt for more information.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -9,50 +9,41 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/driverfs_fs.h&gt;
+macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-macro_line|# define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-macro_line|# define DBG(x...)
-macro_line|#endif
 multiline_comment|/* Random magic number */
-DECL|macro|DRIVERFS_MAGIC
-mdefine_line|#define DRIVERFS_MAGIC 0x42454552
-DECL|variable|driverfs_ops
+DECL|macro|SYSFS_MAGIC
+mdefine_line|#define SYSFS_MAGIC 0x62656572
+DECL|variable|sysfs_ops
 r_static
 r_struct
 id|super_operations
-id|driverfs_ops
+id|sysfs_ops
 suffix:semicolon
-DECL|variable|driverfs_file_operations
+DECL|variable|sysfs_file_operations
 r_static
 r_struct
 id|file_operations
-id|driverfs_file_operations
+id|sysfs_file_operations
 suffix:semicolon
-DECL|variable|driverfs_dir_inode_operations
+DECL|variable|sysfs_dir_inode_operations
 r_static
 r_struct
 id|inode_operations
-id|driverfs_dir_inode_operations
+id|sysfs_dir_inode_operations
 suffix:semicolon
-DECL|variable|driverfs_aops
+DECL|variable|sysfs_aops
 r_static
 r_struct
 id|address_space_operations
-id|driverfs_aops
+id|sysfs_aops
 suffix:semicolon
-DECL|variable|driverfs_mount
+DECL|variable|sysfs_mount
 r_static
 r_struct
 id|vfsmount
 op_star
-id|driverfs_mount
+id|sysfs_mount
 suffix:semicolon
 DECL|variable|mount_lock
 r_static
@@ -68,11 +59,11 @@ id|mount_count
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|driverfs_backing_dev_info
+DECL|variable|sysfs_backing_dev_info
 r_static
 r_struct
 id|backing_dev_info
-id|driverfs_backing_dev_info
+id|sysfs_backing_dev_info
 op_assign
 (brace
 dot
@@ -89,10 +80,10 @@ comma
 multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
-DECL|function|driverfs_readpage
+DECL|function|sysfs_readpage
 r_static
 r_int
-id|driverfs_readpage
+id|sysfs_readpage
 c_func
 (paren
 r_struct
@@ -170,10 +161,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|driverfs_prepare_write
+DECL|function|sysfs_prepare_write
 r_static
 r_int
-id|driverfs_prepare_write
+id|sysfs_prepare_write
 c_func
 (paren
 r_struct
@@ -251,10 +242,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|driverfs_commit_write
+DECL|function|sysfs_commit_write
 r_static
 r_int
-id|driverfs_commit_write
+id|sysfs_commit_write
 c_func
 (paren
 r_struct
@@ -316,12 +307,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|driverfs_get_inode
+DECL|function|sysfs_get_inode
 r_static
 r_struct
 id|inode
 op_star
-id|driverfs_get_inode
+id|sysfs_get_inode
 c_func
 (paren
 r_struct
@@ -388,12 +379,12 @@ suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
-id|driverfs_aops
+id|sysfs_aops
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;backing_dev_info
 op_assign
 op_amp
-id|driverfs_backing_dev_info
+id|sysfs_backing_dev_info
 suffix:semicolon
 r_switch
 c_cond
@@ -423,7 +414,7 @@ suffix:colon
 id|inode-&gt;i_fop
 op_assign
 op_amp
-id|driverfs_file_operations
+id|sysfs_file_operations
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -433,7 +424,7 @@ suffix:colon
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|driverfs_dir_inode_operations
+id|sysfs_dir_inode_operations
 suffix:semicolon
 id|inode-&gt;i_fop
 op_assign
@@ -462,10 +453,10 @@ r_return
 id|inode
 suffix:semicolon
 )brace
-DECL|function|driverfs_mknod
+DECL|function|sysfs_mknod
 r_static
 r_int
-id|driverfs_mknod
+id|sysfs_mknod
 c_func
 (paren
 r_struct
@@ -505,10 +496,10 @@ r_return
 op_minus
 id|EEXIST
 suffix:semicolon
-multiline_comment|/* only allow create if -&gt;d_fsdata is not NULL (so we can assume it &n;&t; * comes from the driverfs API below. */
+multiline_comment|/* only allow create if -&gt;d_fsdata is not NULL (so we can assume it &n;&t; * comes from the sysfs API below. */
 id|inode
 op_assign
-id|driverfs_get_inode
+id|sysfs_get_inode
 c_func
 (paren
 id|dir-&gt;i_sb
@@ -541,10 +532,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|driverfs_mkdir
+DECL|function|sysfs_mkdir
 r_static
 r_int
-id|driverfs_mkdir
+id|sysfs_mkdir
 c_func
 (paren
 r_struct
@@ -580,7 +571,7 @@ id|S_IFDIR
 suffix:semicolon
 id|res
 op_assign
-id|driverfs_mknod
+id|sysfs_mknod
 c_func
 (paren
 id|dir
@@ -605,10 +596,10 @@ r_return
 id|res
 suffix:semicolon
 )brace
-DECL|function|driverfs_create
+DECL|function|sysfs_create
 r_static
 r_int
-id|driverfs_create
+id|sysfs_create
 c_func
 (paren
 r_struct
@@ -640,7 +631,7 @@ id|S_IFREG
 suffix:semicolon
 id|res
 op_assign
-id|driverfs_mknod
+id|sysfs_mknod
 c_func
 (paren
 id|dir
@@ -656,10 +647,10 @@ r_return
 id|res
 suffix:semicolon
 )brace
-DECL|function|driverfs_symlink
+DECL|function|sysfs_symlink
 r_static
 r_int
-id|driverfs_symlink
+id|sysfs_symlink
 c_func
 (paren
 r_struct
@@ -700,7 +691,7 @@ id|EEXIST
 suffix:semicolon
 id|inode
 op_assign
-id|driverfs_get_inode
+id|sysfs_get_inode
 c_func
 (paren
 id|dir-&gt;i_sb
@@ -775,11 +766,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|driverfs_positive
+DECL|function|sysfs_positive
 r_static
 r_inline
 r_int
-id|driverfs_positive
+id|sysfs_positive
 c_func
 (paren
 r_struct
@@ -801,10 +792,10 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
-DECL|function|driverfs_empty
+DECL|function|sysfs_empty
 r_static
 r_int
-id|driverfs_empty
+id|sysfs_empty
 c_func
 (paren
 r_struct
@@ -853,7 +844,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driverfs_positive
+id|sysfs_positive
 c_func
 (paren
 id|de
@@ -883,10 +874,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|driverfs_unlink
+DECL|function|sysfs_unlink
 r_static
 r_int
-id|driverfs_unlink
+id|sysfs_unlink
 c_func
 (paren
 r_struct
@@ -940,11 +931,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_read_file - &quot;read&quot; data from a file.&n; * @file:&t;file pointer&n; * @buf:&t;buffer to fill&n; * @count:&t;number of bytes to read&n; * @ppos:&t;starting offset in file&n; *&n; * Userspace wants data from a file. It is up to the creator of the file to&n; * provide that data.&n; * There is a struct device_attribute embedded in file-&gt;private_data. We&n; * obtain that and check if the read callback is implemented. If so, we call&n; * it, passing the data field of the file entry.&n; * Said callback is responsible for filling the buffer and returning the number&n; * of bytes it put in it. We update @ppos correctly.&n; */
+multiline_comment|/**&n; * sysfs_read_file - &quot;read&quot; data from a file.&n; * @file:&t;file pointer&n; * @buf:&t;buffer to fill&n; * @count:&t;number of bytes to read&n; * @ppos:&t;starting offset in file&n; *&n; * Userspace wants data from a file. It is up to the creator of the file to&n; * provide that data.&n; * There is a struct device_attribute embedded in file-&gt;private_data. We&n; * obtain that and check if the read callback is implemented. If so, we call&n; * it, passing the data field of the file entry.&n; * Said callback is responsible for filling the buffer and returning the number&n; * of bytes it put in it. We update @ppos correctly.&n; */
 r_static
 id|ssize_t
-DECL|function|driverfs_read_file
-id|driverfs_read_file
+DECL|function|sysfs_read_file
+id|sysfs_read_file
 c_func
 (paren
 r_struct
@@ -1151,11 +1142,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_write_file - &quot;write&quot; to a file&n; * @file:&t;file pointer&n; * @buf:&t;data to write&n; * @count:&t;number of bytes&n; * @ppos:&t;starting offset&n; *&n; * Similarly to driverfs_read_file, we act essentially as a bit pipe.&n; * We check for a &quot;write&quot; callback in file-&gt;private_data, and pass&n; * @buffer, @count, @ppos, and the file entry&squot;s data to the callback.&n; * The number of bytes written is returned, and we handle updating&n; * @ppos properly.&n; */
+multiline_comment|/**&n; * sysfs_write_file - &quot;write&quot; to a file&n; * @file:&t;file pointer&n; * @buf:&t;data to write&n; * @count:&t;number of bytes&n; * @ppos:&t;starting offset&n; *&n; * Similarly to sysfs_read_file, we act essentially as a bit pipe.&n; * We check for a &quot;write&quot; callback in file-&gt;private_data, and pass&n; * @buffer, @count, @ppos, and the file entry&squot;s data to the callback.&n; * The number of bytes written is returned, and we handle updating&n; * @ppos properly.&n; */
 r_static
 id|ssize_t
-DECL|function|driverfs_write_file
-id|driverfs_write_file
+DECL|function|sysfs_write_file
+id|sysfs_write_file
 c_func
 (paren
 r_struct
@@ -1351,8 +1342,8 @@ suffix:semicolon
 )brace
 r_static
 id|loff_t
-DECL|function|driverfs_file_lseek
-id|driverfs_file_lseek
+DECL|function|sysfs_file_lseek
+id|sysfs_file_lseek
 c_func
 (paren
 r_struct
@@ -1450,10 +1441,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|driverfs_open_file
+DECL|function|sysfs_open_file
 r_static
 r_int
-id|driverfs_open_file
+id|sysfs_open_file
 c_func
 (paren
 r_struct
@@ -1538,10 +1529,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|driverfs_release
+DECL|function|sysfs_release
 r_static
 r_int
-id|driverfs_release
+id|sysfs_release
 c_func
 (paren
 r_struct
@@ -1586,45 +1577,45 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|driverfs_file_operations
+DECL|variable|sysfs_file_operations
 r_static
 r_struct
 id|file_operations
-id|driverfs_file_operations
+id|sysfs_file_operations
 op_assign
 (brace
 dot
 id|read
 op_assign
-id|driverfs_read_file
+id|sysfs_read_file
 comma
 dot
 id|write
 op_assign
-id|driverfs_write_file
+id|sysfs_write_file
 comma
 dot
 id|llseek
 op_assign
-id|driverfs_file_lseek
+id|sysfs_file_lseek
 comma
 dot
 id|open
 op_assign
-id|driverfs_open_file
+id|sysfs_open_file
 comma
 dot
 id|release
 op_assign
-id|driverfs_release
+id|sysfs_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|driverfs_dir_inode_operations
+DECL|variable|sysfs_dir_inode_operations
 r_static
 r_struct
 id|inode_operations
-id|driverfs_dir_inode_operations
+id|sysfs_dir_inode_operations
 op_assign
 (brace
 dot
@@ -1634,17 +1625,17 @@ id|simple_lookup
 comma
 )brace
 suffix:semicolon
-DECL|variable|driverfs_aops
+DECL|variable|sysfs_aops
 r_static
 r_struct
 id|address_space_operations
-id|driverfs_aops
+id|sysfs_aops
 op_assign
 (brace
 dot
 id|readpage
 op_assign
-id|driverfs_readpage
+id|sysfs_readpage
 comma
 dot
 id|writepage
@@ -1654,19 +1645,19 @@ comma
 dot
 id|prepare_write
 op_assign
-id|driverfs_prepare_write
+id|sysfs_prepare_write
 comma
 dot
 id|commit_write
 op_assign
-id|driverfs_commit_write
+id|sysfs_commit_write
 )brace
 suffix:semicolon
-DECL|variable|driverfs_ops
+DECL|variable|sysfs_ops
 r_static
 r_struct
 id|super_operations
-id|driverfs_ops
+id|sysfs_ops
 op_assign
 (brace
 dot
@@ -1681,10 +1672,10 @@ id|generic_delete_inode
 comma
 )brace
 suffix:semicolon
-DECL|function|driverfs_fill_super
+DECL|function|sysfs_fill_super
 r_static
 r_int
-id|driverfs_fill_super
+id|sysfs_fill_super
 c_func
 (paren
 r_struct
@@ -1720,16 +1711,16 @@ id|PAGE_CACHE_SHIFT
 suffix:semicolon
 id|sb-&gt;s_magic
 op_assign
-id|DRIVERFS_MAGIC
+id|SYSFS_MAGIC
 suffix:semicolon
 id|sb-&gt;s_op
 op_assign
 op_amp
-id|driverfs_ops
+id|sysfs_ops
 suffix:semicolon
 id|inode
 op_assign
-id|driverfs_get_inode
+id|sysfs_get_inode
 c_func
 (paren
 id|sb
@@ -1748,7 +1739,7 @@ op_logical_neg
 id|inode
 )paren
 (brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;%s: could not get inode!&bslash;n&quot;
@@ -1776,7 +1767,7 @@ op_logical_neg
 id|root
 )paren
 (brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;%s: could not get root dentry!&bslash;n&quot;
@@ -1803,12 +1794,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|driverfs_get_sb
+DECL|function|sysfs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
-id|driverfs_get_sb
+id|sysfs_get_sb
 c_func
 (paren
 r_struct
@@ -1838,7 +1829,7 @@ id|flags
 comma
 id|data
 comma
-id|driverfs_fill_super
+id|sysfs_fill_super
 )paren
 suffix:semicolon
 )brace
@@ -1862,7 +1853,7 @@ comma
 dot
 id|get_sb
 op_assign
-id|driverfs_get_sb
+id|sysfs_get_sb
 comma
 dot
 id|kill_sb
@@ -1895,13 +1886,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driverfs_mount
+id|sysfs_mount
 )paren
 (brace
 id|mntget
 c_func
 (paren
-id|driverfs_mount
+id|sysfs_mount
 )paren
 suffix:semicolon
 op_increment
@@ -1948,7 +1939,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;driverfs: could not mount!&bslash;n&quot;
+l_string|&quot;sysfs: could not mount!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1967,10 +1958,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|driverfs_mount
+id|sysfs_mount
 )paren
 (brace
-id|driverfs_mount
+id|sysfs_mount
 op_assign
 id|mnt
 suffix:semicolon
@@ -1991,7 +1982,7 @@ suffix:semicolon
 id|mntget
 c_func
 (paren
-id|driverfs_mount
+id|sysfs_mount
 )paren
 suffix:semicolon
 op_increment
@@ -2006,10 +1997,10 @@ id|mount_lock
 suffix:semicolon
 id|go_ahead
 suffix:colon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;driverfs: mount_count = %d&bslash;n&quot;
+l_string|&quot;sysfs: mount_count = %d&bslash;n&quot;
 comma
 id|mount_count
 )paren
@@ -2041,7 +2032,7 @@ id|mount_lock
 suffix:semicolon
 id|mnt
 op_assign
-id|driverfs_mount
+id|sysfs_mount
 suffix:semicolon
 op_decrement
 id|mount_count
@@ -2052,7 +2043,7 @@ c_cond
 op_logical_neg
 id|mount_count
 )paren
-id|driverfs_mount
+id|sysfs_mount
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2069,10 +2060,10 @@ c_func
 id|mnt
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;driverfs: mount_count = %d&bslash;n&quot;
+l_string|&quot;sysfs: mount_count = %d&bslash;n&quot;
 comma
 id|mount_count
 )paren
@@ -2227,13 +2218,13 @@ id|parent_dentry
 r_if
 c_cond
 (paren
-id|driverfs_mount
+id|sysfs_mount
 op_logical_and
-id|driverfs_mount-&gt;mnt_sb
+id|sysfs_mount-&gt;mnt_sb
 )paren
 id|parent_dentry
 op_assign
-id|driverfs_mount-&gt;mnt_sb-&gt;s_root
+id|sysfs_mount-&gt;mnt_sb-&gt;s_root
 suffix:semicolon
 r_if
 c_cond
@@ -2294,7 +2285,7 @@ id|dentry
 suffix:semicolon
 id|error
 op_assign
-id|driverfs_mkdir
+id|sysfs_mkdir
 c_func
 (paren
 id|parent_dentry-&gt;d_inode
@@ -2430,7 +2421,7 @@ id|entry
 suffix:semicolon
 id|error
 op_assign
-id|driverfs_create
+id|sysfs_create
 c_func
 (paren
 id|parent-&gt;dentry-&gt;d_inode
@@ -2547,7 +2538,7 @@ id|dentry
 )paren
 id|error
 op_assign
-id|driverfs_symlink
+id|sysfs_symlink
 c_func
 (paren
 id|parent-&gt;dentry-&gt;d_inode
@@ -2648,7 +2639,7 @@ id|dir-&gt;dentry-&gt;d_inode
 )paren
 )paren
 (brace
-id|driverfs_unlink
+id|sysfs_unlink
 c_func
 (paren
 id|dir-&gt;dentry-&gt;d_inode
@@ -2762,7 +2753,7 @@ c_cond
 (paren
 id|d-&gt;d_inode
 )paren
-id|driverfs_unlink
+id|sysfs_unlink
 c_func
 (paren
 id|dentry-&gt;d_inode
@@ -2780,7 +2771,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|driverfs_empty
+id|sysfs_empty
 c_func
 (paren
 id|dentry
