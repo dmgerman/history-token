@@ -325,6 +325,10 @@ comma
 id|u32
 op_star
 id|verifier
+comma
+r_int
+op_star
+id|truncp
 )paren
 suffix:semicolon
 r_int

@@ -993,6 +993,8 @@ comma
 id|argp-&gt;createmode
 comma
 id|argp-&gt;verf
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|RETURN_STATUS
