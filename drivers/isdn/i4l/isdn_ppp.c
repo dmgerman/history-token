@@ -3398,7 +3398,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * read() .. non-blocking: ipppd calls it only after select()&n; *           reports, that there is data&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|isdn_ppp_read
 id|isdn_ppp_read
 c_func
@@ -3624,7 +3624,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ipppd wanna write a packet to the card .. non-blocking&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|isdn_ppp_write
 id|isdn_ppp_write
 c_func

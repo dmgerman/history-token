@@ -1646,10 +1646,14 @@ r_if
 c_cond
 (paren
 id|len
-OG
+template_param
 id|BANK4
 op_plus
 l_int|1
+op_logical_or
+id|len
+OG
+l_int|1024
 )paren
 (brace
 id|printk
