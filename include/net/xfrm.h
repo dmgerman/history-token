@@ -3791,8 +3791,7 @@ c_func
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -3914,8 +3913,7 @@ c_func
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XFRM
