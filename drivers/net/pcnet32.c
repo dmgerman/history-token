@@ -5351,7 +5351,7 @@ id|SA_SHIRQ
 suffix:colon
 l_int|0
 comma
-id|lp-&gt;name
+id|dev-&gt;name
 comma
 (paren
 r_void
