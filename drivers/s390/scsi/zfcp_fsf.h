@@ -321,11 +321,11 @@ DECL|macro|FSF_IOSTAT_LS_RJT
 mdefine_line|#define FSF_IOSTAT_LS_RJT&t;&t;&t;0x00000009
 multiline_comment|/* open LUN access flags*/
 DECL|macro|FSF_UNIT_ACCESS_OPEN_LUN_ALLOWED
-mdefine_line|#define FSF_UNIT_ACCESS_OPEN_LUN_ALLOWED        0x01000000
-DECL|macro|FSF_UNIT_ACCESS_EXCLUSIVE_ACCESS
-mdefine_line|#define FSF_UNIT_ACCESS_EXCLUSIVE_ACCESS        0x02000000
+mdefine_line|#define FSF_UNIT_ACCESS_OPEN_LUN_ALLOWED&t;0x01000000
+DECL|macro|FSF_UNIT_ACCESS_EXCLUSIVE
+mdefine_line|#define FSF_UNIT_ACCESS_EXCLUSIVE&t;&t;0x02000000
 DECL|macro|FSF_UNIT_ACCESS_OUTBOUND_TRANSFER
-mdefine_line|#define FSF_UNIT_ACCESS_OUTBOUND_TRANSFER       0x10000000
+mdefine_line|#define FSF_UNIT_ACCESS_OUTBOUND_TRANSFER&t;0x10000000
 r_struct
 id|fsf_queue_designator
 suffix:semicolon

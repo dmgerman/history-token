@@ -869,9 +869,9 @@ macro_line|#endif
 multiline_comment|/*************** ADAPTER/PORT/UNIT AND FSF_REQ STATUS FLAGS ******************/
 multiline_comment|/* &n; * Note, the leftmost status byte is common among adapter, port &n; * and unit&n; */
 DECL|macro|ZFCP_COMMON_FLAGS
-mdefine_line|#define ZFCP_COMMON_FLAGS                       0xff000000
+mdefine_line|#define ZFCP_COMMON_FLAGS&t;&t;&t;0xfff00000
 DECL|macro|ZFCP_SPECIFIC_FLAGS
-mdefine_line|#define ZFCP_SPECIFIC_FLAGS                     0x00ffffff
+mdefine_line|#define ZFCP_SPECIFIC_FLAGS&t;&t;&t;0x000fffff
 multiline_comment|/* common status bits */
 DECL|macro|ZFCP_STATUS_COMMON_REMOVE
 mdefine_line|#define ZFCP_STATUS_COMMON_REMOVE&t;&t;0x80000000
@@ -889,6 +889,8 @@ DECL|macro|ZFCP_STATUS_COMMON_CLOSING
 mdefine_line|#define ZFCP_STATUS_COMMON_CLOSING              0x02000000
 DECL|macro|ZFCP_STATUS_COMMON_ERP_INUSE
 mdefine_line|#define ZFCP_STATUS_COMMON_ERP_INUSE&t;&t;0x01000000
+DECL|macro|ZFCP_STATUS_COMMON_ACCESS_DENIED
+mdefine_line|#define ZFCP_STATUS_COMMON_ACCESS_DENIED&t;0x00800000
 multiline_comment|/* adapter status */
 DECL|macro|ZFCP_STATUS_ADAPTER_QDIOUP
 mdefine_line|#define ZFCP_STATUS_ADAPTER_QDIOUP&t;&t;0x00000002
@@ -939,15 +941,13 @@ DECL|macro|ZFCP_STATUS_PORT_WKA
 mdefine_line|#define ZFCP_STATUS_PORT_WKA &bslash;&n;&t;&t;(ZFCP_STATUS_PORT_NO_WWPN | &bslash;&n;&t;&t; ZFCP_STATUS_PORT_NO_SCSI_ID)
 multiline_comment|/* logical unit status */
 DECL|macro|ZFCP_STATUS_UNIT_NOTSUPPUNITRESET
-mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET       0x00000001
-DECL|macro|ZFCP_STATUS_UNIT_ACCESS_DENIED
-mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_DENIED          0x00000002
-DECL|macro|ZFCP_STATUS_UNIT_ACCESS_SHARED
-mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_SHARED          0x00000004
-DECL|macro|ZFCP_STATUS_UNIT_ACCESS_READONLY
-mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_READONLY        0x00000008
+mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET&t;0x00000001
 DECL|macro|ZFCP_STATUS_UNIT_TEMPORARY
-mdefine_line|#define ZFCP_STATUS_UNIT_TEMPORARY&t;&t;0x00000010
+mdefine_line|#define ZFCP_STATUS_UNIT_TEMPORARY&t;&t;0x00000002
+DECL|macro|ZFCP_STATUS_UNIT_SHARED
+mdefine_line|#define ZFCP_STATUS_UNIT_SHARED&t;&t;&t;0x00000004
+DECL|macro|ZFCP_STATUS_UNIT_READONLY
+mdefine_line|#define ZFCP_STATUS_UNIT_READONLY&t;&t;0x00000008
 multiline_comment|/* FSF request status (this does not have a common part) */
 DECL|macro|ZFCP_STATUS_FSFREQ_NOT_INIT
 mdefine_line|#define ZFCP_STATUS_FSFREQ_NOT_INIT&t;&t;0x00000000
@@ -2772,5 +2772,130 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *  stuff needed for callback handling&n; */
+DECL|typedef|zfcp_cb_incoming_els_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_incoming_els_t
+)paren
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|zfcp_cb_link_down_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_link_down_t
+)paren
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|zfcp_cb_link_up_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_link_up_t
+)paren
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|zfcp_cb_adapter_add_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_adapter_add_t
+)paren
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|zfcp_cb_port_add_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_port_add_t
+)paren
+(paren
+r_struct
+id|zfcp_port
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|zfcp_cb_unit_add_t
+r_typedef
+r_void
+(paren
+op_star
+id|zfcp_cb_unit_add_t
+)paren
+(paren
+r_struct
+id|zfcp_unit
+op_star
+)paren
+suffix:semicolon
+DECL|struct|zfcp_callbacks
+r_struct
+id|zfcp_callbacks
+(brace
+DECL|member|refcount
+id|atomic_t
+id|refcount
+suffix:semicolon
+DECL|member|wq
+id|wait_queue_head_t
+id|wq
+suffix:semicolon
+DECL|member|incoming_els
+id|zfcp_cb_incoming_els_t
+id|incoming_els
+suffix:semicolon
+DECL|member|link_down
+id|zfcp_cb_link_down_t
+id|link_down
+suffix:semicolon
+DECL|member|link_up
+id|zfcp_cb_link_up_t
+id|link_up
+suffix:semicolon
+DECL|member|adapter_add
+id|zfcp_cb_adapter_add_t
+id|adapter_add
+suffix:semicolon
+DECL|member|port_add
+id|zfcp_cb_port_add_t
+id|port_add
+suffix:semicolon
+DECL|member|unit_add
+id|zfcp_cb_unit_add_t
+id|unit_add
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|zfcp_callbacks
+id|zfcp_callbacks
+suffix:semicolon
 macro_line|#endif /* ZFCP_DEF_H */
 eof
