@@ -9,8 +9,6 @@ DECL|macro|K_DEBUG
 mdefine_line|#define K_DEBUG(f, m, args...) do { if(f &amp; m) printk(KERN_DEBUG args); } while(0)
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(f, args...) K_DEBUG(f, pc_debug, args)
-DECL|macro|TRACE
-mdefine_line|#define TRACE(devname)   K_DEBUG(SHOW_TRACING, VERBOSE, &quot;%s:  -&gt; &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname)
 r_extern
 r_int
 id|pc_debug

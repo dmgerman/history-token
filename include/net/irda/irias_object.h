@@ -171,6 +171,9 @@ r_struct
 id|ias_attrib
 op_star
 id|attrib
+comma
+r_int
+id|cleanobject
 )paren
 suffix:semicolon
 r_void

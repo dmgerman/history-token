@@ -606,6 +606,8 @@ c_func
 op_amp
 id|cls-&gt;subsys.kset.kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|cls-&gt;name
 )paren
 suffix:semicolon
@@ -1691,6 +1693,8 @@ c_func
 (paren
 op_amp
 id|class_dev-&gt;kobj
+comma
+l_string|&quot;%s&quot;
 comma
 id|class_dev-&gt;class_id
 )paren

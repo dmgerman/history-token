@@ -560,6 +560,24 @@ l_string|&quot;[ASSURED] &quot;
 r_return
 l_int|1
 suffix:semicolon
+macro_line|#if defined(CONFIG_IP_NF_CONNTRACK_MARK)
+r_if
+c_cond
+(paren
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;mark=%ld &quot;
+comma
+id|conntrack-&gt;mark
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

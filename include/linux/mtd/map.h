@@ -1,11 +1,12 @@
 multiline_comment|/* Overhauled routines for dealing with different mmap regions of flash */
-multiline_comment|/* $Id: map.h,v 1.43 2004/07/14 13:30:27 dwmw2 Exp $ */
+multiline_comment|/* $Id: map.h,v 1.45 2004/09/21 14:31:17 bjd Exp $ */
 macro_line|#ifndef __LINUX_MTD_MAP_H__
 DECL|macro|__LINUX_MTD_MAP_H__
 mdefine_line|#define __LINUX_MTD_MAP_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -73,6 +74,9 @@ macro_line|#else
 DECL|macro|map_bankwidth_is_4
 mdefine_line|#define map_bankwidth_is_4(map) (0)
 macro_line|#endif
+multiline_comment|/* ensure we never evaluate anything shorted than an unsigned long&n; * to zero, and ensure we&squot;ll never miss the end of an comparison (bjd) */
+DECL|macro|map_calc_words
+mdefine_line|#define map_calc_words(map) ((map_bankwidth(map) + (sizeof(unsigned long)-1))/ sizeof(unsigned long))
 macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_8
 macro_line|# ifdef map_bankwidth
 DECL|macro|map_bankwidth
@@ -87,7 +91,7 @@ macro_line|#   define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_
 DECL|macro|map_words
 macro_line|#   undef map_words
 DECL|macro|map_words
-macro_line|#   define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#   define map_words(map) map_calc_words(map)
 macro_line|#  endif
 macro_line|# else
 DECL|macro|map_bankwidth
@@ -95,7 +99,7 @@ macro_line|#  define map_bankwidth(map) 8
 DECL|macro|map_bankwidth_is_large
 macro_line|#  define map_bankwidth_is_large(map) (BITS_PER_LONG &lt; 64)
 DECL|macro|map_words
-macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  define map_words(map) map_calc_words(map)
 macro_line|# endif
 DECL|macro|map_bankwidth_is_8
 mdefine_line|#define map_bankwidth_is_8(map) (map_bankwidth(map) == 8)
@@ -120,14 +124,14 @@ macro_line|#  define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_P
 DECL|macro|map_words
 macro_line|#  undef map_words
 DECL|macro|map_words
-macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  define map_words(map) map_calc_words(map)
 macro_line|# else
 DECL|macro|map_bankwidth
 macro_line|#  define map_bankwidth(map) 16
 DECL|macro|map_bankwidth_is_large
 macro_line|#  define map_bankwidth_is_large(map) (1)
 DECL|macro|map_words
-macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  define map_words(map) map_calc_words(map)
 macro_line|# endif
 DECL|macro|map_bankwidth_is_16
 mdefine_line|#define map_bankwidth_is_16(map) (map_bankwidth(map) == 16)
@@ -152,14 +156,14 @@ macro_line|#  define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_P
 DECL|macro|map_words
 macro_line|#  undef map_words
 DECL|macro|map_words
-macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  define map_words(map) map_calc_words(map)
 macro_line|# else
 DECL|macro|map_bankwidth
 macro_line|#  define map_bankwidth(map) 32
 DECL|macro|map_bankwidth_is_large
 macro_line|#  define map_bankwidth_is_large(map) (1)
 DECL|macro|map_words
-macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  define map_words(map) map_calc_words(map)
 macro_line|# endif
 DECL|macro|map_bankwidth_is_32
 mdefine_line|#define map_bankwidth_is_32(map) (map_bankwidth(map) == 32)

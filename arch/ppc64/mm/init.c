@@ -974,15 +974,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;could not obtain imalloc area for ea 0x%lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
+multiline_comment|/* Expected when PHB-dlpar is in play */
 r_return
 l_int|1
 suffix:semicolon

@@ -239,9 +239,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_char
 op_star

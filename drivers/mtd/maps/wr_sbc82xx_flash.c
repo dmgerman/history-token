@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: wr_sbc82xx_flash.c,v 1.5 2004/07/15 14:52:02 dwmw2 Exp $&n; *&n; * Map for flash chips on Wind River PowerQUICC II SBC82xx board.&n; *&n; * Copyright (C) 2004 Red Hat, Inc.&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; */
+multiline_comment|/*&n; * $Id: wr_sbc82xx_flash.c,v 1.6 2004/09/16 23:27:14 gleixner Exp $&n; *&n; * Map for flash chips on Wind River PowerQUICC II SBC82xx board.&n; *&n; * Copyright (C) 2004 Red Hat, Inc.&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -430,8 +430,9 @@ dot
 id|virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

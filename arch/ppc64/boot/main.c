@@ -911,7 +911,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;0x%x bytes of heap consumed, max in use 0x%&bslash;n&bslash;r&quot;
+l_string|&quot;0x%x bytes of heap consumed, max in use 0x%x&bslash;n&bslash;r&quot;
 comma
 (paren
 r_int

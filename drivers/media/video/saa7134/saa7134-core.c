@@ -5394,7 +5394,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|saa7134_finidev
+)paren
 comma
 )brace
 suffix:semicolon

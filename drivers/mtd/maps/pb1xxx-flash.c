@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.11 2004/07/12 21:59:44 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.13 2004/09/26 07:33:01 ppopov Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#ifdef &t;DEBUG_RW
 DECL|macro|DBG
 mdefine_line|#define&t;DBG(x...)&t;printk(x)
@@ -411,8 +410,9 @@ suffix:semicolon
 id|pb1xxx_mtd_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

@@ -5922,7 +5922,7 @@ suffix:semicolon
 multiline_comment|/* prototypes */
 r_extern
 r_int
-id|security_scaffolding_startup
+id|security_init
 (paren
 r_void
 )paren
@@ -5979,11 +5979,12 @@ id|ops
 suffix:semicolon
 macro_line|#else /* CONFIG_SECURITY */
 multiline_comment|/*&n; * This is the default capabilities functionality.  Most of these functions&n; * are just stubbed out, but a few must call the proper capable code.&n; */
-DECL|function|security_scaffolding_startup
+DECL|function|security_init
 r_static
 r_inline
 r_int
-id|security_scaffolding_startup
+id|security_init
+c_func
 (paren
 r_void
 )paren

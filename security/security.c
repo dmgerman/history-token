@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-DECL|macro|SECURITY_SCAFFOLD_VERSION
-mdefine_line|#define SECURITY_SCAFFOLD_VERSION&t;&quot;1.0.0&quot;
+DECL|macro|SECURITY_FRAMEWORK_VERSION
+mdefine_line|#define SECURITY_FRAMEWORK_VERSION&t;&quot;1.0.0&quot;
 multiline_comment|/* things that live in dummy.c */
 r_extern
 r_struct
@@ -16,6 +16,7 @@ suffix:semicolon
 r_extern
 r_void
 id|security_fixup_ops
+c_func
 (paren
 r_struct
 id|security_operations
@@ -35,6 +36,7 @@ r_static
 r_inline
 r_int
 id|verify
+c_func
 (paren
 r_struct
 id|security_operations
@@ -49,22 +51,12 @@ c_cond
 op_logical_neg
 id|ops
 )paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Passed a NULL security_operations &quot;
-l_string|&quot;pointer, %s failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|security_fixup_ops
+c_func
 (paren
 id|ops
 )paren
@@ -113,20 +105,22 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * security_scaffolding_startup - initializes the security scaffolding framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
-DECL|function|security_scaffolding_startup
+multiline_comment|/**&n; * security_init - initializes the security framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
+DECL|function|security_init
 r_int
 id|__init
-id|security_scaffolding_startup
+id|security_init
+c_func
 (paren
 r_void
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Security Scaffold v&quot;
-id|SECURITY_SCAFFOLD_VERSION
+l_string|&quot;Security Framework v&quot;
+id|SECURITY_FRAMEWORK_VERSION
 l_string|&quot; initialized&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -134,6 +128,7 @@ r_if
 c_cond
 (paren
 id|verify
+c_func
 (paren
 op_amp
 id|dummy_security_ops
@@ -141,6 +136,7 @@ id|dummy_security_ops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s could not verify &quot;
@@ -172,6 +168,7 @@ multiline_comment|/**&n; * register_security - registers a security framework wi
 DECL|function|register_security
 r_int
 id|register_security
+c_func
 (paren
 r_struct
 id|security_operations
@@ -183,14 +180,16 @@ r_if
 c_cond
 (paren
 id|verify
+c_func
 (paren
 id|ops
 )paren
 )paren
 (brace
 id|printk
+c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s could not verify &quot;
 l_string|&quot;security_operations structure.&bslash;n&quot;
 comma
@@ -210,21 +209,10 @@ op_ne
 op_amp
 id|dummy_security_ops
 )paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;There is already a security &quot;
-l_string|&quot;framework initialized, %s failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|EAGAIN
 suffix:semicolon
-)brace
 id|security_ops
 op_assign
 id|ops
@@ -237,6 +225,7 @@ multiline_comment|/**&n; * unregister_security - unregisters a security framewor
 DECL|function|unregister_security
 r_int
 id|unregister_security
+c_func
 (paren
 r_struct
 id|security_operations
@@ -253,6 +242,7 @@ id|security_ops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: trying to unregister &quot;
@@ -280,6 +270,7 @@ multiline_comment|/**&n; * mod_reg_security - allows security modules to be &quo
 DECL|function|mod_reg_security
 r_int
 id|mod_reg_security
+c_func
 (paren
 r_const
 r_char
@@ -296,12 +287,14 @@ r_if
 c_cond
 (paren
 id|verify
+c_func
 (paren
 id|ops
 )paren
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s could not verify &quot;
@@ -324,6 +317,7 @@ id|security_ops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s security operations &quot;
@@ -338,7 +332,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 r_return
-id|security_ops-&gt;register_security
+id|security_ops
+op_member_access_from_pointer
+id|register_security
+c_func
 (paren
 id|name
 comma
@@ -350,6 +347,7 @@ multiline_comment|/**&n; * mod_unreg_security - allows a security module registe
 DECL|function|mod_unreg_security
 r_int
 id|mod_unreg_security
+c_func
 (paren
 r_const
 r_char
@@ -371,6 +369,7 @@ id|security_ops
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s invalid attempt to unregister &quot;
@@ -385,7 +384,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 r_return
-id|security_ops-&gt;unregister_security
+id|security_ops
+op_member_access_from_pointer
+id|unregister_security
+c_func
 (paren
 id|name
 comma
@@ -397,6 +399,7 @@ multiline_comment|/**&n; * capable - calls the currently loaded security module&
 DECL|function|capable
 r_int
 id|capable
+c_func
 (paren
 r_int
 id|cap
@@ -405,7 +408,10 @@ id|cap
 r_if
 c_cond
 (paren
-id|security_ops-&gt;capable
+id|security_ops
+op_member_access_from_pointer
+id|capable
+c_func
 (paren
 id|current
 comma

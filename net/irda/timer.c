@@ -7,6 +7,10 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
+r_extern
+r_int
+id|sysctl_slot_timeout
+suffix:semicolon
 r_static
 r_void
 id|irlap_slot_timer_expired
@@ -110,9 +114,39 @@ op_star
 id|self
 comma
 r_int
-id|timeout
+id|S
+comma
+r_int
+id|s
 )paren
 (brace
+r_int
+id|timeout
+suffix:semicolon
+multiline_comment|/* Calculate when the peer discovery should end. Normally, we&n;&t; * get the end-of-discovery frame, so this is just in case&n;&t; * we miss it.&n;&t; * Basically, we multiply the number of remaining slots by our&n;&t; * slot time, plus add some extra time to properly receive the last&n;&t; * discovery packet (which is longer due to extra discovery info),&n;&t; * to avoid messing with for incomming connections requests and&n;&t; * to accomodate devices that perform discovery slower than us.&n;&t; * Jean II */
+id|timeout
+op_assign
+(paren
+(paren
+id|sysctl_slot_timeout
+op_star
+id|HZ
+op_div
+l_int|1000
+)paren
+op_star
+(paren
+id|S
+op_minus
+id|s
+)paren
+op_plus
+id|XIDEXTRA_TIMEOUT
+op_plus
+id|SMALLBUSY_TIMEOUT
+)paren
+suffix:semicolon
+multiline_comment|/* Set or re-set the timer. We reset the timer for each received&n;&t; * discovery query, which allow us to automatically adjust to&n;&t; * the speed of the peer discovery (faster or slower). Jean II */
 id|irda_start_timer
 c_func
 (paren

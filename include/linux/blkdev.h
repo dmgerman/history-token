@@ -372,32 +372,12 @@ r_int
 r_int
 id|hard_cur_sectors
 suffix:semicolon
-multiline_comment|/* no. of segments left to submit in the current bio */
-DECL|member|nr_cbio_segments
-r_int
-r_int
-id|nr_cbio_segments
-suffix:semicolon
-multiline_comment|/* no. of sectors left to submit in the current bio */
-DECL|member|nr_cbio_sectors
-r_int
-r_int
-id|nr_cbio_sectors
-suffix:semicolon
-DECL|member|cbio
-r_struct
-id|bio
-op_star
-id|cbio
-suffix:semicolon
-multiline_comment|/* next bio to submit */
 DECL|member|bio
 r_struct
 id|bio
 op_star
 id|bio
 suffix:semicolon
-multiline_comment|/* next unfinished bio to complete */
 DECL|member|biotail
 r_struct
 id|bio
@@ -1345,86 +1325,6 @@ mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; RQ
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
-multiline_comment|/* current index into bio being processed for submission */
-DECL|macro|blk_rq_idx
-mdefine_line|#define blk_rq_idx(rq)&t;((rq)-&gt;cbio-&gt;bi_vcnt - (rq)-&gt;nr_cbio_segments)
-multiline_comment|/* current bio vector being processed */
-DECL|macro|blk_rq_vec
-mdefine_line|#define blk_rq_vec(rq)&t;(bio_iovec_idx((rq)-&gt;cbio, blk_rq_idx(rq)))
-multiline_comment|/* current offset with respect to start of the segment being submitted */
-DECL|macro|blk_rq_offset
-mdefine_line|#define blk_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
-multiline_comment|/*&n; * temporarily mapping a (possible) highmem bio (typically for PIO transfer)&n; */
-multiline_comment|/* Assumes rq-&gt;cbio != NULL */
-DECL|function|rq_map_buffer
-r_static
-r_inline
-r_char
-op_star
-id|rq_map_buffer
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_return
-(paren
-id|__bio_kmap_irq
-c_func
-(paren
-id|rq-&gt;cbio
-comma
-id|blk_rq_idx
-c_func
-(paren
-id|rq
-)paren
-comma
-id|flags
-)paren
-op_plus
-id|blk_rq_offset
-c_func
-(paren
-id|rq
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|rq_unmap_buffer
-r_static
-r_inline
-r_void
-id|rq_unmap_buffer
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|__bio_kunmap_irq
-c_func
-(paren
-id|buffer
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * q-&gt;prep_rq_fn return values&n; */
 DECL|macro|BLKPREP_OK
 mdefine_line|#define BLKPREP_OK&t;&t;0&t;/* serve it */
@@ -1977,19 +1877,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|process_that_request_first
-c_func
-(paren
-r_struct
-id|request
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|end_request
 c_func
@@ -2479,16 +2366,6 @@ op_star
 comma
 r_struct
 id|bio
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|blk_rq_prep_restart
-c_func
-(paren
-r_struct
-id|request
 op_star
 )paren
 suffix:semicolon

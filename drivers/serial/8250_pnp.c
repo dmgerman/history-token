@@ -847,6 +847,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* U.S. Robotics Courier V.Everything INT PnP */
+(brace
+l_string|&quot;USR0009&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* U.S. Robotics 33.6K Voice INT PnP */
 (brace
 l_string|&quot;USR2002&quot;

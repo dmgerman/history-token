@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; *  Derived from drivers/mtd/spia.c&n; * &t; Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &n; * $Id: autcpu12.c,v 1.20 2004/07/20 02:44:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   autronix autcpu12 board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; *&n; *&t;02-12-2002 TG&t;Cleanup of module params&n; *&n; *&t;02-20-2002 TG&t;adjusted for different rd/wr adress support&n; *&t;&t;&t;added support for read device ready/busy line&n; *&t;&t;&t;added page_cache&n; *&n; *&t;10-06-2002 TG&t;128K card support added&n; */
+multiline_comment|/*&n; *  drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; *  Derived from drivers/mtd/spia.c&n; * &t; Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &n; * $Id: autcpu12.c,v 1.21 2004/09/16 23:27:14 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   autronix autcpu12 board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; *&n; *&t;02-12-2002 TG&t;Cleanup of module params&n; *&n; *&t;02-20-2002 TG&t;adjusted for different rd/wr adress support&n; *&t;&t;&t;added support for read device ready/busy line&n; *&t;&t;&t;added page_cache&n; *&n; *&t;10-06-2002 TG&t;128K card support added&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -50,7 +50,9 @@ id|AUTCPU12_SMC_PORT_OFFSET
 suffix:semicolon
 DECL|variable|autcpu12_fio_base
 r_static
-r_int
+r_void
+id|__iomem
+op_star
 id|autcpu12_fio_base
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -576,8 +578,9 @@ multiline_comment|/* map physical adress */
 id|autcpu12_fio_base
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

@@ -1967,7 +1967,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|security_scaffolding_startup
+id|security_init
 c_func
 (paren
 )paren

@@ -1423,11 +1423,10 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-DECL|member|prev
+DECL|member|housekeeping
 r_struct
-id|amb_dev
-op_star
-id|prev
+id|timer_list
+id|housekeeping
 suffix:semicolon
 )brace
 suffix:semicolon

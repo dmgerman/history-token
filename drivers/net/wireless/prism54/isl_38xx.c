@@ -317,9 +317,6 @@ c_func
 id|ISL38XX_WRITEIO_DELAY
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|reg
 op_assign
 id|readl
@@ -329,7 +326,10 @@ id|device_base
 op_plus
 id|ISL38XX_INT_IDENT_REG
 )paren
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|reg
 op_eq
 l_int|0xabadface
@@ -543,16 +543,13 @@ id|dma_addr_t
 id|host_address
 )paren
 (brace
-id|u32
-id|reg
-suffix:semicolon
 macro_line|#if VERBOSE &gt; SHOW_ERROR_MESSAGES
 id|DEBUG
 c_func
 (paren
 id|SHOW_FUNCTION_CALLS
 comma
-l_string|&quot;isl38xx_interface_reset &bslash;n&quot;
+l_string|&quot;isl38xx_interface_reset&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -592,16 +589,12 @@ id|ISL38XX_WRITEIO_DELAY
 suffix:semicolon
 multiline_comment|/* enable the interrupt for detecting initialization */
 multiline_comment|/* Note: Do not enable other interrupts here. We want the&n;&t; * device to have come up first 100% before allowing any other &n;&t; * interrupts. */
-id|reg
-op_assign
-id|ISL38XX_INT_IDENT_INIT
-suffix:semicolon
 id|isl38xx_w32_flush
 c_func
 (paren
 id|device_base
 comma
-id|reg
+id|ISL38XX_INT_IDENT_INIT
 comma
 id|ISL38XX_INT_EN_REG
 )paren

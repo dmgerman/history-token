@@ -220,7 +220,7 @@ multiline_comment|/* work to do on any return to user space */
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK 0x0000FFFF&t;
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE     0x4000000
+mdefine_line|#define PREEMPT_ACTIVE     0x10000000
 multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */
 DECL|macro|TS_USEDFPU
 mdefine_line|#define TS_USEDFPU&t;&t;0x0001&t;/* FPU was used by this task this quantum (SMP) */

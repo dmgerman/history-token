@@ -799,6 +799,15 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|ATM_VF_CLOSE
+comma
+op_amp
+id|vcc-&gt;flags
+)paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -971,6 +980,10 @@ comma
 op_amp
 id|vcc-&gt;flags
 )paren
+suffix:semicolon
+id|vcc-&gt;sk-&gt;sk_shutdown
+op_or_assign
+id|RCV_SHUTDOWN
 suffix:semicolon
 id|vcc-&gt;sk-&gt;sk_err
 op_assign

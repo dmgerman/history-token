@@ -76,6 +76,20 @@ DECL|variable|ppc_n_lost_interrupts
 id|atomic_t
 id|ppc_n_lost_interrupts
 suffix:semicolon
+macro_line|#ifdef CONFIG_TAU_INT
+r_extern
+r_int
+id|tau_initialized
+suffix:semicolon
+r_extern
+r_int
+id|tau_interrupts
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|show_interrupts
 r_int
 id|show_interrupts

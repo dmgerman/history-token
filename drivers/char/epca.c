@@ -1038,8 +1038,6 @@ r_struct
 id|tty_struct
 op_star
 comma
-r_int
-comma
 r_const
 r_int
 r_char
@@ -2644,9 +2642,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -2724,157 +2719,6 @@ id|size
 op_assign
 id|ch-&gt;txbufsize
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-multiline_comment|/* Begin from_user */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|globalwinon
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-multiline_comment|/* -----------------------------------------------------------------&t;&n;&t;&t;&t;Anding against size will wrap the pointer back to its beginning &n;&t;&t;&t;position if it is necessary.  This will only work if size is&n;&t;&t;&t;a power of 2 which should always be the case.  Size is determined &n;&t;&t;&t;by the cards on board FEP/OS.&n;&t;&t;-------------------------------------------------------------------- */
-multiline_comment|/* head refers to the next empty location in which data may be stored */
-id|head
-op_assign
-id|bc-&gt;tin
-op_amp
-(paren
-id|size
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* tail refers to the next data byte to be transmitted */
-id|tail
-op_assign
-id|bc-&gt;tout
-suffix:semicolon
-multiline_comment|/* Consider changing this to a do statement to make sure */
-r_if
-c_cond
-(paren
-id|tail
-op_ne
-id|bc-&gt;tout
-)paren
-id|tail
-op_assign
-id|bc-&gt;tout
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------------&t;&n;&t;&t;&t;Anding against size will wrap the pointer back to its beginning &n;&t;&t;&t;position if it is necessary.  This will only work if size is&n;&t;&t;&t;a power of 2 which should always be the case.  Size is determined &n;&t;&t;&t;by the cards on board FEP/OS.&n;&t;&t;--------------------------------------------------------------------- */
-id|tail
-op_and_assign
-(paren
-id|size
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* -----------------------------------------------------------------&n;&t;&t;&t;Two situations can affect how space in the transmit buffer&n;&t;&t;&t;is calculated.  You can have a situation where the transmit&n;&t;&t;&t;in pointer (tin) head has wrapped around and actually has a &n;&t;&t;&t;lower address than the transmit out pointer (tout) tail; or&n;&t;&t;&t;the transmit in pointer (tin) head will not be wrapped around&n;&t;&t;&t;yet, and have a higher address than the transmit out pointer&n;&t;&t;&t;(tout) tail.  Obviously space available in the transmit buffer&n;&t;&t;&t;is calculated differently for each case.&n;&n;&t;&t;&t;Example 1:&n;&t;&t;&t;&n;&t;&t;&t;Consider a 10 byte buffer where head is a pointer to the next&n;&t;&t;&t;empty location in the buffer and tail is a pointer to the next &n;&t;&t;&t;byte to transmit.  In this example head will not have wrapped &n;&t;&t;&t;around and therefore head &gt; tail.  &n;&n;&t;&t;&t;0      1      2      3      4      5      6      7      8      9   &n;&t;&t;                tail                               head&n;&n;&t;&t;&t;The above diagram shows that buffer locations 2,3,4,5 and 6 have&n;&t;&t;&t;data to be transmitted, while head points at the next empty&n;&t;&t;&t;location.  To calculate how much space is available first we have&n;&t;&t;&t;to determine if the head pointer (tin) has wrapped.  To do this&n;&t;&t;&t;compare the head pointer to the tail pointer,  If head is equal&n;&t;&t;&t;or greater than tail; then it has not wrapped; and the space may&n;&t;&t;&t;be calculated by subtracting tail from head and then subtracting&n;&t;&t;&t;that value from the buffers size.  A one is subtracted from the&n;&t;&t;&t;new value to indicate how much space is available between the &n;&t;&t;&t;head pointer and end of buffer; as well as the space between the&n;&t;&t;&t;beginning of the buffer and the tail.  If the head is not greater&n;&t;&t;&t;or equal to the tail this indicates that the head has wrapped&n;&t;&t;&t;around to the beginning of the buffer.  To calculate the space &n;&t;&t;&t;available in this case simply subtract head from tail.  This new &n;&t;&t;&t;value minus one represents the space available betwwen the head &n;&t;&t;&t;and tail pointers.  In this example head (7) is greater than tail (2)&n;&t;&t;&t;and therefore has not wrapped around.  We find the space by first&n;&t;&t;&t;subtracting tail from head (7-2=5).  We then subtract this value&n;&t;&t;&t;from the buffer size of ten and subtract one (10-5-1=4).  The space&n;&t;&t;&t;remaining is 4 bytes. &n;&n;&t;&t;&t;Example 2:&n;&t;&t;&t;&n;&t;&t;&t;Consider a 10 byte buffer where head is a pointer to the next&n;&t;&t;&t;empty location in the buffer and tail is a pointer to the next &n;&t;&t;&t;byte to transmit.  In this example head will wrapped around and &n;&t;&t;&t;therefore head &lt; tail.  &n;&n;&t;&t;&t;0      1      2      3      4      5      6      7      8      9   &n;&t;&t;                head                               tail&n;&n;&t;&t;&t;The above diagram shows that buffer locations 7,8,9,0 and 1 have&n;&t;&t;&t;data to be transmitted, while head points at the next empty&n;&t;&t;&t;location.  To find the space available we compare head to tail.  If&n;&t;&t;&t;head is not equal to, or greater than tail this indicates that head&n;&t;&t;&t;has wrapped around. In this case head (2) is not equal to, or&n;&t;&t;&t;greater than tail (7) and therefore has already wrapped around.  To&n;&t;&t;&t;calculate the available space between the two pointers we subtract&n;&t;&t;&t;head from tail (7-2=5).  We then subtract one from this new value&n;&t;&t;&t;(5-1=4).  We have 5 bytes empty remaining in the buffer.  Unlike the&n;&t;&t;&t;previous example these five bytes are located between the head and&n;&t;&t;&t;tail pointers. &n;&n;&t;&t;----------------------------------------------------------------------- */
-id|dataLen
-op_assign
-(paren
-id|head
-op_ge
-id|tail
-)paren
-ques
-c_cond
-(paren
-id|size
-op_minus
-(paren
-id|head
-op_minus
-id|tail
-)paren
-op_minus
-l_int|1
-)paren
-suffix:colon
-(paren
-id|tail
-op_minus
-id|head
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* ----------------------------------------------------------------------&n;&t;&t;&t;In this case bytesAvailable has been passed into pc_write and&n;&t;&t;&t;represents the amount of data that needs to be written.  dataLen&n;&t;&t;&t;represents the amount of space available on the card.  Whichever&n;&t;&t;&t;value is smaller will be the amount actually written. &n;&t;&t;&t;bytesAvailable will then take on this newly calculated value.&n;&t;&t;---------------------------------------------------------------------- */
-id|bytesAvailable
-op_assign
-id|min
-c_func
-(paren
-id|dataLen
-comma
-id|bytesAvailable
-)paren
-suffix:semicolon
-multiline_comment|/* First we read the data in from the file system into a temp buffer */
-id|memoff
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bytesAvailable
-)paren
-(brace
-multiline_comment|/* Begin bytesAvailable */
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;&t;The below function reads data from user memory.  This routine&n;&t;&t;&t;&t;can not be used in an interrupt routine. (Because it may &n;&t;&t;&t;&t;generate a page fault)  It can only be called while we can the&n;&t;&t;&t;&t;user context is accessible. &n;&n;&t;&t;&t;&t;The prototype is :&n;&t;&t;&t;&t;inline void copy_from_user(void * to, const void * from,&n;&t;&t;&t;&t;&t;&t;&t;  unsigned long count);&n;&n;&t;&t;&t;&t;I also think (Check hackers guide) that optimization must&n;&t;&t;&t;&t;be turned ON.  (Which sounds strange to me...)&n;&n;&t;&t;&t;&t;Remember copy_from_user WILL generate a page fault if the&n;&t;&t;&t;&t;user memory being accessed has been swapped out.  This can&n;&t;&t;&t;&t;cause this routine to temporarily sleep while this page&n;&t;&t;&t;&t;fault is occurring.&n;&t;&t;&t;&n;&t;&t;&t;----------------------------------------------------------------- */
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|ch-&gt;tmp_buf
-comma
-id|buf
-comma
-id|bytesAvailable
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-multiline_comment|/* End bytesAvailable */
-multiline_comment|/* ------------------------------------------------------------------ &n;&t;&t;&t;Set buf to this address for the moment.  tmp_buf was allocated in&n;&t;&t;&t;post_fep_init.&n;&t;&t;--------------------------------------------------------------------- */
-id|buf
-op_assign
-id|ch-&gt;tmp_buf
-suffix:semicolon
-)brace
-multiline_comment|/* End from_user */
-multiline_comment|/* All data is now local */
 id|amountCopied
 op_assign
 l_int|0
@@ -3135,8 +2979,6 @@ id|pc_write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 op_amp
 id|c

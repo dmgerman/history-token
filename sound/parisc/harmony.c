@@ -144,7 +144,7 @@ c_func
 (paren
 id|index
 comma
-l_string|&quot;Index value for Sun CS4231 soundcard.&quot;
+l_string|&quot;Index value for Harmony device.&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -164,7 +164,7 @@ c_func
 (paren
 id|id
 comma
-l_string|&quot;ID string for Sun CS4231 soundcard.&quot;
+l_string|&quot;ID string for Harmony device.&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -184,7 +184,7 @@ c_func
 (paren
 id|enable
 comma
-l_string|&quot;Enable Sun CS4231 soundcard.&quot;
+l_string|&quot;Enable Harmony device.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register offset (from base hpa) */
@@ -604,7 +604,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|idx
-op_le
+OL
 id|ARRAY_SIZE
 c_func
 (paren
@@ -2682,6 +2682,16 @@ id|hw_params
 r_int
 id|err
 suffix:semicolon
+id|snd_card_harmony_t
+op_star
+id|harmony
+op_assign
+id|snd_pcm_substream_chip
+c_func
+(paren
+id|substream
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|snd_pcm_lib_malloc_pages
@@ -2703,7 +2713,7 @@ id|err
 OG
 l_int|0
 op_logical_and
-id|substream-&gt;dma_device.type
+id|harmony-&gt;dma_dev.type
 op_eq
 id|SNDRV_DMA_TYPE_CONTINUOUS
 )paren
@@ -4590,7 +4600,7 @@ c_func
 (paren
 id|harmony-&gt;irq
 comma
-id|snd_card_harmony_interrupt
+id|harmony
 )paren
 suffix:semicolon
 id|printk
@@ -4616,6 +4626,26 @@ id|idx
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|unregister_parisc_driver
+c_func
+(paren
+op_amp
+id|snd_card_harmony_driver
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Failed to unregister Harmony driver&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 id|module_init
 c_func

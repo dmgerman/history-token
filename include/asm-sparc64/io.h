@@ -465,6 +465,7 @@ id|u8
 id|_readb
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -507,6 +508,7 @@ id|u16
 id|_readw
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -549,6 +551,7 @@ id|u32
 id|_readl
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -591,6 +594,7 @@ id|u64
 id|_readq
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -636,6 +640,7 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -677,6 +682,7 @@ c_func
 id|u16
 id|w
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -718,6 +724,7 @@ c_func
 id|u32
 id|l
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -759,6 +766,7 @@ c_func
 id|u64
 id|q
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1811,12 +1819,49 @@ suffix:semicolon
 )brace
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* On sparc64 we have the whole physical IO address space accessible&n; * using physically addressed loads and stores, so this does nothing.&n; */
-DECL|macro|ioremap
-mdefine_line|#define ioremap(__offset, __size)&t;((void __iomem *)(__offset))
+DECL|function|ioremap
+r_static
+r_inline
+r_void
+id|__iomem
+op_star
+id|ioremap
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+id|offset
+suffix:semicolon
+)brace
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y)&t;&t;ioremap((X),(Y))
-DECL|macro|iounmap
-mdefine_line|#define iounmap(__addr)&t;&t;&t;do { (void)(__addr); } while(0)
+DECL|function|iounmap
+r_static
+r_inline
+r_void
+id|iounmap
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+)brace
 DECL|macro|ioread8
 mdefine_line|#define ioread8(X)&t;&t;&t;readb(X)
 DECL|macro|ioread16

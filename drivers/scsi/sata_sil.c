@@ -333,6 +333,12 @@ id|SIL_QUIRK_MOD15WRITE
 )brace
 comma
 (brace
+l_string|&quot;ST3120026AS&quot;
+comma
+id|SIL_QUIRK_MOD15WRITE
+)brace
+comma
+(brace
 l_string|&quot;ST340014ASL&quot;
 comma
 id|SIL_QUIRK_MOD15WRITE
@@ -1223,7 +1229,7 @@ suffix:semicolon
 id|ata_dev_id_string
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 comma
 id|model_num
 comma

@@ -618,6 +618,7 @@ op_star
 id|vma
 )paren
 (brace
+macro_line|#ifdef pgprot_noncached
 r_int
 r_int
 id|offset
@@ -639,7 +640,6 @@ comma
 id|offset
 )paren
 suffix:semicolon
-macro_line|#ifdef pgprot_noncached
 r_if
 c_cond
 (paren
@@ -654,32 +654,18 @@ id|vma-&gt;vm_page_prot
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Don&squot;t try to swap out physical pages.. */
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_RESERVED
-suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t dump addresses that are not real memory to a core file.&n;&t; */
+multiline_comment|/* Remap-pfn-range will mark the range VM_IO and VM_RESERVED */
 r_if
 c_cond
 (paren
-id|uncached
-)paren
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
 comma
 id|vma-&gt;vm_start
 comma
-id|offset
+id|vma-&gt;vm_pgoff
 comma
 id|vma-&gt;vm_end
 op_minus

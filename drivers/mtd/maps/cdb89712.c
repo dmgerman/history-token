@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash on Cirrus CDB89712&n; *&n; * $Id: cdb89712.c,v 1.8 2004/07/12 21:59:43 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Flash on Cirrus CDB89712&n; *&n; * $Id: cdb89712.c,v 1.9 2004/09/16 23:27:12 gleixner Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -122,8 +122,9 @@ suffix:semicolon
 id|cdb89712_flash_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -407,8 +408,9 @@ suffix:semicolon
 id|cdb89712_sram_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -668,8 +670,9 @@ suffix:semicolon
 id|cdb89712_bootrom_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

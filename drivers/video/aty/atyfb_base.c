@@ -7582,6 +7582,7 @@ op_assign
 (paren
 r_struct
 id|aty_cmap_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -8865,10 +8866,6 @@ multiline_comment|/* Clear the video memory */
 id|fb_memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|info-&gt;screen_base
 comma
 l_int|0
@@ -10757,10 +10754,6 @@ id|addr
 suffix:semicolon
 id|default_par-&gt;ati_regbase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -10869,10 +10862,6 @@ id|addr
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -12605,10 +12594,6 @@ id|par-&gt;ati_regbase
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|par-&gt;ati_regbase
 )paren
 suffix:semicolon
@@ -12620,10 +12605,6 @@ id|info-&gt;screen_base
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|info-&gt;screen_base
 )paren
 suffix:semicolon

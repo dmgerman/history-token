@@ -3134,6 +3134,7 @@ suffix:semicolon
 r_extern
 r_void
 id|tcp_delete_keepalive_timer
+c_func
 (paren
 r_struct
 id|sock
@@ -3143,6 +3144,7 @@ suffix:semicolon
 r_extern
 r_void
 id|tcp_reset_keepalive_timer
+c_func
 (paren
 r_struct
 id|sock
@@ -3668,6 +3670,7 @@ id|u32
 id|tcp_receive_window
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -3821,6 +3824,7 @@ r_int
 id|tcp_skb_pcount
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -3845,6 +3849,7 @@ r_int
 id|tcp_skb_mss
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -3872,6 +3877,7 @@ id|tcp_pcount_t
 op_star
 id|count
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -3938,6 +3944,7 @@ id|tcp_pcount_t
 op_star
 id|count
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -3964,6 +3971,7 @@ id|tcp_pcount_t
 op_star
 id|count
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -4007,6 +4015,7 @@ id|__u32
 id|tcp_get_pcount
 c_func
 (paren
+r_const
 id|tcp_pcount_t
 op_star
 id|count
@@ -4053,6 +4062,7 @@ id|tcp_opt
 op_star
 id|tp
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -4107,6 +4117,7 @@ id|tcp_opt
 op_star
 id|tp
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -4132,6 +4143,7 @@ r_int
 id|tcp_packets_in_flight
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -4738,6 +4750,7 @@ id|__u32
 id|tcp_max_burst
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -4755,6 +4768,7 @@ r_int
 id|tcp_minshall_check
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -4795,6 +4809,7 @@ comma
 r_int
 id|mss
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -4827,11 +4842,13 @@ DECL|function|tcp_nagle_check
 id|tcp_nagle_check
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
 id|tp
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -4912,6 +4929,7 @@ r_int
 id|tcp_snd_test
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -5090,11 +5108,13 @@ r_int
 id|tcp_skb_is_last
 c_func
 (paren
+r_const
 r_struct
 id|sock
 op_star
 id|sk
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -5678,6 +5698,7 @@ macro_line|#undef STATE_TRACE
 macro_line|#ifdef STATE_TRACE
 DECL|variable|statename
 r_static
+r_const
 r_char
 op_star
 id|statename
@@ -6994,6 +7015,7 @@ r_int
 id|keepalive_intvl_when
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -7015,6 +7037,7 @@ r_int
 id|keepalive_time_when
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -7036,6 +7059,7 @@ r_int
 id|tcp_fin_time
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star
@@ -7093,6 +7117,7 @@ r_int
 id|tcp_paws_check
 c_func
 (paren
+r_const
 r_struct
 id|tcp_opt
 op_star

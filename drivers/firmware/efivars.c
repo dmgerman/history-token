@@ -2459,6 +2459,8 @@ c_func
 op_amp
 id|new_efivar-&gt;kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|short_name
 )paren
 suffix:semicolon

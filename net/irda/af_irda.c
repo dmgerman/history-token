@@ -7110,6 +7110,8 @@ c_func
 id|ias_obj
 comma
 id|ias_attr
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|kfree

@@ -1258,6 +1258,7 @@ suffix:semicolon
 multiline_comment|/* struct pci_dev pointer */
 DECL|member|memmap
 id|u8
+id|__iomem
 op_star
 id|memmap
 suffix:semicolon

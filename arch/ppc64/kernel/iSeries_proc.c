@@ -2,6 +2,7 @@ multiline_comment|/*&n; * iSeries_proc.c&n; * Copyright (C) 2001  Kyle A. Lucke 
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/param.h&gt;&t;&t;/* for HZ */
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/time.h&gt;

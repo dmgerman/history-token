@@ -2,6 +2,7 @@ multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 DECL|macro|PMM_NPS_MODE
 mdefine_line|#define PMM_NPS_MODE           1
 DECL|macro|PMM_GLOBAL_MODE

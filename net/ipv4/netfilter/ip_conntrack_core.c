@@ -1215,17 +1215,18 @@ op_star
 )paren
 id|ul_conntrack
 suffix:semicolon
-id|CONNTRACK_STAT_INC
-c_func
-(paren
-id|delete_list
-)paren
-suffix:semicolon
 id|WRITE_LOCK
 c_func
 (paren
 op_amp
 id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Inside lock so preempt is disabled on module removal path.&n;&t; * Otherwise we can get spurious warnings. */
+id|CONNTRACK_STAT_INC
+c_func
+(paren
+id|delete_list
 )paren
 suffix:semicolon
 id|clean_from_lists
@@ -2424,6 +2425,12 @@ id|expected-&gt;sibling
 op_assign
 id|conntrack
 suffix:semicolon
+macro_line|#if CONFIG_IP_NF_CONNTRACK_MARK
+id|conntrack-&gt;mark
+op_assign
+id|expected-&gt;expectant-&gt;mark
+suffix:semicolon
+macro_line|#endif
 id|LIST_DELETE
 c_func
 (paren

@@ -2383,6 +2383,8 @@ c_func
 op_amp
 id|slot-&gt;kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|slot-&gt;name
 )paren
 suffix:semicolon

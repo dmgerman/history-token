@@ -58,6 +58,7 @@ macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;linux/atalk.h&gt;
 macro_line|#include &lt;net/sock.h&gt;          /* siocdevprivate_ioctl */
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
@@ -17120,6 +17121,35 @@ id|HANDLE_IOCTL
 c_func
 (paren
 id|SIOCSIFADDR
+comma
+id|dev_ifsioc
+)paren
+multiline_comment|/* ioctls used by appletalk ddp.c */
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCATALKDIFADDR
+comma
+id|dev_ifsioc
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCDIFADDR
+comma
+id|dev_ifsioc
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCSARP
+comma
+id|dev_ifsioc
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SIOCDARP
 comma
 id|dev_ifsioc
 )paren

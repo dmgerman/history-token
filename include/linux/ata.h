@@ -925,31 +925,31 @@ multiline_comment|/* IO operation */
 )brace
 suffix:semicolon
 DECL|macro|ata_id_is_ata
-mdefine_line|#define ata_id_is_ata(dev)&t;(((dev)-&gt;id[0] &amp; (1 &lt;&lt; 15)) == 0)
+mdefine_line|#define ata_id_is_ata(id)&t;(((id)[0] &amp; (1 &lt;&lt; 15)) == 0)
 DECL|macro|ata_id_rahead_enabled
-mdefine_line|#define ata_id_rahead_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 6))
+mdefine_line|#define ata_id_rahead_enabled(id) ((id)[85] &amp; (1 &lt;&lt; 6))
 DECL|macro|ata_id_wcache_enabled
-mdefine_line|#define ata_id_wcache_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 5))
+mdefine_line|#define ata_id_wcache_enabled(id) ((id)[85] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_flush
-mdefine_line|#define ata_id_has_flush(dev) ((dev)-&gt;id[83] &amp; (1 &lt;&lt; 12))
+mdefine_line|#define ata_id_has_flush(id) ((id)[83] &amp; (1 &lt;&lt; 12))
 DECL|macro|ata_id_has_flush_ext
-mdefine_line|#define ata_id_has_flush_ext(dev) ((dev)-&gt;id[83] &amp; (1 &lt;&lt; 13))
+mdefine_line|#define ata_id_has_flush_ext(id) ((id)[83] &amp; (1 &lt;&lt; 13))
 DECL|macro|ata_id_has_lba48
-mdefine_line|#define ata_id_has_lba48(dev)&t;((dev)-&gt;id[83] &amp; (1 &lt;&lt; 10))
+mdefine_line|#define ata_id_has_lba48(id)&t;((id)[83] &amp; (1 &lt;&lt; 10))
 DECL|macro|ata_id_has_wcache
-mdefine_line|#define ata_id_has_wcache(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 5))
+mdefine_line|#define ata_id_has_wcache(id)&t;((id)[82] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_pm
-mdefine_line|#define ata_id_has_pm(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 3))
+mdefine_line|#define ata_id_has_pm(id)&t;((id)[82] &amp; (1 &lt;&lt; 3))
 DECL|macro|ata_id_has_lba
-mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 9))
+mdefine_line|#define ata_id_has_lba(id)&t;((id)[49] &amp; (1 &lt;&lt; 9))
 DECL|macro|ata_id_has_dma
-mdefine_line|#define ata_id_has_dma(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
+mdefine_line|#define ata_id_has_dma(id)&t;((id)[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_removeable
-mdefine_line|#define ata_id_removeable(dev)&t;((dev)-&gt;id[0] &amp; (1 &lt;&lt; 7))
+mdefine_line|#define ata_id_removeable(id)&t;((id)[0] &amp; (1 &lt;&lt; 7))
 DECL|macro|ata_id_u32
-mdefine_line|#define ata_id_u32(dev,n)&t;&bslash;&n;&t;(((u32) (dev)-&gt;id[(n) + 1] &lt;&lt; 16) | ((u32) (dev)-&gt;id[(n)]))
+mdefine_line|#define ata_id_u32(id,n)&t;&bslash;&n;&t;(((u32) (id)[(n) + 1] &lt;&lt; 16) | ((u32) (id)[(n)]))
 DECL|macro|ata_id_u64
-mdefine_line|#define ata_id_u64(dev,n)&t;&bslash;&n;&t;( ((u64) dev-&gt;id[(n) + 3] &lt;&lt; 48) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 2] &lt;&lt; 32) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 1] &lt;&lt; 16) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 0]) )
+mdefine_line|#define ata_id_u64(id,n)&t;&bslash;&n;&t;( ((u64) (id)[(n) + 3] &lt;&lt; 48) |&t;&bslash;&n;&t;  ((u64) (id)[(n) + 2] &lt;&lt; 32) |&t;&bslash;&n;&t;  ((u64) (id)[(n) + 1] &lt;&lt; 16) |&t;&bslash;&n;&t;  ((u64) (id)[(n) + 0]) )
 DECL|function|atapi_cdb_len
 r_static
 r_inline

@@ -909,6 +909,8 @@ DECL|macro|proc_root_driver
 mdefine_line|#define proc_root_driver NULL
 DECL|macro|proc_net
 mdefine_line|#define proc_net NULL
+DECL|macro|proc_bus
+mdefine_line|#define proc_bus NULL
 DECL|macro|proc_net_fops_create
 mdefine_line|#define proc_net_fops_create(name, mode, fops)  ({ (void)(mode), NULL; })
 DECL|macro|proc_net_create

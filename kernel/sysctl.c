@@ -3272,7 +3272,6 @@ id|zero
 comma
 )brace
 comma
-macro_line|#ifdef CONFIG_SWAP
 (brace
 dot
 id|ctl_name
@@ -3375,6 +3374,7 @@ comma
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_SWAP
 (brace
 dot
 id|ctl_name
@@ -3419,6 +3419,7 @@ id|sysctl_jiffies
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name
@@ -3951,7 +3952,6 @@ id|proc_dointvec
 comma
 )brace
 comma
-macro_line|#endif
 (brace
 dot
 id|ctl_name

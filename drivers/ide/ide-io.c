@@ -2870,6 +2870,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hwif-&gt;sg_mapped
+)paren
+multiline_comment|/* needed by ide-scsi */
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|rq-&gt;flags
 op_amp
@@ -4965,6 +4973,15 @@ id|rq-&gt;errors
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rq-&gt;bio
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|rq-&gt;sector
 op_assign
 id|rq-&gt;bio-&gt;bi_sector
@@ -4985,15 +5002,12 @@ id|rq-&gt;hard_cur_sectors
 op_assign
 id|rq-&gt;current_nr_sectors
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
 id|rq-&gt;buffer
 op_assign
 l_int|NULL
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
@@ -5980,31 +5994,6 @@ op_eq
 id|ide_head_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-multiline_comment|/*&n;&t; *&t;FIXME: there should be a drive or hwif-&gt;special&n;&t; *&t;handler that points here by default, not hacks&n;&t; *&t;in the ide-io.c code&n;&t; *&n;&t; *&t;FIXME2: That code breaks power management if used with&n;&t; *&t;this chipset, that really doesn&squot;t belong here !&n;&t; */
-r_if
-c_cond
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|chipset
-op_eq
-id|ide_pdc4030
-op_logical_and
-id|rq-&gt;buffer
-op_ne
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-multiline_comment|/* special drive cmds not supported */
-macro_line|#endif
 id|rq-&gt;errors
 op_assign
 l_int|0

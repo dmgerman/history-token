@@ -466,9 +466,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -486,8 +483,6 @@ c_func
 id|serial_lines
 comma
 id|tty
-comma
-id|from_user
 comma
 id|buf
 comma

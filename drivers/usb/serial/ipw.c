@@ -1334,9 +1334,6 @@ id|usb_serial_port
 op_star
 id|port
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -1360,13 +1357,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: TOP: count=%d, from_user=%d, in_interrupt=%ld&quot;
+l_string|&quot;%s: TOP: count=%d, in_interrupt=%ld&quot;
 comma
 id|__FUNCTION__
 comma
 id|count
-comma
-id|from_user
 comma
 id|in_interrupt
 c_func
@@ -1416,32 +1411,6 @@ comma
 id|port-&gt;bulk_out_size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|port-&gt;bulk_out_buffer
-comma
-id|buf
-comma
-id|count
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_else
-(brace
 id|memcpy
 c_func
 (paren
@@ -1452,7 +1421,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren

@@ -273,6 +273,42 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|obj_attachment
+r_struct
+id|obj_attachment
+(brace
+DECL|member|type
+r_char
+id|type
+suffix:semicolon
+DECL|member|reserved
+r_char
+id|reserved
+suffix:semicolon
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|data
+r_char
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * in case everything&squot;s ok, the inlined function below will be&n; * optimized away by the compiler...&n; */
 r_static
 r_inline
@@ -1255,6 +1291,8 @@ DECL|macro|OID_TYPE_ADDR
 mdefine_line|#define OID_TYPE_ADDR&t;&t;0x0A
 DECL|macro|OID_TYPE_RAW
 mdefine_line|#define OID_TYPE_RAW&t;&t;0x0B
+DECL|macro|OID_TYPE_ATTACH
+mdefine_line|#define OID_TYPE_ATTACH&t;&t;0x0C
 multiline_comment|/* OID_TYPE_MLMEEX is special because of a variable size field when sending.&n; * Not yet implemented (not used in driver anyway).&n; */
 DECL|struct|oid_t
 r_struct

@@ -1043,21 +1043,21 @@ r_struct
 id|net2280_dma
 (brace
 DECL|member|dmacount
-id|u32
+id|__le32
 id|dmacount
 suffix:semicolon
 DECL|member|dmaaddr
-id|u32
+id|__le32
 id|dmaaddr
 suffix:semicolon
 multiline_comment|/* the buffer */
 DECL|member|dmadesc
-id|u32
+id|__le32
 id|dmadesc
 suffix:semicolon
 multiline_comment|/* next dma descriptor */
 DECL|member|_reserved
-id|u32
+id|__le32
 id|_reserved
 suffix:semicolon
 )brace

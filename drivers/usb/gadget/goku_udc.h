@@ -587,16 +587,19 @@ id|desc
 suffix:semicolon
 DECL|member|reg_fifo
 id|u32
+id|__iomem
 op_star
 id|reg_fifo
 suffix:semicolon
 DECL|member|reg_mode
 id|u32
+id|__iomem
 op_star
 id|reg_mode
 suffix:semicolon
 DECL|member|reg_status
 id|u32
+id|__iomem
 op_star
 id|reg_status
 suffix:semicolon
@@ -726,6 +729,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|goku_udc_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

@@ -105,7 +105,7 @@ multiline_comment|/*&n; * Size of kernel stack for each process.&n; */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x10000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */

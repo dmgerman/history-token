@@ -750,6 +750,8 @@ c_func
 op_amp
 id|dev-&gt;kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|dev-&gt;bus_id
 )paren
 suffix:semicolon
