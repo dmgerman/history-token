@@ -369,11 +369,10 @@ op_amp
 id|current-&gt;blocked
 )paren
 suffix:semicolon
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* get rid of controlling tty */
 id|printk
 c_func
 (paren
