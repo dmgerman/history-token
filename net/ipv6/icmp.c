@@ -1352,6 +1352,8 @@ suffix:semicolon
 id|len
 op_assign
 id|skb-&gt;len
+op_minus
+id|msg.offset
 suffix:semicolon
 id|len
 op_assign
