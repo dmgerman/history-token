@@ -2317,9 +2317,9 @@ id|KERN_ERR
 comma
 id|dev-&gt;name
 comma
-l_string|&quot;IEEE-1394 IPv4 over 1394 Ethernet (%s)&bslash;n&quot;
+l_string|&quot;IEEE-1394 IPv4 over 1394 Ethernet (fw-host%d)&bslash;n&quot;
 comma
-id|host-&gt;driver-&gt;name
+id|host-&gt;id
 )paren
 suffix:semicolon
 id|hi-&gt;host
@@ -2458,6 +2458,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|hi-&gt;host-&gt;update_config_rom
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 suffix:semicolon
 id|out
@@ -7253,8 +7257,6 @@ suffix:semicolon
 id|max_payload
 op_assign
 id|priv-&gt;bc_maxpayload
-op_minus
-id|ETHER1394_GASP_OVERHEAD
 suffix:semicolon
 id|BUG_ON
 c_func
