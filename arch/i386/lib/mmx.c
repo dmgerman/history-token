@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/i387.h&gt;
 multiline_comment|/*&n; *&t;MMX 3DNow! library helper functions&n; *&n; *&t;To do:&n; *&t;We can use MMX just for prefetch in IRQ&squot;s. This may be a win. &n; *&t;&t;(reported so on K6-III)&n; *&t;We should use a better code neutral filler for the short jump&n; *&t;&t;leal ebx. [ebx] is apparently best for K6-2, but Cyrix ??&n; *&t;We also want to clobber the filler register so we dont get any&n; *&t;&t;register forwarding stalls on the filler. &n; *&n; *&t;Add *user handling. Checksums are not a win with MMX on any CPU&n; *&t;tested so far for any MMX solution figured.&n; *&n; *&t;22/09/2000 - Arjan van de Ven &n; *&t;&t;Improved for non-egineering-sample Athlons &n; *&n; */
 DECL|function|_mmx_memcpy
 r_void
@@ -35,40 +36,11 @@ op_rshift
 l_int|6
 suffix:semicolon
 multiline_comment|/* len/64 */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
-)paren
-)paren
-id|clts
+id|kernel_fpu_begin
 c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot; fnsave %0; fwait&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|current-&gt;thread.i387
-)paren
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
-suffix:semicolon
-)brace
 id|__asm__
 id|__volatile__
 (paren
@@ -174,7 +146,7 @@ op_amp
 l_int|63
 )paren
 suffix:semicolon
-id|stts
+id|kernel_fpu_end
 c_func
 (paren
 )paren
@@ -197,40 +169,11 @@ id|page
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
-)paren
-)paren
-id|clts
+id|kernel_fpu_begin
 c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot; fnsave %0; fwait&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|current-&gt;thread.i387
-)paren
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
-suffix:semicolon
-)brace
 id|__asm__
 id|__volatile__
 (paren
@@ -291,7 +234,7 @@ suffix:colon
 suffix:colon
 )paren
 suffix:semicolon
-id|stts
+id|kernel_fpu_end
 c_func
 (paren
 )paren
@@ -315,40 +258,11 @@ id|from
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
-)paren
-)paren
-id|clts
+id|kernel_fpu_begin
 c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot; fnsave %0; fwait&bslash;n&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|current-&gt;thread.i387
-)paren
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
-suffix:semicolon
-)brace
 multiline_comment|/* maybe the prefetch stuff can go before the expensive fnsave...&n;&t; * but that is for later. -AV&n;&t; */
 id|__asm__
 id|__volatile__
@@ -455,7 +369,7 @@ suffix:colon
 suffix:colon
 )paren
 suffix:semicolon
-id|stts
+id|kernel_fpu_end
 c_func
 (paren
 )paren

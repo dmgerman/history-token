@@ -105,6 +105,13 @@ c_func
 id|rpc_wake_up_status
 )paren
 suffix:semicolon
+DECL|variable|rpc_release_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpc_release_task
+)paren
+suffix:semicolon
 multiline_comment|/* RPC client functions */
 DECL|variable|rpc_create_client
 id|EXPORT_SYMBOL

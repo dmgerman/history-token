@@ -126,10 +126,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|disable_x86_fxsr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -196,13 +192,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|disable_x86_fxsr
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|cpu_has_fxsr
 )paren
 (brace
@@ -252,15 +241,6 @@ l_string|&quot;done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Disabling fast FPU save and restore.&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Test for the divl bug.. */
 id|__asm__
 c_func

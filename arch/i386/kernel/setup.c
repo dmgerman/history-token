@@ -204,6 +204,7 @@ op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_int
 id|disable_x86_fxsr
 id|__initdata
@@ -8181,6 +8182,32 @@ id|c-&gt;x86_capability
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FXSR disabled? */
+r_if
+c_cond
+(paren
+id|disable_x86_fxsr
+)paren
+(brace
+id|clear_bit
+c_func
+(paren
+id|X86_FEATURE_FXSR
+comma
+op_amp
+id|c-&gt;x86_capability
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|X86_FEATURE_XMM
+comma
+op_amp
+id|c-&gt;x86_capability
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Disable the PN if appropriate */
 id|squash_the_stupid_serial_number
 c_func

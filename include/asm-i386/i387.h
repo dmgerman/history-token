@@ -37,6 +37,16 @@ op_star
 id|tsk
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|kernel_fpu_begin
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|kernel_fpu_end
+mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
 mdefine_line|#define unlazy_fpu( tsk ) do { &bslash;&n;&t;if ( tsk-&gt;flags &amp; PF_USEDFPU ) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
