@@ -288,11 +288,6 @@ op_assign
 id|ramdisk_readpage
 comma
 dot
-id|writepage
-op_assign
-id|fail_writepage
-comma
-dot
 id|prepare_write
 op_assign
 id|ramdisk_prepare_write

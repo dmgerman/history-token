@@ -607,16 +607,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|fail_writepage
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
 r_struct
 id|page
 op_star

@@ -872,7 +872,7 @@ c_cond
 (paren
 id|mapping-&gt;a_ops-&gt;writepage
 op_eq
-id|fail_writepage
+l_int|NULL
 )paren
 r_goto
 id|activate_locked
@@ -964,8 +964,7 @@ c_cond
 (paren
 id|res
 op_eq
-op_minus
-id|EAGAIN
+id|WRITEPAGE_ACTIVATE
 )paren
 (brace
 id|ClearPageReclaim
@@ -974,14 +973,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__set_page_dirty_nobuffers
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|activate_locked
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -993,7 +988,7 @@ id|page
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * synchronous writeout or broken&n;&t;&t;&t;&t;&t; * a_ops?&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* synchronous write or broken a_ops? */
 id|ClearPageReclaim
 c_func
 (paren

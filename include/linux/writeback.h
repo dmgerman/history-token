@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/linux/writeback.h.&n; *&n; * These declarations are private to fs/ and mm/.&n; * Declarations which are exported to filesystems do not&n; * get placed here.&n; */
+multiline_comment|/*&n; * include/linux/writeback.h.&n; */
 macro_line|#ifndef WRITEBACK_H
 DECL|macro|WRITEBACK_H
 mdefine_line|#define WRITEBACK_H
@@ -96,6 +96,10 @@ suffix:semicolon
 multiline_comment|/* An output: a queue is full */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * -&gt;writepage() return values (make these much larger than a pagesize, in&n; * case some fs is returning number-of-bytes-written from writepage)&n; */
+DECL|macro|WRITEPAGE_ACTIVATE
+mdefine_line|#define WRITEPAGE_ACTIVATE&t;0x80000&t;/* IO was not started: activate page */
+multiline_comment|/*&n; * fs/fs-writeback.c&n; */
 r_void
 id|writeback_inodes
 c_func
