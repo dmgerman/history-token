@@ -2663,7 +2663,7 @@ l_int|NULL
 comma
 id|ec-&gt;gpe_bit
 comma
-id|ACPI_EVENT_EDGE_TRIGGERED
+id|ACPI_GPE_EDGE_TRIGGERED
 comma
 op_amp
 id|acpi_ec_gpe_handler
@@ -3022,7 +3022,7 @@ l_int|NULL
 comma
 id|ec_ecdt-&gt;gpe_bit
 comma
-id|ACPI_EVENT_EDGE_TRIGGERED
+id|ACPI_GPE_EDGE_TRIGGERED
 comma
 op_amp
 id|acpi_ec_gpe_handler

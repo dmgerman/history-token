@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
-macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 multiline_comment|/* error message prefix */
 DECL|macro|ERRP

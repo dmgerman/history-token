@@ -3899,7 +3899,7 @@ id|iommu_force_on
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* 512 pages is max DART tablesize. */
+multiline_comment|/* 512 pages (2MB) is max DART tablesize. */
 id|RELOC
 c_func
 (paren
@@ -3908,7 +3908,7 @@ id|dart_tablesize
 op_assign
 l_int|1UL
 op_lshift
-l_int|19
+l_int|21
 suffix:semicolon
 multiline_comment|/* 16MB (1 &lt;&lt; 24) alignment. We allocate a full 16Mb chuck since we&n;&t; * will blow up an entire large page anyway in the kernel mapping&n;&t; */
 id|RELOC

@@ -1199,7 +1199,6 @@ c_func
 (paren
 id|SIOCSIFNAME
 )paren
-multiline_comment|/* FIXME: not compatible&n;COMPATIBLE_IOCTL(SIOCSIFBR)&n;COMPATIBLE_IOCTL(SIOCGIFBR)&n;*/
 id|COMPATIBLE_IOCTL
 c_func
 (paren

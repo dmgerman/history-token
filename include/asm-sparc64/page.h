@@ -172,9 +172,9 @@ mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|iopte_val
 mdefine_line|#define iopte_val(x)&t;((x).iopte)
 DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)      ((unsigned long)(x).pmd)
+mdefine_line|#define pmd_val(x)      ((x).pmd)
 DECL|macro|pgd_val
-mdefine_line|#define pgd_val(x)&t;((unsigned long)(x).pgd)
+mdefine_line|#define pgd_val(x)&t;((x).pgd)
 DECL|macro|ctxd_val
 mdefine_line|#define ctxd_val(x)&t;((x).ctxd)
 DECL|macro|pgprot_val
@@ -244,9 +244,9 @@ mdefine_line|#define pte_val(x)&t;(x)
 DECL|macro|iopte_val
 mdefine_line|#define iopte_val(x)&t;(x)
 DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)      ((unsigned long)(x))
+mdefine_line|#define pmd_val(x)      (x)
 DECL|macro|pgd_val
-mdefine_line|#define pgd_val(x)&t;((unsigned long)(x))
+mdefine_line|#define pgd_val(x)&t;(x)
 DECL|macro|ctxd_val
 mdefine_line|#define ctxd_val(x)&t;(x)
 DECL|macro|pgprot_val

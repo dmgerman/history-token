@@ -86,8 +86,14 @@ mdefine_line|#define __LC_SAVE_AREA                  0xC00
 macro_line|#ifndef __s390x__
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xC40
+DECL|macro|__LC_THREAD_INFO
+mdefine_line|#define __LC_THREAD_INFO&t;&t;0xC44
 DECL|macro|__LC_ASYNC_STACK
-mdefine_line|#define __LC_ASYNC_STACK                0xC44
+mdefine_line|#define __LC_ASYNC_STACK                0xC48
+DECL|macro|__LC_KERNEL_ASCE
+mdefine_line|#define __LC_KERNEL_ASCE&t;&t;0xC4C
+DECL|macro|__LC_USER_ASCE
+mdefine_line|#define __LC_USER_ASCE&t;&t;&t;0xC50
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xC60
 DECL|macro|__LC_CPUADDR
@@ -103,8 +109,14 @@ mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xC98
 macro_line|#else /* __s390x__ */
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xD40
+DECL|macro|__LC_THREAD_INFO
+mdefine_line|#define __LC_THREAD_INFO&t;&t;0xD48
 DECL|macro|__LC_ASYNC_STACK
-mdefine_line|#define __LC_ASYNC_STACK                0xD48
+mdefine_line|#define __LC_ASYNC_STACK                0xD50
+DECL|macro|__LC_KERNEL_ASCE
+mdefine_line|#define __LC_KERNEL_ASCE&t;&t;0xD58
+DECL|macro|__LC_USER_ASCE
+mdefine_line|#define __LC_USER_ASCE&t;&t;&t;0xD60
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xD90
 DECL|macro|__LC_CPUADDR
@@ -116,7 +128,7 @@ mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xDC0
 DECL|macro|__LC_CURRENT
 mdefine_line|#define __LC_CURRENT&t;&t;&t;0xDD8
 DECL|macro|__LC_INT_CLOCK
-mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xDE8
+mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xDe8
 macro_line|#endif /* __s390x__ */
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
@@ -139,7 +151,6 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
 r_void
 id|restart_int_handler
@@ -513,22 +524,37 @@ id|__u32
 id|kernel_stack
 suffix:semicolon
 multiline_comment|/* 0xc40 */
+DECL|member|thread_info
+id|__u32
+id|thread_info
+suffix:semicolon
+multiline_comment|/* 0xc44 */
 DECL|member|async_stack
 id|__u32
 id|async_stack
 suffix:semicolon
-multiline_comment|/* 0xc44 */
-multiline_comment|/* entry.S sensitive area start */
+multiline_comment|/* 0xc48 */
+DECL|member|kernel_asce
+id|__u32
+id|kernel_asce
+suffix:semicolon
+multiline_comment|/* 0xc4c */
+DECL|member|user_asce
+id|__u32
+id|user_asce
+suffix:semicolon
+multiline_comment|/* 0xc50 */
 DECL|member|pad10
 id|__u8
 id|pad10
 (braket
 l_int|0xc60
 op_minus
-l_int|0xc48
+l_int|0xc54
 )braket
 suffix:semicolon
-multiline_comment|/* 0xc5c */
+multiline_comment|/* 0xc54 */
+multiline_comment|/* entry.S sensitive area start */
 DECL|member|cpu_data
 r_struct
 id|cpuinfo_S390
@@ -876,19 +902,31 @@ id|kernel_stack
 suffix:semicolon
 multiline_comment|/* 0xd40 */
 id|__u64
-id|async_stack
+id|thread_info
 suffix:semicolon
 multiline_comment|/* 0xd48 */
-multiline_comment|/* entry.S sensitive area start */
+id|__u64
+id|async_stack
+suffix:semicolon
+multiline_comment|/* 0xd50 */
+id|__u64
+id|kernel_asce
+suffix:semicolon
+multiline_comment|/* 0xd58 */
+id|__u64
+id|user_asce
+suffix:semicolon
+multiline_comment|/* 0xd60 */
 id|__u8
 id|pad10
 (braket
 l_int|0xd80
 op_minus
-l_int|0xd50
+l_int|0xd68
 )braket
 suffix:semicolon
-multiline_comment|/* 0xd64 */
+multiline_comment|/* 0xd68 */
+multiline_comment|/* entry.S sensitive area start */
 r_struct
 id|cpuinfo_S390
 id|cpu_data

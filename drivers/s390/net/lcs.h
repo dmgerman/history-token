@@ -5,12 +5,19 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.13 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.15 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
+DECL|macro|LCS_DBF_HEX
+mdefine_line|#define LCS_DBF_HEX(level,name,addr,len) &bslash;&n;do { &bslash;&n;&t;debug_event(lcs_dbf_##name,level,(void*)(addr),len); &bslash;&n;} while (0)
+DECL|macro|LCS_DBF_TEXT_
+mdefine_line|#define LCS_DBF_TEXT_(level,name,text...) &bslash;&n;do {                                       &bslash;&n;&t;sprintf(debug_buffer, text);  &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name,level, debug_buffer);&bslash;&n;} while (0)
 multiline_comment|/**&n; * some more definitions for debug or output stuff&n; */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER&t;&t;&quot; lcs: &quot;
+multiline_comment|/**&n; *&t;sysfs related stuff&n; */
+DECL|macro|CARD_FROM_DEV
+mdefine_line|#define CARD_FROM_DEV(cdev) &bslash;&n;&t;(struct lcs_card *) &bslash;&n;&t;((struct ccwgroup_device *)cdev-&gt;dev.driver_data)-&gt;dev.driver_data;
 multiline_comment|/**&n; * CCW commands used in this driver&n; */
 DECL|macro|LCS_CCW_WRITE
 mdefine_line|#define LCS_CCW_WRITE&t;&t;0x01
@@ -163,6 +170,9 @@ comma
 DECL|enumerator|CH_STATE_SUSPENDED
 id|CH_STATE_SUSPENDED
 comma
+DECL|enumerator|CH_STATE_CLEARED
+id|CH_STATE_CLEARED
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * LCS device state machine&n; */
@@ -175,6 +185,9 @@ id|DEV_STATE_DOWN
 comma
 DECL|enumerator|DEV_STATE_UP
 id|DEV_STATE_UP
+comma
+DECL|enumerator|DEV_STATE_RECOVER
+id|DEV_STATE_RECOVER
 comma
 )brace
 suffix:semicolon

@@ -289,8 +289,7 @@ r_struct
 id|svr4_stack_t
 (brace
 DECL|member|sp
-r_char
-op_star
+id|u32
 id|sp
 suffix:semicolon
 DECL|member|size

@@ -207,13 +207,13 @@ id|event_status
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_hw_disable_non_wakeup_gpes
+id|acpi_hw_prepare_gpes_for_sleep
 (paren
 r_void
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_hw_enable_non_wakeup_gpes
+id|acpi_hw_restore_gpes_on_wake
 (paren
 r_void
 )paren

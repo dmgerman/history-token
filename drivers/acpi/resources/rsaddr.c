@@ -237,7 +237,7 @@ op_rshift
 l_int|1
 )paren
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 suffix:semicolon
 )brace
@@ -679,7 +679,7 @@ op_or_assign
 (paren
 id|linked_list-&gt;data.address16.attribute.memory.cache_attribute
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 op_lshift
 l_int|1
@@ -1115,7 +1115,7 @@ op_rshift
 l_int|1
 )paren
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 suffix:semicolon
 )brace
@@ -1559,7 +1559,7 @@ op_or_assign
 (paren
 id|linked_list-&gt;data.address32.attribute.memory.cache_attribute
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 op_lshift
 l_int|1
@@ -1992,7 +1992,7 @@ op_rshift
 l_int|1
 )paren
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 suffix:semicolon
 )brace
@@ -2436,7 +2436,7 @@ op_or_assign
 (paren
 id|linked_list-&gt;data.address64.attribute.memory.cache_attribute
 op_amp
-l_int|0x0F
+l_int|0x03
 )paren
 op_lshift
 l_int|1

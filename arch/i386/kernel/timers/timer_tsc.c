@@ -1254,9 +1254,8 @@ macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|use_tsc
+id|cpu_khz
 )paren
-(brace
 id|cpu_khz
 op_assign
 id|cpufreq_scale
@@ -1271,6 +1270,12 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_tsc
+)paren
+(brace
 r_if
 c_cond
 (paren

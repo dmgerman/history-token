@@ -888,6 +888,7 @@ c_func
 (paren
 r_struct
 id|mmap_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -932,20 +933,14 @@ id|pt_regs
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ARCH_S390X
-DECL|macro|__SYS_RETTYPE
-mdefine_line|#define __SYS_RETTYPE int
-macro_line|#else
-DECL|macro|__SYS_RETTYPE
-mdefine_line|#define __SYS_RETTYPE long
-macro_line|#endif /* CONFIG_ARCH_S390X */
 id|asmlinkage
-id|__SYS_RETTYPE
+r_int
 id|sys_pipe
 c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|fildes
 )paren

@@ -1265,8 +1265,6 @@ r_if
 c_cond
 (paren
 id|written
-op_ne
-id|len
 )paren
 (brace
 id|ssize_t

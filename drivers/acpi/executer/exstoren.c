@@ -203,6 +203,9 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_METHOD_ALIAS
+suffix:colon
 multiline_comment|/*&n;&t;&t; * Aliases are resolved by acpi_ex_prep_operands&n;&t;&t; */
 id|ACPI_REPORT_ERROR
 (paren

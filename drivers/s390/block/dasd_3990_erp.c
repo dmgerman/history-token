@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.27 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.28 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -463,6 +463,8 @@ comma
 l_string|&quot;blocking request queue for %is&quot;
 comma
 id|expires
+op_div
+id|HZ
 )paren
 suffix:semicolon
 id|device-&gt;stopped
@@ -7383,7 +7385,7 @@ multiline_comment|/* print current erp_chain */
 id|DEV_MESSAGE
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 comma
 id|device
 comma
@@ -7419,13 +7421,15 @@ id|temp_erp-&gt;refers
 id|DEV_MESSAGE
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;&t;   erp %p refers to %p&quot;
+l_string|&quot;   erp %p (%02x) refers to %p&quot;
 comma
 id|temp_erp
+comma
+id|temp_erp-&gt;status
 comma
 id|temp_erp-&gt;refers
 )paren
@@ -7550,7 +7554,7 @@ multiline_comment|/* print current erp_chain */
 id|DEV_MESSAGE
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 comma
 id|device
 comma
@@ -7586,13 +7590,15 @@ id|temp_erp-&gt;refers
 id|DEV_MESSAGE
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;&t;   erp %p refers to %p&quot;
+l_string|&quot;   erp %p (%02x) refers to %p&quot;
 comma
 id|temp_erp
+comma
+id|temp_erp-&gt;status
 comma
 id|temp_erp-&gt;refers
 )paren

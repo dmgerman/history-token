@@ -158,7 +158,7 @@ id|areg
 OL
 id|NUM_ACRS
 op_logical_and
-id|regs-&gt;acrs
+id|current-&gt;thread.acrs
 (braket
 id|areg
 )braket
@@ -167,7 +167,7 @@ l_int|1
 )paren
 multiline_comment|/*&n;&t;&t; * access register contains 0 -&gt; kernel address,&n;&t;&t; * access register contains 1 -&gt; user space address&n;&t;&t; */
 r_return
-id|regs-&gt;acrs
+id|current-&gt;thread.acrs
 (braket
 id|areg
 )braket
@@ -225,6 +225,13 @@ id|descriptor
 op_eq
 l_int|1
 )paren
+(brace
+id|save_access_regs
+c_func
+(paren
+id|current-&gt;thread.acrs
+)paren
+suffix:semicolon
 r_return
 id|__check_access_register
 c_func
@@ -234,6 +241,7 @@ comma
 id|error_code
 )paren
 suffix:semicolon
+)brace
 r_return
 id|descriptor
 op_rshift

@@ -681,9 +681,9 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;unsol.irq! dev end: %s&bslash;n&quot;
+l_string|&quot;unsol.irq! dev end: %08x&bslash;n&quot;
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+id|device-&gt;cdev_id
 )paren
 suffix:semicolon
 id|PRINT_WARN
@@ -4941,8 +4941,8 @@ multiline_comment|/* end of list */
 suffix:semicolon
 r_static
 r_int
-DECL|function|tape_34xx_enable
-id|tape_34xx_enable
+DECL|function|tape_34xx_online
+id|tape_34xx_online
 c_func
 (paren
 r_struct
@@ -4952,7 +4952,7 @@ id|cdev
 )paren
 (brace
 r_return
-id|tape_enable_device
+id|tape_generic_online
 c_func
 (paren
 id|cdev-&gt;dev.driver_data
@@ -4964,8 +4964,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|tape_34xx_disable
-id|tape_34xx_disable
+DECL|function|tape_34xx_offline
+id|tape_34xx_offline
 c_func
 (paren
 r_struct
@@ -4974,14 +4974,12 @@ op_star
 id|cdev
 )paren
 (brace
-id|tape_disable_device
+r_return
+id|tape_generic_offline
 c_func
 (paren
 id|cdev-&gt;dev.driver_data
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|tape_34xx_driver
@@ -5019,12 +5017,12 @@ comma
 dot
 id|set_online
 op_assign
-id|tape_34xx_enable
+id|tape_34xx_online
 comma
 dot
 id|set_offline
 op_assign
-id|tape_34xx_disable
+id|tape_34xx_offline
 comma
 )brace
 suffix:semicolon
@@ -5044,7 +5042,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;34xx init: $Revision: 1.18 $&bslash;n&quot;
+l_string|&quot;34xx init: $Revision: 1.19 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register driver for 3480/3490 tapes. */
@@ -5118,7 +5116,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached 3480 tape &quot;
-l_string|&quot;device driver ($Revision: 1.18 $)&quot;
+l_string|&quot;device driver ($Revision: 1.19 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

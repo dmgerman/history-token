@@ -3937,7 +3937,7 @@ id|stat
 suffix:semicolon
 singleline_comment|//&t;while (HWGROUP(drive)-&gt;busy)
 singleline_comment|//&t;&t;ide_delay_50ms();
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3952,7 +3952,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
+macro_line|#endif
 multiline_comment|/*&n;&t; * Don&squot;t use ide_wait_cmd here - it will&n;&t; * attempt to set_geometry and recalibrate,&n;&t; * but for some reason these don&squot;t work at&n;&t; * this point (lost interrupt).&n;&t; */
 multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command&n;         */
 id|disable_irq_nosync
@@ -4250,7 +4250,7 @@ op_and_assign
 op_complement
 l_int|0x0F00
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -4258,7 +4258,6 @@ id|speed
 op_ge
 id|XFER_SW_DMA_0
 )paren
-(brace
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_host_on
@@ -4267,9 +4266,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -4284,8 +4281,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
+macro_line|#endif
 r_switch
 c_cond
 (paren

@@ -81,6 +81,7 @@ multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoi
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|s8
 r_typedef
 r_int

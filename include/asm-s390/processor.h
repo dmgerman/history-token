@@ -149,18 +149,14 @@ DECL|member|fp_regs
 id|s390_fp_regs
 id|fp_regs
 suffix:semicolon
-DECL|member|ar2
+DECL|member|acrs
 r_int
 r_int
-id|ar2
+id|acrs
+(braket
+id|NUM_ACRS
+)braket
 suffix:semicolon
-multiline_comment|/* kernel access register 2         */
-DECL|member|ar4
-r_int
-r_int
-id|ar4
-suffix:semicolon
-multiline_comment|/* kernel access register 4         */
 DECL|member|ksp
 r_int
 r_int
@@ -173,6 +169,10 @@ r_int
 id|user_seg
 suffix:semicolon
 multiline_comment|/* HSTD                             */
+DECL|member|mm_segment
+id|mm_segment_t
+id|mm_segment
+suffix:semicolon
 DECL|member|prot_addr
 r_int
 r_int
@@ -222,7 +222,7 @@ DECL|macro|__SWAPPER_PG_DIR
 macro_line|# define __SWAPPER_PG_DIR __pa(&amp;swapper_pg_dir[0]) + _REGION_TABLE
 macro_line|#endif /* __s390x__ */
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD {{0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},&t;       &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},&t;&t;&t;       &bslash;&n;&t;&t;     0, 0,&t;&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     sizeof(init_stack) + (unsigned long) &amp;init_stack,&t;       &bslash;&n;&t;&t;     __SWAPPER_PG_DIR,&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     0,0,0,&t;&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},&t;&t;       &bslash;&n;&t;&t;     0, 0&t;&t;&t;&t;&t;&t;       &bslash;&n;} 
+mdefine_line|#define INIT_THREAD {{0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},&t;       &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},&t;&t;&t;       &bslash;&n;&t;&t;     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},&t;       &bslash;&n;&t;&t;     sizeof(init_stack) + (unsigned long) &amp;init_stack,&t;       &bslash;&n;&t;&t;     __SWAPPER_PG_DIR,&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     {0},&t;&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     0,0,0,&t;&t;&t;&t;&t;&t;       &bslash;&n;&t;&t;     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},&t;&t;       &bslash;&n;&t;&t;     0, 0&t;&t;&t;&t;&t;&t;       &bslash;&n;} 
 multiline_comment|/*&n; * Do necessary setup to start up a new thread.&n; */
 macro_line|#ifndef __s390x__
 DECL|macro|start_thread
@@ -347,7 +347,7 @@ id|p
 )paren
 suffix:semicolon
 DECL|macro|__KSTK_PTREGS
-mdefine_line|#define __KSTK_PTREGS(tsk) ((struct pt_regs *) &bslash;&n;        (((unsigned long) tsk-&gt;thread_info + THREAD_SIZE - sizeof(struct pt_regs)) &amp; -8L))
+mdefine_line|#define __KSTK_PTREGS(tsk) ((struct pt_regs *) &bslash;&n;        ((unsigned long) tsk-&gt;thread_info + THREAD_SIZE - sizeof(struct pt_regs)))
 DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;psw.addr)
 DECL|macro|KSTK_ESP

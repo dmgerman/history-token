@@ -3046,6 +3046,22 @@ comma
 id|irb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
+)paren
+multiline_comment|/* Basic sense hasn&squot;t started. Try again. */
+id|ccw_device_do_sense
+c_func
+(paren
+id|cdev
+comma
+id|irb
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3538,6 +3554,16 @@ comma
 id|irb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
+)paren
+r_goto
+id|call_handler
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3586,6 +3612,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|call_handler
+suffix:colon
 multiline_comment|/* Iff device is idle, reset timeout. */
 id|sch
 op_assign
@@ -3991,6 +4019,7 @@ op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
+multiline_comment|/* FIXME: we should restart stlck here, but this&n;&t;&t;&t; * is extremely unlikely ... */
 r_goto
 id|out_wakeup
 suffix:semicolon
