@@ -696,6 +696,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
+multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concered about races with a command abort.  Hanging this code is&n; * a sure fire way to hang the kernel.&n; *&n; * The abort function first sets the machine state, then tries to acquire the&n; * lock on the current_urb to abort it.&n; *&n; * Once a function grabs the current_urb_sem, then it -MUST- test the state to&n; * see if we just got aborted before the lock was grabbed.  If so, it&squot;s&n; * essential to release the lock and return.&n; *&n; * The idea is that, once the current_urb_sem is held, the state can&squot;t really&n; * change anymore without also engaging the usb_unlink_urb() call _after_ the&n; * URB is actually submitted.&n; *&n; * So, we&squot;ve guaranteed that (after the sm_state test), if we do submit the&n; * URB it will get aborted when we release the current_urb_sem.  And we&squot;ve&n; * also guaranteed that if the abort code was called before we held the&n; * current_urb_sem, we can safely get out before the URB is submitted.&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
 DECL|function|usb_stor_blocking_completion
 r_static
@@ -728,7 +729,7 @@ id|urb_done_ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This is the common part of the URB message submission code&n; * This function expects the current_urb_sem to be held upon entry.&n; */
+multiline_comment|/* This is the common part of the URB message submission code&n; * This function expects the current_urb_sem to be held upon entry.&n; *&n; * All URBs from the usb-storage driver _must_ pass through this function&n; * (or something like it) for the abort mechanisms to work properly.&n; */
 DECL|function|usb_stor_msg_common
 r_static
 r_int
@@ -794,36 +795,6 @@ id|status
 multiline_comment|/* something went wrong */
 r_return
 id|status
-suffix:semicolon
-)brace
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-multiline_comment|/* avoid a race with usb_stor_abort_transport():&n;&t;&t; *  if the abort took place before we submitted&n;&t;&t; *  the URB, we must cancel it ourselves */
-r_if
-c_cond
-(paren
-id|us-&gt;current_urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
-)paren
-id|usb_unlink_urb
-c_func
-(paren
-id|us-&gt;current_urb
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* wait for the completion of the URB */
@@ -967,6 +938,33 @@ id|us-&gt;current_urb_sem
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* has the current command been aborted? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;current_urb_sem
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* fill the URB */
 id|FILL_CONTROL_URB
 c_func
@@ -1069,6 +1067,33 @@ id|us-&gt;current_urb_sem
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* has the current command been aborted? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;current_urb_sem
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* fill the URB */
 id|FILL_BULK_URB
 c_func
@@ -2336,33 +2361,30 @@ l_string|&quot;usb_stor_abort_transport called&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* If the current state is wrong or if there&squot;s&n;&t; *  no srb, then there&squot;s nothing to do */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|state
-op_eq
-id|US_STATE_RUNNING
-op_logical_or
-id|state
-op_eq
-id|US_STATE_RESETTING
-)paren
-op_logical_or
-op_logical_neg
-id|us-&gt;srb
-)paren
-(brace
-id|US_DEBUGP
+id|BUG_ON
 c_func
 (paren
-l_string|&quot;-- invalid current state&bslash;n&quot;
+(paren
+id|state
+op_ne
+id|US_STATE_RUNNING
+op_logical_and
+id|state
+op_ne
+id|US_STATE_RESETTING
+)paren
 )paren
 suffix:semicolon
-r_return
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+(paren
+id|us-&gt;srb
+)paren
+)paren
 suffix:semicolon
-)brace
+multiline_comment|/* set state to abort */
 id|atomic_set
 c_func
 (paren
@@ -2372,8 +2394,17 @@ comma
 id|US_STATE_ABORTING
 )paren
 suffix:semicolon
-multiline_comment|/* If the state machine is blocked waiting for an URB or an IRQ,&n;&t; *  let&squot;s wake it up */
-multiline_comment|/* if we have an URB pending, cancel it */
+multiline_comment|/* If the state machine is blocked waiting for an URB or an IRQ,&n;&t; * let&squot;s wake it up */
+multiline_comment|/* If we have an URB pending, cancel it.  Note that we guarantee with&n;&t; * the current_urb_sem that either (a) an URB has just been submitted,&n;&t; * or (b) the URB will never get submitted.  But, because of the use&n;&t; * of us-&gt;sm_state and current_urb_sem, we can&squot;t get an URB sumbitted&n;&t; * _after_ we set the state to US_STATE_ABORTING and this section of&n;&t; * code runs.  Thus we avoid deadlocks.&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;current_urb_sem
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2396,8 +2427,16 @@ id|us-&gt;current_urb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if we are waiting for an IRQ, simulate it */
-r_else
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;current_urb_sem
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* If we are waiting for an IRQ, simulate it */
 r_if
 c_cond
 (paren
