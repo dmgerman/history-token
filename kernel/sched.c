@@ -12063,6 +12063,10 @@ id|p
 r_return
 id|NOTIFY_BAD
 suffix:semicolon
+id|p-&gt;flags
+op_or_assign
+id|PF_NOFREEZE
+suffix:semicolon
 id|kthread_bind
 c_func
 (paren
