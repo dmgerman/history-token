@@ -373,17 +373,6 @@ r_int
 id|lock_mode
 suffix:semicolon
 multiline_comment|/* need to get access to the xfs_inode to read the generation */
-id|VN_BHV_READ_LOCK
-c_func
-(paren
-op_amp
-(paren
-id|vp
-)paren
-op_member_access_from_pointer
-id|v_bh
-)paren
-suffix:semicolon
 id|bhv
 op_assign
 id|VNODE_TO_FIRST_BHV
@@ -451,17 +440,6 @@ c_func
 id|ip
 comma
 id|lock_mode
-)paren
-suffix:semicolon
-id|VN_BHV_READ_UNLOCK
-c_func
-(paren
-op_amp
-(paren
-id|vp
-)paren
-op_member_access_from_pointer
-id|v_bh
 )paren
 suffix:semicolon
 id|hsize
