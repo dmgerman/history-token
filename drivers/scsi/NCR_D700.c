@@ -1021,6 +1021,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|hostdata-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
 id|found
 op_increment
 suffix:semicolon
