@@ -5,20 +5,6 @@ mdefine_line|#define _LINUX_MODULE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#ifdef __GENKSYMS__
-DECL|macro|_set_ver
-macro_line|#  define _set_ver(sym) sym
-DECL|macro|MODVERSIONS
-macro_line|#  undef  MODVERSIONS
-DECL|macro|MODVERSIONS
-macro_line|#  define MODVERSIONS
-macro_line|#else /* ! __GENKSYMS__ */
-macro_line|# if !defined(MODVERSIONS) &amp;&amp; defined(EXPORT_SYMTAB)
-DECL|macro|_set_ver
-macro_line|#   define _set_ver(sym) sym
-macro_line|#   include &lt;linux/modversions.h&gt;
-macro_line|# endif
-macro_line|#endif /* __GENKSYMS__ */
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* Don&squot;t need to bring in all of uaccess.h just for this decl.  */
 r_struct
@@ -520,7 +506,7 @@ op_assign
 l_string|&quot;kernel_version=&quot;
 id|UTS_RELEASE
 suffix:semicolon
-macro_line|#ifdef MODVERSIONS
+macro_line|#ifdef CONFIG_MODVERSIONS
 DECL|variable|__module_using_checksums
 r_static
 r_const
@@ -579,6 +565,7 @@ macro_line|#endif /* MODULE */
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 multiline_comment|/* Export a symbol either from the kernel or a module.&n;&n;   In the kernel, the symbol is added to the kernel&squot;s global symbol table.&n;&n;   In a module, it controls which variables are exported.  If no&n;   variables are explicitly exported, the action is controled by the&n;   insmod -[xX] flags.  Otherwise, only the variables listed are exported.&n;   This obviates the need for the old register_symtab() function.  */
+multiline_comment|/* So how does the CONFIG_MODVERSIONS magic work? &n; *&n; * A module can only be loaded if it&squot;s undefined symbols can be resolved&n; * using symbols the kernel exports for that purpose. The idea behind&n; * CONFIG_MODVERSIONS is to mangle those symbols depending on their&n; * definition (see man genksyms) - a change in the definition will thus&n; * caused the mangled name to change, and the module will refuse to&n; * load due to unresolved symbols.&n; *&n; * Let&squot;s start with taking a look how things work when we don&squot;t use&n; * CONFIG_MODVERSIONS. In this case, the only thing which is worth&n; * mentioning is the EXPORT_SYMBOL() macro. Using EXPORT_SYMBOL(foo)&n; * will expand into __EXPORT_SYMBOL(foo, &quot;foo&quot;), which then uses&n; * some ELF section magic to generate a list of pairs &n; * (address, symbol_name), which is used to resolve undefined &n; * symbols into addresses when loading a module.&n; * &n; * That&squot;s easy. Let&squot;s get back to CONFIG_MODVERSIONS=y.&n; *&n; * The first step is to generate the checksums. This is done at&n; * &quot;make dep&quot; time, code which exports symbols (using EXPORT_SYMTAB)&n; * is preprocessed with the additional macro __GENKSYMS__ set and fed&n; * into genksyms.&n; * At this stage, for each file that exports symbols an corresponding&n; * file in include/linux/module is generated, which for each exported&n; * symbol contains&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   _set_ver(schedule_task)&n; *&n; * In addition, include/linux/modversions.h is generated, which&n; * looks like&n; *&n; *         #include &lt;linux/modsetver.h&gt;&n; *         #include &lt;linux/modules/kernel__context.ver&gt;&n; *        &lt;&lt;&lt;lists all of the files just described&gt;&gt;&gt;&n; *&n; * Let&squot;s see what happens for different cases during compilation.&n; *&n; * o compile a file into the kernel which does not export symbols:&n; *&n; *   Since the file is known to not export symbols (it&squot;s not listed&n; *   in the export-objs variable in the corresponding Makefile), the&n; *   kernel build system does compile it with no extra flags set.&n; *   The macro EXPORT_SYMTAB is unset, and you can see below that&n; *   files which still try to use EXPORT_SYMBOL() will be trapped.&n; *   Other than that, just regular compilation.&n; *&n; * o compile a file into the kernel which does export symbols:&n; *&n; *   In this case, the file will compiled with the macro &n; *   EXPORT_SYMTAB defined.&n; *   As MODULE is not set, we hit this case from below:&n; *&n; *         #define _set_ver(sym) sym&n; *         #include &lt;linux/modversions.h&gt;&n; *         &n; *         #define EXPORT_SYMBOL(var) &bslash;&n; *          __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))&n; *&n; *   The first two lines will in essence include&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   schedule_task&n; *&n; *   for each symbol. The second line really doesn&squot;t do much, but the&n; *   first one gives us the checksums we generated before.&n; *   &n; *   So EXPORT_SYMBOL(schedule_task) will expand into&n; *   __EXPORT_SYMBOL(schedule_task, &quot;schedule_task_R2d6c3d04&quot;),&n; *   hence exporting the symbol for schedule_task under the name of&n; *   schedule_task_R2d6c3d04.&n; *&n; * o compile a file into a module&n; *   &n; *   In this case, the kernel build system will add &n; *   &quot;-include include/linux/modversions.h&quot; to the command line. So&n; *   modversions.h is prepended to the actual source, turning into&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   schedule_task_R2d6c3d04&n; *&n; *   Though the source code says &quot;schedule_task&quot;, the compiler will&n; *   see the mangled symbol everywhere. So the module will end up with&n; *   an undefined symbol &quot;schedule_task_R2d6c3d04&quot; - which is exactly&n; *   the symbols which occurs in the kernel&squot;s list of symbols, with&n; *   a value of &amp;schedule_task - it all comes together nicely.&n; *&n; *   One question remains: What happens if a module itself exports&n; *   a symbol - the answer is simple: It&squot;s actually handled as the&n; *   CONFIG_MODVERSIONS=n case described first, only that the compiler&n; *   sees the mangled symbol everywhere. So &amp;foo_R12345678 is exported&n; *   with the name &quot;foo_R12345678&quot;. Think about it. It all makes sense.&n; */
 macro_line|#if defined(__GENKSYMS__)
 multiline_comment|/* We want the EXPORT_SYMBOL tag left intact for recognition.  */
 macro_line|#elif !defined(CONFIG_MODULES)
@@ -604,17 +591,20 @@ DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = str;&t;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym &t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|macro|__EXPORT_SYMBOL_GPL
 mdefine_line|#define __EXPORT_SYMBOL_GPL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = &quot;GPLONLY_&quot; str;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym&t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }
-macro_line|#if defined(MODVERSIONS) || !defined(CONFIG_MODVERSIONS)
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  __EXPORT_SYMBOL_GPL(var, __MODULE_STRING(var))
-macro_line|#else
+macro_line|#if defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODULE)
+DECL|macro|_set_ver
+mdefine_line|#define _set_ver(sym) sym
+macro_line|#include &lt;linux/modversions.h&gt;
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))
-macro_line|#endif
+macro_line|#else /* !defined (CONFIG_MODVERSIONS) || defined(MODULE) */
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(var)  __EXPORT_SYMBOL_GPL(var, __MODULE_STRING(var))
+macro_line|#endif /* defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODULE) */
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
 macro_line|#endif /* __GENKSYMS__ */

@@ -23,11 +23,6 @@ macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;&t;/* 1 to support slow data por
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|# define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
-multiline_comment|/* Right now this is only needed by a promise controlled.&n; */
-macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
-DECL|macro|OK_TO_RESET_CONTROLLER
-macro_line|# define OK_TO_RESET_CONTROLLER&t;0&t;/* 0 for use with AH2372A/B interface */
-macro_line|#endif
 macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
 DECL|macro|FANCY_STATUS_DUMPS
 macro_line|# define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
@@ -67,6 +62,11 @@ id|IDE_ERROR_OFFSET
 op_assign
 l_int|1
 comma
+DECL|enumerator|IDE_FEATURE_OFFSET
+id|IDE_FEATURE_OFFSET
+op_assign
+l_int|1
+comma
 DECL|enumerator|IDE_NSECTOR_OFFSET
 id|IDE_NSECTOR_OFFSET
 op_assign
@@ -97,8 +97,18 @@ id|IDE_STATUS_OFFSET
 op_assign
 l_int|7
 comma
+DECL|enumerator|IDE_COMMAND_OFFSET
+id|IDE_COMMAND_OFFSET
+op_assign
+l_int|7
+comma
 DECL|enumerator|IDE_CONTROL_OFFSET
 id|IDE_CONTROL_OFFSET
+op_assign
+l_int|8
+comma
+DECL|enumerator|IDE_ALTSTATUS_OFFSET
+id|IDE_ALTSTATUS_OFFSET
 op_assign
 l_int|8
 comma
@@ -113,10 +123,6 @@ op_assign
 l_int|10
 )brace
 suffix:semicolon
-DECL|macro|IDE_FEATURE_OFFSET
-mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
-DECL|macro|IDE_COMMAND_OFFSET
-mdefine_line|#define IDE_COMMAND_OFFSET&t;IDE_STATUS_OFFSET
 DECL|macro|IDE_DATA_REG
 mdefine_line|#define IDE_DATA_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_DATA_OFFSET])
 DECL|macro|IDE_ERROR_REG
@@ -131,18 +137,12 @@ DECL|macro|IDE_HCYL_REG
 mdefine_line|#define IDE_HCYL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_HCYL_OFFSET])
 DECL|macro|IDE_SELECT_REG
 mdefine_line|#define IDE_SELECT_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_SELECT_OFFSET])
-DECL|macro|IDE_STATUS_REG
-mdefine_line|#define IDE_STATUS_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_STATUS_OFFSET])
-DECL|macro|IDE_CONTROL_REG
-mdefine_line|#define IDE_CONTROL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_CONTROL_OFFSET])
+DECL|macro|IDE_COMMAND_REG
+mdefine_line|#define IDE_COMMAND_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_STATUS_OFFSET])
 DECL|macro|IDE_IRQ_REG
 mdefine_line|#define IDE_IRQ_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_IRQ_OFFSET])
 DECL|macro|IDE_FEATURE_REG
 mdefine_line|#define IDE_FEATURE_REG&t;&t;IDE_ERROR_REG
-DECL|macro|IDE_COMMAND_REG
-mdefine_line|#define IDE_COMMAND_REG&t;&t;IDE_STATUS_REG
-DECL|macro|IDE_ALTSTATUS_REG
-mdefine_line|#define IDE_ALTSTATUS_REG&t;IDE_CONTROL_REG
 DECL|macro|IDE_IREASON_REG
 mdefine_line|#define IDE_IREASON_REG&t;&t;IDE_NSECTOR_REG
 DECL|macro|IDE_BCOUNTL_REG
@@ -151,10 +151,8 @@ DECL|macro|IDE_BCOUNTH_REG
 mdefine_line|#define IDE_BCOUNTH_REG&t;&t;IDE_HCYL_REG
 DECL|macro|GET_ERR
 mdefine_line|#define GET_ERR()&t;&t;IN_BYTE(IDE_ERROR_REG)
-DECL|macro|GET_STAT
-mdefine_line|#define GET_STAT()&t;&t;IN_BYTE(IDE_STATUS_REG)
 DECL|macro|GET_ALTSTAT
-mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(IDE_CONTROL_REG)
+mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(drive-&gt;channel-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|GET_FEAT
 mdefine_line|#define GET_FEAT()&t;&t;IN_BYTE(IDE_NSECTOR_REG)
 DECL|macro|BAD_R_STAT
@@ -476,100 +474,6 @@ DECL|typedef|select_t
 )brace
 id|select_t
 suffix:semicolon
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|bit0
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|nIEN
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* device INTRQ to host */
-DECL|member|SRST
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* host soft reset bit */
-DECL|member|bit3
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
-DECL|member|reserved456
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|HOB
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-macro_line|#else
-macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|control_t
-)brace
-id|control_t
-suffix:semicolon
 multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
 DECL|struct|ata_device
 r_struct
@@ -763,11 +667,6 @@ id|select_t
 id|select
 suffix:semicolon
 multiline_comment|/* basic drive/head select reg value */
-DECL|member|ctl
-id|u8
-id|ctl
-suffix:semicolon
-multiline_comment|/* &quot;normal&quot; value for IDE_CONTROL_REG */
 DECL|member|status
 id|u8
 id|status
@@ -1178,7 +1077,7 @@ id|gd
 suffix:semicolon
 multiline_comment|/* gendisk structure */
 multiline_comment|/*&n;&t; * Routines to tune PIO and DMA mode for drives.&n;&t; *&n;&t; * A value of 255 indicates that the function should choose the optimal&n;&t; * mode itself.&n;&t; */
-multiline_comment|/* setup disk on a channel for a particular transfer mode */
+multiline_comment|/* setup disk on a channel for a particular PIO transfer mode */
 DECL|member|tuneproc
 r_void
 (paren
@@ -1363,11 +1262,11 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|member|XXX_udma
+DECL|member|udma_setup
 r_int
 (paren
 op_star
-id|XXX_udma
+id|udma_setup
 )paren
 (paren
 r_struct
@@ -1420,28 +1319,11 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|udma_read
+DECL|member|udma_init
 r_int
 (paren
 op_star
-id|udma_read
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
-DECL|member|udma_write
-r_int
-(paren
-op_star
-id|udma_write
+id|udma_init
 )paren
 (paren
 r_struct
@@ -1709,7 +1591,6 @@ c_func
 r_struct
 id|ata_channel
 op_star
-id|hwif
 )paren
 suffix:semicolon
 r_struct
@@ -2170,7 +2051,7 @@ id|u8
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|ide_error
+id|ata_error
 c_func
 (paren
 r_struct
@@ -2185,16 +2066,14 @@ comma
 r_const
 r_char
 op_star
-comma
-id|byte
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; */
+r_extern
 r_void
 id|ide_fixstring
 c_func
 (paren
-id|byte
+r_char
 op_star
 id|s
 comma
@@ -2207,7 +2086,6 @@ r_int
 id|byteswap
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after doing &quot;*startstop = ide_error()&quot;, and the&n; * caller should return the updated value of &quot;startstop&quot; in this case.&n; * &quot;startstop&quot; is unchanged when the function returns 0;&n; */
 r_extern
 r_int
 id|ide_wait_stat
@@ -2287,18 +2165,6 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This function is intended to be used prior to invoking ide_do_drive_cmd().&n; */
-r_extern
-r_void
-id|ide_init_drive_cmd
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * &quot;action&quot; parameter type for ide_do_drive_cmd() below.&n; */
 r_typedef
 r_enum
@@ -2350,8 +2216,6 @@ comma
 r_struct
 id|request
 op_star
-comma
-id|u8
 )paren
 suffix:semicolon
 DECL|struct|ata_taskfile
@@ -2365,9 +2229,14 @@ id|taskfile
 suffix:semicolon
 DECL|member|hobfile
 r_struct
-id|hd_drive_hob_hdr
+id|hd_drive_task_hdr
 id|hobfile
 suffix:semicolon
+DECL|member|cmd
+id|u8
+id|cmd
+suffix:semicolon
+multiline_comment|/* actual ATA command */
 DECL|member|command_type
 r_int
 id|command_type
@@ -2485,7 +2354,6 @@ id|request
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* This is setting up all fields in args, which depend upon the command type.&n; */
 r_extern
 r_void
 id|ide_cmd_type_parser
@@ -2509,21 +2377,6 @@ comma
 r_struct
 id|ata_taskfile
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_cmd_ioctl
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_int
-r_int
-id|arg
 )paren
 suffix:semicolon
 r_extern
@@ -2560,10 +2413,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|system_bus_speed
-suffix:semicolon
-r_extern
 r_void
 id|ide_stall_queue
 c_func
@@ -2575,6 +2424,10 @@ comma
 r_int
 r_int
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|system_bus_speed
 suffix:semicolon
 multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate&n; * config bits.&n; */
 r_extern
@@ -2846,11 +2699,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-DECL|function|udma_read
+multiline_comment|/*&n; * Initiate actual DMA data transfer. The direction is encoded in the request.&n; */
+DECL|function|udma_init
 r_static
 r_inline
 r_int
-id|udma_read
+id|udma_init
 c_func
 (paren
 r_struct
@@ -2867,37 +2721,7 @@ id|rq
 r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|udma_read
-c_func
-(paren
-id|drive
-comma
-id|rq
-)paren
-suffix:semicolon
-)brace
-DECL|function|udma_write
-r_static
-r_inline
-r_int
-id|udma_write
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-(brace
-r_return
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma_write
+id|udma_init
 c_func
 (paren
 id|drive
@@ -2976,6 +2800,7 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_extern
 r_void
 id|udma_pci_enable
 c_func
@@ -2992,6 +2817,7 @@ r_int
 id|verbose
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|udma_pci_start
 c_func
@@ -3007,6 +2833,7 @@ op_star
 id|rq
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|udma_pci_stop
 c_func
@@ -3017,8 +2844,9 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|udma_pci_read
+id|udma_pci_init
 c_func
 (paren
 r_struct
@@ -3032,21 +2860,7 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-r_int
-id|udma_pci_write
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
+r_extern
 r_int
 id|udma_pci_irq_status
 c_func
@@ -3057,6 +2871,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|udma_pci_timeout
 c_func
@@ -3067,8 +2882,19 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|udma_pci_irq_lost
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|udma_pci_setup
 c_func
 (paren
 r_struct
@@ -3131,26 +2957,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ata_do_udma
-c_func
-(paren
-r_int
-r_int
-id|reading
-comma
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
-r_extern
 id|ide_startstop_t
 id|udma_tcq_taskfile
 c_func
@@ -3201,16 +3007,6 @@ op_star
 comma
 r_int
 id|good_bad
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|XXX_ide_dmaproc
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -3316,6 +3112,42 @@ comma
 id|u8
 comma
 id|u8
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_irq_enable
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_reset
+c_func
+(paren
+r_struct
+id|ata_channel
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_out_regfile
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|hd_drive_task_hdr
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif

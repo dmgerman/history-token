@@ -56,52 +56,6 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-DECL|function|drive_ctl_nien
-r_static
-r_inline
-r_void
-id|drive_ctl_nien
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_int
-id|set
-)paren
-(brace
-macro_line|#ifdef IDE_TCQ_NIEN
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-(brace
-r_int
-id|mask
-op_assign
-id|set
-ques
-c_cond
-l_int|0x02
-suffix:colon
-l_int|0x00
-suffix:semicolon
-id|OUT_BYTE
-c_func
-(paren
-id|drive-&gt;ctl
-op_or
-id|mask
-comma
-id|IDE_CONTROL_REG
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
 DECL|function|tcq_nop_handler
 r_static
 id|ide_startstop_t
@@ -137,11 +91,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|GET_ERR
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -355,7 +304,7 @@ id|rq-&gt;special
 op_assign
 id|args
 suffix:semicolon
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
@@ -393,17 +342,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * make sure that nIEN is cleared&n;&t; */
 id|out
 suffix:colon
-id|drive_ctl_nien
+macro_line|#ifdef IDE_TCQ_NIEN
+id|ata_irq_enable
 c_func
 (paren
 id|drive
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * start doing stuff again&n;&t; */
 id|q
 op_member_access_from_pointer
@@ -802,14 +752,16 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-id|drive_ctl_nien
+macro_line|#ifdef IDE_TCQ_NIEN
+id|ata_irq_enable
 c_func
 (paren
 id|drive
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * send SERVICE, wait 400ns, wait for BUSY_STAT to clear&n;&t; */
 id|OUT_BYTE
 c_func
@@ -865,14 +817,16 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-id|drive_ctl_nien
+macro_line|#ifdef IDE_TCQ_NIEN
+id|ata_irq_enable
 c_func
 (paren
 id|drive
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * FIXME, invalidate queue&n;&t; */
 r_if
 c_cond
@@ -1418,7 +1372,7 @@ id|args.taskfile.feature
 op_assign
 l_int|0x01
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
@@ -1536,7 +1490,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_EN_WCACHE
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1591,7 +1545,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_DIS_RI
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1647,7 +1601,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_EN_SI
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1940,18 +1894,20 @@ id|rq-&gt;tag
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set nIEN, tag start operation will enable again when&n;&t; * it is safe&n;&t; */
-id|drive_ctl_nien
+macro_line|#ifdef IDE_TCQ_NIEN
+id|ata_irq_enable
 c_func
 (paren
 id|drive
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|OUT_BYTE
 c_func
 (paren
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren
@@ -1993,14 +1949,16 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-id|drive_ctl_nien
+macro_line|#ifdef IDE_TCQ_NIEN
+id|ata_irq_enable
 c_func
 (paren
 id|drive
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -1669,7 +1669,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2297,7 +2297,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2548,7 +2548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|inode

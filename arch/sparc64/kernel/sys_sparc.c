@@ -1180,6 +1180,12 @@ l_string|&quot;sparc&bslash;0&bslash;0&quot;
 comma
 l_int|8
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 r_return

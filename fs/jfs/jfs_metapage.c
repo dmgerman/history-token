@@ -2386,7 +2386,7 @@ c_func
 id|mp-&gt;page
 )paren
 suffix:semicolon
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 id|mp-&gt;page
@@ -2607,7 +2607,7 @@ c_func
 id|mp-&gt;page
 )paren
 suffix:semicolon
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 id|mp-&gt;page
@@ -2649,7 +2649,7 @@ c_cond
 id|page
 )paren
 (brace
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 id|page

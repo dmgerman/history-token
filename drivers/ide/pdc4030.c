@@ -650,17 +650,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-id|outb
+id|ata_irq_enable
 c_func
 (paren
-l_int|0x08
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1389,16 +1384,14 @@ id|BAD_R_STAT
 )paren
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-l_string|&quot;promise_read_intr&quot;
-comma
-id|drive-&gt;status
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|read_again
@@ -1659,7 +1652,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1667,8 +1660,6 @@ comma
 id|rq
 comma
 l_string|&quot;promise read intr&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -1761,7 +1752,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1769,8 +1760,6 @@ comma
 id|rq
 comma
 l_string|&quot;busy timeout&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -2058,7 +2047,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -2066,8 +2055,6 @@ comma
 id|rq
 comma
 l_string|&quot;write timeout&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -2345,66 +2332,26 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-id|outb
+id|ata_irq_enable
 c_func
 (paren
-id|drive-&gt;ctl
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* clear nIEN */
 id|ata_mask
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-id|outb
+id|ata_out_regfile
 c_func
 (paren
-id|taskfile-&gt;feature
+id|drive
 comma
-id|IDE_FEATURE_REG
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|taskfile-&gt;sector_count
-comma
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-multiline_comment|/* refers to number of sectors to transfer */
-id|outb
-c_func
-(paren
-id|taskfile-&gt;sector_number
-comma
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-multiline_comment|/* refers to sector offset or start sector */
-id|outb
-c_func
-(paren
-id|taskfile-&gt;low_cylinder
-comma
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|taskfile-&gt;high_cylinder
-comma
-id|IDE_HCYL_REG
+id|taskfile
 )paren
 suffix:semicolon
 id|outb
@@ -2418,7 +2365,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|taskfile-&gt;command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren
@@ -2725,7 +2672,7 @@ l_int|0x0f
 op_or
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 (paren
 id|rq_data_dir
@@ -2742,7 +2689,6 @@ id|PROMISE_READ
 suffix:colon
 id|PROMISE_WRITE
 suffix:semicolon
-multiline_comment|/* We can&squot;t call ide_cmd_type_parser here, since it won&squot;t understand&n;&t;   our command, but that doesn&squot;t matter, since we don&squot;t use the&n;&t;   generic interrupt handlers either. Setup the bits of args that we&n;&t;   will need. */
 id|args.handler
 op_assign
 l_int|NULL

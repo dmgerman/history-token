@@ -446,17 +446,6 @@ comma
 l_int|40
 )paren
 suffix:semicolon
-id|ide_fixstring
-c_func
-(paren
-id|model
-comma
-l_int|40
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* byte-swap */
 r_for
 c_loop
 (paren

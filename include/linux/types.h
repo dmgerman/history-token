@@ -299,6 +299,11 @@ r_int
 id|sector_t
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * The type of an index into the pagecache.  Use a #define so asm/types.h&n; * can override it.&n; */
+macro_line|#ifndef pgoff_t
+DECL|macro|pgoff_t
+mdefine_line|#define pgoff_t unsigned long
+macro_line|#endif
 macro_line|#endif /* __KERNEL_STRICT_NAMES */
 multiline_comment|/*&n; * Below are truly Linux-specific types that should never collide with&n; * any application/library that wants linux/types.h.&n; */
 DECL|struct|ustat

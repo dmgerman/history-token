@@ -466,10 +466,10 @@ suffix:semicolon
 macro_line|#endif /* CY82C693_DEBUG_INFO */
 )brace
 multiline_comment|/*&n; * used to set DMA mode for CY82C693 (single and multi modes)&n; */
-DECL|function|cy82c693_dmaproc
+DECL|function|cy82c693_udma_setup
 r_static
 r_int
-id|cy82c693_dmaproc
+id|cy82c693_udma_setup
 c_func
 (paren
 r_struct
@@ -1196,9 +1196,9 @@ id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cy82c693_dmaproc
+id|cy82c693_udma_setup
 suffix:semicolon
 r_if
 c_cond

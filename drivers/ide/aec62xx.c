@@ -561,10 +561,10 @@ l_int|5
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-DECL|function|aec62xx_dmaproc
+DECL|function|aec62xx_udma_setup
 r_static
 r_int
-id|aec62xx_dmaproc
+id|aec62xx_udma_setup
 c_func
 (paren
 r_struct
@@ -943,12 +943,10 @@ id|i
 suffix:semicolon
 id|ch-&gt;tuneproc
 op_assign
-op_amp
 id|aec62xx_tune_drive
 suffix:semicolon
 id|ch-&gt;speedproc
 op_assign
-op_amp
 id|aec_set_drive
 suffix:semicolon
 id|ch-&gt;autodma
@@ -1012,9 +1010,9 @@ id|ch-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|aec62xx_dmaproc
+id|aec62xx_udma_setup
 suffix:semicolon
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
 r_if

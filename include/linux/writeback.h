@@ -60,6 +60,16 @@ id|older_than_this
 )paren
 suffix:semicolon
 r_void
+id|wake_up_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
 id|__wait_on_inode
 c_func
 (paren

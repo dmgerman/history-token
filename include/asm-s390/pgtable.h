@@ -1194,20 +1194,17 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;(((entry).val &gt;&gt; 12) &amp; 0x7FFFF )
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type,offset)&t;((swp_entry_t) { pte_val(mk_swap_pte((type),(offset))) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(entry)&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(entry)&t;(((entry).val &gt;&gt; 12) &amp; 0x7FFFF )
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type,offset) ((swp_entry_t) { pte_val(mk_swap_pte((type),(offset))) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
 macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
-DECL|macro|PageSkip
-mdefine_line|#define PageSkip(page)          (0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)
 multiline_comment|/*&n; * No page table caches to initialise&n; */

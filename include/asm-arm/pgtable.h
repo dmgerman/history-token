@@ -232,16 +232,16 @@ id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 multiline_comment|/* Encode and decode a swap entry.&n; *&n; * We support up to 32GB of swap on 4k machines&n; */
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(x)&t;&t;(((x).val &gt;&gt; 2) &amp; 0x7f)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(x)&t;&t;((x).val &gt;&gt; 9)
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 9) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(swp)&t;((pte_t) { (swp).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 2) &amp; 0x7f)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 9)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type,offset) ((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 9) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(swp)&t;((pte_t) { (swp).val })
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
 multiline_comment|/* FIXME: this is not correct */
 DECL|macro|kern_addr_valid

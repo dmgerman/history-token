@@ -240,13 +240,9 @@ id|timer_list
 id|device_timer
 suffix:semicolon
 DECL|macro|SET_TIMER
-mdefine_line|#define SET_TIMER &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mod_timer(&amp;device_timer, jiffies + TIMEOUT_VALUE);&t;&bslash;&n;&t;} while (0)
-DECL|macro|CLEAR_TIMER
-mdefine_line|#define CLEAR_TIMER del_timer(&amp;device_timer);
-DECL|macro|SET_INTR
-macro_line|#undef SET_INTR
-DECL|macro|SET_INTR
-mdefine_line|#define SET_INTR(x) &bslash;&n;if ((DEVICE_INTR = (x)) != NULL) &bslash;&n;&t;SET_TIMER; &bslash;&n;else &bslash;&n;&t;CLEAR_TIMER;
+mdefine_line|#define SET_TIMER&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mod_timer(&amp;device_timer, jiffies + TIMEOUT_VALUE);&t;&bslash;&n;&t;} while (0)
+DECL|macro|SET_HANDLER
+mdefine_line|#define SET_HANDLER(x) &bslash;&n;if ((DEVICE_INTR = (x)) != NULL) &bslash;&n;&t;SET_TIMER; &bslash;&n;else &bslash;&n;&t;del_timer(&amp;device_timer);
 macro_line|#if (HD_DELAY &gt; 0)
 DECL|variable|last_req
 r_int
@@ -1224,7 +1220,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|SET_INTR
+id|SET_HANDLER
 c_func
 (paren
 id|intr_addr
@@ -2033,7 +2029,7 @@ OG
 l_int|0
 )paren
 (brace
-id|SET_INTR
+id|SET_HANDLER
 c_func
 (paren
 op_amp
@@ -2226,7 +2222,7 @@ OG
 l_int|0
 )paren
 (brace
-id|SET_INTR
+id|SET_HANDLER
 c_func
 (paren
 op_amp

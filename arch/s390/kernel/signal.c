@@ -580,6 +580,7 @@ l_int|15
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Returns non-zero on fault. */
 DECL|function|save_sigregs
 r_static
 r_int
@@ -654,6 +655,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* Returns positive number on error */
 DECL|function|restore_sigregs
 r_static
 r_int

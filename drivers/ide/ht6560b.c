@@ -53,18 +53,18 @@ r_int
 id|flags
 suffix:semicolon
 r_static
-id|byte
+id|u8
 id|current_select
 op_assign
 l_int|0
 suffix:semicolon
 r_static
-id|byte
+id|u8
 id|current_timing
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|select
 comma
 id|timing
@@ -184,13 +184,14 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|inb
+id|ata_status
 c_func
 (paren
-id|IDE_STATUS_REG
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -226,7 +227,7 @@ c_func
 r_void
 )paren
 (brace
-id|byte
+id|u8
 id|orig_value
 suffix:semicolon
 r_int
@@ -357,7 +358,7 @@ comma
 l_int|0x1f6
 )paren
 suffix:semicolon
-multiline_comment|/* IDE_SELECT_REG */
+multiline_comment|/* SELECT */
 (paren
 r_void
 )paren
@@ -367,7 +368,7 @@ c_func
 l_int|0x1f7
 )paren
 suffix:semicolon
-multiline_comment|/* IDE_STATUS_REG */
+multiline_comment|/* STATUS */
 id|printk
 c_func
 (paren

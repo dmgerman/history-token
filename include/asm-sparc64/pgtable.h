@@ -456,16 +456,16 @@ id|pte
 suffix:semicolon
 )brace
 multiline_comment|/* Encode and de-code a swap entry */
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;(((entry).val &gt;&gt; PAGE_SHIFT) &amp; 0xffUL)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;((entry).val &gt;&gt; (PAGE_SHIFT + 8UL))
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)&t;&bslash;&n;&t;( (swp_entry_t) &bslash;&n;&t;  { &bslash;&n;&t;&t;(((long)(type) &lt;&lt; PAGE_SHIFT) | &bslash;&n;                 ((long)(offset) &lt;&lt; (PAGE_SHIFT + 8UL))) &bslash;&n;&t;  } )
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(entry)&t;(((entry).val &gt;&gt; PAGE_SHIFT) &amp; 0xffUL)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(entry)&t;((entry).val &gt;&gt; (PAGE_SHIFT + 8UL))
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset)&t;&bslash;&n;&t;( (swp_entry_t) &bslash;&n;&t;  { &bslash;&n;&t;&t;(((long)(type) &lt;&lt; PAGE_SHIFT) | &bslash;&n;                 ((long)(offset) &lt;&lt; (PAGE_SHIFT + 8UL))) &bslash;&n;&t;  } )
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 r_extern
 r_int
 r_int

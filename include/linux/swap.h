@@ -12,8 +12,11 @@ DECL|macro|SWAP_FLAG_PRIO_MASK
 mdefine_line|#define SWAP_FLAG_PRIO_MASK&t;0x7fff
 DECL|macro|SWAP_FLAG_PRIO_SHIFT
 mdefine_line|#define SWAP_FLAG_PRIO_SHIFT&t;0
+multiline_comment|/*&n; * MAX_SWAPFILES defines the maximum number of swaptypes: things which can&n; * be swapped to.  The swap type and the offset into that swap type are&n; * encoded into pte&squot;s and into pgoff_t&squot;s in the swapcache.  Using five bits&n; * for the type means that the maximum number of swapcache pages is 27 bits&n; * on 32-bit-pgoff_t architectures.  And that assumes that the architecture packs&n; * the type/offset into the pte as 5/27 as well.&n; */
+DECL|macro|MAX_SWAPFILES_SHIFT
+mdefine_line|#define MAX_SWAPFILES_SHIFT&t;5
 DECL|macro|MAX_SWAPFILES
-mdefine_line|#define MAX_SWAPFILES 32
+mdefine_line|#define MAX_SWAPFILES&t;&t;(1 &lt;&lt; MAX_SWAPFILES_SHIFT)
 multiline_comment|/*&n; * Magic header for a swap area. The first part of the union is&n; * what the swap magic looks like for the old (limited to 128MB)&n; * swap area format, the second part of the union adds - in the&n; * old reserved area - some extra information. Note that the first&n; * kilobyte is reserved for boot loader or disk label stuff...&n; *&n; * Having the magic at the end of the PAGE_SIZE makes detecting swap&n; * areas somewhat tricky on machines that support multiple page sizes.&n; * For 2.5 we&squot;ll probably want to move the magic to just beyond the&n; * bootbits...&n; */
 DECL|union|swap_header
 r_union
