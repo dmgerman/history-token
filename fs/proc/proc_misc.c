@@ -561,6 +561,10 @@ r_int
 r_int
 id|active
 suffix:semicolon
+r_int
+r_int
+id|free
+suffix:semicolon
 id|get_page_state
 c_func
 (paren
@@ -576,6 +580,9 @@ id|active
 comma
 op_amp
 id|inactive
+comma
+op_amp
+id|free
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * display in kilobytes.&n; */

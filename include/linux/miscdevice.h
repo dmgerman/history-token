@@ -30,6 +30,8 @@ DECL|macro|EFI_RTC_MINOR
 mdefine_line|#define EFI_RTC_MINOR&t;&t;136&t;/* EFI Time services */
 DECL|macro|SUN_OPENPROM_MINOR
 mdefine_line|#define SUN_OPENPROM_MINOR 139
+DECL|macro|DMAPI_MINOR
+mdefine_line|#define DMAPI_MINOR&t;&t;140&t;/* DMAPI */
 DECL|macro|NVRAM_MINOR
 mdefine_line|#define NVRAM_MINOR 144
 DECL|macro|I2O_MINOR

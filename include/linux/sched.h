@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -101,6 +102,23 @@ suffix:semicolon
 r_extern
 r_int
 id|last_pid
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_int
+r_int
+comma
+id|process_counts
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nr_processes
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_extern
 r_int

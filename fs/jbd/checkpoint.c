@@ -1872,13 +1872,6 @@ l_int|NULL
 suffix:semicolon
 id|J_ASSERT
 (paren
-id|transaction-&gt;t_async_datalist
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
-id|J_ASSERT
-(paren
 id|transaction-&gt;t_forget
 op_eq
 l_int|NULL

@@ -3798,7 +3798,7 @@ id|TASK_RUNNING
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Buffer Utility Routines&n; */
-multiline_comment|/*&n; *&t;pagebuf_iodone&n; *&n; *&t;pagebuf_iodone marks a buffer for which I/O is in progress&n; *&t;done with respect to that I/O.&t;The pb_done routine, if&n; *&t;present, will be called as a side-effect.&n; */
+multiline_comment|/*&n; *&t;pagebuf_iodone&n; *&n; *&t;pagebuf_iodone marks a buffer for which I/O is in progress&n; *&t;done with respect to that I/O.&t;The pb_iodone routine, if&n; *&t;present, will be called as a side-effect.&n; */
 r_void
 DECL|function|pagebuf_iodone_work
 id|pagebuf_iodone_work
@@ -4025,7 +4025,7 @@ id|error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_iostart&n; *&n; *&t;pagebuf_iostart initiates I/O on a buffer, based on the flags supplied.&n; *&t;If necessary, it will arrange for any disk space allocation required,&n; *&t;and it will break up the request if the block mappings require it.&n; *&t;An pb_iodone routine in the buffer supplied will only be called&n; *&t;when all of the subsidiary I/O requests, if any, have been completed.&n; *&t;pagebuf_iostart calls the pagebuf_ioinitiate routine or&n; *&t;pagebuf_iorequest, if the former routine is not defined, to start&n; *&t;the I/O on a given low-level request.&n; */
+multiline_comment|/*&n; *&t;pagebuf_iostart&n; *&n; *&t;pagebuf_iostart initiates I/O on a buffer, based on the flags supplied.&n; *&t;If necessary, it will arrange for any disk space allocation required,&n; *&t;and it will break up the request if the block mappings require it.&n; *&t;The pb_iodone routine in the buffer supplied will only be called&n; *&t;when all of the subsidiary I/O requests, if any, have been completed.&n; *&t;pagebuf_iostart calls the pagebuf_ioinitiate routine or&n; *&t;pagebuf_iorequest, if the former routine is not defined, to start&n; *&t;the I/O on a given low-level request.&n; */
 r_int
 DECL|function|pagebuf_iostart
 id|pagebuf_iostart
@@ -4597,7 +4597,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* Set the count to 1 initially, this will stop an I/O&n;&t; * completion callout which happens before we have started&n;&t; * all the I/O from calling iodone too early&n;&t; */
+multiline_comment|/* Set the count to 1 initially, this will stop an I/O&n;&t; * completion callout which happens before we have started&n;&t; * all the I/O from calling pagebuf_iodone too early.&n;&t; */
 id|atomic_set
 c_func
 (paren

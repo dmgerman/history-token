@@ -99,7 +99,7 @@ comma
 id|xfs_rename_nskip
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * The following routine will acquire the locks required for a rename&n; * operation. The code understands the semantics of renames and will&n; * validate that name1 exists under dp1 &amp; that name2 may or may not&n; * exist under dp2.&n; *&n; * We are renaming dp1/name1 to dp2/name2.&n; *&n; * Return ENOENT if dp1 does not exist, other lookup errors, or 0 for success.&n; * Return EAGAIN if the caller needs to try again.&n; */
+multiline_comment|/*&n; * The following routine will acquire the locks required for a rename&n; * operation. The code understands the semantics of renames and will&n; * validate that name1 exists under dp1 &amp; that name2 may or may not&n; * exist under dp2.&n; *&n; * We are renaming dp1/name1 to dp2/name2.&n; *&n; * Return ENOENT if dp1 does not exist, other lookup errors, or 0 for success.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_lock_for_rename
@@ -118,12 +118,12 @@ comma
 multiline_comment|/* new (target) directory inode */
 id|vname_t
 op_star
-id|dentry1
+id|vname1
 comma
 multiline_comment|/* old entry name */
 id|vname_t
 op_star
-id|dentry2
+id|vname2
 comma
 multiline_comment|/* new entry name */
 id|xfs_inode_t
@@ -203,7 +203,7 @@ op_assign
 id|xfs_get_dir_entry
 c_func
 (paren
-id|dentry1
+id|vname1
 comma
 op_amp
 id|ip1
@@ -280,7 +280,7 @@ id|dp2
 comma
 id|lock_mode
 comma
-id|dentry2
+id|vname2
 comma
 op_amp
 id|inum2
@@ -643,16 +643,6 @@ id|rename_which_error_return
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-DECL|variable|xfs_rename_agains
-r_int
-id|xfs_rename_agains
-suffix:semicolon
-DECL|variable|xfs_renames
-r_int
-id|xfs_renames
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * xfs_rename&n; */
 r_int
 DECL|function|xfs_rename
@@ -665,7 +655,7 @@ id|src_dir_bdp
 comma
 id|vname_t
 op_star
-id|src_dentry
+id|src_vname
 comma
 id|vnode_t
 op_star
@@ -673,7 +663,7 @@ id|target_dir_vp
 comma
 id|vname_t
 op_star
-id|target_dentry
+id|target_vname
 comma
 id|cred_t
 op_star
@@ -763,7 +753,7 @@ op_assign
 id|VNAME
 c_func
 (paren
-id|src_dentry
+id|src_vname
 )paren
 suffix:semicolon
 r_char
@@ -773,23 +763,27 @@ op_assign
 id|VNAME
 c_func
 (paren
-id|target_dentry
+id|target_vname
 )paren
 suffix:semicolon
 r_int
 id|src_namelen
+op_assign
+id|VNAMELEN
+c_func
+(paren
+id|src_vname
+)paren
 suffix:semicolon
 r_int
 id|target_namelen
+op_assign
+id|VNAMELEN
+c_func
+(paren
+id|target_vname
+)paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_int
-id|retries
-suffix:semicolon
-id|xfs_renames
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|src_dir_vp
 op_assign
 id|BHV_TO_VNODE
@@ -858,50 +852,6 @@ id|EXDEV
 )paren
 suffix:semicolon
 )brace
-id|src_namelen
-op_assign
-id|VNAMELEN
-c_func
-(paren
-id|src_dentry
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|src_namelen
-op_ge
-id|MAXNAMELEN
-)paren
-r_return
-id|XFS_ERROR
-c_func
-(paren
-id|ENAMETOOLONG
-)paren
-suffix:semicolon
-id|target_namelen
-op_assign
-id|VNAMELEN
-c_func
-(paren
-id|target_dentry
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|target_namelen
-op_ge
-id|MAXNAMELEN
-)paren
-r_return
-id|XFS_ERROR
-c_func
-(paren
-id|ENAMETOOLONG
-)paren
-suffix:semicolon
 id|src_dp
 op_assign
 id|XFS_BHVTOI
@@ -980,19 +930,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Return through std_return after this point. */
-macro_line|#ifdef DEBUG
-id|retries
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Lock all the participating inodes. Depending upon whether&n;&t; * the target_name exists in the target directory, and&n;&t; * whether the target directory is the same as the source&n;&t; * directory, we can lock from 2 to 4 inodes.&n;&t; * xfs_lock_for_rename() will return ENOENT if src_name&n;&t; * does not exist in the source directory.&n;&t; */
 id|tp
 op_assign
 l_int|NULL
 suffix:semicolon
-r_do
-(brace
 id|error
 op_assign
 id|xfs_lock_for_rename
@@ -1002,9 +944,9 @@ id|src_dp
 comma
 id|target_dp
 comma
-id|src_dentry
+id|src_vname
 comma
-id|target_dentry
+id|target_vname
 comma
 op_amp
 id|src_ip
@@ -1016,27 +958,6 @@ id|inodes
 comma
 op_amp
 id|num_inodes
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|error
-op_eq
-id|EAGAIN
-)paren
-id|xfs_rename_agains
-op_increment
-suffix:semicolon
-macro_line|#endif
-)brace
-r_while
-c_loop
-(paren
-id|error
-op_eq
-id|EAGAIN
 )paren
 suffix:semicolon
 r_if

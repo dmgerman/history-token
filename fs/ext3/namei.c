@@ -9717,7 +9717,8 @@ id|ext3_sb_info
 op_star
 id|sbi
 suffix:semicolon
-id|ino_t
+r_int
+r_int
 id|ino_next
 suffix:semicolon
 r_struct
@@ -9781,7 +9782,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;remove inode %ld from orphan list&bslash;n&quot;
+l_string|&quot;remove inode %lu from orphan list&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 )paren
@@ -9838,7 +9839,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;superblock will point to %ld&bslash;n&quot;
+l_string|&quot;superblock will point to %lu&bslash;n&quot;
 comma
 id|ino_next
 )paren
@@ -9918,7 +9919,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;orphan inode %ld will point to %ld&bslash;n&quot;
+l_string|&quot;orphan inode %lu will point to %lu&bslash;n&quot;
 comma
 id|i_prev-&gt;i_ino
 comma

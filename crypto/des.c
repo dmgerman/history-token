@@ -13937,7 +13937,6 @@ id|ret
 OL
 l_int|0
 )paren
-(brace
 id|crypto_unregister_alg
 c_func
 (paren
@@ -13945,10 +13944,6 @@ op_amp
 id|des_alg
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|out
 suffix:colon
 r_return

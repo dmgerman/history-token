@@ -23,5 +23,7 @@ macro_line|#else
 DECL|macro|BUG
 mdefine_line|#define BUG()&t;&t;__builtin_trap()
 macro_line|#endif
+DECL|macro|PAGE_BUG
+mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 macro_line|#endif
 eof

@@ -1365,6 +1365,10 @@ r_int
 r_int
 id|inactive
 suffix:semicolon
+r_int
+r_int
+id|free
+suffix:semicolon
 id|get_zone_counts
 c_func
 (paren
@@ -1373,6 +1377,9 @@ id|active
 comma
 op_amp
 id|inactive
+comma
+op_amp
+id|free
 )paren
 suffix:semicolon
 r_return
@@ -1381,7 +1388,11 @@ c_func
 (paren
 id|nr
 comma
+(paren
 id|inactive
+op_plus
+id|free
+)paren
 op_div
 l_int|2
 )paren
