@@ -16,7 +16,7 @@ multiline_comment|/*&n;     *  Bases of the IDE interfaces&n;     */
 DECL|macro|GAYLE_BASE_4000
 mdefine_line|#define GAYLE_BASE_4000&t;0xdd2020&t;/* A4000/A4000T */
 DECL|macro|GAYLE_BASE_1200
-mdefine_line|#define GAYLE_BASE_1200&t;0xda0000&t;/* A1200/A600 */
+mdefine_line|#define GAYLE_BASE_1200&t;0xda0000&t;/* A1200/A600 and E-Matrix 530 */
 multiline_comment|/*&n;     *  Offsets from one of the above bases&n;     */
 DECL|macro|GAYLE_DATA
 mdefine_line|#define GAYLE_DATA&t;0x00
@@ -239,7 +239,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|a4000
 op_assign
@@ -249,16 +248,36 @@ c_func
 id|A4000_IDE
 )paren
 )paren
-op_logical_and
-op_logical_neg
+op_logical_or
 id|AMIGAHW_PRESENT
 c_func
 (paren
 id|A1200_IDE
 )paren
 )paren
+r_goto
+id|found
+suffix:semicolon
+macro_line|#ifdef CONFIG_ZORRO
+r_if
+c_cond
+(paren
+id|zorro_find_device
+c_func
+(paren
+id|ZORRO_PROD_MTEC_VIPER_MK_V_E_MATRIX_530_SCSI_IDE
+comma
+l_int|NULL
+)paren
+)paren
+r_goto
+id|found
+suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
+id|found
+suffix:colon
 r_for
 c_loop
 (paren
