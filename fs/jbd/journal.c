@@ -3309,10 +3309,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * void journal_destroy() - Release a journal_t structure.&n; * @journal: Journal to act on.&n;* &n; * Release a journal_t structure once it is no longer in use by the&n; * journaled object.&n; */
+multiline_comment|/**&n; * void journal_destroy() - Release a journal_t structure.&n; * @journal: Journal to act on.&n; *&n; * Release a journal_t structure once it is no longer in use by the&n; * journaled object.&n; */
 DECL|function|journal_destroy
 r_void
 id|journal_destroy
+c_func
 (paren
 id|journal_t
 op_star
@@ -3345,6 +3346,14 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+multiline_comment|/* Totally anal locking here... */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3352,6 +3361,14 @@ id|journal-&gt;j_checkpoint_transactions
 op_ne
 l_int|NULL
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 id|log_do_checkpoint
 c_func
 (paren
@@ -3360,6 +3377,14 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
+)brace
 id|J_ASSERT
 c_func
 (paren
@@ -3382,6 +3407,13 @@ c_func
 id|journal-&gt;j_checkpoint_transactions
 op_eq
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* We can now mark the journal as empty. */
@@ -4062,6 +4094,13 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4072,6 +4111,14 @@ id|journal-&gt;j_checkpoint_transactions
 op_ne
 l_int|NULL
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|log_do_checkpoint
@@ -4080,6 +4127,21 @@ c_func
 id|journal
 comma
 id|journal-&gt;j_maxlen
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|cleanup_journal_tail
