@@ -94,6 +94,11 @@ r_int
 r_int
 id|fifo_size
 suffix:semicolon
+DECL|member|tx_loadsz
+r_int
+r_int
+id|tx_loadsz
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int

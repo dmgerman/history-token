@@ -137,6 +137,12 @@ r_int
 id|capabilities
 suffix:semicolon
 multiline_comment|/* port capabilities */
+DECL|member|tx_loadsz
+r_int
+r_int
+id|tx_loadsz
+suffix:semicolon
+multiline_comment|/* transmit fifo load size */
 DECL|member|rev
 r_int
 r_int
@@ -247,11 +253,15 @@ l_string|&quot;unknown&quot;
 comma
 l_int|1
 comma
+l_int|1
+comma
 l_int|0
 )brace
 comma
 (brace
 l_string|&quot;8250&quot;
+comma
+l_int|1
 comma
 l_int|1
 comma
@@ -263,6 +273,8 @@ l_string|&quot;16450&quot;
 comma
 l_int|1
 comma
+l_int|1
+comma
 l_int|0
 )brace
 comma
@@ -271,11 +283,15 @@ l_string|&quot;16550&quot;
 comma
 l_int|1
 comma
+l_int|1
+comma
 l_int|0
 )brace
 comma
 (brace
 l_string|&quot;16550A&quot;
+comma
+l_int|16
 comma
 l_int|16
 comma
@@ -289,11 +305,15 @@ l_string|&quot;Cirrus&quot;
 comma
 l_int|1
 comma
+l_int|1
+comma
 l_int|0
 )brace
 comma
 (brace
 l_string|&quot;ST16650&quot;
+comma
+l_int|1
 comma
 l_int|1
 comma
@@ -307,6 +327,8 @@ l_string|&quot;ST16650V2&quot;
 comma
 l_int|32
 comma
+l_int|16
+comma
 id|UART_CLEAR_FIFO
 op_or
 id|UART_USE_FIFO
@@ -316,6 +338,8 @@ id|UART_STARTECH
 comma
 (brace
 l_string|&quot;TI16750&quot;
+comma
+l_int|64
 comma
 l_int|64
 comma
@@ -329,11 +353,15 @@ l_string|&quot;Startech&quot;
 comma
 l_int|1
 comma
+l_int|1
+comma
 l_int|0
 )brace
 comma
 (brace
 l_string|&quot;16C950/954&quot;
+comma
+l_int|128
 comma
 l_int|128
 comma
@@ -347,6 +375,8 @@ l_string|&quot;ST16654&quot;
 comma
 l_int|64
 comma
+l_int|32
+comma
 id|UART_CLEAR_FIFO
 op_or
 id|UART_USE_FIFO
@@ -356,6 +386,8 @@ id|UART_STARTECH
 comma
 (brace
 l_string|&quot;XR16850&quot;
+comma
+l_int|128
 comma
 l_int|128
 comma
@@ -371,6 +403,8 @@ l_string|&quot;RSA&quot;
 comma
 l_int|2048
 comma
+l_int|2048
+comma
 id|UART_CLEAR_FIFO
 op_or
 id|UART_USE_FIFO
@@ -378,6 +412,8 @@ id|UART_USE_FIFO
 comma
 (brace
 l_string|&quot;NS16550A&quot;
+comma
+l_int|16
 comma
 l_int|16
 comma
@@ -390,6 +426,8 @@ id|UART_NATSEMI
 comma
 (brace
 l_string|&quot;XScale&quot;
+comma
+l_int|32
 comma
 l_int|32
 comma
@@ -2620,6 +2658,15 @@ id|up-&gt;port.type
 dot
 id|flags
 suffix:semicolon
+id|up-&gt;tx_loadsz
+op_assign
+id|uart_config
+(braket
+id|up-&gt;port.type
+)braket
+dot
+id|tx_loadsz
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3727,7 +3774,7 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|up-&gt;port.fifosize
+id|up-&gt;tx_loadsz
 suffix:semicolon
 r_do
 (brace
