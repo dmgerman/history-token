@@ -496,7 +496,11 @@ op_assign
 l_int|9
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Addresses issues with problems in the memory write queue timer in&n; * certain VIA Northbridges.  This bugfix is per VIA&squot;s specifications.&n; *&n; * VIA 8363,8622,8361 Northbridges:&n; *  - bits  5, 6, 7 at offset 0x55 need to be turned off&n; * VIA 8367 (KT266x) Northbridges:&n; *  - bits  5, 6, 7 at offset 0x95 need to be turned off&n; */
+multiline_comment|/*&n; * Addresses issues with problems in the memory write queue timer in&n; * certain VIA Northbridges.  This bugfix is per VIA&squot;s specifications,&n; * except for the KL133/KM133: clearing bit 5 on those Northbridges seems&n; * to trigger a bug in its integrated ProSavage video card, which&n; * causes screen corruption.  We only clear bits 6 and 7 for that chipset,&n; * until VIA can provide us with definitive information on why screen&n; * corruption occurs, and what exactly those bits do.&n; *&n; * VIA 8363,8622,8361 Northbridges:&n; *  - bits  5, 6, 7 at offset 0x55 need to be turned off&n; * VIA 8367 (KT266x) Northbridges:&n; *  - bits  5, 6, 7 at offset 0x95 need to be turned off&n; * VIA 8363 rev 0x81/0x84 (KL133/KM133) Northbridges:&n; *  - bits     6, 7 at offset 0x55 need to be turned off&n; */
+DECL|macro|VIA_8363_KL133_REVISION_ID
+mdefine_line|#define VIA_8363_KL133_REVISION_ID 0x81
+DECL|macro|VIA_8363_KM133_REVISION_ID
+mdefine_line|#define VIA_8363_KM133_REVISION_ID 0x84
 DECL|function|pci_fixup_via_northbridge_bug
 r_static
 r_void
@@ -513,10 +517,30 @@ id|d
 id|u8
 id|v
 suffix:semicolon
+id|u8
+id|revision
+suffix:semicolon
 r_int
 id|where
 op_assign
 l_int|0x55
+suffix:semicolon
+r_int
+id|mask
+op_assign
+l_int|0x1f
+suffix:semicolon
+multiline_comment|/* clear bits 5, 6, 7 by default */
+id|pci_read_config_byte
+c_func
+(paren
+id|d
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|revision
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -530,7 +554,32 @@ id|where
 op_assign
 l_int|0x95
 suffix:semicolon
-multiline_comment|/* the memory write queue timer register is &n;                                 different for the kt266x&squot;s: 0x95 not 0x55 */
+multiline_comment|/* the memory write queue timer register is &n;&t;&t;&t;&t;different for the KT266x&squot;s: 0x95 not 0x55 */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|d-&gt;device
+op_eq
+id|PCI_DEVICE_ID_VIA_8363_0
+op_logical_and
+(paren
+id|revision
+op_eq
+id|VIA_8363_KL133_REVISION_ID
+op_logical_or
+id|revision
+op_eq
+id|VIA_8363_KM133_REVISION_ID
+)paren
+)paren
+(brace
+id|mask
+op_assign
+l_int|0x3f
+suffix:semicolon
+multiline_comment|/* clear only bits 6 and 7; clearing bit 5&n;&t;&t;&t;&t;&t;causes screen corruption on the KL133/KM133 */
 )brace
 id|pci_read_config_byte
 c_func
@@ -548,29 +597,36 @@ c_cond
 (paren
 id|v
 op_amp
-l_int|0xe0
+op_complement
+id|mask
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Disabling broken memory write queue: [%02x] %02x-&gt;%02x&bslash;n&quot;
+l_string|&quot;Disabling VIA memory write queue (PCI ID %04x, rev %02x): [%02x] %02x &amp; %02x -&gt; %02x&bslash;n&quot;
+comma
+"&bslash;"
+id|d-&gt;device
+comma
+id|revision
 comma
 id|where
 comma
 id|v
 comma
+id|mask
+comma
 id|v
 op_amp
-l_int|0x1f
+id|mask
 )paren
 suffix:semicolon
 id|v
 op_and_assign
-l_int|0x1f
+id|mask
 suffix:semicolon
-multiline_comment|/* clear bits 5, 6, 7 */
 id|pci_write_config_byte
 c_func
 (paren
