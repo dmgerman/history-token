@@ -1553,6 +1553,7 @@ r_return
 id|idev
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|dev_forward_change
 r_static
 r_void
@@ -1775,6 +1776,7 @@ id|dev_base_lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Nobody refers to this ifaddr, destroy it */
 DECL|function|inet6_ifa_finish_destroy
 r_void
