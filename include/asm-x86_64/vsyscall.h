@@ -1,7 +1,6 @@
 macro_line|#ifndef _ASM_X86_64_VSYSCALL_H_
 DECL|macro|_ASM_X86_64_VSYSCALL_H_
 mdefine_line|#define _ASM_X86_64_VSYSCALL_H_
-macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
 DECL|enum|vsyscall_num
 r_enum
