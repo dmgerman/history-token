@@ -4199,10 +4199,17 @@ id|ACPI_MADT_INT_SRC_OVR
 op_logical_and
 id|acpi_fadt.sci_int
 op_eq
-id|entry-&gt;global_irq
+id|entry-&gt;bus_irq
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * ACPI should use the settings in the&n;&t;&t;&t;&t; * ISO for its SCI. Do not continue.&n;&t;&t;&t;&t; */
+id|acpi_fadt.sci_int
+op_assign
+id|entry-&gt;global_irq
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|entry
 op_assign
 (paren
