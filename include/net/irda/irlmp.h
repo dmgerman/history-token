@@ -180,8 +180,10 @@ id|magic
 suffix:semicolon
 DECL|member|connected
 r_int
+r_int
 id|connected
 suffix:semicolon
+multiline_comment|/* set_bit used on this */
 DECL|member|persistent
 r_int
 id|persistent

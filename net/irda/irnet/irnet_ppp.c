@@ -3246,7 +3246,7 @@ c_func
 (paren
 id|PPP_INFO
 comma
-l_string|&quot;IrTTP not ready ! (%d-%d)&bslash;n&quot;
+l_string|&quot;IrTTP not ready ! (%ld-%ld)&bslash;n&quot;
 comma
 id|self-&gt;ttp_open
 comma
