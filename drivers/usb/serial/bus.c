@@ -421,6 +421,11 @@ id|device-&gt;driver.remove
 op_assign
 id|usb_serial_device_remove
 suffix:semicolon
+id|device-&gt;driver.devclass
+op_assign
+op_amp
+id|tty_devclass
+suffix:semicolon
 id|retval
 op_assign
 id|driver_register
