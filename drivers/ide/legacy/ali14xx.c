@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  linux/drivers/ide/ali14xx.c&t;&t;Version 0.03&t;Feb 0
 multiline_comment|/*&n; * ALI M14xx chipset EIDE controller&n; *&n; * Works for ALI M1439/1443/1445/1487/1489 chipsets.&n; *&n; * Adapted from code developed by derekn@vw.ece.cmu.edu.  -ml&n; * Derek&squot;s notes follow:&n; *&n; * I think the code should be pretty understandable,&n; * but I&squot;ll be happy to (try to) answer questions.&n; *&n; * The critical part is in the setupDrive function.  The initRegisters&n; * function doesn&squot;t seem to be necessary, but the DOS driver does it, so&n; * I threw it in.&n; *&n; * I&squot;ve only tested this on my system, which only has one disk.  I posted&n; * it to comp.sys.linux.hardware, so maybe some other people will try it&n; * out.&n; *&n; * Derek Noonburg  (derekn@ece.cmu.edu)&n; * 95-sep-26&n; *&n; * Update 96-jul-13:&n; *&n; * I&squot;ve since upgraded to two disks and a CD-ROM, with no trouble, and&n; * I&squot;ve also heard from several others who have used it successfully.&n; * This driver appears to work with both the 1443/1445 and the 1487/1489&n; * chipsets.  I&squot;ve added support for PIO mode 4 for the 1487.  This&n; * seems to work just fine on the 1443 also, although I&squot;m not sure it&squot;s&n; * advertised as supporting mode 4.  (I&squot;ve been running a WDC AC21200 in&n; * mode 4 for a while now with no trouble.)  -Derek&n; */
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO           /* most systems can safely undef this */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -13,7 +15,15 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX_MODULE
+DECL|macro|_IDE_C
+macro_line|# define _IDE_C
+macro_line|# include &quot;ide_modes.h&quot;
+DECL|macro|_IDE_C
+macro_line|# undef _IDE_C
+macro_line|#else
+macro_line|# include &quot;ide_modes.h&quot;
+macro_line|#endif /* CONFIG_BLK_DEV_ALI14XX_MODULE */
 multiline_comment|/* port addresses for auto-detection */
 DECL|macro|ALI_NUM_PORTS
 mdefine_line|#define ALI_NUM_PORTS 4
@@ -43,7 +53,7 @@ DECL|typedef|RegInitializer
 r_typedef
 r_struct
 (brace
-id|byte
+id|u8
 id|reg
 comma
 id|data
@@ -228,7 +238,7 @@ DECL|variable|regTab
 r_static
 r_struct
 (brace
-id|byte
+id|u8
 id|reg1
 comma
 id|reg2
@@ -310,13 +320,13 @@ suffix:semicolon
 multiline_comment|/* port for register data */
 DECL|variable|regOn
 r_static
-id|byte
+id|u8
 id|regOn
 suffix:semicolon
 multiline_comment|/* output to base port to access registers */
 DECL|variable|regOff
 r_static
-id|byte
+id|u8
 id|regOff
 suffix:semicolon
 multiline_comment|/* output to base port to close registers */
@@ -325,10 +335,10 @@ multiline_comment|/*&n; * Read a controller register.&n; */
 DECL|function|inReg
 r_static
 r_inline
-id|byte
+id|u8
 id|inReg
 (paren
-id|byte
+id|u8
 id|reg
 )paren
 (brace
@@ -341,7 +351,7 @@ id|regPort
 )paren
 suffix:semicolon
 r_return
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|dataPort
@@ -354,10 +364,10 @@ r_static
 r_void
 id|outReg
 (paren
-id|byte
+id|u8
 id|data
 comma
-id|byte
+id|u8
 id|reg
 )paren
 (brace
@@ -388,7 +398,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -400,7 +410,7 @@ id|time1
 comma
 id|time2
 suffix:semicolon
-id|byte
+id|u8
 id|param1
 comma
 id|param2
@@ -503,6 +513,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: PIO mode%d, t1=%dns, t2=%dns, cycles = %d+%d, %d+%d&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -639,7 +650,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|byte
+id|u8
 id|t
 suffix:semicolon
 r_int
@@ -676,7 +687,7 @@ id|i
 suffix:semicolon
 id|regOff
 op_assign
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|basePort
@@ -708,7 +719,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|basePort
@@ -802,7 +813,7 @@ id|RegInitializer
 op_star
 id|p
 suffix:semicolon
-id|byte
+id|u8
 id|t
 suffix:semicolon
 r_int
@@ -855,7 +866,7 @@ id|regPort
 suffix:semicolon
 id|t
 op_assign
-id|IN_BYTE
+id|inb
 c_func
 (paren
 id|regPort
@@ -881,10 +892,10 @@ r_return
 id|t
 suffix:semicolon
 )brace
-DECL|function|init_ali14xx
-r_void
+DECL|function|probe_ali14xx
+r_int
 id|__init
-id|init_ali14xx
+id|probe_ali14xx
 (paren
 r_void
 )paren
@@ -903,16 +914,19 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: not found&quot;
+id|KERN_ERR
+l_string|&quot;ali14xx: not found.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: base= 0x%03x, regOn = 0x%02x&quot;
+id|KERN_DEBUG
+l_string|&quot;ali14xx: base= 0x%03x, regOn = 0x%02x.&bslash;n&quot;
 comma
 id|basePort
 comma
@@ -1006,11 +1020,293 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: Chip initialization failed&quot;
+id|KERN_ERR
+l_string|&quot;ali14xx: Chip initialization failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
+id|probe_hwif_init
+c_func
+(paren
+op_amp
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|probe_hwif_init
+c_func
+(paren
+op_amp
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|function|ali14xx_release
+r_void
+id|__init
+id|ali14xx_release
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_ne
+id|ide_ali14xx
+op_logical_and
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_ne
+id|ide_ali14xx
+)paren
+r_return
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_assign
+id|ide_unknown
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_assign
+id|ide_unknown
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|tuneproc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|tuneproc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|mate
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|mate
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#ifndef MODULE
+multiline_comment|/*&n; * init_ali14xx:&n; *&n; * called by ide.c when parsing command line&n; */
+DECL|function|init_ali14xx
+r_void
+id|__init
+id|init_ali14xx
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* auto-detect IDE controller port */
+r_if
+c_cond
+(paren
+id|findPort
+c_func
+(paren
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|probe_ali14xx
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|no_detect
+suffix:semicolon
+r_return
+suffix:semicolon
+id|no_detect
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ali14xx: not found.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ali14xx_release
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;see local file&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;support of ALI 14XX IDE chipsets&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|function|ali14xx_mod_init
+r_int
+id|__init
+id|ali14xx_mod_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* auto-detect IDE controller port */
+r_if
+c_cond
+(paren
+id|findPort
+c_func
+(paren
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|probe_ali14xx
+c_func
+(paren
+)paren
+)paren
+(brace
+id|ali14xx_release
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_ne
+id|ide_ali14xx
+op_logical_and
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_ne
+id|ide_ali14xx
+)paren
+(brace
+id|ali14xx_release
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ali14xx_mod_init
+id|module_init
+c_func
+(paren
+id|ali14xx_mod_init
+)paren
+suffix:semicolon
+DECL|function|ali14xx_mod_exit
+r_void
+id|__init
+id|ali14xx_mod_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ali14xx_release
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|ali14xx_mod_exit
+id|module_exit
+c_func
+(paren
+id|ali14xx_mod_exit
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

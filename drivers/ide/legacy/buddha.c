@@ -422,6 +422,7 @@ id|board
 op_assign
 id|z-&gt;resource.start
 suffix:semicolon
+multiline_comment|/*&n; * FIXME: we now have selectable mmio v/s iomio transports.&n; */
 r_if
 c_cond
 (paren
@@ -617,6 +618,7 @@ id|i
 comma
 id|buddha_ack_intr
 comma
+singleline_comment|//&t;&t;&t;&t;&t;&t;budda_iops,
 id|IRQ_AMIGA_PORTS
 )paren
 suffix:semicolon
@@ -659,6 +661,7 @@ id|i
 comma
 id|xsurf_ack_intr
 comma
+singleline_comment|//&t;&t;&t;&t;&t;&t;xsurf_iops,
 id|IRQ_AMIGA_PORTS
 )paren
 suffix:semicolon

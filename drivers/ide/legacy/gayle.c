@@ -347,6 +347,7 @@ op_assign
 id|gayle_ack_intr_a1200
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * FIXME: we now have selectable modes between mmio v/s iomio&n; */
 id|phys_base
 op_add_assign
 id|i
@@ -430,6 +431,7 @@ id|irqport
 comma
 id|ack_intr
 comma
+singleline_comment|//&t;&t;&t;gaule_iops,
 id|IRQ_AMIGA_PORTS
 )paren
 suffix:semicolon

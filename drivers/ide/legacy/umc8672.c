@@ -3,6 +3,8 @@ multiline_comment|/*&n; *  Principal Author/Maintainer:  PODIEN@hml2.atlas.de (W
 multiline_comment|/*&n; * VLB Controller Support from &n; * Wolfram Podien&n; * Rohoefe 3&n; * D28832 Achim&n; * Germany&n; *&n; * To enable UMC8672 support there must a lilo line like&n; * append=&quot;ide0=umc8672&quot;...&n; * To set the speed according to the abilities of the hardware there must be a&n; * line like&n; * #define UMC_DRIVE0 11&n; * in the beginning of the driver, which sets the speed of drive 0 to 11 (there&n; * are some lines present). 0 - 11 are allowed speed values. These values are&n; * the results from the DOS speed test program supplied from UMC. 11 is the &n; * highest speed (about PIO mode 3)&n; */
 DECL|macro|REALLY_SLOW_IO
 mdefine_line|#define REALLY_SLOW_IO&t;&t;/* some systems can safely undef this */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -14,7 +16,15 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#ifdef CONFIG_BLK_DEV_UMC8672_MODULE
+DECL|macro|_IDE_C
+macro_line|# define _IDE_C
+macro_line|# include &quot;ide_modes.h&quot;
+DECL|macro|_IDE_C
+macro_line|# undef _IDE_C
+macro_line|#else
+macro_line|# include &quot;ide_modes.h&quot;
+macro_line|#endif /* CONFIG_BLK_DEV_UMC8672_MODULE */
 multiline_comment|/*&n; * Default speeds.  These can be changed with &quot;auto-tune&quot; and/or hdparm.&n; */
 DECL|macro|UMC_DRIVE0
 mdefine_line|#define UMC_DRIVE0      1              /* DOS measured drive speeds */
@@ -26,7 +36,7 @@ DECL|macro|UMC_DRIVE3
 mdefine_line|#define UMC_DRIVE3      1              /* In case of crash reduce speed */
 DECL|variable|current_speeds
 r_static
-id|byte
+id|u8
 id|current_speeds
 (braket
 l_int|4
@@ -45,7 +55,7 @@ suffix:semicolon
 DECL|variable|pio_to_umc
 r_static
 r_const
-id|byte
+id|u8
 id|pio_to_umc
 (braket
 l_int|5
@@ -68,7 +78,7 @@ multiline_comment|/*       0    1    2    3    4    5    6    7    8    9    10 
 DECL|variable|speedtab
 r_static
 r_const
-id|byte
+id|u8
 id|speedtab
 (braket
 l_int|3
@@ -189,7 +199,7 @@ suffix:semicolon
 DECL|function|in_umc
 r_static
 r_inline
-id|byte
+id|u8
 id|in_umc
 (paren
 r_char
@@ -217,7 +227,7 @@ r_static
 r_void
 id|umc_set_speeds
 (paren
-id|byte
+id|u8
 id|speeds
 (braket
 )braket
@@ -445,7 +455,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -523,6 +533,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;umc8672: other interface is busy: exiting tune_umc()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -560,14 +571,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_umc8672
-r_void
+DECL|function|probe_umc8672
+r_int
 id|__init
-id|init_umc8672
+id|probe_umc8672
 (paren
 r_void
 )paren
-multiline_comment|/* called from ide.c */
 (brace
 r_int
 r_int
@@ -600,10 +610,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;numc8672: PORTS 0x108-0x109 ALREADY IN USE&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;umc8672: ports 0x108-0x109 already in use.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 id|outb_p
@@ -633,11 +645,14 @@ id|flags
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;umc8672: not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 id|outb_p
@@ -743,5 +758,307 @@ id|channel
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
+id|probe_hwif_init
+c_func
+(paren
+op_amp
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|probe_hwif_init
+c_func
+(paren
+op_amp
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|function|umc8672_release
+r_void
+id|__init
+id|umc8672_release
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_ne
+id|ide_umc8672
+op_logical_and
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_ne
+id|ide_umc8672
+)paren
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_assign
+id|ide_unknown
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_assign
+id|ide_unknown
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|tuneproc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|tuneproc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|mate
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|mate
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|channel
+op_assign
+l_int|0
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|channel
+op_assign
+l_int|0
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+l_int|0xa5
+comma
+l_int|0x108
+)paren
+suffix:semicolon
+multiline_comment|/* disable umc */
+id|release_region
+c_func
+(paren
+l_int|0x108
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifndef MODULE
+multiline_comment|/*&n; * init_umc8672:&n; *&n; * called by ide.c when parsing command line&n; */
+DECL|function|init_umc8672
+r_void
+id|__init
+id|init_umc8672
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|probe_umc8672
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;init_umc8672: umc8672 controller not found.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Wolfram Podien&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Support for UMC 8672 IDE chipset&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|function|umc8672_mod_init
+r_int
+id|__init
+id|umc8672_mod_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|probe_umc8672
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|chipset
+op_ne
+id|ide_umc8672
+op_logical_and
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|chipset
+op_ne
+id|ide_umc8672
+)paren
+(brace
+id|umc8672_release
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|umc8672_mod_init
+id|module_init
+c_func
+(paren
+id|umc8672_mod_init
+)paren
+suffix:semicolon
+DECL|function|umc8672_mod_exit
+r_void
+id|__init
+id|umc8672_mod_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|umc8672_release
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|umc8672_mod_exit
+id|module_exit
+c_func
+(paren
+id|umc8672_mod_exit
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -1373,7 +1373,7 @@ c_cond
 (paren
 id|ctl_base
 )paren
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x02
@@ -1416,7 +1416,7 @@ c_cond
 (paren
 id|ctl_base
 )paren
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x02

@@ -220,6 +220,7 @@ l_int|0
 comma
 l_int|NULL
 comma
+singleline_comment|//&t;&t;&t;pcide_iops,
 id|q40ide_default_irq
 c_func
 (paren

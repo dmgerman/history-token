@@ -111,6 +111,7 @@ l_int|0
 comma
 l_int|NULL
 comma
+singleline_comment|//&t;&t;&t;falconide_iops,
 id|IRQ_MFP_IDE
 )paren
 suffix:semicolon

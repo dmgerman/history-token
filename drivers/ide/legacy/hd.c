@@ -25,15 +25,6 @@ mdefine_line|#define MAJOR_NR HD_MAJOR
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#include &lt;linux/blk.h&gt;
-multiline_comment|/* ATA commands we use.&n; */
-DECL|macro|WIN_SPECIFY
-mdefine_line|#define WIN_SPECIFY&t;0x91 /* set drive geometry translation */
-DECL|macro|WIN_RESTORE
-mdefine_line|#define WIN_RESTORE&t;0x10
-DECL|macro|WIN_READ
-mdefine_line|#define WIN_READ&t;0x20 /* 28-Bit */
-DECL|macro|WIN_WRITE
-mdefine_line|#define WIN_WRITE&t;0x30 /* 28-Bit */
 DECL|macro|HD_IRQ
 mdefine_line|#define HD_IRQ 14&t;/* the standard disk interrupt */
 macro_line|#ifdef __arm__

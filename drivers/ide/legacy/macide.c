@@ -145,6 +145,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;macide: media bay %s detected&bslash;n&quot;
 comma
 id|state
@@ -203,6 +204,7 @@ l_int|0
 comma
 id|macide_ack_intr
 comma
+singleline_comment|//&t;&t;&t;&t;quadra_ide_iops,
 id|IRQ_NUBUS_F
 )paren
 suffix:semicolon
@@ -241,6 +243,7 @@ l_int|0
 comma
 id|macide_ack_intr
 comma
+singleline_comment|//&t;&t;&t;&t;macide_pb_iops,
 id|IRQ_NUBUS_C
 )paren
 suffix:semicolon
@@ -279,6 +282,7 @@ l_int|0
 comma
 l_int|NULL
 comma
+singleline_comment|//&t;&t;&t;&t;macide_baboon_iops,
 id|IRQ_BABOON_1
 )paren
 suffix:semicolon
@@ -313,7 +317,7 @@ id|MAC_MODEL_PB190
 (brace
 multiline_comment|/* Fix breakage in ide-disk.c: drive capacity&t;*/
 multiline_comment|/* is not initialized for drives without a &t;*/
-multiline_comment|/* hardware ID, and we cna&squot;t get that without&t;*/
+multiline_comment|/* hardware ID, and we can&squot;t get that without&t;*/
 multiline_comment|/* probing the drive which freezes a 190.&t;*/
 id|ide_drive_t
 op_star
@@ -381,6 +385,7 @@ id|MAC_IDE_QUADRA
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: Macintosh Quadra IDE interface&bslash;n&quot;
 comma
 id|index
@@ -397,6 +402,7 @@ id|MAC_IDE_PB
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: Macintosh Powerbook IDE interface&bslash;n&quot;
 comma
 id|index
@@ -413,6 +419,7 @@ id|MAC_IDE_BABOON
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: Macintosh Powerbook Baboon IDE interface&bslash;n&quot;
 comma
 id|index
@@ -422,6 +429,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: Unknown Macintosh IDE interface&bslash;n&quot;
 comma
 id|index
