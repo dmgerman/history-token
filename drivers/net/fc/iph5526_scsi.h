@@ -68,7 +68,8 @@ r_int
 id|iph5526_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|Scsi_Disk
 op_star
 id|disk
 comma

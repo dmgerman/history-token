@@ -2789,13 +2789,7 @@ id|pdev
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -737,7 +737,7 @@ c_func
 l_string|&quot;madgemc: unable to allocate card struct&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1495,7 +1495,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1631,7 +1631,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

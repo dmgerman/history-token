@@ -1430,7 +1430,6 @@ c_cond
 (paren
 id|link-&gt;dev
 )paren
-(brace
 id|unregister_netdev
 c_func
 (paren
@@ -1438,14 +1437,6 @@ id|dev
 )paren
 suffix:semicolon
 id|free_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
-r_else
-id|kfree
 c_func
 (paren
 id|dev
