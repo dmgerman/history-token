@@ -185,7 +185,7 @@ r_struct
 id|slowport_cfg
 id|old_cfg
 suffix:semicolon
-macro_line|#ifdef CONFGI_ARCH_IXDP2400
+macro_line|#ifdef CONFIG_ARCH_IXDP2400
 r_if
 c_cond
 (paren

@@ -561,6 +561,15 @@ op_amp
 id|ixp2000_serial_port
 )paren
 suffix:semicolon
+multiline_comment|/* Set slowport to 8-bit mode.  */
+id|ixp2000_reg_write
+c_func
+(paren
+id|IXP2000_SLOWPORT_FRM
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*************************************************************************&n; * Timer-tick functions for IXP2000&n; *************************************************************************/
 DECL|variable|ticks_per_jiffy
