@@ -262,6 +262,11 @@ r_int
 op_star
 id|id_table
 suffix:semicolon
+DECL|member|driver_data
+r_void
+op_star
+id|driver_data
+suffix:semicolon
 DECL|member|driver
 r_struct
 id|device_driver
@@ -458,6 +463,27 @@ r_struct
 id|bus_type
 id|mca_bus_type
 suffix:semicolon
+DECL|function|mca_register_driver
+r_static
+r_inline
+r_void
+id|mca_register_driver
+c_func
+(paren
+r_struct
+id|mca_driver
+op_star
+id|drv
+)paren
+(brace
+id|driver_register
+c_func
+(paren
+op_amp
+id|drv-&gt;driver
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* for now, include the legacy API */
 macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#endif /* _LINUX_MCA_H */
