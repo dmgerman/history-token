@@ -474,10 +474,10 @@ mdefine_line|#define PRINT_PKT(x...)  do { } while(0)
 macro_line|#endif
 multiline_comment|/* this enables an interrupt in the interrupt mask register */
 DECL|macro|SMC_ENABLE_INT
-mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;lp-&gt;lock, flags);&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;lp-&gt;lock, flags);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* this disables an interrupt from the interrupt mask register */
 DECL|macro|SMC_DISABLE_INT
-mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;lp-&gt;lock, flags);&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;lp-&gt;lock, flags);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Wait while MMU is busy.  This is usually in the order of a few nanosecs&n; * if at all, but let&squot;s avoid deadlocking the system if the hardware&n; * decides to go south.&n; */
 DECL|macro|SMC_WAIT_MMU_BUSY
 mdefine_line|#define SMC_WAIT_MMU_BUSY() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(SMC_GET_MMU_CMD() &amp; MC_BUSY)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long timeout = jiffies + 2;&t;&t;&t;&bslash;&n;&t;&t;while (SMC_GET_MMU_CMD() &amp; MC_BUSY) {&t;&t;&t;&bslash;&n;&t;&t;&t;if (time_after(jiffies, timeout)) {&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;%s: timeout %s line %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;&t;dev-&gt;name, __FILE__, __LINE__);&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_relax();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
@@ -530,6 +530,13 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Disable all interrupts */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
@@ -540,6 +547,13 @@ id|SMC_SET_INT_MASK
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This resets the registers mostly to defaults, but doesn&squot;t&n;&t; * affect EEPROM.  That seems unnecessary&n;&t; */
@@ -819,11 +833,29 @@ r_void
 id|smc_shutdown
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
 r_int
 r_int
 id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|smc_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -837,6 +869,13 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* no more interrupts for me */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
@@ -847,6 +886,13 @@ id|SMC_SET_INT_MASK
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* and tell the card to stay away from that nasty outside world */
@@ -1243,6 +1289,22 @@ id|MC_RELEASE
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n; * On SMP we have the following problem:&n; *&n; * &t;A = smc_hardware_send_pkt()&n; * &t;B = smc_hard_start_xmit()&n; * &t;C = smc_interrupt()&n; *&n; * A and B can never be executed simultaneously.  However, at least on UP,&n; * it is possible (and even desirable) for C to interrupt execution of&n; * A or B in order to have better RX reliability and avoid overruns.&n; * C, just like A and B, must have exclusive access to the chip and&n; * each of them must lock against any other concurrent access.&n; * Unfortunately this is not possible to have C suspend execution of A or&n; * B taking place on another CPU. On UP this is no an issue since A and B&n; * are run from softirq context and C from hard IRQ context, and there is&n; * no other CPU where concurrent access can happen.&n; * If ever there is a way to force at least B and C to always be executed&n; * on the same CPU then we could use read/write locks to protect against&n; * any other concurrent access and C would always interrupt B. But life&n; * isn&squot;t that easy in a SMP world...&n; */
+DECL|macro|smc_special_trylock
+mdefine_line|#define smc_special_trylock(lock)&t;spin_trylock_irq(lock)
+DECL|macro|smc_special_lock
+mdefine_line|#define smc_special_lock(lock)&t;&t;spin_lock_irq(lock)
+DECL|macro|smc_special_unlock
+mdefine_line|#define smc_special_unlock(lock)&t;spin_unlock_irq(lock)
+macro_line|#else
+DECL|macro|smc_special_trylock
+mdefine_line|#define smc_special_trylock(lock)&t;(1)
+DECL|macro|smc_special_lock
+mdefine_line|#define smc_special_lock(lock)&t;&t;do { } while (0)
+DECL|macro|smc_special_unlock
+mdefine_line|#define smc_special_unlock(lock)&t;do { } while (0)
+macro_line|#endif
 multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; * Returns non-zero when successful.&n; */
 DECL|function|smc_hardware_send_pkt
 r_static
@@ -1314,6 +1376,28 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smc_special_trylock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+)paren
+(brace
+id|tasklet_schedule
+c_func
+(paren
+op_amp
+id|lp-&gt;tx_task
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|lp-&gt;saved_skb
 op_assign
 l_int|NULL
@@ -1351,13 +1435,8 @@ suffix:semicolon
 id|lp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* point to the beginning of the packet */
@@ -1496,30 +1575,12 @@ c_func
 id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|THROTTLE_TX_PKTS
-)paren
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|SMC_ENABLE_INT
 c_func
 (paren
 id|IM_TX_INT
 op_or
 id|IM_TX_EMPTY_INT
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -1532,6 +1593,33 @@ suffix:semicolon
 id|lp-&gt;stats.tx_bytes
 op_add_assign
 id|len
+suffix:semicolon
+id|done
+suffix:colon
+id|smc_special_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Since I am not sure if I will have enough room in the chip&squot;s ram&n; * to store the packet, I call this routine which either sends it&n; * now, or set the card to generates an interrupt when ready&n; * for the packet.&n; */
@@ -1661,6 +1749,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|smc_special_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* now, try to allocate the memory */
 id|SMC_SET_MMU_CMD
 c_func
@@ -1707,6 +1802,13 @@ c_loop
 (paren
 op_decrement
 id|poll_count
+)paren
+suffix:semicolon
+id|smc_special_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -3771,6 +3873,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|saved_pointer
 op_assign
 id|SMC_GET_PTR
@@ -3864,13 +3973,6 @@ op_logical_neg
 id|status
 )paren
 r_break
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4129,13 +4231,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
@@ -4155,6 +4250,13 @@ id|SMC_SET_INT_MASK
 c_func
 (paren
 id|mask
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 id|DBG
@@ -4900,7 +5002,7 @@ multiline_comment|/* clear everything */
 id|smc_shutdown
 c_func
 (paren
-id|dev-&gt;base_addr
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -7253,7 +7355,7 @@ suffix:semicolon
 id|smc_shutdown
 c_func
 (paren
-id|ndev-&gt;base_addr
+id|ndev
 )paren
 suffix:semicolon
 )brace
