@@ -11528,20 +11528,6 @@ id|pDev-&gt;pScsi_dev-&gt;access_count
 )paren
 (brace
 singleline_comment|// A drive that was mounted is no longer there... bad!
-id|SCSI_LOG_ERROR_RECOVERY
-c_func
-(paren
-l_int|1
-comma
-id|printk
-(paren
-l_string|&quot;%s:Rescan: Previously &quot;
-l_string|&quot;mounted drive not found!&bslash;n&quot;
-comma
-id|pHba-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren

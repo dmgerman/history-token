@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
 DECL|variable|scsi_register_device
@@ -387,37 +388,6 @@ id|scsi_calculate_bounce_limit
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Externalize timers so that HBAs can safely start/restart commands.&n; */
-r_extern
-r_void
-id|scsi_add_timer
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-comma
-r_void
-(paren
-(paren
-op_star
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_delete_timer
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
 DECL|variable|scsi_add_timer
 id|EXPORT_SYMBOL
 c_func

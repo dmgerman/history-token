@@ -1096,6 +1096,8 @@ DECL|macro|READ_ELEMENT_STATUS_TIMEOUT
 mdefine_line|#define READ_ELEMENT_STATUS_TIMEOUT&t;(5 * 60 * HZ)
 DECL|macro|READ_DEFECT_DATA_TIMEOUT
 mdefine_line|#define READ_DEFECT_DATA_TIMEOUT&t;(60 * HZ )
+DECL|macro|OMAX_SB_LEN
+mdefine_line|#define OMAX_SB_LEN 16          /* For backward compatibility */
 DECL|function|sg_scsi_ioctl
 r_static
 r_int
@@ -1142,7 +1144,7 @@ l_int|NULL
 comma
 id|sense
 (braket
-l_int|24
+id|SCSI_SENSE_BUFFERSIZE
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * get in an out lengths, verify they don&squot;t exceed a page worth of data&n;&t; */
@@ -1453,7 +1455,23 @@ r_if
 c_cond
 (paren
 id|rq-&gt;sense_len
+op_logical_and
+id|rq-&gt;sense
 )paren
+(brace
+id|bytes
+op_assign
+(paren
+id|OMAX_SB_LEN
+OG
+id|rq-&gt;sense_len
+)paren
+ques
+c_cond
+id|rq-&gt;sense_len
+suffix:colon
+id|OMAX_SB_LEN
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1464,7 +1482,7 @@ id|sic-&gt;data
 comma
 id|rq-&gt;sense
 comma
-id|rq-&gt;sense_len
+id|bytes
 )paren
 )paren
 id|err
@@ -1472,6 +1490,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace

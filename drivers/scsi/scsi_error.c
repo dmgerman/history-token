@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|SENSE_TIMEOUT
 mdefine_line|#define SENSE_TIMEOUT SCSI_TIMEOUT
@@ -2485,11 +2487,6 @@ op_star
 id|scmd
 )paren
 (brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -2568,34 +2565,14 @@ c_func
 id|BUS_RESET_SETTLE_TIME
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Mark all affected devices to expect a unit attention.&n;&t;&t; */
-id|list_for_each_entry
+id|scsi_report_bus_reset
 c_func
 (paren
-id|sdev
+id|scmd-&gt;device-&gt;host
 comma
-op_amp
-id|scmd-&gt;device-&gt;host-&gt;my_devices
-comma
-id|siblings
-)paren
-r_if
-c_cond
-(paren
 id|scmd-&gt;device-&gt;channel
-op_eq
-id|sdev-&gt;channel
 )paren
-(brace
-id|sdev-&gt;was_reset
-op_assign
-l_int|1
 suffix:semicolon
-id|sdev-&gt;expecting_cc_ua
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 r_return
 id|rtn
@@ -2614,11 +2591,6 @@ op_star
 id|scmd
 )paren
 (brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -2697,34 +2669,14 @@ c_func
 id|HOST_RESET_SETTLE_TIME
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Mark all affected devices to expect a unit attention.&n;&t;&t; */
-id|list_for_each_entry
+id|scsi_report_bus_reset
 c_func
 (paren
-id|sdev
+id|scmd-&gt;device-&gt;host
 comma
-op_amp
-id|scmd-&gt;device-&gt;host-&gt;my_devices
-comma
-id|siblings
-)paren
-r_if
-c_cond
-(paren
 id|scmd-&gt;device-&gt;channel
-op_eq
-id|sdev-&gt;channel
 )paren
-(brace
-id|sdev-&gt;was_reset
-op_assign
-l_int|1
 suffix:semicolon
-id|sdev-&gt;expecting_cc_ua
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 r_return
 id|rtn
@@ -4566,10 +4518,6 @@ op_assign
 id|scsi_reset_provider_done_command
 suffix:semicolon
 id|scmd-&gt;done
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scmd-&gt;reset_chain
 op_assign
 l_int|NULL
 suffix:semicolon

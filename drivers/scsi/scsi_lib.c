@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SG_MEMPOOL_NR
 mdefine_line|#define SG_MEMPOOL_NR&t;&t;5
 DECL|macro|SG_MEMPOOL_SIZE
@@ -600,10 +602,6 @@ id|cmd-&gt;owner
 op_assign
 id|SCSI_OWNER_MIDLEVEL
 suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cmd-&gt;serial_number
 op_assign
 l_int|0
@@ -686,10 +684,6 @@ suffix:semicolon
 id|cmd-&gt;bufflen
 op_assign
 id|cmd-&gt;request_bufflen
-suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
 suffix:semicolon
 id|cmd-&gt;internal_timeout
 op_assign
@@ -2986,7 +2980,8 @@ r_void
 id|scsi_request_fn
 c_func
 (paren
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|q
 )paren
@@ -3015,30 +3010,18 @@ id|request
 op_star
 id|req
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; * To start with, we keep looping until the queue is empty, or until&n;&t; * the host is no longer able to accept any more requests.&n;&t; */
-r_for
+r_while
 c_loop
 (paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_neg
 id|blk_queue_plugged
 c_func
 (paren
 id|q
 )paren
 )paren
-r_goto
-id|completed
-suffix:semicolon
+(brace
 multiline_comment|/*&n;&t;&t; * get next queueable request.  We do this early to make sure&n;&t;&t; * that the request is fully prepared even if we cannot &n;&t;&t; * accept it.&n;&t;&t; */
 id|req
 op_assign
@@ -3053,13 +3036,7 @@ c_cond
 (paren
 op_logical_neg
 id|req
-)paren
-r_goto
-id|completed
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 op_logical_neg
 id|scsi_dev_queue_ready
 c_func
@@ -3069,8 +3046,7 @@ comma
 id|sdev
 )paren
 )paren
-r_goto
-id|completed
+r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Remove the request from the request list.&n;&t;&t; */
 r_if
@@ -3084,16 +3060,13 @@ c_func
 id|q
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|blk_queue_start_tag
 c_func
 (paren
 id|q
 comma
 id|req
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 )paren
@@ -3106,18 +3079,16 @@ suffix:semicolon
 id|sdev-&gt;device_busy
 op_increment
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 id|shost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3135,7 +3106,7 @@ id|sdev
 )paren
 )paren
 r_goto
-id|host_lock_held
+id|not_ready
 suffix:semicolon
 r_if
 c_cond
@@ -3148,16 +3119,13 @@ c_cond
 (paren
 id|sdev-&gt;sdev_target-&gt;starget_sdev_user
 op_logical_and
-(paren
 id|sdev-&gt;sdev_target-&gt;starget_sdev_user
 op_ne
 id|sdev
 )paren
-)paren
 r_goto
-id|host_lock_held
+id|not_ready
 suffix:semicolon
-r_else
 id|sdev-&gt;sdev_target-&gt;starget_sdev_user
 op_assign
 id|sdev
@@ -3166,26 +3134,46 @@ suffix:semicolon
 id|shost-&gt;host_busy
 op_increment
 suffix:semicolon
-id|spin_unlock_irqrestore
+multiline_comment|/*&n;&t;&t; * XXX(hch): This is rather suboptimal, scsi_dispatch_cmd will&n;&t;&t; *&t;&t;take the lock again.&n;&t;&t; */
+id|spin_unlock_irq
 c_func
 (paren
 id|shost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|cmd
 op_assign
 id|req-&gt;special
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Should be impossible for a correctly prepared request&n;&t;&t; * please mail the stack trace to linux-scsi@vger.kernel.org&n;&t;&t; */
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
-op_logical_neg
 id|cmd
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;impossible request in %s.&bslash;n&quot;
+l_string|&quot;please mail a stack trace to &quot;
+l_string|&quot;linux-scsi@vger.kernel.org&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Finally, initialize any error handling parameters, and set up&n;&t;&t; * the timers for timeouts.&n;&t;&t; */
 id|scsi_init_cmd_errh
 c_func
@@ -3200,7 +3188,6 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Now we need to grab the lock again.  We are about to mess&n;&t;&t; * with the request queue and try to find another command.&n;&t;&t; */
 id|spin_lock_irq
 c_func
 (paren
@@ -3208,18 +3195,14 @@ id|q-&gt;queue_lock
 )paren
 suffix:semicolon
 )brace
-id|completed
-suffix:colon
 r_return
 suffix:semicolon
-id|host_lock_held
+id|not_ready
 suffix:colon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 id|shost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * lock q, handle tag, requeue req, and decrement device_busy. We&n;&t; * must return with queue_lock held.&n;&t; *&n;&t; * Decrementing device_busy without checking it is OK, as all such&n;&t; * cases (host limits or settings) should run the queue at some&n;&t; * later time.&n;&t; */
@@ -3322,7 +3305,8 @@ id|BLK_BOUNCE_HIGH
 suffix:semicolon
 )brace
 DECL|function|scsi_alloc_queue
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|scsi_alloc_queue
 c_func
@@ -3333,15 +3317,16 @@ op_star
 id|sdev
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
 id|shost
+op_assign
+id|sdev-&gt;host
 suffix:semicolon
+r_struct
+id|request_queue
+op_star
 id|q
 op_assign
 id|kmalloc
@@ -3379,24 +3364,6 @@ id|q
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX move host code to scsi_register&n;&t; */
-id|shost
-op_assign
-id|sdev-&gt;host
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shost-&gt;max_sectors
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Driver imposes no hard sector transfer limit.&n;&t;&t; * start at machine infinity initially.&n;&t;&t; */
-id|shost-&gt;max_sectors
-op_assign
-id|SCSI_DEFAULT_MAX_SECTORS
-suffix:semicolon
-)brace
 id|blk_init_queue
 c_func
 (paren
@@ -3476,7 +3443,8 @@ r_void
 id|scsi_free_queue
 c_func
 (paren
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|q
 )paren

@@ -197,117 +197,10 @@ DECL|macro|SCSI_STATE_BHQUEUE
 mdefine_line|#define SCSI_STATE_BHQUEUE         0x100a
 DECL|macro|SCSI_STATE_MLQUEUE
 mdefine_line|#define SCSI_STATE_MLQUEUE         0x100b
-multiline_comment|/*&n; * These are the values that the owner field can take.&n; * They are used as an indication of who the command belongs to.&n; */
-DECL|macro|SCSI_OWNER_HIGHLEVEL
-mdefine_line|#define SCSI_OWNER_HIGHLEVEL      0x100
-DECL|macro|SCSI_OWNER_MIDLEVEL
-mdefine_line|#define SCSI_OWNER_MIDLEVEL       0x101
-DECL|macro|SCSI_OWNER_LOWLEVEL
-mdefine_line|#define SCSI_OWNER_LOWLEVEL       0x102
-DECL|macro|SCSI_OWNER_ERROR_HANDLER
-mdefine_line|#define SCSI_OWNER_ERROR_HANDLER  0x103
-DECL|macro|SCSI_OWNER_BH_HANDLER
-mdefine_line|#define SCSI_OWNER_BH_HANDLER     0x104
-DECL|macro|SCSI_OWNER_NOBODY
-mdefine_line|#define SCSI_OWNER_NOBODY         0x105
 DECL|macro|IDENTIFY_BASE
 mdefine_line|#define IDENTIFY_BASE       0x80
 DECL|macro|IDENTIFY
 mdefine_line|#define IDENTIFY(can_disconnect, lun)   (IDENTIFY_BASE |&bslash;&n;&t;&t;     ((can_disconnect) ?  0x40 : 0) |&bslash;&n;&t;&t;     ((lun) &amp; 0x07))
-multiline_comment|/*&n; * This defines the scsi logging feature.  It is a means by which the&n; * user can select how much information they get about various goings on,&n; * and it can be really useful for fault tracing.  The logging word is divided&n; * into 8 nibbles, each of which describes a loglevel.  The division of things&n; * is somewhat arbitrary, and the division of the word could be changed if it&n; * were really needed for any reason.  The numbers below are the only place where these&n; * are specified.  For a first go-around, 3 bits is more than enough, since this&n; * gives 8 levels of logging (really 7, since 0 is always off).  Cutting to 2 bits&n; * might be wise at some point.&n; */
-DECL|macro|SCSI_LOG_ERROR_SHIFT
-mdefine_line|#define SCSI_LOG_ERROR_SHIFT              0
-DECL|macro|SCSI_LOG_TIMEOUT_SHIFT
-mdefine_line|#define SCSI_LOG_TIMEOUT_SHIFT            3
-DECL|macro|SCSI_LOG_SCAN_SHIFT
-mdefine_line|#define SCSI_LOG_SCAN_SHIFT               6
-DECL|macro|SCSI_LOG_MLQUEUE_SHIFT
-mdefine_line|#define SCSI_LOG_MLQUEUE_SHIFT            9
-DECL|macro|SCSI_LOG_MLCOMPLETE_SHIFT
-mdefine_line|#define SCSI_LOG_MLCOMPLETE_SHIFT         12
-DECL|macro|SCSI_LOG_LLQUEUE_SHIFT
-mdefine_line|#define SCSI_LOG_LLQUEUE_SHIFT            15
-DECL|macro|SCSI_LOG_LLCOMPLETE_SHIFT
-mdefine_line|#define SCSI_LOG_LLCOMPLETE_SHIFT         18
-DECL|macro|SCSI_LOG_HLQUEUE_SHIFT
-mdefine_line|#define SCSI_LOG_HLQUEUE_SHIFT            21
-DECL|macro|SCSI_LOG_HLCOMPLETE_SHIFT
-mdefine_line|#define SCSI_LOG_HLCOMPLETE_SHIFT         24
-DECL|macro|SCSI_LOG_IOCTL_SHIFT
-mdefine_line|#define SCSI_LOG_IOCTL_SHIFT              27
-DECL|macro|SCSI_LOG_ERROR_BITS
-mdefine_line|#define SCSI_LOG_ERROR_BITS               3
-DECL|macro|SCSI_LOG_TIMEOUT_BITS
-mdefine_line|#define SCSI_LOG_TIMEOUT_BITS             3
-DECL|macro|SCSI_LOG_SCAN_BITS
-mdefine_line|#define SCSI_LOG_SCAN_BITS                3
-DECL|macro|SCSI_LOG_MLQUEUE_BITS
-mdefine_line|#define SCSI_LOG_MLQUEUE_BITS             3
-DECL|macro|SCSI_LOG_MLCOMPLETE_BITS
-mdefine_line|#define SCSI_LOG_MLCOMPLETE_BITS          3
-DECL|macro|SCSI_LOG_LLQUEUE_BITS
-mdefine_line|#define SCSI_LOG_LLQUEUE_BITS             3
-DECL|macro|SCSI_LOG_LLCOMPLETE_BITS
-mdefine_line|#define SCSI_LOG_LLCOMPLETE_BITS          3
-DECL|macro|SCSI_LOG_HLQUEUE_BITS
-mdefine_line|#define SCSI_LOG_HLQUEUE_BITS             3
-DECL|macro|SCSI_LOG_HLCOMPLETE_BITS
-mdefine_line|#define SCSI_LOG_HLCOMPLETE_BITS          3
-DECL|macro|SCSI_LOG_IOCTL_BITS
-mdefine_line|#define SCSI_LOG_IOCTL_BITS               3
-macro_line|#ifdef CONFIG_SCSI_LOGGING
-DECL|macro|SCSI_CHECK_LOGGING
-mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)     &bslash;&n;{                                                       &bslash;&n;        unsigned int mask;                              &bslash;&n;                                                        &bslash;&n;        mask = (1 &lt;&lt; (BITS)) - 1;                       &bslash;&n;        if( ((scsi_logging_level &gt;&gt; (SHIFT)) &amp; mask) &gt; (LEVEL) ) &bslash;&n;        {                                               &bslash;&n;                (CMD);                                  &bslash;&n;        }&t;&t;&t;&t;&t;&t;&bslash;&n;}
-DECL|macro|SCSI_SET_LOGGING
-mdefine_line|#define SCSI_SET_LOGGING(SHIFT, BITS, LEVEL)            &bslash;&n;{                                                       &bslash;&n;        unsigned int mask;                              &bslash;&n;                                                        &bslash;&n;        mask = ((1 &lt;&lt; (BITS)) - 1) &lt;&lt; SHIFT;            &bslash;&n;        scsi_logging_level = ((scsi_logging_level &amp; ~mask) &bslash;&n;                              | ((LEVEL &lt;&lt; SHIFT) &amp; mask));     &bslash;&n;}
-macro_line|#else
-multiline_comment|/*&n; * With no logging enabled, stub these out so they don&squot;t do anything.&n; */
-DECL|macro|SCSI_SET_LOGGING
-mdefine_line|#define SCSI_SET_LOGGING(SHIFT, BITS, LEVEL)
-DECL|macro|SCSI_CHECK_LOGGING
-mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)
-macro_line|#endif
-multiline_comment|/*&n; * These are the macros that are actually used throughout the code to&n; * log events.  If logging isn&squot;t enabled, they are no-ops and will be&n; * completely absent from the user&squot;s code.&n; *&n; * The &squot;set&squot; versions of the macros are really intended to only be called&n; * from the /proc filesystem, and in production kernels this will be about&n; * all that is ever used.  It could be useful in a debugging environment to&n; * bump the logging level when certain strange events are detected, however.&n; */
-DECL|macro|SCSI_LOG_ERROR_RECOVERY
-mdefine_line|#define SCSI_LOG_ERROR_RECOVERY(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_ERROR_SHIFT, SCSI_LOG_ERROR_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_TIMEOUT
-mdefine_line|#define SCSI_LOG_TIMEOUT(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_TIMEOUT_SHIFT, SCSI_LOG_TIMEOUT_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_SCAN_BUS
-mdefine_line|#define SCSI_LOG_SCAN_BUS(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_SCAN_SHIFT, SCSI_LOG_SCAN_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_MLQUEUE
-mdefine_line|#define SCSI_LOG_MLQUEUE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_MLQUEUE_SHIFT, SCSI_LOG_MLQUEUE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_MLCOMPLETE
-mdefine_line|#define SCSI_LOG_MLCOMPLETE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_MLCOMPLETE_SHIFT, SCSI_LOG_MLCOMPLETE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_LLQUEUE
-mdefine_line|#define SCSI_LOG_LLQUEUE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_LLQUEUE_SHIFT, SCSI_LOG_LLQUEUE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_LLCOMPLETE
-mdefine_line|#define SCSI_LOG_LLCOMPLETE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_LLCOMPLETE_SHIFT, SCSI_LOG_LLCOMPLETE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_HLQUEUE
-mdefine_line|#define SCSI_LOG_HLQUEUE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_HLQUEUE_SHIFT, SCSI_LOG_HLQUEUE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_HLCOMPLETE
-mdefine_line|#define SCSI_LOG_HLCOMPLETE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL,CMD);
-DECL|macro|SCSI_LOG_IOCTL
-mdefine_line|#define SCSI_LOG_IOCTL(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL,CMD);
-DECL|macro|SCSI_SET_ERROR_RECOVERY_LOGGING
-mdefine_line|#define SCSI_SET_ERROR_RECOVERY_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_ERROR_SHIFT, SCSI_LOG_ERROR_BITS, LEVEL);
-DECL|macro|SCSI_SET_TIMEOUT_LOGGING
-mdefine_line|#define SCSI_SET_TIMEOUT_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_TIMEOUT_SHIFT, SCSI_LOG_TIMEOUT_BITS, LEVEL);
-DECL|macro|SCSI_SET_SCAN_BUS_LOGGING
-mdefine_line|#define SCSI_SET_SCAN_BUS_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_SCAN_SHIFT, SCSI_LOG_SCAN_BITS, LEVEL);
-DECL|macro|SCSI_SET_MLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_MLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_MLQUEUE_SHIFT, SCSI_LOG_MLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_MLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_MLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_MLCOMPLETE_SHIFT, SCSI_LOG_MLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_LLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_LLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_LLQUEUE_SHIFT, SCSI_LOG_LLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_LLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_LLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_LLCOMPLETE_SHIFT, SCSI_LOG_LLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_HLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_HLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_HLQUEUE_SHIFT, SCSI_LOG_HLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_HLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_HLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_IOCTL_LOGGING
-mdefine_line|#define SCSI_SET_IOCTL_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL);
 multiline_comment|/* host byte codes */
 DECL|macro|DID_OK
 mdefine_line|#define DID_OK          0x00&t;/* NO error                                */
@@ -409,6 +302,9 @@ r_struct
 id|Scsi_Host
 suffix:semicolon
 r_struct
+id|scsi_target
+suffix:semicolon
+r_struct
 id|scatterlist
 suffix:semicolon
 multiline_comment|/*&n; * Add some typedefs so that we can prototyope a bunch of the functions.&n; */
@@ -430,28 +326,7 @@ r_struct
 id|scsi_request
 id|Scsi_Request
 suffix:semicolon
-DECL|macro|SCSI_CMND_MAGIC
-mdefine_line|#define SCSI_CMND_MAGIC 0xE25C23A5
-DECL|macro|SCSI_REQ_MAGIC
-mdefine_line|#define SCSI_REQ_MAGIC  0x75F6D354
-multiline_comment|/*&n; * Here is where we prototype most of the mid-layer.&n; */
-r_extern
-r_int
-r_int
-id|scsi_logging_level
-suffix:semicolon
-multiline_comment|/* What do we log? */
 multiline_comment|/*&n; * These are the error handling functions defined in scsi_error.c&n; */
-r_extern
-r_void
-id|scsi_times_out
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|scsi_add_timer
@@ -483,26 +358,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCset
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_error_handler
-c_func
-(paren
-r_void
-op_star
-id|host
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_decide_disposition
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
 )paren
 suffix:semicolon
 r_extern
@@ -555,26 +410,6 @@ id|secs
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_lib.c&n; */
 r_extern
-r_int
-id|scsi_maybe_unblock_host
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|SDpnt
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_setup_cmd_retry
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|scsi_io_completion
 c_func
@@ -590,106 +425,7 @@ r_int
 id|block_sectors
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|scsi_queue_insert
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
-comma
-r_int
-id|reason
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_queue_next_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_extern
-id|request_queue_t
-op_star
-id|scsi_alloc_queue
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_free_queue
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_init_queue
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_exit_queue
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi.c&n; */
-r_extern
-r_int
-id|scsi_dispatch_cmd
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_setup_command_freelist
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_destroy_command_freelist
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|scsi_cmnd
@@ -791,80 +527,6 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|scsi_done
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_finish_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_retry_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_attach_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_detach_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_rescan_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_get_device_flags
-c_func
-(paren
-r_int
-r_char
-op_star
-id|vendor
-comma
-r_int
-r_char
-op_star
-id|model
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */
 r_extern
 id|Scsi_Request
@@ -950,118 +612,6 @@ r_int
 id|retries
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|scsi_insert_special_req
-c_func
-(paren
-id|Scsi_Request
-op_star
-id|SRpnt
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_init_cmd_from_req
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-id|Scsi_Request
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in scsi_proc.c&n; */
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_int
-id|scsi_init_procfs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_exit_procfs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_proc_host_add
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_proc_host_rm
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|function|scsi_init_procfs
-r_static
-r_inline
-r_int
-id|scsi_init_procfs
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|scsi_exit_procfs
-r_static
-r_inline
-r_void
-id|scsi_exit_procfs
-c_func
-(paren
-r_void
-)paren
-(brace
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-id|scsi_proc_host_add
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_static
-r_inline
-r_void
-id|scsi_proc_host_rm
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Prototypes for functions in scsi_scan.c&n; */
 r_extern
 r_struct
@@ -1210,107 +760,6 @@ r_int
 r_char
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * dev_info: for the black/white list in the old scsi_static_device_list&n; */
-DECL|struct|dev_info
-r_struct
-id|dev_info
-(brace
-DECL|member|vendor
-r_char
-op_star
-id|vendor
-suffix:semicolon
-DECL|member|model
-r_char
-op_star
-id|model
-suffix:semicolon
-DECL|member|revision
-r_char
-op_star
-id|revision
-suffix:semicolon
-multiline_comment|/* revision known to be bad, unused */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|dev_info
-id|scsi_static_device_list
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
-DECL|struct|scsi_dev_info_list
-r_struct
-id|scsi_dev_info_list
-(brace
-DECL|member|dev_info_list
-r_struct
-id|list_head
-id|dev_info_list
-suffix:semicolon
-DECL|member|vendor
-r_char
-id|vendor
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|member|model
-r_char
-id|model
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-DECL|member|compatible
-r_int
-id|compatible
-suffix:semicolon
-multiline_comment|/* for use with scsi_static_device_list entries */
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|scsi_dev_info_list
-suffix:semicolon
-r_extern
-r_int
-id|scsi_dev_info_list_add_str
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
-DECL|struct|scsi_target
-r_struct
-id|scsi_target
-(brace
-DECL|member|starget_sdev_user
-r_struct
-id|scsi_device
-op_star
-id|starget_sdev_user
-suffix:semicolon
-DECL|member|starget_refcnt
-r_int
-r_int
-id|starget_refcnt
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - One of the great regrets that I have is that I failed to&n; * define these structure elements as something like sdev_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
 DECL|struct|scsi_device
 r_struct
@@ -1329,11 +778,6 @@ id|list_head
 id|same_target_siblings
 suffix:semicolon
 multiline_comment|/* just the devices sharing same target id */
-DECL|member|scpnt_wait
-id|wait_queue_head_t
-id|scpnt_wait
-suffix:semicolon
-multiline_comment|/* Used to wait if&n;&t;&t;&t;&t;&t;   device is busy */
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -1676,11 +1120,6 @@ multiline_comment|/* what device_blocked counts down from  */
 multiline_comment|/* default value if the device doesn&squot;t override */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
-singleline_comment|// Flag to allow revalidate to succeed in sd_open
-DECL|member|allow_revalidate
-r_int
-id|allow_revalidate
-suffix:semicolon
 DECL|member|sdev_driverfs_dev
 r_struct
 id|device
@@ -1903,12 +1342,6 @@ id|Scsi_Request
 op_star
 id|sc_request
 suffix:semicolon
-DECL|member|reset_chain
-r_struct
-id|scsi_cmnd
-op_star
-id|reset_chain
-suffix:semicolon
 DECL|member|list
 r_struct
 id|list_head
@@ -2112,13 +1545,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/*&n;&t; * Used to indicate that a command which has timed out also&n;&t; * completed normally.  Typically the completion function will&n;&t; * do nothing but set this flag in this instance because the&n;&t; * timeout handler is already running.&n;&t; */
-DECL|member|done_late
-r_int
-id|done_late
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/* Low-level done function - can be used by low-level driver to point&n;&t; *        to completion function.  Not used by mid/upper level code. */
 DECL|member|scsi_done
 r_void
@@ -2164,9 +1590,6 @@ suffix:semicolon
 multiline_comment|/* Process ID, starts at 0 */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Flag bit for the internal_timeout array&n; */
-DECL|macro|NORMAL_TIMEOUT
-mdefine_line|#define NORMAL_TIMEOUT 0
 multiline_comment|/*&n; * Definitions and prototypes used for scsi mid-level queue.&n; */
 DECL|macro|SCSI_MLQUEUE_HOST_BUSY
 mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
@@ -2174,7 +1597,7 @@ DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
 DECL|macro|SCSI_MLQUEUE_EH_RETRY
 mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
-multiline_comment|/*&n; * old style reset request from external source&n; * (private to sg.c and scsi_error.c, supplied by scsi_obsolete.c)&n; */
+multiline_comment|/*&n; * Reset request from external source&n; */
 DECL|macro|SCSI_TRY_RESET_DEVICE
 mdefine_line|#define SCSI_TRY_RESET_DEVICE&t;1
 DECL|macro|SCSI_TRY_RESET_BUS
@@ -2432,33 +1855,6 @@ op_star
 id|req-&gt;special
 suffix:semicolon
 )brace
-DECL|macro|scsi_eh_eflags_chk
-mdefine_line|#define scsi_eh_eflags_chk(scp, flags) (scp-&gt;eh_eflags &amp; flags)
-DECL|macro|scsi_eh_eflags_set
-mdefine_line|#define scsi_eh_eflags_set(scp, flags) do { &bslash;&n;&t;scp-&gt;eh_eflags |= flags; &bslash;&n;&t;} while(0)
-DECL|macro|scsi_eh_eflags_clr
-mdefine_line|#define scsi_eh_eflags_clr(scp, flags) do { &bslash;&n;&t;scp-&gt;eh_eflags &amp;= ~flags; &bslash;&n;&t;} while(0)
-DECL|macro|scsi_eh_eflags_clr_all
-mdefine_line|#define scsi_eh_eflags_clr_all(scp) (scp-&gt;eh_eflags = 0)
-multiline_comment|/*&n; * Scsi Error Handler Flags&n; */
-DECL|macro|SCSI_EH_CANCEL_CMD
-mdefine_line|#define SCSI_EH_CANCEL_CMD&t;0x0001&t;/* Cancel this cmd */
-DECL|macro|SCSI_EH_REC_TIMEOUT
-mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0002&t;/* EH retry timed out */
-DECL|macro|SCSI_SENSE_VALID
-mdefine_line|#define SCSI_SENSE_VALID(scmd) ((scmd-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
-r_extern
-r_int
-id|scsi_eh_scmd_add
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_int
 id|scsi_set_medium_removal
 c_func
@@ -2469,42 +1865,6 @@ id|dev
 comma
 r_char
 id|state
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_device_register
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_device_unregister
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_sysfs_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_sysfs_unregister
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _SCSI_H */
