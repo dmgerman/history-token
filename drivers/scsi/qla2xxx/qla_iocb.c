@@ -1065,6 +1065,7 @@ r_uint16
 id|tot_dsds
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -1087,13 +1088,13 @@ id|ha
 op_assign
 id|fclun-&gt;fcport-&gt;ha
 suffix:semicolon
-id|cmd
-op_assign
-id|sp-&gt;cmd
-suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
+suffix:semicolon
+id|cmd
+op_assign
+id|sp-&gt;cmd
 suffix:semicolon
 multiline_comment|/* Send marker if required */
 r_if
@@ -1437,6 +1438,14 @@ id|fclun-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* Update tagged queuing modifier */
+id|cmd_pkt-&gt;control_flags
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|CF_SIMPLE_TAG
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1458,19 +1467,6 @@ l_int|0
 )braket
 )paren
 (brace
-r_case
-id|MSG_SIMPLE_TAG
-suffix:colon
-id|cmd_pkt-&gt;control_flags
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-id|CF_SIMPLE_TAG
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|MSG_HEAD_TAG
 suffix:colon
@@ -1909,6 +1905,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -2148,6 +2145,7 @@ id|sp
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -2501,6 +2499,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign

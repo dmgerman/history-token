@@ -11,6 +11,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 macro_line|#include &quot;NCR_D700.h&quot;
 DECL|variable|NCR_D700
@@ -547,6 +550,20 @@ op_amp
 id|NCR_D700_driver_template
 comma
 id|hostdata
+comma
+id|p-&gt;dev
+comma
+id|irq
+comma
+multiline_comment|/* FIXME: read this from SUS */
+id|id_array
+(braket
+id|slot
+op_star
+l_int|2
+op_plus
+id|siop
+)braket
 )paren
 suffix:semicolon
 r_if
@@ -565,79 +582,6 @@ r_goto
 id|detect_failed
 suffix:semicolon
 )brace
-id|host-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
-multiline_comment|/* FIXME: Read this from SUS */
-id|host-&gt;this_id
-op_assign
-id|id_array
-(braket
-id|slot
-op_star
-l_int|2
-op_plus
-id|siop
-)braket
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;NCR D700: SIOP%d, SCSI id is %d&bslash;n&quot;
-comma
-id|siop
-comma
-id|host-&gt;this_id
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|irq
-comma
-id|NCR_700_intr
-comma
-id|SA_SHIRQ
-comma
-l_string|&quot;NCR_D700&quot;
-comma
-id|host
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;NCR D700: SIOP%d: irq problem, &quot;
-l_string|&quot;detatching&bslash;n&quot;
-comma
-id|siop
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|irq_failed
-suffix:semicolon
-)brace
-id|scsi_add_host
-c_func
-(paren
-id|host
-comma
-id|p-&gt;dev
-)paren
-suffix:semicolon
-multiline_comment|/* XXX handle failure */
 id|scsi_scan_host
 c_func
 (paren
@@ -651,26 +595,8 @@ id|siop
 op_assign
 id|host
 suffix:semicolon
-id|hostdata-&gt;dev
-op_assign
-id|p-&gt;dev
-suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|irq_failed
-suffix:colon
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|NCR_700_release
-c_func
-(paren
-id|host
-)paren
 suffix:semicolon
 id|detect_failed
 suffix:colon

@@ -11,8 +11,9 @@ r_void
 op_star
 id|to
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|from
 comma
 r_int
@@ -58,8 +59,9 @@ r_void
 id|_memcpy_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|to
 comma
 r_const
@@ -111,8 +113,9 @@ r_void
 id|_memset_io
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_int

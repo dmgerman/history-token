@@ -17,10 +17,11 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,0))
 macro_line|# include &lt;linux/blk.h&gt;
 macro_line|#endif
@@ -883,7 +884,8 @@ r_int
 id|nsp32_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -892,7 +894,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -922,7 +925,8 @@ r_static
 r_int
 id|nsp32_eh_abort
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -930,7 +934,8 @@ r_static
 r_int
 id|nsp32_eh_bus_reset
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -939,7 +944,8 @@ r_int
 id|nsp32_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -949,7 +955,8 @@ r_void
 id|nsp32_build_identify
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -957,7 +964,8 @@ r_static
 r_void
 id|nsp32_build_nop
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -965,7 +973,8 @@ r_static
 r_void
 id|nsp32_build_reject
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -973,7 +982,8 @@ r_static
 r_void
 id|nsp32_build_sdtr
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -989,7 +999,8 @@ r_int
 id|nsp32_busfree_occur
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1000,7 +1011,8 @@ r_static
 r_void
 id|nsp32_msgout_occur
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1008,7 +1020,8 @@ r_static
 r_void
 id|nsp32_msgin_occur
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1022,7 +1035,8 @@ r_static
 r_int
 id|nsp32_setup_sg_table
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1031,7 +1045,8 @@ r_int
 id|nsp32_selection_autopara
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1040,7 +1055,8 @@ r_int
 id|nsp32_selection_autoscsi
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1048,7 +1064,8 @@ r_static
 r_void
 id|nsp32_scsi_done
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1056,7 +1073,8 @@ r_static
 r_int
 id|nsp32_arbitration
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1067,7 +1085,8 @@ r_static
 r_int
 id|nsp32_reselection
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1078,7 +1097,8 @@ r_static
 r_void
 id|nsp32_adjust_busfree
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1089,7 +1109,8 @@ r_static
 r_void
 id|nsp32_restart_autoscsi
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_int
@@ -1101,7 +1122,8 @@ r_static
 r_void
 id|nsp32_analyze_sdtr
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1378,7 +1400,8 @@ macro_line|#endif
 multiline_comment|/*&n; * max_sectors is currently limited up to 128.&n; */
 DECL|variable|nsp32_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|nsp32_template
 op_assign
 (brace
@@ -1733,7 +1756,8 @@ r_void
 id|nsp32_build_identify
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -1797,7 +1821,8 @@ r_void
 id|nsp32_build_sdtr
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -1887,7 +1912,8 @@ r_void
 id|nsp32_build_nop
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -1948,7 +1974,8 @@ r_void
 id|nsp32_build_reject
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -1990,7 +2017,8 @@ r_void
 id|nsp32_start_timer
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -2055,7 +2083,8 @@ r_int
 id|nsp32_selection_autopara
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -2489,7 +2518,8 @@ r_int
 id|nsp32_selection_autoscsi
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -3084,7 +3114,8 @@ r_int
 id|nsp32_arbitration
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -3249,7 +3280,8 @@ r_int
 id|nsp32_reselection
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -3463,7 +3495,8 @@ r_int
 id|nsp32_setup_sg_table
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -3555,11 +3588,7 @@ id|sgl
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -3735,11 +3764,7 @@ id|SCpnt-&gt;request_buffer
 comma
 id|SCpnt-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|sgt
@@ -3834,7 +3859,8 @@ r_int
 id|nsp32_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -3844,7 +3870,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -4884,7 +4911,8 @@ id|base
 op_assign
 id|data-&gt;BaseAddress
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 op_assign
@@ -6438,7 +6466,8 @@ r_void
 id|nsp32_scsi_done
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -6492,11 +6521,7 @@ id|SCpnt-&gt;buffer
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6514,11 +6539,7 @@ id|SCpnt-&gt;SCp.have_data_in
 comma
 id|SCpnt-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6579,7 +6600,8 @@ r_int
 id|nsp32_busfree_occur
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -6992,7 +7014,8 @@ r_void
 id|nsp32_adjust_busfree
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -7260,7 +7283,8 @@ r_void
 id|nsp32_msgout_occur
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -7464,7 +7488,8 @@ r_void
 id|nsp32_restart_autoscsi
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -7678,7 +7703,8 @@ r_void
 id|nsp32_msgin_occur
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -8354,7 +8380,8 @@ r_void
 id|nsp32_analyze_sdtr
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -10387,7 +10414,8 @@ r_int
 id|nsp32_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -10512,7 +10540,8 @@ r_int
 id|nsp32_eh_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -10763,7 +10792,8 @@ r_int
 id|nsp32_eh_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
