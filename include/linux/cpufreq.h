@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.26 2002/09/21 09:05:29 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.27 2002/10/08 14:54:23 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _LINUX_CPUFREQ_H
 DECL|macro|_LINUX_CPUFREQ_H
 mdefine_line|#define _LINUX_CPUFREQ_H
@@ -374,7 +374,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_26_API
 macro_line|#ifdef CONFIG_PM
 r_int
 id|cpufreq_restore
@@ -383,7 +382,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.4. INTERFACE                     *&n; *********************************************************************/
@@ -396,15 +394,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-r_int
-id|cpufreq_restore
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_int
 id|cpufreq_set
 c_func

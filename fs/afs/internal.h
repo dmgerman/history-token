@@ -9,63 +9,32 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 multiline_comment|/*&n; * debug tracing&n; */
 DECL|macro|kenter
-mdefine_line|#define kenter(FMT,...)&t;printk(&quot;==&gt; %s(&quot;FMT&quot;)&bslash;n&quot;,__FUNCTION__,##__VA_ARGS__)
+mdefine_line|#define kenter(FMT, a...)&t;printk(&quot;==&gt; %s(&quot;FMT&quot;)&bslash;n&quot;,__FUNCTION__ , ## a)
 DECL|macro|kleave
-mdefine_line|#define kleave(FMT,...)&t;printk(&quot;&lt;== %s()&quot;FMT&quot;&bslash;n&quot;,__FUNCTION__,##__VA_ARGS__)
+mdefine_line|#define kleave(FMT, a...)&t;printk(&quot;&lt;== %s()&quot;FMT&quot;&bslash;n&quot;,__FUNCTION__ , ## a)
 DECL|macro|kdebug
-mdefine_line|#define kdebug(FMT,...)&t;printk(FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define kdebug(FMT, a...)&t;printk(FMT&quot;&bslash;n&quot; , ## a)
 DECL|macro|kproto
-mdefine_line|#define kproto(FMT,...)&t;printk(&quot;### &quot;FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define kproto(FMT, a...)&t;printk(&quot;### &quot;FMT&quot;&bslash;n&quot; , ## a)
 DECL|macro|knet
-mdefine_line|#define knet(FMT,...)&t;printk(FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define knet(FMT, a...)&t;&t;printk(FMT&quot;&bslash;n&quot; , ## a)
 macro_line|#if 0
-mdefine_line|#define _enter(FMT,...)&t;kenter(FMT,##__VA_ARGS__)
-mdefine_line|#define _leave(FMT,...)&t;kleave(FMT,##__VA_ARGS__)
-mdefine_line|#define _debug(FMT,...)&t;kdebug(FMT,##__VA_ARGS__)
-mdefine_line|#define _proto(FMT,...)&t;kproto(FMT,##__VA_ARGS__)
-mdefine_line|#define _net(FMT,...)&t;knet(FMT,##__VA_ARGS__)
+mdefine_line|#define _enter(FMT, a...)&t;kenter(FMT , ## a)
+mdefine_line|#define _leave(FMT, a...)&t;kleave(FMT , ## a)
+mdefine_line|#define _debug(FMT, a...)&t;kdebug(FMT , ## a)
+mdefine_line|#define _proto(FMT, a...)&t;kproto(FMT , ## a)
+mdefine_line|#define _net(FMT, a...)&t;&t;knet(FMT , ## a)
 macro_line|#else
 DECL|macro|_enter
-mdefine_line|#define _enter(FMT,...)&t;do { } while(0)
+mdefine_line|#define _enter(FMT, a...)&t;do { } while(0)
 DECL|macro|_leave
-mdefine_line|#define _leave(FMT,...)&t;do { } while(0)
+mdefine_line|#define _leave(FMT, a...)&t;do { } while(0)
 DECL|macro|_debug
-mdefine_line|#define _debug(FMT,...)&t;do { } while(0)
+mdefine_line|#define _debug(FMT, a...)&t;do { } while(0)
 DECL|macro|_proto
-mdefine_line|#define _proto(FMT,...)&t;do { } while(0)
+mdefine_line|#define _proto(FMT, a...)&t;do { } while(0)
 DECL|macro|_net
-mdefine_line|#define _net(FMT,...)&t;do { } while(0)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
-DECL|macro|wait_on_page_locked
-mdefine_line|#define wait_on_page_locked wait_on_page
-DECL|macro|PageUptodate
-mdefine_line|#define PageUptodate Page_Uptodate
-DECL|function|PDE
-r_static
-r_inline
-r_struct
-id|proc_dir_entry
-op_star
-id|PDE
-c_func
-(paren
-r_const
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|inode-&gt;u.generic_ip
-suffix:semicolon
-)brace
+mdefine_line|#define _net(FMT, a...)&t;&t;do { } while(0)
 macro_line|#endif
 DECL|function|afs_discard_my_signals
 r_static
@@ -176,7 +145,6 @@ op_star
 id|_inode
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 r_extern
 r_int
 id|afs_inode_getattr
@@ -198,34 +166,6 @@ op_star
 id|stat
 )paren
 suffix:semicolon
-macro_line|#else
-r_extern
-r_void
-id|afs_read_inode2
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_void
-op_star
-id|opaque
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|afs_inode_revalidate
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|afs_clear_inode
@@ -289,7 +229,7 @@ id|spinlock_t
 id|afs_cb_hash_lock
 suffix:semicolon
 DECL|macro|afs_cb_hash
-mdefine_line|#define afs_cb_hash(SRV,FID) &bslash;&n;&t;afs_cb_hash_tbl[((unsigned)(SRV) + (FID)-&gt;vid + (FID)-&gt;vnode + (FID)-&gt;unique) % &bslash;&n;&t;&t;&t;AFS_CB_HASH_COUNT]
+mdefine_line|#define afs_cb_hash(SRV,FID) &bslash;&n;&t;afs_cb_hash_tbl[((unsigned long)(SRV) + (FID)-&gt;vid + (FID)-&gt;vnode + (FID)-&gt;unique) % &bslash;&n;&t;&t;&t;AFS_CB_HASH_COUNT]
 multiline_comment|/*&n; * proc.c&n; */
 r_extern
 r_int

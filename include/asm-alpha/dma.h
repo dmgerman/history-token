@@ -15,45 +15,43 @@ DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS&t;8
 multiline_comment|/*&n;  ISA DMA limitations on Alpha platforms,&n;&n;  These may be due to SIO (PCI&lt;-&gt;ISA bridge) chipset limitation, or&n;  just a wiring limit.&n;*/
 multiline_comment|/* The maximum address for ISA DMA transfer on Alpha XL, due to an&n;   hardware SIO limitation, is 64MB.&n;*/
-DECL|macro|ALPHA_XL_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_XL_MAX_DMA_ADDRESS&t;(IDENT_ADDR+0x04000000UL)
-multiline_comment|/* The maximum address for ISA DMA transfer on RUFFIAN and NAUTILUS,&n;   due to an hardware SIO limitation, is 16MB.&n;*/
-DECL|macro|ALPHA_RUFFIAN_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_RUFFIAN_MAX_DMA_ADDRESS&t;(IDENT_ADDR+0x01000000UL)
-DECL|macro|ALPHA_NAUTILUS_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_NAUTILUS_MAX_DMA_ADDRESS&t;(IDENT_ADDR+0x01000000UL)
+DECL|macro|ALPHA_XL_MAX_ISA_DMA_ADDRESS
+mdefine_line|#define ALPHA_XL_MAX_ISA_DMA_ADDRESS&t;&t;0x04000000UL
+multiline_comment|/* The maximum address for ISA DMA transfer on RUFFIAN,&n;   due to an hardware SIO limitation, is 16MB.&n;*/
+DECL|macro|ALPHA_RUFFIAN_MAX_ISA_DMA_ADDRESS
+mdefine_line|#define ALPHA_RUFFIAN_MAX_ISA_DMA_ADDRESS&t;0x01000000UL
 multiline_comment|/* The maximum address for ISA DMA transfer on SABLE, and some ALCORs,&n;   due to an hardware SIO chip limitation, is 2GB.&n;*/
-DECL|macro|ALPHA_SABLE_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_SABLE_MAX_DMA_ADDRESS&t;(IDENT_ADDR+0x80000000UL)
-DECL|macro|ALPHA_ALCOR_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_ALCOR_MAX_DMA_ADDRESS&t;(IDENT_ADDR+0x80000000UL)
+DECL|macro|ALPHA_SABLE_MAX_ISA_DMA_ADDRESS
+mdefine_line|#define ALPHA_SABLE_MAX_ISA_DMA_ADDRESS&t;&t;0x80000000UL
+DECL|macro|ALPHA_ALCOR_MAX_ISA_DMA_ADDRESS
+mdefine_line|#define ALPHA_ALCOR_MAX_ISA_DMA_ADDRESS&t;&t;0x80000000UL
 multiline_comment|/*&n;  Maximum address for all the others is the complete 32-bit bus&n;  address space.&n;*/
-DECL|macro|ALPHA_MAX_DMA_ADDRESS
-mdefine_line|#define ALPHA_MAX_DMA_ADDRESS&t;&t;(IDENT_ADDR+0x100000000UL)
+DECL|macro|ALPHA_MAX_ISA_DMA_ADDRESS
+mdefine_line|#define ALPHA_MAX_ISA_DMA_ADDRESS&t;&t;0x100000000UL
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|# define MAX_DMA_ADDRESS&t;&t;(alpha_mv.max_dma_address)
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|# define MAX_ISA_DMA_ADDRESS&t;&t;(alpha_mv.max_isa_dma_address)
 macro_line|#else
 macro_line|# if defined(CONFIG_ALPHA_XL)
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_XL_MAX_DMA_ADDRESS
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|#  define MAX_ISA_DMA_ADDRESS&t;&t;ALPHA_XL_MAX_ISA_DMA_ADDRESS
 macro_line|# elif defined(CONFIG_ALPHA_RUFFIAN)
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_RUFFIAN_MAX_DMA_ADDRESS
-macro_line|# elif defined(CONFIG_ALPHA_NAUTILUS)
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_NAUTILUS_MAX_DMA_ADDRESS
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|#  define MAX_ISA_DMA_ADDRESS&t;&t;ALPHA_RUFFIAN_MAX_ISA_DMA_ADDRESS
 macro_line|# elif defined(CONFIG_ALPHA_SABLE)
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_SABLE_MAX_DMA_ADDRESS
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|#  define MAX_ISA_DMA_ADDRESS&t;&t;ALPHA_SABLE_MAX_DMA_ISA_ADDRESS
 macro_line|# elif defined(CONFIG_ALPHA_ALCOR)
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_ALCOR_MAX_DMA_ADDRESS
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|#  define MAX_ISA_DMA_ADDRESS&t;&t;ALPHA_ALCOR_MAX_DMA_ISA_ADDRESS
 macro_line|# else
-DECL|macro|MAX_DMA_ADDRESS
-macro_line|#  define MAX_DMA_ADDRESS&t;&t;ALPHA_MAX_DMA_ADDRESS
+DECL|macro|MAX_ISA_DMA_ADDRESS
+macro_line|#  define MAX_ISA_DMA_ADDRESS&t;&t;ALPHA_MAX_ISA_DMA_ADDRESS
 macro_line|# endif
 macro_line|#endif
+multiline_comment|/* If we have the iommu, we don&squot;t have any address limitations on DMA.&n;   Otherwise (Nautilus, RX164), we have to have 0-16 Mb DMA zone&n;   like i386. */
+DECL|macro|MAX_DMA_ADDRESS
+mdefine_line|#define MAX_DMA_ADDRESS&t;&t;(alpha_mv.mv_pci_tbi ?&t;&bslash;&n;&t;&t;&t;&t; ~0UL : IDENT_ADDR + 0x01000000)
 multiline_comment|/* 8237 DMA controllers */
 DECL|macro|IO_DMA1_BASE
 mdefine_line|#define IO_DMA1_BASE&t;0x00&t;/* 8 bit slave DMA, channels 0..3 */

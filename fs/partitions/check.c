@@ -1351,6 +1351,7 @@ op_assign
 (brace
 dot
 id|show
+op_assign
 id|part_attr_show
 comma
 )brace
