@@ -696,11 +696,11 @@ id|MS_SYNC
 )paren
 (brace
 r_struct
-id|inode
+id|address_space
 op_star
-id|inode
+id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|file-&gt;f_mapping
 suffix:semicolon
 r_int
 id|err
@@ -709,7 +709,7 @@ id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 id|ret
@@ -717,7 +717,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -760,7 +760,7 @@ op_assign
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -777,7 +777,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|mapping-&gt;host-&gt;i_sem
 )paren
 suffix:semicolon
 )brace

@@ -7741,7 +7741,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|ret
