@@ -108,6 +108,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is the lowest virtual address we can permit any user space&n; * mapping to be mapped at.  This is particularly important for&n; * non-high vector CPUs.&n; */
+DECL|macro|MIN_MAP_ADDR
+mdefine_line|#define MIN_MAP_ADDR&t;(vectors_high() ? 0 : PAGE_SIZE)
 multiline_comment|/* common code for old and new mmaps */
 DECL|function|do_mmap2
 r_inline
@@ -162,7 +165,6 @@ op_or
 id|MAP_DENYWRITE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we are doing a fixed mapping, and address &lt; PAGE_SIZE,&n;&t; * then deny it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -172,14 +174,7 @@ id|MAP_FIXED
 op_logical_and
 id|addr
 OL
-id|PAGE_SIZE
-op_logical_and
-id|vectors_base
-c_func
-(paren
-)paren
-op_eq
-l_int|0
+id|MIN_MAP_ADDR
 )paren
 r_goto
 id|out
@@ -423,7 +418,6 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we are doing a fixed mapping, and address &lt; PAGE_SIZE,&n;&t; * then deny it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -433,14 +427,7 @@ id|MREMAP_FIXED
 op_logical_and
 id|new_addr
 OL
-id|PAGE_SIZE
-op_logical_and
-id|vectors_base
-c_func
-(paren
-)paren
-op_eq
-l_int|0
+id|MIN_MAP_ADDR
 )paren
 r_goto
 id|out

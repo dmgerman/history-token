@@ -34,12 +34,14 @@ DECL|macro|MT_CACHECLEAN
 mdefine_line|#define MT_CACHECLEAN&t;1
 DECL|macro|MT_MINICLEAN
 mdefine_line|#define MT_MINICLEAN&t;2
-DECL|macro|MT_VECTORS
-mdefine_line|#define MT_VECTORS&t;3
+DECL|macro|MT_LOW_VECTORS
+mdefine_line|#define MT_LOW_VECTORS&t;3
+DECL|macro|MT_HIGH_VECTORS
+mdefine_line|#define MT_HIGH_VECTORS&t;4
 DECL|macro|MT_MEMORY
-mdefine_line|#define MT_MEMORY&t;4
+mdefine_line|#define MT_MEMORY&t;5
 DECL|macro|MT_ROM
-mdefine_line|#define MT_ROM&t;&t;5
+mdefine_line|#define MT_ROM&t;&t;6
 r_extern
 r_void
 id|create_memmap_holes
