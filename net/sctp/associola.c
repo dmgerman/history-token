@@ -500,6 +500,10 @@ id|asoc-&gt;next_tsn
 op_minus
 l_int|1
 suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+id|asoc-&gt;ctsn_ack_point
+suffix:semicolon
 id|asoc-&gt;highest_sacked
 op_assign
 id|asoc-&gt;ctsn_ack_point
@@ -2737,6 +2741,12 @@ r_new
 op_member_access_from_pointer
 id|ctsn_ack_point
 suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+r_new
+op_member_access_from_pointer
+id|adv_peer_ack_point
+suffix:semicolon
 multiline_comment|/* Reinitialize SSN for both local streams&n;&t;&t; * and peer&squot;s streams.&n;&t;&t; */
 id|sctp_ssnmap_clear
 c_func
@@ -2752,6 +2762,10 @@ op_assign
 id|asoc-&gt;next_tsn
 op_minus
 l_int|1
+suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+id|asoc-&gt;ctsn_ack_point
 suffix:semicolon
 r_if
 c_cond

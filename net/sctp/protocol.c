@@ -4232,6 +4232,11 @@ id|sctp_addip_enable
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Enable PR-SCTP by default. */
+id|sctp_prsctp_enable
+op_assign
+l_int|1
+suffix:semicolon
 id|sctp_sysctl_register
 c_func
 (paren

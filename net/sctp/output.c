@@ -815,6 +815,10 @@ id|packet-&gt;size
 op_add_assign
 id|chunk_len
 suffix:semicolon
+id|chunk-&gt;transport
+op_assign
+id|packet-&gt;transport
+suffix:semicolon
 id|finish
 suffix:colon
 r_return
@@ -1788,7 +1792,13 @@ op_assign
 id|rwnd
 suffix:semicolon
 multiline_comment|/* Has been accepted for transmission. */
-id|chunk-&gt;msg-&gt;can_expire
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;peer.prsctp_capable
+)paren
+id|chunk-&gt;msg-&gt;can_abandon
 op_assign
 l_int|0
 suffix:semicolon

@@ -289,6 +289,11 @@ DECL|member|addip_enable
 r_int
 id|addip_enable
 suffix:semicolon
+multiline_comment|/* Flag to indicate if PR-SCTP is enabled. */
+DECL|member|prsctp_enable
+r_int
+id|prsctp_enable
+suffix:semicolon
 )brace
 id|sctp_globals
 suffix:semicolon
@@ -344,6 +349,8 @@ DECL|macro|sctp_local_addr_lock
 mdefine_line|#define sctp_local_addr_lock&t;&t;(sctp_globals.local_addr_lock)
 DECL|macro|sctp_addip_enable
 mdefine_line|#define sctp_addip_enable&t;&t;(sctp_globals.addip_enable)
+DECL|macro|sctp_prsctp_enable
+mdefine_line|#define sctp_prsctp_enable&t;&t;(sctp_globals.prsctp_enable)
 multiline_comment|/* SCTP Socket type: UDP or TCP style. */
 r_typedef
 r_enum
@@ -529,6 +536,10 @@ DECL|member|peer_addr
 r_union
 id|sctp_addr
 id|peer_addr
+suffix:semicolon
+DECL|member|prsctp_capable
+id|__u8
+id|prsctp_capable
 suffix:semicolon
 multiline_comment|/* This is a shim for my peer&squot;s INIT packet, followed by&n;&t; * a copy of the raw address list of the association.&n;&t; * The length of the raw address list is saved in the&n;&t; * raw_addr_list_len field, which will be used at the time when&n;&t; * the association TCB is re-constructed from the cookie.&n;&t; */
 DECL|member|raw_addr_list_len
@@ -808,6 +819,36 @@ id|stream-&gt;ssn
 id|id
 )braket
 op_increment
+suffix:semicolon
+)brace
+multiline_comment|/* Skip over this ssn and all below. */
+DECL|function|sctp_ssn_skip
+r_static
+r_inline
+r_void
+id|sctp_ssn_skip
+c_func
+(paren
+r_struct
+id|sctp_stream
+op_star
+id|stream
+comma
+id|__u16
+id|id
+comma
+id|__u16
+id|ssn
+)paren
+(brace
+id|stream-&gt;ssn
+(braket
+id|id
+)braket
+op_assign
+id|ssn
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Pointers to address related SCTP functions.&n; * (i.e. things that depend on the address family.)&n; */
@@ -1488,10 +1529,10 @@ DECL|member|send_failed
 r_char
 id|send_failed
 suffix:semicolon
-multiline_comment|/* Control whether fragments from this message can expire. */
-DECL|member|can_expire
+multiline_comment|/* Control whether chunks from this message can be abandoned. */
+DECL|member|can_abandon
 r_char
-id|can_expire
+id|can_abandon
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1577,7 +1618,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_datamsg_fail
+id|sctp_chunk_fail
 c_func
 (paren
 r_struct
@@ -1589,7 +1630,7 @@ id|error
 )paren
 suffix:semicolon
 r_int
-id|sctp_datamsg_expires
+id|sctp_chunk_abandoned
 c_func
 (paren
 r_struct
@@ -1723,6 +1764,12 @@ r_struct
 id|sctp_addiphdr
 op_star
 id|addip_hdr
+suffix:semicolon
+DECL|member|fwdtsn_hdr
+r_struct
+id|sctp_fwdtsn_hdr
+op_star
+id|fwdtsn_hdr
 suffix:semicolon
 DECL|member|subh
 )brace
@@ -2393,7 +2440,7 @@ DECL|member|changeover_active
 r_char
 id|changeover_active
 suffix:semicolon
-multiline_comment|/* A glag which indicates whether the change of primary is&n;&t;&t; * the first switch to this destination address during an&n;&t;&t; * active switch.&n;&t;&t; */
+multiline_comment|/* A flag which indicates whether the change of primary is&n;&t;&t; * the first switch to this destination address during an&n;&t;&t; * active switch.&n;&t;&t; */
 DECL|member|cycling_changeover
 r_char
 id|cycling_changeover
@@ -2718,6 +2765,12 @@ DECL|member|retransmit
 r_struct
 id|list_head
 id|retransmit
+suffix:semicolon
+multiline_comment|/* Put chunks on this list to save them for FWD TSN processing as&n;&t; * they were abandoned.&n;&t; */
+DECL|member|abandoned
+r_struct
+id|list_head
+id|abandoned
 suffix:semicolon
 multiline_comment|/* How many unackd bytes do we have in-flight?&t;*/
 DECL|member|outstanding_bytes
@@ -3667,11 +3720,12 @@ id|SCTP_TSN_MAP_SIZE
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/* Do we need to sack the peer? */
+multiline_comment|/* Ack State   : This flag indicates if the next received&n;&t;&t; *             : packet is to be responded to with a&n;&t;&t; *             : SACK. This is initializedto 0.  When a packet&n;&t;&t; *             : is received it is incremented. If this value&n;&t;&t; *             : reaches 2 or more, a SACK is sent and the&n;&t;&t; *             : value is reset to 0. Note: This is used only&n;&t;&t; *             : when no DATA chunks are received out of&n;&t;&t; *             : order.  When DATA chunks are out of order,&n;&t;&t; *             : SACK&squot;s are not delayed (see Section 6).&n;&t;&t; */
 DECL|member|sack_needed
 id|__u8
 id|sack_needed
 suffix:semicolon
+multiline_comment|/* Do we need to sack the peer? */
 multiline_comment|/* These are capabilities which our peer advertised.  */
 DECL|member|ecn_capable
 id|__u8
@@ -3693,11 +3747,16 @@ id|__u8
 id|hostname_address
 suffix:semicolon
 multiline_comment|/* Peer understands DNS addresses? */
-multiline_comment|/* Does peer support ADDIP? */
 DECL|member|asconf_capable
 id|__u8
 id|asconf_capable
 suffix:semicolon
+multiline_comment|/* Does peer support ADDIP? */
+DECL|member|prsctp_capable
+id|__u8
+id|prsctp_capable
+suffix:semicolon
+multiline_comment|/* Can peer do PR-SCTP? */
 multiline_comment|/* This mask is used to disable sending the ASCONF chunk&n;&t;&t; * with specified parameter to peer.&n;&t;&t; */
 DECL|member|addip_disabled_mask
 id|__u16
@@ -3812,6 +3871,11 @@ DECL|member|ctsn_ack_point
 id|__u32
 id|ctsn_ack_point
 suffix:semicolon
+multiline_comment|/* PR-SCTP Advanced.Peer.Ack.Point */
+DECL|member|adv_peer_ack_point
+id|__u32
+id|adv_peer_ack_point
+suffix:semicolon
 multiline_comment|/* Highest TSN that is acknowledged by incoming SACKs. */
 DECL|member|highest_sacked
 id|__u32
@@ -3857,8 +3921,7 @@ DECL|member|frag_point
 id|__u32
 id|frag_point
 suffix:semicolon
-multiline_comment|/* Ack State   : This flag indicates if the next received&n;&t; *&t;       : packet is to be responded to with a&n;&t; *&t;       : SACK. This is initializedto 0.&t; When a packet&n;&t; *&t;       : is received it is incremented. If this value&n;&t; *&t;       : reaches 2 or more, a SACK is sent and the&n;&t; *&t;       : value is reset to 0. Note: This is used only&n;&t; *&t;       : when no DATA chunks are received out of&n;&t; *&t;       : order.&t; When DATA chunks are out of order,&n;&t; *&t;       : SACK&squot;s are not delayed (see Section 6).&n;&t; */
-multiline_comment|/* Do we need to send an ack?&n;&t; * When counters[SctpCounterAckState] is above 1 we do!&n;&t; */
+multiline_comment|/* Currently only one counter is used to count INIT errors. */
 DECL|member|counters
 r_int
 id|counters

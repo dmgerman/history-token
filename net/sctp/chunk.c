@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 2003 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file contains the code relating the the chunk abstraction.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file contains the code relating the the chunk abstraction.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
@@ -37,7 +37,11 @@ id|msg-&gt;send_error
 op_assign
 l_int|0
 suffix:semicolon
-id|msg-&gt;can_expire
+id|msg-&gt;can_abandon
+op_assign
+l_int|0
+suffix:semicolon
+id|msg-&gt;expires_at
 op_assign
 l_int|0
 suffix:semicolon
@@ -522,44 +526,34 @@ c_cond
 id|sinfo-&gt;sinfo_timetolive
 )paren
 (brace
-r_struct
-id|timeval
-id|tv
-suffix:semicolon
-id|__u32
-id|ttl
-op_assign
-id|sinfo-&gt;sinfo_timetolive
-suffix:semicolon
 multiline_comment|/* sinfo_timetolive is in milliseconds */
-id|tv.tv_sec
-op_assign
-id|ttl
-op_div
-l_int|1000
-suffix:semicolon
-id|tv.tv_usec
-op_assign
-id|ttl
-op_mod
-l_int|1000
-op_star
-l_int|1000
-suffix:semicolon
 id|msg-&gt;expires_at
 op_assign
 id|jiffies
 op_plus
-id|timeval_to_jiffies
+id|MSECS_TO_JIFFIES
 c_func
 (paren
-op_amp
-id|tv
+id|sinfo-&gt;sinfo_timetolive
 )paren
 suffix:semicolon
-id|msg-&gt;can_expire
+id|msg-&gt;can_abandon
 op_assign
 l_int|1
+suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: msg:%p expires_at: %ld jiffies:%ld&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|msg
+comma
+id|msg-&gt;expires_at
+comma
+id|jiffies
+)paren
 suffix:semicolon
 )brace
 id|max
@@ -974,9 +968,9 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Check whether this message has expired. */
-DECL|function|sctp_datamsg_expires
+DECL|function|sctp_chunk_abandoned
 r_int
-id|sctp_datamsg_expires
+id|sctp_chunk_abandoned
 c_func
 (paren
 r_struct
@@ -992,12 +986,11 @@ id|msg
 op_assign
 id|chunk-&gt;msg
 suffix:semicolon
-multiline_comment|/* FIXME: When PR-SCTP is supported we can make this&n;&t; * check more lenient.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|msg-&gt;can_expire
+id|msg-&gt;can_abandon
 )paren
 r_return
 l_int|0
@@ -1021,9 +1014,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This chunk (and consequently entire message) has failed in its sending. */
-DECL|function|sctp_datamsg_fail
+DECL|function|sctp_chunk_fail
 r_void
-id|sctp_datamsg_fail
+id|sctp_chunk_fail
 c_func
 (paren
 r_struct
