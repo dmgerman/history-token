@@ -7519,8 +7519,8 @@ id|__initdata
 id|probe_dtc2278
 suffix:semicolon
 r_extern
-r_void
-id|init_dtc2278
+r_int
+id|dtc2278_init
 c_func
 (paren
 r_void
@@ -10698,7 +10698,10 @@ c_cond
 (paren
 id|probe_dtc2278
 )paren
-id|init_dtc2278
+(paren
+r_void
+)paren
+id|dtc2278_init
 c_func
 (paren
 )paren
