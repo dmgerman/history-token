@@ -28,7 +28,7 @@ r_char
 op_star
 id|scsi_debug_version_str
 op_assign
-l_string|&quot;Version: 1.64 (20021109)&quot;
+l_string|&quot;Version: 1.64 (20021111 2)&quot;
 suffix:semicolon
 macro_line|#ifndef SCSI_CMD_READ_16
 DECL|macro|SCSI_CMD_READ_16
@@ -55,8 +55,8 @@ DECL|macro|DEF_MAX_LUNS
 mdefine_line|#define DEF_MAX_LUNS   2
 DECL|macro|DEF_SCSI_LEVEL
 mdefine_line|#define DEF_SCSI_LEVEL   3
-DECL|macro|DEF_ADD_HOST
-mdefine_line|#define DEF_ADD_HOST   1
+DECL|macro|DEF_NUM_HOST
+mdefine_line|#define DEF_NUM_HOST   1
 DECL|macro|MAX_NUM_HOSTS
 mdefine_line|#define MAX_NUM_HOSTS   128
 DECL|macro|DEF_OPTS
@@ -123,9 +123,8 @@ r_static
 r_int
 id|scsi_debug_add_host
 op_assign
-id|DEF_ADD_HOST
+id|DEF_NUM_HOST
 suffix:semicolon
-multiline_comment|/* #define NR_HOSTS_PRESENT (((scsi_debug_num_devs - 1) / 7) + 1) */
 multiline_comment|/* This assumes one lun used per allocated target id */
 DECL|macro|N_HEAD
 mdefine_line|#define N_HEAD          8
@@ -5168,13 +5167,6 @@ id|iflags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|num_hosts_present
-r_static
-r_int
-id|num_hosts_present
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|sdebug_proc_name
 r_static
 r_const
@@ -8284,9 +8276,7 @@ op_star
 id|hpnt
 suffix:semicolon
 r_int
-id|add_host
-comma
-id|num
+id|delta_hosts
 comma
 id|k
 suffix:semicolon
@@ -8323,25 +8313,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-(brace
-multiline_comment|/* temporary hack around sscanf() problem with -ve nums */
-r_int
-id|neg
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_char|&squot;-&squot;
-op_eq
-op_star
-id|work
-)paren
-id|neg
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8351,13 +8322,11 @@ id|sscanf
 c_func
 (paren
 id|work
-op_plus
-id|neg
 comma
 l_string|&quot;%d&quot;
 comma
 op_amp
-id|add_host
+id|delta_hosts
 )paren
 )paren
 r_return
@@ -8367,22 +8336,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|neg
-)paren
-id|add_host
-op_assign
-op_minus
-id|add_host
-suffix:semicolon
-)brace
-id|num
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|add_host
+id|delta_hosts
 OG
 l_int|0
 )paren
@@ -8443,26 +8397,22 @@ id|MAX_NUM_HOSTS
 r_break
 suffix:semicolon
 op_increment
-id|num
+id|scsi_debug_add_host
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
 op_decrement
-id|add_host
+id|delta_hosts
 )paren
-suffix:semicolon
-id|scsi_debug_add_host
-op_add_assign
-id|num
 suffix:semicolon
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|add_host
+id|delta_hosts
 OL
 l_int|0
 )paren
@@ -8533,20 +8483,16 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-op_increment
-id|num
+op_decrement
+id|scsi_debug_add_host
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
 op_increment
-id|add_host
+id|delta_hosts
 )paren
-suffix:semicolon
-id|scsi_debug_add_host
-op_sub_assign
-id|num
 suffix:semicolon
 )brace
 r_return
@@ -8842,11 +8788,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|hpnt
-suffix:semicolon
 r_int
 id|sz
 comma
@@ -9000,6 +8941,23 @@ op_star
 )paren
 id|sdebug_proc_name
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|scsi_debug_hosts
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+op_star
+id|MAX_NUM_HOSTS
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9023,7 +8981,10 @@ id|k
 op_increment
 )paren
 (brace
-id|hpnt
+id|scsi_debug_hosts
+(braket
+id|k
+)braket
 op_assign
 id|sdebug_add_shost
 c_func
@@ -9035,7 +8996,10 @@ c_cond
 (paren
 l_int|NULL
 op_eq
-id|hpnt
+id|scsi_debug_hosts
+(braket
+id|k
+)braket
 )paren
 (brace
 id|printk
@@ -9051,17 +9015,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-op_increment
-id|num_hosts_present
-suffix:semicolon
-id|scsi_debug_hosts
-(braket
-id|k
-)braket
-op_assign
-id|hpnt
-suffix:semicolon
 )brace
+id|scsi_debug_add_host
+op_assign
+id|k
+suffix:semicolon
+singleline_comment|// number of hosts actually present
 r_if
 c_cond
 (paren
@@ -9076,7 +9035,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;scsi_debug: ... built %d host(s)&bslash;n&quot;
 comma
-id|num_hosts_present
+id|scsi_debug_add_host
 )paren
 suffix:semicolon
 )brace
@@ -9102,14 +9061,25 @@ c_loop
 (paren
 id|k
 op_assign
+id|MAX_NUM_HOSTS
+op_minus
+l_int|1
+suffix:semicolon
+id|k
+op_ge
 l_int|0
 suffix:semicolon
+op_decrement
 id|k
-OL
-id|num_hosts_present
-suffix:semicolon
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|scsi_debug_hosts
+(braket
 id|k
-op_increment
+)braket
 )paren
 (brace
 id|scsi_remove_host
@@ -9137,6 +9107,7 @@ id|k
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 id|stop_all_queued
 c_func
