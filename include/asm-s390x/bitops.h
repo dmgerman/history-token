@@ -82,13 +82,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -100,6 +93,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
@@ -208,13 +208,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -226,6 +219,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
@@ -337,13 +337,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -355,6 +348,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
@@ -463,13 +463,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -481,6 +474,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
@@ -598,13 +598,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -616,6 +609,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
@@ -736,13 +736,6 @@ r_int
 id|ptr
 suffix:semicolon
 macro_line|#if ALIGN_CS == 1
-id|addr
-op_xor_assign
-id|addr
-op_amp
-l_int|7
-suffix:semicolon
-multiline_comment|/* align address to 8 */
 id|nr
 op_add_assign
 (paren
@@ -754,6 +747,13 @@ op_lshift
 l_int|3
 suffix:semicolon
 multiline_comment|/* add alignment to bit number */
+id|addr
+op_xor_assign
+id|addr
+op_amp
+l_int|7
+suffix:semicolon
+multiline_comment|/* align address to 8 */
 macro_line|#endif
 id|addr
 op_add_assign
