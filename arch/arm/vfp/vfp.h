@@ -1399,4 +1399,7 @@ id|u32
 id|significand
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * A special flag to tell the normalisation code not to normalise.&n; */
+DECL|macro|VFP_NAN_FLAG
+mdefine_line|#define VFP_NAN_FLAG&t;0x100
 eof
