@@ -2031,6 +2031,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|shmem_truncate
+c_func
 (paren
 id|inode
 )paren
@@ -2043,6 +2044,7 @@ id|inode-&gt;i_blocks
 )paren
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -2052,6 +2054,7 @@ id|sbinfo-&gt;free_inodes
 op_increment
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -2561,6 +2564,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -2624,6 +2628,7 @@ suffix:semicolon
 )brace
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -4077,6 +4082,7 @@ id|sb
 )paren
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -4090,6 +4096,7 @@ id|sbinfo-&gt;free_inodes
 )paren
 (brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -4103,6 +4110,7 @@ id|sbinfo-&gt;free_inodes
 op_decrement
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -4239,6 +4247,7 @@ op_amp
 id|shmem_file_operations
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -4255,6 +4264,7 @@ id|shmem_inodes
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -5438,6 +5448,7 @@ op_assign
 id|PAGE_CACHE_SIZE
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -5462,6 +5473,7 @@ op_assign
 id|sbinfo-&gt;free_inodes
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -6267,6 +6279,7 @@ op_amp
 id|shmem_symlink_inode_operations
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -6283,6 +6296,7 @@ id|shmem_inodes
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|shmem_ilock
@@ -7053,6 +7067,7 @@ DECL|function|shmem_remount_fs
 r_static
 r_int
 id|shmem_remount_fs
+c_func
 (paren
 r_struct
 id|super_block
@@ -7314,6 +7329,7 @@ id|MS_NOUSER
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_init
+c_func
 (paren
 op_amp
 id|sbinfo-&gt;stat_lock
@@ -8030,6 +8046,7 @@ id|error
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Could not register tmpfs&bslash;n&quot;
@@ -8056,6 +8073,7 @@ id|error
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Could not register shm fs&bslash;n&quot;
@@ -8066,6 +8084,7 @@ id|out1
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
 l_int|NULL
 comma
@@ -8102,6 +8121,7 @@ id|res
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;could not kern_mount tmpfs&bslash;n&quot;
@@ -8461,6 +8481,7 @@ suffix:semicolon
 id|put_dentry
 suffix:colon
 id|dput
+c_func
 (paren
 id|dentry
 )paren
@@ -8550,6 +8571,7 @@ c_cond
 id|vma-&gt;vm_file
 )paren
 id|fput
+c_func
 (paren
 id|vma-&gt;vm_file
 )paren
