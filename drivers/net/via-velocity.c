@@ -3845,11 +3845,7 @@ c_cond
 (paren
 id|rd-&gt;rdesc0.owner
 op_eq
-id|cpu_to_le32
-c_func
-(paren
 id|OWNED_BY_NIC
-)paren
 )paren
 r_break
 suffix:semicolon
