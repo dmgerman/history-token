@@ -27,6 +27,8 @@ DECL|macro|USBMIDI_ROLAND_MPU64
 mdefine_line|#define USBMIDI_ROLAND_MPU64&t;&t;0x0002
 DECL|macro|USBMIDI_ROLAND_SC8850
 mdefine_line|#define USBMIDI_ROLAND_SC8850&t;&t;0x0003
+DECL|macro|USBMIDI_ROLAND_SC8820
+mdefine_line|#define USBMIDI_ROLAND_SC8820&t;&t;0x0007
 DECL|macro|USBMIDI_ROLAND_UM2
 mdefine_line|#define USBMIDI_ROLAND_UM2&t;&t;0x0005
 DECL|macro|USBMIDI_ROLAND_UM1
@@ -294,6 +296,53 @@ multiline_comment|/** cables 0,1,2, and 3 **/
 l_int|0x01
 comma
 l_int|15
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+)brace
+comma
+(brace
+multiline_comment|/* Roland SC8820 */
+l_string|&quot;Roland SC8820&quot;
+comma
+id|USB_VENDOR_ID_ROLAND
+comma
+id|USBMIDI_ROLAND_SC8820
+comma
+l_int|2
+comma
+op_minus
+l_int|1
+comma
+(brace
+(brace
+l_int|0x81
+comma
+l_int|17
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+(brace
+(brace
+l_int|0x01
+comma
+l_int|17
 )brace
 comma
 (brace

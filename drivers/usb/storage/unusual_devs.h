@@ -351,29 +351,29 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* Reported by Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt; */
+multiline_comment|/* From Yukihiro Nakai, via zaitcev@yahoo.com.&n; * This is needed for CB instead of CBI */
 id|UNUSUAL_DEV
 c_func
 (paren
-l_int|0x04ce
+l_int|0x04da
 comma
-l_int|0x0002
+l_int|0x0d05
 comma
-l_int|0x0074
+l_int|0x0000
 comma
-l_int|0x0074
+l_int|0x0000
 comma
-l_string|&quot;ScanLogic&quot;
+l_string|&quot;Sharp CE-CW05&quot;
 comma
-l_string|&quot;SL11R-IDE 0049SQFP-1.2 A002&quot;
+l_string|&quot;CD-R/RW Drive&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_8070
 comma
-id|US_PR_BULK
+id|US_PR_CB
 comma
 l_int|NULL
 comma
-id|US_FL_FIX_INQUIRY
+l_int|0
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2003/02/24 show registers in sysfs (Kevin Brosius)&n; *&n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -28,9 +28,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
+multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-17&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2003 Feb 24&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -43,6 +43,16 @@ mdefine_line|#define&t;OHCI_CONTROL_INIT &bslash;&n;&t; (OHCI_CTRL_CBSR &amp; 0x
 DECL|macro|OHCI_UNLINK_TIMEOUT
 mdefine_line|#define OHCI_UNLINK_TIMEOUT&t; (HZ / 10)
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|variable|hcd_name
+r_static
+r_const
+r_char
+id|hcd_name
+(braket
+)braket
+op_assign
+l_string|&quot;ohci-hcd&quot;
+suffix:semicolon
 macro_line|#include &quot;ohci.h&quot;
 DECL|function|disable
 r_static
@@ -593,6 +603,14 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;  
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -605,14 +623,6 @@ op_star
 id|urb_priv
 suffix:semicolon
 multiline_comment|/* Unless an IRQ completed the unlink while it was being&n;&t;&t; * handed to us, flag it for unlink and giveback, and force&n;&t;&t; * some upcoming INTR_SF to call finish_unlinks()&n;&t;&t; */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
@@ -642,18 +652,22 @@ id|urb_priv-&gt;ed
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * with HC dead, we won&squot;t respect hc queue pointers&n;&t;&t; * any more ... just clean up every urb&squot;s memory.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|urb-&gt;hcpriv
+)paren
+(brace
+id|spin_unlock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
@@ -663,7 +677,22 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 )brace
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -800,19 +829,32 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s-%s ed %p (#%d) not unlinked; disconnect() bug? %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;dev %s ep%d-%s linked; disconnect() bug?&bslash;n&quot;
 comma
 id|udev-&gt;devpath
 comma
-id|ed
-comma
+(paren
 id|i
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x0f
 comma
-id|ed-&gt;state
+(paren
+id|i
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;out&quot;
+suffix:colon
+l_string|&quot;in&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ED_OPER: some driver disconnect() is broken,&n;&t;&t;&t; * it didn&squot;t even start its unlinks much less wait&n;&t;&t;&t; * for their completions.&n;&t;&t;&t; * OTHERWISE:  hcd bug, ed is garbage&n;&t;&t;&t; *&n;&t;&t;&t; * ... we can&squot;t recycle this memory in either case,&n;&t;&t;&t; * so just leak it to avoid oopsing.&n;&t;&t;&t; */
@@ -849,15 +891,32 @@ id|in_interrupt
 )paren
 )paren
 (brace
-id|warn
+id|ohci_warn
 (paren
-l_string|&quot;disconnect() bug for dev usb-%s-%s ep 0x%x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;driver disconnect() bug %s ep%d-%s&bslash;n&quot;
 comma
 id|udev-&gt;devpath
 comma
+(paren
 id|i
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x0f
+comma
+(paren
+id|i
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;out&quot;
+suffix:colon
+l_string|&quot;in&quot;
 )paren
 suffix:semicolon
 )brace
@@ -923,7 +982,8 @@ id|ohci
 id|u32
 id|temp
 suffix:semicolon
-multiline_comment|/* SMM owns the HC?  not for long! */
+multiline_comment|/* SMM owns the HC?  not for long!&n;&t; * On PA-RISC, PDC can leave IR set incorrectly; ignore it there.&n;&t; */
+macro_line|#ifndef __hppa__
 r_if
 c_cond
 (paren
@@ -936,9 +996,9 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC TakeOver from BIOS/SMM&bslash;n&quot;
 )paren
@@ -991,9 +1051,9 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dev_err
+id|ohci_err
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
 )paren
@@ -1005,6 +1065,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/* Disable HC interrupts */
 id|writel
 (paren
@@ -1014,13 +1075,19 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&bslash;n&quot;
 comma
-id|ohci-&gt;hcd.self.bus_name
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bus_name
 comma
 id|readl
 (paren
@@ -1095,11 +1162,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dev_err
+id|ohci_err
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
-l_string|&quot;USB HC reset timed out!&quot;
+l_string|&quot;USB HC reset timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1145,11 +1212,18 @@ id|ohci
 (brace
 id|u32
 id|mask
+comma
+id|tmp
 suffix:semicolon
 r_struct
 id|usb_device
 op_star
 id|udev
+suffix:semicolon
+r_struct
+id|usb_bus
+op_star
+id|bus
 suffix:semicolon
 id|spin_lock_init
 (paren
@@ -1271,11 +1345,11 @@ id|ohci-&gt;regs-&gt;periodicstart
 )paren
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s init err&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;init err&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1331,24 +1405,57 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-multiline_comment|/* hub power always on: required for AMD-756 and some Mac platforms */
-id|writel
-(paren
-(paren
+multiline_comment|/* handle root hub init quirks ... */
+id|tmp
+op_assign
 id|roothub_a
 (paren
 id|ohci
 )paren
-op_or
-id|RH_A_NPS
-)paren
-op_amp
+suffix:semicolon
+id|tmp
+op_and_assign
 op_complement
 (paren
 id|RH_A_PSM
 op_or
 id|RH_A_OCPM
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_SUPERIO
+)paren
+(brace
+multiline_comment|/* NSC 87560 and maybe others */
+id|tmp
+op_or_assign
+id|RH_A_NOCP
+suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
+(paren
+id|RH_A_POTPGT
+op_or
+id|RH_A_NPS
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms, use this mode everywhere by default&n;&t;&t; */
+id|tmp
+op_or_assign
+id|RH_A_NPS
+suffix:semicolon
+)brace
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.a
@@ -1386,7 +1493,15 @@ l_int|0x1fe
 )paren
 suffix:semicolon
 multiline_comment|/* connect the virtual root hub */
-id|ohci-&gt;hcd.self.root_hub
+id|bus
+op_assign
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+suffix:semicolon
+id|bus-&gt;root_hub
 op_assign
 id|udev
 op_assign
@@ -1394,8 +1509,7 @@ id|usb_alloc_dev
 (paren
 l_int|NULL
 comma
-op_amp
-id|ohci-&gt;hcd.self
+id|bus
 )paren
 suffix:semicolon
 id|ohci-&gt;hcd.state
@@ -1444,11 +1558,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_register_root_hub
+id|hcd_register_root
 (paren
-id|udev
-comma
-id|ohci-&gt;hcd.controller
+op_amp
+id|ohci-&gt;hcd
 )paren
 op_ne
 l_int|0
@@ -1459,7 +1572,7 @@ id|usb_put_dev
 id|udev
 )paren
 suffix:semicolon
-id|ohci-&gt;hcd.self.root_hub
+id|bus-&gt;root_hub
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1587,11 +1700,11 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s device removed!&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;device removed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1618,7 +1731,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// dbg (&quot;Interrupt: %x frame: %x&quot;, ints, le16_to_cpu (ohci-&gt;hcca-&gt;frame_no));
 r_if
 c_cond
 (paren
@@ -1632,11 +1744,11 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
-id|err
+id|ohci_err
 (paren
-l_string|&quot;OHCI Unrecoverable Error, %s disabled&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;OHCI Unrecoverable Error, disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// e.g. due to PCI Master/Target Abort
@@ -1782,9 +1894,9 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|hcd-&gt;controller
+id|ohci
 comma
 l_string|&quot;stop %s controller%s&bslash;n&quot;
 comma
@@ -1894,12 +2006,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.self.root_hub
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
 )paren
 id|usb_disconnect
 (paren
 op_amp
-id|ohci-&gt;hcd.self.root_hub
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
 )paren
 suffix:semicolon
 multiline_comment|/* empty the interrupt branches */
@@ -1985,11 +2109,11 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;can&squot;t restart %s, %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;can&squot;t restart, %d&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -1999,11 +2123,11 @@ id|temp
 suffix:semicolon
 )brace
 r_else
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;restart %s completed&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;restart complete&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2012,16 +2136,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|variable|hcd_name
-r_static
-r_const
-r_char
-id|hcd_name
-(braket
-)braket
-op_assign
-l_string|&quot;ohci-hcd&quot;
-suffix:semicolon
 DECL|macro|DRIVER_INFO
 mdefine_line|#define DRIVER_INFO DRIVER_VERSION &quot; &quot; DRIVER_DESC
 DECL|variable|DRIVER_AUTHOR
