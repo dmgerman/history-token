@@ -2461,14 +2461,12 @@ op_or_assign
 (paren
 id|PBF_TRYLOCK
 op_or
-id|PBF_READ
-op_or
 id|PBF_ASYNC
 op_or
 id|PBF_READ_AHEAD
 )paren
 suffix:semicolon
-id|xfs_buf_get_flags
+id|xfs_buf_read_flags
 c_func
 (paren
 id|target
