@@ -721,14 +721,25 @@ r_char
 op_star
 id|search_resume_name
 suffix:semicolon
+multiline_comment|/* BB removeme BB */
 DECL|member|resume_name_length
 r_int
 r_int
 id|resume_name_length
 suffix:semicolon
+multiline_comment|/* BB removeme BB */
 DECL|member|resume_key
 id|__u32
 id|resume_key
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+DECL|member|index_of_last_entry_in_buf
+id|loff_t
+id|index_of_last_entry_in_buf
+suffix:semicolon
+DECL|member|entries_in_buffer
+r_int
+id|entries_in_buffer
 suffix:semicolon
 )brace
 suffix:semicolon
