@@ -3525,11 +3525,6 @@ op_assign
 id|generic_writepages
 comma
 dot
-id|vm_writeback
-op_assign
-id|generic_vm_writeback
-comma
-dot
 id|direct_IO
 op_assign
 id|blkdev_direct_IO

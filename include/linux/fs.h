@@ -534,23 +534,6 @@ id|writeback_control
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Perform a writeback as a memory-freeing operation. */
-DECL|member|vm_writeback
-r_int
-(paren
-op_star
-id|vm_writeback
-)paren
-(paren
-r_struct
-id|page
-op_star
-comma
-r_struct
-id|writeback_control
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* Set a page dirty */
 DECL|member|set_page_dirty
 r_int
@@ -6326,22 +6309,6 @@ r_struct
 id|file
 op_star
 id|filp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|generic_vm_writeback
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_struct
-id|writeback_control
-op_star
-id|wbc
 )paren
 suffix:semicolon
 DECL|function|do_generic_file_read

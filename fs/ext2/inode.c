@@ -2540,11 +2540,6 @@ id|writepages
 op_assign
 id|ext2_writepages
 comma
-dot
-id|vm_writeback
-op_assign
-id|generic_vm_writeback
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Probably it should be a library function... search for first non-zero word&n; * or memcmp with zero_page, whatever is better for particular architecture.&n; * Linus?&n; */
