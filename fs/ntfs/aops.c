@@ -3388,7 +3388,7 @@ suffix:semicolon
 multiline_comment|/* Apply the mst protection fixups. */
 id|kaddr
 op_assign
-id|page_address
+id|kmap
 c_func
 (paren
 id|page
@@ -3718,6 +3718,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3834,6 +3840,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|cleanup_out
 suffix:colon
 multiline_comment|/* Clean the buffers. */
