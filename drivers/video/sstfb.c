@@ -30,7 +30,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;sstfb.h&quot;
+macro_line|#include &lt;video/sstfb.h&gt;
 multiline_comment|/* initialized by setup */
 DECL|variable|vgapass
 r_static

@@ -31,8 +31,14 @@ macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
-macro_line|#ifdef CONFIG_FB
-macro_line|#include &lt;asm/linux_logo.h&gt;
+macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
+macro_line|#include &lt;linux/linux_logo.h&gt;
+r_extern
+r_const
+r_struct
+id|linux_logo
+id|logo_linux_clut224
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; *&n; * Because OF may have mapped I/O devices into the area starting at&n; * KERNELBASE, particularly on CHRP machines, we can&squot;t safely call&n; * OF once the kernel has been mapped to KERNELBASE.  Therefore all&n; * OF calls should be done within prom_init(), and prom_init()&n; * and all routines called within it must be careful to relocate&n; * references as necessary.&n; *&n; * Note that the bss is cleared *after* prom_init runs, so we have&n; * to make sure that any static or extern variables it accesses&n; * are put in the data segment.&n; */
 DECL|macro|PROM_BUG
@@ -6516,6 +6522,12 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
+r_const
+r_int
+r_char
+op_star
+id|clut
+suffix:semicolon
 id|_prom-&gt;disp_node
 op_assign
 l_int|0
@@ -6738,6 +6750,14 @@ r_int
 id|node
 suffix:semicolon
 multiline_comment|/* Setup a useable color table when the appropriate&n;&t;&t; * method is available. Should update this to set-colors */
+id|clut
+op_assign
+id|RELOC
+c_func
+(paren
+id|default_colors
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6751,6 +6771,10 @@ l_int|32
 suffix:semicolon
 id|i
 op_increment
+comma
+id|clut
+op_add_assign
+l_int|3
 )paren
 r_if
 c_cond
@@ -6762,40 +6786,18 @@ id|ih
 comma
 id|i
 comma
-id|RELOC
-c_func
-(paren
-id|default_colors
-)paren
+id|clut
 (braket
-id|i
-op_star
-l_int|3
+l_int|0
 )braket
 comma
-id|RELOC
-c_func
-(paren
-id|default_colors
-)paren
+id|clut
 (braket
-id|i
-op_star
-l_int|3
-op_plus
 l_int|1
 )braket
 comma
-id|RELOC
-c_func
-(paren
-id|default_colors
-)paren
+id|clut
 (braket
-id|i
-op_star
-l_int|3
-op_plus
 l_int|2
 )braket
 )paren
@@ -6804,7 +6806,22 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
+macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
+id|clut
+op_assign
+id|RELOC
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+op_amp
+id|logo_linux_clut224
+)paren
+op_member_access_from_pointer
+id|clut
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6814,10 +6831,14 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|LINUX_LOGO_COLORS
+id|logo_linux_clut224.clutsize
 suffix:semicolon
 id|i
 op_increment
+comma
+id|clut
+op_add_assign
+l_int|3
 )paren
 r_if
 c_cond
@@ -6831,31 +6852,19 @@ id|i
 op_plus
 l_int|32
 comma
-id|RELOC
-c_func
-(paren
-id|linux_logo_red
-)paren
+id|clut
 (braket
-id|i
+l_int|0
 )braket
 comma
-id|RELOC
-c_func
-(paren
-id|linux_logo_green
-)paren
+id|clut
 (braket
-id|i
+l_int|1
 )braket
 comma
-id|RELOC
-c_func
-(paren
-id|linux_logo_blue
-)paren
+id|clut
 (braket
-id|i
+l_int|2
 )braket
 )paren
 op_ne
@@ -6863,7 +6872,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_FRAMEBUFFER_CONSOLE */
+macro_line|#endif /* CONFIG_LOGO_LINUX_CLUT224 */
 multiline_comment|/*&n;&t;&t; * If this display is the device that OF is using for stdout,&n;&t;&t; * move it to the front of the list.&n;&t;&t; */
 id|mem
 op_add_assign

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &quot;maxinefb.h&quot;
+macro_line|#include &lt;video/maxinefb.h&gt;
 multiline_comment|/* bootinfo.h defines the machine type values, needed when checking */
 multiline_comment|/* whether are really running on a maxine, KM                       */
 macro_line|#include &lt;asm/bootinfo.h&gt;

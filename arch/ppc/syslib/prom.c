@@ -26,9 +26,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
-macro_line|#ifdef CONFIG_FB
-macro_line|#include &lt;asm/linux_logo.h&gt;
-macro_line|#endif
 DECL|struct|pci_address
 r_struct
 id|pci_address

@@ -26,8 +26,14 @@ macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#ifdef CONFIG_FB
-macro_line|#include &lt;asm/linux_logo.h&gt;
+macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
+macro_line|#include &lt;linux/linux_logo.h&gt;
+r_extern
+r_const
+r_struct
+id|linux_logo
+id|logo_linux_clut224
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Properties whose value is longer than this get excluded from our&n; * copy of the device tree.  This way we don&squot;t waste space storing&n; * things like &quot;driver,AAPL,MacOS,PowerPC&quot; properties.  But this value&n; * does need to be big enough to ensure that we don&squot;t lose things&n; * like the interrupt-map property on a PCI-PCI bridge.&n; */
 DECL|macro|MAX_PROPERTY_LENGTH
@@ -1422,6 +1428,12 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
+r_const
+r_int
+r_char
+op_star
+id|clut
+suffix:semicolon
 id|prom_disp_node
 op_assign
 l_int|0
@@ -1780,6 +1792,10 @@ l_string|&quot;... ok&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Setup a usable color table when the appropriate&n;&t;&t;&t; * method is available.&n;&t;&t;&t; * Should update this to use set-colors.&n;&t;&t;&t; */
+id|clut
+op_assign
+id|default_colors
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1793,6 +1809,10 @@ l_int|32
 suffix:semicolon
 id|i
 op_increment
+comma
+id|clut
+op_add_assign
+l_int|3
 )paren
 r_if
 c_cond
@@ -1804,28 +1824,18 @@ id|ih
 comma
 id|i
 comma
-id|default_colors
+id|clut
 (braket
-id|i
-op_star
-l_int|3
+l_int|0
 )braket
 comma
-id|default_colors
+id|clut
 (braket
-id|i
-op_star
-l_int|3
-op_plus
 l_int|1
 )braket
 comma
-id|default_colors
+id|clut
 (braket
-id|i
-op_star
-l_int|3
-op_plus
 l_int|2
 )braket
 )paren
@@ -1834,7 +1844,11 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
+macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
+id|clut
+op_assign
+id|logo_linux_clut224.clut
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1844,10 +1858,14 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|LINUX_LOGO_COLORS
+id|logo_linux_clut224.clutsize
 suffix:semicolon
 id|i
 op_increment
+comma
+id|clut
+op_add_assign
+l_int|3
 )paren
 r_if
 c_cond
@@ -1861,19 +1879,19 @@ id|i
 op_plus
 l_int|32
 comma
-id|linux_logo_red
+id|clut
 (braket
-id|i
+l_int|0
 )braket
 comma
-id|linux_logo_green
+id|clut
 (braket
-id|i
+l_int|1
 )braket
 comma
-id|linux_logo_blue
+id|clut
 (braket
-id|i
+l_int|2
 )braket
 )paren
 op_ne
@@ -1881,7 +1899,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_FRAMEBUFFER_CONSOLE */
+macro_line|#endif /* CONFIG_LOGO_LINUX_CLUT224 */
 )brace
 )brace
 r_return

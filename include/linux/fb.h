@@ -760,6 +760,7 @@ id|depth
 suffix:semicolon
 multiline_comment|/* Depth of the image */
 DECL|member|data
+r_const
 r_char
 op_star
 id|data

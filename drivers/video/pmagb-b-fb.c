@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
 macro_line|#include &lt;asm/dec/tc.h&gt;
-macro_line|#include &quot;pmagb-b-fb.h&quot;
+macro_line|#include &lt;video/pmagb-b-fb.h&gt;
 DECL|struct|pmagb_b_ramdac_regs
 r_struct
 id|pmagb_b_ramdac_regs

@@ -45,12 +45,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 macro_line|#  define DPRINTK(fmt, args...)
 macro_line|#endif
-DECL|macro|LOGO_H
-mdefine_line|#define LOGO_H&t;&t;&t;80
-DECL|macro|LOGO_W
-mdefine_line|#define LOGO_W&t;&t;&t;80
-DECL|macro|LOGO_LINE
-mdefine_line|#define LOGO_LINE&t;(LOGO_W/8)
 DECL|variable|fb_display
 r_struct
 id|display
@@ -65,6 +59,11 @@ id|con2fb_map
 (braket
 id|MAX_NR_CONSOLES
 )braket
+suffix:semicolon
+DECL|variable|logo_height
+r_static
+r_int
+id|logo_height
 suffix:semicolon
 DECL|variable|logo_lines
 r_static
@@ -1677,7 +1676,7 @@ id|vc-&gt;vc_font.height
 suffix:semicolon
 id|image.depth
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -4211,7 +4210,7 @@ suffix:semicolon
 id|logo_lines
 op_assign
 (paren
-id|LOGO_H
+id|logo_height
 op_plus
 id|vc-&gt;vc_font.height
 op_minus
@@ -9533,13 +9532,15 @@ id|logo_shown
 op_assign
 id|fg_console
 suffix:semicolon
+multiline_comment|/* This is protected above by initmem_freed */
+id|logo_height
+op_assign
 id|fb_show_logo
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* This is protected above by initmem_freed */
 id|update_region
 c_func
 (paren
