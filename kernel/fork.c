@@ -532,6 +532,10 @@ id|mm-&gt;rss
 op_assign
 l_int|0
 suffix:semicolon
+id|mm-&gt;anon_rss
+op_assign
+l_int|0
+suffix:semicolon
 id|cpus_clear
 c_func
 (paren

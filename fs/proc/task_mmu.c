@@ -197,7 +197,9 @@ id|resident
 op_star
 id|shared
 op_assign
-id|mm-&gt;shared_vm
+id|mm-&gt;rss
+op_minus
+id|mm-&gt;anon_rss
 suffix:semicolon
 op_star
 id|text

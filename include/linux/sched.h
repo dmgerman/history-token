@@ -564,7 +564,7 @@ DECL|member|page_table_lock
 id|spinlock_t
 id|page_table_lock
 suffix:semicolon
-multiline_comment|/* Protects task page tables and mm-&gt;rss */
+multiline_comment|/* Protects page tables, mm-&gt;rss, mm-&gt;anon_rss */
 DECL|member|mmlist
 r_struct
 id|list_head
@@ -611,12 +611,15 @@ comma
 id|env_end
 suffix:semicolon
 DECL|member|rss
+DECL|member|anon_rss
 DECL|member|total_vm
 DECL|member|locked_vm
 DECL|member|shared_vm
 r_int
 r_int
 id|rss
+comma
+id|anon_rss
 comma
 id|total_vm
 comma
