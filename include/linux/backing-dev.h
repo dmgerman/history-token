@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/linux/backing-dev.h&n; *&n; * low-level device
 macro_line|#ifndef _LINUX_BACKING_DEV_H
 DECL|macro|_LINUX_BACKING_DEV_H
 mdefine_line|#define _LINUX_BACKING_DEV_H
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Bits in backing_dev_info.state&n; */
 DECL|enum|bdi_state
 r_enum
@@ -11,6 +12,14 @@ DECL|enumerator|BDI_pdflush
 id|BDI_pdflush
 comma
 multiline_comment|/* A pdflush thread is working this device */
+DECL|enumerator|BDI_write_congested
+id|BDI_write_congested
+comma
+multiline_comment|/* The write queue is getting full */
+DECL|enumerator|BDI_read_congested
+id|BDI_read_congested
+comma
+multiline_comment|/* The read queue is getting full */
 DECL|enumerator|BDI_unused
 id|BDI_unused
 comma
@@ -75,5 +84,53 @@ op_star
 id|bdi
 )paren
 suffix:semicolon
+DECL|function|bdi_read_congested
+r_static
+r_inline
+r_int
+id|bdi_read_congested
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+r_return
+id|test_bit
+c_func
+(paren
+id|BDI_read_congested
+comma
+op_amp
+id|bdi-&gt;state
+)paren
+suffix:semicolon
+)brace
+DECL|function|bdi_write_congested
+r_static
+r_inline
+r_int
+id|bdi_write_congested
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+r_return
+id|test_bit
+c_func
+(paren
+id|BDI_write_congested
+comma
+op_amp
+id|bdi-&gt;state
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif&t;&t;/* _LINUX_BACKING_DEV_H */
 eof
