@@ -6456,7 +6456,7 @@ c_func
 id|inode
 )paren
 op_amp
-id|NFS_INO_INVALID_ATTR
+id|NFS_INO_INVALID_ACCESS
 )paren
 )paren
 r_return
@@ -6537,6 +6537,15 @@ c_func
 (paren
 id|set-&gt;cred
 )paren
+suffix:semicolon
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_and_assign
+op_complement
+id|NFS_INO_INVALID_ACCESS
 suffix:semicolon
 )brace
 id|cache-&gt;jiffies

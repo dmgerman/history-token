@@ -295,6 +295,8 @@ DECL|macro|NFS_INO_INVALID_DATA
 mdefine_line|#define NFS_INO_INVALID_DATA&t;0x0010&t;&t;/* cached data is invalid */
 DECL|macro|NFS_INO_INVALID_ATIME
 mdefine_line|#define NFS_INO_INVALID_ATIME&t;0x0020&t;&t;/* cached atime is invalid */
+DECL|macro|NFS_INO_INVALID_ACCESS
+mdefine_line|#define NFS_INO_INVALID_ACCESS&t;0x0040&t;&t;/* cached access cred invalid */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -417,6 +419,8 @@ id|inode
 )paren
 op_or_assign
 id|NFS_INO_INVALID_ATTR
+op_or
+id|NFS_INO_INVALID_ACCESS
 suffix:semicolon
 )brace
 DECL|function|nfs_server_capable
