@@ -2151,15 +2151,6 @@ id|ip_conntrack_protocol_sctp
 op_assign
 (brace
 dot
-id|list
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
-dot
 id|proto
 op_assign
 id|IPPROTO_SCTP

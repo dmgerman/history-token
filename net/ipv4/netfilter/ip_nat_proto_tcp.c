@@ -681,12 +681,6 @@ id|ip_nat_protocol
 id|ip_nat_protocol_tcp
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
 l_string|&quot;TCP&quot;
 comma
 id|IPPROTO_TCP

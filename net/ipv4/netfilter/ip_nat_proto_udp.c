@@ -634,12 +634,6 @@ id|ip_nat_protocol
 id|ip_nat_protocol_udp
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
 l_string|&quot;UDP&quot;
 comma
 id|IPPROTO_UDP
