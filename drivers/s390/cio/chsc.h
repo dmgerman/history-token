@@ -353,10 +353,10 @@ DECL|member|state
 r_int
 id|state
 suffix:semicolon
-DECL|member|sdev
+DECL|member|dev
 r_struct
-id|sys_device
-id|sdev
+id|device
+id|dev
 suffix:semicolon
 )brace
 suffix:semicolon

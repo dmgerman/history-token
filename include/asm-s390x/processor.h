@@ -120,8 +120,6 @@ id|task_struct
 op_star
 id|last_task_used_math
 suffix:semicolon
-DECL|macro|S390_FLAG_31BIT
-mdefine_line|#define S390_FLAG_31BIT 0x01UL
 multiline_comment|/*&n; * User space process size: 4TB (default).&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE       (0x20000000000UL)
@@ -129,7 +127,7 @@ DECL|macro|TASK31_SIZE
 mdefine_line|#define TASK31_SIZE     (0x80000000UL)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE      ((current-&gt;thread.flags &amp; S390_FLAG_31BIT) ? &bslash;&n;&t;(TASK31_SIZE / 2) : (TASK_SIZE / 2))
+mdefine_line|#define TASK_UNMAPPED_BASE &bslash;&n;&t;(test_thread_flag(TIF_31BIT) ? (TASK31_SIZE / 2) : (TASK_SIZE / 2))
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (4*PAGE_SIZE)
 r_typedef

@@ -261,27 +261,12 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Alloc new inode %p &quot;
-comma
-op_star
-id|pinode
-)paren
-)paren
-suffix:semicolon
 )brace
 id|inode
 op_assign
 op_star
 id|pinode
 suffix:semicolon
-multiline_comment|/*        new_inode = iget(parent_dir_inode-&gt;i_sb, findData.IndexNumber); */
-multiline_comment|/* index number not reliable in response data */
 id|cifsInfo
 op_assign
 id|CIFS_I
@@ -958,19 +943,6 @@ id|new_inode
 c_func
 (paren
 id|sb
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Alloc new inode %p &quot;
-comma
-op_star
-id|pinode
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2272,7 +2244,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
+l_string|&quot;Revalidate full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
 comma
 id|full_path
 comma
@@ -2300,7 +2272,6 @@ multiline_comment|/* BB add check - do not need to revalidate oplocked files */
 r_if
 c_cond
 (paren
-(paren
 id|time_before
 c_func
 (paren
@@ -2311,7 +2282,20 @@ op_plus
 id|HZ
 )paren
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|S_ISREG
+c_func
+(paren
+id|direntry-&gt;d_inode-&gt;i_mode
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_or
 (paren
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_eq
@@ -2319,16 +2303,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Do not need to revalidate &quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2349,6 +2323,20 @@ suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Have to revalidate file due to hardlinks&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -3109,6 +3097,8 @@ id|ATTR_UID
 )paren
 )paren
 )paren
+id|rc
+op_assign
 id|CIFSSMBUnixSetPerms
 c_func
 (paren
@@ -3268,8 +3258,15 @@ id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&t;cifsInode-&gt;time = 0; */
-multiline_comment|/* force revalidate to get attributes when needed */
+multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
+id|inode_setattr
+c_func
+(paren
+id|direntry-&gt;d_inode
+comma
+id|attrs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

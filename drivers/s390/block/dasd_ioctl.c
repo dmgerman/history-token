@@ -456,13 +456,12 @@ multiline_comment|/* Found a matching ioctl. Call it. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|try_module_get
 c_func
 (paren
 id|ioctl-&gt;owner
 )paren
-op_ne
-l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -1046,7 +1045,6 @@ id|EACCES
 suffix:semicolon
 id|device
 op_assign
-op_assign
 id|bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
 r_if
@@ -1102,7 +1100,6 @@ op_star
 id|device
 suffix:semicolon
 id|device
-op_assign
 op_assign
 id|bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon

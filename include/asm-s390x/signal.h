@@ -262,6 +262,8 @@ id|sa
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#else
 multiline_comment|/* Here we must cater to libcs that poke about in kernel headers.  */
 DECL|struct|sigaction
@@ -320,8 +322,6 @@ DECL|macro|sa_handler
 mdefine_line|#define sa_handler      _u._sa_handler
 DECL|macro|sa_sigaction
 mdefine_line|#define sa_sigaction    _u._sa_sigaction
-DECL|macro|ptrace_signal_deliver
-mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 DECL|struct|sigaltstack
 r_typedef

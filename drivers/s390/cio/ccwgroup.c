@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.6 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.90 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.91 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -725,11 +725,7 @@ l_int|0
 )paren
 ques
 c_cond
-(paren
 id|lpm
-op_amp
-id|sch-&gt;lpm
-)paren
 suffix:colon
 id|sch-&gt;lpm
 suffix:semicolon

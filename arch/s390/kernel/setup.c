@@ -2321,7 +2321,7 @@ id|pos
 r_return
 op_star
 id|pos
-op_le
+OL
 id|NR_CPUS
 ques
 c_cond

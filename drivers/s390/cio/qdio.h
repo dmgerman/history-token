@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.8 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.11 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -54,6 +54,8 @@ DECL|macro|QDIO_PERF
 mdefine_line|#define QDIO_PERF &quot;qdio_perf&quot;
 multiline_comment|/* must be a power of 2 */
 multiline_comment|/*#define QDIO_STATS_NUMBER 4&n;&n;#define QDIO_STATS_CLASSES 2&n;#define QDIO_STATS_COUNT_NEEDED 2*/
+DECL|macro|QDIO_ACTIVATE_DELAY
+mdefine_line|#define QDIO_ACTIVATE_DELAY 5 /* according to brenton belmar and paul&n;&t;&t;&t;&t; gioquindo it can take up to 5ms before&n;&t;&t;&t;&t; queues are really active */
 DECL|macro|QDIO_NO_USE_COUNT_TIME
 mdefine_line|#define QDIO_NO_USE_COUNT_TIME 10
 DECL|macro|QDIO_NO_USE_COUNT_TIMEOUT
@@ -1197,6 +1199,12 @@ DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
+DECL|member|cdev
+r_struct
+id|ccw_device
+op_star
+id|cdev
+suffix:semicolon
 DECL|member|is_iqdio_q
 r_int
 r_int
@@ -1447,9 +1455,10 @@ r_int
 r_int
 id|state
 suffix:semicolon
-DECL|member|setting_up_lock
-id|spinlock_t
-id|setting_up_lock
+DECL|member|setting_up_sema
+r_struct
+id|semaphore
+id|setting_up_sema
 suffix:semicolon
 DECL|member|no_input_qs
 r_int

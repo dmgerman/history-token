@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.40 2002/02/08 03:57:19 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Changes:&n; *&n; *&t;yoshfuji&t;: fix format of router-alert option&n; *&t;YOSHIFUJI Hideaki @USAGI:&n; *&t;&t;Fixed source address for MLD message based on&n; *&t;&t;&lt;draft-ietf-magma-mld-source-02.txt&gt;.&n; *&t;YOSHIFUJI Hideaki @USAGI:&n; *&t;&t;- Ignore Queries for invalid addresses.&n; *&t;&t;- MLD for link-local addresses.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

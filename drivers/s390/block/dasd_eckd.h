@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.5 $&n; *&n; * History of changes &n; * &n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.6 $&n; *&n; * History of changes &n; * &n; */
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
@@ -362,7 +362,6 @@ id|attributes
 suffix:semicolon
 DECL|member|blk_size
 id|__u16
-r_int
 id|blk_size
 suffix:semicolon
 multiline_comment|/* Blocksize */

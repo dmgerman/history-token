@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.71 $&n; *&n; * History of changes (starts July 2000)&n; * 11/09/00 complete redesign after code review&n; * 02/01/01 added dynamic registration of ioctls&n; *&t;    fixed bug in registration of new majors&n; *&t;    fixed handling of request during dasd_end_request&n; *&t;    fixed handling of plugged queues&n; *&t;    fixed partition handling and HDIO_GETGEO&n; *&t;    fixed traditional naming scheme for devices beyond 702&n; *&t;    fixed some race conditions related to modules&n; *&t;    added devfs suupport&n; * 03/06/01 refined dynamic attach/detach for leaving devices which are online.&n; * 03/09/01 refined dynamic modifiaction of devices&n; * 03/12/01 moved policy in dasd_format to dasdfmt (renamed BIODASDFORMAT)&n; * 03/19/01 added BIODASDINFO-ioctl&n; *&t;    removed 2.2 compatibility&n; * 04/27/01 fixed PL030119COT (dasd_disciplines does not work)&n; * 04/30/01 fixed PL030146HSM (module locking with dynamic ioctls)&n; *&t;    fixed PL030130SBA (handling of invalid ranges)&n; * 05/02/01 fixed PL030145SBA (killing dasdmt)&n; *&t;    fixed PL030149SBA (status of &squot;accepted&squot; devices)&n; *&t;    fixed PL030146SBA (BUG in ibm.c after adding device)&n; *&t;    added BIODASDPRRD ioctl interface&n; * 05/11/01 fixed  PL030164MVE (trap in probeonly mode)&n; * 05/15/01 fixed devfs support for unformatted devices&n; * 06/26/01 hopefully fixed PL030172SBA,PL030234SBA&n; * 07/09/01 fixed PL030324MSH (wrong statistics output)&n; * 07/16/01 merged in new fixes for handling low-mem situations&n; * 01/22/01 fixed PL030579KBE (wrong statistics)&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.74 $&n; *&n; * History of changes (starts July 2000)&n; * 11/09/00 complete redesign after code review&n; * 02/01/01 added dynamic registration of ioctls&n; *&t;    fixed bug in registration of new majors&n; *&t;    fixed handling of request during dasd_end_request&n; *&t;    fixed handling of plugged queues&n; *&t;    fixed partition handling and HDIO_GETGEO&n; *&t;    fixed traditional naming scheme for devices beyond 702&n; *&t;    fixed some race conditions related to modules&n; *&t;    added devfs suupport&n; * 03/06/01 refined dynamic attach/detach for leaving devices which are online.&n; * 03/09/01 refined dynamic modifiaction of devices&n; * 03/12/01 moved policy in dasd_format to dasdfmt (renamed BIODASDFORMAT)&n; * 03/19/01 added BIODASDINFO-ioctl&n; *&t;    removed 2.2 compatibility&n; * 04/27/01 fixed PL030119COT (dasd_disciplines does not work)&n; * 04/30/01 fixed PL030146HSM (module locking with dynamic ioctls)&n; *&t;    fixed PL030130SBA (handling of invalid ranges)&n; * 05/02/01 fixed PL030145SBA (killing dasdmt)&n; *&t;    fixed PL030149SBA (status of &squot;accepted&squot; devices)&n; *&t;    fixed PL030146SBA (BUG in ibm.c after adding device)&n; *&t;    added BIODASDPRRD ioctl interface&n; * 05/11/01 fixed  PL030164MVE (trap in probeonly mode)&n; * 05/15/01 fixed devfs support for unformatted devices&n; * 06/26/01 hopefully fixed PL030172SBA,PL030234SBA&n; * 07/09/01 fixed PL030324MSH (wrong statistics output)&n; * 07/16/01 merged in new fixes for handling low-mem situations&n; * 01/22/01 fixed PL030579KBE (wrong statistics)&n; * 05/04/02 code restructuring.&n; */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST /* Don&squot;t generate end_request in blk.h */
 macro_line|#include &lt;linux/config.h&gt;
@@ -6657,6 +6657,19 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|device-&gt;request_queue
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|request_queue_t
+)paren
+)paren
+suffix:semicolon
 id|device-&gt;request_queue-&gt;queuedata
 op_assign
 id|device
@@ -6682,6 +6695,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+macro_line|#if 0
 id|elevator_exit
 c_func
 (paren
@@ -6715,6 +6729,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 id|blk_queue_hardsect_size
 c_func
 (paren

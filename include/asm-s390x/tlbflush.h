@@ -177,6 +177,11 @@ op_star
 id|mm
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -204,7 +209,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|mm-&gt;mm_count
+id|mm-&gt;mm_users
 )paren
 op_eq
 l_int|1
@@ -227,6 +232,11 @@ suffix:semicolon
 )brace
 r_else
 id|local_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren

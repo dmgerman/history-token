@@ -2151,6 +2151,25 @@ l_int|NULL
 r_if
 c_cond
 (paren
+id|devname
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;CIFS: Missing UNC name for mount target&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|strnlen
 c_func
 (paren
@@ -4361,7 +4380,7 @@ id|pSesInfo-&gt;server-&gt;tsk
 id|send_sig
 c_func
 (paren
-id|SIGINT
+id|SIGKILL
 comma
 id|pSesInfo-&gt;server-&gt;tsk
 comma
@@ -11545,7 +11564,7 @@ suffix:semicolon
 id|send_sig
 c_func
 (paren
-id|SIGINT
+id|SIGKILL
 comma
 id|ses-&gt;server-&gt;tsk
 comma
@@ -11591,7 +11610,6 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* if ((ses-&gt;server) &amp;&amp; (ses-&gt;server-&gt;ssocket)) {&n;               cFYI(1,(&quot;Releasing socket &quot;));        &n;               sock_release(ses-&gt;server-&gt;ssocket); &n;               kfree(ses-&gt;server); &n;          } */
 )brace
 r_if
 c_cond

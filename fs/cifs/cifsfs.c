@@ -635,6 +635,10 @@ c_cond
 id|oplockEnabled
 )paren
 (brace
+id|cifs_inode-&gt;clientCanCacheRead
+op_assign
+l_int|1
+suffix:semicolon
 id|cifs_inode-&gt;clientCanCacheAll
 op_assign
 l_int|1

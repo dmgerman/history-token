@@ -23,6 +23,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|chp_process_crw
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|s390_handle_damage
@@ -136,8 +144,6 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;source is subchannel %04X&bslash;n&quot;
 comma
 id|crw.rsid
@@ -156,8 +162,6 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;source is monitoring facility&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -169,11 +173,15 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;source is channel path %02X&bslash;n&quot;
 comma
-id|pcrwe-&gt;crw.rsid
+id|crw.rsid
+)paren
+suffix:semicolon
+id|chp_process_crw
+c_func
+(paren
+id|crw.rsid
 )paren
 suffix:semicolon
 r_break
@@ -184,8 +192,6 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;source is configuration-alert facility&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -197,8 +203,6 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;source is channel subsystem&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -214,8 +218,6 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
-comma
 l_string|&quot;unknown source&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -737,7 +737,7 @@ r_return
 id|ib-&gt;size
 OG
 (paren
-l_int|4096
+l_int|4096ul
 op_lshift
 id|ib-&gt;page_order
 )paren
@@ -758,7 +758,7 @@ r_return
 id|ib-&gt;size
 OG
 (paren
-l_int|4096
+l_int|4096ul
 op_lshift
 id|ib-&gt;page_order
 )paren

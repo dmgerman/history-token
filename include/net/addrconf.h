@@ -7,6 +7,14 @@ DECL|macro|MAX_RTR_SOLICITATIONS
 mdefine_line|#define MAX_RTR_SOLICITATIONS&t;&t;3
 DECL|macro|RTR_SOLICITATION_INTERVAL
 mdefine_line|#define RTR_SOLICITATION_INTERVAL&t;(4*HZ)
+DECL|macro|TEMP_VALID_LIFETIME
+mdefine_line|#define TEMP_VALID_LIFETIME&t;&t;(7*86400)
+DECL|macro|TEMP_PREFERRED_LIFETIME
+mdefine_line|#define TEMP_PREFERRED_LIFETIME&t;&t;(86400)
+DECL|macro|REGEN_MAX_RETRY
+mdefine_line|#define REGEN_MAX_RETRY&t;&t;&t;(5)
+DECL|macro|MAX_DESYNC_FACTOR
+mdefine_line|#define MAX_DESYNC_FACTOR&t;&t;(600)
 DECL|macro|ADDR_CHECK_FREQUENCY
 mdefine_line|#define ADDR_CHECK_FREQUENCY&t;&t;(120*HZ)
 DECL|struct|prefix_info
