@@ -1,9 +1,7 @@
 macro_line|#ifndef _ASM_M32R_POLL_H
 DECL|macro|_ASM_M32R_POLL_H
 mdefine_line|#define _ASM_M32R_POLL_H
-multiline_comment|/* $Id$ */
-multiline_comment|/* orig : i386 2.4.18 */
-multiline_comment|/* These are specified by iBCS2 */
+multiline_comment|/*&n; * poll(2) bit definitions.  Based on &lt;asm-i386/poll.h&gt;.&n; *&n; * Modified 2004&n; *      Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 DECL|macro|POLLIN
 mdefine_line|#define POLLIN&t;&t;0x0001
 DECL|macro|POLLPRI
@@ -16,7 +14,6 @@ DECL|macro|POLLHUP
 mdefine_line|#define POLLHUP&t;&t;0x0010
 DECL|macro|POLLNVAL
 mdefine_line|#define POLLNVAL&t;0x0020
-multiline_comment|/* The rest seem to be more-or-less nonstandard. Check them! */
 DECL|macro|POLLRDNORM
 mdefine_line|#define POLLRDNORM&t;0x0040
 DECL|macro|POLLRDBAND
@@ -27,6 +24,8 @@ DECL|macro|POLLWRBAND
 mdefine_line|#define POLLWRBAND&t;0x0200
 DECL|macro|POLLMSG
 mdefine_line|#define POLLMSG&t;&t;0x0400
+DECL|macro|POLLREMOVE
+mdefine_line|#define POLLREMOVE&t;0x1000
 DECL|struct|pollfd
 r_struct
 id|pollfd

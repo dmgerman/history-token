@@ -1,11 +1,10 @@
 macro_line|#ifndef _ASM_M32R__ELF_H
 DECL|macro|_ASM_M32R__ELF_H
 mdefine_line|#define _ASM_M32R__ELF_H
-multiline_comment|/* $Id$ */
-multiline_comment|/*&n; * ELF register definitions..&n; */
+multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1999-2004, Renesas Technology Corp.&n; *      Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
-macro_line|#include &lt;linux/utsname.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* M32R relocation types  */
 DECL|macro|R_M32R_NONE
 mdefine_line|#define&t;R_M32R_NONE&t;&t;0
@@ -74,7 +73,7 @@ DECL|macro|R_M32R_LO16_RELA
 mdefine_line|#define R_M32R_LO16_RELA&t;R_M32R_LO16
 DECL|macro|R_M32R_SDA16_RELA
 mdefine_line|#define R_M32R_SDA16_RELA&t;R_M32R_SDA16
-macro_line|#else /* OLD_TYPE */
+macro_line|#else /* not OLD_TYPE */
 DECL|macro|R_M32R_GNU_VTINHERIT
 mdefine_line|#define&t;R_M32R_GNU_VTINHERIT&t;11
 DECL|macro|R_M32R_GNU_VTENTRY
@@ -155,17 +154,18 @@ DECL|macro|R_M32R_GOTPC_HI_SLO
 mdefine_line|#define R_M32R_GOTPC_HI_SLO&t;60
 DECL|macro|R_M32R_GOTPC_LO
 mdefine_line|#define R_M32R_GOTPC_LO&t;&t;61
-macro_line|#endif /* OLD_TYPE */
+macro_line|#endif /* not OLD_TYPE */
 DECL|macro|R_M32R_NUM
 mdefine_line|#define R_M32R_NUM&t;&t;256
+multiline_comment|/*&n; * ELF register definitions..&n; */
+DECL|macro|ELF_NGREG
+mdefine_line|#define ELF_NGREG (sizeof (struct pt_regs) / sizeof(elf_greg_t))
 DECL|typedef|elf_greg_t
 r_typedef
 r_int
 r_int
 id|elf_greg_t
 suffix:semicolon
-DECL|macro|ELF_NGREG
-mdefine_line|#define ELF_NGREG (sizeof (struct pt_regs) / sizeof(elf_greg_t))
 DECL|typedef|elf_gregset_t
 r_typedef
 id|elf_greg_t
@@ -202,28 +202,28 @@ macro_line|#error no endian defined
 macro_line|#endif
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_M32R
-multiline_comment|/* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program starts %edx&n;   contains a pointer to a function which might be registered using `atexit&squot;.&n;   This provides a mean for the dynamic linker to call DT_FINI functions for&n;   shared libraries that have been loaded before the code runs.&n;&n;   A value of 0 tells we have no such handler.&n;&n;   We might as well make sure everything else is cleared too (except for %esp),&n;   just to make things more deterministic.&n; */
+multiline_comment|/* r0 is set by ld.so to a pointer to a function which might be&n; * registered using &squot;atexit&squot;.  This provides a mean for the dynamic&n; * linker to call DT_FINI functions for shared libraries that have&n; * been loaded before the code runs.&n; *&n; * So that we can use the same startup file with static executables,&n; * we start programs with a value of 0 to indicate that there is no&n; * such function.&n; */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;do { &bslash;&n;&t;_r-&gt;r0 = 0; &bslash;&n;} while (0)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;(_r)-&gt;r0 = 0
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
-mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
-multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
+mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
+multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)  &bslash;&n;&t;memcpy((char *)&amp;pr_reg, (char *)&amp;regs, sizeof (struct pt_regs));
-multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  This could be done in user space,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
+multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(0)
-multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.&n;&n;   For the moment, we have only optimizations for the Intel generations,&n;   but that could change... */
+multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.  */
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM  (NULL)
+mdefine_line|#define ELF_PLATFORM&t;(NULL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality(PER_LINUX)
 macro_line|#endif
 macro_line|#endif  /* _ASM_M32R__ELF_H */
 eof
