@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; * Copyright (c) 2001-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This file is released under the GPLv2&n; *&n; * See Documentation/driver-model/*.txt for more information.&n; */
+multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; * Copyright (c) 2001-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This file is released under the GPLv2&n; *&n; * See Documentation/driver-model/ for more information.&n; */
 macro_line|#ifndef _DEVICE_H_
 DECL|macro|_DEVICE_H_
 mdefine_line|#define _DEVICE_H_
