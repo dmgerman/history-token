@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 148 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 150 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -13,14 +13,14 @@ id|MODULE_NAME
 (paren
 l_string|&quot;exstore&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store&n; *&n; * PARAMETERS:  *Val_desc           - Value to be stored&n; *              *Dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an acpi_operand_object of type&n; *                                    Reference; if the latter the descriptor&n; *                                    will be either reused or deleted.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by Val_desc into the location&n; *              described by Dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store&n; *&n; * PARAMETERS:  *Source_desc        - Value to be stored&n; *              *Dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an acpi_operand_object of type&n; *                                    Reference;&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by Source_desc into the location&n; *              described by Dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store
 id|acpi_ex_store
 (paren
 id|acpi_operand_object
 op_star
-id|val_desc
+id|source_desc
 comma
 id|acpi_operand_object
 op_star
@@ -54,7 +54,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|val_desc
+id|source_desc
 op_logical_or
 op_logical_neg
 id|dest_desc
@@ -92,7 +92,7 @@ id|status
 op_assign
 id|acpi_ex_store_object_to_node
 (paren
-id|val_desc
+id|source_desc
 comma
 (paren
 id|acpi_namespace_node
@@ -133,7 +133,7 @@ id|dest_desc
 suffix:semicolon
 id|DUMP_STACK_ENTRY
 (paren
-id|val_desc
+id|source_desc
 )paren
 suffix:semicolon
 id|DUMP_STACK_ENTRY
@@ -176,7 +176,7 @@ id|status
 op_assign
 id|acpi_ex_store_object_to_node
 (paren
-id|val_desc
+id|source_desc
 comma
 id|ref_desc-&gt;reference.object
 comma
@@ -193,7 +193,7 @@ id|status
 op_assign
 id|acpi_ex_store_object_to_index
 (paren
-id|val_desc
+id|source_desc
 comma
 id|ref_desc
 comma
@@ -217,7 +217,7 @@ id|ref_desc-&gt;reference.opcode
 comma
 id|ref_desc-&gt;reference.offset
 comma
-id|val_desc
+id|source_desc
 comma
 id|walk_state
 )paren
@@ -246,7 +246,7 @@ l_string|&quot;[ACPI Debug] %s: &quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -254,7 +254,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 r_case
@@ -270,12 +270,12 @@ comma
 (paren
 id|u32
 )paren
-id|val_desc-&gt;integer.value
+id|source_desc-&gt;integer.value
 comma
 (paren
 id|u32
 )paren
-id|val_desc-&gt;integer.value
+id|source_desc-&gt;integer.value
 )paren
 )paren
 suffix:semicolon
@@ -294,7 +294,7 @@ comma
 (paren
 id|u32
 )paren
-id|val_desc-&gt;buffer.length
+id|source_desc-&gt;buffer.length
 )paren
 )paren
 suffix:semicolon
@@ -310,7 +310,7 @@ id|ACPI_DB_DEBUG_OBJECT
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|val_desc-&gt;string.pointer
+id|source_desc-&gt;string.pointer
 )paren
 )paren
 suffix:semicolon
@@ -329,7 +329,7 @@ comma
 (paren
 id|u32
 )paren
-id|val_desc-&gt;package.elements
+id|source_desc-&gt;package.elements
 )paren
 )paren
 suffix:semicolon
@@ -344,7 +344,7 @@ id|ACPI_DB_DEBUG_OBJECT
 comma
 l_string|&quot;@0x%p&bslash;n&quot;
 comma
-id|val_desc
+id|source_desc
 )paren
 )paren
 suffix:semicolon
@@ -409,33 +409,20 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* switch (Ref_desc-&gt;Reference.Opcode) */
-multiline_comment|/* Always delete the reference descriptor object */
-r_if
-c_cond
-(paren
-id|ref_desc
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|ref_desc
-)paren
-suffix:semicolon
-)brace
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_index&n; *&n; * PARAMETERS:  *Val_desc           - Value to be stored&n; *              *Node               - Named object to receive the value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_index&n; *&n; * PARAMETERS:  *Source_desc          - Value to be stored&n; *              *Node               - Named object to receive the value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_object_to_index
 id|acpi_ex_store_object_to_index
 (paren
 id|acpi_operand_object
 op_star
-id|val_desc
+id|source_desc
 comma
 id|acpi_operand_object
 op_star
@@ -490,7 +477,7 @@ op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The object at *(Dest_desc-&gt;Reference.Where) is the&n;&t;&t;&t; *  element within the package that is to be modified.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The object at *(Dest_desc-&gt;Reference.Where) is the&n;&t;&t;&t; * element within the package that is to be modified.&n;&t;&t;&t; */
 id|obj_desc
 op_assign
 op_star
@@ -504,7 +491,7 @@ c_cond
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If the Destination element is a package, we will delete&n;&t;&t;&t;&t; *  that object and construct a new one.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * TBD: [Investigate] Should both the src and dest be required&n;&t;&t;&t;&t; *      to be packages?&n;&t;&t;&t;&t; *       &amp;&amp; (Val_desc-&gt;Common.Type == ACPI_TYPE_PACKAGE)&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If the Destination element is a package, we will delete&n;&t;&t;&t;&t; *  that object and construct a new one.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * TBD: [Investigate] Should both the src and dest be required&n;&t;&t;&t;&t; *      to be packages?&n;&t;&t;&t;&t; *       &amp;&amp; (Source_desc-&gt;Common.Type == ACPI_TYPE_PACKAGE)&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -513,12 +500,7 @@ op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Take away the reference for being part of a package and&n;&t;&t;&t;&t;&t; * delete&n;&t;&t;&t;&t;&t; */
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
+multiline_comment|/* Take away the reference for being part of a package */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
@@ -537,12 +519,12 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If the Obj_desc is NULL, it means that an uninitialized package&n;&t;&t;&t;&t; * element has been used as a destination (this is OK), therefore,&n;&t;&t;&t;&t; * we must create the destination element to match the type of the&n;&t;&t;&t;&t; * source element NOTE: Val_desc can be of any type.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If the Obj_desc is NULL, it means that an uninitialized package&n;&t;&t;&t;&t; * element has been used as a destination (this is OK), therefore,&n;&t;&t;&t;&t; * we must create the destination element to match the type of the&n;&t;&t;&t;&t; * source element NOTE: Source_desccan be of any type.&n;&t;&t;&t;&t; */
 id|obj_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 suffix:semicolon
 r_if
@@ -571,7 +553,7 @@ id|status
 op_assign
 id|acpi_ut_copy_ipackage_to_ipackage
 (paren
-id|val_desc
+id|source_desc
 comma
 id|obj_desc
 comma
@@ -599,18 +581,13 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Install the new descriptor into the package and add a&n;&t;&t;&t;&t; * reference to the newly created descriptor for now being&n;&t;&t;&t;&t; * part of the parent package&n;&t;&t;&t;&t; */
+multiline_comment|/* Install the new descriptor into the package */
 op_star
 (paren
 id|dest_desc-&gt;reference.where
 )paren
 op_assign
 id|obj_desc
-suffix:semicolon
-id|acpi_ut_add_reference
-(paren
-id|obj_desc
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -621,12 +598,12 @@ op_ne
 id|obj_desc-&gt;common.type
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * The destination element is not a package, so we need to&n;&t;&t;&t;&t; * convert the contents of the source (Val_desc) and copy into&n;&t;&t;&t;&t; * the destination (Obj_desc)&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * The destination element is not a package, so we need to&n;&t;&t;&t;&t; * convert the contents of the source (Source_desc) and copy into&n;&t;&t;&t;&t; * the destination (Obj_desc)&n;&t;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store_object_to_object
 (paren
-id|val_desc
+id|source_desc
 comma
 id|obj_desc
 comma
@@ -690,7 +667,7 @@ multiline_comment|/*&n;&t;&t; * The assignment of the individual elements will b
 r_switch
 c_cond
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 r_case
@@ -725,7 +702,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|val_desc-&gt;integer.value
+id|source_desc-&gt;integer.value
 op_rshift
 (paren
 id|MUL_8
@@ -753,7 +730,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Type is Buffer, the Length is in the structure.&n;&t;&t;&t; * Just loop through the elements and assign each one in turn.&n;&t;&t;&t; */
 id|length
 op_assign
-id|val_desc-&gt;buffer.length
+id|source_desc-&gt;buffer.length
 suffix:semicolon
 r_for
 c_loop
@@ -772,7 +749,7 @@ op_increment
 (brace
 id|value
 op_assign
-id|val_desc-&gt;buffer.pointer
+id|source_desc-&gt;buffer.pointer
 (braket
 id|i
 )braket
@@ -793,7 +770,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Type is String, the Length is in the structure.&n;&t;&t;&t; * Just loop through the elements and assign each one in turn.&n;&t;&t;&t; */
 id|length
 op_assign
-id|val_desc-&gt;string.length
+id|source_desc-&gt;string.length
 suffix:semicolon
 r_for
 c_loop
@@ -812,7 +789,7 @@ op_increment
 (brace
 id|value
 op_assign
-id|val_desc-&gt;string.pointer
+id|source_desc-&gt;string.pointer
 (braket
 id|i
 )braket
@@ -837,7 +814,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Source must be Number/Buffer/String type, not %X&bslash;n&quot;
 comma
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 suffix:semicolon

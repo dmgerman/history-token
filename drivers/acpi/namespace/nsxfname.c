@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -48,27 +48,6 @@ id|FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter Validation */
 r_if
 c_cond
@@ -100,7 +79,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|prefix_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|parent
 )paren
@@ -222,27 +201,6 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Buffer pointer must be valid always */
 r_if
 c_cond
@@ -318,7 +276,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren
@@ -417,10 +375,10 @@ op_star
 id|info
 )paren
 (brace
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 id|hid
 suffix:semicolon
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 id|uid
 suffix:semicolon
 id|acpi_status
@@ -440,27 +398,6 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -485,7 +422,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren

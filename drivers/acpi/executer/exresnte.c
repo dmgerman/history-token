@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -14,7 +14,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;exresnte&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_node_to_value&n; *&n; * PARAMETERS:  Stack_ptr       - Pointer to a location on a stack that contains&n; *                                a pointer to a Node&n; *              Walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a Namespace node (AKA a &quot;direct name pointer&quot;) to&n; *              a valued object&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_INTEGER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_node_to_value&n; *&n; * PARAMETERS:  Object_ptr      - Pointer to a location that contains&n; *                                a pointer to a NS node, and will recieve a&n; *                                pointer to the resolved object.&n; *              Walk_state      - Current state.  Valid only if executing AML&n; *                                code.  NULL if simply resolving an object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a Namespace node to a valued object&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_INTEGER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_node_to_value
 id|acpi_ex_resolve_node_to_value
@@ -22,7 +22,7 @@ id|acpi_ex_resolve_node_to_value
 id|acpi_namespace_node
 op_star
 op_star
-id|stack_ptr
+id|object_ptr
 comma
 id|acpi_walk_state
 op_star
@@ -36,7 +36,7 @@ id|AE_OK
 suffix:semicolon
 id|acpi_operand_object
 op_star
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_operand_object
 op_star
@@ -63,9 +63,9 @@ multiline_comment|/*&n;&t; * The stack pointer points to a acpi_namespace_node (
 id|node
 op_assign
 op_star
-id|stack_ptr
+id|object_ptr
 suffix:semicolon
-id|val_desc
+id|source_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
@@ -87,11 +87,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Entry=%p Val_desc=%p Type=%X&bslash;n&quot;
+l_string|&quot;Entry=%p Source_desc=%p Type=%X&bslash;n&quot;
 comma
 id|node
 comma
-id|val_desc
+id|source_desc
 comma
 id|entry_type
 )paren
@@ -126,7 +126,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|val_desc
+id|source_desc
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -161,7 +161,7 @@ c_cond
 (paren
 id|ACPI_TYPE_PACKAGE
 op_ne
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -173,7 +173,7 @@ l_string|&quot;Object not a Package, type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -187,7 +187,7 @@ suffix:semicolon
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_ut_add_reference
 (paren
@@ -204,7 +204,7 @@ c_cond
 (paren
 id|ACPI_TYPE_BUFFER
 op_ne
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -216,7 +216,7 @@ l_string|&quot;Object not a Buffer, type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -230,7 +230,7 @@ suffix:semicolon
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_ut_add_reference
 (paren
@@ -247,7 +247,7 @@ c_cond
 (paren
 id|ACPI_TYPE_STRING
 op_ne
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -259,7 +259,7 @@ l_string|&quot;Object not a String, type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -273,7 +273,7 @@ suffix:semicolon
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_ut_add_reference
 (paren
@@ -290,7 +290,7 @@ c_cond
 (paren
 id|ACPI_TYPE_INTEGER
 op_ne
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -302,7 +302,7 @@ l_string|&quot;Object not a Integer, type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|val_desc-&gt;common.type
+id|source_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -316,7 +316,7 @@ suffix:semicolon
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_ut_add_reference
 (paren
@@ -342,11 +342,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Field_read Node=%p Val_desc=%p Type=%X&bslash;n&quot;
+l_string|&quot;Field_read Node=%p Source_desc=%p Type=%X&bslash;n&quot;
 comma
 id|node
 comma
-id|val_desc
+id|source_desc
 comma
 id|entry_type
 )paren
@@ -356,7 +356,7 @@ id|status
 op_assign
 id|acpi_ex_read_data_from_field
 (paren
-id|val_desc
+id|source_desc
 comma
 op_amp
 id|obj_desc
@@ -389,7 +389,7 @@ suffix:colon
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|acpi_ut_add_reference
 (paren
@@ -428,7 +428,7 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|val_desc-&gt;reference.opcode
+id|source_desc-&gt;reference.opcode
 )paren
 (brace
 r_case
@@ -463,7 +463,7 @@ id|AML_REVISION_OP
 suffix:colon
 id|temp_val
 op_assign
-id|ACPI_CA_VERSION
+id|ACPI_CA_SUPPORT_LEVEL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -476,7 +476,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unsupported reference opcode %X&bslash;n&quot;
 comma
-id|val_desc-&gt;reference.opcode
+id|source_desc-&gt;reference.opcode
 )paren
 )paren
 suffix:semicolon
@@ -511,7 +511,13 @@ id|obj_desc-&gt;integer.value
 op_assign
 id|temp_val
 suffix:semicolon
-multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
+multiline_comment|/*&n;&t;&t; * Truncate value if we are executing from a 32-bit ACPI table&n;&t;&t; * AND actually executing AML code.  If we are resolving&n;&t;&t; * an object in the namespace via an external call to the&n;&t;&t; * subsystem, we will have a null Walk_state&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|walk_state
+)paren
+(brace
 id|acpi_ex_truncate_for32bit_table
 (paren
 id|obj_desc
@@ -519,6 +525,7 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 multiline_comment|/* Default case is for unknown types */
@@ -546,7 +553,7 @@ suffix:semicolon
 multiline_comment|/* switch (Entry_type) */
 multiline_comment|/* Put the object descriptor on the stack */
 op_star
-id|stack_ptr
+id|object_ptr
 op_assign
 (paren
 r_void

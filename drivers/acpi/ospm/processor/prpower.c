@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prpower.c&n; *   $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prpower.c&n; *   $Revision: 32 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/* TBD: Linux specific */
 macro_line|#include &lt;linux/sched.h&gt;
@@ -15,7 +15,7 @@ l_string|&quot;prpower&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                                  Globals&n; ****************************************************************************/
 r_extern
-id|fadt_descriptor_rev2
+id|FADT_DESCRIPTOR
 id|acpi_fadt
 suffix:semicolon
 DECL|variable|last_idle_jiffies
@@ -410,7 +410,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* no C1 time measurement, so just enter some number of times */
+multiline_comment|/*&n;&t; * TBD: Can&squot;t get time duration while in C1, as resumes&n;&t;&t; *      go to an ISR rather than here.&n;&t;&t; */
 id|time_elapsed
 op_assign
 l_int|0xFFFFFFFF
@@ -618,8 +618,9 @@ multiline_comment|/*&n;&t;&t;&t; * Bus Mastering Activity, if active and used&n;
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bm_control
-op_logical_and
+op_logical_or
 op_logical_neg
 (paren
 id|processor-&gt;power.bm_activity
@@ -627,12 +628,10 @@ op_amp
 id|c_state-&gt;promotion.bm_threshold
 )paren
 )paren
-(brace
 id|next_state
 op_assign
 id|c_state-&gt;promotion.target_state
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/*&n;&t; * Demotion?&n;&t; * ---------&n;&t; * Track the number of shorts (time asleep is less than&n;&t; * time_threshold) and demote when count_threshold is reached.&n;&t; */
@@ -683,12 +682,10 @@ op_amp
 id|c_state-&gt;demotion.bm_threshold
 )paren
 )paren
-(brace
 id|next_state
 op_assign
 id|c_state-&gt;demotion.target_state
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
 r_if
@@ -1289,7 +1286,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* only use C3 if we can control busmastering */
+multiline_comment|/* Only use C3 if we can control bus mastering. */
 r_if
 c_cond
 (paren

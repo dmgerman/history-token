@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bn.c&n; *   $Revision: 25 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bn.c&n; *   $Revision: 27 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Plxxe, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bn.h&quot;
@@ -106,6 +106,10 @@ id|button-&gt;device_handle
 comma
 id|button-&gt;acpi_handle
 comma
+(paren
+r_char
+op_star
+)paren
 id|buffer.pointer
 )paren
 )paren
@@ -129,6 +133,10 @@ id|button-&gt;device_handle
 comma
 id|button-&gt;acpi_handle
 comma
+(paren
+r_char
+op_star
+)paren
 id|buffer.pointer
 )paren
 )paren
@@ -149,6 +157,10 @@ id|button-&gt;device_handle
 comma
 id|button-&gt;acpi_handle
 comma
+(paren
+r_char
+op_star
+)paren
 id|buffer.pointer
 )paren
 )paren

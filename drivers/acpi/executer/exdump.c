@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 123 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 126 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -14,7 +14,7 @@ l_string|&quot;exdump&quot;
 )paren
 multiline_comment|/*&n; * The following routines are used for debug output only&n; */
 macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_show_hex_value&n; *&n; * PARAMETERS:  Byte_count          - Number of bytes to print (1, 2, or 4)&n; *              *Aml_ptr            - Address in AML stream of bytes to print&n; *              Interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *              Lead_space          - # of spaces to print ahead of value&n; *                                    0 =&gt; none ahead but one behind&n; *&n; * DESCRIPTION: Print Byte_count byte(s) starting at Aml_ptr as a single&n; *              value, in hex.  If Byte_count &gt; 1 or the value printed is &gt; 9, also&n; *              print in decimal.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_show_hex_value&n; *&n; * PARAMETERS:  Byte_count          - Number of bytes to print (1, 2, or 4)&n; *              *Aml_start            - Address in AML stream of bytes to print&n; *              Interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *              Lead_space          - # of spaces to print ahead of value&n; *                                    0 =&gt; none ahead but one behind&n; *&n; * DESCRIPTION: Print Byte_count byte(s) starting at Aml_start as a single&n; *              value, in hex.  If Byte_count &gt; 1 or the value printed is &gt; 9, also&n; *              print in decimal.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_show_hex_value
 id|acpi_ex_show_hex_value
@@ -24,7 +24,7 @@ id|byte_count
 comma
 id|u8
 op_star
-id|aml_ptr
+id|aml_start
 comma
 id|u32
 id|lead_space
@@ -57,7 +57,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|aml_ptr
+id|aml_start
 )paren
 (brace
 id|REPORT_ERROR
@@ -74,7 +74,7 @@ c_loop
 (paren
 id|current_aml_ptr
 op_assign
-id|aml_ptr
+id|aml_start
 op_plus
 id|byte_count
 comma
@@ -84,7 +84,7 @@ l_int|0
 suffix:semicolon
 id|current_aml_ptr
 OG
-id|aml_ptr
+id|aml_start
 suffix:semicolon
 )paren
 (brace
@@ -159,15 +159,6 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_LOAD
-comma
-l_string|&quot;&quot;
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -206,7 +197,7 @@ comma
 l_string|&quot;%02x&quot;
 comma
 op_star
-id|aml_ptr
+id|aml_start
 op_increment
 )paren
 )paren
@@ -239,7 +230,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot; [%ld]&quot;
+l_string|&quot; [%d]&quot;
 comma
 id|value
 )paren
@@ -352,32 +343,6 @@ id|DUMP_ENTRY
 id|entry_desc
 comma
 id|ACPI_LV_INFO
-)paren
-suffix:semicolon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|acpi_tb_system_table_pointer
-(paren
-id|entry_desc
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;%p is an AML pointer&bslash;n&quot;
-comma
-id|entry_desc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -589,9 +554,19 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot; value is [%ld]&quot;
+l_string|&quot; value is [%8.8X%8.8x]&quot;
 comma
+id|HIDWORD
+c_func
+(paren
 id|entry_desc-&gt;integer.value
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|entry_desc-&gt;integer.value
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -635,9 +610,19 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot; value is [%ld]&quot;
+l_string|&quot; value is [%8.8X%8.8x]&quot;
 comma
+id|HIDWORD
+c_func
+(paren
 id|entry_desc-&gt;integer.value
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|entry_desc-&gt;integer.value
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -661,7 +646,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Reference.Node-&gt;Name %x&bslash;n&quot;
+l_string|&quot;Reference.Node-&gt;Name %X&bslash;n&quot;
 comma
 id|entry_desc-&gt;reference.node-&gt;name
 )paren
@@ -756,11 +741,6 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-id|length
-ques
-c_cond
-l_string|&quot; %02x&quot;
-suffix:colon
 l_string|&quot; %02x&quot;
 comma
 op_star
@@ -979,9 +959,19 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot; base %p Length %X&bslash;n&quot;
+l_string|&quot; base %8.8X%8.8X Length %X&bslash;n&quot;
 comma
+id|HIDWORD
+c_func
+(paren
 id|entry_desc-&gt;region.address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|entry_desc-&gt;region.address
+)paren
 comma
 id|entry_desc-&gt;region.length
 )paren
@@ -1069,7 +1059,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Region_field: bits=%X bitaccwidth=%X lock=%X update=%X at byte=%lX bit=%X of below:&bslash;n&quot;
+l_string|&quot;Region_field: bits=%X bitaccwidth=%X lock=%X update=%X at byte=%X bit=%X of below:&bslash;n&quot;
 comma
 id|entry_desc-&gt;field.bit_length
 comma
@@ -1114,7 +1104,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Buffer_field: %X bits at byte %lX bit %X of &bslash;n&quot;
+l_string|&quot;Buffer_field: %X bits at byte %X bit %X of &bslash;n&quot;
 comma
 id|entry_desc-&gt;buffer_field.bit_length
 comma
@@ -1192,13 +1182,13 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Method(%X) @ %p:%lX&bslash;n&quot;
+l_string|&quot;Method(%X) @ %p:%X&bslash;n&quot;
 comma
 id|entry_desc-&gt;method.param_count
 comma
-id|entry_desc-&gt;method.pcode
+id|entry_desc-&gt;method.aml_start
 comma
-id|entry_desc-&gt;method.pcode_length
+id|entry_desc-&gt;method.aml_length
 )paren
 )paren
 suffix:semicolon
@@ -1545,6 +1535,10 @@ l_string|&quot;%20s : %4.4s&bslash;n&quot;
 comma
 l_string|&quot;Name&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
@@ -2033,18 +2027,18 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%20s : %X&bslash;n&quot;
 comma
-l_string|&quot;Pcode_length&quot;
+l_string|&quot;Aml_length&quot;
 comma
-id|obj_desc-&gt;method.pcode_length
+id|obj_desc-&gt;method.aml_length
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;%20s : %X&bslash;n&quot;
 comma
-l_string|&quot;Pcode&quot;
+l_string|&quot;Aml_start&quot;
 comma
-id|obj_desc-&gt;method.pcode
+id|obj_desc-&gt;method.aml_start
 )paren
 suffix:semicolon
 r_break

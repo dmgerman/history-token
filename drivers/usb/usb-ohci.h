@@ -831,7 +831,7 @@ id|hcca
 suffix:semicolon
 multiline_comment|/* hcca */
 DECL|member|hcca_dma
-id|u32
+id|dma_addr_t
 id|hcca_dma
 suffix:semicolon
 DECL|member|irq

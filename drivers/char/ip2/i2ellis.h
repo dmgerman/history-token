@@ -747,6 +747,23 @@ DECL|member|write_fifo_spinlock
 id|rwlock_t
 id|write_fifo_spinlock
 suffix:semicolon
+singleline_comment|//&t;For queuing interupt bottom half handlers.&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+DECL|member|tqueue_interrupt
+r_struct
+id|tq_struct
+id|tqueue_interrupt
+suffix:semicolon
+DECL|member|SendPendingTimer
+r_struct
+id|timer_list
+id|SendPendingTimer
+suffix:semicolon
+singleline_comment|// Used by iiSendPending
+DECL|member|SendPendingRetry
+r_int
+r_int
+id|SendPendingRetry
+suffix:semicolon
 macro_line|#ifdef&t;CONFIG_DEVFS_FS
 multiline_comment|/* Device handles into devfs */
 DECL|member|devfs_ipl_handle

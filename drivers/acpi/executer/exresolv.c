@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 99 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 101 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -239,7 +239,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;** Read from buffer %p byte %ld bit %d width %d addr %p mask %08lx val %08lx&bslash;n&quot;
+l_string|&quot;** Read from buffer %p byte %d bit %d width %d addr %p mask %08X val %8.8X%8.8X&bslash;n&quot;
 comma
 id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.pointer
 comma
@@ -253,7 +253,17 @@ id|location
 comma
 id|mask
 comma
+id|HIDWORD
+c_func
+(paren
 id|result_desc-&gt;integer.value
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|result_desc-&gt;integer.value
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -644,7 +654,7 @@ id|AML_REVISION_OP
 suffix:colon
 id|obj_desc-&gt;integer.value
 op_assign
-id|ACPI_CA_VERSION
+id|ACPI_CA_SUPPORT_LEVEL
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pr_osl.c&n; *   $Revision: 18 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pr_osl.c&n; *   $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -19,12 +19,6 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;ACPI Component Architecture (CA) - IA32 Processor Driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|PR_PROC_ROOT
@@ -463,25 +457,30 @@ id|processor-&gt;performance.state_count
 OG
 l_int|1
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;, throttling states: %d&quot;
+l_string|&quot;, %d throttling states&quot;
 comma
 id|processor-&gt;performance.state_count
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|acpi_piix4_bmisx
+op_logical_and
+id|processor-&gt;power.state
+(braket
+l_int|3
+)braket
+dot
+id|is_valid
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;, PIIX workaround active&quot;
+l_string|&quot; (PIIX errata enabled)&quot;
 )paren
 suffix:semicolon
 id|printk

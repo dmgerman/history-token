@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -763,7 +763,7 @@ id|acpi_gbl_gpe_register_count
 op_star
 r_sizeof
 (paren
-id|ACPI_GPE_REGISTERS
+id|acpi_gpe_registers
 )paren
 )paren
 suffix:semicolon
@@ -1141,15 +1141,35 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;GPE registers: %X@%p (Blk0) %X@%p (Blk1)&bslash;n&quot;
+l_string|&quot;GPE registers: %X@%8.8X%8.8X (Blk0) %X@%8.8X%8.8X (Blk1)&bslash;n&quot;
 comma
 id|gpe0register_count
 comma
+id|HIDWORD
+c_func
+(paren
 id|acpi_gbl_FADT-&gt;Xgpe0blk.address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe0blk.address
+)paren
 comma
 id|gpe1_register_count
 comma
+id|HIDWORD
+c_func
+(paren
 id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
+)paren
 )paren
 )paren
 suffix:semicolon

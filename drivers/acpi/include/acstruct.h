@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 5 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 10 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -36,6 +36,11 @@ id|u8
 id|last_predicate
 suffix:semicolon
 multiline_comment|/* Result of last predicate */
+DECL|member|current_result
+id|u8
+id|current_result
+suffix:semicolon
+multiline_comment|/* */
 DECL|member|next_op_info
 id|u8
 id|next_op_info
@@ -46,88 +51,99 @@ id|u8
 id|num_operands
 suffix:semicolon
 multiline_comment|/* Stack pointer for Operands[] array */
-DECL|member|current_result
+DECL|member|return_used
 id|u8
-id|current_result
+id|return_used
 suffix:semicolon
-multiline_comment|/* */
-DECL|member|next
+DECL|member|walk_type
+id|u8
+id|walk_type
+suffix:semicolon
+DECL|member|current_sync_level
+id|u16
+id|current_sync_level
+suffix:semicolon
+multiline_comment|/* Mutex Sync (nested acquire) level */
+DECL|member|opcode
+id|u16
+id|opcode
+suffix:semicolon
+multiline_comment|/* Current AML opcode */
+DECL|member|arg_count
+id|u32
+id|arg_count
+suffix:semicolon
+multiline_comment|/* push for fixed or var args */
+DECL|member|aml_offset
+id|u32
+id|aml_offset
+suffix:semicolon
+DECL|member|arg_types
+id|u32
+id|arg_types
+suffix:semicolon
+DECL|member|method_breakpoint
+id|u32
+id|method_breakpoint
+suffix:semicolon
+multiline_comment|/* For single stepping */
+DECL|member|parse_flags
+id|u32
+id|parse_flags
+suffix:semicolon
+DECL|member|prev_arg_types
+id|u32
+id|prev_arg_types
+suffix:semicolon
+DECL|member|aml_last_while
+id|u8
+op_star
+id|aml_last_while
+suffix:semicolon
+DECL|member|arguments
 r_struct
-id|acpi_walk_state
-op_star
-id|next
+id|acpi_node
+id|arguments
+(braket
+id|MTH_NUM_ARGS
+)braket
 suffix:semicolon
-multiline_comment|/* Next Walk_state in list */
-DECL|member|origin
-id|acpi_parse_object
+multiline_comment|/* Control method arguments */
+DECL|member|caller_return_desc
+r_union
+id|acpi_operand_obj
 op_star
-id|origin
-suffix:semicolon
-multiline_comment|/* Start of walk [Obsolete] */
-multiline_comment|/* TBD: Obsolete with removal of WALK procedure ? */
-DECL|member|prev_op
-id|acpi_parse_object
 op_star
-id|prev_op
+id|caller_return_desc
 suffix:semicolon
-multiline_comment|/* Last op that was processed */
-DECL|member|next_op
-id|acpi_parse_object
-op_star
-id|next_op
-suffix:semicolon
-multiline_comment|/* next op to be processed */
-DECL|member|results
-id|acpi_generic_state
-op_star
-id|results
-suffix:semicolon
-multiline_comment|/* Stack of accumulated results */
 DECL|member|control_state
 id|acpi_generic_state
 op_star
 id|control_state
 suffix:semicolon
 multiline_comment|/* List of control states (nested IFs) */
-DECL|member|scope_info
-id|acpi_generic_state
+DECL|member|local_variables
+r_struct
+id|acpi_node
+id|local_variables
+(braket
+id|MTH_NUM_LOCALS
+)braket
+suffix:semicolon
+multiline_comment|/* Control method locals */
+DECL|member|method_call_node
+r_struct
+id|acpi_node
 op_star
-id|scope_info
+id|method_call_node
 suffix:semicolon
-multiline_comment|/* Stack of nested scopes */
-DECL|member|parser_state
-id|acpi_parse_state
+multiline_comment|/* Called method Node*/
+DECL|member|method_call_op
+id|acpi_parse_object
 op_star
-id|parser_state
+id|method_call_op
 suffix:semicolon
-multiline_comment|/* Current state of parser */
-DECL|member|aml_last_while
-id|u8
-op_star
-id|aml_last_while
-suffix:semicolon
-DECL|member|op_info
-r_const
-id|acpi_opcode_info
-op_star
-id|op_info
-suffix:semicolon
-multiline_comment|/* Info on current opcode */
-DECL|member|descending_callback
-id|acpi_parse_downwards
-id|descending_callback
-suffix:semicolon
-DECL|member|ascending_callback
-id|acpi_parse_upwards
-id|ascending_callback
-suffix:semicolon
-DECL|member|return_desc
-r_union
-id|acpi_operand_obj
-op_star
-id|return_desc
-suffix:semicolon
-multiline_comment|/* Return object, if any */
+multiline_comment|/* Method_call Op if running a method */
 DECL|member|method_desc
 r_union
 id|acpi_operand_obj
@@ -142,19 +158,12 @@ op_star
 id|method_node
 suffix:semicolon
 multiline_comment|/* Method Node if running a method */
-DECL|member|method_call_op
+DECL|member|op
 id|acpi_parse_object
 op_star
-id|method_call_op
+id|op
 suffix:semicolon
-multiline_comment|/* Method_call Op if running a method */
-DECL|member|method_call_node
-r_struct
-id|acpi_node
-op_star
-id|method_call_node
-suffix:semicolon
-multiline_comment|/* Called method Node*/
+multiline_comment|/* Current parser op */
 DECL|member|operands
 r_union
 id|acpi_operand_obj
@@ -162,64 +171,95 @@ op_star
 id|operands
 (braket
 id|OBJ_NUM_OPERANDS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Operands passed to the interpreter */
-DECL|member|arguments
-r_struct
-id|acpi_node
-id|arguments
-(braket
-id|MTH_NUM_ARGS
-)braket
+multiline_comment|/* Operands passed to the interpreter (+1 for NULL terminator) */
+DECL|member|op_info
+r_const
+id|acpi_opcode_info
+op_star
+id|op_info
 suffix:semicolon
-multiline_comment|/* Control method arguments */
-DECL|member|local_variables
-r_struct
-id|acpi_node
-id|local_variables
-(braket
-id|MTH_NUM_LOCALS
-)braket
+multiline_comment|/* Info on current opcode */
+DECL|member|origin
+id|acpi_parse_object
+op_star
+id|origin
 suffix:semicolon
-multiline_comment|/* Control method locals */
+multiline_comment|/* Start of walk [Obsolete] */
+DECL|member|params
+r_union
+id|acpi_operand_obj
+op_star
+op_star
+id|params
+suffix:semicolon
+DECL|member|parser_state
+id|acpi_parse_state
+id|parser_state
+suffix:semicolon
+multiline_comment|/* Current state of parser */
+DECL|member|result_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|result_obj
+suffix:semicolon
+DECL|member|results
+id|acpi_generic_state
+op_star
+id|results
+suffix:semicolon
+multiline_comment|/* Stack of accumulated results */
+DECL|member|return_desc
+r_union
+id|acpi_operand_obj
+op_star
+id|return_desc
+suffix:semicolon
+multiline_comment|/* Return object, if any */
+DECL|member|scope_info
+id|acpi_generic_state
+op_star
+id|scope_info
+suffix:semicolon
+multiline_comment|/* Stack of nested scopes */
+multiline_comment|/* TBD: Obsolete with removal of WALK procedure ? */
+DECL|member|prev_op
+id|acpi_parse_object
+op_star
+id|prev_op
+suffix:semicolon
+multiline_comment|/* Last op that was processed */
+DECL|member|next_op
+id|acpi_parse_object
+op_star
+id|next_op
+suffix:semicolon
+multiline_comment|/* next op to be processed */
+DECL|member|descending_callback
+id|acpi_parse_downwards
+id|descending_callback
+suffix:semicolon
+DECL|member|ascending_callback
+id|acpi_parse_upwards
+id|ascending_callback
+suffix:semicolon
 DECL|member|walk_list
 r_struct
 id|acpi_walk_list
 op_star
 id|walk_list
 suffix:semicolon
-DECL|member|parse_flags
-id|u32
-id|parse_flags
+DECL|member|next
+r_struct
+id|acpi_walk_state
+op_star
+id|next
 suffix:semicolon
-DECL|member|walk_type
-id|u8
-id|walk_type
-suffix:semicolon
-DECL|member|return_used
-id|u8
-id|return_used
-suffix:semicolon
-DECL|member|opcode
-id|u16
-id|opcode
-suffix:semicolon
-multiline_comment|/* Current AML opcode */
-DECL|member|prev_arg_types
-id|u32
-id|prev_arg_types
-suffix:semicolon
-DECL|member|current_sync_level
-id|u16
-id|current_sync_level
-suffix:semicolon
-multiline_comment|/* Mutex Sync (nested acquire) level */
-multiline_comment|/* Debug support */
-DECL|member|method_breakpoint
-id|u32
-id|method_breakpoint
-suffix:semicolon
+multiline_comment|/* Next Walk_state in list */
 DECL|typedef|acpi_walk_state
 )brace
 id|acpi_walk_state
@@ -279,9 +319,9 @@ id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-DECL|typedef|ACPI_INIT_WALK_INFO
+DECL|typedef|acpi_init_walk_info
 )brace
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 suffix:semicolon
 multiline_comment|/* Info used by TBD */
 DECL|struct|acpi_device_walk_info
@@ -306,9 +346,9 @@ id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-DECL|typedef|ACPI_DEVICE_WALK_INFO
+DECL|typedef|acpi_device_walk_info
 )brace
-id|ACPI_DEVICE_WALK_INFO
+id|acpi_device_walk_info
 suffix:semicolon
 multiline_comment|/* TBD: [Restructure] Merge with struct above */
 DECL|struct|acpi_walk_info
@@ -324,17 +364,26 @@ DECL|member|owner_id
 id|u32
 id|owner_id
 suffix:semicolon
-DECL|typedef|ACPI_WALK_INFO
-)brace
-id|ACPI_WALK_INFO
+DECL|member|display_type
+id|u8
+id|display_type
 suffix:semicolon
+DECL|typedef|acpi_walk_info
+)brace
+id|acpi_walk_info
+suffix:semicolon
+multiline_comment|/* Display Types */
+DECL|macro|ACPI_DISPLAY_SUMMARY
+mdefine_line|#define ACPI_DISPLAY_SUMMARY    0
+DECL|macro|ACPI_DISPLAY_OBJECTS
+mdefine_line|#define ACPI_DISPLAY_OBJECTS    1
 DECL|struct|acpi_get_devices_info
 r_typedef
 r_struct
 id|acpi_get_devices_info
 (brace
 DECL|member|user_function
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 suffix:semicolon
 DECL|member|context
@@ -347,9 +396,94 @@ id|NATIVE_CHAR
 op_star
 id|hid
 suffix:semicolon
-DECL|typedef|ACPI_GET_DEVICES_INFO
+DECL|typedef|acpi_get_devices_info
 )brace
-id|ACPI_GET_DEVICES_INFO
+id|acpi_get_devices_info
+suffix:semicolon
+DECL|union|acpi_aml_operands
+r_typedef
+r_union
+id|acpi_aml_operands
+(brace
+DECL|member|operands
+id|acpi_operand_object
+op_star
+id|operands
+(braket
+l_int|7
+)braket
+suffix:semicolon
+r_struct
+(brace
+DECL|member|type
+id|ACPI_OBJECT_INTEGER
+op_star
+id|type
+suffix:semicolon
+DECL|member|code
+id|ACPI_OBJECT_INTEGER
+op_star
+id|code
+suffix:semicolon
+DECL|member|argument
+id|ACPI_OBJECT_INTEGER
+op_star
+id|argument
+suffix:semicolon
+DECL|member|fatal
+)brace
+id|fatal
+suffix:semicolon
+r_struct
+(brace
+DECL|member|source
+id|acpi_operand_object
+op_star
+id|source
+suffix:semicolon
+DECL|member|index
+id|ACPI_OBJECT_INTEGER
+op_star
+id|index
+suffix:semicolon
+DECL|member|target
+id|acpi_operand_object
+op_star
+id|target
+suffix:semicolon
+DECL|member|index
+)brace
+id|index
+suffix:semicolon
+r_struct
+(brace
+DECL|member|source
+id|acpi_operand_object
+op_star
+id|source
+suffix:semicolon
+DECL|member|index
+id|ACPI_OBJECT_INTEGER
+op_star
+id|index
+suffix:semicolon
+DECL|member|length
+id|ACPI_OBJECT_INTEGER
+op_star
+id|length
+suffix:semicolon
+DECL|member|target
+id|acpi_operand_object
+op_star
+id|target
+suffix:semicolon
+DECL|member|mid
+)brace
+id|mid
+suffix:semicolon
+DECL|typedef|ACPI_AML_OPERANDS
+)brace
+id|ACPI_AML_OPERANDS
 suffix:semicolon
 macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 58 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -379,57 +379,134 @@ DECL|macro|OPGRP_FIELD
 mdefine_line|#define OPGRP_FIELD                 0x02
 DECL|macro|OPGRP_BYTELIST
 mdefine_line|#define OPGRP_BYTELIST              0x04
-DECL|macro|OPTYPE_UNDEFINED
-mdefine_line|#define OPTYPE_UNDEFINED            0
-DECL|macro|OPTYPE_LITERAL
-mdefine_line|#define OPTYPE_LITERAL              1
-DECL|macro|OPTYPE_CONSTANT
-mdefine_line|#define OPTYPE_CONSTANT             2
-DECL|macro|OPTYPE_METHOD_ARGUMENT
-mdefine_line|#define OPTYPE_METHOD_ARGUMENT      3
-DECL|macro|OPTYPE_LOCAL_VARIABLE
-mdefine_line|#define OPTYPE_LOCAL_VARIABLE       4
-DECL|macro|OPTYPE_DATA_TERM
-mdefine_line|#define OPTYPE_DATA_TERM            5
-multiline_comment|/* Type 1 opcodes */
-DECL|macro|OPTYPE_MONADIC1
-mdefine_line|#define OPTYPE_MONADIC1             6
-DECL|macro|OPTYPE_DYADIC1
-mdefine_line|#define OPTYPE_DYADIC1              7
-multiline_comment|/* Type 2 opcodes */
-DECL|macro|OPTYPE_MONADIC2
-mdefine_line|#define OPTYPE_MONADIC2             8
-DECL|macro|OPTYPE_MONADIC2_r
-mdefine_line|#define OPTYPE_MONADIC2_r            9
-DECL|macro|OPTYPE_DYADIC2
-mdefine_line|#define OPTYPE_DYADIC2              10
-DECL|macro|OPTYPE_DYADIC2_r
-mdefine_line|#define OPTYPE_DYADIC2_r             11
-DECL|macro|OPTYPE_DYADIC2_s
-mdefine_line|#define OPTYPE_DYADIC2_s             12
-multiline_comment|/* Multi-operand (&gt;=3) opcodes */
-DECL|macro|OPTYPE_TRIADIC
-mdefine_line|#define OPTYPE_TRIADIC              13
-DECL|macro|OPTYPE_QUADRADIC
-mdefine_line|#define OPTYPE_QUADRADIC            14
-DECL|macro|OPTYPE_HEXADIC
-mdefine_line|#define OPTYPE_HEXADIC              15
+multiline_comment|/*&n; * Opcode information&n; */
+multiline_comment|/* Opcode flags */
+DECL|macro|AML_HAS_ARGS
+mdefine_line|#define AML_HAS_ARGS                0x0800
+DECL|macro|AML_HAS_TARGET
+mdefine_line|#define AML_HAS_TARGET              0x0400
+DECL|macro|AML_HAS_RETVAL
+mdefine_line|#define AML_HAS_RETVAL              0x0200
+DECL|macro|AML_NSOBJECT
+mdefine_line|#define AML_NSOBJECT                0x0100
+DECL|macro|AML_NSOPCODE
+mdefine_line|#define AML_NSOPCODE                0x0080
+DECL|macro|AML_NSNODE
+mdefine_line|#define AML_NSNODE                  0x0040
+DECL|macro|AML_NAMED
+mdefine_line|#define AML_NAMED                   0x0020
+DECL|macro|AML_DEFER
+mdefine_line|#define AML_DEFER                   0x0010
+DECL|macro|AML_FIELD
+mdefine_line|#define AML_FIELD                   0x0008
+DECL|macro|AML_CREATE
+mdefine_line|#define AML_CREATE                  0x0004
+DECL|macro|AML_MATH
+mdefine_line|#define AML_MATH                    0x0002
+DECL|macro|AML_LOGICAL
+mdefine_line|#define AML_LOGICAL                 0x0001
+multiline_comment|/* Convenient flag groupings */
+DECL|macro|AML_FLAGS_EXEC_1A_0T_0R
+mdefine_line|#define AML_FLAGS_EXEC_1A_0T_0R     AML_HAS_ARGS                                   /* Monadic1  */
+DECL|macro|AML_FLAGS_EXEC_1A_0T_1R
+mdefine_line|#define AML_FLAGS_EXEC_1A_0T_1R     AML_HAS_ARGS |                  AML_HAS_RETVAL /* Monadic2  */
+DECL|macro|AML_FLAGS_EXEC_1A_1T_0R
+mdefine_line|#define AML_FLAGS_EXEC_1A_1T_0R     AML_HAS_ARGS | AML_HAS_TARGET
+DECL|macro|AML_FLAGS_EXEC_1A_1T_1R
+mdefine_line|#define AML_FLAGS_EXEC_1A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* Monadic2_r */
+DECL|macro|AML_FLAGS_EXEC_2A_0T_0R
+mdefine_line|#define AML_FLAGS_EXEC_2A_0T_0R     AML_HAS_ARGS                                   /* Dyadic1   */
+DECL|macro|AML_FLAGS_EXEC_2A_0T_1R
+mdefine_line|#define AML_FLAGS_EXEC_2A_0T_1R     AML_HAS_ARGS |                  AML_HAS_RETVAL /* Dyadic2   */
+DECL|macro|AML_FLAGS_EXEC_2A_1T_1R
+mdefine_line|#define AML_FLAGS_EXEC_2A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL /* Dyadic2_r  */
+DECL|macro|AML_FLAGS_EXEC_2A_2T_1R
+mdefine_line|#define AML_FLAGS_EXEC_2A_2T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL
+DECL|macro|AML_FLAGS_EXEC_3A_0T_0R
+mdefine_line|#define AML_FLAGS_EXEC_3A_0T_0R     AML_HAS_ARGS
+DECL|macro|AML_FLAGS_EXEC_3A_1T_1R
+mdefine_line|#define AML_FLAGS_EXEC_3A_1T_1R     AML_HAS_ARGS | AML_HAS_TARGET | AML_HAS_RETVAL
+DECL|macro|AML_FLAGS_EXEC_6A_0T_1R
+mdefine_line|#define AML_FLAGS_EXEC_6A_0T_1R     AML_HAS_ARGS |                  AML_HAS_RETVAL
+multiline_comment|/*&n; * The opcode Type is used in a dispatch table, do not change&n; * without updating the table.&n; */
+DECL|macro|AML_TYPE_EXEC_1A_0T_0R
+mdefine_line|#define AML_TYPE_EXEC_1A_0T_0R      0x00 /* Monadic1  */
+DECL|macro|AML_TYPE_EXEC_1A_0T_1R
+mdefine_line|#define AML_TYPE_EXEC_1A_0T_1R      0x01 /* Monadic2  */
+DECL|macro|AML_TYPE_EXEC_1A_1T_0R
+mdefine_line|#define AML_TYPE_EXEC_1A_1T_0R      0x02
+DECL|macro|AML_TYPE_EXEC_1A_1T_1R
+mdefine_line|#define AML_TYPE_EXEC_1A_1T_1R      0x03 /* Monadic2_r */
+DECL|macro|AML_TYPE_EXEC_2A_0T_0R
+mdefine_line|#define AML_TYPE_EXEC_2A_0T_0R      0x04 /* Dyadic1   */
+DECL|macro|AML_TYPE_EXEC_2A_0T_1R
+mdefine_line|#define AML_TYPE_EXEC_2A_0T_1R      0x05 /* Dyadic2   */
+DECL|macro|AML_TYPE_EXEC_2A_1T_1R
+mdefine_line|#define AML_TYPE_EXEC_2A_1T_1R      0x06 /* Dyadic2_r  */
+DECL|macro|AML_TYPE_EXEC_2A_2T_1R
+mdefine_line|#define AML_TYPE_EXEC_2A_2T_1R      0x07
+DECL|macro|AML_TYPE_EXEC_3A_0T_0R
+mdefine_line|#define AML_TYPE_EXEC_3A_0T_0R      0x08
+DECL|macro|AML_TYPE_EXEC_3A_1T_1R
+mdefine_line|#define AML_TYPE_EXEC_3A_1T_1R      0x09
+DECL|macro|AML_TYPE_EXEC_6A_0T_1R
+mdefine_line|#define AML_TYPE_EXEC_6A_0T_1R      0x0A
+multiline_comment|/* End of types used in dispatch table */
+DECL|macro|AML_TYPE_LITERAL
+mdefine_line|#define AML_TYPE_LITERAL            0x0B
+DECL|macro|AML_TYPE_CONSTANT
+mdefine_line|#define AML_TYPE_CONSTANT           0x0C
+DECL|macro|AML_TYPE_METHOD_ARGUMENT
+mdefine_line|#define AML_TYPE_METHOD_ARGUMENT    0x0D
+DECL|macro|AML_TYPE_LOCAL_VARIABLE
+mdefine_line|#define AML_TYPE_LOCAL_VARIABLE     0x0E
+DECL|macro|AML_TYPE_DATA_TERM
+mdefine_line|#define AML_TYPE_DATA_TERM          0x0F
 multiline_comment|/* Generic for an op that returns a value */
-DECL|macro|OPTYPE_METHOD_CALL
-mdefine_line|#define OPTYPE_METHOD_CALL          16
+DECL|macro|AML_TYPE_METHOD_CALL
+mdefine_line|#define AML_TYPE_METHOD_CALL        0x10
 multiline_comment|/* Misc */
-DECL|macro|OPTYPE_CREATE_FIELD
-mdefine_line|#define OPTYPE_CREATE_FIELD         17
-DECL|macro|OPTYPE_CONTROL
-mdefine_line|#define OPTYPE_CONTROL              18
-DECL|macro|OPTYPE_RECONFIGURATION
-mdefine_line|#define OPTYPE_RECONFIGURATION      19
-DECL|macro|OPTYPE_NAMED_OBJECT
-mdefine_line|#define OPTYPE_NAMED_OBJECT         20
-DECL|macro|OPTYPE_RETURN
-mdefine_line|#define OPTYPE_RETURN               21
-DECL|macro|OPTYPE_BOGUS
-mdefine_line|#define OPTYPE_BOGUS                22
+DECL|macro|AML_TYPE_CREATE_FIELD
+mdefine_line|#define AML_TYPE_CREATE_FIELD       0x11
+DECL|macro|AML_TYPE_CONTROL
+mdefine_line|#define AML_TYPE_CONTROL            0x12
+DECL|macro|AML_TYPE_NAMED_NO_OBJ
+mdefine_line|#define AML_TYPE_NAMED_NO_OBJ       0x13
+DECL|macro|AML_TYPE_NAMED_FIELD
+mdefine_line|#define AML_TYPE_NAMED_FIELD        0x14
+DECL|macro|AML_TYPE_NAMED_SIMPLE
+mdefine_line|#define AML_TYPE_NAMED_SIMPLE       0x15
+DECL|macro|AML_TYPE_NAMED_COMPLEX
+mdefine_line|#define AML_TYPE_NAMED_COMPLEX      0x16
+DECL|macro|AML_TYPE_RETURN
+mdefine_line|#define AML_TYPE_RETURN             0x17
+DECL|macro|AML_TYPE_UNDEFINED
+mdefine_line|#define AML_TYPE_UNDEFINED          0x18
+DECL|macro|AML_TYPE_BOGUS
+mdefine_line|#define AML_TYPE_BOGUS              0x19
+multiline_comment|/*&n; * Opcode classes&n; */
+DECL|macro|AML_CLASS_EXECUTE
+mdefine_line|#define AML_CLASS_EXECUTE           0x00
+DECL|macro|AML_CLASS_CREATE
+mdefine_line|#define AML_CLASS_CREATE            0x01
+DECL|macro|AML_CLASS_ARGUMENT
+mdefine_line|#define AML_CLASS_ARGUMENT          0x02
+DECL|macro|AML_CLASS_NAMED_OBJECT
+mdefine_line|#define AML_CLASS_NAMED_OBJECT      0x03
+DECL|macro|AML_CLASS_CONTROL
+mdefine_line|#define AML_CLASS_CONTROL           0x04
+DECL|macro|AML_CLASS_ASCII
+mdefine_line|#define AML_CLASS_ASCII             0x05
+DECL|macro|AML_CLASS_PREFIX
+mdefine_line|#define AML_CLASS_PREFIX            0x06
+DECL|macro|AML_CLASS_INTERNAL
+mdefine_line|#define AML_CLASS_INTERNAL          0x07
+DECL|macro|AML_CLASS_RETURN_VALUE
+mdefine_line|#define AML_CLASS_RETURN_VALUE      0x08
+DECL|macro|AML_CLASS_METHOD_CALL
+mdefine_line|#define AML_CLASS_METHOD_CALL       0x09
+DECL|macro|AML_CLASS_UNKNOWN
+mdefine_line|#define AML_CLASS_UNKNOWN           0x0A
 multiline_comment|/* Predefined Operation Region Space_iDs */
 r_typedef
 r_enum
@@ -626,23 +703,5 @@ DECL|macro|NUM_FIELD_NAMES
 mdefine_line|#define NUM_FIELD_NAMES             2
 DECL|macro|USER_REGION_BEGIN
 mdefine_line|#define USER_REGION_BEGIN           0x80
-multiline_comment|/*&n; * AML tables&n; */
-macro_line|#ifdef DEFINE_AML_GLOBALS
-multiline_comment|/* External declarations for the AML tables */
-r_extern
-id|u8
-id|acpi_gbl_aml
-(braket
-id|NUM_OPCODES
-)braket
-suffix:semicolon
-r_extern
-id|u16
-id|acpi_gbl_pfx
-(braket
-id|NUM_OPCODES
-)braket
-suffix:semicolon
-macro_line|#endif /* DEFINE_AML_GLOBALS */
 macro_line|#endif /* __AMLCODE_H__ */
 eof

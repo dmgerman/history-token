@@ -20,7 +20,7 @@ mdefine_line|#define GPE1_BLK_ADDRESS_SPACE      0x20
 multiline_comment|/* Only for clarity in declarations */
 DECL|typedef|IO_ADDRESS
 r_typedef
-id|UINT64
+id|u64
 id|IO_ADDRESS
 suffix:semicolon
 macro_line|#pragma pack(1)
@@ -55,7 +55,7 @@ id|reserved
 suffix:semicolon
 multiline_comment|/* Must be 0 for 1.0, 2 for 2.0 */
 DECL|member|rsdt_physical_address
-id|UINT64
+id|u64
 id|rsdt_physical_address
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of RSDT */
@@ -81,7 +81,7 @@ id|reserved_pad
 suffix:semicolon
 multiline_comment|/* IA64 alignment, must be 0 */
 DECL|member|table_offset_entry
-id|UINT64
+id|u64
 id|table_offset_entry
 (braket
 l_int|1
@@ -124,22 +124,22 @@ id|reserved4
 suffix:semicolon
 multiline_comment|/* must be 0 */
 DECL|member|firmware_waking_vector
-id|UINT64
+id|u64
 id|firmware_waking_vector
 suffix:semicolon
 multiline_comment|/* ACPI OS waking vector */
 DECL|member|global_lock
-id|UINT64
+id|u64
 id|global_lock
 suffix:semicolon
 multiline_comment|/* Global Lock */
-DECL|member|S4_bios_f
+DECL|member|S4bios_f
 id|u32
-id|S4_bios_f
+id|S4bios_f
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates if S4_bIOS support is present */
+multiline_comment|/* Indicates if S4BIOS support is present */
 DECL|member|reserved1
 id|u32
 id|reserved1
@@ -177,12 +177,12 @@ id|reserved_pad
 suffix:semicolon
 multiline_comment|/* IA64 alignment, must be 0 */
 DECL|member|firmware_ctrl
-id|UINT64
+id|u64
 id|firmware_ctrl
 suffix:semicolon
 multiline_comment|/* 64-bit Physical address of FACS */
 DECL|member|dsdt
-id|UINT64
+id|u64
 id|dsdt
 suffix:semicolon
 multiline_comment|/* 64-bit Physical address of DSDT */
@@ -211,58 +211,58 @@ id|u8
 id|acpi_disable
 suffix:semicolon
 multiline_comment|/* value to write to smi_cmd to disable ACPI */
-DECL|member|S4_bios_req
+DECL|member|S4bios_req
 id|u8
-id|S4_bios_req
+id|S4bios_req
 suffix:semicolon
-multiline_comment|/* Value to write to SMI CMD to enter S4_bIOS state */
+multiline_comment|/* Value to write to SMI CMD to enter S4BIOS state */
 DECL|member|reserved2
 id|u8
 id|reserved2
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
 DECL|member|smi_cmd
-id|UINT64
+id|u64
 id|smi_cmd
 suffix:semicolon
 multiline_comment|/* Port address of SMI command port */
 DECL|member|pm1a_evt_blk
-id|UINT64
+id|u64
 id|pm1a_evt_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt 1a Acpi_event Reg Blk */
 DECL|member|pm1b_evt_blk
-id|UINT64
+id|u64
 id|pm1b_evt_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt 1b Acpi_event Reg Blk */
 DECL|member|pm1a_cnt_blk
-id|UINT64
+id|u64
 id|pm1a_cnt_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt 1a Control Reg Blk */
 DECL|member|pm1b_cnt_blk
-id|UINT64
+id|u64
 id|pm1b_cnt_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt 1b Control Reg Blk */
 DECL|member|pm2_cnt_blk
-id|UINT64
+id|u64
 id|pm2_cnt_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt 2 Control Reg Blk */
 DECL|member|pm_tmr_blk
-id|UINT64
+id|u64
 id|pm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Port address of Power Mgt Timer Ctrl Reg Blk */
 DECL|member|gpe0blk
-id|UINT64
+id|u64
 id|gpe0blk
 suffix:semicolon
 multiline_comment|/* Port addr of General Purpose Acpi_event 0 Reg Blk */
 DECL|member|gpe1_blk
-id|UINT64
+id|u64
 id|gpe1_blk
 suffix:semicolon
 multiline_comment|/* Port addr of General Purpose Acpi_event 1 Reg Blk */

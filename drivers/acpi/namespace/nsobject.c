@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 65 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 67 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -43,9 +43,6 @@ id|ACPI_TYPE_ANY
 suffix:semicolon
 id|u8
 id|flags
-suffix:semicolon
-id|u16
-id|opcode
 suffix:semicolon
 id|FUNCTION_TRACE
 (paren
@@ -299,145 +296,6 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Type is TYPE_Any, we must try to determinte the&n;&t;&t; * actual type of the object.&n;&t;&t; * Check if value points into the AML code&n;&t;&t; */
-r_else
-r_if
-c_cond
-(paren
-id|acpi_tb_system_table_pointer
-(paren
-id|object
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Object points into the AML stream.&n;&t;&t;&t; * Set a flag bit in the Node to indicate this&n;&t;&t;&t; */
-id|flags
-op_or_assign
-id|ANOBJ_AML_ATTACHMENT
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * The next byte (perhaps the next two bytes)&n;&t;&t;&t; * will be the AML opcode&n;&t;&t;&t; */
-id|MOVE_UNALIGNED16_TO_16
-(paren
-op_amp
-id|opcode
-comma
-id|object
-)paren
-suffix:semicolon
-multiline_comment|/* Check for a recognized Opcode */
-r_switch
-c_cond
-(paren
-(paren
-id|u8
-)paren
-id|opcode
-)paren
-(brace
-r_case
-id|AML_OP_PREFIX
-suffix:colon
-r_if
-c_cond
-(paren
-id|opcode
-op_ne
-id|AML_REVISION_OP
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Op_prefix is unrecognized unless part&n;&t;&t;&t;&t;&t; * of Revision_op&n;&t;&t;&t;&t;&t; */
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* case AML_REVISION_OP: fall through and set the type to Integer */
-r_case
-id|AML_ZERO_OP
-suffix:colon
-r_case
-id|AML_ONES_OP
-suffix:colon
-r_case
-id|AML_ONE_OP
-suffix:colon
-r_case
-id|AML_BYTE_OP
-suffix:colon
-r_case
-id|AML_WORD_OP
-suffix:colon
-r_case
-id|AML_DWORD_OP
-suffix:colon
-r_case
-id|AML_QWORD_OP
-suffix:colon
-id|obj_type
-op_assign
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_STRING_OP
-suffix:colon
-id|obj_type
-op_assign
-id|ACPI_TYPE_STRING
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_BUFFER_OP
-suffix:colon
-id|obj_type
-op_assign
-id|ACPI_TYPE_BUFFER
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_MUTEX_OP
-suffix:colon
-id|obj_type
-op_assign
-id|ACPI_TYPE_MUTEX
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_PACKAGE_OP
-suffix:colon
-id|obj_type
-op_assign
-id|ACPI_TYPE_PACKAGE
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;AML Opcode/Type [%x] not supported in attach&bslash;n&quot;
-comma
-(paren
-id|u8
-)paren
-id|opcode
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_TYPE
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Cannot figure out the type -- set to Def_any which&n;&t;&t;&t; * will print as an error in the name table dump&n;&t;&t;&t; */
@@ -460,33 +318,6 @@ comma
 id|_COMPONENT
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_tb_system_table_pointer
-(paren
-id|object
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;AML-stream code %02x&bslash;n&quot;
-comma
-op_star
-(paren
-id|u8
-op_star
-)paren
-id|object
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
@@ -547,6 +378,10 @@ id|obj_desc
 comma
 id|node
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
@@ -643,7 +478,6 @@ id|node-&gt;object
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Found a valid value */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -655,29 +489,21 @@ id|node
 comma
 id|obj_desc
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Not every value is an object allocated via ACPI_MEM_CALLOCATE,&n;&t; * - must check&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_tb_system_table_pointer
-(paren
-id|obj_desc
-)paren
-)paren
-(brace
-multiline_comment|/* Attempt to delete the object (and all subobjects) */
+multiline_comment|/* Remove one reference on the object (and all subobjects) */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
 suffix:semicolon
-)brace
 id|return_VOID
 suffix:semicolon
 )brace

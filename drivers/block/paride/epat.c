@@ -1,7 +1,7 @@
 multiline_comment|/* &n;        epat.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                            Under the terms of the GNU General Public License.&n;&n;&t;This is the low level protocol driver for the EPAT parallel&n;        to IDE adapter from Shuttle Technologies.  This adapter is&n;        used in many popular parallel port disk products such as the&n;        SyQuest EZ drives, the Avatar Shark and the Imation SuperDisk.&n;&t;&n;*/
-multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;&n;*/
+multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;        1.02    Joshua b. Jore CPP(renamed), epat_connect, epat_disconnect&n;&n;*/
 DECL|macro|EPAT_VERSION
-mdefine_line|#define EPAT_VERSION      &quot;1.01&quot;
+mdefine_line|#define EPAT_VERSION      &quot;1.02&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1334,9 +1334,9 @@ DECL|macro|WRi
 mdefine_line|#define WRi(r,v)         epat_write_regr(pi,0,r,v)
 DECL|macro|RRi
 mdefine_line|#define RRi(r)           (epat_read_regr(pi,0,r))
-multiline_comment|/* FIXME:  the CCP stuff should be fixed to handle multiple EPATs on a chain */
-DECL|macro|CCP
-mdefine_line|#define CCP(x) &t;w2(4);w0(0x22);w0(0xaa);w0(0x55);w0(0);w0(0xff);&bslash;&n;                w0(0x87);w0(0x78);w0(x);w2(4);w2(5);w2(4);w0(0xff);
+multiline_comment|/* FIXME:  the CPP stuff should be fixed to handle multiple EPATs on a chain */
+DECL|macro|CPP
+mdefine_line|#define CPP(x) &t;w2(4);w0(0x22);w0(0xaa);w0(0x55);w0(0);w0(0xff);&bslash;&n;                w0(0x87);w0(0x78);w0(x);w2(4);w2(5);w2(4);w0(0xff);
 DECL|function|epat_connect
 r_static
 r_void
@@ -1361,13 +1361,206 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|CCP
+macro_line|#ifdef CONFIG_PARIDE_EPATC8
+multiline_comment|/* Initialize the chip */
+id|CPP
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-id|CCP
+id|CPP
+c_func
+(paren
+l_int|0x40
+)paren
+suffix:semicolon
+id|CPP
+c_func
+(paren
+l_int|0xe0
+)paren
+suffix:semicolon
+id|w0
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0x8
+comma
+l_int|0x12
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0xc
+comma
+l_int|0x14
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0x12
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0xe
+comma
+l_int|0xf
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0xf
+comma
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* WR(0xe,0xa);WR(0xf,4); */
+id|WR
+c_func
+(paren
+l_int|0xe
+comma
+l_int|0xd
+)paren
+suffix:semicolon
+id|WR
+c_func
+(paren
+l_int|0xf
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* CPP(0x30); */
+multiline_comment|/* Connect to the chip */
+id|CPP
+c_func
+(paren
+l_int|0xe0
+)paren
+suffix:semicolon
+id|w0
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* Idle into SPP */
+r_if
+c_cond
+(paren
+id|pi-&gt;mode
+op_ge
+l_int|3
+)paren
+(brace
+id|w0
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|0xc
+)paren
+suffix:semicolon
+multiline_comment|/* Request EPP */
+id|w0
+c_func
+(paren
+l_int|0x40
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|6
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|7
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|0xc
+)paren
+suffix:semicolon
+id|w2
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|CPP
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|CPP
 c_func
 (paren
 l_int|0xe0
@@ -1492,6 +1685,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|epat_disconnect
 r_static
@@ -1503,7 +1697,7 @@ op_star
 id|pi
 )paren
 (brace
-id|CCP
+id|CPP
 c_func
 (paren
 l_int|0x30
@@ -1950,6 +2144,12 @@ id|pi
 )paren
 (brace
 id|MOD_INC_USE_COUNT
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;epat_init_proto&quot;
+)paren
 suffix:semicolon
 )brace
 DECL|function|epat_release_proto

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -397,7 +397,7 @@ id|new_buf
 id|REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_dyadic2_r/Concat_op: Buffer allocation failure&bslash;n&quot;
+l_string|&quot;Ex_convert_to_buffer: Buffer allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -552,10 +552,8 @@ suffix:semicolon
 id|acpi_integer
 id|digit
 suffix:semicolon
-id|u8
-id|leading_zero
-op_assign
-id|TRUE
+id|u32
+id|remainder
 suffix:semicolon
 id|u32
 id|length
@@ -564,6 +562,11 @@ r_sizeof
 (paren
 id|acpi_integer
 )paren
+suffix:semicolon
+id|u8
+id|leading_zero
+op_assign
+id|TRUE
 suffix:semicolon
 id|FUNCTION_ENTRY
 (paren
@@ -578,6 +581,10 @@ id|base
 r_case
 l_int|10
 suffix:colon
+id|remainder
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -613,13 +620,18 @@ id|j
 op_increment
 )paren
 (brace
-id|digit
-op_assign
-id|ACPI_DIVIDE
+id|acpi_ut_short_divide
 (paren
+op_amp
 id|digit
 comma
 l_int|10
+comma
+op_amp
+id|digit
+comma
+op_amp
+id|remainder
 )paren
 suffix:semicolon
 )brace
@@ -655,12 +667,7 @@ id|u8
 (paren
 id|ASCII_ZERO
 op_plus
-id|ACPI_MODULO
-(paren
-id|digit
-comma
-l_int|10
-)paren
+id|remainder
 )paren
 suffix:semicolon
 id|k

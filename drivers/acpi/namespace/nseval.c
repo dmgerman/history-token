@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 97 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 102 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -110,7 +110,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|prefix_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren
@@ -513,7 +513,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren
@@ -684,7 +684,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_ERROR
+id|AE_NULL_OBJECT
 )paren
 suffix:semicolon
 )brace
@@ -693,13 +693,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Control method at Offset %x Length %lx]&bslash;n&quot;
+l_string|&quot;Control method at Offset %p Length %x]&bslash;n&quot;
 comma
-id|obj_desc-&gt;method.pcode
+id|obj_desc-&gt;method.aml_start
 op_plus
 l_int|1
 comma
-id|obj_desc-&gt;method.pcode_length
+id|obj_desc-&gt;method.aml_length
 op_minus
 l_int|1
 )paren
@@ -721,9 +721,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;At offset %8XH&bslash;n&quot;
+l_string|&quot;At offset %p&bslash;n&quot;
 comma
-id|obj_desc-&gt;method.pcode
+id|obj_desc-&gt;method.aml_start
 op_plus
 l_int|1
 )paren
@@ -804,7 +804,7 @@ id|obj_desc
 suffix:semicolon
 id|acpi_operand_object
 op_star
-id|val_desc
+id|source_desc
 suffix:semicolon
 id|FUNCTION_TRACE
 (paren
@@ -852,7 +852,7 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; *  Get the attached object&n;&t;&t; */
-id|val_desc
+id|source_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
@@ -863,7 +863,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|val_desc
+id|source_desc
 )paren
 (brace
 id|status
@@ -879,7 +879,7 @@ id|MEMCPY
 (paren
 id|obj_desc
 comma
-id|val_desc
+id|source_desc
 comma
 r_sizeof
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 188 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 193 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -73,8 +73,9 @@ id|UINT64
 id|ACPI_PHYSICAL_ADDRESS
 suffix:semicolon
 DECL|macro|ALIGNED_ADDRESS_BOUNDARY
-mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000008
-multiline_comment|/* (No hardware alignment support in IA64) */
+mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000008      /* No hardware alignment support in IA64 */
+DECL|macro|ACPI_USE_NATIVE_DIVIDE
+mdefine_line|#define ACPI_USE_NATIVE_DIVIDE                          /* Native 64-bit integer support */
 macro_line|#elif _IA16
 multiline_comment|/*&n; * 16-bit type definitions&n; */
 DECL|typedef|UINT8
@@ -162,6 +163,8 @@ DECL|macro|ALIGNED_ADDRESS_BOUNDARY
 mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000002
 DECL|macro|_HW_ALIGNMENT_SUPPORT
 mdefine_line|#define _HW_ALIGNMENT_SUPPORT
+DECL|macro|ACPI_USE_NATIVE_DIVIDE
+mdefine_line|#define ACPI_USE_NATIVE_DIVIDE                          /* No 64-bit integers, ok to use native divide */
 multiline_comment|/*&n; * (16-bit only) internal integers must be 32-bits, so&n; * 64-bit integers cannot be supported&n; */
 DECL|macro|ACPI_NO_INTEGER64_SUPPORT
 mdefine_line|#define ACPI_NO_INTEGER64_SUPPORT
@@ -350,6 +353,21 @@ DECL|typedef|uint64_struct
 )brace
 id|uint64_struct
 suffix:semicolon
+r_typedef
+r_union
+(brace
+DECL|member|full
+id|u64
+id|full
+suffix:semicolon
+DECL|member|part
+id|uint64_struct
+id|part
+suffix:semicolon
+DECL|typedef|uint64_overlay
+)brace
+id|uint64_overlay
+suffix:semicolon
 multiline_comment|/*&n; * Acpi integer width. In ACPI version 1, integers are&n; * 32 bits.  In ACPI version 2, integers are 64 bits.&n; * Note that this pertains to the ACPI integer type only, not&n; * other integers used in the implementation of the ACPI CA&n; * subsystem.&n; */
 macro_line|#ifdef ACPI_NO_INTEGER64_SUPPORT
 multiline_comment|/* 32-bit integers only, no 64-bit support */
@@ -368,11 +386,13 @@ DECL|macro|ACPI_MAX_BCD_DIGITS
 mdefine_line|#define ACPI_MAX_BCD_DIGITS             8
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
 mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         10
+DECL|macro|ACPI_USE_NATIVE_DIVIDE
+mdefine_line|#define ACPI_USE_NATIVE_DIVIDE          /* Use compiler native 32-bit divide */
 macro_line|#else
 multiline_comment|/* 64-bit integers */
 DECL|typedef|acpi_integer
 r_typedef
-id|UINT64
+id|u64
 id|acpi_integer
 suffix:semicolon
 DECL|macro|ACPI_INTEGER_MAX
@@ -385,6 +405,10 @@ DECL|macro|ACPI_MAX_BCD_DIGITS
 mdefine_line|#define ACPI_MAX_BCD_DIGITS             16
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
 mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         19
+macro_line|#ifdef _IA64
+DECL|macro|ACPI_USE_NATIVE_DIVIDE
+mdefine_line|#define ACPI_USE_NATIVE_DIVIDE          /* Use compiler native 64-bit divide */
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Constants with special meanings&n; */
 DECL|macro|ACPI_ROOT_OBJECT
@@ -665,7 +689,16 @@ DECL|macro|ACPI_EVENT_LEVEL_TRIGGERED
 mdefine_line|#define ACPI_EVENT_LEVEL_TRIGGERED      (acpi_event_type) 1
 DECL|macro|ACPI_EVENT_EDGE_TRIGGERED
 mdefine_line|#define ACPI_EVENT_EDGE_TRIGGERED       (acpi_event_type) 2
-multiline_comment|/*&n; * Acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +---------------+-+-+&n; * |   Bits 31:2   |1|0|&n; * +---------------+-+-+&n; *          |       | |&n; *          |       | +- Enabled?&n; *          |       +--- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
+multiline_comment|/*&n; * GPEs&n; */
+DECL|macro|ACPI_EVENT_ENABLE
+mdefine_line|#define ACPI_EVENT_ENABLE               0x1
+DECL|macro|ACPI_EVENT_WAKE_ENABLE
+mdefine_line|#define ACPI_EVENT_WAKE_ENABLE&t;        0x2
+DECL|macro|ACPI_EVENT_DISABLE
+mdefine_line|#define ACPI_EVENT_DISABLE              0x1
+DECL|macro|ACPI_EVENT_WAKE_DISABLE
+mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2
+multiline_comment|/*&n; * Acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
 DECL|typedef|acpi_event_status
 r_typedef
 id|u32
@@ -675,8 +708,10 @@ DECL|macro|ACPI_EVENT_FLAG_DISABLED
 mdefine_line|#define ACPI_EVENT_FLAG_DISABLED        (acpi_event_status) 0x00
 DECL|macro|ACPI_EVENT_FLAG_ENABLED
 mdefine_line|#define ACPI_EVENT_FLAG_ENABLED         (acpi_event_status) 0x01
+DECL|macro|ACPI_EVENT_FLAG_WAKE_ENABLED
+mdefine_line|#define ACPI_EVENT_FLAG_WAKE_ENABLED    (acpi_event_status) 0x02
 DECL|macro|ACPI_EVENT_FLAG_SET
-mdefine_line|#define ACPI_EVENT_FLAG_SET             (acpi_event_status) 0x02
+mdefine_line|#define ACPI_EVENT_FLAG_SET             (acpi_event_status) 0x04
 multiline_comment|/* Notify types */
 DECL|macro|ACPI_SYSTEM_NOTIFY
 mdefine_line|#define ACPI_SYSTEM_NOTIFY              0
@@ -931,9 +966,9 @@ DECL|member|count
 id|u32
 id|count
 suffix:semicolon
-DECL|typedef|ACPI_TABLE_INFO
+DECL|typedef|acpi_table_info
 )brace
-id|ACPI_TABLE_INFO
+id|acpi_table_info
 suffix:semicolon
 multiline_comment|/*&n; * System info returned by Acpi_get_system_info()&n; */
 DECL|struct|_acpi_sys_info
@@ -974,7 +1009,7 @@ id|u32
 id|num_table_types
 suffix:semicolon
 DECL|member|table_info
-id|ACPI_TABLE_INFO
+id|acpi_table_info
 id|table_info
 (braket
 id|NUM_ACPI_TABLES
@@ -986,11 +1021,11 @@ id|acpi_system_info
 suffix:semicolon
 multiline_comment|/*&n; * Various handlers and callback procedures&n; */
 r_typedef
-DECL|typedef|ACPI_EVENT_HANDLER
+DECL|typedef|acpi_event_handler
 id|u32
 (paren
 op_star
-id|ACPI_EVENT_HANDLER
+id|acpi_event_handler
 )paren
 (paren
 r_void
@@ -999,11 +1034,11 @@ id|context
 )paren
 suffix:semicolon
 r_typedef
-DECL|typedef|ACPI_GPE_HANDLER
+DECL|typedef|acpi_gpe_handler
 r_void
 (paren
 op_star
-id|ACPI_GPE_HANDLER
+id|acpi_gpe_handler
 )paren
 (paren
 r_void
@@ -1012,11 +1047,11 @@ id|context
 )paren
 suffix:semicolon
 r_typedef
-DECL|typedef|ACPI_NOTIFY_HANDLER
+DECL|typedef|acpi_notify_handler
 r_void
 (paren
 op_star
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 )paren
 (paren
 id|acpi_handle
@@ -1036,11 +1071,11 @@ mdefine_line|#define ACPI_READ_ADR_SPACE     1
 DECL|macro|ACPI_WRITE_ADR_SPACE
 mdefine_line|#define ACPI_WRITE_ADR_SPACE    2
 r_typedef
-DECL|typedef|ACPI_ADR_SPACE_HANDLER
+DECL|typedef|acpi_adr_space_handler
 id|acpi_status
 (paren
 op_star
-id|ACPI_ADR_SPACE_HANDLER
+id|acpi_adr_space_handler
 )paren
 (paren
 id|u32
@@ -1066,13 +1101,13 @@ id|region_context
 )paren
 suffix:semicolon
 DECL|macro|ACPI_DEFAULT_HANDLER
-mdefine_line|#define ACPI_DEFAULT_HANDLER            ((ACPI_ADR_SPACE_HANDLER) NULL)
+mdefine_line|#define ACPI_DEFAULT_HANDLER            ((acpi_adr_space_handler) NULL)
 r_typedef
-DECL|typedef|ACPI_ADR_SPACE_SETUP
+DECL|typedef|acpi_adr_space_setup
 id|acpi_status
 (paren
 op_star
-id|ACPI_ADR_SPACE_SETUP
+id|acpi_adr_space_setup
 )paren
 (paren
 id|acpi_handle
@@ -1096,11 +1131,11 @@ mdefine_line|#define ACPI_REGION_ACTIVATE    0
 DECL|macro|ACPI_REGION_DEACTIVATE
 mdefine_line|#define ACPI_REGION_DEACTIVATE  1
 r_typedef
-DECL|typedef|ACPI_WALK_CALLBACK
+DECL|typedef|acpi_walk_callback
 id|acpi_status
 (paren
 op_star
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 )paren
 (paren
 id|acpi_handle
@@ -1247,7 +1282,7 @@ DECL|macro|WRITE_COMBINING_MEMORY
 mdefine_line|#define WRITE_COMBINING_MEMORY          (u8) 0x02
 DECL|macro|PREFETCHABLE_MEMORY
 mdefine_line|#define PREFETCHABLE_MEMORY             (u8) 0x03
-multiline_comment|/*&n; *  IO Attributes&n; *  The ISA IO ranges are: n000-n0FFh,  n400-n4_fFh, n800-n8_fFh, n_c00-n_cFFh.&n; *  The non-ISA IO ranges are: n100-n3_fFh, n500-n7_fFh, n900-n_bFFh, n_cD0-n_fFFh.&n; */
+multiline_comment|/*&n; *  IO Attributes&n; *  The ISA IO ranges are:     n000-n0FFh,  n400-n4_fFh, n800-n8_fFh, n_c00-n_cFFh.&n; *  The non-ISA IO ranges are: n100-n3_fFh, n500-n7_fFh, n900-n_bFFh, n_cD0-n_fFFh.&n; */
 DECL|macro|NON_ISA_ONLY_RANGES
 mdefine_line|#define NON_ISA_ONLY_RANGES             (u8) 0x01
 DECL|macro|ISA_ONLY_RANGES
@@ -1749,23 +1784,23 @@ id|acpi_resource_attribute
 id|attribute
 suffix:semicolon
 DECL|member|granularity
-id|UINT64
+id|u64
 id|granularity
 suffix:semicolon
 DECL|member|min_address_range
-id|UINT64
+id|u64
 id|min_address_range
 suffix:semicolon
 DECL|member|max_address_range
-id|UINT64
+id|u64
 id|max_address_range
 suffix:semicolon
 DECL|member|address_translation_offset
-id|UINT64
+id|u64
 id|address_translation_offset
 suffix:semicolon
 DECL|member|address_length
-id|UINT64
+id|u64
 id|address_length
 suffix:semicolon
 DECL|member|resource_source

@@ -368,8 +368,7 @@ suffix:semicolon
 macro_line|#endif
 id|ep
 op_assign
-op_amp
-id|default_exec_domain
+l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon

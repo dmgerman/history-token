@@ -4246,6 +4246,12 @@ comma
 l_string|&quot;Maximum number of loop devices (1-255)&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|loop_register_transfer
 r_int
 id|loop_register_transfer

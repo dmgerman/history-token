@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 116 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -20,7 +20,7 @@ id|acpi_install_fixed_event_handler
 id|u32
 id|event
 comma
-id|ACPI_EVENT_HANDLER
+id|acpi_event_handler
 id|handler
 comma
 r_void
@@ -36,27 +36,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_install_fixed_event_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -99,7 +78,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Install the handler before enabling the event - just in case... */
+multiline_comment|/* Install the handler before enabling the event */
 id|acpi_gbl_fixed_event_handlers
 (braket
 id|event
@@ -125,6 +104,8 @@ id|acpi_enable_event
 id|event
 comma
 id|ACPI_EVENT_FIXED
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -203,7 +184,7 @@ id|acpi_remove_fixed_event_handler
 id|u32
 id|event
 comma
-id|ACPI_EVENT_HANDLER
+id|acpi_event_handler
 id|handler
 )paren
 (brace
@@ -217,27 +198,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_remove_fixed_event_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -258,7 +218,7 @@ id|acpi_ut_acquire_mutex
 id|ACPI_MTX_EVENTS
 )paren
 suffix:semicolon
-multiline_comment|/* Disable the event before removing the handler - just in case... */
+multiline_comment|/* Disable the event before removing the handler */
 id|status
 op_assign
 id|acpi_disable_event
@@ -267,6 +227,8 @@ c_func
 id|event
 comma
 id|ACPI_EVENT_FIXED
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Always Remove the handler */
@@ -293,7 +255,6 @@ c_cond
 (paren
 op_logical_neg
 id|ACPI_SUCCESS
-c_func
 (paren
 id|status
 )paren
@@ -345,7 +306,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 id|handler
 comma
 r_void
@@ -375,27 +336,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_install_notify_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -426,7 +366,7 @@ suffix:semicolon
 multiline_comment|/* Convert and validate the device handle */
 id|device_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|device
 )paren
@@ -446,7 +386,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Root Object:&n;&t; * ------------&n;&t; * Registering a notify handler on the root object indicates that the&n;&t; * caller wishes to receive notifications for all objects.  Note that&n;&t; * only one &lt;external&gt; global handler can be regsitered (per notify type).&n;&t; */
+multiline_comment|/*&n;&t; * Root Object:&n;&t; * Registering a notify handler on the root object indicates that the&n;&t; * caller wishes to receive notifications for all objects.  Note that&n;&t; * only one &lt;external&gt; global handler can be regsitered (per notify type).&n;&t; */
 r_if
 c_cond
 (paren
@@ -527,7 +467,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Global notify handler installed */
 )brace
-multiline_comment|/*&n;&t; * Other Objects:&n;&t; * --------------&n;&t; * Caller will only receive notifications specific to the target object.&n;&t; * Note that only certain object types can receive notifications.&n;&t; */
+multiline_comment|/*&n;&t; * All Other Objects:&n;&t; * Caller will only receive notifications specific to the target object.&n;&t; * Note that only certain object types can receive notifications.&n;&t; */
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
@@ -750,7 +690,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 id|handler
 )paren
 (brace
@@ -776,27 +716,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_remove_notify_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -827,7 +746,7 @@ suffix:semicolon
 multiline_comment|/* Convert and validate the device handle */
 id|device_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|device
 )paren
@@ -847,7 +766,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Root Object:&n;&t; * ------------&n;&t; */
+multiline_comment|/*&n;&t; * Root Object&n;&t; */
 r_if
 c_cond
 (paren
@@ -936,7 +855,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Other Objects:&n;&t; * --------------&n;&t; */
+multiline_comment|/*&n;&t; * All Other Objects&n;&t; */
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
@@ -1094,7 +1013,7 @@ comma
 id|u32
 id|type
 comma
-id|ACPI_GPE_HANDLER
+id|acpi_gpe_handler
 id|handler
 comma
 r_void
@@ -1112,27 +1031,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_install_gpe_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -1259,7 +1157,7 @@ id|acpi_remove_gpe_handler
 id|u32
 id|gpe_number
 comma
-id|ACPI_GPE_HANDLER
+id|acpi_gpe_handler
 id|handler
 )paren
 (brace
@@ -1273,27 +1171,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_remove_gpe_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -1413,27 +1290,6 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ex_enter_interpreter
@@ -1480,30 +1336,6 @@ id|acpi_release_global_lock
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
-suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|acpi_ev_release_global_lock
 (paren
 )paren

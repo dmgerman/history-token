@@ -4068,7 +4068,7 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|page_cache_release
+id|free_lru_page
 c_func
 (paren
 id|old_page
@@ -4119,13 +4119,19 @@ comma
 id|page_table
 )paren
 suffix:semicolon
+id|lru_cache_add
+c_func
+(paren
+id|new_page
+)paren
+suffix:semicolon
 multiline_comment|/* Free the old page.. */
 id|new_page
 op_assign
 id|old_page
 suffix:semicolon
 )brace
-id|page_cache_release
+id|free_lru_page
 c_func
 (paren
 id|new_page
@@ -4157,7 +4163,7 @@ l_int|1
 suffix:semicolon
 id|no_mem
 suffix:colon
-id|page_cache_release
+id|free_lru_page
 c_func
 (paren
 id|old_page
@@ -5093,6 +5099,12 @@ comma
 id|vma-&gt;vm_page_prot
 )paren
 )paren
+)paren
+suffix:semicolon
+id|lru_cache_add
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bt_osl.c&n; *   $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bt_osl.c&n; *   $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Changes:&n; * Brendan Burns &lt;bburns@wso.williams.edu&gt; 2000-11-15&n; * - added proc battery interface&n; * - parse returned data from _BST and _BIF&n; * Andy Grover &lt;andrew.grover@intel.com&gt; 2000-12-8&n; * - improved proc interface&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,12 +18,6 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;ACPI Component Architecture (CA) - Control Method Battery Driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|BT_PROC_ROOT
@@ -222,6 +216,9 @@ id|p
 comma
 l_string|&quot;Design Capacity:         %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;design_capacity
 comma
 id|battery-&gt;power_units
@@ -258,6 +255,9 @@ id|p
 comma
 l_string|&quot;Last Full Capacity:      %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;last_full_capacity
 comma
 id|battery-&gt;power_units
@@ -346,6 +346,9 @@ id|p
 comma
 l_string|&quot;Design Voltage:          %d mV&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;design_voltage
 )paren
 suffix:semicolon
@@ -359,6 +362,9 @@ id|p
 comma
 l_string|&quot;Design Capacity Warning: %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;design_capacity_warning
 comma
 id|battery-&gt;power_units
@@ -373,6 +379,9 @@ id|p
 comma
 l_string|&quot;Design Capacity Low:     %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;design_capacity_low
 comma
 id|battery-&gt;power_units
@@ -387,6 +396,9 @@ id|p
 comma
 l_string|&quot;Capacity Granularity 1:  %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;battery_capacity_granularity_1
 comma
 id|battery-&gt;power_units
@@ -401,6 +413,9 @@ id|p
 comma
 l_string|&quot;Capacity Granularity 2:  %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_info-&gt;battery_capacity_granularity_2
 comma
 id|battery-&gt;power_units
@@ -769,6 +784,9 @@ id|p
 comma
 l_string|&quot;Present Rate:            %d %s&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_status-&gt;present_rate
 comma
 id|battery-&gt;power_units
@@ -805,6 +823,9 @@ id|p
 comma
 l_string|&quot;Remaining Capacity:      %d %sh&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_status-&gt;remaining_capacity
 comma
 id|battery-&gt;power_units
@@ -841,6 +862,9 @@ id|p
 comma
 l_string|&quot;Battery Voltage:         %d mV&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|battery_status-&gt;present_voltage
 )paren
 suffix:semicolon
@@ -950,7 +974,7 @@ id|battery-&gt;is_present
 id|printk
 c_func
 (paren
-l_string|&quot;Battery: socket found, battery present&bslash;n&quot;
+l_string|&quot;ACPI: Battery socket found, battery present&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -959,7 +983,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Battery: socket found, battery absent&bslash;n&quot;
+l_string|&quot;ACPI: Battery socket found, battery absent&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

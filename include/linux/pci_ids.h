@@ -2163,6 +2163,10 @@ DECL|macro|PCI_VENDOR_ID_ITE
 mdefine_line|#define PCI_VENDOR_ID_ITE&t;&t;0x1283
 DECL|macro|PCI_DEVICE_ID_ITE_IT8172G
 mdefine_line|#define PCI_DEVICE_ID_ITE_IT8172G&t;0x8172
+DECL|macro|PCI_VENDOR_ID_ITE
+mdefine_line|#define PCI_VENDOR_ID_ITE&t;&t;&t;0x1283
+DECL|macro|PCI_DEVICE_ID_ITE_8872
+mdefine_line|#define PCI_DEVICE_ID_ITE_8872&t;&t;0x8872
 multiline_comment|/* formerly Platform Tech */
 DECL|macro|PCI_VENDOR_ID_ESS_OLD
 mdefine_line|#define PCI_VENDOR_ID_ESS_OLD&t;&t;0x1285
@@ -2568,6 +2572,12 @@ DECL|macro|PCI_DEVICE_ID_AVANCE_ALG2064
 mdefine_line|#define PCI_DEVICE_ID_AVANCE_ALG2064&t;0x2064
 DECL|macro|PCI_DEVICE_ID_AVANCE_2302
 mdefine_line|#define PCI_DEVICE_ID_AVANCE_2302&t;0x2302
+DECL|macro|PCI_VENDOR_ID_AKS
+mdefine_line|#define PCI_VENDOR_ID_AKS&t;&t;0x416c
+DECL|macro|PCI_DEVICE_ID_AKS_ALADDINCARD
+mdefine_line|#define PCI_DEVICE_ID_AKS_ALADDINCARD&t;0x0100
+DECL|macro|PCI_DEVICE_ID_AKS_CPC
+mdefine_line|#define PCI_DEVICE_ID_AKS_CPC&t;&t;0x0200
 DECL|macro|PCI_VENDOR_ID_NETVIN
 mdefine_line|#define PCI_VENDOR_ID_NETVIN&t;&t;0x4a14
 DECL|macro|PCI_DEVICE_ID_NETVIN_NV5000SC

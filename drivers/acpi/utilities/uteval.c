@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *              $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *              $Revision: 31 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -80,6 +80,10 @@ l_string|&quot;%s on %4.4s was not found&bslash;n&quot;
 comma
 id|object_name
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 )paren
@@ -97,6 +101,10 @@ l_string|&quot;%s on %4.4s failed with status %s&bslash;n&quot;
 comma
 id|object_name
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 comma
@@ -196,7 +204,7 @@ id|acpi_namespace_node
 op_star
 id|device_node
 comma
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 op_star
 id|hid
 )paren
@@ -252,6 +260,10 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;_HID on %4.4s was not found&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 )paren
@@ -267,6 +279,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_HID on %4.4s failed %s&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 comma
@@ -406,7 +422,7 @@ id|acpi_namespace_node
 op_star
 id|device_node
 comma
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 op_star
 id|uid
 )paren
@@ -462,6 +478,10 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;_UID on %4.4s was not found&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 )paren
@@ -477,6 +497,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_UID on %4.4s failed %s&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 comma
@@ -655,6 +679,10 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;_STA on %4.4s was not found, assuming present.&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 )paren
@@ -687,6 +715,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_STA on %4.4s failed %s&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|device_node-&gt;name
 comma

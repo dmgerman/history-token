@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 76 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 77 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
@@ -64,6 +64,9 @@ mdefine_line|#define ACPI_USE_STANDARD_HEADERS
 multiline_comment|/* Name of host operating system (returned by the _OS_ namespace object) */
 DECL|macro|ACPI_OS_NAME
 mdefine_line|#define ACPI_OS_NAME         &quot;Intel ACPI/CA Core Subsystem&quot;
+multiline_comment|/* This macro is used to tag functions as &quot;printf-like&quot; because&n; * some compilers can catch printf format string problems. MSVC&n; * doesn&squot;t, so this is proprocessed away.&n; */
+DECL|macro|ACPI_PRINTF_LIKE_FUNC
+mdefine_line|#define ACPI_PRINTF_LIKE_FUNC
 macro_line|#endif
 multiline_comment|/*! [End] no source code translation !*/
 multiline_comment|/******************************************************************************&n; *&n; * C library configuration&n; *&n; *****************************************************************************/

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; * &n; * Module Name: os.c - Linux OSL functions&n; *&t;&t;$Revision: 46 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * &n; * Module Name: os.c - Linux OSL functions&n; *&t;&t;$Revision: 49 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  os.c - OS-dependent functions&n; *&n; *  Copyright (C) 2000 Andrew Henroid&n; *  Copyright (C) 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/* Changes&n; *&n; * Christopher Liebman &lt;liebman@sponsera.com&gt; 2001-5-15&n; * - Fixed improper kernel_thread parameters &n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi.h&gt;
-macro_line|#include &quot;driver.h&quot;
 macro_line|#ifdef CONFIG_ACPI_EFI
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#endif
@@ -464,11 +463,6 @@ id|high_memory
 )paren
 )paren
 (brace
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
 op_star
 id|virt
 op_assign
@@ -482,46 +476,6 @@ r_int
 id|phys
 )paren
 suffix:semicolon
-multiline_comment|/* Check for stamping */
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-op_star
-id|virt
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page
-op_logical_and
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|PG_reserved
-comma
-op_amp
-id|page-&gt;flags
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ACPI attempting to access kernel owned memory at %08lX.&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|phys
-)paren
-suffix:semicolon
-)brace
 r_return
 id|AE_OK
 suffix:semicolon
@@ -949,7 +903,7 @@ c_func
 id|ACPI_IO_ADDRESS
 id|port
 comma
-id|u32
+id|NATIVE_UINT
 id|value
 comma
 id|u32

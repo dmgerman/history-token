@@ -225,6 +225,21 @@ DECL|member|timeout
 r_int
 id|timeout
 suffix:semicolon
+DECL|member|best_mode
+r_int
+r_int
+id|best_mode
+suffix:semicolon
+DECL|member|current_mode
+r_int
+r_int
+id|current_mode
+suffix:semicolon
+DECL|member|bits
+r_int
+r_int
+id|bits
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The following constants describe the various signals of the printer port&n; * hardware.  Note that the hardware inverts some signals and that some&n; * signals are active low.  An example is LP_STROBE, which must be programmed&n; * with 1 for being active and 0 for being inactive, because the strobe signal&n; * gets inverted, but it is also active low.&n; */

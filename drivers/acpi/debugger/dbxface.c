@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 41 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -15,7 +15,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;dbxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_single_step&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - Current executing op&n; *              Op_type         - Type of the current AML Opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called just before execution of an AML opcode.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_single_step&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - Current executing op&n; *              Opcode_class    - Class of the current AML Opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called just before execution of an AML opcode.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_db_single_step
 id|acpi_db_single_step
@@ -28,8 +28,8 @@ id|acpi_parse_object
 op_star
 id|op
 comma
-id|u8
-id|op_type
+id|u32
+id|opcode_class
 )paren
 (brace
 id|acpi_parse_object
@@ -108,32 +108,16 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op_type
+id|opcode_class
 )paren
 (brace
 r_case
-id|OPTYPE_UNDEFINED
+id|AML_CLASS_UNKNOWN
 suffix:colon
 r_case
-id|OPTYPE_CONSTANT
+id|AML_CLASS_ARGUMENT
 suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_LITERAL
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_DATA_TERM
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_LOCAL_VARIABLE
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_METHOD_ARGUMENT
-suffix:colon
-multiline_comment|/* argument type only */
+multiline_comment|/* constants, literals, etc.  do nothing */
 r_return
 (paren
 id|AE_OK
@@ -141,26 +125,6 @@ id|AE_OK
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|OPTYPE_NAMED_OBJECT
-suffix:colon
-r_switch
-c_cond
-(paren
-id|op-&gt;opcode
-)paren
-(brace
-r_case
-id|AML_INT_NAMEPATH_OP
-suffix:colon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Under certain debug conditions, display this opcode and its operands&n;&t; */
 r_if
@@ -505,7 +469,7 @@ r_void
 multiline_comment|/* Init globals */
 id|acpi_gbl_db_buffer
 op_assign
-id|acpi_os_allocate
+id|acpi_os_callocate
 (paren
 id|ACPI_DEBUG_BUFFER_SIZE
 )paren
@@ -581,6 +545,39 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_terminate&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Stop debugger&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_db_terminate
+id|acpi_db_terminate
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_db_table_ptr
+)paren
+(brace
+id|acpi_os_free
+(paren
+id|acpi_gbl_db_table_ptr
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_db_buffer
+)paren
+(brace
+id|acpi_os_free
+(paren
+id|acpi_gbl_db_buffer
+)paren
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* ENABLE_DEBUGGER */
 eof

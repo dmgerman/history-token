@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 93 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
@@ -25,6 +25,9 @@ mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 b
 multiline_comment|/* Access flag bits */
 DECL|macro|AFIELD_SINGLE_DATUM
 mdefine_line|#define AFIELD_SINGLE_DATUM         0x1
+multiline_comment|/*&n; * Fields common to both Strings and Buffers&n; */
+DECL|macro|ACPI_COMMON_BUFFER_INFO
+mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                         length;
 multiline_comment|/******************************************************************************&n; *&n; * Individual Object Descriptors&n; *&n; *****************************************************************************/
 r_typedef
 r_struct
@@ -69,10 +72,7 @@ r_struct
 multiline_comment|/* STRING - has length and pointer - Null terminated, ASCII characters only */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
-DECL|member|length
-id|u32
-id|length
-suffix:semicolon
+id|ACPI_COMMON_BUFFER_INFO
 DECL|member|pointer
 id|NATIVE_CHAR
 op_star
@@ -88,16 +88,13 @@ r_struct
 multiline_comment|/* BUFFER - has length and pointer - not null terminated */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
-DECL|member|length
-id|u32
-id|length
-suffix:semicolon
+id|ACPI_COMMON_BUFFER_INFO
 DECL|member|pointer
 id|u8
 op_star
 id|pointer
 suffix:semicolon
-multiline_comment|/* points to the buffer in allocated space */
+multiline_comment|/* Buffer value in AML stream or in allocated space */
 DECL|typedef|ACPI_OBJECT_BUFFER
 )brace
 id|ACPI_OBJECT_BUFFER
@@ -191,19 +188,19 @@ DECL|member|param_count
 id|u8
 id|param_count
 suffix:semicolon
-DECL|member|pcode_length
+DECL|member|aml_length
 id|u32
-id|pcode_length
+id|aml_length
 suffix:semicolon
 DECL|member|semaphore
 r_void
 op_star
 id|semaphore
 suffix:semicolon
-DECL|member|pcode
+DECL|member|aml_start
 id|u8
 op_star
-id|pcode
+id|aml_start
 suffix:semicolon
 DECL|member|concurrency
 id|u8
@@ -543,7 +540,7 @@ id|node
 suffix:semicolon
 multiline_comment|/* Parent device */
 DECL|member|handler
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 id|handler
 suffix:semicolon
 DECL|member|context
@@ -572,7 +569,7 @@ id|u16
 id|hflags
 suffix:semicolon
 DECL|member|handler
-id|ACPI_ADR_SPACE_HANDLER
+id|acpi_adr_space_handler
 id|handler
 suffix:semicolon
 DECL|member|node
@@ -587,7 +584,7 @@ op_star
 id|context
 suffix:semicolon
 DECL|member|setup
-id|ACPI_ADR_SPACE_SETUP
+id|acpi_adr_space_setup
 id|setup
 suffix:semicolon
 DECL|member|region_list
@@ -663,14 +660,14 @@ DECL|member|word_fill1
 id|u16
 id|word_fill1
 suffix:semicolon
-DECL|member|pcode_length
+DECL|member|aml_length
 id|u32
-id|pcode_length
+id|aml_length
 suffix:semicolon
-DECL|member|pcode
+DECL|member|aml_start
 id|u8
 op_star
-id|pcode
+id|aml_start
 suffix:semicolon
 DECL|member|method_REG
 id|acpi_namespace_node

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 50 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 52 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -1265,6 +1265,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Init fields specific to the update struct */
+id|state-&gt;common.data_type
+op_assign
+id|ACPI_DESC_TYPE_STATE_UPDATE
+suffix:semicolon
 id|state-&gt;update.object
 op_assign
 id|object
@@ -1279,7 +1283,7 @@ id|state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_pkg_state&n; *&n; * PARAMETERS:  Object              - Initial Object to be installed in the&n; *                                    state&n; *              Action              - Update action to be performed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create an &quot;Update State&quot; - a flavor of the generic state used&n; *              to update reference counts and delete complex objects such&n; *              as packages.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_pkg_state&n; *&n; * PARAMETERS:  Object              - Initial Object to be installed in the&n; *                                    state&n; *              Action              - Update action to be performed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a &quot;Package State&quot;&n; *&n; ******************************************************************************/
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_create_pkg_state
@@ -1329,6 +1333,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Init fields specific to the update struct */
+id|state-&gt;common.data_type
+op_assign
+id|ACPI_DESC_TYPE_STATE_PACKAGE
+suffix:semicolon
 id|state-&gt;pkg.source_object
 op_assign
 (paren
@@ -1394,6 +1402,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Init fields specific to the control struct */
+id|state-&gt;common.data_type
+op_assign
+id|ACPI_DESC_TYPE_STATE_CONTROL
+suffix:semicolon
 id|state-&gt;common.state
 op_assign
 id|CONTROL_CONDITIONAL_EXECUTING

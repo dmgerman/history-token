@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bn_osl.c&n; *   $Revision: 14 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bn_osl.c&n; *   $Revision: 16 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -17,12 +17,6 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;ACPI Component Architecture (CA) - Button Driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|BN_PROC_ROOT
@@ -47,6 +41,33 @@ op_star
 id|bn_proc_root
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|macro|BN_TYPE_UNKNOWN
+mdefine_line|#define BN_TYPE_UNKNOWN&t;&t;0
+DECL|macro|BN_TYPE_FIXED
+mdefine_line|#define BN_TYPE_FIXED&t;&t;1
+DECL|macro|BN_TYPE_GENERIC
+mdefine_line|#define BN_TYPE_GENERIC&t;&t;2
+DECL|variable|bn_power_button
+r_static
+r_int
+id|bn_power_button
+op_assign
+id|BN_TYPE_UNKNOWN
+suffix:semicolon
+DECL|variable|bn_sleep_button
+r_static
+r_int
+id|bn_sleep_button
+op_assign
+id|BN_TYPE_UNKNOWN
+suffix:semicolon
+DECL|variable|bn_lid_switch
+r_static
+r_int
+id|bn_lid_switch
+op_assign
+id|BN_TYPE_UNKNOWN
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bn_osl_add_device&n; *&n; ****************************************************************************/
 id|acpi_status
@@ -82,16 +103,17 @@ id|button-&gt;type
 )paren
 (brace
 r_case
-id|BN_TYPE_POWER_BUTTON
-suffix:colon
-r_case
 id|BN_TYPE_POWER_BUTTON_FIXED
 suffix:colon
+id|bn_power_button
+op_assign
+id|BN_TYPE_FIXED
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Power Button: found&bslash;n&quot;
+l_string|&quot;ACPI: Power Button (FF) found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -115,16 +137,85 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BN_TYPE_SLEEP_BUTTON
+id|BN_TYPE_POWER_BUTTON
 suffix:colon
+multiline_comment|/* &n;&t;&t; * Avoid creating multiple /proc entries when (buggy) ACPI&n;&t;&t; * BIOS tables erroneously list both fixed- and generic-&n;&t;&t; * feature buttons.  Note that fixed-feature buttons are &n;&t;&t; * always enumerated first (and there can only be one) so&n;&t;&t; * we only need to check here.&n;&t;&t; */
+r_switch
+c_cond
+(paren
+id|bn_power_button
+)paren
+(brace
 r_case
-id|BN_TYPE_SLEEP_BUTTON_FIXED
+id|BN_TYPE_GENERIC
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ACPI: Multiple generic-space power buttons detected, using first&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BN_TYPE_FIXED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ACPI: Multiple power buttons detected, ignoring fixed-feature&bslash;n&quot;
+)paren
+suffix:semicolon
+r_default
 suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Sleep Button: found&bslash;n&quot;
+l_string|&quot;ACPI: Power Button (CM) found&bslash;n&quot;
+)paren
+suffix:semicolon
+id|bn_power_button
+op_assign
+id|BN_TYPE_GENERIC
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc_mkdir
+c_func
+(paren
+id|BN_PROC_POWER_BUTTON
+comma
+id|bn_proc_root
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_ERROR
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|BN_TYPE_SLEEP_BUTTON_FIXED
+suffix:colon
+id|bn_sleep_button
+op_assign
+id|BN_TYPE_FIXED
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: Sleep Button (FF) found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -148,13 +239,101 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BN_TYPE_LID_SWITCH
+id|BN_TYPE_SLEEP_BUTTON
+suffix:colon
+multiline_comment|/* &n;&t;&t; * Avoid creating multiple /proc entries when (buggy) ACPI&n;&t;&t; * BIOS tables erroneously list both fixed- and generic-&n;&t;&t; * feature buttons.  Note that fixed-feature buttons are &n;&t;&t; * always enumerated first (and there can only be one) so&n;&t;&t; * we only need to check here.&n;&t;&t; */
+r_switch
+c_cond
+(paren
+id|bn_sleep_button
+)paren
+(brace
+r_case
+id|BN_TYPE_GENERIC
 suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
+l_string|&quot;ACPI: Multiple generic-space sleep buttons detected, using first&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BN_TYPE_FIXED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ACPI: Multiple sleep buttons detected, ignoring fixed-feature&bslash;n&quot;
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+id|bn_sleep_button
+op_assign
+id|BN_TYPE_GENERIC
+suffix:semicolon
+id|printk
+c_func
+(paren
 id|KERN_INFO
-l_string|&quot;Lid Switch: found&bslash;n&quot;
+l_string|&quot;ACPI: Sleep Button (CM) found&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc_mkdir
+c_func
+(paren
+id|BN_PROC_SLEEP_BUTTON
+comma
+id|bn_proc_root
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_ERROR
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|BN_TYPE_LID_SWITCH
+suffix:colon
+r_if
+c_cond
+(paren
+id|bn_lid_switch
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ACPI: Multiple generic-space lid switches detected, using first&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|bn_lid_switch
+op_assign
+id|BN_TYPE_GENERIC
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: Lid Switch (CM) found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

@@ -790,14 +790,6 @@ comma
 id|args
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;buf %s&bslash;n&quot;
-comma
-id|buf
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: tz.h&n; *   $Revision: 21 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: tz.h&n; *   $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __TZ_H__
 DECL|macro|__TZ_H__
@@ -66,76 +66,51 @@ id|TZ_STATE
 suffix:semicolon
 DECL|macro|TZ_STATE_OK
 mdefine_line|#define TZ_STATE_OK&t;&t;((TZ_STATE) 0x00000000)
+DECL|macro|TZ_STATE_HOT
+mdefine_line|#define TZ_STATE_HOT&t;&t;((TZ_STATE) 0x10000000)
 DECL|macro|TZ_STATE_ACTIVE
 mdefine_line|#define TZ_STATE_ACTIVE&t;&t;((TZ_STATE) 0x20000000)
 DECL|macro|TZ_STATE_PASSIVE
 mdefine_line|#define TZ_STATE_PASSIVE&t;((TZ_STATE) 0x40000000)
 DECL|macro|TZ_STATE_CRITICAL
 mdefine_line|#define TZ_STATE_CRITICAL&t;((TZ_STATE) 0x80000000)
-multiline_comment|/*&n; * TZ_THRESHOLD:&n; * -------------&n; * Information on an individual threshold.&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|type
-id|TZ_THRESHOLD_TYPE
-id|type
-suffix:semicolon
-DECL|member|index
+DECL|member|temperature
 id|u32
-id|index
+id|temperature
+suffix:semicolon
+DECL|typedef|TZ_CRITICAL_THRESHOLD
+)brace
+id|TZ_CRITICAL_THRESHOLD
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|is_valid
+id|u8
+id|is_valid
 suffix:semicolon
 DECL|member|temperature
 id|u32
 id|temperature
 suffix:semicolon
-DECL|member|cooling_state
-id|TZ_COOLING_STATE
-id|cooling_state
-suffix:semicolon
-DECL|member|cooling_devices
-id|BM_HANDLE_LIST
-id|cooling_devices
-suffix:semicolon
-DECL|typedef|TZ_THRESHOLD
+DECL|typedef|TZ_HOT_THRESHOLD
 )brace
-id|TZ_THRESHOLD
+id|TZ_HOT_THRESHOLD
 suffix:semicolon
-multiline_comment|/*&n; * TZ_THRESHOLD_LIST:&n; * ------------------&n; * Container for the thresholds of a given thermal zone.&n; * Note that thresholds are always ordered by increasing&n; * temperature value to simplify use by thermal policy.&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|count
+DECL|member|is_valid
+id|u8
+id|is_valid
+suffix:semicolon
+DECL|member|temperature
 id|u32
-id|count
+id|temperature
 suffix:semicolon
-DECL|member|thresholds
-id|TZ_THRESHOLD
-id|thresholds
-(braket
-id|TZ_MAX_THRESHOLDS
-)braket
-suffix:semicolon
-DECL|typedef|TZ_THRESHOLD_LIST
-)brace
-id|TZ_THRESHOLD_LIST
-suffix:semicolon
-multiline_comment|/*&n; * TZ_CRITICAL_POLICY:&n; * -------------------&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|threshold
-id|TZ_THRESHOLD
-op_star
-id|threshold
-suffix:semicolon
-DECL|typedef|TZ_CRITICAL_POLICY
-)brace
-id|TZ_CRITICAL_POLICY
-suffix:semicolon
-multiline_comment|/*&n; * TZ_PASSIVE_POLICY:&n; * ------------------&n; */
-r_typedef
-r_struct
-(brace
 DECL|member|tc1
 id|u32
 id|tc1
@@ -148,34 +123,62 @@ DECL|member|tsp
 id|u32
 id|tsp
 suffix:semicolon
-DECL|member|threshold
-id|TZ_THRESHOLD
-op_star
-id|threshold
+DECL|member|devices
+id|BM_HANDLE_LIST
+id|devices
 suffix:semicolon
-DECL|typedef|TZ_PASSIVE_POLICY
+DECL|typedef|TZ_PASSIVE_THRESHOLD
 )brace
-id|TZ_PASSIVE_POLICY
+id|TZ_PASSIVE_THRESHOLD
 suffix:semicolon
-multiline_comment|/*&n; * TZ_ACTIVE_POLICY:&n; * -----------------&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|threshold_count
-id|u32
-id|threshold_count
+DECL|member|is_valid
+id|u8
+id|is_valid
 suffix:semicolon
-DECL|member|threshold
-id|TZ_THRESHOLD
-op_star
-id|threshold
+DECL|member|temperature
+id|u32
+id|temperature
+suffix:semicolon
+DECL|member|cooling_state
+id|TZ_COOLING_STATE
+id|cooling_state
+suffix:semicolon
+DECL|member|devices
+id|BM_HANDLE_LIST
+id|devices
+suffix:semicolon
+DECL|typedef|TZ_ACTIVE_THRESHOLD
+)brace
+id|TZ_ACTIVE_THRESHOLD
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|critical
+id|TZ_CRITICAL_THRESHOLD
+id|critical
+suffix:semicolon
+DECL|member|hot
+id|TZ_HOT_THRESHOLD
+id|hot
+suffix:semicolon
+DECL|member|passive
+id|TZ_PASSIVE_THRESHOLD
+id|passive
+suffix:semicolon
+DECL|member|active
+id|TZ_ACTIVE_THRESHOLD
+id|active
 (braket
 id|TZ_MAX_ACTIVE_THRESHOLDS
 )braket
 suffix:semicolon
-DECL|typedef|TZ_ACTIVE_POLICY
+DECL|typedef|TZ_THRESHOLDS
 )brace
-id|TZ_ACTIVE_POLICY
+id|TZ_THRESHOLDS
 suffix:semicolon
 multiline_comment|/*&n; * TZ_POLICY:&n; * ---------&n; */
 r_typedef
@@ -197,23 +200,10 @@ DECL|member|polling_freq
 id|u32
 id|polling_freq
 suffix:semicolon
-DECL|member|threshold_list
-id|TZ_THRESHOLD_LIST
-id|threshold_list
+DECL|member|thresholds
+id|TZ_THRESHOLDS
+id|thresholds
 suffix:semicolon
-DECL|member|critical
-id|TZ_CRITICAL_POLICY
-id|critical
-suffix:semicolon
-DECL|member|passive
-id|TZ_PASSIVE_POLICY
-id|passive
-suffix:semicolon
-DECL|member|active
-id|TZ_ACTIVE_POLICY
-id|active
-suffix:semicolon
-multiline_comment|/* TBD: Linux-specific */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -251,7 +241,7 @@ DECL|typedef|TZ_CONTEXT
 id|TZ_CONTEXT
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                             Function Prototypes&n; *****************************************************************************/
-multiline_comment|/* thermal_zone.c */
+multiline_comment|/* tz.c */
 id|acpi_status
 id|tz_initialize
 (paren
@@ -294,11 +284,7 @@ id|tz_get_temperature
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
-comma
-id|u32
-op_star
-id|temperature
+id|tz
 )paren
 suffix:semicolon
 id|acpi_status
@@ -306,11 +292,18 @@ id|tz_get_thresholds
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
-comma
-id|TZ_THRESHOLD_LIST
+id|tz
+)paren
+suffix:semicolon
+id|acpi_status
+id|tz_set_cooling_preference
+(paren
+id|TZ_CONTEXT
 op_star
-id|threshold_list
+id|tz
+comma
+id|TZ_COOLING_MODE
+id|cooling_mode
 )paren
 suffix:semicolon
 r_void
@@ -318,7 +311,7 @@ id|tz_print
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 multiline_comment|/* tzpolicy.c */
@@ -327,7 +320,7 @@ id|tz_policy_add_device
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 id|acpi_status
@@ -335,7 +328,7 @@ id|tz_policy_remove_device
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 r_void
@@ -346,13 +339,13 @@ op_star
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/* Thermal Zone Driver OSL */
+multiline_comment|/* tz_osl.c */
 id|acpi_status
 id|tz_osl_add_device
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 id|acpi_status
@@ -360,7 +353,7 @@ id|tz_osl_remove_device
 (paren
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 id|acpi_status
@@ -371,7 +364,7 @@ id|event
 comma
 id|TZ_CONTEXT
 op_star
-id|thermal_zone
+id|tz
 )paren
 suffix:semicolon
 macro_line|#endif  /* __TZ_H__ */

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -104,13 +104,26 @@ id|parent
 op_assign
 id|op-&gt;parent
 suffix:semicolon
+id|walk_state-&gt;op
+op_assign
+id|op
+suffix:semicolon
+id|walk_state-&gt;op_info
+op_assign
+id|acpi_ps_get_opcode_info
+(paren
+id|op-&gt;opcode
+)paren
+suffix:semicolon
+id|walk_state-&gt;opcode
+op_assign
+id|op-&gt;opcode
+suffix:semicolon
 id|status
 op_assign
 id|ascending_callback
 (paren
 id|walk_state
-comma
-id|op
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we are back to the starting point, the walk is complete.&n;&t;&t; */
@@ -190,13 +203,26 @@ id|next
 op_assign
 id|parent-&gt;next
 suffix:semicolon
+id|walk_state-&gt;op
+op_assign
+id|parent
+suffix:semicolon
+id|walk_state-&gt;op_info
+op_assign
+id|acpi_ps_get_opcode_info
+(paren
+id|parent-&gt;opcode
+)paren
+suffix:semicolon
+id|walk_state-&gt;opcode
+op_assign
+id|parent-&gt;opcode
+suffix:semicolon
 id|status
 op_assign
 id|ascending_callback
 (paren
 id|walk_state
-comma
-id|parent
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we are back to the starting point, the walk is complete.&n;&t;&t; */
@@ -283,16 +309,12 @@ id|acpi_ps_delete_completed_op
 (paren
 id|acpi_walk_state
 op_star
-id|state
-comma
-id|acpi_parse_object
-op_star
-id|op
+id|walk_state
 )paren
 (brace
 id|acpi_ps_free_op
 (paren
-id|op
+id|walk_state-&gt;op
 )paren
 suffix:semicolon
 r_return
@@ -372,10 +394,6 @@ id|walk_state
 id|return_VOID
 suffix:semicolon
 )brace
-id|walk_state-&gt;parser_state
-op_assign
-l_int|NULL
-suffix:semicolon
 id|walk_state-&gt;parse_flags
 op_assign
 l_int|0

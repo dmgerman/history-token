@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 21 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -175,10 +175,10 @@ id|u8
 id|type_b
 suffix:semicolon
 id|u16
-id|PM1_acontrol
+id|PM1Acontrol
 suffix:semicolon
 id|u16
-id|PM1_bcontrol
+id|PM1Bcontrol
 suffix:semicolon
 id|FUNCTION_TRACE
 (paren
@@ -299,8 +299,12 @@ id|disable
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: disable all non-wake GPEs here */
-id|PM1_acontrol
+id|acpi_hw_disable_non_wakeup_gpes
+c_func
+(paren
+)paren
+suffix:semicolon
+id|PM1Acontrol
 op_assign
 (paren
 id|u16
@@ -324,7 +328,7 @@ id|sleep_state
 )paren
 suffix:semicolon
 multiline_comment|/* mask off SLP_EN and SLP_TYP fields */
-id|PM1_acontrol
+id|PM1Acontrol
 op_and_assign
 op_complement
 (paren
@@ -333,12 +337,12 @@ op_or
 id|SLP_EN_MASK
 )paren
 suffix:semicolon
-id|PM1_bcontrol
+id|PM1Bcontrol
 op_assign
-id|PM1_acontrol
+id|PM1Acontrol
 suffix:semicolon
 multiline_comment|/* mask in SLP_TYP */
-id|PM1_acontrol
+id|PM1Acontrol
 op_or_assign
 (paren
 id|type_a
@@ -349,7 +353,7 @@ id|SLP_TYPE_X_MASK
 )paren
 )paren
 suffix:semicolon
-id|PM1_bcontrol
+id|PM1Bcontrol
 op_or_assign
 (paren
 id|type_b
@@ -365,22 +369,22 @@ id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_LOCK
 comma
-id|PM1_a_CONTROL
+id|PM1A_CONTROL
 comma
-id|PM1_acontrol
+id|PM1Acontrol
 )paren
 suffix:semicolon
 id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_LOCK
 comma
-id|PM1_b_CONTROL
+id|PM1B_CONTROL
 comma
-id|PM1_bcontrol
+id|PM1Bcontrol
 )paren
 suffix:semicolon
 multiline_comment|/* mask in SLP_EN */
-id|PM1_acontrol
+id|PM1Acontrol
 op_or_assign
 (paren
 l_int|1
@@ -391,7 +395,7 @@ id|SLP_EN_MASK
 )paren
 )paren
 suffix:semicolon
-id|PM1_bcontrol
+id|PM1Bcontrol
 op_or_assign
 (paren
 l_int|1
@@ -413,18 +417,18 @@ id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_LOCK
 comma
-id|PM1_a_CONTROL
+id|PM1A_CONTROL
 comma
-id|PM1_acontrol
+id|PM1Acontrol
 )paren
 suffix:semicolon
 id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_LOCK
 comma
-id|PM1_b_CONTROL
+id|PM1B_CONTROL
 comma
-id|PM1_bcontrol
+id|PM1Bcontrol
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait a second, then try again. This is to get S4/5 to work on all machines.&n;&t; */
@@ -481,6 +485,11 @@ id|ACPI_MTX_LOCK
 comma
 id|WAK_STS
 )paren
+)paren
+suffix:semicolon
+id|acpi_hw_enable_non_wakeup_gpes
+c_func
+(paren
 )paren
 suffix:semicolon
 id|enable
@@ -581,7 +590,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* _WAK returns stuff - do we want to look at it? */
-multiline_comment|/* Re-enable GPEs */
+id|acpi_hw_enable_non_wakeup_gpes
+c_func
+(paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 52 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 57 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -604,7 +604,9 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Object Pathname: %s&bslash;n&quot;
+l_string|&quot;Object (%p) Pathname: %s&bslash;n&quot;
+comma
+id|node
 comma
 id|ret_buf.pointer
 )paren
@@ -700,6 +702,10 @@ suffix:semicolon
 )brace
 id|acpi_ut_dump_buffer
 (paren
+(paren
+r_void
+op_star
+)paren
 id|node-&gt;object
 comma
 r_sizeof
@@ -1097,7 +1103,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;[Const]         Revision (%X)&quot;
 comma
-id|ACPI_CA_VERSION
+id|ACPI_CA_SUPPORT_LEVEL
 )paren
 suffix:semicolon
 r_break
@@ -1431,6 +1437,7 @@ id|num_remaining_ops
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Decode the opcode */
 id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
@@ -1438,51 +1445,17 @@ id|acpi_ps_get_opcode_info
 id|op-&gt;opcode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_GET_OP_TYPE
-(paren
-id|op_info
-)paren
-op_ne
-id|ACPI_OP_TYPE_OPCODE
-)paren
-(brace
-multiline_comment|/* Bad opcode or ASCII character */
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* Decode the opcode */
 r_switch
 c_cond
 (paren
-id|ACPI_GET_OP_CLASS
-(paren
 id|op_info
-)paren
+op_member_access_from_pointer
+r_class
 )paren
 (brace
 r_case
-id|OPTYPE_CONSTANT
+id|AML_CLASS_ARGUMENT
 suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_LITERAL
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_DATA_TERM
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_LOCAL_VARIABLE
-suffix:colon
-multiline_comment|/* argument type only */
-r_case
-id|OPTYPE_METHOD_ARGUMENT
-suffix:colon
-multiline_comment|/* argument type only */
 r_if
 c_cond
 (paren
@@ -1497,6 +1470,12 @@ id|num_operands
 op_increment
 suffix:semicolon
 r_break
+suffix:semicolon
+r_case
+id|AML_CLASS_UNKNOWN
+suffix:colon
+multiline_comment|/* Bad opcode or ASCII character */
+r_continue
 suffix:semicolon
 r_default
 suffix:colon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 131 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 133 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -292,7 +292,7 @@ l_string|&quot;&bslash;&bslash;_S4_&quot;
 comma
 l_string|&quot;&bslash;&bslash;_S5_&quot;
 comma
-l_string|&quot;&bslash;&bslash;_S4_b&quot;
+l_string|&quot;&bslash;&bslash;_S4B&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
@@ -792,7 +792,7 @@ op_assign
 l_string|&quot;UNDEFINED&quot;
 suffix:semicolon
 DECL|macro|TYPE_NAME_LENGTH
-mdefine_line|#define TYPE_NAME_LENGTH    9                           /* Maximum length of each string */
+mdefine_line|#define TYPE_NAME_LENGTH    12                           /* Maximum length of each string */
 DECL|variable|acpi_gbl_ns_type_names
 r_static
 r_const
@@ -847,22 +847,22 @@ multiline_comment|/* 13 */
 l_string|&quot;Thermal&quot;
 comma
 multiline_comment|/* 14 */
-l_string|&quot;Buff_field&quot;
+l_string|&quot;Buffer_field&quot;
 comma
 multiline_comment|/* 15 */
 l_string|&quot;Ddb_handle&quot;
 comma
 multiline_comment|/* 16 */
-l_string|&quot;Debug_obj&quot;
+l_string|&quot;Debug_object&quot;
 comma
 multiline_comment|/* 17 */
-l_string|&quot;Regn_field&quot;
+l_string|&quot;Region_field&quot;
 comma
 multiline_comment|/* 18 */
 l_string|&quot;Bank_field&quot;
 comma
 multiline_comment|/* 19 */
-l_string|&quot;Indx_field&quot;
+l_string|&quot;Index_field&quot;
 comma
 multiline_comment|/* 20 */
 l_string|&quot;Reference&quot;
@@ -874,22 +874,22 @@ multiline_comment|/* 22 */
 l_string|&quot;Notify&quot;
 comma
 multiline_comment|/* 23 */
-l_string|&quot;Addr_hndlr&quot;
+l_string|&quot;Addr_handler&quot;
 comma
 multiline_comment|/* 24 */
-l_string|&quot;Rsrc_desc&quot;
+l_string|&quot;Resource_desc&quot;
 comma
 multiline_comment|/* 25 */
-l_string|&quot;Rsrc_field&quot;
+l_string|&quot;Resource_fld&quot;
 comma
 multiline_comment|/* 26 */
-l_string|&quot;Rgn_fld_dfn&quot;
+l_string|&quot;Region_fld_dfn&quot;
 comma
 multiline_comment|/* 27 */
-l_string|&quot;Bnk_fld_dfn&quot;
+l_string|&quot;Bank_fld_dfn&quot;
 comma
 multiline_comment|/* 28 */
-l_string|&quot;Idx_fld_dfn&quot;
+l_string|&quot;Index_fld_dfn&quot;
 comma
 multiline_comment|/* 29 */
 l_string|&quot;If&quot;

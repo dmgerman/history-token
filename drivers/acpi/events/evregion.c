@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 110 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 113 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -239,27 +239,14 @@ l_int|1
 )braket
 )paren
 (brace
-id|acpi_ut_remove_reference
-(paren
-id|params
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
-id|params
-(braket
-l_int|2
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; *  Set up the parameter objects&n;&t; */
 id|params
 (braket
@@ -278,6 +265,13 @@ op_member_access_from_pointer
 id|integer.value
 op_assign
 id|function
+suffix:semicolon
+id|params
+(braket
+l_int|2
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Execute the method, no return value&n;&t; */
 id|DEBUG_EXEC
@@ -306,15 +300,17 @@ id|acpi_ut_remove_reference
 (paren
 id|params
 (braket
-l_int|0
+l_int|1
 )braket
 )paren
 suffix:semicolon
+id|cleanup
+suffix:colon
 id|acpi_ut_remove_reference
 (paren
 id|params
 (braket
-l_int|1
+l_int|0
 )braket
 )paren
 suffix:semicolon
@@ -350,10 +346,10 @@ id|value
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_ADR_SPACE_HANDLER
+id|acpi_adr_space_handler
 id|handler
 suffix:semicolon
-id|ACPI_ADR_SPACE_SETUP
+id|acpi_adr_space_setup
 id|region_setup
 suffix:semicolon
 id|acpi_operand_object
@@ -533,7 +529,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_OPREGION
 comma
-l_string|&quot;Addrhandler %p (%p), Address %8.8lX%8.8lX&bslash;n&quot;
+l_string|&quot;Addrhandler %p (%p), Address %8.8X%8.8X&bslash;n&quot;
 comma
 op_amp
 id|region_obj-&gt;region.addr_handler-&gt;addr_handler
@@ -669,7 +665,7 @@ op_star
 op_star
 id|last_obj_ptr
 suffix:semicolon
-id|ACPI_ADR_SPACE_SETUP
+id|acpi_adr_space_setup
 id|region_setup
 suffix:semicolon
 r_void
@@ -1045,7 +1041,7 @@ suffix:semicolon
 multiline_comment|/* Convert and validate the device handle */
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|obj_handle
 )paren

@@ -2858,10 +2858,11 @@ id|info
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|tmp_ptr
-comma
+suffix:semicolon
+r_int
+r_int
 id|myjif
 suffix:semicolon
 id|u32

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -45,6 +45,10 @@ suffix:semicolon
 id|acpi_parse_object
 op_star
 id|op
+suffix:semicolon
+id|acpi_walk_state
+op_star
+id|walk_state
 suffix:semicolon
 id|FUNCTION_TRACE
 (paren
@@ -145,13 +149,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Perform the first pass parse of the method to enter any&n;&t; * named objects that it creates into the namespace&n;&t; */
+multiline_comment|/*&n;&t; * 1) Perform the first pass parse of the method to enter any&n;&t; * named objects that it creates into the namespace&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;**** Begin Method Execution **** Entry=%p obj=%p&bslash;n&quot;
+l_string|&quot;**** Begin Method Parse **** Entry=%p obj=%p&bslash;n&quot;
 comma
 id|method_node
 comma
@@ -180,34 +184,95 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Create and initialize a new walk state */
+id|walk_state
+op_assign
+id|acpi_ds_create_walk_state
+(paren
+id|TABLE_ID_DSDT
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_ds_init_aml_walk
+(paren
+id|walk_state
+comma
+id|op
+comma
+id|method_node
+comma
+id|obj_desc-&gt;method.aml_start
+comma
+id|obj_desc-&gt;method.aml_length
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* TBD: delete walk state */
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Parse the AML */
 id|status
 op_assign
 id|acpi_ps_parse_aml
 (paren
-id|op
-comma
-id|obj_desc-&gt;method.pcode
-comma
-id|obj_desc-&gt;method.pcode_length
-comma
-id|ACPI_PARSE_LOAD_PASS1
-op_or
-id|ACPI_PARSE_DELETE_TREE
-comma
-id|method_node
-comma
-id|params
-comma
-id|return_obj_desc
-comma
-id|acpi_ds_load1_begin_op
-comma
-id|acpi_ds_load1_end_op
+id|walk_state
 )paren
 suffix:semicolon
 id|acpi_ps_delete_parse_tree
 (paren
 id|op
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * 2) Execute the method.  Performs second pass parse simultaneously&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;**** Begin Method Execution **** Entry=%p obj=%p&bslash;n&quot;
+comma
+id|method_node
+comma
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Create and init a Root Node */
@@ -243,30 +308,76 @@ id|op-&gt;node
 op_assign
 id|method_node
 suffix:semicolon
-multiline_comment|/*&n;&t; * The walk of the parse tree is where we actually execute the method&n;&t; */
+multiline_comment|/* Create and initialize a new walk state */
+id|walk_state
+op_assign
+id|acpi_ds_create_walk_state
+(paren
+id|TABLE_ID_DSDT
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
-id|acpi_ps_parse_aml
+id|acpi_ds_init_aml_walk
 (paren
+id|walk_state
+comma
 id|op
 comma
-id|obj_desc-&gt;method.pcode
-comma
-id|obj_desc-&gt;method.pcode_length
-comma
-id|ACPI_PARSE_EXECUTE
-op_or
-id|ACPI_PARSE_DELETE_TREE
-comma
 id|method_node
+comma
+id|obj_desc-&gt;method.aml_start
+comma
+id|obj_desc-&gt;method.aml_length
 comma
 id|params
 comma
 id|return_obj_desc
 comma
-id|acpi_ds_exec_begin_op
-comma
-id|acpi_ds_exec_end_op
+l_int|3
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* TBD: delete walk state */
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * The walk of the parse tree is where we actually execute the method&n;&t; */
+id|status
+op_assign
+id|acpi_ps_parse_aml
+(paren
+id|walk_state
 )paren
 suffix:semicolon
 id|acpi_ps_delete_parse_tree
@@ -309,6 +420,27 @@ id|REF_DECREMENT
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|DUMP_PATHNAME
+(paren
+id|method_node
+comma
+l_string|&quot;Ps_execute: method failed -&quot;
+comma
+id|ACPI_LV_ERROR
+comma
+id|_COMPONENT
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If the method has returned an object, signal this to the caller with&n;&t; * a control exception code&n;&t; */
 r_if
 c_cond
@@ -322,7 +454,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Method returned Obj_desc=%X&bslash;n&quot;
+l_string|&quot;Method returned Obj_desc=%p&bslash;n&quot;
 comma
 op_star
 id|return_obj_desc

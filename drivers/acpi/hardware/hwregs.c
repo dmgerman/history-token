@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 109 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 110 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -1019,11 +1019,18 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_IO
 comma
-l_string|&quot;PM2 control: Read %X from %p&bslash;n&quot;
+l_string|&quot;PM2 control: Read %X from %8.8X%8.8X&bslash;n&quot;
 comma
 id|register_value
 comma
-id|ACPI_GET_ADDRESS
+id|HIDWORD
+c_func
+(paren
+id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+)paren
+comma
+id|LODWORD
+c_func
 (paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
 )paren
@@ -1063,11 +1070,21 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_IO
 comma
-l_string|&quot;About to write %04X to %p&bslash;n&quot;
+l_string|&quot;About to write %04X to %8.8X%8.8X&bslash;n&quot;
 comma
 id|register_value
 comma
+id|HIDWORD
+c_func
+(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1109,11 +1126,18 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_IO
 comma
-l_string|&quot;PM_TIMER: Read %X from %p&bslash;n&quot;
+l_string|&quot;PM_TIMER: Read %X from %8.8X%8.8X&bslash;n&quot;
 comma
 id|register_value
 comma
-id|ACPI_GET_ADDRESS
+id|HIDWORD
+c_func
+(paren
+id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
+)paren
+comma
+id|LODWORD
+c_func
 (paren
 id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
 )paren
@@ -1799,7 +1823,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PM1_a_CONTROL
+id|PM1A_CONTROL
 suffix:colon
 multiline_comment|/* 16-bit access */
 id|acpi_hw_low_level_write
@@ -1817,7 +1841,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PM1_b_CONTROL
+id|PM1B_CONTROL
 suffix:colon
 multiline_comment|/* 16-bit access */
 id|acpi_hw_low_level_write

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 56 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -344,6 +344,10 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;[%4.4s] is a forward reference&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
@@ -410,6 +414,10 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;%4.4s added to %p at %p&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 comma
@@ -519,7 +527,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Found a grandchild! P=%X C=%X&bslash;n&quot;
+l_string|&quot;Found a grandchild! P=%p C=%p&bslash;n&quot;
 comma
 id|parent_node
 comma
@@ -553,19 +561,12 @@ id|acpi_gbl_current_node_count
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Detach an object if there is one&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|child_node-&gt;object
-)paren
-(brace
+multiline_comment|/*&n;&t;&t; * Detach an object if there is one, then free the child node&n;&t;&t; */
 id|acpi_ns_detach_object
 (paren
 id|child_node
 )paren
 suffix:semicolon
-)brace
 id|ACPI_MEM_FREE
 (paren
 id|child_node
@@ -609,13 +610,13 @@ id|parent_node
 id|acpi_namespace_node
 op_star
 id|child_node
-suffix:semicolon
-id|acpi_operand_object
-op_star
-id|obj_desc
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u32
 id|level
+op_assign
+l_int|1
 suffix:semicolon
 id|FUNCTION_TRACE
 (paren
@@ -635,14 +636,6 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-id|child_node
-op_assign
-l_int|0
-suffix:semicolon
-id|level
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t; * Traverse the tree of objects until we bubble back up&n;&t; * to where we started.&n;&t; */
 r_while
 c_loop
@@ -652,10 +645,10 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Get the next typed object in this scope.&n;&t;&t; * Null returned if not found&n;&t;&t; */
+multiline_comment|/* Get the next node in this scope (NULL if none) */
 id|child_node
 op_assign
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 id|ACPI_TYPE_ANY
 comma
@@ -670,36 +663,17 @@ c_cond
 id|child_node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Found an object - delete the object within&n;&t;&t;&t; * the Value field&n;&t;&t;&t; */
-id|obj_desc
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-id|child_node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|obj_desc
-)paren
-(brace
+multiline_comment|/* Found a child node - detach any attached object */
 id|acpi_ns_detach_object
 (paren
 id|child_node
 )paren
 suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check if this object has any children */
+multiline_comment|/* Check if this node has any children */
 r_if
 c_cond
 (paren
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 id|ACPI_TYPE_ANY
 comma
@@ -709,7 +683,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * There is at least one child of this object,&n;&t;&t;&t;&t; * visit the object&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There is at least one child of this node,&n;&t;&t;&t;&t; * visit the node&n;&t;&t;&t;&t; */
 id|level
 op_increment
 suffix:semicolon
@@ -725,7 +699,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * No more children in this object.&n;&t;&t;&t; * We will move up to the grandparent.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * No more children of this parent node.&n;&t;&t;&t; * Move up to the grandparent.&n;&t;&t;&t; */
 id|level
 op_decrement
 suffix:semicolon
@@ -735,12 +709,12 @@ id|acpi_ns_delete_children
 id|parent_node
 )paren
 suffix:semicolon
-multiline_comment|/* New &quot;last child&quot; is this parent object */
+multiline_comment|/* New &quot;last child&quot; is this parent node */
 id|child_node
 op_assign
 id|parent_node
 suffix:semicolon
-multiline_comment|/* Now we can move up the tree to the grandparent */
+multiline_comment|/* Move up the tree to the grandparent */
 id|parent_node
 op_assign
 id|acpi_ns_get_parent_object
@@ -756,7 +730,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named object whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any object along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named node whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any node along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_ns_remove_reference
@@ -775,7 +749,7 @@ id|FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Decrement the reference count(s) of this object and all&n;&t; * objects up to the root,  Delete anything with zero remaining references.&n;&t; */
+multiline_comment|/*&n;&t; * Decrement the reference count(s) of this node and all&n;&t; * nodes up to the root,  Delete anything with zero remaining references.&n;&t; */
 id|next_node
 op_assign
 id|node
@@ -786,11 +760,11 @@ c_loop
 id|next_node
 )paren
 (brace
-multiline_comment|/* Decrement the reference count on this object*/
+multiline_comment|/* Decrement the reference count on this node*/
 id|next_node-&gt;reference_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* Delete the object if no more references */
+multiline_comment|/* Delete the node if no more references */
 r_if
 c_cond
 (paren
@@ -798,7 +772,7 @@ op_logical_neg
 id|next_node-&gt;reference_count
 )paren
 (brace
-multiline_comment|/* Delete all children and delete the object */
+multiline_comment|/* Delete all children and delete the node */
 id|acpi_ns_delete_children
 (paren
 id|next_node
@@ -836,10 +810,6 @@ suffix:semicolon
 id|u32
 id|level
 suffix:semicolon
-id|acpi_operand_object
-op_star
-id|obj_desc
-suffix:semicolon
 id|acpi_namespace_node
 op_star
 id|parent_node
@@ -861,7 +831,7 @@ id|level
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Traverse the tree of objects until we bubble back up&n;&t; * to where we started.&n;&t; */
+multiline_comment|/*&n;&t; * Traverse the tree of nodes until we bubble back up&n;&t; * to where we started.&n;&t; */
 r_while
 c_loop
 (paren
@@ -870,10 +840,10 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Get the next typed object in this scope.&n;&t;&t; * Null returned if not found&n;&t;&t; */
+multiline_comment|/* Get the next node in this scope (NULL if none) */
 id|child_node
 op_assign
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 id|ACPI_TYPE_ANY
 comma
@@ -896,37 +866,18 @@ op_eq
 id|owner_id
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Found an object - delete the object within&n;&t;&t;&t;&t; * the Value field&n;&t;&t;&t;&t; */
-id|obj_desc
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-id|child_node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|obj_desc
-)paren
-(brace
+multiline_comment|/* Found a child node - detach any attached object */
 id|acpi_ns_detach_object
 (paren
 id|child_node
 )paren
 suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Check if this object has any children */
+multiline_comment|/* Check if this node has any children */
 r_if
 c_cond
 (paren
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 id|ACPI_TYPE_ANY
 comma
@@ -936,7 +887,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * There is at least one child of this object,&n;&t;&t;&t;&t; * visit the object&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There is at least one child of this node,&n;&t;&t;&t;&t; * visit the node&n;&t;&t;&t;&t; */
 id|level
 op_increment
 suffix:semicolon
@@ -967,7 +918,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * No more children in this object.  Move up to grandparent.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * No more children of this parent node.&n;&t;&t;&t; * Move up to the grandparent.&n;&t;&t;&t; */
 id|level
 op_decrement
 suffix:semicolon
@@ -994,12 +945,12 @@ id|parent_node
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* New &quot;last child&quot; is this parent object */
+multiline_comment|/* New &quot;last child&quot; is this parent node */
 id|child_node
 op_assign
 id|parent_node
 suffix:semicolon
-multiline_comment|/* Now we can move up the tree to the grandparent */
+multiline_comment|/* Move up the tree to the grandparent */
 id|parent_node
 op_assign
 id|acpi_ns_get_parent_object

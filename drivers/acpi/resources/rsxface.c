@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsxface - Public interfaces to the resource manager&n; *              $Revision: 14 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsxface - Public interfaces to the resource manager&n; *              $Revision: 15 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -31,27 +31,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_get_irq_routing_table &quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Must have a valid handle and buffer, So we have to have a handle&n;&t; * and a return buffer structure, and if there is a non-zero buffer length&n;&t; * we also need a valid pointer in the buffer. If it&squot;s a zero buffer length,&n;&t; * we&squot;ll be returning the needed buffer size, so keep going.&n;&t; */
 r_if
 c_cond
@@ -120,27 +99,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_get_current_resources&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Must have a valid handle and buffer, So we have to have a handle&n;&t; * and a return buffer structure, and if there is a non-zero buffer length&n;&t; * we also need a valid pointer in the buffer. If it&squot;s a zero buffer length,&n;&t; * we&squot;ll be returning the needed buffer size, so keep going.&n;&t; */
 r_if
 c_cond
@@ -209,27 +167,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_get_possible_resources&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Must have a valid handle and buffer, So we have to have a handle&n;&t; * and a return buffer structure, and if there is a non-zero buffer length&n;&t; * we also need a valid pointer in the buffer. If it&squot;s a zero buffer length,&n;&t; * we&squot;ll be returning the needed buffer size, so keep going.&n;&t; */
 r_if
 c_cond
@@ -298,27 +235,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_set_current_resources&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Must have a valid handle and buffer&n;&t; */
 r_if
 c_cond

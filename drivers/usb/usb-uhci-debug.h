@@ -35,10 +35,13 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;QH @ %p/%08X:&quot;
+l_string|&quot;QH @ %p/%08llX:&quot;
 comma
 id|qh
 comma
+(paren
+id|u64
+)paren
 id|qh-&gt;dma_addr
 )paren
 suffix:semicolon

@@ -814,7 +814,7 @@ id|object_size
 (brace
 id|size
 op_assign
-id|ROUND_UP_TO_1_k
+id|ROUND_UP_TO_1K
 (paren
 id|outstanding
 op_star
@@ -831,7 +831,7 @@ r_else
 (brace
 id|size
 op_assign
-id|ROUND_UP_TO_1_k
+id|ROUND_UP_TO_1K
 (paren
 id|acpi_gbl_memory_lists
 (braket

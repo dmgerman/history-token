@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 107 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 110 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -111,7 +111,7 @@ comma
 id|u8
 id|unlock_before_callback
 comma
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 comma
 r_void
@@ -126,7 +126,7 @@ id|return_value
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 id|acpi_object_type8
 id|type
@@ -332,6 +332,9 @@ id|acpi_ns_dump_objects
 (paren
 id|acpi_object_type8
 id|type
+comma
+id|u8
+id|display_type
 comma
 id|u32
 id|max_depth
@@ -656,7 +659,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_build_internal_name
 (paren
-id|ACPI_NAMESTRING_INFO
+id|acpi_namestring_info
 op_star
 id|info
 )paren
@@ -664,7 +667,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_get_internal_name_length
 (paren
-id|ACPI_NAMESTRING_INFO
+id|acpi_namestring_info
 op_star
 id|info
 )paren
@@ -704,7 +707,7 @@ id|converted_name
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|acpi_handle
 id|handle
@@ -736,7 +739,7 @@ id|node
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|acpi_ns_get_next_valid_object
+id|acpi_ns_get_next_valid_node
 (paren
 id|acpi_namespace_node
 op_star

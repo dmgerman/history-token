@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 31 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -21,7 +21,7 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 id|info
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -165,7 +165,7 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_DEVICE_WALK_INFO
+id|acpi_device_walk_info
 id|info
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -283,12 +283,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 op_star
 id|info
 op_assign
 (paren
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 op_star
 )paren
 id|context
@@ -447,6 +447,10 @@ id|acpi_format_exception
 id|status
 )paren
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
@@ -533,6 +537,10 @@ id|acpi_format_exception
 id|status
 )paren
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|node-&gt;name
 )paren
@@ -578,7 +586,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_device&n; *&n; * PARAMETERS:  ACPI_WALK_CALLBACK&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_device&n; *&n; * PARAMETERS:  acpi_walk_callback&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_init_one_device
 id|acpi_ns_init_one_device
@@ -609,12 +617,12 @@ suffix:semicolon
 id|u32
 id|flags
 suffix:semicolon
-id|ACPI_DEVICE_WALK_INFO
+id|acpi_device_walk_info
 op_star
 id|info
 op_assign
 (paren
-id|ACPI_DEVICE_WALK_INFO
+id|acpi_device_walk_info
 op_star
 )paren
 id|context
@@ -655,7 +663,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|obj_handle
 )paren

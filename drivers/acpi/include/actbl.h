@@ -94,7 +94,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* XSDT Length in bytes including hdr */
 DECL|member|xsdt_physical_address
-id|UINT64
+id|u64
 id|xsdt_physical_address
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of XSDT */
@@ -190,7 +190,7 @@ op_star
 id|global_lock
 suffix:semicolon
 DECL|member|firmware_waking_vector
-id|UINT64
+id|u64
 op_star
 id|firmware_waking_vector
 suffix:semicolon

@@ -177,7 +177,7 @@ comma
 id|u32
 id|max_depth
 comma
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 comma
 r_void
@@ -197,7 +197,7 @@ id|NATIVE_CHAR
 op_star
 id|HID
 comma
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 comma
 r_void
@@ -314,7 +314,7 @@ id|acpi_install_fixed_event_handler
 id|u32
 id|acpi_event
 comma
-id|ACPI_EVENT_HANDLER
+id|acpi_event_handler
 id|handler
 comma
 r_void
@@ -328,7 +328,7 @@ id|acpi_remove_fixed_event_handler
 id|u32
 id|acpi_event
 comma
-id|ACPI_EVENT_HANDLER
+id|acpi_event_handler
 id|handler
 )paren
 suffix:semicolon
@@ -341,7 +341,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 id|handler
 comma
 r_void
@@ -358,7 +358,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|ACPI_NOTIFY_HANDLER
+id|acpi_notify_handler
 id|handler
 )paren
 suffix:semicolon
@@ -371,10 +371,10 @@ comma
 id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ACPI_ADR_SPACE_HANDLER
+id|acpi_adr_space_handler
 id|handler
 comma
-id|ACPI_ADR_SPACE_SETUP
+id|acpi_adr_space_setup
 id|setup
 comma
 r_void
@@ -391,7 +391,7 @@ comma
 id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ACPI_ADR_SPACE_HANDLER
+id|acpi_adr_space_handler
 id|handler
 )paren
 suffix:semicolon
@@ -404,7 +404,7 @@ comma
 id|u32
 id|type
 comma
-id|ACPI_GPE_HANDLER
+id|acpi_gpe_handler
 id|handler
 comma
 r_void
@@ -430,7 +430,7 @@ id|acpi_remove_gpe_handler
 id|u32
 id|gpe_number
 comma
-id|ACPI_GPE_HANDLER
+id|acpi_gpe_handler
 id|handler
 )paren
 suffix:semicolon
@@ -442,6 +442,9 @@ id|acpi_event
 comma
 id|u32
 id|type
+comma
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|acpi_status
@@ -452,6 +455,9 @@ id|acpi_event
 comma
 id|u32
 id|type
+comma
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|acpi_status

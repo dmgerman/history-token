@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 28 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -55,7 +55,7 @@ id|pointer_size
 op_assign
 r_sizeof
 (paren
-id|UINT64
+id|u64
 )paren
 suffix:semicolon
 )brace
@@ -122,7 +122,7 @@ id|number_of_tables
 op_star
 r_sizeof
 (paren
-id|UINT64
+id|u64
 )paren
 )paren
 op_plus
@@ -424,9 +424,9 @@ id|FADT2-&gt;acpi_disable
 op_assign
 id|FADT71-&gt;acpi_disable
 suffix:semicolon
-id|FADT2-&gt;S4_bios_req
+id|FADT2-&gt;S4bios_req
 op_assign
-id|FADT71-&gt;S4_bios_req
+id|FADT71-&gt;S4bios_req
 suffix:semicolon
 id|FADT2-&gt;plvl2_lat
 op_assign
@@ -951,7 +951,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_TABLES
 comma
-l_string|&quot;Hex dump of common internal FADT, size %ld (%lX)&bslash;n&quot;
+l_string|&quot;Hex dump of common internal FADT, size %d (%X)&bslash;n&quot;
 comma
 id|acpi_gbl_FADT-&gt;header.length
 comma
@@ -1095,7 +1095,7 @@ suffix:semicolon
 id|common_facs-&gt;firmware_waking_vector
 op_assign
 (paren
-id|UINT64
+id|u64
 op_star
 )paren
 op_amp

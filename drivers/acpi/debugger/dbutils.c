@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 43 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -171,7 +171,7 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Integer] = %X%8.8X&bslash;n&quot;
+l_string|&quot;[Integer] = %8.8X%8.8X&bslash;n&quot;
 comma
 id|HIDWORD
 (paren
@@ -466,6 +466,14 @@ suffix:semicolon
 id|u32
 id|base_aml_offset
 suffix:semicolon
+id|acpi_walk_state
+op_star
+id|walk_state
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;Pass two parse ....&bslash;n&quot;
@@ -493,27 +501,63 @@ op_star
 )paren
 id|op
 suffix:semicolon
+id|walk_state
+op_assign
+id|acpi_ds_create_walk_state
+(paren
+id|TABLE_ID_DSDT
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|walk_state-&gt;parser_state.aml
+op_assign
+id|walk_state-&gt;parser_state.aml_start
+op_assign
+id|method-&gt;data
+suffix:semicolon
+id|walk_state-&gt;parser_state.aml_end
+op_assign
+id|walk_state-&gt;parser_state.pkg_end
+op_assign
+id|method-&gt;data
+op_plus
+id|method-&gt;length
+suffix:semicolon
+id|walk_state-&gt;parser_state.start_scope
+op_assign
+id|op
+suffix:semicolon
+id|walk_state-&gt;descending_callback
+op_assign
+id|acpi_ds_load1_begin_op
+suffix:semicolon
+id|walk_state-&gt;ascending_callback
+op_assign
+id|acpi_ds_load1_end_op
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ps_parse_aml
 (paren
-id|op
-comma
-id|method-&gt;data
-comma
-id|method-&gt;length
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-id|acpi_ds_load1_begin_op
-comma
-id|acpi_ds_load1_end_op
+id|walk_state
 )paren
 suffix:semicolon
 id|base_aml_offset
@@ -579,10 +623,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
-(paren
-id|status
-)paren
+r_break
 suffix:semicolon
 )brace
 id|op

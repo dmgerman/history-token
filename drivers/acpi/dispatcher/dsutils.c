@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 72 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 80 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -87,12 +87,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_GET_OP_TYPE
-(paren
 id|parent_info
-)paren
-op_ne
-id|ACPI_OP_TYPE_OPCODE
+op_member_access_from_pointer
+r_class
+op_eq
+id|AML_CLASS_UNKNOWN
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -100,7 +99,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown parent opcode. Op=%X&bslash;n&quot;
+l_string|&quot;Unknown parent opcode. Op=%p&bslash;n&quot;
 comma
 id|op
 )paren
@@ -116,15 +115,14 @@ multiline_comment|/*&n;&t; * Decide what to do with the result based on the pare
 r_switch
 c_cond
 (paren
-id|ACPI_GET_OP_CLASS
-(paren
 id|parent_info
-)paren
+op_member_access_from_pointer
+r_class
 )paren
 (brace
 multiline_comment|/*&n;&t; * In these cases, the parent will never use the return object&n;&t; */
 r_case
-id|OPTYPE_CONTROL
+id|AML_CLASS_CONTROL
 suffix:colon
 multiline_comment|/* IF, ELSE, WHILE only */
 r_switch
@@ -142,7 +140,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Result used, [RETURN] opcode=%X Op=%X&bslash;n&quot;
+l_string|&quot;Result used, [RETURN] opcode=%X Op=%p&bslash;n&quot;
 comma
 id|op-&gt;opcode
 comma
@@ -185,7 +183,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Result used as a predicate, [IF/WHILE] opcode=%X Op=%X&bslash;n&quot;
+l_string|&quot;Result used as a predicate, [IF/WHILE] opcode=%X Op=%p&bslash;n&quot;
 comma
 id|op-&gt;opcode
 comma
@@ -204,9 +202,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fall through to not used case below */
 r_case
-id|OPTYPE_NAMED_OBJECT
+id|AML_CLASS_NAMED_OBJECT
 suffix:colon
 multiline_comment|/* Scope, method, etc. */
+r_case
+id|AML_CLASS_CREATE
+suffix:colon
 multiline_comment|/*&n;&t;&t; * These opcodes allow Term_arg(s) as operands and therefore&n;&t;&t; * method calls.  The result is used.&n;&t;&t; */
 r_if
 c_cond
@@ -259,7 +260,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Result used, [Region or Create_field] opcode=%X Op=%X&bslash;n&quot;
+l_string|&quot;Result used, [Region or Create_field] opcode=%X Op=%p&bslash;n&quot;
 comma
 id|op-&gt;opcode
 comma
@@ -278,7 +279,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Result not used, Parent opcode=%X Op=%X&bslash;n&quot;
+l_string|&quot;Result not used, Parent opcode=%X Op=%p&bslash;n&quot;
 comma
 id|op-&gt;opcode
 comma
@@ -651,6 +652,16 @@ multiline_comment|/*&n;&t;&t;&t;&t; * We just plain didn&squot;t find it -- whic
 id|status
 op_assign
 id|AE_AML_NAME_NOT_FOUND
+suffix:semicolon
+multiline_comment|/* TBD: Externalize Name_string and print */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Object name was not found in namespace&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1195,12 +1206,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_GET_OP_TYPE
-(paren
 id|op_info
-)paren
-op_ne
-id|ACPI_OP_TYPE_OPCODE
+op_member_access_from_pointer
+r_class
+op_eq
+id|AML_CLASS_UNKNOWN
 )paren
 (brace
 multiline_comment|/* Unknown opcode */
@@ -1221,17 +1231,15 @@ id|data_type
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * TBD: Use op class&n; */
 r_switch
 c_cond
 (paren
-id|ACPI_GET_OP_CLASS
-(paren
-id|op_info
-)paren
+id|op_info-&gt;type
 )paren
 (brace
 r_case
-id|OPTYPE_LITERAL
+id|AML_TYPE_LITERAL
 suffix:colon
 r_switch
 c_cond
@@ -1294,7 +1302,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_DATA_TERM
+id|AML_TYPE_DATA_TERM
 suffix:colon
 r_switch
 c_cond
@@ -1342,13 +1350,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_CONSTANT
+id|AML_TYPE_CONSTANT
 suffix:colon
 r_case
-id|OPTYPE_METHOD_ARGUMENT
+id|AML_TYPE_METHOD_ARGUMENT
 suffix:colon
 r_case
-id|OPTYPE_LOCAL_VARIABLE
+id|AML_TYPE_LOCAL_VARIABLE
 suffix:colon
 id|data_type
 op_assign
@@ -1357,31 +1365,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_MONADIC2
+id|AML_TYPE_EXEC_1A_0T_1R
 suffix:colon
 r_case
-id|OPTYPE_MONADIC2_r
+id|AML_TYPE_EXEC_1A_1T_1R
 suffix:colon
 r_case
-id|OPTYPE_DYADIC2
+id|AML_TYPE_EXEC_2A_0T_1R
 suffix:colon
 r_case
-id|OPTYPE_DYADIC2_r
+id|AML_TYPE_EXEC_2A_1T_1R
 suffix:colon
 r_case
-id|OPTYPE_DYADIC2_s
+id|AML_TYPE_EXEC_2A_2T_1R
 suffix:colon
 r_case
-id|OPTYPE_TRIADIC
+id|AML_TYPE_EXEC_3A_1T_1R
 suffix:colon
 r_case
-id|OPTYPE_QUADRADIC
+id|AML_TYPE_EXEC_6A_0T_1R
 suffix:colon
 r_case
-id|OPTYPE_HEXADIC
-suffix:colon
-r_case
-id|OPTYPE_RETURN
+id|AML_TYPE_RETURN
 suffix:colon
 id|flags
 op_assign
@@ -1394,7 +1399,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_METHOD_CALL
+id|AML_TYPE_METHOD_CALL
 suffix:colon
 id|flags
 op_assign
@@ -1407,7 +1412,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_NAMED_OBJECT
+id|AML_TYPE_NAMED_FIELD
+suffix:colon
+r_case
+id|AML_TYPE_NAMED_SIMPLE
+suffix:colon
+r_case
+id|AML_TYPE_NAMED_COMPLEX
+suffix:colon
+r_case
+id|AML_TYPE_NAMED_NO_OBJ
 suffix:colon
 id|data_type
 op_assign
@@ -1419,10 +1433,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_DYADIC1
+id|AML_TYPE_EXEC_1A_0T_0R
 suffix:colon
 r_case
-id|OPTYPE_CONTROL
+id|AML_TYPE_EXEC_2A_0T_0R
+suffix:colon
+r_case
+id|AML_TYPE_EXEC_3A_0T_0R
+suffix:colon
+r_case
+id|AML_TYPE_EXEC_1A_1T_0R
+suffix:colon
+r_case
+id|AML_TYPE_CONTROL
 suffix:colon
 multiline_comment|/* No mapping needed at this time */
 r_break
@@ -1619,6 +1642,9 @@ id|ACPI_TYPE_EVENT
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|AML_DATA_REGION_OP
+suffix:colon
 r_case
 id|AML_REGION_OP
 suffix:colon

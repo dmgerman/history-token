@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -327,7 +327,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Region %s(%X) width %X base:off %X:%X at %8.8lX%8.8lX&bslash;n&quot;
+l_string|&quot;Region %s(%X) width %X base:off %X:%X at %8.8X%8.8X&bslash;n&quot;
 comma
 id|acpi_ut_get_region_name
 (paren
@@ -455,7 +455,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Returned value=%08lX &bslash;n&quot;
+l_string|&quot;Returned value=%08X &bslash;n&quot;
 comma
 op_star
 id|value
@@ -1175,7 +1175,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Store %X in Region %s(%X) at %8.8lX%8.8lX width %X&bslash;n&quot;
+l_string|&quot;Store %X in Region %s(%X) at %8.8X%8.8X width %X&bslash;n&quot;
 comma
 id|value
 comma
@@ -1302,7 +1302,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Value written=%08lX &bslash;n&quot;
+l_string|&quot;Value written=%08X &bslash;n&quot;
 comma
 id|value
 )paren
@@ -1795,17 +1795,19 @@ multiline_comment|/*&n;&t;&t; * Special handling for the last datum if the field
 r_if
 c_cond
 (paren
-(paren
 id|datum_offset
 op_eq
 id|datum_count
 )paren
-op_logical_and
+(brace
+multiline_comment|/*&n;&t;&t;&t; * If there are dangling non-aligned bits, perform one more merged write&n;&t;&t;&t; * Else - field is aligned at the end, no need for any more writes&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
 id|obj_desc-&gt;common_field.end_field_valid_bits
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Part3:&n;&t;&t;&t; * This is the last datum and the field does not end on a datum boundary.&n;&t;&t;&t; * Build the partial datum and write with the update rule.&n;&t;&t;&t; */
-multiline_comment|/* Mask off the unused bits above (after) the end-of-field */
+multiline_comment|/*&n;&t;&t;&t;&t; * Part3:&n;&t;&t;&t;&t; * This is the last datum and the field does not end on a datum boundary.&n;&t;&t;&t;&t; * Build the partial datum and write with the update rule.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Mask off the unused bits above (after) the end-of-field&n;&t;&t;&t;&t; */
 id|mask
 op_assign
 id|MASK_BITS_ABOVE
@@ -1845,6 +1847,7 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_else

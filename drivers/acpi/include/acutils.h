@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 113 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 117 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
@@ -487,7 +487,7 @@ id|acpi_ut_trace
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 )paren
@@ -498,7 +498,7 @@ id|acpi_ut_trace_ptr
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -513,7 +513,7 @@ id|acpi_ut_trace_u32
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -527,7 +527,7 @@ id|acpi_ut_trace_str
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -542,7 +542,7 @@ id|acpi_ut_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 )paren
@@ -553,7 +553,7 @@ id|acpi_ut_status_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -567,7 +567,7 @@ id|acpi_ut_value_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -581,7 +581,7 @@ id|acpi_ut_ptr_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -658,7 +658,7 @@ comma
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -670,6 +670,7 @@ dot
 dot
 dot
 )paren
+id|ACPI_PRINTF_LIKE_FUNC
 suffix:semicolon
 r_void
 id|acpi_ut_debug_print_raw
@@ -680,7 +681,7 @@ comma
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -692,6 +693,7 @@ dot
 dot
 dot
 )paren
+id|ACPI_PRINTF_LIKE_FUNC
 suffix:semicolon
 multiline_comment|/*&n; * Ut_delete - Object deletion&n; */
 r_void
@@ -743,6 +745,8 @@ DECL|macro|METHOD_NAME__SEG
 mdefine_line|#define METHOD_NAME__SEG        &quot;_SEG&quot;
 DECL|macro|METHOD_NAME__BBN
 mdefine_line|#define METHOD_NAME__BBN        &quot;_BBN&quot;
+DECL|macro|METHOD_NAME__PRT
+mdefine_line|#define METHOD_NAME__PRT        &quot;_PRT&quot;
 id|acpi_status
 id|acpi_ut_evaluate_numeric_object
 (paren
@@ -766,7 +770,7 @@ id|acpi_namespace_node
 op_star
 id|device_node
 comma
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 op_star
 id|hid
 )paren
@@ -790,7 +794,7 @@ id|acpi_namespace_node
 op_star
 id|device_node
 comma
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 op_star
 id|uid
 )paren
@@ -1067,7 +1071,46 @@ id|acpi_ut_delete_object_cache
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ututils&n; */
+multiline_comment|/*&n; * utmisc&n; */
+id|acpi_status
+id|acpi_ut_divide
+(paren
+id|acpi_integer
+op_star
+id|in_dividend
+comma
+id|acpi_integer
+op_star
+id|in_divisor
+comma
+id|acpi_integer
+op_star
+id|out_quotient
+comma
+id|acpi_integer
+op_star
+id|out_remainder
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_short_divide
+(paren
+id|acpi_integer
+op_star
+id|in_dividend
+comma
+id|u32
+id|divisor
+comma
+id|acpi_integer
+op_star
+id|out_quotient
+comma
+id|u32
+op_star
+id|out_remainder
+)paren
+suffix:semicolon
 id|u8
 id|acpi_ut_valid_acpi_name
 (paren
@@ -1202,7 +1245,7 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|acpi_ut_dump_current_allocations
+id|acpi_ut_dump_allocations
 (paren
 id|u32
 id|component

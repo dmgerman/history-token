@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 76 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -316,16 +316,6 @@ c_cond
 id|obj_pointer
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_tb_system_table_pointer
-(paren
-id|obj_pointer
-)paren
-)paren
-(brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -342,7 +332,6 @@ id|ACPI_MEM_FREE
 id|obj_pointer
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Only delete the object if it was dynamically allocated */
 r_if
@@ -685,9 +674,9 @@ id|MAX_REFERENCE_COUNT
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_ERROR
+id|ACPI_DB_WARN
 comma
-l_string|&quot;**** AE_ERROR **** Invalid Reference Count (%X) in object %p&bslash;n&bslash;n&quot;
+l_string|&quot;**** Warning **** Large Reference Count (%X) in object %p&bslash;n&bslash;n&quot;
 comma
 id|count
 comma
@@ -775,32 +764,6 @@ id|ACPI_DEBUG_PRINT
 id|ACPI_DB_INFO
 comma
 l_string|&quot;Object %p is NS handle&bslash;n&quot;
-comma
-id|object
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|acpi_tb_system_table_pointer
-(paren
-id|object
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;**** Object %p is Pcode Ptr&bslash;n&quot;
 comma
 id|object
 )paren
@@ -1163,13 +1126,10 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_REGION
 suffix:colon
-multiline_comment|/* TBD: [Investigate]&n;&t;&t;&t;Acpi_ut_update_ref_count (Object-&gt;Region.Addr_handler, Action);&n;&t;*/
-multiline_comment|/*&n;&t;&t;&t;Status =&n;&t;&t;&t;&t;Acpi_ut_create_update_state_and_push (Object-&gt;Region.Addr_handler,&n;&t;&t;&t;&t;&t;&t;   Action, &amp;State_list);&n;&t;&t;&t;if (ACPI_FAILURE (Status))&n;&t;&t;&t;{&n;&t;&t;&t;&t;return_ACPI_STATUS (Status);&n;&t;&t;&t;}&n;*/
-r_break
-suffix:semicolon
 r_case
 id|INTERNAL_TYPE_REFERENCE
 suffix:colon
+multiline_comment|/* No subobjects */
 r_break
 suffix:semicolon
 )brace
@@ -1256,6 +1216,26 @@ comma
 id|object
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Allow a NULL pointer to be passed in, just ignore it.  This saves&n;&t; * each caller from having to check.  Also, ignore NS nodes.&n;&t; *&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|object
+op_logical_or
+(paren
+id|VALID_DESCRIPTOR_TYPE
+(paren
+id|object
+comma
+id|ACPI_DESC_TYPE_NAMED
+)paren
+)paren
+)paren
+(brace
+id|return_VOID
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Ensure that we have a valid object&n;&t; */
 r_if
 c_cond

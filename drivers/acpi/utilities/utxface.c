@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -485,35 +485,11 @@ id|acpi_terminate
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
-suffix:semicolon
 id|FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_terminate&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Terminate the AML Debugger if present */
 id|DEBUGGER_EXEC
 c_func
@@ -535,6 +511,13 @@ id|acpi_ut_mutex_terminate
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef ENABLE_DEBUGGER
+multiline_comment|/* Shut down the debugger */
+id|acpi_db_terminate
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Now we can shutdown the OS-dependent layer */
 id|acpi_os_terminate
 (paren
@@ -594,35 +577,11 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|acpi_status
-id|status
-suffix:semicolon
 id|FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_system_info&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *  Must have a valid buffer&n;&t; */
 r_if
 c_cond

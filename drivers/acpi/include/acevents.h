@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEVENTS_H__
 DECL|macro|__ACEVENTS_H__
@@ -211,6 +211,44 @@ id|region_context
 suffix:semicolon
 id|acpi_status
 id|acpi_ev_pci_config_region_setup
+(paren
+id|acpi_handle
+id|handle
+comma
+id|u32
+id|function
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+op_star
+id|region_context
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ev_cmos_region_setup
+(paren
+id|acpi_handle
+id|handle
+comma
+id|u32
+id|function
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+op_star
+id|region_context
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ev_pci_bar_region_setup
 (paren
 id|acpi_handle
 id|handle

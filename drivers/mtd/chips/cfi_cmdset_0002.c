@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.51 2001/10/02 15:05:12 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.52 2001/10/24 09:37:30 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -294,6 +294,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot; Amd/Fujitsu Extended Query Table v%c.%c at 0x%4.4X&bslash;n&quot;
 comma
 id|major
@@ -784,6 +785,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;number of %s chips: %d&bslash;n&quot;
 comma
 (paren
@@ -791,9 +793,9 @@ id|cfi-&gt;cfi_mode
 )paren
 ques
 c_cond
-l_string|&quot;JEDEC&quot;
-suffix:colon
 l_string|&quot;CFI&quot;
+suffix:colon
+l_string|&quot;JEDEC&quot;
 comma
 id|cfi-&gt;numchips
 )paren
@@ -808,6 +810,7 @@ id|mtd
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Failed to allocate memory for MTD device&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -923,6 +926,7 @@ id|mtd-&gt;eraseregions
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Failed to allocate memory for MTD erase region info&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1089,6 +1093,7 @@ multiline_comment|/* Argh */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Sum of regions (%lx) != total size of set of interleaved chips (%lx)&bslash;n&quot;
 comma
 id|offset
@@ -1112,6 +1117,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#if 0
 singleline_comment|// debug
 r_for
 c_loop
@@ -1158,6 +1164,7 @@ id|numblocks
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_switch
 c_cond
@@ -1207,6 +1214,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Unsupported buswidth&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1319,14 +1327,17 @@ op_ne
 id|FL_READY
 )paren
 (brace
+macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Waiting for chip to read, status = %d&bslash;n&quot;
 comma
 id|chip-&gt;state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|set_current_state
 c_func
 (paren
@@ -1688,14 +1699,17 @@ op_ne
 id|FL_READY
 )paren
 (brace
+macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Waiting for chip to write, status = %d&bslash;n&quot;
 comma
 id|chip-&gt;state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|set_current_state
 c_func
 (paren
@@ -1733,13 +1747,14 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Wake up to write:&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2025,6 +2040,7 @@ id|datum
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Last[%ld] is %x, datum is %x&bslash;n&quot;
 comma
 (paren
@@ -3327,6 +3343,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;erase suspended. Sleeping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3406,6 +3423,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;waiting for erase to complete timed out.&quot;
 )paren
 suffix:semicolon
@@ -3445,6 +3463,7 @@ l_int|100
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;chip not ready yet after erase. looping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4543,6 +4562,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Argh. Chip not in PM_SUSPENDED state upon resume()&bslash;n&quot;
 )paren
 suffix:semicolon

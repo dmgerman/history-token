@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 97 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -83,7 +83,7 @@ macro_line|#else
 multiline_comment|/*&n; * Full 64-bit address/integer on both 32-bit and 64-bit platforms&n; */
 macro_line|#ifndef LODWORD
 DECL|macro|LODWORD
-mdefine_line|#define LODWORD(l)                      ((u32)(UINT64)(l))
+mdefine_line|#define LODWORD(l)                      ((u32)(u64)(l))
 macro_line|#endif
 macro_line|#ifndef HIDWORD
 DECL|macro|HIDWORD
@@ -115,7 +115,7 @@ mdefine_line|#define MOVE_UNALIGNED32_TO_32(d,s)     *(u32*)(d) = *(u32*)(s)
 DECL|macro|MOVE_UNALIGNED16_TO_32
 mdefine_line|#define MOVE_UNALIGNED16_TO_32(d,s)     *(u32*)(d) = *(u16*)(s)
 DECL|macro|MOVE_UNALIGNED64_TO_64
-mdefine_line|#define MOVE_UNALIGNED64_TO_64(d,s)     *(UINT64*)(d) = *(UINT64*)(s)
+mdefine_line|#define MOVE_UNALIGNED64_TO_64(d,s)     *(u64*)(d) = *(u64*)(s)
 macro_line|#else
 multiline_comment|/*&n; * The hardware does not support unaligned transfers.  We must move the&n; * data one byte at a time.  These macros work whether the source or&n; * the destination (or both) is/are unaligned.&n; */
 DECL|macro|MOVE_UNALIGNED16_TO_16
@@ -158,11 +158,6 @@ DECL|macro|MUL_16
 mdefine_line|#define MUL_16(a)                       _MUL(a,4)
 DECL|macro|MOD_16
 mdefine_line|#define MOD_16(a)                       _MOD(a,16)
-multiline_comment|/*&n; * Divide and Modulo&n; */
-DECL|macro|ACPI_DIVIDE
-mdefine_line|#define ACPI_DIVIDE(n,d)                ((n) / (d))
-DECL|macro|ACPI_MODULO
-mdefine_line|#define ACPI_MODULO(n,d)                ((n) % (d))
 multiline_comment|/*&n; * Rounding macros (Power of two boundaries only)&n; */
 DECL|macro|ROUND_DOWN
 mdefine_line|#define ROUND_DOWN(value,boundary)      ((value) &amp; (~((boundary)-1)))
@@ -188,8 +183,8 @@ DECL|macro|ROUND_BITS_UP_TO_BYTES
 mdefine_line|#define ROUND_BITS_UP_TO_BYTES(a)       DIV_8((a) + 7)
 DECL|macro|ROUND_BITS_DOWN_TO_BYTES
 mdefine_line|#define ROUND_BITS_DOWN_TO_BYTES(a)     DIV_8((a))
-DECL|macro|ROUND_UP_TO_1_k
-mdefine_line|#define ROUND_UP_TO_1_k(a)              (((a) + 1023) &gt;&gt; 10)
+DECL|macro|ROUND_UP_TO_1K
+mdefine_line|#define ROUND_UP_TO_1K(a)               (((a) + 1023) &gt;&gt; 10)
 multiline_comment|/* Generic (non-power-of-two) rounding */
 DECL|macro|ROUND_UP_TO
 mdefine_line|#define ROUND_UP_TO(value,boundary)     (((value) + ((boundary)-1)) / (boundary))
@@ -201,11 +196,11 @@ mdefine_line|#define MASK_BITS_BELOW(position)       (((u32)(-1)) &lt;&lt; ((u32
 multiline_comment|/* Macros for GAS addressing */
 macro_line|#ifndef _IA16
 DECL|macro|ACPI_PCI_DEVICE_MASK
-mdefine_line|#define ACPI_PCI_DEVICE_MASK            (UINT64) 0x0000FFFF00000000
+mdefine_line|#define ACPI_PCI_DEVICE_MASK            (u64) 0x0000FFFF00000000
 DECL|macro|ACPI_PCI_FUNCTION_MASK
-mdefine_line|#define ACPI_PCI_FUNCTION_MASK          (UINT64) 0x00000000FFFF0000
+mdefine_line|#define ACPI_PCI_FUNCTION_MASK          (u64) 0x00000000FFFF0000
 DECL|macro|ACPI_PCI_REGISTER_MASK
-mdefine_line|#define ACPI_PCI_REGISTER_MASK          (UINT64) 0x000000000000FFFF
+mdefine_line|#define ACPI_PCI_REGISTER_MASK          (u64) 0x000000000000FFFF
 DECL|macro|ACPI_PCI_FUNCTION
 mdefine_line|#define ACPI_PCI_FUNCTION(a)            (u16) ((((a) &amp; ACPI_PCI_FUNCTION_MASK) &gt;&gt; 16))
 DECL|macro|ACPI_PCI_DEVICE
@@ -230,9 +225,6 @@ mdefine_line|#define IS_THIS_OBJECT_TYPE(d,t)        (((acpi_operand_object  *)d
 multiline_comment|/* Macro to check the table flags for SINGLE or MULTIPLE tables are allowed */
 DECL|macro|IS_SINGLE_TABLE
 mdefine_line|#define IS_SINGLE_TABLE(x)              (((x) &amp; 0x01) == ACPI_TABLE_SINGLE ? 1 : 0)
-multiline_comment|/* Check if ACPI has been initialized properly */
-DECL|macro|ACPI_IS_INITIALIZATION_COMPLETE
-mdefine_line|#define ACPI_IS_INITIALIZATION_COMPLETE(s)  {if (acpi_gbl_root_node) s = AE_OK; else s=AE_NO_NAMESPACE;}
 multiline_comment|/*&n; * Macro to check if a pointer is within an ACPI table.&n; * Parameter (a) is the pointer to check.  Parameter (b) must be defined&n; * as a pointer to an acpi_table_header.  (b+1) then points past the header,&n; * and ((u8 *)b+b-&gt;Length) points one byte past the end of the table.&n; */
 macro_line|#ifndef _IA16
 DECL|macro|IS_IN_ACPI_TABLE
@@ -244,10 +236,10 @@ macro_line|#endif
 multiline_comment|/*&n; * Macros for the master AML opcode table&n; */
 macro_line|#ifdef ACPI_DEBUG
 DECL|macro|ACPI_OP
-mdefine_line|#define ACPI_OP(name,Pargs,Iargs,flags)     {Pargs,Iargs,flags,name}
+mdefine_line|#define ACPI_OP(name,Pargs,Iargs,class,type,flags)     {Pargs,Iargs,flags,class,type,name}
 macro_line|#else
 DECL|macro|ACPI_OP
-mdefine_line|#define ACPI_OP(name,Pargs,Iargs,flags)     {Pargs,Iargs,flags}
+mdefine_line|#define ACPI_OP(name,Pargs,Iargs,class,type,flags)     {Pargs,Iargs,flags,class,type}
 macro_line|#endif
 DECL|macro|ARG_TYPE_WIDTH
 mdefine_line|#define ARG_TYPE_WIDTH                  5
@@ -329,7 +321,7 @@ DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME(name)               static char *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_Proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|PROC_NAME
-mdefine_line|#define PROC_NAME(a)                    ACPI_DEBUG_PRINT_INFO _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
+mdefine_line|#define PROC_NAME(a)                    acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
 DECL|macro|FUNCTION_TRACE
 mdefine_line|#define FUNCTION_TRACE(a)               PROC_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_dbg)
 DECL|macro|FUNCTION_TRACE_PTR

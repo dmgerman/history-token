@@ -11211,7 +11211,7 @@ id|arg
 )paren
 (brace
 r_return
-id|cdrom_fops.ioctl
+id|cdrom_ioctl
 (paren
 id|inode
 comma
@@ -11291,9 +11291,7 @@ op_logical_or
 (paren
 id|rc
 op_assign
-id|cdrom_fops
-dot
-id|open
+id|cdrom_open
 c_func
 (paren
 id|ip
@@ -11333,7 +11331,7 @@ op_star
 id|drive
 )paren
 (brace
-id|cdrom_fops.release
+id|cdrom_release
 (paren
 id|inode
 comma
@@ -11354,9 +11352,7 @@ id|drive
 )paren
 (brace
 r_return
-id|cdrom_fops
-dot
-id|check_media_change
+id|cdrom_media_changed
 c_func
 (paren
 id|MKDEV

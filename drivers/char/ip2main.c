@@ -1,7 +1,29 @@
 multiline_comment|/*&n;*&n;*   (c) 1999 by Computone Corporation&n;*&n;********************************************************************************&n;*&n;*   PACKAGE:     Linux tty Device Driver for IntelliPort family of multiport&n;*                serial I/O controllers.&n;*&n;*   DESCRIPTION: Mainline code for the device driver&n;*&n;*******************************************************************************/
 singleline_comment|// ToDo:
 singleline_comment|//
+singleline_comment|// Fix the immediate DSS_NOW problem.
+singleline_comment|//
 singleline_comment|// Done:
+singleline_comment|//
+singleline_comment|// 1.2.12&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|// Cleaned up some remove queue cut and paste errors
+singleline_comment|//
+singleline_comment|// 1.2.11&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|// Clean up potential NULL pointer dereferences
+singleline_comment|// Clean up devfs registration
+singleline_comment|// Add kernel command line parsing for io and irq
+singleline_comment|//&t;Compile defaults for io and irq are now set in ip2.c not ip2/ip2.h!
+singleline_comment|// Reworked poll_only hack for explicit parameter setting
+singleline_comment|//&t;You must now EXPLICITLY set poll_only = 1 or set all irqs to 0
+singleline_comment|// Merged ip2_loadmain and old_ip2_init
+singleline_comment|// Converted all instances of interruptible_sleep_on into queue calls
+singleline_comment|//&t;Most of these had no race conditions but better to clean up now
+singleline_comment|//
+singleline_comment|// 1.2.10&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|// Fixed the bottom half interrupt handler and enabled USE_IQI
+singleline_comment|//&t;to split the interrupt handler into a formal top-half / bottom-half
+singleline_comment|// Fixed timing window on high speed processors that queued messages to
+singleline_comment|// &t;the outbound mail fifo faster than the board could handle.
 singleline_comment|//
 singleline_comment|// 1.2.9
 singleline_comment|// Four box EX was barfing on &gt;128k kmalloc, made structure smaller by
@@ -203,7 +225,7 @@ r_char
 op_star
 id|pcVersion
 op_assign
-l_string|&quot;1.2.9&quot;
+l_string|&quot;1.2.11&quot;
 suffix:semicolon
 multiline_comment|/* String constants for port names */
 DECL|variable|pcDriver_name
@@ -312,13 +334,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_int
-id|old_ip2_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Private (static) functions */
 r_static
 r_int
@@ -488,6 +503,15 @@ c_func
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ip2_interrupt_bh
+c_func
+(paren
+id|i2eBordStrPtr
+id|pB
 )paren
 suffix:semicolon
 r_static
@@ -874,15 +898,22 @@ suffix:semicolon
 DECL|variable|irq_counter
 r_static
 r_int
+r_int
 id|irq_counter
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|bh_counter
 r_static
 r_int
+r_int
 id|bh_counter
+op_assign
+l_int|0
 suffix:semicolon
 singleline_comment|// Use immediate queue to service interrupts
-singleline_comment|//#define USE_IQI&t;// PCI&amp;2.2 needs work
+DECL|macro|USE_IQI
+mdefine_line|#define USE_IQI
 singleline_comment|//#define USE_IQ&t;// PCI&amp;2.2 needs work
 multiline_comment|/* The timer_list entry for our poll routine. If interrupt operation is not&n; * selected, the board is serviced periodically to see if anything needs doing.&n; */
 DECL|macro|POLL_TIMEOUT
@@ -974,6 +1005,8 @@ DECL|variable|poll_only
 r_static
 r_int
 id|poll_only
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|Eisa_irq
 r_static
@@ -1025,130 +1058,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/******************************************************************************/
-multiline_comment|/* Initialisation Section                                                     */
-multiline_comment|/******************************************************************************/
-r_int
-DECL|function|ip2_loadmain
-id|ip2_loadmain
-c_func
-(paren
-r_int
-op_star
-id|iop
-comma
-r_int
-op_star
-id|irqp
-comma
-r_int
-r_char
-op_star
-id|firmware
-comma
-r_int
-id|firmsize
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* process command line arguments to modprobe or insmod i.e. iop &amp; irqp */
-multiline_comment|/* otherwise ip2config is initialized by what&squot;s in ip2/ip2.h */
-multiline_comment|/* command line trumps initialization in ip2.h */
-multiline_comment|/* first two args are null if builtin to kernel */
-r_if
-c_cond
-(paren
-(paren
-id|irqp
-op_ne
-l_int|NULL
-)paren
-op_logical_or
-(paren
-id|iop
-op_ne
-l_int|NULL
-)paren
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|IP2_MAX_BOARDS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|irqp
-op_logical_and
-id|irqp
-(braket
-id|i
-)braket
-)paren
-(brace
-id|ip2config.irq
-(braket
-id|i
-)braket
-op_assign
-id|irqp
-(braket
-id|i
-)braket
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|iop
-op_logical_and
-id|iop
-(braket
-id|i
-)braket
-)paren
-(brace
-id|ip2config.addr
-(braket
-id|i
-)braket
-op_assign
-id|iop
-(braket
-id|i
-)braket
-suffix:semicolon
-)brace
-)brace
-)brace
-id|Fip_firmware
-op_assign
-id|firmware
-suffix:semicolon
-id|Fip_firmware_size
-op_assign
-id|firmsize
-suffix:semicolon
-r_return
-id|old_ip2_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 singleline_comment|// Some functions to keep track of what irq&squot;s we have
 r_static
 r_int
@@ -1348,7 +1257,6 @@ l_string|&quot;Loading module ...&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|//was&t;return old_ip2_init();
 r_return
 l_int|0
 suffix:semicolon
@@ -1762,8 +1670,9 @@ macro_line|#endif
 )brace
 macro_line|#endif /* MODULE */
 multiline_comment|/******************************************************************************/
-multiline_comment|/* Function:   old_ip2_init()                                                 */
+multiline_comment|/* Function:   ip2_loadmain()                                                 */
 multiline_comment|/* Parameters: irq, io from command line of insmod et. al.                    */
+multiline_comment|/*&t;&t;pointer to fip firmware and firmware size for boards&t;      */
 multiline_comment|/* Returns:    Success (0)                                                    */
 multiline_comment|/*                                                                            */
 multiline_comment|/* Description:                                                               */
@@ -1779,11 +1688,25 @@ DECL|macro|IP2_SA_FLAGS
 mdefine_line|#define IP2_SA_FLAGS&t;0
 r_int
 id|__init
-DECL|function|old_ip2_init
-id|old_ip2_init
+DECL|function|ip2_loadmain
+id|ip2_loadmain
 c_func
 (paren
-r_void
+r_int
+op_star
+id|iop
+comma
+r_int
+op_star
+id|irqp
+comma
+r_int
+r_char
+op_star
+id|firmware
+comma
+r_int
+id|firmsize
 )paren
 (brace
 macro_line|#ifdef&t;CONFIG_DEVFS_FS
@@ -1836,6 +1759,111 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* process command line arguments to modprobe or&n;&t;&t;insmod i.e. iop &amp; irqp */
+multiline_comment|/* irqp and iop should ALWAYS be specified now...  But we check&n;&t;&t;them individually just to be sure, anyways... */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|IP2_MAX_BOARDS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|iop
+)paren
+(brace
+id|ip2config.addr
+(braket
+id|i
+)braket
+op_assign
+id|iop
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irqp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|irqp
+(braket
+id|i
+)braket
+op_ge
+l_int|0
+)paren
+(brace
+id|ip2config.irq
+(braket
+id|i
+)braket
+op_assign
+id|irqp
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ip2config.irq
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+singleline_comment|// This is a little bit of a hack.  If poll_only=1 on command
+singleline_comment|// line back in ip2.c OR all IRQs on all specified boards are
+singleline_comment|// explicitly set to 0, then drop to poll only mode and override
+singleline_comment|// PCI or EISA interrupts.  This superceeds the old hack of
+singleline_comment|// triggering if all interrupts were zero (like da default).
+singleline_comment|// Still a hack but less prone to random acts of terrorism.
+singleline_comment|//
+singleline_comment|// What we really should do, now that the IRQ default is set
+singleline_comment|// to -1, is to use 0 as a hard coded, do not probe.
+singleline_comment|//
+singleline_comment|//&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+id|poll_only
+op_or_assign
+id|irqp
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+)brace
+)brace
+id|poll_only
+op_assign
+op_logical_neg
+id|poll_only
+suffix:semicolon
+id|Fip_firmware
+op_assign
+id|firmware
+suffix:semicolon
+id|Fip_firmware_size
+op_assign
+id|firmsize
+suffix:semicolon
 multiline_comment|/* Announce our presence */
 id|printk
 c_func
@@ -1870,35 +1898,6 @@ suffix:semicolon
 )brace
 id|loaded
 op_increment
-suffix:semicolon
-multiline_comment|/* if all irq config is zero we shall poll_only */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|IP2_MAX_BOARDS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|poll_only
-op_or_assign
-id|ip2config.irq
-(braket
-id|i
-)braket
-suffix:semicolon
-)brace
-id|poll_only
-op_assign
-op_logical_neg
-id|poll_only
 suffix:semicolon
 multiline_comment|/* Initialise the iiEllis subsystem. */
 id|iiEllisInit
@@ -2224,31 +2223,12 @@ op_amp
 id|pci_irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|is_valid_irq
-c_func
-(paren
-id|pci_irq
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;
-comma
-id|pci_irq
-)paren
-suffix:semicolon
-id|pci_irq
-op_assign
-l_int|0
-suffix:semicolon
-)brace
+singleline_comment|//&t;&t;If the PCI BIOS assigned it, lets try and use it.  If we
+singleline_comment|//&t;&t;can&squot;t acquire it or it screws up, deal with it then.
+singleline_comment|//&t;&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
+singleline_comment|//&t;&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
+singleline_comment|//&t;&t;&t;&t;&t;&t;pci_irq = 0;
+singleline_comment|//&t;&t;&t;&t;&t;}
 id|ip2config.irq
 (braket
 id|i
@@ -2407,31 +2387,12 @@ op_amp
 id|pci_irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|is_valid_irq
-c_func
-(paren
-id|pci_irq
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;
-comma
-id|pci_irq
-)paren
-suffix:semicolon
-id|pci_irq
-op_assign
-l_int|0
-suffix:semicolon
-)brace
+singleline_comment|//&t;&t;If the PCI BIOS assigned it, lets try and use it.  If we
+singleline_comment|//&t;&t;can&squot;t acquire it or it screws up, deal with it then.
+singleline_comment|//&t;&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
+singleline_comment|//&t;&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
+singleline_comment|//&t;&t;&t;&t;&t;&t;pci_irq = 0;
+singleline_comment|//&t;&t;&t;&t;&t;}
 id|ip2config.irq
 (braket
 id|i
@@ -3138,6 +3099,21 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#ifdef&t;CONFIG_DEVFS_FS
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+(paren
+id|pB
+op_assign
+id|i2BoardPtrTable
+(braket
+id|i
+)braket
+)paren
+)paren
+(brace
 id|sprintf
 c_func
 (paren
@@ -3148,12 +3124,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|i2BoardPtrTable
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|devfs_ipl_handle
+id|pB-&gt;devfs_ipl_handle
 op_assign
 id|devfs_register
 (paren
@@ -3193,12 +3164,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|i2BoardPtrTable
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|devfs_stat_handle
+id|pB-&gt;devfs_stat_handle
 op_assign
 id|devfs_register
 (paren
@@ -3320,6 +3286,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -3327,6 +3294,8 @@ c_cond
 id|poll_only
 )paren
 (brace
+singleline_comment|//&t;&t;Poll only forces driver to only use polling and
+singleline_comment|//&t;&t;to ignore the probed PCI or EISA interrupts.
 id|ip2config.irq
 (braket
 id|i
@@ -3605,26 +3574,15 @@ comma
 id|pB-&gt;i2eError
 )paren
 suffix:semicolon
-id|kfree
-(paren
-id|pB
-)paren
-suffix:semicolon
-id|i2BoardPtrTable
-(braket
-id|boardnum
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
+r_goto
+id|err_initialize
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Board %d: addr=0x%x irq=%d &quot;
+l_string|&quot;IP2: Board %d: addr=0x%x irq=%d&bslash;n&quot;
 comma
 id|boardnum
 op_plus
@@ -3662,18 +3620,11 @@ l_int|8
 )paren
 )paren
 (brace
-id|i2BoardPtrTable
-(braket
-id|boardnum
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bad addr=0x%x rc = %d&bslash;n&quot;
+l_string|&quot;IP2: bad addr=0x%x rc = %d&bslash;n&quot;
 comma
 id|ip2config.addr
 (braket
@@ -3683,7 +3634,8 @@ comma
 id|rc
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|err_initialize
 suffix:semicolon
 )brace
 id|request_region
@@ -3722,8 +3674,11 @@ id|II_DOWN_GOOD
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;IP2:failed to download loadware &quot;
+l_string|&quot;IP2: failed to download loadware&bslash;n&quot;
 )paren
+suffix:semicolon
+r_goto
+id|err_release_region
 suffix:semicolon
 )brace
 r_else
@@ -3731,7 +3686,7 @@ r_else
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;fv=%d.%d.%d lv=%d.%d.%d&bslash;n&quot;
+l_string|&quot;IP2: fv=%d.%d.%d lv=%d.%d.%d&bslash;n&quot;
 comma
 id|pB-&gt;i2ePom.e.porVersion
 comma
@@ -3762,7 +3717,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;IP2: Unknown board type, ID = %x&quot;
+l_string|&quot;IP2: Unknown board type, ID = %x&bslash;n&quot;
 comma
 id|pB-&gt;i2ePom.e.porID
 )paren
@@ -3772,7 +3727,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_goto
-id|ex_exit
+id|err_release_region
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3783,7 +3738,7 @@ multiline_comment|/* IntelliPort-II, ISA-4 (4xRJ45) */
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;ISA-4&quot;
+l_string|&quot;IP2: ISA-4&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nports
@@ -3799,7 +3754,7 @@ multiline_comment|/* IntelliPort-II, 8-port using standard brick. */
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;ISA-8 std&quot;
+l_string|&quot;IP2: ISA-8 std&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nports
@@ -3815,7 +3770,7 @@ multiline_comment|/* IntelliPort-II, 8-port using RJ11&squot;s (no CTS) */
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;ISA-8 RJ11&quot;
+l_string|&quot;IP2: ISA-8 RJ11&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nports
@@ -3927,6 +3882,23 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|pCh
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;IP2: (i2_init_channel:) Out of memory.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_release_region
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|i2InitChannels
 c_func
 (paren
@@ -3942,10 +3914,18 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2InitChannels failed: %d&bslash;n&quot;
+l_string|&quot;IP2: i2InitChannels failed: %d&bslash;n&quot;
 comma
 id|pB-&gt;i2eError
 )paren
+suffix:semicolon
+id|kfree
+(paren
+id|pCh
+)paren
+suffix:semicolon
+r_goto
+id|err_release_region
 suffix:semicolon
 )brace
 id|pB-&gt;i2eChannelPtr
@@ -4034,7 +4014,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IP2: EX box=%d ports=%d %d bit&quot;
+l_string|&quot;IP2: EX box=%d ports=%d %d bit&bslash;n&quot;
 comma
 id|nboxes
 comma
@@ -4051,8 +4031,6 @@ suffix:semicolon
 )brace
 r_goto
 id|ex_exit
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|DevTableMem
@@ -4074,6 +4052,23 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pCh
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;IP2: (i2_init_channel:) Out of memory.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_release_region
+suffix:semicolon
+)brace
 id|pB-&gt;i2eChannelPtr
 op_assign
 id|pCh
@@ -4082,15 +4077,39 @@ id|pB-&gt;i2eChannelCnt
 op_assign
 id|nports
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|i2InitChannels
+c_func
 (paren
 id|pB
 comma
-id|pB-&gt;i2eChannelCnt
+id|nports
 comma
 id|pCh
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IP2: i2InitChannels failed: %d&bslash;n&quot;
+comma
+id|pB-&gt;i2eError
+)paren
 suffix:semicolon
+id|kfree
+(paren
+id|pCh
+)paren
+suffix:semicolon
+r_goto
+id|err_release_region
+suffix:semicolon
+)brace
 id|pB-&gt;i2eChannelPtr
 op_assign
 op_amp
@@ -4143,11 +4162,54 @@ suffix:semicolon
 )brace
 id|ex_exit
 suffix:colon
-id|printk
+id|pB-&gt;tqueue_interrupt.routine
+op_assign
 (paren
-id|KERN_INFO
-l_string|&quot;&bslash;n&quot;
+r_void
+(paren
+op_star
 )paren
+(paren
+r_void
+op_star
+)paren
+)paren
+id|ip2_interrupt_bh
+suffix:semicolon
+id|pB-&gt;tqueue_interrupt.data
+op_assign
+id|pB
+suffix:semicolon
+r_return
+suffix:semicolon
+id|err_release_region
+suffix:colon
+id|release_region
+c_func
+(paren
+id|ip2config.addr
+(braket
+id|boardnum
+)braket
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|err_initialize
+suffix:colon
+id|kfree
+(paren
+id|pB
+)paren
+suffix:semicolon
+id|i2BoardPtrTable
+(braket
+id|boardnum
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************/
@@ -5100,37 +5162,60 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef USE_IQI
+multiline_comment|/******************************************************************************/
+multiline_comment|/* Function:   ip2_interrupt_bh(pB)                                           */
+multiline_comment|/* Parameters: pB - pointer to the board structure                            */
+multiline_comment|/* Returns:    Nothing                                                        */
+multiline_comment|/*                                                                            */
+multiline_comment|/* Description:                                                               */
+multiline_comment|/*&t;Service the board in a bottom half interrupt handler and then         */
+multiline_comment|/*&t;reenable the board&squot;s interrupts if it has an IRQ number               */
+multiline_comment|/*                                                                            */
+multiline_comment|/******************************************************************************/
 r_static
-r_struct
-id|tq_struct
-DECL|variable|senior_service
-id|senior_service
-op_assign
+r_void
+DECL|function|ip2_interrupt_bh
+id|ip2_interrupt_bh
+c_func
+(paren
+id|i2eBordStrPtr
+id|pB
+)paren
 (brace
-singleline_comment|// it&squot;s the death that worse than fate
-l_int|NULL
-comma
-l_int|0
-comma
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-)paren
-id|service_all_boards
-comma
-l_int|NULL
-comma
-singleline_comment|//later - board address XXX
-)brace
+singleline_comment|//&t;pB better well be set or we have a problem!  We can only get
+singleline_comment|//&t;here from the IMMEDIATE queue.  Here, we process the boards.
+singleline_comment|//&t;Checking pB doesn&squot;t cost much and it saves us from the sanity checkers.
+id|bh_counter
+op_increment
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|pB
+)paren
+(brace
+id|i2ServiceBoard
+c_func
+(paren
+id|pB
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pB-&gt;i2eUsingIrq
+)paren
+(brace
+singleline_comment|//&t;&t;&t;Re-enable his interrupts
+id|iiEnableMailIrq
+c_func
+(paren
+id|pB
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   ip2_interrupt(int irq, void *dev_id, struct pt_regs * regs)    */
 multiline_comment|/* Parameters: irq - interrupt number                                         */
@@ -5139,6 +5224,14 @@ multiline_comment|/*             pointer to register structure                  
 multiline_comment|/* Returns:    Nothing                                                        */
 multiline_comment|/*                                                                            */
 multiline_comment|/* Description:                                                               */
+multiline_comment|/*                                                                            */
+multiline_comment|/*&t;Our task here is simply to identify each board which needs servicing. */
+multiline_comment|/*&t;If we are queuing then, queue it to be serviced, and disable its irq  */
+multiline_comment|/*&t;mask otherwise process the board directly.                            */
+multiline_comment|/*                                                                            */
+multiline_comment|/*&t;We could queue by IRQ but that just complicates things on both ends   */
+multiline_comment|/*&t;with very little gain in performance (how many instructions does      */
+multiline_comment|/*&t;it take to iterate on the immediate queue).                           */
 multiline_comment|/*                                                                            */
 multiline_comment|/*                                                                            */
 multiline_comment|/******************************************************************************/
@@ -5182,24 +5275,6 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef USE_IQI
-id|queue_task
-c_func
-(paren
-op_amp
-id|senior_service
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-macro_line|#else
 multiline_comment|/* Service just the boards on the list using this irq */
 r_for
 c_loop
@@ -5223,6 +5298,8 @@ id|i2BoardPtrTable
 id|i
 )braket
 suffix:semicolon
+singleline_comment|//&t;&t;Only process those boards which match our IRQ.
+singleline_comment|//&t;&t;&t;IRQ = 0 for polled boards, we won&squot;t poll &quot;IRQ&quot; boards
 r_if
 c_cond
 (paren
@@ -5235,15 +5312,63 @@ id|irq
 )paren
 )paren
 (brace
+macro_line|#ifdef USE_IQI
+r_if
+c_cond
+(paren
+id|NO_MAIL_HERE
+op_ne
+(paren
+id|pB-&gt;i2eStartMail
+op_assign
+id|iiGetMail
+c_func
+(paren
+id|pB
+)paren
+)paren
+)paren
+(brace
+singleline_comment|//&t;&t;&t;Disable his interrupt (will be enabled when serviced)
+singleline_comment|//&t;&t;&t;This is mostly to protect from reentrancy.
+id|iiDisableMailIrq
+c_func
+(paren
+id|pB
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;&t;Park the board on the immediate queue for processing.
+id|queue_task
+c_func
+(paren
+op_amp
+id|pB-&gt;tqueue_interrupt
+comma
+op_amp
+id|tq_immediate
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;&t;Make sure the immediate queue is flagged to fire.
+id|mark_bh
+c_func
+(paren
+id|IMMEDIATE_BH
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+singleline_comment|//&t;&t;We are using immediate servicing here.  This sucks and can
+singleline_comment|//&t;&t;cause all sorts of havoc with ppp and others.  The failsafe
+singleline_comment|//&t;&t;check on iiSendPendingMail could also throw a hairball.
 id|i2ServiceBoard
 c_func
 (paren
 id|pB
 )paren
 suffix:semicolon
-)brace
-)brace
 macro_line|#endif /* USE_IQI */
+)brace
+)brace
 op_increment
 id|irq_counter
 suffix:semicolon
@@ -5300,28 +5425,9 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// it&squot;s the truth but not checked in service
-id|bh_counter
-op_increment
-suffix:semicolon
-macro_line|#ifdef USE_IQI
-id|queue_task
-c_func
-(paren
-op_amp
-id|senior_service
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-macro_line|#else
-singleline_comment|// Just polled boards, service_all might be better
+singleline_comment|// Just polled boards, IRQ = 0 will hit all non-interrupt boards.
+singleline_comment|// It will NOT poll boards handled by hard interrupts.
+singleline_comment|// The issue of queued BH interrups is handled in ip2_interrupt().
 id|ip2_interrupt
 c_func
 (paren
@@ -5332,7 +5438,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_IQI */
 id|PollTimer.expires
 op_assign
 id|POLL_TIMEOUT
@@ -6039,6 +6144,9 @@ op_star
 id|pFile
 )paren
 (brace
+id|wait_queue_t
+id|wait
+suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -6175,6 +6283,31 @@ id|pCh-&gt;pMyBord
 suffix:semicolon
 multiline_comment|/* Block here until the port is ready (per serial and istallion) */
 multiline_comment|/*&n;&t; * 1. If the port is in the middle of closing wait for the completion&n;&t; *    and then return the appropriate error.&n;&t; */
+id|init_waitqueue_entry
+c_func
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;close_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6199,11 +6332,9 @@ op_amp
 id|ASYNC_CLOSING
 )paren
 (brace
-id|interruptible_sleep_on
+id|schedule
 c_func
 (paren
-op_amp
-id|pCh-&gt;close_wait
 )paren
 suffix:semicolon
 )brace
@@ -6217,6 +6348,22 @@ id|pFile
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;close_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_return
 (paren
 id|pCh-&gt;flags
@@ -6233,6 +6380,22 @@ id|ERESTARTSYS
 suffix:semicolon
 )brace
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;close_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * 2. If this is a callout device, make sure the normal port is not in&n;&t; *    use, and that someone else doesn&squot;t have the callout device locked.&n;&t; *    (These are the only tests the standard serial driver makes for&n;&t; *    callout devices.)&n;&t; */
 r_if
 c_cond
@@ -6412,6 +6575,25 @@ macro_line|#endif
 op_increment
 id|pCh-&gt;wopen
 suffix:semicolon
+id|init_waitqueue_entry
+c_func
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;open_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6454,6 +6636,12 @@ op_or
 id|I2_RTS
 )paren
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|serviceOutgoingFifo
 c_func
 (paren
@@ -6471,6 +6659,22 @@ id|pFile
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;open_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_return
 (paren
 id|pCh-&gt;flags
@@ -6622,14 +6826,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
 c_func
 (paren
 op_amp
 id|pCh-&gt;open_wait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
-)brace
 op_decrement
 id|pCh-&gt;wopen
 suffix:semicolon
@@ -7178,6 +7396,16 @@ id|pCh
 op_assign
 id|tty-&gt;driver_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pCh
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
@@ -7231,9 +7459,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|tty
-op_logical_or
 (paren
 id|tty-&gt;termios-&gt;c_cflag
 op_amp
@@ -8346,6 +8571,9 @@ id|ULONG
 id|arg
 )paren
 (brace
+id|wait_queue_t
+id|wait
+suffix:semicolon
 id|i2ChanStrPtr
 id|pCh
 op_assign
@@ -8928,7 +9156,90 @@ id|rc
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;FIXME - the following code is causing a NULL pointer dereference in&n;&t;2.3.51 in an interrupt handler.  It&squot;s suppose to prompt the board&n;&t;to return the DSS signal status immediately.  Why doesn&squot;t it do&n;&t;the same thing in 2.2.14?&n;*/
-multiline_comment|/*&n;&t;&t;i2QueueCommands(PTYPE_BYPASS, pCh, 100, 1, CMD_DSS_NOW);&n;&t;&t;serviceOutgoingFifo( pCh-&gt;pMyBord );&n;&t;&t;interruptible_sleep_on(&amp;pCh-&gt;dss_now_wait);&n;&t;&t;if (signal_pending(current)) {&n;&t;&t;&t;return -EINTR;&n;&t;&t;}&n;*/
+multiline_comment|/*&t;This thing is still busted in the 1.2.12 driver on 2.4.x&n;&t;and even hoses the serial console so the oops can be trapped.&n;&t;&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/&t;&t;&t;*/
+macro_line|#ifdef&t;ENABLE_DSSNOW
+id|i2QueueCommands
+c_func
+(paren
+id|PTYPE_BYPASS
+comma
+id|pCh
+comma
+l_int|100
+comma
+l_int|1
+comma
+id|CMD_DSS_NOW
+)paren
+suffix:semicolon
+id|init_waitqueue_entry
+c_func
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;dss_now_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|serviceOutgoingFifo
+c_func
+(paren
+id|pCh-&gt;pMyBord
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;dss_now_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
+macro_line|#endif
 id|PUT_USER
 c_func
 (paren
@@ -9109,6 +9420,31 @@ comma
 id|CMD_RI_REP
 )paren
 suffix:semicolon
+id|init_waitqueue_entry
+c_func
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;delta_msr_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|serviceOutgoingFifo
 c_func
 (paren
@@ -9135,11 +9471,9 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|interruptible_sleep_on
+id|schedule
 c_func
 (paren
-op_amp
-id|pCh-&gt;delta_msr_wait
 )paren
 suffix:semicolon
 macro_line|#ifdef IP2DEBUG_TRACE
@@ -9297,6 +9631,22 @@ op_assign
 id|cnow
 suffix:semicolon
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pCh-&gt;delta_msr_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 id|i2QueueCommands
 c_func
 (paren

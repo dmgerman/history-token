@@ -64,13 +64,13 @@ id|u32
 id|global_lock
 suffix:semicolon
 multiline_comment|/* Global Lock */
-DECL|member|S4_bios_f
+DECL|member|S4bios_f
 id|u32
-id|S4_bios_f
+id|S4bios_f
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates if S4_bIOS support is present */
+multiline_comment|/* Indicates if S4BIOS support is present */
 DECL|member|reserved1
 id|u32
 id|reserved1
@@ -142,11 +142,11 @@ id|u8
 id|acpi_disable
 suffix:semicolon
 multiline_comment|/* value to write to smi_cmd to disable ACPI */
-DECL|member|S4_bios_req
+DECL|member|S4bios_req
 id|u8
-id|S4_bios_req
+id|S4bios_req
 suffix:semicolon
-multiline_comment|/* Value to write to SMI CMD to enter S4_bIOS state */
+multiline_comment|/* Value to write to SMI CMD to enter S4BIOS state */
 DECL|member|reserved2
 id|u8
 id|reserved2

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: niccy.c,v 1.15.6.5 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Dr. Neuhaus NICCY PnP and NICCY PCI and&n; * compatible (SAGEM cybermodem)&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; * &n; * Thanks to Dr. Neuhaus and SAGEM for information&n; *&n; */
+multiline_comment|/* $Id: niccy.c,v 1.15.6.6 2001/10/20 22:08:24 kai Exp $&n; *&n; * low level stuff for Dr. Neuhaus NICCY PnP and NICCY PCI and&n; * compatible (SAGEM cybermodem)&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; * &n; * Thanks to Dr. Neuhaus and SAGEM for information&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -22,7 +22,7 @@ r_char
 op_star
 id|niccy_revision
 op_assign
-l_string|&quot;$Revision: 1.15.6.5 $&quot;
+l_string|&quot;$Revision: 1.15.6.6 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)
@@ -843,7 +843,7 @@ c_func
 (paren
 id|cs-&gt;hw.niccy.cfg_reg
 comma
-l_int|0x80
+l_int|0x40
 )paren
 suffix:semicolon
 id|release_region
@@ -1482,7 +1482,7 @@ c_func
 (paren
 id|cs-&gt;hw.niccy.cfg_reg
 comma
-l_int|0x80
+l_int|0x40
 )paren
 )paren
 (brace
@@ -1501,7 +1501,7 @@ id|cs-&gt;hw.niccy.cfg_reg
 comma
 id|cs-&gt;hw.niccy.cfg_reg
 op_plus
-l_int|0x80
+l_int|0x40
 )paren
 suffix:semicolon
 id|release_region
@@ -1525,7 +1525,7 @@ c_func
 (paren
 id|cs-&gt;hw.niccy.cfg_reg
 comma
-l_int|0x80
+l_int|0x40
 comma
 l_string|&quot;niccy pci&quot;
 )paren

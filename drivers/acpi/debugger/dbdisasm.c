@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 48 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 50 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -72,6 +72,10 @@ id|acpi_status
 DECL|function|acpi_ps_display_object_pathname
 id|acpi_ps_display_object_pathname
 (paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
 id|acpi_parse_object
 op_star
 id|op
@@ -139,6 +143,10 @@ id|acpi_status
 DECL|function|acpi_ps_display_object_pathname
 id|acpi_ps_display_object_pathname
 (paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
 id|acpi_parse_object
 op_star
 id|op
@@ -162,10 +170,17 @@ id|buffer_size
 op_assign
 id|MAX_SHOW_ENTRY
 suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot; (Path &quot;
-)paren
+id|u32
+id|debug_level
+suffix:semicolon
+multiline_comment|/* Save current debug level so we don&squot;t get extraneous debug output */
+id|debug_level
+op_assign
+id|acpi_dbg_level
+suffix:semicolon
+id|acpi_dbg_level
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Just get the Node out of the Op object */
 id|node
@@ -179,11 +194,52 @@ op_logical_neg
 id|node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * No Named obj,  so we can&squot;t get the pathname since the object&n;&t;&t; * is not in the namespace.  This can happen during single&n;&t;&t; * stepping where a dynamic named object is *about* to be created.&n;&t;&t; */
-r_return
+multiline_comment|/* Node not defined in this scope, look it up */
+id|status
+op_assign
+id|acpi_ns_lookup
 (paren
-id|AE_OK
+id|walk_state-&gt;scope_info
+comma
+id|op-&gt;value.string
+comma
+id|ACPI_TYPE_ANY
+comma
+id|IMODE_EXECUTE
+comma
+id|NS_SEARCH_PARENT
+comma
+id|walk_state
+comma
+op_amp
+(paren
+id|node
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We can&squot;t get the pathname since the object&n;&t;&t;&t; * is not in the namespace.  This can happen during single&n;&t;&t;&t; * stepping where a dynamic named object is *about* to be created.&n;&t;&t;&t; */
+id|acpi_os_printf
+(paren
+l_string|&quot; [Path not found]&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+multiline_comment|/* Save it for next time. */
+id|op-&gt;node
+op_assign
+id|node
 suffix:semicolon
 )brace
 multiline_comment|/* Convert Named_desc/handle to a full pathname */
@@ -213,22 +269,27 @@ id|acpi_os_printf
 l_string|&quot;****Could not get pathname****)&quot;
 )paren
 suffix:semicolon
-r_return
-(paren
-id|status
-)paren
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot;%s)&quot;
+l_string|&quot; (Path %s)&quot;
 comma
 id|buffer
 )paren
 suffix:semicolon
+m_exit
+suffix:colon
+multiline_comment|/* Restore the debug level */
+id|acpi_dbg_level
+op_assign
+id|debug_level
+suffix:semicolon
 r_return
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -595,6 +656,8 @@ id|acpi_gbl_db_opt_verbose
 (brace
 id|acpi_ps_display_object_pathname
 (paren
+id|walk_state
+comma
 id|op
 )paren
 suffix:semicolon
@@ -1307,7 +1370,7 @@ id|acpi_gbl_db_opt_verbose
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;(UINT64) 0x%8.8X%8.8X&quot;
+l_string|&quot;(u64) 0x%8.8X%8.8X&quot;
 comma
 id|op-&gt;value.integer64.hi
 comma

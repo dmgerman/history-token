@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -12,7 +12,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;exregion&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_memory_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                      accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the System Memory address space (Op Region)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_memory_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the System Memory address space (Op Region)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_memory_space_handler
 id|acpi_ex_system_memory_space_handler
@@ -237,7 +237,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;IO %d (%d width) Address=%8.8lX%8.8lX&bslash;n&quot;
+l_string|&quot;System_memory %d (%d width) Address=%8.8X%8.8X&bslash;n&quot;
 comma
 id|function
 comma
@@ -385,7 +385,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_io_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                      accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the System IO address space (Op Region)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_io_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the System IO address space (Op Region)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_io_space_handler
 id|acpi_ex_system_io_space_handler
@@ -427,7 +427,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;IO %d (%d width) Address=%8.8lX%8.8lX&bslash;n&quot;
+l_string|&quot;System_iO %d (%d width) Address=%8.8X%8.8X&bslash;n&quot;
 comma
 id|function
 comma
@@ -511,7 +511,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_pci_config_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                      accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the PCI Config address space (Op Region)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_pci_config_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the PCI Config address space (Op Region)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_pci_config_space_handler
 id|acpi_ex_pci_config_space_handler
@@ -576,7 +576,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;IO %d (%d) Seg(%04x) Bus(%04x) Dev(%04x) Func(%04x) Reg(%04x)&bslash;n&quot;
+l_string|&quot;Pci_config %d (%d) Seg(%04x) Bus(%04x) Dev(%04x) Func(%04x) Reg(%04x)&bslash;n&quot;
 comma
 id|function
 comma
@@ -651,6 +651,92 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_cmos_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the CMOS address space (Op Region)&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_cmos_space_handler
+id|acpi_ex_cmos_space_handler
+(paren
+id|u32
+id|function
+comma
+id|ACPI_PHYSICAL_ADDRESS
+id|address
+comma
+id|u32
+id|bit_width
+comma
+id|u32
+op_star
+id|value
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+id|region_context
+)paren
+(brace
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_cmos_space_handler&quot;
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_pci_bar_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the PCI Bar_target address space (Op Region)&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_pci_bar_space_handler
+id|acpi_ex_pci_bar_space_handler
+(paren
+id|u32
+id|function
+comma
+id|ACPI_PHYSICAL_ADDRESS
+id|address
+comma
+id|u32
+id|bit_width
+comma
+id|u32
+op_star
+id|value
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+id|region_context
+)paren
+(brace
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_pci_bar_space_handler&quot;
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status

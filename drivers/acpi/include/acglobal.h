@@ -77,7 +77,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Predefined mutex objects.  This array contains the&n; * actual OS mutex handles, indexed by the local ACPI_MUTEX_HANDLEs.&n; * (The table maps local handles to the real OS handles)&n; */
 DECL|variable|acpi_gbl_acpi_mutex_info
 id|ACPI_EXTERN
-id|ACPI_MUTEX_INFO
+id|acpi_mutex_info
 id|acpi_gbl_acpi_mutex_info
 (braket
 id|NUM_MTX
@@ -308,7 +308,7 @@ suffix:semicolon
 multiline_comment|/* Address Space handlers */
 DECL|variable|acpi_gbl_address_spaces
 id|ACPI_EXTERN
-id|ACPI_ADR_SPACE_INFO
+id|acpi_adr_space_info
 id|acpi_gbl_address_spaces
 (braket
 id|ACPI_NUM_ADDRESS_SPACES
@@ -330,7 +330,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_fixed_event_handlers
 id|ACPI_EXTERN
-id|ACPI_FIXED_EVENT_INFO
+id|acpi_fixed_event_info
 id|acpi_gbl_fixed_event_handlers
 (braket
 id|ACPI_NUM_FIXED_EVENTS
@@ -348,7 +348,7 @@ id|acpi_gbl_gpe_register_count
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_registers
 id|ACPI_EXTERN
-id|ACPI_GPE_REGISTERS
+id|acpi_gpe_registers
 op_star
 id|acpi_gbl_gpe_registers
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 87 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -92,20 +92,6 @@ id|acpi_gbl_deepest_nesting
 op_assign
 id|acpi_gbl_nesting_level
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_gbl_deepest_nesting
-op_eq
-l_int|34
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;hit deepest nesting&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_debug_print&n; *&n; * PARAMETERS:  Debug_level         - Requested debug print level&n; *              Proc_name           - Caller&squot;s procedure name&n; *              Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print error message with prefix consisting of the module name,&n; *              line number, and component ID.&n; *&n; ****************************************************************************/
@@ -119,7 +105,7 @@ comma
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -263,7 +249,7 @@ comma
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -323,7 +309,7 @@ id|acpi_ut_trace
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 )paren
@@ -357,7 +343,7 @@ id|acpi_ut_trace_ptr
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -397,7 +383,7 @@ id|acpi_ut_trace_str
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -437,7 +423,7 @@ id|acpi_ut_trace_u32
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -476,7 +462,7 @@ id|acpi_ut_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 )paren
@@ -506,7 +492,7 @@ id|acpi_ut_status_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -575,7 +561,7 @@ id|acpi_ut_value_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma
@@ -591,11 +577,21 @@ id|line_number
 comma
 id|dbg_info
 comma
-l_string|&quot;%s %08X&bslash;n&quot;
+l_string|&quot;%s %8.8X%8.8X&bslash;n&quot;
 comma
 id|acpi_gbl_fn_exit_str
 comma
+id|HIDWORD
+c_func
+(paren
 id|value
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|value
+)paren
 )paren
 suffix:semicolon
 id|acpi_gbl_nesting_level
@@ -610,7 +606,7 @@ id|acpi_ut_ptr_exit
 id|u32
 id|line_number
 comma
-id|ACPI_DEBUG_PRINT_INFO
+id|acpi_debug_print_info
 op_star
 id|dbg_info
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prperf.c&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prperf.c&n; *              $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * TBD: 1. Support ACPI 2.0 processor performance states (not just throttling).&n; *      2. Fully implement thermal -vs- power management limit control.&n; */
 macro_line|#include &lt;acpi.h&gt;
@@ -341,9 +341,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|state
+op_eq
+id|processor-&gt;performance.active_state
+)paren
+op_logical_or
+(paren
 id|processor-&gt;performance.state_count
 op_eq
 l_int|1
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -492,6 +500,10 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
+id|processor-&gt;performance.active_state
+op_assign
+id|state
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -598,7 +610,7 @@ id|processor
 comma
 (paren
 id|performance-&gt;active_state
-op_minus
+op_plus
 l_int|1
 )paren
 )paren
@@ -626,7 +638,7 @@ id|processor
 comma
 (paren
 id|performance-&gt;active_state
-op_plus
+op_minus
 l_int|1
 )paren
 )paren
@@ -681,7 +693,7 @@ id|status
 (brace
 id|performance-&gt;thermal_limit
 op_assign
-id|limit
+id|performance-&gt;active_state
 suffix:semicolon
 )brace
 id|ACPI_DEBUG_PRINT
@@ -894,6 +906,43 @@ id|processor-&gt;performance.active_state
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+c_func
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Set to Maximum Performance:&n;&t; * ---------------------------&n;&t; * We&squot;ll let subsequent policy (e.g. thermal/power) decide to lower&n;&t; * performance if it so chooses, but for now crank up the speed.&n;&t; */
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|processor-&gt;performance.active_state
+)paren
+(brace
+id|status
+op_assign
+id|pr_perf_set_state
+c_func
+(paren
+id|processor
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 c_func
 (paren

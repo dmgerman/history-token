@@ -1548,6 +1548,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* shut gcc up */
 r_int
+r_char
+id|ctl
+suffix:semicolon
+r_int
 id|rle
 op_assign
 l_int|0
@@ -1584,16 +1588,28 @@ op_assign
 id|IEEE1284_PH_REV_DATA
 suffix:semicolon
 multiline_comment|/* Set HostAck low to start accepting data. */
-id|parport_frob_control
+id|ctl
+op_assign
+id|parport_read_control
 (paren
 id|port
-comma
-id|PARPORT_CONTROL_AUTOFD
-op_or
+)paren
+suffix:semicolon
+id|ctl
+op_and_assign
+op_complement
+(paren
 id|PARPORT_CONTROL_STROBE
 op_or
 id|PARPORT_CONTROL_INIT
+)paren
+suffix:semicolon
+id|parport_write_control
+(paren
+id|port
 comma
+id|ctl
+op_or
 id|PARPORT_CONTROL_AUTOFD
 )paren
 suffix:semicolon
@@ -1845,13 +1861,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Event 44: Set HostAck high, acknowledging handshake. */
-id|parport_frob_control
+id|parport_write_control
 (paren
 id|port
 comma
-id|PARPORT_CONTROL_AUTOFD
-comma
-l_int|0
+id|ctl
 )paren
 suffix:semicolon
 multiline_comment|/* Event 45: The peripheral has 35ms to set nAck high. */
@@ -1894,12 +1908,12 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Event 46: Set HostAck low and accept the data. */
-id|parport_frob_control
+id|parport_write_control
 (paren
 id|port
 comma
-id|PARPORT_CONTROL_AUTOFD
-comma
+id|ctl
+op_or
 id|PARPORT_CONTROL_AUTOFD
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 36 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -141,27 +141,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_disable&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Restore original mode  */
 id|status
 op_assign
@@ -209,7 +188,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *              Flags           - Just enable, or also wake enable?&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enable_event
 id|acpi_enable_event
@@ -219,6 +198,9 @@ id|event
 comma
 id|u32
 id|type
+comma
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -234,27 +216,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_enable_event&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -402,11 +363,34 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Enable the requested GPE number */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_EVENT_ENABLE
+)paren
+(brace
 id|acpi_hw_enable_gpe
 (paren
 id|event
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_EVENT_WAKE_ENABLE
+)paren
+(brace
+id|acpi_hw_enable_gpe_for_wakeup
+(paren
+id|event
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -422,7 +406,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event, fixed or general purpose&n; *              Flags           - Wake disable vs. non-wake disable&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_disable_event
 id|acpi_disable_event
@@ -432,6 +416,9 @@ id|event
 comma
 id|u32
 id|type
+comma
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -447,27 +434,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_disable_event&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -615,11 +581,34 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Disable the requested GPE number */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_EVENT_DISABLE
+)paren
+(brace
 id|acpi_hw_disable_gpe
 (paren
 id|event
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_EVENT_WAKE_DISABLE
+)paren
+(brace
+id|acpi_hw_disable_gpe_for_wakeup
+(paren
+id|event
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -660,27 +649,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_clear_event&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -845,27 +813,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_get_event_status&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

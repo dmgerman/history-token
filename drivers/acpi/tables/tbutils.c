@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 42 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -367,7 +367,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Table signature at %p [%X] has invalid characters&bslash;n&quot;
+l_string|&quot;Table signature at %p [%p] has invalid characters&bslash;n&quot;
 comma
 id|table_header
 comma
@@ -381,6 +381,10 @@ id|REPORT_WARNING
 (paren
 l_string|&quot;Invalid table signature %4.4s found&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|signature
 )paren
@@ -423,6 +427,10 @@ l_string|&quot;Invalid length in table header %p name %4.4s&bslash;n&quot;
 comma
 id|table_header
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|signature
 )paren
@@ -695,6 +703,10 @@ l_string|&quot;Invalid checksum (%X) in table %4.4s&bslash;n&quot;
 comma
 id|checksum
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|table_header-&gt;signature
 )paren

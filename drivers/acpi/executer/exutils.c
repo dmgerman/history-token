@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 84 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 85 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
@@ -283,13 +283,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_digits_needed&n; *&n; * PARAMETERS:  val             - Value to be represented&n; *              base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent val in base&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_digits_needed&n; *&n; * PARAMETERS:  Value           - Value to be represented&n; *              Base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent Value in Base&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ex_digits_needed
 id|acpi_ex_digits_needed
 (paren
 id|acpi_integer
-id|val
+id|value
 comma
 id|u32
 id|base
@@ -323,7 +323,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * acpi_integer is unsigned, which is why we don&squot;t worry about the &squot;-&squot;&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * acpi_integer is unsigned, which is why we don&squot;t worry about a &squot;-&squot;&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -332,13 +332,17 @@ op_assign
 l_int|1
 suffix:semicolon
 (paren
-id|val
-op_assign
-id|ACPI_DIVIDE
+id|acpi_ut_short_divide
 (paren
-id|val
+op_amp
+id|value
 comma
 id|base
+comma
+op_amp
+id|value
+comma
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -621,6 +625,9 @@ suffix:semicolon
 id|u32
 id|digits_needed
 suffix:semicolon
+id|u32
+id|remainder
+suffix:semicolon
 id|FUNCTION_ENTRY
 (paren
 )paren
@@ -639,7 +646,7 @@ id|out_string
 id|digits_needed
 )braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -656,6 +663,20 @@ id|count
 op_decrement
 )paren
 (brace
+id|acpi_ut_short_divide
+(paren
+op_amp
+id|value
+comma
+l_int|10
+comma
+op_amp
+id|value
+comma
+op_amp
+id|remainder
+)paren
+suffix:semicolon
 id|out_string
 (braket
 id|count
@@ -669,23 +690,7 @@ id|NATIVE_CHAR
 (paren
 l_char|&squot;0&squot;
 op_plus
-(paren
-id|ACPI_MODULO
-(paren
-id|value
-comma
-l_int|10
-)paren
-)paren
-)paren
-suffix:semicolon
-id|value
-op_assign
-id|ACPI_DIVIDE
-(paren
-id|value
-comma
-l_int|10
+id|remainder
 )paren
 suffix:semicolon
 )brace

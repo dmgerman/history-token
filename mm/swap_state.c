@@ -510,7 +510,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|page_cache_release
+id|free_lru_page
 c_func
 (paren
 id|page

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 90 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 95 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -10,7 +10,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;nsxfobj&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **Params            - List of parameters to pass to&n; *                                    method, terminated by NULL.&n; *                                    Params itself may be NULL&n; *                                    if no parameters are being&n; *                                    passed.&n; *              *Return_object      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **External_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *Return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object
 id|acpi_evaluate_object
@@ -23,7 +23,7 @@ id|pathname
 comma
 id|acpi_object_list
 op_star
-id|param_objects
+id|external_params
 comma
 id|acpi_buffer
 op_star
@@ -36,13 +36,13 @@ suffix:semicolon
 id|acpi_operand_object
 op_star
 op_star
-id|param_ptr
+id|internal_params
 op_assign
 l_int|NULL
 suffix:semicolon
 id|acpi_operand_object
 op_star
-id|return_obj
+id|internal_return_obj
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -60,43 +60,22 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_evaluate_object&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If there are parameters to be passed to the object&n;&t; * (which must be a control method), the external objects&n;&t; * must be converted to internal objects&n;&t; */
 r_if
 c_cond
 (paren
-id|param_objects
+id|external_params
 op_logical_and
-id|param_objects-&gt;count
+id|external_params-&gt;count
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Allocate a new parameter block for the internal objects&n;&t;&t; * Add 1 to count to allow for null terminated internal list&n;&t;&t; */
-id|param_ptr
+id|internal_params
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|param_objects-&gt;count
+id|external_params-&gt;count
 op_plus
 l_int|1
 )paren
@@ -112,7 +91,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|param_ptr
+id|internal_params
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -131,7 +110,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|param_objects-&gt;count
+id|external_params-&gt;count
 suffix:semicolon
 id|i
 op_increment
@@ -142,13 +121,13 @@ op_assign
 id|acpi_ut_copy_eobject_to_iobject
 (paren
 op_amp
-id|param_objects-&gt;pointer
+id|external_params-&gt;pointer
 (braket
 id|i
 )braket
 comma
 op_amp
-id|param_ptr
+id|internal_params
 (braket
 id|i
 )braket
@@ -165,7 +144,7 @@ id|status
 (brace
 id|acpi_ut_delete_internal_object_list
 (paren
-id|param_ptr
+id|internal_params
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -175,9 +154,9 @@ id|status
 suffix:semicolon
 )brace
 )brace
-id|param_ptr
+id|internal_params
 (braket
-id|param_objects-&gt;count
+id|external_params-&gt;count
 )braket
 op_assign
 l_int|NULL
@@ -209,10 +188,10 @@ id|acpi_ns_evaluate_by_name
 (paren
 id|pathname
 comma
-id|param_ptr
+id|internal_params
 comma
 op_amp
-id|return_obj
+id|internal_return_obj
 )paren
 suffix:semicolon
 )brace
@@ -276,10 +255,10 @@ id|acpi_ns_evaluate_by_handle
 (paren
 id|handle
 comma
-id|param_ptr
+id|internal_params
 comma
 op_amp
-id|return_obj
+id|internal_return_obj
 )paren
 suffix:semicolon
 )brace
@@ -294,10 +273,10 @@ id|handle
 comma
 id|pathname
 comma
-id|param_ptr
+id|internal_params
 comma
 op_amp
-id|return_obj
+id|internal_return_obj
 )paren
 suffix:semicolon
 )brace
@@ -320,7 +299,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|return_obj
+id|internal_return_obj
 )paren
 (brace
 r_if
@@ -328,7 +307,7 @@ c_cond
 (paren
 id|VALID_DESCRIPTOR_TYPE
 (paren
-id|return_obj
+id|internal_return_obj
 comma
 id|ACPI_DESC_TYPE_NAMED
 )paren
@@ -339,7 +318,7 @@ id|status
 op_assign
 id|AE_TYPE
 suffix:semicolon
-id|return_obj
+id|internal_return_obj
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -359,7 +338,7 @@ id|status
 op_assign
 id|acpi_ut_get_object_size
 (paren
-id|return_obj
+id|internal_return_obj
 comma
 op_amp
 id|buffer_space_needed
@@ -413,7 +392,7 @@ id|status
 op_assign
 id|acpi_ut_copy_iobject_to_eobject
 (paren
-id|return_obj
+id|internal_return_obj
 comma
 id|return_buffer
 )paren
@@ -431,13 +410,13 @@ multiline_comment|/* Delete the return and parameter objects */
 r_if
 c_cond
 (paren
-id|return_obj
+id|internal_return_obj
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Delete the internal return object. (Or at least&n;&t;&t; * decrement the reference count by one)&n;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
-id|return_obj
+id|internal_return_obj
 )paren
 suffix:semicolon
 )brace
@@ -445,13 +424,13 @@ multiline_comment|/*&n;&t; * Free the input parameter list (if we created one),&
 r_if
 c_cond
 (paren
-id|param_ptr
+id|internal_params
 )paren
 (brace
 multiline_comment|/* Free the allocated parameter block */
 id|acpi_ut_delete_internal_object_list
 (paren
-id|param_ptr
+id|internal_params
 )paren
 suffix:semicolon
 )brace
@@ -501,27 +480,6 @@ id|child_node
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -553,7 +511,7 @@ id|child
 multiline_comment|/* Start search at the beginning of the specified scope */
 id|parent_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|parent
 )paren
@@ -580,7 +538,7 @@ r_else
 multiline_comment|/* Convert and validate the handle */
 id|child_node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|child
 )paren
@@ -604,7 +562,7 @@ suffix:semicolon
 multiline_comment|/* Internal function does the real work */
 id|node
 op_assign
-id|acpi_ns_get_next_object
+id|acpi_ns_get_next_node
 (paren
 (paren
 id|acpi_object_type8
@@ -676,30 +634,6 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|acpi_status
-id|status
-suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter Validation */
 r_if
 c_cond
@@ -742,7 +676,7 @@ suffix:semicolon
 multiline_comment|/* Convert and validate the handle */
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren
@@ -803,27 +737,6 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -860,7 +773,7 @@ suffix:semicolon
 multiline_comment|/* Convert and validate the handle */
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|handle
 )paren
@@ -935,7 +848,7 @@ comma
 id|u32
 id|max_depth
 comma
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 comma
 r_void
@@ -956,27 +869,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_walk_namespace&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -1075,10 +967,10 @@ suffix:semicolon
 id|u32
 id|flags
 suffix:semicolon
-id|ACPI_DEVICE_ID
+id|acpi_device_id
 id|device_id
 suffix:semicolon
-id|ACPI_GET_DEVICES_INFO
+id|acpi_get_devices_info
 op_star
 id|info
 suffix:semicolon
@@ -1093,7 +985,7 @@ id|ACPI_MTX_NAMESPACE
 suffix:semicolon
 id|node
 op_assign
-id|acpi_ns_convert_handle_to_entry
+id|acpi_ns_map_handle_to_node
 (paren
 id|obj_handle
 )paren
@@ -1260,7 +1152,7 @@ id|NATIVE_CHAR
 op_star
 id|HID
 comma
-id|ACPI_WALK_CALLBACK
+id|acpi_walk_callback
 id|user_function
 comma
 r_void
@@ -1276,7 +1168,7 @@ id|return_value
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_GET_DEVICES_INFO
+id|acpi_get_devices_info
 id|info
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -1284,27 +1176,6 @@ id|FUNCTION_TRACE
 l_string|&quot;Acpi_get_devices&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that ACPI has been initialized */
-id|ACPI_IS_INITIALIZATION_COMPLETE
-(paren
-id|status
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond

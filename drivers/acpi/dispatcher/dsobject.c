@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 75 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -39,12 +39,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 op_star
 id|info
 op_assign
 (paren
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 op_star
 )paren
 id|context
@@ -171,7 +171,6 @@ id|acpi_ds_parse_method
 id|obj_handle
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: [Errors] what do we do with an error? */
 r_if
 c_cond
 (paren
@@ -186,10 +185,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Method %p [%4.4s] parse failed! %s&bslash;n&quot;
+l_string|&quot;Method %p [%4.4s] - parse failure, %s&bslash;n&quot;
 comma
 id|obj_handle
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 (paren
 (paren
@@ -208,6 +211,7 @@ id|status
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* This parse failed, but we will continue parsing more methods */
 r_break
 suffix:semicolon
 )brace
@@ -248,7 +252,7 @@ id|start_node
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_INIT_WALK_INFO
+id|acpi_init_walk_info
 id|info
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -437,12 +441,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_GET_OP_TYPE
-(paren
 id|op_info
-)paren
-op_ne
-id|ACPI_OP_TYPE_OPCODE
+op_member_access_from_pointer
+r_class
+op_eq
+id|AML_CLASS_UNKNOWN
 )paren
 (brace
 multiline_comment|/* Unknown opcode */
@@ -644,7 +647,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Expecting bytelist, got: %x&bslash;n&quot;
+l_string|&quot;Expecting bytelist, got: %p&bslash;n&quot;
 comma
 id|byte_list
 )paren
@@ -731,14 +734,11 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|ACPI_GET_OP_CLASS
-(paren
-id|op_info
-)paren
+id|op_info-&gt;type
 )paren
 (brace
 r_case
-id|OPTYPE_LOCAL_VARIABLE
+id|AML_TYPE_LOCAL_VARIABLE
 suffix:colon
 multiline_comment|/* Split the opcode into a base opcode + offset */
 id|obj_desc-&gt;reference.opcode
@@ -754,7 +754,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_METHOD_ARGUMENT
+id|AML_TYPE_METHOD_ARGUMENT
 suffix:colon
 multiline_comment|/* Split the opcode into a base opcode + offset */
 id|obj_desc-&gt;reference.opcode
@@ -1367,6 +1367,19 @@ comma
 id|op
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Because of the execution pass through the non-control-method&n;&t; * parts of the table, we can arrive here twice.  Only init&n;&t; * the named object node the first time through&n;&t; */
+r_if
+c_cond
+(paren
+id|node-&gt;object
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1429,26 +1442,7 @@ id|u8
 id|node-&gt;type
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-id|cleanup
-suffix:colon
+multiline_comment|/* Remove local reference to the object */
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc

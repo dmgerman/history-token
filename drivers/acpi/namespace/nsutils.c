@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -153,7 +153,7 @@ id|acpi_status
 DECL|function|acpi_ns_get_internal_name_length
 id|acpi_ns_get_internal_name_length
 (paren
-id|ACPI_NAMESTRING_INFO
+id|acpi_namestring_info
 op_star
 id|info
 )paren
@@ -299,7 +299,7 @@ id|acpi_status
 DECL|function|acpi_ns_build_internal_name
 id|acpi_ns_build_internal_name
 (paren
-id|ACPI_NAMESTRING_INFO
+id|acpi_namestring_info
 op_star
 id|info
 )paren
@@ -717,7 +717,7 @@ id|NATIVE_CHAR
 op_star
 id|internal_name
 suffix:semicolon
-id|ACPI_NAMESTRING_INFO
+id|acpi_namestring_info
 id|info
 suffix:semicolon
 id|acpi_status
@@ -1291,11 +1291,11 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_convert_handle_to_entry&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to an Node&n; *&n; * RETURN:      A Name table entry pointer&n; *&n; * DESCRIPTION: Convert a namespace handle to a real Node&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_map_handle_to_node&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to an Node&n; *&n; * RETURN:      A Name table entry pointer&n; *&n; * DESCRIPTION: Convert a namespace handle to a real Node&n; *&n; ******************************************************************************/
 id|acpi_namespace_node
 op_star
-DECL|function|acpi_ns_convert_handle_to_entry
-id|acpi_ns_convert_handle_to_entry
+DECL|function|acpi_ns_map_handle_to_node
+id|acpi_ns_map_handle_to_node
 (paren
 id|acpi_handle
 id|handle
@@ -1741,11 +1741,19 @@ l_string|&quot;Parent of %p [%4.4s] is %p [%4.4s]&bslash;n&quot;
 comma
 id|child_node
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|child_node-&gt;name
 comma
 id|parent_node
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|parent_node-&gt;name
 )paren
@@ -1773,6 +1781,10 @@ l_string|&quot;unable to find parent of %p (%4.4s)&bslash;n&quot;
 comma
 id|child_node
 comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|child_node-&gt;name
 )paren
@@ -1879,11 +1891,11 @@ id|node-&gt;peer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_next_valid_object&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid object in the table.  NULL if no more valid&n; *              objects&n; *&n; * DESCRIPTION: Find the next valid object within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_next_valid_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid Node in the linked node list.  NULL if no more valid&n; *              nodess&n; *&n; * DESCRIPTION: Find the next valid node within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
 id|acpi_namespace_node
 op_star
-DECL|function|acpi_ns_get_next_valid_object
-id|acpi_ns_get_next_valid_object
+DECL|function|acpi_ns_get_next_valid_node
+id|acpi_ns_get_next_valid_node
 (paren
 id|acpi_namespace_node
 op_star

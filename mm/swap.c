@@ -197,17 +197,20 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|PageLocked
+id|PageActive
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|PageInactive
 c_func
 (paren
 id|page
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 id|spin_lock
 c_func
 (paren
@@ -228,6 +231,7 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * __lru_cache_del: remove a page from the page lists&n; * @page: the page to add&n; *&n; * This function is for when the caller already holds&n; * the pagemap_lru_lock.&n; */
 DECL|function|__lru_cache_del
@@ -277,12 +281,9 @@ id|page
 suffix:semicolon
 )brace
 r_else
-id|printk
-c_func
-(paren
-l_string|&quot;VM: __lru_cache_del, found unknown page ?!&bslash;n&quot;
-)paren
-suffix:semicolon
+(brace
+singleline_comment|//&t;&t;printk(&quot;VM: __lru_cache_del, found unknown page ?!&bslash;n&quot;);
+)brace
 id|DEBUG_LRU_PAGE
 c_func
 (paren
@@ -302,21 +303,6 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageLocked
-c_func
-(paren
-id|page
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
