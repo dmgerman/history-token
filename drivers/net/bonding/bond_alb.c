@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -4765,6 +4766,12 @@ op_logical_or
 id|skb-&gt;nh.iph-&gt;daddr
 op_eq
 id|ip_bcast
+)paren
+op_logical_or
+(paren
+id|skb-&gt;nh.iph-&gt;protocol
+op_eq
+id|IPPROTO_IGMP
 )paren
 )paren
 (brace
