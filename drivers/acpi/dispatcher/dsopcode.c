@@ -56,7 +56,7 @@ id|arg
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;acpi_ds_execute_arguments&quot;
+l_string|&quot;ds_execute_arguments&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate a new parser op to be the root of the parsed tree&n;&t; */
@@ -90,7 +90,7 @@ id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
 (paren
-id|TABLE_ID_DSDT
+l_int|0
 comma
 l_int|NULL
 comma
@@ -233,7 +233,7 @@ id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
 (paren
-id|TABLE_ID_DSDT
+l_int|0
 comma
 l_int|NULL
 comma
