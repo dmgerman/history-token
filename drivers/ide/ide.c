@@ -3919,7 +3919,7 @@ r_return
 id|setting
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;auto_remove_settings&t;-&t;remove driver specific settings&n; *&t;@drive: drive&n; *&n; *&t;Automatically remove all the driver specific settings for this&n; *&t;drive. This function may sleep and must not be called from IRQ&n; *&t;context. Takes the settings_lock&n; */
+multiline_comment|/**&n; *&t;auto_remove_settings&t;-&t;remove driver specific settings&n; *&t;@drive: drive&n; *&n; *&t;Automatically remove all the driver specific settings for this&n; *&t;drive. This function may sleep and must not be called from IRQ&n; *&t;context. The caller must hold ide_setting_sem.&n; */
 DECL|function|auto_remove_settings
 r_static
 r_void
@@ -3933,13 +3933,6 @@ id|drive
 id|ide_settings_t
 op_star
 id|setting
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|ide_setting_sem
-)paren
 suffix:semicolon
 id|repeat
 suffix:colon
@@ -3976,13 +3969,6 @@ op_assign
 id|setting-&gt;next
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|ide_setting_sem
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ide_read_setting&t;-&t;read an IDE setting&n; *&t;@drive: drive to read from&n; *&t;@setting: drive setting&n; *&n; *&t;Read a drive setting and return the value. The caller&n; *&t;must hold the ide_setting_sem when making this call.&n; *&n; *&t;BUGS: the data return and error are the same return value&n; *&t;so an error -EINVAL and true return of the same value cannot&n; *&t;be told apart&n; */
 DECL|function|ide_read_setting
@@ -9864,6 +9850,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ide_setting_sem
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -9899,6 +9892,13 @@ op_amp
 id|ide_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
 )paren
 suffix:semicolon
 r_return
@@ -9961,6 +9961,13 @@ op_amp
 id|ide_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ide_setting_sem
 )paren
 suffix:semicolon
 id|spin_lock
