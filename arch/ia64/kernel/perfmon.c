@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file implements the perfmon subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * Originaly Written by Ganesh Venkitachalam, IBM Corp.&n; * Copyright (C) 1999 Ganesh Venkitachalam &lt;venkitac@us.ibm.com&gt;&n; *&n; * Modifications by Stephane Eranian, Hewlett-Packard Co.&n; * Modifications by David Mosberger-Tang, Hewlett-Packard Co.&n; *&n; * Copyright (C) 1999-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file implements the perfmon subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * Originally Written by Ganesh Venkitachalam, IBM Corp.&n; * Copyright (C) 1999 Ganesh Venkitachalam &lt;venkitac@us.ibm.com&gt;&n; *&n; * Modifications by Stephane Eranian, Hewlett-Packard Co.&n; * Modifications by David Mosberger-Tang, Hewlett-Packard Co.&n; *&n; * Copyright (C) 1999-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1785,7 +1785,7 @@ id|psb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called from pfm_destroy_context() and also from pfm_inherit()&n; * to explicitely remove the sampling buffer mapping from the user level address space.&n; */
+multiline_comment|/*&n; * This function is called from pfm_destroy_context() and also from pfm_inherit()&n; * to explicitly remove the sampling buffer mapping from the user level address space.&n; */
 r_static
 r_int
 DECL|function|pfm_remove_smpl_mapping
@@ -5946,7 +5946,7 @@ id|cnum
 r_goto
 id|abort_mission
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we can only read the register that we use. That includes&n;&t;&t; * the one we explicitely initialize AND the one we want included&n;&t;&t; * in the sampling buffer (smpl_regs).&n;&t;&t; *&n;&t;&t; * Having this restriction allows optimization in the ctxsw routine&n;&t;&t; * without compromising security (leaks)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * we can only read the register that we use. That includes&n;&t;&t; * the one we explicitly initialize AND the one we want included&n;&t;&t; * in the sampling buffer (smpl_regs).&n;&t;&t; *&n;&t;&t; * Having this restriction allows optimization in the ctxsw routine&n;&t;&t; * without compromising security (leaks)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6558,7 +6558,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* restart on another task */
-multiline_comment|/*&n;&t; * if blocking, then post the semaphore.&n;&t; * if non-blocking, then we ensure that the task will go into&n;&t; * pfm_overflow_must_block() before returning to user mode. &n;&t; * We cannot explicitely reset another task, it MUST always&n;&t; * be done by the task itself. This works for system wide because&n;&t; * the tool that is controlling the session is doing &quot;self-monitoring&quot;.&n;&t; *&n;&t; * XXX: what if the task never goes back to user?&n;&t; *&n;&t; */
+multiline_comment|/*&n;&t; * if blocking, then post the semaphore.&n;&t; * if non-blocking, then we ensure that the task will go into&n;&t; * pfm_overflow_must_block() before returning to user mode. &n;&t; * We cannot explicitly reset another task, it MUST always&n;&t; * be done by the task itself. This works for system wide because&n;&t; * the tool that is controlling the session is doing &quot;self-monitoring&quot;.&n;&t; *&n;&t; * XXX: what if the task never goes back to user?&n;&t; *&n;&t; */
 r_if
 c_cond
 (paren
@@ -10264,7 +10264,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * main overflow processing routine.&n; * it can be called from the interrupt path or explicitely during the context switch code&n; * Arguments:&n; *&t;mode: 0=coming from PMU interrupt, 1=coming from ctxsw &n; *&t;&n; * Return:&n; *&t;new value of pmc[0]. if 0x0 then unfreeze, else keep frozen&n; */
+multiline_comment|/*&n; * main overflow processing routine.&n; * it can be called from the interrupt path or explicitly during the context switch code&n; * Arguments:&n; *&t;mode: 0=coming from PMU interrupt, 1=coming from ctxsw &n; *&t;&n; * Return:&n; *&t;new value of pmc[0]. if 0x0 then unfreeze, else keep frozen&n; */
 r_static
 r_int
 r_int
@@ -13097,7 +13097,7 @@ id|task-&gt;pid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * if there was a virtual mapping for the sampling buffer&n;&t; * the mapping is NOT inherited across fork() (see VM_DONTCOPY), &n;&t; * so we don&squot;t have to explicitely remove it here. &n;&t; *&n;&t; *&n;&t; * Part of the clearing of fields is also done in&n;&t; * copy_thread() because the fiels are outside the&n;&t; * pfm_context structure and can affect tasks not&n;&t; * using perfmon.&n;&t; */
+multiline_comment|/*&n;&t; * if there was a virtual mapping for the sampling buffer&n;&t; * the mapping is NOT inherited across fork() (see VM_DONTCOPY), &n;&t; * so we don&squot;t have to explicitly remove it here. &n;&t; *&n;&t; *&n;&t; * Part of the clearing of fields is also done in&n;&t; * copy_thread() because the fiels are outside the&n;&t; * pfm_context structure and can affect tasks not&n;&t; * using perfmon.&n;&t; */
 multiline_comment|/* clear pending notification */
 id|task-&gt;thread.pfm_ovfl_block_reset
 op_assign
