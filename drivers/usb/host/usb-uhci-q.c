@@ -1,4 +1,4 @@
-multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, UHCI transfer processing&n;    &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at&n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-q.c,v 1.1 2002/05/14 20:36:57 acher Exp $&n;*/
+multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, UHCI transfer processing&n;    &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at&n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-q.c,v 1.3 2002/05/25 16:42:41 acher Exp $&n;*/
 multiline_comment|/*-------------------------------------------------------------------*/
 DECL|function|finish_urb
 r_static
@@ -239,7 +239,7 @@ suffix:semicolon
 r_int
 id|depth_first
 op_assign
-id|USE_CTRL_DEPTH_FIRST
+id|ctrl_depth
 suffix:semicolon
 singleline_comment|// UHCI descriptor chasing method
 r_int
@@ -819,7 +819,7 @@ suffix:semicolon
 r_int
 id|depth_first
 op_assign
-id|USE_BULK_DEPTH_FIRST
+id|bulk_depth
 suffix:semicolon
 singleline_comment|// UHCI descriptor chasing method
 r_if
@@ -1460,8 +1460,6 @@ id|urb-&gt;hcpriv
 suffix:semicolon
 r_int
 id|nint
-comma
-id|n
 suffix:semicolon
 id|uhci_desc_t
 op_star
@@ -1494,54 +1492,31 @@ l_int|0
 suffix:semicolon
 r_else
 (brace
-singleline_comment|// round interval down to 2^n
-r_for
-c_loop
+singleline_comment|// log2-function (urb-&gt;interval already 2^n)
+id|nint
+op_assign
+id|ffs
+c_func
 (paren
-id|nint
-op_assign
-l_int|0
-comma
-id|n
-op_assign
-l_int|1
-suffix:semicolon
-id|nint
-op_le
-l_int|8
-suffix:semicolon
-id|nint
-op_increment
-comma
-id|n
-op_add_assign
-id|n
+id|urb-&gt;interval
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;interval
-OL
-id|n
-)paren
-(brace
-id|urb-&gt;interval
-op_assign
-id|n
-op_div
-l_int|2
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|nint
-op_decrement
+OG
+l_int|7
+)paren
+id|nint
+op_assign
+l_int|7
 suffix:semicolon
 )brace
 id|dbg
 c_func
 (paren
-l_string|&quot;Rounded interval to %i, chain  %i&quot;
+l_string|&quot;INT-interval %i, chain  %i&quot;
 comma
 id|urb-&gt;interval
 comma
@@ -1860,6 +1835,8 @@ op_assign
 id|last_urb-&gt;start_frame
 op_plus
 id|last_urb-&gt;number_of_packets
+op_star
+id|last_urb-&gt;interval
 )paren
 op_amp
 l_int|1023
@@ -1915,6 +1892,8 @@ op_assign
 l_int|0
 comma
 id|queued_size
+comma
+id|number_of_frames
 suffix:semicolon
 r_int
 id|limits
@@ -1928,13 +1907,21 @@ id|uhci
 op_amp
 l_int|1023
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|number_of_frames
+op_assign
 (paren
 r_int
 )paren
+(paren
 id|urb-&gt;number_of_packets
+op_star
+id|urb-&gt;interval
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|number_of_frames
 OG
 l_int|900
 )paren
@@ -2017,7 +2004,7 @@ op_le
 (paren
 r_int
 )paren
-id|urb-&gt;number_of_packets
+id|number_of_frames
 )paren
 (brace
 id|info
@@ -2029,13 +2016,15 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;iso_find_start: now %u start_frame %u number_of_packets %u pipe 0x%08x&quot;
+l_string|&quot;iso_find_start: now %u start_frame %u number_of_packets %u interval %u pipe 0x%08x&quot;
 comma
 id|now
 comma
 id|urb-&gt;start_frame
 comma
 id|urb-&gt;number_of_packets
+comma
+id|urb-&gt;interval
 comma
 id|urb-&gt;pipe
 )paren
@@ -2073,10 +2062,7 @@ op_amp
 l_int|1023
 )paren
 OL
-(paren
-r_int
-)paren
-id|urb-&gt;number_of_packets
+id|number_of_frames
 )paren
 (brace
 id|dbg
@@ -2119,7 +2105,7 @@ op_logical_or
 (paren
 id|urb-&gt;start_frame
 op_plus
-id|urb-&gt;number_of_packets
+id|number_of_frames
 op_minus
 l_int|1
 op_minus
@@ -2507,6 +2493,8 @@ id|uhci-&gt;iso_td
 id|urb-&gt;start_frame
 op_plus
 id|n
+op_star
+id|urb-&gt;interval
 )paren
 op_amp
 l_int|1023
@@ -3633,6 +3621,11 @@ id|urb-&gt;pipe
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
+id|urb_priv-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// mark as deleted (if called from completion)
 id|uhci_do_toggle
 (paren
 id|urb
@@ -4118,11 +4111,12 @@ id|UNLINK_ASYNC_STORE_URB
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_USB_UHCI_HIGH_BANDWIDTH
 r_else
 r_if
 c_cond
 (paren
+id|high_bw
+op_logical_and
 (paren
 (paren
 id|type
@@ -4159,7 +4153,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|uhci-&gt;timeout_check
 op_assign
@@ -5030,7 +5023,11 @@ id|urb-&gt;status
 op_assign
 id|status
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_UHCI_HIGH_BANDWIDTH&t;
+r_if
+c_cond
+(paren
+id|high_bw
+)paren
 id|disable_desc_loop
 c_func
 (paren
@@ -5039,7 +5036,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-macro_line|#endif&t;
 id|dbg
 c_func
 (paren
@@ -5258,6 +5254,19 @@ id|actual_length
 suffix:semicolon
 id|recycle
 suffix:colon
+(paren
+(paren
+id|urb_priv_t
+op_star
+)paren
+id|urb-&gt;hcpriv
+)paren
+op_member_access_from_pointer
+id|flags
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// set to detect unlink during completion
 id|uhci_urb_dma_sync
 c_func
 (paren
@@ -5279,19 +5288,6 @@ id|urb-&gt;status
 op_assign
 id|status
 suffix:semicolon
-(paren
-(paren
-id|urb_priv_t
-op_star
-)paren
-id|urb-&gt;hcpriv
-)paren
-op_member_access_from_pointer
-id|flags
-op_assign
-l_int|1
-suffix:semicolon
-singleline_comment|// if unlink_urb is called during completion
 id|spin_unlock
 c_func
 (paren
@@ -5316,19 +5312,6 @@ op_amp
 id|uhci-&gt;urb_list_lock
 )paren
 suffix:semicolon
-(paren
-(paren
-id|urb_priv_t
-op_star
-)paren
-id|urb-&gt;hcpriv
-)paren
-op_member_access_from_pointer
-id|flags
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// FIXME: unlink in completion not handled...
 )brace
 r_if
 c_cond
@@ -5352,6 +5335,16 @@ op_ne
 op_minus
 id|ENOENT
 )paren
+op_logical_and
+(paren
+(paren
+id|urb_priv_t
+op_star
+)paren
+id|urb-&gt;hcpriv
+)paren
+op_member_access_from_pointer
+id|flags
 )paren
 (brace
 id|urb-&gt;status
@@ -5925,7 +5918,6 @@ id|list_del
 id|p_tmp
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;delete_desc (uhci, desc);
 singleline_comment|// add to cool down pool
 id|INIT_LIST_HEAD
 c_func
@@ -6110,6 +6102,10 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|EINPROGRESS
+op_logical_and
+id|type
+op_ne
+id|PIPE_INTERRUPT
 )paren
 (brace
 id|dequeue_urb
@@ -6129,15 +6125,6 @@ comma
 id|urb-&gt;hcpriv
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|type
-op_ne
-id|PIPE_INTERRUPT
-)paren
-(brace
-singleline_comment|// process_interrupt does completion on its own&t;&t;
 id|spin_unlock
 c_func
 (paren
@@ -6173,7 +6160,6 @@ op_amp
 id|uhci-&gt;urb_list_lock
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|ret
