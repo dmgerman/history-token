@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
 macro_line|#include &quot;inode.h&quot;
