@@ -2129,10 +2129,10 @@ r_return
 id|ra
 suffix:semicolon
 )brace
+macro_line|#if 0 /* don&squot;t poke into fs code directly */
 multiline_comment|/*&n; * Grab and keep cached pages assosiated with a file in the svc_rqst&n; * so that they can be passed to the netowork sendmsg/sendpage routines&n; * directrly. They will be released after the sending has completed.&n; */
 r_static
 r_int
-DECL|function|nfsd_read_actor
 id|nfsd_read_actor
 c_func
 (paren
@@ -2271,7 +2271,6 @@ suffix:semicolon
 r_static
 r_inline
 id|ssize_t
-DECL|function|nfsd_getpages
 id|nfsd_getpages
 c_func
 (paren
@@ -2363,6 +2362,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Read data from a file. count must contain the requested read count&n; * on entry. On return, *count contains the number of bytes actually read.&n; * N.B. After this call fhp needs an fh_put&n; */
 r_int
 DECL|function|nfsd_read
@@ -2497,6 +2497,7 @@ id|file.f_ra
 op_assign
 id|ra-&gt;p_ra
 suffix:semicolon
+macro_line|#if 0 /* don&squot;t poke into fs code directly */
 r_if
 c_cond
 (paren
@@ -2523,6 +2524,7 @@ id|count
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 id|oldfs
 op_assign
@@ -2548,9 +2550,6 @@ comma
 id|vec
 comma
 id|vlen
-comma
-op_star
-id|count
 comma
 op_amp
 id|offset
@@ -2841,8 +2840,6 @@ comma
 id|vec
 comma
 id|vlen
-comma
-id|cnt
 comma
 op_amp
 id|offset
