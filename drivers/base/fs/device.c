@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * drivers/base/fs.c - driver model interface to driverfs &n; *&n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
