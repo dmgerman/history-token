@@ -940,7 +940,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|rtl8169_interrupt
 c_func
 (paren
@@ -4150,7 +4150,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up after the Tx thread. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|rtl8169_interrupt
 id|rtl8169_interrupt
 c_func
@@ -4203,6 +4203,11 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_do
 (brace
 id|status
@@ -4222,6 +4227,10 @@ op_eq
 l_int|0xFFFF
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;if (status &amp; RxUnderrun)&n;&t;&t;&t;link_changed = RTL_R16 (CSCR) &amp; CSCR_LinkChangeBit;&n;*/
 id|RTL_W16
@@ -4381,6 +4390,13 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 r_static
 r_int

@@ -390,7 +390,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -6380,7 +6380,7 @@ suffix:semicolon
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
 DECL|function|net_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -6413,6 +6413,11 @@ r_int
 id|ioaddr
 comma
 id|status
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -6460,6 +6465,10 @@ id|dev-&gt;name
 comma
 id|status
 )paren
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -6797,6 +6806,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
