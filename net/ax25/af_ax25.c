@@ -8406,6 +8406,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|PF_AX25
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_AX25
+)paren
+suffix:semicolon
 DECL|function|ax25_exit
 r_static
 r_void

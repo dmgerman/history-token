@@ -3558,4 +3558,11 @@ id|inet6_exit
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
+DECL|variable|PF_INET6
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_INET6
+)paren
+suffix:semicolon
 eof

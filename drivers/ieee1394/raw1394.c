@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -642,6 +643,12 @@ op_logical_or
 id|req-&gt;req.type
 op_eq
 id|RAW1394_REQ_ASYNC_WRITE
+)paren
+op_logical_or
+(paren
+id|req-&gt;req.type
+op_eq
+id|RAW1394_REQ_ASYNC_STREAM
 )paren
 op_logical_or
 (paren
@@ -2993,6 +3000,81 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|RAW1394_REQ_ASYNC_STREAM
+suffix:colon
+id|DBGMSG
+c_func
+(paren
+l_string|&quot;stream_request called&quot;
+)paren
+suffix:semicolon
+id|packet
+op_assign
+id|hpsb_make_streampacket
+c_func
+(paren
+id|fi-&gt;host
+comma
+l_int|NULL
+comma
+id|req-&gt;req.length
+comma
+id|node
+op_amp
+l_int|0x3f
+multiline_comment|/*channel*/
+comma
+(paren
+id|req-&gt;req.misc
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x3
+comma
+id|req-&gt;req.misc
+op_amp
+l_int|0xf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|packet
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|packet-&gt;data
+comma
+id|int2ptr
+c_func
+(paren
+id|req-&gt;req.sendb
+)paren
+comma
+id|req-&gt;req.length
+)paren
+)paren
+id|req-&gt;req.error
+op_assign
+id|RAW1394_ERROR_MEMFAULT
+suffix:semicolon
+id|req-&gt;req.length
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|RAW1394_REQ_LOCK
 suffix:colon
 id|DBGMSG
@@ -3979,7 +4061,7 @@ id|DBGMSG
 c_func
 (paren
 l_string|&quot;arm_read  called by node: %X&quot;
-l_string|&quot;addr: %4.4x %8.8x length: %u&quot;
+l_string|&quot;addr: %4.4x %8.8x length: %Zu&quot;
 comma
 id|nodeid
 comma
@@ -4840,7 +4922,7 @@ id|DBGMSG
 c_func
 (paren
 l_string|&quot;arm_write called by node: %X&quot;
-l_string|&quot;addr: %4.4x %8.8x length: %u&quot;
+l_string|&quot;addr: %4.4x %8.8x length: %Zu&quot;
 comma
 id|nodeid
 comma
@@ -8347,10 +8429,7 @@ id|req-&gt;req.address
 op_amp
 op_complement
 (paren
-(paren
-id|u64
-)paren
-l_int|0xFFFFFFFFFFFFLL
+l_int|0xFFFFFFFFFFFFULL
 )paren
 )paren
 op_ne
@@ -8367,10 +8446,7 @@ id|req-&gt;req.length
 op_amp
 op_complement
 (paren
-(paren
-id|u64
-)paren
-l_int|0xFFFFFFFFFFFFLL
+l_int|0xFFFFFFFFFFFFULL
 )paren
 )paren
 op_ne
@@ -8434,12 +8510,10 @@ op_assign
 id|u8
 op_star
 )paren
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|req-&gt;req.length
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -8516,7 +8590,7 @@ id|req-&gt;req.length
 )paren
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -8753,7 +8827,7 @@ id|same_host
 )paren
 (brace
 multiline_comment|/* addressrange occupied by same host */
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -8955,7 +9029,7 @@ l_string|&quot;raw1394: arm_register failed &quot;
 l_string|&quot; address-range-entry is invalid -&gt; EFAULT !!!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -9064,7 +9138,7 @@ comma
 id|retval
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -9454,7 +9528,7 @@ op_amp
 id|addr-&gt;addr_list
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -9553,7 +9627,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer
@@ -12851,7 +12925,7 @@ op_amp
 id|addr-&gt;addr_list
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|addr-&gt;addr_space_buffer

@@ -8,8 +8,8 @@ id|version
 op_assign
 l_string|&quot;sunhme.c:v2.02 24/Aug/2003 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -11640,6 +11640,7 @@ id|pdev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SBUS
 r_else
 (brace
 r_struct
@@ -11660,6 +11661,7 @@ id|sdev-&gt;slot
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|hme_get_link
 r_static

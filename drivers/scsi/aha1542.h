@@ -337,9 +337,5 @@ DECL|macro|AHA1542_SCATTER
 mdefine_line|#define AHA1542_SCATTER 16
 DECL|macro|AHA1542_CMDLUN
 mdefine_line|#define AHA1542_CMDLUN 1
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 macro_line|#endif
 eof

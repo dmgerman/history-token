@@ -93,9 +93,5 @@ r_int
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL (0)
-macro_line|#endif
 macro_line|#endif /* _QLOGICISP_H */
 eof

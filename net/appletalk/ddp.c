@@ -7668,4 +7668,11 @@ c_func
 l_string|&quot;AppleTalk 0.20 for Linux NET4.0&bslash;n&quot;
 )paren
 suffix:semicolon
+DECL|variable|PF_APPLETALK
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_APPLETALK
+)paren
+suffix:semicolon
 eof
