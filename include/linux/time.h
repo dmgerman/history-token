@@ -544,12 +544,12 @@ id|tv
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|do_settimeofday
 c_func
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
@@ -560,7 +560,7 @@ id|do_sys_settimeofday
 c_func
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 comma
@@ -579,6 +579,17 @@ r_void
 )paren
 suffix:semicolon
 singleline_comment|// call when ever the clock is set
+r_extern
+r_int
+id|do_posix_clock_monotonic_gettime
+c_func
+(paren
+r_struct
+id|timespec
+op_star
+id|tp
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|do_nanosleep
