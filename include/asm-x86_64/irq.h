@@ -91,5 +91,27 @@ macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|ARCH_HAS_NMI_WATCHDOG
 mdefine_line|#define ARCH_HAS_NMI_WATCHDOG&t;&t;/* See include/linux/nmi.h */
 macro_line|#endif
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IRQ_H */
 eof

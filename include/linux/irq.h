@@ -195,23 +195,6 @@ suffix:semicolon
 macro_line|#include &lt;asm/hw_irq.h&gt; /* the arch dependent stuff */
 r_extern
 r_int
-id|handle_IRQ_event
-c_func
-(paren
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|setup_irq
 c_func
 (paren

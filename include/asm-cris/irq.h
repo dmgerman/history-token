@@ -39,5 +39,27 @@ DECL|macro|disable_irq_nosync
 mdefine_line|#define disable_irq_nosync      disable_irq
 DECL|macro|enable_irq_nosync
 mdefine_line|#define enable_irq_nosync       enable_irq
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif  /* _ASM_IRQ_H */
 eof

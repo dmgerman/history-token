@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* include comes from machine specific directory */
 macro_line|#include &quot;irq_vectors.h&quot;
+macro_line|#include &lt;asm/thread_info.h&gt;
 DECL|function|irq_canonicalize
 r_static
 id|__inline__
@@ -86,5 +87,86 @@ macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|ARCH_HAS_NMI_WATCHDOG
 mdefine_line|#define ARCH_HAS_NMI_WATCHDOG&t;&t;/* See include/linux/nmi.h */
 macro_line|#endif
+macro_line|#ifdef CONFIG_4KSTACKS
+multiline_comment|/*&n; * per-CPU IRQ handling contexts (thread information and stack)&n; */
+DECL|union|irq_ctx
+r_union
+id|irq_ctx
+(brace
+DECL|member|tinfo
+r_struct
+id|thread_info
+id|tinfo
+suffix:semicolon
+DECL|member|stack
+id|u32
+id|stack
+(braket
+id|THREAD_SIZE
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_union
+id|irq_ctx
+op_star
+id|hardirq_ctx
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_union
+id|irq_ctx
+op_star
+id|softirq_ctx
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_void
+id|irq_ctx_init
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+DECL|macro|__ARCH_HAS_DO_SOFTIRQ
+mdefine_line|#define __ARCH_HAS_DO_SOFTIRQ
+macro_line|#else
+DECL|macro|irq_ctx_init
+mdefine_line|#define irq_ctx_init(cpu) do { ; } while (0)
+macro_line|#endif
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+id|asmlinkage
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IRQ_H */
 eof

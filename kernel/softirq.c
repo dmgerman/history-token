@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/kthread.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n;   - No shared variables, all the data are CPU local.&n;   - If a softirq needs serialization, let it serialize itself&n;     by its own spinlocks.&n;   - Even if softirq is serialized, only local cpu is marked for&n;     execution. Hence, we get something sort of weak cpu binding.&n;     Though it is still not clear, will it result in better locality&n;     or will not.&n;&n;   Examples:&n;   - NET RX softirq. It is multithreaded and does not require&n;     any global serialization.&n;   - NET TX softirq. It kicks software netdevice queues, hence&n;     it is logically serialized per device, but this serialization&n;     is invisible to common code.&n;   - Tasklets: serialized wrt itself.&n; */
 macro_line|#ifndef __ARCH_IRQ_STAT
 DECL|variable|____cacheline_aligned
@@ -89,42 +90,27 @@ suffix:semicolon
 multiline_comment|/*&n; * We restart softirq processing MAX_SOFTIRQ_RESTART times,&n; * and we fall back to softirqd after that.&n; *&n; * This number has been established via experimentation.&n; * The two things to balance is latency against fairness -&n; * we want to handle softirqs as soon as possible, but they&n; * should not be able to lock up the box.&n; */
 DECL|macro|MAX_SOFTIRQ_RESTART
 mdefine_line|#define MAX_SOFTIRQ_RESTART 10
-DECL|function|do_softirq
+DECL|function|__do_softirq
 id|asmlinkage
 r_void
-id|do_softirq
+id|__do_softirq
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|max_restart
-op_assign
-id|MAX_SOFTIRQ_RESTART
+r_struct
+id|softirq_action
+op_star
+id|h
 suffix:semicolon
 id|__u32
 id|pending
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-r_return
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
+id|max_restart
+op_assign
+id|MAX_SOFTIRQ_RESTART
 suffix:semicolon
 id|pending
 op_assign
@@ -132,17 +118,6 @@ id|local_softirq_pending
 c_func
 (paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pending
-)paren
-(brace
-r_struct
-id|softirq_action
-op_star
-id|h
 suffix:semicolon
 id|local_bh_disable
 c_func
@@ -238,6 +213,56 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef __ARCH_HAS_DO_SOFTIRQ
+DECL|function|do_softirq
+id|asmlinkage
+r_void
+id|do_softirq
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__u32
+id|pending
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|pending
+op_assign
+id|local_softirq_pending
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pending
+)paren
+id|__do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|local_irq_restore
 c_func
 (paren
@@ -252,6 +277,7 @@ c_func
 id|do_softirq
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|local_bh_enable
 r_void
 id|local_bh_enable

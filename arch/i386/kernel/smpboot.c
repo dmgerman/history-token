@@ -2780,6 +2780,12 @@ op_star
 )paren
 id|idle-&gt;thread.esp
 suffix:semicolon
+id|irq_ctx_init
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This grunge runs the startup process for&n;&t; * the targeted processor.&n;&t; */
 id|atomic_set
 c_func
