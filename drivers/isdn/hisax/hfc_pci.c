@@ -7695,8 +7695,6 @@ id|xmit_pull_req_b
 c_func
 (paren
 id|st
-comma
-id|skb
 )paren
 suffix:semicolon
 r_break
