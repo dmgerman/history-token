@@ -568,7 +568,7 @@ r_int
 (paren
 id|packet
 (braket
-l_int|2
+l_int|3
 )braket
 op_amp
 l_int|8
