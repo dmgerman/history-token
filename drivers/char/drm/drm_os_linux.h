@@ -24,6 +24,10 @@ DECL|macro|DRM_WRITEMEMORYBARRIER
 mdefine_line|#define DRM_WRITEMEMORYBARRIER()&t;wmb()
 DECL|macro|DRM_DEVICE
 mdefine_line|#define DRM_DEVICE&t;drm_file_t&t;*priv&t;= filp-&gt;private_data; &bslash;&n;&t;&t;&t;drm_device_t&t;*dev&t;= priv-&gt;dev
+DECL|macro|DRM_IRQ_ARGS
+mdefine_line|#define DRM_IRQ_ARGS&t;        int irq, void *arg, struct pt_regs *regs
+DECL|macro|DRM_TASKQUEUE_ARGS
+mdefine_line|#define DRM_TASKQUEUE_ARGS&t;void *arg
 multiline_comment|/* For data going from/to the kernel through the ioctl argument */
 DECL|macro|DRM_COPY_FROM_USER_IOCTL
 mdefine_line|#define DRM_COPY_FROM_USER_IOCTL(arg1, arg2, arg3)&t;&bslash;&n;&t;if ( copy_from_user(&amp;arg1, arg2, arg3) )&t;&bslash;&n;&t;&t;return -EFAULT

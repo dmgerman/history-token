@@ -1429,6 +1429,8 @@ id|dev-&gt;vmalist
 op_assign
 l_int|NULL
 suffix:semicolon
+id|dev-&gt;sigdata.lock
+op_assign
 id|dev-&gt;lock.hw_lock
 op_assign
 l_int|NULL
@@ -2268,6 +2270,8 @@ c_cond
 id|dev-&gt;lock.hw_lock
 )paren
 (brace
+id|dev-&gt;sigdata.lock
+op_assign
 id|dev-&gt;lock.hw_lock
 op_assign
 l_int|NULL
