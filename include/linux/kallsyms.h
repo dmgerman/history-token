@@ -29,6 +29,10 @@ r_char
 op_star
 op_star
 id|modname
+comma
+r_char
+op_star
+id|namebuf
 )paren
 suffix:semicolon
 multiline_comment|/* Replace &quot;%s&quot; in format with address, if found */
@@ -75,6 +79,10 @@ r_char
 op_star
 op_star
 id|modname
+comma
+r_char
+op_star
+id|namebuf
 )paren
 (brace
 r_return

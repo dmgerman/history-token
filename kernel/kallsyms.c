@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kallsyms.c: in-kernel printing of symbolic oopses and stack traces.&n; *&n; * Rewritten and vastly simplified by Rusty Russell for in-kernel&n; * module loader:&n; *   Copyright 2002 Rusty Russell &lt;rusty@rustcorp.com.au&gt; IBM Corporation&n; */
+multiline_comment|/*&n; * kallsyms.c: in-kernel printing of symbolic oopses and stack traces.&n; *&n; * Rewritten and vastly simplified by Rusty Russell for in-kernel&n; * module loader:&n; *   Copyright 2002 Rusty Russell &lt;rusty@rustcorp.com.au&gt; IBM Corporation&n; * Stem compression by Andi Kleen.&n; */
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|kallsyms_dummy
@@ -103,6 +103,10 @@ r_char
 op_star
 op_star
 id|modname
+comma
+r_char
+op_star
+id|namebuf
 )paren
 (brace
 r_int
@@ -130,6 +134,13 @@ id|BUG
 c_func
 (paren
 )paren
+suffix:semicolon
+id|namebuf
+(braket
+l_int|127
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -217,6 +228,26 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+op_increment
+id|name
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|namebuf
+op_plus
+id|name
+(braket
+op_minus
+l_int|1
+)braket
+comma
+id|name
+comma
+l_int|127
+)paren
+suffix:semicolon
 id|name
 op_add_assign
 id|strlen
@@ -227,6 +258,7 @@ id|name
 op_plus
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* Base symbol size on next symbol. */
 r_if
 c_cond
@@ -281,7 +313,7 @@ id|best
 )braket
 suffix:semicolon
 r_return
-id|name
+id|namebuf
 suffix:semicolon
 )brace
 r_return
@@ -329,6 +361,12 @@ id|offset
 comma
 id|size
 suffix:semicolon
+r_char
+id|namebuf
+(braket
+l_int|128
+)braket
+suffix:semicolon
 id|name
 op_assign
 id|kallsyms_lookup
@@ -344,6 +382,8 @@ id|offset
 comma
 op_amp
 id|modname
+comma
+id|namebuf
 )paren
 suffix:semicolon
 r_if
