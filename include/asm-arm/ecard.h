@@ -474,6 +474,10 @@ id|loader_t
 id|loader
 suffix:semicolon
 multiline_comment|/* loader program */
+DECL|member|dma_mask
+id|u64
+id|dma_mask
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|in_chunk_dir
