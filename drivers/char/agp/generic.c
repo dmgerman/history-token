@@ -2399,6 +2399,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|cap_ptr
+op_assign
+l_int|0
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
