@@ -793,6 +793,20 @@ id|split
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * We&squot;d prefer to avoid failure later on in do_munmap:&n;&t; * which may split one vma into three before unmapping.&n;&t; */
+r_if
+c_cond
+(paren
+id|mm-&gt;map_count
+op_ge
+id|sysctl_max_map_count
+op_minus
+l_int|3
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|new_pgoff
 op_assign
 id|vma-&gt;vm_pgoff
