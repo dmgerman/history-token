@@ -9963,18 +9963,6 @@ id|ap-&gt;last_ctl
 op_assign
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/* ata_engine init */
-id|ap-&gt;eng.flags
-op_assign
-l_int|0
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|ap-&gt;eng.q
-)paren
-suffix:semicolon
 id|INIT_WORK
 c_func
 (paren

@@ -320,13 +320,6 @@ l_int|5
 )paren
 comma
 multiline_comment|/* polling, no interrupts */
-multiline_comment|/* struct ata_engine atomic flags (use test_bit, etc.) */
-DECL|enumerator|ATA_EFLG_ACTIVE
-id|ATA_EFLG_ACTIVE
-op_assign
-l_int|0
-comma
-multiline_comment|/* engine is active */
 multiline_comment|/* various lengths of time */
 DECL|enumerator|ATA_TMOUT_EDD
 id|ATA_TMOUT_EDD
@@ -986,22 +979,6 @@ suffix:semicolon
 multiline_comment|/* opcode to use on write */
 )brace
 suffix:semicolon
-DECL|struct|ata_engine
-r_struct
-id|ata_engine
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|member|q
-r_struct
-id|list_head
-id|q
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|ata_port
 r_struct
 id|ata_port
@@ -1091,11 +1068,6 @@ r_int
 id|cbl
 suffix:semicolon
 multiline_comment|/* cable type; ATA_CBL_xxx */
-DECL|member|eng
-r_struct
-id|ata_engine
-id|eng
-suffix:semicolon
 DECL|member|device
 r_struct
 id|ata_device
