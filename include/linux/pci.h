@@ -1430,6 +1430,9 @@ mdefine_line|#define PCI_DEVICE(vend,dev) &bslash;&n;&t;.vendor = (vend), .devic
 multiline_comment|/**&n; * PCI_DEVICE_CLASS - macro used to describe a specific pci device class&n; * @dev_class: the class, subclass, prog-if triple for this device&n; * @dev_class_mask: the class mask for this device&n; *&n; * This macro is used to create a struct pci_device_id that matches a&n; * specific PCI class.  The vendor, device, subvendor, and subdevice &n; * fields will be set to PCI_ANY_ID.&n; */
 DECL|macro|PCI_DEVICE_CLASS
 mdefine_line|#define PCI_DEVICE_CLASS(dev_class,dev_class_mask) &bslash;&n;&t;.class = (dev_class), .class_mask = (dev_class_mask), &bslash;&n;&t;.vendor = PCI_ANY_ID, .device = PCI_ANY_ID, &bslash;&n;&t;.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
+multiline_comment|/* &n; * pci_module_init is obsolete, this stays here till we fix up all usages of it&n; * in the tree.&n; */
+DECL|macro|pci_module_init
+mdefine_line|#define pci_module_init&t;pci_register_driver
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -3122,24 +3125,6 @@ id|dev
 )paren
 (brace
 )brace
-DECL|function|pci_module_init
-r_static
-r_inline
-r_int
-id|pci_module_init
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|drv
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 DECL|function|pci_set_dma_mask
 r_static
 r_inline
@@ -3380,39 +3365,6 @@ suffix:semicolon
 DECL|macro|isa_bridge
 mdefine_line|#define&t;isa_bridge&t;((struct pci_dev *)NULL)
 macro_line|#else
-multiline_comment|/*&n; * a helper function which helps ensure correct pci_driver&n; * setup and cleanup for commonly-encountered hotplug/modular cases&n; *&n; * This MUST stay in a header, as it checks for -DMODULE&n; */
-DECL|function|pci_module_init
-r_static
-r_inline
-r_int
-id|pci_module_init
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|drv
-)paren
-(brace
-r_int
-id|rc
-op_assign
-id|pci_register_driver
-(paren
-id|drv
-)paren
-suffix:semicolon
-r_return
-id|rc
-OL
-l_int|0
-ques
-c_cond
-id|rc
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */
 macro_line|#ifndef CONFIG_PCI_DOMAINS
 DECL|function|pci_domain_nr
