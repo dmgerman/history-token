@@ -718,7 +718,9 @@ mdefine_line|#define PV854697 (~0)     /* PIC: write 64bit regs as 64bits. perma
 DECL|macro|PV854827
 mdefine_line|#define PV854827 (~0)     /* PIC: fake widget 0xf presence bit. permanent */
 DECL|macro|PV855271
-mdefine_line|#define PV855271 (1 &lt;&lt; 1) /* PIC: PIC: use virt chan iff 64-bit device. */
+mdefine_line|#define PV855271 (1 &lt;&lt; 1) /* PIC: use virt chan iff 64-bit device. */
+DECL|macro|PV878674
+mdefine_line|#define PV878674 (~0)     /* PIC: Dont allow 64bit PIOs.  permanent */
 DECL|macro|PV855272
 mdefine_line|#define PV855272 (1 &lt;&lt; 1) /* PIC: runaway interrupt WAR */
 DECL|macro|PV856155
