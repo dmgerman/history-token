@@ -3095,7 +3095,8 @@ id|i
 OL
 id|s_i
 )paren
-r_continue
+r_goto
+id|next
 suffix:semicolon
 r_if
 c_cond
@@ -3148,6 +3149,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|next
+suffix:colon
 id|i
 op_increment
 suffix:semicolon
