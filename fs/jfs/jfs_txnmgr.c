@@ -8975,10 +8975,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;tty
-op_assign
-l_int|NULL
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -9640,10 +9636,6 @@ id|daemonize
 c_func
 (paren
 )paren
-suffix:semicolon
-id|current-&gt;tty
-op_assign
-l_int|NULL
 suffix:semicolon
 id|strcpy
 c_func

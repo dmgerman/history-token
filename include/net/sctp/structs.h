@@ -342,7 +342,8 @@ id|max_outstreams
 suffix:semicolon
 multiline_comment|/* This is a list of groups of functions for each address&n;&t; * family that we support.&n;&t; */
 DECL|member|address_families
-id|list_t
+r_struct
+id|list_head
 id|address_families
 suffix:semicolon
 multiline_comment|/* This is the hash of all endpoints. */
@@ -386,7 +387,8 @@ id|port_hashtable
 suffix:semicolon
 multiline_comment|/* This is the global local address list.&n;&t; * We actively maintain this complete list of interfaces on&n;&t; * the system by catching routing events.&n;&t; *&n;&t; * It is a list of struct sockaddr_storage_list.&n;&t; */
 DECL|member|local_addr_list
-id|list_t
+r_struct
+id|list_head
 id|local_addr_list
 suffix:semicolon
 DECL|member|local_addr_lock
@@ -493,7 +495,8 @@ id|sa_family_t
 id|sa_family
 suffix:semicolon
 DECL|member|list
-id|list_t
+r_struct
+id|list_head
 id|list
 suffix:semicolon
 DECL|typedef|sctp_func_t
@@ -1102,7 +1105,8 @@ r_struct
 id|sockaddr_storage_list
 (brace
 DECL|member|list
-id|list_t
+r_struct
+id|list_head
 id|list
 suffix:semicolon
 DECL|member|a
@@ -1308,7 +1312,8 @@ id|SCTP_transport
 (brace
 multiline_comment|/* A list of transports. */
 DECL|member|transports
-id|list_t
+r_struct
+id|list_head
 id|transports
 suffix:semicolon
 multiline_comment|/* Reference counting. */
@@ -1923,7 +1928,8 @@ id|port
 suffix:semicolon
 multiline_comment|/* RFC 2960 12.1 Parameters necessary for the SCTP instance&n;&t; *&n;&t; * Address List: The list of IP addresses that this instance&n;&t; *&t;has bound.  This information is passed to one&squot;s&n;&t; *&t;peer(s) in INIT and INIT ACK chunks.&n;&t; */
 DECL|member|address_list
-id|list_t
+r_struct
+id|list_head
 id|address_list
 suffix:semicolon
 DECL|member|malloced
@@ -2200,7 +2206,8 @@ suffix:semicolon
 multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *            to the data consumers for each association. This&n;&t; *            may be in the form of a hash table or other&n;&t; *            implementation dependent structure. The data&n;&t; *            consumers may be process identification&n;&t; *            information such as file descriptors, named pipe&n;&t; *            pointer, or table pointers dependent on how SCTP&n;&t; *            is implemented.&n;&t; */
 multiline_comment|/* This is really a list of sctp_association_t entries. */
 DECL|member|asocs
-id|list_t
+r_struct
+id|list_head
 id|asocs
 suffix:semicolon
 multiline_comment|/* Secret Key: A secret key used by this endpoint to compute&n;&t; *            the MAC.  This SHOULD be a cryptographic quality&n;&t; *            random number with a sufficient length.&n;&t; *&t;      Discussion in [RFC1750] can be helpful in&n;&t; * &t;      selection of the key.&n;&t; */
@@ -2462,7 +2469,8 @@ id|base
 suffix:semicolon
 multiline_comment|/* Associations on the same socket. */
 DECL|member|asocs
-id|list_t
+r_struct
+id|list_head
 id|asocs
 suffix:semicolon
 multiline_comment|/* This is a signature that lets us know that this is a&n;&t; * sctp_association_t data structure.  Used for mapping an&n;&t; * association id to an association.&n;&t; */
@@ -2491,7 +2499,8 @@ id|rwnd
 suffix:semicolon
 multiline_comment|/* transport_addr_list&n;&t;&t; *&n;&t;&t; * Peer        : A list of SCTP transport addresses that the&n;&t;&t; * Transport   : peer is bound to. This information is derived&n;&t;&t; * Address     : from the INIT or INIT ACK and is used to&n;&t;&t; * List        : associate an inbound packet with a given&n;&t;&t; *             : association. Normally this information is&n;&t;&t; *&t;       : hashed or keyed for quick lookup and access&n;&t;&t; *&t;       : of the TCB.&n;&t;&t; *&n;&t;&t; * It is a list of SCTP_transport&squot;s.&n;&t;&t; */
 DECL|member|transport_addr_list
-id|list_t
+r_struct
+id|list_head
 id|transport_addr_list
 suffix:semicolon
 multiline_comment|/* port&n;&t;&t; *   The transport layer port number.&n;&t;&t; */

@@ -39,10 +39,6 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/backlight.h&gt;
-macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;asm/smplock.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#endif /* CONFIG_SMP */
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
@@ -1108,6 +1104,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|release_OF_resource
+)paren
+suffix:semicolon
+DECL|variable|pci_busdev_to_OF_node
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_busdev_to_OF_node
 )paren
 suffix:semicolon
 DECL|variable|pci_device_to_OF_node

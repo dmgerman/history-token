@@ -745,12 +745,14 @@ id|a_ops
 suffix:semicolon
 multiline_comment|/* methods */
 DECL|member|i_mmap
-id|list_t
+r_struct
+id|list_head
 id|i_mmap
 suffix:semicolon
 multiline_comment|/* list of private mappings */
 DECL|member|i_mmap_shared
-id|list_t
+r_struct
+id|list_head
 id|i_mmap_shared
 suffix:semicolon
 multiline_comment|/* list of private mappings */

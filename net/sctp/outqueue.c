@@ -186,7 +186,8 @@ id|sctp_transport_t
 op_star
 id|transport
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|lchunk
 comma
@@ -2955,7 +2956,8 @@ id|sctp_chunk_t
 op_star
 id|tchunk
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|lchunk
 comma

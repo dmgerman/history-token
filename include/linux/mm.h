@@ -94,7 +94,8 @@ id|vm_rb
 suffix:semicolon
 multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * one of the address_space-&gt;i_mmap{,shared} lists,&n;&t; * for shm areas, the list of attaches, otherwise unused.&n;&t; */
 DECL|member|shared
-id|list_t
+r_struct
+id|list_head
 id|shared
 suffix:semicolon
 multiline_comment|/* Function pointers to deal with this struct. */
@@ -501,7 +502,7 @@ DECL|macro|page_address
 mdefine_line|#define page_address(page) ((page)-&gt;virtual)
 macro_line|#else /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
 DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( (((page) - page_zone(page)-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT)&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_paddr)
+mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( ( ((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
 multiline_comment|/*&n; * Error return values for the *_nopage functions&n; */
 DECL|macro|NOPAGE_SIGBUS
@@ -1046,7 +1047,7 @@ id|zones_size
 comma
 r_int
 r_int
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 r_int
 r_int

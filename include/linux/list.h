@@ -20,16 +20,10 @@ id|prev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|list_t
-r_typedef
-r_struct
-id|list_head
-id|list_t
-suffix:semicolon
 DECL|macro|LIST_HEAD_INIT
 mdefine_line|#define LIST_HEAD_INIT(name) { &amp;(name), &amp;(name) }
 DECL|macro|LIST_HEAD
-mdefine_line|#define LIST_HEAD(name) &bslash;&n;&t;list_t name = LIST_HEAD_INIT(name)
+mdefine_line|#define LIST_HEAD(name) &bslash;&n;&t;struct list_head name = LIST_HEAD_INIT(name)
 DECL|macro|INIT_LIST_HEAD
 mdefine_line|#define INIT_LIST_HEAD(ptr) do { &bslash;&n;&t;(ptr)-&gt;next = (ptr); (ptr)-&gt;prev = (ptr); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Insert a new entry between two known consecutive entries. &n; *&n; * This is only for internal list manipulation where we know&n; * the prev/next entries already!&n; */
@@ -40,15 +34,18 @@ r_void
 id|__list_add
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 r_new
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|prev
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|next
 )paren
@@ -82,11 +79,13 @@ r_void
 id|list_add
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 r_new
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -110,11 +109,13 @@ r_void
 id|list_add_tail
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 r_new
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -138,11 +139,13 @@ r_void
 id|__list_del
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|prev
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|next
 )paren
@@ -164,7 +167,8 @@ r_void
 id|list_del
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|entry
 )paren
@@ -202,7 +206,8 @@ r_void
 id|list_del_init
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|entry
 )paren
@@ -230,11 +235,13 @@ r_void
 id|list_move
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|list
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -264,11 +271,13 @@ r_void
 id|list_move_tail
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|list
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -298,7 +307,8 @@ r_int
 id|list_empty
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -316,28 +326,33 @@ r_void
 id|__list_splice
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|list
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
 (brace
-id|list_t
+r_struct
+id|list_head
 op_star
 id|first
 op_assign
 id|list-&gt;next
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|last
 op_assign
 id|list-&gt;prev
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|at
 op_assign
@@ -368,11 +383,13 @@ r_void
 id|list_splice
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|list
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -404,11 +421,13 @@ r_void
 id|list_splice_init
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|list
 comma
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 )paren
@@ -440,16 +459,16 @@ id|list
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * list_entry - get the struct for this entry&n; * @ptr:&t;the &amp;list_t pointer.&n; * @type:&t;the type of the struct this is embedded in.&n; * @member:&t;the name of the list_struct within the struct.&n; */
+multiline_comment|/**&n; * list_entry - get the struct for this entry&n; * @ptr:&t;the &amp;struct list_head pointer.&n; * @type:&t;the type of the struct this is embedded in.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_entry
 mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;container_of(ptr, type, member)
-multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;list_t to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
 mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))
-multiline_comment|/**&n; * list_for_each_prev&t;-&t;iterate over a list backwards&n; * @pos:&t;the &amp;list_t to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each_prev&t;-&t;iterate over a list backwards&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_prev
 mdefine_line|#define list_for_each_prev(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;prev, prefetch(pos-&gt;prev); pos != (head); &bslash;&n;        &t;pos = pos-&gt;prev, prefetch(pos-&gt;prev))
-multiline_comment|/**&n; * list_for_each_safe&t;-&t;iterate over a list safe against removal of list entry&n; * @pos:&t;the &amp;list_t to use as a loop counter.&n; * @n:&t;&t;another &amp;list_t to use as temporary storage&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each_safe&t;-&t;iterate over a list safe against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_safe
 mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
 multiline_comment|/**&n; * list_for_each_entry&t;-&t;iterate over list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */

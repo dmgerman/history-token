@@ -2382,7 +2382,8 @@ comma
 op_star
 id|addr
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma

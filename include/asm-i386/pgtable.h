@@ -697,8 +697,10 @@ DECL|macro|page_pte
 mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
 DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|pmd_large
 mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
 multiline_comment|/* to find an entry in a page-table-directory. */
@@ -741,8 +743,10 @@ mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { (pte).pte_low
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
 macro_line|#endif /* _I386_PGTABLE_H */

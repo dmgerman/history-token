@@ -102,7 +102,8 @@ id|BITMAP_SIZE
 )braket
 suffix:semicolon
 DECL|member|queue
-id|list_t
+r_struct
+id|list_head
 id|queue
 (braket
 id|MAX_PRIO
@@ -170,7 +171,8 @@ op_star
 id|migration_thread
 suffix:semicolon
 DECL|member|migration_queue
-id|list_t
+r_struct
+id|list_head
 id|migration_queue
 suffix:semicolon
 DECL|variable|____cacheline_aligned
@@ -2185,7 +2187,8 @@ id|prio_array_t
 op_star
 id|array
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 comma
@@ -2832,7 +2835,8 @@ id|prio_array_t
 op_star
 id|array
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|queue
 suffix:semicolon
@@ -6282,7 +6286,8 @@ r_typedef
 r_struct
 (brace
 DECL|member|list
-id|list_t
+r_struct
+id|list_head
 id|list
 suffix:semicolon
 DECL|member|task

@@ -75,7 +75,7 @@ DECL|macro|PLAT_NODE_DATA_SIZE
 mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;&t;(PLAT_NODE_DATA(n)-&gt;gendata.node_size)
 macro_line|#if 1
 DECL|macro|PLAT_NODE_DATA_LOCALNR
-mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n)&t;&bslash;&n;&t;(((p) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_paddr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n)&t;&bslash;&n;&t;(((p) &gt;&gt; PAGE_SHIFT) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_pfn)
 macro_line|#else
 r_static
 r_inline
@@ -100,6 +100,11 @@ suffix:semicolon
 id|temp
 op_assign
 id|p
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_return
+id|temp
 op_minus
 id|PLAT_NODE_DATA
 c_func
@@ -107,14 +112,7 @@ c_func
 id|n
 )paren
 op_member_access_from_pointer
-id|gendata.node_start_paddr
-suffix:semicolon
-r_return
-(paren
-id|temp
-op_rshift
-id|PAGE_SHIFT
-)paren
+id|gendata.node_start_pfn
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -134,7 +132,7 @@ DECL|macro|ADDR_TO_MAPBASE
 mdefine_line|#define ADDR_TO_MAPBASE(kaddr) &bslash;&n;&t;&t;&t;NODE_MEM_MAP(KVADDR_TO_NID((unsigned long)(kaddr)))
 multiline_comment|/*&n; * Given a kaddr, LOCAL_BASE_ADDR finds the owning node of the memory&n; * and returns the kaddr corresponding to first physical page in the&n; * node&squot;s mem_map.&n; */
 DECL|macro|LOCAL_BASE_ADDR
-mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;((unsigned long)__va(NODE_DATA(KVADDR_TO_NID(kaddr))-&gt;node_start_paddr))
+mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;((unsigned long)__va(NODE_DATA(KVADDR_TO_NID(kaddr))-&gt;node_start_pfn &lt;&lt; PAGE_SHIFT))
 DECL|macro|LOCAL_MAP_NR
 mdefine_line|#define LOCAL_MAP_NR(kvaddr) &bslash;&n;&t;(((unsigned long)(kvaddr)-LOCAL_BASE_ADDR(kvaddr)) &gt;&gt; PAGE_SHIFT)
 DECL|macro|kern_addr_valid
