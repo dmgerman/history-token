@@ -8985,6 +8985,12 @@ c_func
 (paren
 id|laptop_mode
 )paren
+op_logical_and
+id|blk_fs_request
+c_func
+(paren
+id|req
+)paren
 )paren
 id|laptop_io_completion
 c_func
