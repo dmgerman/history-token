@@ -1,6 +1,10 @@
 macro_line|#ifndef __ASM_MACH_MPPARSE_H
 DECL|macro|__ASM_MACH_MPPARSE_H
 mdefine_line|#define __ASM_MACH_MPPARSE_H
+r_extern
+r_int
+id|use_cyclone
+suffix:semicolon
 DECL|function|mpc_oem_bus_info
 r_static
 r_inline
@@ -112,10 +116,17 @@ l_int|12
 )paren
 )paren
 )paren
+(brace
 id|x86_summit
 op_assign
 l_int|1
 suffix:semicolon
+id|use_cyclone
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*enable cyclone-timer*/
+)brace
 )brace
 multiline_comment|/* Hook from generic ACPI tables.c */
 DECL|function|acpi_madt_oem_check
@@ -159,10 +170,17 @@ comma
 l_int|8
 )paren
 )paren
+(brace
 id|x86_summit
 op_assign
 l_int|1
 suffix:semicolon
+id|use_cyclone
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*enable cyclone-timer*/
+)brace
 )brace
 macro_line|#endif /* __ASM_MACH_MPPARSE_H */
 eof
