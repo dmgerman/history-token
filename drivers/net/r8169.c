@@ -6157,7 +6157,7 @@ id|cur_rx
 op_assign
 id|tp-&gt;cur_rx
 op_mod
-id|RX_BUF_SIZE
+id|NUM_RX_DESC
 suffix:semicolon
 r_while
 c_loop
