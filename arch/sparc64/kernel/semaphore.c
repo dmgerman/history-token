@@ -267,6 +267,11 @@ op_star
 id|sem
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* This atomically does:&n;&t; * &t;old_val = sem-&gt;count;&n;&t; *&t;new_val = sem-&gt;count - 1;&n;&t; *&t;sem-&gt;count = new_val;&n;&t; *&t;if (old_val &lt; 1)&n;&t; *&t;&t;__down(sem);&n;&t; *&n;&t; * The (old_val &lt; 1) test is equivalent to&n;&t; * the more straightforward (new_val &lt; 0),&n;&t; * but it is easier to test the former because&n;&t; * of how the CAS instruction works.&n;&t; */
 id|__asm__
 id|__volatile__
@@ -511,6 +516,11 @@ r_int
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* This atomically does:&n;&t; * &t;old_val = sem-&gt;count;&n;&t; *&t;new_val = sem-&gt;count - 1;&n;&t; *&t;sem-&gt;count = new_val;&n;&t; *&t;if (old_val &lt; 1)&n;&t; *&t;&t;ret = __down_interruptible(sem);&n;&t; *&n;&t; * The (old_val &lt; 1) test is equivalent to&n;&t; * the more straightforward (new_val &lt; 0),&n;&t; * but it is easier to test the former because&n;&t; * of how the CAS instruction works.&n;&t; */
 id|__asm__

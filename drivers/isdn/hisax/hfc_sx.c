@@ -572,9 +572,14 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
+(paren
 id|skb-&gt;len
 op_plus
 l_int|1
+)paren
 )paren
 r_return
 l_int|0
@@ -831,6 +836,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 id|skb-&gt;len
 )paren
 (brace

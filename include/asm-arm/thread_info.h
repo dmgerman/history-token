@@ -11,9 +11,9 @@ r_struct
 id|exec_domain
 suffix:semicolon
 macro_line|#include &lt;asm/fpstate.h&gt;
-macro_line|#include &lt;asm/proc/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/domain.h&gt;
 DECL|typedef|mm_segment_t
 r_typedef
 r_int
@@ -138,7 +138,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.preempt_count&t;= 1,&t;&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&t;&bslash;&n;&t;&t;.fn&t;= do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;INIT_EXTRA_THREAD_INFO,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.preempt_count&t;= 1,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.cpu_domain&t;= domain_val(DOMAIN_USER, DOMAIN_MANAGER) |&t;&bslash;&n;&t;&t;&t;  domain_val(DOMAIN_KERNEL, DOMAIN_MANAGER) |&t;&bslash;&n;&t;&t;&t;  domain_val(DOMAIN_IO, DOMAIN_CLIENT),&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.fn&t;= do_no_restart_syscall,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

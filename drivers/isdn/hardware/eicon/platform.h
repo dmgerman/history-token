@@ -484,10 +484,7 @@ suffix:semicolon
 DECL|macro|diva_os_in_irq
 mdefine_line|#define diva_os_in_irq() in_irq()
 multiline_comment|/*&n;** module locking&n;*/
-DECL|macro|DIVA_LOCK_MODULE
-mdefine_line|#define DIVA_LOCK_MODULE MOD_INC_USE_COUNT
-DECL|macro|DIVA_UNLOCK_MODULE
-mdefine_line|#define DIVA_UNLOCK_MODULE MOD_DEC_USE_COUNT
+multiline_comment|/* &n;#define DIVA_LOCK_MODULE MOD_INC_USE_COUNT&n;#define DIVA_UNLOCK_MODULE MOD_DEC_USE_COUNT&n;*/
 multiline_comment|/*&n;**  Spin Lock framework&n;*/
 DECL|typedef|diva_os_spin_lock_magic_t
 r_typedef

@@ -9,12 +9,6 @@ DECL|macro|MULTI_CPU
 macro_line|#undef MULTI_CPU
 DECL|macro|CPU_NAME
 macro_line|#undef CPU_NAME
-macro_line|#ifdef CONFIG_CPU_26
-DECL|macro|CPU_INCLUDE_NAME
-macro_line|# define CPU_INCLUDE_NAME &quot;asm/cpu-multi26.h&quot;
-DECL|macro|MULTI_CPU
-macro_line|# define MULTI_CPU
-macro_line|#endif
 multiline_comment|/*&n; * CPU_NAME - the prefix for CPU related functions&n; */
 macro_line|#ifdef CONFIG_CPU_32
 DECL|macro|CPU_INCLUDE_NAME

@@ -7028,4 +7028,11 @@ comma
 l_string|&quot;Set this to enable APM use on an SMP platform. Use with caution on older systems&quot;
 )paren
 suffix:semicolon
+DECL|variable|APM_MINOR_DEV
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|APM_MINOR_DEV
+)paren
+suffix:semicolon
 eof

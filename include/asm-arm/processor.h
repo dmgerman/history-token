@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/processor.h&n; *&n; *  Copyright (C) 1995 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/processor.h&n; *&n; *  Copyright (C) 1995-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef __ASM_ARM_PROCESSOR_H
 DECL|macro|__ASM_ARM_PROCESSOR_H
 mdefine_line|#define __ASM_ARM_PROCESSOR_H
@@ -16,8 +16,9 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
-macro_line|#include &lt;asm/proc/processor.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+DECL|macro|KERNEL_STACK_SIZE
+mdefine_line|#define KERNEL_STACK_SIZE&t;PAGE_SIZE
 DECL|union|debug_insn
 r_union
 id|debug_insn
@@ -95,6 +96,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;}
+DECL|macro|start_thread
+mdefine_line|#define start_thread(regs,pc,sp)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *stack = (unsigned long *)sp;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;memzero(regs-&gt;uregs, sizeof(regs-&gt;uregs));&t;&t;&t;&bslash;&n;&t;if (current-&gt;personality &amp; ADDR_LIMIT_32BIT)&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ARM_cpsr = USR_MODE;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ARM_cpsr = USR26_MODE;&t;&t;&t;&t;&bslash;&n;&t;if (elf_hwcap &amp; HWCAP_THUMB &amp;&amp; pc &amp; 1)&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ARM_cpsr |= PSR_T_BIT;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_pc = pc &amp; ~1;&t;&t;/* pc */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_sp = sp;&t;&t;/* sp */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r2 = stack[2];&t;/* r2 (envp) */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r1 = stack[1];&t;/* r1 (argv) */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r0 = stack[0];&t;/* r0 (argc) */&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Forward declaration, a strange C thing */
 r_struct
 id|task_struct
@@ -151,6 +154,10 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+DECL|macro|KSTK_EIP
+mdefine_line|#define KSTK_EIP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1019])
+DECL|macro|KSTK_ESP
+mdefine_line|#define KSTK_ESP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1017])
 multiline_comment|/*&n; * Prefetching support - only ARMv5.&n; */
 macro_line|#if __LINUX_ARM_ARCH__ &gt;= 5
 DECL|macro|ARCH_HAS_PREFETCH

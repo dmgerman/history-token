@@ -6928,9 +6928,18 @@ id|xd_manual_geo_init
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
+DECL|variable|xd_init
 id|module_init
 c_func
 (paren
 id|xd_init
 )paren
+suffix:semicolon
+DECL|variable|XT_DISK_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|XT_DISK_MAJOR
+)paren
+suffix:semicolon
 eof

@@ -80,9 +80,13 @@ id|line
 suffix:semicolon
 DECL|macro|might_sleep
 mdefine_line|#define might_sleep() __might_sleep(__FILE__, __LINE__)
+DECL|macro|might_sleep_if
+mdefine_line|#define might_sleep_if(cond) do { if (unlikely(cond)) might_sleep(); } while (0)
 macro_line|#else
 DECL|macro|might_sleep
 mdefine_line|#define might_sleep() do {} while(0)
+DECL|macro|might_sleep_if
+mdefine_line|#define might_sleep_if(cond) do {} while (0)
 macro_line|#endif
 r_extern
 r_struct

@@ -4629,6 +4629,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_6PACK
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_6PACK
+)paren
+suffix:semicolon
 DECL|variable|sixpack_init_driver
 id|module_init
 c_func

@@ -9920,4 +9920,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|AZTECH_CDROM_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|AZTECH_CDROM_MAJOR
+)paren
+suffix:semicolon
 eof

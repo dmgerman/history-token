@@ -1551,7 +1551,7 @@ id|BCState
 op_star
 id|bcs
 comma
-r_int
+id|u_int
 id|fifo_size
 comma
 r_int
@@ -1753,7 +1753,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-r_int
+id|u_int
 id|fifo_size
 comma
 r_int

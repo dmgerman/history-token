@@ -182,15 +182,6 @@ id|wait
 )paren
 suffix:semicolon
 macro_line|#endif
-r_void
-id|get_rtc_time
-(paren
-r_struct
-id|rtc_time
-op_star
-id|rtc_tm
-)paren
-suffix:semicolon
 r_static
 r_void
 id|get_rtc_alm_time
@@ -1450,7 +1441,7 @@ id|RTC_RD_TIME
 suffix:colon
 multiline_comment|/* Read the time/date from RTC&t;*/
 (brace
-id|get_rtc_time
+id|rtc_get_rtc_time
 c_func
 (paren
 op_amp
@@ -4080,7 +4071,7 @@ id|p
 op_assign
 id|buf
 suffix:semicolon
-id|get_rtc_time
+id|rtc_get_rtc_time
 c_func
 (paren
 op_amp
@@ -4441,9 +4432,9 @@ r_return
 id|uip
 suffix:semicolon
 )brace
-DECL|function|get_rtc_time
+DECL|function|rtc_get_rtc_time
 r_void
-id|get_rtc_time
+id|rtc_get_rtc_time
 c_func
 (paren
 r_struct
@@ -4937,6 +4928,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|RTC_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|RTC_MINOR
 )paren
 suffix:semicolon
 eof

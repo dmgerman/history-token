@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/proc/locks.h&gt;
+macro_line|#include &lt;asm/locks.h&gt;
 DECL|struct|semaphore
 r_struct
 id|semaphore
@@ -261,6 +261,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__down_op
 c_func
 (paren
@@ -291,6 +296,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|__down_op_ret
 c_func

@@ -189,6 +189,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_PPP
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_PPP
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototypes.&n; */
 r_static
 r_int

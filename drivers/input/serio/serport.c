@@ -25,6 +25,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_MOUSE
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_MOUSE
+)paren
+suffix:semicolon
 DECL|macro|SERPORT_BUSY
 mdefine_line|#define SERPORT_BUSY&t;1
 DECL|struct|serport

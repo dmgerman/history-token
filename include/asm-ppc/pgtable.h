@@ -42,27 +42,28 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * The PowerPC MMU uses a hash table containing PTEs, together with&n; * a set of 16 segment registers (on 32-bit implementations), to define&n; * the virtual to physical address mapping.&n; *&n; * We use the hash table as an extended TLB, i.e. a cache of currently&n; * active mappings.  We maintain a two-level page table tree, much&n; * like that used by the i386, for the sake of the Linux memory&n; * management code.  Low-level assembler code in hashtable.S&n; * (procedure hash_page) is responsible for extracting ptes from the&n; * tree and putting them into the hash table when necessary, and&n; * updating the accessed and modified bits in the page table tree.&n; */
 multiline_comment|/*&n; * The PowerPC MPC8xx uses a TLB with hardware assisted, software tablewalk.&n; * We also use the two level tables, but we can put the real bits in them&n; * needed for the TLB and tablewalk.  These definitions require Mx_CTR.PPM = 0,&n; * Mx_CTR.PPCS = 0, and MD_CTR.TWAM = 1.  The level 2 descriptor has&n; * additional page protection (when Mx_CTR.PPCS = 1) that allows TLB hit&n; * based upon user/super access.  The TLB does not have accessed nor write&n; * protect.  We assume that if the TLB get loaded with an entry it is&n; * accessed, and overload the changed bit for write protect.  We use&n; * two bits in the software pte that are supposed to be set to zero in&n; * the TLB entry (24 and 25) for these indicators.  Although the level 1&n; * descriptor contains the guarded and writethrough/copyback bits, we can&n; * set these at the page level since they get copied from the Mx_TWC&n; * register when the TLB entry is loaded.  We will use bit 27 for guard, since&n; * that is where it exists in the MD_TWC, and bit 26 for writethrough.&n; * These will get masked from the level 2 descriptor at TLB load time, and&n; * copied to the MD_TWC before it gets loaded.&n; * Large page sizes added.  We currently support two sizes, 4K and 8M.&n; * This also allows a TLB hander optimization because we can directly&n; * load the PMD into MD_TWC.  The 8M pages are only used for kernel&n; * mapping of well known areas.  The PMD (PGD) entries contain control&n; * flags in addition to the address, so care must be taken that the&n; * software no longer assumes these are only pointers.&n; */
 multiline_comment|/*&n; * At present, all PowerPC 400-class processors share a similar TLB&n; * architecture. The instruction and data sides share a unified,&n; * 64-entry, fully-associative TLB which is maintained totally under&n; * software control. In addition, the instruction side has a&n; * hardware-managed, 4-entry, fully-associative TLB which serves as a&n; * first level to the shared TLB. These two TLBs are known as the UTLB&n; * and ITLB, respectively (see &quot;mmu.h&quot; for definitions).&n; */
-multiline_comment|/* PMD_SHIFT determines the size of the area mapped by the second-level page tables */
+multiline_comment|/*&n; * The normal case is that PTEs are 32-bits and we have a 1-page&n; * 1024-entry pgdir pointing to 1-page 1024-entry PTE pages.  -- paulus&n; *&n; * For any &gt;32-bit physical address platform, we can use the following&n; * two level page table layout where the pgdir is 8KB and the MS 13 bits&n; * are an index to the second level table.  The combined pgdir/pmd first&n; * level has 2048 entries and the second level has 512 64-bit PTE entries.&n; * -Matt&n; */
+multiline_comment|/* PMD_SHIFT determines the size of the area mapped by the PTE pages */
 DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;22
+mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + PTE_SHIFT)
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
-multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
+multiline_comment|/* PGDIR_SHIFT determines what a top-level page table entry can map */
 DECL|macro|PGDIR_SHIFT
-mdefine_line|#define PGDIR_SHIFT&t;22
+mdefine_line|#define PGDIR_SHIFT&t;PMD_SHIFT
 DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 multiline_comment|/*&n; * entries per page directory level: our page-table tree is two-level, so&n; * we don&squot;t really have any PMD directory.&n; */
 DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;1024
+mdefine_line|#define PTRS_PER_PTE&t;(1 &lt;&lt; PTE_SHIFT)
 DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;1
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;1024
+mdefine_line|#define PTRS_PER_PGD&t;(1 &lt;&lt; (32 - PGDIR_SHIFT))
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE / PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
@@ -72,7 +73,7 @@ mdefine_line|#define USER_PGD_PTRS (PAGE_OFFSET &gt;&gt; PGDIR_SHIFT)
 DECL|macro|KERNEL_PGD_PTRS
 mdefine_line|#define KERNEL_PGD_PTRS (PTRS_PER_PGD-USER_PGD_PTRS)
 DECL|macro|pte_ERROR
-mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
+mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte &quot;PTE_FMT&quot;.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
 DECL|macro|pgd_ERROR
@@ -80,8 +81,13 @@ mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08l
 multiline_comment|/*&n; * Just any arbitrary offset to the start of the vmalloc VM area: the&n; * current 64MB value just means that there will be a 64MB &quot;hole&quot; after the&n; * physical memory until the kernel virtual memory starts.  That means that&n; * any out-of-bounds memory accesses will hopefully be caught.&n; * The vmalloc() routines leaves a hole of 4kB between each vmalloced&n; * area for the same reason. ;)&n; *&n; * We no longer map larger than phys RAM with the BATs so we don&squot;t have&n; * to worry about the VMALLOC_OFFSET causing problems.  We do have to worry&n; * about clashes between our early calls to ioremap() that start growing down&n; * from ioremap_base being run into the VM area allocations (growing upwards&n; * from VMALLOC_START).  For this reason we have ioremap_bot to check when&n; * we actually run into our mappings setup in the early boot with the VM&n; * system.  This really does become a problem for machines with good amounts&n; * of RAM.  -- Cort&n; */
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET (0x1000000) /* 16M */
+macro_line|#ifdef CONFIG_44x
+DECL|macro|VMALLOC_START
+mdefine_line|#define VMALLOC_START (((_ALIGN((long)high_memory, PPC44x_PIN_SIZE) + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1)))
+macro_line|#else
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1)))
+macro_line|#endif
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
@@ -124,6 +130,44 @@ DECL|macro|_PMD_SIZE_16M
 mdefine_line|#define _PMD_SIZE_16M&t;0x0e0
 DECL|macro|PMD_PAGE_SIZE
 mdefine_line|#define PMD_PAGE_SIZE(pmdval)&t;(1024 &lt;&lt; (((pmdval) &amp; _PMD_SIZE) &gt;&gt; 4))
+macro_line|#elif defined(CONFIG_44x)
+multiline_comment|/*&n; * Definitions for PPC440&n; *&n; * Because of the 3 word TLB entries to support 36-bit addressing,&n; * the attribute are difficult to map in such a fashion that they&n; * are easily loaded during exception processing.  I decided to&n; * organize the entry so the ERPN is the only portion in the&n; * upper word of the PTE and the attribute bits below are packed&n; * in as sensibly as they can be in the area below a 4KB page size&n; * oriented RPN.  This at least makes it easy to load the RPN and&n; * ERPN fields in the TLB. -Matt&n; *&n; * Note that these bits preclude future use of a page size&n; * less than 4KB.&n; */
+DECL|macro|_PAGE_PRESENT
+mdefine_line|#define _PAGE_PRESENT&t;0x00000001&t;&t;/* S: PTE valid */
+DECL|macro|_PAGE_RW
+mdefine_line|#define&t;_PAGE_RW&t;0x00000002&t;&t;/* S: Write permission */
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define&t;_PAGE_DIRTY&t;0x00000004&t;&t;/* S: Page dirty */
+DECL|macro|_PAGE_ACCESSED
+mdefine_line|#define _PAGE_ACCESSED&t;0x00000008&t;&t;/* S: Page referenced */
+DECL|macro|_PAGE_HWWRITE
+mdefine_line|#define _PAGE_HWWRITE&t;0x00000010&t;&t;/* H: Dirty &amp; RW */
+DECL|macro|_PAGE_HWEXEC
+mdefine_line|#define _PAGE_HWEXEC&t;0x00000020&t;&t;/* H: Execute permission */
+DECL|macro|_PAGE_USER
+mdefine_line|#define&t;_PAGE_USER&t;0x00000040&t;&t;/* S: User page */
+DECL|macro|_PAGE_ENDIAN
+mdefine_line|#define&t;_PAGE_ENDIAN&t;0x00000080&t;&t;/* H: E bit */
+DECL|macro|_PAGE_GUARDED
+mdefine_line|#define&t;_PAGE_GUARDED&t;0x00000100&t;&t;/* H: G bit */
+DECL|macro|_PAGE_COHERENT
+mdefine_line|#define&t;_PAGE_COHERENT&t;0x00000200&t;&t;/* H: M bit */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x00000400&t;&t;/* S: nonlinear file mapping */
+DECL|macro|_PAGE_NO_CACHE
+mdefine_line|#define&t;_PAGE_NO_CACHE&t;0x00000400&t;&t;/* H: I bit */
+DECL|macro|_PAGE_WRITETHRU
+mdefine_line|#define&t;_PAGE_WRITETHRU&t;0x00000800&t;&t;/* H: W bit */
+multiline_comment|/* TODO: Add large page lowmem mapping support */
+DECL|macro|_PMD_PRESENT
+mdefine_line|#define _PMD_PRESENT&t;0
+DECL|macro|_PMD_PRESENT_MASK
+mdefine_line|#define _PMD_PRESENT_MASK (PAGE_MASK)
+DECL|macro|_PMD_BAD
+mdefine_line|#define _PMD_BAD&t;(~PAGE_MASK)
+multiline_comment|/* ERPN in a PTE never gets cleared, ignore it */
+DECL|macro|_PTE_NONE_MASK
+mdefine_line|#define _PTE_NONE_MASK&t;0xffffffff00000000ULL
 macro_line|#elif defined(CONFIG_8xx)
 multiline_comment|/* Definitions for 8xx embedded chips. */
 DECL|macro|_PAGE_PRESENT
@@ -238,8 +282,13 @@ DECL|macro|_PAGE_BASE
 mdefine_line|#define _PAGE_BASE&t;(_PAGE_PRESENT | _PAGE_ACCESSED)
 DECL|macro|_PAGE_WRENABLE
 mdefine_line|#define _PAGE_WRENABLE&t;(_PAGE_RW | _PAGE_DIRTY | _PAGE_HWWRITE)
+macro_line|#ifndef CONFIG_44x
 DECL|macro|_PAGE_KERNEL
 mdefine_line|#define _PAGE_KERNEL&t;(_PAGE_BASE | _PAGE_SHARED | _PAGE_WRENABLE)
+macro_line|#else
+DECL|macro|_PAGE_KERNEL
+mdefine_line|#define _PAGE_KERNEL&t;(_PAGE_BASE | _PAGE_SHARED | _PAGE_WRENABLE | _PAGE_GUARDED)
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 multiline_comment|/* On standard PPC MMU, no user access implies kernel read/write access,&n; * so to write-protect kernel memory we must turn on user access */
 DECL|macro|_PAGE_KERNEL_RO
@@ -252,7 +301,7 @@ DECL|macro|_PAGE_IO
 mdefine_line|#define _PAGE_IO&t;(_PAGE_KERNEL | _PAGE_NO_CACHE | _PAGE_GUARDED)
 DECL|macro|_PAGE_RAM
 mdefine_line|#define _PAGE_RAM&t;(_PAGE_KERNEL | _PAGE_HWEXEC)
-macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON)
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || defined(CONFIG_BDI_SWITCH)
 multiline_comment|/* We want the debuggers to be able to set breakpoints anywhere, so&n; * don&squot;t write protect the kernel text */
 DECL|macro|_PAGE_RAM_TEXT
 mdefine_line|#define _PAGE_RAM_TEXT&t;_PAGE_RAM
@@ -861,7 +910,7 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Atomic PTE updates.&n; *&n; * pte_update clears and sets bit atomically, and returns&n; * the old pte value.&n; */
+multiline_comment|/*&n; * Atomic PTE updates.&n; *&n; * pte_update clears and sets bit atomically, and returns&n; * the old pte value.&n; * The ((unsigned long)(p+1) - 4) hack is to get to the least-significant&n; * 32 bits of the PTE regardless of whether PTEs are 32 or 64 bits.&n; */
 DECL|function|pte_update
 r_static
 r_inline
@@ -922,7 +971,17 @@ id|p
 suffix:colon
 l_string|&quot;r&quot;
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|p
+op_plus
+l_int|1
+)paren
+op_minus
+l_int|4
 )paren
 comma
 l_string|&quot;r&quot;
@@ -1139,10 +1198,18 @@ DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HASHPTE) == 0)
+multiline_comment|/*&n; * Note that on Book E processors, the pmd contains the kernel virtual&n; * (lowmem) address of the pte page.  The physical address is less useful&n; * because everything runs with translation enabled (even the TLB miss&n; * handler).  On everything else the pmd contains the physical address&n; * of the pte page.  -- paulus&n; */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd)&t;&bslash;&n;&t;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;&bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+macro_line|#else
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;&bslash;&n;&t;((unsigned long) (pmd_val(pmd) &amp; PAGE_MASK))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;&t;&bslash;&n;&t;(mem_map + (__pa(pmd_val(pmd)) &gt;&gt; PAGE_SHIFT))
+macro_line|#endif
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
@@ -1194,7 +1261,7 @@ r_extern
 id|pgd_t
 id|swapper_pg_dir
 (braket
-l_int|1024
+id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 r_extern

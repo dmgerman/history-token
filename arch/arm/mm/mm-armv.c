@@ -63,9 +63,9 @@ op_assign
 (brace
 l_string|&quot;uncached&quot;
 comma
-id|CR1_W
+id|CR_W
 op_or
-id|CR1_C
+id|CR_C
 comma
 id|PMD_SECT_UNCACHED
 )brace
@@ -73,7 +73,7 @@ comma
 (brace
 l_string|&quot;buffered&quot;
 comma
-id|CR1_C
+id|CR_C
 comma
 id|PMD_SECT_BUFFERED
 )brace
@@ -433,12 +433,12 @@ id|__unused
 id|cr_alignment
 op_and_assign
 op_complement
-id|CR1_A
+id|CR_A
 suffix:semicolon
 id|cr_no_alignment
 op_and_assign
 op_complement
-id|CR1_A
+id|CR_A
 suffix:semicolon
 id|set_cr
 c_func

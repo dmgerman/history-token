@@ -7967,6 +7967,7 @@ id|len
 suffix:semicolon
 )brace
 r_else
+(brace
 id|pmu_pass_intr
 c_func
 (paren
@@ -7976,6 +7977,7 @@ id|len
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+)brace
 r_goto
 id|next
 suffix:semicolon

@@ -6419,4 +6419,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|SANYO_CDROM_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|SANYO_CDROM_MAJOR
+)paren
+suffix:semicolon
 eof

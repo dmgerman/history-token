@@ -3765,5 +3765,8 @@ comma
 id|val
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

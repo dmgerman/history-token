@@ -470,6 +470,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|VIDEO_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|VIDEO_MAJOR
+)paren
+suffix:semicolon
 multiline_comment|/* kernel args */
 macro_line|#ifndef MODULE
 DECL|function|p_radio

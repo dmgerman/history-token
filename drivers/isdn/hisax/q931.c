@@ -1245,7 +1245,7 @@ id|dp
 op_assign
 id|dest
 suffix:semicolon
-r_int
+id|u_int
 id|i
 comma
 id|cause
@@ -3703,7 +3703,8 @@ comma
 id|tag
 comma
 id|len
-comma
+suffix:semicolon
+id|u_int
 id|i
 suffix:semicolon
 id|p
@@ -5240,7 +5241,7 @@ id|tei
 comma
 id|ftyp
 suffix:semicolon
-r_int
+id|u_int
 id|i
 comma
 id|cset
