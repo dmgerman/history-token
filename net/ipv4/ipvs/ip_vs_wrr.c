@@ -366,6 +366,17 @@ c_func
 id|svc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mark-&gt;cw
+OG
+id|mark-&gt;mw
+)paren
+id|mark-&gt;cw
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -571,6 +582,10 @@ c_cond
 id|mark-&gt;cl
 op_eq
 id|p
+op_logical_and
+id|mark-&gt;cw
+op_eq
+id|mark-&gt;di
 )paren
 (brace
 multiline_comment|/* back to the start, and no dest is found.&n;&t;&t;&t;   It is only possible when all dests are OVERLOADED */
