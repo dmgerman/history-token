@@ -135,13 +135,16 @@ suffix:semicolon
 multiline_comment|/* set the initial values */
 op_star
 id|flags
-op_assign
-op_star
-id|flags
-op_or
+op_or_assign
 id|rule-&gt;flags
 op_or
 id|IORESOURCE_IO
+suffix:semicolon
+op_star
+id|flags
+op_and_assign
+op_complement
+id|IORESOURCE_UNSET
 suffix:semicolon
 r_if
 c_cond
@@ -338,13 +341,16 @@ suffix:semicolon
 multiline_comment|/* set the initial values */
 op_star
 id|flags
-op_assign
-op_star
-id|flags
-op_or
+op_or_assign
 id|rule-&gt;flags
 op_or
 id|IORESOURCE_MEM
+suffix:semicolon
+op_star
+id|flags
+op_and_assign
+op_complement
+id|IORESOURCE_UNSET
 suffix:semicolon
 multiline_comment|/* convert pnp flags to standard Linux flags */
 r_if
@@ -639,13 +645,16 @@ suffix:semicolon
 multiline_comment|/* set the initial values */
 op_star
 id|flags
-op_assign
-op_star
-id|flags
-op_or
+op_or_assign
 id|rule-&gt;flags
 op_or
 id|IORESOURCE_IRQ
+suffix:semicolon
+op_star
+id|flags
+op_and_assign
+op_complement
+id|IORESOURCE_UNSET
 suffix:semicolon
 r_if
 c_cond
@@ -872,13 +881,16 @@ suffix:semicolon
 multiline_comment|/* set the initial values */
 op_star
 id|flags
-op_assign
-op_star
-id|flags
-op_or
+op_or_assign
 id|rule-&gt;flags
 op_or
 id|IORESOURCE_DMA
+suffix:semicolon
+op_star
+id|flags
+op_and_assign
+op_complement
+id|IORESOURCE_UNSET
 suffix:semicolon
 r_if
 c_cond
@@ -1027,6 +1039,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1081,6 +1095,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1133,6 +1149,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1185,6 +1203,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 )brace
@@ -1264,6 +1284,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1326,6 +1348,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1386,6 +1410,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 r_for
@@ -1446,6 +1472,8 @@ dot
 id|flags
 op_assign
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
 suffix:semicolon
 )brace
 )brace
