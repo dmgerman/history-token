@@ -825,6 +825,8 @@ id|snd_usbmidi_in_urb_complete
 c_func
 (paren
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
