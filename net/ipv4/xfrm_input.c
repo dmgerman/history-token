@@ -158,6 +158,12 @@ suffix:semicolon
 op_star
 id|spi
 op_assign
+id|ntohl
+c_func
+(paren
+id|ntohs
+c_func
+(paren
 op_star
 (paren
 id|u16
@@ -167,6 +173,8 @@ op_star
 id|skb-&gt;h.raw
 op_plus
 l_int|2
+)paren
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -878,6 +886,12 @@ suffix:semicolon
 op_star
 id|spi
 op_assign
+id|ntohl
+c_func
+(paren
+id|ntohs
+c_func
+(paren
 op_star
 (paren
 id|u16
@@ -887,6 +901,8 @@ op_star
 id|skb-&gt;h.raw
 op_plus
 l_int|2
+)paren
+)paren
 )paren
 suffix:semicolon
 op_star
