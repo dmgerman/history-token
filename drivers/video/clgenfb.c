@@ -11535,7 +11535,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_ZORRO)
-multiline_comment|/* FIXME: CONFIG_PCI and CONFIG_ZORRO may be defined both */
+multiline_comment|/* FIXME: CONFIG_PCI and CONFIG_ZORRO may both be defined */
 r_if
 c_cond
 (paren

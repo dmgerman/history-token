@@ -308,13 +308,11 @@ c_cond
 (paren
 id|card-&gt;seq_mididev
 )paren
-(brace
 multiline_comment|/* card is opened by sequencer */
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* Wait for device to become free */
 id|down
@@ -419,12 +417,10 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|midi_dev-&gt;card
 op_assign
 id|card
@@ -1961,12 +1957,10 @@ id|devc
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|card
 op_assign
 id|midi_devs
@@ -1981,13 +1975,11 @@ c_cond
 (paren
 id|card-&gt;open_mode
 )paren
-(brace
 multiline_comment|/* card is opened native */
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 id|DPF
 c_func
 (paren
@@ -2022,12 +2014,10 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|midi_dev-&gt;card
 op_assign
 id|card
@@ -2151,10 +2141,8 @@ id|devc
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|card
 op_assign
 id|midi_devs
@@ -2234,12 +2222,10 @@ id|devc
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|card
 op_assign
 id|midi_devs
@@ -2480,12 +2466,10 @@ id|devc
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|count
 op_assign
 l_int|0
@@ -2521,10 +2505,8 @@ id|queue
 op_eq
 id|card-&gt;mpuout-&gt;lastmidiq
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|queue
 op_assign
 id|queue-&gt;next

@@ -122,11 +122,11 @@ l_int|32
 )braket
 suffix:semicolon
 DECL|member|traml_istart
-DECL|member|traml_isize
 id|u8
 id|traml_istart
 suffix:semicolon
 multiline_comment|/* starting address of the internal tram lines used */
+DECL|member|traml_isize
 id|u8
 id|traml_isize
 suffix:semicolon
@@ -222,9 +222,6 @@ DECL|macro|GPR_BASE
 mdefine_line|#define GPR_BASE 0x100
 DECL|macro|OUTPUT_BASE
 mdefine_line|#define OUTPUT_BASE 0x20
-singleline_comment|//We can get this info by looking at the code start
-singleline_comment|//#define PATCH_TYPE_INPUT        0x1
-singleline_comment|//#define PATCH_TYPE_OUTPUT       0x2
 DECL|macro|MAX_PATCHES_PAGES
 mdefine_line|#define MAX_PATCHES_PAGES 32
 DECL|struct|patch_manager
@@ -318,6 +315,19 @@ DECL|macro|PCM1_IN_L
 mdefine_line|#define PCM1_IN_L        0x04
 DECL|macro|PCM1_IN_R
 mdefine_line|#define PCM1_IN_R        0x05
+singleline_comment|//mutilchannel playback stream appear here:
+DECL|macro|MULTI_FRONT_L
+mdefine_line|#define MULTI_FRONT_L&t;0x08
+DECL|macro|MULTI_FRONT_R
+mdefine_line|#define MULTI_FRONT_R&t;0x09
+DECL|macro|MULTI_REAR_L
+mdefine_line|#define MULTI_REAR_L&t;0x0a
+DECL|macro|MULTI_REAR_R
+mdefine_line|#define MULTI_REAR_R&t;0x0b
+DECL|macro|MULTI_CENTER
+mdefine_line|#define MULTI_CENTER&t;0x0c
+DECL|macro|MULTI_LFE
+mdefine_line|#define MULTI_LFE&t;0x0d
 DECL|macro|AC97_IN_L
 mdefine_line|#define AC97_IN_L&t;0x10
 DECL|macro|AC97_IN_R
@@ -335,6 +345,10 @@ DECL|macro|DIGITAL_OUT_L
 mdefine_line|#define DIGITAL_OUT_L&t;0x22
 DECL|macro|DIGITAL_OUT_R
 mdefine_line|#define DIGITAL_OUT_R&t;0x23
+DECL|macro|DIGITAL_CENTER
+mdefine_line|#define DIGITAL_CENTER&t;0x24
+DECL|macro|DIGITAL_LFE
+mdefine_line|#define DIGITAL_LFE&t;0x25
 DECL|macro|ANALOG_REAR_L
 mdefine_line|#define ANALOG_REAR_L&t;0x28
 DECL|macro|ANALOG_REAR_R
@@ -343,6 +357,10 @@ DECL|macro|ADC_REC_L
 mdefine_line|#define ADC_REC_L&t;0x2a
 DECL|macro|ADC_REC_R
 mdefine_line|#define ADC_REC_R&t;0x2b
+DECL|macro|ANALOG_CENTER
+mdefine_line|#define ANALOG_CENTER&t;0x31
+DECL|macro|ANALOG_LFE
+mdefine_line|#define ANALOG_LFE&t;0x32
 DECL|macro|INPUT_PATCH_START
 mdefine_line|#define INPUT_PATCH_START(patch, nm, ln, i)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;patch = PATCH(mgr, patch_n);&t;&t;&t;&bslash;&n;&t;strcpy(patch-&gt;name, nm);&t;&t;&t;&bslash;&n;&t;patch-&gt;code_start = pc * 2;&t;&t;&t;&bslash;&n;&t;patch-&gt;input = (1&lt;&lt;(0x1f&amp;ln));&t;&t;&t;&bslash;&n;&t;patch-&gt;output= (1&lt;&lt;(0x1f&amp;ln));&t;&t;&t;&bslash;&n;&t;patch-&gt;id = i;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|INPUT_PATCH_END

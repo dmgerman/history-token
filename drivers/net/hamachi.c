@@ -934,14 +934,14 @@ suffix:semicolon
 multiline_comment|/* MII device addresses, only first one used. */
 DECL|member|rx_int_var
 DECL|member|tx_int_var
-id|u_int32_t
+id|u32
 id|rx_int_var
 comma
 id|tx_int_var
 suffix:semicolon
 multiline_comment|/* interrupt control variables */
 DECL|member|option
-id|u_int32_t
+id|u32
 id|option
 suffix:semicolon
 multiline_comment|/* Hold on to a copy of the options */
@@ -2999,12 +2999,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|u_int32_t
+id|u32
 id|rx_int_var
 comma
 id|tx_int_var
 suffix:semicolon
-id|u_int16_t
+id|u16
 id|fifo_info
 suffix:semicolon
 id|i

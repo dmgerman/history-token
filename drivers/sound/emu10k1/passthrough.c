@@ -17,7 +17,6 @@ macro_line|#include &quot;recmgr.h&quot;
 macro_line|#include &quot;irqmgr.h&quot;
 macro_line|#include &quot;audio.h&quot;
 macro_line|#include &quot;8010.h&quot;
-macro_line|#include &quot;passthrough.h&quot;
 DECL|function|pt_putsamples
 r_static
 r_void
@@ -966,19 +965,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|card-&gt;pt.lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1064,15 +1050,6 @@ id|pt-&gt;buf
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;pt.lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|emu10k1_pt_waveout_update
 r_void

@@ -30,7 +30,8 @@ singleline_comment|// 1=use parity, 0=don&squot;t
 DECL|member|ctsFlowControl
 id|ctsFlowControl
 comma
-singleline_comment|// 1=use CTS flow control, 0=don&squot;t
+singleline_comment|// all except 19Q: 1=use CTS flow control, 0=don&squot;t
+singleline_comment|// 19Q: 0x08:CTSflowControl 0x10:DSRflowControl
 DECL|member|xonFlowControl
 id|xonFlowControl
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff.&n;&n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;  &n;  See keyspan.c for update history.&n;&n;*/
+multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000-2001&n;      Hugh Blemings &lt;hugh@misc.nu&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://misc.nu/hugh/keyspan.html for more information.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff.&n;&n;  Tip &squot;o the hat to IBM (and previously Linuxcare :) for supporting &n;  staff in their work on open source projects.&n;  &n;  See keyspan.c for update history.&n;&n;*/
 macro_line|#ifndef __LINUX_USB_SERIAL_KEYSPAN_H
 DECL|macro|__LINUX_USB_SERIAL_KEYSPAN_H
 mdefine_line|#define __LINUX_USB_SERIAL_KEYSPAN_H
@@ -104,6 +104,19 @@ id|buf
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_static
+r_void
+id|keyspan_send_setup
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_int
+id|reset_port
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -251,6 +264,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 suffix:semicolon
 r_static
@@ -266,6 +282,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 suffix:semicolon
 r_static
@@ -281,6 +300,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 suffix:semicolon
 multiline_comment|/* Functions from usbserial.c for ezusb firmware handling */
@@ -322,7 +344,7 @@ id|__u8
 id|bRequest
 )paren
 suffix:semicolon
-multiline_comment|/* Struct used for firmware */
+multiline_comment|/* Struct used for firmware - increased size of data section&n;&t;   to allow Keyspan&squot;s &squot;C&squot; firmware struct to be used unmodified */
 DECL|struct|ezusb_hex_record
 r_struct
 id|ezusb_hex_record
@@ -339,12 +361,12 @@ DECL|member|data
 id|__u8
 id|data
 (braket
-l_int|16
+l_int|64
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Conditionally include firmware images, if they aren&squot;t&n;&t;   included create a null pointer instead.  Current &n;&t;   firmware images aren&squot;t optimised to remove duplicate&n;&t;   addresses. */
+multiline_comment|/* Conditionally include firmware images, if they aren&squot;t&n;&t;   included create a null pointer instead.  Current &n;&t;   firmware images aren&squot;t optimised to remove duplicate&n;&t;   addresses in the image itself. */
 macro_line|#ifdef CONFIG_USB_SERIAL_KEYSPAN_USA28
 macro_line|#include &quot;keyspan_usa28_fw.h&quot;
 macro_line|#else
@@ -369,6 +391,34 @@ r_struct
 id|ezusb_hex_record
 op_star
 id|keyspan_usa28x_firmware
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_SERIAL_KEYSPAN_USA28XA
+macro_line|#include &quot;keyspan_usa28xa_fw.h&quot;
+macro_line|#else
+DECL|variable|keyspan_usa28xa_firmware
+r_static
+r_const
+r_struct
+id|ezusb_hex_record
+op_star
+id|keyspan_usa28xa_firmware
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_SERIAL_KEYSPAN_USA28XB
+macro_line|#include &quot;keyspan_usa28xb_fw.h&quot;
+macro_line|#else
+DECL|variable|keyspan_usa28xb_firmware
+r_static
+r_const
+r_struct
+id|ezusb_hex_record
+op_star
+id|keyspan_usa28xb_firmware
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -449,6 +499,43 @@ DECL|macro|KEYSPAN_MAX_NUM_PORTS
 mdefine_line|#define&t;&t;KEYSPAN_MAX_NUM_PORTS&t;&t;(4)
 DECL|macro|KEYSPAN_MAX_FLIPS
 mdefine_line|#define&t;&t;KEYSPAN_MAX_FLIPS&t;&t;(2)
+multiline_comment|/* Device info for the Keyspan serial converter, used&n;&t;   by the overall usb-serial probe function */
+DECL|macro|KEYSPAN_VENDOR_ID
+mdefine_line|#define KEYSPAN_VENDOR_ID&t;&t;&t;(0x06cd)
+multiline_comment|/* Product IDs for the eight products supported, pre-renumeration */
+DECL|macro|keyspan_usa18x_pre_product_id
+mdefine_line|#define&t;keyspan_usa18x_pre_product_id&t;&t;0x0105
+DECL|macro|keyspan_usa19_pre_product_id
+mdefine_line|#define&t;keyspan_usa19_pre_product_id&t;&t;0x0103
+DECL|macro|keyspan_usa19w_pre_product_id
+mdefine_line|#define&t;keyspan_usa19w_pre_product_id&t;&t;0x0106
+DECL|macro|keyspan_usa28_pre_product_id
+mdefine_line|#define&t;keyspan_usa28_pre_product_id&t;&t;0x0101
+DECL|macro|keyspan_usa28x_pre_product_id
+mdefine_line|#define&t;keyspan_usa28x_pre_product_id&t;&t;0x0102
+DECL|macro|keyspan_usa28xa_pre_product_id
+mdefine_line|#define&t;keyspan_usa28xa_pre_product_id&t;&t;0x0114
+DECL|macro|keyspan_usa28xb_pre_product_id
+mdefine_line|#define&t;keyspan_usa28xb_pre_product_id&t;&t;0x0113
+DECL|macro|keyspan_usa49w_pre_product_id
+mdefine_line|#define&t;keyspan_usa49w_pre_product_id&t;&t;0x0109
+multiline_comment|/* Product IDs post-renumeration.  Note that the 28x and 28xb&n;&t;   have the same id&squot;s post-renumeration but behave identically&n;&t;   so it&squot;s not an issue. */
+DECL|macro|keyspan_usa18x_product_id
+mdefine_line|#define&t;keyspan_usa18x_product_id&t;&t;0x0112
+DECL|macro|keyspan_usa19_product_id
+mdefine_line|#define&t;keyspan_usa19_product_id&t;&t;0x0107
+DECL|macro|keyspan_usa19w_product_id
+mdefine_line|#define&t;keyspan_usa19w_product_id&t;&t;0x0108
+DECL|macro|keyspan_usa28_product_id
+mdefine_line|#define&t;keyspan_usa28_product_id&t;&t;0x010f
+DECL|macro|keyspan_usa28x_product_id
+mdefine_line|#define&t;keyspan_usa28x_product_id&t;&t;0x0110
+DECL|macro|keyspan_usa28xa_product_id
+mdefine_line|#define&t;keyspan_usa28xa_product_id&t;&t;0x0115
+DECL|macro|keyspan_usa28xb_product_id
+mdefine_line|#define&t;keyspan_usa28xb_product_id&t;&t;0x0110
+DECL|macro|keyspan_usa49w_product_id
+mdefine_line|#define&t;keyspan_usa49w_product_id&t;&t;0x010a
 r_typedef
 r_struct
 (brace
@@ -570,7 +657,7 @@ id|keyspan_device_details
 id|usa18x_device_details
 op_assign
 (brace
-l_int|0x112
+id|keyspan_usa18x_product_id
 comma
 multiline_comment|/* product ID */
 id|msg_usa26
@@ -625,7 +712,7 @@ id|keyspan_device_details
 id|usa19_device_details
 op_assign
 (brace
-l_int|0x107
+id|keyspan_usa19_product_id
 comma
 multiline_comment|/* product ID */
 id|msg_usa28
@@ -681,7 +768,7 @@ id|keyspan_device_details
 id|usa19w_device_details
 op_assign
 (brace
-l_int|0x108
+id|keyspan_usa19w_product_id
 comma
 multiline_comment|/* product ID */
 id|msg_usa26
@@ -736,7 +823,7 @@ id|keyspan_device_details
 id|usa28x_device_details
 op_assign
 (brace
-l_int|0x110
+id|keyspan_usa28x_product_id
 comma
 multiline_comment|/* product ID */
 id|msg_usa26
@@ -791,6 +878,69 @@ multiline_comment|/* calc baud rate */
 id|KEYSPAN_USA28X_BAUDCLK
 )brace
 suffix:semicolon
+DECL|variable|usa28xa_device_details
+r_static
+r_const
+id|keyspan_device_details
+id|usa28xa_device_details
+op_assign
+(brace
+id|keyspan_usa28xa_product_id
+comma
+multiline_comment|/* product ID */
+id|msg_usa26
+comma
+multiline_comment|/* msg type*/
+l_int|2
+comma
+multiline_comment|/* num ports */
+l_int|0
+comma
+multiline_comment|/* indat endpoint flip */
+l_int|1
+comma
+multiline_comment|/* outdat endpoint flip */
+(brace
+l_int|0x81
+comma
+l_int|0x83
+)brace
+comma
+multiline_comment|/* per port indat */
+(brace
+l_int|0x01
+comma
+l_int|0x03
+)brace
+comma
+multiline_comment|/* per port outdat */
+(brace
+l_int|0x85
+comma
+l_int|0x86
+)brace
+comma
+multiline_comment|/* per port inack */
+(brace
+l_int|0x05
+comma
+l_int|0x06
+)brace
+comma
+multiline_comment|/* per port outcont */
+l_int|0x87
+comma
+multiline_comment|/* instat endpoint */
+l_int|0x07
+comma
+multiline_comment|/* glocont endpoint */
+id|keyspan_usa19w_calc_baud
+comma
+multiline_comment|/* calc baud rate */
+id|KEYSPAN_USA28X_BAUDCLK
+)brace
+suffix:semicolon
+multiline_comment|/* We don&squot;t need a separate entry for the usa28xb as it appears as a 28x anyway */
 DECL|variable|usa49w_device_details
 r_static
 r_const
@@ -798,7 +948,7 @@ id|keyspan_device_details
 id|usa49w_device_details
 op_assign
 (brace
-l_int|0x010a
+id|keyspan_usa49w_product_id
 comma
 multiline_comment|/* product ID */
 id|msg_usa49
@@ -900,40 +1050,14 @@ op_amp
 id|usa28x_device_details
 comma
 op_amp
+id|usa28xa_device_details
+comma
+op_amp
 id|usa49w_device_details
 comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/* Device info for the Keyspan serial converter, used&n;&t;   by the overall usb-serial probe function */
-DECL|macro|KEYSPAN_VENDOR_ID
-mdefine_line|#define KEYSPAN_VENDOR_ID&t;&t;&t;(0x06cd)
-multiline_comment|/* Product IDs for the five products supported, pre-renumeration */
-DECL|macro|keyspan_usa18x_pre_product_id
-mdefine_line|#define&t;keyspan_usa18x_pre_product_id&t;0x0105
-DECL|macro|keyspan_usa19_pre_product_id
-mdefine_line|#define&t;keyspan_usa19_pre_product_id&t;0x0103
-DECL|macro|keyspan_usa19w_pre_product_id
-mdefine_line|#define&t;keyspan_usa19w_pre_product_id&t;0x0106
-DECL|macro|keyspan_usa28_pre_product_id
-mdefine_line|#define&t;keyspan_usa28_pre_product_id&t;0x0101
-DECL|macro|keyspan_usa28x_pre_product_id
-mdefine_line|#define&t;keyspan_usa28x_pre_product_id&t;0x0102
-DECL|macro|keyspan_usa49w_pre_product_id
-mdefine_line|#define&t;keyspan_usa49w_pre_product_id&t;0x0109
-multiline_comment|/* Product IDs post-renumeration */
-DECL|macro|keyspan_usa18x_product_id
-mdefine_line|#define&t;keyspan_usa18x_product_id&t;0x0112
-DECL|macro|keyspan_usa19_product_id
-mdefine_line|#define&t;keyspan_usa19_product_id&t;0x0107
-DECL|macro|keyspan_usa19w_product_id
-mdefine_line|#define&t;keyspan_usa19w_product_id&t;0x0108
-DECL|macro|keyspan_usa28_product_id
-mdefine_line|#define&t;keyspan_usa28_product_id&t;0x010f
-DECL|macro|keyspan_usa28x_product_id
-mdefine_line|#define&t;keyspan_usa28x_product_id&t;0x0110
-DECL|macro|keyspan_usa49w_product_id
-mdefine_line|#define&t;keyspan_usa49w_product_id&t;0x010a
 DECL|variable|keyspan_ids_combined
 r_static
 id|__devinitdata
@@ -1000,6 +1124,26 @@ c_func
 (paren
 id|KEYSPAN_VENDOR_ID
 comma
+id|keyspan_usa28xa_pre_product_id
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xb_pre_product_id
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
 id|keyspan_usa49w_pre_product_id
 )paren
 )brace
@@ -1051,6 +1195,26 @@ c_func
 id|KEYSPAN_VENDOR_ID
 comma
 id|keyspan_usa28x_product_id
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xa_product_id
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xb_product_id
 )paren
 )brace
 comma
@@ -1195,6 +1359,56 @@ c_func
 id|KEYSPAN_VENDOR_ID
 comma
 id|keyspan_usa28x_pre_product_id
+)paren
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+DECL|variable|keyspan_usa28xa_pre_ids
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|keyspan_usa28xa_pre_ids
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xa_pre_product_id
+)paren
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+DECL|variable|keyspan_usa28xb_pre_ids
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|keyspan_usa28xb_pre_ids
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xb_pre_product_id
 )paren
 )brace
 comma
@@ -1353,6 +1567,31 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
+DECL|variable|keyspan_usa28xa_ids
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|keyspan_usa28xa_ids
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
+id|keyspan_usa28xa_product_id
+)paren
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
 DECL|variable|keyspan_usa49w_ids
 r_static
 id|__devinitdata
@@ -1378,7 +1617,7 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
-multiline_comment|/* Structs for the devices, pre and post renumeration.&n;       These are incomplete at present - HAB 20000708  */
+multiline_comment|/* Structs for the devices, pre and post renumeration. */
 DECL|variable|keyspan_usa18x_pre_device
 r_struct
 id|usb_serial_device_type
@@ -1580,6 +1819,100 @@ comma
 id|id_table
 suffix:colon
 id|keyspan_usa28x_pre_ids
+comma
+id|needs_interrupt_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_out
+suffix:colon
+id|DONT_CARE
+comma
+id|num_interrupt_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_out
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_ports
+suffix:colon
+l_int|2
+comma
+id|startup
+suffix:colon
+id|keyspan_fake_startup
+)brace
+suffix:semicolon
+DECL|variable|keyspan_usa28xa_pre_device
+r_struct
+id|usb_serial_device_type
+id|keyspan_usa28xa_pre_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Keyspan USA28XA - (without firmware)&quot;
+comma
+id|id_table
+suffix:colon
+id|keyspan_usa28xa_pre_ids
+comma
+id|needs_interrupt_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_out
+suffix:colon
+id|DONT_CARE
+comma
+id|num_interrupt_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_out
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_ports
+suffix:colon
+l_int|2
+comma
+id|startup
+suffix:colon
+id|keyspan_fake_startup
+)brace
+suffix:semicolon
+DECL|variable|keyspan_usa28xb_pre_device
+r_struct
+id|usb_serial_device_type
+id|keyspan_usa28xb_pre_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Keyspan USA28XB - (without firmware)&quot;
+comma
+id|id_table
+suffix:colon
+id|keyspan_usa28xb_pre_ids
 comma
 id|needs_interrupt_in
 suffix:colon
@@ -2015,11 +2348,105 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;Keyspan USA28X&quot;
+l_string|&quot;Keyspan USA28X/XB&quot;
 comma
 id|id_table
 suffix:colon
 id|keyspan_usa28x_ids
+comma
+id|needs_interrupt_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_out
+suffix:colon
+id|DONT_CARE
+comma
+id|num_interrupt_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_out
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_ports
+suffix:colon
+l_int|2
+comma
+id|open
+suffix:colon
+id|keyspan_open
+comma
+id|close
+suffix:colon
+id|keyspan_close
+comma
+id|write
+suffix:colon
+id|keyspan_write
+comma
+id|write_room
+suffix:colon
+id|keyspan_write_room
+comma
+singleline_comment|//&t;write_bulk_callback: &t;keyspan_write_bulk_callback,
+singleline_comment|//&t;read_int_callback:&t;keyspan_usa26_read_int_callback,
+id|chars_in_buffer
+suffix:colon
+id|keyspan_chars_in_buffer
+comma
+id|throttle
+suffix:colon
+id|keyspan_rx_throttle
+comma
+id|unthrottle
+suffix:colon
+id|keyspan_rx_unthrottle
+comma
+id|ioctl
+suffix:colon
+id|keyspan_ioctl
+comma
+id|set_termios
+suffix:colon
+id|keyspan_set_termios
+comma
+id|break_ctl
+suffix:colon
+id|keyspan_break_ctl
+comma
+id|startup
+suffix:colon
+id|keyspan_startup
+comma
+id|shutdown
+suffix:colon
+id|keyspan_shutdown
+comma
+)brace
+suffix:semicolon
+DECL|variable|keyspan_usa28xa_device
+r_struct
+id|usb_serial_device_type
+id|keyspan_usa28xa_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Keyspan USA28XA&quot;
+comma
+id|id_table
+suffix:colon
+id|keyspan_usa28xa_ids
 comma
 id|needs_interrupt_in
 suffix:colon

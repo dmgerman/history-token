@@ -75,14 +75,14 @@ id|hermes_t
 op_star
 id|hw
 comma
-r_uint16
+id|u16
 id|cmd
 comma
-r_uint16
+id|u16
 id|param0
 )paren
 (brace
-r_uint16
+id|u16
 id|reg
 suffix:semicolon
 multiline_comment|/* First check that the command register is not busy */
@@ -186,7 +186,7 @@ op_star
 id|hw
 )paren
 (brace
-r_uint16
+id|u16
 id|status
 comma
 id|reg
@@ -500,10 +500,10 @@ id|hermes_t
 op_star
 id|hw
 comma
-r_uint16
+id|u16
 id|cmd
 comma
-r_uint16
+id|u16
 id|parm0
 comma
 id|hermes_response_t
@@ -517,7 +517,7 @@ suffix:semicolon
 r_int
 id|k
 suffix:semicolon
-r_uint16
+id|u16
 id|reg
 suffix:semicolon
 id|err
@@ -756,10 +756,10 @@ id|hermes_t
 op_star
 id|hw
 comma
-r_uint16
+id|u16
 id|size
 comma
-r_uint16
+id|u16
 op_star
 id|fid
 )paren
@@ -775,7 +775,7 @@ suffix:semicolon
 r_int
 id|k
 suffix:semicolon
-r_uint16
+id|u16
 id|reg
 suffix:semicolon
 r_if
@@ -970,10 +970,10 @@ comma
 r_int
 id|bap
 comma
-r_uint16
+id|u16
 id|id
 comma
-r_uint16
+id|u16
 id|offset
 )paren
 (brace
@@ -1000,7 +1000,7 @@ suffix:semicolon
 r_int
 id|k
 suffix:semicolon
-r_uint16
+id|u16
 id|reg
 suffix:semicolon
 multiline_comment|/* Paranoia.. */
@@ -1218,10 +1218,10 @@ comma
 r_int
 id|len
 comma
-r_uint16
+id|u16
 id|id
 comma
-r_uint16
+id|u16
 id|offset
 )paren
 (brace
@@ -1315,10 +1315,10 @@ comma
 r_int
 id|len
 comma
-r_uint16
+id|u16
 id|id
 comma
-r_uint16
+id|u16
 id|offset
 )paren
 (brace
@@ -1404,13 +1404,13 @@ comma
 r_int
 id|bap
 comma
-r_uint16
+id|u16
 id|rid
 comma
 r_int
-id|buflen
+id|bufsize
 comma
-r_uint16
+id|u16
 op_star
 id|length
 comma
@@ -1434,7 +1434,7 @@ id|HERMES_DATA1
 suffix:colon
 id|HERMES_DATA0
 suffix:semicolon
-r_uint16
+id|u16
 id|rlength
 comma
 id|rtype
@@ -1442,13 +1442,10 @@ suffix:semicolon
 id|hermes_response_t
 id|resp
 suffix:semicolon
-r_int
-id|count
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|buflen
+id|bufsize
 op_mod
 l_int|2
 )paren
@@ -1559,7 +1556,7 @@ c_func
 id|rlength
 )paren
 OG
-id|buflen
+id|bufsize
 )paren
 id|printk
 c_func
@@ -1576,20 +1573,14 @@ c_func
 id|rlength
 )paren
 comma
-id|buflen
+id|bufsize
 comma
 id|rid
 comma
 id|rlength
 )paren
 suffix:semicolon
-multiline_comment|/* For now we always read the whole buffer, the&n;&t;   lengths in the records seem to be wrong, frequently */
-id|count
-op_assign
-id|buflen
-op_div
-l_int|2
-suffix:semicolon
+multiline_comment|/* FIXME: we should read the min of the requested length and&n;           the actual record length */
 id|hermes_read_words
 c_func
 (paren
@@ -1599,7 +1590,9 @@ id|dreg
 comma
 id|buf
 comma
-id|count
+id|bufsize
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|out
@@ -1620,10 +1613,10 @@ comma
 r_int
 id|bap
 comma
-r_uint16
+id|u16
 id|rid
 comma
-r_uint16
+id|u16
 id|length
 comma
 r_const
@@ -1669,7 +1662,7 @@ comma
 op_star
 (paren
 (paren
-r_uint16
+id|u16
 op_star
 )paren
 id|value

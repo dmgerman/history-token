@@ -165,13 +165,15 @@ r_if
 c_cond
 (paren
 id|ret
+op_ne
+l_int|7
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;uss720: get_1284_register(%d) failed, status 0x%x&bslash;n&quot;
+l_string|&quot;uss720: get_1284_register(%d) failed, status 0x%x expected 7&bslash;n&quot;
 comma
 (paren
 r_int
@@ -181,6 +183,11 @@ id|reg
 comma
 id|ret
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -288,6 +295,10 @@ id|pp
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -3167,6 +3178,16 @@ l_int|0x1284
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1293
+comma
+l_int|0x0002
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -3216,6 +3237,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|uss720_init

@@ -537,6 +537,12 @@ comma
 id|hpusbscsi_usb_ids
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|hpusbscsi_usb_driver
 r_static
 r_struct

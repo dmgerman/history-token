@@ -17,7 +17,6 @@ macro_line|#include &quot;recmgr.h&quot;
 macro_line|#include &quot;irqmgr.h&quot;
 macro_line|#include &quot;audio.h&quot;
 macro_line|#include &quot;8010.h&quot;
-macro_line|#include &quot;passthrough.h&quot;
 r_static
 r_void
 id|calculate_ofrag
@@ -4354,6 +4353,24 @@ id|rd
 comma
 id|wr
 suffix:semicolon
+id|DPF
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;emu10k1_mm_nopage()&bslash;n&quot;
+)paren
+suffix:semicolon
+id|DPD
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;addr: %#lx&bslash;n&quot;
+comma
+id|address
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4496,6 +4513,16 @@ id|get_page
 id|dmapage
 )paren
 suffix:semicolon
+id|DPD
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;page: %#lx&bslash;n&quot;
+comma
+id|dmapage
+)paren
+suffix:semicolon
 r_return
 id|dmapage
 suffix:semicolon
@@ -4543,11 +4570,9 @@ id|file-&gt;private_data
 suffix:semicolon
 r_int
 r_int
-id|maxsize
+id|max_pages
 comma
-id|size
-comma
-id|offset
+id|n_pages
 comma
 id|pgoffset
 suffix:semicolon
@@ -4577,7 +4602,7 @@ comma
 l_string|&quot;emu10k1_audio_mmap()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|maxsize
+id|max_pages
 op_assign
 l_int|0
 suffix:semicolon
@@ -4675,11 +4700,9 @@ id|woinst-&gt;mmapped
 op_assign
 l_int|1
 suffix:semicolon
-id|maxsize
+id|max_pages
 op_add_assign
 id|woinst-&gt;buffer.pages
-op_star
-id|PAGE_SIZE
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -4762,11 +4785,9 @@ id|wiinst-&gt;mmapped
 op_assign
 l_int|1
 suffix:semicolon
-id|maxsize
+id|max_pages
 op_add_assign
 id|wiinst-&gt;buffer.pages
-op_star
-id|PAGE_SIZE
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -4778,30 +4799,60 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|size
+id|n_pages
 op_assign
+(paren
+(paren
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
+)paren
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|pgoffset
 op_assign
 id|vma-&gt;vm_pgoff
 suffix:semicolon
-id|offset
-op_assign
+id|DPD
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;vma_start: %#lx, vma_end: %#lx, vma_offset: %d&bslash;n&quot;
+comma
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_end
+comma
 id|pgoffset
-op_lshift
-id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|DPD
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;n_pages: %d, max_pages: %d&bslash;n&quot;
+comma
+id|n_pages
+comma
+id|max_pages
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|offset
+id|pgoffset
 op_plus
-id|size
+id|n_pages
 OG
-id|maxsize
+id|max_pages
 )paren
 r_return
 op_minus
@@ -5504,12 +5555,28 @@ id|card-&gt;pt.state
 op_ne
 id|PT_STATE_INACTIVE
 )paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|card-&gt;pt.lock
+)paren
+suffix:semicolon
 id|emu10k1_pt_stop
 c_func
 (paren
 id|card
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;pt.lock
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5606,7 +5673,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* wait for the tasklet (bottom-half) to finish */
+multiline_comment|/* remove the tasklet */
 id|tasklet_kill
 c_func
 (paren
@@ -6753,7 +6820,11 @@ c_cond
 id|bytestocopy
 op_ge
 id|wiinst-&gt;buffer.fragment_size
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|waitqueue_active
 c_func
 (paren
@@ -6768,6 +6839,7 @@ op_amp
 id|wiinst-&gt;wait_queue
 )paren
 suffix:semicolon
+)brace
 r_else
 id|DPD
 c_func
@@ -6911,7 +6983,11 @@ c_cond
 id|bytestocopy
 op_ge
 id|woinst-&gt;buffer.fragment_size
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|waitqueue_active
 c_func
 (paren
@@ -6926,6 +7002,7 @@ op_amp
 id|woinst-&gt;wait_queue
 )paren
 suffix:semicolon
+)brace
 r_else
 id|DPD
 c_func

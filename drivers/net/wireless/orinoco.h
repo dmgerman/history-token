@@ -3,7 +3,7 @@ macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
 multiline_comment|/* To enable debug messages */
-singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
+multiline_comment|/*  #define ORINOCO_DEBUG&t;&t;3 */
 macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
 macro_line|#error &quot;orinoco_cs requires Wireless extensions v10 or later.&quot;
 macro_line|#endif /* (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10) */
@@ -47,6 +47,7 @@ DECL|member|len
 r_uint16
 id|len
 suffix:semicolon
+multiline_comment|/* always store little-endian */
 DECL|member|data
 r_char
 id|data

@@ -1347,23 +1347,21 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*&n; *                         SYNCHRONOUS CALL SUPPORT                  *&n; *-------------------------------------------------------------------*/
-r_typedef
+DECL|struct|usb_api_data
 r_struct
+id|usb_api_data
 (brace
-DECL|member|wakeup
+DECL|member|wqh
 id|wait_queue_head_t
-op_star
-id|wakeup
+id|wqh
 suffix:semicolon
-DECL|member|stuff
-r_void
-op_star
-id|stuff
+DECL|member|done
+r_int
+id|done
 suffix:semicolon
-multiline_comment|/* more to follow */
-DECL|typedef|api_wrapper_data
+multiline_comment|/* void* stuff;&t;*/
+multiline_comment|/* Possible extension later. */
 )brace
-id|api_wrapper_data
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 DECL|struct|usb_operations

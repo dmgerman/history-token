@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;&n;  Change History&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;   (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;   (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
+multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000-2001&n;      Hugh Blemings &lt;hugh@misc.nu&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://misc.nu/hugh/keyspan.html for more information.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to IBM (and previously Linuxcare :) for supporting &n;  staff in their work on open source projects.&n;&n;  Change History&n;&n;    Mon Oct  8 14:29:00 EST 2001 hugh&n;      Fixed bug that prevented mulitport devices operating correctly&n;      if they weren&squot;t the first unit attached.&n;&n;    Sat Oct  6 12:31:21 EST 2001 hugh&n;      Added support for USA-28XA and -28XB, misc cleanups, break support&n;      for usa26 based models thanks to David Gibson.&n;&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;    (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;    (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -22,20 +22,25 @@ id|debug
 op_assign
 l_int|1
 suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
 macro_line|#else
 DECL|variable|debug
 r_static
 r_int
 id|debug
 suffix:semicolon
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#endif
+macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;keyspan.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1.1&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Hugh Blemings &lt;hugh@linuxcare.com&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Hugh Blemings &lt;hugh@misc.nu&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Keyspan USB to Serial Converter Driver&quot;
 DECL|macro|INSTAT_BUFLEN
@@ -223,6 +228,10 @@ DECL|member|ri_state
 r_int
 id|ri_state
 suffix:semicolon
+DECL|member|break_on
+r_int
+id|break_on
+suffix:semicolon
 DECL|member|tx_start_time
 r_int
 r_int
@@ -247,17 +256,6 @@ macro_line|#if 0
 macro_line|#undef &t;dbg 
 mdefine_line|#define&t;dbg&t;printk 
 macro_line|#endif
-r_static
-r_void
-id|keyspan_send_setup
-c_func
-(paren
-r_struct
-id|usb_serial_port
-op_star
-id|port
-)paren
-suffix:semicolon
 multiline_comment|/* Functions used by new usb-serial code. */
 DECL|function|keyspan_init
 r_int
@@ -299,6 +297,18 @@ suffix:semicolon
 id|usb_serial_register
 (paren
 op_amp
+id|keyspan_usa28xa_pre_device
+)paren
+suffix:semicolon
+id|usb_serial_register
+(paren
+op_amp
+id|keyspan_usa28xb_pre_device
+)paren
+suffix:semicolon
+id|usb_serial_register
+(paren
+op_amp
 id|keyspan_usa49w_pre_device
 )paren
 suffix:semicolon
@@ -332,6 +342,13 @@ op_amp
 id|keyspan_usa28x_device
 )paren
 suffix:semicolon
+id|usb_serial_register
+(paren
+op_amp
+id|keyspan_usa28xa_device
+)paren
+suffix:semicolon
+multiline_comment|/* We don&squot;t need a separate entry for the usa28xb as it appears as a 28x anyway */
 id|usb_serial_register
 (paren
 op_amp
@@ -390,6 +407,18 @@ suffix:semicolon
 id|usb_serial_deregister
 (paren
 op_amp
+id|keyspan_usa28xa_pre_device
+)paren
+suffix:semicolon
+id|usb_serial_deregister
+(paren
+op_amp
+id|keyspan_usa28xb_pre_device
+)paren
+suffix:semicolon
+id|usb_serial_deregister
+(paren
+op_amp
 id|keyspan_usa49w_pre_device
 )paren
 suffix:semicolon
@@ -426,6 +455,13 @@ suffix:semicolon
 id|usb_serial_deregister
 (paren
 op_amp
+id|keyspan_usa28xa_device
+)paren
+suffix:semicolon
+multiline_comment|/* We don&squot;t need a separate entry for the usa28xb as it appears as a 28x anyway */
+id|usb_serial_deregister
+(paren
+op_amp
 id|keyspan_usa49w_device
 )paren
 suffix:semicolon
@@ -458,7 +494,7 @@ id|port
 id|dbg
 c_func
 (paren
-l_string|&quot;keyspan_rx_throttle port %d&quot;
+l_string|&quot;keyspan_rx_throttle port %d&bslash;n&quot;
 comma
 id|port-&gt;number
 )paren
@@ -478,7 +514,7 @@ id|port
 id|dbg
 c_func
 (paren
-l_string|&quot;keyspan_rx_unthrottle port %d&quot;
+l_string|&quot;keyspan_rx_unthrottle port %d&bslash;n&quot;
 comma
 id|port-&gt;number
 )paren
@@ -498,10 +534,51 @@ r_int
 id|break_state
 )paren
 (brace
+r_struct
+id|keyspan_port_private
+op_star
+id|p_priv
+suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;keyspan_break_ctl&quot;
+l_string|&quot;keyspan_break_ctl&bslash;n&quot;
+)paren
+suffix:semicolon
+id|p_priv
+op_assign
+(paren
+r_struct
+id|keyspan_port_private
+op_star
+)paren
+id|port
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|break_state
+op_eq
+op_minus
+l_int|1
+)paren
+id|p_priv-&gt;break_on
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|p_priv-&gt;break_on
+op_assign
+l_int|0
+suffix:semicolon
+id|keyspan_send_setup
+c_func
+(paren
+id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -538,7 +615,13 @@ r_int
 r_int
 id|cflag
 suffix:semicolon
-multiline_comment|/*  dbg(__FUNCTION__ &quot;.&quot;); */
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|p_priv
 op_assign
 (paren
@@ -624,6 +707,8 @@ id|keyspan_send_setup
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -833,6 +918,8 @@ id|keyspan_send_setup
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -898,6 +985,8 @@ id|keyspan_send_setup
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -981,7 +1070,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; for port %d (%d chars [%x]), flip=%d&quot;
+l_string|&quot; for port %d (%d chars [%x]), flip=%d&bslash;n&quot;
 comma
 id|port-&gt;number
 comma
@@ -1052,13 +1141,26 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; no output urb :(&quot;
+l_string|&quot; no output urb :(&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 id|count
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; endpoint %d&bslash;n&quot;
+comma
+id|usb_pipeendpoint
+c_func
+(paren
+id|this_urb-&gt;pipe
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1199,7 +1301,7 @@ l_int|0
 id|dbg
 c_func
 (paren
-l_string|&quot;usb_submit_urb(write bulk) failed (%d)&quot;
+l_string|&quot;usb_submit_urb(write bulk) failed (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -1267,7 +1369,13 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|endpoint
 op_assign
 id|usb_pipeendpoint
@@ -1286,7 +1394,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;nonzero status: %x on endpoint %d.&quot;
+l_string|&quot;nonzero status: %x on endpoint %d.&bslash;n&quot;
 comma
 id|urb-&gt;status
 comma
@@ -1473,7 +1581,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -1527,7 +1635,19 @@ op_member_access_from_pointer
 r_private
 )paren
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__ &quot; urb %d&quot;, urb == p_priv-&gt;out_urbs[1]); */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; urb %d&bslash;n&quot;
+comma
+id|urb
+op_eq
+id|p_priv-&gt;out_urbs
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1566,6 +1686,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1620,13 +1742,20 @@ c_cond
 id|p_priv-&gt;resend_cont
 )paren
 (brace
-multiline_comment|/*  dbg (__FUNCTION__ &quot; sending setup&quot;); */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; sending setup&bslash;n&quot;
+)paren
+suffix:semicolon
 id|keyspan_usa26_send_setup
 c_func
 (paren
 id|port-&gt;serial
 comma
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1693,7 +1822,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; nonzero status: %x&quot;
+l_string|&quot; nonzero status: %x&bslash;n&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1713,7 +1842,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; %d byte report??&quot;
+l_string|&quot; %d byte report??&bslash;n&quot;
 comma
 id|urb-&gt;actual_length
 )paren
@@ -1735,7 +1864,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; port status: port %d cts %d dcd %d dsr %d ri %d toff %d txoff %d rxen %d cr %d&quot;
+l_string|&quot; port status: port %d cts %d dcd %d dsr %d ri %d toff %d txoff %d rxen %d cr %d&bslash;n&quot;
 comma
 id|msg-&gt;port
 comma
@@ -1769,7 +1898,7 @@ id|serial-&gt;num_ports
 (brace
 id|dbg
 (paren
-l_string|&quot;Unexpected port number %d&quot;
+l_string|&quot;Unexpected port number %d&bslash;n&quot;
 comma
 id|msg-&gt;port
 )paren
@@ -1914,7 +2043,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -1935,6 +2064,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1976,7 +2107,13 @@ id|keyspan_port_private
 op_star
 id|p_priv
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|port
 op_assign
 (paren
@@ -2038,6 +2175,8 @@ id|endpoint
 op_mod
 id|d
 dot
+"&bslash;"
+id|n
 "&quot;"
 comma
 id|urb-&gt;status
@@ -2149,7 +2288,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -2191,6 +2330,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2248,7 +2389,7 @@ id|p_priv-&gt;resend_cont
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; sending setup&quot;
+l_string|&quot; sending setup&bslash;n&quot;
 )paren
 suffix:semicolon
 id|keyspan_usa28_send_setup
@@ -2257,6 +2398,8 @@ c_func
 id|port-&gt;serial
 comma
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2324,7 +2467,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; nonzero status: %x&quot;
+l_string|&quot; nonzero status: %x&bslash;n&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -2348,7 +2491,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; bad length %d&quot;
+l_string|&quot; bad length %d&bslash;n&quot;
 comma
 id|urb-&gt;actual_length
 )paren
@@ -2357,7 +2500,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/*dbg(__FUNCTION__ &quot; %x %x %x %x %x %x %x %x %x %x %x %x&quot;,&n;&t;    data[0], data[1], data[2], data[3], data[4], data[5],&n;&t;    data[6], data[7], data[8], data[9], data[10], data[11]);*/
+multiline_comment|/*dbg(__FUNCTION__ &quot; %x %x %x %x %x %x %x %x %x %x %x %x&bslash;n&quot;,&n;&t;    data[0], data[1], data[2], data[3], data[4], data[5],&n;&t;    data[6], data[7], data[8], data[9], data[10], data[11]);*/
 multiline_comment|/* Now do something useful with the data */
 id|msg
 op_assign
@@ -2378,7 +2521,7 @@ id|serial-&gt;num_ports
 (brace
 id|dbg
 (paren
-l_string|&quot;Unexpected port number %d&quot;
+l_string|&quot;Unexpected port number %d&bslash;n&quot;
 comma
 id|msg-&gt;port
 )paren
@@ -2523,7 +2666,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -2544,6 +2687,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2578,7 +2723,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|serial
 op_assign
 (paren
@@ -2630,13 +2781,20 @@ c_cond
 id|p_priv-&gt;resend_cont
 )paren
 (brace
-multiline_comment|/*  dbg (__FUNCTION__ &quot; sending setup&quot;); */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; sending setup&bslash;n&quot;
+)paren
+suffix:semicolon
 id|keyspan_usa49_send_setup
 c_func
 (paren
 id|serial
 comma
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -2689,7 +2847,13 @@ suffix:semicolon
 r_int
 id|old_dcd_state
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|serial
 op_assign
 (paren
@@ -2709,7 +2873,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; nonzero status: %x&quot;
+l_string|&quot; nonzero status: %x&bslash;n&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -2733,7 +2897,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; bad length %d&quot;
+l_string|&quot; bad length %d&bslash;n&quot;
 comma
 id|urb-&gt;actual_length
 )paren
@@ -2742,7 +2906,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/*dbg(__FUNCTION__ &quot; %x %x %x %x %x %x %x %x %x %x %x&quot;,&n;&t;    data[0], data[1], data[2], data[3], data[4], data[5],&n;&t;    data[6], data[7], data[8], data[9], data[10]);*/
+multiline_comment|/*dbg(__FUNCTION__ &quot; %x %x %x %x %x %x %x %x %x %x %x&bslash;n&quot;,&n;&t;    data[0], data[1], data[2], data[3], data[4], data[5],&n;&t;    data[6], data[7], data[8], data[9], data[10]);*/
 multiline_comment|/* Now do something useful with the data */
 id|msg
 op_assign
@@ -2763,7 +2927,7 @@ id|serial-&gt;num_ports
 (brace
 id|dbg
 (paren
-l_string|&quot;Unexpected port number %d&quot;
+l_string|&quot;Unexpected port number %d&bslash;n&quot;
 comma
 id|msg-&gt;portNumber
 )paren
@@ -2908,7 +3072,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -2929,6 +3093,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2970,7 +3136,13 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|endpoint
 op_assign
 id|usb_pipeendpoint
@@ -2989,7 +3161,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;nonzero status: %x on endpoint %d.&quot;
+l_string|&quot;nonzero status: %x on endpoint %d.&bslash;n&quot;
 comma
 id|urb-&gt;status
 comma
@@ -3176,7 +3348,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;resubmit read urb failed. (%d)&quot;
+l_string|&quot;resubmit read urb failed. (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -3198,6 +3370,8 @@ id|urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3213,7 +3387,12 @@ op_star
 id|port
 )paren
 (brace
-singleline_comment|//&t;dbg(&quot;keyspan_write_room called&quot;);
+id|dbg
+c_func
+(paren
+l_string|&quot;keyspan_write_room called&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|32
@@ -3316,7 +3495,14 @@ id|d_details
 op_assign
 id|s_priv-&gt;device_details
 suffix:semicolon
-multiline_comment|/*  dbg(&quot;keyspan_open called.&quot;); */
+id|dbg
+c_func
+(paren
+l_string|&quot;keyspan_open called for port%d.&bslash;n&quot;
+comma
+id|port-&gt;number
+)paren
+suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|down
@@ -3428,7 +3614,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; submit urb %d failed (%d)&quot;
+l_string|&quot; submit urb %d failed (%d)&bslash;n&quot;
 comma
 id|i
 comma
@@ -3525,7 +3711,12 @@ id|keyspan_port_private
 op_star
 id|p_priv
 suffix:semicolon
-multiline_comment|/*  dbg(&quot;keyspan_close called&quot;); */
+id|dbg
+c_func
+(paren
+l_string|&quot;keyspan_close called&bslash;n&quot;
+)paren
+suffix:semicolon
 id|s_priv
 op_assign
 (paren
@@ -3551,6 +3742,31 @@ id|port
 op_member_access_from_pointer
 r_private
 )paren
+suffix:semicolon
+id|p_priv-&gt;rts_state
+op_assign
+l_int|0
+suffix:semicolon
+id|p_priv-&gt;dtr_state
+op_assign
+l_int|0
+suffix:semicolon
+id|keyspan_send_setup
+c_func
+(paren
+id|port
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/*while (p_priv-&gt;outcont_urb-&gt;status == -EINPROGRESS) {&n;&t;&t;dbg(&quot;close - urb in progress&bslash;n&quot;);&n;&t;}*/
+id|p_priv-&gt;out_flip
+op_assign
+l_int|0
+suffix:semicolon
+id|p_priv-&gt;in_flip
+op_assign
+l_int|0
 suffix:semicolon
 id|down
 (paren
@@ -3672,7 +3888,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Keyspan startup version %04x product %04x&quot;
+l_string|&quot;Keyspan startup version %04x product %04x&bslash;n&quot;
 comma
 id|serial-&gt;dev-&gt;descriptor.bcdDevice
 comma
@@ -3694,7 +3910,7 @@ l_int|0x8000
 id|dbg
 c_func
 (paren
-l_string|&quot;Firmware already loaded.  Quitting.&quot;
+l_string|&quot;Firmware already loaded.  Quitting.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3709,7 +3925,7 @@ id|serial-&gt;dev-&gt;descriptor.idProduct
 )paren
 (brace
 r_case
-l_int|0x0101
+id|keyspan_usa28_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3726,7 +3942,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0102
+id|keyspan_usa28x_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3743,7 +3959,41 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0103
+id|keyspan_usa28xa_pre_product_id
+suffix:colon
+id|record
+op_assign
+op_amp
+id|keyspan_usa28xa_firmware
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|fw_name
+op_assign
+l_string|&quot;USA28XA&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|keyspan_usa28xb_pre_product_id
+suffix:colon
+id|record
+op_assign
+op_amp
+id|keyspan_usa28xb_firmware
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|fw_name
+op_assign
+l_string|&quot;USA28XB&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|keyspan_usa19_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3760,7 +4010,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0105
+id|keyspan_usa18x_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3777,7 +4027,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0106
+id|keyspan_usa19w_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3794,7 +4044,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0109
+id|keyspan_usa49w_pre_product_id
 suffix:colon
 id|record
 op_assign
@@ -3846,7 +4096,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Uploading Keyspan %s firmware.&quot;
+l_string|&quot;Uploading Keyspan %s firmware.&bslash;n&quot;
 comma
 id|fw_name
 )paren
@@ -3996,7 +4246,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* endpoint not needed */
-multiline_comment|/*  dbg (__FUNCTION__ &quot; alloc for endpoint %d.&quot;, endpoint); */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; alloc for endpoint %d.&bslash;n&quot;
+comma
+id|endpoint
+)paren
+suffix:semicolon
 id|urb
 op_assign
 id|usb_alloc_urb
@@ -4017,7 +4274,7 @@ l_int|NULL
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; alloc for endpoint %d failed.&quot;
+l_string|&quot; alloc for endpoint %d failed.&bslash;n&quot;
 comma
 id|endpoint
 )paren
@@ -4265,7 +4522,13 @@ suffix:semicolon
 r_int
 id|endp
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|s_priv
 op_assign
 (paren
@@ -4797,7 +5060,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__ &quot; %d.&quot;, baud_rate); */
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; %d.&bslash;n&quot;
+comma
+id|baud_rate
+)paren
+suffix:semicolon
 multiline_comment|/* prevent divide by zero */
 r_if
 c_cond
@@ -5030,6 +5300,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 (brace
 r_struct
@@ -5061,7 +5334,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+id|dbg
+(paren
+l_string|&quot;%s reset=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|reset_port
+)paren
+suffix:semicolon
 id|s_priv
 op_assign
 (paren
@@ -5103,6 +5384,19 @@ id|this_urb
 op_assign
 id|p_priv-&gt;outcont_urb
 suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; endpoint %d&bslash;n&quot;
+comma
+id|usb_pipeendpoint
+c_func
+(paren
+id|this_urb-&gt;pipe
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Make sure we have an urb then send the message */
 r_if
 c_cond
@@ -5116,7 +5410,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; oops no urb.&quot;
+l_string|&quot; oops no urb.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5201,7 +5495,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;Invalid baud rate %d requested, using 9600.&quot;
+l_string|&quot;Invalid baud rate %d requested, using 9600.&bslash;n&quot;
 comma
 id|p_priv-&gt;baud
 )paren
@@ -5338,9 +5632,61 @@ id|msg.xoffChar
 op_assign
 l_int|19
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|reset_port
+)paren
+(brace
 id|msg._txOn
 op_assign
+l_int|0
+suffix:semicolon
+id|msg._txOff
+op_assign
 l_int|1
+suffix:semicolon
+id|msg.txFlush
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.txBreak
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxOn
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.rxOff
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxFlush
+op_assign
+l_int|1
+suffix:semicolon
+id|msg.rxForward
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.returnStatus
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.resetDataToggle
+op_assign
+l_int|0xff
+suffix:semicolon
+)brace
+r_else
+(brace
+id|msg._txOn
+op_assign
+(paren
+op_logical_neg
+id|p_priv-&gt;break_on
+)paren
 suffix:semicolon
 id|msg._txOff
 op_assign
@@ -5352,7 +5698,9 @@ l_int|0
 suffix:semicolon
 id|msg.txBreak
 op_assign
-l_int|0
+(paren
+id|p_priv-&gt;break_on
+)paren
 suffix:semicolon
 id|msg.rxOn
 op_assign
@@ -5370,7 +5718,15 @@ id|msg.rxForward
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*msg.returnStatus = 1;&n;&t;msg.resetDataToggle = 0xff;*/
+id|msg.returnStatus
+op_assign
+l_int|0
+suffix:semicolon
+id|msg.resetDataToggle
+op_assign
+l_int|0x0
+suffix:semicolon
+)brace
 multiline_comment|/* Do handshaking outputs */
 id|msg.setTxTriState_setRts
 op_assign
@@ -5437,7 +5793,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; usb_submit_urb(setup) failed (%d)&quot;
+l_string|&quot; usb_submit_urb(setup) failed (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -5486,6 +5842,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 (brace
 r_struct
@@ -5561,7 +5920,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; oops no urb.&quot;
+l_string|&quot; oops no urb.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5585,7 +5944,7 @@ id|EINPROGRESS
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; already writing&quot;
+l_string|&quot; already writing&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5640,7 +5999,7 @@ c_func
 id|__FUNCTION__
 l_string|&quot;Invalid baud rate requested %d.&quot;
 comma
-l_int|9600
+id|p_priv-&gt;baud
 )paren
 suffix:semicolon
 id|msg.baudLo
@@ -5786,7 +6145,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; usb_submit_urb(setup) failed&quot;
+l_string|&quot; usb_submit_urb(setup) failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5825,6 +6184,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 (brace
 r_struct
@@ -5856,7 +6218,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/*  dbg (__FUNCTION__); */
+r_int
+id|device_port
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|s_priv
 op_assign
 (paren
@@ -5895,7 +6266,30 @@ id|this_urb
 op_assign
 id|s_priv-&gt;glocont_urb
 suffix:semicolon
-multiline_comment|/*  dbg(__FUNCTION__ &quot; port %d&bslash;n&quot;, port-&gt;number); */
+multiline_comment|/* Work out which port within the device is being setup */
+id|device_port
+op_assign
+id|port-&gt;number
+op_minus
+id|port-&gt;serial-&gt;minor
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; endpoint %d port %d (%d)&bslash;n&quot;
+comma
+id|usb_pipeendpoint
+c_func
+(paren
+id|this_urb-&gt;pipe
+)paren
+comma
+id|port-&gt;number
+comma
+id|device_port
+)paren
+suffix:semicolon
 multiline_comment|/* Make sure we have an urb then send the message */
 r_if
 c_cond
@@ -5909,7 +6303,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; oops no urb for port %d.&quot;
+l_string|&quot; oops no urb for port %d.&bslash;n&quot;
 comma
 id|port-&gt;number
 )paren
@@ -5953,9 +6347,10 @@ id|keyspan_usa49_portControlMessage
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*msg.portNumber = port-&gt;number;*/
 id|msg.portNumber
 op_assign
-id|port-&gt;number
+id|device_port
 suffix:semicolon
 multiline_comment|/* Only set baud rate if it&squot;s changed */
 r_if
@@ -6000,7 +6395,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;Invalid baud rate %d requested, using 9600.&quot;
+l_string|&quot;Invalid baud rate %d requested, using 9600.&bslash;n&quot;
 comma
 id|p_priv-&gt;baud
 )paren
@@ -6240,7 +6635,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; usb_submit_urb(setup) failed (%d)&quot;
+l_string|&quot; usb_submit_urb(setup) failed (%d)&bslash;n&quot;
 comma
 id|err
 )paren
@@ -6284,6 +6679,9 @@ r_struct
 id|usb_serial_port
 op_star
 id|port
+comma
+r_int
+id|reset_port
 )paren
 (brace
 r_struct
@@ -6335,6 +6733,8 @@ c_func
 id|serial
 comma
 id|port
+comma
+id|reset_port
 )paren
 suffix:semicolon
 r_break
@@ -6348,6 +6748,8 @@ c_func
 id|serial
 comma
 id|port
+comma
+id|reset_port
 )paren
 suffix:semicolon
 r_break
@@ -6361,6 +6763,8 @@ c_func
 id|serial
 comma
 id|port
+comma
+id|reset_port
 )paren
 suffix:semicolon
 r_break
@@ -6404,7 +6808,12 @@ id|keyspan_device_details
 op_star
 id|d_details
 suffix:semicolon
-multiline_comment|/*  dbg(&quot;keyspan_startup called.&quot;); */
+id|dbg
+c_func
+(paren
+l_string|&quot;keyspan_startup called.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6487,7 +6896,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;kmalloc for keyspan_serial_private failed.&quot;
+l_string|&quot;kmalloc for keyspan_serial_private failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6582,7 +6991,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;kmalloc for keyspan_port_private (%d) failed!.&quot;
+l_string|&quot;kmalloc for keyspan_port_private (%d) failed!.&bslash;n&quot;
 comma
 id|i
 )paren
@@ -6657,7 +7066,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; submit instat urb failed %d&quot;
+l_string|&quot; submit instat urb failed %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -6700,7 +7109,12 @@ id|keyspan_port_private
 op_star
 id|p_priv
 suffix:semicolon
-multiline_comment|/*  dbg(&quot;keyspan_shutdown called&quot;); */
+id|dbg
+c_func
+(paren
+l_string|&quot;keyspan_shutdown called&bslash;n&quot;
+)paren
+suffix:semicolon
 id|s_priv
 op_assign
 (paren

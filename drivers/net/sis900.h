@@ -123,10 +123,16 @@ r_enum
 id|sis900_command_register_bits
 (brace
 DECL|enumerator|RELOAD
+DECL|enumerator|ACCESSMODE
 id|RELOAD
 op_assign
 l_int|0x00000400
 comma
+id|ACCESSMODE
+op_assign
+l_int|0x00000200
+comma
+multiline_comment|/* ET */
 DECL|enumerator|RESET
 DECL|enumerator|SWI
 DECL|enumerator|RxRESET
@@ -1185,12 +1191,17 @@ id|SIS630EA1_900_REV
 op_assign
 l_int|0x83
 comma
+DECL|enumerator|SIS630ET_900_REV
 DECL|enumerator|SIS635A_900_REV
-DECL|enumerator|SIS900B_900_REV
+id|SIS630ET_900_REV
+op_assign
+l_int|0x84
+comma
 id|SIS635A_900_REV
 op_assign
 l_int|0x90
 comma
+DECL|enumerator|SIS900B_900_REV
 id|SIS900B_900_REV
 op_assign
 l_int|0x03

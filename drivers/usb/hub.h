@@ -7,12 +7,12 @@ DECL|macro|USB_RT_HUB
 mdefine_line|#define USB_RT_HUB&t;(USB_TYPE_CLASS | USB_RECIP_DEVICE)
 DECL|macro|USB_RT_PORT
 mdefine_line|#define USB_RT_PORT&t;(USB_TYPE_CLASS | USB_RECIP_OTHER)
-multiline_comment|/*&n; * Hub Class feature numbers&n; */
+multiline_comment|/*&n; * Hub Class feature numbers&n; * See USB 2.0 spec Table 11-17&n; */
 DECL|macro|C_HUB_LOCAL_POWER
 mdefine_line|#define C_HUB_LOCAL_POWER&t;0
 DECL|macro|C_HUB_OVER_CURRENT
 mdefine_line|#define C_HUB_OVER_CURRENT&t;1
-multiline_comment|/*&n; * Port feature numbers&n; */
+multiline_comment|/*&n; * Port feature numbers&n; * See USB 2.0 spec Table 11-17&n; */
 DECL|macro|USB_PORT_FEAT_CONNECTION
 mdefine_line|#define USB_PORT_FEAT_CONNECTION&t;0
 DECL|macro|USB_PORT_FEAT_ENABLE
@@ -138,7 +138,7 @@ DECL|macro|HUB_CHANGE_LOCAL_POWER
 mdefine_line|#define HUB_CHANGE_LOCAL_POWER&t;0x0001
 DECL|macro|HUB_CHANGE_OVERCURRENT
 mdefine_line|#define HUB_CHANGE_OVERCURRENT&t;0x0002
-multiline_comment|/* Hub descriptor */
+multiline_comment|/* &n; * Hub descriptor &n; * See USB 2.0 spec Table 11-13&n; */
 DECL|struct|usb_hub_descriptor
 r_struct
 id|usb_hub_descriptor
@@ -167,14 +167,11 @@ DECL|member|bHubContrCurrent
 id|__u8
 id|bHubContrCurrent
 suffix:semicolon
-multiline_comment|/* DeviceRemovable and PortPwrCtrlMask want to be variable-length &n;&t;   bitmaps that hold max 256 entries, but for now they&squot;re ignored */
-DECL|member|bitmap
+multiline_comment|/* add 1 bit for hub status change; round to bytes */
+DECL|member|DeviceRemovable
 id|__u8
-id|bitmap
+id|DeviceRemovable
 (braket
-l_int|2
-op_star
-(paren
 (paren
 id|USB_MAXCHILDREN
 op_plus
@@ -184,7 +181,21 @@ l_int|7
 )paren
 op_div
 l_int|8
+)braket
+suffix:semicolon
+DECL|member|PortPwrCtrlMask
+id|__u8
+id|PortPwrCtrlMask
+(braket
+(paren
+id|USB_MAXCHILDREN
+op_plus
+l_int|1
+op_plus
+l_int|7
 )paren
+op_div
+l_int|8
 )braket
 suffix:semicolon
 )brace

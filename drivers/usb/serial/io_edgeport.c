@@ -1065,25 +1065,6 @@ r_int
 id|unicode_size
 )paren
 suffix:semicolon
-r_static
-r_int
-id|get_string_desc
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|Id
-comma
-r_struct
-id|usb_string_descriptor
-op_star
-op_star
-id|pRetDesc
-)paren
-suffix:semicolon
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
@@ -1522,8 +1503,8 @@ id|string
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/************************************************************************&n; *&n; *  Get string descriptor from device&n; *&n; ************************************************************************/
-DECL|function|get_string_desc
 r_static
 r_int
 id|get_string_desc
@@ -1648,6 +1629,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************/
 DECL|function|get_product_info
 r_static

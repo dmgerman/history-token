@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.24&quot;
@@ -756,13 +757,25 @@ id|radio
 op_assign
 id|ptr
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|users
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -772,6 +785,11 @@ suffix:semicolon
 id|usb_dsbr100_radio.priv
 op_assign
 l_int|NULL
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|usb_dsbr100_ioctl
@@ -1579,6 +1597,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;vi: ts=8&n;Sigh.  Of course, I am one of the ts=2 heretics, but Linus&squot; wish is&n;my command.&n;*/

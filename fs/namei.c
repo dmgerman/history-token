@@ -939,6 +939,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Yes, this really increments the link_count by 5, and&n; * decrements it by 4. Together with checking against 40,&n; * this limits recursive symlink follows to 8, while&n; * limiting consecutive symlinks to 40.&n; *&n; * Without that kind of total limit, nasty chains of consecutive&n; * symlinks can cause almost arbitrarily long lookups. &n; */
 DECL|function|do_follow_link
 r_static
 r_inline
@@ -965,7 +966,7 @@ c_cond
 (paren
 id|current-&gt;link_count
 op_ge
-l_int|8
+l_int|40
 )paren
 r_goto
 id|loop
@@ -987,7 +988,8 @@ c_func
 suffix:semicolon
 )brace
 id|current-&gt;link_count
-op_increment
+op_add_assign
+l_int|5
 suffix:semicolon
 id|UPDATE_ATIME
 c_func
@@ -1008,7 +1010,8 @@ id|nd
 )paren
 suffix:semicolon
 id|current-&gt;link_count
-op_decrement
+op_sub_assign
+l_int|4
 suffix:semicolon
 r_return
 id|err
@@ -1479,9 +1482,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Name resolution.&n; *&n; * This is the basic name resolution function, turning a pathname&n; * into the final dentry.&n; *&n; * We expect &squot;base&squot; to be positive and a directory.&n; */
-DECL|function|path_walk
+DECL|function|link_path_walk
 r_int
-id|path_walk
+id|link_path_walk
 c_func
 (paren
 r_const
@@ -2368,6 +2371,36 @@ id|return_err
 suffix:colon
 r_return
 id|err
+suffix:semicolon
+)brace
+DECL|function|path_walk
+r_int
+id|path_walk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
+)paren
+(brace
+id|current-&gt;link_count
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|link_path_walk
+c_func
+(paren
+id|name
+comma
+id|nd
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SMP-safe */
@@ -8425,7 +8458,7 @@ suffix:semicolon
 )brace
 id|res
 op_assign
-id|path_walk
+id|link_path_walk
 c_func
 (paren
 id|link

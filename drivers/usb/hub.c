@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB hub driver.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Gregory P. Smith&n; */
+multiline_comment|/*&n; * USB hub driver.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Gregory P. Smith&n; * (C) Copyright 2001 Brad Hards (bhards@bigpond.net.au)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -120,6 +120,7 @@ l_string|&quot;12 Mb/s&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* USB 2.0 spec Section 11.24.4.5 */
 DECL|function|usb_get_hub_descriptor
 r_static
 r_int
@@ -173,6 +174,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.1&n; */
 DECL|function|usb_clear_hub_feature
 r_static
 r_int
@@ -218,6 +220,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.2&n; * BUG: doesn&squot;t handle port indicator selector in high byte of wIndex&n; */
 DECL|function|usb_clear_port_feature
 r_static
 r_int
@@ -266,6 +269,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.13&n; * BUG: doesn&squot;t handle port indicator selector in high byte of wIndex&n; */
 DECL|function|usb_set_port_feature
 r_static
 r_int
@@ -314,6 +318,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.6&n; */
 DECL|function|usb_get_hub_status
 r_static
 r_int
@@ -366,6 +371,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.7&n; */
 DECL|function|usb_get_port_status
 r_static
 r_int
@@ -1034,7 +1040,7 @@ id|portstr
 id|i
 )braket
 op_assign
-id|hub-&gt;descriptor-&gt;bitmap
+id|hub-&gt;descriptor-&gt;DeviceRemovable
 (braket
 (paren
 (paren
@@ -3764,6 +3770,11 @@ id|dbg
 c_func
 (paren
 l_string|&quot;usb_hub_thread exiting&quot;
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|complete_and_exit

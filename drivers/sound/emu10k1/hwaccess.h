@@ -7,8 +7,8 @@ macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;passthrough.h&quot;
 macro_line|#include &quot;efxmgr.h&quot;
+macro_line|#include &quot;passthrough.h&quot;
 macro_line|#include &quot;midi.h&quot;
 DECL|macro|EMUPAGESIZE
 mdefine_line|#define EMUPAGESIZE     4096            /* don&squot;t change */
@@ -195,19 +195,11 @@ DECL|macro|CMD_SETMCH_FX
 mdefine_line|#define CMD_SETMCH_FX&t;&t;_IOW(&squot;D&squot;, 17, struct mixer_private_ioctl)
 DECL|macro|CMD_SETPASSTHROUGH
 mdefine_line|#define CMD_SETPASSTHROUGH&t;_IOW(&squot;D&squot;, 18, struct mixer_private_ioctl)
-DECL|struct|oss_scaling
-r_struct
-id|oss_scaling
-(brace
-DECL|member|scale
-DECL|member|muting
-r_char
-id|scale
-comma
-id|muting
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|CMD_PRIVATE3_VERSION
+mdefine_line|#define CMD_PRIVATE3_VERSION&t;_IOW(&squot;D&squot;, 19, struct mixer_private_ioctl)
+singleline_comment|//up this number when breaking compatibility
+DECL|macro|PRIVATE3_VERSION
+mdefine_line|#define PRIVATE3_VERSION 1
 DECL|struct|emu10k1_card
 r_struct
 id|emu10k1_card
@@ -464,16 +456,14 @@ comma
 id|s32
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|macro|VOL_6BIT
-mdefine_line|#define VOL_6BIT 0x40,0x40
+mdefine_line|#define VOL_6BIT 0x40
 DECL|macro|VOL_5BIT
-mdefine_line|#define VOL_5BIT 0x20,0x20
+mdefine_line|#define VOL_5BIT 0x20
 DECL|macro|VOL_4BIT
-mdefine_line|#define VOL_4BIT 0x10,0x7f
+mdefine_line|#define VOL_4BIT 0x10
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT &t;&t;    16384
 id|u32

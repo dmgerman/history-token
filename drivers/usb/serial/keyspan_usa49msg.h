@@ -183,6 +183,7 @@ DECL|macro|PARITY_1
 mdefine_line|#define&t;PARITY_1&t;&t;&t;0x28
 DECL|macro|PARITY_0
 mdefine_line|#define&t;PARITY_0&t;&t;&t;0x38
+multiline_comment|/*&n;&t;during normal operation, status messages are returned &n;&t;to the host whenever the board detects changes.  In some&n;&t;circumstances (e.g. Windows), status messages from the&n;&t;device cause problems; to shut them off, the host issues&n;&t;a control message with the disableStatusMessages flags&n;&t;set (to any non-zero value).  The device will respond to&n;&t;this message, and then suppress further status messages;&n;&t;it will resume sending status messages any time the host&n;&t;sends any control message (either global or port-specific).&n;*/
 DECL|struct|keyspan_usa49_globalControlMessage
 r_typedef
 r_struct
@@ -207,8 +208,12 @@ comma
 singleline_comment|// a cycling value
 DECL|member|remoteWakeupEnable
 id|remoteWakeupEnable
+comma
+singleline_comment|// 0x10=P1, 0x20=P2, 0x40=P3, 0x80=P4
+DECL|member|disableStatusMessages
+id|disableStatusMessages
 suffix:semicolon
-singleline_comment|// 0x10=P1, 0x20=P2, 0x40=P3, 0x80=P3
+singleline_comment|// 1=send no status until host talks
 DECL|typedef|keyspan_usa49_globalControlMessage
 )brace
 id|keyspan_usa49_globalControlMessage
