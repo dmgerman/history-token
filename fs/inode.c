@@ -1176,7 +1176,7 @@ op_assign
 id|get_super
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if

@@ -458,6 +458,13 @@ c_func
 id|get_fs_type
 )paren
 suffix:semicolon
+DECL|variable|user_get_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|user_get_super
+)paren
+suffix:semicolon
 DECL|variable|get_super
 id|EXPORT_SYMBOL
 c_func
