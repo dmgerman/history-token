@@ -1426,12 +1426,12 @@ c_func
 id|srbcmd-&gt;channel
 )paren
 suffix:semicolon
-id|srbcmd-&gt;target
+id|srbcmd-&gt;id
 op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|srbcmd-&gt;target
+id|srbcmd-&gt;id
 )paren
 suffix:semicolon
 id|srbcmd-&gt;lun

@@ -32,49 +32,10 @@ DECL|macro|INQD_PDT_DMASK
 mdefine_line|#define&t;INQD_PDT_DMASK&t;0x1F&t;/* Peripheral Device Type Mask */
 DECL|macro|INQD_PDT_QMASK
 mdefine_line|#define&t;INQD_PDT_QMASK&t;0xE0&t;/* Peripheral Device Qualifer Mask */
-DECL|macro|TARGET_LUN_TO_CONTAINER
-mdefine_line|#define&t;TARGET_LUN_TO_CONTAINER(target, lun)&t;(target)
-DECL|macro|CONTAINER_TO_TARGET
-mdefine_line|#define CONTAINER_TO_TARGET(cont)&t;&t;((cont))
-DECL|macro|CONTAINER_TO_LUN
-mdefine_line|#define CONTAINER_TO_LUN(cont)&t;&t;&t;(0)
 DECL|macro|MAX_FIB_DATA
 mdefine_line|#define MAX_FIB_DATA (sizeof(struct hw_fib) - sizeof(FIB_HEADER))
 DECL|macro|MAX_DRIVER_SG_SEGMENT_COUNT
 mdefine_line|#define MAX_DRIVER_SG_SEGMENT_COUNT 17
-multiline_comment|/*&n; *&t;Sense keys&n; */
-DECL|macro|SENKEY_NO_SENSE
-mdefine_line|#define SENKEY_NO_SENSE      0x00&t;
-DECL|macro|SENKEY_UNDEFINED
-mdefine_line|#define SENKEY_UNDEFINED     0x01&t;
-DECL|macro|SENKEY_NOT_READY
-mdefine_line|#define SENKEY_NOT_READY     0x02&t;
-DECL|macro|SENKEY_MEDIUM_ERR
-mdefine_line|#define SENKEY_MEDIUM_ERR    0x03&t;
-DECL|macro|SENKEY_HW_ERR
-mdefine_line|#define SENKEY_HW_ERR        0x04&t;
-DECL|macro|SENKEY_ILLEGAL
-mdefine_line|#define SENKEY_ILLEGAL       0x05&t;
-DECL|macro|SENKEY_ATTENTION
-mdefine_line|#define SENKEY_ATTENTION     0x06&t;
-DECL|macro|SENKEY_PROTECTED
-mdefine_line|#define SENKEY_PROTECTED     0x07&t;
-DECL|macro|SENKEY_BLANK
-mdefine_line|#define SENKEY_BLANK         0x08&t;
-DECL|macro|SENKEY_V_UNIQUE
-mdefine_line|#define SENKEY_V_UNIQUE      0x09&t;
-DECL|macro|SENKEY_CPY_ABORT
-mdefine_line|#define SENKEY_CPY_ABORT     0x0A&t;
-DECL|macro|SENKEY_ABORT
-mdefine_line|#define SENKEY_ABORT         0x0B&t;
-DECL|macro|SENKEY_EQUAL
-mdefine_line|#define SENKEY_EQUAL         0x0C&t;
-DECL|macro|SENKEY_VOL_OVERFLOW
-mdefine_line|#define SENKEY_VOL_OVERFLOW  0x0D&t;
-DECL|macro|SENKEY_MISCOMP
-mdefine_line|#define SENKEY_MISCOMP       0x0E&t;
-DECL|macro|SENKEY_RESERVED
-mdefine_line|#define SENKEY_RESERVED      0x0F&t;
 multiline_comment|/*&n; *&t;Sense codes&n; */
 DECL|macro|SENCODE_NO_SENSE
 mdefine_line|#define SENCODE_NO_SENSE                        0x00
@@ -375,17 +336,6 @@ multiline_comment|/* byte of the CDB or parameter data in error */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *              M O D U L E   G L O B A L S&n; */
-DECL|variable|fsa_dev
-r_static
-r_struct
-id|fsa_scsi_hba
-op_star
-id|fsa_dev
-(braket
-id|MAXIMUM_NUM_ADAPTERS
-)braket
-suffix:semicolon
-multiline_comment|/*  SCSI Device Instance Pointers */
 DECL|variable|sense_data
 r_static
 r_struct
@@ -778,13 +728,6 @@ c_func
 (paren
 id|fibptr
 )paren
-suffix:semicolon
-id|fsa_dev
-(braket
-id|instance
-)braket
-op_assign
-id|fsa_dev_ptr
 suffix:semicolon
 r_return
 id|status
@@ -1446,7 +1389,7 @@ c_cond
 (paren
 id|sense_key
 op_eq
-id|SENKEY_ILLEGAL
+id|ILLEGAL_REQUEST
 )paren
 id|sense_buf
 (braket
@@ -1486,7 +1429,7 @@ c_cond
 (paren
 id|sense_key
 op_eq
-id|SENKEY_ILLEGAL
+id|ILLEGAL_REQUEST
 )paren
 (brace
 id|sense_buf
@@ -1920,7 +1863,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s%d: Non-DASD support enabled&bslash;n&quot;
+l_string|&quot;%s%d: Non-DASD support enabled.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1951,6 +1894,17 @@ id|AAC_OPT_SGMAP_HOST64
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s%d: 64bit support enabled.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;id
+)paren
+suffix:semicolon
 id|dev-&gt;pae_support
 op_assign
 l_int|1
@@ -2078,7 +2032,7 @@ id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
-id|TARGET_LUN_TO_CONTAINER
+id|ID_LUN_TO_CONTAINER
 c_func
 (paren
 id|scsicmd-&gt;device-&gt;id
@@ -2267,7 +2221,7 @@ id|sense_data
 id|cid
 )braket
 comma
-id|SENKEY_HW_ERR
+id|HARDWARE_ERROR
 comma
 id|SENCODE_INTERNAL_TARGET_FAILURE
 comma
@@ -2280,6 +2234,24 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|scsicmd-&gt;sense_buffer
+comma
+op_amp
+id|sense_data
+(braket
+id|cid
+)braket
+comma
+r_sizeof
+(paren
+r_struct
+id|sense_data
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2359,7 +2331,7 @@ id|scsicmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
-id|TARGET_LUN_TO_CONTAINER
+id|ID_LUN_TO_CONTAINER
 c_func
 (paren
 id|scsicmd-&gt;device-&gt;id
@@ -2548,7 +2520,7 @@ id|sense_data
 id|cid
 )braket
 comma
-id|SENKEY_HW_ERR
+id|HARDWARE_ERROR
 comma
 id|SENCODE_INTERNAL_TARGET_FAILURE
 comma
@@ -2561,6 +2533,24 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|scsicmd-&gt;sense_buffer
+comma
+op_amp
+id|sense_data
+(braket
+id|cid
+)braket
+comma
+r_sizeof
+(paren
+r_struct
+id|sense_data
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2646,7 +2636,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;aachba: received a read(6) command on target %d.&bslash;n&quot;
+l_string|&quot;aachba: received a read(6) command on id %d.&bslash;n&quot;
 comma
 id|cid
 )paren
@@ -2707,7 +2697,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;aachba: received a read(10) command on target %d.&bslash;n&quot;
+l_string|&quot;aachba: received a read(10) command on id %d.&bslash;n&quot;
 comma
 id|cid
 )paren
@@ -2798,23 +2788,9 @@ id|dev
 )paren
 )paren
 (brace
-id|scsicmd-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
-id|aac_io_done
-c_func
-(paren
-id|scsicmd
-)paren
-suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|fib_init
@@ -3130,9 +3106,17 @@ op_eq
 op_minus
 id|EINPROGRESS
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;read queued.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -3292,7 +3276,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;aachba: received a write(10) command on target %d.&bslash;n&quot;
+l_string|&quot;aachba: received a write(10) command on id %d.&bslash;n&quot;
 comma
 id|cid
 )paren
@@ -3724,9 +3708,17 @@ op_eq
 op_minus
 id|EINPROGRESS
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;write queued.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -3772,7 +3764,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_scsi_cmd()&t;&t;-&t;Process SCSI command&n; *&t;@scsicmd:&t;&t;SCSI command block&n; *&t;@wait:&t;&t;&t;1 if the user wants to await completion&n; *&n; *&t;Emulate a SCSI command and queue the required request for the&n; *&t;aacraid firmware.&n; */
+multiline_comment|/**&n; *&t;aac_scsi_cmd()&t;&t;-&t;Process SCSI command&n; *&t;@scsicmd:&t;&t;SCSI command block&n; *&n; *&t;Emulate a SCSI command and queue the required request for the&n; *&t;aacraid firmware.&n; */
 DECL|function|aac_scsi_cmd
 r_int
 id|aac_scsi_cmd
@@ -3788,14 +3780,6 @@ id|u32
 id|cid
 op_assign
 l_int|0
-suffix:semicolon
-r_struct
-id|fsa_scsi_hba
-op_star
-id|fsa_dev_ptr
-suffix:semicolon
-r_int
-id|cardtype
 suffix:semicolon
 r_int
 id|ret
@@ -3819,18 +3803,20 @@ op_star
 )paren
 id|host-&gt;hostdata
 suffix:semicolon
+r_struct
+id|fsa_scsi_hba
+op_star
+id|fsa_dev_ptr
+op_assign
+op_amp
+id|dev-&gt;fsa_dev
+suffix:semicolon
+r_int
 id|cardtype
 op_assign
 id|dev-&gt;cardtype
 suffix:semicolon
-id|fsa_dev_ptr
-op_assign
-id|fsa_dev
-(braket
-id|host-&gt;unique_id
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;If the bus, target or lun is out of range, return fail&n;&t; *&t;Test does not apply to ID 16, the pseudo id for the controller&n;&t; *&t;itself.&n;&t; */
+multiline_comment|/*&n;&t; *&t;If the bus, id or lun is out of range, return fail&n;&t; *&t;Test does not apply to ID 16, the pseudo id for the controller&n;&t; *&t;itself.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3855,7 +3841,7 @@ c_cond
 (paren
 id|scsicmd-&gt;device-&gt;id
 op_ge
-id|AAC_MAX_TARGET
+id|MAXIMUM_NUM_CONTAINERS
 )paren
 op_logical_or
 (paren
@@ -3883,7 +3869,7 @@ suffix:semicolon
 )brace
 id|cid
 op_assign
-id|TARGET_LUN_TO_CONTAINER
+id|ID_LUN_TO_CONTAINER
 c_func
 (paren
 id|scsicmd-&gt;device-&gt;id
@@ -3999,8 +3985,7 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -4107,7 +4092,7 @@ id|sense_data
 id|cid
 )braket
 comma
-id|SENKEY_ILLEGAL
+id|ILLEGAL_REQUEST
 comma
 id|SENCODE_INVALID_COMMAND
 comma
@@ -4128,9 +4113,26 @@ c_func
 id|scsicmd
 )paren
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|scsicmd-&gt;sense_buffer
+comma
+op_amp
+id|sense_data
+(braket
+id|cid
+)braket
+comma
+r_sizeof
+(paren
+r_struct
+id|sense_data
+)paren
+)paren
+suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Handle commands here that don&squot;t really require going out to the adapter */
@@ -4655,9 +4657,7 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_case
 id|ALLOW_MEDIUM_REMOVAL
@@ -4756,9 +4756,7 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_switch
@@ -4891,7 +4889,7 @@ id|sense_data
 id|cid
 )braket
 comma
-id|SENKEY_ILLEGAL
+id|ILLEGAL_REQUEST
 comma
 id|SENCODE_INVALID_COMMAND
 comma
@@ -4906,6 +4904,24 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|scsicmd-&gt;sense_buffer
+comma
+op_amp
+id|sense_data
+(braket
+id|cid
+)braket
+comma
+r_sizeof
+(paren
+r_struct
+id|sense_data
+)paren
+)paren
+suffix:semicolon
 id|__aac_io_done
 c_func
 (paren
@@ -4913,8 +4929,7 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -4982,10 +4997,10 @@ l_int|1
 )paren
 id|qd.cnum
 op_assign
-id|TARGET_LUN_TO_CONTAINER
+id|ID_LUN_TO_CONTAINER
 c_func
 (paren
-id|qd.target
+id|qd.id
 comma
 id|qd.lun
 )paren
@@ -5002,7 +5017,7 @@ l_int|1
 )paren
 op_logical_and
 (paren
-id|qd.target
+id|qd.id
 op_eq
 op_minus
 l_int|1
@@ -5039,9 +5054,9 @@ id|qd.bus
 op_assign
 l_int|0
 suffix:semicolon
-id|qd.target
+id|qd.id
 op_assign
-id|CONTAINER_TO_TARGET
+id|CONTAINER_TO_ID
 c_func
 (paren
 id|qd.cnum
@@ -5494,8 +5509,8 @@ l_int|0
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-singleline_comment|// initialize sense valid flag to false
-singleline_comment|// calculate resid for sg 
+multiline_comment|/* Initialize sense valid flag to false */
+multiline_comment|/*&n;&t; *&t;Calculate resid for sg &n;&t; */
 id|scsicmd-&gt;resid
 op_assign
 id|scsicmd-&gt;request_bufflen
@@ -6222,8 +6237,9 @@ id|scsicmd-&gt;sense_buffer
 suffix:colon
 id|srbreply-&gt;sense_data_size
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
+(paren
 (paren
 id|KERN_WARNING
 l_string|&quot;aac_srb_callback: check condition, status = %d len=%d&bslash;n&quot;
@@ -6235,6 +6251,7 @@ id|srbreply-&gt;status
 )paren
 comma
 id|len
+)paren
 )paren
 suffix:semicolon
 id|memcpy
@@ -6417,18 +6434,6 @@ id|dev
 )paren
 )paren
 (brace
-id|scsicmd-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
-id|__aac_io_done
-c_func
-(paren
-id|scsicmd
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -6473,7 +6478,7 @@ id|scsicmd-&gt;device-&gt;channel
 )paren
 )paren
 suffix:semicolon
-id|srbcmd-&gt;target
+id|srbcmd-&gt;id
 op_assign
 id|cpu_to_le32
 c_func
@@ -6783,25 +6788,6 @@ id|KERN_WARNING
 l_string|&quot;aac_srb: fib_send failed with status: %d&bslash;n&quot;
 comma
 id|status
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;For some reason, the Fib didn&squot;t queue, return QUEUE_FULL&n;&t; */
-id|scsicmd-&gt;result
-op_assign
-id|DID_OK
-op_lshift
-l_int|16
-op_or
-id|COMMAND_COMPLETE
-op_lshift
-l_int|8
-op_or
-id|SAM_STAT_TASK_SET_FULL
-suffix:semicolon
-id|__aac_io_done
-c_func
-(paren
-id|scsicmd
 )paren
 suffix:semicolon
 id|fib_complete

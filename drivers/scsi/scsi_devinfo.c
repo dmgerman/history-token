@@ -1134,9 +1134,7 @@ l_string|&quot;DACARMRB&quot;
 comma
 l_string|&quot;*&quot;
 comma
-id|BLIST_SPARSELUN
-op_or
-id|BLIST_LARGELUN
+id|BLIST_REPORTLUN2
 )brace
 comma
 (brace
@@ -1294,9 +1292,7 @@ l_string|&quot;TP9100&quot;
 comma
 l_string|&quot;*&quot;
 comma
-id|BLIST_SPARSELUN
-op_or
-id|BLIST_LARGELUN
+id|BLIST_REPORTLUN2
 )brace
 comma
 (brace

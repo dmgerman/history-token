@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *   linit.c&n; *&n; * Abstract: Linux Driver entry module for Adaptec RAID Array Controller&n; */
 DECL|macro|AAC_DRIVER_VERSION
-mdefine_line|#define AAC_DRIVER_VERSION&t;&t;&quot;1.1.2-lk1&quot;
+mdefine_line|#define AAC_DRIVER_VERSION&t;&t;&quot;1.1.2-lk2&quot;
 DECL|macro|AAC_DRIVER_BUILD_DATE
 mdefine_line|#define AAC_DRIVER_BUILD_DATE&t;&t;__DATE__
 DECL|macro|AAC_DRIVERNAME
@@ -1843,6 +1843,11 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+r_struct
+id|aac_dev
+op_star
+id|aac
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1856,18 +1861,22 @@ comma
 id|AAC_DRIVERNAME
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|aac_adapter_check_health
-c_func
-(paren
+id|aac
+op_assign
 (paren
 r_struct
 id|aac_dev
 op_star
 )paren
 id|host-&gt;hostdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|aac_adapter_check_health
+c_func
+(paren
+id|aac
 )paren
 )paren
 (brace
@@ -1954,15 +1963,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|active
-)paren
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * We can exit If all the commands are complete&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We can exit If all the commands are complete&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1973,6 +1974,7 @@ l_int|0
 r_return
 id|SUCCESS
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -2198,11 +2200,19 @@ id|max_sectors
 op_assign
 l_int|128
 comma
+macro_line|#if (AAC_NUM_IO_FIB &gt; 256)
+dot
+id|cmd_per_lun
+op_assign
+l_int|256
+comma
+macro_line|#else&t;&t;
 dot
 id|cmd_per_lun
 op_assign
 id|AAC_NUM_IO_FIB
 comma
+macro_line|#endif&t;
 dot
 id|use_clustering
 op_assign
@@ -2486,8 +2496,6 @@ id|init
 )paren
 (paren
 id|aac
-comma
-id|shost-&gt;unique_id
 )paren
 )paren
 r_goto
@@ -2568,7 +2576,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * dmb - we may need to move the setting of these parms somewhere else once&n;&t; * we get a fib that can report the actual numbers&n;&t; */
 id|shost-&gt;max_id
 op_assign
-id|AAC_MAX_TARGET
+id|MAXIMUM_NUM_CONTAINERS
 suffix:semicolon
 id|shost-&gt;max_lun
 op_assign
