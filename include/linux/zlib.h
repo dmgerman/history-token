@@ -3,11 +3,6 @@ macro_line|#ifndef _ZLIB_H
 DECL|macro|_ZLIB_H
 mdefine_line|#define _ZLIB_H
 macro_line|#include &lt;linux/zconf.h&gt;
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 DECL|macro|ZLIB_VERSION
 mdefine_line|#define ZLIB_VERSION &quot;1.1.3&quot;
 multiline_comment|/* &n;     The &squot;zlib&squot; compression library provides in-memory compression and&n;  decompression functions, including integrity checks of the uncompressed&n;  data.  This version of the library supports only one compression method&n;  (deflation) but other algorithms will be added later and will have the same&n;  stream interface.&n;&n;     Compression can be done in a single step if the buffers are large&n;  enough (for example if an input file is mmap&squot;ed), or can be done by&n;  repeated calls of the compression function.  In the latter case, the&n;  application must provide more input and/or consume the output&n;  (providing more output space) before each call.&n;&n;     The library also supports reading and writing files in gzip (.gz) format&n;  with an interface similar to that of stdio.&n;&n;     The library does not install any signal handler. The decoder checks&n;  the consistency of the compressed data, so the library should never&n;  crash even in case of corrupted input.&n;*/
@@ -465,8 +460,5 @@ id|zlib_get_crc_table
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-)brace
-macro_line|#endif
 macro_line|#endif /* _ZLIB_H */
 eof
