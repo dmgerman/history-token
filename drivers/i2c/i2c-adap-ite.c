@@ -65,23 +65,11 @@ r_struct
 id|iic_ite
 id|gpi
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x020301)
-DECL|variable|iic_wait
-r_static
-r_struct
-id|wait_queue
-op_star
-id|iic_wait
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#else
 DECL|variable|iic_wait
 r_static
 id|wait_queue_head_t
 id|iic_wait
 suffix:semicolon
-macro_line|#endif
 DECL|variable|iic_pending
 r_static
 r_int
@@ -656,7 +644,6 @@ op_star
 )paren
 id|piic
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020301)
 id|init_waitqueue_head
 c_func
 (paren
@@ -664,7 +651,6 @@ op_amp
 id|iic_wait
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -1,6 +1,5 @@
 multiline_comment|/*&n;    i2c-proc.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This driver puts entries in /proc/sys/dev/sensors for each I2C device&n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -8,14 +7,10 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifndef THIS_MODULE
-DECL|macro|THIS_MODULE
-mdefine_line|#define THIS_MODULE NULL
-macro_line|#endif
+macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_int
 id|i2c_create_name
@@ -159,15 +154,6 @@ r_struct
 id|ctl_table_header
 op_star
 id|i2c_entries
-(braket
-id|SENSORS_ENTRY_MAX
-)braket
-suffix:semicolon
-DECL|variable|i2c_inodes
-r_static
-r_int
-r_int
-id|i2c_inodes
 (braket
 id|SENSORS_ENTRY_MAX
 )braket
@@ -954,15 +940,6 @@ id|id
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* DEBUG */
-id|i2c_inodes
-(braket
-id|id
-op_minus
-l_int|256
-)braket
-op_assign
-id|new_header-&gt;ctl_table-&gt;child-&gt;child-&gt;de-&gt;low_ino
-suffix:semicolon
 id|new_header-&gt;ctl_table-&gt;child-&gt;child-&gt;de-&gt;owner
 op_assign
 id|controlling_mod
