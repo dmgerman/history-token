@@ -7390,6 +7390,12 @@ suffix:colon
 r_case
 id|E1000_DEV_ID_82546EB_QUAD_COPPER
 suffix:colon
+r_case
+id|E1000_DEV_ID_82545EM_FIBER
+suffix:colon
+r_case
+id|E1000_DEV_ID_82545EM_COPPER
+suffix:colon
 r_return
 id|wol-&gt;wolopts
 ques
