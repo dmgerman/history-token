@@ -4058,7 +4058,7 @@ op_assign
 id|_PREP_Motorola
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PREP_PRESIDUAL
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 multiline_comment|/* Switch off all residual data processing if the user requests it */
 r_if
 c_cond
