@@ -427,6 +427,31 @@ id|__u32
 id|pmtu
 )paren
 suffix:semicolon
+r_void
+id|sctp_icmp_proto_unreachable
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sctp_endpoint
+op_star
+id|ep
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_struct
+id|sctp_transport
+op_star
+id|t
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Section:  Macros, externs, and inlines&n; */
 macro_line|#ifdef TEST_FRAME
 macro_line|#include &lt;test_frame.h&gt;

@@ -387,6 +387,10 @@ DECL|variable|sctp_sf_ignore_other
 id|sctp_state_fn_t
 id|sctp_sf_ignore_other
 suffix:semicolon
+DECL|variable|sctp_sf_cookie_wait_icmp_abort
+id|sctp_state_fn_t
+id|sctp_sf_cookie_wait_icmp_abort
+suffix:semicolon
 multiline_comment|/* Prototypes for timeout event state functions.  */
 DECL|variable|sctp_sf_do_6_3_3_rtx
 id|sctp_state_fn_t
@@ -961,6 +965,18 @@ c_func
 r_struct
 id|sctp_chunk
 op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_stop_t1_and_abort
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+id|commands
+comma
+id|__u16
+id|error
 )paren
 suffix:semicolon
 multiline_comment|/* Prototypes for statetable processing. */

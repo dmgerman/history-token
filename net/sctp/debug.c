@@ -281,6 +281,8 @@ op_assign
 (brace
 l_string|&quot;NO_PENDING_TSN&quot;
 comma
+l_string|&quot;ICMP_PROTO_UNREACH&quot;
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup &quot;other&quot; debug name. */
@@ -310,7 +312,7 @@ r_if
 c_cond
 (paren
 id|id.other
-OL
+op_le
 id|SCTP_EVENT_OTHER_MAX
 )paren
 r_return

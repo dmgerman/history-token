@@ -121,12 +121,15 @@ id|SCTP_EVENT_NO_PENDING_TSN
 op_assign
 l_int|0
 comma
+DECL|enumerator|SCTP_EVENT_ICMP_PROTO_UNREACH
+id|SCTP_EVENT_ICMP_PROTO_UNREACH
+comma
 DECL|typedef|sctp_event_other_t
 )brace
 id|sctp_event_other_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_OTHER_MAX
-mdefine_line|#define SCTP_EVENT_OTHER_MAX&t;&t;SCTP_EVENT_NO_PENDING_TSN
+mdefine_line|#define SCTP_EVENT_OTHER_MAX&t;&t;SCTP_EVENT_ICMP_PROTO_UNREACH
 DECL|macro|SCTP_NUM_OTHER_TYPES
 mdefine_line|#define SCTP_NUM_OTHER_TYPES&t;&t;(SCTP_EVENT_OTHER_MAX + 1)
 multiline_comment|/* These are primitive requests from the ULP.  */

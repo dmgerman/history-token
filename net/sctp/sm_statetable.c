@@ -459,6 +459,8 @@ comma
 suffix:semicolon
 DECL|macro|TYPE_SCTP_OTHER_NO_PENDING_TSN
 mdefine_line|#define TYPE_SCTP_OTHER_NO_PENDING_TSN  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_do_9_2_start_shutdown, &bslash;&n;&t; .name = &quot;sctp_do_9_2_start_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_do_9_2_shutdown_ack, &bslash;&n;&t; .name = &quot;sctp_sf_do_9_2_shutdown_ack&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;}
+DECL|macro|TYPE_SCTP_OTHER_ICMP_PROTO_UNREACH
+mdefine_line|#define TYPE_SCTP_OTHER_ICMP_PROTO_UNREACH  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_cookie_wait_icmp_abort, &bslash;&n;&t; .name = &quot;sctp_sf_cookie_wait_icmp_abort&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;}
 DECL|variable|other_event_table
 r_static
 r_const
@@ -473,6 +475,8 @@ id|SCTP_STATE_NUM_STATES
 op_assign
 (brace
 id|TYPE_SCTP_OTHER_NO_PENDING_TSN
+comma
+id|TYPE_SCTP_OTHER_ICMP_PROTO_UNREACH
 comma
 )brace
 suffix:semicolon
