@@ -14,21 +14,6 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;io_edgeport.h&quot;
 macro_line|#include &quot;io_ionsp.h&quot;&t;&t;/* info for the iosp messages */
@@ -72,12 +57,11 @@ DECL|macro|OPEN_TIMEOUT
 mdefine_line|#define OPEN_TIMEOUT&t;&t;(5*HZ)&t;&t;/* 5 seconds */
 DECL|macro|COMMAND_TIMEOUT
 mdefine_line|#define COMMAND_TIMEOUT&t;&t;(5*HZ)&t;&t;/* 5 seconds */
-macro_line|#ifndef SERIAL_MAGIC
-DECL|macro|SERIAL_MAGIC
-mdefine_line|#define SERIAL_MAGIC&t;0x6702
-macro_line|#endif
-DECL|macro|PORT_MAGIC
-mdefine_line|#define PORT_MAGIC&t;&t;0x7301
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 multiline_comment|/* receive port state */
 DECL|enum|RXSTATE
 r_enum
@@ -2302,8 +2286,12 @@ id|length
 )paren
 (brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -2647,8 +2635,12 @@ op_assign
 id|urb-&gt;actual_length
 suffix:semicolon
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4225,8 +4217,12 @@ id|firsthalf
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4338,8 +4334,12 @@ id|secondhalf
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4584,7 +4584,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+id|edge_port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - no more kernel memory...&bslash;n&quot;
 comma
@@ -4727,10 +4727,13 @@ c_cond
 (paren
 id|count
 )paren
-(brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|edge_port-&gt;port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4743,7 +4746,6 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* fill up the urb with all of our data and submit it */
 id|usb_fill_bulk_urb
 (paren
@@ -8595,8 +8597,12 @@ r_int
 id|timeout
 suffix:semicolon
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|edge_port-&gt;port-&gt;dev
 comma
 id|__FUNCTION__
 comma

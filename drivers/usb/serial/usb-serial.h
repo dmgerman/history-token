@@ -1022,11 +1022,15 @@ r_static
 r_inline
 r_void
 id|usb_serial_debug_data
+c_func
 (paren
-r_const
-r_char
+r_int
+id|debug
+comma
+r_struct
+id|device
 op_star
-id|file
+id|dev
 comma
 r_const
 r_char
@@ -1049,17 +1053,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|debug
 )paren
-r_return
-suffix:semicolon
-id|printk
+(brace
+id|dev_printk
+c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: %s - length = %d, data = &quot;
 comma
-id|file
+id|dev
+comma
+l_string|&quot;%s - length = %d, data = &quot;
 comma
 id|function
 comma
@@ -1080,7 +1084,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|printk
 (paren
 l_string|&quot;%.2x &quot;
@@ -1091,12 +1094,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|printk
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Use our own dbg macro */
 DECL|macro|dbg

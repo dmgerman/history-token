@@ -7,21 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/* EZ-USB Control and Status Register.  Bit 0 controls 8051 reset */
 DECL|macro|CPUCS_REG
@@ -66,7 +51,7 @@ op_logical_neg
 id|serial-&gt;dev
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
 l_string|&quot;%s - no physical device present, failing.&quot;
@@ -179,16 +164,7 @@ id|reset_bit
 r_int
 id|response
 suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - %d&quot;
-comma
-id|__FUNCTION__
-comma
-id|reset_bit
-)paren
-suffix:semicolon
+multiline_comment|/* dbg(&quot;%s - %d&quot;, __FUNCTION__, reset_bit); */
 id|response
 op_assign
 id|ezusb_writememory
@@ -212,7 +188,6 @@ id|response
 OL
 l_int|0
 )paren
-(brace
 id|dev_err
 c_func
 (paren
@@ -226,7 +201,6 @@ comma
 id|reset_bit
 )paren
 suffix:semicolon
-)brace
 r_return
 id|response
 suffix:semicolon

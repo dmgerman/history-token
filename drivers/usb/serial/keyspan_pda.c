@@ -12,21 +12,11 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
 DECL|variable|debug
 r_static
 r_int
 id|debug
 suffix:semicolon
-macro_line|#endif
 DECL|struct|ezusb_hex_record
 r_struct
 id|ezusb_hex_record

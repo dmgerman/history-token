@@ -11,24 +11,14 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &quot;usb-serial.h&quot;
 DECL|macro|CYBERJACK_LOCAL_BUF_SIZE
 mdefine_line|#define CYBERJACK_LOCAL_BUF_SIZE 32
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
 DECL|variable|debug
 r_static
 r_int
 id|debug
 suffix:semicolon
-macro_line|#endif
-macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.0&quot;
@@ -973,8 +963,12 @@ id|count
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -1327,8 +1321,12 @@ id|urb-&gt;status
 r_return
 suffix:semicolon
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -1606,23 +1604,27 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+id|usb_serial_debug_data
+c_func
+(paren
+id|debug
+comma
+op_amp
+id|port-&gt;dev
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;actual_length
+comma
+id|data
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|urb-&gt;actual_length
-comma
-id|urb-&gt;transfer_buffer
-)paren
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1636,17 +1638,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|urb-&gt;actual_length
-comma
-id|data
-)paren
-suffix:semicolon
 id|tty
 op_assign
 id|port-&gt;tty

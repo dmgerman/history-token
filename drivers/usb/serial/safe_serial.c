@@ -12,10 +12,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifndef CONFIG_USB_SERIAL_DEBUG
-DECL|macro|CONFIG_USB_SERIAL_DEBUG
-mdefine_line|#define CONFIG_USB_SERIAL_DEBUG 0
-macro_line|#endif
+macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#ifndef CONFIG_USB_SAFE_PADDED
 DECL|macro|CONFIG_USB_SAFE_PADDED
 mdefine_line|#define CONFIG_USB_SAFE_PADDED 0
@@ -24,11 +21,7 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-id|CONFIG_USB_SERIAL_DEBUG
 suffix:semicolon
-macro_line|#include &quot;usb-serial.h&quot;&t;&t;
-singleline_comment|// must follow the declaration of debug
 DECL|variable|safe
 r_static
 r_int
@@ -1638,8 +1631,12 @@ id|count
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma

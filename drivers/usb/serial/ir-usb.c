@@ -11,21 +11,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
@@ -111,13 +96,16 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 multiline_comment|/* if overridden by the user, then use their value for the size of the read and&n; * write urbs */
 DECL|variable|buffer_size
 r_static
 r_int
 id|buffer_size
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* if overridden by the user, then use the specified number of XBOFs */
 DECL|variable|xbof
@@ -1575,7 +1563,10 @@ suffix:semicolon
 )brace
 id|usb_serial_debug_data
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -1695,7 +1686,10 @@ l_int|0x0f
 suffix:semicolon
 id|usb_serial_debug_data
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
