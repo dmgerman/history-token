@@ -983,7 +983,7 @@ id|IRQ_FLG_SLOW
 comma
 l_string|&quot;ncr5380&quot;
 comma
-id|NCR5380_intr
+id|instance
 )paren
 )paren
 (brace
