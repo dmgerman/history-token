@@ -2873,10 +2873,6 @@ c_func
 id|pskb
 comma
 id|iphdroff
-op_plus
-id|iph-&gt;ihl
-op_star
-l_int|4
 comma
 id|manip
 comma
