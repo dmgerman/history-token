@@ -21,6 +21,7 @@ DECL|variable|numscales
 DECL|variable|numvscales
 r_static
 r_int
+r_int
 id|numscales
 op_assign
 l_int|16
@@ -68,6 +69,7 @@ id|dont_scale_fsb
 suffix:semicolon
 DECL|variable|current_fsb
 r_static
+r_int
 r_int
 id|current_fsb
 suffix:semicolon
@@ -854,6 +856,7 @@ suffix:semicolon
 DECL|variable|highest_speed
 DECL|variable|lowest_speed
 r_static
+r_int
 r_int
 id|highest_speed
 comma
