@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;s3c2440.h&quot;
 DECL|struct|cpu_table
@@ -343,10 +344,55 @@ op_star
 id|b
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|board
 op_assign
 id|b
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|b-&gt;clocks_count
+op_ne
+l_int|0
+)paren
+(brace
+r_struct
+id|clk
+op_star
+op_star
+id|ptr
+op_assign
+id|b-&gt;clocks
+suffix:semicolon
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|b-&gt;clocks_count
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+comma
+id|ptr
+op_increment
+)paren
+id|s3c2410_register_clock
+c_func
+(paren
+op_star
+id|ptr
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* cpu information */
 DECL|variable|cpu

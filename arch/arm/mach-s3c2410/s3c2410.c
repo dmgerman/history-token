@@ -590,6 +590,12 @@ id|s3c24xx_pclk
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* initialise the clocks here, to allow other things like the&n;&t; * console to use them&n;&t; */
+id|s3c2410_init_clocks
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|s3c2410_init
 r_int
