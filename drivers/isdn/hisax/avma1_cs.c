@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * PCMCIA client driver for AVM A1 / Fritz!PCMCIA&n; *&n; * Author       Carsten Paeth&n; * Copyright    1998-2001 by Carsten Paeth &lt;calle@calle.in-berlin.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
