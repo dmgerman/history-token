@@ -4715,7 +4715,7 @@ id|device-&gt;pnp.bus_id
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;root&quot;
+l_string|&quot;ACPI&quot;
 )paren
 suffix:semicolon
 r_break
