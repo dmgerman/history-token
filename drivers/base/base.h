@@ -76,4 +76,15 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|device_bus_link
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 eof

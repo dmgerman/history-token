@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * bus.c - bus driver management&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; * &n; * &n; */
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -54,6 +56,16 @@ c_cond
 id|dev-&gt;bus
 )paren
 (brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;registering %s with bus &squot;%s&squot;&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
+comma
+id|dev-&gt;bus-&gt;name
+)paren
+suffix:semicolon
 id|get_bus
 c_func
 (paren
@@ -84,6 +96,12 @@ op_amp
 id|dev-&gt;bus-&gt;lock
 )paren
 suffix:semicolon
+id|device_bus_link
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -107,6 +125,15 @@ c_cond
 id|dev-&gt;bus
 )paren
 (brace
+id|driverfs_remove_file
+c_func
+(paren
+op_amp
+id|dev-&gt;bus-&gt;device_dir
+comma
+id|dev-&gt;bus_id
+)paren
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -384,7 +411,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|bus_init
-id|subsys_initcall
+id|core_initcall
 c_func
 (paren
 id|bus_init
