@@ -743,7 +743,7 @@ id|ABRT_ERR
 comma
 id|ICRC_ERR
 comma
-l_string|&quot;bad sectorr&quot;
+l_string|&quot;bad sector&quot;
 )brace
 comma
 (brace
