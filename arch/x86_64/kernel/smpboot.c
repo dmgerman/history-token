@@ -818,7 +818,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_test_and_set
+id|cpu_isset
 c_func
 (paren
 id|cpuid
@@ -2237,15 +2237,6 @@ c_func
 l_string|&quot;OK.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU%d: &quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|print_cpu_info
 c_func
 (paren
@@ -2530,6 +2521,11 @@ r_int
 id|apicid
 comma
 id|cpu
+suffix:semicolon
+id|nmi_watchdog_default
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup boot CPU information&n;&t; */
 id|smp_store_cpu_info

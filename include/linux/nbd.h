@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; * 2003/06/24 Louis D. Langholtz &lt;ldl@aros.net&gt;&n; *            Removed unneeded blksize_bits field from nbd_device struct.&n; *            Cleanup PARANOIA usage &amp; code.&n; */
+multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; * 2003/06/24 Louis D. Langholtz &lt;ldl@aros.net&gt;&n; *            Removed unneeded blksize_bits field from nbd_device struct.&n; *            Cleanup PARANOIA usage &amp; code.&n; * 2004/02/19 Paul Clements&n; *            Removed PARANOIA, plus various cleanup and comments&n; */
 macro_line|#ifndef LINUX_NBD_H
 DECL|macro|LINUX_NBD_H
 mdefine_line|#define LINUX_NBD_H
@@ -42,11 +42,13 @@ DECL|macro|nbd_cmd
 mdefine_line|#define nbd_cmd(req) ((req)-&gt;cmd[0])
 DECL|macro|MAX_NBD
 mdefine_line|#define MAX_NBD 128
-multiline_comment|/* Define PARANOIA to include extra sanity checking code in here &amp; driver */
-DECL|macro|PARANOIA
-mdefine_line|#define PARANOIA
 multiline_comment|/* userspace doesn&squot;t need the nbd_device structure */
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* values for flags field */
+DECL|macro|NBD_READ_ONLY
+mdefine_line|#define NBD_READ_ONLY 0x0001
+DECL|macro|NBD_WRITE_NOCHK
+mdefine_line|#define NBD_WRITE_NOCHK 0x0002
 DECL|struct|nbd_device
 r_struct
 id|nbd_device
@@ -60,10 +62,6 @@ r_int
 id|harderror
 suffix:semicolon
 multiline_comment|/* Code of hard error&t;&t;&t;*/
-DECL|macro|NBD_READ_ONLY
-mdefine_line|#define NBD_READ_ONLY 0x0001
-DECL|macro|NBD_WRITE_NOCHK
-mdefine_line|#define NBD_WRITE_NOCHK 0x0002
 DECL|member|sock
 r_struct
 id|socket
@@ -77,13 +75,10 @@ op_star
 id|file
 suffix:semicolon
 multiline_comment|/* If == NULL, device is not ready, yet&t;*/
-macro_line|#ifdef PARANOIA
 DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
-multiline_comment|/* FIXME: not if debugging is off&t;*/
-macro_line|#endif
 DECL|member|queue_lock
 id|spinlock_t
 id|queue_lock
@@ -116,14 +111,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* This now IS in some kind of include file...&t;*/
-multiline_comment|/* These are send over network in request/reply magic field */
+multiline_comment|/* These are sent over the network in the request/reply magic fields */
 DECL|macro|NBD_REQUEST_MAGIC
 mdefine_line|#define NBD_REQUEST_MAGIC 0x25609513
 DECL|macro|NBD_REPLY_MAGIC
 mdefine_line|#define NBD_REPLY_MAGIC 0x67446698
 multiline_comment|/* Do *not* use magics: 0x12560953 0x96744668. */
-multiline_comment|/*&n; * This is packet used for communication between client and&n; * server. All data are in network byte order.&n; */
+multiline_comment|/*&n; * This is the packet used for communication between client and&n; * server. All data are in network byte order.&n; */
 DECL|struct|nbd_request
 r_struct
 id|nbd_request
@@ -162,6 +156,7 @@ id|packed
 )paren
 macro_line|#endif
 suffix:semicolon
+multiline_comment|/*&n; * This is the reply packet that nbd-server sends back to the client after&n; * it has completed an I/O request (or an error occurs).&n; */
 DECL|struct|nbd_reply
 r_struct
 id|nbd_reply

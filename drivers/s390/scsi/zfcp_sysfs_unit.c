@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_unit.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs unit related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_unit.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs unit related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_UNIT_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_UNIT_C_REVISION &quot;$Revision: 1.19 $&quot;
+mdefine_line|#define ZFCP_SYSFS_UNIT_C_REVISION &quot;$Revision: 1.23 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -8,8 +8,6 @@ macro_line|#include &quot;zfcp_ext.h&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-mdefine_line|#define ZFCP_LOG_AREA_PREFIX            ZFCP_LOG_AREA_PREFIX_CONFIG
 multiline_comment|/**&n; * zfcp_sysfs_unit_release - gets called when a struct device unit is released&n; * @dev: pointer to belonging device&n; */
 r_void
 DECL|function|zfcp_sysfs_unit_release
@@ -194,24 +192,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* restart error recovery only if adapter is online */
-r_if
-c_cond
-(paren
-id|unit-&gt;port-&gt;adapter-&gt;ccw_device-&gt;online
-op_ne
-l_int|1
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|ENXIO
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|zfcp_erp_modify_unit_status
 c_func
 (paren
@@ -228,6 +208,12 @@ c_func
 id|unit
 comma
 id|ZFCP_STATUS_COMMON_ERP_FAILED
+)paren
+suffix:semicolon
+id|zfcp_erp_wait
+c_func
+(paren
+id|unit-&gt;port-&gt;adapter
 )paren
 suffix:semicolon
 id|out
@@ -488,6 +474,4 @@ suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA
 macro_line|#undef ZFCP_LOG_AREA
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-macro_line|#undef ZFCP_LOG_AREA_PREFIX
 eof

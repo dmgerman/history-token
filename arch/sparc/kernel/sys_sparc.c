@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -266,18 +267,6 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-r_extern
-id|asmlinkage
-r_int
-r_int
-id|sys_brk
-c_func
-(paren
-r_int
-r_int
-id|brk
-)paren
-suffix:semicolon
 DECL|function|sparc_brk
 id|asmlinkage
 r_int
@@ -826,7 +815,7 @@ id|raddr
 suffix:semicolon
 id|err
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -888,7 +877,7 @@ suffix:colon
 multiline_comment|/* iBCS2 emulator entry point */
 id|err
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

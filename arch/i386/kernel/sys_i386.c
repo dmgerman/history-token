@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -383,32 +384,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_select
-c_func
-(paren
-r_int
-comma
-id|fd_set
-id|__user
-op_star
-comma
-id|fd_set
-id|__user
-op_star
-comma
-id|fd_set
-id|__user
-op_star
-comma
-r_struct
-id|timeval
-id|__user
-op_star
-)paren
-suffix:semicolon
 DECL|struct|sel_arg_struct
 r_struct
 id|sel_arg_struct
@@ -825,7 +800,7 @@ id|raddr
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -892,7 +867,7 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* The &quot;(ulong *) third&quot; is valid _only_ because of the kernel segment thing */
 r_return
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

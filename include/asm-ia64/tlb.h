@@ -6,6 +6,7 @@ multiline_comment|/*&n; * Removing a translation from a page table (including TL
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#ifdef CONFIG_SMP

@@ -153,6 +153,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
 DECL|member|ud_kv
 r_struct
 id|csr1212_keyval

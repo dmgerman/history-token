@@ -2143,7 +2143,7 @@ c_func
 id|SCp-&gt;device
 )paren
 OG
-id|NCR_700_MAX_TAGS
+id|SCp-&gt;device-&gt;queue_depth
 )paren
 (brace
 id|printk
@@ -7927,7 +7927,7 @@ c_func
 id|SCp-&gt;device
 )paren
 op_ge
-id|NCR_700_MAX_TAGS
+id|SCp-&gt;device-&gt;queue_depth
 )paren
 (brace
 id|DEBUG
@@ -8055,7 +8055,7 @@ c_func
 (paren
 id|SCp-&gt;device
 comma
-id|NCR_700_MAX_TAGS
+id|NCR_700_DEFAULT_TAGS
 )paren
 suffix:semicolon
 )brace

@@ -19,26 +19,15 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_ldisc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/*&n; * Note: don&squot;t mess with NR_PTYS until you understand the tty minor &n; * number allocation game...&n; * (Note: the *_driver.minor_start values 1, 64, 128, 192 are&n; * hardcoded at present.)&n; */
+multiline_comment|/*&n; * (Note: the *_driver.minor_start values 1, 64, 128, 192 are&n; * hardcoded at present.)&n; */
 DECL|macro|NR_PTYS
-mdefine_line|#define NR_PTYS&t;&t;256&t;/* ptys/major */
+mdefine_line|#define NR_PTYS&t;CONFIG_LEGACY_PTY_COUNT   /* Number of legacy ptys */
+DECL|macro|NR_UNIX98_PTY_DEFAULT
+mdefine_line|#define NR_UNIX98_PTY_DEFAULT&t;4096      /* Default maximum for Unix98 ptys */
+DECL|macro|NR_UNIX98_PTY_MAX
+mdefine_line|#define NR_UNIX98_PTY_MAX&t;(1 &lt;&lt; MINORBITS) /* Absolute limit */
 DECL|macro|NR_LDISCS
-mdefine_line|#define NR_LDISCS&t;16
-multiline_comment|/*&n; * Unix98 PTY&squot;s can be defined as any multiple of NR_PTYS up to&n; * UNIX98_PTY_MAJOR_COUNT; this section defines what we need from the&n; * config options&n; */
-macro_line|#ifdef CONFIG_UNIX98_PTYS
-DECL|macro|UNIX98_NR_MAJORS
-macro_line|# define UNIX98_NR_MAJORS ((CONFIG_UNIX98_PTY_COUNT+NR_PTYS-1)/NR_PTYS)
-macro_line|# if UNIX98_NR_MAJORS &lt;= 0
-DECL|macro|CONFIG_UNIX98_PTYS
-macro_line|#  undef CONFIG_UNIX98_PTYS
-macro_line|# elif UNIX98_NR_MAJORS &gt; UNIX98_PTY_MAJOR_COUNT
-macro_line|#  error  Too many Unix98 ptys defined
-DECL|macro|UNIX98_NR_MAJORS
-macro_line|#  undef  UNIX98_NR_MAJORS
-DECL|macro|UNIX98_NR_MAJORS
-macro_line|#  define UNIX98_NR_MAJORS UNIX98_PTY_MAJOR_COUNT
-macro_line|# endif
-macro_line|#endif
+mdefine_line|#define NR_LDISCS&t;&t;16
 multiline_comment|/*&n; * These are set up by the setup-routine at boot-time:&n; */
 DECL|struct|screen_info
 r_struct
@@ -408,6 +397,8 @@ DECL|macro|I_IXOFF
 mdefine_line|#define I_IXOFF(tty)&t;_I_FLAG((tty),IXOFF)
 DECL|macro|I_IMAXBEL
 mdefine_line|#define I_IMAXBEL(tty)&t;_I_FLAG((tty),IMAXBEL)
+DECL|macro|I_IUTF8
+mdefine_line|#define I_IUTF8(tty)&t;_I_FLAG((tty),IUTF8)
 DECL|macro|O_OPOST
 mdefine_line|#define O_OPOST(tty)&t;_O_FLAG((tty),OPOST)
 DECL|macro|O_OLCUC

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
@@ -103,6 +104,13 @@ DECL|variable|minolduid
 r_static
 r_int
 id|minolduid
+suffix:semicolon
+DECL|variable|ngroups_max
+r_static
+r_int
+id|ngroups_max
+op_assign
+id|NGROUPS_MAX
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
 r_extern
@@ -371,6 +379,14 @@ id|random_table
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_UNIX98_PTYS
+r_extern
+id|ctl_table
+id|pty_table
+(braket
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* /proc declarations: */
 macro_line|#ifdef CONFIG_PROC_FS
 r_static
@@ -2055,6 +2071,31 @@ id|random_table
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_UNIX98_PTYS
+(brace
+dot
+id|ctl_name
+op_assign
+id|KERN_PTY
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;pty&quot;
+comma
+dot
+id|mode
+op_assign
+l_int|0555
+comma
+dot
+id|child
+op_assign
+id|pty_table
+comma
+)brace
+comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name
@@ -2396,6 +2437,44 @@ dot
 id|mode
 op_assign
 l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
+id|KERN_NGROUPS_MAX
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;ngroups_max&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|ngroups_max
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0444
 comma
 dot
 id|proc_handler
@@ -3765,12 +3844,6 @@ id|__sysctl_args
 id|tmp
 suffix:semicolon
 r_int
-id|name
-(braket
-l_int|2
-)braket
-suffix:semicolon
-r_int
 id|error
 suffix:semicolon
 r_if
@@ -3794,111 +3867,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp.nlen
-op_ne
-l_int|2
-op_logical_or
-id|copy_from_user
-c_func
-(paren
-id|name
-comma
-id|tmp.name
-comma
-r_sizeof
-(paren
-id|name
-)paren
-)paren
-op_logical_or
-id|name
-(braket
-l_int|0
-)braket
-op_ne
-id|CTL_KERN
-op_logical_or
-id|name
-(braket
-l_int|1
-)braket
-op_ne
-id|KERN_VERSION
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: numerical sysctl &quot;
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|tmp.nlen
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_int
-id|n
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_user
-c_func
-(paren
-id|n
-comma
-id|tmp.name
-op_plus
-id|i
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;? &quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%d &quot;
-comma
-id|n
-)paren
-suffix:semicolon
-)brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;is obsolete.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|lock_kernel
 c_func
 (paren
@@ -8914,7 +8882,6 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_SYSCTL */
 DECL|function|sys_sysctl
-r_extern
 id|asmlinkage
 r_int
 id|sys_sysctl

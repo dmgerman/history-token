@@ -242,7 +242,7 @@ multiline_comment|/*&n; * Our Physical Region Descriptor (PRD) table should be l
 DECL|macro|PRD_BYTES
 mdefine_line|#define PRD_BYTES       8
 DECL|macro|PRD_ENTRIES
-mdefine_line|#define PRD_ENTRIES     (PAGE_SIZE / (2 * PRD_BYTES))
+mdefine_line|#define PRD_ENTRIES&t;256
 multiline_comment|/*&n; * Some more useful definitions&n; */
 DECL|macro|IDE_MAJOR_NAME
 mdefine_line|#define IDE_MAJOR_NAME&t;&quot;hd&quot;&t;/* the same for all i/f; see also genhd.c */

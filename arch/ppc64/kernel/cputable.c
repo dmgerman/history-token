@@ -85,7 +85,7 @@ l_int|0xffff0000
 comma
 l_int|0x00400000
 comma
-l_string|&quot;Power3 (630)&quot;
+l_string|&quot;POWER3 (630)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -114,7 +114,7 @@ l_int|0xffff0000
 comma
 l_int|0x00410000
 comma
-l_string|&quot;Power3 (630+)&quot;
+l_string|&quot;POWER3 (630+)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -143,7 +143,7 @@ l_int|0xffff0000
 comma
 l_int|0x00330000
 comma
-l_string|&quot;Northstar&quot;
+l_string|&quot;RS64-II (northstar)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -172,7 +172,7 @@ l_int|0xffff0000
 comma
 l_int|0x00340000
 comma
-l_string|&quot;Pulsar&quot;
+l_string|&quot;RS64-III (pulsar)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -201,7 +201,7 @@ l_int|0xffff0000
 comma
 l_int|0x00360000
 comma
-l_string|&quot;I-star&quot;
+l_string|&quot;RS64-III (icestar)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -230,7 +230,7 @@ l_int|0xffff0000
 comma
 l_int|0x00370000
 comma
-l_string|&quot;S-star&quot;
+l_string|&quot;RS64-IV (sstar)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -259,7 +259,7 @@ l_int|0xffff0000
 comma
 l_int|0x00350000
 comma
-l_string|&quot;Power4&quot;
+l_string|&quot;POWER4 (gp)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -288,7 +288,7 @@ l_int|0xffff0000
 comma
 l_int|0x00380000
 comma
-l_string|&quot;Power4+&quot;
+l_string|&quot;POWER4+ (gq)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -345,12 +345,45 @@ id|COMMON_PPC64_FW
 )brace
 comma
 (brace
+multiline_comment|/* PPC970FX */
+l_int|0xffff0000
+comma
+l_int|0x003c0000
+comma
+l_string|&quot;PPC970FX&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_PPCAS_ARCH_V2
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_CAN_NAP
+comma
+id|COMMON_USER_PPC64
+op_or
+id|PPC_FEATURE_HAS_ALTIVEC_COMP
+comma
+l_int|128
+comma
+l_int|128
+comma
+id|__setup_cpu_ppc970
+comma
+id|COMMON_PPC64_FW
+)brace
+comma
+(brace
 multiline_comment|/* Power5 */
 l_int|0xffff0000
 comma
 l_int|0x003a0000
 comma
-l_string|&quot;Power5&quot;
+l_string|&quot;POWER5 (gr)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -377,7 +410,7 @@ l_int|0x00000000
 comma
 l_int|0x00000000
 comma
-l_string|&quot;(Power4-Compatible)&quot;
+l_string|&quot;POWER4 (compatible)&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or

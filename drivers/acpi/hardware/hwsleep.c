@@ -317,6 +317,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
+id|asmlinkage
 DECL|function|acpi_enter_sleep_state
 id|acpi_enter_sleep_state
 (paren

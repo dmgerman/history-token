@@ -101,8 +101,9 @@ id|rxrpc_timer_ops
 id|rxrpc_conn_timer_ops
 op_assign
 (brace
+dot
 id|timed_out
-suffix:colon
+op_assign
 id|__rxrpc_conn_timeout
 comma
 )brace

@@ -33,9 +33,12 @@ DECL|macro|NCR_700_MAX_LUNS
 mdefine_line|#define NCR_700_MAX_LUNS&t;&t;32
 DECL|macro|NCR_700_LUN_MASK
 mdefine_line|#define NCR_700_LUN_MASK&t;&t;(NCR_700_MAX_LUNS - 1)
-multiline_comment|/* Alter this with care: too many tags won&squot;t give the elevator a chance to&n; * work; too few will cause the device to operate less efficiently */
+multiline_comment|/* Maximum number of tags the driver ever allows per device */
 DECL|macro|NCR_700_MAX_TAGS
 mdefine_line|#define NCR_700_MAX_TAGS&t;&t;16
+multiline_comment|/* Tag depth the driver starts out with (can be altered in sysfs) */
+DECL|macro|NCR_700_DEFAULT_TAGS
+mdefine_line|#define NCR_700_DEFAULT_TAGS&t;&t;4
 multiline_comment|/* This is the default number of commands per LUN in the untagged case.&n; * two is a good value because it means we can have one command active and&n; * one command fully prepared and waiting&n; */
 DECL|macro|NCR_700_CMD_PER_LUN
 mdefine_line|#define NCR_700_CMD_PER_LUN&t;&t;2

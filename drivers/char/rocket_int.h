@@ -1428,13 +1428,9 @@ DECL|macro|ROCKET_CLOSING
 mdefine_line|#define ROCKET_CLOSING&t;&t;0x40000000&t;/* Serial port is closing */
 DECL|macro|ROCKET_NORMAL_ACTIVE
 mdefine_line|#define ROCKET_NORMAL_ACTIVE&t;0x20000000&t;/* Normal port is active */
-DECL|macro|ROCKET_CALLOUT_ACTIVE
-mdefine_line|#define ROCKET_CALLOUT_ACTIVE&t;0x10000000&t;/* Callout port is active */
 multiline_comment|/* tty subtypes */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL 1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT 2
 multiline_comment|/*&n; * Assigned major numbers for the Comtrol Rocketport&n; */
 DECL|macro|TTY_ROCKET_MAJOR
 mdefine_line|#define TTY_ROCKET_MAJOR&t;46

@@ -79,6 +79,7 @@ id|bfusb
 DECL|member|hdev
 r_struct
 id|hci_dev
+op_star
 id|hdev
 suffix:semicolon
 DECL|member|state
@@ -491,7 +492,7 @@ c_func
 (paren
 l_string|&quot;%s bulk tx submit failed urb %p err %d&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -733,7 +734,7 @@ c_func
 id|HCI_RUNNING
 comma
 op_amp
-id|bfusb-&gt;hdev.flags
+id|bfusb-&gt;hdev-&gt;flags
 )paren
 )paren
 r_return
@@ -744,12 +745,12 @@ c_cond
 op_logical_neg
 id|urb-&gt;status
 )paren
-id|bfusb-&gt;hdev.stat.byte_tx
+id|bfusb-&gt;hdev-&gt;stat.byte_tx
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
 r_else
-id|bfusb-&gt;hdev.stat.err_tx
+id|bfusb-&gt;hdev-&gt;stat.err_tx
 op_increment
 suffix:semicolon
 id|read_lock
@@ -966,7 +967,7 @@ c_func
 (paren
 l_string|&quot;%s bulk rx submit failed urb %p err %d&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -1047,7 +1048,7 @@ c_func
 (paren
 l_string|&quot;%s error in block&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -1103,7 +1104,7 @@ c_func
 (paren
 l_string|&quot;%s unexpected start block&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1130,7 +1131,7 @@ c_func
 (paren
 l_string|&quot;%s no packet type found&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1190,7 +1191,7 @@ c_func
 (paren
 l_string|&quot;%s event block is too short&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1241,7 +1242,7 @@ c_func
 (paren
 l_string|&quot;%s data block is too short&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1288,7 +1289,7 @@ c_func
 (paren
 l_string|&quot;%s audio block is too short&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1321,7 +1322,7 @@ c_func
 (paren
 l_string|&quot;%s no memory for the packet&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1335,7 +1336,6 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
 id|bfusb-&gt;hdev
 suffix:semicolon
 id|skb-&gt;pkt_type
@@ -1361,7 +1361,7 @@ c_func
 (paren
 l_string|&quot;%s unexpected continuation block&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1500,7 +1500,7 @@ c_func
 id|HCI_RUNNING
 comma
 op_amp
-id|bfusb-&gt;hdev.flags
+id|bfusb-&gt;hdev-&gt;flags
 )paren
 )paren
 r_return
@@ -1523,7 +1523,7 @@ id|count
 r_goto
 id|resubmit
 suffix:semicolon
-id|bfusb-&gt;hdev.stat.byte_rx
+id|bfusb-&gt;hdev-&gt;stat.byte_rx
 op_add_assign
 id|count
 suffix:semicolon
@@ -1621,7 +1621,7 @@ c_func
 (paren
 l_string|&quot;%s block extends over URB buffer ranges&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1713,7 +1713,7 @@ c_func
 (paren
 l_string|&quot;%s bulk resubmit failed urb %p err %d&quot;
 comma
-id|bfusb-&gt;hdev.name
+id|bfusb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -2851,7 +2851,7 @@ c_func
 r_struct
 id|usb_interface
 op_star
-id|iface
+id|intf
 comma
 r_const
 r_struct
@@ -2874,7 +2874,7 @@ op_assign
 id|interface_to_usbdev
 c_func
 (paren
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_struct
@@ -2900,9 +2900,9 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;iface %p id %p&quot;
+l_string|&quot;intf %p id %p&quot;
 comma
-id|iface
+id|intf
 comma
 id|id
 )paren
@@ -2911,7 +2911,7 @@ multiline_comment|/* Check number of endpoints */
 r_if
 c_cond
 (paren
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -2927,7 +2927,7 @@ suffix:semicolon
 id|bulk_out_ep
 op_assign
 op_amp
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -2940,7 +2940,7 @@ suffix:semicolon
 id|bulk_in_ep
 op_assign
 op_amp
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -3134,8 +3134,31 @@ suffix:semicolon
 multiline_comment|/* Initialize and register HCI device */
 id|hdev
 op_assign
-op_amp
+id|hci_alloc_dev
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;Can&squot;t allocate HCI device&quot;
+)paren
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
 id|bfusb-&gt;hdev
+op_assign
+id|hdev
 suffix:semicolon
 id|hdev-&gt;type
 op_assign
@@ -3144,6 +3167,15 @@ suffix:semicolon
 id|hdev-&gt;driver_data
 op_assign
 id|bfusb
+suffix:semicolon
+id|SET_HCIDEV_DEV
+c_func
+(paren
+id|hdev
+comma
+op_amp
+id|intf-&gt;dev
+)paren
 suffix:semicolon
 id|hdev-&gt;open
 op_assign
@@ -3191,6 +3223,12 @@ c_func
 l_string|&quot;Can&squot;t register HCI device&quot;
 )paren
 suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
 r_goto
 id|error
 suffix:semicolon
@@ -3198,7 +3236,7 @@ suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
-id|iface
+id|intf
 comma
 id|bfusb
 )paren
@@ -3238,7 +3276,7 @@ c_func
 r_struct
 id|usb_interface
 op_star
-id|iface
+id|intf
 )paren
 (brace
 r_struct
@@ -3249,7 +3287,7 @@ op_assign
 id|usb_get_intfdata
 c_func
 (paren
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_struct
@@ -3257,15 +3295,14 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|bfusb-&gt;hdev
 suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;iface %p&quot;
+l_string|&quot;intf %p&quot;
 comma
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -3279,7 +3316,7 @@ suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
-id|iface
+id|intf
 comma
 l_int|NULL
 )paren
@@ -3307,6 +3344,12 @@ c_func
 l_string|&quot;Can&squot;t unregister HCI device %s&quot;
 comma
 id|hdev-&gt;name
+)paren
+suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 )brace

@@ -48,7 +48,7 @@ mdefine_line|#define FS_TLS_SEL ((GDT_ENTRY_TLS_MIN+FS_TLS)*8 + 3)
 DECL|macro|IDT_ENTRIES
 mdefine_line|#define IDT_ENTRIES 256
 DECL|macro|GDT_ENTRIES
-mdefine_line|#define GDT_ENTRIES (L1_CACHE_BYTES / 8) 
+mdefine_line|#define GDT_ENTRIES 16
 DECL|macro|GDT_SIZE
 mdefine_line|#define GDT_SIZE (GDT_ENTRIES * 8)
 DECL|macro|TLS_SIZE

@@ -29,6 +29,7 @@ mdefine_line|#define EXT_COUNTERS 1
 multiline_comment|/************************************************************************/
 multiline_comment|/* Header files&t;&t;&t;&t;&t;&t;&t;&t;*/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -956,14 +957,8 @@ DECL|macro|READHEX16
 mdefine_line|#define READHEX16(X) ((__u16)(READHEX(X)))
 DECL|macro|READDEC
 mdefine_line|#define READDEC(X) ((X)&gt;=&squot;0&squot; &amp;&amp; (X)&lt;=&squot;9&squot; ? (X)-&squot;0&squot; : 0)
-DECL|macro|MIN
-mdefine_line|#define MIN(X, Y) ((X) &lt; (Y) ? (X) : (Y))
-DECL|macro|MAX
-mdefine_line|#define MAX(X, Y) ((X) &gt; (Y) ? (X) : (Y))
-DECL|macro|ELEMENTS_OF
-mdefine_line|#define ELEMENTS_OF(X) (sizeof(X) / sizeof((X)[0]))
 DECL|macro|ARRAY_END
-mdefine_line|#define ARRAY_END(X) (&amp;((X)[ELEMENTS_OF(X)]))
+mdefine_line|#define ARRAY_END(X) (&amp;((X)[ARRAY_SIZE(X)]))
 DECL|macro|JIFFIE_TO_SEC
 mdefine_line|#define JIFFIE_TO_SEC(X) ((X) / HZ)
 multiline_comment|/************************************************************************/
@@ -2466,9 +2461,11 @@ suffix:semicolon
 r_int
 id|sx_size
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+comma
 id|STRIP_ENCAP_SIZE
 c_func
 (paren
@@ -2885,6 +2882,7 @@ id|strip_info-&gt;dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If the time is in the near future, time_delta prints the number of&n; * seconds to go into the buffer and returns the address of the buffer.&n; * If the time is not in the near future, it returns the address of the&n; * string &quot;Not scheduled&quot; The buffer must be long enough to contain the&n; * ascii representation of the number plus 9 charactes for the &quot; seconds&quot;&n; * and the null character.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|time_delta
 r_static
 r_char
@@ -3955,6 +3953,7 @@ id|seq_release
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/************************************************************************/
 multiline_comment|/* Sending routines&t;&t;&t;&t;&t;&t;&t;*/
 DECL|function|ResetRadio
@@ -5275,7 +5274,7 @@ c_cond
 op_increment
 id|strip_info-&gt;next_command
 op_ge
-id|ELEMENTS_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|CommandString
@@ -6143,9 +6142,11 @@ id|value_begin
 suffix:semicolon
 id|len
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|len
 comma
 r_sizeof

@@ -259,8 +259,6 @@ mdefine_line|#define ASYNC_USR_MASK&t;0x3430&t;/* Legal flags that non-privilege
 multiline_comment|/* Internal flags used only by kernel/chr_drv/serial.c */
 DECL|macro|ASYNC_INITIALIZED
 mdefine_line|#define ASYNC_INITIALIZED&t;0x80000000 /* Serial port was initialized */
-DECL|macro|ASYNC_CALLOUT_ACTIVE
-mdefine_line|#define ASYNC_CALLOUT_ACTIVE&t;0x40000000 /* Call out device is active */
 DECL|macro|ASYNC_NORMAL_ACTIVE
 mdefine_line|#define ASYNC_NORMAL_ACTIVE&t;0x20000000 /* Normal device is active */
 DECL|macro|ASYNC_BOOT_AUTOCONF

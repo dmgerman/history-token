@@ -149,11 +149,11 @@ id|u8
 id|LogicalSlot
 suffix:semicolon
 multiline_comment|/* Hv Slot Index for Tces      */
-DECL|member|DevTceTable
+DECL|member|iommu_table
 r_struct
-id|TceTable
+id|iommu_table
 op_star
-id|DevTceTable
+id|iommu_table
 suffix:semicolon
 multiline_comment|/* Device TCE Table            */
 DECL|member|PhbId

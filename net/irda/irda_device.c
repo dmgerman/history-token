@@ -10,13 +10,11 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
@@ -47,25 +45,6 @@ op_star
 id|tasks
 op_assign
 l_int|NULL
-suffix:semicolon
-DECL|variable|infrared_mode
-r_const
-r_char
-op_star
-id|infrared_mode
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;IRDA_IRLAP&quot;
-comma
-l_string|&quot;IRDA_RAW&quot;
-comma
-l_string|&quot;SHARP_ASK&quot;
-comma
-l_string|&quot;TV_REMOTE&quot;
-comma
-)brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|task_state
@@ -729,6 +708,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_task_kick (task)&n; *&n; *    Tries to execute a task possible multiple times until the task is either&n; *    finished, or askes for a timeout. When a task is finished, we do post&n; *    processing, and notify the parent task, that is waiting for this task&n; *    to complete.&n; */
 DECL|function|irda_task_kick
+r_static
 r_int
 id|irda_task_kick
 c_func
@@ -1258,35 +1238,6 @@ id|irda_device_setup
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_txqueue_empty (dev)&n; *&n; *    Check if there is still some frames in the transmit queue for this&n; *    device. Maybe we should use: q-&gt;q.qlen == 0.&n; *&n; */
-DECL|function|irda_device_txqueue_empty
-r_int
-id|irda_device_txqueue_empty
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|skb_queue_len
-c_func
-(paren
-op_amp
-id|dev-&gt;qdisc-&gt;q
-)paren
-)paren
-r_return
-id|FALSE
-suffix:semicolon
-r_return
-id|TRUE
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function irda_device_init_dongle (self, type, qos)&n; *&n; *    Initialize attached dongle.&n; *&n; * Important : request_module require us to call this function with&n; * a process context and irq enabled. - Jean II&n; */
 DECL|function|irda_device_dongle_init
 id|dongle_t
@@ -1743,9 +1694,9 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISA
 multiline_comment|/*&n; * Function setup_dma (idev, buffer, count, mode)&n; *&n; *    Setup the DMA channel. Commonly used by ISA FIR drivers&n; *&n; */
-DECL|function|setup_dma
+DECL|function|irda_setup_dma
 r_void
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 r_int
@@ -1826,5 +1777,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irda_setup_dma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_setup_dma
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

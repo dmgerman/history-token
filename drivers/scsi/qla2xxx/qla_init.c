@@ -2900,12 +2900,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Flush written firmware to the ha-&gt;request_ring buffer&n;&t;&t;&t; * before DMA.&n;&t;&t;&t; */
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

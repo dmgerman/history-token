@@ -103,7 +103,7 @@ c_cond
 (paren
 id|dev-&gt;power.power_state
 )paren
-id|dpm_runtime_resume
+id|runtime_resume
 c_func
 (paren
 id|dev

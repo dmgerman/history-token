@@ -4,6 +4,7 @@ DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 multiline_comment|/*&n; * low level task data.&n; */
@@ -62,8 +63,13 @@ DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;(PAGE_SIZE &lt;&lt; THREAD_ORDER)
 DECL|macro|THREAD_SHIFT
 mdefine_line|#define THREAD_SHIFT&t;&t;(PAGE_SHIFT + THREAD_ORDER)
+macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(task)&t;((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
+mdefine_line|#define alloc_thread_info(tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct thread_info *ret;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = kmalloc(THREAD_SIZE, GFP_KERNEL);&t;&t;&bslash;&n;&t;&t;if (ret)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;memset(ret, 0, THREAD_SIZE);&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#else
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk) kmalloc(THREAD_SIZE, GFP_KERNEL)
+macro_line|#endif
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)&t;kfree(ti)
 DECL|macro|get_thread_info

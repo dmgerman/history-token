@@ -22,35 +22,19 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;power.h&quot;
-r_extern
-r_int
-id|sys_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|software_suspend_enabled
 r_int
 r_char
 id|software_suspend_enabled
 op_assign
 l_int|0
-suffix:semicolon
-r_extern
-r_void
-id|do_magic
-c_func
-(paren
-r_int
-id|resume
-)paren
 suffix:semicolon
 DECL|macro|NORESUME
 mdefine_line|#define NORESUME&t;&t;1
@@ -2368,6 +2352,7 @@ multiline_comment|/* NOTREACHED */
 )brace
 multiline_comment|/*&n; * Magic happens here&n; */
 DECL|function|do_magic_resume_1
+id|asmlinkage
 r_void
 id|do_magic_resume_1
 c_func
@@ -2414,6 +2399,7 @@ suffix:semicolon
 multiline_comment|/* We do not want some readahead with DMA to corrupt our memory, right?&n;&t;&t;&t;   Do it with disabled interrupts for best effect. That way, if some&n;&t;&t;&t;   driver scheduled DMA, we have good chance for DMA to finish ;-). */
 )brace
 DECL|function|do_magic_resume_2
+id|asmlinkage
 r_void
 id|do_magic_resume_2
 c_func
@@ -2519,6 +2505,11 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUSPEND_CONSOLE
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|update_screen
 c_func
 (paren
@@ -2526,10 +2517,16 @@ id|fg_console
 )paren
 suffix:semicolon
 multiline_comment|/* Hmm, is this the problem? */
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* do_magic() is implemented in arch/?/kernel/suspend_asm.S, and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;do_magic_suspend_1();&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;do_magic_suspend_2();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;do_magic_resume_1();&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;do_magic_resume_2();&n;&n; */
 DECL|function|do_magic_suspend_1
+id|asmlinkage
 r_void
 id|do_magic_suspend_1
 c_func
@@ -2565,6 +2562,7 @@ id|suspend_pagedir_lock
 suffix:semicolon
 )brace
 DECL|function|do_magic_suspend_2
+id|asmlinkage
 r_void
 id|do_magic_suspend_2
 c_func

@@ -2522,13 +2522,6 @@ l_string|&quot;Upgrade your hardware or join the FPU &quot;
 l_string|&quot;emulation project&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;(see http://no-fpu.linux-m68k.org)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|panic
 c_func
 (paren

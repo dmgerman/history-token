@@ -374,12 +374,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* need to save/restore p4/p5 manually otherwise gcc&squot;s 10 argument&n;&t;   limit gets exceeded (+ counts as two arguments) */
+multiline_comment|/* Make sure GCC forgets anything it knows about p4 or p5,&n;&t;   such that it won&squot;t pass to the asm volatile below a&n;&t;   register that is shared with any other variable.  That&squot;s&n;&t;   because we modify p4 and p5 there, but we can&squot;t mark them&n;&t;   as read/write, otherwise we&squot;d overflow the 10-asm-operands&n;&t;   limit of GCC &lt; 3.1.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;+r&quot;
+(paren
+id|p5
+)paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;  pushl %4&bslash;n&quot;
-l_string|&quot;  pushl %5&bslash;n&quot;
 DECL|macro|BLOCK
 macro_line|#undef BLOCK
 DECL|macro|BLOCK
@@ -413,8 +426,6 @@ l_string|&quot;       addl $128, %4         ;&bslash;n&quot;
 l_string|&quot;       addl $128, %5         ;&bslash;n&quot;
 l_string|&quot;       decl %0               ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                ;&bslash;n&quot;
-l_string|&quot;&t;popl %5&bslash;n&quot;
-l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
 l_string|&quot;+r&quot;
 (paren
@@ -447,6 +458,22 @@ id|p5
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* p4 and p5 were modified, and now the variables are dead.&n;&t;   Clobber them just to be sure nobody does something stupid&n;&t;   like assuming they have some legal value.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|p5
+)paren
 )paren
 suffix:semicolon
 id|kernel_fpu_end
@@ -854,12 +881,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* need to save p4/p5 manually to not exceed gcc&squot;s 10 argument limit */
+multiline_comment|/* Make sure GCC forgets anything it knows about p4 or p5,&n;&t;   such that it won&squot;t pass to the asm volatile below a&n;&t;   register that is shared with any other variable.  That&squot;s&n;&t;   because we modify p4 and p5 there, but we can&squot;t mark them&n;&t;   as read/write, otherwise we&squot;d overflow the 10-asm-operands&n;&t;   limit of GCC &lt; 3.1.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;+r&quot;
+(paren
+id|p5
+)paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&t;pushl %4&bslash;n&quot;
-l_string|&quot;&t;pushl %5&bslash;n&quot;
 l_string|&quot; .align 32,0x90             ;&bslash;n&quot;
 l_string|&quot; 1:                         ;&bslash;n&quot;
 l_string|&quot;       movq   (%1), %%mm0   ;&bslash;n&quot;
@@ -917,10 +957,8 @@ l_string|&quot;       addl $64, %4         ;&bslash;n&quot;
 l_string|&quot;       addl $64, %5         ;&bslash;n&quot;
 l_string|&quot;       decl %0              ;&bslash;n&quot;
 l_string|&quot;       jnz 1b               ;&bslash;n&quot;
-l_string|&quot;&t;popl %5&bslash;n&quot;
-l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
-l_string|&quot;+g&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
@@ -951,6 +989,22 @@ id|p5
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* p4 and p5 were modified, and now the variables are dead.&n;&t;   Clobber them just to be sure nobody does something stupid&n;&t;   like assuming they have some legal value.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|p5
+)paren
 )paren
 suffix:semicolon
 id|kernel_fpu_end
@@ -1482,12 +1536,25 @@ id|cr0
 suffix:semicolon
 id|XMMS_SAVE
 suffix:semicolon
-multiline_comment|/* need to save p4/p5 manually to not exceed gcc&squot;s 10 argument limit */
+multiline_comment|/* Make sure GCC forgets anything it knows about p4 or p5,&n;&t;   such that it won&squot;t pass to the asm volatile below a&n;&t;   register that is shared with any other variable.  That&squot;s&n;&t;   because we modify p4 and p5 there, but we can&squot;t mark them&n;&t;   as read/write, otherwise we&squot;d overflow the 10-asm-operands&n;&t;   limit of GCC &lt; 3.1.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;+r&quot;
+(paren
+id|p5
+)paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot; pushl %4&bslash;n&quot;
-l_string|&quot; pushl %5&bslash;n&quot;
 DECL|macro|BLOCK
 macro_line|#undef BLOCK
 DECL|macro|BLOCK
@@ -1531,8 +1598,6 @@ l_string|&quot;       addl $256, %4           ;&bslash;n&quot;
 l_string|&quot;       addl $256, %5           ;&bslash;n&quot;
 l_string|&quot;       decl %0                 ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                  ;&bslash;n&quot;
-l_string|&quot;&t;popl %5&bslash;n&quot;
-l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
 l_string|&quot;+r&quot;
 (paren
@@ -1565,6 +1630,22 @@ id|p5
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* p4 and p5 were modified, and now the variables are dead.&n;&t;   Clobber them just to be sure nobody does something stupid&n;&t;   like assuming they have some legal value.  */
+id|__asm__
+(paren
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|p4
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|p5
+)paren
 )paren
 suffix:semicolon
 id|XMMS_RESTORE

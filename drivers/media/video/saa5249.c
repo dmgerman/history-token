@@ -235,12 +235,6 @@ mdefine_line|#define FALSE 0
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1
 macro_line|#endif
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
-DECL|macro|MAX
-mdefine_line|#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|RESCHED
 mdefine_line|#define RESCHED do { cond_resched(); } while(0)
 DECL|variable|saa_template
@@ -2755,7 +2749,7 @@ l_int|16
 suffix:semicolon
 id|start
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|req-&gt;start
@@ -2765,7 +2759,7 @@ l_int|32
 suffix:semicolon
 id|end
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|req-&gt;end
@@ -2868,7 +2862,7 @@ id|len
 suffix:semicolon
 id|start
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|req-&gt;start
@@ -2878,7 +2872,7 @@ l_int|7
 suffix:semicolon
 id|end
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|req-&gt;end

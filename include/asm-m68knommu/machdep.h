@@ -2,6 +2,7 @@ macro_line|#ifndef _M68KNOMMU_MACHDEP_H
 DECL|macro|_M68KNOMMU_MACHDEP_H
 mdefine_line|#define _M68KNOMMU_MACHDEP_H
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -27,7 +28,7 @@ op_star
 id|mach_sched_init
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -90,7 +91,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 (paren

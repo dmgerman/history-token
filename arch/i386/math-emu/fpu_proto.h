@@ -67,7 +67,7 @@ op_star
 id|defaultNaN
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|arith_invalid
 c_func
@@ -76,7 +76,7 @@ r_int
 id|deststnr
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|FPU_divide_by_zero
 c_func
@@ -97,7 +97,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_void
 id|set_precision_flag_up
 c_func
@@ -105,7 +105,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_void
 id|set_precision_flag_down
 c_func
@@ -113,7 +113,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|denormal_operand
 c_func
@@ -121,7 +121,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|arith_overflow
 c_func
@@ -131,7 +131,7 @@ op_star
 id|dest
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|arith_underflow
 c_func

@@ -182,6 +182,17 @@ DECL|member|intrp_allocated
 r_int
 id|intrp_allocated
 suffix:semicolon
+DECL|member|rp_openfh_len
+r_int
+id|rp_openfh_len
+suffix:semicolon
+DECL|member|rp_openfh
+r_char
+id|rp_openfh
+(braket
+id|NFS4_FHSIZE
+)braket
+suffix:semicolon
 DECL|member|rp_ibuf
 r_char
 id|rp_ibuf
@@ -191,7 +202,7 @@ id|NFSD4_REPLAY_ISIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or a lock_owner&n;*&n;*    so_idhash:  stateid_hashtbl[] for open owner, lockstateid_hashtbl[]&n;*         for lock_owner&n;*    so_strhash: ownerstr_hashtbl[] for open_owner, lock_ownerstr_hashtbl[]&n;*         for lock_owner&n;*    so_perclient: nfs4_client-&gt;cl_perclient entry - used when nfs4_client&n;*         struct is reaped.&n;*    so_perfilestate: heads the list of nfs4_stateid (either open or lock) &n;*         and is used to ensure no dangling nfs4_stateid references when we &n;*         release a stateowner.&n;*/
+multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or a lock_owner&n;*&n;*    so_idhash:  stateid_hashtbl[] for open owner, lockstateid_hashtbl[]&n;*         for lock_owner&n;*    so_strhash: ownerstr_hashtbl[] for open_owner, lock_ownerstr_hashtbl[]&n;*         for lock_owner&n;*    so_perclient: nfs4_client-&gt;cl_perclient entry - used when nfs4_client&n;*         struct is reaped.&n;*    so_perfilestate: heads the list of nfs4_stateid (either open or lock) &n;*         and is used to ensure no dangling nfs4_stateid references when we &n;*         release a stateowner.&n;*    so_perlockowner: (open) nfs4_stateid-&gt;st_perlockowner entry - used when&n;*         close is called to reap associated byte-range locks&n;*/
 DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
@@ -220,6 +231,12 @@ id|list_head
 id|so_perfilestate
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
+DECL|member|so_perlockowner
+r_struct
+id|list_head
+id|so_perlockowner
+suffix:semicolon
+multiline_comment|/* nfs4_stateid-&gt;st_perlockowner */
 DECL|member|so_is_open_owner
 r_int
 id|so_is_open_owner
@@ -287,7 +304,7 @@ suffix:semicolon
 multiline_comment|/* used with stateowner-&gt;so_id &n;&t;&t;&t;&t;&t;     * for stateid_hashtbl hash */
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*&n;* &t;st_hash: stateid_hashtbl[] entry or lockstateid_hashtbl entry&n;* &t;st_perfile: file_hashtbl[] entry.&n;* &t;st_perfile_state: nfs4_stateowner-&gt;so_perfilestate&n;* &t;st_share_access: used only for open stateid&n;* &t;st_share_deny: used only for open stateid&n;*/
+multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*&n;* &t;st_hash: stateid_hashtbl[] entry or lockstateid_hashtbl entry&n;* &t;st_perfile: file_hashtbl[] entry.&n;* &t;st_perfile_state: nfs4_stateowner-&gt;so_perfilestate&n;*       st_perlockowner: (open stateid) list of lock nfs4_stateowners&n;* &t;st_access_bmap: used only for open stateid&n;* &t;st_deny_bmap: used only for open stateid&n;*/
 DECL|struct|nfs4_stateid
 r_struct
 id|nfs4_stateid
@@ -306,6 +323,11 @@ DECL|member|st_perfilestate
 r_struct
 id|list_head
 id|st_perfilestate
+suffix:semicolon
+DECL|member|st_perlockowner
+r_struct
+id|list_head
+id|st_perlockowner
 suffix:semicolon
 DECL|member|st_stateowner
 r_struct
@@ -332,15 +354,15 @@ DECL|member|st_vfs_set
 r_int
 id|st_vfs_set
 suffix:semicolon
-DECL|member|st_share_access
+DECL|member|st_access_bmap
 r_int
 r_int
-id|st_share_access
+id|st_access_bmap
 suffix:semicolon
-DECL|member|st_share_deny
+DECL|member|st_deny_bmap
 r_int
 r_int
-id|st_share_deny
+id|st_deny_bmap
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -292,11 +292,6 @@ id|__s32
 id|new_speed
 suffix:semicolon
 multiline_comment|/* speed we need to set */
-DECL|member|flags
-id|__u32
-id|flags
-suffix:semicolon
-multiline_comment|/* Interface flags */
 )brace
 suffix:semicolon
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -1628,7 +1629,7 @@ id|raddr
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -1692,7 +1693,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

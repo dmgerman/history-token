@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|BUID_HI
 mdefine_line|#define BUID_HI(buid) ((buid) &gt;&gt; 32)
@@ -59,6 +60,14 @@ DECL|variable|eeh_opts_last
 r_static
 r_int
 id|eeh_opts_last
+suffix:semicolon
+DECL|variable|slot_err_buf
+r_int
+r_char
+id|slot_err_buf
+(braket
+id|RTAS_ERROR_LOG_MAX
+)braket
 suffix:semicolon
 id|pte_t
 op_star
@@ -370,6 +379,85 @@ op_ge
 l_int|2
 )paren
 (brace
+r_int
+r_int
+id|slot_err_ret
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|slot_err_buf
+comma
+l_int|0
+comma
+id|RTAS_ERROR_LOG_MAX
+)paren
+suffix:semicolon
+id|slot_err_ret
+op_assign
+id|rtas_call
+c_func
+(paren
+id|rtas_token
+c_func
+(paren
+l_string|&quot;ibm,slot-error-detail&quot;
+)paren
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|NULL
+comma
+id|dn-&gt;eeh_config_addr
+comma
+id|BUID_HI
+c_func
+(paren
+id|dn-&gt;phb-&gt;buid
+)paren
+comma
+id|BUID_LO
+c_func
+(paren
+id|dn-&gt;phb-&gt;buid
+)paren
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|__pa
+c_func
+(paren
+id|slot_err_buf
+)paren
+comma
+id|RTAS_ERROR_LOG_MAX
+comma
+l_int|2
+multiline_comment|/* Permanent Error */
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot_err_ret
+op_eq
+l_int|0
+)paren
+id|log_error
+c_func
+(paren
+id|slot_err_buf
+comma
+id|ERR_TYPE_RTAS_LOG
+comma
+l_int|1
+multiline_comment|/* Fatal */
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * XXX We should create a separate sysctl for this.&n;&t;&t;&t; *&n;&t;&t;&t; * Since the panic_on_oops sysctl is used to halt&n;&t;&t;&t; * the system in light of potential corruption, we&n;&t;&t;&t; * can use it here.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -810,13 +898,6 @@ r_struct
 id|eeh_early_enable_info
 id|info
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* Very early cmd line parse.  Cheap, but works. */
 r_char
 op_star
 id|eeh_force_off
@@ -824,7 +905,7 @@ op_assign
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;eeh-force-off&quot;
 )paren
@@ -836,7 +917,7 @@ op_assign
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;eeh-force-on&quot;
 )paren

@@ -1,82 +1,123 @@
 macro_line|#ifndef _PPC64_TLBFLUSH_H
 DECL|macro|_PPC64_TLBFLUSH_H
 mdefine_line|#define _PPC64_TLBFLUSH_H
-macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
-r_extern
-r_void
-id|flush_tlb_mm
-c_func
-(paren
+macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+DECL|macro|PPC64_TLB_BATCH_NR
+mdefine_line|#define PPC64_TLB_BATCH_NR 192
+r_struct
+id|mm_struct
+suffix:semicolon
+DECL|struct|ppc64_tlb_batch
+r_struct
+id|ppc64_tlb_batch
+(brace
+DECL|member|index
+r_int
+r_int
+id|index
+suffix:semicolon
+DECL|member|context
+r_int
+r_int
+id|context
+suffix:semicolon
+DECL|member|mm
 r_struct
 id|mm_struct
 op_star
 id|mm
+suffix:semicolon
+DECL|member|pte
+id|pte_t
+id|pte
+(braket
+id|PPC64_TLB_BATCH_NR
+)braket
+suffix:semicolon
+DECL|member|addr
+r_int
+r_int
+id|addr
+(braket
+id|PPC64_TLB_BATCH_NR
+)braket
+suffix:semicolon
+DECL|member|vaddr
+r_int
+r_int
+id|vaddr
+(braket
+id|PPC64_TLB_BATCH_NR
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|ppc64_tlb_batch
+comma
+id|ppc64_tlb_batch
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|flush_tlb_page
+id|__flush_tlb_pending
 c_func
 (paren
 r_struct
-id|vm_area_struct
+id|ppc64_tlb_batch
 op_star
-id|vma
-comma
-r_int
-r_int
-id|vmaddr
+id|batch
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__flush_tlb_range
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;__flush_tlb_range(vma-&gt;vm_mm, start, end)
-DECL|macro|flush_tlb_kernel_range
-mdefine_line|#define flush_tlb_kernel_range(start, end) &bslash;&n;&t;__flush_tlb_range(&amp;init_mm, (start), (end))
-DECL|function|flush_tlb_pgtables
+DECL|function|flush_tlb_pending
 r_static
 r_inline
 r_void
-id|flush_tlb_pgtables
+id|flush_tlb_pending
 c_func
 (paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
+r_void
 )paren
 (brace
-multiline_comment|/* PPC has hw page tables. */
+r_struct
+id|ppc64_tlb_batch
+op_star
+id|batch
+op_assign
+op_amp
+id|__get_cpu_var
+c_func
+(paren
+id|ppc64_tlb_batch
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|batch-&gt;index
+)paren
+id|__flush_tlb_pending
+c_func
+(paren
+id|batch
+)paren
+suffix:semicolon
 )brace
+DECL|macro|flush_tlb_mm
+mdefine_line|#define flush_tlb_mm(mm)&t;&t;&t;flush_tlb_pending()
+DECL|macro|flush_tlb_page
+mdefine_line|#define flush_tlb_page(vma, addr)&t;&t;flush_tlb_pending()
+DECL|macro|flush_tlb_range
+mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;&t;do { (void)(start); flush_tlb_pending(); } while (0)
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start, end)&t;flush_tlb_pending()
+DECL|macro|flush_tlb_pgtables
+mdefine_line|#define flush_tlb_pgtables(mm, start, end)&t;do { } while (0)
 r_extern
 r_void
 id|flush_hash_page

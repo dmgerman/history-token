@@ -61,6 +61,14 @@ DECL|macro|_CACHE
 macro_line|#  define _CACHE xscale
 macro_line|# endif
 macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_V6)
+singleline_comment|//# ifdef _CACHE
+DECL|macro|MULTI_CACHE
+macro_line|#  define MULTI_CACHE 1
+singleline_comment|//# else
+singleline_comment|//#  define _CACHE v6
+singleline_comment|//# endif
+macro_line|#endif
 macro_line|#if !defined(_CACHE) &amp;&amp; !defined(MULTI_CACHE)
 macro_line|#error Unknown cache maintainence model
 macro_line|#endif

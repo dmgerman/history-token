@@ -56,8 +56,9 @@ mdefine_line|#define N_DRSIZE(a)&t;((a).a_drsize)
 DECL|macro|N_SYMSIZE
 mdefine_line|#define N_SYMSIZE(a)&t;((a).a_syms)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/thread_info.h&gt;
 DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP&t;0xc0000000
+mdefine_line|#define STACK_TOP (test_thread_flag(TIF_IA32) ? IA32_PAGE_OFFSET : TASK_SIZE)
 macro_line|#endif
 macro_line|#endif /* __A_OUT_GNU_H__ */
 eof

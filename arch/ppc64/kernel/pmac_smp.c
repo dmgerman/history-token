@@ -63,13 +63,6 @@ id|target
 comma
 r_int
 id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 suffix:semicolon
 r_extern

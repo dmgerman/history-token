@@ -265,18 +265,6 @@ suffix:semicolon
 )brace
 DECL|macro|ELF_CORE_EFLAGS
 mdefine_line|#define ELF_CORE_EFLAGS EF_MIPS_ABI2
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
-DECL|macro|CONFIG_BINFMT_ELF
-mdefine_line|#define CONFIG_BINFMT_ELF CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-mdefine_line|#define CONFIG_BINFMT_ELF_MODULE CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
 id|MODULE_DESCRIPTION
 c_func
 (paren

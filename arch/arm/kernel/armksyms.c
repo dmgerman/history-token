@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -101,54 +102,6 @@ id|ptr
 comma
 r_int
 id|size
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * syscalls&n; */
-r_extern
-r_int
-id|sys_write
-c_func
-(paren
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_read
-c_func
-(paren
-r_int
-comma
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_lseek
-c_func
-(paren
-r_int
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_exit
-c_func
-(paren
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * libgcc functions - functions that are used internally by the&n; * compiler...  (prototypes are not correct though, but that&n; * doesn&squot;t really matter since they&squot;re not versioned).&n; */

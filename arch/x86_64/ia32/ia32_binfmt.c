@@ -621,18 +621,6 @@ DECL|macro|exit_elf_binfmt
 mdefine_line|#define exit_elf_binfmt&t;&t;&t;exit_elf32_binfmt
 DECL|macro|load_elf_binary
 mdefine_line|#define load_elf_binary load_elf32_binary
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|# define CONFIG_BINFMT_ELF&t;&t;CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|# define CONFIG_BINFMT_ELF_MODULE&t;CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(r, load_addr)&t;elf32_init(r)
 DECL|macro|setup_arg_pages
@@ -1148,4 +1136,107 @@ r_return
 id|map_addr
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
+multiline_comment|/* Register vsyscall32 into the ABI table */
+macro_line|#include &lt;linux/sysctl.h&gt;
+DECL|variable|abi_table2
+r_static
+id|ctl_table
+id|abi_table2
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|99
+comma
+l_string|&quot;vsyscall32&quot;
+comma
+op_amp
+id|sysctl_vsyscall32
+comma
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0644
+comma
+l_int|NULL
+comma
+id|proc_dointvec
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|abi_root_table2
+r_static
+id|ctl_table
+id|abi_root_table2
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|ctl_name
+op_assign
+id|CTL_ABI
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;abi&quot;
+comma
+dot
+id|mode
+op_assign
+l_int|0555
+comma
+dot
+id|child
+op_assign
+id|abi_table2
+)brace
+comma
+(brace
+l_int|0
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|function|ia32_binfmt_init
+r_static
+id|__init
+r_int
+id|ia32_binfmt_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_sysctl_table
+c_func
+(paren
+id|abi_root_table2
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ia32_binfmt_init
+id|__initcall
+c_func
+(paren
+id|ia32_binfmt_init
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

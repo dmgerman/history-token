@@ -191,9 +191,23 @@ DECL|member|unused2
 id|__u32
 id|unused2
 suffix:colon
-l_int|20
+l_int|18
 suffix:semicolon
 multiline_comment|/* reserved zeros */
+DECL|member|mbfc
+id|__u32
+id|mbfc
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* measurement block format control */
+DECL|member|xmwme
+id|__u32
+id|xmwme
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* extended measurement word mode enable */
 DECL|member|csense
 id|__u32
 id|csense
@@ -229,11 +243,16 @@ id|scsw
 id|scsw
 suffix:semicolon
 multiline_comment|/* subchannel status word */
+DECL|member|mba
+id|__u64
+id|mba
+suffix:semicolon
+multiline_comment|/* measurement block address */
 DECL|member|mda
 id|__u8
 id|mda
 (braket
-l_int|12
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* model dependent area */

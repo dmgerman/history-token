@@ -7,6 +7,7 @@ macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/msg.h&quot;
 macro_line|#include &quot;linux/shm.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
+macro_line|#include &quot;linux/syscalls.h&quot;
 macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/utime.h&quot;
@@ -1142,7 +1143,7 @@ id|raddr
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -1206,7 +1207,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

@@ -766,9 +766,6 @@ op_star
 id|bdi
 suffix:semicolon
 r_int
-id|holder
-suffix:semicolon
-r_int
 id|ret
 comma
 id|n
@@ -1008,8 +1005,7 @@ c_func
 (paren
 id|bdev
 comma
-op_amp
-id|holder
+id|file
 )paren
 OL
 l_int|0

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -29,11 +30,12 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
@@ -265,31 +267,6 @@ id|devtree_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|UNDEFINED_IRQ
-mdefine_line|#define UNDEFINED_IRQ 0xffff
-DECL|variable|real_irq_to_virt_map
-r_int
-r_int
-id|real_irq_to_virt_map
-(braket
-id|NR_HW_IRQS
-)braket
-suffix:semicolon
-DECL|variable|virt_irq_to_real_map
-r_int
-r_int
-id|virt_irq_to_real_map
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
-DECL|variable|last_virt_irq
-r_int
-id|last_virt_irq
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* index of last virt_irq.  Skip through IPI */
 r_static
 r_int
 r_int
@@ -550,14 +527,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
-(braket
-l_int|512
-)braket
-suffix:semicolon
-multiline_comment|/* XXX */
 DECL|variable|dev_tree_size
 r_int
 r_int
@@ -2484,6 +2453,130 @@ l_int|2
 op_div
 l_int|8
 suffix:semicolon
+r_int
+id|nodart
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+r_char
+op_star
+id|opt
+suffix:semicolon
+id|opt
+op_assign
+id|strstr
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+id|cmd_line
+)paren
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;iommu=&quot;
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|opt
+)paren
+(brace
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;opt is:&quot;
+)paren
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|opt
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|opt
+op_add_assign
+l_int|6
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|opt
+op_logical_and
+op_star
+id|opt
+op_eq
+l_char|&squot; &squot;
+)paren
+(brace
+id|opt
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|opt
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;off&quot;
+)paren
+comma
+l_int|3
+)paren
+)paren
+id|nodart
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#else
+id|nodart
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_DART */
+r_if
+c_cond
+(paren
+id|nodart
+)paren
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;DART disabled on PowerMac !&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|lmb_init
 c_func
 (paren
@@ -2669,6 +2762,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|nodart
+op_logical_and
 id|lmb_base
 OG
 l_int|0x80000000ull
@@ -2680,7 +2775,8 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;Skipping memory above 2Gb for now, not yet supported&bslash;n&quot;
+l_string|&quot;Skipping memory above 2Gb for &quot;
+l_string|&quot;now, DART support disabled&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3403,27 +3499,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;    memory.lcd_size             = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;memory.lcd_size
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3533,32 +3608,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;                      .type     = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;memory.region
-(braket
-id|i
-)braket
-dot
-id|type
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|prom_print_nl
 c_func
@@ -3600,27 +3649,6 @@ id|prom_print_hex
 c_func
 (paren
 id|_lmb-&gt;reserved.size
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;    reserved.lcd_size             = 0x&quot;
-)paren
-)paren
-suffix:semicolon
-id|prom_print_hex
-c_func
-(paren
-id|_lmb-&gt;reserved.lcd_size
 )paren
 suffix:semicolon
 id|prom_print_nl
@@ -3737,35 +3765,118 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* DEBUG_PROM */
+macro_line|#ifdef CONFIG_PMAC_DART
+DECL|function|prom_initialize_dart_table
+r_void
+id|prom_initialize_dart_table
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|offset
+op_assign
+id|reloc_offset
+c_func
+(paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|dart_tablebase
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|dart_tablesize
+suffix:semicolon
+multiline_comment|/* Only reserve DART space if machine has more than 2Gb of RAM */
+r_if
+c_cond
+(paren
+id|lmb_end_of_DRAM
+c_func
+(paren
+)paren
+op_le
+l_int|0x80000000ull
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* 512 pages is max DART tablesize. */
+id|RELOC
+c_func
+(paren
+id|dart_tablesize
+)paren
+op_assign
+l_int|1UL
+op_lshift
+l_int|19
+suffix:semicolon
+multiline_comment|/* 16MB (1 &lt;&lt; 24) alignment. We allocate a full 16Mb chuck since we&n;&t; * will blow up an entire large page anyway in the kernel mapping&n;&t; */
+id|RELOC
+c_func
+(paren
+id|dart_tablebase
+)paren
+op_assign
+id|absolute_to_virt
+c_func
+(paren
+id|lmb_alloc_base
+c_func
+(paren
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|0x80000000L
+)paren
+)paren
+suffix:semicolon
 id|prom_print
 c_func
 (paren
 id|RELOC
 c_func
 (paren
-l_string|&quot;                      .type     = 0x&quot;
+l_string|&quot;Dart at: &quot;
 )paren
 )paren
 suffix:semicolon
 id|prom_print_hex
 c_func
 (paren
-id|_lmb-&gt;reserved.region
-(braket
-id|i
-)braket
-dot
-id|type
-)paren
-suffix:semicolon
-id|prom_print_nl
+id|RELOC
 c_func
 (paren
+id|dart_tablebase
+)paren
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif /* DEBUG_PROM */
+macro_line|#endif /* CONFIG_PMAC_DART */
 r_void
 DECL|function|prom_initialize_tce_table
 id|prom_initialize_tce_table
@@ -4786,17 +4897,6 @@ id|__secondary_hold
 )paren
 suffix:semicolon
 r_struct
-id|naca_struct
-op_star
-id|_naca
-op_assign
-id|RELOC
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
-r_struct
 id|systemcfg
 op_star
 id|_systemcfg
@@ -4834,6 +4934,19 @@ op_amp
 id|prom
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_struct
+id|naca_struct
+op_star
+id|_naca
+op_assign
+id|RELOC
+c_func
+(paren
+id|naca
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* On pmac, we just fill out the various global bitmasks and&n;&t; * arrays indicating our CPUs are here, they are actually started&n;&t; * later on from pmac_smp&n;&t; */
 r_if
 c_cond
@@ -5700,6 +5813,17 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We have to get every CPU out of OF,&n;&t;&t;&t;&t; * even if we never start it. */
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_goto
+id|next
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Set the number of active processors. */
 id|_systemcfg-&gt;processorCount
@@ -5849,6 +5973,10 @@ id|cpu_present_at_boot
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+id|next
+suffix:colon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Init paca for secondary threads.   They start later. */
 r_for
 c_loop
@@ -5867,6 +5995,15 @@ op_increment
 (brace
 id|cpuid
 op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+r_continue
 suffix:semicolon
 id|_xPaca
 (braket
@@ -6123,6 +6260,29 @@ l_string|&quot;Processor is not HMT capable&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|cpuid
+op_ge
+id|NR_CPUS
+)paren
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;WARNING: maximum CPUs (&quot;
+id|__stringify
+c_func
+(paren
+id|NR_CPUS
+)paren
+l_string|&quot;) exceeded: ignoring extras&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG_PROM
 id|prom_print
 c_func
@@ -6471,7 +6631,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;off&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
@@ -6488,7 +6652,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;on&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
@@ -8493,7 +8661,7 @@ l_int|0
 op_ne
 l_int|0
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|RELOC
@@ -8511,22 +8679,6 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
-id|RELOC
-c_func
-(paren
-id|cmd_line
-(braket
-r_sizeof
-(paren
-id|cmd_line
-)paren
-op_minus
-l_int|1
-)braket
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 id|mem
 op_assign
 id|prom_initialize_lmb
@@ -8642,6 +8794,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+r_if
+c_cond
+(paren
+id|_systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+id|prom_initialize_dart_table
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_if
 c_cond
@@ -9442,185 +9608,6 @@ c_func
 (paren
 id|mem
 )paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|virt_irq_init
-id|virt_irq_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_IRQS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|virt_irq_to_real_map
-(braket
-id|i
-)braket
-op_assign
-id|UNDEFINED_IRQ
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_HW_IRQS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|real_irq_to_virt_map
-(braket
-id|i
-)braket
-op_assign
-id|UNDEFINED_IRQ
-suffix:semicolon
-)brace
-multiline_comment|/* Create a mapping for a real_irq if it doesn&squot;t already exist.&n; * Return the virtual irq as a convenience.&n; */
-r_int
-r_int
-DECL|function|virt_irq_create_mapping
-id|virt_irq_create_mapping
-c_func
-(paren
-r_int
-r_int
-id|real_irq
-)paren
-(brace
-r_int
-r_int
-id|virq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|naca-&gt;interrupt_controller
-op_eq
-id|IC_OPEN_PIC
-)paren
-r_return
-id|real_irq
-suffix:semicolon
-multiline_comment|/* no mapping for openpic (for now) */
-id|virq
-op_assign
-id|real_irq_to_virt
-c_func
-(paren
-id|real_irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|virq
-op_eq
-id|UNDEFINED_IRQ
-)paren
-(brace
-multiline_comment|/* Assign a virtual IRQ number */
-r_if
-c_cond
-(paren
-id|real_irq
-OL
-id|NR_IRQS
-op_logical_and
-id|virt_irq_to_real
-c_func
-(paren
-id|real_irq
-)paren
-op_eq
-id|UNDEFINED_IRQ
-)paren
-(brace
-multiline_comment|/* A 1-1 mapping will work. */
-id|virq
-op_assign
-id|real_irq
-suffix:semicolon
-)brace
-r_else
-(brace
-r_while
-c_loop
-(paren
-id|last_virt_irq
-OL
-id|NR_IRQS
-op_logical_and
-id|virt_irq_to_real
-c_func
-(paren
-op_increment
-id|last_virt_irq
-)paren
-op_ne
-id|UNDEFINED_IRQ
-)paren
-multiline_comment|/* skip irq&squot;s in use */
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|last_virt_irq
-op_ge
-id|NR_IRQS
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Too many IRQs are required on this system.  NR_IRQS=%d&bslash;n&quot;
-comma
-id|NR_IRQS
-)paren
-suffix:semicolon
-id|virq
-op_assign
-id|last_virt_irq
-suffix:semicolon
-)brace
-id|virt_irq_to_real_map
-(braket
-id|virq
-)braket
-op_assign
-id|real_irq
-suffix:semicolon
-id|real_irq_to_virt_map
-(braket
-id|real_irq
-)braket
-op_assign
-id|virq
-suffix:semicolon
-)brace
-r_return
-id|virq
 suffix:semicolon
 )brace
 r_static
@@ -11754,6 +11741,8 @@ r_int
 r_int
 op_star
 id|irq
+comma
+id|virq
 suffix:semicolon
 r_struct
 id|device_node
@@ -11889,6 +11878,37 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+id|virq
+op_assign
+id|virt_irq_create_mapping
+c_func
+(paren
+id|irq
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|virq
+op_eq
+id|NO_IRQ
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Could not allocate interrupt &quot;
+l_string|&quot;number for %s&bslash;n&quot;
+comma
+id|np-&gt;full_name
+)paren
+suffix:semicolon
+)brace
+r_else
 id|np-&gt;intrs
 (braket
 id|i
@@ -11899,14 +11919,7 @@ op_assign
 id|openpic_to_irq
 c_func
 (paren
-id|virt_irq_create_mapping
-c_func
-(paren
-id|irq
-(braket
-l_int|0
-)braket
-)paren
+id|virq
 )paren
 suffix:semicolon
 multiline_comment|/* We offset irq numbers for the u3 MPIC by 128 in PowerMac */
@@ -15578,6 +15591,8 @@ r_int
 r_int
 op_star
 id|irq
+comma
+id|virq
 suffix:semicolon
 r_struct
 id|device_node
@@ -15842,9 +15857,16 @@ c_cond
 op_logical_neg
 id|ints
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|intrcells
 op_assign
 id|prom_n_intr_cells
@@ -15959,6 +15981,37 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+id|virq
+op_assign
+id|virt_irq_create_mapping
+c_func
+(paren
+id|irq
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|virq
+op_eq
+id|NO_IRQ
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Could not allocate interrupt &quot;
+l_string|&quot;number for %s&bslash;n&quot;
+comma
+id|node-&gt;full_name
+)paren
+suffix:semicolon
+)brace
+r_else
 id|node-&gt;intrs
 (braket
 id|i
@@ -15969,14 +16022,7 @@ op_assign
 id|openpic_to_irq
 c_func
 (paren
-id|virt_irq_create_mapping
-c_func
-(paren
-id|irq
-(braket
-l_int|0
-)braket
-)paren
+id|virq
 )paren
 suffix:semicolon
 r_if
@@ -16108,7 +16154,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-multiline_comment|/* fixing up tce_table */
+multiline_comment|/* fixing up iommu_table */
 r_if
 c_cond
 (paren
@@ -16137,21 +16183,17 @@ id|node-&gt;bussubno
 op_assign
 id|node-&gt;busno
 suffix:semicolon
-id|create_pci_bus_tce_table
+id|iommu_devnode_init
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|node
 )paren
 suffix:semicolon
 )brace
 r_else
-id|node-&gt;tce_table
+id|node-&gt;iommu_table
 op_assign
-id|parent-&gt;tce_table
+id|parent-&gt;iommu_table
 suffix:semicolon
 id|out
 suffix:colon

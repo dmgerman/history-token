@@ -2745,9 +2745,9 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Fix shmaddr, allocate descriptor, map shm, add attach descriptor to lists.&n; *&n; * NOTE! Despite the name, this is NOT a direct system call entrypoint. The&n; * &quot;raddr&quot; thing points to kernel space, and there has to be a wrapper around&n; * this.&n; */
-DECL|function|sys_shmat
+DECL|function|do_shmat
 r_int
-id|sys_shmat
+id|do_shmat
 c_func
 (paren
 r_int

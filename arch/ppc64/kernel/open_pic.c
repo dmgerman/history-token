@@ -287,11 +287,6 @@ r_char
 op_star
 id|chrp_int_ack_special
 suffix:semicolon
-DECL|variable|broken_ipi_registers
-r_static
-r_int
-id|broken_ipi_registers
-suffix:semicolon
 DECL|variable|ISU
 id|OpenPIC_SourcePtr
 id|ISU
@@ -914,6 +909,11 @@ id|OPENPIC_MASK
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
+DECL|variable|broken_ipi_registers
+r_static
+r_int
+id|broken_ipi_registers
+suffix:semicolon
 DECL|function|openpic_read_IPI
 r_static
 id|u_int

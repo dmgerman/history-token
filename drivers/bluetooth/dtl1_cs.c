@@ -99,6 +99,7 @@ suffix:semicolon
 DECL|member|hdev
 r_struct
 id|hci_dev
+op_star
 id|hdev
 suffix:semicolon
 DECL|member|lock
@@ -547,7 +548,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|info-&gt;hdev.stat.byte_tx
+id|info-&gt;hdev-&gt;stat.byte_tx
 op_add_assign
 id|len
 suffix:semicolon
@@ -749,7 +750,7 @@ id|info-&gt;link.io.BasePort1
 suffix:semicolon
 r_do
 (brace
-id|info-&gt;hdev.stat.byte_rx
+id|info-&gt;hdev-&gt;stat.byte_rx
 op_increment
 suffix:semicolon
 multiline_comment|/* Allocate packet */
@@ -924,10 +925,7 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
-(paren
 id|info-&gt;hdev
-)paren
 suffix:semicolon
 id|info-&gt;rx_skb-&gt;pkt_type
 op_and_assign
@@ -1807,10 +1805,33 @@ suffix:semicolon
 multiline_comment|/* Initialize and register HCI device */
 id|hdev
 op_assign
-op_amp
+id|hci_alloc_dev
+c_func
 (paren
-id|info-&gt;hdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;dtl1_cs: Can&squot;t allocate HCI device.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|info-&gt;hdev
+op_assign
+id|hdev
 suffix:semicolon
 id|hdev-&gt;type
 op_assign
@@ -1864,9 +1885,13 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;dtl1_cs: Can&squot;t register HCI device %s.&bslash;n&quot;
-comma
-id|hdev-&gt;name
+l_string|&quot;dtl1_cs: Can&squot;t register HCI device.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 r_return
@@ -1903,10 +1928,7 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
-(paren
 id|info-&gt;hdev
-)paren
 suffix:semicolon
 id|dtl1_hci_close
 c_func
@@ -1976,6 +1998,12 @@ id|KERN_WARNING
 l_string|&quot;dtl1_cs: Can&squot;t unregister HCI device %s.&bslash;n&quot;
 comma
 id|hdev-&gt;name
+)paren
+suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 r_return
@@ -2880,7 +2908,7 @@ c_func
 (paren
 id|info-&gt;node.dev_name
 comma
-id|info-&gt;hdev.name
+id|info-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 id|link-&gt;dev

@@ -4335,6 +4335,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fib6_node_kmem
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;cannot create fib6_nodes cache&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|fib6_gc_cleanup
 r_void

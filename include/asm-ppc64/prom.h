@@ -377,7 +377,7 @@ r_struct
 id|pci_controller
 suffix:semicolon
 r_struct
-id|TceTable
+id|iommu_table
 suffix:semicolon
 DECL|struct|device_node
 r_struct
@@ -465,11 +465,11 @@ op_star
 id|phb
 suffix:semicolon
 multiline_comment|/* for pci devices */
-DECL|member|tce_table
+DECL|member|iommu_table
 r_struct
-id|TceTable
+id|iommu_table
 op_star
-id|tce_table
+id|iommu_table
 suffix:semicolon
 multiline_comment|/* for phb&squot;s or bridges */
 DECL|member|properties

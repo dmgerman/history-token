@@ -1,11 +1,7 @@
 multiline_comment|/*&n; * JFFS -- Journalling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: inode-v23.c,v 1.70 2001/10/02 09:16:02 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; * Copyright 2000, 2001  Red Hat, Inc.&n; */
 multiline_comment|/* inode.c -- Contains the code that is called from the VFS.  */
 multiline_comment|/* TODO-ALEX:&n; * uid and gid are just 16 bit.&n; * jffs_file_write reads from user-space pointers without xx_from_user&n; * maybe other stuff do to.&n; */
-multiline_comment|/* Argh. Some architectures have kernel_thread in asm/processor.h&n;   Some have it in unistd.h and you need to define __KERNEL_SYSCALLS__&n;   Pass me a baseball bat and the person responsible.&n;   dwmw2&n;*/
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8041,6 +8037,21 @@ comma
 id|proc_root_fs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jffs_proc_root
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cannot create /proc/jffs entry&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|fm_cache
 op_assign
@@ -8066,6 +8077,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fm_cache
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|node_cache
 op_assign
 id|kmem_cache_create
@@ -8090,6 +8113,24 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_cache
+)paren
+(brace
+id|kmem_cache_destroy
+c_func
+(paren
+id|fm_cache
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_return
 id|register_filesystem
 c_func

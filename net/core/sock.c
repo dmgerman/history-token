@@ -29,6 +29,15 @@ macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#endif
+multiline_comment|/* Take into consideration the size of the struct sk_buff overhead in the&n; * determination of these values, since that is non-constant across&n; * platforms.  This makes socket queueing behavior and performance&n; * not depend upon such differences.&n; */
+DECL|macro|_SK_MEM_PACKETS
+mdefine_line|#define _SK_MEM_PACKETS&t;&t;256
+DECL|macro|_SK_MEM_OVERHEAD
+mdefine_line|#define _SK_MEM_OVERHEAD&t;(sizeof(struct sk_buff) + 256)
+DECL|macro|SK_WMEM_MAX
+mdefine_line|#define SK_WMEM_MAX&t;&t;(_SK_MEM_OVERHEAD * _SK_MEM_PACKETS)
+DECL|macro|SK_RMEM_MAX
+mdefine_line|#define SK_RMEM_MAX&t;&t;(_SK_MEM_OVERHEAD * _SK_MEM_PACKETS)
 multiline_comment|/* Run time adjustable parameters. */
 DECL|variable|sysctl_wmem_max
 id|__u32
@@ -4493,6 +4502,13 @@ id|sock_wmalloc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
+DECL|variable|sysctl_optmem_max
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_optmem_max
+)paren
+suffix:semicolon
 DECL|variable|sysctl_rmem_max
 id|EXPORT_SYMBOL
 c_func

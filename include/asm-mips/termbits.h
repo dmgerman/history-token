@@ -147,6 +147,8 @@ DECL|macro|IXOFF
 mdefine_line|#define IXOFF&t;0010000&t;&t;/* Enable start/stop input control.  */
 DECL|macro|IMAXBEL
 mdefine_line|#define IMAXBEL&t;0020000&t;&t;/* Ring bell when input queue is full.  */
+DECL|macro|IUTF8
+mdefine_line|#define IUTF8&t;0040000&t;&t;/* Input is UTF8 */
 multiline_comment|/* c_oflag bits */
 DECL|macro|OPOST
 mdefine_line|#define OPOST&t;0000001&t;&t;/* Perform output processing.  */

@@ -1379,7 +1379,7 @@ id|hwreg_present
 c_func
 (paren
 op_amp
-id|codec.unused5
+id|falcon_codec.unused5
 )paren
 )paren
 (brace

@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_SHM_H_
 DECL|macro|_LINUX_SHM_H_
 mdefine_line|#define _LINUX_SHM_H_
 macro_line|#include &lt;linux/ipc.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * SHMMAX, SHMMNI and SHMALL are upper limits are defaults which can&n; * be increased by sysctl&n; */
 DECL|macro|SHMMAX
@@ -231,8 +232,10 @@ DECL|macro|SHM_LOCKED
 mdefine_line|#define SHM_LOCKED      02000   /* segment will not be swapped */
 DECL|macro|SHM_HUGETLB
 mdefine_line|#define SHM_HUGETLB     04000   /* segment will use huge TLB pages */
+macro_line|#ifdef CONFIG_SYSVIPC
 r_int
-id|sys_shmat
+id|do_shmat
+c_func
 (paren
 r_int
 id|shmid
@@ -251,47 +254,37 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-id|asmlinkage
+macro_line|#else
+DECL|function|do_shmat
+r_static
+r_inline
 r_int
-id|sys_shmget
-(paren
-id|key_t
-id|key
-comma
-r_int
-id|size
-comma
-r_int
-id|flag
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_shmdt
-(paren
-r_char
-id|__user
-op_star
-id|shmaddr
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_shmctl
+id|do_shmat
+c_func
 (paren
 r_int
 id|shmid
 comma
-r_int
-id|cmd
-comma
-r_struct
-id|shmid_ds
+r_char
 id|__user
 op_star
-id|buf
+id|shmaddr
+comma
+r_int
+id|shmflg
+comma
+r_int
+r_int
+op_star
+id|addr
 )paren
+(brace
+r_return
+op_minus
+id|ENOSYS
 suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SHM_H_ */
 eof

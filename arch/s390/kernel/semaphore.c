@@ -46,7 +46,7 @@ l_string|&quot;=&amp;d&quot;
 id|new_val
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|sem-&gt;count
 )paren
@@ -60,6 +60,11 @@ comma
 l_string|&quot;d&quot;
 (paren
 id|incr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

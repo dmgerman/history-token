@@ -375,7 +375,7 @@ id|iso-&gt;data_buf
 suffix:semicolon
 id|iso-&gt;buf_size
 op_assign
-id|round_up_to_page
+id|PAGE_ALIGN
 c_func
 (paren
 id|data_buf_size

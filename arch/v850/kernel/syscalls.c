@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
@@ -395,7 +396,7 @@ r_break
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -460,7 +461,7 @@ r_break
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

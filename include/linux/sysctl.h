@@ -450,6 +450,18 @@ op_assign
 l_int|61
 comma
 multiline_comment|/* int: tune printk ratelimiting */
+DECL|enumerator|KERN_PTY
+id|KERN_PTY
+op_assign
+l_int|62
+comma
+multiline_comment|/* dir: pty driver */
+DECL|enumerator|KERN_NGROUPS_MAX
+id|KERN_NGROUPS_MAX
+op_assign
+l_int|63
+comma
+multiline_comment|/* int: NGROUPS_MAX */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -705,6 +717,20 @@ DECL|enumerator|RANDOM_UUID
 id|RANDOM_UUID
 op_assign
 l_int|6
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/kernel/pty */
+r_enum
+(brace
+DECL|enumerator|PTY_MAX
+id|PTY_MAX
+op_assign
+l_int|1
+comma
+DECL|enumerator|PTY_NR
+id|PTY_NR
+op_assign
+l_int|2
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/bus/isa */
@@ -2686,18 +2712,6 @@ multiline_comment|/* fake target utsname information */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-r_extern
-id|asmlinkage
-r_int
-id|sys_sysctl
-c_func
-(paren
-r_struct
-id|__sysctl_args
-id|__user
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|sysctl_init

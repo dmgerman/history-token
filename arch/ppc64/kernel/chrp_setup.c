@@ -33,7 +33,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -368,12 +368,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
 r_struct
 id|device_node
 op_star

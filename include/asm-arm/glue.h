@@ -10,7 +10,7 @@ mdefine_line|#define ____glue(name,fn)&t;name/**/fn
 macro_line|#endif
 DECL|macro|__glue
 mdefine_line|#define __glue(name,fn)&t;&t;____glue(name,fn)
-multiline_comment|/*&n; *&t;Data Abort Model&n; *&t;================&n; *&n; *&t;We have the following to choose from:&n; *&t;  arm6          - ARM6 style&n; *&t;  arm7&t;&t;- ARM7 style&n; *&t;  v4_early&t;- ARMv4 without Thumb early abort handler&n; *&t;  v4t_late&t;- ARMv4 with Thumb late abort handler&n; *&t;  v4t_early&t;- ARMv4 with Thumb early abort handler&n; *&t;  v5tej_early&t;- ARMv5 with Thumb and Java early abort handler&n; *&t;  xscale&t;- ARMv5 with Thumb with Xscale extensions&n; */
+multiline_comment|/*&n; *&t;Data Abort Model&n; *&t;================&n; *&n; *&t;We have the following to choose from:&n; *&t;  arm6          - ARM6 style&n; *&t;  arm7&t;&t;- ARM7 style&n; *&t;  v4_early&t;- ARMv4 without Thumb early abort handler&n; *&t;  v4t_late&t;- ARMv4 with Thumb late abort handler&n; *&t;  v4t_early&t;- ARMv4 with Thumb early abort handler&n; *&t;  v5tej_early&t;- ARMv5 with Thumb and Java early abort handler&n; *&t;  xscale&t;- ARMv5 with Thumb with Xscale extensions&n; *&t;  v6_early&t;- ARMv6 generic early abort handler&n; */
 DECL|macro|CPU_ABORT_HANDLER
 macro_line|#undef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
@@ -76,6 +76,15 @@ macro_line|#  define MULTI_ABORT 1
 macro_line|# else
 DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v5t_early_abort
+macro_line|# endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_ABRT_EV6
+macro_line|# ifdef CPU_ABORT_HANDLER
+DECL|macro|MULTI_ABORT
+macro_line|#  define MULTI_ABORT 1
+macro_line|# else
+DECL|macro|CPU_ABORT_HANDLER
+macro_line|#  define CPU_ABORT_HANDLER v6_early_abort
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef CPU_ABORT_HANDLER

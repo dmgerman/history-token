@@ -1,12 +1,8 @@
 multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.44 2003/10/08 13:29:55 dwmw2 Exp $&n; *&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
@@ -467,34 +463,8 @@ l_string|&quot;jffs2_garbage_collect_thread(): SIGKILL received.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+r_goto
 id|die
-suffix:colon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|c-&gt;erase_completion_lock
-)paren
-suffix:semicolon
-id|c-&gt;gc_task
-op_assign
-l_int|NULL
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|c-&gt;erase_completion_lock
-)paren
-suffix:semicolon
-id|complete_and_exit
-c_func
-(paren
-op_amp
-id|c-&gt;gc_thread_exit
-comma
-l_int|0
-)paren
 suffix:semicolon
 r_case
 id|SIGHUP
@@ -572,6 +542,35 @@ id|die
 suffix:semicolon
 )brace
 )brace
+id|die
+suffix:colon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
+id|c-&gt;gc_task
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
+id|complete_and_exit
+c_func
+(paren
+op_amp
+id|c-&gt;gc_thread_exit
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|function|thread_should_wake
 r_static

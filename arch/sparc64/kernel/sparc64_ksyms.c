@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -286,54 +287,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|sys_getppid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_getpid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_geteuid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_getuid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_getegid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_getgid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|svr4_getcontext
 c_func
 (paren
@@ -360,24 +313,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
 )paren
 suffix:semicolon
 r_extern
@@ -457,15 +392,6 @@ id|prot
 comma
 r_int
 id|space
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_close
-c_func
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern

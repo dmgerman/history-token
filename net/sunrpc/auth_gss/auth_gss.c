@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth_gss.h&gt;
+macro_line|#include &lt;linux/sunrpc/svcauth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_err.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
@@ -4635,6 +4636,43 @@ op_amp
 id|authgss_ops
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|err
+op_assign
+id|gss_svc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out_unregister
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|out_unregister
+suffix:colon
+id|rpcauth_unregister
+c_func
+(paren
+op_amp
+id|authgss_ops
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|err
 suffix:semicolon
