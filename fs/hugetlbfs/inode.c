@@ -2311,19 +2311,9 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;hugetlbfs: invalid mount options: %s.&bslash;n&quot;
-comma
-id|data
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|sb-&gt;s_blocksize
 op_assign
 id|PAGE_CACHE_SIZE
