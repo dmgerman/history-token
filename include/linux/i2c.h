@@ -669,14 +669,6 @@ id|module
 op_star
 id|owner
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-multiline_comment|/* some useful name to identify the adapter&t;*/
 DECL|member|id
 r_int
 r_int

@@ -39,11 +39,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|name
-op_assign
-l_string|&quot;ISA main adapter&quot;
-comma
-dot
 id|id
 op_assign
 id|I2C_ALGO_ISA
@@ -55,6 +50,17 @@ id|algo
 op_assign
 op_amp
 id|isa_algorithm
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;ISA main adapter&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
