@@ -23,11 +23,10 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|power_reg
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|power_reg
-op_assign
-l_int|0UL
 suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
@@ -137,8 +136,6 @@ r_if
 c_cond
 (paren
 id|power_reg
-op_ne
-l_int|0UL
 )paren
 (brace
 multiline_comment|/* Both register bits seem to have the&n;&t;&t;&t; * same effect, so until I figure out&n;&t;&t;&t; * what the difference is...&n;&t;&t;&t; */
@@ -466,10 +463,6 @@ id|found
 suffix:colon
 id|power_reg
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -486,7 +479,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;power: Control reg at %016lx ... &quot;
+l_string|&quot;power: Control reg at %p ... &quot;
 comma
 id|power_reg
 )paren

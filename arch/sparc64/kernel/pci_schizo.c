@@ -4382,7 +4382,7 @@ id|irq
 suffix:semicolon
 id|tmp
 op_assign
-id|readl
+id|upa_readl
 c_func
 (paren
 id|bucket-&gt;imap
@@ -5156,7 +5156,7 @@ id|irq
 suffix:semicolon
 id|tmp
 op_assign
-id|readl
+id|upa_readl
 c_func
 (paren
 id|bucket-&gt;imap

@@ -10,8 +10,9 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;
 multiline_comment|/* This cannot be static, as it is referenced in entry.S */
 DECL|variable|auxio_register
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|auxio_register
 op_assign
 l_int|0UL
@@ -540,10 +541,6 @@ id|AUXIO_TYPE_EBUS
 suffix:semicolon
 id|auxio_register
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

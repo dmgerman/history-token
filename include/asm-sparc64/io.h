@@ -3,6 +3,7 @@ macro_line|#ifndef __SPARC64_IO_H
 DECL|macro|__SPARC64_IO_H
 mdefine_line|#define __SPARC64_IO_H
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;      /* IO address mapping routines need this */
 macro_line|#include &lt;asm/system.h&gt;
@@ -441,13 +442,14 @@ suffix:semicolon
 multiline_comment|/* Memory functions, same as I/O accesses on Ultra. */
 DECL|function|_readb
 r_static
-id|__inline__
+r_inline
 id|u8
 id|_readb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -482,13 +484,14 @@ suffix:semicolon
 )brace
 DECL|function|_readw
 r_static
-id|__inline__
+r_inline
 id|u16
 id|_readw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -523,13 +526,14 @@ suffix:semicolon
 )brace
 DECL|function|_readl
 r_static
-id|__inline__
+r_inline
 id|u32
 id|_readl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -564,13 +568,14 @@ suffix:semicolon
 )brace
 DECL|function|_readq
 r_static
-id|__inline__
+r_inline
 id|u64
 id|_readq
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -605,7 +610,7 @@ suffix:semicolon
 )brace
 DECL|function|_writeb
 r_static
-id|__inline__
+r_inline
 r_void
 id|_writeb
 c_func
@@ -613,8 +618,9 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -645,7 +651,7 @@ suffix:semicolon
 )brace
 DECL|function|_writew
 r_static
-id|__inline__
+r_inline
 r_void
 id|_writew
 c_func
@@ -653,8 +659,9 @@ c_func
 id|u16
 id|w
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -685,7 +692,7 @@ suffix:semicolon
 )brace
 DECL|function|_writel
 r_static
-id|__inline__
+r_inline
 r_void
 id|_writel
 c_func
@@ -693,8 +700,9 @@ c_func
 id|u32
 id|l
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -725,7 +733,7 @@ suffix:semicolon
 )brace
 DECL|function|_writeq
 r_static
-id|__inline__
+r_inline
 r_void
 id|_writeq
 c_func
@@ -733,8 +741,9 @@ c_func
 id|u64
 id|q
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -764,29 +773,29 @@ id|ASI_PHYS_BYPASS_EC_E_L
 suffix:semicolon
 )brace
 DECL|macro|readb
-mdefine_line|#define readb(__addr)&t;&t;(_readb((unsigned long)(__addr)))
+mdefine_line|#define readb(__addr)&t;&t;_readb(__addr)
 DECL|macro|readw
-mdefine_line|#define readw(__addr)&t;&t;(_readw((unsigned long)(__addr)))
+mdefine_line|#define readw(__addr)&t;&t;_readw(__addr)
 DECL|macro|readl
-mdefine_line|#define readl(__addr)&t;&t;(_readl((unsigned long)(__addr)))
+mdefine_line|#define readl(__addr)&t;&t;_readl(__addr)
 DECL|macro|readq
-mdefine_line|#define readq(__addr)&t;&t;(_readq((unsigned long)(__addr)))
+mdefine_line|#define readq(__addr)&t;&t;_readq(__addr)
 DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(a)&t;readb(a)
+mdefine_line|#define readb_relaxed(__addr)&t;_readb(__addr)
 DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(a)&t;readw(a)
+mdefine_line|#define readw_relaxed(__addr)&t;_readw(__addr)
 DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(a)&t;readl(a)
+mdefine_line|#define readl_relaxed(__addr)&t;_readl(__addr)
 DECL|macro|readq_relaxed
-mdefine_line|#define readq_relaxed(a)&t;readq(a)
+mdefine_line|#define readq_relaxed(__addr)&t;_readq(__addr)
 DECL|macro|writeb
-mdefine_line|#define writeb(__b, __addr)&t;(_writeb((u8)(__b), (unsigned long)(__addr)))
+mdefine_line|#define writeb(__b, __addr)&t;_writeb(__b, __addr)
 DECL|macro|writew
-mdefine_line|#define writew(__w, __addr)&t;(_writew((u16)(__w), (unsigned long)(__addr)))
+mdefine_line|#define writew(__w, __addr)&t;_writew(__w, __addr)
 DECL|macro|writel
-mdefine_line|#define writel(__l, __addr)&t;(_writel((u32)(__l), (unsigned long)(__addr)))
+mdefine_line|#define writel(__l, __addr)&t;_writel(__l, __addr)
 DECL|macro|writeq
-mdefine_line|#define writeq(__q, __addr)&t;(_writeq((u64)(__q), (unsigned long)(__addr)))
+mdefine_line|#define writeq(__q, __addr)&t;_writeq(__q, __addr)
 multiline_comment|/* Now versions without byte-swapping. */
 DECL|function|_raw_readb
 r_static
@@ -1134,13 +1143,14 @@ mdefine_line|#define IO_SPACE_LIMIT 0xffffffffffffffffUL
 multiline_comment|/* Now, SBUS variants, only difference from PCI is that we do&n; * not use little-endian ASIs.&n; */
 DECL|function|_sbus_readb
 r_static
-id|__inline__
+r_inline
 id|u8
 id|_sbus_readb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1175,13 +1185,14 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_readw
 r_static
-id|__inline__
+r_inline
 id|u16
 id|_sbus_readw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1216,13 +1227,14 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_readl
 r_static
-id|__inline__
+r_inline
 id|u32
 id|_sbus_readl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1257,13 +1269,14 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_readq
 r_static
-id|__inline__
+r_inline
 id|u64
 id|_sbus_readq
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1298,7 +1311,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writeb
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writeb
 c_func
@@ -1306,8 +1319,9 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1338,7 +1352,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writew
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writew
 c_func
@@ -1346,8 +1360,9 @@ c_func
 id|u16
 id|w
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1378,7 +1393,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writel
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writel
 c_func
@@ -1386,8 +1401,9 @@ c_func
 id|u32
 id|l
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1418,7 +1434,7 @@ suffix:semicolon
 )brace
 DECL|function|_sbus_writeq
 r_static
-id|__inline__
+r_inline
 r_void
 id|_sbus_writeq
 c_func
@@ -1426,8 +1442,9 @@ c_func
 id|u64
 id|l
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1457,31 +1474,33 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|macro|sbus_readb
-mdefine_line|#define sbus_readb(__addr)&t;&t;(_sbus_readb((unsigned long)(__addr)))
+mdefine_line|#define sbus_readb(__addr)&t;&t;_sbus_readb(__addr)
 DECL|macro|sbus_readw
-mdefine_line|#define sbus_readw(__addr)&t;&t;(_sbus_readw((unsigned long)(__addr)))
+mdefine_line|#define sbus_readw(__addr)&t;&t;_sbus_readw(__addr)
 DECL|macro|sbus_readl
-mdefine_line|#define sbus_readl(__addr)&t;&t;(_sbus_readl((unsigned long)(__addr)))
+mdefine_line|#define sbus_readl(__addr)&t;&t;_sbus_readl(__addr)
 DECL|macro|sbus_readq
-mdefine_line|#define sbus_readq(__addr)&t;&t;(_sbus_readq((unsigned long)(__addr)))
+mdefine_line|#define sbus_readq(__addr)&t;&t;_sbus_readq(__addr)
 DECL|macro|sbus_writeb
-mdefine_line|#define sbus_writeb(__b, __addr)&t;(_sbus_writeb((__b), (unsigned long)(__addr)))
+mdefine_line|#define sbus_writeb(__b, __addr)&t;_sbus_writeb(__b, __addr)
 DECL|macro|sbus_writew
-mdefine_line|#define sbus_writew(__w, __addr)&t;(_sbus_writew((__w), (unsigned long)(__addr)))
+mdefine_line|#define sbus_writew(__w, __addr)&t;_sbus_writew(__w, __addr)
 DECL|macro|sbus_writel
-mdefine_line|#define sbus_writel(__l, __addr)&t;(_sbus_writel((__l), (unsigned long)(__addr)))
+mdefine_line|#define sbus_writel(__l, __addr)&t;_sbus_writel(__l, __addr)
 DECL|macro|sbus_writeq
-mdefine_line|#define sbus_writeq(__l, __addr)&t;(_sbus_writeq((__l), (unsigned long)(__addr)))
+mdefine_line|#define sbus_writeq(__l, __addr)&t;_sbus_writeq(__l, __addr)
 DECL|function|_sbus_memset_io
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 id|_sbus_memset_io
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_int
@@ -1519,16 +1538,18 @@ id|dst
 suffix:semicolon
 )brace
 DECL|macro|sbus_memset_io
-mdefine_line|#define sbus_memset_io(d,c,sz)&t;&bslash;&n;&t;_sbus_memset_io((unsigned long)d,(int)c,(__kernel_size_t)sz)
+mdefine_line|#define sbus_memset_io(d,c,sz)&t;_sbus_memset_io(d,c,sz)
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 DECL|function|_memset_io
 id|_memset_io
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|dst
 comma
@@ -1539,7 +1560,8 @@ id|__kernel_size_t
 id|n
 )paren
 (brace
-r_char
+r_void
+id|__iomem
 op_star
 id|d
 op_assign
@@ -1569,10 +1591,11 @@ id|dst
 suffix:semicolon
 )brace
 DECL|macro|memset_io
-mdefine_line|#define memset_io(d,c,sz)&t;&bslash;&n;&t;_memset_io((void *)d,(int)c,(__kernel_size_t)sz)
+mdefine_line|#define memset_io(d,c,sz)&t;_memset_io(d,c,sz)
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 DECL|function|_memcpy_fromio
 id|_memcpy_fromio
@@ -1582,8 +1605,9 @@ r_void
 op_star
 id|dst
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|src
 comma
 id|__kernel_size_t
@@ -1627,17 +1651,19 @@ id|dst
 suffix:semicolon
 )brace
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(d,s,sz)&t;&bslash;&n;&t;_memcpy_fromio((void *)d,(unsigned long)s,(__kernel_size_t)sz)
+mdefine_line|#define memcpy_fromio(d,s,sz)&t;_memcpy_fromio(d,s,sz)
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 DECL|function|_memcpy_toio
 id|_memcpy_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_const
@@ -1656,8 +1682,9 @@ id|s
 op_assign
 id|src
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|d
 op_assign
 id|dst
@@ -1689,15 +1716,11 @@ op_increment
 suffix:semicolon
 )brace
 r_return
-(paren
-r_void
-op_star
-)paren
 id|dst
 suffix:semicolon
 )brace
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(d,s,sz)&t;&bslash;&n;&t;_memcpy_toio((unsigned long)d,(const void *)s,(__kernel_size_t)sz)
+mdefine_line|#define memcpy_toio(d,s,sz)&t;_memcpy_toio(d,s,sz)
 DECL|function|check_signature
 r_static
 r_inline
@@ -1732,8 +1755,12 @@ c_cond
 id|readb
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|io_addr
-op_increment
 )paren
 op_ne
 op_star
@@ -1742,6 +1769,9 @@ op_increment
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|io_addr
+op_increment
 suffix:semicolon
 )brace
 r_while
@@ -1764,16 +1794,94 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* On sparc64 we have the whole physical IO address space accessible&n; * using physically addressed loads and stores, so this does nothing.&n; */
 DECL|macro|ioremap
-mdefine_line|#define ioremap(__offset, __size)&t;((void *)(__offset))
+mdefine_line|#define ioremap(__offset, __size)&t;((void __iomem *)(__offset))
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y)&t;&t;ioremap((X),(Y))
 DECL|macro|iounmap
 mdefine_line|#define iounmap(__addr)&t;&t;&t;do { (void)(__addr); } while(0)
+DECL|macro|ioread8
+mdefine_line|#define ioread8(X)&t;&t;&t;readb(X)
+DECL|macro|ioread16
+mdefine_line|#define ioread16(X)&t;&t;&t;readw(X)
+DECL|macro|ioread32
+mdefine_line|#define ioread32(X)&t;&t;&t;readl(X)
+DECL|macro|iowrite8
+mdefine_line|#define iowrite8(val,X)&t;&t;&t;writeb(val,X)
+DECL|macro|iowrite16
+mdefine_line|#define iowrite16(val,X)&t;&t;writew(val,X)
+DECL|macro|iowrite32
+mdefine_line|#define iowrite32(val,X)&t;&t;writel(val,X)
+multiline_comment|/* Create a virtual mapping cookie for an IO port range */
+r_extern
+r_void
+id|__iomem
+op_star
+id|ioport_map
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+r_int
+id|nr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ioport_unmap
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+r_struct
+id|pci_dev
+suffix:semicolon
+r_extern
+r_void
+id|__iomem
+op_star
+id|pci_iomap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|bar
+comma
+r_int
+r_int
+id|max
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_iounmap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_void
+id|__iomem
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Similarly for SBUS. */
 DECL|macro|sbus_ioremap
-mdefine_line|#define sbus_ioremap(__res, __offset, __size, __name) &bslash;&n;({&t;unsigned long __ret; &bslash;&n;&t;__ret  = (__res)-&gt;start + (((__res)-&gt;flags &amp; 0x1ffUL) &lt;&lt; 32UL); &bslash;&n;&t;__ret += (unsigned long) (__offset); &bslash;&n;&t;if (! request_region((__ret), (__size), (__name))) &bslash;&n;&t;&t;__ret = 0UL; &bslash;&n;&t;__ret; &bslash;&n;})
+mdefine_line|#define sbus_ioremap(__res, __offset, __size, __name) &bslash;&n;({&t;unsigned long __ret; &bslash;&n;&t;__ret  = (__res)-&gt;start + (((__res)-&gt;flags &amp; 0x1ffUL) &lt;&lt; 32UL); &bslash;&n;&t;__ret += (unsigned long) (__offset); &bslash;&n;&t;if (! request_region((__ret), (__size), (__name))) &bslash;&n;&t;&t;__ret = 0UL; &bslash;&n;&t;(void __iomem *) __ret; &bslash;&n;})
 DECL|macro|sbus_iounmap
-mdefine_line|#define sbus_iounmap(__addr, __size)&t;&bslash;&n;&t;release_region((__addr), (__size))
+mdefine_line|#define sbus_iounmap(__addr, __size)&t;&bslash;&n;&t;release_region((unsigned long)(__addr), (__size))
 multiline_comment|/* Nothing to do */
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
