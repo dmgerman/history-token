@@ -2857,6 +2857,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|efi_mem_attributes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi_mem_attributes
+)paren
+suffix:semicolon
 r_int
 DECL|function|valid_phys_addr_range
 id|valid_phys_addr_range
