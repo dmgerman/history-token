@@ -11,5 +11,18 @@ DECL|macro|__mem_pci
 mdefine_line|#define __mem_pci(a)&t;&t;((unsigned long)(a))
 DECL|macro|__mem_isa
 mdefine_line|#define __mem_isa(a)&t;&t;((unsigned long)(a))
+multiline_comment|/*&n; * Functions to access the OMAP IO region&n; *&n; * NOTE: - Use omap_read/write[bwl] for physical register addresses&n; *&t; - Use __raw_read/write[bwl]() for virtual register addresses&n; *&t; - Use IO_ADDRESS(phys_addr) to convert registers to virtual addresses&n; *&t; - DO NOT use hardcoded virtual addresses to allow changing the&n; *&t;   IO address space again if needed&n; */
+DECL|macro|omap_readb
+mdefine_line|#define omap_readb(a)&t;&t;(*(volatile unsigned char  *)IO_ADDRESS(a))
+DECL|macro|omap_readw
+mdefine_line|#define omap_readw(a)&t;&t;(*(volatile unsigned short *)IO_ADDRESS(a))
+DECL|macro|omap_readl
+mdefine_line|#define omap_readl(a)&t;&t;(*(volatile unsigned int   *)IO_ADDRESS(a))
+DECL|macro|omap_writeb
+mdefine_line|#define omap_writeb(v,a)&t;(*(volatile unsigned char  *)IO_ADDRESS(a) = (v))
+DECL|macro|omap_writew
+mdefine_line|#define omap_writew(v,a)&t;(*(volatile unsigned short *)IO_ADDRESS(a) = (v))
+DECL|macro|omap_writel
+mdefine_line|#define omap_writel(v,a)&t;(*(volatile unsigned int   *)IO_ADDRESS(a) = (v))
 macro_line|#endif
 eof

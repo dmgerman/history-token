@@ -3,7 +3,9 @@ macro_line|#ifndef __ASM_ARCH_MUX_H
 DECL|macro|__ASM_ARCH_MUX_H
 mdefine_line|#define __ASM_ARCH_MUX_H
 DECL|macro|PU_PD_SEL_NA
-mdefine_line|#define PU_PD_SEL_NA&t;0&t;/* No pu_pd reg availabe */
+mdefine_line|#define PU_PD_SEL_NA&t;&t;0&t;/* No pu_pd reg available */
+DECL|macro|PULL_DWN_CTRL_NA
+mdefine_line|#define PULL_DWN_CTRL_NA&t;0&t;/* No pull-down control needed */
 DECL|macro|DEBUG_MUX
 mdefine_line|#define DEBUG_MUX
 macro_line|#ifdef DEBUG_MUX
@@ -505,11 +507,15 @@ comma
 DECL|enumerator|N19_1610_KBR5
 id|N19_1610_KBR5
 comma
+multiline_comment|/* Power management */
+DECL|enumerator|T20_1610_LOW_PWR
+id|T20_1610_LOW_PWR
+comma
 DECL|typedef|reg_cfg_t
 )brace
 id|reg_cfg_t
 suffix:semicolon
-macro_line|#ifdef __MUX_C__
+macro_line|#if defined(__MUX_C__) &amp;&amp; defined(CONFIG_OMAP_MUX)
 multiline_comment|/*&n; * Table of various FUNC_MUX and PULL_DWN combinations for each device.&n; * See also reg_cfg_t above for the lookup table.&n; */
 DECL|variable|reg_cfg_table
 r_static
@@ -2408,13 +2414,13 @@ l_int|18
 comma
 l_int|2
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2524,13 +2530,13 @@ l_int|21
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2756,7 +2762,7 @@ l_int|9
 comma
 l_int|1
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2779,7 +2785,7 @@ l_int|6
 comma
 l_int|1
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2802,7 +2808,7 @@ l_int|21
 comma
 l_int|1
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2825,7 +2831,7 @@ l_int|18
 comma
 l_int|1
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2848,7 +2854,7 @@ l_int|27
 comma
 l_int|2
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2871,7 +2877,7 @@ l_int|24
 comma
 l_int|2
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -2988,13 +2994,13 @@ l_int|24
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -3011,13 +3017,13 @@ l_int|27
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
 l_int|0
 comma
-l_int|0
+id|NA
 comma
 l_int|0
 comma
@@ -3274,6 +3280,30 @@ comma
 l_int|1
 comma
 l_int|1
+comma
+l_int|0
+)paren
+multiline_comment|/* Power management */
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;T20_1610_LOW_PWR&quot;
+comma
+l_int|7
+comma
+l_int|12
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|NA
+comma
+l_int|0
 comma
 l_int|0
 )paren

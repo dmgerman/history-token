@@ -9,98 +9,108 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * I/O mapping&n; * ----------------------------------------------------------------------------&n; */
-DECL|macro|IO_BASE
-mdefine_line|#define IO_BASE&t;&t;&t;0xFFFB0000&t;/* Virtual */
+DECL|macro|IO_PHYS
+mdefine_line|#define IO_PHYS&t;&t;&t;0xFFFB0000
+DECL|macro|IO_OFFSET
+mdefine_line|#define IO_OFFSET&t;&t;0x01000000&t;/* Virtual IO = 0xfefb0000 */
+DECL|macro|IO_VIRT
+mdefine_line|#define IO_VIRT&t;&t;&t;(IO_PHYS - IO_OFFSET)
 DECL|macro|IO_SIZE
 mdefine_line|#define IO_SIZE&t;&t;&t;0x40000
-DECL|macro|IO_START
-mdefine_line|#define IO_START&t;&t;0xFFFB0000&t;/* Physical */
+DECL|macro|IO_ADDRESS
+mdefine_line|#define IO_ADDRESS(x)&t;&t;((x) - IO_OFFSET)
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0
-DECL|macro|IO_ADDRESS
-mdefine_line|#define IO_ADDRESS(x)&t;&t;((x))
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor differentiation&n; * ---------------------------------------------------------------------------&n; */
-macro_line|#ifdef CONFIG_ARCH_OMAP730
-macro_line|#include &quot;omap730.h&quot;
-DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;(1)
+DECL|macro|io_p2v
+mdefine_line|#define io_p2v(x)               ((x) - IO_OFFSET)
+DECL|macro|io_v2p
+mdefine_line|#define io_v2p(x)               ((x) + IO_OFFSET)
+macro_line|#ifndef __ASSEMBLER__
+multiline_comment|/* 16 bit uses LDRH/STRH, base +/- offset_8 */
+DECL|member|offset
+DECL|typedef|__regbase16
+r_typedef
+r_struct
+(brace
+r_volatile
+id|u16
+id|offset
+(braket
+l_int|256
+)braket
+suffix:semicolon
+)brace
+id|__regbase16
+suffix:semicolon
+DECL|macro|__REGV16
+mdefine_line|#define __REGV16(vaddr)&t;&t;((__regbase16 *)((vaddr)&amp;~0xff)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((vaddr)&amp;0xff)&gt;&gt;1]
+DECL|macro|__REG16
+mdefine_line|#define __REG16(paddr)          __REGV16(io_p2v(paddr))
+multiline_comment|/* 8/32 bit uses LDR/STR, base +/- offset_12 */
+DECL|member|offset
+DECL|typedef|__regbase8
+r_typedef
+r_struct
+(brace
+r_volatile
+id|u8
+id|offset
+(braket
+l_int|4096
+)braket
+suffix:semicolon
+)brace
+id|__regbase8
+suffix:semicolon
+DECL|macro|__REGV8
+mdefine_line|#define __REGV8(vaddr)&t;&t;((__regbase8  *)((paddr)&amp;~4095)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((paddr)&amp;4095)&gt;&gt;0]
+DECL|macro|__REG8
+mdefine_line|#define __REG8(paddr)&t;&t;__REGV8(io_p2v(paddr))
+DECL|member|offset
+DECL|typedef|__regbase32
+r_typedef
+r_struct
+(brace
+r_volatile
+id|u32
+id|offset
+(braket
+l_int|4096
+)braket
+suffix:semicolon
+)brace
+id|__regbase32
+suffix:semicolon
+DECL|macro|__REGV32
+mdefine_line|#define __REGV32(vaddr)&t;&t;((__regbase32 *)((vaddr)&amp;~4095)) &bslash;&n;&t;&t;&t;&t;&t;-&gt;offset[((vaddr)&amp;4095)&gt;&gt;2]
+DECL|macro|__REG32
+mdefine_line|#define __REG32(paddr)&t;&t;__REGV32(io_p2v(paddr))
 macro_line|#else
-DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;(0)
-macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1510
-macro_line|#include &quot;omap1510.h&quot;
-DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;(1)
-macro_line|#else
-DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;(0)
-macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
-macro_line|#include &quot;omap1610.h&quot;
-DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(1)
-macro_line|#else
-DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(0)
-macro_line|#endif
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Board differentiation&n; * ---------------------------------------------------------------------------&n; */
-macro_line|#ifdef CONFIG_OMAP_INNOVATOR
-macro_line|#include &quot;omap-innovator.h&quot;
-DECL|macro|omap_is_innovator
-mdefine_line|#define omap_is_innovator()&t;(1)
-macro_line|#else
-DECL|macro|omap_is_innovator
-mdefine_line|#define omap_is_innovator()&t;(0)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MACH_OMAP_H2
-macro_line|#include &quot;omap-h2.h&quot;
-DECL|macro|omap_is_h2
-mdefine_line|#define omap_is_h2()&t;&t;(1)
-macro_line|#else
-DECL|macro|omap_is_h2
-mdefine_line|#define omap_is_h2()&t;&t;(0)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MACH_OMAP_PERSEUS2
-macro_line|#include &quot;omap-perseus2.h&quot;
-DECL|macro|omap_is_perseus2
-mdefine_line|#define omap_is_perseus2()&t;(1)
-macro_line|#else
-DECL|macro|omap_is_perseus2
-mdefine_line|#define omap_is_perseus2()&t;(0)
+DECL|macro|__REG8
+mdefine_line|#define __REG8(paddr)&t;&t;io_p2v(paddr)
+DECL|macro|__REG16
+mdefine_line|#define __REG16(paddr)&t;&t;io_p2v(paddr)
+DECL|macro|__REG32
+mdefine_line|#define __REG32(paddr)&t;&t;io_p2v(paddr)
 macro_line|#endif
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Common definitions for all OMAP processors&n; * NOTE: Put all processor or board specific parts to the special header&n; *&t; files.&n; * ---------------------------------------------------------------------------&n; */
-multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Base addresses&n; * ----------------------------------------------------------------------------&n; */
-multiline_comment|/* Syntax: XX_BASE = Virtual base address, XX_START = Physical base address */
-DECL|macro|OMAP_DSP_BASE
-mdefine_line|#define OMAP_DSP_BASE&t;&t;0xE0000000
-DECL|macro|OMAP_DSP_SIZE
-mdefine_line|#define OMAP_DSP_SIZE&t;&t;0x50000
-DECL|macro|OMAP_DSP_START
-mdefine_line|#define OMAP_DSP_START&t;&t;0xE0000000
-DECL|macro|OMAP_DSPREG_BASE
-mdefine_line|#define OMAP_DSPREG_BASE&t;0xE1000000
-DECL|macro|OMAP_DSPREG_SIZE
-mdefine_line|#define OMAP_DSPREG_SIZE&t;SZ_128K
-DECL|macro|OMAP_DSPREG_START
-mdefine_line|#define OMAP_DSPREG_START&t;0xE1000000
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Clocks&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|CLKGEN_RESET_BASE
 mdefine_line|#define CLKGEN_RESET_BASE&t;(0xfffece00)
 DECL|macro|ARM_CKCTL
-mdefine_line|#define ARM_CKCTL&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x0)
+mdefine_line|#define ARM_CKCTL&t;&t;(CLKGEN_RESET_BASE + 0x0)
 DECL|macro|ARM_IDLECT1
-mdefine_line|#define ARM_IDLECT1&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x4)
+mdefine_line|#define ARM_IDLECT1&t;&t;(CLKGEN_RESET_BASE + 0x4)
 DECL|macro|ARM_IDLECT2
-mdefine_line|#define ARM_IDLECT2&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x8)
+mdefine_line|#define ARM_IDLECT2&t;&t;(CLKGEN_RESET_BASE + 0x8)
 DECL|macro|ARM_EWUPCT
-mdefine_line|#define ARM_EWUPCT&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0xC)
+mdefine_line|#define ARM_EWUPCT&t;&t;(CLKGEN_RESET_BASE + 0xC)
 DECL|macro|ARM_RSTCT1
-mdefine_line|#define ARM_RSTCT1&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x10)
+mdefine_line|#define ARM_RSTCT1&t;&t;(CLKGEN_RESET_BASE + 0x10)
 DECL|macro|ARM_RSTCT2
-mdefine_line|#define ARM_RSTCT2&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x14)
+mdefine_line|#define ARM_RSTCT2&t;&t;(CLKGEN_RESET_BASE + 0x14)
 DECL|macro|ARM_SYSST
-mdefine_line|#define ARM_SYSST&t;&t;(volatile __u16 *)(CLKGEN_RESET_BASE + 0x18)
+mdefine_line|#define ARM_SYSST&t;&t;(CLKGEN_RESET_BASE + 0x18)
 DECL|macro|CK_RATEF
 mdefine_line|#define CK_RATEF&t;&t;1
 DECL|macro|CK_IDLEF
@@ -113,28 +123,28 @@ DECL|macro|SETARM_IDLE_SHIFT
 mdefine_line|#define SETARM_IDLE_SHIFT
 multiline_comment|/* DPLL control registers */
 DECL|macro|DPLL_CTL_REG
-mdefine_line|#define DPLL_CTL_REG&t;&t;(volatile __u16 *)(0xfffecf00)
+mdefine_line|#define DPLL_CTL_REG&t;&t;(0xfffecf00)
 DECL|macro|CK_DPLL1
-mdefine_line|#define CK_DPLL1&t;&t;(volatile __u16 *)(0xfffecf00)
+mdefine_line|#define CK_DPLL1&t;&t;(0xfffecf00)
 multiline_comment|/* ULPD */
 DECL|macro|ULPD_REG_BASE
 mdefine_line|#define ULPD_REG_BASE&t;&t;(0xfffe0800)
 DECL|macro|ULPD_IT_STATUS_REG
-mdefine_line|#define ULPD_IT_STATUS_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x14)
+mdefine_line|#define ULPD_IT_STATUS_REG&t;(ULPD_REG_BASE + 0x14)
 DECL|macro|ULPD_CLOCK_CTRL_REG
-mdefine_line|#define ULPD_CLOCK_CTRL_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x30)
+mdefine_line|#define ULPD_CLOCK_CTRL_REG&t;(ULPD_REG_BASE + 0x30)
 DECL|macro|ULPD_SOFT_REQ_REG
-mdefine_line|#define ULPD_SOFT_REQ_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x34)
+mdefine_line|#define ULPD_SOFT_REQ_REG&t;(ULPD_REG_BASE + 0x34)
 DECL|macro|ULPD_DPLL_CTRL_REG
-mdefine_line|#define ULPD_DPLL_CTRL_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x3c)
+mdefine_line|#define ULPD_DPLL_CTRL_REG&t;(ULPD_REG_BASE + 0x3c)
 DECL|macro|ULPD_STATUS_REQ_REG
-mdefine_line|#define ULPD_STATUS_REQ_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x40)
+mdefine_line|#define ULPD_STATUS_REQ_REG&t;(ULPD_REG_BASE + 0x40)
 DECL|macro|ULPD_APLL_CTRL_REG
-mdefine_line|#define ULPD_APLL_CTRL_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x4c)
+mdefine_line|#define ULPD_APLL_CTRL_REG&t;(ULPD_REG_BASE + 0x4c)
 DECL|macro|ULPD_POWER_CTRL_REG
-mdefine_line|#define ULPD_POWER_CTRL_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x50)
+mdefine_line|#define ULPD_POWER_CTRL_REG&t;(ULPD_REG_BASE + 0x50)
 DECL|macro|ULPD_CAM_CLK_CTRL_REG
-mdefine_line|#define ULPD_CAM_CLK_CTRL_REG&t;(volatile __u16 *)(ULPD_REG_BASE + 0x7c)
+mdefine_line|#define ULPD_CAM_CLK_CTRL_REG&t;(ULPD_REG_BASE + 0x7c)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Timers&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_32kHz_TIMER_BASE
 mdefine_line|#define OMAP_32kHz_TIMER_BASE 0xfffb9000
@@ -257,6 +267,8 @@ mdefine_line|#define EMIF_CFG_DYNAMIC_WS&t;(TCMIF_BASE + 0x40)
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * System control registers&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|MOD_CONF_CTRL_0
 mdefine_line|#define MOD_CONF_CTRL_0&t;&t;0xfffe1080
+DECL|macro|MOD_CONF_CTRL_1
+mdefine_line|#define MOD_CONF_CTRL_1&t;&t;0xfffe1110
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Pin multiplexing registers&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|FUNC_MUX_CTRL_0
 mdefine_line|#define FUNC_MUX_CTRL_0&t;&t;0xfffe1000
@@ -329,20 +341,83 @@ mdefine_line|#define MPU_PRIVATE_TIPB_CNTL_REG&t;(TIPB_PRIVATE_CNTL_BASE + 0x8)
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * DSP control registers&n; * ----------------------------------------------------------------------------&n; */
 multiline_comment|/*  MPUI Interface Registers */
 DECL|macro|MPUI_CTRL_REG
-mdefine_line|#define MPUI_CTRL_REG&t;&t;(volatile __u32 *)(0xfffec900)
+mdefine_line|#define MPUI_CTRL_REG&t;&t;(0xfffec900)
 DECL|macro|MPUI_DEBUG_ADDR
-mdefine_line|#define MPUI_DEBUG_ADDR&t;&t;(volatile __u32 *)(0xfffec904)
+mdefine_line|#define MPUI_DEBUG_ADDR&t;&t;(0xfffec904)
 DECL|macro|MPUI_DEBUG_DATA
-mdefine_line|#define MPUI_DEBUG_DATA&t;&t;(volatile __u32 *)(0xfffec908)
+mdefine_line|#define MPUI_DEBUG_DATA&t;&t;(0xfffec908)
 DECL|macro|MPUI_DEBUG_FLAG
-mdefine_line|#define MPUI_DEBUG_FLAG&t;&t;(volatile __u16 *)(0xfffec90c)
+mdefine_line|#define MPUI_DEBUG_FLAG&t;&t;(0xfffec90c)
 DECL|macro|MPUI_STATUS_REG
-mdefine_line|#define MPUI_STATUS_REG&t;&t;(volatile __u16 *)(0xfffec910)
+mdefine_line|#define MPUI_STATUS_REG&t;&t;(0xfffec910)
 DECL|macro|MPUI_DSP_STATUS_REG
-mdefine_line|#define MPUI_DSP_STATUS_REG&t;(volatile __u16 *)(0xfffec914)
+mdefine_line|#define MPUI_DSP_STATUS_REG&t;(0xfffec914)
 DECL|macro|MPUI_DSP_BOOT_CONFIG
-mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;(volatile __u16 *)(0xfffec918)
+mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;(0xfffec918)
 DECL|macro|MPUI_DSP_API_CONFIG
-mdefine_line|#define MPUI_DSP_API_CONFIG&t;(volatile __u16 *)(0xfffec91c)
+mdefine_line|#define MPUI_DSP_API_CONFIG&t;(0xfffec91c)
+macro_line|#ifndef __ASSEMBLER__
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor differentiation&n; * ---------------------------------------------------------------------------&n; */
+DECL|macro|OMAP_ID_REG
+mdefine_line|#define OMAP_ID_REG&t;&t;__REG32(0xfffed404)
+macro_line|#ifdef CONFIG_ARCH_OMAP730
+macro_line|#include &quot;omap730.h&quot;
+DECL|macro|cpu_is_omap730
+mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB55F)
+macro_line|#else
+DECL|macro|cpu_is_omap730
+mdefine_line|#define cpu_is_omap730()&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
+macro_line|#include &quot;omap1510.h&quot;
+DECL|macro|cpu_is_omap1510
+mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB470)
+macro_line|#else
+DECL|macro|cpu_is_omap1510
+mdefine_line|#define cpu_is_omap1510()&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#include &quot;omap1610.h&quot;
+DECL|macro|cpu_is_omap1710
+mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB5F7)
+multiline_comment|/* Detect 1710 as 1610 for now */
+DECL|macro|cpu_is_omap1610
+mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB576 || &bslash;&n;&t;&t;&t;&t; cpu_is_omap1710())
+macro_line|#else
+DECL|macro|cpu_is_omap1610
+mdefine_line|#define cpu_is_omap1610()&t;0
+DECL|macro|cpu_is_omap1710
+mdefine_line|#define cpu_is_omap1710()&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP5912
+macro_line|#include &quot;omap5912.h&quot;
+DECL|macro|cpu_is_omap5912
+mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB58C)
+macro_line|#else
+DECL|macro|cpu_is_omap5912
+mdefine_line|#define cpu_is_omap5912()&t;0
+macro_line|#endif
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Board differentiation&n; * ---------------------------------------------------------------------------&n; */
+macro_line|#ifdef CONFIG_MACH_OMAP_INNOVATOR
+macro_line|#include &quot;board-innovator.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_OMAP_H2
+macro_line|#include &quot;board-h2.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_OMAP_PERSEUS2
+macro_line|#include &quot;board-perseus2.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_OMAP_H3
+macro_line|#include &quot;board-h3.h&quot;
+macro_line|#error &quot;Support for H3 board not yet implemented.&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_OMAP_H4
+macro_line|#include &quot;board-h4.h&quot;
+macro_line|#error &quot;Support for H4 board not yet implemented.&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_OMAP_OSK
+macro_line|#include &quot;board-osk.h&quot;
+macro_line|#endif
+macro_line|#endif /* !__ASSEMBLER__ */
 macro_line|#endif&t;/* __ASM_ARCH_OMAP_HARDWARE_H */
 eof
