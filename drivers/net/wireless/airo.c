@@ -12975,6 +12975,12 @@ r_int
 id|raw
 )paren
 (brace
+r_int
+r_int
+id|loop
+op_assign
+l_int|3000
+suffix:semicolon
 id|Cmd
 id|cmd
 suffix:semicolon
@@ -13059,6 +13065,7 @@ r_while
 c_loop
 (paren
 (paren
+(paren
 id|IN4500
 c_func
 (paren
@@ -13072,7 +13079,26 @@ id|EV_ALLOC
 op_eq
 l_int|0
 )paren
+op_logical_and
+op_decrement
+id|loop
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|loop
+)paren
+(brace
+id|txFid
+op_assign
+id|ERROR
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 singleline_comment|// get the allocated fid and acknowledge
 id|txFid
 op_assign
