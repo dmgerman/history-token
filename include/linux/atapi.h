@@ -4,6 +4,23 @@ DECL|macro|IDEFLOPPY_PC_BUFFER_SIZE
 mdefine_line|#define IDEFLOPPY_PC_BUFFER_SIZE&t;256
 DECL|macro|IDETAPE_PC_BUFFER_SIZE
 mdefine_line|#define IDETAPE_PC_BUFFER_SIZE&t;&t;256
+multiline_comment|/*&n; * Packet flags bits.&n; */
+DECL|macro|PC_ABORT
+mdefine_line|#define&t;PC_ABORT&t;&t;0&t;/* set when an error is considered normal - we won&squot;t retry */
+DECL|macro|PC_WAIT_FOR_DSC
+mdefine_line|#define PC_WAIT_FOR_DSC&t;&t;1&t;/* 1 when polling for DSC on a media access command */
+DECL|macro|PC_DMA_RECOMMENDED
+mdefine_line|#define PC_DMA_RECOMMENDED&t;2&t;/* 1 when we prefer to use DMA if possible */
+DECL|macro|PC_DMA_IN_PROGRESS
+mdefine_line|#define&t;PC_DMA_IN_PROGRESS&t;3&t;/* 1 while DMA in progress */
+DECL|macro|PC_DMA_ERROR
+mdefine_line|#define&t;PC_DMA_ERROR&t;&t;4&t;/* 1 when encountered problem during DMA */
+DECL|macro|PC_WRITING
+mdefine_line|#define&t;PC_WRITING&t;&t;5&t;/* data direction */
+DECL|macro|PC_SUPPRESS_ERROR
+mdefine_line|#define&t;PC_SUPPRESS_ERROR&t;6&t;/* suppress error reporting */
+DECL|macro|PC_TRANSFORM
+mdefine_line|#define PC_TRANSFORM&t;&t;7&t;/* transform SCSI commands */
 multiline_comment|/* This struct get&squot;s shared between different drivers.&n; */
 DECL|struct|atapi_packet_command
 r_struct
