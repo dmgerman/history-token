@@ -369,7 +369,8 @@ suffix:semicolon
 multiline_comment|/* grab the first serial port that happens to be connected */
 id|serial
 op_assign
-id|usb_serial_get_by_minor
+id|usb_serial_get_by_index
+c_func
 (paren
 l_int|0
 )paren

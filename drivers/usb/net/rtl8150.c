@@ -538,10 +538,6 @@ id|indx
 comma
 id|u16
 id|size
-comma
-r_void
-op_star
-id|data
 )paren
 (brace
 r_int
@@ -2443,11 +2439,18 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 multiline_comment|/* RCR bit7=1 attach Rx info at the end;  =0 HW CRC (which is broken) */
-id|dev-&gt;rx_creg
-op_assign
 id|rcr
 op_assign
 l_int|0x9e
+suffix:semicolon
+multiline_comment|/* bit7=1 attach Rx info at the end */
+id|dev-&gt;rx_creg
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|rcr
+)paren
 suffix:semicolon
 id|tcr
 op_assign
@@ -2690,7 +2693,11 @@ id|IFF_PROMISC
 (brace
 id|dev-&gt;rx_creg
 op_or_assign
+id|cpu_to_le16
+c_func
+(paren
 l_int|0x0001
+)paren
 suffix:semicolon
 id|info
 c_func
@@ -2720,11 +2727,19 @@ id|IFF_ALLMULTI
 (brace
 id|dev-&gt;rx_creg
 op_and_assign
+id|cpu_to_le16
+c_func
+(paren
 l_int|0xfffe
+)paren
 suffix:semicolon
 id|dev-&gt;rx_creg
 op_or_assign
+id|cpu_to_le16
+c_func
+(paren
 l_int|0x0002
+)paren
 suffix:semicolon
 id|info
 c_func
@@ -2740,7 +2755,11 @@ r_else
 multiline_comment|/* ~RX_MULTICAST, ~RX_PROMISCUOUS */
 id|dev-&gt;rx_creg
 op_and_assign
+id|cpu_to_le16
+c_func
+(paren
 l_int|0x00fc
+)paren
 suffix:semicolon
 )brace
 id|async_set_registers
@@ -2751,9 +2770,6 @@ comma
 id|RCR
 comma
 l_int|2
-comma
-op_amp
-id|dev-&gt;rx_creg
 )paren
 suffix:semicolon
 id|netif_wake_queue

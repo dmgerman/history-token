@@ -208,13 +208,7 @@ c_func
 op_amp
 id|scanner_driver
 comma
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|scn_minor
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2908,16 +2902,9 @@ comma
 id|scn
 )paren
 suffix:semicolon
-multiline_comment|/* add device id so the device works when advertised */
-id|intf-&gt;kdev
+id|intf-&gt;minor
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
-id|scn-&gt;scn_minor
-)paren
+id|scn_minor
 suffix:semicolon
 r_return
 l_int|0
@@ -2946,10 +2933,11 @@ c_func
 id|intf
 )paren
 suffix:semicolon
-multiline_comment|/* remove device id to disable open() */
-id|intf-&gt;kdev
+multiline_comment|/* disable open() */
+id|intf-&gt;minor
 op_assign
-id|NODEV
+op_minus
+l_int|1
 suffix:semicolon
 id|usb_set_intfdata
 c_func

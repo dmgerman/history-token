@@ -1099,13 +1099,7 @@ c_func
 op_amp
 id|usblp_driver
 comma
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|minor
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3700,16 +3694,9 @@ comma
 id|usblp
 )paren
 suffix:semicolon
-multiline_comment|/* add device id so the device works when advertised */
-id|intf-&gt;kdev
+id|intf-&gt;minor
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|usblp-&gt;minor
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4512,9 +4499,10 @@ id|intf
 )paren
 suffix:semicolon
 multiline_comment|/* remove device id to disable open() */
-id|intf-&gt;kdev
+id|intf-&gt;minor
 op_assign
-id|NODEV
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
