@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.59 2004/11/17 09:46:24 dvrabel Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.61 2004/11/19 20:52:16 thayne Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -400,6 +400,22 @@ id|addr2
 op_assign
 l_int|0x0000
 multiline_comment|/* is used - must be last entry */
+)brace
+comma
+(braket
+id|MTD_UADDR_UNNECESSARY
+)braket
+op_assign
+(brace
+dot
+id|addr1
+op_assign
+l_int|0x0000
+comma
+dot
+id|addr2
+op_assign
+l_int|0x0000
 )brace
 )brace
 suffix:semicolon
@@ -7942,7 +7958,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Mask out address bits which are smaller than the device type */
 id|p_cfi-&gt;addr_unlock1
 op_assign
 id|unlock_addrs
@@ -8489,7 +8504,6 @@ id|uaddr_idx
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Mask out address bits which are smaller than the device type */
 id|cfi-&gt;addr_unlock1
 op_assign
 id|unlock_addrs
