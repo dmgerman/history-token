@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -443,18 +444,10 @@ r_int
 id|status
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Poll every 2 seconds&n;&t;&t; */
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_star
-l_int|2
+l_int|2000
 )paren
 suffix:semicolon
 r_if
