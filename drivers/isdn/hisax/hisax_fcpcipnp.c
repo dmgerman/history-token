@@ -109,7 +109,7 @@ DECL|variable|__devinitdata
 r_static
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|fcpnp_ids
 (braket
 )braket
@@ -145,7 +145,7 @@ suffix:semicolon
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
-id|pnpc
+id|pnp_card
 comma
 id|fcpnp_ids
 )paren
@@ -4343,7 +4343,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|card_id
 )paren
