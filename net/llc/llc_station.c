@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
-macro_line|#include &lt;net/llc_station.h&gt;
 macro_line|#include &lt;net/llc_c_ac.h&gt;
 macro_line|#include &lt;net/llc_s_ac.h&gt;
 macro_line|#include &lt;net/llc_c_ev.h&gt;
@@ -13,6 +12,54 @@ macro_line|#include &lt;net/llc_c_st.h&gt;
 macro_line|#include &lt;net/llc_s_ev.h&gt;
 macro_line|#include &lt;net/llc_s_st.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
+multiline_comment|/**&n; * struct llc_station - LLC station component&n; *&n; * SAP and connection resource manager, one per adapter.&n; *&n; * @state - state of station&n; * @xid_r_count - XID response PDU counter&n; * @mac_sa - MAC source address&n; * @sap_list - list of related SAPs&n; * @ev_q - events entering state mach.&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
+DECL|struct|llc_station
+r_struct
+id|llc_station
+(brace
+DECL|member|state
+id|u8
+id|state
+suffix:semicolon
+DECL|member|xid_r_count
+id|u8
+id|xid_r_count
+suffix:semicolon
+DECL|member|ack_timer
+r_struct
+id|timer_list
+id|ack_timer
+suffix:semicolon
+DECL|member|retry_count
+id|u8
+id|retry_count
+suffix:semicolon
+DECL|member|maximum_retry
+id|u8
+id|maximum_retry
+suffix:semicolon
+r_struct
+(brace
+DECL|member|list
+r_struct
+id|sk_buff_head
+id|list
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|ev_q
+)brace
+id|ev_q
+suffix:semicolon
+DECL|member|mac_pdu_q
+r_struct
+id|sk_buff_head
+id|mac_pdu_q
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Types of events (possible values in &squot;ev-&gt;type&squot;) */
 DECL|macro|LLC_STATION_EV_TYPE_SIMPLE
 mdefine_line|#define LLC_STATION_EV_TYPE_SIMPLE&t;1

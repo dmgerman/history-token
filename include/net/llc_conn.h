@@ -5,6 +5,18 @@ multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
+DECL|macro|LLC_EVENT
+mdefine_line|#define LLC_EVENT                1
+DECL|macro|LLC_PACKET
+mdefine_line|#define LLC_PACKET               2
+DECL|macro|LLC_P_TIME
+mdefine_line|#define LLC_P_TIME               2
+DECL|macro|LLC_ACK_TIME
+mdefine_line|#define LLC_ACK_TIME             1
+DECL|macro|LLC_REJ_TIME
+mdefine_line|#define LLC_REJ_TIME             3
+DECL|macro|LLC_BUSY_TIME
+mdefine_line|#define LLC_BUSY_TIME            3
 DECL|struct|llc_timer
 r_struct
 id|llc_timer

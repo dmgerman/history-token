@@ -308,5 +308,21 @@ r_char
 id|dsap
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|llc_station_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|llc_station_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_H */
 eof
