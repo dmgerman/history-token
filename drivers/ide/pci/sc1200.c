@@ -1820,10 +1820,10 @@ DECL|typedef|sc1200_saved_state_t
 )brace
 id|sc1200_saved_state_t
 suffix:semicolon
-DECL|function|sc1200_save_state
+DECL|function|sc1200_suspend
 r_static
 r_int
-id|sc1200_save_state
+id|sc1200_suspend
 (paren
 r_struct
 id|pci_dev
@@ -1843,7 +1843,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SC1200: save_state(%u)&bslash;n&quot;
+l_string|&quot;SC1200: suspend(%u)&bslash;n&quot;
 comma
 id|state
 )paren
@@ -1852,12 +1852,10 @@ r_if
 c_cond
 (paren
 id|state
-op_ne
+op_eq
 l_int|0
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 singleline_comment|// we only save state when going from full power to less
 singleline_comment|//
 singleline_comment|// Loop over all interfaces that are part of this PCI device:
@@ -1951,7 +1949,8 @@ op_star
 id|hwif-&gt;config_data
 suffix:semicolon
 singleline_comment|//
-singleline_comment|// Save timing registers:  this may be unnecessary if BIOS also does it
+singleline_comment|// Save timing registers:  this may be unnecessary if 
+singleline_comment|// BIOS also does it
 singleline_comment|//
 id|basereg
 op_assign
@@ -1998,32 +1997,7 @@ id|r
 suffix:semicolon
 )brace
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|function|sc1200_suspend
-r_static
-r_int
-id|sc1200_suspend
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-id|u32
-id|state
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;SC1200: suspend(%u)&bslash;n&quot;
-comma
-id|state
-)paren
-suffix:semicolon
 multiline_comment|/* You don&squot;t need to iterate over disks -- sysfs should have done that for you already */
 id|pci_disable_device
 c_func
@@ -2721,11 +2695,6 @@ dot
 id|probe
 op_assign
 id|sc1200_init_one
-comma
-dot
-id|save_state
-op_assign
-id|sc1200_save_state
 comma
 dot
 id|suspend
