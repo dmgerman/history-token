@@ -954,6 +954,8 @@ op_assign
 id|loff_t
 )paren
 id|dbp-&gt;d_off
+op_amp
+l_int|0x7fffffff
 suffix:semicolon
 id|dbp
 op_assign
@@ -984,6 +986,8 @@ l_int|0
 id|filp-&gt;f_pos
 op_assign
 id|uio.uio_offset
+op_amp
+l_int|0x7fffffff
 suffix:semicolon
 r_else
 r_if
