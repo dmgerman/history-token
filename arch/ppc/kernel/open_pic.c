@@ -2224,7 +2224,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Do per-cpu setup for SMP systems.&n; *&n; * Get IPI&squot;s working and start taking interrupts.&n; *   -- Cort&n; */
 DECL|function|do_openpic_setup_cpu
 r_void
-id|__init
+id|__devinit
 id|do_openpic_setup_cpu
 c_func
 (paren
