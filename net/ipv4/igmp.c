@@ -4818,9 +4818,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_dev-&gt;dev-&gt;flags
-op_amp
-id|IFF_UP
+op_logical_neg
+id|in_dev-&gt;dead
 )paren
 (brace
 r_if
@@ -4937,6 +4936,13 @@ c_cond
 id|im-&gt;multiaddr
 op_eq
 id|IGMP_ALL_HOSTS
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_dev-&gt;dead
 )paren
 r_return
 suffix:semicolon
@@ -5248,9 +5254,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_dev-&gt;dev-&gt;flags
-op_amp
-id|IFF_UP
+op_logical_neg
+id|in_dev-&gt;dead
 )paren
 id|ip_rt_multicast_event
 c_func
@@ -5360,9 +5365,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_dev-&gt;dev-&gt;flags
-op_amp
-id|IFF_UP
+op_logical_neg
+id|in_dev-&gt;dead
 )paren
 id|ip_rt_multicast_event
 c_func
@@ -5616,6 +5620,13 @@ suffix:semicolon
 id|ASSERT_RTNL
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* Deactivate timers */
+id|ip_mc_down
+c_func
+(paren
+id|in_dev
 )paren
 suffix:semicolon
 id|write_lock_bh
