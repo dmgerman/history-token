@@ -723,6 +723,9 @@ OL
 id|needed
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -734,6 +737,10 @@ id|buffer
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|pt-&gt;prepend_size
 op_add_assign
@@ -753,6 +760,9 @@ r_return
 id|count
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -764,6 +774,10 @@ id|buffer
 comma
 id|needed
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|r
 op_assign
@@ -836,6 +850,9 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -845,6 +862,10 @@ id|bufptr
 comma
 id|PT_BLOCKSIZE
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|bufptr
 op_assign
@@ -912,6 +933,9 @@ id|pt-&gt;prepend_size
 op_assign
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -923,6 +947,10 @@ id|bytes_copied
 comma
 id|i
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|bytes_copied
 op_add_assign

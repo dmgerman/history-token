@@ -2,7 +2,7 @@ multiline_comment|/* -*- c -*- -------------------------------------------------
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;autofs_i.h&quot;
 DECL|macro|__NO_VERSION__

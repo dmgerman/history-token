@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/namei.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  adding &amp; removing files &amp; directories&n; */
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|function|hpfs_mkdir

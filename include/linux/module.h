@@ -608,6 +608,12 @@ DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
+id|__asm__
+c_func
+(paren
+l_string|&quot;.section __ksymtab,&bslash;&quot;a&bslash;&quot;&bslash;n.previous&quot;
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = str;&t;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym &t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }

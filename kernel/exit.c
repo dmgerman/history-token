@@ -766,7 +766,7 @@ id|current-&gt;files-&gt;count
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we die, we re-parent all our children.&n; * Try to give them to another thread in our process&n; * group, and if no such member exists, give it to&n; * the global child reaper process (ie &quot;init&quot;)&n; */
+multiline_comment|/*&n; * When we die, we re-parent all our children.&n; * Try to give them to another thread in our thread&n; * group, and if no such member exists, give it to&n; * the global child reaper process (ie &quot;init&quot;)&n; */
 DECL|function|forget_original_parent
 r_static
 r_inline
@@ -795,12 +795,39 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Next in our thread group */
+multiline_comment|/* Next in our thread group, if they&squot;re not already exiting */
+id|reaper
+op_assign
+id|father
+suffix:semicolon
+r_do
+(brace
 id|reaper
 op_assign
 id|next_thread
 c_func
 (paren
+id|reaper
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|reaper-&gt;flags
+op_amp
+id|PF_EXITING
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|reaper
+op_ne
 id|father
 )paren
 suffix:semicolon

@@ -3012,6 +3012,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3023,6 +3026,10 @@ id|pos
 comma
 id|nbytes
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 op_star
 id|ppos

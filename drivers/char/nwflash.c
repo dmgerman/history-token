@@ -602,6 +602,12 @@ op_add_assign
 id|count
 suffix:semicolon
 )brace
+r_else
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 id|up
 c_func
 (paren

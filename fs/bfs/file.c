@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;fs/bfs/file.c&n; *&t;BFS file operations.&n; *&t;Copyright (C) 1999,2000 Tigran Aivazian &lt;tigran@veritas.com&gt;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/bfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;bfs_defs.h&quot;

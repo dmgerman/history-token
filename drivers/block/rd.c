@@ -1100,6 +1100,9 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1116,6 +1119,10 @@ id|ppos
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 op_star
 id|ppos

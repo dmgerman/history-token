@@ -151,6 +151,8 @@ DECL|macro|FIONREAD
 mdefine_line|#define FIONREAD&t;_IOR(&squot;f&squot;, 127, int)
 DECL|macro|TIOCINQ
 mdefine_line|#define TIOCINQ&t;&t;FIONREAD
+DECL|macro|FIOQSIZE
+mdefine_line|#define FIOQSIZE&t;_IOR(&squot;f&squot;, 128, loff_t)
 multiline_comment|/* SCARY Rutgers local SunOS kernel hackery, perhaps I will support it&n; * someday.  This is completely bogus, I know...&n; */
 DECL|macro|__TCGETSTAT
 mdefine_line|#define __TCGETSTAT       _IO(&squot;T&squot;, 200) /* Rutgers specific */

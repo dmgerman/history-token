@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -20750,8 +20749,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -20765,17 +20765,17 @@ r_sizeof
 id|DAC960_V1_UserCommand_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure1
 suffix:semicolon
+)brace
 id|ControllerNumber
 op_assign
 id|UserCommand.ControllerNumber
@@ -20849,8 +20849,9 @@ op_eq
 id|DAC960_V1_DCDB
 )paren
 (brace
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -20864,17 +20865,17 @@ r_sizeof
 id|DAC960_V1_DCDB_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -21021,8 +21022,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -21033,17 +21035,17 @@ comma
 op_minus
 id|DataTransferLength
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure1
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -21311,8 +21313,9 @@ OG
 l_int|0
 )paren
 (brace
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -21322,17 +21325,16 @@ id|DataTransferBuffer
 comma
 id|DataTransferLength
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure1
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -21352,8 +21354,9 @@ id|DCDB.TargetID
 op_assign
 l_bool|false
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -21367,17 +21370,17 @@ r_sizeof
 id|DAC960_V1_DCDB_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure1
 suffix:semicolon
+)brace
 )brace
 id|ErrorCode
 op_assign
@@ -21474,8 +21477,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -21489,17 +21493,17 @@ r_sizeof
 id|DAC960_V2_UserCommand_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
+)brace
 id|ControllerNumber
 op_assign
 id|UserCommand.ControllerNumber
@@ -21621,8 +21625,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -21633,17 +21638,17 @@ comma
 op_minus
 id|DataTransferLength
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
+)brace
 )brace
 id|RequestSenseLength
 op_assign
@@ -21945,8 +21950,9 @@ id|RequestSenseLength
 op_assign
 id|UserCommand.RequestSenseLength
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -21961,19 +21967,20 @@ r_sizeof
 id|DataTransferResidue
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
-id|ErrorCode
-op_assign
+)brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -21988,17 +21995,17 @@ r_sizeof
 id|RequestSenseLength
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -22007,8 +22014,9 @@ OG
 l_int|0
 )paren
 (brace
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22018,17 +22026,17 @@ id|DataTransferBuffer
 comma
 id|DataTransferLength
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -22038,8 +22046,9 @@ OG
 l_int|0
 )paren
 (brace
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22049,17 +22058,17 @@ id|RequestSenseBuffer
 comma
 id|RequestSenseLength
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
+(brace
+id|ErrorCode
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|Failure2
 suffix:semicolon
+)brace
 )brace
 id|ErrorCode
 op_assign
@@ -22135,8 +22144,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22150,16 +22160,10 @@ r_sizeof
 id|DAC960_V2_GetHealthStatus_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
 r_return
-id|ErrorCode
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ControllerNumber
 op_assign
@@ -22207,8 +22211,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22222,16 +22227,10 @@ r_sizeof
 id|DAC960_V2_HealthStatusBuffer_T
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ErrorCode
-op_ne
-l_int|0
 )paren
 r_return
-id|ErrorCode
+op_minus
+id|EFAULT
 suffix:semicolon
 r_while
 c_loop
@@ -22268,8 +22267,9 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
-id|ErrorCode
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22282,9 +22282,13 @@ r_sizeof
 id|DAC960_V2_HealthStatusBuffer_T
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
-id|ErrorCode
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -22294,7 +22298,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_KernelIOCTL is the Kernel IOCTL Function for the DAC960 Driver.&n;*/
-DECL|function|DAC960_KernelIOCTL
 r_int
 id|DAC960_KernelIOCTL
 c_func
@@ -23362,7 +23365,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_CheckStatusBuffer verifies that there is room to hold ByteCount&n;  additional bytes in the Combined Status Buffer and grows the buffer if&n;  necessary.  It returns true if there is enough room and false otherwise.&n;*/
-DECL|function|DAC960_CheckStatusBuffer
 r_static
 id|boolean
 id|DAC960_CheckStatusBuffer
@@ -23534,7 +23536,6 @@ l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_Message prints Driver Messages.&n;*/
-DECL|function|DAC960_Message
 r_static
 r_void
 id|DAC960_Message
@@ -23979,7 +23980,6 @@ l_char|&squot;&bslash;n&squot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ParsePhysicalDevice parses spaces followed by a Physical Device&n;  Channel:TargetID specification from a User Command string.  It updates&n;  Channel and TargetID and returns true on success and false on failure.&n;*/
-DECL|function|DAC960_ParsePhysicalDevice
 r_static
 id|boolean
 id|DAC960_ParsePhysicalDevice
@@ -24121,7 +24121,6 @@ l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ParseLogicalDrive parses spaces followed by a Logical Drive Number&n;  specification from a User Command string.  It updates LogicalDriveNumber and&n;  returns true on success and false on failure.&n;*/
-DECL|function|DAC960_ParseLogicalDrive
 r_static
 id|boolean
 id|DAC960_ParseLogicalDrive
@@ -24216,7 +24215,6 @@ l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_V1_SetDeviceState sets the Device State for a Physical Device for&n;  DAC960 V1 Firmware Controllers.&n;*/
-DECL|function|DAC960_V1_SetDeviceState
 r_static
 r_void
 id|DAC960_V1_SetDeviceState
@@ -24410,7 +24408,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;  DAC960_V1_ExecuteUserCommand executes a User Command for DAC960 V1 Firmware&n;  Controllers.&n;*/
-DECL|function|DAC960_V1_ExecuteUserCommand
 r_static
 id|boolean
 id|DAC960_V1_ExecuteUserCommand
@@ -25273,7 +25270,6 @@ l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_V2_TranslatePhysicalDevice translates a Physical Device Channel and&n;  TargetID into a Logical Device.  It returns true on success and false&n;  on failure.&n;*/
-DECL|function|DAC960_V2_TranslatePhysicalDevice
 r_static
 id|boolean
 id|DAC960_V2_TranslatePhysicalDevice
@@ -25421,7 +25417,6 @@ id|DAC960_V2_NormalCompletion
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_V2_ExecuteUserCommand executes a User Command for DAC960 V2 Firmware&n;  Controllers.&n;*/
-DECL|function|DAC960_V2_ExecuteUserCommand
 r_static
 id|boolean
 id|DAC960_V2_ExecuteUserCommand
@@ -26369,7 +26364,6 @@ l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ProcReadStatus implements reading /proc/rd/status.&n;*/
-DECL|function|DAC960_ProcReadStatus
 r_static
 r_int
 id|DAC960_ProcReadStatus
@@ -26520,7 +26514,6 @@ id|Count
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ProcReadInitialStatus implements reading /proc/rd/cN/initial_status.&n;*/
-DECL|function|DAC960_ProcReadInitialStatus
 r_static
 r_int
 id|DAC960_ProcReadInitialStatus
@@ -26619,7 +26612,6 @@ id|Count
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ProcReadCurrentStatus implements reading /proc/rd/cN/current_status.&n;*/
-DECL|function|DAC960_ProcReadCurrentStatus
 r_static
 r_int
 id|DAC960_ProcReadCurrentStatus
@@ -26856,7 +26848,6 @@ id|Count
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ProcReadUserCommand implements reading /proc/rd/cN/user_command.&n;*/
-DECL|function|DAC960_ProcReadUserCommand
 r_static
 r_int
 id|DAC960_ProcReadUserCommand
@@ -26955,7 +26946,6 @@ id|Count
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_ProcWriteUserCommand implements writing /proc/rd/cN/user_command.&n;*/
-DECL|function|DAC960_ProcWriteUserCommand
 r_static
 r_int
 id|DAC960_ProcWriteUserCommand
@@ -27111,7 +27101,6 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_CreateProcEntries creates the /proc/rd/... entries for the&n;  DAC960 Driver.&n;*/
-DECL|function|DAC960_CreateProcEntries
 r_static
 r_void
 id|DAC960_CreateProcEntries
@@ -27271,7 +27260,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;  DAC960_DestroyProcEntries destroys the /proc/rd/... entries for the&n;  DAC960 Driver.&n;*/
-DECL|function|DAC960_DestroyProcEntries
 r_static
 r_void
 id|DAC960_DestroyProcEntries
@@ -27366,14 +27354,12 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|DAC960_Initialize
 id|module_init
 c_func
 (paren
 id|DAC960_Initialize
 )paren
 suffix:semicolon
-DECL|variable|DAC960_Finalize
 id|module_exit
 c_func
 (paren

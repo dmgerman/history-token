@@ -3686,9 +3686,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -3699,7 +3696,6 @@ comma
 id|ICN_CODE_STAGE1
 )paren
 )paren
-)paren
 (brace
 id|kfree
 c_func
@@ -3708,7 +3704,8 @@ id|codebuf
 )paren
 suffix:semicolon
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_if
@@ -4894,6 +4891,10 @@ c_cond
 (paren
 id|user
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -4903,7 +4904,12 @@ id|buf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_else
 id|memcpy
 c_func
@@ -5782,9 +5788,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
-id|i
-op_assign
 id|copy_to_user
 c_func
 (paren
@@ -5807,9 +5810,9 @@ id|ulong
 )paren
 )paren
 )paren
-)paren
 r_return
-id|i
+op_minus
+id|EFAULT
 suffix:semicolon
 id|a
 op_add_assign
@@ -5831,9 +5834,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|i
-op_assign
 id|copy_to_user
 c_func
 (paren
@@ -5856,9 +5856,9 @@ id|ulong
 )paren
 )paren
 )paren
-)paren
 r_return
-id|i
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
@@ -5981,9 +5981,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|i
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -6006,9 +6003,9 @@ id|cdef
 )paren
 )paren
 )paren
-)paren
 r_return
-id|i
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 (paren

@@ -8563,6 +8563,7 @@ id|info.bytes
 suffix:semicolon
 r_return
 id|copy_to_user
+c_func
 (paren
 id|arg
 comma
@@ -8574,6 +8575,12 @@ r_sizeof
 id|info
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;via_dsp_ioctl_ptr - get information about hardware buffer ptr&n; *&t;@card: Private info for specified board&n; *&t;@chan: pointer to channel-specific info&n; *&t;@arg: user buffer for returned information&n; *&n; *&t;Handles SNDCTL_DSP_GETIPTR and SNDCTL_DSP_GETOPTR.&n; *&n; *&t;Locking: inside card-&gt;syscall_sem&n; */
@@ -8684,6 +8691,7 @@ id|info.ptr
 suffix:semicolon
 r_return
 id|copy_to_user
+c_func
 (paren
 id|arg
 comma
@@ -8695,6 +8703,12 @@ r_sizeof
 id|info
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|via_dsp_ioctl_trigger

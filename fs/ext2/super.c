@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;

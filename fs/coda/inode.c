@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -21,16 +20,6 @@ macro_line|#include &lt;linux/coda_psdev.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda_cache.h&gt;
 multiline_comment|/* VFS super_block ops */
-r_static
-r_void
-id|coda_read_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
 r_static
 r_void
 id|coda_clear_inode
@@ -337,10 +326,6 @@ comma
 id|destroy_inode
 suffix:colon
 id|coda_destroy_inode
-comma
-id|read_inode
-suffix:colon
-id|coda_read_inode
 comma
 id|clear_inode
 suffix:colon
@@ -917,65 +902,6 @@ id|kfree
 c_func
 (paren
 id|sbi
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* all filling in of inodes postponed until lookup */
-DECL|function|coda_read_inode
-r_static
-r_void
-id|coda_read_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_struct
-id|coda_sb_info
-op_star
-id|sbi
-op_assign
-id|coda_sbp
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-suffix:semicolon
-r_struct
-id|coda_inode_info
-op_star
-id|cii
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbi
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cii
-op_assign
-id|ITOC
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|cii-&gt;c_cilist
-comma
-op_amp
-id|sbi-&gt;sbi_cihead
 )paren
 suffix:semicolon
 )brace

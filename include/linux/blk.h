@@ -3,7 +3,6 @@ DECL|macro|_BLK_H
 mdefine_line|#define _BLK_H
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;

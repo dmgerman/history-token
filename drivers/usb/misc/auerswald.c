@@ -5520,6 +5520,12 @@ id|cp-&gt;dev_desc
 comma
 id|u
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6545,7 +6551,7 @@ id|ccp-&gt;mutex
 suffix:semicolon
 r_return
 op_minus
-id|EIO
+id|EFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* set the header byte */

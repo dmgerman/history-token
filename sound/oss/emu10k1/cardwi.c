@@ -1114,6 +1114,10 @@ id|cov
 op_eq
 l_int|1
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -1125,7 +1129,10 @@ id|str
 comma
 id|len
 )paren
+)paren
+r_return
 suffix:semicolon
+)brace
 r_else
 (brace
 id|u8
@@ -1168,6 +1175,9 @@ id|i
 op_xor
 l_int|0x80
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -1180,6 +1190,8 @@ id|byte
 comma
 l_int|1
 )paren
+)paren
+r_return
 suffix:semicolon
 )brace
 )brace

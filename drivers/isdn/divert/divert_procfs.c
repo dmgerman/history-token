@@ -754,9 +754,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|i
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -775,11 +772,9 @@ id|dioctl
 )paren
 )paren
 )paren
-)paren
 r_return
-(paren
-id|i
-)paren
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -1095,7 +1090,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* switch cmd */
 r_return
-(paren
 id|copy_to_user
 c_func
 (paren
@@ -1113,9 +1107,13 @@ r_sizeof
 id|dioctl
 )paren
 )paren
-)paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
-multiline_comment|/* success */
 )brace
 multiline_comment|/* isdn_divert_ioctl */
 macro_line|#ifdef CONFIG_PROC_FS

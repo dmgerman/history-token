@@ -5045,7 +5045,8 @@ op_assign
 id|pClient
 suffix:semicolon
 )brace
-id|copy_from_user
+id|__copy_from_user
+c_func
 (paren
 id|pHeader-&gt;data
 comma

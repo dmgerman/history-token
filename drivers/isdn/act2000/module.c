@@ -1171,9 +1171,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -1191,9 +1188,9 @@ id|tmp
 )paren
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -1236,9 +1233,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -1257,9 +1251,9 @@ id|cdef
 )paren
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

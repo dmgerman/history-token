@@ -582,6 +582,12 @@ op_star
 id|bdev
 suffix:semicolon
 multiline_comment|/* block device handle */
+DECL|member|sb_page
+r_struct
+id|page
+op_star
+id|sb_page
+suffix:semicolon
 DECL|member|sb
 id|mdp_super_t
 op_star

@@ -8341,6 +8341,9 @@ id|ENOSPC
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Copy the header from user space but ignore the first bytes which have&n;&t; * been transferred already.&n;&t; */
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -8369,6 +8372,10 @@ id|sizeof_patch
 op_minus
 id|offs
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -8888,6 +8895,9 @@ id|ENOSPC
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * OK, move now. First in and then out.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -8910,6 +8920,10 @@ id|src_offs
 comma
 id|blk_sz
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|save_flags
 c_func

@@ -1284,7 +1284,8 @@ id|ret
 )paren
 suffix:semicolon
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 id|p
@@ -1458,6 +1459,11 @@ l_string|&quot;isar_load_firmware copy_from_user ret %d&bslash;n&quot;
 comma
 id|ret
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 r_goto
 id|reterror
@@ -1740,6 +1746,11 @@ l_string|&quot;isar_load_firmware copy_from_user ret %d&bslash;n&quot;
 comma
 id|ret
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 r_goto
 id|reterror

@@ -3604,20 +3604,24 @@ op_eq
 id|SOCK_DGRAM
 )paren
 (brace
-multiline_comment|/* udp sockets need large rcvbuf as all pending&n;&t;&t;&t; * requests are still in that buffer.&n;&t;&t;&t; * As outgoing requests do not wait for an&n;&t;&t;&t; * ACK, only a moderate sndbuf is needed&n;&t;&t;&t; */
+multiline_comment|/* udp sockets need large rcvbuf as all pending&n;&t;&t;&t; * requests are still in that buffer.&n;&t;&t;&t; */
 id|svc_sock_setbufsize
 c_func
 (paren
 id|sock
 comma
-l_int|5
+(paren
+id|serv-&gt;sv_nrthreads
+op_plus
+l_int|3
+)paren
 op_star
 id|serv-&gt;sv_bufsz
 comma
 (paren
 id|serv-&gt;sv_nrthreads
 op_plus
-l_int|2
+l_int|3
 )paren
 op_star
 id|serv-&gt;sv_bufsz

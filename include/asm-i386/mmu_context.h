@@ -172,20 +172,10 @@ id|next-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
 multiline_comment|/* Re-load page tables */
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl %0,%%cr3&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|__pa
+id|load_cr3
 c_func
 (paren
 id|next-&gt;pgd
-)paren
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* load_LDT, if either the previous or next thread&n;&t;&t; * has a non-default LDT.&n;&t;&t; */
@@ -249,10 +239,11 @@ id|next-&gt;cpu_vm_mask
 )paren
 )paren
 (brace
-multiline_comment|/* We were in lazy tlb mode and leave_mm disabled &n;&t;&t;&t; * tlb flush IPI delivery. We must flush our tlb.&n;&t;&t;&t; */
-id|local_flush_tlb
+multiline_comment|/* We were in lazy tlb mode and leave_mm disabled &n;&t;&t;&t; * tlb flush IPI delivery. We must reload %cr3.&n;&t;&t;&t; */
+id|load_cr3
 c_func
 (paren
+id|next-&gt;pgd
 )paren
 suffix:semicolon
 id|load_LDT

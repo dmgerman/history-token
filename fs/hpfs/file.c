@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/hpfs/file.c&n; *&n; *  Mikulas Patocka (miku
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|macro|BLOCKS
 mdefine_line|#define BLOCKS(size) (((size) + 511) &gt;&gt; 9)

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * define how far ahead to read directories while searching them.&n; */

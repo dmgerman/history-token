@@ -609,8 +609,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|write_unlock
 c_func
 (paren

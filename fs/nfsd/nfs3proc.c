@@ -2,7 +2,6 @@ multiline_comment|/*&n; * linux/fs/nfsd/nfs3proc.c&n; *&n; * Process version 3 N
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;

@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;i_bufferlist_lock&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|pagemap_lru_lock
@@ -1587,7 +1587,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * In-memory filesystems have to fail their&n; * writepage function - and this has to be&n; * worked around in the VM layer..&n; *&n; * We&n; *  - mark the page dirty again (but do NOT&n; *    add it back to the inode dirty list, as&n; *    that would livelock in fdatasync)&n; *  - activate the page so that the page stealer&n; *    doesn&squot;t try to write it out over and over&n; *    again.&n; */
+multiline_comment|/*&n; * In-memory filesystems have to fail their&n; * writepage function - and this has to be&n; * worked around in the VM layer..&n; *&n; * We&n; *  - mark the page dirty again (but do NOT&n; *    add it back to the inode dirty list, as&n; *    that would livelock in fdatasync)&n; *  - activate the page so that the page stealer&n; *    doesn&squot;t try to write it out over and over&n; *    again.&n; *&n; * NOTE!  The livelock in fdatasync went away, due to io_pages.&n; * So this function can now call set_page_dirty().&n; */
 DECL|function|fail_writepage
 r_int
 id|fail_writepage
@@ -1603,11 +1603,9 @@ multiline_comment|/* Only activate on memory-pressure, not fsync.. */
 r_if
 c_cond
 (paren
-id|PageLaunder
-c_func
-(paren
-id|page
-)paren
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
 )paren
 (brace
 id|activate_page
@@ -1659,24 +1657,8 @@ op_star
 id|mapping
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|mapping-&gt;a_ops-&gt;writeback_mapping
-)paren
 r_return
-id|mapping-&gt;a_ops
-op_member_access_from_pointer
 id|writeback_mapping
-c_func
-(paren
-id|mapping
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_return
-id|generic_writeback_mapping
 c_func
 (paren
 id|mapping
@@ -2524,12 +2506,6 @@ op_star
 id|waitqueue
 op_assign
 id|page_waitqueue
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|ClearPageLaunder
 c_func
 (paren
 id|page

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -837,6 +836,11 @@ c_func
 (paren
 id|bit_nr
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|jb-&gt;bitmaps
 (braket
 id|bmap_nr
@@ -2425,6 +2429,11 @@ c_func
 (paren
 id|bit_nr
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|jb-&gt;bitmaps
 (braket
 id|bmap_nr

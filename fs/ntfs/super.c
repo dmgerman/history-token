@@ -2,9 +2,9 @@ multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of th
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
@@ -6226,6 +6226,25 @@ op_amp
 id|vol-&gt;mftbmp_mapping.i_shared_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * private_lock and private_list are unused by ntfs.  But they&n;&t; * are available.&n;&t; */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_lock
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_mapping.private_list
+)paren
+suffix:semicolon
+id|vol-&gt;mftbmp_mapping.assoc_mapping
+op_assign
+l_int|NULL
+suffix:semicolon
 id|vol-&gt;mftbmp_mapping.dirtied_when
 op_assign
 l_int|0
@@ -6234,9 +6253,9 @@ id|vol-&gt;mftbmp_mapping.gfp_mask
 op_assign
 id|GFP_HIGHUSER
 suffix:semicolon
-id|vol-&gt;mftbmp_mapping.ra_pages
+id|vol-&gt;mftbmp_mapping.backing_dev_info
 op_assign
-id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;ra_pages
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access. Further files by default&n;&t; * are not executable but directories are of course browseable.&n;&t; */
 id|vol-&gt;fmask

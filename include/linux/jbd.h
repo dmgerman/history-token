@@ -365,6 +365,13 @@ id|JBDDirty
 comma
 id|jbddirty
 )paren
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|JBDDirty
+comma
+id|jbddirty
+)paren
 DECL|function|jh2bh
 r_static
 r_inline

@@ -6508,8 +6508,9 @@ OG
 l_int|0
 )paren
 (brace
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -6519,18 +6520,11 @@ id|buffaddr
 comma
 id|bytes_done
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 )brace
 macro_line|#if 1
 multiline_comment|/* Checks Ton&squot;s patch below */
@@ -6937,8 +6931,9 @@ OG
 l_int|0
 )paren
 (brace
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -6948,18 +6943,11 @@ id|buf
 comma
 id|bytes_todo
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/****************** similar problem with read() at FM could happen here at EOT.&n; ******************/
 multiline_comment|/***** if at EOT, 0 bytes can be written. start_dma() will&n; ***** fail and write() will return ENXIO error&n; *****/
 r_if

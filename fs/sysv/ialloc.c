@@ -1,9 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/sysv/ialloc.c&n; *&n; *  minix/bitmap.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext/freelists.c&n; *  Copyright (C) 1992  Remy Card (card@masi.ibp.fr)&n; *&n; *  xenix/alloc.c&n; *  Copyright (C) 1992  Doug Evans&n; *&n; *  coh/alloc.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/ialloc.c&n; *  Copyright (C) 1993  Bruno Haible&n; *&n; *  This file contains code for allocating/freeing inodes.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &quot;sysv.h&quot;
 multiline_comment|/* We don&squot;t trust the value of&n;   sb-&gt;sv_sbd2-&gt;s_tinode = *sb-&gt;sv_sb_total_free_inodes&n;   but we nevertheless keep it up to date. */
 multiline_comment|/* An inode on disk is considered free if both i_mode == 0 and i_nlink == 0. */

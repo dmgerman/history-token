@@ -791,6 +791,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* If it&squot;s really a local destination manip, it may need to do a&n;   source manip too. */
 r_static
 r_int
@@ -864,6 +865,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Simple way to iterate through all. */
 DECL|function|fake_cmp
 r_static

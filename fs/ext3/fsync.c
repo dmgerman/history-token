@@ -47,13 +47,13 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * fsync_inode_buffers() just walks i_dirty_buffers and waits&n;&t; * on them.  It&squot;s a no-op for full data journalling because&n;&t; * i_dirty_buffers will be ampty.&n;&t; * Really, we only need to start I/O on the dirty buffers -&n;&t; * we&squot;ll end up waiting on them in commit.&n;&t; */
+multiline_comment|/*&n;&t; * fsync_inode_buffers() just walks private_list and waits&n;&t; * on them.  It&squot;s a no-op for full data journalling because&n;&t; * private_list will be empty.&n;&t; * Really, we only need to start I/O on the dirty buffers -&n;&t; * we&squot;ll end up waiting on them in commit.&n;&t; */
 id|ret
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|ext3_force_commit

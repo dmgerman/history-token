@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/ufs/util.c&n; *&n; * Copyright (C) 1998&n; * Daniel Pirkl &lt;daniel.pirkl@email.cz&gt;&n; * Charles University, Faculty of Mathematics and Physics&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;

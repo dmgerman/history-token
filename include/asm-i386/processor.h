@@ -509,6 +509,8 @@ r_return
 id|edx
 suffix:semicolon
 )brace
+DECL|macro|load_cr3
+mdefine_line|#define load_cr3(pgdir) &bslash;&n;&t;asm volatile(&quot;movl %0,%%cr3&quot;: :&quot;r&quot; (__pa(pgdir)))
 multiline_comment|/*&n; * Intel CPU features in CR4&n; */
 DECL|macro|X86_CR4_VME
 mdefine_line|#define X86_CR4_VME&t;&t;0x0001&t;/* enable vm86 extensions */

@@ -72,10 +72,10 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|fsync_inode_buffers
+id|sync_mapping_buffers
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if

@@ -5132,6 +5132,10 @@ c_cond
 (paren
 id|from_user
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -5147,7 +5151,18 @@ id|buf
 comma
 id|c
 )paren
+)paren
+(brace
+id|total
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+)brace
 r_else
 id|memcpy
 c_func
@@ -5523,6 +5538,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -11309,6 +11326,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -11318,6 +11338,8 @@ id|p
 comma
 id|count
 )paren
+)paren
+r_return
 suffix:semicolon
 id|p
 op_assign

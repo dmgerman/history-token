@@ -1,11 +1,11 @@
 multiline_comment|/*&n; *  linux/fs/super.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  super.c contains code to handle: - mount structures&n; *                                   - super-block tables&n; *                                   - filesystem drivers list&n; *                                   - mount system call&n; *                                   - umount system call&n; *                                   - ustat system call&n; *&n; * GK 2/5/95  -  Changed to support mounting the root fs via NFS&n; *&n; *  Added kerneld support: Jacques Gelinas and Bjorn Ekwall&n; *  Added change_root: Werner Almesberger &amp; Hans Lermen, Feb &squot;96&n; *  Added options to /proc/mounts:&n; *    Torbj&#xfffd;rn Lindh (torbjorn.lindh@gopta.se), April 14, 1996.&n; *  Added devfs support: Richard Gooch &lt;rgooch@atnf.csiro.au&gt;, 13-JAN-1998&n; *  Heavily rewritten for &squot;one fs - one tree&squot; dcache architecture. AV, Mar 2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
@@ -112,6 +112,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|s-&gt;s_io
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|s-&gt;s_locked_inodes
 )paren
 suffix:semicolon
@@ -202,6 +209,14 @@ suffix:semicolon
 id|s-&gt;s_maxbytes
 op_assign
 id|MAX_NON_LFS
+suffix:semicolon
+id|s-&gt;dq_op
+op_assign
+id|sb_dquot_ops
+suffix:semicolon
+id|s-&gt;s_qcop
+op_assign
+id|sb_quotactl_ops
 suffix:semicolon
 )brace
 r_return
@@ -449,7 +464,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;insert_super&t;-&t;put superblock on the lists&n; *&t;@s:&t;superblock in question&n; *&t;@type:&t;filesystem type it will belong to&n; *&n; *&t;Associates superblock with fs type and puts it on per-type and global&n; *&t;superblocks&squot; lists.  Should be called with sb_lock held; drops it.&n; */
+multiline_comment|/**&n; *&t;insert_super&t;-&t;put superblock on the lists&n; *&t;@s:&t;superblock in question&n; *&t;@type:&t;filesystem type it will belong to&n; *&n; *&t;Associates superblock with fs type and puts it on per-type and global&n; *&t;superblocks&squot; lists.  Should be called with sb_lock held; drops it.&n; *&n; *&t;NOTE: the super_blocks ordering here is important: writeback wants&n; *&t;the blockdev superblock to be at super_blocks.next.&n; */
 DECL|function|insert_super
 r_static
 r_void

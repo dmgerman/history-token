@@ -28,12 +28,10 @@ DECL|macro|PG_arch_1
 mdefine_line|#define PG_arch_1&t;&t;10
 DECL|macro|PG_reserved
 mdefine_line|#define PG_reserved&t;&t;11
-DECL|macro|PG_launder
-mdefine_line|#define PG_launder&t;&t;12&t;/* written out by VM pressure.. */
 DECL|macro|PG_private
-mdefine_line|#define PG_private&t;&t;13&t;/* Has something at -&gt;private */
+mdefine_line|#define PG_private&t;&t;12&t;/* Has something at -&gt;private */
 DECL|macro|PG_writeback
-mdefine_line|#define PG_writeback&t;&t;14&t;/* Page is under writeback */
+mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.&n; */
 DECL|struct|page_state
 r_extern
@@ -155,12 +153,6 @@ DECL|macro|SetPageReserved
 mdefine_line|#define SetPageReserved(page)&t;set_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageReserved
 mdefine_line|#define ClearPageReserved(page)&t;clear_bit(PG_reserved, &amp;(page)-&gt;flags)
-DECL|macro|PageLaunder
-mdefine_line|#define PageLaunder(page)&t;test_bit(PG_launder, &amp;(page)-&gt;flags)
-DECL|macro|SetPageLaunder
-mdefine_line|#define SetPageLaunder(page)&t;set_bit(PG_launder, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageLaunder
-mdefine_line|#define ClearPageLaunder(page)&t;clear_bit(PG_launder, &amp;(page)-&gt;flags)
 DECL|macro|SetPagePrivate
 mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|ClearPagePrivate

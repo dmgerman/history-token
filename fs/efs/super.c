@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * super.c&n; *&n; * Copyright (c) 1999 Al Smith&n; *&n; * Portions derived from work (c) 1995,1996 Christian Vogelgsang.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/efs_vh.h&gt;
 macro_line|#include &lt;linux/efs_fs_sb.h&gt;

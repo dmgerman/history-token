@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by r
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#ifdef CONFIG_REISERFS_CHECK

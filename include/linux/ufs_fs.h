@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|UFS_BBLOCK
 mdefine_line|#define UFS_BBLOCK 0
 DECL|macro|UFS_BBSIZE

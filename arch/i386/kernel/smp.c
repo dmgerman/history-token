@@ -586,7 +586,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL&t;0xffffffff
-multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; */
+multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; *&n; * We need to reload %cr3 since the page tables may be going&n; * away from under us..&n; */
 DECL|function|leave_mm
 r_static
 r_void
@@ -627,6 +627,12 @@ id|cpu
 )braket
 dot
 id|active_mm-&gt;cpu_vm_mask
+)paren
+suffix:semicolon
+id|load_cr3
+c_func
+(paren
+id|swapper_pg_dir
 )paren
 suffix:semicolon
 )brace

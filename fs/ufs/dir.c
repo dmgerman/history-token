@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/ufs/ufs_dir.c&n; *&n; * Copyright (C) 1996&n; * Adrian Rodriguez (adrian@franklins-tower.rutgers.edu)&n; * Laboratory for Computer Science Research Computing Facility&n; * Rutgers, The State University of New Jersey&n; *&n; * swab support by Francois-Rene Rideau &lt;fare@tunes.org&gt; 19970406&n; *&n; * 4.4BSD (FreeBSD) support added on February 1st 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt; partially based&n; * on code by Martin von Loewis &lt;martin@mira.isdn.cs.tu-berlin.de&gt;.&n; */
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
