@@ -2153,10 +2153,7 @@ id|alignment_check
 comma
 id|BUS_ADRALN
 comma
-id|get_cr2
-c_func
-(paren
-)paren
+l_int|0
 )paren
 id|DO_ERROR
 c_func
