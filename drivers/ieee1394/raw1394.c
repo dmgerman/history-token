@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -9103,6 +9104,8 @@ c_func
 op_amp
 id|raw1394_highlevel
 comma
+id|fi-&gt;host
+comma
 op_amp
 id|arm_ops
 comma
@@ -9574,6 +9577,8 @@ c_func
 (paren
 op_amp
 id|raw1394_highlevel
+comma
+id|fi-&gt;host
 comma
 id|addr-&gt;start
 )paren
@@ -12987,23 +12992,6 @@ id|file_info
 op_star
 id|fi
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ieee1394_file_to_instance
-c_func
-(paren
-id|file
-)paren
-OG
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 id|fi
 op_assign
 id|kmalloc
@@ -13464,6 +13452,8 @@ c_func
 op_amp
 id|raw1394_highlevel
 comma
+id|fi-&gt;host
+comma
 id|addr-&gt;start
 )paren
 suffix:semicolon
@@ -13820,11 +13810,17 @@ id|fcp_request
 comma
 )brace
 suffix:semicolon
-DECL|variable|file_ops
+DECL|variable|raw1394_cdev
+r_static
+r_struct
+id|cdev
+id|raw1394_cdev
+suffix:semicolon
+DECL|variable|raw1394_fops
 r_static
 r_struct
 id|file_operations
-id|file_ops
+id|raw1394_fops
 op_assign
 (brace
 dot
@@ -13908,18 +13904,41 @@ comma
 id|RAW1394_DEVICE_NAME
 )paren
 suffix:semicolon
+id|cdev_init
+c_func
+(paren
+op_amp
+id|raw1394_cdev
+comma
+op_amp
+id|raw1394_fops
+)paren
+suffix:semicolon
+id|raw1394_cdev.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|raw1394_cdev.kobj
+comma
+id|RAW1394_DEVICE_NAME
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ieee1394_register_chardev
+id|cdev_add
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_RAW1394
-comma
-id|THIS_MODULE
-comma
 op_amp
-id|file_ops
+id|raw1394_cdev
+comma
+id|IEEE1394_RAW1394_DEV
+comma
+l_int|1
 )paren
 )paren
 (brace
@@ -13984,10 +14003,19 @@ op_amp
 id|raw1394_driver
 )paren
 suffix:semicolon
-id|ieee1394_unregister_chardev
+id|cdev_unmap
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_RAW1394
+id|IEEE1394_RAW1394_DEV
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|cdev_del
+c_func
+(paren
+op_amp
+id|raw1394_cdev
 )paren
 suffix:semicolon
 id|devfs_remove
@@ -14022,6 +14050,16 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_RAW1394
+op_star
+l_int|16
 )paren
 suffix:semicolon
 eof
