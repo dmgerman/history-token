@@ -478,6 +478,10 @@ id|bio_map_user
 c_func
 (paren
 r_struct
+id|request_queue
+op_star
+comma
+r_struct
 id|block_device
 op_star
 comma

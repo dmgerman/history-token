@@ -15,6 +15,14 @@ macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP2322
 DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP2322
 mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP2322&t;0x2322
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP6312
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP6312
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP6312&t;0x6312
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP6322
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP6322
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP6322&t;0x6322
+macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI_QLA21XX) || defined(CONFIG_SCSI_QLA21XX_MODULE)
 DECL|macro|IS_QLA2100
 mdefine_line|#define IS_QLA2100(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2100)
@@ -29,28 +37,43 @@ macro_line|#else
 DECL|macro|IS_QLA2200
 mdefine_line|#define IS_QLA2200(ha)&t;0
 macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_QLA23XX) || defined(CONFIG_SCSI_QLA23XX_MODULE)
+macro_line|#if defined(CONFIG_SCSI_QLA2300) || defined(CONFIG_SCSI_QLA2300_MODULE)
 DECL|macro|IS_QLA2300
 mdefine_line|#define IS_QLA2300(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2300)
 DECL|macro|IS_QLA2312
 mdefine_line|#define IS_QLA2312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2312)
-DECL|macro|IS_QLA2322
-mdefine_line|#define IS_QLA2322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2322)
-DECL|macro|IS_QLA23XX
-mdefine_line|#define IS_QLA23XX(ha)&t;(IS_QLA2300(ha) || IS_QLA2312(ha) || IS_QLA2322(ha))
 macro_line|#else
 DECL|macro|IS_QLA2300
 mdefine_line|#define IS_QLA2300(ha)&t;0
 DECL|macro|IS_QLA2312
 mdefine_line|#define IS_QLA2312(ha)&t;0
+macro_line|#endif
+macro_line|#if defined(CONFIG_SCSI_QLA2322) || defined(CONFIG_SCSI_QLA2322_MODULE)
+DECL|macro|IS_QLA2322
+mdefine_line|#define IS_QLA2322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2322)
+macro_line|#else
 DECL|macro|IS_QLA2322
 mdefine_line|#define IS_QLA2322(ha)&t;0
-DECL|macro|IS_QLA23XX
-mdefine_line|#define IS_QLA23XX(ha)&t;0
 macro_line|#endif
-multiline_comment|/*&n; * Only ISP23XX has extended addressing support in the firmware.&n; */
+macro_line|#if defined(CONFIG_SCSI_QLA6312) || defined(CONFIG_SCSI_QLA6312_MODULE)
+DECL|macro|IS_QLA6312
+mdefine_line|#define IS_QLA6312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6312)
+macro_line|#else
+DECL|macro|IS_QLA6312
+mdefine_line|#define IS_QLA6312(ha)&t;0
+macro_line|#endif
+macro_line|#if defined(CONFIG_SCSI_QLA6322) || defined(CONFIG_SCSI_QLA6322_MODULE)
+DECL|macro|IS_QLA6322
+mdefine_line|#define IS_QLA6322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6322)
+macro_line|#else
+DECL|macro|IS_QLA6322
+mdefine_line|#define IS_QLA6322(ha)&t;0
+macro_line|#endif
+DECL|macro|IS_QLA23XX
+mdefine_line|#define IS_QLA23XX(ha)&t;(IS_QLA2300(ha) || IS_QLA2312(ha) || IS_QLA2322(ha) || &bslash;&n;    &t;&t;&t; IS_QLA6312(ha) || IS_QLA6322(ha))
+multiline_comment|/*&n; * Only non-ISP2[12]00 have extended addressing support in the firmware.&n; */
 DECL|macro|HAS_EXTENDED_IDS
-mdefine_line|#define HAS_EXTENDED_IDS(ha)&t;IS_QLA23XX(ha)
+mdefine_line|#define HAS_EXTENDED_IDS(ha)&t;(!IS_QLA2100(ha) &amp;&amp; !IS_QLA2200(ha))
 multiline_comment|/*&n; * We have MAILBOX_REGISTER_COUNT sized arrays in a few places,&n; * but that&squot;s fine as we don&squot;t look at the last 24 ones for&n; * ISP2100 HBAs.&n; */
 DECL|macro|MAILBOX_REGISTER_COUNT_2100
 mdefine_line|#define MAILBOX_REGISTER_COUNT_2100&t;8
@@ -141,7 +164,6 @@ mdefine_line|#define LSD(x)&t;((uint32_t)((uint64_t)(x)))
 DECL|macro|MSD
 mdefine_line|#define MSD(x)&t;((uint32_t)((((uint64_t)(x)) &gt;&gt; 16) &gt;&gt; 16))
 multiline_comment|/*&n; * I/O register&n;*/
-macro_line|#if MEMORY_MAPPED_IO
 DECL|macro|RD_REG_BYTE
 mdefine_line|#define RD_REG_BYTE(addr)&t;&t;readb(addr)
 DECL|macro|RD_REG_WORD
@@ -154,20 +176,6 @@ DECL|macro|WRT_REG_WORD
 mdefine_line|#define WRT_REG_WORD(addr, data)&t;writew(data,addr)
 DECL|macro|WRT_REG_DWORD
 mdefine_line|#define WRT_REG_DWORD(addr, data)&t;writel(data,addr)
-macro_line|#else   /* MEMORY_MAPPED_IO */
-DECL|macro|RD_REG_BYTE
-mdefine_line|#define RD_REG_BYTE(addr)&t;&t;(inb((unsigned long)addr))
-DECL|macro|RD_REG_WORD
-mdefine_line|#define RD_REG_WORD(addr)&t;&t;(inw((unsigned long)addr))
-DECL|macro|RD_REG_DWORD
-mdefine_line|#define RD_REG_DWORD(addr)&t;&t;(inl((unsigned long)addr))
-DECL|macro|WRT_REG_BYTE
-mdefine_line|#define WRT_REG_BYTE(addr, data)&t;(outb(data,(unsigned long)addr))
-DECL|macro|WRT_REG_WORD
-mdefine_line|#define WRT_REG_WORD(addr, data)&t;(outw(data,(unsigned long)addr))
-DECL|macro|WRT_REG_DWORD
-mdefine_line|#define WRT_REG_DWORD(addr, data)&t;(outl(data,(unsigned long)addr))
-macro_line|#endif  /* MEMORY_MAPPED_IO */
 multiline_comment|/*&n; * Fibre Channel device definitions.&n; */
 DECL|macro|WWN_SIZE
 mdefine_line|#define WWN_SIZE&t;&t;8&t;/* Size of WWPN, WWN &amp; WWNN */
@@ -1035,21 +1043,21 @@ DECL|typedef|device_reg_t
 id|device_reg_t
 suffix:semicolon
 DECL|macro|ISP_REQ_Q_IN
-mdefine_line|#define&t;ISP_REQ_Q_IN(ha, reg) &bslash;&n;&t;(IS_QLA23XX(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.req_q_in : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox4)
+mdefine_line|#define ISP_REQ_Q_IN(ha, reg) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox4 : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.req_q_in)
 DECL|macro|ISP_REQ_Q_OUT
-mdefine_line|#define&t;ISP_REQ_Q_OUT(ha, reg) &bslash;&n;&t;(IS_QLA23XX(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.req_q_out : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox4)
+mdefine_line|#define ISP_REQ_Q_OUT(ha, reg) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox4 : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.req_q_out)
 DECL|macro|ISP_RSP_Q_IN
-mdefine_line|#define&t;ISP_RSP_Q_IN(ha, reg) &bslash;&n;&t;(IS_QLA23XX(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.rsp_q_in : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox5)
+mdefine_line|#define ISP_RSP_Q_IN(ha, reg) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox5 : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.rsp_q_in)
 DECL|macro|ISP_RSP_Q_OUT
-mdefine_line|#define&t;ISP_RSP_Q_OUT(ha, reg) &bslash;&n;&t;(IS_QLA23XX(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.rsp_q_out : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox5)
+mdefine_line|#define ISP_RSP_Q_OUT(ha, reg) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2100.mailbox5 : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.rsp_q_out)
 DECL|macro|MAILBOX_REG
-mdefine_line|#define MAILBOX_REG(ha, reg, num) &bslash;&n;&t;(IS_QLA23XX(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.mailbox0 + (num) : &bslash;&n;&t; ((num &lt; 8) ? &bslash;&n;&t;  &amp;(reg)-&gt;u.isp2100.mailbox0 + (num) : &bslash;&n;&t;  &amp;(reg)-&gt;u_end.isp2200.mailbox8 + (num) - 8))&t;/* only for isp2200 */
+mdefine_line|#define MAILBOX_REG(ha, reg, num) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; (num &lt; 8 ? &bslash;&n;&t;  &amp;(reg)-&gt;u.isp2100.mailbox0 + (num) : &bslash;&n;&t;  &amp;(reg)-&gt;u_end.isp2200.mailbox8 + (num) - 8) : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.mailbox0 + (num))
 DECL|macro|RD_MAILBOX_REG
 mdefine_line|#define RD_MAILBOX_REG(ha, reg, num) &bslash;&n;&t;RD_REG_WORD(MAILBOX_REG(ha, reg, num))
 DECL|macro|WRT_MAILBOX_REG
 mdefine_line|#define WRT_MAILBOX_REG(ha, reg, num, data) &bslash;&n;&t;WRT_REG_WORD(MAILBOX_REG(ha, reg, num), data)
 DECL|macro|FB_CMD_REG
-mdefine_line|#define FB_CMD_REG(ha, reg) &bslash;&n;&t;(IS_QLA23XX(ha) ? &amp;(reg)-&gt;u.isp2300.fb_cmd : &amp;(reg)-&gt;fb_cmd_2100)
+mdefine_line|#define FB_CMD_REG(ha, reg) &bslash;&n;&t;(IS_QLA2100(ha) || IS_QLA2200(ha) ? &bslash;&n;&t; &amp;(reg)-&gt;fb_cmd_2100 : &bslash;&n;&t; &amp;(reg)-&gt;u.isp2300.fb_cmd)
 DECL|macro|RD_FB_CMD_REG
 mdefine_line|#define RD_FB_CMD_REG(ha, reg) &bslash;&n;&t;RD_REG_WORD(FB_CMD_REG(ha, reg))
 DECL|macro|WRT_FB_CMD_REG
@@ -1525,7 +1533,6 @@ id|node_name
 id|WWN_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Big endian. */
 DECL|member|port_name
 r_uint8
 id|port_name
@@ -1533,7 +1540,6 @@ id|port_name
 id|WWN_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Big endian. */
 DECL|member|execution_throttle
 r_uint16
 id|execution_throttle
@@ -4502,6 +4508,158 @@ id|p
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * SNS command structures -- for 2200 compatability.&n; */
+DECL|macro|RFT_ID_SNS_SCMD_LEN
+mdefine_line|#define&t;RFT_ID_SNS_SCMD_LEN&t;22
+DECL|macro|RFT_ID_SNS_CMD_SIZE
+mdefine_line|#define&t;RFT_ID_SNS_CMD_SIZE&t;60
+DECL|macro|RFT_ID_SNS_DATA_SIZE
+mdefine_line|#define&t;RFT_ID_SNS_DATA_SIZE&t;16
+DECL|macro|RFF_ID_SNS_SCMD_LEN
+mdefine_line|#define&t;RFF_ID_SNS_SCMD_LEN&t;8
+DECL|macro|RFF_ID_SNS_CMD_SIZE
+mdefine_line|#define&t;RFF_ID_SNS_CMD_SIZE&t;32
+DECL|macro|RFF_ID_SNS_DATA_SIZE
+mdefine_line|#define&t;RFF_ID_SNS_DATA_SIZE&t;16
+DECL|macro|RNN_ID_SNS_SCMD_LEN
+mdefine_line|#define&t;RNN_ID_SNS_SCMD_LEN&t;10
+DECL|macro|RNN_ID_SNS_CMD_SIZE
+mdefine_line|#define&t;RNN_ID_SNS_CMD_SIZE&t;36
+DECL|macro|RNN_ID_SNS_DATA_SIZE
+mdefine_line|#define&t;RNN_ID_SNS_DATA_SIZE&t;16
+DECL|macro|GA_NXT_SNS_SCMD_LEN
+mdefine_line|#define&t;GA_NXT_SNS_SCMD_LEN&t;6
+DECL|macro|GA_NXT_SNS_CMD_SIZE
+mdefine_line|#define&t;GA_NXT_SNS_CMD_SIZE&t;28
+DECL|macro|GA_NXT_SNS_DATA_SIZE
+mdefine_line|#define&t;GA_NXT_SNS_DATA_SIZE&t;(620 + 16)
+DECL|macro|GID_PT_SNS_SCMD_LEN
+mdefine_line|#define&t;GID_PT_SNS_SCMD_LEN&t;6
+DECL|macro|GID_PT_SNS_CMD_SIZE
+mdefine_line|#define&t;GID_PT_SNS_CMD_SIZE&t;28
+DECL|macro|GID_PT_SNS_DATA_SIZE
+mdefine_line|#define&t;GID_PT_SNS_DATA_SIZE&t;(MAX_FIBRE_DEVICES * 4 + 16)
+DECL|macro|GPN_ID_SNS_SCMD_LEN
+mdefine_line|#define&t;GPN_ID_SNS_SCMD_LEN&t;6
+DECL|macro|GPN_ID_SNS_CMD_SIZE
+mdefine_line|#define&t;GPN_ID_SNS_CMD_SIZE&t;28
+DECL|macro|GPN_ID_SNS_DATA_SIZE
+mdefine_line|#define&t;GPN_ID_SNS_DATA_SIZE&t;(8 + 16)
+DECL|macro|GNN_ID_SNS_SCMD_LEN
+mdefine_line|#define&t;GNN_ID_SNS_SCMD_LEN&t;6
+DECL|macro|GNN_ID_SNS_CMD_SIZE
+mdefine_line|#define&t;GNN_ID_SNS_CMD_SIZE&t;28
+DECL|macro|GNN_ID_SNS_DATA_SIZE
+mdefine_line|#define&t;GNN_ID_SNS_DATA_SIZE&t;(8 + 16)
+DECL|struct|sns_cmd_pkt
+r_struct
+id|sns_cmd_pkt
+(brace
+r_union
+(brace
+r_struct
+(brace
+DECL|member|buffer_length
+r_uint16
+id|buffer_length
+suffix:semicolon
+DECL|member|reserved_1
+r_uint16
+id|reserved_1
+suffix:semicolon
+DECL|member|buffer_address
+r_uint32
+id|buffer_address
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|subcommand_length
+r_uint16
+id|subcommand_length
+suffix:semicolon
+DECL|member|reserved_2
+r_uint16
+id|reserved_2
+suffix:semicolon
+DECL|member|subcommand
+r_uint16
+id|subcommand
+suffix:semicolon
+DECL|member|size
+r_uint16
+id|size
+suffix:semicolon
+DECL|member|reserved_3
+r_uint32
+id|reserved_3
+suffix:semicolon
+DECL|member|param
+r_uint8
+id|param
+(braket
+l_int|36
+)braket
+suffix:semicolon
+DECL|member|cmd
+)brace
+id|cmd
+suffix:semicolon
+DECL|member|rft_data
+r_uint8
+id|rft_data
+(braket
+id|RFT_ID_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|rff_data
+r_uint8
+id|rff_data
+(braket
+id|RFF_ID_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|rnn_data
+r_uint8
+id|rnn_data
+(braket
+id|RNN_ID_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|gan_data
+r_uint8
+id|gan_data
+(braket
+id|GA_NXT_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|gid_data
+r_uint8
+id|gid_data
+(braket
+id|GID_PT_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|gpn_data
+r_uint8
+id|gpn_data
+(braket
+id|GPN_ID_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|gnn_data
+r_uint8
+id|gnn_data
+(braket
+id|GNN_ID_SNS_DATA_SIZE
+)braket
+suffix:semicolon
+DECL|member|p
+)brace
+id|p
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* IO descriptors */
 DECL|macro|MAX_IO_DESCRIPTORS
 mdefine_line|#define MAX_IO_DESCRIPTORS&t;32
@@ -4568,27 +4726,6 @@ r_uint32
 id|signature
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/* Mailbox command semaphore queue for command serialization */
-DECL|struct|_mbx_cmdq_t
-r_typedef
-r_struct
-id|_mbx_cmdq_t
-(brace
-DECL|member|cmd_sem
-r_struct
-id|semaphore
-id|cmd_sem
-suffix:semicolon
-DECL|member|pnext
-r_struct
-id|_mbx_cmdq_t
-op_star
-id|pnext
-suffix:semicolon
-DECL|typedef|mbx_cmdq_t
-)brace
-id|mbx_cmdq_t
 suffix:semicolon
 DECL|struct|qla_fw_info
 r_struct
@@ -5154,6 +5291,11 @@ r_uint16
 id|min_external_loopid
 suffix:semicolon
 multiline_comment|/* First external loop Id */
+DECL|member|link_data_rate
+r_uint16
+id|link_data_rate
+suffix:semicolon
+multiline_comment|/* F/W operating speed */
 DECL|member|current_topology
 r_uint8
 id|current_topology
@@ -5183,16 +5325,6 @@ DECL|macro|LOOP_P2P
 mdefine_line|#define LOOP_P2P  2
 DECL|macro|P2P_LOOP
 mdefine_line|#define P2P_LOOP  3
-DECL|member|active_fc4_types
-r_uint8
-id|active_fc4_types
-suffix:semicolon
-multiline_comment|/* Active fc4 types */
-DECL|member|current_speed
-r_uint8
-id|current_speed
-suffix:semicolon
-multiline_comment|/* F/W operating speed */
 DECL|member|marker_needed
 r_uint8
 id|marker_needed
@@ -5336,6 +5468,7 @@ DECL|member|rscn_out_ptr
 r_uint8
 id|rscn_out_ptr
 suffix:semicolon
+multiline_comment|/* SNS command interfaces. */
 DECL|member|ms_iocb
 id|ms_iocb_entry_t
 op_star
@@ -5354,6 +5487,17 @@ suffix:semicolon
 DECL|member|ct_sns_dma
 id|dma_addr_t
 id|ct_sns_dma
+suffix:semicolon
+multiline_comment|/* SNS command interfaces for 2200. */
+DECL|member|sns_cmd
+r_struct
+id|sns_cmd_pkt
+op_star
+id|sns_cmd
+suffix:semicolon
+DECL|member|sns_cmd_dma
+id|dma_addr_t
+id|sns_cmd_dma
 suffix:semicolon
 DECL|member|dpc_pid
 id|pid_t
@@ -5443,61 +5587,27 @@ r_int
 r_int
 id|mbx_cmd_flags
 suffix:semicolon
-DECL|macro|MBX_CMD_ACTIVE
-mdefine_line|#define MBX_CMD_ACTIVE&t;1
-DECL|macro|MBX_CMD_WANT
-mdefine_line|#define MBX_CMD_WANT&t;2
 DECL|macro|MBX_INTERRUPT
-mdefine_line|#define MBX_INTERRUPT&t;3
+mdefine_line|#define MBX_INTERRUPT&t;1
 DECL|macro|MBX_INTR_WAIT
-mdefine_line|#define MBX_INTR_WAIT   4
+mdefine_line|#define MBX_INTR_WAIT   2
 DECL|member|mbx_reg_lock
 id|spinlock_t
 id|mbx_reg_lock
 suffix:semicolon
 multiline_comment|/* Mbx Cmd Register Lock */
-DECL|member|mbx_q_lock
-id|spinlock_t
-id|mbx_q_lock
+DECL|member|mbx_cmd_sem
+r_struct
+id|semaphore
+id|mbx_cmd_sem
 suffix:semicolon
-multiline_comment|/* Mbx Active Cmd Queue Lock */
-DECL|member|mbx_bits_lock
-id|spinlock_t
-id|mbx_bits_lock
-suffix:semicolon
-multiline_comment|/* Mailbox access bits Lock */
+multiline_comment|/* Serialialize mbx access */
 DECL|member|mbx_intr_sem
 r_struct
 id|semaphore
 id|mbx_intr_sem
 suffix:semicolon
 multiline_comment|/* Used for completion notification */
-DECL|member|mbx_sem_pool_head
-id|mbx_cmdq_t
-op_star
-id|mbx_sem_pool_head
-suffix:semicolon
-multiline_comment|/* Head Pointer to a list of&n;&t;&t;&t;                      * recyclable mbx semaphore pool&n;&t;&t;&t;                      * to be used during run time.&n;&t;&t;&t;                      */
-DECL|member|mbx_sem_pool_tail
-id|mbx_cmdq_t
-op_star
-id|mbx_sem_pool_tail
-suffix:semicolon
-multiline_comment|/* Tail Pointer to semaphore pool*/
-DECL|macro|MBQ_INIT_LEN
-mdefine_line|#define MBQ_INIT_LEN&t;16 /* initial mbx sem pool q len. actual len may vary */
-DECL|member|mbx_q_head
-id|mbx_cmdq_t
-op_star
-id|mbx_q_head
-suffix:semicolon
-multiline_comment|/* Head Pointer to sem q for active cmds */
-DECL|member|mbx_q_tail
-id|mbx_cmdq_t
-op_star
-id|mbx_q_tail
-suffix:semicolon
-multiline_comment|/* Tail Pointer to sem q for active cmds */
 DECL|member|mbx_flags
 r_uint32
 id|mbx_flags
@@ -5624,13 +5734,12 @@ DECL|member|pci_attr
 r_uint16
 id|pci_attr
 suffix:semicolon
-DECL|member|xchg_buf_cnt
+DECL|member|product_id
 r_uint16
-id|xchg_buf_cnt
-suffix:semicolon
-DECL|member|iocb_buf_cnt
-r_uint16
-id|iocb_buf_cnt
+id|product_id
+(braket
+l_int|4
+)braket
 suffix:semicolon
 DECL|member|model_number
 r_uint8
@@ -5649,27 +5758,6 @@ op_star
 id|model_desc
 suffix:semicolon
 multiline_comment|/* following are new and needed for IOCTL support */
-macro_line|#ifdef CONFIG_SCSI_QLA2XXX_IOCTL
-DECL|member|ioctl
-r_struct
-id|hba_ioctl
-op_star
-id|ioctl
-suffix:semicolon
-DECL|member|ioctl_mem
-r_void
-op_star
-id|ioctl_mem
-suffix:semicolon
-DECL|member|ioctl_mem_phys
-id|dma_addr_t
-id|ioctl_mem_phys
-suffix:semicolon
-DECL|member|ioctl_mem_size
-r_uint32
-id|ioctl_mem_size
-suffix:semicolon
-macro_line|#endif
 DECL|member|node_name
 r_uint8
 id|node_name
