@@ -479,26 +479,6 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|scsi_slave_attach
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_slave_detach
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scsi_device_get
 c_func
 (paren
@@ -868,11 +848,6 @@ r_int
 id|sector_size
 suffix:semicolon
 multiline_comment|/* size in bytes */
-DECL|member|attached
-r_int
-id|attached
-suffix:semicolon
-multiline_comment|/* # of high level drivers attached to &n;&t;&t;&t;&t; * this */
 DECL|member|access_count
 r_int
 id|access_count

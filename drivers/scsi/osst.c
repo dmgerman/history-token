@@ -29144,27 +29144,6 @@ id|SDp
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsi_slave_attach
-c_func
-(paren
-id|SDp
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;osst :E: Failed to attach scsi slave.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 id|drive
 op_assign
 id|alloc_disk
@@ -29187,8 +29166,8 @@ id|KERN_ERR
 l_string|&quot;osst :E: Out of memory. Device not attached.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|out_slave_detach
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* if this is the first attach, build the infrastructure */
@@ -30252,14 +30231,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|out_slave_detach
-suffix:colon
-id|scsi_slave_detach
-c_func
-(paren
-id|SDp
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -30407,12 +30378,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|scsi_slave_detach
-c_func
-(paren
-id|SDp
-)paren
 suffix:semicolon
 id|osst_nr_dev
 op_decrement

@@ -4863,15 +4863,6 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;attached
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|scsi_device_unregister
 c_func
 (paren
