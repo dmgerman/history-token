@@ -3627,11 +3627,11 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|info.si_uid
 op_assign
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 suffix:semicolon
 )brace
 multiline_comment|/* If the (new) signal is now blocked, requeue it.  */
@@ -3793,7 +3793,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|current-&gt;p_pptr-&gt;sig-&gt;action
+id|current-&gt;parent-&gt;sig-&gt;action
 (braket
 id|SIGCHLD
 op_minus
