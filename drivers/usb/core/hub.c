@@ -6523,19 +6523,6 @@ comma
 id|USB_STATE_POWERED
 )paren
 suffix:semicolon
-multiline_comment|/* hub can tell if it&squot;s lowspeed already:  D- pullup (not D+) */
-r_if
-c_cond
-(paren
-id|portstatus
-op_amp
-id|USB_PORT_STAT_LOW_SPEED
-)paren
-id|udev-&gt;speed
-op_assign
-id|USB_SPEED_LOW
-suffix:semicolon
-r_else
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_UNKNOWN
