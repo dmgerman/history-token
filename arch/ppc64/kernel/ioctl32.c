@@ -21469,7 +21469,6 @@ id|TIOCSLTC
 )paren
 comma
 multiline_comment|/* Big F */
-macro_line|#if 0
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -21491,36 +21490,6 @@ comma
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|FBIOGET_FCURSORINFO
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|FBIOGET_VCURSORINFO
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|FBIOPUT_VCURSORINFO
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|FBIOGET_CURSORSTATE
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|FBIOPUT_CURSORSTATE
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|FBIOGET_CON2FBMAP
 )paren
 comma
@@ -21530,7 +21499,6 @@ c_func
 id|FBIOPUT_CON2FBMAP
 )paren
 comma
-macro_line|#endif
 macro_line|#if 0
 id|COMPATIBLE_IOCTL
 c_func
@@ -25667,7 +25635,6 @@ comma
 id|do_kdfontop_ioctl
 )paren
 comma
-macro_line|#if 0
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -25692,7 +25659,6 @@ comma
 id|do_fbioputcmap_ioctl
 )paren
 comma
-macro_line|#endif
 macro_line|#endif
 id|HANDLE_IOCTL
 c_func
