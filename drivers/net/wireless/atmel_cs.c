@@ -849,6 +849,19 @@ id|ATMEL_FW_TYPE_502E
 comma
 l_string|&quot;11WAVE WaveBuddy&quot;
 )brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;LG/LW2100N&quot;
+comma
+id|ATMEL_FW_TYPE_502E
+comma
+l_string|&quot;LG LW2100N 11Mbps WLAN PCMCIA Card&quot;
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|atmel_config
