@@ -951,7 +951,6 @@ comma
 l_int|0x078B
 )paren
 suffix:semicolon
-macro_line|#if !defined(DISABLE_SB_EMULATION)
 (brace
 r_struct
 id|address_info
@@ -1068,16 +1067,6 @@ l_int|0xF788
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|pas_write
-c_func
-(paren
-l_int|0x00
-comma
-l_int|0xF788
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1319,15 +1308,6 @@ c_func
 id|hw_config
 )paren
 suffix:semicolon
-macro_line|#if !defined(MODULE) &amp;&amp; !defined(DISABLE_SB_EMULATION)
-id|sb_dsp_disable_midi
-c_func
-(paren
-id|pas_sb_base
-)paren
-suffix:semicolon
-multiline_comment|/* No MIDI capability */
-macro_line|#endif
 id|pas_midi_init
 c_func
 (paren

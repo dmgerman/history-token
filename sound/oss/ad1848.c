@@ -244,14 +244,17 @@ r_int
 id|nr_ad1848_devs
 suffix:semicolon
 DECL|variable|deskpro_xl
+r_static
 r_int
 id|deskpro_xl
 suffix:semicolon
 DECL|variable|deskpro_m
+r_static
 r_int
 id|deskpro_m
 suffix:semicolon
 DECL|variable|soundpro
+r_static
 r_int
 id|soundpro
 suffix:semicolon
@@ -13840,6 +13843,7 @@ l_string|&quot;When set to 1, will reverse ISAPnP search order&quot;
 )paren
 suffix:semicolon
 DECL|variable|ad1848_dev
+r_static
 r_struct
 id|pnp_dev
 op_star

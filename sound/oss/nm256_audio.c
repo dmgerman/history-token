@@ -475,6 +475,7 @@ l_int|99999999
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set the card samplerate, word size and stereo mode to correspond to&n; * the settings in the CARD struct for the specified device in DEV.&n; * We keep two separate sets of information, one for each device; the&n; * hardware is not actually configured until a read or write is&n; * attempted.&n; */
+r_static
 r_int
 DECL|function|nm256_setInfo
 id|nm256_setInfo
@@ -6254,6 +6255,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|nm256_pci_driver
+r_static
 r_struct
 id|pci_driver
 id|nm256_pci_driver

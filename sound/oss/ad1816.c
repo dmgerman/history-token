@@ -5736,6 +5736,7 @@ id|isapnp_ad1816_list
 )paren
 suffix:semicolon
 DECL|function|ad1816_config_pnp_card
+r_static
 r_void
 id|__init
 id|ad1816_config_pnp_card
@@ -5903,6 +5904,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ad1816_config_pnp_cards
+r_static
 r_void
 id|__init
 id|ad1816_config_pnp_cards

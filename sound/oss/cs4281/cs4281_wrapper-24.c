@@ -1,6 +1,7 @@
 multiline_comment|/*******************************************************************************&n;*&n;*      &quot;cs4281_wrapper.c&quot; --  Cirrus Logic-Crystal CS4281 linux audio driver.&n;*&n;*      Copyright (C) 2000,2001  Cirrus Logic Corp.  &n;*            -- tom woller (twoller@crystal.cirrus.com) or&n;*               (audio@crystal.cirrus.com).&n;*&n;*      This program is free software; you can redistribute it and/or modify&n;*      it under the terms of the GNU General Public License as published by&n;*      the Free Software Foundation; either version 2 of the License, or&n;*      (at your option) any later version.&n;*&n;*      This program is distributed in the hope that it will be useful,&n;*      but WITHOUT ANY WARRANTY; without even the implied warranty of&n;*      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;*      GNU General Public License for more details.&n;*&n;*      You should have received a copy of the GNU General Public License&n;*      along with this program; if not, write to the Free Software&n;*      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*&n;* 12/20/00 trw - new file. &n;*&n;*******************************************************************************/
 macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|function|cs4281_resume_null
+r_static
 r_int
 id|cs4281_resume_null
 c_func
@@ -16,6 +17,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cs4281_suspend_null
+r_static
 r_int
 id|cs4281_suspend_null
 c_func

@@ -1087,6 +1087,7 @@ DECL|macro|DMACONTROL_DIRECTION
 mdefine_line|#define DMACONTROL_DIRECTION            0x0100
 multiline_comment|/*&n; * DSP Code images&n; */
 DECL|variable|assp_kernel_image
+r_static
 id|u16
 id|assp_kernel_image
 (braket
@@ -2995,6 +2996,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Mini sample rate converter code image&n; * that is to be loaded at 0x400 on the DSP.&n; */
 DECL|variable|assp_minisrc_image
+r_static
 id|u16
 id|assp_minisrc_image
 (braket

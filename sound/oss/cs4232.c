@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
-macro_line|#include &quot;cs4232.h&quot;
 macro_line|#include &quot;ad1848.h&quot;
 macro_line|#include &quot;mpu401.h&quot;
 DECL|macro|KEY_PORT
@@ -73,6 +72,7 @@ r_int
 id|mpu_detected
 suffix:semicolon
 DECL|function|probe_cs4232_mpu
+r_static
 r_int
 id|probe_cs4232_mpu
 c_func

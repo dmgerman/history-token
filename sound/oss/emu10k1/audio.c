@@ -33,6 +33,26 @@ id|wiinst
 op_star
 )paren
 suffix:semicolon
+r_static
+r_void
+id|emu10k1_waveout_bh
+c_func
+(paren
+r_int
+r_int
+id|refdata
+)paren
+suffix:semicolon
+r_static
+r_void
+id|emu10k1_wavein_bh
+c_func
+(paren
+r_int
+r_int
+id|refdata
+)paren
+suffix:semicolon
 multiline_comment|/* Audio file operations */
 DECL|function|emu10k1_audio_read
 r_static
@@ -4507,6 +4527,7 @@ id|dmapage
 suffix:semicolon
 )brace
 DECL|variable|emu10k1_mm_ops
+r_static
 r_struct
 id|vm_operations_struct
 id|emu10k1_mm_ops
@@ -6664,6 +6685,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_bh
+r_static
 r_void
 id|emu10k1_wavein_bh
 c_func
@@ -6806,6 +6828,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|emu10k1_waveout_bh
+r_static
 r_void
 id|emu10k1_waveout_bh
 c_func

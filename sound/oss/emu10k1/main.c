@@ -766,6 +766,7 @@ id|card-&gt;audio_dev
 suffix:semicolon
 )brace
 DECL|function|emu10k1_info_proc
+r_static
 r_int
 id|emu10k1_info_proc
 (paren

@@ -225,6 +225,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|d_hcfg
 id|decoded_hcfg
@@ -974,6 +975,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|aedsp16_hard_decode
+r_static
 r_void
 id|__init
 id|aedsp16_hard_decode
@@ -1139,6 +1141,7 @@ l_string|&quot;success.&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|aedsp16_hard_encode
+r_static
 r_void
 id|__init
 id|aedsp16_hard_encode
@@ -3806,6 +3809,7 @@ l_string|&quot;done.&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|init_aedsp16
+r_static
 r_int
 id|__init
 id|init_aedsp16
@@ -3955,6 +3959,7 @@ id|initialized
 suffix:semicolon
 )brace
 DECL|function|uninit_aedsp16
+r_static
 r_void
 id|__init
 id|uninit_aedsp16

@@ -1118,6 +1118,7 @@ id|AD_WAV_STATE
 suffix:semicolon
 )brace
 DECL|function|ad1889_read_proc
+r_static
 r_int
 id|ad1889_read_proc
 (paren

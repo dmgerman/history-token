@@ -501,6 +501,7 @@ DECL|macro|AWE_DEFAULT_MEM_SIZE
 mdefine_line|#define AWE_DEFAULT_MEM_SIZE&t;-1&t;/* autodetect */
 macro_line|#endif
 DECL|variable|io
+r_static
 r_int
 id|io
 op_assign
@@ -508,6 +509,7 @@ id|AWE_DEFAULT_BASE_ADDR
 suffix:semicolon
 multiline_comment|/* Emu8000 base address */
 DECL|variable|memsize
+r_static
 r_int
 id|memsize
 op_assign
@@ -32729,6 +32731,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|attach_awe
+r_static
 r_int
 id|__init
 id|attach_awe
@@ -32751,6 +32754,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|unload_awe
+r_static
 r_void
 id|__exit
 id|unload_awe

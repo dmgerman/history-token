@@ -314,6 +314,7 @@ mdefine_line|#define CS46XX_ARCH&t;     &t;&quot;32&quot;&t;
 singleline_comment|//architecture key
 macro_line|#endif
 DECL|variable|cs46xx_devs
+r_static
 r_struct
 id|list_head
 id|cs46xx_devs
@@ -1068,6 +1069,26 @@ op_star
 id|pcidev
 )paren
 suffix:semicolon
+macro_line|#ifndef CS46XX_ACPI_SUPPORT
+r_static
+r_int
+id|cs46xx_pm_callback
+c_func
+(paren
+r_struct
+id|pm_dev
+op_star
+id|dev
+comma
+id|pm_request_t
+id|rqst
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if CSDEBUG
 multiline_comment|/* DEBUG ROUTINES */
 DECL|macro|SOUND_MIXER_CS_GETDBGLEVEL
@@ -1081,6 +1102,7 @@ mdefine_line|#define SOUND_MIXER_CS_SETDBGMASK &t;_SIOWR(&squot;M&squot;,123, in
 DECL|macro|SOUND_MIXER_CS_APM
 mdefine_line|#define SOUND_MIXER_CS_APM&t; &t;_SIOWR(&squot;M&squot;,124, int)
 DECL|function|printioctl
+r_static
 r_void
 id|printioctl
 c_func
@@ -3905,6 +3927,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * &quot;SetCaptureSPValues()&quot; -- Initialize record task values before each&n; * &t;capture startup.  &n; */
 DECL|function|SetCaptureSPValues
+r_static
 r_void
 id|SetCaptureSPValues
 c_func
@@ -16617,6 +16640,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Suspend - save the ac97 regs, mute the outputs and power down the part.  &n;*&n;****************************************************************************/
 DECL|function|cs46xx_ac97_suspend
+r_static
 r_void
 id|cs46xx_ac97_suspend
 c_func
@@ -16910,6 +16934,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Resume - power up the part and restore its registers..  &n;*&n;****************************************************************************/
 DECL|function|cs46xx_ac97_resume
+r_static
 r_void
 id|cs46xx_ac97_resume
 c_func
@@ -19429,14 +19454,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
-id|__exit
-id|cs46xx_cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|cs_ioctl_mixdev
 r_static
 r_int
@@ -25793,6 +25810,7 @@ id|cs46xx_pci_tbl
 )paren
 suffix:semicolon
 DECL|variable|cs46xx_pci_driver
+r_static
 r_struct
 id|pci_driver
 id|cs46xx_pci_driver
@@ -25835,6 +25853,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cs46xx_init_module
+r_static
 r_int
 id|__init
 id|cs46xx_init_module
@@ -25924,6 +25943,7 @@ id|rtn
 suffix:semicolon
 )brace
 DECL|function|cs46xx_cleanup_module
+r_static
 r_void
 id|__exit
 id|cs46xx_cleanup_module
@@ -25977,7 +25997,9 @@ c_func
 id|cs46xx_cleanup_module
 )paren
 suffix:semicolon
+macro_line|#ifndef CS46XX_ACPI_SUPPORT
 DECL|function|cs46xx_pm_callback
+r_static
 r_int
 id|cs46xx_pm_callback
 c_func
@@ -26151,6 +26173,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#if CS46XX_ACPI_SUPPORT
 DECL|function|cs46xx_suspend_tbl
 r_static

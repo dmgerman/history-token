@@ -317,16 +317,6 @@ id|multiple
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* PnP devices */
-DECL|variable|opl3sa2_dev
-r_struct
-id|pnp_dev
-op_star
-id|opl3sa2_dev
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-suffix:semicolon
 multiline_comment|/* Whether said devices have been activated */
 DECL|variable|opl3sa2_activated
 r_static
@@ -3023,6 +3013,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PNP
 DECL|variable|pnp_opl3sa2_list
+r_static
 r_struct
 id|pnp_device_id
 id|pnp_opl3sa2_list

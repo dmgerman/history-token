@@ -2928,6 +2928,7 @@ id|pss_mixer_ioctl
 )brace
 suffix:semicolon
 DECL|function|disable_all_emulations
+r_static
 r_void
 id|disable_all_emulations
 c_func
@@ -2998,6 +2999,7 @@ id|CONF_CDROM
 suffix:semicolon
 )brace
 DECL|function|configure_nonsound_components
+r_static
 r_void
 id|configure_nonsound_components
 c_func
