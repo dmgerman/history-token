@@ -108,6 +108,7 @@ id|last_busno
 suffix:semicolon
 DECL|member|io_base_virt
 r_void
+id|__iomem
 op_star
 id|io_base_virt
 suffix:semicolon
@@ -137,6 +138,7 @@ DECL|member|cfg_addr
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|cfg_addr
 suffix:semicolon
@@ -144,6 +146,7 @@ DECL|member|cfg_data
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|cfg_data
 suffix:semicolon
