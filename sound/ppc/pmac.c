@@ -1257,6 +1257,11 @@ op_amp
 id|cp-&gt;res_count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
 id|count
 op_assign
 id|rec-&gt;period_size
