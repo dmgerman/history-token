@@ -9835,7 +9835,7 @@ id|type
 r_case
 id|ITYPE_RBRQ_THRESH
 suffix:colon
-id|hprintk
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;rbrq%d threshold&bslash;n&quot;
@@ -9843,6 +9843,7 @@ comma
 id|group
 )paren
 suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 id|ITYPE_RBRQ_TIMER
 suffix:colon
@@ -9882,7 +9883,7 @@ suffix:semicolon
 r_case
 id|ITYPE_TBRQ_THRESH
 suffix:colon
-id|hprintk
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;tbrq%d threshold&bslash;n&quot;
@@ -9890,6 +9891,7 @@ comma
 id|group
 )paren
 suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 id|ITYPE_TPD_COMPLETE
 suffix:colon
@@ -9934,6 +9936,12 @@ suffix:semicolon
 r_case
 id|ITYPE_PHY
 suffix:colon
+id|HPRINTK
+c_func
+(paren
+l_string|&quot;phy interrupt&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ATM_HE_USE_SUNI
 id|HE_SPIN_UNLOCK
 c_func
@@ -9967,12 +9975,6 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HPRINTK
-c_func
-(paren
-l_string|&quot;phy interrupt&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -10019,18 +10021,13 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
+r_case
+id|ITYPE_TYPE
+c_func
 (paren
-id|he_dev-&gt;irq_head-&gt;isw
-op_eq
 id|ITYPE_INVALID
 )paren
-(brace
+suffix:colon
 multiline_comment|/* see 8.1.1 -- check all queues */
 id|HPRINTK
 c_func
@@ -10074,12 +10071,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|hprintk
 c_func
 (paren
-l_string|&quot;bad isw = 0x%x?&bslash;n&quot;
+l_string|&quot;bad isw 0x%x?&bslash;n&quot;
 comma
 id|he_dev-&gt;irq_head-&gt;isw
 )paren
