@@ -1234,7 +1234,8 @@ id|ohci_err
 (paren
 id|ohci
 comma
-l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
+l_string|&quot;USB HC takeover failed!&quot;
+l_string|&quot;  (BIOS/SMM bug)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
