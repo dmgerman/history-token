@@ -1,6 +1,7 @@
 macro_line|#ifndef _WD7000_H
 multiline_comment|/* $Id: $&n; *&n; * Header file for the WD-7000 driver for Linux&n; *&n; * John Boyd &lt;boyd@cis.ohio-state.edu&gt;  Jan 1994:&n; * This file has been reduced to only the definitions needed for the&n; * WD7000 host structure.&n; *&n; * Revision by Miroslav Zagorac &lt;zaga@fly.cc.fer.hr&gt;  Jun 1997.&n; */
 macro_line|#include &lt;linux/types.h&gt;
+r_static
 r_int
 id|wd7000_set_info
 (paren
@@ -17,6 +18,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd7000_proc_info
 (paren
@@ -42,6 +44,7 @@ r_int
 id|inout
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd7000_detect
 (paren
@@ -49,6 +52,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd7000_command
 (paren
@@ -56,6 +60,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd7000_queuecommand
 (paren
@@ -73,6 +78,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd7000_abort
 (paren
@@ -80,16 +86,31 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|wd7000_reset
+id|wd7000_bus_reset
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
+r_static
+r_int
+id|wd7000_host_reset
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|wd7000_device_reset
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|wd7000_biosparam
 (paren
@@ -114,6 +135,6 @@ mdefine_line|#define WD7000_Q    16
 DECL|macro|WD7000_SG
 mdefine_line|#define WD7000_SG   16
 DECL|macro|WD7000
-mdefine_line|#define WD7000 {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&t;&quot;wd7000&quot;,&t;&t;&t;&bslash;&n;&t;proc_info:&t;&t;wd7000_proc_info,&t;&t;&bslash;&n;&t;name:&t;&t;&t;&quot;Western Digital WD-7000&quot;,&t;&bslash;&n;&t;detect:&t;&t;&t;wd7000_detect,&t;&t;&t;&bslash;&n;&t;command:&t;&t;wd7000_command,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;&t;wd7000_queuecommand,&t;&t;&bslash;&n;&t;abort:&t;&t;&t;wd7000_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;&t;wd7000_reset,&t;&t;&t;&bslash;&n;&t;bios_param:&t;&t;wd7000_biosparam,&t;&t;&bslash;&n;&t;can_queue:&t;&t;WD7000_Q,&t;&t;&t;&bslash;&n;&t;this_id:&t;&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;&t;WD7000_SG,&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma:&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;&t;ENABLE_CLUSTERING,&t;&t;&bslash;&n;}
+mdefine_line|#define WD7000 {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&t;&quot;wd7000&quot;,&t;&t;&t;&bslash;&n;&t;proc_info:&t;&t;wd7000_proc_info,&t;&t;&bslash;&n;&t;name:&t;&t;&t;&quot;Western Digital WD-7000&quot;,&t;&bslash;&n;&t;detect:&t;&t;&t;wd7000_detect,&t;&t;&t;&bslash;&n;&t;command:&t;&t;wd7000_command,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;&t;wd7000_queuecommand,&t;&t;&bslash;&n;&t;abort:&t;&t;&t;wd7000_abort,&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler:&t;wd7000_bus_reset,&t;&t;&bslash;&n;&t;eh_device_reset_handler:wd7000_device_reset,&t;&t;&bslash;&n;&t;eh_host_reset_handler:&t;wd7000_host_reset,&t;&t;&bslash;&n;&t;bios_param:&t;&t;wd7000_biosparam,&t;&t;&bslash;&n;&t;can_queue:&t;&t;WD7000_Q,&t;&t;&t;&bslash;&n;&t;this_id:&t;&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;&t;WD7000_SG,&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma:&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;&t;ENABLE_CLUSTERING,&t;&t;&bslash;&n;}
 macro_line|#endif
 eof

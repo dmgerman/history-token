@@ -8866,6 +8866,7 @@ suffix:semicolon
 DECL|member|disks
 r_struct
 id|gendisk
+op_star
 id|disks
 (braket
 id|DAC960_MaxLogicalDrives

@@ -1,7 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
 multiline_comment|/*&n; * BlueZ Bluetooth address family and sockets.&n; *&n; * $Id: af_bluetooth.c,v 1.3 2002/04/17 17:37:15 maxk Exp $&n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.0&quot;
+mdefine_line|#define VERSION &quot;2.2&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -28,7 +28,7 @@ mdefine_line|#define BT_DBG( A... )
 macro_line|#endif
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BLUEZ_MAX_PROTO
-mdefine_line|#define BLUEZ_MAX_PROTO&t;4
+mdefine_line|#define BLUEZ_MAX_PROTO&t;5
 DECL|variable|bluez_proto
 r_static
 r_struct
@@ -385,7 +385,7 @@ op_star
 id|sk
 )paren
 (brace
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -406,7 +406,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -436,7 +436,7 @@ op_star
 op_star
 id|skp
 suffix:semicolon
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -491,7 +491,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|write_unlock
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1084,6 +1084,20 @@ id|BT_CLOSED
 id|mask
 op_or_assign
 id|POLLHUP
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;state
+op_eq
+id|BT_CONNECT
+op_logical_or
+id|sk-&gt;state
+op_eq
+id|BT_CONNECT2
+)paren
+r_return
+id|mask
 suffix:semicolon
 r_if
 c_cond

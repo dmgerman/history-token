@@ -7048,10 +7048,6 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* turn on amplifier */
 id|chip
 op_member_access_from_pointer

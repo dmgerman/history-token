@@ -1,6 +1,6 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * $Id: hci_uart.h,v 1.1.1.1 2002/03/08 21:03:15 maxk Exp $&n; */
-macro_line|#ifndef N_HCI
+multiline_comment|/*&n; * $Id: hci_uart.h,v 1.2 2002/09/09 01:17:32 maxk Exp $&n; */
+macro_line|#ifndef N_HCI 
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;15
 macro_line|#endif
@@ -20,7 +20,7 @@ DECL|macro|HCI_UART_NCSP
 mdefine_line|#define HCI_UART_NCSP&t;2
 macro_line|#ifdef __KERNEL__
 r_struct
-id|n_hci
+id|hci_uart
 suffix:semicolon
 DECL|struct|hci_uart_proto
 r_struct
@@ -39,49 +39,9 @@ id|open
 )paren
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
-)paren
-suffix:semicolon
-DECL|member|recv
-r_int
-(paren
-op_star
-id|recv
-)paren
-(paren
-r_struct
-id|n_hci
-op_star
-id|n_hci
-comma
-r_void
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-DECL|member|send
-r_int
-(paren
-op_star
-id|send
-)paren
-(paren
-r_struct
-id|n_hci
-op_star
-id|n_hci
-comma
-r_void
-op_star
-id|data
-comma
-r_int
-id|len
+id|hu
 )paren
 suffix:semicolon
 DECL|member|close
@@ -92,9 +52,9 @@ id|close
 )paren
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 )paren
 suffix:semicolon
 DECL|member|flush
@@ -105,24 +65,42 @@ id|flush
 )paren
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 )paren
 suffix:semicolon
-DECL|member|preq
-r_struct
-id|sk_buff
-op_star
+DECL|member|recv
+r_int
 (paren
 op_star
-id|preq
+id|recv
 )paren
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|member|enqueue
+r_int
+(paren
+op_star
+id|enqueue
+)paren
+(paren
+r_struct
+id|hci_uart
+op_star
+id|hu
 comma
 r_struct
 id|sk_buff
@@ -130,11 +108,26 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+DECL|member|dequeue
+r_struct
+id|sk_buff
+op_star
+(paren
+op_star
+id|dequeue
+)paren
+(paren
+r_struct
+id|hci_uart
+op_star
+id|hu
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|n_hci
+DECL|struct|hci_uart
 r_struct
-id|n_hci
+id|hci_uart
 (brace
 DECL|member|tty
 r_struct
@@ -163,10 +156,11 @@ r_void
 op_star
 id|priv
 suffix:semicolon
-DECL|member|txq
+DECL|member|tx_skb
 r_struct
-id|sk_buff_head
-id|txq
+id|sk_buff
+op_star
+id|tx_skb
 suffix:semicolon
 DECL|member|tx_state
 r_int
@@ -179,14 +173,14 @@ id|rx_lock
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* N_HCI flag bits */
-DECL|macro|N_HCI_PROTO_SET
-mdefine_line|#define N_HCI_PROTO_SET&t;&t;0x00
+multiline_comment|/* HCI_UART flag bits */
+DECL|macro|HCI_UART_PROTO_SET
+mdefine_line|#define HCI_UART_PROTO_SET&t;&t;0x00
 multiline_comment|/* TX states  */
-DECL|macro|N_HCI_SENDING
-mdefine_line|#define N_HCI_SENDING&t;&t;1
-DECL|macro|N_HCI_TX_WAKEUP
-mdefine_line|#define N_HCI_TX_WAKEUP&t;&t;2
+DECL|macro|HCI_UART_SENDING
+mdefine_line|#define HCI_UART_SENDING&t;&t;1
+DECL|macro|HCI_UART_TX_WAKEUP
+mdefine_line|#define HCI_UART_TX_WAKEUP&t;&t;2
 r_int
 id|hci_uart_register_proto
 c_func
@@ -205,6 +199,16 @@ r_struct
 id|hci_uart_proto
 op_star
 id|p
+)paren
+suffix:semicolon
+r_int
+id|hci_uart_tx_wakeup
+c_func
+(paren
+r_struct
+id|hci_uart
+op_star
+id|hu
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

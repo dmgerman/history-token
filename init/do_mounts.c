@@ -3699,11 +3699,16 @@ c_loop
 (paren
 id|pid
 op_ne
-id|wait
+id|waitpid
 c_func
 (paren
+op_minus
+l_int|1
+comma
 op_amp
 id|i
+comma
+l_int|0
 )paren
 )paren
 id|yield

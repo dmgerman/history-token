@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/ad1848.h&gt;
@@ -521,6 +522,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_sgalaxy_dummy_interrupt
+r_static
+r_void
+id|snd_sgalaxy_dummy_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+)brace
 DECL|function|snd_sgalaxy_setup_wss
 r_static
 r_int
@@ -612,10 +633,6 @@ id|tmp
 comma
 id|tmp1
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -706,17 +723,6 @@ l_string|&quot;sgalaxy - setting up IRQ/DMA for WSS&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* initialize IRQ for WSS codec */
 id|tmp
 op_assign
@@ -734,18 +740,31 @@ id|tmp
 OL
 l_int|0
 )paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|irq
+comma
+id|snd_sgalaxy_dummy_interrupt
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;sgalaxy&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -775,10 +794,12 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|restore_flags
+id|free_irq
 c_func
 (paren
-id|flags
+id|irq
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

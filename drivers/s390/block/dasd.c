@@ -886,7 +886,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|dasd_gendisk_free
+id|put_disk
 c_func
 (paren
 id|device-&gt;gdp

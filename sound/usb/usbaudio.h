@@ -57,6 +57,10 @@ DECL|macro|EP_GENERAL
 mdefine_line|#define EP_GENERAL&t;&t;&t;0x01
 DECL|macro|MS_GENERAL
 mdefine_line|#define MS_GENERAL&t;&t;&t;0x01
+DECL|macro|MIDI_IN_JACK
+mdefine_line|#define MIDI_IN_JACK&t;&t;&t;0x02
+DECL|macro|MIDI_OUT_JACK
+mdefine_line|#define MIDI_OUT_JACK&t;&t;&t;0x03
 multiline_comment|/* endpoint attributes */
 DECL|macro|EP_ATTR_MASK
 mdefine_line|#define EP_ATTR_MASK&t;&t;&t;0x0c
@@ -194,6 +198,14 @@ macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Information about devices with broken descriptors&n; */
+DECL|macro|QUIRK_ANY_INTERFACE
+mdefine_line|#define QUIRK_ANY_INTERFACE -1
+DECL|macro|QUIRK_MIDI_FIXED_ENDPOINT
+mdefine_line|#define QUIRK_MIDI_FIXED_ENDPOINT&t;0
+DECL|macro|QUIRK_MIDI_YAMAHA
+mdefine_line|#define QUIRK_MIDI_YAMAHA&t;&t;1
+DECL|macro|QUIRK_MIDI_MIDIMAN
+mdefine_line|#define QUIRK_MIDI_MIDIMAN&t;&t;2
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -223,10 +235,22 @@ op_star
 id|product_name
 suffix:semicolon
 DECL|member|ifnum
-r_int
+r_int16
 id|ifnum
 suffix:semicolon
-multiline_comment|/* MIDI specific */
+DECL|member|type
+r_int16
+id|type
+suffix:semicolon
+DECL|member|data
+r_const
+r_void
+op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* data for QUIRK_MIDI_FIXED_ENDPOINT */
 DECL|struct|snd_usb_midi_endpoint_info
 r_struct
 id|snd_usb_midi_endpoint_info
@@ -246,15 +270,10 @@ r_uint16
 id|in_cables
 suffix:semicolon
 multiline_comment|/* bitmask */
-DECL|member|endpoints
-)brace
-id|endpoints
-(braket
-id|MIDI_MAX_ENDPOINTS
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
+multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data is the number of ports */
 multiline_comment|/*&n; * USB MIDI sequencer device data&n; */
 DECL|typedef|snd_usb_midi_t
 r_typedef
@@ -289,6 +308,12 @@ DECL|member|chip
 id|snd_usb_audio_t
 op_star
 id|chip
+suffix:semicolon
+DECL|member|iface
+r_struct
+id|usb_interface
+op_star
+id|iface
 suffix:semicolon
 DECL|member|ifnum
 r_int

@@ -309,6 +309,7 @@ singleline_comment|// Disk structures we need to pass back
 DECL|member|gendisk
 r_struct
 id|gendisk
+op_star
 id|gendisk
 (braket
 id|NWD

@@ -239,6 +239,7 @@ suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
+op_star
 id|disk
 suffix:semicolon
 )brace

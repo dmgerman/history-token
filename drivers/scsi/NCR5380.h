@@ -579,20 +579,40 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_reset
+macro_line|#ifndef NCR5380_bus_reset
 r_static
 macro_line|#endif
 r_int
-id|NCR5380_reset
+id|NCR5380_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
+)paren
+suffix:semicolon
+macro_line|#ifndef NCR5380_host_reset
+r_static
+macro_line|#endif
 r_int
+id|NCR5380_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+macro_line|#ifndef NCR5380_device_reset
+r_static
+macro_line|#endif
 r_int
-id|reset_flags
+id|NCR5380_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
 )paren
 suffix:semicolon
 macro_line|#ifndef NCR5380_queue_command

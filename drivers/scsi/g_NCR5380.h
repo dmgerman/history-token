@@ -60,14 +60,27 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|generic_NCR5380_reset
+id|generic_NCR5380_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
+)paren
+suffix:semicolon
 r_int
+id|generic_NCR5380_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
 r_int
+id|generic_NCR5380_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
 )paren
 suffix:semicolon
 r_int
@@ -162,7 +175,7 @@ DECL|macro|CAN_QUEUE
 mdefine_line|#define CAN_QUEUE 16
 macro_line|#endif
 DECL|macro|GENERIC_NCR5380
-mdefine_line|#define GENERIC_NCR5380 {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_info:      generic_NCR5380_proc_info,&t;&t;&t;&bslash;&n;&t;name:           &quot;Generic NCR5380/NCR53C400 Scsi Driver&quot;,&t;&bslash;&n;&t;detect:         generic_NCR5380_detect,&t;&t;&t;&t;&bslash;&n;&t;release:        generic_NCR5380_release_resources,&t;&t;&bslash;&n;&t;info:           (void *)generic_NCR5380_info,&t;&t;&t;&bslash;&n;&t;queuecommand:   generic_NCR5380_queue_command,&t;&t;&t;&bslash;&n;&t;abort:          generic_NCR5380_abort,&t;&t;&t;&t;&bslash;&n;&t;reset:          generic_NCR5380_reset, &t;&t;&t;&t;&bslash;&n;&t;bios_param:     NCR5380_BIOSPARAM,&t;&t;&t;&t;&bslash;&n;&t;can_queue:      CAN_QUEUE,&t;&t;&t;&t;&t;&bslash;&n;        this_id:        7,&t;&t;&t;&t;&t;&t;&bslash;&n;        sg_tablesize:   SG_ALL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:    CMD_PER_LUN ,&t;&t;&t;&t;&t;&bslash;&n;        use_clustering: DISABLE_CLUSTERING}
+mdefine_line|#define GENERIC_NCR5380 {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_info:      generic_NCR5380_proc_info,&t;&t;&t;&bslash;&n;&t;name:           &quot;Generic NCR5380/NCR53C400 Scsi Driver&quot;,&t;&bslash;&n;&t;detect:         generic_NCR5380_detect,&t;&t;&t;&t;&bslash;&n;&t;release:        generic_NCR5380_release_resources,&t;&t;&bslash;&n;&t;info:           (void *)generic_NCR5380_info,&t;&t;&t;&bslash;&n;&t;queuecommand:   generic_NCR5380_queue_command,&t;&t;&t;&bslash;&n;&t;eh_abort_handler:generic_NCR5380_abort,&t;&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler:generic_NCR5380_bus_reset,&t;&t;&t;&bslash;&n;&t;eh_device_reset_handler:generic_NCR5380_device_reset,&t;&t;&bslash;&n;&t;eh_host_reset_handler:generic_NCR5380_host_reset,&t;&t;&t;&bslash;&n;&t;bios_param:     NCR5380_BIOSPARAM,&t;&t;&t;&t;&bslash;&n;&t;can_queue:      CAN_QUEUE,&t;&t;&t;&t;&t;&bslash;&n;        this_id:        7,&t;&t;&t;&t;&t;&t;&bslash;&n;        sg_tablesize:   SG_ALL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:    CMD_PER_LUN ,&t;&t;&t;&t;&t;&bslash;&n;        use_clustering: DISABLE_CLUSTERING}
 macro_line|#ifndef HOSTS_C
 DECL|macro|__STRVAL
 mdefine_line|#define __STRVAL(x) #x
@@ -231,8 +244,12 @@ DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command generic_NCR5380_queue_command
 DECL|macro|NCR5380_abort
 mdefine_line|#define NCR5380_abort generic_NCR5380_abort
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset generic_NCR5380_reset
+DECL|macro|NCR5380_bus_reset
+mdefine_line|#define NCR5380_bus_reset generic_NCR5380_bus_reset
+DECL|macro|NCR5380_device_reset
+mdefine_line|#define NCR5380_device_reset generic_NCR5380_device_reset
+DECL|macro|NCR5380_host_reset
+mdefine_line|#define NCR5380_host_reset generic_NCR5380_host_reset
 DECL|macro|NCR5380_pread
 mdefine_line|#define NCR5380_pread generic_NCR5380_pread
 DECL|macro|NCR5380_pwrite
