@@ -3483,7 +3483,7 @@ comma
 l_int|0x02
 )paren
 suffix:semicolon
-id|cs
+id|cs-&gt;card_ops
 op_member_access_from_pointer
 id|irq_func
 c_func
@@ -3495,6 +3495,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME? */
 r_if
 c_cond
 (paren

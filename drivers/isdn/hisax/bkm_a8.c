@@ -678,8 +678,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|bkm_interrupt_ipac
-id|bkm_interrupt_ipac
+DECL|function|bkm_a8_interrupt
+id|bkm_a8_interrupt
 c_func
 (paren
 r_int
@@ -1331,6 +1331,11 @@ dot
 id|init
 op_assign
 id|bkm_a8_init
+comma
+dot
+id|irq_func
+op_assign
+id|bkm_a8_interrupt
 comma
 )brace
 suffix:semicolon
@@ -2160,11 +2165,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|BKM_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|bkm_interrupt_ipac
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

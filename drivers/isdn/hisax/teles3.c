@@ -1192,6 +1192,11 @@ id|init
 op_assign
 id|inithscxisac
 comma
+dot
+id|irq_func
+op_assign
+id|teles3_interrupt
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
@@ -2598,11 +2603,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|Teles_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|teles3_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

@@ -1450,8 +1450,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|W6692_interrupt
-id|W6692_interrupt
+DECL|function|w6692_interrupt
+id|w6692_interrupt
 c_func
 (paren
 r_int
@@ -2688,7 +2688,7 @@ id|W_D_CMDR_XRST
 )paren
 suffix:semicolon
 multiline_comment|/* Transmitter reset */
-id|cs
+id|cs-&gt;card_ops
 op_member_access_from_pointer
 id|irq_func
 c_func
@@ -2700,6 +2700,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME? */
 )brace
 )brace
 )brace
@@ -3619,6 +3620,11 @@ id|init
 op_assign
 id|w6692_init
 comma
+dot
+id|irq_func
+op_assign
+id|w6692_interrupt
+comma
 )brace
 suffix:semicolon
 DECL|variable|w6692_bc_l1_ops
@@ -4083,11 +4089,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|w6692_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|W6692_interrupt
 suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign

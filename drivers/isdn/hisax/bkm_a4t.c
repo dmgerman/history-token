@@ -1302,6 +1302,11 @@ id|init
 op_assign
 id|bkm_a4t_init
 comma
+dot
+id|irq_func
+op_assign
+id|bkm_interrupt
+comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -1737,11 +1742,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|BKM_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|bkm_interrupt
 suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign

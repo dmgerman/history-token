@@ -18,8 +18,8 @@ l_string|&quot;$Revision: 2.8.6.6 $&quot;
 suffix:semicolon
 r_static
 r_void
-DECL|function|netjet_u_interrupt
-id|netjet_u_interrupt
+DECL|function|nj_u_interrupt
+id|nj_u_interrupt
 c_func
 (paren
 r_int
@@ -509,6 +509,11 @@ id|init
 op_assign
 id|nj_u_init
 comma
+dot
+id|irq_func
+op_assign
+id|nj_u_interrupt
+comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -986,11 +991,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|NETjet_U_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|netjet_u_interrupt
 suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign

@@ -904,8 +904,8 @@ comma
 suffix:semicolon
 r_static
 r_void
-DECL|function|TeleInt_interrupt
-id|TeleInt_interrupt
+DECL|function|teleint_interrupt
+id|teleint_interrupt
 c_func
 (paren
 r_int
@@ -1360,6 +1360,11 @@ id|init
 op_assign
 id|teleint_init
 comma
+dot
+id|irq_func
+op_assign
+id|teleint_interrupt
+comma
 )brace
 suffix:semicolon
 r_int
@@ -1716,11 +1721,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|TeleInt_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|TeleInt_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

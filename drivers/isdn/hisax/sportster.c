@@ -884,6 +884,11 @@ id|init
 op_assign
 id|sportster_init
 comma
+dot
+id|irq_func
+op_assign
+id|sportster_interrupt
+comma
 )brace
 suffix:semicolon
 r_static
@@ -1250,11 +1255,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|Sportster_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|sportster_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

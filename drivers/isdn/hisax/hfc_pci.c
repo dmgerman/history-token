@@ -7848,6 +7848,11 @@ id|init
 op_assign
 id|hfcpci_init
 comma
+dot
+id|irq_func
+op_assign
+id|hfcpci_interrupt
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* this variable is used as card index when more than one cards are present */
@@ -8286,11 +8291,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* no valid card type */
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|hfcpci_interrupt
-suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ

@@ -3006,7 +3006,7 @@ c_func
 (paren
 id|cs-&gt;irq
 comma
-id|cs-&gt;irq_func
+id|cs-&gt;card_ops-&gt;irq_func
 comma
 id|cs-&gt;irq_flags
 comma

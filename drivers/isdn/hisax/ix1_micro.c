@@ -1012,6 +1012,11 @@ id|init
 op_assign
 id|inithscxisac
 comma
+dot
+id|irq_func
+op_assign
+id|ix1micro_interrupt
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
@@ -1553,11 +1558,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|ix1_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|ix1micro_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

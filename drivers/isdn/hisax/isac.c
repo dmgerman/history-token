@@ -2727,7 +2727,7 @@ l_int|0x01
 )paren
 suffix:semicolon
 multiline_comment|/* Transmitter reset */
-id|cs
+id|cs-&gt;card_ops
 op_member_access_from_pointer
 id|irq_func
 c_func

@@ -1116,6 +1116,11 @@ id|init
 op_assign
 id|niccy_reset
 comma
+dot
+id|irq_func
+op_assign
+id|niccy_interrupt
+comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -1921,11 +1926,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|niccy_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|niccy_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign

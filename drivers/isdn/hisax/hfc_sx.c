@@ -5922,6 +5922,11 @@ id|init
 op_assign
 id|hfcsx_init
 comma
+dot
+id|irq_func
+op_assign
+id|hfcsx_interrupt
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
@@ -6606,11 +6611,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* no valid card type */
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|hfcsx_interrupt
-suffix:semicolon
 id|cs-&gt;hw.hfcsx.timer.function
 op_assign
 (paren

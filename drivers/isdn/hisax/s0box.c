@@ -1399,6 +1399,11 @@ id|init
 op_assign
 id|inithscxisac
 comma
+dot
+id|irq_func
+op_assign
+id|s0box_interrupt
+comma
 )brace
 suffix:semicolon
 r_int
@@ -1608,11 +1613,6 @@ id|cs-&gt;cardmsg
 op_assign
 op_amp
 id|S0Box_card_msg
-suffix:semicolon
-id|cs-&gt;irq_func
-op_assign
-op_amp
-id|s0box_interrupt
 suffix:semicolon
 id|cs-&gt;card_ops
 op_assign
