@@ -2088,10 +2088,6 @@ id|SIGABRT
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure exceptions are disabled */
-DECL|macro|MMCR0_PMXE
-mdefine_line|#define MMCR0_PMXE      (1UL &lt;&lt; (31 - 5))
-DECL|macro|MMCR0_PMAO
-mdefine_line|#define MMCR0_PMAO      (1UL &lt;&lt; (31 - 24))
 DECL|function|dummy_perf
 r_static
 r_void
