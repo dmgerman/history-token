@@ -204,11 +204,11 @@ id|fp
 op_assign
 id|fmt
 suffix:semicolon
-id|ulong
-id|flags
-suffix:semicolon
 r_int
 id|len
+suffix:semicolon
+id|ulong
+id|flags
 suffix:semicolon
 id|va_list
 id|ap
