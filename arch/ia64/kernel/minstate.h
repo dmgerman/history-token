@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &quot;entry.h&quot;
 multiline_comment|/*&n; * A couple of convenience macros that make writing and reading&n; * SAVE_MIN and SAVE_REST easier.&n; */
 DECL|macro|rARPR
