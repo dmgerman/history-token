@@ -3856,6 +3856,7 @@ op_star
 id|fp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

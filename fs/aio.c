@@ -3308,11 +3308,13 @@ id|nr
 comma
 r_struct
 id|io_event
+id|__user
 op_star
 id|event
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|timeout
 )paren
@@ -4118,6 +4120,7 @@ id|ssize_t
 id|ret
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -4303,6 +4306,7 @@ id|buf
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -4841,6 +4845,7 @@ id|ctx
 comma
 r_struct
 id|iocb
+id|__user
 op_star
 id|iocb
 comma
@@ -4905,11 +4910,13 @@ id|ctx_id
 comma
 r_struct
 id|iocb
+id|__user
 op_star
 id|iocb
 comma
 r_struct
 id|io_event
+id|__user
 op_star
 id|result
 )paren
@@ -5171,11 +5178,13 @@ id|nr
 comma
 r_struct
 id|io_event
+id|__user
 op_star
 id|events
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|timeout
 )paren
