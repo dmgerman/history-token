@@ -866,6 +866,12 @@ DECL|macro|REL_Y
 mdefine_line|#define REL_Y&t;&t;&t;0x01
 DECL|macro|REL_Z
 mdefine_line|#define REL_Z&t;&t;&t;0x02
+DECL|macro|REL_RX
+mdefine_line|#define REL_RX&t;&t;&t;0x03
+DECL|macro|REL_RY
+mdefine_line|#define REL_RY&t;&t;&t;0x04
+DECL|macro|REL_RZ
+mdefine_line|#define REL_RZ&t;&t;&t;0x05
 DECL|macro|REL_HWHEEL
 mdefine_line|#define REL_HWHEEL&t;&t;0x06
 DECL|macro|REL_DIAL

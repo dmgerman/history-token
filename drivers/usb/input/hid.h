@@ -190,6 +190,8 @@ mdefine_line|#define HID_LOCAL_ITEM_TAG_DELIMITER&t;&t;10
 multiline_comment|/*&n; * HID usage tables&n; */
 DECL|macro|HID_USAGE_PAGE
 mdefine_line|#define HID_USAGE_PAGE&t;&t;0xffff0000
+DECL|macro|HID_UP_UNDEFINED
+mdefine_line|#define HID_UP_UNDEFINED&t;0x00000000
 DECL|macro|HID_UP_GENDESK
 mdefine_line|#define HID_UP_GENDESK &t;&t;0x00010000
 DECL|macro|HID_UP_KEYBOARD
@@ -218,8 +220,66 @@ DECL|macro|HID_GD_JOYSTICK
 mdefine_line|#define HID_GD_JOYSTICK&t;&t;0x00010004
 DECL|macro|HID_GD_GAMEPAD
 mdefine_line|#define HID_GD_GAMEPAD&t;&t;0x00010005
+DECL|macro|HID_GD_KEYBOARD
+mdefine_line|#define HID_GD_KEYBOARD&t;&t;0x00010006
+DECL|macro|HID_GD_KEYPAD
+mdefine_line|#define HID_GD_KEYPAD&t;&t;0x00010007
+DECL|macro|HID_GD_MULTIAXIS
+mdefine_line|#define HID_GD_MULTIAXIS&t;0x00010008
+DECL|macro|HID_GD_X
+mdefine_line|#define HID_GD_X&t;&t;0x00010030
+DECL|macro|HID_GD_Y
+mdefine_line|#define HID_GD_Y&t;&t;0x00010031
+DECL|macro|HID_GD_Z
+mdefine_line|#define HID_GD_Z&t;&t;0x00010032
+DECL|macro|HID_GD_RX
+mdefine_line|#define HID_GD_RX&t;&t;0x00010033
+DECL|macro|HID_GD_RY
+mdefine_line|#define HID_GD_RY&t;&t;0x00010034
+DECL|macro|HID_GD_RZ
+mdefine_line|#define HID_GD_RZ&t;&t;0x00010035
+DECL|macro|HID_GD_SLIDER
+mdefine_line|#define HID_GD_SLIDER&t;&t;0x00010036
+DECL|macro|HID_GD_DIAL
+mdefine_line|#define HID_GD_DIAL&t;&t;0x00010037
+DECL|macro|HID_GD_WHEEL
+mdefine_line|#define HID_GD_WHEEL&t;&t;0x00010038
 DECL|macro|HID_GD_HATSWITCH
 mdefine_line|#define HID_GD_HATSWITCH&t;0x00010039
+DECL|macro|HID_GD_BUFFER
+mdefine_line|#define HID_GD_BUFFER&t;&t;0x0001003a
+DECL|macro|HID_GD_BYTECOUNT
+mdefine_line|#define HID_GD_BYTECOUNT&t;0x0001003b
+DECL|macro|HID_GD_MOTION
+mdefine_line|#define HID_GD_MOTION&t;&t;0x0001003c
+DECL|macro|HID_GD_START
+mdefine_line|#define HID_GD_START&t;&t;0x0001003d
+DECL|macro|HID_GD_SELECT
+mdefine_line|#define HID_GD_SELECT&t;&t;0x0001003e
+DECL|macro|HID_GD_VX
+mdefine_line|#define HID_GD_VX&t;&t;0x00010040
+DECL|macro|HID_GD_VY
+mdefine_line|#define HID_GD_VY&t;&t;0x00010041
+DECL|macro|HID_GD_VZ
+mdefine_line|#define HID_GD_VZ&t;&t;0x00010042
+DECL|macro|HID_GD_VBRX
+mdefine_line|#define HID_GD_VBRX&t;&t;0x00010043
+DECL|macro|HID_GD_VBRY
+mdefine_line|#define HID_GD_VBRY&t;&t;0x00010044
+DECL|macro|HID_GD_VBRZ
+mdefine_line|#define HID_GD_VBRZ&t;&t;0x00010045
+DECL|macro|HID_GD_VNO
+mdefine_line|#define HID_GD_VNO&t;&t;0x00010046
+DECL|macro|HID_GD_FEATURE
+mdefine_line|#define HID_GD_FEATURE&t;&t;0x00010047
+DECL|macro|HID_GD_UP
+mdefine_line|#define HID_GD_UP&t;&t;0x00010090
+DECL|macro|HID_GD_DOWN
+mdefine_line|#define HID_GD_DOWN&t;&t;0x00010091
+DECL|macro|HID_GD_RIGHT
+mdefine_line|#define HID_GD_RIGHT&t;&t;0x00010092
+DECL|macro|HID_GD_LEFT
+mdefine_line|#define HID_GD_LEFT&t;&t;0x00010093
 multiline_comment|/*&n; * HID report types --- Ouch! HID spec says 1 2 3!&n; */
 DECL|macro|HID_INPUT_REPORT
 mdefine_line|#define HID_INPUT_REPORT&t;0
@@ -242,10 +302,10 @@ DECL|macro|HID_QUIRK_BADPAD
 mdefine_line|#define HID_QUIRK_BADPAD&t;&t;&t;0x020
 DECL|macro|HID_QUIRK_MULTI_INPUT
 mdefine_line|#define HID_QUIRK_MULTI_INPUT&t;&t;&t;0x040
-DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_BACK
-mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_BACK&t;0x080
-DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA
-mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA&t;0x100
+DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_7
+mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_7&t;&t;0x080
+DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_5
+mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_5&t;&t;0x100
 DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_ON
 mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_ON&t;&t;0x200
 multiline_comment|/*&n; * This is the global environment of the parser. This information is&n; * persistent for main-items. The global environment can be saved and&n; * restored with PUSH/POP statements.&n; */
@@ -373,6 +433,7 @@ r_int
 id|collection_index
 suffix:semicolon
 multiline_comment|/* index into collection array */
+multiline_comment|/* hidinput data */
 DECL|member|code
 id|__u16
 id|code
@@ -393,7 +454,15 @@ id|__s8
 id|hat_max
 suffix:semicolon
 multiline_comment|/* ditto */
+DECL|member|hat_dir
+id|__s8
+id|hat_dir
+suffix:semicolon
+multiline_comment|/* ditto */
 )brace
+suffix:semicolon
+r_struct
+id|hid_input
 suffix:semicolon
 DECL|struct|hid_field
 r_struct
@@ -493,6 +562,19 @@ r_int
 id|index
 suffix:semicolon
 multiline_comment|/* index into report-&gt;field[] */
+multiline_comment|/* hidinput data */
+DECL|member|hidinput
+r_struct
+id|hid_input
+op_star
+id|hidinput
+suffix:semicolon
+multiline_comment|/* associated input structure */
+DECL|member|dpad
+id|__u16
+id|dpad
+suffix:semicolon
+multiline_comment|/* dpad input code */
 )brace
 suffix:semicolon
 DECL|macro|HID_MAX_FIELDS
@@ -1047,13 +1129,15 @@ DECL|macro|hid_dump_field
 mdefine_line|#define hid_dump_field(a,b)&t;do { } while (0)
 DECL|macro|resolv_usage
 mdefine_line|#define resolv_usage(a)&t;&t;do { } while (0)
+DECL|macro|resolv_event
+mdefine_line|#define resolv_event(a,b)&t;do { } while (0)
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_HIDINPUT
 multiline_comment|/* Applications from HID Usage Tables 4/8/99 Version 1.1 */
 multiline_comment|/* We ignore a few input applications that are not widely used */
 DECL|macro|IS_INPUT_APPLICATION
-mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || ( a == 0x00010080) || ( a == 0x000c0001))
+mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || (a == 0x00010080) || (a == 0x000c0001))
 r_extern
 r_void
 id|hidinput_hid_event
