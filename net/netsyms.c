@@ -20,7 +20,6 @@ macro_line|#ifdef CONFIG_HIPPI
 macro_line|#include &lt;linux/hippidevice.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/pkt_sched.h&gt;
-macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -101,13 +100,6 @@ c_func
 id|memcpy_tokerneliovec
 )paren
 suffix:semicolon
-DECL|variable|put_cmsg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|put_cmsg
-)paren
-suffix:semicolon
 DECL|variable|sk_run_filter
 id|EXPORT_SYMBOL
 c_func
@@ -167,28 +159,7 @@ id|net_srandom
 )paren
 suffix:semicolon
 multiline_comment|/* Needed by smbfs.o */
-DECL|variable|__scm_destroy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__scm_destroy
-)paren
-suffix:semicolon
-DECL|variable|__scm_send
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__scm_send
-)paren
-suffix:semicolon
 multiline_comment|/* Needed by unix.o */
-DECL|variable|scm_fp_dup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scm_fp_dup
-)paren
-suffix:semicolon
 DECL|variable|files_stat
 id|EXPORT_SYMBOL
 c_func
@@ -233,13 +204,6 @@ id|destroy_EII_client
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|scm_detach_fds
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scm_detach_fds
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|variable|alloc_divert_blk
 id|EXPORT_SYMBOL
@@ -529,14 +493,6 @@ id|fddi_type_trans
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_FDDI */
-macro_line|#if 0
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|eth_copy_and_sum
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|dev_base
 id|EXPORT_SYMBOL
 c_func
