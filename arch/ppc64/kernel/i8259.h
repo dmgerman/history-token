@@ -7,13 +7,16 @@ r_struct
 id|hw_interrupt_type
 id|i8259_pic
 suffix:semicolon
+r_extern
 r_void
 id|i8259_init
 c_func
 (paren
-r_void
+r_int
+id|offset
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i8259_irq
 c_func

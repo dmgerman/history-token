@@ -1235,6 +1235,10 @@ r_struct
 id|list_head
 id|substreams
 suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
 DECL|typedef|snd_pcm_group_t
 )brace
 id|snd_pcm_group_t
@@ -1405,6 +1409,14 @@ DECL|member|proc_prealloc_entry
 id|snd_info_entry_t
 op_star
 id|proc_prealloc_entry
+suffix:semicolon
+multiline_comment|/* misc flags */
+DECL|member|no_mmap_ctrl
+r_int
+r_int
+id|no_mmap_ctrl
+suffix:colon
+l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1764,6 +1776,15 @@ id|substream
 comma
 r_int
 id|status
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_drain_done
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM

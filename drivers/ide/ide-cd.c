@@ -13765,12 +13765,14 @@ id|ignore
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ignore
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

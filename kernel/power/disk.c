@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
+multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * Copyright (c) 2004 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * This file is released under the GPLv2.&n; *&n; */
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -76,7 +76,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;power_down - Shut machine down for hibernate.&n; *&t;@mode:&t;&t;Suspend-to-disk mode&n; *&n; *&t;Use the platform driver, if configured so, and return gracefully if it&n; *&t;fails.&n; *&t;Otherwise, try to power off and reboot. If they fail, halt the machine,&n; *&t;there ain&squot;t no turning back.&n; */
 DECL|function|power_down
 r_static
-r_int
+r_void
 id|power_down
 c_func
 (paren
@@ -185,9 +185,6 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|__nosavedata
 r_static
@@ -492,7 +489,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call pmdis to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
+multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call swsusp to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
 DECL|function|pm_suspend_disk
 r_int
 id|pm_suspend_disk
@@ -578,17 +575,6 @@ c_func
 l_string|&quot;PM: writing image.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FIXME: Leftover from swsusp. Are they necessary?&n;&t;&t; */
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|swsusp_write
@@ -602,22 +588,12 @@ c_cond
 op_logical_neg
 id|error
 )paren
-(brace
-id|error
-op_assign
 id|power_down
 c_func
 (paren
 id|pm_disk_mode
 )paren
 suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;PM: Power down failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 r_else
 id|pr_debug

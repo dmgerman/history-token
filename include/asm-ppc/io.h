@@ -925,6 +925,8 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus&n; */
 DECL|macro|insb
 mdefine_line|#define insb(port, buf, ns)&t;_insb((port)+___IO_BASE, (buf), (ns))

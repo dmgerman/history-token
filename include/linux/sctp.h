@@ -779,6 +779,32 @@ id|packed
 )paren
 id|sctp_ecn_capable_param_t
 suffix:semicolon
+multiline_comment|/* ADDIP Section 3.2.6 Adaption Layer Indication */
+DECL|struct|sctp_adaption_ind_param
+r_typedef
+r_struct
+id|sctp_adaption_ind_param
+(brace
+DECL|member|param_hdr
+r_struct
+id|sctp_paramhdr
+id|param_hdr
+suffix:semicolon
+DECL|member|adaption_ind
+id|__u32
+id|adaption_ind
+suffix:semicolon
+DECL|typedef|sctp_adaption_ind_param_t
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|sctp_adaption_ind_param_t
+suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.3 Initiation Acknowledgement (INIT ACK) (2):&n; *   The INIT ACK chunk is used to acknowledge the initiation of an SCTP&n; *   association.&n; */
 DECL|typedef|sctp_initack_chunk_t
 r_typedef

@@ -129,10 +129,6 @@ DECL|member|divisor
 r_int
 id|divisor
 suffix:semicolon
-DECL|member|hgenerator
-id|u32
-id|hgenerator
-suffix:semicolon
 DECL|member|ht
 r_struct
 id|tc_u_knode

@@ -4500,20 +4500,6 @@ comma
 id|info-&gt;var.transp.length
 )paren
 suffix:semicolon
-id|set_color
-c_func
-(paren
-id|par
-comma
-id|regno
-comma
-id|red
-comma
-id|green
-comma
-id|blue
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4623,44 +4609,11 @@ id|info-&gt;var.bits_per_pixel
 r_case
 l_int|8
 suffix:colon
-multiline_comment|/* Yes some hand held devices have this. */
-(paren
-(paren
-id|u8
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
-(braket
-id|regno
-)braket
-op_assign
-id|v
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-(paren
-(paren
-id|u16
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
-(braket
-id|regno
-)braket
-op_assign
-id|v
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|24
 suffix:colon
@@ -4689,7 +4642,28 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* ... */
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;fix.visual
+op_eq
+id|FB_VISUAL_PSEUDOCOLOR
+)paren
+id|set_color
+c_func
+(paren
+id|par
+comma
+id|regno
+comma
+id|red
+comma
+id|green
+comma
+id|blue
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4847,17 +4821,6 @@ comma
 id|blank_mode
 )paren
 suffix:semicolon
-multiline_comment|/* Turn everything on, then disable as requested. */
-id|video
-op_or_assign
-(paren
-id|PM2F_VIDEO_ENABLE
-op_or
-id|PM2F_HSYNC_MASK
-op_or
-id|PM2F_VSYNC_MASK
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4867,13 +4830,19 @@ id|blank_mode
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* Screen: On; HSync: On, VSync: On */
+multiline_comment|/* Screen: On */
+id|video
+op_or_assign
+id|PM2F_VIDEO_ENABLE
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|VESA_NO_BLANKING
+op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Screen: Off; HSync: On, VSync: On */
+multiline_comment|/* Screen: Off */
 id|video
 op_and_assign
 op_complement
@@ -4882,15 +4851,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|VESA_VSYNC_SUSPEND
+op_plus
+l_int|1
 suffix:colon
-multiline_comment|/* Screen: Off; HSync: On, VSync: Off */
+multiline_comment|/* VSync: Off */
 id|video
 op_and_assign
 op_complement
 (paren
-id|PM2F_VIDEO_ENABLE
-op_or
 id|PM2F_VSYNC_MASK
 op_or
 id|PM2F_BLANK_LOW
@@ -4899,15 +4868,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|VESA_HSYNC_SUSPEND
+op_plus
+l_int|1
 suffix:colon
-multiline_comment|/* Screen: Off; HSync: Off, VSync: On */
+multiline_comment|/* HSync: Off */
 id|video
 op_and_assign
 op_complement
 (paren
-id|PM2F_VIDEO_ENABLE
-op_or
 id|PM2F_HSYNC_MASK
 op_or
 id|PM2F_BLANK_LOW
@@ -4916,15 +4885,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|VESA_POWERDOWN
+op_plus
+l_int|1
 suffix:colon
-multiline_comment|/* Screen: Off; HSync: Off, VSync: Off */
+multiline_comment|/* HSync: Off, VSync: Off */
 id|video
 op_and_assign
 op_complement
 (paren
-id|PM2F_VIDEO_ENABLE
-op_or
 id|PM2F_VSYNC_MASK
 op_or
 id|PM2F_HSYNC_MASK

@@ -187,13 +187,15 @@ DECL|macro|ENOMEDIUM
 mdefine_line|#define ENOMEDIUM&t;129&t;/* No medium found */
 DECL|macro|EMEDIUMTYPE
 mdefine_line|#define EMEDIUMTYPE&t;130&t;/* Wrong medium type */
+DECL|macro|ECANCELED
+mdefine_line|#define&t;ECANCELED&t;131&t;/* Operation Cancelled */
 DECL|macro|ENOKEY
-mdefine_line|#define&t;ENOKEY&t;&t;131&t;/* Required key not available */
+mdefine_line|#define&t;ENOKEY&t;&t;132&t;/* Required key not available */
 DECL|macro|EKEYEXPIRED
-mdefine_line|#define&t;EKEYEXPIRED&t;132&t;/* Key has expired */
+mdefine_line|#define&t;EKEYEXPIRED&t;133&t;/* Key has expired */
 DECL|macro|EKEYREVOKED
-mdefine_line|#define&t;EKEYREVOKED&t;133&t;/* Key has been revoked */
+mdefine_line|#define&t;EKEYREVOKED&t;134&t;/* Key has been revoked */
 DECL|macro|EKEYREJECTED
-mdefine_line|#define&t;EKEYREJECTED&t;134&t;/* Key was rejected by service */
+mdefine_line|#define&t;EKEYREJECTED&t;135&t;/* Key was rejected by service */
 macro_line|#endif
 eof

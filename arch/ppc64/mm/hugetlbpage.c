@@ -1115,7 +1115,7 @@ c_cond
 (paren
 id|addr
 OL
-l_int|0x100000000
+l_int|0x100000000UL
 )paren
 op_logical_and
 (paren
@@ -1125,7 +1125,7 @@ op_plus
 id|len
 )paren
 OL
-l_int|0x100000000
+l_int|0x100000000UL
 )paren
 )paren
 (brace

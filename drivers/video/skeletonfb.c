@@ -633,7 +633,7 @@ op_star
 id|cursor
 )paren
 (brace
-multiline_comment|/*&n; *      @set: &t;Which fields we are altering in struct fb_cursor &n; *&t;@enable: Disable or enable the cursor &n; *      @rop: &t;The bit operation we want to do. &n; *      @mask:  This is the cursor mask bitmap. &n; *      @dest:  A image of the area we are going to display the cursor.&n; *&t;&t;Used internally by the driver.&t; &n; *      @hot:&t;The hot spot. &n; *&t;@image:&t;The actual data for the cursor image.&n; */
+multiline_comment|/*&n; *      @set: &t;Which fields we are altering in struct fb_cursor &n; *&t;@enable: Disable or enable the cursor &n; *      @rop: &t;The bit operation we want to do. &n; *      @mask:  This is the cursor mask bitmap. &n; *      @dest:  A image of the area we are going to display the cursor.&n; *&t;&t;Used internally by the driver.&t; &n; *      @hot:&t;The hot spot. &n; *&t;@image:&t;The actual data for the cursor image.&n; *&n; *      NOTES ON FLAGS (cursor-&gt;set):&n; *&n; *      FB_CUR_SETIMAGE - the cursor image has changed (cursor-&gt;image.data)&n; *      FB_CUR_SETPOS   - the cursor position has changed (cursor-&gt;image.dx|dy)&n; *      FB_CUR_SETHOT   - the cursor hot spot has changed (cursor-&gt;hot.dx|dy)&n; *      FB_CUR_SETCMAP  - the cursor colors has changed (cursor-&gt;fg_color|bg_color)&n; *      FB_CUR_SETSHAPE - the cursor bitmask has changed (cursor-&gt;mask)&n; *      FB_CUR_SETSIZE  - the cursor size has changed (cursor-&gt;width|height)&n; *      FB_CUR_SETALL   - everything has changed&n; *&n; *      NOTES ON ROPs (cursor-&gt;rop, Raster Operation)&n; *&n; *      ROP_XOR         - cursor-&gt;image.data XOR cursor-&gt;mask&n; *      ROP_COPY        - curosr-&gt;image.data AND cursor-&gt;mask&n; *&n; *      OTHER NOTES:&n; *&n; *      - fbcon only supports a 2-color cursor (cursor-&gt;image.depth = 1)&n; *      - The fb_cursor structure, @cursor, _will_ always contain valid&n; *        fields, whether any particular bitfields in cursor-&gt;set is set&n; *        or not.&n; */
 )brace
 multiline_comment|/**&n; *&t;xxxfb_rotate -  NOT a required function. If your hardware&n; *&t;&t;&t;supports rotation the whole screen then &n; *&t;&t;&t;you would provide a hook for this. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@angle: The angle we rotate the screen.   &n; *&n; *      This operation is used to set or alter the properities of the&n; *&t;cursor.&n; */
 DECL|function|xxxfb_rotate
@@ -696,6 +696,37 @@ id|cmap_len
 comma
 id|retval
 suffix:semicolon
+multiline_comment|/*&n;     *  For kernel boot options (in &squot;video=xxxfb:&lt;options&gt;&squot; format)&n;     */
+macro_line|#ifndef MODULE
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;xxxfb&quot;
+comma
+op_amp
+id|option
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|xxxfb_setup
+c_func
+(paren
+id|option
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* &n;     * Here we set the screen_base to the vitrual memory address&n;     * for the framebuffer. Usually we obtain the resource address&n;     * from the bus layer and then translate it to virtual memory&n;     * space via ioremap. Consult ioport.h. &n;     */
 id|info.screen_base
 op_assign
@@ -829,37 +860,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;     *  For kernel boot options (in &squot;video=xxxfb:&lt;options&gt;&squot; format)&n;     */
-macro_line|#ifndef MODULE
-r_char
-op_star
-id|option
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fb_get_options
-c_func
-(paren
-l_string|&quot;xxxfb&quot;
-comma
-op_amp
-id|option
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|xxxfb_setup
-c_func
-(paren
-id|option
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;     *  If your driver supports multiple boards, you should unregister and&n;     *  clean up all instances.&n;     */
 id|unregister_framebuffer
 c_func

@@ -428,11 +428,6 @@ id|result
 comma
 id|base_and_type
 suffix:semicolon
-multiline_comment|/* We can use CIA_MEM_R1_MASK for io ports too, since it is large&n;&t;   enough to cover all io ports, and smaller than CIA_IO.  */
-id|addr
-op_and_assign
-id|CIA_MEM_R1_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -452,6 +447,11 @@ op_assign
 id|CIA_IO
 op_plus
 l_int|0x00
+suffix:semicolon
+multiline_comment|/* We can use CIA_MEM_R1_MASK for io ports too, since it is large&n;&t;   enough to cover all io ports, and smaller than CIA_IO.  */
+id|addr
+op_and_assign
+id|CIA_MEM_R1_MASK
 suffix:semicolon
 id|result
 op_assign
@@ -512,10 +512,6 @@ id|w
 comma
 id|base_and_type
 suffix:semicolon
-id|addr
-op_and_assign
-id|CIA_MEM_R1_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -535,6 +531,10 @@ op_assign
 id|CIA_IO
 op_plus
 l_int|0x00
+suffix:semicolon
+id|addr
+op_and_assign
+id|CIA_MEM_R1_MASK
 suffix:semicolon
 id|w
 op_assign
@@ -594,10 +594,6 @@ id|result
 comma
 id|base_and_type
 suffix:semicolon
-id|addr
-op_and_assign
-id|CIA_MEM_R1_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -617,6 +613,10 @@ op_assign
 id|CIA_IO
 op_plus
 l_int|0x08
+suffix:semicolon
+id|addr
+op_and_assign
+id|CIA_MEM_R1_MASK
 suffix:semicolon
 id|result
 op_assign
@@ -677,10 +677,6 @@ id|w
 comma
 id|base_and_type
 suffix:semicolon
-id|addr
-op_and_assign
-id|CIA_MEM_R1_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -700,6 +696,10 @@ op_assign
 id|CIA_IO
 op_plus
 l_int|0x08
+suffix:semicolon
+id|addr
+op_and_assign
+id|CIA_MEM_R1_MASK
 suffix:semicolon
 id|w
 op_assign

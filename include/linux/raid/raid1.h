@@ -79,6 +79,11 @@ DECL|member|device_lock
 id|spinlock_t
 id|device_lock
 suffix:semicolon
+DECL|member|retry_list
+r_struct
+id|list_head
+id|retry_list
+suffix:semicolon
 multiline_comment|/* for use when syncing mirrors: */
 DECL|member|resync_lock
 id|spinlock_t

@@ -741,7 +741,6 @@ l_string|&quot;ext2_inode_cache: not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
 DECL|function|ext2_clear_inode
 r_static
 r_void
@@ -754,6 +753,7 @@ op_star
 id|inode
 )paren
 (brace
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
 r_struct
 id|ext2_inode_info
 op_star
@@ -807,11 +807,24 @@ op_assign
 id|EXT2_ACL_NOT_CACHED
 suffix:semicolon
 )brace
-)brace
-macro_line|#else
-DECL|macro|ext2_clear_inode
-macro_line|# define ext2_clear_inode NULL
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|ext2_discard_prealloc
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 DECL|variable|ext2_sops
 r_static
 r_struct
@@ -838,11 +851,6 @@ dot
 id|write_inode
 op_assign
 id|ext2_write_inode
-comma
-dot
-id|put_inode
-op_assign
-id|ext2_put_inode
 comma
 dot
 id|delete_inode

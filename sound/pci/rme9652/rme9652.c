@@ -378,8 +378,9 @@ r_int
 id|port
 suffix:semicolon
 DECL|member|iobase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iobase
 suffix:semicolon
 DECL|member|precise_ptr
@@ -6843,6 +6844,10 @@ id|rme9652-&gt;irq
 comma
 id|rme9652-&gt;port
 comma
+(paren
+r_int
+r_int
+)paren
 id|rme9652-&gt;iobase
 )paren
 suffix:semicolon
@@ -7750,10 +7755,6 @@ id|rme9652-&gt;iobase
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|rme9652-&gt;iobase
 )paren
 suffix:semicolon
@@ -10888,10 +10889,6 @@ l_int|0
 suffix:semicolon
 id|rme9652-&gt;iobase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -10905,7 +10902,7 @@ c_cond
 (paren
 id|rme9652-&gt;iobase
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk

@@ -209,6 +209,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -244,6 +245,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -315,6 +317,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

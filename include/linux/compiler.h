@@ -13,6 +13,14 @@ DECL|macro|__force
 macro_line|# define __force&t;__attribute__((force))
 DECL|macro|__iomem
 macro_line|# define __iomem&t;__attribute__((noderef, address_space(2)))
+DECL|macro|__acquires
+macro_line|# define __acquires(x)&t;__attribute__((context(0,1)))
+DECL|macro|__releases
+macro_line|# define __releases(x)&t;__attribute__((context(1,0)))
+DECL|macro|__acquire
+macro_line|# define __acquire(x)&t;__context__(1)
+DECL|macro|__release
+macro_line|# define __release(x)&t;__context__(-1)
 r_extern
 r_void
 id|__chk_user_ptr
@@ -50,6 +58,14 @@ DECL|macro|__chk_io_ptr
 macro_line|# define __chk_io_ptr(x) (void)0
 DECL|macro|__builtin_warning
 macro_line|# define __builtin_warning(x, y...) (1)
+DECL|macro|__acquires
+macro_line|# define __acquires(x)
+DECL|macro|__releases
+macro_line|# define __releases(x)
+DECL|macro|__acquire
+macro_line|# define __acquire(x) (void)0
+DECL|macro|__release
+macro_line|# define __release(x) (void)0
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#if __GNUC__ &gt; 3

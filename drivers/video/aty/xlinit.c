@@ -525,12 +525,12 @@ id|par
 )paren
 (brace
 singleline_comment|// enable DLL
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_GEN_CNTL
 comma
-id|aty_ld_pll
+id|aty_ld_pll_ct
 c_func
 (paren
 id|PLL_GEN_CNTL
@@ -544,7 +544,7 @@ id|par
 )paren
 suffix:semicolon
 singleline_comment|// reset DLL
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|DLL_CNTL
@@ -554,7 +554,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|DLL_CNTL
@@ -570,7 +570,7 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|DLL_CNTL
@@ -613,7 +613,7 @@ c_func
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|MCLK_FB_DIV
@@ -623,7 +623,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|SCLK_FB_DIV
@@ -704,7 +704,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|SPLL_CNTL2
@@ -714,7 +714,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_GEN_CNTL
@@ -724,7 +724,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_VCLK_CNTL
@@ -866,7 +866,7 @@ id|pll
 r_return
 id|err
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|LVDS_CNTL0
@@ -876,7 +876,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|DLL2_CNTL
@@ -886,7 +886,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|V2PLL_CNTL
@@ -896,7 +896,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|MPLL_CNTL
@@ -906,7 +906,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VPLL_CNTL
@@ -916,7 +916,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_VCLK_CNTL
@@ -926,7 +926,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VFC_CNTL
@@ -936,7 +936,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_REF_DIV
@@ -946,7 +946,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_EXT_CNTL
@@ -956,7 +956,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|SPLL_CNTL2
@@ -966,7 +966,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_GEN_CNTL
@@ -993,7 +993,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK_POST_DIV
@@ -1003,7 +1003,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK0_FB_DIV
@@ -1013,7 +1013,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK_POST_DIV
@@ -1023,7 +1023,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK1_FB_DIV
@@ -1033,7 +1033,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK_POST_DIV
@@ -1043,7 +1043,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_EXT_CNTL
@@ -1055,7 +1055,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK2_FB_DIV
@@ -1065,7 +1065,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK_POST_DIV
@@ -1075,7 +1075,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_EXT_CNTL
@@ -1087,7 +1087,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|VCLK3_FB_DIV
@@ -1512,7 +1512,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_YCLK_CNTL
@@ -1618,7 +1618,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_YCLK_CNTL
@@ -1634,7 +1634,7 @@ c_func
 l_int|15
 )paren
 suffix:semicolon
-id|aty_st_pll
+id|aty_st_pll_ct
 c_func
 (paren
 id|PLL_YCLK_CNTL

@@ -9,11 +9,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;linux/8250_pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/8250.h&gt;
+macro_line|#include &lt;linux/8250_pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|FL_BASE_MASK
 mdefine_line|#define FL_BASE_MASK&t;&t;0x0007

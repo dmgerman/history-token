@@ -8612,13 +8612,6 @@ c_func
 id|tcp_close
 )paren
 suffix:semicolon
-DECL|variable|tcp_close_state
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_close_state
-)paren
-suffix:semicolon
 DECL|variable|tcp_destroy_sock
 id|EXPORT_SYMBOL
 c_func

@@ -402,7 +402,7 @@ c_func
 (paren
 id|uart-&gt;gsi
 comma
-id|uart_active_high_low
+id|uart_edge_level
 c_func
 (paren
 id|rev
@@ -410,7 +410,7 @@ comma
 id|uart
 )paren
 comma
-id|uart_edge_level
+id|uart_active_high_low
 c_func
 (paren
 id|rev

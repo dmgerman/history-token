@@ -3222,7 +3222,7 @@ id|ep-&gt;out
 op_logical_and
 id|ep-&gt;out-&gt;urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ep-&gt;out-&gt;urb
@@ -3235,7 +3235,7 @@ id|ep-&gt;in
 op_logical_and
 id|ep-&gt;in-&gt;urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ep-&gt;in-&gt;urb
@@ -5689,7 +5689,7 @@ c_cond
 (paren
 id|ep-&gt;in
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ep-&gt;in-&gt;urb

@@ -249,7 +249,7 @@ DECL|member|driver_status
 r_int
 id|driver_status
 suffix:semicolon
-multiline_comment|/* For communicating with firware */
+multiline_comment|/* For communicating with firmware */
 DECL|member|firmware_status
 r_int
 id|firmware_status

@@ -134,6 +134,23 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;ia64_mfa()
+multiline_comment|/**&n; * __ia64_mmiowb - I/O write barrier&n; *&n; * Ensure ordering of I/O space writes.  This will make sure that writes&n; * following the barrier will arrive after all previous writes.  For most&n; * ia64 platforms, this is a simple &squot;mf.a&squot; instruction.&n; *&n; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n; */
+DECL|function|__ia64_mmiowb
+r_static
+r_inline
+r_void
+id|__ia64_mmiowb
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ia64_mfa
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_const
@@ -779,6 +796,8 @@ DECL|macro|__outw
 mdefine_line|#define __outw&t;&t;platform_outw
 DECL|macro|__outl
 mdefine_line|#define __outl&t;&t;platform_outl
+DECL|macro|__mmiowb
+mdefine_line|#define __mmiowb&t;platform_mmiowb
 DECL|macro|inb
 mdefine_line|#define inb(p)&t;&t;__inb(p)
 DECL|macro|inw
@@ -803,6 +822,8 @@ DECL|macro|outsw
 mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
 mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()&t;__mmiowb()
 multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; *&n; * We need these to be machine vectors since some platforms don&squot;t provide&n; * DMA coherence via PIO reads (PCI drivers and the spec imply that this is&n; * a good idea).  Writes are ok though for all existing ia64 platforms (and&n; * hopefully it&squot;ll stay that way).&n; */
 r_static
 r_inline

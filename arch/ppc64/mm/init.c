@@ -964,6 +964,8 @@ comma
 id|IM_REGION_UNUSED
 op_or
 id|IM_REGION_SUBSET
+op_or
+id|IM_REGION_EXISTS
 )paren
 suffix:semicolon
 r_if
@@ -3611,6 +3613,7 @@ suffix:semicolon
 )brace
 DECL|function|reserve_phb_iospace
 r_void
+id|__iomem
 op_star
 id|reserve_phb_iospace
 c_func
@@ -3621,6 +3624,7 @@ id|size
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|virt_addr
 suffix:semicolon
@@ -3641,6 +3645,7 @@ id|virt_addr
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|phbs_io_bot

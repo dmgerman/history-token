@@ -140,6 +140,8 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio

@@ -167,6 +167,8 @@ DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HUGETLB_PAGE_ORDER
 mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|#endif
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)

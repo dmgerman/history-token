@@ -35,7 +35,7 @@ mdefine_line|#define MD_MAJOR_VERSION                0
 DECL|macro|MD_MINOR_VERSION
 mdefine_line|#define MD_MINOR_VERSION                90
 DECL|macro|MD_PATCHLEVEL_VERSION
-mdefine_line|#define MD_PATCHLEVEL_VERSION           0
+mdefine_line|#define MD_PATCHLEVEL_VERSION           1
 r_extern
 r_int
 id|register_md_personality

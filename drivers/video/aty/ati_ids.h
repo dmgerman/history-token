@@ -119,6 +119,8 @@ DECL|macro|PCI_CHIP_MACH64LR
 mdefine_line|#define PCI_CHIP_MACH64LR&t;&t;0x4C52
 DECL|macro|PCI_CHIP_MACH64LS
 mdefine_line|#define PCI_CHIP_MACH64LS&t;&t;0x4C53
+DECL|macro|PCI_CHIP_MACH64LT
+mdefine_line|#define PCI_CHIP_MACH64LT&t;&t;0x4C54
 DECL|macro|PCI_CHIP_RADEON_LW
 mdefine_line|#define PCI_CHIP_RADEON_LW&t;&t;0x4C57
 DECL|macro|PCI_CHIP_RADEON_LX

@@ -195,6 +195,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -391,6 +392,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2744,6 +2746,7 @@ r_int
 id|nvram_clear_error_log
 c_func
 (paren
+r_void
 )paren
 (brace
 id|loff_t

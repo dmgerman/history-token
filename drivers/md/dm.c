@@ -3131,7 +3131,6 @@ op_amp
 id|md-&gt;event_nr
 )paren
 suffix:semicolon
-suffix:semicolon
 id|wake_up
 c_func
 (paren

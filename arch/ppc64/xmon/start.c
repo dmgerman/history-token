@@ -675,7 +675,7 @@ op_eq
 id|str
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon

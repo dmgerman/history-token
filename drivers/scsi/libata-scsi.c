@@ -257,7 +257,7 @@ suffix:colon
 id|rc
 op_assign
 op_minus
-id|EOPNOTSUPP
+id|ENOTTY
 suffix:semicolon
 r_break
 suffix:semicolon

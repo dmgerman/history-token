@@ -3,7 +3,7 @@ DECL|macro|__SOUND_DELTA_H
 mdefine_line|#define __SOUND_DELTA_H
 multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for M-Audio Delta 1010, 44, 66, Dio2496, Audiophile&n; *                          Digigram VX442&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 DECL|macro|DELTA_DEVICE_DESC
-mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010LT},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;&bslash;&n;&t;&t;&quot;{Digigram,VX442},&quot;
+mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010LT},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;&bslash;&n;&t;&t;&quot;{Digigram,VX442},&quot;&bslash;&n;&t;&t;&quot;{Lionstracs,Mediastation},&quot;
 DECL|macro|ICE1712_SUBDEVICE_DELTA1010
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010&t;0x121430d6
 DECL|macro|ICE1712_SUBDEVICE_DELTADIO2496
@@ -20,6 +20,8 @@ DECL|macro|ICE1712_SUBDEVICE_DELTA1010LT
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010LT&t;0x12143bd6
 DECL|macro|ICE1712_SUBDEVICE_VX442
 mdefine_line|#define ICE1712_SUBDEVICE_VX442&t;&t;0x12143cd6
+DECL|macro|ICE1712_SUBDEVICE_MEDIASTATION
+mdefine_line|#define ICE1712_SUBDEVICE_MEDIASTATION&t;0x694c0100
 multiline_comment|/* entry point */
 r_extern
 r_struct

@@ -40,6 +40,11 @@ DECL|member|device_lock
 id|spinlock_t
 id|device_lock
 suffix:semicolon
+DECL|member|retry_list
+r_struct
+id|list_head
+id|retry_list
+suffix:semicolon
 DECL|member|pool
 id|mempool_t
 op_star
@@ -81,13 +86,11 @@ DECL|member|path
 r_int
 id|path
 suffix:semicolon
-DECL|member|next_mp
+DECL|member|retry_list
 r_struct
-id|multipath_bh
-op_star
-id|next_mp
+id|list_head
+id|retry_list
 suffix:semicolon
-multiline_comment|/* next for retry */
 )brace
 suffix:semicolon
 macro_line|#endif

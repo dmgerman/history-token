@@ -1162,6 +1162,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|snd_pcm_proc_info_read
 r_static
 r_void
@@ -2051,6 +2052,7 @@ id|runtime-&gt;control-&gt;appl_ptr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|function|snd_pcm_xrun_debug_read
 r_static

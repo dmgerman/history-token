@@ -491,8 +491,6 @@ DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;&t;1269
-DECL|macro|__NR_setaltroot
-mdefine_line|#define __NR_setaltroot&t;&t;&t;1270
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls

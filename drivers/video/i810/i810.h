@@ -664,11 +664,6 @@ r_struct
 id|vgastate
 id|state
 suffix:semicolon
-DECL|member|drm_agp
-id|drm_agp_t
-op_star
-id|drm_agp
-suffix:semicolon
 DECL|member|use_count
 id|atomic_t
 id|use_count

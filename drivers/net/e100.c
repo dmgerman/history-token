@@ -20,9 +20,9 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_EXT
-mdefine_line|#define DRV_EXT&t;&t;&t;&quot;-NAPI&quot;
+mdefine_line|#define DRV_EXT&t;&t;&quot;-NAPI&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.27-k2&quot;DRV_EXT
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.2.3-k2&quot;DRV_EXT
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
@@ -2306,6 +2306,19 @@ op_star
 id|nic
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|writeb
 c_func
 (paren
@@ -2313,6 +2326,15 @@ id|irq_mask_none
 comma
 op_amp
 id|nic-&gt;csr-&gt;scb.cmd_hi
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|e100_write_flush
@@ -2335,6 +2357,19 @@ op_star
 id|nic
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|writeb
 c_func
 (paren
@@ -2342,6 +2377,15 @@ id|irq_mask_all
 comma
 op_amp
 id|nic-&gt;csr-&gt;scb.cmd_hi
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|e100_write_flush
@@ -2407,32 +2451,6 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-multiline_comment|/* TCO workaround - 82559 and greater */
-r_if
-c_cond
-(paren
-id|nic-&gt;mac
-op_ge
-id|mac_82559_D101M
-)paren
-(brace
-multiline_comment|/* Issue a redundant CU load base without setting&n;&t;&t; * general pointer, and without waiting for scb to&n;&t;&t; * clear.  This gets us into post-driver.  Finally,&n;&t;&t; * wait 20 msec for reset to take effect. */
-id|writeb
-c_func
-(paren
-id|cuc_load_base
-comma
-op_amp
-id|nic-&gt;csr-&gt;scb.cmd_lo
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|20
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Mask off our interrupt line - it&squot;s unmasked after reset */
 id|e100_disable_irq
 c_func
@@ -6218,14 +6236,35 @@ op_amp
 id|nic-&gt;mii
 )paren
 suffix:semicolon
-multiline_comment|/* Software generated interrupt to recover from (rare) Rx&n;&t; * allocation failure */
+multiline_comment|/* Software generated interrupt to recover from (rare) Rx&n;&t;* allocation failure.&n;&t;* Unfortunately have to use a spinlock to not re-enable interrupts&n;&t;* accidentally, due to hardware that shares a register between the&n;&t;* interrupt mask bit and the SW Interrupt generation bit */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
+)paren
+suffix:semicolon
 id|writeb
 c_func
 (paren
+id|readb
+c_func
+(paren
+op_amp
+id|nic-&gt;csr-&gt;scb.cmd_hi
+)paren
+op_or
 id|irq_sw_gen
 comma
 op_amp
 id|nic-&gt;csr-&gt;scb.cmd_hi
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|nic-&gt;cmd_lock
 )paren
 suffix:semicolon
 id|e100_write_flush
@@ -6464,6 +6503,16 @@ op_minus
 id|ENOSPC
 suffix:colon
 multiline_comment|/* We queued the skb, but now we&squot;re out of space. */
+id|DPRINTK
+c_func
+(paren
+id|TX_ERR
+comma
+id|DEBUG
+comma
+l_string|&quot;No space for CB&bslash;n&quot;
+)paren
+suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -7027,13 +7076,6 @@ op_star
 id|rx
 )paren
 (brace
-r_int
-r_int
-id|rx_offset
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* u32 align protocol headers */
 r_if
 c_cond
 (paren
@@ -7046,7 +7088,7 @@ c_func
 (paren
 id|RFD_BUF_LEN
 op_plus
-id|rx_offset
+id|NET_IP_ALIGN
 )paren
 )paren
 )paren
@@ -7066,7 +7108,7 @@ c_func
 (paren
 id|rx-&gt;skb
 comma
-id|rx_offset
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|memcpy
@@ -9926,6 +9968,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ring-&gt;rx_mini_pending
+)paren
+op_logical_or
+(paren
+id|ring-&gt;rx_jumbo_pending
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|netif_running
 c_func
 (paren
@@ -9978,6 +10035,20 @@ c_func
 id|cbs-&gt;count
 comma
 id|cbs-&gt;max
+)paren
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+id|DRV
+comma
+id|INFO
+comma
+l_string|&quot;Ring Param settings: rx: %d, tx %d&bslash;n&quot;
+comma
+id|rfds-&gt;count
+comma
+id|cbs-&gt;count
 )paren
 suffix:semicolon
 r_if
@@ -11133,6 +11204,18 @@ op_assign
 id|e100_netpoll
 suffix:semicolon
 macro_line|#endif
+id|strcpy
+c_func
+(paren
+id|netdev-&gt;name
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
 id|nic
 op_assign
 id|netdev_priv
@@ -11576,6 +11659,14 @@ c_func
 id|nic
 )paren
 )paren
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|netdev-&gt;name
+comma
+l_string|&quot;eth%d&quot;
 )paren
 suffix:semicolon
 r_if

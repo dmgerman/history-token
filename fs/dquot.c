@@ -3480,7 +3480,7 @@ id|IHARDWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; file limit reached.&bslash;n&quot;
+l_string|&quot; file limit reached.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3489,7 +3489,7 @@ id|ISOFTLONGWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; file quota exceeded too long.&bslash;n&quot;
+l_string|&quot; file quota exceeded too long.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3498,7 +3498,7 @@ id|ISOFTWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; file quota exceeded.&bslash;n&quot;
+l_string|&quot; file quota exceeded.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3507,7 +3507,7 @@ id|BHARDWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; block limit reached.&bslash;n&quot;
+l_string|&quot; block limit reached.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3516,7 +3516,7 @@ id|BSOFTLONGWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; block quota exceeded too long.&bslash;n&quot;
+l_string|&quot; block quota exceeded too long.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3525,7 +3525,7 @@ id|BSOFTWARN
 suffix:colon
 id|msg
 op_assign
-l_string|&quot; block quota exceeded.&bslash;n&quot;
+l_string|&quot; block quota exceeded.&bslash;r&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon

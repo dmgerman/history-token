@@ -206,6 +206,8 @@ DECL|macro|outb
 mdefine_line|#define outb(x,addr) ((void) writeb(x,addr))
 DECL|macro|outb_p
 mdefine_line|#define outb_p(x,addr) outb(x,addr)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

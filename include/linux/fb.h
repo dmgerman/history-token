@@ -173,6 +173,8 @@ DECL|macro|FB_ACCEL_SIS_GLAMOUR_2
 mdefine_line|#define FB_ACCEL_SIS_GLAMOUR_2  40&t;/* SiS 315, 650, 740&t;&t;*/
 DECL|macro|FB_ACCEL_SIS_XABRE
 mdefine_line|#define FB_ACCEL_SIS_XABRE      41&t;/* SiS 330 (&quot;Xabre&quot;)&t;&t;*/
+DECL|macro|FB_ACCEL_I830
+mdefine_line|#define FB_ACCEL_I830           42      /* Intel 830M/845G/85x/865G     */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
@@ -191,6 +193,36 @@ DECL|macro|FB_ACCEL_NEOMAGIC_NM2360
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2360 97&t;/* NeoMagic NM2360              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2380
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2380 98&t;/* NeoMagic NM2380              */
+DECL|macro|FB_ACCEL_SAVAGE4
+mdefine_line|#define FB_ACCEL_SAVAGE4        0x80&t;/* S3 Savage4                   */
+DECL|macro|FB_ACCEL_SAVAGE3D
+mdefine_line|#define FB_ACCEL_SAVAGE3D       0x81&t;/* S3 Savage3D                  */
+DECL|macro|FB_ACCEL_SAVAGE3D_MV
+mdefine_line|#define FB_ACCEL_SAVAGE3D_MV    0x82&t;/* S3 Savage3D-MV               */
+DECL|macro|FB_ACCEL_SAVAGE2000
+mdefine_line|#define FB_ACCEL_SAVAGE2000     0x83&t;/* S3 Savage2000                */
+DECL|macro|FB_ACCEL_SAVAGE_MX_MV
+mdefine_line|#define FB_ACCEL_SAVAGE_MX_MV   0x84&t;/* S3 Savage/MX-MV              */
+DECL|macro|FB_ACCEL_SAVAGE_MX
+mdefine_line|#define FB_ACCEL_SAVAGE_MX      0x85&t;/* S3 Savage/MX                 */
+DECL|macro|FB_ACCEL_SAVAGE_IX_MV
+mdefine_line|#define FB_ACCEL_SAVAGE_IX_MV   0x86&t;/* S3 Savage/IX-MV              */
+DECL|macro|FB_ACCEL_SAVAGE_IX
+mdefine_line|#define FB_ACCEL_SAVAGE_IX      0x87&t;/* S3 Savage/IX                 */
+DECL|macro|FB_ACCEL_PROSAVAGE_PM
+mdefine_line|#define FB_ACCEL_PROSAVAGE_PM   0x88&t;/* S3 ProSavage PM133           */
+DECL|macro|FB_ACCEL_PROSAVAGE_KM
+mdefine_line|#define FB_ACCEL_PROSAVAGE_KM   0x89&t;/* S3 ProSavage KM133           */
+DECL|macro|FB_ACCEL_S3TWISTER_P
+mdefine_line|#define FB_ACCEL_S3TWISTER_P    0x8a&t;/* S3 Twister                   */
+DECL|macro|FB_ACCEL_S3TWISTER_K
+mdefine_line|#define FB_ACCEL_S3TWISTER_K    0x8b&t;/* S3 TwisterK                  */
+DECL|macro|FB_ACCEL_SUPERSAVAGE
+mdefine_line|#define FB_ACCEL_SUPERSAVAGE    0x8c    /* S3 Supersavage               */
+DECL|macro|FB_ACCEL_PROSAVAGE_DDR
+mdefine_line|#define FB_ACCEL_PROSAVAGE_DDR  0x8d&t;/* S3 ProSavage DDR             */
+DECL|macro|FB_ACCEL_PROSAVAGE_DDRK
+mdefine_line|#define FB_ACCEL_PROSAVAGE_DDRK 0x8e&t;/* S3 ProSavage DDR-K           */
 DECL|struct|fb_fix_screeninfo
 r_struct
 id|fb_fix_screeninfo
@@ -737,8 +769,8 @@ multiline_comment|/* color map info */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * hardware cursor control&n; */
-DECL|macro|FB_CUR_SETCUR
-mdefine_line|#define FB_CUR_SETCUR   0x01
+DECL|macro|FB_CUR_SETIMAGE
+mdefine_line|#define FB_CUR_SETIMAGE 0x01
 DECL|macro|FB_CUR_SETPOS
 mdefine_line|#define FB_CUR_SETPOS   0x02
 DECL|macro|FB_CUR_SETHOT
@@ -802,18 +834,6 @@ id|fb_image
 id|image
 suffix:semicolon
 multiline_comment|/* Cursor image */
-multiline_comment|/* all fields below are for fbcon use only */
-DECL|member|flash
-r_int
-id|flash
-suffix:semicolon
-multiline_comment|/* cursor blink */
-DECL|member|data
-r_char
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* copy of bitmap */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -2107,12 +2127,6 @@ id|fb_monspecs
 id|monspecs
 suffix:semicolon
 multiline_comment|/* Current Monitor specs */
-DECL|member|cursor
-r_struct
-id|fb_cursor
-id|cursor
-suffix:semicolon
-multiline_comment|/* Current cursor */
 DECL|member|queue
 r_struct
 id|work_struct
@@ -2620,16 +2634,6 @@ id|s_pitch
 comma
 id|u32
 id|height
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fb_load_cursor_image
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
 )paren
 suffix:semicolon
 r_extern

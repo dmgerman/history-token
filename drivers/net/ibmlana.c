@@ -3457,28 +3457,6 @@ op_amp
 id|priv-&gt;stat
 suffix:semicolon
 )brace
-multiline_comment|/* we don&squot;t support runtime reconfiguration, since am MCA card can&n;   be unambigously identified by its POS registers. */
-DECL|function|ibmlana_config
-r_static
-r_int
-id|ibmlana_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* switch receiver mode. */
 DECL|function|ibmlana_set_multicast_list
 r_static
@@ -3843,10 +3821,6 @@ suffix:semicolon
 id|dev-&gt;stop
 op_assign
 id|ibmlana_close
-suffix:semicolon
-id|dev-&gt;set_config
-op_assign
-id|ibmlana_config
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
