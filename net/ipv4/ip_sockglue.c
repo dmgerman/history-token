@@ -3732,6 +3732,7 @@ id|optlen
 (brace
 id|err
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto

@@ -7289,7 +7289,10 @@ op_star
 id|dev
 )paren
 (brace
-r_return
+multiline_comment|/* some units seem to need this reset, others reject it utterly.&n;&t; * FIXME be more like &quot;naplink&quot; or windows drivers.&n;&t; */
+(paren
+r_void
+)paren
 id|pl_set_QuickLink_features
 (paren
 id|dev
@@ -7302,6 +7305,9 @@ id|PL_RESET_IN
 op_or
 id|PL_PEER_E
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|prolific_info

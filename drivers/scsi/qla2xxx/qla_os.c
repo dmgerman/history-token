@@ -1451,6 +1451,11 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 comma
 dot
@@ -1526,6 +1531,11 @@ op_assign
 id|S_IRUSR
 op_or
 id|S_IWUSR
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 comma

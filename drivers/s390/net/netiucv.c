@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.48 2004/04/01 13:42:09 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.48 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.49 2004/04/15 06:37:54 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.49 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -1816,7 +1816,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1836,6 +1835,7 @@ op_minus
 id|NETIUCV_HDRLEN
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|conn-&gt;tx_buff-&gt;data
@@ -4002,6 +4002,9 @@ id|rc
 op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 r_else
@@ -7396,7 +7399,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.48 $&quot;
+l_string|&quot;$Revision: 1.49 $&quot;
 suffix:semicolon
 r_char
 op_star

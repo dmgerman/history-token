@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.56 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.57 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -195,6 +195,12 @@ r_int
 id|retries
 suffix:semicolon
 multiline_comment|/* A retry counter */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* flags of this request */
 multiline_comment|/* ... and how */
 DECL|member|starttime
 r_int
@@ -305,6 +311,9 @@ DECL|macro|DASD_CQR_ERROR
 mdefine_line|#define DASD_CQR_ERROR    0x04&t;/* request is completed with error */
 DECL|macro|DASD_CQR_FAILED
 mdefine_line|#define DASD_CQR_FAILED   0x05&t;/* request is finally failed */
+multiline_comment|/* per dasd_ccw_req flags */
+DECL|macro|DASD_CQR_FLAGS_USE_ERP
+mdefine_line|#define DASD_CQR_FLAGS_USE_ERP   0&t;/* use ERP for this request */
 multiline_comment|/* Signature for error recovery functions. */
 DECL|typedef|dasd_erp_fn_t
 r_typedef

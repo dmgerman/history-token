@@ -1198,20 +1198,20 @@ id|pmtu
 suffix:semicolon
 id|frag
 op_sub_assign
-id|SCTP_IP_OVERHEAD
-op_plus
-r_sizeof
-(paren
-r_struct
-id|sctp_data_chunk
-)paren
+id|sp-&gt;pf-&gt;af-&gt;net_header_len
 suffix:semicolon
 id|frag
 op_sub_assign
 r_sizeof
 (paren
 r_struct
-id|sctp_sack_chunk
+id|sctphdr
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|sctp_data_chunk
 )paren
 suffix:semicolon
 r_if
@@ -1231,6 +1231,18 @@ comma
 id|sp-&gt;user_frag
 )paren
 suffix:semicolon
+id|frag
+op_assign
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|frag
+comma
+id|SCTP_MAX_CHUNK_LEN
+)paren
+suffix:semicolon
 r_return
 id|frag
 suffix:semicolon
@@ -1244,6 +1256,10 @@ DECL|macro|sctp_walk_errors
 mdefine_line|#define sctp_walk_errors(err, chunk_hdr)&bslash;&n;_sctp_walk_errors((err), (chunk_hdr), ntohs((chunk_hdr)-&gt;length))
 DECL|macro|_sctp_walk_errors
 mdefine_line|#define _sctp_walk_errors(err, chunk_hdr, end)&bslash;&n;for (err = (sctp_errhdr_t *)((void *)chunk_hdr + &bslash;&n;&t;    sizeof(sctp_chunkhdr_t));&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - sizeof(sctp_errhdr_t) &amp;&amp;&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - &bslash;&n;&t;&t;    WORD_ROUND(ntohs(err-&gt;length));&bslash;&n;     err = (sctp_errhdr_t *)((void *)err + &bslash;&n;&t;    WORD_ROUND(ntohs(err-&gt;length))))
+DECL|macro|sctp_walk_fwdtsn
+mdefine_line|#define sctp_walk_fwdtsn(pos, chunk)&bslash;&n;_sctp_walk_fwdtsn((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr-&gt;length) - sizeof(struct sctp_fwdtsn_chunk))
+DECL|macro|_sctp_walk_fwdtsn
+mdefine_line|#define _sctp_walk_fwdtsn(pos, chunk, end)&bslash;&n;for (pos = chunk-&gt;subh.fwdtsn_hdr-&gt;skip;&bslash;&n;     (void *)pos &lt;= (void *)chunk-&gt;subh.fwdtsn_hdr-&gt;skip + end - sizeof(struct sctp_fwdtsn_skip);&bslash;&n;     pos++)
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)

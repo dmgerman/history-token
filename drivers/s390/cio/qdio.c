@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.79 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.80 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -1697,7 +1697,7 @@ id|f_mod_no
 )braket
 )paren
 (brace
-multiline_comment|/* the hydra has not fetched the output yet */
+multiline_comment|/* the adapter has not fetched the output yet */
 r_case
 id|SLSB_CU_OUTPUT_PRIMED
 suffix:colon
@@ -1713,7 +1713,7 @@ l_string|&quot;outpprim&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* the hydra got it */
+multiline_comment|/* the adapter got it */
 r_case
 id|SLSB_P_OUTPUT_EMPTY
 suffix:colon
@@ -3480,7 +3480,7 @@ op_amp
 id|q-&gt;number_of_buffers_used
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * we need that one for synchronization with Hydra, as Hydra&n;&t; * does a kind of PCI avoidance &n;&t; */
+multiline_comment|/* &n;&t; * we need that one for synchronization with the adapter, as it&n;&t; * does a kind of PCI avoidance &n;&t; */
 id|SYNC_MEMORY
 suffix:semicolon
 r_if
@@ -4132,7 +4132,7 @@ r_else
 id|SYNC_MEMORY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * maybe we have to do work on our outbound queues... at least&n;&t; * we have to check Hydra outbound-int-capable thinint-capable&n;&t; * queues&n;&t; */
+multiline_comment|/*&n;&t; * maybe we have to do work on our outbound queues... at least&n;&t; * we have to check the outbound-int-capable thinint-capable&n;&t; * queues&n;&t; */
 r_if
 c_cond
 (paren
@@ -8564,7 +8564,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Check for hydra thin interrupts (bit 67). */
+multiline_comment|/* Check for OSA/FCP thin interrupts (bit 67). */
 id|hydra_thinints
 op_assign
 (paren

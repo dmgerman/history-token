@@ -225,19 +225,6 @@ op_amp
 id|peer-&gt;transports
 )paren
 suffix:semicolon
-id|sctp_packet_init
-c_func
-(paren
-op_amp
-id|peer-&gt;packet
-comma
-id|peer
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Set up the retransmission timer.  */
 id|init_timer
 c_func
@@ -391,6 +378,13 @@ id|sctp_association_put
 c_func
 (paren
 id|transport-&gt;asoc
+)paren
+suffix:semicolon
+id|sctp_packet_free
+c_func
+(paren
+op_amp
+id|transport-&gt;packet
 )paren
 suffix:semicolon
 id|dst_release

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions manipulate sctp tsn mapping array.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions manipulate sctp tsn mapping array.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
@@ -695,6 +695,134 @@ suffix:semicolon
 )brace
 r_return
 id|ended
+suffix:semicolon
+)brace
+multiline_comment|/* Mark this and any lower TSN as seen.  */
+DECL|function|sctp_tsnmap_skip
+r_void
+id|sctp_tsnmap_skip
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+comma
+id|__u32
+id|tsn
+)paren
+(brace
+id|__s32
+id|gap
+suffix:semicolon
+multiline_comment|/* Vacuously mark any TSN which precedes the map base or&n;&t; * exceeds the end of the map.&n;&t; */
+r_if
+c_cond
+(paren
+id|TSN_lt
+c_func
+(paren
+id|tsn
+comma
+id|map-&gt;base_tsn
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|TSN_lt
+c_func
+(paren
+id|tsn
+comma
+id|map-&gt;base_tsn
+op_plus
+id|map-&gt;len
+op_plus
+id|map-&gt;len
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Bump the max.  */
+r_if
+c_cond
+(paren
+id|TSN_lt
+c_func
+(paren
+id|map-&gt;max_tsn_seen
+comma
+id|tsn
+)paren
+)paren
+id|map-&gt;max_tsn_seen
+op_assign
+id|tsn
+suffix:semicolon
+multiline_comment|/* Assert: TSN is in range.  */
+id|gap
+op_assign
+id|tsn
+op_minus
+id|map-&gt;base_tsn
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Mark the TSNs as received.  */
+r_if
+c_cond
+(paren
+id|gap
+op_le
+id|map-&gt;len
+)paren
+id|memset
+c_func
+(paren
+id|map-&gt;tsn_map
+comma
+l_int|0x01
+comma
+id|gap
+)paren
+suffix:semicolon
+r_else
+(brace
+id|memset
+c_func
+(paren
+id|map-&gt;tsn_map
+comma
+l_int|0x01
+comma
+id|map-&gt;len
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|map-&gt;overflow_map
+comma
+l_int|0x01
+comma
+(paren
+id|gap
+op_minus
+id|map-&gt;len
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Go fixup any internal TSN mapping variables including&n;&t; * cumulative_tsn_ack_point.&n;&t; */
+id|sctp_tsnmap_update
+c_func
+(paren
+id|map
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/

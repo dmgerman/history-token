@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.59 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.60 $&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
@@ -972,36 +972,6 @@ suffix:semicolon
 id|retval
 op_assign
 id|SCSI_MLQUEUE_HOST_BUSY
-suffix:semicolon
-)brace
-r_else
-(brace
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|3
-comma
-l_string|&quot;q_scpnt&quot;
-)paren
-suffix:semicolon
-id|debug_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|3
-comma
-op_amp
-id|scpnt
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
 suffix:semicolon
 )brace
 id|out

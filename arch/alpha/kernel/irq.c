@@ -1654,19 +1654,7 @@ op_assign
 id|prof_cpu_mask_write_proc
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Create entries for all existing IRQs. If the number of IRQs&n;&t; * is greater the 1/4 the total dynamic inode space for /proc,&n;&t; * don&squot;t pollute the inode space&n;&t; */
-r_if
-c_cond
-(paren
-id|ACTUAL_NR_IRQS
-OL
-(paren
-id|PROC_NDYNAMIC
-op_div
-l_int|4
-)paren
-)paren
-(brace
+multiline_comment|/*&n;&t; * Create entries for all existing IRQs.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1703,7 +1691,6 @@ c_func
 id|i
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_int

@@ -825,6 +825,20 @@ id|__u8
 id|reordering
 suffix:semicolon
 multiline_comment|/* Packet reordering metric.&t;&t;*/
+DECL|member|frto_counter
+id|__u8
+id|frto_counter
+suffix:semicolon
+multiline_comment|/* Number of new acks after RTO */
+DECL|member|frto_highmark
+id|__u32
+id|frto_highmark
+suffix:semicolon
+multiline_comment|/* snd_nxt when RTO occurred */
+DECL|member|unused_pad
+id|__u8
+id|unused_pad
+suffix:semicolon
 DECL|member|queue_shrunk
 id|__u8
 id|queue_shrunk
@@ -1217,16 +1231,6 @@ DECL|member|linger2
 r_int
 id|linger2
 suffix:semicolon
-DECL|member|frto_counter
-r_int
-id|frto_counter
-suffix:semicolon
-multiline_comment|/* Number of new acks after RTO */
-DECL|member|frto_highmark
-id|__u32
-id|frto_highmark
-suffix:semicolon
-multiline_comment|/* snd_nxt when RTO occurred */
 DECL|member|last_synq_overflow
 r_int
 r_int
@@ -1279,6 +1283,53 @@ multiline_comment|/* minimum observed RTT */
 DECL|member|westwood
 )brace
 id|westwood
+suffix:semicolon
+multiline_comment|/* Vegas variables */
+r_struct
+(brace
+DECL|member|beg_snd_nxt
+id|__u32
+id|beg_snd_nxt
+suffix:semicolon
+multiline_comment|/* right edge during last RTT */
+DECL|member|beg_snd_una
+id|__u32
+id|beg_snd_una
+suffix:semicolon
+multiline_comment|/* left edge  during last RTT */
+DECL|member|beg_snd_cwnd
+id|__u32
+id|beg_snd_cwnd
+suffix:semicolon
+multiline_comment|/* saves the size of the cwnd */
+DECL|member|do_vegas
+id|__u8
+id|do_vegas
+suffix:semicolon
+multiline_comment|/* do vegas for this connection */
+DECL|member|doing_vegas_now
+id|__u8
+id|doing_vegas_now
+suffix:semicolon
+multiline_comment|/* if true, do vegas for this RTT */
+DECL|member|cntRTT
+id|__u16
+id|cntRTT
+suffix:semicolon
+multiline_comment|/* # of RTTs measured within last RTT */
+DECL|member|minRTT
+id|__u32
+id|minRTT
+suffix:semicolon
+multiline_comment|/* min of RTTs measured within last RTT (in usec) */
+DECL|member|baseRTT
+id|__u32
+id|baseRTT
+suffix:semicolon
+multiline_comment|/* the min of all Vegas RTT measurements seen (in usec) */
+DECL|member|vegas
+)brace
+id|vegas
 suffix:semicolon
 )brace
 suffix:semicolon

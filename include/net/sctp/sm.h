@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are definitions needed by the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *    Kevin Gao &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are definitions needed by the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *    Kevin Gao &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -305,6 +305,18 @@ DECL|variable|sctp_sf_do_asconf_ack
 id|sctp_state_fn_t
 id|sctp_sf_do_asconf_ack
 suffix:semicolon
+DECL|variable|sctp_sf_do_9_2_reshutack
+id|sctp_state_fn_t
+id|sctp_sf_do_9_2_reshutack
+suffix:semicolon
+DECL|variable|sctp_sf_eat_fwd_tsn
+id|sctp_state_fn_t
+id|sctp_sf_eat_fwd_tsn
+suffix:semicolon
+DECL|variable|sctp_sf_eat_fwd_tsn_fast
+id|sctp_state_fn_t
+id|sctp_sf_eat_fwd_tsn_fast
+suffix:semicolon
 multiline_comment|/* Prototypes for primitive event state functions.  */
 DECL|variable|sctp_sf_do_prm_asoc
 id|sctp_state_fn_t
@@ -395,45 +407,6 @@ suffix:semicolon
 DECL|variable|sctp_sf_autoclose_timer_expire
 id|sctp_state_fn_t
 id|sctp_sf_autoclose_timer_expire
-suffix:semicolon
-multiline_comment|/* These are state functions which are either obsolete or not in use yet.&n; * If any of these functions needs to be revived, it should be renamed with&n; * the &quot;sctp_sf_xxx&quot; prefix, and be moved to the above prototype groups.&n; */
-multiline_comment|/* Prototypes for chunk state functions.  Not in use. */
-DECL|variable|sctp_sf_do_9_2_reshutack
-id|sctp_state_fn_t
-id|sctp_sf_do_9_2_reshutack
-suffix:semicolon
-DECL|variable|sctp_sf_do_9_2_reshut
-id|sctp_state_fn_t
-id|sctp_sf_do_9_2_reshut
-suffix:semicolon
-DECL|variable|sctp_sf_do_9_2_shutack
-id|sctp_state_fn_t
-id|sctp_sf_do_9_2_shutack
-suffix:semicolon
-multiline_comment|/* Prototypes for timeout event state functions.  Not in use. */
-DECL|variable|sctp_do_4_2_reinit
-id|sctp_state_fn_t
-id|sctp_do_4_2_reinit
-suffix:semicolon
-DECL|variable|sctp_do_4_3_reecho
-id|sctp_state_fn_t
-id|sctp_do_4_3_reecho
-suffix:semicolon
-DECL|variable|sctp_do_9_2_reshut
-id|sctp_state_fn_t
-id|sctp_do_9_2_reshut
-suffix:semicolon
-DECL|variable|sctp_do_9_2_reshutack
-id|sctp_state_fn_t
-id|sctp_do_9_2_reshutack
-suffix:semicolon
-DECL|variable|sctp_do_8_3_hb_err
-id|sctp_state_fn_t
-id|sctp_do_8_3_hb_err
-suffix:semicolon
-DECL|variable|sctp_heartoff
-id|sctp_state_fn_t
-id|sctp_heartoff
 suffix:semicolon
 multiline_comment|/* Prototypes for utility support functions.  */
 id|__u8
@@ -1068,6 +1041,30 @@ r_struct
 id|sctp_chunk
 op_star
 id|asconf_ack
+)paren
+suffix:semicolon
+r_struct
+id|sctp_chunk
+op_star
+id|sctp_make_fwdtsn
+c_func
+(paren
+r_const
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+id|__u32
+id|new_cum_tsn
+comma
+r_int
+id|nstreams
+comma
+r_struct
+id|sctp_fwdtsn_skip
+op_star
+id|skiplist
 )paren
 suffix:semicolon
 r_void

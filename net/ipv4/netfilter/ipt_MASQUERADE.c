@@ -450,6 +450,12 @@ l_string|&quot;MASQUERADE:&quot;
 l_string|&quot; Route sent us somewhere else.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ip_rt_put
+c_func
+(paren
+id|rt
+)paren
+suffix:semicolon
 r_return
 id|NF_DROP
 suffix:semicolon

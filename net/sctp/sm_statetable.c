@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the state tables for the SCTP state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the state tables for the SCTP state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
@@ -214,6 +214,26 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*state_fn_t addip_chunk_event_table[][] */
+DECL|macro|TYPE_SCTP_FWD_TSN
+mdefine_line|#define TYPE_SCTP_FWD_TSN { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_ootb, .name = &quot;sctp_sf_ootb&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_tabort_8_4_8, .name = &quot;sctp_sf_tabort_8_4_8&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_eat_fwd_tsn, .name = &quot;sctp_sf_eat_fwd_tsn&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_eat_fwd_tsn, .name = &quot;sctp_sf_eat_fwd_tsn&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_eat_fwd_tsn_fast, .name = &quot;sctp_sf_eat_fwd_tsn_fast&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;} /* TYPE_SCTP_FWD_TSN */
+multiline_comment|/* The primary index for this table is the chunk type.&n; * The secondary index for this table is the state.&n; */
+DECL|variable|prsctp_chunk_event_table
+r_const
+id|sctp_sm_table_entry_t
+id|prsctp_chunk_event_table
+(braket
+id|SCTP_NUM_PRSCTP_CHUNK_TYPES
+)braket
+(braket
+id|SCTP_STATE_NUM_STATES
+)braket
+op_assign
+(brace
+id|TYPE_SCTP_FWD_TSN
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*state_fn_t prsctp_chunk_event_table[][] */
 r_static
 r_const
 id|sctp_sm_table_entry_t
@@ -501,6 +521,30 @@ id|cid
 id|state
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_prsctp_enable
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cid
+op_eq
+id|SCTP_CID_FWD_TSN
+)paren
+r_return
+op_amp
+id|prsctp_chunk_event_table
+(braket
+l_int|0
+)braket
+(braket
+id|state
+)braket
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

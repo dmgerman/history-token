@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.71 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.72 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -1225,16 +1225,6 @@ DECL|macro|ZFCP_ERP_DBF_LEVEL
 mdefine_line|#define ZFCP_ERP_DBF_LEVEL     3
 DECL|macro|ZFCP_ERP_DBF_NAME
 mdefine_line|#define ZFCP_ERP_DBF_NAME      &quot;zfcperp&quot;
-DECL|macro|ZFCP_REQ_DBF_INDEX
-mdefine_line|#define ZFCP_REQ_DBF_INDEX     1
-DECL|macro|ZFCP_REQ_DBF_AREAS
-mdefine_line|#define ZFCP_REQ_DBF_AREAS     1
-DECL|macro|ZFCP_REQ_DBF_LENGTH
-mdefine_line|#define ZFCP_REQ_DBF_LENGTH    8
-DECL|macro|ZFCP_REQ_DBF_LEVEL
-mdefine_line|#define ZFCP_REQ_DBF_LEVEL     1
-DECL|macro|ZFCP_REQ_DBF_NAME
-mdefine_line|#define ZFCP_REQ_DBF_NAME      &quot;zfcpreq&quot;
 DECL|macro|ZFCP_CMD_DBF_INDEX
 mdefine_line|#define ZFCP_CMD_DBF_INDEX     2
 DECL|macro|ZFCP_CMD_DBF_AREAS
@@ -1265,14 +1255,6 @@ DECL|macro|ZFCP_IN_ELS_DBF_LEVEL
 mdefine_line|#define ZFCP_IN_ELS_DBF_LEVEL  6
 DECL|macro|ZFCP_IN_ELS_DBF_NAME
 mdefine_line|#define ZFCP_IN_ELS_DBF_NAME   &quot;zfcpels&quot;
-DECL|macro|ZFCP_ADAPTER_REQ_DBF_INDEX
-mdefine_line|#define ZFCP_ADAPTER_REQ_DBF_INDEX  4 
-DECL|macro|ZFCP_ADAPTER_REQ_DBF_AREAS
-mdefine_line|#define ZFCP_ADAPTER_REQ_DBF_AREAS  1
-DECL|macro|ZFCP_ADAPTER_REQ_DBF_LENGTH
-mdefine_line|#define ZFCP_ADAPTER_REQ_DBF_LENGTH 8
-DECL|macro|ZFCP_ADAPTER_REQ_DBF_LEVEL
-mdefine_line|#define ZFCP_ADAPTER_REQ_DBF_LEVEL  6
 multiline_comment|/******************** LOGGING MACROS AND DEFINES *****************************/
 multiline_comment|/*&n; * Logging may be applied on certain kinds of driver operations&n; * independently. Additionally, different log-levels are supported for&n; * each of these areas.&n; */
 DECL|macro|ZFCP_NAME
@@ -2623,11 +2605,6 @@ DECL|member|abort_dbf
 id|debug_info_t
 op_star
 id|abort_dbf
-suffix:semicolon
-DECL|member|req_dbf
-id|debug_info_t
-op_star
-id|req_dbf
 suffix:semicolon
 DECL|member|in_els_dbf
 id|debug_info_t
