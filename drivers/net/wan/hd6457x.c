@@ -1219,14 +1219,10 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|port_to_dev
 c_func
 (paren
 id|port
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1352,14 +1348,10 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|port_to_dev
 c_func
 (paren
 id|port
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3096,11 +3088,7 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef __HD64570_H

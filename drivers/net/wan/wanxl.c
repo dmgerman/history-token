@@ -670,8 +670,11 @@ id|value
 op_amp
 id|STATUS_CABLE_DCD
 comma
-op_amp
-id|port-&gt;hdlc
+id|port_to_dev
+c_func
+(paren
+id|port
+)paren
 )paren
 suffix:semicolon
 )brace

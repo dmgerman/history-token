@@ -398,11 +398,7 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -648,11 +644,7 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 id|printk
@@ -1564,11 +1556,7 @@ op_amp
 id|ST3_DCD
 )paren
 comma
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 id|printk

@@ -853,9 +853,10 @@ c_func
 r_int
 id|on
 comma
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* May be used by hardware driver to gain control over HDLC device */
