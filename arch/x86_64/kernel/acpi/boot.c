@@ -1414,6 +1414,12 @@ id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_IOAPIC
 suffix:semicolon
+id|acpi_irq_balance_set
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 id|acpi_ioapic
 op_assign
 l_int|1

@@ -102,6 +102,35 @@ macro_line|#  define acpi_lapic 0
 DECL|macro|acpi_ioapic
 macro_line|#  define acpi_ioapic 0
 macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_PCI
+r_extern
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_irq_balance_set
+r_static
+r_inline
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 multiline_comment|/* routines for saving/restoring kernel state */
 r_extern

@@ -65,6 +65,35 @@ multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixm
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
+macro_line|#ifdef CONFIG_ACPI_PCI
+r_extern
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_irq_balance_set
+r_static
+r_inline
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 multiline_comment|/* routines for saving/restoring kernel state */
 r_extern

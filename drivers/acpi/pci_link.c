@@ -198,7 +198,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-r_int
+id|u32
 id|i
 op_assign
 l_int|0
@@ -975,7 +975,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;_CRS returns NULL! Using IRQ %d for device (%s [%s]).&bslash;n&quot;
+l_string|&quot;_CRS returns NULL! Using IRQ %d for&quot;
+l_string|&quot;device (%s [%s]).&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1516,11 +1517,23 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                            PCI Link IRQ Management&n;   -------------------------------------------------------------------------- */
+multiline_comment|/*&n; * &quot;acpi_irq_balance&quot; (default in APIC mode) enables ACPI to use PIC Interrupt&n; * Link Devices to move the PIRQs around to minimize sharing.&n; * &n; * &quot;acpi_irq_nobalance&quot; (default in PIC mode) tells ACPI not to move any PIC IRQs&n; * that the BIOS has already set to active.  This is necessary because&n; * ACPI has no automatic means of knowing what ISA IRQs are used.  Note that&n; * if the BIOS doesn&squot;t set a Link Device active, ACPI needs to program it&n; * even if acpi_irq_nobalance is set.&n; *&n; * A tables of penalties avoids directing PCI interrupts to well known&n; * ISA IRQs. Boot params are available to over-ride the default table:&n; *&n; * List interrupts that are free for PCI use.&n; * acpi_irq_pci=n[,m]&n; *&n; * List interrupts that should not be used for PCI:&n; * acpi_irq_isa=n[,m]&n; *&n; * Note that PCI IRQ routers have a list of possible IRQs,&n; * which may not include the IRQs this table says are available.&n; * &n; * Since this heuristic can&squot;t tell the difference between a link&n; * that no device will attach to, vs. a link which may be shared&n; * by multiple active devices -- it is not optimal.&n; *&n; * If interrupt performance is that important, get an IO-APIC system&n; * with a pin dedicated to each device.  Or for that matter, an MSI&n; * enabled system.&n; */
 DECL|macro|ACPI_MAX_IRQS
 mdefine_line|#define ACPI_MAX_IRQS&t;&t;256
 DECL|macro|ACPI_MAX_ISA_IRQ
 mdefine_line|#define ACPI_MAX_ISA_IRQ&t;16
-multiline_comment|/*&n; * IRQ penalties are used to promote PCI IRQ balancing.  We set each ISA-&n; * possible IRQ (0-15) with a default penalty relative to its feasibility&n; * for PCI&squot;s use:&n; *&n; *   Never use:&t;&t;0, 1, 2 (timer, keyboard, and cascade)&n; *   Avoid using:&t;13, 14, and 15 (FP error and IDE)&n; *   Penalize:&t;&t;3, 4, 6, 7, 12 (known ISA uses)&n; *&n; * Thus we&squot;re left with IRQs 5, 9, 10, 11, and everything above 15 (IO[S]APIC)&n; * as &squot;best bets&squot; for PCI use.&n; */
+DECL|macro|PIRQ_PENALTY_PCI_AVAILABLE
+mdefine_line|#define PIRQ_PENALTY_PCI_AVAILABLE&t;(0)
+DECL|macro|PIRQ_PENALTY_PCI_POSSIBLE
+mdefine_line|#define PIRQ_PENALTY_PCI_POSSIBLE&t;(16*16)
+DECL|macro|PIRQ_PENALTY_PCI_USING
+mdefine_line|#define PIRQ_PENALTY_PCI_USING&t;&t;(16*16*16)
+DECL|macro|PIRQ_PENALTY_ISA_TYPICAL
+mdefine_line|#define PIRQ_PENALTY_ISA_TYPICAL&t;(16*16*16*16)
+DECL|macro|PIRQ_PENALTY_ISA_USED
+mdefine_line|#define PIRQ_PENALTY_ISA_USED&t;&t;(16*16*16*16*16)
+DECL|macro|PIRQ_PENALTY_ISA_ALWAYS
+mdefine_line|#define PIRQ_PENALTY_ISA_ALWAYS&t;&t;(16*16*16*16*16*16)
 DECL|variable|acpi_irq_penalty
 r_static
 r_int
@@ -1530,38 +1543,55 @@ id|ACPI_MAX_IRQS
 )braket
 op_assign
 (brace
-l_int|1000000
+id|PIRQ_PENALTY_ISA_ALWAYS
 comma
-l_int|1000000
+multiline_comment|/* IRQ0 timer */
+id|PIRQ_PENALTY_ISA_ALWAYS
 comma
-l_int|1000000
+multiline_comment|/* IRQ1 keyboard */
+id|PIRQ_PENALTY_ISA_ALWAYS
 comma
-l_int|10000
+multiline_comment|/* IRQ2 cascade */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|10000
+multiline_comment|/* IRQ3&t;serial */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|0
+multiline_comment|/* IRQ4&t;serial */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|10000
+multiline_comment|/* IRQ5 sometimes SoundBlaster */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|10000
+multiline_comment|/* IRQ6 */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|10000
+multiline_comment|/* IRQ7 parallel, spurious */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|0
+multiline_comment|/* IRQ8 rtc, sometimes */
+id|PIRQ_PENALTY_PCI_AVAILABLE
 comma
-l_int|0
+multiline_comment|/* IRQ9  PCI, often acpi */
+id|PIRQ_PENALTY_PCI_AVAILABLE
 comma
-l_int|0
+multiline_comment|/* IRQ10 PCI */
+id|PIRQ_PENALTY_PCI_AVAILABLE
 comma
-l_int|10000
+multiline_comment|/* IRQ11 PCI */
+id|PIRQ_PENALTY_ISA_TYPICAL
 comma
-l_int|100000
+multiline_comment|/* IRQ12 mouse */
+id|PIRQ_PENALTY_ISA_USED
 comma
-l_int|100000
+multiline_comment|/* IRQ13 fpe, sometimes */
+id|PIRQ_PENALTY_ISA_USED
 comma
-l_int|100000
+multiline_comment|/* IRQ14 ide0 */
+id|PIRQ_PENALTY_ISA_USED
 comma
+multiline_comment|/* IRQ15 ide1 */
+multiline_comment|/* &gt;IRQ15 */
 )brace
 suffix:semicolon
 r_int
@@ -1639,19 +1669,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|link-&gt;irq.active
-)paren
-id|acpi_irq_penalty
-(braket
-id|link-&gt;irq.active
-)braket
-op_add_assign
-l_int|100
-suffix:semicolon
-r_else
+multiline_comment|/*&n;&t;&t; * reflect the possible and active irqs in the penalty table --&n;&t;&t; * useful for breaking ties.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1661,7 +1679,7 @@ id|link-&gt;irq.possible_count
 r_int
 id|penalty
 op_assign
-l_int|100
+id|PIRQ_PENALTY_PCI_POSSIBLE
 op_div
 id|link-&gt;irq.possible_count
 suffix:semicolon
@@ -1702,7 +1720,30 @@ id|penalty
 suffix:semicolon
 )brace
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|link-&gt;irq.active
+)paren
+(brace
+id|acpi_irq_penalty
+(braket
+id|link-&gt;irq.active
+)braket
+op_add_assign
+id|PIRQ_PENALTY_PCI_POSSIBLE
+suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Add a penalty for the SCI */
+id|acpi_irq_penalty
+(braket
+id|acpi_fadt.sci_int
+)braket
+op_add_assign
+id|PIRQ_PENALTY_PCI_USING
+suffix:semicolon
 id|return_VALUE
 c_func
 (paren
@@ -1710,6 +1751,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_irq_balance
+r_static
+r_int
+id|acpi_irq_balance
+suffix:semicolon
+multiline_comment|/* 0: static, 1: balance */
 DECL|function|acpi_pci_link_allocate
 r_static
 r_int
@@ -1765,6 +1812,16 @@ id|link-&gt;irq.possible
 l_int|0
 )braket
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_irq_balance
+op_logical_or
+op_logical_neg
+id|link-&gt;irq.active
+)paren
+(brace
 multiline_comment|/*&n;&t;&t; * Select the best IRQ.  This is done in reverse to promote&n;&t;&t; * the use of IRQs 9, 10, 11, and &gt;15.&n;&t;&t; */
 r_for
 c_loop
@@ -1778,7 +1835,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|i
-OG
+op_ge
 l_int|0
 suffix:semicolon
 id|i
@@ -1857,7 +1914,7 @@ id|acpi_irq_penalty
 id|link-&gt;irq.active
 )braket
 op_add_assign
-l_int|100
+id|PIRQ_PENALTY_PCI_USING
 suffix:semicolon
 id|printk
 c_func
@@ -2253,12 +2310,14 @@ id|result
 r_goto
 id|end
 suffix:semicolon
+multiline_comment|/* query and set link-&gt;irq.active */
 id|acpi_pci_link_get_current
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
+singleline_comment|//#ifdef CONFIG_ACPI_DEBUG
 id|printk
 c_func
 (paren
@@ -2339,6 +2398,7 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
+singleline_comment|//#endif /* CONFIG_ACPI_DEBUG */
 multiline_comment|/* TBD: Acquire/release lock */
 id|list_add_tail
 c_func
@@ -2454,6 +2514,249 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * modify acpi_irq_penalty[] from cmdline&n; */
+DECL|function|acpi_irq_penalty_update
+r_static
+r_int
+id|__init
+id|acpi_irq_penalty_update
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_int
+id|used
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+id|retval
+suffix:semicolon
+r_int
+id|irq
+suffix:semicolon
+id|retval
+op_assign
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* no number found */
+r_if
+c_cond
+(paren
+id|irq
+OL
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_ge
+id|ACPI_MAX_IRQS
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|used
+)paren
+id|acpi_irq_penalty
+(braket
+id|irq
+)braket
+op_add_assign
+id|PIRQ_PENALTY_ISA_USED
+suffix:semicolon
+r_else
+id|acpi_irq_penalty
+(braket
+id|irq
+)braket
+op_assign
+id|PIRQ_PENALTY_PCI_AVAILABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|2
+)paren
+multiline_comment|/* no next number */
+r_break
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Over-ride default table to reserve additional IRQs for use by ISA&n; * e.g. acpi_irq_isa=5&n; * Useful for telling ACPI how not to interfere with your ISA sound card.&n; */
+DECL|function|acpi_irq_isa
+r_static
+r_int
+id|__init
+id|acpi_irq_isa
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+id|acpi_irq_penalty_update
+c_func
+(paren
+id|str
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;acpi_irq_isa=&quot;
+comma
+id|acpi_irq_isa
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Over-ride default table to free additional IRQs for use by PCI&n; * e.g. acpi_irq_pci=7,15&n; * Used for acpi_irq_balance to free up IRQs to reduce PCI IRQ sharing.&n; */
+DECL|function|acpi_irq_pci
+r_static
+r_int
+id|__init
+id|acpi_irq_pci
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+id|acpi_irq_penalty_update
+c_func
+(paren
+id|str
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;acpi_irq_pci=&quot;
+comma
+id|acpi_irq_pci
+)paren
+suffix:semicolon
+DECL|function|acpi_irq_nobalance_set
+r_static
+r_int
+id|__init
+id|acpi_irq_nobalance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ACPI STATIC SET&bslash;n&quot;
+)paren
+suffix:semicolon
+id|acpi_irq_balance
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;acpi_irq_nobalance&quot;
+comma
+id|acpi_irq_nobalance_set
+)paren
+suffix:semicolon
+DECL|function|acpi_irq_balance_set
+r_int
+id|__init
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ACPI BALANCE SET&bslash;n&quot;
+)paren
+suffix:semicolon
+id|acpi_irq_balance
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;acpi_irq_balance&quot;
+comma
+id|acpi_irq_balance_set
+)paren
+suffix:semicolon
 DECL|function|acpi_pci_link_init
 r_static
 r_int
