@@ -90,6 +90,11 @@ id|ATTR_GID
 )paren
 op_logical_and
 (paren
+id|current-&gt;fsuid
+op_ne
+id|inode-&gt;i_uid
+op_logical_or
+(paren
 op_logical_neg
 id|in_group_p
 c_func
@@ -100,6 +105,7 @@ op_logical_and
 id|attr-&gt;ia_gid
 op_ne
 id|inode-&gt;i_gid
+)paren
 )paren
 op_logical_and
 op_logical_neg
