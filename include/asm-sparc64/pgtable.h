@@ -158,7 +158,7 @@ mdefine_line|#define __ACCESS_BITS&t;(_PAGE_ACCESSED | _PAGE_READ | _PAGE_R)
 DECL|macro|__PRIV_BITS
 mdefine_line|#define __PRIV_BITS&t;_PAGE_P
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot (_PAGE_PRESENT | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_NONE&t;__pgprot (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_CACHE)
 multiline_comment|/* Don&squot;t set the TTE _PAGE_W bit here, else the dirty bit never gets set. */
 DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE)
@@ -168,12 +168,8 @@ DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __PRIV_BITS | __ACCESS_BITS | __DIRTY_BITS)
-DECL|macro|PAGE_INVALID
-mdefine_line|#define PAGE_INVALID&t;__pgprot (0)
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;_PAGE_PADDR
-DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;(_PFN_MASK | _PAGE_MODIFIED | _PAGE_ACCESSED | _PAGE_PRESENT | _PAGE_SZBITS)
 DECL|macro|pg_iobits
 mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | __ACCESS_BITS | _PAGE_E)
 DECL|macro|__P000
@@ -257,6 +253,27 @@ id|new_prot
 id|pte_t
 id|__pte
 suffix:semicolon
+r_const
+r_int
+r_int
+id|preserve_mask
+op_assign
+(paren
+id|_PFN_MASK
+op_or
+id|_PAGE_MODIFIED
+op_or
+id|_PAGE_ACCESSED
+op_or
+id|_PAGE_CACHE
+op_or
+id|_PAGE_E
+op_or
+id|_PAGE_PRESENT
+op_or
+id|_PAGE_SZBITS
+)paren
+suffix:semicolon
 id|pte_val
 c_func
 (paren
@@ -270,13 +287,18 @@ c_func
 id|orig_pte
 )paren
 op_amp
-id|_PAGE_CHG_MASK
+id|preserve_mask
 )paren
 op_or
+(paren
 id|pgprot_val
 c_func
 (paren
 id|new_prot
+)paren
+op_amp
+op_complement
+id|preserve_mask
 )paren
 suffix:semicolon
 r_return
