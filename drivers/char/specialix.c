@@ -3147,21 +3147,12 @@ l_string|&quot;Sending HUP.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;tqueue_hangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 r_else
@@ -3794,8 +3785,6 @@ id|bp-&gt;flags
 op_or_assign
 id|SX_BOARD_ACTIVE
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3857,8 +3846,6 @@ id|turn_ints_off
 (paren
 id|bp
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setting up port characteristics. &n; * Must be called with disabled interrupts&n; */
@@ -9572,8 +9559,6 @@ id|tty
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: module removal race here */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|sx_hangup
 r_static
@@ -9957,6 +9942,10 @@ suffix:semicolon
 id|specialix_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|specialix_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|specialix_driver.name
 op_assign
