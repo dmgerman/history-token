@@ -1474,6 +1474,36 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;block=%llu, b_blocknr=%llu&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|block
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|bh-&gt;b_blocknr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;b_state=0x%08lx, b_size=%u&bslash;n&quot;
+comma
+id|bh-&gt;b_state
+comma
+id|bh-&gt;b_size
+)paren
+suffix:semicolon
 id|out_unlock
 suffix:colon
 id|spin_unlock
