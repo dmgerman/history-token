@@ -16053,8 +16053,7 @@ id|device_names
 )paren
 )paren
 (brace
-r_struct
-id|dname
+id|dev_name_t
 op_star
 id|tmp
 op_assign
