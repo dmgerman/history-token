@@ -346,27 +346,25 @@ id|random_state
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************&n; *&n; * Utility functions, with some ASM defined functions for speed&n; * purposes&n; *&n; *****************************************************************/
-multiline_comment|/*&n; * Unfortunately, while the GCC optimizer for the i386 understands how&n; * to optimize a static rotate left of x bits, it doesn&squot;t know how to&n; * deal with a variable rotate of x bits.  So we use a bit of asm magic.&n; */
-macro_line|#if (!defined (__i386__))
-DECL|function|rotate_left
+DECL|function|rol32
 r_static
 r_inline
 id|__u32
-id|rotate_left
+id|rol32
 c_func
 (paren
-r_int
-id|i
-comma
 id|__u32
 id|word
+comma
+r_int
+id|shift
 )paren
 (brace
 r_return
 (paren
 id|word
 op_lshift
-id|i
+id|shift
 )paren
 op_or
 (paren
@@ -375,52 +373,11 @@ op_rshift
 (paren
 l_int|32
 op_minus
-id|i
+id|shift
 )paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|rotate_left
-r_static
-r_inline
-id|__u32
-id|rotate_left
-c_func
-(paren
-r_int
-id|i
-comma
-id|__u32
-id|word
-)paren
-(brace
-id|__asm__
-c_func
-(paren
-l_string|&quot;roll %%cl,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|word
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|word
-)paren
-comma
-l_string|&quot;c&quot;
-(paren
-id|i
-)paren
-)paren
-suffix:semicolon
-r_return
-id|word
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * More asm magic....&n; *&n; * For entropy estimation, we need to do an integral base 2&n; * logarithm.&n; *&n; * Note the &quot;12bits&quot; suffix - this is used for numbers between&n; * 0 and 4095 only.  This allows a few shortcuts.&n; */
 macro_line|#if 0&t;/* Slow but clear version */
 r_static
@@ -956,7 +913,7 @@ op_decrement
 (brace
 id|w
 op_assign
-id|rotate_left
+id|rol32
 c_func
 (paren
 id|input_rotate
@@ -2270,10 +2227,8 @@ DECL|macro|K3
 mdefine_line|#define K3  0x8F1BBCDCL&t;&t;&t;/* Rounds 40-59: sqrt(5) * 2^30 */
 DECL|macro|K4
 mdefine_line|#define K4  0xCA62C1D6L&t;&t;&t;/* Rounds 60-79: sqrt(10) * 2^30 */
-DECL|macro|ROTL
-mdefine_line|#define ROTL(n,X)  (((X) &lt;&lt; n ) | ((X) &gt;&gt; (32 - n)))
 DECL|macro|subRound
-mdefine_line|#define subRound(a, b, c, d, e, f, k, data) &bslash;&n;    (e += ROTL(5, a) + f(b, c, d) + k + data, b = ROTL(30, b))
+mdefine_line|#define subRound(a, b, c, d, e, f, k, data) &bslash;&n;    (e += rol32(a, 5) + f(b, c, d) + k + data, b = rol32(b, 30))
 DECL|function|SHATransform
 r_static
 r_void
@@ -2380,12 +2335,12 @@ op_plus
 l_int|16
 )braket
 op_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|1
-comma
 id|TEMP
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2529,12 +2484,12 @@ suffix:semicolon
 )brace
 id|TEMP
 op_add_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|5
-comma
 id|A
+comma
+l_int|5
 )paren
 op_plus
 id|E
@@ -2554,12 +2509,12 @@ id|C
 suffix:semicolon
 id|C
 op_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|30
-comma
 id|B
+comma
+l_int|30
 )paren
 suffix:semicolon
 id|B
@@ -2601,12 +2556,12 @@ id|D
 op_plus
 id|K1
 op_plus
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|5
-comma
 id|A
+comma
+l_int|5
 )paren
 op_plus
 id|E
@@ -2626,12 +2581,12 @@ id|C
 suffix:semicolon
 id|C
 op_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|30
-comma
 id|B
+comma
+l_int|30
 )paren
 suffix:semicolon
 id|B
@@ -2669,12 +2624,12 @@ id|D
 op_plus
 id|K2
 op_plus
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|5
-comma
 id|A
+comma
+l_int|5
 )paren
 op_plus
 id|E
@@ -2694,12 +2649,12 @@ id|C
 suffix:semicolon
 id|C
 op_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|30
-comma
 id|B
+comma
+l_int|30
 )paren
 suffix:semicolon
 id|B
@@ -2737,12 +2692,12 @@ id|D
 op_plus
 id|K3
 op_plus
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|5
-comma
 id|A
+comma
+l_int|5
 )paren
 op_plus
 id|E
@@ -2762,12 +2717,12 @@ id|C
 suffix:semicolon
 id|C
 op_assign
-id|ROTL
+id|rol22
 c_func
 (paren
-l_int|30
-comma
 id|B
+comma
+l_int|30
 )paren
 suffix:semicolon
 id|B
@@ -2805,12 +2760,12 @@ id|D
 op_plus
 id|K4
 op_plus
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|5
-comma
 id|A
+comma
+l_int|5
 )paren
 op_plus
 id|E
@@ -2830,12 +2785,12 @@ id|C
 suffix:semicolon
 id|C
 op_assign
-id|ROTL
+id|rol32
 c_func
 (paren
-l_int|30
-comma
 id|B
+comma
+l_int|30
 )paren
 suffix:semicolon
 id|B
@@ -5283,8 +5238,6 @@ multiline_comment|/* W is wiped by the caller */
 DECL|macro|W
 macro_line|#undef W
 )brace
-DECL|macro|ROTL
-macro_line|#undef ROTL
 DECL|macro|f1
 macro_line|#undef f1
 DECL|macro|f2
