@@ -145,11 +145,6 @@ id|acpi_fan
 op_star
 id|fan
 op_assign
-(paren
-r_struct
-id|acpi_fan
-op_star
-)paren
 id|seq
 op_member_access_from_pointer
 r_private
@@ -168,12 +163,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|fan
 )paren
-r_goto
-id|end
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -186,9 +178,15 @@ op_amp
 id|state
 )paren
 )paren
-r_goto
-id|end
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;status:                  ERROR&bslash;n&quot;
+)paren
 suffix:semicolon
+r_else
 id|seq_printf
 c_func
 (paren
@@ -205,8 +203,7 @@ suffix:colon
 l_string|&quot;off&quot;
 )paren
 suffix:semicolon
-id|end
-suffix:colon
+)brace
 id|return_VALUE
 c_func
 (paren
