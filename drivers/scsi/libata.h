@@ -141,21 +141,6 @@ op_star
 id|tf
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ata_thread_wake
-c_func
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_int
-r_int
-id|thr_state
-)paren
-suffix:semicolon
 multiline_comment|/* libata-scsi.c */
 r_extern
 r_void
