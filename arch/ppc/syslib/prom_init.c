@@ -489,10 +489,6 @@ r_char
 op_star
 id|klimit
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
 r_static
 r_void
 id|__init
@@ -3162,7 +3158,6 @@ op_star
 )paren
 l_int|0
 comma
-op_amp
 id|_stext
 comma
 l_int|0x100
@@ -3397,7 +3392,6 @@ op_star
 )paren
 id|__secondary_hold
 op_minus
-op_amp
 id|_stext
 comma
 id|cpu
