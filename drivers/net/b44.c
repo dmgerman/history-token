@@ -1,4 +1,4 @@
-multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)&n; */
+multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)&n; *&n; * Distribute under GPL.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -20,9 +20,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;b44&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.92&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.93&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Nov 4, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Mar, 2004&quot;
 DECL|macro|B44_DEF_MSG_ENABLE
 mdefine_line|#define B44_DEF_MSG_ENABLE&t;  &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_PROBE&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* length of time before we decide the hardware is borked,&n; * and dev-&gt;tx_timeout() should be called to fix the problem&n; */
@@ -127,6 +127,38 @@ op_assign
 id|PCI_VENDOR_ID_BROADCOM
 comma
 id|PCI_DEVICE_ID_BCM4401
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_BCM4401B0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_BCM4401B1
 comma
 id|PCI_ANY_ID
 comma
@@ -5365,12 +5397,6 @@ id|bp
 (brace
 id|u32
 id|val
-suffix:semicolon
-id|b44_disable_ints
-c_func
-(paren
-id|bp
-)paren
 suffix:semicolon
 id|b44_chip_reset
 c_func

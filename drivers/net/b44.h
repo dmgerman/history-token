@@ -1,9 +1,11 @@
 macro_line|#ifndef _B44_H
 DECL|macro|_B44_H
 mdefine_line|#define _B44_H
-multiline_comment|/* Register layout. */
+multiline_comment|/* Register layout. (These correspond to struct _bcmenettregs in bcm4400.) */
 DECL|macro|B44_DEVCTRL
 mdefine_line|#define&t;B44_DEVCTRL&t;0x0000UL /* Device Control */
+DECL|macro|DEVCTRL_MPM
+mdefine_line|#define  DEVCTRL_MPM&t;&t;0x00000040 /* Magic Packet PME Enable (B0 only) */
 DECL|macro|DEVCTRL_PFE
 mdefine_line|#define  DEVCTRL_PFE&t;&t;0x00000080 /* Pattern Filtering Enable */
 DECL|macro|DEVCTRL_IPP
@@ -46,6 +48,8 @@ DECL|macro|WKUP_LEN_D3
 mdefine_line|#define  WKUP_LEN_D3&t;&t;0x80000000
 DECL|macro|B44_ISTAT
 mdefine_line|#define B44_ISTAT&t;0x0020UL /* Interrupt Status */
+DECL|macro|ISTAT_LS
+mdefine_line|#define  ISTAT_LS&t;&t;0x00000020 /* Link Change (B0 only) */
 DECL|macro|ISTAT_PME
 mdefine_line|#define  ISTAT_PME&t;&t;0x00000040 /* Power Management Event */
 DECL|macro|ISTAT_TO
@@ -80,6 +84,10 @@ DECL|macro|IMASK_DEF
 mdefine_line|#define  IMASK_DEF&t;&t;(ISTAT_ERRORS | ISTAT_TO | ISTAT_RX | ISTAT_TX)
 DECL|macro|B44_GPTIMER
 mdefine_line|#define B44_GPTIMER&t;0x0028UL /* General Purpose Timer */
+DECL|macro|B44_ADDR_LO
+mdefine_line|#define B44_ADDR_LO&t;0x0088UL /* ENET Address Lo (B0 only) */
+DECL|macro|B44_ADDR_HI
+mdefine_line|#define B44_ADDR_HI&t;0x008CUL /* ENET Address Hi (B0 only) */
 DECL|macro|B44_FILT_ADDR
 mdefine_line|#define B44_FILT_ADDR&t;0x0090UL /* ENET Filter Address */
 DECL|macro|B44_FILT_DATA
