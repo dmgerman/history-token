@@ -3220,6 +3220,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -3239,6 +3240,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -3259,6 +3261,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 comma
 r_int
@@ -3280,6 +3283,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 comma
 r_int
@@ -5944,6 +5948,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -5989,6 +5994,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6064,6 +6070,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6087,6 +6094,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6425,6 +6433,7 @@ id|dentry
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6458,6 +6467,7 @@ id|dentry
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int

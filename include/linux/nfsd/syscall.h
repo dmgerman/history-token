@@ -279,9 +279,11 @@ r_int
 comma
 r_struct
 id|nfsctl_arg
+id|__user
 op_star
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon

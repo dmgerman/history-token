@@ -645,7 +645,7 @@ op_assign
 id|symversion
 c_func
 (paren
-id|mod-&gt;crcs
+id|mod-&gt;gpl_crcs
 comma
 id|i
 )paren
