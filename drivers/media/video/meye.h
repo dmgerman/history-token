@@ -5,7 +5,7 @@ mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;2
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;3
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
@@ -500,12 +500,6 @@ id|MEYE_MAX_BUFNBRS
 )braket
 suffix:semicolon
 multiline_comment|/* other */
-DECL|member|open_count
-r_int
-r_int
-id|open_count
-suffix:semicolon
-multiline_comment|/* open() count */
 DECL|member|lock
 r_struct
 id|semaphore
