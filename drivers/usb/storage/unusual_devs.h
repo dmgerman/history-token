@@ -870,6 +870,30 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0069
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;Memorystick MSC-U03&quot;
+comma
+id|US_SC_UFI
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
 multiline_comment|/* Submitted by Nathan Babb &lt;nathan@lexi.com&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -1336,7 +1360,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-l_int|0
+id|US_FL_IGNORE_SER
 )paren
 comma
 id|UNUSUAL_DEV
