@@ -304,7 +304,7 @@ OL
 id|FIX_ACPI_BEGIN
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* cannot handle this */
 id|phys
@@ -1751,7 +1751,7 @@ id|fadt_descriptor_rev2
 op_star
 id|fadt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fadt
 op_assign

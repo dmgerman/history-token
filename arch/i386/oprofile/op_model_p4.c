@@ -1539,7 +1539,7 @@ id|p4_event_binding
 op_star
 id|ev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
