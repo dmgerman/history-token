@@ -755,9 +755,9 @@ suffix:semicolon
 multiline_comment|/* Part of multi-function device */
 macro_line|#ifdef CONFIG_PCI_NAMES
 DECL|macro|PCI_NAME_SIZE
-mdefine_line|#define PCI_NAME_SIZE&t;50
+mdefine_line|#define PCI_NAME_SIZE&t;96
 DECL|macro|PCI_NAME_HALF
-mdefine_line|#define PCI_NAME_HALF&t;__stringify(20)&t;/* less than half to handle slop */
+mdefine_line|#define PCI_NAME_HALF&t;__stringify(43)&t;/* less than half to handle slop */
 DECL|member|pretty_name
 r_char
 id|pretty_name
@@ -885,16 +885,23 @@ id|name
 l_int|48
 )braket
 suffix:semicolon
-DECL|member|dev
+DECL|member|bridge
 r_struct
 id|device
 op_star
-id|dev
+id|bridge
+suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|pci_bus_b
-mdefine_line|#define pci_bus_b(n) list_entry(n, struct pci_bus, node)
+mdefine_line|#define pci_bus_b(n)&t;list_entry(n, struct pci_bus, node)
+DECL|macro|to_pci_bus
+mdefine_line|#define to_pci_bus(n)&t;container_of(n, struct pci_bus, class_dev)
 multiline_comment|/*&n; * Error values that may be returned by PCI functions.&n; */
 DECL|macro|PCIBIOS_SUCCESSFUL
 mdefine_line|#define PCIBIOS_SUCCESSFUL&t;&t;0x00
@@ -1372,6 +1379,21 @@ r_int
 id|devfn
 )paren
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_scan_single_device
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+id|devfn
+)paren
+suffix:semicolon
 r_void
 id|pci_bus_add_devices
 c_func
@@ -1648,6 +1670,21 @@ r_struct
 id|pci_dev
 op_star
 id|from
+)paren
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_get_slot
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
 )paren
 suffix:semicolon
 r_int
@@ -3071,50 +3108,15 @@ id|pci_register_driver
 id|drv
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-OG
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* iff CONFIG_HOTPLUG and built into kernel, we should&n;&t; * leave the driver around for future hotplug events.&n;&t; * For the module case, a hotplug daemon of some sort&n;&t; * should load a module in response to an insert event. */
-macro_line|#if defined(CONFIG_HOTPLUG) &amp;&amp; !defined(MODULE)
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* if we get here, we need to clean up pci driver instance&n;&t; * and return some sort of error */
-id|pci_unregister_driver
-(paren
-id|drv
-)paren
-suffix:semicolon
 r_return
 id|rc
+OL
+l_int|0
+ques
+c_cond
+id|rc
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */

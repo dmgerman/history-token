@@ -234,11 +234,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;%.&quot;
-id|PCI_NAME_HALF
-l_string|&quot;s %.&quot;
-id|PCI_NAME_HALF
-l_string|&quot;s&quot;
+l_string|&quot;%s %s&quot;
 comma
 id|vendor_p-&gt;name
 comma
