@@ -9222,13 +9222,6 @@ c_func
 id|pcmcia_modify_configuration
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_parse_tuple
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_parse_tuple
-)paren
-suffix:semicolon
 DECL|variable|pcmcia_register_client
 id|EXPORT_SYMBOL
 c_func

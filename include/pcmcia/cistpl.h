@@ -1690,5 +1690,18 @@ op_star
 id|tuple
 )paren
 suffix:semicolon
+r_int
+id|pccard_parse_tuple
+c_func
+(paren
+id|tuple_t
+op_star
+id|tuple
+comma
+id|cisparse_t
+op_star
+id|parse
+)paren
+suffix:semicolon
 macro_line|#endif /* LINUX_CISTPL_H */
 eof

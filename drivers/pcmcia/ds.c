@@ -3960,11 +3960,9 @@ id|buf.tuple_parse.data
 suffix:semicolon
 id|ret
 op_assign
-id|pcmcia_parse_tuple
+id|pccard_parse_tuple
 c_func
 (paren
-id|s-&gt;handle
-comma
 op_amp
 id|buf.tuple
 comma
