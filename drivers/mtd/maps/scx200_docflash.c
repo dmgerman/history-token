@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.9 2004/11/16 18:29:02 dwmw2 Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
+multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.10 2004/11/28 09:40:40 dwmw2 Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -822,10 +822,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|scx200_docflash_map.virt
 )paren
 suffix:semicolon
@@ -967,10 +963,6 @@ id|scx200_docflash_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|scx200_docflash_map.virt
 )paren
 suffix:semicolon

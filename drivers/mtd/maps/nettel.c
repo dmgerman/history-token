@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.8 2004/11/04 13:24:15 gleixner Exp $&n; */
+multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.9 2004/11/28 09:40:40 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1655,16 +1655,12 @@ id|nettel_amd_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_amd_map.virt
 )paren
 suffix:semicolon
 id|nettel_amd_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MTD_CFI_INTELEXT

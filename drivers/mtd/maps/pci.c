@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mtd/maps/pci.c&n; *&n; *  Copyright (C) 2001 Russell King, All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  $Id: pci.c,v 1.8 2004/07/12 22:38:29 dwmw2 Exp $&n; * &n; * Generic PCI memory map driver.  We support the following boards:&n; *  - Intel IQ80310 ATU.&n; *  - Intel EBSA285 (blank rom programming mode). Tested working 27/09/2001&n; */
+multiline_comment|/*&n; *  linux/drivers/mtd/maps/pci.c&n; *&n; *  Copyright (C) 2001 Russell King, All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  $Id: pci.c,v 1.9 2004/11/28 09:40:40 dwmw2 Exp $&n; * &n; * Generic PCI memory map driver.  We support the following boards:&n; *  - Intel IQ80310 ATU.&n; *  - Intel EBSA285 (blank rom programming mode). Tested working 27/09/2001&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -86,6 +86,7 @@ id|map
 suffix:semicolon
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -729,10 +730,6 @@ id|map-&gt;base
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|map-&gt;base
 )paren
 suffix:semicolon
@@ -1090,10 +1087,6 @@ id|map-&gt;base
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|map-&gt;base
 )paren
 suffix:semicolon

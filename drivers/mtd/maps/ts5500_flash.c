@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ts5500_flash.c -- MTD map driver for Technology Systems TS-5500 board&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Note:&n; * - In order for detection to work, jumper 3 must be set.&n; * - Drive A and B use a proprietary FTL from General Software which isn&squot;t &n; *   supported as of yet so standard drives can&squot;t be mounted; you can create &n; *   your own (e.g. jffs) file system.&n; * - If you have created your own jffs file system and the bios overwrites &n; *   it during boot, try disabling Drive A: and B: in the boot order.&n; *&n; * $Id: ts5500_flash.c,v 1.1 2004/09/20 15:33:26 sean Exp $&n; */
+multiline_comment|/*&n; * ts5500_flash.c -- MTD map driver for Technology Systems TS-5500 board&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Note:&n; * - In order for detection to work, jumper 3 must be set.&n; * - Drive A and B use a proprietary FTL from General Software which isn&squot;t &n; *   supported as of yet so standard drives can&squot;t be mounted; you can create &n; *   your own (e.g. jffs) file system.&n; * - If you have created your own jffs file system and the bios overwrites &n; *   it during boot, try disabling Drive A: and B: in the boot order.&n; *&n; * $Id: ts5500_flash.c,v 1.2 2004/11/28 09:40:40 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -131,10 +131,6 @@ l_int|0
 suffix:semicolon
 id|ts5500_map.virt
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -258,10 +254,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ts5500_map.virt
 )paren
 suffix:semicolon
@@ -316,16 +308,12 @@ id|ts5500_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ts5500_map.virt
 )paren
 suffix:semicolon
 id|ts5500_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

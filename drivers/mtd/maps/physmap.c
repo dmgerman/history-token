@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: physmap.c,v 1.36 2004/11/04 13:24:15 gleixner Exp $&n; *&n; * Normal mappings of chips in physical memory&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * 031022 - [jsun] add run-time configure and partition setup&n; */
+multiline_comment|/*&n; * $Id: physmap.c,v 1.37 2004/11/28 09:40:40 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * 031022 - [jsun] add run-time configure and partition setup&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -315,10 +315,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|physmap_map.virt
 )paren
 suffix:semicolon
@@ -397,16 +393,12 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|physmap_map.virt
 )paren
 suffix:semicolon
 id|physmap_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|init_physmap

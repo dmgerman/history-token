@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ebony.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * $Id: ebony.c,v 1.14 2004/11/28 09:40:39 dwmw2 Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -153,6 +153,7 @@ id|u8
 id|fpga0_reg
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|fpga0_adr
 suffix:semicolon
@@ -383,10 +384,6 @@ id|large_flash_base
 suffix:semicolon
 id|ebony_large_map.virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap64
 c_func
 (paren
@@ -511,16 +508,12 @@ id|ebony_small_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ebony_small_map.virt
 )paren
 suffix:semicolon
 id|ebony_small_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -532,16 +525,12 @@ id|ebony_large_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ebony_large_map.virt
 )paren
 suffix:semicolon
 id|ebony_large_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
