@@ -1078,7 +1078,10 @@ r_int
 id|i
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1168,8 +1171,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1363,8 +1367,9 @@ id|filp
 id|dbg
 c_func
 (paren
+l_string|&quot;%s port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1436,8 +1441,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1453,8 +1459,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1485,9 +1492,11 @@ id|EINPROGRESS
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1624,8 +1633,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1707,8 +1717,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1723,8 +1734,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1739,8 +1751,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1875,8 +1888,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1891,8 +1905,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1910,8 +1925,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2170,8 +2186,9 @@ id|B0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: baud was B0&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: baud was B0&quot;
 )paren
 suffix:semicolon
 id|priv-&gt;control_state
@@ -2382,8 +2399,9 @@ id|B0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: baud is B0&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: baud is B0&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Drop RTS and DTR */
@@ -2701,9 +2719,11 @@ op_assign
 id|priv-&gt;last_lcr
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%sstate=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;state=%d&quot;
 comma
 id|break_state
 )paren
@@ -2776,9 +2796,11 @@ r_int
 id|mask
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%scmd=0x%x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;cmd=0x%x&quot;
 comma
 id|cmd
 )paren
@@ -2978,8 +3000,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: arg not supported - 0x%04x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: arg not supported - 0x%04x&quot;
 comma
 id|cmd
 )paren
