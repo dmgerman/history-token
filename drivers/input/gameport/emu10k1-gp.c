@@ -375,7 +375,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Emu10k1 Gameport&quot;
+l_string|&quot;Emu10k1_gameport&quot;
 comma
 dot
 id|id_table
