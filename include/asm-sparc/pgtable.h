@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC_PGTABLE_H
 multiline_comment|/*  asm-sparc/pgtable.h:  Defines and functions used to work&n; *                        with Sparc page tables.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/pgtsun4.h&gt;
@@ -1345,12 +1346,45 @@ r_int
 id|invalid_segment
 suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_int
+r_int
+comma
+id|__swp_type
+comma
+id|swp_entry_t
+)paren
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_int
+r_int
+comma
+id|__swp_offset
+comma
+id|swp_entry_t
+)paren
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+id|swp_entry_t
+comma
+id|__swp_entry
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 2) &amp; 0x7f)
+mdefine_line|#define __swp_type(__x)&t;&t;&t;BTFIXUP_CALL(__swp_type)(__x)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;(((x).val &gt;&gt; 9) &amp; 0x3ffff)
+mdefine_line|#define __swp_offset(__x)&t;&t;BTFIXUP_CALL(__swp_offset)(__x)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { (((type) &amp; 0x7f) &lt;&lt; 2) | (((offset) &amp; 0x3ffff) &lt;&lt; 9) })
+mdefine_line|#define __swp_entry(__type,__off)&t;BTFIXUP_CALL(__swp_entry)(__type,__off)
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte

@@ -94,6 +94,15 @@ DECL|macro|SRMMU_PTE_FILE_SHIFT
 mdefine_line|#define SRMMU_PTE_FILE_SHIFT     8&t;/* == 32-PTE_FILE_MAX_BITS */
 DECL|macro|SRMMU_CHG_MASK
 mdefine_line|#define SRMMU_CHG_MASK    (0xffffff00 | SRMMU_REF | SRMMU_DIRTY)
+multiline_comment|/* SRMMU swap entry encoding&n; *&n; * We use 5 bits for the type and 19 for the offset.  This gives us&n; * 32 swapfiles of 4GB each.  Encoding looks like:&n; *&n; * oooooooooooooooooootttttRRRRRRRR&n; * fedcba9876543210fedcba9876543210&n; *&n; * The bottom 8 bits are reserved for protection and status bits, especially&n; * FILE and PRESENT.&n; */
+DECL|macro|SRMMU_SWP_TYPE_MASK
+mdefine_line|#define SRMMU_SWP_TYPE_MASK&t;0x1f
+DECL|macro|SRMMU_SWP_TYPE_SHIFT
+mdefine_line|#define SRMMU_SWP_TYPE_SHIFT&t;SRMMU_PTE_FILE_SHIFT
+DECL|macro|SRMMU_SWP_OFF_MASK
+mdefine_line|#define SRMMU_SWP_OFF_MASK&t;0x7ffff
+DECL|macro|SRMMU_SWP_OFF_SHIFT
+mdefine_line|#define SRMMU_SWP_OFF_SHIFT&t;(SRMMU_PTE_FILE_SHIFT + 5)
 multiline_comment|/* Some day I will implement true fine grained access bits for&n; * user pages because the SRMMU gives us the capabilities to&n; * enforce all the protection levels that vma&squot;s can have.&n; * XXX But for now...&n; */
 DECL|macro|SRMMU_PAGE_NONE
 mdefine_line|#define SRMMU_PAGE_NONE    __pgprot(SRMMU_VALID | SRMMU_CACHE | &bslash;&n;&t;&t;&t;&t;    SRMMU_PRIV | SRMMU_REF)
