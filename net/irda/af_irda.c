@@ -3567,11 +3567,7 @@ suffix:semicolon
 multiline_comment|/* Allocate IrDA socket */
 id|self
 op_assign
-id|irda_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func
@@ -4009,11 +4005,7 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Prevent sock_def_destruct() to create havoc */
-id|irda_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 l_int|NULL
 suffix:semicolon

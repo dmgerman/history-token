@@ -30647,9 +30647,15 @@ id|regs
 comma
 r_void
 op_star
-id|p
+id|_p
 )paren
 (brace
+id|u32
+op_star
+id|p
+op_assign
+id|_p
+suffix:semicolon
 r_struct
 id|tg3
 op_star
@@ -30661,7 +30667,7 @@ id|u8
 op_star
 id|orig_p
 op_assign
-id|p
+id|_p
 suffix:semicolon
 r_int
 id|i
@@ -30695,11 +30701,11 @@ id|tp-&gt;tx_lock
 )paren
 suffix:semicolon
 DECL|macro|__GET_REG32
-mdefine_line|#define __GET_REG32(reg)&t;(*((u32 *)(p))++ = tr32(reg))
+mdefine_line|#define __GET_REG32(reg)&t;(*(p)++ = tr32(reg))
 DECL|macro|GET_REG32_LOOP
-mdefine_line|#define GET_REG32_LOOP(base,len)&t;&t;&bslash;&n;do {&t;p = orig_p + (base);&t;&t;&t;&bslash;&n;&t;for (i = 0; i &lt; len; i += 4)&t;&t;&bslash;&n;&t;&t;__GET_REG32((base) + i);&t;&bslash;&n;} while (0)
+mdefine_line|#define GET_REG32_LOOP(base,len)&t;&t;&bslash;&n;do {&t;p = (u32 *)(orig_p + (base));&t;&t;&bslash;&n;&t;for (i = 0; i &lt; len; i += 4)&t;&t;&bslash;&n;&t;&t;__GET_REG32((base) + i);&t;&bslash;&n;} while (0)
 DECL|macro|GET_REG32_1
-mdefine_line|#define GET_REG32_1(reg)&t;&bslash;&n;do {&t;p = orig_p + (reg);&t;&bslash;&n;&t;__GET_REG32((reg));&t;&bslash;&n;} while (0)
+mdefine_line|#define GET_REG32_1(reg)&t;&t;&t;&bslash;&n;do {&t;p = (u32 *)(orig_p + (reg));&t;&t;&bslash;&n;&t;__GET_REG32((reg));&t;&t;&t;&bslash;&n;} while (0)
 id|GET_REG32_LOOP
 c_func
 (paren

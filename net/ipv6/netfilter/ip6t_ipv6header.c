@@ -1,5 +1,6 @@
-multiline_comment|/* ipv6header match - matches IPv6 packets based&n;on whether they contain certain headers */
+multiline_comment|/* ipv6header match - matches IPv6 packets based&n;   on whether they contain certain headers */
 multiline_comment|/* Original idea: Brad Chapman &n; * Rewritten by: Andras Kis-Szabo &lt;kisza@sch.bme.hu&gt; */
+multiline_comment|/* (C) 2001-2002 Andras Kis-Szabo &lt;kisza@sch.bme.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;

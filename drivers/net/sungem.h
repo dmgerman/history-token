@@ -37,6 +37,10 @@ DECL|macro|GREG_CFG_TXDMALIM
 mdefine_line|#define GREG_CFG_TXDMALIM&t;0x0000003e&t;/* TX DMA grant limit&t;&t;*/
 DECL|macro|GREG_CFG_RXDMALIM
 mdefine_line|#define GREG_CFG_RXDMALIM&t;0x000007c0&t;/* RX DMA grant limit&t;&t;*/
+DECL|macro|GREG_CFG_RONPAULBIT
+mdefine_line|#define GREG_CFG_RONPAULBIT&t;0x00000800&t;/* Use mem read multiple for PCI read&n;&t;&t;&t;&t;&t;&t; * after infinite burst (Apple) */
+DECL|macro|GREG_CFG_ENBUG2FIX
+mdefine_line|#define GREG_CFG_ENBUG2FIX&t;0x00001000&t;/* Fix Rx hang after overflow */
 multiline_comment|/* Global Interrupt Status Register.&n; *&n; * Reading this register automatically clears bits 0 through 6.&n; * This auto-clearing does not occur when the alias at GREG_STAT2&n; * is read instead.  The rest of the interrupt bits only clear when&n; * the secondary interrupt status register corresponding to that&n; * bit is read (ie. if GREG_STAT_PCS is set, it will be cleared by&n; * reading PCS_ISTAT).&n; */
 DECL|macro|GREG_STAT_TXINTME
 mdefine_line|#define GREG_STAT_TXINTME&t;0x00000001&t;/* TX INTME frame transferred&t;*/

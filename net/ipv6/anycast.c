@@ -357,13 +357,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|ipv6_addr_is_multicast
 c_func
 (paren
 id|addr
 )paren
-op_amp
-id|IPV6_ADDR_MULTICAST
 )paren
 r_return
 op_minus

@@ -1,4 +1,4 @@
-multiline_comment|/* IP tables module for matching the value of the TTL &n; *&n; * ipt_ttl.c,v 1.5 2000/11/13 11:16:08 laforge Exp&n; *&n; * (C) 2000,2001 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * This software is distributed under the terms  GNU GPL&n; */
+multiline_comment|/* IP tables module for matching the value of the TTL &n; *&n; * ipt_ttl.c,v 1.5 2000/11/13 11:16:08 laforge Exp&n; *&n; * (C) 2000,2001 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_ttl.h&gt;
@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
+l_string|&quot;Harald Welte &lt;laforge@netfilter.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * iptables module to match IP address ranges&n; *   (c) 2003 Jozsef Kadlecsik &lt;kadlec@blackhole.kfki.hu&gt;&n; *&n; * Released under the terms of GNU GPLv2.&n; *&n; */
+multiline_comment|/*&n; * iptables module to match IP address ranges&n; *&n; * (C) 2003 Jozsef Kadlecsik &lt;kadlec@blackhole.kfki.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
