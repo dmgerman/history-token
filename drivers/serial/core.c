@@ -4710,10 +4710,6 @@ id|tty-&gt;closing
 op_assign
 l_int|0
 suffix:semicolon
-id|info-&gt;event
-op_assign
-l_int|0
-suffix:semicolon
 id|info-&gt;tty
 op_assign
 l_int|NULL
@@ -5085,10 +5081,6 @@ c_func
 (paren
 id|info
 )paren
-suffix:semicolon
-id|info-&gt;event
-op_assign
-l_int|0
 suffix:semicolon
 id|state-&gt;count
 op_assign

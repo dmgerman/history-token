@@ -738,11 +738,6 @@ r_struct
 id|semaphore
 id|tmpbuf_sem
 suffix:semicolon
-DECL|member|event
-r_int
-r_int
-id|event
-suffix:semicolon
 DECL|member|blocked_open
 r_int
 id|blocked_open
