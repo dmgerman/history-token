@@ -4019,30 +4019,19 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETPOLL
+multiline_comment|/* if netpoll wants it, pretend we never saw it */
 r_if
 c_cond
 (paren
-id|skb-&gt;dev-&gt;netpoll_rx
-op_logical_and
 id|netpoll_rx
 c_func
 (paren
 id|skb
 )paren
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 id|NET_RX_DROP
 suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4843,12 +4832,10 @@ r_int
 r_int
 id|type
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETPOLL
+multiline_comment|/* if we&squot;ve gotten here through NAPI, check netpoll */
 r_if
 c_cond
 (paren
-id|skb-&gt;dev-&gt;netpoll_rx
-op_logical_and
 id|skb-&gt;dev-&gt;poll
 op_logical_and
 id|netpoll_rx
@@ -4857,18 +4844,9 @@ c_func
 id|skb
 )paren
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 id|NET_RX_DROP
 suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

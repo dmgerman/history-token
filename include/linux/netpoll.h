@@ -161,7 +161,7 @@ id|np
 )paren
 suffix:semicolon
 r_int
-id|netpoll_rx
+id|__netpoll_rx
 c_func
 (paren
 r_struct
@@ -170,5 +170,33 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL
+DECL|function|netpoll_rx
+r_static
+r_inline
+r_int
+id|netpoll_rx
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|skb-&gt;dev-&gt;netpoll_rx
+op_logical_and
+id|__netpoll_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|netpoll_rx
+mdefine_line|#define netpoll_rx(a) 0
+macro_line|#endif
 macro_line|#endif
 eof
