@@ -20210,6 +20210,17 @@ comma
 id|maxlen_flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5705
+)paren
 id|tg3_write_mem
 c_func
 (paren
