@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/serial/imx.c&n; *&n; *  Driver for Motorola IMX serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Author: Sascha Hauer &lt;sascha@saschahauer.de&gt;&n; *  Copyright (C) 2004 Pengutronix&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/serial/imx.c&n; *&n; *  Driver for Motorola IMX serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Author: Sascha Hauer &lt;sascha@saschahauer.de&gt;&n; *  Copyright (C) 2004 Pengutronix&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * [29-Mar-2005] Mike Lee&n; * Added hardware handshake&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_IMX_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
@@ -1597,6 +1597,24 @@ id|UCR2_SRST
 op_or
 id|UCR2_IRTS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|termios-&gt;c_cflag
+op_amp
+id|CRTSCTS
+)paren
+(brace
+id|ucr2
+op_and_assign
+op_complement
+id|UCR2_IRTS
+suffix:semicolon
+id|ucr2
+op_or_assign
+id|UCR2_CTSC
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
