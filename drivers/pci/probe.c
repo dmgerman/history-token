@@ -2857,6 +2857,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;multifunction
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2864,13 +2865,18 @@ id|func
 OG
 l_int|0
 )paren
+(brace
 id|dev-&gt;multifunction
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_else
+(brace
 r_break
 suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 (brace
