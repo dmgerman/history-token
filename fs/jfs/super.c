@@ -10,6 +10,7 @@ macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_imap.h&quot;
+macro_line|#include &quot;jfs_acl.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
 id|MODULE_DESCRIPTION
 c_func
@@ -335,16 +336,59 @@ op_star
 id|inode
 )paren
 (brace
-id|kmem_cache_free
-c_func
-(paren
-id|jfs_inode_cachep
-comma
+r_struct
+id|jfs_inode_info
+op_star
+id|ji
+op_assign
 id|JFS_IP
 c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+r_if
+c_cond
+(paren
+id|ji-&gt;i_acl
+op_logical_and
+(paren
+id|ji-&gt;i_acl
+op_ne
+id|JFS_ACL_NOT_CACHED
+)paren
+)paren
+id|posix_acl_release
+c_func
+(paren
+id|ji-&gt;i_acl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ji-&gt;i_default_acl
+op_logical_and
+(paren
+id|ji-&gt;i_default_acl
+op_ne
+id|JFS_ACL_NOT_CACHED
+)paren
+)paren
+id|posix_acl_release
+c_func
+(paren
+id|ji-&gt;i_default_acl
+)paren
+suffix:semicolon
+macro_line|#endif
+id|kmem_cache_free
+c_func
+(paren
+id|jfs_inode_cachep
+comma
+id|ji
 )paren
 suffix:semicolon
 )brace
@@ -1894,6 +1938,16 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+id|jfs_ip-&gt;i_acl
+op_assign
+id|JFS_ACL_NOT_CACHED
+suffix:semicolon
+id|jfs_ip-&gt;i_default_acl
+op_assign
+id|JFS_ACL_NOT_CACHED
+suffix:semicolon
+macro_line|#endif
 id|inode_init_once
 c_func
 (paren

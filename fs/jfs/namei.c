@@ -7,6 +7,7 @@ macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_unicode.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_xattr.h&quot;
+macro_line|#include &quot;jfs_acl.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
 r_extern
 r_struct
@@ -68,6 +69,20 @@ id|super_block
 op_star
 comma
 id|ino_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|jfs_init_acl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|inode
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * forward references&n; */
@@ -536,6 +551,23 @@ op_amp
 id|dname
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|jfs_init_acl
+c_func
+(paren
+id|ip
+comma
+id|dip
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out1
 suffix:colon
 id|jFYI
@@ -1035,6 +1067,23 @@ op_amp
 id|dname
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|jfs_init_acl
+c_func
+(paren
+id|ip
+comma
+id|dip
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out1
 suffix:colon
 id|jFYI
@@ -3922,6 +3971,23 @@ op_amp
 id|dname
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|jfs_init_acl
+c_func
+(paren
+id|ip
+comma
+id|dip
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out1
 suffix:colon
 id|jFYI
@@ -5609,6 +5675,23 @@ op_amp
 id|dname
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|jfs_init_acl
+c_func
+(paren
+id|ip
+comma
+id|dir
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out
 suffix:colon
 id|jFYI
@@ -6065,6 +6148,18 @@ id|removexattr
 op_assign
 id|jfs_removexattr
 comma
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+dot
+id|setattr
+op_assign
+id|jfs_setattr
+comma
+dot
+id|permission
+op_assign
+id|jfs_permission
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|jfs_dir_operations

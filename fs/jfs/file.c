@@ -4,6 +4,7 @@ macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
 macro_line|#include &quot;jfs_xattr.h&quot;
+macro_line|#include &quot;jfs_acl.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
 r_extern
 r_int
@@ -533,6 +534,18 @@ id|removexattr
 op_assign
 id|jfs_removexattr
 comma
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+dot
+id|setattr
+op_assign
+id|jfs_setattr
+comma
+dot
+id|permission
+op_assign
+id|jfs_permission
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|jfs_file_operations
