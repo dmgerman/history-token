@@ -179,7 +179,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_INFO
 l_string|&quot;PCI: i440KX/GX host bridge %s: secondary bus %02x&bslash;n&quot;
 comma
 id|d-&gt;slot_name

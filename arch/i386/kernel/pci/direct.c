@@ -1678,9 +1678,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using configuration type 1&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1690,6 +1695,9 @@ l_int|8
 comma
 l_string|&quot;PCI conf1&quot;
 )paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_return
 op_amp
@@ -1768,9 +1776,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using configuration type 2&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1780,6 +1793,9 @@ l_int|4
 comma
 l_string|&quot;PCI conf2&quot;
 )paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_return
 op_amp

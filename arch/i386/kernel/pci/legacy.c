@@ -142,6 +142,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Discovered peer bus %02x&bslash;n&quot;
 comma
 id|n

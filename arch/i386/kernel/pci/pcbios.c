@@ -245,6 +245,7 @@ multiline_comment|/* Not present */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;bios32_service(0x%lx): not present&bslash;n&quot;
 comma
 id|service
@@ -259,6 +260,7 @@ multiline_comment|/* Shouldn&squot;t happen */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;bios32_service(0x%lx): returned 0x%x -- BIOS bug!&bslash;n&quot;
 comma
 id|service
@@ -500,6 +502,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: PCI BIOS revision %x.%02x entry at 0x%lx, last bus=%d&bslash;n&quot;
 comma
 id|major_ver
@@ -1978,6 +1981,7 @@ id|pci_devices
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: BIOS reporting unknown device %02x:%02x&bslash;n&quot;
 comma
 id|bus
@@ -2000,6 +2004,7 @@ id|found
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Device %02x:%02x not found by BIOS&bslash;n&quot;
 comma
 id|dev-&gt;bus-&gt;number
@@ -2301,6 +2306,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using BIOS Interrupt Routing Table&bslash;n&quot;
 )paren
 suffix:semicolon
