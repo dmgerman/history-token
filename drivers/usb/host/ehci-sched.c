@@ -3355,6 +3355,14 @@ comma
 id|sched
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM

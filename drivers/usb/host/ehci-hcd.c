@@ -194,7 +194,6 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hc states include: unknown, halted, ready, running&n; * transitional states are messy just now&n; * trying to avoid &quot;running&quot; unless urbs are active&n; * a &quot;ready&quot; hc can be finishing prefetched work&n; */
 multiline_comment|/* force HC to halt state from unknown (EHCI spec section 2.3) */
 DECL|function|ehci_halt
 r_static
@@ -1416,6 +1415,7 @@ id|QTD_NEXT
 id|ehci-&gt;async-&gt;dummy-&gt;qtd_dma
 )paren
 suffix:semicolon
+)brace
 id|writel
 (paren
 (paren
@@ -1427,7 +1427,6 @@ op_amp
 id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  the dma mask is visible through dma_supported(), so&n;&t; * drivers can pass this info along ... like NETIF_F_HIGHDMA,&n;&t; * Scsi_Host.highmem_io, and so forth.  It&squot;s readonly to all&n;&t; * host side drivers though.&n;&t; */
 r_if
 c_cond
@@ -1663,10 +1662,6 @@ c_cond
 id|USB_STATE_ATTACHED
 suffix:colon
 id|USB_STATE_CONFIGURED
-suffix:semicolon
-id|udev-&gt;dev.power.power_state
-op_assign
-id|PM_SUSPEND_ON
 suffix:semicolon
 multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.  (Except where one is integrated,&n;&t; * and there&squot;s no companion controller unless maybe for USB OTG.)&n;&t; */
 r_if
@@ -2107,14 +2102,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hcd-&gt;self.root_hub-&gt;dev.power.power_state
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
 id|time_before
 (paren
 id|jiffies
@@ -2139,7 +2126,11 @@ id|state
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* FIXME lock root hub */
+id|usb_lock_device
+(paren
+id|hcd-&gt;self.root_hub
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren
@@ -2148,8 +2139,14 @@ id|ehci_hub_suspend
 id|hcd
 )paren
 suffix:semicolon
+id|usb_unlock_device
+(paren
+id|hcd-&gt;self.root_hub
+)paren
+suffix:semicolon
 macro_line|#endif
 singleline_comment|// save (PCI) FLADJ in case of Vaux power loss
+singleline_comment|// ... we&squot;d only use it to handle clock skew
 r_return
 l_int|0
 suffix:semicolon
@@ -2191,9 +2188,14 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_int
+id|powerup
+op_assign
+l_int|0
+suffix:semicolon
 singleline_comment|// maybe restore (PCI) FLADJ
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|time_before
 (paren
@@ -2271,6 +2273,21 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_amp
+id|PORT_POWER
+)paren
+op_eq
+l_int|0
+)paren
+id|powerup
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2376,18 +2393,63 @@ id|ehci_start
 id|hcd
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* here we &quot;know&quot; root ports should always stay powered;&n;&t;&t; * but some controllers may lost all power.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|retval
-op_eq
-l_int|0
+id|powerup
 )paren
-id|hcd-&gt;self.controller-&gt;power.power_state
+(brace
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;...powerup ports...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|port
 op_assign
+id|HCS_N_PORTS
+(paren
+id|ehci-&gt;hcs_params
+)paren
+suffix:semicolon
+id|port
+OG
 l_int|0
 suffix:semicolon
+)paren
+(paren
+r_void
+)paren
+id|ehci_hub_control
+c_func
+(paren
+id|hcd
+comma
+id|SetPortFeature
+comma
+id|USB_PORT_FEAT_POWER
+comma
+id|port
+op_decrement
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|20
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 id|retval
 suffix:semicolon

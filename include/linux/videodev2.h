@@ -472,6 +472,8 @@ mdefine_line|#define V4L2_PIX_FMT_MPEG     v4l2_fourcc(&squot;M&squot;,&squot;P&
 multiline_comment|/*  Vendor-specific formats   */
 DECL|macro|V4L2_PIX_FMT_WNVA
 mdefine_line|#define V4L2_PIX_FMT_WNVA     v4l2_fourcc(&squot;W&squot;,&squot;N&squot;,&squot;V&squot;,&squot;A&squot;) /* Winnov hw compress */
+DECL|macro|V4L2_PIX_FMT_SN9C10X
+mdefine_line|#define V4L2_PIX_FMT_SN9C10X  v4l2_fourcc(&squot;S&squot;,&squot;9&squot;,&squot;1&squot;,&squot;0&squot;) /* SN9C10x compression */
 multiline_comment|/*&n; *&t;F O R M A T   E N U M E R A T I O N&n; */
 DECL|struct|v4l2_fmtdesc
 r_struct
