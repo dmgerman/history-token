@@ -2223,7 +2223,7 @@ c_func
 op_amp
 id|msg-&gt;target
 comma
-id|src_addr
+id|solicited_addr
 )paren
 suffix:semicolon
 r_if
