@@ -232,18 +232,19 @@ DECL|member|first_minor
 r_int
 id|first_minor
 suffix:semicolon
-DECL|member|major_name
-r_const
-r_char
-op_star
-id|major_name
-suffix:semicolon
-multiline_comment|/* name of major driver */
 DECL|member|minor_shift
 r_int
 id|minor_shift
 suffix:semicolon
 multiline_comment|/* number of times minor is shifted to&n;&t;&t;&t;&t;&t;   get real minor */
+DECL|member|disk_name
+r_char
+id|disk_name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* name of major driver */
 DECL|member|part
 r_struct
 id|hd_struct

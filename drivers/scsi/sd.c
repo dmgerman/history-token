@@ -4854,12 +4854,6 @@ suffix:semicolon
 r_int
 id|dsk_nr
 suffix:semicolon
-r_char
-id|diskname
-(braket
-l_int|6
-)braket
-suffix:semicolon
 r_int
 r_int
 id|iflags
@@ -4869,12 +4863,6 @@ r_struct
 r_struct
 id|gendisk
 id|disk
-suffix:semicolon
-r_char
-id|name
-(braket
-l_int|5
-)braket
 suffix:semicolon
 )brace
 op_star
@@ -4911,7 +4899,7 @@ id|TYPE_MOD
 r_return
 l_int|0
 suffix:semicolon
-id|p
+id|gd
 op_assign
 id|kmalloc
 c_func
@@ -4929,7 +4917,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p
+id|gd
 )paren
 r_return
 l_int|1
@@ -4937,7 +4925,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|p
+id|gd
 comma
 l_int|0
 comma
@@ -4947,11 +4935,6 @@ op_star
 id|p
 )paren
 )paren
-suffix:semicolon
-id|gd
-op_assign
-op_amp
-id|p-&gt;disk
 suffix:semicolon
 id|SCSI_LOG_HLQUEUE
 c_func
@@ -4994,7 +4977,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|p
+id|gd
 )paren
 suffix:semicolon
 r_return
@@ -5090,7 +5073,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|p
+id|gd
 )paren
 suffix:semicolon
 r_return
@@ -5143,7 +5126,7 @@ l_int|26
 id|sprintf
 c_func
 (paren
-id|p-&gt;name
+id|gd-&gt;disk_name
 comma
 l_string|&quot;sd%c%c&quot;
 comma
@@ -5166,7 +5149,7 @@ r_else
 id|sprintf
 c_func
 (paren
-id|p-&gt;name
+id|gd-&gt;disk_name
 comma
 l_string|&quot;sd%c&quot;
 comma
@@ -5176,10 +5159,6 @@ id|dsk_nr
 op_mod
 l_int|26
 )paren
-suffix:semicolon
-id|gd-&gt;major_name
-op_assign
-id|p-&gt;name
 suffix:semicolon
 id|gd-&gt;flags
 op_assign
@@ -5208,14 +5187,6 @@ id|dsk_nr
 op_assign
 id|gd
 suffix:semicolon
-id|sd_dskname
-c_func
-(paren
-id|dsk_nr
-comma
-id|diskname
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5230,7 +5201,7 @@ l_string|&quot;removable &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
-id|diskname
+id|gd-&gt;disk_name
 comma
 id|sdp-&gt;host-&gt;host_no
 comma

@@ -3690,7 +3690,7 @@ op_amp
 id|stram_fops
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;stram&quot;
 )brace

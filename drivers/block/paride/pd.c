@@ -3462,9 +3462,13 @@ c_cond
 id|disk-&gt;present
 )paren
 (brace
-id|disk-&gt;gd.major_name
-op_assign
+id|strcpy
+c_func
+(paren
+id|disk-&gt;gd.disk_name
+comma
 id|disk-&gt;name
+)paren
 suffix:semicolon
 id|disk-&gt;gd.minor_shift
 op_assign

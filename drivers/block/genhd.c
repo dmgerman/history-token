@@ -171,7 +171,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;out of memory; no partitions for %s&bslash;n&quot;
 comma
-id|gp-&gt;major_name
+id|gp-&gt;disk_name
 )paren
 suffix:semicolon
 id|gp-&gt;minor_shift

@@ -176,7 +176,7 @@ id|buf
 comma
 l_string|&quot;%s&quot;
 comma
-id|hd-&gt;major_name
+id|hd-&gt;disk_name
 )paren
 suffix:semicolon
 )brace
@@ -233,12 +233,12 @@ c_cond
 id|isdigit
 c_func
 (paren
-id|hd-&gt;major_name
+id|hd-&gt;disk_name
 (braket
 id|strlen
 c_func
 (paren
-id|hd-&gt;major_name
+id|hd-&gt;disk_name
 )paren
 op_minus
 l_int|1
@@ -252,7 +252,7 @@ id|buf
 comma
 l_string|&quot;%sp%d&quot;
 comma
-id|hd-&gt;major_name
+id|hd-&gt;disk_name
 comma
 id|part
 )paren
@@ -265,7 +265,7 @@ id|buf
 comma
 l_string|&quot;%s%d&quot;
 comma
-id|hd-&gt;major_name
+id|hd-&gt;disk_name
 comma
 id|part
 )paren
@@ -1492,7 +1492,7 @@ id|dirname
 comma
 l_string|&quot;../%s/disc%d&quot;
 comma
-id|dev-&gt;major_name
+id|dev-&gt;disk_name
 comma
 id|dev-&gt;first_minor
 op_rshift

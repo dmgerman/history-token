@@ -5036,9 +5036,13 @@ id|disk-&gt;minor_shift
 op_assign
 l_int|0
 suffix:semicolon
-id|disk-&gt;major_name
-op_assign
+id|strcpy
+c_func
+(paren
+id|disk-&gt;disk_name
+comma
 id|stuffp-&gt;info.name
+)paren
 suffix:semicolon
 id|disk-&gt;fops
 op_assign

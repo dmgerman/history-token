@@ -3198,7 +3198,7 @@ op_assign
 l_int|0
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;hda&quot;
 comma
@@ -3227,7 +3227,7 @@ op_assign
 l_int|64
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;hdb&quot;
 comma
@@ -3645,7 +3645,7 @@ id|hd_gendisk
 id|drive
 )braket
 dot
-id|major_name
+id|disk_name
 comma
 id|size
 op_div
