@@ -2793,8 +2793,9 @@ suffix:semicolon
 )brace
 DECL|function|ibm_unconfigure_device
 r_static
-r_int
+r_void
 id|ibm_unconfigure_device
+c_func
 (paren
 r_struct
 id|pci_func
@@ -2811,6 +2812,7 @@ id|u8
 id|j
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;inside %s&bslash;n&quot;
 comma
@@ -2818,6 +2820,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;func-&gt;device = %x, func-&gt;function = %x&bslash;n&quot;
 comma
@@ -2827,6 +2830,7 @@ id|func-&gt;function
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;func-&gt;device &lt;&lt; 3 | 0x0  = %x&bslash;n&quot;
 comma
@@ -2855,6 +2859,7 @@ op_increment
 id|temp
 op_assign
 id|pci_find_slot
+c_func
 (paren
 id|func-&gt;busno
 comma
@@ -2879,9 +2884,6 @@ id|temp
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * The following function is to fix kernel bug regarding &n; * getting bus entries, here we manually add those primary &n; * bus entries to kernel bus structure whenever apply&n; */
 DECL|function|bus_structure_fixup
@@ -4900,34 +4902,12 @@ op_assign
 id|slot_cur-&gt;device
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
 id|ibm_unconfigure_device
+c_func
 (paren
 id|slot_cur-&gt;func
 )paren
-)paren
-)paren
-(brace
-id|err
-(paren
-l_string|&quot;removing from kernel failed... &bslash;n&quot;
-)paren
 suffix:semicolon
-id|err
-(paren
-l_string|&quot;Please check to see if it was statically linked or is &quot;
-l_string|&quot;in use otherwise. (perhaps the driver is not &squot;hot-removable&squot;)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|error
-suffix:semicolon
-)brace
 multiline_comment|/* If we got here from latch suddenly opening on operating card or &n;&t;a power fault, there&squot;s no power to the card, so cannot&n;&t;read from it to determine what resources it occupied.  This operation&n;&t;is forbidden anyhow.  The best we can do is remove it from kernel&n;&t;lists at least */
 r_if
 c_cond
