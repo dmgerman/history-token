@@ -404,9 +404,13 @@ comma
 id|data-&gt;aout
 )paren
 suffix:semicolon
-)brace
 r_return
 id|count
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_static

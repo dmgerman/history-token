@@ -1510,7 +1510,7 @@ l_int|0
 )paren
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 id|it87_write_value
 c_func

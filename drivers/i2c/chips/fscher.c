@@ -1834,7 +1834,7 @@ id|v
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* bits 2..7 reserved =&gt; mask with 0x03 */
