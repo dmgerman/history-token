@@ -1272,7 +1272,7 @@ id|id
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Structure to track chunk fragments that have been acked, but peer&n; * fragments of the same message have not.  &n; */
+multiline_comment|/* Structure to track chunk fragments that have been acked, but peer&n; * fragments of the same message have not.&n; */
 DECL|struct|sctp_datamsg
 r_struct
 id|sctp_datamsg
@@ -1294,6 +1294,12 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
+multiline_comment|/* When is this message no longer interesting to the peer? */
+DECL|member|expires_at
+r_int
+r_int
+id|expires_at
+suffix:semicolon
 multiline_comment|/* Did the messenge fail to send? */
 DECL|member|send_error
 r_int
@@ -1302,6 +1308,11 @@ suffix:semicolon
 DECL|member|send_failed
 r_char
 id|send_failed
+suffix:semicolon
+multiline_comment|/* Control whether fragments from this message can expire. */
+DECL|member|can_expire
+r_char
+id|can_expire
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1381,6 +1392,27 @@ r_struct
 id|sctp_datamsg
 op_star
 comma
+r_struct
+id|sctp_chunk
+op_star
+)paren
+suffix:semicolon
+r_void
+id|sctp_datamsg_fail
+c_func
+(paren
+r_struct
+id|sctp_chunk
+op_star
+comma
+r_int
+id|error
+)paren
+suffix:semicolon
+r_int
+id|sctp_datamsg_expires
+c_func
+(paren
 r_struct
 id|sctp_chunk
 op_star
@@ -1542,6 +1574,32 @@ r_int
 r_int
 id|sent_at
 suffix:semicolon
+multiline_comment|/* What is the origin IP address for this chunk?  */
+DECL|member|source
+r_union
+id|sctp_addr
+id|source
+suffix:semicolon
+multiline_comment|/* Destination address for this chunk. */
+DECL|member|dest
+r_union
+id|sctp_addr
+id|dest
+suffix:semicolon
+multiline_comment|/* For outbound message, track all fragments for SEND_FAILED. */
+DECL|member|msg
+r_struct
+id|sctp_datamsg
+op_star
+id|msg
+suffix:semicolon
+multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
+DECL|member|transport
+r_struct
+id|sctp_transport
+op_star
+id|transport
+suffix:semicolon
 DECL|member|rtt_in_progress
 id|__u8
 id|rtt_in_progress
@@ -1597,32 +1655,6 @@ id|__u8
 id|tsn_missing_report
 suffix:semicolon
 multiline_comment|/* Data chunk missing counter. */
-multiline_comment|/* What is the origin IP address for this chunk?  */
-DECL|member|source
-r_union
-id|sctp_addr
-id|source
-suffix:semicolon
-multiline_comment|/* Destination address for this chunk. */
-DECL|member|dest
-r_union
-id|sctp_addr
-id|dest
-suffix:semicolon
-multiline_comment|/* For outbound message, track all fragments for SEND_FAILED. */
-DECL|member|msg
-r_struct
-id|sctp_datamsg
-op_star
-id|msg
-suffix:semicolon
-multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
-DECL|member|transport
-r_struct
-id|sctp_transport
-op_star
-id|transport
-suffix:semicolon
 )brace
 suffix:semicolon
 r_void

@@ -983,6 +983,12 @@ op_logical_neg
 id|chunk-&gt;has_tsn
 )paren
 (brace
+id|sctp_chunk_assign_ssn
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
 id|sctp_chunk_assign_tsn
 c_func
 (paren
@@ -1700,6 +1706,11 @@ suffix:semicolon
 id|asoc-&gt;peer.rwnd
 op_assign
 id|rwnd
+suffix:semicolon
+multiline_comment|/* Has been accepted for transmission. */
+id|chunk-&gt;msg-&gt;can_expire
+op_assign
+l_int|0
 suffix:semicolon
 id|finish
 suffix:colon

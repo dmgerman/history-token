@@ -839,6 +839,16 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+multiline_comment|/* Pull off any padding. */
+r_int
+id|len
+op_assign
+id|ntohs
+c_func
+(paren
+id|chunk-&gt;chunk_hdr-&gt;length
+)paren
+suffix:semicolon
 multiline_comment|/* Make skb with more room so we can prepend notification.  */
 id|skb
 op_assign
@@ -877,8 +887,17 @@ id|skb
 comma
 r_sizeof
 (paren
-id|sctp_data_chunk_t
+r_struct
+id|sctp_data_chunk
 )paren
+)paren
+suffix:semicolon
+id|len
+op_sub_assign
+r_sizeof
+(paren
+r_struct
+id|sctp_data_chunk
 )paren
 suffix:semicolon
 multiline_comment|/* Embed the event fields inside the cloned skb.  */
@@ -941,7 +960,21 @@ suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_length: sizeof (__u32)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|ssf-&gt;ssf_length
 op_assign
-id|skb-&gt;len
+r_sizeof
+(paren
+r_struct
+id|sctp_send_failed
+)paren
+op_plus
+id|len
+suffix:semicolon
+id|skb_trim
+c_func
+(paren
+id|skb
+comma
+id|ssf-&gt;ssf_length
+)paren
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_error: 16 bits (unsigned integer)&n;&t; * This value represents the reason why the send failed, and if set,&n;&t; * will be a SCTP protocol error code as defined in [SCTP] section&n;&t; * 3.3.10.&n;&t; */
 id|ssf-&gt;ssf_error
@@ -964,6 +997,11 @@ r_struct
 id|sctp_sndrcvinfo
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Per TSVWG discussion with Randy. Allow the application to&n;&t; * ressemble a fragmented message. &n;&t; */
+id|ssf-&gt;ssf_info.sinfo_flags
+op_assign
+id|chunk-&gt;chunk_hdr-&gt;flags
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, sf_assoc_id, holds the identifier for the&n;&t; * association.  All notifications for a given association have the&n;&t; * same association identifier.  For TCP style socket, this field is&n;&t; * ignored.&n;&t; */
 id|skb
