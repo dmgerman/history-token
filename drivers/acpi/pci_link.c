@@ -2698,12 +2698,6 @@ op_star
 id|str
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI STATIC SET&bslash;n&quot;
-)paren
-suffix:semicolon
 id|acpi_irq_balance
 op_assign
 l_int|0
@@ -2731,12 +2725,6 @@ op_star
 id|str
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI BALANCE SET&bslash;n&quot;
-)paren
-suffix:semicolon
 id|acpi_irq_balance
 op_assign
 l_int|1
