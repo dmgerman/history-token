@@ -3972,6 +3972,46 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;siimage_fixup&t;&t;-&t;post probe fixups&n; *&t;@hwif: interface to fix up&n; *&n; *&t;Called after drive probe we use this to decide whether the&n; *&t;Seagate fixup must be applied. This used to be in init_iops but&n; *&t;that can occur before we know what drives are present.&n; */
+DECL|function|siimage_fixup
+r_static
+r_void
+id|__devinit
+id|siimage_fixup
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+multiline_comment|/* Try and raise the rqsize */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_sata
+c_func
+(paren
+id|hwif
+)paren
+op_logical_or
+op_logical_neg
+id|is_dev_seagate_sata
+c_func
+(paren
+op_amp
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|hwif-&gt;rqsize
+op_assign
+l_int|128
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;init_iops_siimage&t;-&t;set up iops&n; *&t;@hwif: interface to set up&n; *&n; *&t;Do the basic setup for the SIIMAGE hardware interface&n; *&t;and then do the MMIO setup if we can. This is the first&n; *&t;look in we get for setting up the hwif so that we&n; *&t;can get the iops right before using them.&n; */
 DECL|function|init_iops_siimage
 r_static
@@ -4016,29 +4056,7 @@ id|hwif-&gt;hwif_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|hwif-&gt;rqsize
-op_assign
-l_int|128
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|is_sata
-c_func
-(paren
-id|hwif
-)paren
-op_logical_and
-id|is_dev_seagate_sata
-c_func
-(paren
-op_amp
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-)paren
-)paren
+multiline_comment|/* Pessimal until we finish probing */
 id|hwif-&gt;rqsize
 op_assign
 l_int|15
@@ -4327,7 +4345,7 @@ id|hwif-&gt;autodma
 suffix:semicolon
 )brace
 DECL|macro|DECLARE_SII_DEV
-mdefine_line|#define DECLARE_SII_DEV(name_str)&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_siimage,&t;&bslash;&n;&t;&t;.init_iops&t;= init_iops_siimage,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_siimage,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
+mdefine_line|#define DECLARE_SII_DEV(name_str)&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_siimage,&t;&bslash;&n;&t;&t;.init_iops&t;= init_iops_siimage,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_siimage,&t;&bslash;&n;&t;&t;.fixup&t;&t;= siimage_fixup,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
 DECL|variable|__devinitdata
 r_static
 id|ide_pci_device_t

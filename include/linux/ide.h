@@ -4975,6 +4975,17 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|member|fixup
+r_void
+(paren
+op_star
+id|fixup
+)paren
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
 DECL|member|channels
 id|u8
 id|channels
