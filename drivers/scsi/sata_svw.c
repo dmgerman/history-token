@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#endif /* CONFIG_ALL_PPC */
 DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME&t;&quot;ata_k2&quot;
+mdefine_line|#define DRV_NAME&t;&quot;sata_svw&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
 DECL|function|k2_sata_scr_read
