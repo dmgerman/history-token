@@ -651,11 +651,7 @@ id|n
 r_return
 l_int|NULL
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|n
-)paren
+r_do
 (brace
 id|rsv
 op_assign
@@ -698,6 +694,12 @@ r_return
 id|rsv
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+id|n
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We&squot;ve fallen off the end of the tree: the goal wasn&squot;t inside&n;&t; * any particular node.  OK, the previous node must be to one&n;&t; * side of the interval containing the goal.  If it&squot;s the RHS,&n;&t; * we need to back up one.&n;&t; */
 r_if
 c_cond
