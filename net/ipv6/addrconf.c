@@ -14633,7 +14633,7 @@ DECL|member|addrconf_vars
 id|ctl_table
 id|addrconf_vars
 (braket
-l_int|16
+l_int|17
 )braket
 suffix:semicolon
 DECL|member|addrconf_dev
@@ -15305,6 +15305,14 @@ id|proc_dointvec
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+comma
+multiline_comment|/* sentinel */
+)brace
 )brace
 comma
 dot
