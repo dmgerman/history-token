@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 DECL|variable|node_class
@@ -112,31 +113,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Can be overwritten by architecture specific code. */
-DECL|function|hugetlb_report_node_meminfo
-r_int
-id|__attribute__
-c_func
-(paren
-(paren
-id|weak
-)paren
-)paren
-id|hugetlb_report_node_meminfo
-c_func
-(paren
-r_int
-id|node
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|K
 mdefine_line|#define K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))
 DECL|function|node_read_meminfo

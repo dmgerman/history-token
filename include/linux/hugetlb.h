@@ -148,6 +148,16 @@ op_star
 )paren
 suffix:semicolon
 r_int
+id|hugetlb_report_node_meminfo
+c_func
+(paren
+r_int
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_int
 id|is_hugepage_mem_enough
 c_func
 (paren
@@ -365,6 +375,8 @@ DECL|macro|is_hugepage_mem_enough
 mdefine_line|#define is_hugepage_mem_enough(size)&t;&t;0
 DECL|macro|hugetlb_report_meminfo
 mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
+DECL|macro|hugetlb_report_node_meminfo
+mdefine_line|#define hugetlb_report_node_meminfo(n, buf)&t;0
 DECL|macro|mark_mm_hugetlb
 mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
 DECL|macro|follow_huge_pmd
