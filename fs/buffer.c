@@ -3955,6 +3955,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|block_flushpage
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|block_flushpage
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We attach and possibly dirty the buffers atomically wrt&n; * __set_page_dirty_buffers() via i_bufferlist_lock.  try_to_free_buffers&n; * is already excluded via the page lock.&n; */
 DECL|function|create_empty_buffers
 r_void
