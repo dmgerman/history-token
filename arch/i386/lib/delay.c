@@ -105,10 +105,10 @@ c_func
 (paren
 id|usecs
 op_star
-l_int|0x000010c6
+l_int|0x000010c7
 )paren
 suffix:semicolon
-multiline_comment|/* 2**32 / 1000000 */
+multiline_comment|/* 2**32 / 1000000 (rounded up) */
 )brace
 DECL|function|__ndelay
 r_void
