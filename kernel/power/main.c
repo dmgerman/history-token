@@ -1,8 +1,11 @@
 multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -469,6 +472,11 @@ id|in_suspend
 op_assign
 l_int|1
 suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -494,6 +502,17 @@ id|pr_debug
 c_func
 (paren
 l_string|&quot;PM: writing image.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * FIXME: Leftover from swsusp. Are they necessary? &n;&t;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 id|error
@@ -538,6 +557,11 @@ c_func
 suffix:semicolon
 id|Done
 suffix:colon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -1009,6 +1033,34 @@ id|PM_SUSPEND_DISK
 r_goto
 id|Free
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp. &n;&t; * Are they really necessary? &n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
+id|pr_debug
+c_func
+(paren
+l_string|&quot;PM: Waiting for DMAs to settle down.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1016,6 +1068,11 @@ l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|swsusp_restore
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
 c_func
 (paren
 )paren
