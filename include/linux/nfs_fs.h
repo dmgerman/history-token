@@ -2292,6 +2292,18 @@ id|clp
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|nfs4_client
+op_star
+id|nfs4_find_client
+c_func
+(paren
+r_struct
+id|in_addr
+op_star
+)paren
+suffix:semicolon
+r_extern
 id|u32
 id|nfs4_alloc_lockowner_id
 c_func
@@ -2549,6 +2561,8 @@ DECL|macro|NFSDBG_FILE
 mdefine_line|#define NFSDBG_FILE&t;&t;0x0040
 DECL|macro|NFSDBG_ROOT
 mdefine_line|#define NFSDBG_ROOT&t;&t;0x0080
+DECL|macro|NFSDBG_CALLBACK
+mdefine_line|#define NFSDBG_CALLBACK&t;&t;0x0100
 DECL|macro|NFSDBG_ALL
 mdefine_line|#define NFSDBG_ALL&t;&t;0xFFFF
 macro_line|#ifdef __KERNEL__
