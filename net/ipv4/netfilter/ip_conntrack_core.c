@@ -5342,7 +5342,7 @@ id|ip_conntrack
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma
@@ -5382,7 +5382,7 @@ id|ip_conntrack_expect
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma
