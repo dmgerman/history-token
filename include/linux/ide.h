@@ -340,31 +340,9 @@ op_star
 id|ack_intr
 suffix:semicolon
 multiline_comment|/* acknowledge interrupt */
-DECL|member|priv
-r_void
-op_star
-id|priv
-suffix:semicolon
-multiline_comment|/* interface specific data */
 DECL|member|chipset
 id|hwif_chipset_t
 id|chipset
-suffix:semicolon
-DECL|member|sata_scr
-r_int
-r_int
-id|sata_scr
-(braket
-id|SATA_NR_PORTS
-)braket
-suffix:semicolon
-DECL|member|sata_misc
-r_int
-r_int
-id|sata_misc
-(braket
-id|SATA_NR_PORTS
-)braket
 suffix:semicolon
 DECL|typedef|hw_regs_t
 )brace
