@@ -2156,12 +2156,6 @@ c_func
 id|sdev-&gt;inquiry
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;single_lun
-)paren
-(brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2170,6 +2164,19 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|sdev-&gt;starved_entry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdev-&gt;single_lun
+)paren
+(brace
 id|sdev-&gt;sdev_target-&gt;starget_refcnt
 op_decrement
 suffix:semicolon
@@ -2186,6 +2193,7 @@ c_func
 id|sdev-&gt;sdev_target
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2194,7 +2202,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -4856,7 +4863,7 @@ op_star
 id|starget
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
