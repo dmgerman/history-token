@@ -1,6 +1,5 @@
 multiline_comment|/* i915_mem.c -- Simple agp/fb memory manager for i915 -*- linux-c -*-&n; */
 multiline_comment|/**************************************************************************&n; * &n; * Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All Rights Reserved.&n; * &n; **************************************************************************/
-macro_line|#include &quot;i915.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;i915_drm.h&quot;
@@ -262,11 +261,8 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -343,11 +339,8 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -610,11 +603,8 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -655,11 +645,8 @@ id|q-&gt;next-&gt;prev
 op_assign
 id|q
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|p
 comma
@@ -699,11 +686,8 @@ id|mem_block
 op_star
 id|blocks
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -727,11 +711,8 @@ suffix:semicolon
 op_star
 id|heap
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -751,11 +732,8 @@ op_star
 id|heap
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|blocks
 comma
@@ -964,11 +942,8 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -1041,11 +1016,8 @@ id|p
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -1059,11 +1031,8 @@ id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 op_star
 id|heap

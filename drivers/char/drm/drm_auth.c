@@ -2,14 +2,11 @@ multiline_comment|/**&n; * &bslash;file drm_auth.h &n; * IOCTLs for authenticati
 multiline_comment|/*&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 multiline_comment|/**&n; * Generate a hash key from a magic.&n; *&n; * &bslash;param magic magic.&n; * &bslash;return hash key.&n; *&n; * The key is the modulus of the hash table size, #DRM_HASH_SIZE, which must be&n; * a power of 2.&n; */
-DECL|function|hash_magic
+DECL|function|drm_hash_magic
 r_static
 r_int
-id|DRM
+id|drm_hash_magic
 c_func
-(paren
-id|hash_magic
-)paren
 (paren
 id|drm_magic_t
 id|magic
@@ -26,15 +23,12 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Find the file with the given magic number.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param magic magic number.&n; *&n; * Searches in drm_device::magiclist within all files with the same hash key&n; * the one with matching magic number, while holding the drm_device::struct_sem&n; * lock.&n; */
-DECL|function|find_file
+DECL|function|drm_find_file
 r_static
 id|drm_file_t
 op_star
-id|DRM
+id|drm_find_file
 c_func
-(paren
-id|find_file
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -57,11 +51,8 @@ suffix:semicolon
 r_int
 id|hash
 op_assign
-id|DRM
+id|drm_hash_magic
 c_func
-(paren
-id|hash_magic
-)paren
 (paren
 id|magic
 )paren
@@ -120,13 +111,10 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Adds a magic number.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param priv file private data.&n; * &bslash;param magic magic number.&n; *&n; * Creates a drm_magic_entry structure and appends to the linked list&n; * associated the magic number hash key in drm_device::magiclist, while holding&n; * the drm_device::struct_sem lock.&n; */
-DECL|function|add_magic
+DECL|function|drm_add_magic
 r_int
-id|DRM
+id|drm_add_magic
 c_func
-(paren
-id|add_magic
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -157,22 +145,16 @@ id|magic
 suffix:semicolon
 id|hash
 op_assign
-id|DRM
+id|drm_hash_magic
 c_func
-(paren
-id|hash_magic
-)paren
 (paren
 id|magic
 )paren
 suffix:semicolon
 id|entry
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -289,13 +271,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Remove a magic number.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;param magic magic number.&n; *&n; * Searches and unlinks the entry in drm_device::magiclist with the magic&n; * number hash key, while holding the drm_device::struct_sem lock.&n; */
-DECL|function|remove_magic
+DECL|function|drm_remove_magic
 r_int
-id|DRM
+id|drm_remove_magic
 c_func
-(paren
-id|remove_magic
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -328,11 +307,8 @@ id|magic
 suffix:semicolon
 id|hash
 op_assign
-id|DRM
+id|drm_hash_magic
 c_func
-(paren
-id|hash_magic
-)paren
 (paren
 id|magic
 )paren
@@ -451,11 +427,8 @@ op_amp
 id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|pt
 comma
@@ -474,13 +447,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Get a unique magic number (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a resulting drm_auth structure.&n; * &bslash;return zero on success, or a negative number on failure.&n; *&n; * If there is a magic number in drm_file::magic then use it, otherwise&n; * searches an unique non-zero magic number and add it associating it with &bslash;p&n; * filp.&n; */
-DECL|function|getmagic
+DECL|function|drm_getmagic
 r_int
-id|DRM
+id|drm_getmagic
 c_func
-(paren
-id|getmagic
-)paren
 (paren
 r_struct
 id|inode
@@ -577,11 +547,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|DRM
+id|drm_find_file
 c_func
-(paren
-id|find_file
-)paren
 (paren
 id|dev
 comma
@@ -593,11 +560,8 @@ id|priv-&gt;magic
 op_assign
 id|auth.magic
 suffix:semicolon
-id|DRM
+id|drm_add_magic
 c_func
-(paren
-id|add_magic
-)paren
 (paren
 id|dev
 comma
@@ -646,13 +610,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Authenticate with a magic.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_auth structure.&n; * &bslash;return zero if authentication successed, or a negative number otherwise.&n; *&n; * Checks if &bslash;p filp is associated with the magic number passed in &bslash;arg.&n; */
-DECL|function|authmagic
+DECL|function|drm_authmagic
 r_int
-id|DRM
+id|drm_authmagic
 c_func
-(paren
-id|authmagic
-)paren
 (paren
 r_struct
 id|inode
@@ -732,11 +693,8 @@ c_cond
 (paren
 id|file
 op_assign
-id|DRM
+id|drm_find_file
 c_func
-(paren
-id|find_file
-)paren
 (paren
 id|dev
 comma
@@ -749,11 +707,8 @@ id|file-&gt;authenticated
 op_assign
 l_int|1
 suffix:semicolon
-id|DRM
+id|drm_remove_magic
 c_func
-(paren
-id|remove_magic
-)paren
 (paren
 id|dev
 comma

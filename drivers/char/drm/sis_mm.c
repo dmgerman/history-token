@@ -1,5 +1,4 @@
 multiline_comment|/* sis_mm.c -- Private header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by sclin@sis.com.tw&n; *&n; * Copyright 2000 Silicon Integrated Systems Corp, Inc., HsinChu, Taiwan.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; * &n; * Authors:&n; *    Sung-Ching Lin &lt;sclin@sis.com.tw&gt;&n; * &n; */
-macro_line|#include &quot;sis.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;sis_drm.h&quot;
 macro_line|#include &quot;sis_drv.h&quot;
@@ -518,11 +517,8 @@ l_int|NULL
 (brace
 id|dev-&gt;dev_private
 op_assign
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|1
 comma
@@ -922,11 +918,8 @@ l_int|NULL
 (brace
 id|dev-&gt;dev_private
 op_assign
-id|DRM
+id|drm_calloc
 c_func
-(paren
-id|calloc
-)paren
 (paren
 l_int|1
 comma
@@ -1747,34 +1740,6 @@ suffix:semicolon
 )brace
 r_return
 l_int|1
-suffix:semicolon
-)brace
-DECL|function|driver_register_fns
-r_void
-id|DRM
-c_func
-(paren
-id|driver_register_fns
-)paren
-(paren
-id|drm_device_t
-op_star
-id|dev
-)paren
-(brace
-id|dev-&gt;driver_features
-op_assign
-id|DRIVER_USE_AGP
-op_or
-id|DRIVER_USE_MTRR
-suffix:semicolon
-id|dev-&gt;fn_tbl.context_ctor
-op_assign
-id|sis_init_context
-suffix:semicolon
-id|dev-&gt;fn_tbl.context_dtor
-op_assign
-id|sis_final_context
 suffix:semicolon
 )brace
 eof

@@ -3,6 +3,25 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef _I915_DRV_H_
 DECL|macro|_I915_DRV_H_
 mdefine_line|#define _I915_DRV_H_
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Tungsten Graphics, Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;i915&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel Graphics&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20040405&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1: Original.&n; */
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;1
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
+multiline_comment|/* We use our own dma mechanisms, not the drm template code.  However,&n; * the shared IRQ code is useful to us:&n; */
+DECL|macro|__HAVE_PM
+mdefine_line|#define __HAVE_PM&t;&t;1
 DECL|struct|_drm_i915_ring_buffer
 r_typedef
 r_struct
@@ -246,6 +265,29 @@ c_func
 id|drm_device_t
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i915_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i915_driver_prerelease
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|DRMFILE
+id|filp
 )paren
 suffix:semicolon
 multiline_comment|/* i915_irq.c */

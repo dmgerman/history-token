@@ -2,6 +2,21 @@ multiline_comment|/* sis_drv.h -- Private header for sis driver -*- linux-c -*-&
 macro_line|#ifndef _SIS_DRV_H_
 DECL|macro|_SIS_DRV_H_
 mdefine_line|#define _SIS_DRV_H_
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;SIS&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;sis&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;SIS 300/630/540&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20030826&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;1
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 macro_line|#include &quot;sis_ds.h&quot;
 DECL|struct|drm_sis_private
 r_typedef
@@ -68,6 +83,32 @@ id|sis_fb_init
 c_func
 (paren
 id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sis_init_context
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+id|context
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sis_final_context
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+id|context
 )paren
 suffix:semicolon
 macro_line|#endif

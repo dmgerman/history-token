@@ -1041,8 +1041,7 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-macro_line|#include &quot;drm_core.h&quot;
-multiline_comment|/* This functions must be here since it references DRM(numdevs)&n; * which drm_drv.h declares.&n; */
+multiline_comment|/* This functions must be here since it references drm_numdevs)&n; * which drm_drv.h declares.&n; */
 DECL|function|ffb_presetup
 r_static
 r_int
@@ -1092,11 +1091,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|DRM
-c_func
-(paren
-id|numdevs
-)paren
+id|drm_numdevs
 suffix:semicolon
 id|i
 op_increment
@@ -1106,11 +1101,7 @@ id|temp_dev
 op_assign
 op_amp
 (paren
-id|DRM
-c_func
-(paren
-id|device
-)paren
+id|drm_device
 (braket
 id|i
 )braket
@@ -1133,11 +1124,7 @@ c_cond
 (paren
 id|i
 op_eq
-id|DRM
-c_func
-(paren
-id|numdevs
-)paren
+id|drm_numdevs
 )paren
 r_return
 op_minus

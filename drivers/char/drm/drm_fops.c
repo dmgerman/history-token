@@ -3,13 +3,10 @@ multiline_comment|/*&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/poll.h&gt;
 multiline_comment|/**&n; * Called whenever a process opens /dev/drm. &n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param dev device.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Creates and initializes a drm_file structure for the file private data in &bslash;p&n; * filp and add it into the double linked list in &bslash;p dev.&n; */
-DECL|function|open_helper
+DECL|function|drm_open_helper
 r_int
-id|DRM
+id|drm_open_helper
 c_func
-(paren
-id|open_helper
-)paren
 (paren
 r_struct
 id|inode
@@ -58,11 +55,8 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|DRM
+id|drm_cpu_valid
 c_func
-(paren
-id|cpu_valid
-)paren
 (paren
 )paren
 )paren
@@ -82,11 +76,8 @@ id|minor
 suffix:semicolon
 id|priv
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -162,13 +153,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl.open_helper
+id|dev-&gt;fn_tbl-&gt;open_helper
 )paren
 (brace
 id|ret
 op_assign
 id|dev-&gt;fn_tbl
-dot
+op_member_access_from_pointer
 id|open_helper
 c_func
 (paren
@@ -323,11 +314,8 @@ l_int|0
 suffix:semicolon
 id|out_free
 suffix:colon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|priv
 comma
@@ -349,13 +337,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/** No-op. */
-DECL|function|flush
+DECL|function|drm_flush
 r_int
-id|DRM
+id|drm_flush
 c_func
-(paren
-id|flush
-)paren
 (paren
 r_struct
 id|file
@@ -398,14 +383,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/** No-op. */
-DECL|function|fasync
-r_int
-id|DRM
+DECL|variable|drm_flush
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|fasync
+id|drm_flush
 )paren
+suffix:semicolon
+multiline_comment|/** No-op. */
+DECL|function|drm_fasync
+r_int
+id|drm_fasync
+c_func
 (paren
 r_int
 id|fd
@@ -480,15 +469,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/** No-op. */
-DECL|function|poll
-r_int
-r_int
-id|DRM
+DECL|variable|drm_fasync
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|poll
+id|drm_fasync
 )paren
+suffix:semicolon
+multiline_comment|/** No-op. */
+DECL|function|drm_poll
+r_int
+r_int
+id|drm_poll
+c_func
 (paren
 r_struct
 id|file
@@ -506,13 +499,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/** No-op. */
-DECL|function|read
+DECL|function|drm_read
 id|ssize_t
-id|DRM
+id|drm_read
 c_func
-(paren
-id|read
-)paren
 (paren
 r_struct
 id|file

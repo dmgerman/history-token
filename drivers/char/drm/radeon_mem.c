@@ -1,5 +1,4 @@
 multiline_comment|/* radeon_mem.c -- Simple GART/fb memory manager for radeon -*- linux-c -*-&n; *&n; * Copyright (C) The Weather Channel, Inc.  2002.  All Rights Reserved.&n; * &n; * The Weather Channel (TM) funded Tungsten Graphics to develop the&n; * initial release of the Radeon 8500 driver under the XFree86 license.&n; * This notice must be preserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Keith Whitwell &lt;keith@tungstengraphics.com&gt;&n; */
-macro_line|#include &quot;radeon.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;radeon_drm.h&quot;
@@ -42,11 +41,8 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -123,11 +119,8 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -374,11 +367,8 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -419,11 +409,8 @@ id|q-&gt;next-&gt;prev
 op_assign
 id|q
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|p
 comma
@@ -463,11 +450,8 @@ id|mem_block
 op_star
 id|blocks
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -494,11 +478,8 @@ suffix:semicolon
 op_star
 id|heap
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -518,11 +499,8 @@ op_star
 id|heap
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|blocks
 comma
@@ -702,11 +680,8 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -779,11 +754,8 @@ id|p
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|q
 comma
@@ -797,11 +769,8 @@ id|DRM_MEM_DRIVER
 )paren
 suffix:semicolon
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 op_star
 id|heap

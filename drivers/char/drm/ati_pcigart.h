@@ -28,15 +28,12 @@ DECL|macro|ATI_MAX_PCIGART_PAGES
 macro_line|# define ATI_MAX_PCIGART_PAGES&t;&t;8192&t;/**&lt; 32 MB aperture, 4K pages */
 DECL|macro|ATI_PCIGART_PAGE_SIZE
 macro_line|# define ATI_PCIGART_PAGE_SIZE&t;&t;4096&t;/**&lt; PCI GART page size */
-DECL|function|ati_alloc_pcigart_table
+DECL|function|drm_ati_alloc_pcigart_table
 r_static
 r_int
 r_int
-id|DRM
+id|drm_ati_alloc_pcigart_table
 c_func
-(paren
-id|ati_alloc_pcigart_table
-)paren
 (paren
 r_void
 )paren
@@ -136,14 +133,11 @@ r_return
 id|address
 suffix:semicolon
 )brace
-DECL|function|ati_free_pcigart_table
+DECL|function|drm_ati_free_pcigart_table
 r_static
 r_void
-id|DRM
+id|drm_ati_free_pcigart_table
 c_func
-(paren
-id|ati_free_pcigart_table
-)paren
 (paren
 r_int
 r_int
@@ -214,13 +208,10 @@ id|ATI_PCIGART_TABLE_ORDER
 )paren
 suffix:semicolon
 )brace
-DECL|function|ati_pcigart_init
+DECL|function|drm_ati_pcigart_init
 r_int
-id|DRM
+id|drm_ati_pcigart_init
 c_func
-(paren
-id|ati_pcigart_init
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -290,11 +281,8 @@ suffix:semicolon
 )brace
 id|address
 op_assign
-id|DRM
+id|drm_ati_alloc_pcigart_table
 c_func
-(paren
-id|ati_alloc_pcigart_table
-)paren
 (paren
 )paren
 suffix:semicolon
@@ -366,11 +354,8 @@ c_func
 l_string|&quot;unable to map PCIGART pages!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DRM
+id|drm_ati_free_pcigart_table
 c_func
-(paren
-id|ati_free_pcigart_table
-)paren
 (paren
 id|address
 )paren
@@ -476,11 +461,8 @@ c_func
 l_string|&quot;unable to map PCIGART pages!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DRM
+id|drm_ati_pcigart_cleanup
 c_func
-(paren
-id|ati_pcigart_cleanup
-)paren
 (paren
 id|dev
 comma
@@ -583,13 +565,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|ati_pcigart_cleanup
+DECL|function|drm_ati_pcigart_cleanup
 r_int
-id|DRM
+id|drm_ati_pcigart_cleanup
 c_func
-(paren
-id|ati_pcigart_cleanup
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -716,11 +695,8 @@ c_cond
 id|addr
 )paren
 (brace
-id|DRM
+id|drm_ati_free_pcigart_table
 c_func
-(paren
-id|ati_free_pcigart_table
-)paren
 (paren
 id|addr
 )paren
