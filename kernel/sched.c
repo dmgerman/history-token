@@ -28,13 +28,6 @@ macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|cpu_to_node_mask
-mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
-macro_line|#else
-DECL|macro|cpu_to_node_mask
-mdefine_line|#define cpu_to_node_mask(cpu) (cpu_online_map)
-macro_line|#endif
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
 DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
