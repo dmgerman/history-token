@@ -44,9 +44,9 @@ macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Debug flags.&n; */
-multiline_comment|/*#undef DEBUG*/
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
+multiline_comment|/*#define DEBUG*/
 multiline_comment|/* Make sure n * PAGE_SIZE is protected at end of Aperture for GUI-regs */
 multiline_comment|/*  - must be large enough to catch all GUI-Regs   */
 multiline_comment|/*  - must be aligned to a PAGE boundary           */
