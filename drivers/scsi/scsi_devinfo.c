@@ -2673,6 +2673,7 @@ suffix:semicolon
 multiline_comment|/**&n; * scsi_dev_list_init: set up the dynamic device list.&n; * @dev_list:&t;string of device flags to add&n; *&n; * Description:&n; * &t;Add command line @dev_list entries, then add&n; * &t;scsi_static_device_list entries to the scsi device info list.&n; **/
 DECL|function|scsi_init_devinfo
 r_int
+id|__init
 id|scsi_init_devinfo
 c_func
 (paren
