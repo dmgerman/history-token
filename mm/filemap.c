@@ -310,6 +310,13 @@ id|WB_SYNC_NONE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|filemap_flush
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_flush
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * filemap_fdatawait - walk the list of locked pages of the given address&n; *                     space and wait for all of them.&n; * @mapping: address space structure to wait for&n; */
 DECL|function|filemap_fdatawait
 r_int
