@@ -673,6 +673,11 @@ id|uart_port
 op_star
 id|port
 suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|pm
 r_struct
@@ -711,8 +716,6 @@ DECL|macro|UIF_CHECK_CD
 mdefine_line|#define UIF_CHECK_CD&t;&t;(1 &lt;&lt; 25)
 DECL|macro|UIF_CTS_FLOW
 mdefine_line|#define UIF_CTS_FLOW&t;&t;(1 &lt;&lt; 26)
-DECL|macro|UIF_CLOSING
-mdefine_line|#define UIF_CLOSING&t;&t;(1 &lt;&lt; 27)
 DECL|macro|UIF_NORMAL_ACTIVE
 mdefine_line|#define UIF_NORMAL_ACTIVE&t;(1 &lt;&lt; 29)
 DECL|macro|UIF_INITIALIZED
