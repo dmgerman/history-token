@@ -3310,7 +3310,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|macro|WL3501_STUPID_LOOP
-mdefine_line|#define WL3501_STUPID_LOOP
+macro_line|#undef WL3501_STUPID_LOOP
 macro_line|#ifdef WL3501_STUPID_LOOP
 DECL|macro|wl3501_loop
 mdefine_line|#define wl3501_loop(__cmd) &bslash;&n;({&t;int i; &bslash;&n;&t;for (i = 0; i &lt; 3000; i++) &bslash;&n;&t;&t;if (!__cmd) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;i == 3000; &bslash;&n;})
@@ -4589,6 +4589,43 @@ op_amp
 l_int|0x80
 suffix:semicolon
 )brace
+DECL|function|wl3501_online
+r_static
+r_void
+id|wl3501_online
+c_func
+(paren
+r_struct
+id|wl3501_card
+op_star
+id|this
+)paren
+(brace
+id|this-&gt;card_start
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Wireless LAN On-Line. BSSID: &quot;
+l_string|&quot;%02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|this-&gt;bssid.b0
+comma
+id|this-&gt;bssid.b1
+comma
+id|this-&gt;bssid.b2
+comma
+id|this-&gt;bssid.b3
+comma
+id|this-&gt;bssid.b4
+comma
+id|this-&gt;bssid.b5
+)paren
+suffix:semicolon
+)brace
 DECL|function|wl3501_esbq_confirm_done
 r_static
 r_void
@@ -5039,10 +5076,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|this-&gt;card_start
-op_assign
-l_int|1
-suffix:semicolon
 id|i
 op_assign
 id|this-&gt;join_sta_bss
@@ -5111,24 +5144,10 @@ comma
 l_int|34
 )paren
 suffix:semicolon
-id|printk
+id|wl3501_online
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Wireless LAN On-Line  Join:&quot;
-l_string|&quot; %2X %2X %2X %2X %2X %2X&bslash;n&quot;
-comma
-id|this-&gt;bssid.b0
-comma
-id|this-&gt;bssid.b1
-comma
-id|this-&gt;bssid.b2
-comma
-id|this-&gt;bssid.b3
-comma
-id|this-&gt;bssid.b4
-comma
-id|this-&gt;bssid.b5
+id|this
 )paren
 suffix:semicolon
 )brace
@@ -5823,32 +5842,12 @@ id|sig.status
 op_eq
 id|WL3501_STATUS_SUCCESS
 )paren
-(brace
-id|printk
+id|wl3501_online
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Wireless LAN On-Line  Join:&quot;
-l_string|&quot; %2X %2X %2X %2X %2X %2X&bslash;n&quot;
-comma
-id|this-&gt;bssid.b0
-comma
-id|this-&gt;bssid.b1
-comma
-id|this-&gt;bssid.b2
-comma
-id|this-&gt;bssid.b3
-comma
-id|this-&gt;bssid.b4
-comma
-id|this-&gt;bssid.b5
+id|this
 )paren
 suffix:semicolon
-id|this-&gt;card_start
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 r_else
 id|this-&gt;card_start
 op_assign
