@@ -221,7 +221,7 @@ id|dbg
 (paren
 l_string|&quot;%s: %s portroute %s&quot;
 comma
-id|ehci-&gt;hcd.bus_name
+id|ehci-&gt;hcd.self.bus_name
 comma
 id|label
 comma

@@ -3197,7 +3197,7 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Save readable and stable topology id, distinguishing&n;&t;&t; * devices by location for diagnostics, tools, etc.  The&n;&t;&t; * string is a path along hub ports, from the root.  Each&n;&t;&t; * device&squot;s id will be stable until USB is re-cabled, and&n;&t;&t; * hubs are often labled with these port numbers.&n;&t;&t; *&n;&t;&t; * Initial size: &quot;/NN&quot; times five hubs + NUL = 16 bytes max&n;&t;&t; * (quite rare, since most hubs have 4-6 ports).&n;&t;&t; */
+multiline_comment|/* Save readable and stable topology id, distinguishing&n;&t;&t; * devices by location for diagnostics, tools, etc.  The&n;&t;&t; * string is a path along hub ports, from the root.  Each&n;&t;&t; * device&squot;s id will be stable until USB is re-cabled, and&n;&t;&t; * hubs are often labeled with these port numbers.&n;&t;&t; *&n;&t;&t; * Initial size: &quot;.NN&quot; times five hubs + NUL = 16 bytes max&n;&t;&t; * (quite rare, since most hubs have 4-6 ports).&n;&t;&t; */
 id|pdev
 op_assign
 id|dev-&gt;parent
@@ -3207,10 +3207,10 @@ c_cond
 (paren
 id|pdev-&gt;devpath
 (braket
-l_int|1
+l_int|0
 )braket
 op_ne
-l_char|&squot;&bslash;0&squot;
+l_char|&squot;/&squot;
 )paren
 multiline_comment|/* parent not root */
 id|len
@@ -3222,7 +3222,7 @@ comma
 r_sizeof
 id|dev-&gt;devpath
 comma
-l_string|&quot;%s/%d&quot;
+l_string|&quot;%s.%d&quot;
 comma
 id|pdev-&gt;devpath
 comma
@@ -3232,7 +3232,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* root == &quot;/&quot;, root port 2 == &quot;/2&quot; */
+multiline_comment|/* root == &quot;/&quot;, root port 2 == &quot;2&quot;, port 3 that hub &quot;/2.3&quot; */
 id|len
 op_assign
 id|snprintf
@@ -3242,7 +3242,7 @@ comma
 r_sizeof
 id|dev-&gt;devpath
 comma
-l_string|&quot;/%d&quot;
+l_string|&quot;%d&quot;
 comma
 id|port
 op_plus
@@ -3271,9 +3271,9 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;new USB device on bus %d path %s, assigned address %d&quot;
+l_string|&quot;new USB device %s-%s, assigned address %d&quot;
 comma
-id|dev-&gt;bus-&gt;busnum
+id|dev-&gt;bus-&gt;bus_name
 comma
 id|dev-&gt;devpath
 comma
@@ -4032,11 +4032,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|interruptible_sleep_on
+id|wait_event_interruptible
+c_func
+(paren
+id|khubd_wait
+comma
+op_logical_neg
+id|list_empty
 c_func
 (paren
 op_amp
-id|khubd_wait
+id|hub_event_list
+)paren
 )paren
 suffix:semicolon
 )brace

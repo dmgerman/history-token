@@ -277,13 +277,13 @@ id|qh
 suffix:semicolon
 )brace
 multiline_comment|/* to share a qh (cpu threads, or hc) */
-DECL|function|qh_put
+DECL|function|qh_get
 r_static
 r_inline
 r_struct
 id|ehci_qh
 op_star
-id|qh_put
+id|qh_get
 (paren
 multiline_comment|/* ehci, */
 r_struct
@@ -292,7 +292,7 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;put %p (%d++)&quot;, qh, qh-&gt;refcount.counter);
+singleline_comment|// dbg (&quot;get %p (%d++)&quot;, qh, qh-&gt;refcount.counter);
 id|atomic_inc
 (paren
 op_amp
@@ -303,10 +303,10 @@ r_return
 id|qh
 suffix:semicolon
 )brace
-DECL|function|qh_unput
+DECL|function|qh_put
 r_static
 r_void
-id|qh_unput
+id|qh_put
 (paren
 r_struct
 id|ehci_hcd
@@ -319,7 +319,7 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;unput %p (--%d)&quot;, qh, qh-&gt;refcount.counter);
+singleline_comment|// dbg (&quot;put %p (--%d)&quot;, qh, qh-&gt;refcount.counter);
 r_if
 c_cond
 (paren

@@ -864,7 +864,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
@@ -1149,7 +1149,7 @@ c_func
 (paren
 id|catc-&gt;rx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
@@ -1226,7 +1226,7 @@ c_func
 (paren
 id|catc-&gt;tx_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 OL
@@ -2831,12 +2831,6 @@ suffix:semicolon
 id|u32
 id|cmd
 suffix:semicolon
-r_char
-id|tmp
-(braket
-l_int|40
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2895,26 +2889,14 @@ comma
 id|ETHTOOL_BUSINFO_LEN
 )paren
 suffix:semicolon
-id|sprintf
-c_func
+id|usb_make_path
 (paren
-id|tmp
+id|catc-&gt;usbdev
 comma
-l_string|&quot;usb%d:%d&quot;
-comma
-id|catc-&gt;usbdev-&gt;bus-&gt;busnum
-comma
-id|catc-&gt;usbdev-&gt;devnum
-)paren
-suffix:semicolon
-id|strncpy
-c_func
-(paren
 id|info.bus_info
 comma
-id|tmp
-comma
-id|ETHTOOL_BUSINFO_LEN
+r_sizeof
+id|info.bus_info
 )paren
 suffix:semicolon
 r_if
@@ -4144,7 +4126,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s USB Ethernet at usb%d:%d.%d, &quot;
+l_string|&quot;%s: %s USB Ethernet at usb-%s-%s/%d, &quot;
 comma
 id|netdev-&gt;name
 comma
@@ -4157,9 +4139,9 @@ l_string|&quot;Belkin F5U011&quot;
 suffix:colon
 l_string|&quot;CATC EL1210A NetMate&quot;
 comma
-id|usbdev-&gt;bus-&gt;busnum
+id|usbdev-&gt;bus-&gt;bus_name
 comma
-id|usbdev-&gt;devnum
+id|usbdev-&gt;devpath
 comma
 id|ifnum
 )paren
