@@ -26,10 +26,6 @@ DECL|member|f_bit
 id|u8
 id|f_bit
 suffix:semicolon
-DECL|member|req
-id|llc_prim_call_t
-id|req
-suffix:semicolon
 DECL|member|ind
 id|llc_prim_call_t
 id|ind

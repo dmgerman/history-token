@@ -5,6 +5,8 @@ multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&
 multiline_comment|/* Defines LLC interface to network layer */
 multiline_comment|/* Available primitives */
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/llc.h&gt;
 DECL|macro|LLC_DATAUNIT_PRIM
 mdefine_line|#define LLC_DATAUNIT_PRIM&t;0
 DECL|macro|LLC_CONN_PRIM
@@ -333,6 +335,69 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|llc_build_and_send_ui_pkt
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|sockaddr_llc
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|llc_build_and_send_xid_pkt
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|sockaddr_llc
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|llc_build_and_send_test_pkt
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|sockaddr_llc
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|llc_send_disc
 c_func
@@ -343,5 +408,36 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;llc_proto_type - return eth protocol for ARP header type&n; *&t;@arphrd: ARP header type.&n; *&n; *&t;Given an ARP header type return the corresponding ethernet protocol.&n; */
+DECL|function|llc_proto_type
+r_static
+id|__inline__
+id|u16
+id|llc_proto_type
+c_func
+(paren
+id|u16
+id|arphrd
+)paren
+(brace
+r_return
+id|arphrd
+op_eq
+id|ARPHRD_IEEE802_TR
+ques
+c_cond
+id|htons
+c_func
+(paren
+id|ETH_P_TR_802_2
+)paren
+suffix:colon
+id|htons
+c_func
+(paren
+id|ETH_P_802_2
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* LLC_IF_H */
 eof
