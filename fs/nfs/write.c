@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -1052,6 +1054,101 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_int
+DECL|function|nfs_writepages
+id|nfs_writepages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|mapping-&gt;host
+suffix:semicolon
+r_int
+id|is_sync
+op_assign
+op_logical_neg
+id|wbc-&gt;nonblocking
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|generic_writepages
+c_func
+(paren
+id|mapping
+comma
+id|wbc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|err
+op_assign
+id|nfs_flush_file
+c_func
+(paren
+id|inode
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_sync
+)paren
+id|err
+op_assign
+id|nfs_wb_all
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Insert a write request into an inode&n; */
@@ -3399,6 +3496,12 @@ op_amp
 id|data-&gt;pages
 )paren
 suffix:semicolon
+id|SetPageWriteback
+c_func
+(paren
+id|req-&gt;wb_page
+)paren
+suffix:semicolon
 op_star
 id|pages
 op_increment
@@ -4058,6 +4161,12 @@ id|req-&gt;wb_file-&gt;f_error
 op_assign
 id|task-&gt;tk_status
 suffix:semicolon
+id|end_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|nfs_inode_remove_request
 c_func
 (paren
@@ -4076,6 +4185,12 @@ r_goto
 id|next
 suffix:semicolon
 )brace
+id|end_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
