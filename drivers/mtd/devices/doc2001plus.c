@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.11 2004/11/16 18:29:01 dwmw2 Exp $&n; *&n; * Released under GPL&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.12 2005/01/05 12:40:36 dwmw2 Exp $&n; *&n; * Released under GPL&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;

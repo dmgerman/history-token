@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.h,v 1.2 2003/11/08 00:51:21 dsaxena Exp $&n; */
+multiline_comment|/*&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.h,v 1.3 2004/10/20 22:10:33 dwmw2 Exp $&n; */
 macro_line|#ifndef __LINUX_MTD_GEN_PROBE_H__
 DECL|macro|__LINUX_MTD_GEN_PROBE_H__
 mdefine_line|#define __LINUX_MTD_GEN_PROBE_H__
