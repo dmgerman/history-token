@@ -69,31 +69,6 @@ id|to_exponential
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is the RPC buffer&n; */
-DECL|struct|rpc_iov
-r_struct
-id|rpc_iov
-(brace
-DECL|member|io_vec
-r_struct
-id|iovec
-id|io_vec
-(braket
-id|MAX_IOVEC
-)braket
-suffix:semicolon
-DECL|member|io_nr
-r_int
-r_int
-id|io_nr
-suffix:semicolon
-DECL|member|io_len
-r_int
-r_int
-id|io_len
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * This describes a complete RPC request&n; */
 DECL|struct|rpc_rqst
 r_struct
