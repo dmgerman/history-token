@@ -113,6 +113,14 @@ id|x86_virt_bits
 comma
 id|x86_phys_bits
 suffix:semicolon
+DECL|member|x86_num_cores
+id|__u8
+id|x86_num_cores
+suffix:semicolon
+DECL|member|x86_apicid
+id|__u8
+id|x86_apicid
+suffix:semicolon
 DECL|member|x86_power
 id|__u32
 id|x86_power

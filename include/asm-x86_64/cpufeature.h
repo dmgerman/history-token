@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_X8664_CPUFEATURE_H
 DECL|macro|__ASM_X8664_CPUFEATURE_H
 mdefine_line|#define __ASM_X8664_CPUFEATURE_H
 DECL|macro|NCAPINTS
-mdefine_line|#define NCAPINTS&t;5&t;/* Currently we have 4 32-bit words worth of info */
+mdefine_line|#define NCAPINTS&t;6
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001, word 0 */
 DECL|macro|X86_FEATURE_FPU
 mdefine_line|#define X86_FEATURE_FPU&t;&t;(0*32+ 0) /* Onboard FPU */
@@ -112,6 +112,9 @@ DECL|macro|X86_FEATURE_CX16
 mdefine_line|#define X86_FEATURE_CX16&t;(4*32+13) /* CMPXCHG16B */
 DECL|macro|X86_FEATURE_XTPR
 mdefine_line|#define X86_FEATURE_XTPR&t;(4*32+14) /* Send Task Priority Messages */
+multiline_comment|/* More extended AMD flags: CPUID level 0x80000001, ecx, word 5 */
+DECL|macro|X86_FEATURE_HTVALID
+mdefine_line|#define X86_FEATURE_HTVALID&t;(5*32+ 0) /* HyperThreading valid, otherwise CMP */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)                test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has
