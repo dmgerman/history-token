@@ -386,6 +386,20 @@ id|state
 id|acpi_status
 id|status
 suffix:semicolon
+multiline_comment|/* Suspend is hard to get right on SMP. */
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_ne
+l_int|1
+)paren
+r_return
+id|AE_ERROR
+suffix:semicolon
 multiline_comment|/* get out if state is invalid */
 r_if
 c_cond
@@ -412,12 +426,25 @@ r_return
 id|AE_ERROR
 suffix:semicolon
 multiline_comment|/*&n;&t; * TBD: S1 can be done without device_suspend.  Make a CONFIG_XX&n;&t; * to handle however when S1 failed without device_suspend.&n;&t; */
+r_if
+c_cond
+(paren
 id|freeze_processes
 c_func
 (paren
 )paren
+)paren
+(brace
+id|thaw_processes
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|AE_ERROR
 suffix:semicolon
 multiline_comment|/* device_suspend needs processes to be stopped */
+)brace
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
 multiline_comment|/* Here, we support only S4BIOS, those we set the wakeup address */
 multiline_comment|/* S4OS is only supported for now via swsusp.. */

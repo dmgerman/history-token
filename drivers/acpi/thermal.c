@@ -1758,7 +1758,6 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-suffix:semicolon
 id|argv
 (braket
 l_int|0
