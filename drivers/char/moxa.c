@@ -13802,7 +13802,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|MoxaPortGetCurBaud
+macro_line|#if 0
 r_int
 id|MoxaPortGetCurBaud
 c_func
@@ -13835,6 +13835,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|MoxaSetFifo
 r_static
 r_void
