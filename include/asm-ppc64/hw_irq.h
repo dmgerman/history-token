@@ -4,6 +4,7 @@ macro_line|#ifndef _PPC64_HW_IRQ_H
 DECL|macro|_PPC64_HW_IRQ_H
 mdefine_line|#define _PPC64_HW_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 r_int
 id|timer_interrupt
