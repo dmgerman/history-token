@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.63 2001/03/09 22:04:25 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.64 2001/04/24 21:10:05 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2435,6 +2435,13 @@ r_char
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+DECL|variable|up_clock_tick
+r_int
+r_int
+id|up_clock_tick
+suffix:semicolon
+macro_line|#endif
 DECL|function|get_cpuinfo
 r_int
 id|get_cpuinfo
@@ -2471,7 +2478,8 @@ l_string|&quot;type&bslash;t&bslash;t: sun4u&bslash;n&quot;
 l_string|&quot;ncpus probed&bslash;t: %d&bslash;n&quot;
 l_string|&quot;ncpus active&bslash;t: %d&bslash;n&quot;
 macro_line|#ifndef CONFIG_SMP
-l_string|&quot;BogoMips&bslash;t: %lu.%02lu&bslash;n&quot;
+l_string|&quot;Cpu0Bogo&bslash;t: %lu.%02lu&bslash;n&quot;
+l_string|&quot;Cpu0ClkTck&bslash;t: %016lx&bslash;n&quot;
 macro_line|#endif
 comma
 id|sparc_cpu_type
@@ -2526,6 +2534,8 @@ id|HZ
 )paren
 op_mod
 l_int|100
+comma
+id|up_clock_tick
 macro_line|#endif
 )paren
 suffix:semicolon

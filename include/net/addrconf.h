@@ -344,6 +344,17 @@ id|idev
 suffix:semicolon
 r_extern
 r_void
+id|ipv6_mc_init_dev
+c_func
+(paren
+r_struct
+id|inet6_dev
+op_star
+id|idev
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ipv6_mc_destroy_dev
 c_func
 (paren

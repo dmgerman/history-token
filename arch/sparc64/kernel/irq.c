@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.99 2001/03/22 02:19:23 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: irq.c,v 1.100 2001/04/24 01:09:12 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -4410,91 +4410,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|sethi
-op_mod
-op_mod
-id|hi
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
-op_mod
-op_mod
-id|g1
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|sllx
-op_mod
-op_mod
-id|g1
-comma
-l_int|32
-comma
-op_mod
-op_mod
-id|g1
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g2
-id|add
-op_mod
-op_mod
-id|g2
-comma
-l_int|6
-comma
-op_mod
-op_mod
-id|g2
-id|andn
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-id|wrpr
-op_mod
-op_mod
-id|g2
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|tick
-id|rdpr
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g0
-"&quot;"
+l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; sllx&t;%%g1, 32, %%g1&bslash;n&quot;
+l_string|&quot;&t;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;rd&t;%%tick, %%g2&bslash;n&quot;
+l_string|&quot;&t;add&t;%%g2, 6, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;wrpr&t;%%g2, 0, %%tick&bslash;n&quot;
+l_string|&quot;&t;rdpr&t;%%tick, %%g0&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4517,58 +4441,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g1
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|add
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|wr
-op_mod
-op_mod
-id|g1
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|tick_cmpr
-id|rd
-op_mod
-op_mod
-id|tick_cmpr
-comma
-op_mod
-op_mod
-id|g0
-"&quot;"
+l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; add&t;%%g1, %0, %%g1&bslash;n&quot;
+l_string|&quot;&t;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;wr&t;%%g1, 0x0, %%tick_cmpr&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%tick_cmpr, %%g0&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4588,60 +4466,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|sethi
-op_mod
-op_mod
-id|hi
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
-op_mod
-op_mod
-id|g1
-id|sllx
-op_mod
-op_mod
-id|g1
-comma
-l_int|32
-comma
-op_mod
-op_mod
-id|g1
-id|rd
-op_mod
-op_mod
-id|asr24
-comma
-op_mod
-op_mod
-id|g2
-id|andn
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-id|wr
-op_mod
-op_mod
-id|g2
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|asr24
-"&quot;"
+l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
+l_string|&quot;&t;sllx&t;%%g1, 32, %%g1&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%asr24, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;wr&t;%%g2, 0, %%asr24&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4656,37 +4485,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|asr24
-comma
-op_mod
-op_mod
-id|g1
-id|add
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-id|wr
-op_mod
-op_mod
-id|g1
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|asr25
-"&quot;"
+l_string|&quot;&t;rd&t;%%asr24, %%g1&bslash;n&quot;
+l_string|&quot;&t;add&t;%%g1, %0, %%g1&bslash;n&quot;
+l_string|&quot;&t;wr&t;%%g1, 0x0, %%asr25&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -5148,52 +4949,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-l_int|0x40
-comma
-op_mod
-op_mod
-id|g2
-id|ldxa
-(braket
-op_mod
-op_mod
-id|g0
-)braket
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-id|ldxa
-(braket
-op_mod
-op_mod
-id|g2
-)braket
-op_mod
-l_int|1
-comma
-op_mod
-op_mod
-id|g1
-id|stxa
-op_mod
-op_mod
-id|g0
-comma
-(braket
-op_mod
-op_mod
-id|g0
-)braket
-op_mod
-l_int|0
-id|membar
-macro_line|#Sync
-"&quot;"
+l_string|&quot;&t;mov&t;0x40, %%g2&bslash;n&quot;
+l_string|&quot;&t;ldxa&t;[%%g0] %0, %%g1&bslash;n&quot;
+l_string|&quot;&t;ldxa&t;[%%g2] %1, %%g1&bslash;n&quot;
+l_string|&quot;&t;stxa&t;%%g0, [%%g0] %0&bslash;n&quot;
+l_string|&quot;&t;membar&t;#Sync&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

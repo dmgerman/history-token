@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: delay.h,v 1.11 2001/01/02 08:15:32 davem Exp $&n; * delay.h: Linux delay routines on the V9.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu).&n; */
+multiline_comment|/* $Id: delay.h,v 1.12 2001/04/24 01:09:12 davem Exp $&n; * delay.h: Linux delay routines on the V9.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu).&n; */
 macro_line|#ifndef __SPARC64_DELAY_H
 DECL|macro|__SPARC64_DELAY_H
 mdefine_line|#define __SPARC64_DELAY_H
@@ -24,47 +24,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|b
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|cmp
-op_mod
-l_int|0
-comma
-l_int|0
-dot
-id|align
-l_int|32
-l_int|1
+l_string|&quot;&t;b,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; cmp&t;%0, 0&bslash;n&quot;
+l_string|&quot;&t;.align&t;32&bslash;n&quot;
+l_string|&quot;1:&bslash;n&quot;
+l_string|&quot;&t;bne,pt&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t; subcc&t;%0, 1, %0&bslash;n&quot;
 suffix:colon
-id|bne
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|1
-id|b
-id|subcc
-op_mod
-l_int|0
-comma
-l_int|1
-comma
-op_mod
-l_int|0
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;=&amp;r&quot;
 (paren
 id|loops
 )paren
@@ -103,28 +70,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mulx
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-id|srlx
-op_mod
-l_int|0
-comma
-l_int|32
-comma
-op_mod
-l_int|0
-l_string|&quot;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;&t;mulx&t;%1, %2, %0&bslash;n&quot;
+l_string|&quot;&t;srlx&t;%0, 32, %0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|usecs
 )paren

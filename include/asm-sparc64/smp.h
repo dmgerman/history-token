@@ -67,14 +67,12 @@ r_int
 r_int
 id|idle_volume
 suffix:semicolon
-DECL|member|__pad
+DECL|member|clock_tick
 r_int
 r_int
-id|__pad
-(braket
-l_int|2
-)braket
+id|clock_tick
 suffix:semicolon
+multiline_comment|/* %tick&squot;s per second */
 DECL|member|udelay_val
 r_int
 r_int

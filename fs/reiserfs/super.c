@@ -2303,11 +2303,17 @@ op_assign
 op_amp
 id|reiserfs_sops
 suffix:semicolon
+multiline_comment|/* new format is limited by the 32 bit wide i_blocks field, want to&n;    ** be one full block below that.&n;    */
 id|s-&gt;s_maxbytes
 op_assign
-l_int|0xFFFFFFFF
+(paren
+l_int|512LL
+op_lshift
+l_int|32
+)paren
+op_minus
+id|s-&gt;s_blocksize
 suffix:semicolon
-multiline_comment|/* 4Gig */
 r_return
 l_int|0
 suffix:semicolon

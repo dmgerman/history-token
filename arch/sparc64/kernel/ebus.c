@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.60 2001/03/15 02:11:09 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ebus.c,v 1.61 2001/04/24 05:13:25 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -962,6 +962,23 @@ r_if
 c_cond
 (paren
 id|len
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|dev-&gt;num_addrs
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|probe_interrupts
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|len
 op_mod
 r_sizeof
 (paren
@@ -1148,6 +1165,8 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|probe_interrupts
+suffix:colon
 id|len
 op_assign
 id|prom_getproperty

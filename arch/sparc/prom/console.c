@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: console.c,v 1.23 2000/08/26 02:38:03 anton Exp $&n; * console.c: Routines that deal with sending and receiving IO&n; *            to/from the current console device using the PROM.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Pete Zaitcev &lt;zaitcev@metabyte.com&gt;&n; */
+multiline_comment|/* $Id: console.c,v 1.23 2000/08/26 02:38:03 anton Exp $&n; * console.c: Routines that deal with sending and receiving IO&n; *            to/from the current console device using the PROM.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Pete Zaitcev &lt;zaitcev@yahoo.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: debuglocks.c,v 1.5 2000/05/09 17:40:14 davem Exp $&n; * debuglocks.c: Debugging versions of SMP locking primitives.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: debuglocks.c,v 1.6 2001/04/24 01:09:12 davem Exp $&n; * debuglocks.c: Debugging versions of SMP locking primitives.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -532,71 +532,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|brlz
-comma
-id|a
-comma
-id|pn
-op_mod
-op_mod
-id|g5
-comma
-l_float|2f
-id|mov
-l_int|1
-comma
-op_mod
-l_int|0
-id|add
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-l_int|2
+l_string|&quot;&t;ldx&t;&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;brlz,a,pn&t;%%g5, 2f&bslash;n&quot;
+l_string|&quot;&t; mov&t;&t;1, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;sub&t;&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;2:&quot;
 suffix:colon
-l_string|&quot;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;=r&quot;
 (paren
 id|val
 )paren
@@ -697,56 +641,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|membar
-macro_line|#StoreLoad | #StoreStore
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-l_string|&quot;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g5, %%g7, %0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|val
 )paren
@@ -889,99 +790,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-l_int|1
-comma
-op_mod
-op_mod
-id|g3
-id|sllx
-op_mod
-op_mod
-id|g3
-comma
-l_int|63
-comma
-op_mod
-op_mod
-id|g3
-id|ldx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|brlz
-comma
-id|pn
-op_mod
-op_mod
-id|g5
-comma
-l_float|1f
-op_logical_or
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|membar
-macro_line|#StoreLoad | #StoreStore
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|2f
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-l_int|1
+l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
+l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;brlz,pn&t;%%g5, 1f&bslash;n&quot;
+l_string|&quot;&t; or&t;%%g5, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 2f&bslash;n&quot;
+l_string|&quot;&t; sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;1:&t;mov&t;1, %0&bslash;n&quot;
+l_string|&quot;2:&quot;
 suffix:colon
-id|mov
-l_int|1
-comma
-op_mod
-l_int|0
-l_int|2
-suffix:colon
-l_string|&quot;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;=r&quot;
 (paren
 id|val
 )paren
@@ -1085,78 +906,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-l_int|1
-comma
-op_mod
-op_mod
-id|g3
-id|sllx
-op_mod
-op_mod
-id|g3
-comma
-l_int|63
-comma
-op_mod
-op_mod
-id|g3
-l_int|1
-suffix:colon
-id|ldx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|andn
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|cmp
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|bne
-comma
-id|pn
-op_mod
-op_mod
-id|xcc
-comma
-l_int|1
-id|b
-id|membar
-macro_line|#StoreLoad | #StoreStore&quot;
+l_string|&quot;&t;&t;mov&t;1, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
+l_string|&quot;1:&t;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -1279,74 +1036,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-l_int|1
-comma
-op_mod
-op_mod
-id|g3
-id|sllx
-op_mod
-op_mod
-id|g3
-comma
-l_int|63
-comma
-op_mod
-op_mod
-id|g3
-id|ldx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|andn
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|membar
-macro_line|#StoreLoad | #StoreStore
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-l_string|&quot;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
+l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g5, %%g7, %0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|val
 )paren

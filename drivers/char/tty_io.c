@@ -298,7 +298,39 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|hwc_tty_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|con3215_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tty3215_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tub3270_con_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tub3270_initfunc
 c_func
 (paren
 r_void
@@ -9200,6 +9232,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_3270_CONSOLE
+id|tub3270_con_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_HWC
 id|hwc_console_init
 c_func
@@ -9612,6 +9651,27 @@ suffix:semicolon
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_VT
 id|vcs_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_3270
+id|tub3270_initfunc
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_3215
+id|tty3215_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_HWC
+id|hwc_tty_init
 c_func
 (paren
 )paren

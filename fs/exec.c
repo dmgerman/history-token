@@ -3153,6 +3153,14 @@ multiline_comment|/* should call search_binary_handler recursively here,&n;&t;&t
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/* kernel module loader fixup */
+multiline_comment|/* so we don&squot;t try to load run modprobe in kernel space. */
+id|set_fs
+c_func
+(paren
+id|USER_DS
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*  sun4m_irq.c&n; *  arch/sparc/kernel/sun4m_irq.c:&n; *&n; *  djhr: Hacked out of irq.c into a CPU dependent version.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1995 Pete A. Zaitcev (zaitcev@ipmce.su)&n; *  Copyright (C) 1996 Dave Redman (djhr@tadpole.co.uk)&n; */
+multiline_comment|/*  sun4m_irq.c&n; *  arch/sparc/kernel/sun4m_irq.c:&n; *&n; *  djhr: Hacked out of irq.c into a CPU dependent version.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1995 Pete A. Zaitcev (zaitcev@yahoo.com)&n; *  Copyright (C) 1996 Dave Redman (djhr@tadpole.co.uk)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -20,6 +20,10 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
+macro_line|#if defined(CONFIG_ARCH_S390)
+macro_line|#include &lt;asm/s390mach.h&gt;
+macro_line|#include &lt;asm/ccwcache.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
@@ -31,16 +35,6 @@ macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#  include &lt;asm/mtrr.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_3215_CONSOLE
-r_extern
-r_int
-id|con3215_activate
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NUBUS
 macro_line|#include &lt;linux/nubus.h&gt;
@@ -787,103 +781,7 @@ op_lshift
 l_int|8
 )brace
 comma
-macro_line|#ifdef CONFIG_MDISK
-(brace
-l_string|&quot;mnda&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-)brace
-comma
-(brace
-l_string|&quot;mndb&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|1
-)brace
-comma
-(brace
-l_string|&quot;mndc&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|2
-)brace
-comma
-(brace
-l_string|&quot;mndd&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|3
-)brace
-comma
-(brace
-l_string|&quot;mnde&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|4
-)brace
-comma
-(brace
-l_string|&quot;mndf&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|5
-)brace
-comma
-(brace
-l_string|&quot;mndg&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|6
-)brace
-comma
-(brace
-l_string|&quot;mndh&quot;
-comma
-(paren
-id|MDISK_MAJOR
-op_lshift
-id|MINORBITS
-)paren
-op_plus
-l_int|7
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_DASD
+macro_line|#if defined(CONFIG_ARCH_S390)
 (brace
 l_string|&quot;dasda&quot;
 comma
@@ -2430,13 +2328,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_3215_CONSOLE
-id|con3215_activate
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_init
 c_func
@@ -2477,6 +2368,13 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ARCH_S390)
+id|ccwcache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|kiobuf_setup
 c_func
 (paren
@@ -2745,6 +2643,13 @@ c_func
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Ok, at this point all CPU&squot;s should be initialized, so&n;&t; * we can start looking into devices..&n;&t; */
+macro_line|#if defined(CONFIG_ARCH_S390)
+id|s390_init_machine_check
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 id|pci_init
 c_func

@@ -36,67 +36,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|ldstub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g7
-id|brnz
-comma
-id|pn
-op_mod
-op_mod
-id|g7
-comma
-l_float|2f
-id|membar
-macro_line|#StoreLoad | #StoreStore
-dot
-id|subsection
-l_int|2
-l_int|2
-suffix:colon
-id|ldub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g7
-id|brnz
-comma
-id|pt
-op_mod
-op_mod
-id|g7
-comma
-l_int|2
-id|b
-id|membar
-macro_line|#LoadLoad
-id|b
-comma
-id|a
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|1
-id|b
-dot
-id|previous
-"&quot;"
+l_string|&quot;1:&t;ldstub&t;&t;[%0], %%g7&bslash;n&quot;
+l_string|&quot;&t;brnz,pn&t;&t;%%g7, 2f&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&t;ldub&t;&t;[%0], %%g7&bslash;n&quot;
+l_string|&quot;&t;brnz,pt&t;&t;%%g7, 2b&bslash;n&quot;
+l_string|&quot;&t; membar&t;&t;#LoadLoad&bslash;n&quot;
+l_string|&quot;&t;b,a,pt&t;&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

@@ -541,13 +541,12 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|wait_on_buffer
+id|lock_buffer
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
-singleline_comment|// clear_bit(BH_Uptodate, &amp;bh-&gt;b_state) ;
 id|clear_bit
 c_func
 (paren
@@ -573,6 +572,12 @@ id|BH_New
 comma
 op_amp
 id|bh-&gt;b_state
+)paren
+suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 )brace

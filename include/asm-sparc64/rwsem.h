@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rwsem.h,v 1.2 2001/04/19 01:52:04 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
+multiline_comment|/* $Id: rwsem.h,v 1.4 2001/04/26 02:36:36 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
 macro_line|#ifndef _SPARC64_RWSEM_H
 DECL|macro|_SPARC64_RWSEM_H
 mdefine_line|#define _SPARC64_RWSEM_H
@@ -6,8 +6,60 @@ macro_line|#ifndef _LINUX_RWSEM_H
 macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 r_struct
 id|rwsem_waiter
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|FASTCALL
+c_func
+(paren
+id|rwsem_down_read_failed
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|FASTCALL
+c_func
+(paren
+id|rwsem_down_write_failed
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|FASTCALL
+c_func
+(paren
+id|rwsem_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+)paren
+)paren
 suffix:semicolon
 DECL|struct|rw_semaphore
 r_struct
@@ -34,23 +86,15 @@ DECL|member|wait_lock
 id|spinlock_t
 id|wait_lock
 suffix:semicolon
-DECL|member|wait_front
+DECL|member|wait_list
 r_struct
-id|rwsem_waiter
-op_star
-id|wait_front
-suffix:semicolon
-DECL|member|wait_back
-r_struct
-id|rwsem_waiter
-op_star
-op_star
-id|wait_back
+id|list_head
+id|wait_list
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, NULL, &amp;(name).wait_front }
+mdefine_line|#define __RWSEM_INITIALIZER(name) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, LIST_HEAD_INIT((name).wait_list) }
 DECL|macro|DECLARE_RWSEM
 mdefine_line|#define DECLARE_RWSEM(name) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name)
 DECL|function|init_rwsem
@@ -70,11 +114,18 @@ id|sem-&gt;count
 op_assign
 id|RWSEM_UNLOCKED_VALUE
 suffix:semicolon
-id|init_waitqueue_head
+id|spin_lock_init
 c_func
 (paren
 op_amp
-id|sem-&gt;wait
+id|sem-&gt;wait_lock
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sem-&gt;wait_list
 )paren
 suffix:semicolon
 )brace
@@ -249,9 +300,8 @@ l_string|&quot; mov&t;&t;%0, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g7, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o1&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
 l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
@@ -266,7 +316,7 @@ id|sem
 comma
 l_string|&quot;i&quot;
 (paren
-id|rwsem_up_read_wake
+id|rwsem_wake
 )paren
 comma
 l_string|&quot;i&quot;
@@ -306,20 +356,23 @@ c_func
 l_string|&quot;! beginning __up_write&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;sub&t;&t;%%g5, %%g5, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;bne,pn&t;&t;%%icc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; sub&t;&t;%%g7, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
+l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o1&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
 l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
@@ -334,7 +387,7 @@ id|sem
 comma
 l_string|&quot;i&quot;
 (paren
-id|rwsem_up_write_wake
+id|rwsem_wake
 )paren
 comma
 l_string|&quot;i&quot;
@@ -345,6 +398,8 @@ suffix:colon
 l_string|&quot;g1&quot;
 comma
 l_string|&quot;g5&quot;
+comma
+l_string|&quot;g7&quot;
 comma
 l_string|&quot;memory&quot;
 comma

@@ -2552,22 +2552,6 @@ multiline_comment|/* server&squot;s netname */
 )brace
 suffix:semicolon
 r_extern
-id|dev_t
-id|get_unnamed_dev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|put_unnamed_dev
-c_func
-(paren
-id|dev_t
-)paren
-suffix:semicolon
-r_extern
 id|asmlinkage
 r_int
 id|sys_mount
@@ -3166,9 +3150,8 @@ id|data
 r_int
 id|linux_flags
 op_assign
-id|MS_MGC_MSK
+l_int|0
 suffix:semicolon
-multiline_comment|/* new semantics */
 r_int
 id|ret
 op_assign

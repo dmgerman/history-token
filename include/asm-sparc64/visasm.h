@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: visasm.h,v 1.4 1999/04/19 01:25:55 davem Exp $ */
+multiline_comment|/* $Id: visasm.h,v 1.5 2001/04/24 01:09:12 davem Exp $ */
 macro_line|#ifndef _SPARC64_VISASM_H
 DECL|macro|_SPARC64_VISASM_H
 mdefine_line|#define _SPARC64_VISASM_H
@@ -31,98 +31,18 @@ r_void
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|fprs
-comma
-op_mod
-op_mod
-id|o5
-id|andcc
-op_mod
-op_mod
-id|o5
-comma
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g0
-id|be
-comma
-id|pt
-op_mod
-op_mod
-id|icc
-comma
-l_float|299f
-id|sethi
-op_mod
-op_mod
-id|hi
-c_func
-(paren
-l_float|298f
-)paren
-comma
-op_mod
-op_mod
-id|g7
-id|ba
-id|VISenter
-op_logical_neg
-id|Note
-dot
-id|This
-id|cannot
-id|be
-id|bp
-comma
-id|as
-id|it
-id|may
-id|be
-id|too
-id|far
-id|from
-id|VISenter
-dot
-op_logical_or
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-op_mod
-id|lo
-c_func
-(paren
-l_float|298f
-)paren
-comma
-op_mod
-op_mod
-id|g7
-l_int|298
+l_string|&quot;&t;&t;rd %%fprs, %%o5&bslash;n&quot;
+l_string|&quot;&t;&t;andcc %%o5, %0, %%g0&bslash;n&quot;
+l_string|&quot;&t;&t;be,pt %%icc, 299f&bslash;n&quot;
+l_string|&quot;&t;&t; sethi %%hi(298f), %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;ba VISenter&t;! Note. This cannot be bp, as it may be too far from VISenter.&bslash;n&quot;
+l_string|&quot;&t;&t; or %%g7, %%lo(298f), %%g7&bslash;n&quot;
+l_string|&quot;&t;298:&t;wr %%g0, 0, %%fprs&bslash;n&quot;
+l_string|&quot;&t;299:&bslash;n&quot;
+l_string|&quot;&t;&t;&quot;
 suffix:colon
-id|wr
-op_mod
-op_mod
-id|g0
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|fprs
-l_int|299
 suffix:colon
-l_string|&quot; : : &quot;
-id|i
-"&quot;"
+l_string|&quot;i&quot;
 (paren
 id|FPRS_FEF
 op_or

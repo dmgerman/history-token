@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
-macro_line|#include &lt;asm/tlb.h&gt;
 DECL|variable|totalram_pages
 r_static
 r_int

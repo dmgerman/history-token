@@ -378,6 +378,27 @@ l_int|0
 op_assign
 id|prom_node_cpu
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+(brace
+r_extern
+r_int
+r_int
+id|up_clock_tick
+suffix:semicolon
+id|up_clock_tick
+op_assign
+id|prom_getintdefault
+c_func
+(paren
+id|prom_node_cpu
+comma
+l_string|&quot;clock-frequency&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|central_probe
 c_func
 (paren

@@ -140,14 +140,16 @@ DECL|macro|EM_IA_64
 mdefine_line|#define EM_IA_64&t;50&t;/* HP/Intel IA-64 */
 DECL|macro|EM_X8664
 mdefine_line|#define EM_X8664&t;62&t;/* AMD x86-64 */
+DECL|macro|EM_S390
+mdefine_line|#define EM_S390&t;&t;22&t;/* IBM S/390 */
 DECL|macro|EM_CRIS
 mdefine_line|#define EM_CRIS         76      /* Axis Communications 32-bit embedded processor */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026
-multiline_comment|/*&n; * This is an interim value for S390 architecture&n; */
-DECL|macro|EM_S390
-mdefine_line|#define EM_S390         0xA390
+multiline_comment|/*&n; * This is the old interim value for S/390 architecture&n; */
+DECL|macro|EM_S390_OLD
+mdefine_line|#define EM_S390_OLD     0xA390
 multiline_comment|/* This is the info that is needed to parse the dynamic section of the file */
 DECL|macro|DT_NULL
 mdefine_line|#define DT_NULL&t;&t;0

@@ -379,6 +379,9 @@ op_assign
 (paren
 id|u32
 )paren
+(paren
+r_int
+)paren
 id|filp-&gt;private_data
 suffix:semicolon
 r_if
@@ -722,6 +725,9 @@ op_assign
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|ino
 suffix:semicolon

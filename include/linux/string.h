@@ -1,6 +1,8 @@
 macro_line|#ifndef _LINUX_STRING_H_
 DECL|macro|_LINUX_STRING_H_
 mdefine_line|#define _LINUX_STRING_H_
+multiline_comment|/* We don&squot;t want strings.h stuff being user by user stuff by accident */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;&t;/* for size_t */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* for NULL */
 macro_line|#ifdef __cplusplus
@@ -371,6 +373,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef __cplusplus
 )brace
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* _LINUX_STRING_H_ */
 eof

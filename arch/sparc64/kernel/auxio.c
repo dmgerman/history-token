@@ -163,37 +163,11 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|central_bus
-op_logical_or
-id|this_is_starfire
-op_logical_or
-(paren
-id|tlb_type
-op_eq
-id|cheetah
-)paren
-)paren
-(brace
 id|auxio_register
 op_assign
 l_int|0UL
 suffix:semicolon
 r_return
-suffix:semicolon
-)brace
-id|prom_printf
-c_func
-(paren
-l_string|&quot;Cannot find auxio node, cannot continue...&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_halt
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Map the register both read and write */

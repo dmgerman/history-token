@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.12 2001/04/17 07:20:20 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.c,v 1.13 2001/04/20 08:16:28 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -26,6 +26,10 @@ macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
+macro_line|#endif
+macro_line|#ifdef __powerpc__
+macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sungem.h&quot;
 DECL|variable|__devinitdata
@@ -120,12 +124,10 @@ comma
 l_int|0UL
 )brace
 comma
-macro_line|#if 0
-multiline_comment|/* Need to figure this one out. */
 (brace
-id|PCI_VENDOR_ID_SUN
+id|PCI_VENDOR_ID_APPLE
 comma
-id|PCI_DEVICE_ID_SUN_PPC_GEM
+id|PCI_DEVICE_ID_APPLE_UNI_N_GMAC
 comma
 id|PCI_ANY_ID
 comma
@@ -138,7 +140,6 @@ comma
 l_int|0UL
 )brace
 comma
-macro_line|#endif
 (brace
 l_int|0
 comma
@@ -658,6 +659,7 @@ id|MAC_TXSTAT_URUN
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: TX MAC xmit underrun.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -678,6 +680,7 @@ id|MAC_TXSTAT_MPE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: TX MAC max packet size error.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -780,6 +783,7 @@ id|MAC_RXSTAT_OFLW
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: RX MAC fifo overflow.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -993,6 +997,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|gp-&gt;pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
 id|gp-&gt;pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_GEM
@@ -4727,6 +4735,10 @@ id|gp
 r_if
 c_cond
 (paren
+id|gp-&gt;pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
 id|gp-&gt;pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_GEM
@@ -5442,6 +5454,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|gp-&gt;pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
 id|gp-&gt;pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_GEM
@@ -7663,18 +7679,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
 id|pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_RIO_GEM
-macro_line|#if 0
-op_logical_or
-id|pdev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_SUN_PPC_GEM
-macro_line|#endif
 )paren
 (brace
-multiline_comment|/* One of the MII PHYs _must_ be present&n;&t;&t; * as these chip versions have no gigabit&n;&t;&t; * PHY.&n;&t;&t; */
+multiline_comment|/* One of the MII PHYs _must_ be present&n;&t;&t; * as this chip has no gigabit PHY.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7884,6 +7898,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_GEM
@@ -7965,6 +7987,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Calculate pause thresholds.  Setting the OFF threshold to the&n;&t; * full RX fifo size effectively disables PAUSE generation which&n;&t; * is what we do for 10/100 only GEMs which have FIFOs too small&n;&t; * to make real gains from PAUSE.&n;&t; */
@@ -8089,7 +8112,7 @@ suffix:semicolon
 )brace
 DECL|function|gem_get_device_address
 r_static
-r_void
+r_int
 id|__devinit
 id|gem_get_device_address
 c_func
@@ -8191,6 +8214,79 @@ l_int|6
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef __powerpc__
+r_struct
+id|device_node
+op_star
+id|gem_node
+suffix:semicolon
+r_int
+r_char
+op_star
+id|addr
+suffix:semicolon
+id|gem_node
+op_assign
+id|pci_device_to_OF_node
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|addr
+op_assign
+id|get_property
+c_func
+(paren
+id|gem_node
+comma
+l_string|&quot;local-mac-address&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t get mac-address&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|memcpy
+c_func
+(paren
+id|dev-&gt;dev_addr
+comma
+id|addr
+comma
+id|MAX_ADDR_LEN
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|gem_init_one
 r_static
@@ -8251,6 +8347,18 @@ id|KERN_INFO
 l_string|&quot;%s&quot;
 comma
 id|version
+)paren
+suffix:semicolon
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|gemreg_base
@@ -8553,11 +8661,17 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|gem_get_device_address
 c_func
 (paren
 id|gp
 )paren
+)paren
+r_goto
+id|err_out_iounmap
 suffix:semicolon
 r_for
 c_loop

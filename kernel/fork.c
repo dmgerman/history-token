@@ -2692,7 +2692,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|bad_fork_cleanup_sighand
+id|bad_fork_cleanup_mm
 suffix:semicolon
 id|p-&gt;semundo
 op_assign
@@ -2852,6 +2852,14 @@ id|sem
 suffix:semicolon
 r_return
 id|retval
+suffix:semicolon
+id|bad_fork_cleanup_mm
+suffix:colon
+id|exit_mm
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|bad_fork_cleanup_sighand
 suffix:colon

@@ -678,6 +678,9 @@ op_eq
 (paren
 id|u32
 )paren
+(paren
+r_int
+)paren
 id|dentry-&gt;d_fsdata
 )paren
 (brace
@@ -794,6 +797,9 @@ id|link_ino
 op_assign
 (paren
 id|u32
+)paren
+(paren
+r_int
 )paren
 id|dentry-&gt;d_fsdata
 suffix:semicolon

@@ -274,12 +274,11 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
-DECL|member|d_reftime
+DECL|member|d_vfs_flags
 r_int
 r_int
-id|d_reftime
+id|d_vfs_flags
 suffix:semicolon
-multiline_comment|/* last time referenced */
 DECL|member|d_fsdata
 r_void
 op_star

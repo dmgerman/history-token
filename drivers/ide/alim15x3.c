@@ -3503,6 +3503,7 @@ comma
 l_int|15
 )brace
 suffix:semicolon
+macro_line|#ifndef CONFIG_SPARC64
 id|hwif-&gt;irq
 op_assign
 id|hwif-&gt;channel
@@ -3625,6 +3626,7 @@ id|inmir
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_SPARC64 */
 id|hwif-&gt;tuneproc
 op_assign
 op_amp

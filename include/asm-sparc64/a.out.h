@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: a.out.h,v 1.6 1999/08/04 07:04:21 jj Exp $ */
+multiline_comment|/* $Id: a.out.h,v 1.7 2001/04/24 01:09:12 davem Exp $ */
 macro_line|#ifndef __SPARC64_A_OUT_H__
 DECL|macro|__SPARC64_A_OUT_H__
 mdefine_line|#define __SPARC64_A_OUT_H__
@@ -78,7 +78,7 @@ id|a_drsize
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif __ASSEMBLY__
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Where in the file does the text information begin? */
 DECL|macro|N_TXTOFF
 mdefine_line|#define N_TXTOFF(x)     (N_MAGIC(x) == ZMAGIC ? 0 : sizeof (struct exec))

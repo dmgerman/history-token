@@ -211,176 +211,28 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|lduw
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|cas
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|cmp
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|bne
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_int|1
-id|b
-id|cmp
-op_mod
-op_mod
-id|g7
-comma
-l_int|1
-id|bl
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_float|3f
-id|membar
-macro_line|#StoreStore
-l_int|2
-suffix:colon
-dot
-id|subsection
-l_int|2
-l_int|3
-suffix:colon
-id|mov
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g5
-id|save
-op_mod
-op_mod
-id|sp
-comma
-op_minus
-l_int|160
-comma
-op_mod
-op_mod
-id|sp
-id|mov
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|l1
-id|mov
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|l2
-id|mov
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|l3
-id|call
-op_mod
-l_int|1
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|o0
-id|mov
-op_mod
-op_mod
-id|l1
-comma
-op_mod
-op_mod
-id|g1
-id|mov
-op_mod
-op_mod
-id|l2
-comma
-op_mod
-op_mod
-id|g2
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|2
-id|b
-id|restore
-op_mod
-op_mod
-id|l3
-comma
-op_mod
-op_mod
-id|g0
-comma
-op_mod
-op_mod
-id|g3
-dot
-id|previous
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&t;1:&t;lduw&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cas&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; cmp&t;%%g7, 1&bslash;n&quot;
+l_string|&quot;&t;&t;bl,pn&t;%%icc, 3f&bslash;n&quot;
+l_string|&quot;&t;&t; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot;&t;2:&bslash;n&quot;
+l_string|&quot;&t;&t;.subsection 2&bslash;n&quot;
+l_string|&quot;&t;3:&t;mov&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g1, %%l1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g2, %%l2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g3, %%l3&bslash;n&quot;
+l_string|&quot;&t;&t;call&t;%1&bslash;n&quot;
+l_string|&quot;&t;&t; mov&t;%%g5, %%o0&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l1, %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
+l_string|&quot;&t;&t; restore %%l3, %%g0, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -433,183 +285,29 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|lduw
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|cas
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|cmp
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|bne
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_int|1
-id|b
-id|cmp
-op_mod
-op_mod
-id|g7
-comma
-l_int|1
-id|bl
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_float|3f
-id|membar
-macro_line|#StoreStore
-l_int|2
-suffix:colon
-dot
-id|subsection
-l_int|2
-l_int|3
-suffix:colon
-id|mov
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|g5
-id|save
-op_mod
-op_mod
-id|sp
-comma
-op_minus
-l_int|160
-comma
-op_mod
-op_mod
-id|sp
-id|mov
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|l1
-id|mov
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|l2
-id|mov
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|l3
-id|call
-op_mod
-l_int|3
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|o0
-id|mov
-op_mod
-op_mod
-id|l1
-comma
-op_mod
-op_mod
-id|g1
-id|mov
-op_mod
-op_mod
-id|l2
-comma
-op_mod
-op_mod
-id|g2
-id|mov
-op_mod
-op_mod
-id|l3
-comma
-op_mod
-op_mod
-id|g3
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|2
-id|b
-id|restore
-op_mod
-op_mod
-id|o0
-comma
-op_mod
-op_mod
-id|g0
-comma
-op_mod
-l_int|0
-dot
-id|previous
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&t;1:&t;lduw&t;[%2], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cas&t;[%2], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; cmp&t;%%g7, 1&bslash;n&quot;
+l_string|&quot;&t;&t;bl,pn&t;%%icc, 3f&bslash;n&quot;
+l_string|&quot;&t;&t; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot;&t;2:&bslash;n&quot;
+l_string|&quot;&t;&t;.subsection 2&bslash;n&quot;
+l_string|&quot;&t;3:&t;mov&t;%2, %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g1, %%l1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g2, %%l2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g3, %%l3&bslash;n&quot;
+l_string|&quot;&t;&t;call&t;%3&bslash;n&quot;
+l_string|&quot;&t;&t; mov&t;%%g5, %%o0&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l1, %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l3, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
+l_string|&quot;&t;&t; restore %%o0, %%g0, %0&bslash;n&quot;
+l_string|&quot;&t;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -674,183 +372,29 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|lduw
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|sub
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|cas
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|cmp
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|bne
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_int|1
-id|b
-id|cmp
-op_mod
-op_mod
-id|g7
-comma
-l_int|1
-id|bl
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_float|3f
-id|membar
-macro_line|#StoreStore
-l_int|2
-suffix:colon
-dot
-id|subsection
-l_int|2
-l_int|3
-suffix:colon
-id|mov
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|g5
-id|save
-op_mod
-op_mod
-id|sp
-comma
-op_minus
-l_int|160
-comma
-op_mod
-op_mod
-id|sp
-id|mov
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|l1
-id|mov
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|l2
-id|mov
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|l3
-id|call
-op_mod
-l_int|3
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|o0
-id|mov
-op_mod
-op_mod
-id|l1
-comma
-op_mod
-op_mod
-id|g1
-id|mov
-op_mod
-op_mod
-id|l2
-comma
-op_mod
-op_mod
-id|g2
-id|mov
-op_mod
-op_mod
-id|l3
-comma
-op_mod
-op_mod
-id|g3
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|2
-id|b
-id|restore
-op_mod
-op_mod
-id|o0
-comma
-op_mod
-op_mod
-id|g0
-comma
-op_mod
-l_int|0
-dot
-id|previous
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&t;1:&t;lduw&t;[%2], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cas&t;[%2], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; cmp&t;%%g7, 1&bslash;n&quot;
+l_string|&quot;&t;&t;bl,pn&t;%%icc, 3f&bslash;n&quot;
+l_string|&quot;&t;&t; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot;&t;2:&bslash;n&quot;
+l_string|&quot;&t;&t;.subsection 2&bslash;n&quot;
+l_string|&quot;&t;3:&t;mov&t;%2, %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g1, %%l1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g2, %%l2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g3, %%l3&bslash;n&quot;
+l_string|&quot;&t;&t;call&t;%3&bslash;n&quot;
+l_string|&quot;&t;&t; mov&t;%%g5, %%o0&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l1, %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l3, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
+l_string|&quot;&t;&t; restore %%o0, %%g0, %0&bslash;n&quot;
+l_string|&quot;&t;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -910,181 +454,29 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|membar
-macro_line|#StoreLoad | #LoadLoad
-l_int|1
-suffix:colon
-id|lduw
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|add
-op_mod
-op_mod
-id|g5
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g7
-id|cas
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|cmp
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|g7
-id|bne
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_int|1
-id|b
-id|addcc
-op_mod
-op_mod
-id|g7
-comma
-l_int|1
-comma
-op_mod
-op_mod
-id|g0
-id|ble
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_float|3f
-id|nop
-l_int|2
-suffix:colon
-dot
-id|subsection
-l_int|2
-l_int|3
-suffix:colon
-id|mov
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g5
-id|save
-op_mod
-op_mod
-id|sp
-comma
-op_minus
-l_int|160
-comma
-op_mod
-op_mod
-id|sp
-id|mov
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|l1
-id|mov
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|l2
-id|mov
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|l3
-id|call
-op_mod
-l_int|1
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-op_mod
-id|o0
-id|mov
-op_mod
-op_mod
-id|l1
-comma
-op_mod
-op_mod
-id|g1
-id|mov
-op_mod
-op_mod
-id|l2
-comma
-op_mod
-op_mod
-id|g2
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|2
-id|b
-id|restore
-op_mod
-op_mod
-id|l3
-comma
-op_mod
-op_mod
-id|g0
-comma
-op_mod
-op_mod
-id|g3
-dot
-id|previous
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&t;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
+l_string|&quot;&t;1:&t;lduw&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;add&t;%%g5, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cas&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; addcc&t;%%g7, 1, %%g0&bslash;n&quot;
+l_string|&quot;&t;&t;ble,pn&t;%%icc, 3f&bslash;n&quot;
+l_string|&quot;&t;&t; nop&bslash;n&quot;
+l_string|&quot;&t;2:&bslash;n&quot;
+l_string|&quot;&t;&t;.subsection 2&bslash;n&quot;
+l_string|&quot;&t;3:&t;mov&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g1, %%l1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g2, %%l2&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%g3, %%l3&bslash;n&quot;
+l_string|&quot;&t;&t;call&t;%1&bslash;n&quot;
+l_string|&quot;&t;&t; mov&t;%%g5, %%o0&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l1, %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
+l_string|&quot;&t;&t; restore %%l3, %%g0, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: signal32.c,v 1.69 2001/03/21 11:46:20 davem Exp $&n; *  arch/sparc64/kernel/signal32.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: signal32.c,v 1.70 2001/04/24 01:09:12 davem Exp $&n; *  arch/sparc64/kernel/signal32.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -4701,16 +4701,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|membar
-macro_line|#StoreStore
-id|flush
-op_mod
-l_int|0
-op_plus
-op_mod
-l_int|1
-"&quot;"
+l_string|&quot;&t;membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot;&t;flush&t;%0 + %1&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -7488,16 +7480,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|membar
-macro_line|#StoreStore
-id|flush
-op_mod
-l_int|0
-op_plus
-op_mod
-l_int|1
-"&quot;"
+l_string|&quot;&t;membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot;&t;flush&t;%0 + %1&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;

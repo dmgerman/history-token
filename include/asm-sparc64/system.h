@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: system.h,v 1.62 2000/09/23 02:09:21 davem Exp $ */
+multiline_comment|/* $Id: system.h,v 1.63 2001/04/24 01:09:12 davem Exp $ */
 macro_line|#ifndef __SPARC64_SYSTEM_H
 DECL|macro|__SPARC64_SYSTEM_H
 mdefine_line|#define __SPARC64_SYSTEM_H
@@ -255,69 +255,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g5
-l_int|1
+l_string|&quot;&t;mov&t;&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;&t;[%2], %%g7&bslash;n&quot;
+l_string|&quot;&t;cas&t;&t;[%2], %%g7, %0&bslash;n&quot;
+l_string|&quot;&t;cmp&t;&t;%%g7, %0&bslash;n&quot;
+l_string|&quot;&t;bne,a,pn&t;%%icc, 1b&bslash;n&quot;
+l_string|&quot;&t; mov&t;&t;%%g5, %0&bslash;n&quot;
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
 suffix:colon
-id|lduw
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g7
-id|cas
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-id|cmp
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-id|bne
-comma
-id|a
-comma
-id|pn
-op_mod
-op_mod
-id|icc
-comma
-l_int|1
-id|b
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-l_int|0
-id|membar
-macro_line|#StoreLoad | #StoreStore
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;=&amp;r&quot;
 (paren
 id|val
 )paren
@@ -368,69 +314,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g5
-l_int|1
+l_string|&quot;&t;mov&t;&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;1:&t;ldx&t;&t;[%2], %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;&t;[%2], %%g7, %0&bslash;n&quot;
+l_string|&quot;&t;cmp&t;&t;%%g7, %0&bslash;n&quot;
+l_string|&quot;&t;bne,a,pn&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t; mov&t;&t;%%g5, %0&bslash;n&quot;
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
 suffix:colon
-id|ldx
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g7
-id|casx
-(braket
-op_mod
-l_int|2
-)braket
-comma
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-id|cmp
-op_mod
-op_mod
-id|g7
-comma
-op_mod
-l_int|0
-id|bne
-comma
-id|a
-comma
-id|pn
-op_mod
-op_mod
-id|xcc
-comma
-l_int|1
-id|b
-id|mov
-op_mod
-op_mod
-id|g5
-comma
-op_mod
-l_int|0
-id|membar
-macro_line|#StoreLoad | #StoreStore
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;=&amp;r&quot;
 (paren
 id|val
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bitops.h,v 1.32 2001/04/14 01:12:16 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.33 2001/04/24 01:09:12 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_BITOPS_H
 DECL|macro|_SPARC64_BITOPS_H
 mdefine_line|#define _SPARC64_BITOPS_H
@@ -146,46 +146,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|brz
-comma
-id|pn
-op_mod
-l_int|0
-comma
-l_float|1f
-id|neg
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-id|xnor
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-id|popc
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-l_int|0
-l_int|1
+l_string|&quot;&t;brz,pn&t;%0, 1f&bslash;n&quot;
+l_string|&quot;&t; neg&t;%0, %%g1&bslash;n&quot;
+l_string|&quot;&t;xnor&t;%0, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;popc&t;%%g2, %0&bslash;n&quot;
+l_string|&quot;1:&t;&quot;
 suffix:colon
-l_string|&quot; : &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;=&amp;r&quot;
 (paren
 id|result
 )paren

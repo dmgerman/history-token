@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.36 2001/03/03 01:20:10 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.37 2001/04/25 20:46:34 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Changes:&n; *&n; *&t;yoshfuji&t;: fix format of router-alert option&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -2846,10 +2846,6 @@ id|ifmcaddr6
 op_star
 id|i
 suffix:semicolon
-r_struct
-id|in6_addr
-id|maddr
-suffix:semicolon
 multiline_comment|/* Withdraw multicast list */
 id|read_lock_bh
 c_func
@@ -2884,23 +2880,6 @@ op_amp
 id|idev-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* Delete all-nodes address. */
-id|ipv6_addr_all_nodes
-c_func
-(paren
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-id|ipv6_dev_mc_dec
-c_func
-(paren
-id|idev-&gt;dev
-comma
-op_amp
-id|maddr
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Device going up */
 DECL|function|ipv6_mc_up
@@ -2918,27 +2897,6 @@ r_struct
 id|ifmcaddr6
 op_star
 id|i
-suffix:semicolon
-r_struct
-id|in6_addr
-id|maddr
-suffix:semicolon
-multiline_comment|/* Add all-nodes address. */
-id|ipv6_addr_all_nodes
-c_func
-(paren
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-id|ipv6_dev_mc_inc
-c_func
-(paren
-id|idev-&gt;dev
-comma
-op_amp
-id|maddr
-)paren
 suffix:semicolon
 multiline_comment|/* Install multicast list, except for all-nodes (already installed) */
 id|read_lock_bh
@@ -2975,6 +2933,40 @@ id|idev-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* IPv6 device initialization. */
+DECL|function|ipv6_mc_init_dev
+r_void
+id|ipv6_mc_init_dev
+c_func
+(paren
+r_struct
+id|inet6_dev
+op_star
+id|idev
+)paren
+(brace
+r_struct
+id|in6_addr
+id|maddr
+suffix:semicolon
+multiline_comment|/* Add all-nodes address. */
+id|ipv6_addr_all_nodes
+c_func
+(paren
+op_amp
+id|maddr
+)paren
+suffix:semicolon
+id|ipv6_dev_mc_inc
+c_func
+(paren
+id|idev-&gt;dev
+comma
+op_amp
+id|maddr
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Device is about to be destroyed: clean up.&n; */
 DECL|function|ipv6_mc_destroy_dev
 r_void
@@ -2991,6 +2983,27 @@ r_struct
 id|ifmcaddr6
 op_star
 id|i
+suffix:semicolon
+r_struct
+id|in6_addr
+id|maddr
+suffix:semicolon
+multiline_comment|/* Delete all-nodes address. */
+id|ipv6_addr_all_nodes
+c_func
+(paren
+op_amp
+id|maddr
+)paren
+suffix:semicolon
+id|ipv6_dev_mc_dec
+c_func
+(paren
+id|idev-&gt;dev
+comma
+op_amp
+id|maddr
+)paren
 suffix:semicolon
 id|write_lock_bh
 c_func

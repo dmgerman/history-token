@@ -5325,7 +5325,7 @@ r_int
 id|err
 suffix:semicolon
 r_struct
-id|mem_dqblk
+id|dqblk
 id|d
 suffix:semicolon
 id|mm_segment_t

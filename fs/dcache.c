@@ -318,11 +318,6 @@ suffix:semicolon
 id|dentry_stat.nr_unused
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * Update the timestamp&n;&t; */
-id|dentry-&gt;d_reftime
-op_assign
-id|jiffies
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -967,12 +962,12 @@ multiline_comment|/* If the dentry was recently referenced, don&squot;t free it.
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_flags
+id|dentry-&gt;d_vfs_flags
 op_amp
 id|DCACHE_REFERENCED
 )paren
 (brace
-id|dentry-&gt;d_flags
+id|dentry-&gt;d_vfs_flags
 op_and_assign
 op_complement
 id|DCACHE_REFERENCED
@@ -1793,6 +1788,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|dentry-&gt;d_vfs_flags
+op_assign
+l_int|0
+suffix:semicolon
 id|dentry-&gt;d_flags
 op_assign
 l_int|0
@@ -2297,7 +2296,7 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
-id|dentry-&gt;d_flags
+id|dentry-&gt;d_vfs_flags
 op_or_assign
 id|DCACHE_REFERENCED
 suffix:semicolon

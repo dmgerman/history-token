@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.36 2001/03/15 08:51:24 anton Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
+multiline_comment|/* $Id: time.c,v 1.37 2001/04/24 01:09:12 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -484,67 +484,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|tick_cmpr
-comma
-op_mod
-l_int|0
-id|ba
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|wr
-op_mod
-l_int|0
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|tick_cmpr
-id|rd
-op_mod
-op_mod
-id|tick_cmpr
-comma
-op_mod
-op_mod
-id|g0
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-l_int|1
-id|mov
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-"&quot;"
+l_string|&quot;&t;rd&t;%%tick_cmpr, %0&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; add&t;%0, %2, %0&bslash;n&quot;
+l_string|&quot;&t;.align&t;64&bslash;n&quot;
+l_string|&quot;1: &t;wr&t;%0, 0, %%tick_cmpr&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%tick_cmpr, %%g0&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%tick, %1&bslash;n&quot;
+l_string|&quot;&t;mov&t;%1, %1&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -569,40 +516,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|asr25
-comma
-op_mod
-l_int|0
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-id|wr
-op_mod
-l_int|0
-comma
-l_int|0
-comma
-op_mod
-op_mod
-id|asr25
-id|rd
-op_mod
-op_mod
-id|asr24
-comma
-op_mod
-l_int|1
-"&quot;"
+l_string|&quot;&t;rd&t;%%asr25, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;%0, %2, %0&bslash;n&quot;
+l_string|&quot;&t;wr&t;%0, 0, %%asr25&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%asr24, %1&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -695,24 +612,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|tick_cmpr
-comma
-op_mod
-l_int|0
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;&t;rd&t;%%tick_cmpr, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;%0, %1, %0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -732,24 +633,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|asr25
-comma
-op_mod
-l_int|0
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;&t;rd&t;%%asr25, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;%0, %1, %0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -2700,35 +2585,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-op_mod
-id|g1
-id|add
-op_mod
-l_int|1
-comma
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-l_int|0
-id|sub
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
+l_string|&quot;&t;add&t;%1, %%g1, %0&bslash;n&quot;
+l_string|&quot;&t;sub&t;%0, %2, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.174 2001/03/30 07:10:42 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.175 2001/04/24 01:09:12 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -5754,37 +5754,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|stxa
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|stxa
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|5
-)braket
-op_mod
-l_int|4
-id|membar
-macro_line|#Sync
-id|flush
-op_mod
-op_mod
-id|g6
-id|nop
-id|nop
-id|nop
-"&quot;"
+l_string|&quot;&t;stxa&t;%1, [%0] %3&bslash;n&quot;
+l_string|&quot;&t;stxa&t;%2, [%5] %4&bslash;n&quot;
+l_string|&quot;&t;membar&t;#Sync&bslash;n&quot;
+l_string|&quot;&t;flush&t;%%g6&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -5850,37 +5826,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|stxa
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|stxa
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|5
-)braket
-op_mod
-l_int|4
-id|membar
-macro_line|#Sync
-id|flush
-op_mod
-op_mod
-id|g6
-id|nop
-id|nop
-id|nop
-"&quot;"
+l_string|&quot;&t;stxa&t;%1, [%0] %3&bslash;n&quot;
+l_string|&quot;&t;stxa&t;%2, [%5] %4&bslash;n&quot;
+l_string|&quot;&t;membar&t;#Sync&bslash;n&quot;
+l_string|&quot;&t;flush&t;%%g6&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -5936,37 +5888,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|stxa
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|stxa
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|5
-)braket
-op_mod
-l_int|4
-id|membar
-macro_line|#Sync
-id|flush
-op_mod
-op_mod
-id|g6
-id|nop
-id|nop
-id|nop
-"&quot;"
+l_string|&quot;&t;stxa&t;%1, [%0] %3&bslash;n&quot;
+l_string|&quot;&t;stxa&t;%2, [%5] %4&bslash;n&quot;
+l_string|&quot;&t;membar&t;#Sync&bslash;n&quot;
+l_string|&quot;&t;flush&t;%%g6&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -6040,37 +5968,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|stxa
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|stxa
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|5
-)braket
-op_mod
-l_int|4
-id|membar
-macro_line|#Sync
-id|flush
-op_mod
-op_mod
-id|g6
-id|nop
-id|nop
-id|nop
-"&quot;"
+l_string|&quot;&t;stxa&t;%1, [%0] %3&bslash;n&quot;
+l_string|&quot;&t;stxa&t;%2, [%5] %4&bslash;n&quot;
+l_string|&quot;&t;membar&t;#Sync&bslash;n&quot;
+l_string|&quot;&t;flush&t;%%g6&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
