@@ -381,6 +381,16 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * atm driver prototypes and stuctures&n; */
 r_static
+r_void
+id|udsl_atm_dev_close
+(paren
+r_struct
+id|atm_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
 r_int
 id|udsl_atm_open
 (paren
@@ -464,6 +474,11 @@ id|atmdev_ops
 id|udsl_atm_devops
 op_assign
 (brace
+dot
+id|dev_close
+op_assign
+id|udsl_atm_dev_close
+comma
 dot
 id|open
 op_assign
@@ -2736,71 +2751,66 @@ suffix:semicolon
 )brace
 multiline_comment|/************&n;**   ATM   **&n;************/
 multiline_comment|/***************************************************************************&n;*&n;* init functions&n;*&n;****************************************************************************/
-DECL|function|udsl_atm_stopdevice
+DECL|function|udsl_atm_dev_close
 r_static
 r_void
-id|udsl_atm_stopdevice
+id|udsl_atm_dev_close
 (paren
+r_struct
+id|atm_dev
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|udsl_instance_data
 op_star
 id|instance
-)paren
-(brace
-r_struct
-id|atm_vcc
-op_star
-id|walk
-suffix:semicolon
-r_struct
-id|atm_dev
-op_star
-id|atm_dev
+op_assign
+id|dev-&gt;dev_data
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|instance-&gt;atm_dev
+id|instance
 )paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;udsl_atm_dev_close: NULL instance!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
-id|atm_dev
-op_assign
-id|instance-&gt;atm_dev
-suffix:semicolon
-id|atm_dev-&gt;signal
-op_assign
-id|ATM_PHY_SIG_LOST
-suffix:semicolon
-id|walk
-op_assign
-id|atm_dev-&gt;vccs
-suffix:semicolon
-id|shutdown_atm_dev
+)brace
+id|PDEBUG
 (paren
-id|atm_dev
+l_string|&quot;udsl_atm_dev_close: queue has %u elements&bslash;n&quot;
+comma
+id|instance-&gt;sndqueue.qlen
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|PDEBUG
 (paren
-suffix:semicolon
-id|walk
-suffix:semicolon
-id|walk
-op_assign
-id|walk-&gt;next
+l_string|&quot;udsl_atm_dev_close: killing tasklet&bslash;n&quot;
 )paren
-id|wake_up
+suffix:semicolon
+id|tasklet_kill
 (paren
 op_amp
-id|walk-&gt;sleep
+id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
-id|instance-&gt;atm_dev
-op_assign
-l_int|NULL
+id|PDEBUG
+(paren
+l_string|&quot;udsl_atm_dev_close: freeing instance&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|instance
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
@@ -4268,7 +4278,7 @@ op_amp
 id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
-multiline_comment|/* flush spare receivers */
+multiline_comment|/* receive finalize */
 id|down
 (paren
 op_amp
@@ -4510,11 +4520,7 @@ id|rcv-&gt;skb
 )paren
 suffix:semicolon
 )brace
-id|udsl_atm_stopdevice
-(paren
-id|instance
-)paren
-suffix:semicolon
+multiline_comment|/* send finalize */
 id|tasklet_disable
 (paren
 op_amp
@@ -4664,12 +4670,6 @@ op_amp
 id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
-id|tasklet_kill
-(paren
-op_amp
-id|instance-&gt;receive_tasklet
-)paren
-suffix:semicolon
 id|PDEBUG
 (paren
 l_string|&quot;udsl_usb_disconnect: freeing senders&bslash;n&quot;
@@ -4728,14 +4728,10 @@ dot
 id|base
 )paren
 suffix:semicolon
-id|PDEBUG
+multiline_comment|/* atm finalize */
+id|shutdown_atm_dev
 (paren
-l_string|&quot;udsl_usb_disconnect: freeing instance&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|instance
+id|instance-&gt;atm_dev
 )paren
 suffix:semicolon
 )brace
