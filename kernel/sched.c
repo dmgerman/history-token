@@ -1581,13 +1581,13 @@ c_func
 id|kick_process
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return a low guess at the load of cpu.&n; */
-DECL|function|get_low_cpu_load
+multiline_comment|/*&n; * Return a low guess at the load of a migration-source cpu.&n; *&n; * We want to under-estimate the load of migration sources, to&n; * balance conservatively.&n; */
+DECL|function|source_load
 r_static
 r_inline
 r_int
 r_int
-id|get_low_cpu_load
+id|source_load
 c_func
 (paren
 r_int
@@ -1622,12 +1622,13 @@ id|load_now
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_high_cpu_load
+multiline_comment|/*&n; * Return a high guess at the load of a migration-target cpu&n; */
+DECL|function|target_load
 r_static
 r_inline
 r_int
 r_int
-id|get_high_cpu_load
+id|target_load
 c_func
 (paren
 r_int
@@ -1959,7 +1960,7 @@ id|out_set_cpu
 suffix:semicolon
 id|load
 op_assign
-id|get_low_cpu_load
+id|source_load
 c_func
 (paren
 id|cpu
@@ -1967,7 +1968,7 @@ id|cpu
 suffix:semicolon
 id|this_load
 op_assign
-id|get_high_cpu_load
+id|target_load
 c_func
 (paren
 id|this_cpu
@@ -3438,7 +3439,7 @@ id|this_cpu
 )paren
 id|load
 op_assign
-id|get_low_cpu_load
+id|source_load
 c_func
 (paren
 id|i
@@ -3447,7 +3448,7 @@ suffix:semicolon
 r_else
 id|load
 op_assign
-id|get_high_cpu_load
+id|target_load
 c_func
 (paren
 id|i
@@ -4275,7 +4276,7 @@ id|local_group
 )paren
 id|load
 op_assign
-id|get_high_cpu_load
+id|target_load
 c_func
 (paren
 id|i
@@ -4284,7 +4285,7 @@ suffix:semicolon
 r_else
 id|load
 op_assign
-id|get_low_cpu_load
+id|source_load
 c_func
 (paren
 id|i
@@ -4724,7 +4725,7 @@ id|tmp
 (brace
 id|load
 op_assign
-id|get_low_cpu_load
+id|source_load
 c_func
 (paren
 id|i
