@@ -898,6 +898,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|cpu_callout_map
+r_volatile
 r_int
 r_int
 id|cpu_callout_map
