@@ -205,6 +205,7 @@ id|cfgtable
 suffix:semicolon
 DECL|member|intr
 r_int
+r_int
 id|intr
 suffix:semicolon
 DECL|member|interrupts_enabled

@@ -1816,6 +1816,11 @@ c_func
 (paren
 id|LOOP_SET_FD
 )paren
+id|ULONG_IOCTL
+c_func
+(paren
+id|LOOP_CHANGE_FD
+)paren
 id|COMPATIBLE_IOCTL
 c_func
 (paren

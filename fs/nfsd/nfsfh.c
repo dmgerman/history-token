@@ -1368,7 +1368,6 @@ id|ref_fh_fsid_type
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* make sure ref_fh type works for given export */
 r_if
 c_cond
@@ -1391,6 +1390,19 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|exp-&gt;ex_flags
+op_amp
+id|NFSEXP_FSID
+)paren
+id|ref_fh_fsid_type
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -471,7 +471,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_file.f_dentry-&gt;d_inode
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 r_struct
 id|nlm_file
@@ -529,7 +529,6 @@ op_member_access_from_pointer
 id|fclose
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 )paren
 suffix:semicolon
@@ -710,7 +709,6 @@ c_cond
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -950,7 +948,6 @@ op_member_access_from_pointer
 id|fclose
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 )paren
 suffix:semicolon

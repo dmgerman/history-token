@@ -7565,7 +7565,13 @@ suffix:semicolon
 multiline_comment|/* Setup framebuffer.  */
 id|all-&gt;info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_HWACCEL_FILLRECT
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign

@@ -550,6 +550,14 @@ DECL|enumerator|__REQ_PM_SHUTDOWN
 id|__REQ_PM_SHUTDOWN
 comma
 multiline_comment|/* shutdown request */
+DECL|enumerator|__REQ_BAR_PREFLUSH
+id|__REQ_BAR_PREFLUSH
+comma
+multiline_comment|/* barrier pre-flush done */
+DECL|enumerator|__REQ_BAR_POSTFLUSH
+id|__REQ_BAR_POSTFLUSH
+comma
+multiline_comment|/* barrier post-flush */
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -600,6 +608,10 @@ DECL|macro|REQ_PM_RESUME
 mdefine_line|#define REQ_PM_RESUME&t;(1 &lt;&lt; __REQ_PM_RESUME)
 DECL|macro|REQ_PM_SHUTDOWN
 mdefine_line|#define REQ_PM_SHUTDOWN&t;(1 &lt;&lt; __REQ_PM_SHUTDOWN)
+DECL|macro|REQ_BAR_PREFLUSH
+mdefine_line|#define REQ_BAR_PREFLUSH&t;(1 &lt;&lt; __REQ_BAR_PREFLUSH)
+DECL|macro|REQ_BAR_POSTFLUSH
+mdefine_line|#define REQ_BAR_POSTFLUSH&t;(1 &lt;&lt; __REQ_BAR_POSTFLUSH)
 multiline_comment|/*&n; * State information carried for REQ_PM_SUSPEND and REQ_PM_RESUME&n; * requests. Some step values could eventually be made generic.&n; */
 DECL|struct|request_pm_state
 r_struct
@@ -754,6 +766,24 @@ r_int
 id|rw
 )paren
 suffix:semicolon
+DECL|typedef|issue_flush_fn
+r_typedef
+r_int
+(paren
+id|issue_flush_fn
+)paren
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|gendisk
+op_star
+comma
+id|sector_t
+op_star
+)paren
+suffix:semicolon
 DECL|enum|blk_queue_state
 r_enum
 id|blk_queue_state
@@ -887,6 +917,11 @@ DECL|member|activity_fn
 id|activity_fn
 op_star
 id|activity_fn
+suffix:semicolon
+DECL|member|issue_flush_fn
+id|issue_flush_fn
+op_star
+id|issue_flush_fn
 suffix:semicolon
 multiline_comment|/*&n;&t; * Auto-unplugging state&n;&t; */
 DECL|member|unplug_timer
@@ -1060,6 +1095,8 @@ DECL|macro|QUEUE_FLAG_REENTER
 mdefine_line|#define QUEUE_FLAG_REENTER&t;6&t;/* Re-entrancy avoidance */
 DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;7&t;/* queue is plugged */
+DECL|macro|QUEUE_FLAG_ORDERED
+mdefine_line|#define QUEUE_FLAG_ORDERED&t;8&t;/* supports ordered writes */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_tagged
@@ -1082,6 +1119,12 @@ DECL|macro|blk_pm_resume_request
 mdefine_line|#define blk_pm_resume_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_RESUME)
 DECL|macro|blk_pm_request
 mdefine_line|#define blk_pm_request(rq)&t;&bslash;&n;&t;((rq)-&gt;flags &amp; (REQ_PM_SUSPEND | REQ_PM_RESUME))
+DECL|macro|blk_barrier_rq
+mdefine_line|#define blk_barrier_rq(rq)&t;((rq)-&gt;flags &amp; REQ_HARDBARRIER)
+DECL|macro|blk_barrier_preflush
+mdefine_line|#define blk_barrier_preflush(rq)&t;((rq)-&gt;flags &amp; REQ_BAR_PREFLUSH)
+DECL|macro|blk_barrier_postflush
+mdefine_line|#define blk_barrier_postflush(rq)&t;((rq)-&gt;flags &amp; REQ_BAR_POSTFLUSH)
 DECL|macro|list_entry_rq
 mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queuelist)
 DECL|macro|rq_data_dir
@@ -1882,6 +1925,9 @@ r_int
 id|uptodate
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * end_that_request_first/chunk() takes an uptodate argument. we account&n; * any value &lt;= as an io error. 0 means -EIO for compatability reasons,&n; * any other &lt; 0 value is the direct error type. An uptodate value of&n; * 1 indicates successful io completion&n; */
+DECL|macro|end_io_error
+mdefine_line|#define end_io_error(uptodate)&t;(unlikely((uptodate) &lt;= 0))
 DECL|function|blkdev_dequeue_request
 r_static
 r_inline
@@ -2109,6 +2155,45 @@ id|bdev
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|blk_queue_ordered
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_issue_flush_fn
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+id|issue_flush_fn
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blkdev_scsi_issue_flush_fn
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|gendisk
+op_star
+comma
+id|sector_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|blk_rq_map_sg
 c_func
@@ -2308,6 +2393,19 @@ c_func
 (paren
 r_struct
 id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blkdev_issue_flush
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+id|sector_t
 op_star
 )paren
 suffix:semicolon

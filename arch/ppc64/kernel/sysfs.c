@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -518,7 +519,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;H_PERFMON call returned %d&quot;
+l_string|&quot;H_PERFMON call on cpu %u &quot;
+l_string|&quot;returned %d&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|ret
 )paren
@@ -598,6 +605,13 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+DECL|variable|ppc64_enable_pmcs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ppc64_enable_pmcs
+)paren
+suffix:semicolon
 multiline_comment|/* XXX convert to rusty&squot;s on_one_cpu */
 DECL|function|run_on_cpu
 r_static

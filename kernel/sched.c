@@ -7406,7 +7406,7 @@ c_func
 id|prev
 )paren
 suffix:semicolon
-id|RCU_qsctr
+id|rcu_qsctr_inc
 c_func
 (paren
 id|task_cpu
@@ -7415,7 +7415,6 @@ c_func
 id|prev
 )paren
 )paren
-op_increment
 suffix:semicolon
 id|prev-&gt;sleep_avg
 op_sub_assign

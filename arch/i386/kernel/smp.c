@@ -11,28 +11,17 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#include &lt;mach_ipi.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 multiline_comment|/*&n; *&t;Some notes on x86 processor bugs affecting SMP operation:&n; *&n; *&t;Pentium, Pentium Pro, II, III (and all CPUs) have bugs.&n; *&t;The Linux implications for SMP are handled as follows:&n; *&n; *&t;Pentium III / [Xeon]&n; *&t;&t;None of the E1AP-E3AP errata are visible to the user.&n; *&n; *&t;E1AP.&t;see PII A1AP&n; *&t;E2AP.&t;see PII A2AP&n; *&t;E3AP.&t;see PII A3AP&n; *&n; *&t;Pentium II / [Xeon]&n; *&t;&t;None of the A1AP-A3AP errata are visible to the user.&n; *&n; *&t;A1AP.&t;see PPro 1AP&n; *&t;A2AP.&t;see PPro 2AP&n; *&t;A3AP.&t;see PPro 7AP&n; *&n; *&t;Pentium Pro&n; *&t;&t;None of 1AP-9AP errata are visible to the normal user,&n; *&t;except occasional delivery of &squot;spurious interrupt&squot; as trap #15.&n; *&t;This is very rare and a non-problem.&n; *&n; *&t;1AP.&t;Linux maps APIC as non-cacheable&n; *&t;2AP.&t;worked around in hardware&n; *&t;3AP.&t;fixed in C0 and above steppings microcode update.&n; *&t;&t;Linux does not use excessive STARTUP_IPIs.&n; *&t;4AP.&t;worked around in hardware&n; *&t;5AP.&t;symmetric IO mode (normal Linux operation) not affected.&n; *&t;&t;&squot;noapic&squot; mode has vector 0xf filled out properly.&n; *&t;6AP.&t;&squot;noapic&squot; mode might be affected - fixed in later steppings&n; *&t;7AP.&t;We do not assume writes to the LVT deassering IRQs&n; *&t;8AP.&t;We do not enable low power mode (deep sleep) during MP bootup&n; *&t;9AP.&t;We do not use mixed mode&n; *&n; *&t;Pentium&n; *&t;&t;There is a marginal case where REP MOVS on 100MHz SMP&n; *&t;machines with B stepping processors can fail. XXX should provide&n; *&t;an L1cache=Writethrough or L1cache=off option.&n; *&n; *&t;&t;B stepping CPUs may hang. There are hardware work arounds&n; *&t;for this. We warn about it in case your board doesn&squot;t have the work&n; *&t;arounds. Basically thats so I can tell anyone with a B stepping&n; *&t;CPU and SMP problems &quot;tough&quot;.&n; *&n; *&t;Specific items [From Pentium Processor Specification Update]&n; *&n; *&t;1AP.&t;Linux doesn&squot;t use remote read&n; *&t;2AP.&t;Linux doesn&squot;t trust APIC errors&n; *&t;3AP.&t;We work around this&n; *&t;4AP.&t;Linux never generated 3 interrupts of the same priority&n; *&t;&t;to cause a lost local interrupt.&n; *&t;5AP.&t;Remote read is never used&n; *&t;6AP.&t;not affected - worked around in hardware&n; *&t;7AP.&t;not affected - worked around in hardware&n; *&t;8AP.&t;worked around in hardware - we get explicit CS errors if not&n; *&t;9AP.&t;only &squot;noapic&squot; mode affected. Might generate spurious&n; *&t;&t;interrupts, we log only the first one and count the&n; *&t;&t;rest silently.&n; *&t;10AP.&t;not affected - worked around in hardware&n; *&t;11AP.&t;Linux reads the APIC between writes to avoid this, as per&n; *&t;&t;the documentation. Make sure you preserve this as it affects&n; *&t;&t;the C stepping chips too.&n; *&t;12AP.&t;not affected - worked around in hardware&n; *&t;13AP.&t;not affected - worked around in hardware&n; *&t;14AP.&t;we always deassert INIT during bootup&n; *&t;15AP.&t;not affected - worked around in hardware&n; *&t;16AP.&t;not affected - worked around in hardware&n; *&t;17AP.&t;not affected - worked around in hardware&n; *&t;18AP.&t;not affected - worked around in hardware&n; *&t;19AP.&t;not affected - worked around in BIOS&n; *&n; *&t;If this sounds worrying believe me these bugs are either ___RARE___,&n; *&t;or are signal timing bugs worked around in hardware and there&squot;s&n; *&t;about nothing of note with C stepping upwards.&n; */
-DECL|variable|__cacheline_aligned
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|tlb_state
+comma
 id|cpu_tlbstate
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|NR_CPUS
-op_minus
-l_int|1
-)braket
+)paren
+id|____cacheline_aligned
 op_assign
 (brace
 op_amp
@@ -40,7 +29,6 @@ id|init_mm
 comma
 l_int|0
 comma
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * the following functions deal with sending IPIs between CPUs.&n; *&n; * We use &squot;broadcast&squot;, CPU-&gt;CPU IPIs and self-IPIs too.&n; */
@@ -88,7 +76,6 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|__send_IPI_shortcut
-r_inline
 r_void
 id|__send_IPI_shortcut
 c_func
@@ -154,7 +141,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is only used on smaller machines.&n; */
 DECL|function|send_IPI_mask_bitmask
-r_inline
 r_void
 id|send_IPI_mask_bitmask
 c_func
@@ -356,6 +342,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#include &lt;mach_ipi.h&gt; /* must come after the send_IPI functions above for inlining */
 multiline_comment|/*&n; *&t;Smarter SMP flushing macros. &n; *&t;&t;c/o Linus Torvalds.&n; *&n; *&t;These mean you can really definitely utterly forget about&n; *&t;writing to user space from interrupts. (Its not allowed anyway).&n; *&n; *&t;Optimizations Manfred Spraul &lt;manfred@colorfullife.com&gt;&n; */
 DECL|variable|flush_cpumask
 r_static
@@ -399,10 +386,13 @@ id|cpu
 r_if
 c_cond
 (paren
+id|per_cpu
+c_func
+(paren
 id|cpu_tlbstate
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|state
 op_eq
@@ -418,10 +408,13 @@ c_func
 (paren
 id|cpu
 comma
+id|per_cpu
+c_func
+(paren
 id|cpu_tlbstate
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|active_mm-&gt;cpu_vm_mask
 )paren
@@ -475,10 +468,13 @@ c_cond
 (paren
 id|flush_mm
 op_eq
+id|per_cpu
+c_func
+(paren
 id|cpu_tlbstate
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|active_mm
 )paren
@@ -486,10 +482,13 @@ id|active_mm
 r_if
 c_cond
 (paren
+id|per_cpu
+c_func
+(paren
 id|cpu_tlbstate
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|state
 op_eq
@@ -1054,10 +1053,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|per_cpu
+c_func
+(paren
 id|cpu_tlbstate
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|state
 op_eq

@@ -57,18 +57,6 @@ id|cpu_online_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
-DECL|variable|cpu_available_map
-id|cpumask_t
-id|cpu_available_map
-op_assign
-id|CPU_MASK_NONE
-suffix:semicolon
-DECL|variable|cpu_present_at_boot
-id|cpumask_t
-id|cpu_present_at_boot
-op_assign
-id|CPU_MASK_NONE
-suffix:semicolon
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func
@@ -388,14 +376,6 @@ c_func
 (paren
 id|i
 comma
-id|cpu_available_map
-)paren
-suffix:semicolon
-id|cpu_set
-c_func
-(paren
-id|i
-comma
 id|cpu_possible_map
 )paren
 suffix:semicolon
@@ -404,7 +384,7 @@ c_func
 (paren
 id|i
 comma
-id|cpu_present_at_boot
+id|cpu_present_map
 )paren
 suffix:semicolon
 op_increment
@@ -734,10 +714,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/* Get state of physical CPU.&n; * Return codes:&n; *&t;0&t;- The processor is in the RTAS stopped state&n; *&t;1&t;- stop-self is in progress&n; *&t;2&t;- The processor is not in the RTAS stopped state&n; *&t;-1&t;- Hardware Error&n; *&t;-2&t;- Hardware Busy, Try again later.&n; */
 DECL|function|query_cpu_stopped
-r_static
 r_int
 id|query_cpu_stopped
 c_func
@@ -763,13 +741,16 @@ c_func
 l_string|&quot;query-cpu-stopped-state&quot;
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 id|qcss_tok
 op_eq
 id|RTAS_UNKNOWN_SERVICE
 )paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|status
 op_assign
@@ -813,6 +794,7 @@ r_return
 id|cpu_status
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
 DECL|function|__cpu_disable
 r_int
 id|__cpu_disable
@@ -897,7 +879,7 @@ l_int|0
 suffix:semicolon
 id|tries
 OL
-l_int|5
+l_int|25
 suffix:semicolon
 id|tries
 op_increment
@@ -930,6 +912,8 @@ id|schedule_timeout
 c_func
 (paren
 id|HZ
+op_div
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -1734,6 +1718,14 @@ id|cpu
 r_int
 r_int
 id|flags
+comma
+id|pcpu
+op_assign
+id|get_hard_smp_processor_id
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
 multiline_comment|/* Register the Virtual Processor Area (VPA) */
 id|flags
@@ -1751,7 +1743,7 @@ c_func
 (paren
 id|flags
 comma
-id|cpu
+id|pcpu
 comma
 id|__pa
 c_func
@@ -2762,6 +2754,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
 DECL|function|smp_call_function_interrupt
 r_void
 id|smp_call_function_interrupt
@@ -3108,6 +3107,10 @@ id|do_gtod.tb_orig_stamp
 op_assign
 id|tb_last_stamp
 suffix:semicolon
+id|systemcfg-&gt;tb_orig_stamp
+op_assign
+id|tb_last_stamp
+suffix:semicolon
 id|look_for_more_cpus
 c_func
 (paren
@@ -3223,7 +3226,7 @@ op_eq
 id|SYSTEM_BOOTING
 op_logical_and
 op_logical_neg
-id|cpu_present_at_boot
+id|cpu_present
 c_func
 (paren
 id|cpu

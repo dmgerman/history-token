@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.6.2)&quot;
+mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.2)&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,2)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
@@ -45,7 +45,7 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
-l_string|&quot; SA6i&quot;
+l_string|&quot; SA6i V100&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -228,9 +228,9 @@ l_int|0
 )brace
 comma
 (brace
-id|PCI_VENDOR_ID_COMPAQ
+id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_COMPAQ_CISSC
+id|PCI_DEVICE_ID_HP_CISS
 comma
 l_int|0x103C
 comma
@@ -379,7 +379,7 @@ multiline_comment|/*define how many times we will try a command because of bus r
 DECL|macro|MAX_CMD_RETRIES
 mdefine_line|#define MAX_CMD_RETRIES 3
 DECL|macro|READ_AHEAD
-mdefine_line|#define READ_AHEAD &t; 256
+mdefine_line|#define READ_AHEAD &t; 1024
 DECL|macro|NR_CMDS
 mdefine_line|#define NR_CMDS&t;&t; 384 /* #commands that can be outstanding */
 DECL|macro|MAX_CTLR
@@ -789,7 +789,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &quot;cciss_scsi.c&quot;&t;&t;/* For SCSI tape support */
 multiline_comment|/*&n; * Report information about this controller.&n; */
 DECL|macro|ENG_GIG
-mdefine_line|#define ENG_GIG 1048576000
+mdefine_line|#define ENG_GIG 1000000000
 DECL|macro|ENG_GIG_FACTOR
 mdefine_line|#define ENG_GIG_FACTOR (ENG_GIG/512)
 DECL|macro|RAID_UNKNOWN
@@ -808,7 +808,7 @@ l_string|&quot;0&quot;
 comma
 l_string|&quot;4&quot;
 comma
-l_string|&quot;1(0+1)&quot;
+l_string|&quot;1(1+0)&quot;
 comma
 l_string|&quot;5&quot;
 comma
@@ -891,8 +891,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|vol_sz
 comma
 id|vol_sz_frac
@@ -1057,9 +1056,6 @@ id|i
 op_increment
 )paren
 (brace
-id|sector_t
-id|tmp
-suffix:semicolon
 id|drv
 op_assign
 op_amp
@@ -1081,6 +1077,8 @@ id|vol_sz
 op_assign
 id|drv-&gt;nr_blocks
 suffix:semicolon
+id|vol_sz_frac
+op_assign
 id|sector_div
 c_func
 (paren
@@ -1089,22 +1087,6 @@ comma
 id|ENG_GIG_FACTOR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Awkwardly do this:&n;&t;&t; * vol_sz_frac =&n;&t;&t; *     (drv-&gt;nr_blocks%ENG_GIG_FACTOR)*100/ENG_GIG_FACTOR;&n;&t;&t; */
-id|tmp
-op_assign
-id|drv-&gt;nr_blocks
-suffix:semicolon
-id|vol_sz_frac
-op_assign
-id|sector_div
-c_func
-(paren
-id|tmp
-comma
-id|ENG_GIG_FACTOR
-)paren
-suffix:semicolon
-multiline_comment|/* Now, vol_sz_frac = (drv-&gt;nr_blocks%ENG_GIG_FACTOR) */
 id|vol_sz_frac
 op_mul_assign
 l_int|100
@@ -1138,14 +1120,20 @@ op_plus
 id|len
 comma
 l_string|&quot;cciss/c%dd%d:&quot;
-l_string|&quot;&bslash;t%4d.%02dGB&bslash;tRAID %s&bslash;n&quot;
+l_string|&quot;&bslash;t%4u.%02uGB&bslash;tRAID %s&bslash;n&quot;
 comma
 id|ctlr
 comma
 id|i
 comma
+(paren
+r_int
+)paren
 id|vol_sz
 comma
+(paren
+r_int
+)paren
 id|vol_sz_frac
 comma
 id|raid_label
@@ -2782,7 +2770,6 @@ id|p-&gt;error_info
 comma
 r_sizeof
 (paren
-op_amp
 id|arg32-&gt;error_info
 )paren
 )paren
@@ -3015,7 +3002,6 @@ id|p-&gt;error_info
 comma
 r_sizeof
 (paren
-op_amp
 id|arg32-&gt;error_info
 )paren
 )paren
@@ -4293,6 +4279,19 @@ id|EFAULT
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|memset
+c_func
+(paren
+id|buff
+comma
+l_int|0
+comma
+id|iocommand.buf_size
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5027,6 +5026,22 @@ id|ENOMEM
 suffix:semicolon
 r_goto
 id|cleanup1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|memset
+c_func
+(paren
+id|buff
+(braket
+id|sg_used
+)braket
+comma
+l_int|0
+comma
+id|sz
+)paren
 suffix:semicolon
 )brace
 id|left
@@ -7202,6 +7217,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+r_int
+id|t
+suffix:semicolon
 id|drv-&gt;block_size
 op_assign
 id|block_size
@@ -7244,6 +7263,34 @@ id|inq_buff-&gt;data_byte
 l_int|5
 )braket
 suffix:semicolon
+id|drv-&gt;raid_level
+op_assign
+id|inq_buff-&gt;data_byte
+(braket
+l_int|8
+)braket
+suffix:semicolon
+id|t
+op_assign
+id|drv-&gt;heads
+op_star
+id|drv-&gt;sectors
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+OG
+l_int|1
+)paren
+(brace
+id|drv-&gt;cylinders
+op_assign
+id|total_size
+op_div
+id|t
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -11052,11 +11099,6 @@ id|subsystem_device_id
 comma
 id|command
 suffix:semicolon
-id|unchar
-id|irq
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
 id|__u32
 id|board_id
 comma
@@ -11319,7 +11361,7 @@ c_func
 (paren
 l_string|&quot;irq = %x&bslash;n&quot;
 comma
-id|irq
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 id|printk
@@ -11333,7 +11375,7 @@ suffix:semicolon
 macro_line|#endif /* CCISS_DEBUG */ 
 id|c-&gt;intr
 op_assign
-id|irq
+id|pdev-&gt;irq
 suffix:semicolon
 multiline_comment|/*&n;&t; * Memory base addr is first addr , the second points to the config&n;         *   table&n;&t; */
 id|c-&gt;paddr

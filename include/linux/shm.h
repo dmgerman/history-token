@@ -223,6 +223,12 @@ DECL|member|shm_lprid
 id|pid_t
 id|shm_lprid
 suffix:semicolon
+DECL|member|mlock_user
+r_struct
+id|user_struct
+op_star
+id|mlock_user
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* shm_mode upper byte flags */

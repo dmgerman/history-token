@@ -367,7 +367,7 @@ op_amp
 id|jiffy_stamp
 )paren
 )paren
-OL
+op_le
 l_int|0
 )paren
 (brace

@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|dbg
-mdefine_line|#define dbg(args...) printk(args)
+mdefine_line|#define dbg(args...)
 macro_line|#include &quot;op_impl.h&quot;
 DECL|function|ctrl_write
 r_static

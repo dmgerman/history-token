@@ -663,6 +663,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|inserted
+op_assign
+l_int|0
+suffix:semicolon
 id|dn
 op_assign
 id|pci_device_to_OF_node
@@ -852,7 +857,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|inserted
+op_assign
+l_int|1
+suffix:semicolon
 )brace
+multiline_comment|/* If there was nothing to add, the cache has no reference... */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inserted
+)paren
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_addr_cache_insert_device - Add a device to the address cache&n; * @dev: PCI device whose I/O addresses we are interested in.&n; *&n; * In order to support the fast lookup of devices based on addresses,&n; * we maintain a cache of devices that can be quickly searched.&n; * This routine adds a device to that cache.&n; */
 DECL|function|pci_addr_cache_insert_device
@@ -913,6 +935,11 @@ id|rb_node
 op_star
 id|n
 suffix:semicolon
+r_int
+id|removed
+op_assign
+l_int|0
+suffix:semicolon
 id|restart
 suffix:colon
 id|n
@@ -965,6 +992,10 @@ op_amp
 id|pci_io_addr_cache_root.rb_root
 )paren
 suffix:semicolon
+id|removed
+op_assign
+l_int|1
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -985,6 +1016,11 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/* The cache no longer holds its reference to this device... */
+r_if
+c_cond
+(paren
+id|removed
+)paren
 id|pci_dev_put
 c_func
 (paren

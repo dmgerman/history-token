@@ -859,18 +859,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_int
-id|proc_pid_cpu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
 DECL|function|proc_fd_link
 r_static
 r_int
@@ -1706,6 +1694,16 @@ id|mm
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mm-&gt;arg_end
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* Shh! No looking before we&squot;re done */
 id|len
 op_assign
 id|mm-&gt;arg_end

@@ -556,14 +556,6 @@ id|st_new_ptr
 suffix:semicolon
 r_extern
 r_void
-id|FPU_sync_tags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|FPU_copy_to_regi
 c_func
 (paren

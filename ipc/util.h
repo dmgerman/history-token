@@ -171,7 +171,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* for allocation that need to be freed by RCU&n; * both function can sleep&n; */
+multiline_comment|/*&n; * For allocation that need to be freed by RCU.&n; * Objects are reference counted, they start with reference count 1.&n; * getref increases the refcount, the putref call that reduces the recount&n; * to 0 schedules the rcu destruction. Caller must guarantee locking.&n; */
 r_void
 op_star
 id|ipc_rcu_alloc
@@ -182,15 +182,21 @@ id|size
 )paren
 suffix:semicolon
 r_void
-id|ipc_rcu_free
+id|ipc_rcu_getref
 c_func
 (paren
 r_void
 op_star
-id|arg
-comma
-r_int
-id|size
+id|ptr
+)paren
+suffix:semicolon
+r_void
+id|ipc_rcu_putref
+c_func
+(paren
+r_void
+op_star
+id|ptr
 )paren
 suffix:semicolon
 r_struct
@@ -221,6 +227,16 @@ id|ids
 comma
 r_int
 id|id
+)paren
+suffix:semicolon
+r_void
+id|ipc_lock_by_ptr
+c_func
+(paren
+r_struct
+id|kern_ipc_perm
+op_star
+id|ipcp
 )paren
 suffix:semicolon
 r_void

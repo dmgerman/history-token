@@ -1685,10 +1685,6 @@ op_amp
 id|crc
 )paren
 suffix:semicolon
-id|modversions
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -3242,10 +3238,6 @@ id|modname
 )paren
 )paren
 (brace
-id|modversions
-op_assign
-l_int|1
-suffix:semicolon
 id|have_vmlinux
 op_assign
 l_int|1
@@ -3473,7 +3465,7 @@ id|argc
 comma
 id|argv
 comma
-l_string|&quot;i:o:&quot;
+l_string|&quot;i:mo:&quot;
 )paren
 )paren
 op_ne
@@ -3493,6 +3485,15 @@ suffix:colon
 id|dump_read
 op_assign
 id|optarg
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;m&squot;
+suffix:colon
+id|modversions
+op_assign
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon

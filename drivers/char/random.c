@@ -7888,6 +7888,12 @@ c_func
 id|random_state
 )paren
 suffix:semicolon
+id|init_std_data
+c_func
+(paren
+id|sec_random_state
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init_random
 c_func

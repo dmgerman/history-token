@@ -457,6 +457,7 @@ suffix:semicolon
 DECL|member|st_vfs_file
 r_struct
 id|file
+op_star
 id|st_vfs_file
 suffix:semicolon
 DECL|member|st_vfs_set

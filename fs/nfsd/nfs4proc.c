@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfsd/state.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
+macro_line|#include &lt;linux/nfs4_acl.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;&t;NFSDDBG_PROC
 r_static
@@ -2505,8 +2506,8 @@ c_func
 l_string|&quot;NFSD: nfsd4_setattr: magic stateid!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|status
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|nfs4_lock_state
@@ -2545,7 +2546,7 @@ l_string|&quot;NFSD: nfsd4_setattr: couldn&squot;t process stateid!&bslash;n&quo
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 id|status
@@ -2570,7 +2571,7 @@ l_string|&quot;NFSD: nfsd4_setattr: not opened for write!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 id|nfs4_unlock_state
@@ -2579,8 +2580,39 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_return
+id|status
+op_assign
+id|nfs_ok
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|setattr-&gt;sa_acl
+op_ne
+l_int|NULL
+)paren
+id|status
+op_assign
+id|nfsd4_set_nfs4_acl
+c_func
+(paren
+id|rqstp
+comma
+id|current_fh
+comma
+id|setattr-&gt;sa_acl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|status
+op_assign
 id|nfsd_setattr
 c_func
 (paren
@@ -2598,9 +2630,13 @@ id|time_t
 )paren
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|out
+suffix:colon
+r_return
+id|status
+suffix:semicolon
+id|out_unlock
 suffix:colon
 id|nfs4_unlock_state
 c_func

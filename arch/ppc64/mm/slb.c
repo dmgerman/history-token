@@ -91,7 +91,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_PPC_ISERIES
 id|WARN_ON
 c_func
 (paren
@@ -129,7 +128,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Flush all user entries from the segment table of the current processor. */
 DECL|function|switch_slb

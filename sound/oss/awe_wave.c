@@ -21753,7 +21753,6 @@ suffix:semicolon
 DECL|function|unload_mixer
 r_static
 r_void
-id|__exit
 id|unload_mixer
 c_func
 (paren
@@ -27829,7 +27828,6 @@ suffix:semicolon
 DECL|function|unload_midiemu
 r_static
 r_void
-id|__exit
 id|unload_midiemu
 c_func
 (paren

@@ -389,7 +389,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fl-&gt;fl_u.nfs_fl.host
+id|fl-&gt;fl_u.nfs_fl.owner-&gt;host
 op_ne
 id|host
 )paren
@@ -660,7 +660,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fl-&gt;fl_u.nfs_fl.host
+id|fl-&gt;fl_u.nfs_fl.owner-&gt;host
 op_ne
 id|host
 )paren

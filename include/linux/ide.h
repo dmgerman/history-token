@@ -1962,6 +1962,11 @@ id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
+DECL|member|doing_barrier
+id|u8
+id|doing_barrier
+suffix:semicolon
+multiline_comment|/* state, 1=currently doing flush */
 DECL|member|bios_cyl
 r_int
 r_int
@@ -4334,6 +4339,19 @@ op_star
 id|rq
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * this function returns error location sector offset in case of a write error&n; */
+r_extern
+id|u64
+id|ide_get_error_location
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * &quot;action&quot; parameter type for ide_do_drive_cmd() below.&n; */
 r_typedef
 r_enum
@@ -6153,5 +6171,11 @@ r_struct
 id|bus_type
 id|ide_bus_type
 suffix:semicolon
+multiline_comment|/* check if CACHE FLUSH (EXT) command is supported (bits defined in ATA-6) */
+DECL|macro|ide_id_has_flush_cache
+mdefine_line|#define ide_id_has_flush_cache(id)&t;((id)-&gt;cfs_enable_2 &amp; 0x3000)
+multiline_comment|/* some Maxtor disks have bit 13 defined incorrectly so check bit 10 too */
+DECL|macro|ide_id_has_flush_cache_ext
+mdefine_line|#define ide_id_has_flush_cache_ext(id)&t;&bslash;&n;&t;(((id)-&gt;cfs_enable_2 &amp; 0x2400) == 0x2400)
 macro_line|#endif /* _IDE_H */
 eof

@@ -2142,14 +2142,13 @@ c_func
 suffix:semicolon
 id|ipprot
 op_assign
+id|rcu_dereference
+c_func
+(paren
 id|inet6_protos
 (braket
 id|hash
 )braket
-suffix:semicolon
-id|smp_read_barrier_depends
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -160,6 +161,11 @@ suffix:semicolon
 r_extern
 r_int
 id|smp_tb_synchronized
+suffix:semicolon
+r_extern
+r_struct
+id|timezone
+id|sys_tz
 suffix:semicolon
 r_void
 id|ppc_adjtimex
@@ -648,6 +654,14 @@ id|do_gtod.varp-&gt;tb_to_xs
 op_assign
 id|tb_to_xs
 suffix:semicolon
+id|systemcfg-&gt;tb_ticks_per_sec
+op_assign
+id|tb_ticks_per_sec
+suffix:semicolon
+id|systemcfg-&gt;tb_to_xs
+op_assign
+id|tb_to_xs
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -754,6 +768,17 @@ c_func
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n;&t;&t; * We cannot disable the decrementer, so in the period&n;&t;&t; * between this cpu&squot;s being marked offline in cpu_online_map&n;&t;&t; * and calling stop-self, it is taking timer interrupts.&n;&t;&t; * Avoid calling into the scheduler rebalancing code if this&n;&t;&t; * is the case.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_is_offline
+c_func
+(paren
+id|cpu
+)paren
+)paren
 id|smp_local_timer_interrupt
 c_func
 (paren
@@ -761,6 +786,7 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * No need to check whether cpu is offline here; boot_cpuid&n;&t;&t; * should have been fixed up by now.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1249,6 +1275,12 @@ id|new_xsec
 op_minus
 id|delta_xsec
 suffix:semicolon
+id|systemcfg-&gt;stamp_xsec
+op_assign
+id|new_xsec
+op_minus
+id|delta_xsec
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1261,7 +1293,23 @@ id|do_gtod.tb_orig_stamp
 op_assign
 id|tb_last_stamp
 suffix:semicolon
+id|systemcfg-&gt;stamp_xsec
+op_assign
+id|new_xsec
+suffix:semicolon
+id|systemcfg-&gt;tb_orig_stamp
+op_assign
+id|tb_last_stamp
+suffix:semicolon
 )brace
+id|systemcfg-&gt;tz_minuteswest
+op_assign
+id|sys_tz.tz_minuteswest
+suffix:semicolon
+id|systemcfg-&gt;tz_dsttime
+op_assign
+id|sys_tz.tz_dsttime
+suffix:semicolon
 id|write_sequnlock_irqrestore
 c_func
 (paren
@@ -1604,6 +1652,28 @@ suffix:semicolon
 id|do_gtod.tb_to_us
 op_assign
 id|tb_to_us
+suffix:semicolon
+id|systemcfg-&gt;tb_orig_stamp
+op_assign
+id|tb_last_stamp
+suffix:semicolon
+id|systemcfg-&gt;tb_update_count
+op_assign
+l_int|0
+suffix:semicolon
+id|systemcfg-&gt;tb_ticks_per_sec
+op_assign
+id|tb_ticks_per_sec
+suffix:semicolon
+id|systemcfg-&gt;stamp_xsec
+op_assign
+id|xtime.tv_sec
+op_star
+id|XSEC_PER_SEC
+suffix:semicolon
+id|systemcfg-&gt;tb_to_xs
+op_assign
+id|tb_to_xs
 suffix:semicolon
 id|xtime_sync_interval
 op_assign
@@ -2096,6 +2166,35 @@ suffix:semicolon
 id|do_gtod.var_idx
 op_assign
 id|temp_idx
+suffix:semicolon
+multiline_comment|/*&n;&t; * tb_update_count is used to allow the problem state gettimeofday code&n;&t; * to assure itself that it sees a consistent view of the tb_to_xs and&n;&t; * stamp_xsec variables.  It reads the tb_update_count, then reads&n;&t; * tb_to_xs and stamp_xsec and then reads tb_update_count again.  If&n;&t; * the two values of tb_update_count match and are even then the&n;&t; * tb_to_xs and stamp_xsec values are consistent.  If not, then it&n;&t; * loops back and reads them again until this criteria is met.&n;&t; */
+op_increment
+(paren
+id|systemcfg-&gt;tb_update_count
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|systemcfg-&gt;tb_to_xs
+op_assign
+id|new_tb_to_xs
+suffix:semicolon
+id|systemcfg-&gt;stamp_xsec
+op_assign
+id|new_stamp_xsec
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+op_increment
+(paren
+id|systemcfg-&gt;tb_update_count
+)paren
 suffix:semicolon
 id|write_sequnlock_irqrestore
 c_func

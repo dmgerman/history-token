@@ -561,6 +561,8 @@ DECL|macro|EXT3_MOUNT_XATTR_USER
 mdefine_line|#define EXT3_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
 DECL|macro|EXT3_MOUNT_POSIX_ACL
 mdefine_line|#define EXT3_MOUNT_POSIX_ACL&t;&t;0x8000&t;/* POSIX Access Control Lists */
+DECL|macro|EXT3_MOUNT_BARRIER
+mdefine_line|#define EXT3_MOUNT_BARRIER&t;&t;0x10000 /* Use block barriers */
 multiline_comment|/* Compatibility, for having both ext2_fs.h and ext3_fs.h included at once */
 macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|clear_opt

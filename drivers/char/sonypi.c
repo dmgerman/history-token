@@ -16,6 +16,12 @@ macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+DECL|variable|verbose
+r_static
+r_int
+id|verbose
+suffix:semicolon
+multiline_comment|/* = 0 */
 macro_line|#include &quot;sonypi.h&quot;
 macro_line|#include &lt;linux/sonypi.h&gt;
 DECL|variable|sonypi_device
@@ -32,12 +38,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|verbose
-r_static
-r_int
-id|verbose
-suffix:semicolon
-multiline_comment|/* = 0 */
 DECL|variable|fnkeyinit
 r_static
 r_int

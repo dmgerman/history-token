@@ -862,24 +862,6 @@ id|qstr
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* super.c */
-r_extern
-r_struct
-id|super_block
-op_star
-id|hfs_read_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* trans.c */
 r_extern
 r_void

@@ -3011,11 +3011,6 @@ id|ufs_dir_operations
 suffix:semicolon
 multiline_comment|/* super.c */
 r_extern
-r_struct
-id|file_system_type
-id|ufs_fs_type
-suffix:semicolon
-r_extern
 r_void
 id|ufs_warning
 (paren

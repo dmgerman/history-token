@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_ERR_H
 DECL|macro|_LINUX_ERR_H
 mdefine_line|#define _LINUX_ERR_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 multiline_comment|/*&n; * Kernel pointers have redundant information, so we can use a&n; * scheme where we can return either an error code or a dentry&n; * pointer with the same return value.&n; *&n; * This should be a per-architecture thing, to allow different&n; * error and pointer decisions.&n; */
 DECL|function|ERR_PTR
@@ -57,6 +58,9 @@ id|ptr
 )paren
 (brace
 r_return
+id|unlikely
+c_func
+(paren
 (paren
 r_int
 r_int
@@ -69,6 +73,7 @@ r_int
 )paren
 op_minus
 l_int|1000L
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _LINUX_ERR_H */

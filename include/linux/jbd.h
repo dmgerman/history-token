@@ -1159,6 +1159,8 @@ DECL|macro|JFS_FLUSHED
 mdefine_line|#define JFS_FLUSHED&t;0x008&t;/* The journal superblock has been flushed */
 DECL|macro|JFS_LOADED
 mdefine_line|#define JFS_LOADED&t;0x010&t;/* The journal superblock has been loaded */
+DECL|macro|JFS_BARRIER
+mdefine_line|#define JFS_BARRIER&t;0x020&t;/* Use IDE barriers */
 multiline_comment|/* &n; * Function declarations for the journaling transaction and buffer&n; * management&n; */
 multiline_comment|/* Filing buffers */
 r_extern

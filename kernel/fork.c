@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
@@ -1172,12 +1173,6 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|vma_prio_tree_init
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
 id|file
 op_assign
 id|tmp-&gt;vm_file
@@ -1723,6 +1718,12 @@ id|mm
 )paren
 suffix:semicolon
 id|exit_mmap
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|put_swap_token
 c_func
 (paren
 id|mm

@@ -652,7 +652,8 @@ id|pauerscon_t
 id|scp
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|auerswald_driver
+r_static
 r_struct
 id|usb_driver
 id|auerswald_driver

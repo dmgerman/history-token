@@ -1619,7 +1619,7 @@ suffix:semicolon
 )brace
 id|all-&gt;info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign

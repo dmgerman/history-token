@@ -1293,7 +1293,7 @@ id|clps7111fb_ops
 suffix:semicolon
 id|cfb-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|clps711x_guess_lcd_params
 c_func

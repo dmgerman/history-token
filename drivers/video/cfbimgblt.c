@@ -1555,13 +1555,6 @@ id|pitch_index
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|image-&gt;depth
-op_le
-id|bpp
-)paren
 id|color_imageblit
 c_func
 (paren

@@ -91,6 +91,8 @@ DECL|macro|IbmVethPool1DftCnt
 mdefine_line|#define IbmVethPool1DftCnt  256
 DECL|macro|IbmVethPool2DftCnt
 mdefine_line|#define IbmVethPool2DftCnt  256
+DECL|macro|IBM_VETH_INVALID_MAP
+mdefine_line|#define IBM_VETH_INVALID_MAP ((u16)0xffff)
 DECL|struct|ibmveth_buff_pool
 r_struct
 id|ibmveth_buff_pool

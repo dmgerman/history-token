@@ -54,16 +54,6 @@ op_star
 id|task
 )paren
 suffix:semicolon
-r_static
-r_void
-id|nlmsvc_notify_blocked
-c_func
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The list of blocked locks to retry&n; */
 DECL|variable|nlm_blocked
 r_static
@@ -729,9 +719,10 @@ r_goto
 id|failed_free
 suffix:semicolon
 multiline_comment|/* Set notifier function for VFS, and init args */
-id|block-&gt;b_call.a_args.lock.fl.fl_notify
+id|block-&gt;b_call.a_args.lock.fl.fl_lmops
 op_assign
-id|nlmsvc_notify_blocked
+op_amp
+id|nlmsvc_lock_operations
 suffix:semicolon
 id|block-&gt;b_call.a_args.cookie
 op_assign
@@ -861,7 +852,6 @@ suffix:semicolon
 id|posix_unblock_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 id|fl
@@ -1112,9 +1102,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_lock(%s/%ld, ty=%d, pi=%d, %Ld-%Ld, bl=%d)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_type
 comma
@@ -1172,7 +1162,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1186,7 +1175,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1427,9 +1415,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_type
 comma
@@ -1455,7 +1443,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1534,9 +1521,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_unlock(%s/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_pid
 comma
@@ -1571,7 +1558,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1618,9 +1604,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_cancel(%s/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_pid
 comma
@@ -1774,6 +1760,51 @@ l_string|&quot;lockd: notification for unknown block!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|nlmsvc_same_owner
+r_static
+r_int
+id|nlmsvc_same_owner
+c_func
+(paren
+r_struct
+id|file_lock
+op_star
+id|fl1
+comma
+r_struct
+id|file_lock
+op_star
+id|fl2
+)paren
+(brace
+r_return
+id|fl1-&gt;fl_owner
+op_eq
+id|fl2-&gt;fl_owner
+op_logical_and
+id|fl1-&gt;fl_pid
+op_eq
+id|fl2-&gt;fl_pid
+suffix:semicolon
+)brace
+DECL|variable|nlmsvc_lock_operations
+r_struct
+id|lock_manager_operations
+id|nlmsvc_lock_operations
+op_assign
+(brace
+dot
+id|fl_compare_owner
+op_assign
+id|nlmsvc_same_owner
+comma
+dot
+id|fl_notify
+op_assign
+id|nlmsvc_notify_blocked
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Try to claim a lock that was previously blocked.&n; *&n; * Note that we use both the RPC_GRANTED_MSG call _and_ an async&n; * RPC thread when notifying the client. This seems like overkill...&n; * Here&squot;s why:&n; *  -&t;we don&squot;t want to use a synchronous RPC thread, otherwise&n; *&t;we might find ourselves hanging on a dead portmapper.&n; *  -&t;Some lockd implementations (e.g. HP) don&squot;t react to&n; *&t;RPC_GRANTED calls; they seem to insist on RPC_GRANTED_MSG calls.&n; */
 r_static
 r_void
@@ -1860,7 +1891,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1915,7 +1945,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp

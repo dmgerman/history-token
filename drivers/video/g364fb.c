@@ -927,7 +927,9 @@ id|fb_fix
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|fb_alloc_cmap
 c_func

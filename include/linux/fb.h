@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_FB_H
 DECL|macro|_LINUX_FB_H
 mdefine_line|#define _LINUX_FB_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* Definitions of frame buffers&t;&t;&t;&t;&t;&t;*/
 DECL|macro|FB_MAJOR
 mdefine_line|#define FB_MAJOR&t;&t;29
@@ -320,6 +321,8 @@ DECL|macro|FB_ACTIVATE_ALL
 mdefine_line|#define FB_ACTIVATE_ALL&t;       64&t;/* change all VCs on this fb&t;*/
 DECL|macro|FB_ACTIVATE_FORCE
 mdefine_line|#define FB_ACTIVATE_FORCE     128&t;/* force apply even when no change*/
+DECL|macro|FB_ACTIVATE_INV_MODE
+mdefine_line|#define FB_ACTIVATE_INV_MODE  256       /* invalidate videomode */
 DECL|macro|FB_ACCELF_TEXT
 mdefine_line|#define FB_ACCELF_TEXT&t;&t;1&t;/* (OBSOLETE) see fb_info.flags and vc_mode */
 DECL|macro|FB_SYNC_HOR_HIGH_ACT
@@ -661,6 +664,12 @@ op_star
 id|modedb
 suffix:semicolon
 multiline_comment|/* mode database */
+DECL|member|modelist
+r_struct
+id|list_head
+id|modelist
+suffix:semicolon
+multiline_comment|/* mode list */
 DECL|member|manufacturer
 id|__u8
 id|manufacturer
@@ -1037,6 +1046,13 @@ id|fb_image
 id|image
 suffix:semicolon
 multiline_comment|/* Cursor image */
+multiline_comment|/* all fields below are for fbcon use only */
+DECL|member|data
+r_char
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* copy of bitmap */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -1205,6 +1221,26 @@ mdefine_line|#define FB_EVENT_SUSPEND&t;&t;0x02
 multiline_comment|/*&t;The display on this fb_info was resumed, you can restore the display&n; *&t;if you own it&n; */
 DECL|macro|FB_EVENT_RESUME
 mdefine_line|#define FB_EVENT_RESUME&t;&t;&t;0x03
+multiline_comment|/*      An entry from the modelist was removed */
+DECL|macro|FB_EVENT_MODE_DELETE
+mdefine_line|#define FB_EVENT_MODE_DELETE            0x04
+DECL|struct|fb_event
+r_struct
+id|fb_event
+(brace
+DECL|member|info
+r_struct
+id|fb_info
+op_star
+id|info
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_int
 id|fb_register_client
@@ -2254,6 +2290,17 @@ id|state
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|fb_get_color_depth
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|fb_info
 op_star
@@ -2317,6 +2364,8 @@ DECL|macro|FB_MODE_IS_CALCULATED
 mdefine_line|#define FB_MODE_IS_CALCULATED&t;8
 DECL|macro|FB_MODE_IS_FIRST
 mdefine_line|#define FB_MODE_IS_FIRST&t;16
+DECL|macro|FB_MODE_IS_FROM_VAR
+mdefine_line|#define FB_MODE_IS_FROM_VAR     32
 r_extern
 r_int
 id|fbmon_valid_timings
@@ -2491,6 +2540,152 @@ id|fb_videomode
 id|vesa_modes
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_void
+id|fb_var_to_videomode
+c_func
+(paren
+r_struct
+id|fb_videomode
+op_star
+id|mode
+comma
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_videomode_to_var
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+comma
+r_struct
+id|fb_videomode
+op_star
+id|mode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_mode_is_equal
+c_func
+(paren
+r_struct
+id|fb_videomode
+op_star
+id|mode1
+comma
+r_struct
+id|fb_videomode
+op_star
+id|mode2
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_add_videomode
+c_func
+(paren
+r_struct
+id|fb_videomode
+op_star
+id|mode
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_delete_videomode
+c_func
+(paren
+r_struct
+id|fb_videomode
+op_star
+id|mode
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|fb_videomode
+op_star
+id|fb_match_mode
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|fb_videomode
+op_star
+id|fb_find_best_mode
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_destroy_modelist
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_videomode_to_modelist
+c_func
+(paren
+r_struct
+id|fb_videomode
+op_star
+id|modedb
+comma
+r_int
+id|num
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
 suffix:semicolon
 multiline_comment|/* drivers/video/fbcmap.c */
 r_extern
@@ -2667,6 +2862,22 @@ suffix:semicolon
 DECL|member|flag
 id|u32
 id|flag
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|fb_modelist
+r_struct
+id|fb_modelist
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|mode
+r_struct
+id|fb_videomode
+id|mode
 suffix:semicolon
 )brace
 suffix:semicolon

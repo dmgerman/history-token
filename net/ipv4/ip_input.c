@@ -356,10 +356,14 @@ c_cond
 (paren
 id|ipprot
 op_assign
+id|rcu_dereference
+c_func
+(paren
 id|inet_protos
 (braket
 id|hash
 )braket
+)paren
 )paren
 op_ne
 l_int|NULL
@@ -367,11 +371,6 @@ l_int|NULL
 (brace
 r_int
 id|ret
-suffix:semicolon
-id|smp_read_barrier_depends
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1525,7 +1525,9 @@ id|pseudo_palette
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|fb_info.screen_base
 op_assign

@@ -1391,6 +1391,8 @@ DECL|macro|IM_REGION_EXISTS
 mdefine_line|#define IM_REGION_EXISTS&t;0x4
 DECL|macro|IM_REGION_OVERLAP
 mdefine_line|#define IM_REGION_OVERLAP&t;0x8
+DECL|macro|IM_REGION_SUPERSET
+mdefine_line|#define IM_REGION_SUPERSET&t;0x10
 r_extern
 r_struct
 id|vm_struct

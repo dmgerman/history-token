@@ -3327,7 +3327,9 @@ l_int|1
 suffix:semicolon
 id|fb_info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 r_if
 c_cond

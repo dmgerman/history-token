@@ -5248,7 +5248,9 @@ id|cyber2000fb_ops
 suffix:semicolon
 id|cfb-&gt;fb.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|cfb-&gt;fb.pseudo_palette
 op_assign

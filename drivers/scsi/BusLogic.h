@@ -2512,7 +2512,7 @@ DECL|struct|BusLogic_CCB
 r_struct
 id|BusLogic_CCB
 (brace
-multiline_comment|/*&n;    MultiMaster Firmware and FlashPoint SCCB Manager Common Portion.&n;  */
+multiline_comment|/*&n;&t;   MultiMaster Firmware and FlashPoint SCCB Manager Common Portion.&n;&t; */
 DECL|member|Opcode
 r_enum
 id|BusLogic_CCB_Opcode
@@ -2651,7 +2651,7 @@ id|u32
 id|SenseDataPointer
 suffix:semicolon
 multiline_comment|/* Bytes 36-39 */
-multiline_comment|/*&n;    FlashPoint SCCB Manager Defined Portion.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint SCCB Manager Defined Portion.&n;&t; */
 DECL|member|CallbackFunction
 r_void
 (paren
@@ -2699,7 +2699,7 @@ l_int|48
 suffix:semicolon
 multiline_comment|/* Bytes 52-99 */
 macro_line|#endif
-multiline_comment|/*&n;    BusLogic Linux Driver Defined Portion.&n;  */
+multiline_comment|/*&n;&t;   BusLogic Linux Driver Defined Portion.&n;&t; */
 DECL|member|AllocationGroupHead
 id|dma_addr_t
 id|AllocationGroupHead
@@ -4864,5 +4864,5 @@ r_char
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* _BUSLOGIC_H */
+macro_line|#endif&t;&t;&t;&t;/* _BUSLOGIC_H */
 eof

@@ -787,6 +787,16 @@ op_star
 id|value
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|getnstimeofday
+(paren
+r_struct
+id|timespec
+op_star
+id|tv
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_void

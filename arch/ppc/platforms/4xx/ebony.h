@@ -33,7 +33,7 @@ DECL|macro|EBONY_RTC_SIZE
 mdefine_line|#define EBONY_RTC_SIZE&t;&t;0x2000
 multiline_comment|/* Flash */
 DECL|macro|EBONY_FPGA_ADDR
-mdefine_line|#define EBONY_FPGA_ADDR&t;&t;0x0000000148300000
+mdefine_line|#define EBONY_FPGA_ADDR&t;&t;0x0000000148300000ULL
 DECL|macro|EBONY_BOOT_SMALL_FLASH
 mdefine_line|#define EBONY_BOOT_SMALL_FLASH(x)&t;(x &amp; 0x20)
 DECL|macro|EBONY_ONBRD_FLASH_EN
@@ -41,25 +41,25 @@ mdefine_line|#define EBONY_ONBRD_FLASH_EN(x)&t;&t;(x &amp; 0x02)
 DECL|macro|EBONY_FLASH_SEL
 mdefine_line|#define EBONY_FLASH_SEL(x)&t;&t;(x &amp; 0x01)
 DECL|macro|EBONY_SMALL_FLASH_LOW1
-mdefine_line|#define EBONY_SMALL_FLASH_LOW1&t;0x00000001ff800000
+mdefine_line|#define EBONY_SMALL_FLASH_LOW1&t;0x00000001ff800000ULL
 DECL|macro|EBONY_SMALL_FLASH_LOW2
-mdefine_line|#define EBONY_SMALL_FLASH_LOW2&t;0x00000001ff880000
+mdefine_line|#define EBONY_SMALL_FLASH_LOW2&t;0x00000001ff880000ULL
 DECL|macro|EBONY_SMALL_FLASH_HIGH1
-mdefine_line|#define EBONY_SMALL_FLASH_HIGH1&t;0x00000001fff00000
+mdefine_line|#define EBONY_SMALL_FLASH_HIGH1&t;0x00000001fff00000ULL
 DECL|macro|EBONY_SMALL_FLASH_HIGH2
-mdefine_line|#define EBONY_SMALL_FLASH_HIGH2&t;0x00000001fff80000
+mdefine_line|#define EBONY_SMALL_FLASH_HIGH2&t;0x00000001fff80000ULL
 DECL|macro|EBONY_SMALL_FLASH_SIZE
 mdefine_line|#define EBONY_SMALL_FLASH_SIZE&t;0x80000
 DECL|macro|EBONY_LARGE_FLASH_LOW
-mdefine_line|#define EBONY_LARGE_FLASH_LOW&t;0x00000001ff800000
+mdefine_line|#define EBONY_LARGE_FLASH_LOW&t;0x00000001ff800000ULL
 DECL|macro|EBONY_LARGE_FLASH_HIGH
-mdefine_line|#define EBONY_LARGE_FLASH_HIGH&t;0x00000001ffc00000
+mdefine_line|#define EBONY_LARGE_FLASH_HIGH&t;0x00000001ffc00000ULL
 DECL|macro|EBONY_LARGE_FLASH_SIZE
 mdefine_line|#define EBONY_LARGE_FLASH_SIZE&t;0x400000
 DECL|macro|EBONY_SMALL_FLASH_BASE
-mdefine_line|#define EBONY_SMALL_FLASH_BASE&t;0x00000001fff80000
+mdefine_line|#define EBONY_SMALL_FLASH_BASE&t;0x00000001fff80000ULL
 DECL|macro|EBONY_LARGE_FLASH_BASE
-mdefine_line|#define EBONY_LARGE_FLASH_BASE&t;0x00000001ff800000
+mdefine_line|#define EBONY_LARGE_FLASH_BASE&t;0x00000001ff800000ULL
 multiline_comment|/*&n; * Serial port defines&n; */
 multiline_comment|/* OpenBIOS defined UART mappings, used before early_serial_setup */
 DECL|macro|UART0_IO_BASE

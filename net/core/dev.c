@@ -3747,11 +3747,10 @@ suffix:semicolon
 multiline_comment|/* Updates of qdisc are serialized by queue_lock. &n;&t; * The struct Qdisc which is pointed to by qdisc is now a &n;&t; * rcu structure - it may be accessed without acquiring &n;&t; * a lock (but the structure may be stale.) The freeing of the&n;&t; * qdisc will be deferred until it&squot;s known that there are no &n;&t; * more references to it.&n;&t; * &n;&t; * If the qdisc has an enqueue function, we still need to &n;&t; * hold the queue_lock before calling it, since queue_lock&n;&t; * also serializes access to the device queue.&n;&t; */
 id|q
 op_assign
-id|dev-&gt;qdisc
-suffix:semicolon
-id|smp_read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+id|dev-&gt;qdisc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT

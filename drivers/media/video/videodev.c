@@ -1031,7 +1031,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
+DECL|variable|video_fops
+r_static
 r_struct
 id|file_operations
 id|video_fops

@@ -1423,14 +1423,6 @@ id|xfs_bmap_free
 op_star
 )paren
 suffix:semicolon
-r_int
-id|xfs_atruncate_start
-c_func
-(paren
-id|xfs_inode_t
-op_star
-)paren
-suffix:semicolon
 r_void
 id|xfs_itruncate_start
 c_func

@@ -35,12 +35,10 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|HAVE_ARCH_BUG
+mdefine_line|#define HAVE_ARCH_BUG
 DECL|macro|BUG
 mdefine_line|#define BUG() &bslash;&n;&t;asm volatile(&quot;ud2 ; .quad %c1 ; .short %c0&quot; :: &bslash;&n;&t;&t;     &quot;i&quot;(__LINE__), &quot;i&quot; (__stringify(KBUILD_BASENAME)))
-DECL|macro|BUG_ON
-mdefine_line|#define BUG_ON(condition) do { if (unlikely((condition)!=0)) BUG(); } while(0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) BUG()
 r_void
 id|out_of_line_bug
 c_func
@@ -48,7 +46,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|WARN_ON
-mdefine_line|#define WARN_ON(condition) do { &bslash;&n;&t;if (unlikely((condition)!=0)) { &bslash;&n;&t;&t;printk(&quot;Badness in %s at %s:%d&bslash;n&quot;, __FUNCTION__, __FILE__, __LINE__); &bslash;&n;&t;&t;dump_stack(); &bslash;&n;&t;} &bslash;&n;} while (0)
+macro_line|#include &lt;asm-generic/bug.h&gt;
 macro_line|#endif
 eof

@@ -77,12 +77,6 @@ id|v
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* An NULL mempolicy pointer is a synonym of &amp;default_policy. */
-r_extern
-r_struct
-id|mempolicy
-id|default_policy
-suffix:semicolon
 multiline_comment|/*&n; * Support for managing mempolicy data objects (clone, copy, destroy)&n; * The default fast path of a NULL MPOL_DEFAULT policy is always inlined.&n; */
 r_extern
 r_void

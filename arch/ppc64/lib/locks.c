@@ -130,7 +130,11 @@ c_func
 (paren
 id|H_CONFER
 comma
+id|get_hard_smp_processor_id
+c_func
+(paren
 id|holder_cpu
+)paren
 comma
 id|yield_count
 )paren
@@ -581,7 +585,11 @@ c_func
 (paren
 id|H_CONFER
 comma
+id|get_hard_smp_processor_id
+c_func
+(paren
 id|holder_cpu
+)paren
 comma
 id|yield_count
 )paren

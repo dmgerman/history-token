@@ -193,14 +193,6 @@ id|size
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|generic_init_secondary
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|generic_validate_add_page
 c_func

@@ -73,9 +73,9 @@ l_string|&quot;.previous&t;&t;&bslash;n&quot;
 )paren
 suffix:semicolon
 DECL|macro|Q_SET_SEL
-mdefine_line|#define Q_SET_SEL(cpu, selname, address, size) &bslash;&n;do { &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;set_limit(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size); &bslash;&n;} while(0)
+mdefine_line|#define Q_SET_SEL(cpu, selname, address, size) &bslash;&n;do { &bslash;&n;set_base(per_cpu(cpu_gdt_table,cpu)[(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;set_limit(per_cpu(cpu_gdt_table,cpu)[(selname) &gt;&gt; 3], size); &bslash;&n;} while(0)
 DECL|macro|Q2_SET_SEL
-mdefine_line|#define Q2_SET_SEL(cpu, selname, address, size) &bslash;&n;do { &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;set_limit(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size); &bslash;&n;} while(0)
+mdefine_line|#define Q2_SET_SEL(cpu, selname, address, size) &bslash;&n;do { &bslash;&n;set_base(per_cpu(cpu_gdt_table,cpu)[(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;set_limit(per_cpu(cpu_gdt_table,cpu)[(selname) &gt;&gt; 3], size); &bslash;&n;} while(0)
 DECL|variable|bad_bios_desc
 r_static
 r_struct
@@ -189,20 +189,26 @@ c_func
 suffix:semicolon
 id|save_desc_40
 op_assign
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 l_int|0x40
 op_div
 l_int|8
 )braket
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 l_int|0x40
 op_div
@@ -385,10 +391,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 l_int|0x40
 op_div

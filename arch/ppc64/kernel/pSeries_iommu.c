@@ -670,6 +670,10 @@ id|tbl-&gt;it_blocksize
 op_assign
 l_int|16
 suffix:semicolon
+id|tbl-&gt;it_type
+op_assign
+id|TCE_PCI
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * iommu_table_setparms_lpar&n; *&n; * Function: On pSeries LPAR systems, return TCE table info, given a pci bus.&n; *&n; * ToDo: properly interpret the ibm,dma-window property.  The definition is:&n; *&t;logical-bus-number&t;(1 word)&n; *&t;phys-address&t;&t;(#address-cells words)&n; *&t;size&t;&t;&t;(#cell-size words)&n; *&n; * Currently we hard code these sizes (more or less).&n; */
 DECL|function|iommu_table_setparms_lpar
@@ -823,6 +827,10 @@ suffix:semicolon
 id|tbl-&gt;it_blocksize
 op_assign
 l_int|16
+suffix:semicolon
+id|tbl-&gt;it_type
+op_assign
+id|TCE_PCI
 suffix:semicolon
 )brace
 DECL|function|iommu_devnode_init

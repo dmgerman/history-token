@@ -55,7 +55,7 @@ comma
 multiline_comment|/* Hold the inode on sb_dirty for sys_sync() */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * A control structure which tells the writeback code what to do&n; */
+multiline_comment|/*&n; * A control structure which tells the writeback code what to do.  These are&n; * always on the stack, and hence need no locking.  They are always initialised&n; * in a manner such that unspecified fields are set to zero.&n; */
 DECL|struct|writeback_control
 r_struct
 id|writeback_control
@@ -89,24 +89,41 @@ r_int
 id|pages_skipped
 suffix:semicolon
 multiline_comment|/* Pages which were not written */
+multiline_comment|/*&n;&t; * For a_ops-&gt;writepages(): is start or end are non-zero then this is&n;&t; * a hint that the filesystem need only write out the pages inside that&n;&t; * byterange.  The byte at `end&squot; is included in the writeout request.&n;&t; */
+DECL|member|start
+id|loff_t
+id|start
+suffix:semicolon
+DECL|member|end
+id|loff_t
+id|end
+suffix:semicolon
 DECL|member|nonblocking
 r_int
 id|nonblocking
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* Don&squot;t get stuck on request queues */
 DECL|member|encountered_congestion
 r_int
 id|encountered_congestion
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* An output: a queue is full */
 DECL|member|for_kupdate
 r_int
 id|for_kupdate
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* A kupdate writeback */
 DECL|member|for_reclaim
 r_int
 id|for_reclaim
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* Invoked from the page allocator */
 )brace
@@ -321,6 +338,27 @@ r_struct
 id|writeback_control
 op_star
 id|wbc
+)paren
+suffix:semicolon
+r_int
+id|sync_page_range
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|loff_t
+id|pos
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 multiline_comment|/* pdflush.c */

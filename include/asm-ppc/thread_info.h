@@ -104,19 +104,6 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Size of kernel stack for each process.&n; */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;8192&t;/* 2 pages */
-multiline_comment|/*&n; * Offsets in thread_info structure, used in assembly code&n; */
-DECL|macro|TI_TASK
-mdefine_line|#define TI_TASK&t;&t;0
-DECL|macro|TI_EXECDOMAIN
-mdefine_line|#define TI_EXECDOMAIN&t;4
-DECL|macro|TI_FLAGS
-mdefine_line|#define TI_FLAGS&t;8
-DECL|macro|TI_LOCAL_FLAGS
-mdefine_line|#define TI_LOCAL_FLAGS&t;12
-DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;16
-DECL|macro|TI_PREEMPT
-mdefine_line|#define TI_PREEMPT&t;20
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */

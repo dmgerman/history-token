@@ -4701,6 +4701,14 @@ id|fix-&gt;visual
 op_assign
 id|FB_VISUAL_MONO10
 suffix:semicolon
+id|var-&gt;red.length
+op_assign
+id|var-&gt;green.length
+op_assign
+id|var-&gt;blue.length
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4813,7 +4821,7 @@ l_int|1
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|info-&gt;currcon
 op_assign

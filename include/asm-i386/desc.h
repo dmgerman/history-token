@@ -6,17 +6,27 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 r_extern
 r_struct
 id|desc_struct
 id|cpu_gdt_table
 (braket
-id|NR_CPUS
+id|GDT_ENTRIES
 )braket
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|desc_struct
+comma
+id|cpu_gdt_table
 (braket
 id|GDT_ENTRIES
 )braket
+)paren
 suffix:semicolon
 DECL|struct|Xgt_desc_struct
 r_struct
@@ -114,10 +124,13 @@ id|_set_tssldt_desc
 c_func
 (paren
 op_amp
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 id|entry
 )braket
@@ -167,10 +180,13 @@ id|_set_tssldt_desc
 c_func
 (paren
 op_amp
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 id|GDT_ENTRY_LDT
 )braket
@@ -221,7 +237,7 @@ id|cpu
 )paren
 (brace
 DECL|macro|C
-mdefine_line|#define C(i) cpu_gdt_table[cpu][GDT_ENTRY_TLS_MIN + i] = t-&gt;tls_array[i]
+mdefine_line|#define C(i) per_cpu(cpu_gdt_table, cpu)[GDT_ENTRY_TLS_MIN + i] = t-&gt;tls_array[i]
 id|C
 c_func
 (paren

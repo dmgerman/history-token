@@ -28,6 +28,10 @@ macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &quot;mmu_decl.h&quot;
+r_extern
+r_int
+id|__map_without_ltlbs
+suffix:semicolon
 multiline_comment|/*&n; * MMU_init_hw does the chip-specific initialization of the MMU hardware.&n; */
 DECL|function|MMU_init_hw
 r_void
@@ -117,6 +121,16 @@ id|s
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|__map_without_ltlbs
+)paren
+(brace
+r_return
+id|s
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren

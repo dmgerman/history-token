@@ -281,9 +281,14 @@ id|tss_struct
 op_star
 id|t
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|set_tss_desc
 c_func
@@ -294,10 +299,13 @@ id|t
 )paren
 suffix:semicolon
 multiline_comment|/* This just modifies memory; should not be necessary. But... This is necessary, because 386 hardware has concept of busy TSS or some similar stupidity. */
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 id|GDT_ENTRY_TSS
 )braket

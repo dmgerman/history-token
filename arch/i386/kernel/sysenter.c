@@ -42,9 +42,14 @@ id|tss_struct
 op_star
 id|tss
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|tss-&gt;ss1
 op_assign

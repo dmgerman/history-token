@@ -23,14 +23,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|fs_nodev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|fs_noval
 c_func

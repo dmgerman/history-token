@@ -210,7 +210,6 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|current_menu
-r_static
 r_struct
 id|menu
 op_star

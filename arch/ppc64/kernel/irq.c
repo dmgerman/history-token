@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2143,7 +2144,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_STACKOVERFLOW
-multiline_comment|/* Debugging check for stack overflow: is there less than 4KB free? */
+multiline_comment|/* Debugging check for stack overflow: is there less than 2KB free? */
 (brace
 r_int
 id|sp
@@ -2176,7 +2177,7 @@ r_struct
 id|thread_info
 )paren
 op_plus
-l_int|4096
+l_int|2048
 )paren
 )paren
 )paren
@@ -2299,7 +2300,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_STACKOVERFLOW
-multiline_comment|/* Debugging check for stack overflow: is there less than 4KB free? */
+multiline_comment|/* Debugging check for stack overflow: is there less than 2KB free? */
 (brace
 r_int
 id|sp
@@ -2332,7 +2333,7 @@ r_struct
 id|thread_info
 )paren
 op_plus
-l_int|4096
+l_int|2048
 )paren
 )paren
 )paren

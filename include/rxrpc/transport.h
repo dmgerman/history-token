@@ -226,11 +226,6 @@ multiline_comment|/* T if received ICMP error outstanding */
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|list_head
-id|rxrpc_transports
-suffix:semicolon
-r_extern
 r_int
 id|rxrpc_create_transport
 c_func
