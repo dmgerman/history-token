@@ -183,8 +183,8 @@ l_int|NULL
 op_logical_and
 (paren
 id|pCifsFile-&gt;pid
-op_assign
-id|current-&gt;pid
+op_eq
+id|current-&gt;tgid
 )paren
 )paren
 (brace
@@ -612,7 +612,7 @@ id|netfid
 suffix:semicolon
 id|pCifsFile-&gt;pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -2700,7 +2700,7 @@ op_amp
 id|FL_POSIX
 )paren
 )paren
-id|posix_lock_file
+id|posix_lock_file_wait
 c_func
 (paren
 id|file

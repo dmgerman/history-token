@@ -1437,7 +1437,7 @@ id|dmanr
 suffix:semicolon
 id|polarity
 op_or_assign
-id|p_dma_ch-&gt;polarity
+id|p_init-&gt;polarity
 suffix:semicolon
 macro_line|#if DCRN_POL &gt; 0
 id|mtdcr

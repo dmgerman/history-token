@@ -1537,6 +1537,29 @@ op_amp
 id|server-&gt;secType
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* BB Need to fill struct for sessetup here */
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -2276,7 +2299,7 @@ id|pSMB-&gt;fileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -2301,7 +2324,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -2555,7 +2578,7 @@ id|pSMB-&gt;DirName
 comma
 id|dirName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -2580,7 +2603,7 @@ c_func
 (paren
 id|dirName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -2822,7 +2845,7 @@ id|pSMB-&gt;DirName
 comma
 id|name
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -2847,7 +2870,7 @@ c_func
 (paren
 id|name
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -3121,7 +3144,7 @@ l_int|1
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -3159,7 +3182,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -5233,7 +5256,7 @@ id|pSMB-&gt;OldFileName
 comma
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -5286,7 +5309,7 @@ l_int|2
 comma
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 comma
 id|nls_codepage
 )paren
@@ -5315,7 +5338,7 @@ c_func
 (paren
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -5339,7 +5362,7 @@ c_func
 (paren
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len2
@@ -5811,7 +5834,7 @@ id|rename_info-&gt;target_name
 comma
 id|target_name
 comma
-l_int|530
+id|PATH_MAX
 comma
 id|nls_codepage
 )paren
@@ -6114,7 +6137,7 @@ id|pSMB-&gt;OldFileName
 comma
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -6167,7 +6190,7 @@ l_int|2
 comma
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 comma
 id|nls_codepage
 )paren
@@ -6196,7 +6219,7 @@ c_func
 (paren
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -6220,7 +6243,7 @@ c_func
 (paren
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len2
@@ -6502,7 +6525,7 @@ id|pSMB-&gt;FileName
 comma
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -6527,7 +6550,7 @@ c_func
 (paren
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -6623,7 +6646,7 @@ id|data_offset
 comma
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -6648,7 +6671,7 @@ c_func
 (paren
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len_target
@@ -6987,7 +7010,7 @@ id|pSMB-&gt;FileName
 comma
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -7012,7 +7035,7 @@ c_func
 (paren
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -7108,7 +7131,7 @@ id|data_offset
 comma
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -7133,7 +7156,7 @@ c_func
 (paren
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len_target
@@ -7489,7 +7512,7 @@ id|pSMB-&gt;OldFileName
 comma
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -7541,7 +7564,7 @@ l_int|2
 comma
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 comma
 id|nls_codepage
 )paren
@@ -7570,7 +7593,7 @@ c_func
 (paren
 id|fromName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -7594,7 +7617,7 @@ c_func
 (paren
 id|toName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len2
@@ -7864,7 +7887,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -7889,7 +7912,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -9596,7 +9619,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* BB fixme find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -9637,7 +9660,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* BB fixme */
 )paren
 suffix:semicolon
@@ -10097,7 +10120,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* BB fixme find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -10122,7 +10145,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -10533,7 +10556,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -10558,7 +10581,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -10999,7 +11022,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -11024,7 +11047,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -11455,7 +11478,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -11480,7 +11503,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -11887,7 +11910,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -11912,7 +11935,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -14550,7 +14573,7 @@ id|pSMB-&gt;RequestFileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -14575,7 +14598,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -16941,7 +16964,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -16966,7 +16989,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -17900,7 +17923,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -17925,7 +17948,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -18353,7 +18376,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -18378,7 +18401,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -18543,8 +18566,6 @@ id|pSMB-&gt;TotalParameterCount
 op_assign
 id|pSMB-&gt;ParameterCount
 suffix:semicolon
-multiline_comment|/* I doubt that passthrough levels apply to this old&n;&t;preNT info level */
-multiline_comment|/*&t;if (tcon-&gt;ses-&gt;capabilities &amp; CAP_INFOLEVEL_PASSTHRU)&n;&t;&t;pSMB-&gt;InformationLevel = cpu_to_le16(SMB_SET_FILE_BASIC_INFO2);&n;&t;else*/
 id|pSMB-&gt;InformationLevel
 op_assign
 id|cpu_to_le16
@@ -18802,7 +18823,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -18827,7 +18848,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -19697,7 +19718,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -19722,7 +19743,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -20394,7 +20415,7 @@ id|pSMB-&gt;FileName
 comma
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -20419,7 +20440,7 @@ c_func
 (paren
 id|searchName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
@@ -21081,7 +21102,7 @@ id|pSMB-&gt;FileName
 comma
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 multiline_comment|/* find define for this maxpathcomponent */
 comma
 id|nls_codepage
@@ -21106,7 +21127,7 @@ c_func
 (paren
 id|fileName
 comma
-l_int|530
+id|PATH_MAX
 )paren
 suffix:semicolon
 id|name_len
