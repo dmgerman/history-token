@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl wrapper for timer API&n; *  
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -34,9 +35,9 @@ id|name
 l_int|80
 )braket
 suffix:semicolon
-DECL|member|ticks
+DECL|member|reserved0
 id|u32
-id|ticks
+id|reserved0
 suffix:semicolon
 DECL|member|resolution
 id|u32
@@ -53,28 +54,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CVT_sndrv_timer_info
-mdefine_line|#define CVT_sndrv_timer_info()&bslash;&n;{&bslash;&n;&t;COPY(flags);&bslash;&n;&t;COPY(card);&bslash;&n;&t;memcpy(dst-&gt;id, src-&gt;id, sizeof(src-&gt;id));&bslash;&n;&t;memcpy(dst-&gt;name, src-&gt;name, sizeof(src-&gt;name));&bslash;&n;&t;COPY(ticks);&bslash;&n;&t;COPY(resolution);&bslash;&n;}
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-id|s32
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-id|s32
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
+mdefine_line|#define CVT_sndrv_timer_info()&bslash;&n;{&bslash;&n;&t;COPY(flags);&bslash;&n;&t;COPY(card);&bslash;&n;&t;memcpy(dst-&gt;id, src-&gt;id, sizeof(src-&gt;id));&bslash;&n;&t;memcpy(dst-&gt;name, src-&gt;name, sizeof(src-&gt;name));&bslash;&n;&t;COPY(resolution);&bslash;&n;}
 DECL|struct|sndrv_timer_status32
 r_struct
 id|sndrv_timer_status32
 (brace
 DECL|member|tstamp
 r_struct
-id|timeval32
+id|compat_timespec
 id|tstamp
 suffix:semicolon
 DECL|member|resolution
@@ -104,7 +91,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CVT_sndrv_timer_status
-mdefine_line|#define CVT_sndrv_timer_status()&bslash;&n;{&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_usec);&bslash;&n;&t;COPY(resolution);&bslash;&n;&t;COPY(lost);&bslash;&n;&t;COPY(overrun);&bslash;&n;&t;COPY(queue);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_timer_status()&bslash;&n;{&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_nsec);&bslash;&n;&t;COPY(resolution);&bslash;&n;&t;COPY(lost);&bslash;&n;&t;COPY(overrun);&bslash;&n;&t;COPY(queue);&bslash;&n;}
 DECL|variable|timer_info
 id|DEFINE_ALSA_IOCTL
 c_func
