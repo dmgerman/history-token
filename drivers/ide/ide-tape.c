@@ -26870,11 +26870,6 @@ id|S_IRUGO
 op_or
 id|S_IWUGO
 comma
-op_amp
-id|idetape_fops
-comma
-l_int|NULL
-comma
 l_string|&quot;%s/mt&quot;
 comma
 id|drive-&gt;devfs_name
@@ -26904,11 +26899,6 @@ op_or
 id|S_IRUGO
 op_or
 id|S_IWUGO
-comma
-op_amp
-id|idetape_fops
-comma
-l_int|NULL
 comma
 l_string|&quot;%s/mtn&quot;
 comma

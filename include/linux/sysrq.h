@@ -295,27 +295,4 @@ mdefine_line|#define register_sysrq_key(ig,nore) __reterr()
 DECL|macro|unregister_sysrq_key
 mdefine_line|#define unregister_sysrq_key(ig,nore) __reterr()
 macro_line|#endif
-multiline_comment|/* Deferred actions */
-r_extern
-r_int
-id|emergency_sync_scheduled
-suffix:semicolon
-DECL|macro|EMERG_SYNC
-mdefine_line|#define EMERG_SYNC 1
-DECL|macro|EMERG_REMOUNT
-mdefine_line|#define EMERG_REMOUNT 2
-r_void
-id|do_emergency_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-DECL|macro|CHECK_EMERGENCY_SYNC
-mdefine_line|#define CHECK_EMERGENCY_SYNC&t;&t;&t;&bslash;&n;&t;if (emergency_sync_scheduled)&t;&t;&bslash;&n;&t;&t;do_emergency_sync();
-macro_line|#else
-DECL|macro|CHECK_EMERGENCY_SYNC
-mdefine_line|#define CHECK_EMERGENCY_SYNC
-macro_line|#endif
 eof

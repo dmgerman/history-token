@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG   &t;&t;/* include debug macros until it&squot;s done&t;*/
 macro_line|#include &lt;linux/usb.h&gt;
@@ -33,19 +32,11 @@ multiline_comment|/* Private declarations for Auerswald USB driver              
 multiline_comment|/* Auerswald Vendor ID */
 DECL|macro|ID_AUERSWALD
 mdefine_line|#define ID_AUERSWALD  &t;0x09BF
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-multiline_comment|/* we can have up to 256 devices at once */
-DECL|macro|AUER_MINOR_BASE
-mdefine_line|#define AUER_MINOR_BASE&t;0
-DECL|macro|AUER_MAX_DEVICES
-mdefine_line|#define AUER_MAX_DEVICES 256
-macro_line|#else
 DECL|macro|AUER_MINOR_BASE
 mdefine_line|#define AUER_MINOR_BASE&t;112&t;/* auerswald driver minor number */
 multiline_comment|/* we can have up to this number of device plugged in at once */
 DECL|macro|AUER_MAX_DEVICES
 mdefine_line|#define AUER_MAX_DEVICES 16
-macro_line|#endif
 multiline_comment|/* Number of read buffers for each device */
 DECL|macro|AU_RBUFFERS
 mdefine_line|#define AU_RBUFFERS     10
@@ -569,22 +560,6 @@ id|auerswald_t
 comma
 op_star
 id|pauerswald_t
-suffix:semicolon
-multiline_comment|/* array of pointers to our devices that are currently connected */
-DECL|variable|dev_table
-r_static
-id|pauerswald_t
-id|dev_table
-(braket
-id|AUER_MAX_DEVICES
-)braket
-suffix:semicolon
-multiline_comment|/* lock to protect the dev_table structure */
-DECL|variable|dev_table_mutex
-r_static
-r_struct
-id|semaphore
-id|dev_table_mutex
 suffix:semicolon
 multiline_comment|/* ................................................................... */
 multiline_comment|/* character device context */
@@ -4819,8 +4794,6 @@ c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
-op_minus
-id|AUER_MINOR_BASE
 suffix:semicolon
 id|pauerswald_t
 id|cp
@@ -4832,6 +4805,11 @@ id|ccp
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|usb_interface
+op_star
+id|intf
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -4839,17 +4817,32 @@ multiline_comment|/* minor number in range? */
 r_if
 c_cond
 (paren
-(paren
 id|dtindex
 OL
 l_int|0
 )paren
-op_logical_or
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|intf
+op_assign
+id|usb_find_interface
+c_func
 (paren
+op_amp
+id|auerswald_driver
+comma
 id|dtindex
-op_ge
-id|AUER_MAX_DEVICES
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|intf
 )paren
 (brace
 r_return
@@ -4858,27 +4851,12 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* usb device available? */
-r_if
-c_cond
-(paren
-id|down_interruptible
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-)brace
 id|cp
 op_assign
-id|dev_table
-(braket
-id|dtindex
-)braket
+id|usb_get_intfdata
+(paren
+id|intf
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4888,12 +4866,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -4909,23 +4881,11 @@ id|cp-&gt;mutex
 )paren
 )paren
 (brace
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
 multiline_comment|/* we have access to the device. Now lets allocate memory */
 id|ccp
 op_assign
@@ -7003,6 +6963,40 @@ id|auerchar_release
 comma
 )brace
 suffix:semicolon
+DECL|variable|auerswald_class
+r_static
+r_struct
+id|usb_class_driver
+id|auerswald_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb/auer%d&quot;
+comma
+dot
+id|fops
+op_assign
+op_amp
+id|auerswald_fops
+comma
+dot
+id|mode
+op_assign
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUGO
+comma
+dot
+id|minor_base
+op_assign
+id|AUER_MINOR_BASE
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/* Special USB driver functions                                          */
 multiline_comment|/* Probe if this driver wants to serve an USB device&n;&n;   This entry point is called whenever a new device is attached to the bus.&n;   Then the device driver has to create a new instance of its internal data&n;   structures for the new device.&n;&n;   The  dev argument specifies the device context, which contains pointers&n;   to all USB descriptors. The  interface argument specifies the interface&n;   number. If a USB driver wants to bind itself to a particular device and&n;   interface it has to return a pointer. This pointer normally references&n;   the device driver&squot;s context structure.&n;&n;   Probing normally is done by checking the vendor and product identifications&n;   or the class and subclass definitions. If they match the interface number&n;   is compared with the ones supported by the driver. When probing is done&n;   class based it might be necessary to parse some more USB descriptors because&n;   the device properties can differ in a wide range.&n;*/
@@ -7043,10 +7037,6 @@ id|DECLARE_WAIT_QUEUE_HEAD
 (paren
 id|wqh
 )paren
-suffix:semicolon
-r_int
-r_int
-id|dtindex
 suffix:semicolon
 r_int
 r_int
@@ -7165,25 +7155,15 @@ op_amp
 id|cp-&gt;bufferwait
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|usb_register_dev
+c_func
 (paren
-op_amp
-id|auerswald_fops
-comma
-id|AUER_MINOR_BASE
-comma
-l_int|1
+id|intf
 comma
 op_amp
-id|dtindex
+id|auerswald_class
 )paren
 suffix:semicolon
 r_if
@@ -7197,12 +7177,6 @@ id|err
 l_string|&quot;Not able to get a minor for this device.&quot;
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
 r_goto
 id|pfail
 suffix:semicolon
@@ -7214,54 +7188,13 @@ id|cp-&gt;name
 comma
 l_string|&quot;usb/auer%d&quot;
 comma
-id|dtindex
+id|intf-&gt;minor
 )paren
 suffix:semicolon
 multiline_comment|/* Store the index */
 id|cp-&gt;dtindex
 op_assign
-id|dtindex
-suffix:semicolon
-id|dev_table
-(braket
-id|dtindex
-)braket
-op_assign
-id|cp
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
-multiline_comment|/* initialize the devfs node for this device and register it */
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|cp-&gt;name
-comma
-l_int|0
-comma
-id|USB_MAJOR
-comma
-id|AUER_MINOR_BASE
-op_plus
-id|dtindex
-comma
-id|S_IFCHR
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|auerswald_fops
-comma
-l_int|NULL
-)paren
+id|intf-&gt;minor
 suffix:semicolon
 multiline_comment|/* Get the usb version of the device */
 id|cp-&gt;version
@@ -7707,41 +7640,14 @@ comma
 id|cp-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* remove from device table */
-multiline_comment|/* Nobody can open() this device any more */
-id|down
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
-id|dev_table
-(braket
-id|cp-&gt;dtindex
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|dev_table_mutex
-)paren
-suffix:semicolon
-multiline_comment|/* remove our devfs node */
-multiline_comment|/* Nobody can see this device any more */
-id|devfs_remove
-c_func
-(paren
-id|cp-&gt;name
-)paren
-suffix:semicolon
 multiline_comment|/* give back our USB minor number */
 id|usb_deregister_dev
+c_func
 (paren
-l_int|1
+id|intf
 comma
-id|cp-&gt;dtindex
+op_amp
+id|auerswald_class
 )paren
 suffix:semicolon
 multiline_comment|/* Stop the interrupt endpoint */
@@ -7950,26 +7856,6 @@ suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;init&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* initialize the device table */
-id|memset
-(paren
-op_amp
-id|dev_table
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|dev_table
-)paren
-)paren
-suffix:semicolon
-id|init_MUTEX
-(paren
-op_amp
-id|dev_table_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* register driver at the USB subsystem */

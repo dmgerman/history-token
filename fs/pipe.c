@@ -511,7 +511,7 @@ id|ret
 OG
 l_int|0
 )paren
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

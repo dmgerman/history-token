@@ -1399,11 +1399,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_cache_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|local_irq_enable
 c_func
 (paren
@@ -1460,7 +1455,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_cache_sizes_init
+id|kmem_cache_init
 c_func
 (paren
 )paren

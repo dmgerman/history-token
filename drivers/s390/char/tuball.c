@@ -2000,14 +2000,26 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_TN3270_CONSOLE */
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|fs3270_devfs_register
+id|devfs_mk_cdev
 c_func
 (paren
-id|tubp
+id|MKDEV
+c_func
+(paren
+id|IBM_FS3270_MAJOR
+comma
+id|tubp-&gt;minor
+)paren
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+comma
+l_string|&quot;3270/tub%.4x&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|TUBUNLOCK
 c_func
 (paren
@@ -2087,14 +2099,14 @@ id|tubpp
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|fs3270_devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|tubp
+l_string|&quot;3270/tub%.4x&quot;
+comma
+id|tubp-&gt;devno
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tubdelbyirq
 c_func
 (paren

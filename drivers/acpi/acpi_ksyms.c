@@ -259,6 +259,13 @@ c_func
 id|acpi_set_current_resources
 )paren
 suffix:semicolon
+DECL|variable|acpi_resource_to_address64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_resource_to_address64
+)paren
+suffix:semicolon
 DECL|variable|acpi_enable_event
 id|EXPORT_SYMBOL
 c_func

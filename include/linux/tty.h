@@ -517,6 +517,9 @@ DECL|macro|L_PENDIN
 mdefine_line|#define L_PENDIN(tty)&t;_L_FLAG((tty),PENDIN)
 DECL|macro|L_IEXTEN
 mdefine_line|#define L_IEXTEN(tty)&t;_L_FLAG((tty),IEXTEN)
+r_struct
+id|device
+suffix:semicolon
 multiline_comment|/*&n; * Where all of the state associated with a tty is kept while the tty&n; * is open.  Since the termios state should be kept even if the tty&n; * has been closed --- for things like the baud rate, etc --- it is&n; * not stored here, but rather a pointer to the real state is stored&n; * here.  Possible the winsize structure should have the same&n; * treatment, but (1) the default 80x24 is usually right and (2) it&squot;s&n; * most often used by a windowing system, which will set the correct&n; * size each time the window is created or resized anyway.&n; * IMPORTANT: since this structure is dynamically allocated, it must&n; * be no larger than 4096 bytes.  Changing TTY_FLIPBUF_SIZE will change&n; * the size of this structure, and it needs to be done with care.&n; * &t;&t;&t;&t;&t;&t;- TYT, 9/14/92&n; */
 DECL|struct|tty_struct
 r_struct
@@ -1168,6 +1171,11 @@ id|driver
 comma
 r_int
 id|index
+comma
+r_struct
+id|device
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern

@@ -298,11 +298,10 @@ c_cond
 (paren
 id|dev
 )paren
-id|atomic_inc
+id|dev_hold
 c_func
 (paren
-op_amp
-id|dev-&gt;refcnt
+id|dev
 )paren
 suffix:semicolon
 id|out

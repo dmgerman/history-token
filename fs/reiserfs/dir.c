@@ -816,7 +816,7 @@ op_amp
 id|path_to_entry
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

@@ -60,7 +60,7 @@ id|translation
 DECL|function|mps_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|mps_oem_check
 c_func
 (paren
@@ -128,22 +128,30 @@ l_int|12
 )paren
 )paren
 (brace
+macro_line|#ifndef CONFIG_X86_GENERICARCH
 id|x86_summit
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|use_cyclone
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*enable cyclone-timer*/
+r_return
+l_int|1
+suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Hook from generic ACPI tables.c */
 DECL|function|acpi_madt_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|acpi_madt_oem_check
 c_func
 (paren
@@ -195,16 +203,24 @@ l_int|3
 )paren
 )paren
 (brace
+macro_line|#ifndef CONFIG_X86_GENERICARCH
 id|x86_summit
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|use_cyclone
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*enable cyclone-timer*/
+r_return
+l_int|1
+suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_MPPARSE_H */
 eof

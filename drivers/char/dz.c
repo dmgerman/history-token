@@ -4394,6 +4394,10 @@ id|serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|serial_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
 id|serial_driver.name
 op_assign
@@ -4754,6 +4758,8 @@ op_amp
 id|serial_driver
 comma
 id|info-&gt;line
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|tty_register_device
@@ -4763,6 +4769,8 @@ op_amp
 id|callout_driver
 comma
 id|info-&gt;line
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

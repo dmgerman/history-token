@@ -1521,7 +1521,7 @@ id|filp-&gt;f_version
 op_assign
 id|inode-&gt;i_version
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

@@ -1579,7 +1579,7 @@ DECL|macro|ASM_NOP7
 mdefine_line|#define ASM_NOP7 K8_NOP7
 DECL|macro|ASM_NOP8
 mdefine_line|#define ASM_NOP8 K8_NOP8
-macro_line|#elif CONFIG_MK7
+macro_line|#elif defined(CONFIG_MK7)
 DECL|macro|ASM_NOP1
 mdefine_line|#define ASM_NOP1 K7_NOP1
 DECL|macro|ASM_NOP2

@@ -3014,6 +3014,9 @@ op_amp
 id|acm_tty_driver
 comma
 id|minor
+comma
+op_amp
+id|intf-&gt;dev
 )paren
 suffix:semicolon
 id|acm_table

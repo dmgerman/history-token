@@ -4532,6 +4532,12 @@ op_star
 id|desc
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4539,7 +4545,7 @@ l_string|&quot; DISK&lt;N:%d,%s(%d,%d),R:%d,S:%d&gt;&bslash;n&quot;
 comma
 id|desc-&gt;number
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|MKDEV
@@ -4549,6 +4555,8 @@ id|desc-&gt;major
 comma
 id|desc-&gt;minor
 )paren
+comma
+id|b
 )paren
 comma
 id|desc-&gt;major
@@ -5302,6 +5310,12 @@ r_int
 id|super_minor
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -5343,10 +5357,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;md: could not alloc mem for %s!&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|newdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -5411,10 +5427,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;md: could not lock %s.&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|newdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -7649,6 +7667,12 @@ id|dev_t
 id|startdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_int
 id|err
 op_assign
@@ -7700,10 +7724,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: could not import %s!&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|startdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -7876,10 +7902,12 @@ id|KERN_WARNING
 l_string|&quot;md: could not import %s,&quot;
 l_string|&quot; trying to run array nevertheless.&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -8891,6 +8919,12 @@ id|dev_t
 id|dev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_struct
 id|request_queue
 op_star
@@ -8916,10 +8950,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: trying to generate %s error in md%d ... &bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 comma
 id|mdidx
@@ -9036,6 +9072,12 @@ id|dev_t
 id|dev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|mdk_rdev_t
 op_star
 id|rdev
@@ -9056,10 +9098,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: trying to remove %s from md%d ... &bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 comma
 id|mdidx
@@ -9154,6 +9198,12 @@ id|dev_t
 id|dev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -9181,10 +9231,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: trying to hot-add %s to md%d ... &bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 comma
 id|mdidx
@@ -9728,6 +9780,12 @@ r_int
 id|arg
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_int
 r_int
 id|minor
@@ -9913,10 +9971,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: autostart %s failed!&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|arg
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -14711,6 +14771,12 @@ c_func
 r_void
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|mdk_rdev_t
 op_star
 id|rdev
@@ -14776,10 +14842,12 @@ c_func
 id|KERN_ALERT
 l_string|&quot;md: could not import %s!&bslash;n&quot;
 comma
-id|partition_name
+id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

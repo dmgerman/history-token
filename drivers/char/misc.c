@@ -746,18 +746,16 @@ id|misc-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|devfs_register
+id|devfs_mk_cdev
 c_func
 (paren
-l_int|NULL
-comma
-id|misc-&gt;devfs_name
-comma
-l_int|0
-comma
+id|MKDEV
+c_func
+(paren
 id|MISC_MAJOR
 comma
 id|misc-&gt;minor
+)paren
 comma
 id|S_IFCHR
 op_or
@@ -767,9 +765,7 @@ id|S_IWUSR
 op_or
 id|S_IRGRP
 comma
-id|misc-&gt;fops
-comma
-l_int|NULL
+id|misc-&gt;devfs_name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Add it to the front, so that later devices can &quot;override&quot;&n;&t; * earlier defaults&n;&t; */

@@ -632,7 +632,11 @@ c_func
 id|rawdev-&gt;binding
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -676,7 +680,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_else
-id|try_module_get
+id|__module_get
 c_func
 (paren
 id|THIS_MODULE

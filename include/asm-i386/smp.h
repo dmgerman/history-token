@@ -236,9 +236,20 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef APIC_DEFINITION
+r_extern
+r_int
+id|hard_smp_processor_id
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+macro_line|#include &lt;mach_apic.h&gt;
 DECL|function|hard_smp_processor_id
 r_static
-id|__inline
+r_inline
 r_int
 id|hard_smp_processor_id
 c_func
@@ -265,6 +276,7 @@ id|APIC_ID
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|logical_smp_processor_id
 r_static
 id|__inline

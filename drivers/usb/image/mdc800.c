@@ -37,14 +37,9 @@ DECL|macro|TO_READ_FROM_IRQ
 mdefine_line|#define TO_READ_FROM_IRQ &t;&t;TO_DEFAULT_COMMAND
 DECL|macro|TO_GET_READY
 mdefine_line|#define TO_GET_READY&t;&t;&t;TO_DEFAULT_COMMAND
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|MDC800_DEVICE_MINOR_BASE
-mdefine_line|#define MDC800_DEVICE_MINOR_BASE 0
-macro_line|#else
 multiline_comment|/* Minor Number of the device (create with mknod /dev/mustek c 180 32) */
 DECL|macro|MDC800_DEVICE_MINOR_BASE
 mdefine_line|#define MDC800_DEVICE_MINOR_BASE 32
-macro_line|#endif
 multiline_comment|/**************************************************************************&n;&t;Data and structs&n;***************************************************************************/
 r_typedef
 r_enum
@@ -991,6 +986,44 @@ r_struct
 id|file_operations
 id|mdc800_device_ops
 suffix:semicolon
+DECL|variable|mdc800_class
+r_static
+r_struct
+id|usb_class_driver
+id|mdc800_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb/mdc800%d&quot;
+comma
+dot
+id|fops
+op_assign
+op_amp
+id|mdc800_device_ops
+comma
+dot
+id|mode
+op_assign
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+dot
+id|minor_base
+op_assign
+id|MDC800_DEVICE_MINOR_BASE
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Callback to search the Mustek MDC800 on the USB Bus&n; */
 DECL|function|mdc800_usb_probe
 r_static
@@ -1290,29 +1323,18 @@ suffix:semicolon
 id|retval
 op_assign
 id|usb_register_dev
+c_func
 (paren
-op_amp
-id|mdc800_device_ops
-comma
-id|MDC800_DEVICE_MINOR_BASE
-comma
-l_int|1
+id|intf
 comma
 op_amp
-id|mdc800-&gt;minor
+id|mdc800_class
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|retval
-op_logical_and
-(paren
-id|retval
-op_ne
-op_minus
-id|ENODEV
-)paren
 )paren
 (brace
 id|err
@@ -1477,10 +1499,12 @@ id|NOT_CONNECTED
 r_return
 suffix:semicolon
 id|usb_deregister_dev
+c_func
 (paren
-l_int|1
+id|intf
 comma
-id|mdc800-&gt;minor
+op_amp
+id|mdc800_class
 )paren
 suffix:semicolon
 id|mdc800-&gt;state

@@ -1315,6 +1315,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Currently only used for power management */
+macro_line|#ifdef CONFIG_PM
 DECL|function|opl3sa2_mixer_restore
 r_static
 r_void
@@ -1381,6 +1383,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 DECL|function|arg_to_vol_mono
 r_static
 r_inline
@@ -3885,7 +3888,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PM */
 DECL|function|opl3sa2_pm_callback
 r_static
 r_int
@@ -3948,6 +3950,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PM */
 multiline_comment|/*&n; * Install OPL3-SA2 based card(s).&n; *&n; * Need to have ad1848 and mpu401 loaded ready.&n; */
 DECL|function|init_opl3sa2
 r_static
@@ -4656,6 +4659,7 @@ id|card
 op_increment
 )paren
 (brace
+macro_line|#ifdef CONFIG_PM
 r_if
 c_cond
 (paren
@@ -4677,6 +4681,7 @@ dot
 id|pmdev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -351,7 +351,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

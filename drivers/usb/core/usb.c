@@ -1058,7 +1058,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_find_interface - find usb_interface pointer for driver and device&n; * @drv: the driver whose current configuration is considered&n; * @kdev: the desired device&n; *&n; * This walks the driver device list and returns a pointer to the interface &n; * with the matching kdev_t.&n; */
+multiline_comment|/**&n; * usb_find_interface - find usb_interface pointer for driver and device&n; * @drv: the driver whose current configuration is considered&n; * @minor: the minor number of the desired device&n; *&n; * This walks the driver device list and returns a pointer to the interface &n; * with the matching minor.  Note, this only works for devices that share the&n; * USB major number.&n; */
 DECL|function|usb_find_interface
 r_struct
 id|usb_interface
@@ -1071,8 +1071,8 @@ id|usb_driver
 op_star
 id|drv
 comma
-id|kdev_t
-id|kdev
+r_int
+id|minor
 )paren
 (brace
 r_struct
@@ -1134,19 +1134,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_same
-c_func
+id|intf-&gt;minor
+op_eq
+op_minus
+l_int|1
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|intf-&gt;kdev
-comma
-id|kdev
+id|intf-&gt;minor
+op_eq
+id|minor
 )paren
-)paren
-(brace
 r_return
 id|intf
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* no device found that matches */
 r_return

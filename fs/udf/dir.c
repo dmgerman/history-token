@@ -163,7 +163,7 @@ comma
 id|dirent
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|dir

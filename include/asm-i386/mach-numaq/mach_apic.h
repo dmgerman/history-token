@@ -1,6 +1,8 @@
 macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
@@ -403,5 +405,35 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|macro|APIC_ID_MASK
+mdefine_line|#define APIC_ID_MASK (0xF&lt;&lt;24)
+DECL|function|get_apic_id
+r_static
+r_inline
+r_int
+id|get_apic_id
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|x
+)paren
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0x0F
+)paren
+suffix:semicolon
+)brace
+DECL|macro|GET_APIC_ID
+mdefine_line|#define         GET_APIC_ID(x)  get_apic_id(x)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

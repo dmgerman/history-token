@@ -1700,6 +1700,11 @@ op_or
 id|I2C_HW_SMBUS_ALI15X3
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_SMBUS
+comma
+dot
 id|algo
 op_assign
 op_amp

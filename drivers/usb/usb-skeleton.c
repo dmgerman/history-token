@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Skeleton driver - 1.0&n; *&n; * Copyright (c) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum, David Brownell, and Alan Stern for their help&n; * in debugging this driver.&n; *&n; *&n; * History:&n; *&n; * 2003-02-25 - 1.0 - fix races involving urb-&gt;status, unlink_urb(), and&n; *&t;&t;&t;disconnect.  Fix transfer amount in read().  Use&n; *&t;&t;&t;macros instead of magic numbers in probe().  Change&n; *&t;&t;&t;size variables to size_t.  Show how to eliminate&n; *&t;&t;&t;DMA bounce buffer.&n; * 2002_12_12 - 0.9 - compile fixes and got rid of fixed minor array.&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; *&n; */
+multiline_comment|/*&n; * USB Skeleton driver - 1.1&n; *&n; * Copyright (c) 2001-2003 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum, David Brownell, and Alan Stern for their help&n; * in debugging this driver.&n; *&n; *&n; * History:&n; *&n; * 2003-05-06 - 1.1 - changes due to usb core changes with usb_register_dev()&n; * 2003-02-25 - 1.0 - fix races involving urb-&gt;status, unlink_urb(), and&n; *&t;&t;&t;disconnect.  Fix transfer amount in read().  Use&n; *&t;&t;&t;macros instead of magic numbers in probe().  Change&n; *&t;&t;&t;size variables to size_t.  Show how to eliminate&n; *&t;&t;&t;DMA bounce buffer.&n; * 2002_12_12 - 0.9 - compile fixes and got rid of fixed minor array.&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
@@ -102,14 +101,9 @@ comma
 id|skel_table
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|USB_SKEL_MINOR_BASE
-mdefine_line|#define USB_SKEL_MINOR_BASE&t;0
-macro_line|#else
 multiline_comment|/* Get a minor range for your devices from the usb maintainer */
 DECL|macro|USB_SKEL_MINOR_BASE
 mdefine_line|#define USB_SKEL_MINOR_BASE&t;192
-macro_line|#endif
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|usb_skel
 r_struct
@@ -374,7 +368,7 @@ id|file_operations
 id|skel_fops
 op_assign
 (brace
-multiline_comment|/*&n;&t; * The owner field is part of the module-locking&n;&t; * mechanism. The idea is that the kernel knows&n;&t; * which module to increment the use-counter of&n;&t; * BEFORE it calls the device&squot;s open() function.&n;&t; * This also means that the kernel can decrement&n;&t; * the use-counter again before calling release()&n;&t; * or should the open() function fail.&n;&t; *&n;&t; * Not all device structures have an &quot;owner&quot; field&n;&t; * yet. &quot;struct file_operations&quot; and &quot;struct net_device&quot;&n;&t; * do, while &quot;struct tty_driver&quot; does not. If the struct&n;&t; * has an &quot;owner&quot; field, then initialize it to the value&n;&t; * THIS_MODULE and the kernel will handle all module&n;&t; * locking for you automatically. Otherwise, you must&n;&t; * increment the use-counter in the open() function&n;&t; * and decrement it again in the release() function&n;&t; * yourself.&n;&t; */
+multiline_comment|/*&n;&t; * The owner field is part of the module-locking&n;&t; * mechanism. The idea is that the kernel knows&n;&t; * which module to increment the use-counter of&n;&t; * BEFORE it calls the device&squot;s open() function.&n;&t; * This also means that the kernel can decrement&n;&t; * the use-counter again before calling release()&n;&t; * or should the open() function fail.&n;&t; */
 dot
 id|owner
 op_assign
@@ -404,6 +398,47 @@ dot
 id|release
 op_assign
 id|skel_release
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* &n; * usb class driver info in order to get a minor number from the usb core,&n; * and to have the device registered with devfs and the driver core&n; */
+DECL|variable|skell_class
+r_static
+r_struct
+id|usb_class_driver
+id|skell_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb/skel%d&quot;
+comma
+dot
+id|fops
+op_assign
+op_amp
+id|skel_fops
+comma
+dot
+id|mode
+op_assign
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+op_or
+id|S_IROTH
+comma
+dot
+id|minor_base
+op_assign
+id|USB_SKEL_MINOR_BASE
 comma
 )brace
 suffix:semicolon
@@ -640,13 +675,7 @@ id|usb_find_interface
 op_amp
 id|skel_driver
 comma
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|subminor
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1509,9 +1538,6 @@ op_star
 id|endpoint
 suffix:semicolon
 r_int
-id|minor
-suffix:semicolon
-r_int
 id|buffer_size
 suffix:semicolon
 r_int
@@ -1552,15 +1578,10 @@ id|retval
 op_assign
 id|usb_register_dev
 (paren
-op_amp
-id|skel_fops
-comma
-id|USB_SKEL_MINOR_BASE
-comma
-l_int|1
+id|intf
 comma
 op_amp
-id|minor
+id|skel_class
 )paren
 suffix:semicolon
 r_if
@@ -1639,7 +1660,7 @@ id|interface
 suffix:semicolon
 id|dev-&gt;minor
 op_assign
-id|minor
+id|intf-&gt;minor
 suffix:semicolon
 multiline_comment|/* set up the endpoint information */
 multiline_comment|/* check out the endpoints */
@@ -1892,65 +1913,10 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* initialize the devfs node for this device and register it */
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;usb/skel%d&quot;
-comma
-id|dev-&gt;minor
-)paren
-suffix:semicolon
-id|devfs
-op_assign
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|name
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|USB_MAJOR
-comma
-id|dev-&gt;minor
-comma
-id|S_IFCHR
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-op_or
-id|S_IRGRP
-op_or
-id|S_IWGRP
-op_or
-id|S_IROTH
-comma
-op_amp
-id|skel_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* let the user know what node this device is now attached to */
 id|info
 (paren
 l_string|&quot;USB Skeleton device now attached to USBSkel-%d&quot;
-comma
-id|dev-&gt;minor
-)paren
-suffix:semicolon
-multiline_comment|/* add device id so the device works when advertised */
-id|interface-&gt;kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
 comma
 id|dev-&gt;minor
 )paren
@@ -1973,9 +1939,10 @@ id|exit_minor
 suffix:colon
 id|usb_deregister_dev
 (paren
-l_int|1
+id|intf
 comma
-id|minor
+op_amp
+id|skel_class
 )paren
 suffix:semicolon
 m_exit
@@ -2058,30 +2025,23 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* remove device id to disable open() */
-id|interface-&gt;kdev
+multiline_comment|/* disable open() */
+id|interface-&gt;minor
 op_assign
-id|NODEV
+op_minus
+l_int|1
 suffix:semicolon
 id|minor
 op_assign
 id|dev-&gt;minor
 suffix:semicolon
-multiline_comment|/* remove our devfs node */
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;usb/skel%d&quot;
-comma
-id|dev-&gt;minor
-)paren
-suffix:semicolon
-multiline_comment|/* give back our dynamic minor */
+multiline_comment|/* give back our minor */
 id|usb_deregister_dev
 (paren
-l_int|1
+id|intf
 comma
-id|minor
+op_amp
+id|skel_class
 )paren
 suffix:semicolon
 multiline_comment|/* terminate an ongoing write */

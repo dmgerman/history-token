@@ -9624,100 +9624,6 @@ id|dv1394_fasync
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|function|dv1394_devfs_add_entry
-r_static
-r_int
-id|dv1394_devfs_add_entry
-c_func
-(paren
-r_struct
-id|video_card
-op_star
-id|video
-)paren
-(brace
-r_char
-id|buf
-(braket
-l_int|64
-)braket
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|buf
-comma
-r_sizeof
-(paren
-id|buf
-)paren
-comma
-l_string|&quot;ieee1394/dv/host%d/%s/%s&quot;
-comma
-(paren
-id|video-&gt;id
-op_rshift
-l_int|2
-)paren
-comma
-(paren
-id|video-&gt;pal_or_ntsc
-op_eq
-id|DV1394_NTSC
-ques
-c_cond
-l_string|&quot;NTSC&quot;
-suffix:colon
-l_string|&quot;PAL&quot;
-)paren
-comma
-(paren
-id|video-&gt;mode
-op_eq
-id|MODE_RECEIVE
-ques
-c_cond
-l_string|&quot;in&quot;
-suffix:colon
-l_string|&quot;out&quot;
-)paren
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|buf
-comma
-l_int|0
-comma
-id|IEEE1394_MAJOR
-comma
-id|IEEE1394_MINOR_BLOCK_DV1394
-op_star
-l_int|16
-op_plus
-id|video-&gt;id
-comma
-id|S_IFCHR
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|dv1394_fops
-comma
-id|video
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_DEVFS_FS */
 multiline_comment|/*** HOTPLUG STUFF **********************************************************/
 multiline_comment|/*&n; * Export information about protocols/devices supported by this driver.&n; */
 DECL|variable|dv1394_id_table
@@ -10117,14 +10023,59 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
-id|dv1394_devfs_add_entry
+id|devfs_mk_cdev
 c_func
 (paren
-id|video
+id|MKDEV
+c_func
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_DV1394
+op_star
+l_int|16
+op_plus
+id|video-&gt;id
+)paren
+comma
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUGO
+comma
+l_string|&quot;ieee1394/dv/host%d/%s/%s&quot;
+comma
+(paren
+id|video-&gt;id
+op_rshift
+l_int|2
+)paren
+comma
+(paren
+id|video-&gt;pal_or_ntsc
+op_eq
+id|DV1394_NTSC
+ques
+c_cond
+l_string|&quot;NTSC&quot;
+suffix:colon
+l_string|&quot;PAL&quot;
+)paren
+comma
+(paren
+id|video-&gt;mode
+op_eq
+id|MODE_RECEIVE
+ques
+c_cond
+l_string|&quot;in&quot;
+suffix:colon
+l_string|&quot;out&quot;
+)paren
 )paren
 OL
 l_int|0
@@ -10132,7 +10083,6 @@ l_int|0
 r_goto
 id|err_free
 suffix:semicolon
-macro_line|#endif
 id|debug_printk
 c_func
 (paren
@@ -10227,7 +10177,6 @@ l_string|&quot;out&quot;
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_remove
 c_func
 (paren
@@ -10236,7 +10185,6 @@ comma
 id|buf
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|dv1394_procfs_del
 c_func
@@ -10410,7 +10358,6 @@ op_rshift
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_remove
 c_func
 (paren
@@ -10435,7 +10382,6 @@ comma
 id|n
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|snprintf
 c_func
@@ -10619,7 +10565,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_mk_dir
 c_func
 (paren
@@ -10644,7 +10589,6 @@ comma
 id|ohci-&gt;id
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dv1394_init
 c_func
 (paren
@@ -11710,14 +11654,12 @@ c_func
 id|IEEE1394_MINOR_BLOCK_DV1394
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_remove
 c_func
 (paren
 l_string|&quot;ieee1394/dv&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|dv1394_procfs_del
 c_func
@@ -11771,14 +11713,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;ieee1394/dv&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|ret
 op_assign
@@ -11813,14 +11753,12 @@ c_func
 id|IEEE1394_MINOR_BLOCK_DV1394
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_remove
 c_func
 (paren
 l_string|&quot;ieee1394/dv&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|ENOMEM
