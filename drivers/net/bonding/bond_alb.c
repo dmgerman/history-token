@@ -1237,7 +1237,7 @@ op_star
 id|skb-&gt;data
 suffix:semicolon
 r_int
-id|ret
+id|res
 op_assign
 id|NET_RX_DROP
 suffix:semicolon
@@ -1323,7 +1323,7 @@ l_string|&quot;Server received an ARP Reply from client&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|ret
+id|res
 op_assign
 id|NET_RX_SUCCESS
 suffix:semicolon
@@ -1336,7 +1336,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
@@ -3949,7 +3949,7 @@ id|ETH_ALEN
 )braket
 suffix:semicolon
 r_int
-id|error
+id|res
 suffix:semicolon
 r_int
 id|i
@@ -3982,7 +3982,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|error
+id|res
 op_assign
 op_minus
 id|EOPNOTSUPP
@@ -4002,7 +4002,7 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-id|error
+id|res
 op_assign
 id|slave-&gt;dev
 op_member_access_from_pointer
@@ -4028,7 +4028,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|res
 )paren
 (brace
 r_goto
@@ -4107,7 +4107,7 @@ id|ETH_ALEN
 suffix:semicolon
 )brace
 r_return
-id|error
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/************************ exported alb funcions ************************/
@@ -5105,11 +5105,9 @@ id|slave
 )paren
 (brace
 r_int
-id|err
-op_assign
-l_int|0
+id|res
 suffix:semicolon
-id|err
+id|res
 op_assign
 id|alb_set_slave_mac_addr
 c_func
@@ -5124,11 +5122,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 r_return
-id|err
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/* caller must hold the bond lock for write since the mac addresses&n;&t; * are compared and may be swapped.&n;&t; */
@@ -5139,7 +5137,7 @@ op_amp
 id|bond-&gt;lock
 )paren
 suffix:semicolon
-id|err
+id|res
 op_assign
 id|alb_handle_addr_collision_on_attach
 c_func
@@ -5159,11 +5157,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 r_return
-id|err
+id|res
 suffix:semicolon
 )brace
 id|tlb_init_slave
@@ -5568,9 +5566,7 @@ op_star
 id|swap_slave
 suffix:semicolon
 r_int
-id|error
-op_assign
-l_int|0
+id|res
 suffix:semicolon
 r_int
 id|i
@@ -5595,7 +5591,7 @@ op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
 )brace
-id|error
+id|res
 op_assign
 id|alb_set_mac_address
 c_func
@@ -5608,11 +5604,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|res
 )paren
 (brace
 r_return
-id|error
+id|res
 suffix:semicolon
 )brace
 id|memcpy

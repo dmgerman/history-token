@@ -1157,7 +1157,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Less bad way to call ioctl from within the kernel; this needs to be&n; * done some other way to get the call out of interrupt context.&n; * Needs &quot;ioctl&quot; variable to be supplied by calling context.&n; */
 DECL|macro|IOCTL
-mdefine_line|#define IOCTL(dev, arg, cmd) ({&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&bslash;&n;&t;set_fs(get_ds());&t;&t;&bslash;&n;&t;ret = ioctl(dev, arg, cmd);&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&bslash;&n;&t;ret; })
+mdefine_line|#define IOCTL(dev, arg, cmd) ({&t;&t;&bslash;&n;&t;int res = 0;&t;&t;&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&bslash;&n;&t;set_fs(get_ds());&t;&t;&bslash;&n;&t;res = ioctl(dev, arg, cmd);&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&bslash;&n;&t;res; })
 multiline_comment|/*&n; * Get link speed and duplex from the slave&squot;s base driver&n; * using ethtool. If for some reason the call fails or the&n; * values are invalid, fake speed and duplex to 100/Full&n; * and return error.&n; */
 DECL|function|bond_update_speed_duplex
 r_static
@@ -1460,9 +1460,11 @@ l_int|0
 )paren
 (brace
 r_return
+(paren
 id|mii-&gt;val_out
 op_amp
 id|BMSR_LSTATUS
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1527,6 +1529,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If reporting, report that either there&squot;s no dev-&gt;do_ioctl,&n;&t; * or both SIOCGMIIREG and SIOCETHTOOL failed (meaning that we&n;&t; * cannot report link status).  If not reporting, pretend&n;&t; * we&squot;re ok.&n;&t; */
 r_return
+(paren
 id|reporting
 ques
 c_cond
@@ -1534,6 +1537,7 @@ op_minus
 l_int|1
 suffix:colon
 id|BMSR_LSTATUS
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* register to receive lacpdus on a bond */
@@ -3241,11 +3245,6 @@ id|new_slave
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|dev_mc_list
 op_star
@@ -3257,6 +3256,11 @@ suffix:semicolon
 r_struct
 id|sockaddr
 id|addr
+suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3536,7 +3540,7 @@ id|addr.sa_family
 op_assign
 id|slave_dev-&gt;type
 suffix:semicolon
-id|err
+id|res
 op_assign
 id|slave_dev
 op_member_access_from_pointer
@@ -3552,7 +3556,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 id|dprintk
@@ -3560,7 +3564,7 @@ c_func
 (paren
 l_string|&quot;Error %d calling set_mac_address&bslash;n&quot;
 comma
-id|err
+id|res
 )paren
 suffix:semicolon
 r_goto
@@ -3568,7 +3572,7 @@ id|err_free
 suffix:semicolon
 )brace
 multiline_comment|/* open the slave since the application closed it */
-id|err
+id|res
 op_assign
 id|dev_open
 c_func
@@ -3579,7 +3583,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 id|dprintk
@@ -3595,7 +3599,7 @@ id|err_restore_mac
 suffix:semicolon
 )brace
 )brace
-id|err
+id|res
 op_assign
 id|netdev_set_master
 c_func
@@ -3608,7 +3612,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 id|dprintk
@@ -3616,7 +3620,7 @@ c_func
 (paren
 l_string|&quot;Error %d calling netdev_set_master&bslash;n&quot;
 comma
-id|err
+id|res
 )paren
 suffix:semicolon
 r_if
@@ -3659,7 +3663,7 @@ id|BOND_MODE_ALB
 )paren
 (brace
 multiline_comment|/* bond_alb_init_slave() must be called before all other stages since&n;&t;&t; * it might fail and we do not want to have to undo everything&n;&t;&t; */
-id|err
+id|res
 op_assign
 id|bond_alb_init_slave
 c_func
@@ -3672,7 +3676,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 r_goto
@@ -4444,7 +4448,7 @@ id|new_slave
 )paren
 suffix:semicolon
 r_return
-id|err
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * This function changes the active slave to slave &lt;slave_dev&gt;.&n; * It returns -EINVAL in the following cases.&n; *  - &lt;slave_dev&gt; is not found in the list.&n; *  - There is not active slave now.&n; *  - &lt;slave_dev&gt; is already active.&n; *  - The link state of &lt;slave_dev&gt; is not BOND_LINK_UP.&n; *  - &lt;slave_dev&gt; is not running.&n; * In these cases, this fuction does nothing.&n; * In the other cases, currnt_slave pointer is changed and 0 is returned.&n; */
@@ -4492,7 +4496,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
-id|ret
+id|res
 op_assign
 l_int|0
 suffix:semicolon
@@ -4603,7 +4607,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ret
+id|res
 op_assign
 op_minus
 id|EINVAL
@@ -4617,7 +4621,7 @@ id|bond-&gt;lock
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * find_best_interface - select the best available slave to be the active one&n; * @bond: our bonding struct&n; *&n; * Warning: Caller must hold curr_slave_lock for writing.&n; */
@@ -5633,11 +5637,6 @@ r_struct
 id|sockaddr
 id|addr
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
@@ -5920,7 +5919,7 @@ id|bond-&gt;lock
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this function is called regularly to monitor each slave&squot;s link. */
@@ -8334,7 +8333,7 @@ op_assign
 id|orig_app_abi_ver
 suffix:semicolon
 r_int
-id|ret
+id|res
 op_assign
 l_int|0
 suffix:semicolon
@@ -8529,7 +8528,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|ret
+id|res
 op_assign
 id|bond_info_query
 c_func
@@ -8543,7 +8542,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|res
 op_eq
 l_int|0
 )paren
@@ -8573,7 +8572,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|ret
+id|res
 suffix:semicolon
 r_case
 id|BOND_SLAVE_INFO_QUERY_OLD
@@ -8613,7 +8612,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|ret
+id|res
 op_assign
 id|bond_slave_info_query
 c_func
@@ -8627,7 +8626,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|res
 op_eq
 l_int|0
 )paren
@@ -8657,7 +8656,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|ret
+id|res
 suffix:semicolon
 )brace
 r_if
@@ -8743,7 +8742,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ret
+id|res
 op_assign
 op_minus
 id|ENODEV
@@ -8771,7 +8770,7 @@ suffix:colon
 r_case
 id|SIOCBONDENSLAVE
 suffix:colon
-id|ret
+id|res
 op_assign
 id|bond_enslave
 c_func
@@ -8789,7 +8788,7 @@ suffix:colon
 r_case
 id|SIOCBONDRELEASE
 suffix:colon
-id|ret
+id|res
 op_assign
 id|bond_release
 c_func
@@ -8807,7 +8806,7 @@ suffix:colon
 r_case
 id|SIOCBONDSETHWADDR
 suffix:colon
-id|ret
+id|res
 op_assign
 id|bond_sethwaddr
 c_func
@@ -8835,7 +8834,7 @@ id|bond_mode
 )paren
 )paren
 (brace
-id|ret
+id|res
 op_assign
 id|bond_ioctl_change_active
 c_func
@@ -8848,7 +8847,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ret
+id|res
 op_assign
 op_minus
 id|EINVAL
@@ -8858,7 +8857,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ret
+id|res
 op_assign
 op_minus
 id|EOPNOTSUPP
@@ -8874,7 +8873,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|res
 OL
 l_int|0
 )paren
@@ -8886,7 +8885,7 @@ id|prev_abi_ver
 suffix:semicolon
 )brace
 r_return
-id|ret
+id|res
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_FASTROUTE
@@ -9647,9 +9646,6 @@ op_star
 )paren
 id|bond_dev-&gt;priv
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9777,8 +9773,6 @@ id|skb-&gt;priority
 op_assign
 l_int|1
 suffix:semicolon
-id|ret
-op_assign
 id|dev_queue_xmit
 c_func
 (paren
@@ -10763,9 +10757,9 @@ op_star
 id|proc
 suffix:semicolon
 r_int
-id|rc
+id|res
 suffix:semicolon
-id|rc
+id|res
 op_assign
 id|seq_open
 c_func
@@ -10780,7 +10774,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|rc
+id|res
 )paren
 (brace
 multiline_comment|/* recover the pointer buried in proc_dir_entry data */
@@ -10804,7 +10798,7 @@ id|proc-&gt;data
 suffix:semicolon
 )brace
 r_return
-id|rc
+id|res
 suffix:semicolon
 )brace
 DECL|variable|bond_info_fops
@@ -11213,7 +11207,9 @@ op_star
 id|stop_at
 suffix:semicolon
 r_int
-id|error
+id|res
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -11280,7 +11276,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|error
+id|res
 op_assign
 op_minus
 id|EOPNOTSUPP
@@ -11297,7 +11293,7 @@ r_goto
 id|unwind
 suffix:semicolon
 )brace
-id|error
+id|res
 op_assign
 id|slave-&gt;dev
 op_member_access_from_pointer
@@ -11312,7 +11308,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|res
 )paren
 (brace
 multiline_comment|/* TODO: consider downing the slave &n;&t;&t;&t; * and retry ?&n;&t;&t;&t; * User should expect communications&n;&t;&t;&t; * breakage anyway until ARP finish&n;&t;&t;&t; * updating, so...&n;&t;&t;&t; */
@@ -11321,7 +11317,7 @@ c_func
 (paren
 l_string|&quot;err %d %s&bslash;n&quot;
 comma
-id|error
+id|res
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -11381,9 +11377,9 @@ id|stop_at
 )paren
 (brace
 r_int
-id|tmp_error
+id|tmp_res
 suffix:semicolon
-id|tmp_error
+id|tmp_res
 op_assign
 id|slave-&gt;dev
 op_member_access_from_pointer
@@ -11399,7 +11395,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp_error
+id|tmp_res
 )paren
 (brace
 id|dprintk
@@ -11407,7 +11403,7 @@ c_func
 (paren
 l_string|&quot;unwind err %d dev %s&bslash;n&quot;
 comma
-id|tmp_error
+id|tmp_res
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -11415,7 +11411,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|error
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change the MTU of all of a master&squot;s slaves to match the master&n; */
@@ -11455,7 +11451,9 @@ op_star
 id|stop_at
 suffix:semicolon
 r_int
-id|error
+id|res
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -11508,7 +11506,7 @@ c_cond
 id|slave-&gt;dev-&gt;change_mtu
 )paren
 (brace
-id|error
+id|res
 op_assign
 id|slave-&gt;dev
 op_member_access_from_pointer
@@ -11527,7 +11525,7 @@ id|slave-&gt;dev-&gt;mtu
 op_assign
 id|new_mtu
 suffix:semicolon
-id|error
+id|res
 op_assign
 l_int|0
 suffix:semicolon
@@ -11535,7 +11533,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|res
 )paren
 (brace
 multiline_comment|/* If we failed to set the slave&squot;s mtu to the new value&n;&t;&t;&t; * we must abort the operation even in ACTIVE_BACKUP&n;&t;&t;&t; * mode, because if we allow the backup slaves to have&n;&t;&t;&t; * different mtu values than the active slave we&squot;ll&n;&t;&t;&t; * need to change their mtu when doing a failover. That&n;&t;&t;&t; * means changing their mtu from timer context, which&n;&t;&t;&t; * is probably not a good idea.&n;&t;&t;&t; */
@@ -11544,7 +11542,7 @@ c_func
 (paren
 l_string|&quot;err %d %s&bslash;n&quot;
 comma
-id|error
+id|res
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -11582,12 +11580,17 @@ comma
 id|stop_at
 )paren
 (brace
+r_int
+id|tmp_res
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|slave-&gt;dev-&gt;change_mtu
 )paren
 (brace
+id|tmp_res
+op_assign
 id|slave-&gt;dev
 op_member_access_from_pointer
 id|change_mtu
@@ -11598,6 +11601,23 @@ comma
 id|bond_dev-&gt;mtu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp_res
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;unwind err %d dev %s&bslash;n&quot;
+comma
+id|tmp_res
+comma
+id|slave-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -11608,7 +11628,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|error
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change device name&n; */
@@ -13218,7 +13238,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|err
+id|res
 suffix:semicolon
 id|printk
 c_func
@@ -13229,7 +13249,7 @@ comma
 id|version
 )paren
 suffix:semicolon
-id|err
+id|res
 op_assign
 id|bond_check_params
 c_func
@@ -13239,11 +13259,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 )paren
 (brace
 r_return
-id|err
+id|res
 suffix:semicolon
 )brace
 id|rtnl_lock
@@ -13258,10 +13278,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13305,7 +13321,7 @@ op_logical_neg
 id|bond_dev
 )paren
 (brace
-id|err
+id|res
 op_assign
 op_minus
 id|ENOMEM
@@ -13314,7 +13330,7 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
-id|err
+id|res
 op_assign
 id|dev_alloc_name
 c_func
@@ -13327,7 +13343,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 OL
 l_int|0
 )paren
@@ -13343,7 +13359,7 @@ id|out_err
 suffix:semicolon
 )brace
 multiline_comment|/* bond_init() must be called after dev_alloc_name() (for the&n;&t;&t; * /proc files), but before register_netdevice(), because we&n;&t;&t; * need to set function pointers.&n;&t;&t; */
-id|err
+id|res
 op_assign
 id|bond_init
 c_func
@@ -13354,7 +13370,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 OL
 l_int|0
 )paren
@@ -13375,7 +13391,7 @@ c_func
 id|bond_dev
 )paren
 suffix:semicolon
-id|err
+id|res
 op_assign
 id|register_netdevice
 c_func
@@ -13386,7 +13402,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|res
 OL
 l_int|0
 )paren
@@ -13437,7 +13453,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|err
+id|res
 suffix:semicolon
 )brace
 DECL|function|bonding_exit
