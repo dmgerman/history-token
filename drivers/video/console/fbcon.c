@@ -41,6 +41,30 @@ macro_line|#else
 DECL|macro|DPRINTK
 macro_line|#  define DPRINTK(fmt, args...)
 macro_line|#endif
+r_enum
+(brace
+DECL|enumerator|FBCON_LOGO_CANSHOW
+id|FBCON_LOGO_CANSHOW
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* the logo can be shown */
+DECL|enumerator|FBCON_LOGO_DRAW
+id|FBCON_LOGO_DRAW
+op_assign
+op_minus
+l_int|2
+comma
+multiline_comment|/* draw the logo to a console */
+DECL|enumerator|FBCON_LOGO_DONTSHOW
+id|FBCON_LOGO_DONTSHOW
+op_assign
+op_minus
+l_int|3
+multiline_comment|/* do not show the logo */
+)brace
+suffix:semicolon
 DECL|variable|fb_display
 r_struct
 id|display
@@ -75,13 +99,13 @@ r_static
 r_int
 id|logo_lines
 suffix:semicolon
+multiline_comment|/* logo_shown is an index to vc_cons when &gt;= 0; otherwise follows FBCON_LOGO&n;   enums.  */
 DECL|variable|logo_shown
 r_static
 r_int
 id|logo_shown
 op_assign
-op_minus
-l_int|1
+id|FBCON_LOGO_CANSHOW
 suffix:semicolon
 multiline_comment|/* Software scrollback */
 DECL|variable|fbcon_softback_size
@@ -1555,8 +1579,7 @@ id|show_logo
 )paren
 id|logo_shown
 op_assign
-op_minus
-l_int|3
+id|FBCON_LOGO_DONTSHOW
 suffix:semicolon
 r_for
 c_loop
@@ -2064,8 +2087,7 @@ id|vc-&gt;vc_bottom
 (brace
 id|logo_shown
 op_assign
-op_minus
-l_int|1
+id|FBCON_LOGO_CANSHOW
 suffix:semicolon
 id|printk
 c_func
@@ -2081,14 +2103,12 @@ c_cond
 (paren
 id|logo_shown
 op_ne
-op_minus
-l_int|3
+id|FBCON_LOGO_DONTSHOW
 )paren
 (brace
 id|logo_shown
 op_assign
-op_minus
-l_int|2
+id|FBCON_LOGO_DRAW
 suffix:semicolon
 id|vc-&gt;vc_top
 op_assign
@@ -2748,8 +2768,7 @@ id|user
 op_logical_and
 id|logo_shown
 op_ne
-op_minus
-l_int|3
+id|FBCON_LOGO_DONTSHOW
 )paren
 (brace
 r_struct
@@ -3737,8 +3756,7 @@ id|display_fg
 op_logical_or
 id|logo_shown
 op_eq
-op_minus
-l_int|3
+id|FBCON_LOGO_DONTSHOW
 op_logical_or
 (paren
 id|info-&gt;fix.type
@@ -9639,8 +9657,7 @@ l_int|0
 suffix:semicolon
 id|logo_shown
 op_assign
-op_minus
-l_int|1
+id|FBCON_LOGO_CANSHOW
 suffix:semicolon
 )brace
 id|prev_console
@@ -9927,8 +9944,7 @@ c_cond
 (paren
 id|logo_shown
 op_eq
-op_minus
-l_int|2
+id|FBCON_LOGO_DRAW
 )paren
 (brace
 id|logo_shown
@@ -12910,8 +12926,7 @@ suffix:semicolon
 )brace
 id|logo_shown
 op_assign
-op_minus
-l_int|1
+id|FBCON_LOGO_CANSHOW
 suffix:semicolon
 )brace
 id|fbcon_cursor
