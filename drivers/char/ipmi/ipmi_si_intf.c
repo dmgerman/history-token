@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#ifdef CONFIG_HIGH_RES_TIMERS
 macro_line|#include &lt;linux/hrtime.h&gt;
 macro_line|# if defined(schedule_next_int)
