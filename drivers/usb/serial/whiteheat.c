@@ -224,7 +224,7 @@ id|port
 suffix:semicolon
 r_static
 r_int
-id|whiteheat_fake_startup
+id|whiteheat_firmware_download
 (paren
 r_struct
 id|usb_serial
@@ -234,7 +234,7 @@ id|serial
 suffix:semicolon
 r_static
 r_int
-id|whiteheat_real_startup
+id|whiteheat_attach
 (paren
 r_struct
 id|usb_serial
@@ -244,7 +244,7 @@ id|serial
 suffix:semicolon
 r_static
 r_void
-id|whiteheat_real_shutdown
+id|whiteheat_shutdown
 (paren
 r_struct
 id|usb_serial
@@ -287,9 +287,9 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|probe
 suffix:colon
-id|whiteheat_fake_startup
+id|whiteheat_firmware_download
 comma
 )brace
 suffix:semicolon
@@ -352,13 +352,13 @@ id|set_termios
 suffix:colon
 id|whiteheat_set_termios
 comma
-id|startup
+id|attach
 suffix:colon
-id|whiteheat_real_startup
+id|whiteheat_attach
 comma
 id|shutdown
 suffix:colon
-id|whiteheat_real_shutdown
+id|whiteheat_shutdown
 comma
 )brace
 suffix:semicolon
@@ -1757,10 +1757,10 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* steps to download the firmware to the WhiteHEAT device:&n; - hold the reset (by writing to the reset bit of the CPUCS register)&n; - download the VEND_AX.HEX file to the chip using VENDOR_REQUEST-ANCHOR_LOAD&n; - release the reset (by writing to the CPUCS register)&n; - download the WH.HEX file for all addresses greater than 0x1b3f using&n;   VENDOR_REQUEST-ANCHOR_EXTERNAL_RAM_LOAD&n; - hold the reset&n; - download the WH.HEX file for all addresses less than 0x1b40 using&n;   VENDOR_REQUEST_ANCHOR_LOAD&n; - release the reset&n; - device renumerated itself and comes up as new device id with all&n;   firmware download completed.&n;*/
-DECL|function|whiteheat_fake_startup
+DECL|function|whiteheat_firmware_download
 r_static
 r_int
-id|whiteheat_fake_startup
+id|whiteheat_firmware_download
 (paren
 r_struct
 id|usb_serial
@@ -1839,8 +1839,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - ezusb_writememory failed for loader (%d %04X %p %d)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - ezusb_writememory failed for loader (%d %04X %p %d)&quot;
 comma
 id|response
 comma
@@ -1926,8 +1927,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - ezusb_writememory failed for first firmware step (%d %04X %p %d)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - ezusb_writememory failed for first firmware step (%d %04X %p %d)&quot;
 comma
 id|response
 comma
@@ -2001,8 +2003,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - ezusb_writememory failed for second firmware step (%d %04X %p %d)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - ezusb_writememory failed for second firmware step (%d %04X %p %d)&quot;
 comma
 id|response
 comma
@@ -2034,10 +2037,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|whiteheat_real_startup
+DECL|function|whiteheat_attach
 r_static
 r_int
-id|whiteheat_real_startup
+id|whiteheat_attach
 (paren
 r_struct
 id|usb_serial
@@ -2347,10 +2350,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|whiteheat_real_shutdown
+DECL|function|whiteheat_shutdown
 r_static
 r_void
-id|whiteheat_real_shutdown
+id|whiteheat_shutdown
 (paren
 r_struct
 id|usb_serial
