@@ -264,6 +264,10 @@ id|cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|mddev-&gt;array_size
+op_assign
+l_int|0
+suffix:semicolon
 id|ITERATE_RDEV
 c_func
 (paren
@@ -313,6 +317,10 @@ id|rdev
 suffix:semicolon
 id|disk-&gt;size
 op_assign
+id|rdev-&gt;size
+suffix:semicolon
+id|mddev-&gt;array_size
+op_add_assign
 id|rdev-&gt;size
 suffix:semicolon
 r_if
@@ -367,14 +375,7 @@ id|base
 suffix:semicolon
 id|sz
 op_assign
-id|md_size
-(braket
-id|mdidx
-c_func
-(paren
-id|mddev
-)paren
-)braket
+id|mddev-&gt;array_size
 suffix:semicolon
 id|base
 op_assign

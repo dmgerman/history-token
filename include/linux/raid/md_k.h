@@ -631,6 +631,11 @@ id|sector_t
 id|size
 suffix:semicolon
 multiline_comment|/* used size of component devices */
+DECL|member|array_size
+id|sector_t
+id|array_size
+suffix:semicolon
+multiline_comment|/* exported array size */
 DECL|member|events
 id|__u64
 id|events
