@@ -88,6 +88,8 @@ id|off
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DEVICE_ATTR
+mdefine_line|#define DEVICE_ATTR(_name,_str,_mode,_show,_store) &bslash;&n;struct device_attribute dev_attr_##_name = { &bslash;&n;&t;.name&t;= _str,&t;&t;&bslash;&n;&t;.mode&t;= _mode,&t;&bslash;&n;&t;.show&t;= _show,&t;&bslash;&n;&t;.store&t;= _store,&t;&bslash;&n;};
 r_extern
 r_int
 id|driverfs_create_dir
