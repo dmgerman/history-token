@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (page_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *&t;Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,6 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
