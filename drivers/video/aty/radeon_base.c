@@ -7931,10 +7931,6 @@ op_assign
 op_amp
 id|radeonfb_ops
 suffix:semicolon
-id|info-&gt;display_fg
-op_assign
-l_int|NULL
-suffix:semicolon
 id|info-&gt;screen_base
 op_assign
 (paren

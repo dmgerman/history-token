@@ -19,14 +19,6 @@ id|inverse
 suffix:semicolon
 multiline_comment|/* != 0 text black on white as default */
 multiline_comment|/* Filled in by the low-level console driver */
-DECL|member|fontname
-r_char
-id|fontname
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* Font associated to this display */
 DECL|member|fontdata
 id|u_char
 op_star
