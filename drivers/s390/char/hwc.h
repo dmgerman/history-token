@@ -201,6 +201,8 @@ id|packed
 DECL|typedef|mto_t
 id|mto_t
 suffix:semicolon
+multiline_comment|/* FIXME: don&squot;t define static variables in a header!!! */
+macro_line|#warning
 DECL|variable|write_hwcb_template
 r_static
 id|write_hwcb_t
@@ -262,6 +264,7 @@ l_int|0x0001
 )brace
 )brace
 suffix:semicolon
+macro_line|#warning
 DECL|variable|mto_template
 r_static
 id|mto_t
@@ -323,6 +326,7 @@ id|packed
 DECL|typedef|init_hwcb_t
 id|init_hwcb_t
 suffix:semicolon
+macro_line|#warning
 DECL|variable|init_hwcb_template
 r_static
 id|init_hwcb_t
@@ -476,6 +480,7 @@ id|packed
 DECL|typedef|read_hwcb_t
 id|read_hwcb_t
 suffix:semicolon
+macro_line|#warning
 DECL|variable|read_hwcb_template
 r_static
 id|read_hwcb_t

@@ -918,6 +918,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this function is never used, why */
 r_void
 DECL|function|fsm_modtimer
 id|fsm_modtimer

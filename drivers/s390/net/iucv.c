@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id$&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision$&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.32 2002/02/12 21:52:20 felfert Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.32 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG
 multiline_comment|/* FLAGS:&n; * All flags are defined in the field IPFLAGS1 of each function&n; * and can be found in CP Programming Services.&n; * IPSRCCLS - Indicates you have specified a source class&n; * IPFGMCL  - Indicates you have specified a target class&n; * IPFGPID  - Indicates you have specified a pathid&n; * IPFGMID  - Indicates you have specified a message ID&n; * IPANSLST - Indicates that you are using an address list for&n; *            reply data&n; * IPBUFLST - Indicates that you are using an address list for&n; *            message data&n; */
 DECL|macro|IPSRCCLS
 mdefine_line|#define IPSRCCLS &t;0x01
@@ -101,6 +101,7 @@ DECL|typedef|iucv_irqdata
 id|iucv_irqdata
 suffix:semicolon
 DECL|variable|iucv_irq_queue
+r_static
 r_struct
 id|list_head
 id|iucv_irq_queue
@@ -113,6 +114,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|iucv_tq
+r_static
 r_struct
 id|tq_struct
 id|iucv_tq
@@ -255,6 +257,12 @@ DECL|variable|declare_flag
 r_static
 r_int
 id|declare_flag
+suffix:semicolon
+multiline_comment|/**&n; * register_flag: is 0 when external interrupt has not been registered&n; */
+DECL|variable|register_flag
+r_static
+r_int
+id|register_flag
 suffix:semicolon
 multiline_comment|/****************FIVE 40-BYTE PARAMETER STRUCTURES******************/
 multiline_comment|/* Data struct 1: iparml_control&n; * Used for iucv_accept&n; *          iucv_connect&n; *          iucv_quiesce&n; *          iucv_resume&n; *          iucv_sever&n; *          iucv_retrieve_buffer&n; * Data struct 2: iparml_dpl     (data in parameter list)&n; * Used for iucv_send_prmmsg&n; *          iucv_send2way_prmmsg&n; *          iucv_send2way_prmmsg_array&n; *          iucv_reply_prmmsg&n; * Data struct 3: iparml_db       (data in a buffer)&n; * Used for iucv_receive&n; *          iucv_receive_array&n; *          iucv_reject&n; *          iucv_reply&n; *          iucv_reply_array&n; *          iucv_send&n; *          iucv_send_array&n; *          iucv_send2way&n; *          iucv_send2way_array&n; *          iucv_declare_buffer&n; * Data struct 4: iparml_purge&n; * Used for iucv_purge&n; *          iucv_query&n; * Data struct 5: iparml_set_mask&n; * Used for iucv_set_mask&n; */
@@ -555,15 +563,62 @@ id|iucv_param
 op_star
 id|iucv_param_pool
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;(C) 2001 IBM Corp. by Fritz Elfert (felfert@millenux.com)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Linux for S/390 IUCV lowlevel driver&quot;
+)paren
+suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,12))
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Debugging stuff&n; *******************************************************************************/
 "&f;"
 macro_line|#ifdef DEBUG
+DECL|variable|debuglevel
+r_static
+r_int
+id|debuglevel
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debuglevel
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debuglevel
+comma
+l_string|&quot;Specifies the debug level (0=off ... 3=all)&quot;
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|iucv_dumpit
 id|iucv_dumpit
 c_func
 (paren
+r_char
+op_star
+id|title
+comma
 r_void
 op_star
 id|buf
@@ -585,10 +640,28 @@ op_star
 )paren
 id|buf
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|debuglevel
+OL
+l_int|3
+)paren
+r_return
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
+id|__FUNCTION__
+l_string|&quot;: %s&bslash;n&quot;
+comma
+id|title
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 l_string|&quot;  &quot;
 )paren
 suffix:semicolon
@@ -642,11 +715,13 @@ op_ne
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; &quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;%02X&quot;
 comma
@@ -672,15 +747,94 @@ r_return
 suffix:semicolon
 )brace
 DECL|macro|iucv_debug
-mdefine_line|#define iucv_debug(fmt, args...) &bslash;&n;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; fmt &quot;&bslash;n&quot; , ## args);
+mdefine_line|#define iucv_debug(lvl, fmt, args...) &bslash;&n;do { &bslash;&n;&t;if (debuglevel &gt;= lvl) &bslash;&n;&t;&t;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; fmt &quot;&bslash;n&quot; , ## args); &bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|iucv_debug
-mdefine_line|#define iucv_debug(fmt, args...)
+mdefine_line|#define iucv_debug(lvl, fmt, args...)
 DECL|macro|iucv_dumpit
-mdefine_line|#define iucv_dumpit(buf, len)
+mdefine_line|#define iucv_dumpit(title, buf, len)
 macro_line|#endif
 multiline_comment|/*&n; * Internal functions&n; *******************************************************************************/
 "&f;"
+multiline_comment|/**&n; * print start banner&n; */
+r_static
+r_void
+DECL|function|iucv_banner
+id|iucv_banner
+c_func
+(paren
+r_void
+)paren
+(brace
+r_char
+id|vbuf
+(braket
+)braket
+op_assign
+l_string|&quot;$Revision: 1.32 $&quot;
+suffix:semicolon
+r_char
+op_star
+id|version
+op_assign
+id|vbuf
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|version
+op_assign
+id|strchr
+c_func
+(paren
+id|version
+comma
+l_char|&squot;:&squot;
+)paren
+)paren
+)paren
+(brace
+r_char
+op_star
+id|p
+op_assign
+id|strchr
+c_func
+(paren
+id|version
+op_plus
+l_int|1
+comma
+l_char|&squot;$&squot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+)paren
+op_star
+id|p
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+)brace
+r_else
+id|version
+op_assign
+l_string|&quot; ??? &quot;
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IUCV lowlevel driver Version%s initialized&bslash;n&quot;
+comma
+id|version
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * iucv_init - Initialization&n; *&n; * Allocates and initializes various data structures.&n; */
 r_static
 r_int
@@ -849,8 +1003,53 @@ op_amp
 id|iucv_handler_table
 )paren
 suffix:semicolon
+id|iucv_banner
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * iucv_exit - De-Initialization&n; *&n; * Frees everything allocated from iucv_init.&n; */
+r_static
+r_void
+DECL|function|iucv_exit
+id|iucv_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|iucv_external_int_buffer
+)paren
+id|kfree
+c_func
+(paren
+id|iucv_external_int_buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iucv_param_pool
+)paren
+id|kfree
+c_func
+(paren
+id|iucv_param_pool
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IUCV lowlevel driver unloaded&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * grab_param: - Get a parameter buffer from the pre-allocated pool.&n; *&n; * This function searches for an unused element in the the pre-allocated pool&n; * of parameter buffers. If one is found, it marks it &quot;in use&quot; and returns&n; * a pointer to it. The calling function is responsible for releasing it&n; * when it has finished its usage.&n; *&n; * Returns: A pointer to iucv_param.&n; */
@@ -984,12 +1183,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;handler:&quot;
+comma
 r_new
 comma
 r_sizeof
@@ -1073,6 +1276,8 @@ l_int|0
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;ret 1&quot;
 )paren
 suffix:semicolon
@@ -1123,80 +1328,13 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * iucv_remove_handler:&n; * @users_handler: handler to be removed&n; *&n; * Remove handler when application unregisters.&n; */
-r_static
-r_void
-DECL|function|iucv_remove_handler
-id|iucv_remove_handler
-c_func
-(paren
-id|handler
-op_star
-id|handler
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|iucv_pathid_table
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|handler
-)paren
-)paren
-r_return
-suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;entering&quot;
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|iucv_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|handler-&gt;list
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|iucv_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;exiting&quot;
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * b2f0:&n; * @code: identifier of IUCV call to CP.&n; * @parm: pointer to 40 byte iparml area passed to CP&n; *&n; * Calls CP to execute IUCV commands.&n; *&n; * Returns: return code from CP&squot;s IUCV call&n; */
@@ -1215,20 +1353,16 @@ op_star
 id|parm
 )paren
 (brace
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;iparml before b2f0 call:&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;iparml before b2f0 call:&quot;
+comma
 id|parm
 comma
 r_sizeof
 (paren
-id|iucv_param.param
+id|iucv_param
 )paren
 )paren
 suffix:semicolon
@@ -1255,20 +1389,16 @@ comma
 l_string|&quot;1&quot;
 )paren
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;iparml after b2f0 call:&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;iparml after b2f0 call:&quot;
+comma
 id|parm
 comma
 r_sizeof
 (paren
-id|iucv_param.param
+id|iucv_param
 )paren
 )paren
 suffix:semicolon
@@ -1312,12 +1442,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;handler is pointing to %p&quot;
 comma
 id|handler
@@ -1366,6 +1500,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid entry is %p&quot;
 comma
 id|iucv_pathid_table
@@ -1406,6 +1542,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -1464,19 +1602,40 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Name: iucv_declare_buffer&n; * Purpose: Specifies the guests real address of an external&n; *          interrupt.&n; * Input: void&n; * Output: iprcode - return code from b2f0 call&n;*/
-r_int
-DECL|function|iucv_declare_buffer
-id|iucv_declare_buffer
+multiline_comment|/**&n; * iucv_declare_buffer_cpu0&n; * Register at VM for subsequent IUCV operations. This is always&n; * executed on CPU 0. Called from iucv_declare_buffer().&n; */
+r_static
+r_void
+DECL|function|iucv_declare_buffer_cpu0
+id|iucv_declare_buffer_cpu0
 (paren
 r_void
+op_star
+id|result
 )paren
 (brace
-id|ulong
-id|b2f0_result
-suffix:semicolon
 id|iparml_db
 op_star
+id|parm
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|result
+op_logical_and
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+)paren
+r_return
+suffix:semicolon
 id|parm
 op_assign
 (paren
@@ -1496,7 +1655,18 @@ c_func
 id|iucv_external_int_buffer
 )paren
 suffix:semicolon
-id|b2f0_result
+r_if
+c_cond
+(paren
+(paren
+op_star
+(paren
+(paren
+id|ulong
+op_star
+)paren
+id|result
+)paren
 op_assign
 id|b2f0
 c_func
@@ -1505,6 +1675,20 @@ id|DECLARE_BUFFER
 comma
 id|parm
 )paren
+)paren
+op_eq
+l_int|1
+)paren
+op_star
+(paren
+(paren
+id|ulong
+op_star
+)paren
+id|result
+)paren
+op_assign
+id|parm-&gt;iprcode
 suffix:semicolon
 id|release_param
 c_func
@@ -1512,39 +1696,34 @@ c_func
 id|parm
 )paren
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;Address of EIB = %p&quot;
-comma
-id|iucv_external_int_buffer
-)paren
-suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;exiting&quot;
-)paren
-suffix:semicolon
-r_return
-id|b2f0_result
-suffix:semicolon
 )brace
-multiline_comment|/**&n; * iucv_retrieve_buffer:&n; *&n; * Terminates all use of IUCV.&n; * Returns: return code from CP&n; */
-r_int
-DECL|function|iucv_retrieve_buffer
-id|iucv_retrieve_buffer
+multiline_comment|/**&n; * iucv_retrieve_buffer_cpu0:&n; * Unregister IUCV usage at VM. This is always executed on CPU 0.&n; * Called from iucv_retrieve_buffer().&n; */
+r_static
+r_void
+DECL|function|iucv_retrieve_buffer_cpu0
+id|iucv_retrieve_buffer_cpu0
 (paren
 r_void
+op_star
+id|result
 )paren
 (brace
-id|ulong
-id|b2f0_result
-op_assign
-l_int|0
-suffix:semicolon
 id|iparml_control
 op_star
+id|parm
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|parm
 op_assign
 (paren
@@ -1556,14 +1735,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;entering&quot;
-)paren
-suffix:semicolon
-id|b2f0_result
-op_assign
 id|b2f0
 c_func
 (paren
@@ -1578,23 +1749,144 @@ c_func
 id|parm
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/**&n; * Name: iucv_declare_buffer&n; * Purpose: Specifies the guests real address of an external&n; *          interrupt.&n; * Input: void&n; * Output: iprcode - return code from b2f0 call&n; */
+r_static
+r_int
+DECL|function|iucv_declare_buffer
+id|iucv_declare_buffer
+(paren
+r_void
+)paren
+(brace
+id|ulong
+id|b2f0_result
+op_assign
+l_int|0x0deadbeef
+suffix:semicolon
+id|iucv_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;entering&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+id|iucv_declare_buffer_cpu0
+c_func
+(paren
+op_amp
+id|b2f0_result
+)paren
+suffix:semicolon
+r_else
+id|smp_call_function
+c_func
+(paren
+id|iucv_declare_buffer_cpu0
+comma
+op_amp
+id|b2f0_result
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|iucv_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Address of EIB = %p&quot;
+comma
+id|iucv_external_int_buffer
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|b2f0_result
 op_eq
-l_int|0
+l_int|0x0deadbeef
 )paren
-(brace
-id|kfree
+id|b2f0_result
+op_assign
+l_int|0xaa
+suffix:semicolon
+id|iucv_debug
 c_func
 (paren
-id|iucv_pathid_table
+l_int|1
+comma
+l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
-id|iucv_pathid_table
-op_assign
-l_int|NULL
+r_return
+id|b2f0_result
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * iucv_retrieve_buffer:&n; *&n; * Terminates all use of IUCV.&n; * Returns: return code from CP&n; */
+r_static
+r_int
+DECL|function|iucv_retrieve_buffer
+id|iucv_retrieve_buffer
+(paren
+r_void
+)paren
+(brace
+id|iucv_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;entering&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|declare_flag
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+id|iucv_retrieve_buffer_cpu0
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_else
+id|smp_call_function
+c_func
+(paren
+id|iucv_retrieve_buffer_cpu0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|1
+)paren
 suffix:semicolon
 id|declare_flag
 op_assign
@@ -1604,11 +1896,122 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
 r_return
-id|b2f0_result
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * iucv_remove_handler:&n; * @users_handler: handler to be removed&n; *&n; * Remove handler when application unregisters.&n; */
+r_static
+r_void
+DECL|function|iucv_remove_handler
+id|iucv_remove_handler
+c_func
+(paren
+id|handler
+op_star
+id|handler
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|iucv_pathid_table
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|handler
+)paren
+)paren
+r_return
+suffix:semicolon
+id|iucv_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;entering&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|handler-&gt;list
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|iucv_handler_table
+)paren
+)paren
+(brace
+id|iucv_retrieve_buffer
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_flag
+)paren
+(brace
+id|unregister_external_interrupt
+c_func
+(paren
+l_int|0x4000
+comma
+id|iucv_irq_handler
+)paren
+suffix:semicolon
+id|register_flag
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|iucv_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;exiting&quot;
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * iucv_register_program:&n; * @pgmname:  user identification&n; * @userid:   machine identification&n; * @pgmmask:  Indicates which bits in the pgmname and userid combined will be&n; *            used to determine who is given control.&n; * @ops:      Address of interrupt handler table.&n; * @pgm_data: Application data to be passed to interrupt handlers.&n; *&n; * Registers an application with IUCV.&n; * Returns:&n; *           The address of handler, or NULL on failure.&n; * NOTE on pgmmask:&n; *   If pgmname, userid and pgmmask are provided, pgmmask is entered into the&n; *   handler as is.&n; *   If pgmmask is NULL, the internal mask is set to all 0xff&squot;s&n; *   When userid is NULL, the first 8 bytes of the internal mask are forced&n; *   to 0x00.&n; *   If pgmmask and userid are NULL, the first 8 bytes of the internal mask&n; *   are forced to 0x00 and the last 16 bytes to 0xff.&n; */
@@ -1656,6 +2059,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -2041,6 +2446,12 @@ c_cond
 id|rc
 )paren
 (brace
+r_char
+op_star
+id|err
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
 id|iucv_remove_handler
 c_func
 (paren
@@ -2053,22 +2464,98 @@ c_func
 id|new_handler
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|rc
+)paren
+(brace
+r_case
+l_int|0x03
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Directory error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x0a
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Invalid length&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x13
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Buffer already exists&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x3e
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Buffer overlap&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x5c
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Paging or storage error&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xaa
+suffix:colon
+id|err
+op_assign
+l_string|&quot;Function not called&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: iucv_declare_buffer &quot;
-l_string|&quot;returned %ld&bslash;n&quot;
+l_string|&quot;returned error 0x%02lx (%s)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|rc
+comma
+id|err
 )paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|declare_flag
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|register_flag
+op_eq
+l_int|0
+)paren
+(brace
 multiline_comment|/* request the 0x4000 external interrupt */
 id|rc
 op_assign
@@ -2089,11 +2576,6 @@ id|iucv_remove_handler
 c_func
 (paren
 id|new_handler
-)paren
-suffix:semicolon
-id|iucv_retrieve_buffer
-c_func
-(paren
 )paren
 suffix:semicolon
 id|kfree
@@ -2117,14 +2599,18 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|declare_flag
+id|register_flag
 op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -2133,7 +2619,7 @@ id|new_handler
 suffix:semicolon
 )brace
 multiline_comment|/* end of register function */
-multiline_comment|/**&n; * iucv_unregister_program:&n; * @handle: address of handler&n; *&n; * Unregister application with IUCV.&n; * Returns:&n; *   Always 0&n; */
+multiline_comment|/**&n; * iucv_unregister_program:&n; * @handle: address of handler&n; *&n; * Unregister application with IUCV.&n; * Returns:&n; *   0 on success, -EINVAL, if specified handle is invalid.&n; */
 r_int
 DECL|function|iucv_unregister_program
 id|iucv_unregister_program
@@ -2146,11 +2632,12 @@ id|handler
 op_star
 id|h
 op_assign
-(paren
-id|handler
+l_int|NULL
+suffix:semicolon
+r_struct
+id|list_head
 op_star
-)paren
-id|handle
+id|lh
 suffix:semicolon
 r_int
 id|i
@@ -2161,18 +2648,22 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;address of handler is %p&quot;
 comma
 id|h
 )paren
 suffix:semicolon
-multiline_comment|/**&n;&t; * First, walk thru iucv_pathid_table and sever any pathid which is&n;&t; * still pointing to the handler to be removed.&n;&t; */
+multiline_comment|/* Checking if handle is valid  */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -2181,6 +2672,92 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|lh
+comma
+op_amp
+id|iucv_handler_table
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|handler
+op_star
+)paren
+id|handle
+op_eq
+id|list_entry
+c_func
+(paren
+id|lh
+comma
+id|handler
+comma
+id|list
+)paren
+)paren
+(brace
+id|h
+op_assign
+(paren
+id|handler
+op_star
+)paren
+id|handle
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|h
+)paren
+(brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|handle
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Handler not found in iucv_handler_table.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: NULL handle passed by application.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/**&n;&t; * First, walk thru iucv_pathid_table and sever any pathid which is&n;&t; * still pointing to the handler to be removed.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2252,9 +2829,13 @@ c_func
 id|h
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -2325,12 +2906,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid = %d&quot;
 comma
 id|pathid
@@ -2401,12 +2986,26 @@ op_logical_neg
 id|h
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|handle
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: NULL handle passed by application &quot;
-l_string|&quot;or handler not found in iucv_handler_table&bslash;n&quot;
+l_string|&quot;%s: Handler not found in iucv_handler_table.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: NULL handle passed by application.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2516,6 +3115,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -2611,6 +3212,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -2679,12 +3282,26 @@ op_logical_neg
 id|h
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|handle
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: NULL handle passed by application &quot;
-l_string|&quot;or handler not found in iucv_handler_table&bslash;n&quot;
+l_string|&quot;%s: Handler not found in iucv_handler_table.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: NULL handle passed by application.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2943,6 +3560,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -2981,12 +3600,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid = %d&quot;
 comma
 id|pathid
@@ -3076,6 +3699,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;b2f0_result = %ld&quot;
 comma
 id|b2f0_result
@@ -3084,6 +3709,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -3254,12 +3881,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid = %d&quot;
 comma
 id|pathid
@@ -3312,6 +3943,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;b2f0_result = %ld&quot;
 comma
 id|b2f0_result
@@ -3320,6 +3953,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -3377,6 +4012,8 @@ multiline_comment|/* number of bytes moved from parmlist to buffer */
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -3476,6 +4113,8 @@ id|flags1_out
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;*flags1_out = %d&quot;
 comma
 op_star
@@ -3497,6 +4136,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;*flags1_out = %d&quot;
 comma
 op_star
@@ -3623,6 +4264,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -3689,6 +4332,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -3787,6 +4432,8 @@ id|flags1_out
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;*flags1_out = %d&quot;
 comma
 op_star
@@ -3808,6 +4455,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;*flags1_out = %d&quot;
 comma
 op_star
@@ -4052,6 +4701,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4086,12 +4737,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid = %d&quot;
 comma
 id|pathid
@@ -4149,6 +4804,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;b2f0_result = %ld&quot;
 comma
 id|b2f0_result
@@ -4157,6 +4814,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4207,6 +4866,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -4327,6 +4988,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4377,6 +5040,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -4494,6 +5159,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4535,6 +5202,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -4601,6 +5270,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4635,12 +5306,16 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;pathid = %d&quot;
 comma
 id|pathid
@@ -4693,6 +5368,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4742,6 +5419,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -4848,6 +5527,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -4897,6 +5578,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5004,6 +5687,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5052,6 +5737,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5142,6 +5829,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5198,6 +5887,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5322,6 +6013,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5378,6 +6071,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5507,6 +6202,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5562,6 +6259,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5680,6 +6379,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5735,6 +6436,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5854,6 +6557,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5882,6 +6587,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -5922,6 +6629,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;b2f0_result = %ld&quot;
 comma
 id|b2f0_result
@@ -5930,6 +6639,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -5965,6 +6676,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
@@ -6027,6 +6740,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
@@ -6257,6 +6972,8 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;entering, pathid %d, type %02X&quot;
 comma
 id|int_buf-&gt;ippathid
@@ -6264,15 +6981,11 @@ comma
 id|int_buf-&gt;iptype
 )paren
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;External Interrupt Buffer:&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;External Interrupt Buffer:&quot;
+comma
 id|int_buf
 comma
 r_sizeof
@@ -6340,15 +7053,11 @@ id|interrupt
 op_assign
 id|h-&gt;interrupt_table
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;Handler:&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;Handler:&quot;
+comma
 id|h
 comma
 r_sizeof
@@ -6466,15 +7175,11 @@ id|j
 )braket
 suffix:semicolon
 )brace
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;temp_buff1:&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;temp_buff1:&quot;
+comma
 id|temp_buff1
 comma
 r_sizeof
@@ -6483,15 +7188,11 @@ id|temp_buff1
 )paren
 )paren
 suffix:semicolon
-id|iucv_debug
-c_func
-(paren
-l_string|&quot;temp_buff2&quot;
-)paren
-suffix:semicolon
 id|iucv_dumpit
 c_func
 (paren
+l_string|&quot;temp_buff2&quot;
+comma
 id|temp_buff2
 comma
 r_sizeof
@@ -6518,6 +7219,8 @@ l_int|0
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;found a matching handler&quot;
 )paren
 suffix:semicolon
@@ -6566,12 +7269,11 @@ suffix:semicolon
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;add_pathid failed, rc = %d&quot;
 comma
-(paren
-r_int
-)paren
-id|add_pathid_result
+id|rc
 )paren
 suffix:semicolon
 )brace
@@ -6664,10 +7366,21 @@ r_else
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;ConnectionComplete not called&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+id|iucv_sever
+c_func
+(paren
+id|int_buf-&gt;ippathid
+comma
+id|no_listener
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -6752,6 +7465,8 @@ r_else
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;ConnectionQuiesced not called&quot;
 )paren
 suffix:semicolon
@@ -6791,6 +7506,8 @@ r_else
 id|iucv_debug
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;ConnectionResumed not called&quot;
 )paren
 suffix:semicolon
@@ -6834,6 +7551,8 @@ r_else
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;MessageComplete not called&quot;
 )paren
 suffix:semicolon
@@ -6877,6 +7596,8 @@ r_else
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;MessagePending not called&quot;
 )paren
 suffix:semicolon
@@ -6902,6 +7623,8 @@ multiline_comment|/* end switch */
 id|iucv_debug
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;exiting pathid %d, type %02X&quot;
 comma
 id|int_buf-&gt;ippathid
@@ -7025,7 +7748,21 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Export all public stuff&n; */
+DECL|variable|iucv_init
+id|module_init
+c_func
+(paren
+id|iucv_init
+)paren
+suffix:semicolon
+DECL|variable|iucv_exit
+id|module_exit
+c_func
+(paren
+id|iucv_exit
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Export all public stuff&n; * FIXME: I have commented out all the functions that&n; * &t;  are not used in netiucv. Is anyone else&n; * &t;  using them or should some of them be made&n; * &t;  static / removed? pls review. Arnd&n; */
 DECL|variable|iucv_accept
 id|EXPORT_SYMBOL
 (paren
@@ -7038,120 +7775,109 @@ id|EXPORT_SYMBOL
 id|iucv_connect
 )paren
 suffix:semicolon
-DECL|variable|iucv_purge
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|iucv_purge
 )paren
 suffix:semicolon
-DECL|variable|iucv_query_maxconn
 id|EXPORT_SYMBOL
 (paren
 id|iucv_query_maxconn
 )paren
 suffix:semicolon
-DECL|variable|iucv_query_bufsize
 id|EXPORT_SYMBOL
 (paren
 id|iucv_query_bufsize
 )paren
 suffix:semicolon
-DECL|variable|iucv_quiesce
 id|EXPORT_SYMBOL
 (paren
 id|iucv_quiesce
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|iucv_receive
 id|EXPORT_SYMBOL
 (paren
 id|iucv_receive
 )paren
 suffix:semicolon
-DECL|variable|iucv_receive_array
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|iucv_receive_array
 )paren
 suffix:semicolon
-DECL|variable|iucv_reject
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reject
 )paren
 suffix:semicolon
-DECL|variable|iucv_reply
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reply
 )paren
 suffix:semicolon
-DECL|variable|iucv_reply_array
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reply_array
 )paren
 suffix:semicolon
-DECL|variable|iucv_reply_prmmsg
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reply_prmmsg
 )paren
 suffix:semicolon
-DECL|variable|iucv_resume
 id|EXPORT_SYMBOL
 (paren
 id|iucv_resume
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|iucv_send
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send
 )paren
 suffix:semicolon
-DECL|variable|iucv_send2way
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send2way
 )paren
 suffix:semicolon
-DECL|variable|iucv_send2way_array
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send2way_array
 )paren
 suffix:semicolon
-DECL|variable|iucv_send_array
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send_array
 )paren
 suffix:semicolon
-DECL|variable|iucv_send2way_prmmsg
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send2way_prmmsg
 )paren
 suffix:semicolon
-DECL|variable|iucv_send2way_prmmsg_array
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send2way_prmmsg_array
 )paren
 suffix:semicolon
-DECL|variable|iucv_send_prmmsg
 id|EXPORT_SYMBOL
 (paren
 id|iucv_send_prmmsg
 )paren
 suffix:semicolon
-DECL|variable|iucv_setmask
 id|EXPORT_SYMBOL
 (paren
 id|iucv_setmask
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|iucv_sever
 id|EXPORT_SYMBOL
 (paren
