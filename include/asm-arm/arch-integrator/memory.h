@@ -16,23 +16,15 @@ mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0x00000000UL)
 multiline_comment|/*&n; * On integrator, the dram is contiguous&n; */
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
 DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(vpage) ((vpage) - PAGE_OFFSET)
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((ppage) + PAGE_OFFSET)
 DECL|macro|BUS_OFFSET
 mdefine_line|#define BUS_OFFSET&t;(0x80000000UL)
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *              address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *              to an address that the kernel can use.&n; */
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;(x - PAGE_OFFSET + BUS_OFFSET)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;(x - BUS_OFFSET + PAGE_OFFSET)
 macro_line|#endif

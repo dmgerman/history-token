@@ -19,19 +19,11 @@ multiline_comment|/*&n; * OMAP-1510 Local Bus address offset&n; */
 DECL|macro|OMAP1510_LB_OFFSET
 mdefine_line|#define OMAP1510_LB_OFFSET&t;(0x30000000UL)
 multiline_comment|/*&n; * The DRAM is contiguous.&n; */
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
 DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(vpage) ((vpage) - PAGE_OFFSET + PHYS_OFFSET)
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((ppage) + PAGE_OFFSET - PHYS_OFFSET)
 multiline_comment|/*&n; * Conversion between SDRAM and fake PCI bus, used by USB&n; * NOTE: Physical address must be converted to Local Bus address&n; *&t; on OMAP-1510 only&n; */
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 multiline_comment|/*&n; * Bus address is physical address, except for OMAP-1510 Local Bus.&n; */
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;__virt_to_phys(x)
