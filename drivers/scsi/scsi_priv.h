@@ -1,6 +1,26 @@
 macro_line|#ifndef _SCSI_PRIV_H
 DECL|macro|_SCSI_PRIV_H
 mdefine_line|#define _SCSI_PRIV_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+r_struct
+id|request_queue
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
+r_struct
+id|scsi_device
+suffix:semicolon
+r_struct
+id|scsi_host_template
+suffix:semicolon
+r_struct
+id|scsi_request
+suffix:semicolon
+r_struct
+id|Scsi_Host
+suffix:semicolon
 multiline_comment|/*&n; * These are the values that the owner field can take.&n; * They are used as an indication of who the command belongs to.&n; */
 DECL|macro|SCSI_OWNER_HIGHLEVEL
 mdefine_line|#define SCSI_OWNER_HIGHLEVEL      0x100
