@@ -900,13 +900,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* from:  hdx=noprobe */
-DECL|member|busy
-r_int
-id|busy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* currently doing revalidate_disk() */
 DECL|member|removable
 r_int
 id|removable
@@ -1120,11 +1113,6 @@ op_star
 id|hwif
 suffix:semicolon
 multiline_comment|/* actually (ide_hwif_t *) */
-DECL|member|wqueue
-id|wait_queue_head_t
-id|wqueue
-suffix:semicolon
-multiline_comment|/* used to wait for drive in open() */
 DECL|member|id
 r_struct
 id|hd_driveid
