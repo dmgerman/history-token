@@ -4,13 +4,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;pci.h&quot;
-macro_line|#if BITS_PER_LONG == 32
-DECL|macro|LONG_FORMAT
-mdefine_line|#define LONG_FORMAT &quot;&bslash;t%08lx&quot;
-macro_line|#else
-DECL|macro|LONG_FORMAT
-mdefine_line|#define LONG_FORMAT &quot;&bslash;t%16lx&quot;
-macro_line|#endif
 multiline_comment|/* show configuration fields */
 DECL|macro|pci_config_attr
 mdefine_line|#define pci_config_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##field (struct device *dev, char *buf)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct pci_dev *pdev;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pdev = to_pci_dev (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, format_string, pdev-&gt;field);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, show_##field, NULL);
@@ -19,7 +12,7 @@ c_func
 (paren
 id|vendor
 comma
-l_string|&quot;%04x&bslash;n&quot;
+l_string|&quot;0x%04x&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_config_attr
@@ -27,7 +20,7 @@ c_func
 (paren
 id|device
 comma
-l_string|&quot;%04x&bslash;n&quot;
+l_string|&quot;0x%04x&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_config_attr
@@ -35,7 +28,7 @@ c_func
 (paren
 id|subsystem_vendor
 comma
-l_string|&quot;%04x&bslash;n&quot;
+l_string|&quot;0x%04x&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_config_attr
@@ -43,7 +36,7 @@ c_func
 (paren
 id|subsystem_device
 comma
-l_string|&quot;%04x&bslash;n&quot;
+l_string|&quot;0x%04x&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_config_attr
@@ -51,7 +44,7 @@ c_func
 (paren
 r_class
 comma
-l_string|&quot;%06x&bslash;n&quot;
+l_string|&quot;0x%06x&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_config_attr
@@ -99,6 +92,20 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|max
+op_assign
+l_int|7
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_dev-&gt;subordinate
+)paren
+id|max
+op_assign
+id|DEVICE_COUNT_RESOURCE
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -108,15 +115,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|DEVICE_COUNT_RESOURCE
-op_logical_and
-id|pci_resource_start
-c_func
-(paren
-id|pci_dev
-comma
-id|i
-)paren
+id|max
 suffix:semicolon
 id|i
 op_increment
@@ -129,10 +128,7 @@ c_func
 (paren
 id|str
 comma
-id|LONG_FORMAT
-id|LONG_FORMAT
-id|LONG_FORMAT
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;0x%016lx 0x%016lx 0x%016lx&bslash;n&quot;
 comma
 id|pci_resource_start
 c_func
