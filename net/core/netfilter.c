@@ -2482,6 +2482,11 @@ op_assign
 op_amp
 id|info-&gt;elem-&gt;list
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|i
+suffix:semicolon
 id|rcu_read_lock
 c_func
 (paren
