@@ -778,6 +778,16 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|scsi_set_device_offline
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|scsi_done
 c_func
 (paren
