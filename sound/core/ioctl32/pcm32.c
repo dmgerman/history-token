@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl wrapper for PCM API&n; *   Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;ioctl32.h&quot;
@@ -693,6 +694,7 @@ id|arg
 suffix:semicolon
 r_void
 op_star
+op_star
 id|bufs
 op_assign
 l_int|NULL
@@ -864,6 +866,7 @@ l_int|128
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1401,7 +1404,7 @@ id|err
 suffix:semicolon
 id|data32
 op_assign
-id|kcalloc
+id|snd_kcalloc
 c_func
 (paren
 r_sizeof
@@ -1415,7 +1418,7 @@ id|GFP_KERNEL
 suffix:semicolon
 id|data
 op_assign
-id|kcalloc
+id|snd_kcalloc
 c_func
 (paren
 r_sizeof

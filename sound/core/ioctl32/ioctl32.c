@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -1201,7 +1202,7 @@ c_cond
 id|data-&gt;indirect
 )paren
 multiline_comment|/* FIXME: this is not correct for long arrays */
-id|data.value.integer.value_ptr
+id|data-&gt;value.integer.value_ptr
 op_assign
 (paren
 r_void
@@ -1244,7 +1245,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|data.indirect
+id|data-&gt;indirect
 )paren
 (brace
 r_switch
@@ -1438,7 +1439,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|data.indirect
+id|data-&gt;indirect
 )paren
 (brace
 r_switch
