@@ -268,5 +268,8 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* XXX For now... */
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start, end)&t;flush_tlb_all()
 macro_line|#endif /* _SPARC64_TLBFLUSH_H */
 eof
