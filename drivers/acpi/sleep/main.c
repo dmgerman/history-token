@@ -146,31 +146,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Do arch specific saving of state. */
-r_if
-c_cond
-(paren
-id|state
-OG
-id|PM_SUSPEND_STANDBY
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|acpi_save_state_mem
-c_func
-(paren
-)paren
-)paren
-)paren
-r_goto
-id|Err
-suffix:semicolon
-)brace
 id|acpi_enter_sleep_state_prep
 c_func
 (paren
@@ -227,6 +202,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Do arch specific saving of state. */
+r_if
+c_cond
+(paren
+id|state
+OG
+id|PM_SUSPEND_STANDBY
+)paren
+(brace
+r_int
+id|error
+op_assign
+id|acpi_save_state_mem
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
+)brace
 id|local_irq_save
 c_func
 (paren
@@ -315,6 +316,19 @@ id|KERN_DEBUG
 l_string|&quot;Back to C!&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* restore processor state&n;&t; * We should only be here if we&squot;re coming back from STR or STD.&n;&t; * And, in the case of the latter, the memory image should have already&n;&t; * been loaded from disk.&n;&t; */
+r_if
+c_cond
+(paren
+id|state
+OG
+id|PM_SUSPEND_STANDBY
+)paren
+id|acpi_restore_state_mem
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ACPI_SUCCESS
 c_func
@@ -344,19 +358,6 @@ id|acpi_leave_sleep_state
 c_func
 (paren
 id|state
-)paren
-suffix:semicolon
-multiline_comment|/* restore processor state&n;&t; * We should only be here if we&squot;re coming back from STR or STD.&n;&t; * And, in the case of the latter, the memory image should have already&n;&t; * been loaded from disk.&n;&t; */
-r_if
-c_cond
-(paren
-id|state
-OG
-id|ACPI_STATE_S1
-)paren
-id|acpi_restore_state_mem
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* reset firmware waking vector */

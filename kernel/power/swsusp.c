@@ -1,38 +1,22 @@
 multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/vt_kern.h&gt;
-macro_line|#include &lt;linux/kbd_kern.h&gt;
-macro_line|#include &lt;linux/keyboard.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;power.h&quot;
-DECL|variable|software_suspend_enabled
+r_extern
 r_int
-r_char
-id|software_suspend_enabled
-op_assign
-l_int|1
+id|swsusp_arch_suspend
+c_func
+(paren
+r_int
+id|resume
+)paren
 suffix:semicolon
 DECL|macro|__ADDRESS
 mdefine_line|#define __ADDRESS(x)  ((unsigned long) phys_to_virt(x))
@@ -56,14 +40,6 @@ r_struct
 id|page
 op_star
 )paren
-suffix:semicolon
-multiline_comment|/* Locks */
-DECL|variable|__nosavedata
-id|spinlock_t
-id|suspend_pagedir_lock
-id|__nosavedata
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Variables to be preserved over suspend */
 DECL|variable|pagedir_order_check
@@ -2077,6 +2053,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;suspend_save_image - Prepare and write saved image to swap.&n; *&n; *&t;IRQs are re-enabled here so we can resume devices and safely write &n; *&t;to the swap devices. We disable them again before we leave.&n; *&n; *&t;The second lock_swapdevices() will unlock ignored swap devices since&n; *&t;writing is finished.&n; *&t;It is important _NOT_ to umount filesystems at this point. We want&n; *&t;them synced (in case something goes wrong) but we DO not want to mark&n; *&t;filesystem clean: it is not. (And it does not matter, if we resume&n; *&t;correctly, we&squot;ll mark system clean, anyway.)&n; */
 DECL|function|suspend_save_image
 r_static
 r_int
@@ -2088,6 +2065,11 @@ r_void
 (brace
 r_int
 id|error
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|device_resume
 c_func
@@ -2111,56 +2093,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* This will unlock ignored swap devices since writing is finished */
-multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n;&t; * them synced (in case something goes wrong) but we DO not want to mark&n;&t; * filesystem clean: it is not. (And it does not matter, if we resume&n;&t; * correctly, we&squot;ll mark system clean, anyway.)&n;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Magic happens here&n; */
-DECL|function|do_magic_resume_1
-r_void
-id|do_magic_resume_1
-c_func
-(paren
-r_void
-)paren
-(brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Done to disable interrupts */
-id|PRINTK
-c_func
-(paren
-l_string|&quot;Waiting for DMAs to settle down...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* We do not want some readahead with DMA to corrupt our memory, right?&n;&t;   Do it with disabled interrupts for best effect. That way, if some&n;&t;   driver scheduled DMA, we have good chance for DMA to finish ;-). */
-id|mdelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-DECL|function|do_magic_resume_2
-r_void
-id|do_magic_resume_2
+DECL|function|swsusp_resume
+r_int
+id|swsusp_resume
 c_func
 (paren
 r_void
@@ -2186,83 +2131,53 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
+r_return
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* do_magic() is implemented in arch/?/kernel/suspend_asm.S, and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;do_magic_suspend_1();&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;do_magic_suspend_2();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;do_magic_resume_1();&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;do_magic_resume_2();&n;&n; */
-DECL|function|do_magic_suspend_1
-r_void
-id|do_magic_suspend_1
-c_func
-(paren
-r_void
-)paren
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|do_magic_suspend_2
+multiline_comment|/* swsusp_arch_suspend() is implemented in arch/?/power/swsusp.S, &n;   and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;swsusp_suspend();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;swsusp_resume();&n;&n; */
+DECL|function|swsusp_suspend
 r_int
-id|do_magic_suspend_2
+id|swsusp_suspend
 c_func
 (paren
 r_void
 )paren
 (brace
 r_int
-id|is_problem
+id|error
 suffix:semicolon
 id|read_swapfiles
 c_func
 (paren
 )paren
 suffix:semicolon
-id|is_problem
+id|error
 op_assign
 id|suspend_prepare_image
 c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|is_problem
+id|error
 )paren
-r_return
+id|error
+op_assign
 id|suspend_save_image
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2288,9 +2203,9 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
+)brace
 r_return
-op_minus
-id|EFAULT
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/* More restore stuff */
@@ -3490,10 +3405,13 @@ id|EPERM
 suffix:semicolon
 macro_line|#endif
 r_return
-l_int|0
+id|arch_prepare_suspend
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_write - Write saved memory image to swap.&n; *&n; *&t;do_magic(0) returns after system is resumed.&n; *&n; *&t;do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n; *&t;unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
+multiline_comment|/**&n; *&t;swsusp_write - Write saved memory image to swap.&n; *&n; *&t;swsusp_arch_suspend(0) returns after system is resumed.&n; *&n; *&t;swsusp_arch_suspend() copies all &quot;used&quot; memory to &quot;free&quot; memory, &n; *&t;then unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
 DECL|function|swsusp_write
 r_int
 id|swsusp_write
@@ -3502,13 +3420,8 @@ c_func
 r_void
 )paren
 (brace
-id|arch_prepare_suspend
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-id|do_magic
+id|swsusp_arch_suspend
 c_func
 (paren
 l_int|0
@@ -3721,7 +3634,7 @@ r_void
 )paren
 (brace
 r_return
-id|do_magic
+id|swsusp_arch_suspend
 c_func
 (paren
 l_int|1
