@@ -1550,6 +1550,7 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 DECL|variable|pppoatm_ioctl_ops
+r_static
 r_struct
 id|atm_ioctl
 id|pppoatm_ioctl_ops

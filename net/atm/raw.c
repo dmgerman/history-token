@@ -16,6 +16,7 @@ mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
 multiline_comment|/*&n; * SKB == NULL indicates that the link is being closed&n; */
 DECL|function|atm_push_raw
+r_static
 r_void
 id|atm_push_raw
 c_func

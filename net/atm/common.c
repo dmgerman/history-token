@@ -46,6 +46,7 @@ id|vcc_sklist_lock
 )paren
 suffix:semicolon
 DECL|function|__vcc_insert_socket
+r_static
 r_void
 id|__vcc_insert_socket
 c_func
