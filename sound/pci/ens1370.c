@@ -18,6 +18,7 @@ macro_line|#endif
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t ensoniq_t
 macro_line|#ifndef CHIP1371
@@ -239,24 +240,28 @@ DECL|macro|ES_1370_ADC_STOP
 mdefine_line|#define   ES_1370_ADC_STOP&t;(1&lt;&lt;31)&t;&t;/* disable capture buffer transfers */
 DECL|macro|ES_1370_XCTL1
 mdefine_line|#define   ES_1370_XCTL1 &t;(1&lt;&lt;30)&t;&t;/* general purpose output bit */
-DECL|macro|ES_1371_SPDIF_EN
-mdefine_line|#define   ES_1371_SPDIF_EN&t;(1&lt;&lt;26)&t;&t;/* SPDIF enable */
+DECL|macro|ES_1373_TEST_BIT
+mdefine_line|#define   ES_1373_TEST_BIT&t;(1&lt;&lt;29)&t;&t;/* should be set to 0 for normal operation */
+DECL|macro|ES_1373_RECEN_B
+mdefine_line|#define   ES_1373_RECEN_B&t;(1&lt;&lt;28)&t;&t;/* mix record with playback for I2S/SPDIF out */
+DECL|macro|ES_1373_SPDIF_THRU
+mdefine_line|#define   ES_1373_SPDIF_THRU&t;(1&lt;&lt;26)&t;&t;/* 0 = SPDIF thru mode, 1 = SPDIF == dig out */
 DECL|macro|ES_1371_JOY_ASEL
-mdefine_line|#define   ES_1371_JOY_ASEL(o)&t;(((o)&amp;0x03)&lt;&lt;24)&t;/* joystick port mapping */
+mdefine_line|#define   ES_1371_JOY_ASEL(o)&t;(((o)&amp;0x03)&lt;&lt;24)/* joystick port mapping */
 DECL|macro|ES_1371_JOY_ASELM
 mdefine_line|#define   ES_1371_JOY_ASELM&t;(0x03&lt;&lt;24)&t;/* mask for above */
 DECL|macro|ES_1371_JOY_ASELI
 mdefine_line|#define   ES_1371_JOY_ASELI(i)  (((i)&gt;&gt;24)&amp;0x03)
 DECL|macro|ES_1371_GPIO_IN
-mdefine_line|#define   ES_1371_GPIO_IN(i)&t;(((i)&gt;&gt;20)&amp;0x0f)&t;/* GPIO in [3:0] pins - R/O */
+mdefine_line|#define   ES_1371_GPIO_IN(i)&t;(((i)&gt;&gt;20)&amp;0x0f)/* GPIO in [3:0] pins - R/O */
 DECL|macro|ES_1370_PCLKDIVO
-mdefine_line|#define   ES_1370_PCLKDIVO(o)&t;(((o)&amp;0x1fff)&lt;&lt;16)&t;/* clock divide ratio for DAC2 */
+mdefine_line|#define   ES_1370_PCLKDIVO(o)&t;(((o)&amp;0x1fff)&lt;&lt;16)/* clock divide ratio for DAC2 */
 DECL|macro|ES_1370_PCLKDIVM
 mdefine_line|#define   ES_1370_PCLKDIVM&t;((0x1fff)&lt;&lt;16)&t;/* mask for above */
 DECL|macro|ES_1370_PCLKDIVI
-mdefine_line|#define   ES_1370_PCLKDIVI(i)&t;(((i)&gt;&gt;16)&amp;0x1fff)&t;/* clock divide ratio for DAC2 */
+mdefine_line|#define   ES_1370_PCLKDIVI(i)&t;(((i)&gt;&gt;16)&amp;0x1fff)/* clock divide ratio for DAC2 */
 DECL|macro|ES_1371_GPIO_OUT
-mdefine_line|#define   ES_1371_GPIO_OUT(o)&t;(((o)&amp;0x0f)&lt;&lt;16)&t;/* GPIO out [3:0] pins - W/R */
+mdefine_line|#define   ES_1371_GPIO_OUT(o)&t;(((o)&amp;0x0f)&lt;&lt;16)/* GPIO out [3:0] pins - W/R */
 DECL|macro|ES_1371_GPIO_OUTM
 mdefine_line|#define   ES_1371_GPIO_OUTM     (0x0f&lt;&lt;16)&t;/* mask for above */
 DECL|macro|ES_MSFMTSEL
@@ -266,7 +271,7 @@ mdefine_line|#define   ES_1370_M_SBB&t;&t;(1&lt;&lt;14)&t;&t;/* clock source for
 DECL|macro|ES_1371_SYNC_RES
 mdefine_line|#define   ES_1371_SYNC_RES&t;(1&lt;&lt;14)&t;&t;/* Warm AC97 reset */
 DECL|macro|ES_1370_WTSRSEL
-mdefine_line|#define   ES_1370_WTSRSEL(o)&t;(((o)&amp;0x03)&lt;&lt;12)&t;/* fixed frequency clock for DAC1 */
+mdefine_line|#define   ES_1370_WTSRSEL(o)&t;(((o)&amp;0x03)&lt;&lt;12)/* fixed frequency clock for DAC1 */
 DECL|macro|ES_1370_WTSRSELM
 mdefine_line|#define   ES_1370_WTSRSELM&t;(0x03&lt;&lt;12)&t;/* mask for above */
 DECL|macro|ES_1371_ADC_STOP
@@ -276,89 +281,93 @@ mdefine_line|#define   ES_1371_PWR_INTRM&t;(1&lt;&lt;12)&t;&t;/* power level cha
 DECL|macro|ES_1370_DAC_SYNC
 mdefine_line|#define   ES_1370_DAC_SYNC&t;(1&lt;&lt;11)&t;&t;/* DAC&squot;s are synchronous */
 DECL|macro|ES_1371_M_CB
-mdefine_line|#define   ES_1371_M_CB&t;&t;(1&lt;&lt;11)&t;&t;/* capture clock source; 0 = ADC; 1 = I2S */
+mdefine_line|#define   ES_1371_M_CB&t;&t;(1&lt;&lt;11)&t;&t;/* capture clock source; 0 = AC&squot;97 ADC; 1 = I2S */
 DECL|macro|ES_CCB_INTRM
 mdefine_line|#define   ES_CCB_INTRM&t;&t;(1&lt;&lt;10)&t;&t;/* CCB voice interrupts enable */
 DECL|macro|ES_1370_M_CB
-mdefine_line|#define   ES_1370_M_CB&t;&t;(1&lt;&lt;9)&t;/* capture clock source; 0 = ADC; 1 = MPEG */
+mdefine_line|#define   ES_1370_M_CB&t;&t;(1&lt;&lt;9)&t;&t;/* capture clock source; 0 = ADC; 1 = MPEG */
 DECL|macro|ES_1370_XCTL0
-mdefine_line|#define   ES_1370_XCTL0&t;&t;(1&lt;&lt;8)&t;/* generap purpose output bit */
+mdefine_line|#define   ES_1370_XCTL0&t;&t;(1&lt;&lt;8)&t;&t;/* generap purpose output bit */
 DECL|macro|ES_1371_PDLEV
-mdefine_line|#define   ES_1371_PDLEV(o)&t;(((o)&amp;0x03)&lt;&lt;8)&t;&t;/* current power down level */
+mdefine_line|#define   ES_1371_PDLEV(o)&t;(((o)&amp;0x03)&lt;&lt;8)&t;/* current power down level */
 DECL|macro|ES_1371_PDLEVM
 mdefine_line|#define   ES_1371_PDLEVM&t;(0x03&lt;&lt;8)&t;/* mask for above */
 DECL|macro|ES_BREQ
-mdefine_line|#define   ES_BREQ&t;&t;(1&lt;&lt;7)&t;/* memory bus request enable */
+mdefine_line|#define   ES_BREQ&t;&t;(1&lt;&lt;7)&t;&t;/* memory bus request enable */
 DECL|macro|ES_DAC1_EN
-mdefine_line|#define   ES_DAC1_EN&t;&t;(1&lt;&lt;6)&t;/* DAC1 playback channel enable */
+mdefine_line|#define   ES_DAC1_EN&t;&t;(1&lt;&lt;6)&t;&t;/* DAC1 playback channel enable */
 DECL|macro|ES_DAC2_EN
-mdefine_line|#define   ES_DAC2_EN&t;&t;(1&lt;&lt;5)&t;/* DAC2 playback channel enable */
+mdefine_line|#define   ES_DAC2_EN&t;&t;(1&lt;&lt;5)&t;&t;/* DAC2 playback channel enable */
 DECL|macro|ES_ADC_EN
-mdefine_line|#define   ES_ADC_EN&t;&t;(1&lt;&lt;4)&t;/* ADC capture channel enable */
+mdefine_line|#define   ES_ADC_EN&t;&t;(1&lt;&lt;4)&t;&t;/* ADC capture channel enable */
 DECL|macro|ES_UART_EN
-mdefine_line|#define   ES_UART_EN&t;&t;(1&lt;&lt;3)&t;/* UART enable */
+mdefine_line|#define   ES_UART_EN&t;&t;(1&lt;&lt;3)&t;&t;/* UART enable */
 DECL|macro|ES_JYSTK_EN
-mdefine_line|#define   ES_JYSTK_EN&t;&t;(1&lt;&lt;2)&t;/* Joystick module enable */
+mdefine_line|#define   ES_JYSTK_EN&t;&t;(1&lt;&lt;2)&t;&t;/* Joystick module enable */
 DECL|macro|ES_1370_CDC_EN
-mdefine_line|#define   ES_1370_CDC_EN&t;(1&lt;&lt;1)&t;/* Codec interface enable */
+mdefine_line|#define   ES_1370_CDC_EN&t;(1&lt;&lt;1)&t;&t;/* Codec interface enable */
 DECL|macro|ES_1371_XTALCKDIS
-mdefine_line|#define   ES_1371_XTALCKDIS&t;(1&lt;&lt;1)&t;/* Xtal clock disable */
+mdefine_line|#define   ES_1371_XTALCKDIS&t;(1&lt;&lt;1)&t;&t;/* Xtal clock disable */
 DECL|macro|ES_1370_SERR_DISABLE
-mdefine_line|#define   ES_1370_SERR_DISABLE&t;(1&lt;&lt;0)&t;/* PCI serr signal disable */
+mdefine_line|#define   ES_1370_SERR_DISABLE&t;(1&lt;&lt;0)&t;&t;/* PCI serr signal disable */
 DECL|macro|ES_1371_PCICLKDIS
-mdefine_line|#define   ES_1371_PCICLKDIS     (1&lt;&lt;0)&t;/* PCI clock disable */
+mdefine_line|#define   ES_1371_PCICLKDIS     (1&lt;&lt;0)&t;&t;/* PCI clock disable */
 DECL|macro|ES_REG_STATUS
 mdefine_line|#define ES_REG_STATUS&t;0x04&t;/* R/O: Interrupt/Chip select status register */
 DECL|macro|ES_INTR
-mdefine_line|#define   ES_INTR               (1&lt;&lt;31)&t;/* Interrupt is pending */
+mdefine_line|#define   ES_INTR               (1&lt;&lt;31)&t;&t;/* Interrupt is pending */
 DECL|macro|ES_1371_ST_AC97_RST
-mdefine_line|#define   ES_1371_ST_AC97_RST&t;(1&lt;&lt;29) /* CT5880 AC&squot;97 Reset bit */
-DECL|macro|ES_1371_ST_SPDIF_EN
-mdefine_line|#define   ES_1371_ST_SPDIF_EN&t;(1&lt;&lt;18) /* SPDIF enable */
-DECL|macro|ES_1371_ST_SPDIF_TEST
-mdefine_line|#define   ES_1371_ST_SPDIF_TEST (1&lt;&lt;17) /* SPDIF test */
+mdefine_line|#define   ES_1371_ST_AC97_RST&t;(1&lt;&lt;29)&t;&t;/* CT5880 AC&squot;97 Reset bit */
+DECL|macro|ES_1373_GPIO_INT_EN
+mdefine_line|#define   ES_1373_GPIO_INT_EN(o)(((o)&amp;0x0f)&lt;&lt;20)/* GPIO [3:0] pins - interrupt enable */
+DECL|macro|ES_1373_SPDIF_EN
+mdefine_line|#define   ES_1373_SPDIF_EN&t;(1&lt;&lt;18)&t;&t;/* SPDIF enable */
+DECL|macro|ES_1373_SPDIF_TEST
+mdefine_line|#define   ES_1373_SPDIF_TEST&t;(1&lt;&lt;17)&t;&t;/* SPDIF test */
 DECL|macro|ES_1371_TEST
-mdefine_line|#define   ES_1371_TEST          (1&lt;&lt;16) /* test ASIC */
+mdefine_line|#define   ES_1371_TEST          (1&lt;&lt;16)&t;&t;/* test ASIC */
+DECL|macro|ES_1373_GPIO_INT
+mdefine_line|#define   ES_1373_GPIO_INT(i)&t;(((i)&amp;0x0f)&gt;&gt;12)/* GPIO [3:0] pins - interrupt pending */
 DECL|macro|ES_1370_CSTAT
-mdefine_line|#define   ES_1370_CSTAT&t;&t;(1&lt;&lt;10)&t;/* CODEC is busy or register write in progress */
+mdefine_line|#define   ES_1370_CSTAT&t;&t;(1&lt;&lt;10)&t;&t;/* CODEC is busy or register write in progress */
 DECL|macro|ES_1370_CBUSY
-mdefine_line|#define   ES_1370_CBUSY         (1&lt;&lt;9)&t;/* CODEC is busy */
+mdefine_line|#define   ES_1370_CBUSY         (1&lt;&lt;9)&t;&t;/* CODEC is busy */
 DECL|macro|ES_1370_CWRIP
-mdefine_line|#define   ES_1370_CWRIP&t;&t;(1&lt;&lt;8)&t;/* CODEC register write in progress */
+mdefine_line|#define   ES_1370_CWRIP&t;&t;(1&lt;&lt;8)&t;&t;/* CODEC register write in progress */
 DECL|macro|ES_1371_SYNC_ERR
-mdefine_line|#define   ES_1371_SYNC_ERR&t;(1&lt;&lt;8)&t;/* CODEC synchronization error occured */
+mdefine_line|#define   ES_1371_SYNC_ERR&t;(1&lt;&lt;8)&t;&t;/* CODEC synchronization error occured */
 DECL|macro|ES_1371_VC
-mdefine_line|#define   ES_1371_VC(i)         (((i)&gt;&gt;6)&amp;0x03)&t;&t;/* voice code from CCB module */
+mdefine_line|#define   ES_1371_VC(i)         (((i)&gt;&gt;6)&amp;0x03)&t;/* voice code from CCB module */
 DECL|macro|ES_1370_VC
-mdefine_line|#define   ES_1370_VC(i)&t;&t;(((i)&gt;&gt;5)&amp;0x03)&t;&t;/* voice code from CCB module */
+mdefine_line|#define   ES_1370_VC(i)&t;&t;(((i)&gt;&gt;5)&amp;0x03)&t;/* voice code from CCB module */
 DECL|macro|ES_1371_MPWR
-mdefine_line|#define   ES_1371_MPWR          (1&lt;&lt;5)&t;/* power level interrupt pending */
+mdefine_line|#define   ES_1371_MPWR          (1&lt;&lt;5)&t;&t;/* power level interrupt pending */
 DECL|macro|ES_MCCB
-mdefine_line|#define   ES_MCCB&t;&t;(1&lt;&lt;4)&t;/* CCB interrupt pending */
+mdefine_line|#define   ES_MCCB&t;&t;(1&lt;&lt;4)&t;&t;/* CCB interrupt pending */
 DECL|macro|ES_UART
-mdefine_line|#define   ES_UART&t;&t;(1&lt;&lt;3)&t;/* UART interrupt pending */
+mdefine_line|#define   ES_UART&t;&t;(1&lt;&lt;3)&t;&t;/* UART interrupt pending */
 DECL|macro|ES_DAC1
-mdefine_line|#define   ES_DAC1&t;&t;(1&lt;&lt;2)&t;/* DAC1 channel interrupt pending */
+mdefine_line|#define   ES_DAC1&t;&t;(1&lt;&lt;2)&t;&t;/* DAC1 channel interrupt pending */
 DECL|macro|ES_DAC2
-mdefine_line|#define   ES_DAC2&t;&t;(1&lt;&lt;1)&t;/* DAC2 channel interrupt pending */
+mdefine_line|#define   ES_DAC2&t;&t;(1&lt;&lt;1)&t;&t;/* DAC2 channel interrupt pending */
 DECL|macro|ES_ADC
-mdefine_line|#define   ES_ADC&t;&t;(1&lt;&lt;0)&t;/* ADC channel interrupt pending */
+mdefine_line|#define   ES_ADC&t;&t;(1&lt;&lt;0)&t;&t;/* ADC channel interrupt pending */
 DECL|macro|ES_REG_UART_DATA
 mdefine_line|#define ES_REG_UART_DATA 0x08&t;/* R/W: UART data register */
 DECL|macro|ES_REG_UART_STATUS
 mdefine_line|#define ES_REG_UART_STATUS 0x09&t;/* R/O: UART status register */
 DECL|macro|ES_RXINT
-mdefine_line|#define   ES_RXINT&t;&t;(1&lt;&lt;7)&t;/* RX interrupt occured */
+mdefine_line|#define   ES_RXINT&t;&t;(1&lt;&lt;7)&t;&t;/* RX interrupt occured */
 DECL|macro|ES_TXINT
-mdefine_line|#define   ES_TXINT&t;&t;(1&lt;&lt;2)&t;/* TX interrupt occured */
+mdefine_line|#define   ES_TXINT&t;&t;(1&lt;&lt;2)&t;&t;/* TX interrupt occured */
 DECL|macro|ES_TXRDY
-mdefine_line|#define   ES_TXRDY&t;&t;(1&lt;&lt;1)&t;/* transmitter ready */
+mdefine_line|#define   ES_TXRDY&t;&t;(1&lt;&lt;1)&t;&t;/* transmitter ready */
 DECL|macro|ES_RXRDY
-mdefine_line|#define   ES_RXRDY&t;&t;(1&lt;&lt;0)&t;/* receiver ready */
+mdefine_line|#define   ES_RXRDY&t;&t;(1&lt;&lt;0)&t;&t;/* receiver ready */
 DECL|macro|ES_REG_UART_CONTROL
 mdefine_line|#define ES_REG_UART_CONTROL 0x09&t;/* W/O: UART control register */
 DECL|macro|ES_RXINTEN
-mdefine_line|#define   ES_RXINTEN&t;&t;(1&lt;&lt;7)&t;/* RX interrupt enable */
+mdefine_line|#define   ES_RXINTEN&t;&t;(1&lt;&lt;7)&t;&t;/* RX interrupt enable */
 DECL|macro|ES_TXINTENO
 mdefine_line|#define   ES_TXINTENO(o)&t;(((o)&amp;0x03)&lt;&lt;5)&t;/* TX interrupt enable */
 DECL|macro|ES_TXINTENM
@@ -402,11 +411,11 @@ mdefine_line|#define   ES_1371_CODEC_READ(i)    (((i)&gt;&gt;0)&amp;0xffff)
 DECL|macro|ES_REG_1371_SMPRATE
 mdefine_line|#define ES_REG_1371_SMPRATE 0x10&t;/* W/R: Codec rate converter interface register */
 DECL|macro|ES_1371_SRC_RAM_ADDRO
-mdefine_line|#define   ES_1371_SRC_RAM_ADDRO(o) (((o)&amp;0x7f)&lt;&lt;25)&t;/* address of the sample rate converter */
+mdefine_line|#define   ES_1371_SRC_RAM_ADDRO(o) (((o)&amp;0x7f)&lt;&lt;25)/* address of the sample rate converter */
 DECL|macro|ES_1371_SRC_RAM_ADDRM
 mdefine_line|#define   ES_1371_SRC_RAM_ADDRM&t;   (0x7f&lt;&lt;25)&t;/* mask for above */
 DECL|macro|ES_1371_SRC_RAM_ADDRI
-mdefine_line|#define   ES_1371_SRC_RAM_ADDRI(i) (((i)&gt;&gt;25)&amp;0x7f)&t;/* address of the sample rate converter */
+mdefine_line|#define   ES_1371_SRC_RAM_ADDRI(i) (((i)&gt;&gt;25)&amp;0x7f)/* address of the sample rate converter */
 DECL|macro|ES_1371_SRC_RAM_WE
 mdefine_line|#define   ES_1371_SRC_RAM_WE&t;   (1&lt;&lt;24)&t;/* R/W: read/write control for sample rate converter */
 DECL|macro|ES_1371_SRC_RAM_BUSY
@@ -420,11 +429,11 @@ mdefine_line|#define   ES_1371_DIS_P2&t;   (1&lt;&lt;20)&t;/* playback channel 1
 DECL|macro|ES_1371_DIS_R1
 mdefine_line|#define   ES_1371_DIS_R1&t;   (1&lt;&lt;19)&t;/* capture channel accumulator update disable */
 DECL|macro|ES_1371_SRC_RAM_DATAO
-mdefine_line|#define   ES_1371_SRC_RAM_DATAO(o) (((o)&amp;0xffff)&lt;&lt;0)&t;/* current value of the sample rate converter */
+mdefine_line|#define   ES_1371_SRC_RAM_DATAO(o) (((o)&amp;0xffff)&lt;&lt;0)/* current value of the sample rate converter */
 DECL|macro|ES_1371_SRC_RAM_DATAM
 mdefine_line|#define   ES_1371_SRC_RAM_DATAM&t;   (0xffff&lt;&lt;0)&t;/* mask for above */
 DECL|macro|ES_1371_SRC_RAM_DATAI
-mdefine_line|#define   ES_1371_SRC_RAM_DATAI(i) (((i)&gt;&gt;0)&amp;0xffff)&t;/* current value of the sample rate converter */
+mdefine_line|#define   ES_1371_SRC_RAM_DATAI(i) (((i)&gt;&gt;0)&amp;0xffff)/* current value of the sample rate converter */
 DECL|macro|ES_REG_1371_LEGACY
 mdefine_line|#define ES_REG_1371_LEGACY 0x18&t;/* W/R: Legacy control/status register */
 DECL|macro|ES_1371_JFAST
@@ -434,17 +443,17 @@ mdefine_line|#define   ES_1371_HIB&t;&t;(1&lt;&lt;30)&t;&t;/* host interrupt blo
 DECL|macro|ES_1371_VSB
 mdefine_line|#define   ES_1371_VSB&t;&t;(1&lt;&lt;29)&t;&t;/* SB; 0 = addr 0x220xH, 1 = 0x22FxH */
 DECL|macro|ES_1371_VMPUO
-mdefine_line|#define   ES_1371_VMPUO(o)&t;(((o)&amp;0x03)&lt;&lt;27)&t;/* base register address; 0 = 0x320xH; 1 = 0x330xH; 2 = 0x340xH; 3 = 0x350xH */
+mdefine_line|#define   ES_1371_VMPUO(o)&t;(((o)&amp;0x03)&lt;&lt;27)/* base register address; 0 = 0x320xH; 1 = 0x330xH; 2 = 0x340xH; 3 = 0x350xH */
 DECL|macro|ES_1371_VMPUM
 mdefine_line|#define   ES_1371_VMPUM&t;&t;(0x03&lt;&lt;27)&t;/* mask for above */
 DECL|macro|ES_1371_VMPUI
-mdefine_line|#define   ES_1371_VMPUI(i)&t;(((i)&gt;&gt;27)&amp;0x03)&t;/* base register address */
+mdefine_line|#define   ES_1371_VMPUI(i)&t;(((i)&gt;&gt;27)&amp;0x03)/* base register address */
 DECL|macro|ES_1371_VCDCO
-mdefine_line|#define   ES_1371_VCDCO(o)&t;(((o)&amp;0x03)&lt;&lt;25)&t;/* CODEC; 0 = 0x530xH; 1 = undefined; 2 = 0xe80xH; 3 = 0xF40xH */
+mdefine_line|#define   ES_1371_VCDCO(o)&t;(((o)&amp;0x03)&lt;&lt;25)/* CODEC; 0 = 0x530xH; 1 = undefined; 2 = 0xe80xH; 3 = 0xF40xH */
 DECL|macro|ES_1371_VCDCM
 mdefine_line|#define   ES_1371_VCDCM&t;&t;(0x03&lt;&lt;25)&t;/* mask for above */
 DECL|macro|ES_1371_VCDCI
-mdefine_line|#define   ES_1371_VCDCI(i)&t;(((i)&gt;&gt;25)&amp;0x03)&t;/* CODEC address */
+mdefine_line|#define   ES_1371_VCDCI(i)&t;(((i)&gt;&gt;25)&amp;0x03)/* CODEC address */
 DECL|macro|ES_1371_FIRQ
 mdefine_line|#define   ES_1371_FIRQ&t;&t;(1&lt;&lt;24)&t;&t;/* force an interrupt */
 DECL|macro|ES_1371_SDMACAP
@@ -464,29 +473,31 @@ mdefine_line|#define   ES_1371_CDCCAP&t;(1&lt;&lt;17)&t;&t;/* enable event captu
 DECL|macro|ES_1371_BACAP
 mdefine_line|#define   ES_1371_BACAP&t;&t;(1&lt;&lt;16)&t;&t;/* enable event capture for SoundScape base address */
 DECL|macro|ES_1371_EXI
-mdefine_line|#define   ES_1371_EXI(i)&t;(((i)&gt;&gt;8)&amp;0x07)&t;&t;/* event number */
+mdefine_line|#define   ES_1371_EXI(i)&t;(((i)&gt;&gt;8)&amp;0x07)&t;/* event number */
 DECL|macro|ES_1371_AI
-mdefine_line|#define   ES_1371_AI(i)&t;&t;(((i)&gt;&gt;3)&amp;0x1f)&t;&t;/* event significant I/O address */
+mdefine_line|#define   ES_1371_AI(i)&t;&t;(((i)&gt;&gt;3)&amp;0x1f)&t;/* event significant I/O address */
 DECL|macro|ES_1371_WR
 mdefine_line|#define   ES_1371_WR&t;&t;(1&lt;&lt;2)&t;/* event capture; 0 = read; 1 = write */
 DECL|macro|ES_1371_LEGINT
 mdefine_line|#define   ES_1371_LEGINT&t;(1&lt;&lt;0)&t;/* interrupt for legacy events; 0 = interrupt did occur */
+DECL|macro|ES_REG_CHANNEL_STATUS
+mdefine_line|#define ES_REG_CHANNEL_STATUS 0x1c /* R/W: first 32-bits from S/PDIF channel status block, es1373 */
 DECL|macro|ES_REG_SERIAL
 mdefine_line|#define ES_REG_SERIAL&t;0x20&t;/* R/W: Serial interface control register */
 DECL|macro|ES_1371_DAC_TEST
 mdefine_line|#define   ES_1371_DAC_TEST&t;(1&lt;&lt;22)&t;&t;/* DAC test mode enable */
 DECL|macro|ES_P2_END_INCO
-mdefine_line|#define   ES_P2_END_INCO(o)&t;(((o)&amp;0x07)&lt;&lt;19)&t;/* binary offset value to increment / loop end */
+mdefine_line|#define   ES_P2_END_INCO(o)&t;(((o)&amp;0x07)&lt;&lt;19)/* binary offset value to increment / loop end */
 DECL|macro|ES_P2_END_INCM
 mdefine_line|#define   ES_P2_END_INCM&t;(0x07&lt;&lt;19)&t;/* mask for above */
 DECL|macro|ES_P2_END_INCI
-mdefine_line|#define   ES_P2_END_INCI(i)&t;(((i)&gt;&gt;16)&amp;0x07)&t;/* binary offset value to increment / loop end */
+mdefine_line|#define   ES_P2_END_INCI(i)&t;(((i)&gt;&gt;16)&amp;0x07)/* binary offset value to increment / loop end */
 DECL|macro|ES_P2_ST_INCO
-mdefine_line|#define   ES_P2_ST_INCO(o)&t;(((o)&amp;0x07)&lt;&lt;16)&t;/* binary offset value to increment / start */
+mdefine_line|#define   ES_P2_ST_INCO(o)&t;(((o)&amp;0x07)&lt;&lt;16)/* binary offset value to increment / start */
 DECL|macro|ES_P2_ST_INCM
 mdefine_line|#define   ES_P2_ST_INCM&t;&t;(0x07&lt;&lt;16)&t;/* mask for above */
 DECL|macro|ES_P2_ST_INCI
-mdefine_line|#define   ES_P2_ST_INCI(i)&t;(((i)&lt;&lt;16)&amp;0x07)&t;/* binary offset value to increment / start */
+mdefine_line|#define   ES_P2_ST_INCI(i)&t;(((i)&lt;&lt;16)&amp;0x07)/* binary offset value to increment / start */
 DECL|macro|ES_R1_LOOP_SEL
 mdefine_line|#define   ES_R1_LOOP_SEL&t;(1&lt;&lt;15)&t;&t;/* ADC; 0 - loop mode; 1 = stop mode */
 DECL|macro|ES_P2_LOOP_SEL
@@ -500,27 +511,27 @@ mdefine_line|#define   ES_P1_PAUSE&t;&t;(1&lt;&lt;11)&t;&t;/* DAC1; 0 - play mod
 DECL|macro|ES_R1_INT_EN
 mdefine_line|#define   ES_R1_INT_EN&t;&t;(1&lt;&lt;10)&t;&t;/* ADC interrupt enable */
 DECL|macro|ES_P2_INT_EN
-mdefine_line|#define   ES_P2_INT_EN&t;&t;(1&lt;&lt;9)&t;/* DAC2 interrupt enable */
+mdefine_line|#define   ES_P2_INT_EN&t;&t;(1&lt;&lt;9)&t;&t;/* DAC2 interrupt enable */
 DECL|macro|ES_P1_INT_EN
-mdefine_line|#define   ES_P1_INT_EN&t;&t;(1&lt;&lt;8)&t;/* DAC1 interrupt enable */
+mdefine_line|#define   ES_P1_INT_EN&t;&t;(1&lt;&lt;8)&t;&t;/* DAC1 interrupt enable */
 DECL|macro|ES_P1_SCT_RLD
-mdefine_line|#define   ES_P1_SCT_RLD&t;&t;(1&lt;&lt;7)&t;/* force sample counter reload for DAC1 */
+mdefine_line|#define   ES_P1_SCT_RLD&t;&t;(1&lt;&lt;7)&t;&t;/* force sample counter reload for DAC1 */
 DECL|macro|ES_P2_DAC_SEN
-mdefine_line|#define   ES_P2_DAC_SEN&t;&t;(1&lt;&lt;6)&t;/* when stop mode: 0 - DAC2 play back zeros; 1 = DAC2 play back last sample */
+mdefine_line|#define   ES_P2_DAC_SEN&t;&t;(1&lt;&lt;6)&t;&t;/* when stop mode: 0 - DAC2 play back zeros; 1 = DAC2 play back last sample */
 DECL|macro|ES_R1_MODEO
-mdefine_line|#define   ES_R1_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;4)&t;&t;/* ADC mode; 0 = 8-bit mono; 1 = 8-bit stereo; 2 = 16-bit mono; 3 = 16-bit stereo */
+mdefine_line|#define   ES_R1_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;4)&t;/* ADC mode; 0 = 8-bit mono; 1 = 8-bit stereo; 2 = 16-bit mono; 3 = 16-bit stereo */
 DECL|macro|ES_R1_MODEM
 mdefine_line|#define   ES_R1_MODEM&t;&t;(0x03&lt;&lt;4)&t;/* mask for above */
 DECL|macro|ES_R1_MODEI
 mdefine_line|#define   ES_R1_MODEI(i)&t;(((i)&gt;&gt;4)&amp;0x03)
 DECL|macro|ES_P2_MODEO
-mdefine_line|#define   ES_P2_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;2)&t;&t;/* DAC2 mode; -- &squot;&squot; -- */
+mdefine_line|#define   ES_P2_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;2)&t;/* DAC2 mode; -- &squot;&squot; -- */
 DECL|macro|ES_P2_MODEM
 mdefine_line|#define   ES_P2_MODEM&t;&t;(0x03&lt;&lt;2)&t;/* mask for above */
 DECL|macro|ES_P2_MODEI
 mdefine_line|#define   ES_P2_MODEI(i)&t;(((i)&gt;&gt;2)&amp;0x03)
 DECL|macro|ES_P1_MODEO
-mdefine_line|#define   ES_P1_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;0)&t;&t;/* DAC1 mode; -- &squot;&squot; -- */
+mdefine_line|#define   ES_P1_MODEO(o)&t;(((o)&amp;0x03)&lt;&lt;0)&t;/* DAC1 mode; -- &squot;&squot; -- */
 DECL|macro|ES_P1_MODEM
 mdefine_line|#define   ES_P1_MODEM&t;&t;(0x03&lt;&lt;0)&t;/* mask for above */
 DECL|macro|ES_P1_MODEI
@@ -833,6 +844,21 @@ DECL|member|midi_output
 id|snd_rawmidi_substream_t
 op_star
 id|midi_output
+suffix:semicolon
+DECL|member|spdif
+r_int
+r_int
+id|spdif
+suffix:semicolon
+DECL|member|spdif_default
+r_int
+r_int
+id|spdif_default
+suffix:semicolon
+DECL|member|spdif_stream
+r_int
+r_int
+id|spdif_stream
 suffix:semicolon
 DECL|member|proc_entry
 id|snd_info_entry_t
@@ -5074,6 +5100,33 @@ c_func
 id|substream
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ensoniq-&gt;spdif
+op_logical_and
+id|ensoniq-&gt;playback2_substream
+op_eq
+l_int|NULL
+)paren
+id|ensoniq-&gt;spdif_stream
+op_assign
+id|ensoniq-&gt;spdif_default
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
 macro_line|#ifdef CHIP1370
 id|snd_pcm_hw_constraint_list
 c_func
@@ -5150,6 +5203,33 @@ id|snd_pcm_set_sync
 c_func
 (paren
 id|substream
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ensoniq-&gt;spdif
+op_logical_and
+id|ensoniq-&gt;playback1_substream
+op_eq
+l_int|NULL
+)paren
+id|ensoniq-&gt;spdif_stream
+op_assign
+id|ensoniq-&gt;spdif_default
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CHIP1370
@@ -5980,6 +6060,665 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Mixer section&n; */
 macro_line|#ifdef CHIP1371
+DECL|function|snd_ens1373_spdif_info
+r_static
+r_int
+id|snd_ens1373_spdif_info
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_info_t
+op_star
+id|uinfo
+)paren
+(brace
+id|uinfo-&gt;type
+op_assign
+id|SNDRV_CTL_ELEM_TYPE_IEC958
+suffix:semicolon
+id|uinfo-&gt;count
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ens1373_spdif_default_get
+r_static
+r_int
+id|snd_ens1373_spdif_default_get
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ensoniq_t
+op_star
+id|ensoniq
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_default
+op_rshift
+l_int|0
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_default
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_default
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|3
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_default
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ens1373_spdif_default_put
+r_static
+r_int
+id|snd_ens1373_spdif_default_put
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ensoniq_t
+op_star
+id|ensoniq
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+r_int
+r_int
+id|val
+suffix:semicolon
+r_int
+id|change
+suffix:semicolon
+id|val
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|0
+)braket
+op_lshift
+l_int|0
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|1
+)braket
+op_lshift
+l_int|8
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|2
+)braket
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|3
+)braket
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+id|change
+op_assign
+id|ensoniq-&gt;spdif_default
+op_ne
+id|val
+suffix:semicolon
+id|ensoniq-&gt;spdif_default
+op_assign
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|change
+op_logical_and
+id|ensoniq-&gt;playback1_substream
+op_eq
+l_int|NULL
+op_logical_and
+id|ensoniq-&gt;playback2_substream
+op_eq
+l_int|NULL
+)paren
+id|outl
+c_func
+(paren
+id|val
+comma
+id|ES_REG
+c_func
+(paren
+id|ensoniq
+comma
+id|CHANNEL_STATUS
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+id|change
+suffix:semicolon
+)brace
+DECL|function|snd_ens1373_spdif_mask_get
+r_static
+r_int
+id|snd_ens1373_spdif_mask_get
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0xff
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ens1373_spdif_stream_get
+r_static
+r_int
+id|snd_ens1373_spdif_stream_get
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ensoniq_t
+op_star
+id|ensoniq
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_stream
+op_rshift
+l_int|0
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_stream
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_stream
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|3
+)braket
+op_assign
+(paren
+id|ensoniq-&gt;spdif_stream
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ens1373_spdif_stream_put
+r_static
+r_int
+id|snd_ens1373_spdif_stream_put
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ensoniq_t
+op_star
+id|ensoniq
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+r_int
+r_int
+id|val
+suffix:semicolon
+r_int
+id|change
+suffix:semicolon
+id|val
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|0
+)braket
+op_lshift
+l_int|0
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|1
+)braket
+op_lshift
+l_int|8
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|2
+)braket
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+(paren
+id|u32
+)paren
+id|ucontrol-&gt;value.iec958.status
+(braket
+l_int|3
+)braket
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+id|change
+op_assign
+id|ensoniq-&gt;spdif_stream
+op_ne
+id|val
+suffix:semicolon
+id|ensoniq-&gt;spdif_stream
+op_assign
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|change
+op_logical_and
+(paren
+id|ensoniq-&gt;playback1_substream
+op_ne
+l_int|NULL
+op_logical_or
+id|ensoniq-&gt;playback2_substream
+op_ne
+l_int|NULL
+)paren
+)paren
+id|outl
+c_func
+(paren
+id|val
+comma
+id|ES_REG
+c_func
+(paren
+id|ensoniq
+comma
+id|CHANNEL_STATUS
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ensoniq-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+id|change
+suffix:semicolon
+)brace
+DECL|variable|__devinitdata
+r_static
+id|snd_kcontrol_new_t
+id|snd_ens1373_spdif_default
+id|__devinitdata
+op_assign
+(brace
+dot
+id|iface
+op_assign
+id|SNDRV_CTL_ELEM_IFACE_PCM
+comma
+dot
+id|name
+op_assign
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|DEFAULT
+)paren
+comma
+dot
+id|info
+op_assign
+id|snd_ens1373_spdif_info
+comma
+dot
+id|get
+op_assign
+id|snd_ens1373_spdif_default_get
+comma
+dot
+id|put
+op_assign
+id|snd_ens1373_spdif_default_put
+comma
+)brace
+suffix:semicolon
+DECL|variable|__devinitdata
+r_static
+id|snd_kcontrol_new_t
+id|snd_ens1373_spdif_mask
+id|__devinitdata
+op_assign
+(brace
+dot
+id|iface
+op_assign
+id|SNDRV_CTL_ELEM_IFACE_PCM
+comma
+dot
+id|name
+op_assign
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|MASK
+)paren
+comma
+dot
+id|info
+op_assign
+id|snd_ens1373_spdif_info
+comma
+dot
+id|get
+op_assign
+id|snd_ens1373_spdif_mask_get
+)brace
+suffix:semicolon
+DECL|variable|__devinitdata
+r_static
+id|snd_kcontrol_new_t
+id|snd_ens1373_spdif_stream
+id|__devinitdata
+op_assign
+(brace
+dot
+id|iface
+op_assign
+id|SNDRV_CTL_ELEM_IFACE_PCM
+comma
+dot
+id|name
+op_assign
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|PCM_STREAM
+)paren
+comma
+dot
+id|info
+op_assign
+id|snd_ens1373_spdif_info
+comma
+dot
+id|get
+op_assign
+id|snd_ens1373_spdif_stream_get
+comma
+dot
+id|put
+op_assign
+id|snd_ens1373_spdif_stream_put
+)brace
+suffix:semicolon
 DECL|macro|ES1371_SPDIF
 mdefine_line|#define ES1371_SPDIF(xname) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_es1371_spdif_info, &bslash;&n;  .get = snd_es1371_spdif_get, .put = snd_es1371_spdif_put }
 DECL|function|snd_es1371_spdif_info
@@ -6042,17 +6781,11 @@ c_func
 id|kcontrol
 )paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ensoniq-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|ucontrol-&gt;value.integer.value
@@ -6062,20 +6795,18 @@ l_int|0
 op_assign
 id|ensoniq-&gt;ctrl
 op_amp
-id|ES_1371_SPDIF_EN
+id|ES_1373_SPDIF_THRU
 ques
 c_cond
 l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ensoniq-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -6109,10 +6840,6 @@ id|kcontrol
 suffix:semicolon
 r_int
 r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
 id|nval1
 comma
 id|nval2
@@ -6128,7 +6855,7 @@ l_int|0
 )braket
 ques
 c_cond
-id|ES_1371_SPDIF_EN
+id|ES_1373_SPDIF_THRU
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -6140,17 +6867,15 @@ l_int|0
 )braket
 ques
 c_cond
-id|ES_1371_ST_SPDIF_EN
+id|ES_1373_SPDIF_EN
 suffix:colon
 l_int|0
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ensoniq-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|change
@@ -6158,7 +6883,7 @@ op_assign
 (paren
 id|ensoniq-&gt;ctrl
 op_amp
-id|ES_1371_SPDIF_EN
+id|ES_1373_SPDIF_THRU
 )paren
 op_ne
 id|nval1
@@ -6166,7 +6891,7 @@ suffix:semicolon
 id|ensoniq-&gt;ctrl
 op_and_assign
 op_complement
-id|ES_1371_SPDIF_EN
+id|ES_1373_SPDIF_THRU
 suffix:semicolon
 id|ensoniq-&gt;ctrl
 op_or_assign
@@ -6175,7 +6900,7 @@ suffix:semicolon
 id|ensoniq-&gt;cssr
 op_and_assign
 op_complement
-id|ES_1371_ST_SPDIF_EN
+id|ES_1373_SPDIF_EN
 suffix:semicolon
 id|ensoniq-&gt;cssr
 op_or_assign
@@ -6209,13 +6934,11 @@ id|STATUS
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ensoniq-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -6287,6 +7010,7 @@ suffix:semicolon
 multiline_comment|/* revision */
 DECL|variable|es1371_spdif_present
 )brace
+id|__devinitdata
 id|es1371_spdif_present
 (braket
 )braket
@@ -6526,6 +7250,43 @@ id|rev
 id|snd_kcontrol_t
 op_star
 id|kctl
+suffix:semicolon
+r_int
+id|index
+op_assign
+l_int|0
+suffix:semicolon
+id|ensoniq-&gt;spdif_default
+op_assign
+id|ensoniq-&gt;spdif_stream
+op_assign
+id|SNDRV_PCM_DEFAULT_CON_SPDIF
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|ensoniq-&gt;spdif_default
+comma
+id|ES_REG
+c_func
+(paren
+id|ensoniq
+comma
+id|CHANNEL_STATUS
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ensoniq-&gt;u.es1371.ac97-&gt;ext_id
+op_amp
+id|AC97_EI_SPDIF
+)paren
+id|index
+op_increment
+suffix:semicolon
+id|kctl
 op_assign
 id|snd_ctl_new1
 c_func
@@ -6536,16 +7297,78 @@ comma
 id|ensoniq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ensoniq-&gt;u.es1371.ac97-&gt;ext_id
-op_amp
-id|AC97_EI_SPDIF
-)paren
 id|kctl-&gt;id.index
 op_assign
-l_int|1
+id|index
+suffix:semicolon
+id|snd_ctl_add
+c_func
+(paren
+id|card
+comma
+id|kctl
+)paren
+suffix:semicolon
+id|kctl
+op_assign
+id|snd_ctl_new1
+c_func
+(paren
+op_amp
+id|snd_ens1373_spdif_default
+comma
+id|ensoniq
+)paren
+suffix:semicolon
+id|kctl-&gt;id.index
+op_assign
+id|index
+suffix:semicolon
+id|snd_ctl_add
+c_func
+(paren
+id|card
+comma
+id|kctl
+)paren
+suffix:semicolon
+id|kctl
+op_assign
+id|snd_ctl_new1
+c_func
+(paren
+op_amp
+id|snd_ens1373_spdif_mask
+comma
+id|ensoniq
+)paren
+suffix:semicolon
+id|kctl-&gt;id.index
+op_assign
+id|index
+suffix:semicolon
+id|snd_ctl_add
+c_func
+(paren
+id|card
+comma
+id|kctl
+)paren
+suffix:semicolon
+id|kctl
+op_assign
+id|snd_ctl_new1
+c_func
+(paren
+op_amp
+id|snd_ens1373_spdif_stream
+comma
+id|ensoniq
+)paren
+suffix:semicolon
+id|kctl-&gt;id.index
+op_assign
+id|index
 suffix:semicolon
 id|snd_ctl_add
 c_func

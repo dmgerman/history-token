@@ -100,7 +100,13 @@ mdefine_line|#define SPDIFO_IP_OUTPUT_BUFFER1 0x1000
 DECL|macro|MIX_SAMPLE_BUF1
 mdefine_line|#define MIX_SAMPLE_BUF1          0x1400
 DECL|macro|MIX_SAMPLE_BUF2
-mdefine_line|#define MIX_SAMPLE_BUF2          0x3000
+mdefine_line|#define MIX_SAMPLE_BUF2          0x2D00
+DECL|macro|MIX_SAMPLE_BUF3
+mdefine_line|#define MIX_SAMPLE_BUF3          0x2E00
+DECL|macro|MIX_SAMPLE_BUF4
+mdefine_line|#define MIX_SAMPLE_BUF4          0x2F00
+DECL|macro|MIX_SAMPLE_BUF5
+mdefine_line|#define MIX_SAMPLE_BUF5          0x3000
 multiline_comment|/* Task stack address */
 DECL|macro|HFG_STACK
 mdefine_line|#define HFG_STACK                0x066A
@@ -155,6 +161,10 @@ DECL|macro|PCMSERIALIN_PCM_SCB_ADDR
 mdefine_line|#define PCMSERIALIN_PCM_SCB_ADDR 0x160
 DECL|macro|RECORD_MIXER_SCB_ADDR
 mdefine_line|#define RECORD_MIXER_SCB_ADDR    0x170
+DECL|macro|REAR_MIXER_SCB_ADDR
+mdefine_line|#define REAR_MIXER_SCB_ADDR      0x180
+DECL|macro|SPDIF_MIXER_SCB_ADDR
+mdefine_line|#define SPDIF_MIXER_SCB_ADDR     0x190
 multiline_comment|/* hyperforground SCB&squot;s*/
 DECL|macro|HFG_TREE_SCB
 mdefine_line|#define HFG_TREE_SCB             0xBA0
@@ -187,6 +197,8 @@ DECL|macro|SRCCorPerGof
 mdefine_line|#define SRCCorPerGof         0x2
 DECL|macro|SRCPhiIncr6Int26Frac
 mdefine_line|#define SRCPhiIncr6Int26Frac 0xd
+DECL|macro|SCBVolumeCtrl
+mdefine_line|#define SCBVolumeCtrl        0xe
 multiline_comment|/* conf */
 DECL|macro|UseASER1Input
 mdefine_line|#define UseASER1Input 1
@@ -271,6 +283,123 @@ DECL|macro|SP_SPDOUT_CONTROL
 mdefine_line|#define SP_SPDOUT_CONTROL 0x804D
 DECL|macro|SP_SPDOUT_CSUV
 mdefine_line|#define SP_SPDOUT_CSUV    0x808E
+DECL|function|cs46xx_dsp_spos_update_scb
+r_static
+r_inline
+r_void
+id|cs46xx_dsp_spos_update_scb
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|scb
+)paren
+(brace
+multiline_comment|/* update nextSCB and subListPtr in SCB */
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|scb-&gt;address
+op_plus
+id|SCBsubListPtr
+)paren
+op_lshift
+l_int|2
+comma
+(paren
+id|scb-&gt;sub_list_ptr-&gt;address
+op_lshift
+l_int|0x10
+)paren
+op_or
+(paren
+id|scb-&gt;next_scb_ptr-&gt;address
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|cs46xx_dsp_scb_set_volume
+r_static
+r_inline
+r_void
+id|cs46xx_dsp_scb_set_volume
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|scb
+comma
+id|u16
+id|right
+comma
+id|u16
+id|left
+)paren
+(brace
+r_int
+r_int
+id|val
+op_assign
+(paren
+(paren
+l_int|0xffff
+op_minus
+id|right
+)paren
+op_lshift
+l_int|16
+op_or
+(paren
+l_int|0xffff
+op_minus
+id|left
+)paren
+)paren
+suffix:semicolon
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|scb-&gt;address
+op_plus
+id|SCBVolumeCtrl
+)paren
+op_lshift
+l_int|2
+comma
+id|val
+)paren
+suffix:semicolon
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|scb-&gt;address
+op_plus
+id|SCBVolumeCtrl
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|2
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __DSP_SPOS_H__ */
 macro_line|#endif /* CONFIG_SND_CS46XX_NEW_DSP  */
 eof
