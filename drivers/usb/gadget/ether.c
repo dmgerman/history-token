@@ -444,6 +444,10 @@ macro_line|#ifdef CONFIG_USB_GADGET_SH
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 multiline_comment|/* use non-CDC for backwards compatibility */
 DECL|macro|DEV_CONFIG_SUBSET
@@ -8159,6 +8163,25 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0208
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_lh7a40x
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0209
 )paren
 suffix:semicolon
 )brace

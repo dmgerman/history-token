@@ -593,6 +593,10 @@ macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;lh7a40x_udc&quot;
+macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------------*/
 multiline_comment|/* NOTE:  don&squot;t use dev_printk calls before binding to the gadget&n; * at the end of ep0 configuration, or after unbind.&n; */
 multiline_comment|/* too wordy: dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args) */
