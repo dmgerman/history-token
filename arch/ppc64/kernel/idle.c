@@ -474,8 +474,9 @@ op_assign
 op_amp
 id|paca
 (braket
+id|smp_processor_id
+c_func
 (paren
-id|lpaca-&gt;xPacaIndex
 )paren
 op_xor
 l_int|1
