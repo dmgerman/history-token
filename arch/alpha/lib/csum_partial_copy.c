@@ -142,6 +142,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|src
 comma
@@ -328,6 +329,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|src
 comma
@@ -1398,6 +1400,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -1478,6 +1481,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|src
@@ -1508,6 +1512,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|src
@@ -1560,6 +1565,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|src
@@ -1594,6 +1600,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|src
@@ -1641,6 +1648,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
