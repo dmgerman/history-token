@@ -4,42 +4,6 @@ mdefine_line|#define _LINUX_MODULELOADER_H
 multiline_comment|/* The stuff needed for archs to support modules. */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
-multiline_comment|/* Helper function for arch-specific module loaders */
-r_int
-r_int
-id|find_symbol_internal
-c_func
-(paren
-id|Elf_Shdr
-op_star
-id|sechdrs
-comma
-r_int
-r_int
-id|symindex
-comma
-r_const
-r_char
-op_star
-id|strtab
-comma
-r_const
-r_char
-op_star
-id|name
-comma
-r_struct
-id|module
-op_star
-id|mod
-comma
-r_struct
-id|kernel_symbol_group
-op_star
-op_star
-id|group
-)paren
-suffix:semicolon
 multiline_comment|/* These must be implemented by the specific architecture */
 multiline_comment|/* Adjust arch-specific sections.  Return 0 on success.  */
 r_int

@@ -275,14 +275,18 @@ DECL|macro|STT_SECTION
 mdefine_line|#define STT_SECTION 3
 DECL|macro|STT_FILE
 mdefine_line|#define STT_FILE    4
+DECL|macro|ELF_ST_BIND
+mdefine_line|#define ELF_ST_BIND(x)&t;&t;((x) &gt;&gt; 4)
+DECL|macro|ELF_ST_TYPE
+mdefine_line|#define ELF_ST_TYPE(x)&t;&t;(((unsigned int) x) &amp; 0xf)
 DECL|macro|ELF32_ST_BIND
-mdefine_line|#define ELF32_ST_BIND(x) ((x) &gt;&gt; 4)
+mdefine_line|#define ELF32_ST_BIND(x)&t;ELF_ST_BIND(x)
 DECL|macro|ELF32_ST_TYPE
-mdefine_line|#define ELF32_ST_TYPE(x) (((unsigned int) x) &amp; 0xf)
+mdefine_line|#define ELF32_ST_TYPE(x)&t;ELF_ST_TYPE(x)
 DECL|macro|ELF64_ST_BIND
-mdefine_line|#define ELF64_ST_BIND(x) ((x) &gt;&gt; 4)
+mdefine_line|#define ELF64_ST_BIND(x)&t;ELF_ST_BIND(x)
 DECL|macro|ELF64_ST_TYPE
-mdefine_line|#define ELF64_ST_TYPE(x) (((unsigned int) x) &amp; 0xf)
+mdefine_line|#define ELF64_ST_TYPE(x)&t;ELF_ST_TYPE(x)
 multiline_comment|/* Symbolic values for the entries in the auxiliary table&n;   put on the initial stack */
 DECL|macro|AT_NULL
 mdefine_line|#define AT_NULL   0&t;/* end of vector */
