@@ -2425,6 +2425,7 @@ suffix:semicolon
 DECL|function|speedo_found1
 r_static
 r_int
+id|__devinit
 id|speedo_found1
 c_func
 (paren
@@ -3734,6 +3735,7 @@ multiline_comment|/* The fixes for the code were kindly provided by Dragan Stanc
 DECL|function|do_eeprom_cmd
 r_static
 r_int
+id|__devinit
 id|do_eeprom_cmd
 c_func
 (paren
