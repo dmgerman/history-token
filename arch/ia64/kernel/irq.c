@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *&t;linux/arch/ia64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; */
 multiline_comment|/*&n; * (mostly architecture independent, will move to kernel/irq.c in 2.5.)&n; *&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -16,6 +15,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the apropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
+multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the appropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
 id|irq_desc_t
@@ -123,7 +123,7 @@ id|irq
 suffix:semicolon
 multiline_comment|/*&n; * Special irq handlers.&n; */
 DECL|function|no_action
-r_void
+id|irqreturn_t
 id|no_action
 c_func
 (paren
@@ -140,6 +140,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic no controller code&n; */
 DECL|function|enable_none
@@ -260,11 +263,13 @@ DECL|variable|irq_err_count
 id|atomic_t
 id|irq_err_count
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) &amp;&amp; defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
+macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef APIC_MISMATCH_DEBUG
 DECL|variable|irq_mis_count
 id|atomic_t
 id|irq_mis_count
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
 DECL|function|show_interrupts
@@ -581,7 +586,7 @@ comma
 l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_X86)
+macro_line|#if CONFIG_X86_LOCAL_APIC
 id|seq_puts
 c_func
 (paren
@@ -620,10 +625,12 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|apic_timer_irqs
+id|irq_stat
 (braket
 id|j
 )braket
+dot
+id|apic_timer_irqs
 )paren
 suffix:semicolon
 id|seq_putc
@@ -650,7 +657,8 @@ id|irq_err_count
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) &amp;&amp; defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
+macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef APIC_MISMATCH_DEBUG
 id|seq_printf
 c_func
 (paren
@@ -666,6 +674,7 @@ id|irq_mis_count
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 l_int|0
@@ -730,6 +739,18 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|irqaction
+op_star
+id|first_action
+op_assign
+id|action
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -751,6 +772,8 @@ id|status
 op_or_assign
 id|action-&gt;flags
 suffix:semicolon
+id|retval
+op_or_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -792,6 +815,113 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|1
+)paren
+(brace
+r_static
+r_int
+id|count
+op_assign
+l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
+(brace
+id|count
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;irq event %d: bogus retval mask %x&bslash;n&quot;
+comma
+id|irq
+comma
+id|retval
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;irq %d: nobody cared!&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;handlers:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|action
+op_assign
+id|first_action
+suffix:semicolon
+r_do
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;[&lt;%p&gt;]&quot;
+comma
+id|action-&gt;handler
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; (%s)&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|action-&gt;handler
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|action
+op_assign
+id|action-&gt;next
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|action
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 id|status
 suffix:semicolon
@@ -1310,7 +1440,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -1412,7 +1542,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1474,7 +1604,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function. The function&n; *&t;does not return until any executing interrupts for this IRQ&n; *&t;have completed.&n; *&n; *&t;This function may be called from interrupt context. &n; *&n; *&t;Bugs: Attempting to free an irq in a handler for the same irq hangs&n; *&t;      the machine.&n; */
+multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function. The function&n; *&t;does not return until any executing interrupts for this IRQ&n; *&t;have completed.&n; *&n; *&t;This function must not be called from interrupt context.&n; */
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -1612,22 +1742,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Wait to make sure it&squot;s not being used on another CPU */
-r_while
-c_loop
-(paren
-id|desc-&gt;status
-op_amp
-id|IRQ_INPROGRESS
-)paren
 id|synchronize_irq
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -2111,7 +2232,7 @@ op_amp
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
+multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldn&squot;t happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -2299,6 +2420,18 @@ c_func
 (paren
 id|irq
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;handler
+op_eq
+op_amp
+id|no_irq_type
+)paren
+r_return
+op_minus
+id|ENOSYS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some drivers like serial.c use request_irq() heavily,&n;&t; * so we have to be careful not to interfere with a&n;&t; * running system.&n;&t; */
 r_if
@@ -2501,6 +2634,7 @@ mdefine_line|#define HEX_DIGITS 8
 DECL|function|parse_hex_value
 r_static
 r_int
+r_int
 id|parse_hex_value
 (paren
 r_const
@@ -2528,8 +2662,7 @@ suffix:semicolon
 r_int
 r_int
 id|value
-suffix:semicolon
-r_int
+comma
 id|i
 suffix:semicolon
 r_if
@@ -3292,7 +3425,6 @@ r_void
 op_star
 )paren
 (paren
-r_int
 r_int
 )paren
 id|irq

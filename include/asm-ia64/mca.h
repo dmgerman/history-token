@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_IA64_MCA_H
 DECL|macro|_ASM_IA64_MCA_H
 mdefine_line|#define _ASM_IA64_MCA_H
 macro_line|#if !defined(__ASSEMBLY__)
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -373,7 +374,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ia64_mca_rendez_int_handler
 c_func
 (paren
@@ -388,7 +389,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ia64_mca_wakeup_int_handler
 c_func
 (paren
@@ -403,7 +404,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ia64_mca_cmc_int_handler
 c_func
 (paren
@@ -418,7 +419,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ia64_mca_cpe_int_handler
 c_func
 (paren

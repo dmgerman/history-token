@@ -136,7 +136,7 @@ op_assign
 initialization_block
 suffix:semicolon
 DECL|macro|RSE_HINTS_COUNT
-mdefine_line|#define RSE_HINTS_COUNT (sizeof(rse_hints)/sizeof(const char *))
+mdefine_line|#define RSE_HINTS_COUNT ARRAY_SIZE(rse_hints)
 DECL|variable|mem_attrib
 r_static
 r_const
@@ -562,13 +562,9 @@ c_func
 id|p
 comma
 l_string|&quot;Power level %d:&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tentry_latency       : %d cycles&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;texit_latency        : %d cycles&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tpower consumption   : %d mW&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tCache+TLB coherency : %s&bslash;n&quot;
 comma
 id|i
@@ -648,6 +644,8 @@ op_assign
 id|page
 suffix:semicolon
 id|u64
+id|i
+comma
 id|levels
 comma
 id|unique_caches
@@ -656,8 +654,6 @@ id|pal_cache_config_info_t
 id|cci
 suffix:semicolon
 r_int
-id|i
-comma
 id|j
 comma
 id|k
@@ -774,10 +770,8 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%s Cache level %d:&bslash;n&quot;
-"&bslash;"
-l_string|&quot;&bslash;tSize           : %ld bytes&bslash;n&quot;
-"&bslash;"
+l_string|&quot;%s Cache level %lu:&bslash;n&quot;
+l_string|&quot;&bslash;tSize           : %lu bytes&bslash;n&quot;
 l_string|&quot;&bslash;tAttributes     : &quot;
 comma
 id|cache_types
@@ -832,9 +826,7 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;tAssociativity  : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tLine size      : %d bytes&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tStride         : %d bytes&bslash;n&quot;
 comma
 id|cci.pcci_assoc
@@ -886,7 +878,6 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;tLoad latency   : %d cycle(s)&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tStore hints    : &quot;
 comma
 id|cci.pcci_ld_latency
@@ -994,9 +985,7 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;n&bslash;tAlias boundary : %d byte(s)&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tTag LSB        : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tTag MSB        : %d&bslash;n&quot;
 comma
 l_int|1
@@ -1121,15 +1110,10 @@ c_func
 id|p
 comma
 l_string|&quot;Physical Address Space         : %d bits&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Virtual Address Space          : %d bits&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Protection Key Registers(PKR)  : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Implemented bits in PKR.key    : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Hash Tag ID                    : 0x%x&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Size of RR.rid                 : %d&bslash;n&quot;
 comma
 id|vm_info_1.pal_vm_info_1_s.phys_add_size
@@ -1279,11 +1263,8 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;nTLB walker                     : %simplemented&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Number of DTR                  : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Number of ITR                  : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;TLB insertable page sizes      : &quot;
 comma
 id|vm_info_1.pal_vm_info_1_s.vw
@@ -1370,13 +1351,9 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;nPurge base address             : 0x%016lx&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Purge outer loop count         : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Purge inner loop count         : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Purge outer loop stride        : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Purge inner loop stride        : %d&bslash;n&quot;
 comma
 id|ptce.base
@@ -1410,7 +1387,6 @@ c_func
 id|p
 comma
 l_string|&quot;TC Levels                      : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Unique TC(s)                   : %d&bslash;n&quot;
 comma
 id|vm_info_1.pal_vm_info_1_s.num_tc_levels
@@ -1489,13 +1465,9 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;n%s Translation Cache Level %d:&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tHash sets           : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tAssociativity       : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tNumber of entries   : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tFlags               : &quot;
 comma
 id|cache_types
@@ -1757,7 +1729,6 @@ c_func
 id|p
 comma
 l_string|&quot;RSE stacked physical registers   : %ld&bslash;n&quot;
-"&bslash;"
 l_string|&quot;RSE load/store hints             : %ld (%s)&bslash;n&quot;
 comma
 id|phys_stacked
@@ -1801,7 +1772,6 @@ c_func
 id|p
 comma
 l_string|&quot;Instruction debug register pairs : %ld&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Data debug register pairs        : %ld&bslash;n&quot;
 comma
 id|iregs
@@ -2245,9 +2215,7 @@ c_func
 id|p
 comma
 l_string|&quot;PAL_vendor : 0x%02x (min=0x%02x)&bslash;n&quot;
-"&bslash;"
 l_string|&quot;PAL_A      : %x.%x.%x (min=%x.%x.%x)&bslash;n&quot;
-"&bslash;"
 l_string|&quot;PAL_B      : %x.%x.%x (min=%x.%x.%x)&bslash;n&quot;
 comma
 id|cur_ver.pal_version_s.pv_pal_vendor
@@ -2352,13 +2320,9 @@ c_func
 id|p
 comma
 l_string|&quot;PMC/PMD pairs                 : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Counter width                 : %d bits&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Cycle event number            : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Retired event number          : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Implemented PMC               : &quot;
 comma
 id|pm_info.pal_perf_mon_info_s.generic
@@ -2583,9 +2547,7 @@ c_func
 id|p
 comma
 l_string|&quot;Processor/Clock ratio   : %ld/%ld&bslash;n&quot;
-"&bslash;"
 l_string|&quot;Bus/Clock ratio         : %ld/%ld&bslash;n&quot;
-"&bslash;"
 l_string|&quot;ITC/Clock ratio         : %ld/%ld&bslash;n&quot;
 comma
 id|proc.num
@@ -2642,7 +2604,7 @@ suffix:semicolon
 id|pal_vm_info_2_u_t
 id|vm_info_2
 suffix:semicolon
-r_int
+id|u64
 id|i
 comma
 id|j
@@ -2909,7 +2871,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;palinfo: pal call failed on tr[%d:%d]=%ld&bslash;n&quot;
+l_string|&quot;palinfo: pal call failed on tr[%lu:%lu]=%ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -2996,12 +2958,9 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%cTR%d: av=%d pv=%d dv=%d mv=%d&bslash;n&quot;
-"&bslash;"
+l_string|&quot;%cTR%lu: av=%d pv=%d dv=%d mv=%d&bslash;n&quot;
 l_string|&quot;&bslash;tppn  : 0x%lx&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tvpn  : 0x%lx&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tps   : &quot;
 comma
 l_string|&quot;ID&quot;
@@ -3056,15 +3015,10 @@ c_func
 id|p
 comma
 l_string|&quot;&bslash;n&bslash;tpl   : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tar   : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;trid  : %x&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tp    : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;tma   : %d&bslash;n&quot;
-"&bslash;"
 l_string|&quot;&bslash;td    : %d&bslash;n&quot;
 comma
 id|gr_reg-&gt;pl
@@ -3099,7 +3053,7 @@ op_assign
 initialization_block
 suffix:semicolon
 DECL|macro|NR_PALINFO_ENTRIES
-mdefine_line|#define NR_PALINFO_ENTRIES&t;(sizeof(palinfo_entries)/sizeof(palinfo_entry_t))
+mdefine_line|#define NR_PALINFO_ENTRIES&t;(int) ARRAY_SIZE(palinfo_entries)
 multiline_comment|/*&n; * this array is used to keep track of the proc entries we create. This is&n; * required in the module mode when we need to remove all entries. The procfs code&n; * does not do recursion of deletion&n; *&n; * Notes:&n; *&t;- first +1 accounts for the cpuN entry&n; *&t;- second +1 account for toplevel palinfo&n; *&n; */
 DECL|macro|NR_PALINFO_PROC_ENTRIES
 mdefine_line|#define NR_PALINFO_PROC_ENTRIES&t;(NR_CPUS*(NR_PALINFO_ENTRIES+1)+1)

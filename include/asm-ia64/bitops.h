@@ -1586,21 +1586,21 @@ DECL|macro|find_first_bit
 mdefine_line|#define find_first_bit(addr, size) find_next_bit((addr), (size), 0)
 macro_line|#ifdef __KERNEL__
 DECL|macro|__clear_bit
-mdefine_line|#define __clear_bit(nr, addr)        clear_bit(nr, addr)
+mdefine_line|#define __clear_bit(nr, addr)&t;&t;clear_bit(nr, addr)
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit                 test_and_set_bit
-DECL|macro|ext2_set_atomic
-mdefine_line|#define ext2_set_atomic(l,n,a)&t;     test_and_set_bit(n,a)
+mdefine_line|#define ext2_set_bit&t;&t;&t;test_and_set_bit
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(l,n,a)&t;test_and_set_bit(n,a)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit               test_and_clear_bit
-DECL|macro|ext2_clear_atomic
-mdefine_line|#define ext2_clear_atomic(l,n,a)     test_and_clear_bit(n,a)
+mdefine_line|#define ext2_clear_bit&t;&t;&t;test_and_clear_bit
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(l,n,a)&t;test_and_clear_bit(n,a)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit                test_bit
+mdefine_line|#define ext2_test_bit&t;&t;&t;test_bit
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit     find_first_zero_bit
+mdefine_line|#define ext2_find_first_zero_bit&t;find_first_zero_bit
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit      find_next_zero_bit
+mdefine_line|#define ext2_find_next_zero_bit&t;&t;find_next_zero_bit
 multiline_comment|/* Bitmap functions for the minix filesystem.  */
 DECL|macro|minix_test_and_set_bit
 mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&t;test_and_set_bit(nr,addr)

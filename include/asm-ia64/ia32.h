@@ -1189,32 +1189,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ia32_setup_frame1
-(paren
-r_int
-id|sig
-comma
-r_struct
-id|k_sigaction
-op_star
-id|ka
-comma
-id|siginfo_t
-op_star
-id|info
-comma
-id|sigset_t
-op_star
-id|set
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ia32_init_addr_space
 (paren
@@ -1299,5 +1273,32 @@ mdefine_line|#define ia32f2ia64f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;regis
 DECL|macro|ia64f2ia32f
 mdefine_line|#define ia64f2ia32f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;register double f6 asm (&quot;f6&quot;); &bslash;&n;&t;asm volatile (&quot;ldf.fill f6=[%2];; stfe [%1]=f6&quot; : &quot;=f&quot;(f6): &quot;r&quot;(dst),  &quot;r&quot;(src) : &quot;memory&quot;); &bslash;&n;&t;} while(0)
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
+multiline_comment|/* Declare this uncondiontally, so we don&squot;t get warnings for unreachable code.  */
+r_extern
+r_int
+id|ia32_setup_frame1
+(paren
+r_int
+id|sig
+comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
+id|siginfo_t
+op_star
+id|info
+comma
+id|sigset_t
+op_star
+id|set
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_IA32_H */
 eof

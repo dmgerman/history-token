@@ -1,45 +1,8 @@
-multiline_comment|/*&n; * ia64/platform/hp/common/hp_acpi.h&n; *&n; * Copyright (C) 2003 Hewlett-Packard&n; * Copyright (C) Alex Williamson&n; *&n; * Vendor specific extensions to ACPI.  The HP-specific extensiosn are also used by NEC.&n; */
+multiline_comment|/*&n; * ia64/platform/hp/common/hp_acpi.h&n; *&n; * Copyright (C) 2003 Hewlett-Packard&n; * Copyright (C) Alex Williamson&n; * Copyright (C) Bjorn Helgaas&n; *&n; * Vendor specific extensions to ACPI.&n; */
 macro_line|#ifndef _ASM_IA64_ACPI_EXT_H
 DECL|macro|_ASM_IA64_ACPI_EXT_H
 mdefine_line|#define _ASM_IA64_ACPI_EXT_H
 macro_line|#include &lt;linux/types.h&gt;
-DECL|macro|HP_CCSR_LENGTH
-mdefine_line|#define HP_CCSR_LENGTH&t;0x21
-DECL|macro|HP_CCSR_TYPE
-mdefine_line|#define HP_CCSR_TYPE&t;0x2
-DECL|macro|HP_CCSR_GUID
-mdefine_line|#define HP_CCSR_GUID&t;EFI_GUID(0x69e9adf9, 0x924f, 0xab5f, &bslash;&n;&t;&t;&t;&t; 0xf6, 0x4a, 0x24, 0xd2, 0x01, 0x37, 0x0e, 0xad)
-DECL|struct|acpi_hp_vendor_long
-r_struct
-id|acpi_hp_vendor_long
-(brace
-DECL|member|guid_id
-id|u8
-id|guid_id
-suffix:semicolon
-DECL|member|guid
-id|u8
-id|guid
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|csr_base
-id|u8
-id|csr_base
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|member|csr_length
-id|u8
-id|csr_length
-(braket
-l_int|8
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 r_extern
 id|acpi_status
 id|hp_acpi_csr_space
@@ -53,56 +16,6 @@ comma
 id|u64
 op_star
 id|length
-)paren
-suffix:semicolon
-r_extern
-id|acpi_status
-id|acpi_get_crs
-(paren
-id|acpi_handle
-comma
-r_struct
-id|acpi_buffer
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|acpi_resource
-op_star
-id|acpi_get_crs_next
-(paren
-r_struct
-id|acpi_buffer
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_union
-id|acpi_resource_data
-op_star
-id|acpi_get_crs_type
-(paren
-r_struct
-id|acpi_buffer
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|acpi_dispose_crs
-(paren
-r_struct
-id|acpi_buffer
-op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_ACPI_EXT_H */

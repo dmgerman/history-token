@@ -175,6 +175,32 @@ id|mm
 r_goto
 id|no_context
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+multiline_comment|/*&n;&t; * If fault is in region 5 and we are in the kernel, we may already&n;&t; * have the mmap_sem (pfn_valid macro is called during mmap). There&n;&t; * is no vma for region 5 addr&squot;s anyway, so skip getting the semaphore&n;&t; * and go directly to the exception handling code.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|REGION_NUMBER
+c_func
+(paren
+id|address
+)paren
+op_eq
+l_int|5
+)paren
+op_logical_and
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_goto
+id|bad_area_no_up
+suffix:semicolon
+macro_line|#endif
 id|down_read
 c_func
 (paren
@@ -502,6 +528,10 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+id|bad_area_no_up
+suffix:colon
+macro_line|#endif
 r_if
 c_cond
 (paren

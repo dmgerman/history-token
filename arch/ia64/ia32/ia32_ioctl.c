@@ -1,7 +1,9 @@
-multiline_comment|/*&n; * IA32 Architecture-specific ioctl shim code&n; *&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA32 Architecture-specific ioctl shim code&n; *&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
+macro_line|#include &lt;linux/signal.h&gt;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
+macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
@@ -25,7 +27,6 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|__KERNEL__
 mdefine_line|#define&t;__KERNEL__
 macro_line|#include &lt;scsi/sg.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;../drivers/char/drm/drm.h&gt;
 macro_line|#include &lt;../drivers/char/drm/mga_drm.h&gt;
 macro_line|#include &lt;../drivers/char/drm/i810_drm.h&gt;
