@@ -3118,7 +3118,7 @@ r_return
 op_minus
 id|EFBIG
 suffix:semicolon
-multiline_comment|/*&n;&t; * Normally, filepage is NULL on entry, and either found&n;&t; * uptodate immediately, or allocated and zeroed, or read&n;&t; * in under swappage, which is then assigned to filepage.&n;&t; * But shmem_readpage and shmem_prepare_write pass in a locked&n;&t; * filepage, which may be found not uptodate by other callers&n;&t; * too, and may need to be copied from the swappage read in.&n;&t; */
+multiline_comment|/*&n;&t; * Normally, filepage is NULL on entry, and either found&n;&t; * uptodate immediately, or allocated and zeroed, or read&n;&t; * in under swappage, which is then assigned to filepage.&n;&t; * But shmem_prepare_write passes in a locked filepage,&n;&t; * which may be found not uptodate by other callers too,&n;&t; * and may need to be copied from the swappage read in.&n;&t; */
 id|repeat
 suffix:colon
 r_if
@@ -4912,57 +4912,7 @@ r_struct
 id|inode_operations
 id|shmem_symlink_inline_operations
 suffix:semicolon
-multiline_comment|/*&n; * tmpfs itself makes no use of generic_file_read, generic_file_mmap&n; * or generic_file_write; but shmem_readpage, shmem_prepare_write and&n; * simple_commit_write let a tmpfs file be used below the loop driver.&n; */
-r_static
-r_int
-DECL|function|shmem_readpage
-id|shmem_readpage
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
-r_int
-id|error
-op_assign
-id|shmem_getpage
-c_func
-(paren
-id|inode
-comma
-id|page-&gt;index
-comma
-op_amp
-id|page
-comma
-id|SGP_CACHE
-)paren
-suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * Normally tmpfs makes no use of shmem_prepare_write, but it&n; * lets a tmpfs file be used read-write below the loop driver.&n; */
 r_static
 r_int
 DECL|function|shmem_prepare_write
@@ -8146,11 +8096,6 @@ op_assign
 id|__set_page_dirty_nobuffers
 comma
 macro_line|#ifdef CONFIG_TMPFS
-dot
-id|readpage
-op_assign
-id|shmem_readpage
-comma
 dot
 id|prepare_write
 op_assign
