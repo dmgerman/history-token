@@ -1559,18 +1559,18 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
-DECL|member|serial_cnt
+DECL|member|currnt_wnd_hit
 r_int
 r_int
-id|serial_cnt
+id|currnt_wnd_hit
 suffix:semicolon
-multiline_comment|/* measure of sequentiality */
+multiline_comment|/* locality in the current window */
 DECL|member|average
 r_int
 r_int
 id|average
 suffix:semicolon
-multiline_comment|/* another measure of sequentiality */
+multiline_comment|/* size of next current window */
 DECL|member|ra_pages
 r_int
 r_int
