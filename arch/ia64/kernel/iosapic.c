@@ -2751,24 +2751,7 @@ id|vector
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * Forget not to program the IOSAPIC RTE per ACPI _PRT&n;&t;&t; */
-id|set_rte
-c_func
-(paren
-id|vector
-comma
-(paren
-id|ia64_get_lid
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xffff
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * NOTE: The IOSAPIC RTE will be programmed in iosapic_pci_fixup().  It&n;&t;&t; * needs to be done there to ensure PCI hotplug works right.&n;&t;&t; */
 )brace
 )brace
 r_void

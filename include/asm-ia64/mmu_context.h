@@ -114,7 +114,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__ia64_need_tlb_flush
+id|ia64_need_tlb_flush
 op_assign
 l_int|0
 suffix:semicolon
@@ -132,11 +132,6 @@ op_star
 id|mm
 )paren
 (brace
-id|delayed_tlb_flush
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -408,6 +403,11 @@ op_star
 id|next
 )paren
 (brace
+id|delayed_tlb_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We may get interrupts here, but that&squot;s OK because interrupt&n;&t; * handlers cannot touch user-space.&n;&t; */
 id|ia64_set_kr
 c_func
