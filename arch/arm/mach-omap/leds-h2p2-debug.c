@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-omap/leds-perseus2.c&n; *&n; * Copyright 2003 by Texas Instruments Incorporated&n; *&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-omap/leds-h2p2-debug.c&n; *&n; * Copyright 2003 by Texas Instruments Incorporated&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -8,10 +8,11 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &quot;leds.h&quot;
-DECL|function|perseus2_leds_event
+DECL|function|h2p2_dbg_leds_event
 r_void
-id|perseus2_leds_event
+id|h2p2_dbg_leds_event
 c_func
 (paren
 id|led_event_t
@@ -46,7 +47,7 @@ id|led_start
 suffix:colon
 id|hw_led_state
 op_or_assign
-id|OMAP730_FPGA_LED_STARTSTOP
+id|H2P2_DBG_FPGA_LED_STARTSTOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -56,7 +57,7 @@ suffix:colon
 id|hw_led_state
 op_and_assign
 op_complement
-id|OMAP730_FPGA_LED_STARTSTOP
+id|H2P2_DBG_FPGA_LED_STARTSTOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -65,7 +66,7 @@ id|led_claim
 suffix:colon
 id|hw_led_state
 op_or_assign
-id|OMAP730_FPGA_LED_CLAIMRELEASE
+id|H2P2_DBG_FPGA_LED_CLAIMRELEASE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -75,7 +76,7 @@ suffix:colon
 id|hw_led_state
 op_and_assign
 op_complement
-id|OMAP730_FPGA_LED_CLAIMRELEASE
+id|H2P2_DBG_FPGA_LED_CLAIMRELEASE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -89,17 +90,17 @@ c_cond
 (paren
 id|hw_led_state
 op_amp
-id|OMAP730_FPGA_LED_TIMER
+id|H2P2_DBG_FPGA_LED_TIMER
 )paren
 id|hw_led_state
 op_and_assign
 op_complement
-id|OMAP730_FPGA_LED_TIMER
+id|H2P2_DBG_FPGA_LED_TIMER
 suffix:semicolon
 r_else
 id|hw_led_state
 op_or_assign
-id|OMAP730_FPGA_LED_TIMER
+id|H2P2_DBG_FPGA_LED_TIMER
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -110,7 +111,7 @@ id|led_idle_start
 suffix:colon
 id|hw_led_state
 op_or_assign
-id|OMAP730_FPGA_LED_IDLE
+id|H2P2_DBG_FPGA_LED_IDLE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -120,7 +121,7 @@ suffix:colon
 id|hw_led_state
 op_and_assign
 op_complement
-id|OMAP730_FPGA_LED_IDLE
+id|H2P2_DBG_FPGA_LED_IDLE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -133,17 +134,17 @@ c_cond
 (paren
 id|hw_led_state
 op_amp
-id|OMAP730_FPGA_LED_HALTED
+id|H2P2_DBG_FPGA_LED_HALTED
 )paren
 id|hw_led_state
 op_and_assign
 op_complement
-id|OMAP730_FPGA_LED_HALTED
+id|H2P2_DBG_FPGA_LED_HALTED
 suffix:semicolon
 r_else
 id|hw_led_state
 op_or_assign
-id|OMAP730_FPGA_LED_HALTED
+id|H2P2_DBG_FPGA_LED_HALTED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -191,7 +192,7 @@ id|hw_led_state
 op_amp
 l_int|0xffff
 comma
-id|OMAP730_FPGA_LEDS
+id|H2P2_DBG_FPGA_LEDS
 )paren
 suffix:semicolon
 id|local_irq_restore
