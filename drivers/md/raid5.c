@@ -7916,7 +7916,7 @@ r_if
 c_cond
 (paren
 id|raid_disk
-OG
+op_ge
 id|mddev-&gt;raid_disks
 op_logical_or
 id|raid_disk
