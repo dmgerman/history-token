@@ -1966,10 +1966,10 @@ c_cond
 id|task-&gt;thread.singlestep_syscall
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 r_return
-l_int|1
+l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

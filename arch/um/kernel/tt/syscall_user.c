@@ -251,6 +251,16 @@ l_string|&quot;I&squot;m tracing myself and I can&squot;t get out&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* advanced sysemu mode set syscall number to -1 automatically */
+r_if
+c_cond
+(paren
+id|local_using_sysemu
+op_eq
+l_int|2
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* syscall number -1 in sysemu skips syscall restarting in host */
 r_if
 c_cond
