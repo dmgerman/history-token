@@ -30,7 +30,7 @@ r_struct
 id|vio_device_id
 suffix:semicolon
 r_struct
-id|TceTable
+id|iommu_table
 suffix:semicolon
 r_int
 id|vio_register_driver
@@ -127,9 +127,9 @@ id|dev
 )paren
 suffix:semicolon
 r_struct
-id|TceTable
+id|iommu_table
 op_star
-id|vio_build_tce_table
+id|vio_build_iommu_table
 c_func
 (paren
 r_struct
@@ -417,11 +417,11 @@ r_int
 r_int
 id|unit_address
 suffix:semicolon
-DECL|member|tce_table
+DECL|member|iommu_table
 r_struct
-id|TceTable
+id|iommu_table
 op_star
-id|tce_table
+id|iommu_table
 suffix:semicolon
 multiline_comment|/* vio_map_* uses this */
 DECL|member|irq

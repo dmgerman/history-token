@@ -42,6 +42,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 6
+id|DEFINE
+c_func
+(paren
+id|MM_CONTEXT_ID
+comma
+m_offsetof
+(paren
+r_struct
+id|mm_struct
+comma
+id|context.id
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
 id|DEFINE
 c_func
 (paren

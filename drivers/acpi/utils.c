@@ -1382,6 +1382,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;No return object (len %X ptr %p)&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|buffer.length
 comma
 id|package

@@ -28,6 +28,10 @@ DECL|macro|Nonpriority_MessageCompletionInterruptsFlag
 mdefine_line|#define Nonpriority_MessageCompletionInterruptsFlag      0x20
 DECL|macro|Priority_MessageCompletionInterruptsFlag
 mdefine_line|#define Priority_MessageCompletionInterruptsFlag         0x10
+DECL|macro|IUCVControlInterruptsFlag
+mdefine_line|#define IUCVControlInterruptsFlag                        0x08
+DECL|macro|AllInterrupts
+mdefine_line|#define AllInterrupts                                    0xf8
 multiline_comment|/*&n; * Mapping of external interrupt buffers should be used with the corresponding&n; * interrupt types.                  &n; * Names: iucv_ConnectionPending    -&gt;  connection pending &n; *        iucv_ConnectionComplete   -&gt;  connection complete&n; *        iucv_ConnectionSevered    -&gt;  connection severed &n; *        iucv_ConnectionQuiesced   -&gt;  connection quiesced &n; *        iucv_ConnectionResumed    -&gt;  connection resumed &n; *        iucv_MessagePending       -&gt;  message pending    &n; *        iucv_MessageComplete      -&gt;  message complete   &n; */
 r_typedef
 r_struct
@@ -1181,7 +1185,7 @@ id|ulong
 id|anslen
 )paren
 suffix:semicolon
-multiline_comment|/*                                                                   &n; * Name: iucv_setmask                                                &n; * Purpose: This function enables or disables the following IUCV     &n; *          external interruptions: Nonpriority and priority message &n; *          interrupts, nonpriority and priority reply interrupts.   &n; * Input: SetMaskFlag - options for interrupts&n; *           0x80 - Nonpriority_MessagePendingInterruptsFlag         &n; *           0x40 - Priority_MessagePendingInterruptsFlag            &n; *           0x20 - Nonpriority_MessageCompletionInterruptsFlag      &n; *           0x10 - Priority_MessageCompletionInterruptsFlag         &n; * Output: NA                                                        &n; * Return: Return code from CP IUCV call.                         &n;*/
+multiline_comment|/*                                                                   &n; * Name: iucv_setmask                                                &n; * Purpose: This function enables or disables the following IUCV     &n; *          external interruptions: Nonpriority and priority message &n; *          interrupts, nonpriority and priority reply interrupts.   &n; * Input: SetMaskFlag - options for interrupts&n; *           0x80 - Nonpriority_MessagePendingInterruptsFlag         &n; *           0x40 - Priority_MessagePendingInterruptsFlag            &n; *           0x20 - Nonpriority_MessageCompletionInterruptsFlag      &n; *           0x10 - Priority_MessageCompletionInterruptsFlag         &n; *           0x08 - IUCVControlInterruptsFlag&n; * Output: NA                                                        &n; * Return: Return code from CP IUCV call.                         &n;*/
 r_int
 id|iucv_setmask
 (paren

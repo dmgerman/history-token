@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -41,24 +42,6 @@ macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#endif
 r_extern
 r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|do_signal
 c_func
 (paren
@@ -76,18 +59,6 @@ c_func
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|iSeries_veth_dev
-suffix:semicolon
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|iSeries_vio_dev
 suffix:semicolon
 DECL|variable|do_signal
 id|EXPORT_SYMBOL
@@ -652,20 +623,6 @@ id|eeh_total_mmio_ffs
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
-DECL|variable|iSeries_veth_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_veth_dev
-)paren
-suffix:semicolon
-DECL|variable|iSeries_vio_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_vio_dev
-)paren
-suffix:semicolon
 DECL|variable|start_thread
 id|EXPORT_SYMBOL
 c_func

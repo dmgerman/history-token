@@ -3,6 +3,7 @@ macro_line|#ifndef __SPARC64_SPINLOCK_H
 DECL|macro|__SPARC64_SPINLOCK_H
 mdefine_line|#define __SPARC64_SPINLOCK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;&t;/* For NR_CPUS */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* To get debugging spinlocks which detect and catch&n; * deadlock situations, set CONFIG_DEBUG_SPINLOCK&n; * and rebuild your kernel.&n; */
 multiline_comment|/* All of these locking primitives are expected to work properly&n; * even in an RMO memory model, which currently is what the kernel&n; * runs in.&n; *&n; * There is another issue.  Because we play games to save cycles&n; * in the non-contention case, we need to be extra careful about&n; * branch targets into the &quot;spinning&quot; code.  They live in their&n; * own section, but the newer V9 branches have a shorter range&n; * than the traditional 32-bit sparc branch variants.  The rule&n; * is that the branches that go into and out of the spinner sections&n; * must be pre-V9 branches.&n; */
@@ -292,7 +293,7 @@ r_int
 r_int
 id|reader_pc
 (braket
-l_int|4
+id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|typedef|rwlock_t
@@ -300,7 +301,7 @@ DECL|typedef|rwlock_t
 id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { 0, 0, 0xff, { 0, 0, 0, 0 } }
+mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { 0, 0, 0xff, { } }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked

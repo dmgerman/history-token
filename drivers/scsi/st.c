@@ -21082,8 +21082,6 @@ c_cond
 l_int|0
 suffix:colon
 id|SCpnt-&gt;bufflen
-op_rshift
-l_int|9
 )paren
 comma
 l_int|1

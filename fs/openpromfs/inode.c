@@ -5541,7 +5541,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* {{{ init section */
-macro_line|#ifndef MODULE
 DECL|function|check_space
 r_static
 r_int
@@ -5551,15 +5550,6 @@ id|check_space
 id|u16
 id|n
 )paren
-macro_line|#else
-r_static
-r_int
-id|check_space
-(paren
-id|u16
-id|n
-)paren
-macro_line|#endif
 (brace
 r_int
 r_int
@@ -5666,7 +5656,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
 DECL|function|get_nodes
 r_static
 id|u16
@@ -5679,18 +5668,6 @@ comma
 id|u32
 id|node
 )paren
-macro_line|#else
-r_static
-id|u16
-id|get_nodes
-(paren
-id|u16
-id|parent
-comma
-id|u32
-id|node
-)paren
-macro_line|#endif
 (brace
 r_char
 op_star
@@ -6213,6 +6190,10 @@ r_struct
 id|inode
 op_star
 id|root_inode
+suffix:semicolon
+id|s-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
 suffix:semicolon
 id|s-&gt;s_blocksize
 op_assign

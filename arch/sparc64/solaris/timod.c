@@ -14,25 +14,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
 macro_line|#include &quot;conv.h&quot;
 macro_line|#include &quot;socksys.h&quot;
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 id|solaris_ioctl

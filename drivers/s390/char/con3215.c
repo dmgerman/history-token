@@ -1742,7 +1742,7 @@ l_string|&quot;^n&quot;
 comma
 l_int|2
 )paren
-op_logical_or
+op_logical_and
 id|strncmp
 c_func
 (paren

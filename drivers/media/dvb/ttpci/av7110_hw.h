@@ -798,7 +798,7 @@ id|av7110
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|av7110_firmversion
 c_func
 (paren

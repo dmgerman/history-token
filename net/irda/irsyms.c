@@ -704,13 +704,6 @@ c_func
 id|irda_task_execute
 )paren
 suffix:semicolon
-DECL|variable|irda_task_kick
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_task_kick
-)paren
-suffix:semicolon
 DECL|variable|irda_task_next_state
 id|EXPORT_SYMBOL
 c_func
@@ -758,22 +751,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|irda_start_timer
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
-DECL|variable|setup_dma
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|setup_dma
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|infrared_mode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|infrared_mode
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRTTY

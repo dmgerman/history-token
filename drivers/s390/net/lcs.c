@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.61 $&t; $Date: 2003/12/02 15:18:50 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.66 $&t; $Date: 2004/02/19 13:46:01 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -22,7 +22,7 @@ macro_line|#error Cannot compile lcs.c without some net devices switched on.
 macro_line|#endif
 multiline_comment|/**&n; * initialization string for output&n; */
 DECL|macro|VERSION_LCS_C
-mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.61 $&quot;
+mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.66 $&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -214,7 +214,7 @@ c_func
 (paren
 id|lcs_dbf_trace
 comma
-l_int|3
+l_int|5
 )paren
 suffix:semicolon
 r_return
@@ -410,6 +410,19 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|channel-&gt;iob
+(braket
+id|cnt
+)braket
+dot
+id|data
+op_ne
+l_int|NULL
+)paren
 id|kfree
 c_func
 (paren
@@ -421,6 +434,16 @@ dot
 id|data
 )paren
 suffix:semicolon
+id|channel-&gt;iob
+(braket
+id|cnt
+)braket
+dot
+id|data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * LCS alloc memory for card and channels&n; */
 r_static
@@ -1350,6 +1373,13 @@ id|ipm_list
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|card-&gt;dev
+op_ne
+l_int|NULL
+)paren
 id|free_netdev
 c_func
 (paren
@@ -2762,6 +2792,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|16
+)braket
+suffix:semicolon
 id|cmd
 op_assign
 (paren
@@ -2898,6 +2934,36 @@ c_func
 (paren
 op_amp
 id|timer
+)paren
+suffix:semicolon
+id|LCS_DBF_TEXT
+c_func
+(paren
+l_int|5
+comma
+id|trace
+comma
+l_string|&quot;sendcmd&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;rc:%d&quot;
+comma
+id|reply.rc
+)paren
+suffix:semicolon
+id|LCS_DBF_TEXT
+c_func
+(paren
+l_int|5
+comma
+id|trace
+comma
+id|buf
 )paren
 suffix:semicolon
 r_return
@@ -3312,7 +3378,7 @@ l_int|2
 comma
 id|trace
 comma
-l_string|&quot;cmdstpln&quot;
+l_string|&quot;cmdstaln&quot;
 )paren
 suffix:semicolon
 id|buffer
@@ -4491,9 +4557,17 @@ multiline_comment|/* How far in the ccw chain have we processed? */
 r_if
 c_cond
 (paren
+(paren
 id|channel-&gt;state
 op_ne
 id|CH_STATE_INIT
+)paren
+op_logical_and
+(paren
+id|irb-&gt;scsw.fctl
+op_amp
+id|SCSW_FCTL_START_FUNC
+)paren
 )paren
 (brace
 id|index
@@ -4624,11 +4698,35 @@ id|irb-&gt;scsw.fctl
 op_amp
 id|SCSW_FCTL_HALT_FUNC
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_ne
+l_int|0
+)paren
+(brace
+id|ccw_device_halt
+c_func
+(paren
+id|channel-&gt;ccwdev
+comma
+(paren
+id|addr_t
+)paren
+id|channel
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* The channel has been stopped by halt_IO. */
 id|channel-&gt;state
 op_assign
 id|CH_STATE_HALTED
 suffix:semicolon
+)brace
 multiline_comment|/* Do the rest in the tasklet. */
 id|tasklet_schedule
 c_func
@@ -5488,7 +5586,7 @@ l_int|0
 suffix:semicolon
 id|i
 op_le
-id|card-&gt;max_port_no
+l_int|16
 suffix:semicolon
 id|i
 op_increment
@@ -5569,6 +5667,8 @@ id|card
 (brace
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|LCS_DBF_TEXT
 c_func
@@ -7660,12 +7760,6 @@ c_func
 l_string|&quot;LCS card Initialization failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|lcs_free_card
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -7691,12 +7785,6 @@ id|card
 )paren
 suffix:semicolon
 id|lcs_cleanup_card
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
-id|lcs_free_card
 c_func
 (paren
 id|card
@@ -7956,12 +8044,6 @@ suffix:semicolon
 id|out
 suffix:colon
 id|lcs_cleanup_card
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
-id|lcs_free_card
 c_func
 (paren
 id|card
@@ -8240,16 +8322,6 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-id|LCS_DBF_TEXT
-c_func
-(paren
-l_int|0
-comma
-id|setup
-comma
-l_string|&quot;lcsinit&quot;
-)paren
-suffix:semicolon
 id|PRINT_INFO
 c_func
 (paren
@@ -8263,6 +8335,16 @@ op_assign
 id|lcs_register_debug_facility
 c_func
 (paren
+)paren
+suffix:semicolon
+id|LCS_DBF_TEXT
+c_func
+(paren
+l_int|0
+comma
+id|setup
+comma
+l_string|&quot;lcsinit&quot;
 )paren
 suffix:semicolon
 r_if

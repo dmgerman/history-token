@@ -430,7 +430,11 @@ op_assign
 id|alloc_trdev
 c_func
 (paren
-l_int|0
+r_sizeof
+(paren
+r_struct
+id|net_local
+)paren
 )paren
 suffix:semicolon
 r_if

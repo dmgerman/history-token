@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
+macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -19,38 +21,58 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;i8259.h&quot;
+r_static
+r_int
+r_int
+id|xics_startup
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_static
 r_void
 id|xics_enable_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xics_disable_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xics_mask_and_ack_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xics_end_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xics_set_affinity
 c_func
@@ -69,20 +91,39 @@ id|hw_interrupt_type
 id|xics_pic
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot; XICS     &quot;
 comma
-l_int|NULL
+dot
+id|startup
+op_assign
+id|xics_startup
 comma
-l_int|NULL
-comma
+dot
+id|enable
+op_assign
 id|xics_enable_irq
 comma
+dot
+id|disable
+op_assign
 id|xics_disable_irq
 comma
+dot
+id|ack
+op_assign
 id|xics_mask_and_ack_irq
 comma
+dot
+id|end
+op_assign
 id|xics_end_irq
 comma
+dot
+id|set_affinity
+op_assign
 id|xics_set_affinity
 )brace
 suffix:semicolon
@@ -92,20 +133,30 @@ id|hw_interrupt_type
 id|xics_8259_pic
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot; XICS/8259&quot;
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
+dot
+id|ack
+op_assign
 id|xics_mask_and_ack_irq
 comma
-l_int|NULL
 )brace
+suffix:semicolon
+multiline_comment|/* This is used to map real irq numbers to virtual */
+DECL|variable|irq_map
+r_static
+r_struct
+id|radix_tree_root
+id|irq_map
+op_assign
+id|RADIX_TREE_INIT
+c_func
+(paren
+id|GFP_KERNEL
+)paren
 suffix:semicolon
 DECL|macro|XICS_IPI
 mdefine_line|#define XICS_IPI&t;&t;2
@@ -742,16 +793,125 @@ comma
 id|pSeriesLP_qirr_info
 )brace
 suffix:semicolon
+DECL|function|xics_startup
+r_static
+r_int
+r_int
+id|xics_startup
+c_func
+(paren
+r_int
+r_int
+id|virq
+)paren
+(brace
+id|virq
+op_sub_assign
+id|XICS_IRQ_OFFSET
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|radix_tree_insert
+c_func
+(paren
+op_amp
+id|irq_map
+comma
+id|virt_irq_to_real
+c_func
+(paren
+id|virq
+)paren
+comma
+op_amp
+id|virt_irq_to_real_map
+(braket
+id|virq
+)braket
+)paren
+op_eq
+op_minus
+id|ENOMEM
+)paren
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Out of memory creating real -&gt; virtual&quot;
+l_string|&quot; IRQ mapping for irq %u (real 0x%x)&bslash;n&quot;
+comma
+id|virq
+comma
+id|virt_irq_to_real
+c_func
+(paren
+id|virq
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* return value is ignored */
+)brace
+DECL|function|real_irq_to_virt
+r_static
+r_int
+r_int
+id|real_irq_to_virt
+c_func
+(paren
+r_int
+r_int
+id|real_irq
+)paren
+(brace
+r_int
+r_int
+op_star
+id|ptr
+suffix:semicolon
+id|ptr
+op_assign
+id|radix_tree_lookup
+c_func
+(paren
+op_amp
+id|irq_map
+comma
+id|real_irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+op_eq
+l_int|NULL
+)paren
+r_return
+id|NO_IRQ
+suffix:semicolon
+r_return
+id|ptr
+op_minus
+id|virt_irq_to_real_map
+suffix:semicolon
+)brace
 DECL|function|xics_enable_irq
+r_static
 r_void
 id|xics_enable_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|virq
 )paren
 (brace
-id|u_int
+r_int
+r_int
 id|irq
 suffix:semicolon
 r_int
@@ -834,7 +994,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xics_enable_irq: irq=%x: ibm_set_xive returned %lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_enable_irq: irq=%x: ibm_set_xive &quot;
+l_string|&quot;returned %lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -872,7 +1034,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xics_enable_irq: irq=%x: ibm_int_on returned %lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_enable_irq: irq=%x: ibm_int_on &quot;
+l_string|&quot;returned %lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -883,32 +1047,19 @@ r_return
 suffix:semicolon
 )brace
 )brace
-DECL|function|xics_disable_irq
+DECL|function|xics_disable_real_irq
+r_static
 r_void
-id|xics_disable_irq
+id|xics_disable_real_irq
 c_func
 (paren
-id|u_int
-id|virq
+r_int
+r_int
+id|irq
 )paren
 (brace
-id|u_int
-id|irq
-suffix:semicolon
 r_int
 id|call_status
-suffix:semicolon
-id|virq
-op_sub_assign
-id|XICS_IRQ_OFFSET
-suffix:semicolon
-id|irq
-op_assign
-id|virt_irq_to_real
-c_func
-(paren
-id|virq
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -946,7 +1097,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xics_disable_irq: irq=%x: ibm_int_off returned %lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_disable_real_irq: irq=%x: &quot;
+l_string|&quot;ibm_int_off returned %lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -988,7 +1141,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;xics_disable_irq: irq=%x: ibm_set_xive(0xff) returned %lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_disable_irq: irq=%x: ibm_set_xive(0xff)&quot;
+l_string|&quot; returned %lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -999,12 +1154,48 @@ r_return
 suffix:semicolon
 )brace
 )brace
+DECL|function|xics_disable_irq
+r_static
+r_void
+id|xics_disable_irq
+c_func
+(paren
+r_int
+r_int
+id|virq
+)paren
+(brace
+r_int
+r_int
+id|irq
+suffix:semicolon
+id|virq
+op_sub_assign
+id|XICS_IRQ_OFFSET
+suffix:semicolon
+id|irq
+op_assign
+id|virt_irq_to_real
+c_func
+(paren
+id|virq
+)paren
+suffix:semicolon
+id|xics_disable_real_irq
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+)brace
 DECL|function|xics_end_irq
+r_static
 r_void
 id|xics_end_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 (brace
@@ -1049,11 +1240,13 @@ id|XICS_IRQ_OFFSET
 suffix:semicolon
 )brace
 DECL|function|xics_mask_and_ack_irq
+r_static
 r_void
 id|xics_mask_and_ack_irq
 c_func
 (paren
-id|u_int
+r_int
+r_int
 id|irq
 )paren
 (brace
@@ -1122,7 +1315,8 @@ op_star
 id|regs
 )paren
 (brace
-id|u_int
+r_int
+r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -1130,7 +1324,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|u_int
+r_int
+r_int
 id|vec
 suffix:semicolon
 r_int
@@ -1217,7 +1412,35 @@ c_func
 (paren
 id|vec
 )paren
-op_plus
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+id|NO_IRQ
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Interrupt 0x%x (real) is invalid,&quot;
+l_string|&quot; disabling it.&bslash;n&quot;
+comma
+id|vec
+)paren
+suffix:semicolon
+id|xics_disable_real_irq
+c_func
+(paren
+id|vec
+)paren
+suffix:semicolon
+)brace
+r_else
+id|irq
+op_add_assign
 id|XICS_IRQ_OFFSET
 suffix:semicolon
 )brace
@@ -2300,11 +2523,6 @@ c_func
 r_void
 )paren
 (brace
-id|real_irq_to_virt_map
-(braket
-id|XICS_IPI
-)braket
-op_assign
 id|virt_irq_to_real_map
 (braket
 id|XICS_IPI
@@ -2343,6 +2561,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|xics_set_affinity
+r_static
 r_void
 id|xics_set_affinity
 c_func
@@ -2455,7 +2674,9 @@ id|status
 id|printk
 c_func
 (paren
-l_string|&quot;xics_set_affinity: irq=%d ibm,get-xive returns %ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_set_affinity: irq=%d ibm,get-xive &quot;
+l_string|&quot;returns %ld&bslash;n&quot;
 comma
 id|irq
 comma
@@ -2553,7 +2774,9 @@ id|status
 id|printk
 c_func
 (paren
-l_string|&quot;xics_set_affinity irq=%d ibm,set-xive returns %ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;xics_set_affinity irq=%d ibm,set-xive &quot;
+l_string|&quot;returns %ld&bslash;n&quot;
 comma
 id|irq
 comma

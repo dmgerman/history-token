@@ -124,8 +124,6 @@ DECL|macro|PORT_COUNT
 mdefine_line|#define&t;&t;PORT_COUNT&t;(BOARD_COUNT*16)
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define&t;&t;SERIAL_TYPE_NORMAL&t;1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define&t;&t;SERIAL_TYPE_CALLOUT&t;2
 multiline_comment|/*   character sizes  */
 DECL|macro|ISICOM_CS5
 mdefine_line|#define&t;&t;ISICOM_CS5&t;&t;0x0000

@@ -543,7 +543,9 @@ id|len
 )paren
 (brace
 r_return
-op_complement
+id|csum_fold
+c_func
+(paren
 id|csum_partial
 c_func
 (paren
@@ -552,6 +554,7 @@ comma
 id|len
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace

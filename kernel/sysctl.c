@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
@@ -103,6 +104,13 @@ DECL|variable|minolduid
 r_static
 r_int
 id|minolduid
+suffix:semicolon
+DECL|variable|ngroups_max
+r_static
+r_int
+id|ngroups_max
+op_assign
+id|NGROUPS_MAX
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
 r_extern
@@ -2442,6 +2450,44 @@ comma
 dot
 id|ctl_name
 op_assign
+id|KERN_NGROUPS_MAX
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;ngroups_max&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|ngroups_max
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0444
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
 l_int|0
 )brace
 )brace
@@ -3820,17 +3866,6 @@ id|tmp
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp.nlen
-template_param
-id|CTL_MAXNAME
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -8847,7 +8882,6 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_SYSCTL */
 DECL|function|sys_sysctl
-r_extern
 id|asmlinkage
 r_int
 id|sys_sysctl

@@ -41,22 +41,6 @@ r_int
 id|priv
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x20115
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Scott Bambrough &lt;scottb@rebel.com&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;NWFPE floating point emulator (&quot;
-id|NWFPE_BITS
-l_string|&quot; precision)&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#else
 DECL|macro|fp_send_sig
 mdefine_line|#define fp_send_sig&t;send_sig
@@ -488,6 +472,26 @@ id|module_exit
 c_func
 (paren
 id|fpe_exit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Scott Bambrough &lt;scottb@rebel.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;NWFPE floating point emulator (&quot;
+id|NWFPE_BITS
+l_string|&quot; precision)&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
