@@ -13427,7 +13427,7 @@ suffix:semicolon
 multiline_comment|/* reset counter */
 )brace
 )brace
-id|spin_lock_irq
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -13457,6 +13457,8 @@ id|pkt_dev-&gt;skb-&gt;users
 )paren
 )paren
 suffix:semicolon
+id|retry_now
+suffix:colon
 id|ret
 op_assign
 id|odev
@@ -13494,6 +13496,30 @@ suffix:semicolon
 id|pkt_dev-&gt;tx_bytes
 op_add_assign
 id|pkt_dev-&gt;cur_pkt_size
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|NETDEV_TX_LOCKED
+op_logical_and
+(paren
+id|odev-&gt;features
+op_amp
+id|NETIF_F_LLTX
+)paren
+)paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|retry_now
 suffix:semicolon
 )brace
 r_else
@@ -13620,7 +13646,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

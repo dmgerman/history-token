@@ -4023,7 +4023,7 @@ r_struct
 id|tg3
 (brace
 multiline_comment|/* begin &quot;general, frequently-used members&quot; cacheline section */
-multiline_comment|/* SMP locking strategy:&n;&t; *&n;&t; * lock: Held during all operations except TX packet&n;&t; *       processing.&n;&t; *&n;&t; * dev-&gt;xmit_lock: Held during tg3_start_xmit and tg3_tx&n;&t; *&n;&t; * If you want to shut up all asynchronous processing you must&n;&t; * acquire both locks, &squot;lock&squot; taken before &squot;xmit_lock&squot;.  IRQs must&n;&t; * be disabled to take either lock.&n;&t; */
+multiline_comment|/* SMP locking strategy:&n;&t; *&n;&t; * lock: Held during all operations except TX packet&n;&t; *       processing.&n;&t; *&n;&t; * tx_lock: Held during tg3_start_xmit{,_4gbug} and tg3_tx&n;&t; *&n;&t; * If you want to shut up all asynchronous processing you must&n;&t; * acquire both locks, &squot;lock&squot; taken before &squot;tx_lock&squot;.  IRQs must&n;&t; * be disabled to take &squot;lock&squot; but only softirq disabling is&n;&t; * necessary for acquisition of &squot;tx_lock&squot;.&n;&t; */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -4076,6 +4076,10 @@ suffix:semicolon
 DECL|member|tx_pending
 id|u32
 id|tx_pending
+suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
 suffix:semicolon
 DECL|member|tx_ring
 r_struct
