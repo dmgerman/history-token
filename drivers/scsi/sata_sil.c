@@ -1597,9 +1597,13 @@ op_amp
 id|probe_ent-&gt;node
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|probe_ent-&gt;port_ops
 op_assign

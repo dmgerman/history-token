@@ -1270,9 +1270,13 @@ id|probe_ent
 )paren
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
