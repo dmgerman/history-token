@@ -4080,6 +4080,15 @@ id|tblock
 op_star
 id|target
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|log
+)paren
+multiline_comment|/* jfs_write_inode may call us during read-only mount */
+r_return
+suffix:semicolon
 id|jfs_info
 c_func
 (paren
