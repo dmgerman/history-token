@@ -2160,7 +2160,6 @@ c_func
 (paren
 id|X86_FEATURE_PSE
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 suffix:semicolon
@@ -4294,7 +4293,6 @@ l_int|32
 op_plus
 l_int|31
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -4337,7 +4335,6 @@ c_func
 (paren
 id|X86_FEATURE_APIC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -4346,7 +4343,6 @@ c_func
 (paren
 id|X86_FEATURE_PGE
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -4748,7 +4744,6 @@ c_func
 (paren
 id|X86_FEATURE_K6_MTRR
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -4783,7 +4778,6 @@ c_func
 (paren
 id|X86_FEATURE_XMM
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -4825,7 +4819,6 @@ c_func
 (paren
 id|X86_FEATURE_XMM
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5347,7 +5340,6 @@ l_int|32
 op_plus
 l_int|31
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5364,7 +5356,6 @@ l_int|32
 op_plus
 l_int|24
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -5378,7 +5369,6 @@ l_int|32
 op_plus
 l_int|24
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5387,7 +5377,6 @@ c_func
 (paren
 id|X86_FEATURE_CXMMX
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5583,7 +5572,6 @@ c_func
 (paren
 id|X86_FEATURE_CYRIX_ARR
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5729,7 +5717,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -5849,7 +5836,6 @@ c_func
 (paren
 id|X86_FEATURE_CYRIX_ARR
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -6898,7 +6884,6 @@ l_int|32
 op_plus
 l_int|31
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -6952,7 +6937,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7247,7 +7231,6 @@ c_func
 (paren
 id|X86_FEATURE_CENTAUR_MCR
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7257,7 +7240,6 @@ c_func
 (paren
 id|X86_FEATURE_CX8
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7274,7 +7256,6 @@ c_func
 (paren
 id|X86_FEATURE_3DNOW
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7391,7 +7372,6 @@ c_func
 (paren
 id|X86_FEATURE_CX8
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7400,7 +7380,6 @@ c_func
 (paren
 id|X86_FEATURE_3DNOW
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -7935,7 +7914,6 @@ c_func
 (paren
 id|X86_FEATURE_CX8
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -8530,7 +8508,6 @@ c_func
 (paren
 id|X86_FEATURE_SEP
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -8632,7 +8609,6 @@ c_func
 (paren
 id|X86_FEATURE_HT
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -9585,7 +9561,6 @@ c_func
 (paren
 id|X86_FEATURE_PN
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 op_logical_and
@@ -9635,7 +9610,6 @@ c_func
 (paren
 id|X86_FEATURE_PN
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -10209,6 +10183,9 @@ op_ge
 l_int|0x00000001
 )paren
 (brace
+id|u32
+id|capability
+suffix:semicolon
 id|cpuid
 c_func
 (paren
@@ -10224,11 +10201,15 @@ op_amp
 id|junk
 comma
 op_amp
+id|capability
+)paren
+suffix:semicolon
 id|c-&gt;x86_capability
 (braket
 l_int|0
 )braket
-)paren
+op_assign
+id|capability
 suffix:semicolon
 id|c-&gt;x86
 op_assign
@@ -10364,7 +10345,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU: Before vendor init, caps: %08x %08x %08x, vendor = %d&bslash;n&quot;
+l_string|&quot;CPU: Before vendor init, caps: %08lx %08lx %08lx, vendor = %d&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -10536,7 +10517,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU: After vendor init, caps: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;CPU: After vendor init, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -10572,7 +10553,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -10589,7 +10569,6 @@ c_func
 (paren
 id|X86_FEATURE_FXSR
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -10598,7 +10577,6 @@ c_func
 (paren
 id|X86_FEATURE_XMM
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
@@ -10673,7 +10651,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU:     After generic, caps: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;CPU:     After generic, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -10736,7 +10714,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU:             Common caps: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;CPU:             Common caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|boot_cpu_data.x86_capability
 (braket
@@ -11361,7 +11339,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -11505,7 +11482,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 op_logical_and

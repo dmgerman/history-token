@@ -481,7 +481,6 @@ c_func
 (paren
 id|X86_FEATURE_APIC
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 op_logical_and
