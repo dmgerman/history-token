@@ -2426,7 +2426,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_PCMCIA_PROBE */
-multiline_comment|/*&n; * Locking note: this is the only place where we take&n; * both rsrc_sem and skt_sem.&n; */
+multiline_comment|/*&n; * Locking note: Must be called with skt_sem held!&n; */
 DECL|function|pcmcia_nonstatic_validate_mem
 r_static
 r_void
@@ -2491,13 +2491,6 @@ id|s_data-&gt;rsrc_mem_probe
 op_or_assign
 id|probe_mask
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|s-&gt;skt_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2511,13 +2504,6 @@ c_func
 id|s
 comma
 id|probe_mask
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|s-&gt;skt_sem
 )paren
 suffix:semicolon
 )brace
@@ -3776,6 +3762,20 @@ id|data
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|data
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|socket_data
+)paren
+)paren
 suffix:semicolon
 id|data-&gt;mem_db.next
 op_assign
