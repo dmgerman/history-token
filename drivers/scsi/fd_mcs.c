@@ -5071,17 +5071,16 @@ id|Scsi_Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
 id|info_array
 )paren
 (brace
-r_int
-id|drive
-suffix:semicolon
 r_int
 r_char
 id|buf
@@ -5151,16 +5150,6 @@ r_int
 id|retcode
 suffix:semicolon
 multiline_comment|/* BIOS &gt;= 3.4 for MCA cards */
-id|drive
-op_assign
-id|MINOR
-c_func
-(paren
-id|dev
-)paren
-op_div
-l_int|16
-suffix:semicolon
 multiline_comment|/* This algorithm was provided by Future Domain (much thanks!). */
 id|sizes
 (braket

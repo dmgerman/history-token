@@ -1,13 +1,6 @@
 multiline_comment|/*&n; *  fs/partitions/mac.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;mac.h&quot;
 macro_line|#ifdef CONFIG_ALL_PPC
@@ -83,23 +76,21 @@ id|mac_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|fsec
-comma
-r_int
-id|first_part_minor
 )paren
 (brace
+r_int
+id|slot
+op_assign
+l_int|1
+suffix:semicolon
 id|Sector
 id|sect
 suffix:semicolon
@@ -361,15 +352,13 @@ id|MAC_PARTITION_MAGIC
 )paren
 r_break
 suffix:semicolon
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|first_part_minor
+id|slot
 comma
-id|fsec
-op_plus
 id|be32_to_cpu
 c_func
 (paren
@@ -612,7 +601,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
 op_increment
-id|first_part_minor
+id|slot
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ALL_PPC

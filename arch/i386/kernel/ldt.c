@@ -440,6 +440,13 @@ c_cond
 id|mm-&gt;context.size
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mm
+op_eq
+id|current-&gt;active_mm
+)paren
 id|clear_LDT
 c_func
 (paren

@@ -1,7 +1,6 @@
 macro_line|#ifndef _AHA1740_H
 multiline_comment|/* $Id$&n; *&n; * Header file for the adaptec 1740 driver for Linux&n; *&n; * With minor revisions 3/31/93&n; * Written and (C) 1992,1993 Brad McLean.  See aha1740.c&n; * for more info&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 multiline_comment|/* Eisa Enhanced mode operation - slot locating and addressing */
 DECL|macro|MINEISA
 mdefine_line|#define MINEISA 1   /* I don&squot;t have an EISA Spec to know these ranges, so I */
@@ -441,7 +440,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *&t;ultrastor.c&t;(C) 1991 David B. Gentzel&n; *&t;Low-l
 macro_line|#ifndef _ULTRASTOR_H
 DECL|macro|_ULTRASTOR_H
 mdefine_line|#define _ULTRASTOR_H
-macro_line|#include &lt;linux/kdev_t.h&gt;
 r_int
 id|ultrastor_detect
 c_func
@@ -67,7 +66,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

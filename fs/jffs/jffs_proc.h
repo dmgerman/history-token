@@ -15,8 +15,8 @@ r_int
 id|jffs_register_jffs_proc_dir
 c_func
 (paren
-id|kdev_t
-id|dev
+r_int
+id|mtd
 comma
 r_struct
 id|jffs_control
