@@ -14426,10 +14426,10 @@ op_amp
 id|addr
 )paren
 )paren
-id|ipv6_dev_ac_dec
+id|__ipv6_dev_ac_dec
 c_func
 (paren
-id|ifp-&gt;idev-&gt;dev
+id|ifp-&gt;idev
 comma
 op_amp
 id|addr
