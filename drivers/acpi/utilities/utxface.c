@@ -220,7 +220,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Enable ACPI mode&n;&t; */
+multiline_comment|/* Enable ACPI mode */
 r_if
 c_cond
 (paren
@@ -279,7 +279,50 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Initialize ACPI Event handling&n;&t; *&n;&t; * NOTE: We must have the hardware AND events initialized before we can execute&n;&t; * ANY control methods SAFELY.  Any control method can require ACPI hardware&n;&t; * support, so the hardware MUST be initialized before execution!&n;&t; */
+multiline_comment|/*&n;&t; * Install the default op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * install_address_space_handler interface.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|ACPI_NO_ADDRESS_SPACE_INIT
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ev_install_region_handlers
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Initialize ACPI Event handling (Fixed and General Purpose)&n;&t; *&n;&t; * NOTE: We must have the hardware AND events initialized before we can execute&n;&t; * ANY control methods SAFELY.  Any control method can require ACPI hardware&n;&t; * support, so the hardware MUST be initialized before execution!&n;&t; */
 r_if
 c_cond
 (paren
@@ -302,7 +345,7 @@ l_string|&quot;[Init] Initializing ACPI events&bslash;n&quot;
 suffix:semicolon
 id|status
 op_assign
-id|acpi_ev_initialize
+id|acpi_ev_initialize_events
 (paren
 )paren
 suffix:semicolon
@@ -322,7 +365,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Install the SCI handler, Global Lock handler, and GPE handlers */
+multiline_comment|/* Install the SCI handler and Global Lock handler */
 r_if
 c_cond
 (paren
@@ -339,13 +382,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[Init] Installing SCI/GL/GPE handlers&bslash;n&quot;
+l_string|&quot;[Init] Installing SCI/GL handlers&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 id|status
 op_assign
-id|acpi_ev_handler_initialize
+id|acpi_ev_install_xrupt_handlers
 (paren
 )paren
 suffix:semicolon
@@ -390,7 +433,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_initialize_objects&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install the default op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * install_address_space_handler interface.&n;&t; *&n;&t; * NOTE: This will cause _REG methods to be run.  Any objects accessed&n;&t; * by the _REG methods will be automatically initialized, even if they&n;&t; * contain executable AML (see call to acpi_ns_initialize_objects below).&n;&t; */
+multiline_comment|/*&n;&t; * Run all _REG methods&n;&t; *&n;&t; * NOTE: Any objects accessed&n;&t; * by the _REG methods will be automatically initialized, even if they&n;&t; * contain executable AML (see call to acpi_ns_initialize_objects below).&n;&t; */
 r_if
 c_cond
 (paren
@@ -407,13 +450,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
+l_string|&quot;[Init] Executing _REG op_region methods&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 id|status
 op_assign
-id|acpi_ev_init_address_spaces
+id|acpi_ev_initialize_op_regions
 (paren
 )paren
 suffix:semicolon
@@ -450,7 +493,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[Init] Initializing ACPI Objects&bslash;n&quot;
+l_string|&quot;[Init] Completing Initialization of ACPI Objects&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
