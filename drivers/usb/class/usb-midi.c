@@ -7866,10 +7866,6 @@ c_cond
 id|mdevs
 op_ne
 l_int|NULL
-op_logical_and
-id|devices
-OG
-l_int|0
 )paren
 (brace
 r_for
