@@ -246,10 +246,10 @@ DECL|member|ctrl_wait
 id|wait_queue_head_t
 id|ctrl_wait
 suffix:semicolon
-DECL|member|ctrl_sem
+DECL|member|sem
 r_struct
 id|semaphore
-id|ctrl_sem
+id|sem
 suffix:semicolon
 DECL|member|rx_buff
 r_int
