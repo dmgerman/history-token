@@ -393,12 +393,12 @@ macro_line|#else
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
-DECL|function|pmd_page
 r_extern
 r_inline
 r_int
 r_int
-id|pmd_page
+DECL|function|pmd_page_kernel
+id|pmd_page_kernel
 c_func
 (paren
 id|pmd_t
@@ -406,8 +406,6 @@ id|pmd
 )paren
 (brace
 r_return
-id|PAGE_OFFSET
-op_plus
 (paren
 (paren
 id|pmd_val
@@ -425,8 +423,12 @@ op_minus
 id|PAGE_SHIFT
 )paren
 )paren
+op_plus
+id|PAGE_OFFSET
 suffix:semicolon
 )brace
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;(mem_map + ((pmd_val(pmd) &amp; _PFN_MASK) &gt;&gt; 32))
 DECL|function|pgd_page
 r_extern
 r_inline
@@ -1114,12 +1116,12 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|function|pte_offset
+DECL|function|pte_offset_kernel
 r_extern
 r_inline
 id|pte_t
 op_star
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_t
@@ -1136,7 +1138,7 @@ r_return
 id|pte_t
 op_star
 )paren
-id|pmd_page
+id|pmd_page_kernel
 c_func
 (paren
 op_star
@@ -1158,6 +1160,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel((dir),(addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,addr)&t;pte_offset_kernel((dir),(addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 r_extern
 id|pgd_t
 id|swapper_pg_dir
