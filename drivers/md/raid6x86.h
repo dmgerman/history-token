@@ -49,6 +49,8 @@ id|sarea
 l_int|8
 op_star
 l_int|4
+op_plus
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|cr0
@@ -83,6 +85,8 @@ id|sarea
 l_int|16
 op_star
 l_int|4
+op_plus
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|cr0
@@ -105,9 +109,9 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* On x86-64 the stack is 16-byte aligned */
+multiline_comment|/* On x86-64 the stack *SHOULD* be 16-byte aligned, but currently this&n;   is buggy in the kernel and it&squot;s only 8-byte aligned in places, so&n;   we need to do this anyway.  Sigh. */
 DECL|macro|SAREA
-mdefine_line|#define SAREA(x) (x-&gt;sarea)
+mdefine_line|#define SAREA(x) ((unsigned int *)((((unsigned long)&amp;(x)-&gt;sarea)+15) &amp; ~15))
 macro_line|#else /* __i386__ */
 r_typedef
 r_struct
@@ -154,6 +158,7 @@ DECL|typedef|raid6_sse_save_t
 )brace
 id|raid6_sse_save_t
 suffix:semicolon
+multiline_comment|/* Find the 16-byte aligned save area */
 DECL|macro|SAREA
 mdefine_line|#define SAREA(x) ((unsigned int *)((((unsigned long)&amp;(x)-&gt;sarea)+15) &amp; ~15))
 macro_line|#endif

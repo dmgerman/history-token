@@ -25,6 +25,7 @@ multiline_comment|/*   Created, Feb 2, 2001                                     
 multiline_comment|/*   Ported to ppc64, August 20, 2001                                   */
 multiline_comment|/* End Change Activity                                                  */
 multiline_comment|/************************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/types.h&gt;

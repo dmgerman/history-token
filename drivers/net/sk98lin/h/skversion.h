@@ -20,15 +20,15 @@ id|SysKonnectBuildNumber
 (braket
 )braket
 op_assign
-l_string|&quot;@(#)SK-BUILD: 6.21 PL: 01&quot;
+l_string|&quot;@(#)SK-BUILD: 6.22 PL: 01&quot;
 suffix:semicolon
 macro_line|#endif&t;/* !defined(lint) */
 DECL|macro|BOOT_STRING
-mdefine_line|#define BOOT_STRING&t;&quot;sk98lin: Network Device Driver v6.21&bslash;n&quot; &bslash;&n;&t;&t;&t;&quot;(C)Copyright 1999-2003 Marvell(R).&quot;
+mdefine_line|#define BOOT_STRING&t;&quot;sk98lin: Network Device Driver v6.22&bslash;n&quot; &bslash;&n;&t;&t;&t;&quot;(C)Copyright 1999-2004 Marvell(R).&quot;
 DECL|macro|VER_STRING
-mdefine_line|#define VER_STRING&t;&quot;6.21&quot;
+mdefine_line|#define VER_STRING&t;&quot;6.22&quot;
 DECL|macro|DRIVER_FILE_NAME
 mdefine_line|#define DRIVER_FILE_NAME&t;&quot;sk98lin&quot;
 DECL|macro|DRIVER_REL_DATE
-mdefine_line|#define DRIVER_REL_DATE&t;&t;&quot;Dec-15-2003&quot;
+mdefine_line|#define DRIVER_REL_DATE&t;&t;&quot;Jan-30-2004&quot;
 eof

@@ -518,6 +518,14 @@ id|sclp_conbuf
 op_ne
 l_int|NULL
 op_logical_and
+id|sclp_chars_in_buffer
+c_func
+(paren
+id|sclp_conbuf
+)paren
+op_ne
+l_int|0
+op_logical_and
 op_logical_neg
 id|timer_pending
 c_func

@@ -1201,9 +1201,20 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;ipte %0,%1&quot;
+l_string|&quot;ipte %2,%3&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|ptep
+)paren
 suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+id|ptep
+)paren
+comma
 l_string|&quot;a&quot;
 (paren
 id|pto
@@ -1234,9 +1245,20 @@ id|_PAGE_INVALID
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;ipte %0,%1&quot;
+l_string|&quot;ipte %2,%3&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|ptep
+)paren
 suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+id|ptep
+)paren
+comma
 l_string|&quot;a&quot;
 (paren
 id|ptep

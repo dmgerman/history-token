@@ -378,7 +378,7 @@ l_int|0x29
 suffix:semicolon
 id|desc-&gt;bPwrOn2PwrGood
 op_assign
-l_int|0
+l_int|10
 suffix:semicolon
 multiline_comment|/* FIXME: f(system power) */
 id|desc-&gt;bHubContrCurrent

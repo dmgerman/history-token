@@ -275,7 +275,7 @@ l_string|&quot;=&amp;d&quot;
 id|new_val
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|sem-&gt;count.counter
 )paren
@@ -285,8 +285,15 @@ l_string|&quot;a&quot;
 op_amp
 id|sem-&gt;count.counter
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count.counter
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
