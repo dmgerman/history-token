@@ -2264,7 +2264,7 @@ id|ETH_ZLEN
 id|len
 op_assign
 id|ETH_ZLEN
-suffix:colon
+suffix:semicolon
 id|skb
 op_assign
 id|skb_padto
