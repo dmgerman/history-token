@@ -537,6 +537,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: check if the address is multicast */
 id|seq_printf
 c_func
 (paren
@@ -546,24 +547,13 @@ l_string|&quot;%2X  %2X &quot;
 comma
 id|sk-&gt;sk_type
 comma
-op_logical_neg
-id|llc_mac_null
-c_func
-(paren
-id|llc-&gt;addr.sllc_mmac
-)paren
+l_int|0
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|llc-&gt;dev
-op_logical_and
-id|llc_mac_null
-c_func
-(paren
-id|llc-&gt;addr.sllc_mmac
-)paren
 )paren
 id|llc_ui_format_mac
 c_func
@@ -571,25 +561,6 @@ c_func
 id|seq
 comma
 id|llc-&gt;dev-&gt;dev_addr
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|llc_mac_null
-c_func
-(paren
-id|llc-&gt;addr.sllc_mmac
-)paren
-)paren
-id|llc_ui_format_mac
-c_func
-(paren
-id|seq
-comma
-id|llc-&gt;addr.sllc_mmac
 )paren
 suffix:semicolon
 r_else
@@ -616,7 +587,7 @@ c_func
 (paren
 id|seq
 comma
-id|llc-&gt;addr.sllc_dmac
+id|llc-&gt;daddr.mac
 )paren
 suffix:semicolon
 id|seq_printf
@@ -626,7 +597,7 @@ id|seq
 comma
 l_string|&quot;@%02X %8d %8d %2d %3d %4d&bslash;n&quot;
 comma
-id|llc-&gt;addr.sllc_dsap
+id|llc-&gt;daddr.lsap
 comma
 id|atomic_read
 c_func

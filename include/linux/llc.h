@@ -3,7 +3,7 @@ DECL|macro|__LINUX_LLC_H
 mdefine_line|#define __LINUX_LLC_H
 multiline_comment|/*&n; * IEEE 802.2 User Interface SAPs for Linux, data structures and indicators.&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 DECL|macro|__LLC_SOCK_SIZE__
-mdefine_line|#define __LLC_SOCK_SIZE__ 28&t;/* sizeof(sockaddr_llc), word align. */
+mdefine_line|#define __LLC_SOCK_SIZE__ 16&t;/* sizeof(sockaddr_llc), word align. */
 DECL|struct|sockaddr_llc
 r_struct
 id|sockaddr_llc
@@ -34,36 +34,15 @@ r_char
 id|sllc_ua
 suffix:semicolon
 multiline_comment|/* UA data, only for SOCK_STREAM. */
-DECL|member|sllc_dsap
+DECL|member|sllc_sap
 r_int
 r_char
-id|sllc_dsap
+id|sllc_sap
 suffix:semicolon
-DECL|member|sllc_ssap
+DECL|member|sllc_mac
 r_int
 r_char
-id|sllc_ssap
-suffix:semicolon
-DECL|member|sllc_dmac
-r_int
-r_char
-id|sllc_dmac
-(braket
-id|IFHWADDRLEN
-)braket
-suffix:semicolon
-DECL|member|sllc_smac
-r_int
-r_char
-id|sllc_smac
-(braket
-id|IFHWADDRLEN
-)braket
-suffix:semicolon
-DECL|member|sllc_mmac
-r_int
-r_char
-id|sllc_mmac
+id|sllc_mac
 (braket
 id|IFHWADDRLEN
 )braket
@@ -88,11 +67,9 @@ r_int
 r_char
 )paren
 op_star
-l_int|5
+l_int|4
 op_minus
 id|IFHWADDRLEN
-op_star
-l_int|3
 )braket
 suffix:semicolon
 )brace
