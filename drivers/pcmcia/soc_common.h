@@ -238,6 +238,7 @@ r_struct
 id|soc_pcmcia_socket
 op_star
 comma
+r_const
 id|socket_state_t
 op_star
 )paren
