@@ -6401,7 +6401,6 @@ suffix:semicolon
 DECL|variable|agp_intel_pci_driver
 r_static
 r_struct
-id|__initdata
 id|pci_driver
 id|agp_intel_pci_driver
 op_assign
