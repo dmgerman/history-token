@@ -4079,8 +4079,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-id|__FUNCTION__
-l_string|&quot;: Can&squot;t create protocol sock SLAB caches!&bslash;n&quot;
+l_string|&quot;inet_init: Can&squot;t create protocol sock SLAB caches!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Tell SOCKET that we are alive... &n;&t; */
