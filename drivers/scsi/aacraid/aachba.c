@@ -10,12 +10,15 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR&t;/* For DEVICE_NR() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
 multiline_comment|/*&t;SCSI Commands */
-multiline_comment|/*&t;TODO:  dmb - use the ones defined in include/scsi/scsi.h */
+multiline_comment|/* TODO dmb - use the ones defined in include/scsi/scsi.h*/
 DECL|macro|SS_TEST
 mdefine_line|#define&t;SS_TEST&t;&t;&t;0x00&t;/* Test unit ready */
 DECL|macro|SS_REZERO
@@ -50,21 +53,21 @@ DECL|macro|SS_SEEK
 mdefine_line|#define SS_SEEK&t;&t;&t;0x2B&t;/* Seek */
 multiline_comment|/* values for inqd_pdt: Peripheral device type in plain English */
 DECL|macro|INQD_PDT_DA
-mdefine_line|#define&t;INQD_PDT_DA&t;0x00&t;&t;/* Direct-access (DISK) device */
+mdefine_line|#define&t;INQD_PDT_DA&t;0x00&t;/* Direct-access (DISK) device */
 DECL|macro|INQD_PDT_PROC
-mdefine_line|#define&t;INQD_PDT_PROC&t;0x03&t;&t;/* Processor device */
+mdefine_line|#define&t;INQD_PDT_PROC&t;0x03&t;/* Processor device */
 DECL|macro|INQD_PDT_CHNGR
-mdefine_line|#define&t;INQD_PDT_CHNGR&t;0x08&t;&t;/* Changer (jukebox, scsi2) */
+mdefine_line|#define&t;INQD_PDT_CHNGR&t;0x08&t;/* Changer (jukebox, scsi2) */
 DECL|macro|INQD_PDT_COMM
-mdefine_line|#define&t;INQD_PDT_COMM&t;0x09&t;&t;/* Communication device (scsi2) */
+mdefine_line|#define&t;INQD_PDT_COMM&t;0x09&t;/* Communication device (scsi2) */
 DECL|macro|INQD_PDT_NOLUN2
-mdefine_line|#define&t;INQD_PDT_NOLUN2 0x1f&t;&t;/* Unknown Device (scsi2) */
+mdefine_line|#define&t;INQD_PDT_NOLUN2 0x1f&t;/* Unknown Device (scsi2) */
 DECL|macro|INQD_PDT_NOLUN
-mdefine_line|#define&t;INQD_PDT_NOLUN&t;0x7f&t;&t;/* Logical Unit Not Present */
+mdefine_line|#define&t;INQD_PDT_NOLUN&t;0x7f&t;/* Logical Unit Not Present */
 DECL|macro|INQD_PDT_DMASK
-mdefine_line|#define&t;INQD_PDT_DMASK&t;0x1F&t;&t;/* Peripheral Device Type Mask */
+mdefine_line|#define&t;INQD_PDT_DMASK&t;0x1F&t;/* Peripheral Device Type Mask */
 DECL|macro|INQD_PDT_QMASK
-mdefine_line|#define&t;INQD_PDT_QMASK&t;0xE0&t;&t;/* Peripheral Device Qualifer Mask */
+mdefine_line|#define&t;INQD_PDT_QMASK&t;0xE0&t;/* Peripheral Device Qualifer Mask */
 DECL|macro|TARGET_LUN_TO_CONTAINER
 mdefine_line|#define&t;TARGET_LUN_TO_CONTAINER(target, lun)&t;(target)
 DECL|macro|CONTAINER_TO_TARGET
@@ -77,37 +80,37 @@ DECL|macro|MAX_DRIVER_SG_SEGMENT_COUNT
 mdefine_line|#define MAX_DRIVER_SG_SEGMENT_COUNT 17
 multiline_comment|/*&n; *&t;Sense keys&n; */
 DECL|macro|SENKEY_NO_SENSE
-mdefine_line|#define SENKEY_NO_SENSE      &t;&t;&t;0x00&t;
+mdefine_line|#define SENKEY_NO_SENSE      0x00&t;
 DECL|macro|SENKEY_UNDEFINED
-mdefine_line|#define SENKEY_UNDEFINED     &t;&t;&t;0x01&t;
+mdefine_line|#define SENKEY_UNDEFINED     0x01&t;
 DECL|macro|SENKEY_NOT_READY
-mdefine_line|#define SENKEY_NOT_READY     &t;&t;&t;0x02&t;
+mdefine_line|#define SENKEY_NOT_READY     0x02&t;
 DECL|macro|SENKEY_MEDIUM_ERR
-mdefine_line|#define SENKEY_MEDIUM_ERR    &t;&t;&t;0x03&t;
+mdefine_line|#define SENKEY_MEDIUM_ERR    0x03&t;
 DECL|macro|SENKEY_HW_ERR
-mdefine_line|#define SENKEY_HW_ERR        &t;&t;&t;0x04&t;
+mdefine_line|#define SENKEY_HW_ERR        0x04&t;
 DECL|macro|SENKEY_ILLEGAL
-mdefine_line|#define SENKEY_ILLEGAL       &t;&t;&t;0x05&t;
+mdefine_line|#define SENKEY_ILLEGAL       0x05&t;
 DECL|macro|SENKEY_ATTENTION
-mdefine_line|#define SENKEY_ATTENTION     &t;&t;&t;0x06&t;
+mdefine_line|#define SENKEY_ATTENTION     0x06&t;
 DECL|macro|SENKEY_PROTECTED
-mdefine_line|#define SENKEY_PROTECTED     &t;&t;&t;0x07&t;
+mdefine_line|#define SENKEY_PROTECTED     0x07&t;
 DECL|macro|SENKEY_BLANK
-mdefine_line|#define SENKEY_BLANK         &t;&t;&t;0x08&t;
+mdefine_line|#define SENKEY_BLANK         0x08&t;
 DECL|macro|SENKEY_V_UNIQUE
-mdefine_line|#define SENKEY_V_UNIQUE      &t;&t;&t;0x09&t;
+mdefine_line|#define SENKEY_V_UNIQUE      0x09&t;
 DECL|macro|SENKEY_CPY_ABORT
-mdefine_line|#define SENKEY_CPY_ABORT     &t;&t;&t;0x0A&t;
+mdefine_line|#define SENKEY_CPY_ABORT     0x0A&t;
 DECL|macro|SENKEY_ABORT
-mdefine_line|#define SENKEY_ABORT         &t;&t;&t;0x0B&t;
+mdefine_line|#define SENKEY_ABORT         0x0B&t;
 DECL|macro|SENKEY_EQUAL
-mdefine_line|#define SENKEY_EQUAL         &t;&t;&t;0x0C&t;
+mdefine_line|#define SENKEY_EQUAL         0x0C&t;
 DECL|macro|SENKEY_VOL_OVERFLOW
-mdefine_line|#define SENKEY_VOL_OVERFLOW  &t;&t;&t;0x0D&t;
+mdefine_line|#define SENKEY_VOL_OVERFLOW  0x0D&t;
 DECL|macro|SENKEY_MISCOMP
-mdefine_line|#define SENKEY_MISCOMP       &t;&t;&t;0x0E&t;
+mdefine_line|#define SENKEY_MISCOMP       0x0E&t;
 DECL|macro|SENKEY_RESERVED
-mdefine_line|#define SENKEY_RESERVED      &t;&t;&t;0x0F&t;
+mdefine_line|#define SENKEY_RESERVED      0x0F&t;
 multiline_comment|/*&n; *&t;Sense codes&n; */
 DECL|macro|SENCODE_NO_SENSE
 mdefine_line|#define SENCODE_NO_SENSE                        0x00
@@ -288,7 +291,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* A valid bit of one indicates that the information  */
-multiline_comment|/* field contains valid information as defined in the&n;&t; * SCSI-2 Standard.&n;&t; */
+multiline_comment|/* field contains valid information as defined in the&n;&t;&t;&t;&t; * SCSI-2 Standard.&n;&t;&t;&t;&t; */
 DECL|member|segment_number
 id|u8
 id|segment_number
@@ -427,6 +430,19 @@ id|sense_data
 (braket
 id|MAXIMUM_NUM_CONTAINERS
 )braket
+suffix:semicolon
+r_static
+r_void
+id|get_sd_devname
+c_func
+(paren
+r_int
+id|disknum
+comma
+r_char
+op_star
+id|buffer
+)paren
 suffix:semicolon
 r_static
 r_int
@@ -649,7 +665,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ProbeContainers: SendFIB failed.&bslash;n&quot;
+l_string|&quot;aac_get_containers: SendFIB failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -694,6 +710,21 @@ id|vol
 )paren
 op_ne
 id|CT_NONE
+)paren
+op_logical_and
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|dresp-&gt;mnt
+(braket
+l_int|0
+)braket
+dot
+id|state
+)paren
+op_ne
+id|FSCS_HIDDEN
 )paren
 )paren
 (brace
@@ -782,8 +813,10 @@ c_func
 id|dresp-&gt;count
 )paren
 )paren
+(brace
 r_break
 suffix:semicolon
+)brace
 )brace
 id|fib_free
 c_func
@@ -1001,6 +1034,21 @@ id|vol
 op_ne
 id|CT_NONE
 )paren
+op_logical_and
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|dresp-&gt;mnt
+(braket
+l_int|0
+)braket
+dot
+id|state
+)paren
+op_ne
+id|FSCS_HIDDEN
+)paren
 )paren
 (brace
 id|fsa_dev_ptr-&gt;valid
@@ -1195,7 +1243,7 @@ comma
 l_string|&quot;Unknown&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Function: setinqstr&n; *&n; * Arguments: [1] pointer to void [1] int&n; *&n; * Purpose: Sets SCSI inquiry data strings for vendor, product&n; * and revision level. Allows strings to be set in platform dependent&n; * files instead of in OS dependent driver source.&n; */
+multiline_comment|/* Function: setinqstr&n; *&n; * Arguments: [1] pointer to void [1] int&n; *&n; * Purpose: Sets SCSI inquiry data strings for vendor, product&n; * and revision level. Allows strings to be set in platform dependant&n; * files instead of in OS dependant driver source.&n; */
 DECL|function|setinqstr
 r_static
 r_void
@@ -1570,7 +1618,8 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 comma
 id|cpu_flags
 )paren
@@ -1586,7 +1635,8 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 comma
 id|cpu_flags
 )paren
@@ -1863,10 +1913,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|dev-&gt;pae_support
-op_assign
-l_int|0
-suffix:semicolon
 id|dev-&gt;nondasd_support
 op_assign
 l_int|0
@@ -1874,9 +1920,67 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BITS_PER_LONG
-op_ge
-l_int|64
+id|dev-&gt;adapter_info.options
+op_amp
+id|AAC_OPT_NONDASD
+)paren
+(brace
+singleline_comment|//&t;&t;dev-&gt;nondasd_support = 1;
+singleline_comment|// dmb - temporarily disable nondasd
+)brace
+r_if
+c_cond
+(paren
+id|nondasd
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|dev-&gt;nondasd_support
+op_assign
+(paren
+id|nondasd
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|dev-&gt;nondasd_support
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s%d: Non-DASD support enabled&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;id
+)paren
+suffix:semicolon
+)brace
+id|dev-&gt;pae_support
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+OG
+l_int|4
+)paren
 op_logical_and
 (paren
 id|dev-&gt;adapter_info.options
@@ -1885,31 +1989,29 @@ id|AAC_OPT_SGMAP_HOST64
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s%d: 64 Bit PAE enabled&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dev-&gt;id
-)paren
-suffix:semicolon
 id|dev-&gt;pae_support
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* TODO - dmb temporary until fw can set this bit  */
+r_if
+c_cond
+(paren
+id|paemode
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|dev-&gt;pae_support
 op_assign
 (paren
-id|BITS_PER_LONG
-op_ge
-l_int|64
+id|paemode
+op_ne
+l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1929,20 +2031,30 @@ comma
 id|dev-&gt;id
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
+id|pci_set_dma_mask
+c_func
 (paren
-id|dev-&gt;adapter_info.options
-op_amp
-id|AAC_OPT_NONDASD
+id|dev-&gt;pdev
+comma
+(paren
+id|dma_addr_t
 )paren
-(brace
-id|dev-&gt;nondasd_support
-op_assign
-l_int|1
+l_int|0xFFFFFFFFFFFFFFFFULL
+)paren
 suffix:semicolon
 )brace
+id|fib_complete
+c_func
+(paren
+id|fibptr
+)paren
+suffix:semicolon
+id|fib_free
+c_func
+(paren
+id|fibptr
+)paren
+suffix:semicolon
 r_return
 id|rcode
 suffix:semicolon
@@ -1998,16 +2110,16 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 comma
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 )paren
 suffix:semicolon
 id|lba
@@ -2044,7 +2156,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;read_callback[cpu %d]: lba = %d, t = %ld.&bslash;n&quot;
+l_string|&quot;read_callback[cpu %d]: lba = %u, t = %ld.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -2109,7 +2221,13 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-id|scsicmd-&gt;SCp.dma_handle
+(paren
+id|dma_addr_t
+)paren
+(paren
+id|ulong
+)paren
+id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -2279,16 +2397,16 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cid
 op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 comma
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 )paren
 suffix:semicolon
 id|lba
@@ -2325,7 +2443,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;write_callback[cpu %d]: lba = %d, t = %ld.&bslash;n&quot;
+l_string|&quot;write_callback[cpu %d]: lba = %u, t = %ld.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -2390,7 +2508,13 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-id|scsicmd-&gt;SCp.dma_handle
+(paren
+id|dma_addr_t
+)paren
+(paren
+id|ulong
+)paren
+id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -2551,7 +2675,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get block address and transfer length&n;&t; */
 r_if
@@ -3146,7 +3270,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get block address and transfer length&n;&t; */
 r_if
@@ -3278,7 +3402,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;aac_write[cpu %d]: lba = %lu, t = %ld.&bslash;n&quot;
+l_string|&quot;aac_write[cpu %d]: lba = %u, t = %ld.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -3556,11 +3680,13 @@ op_star
 l_int|1024
 )paren
 )paren
+(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|aac_build_sg
 c_func
 (paren
@@ -3731,7 +3857,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cardtype
 op_assign
@@ -3741,23 +3867,23 @@ id|fsa_dev_ptr
 op_assign
 id|fsa_dev
 (braket
-id|scsicmd-&gt;device-&gt;host-&gt;unique_id
+id|scsicmd-&gt;host-&gt;unique_id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;If the bus, target or lun is out of range, return fail&n;&t; *&t;Test does not apply to ID 16, the pseudo id for the controller&n;&t; *&t;itself.&n;&t; */
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 op_ne
-id|scsicmd-&gt;device-&gt;host-&gt;this_id
+id|scsicmd-&gt;host-&gt;this_id
 )paren
 (brace
 r_if
 c_cond
 (paren
 (paren
-id|scsicmd-&gt;device-&gt;channel
+id|scsicmd-&gt;channel
 op_eq
 l_int|0
 )paren
@@ -3767,13 +3893,13 @@ r_if
 c_cond
 (paren
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 op_ge
 id|AAC_MAX_TARGET
 )paren
 op_logical_or
 (paren
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -3800,9 +3926,9 @@ op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 comma
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *&t;If the target container doesn&squot;t exist, it may have&n;&t;&t;&t; *&t;been newly created&n;&t;&t;&t; */
@@ -3838,7 +3964,8 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 id|probe_container
@@ -3852,7 +3979,8 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 r_if
@@ -4073,7 +4201,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;INQUIRY command, ID: %d.&bslash;n&quot;
 comma
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 )paren
 )paren
 suffix:semicolon
@@ -4105,11 +4233,26 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* claim compliance to SCSI-2 */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strstr
+c_func
+(paren
+id|UTS_RELEASE
+comma
+l_string|&quot;BOOT&quot;
+)paren
+)paren
+(brace
+singleline_comment|// If this is not a RH driver disk kernel
 id|inq_data_ptr-&gt;inqd_dtq
 op_assign
 l_int|0x80
 suffix:semicolon
 multiline_comment|/* set RMB bit to one indicating that the medium is removable */
+)brace
 id|inq_data_ptr-&gt;inqd_rdf
 op_assign
 l_int|2
@@ -4148,9 +4291,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 op_eq
-id|scsicmd-&gt;device-&gt;host-&gt;this_id
+id|scsicmd-&gt;host-&gt;this_id
 )paren
 id|inq_data_ptr-&gt;inqd_pdt
 op_assign
@@ -4619,25 +4762,19 @@ multiline_comment|/*&n;&t;&t;&t; *&t;Hack to keep track of ordinal number of the
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsicmd-&gt;request-&gt;rq_disk
-)paren
-id|memcpy
-c_func
-(paren
-id|fsa_dev_ptr-&gt;devname
+id|fsa_dev_ptr-&gt;devno
 (braket
 id|cid
 )braket
-comma
-id|scsicmd-&gt;request-&gt;rq_disk-&gt;disk_name
-comma
-l_int|8
+op_assign
+id|DEVICE_NR
+c_func
+(paren
+id|scsicmd-&gt;request.rq_dev
 )paren
 suffix:semicolon
 id|ret
@@ -4653,7 +4790,8 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -4668,7 +4806,8 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 id|ret
@@ -4684,7 +4823,8 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -4859,11 +4999,7 @@ r_if
 c_cond
 (paren
 id|qd.cnum
-OL
-l_int|0
-op_logical_or
-id|qd.cnum
-op_ge
+template_param
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return
@@ -4924,15 +5060,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fsa_dev_ptr-&gt;devname
+id|fsa_dev_ptr-&gt;devno
 (braket
 id|qd.cnum
 )braket
-(braket
-l_int|0
-)braket
 op_eq
-l_char|&squot;&bslash;0&squot;
+op_minus
+l_int|1
 )paren
 id|qd.unmapped
 op_assign
@@ -4943,17 +5077,15 @@ id|qd.unmapped
 op_assign
 l_int|0
 suffix:semicolon
-id|strncpy
+id|get_sd_devname
 c_func
 (paren
-id|qd.name
-comma
-id|fsa_dev_ptr-&gt;devname
+id|fsa_dev_ptr-&gt;devno
 (braket
 id|qd.cnum
 )braket
 comma
-l_int|8
+id|qd.name
 )paren
 suffix:semicolon
 r_if
@@ -4981,6 +5113,103 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|get_sd_devname
+r_static
+r_void
+id|get_sd_devname
+c_func
+(paren
+r_int
+id|disknum
+comma
+r_char
+op_star
+id|buffer
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|disknum
+OL
+l_int|0
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|disknum
+OL
+l_int|26
+)paren
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;sd%c&quot;
+comma
+l_char|&squot;a&squot;
+op_plus
+id|disknum
+)paren
+suffix:semicolon
+r_else
+(brace
+r_int
+r_int
+id|min1
+suffix:semicolon
+r_int
+r_int
+id|min2
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * For larger numbers of disks, we need to go to a new&n;&t;&t; * naming scheme.&n;&t;&t; */
+id|min1
+op_assign
+id|disknum
+op_div
+l_int|26
+suffix:semicolon
+id|min2
+op_assign
+id|disknum
+op_mod
+l_int|26
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;sd%c%c&quot;
+comma
+l_char|&squot;a&squot;
+op_plus
+id|min1
+op_minus
+l_int|1
+comma
+l_char|&squot;a&squot;
+op_plus
+id|min2
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|force_delete_disk
 r_static
@@ -5040,7 +5269,7 @@ r_if
 c_cond
 (paren
 id|dd.cnum
-op_ge
+OG
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return
@@ -5125,7 +5354,7 @@ r_if
 c_cond
 (paren
 id|dd.cnum
-op_ge
+OG
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return
@@ -5155,15 +5384,13 @@ id|dd.cnum
 op_assign
 l_int|0
 suffix:semicolon
-id|fsa_dev_ptr-&gt;devname
+id|fsa_dev_ptr-&gt;devno
 (braket
 id|dd.cnum
 )braket
-(braket
-l_int|0
-)braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -5294,7 +5521,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -5376,7 +5603,10 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-id|scsicmd-&gt;SCp.dma_handle
+(paren
+id|ulong
+)paren
+id|scsicmd-&gt;SCp.ptr
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -5463,11 +5693,15 @@ multiline_comment|/*&n;&t; * Next check the srb status&n;&t; */
 r_switch
 c_cond
 (paren
+(paren
 id|le32_to_cpu
 c_func
 (paren
 id|srbreply-&gt;srb_status
 )paren
+)paren
+op_amp
+l_int|0x3f
 )paren
 (brace
 r_case
@@ -5493,27 +5727,84 @@ id|INQUIRY
 id|u8
 id|b
 suffix:semicolon
-multiline_comment|/* We can&squot;t expose disk devices because we can&squot;t tell whether they&n;&t;&t;&t; * are the raw container drives or stand alone drives&n;&t;&t;&t; */
+id|u8
+id|b1
+suffix:semicolon
+multiline_comment|/* We can&squot;t expose disk devices because we can&squot;t tell whether they&n;&t;&t;&t; * are the raw container drives or stand alone drives.  If they have&n;&t;&t;&t; * the removable bit set then we should expose them though.&n;&t;&t;&t; */
 id|b
 op_assign
+(paren
 op_star
 (paren
 id|u8
 op_star
 )paren
 id|scsicmd-&gt;buffer
+)paren
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|b1
+op_assign
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|scsicmd-&gt;buffer
+)paren
+(braket
+l_int|1
+)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|b
+op_eq
+id|TYPE_TAPE
+op_logical_or
+id|b
+op_eq
+id|TYPE_WORM
+op_logical_or
+id|b
+op_eq
+id|TYPE_ROM
+op_logical_or
+id|b
+op_eq
+id|TYPE_MOD
+op_logical_or
+id|b
+op_eq
+id|TYPE_MEDIUM_CHANGER
+op_logical_or
 (paren
 id|b
-op_amp
-l_int|0x0f
-)paren
 op_eq
 id|TYPE_DISK
+op_logical_and
+(paren
+id|b1
+op_amp
+l_int|0x80
 )paren
+)paren
+)paren
+(brace
+id|scsicmd-&gt;result
+op_assign
+id|DID_OK
+op_lshift
+l_int|16
+op_or
+id|COMMAND_COMPLETE
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
+r_else
 (brace
 id|scsicmd-&gt;result
 op_assign
@@ -5614,6 +5905,106 @@ l_int|8
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|INQUIRY
+suffix:colon
+(brace
+id|u8
+id|b
+suffix:semicolon
+id|u8
+id|b1
+suffix:semicolon
+multiline_comment|/* We can&squot;t expose disk devices because we can&squot;t tell whether they&n;&t;&t;&t;* are the raw container drives or stand alone drives&n;&t;&t;&t;*/
+id|b
+op_assign
+(paren
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|scsicmd-&gt;buffer
+)paren
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|b1
+op_assign
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|scsicmd-&gt;buffer
+)paren
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|b
+op_eq
+id|TYPE_TAPE
+op_logical_or
+id|b
+op_eq
+id|TYPE_WORM
+op_logical_or
+id|b
+op_eq
+id|TYPE_ROM
+op_logical_or
+id|b
+op_eq
+id|TYPE_MOD
+op_logical_or
+id|b
+op_eq
+id|TYPE_MEDIUM_CHANGER
+op_logical_or
+(paren
+id|b
+op_eq
+id|TYPE_DISK
+op_logical_and
+(paren
+id|b1
+op_amp
+l_int|0x80
+)paren
+)paren
+)paren
+(brace
+id|scsicmd-&gt;result
+op_assign
+id|DID_OK
+op_lshift
+l_int|16
+op_or
+id|COMMAND_COMPLETE
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
+r_else
+(brace
+id|scsicmd-&gt;result
+op_assign
+id|DID_NO_CONNECT
+op_lshift
+l_int|16
+op_or
+id|COMMAND_COMPLETE
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 id|scsicmd-&gt;result
@@ -5815,7 +6206,15 @@ macro_line|#ifdef AAC_DETAILED_STATUS_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;aacraid: SRB ERROR (%s)&bslash;n&quot;
+l_string|&quot;aacraid: SRB ERROR(%u) %s scsi cmd 0x%x - scsi status 0x%x&bslash;n&quot;
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|srbreply-&gt;srb_status
+op_amp
+l_int|0x3f
+)paren
 comma
 id|aac_get_status_string
 c_func
@@ -5825,6 +6224,17 @@ c_func
 (paren
 id|srbreply-&gt;srb_status
 )paren
+)paren
+comma
+id|scsicmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|srbreply-&gt;scsi_status
 )paren
 )paren
 suffix:semicolon
@@ -5857,6 +6267,10 @@ l_int|0x02
 singleline_comment|// Check Condition
 r_int
 id|len
+suffix:semicolon
+id|scsicmd-&gt;result
+op_or_assign
+id|CHECK_CONDITION
 suffix:semicolon
 id|len
 op_assign
@@ -5967,14 +6381,17 @@ suffix:semicolon
 id|u32
 id|flag
 suffix:semicolon
+id|u32
+id|timeout
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 OG
 l_int|15
 op_logical_or
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 OG
 l_int|7
 )paren
@@ -6002,7 +6419,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 r_switch
 c_cond
@@ -6119,7 +6536,7 @@ c_func
 id|aac_logical_to_phys
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;channel
+id|scsicmd-&gt;channel
 )paren
 )paren
 suffix:semicolon
@@ -6128,7 +6545,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;id
+id|scsicmd-&gt;target
 )paren
 suffix:semicolon
 id|srbcmd-&gt;lun
@@ -6136,7 +6553,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;lun
+id|scsicmd-&gt;lun
 )paren
 suffix:semicolon
 id|srbcmd-&gt;flags
@@ -6147,15 +6564,38 @@ c_func
 id|flag
 )paren
 suffix:semicolon
+id|timeout
+op_assign
+(paren
+id|scsicmd-&gt;timeout
+op_minus
+id|jiffies
+)paren
+op_div
+id|HZ
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|timeout
+op_eq
+l_int|0
+)paren
+(brace
+id|timeout
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|srbcmd-&gt;timeout
 op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|0
+id|timeout
 )paren
 suffix:semicolon
-singleline_comment|// timeout not used
+singleline_comment|// timeout in seconds
 id|srbcmd-&gt;retry_limit
 op_assign
 id|cpu_to_le32
@@ -6483,7 +6923,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 singleline_comment|// Get rid of old data
 id|psg-&gt;count
@@ -6754,8 +7194,12 @@ c_func
 id|scsicmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsicmd-&gt;SCp.dma_handle
+id|scsicmd-&gt;SCp.ptr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|addr
 suffix:semicolon
 id|byte_count
@@ -6805,7 +7249,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|scsicmd-&gt;host-&gt;hostdata
 suffix:semicolon
 singleline_comment|// Get rid of old data
 id|psg-&gt;count
@@ -7161,8 +7605,12 @@ c_func
 id|scsicmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsicmd-&gt;SCp.dma_handle
+id|scsicmd-&gt;SCp.ptr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|addr
 suffix:semicolon
 id|byte_count
