@@ -14,8 +14,6 @@ DECL|macro|EDDPARMSIZE
 mdefine_line|#define EDDPARMSIZE 74
 DECL|macro|CHECKEXTENSIONSPRESENT
 mdefine_line|#define CHECKEXTENSIONSPRESENT 0x41
-DECL|macro|EXTENDEDREAD
-mdefine_line|#define EXTENDEDREAD 0x42
 DECL|macro|GETDEVICEPARAMETERS
 mdefine_line|#define GETDEVICEPARAMETERS 0x48
 DECL|macro|LEGACYGETDEVICEPARAMETERS
@@ -24,16 +22,10 @@ DECL|macro|EDDMAGIC1
 mdefine_line|#define EDDMAGIC1 0x55AA
 DECL|macro|EDDMAGIC2
 mdefine_line|#define EDDMAGIC2 0xAA55
-DECL|macro|FIXEDDISKSUBSET
-mdefine_line|#define FIXEDDISKSUBSET 0x0001
-DECL|macro|GET_DEVICE_PARAMETERS_SUPPORTED
-mdefine_line|#define GET_DEVICE_PARAMETERS_SUPPORTED 0x0007
 DECL|macro|READ_SECTORS
 mdefine_line|#define READ_SECTORS 0x02         /* int13 AH=0x02 is READ_SECTORS command */
 DECL|macro|EDD_MBR_SIG_OFFSET
 mdefine_line|#define EDD_MBR_SIG_OFFSET 0x1B8  /* offset of signature in the MBR */
-DECL|macro|EDD_DEV_ADDR_PACKET_LEN
-mdefine_line|#define EDD_DEV_ADDR_PACKET_LEN 0x10  /* for int13 fn42 */
 DECL|macro|EDD_MBR_SIG_BUF
 mdefine_line|#define EDD_MBR_SIG_BUF    0x290  /* addr in boot params */
 DECL|macro|EDD_MBR_SIG_MAX
