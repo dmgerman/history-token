@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_IOERROR_HANDLING_H
 DECL|macro|_ASM_IA64_SN_IOERROR_HANDLING_H
 mdefine_line|#define _ASM_IA64_SN_IOERROR_HANDLING_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#if __KERNEL__
@@ -406,7 +405,7 @@ id|GRAPH_SUCCESS
 (brace
 id|error_env
 op_assign
-id|snia_kmem_zalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -414,7 +413,7 @@ r_sizeof
 id|label_t
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* Unable to allocate memory for jum buffer. This should &n;&t;&t; * be a very rare occurrence.&t;&t;&t;&t; &n;&t;&t; */
@@ -427,6 +426,19 @@ id|error_env
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|error_env
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|label_t
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Store the jump buffer information on the vertex.*/
 r_if

@@ -1,8 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PCI_DEFS_H
-DECL|macro|_ASM_SN_PCI_PCI_DEFS_H
-mdefine_line|#define _ASM_SN_PCI_PCI_DEFS_H
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef _ASM_IA64_SN_PCI_PCI_DEFS_H
+DECL|macro|_ASM_IA64_SN_PCI_PCI_DEFS_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PCI_DEFS_H
 multiline_comment|/* defines for the PCI bus architecture */
 multiline_comment|/* Bit layout of address fields for Type-1&n; * Configuration Space cycles.&n; */
 DECL|macro|PCI_TYPE0_SLOT_MASK
@@ -311,7 +310,8 @@ DECL|macro|PCI_OUTW
 mdefine_line|#define PCI_OUTW(x,y)       (*((volatile int*)x) = y)
 macro_line|#else
 r_extern
-id|uint
+r_int
+r_int
 id|pci_read
 c_func
 (paren
@@ -460,35 +460,35 @@ r_uint16
 id|status
 suffix:semicolon
 DECL|member|rev
-id|uchar_t
+r_uint8
 id|rev
 suffix:semicolon
 DECL|member|prog_if
-id|uchar_t
+r_uint8
 id|prog_if
 suffix:semicolon
 DECL|member|sub_class
-id|uchar_t
+r_uint8
 id|sub_class
 suffix:semicolon
 DECL|member|class
-id|uchar_t
+r_uint8
 r_class
 suffix:semicolon
 DECL|member|line_size
-id|uchar_t
+r_uint8
 id|line_size
 suffix:semicolon
 DECL|member|lt
-id|uchar_t
+r_uint8
 id|lt
 suffix:semicolon
 DECL|member|hdr_type
-id|uchar_t
+r_uint8
 id|hdr_type
 suffix:semicolon
 DECL|member|bist
-id|uchar_t
+r_uint8
 id|bist
 suffix:semicolon
 DECL|member|bar
@@ -522,19 +522,19 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|member|int_line
-id|uchar_t
+r_uint8
 id|int_line
 suffix:semicolon
 DECL|member|int_pin
-id|uchar_t
+r_uint8
 id|int_pin
 suffix:semicolon
 DECL|member|min_gnt
-id|uchar_t
+r_uint8
 id|min_gnt
 suffix:semicolon
 DECL|member|max_lat
-id|uchar_t
+r_uint8
 id|max_lat
 suffix:semicolon
 DECL|typedef|pci_cfg_t
@@ -565,35 +565,35 @@ r_uint16
 id|status
 suffix:semicolon
 DECL|member|rev
-id|uchar_t
+r_uint8
 id|rev
 suffix:semicolon
 DECL|member|prog_if
-id|uchar_t
+r_uint8
 id|prog_if
 suffix:semicolon
 DECL|member|sub_class
-id|uchar_t
+r_uint8
 id|sub_class
 suffix:semicolon
 DECL|member|class
-id|uchar_t
+r_uint8
 r_class
 suffix:semicolon
 DECL|member|line_size
-id|uchar_t
+r_uint8
 id|line_size
 suffix:semicolon
 DECL|member|lt
-id|uchar_t
+r_uint8
 id|lt
 suffix:semicolon
 DECL|member|hdr_type
-id|uchar_t
+r_uint8
 id|hdr_type
 suffix:semicolon
 DECL|member|bist
-id|uchar_t
+r_uint8
 id|bist
 suffix:semicolon
 DECL|member|bar
@@ -604,27 +604,27 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|member|pri_bus_num
-id|uchar_t
+r_uint8
 id|pri_bus_num
 suffix:semicolon
 DECL|member|snd_bus_num
-id|uchar_t
+r_uint8
 id|snd_bus_num
 suffix:semicolon
 DECL|member|sub_bus_num
-id|uchar_t
+r_uint8
 id|sub_bus_num
 suffix:semicolon
 DECL|member|slt
-id|uchar_t
+r_uint8
 id|slt
 suffix:semicolon
 DECL|member|io_base
-id|uchar_t
+r_uint8
 id|io_base
 suffix:semicolon
 DECL|member|io_limit
-id|uchar_t
+r_uint8
 id|io_limit
 suffix:semicolon
 DECL|member|snd_status
@@ -672,11 +672,11 @@ r_uint32
 id|exp_rom
 suffix:semicolon
 DECL|member|int_line
-id|uchar_t
+r_uint8
 id|int_line
 suffix:semicolon
 DECL|member|int_pin
-id|uchar_t
+r_uint8
 id|int_pin
 suffix:semicolon
 DECL|member|ppb_control
@@ -807,11 +807,11 @@ r_struct
 id|cap_pcix_type0_s
 (brace
 DECL|member|pcix_cap_id
-id|uchar_t
+r_uint8
 id|pcix_cap_id
 suffix:semicolon
 DECL|member|pcix_cap_nxt
-id|uchar_t
+r_uint8
 id|pcix_cap_nxt
 suffix:semicolon
 DECL|member|pcix_type0_command
@@ -827,5 +827,5 @@ DECL|typedef|cap_pcix_type0_t
 id|cap_pcix_type0_t
 suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
-macro_line|#endif /* _ASM_SN_PCI_PCI_DEFS_H */
+macro_line|#endif /* _ASM_IA64_SN_PCI_PCI_DEFS_H */
 eof

@@ -1,13 +1,14 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
@@ -465,9 +466,11 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * module_add_node&n; *&n; *   The first time a new module number is seen, a module structure is&n; *   inserted into the module list in order sorted by module number&n; *   and the structure is initialized.&n; *&n; *   The node number is added to the list of nodes in the module.&n; */
-DECL|function|module_add_node
+r_static
 id|module_t
 op_star
+id|__init
+DECL|function|module_add_node
 id|module_add_node
 c_func
 (paren
@@ -591,7 +594,7 @@ op_amp
 id|m-&gt;lock
 )paren
 suffix:semicolon
-id|mutex_init_locked
+id|init_MUTEX
 c_func
 (paren
 op_amp
@@ -678,8 +681,10 @@ r_return
 id|m
 suffix:semicolon
 )brace
-DECL|function|module_probe_snum
+r_static
 r_int
+id|__init
+DECL|function|module_probe_snum
 id|module_probe_snum
 c_func
 (paren
@@ -943,6 +948,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__init
 DECL|function|io_module_init
 id|io_module_init
 c_func

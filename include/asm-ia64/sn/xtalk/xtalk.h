@@ -1,14 +1,16 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
-macro_line|#ifndef _ASM_SN_XTALK_XTALK_H
-DECL|macro|_ASM_SN_XTALK_XTALK_H
-mdefine_line|#define _ASM_SN_XTALK_XTALK_H
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XTALK_H
+DECL|macro|_ASM_IA64_SN_XTALK_XTALK_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XTALK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &quot;asm/sn/sgi.h&quot;
+macro_line|#endif
 multiline_comment|/*&n; * xtalk.h -- platform-independent crosstalk interface&n; */
 multiline_comment|/*&n; * User-level device driver visible types&n; */
 DECL|typedef|xwidgetnum_t
 r_typedef
-r_int
+r_char
 id|xwidgetnum_t
 suffix:semicolon
 multiline_comment|/* xtalk widget number  (0..15) */
@@ -1107,5 +1109,5 @@ id|func
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_XTALK_XTALK_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_XTALK_XTALK_H */
 eof

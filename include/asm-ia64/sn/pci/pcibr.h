@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PCIBR_H
-DECL|macro|_ASM_SN_PCI_PCIBR_H
-mdefine_line|#define _ASM_SN_PCI_PCIBR_H
+macro_line|#ifndef _ASM_IA64_SN_PCI_PCIBR_H
+DECL|macro|_ASM_IA64_SN_PCI_PCIBR_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PCIBR_H
 macro_line|#if defined(__KERNEL__)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
@@ -1010,7 +1010,7 @@ id|iopaddr_t
 id|resp_bss_devio_bssd_base
 suffix:semicolon
 DECL|member|resp_bss_device
-id|bridgereg_t
+r_uint64
 id|resp_bss_device
 suffix:semicolon
 DECL|member|resp_bss_pmu_uctr
@@ -1076,19 +1076,19 @@ r_int
 id|resp_bs_rrb_res
 suffix:semicolon
 DECL|member|resp_b_resp
-id|bridgereg_t
+r_uint64
 id|resp_b_resp
 suffix:semicolon
 DECL|member|resp_b_int_device
-id|bridgereg_t
+r_uint64
 id|resp_b_int_device
 suffix:semicolon
 DECL|member|resp_b_int_enable
-id|bridgereg_t
+r_uint64
 id|resp_b_int_enable
 suffix:semicolon
 DECL|member|resp_b_int_host
-id|bridgereg_t
+r_uint64
 id|resp_b_int_host
 suffix:semicolon
 DECL|member|resp_p_int_enable
@@ -1259,5 +1259,5 @@ DECL|macro|PCI_SLOT_RBAR_ALLOC_ERR
 mdefine_line|#define PCI_SLOT_RBAR_ALLOC_ERR  29     /* slot PCI-X RBAR alloc error */
 multiline_comment|/* ERANGE                        34    */
 multiline_comment|/* EUNATCH                       42    */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIBR_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_PCI_PCIBR_H */
 eof

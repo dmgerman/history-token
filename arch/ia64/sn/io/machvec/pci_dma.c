@@ -1,21 +1,5 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000,2002-2003 Silicon Graphics, Inc. All rights reserved.&n; *&n; * Routines for PCI DMA mapping.  See Documentation/DMA-mapping.txt for&n; * a description of how these routines should be used.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
-macro_line|#include &lt;asm/sn/driver.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 multiline_comment|/*&n; * For ATE allocations&n; */
 id|pciio_dmamap_t
@@ -269,7 +253,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sn_pci_alloc_consistent - allocate memory for coherent DMA&n; * @hwdev: device to allocate for&n; * @size: size of the region&n; * @dma_handle: DMA (bus) address&n; *&n; * pci_alloc_consistent() returns a pointer to a memory region suitable for&n; * coherent DMA traffic to/from a PCI device.  On SN platforms, this means&n; * that @dma_handle will have the %PCIIO_DMA_CMD flag set.&n; *&n; * This interface is usually used for &quot;command&quot; streams (e.g. the command&n; * queue for a SCSI controller).  See Documentation/DMA-mapping.txt for&n; * more information.  Note that this routine will always put a 32 bit&n; * DMA address into @dma_handle.  This is because most devices&n; * that are capable of 64 bit PCI DMA transactions can&squot;t do 64 bit _coherent_&n; * DMAs, and unfortunately this interface has to cater to the LCD.  Oh well.&n; *&n; * Also known as platform_pci_alloc_consistent() by the IA64 machvec code.&n; */
+multiline_comment|/**&n; * sn_pci_alloc_consistent - allocate memory for coherent DMA&n; * @hwdev: device to allocate for&n; * @size: size of the region&n; * @dma_handle: DMA (bus) address&n; *&n; * pci_alloc_consistent() returns a pointer to a memory region suitable for&n; * coherent DMA traffic to/from a PCI device.  On SN platforms, this means&n; * that @dma_handle will have the %PCIIO_DMA_CMD flag set.&n; *&n; * This interface is usually used for &quot;command&quot; streams (e.g. the command&n; * queue for a SCSI controller).  See Documentation/DMA-mapping.txt for&n; * more information.&n; *&n; * Also known as platform_pci_alloc_consistent() by the IA64 machvec code.&n; */
 r_void
 op_star
 DECL|function|sn_pci_alloc_consistent

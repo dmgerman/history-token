@@ -5,7 +5,6 @@ mdefine_line|#define _ASM_IA64_SN_NODEPDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;

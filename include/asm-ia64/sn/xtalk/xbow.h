@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
-macro_line|#ifndef _ASM_SN_SN_XTALK_XBOW_H
-DECL|macro|_ASM_SN_SN_XTALK_XBOW_H
-mdefine_line|#define _ASM_SN_SN_XTALK_XBOW_H
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XBOW_H
+DECL|macro|_ASM_IA64_SN_XTALK_XBOW_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XBOW_H
 multiline_comment|/*&n; * xbow.h - header file for crossbow chip and xbow section of xbridge&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
@@ -2182,5 +2182,5 @@ suffix:semicolon
 multiline_comment|/* xbow_macrofield[] */
 macro_line|#endif&t;&t;&t;&t;/* MACROFIELD_LINE */
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif                          /* _ASM_SN_SN_XTALK_XBOW_H */
+macro_line|#endif                          /* _ASM_IA64_SN_XTALK_XBOW_H */
 eof

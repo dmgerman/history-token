@@ -2,8 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_KLCONFIG_H
 DECL|macro|_ASM_IA64_SN_KLCONFIG_H
 mdefine_line|#define _ASM_IA64_SN_KLCONFIG_H
-macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * klconfig.h&n; */
 multiline_comment|/*&n; * The KLCONFIG structures store info about the various BOARDs found&n; * during Hardware Discovery. In addition, it stores info about the&n; * components found on the BOARDs.&n; */
 multiline_comment|/*&n; * WARNING:&n; *&t;Certain assembly language routines (notably xxxxx.s) in the IP27PROM &n; *&t;will depend on the format of the data structures in this file.  In &n; *      most cases, rearranging the fields can seriously break things.   &n; *      Adding fields in the beginning or middle can also break things.&n; *      Add fields if necessary, to the end of a struct in such a way&n; *      that offsets of existing fields do not change.&n; */
 macro_line|#include &lt;linux/types.h&gt;

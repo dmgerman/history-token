@@ -1,28 +1,11 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#ifndef LOCAL
-DECL|macro|LOCAL
-mdefine_line|#define LOCAL           static
-macro_line|#endif
 multiline_comment|/*&n; * functions&n; */
 r_int
 id|pcibr_init_ext_ate_ram
@@ -137,7 +120,7 @@ DECL|macro|ATE_NUM_ENTRIES
 mdefine_line|#define ATE_NUM_ENTRIES(n) _ate_info[n]
 multiline_comment|/* Possible choices for number of ATE entries in Bridge&squot;s SSRAM */
 DECL|variable|_ate_info
-id|LOCAL
+r_static
 r_int
 id|_ate_info
 (braket
@@ -197,9 +180,6 @@ id|bridgereg_t
 id|old_enable
 comma
 id|new_enable
-suffix:semicolon
-r_int
-id|s
 suffix:semicolon
 multiline_comment|/* Probe SSRAM to determine its size. */
 id|old_enable
@@ -304,13 +284,6 @@ id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
 multiline_comment|/*&n;     * ensure that we write and read without any interruption.&n;     * The read following the write is required for the Bridge war&n;     */
-id|s
-op_assign
-id|splhi
-c_func
-(paren
-)paren
-suffix:semicolon
 id|bridge-&gt;b_wid_control
 op_assign
 (paren
@@ -329,12 +302,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_control
 suffix:semicolon
 multiline_comment|/* inval addr bug war */
-id|splx
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|num_entries
 op_assign
 id|ATE_NUM_ENTRIES

@@ -13,7 +13,8 @@ comma
 r_char
 op_star
 comma
-id|uint
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern

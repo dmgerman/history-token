@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
-macro_line|#ifndef _ASM_SN_KSYS_L1_H
-DECL|macro|_ASM_SN_KSYS_L1_H
-mdefine_line|#define _ASM_SN_KSYS_L1_H
+macro_line|#ifndef _ASM_IA64_SN_KSYS_L1_H
+DECL|macro|_ASM_IA64_SN_KSYS_L1_H
+mdefine_line|#define _ASM_IA64_SN_KSYS_L1_H
 macro_line|#include &lt;asm/sn/types.h&gt;
 multiline_comment|/* L1 Target Addresses */
 multiline_comment|/*&n; * L1 commands and responses use source/target addresses that are&n; * 32 bits long.  These are broken up into multiple bitfields that&n; * specify the type of the target controller (could actually be L2&n; * L3, not just L1), the rack and bay of the target, and the task&n; * id (L1 functionality is divided into several independent &quot;tasks&quot;&n; * that can each receive command requests and transmit responses)&n; */
@@ -197,5 +197,5 @@ id|nasid_t
 id|nasid
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_SN_KSYS_L1_H */
+macro_line|#endif /* _ASM_IA64_SN_KSYS_L1_H */
 eof

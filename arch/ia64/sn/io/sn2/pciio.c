@@ -982,7 +982,6 @@ id|vertex_hdl_t
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *    Provider Function Location&n; *&n; *      If there is more than one possible provider for&n; *      this platform, we need to examine the master&n; *      vertex of the current vertex for a provider&n; *      function structure, and indirect through the&n; *      appropriately named member.&n; */
 macro_line|#if !defined(DEV_FUNC)
-r_static
 id|pciio_provider_t
 op_star
 DECL|function|pciio_to_provider_fns
@@ -1051,7 +1050,7 @@ op_eq
 l_int|NULL
 )paren
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;%v: provider_fns == NULL&quot;
@@ -1060,7 +1059,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#else
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;0x%p: provider_fns == NULL&quot;
@@ -1517,11 +1516,11 @@ c_cond
 (paren
 id|align
 OL
-id|NBPP
+id|PAGE_SIZE
 )paren
 id|align
 op_assign
-id|NBPP
+id|PAGE_SIZE
 suffix:semicolon
 r_return
 id|DEV_FUNC
@@ -4136,7 +4135,7 @@ r_struct
 id|resource
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|status

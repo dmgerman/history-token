@@ -6,26 +6,18 @@ multiline_comment|/*&n; * bridge.h - header file for bridge chip and bridge port
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/pci/pic.h&gt;
-r_extern
-r_int
-id|io_get_sh_swapper
-c_func
-(paren
-id|nasid_t
-)paren
-suffix:semicolon
 DECL|macro|BRIDGE_REG_GET32
 mdefine_line|#define BRIDGE_REG_GET32(reg) &bslash;&n;                __swab32( *(volatile uint32_t *) (((uint64_t)reg)^4) )
 DECL|macro|BRIDGE_REG_SET32
 mdefine_line|#define BRIDGE_REG_SET32(reg) &bslash;&n;                *(volatile uint32_t *) (((uint64_t)reg)^4)
 multiline_comment|/* I/O page size */
-macro_line|#if _PAGESZ == 4096
+macro_line|#if PAGE_SIZE == 4096
 DECL|macro|IOPFNSHIFT
 mdefine_line|#define IOPFNSHIFT&t;&t;12&t;/* 4K per mapped page */
 macro_line|#else
 DECL|macro|IOPFNSHIFT
 mdefine_line|#define IOPFNSHIFT&t;&t;14&t;/* 16K per mapped page */
-macro_line|#endif&t;&t;&t;&t;/* _PAGESZ */
+macro_line|#endif&t;&t;&t;&t;/* PAGE_SIZE */
 DECL|macro|IOPGSIZE
 mdefine_line|#define IOPGSIZE&t;&t;(1 &lt;&lt; IOPFNSHIFT)
 DECL|macro|IOPG

@@ -1,12 +1,16 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
-macro_line|#ifndef __ASM_SN_XTALK_XWIDGET_H__
-DECL|macro|__ASM_SN_XTALK_XWIDGET_H__
-mdefine_line|#define __ASM_SN_XTALK_XWIDGET_H__
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XWIDGET_H
+DECL|macro|_ASM_IA64_SN_XTALK_XWIDGET_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XWIDGET_H
 multiline_comment|/*&n; * xwidget.h - generic crosstalk widget header file&n; */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/cdl.h&gt;
 macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#else
+macro_line|#include &lt;xtalk/xtalk.h&gt;
+macro_line|#endif
 DECL|macro|WIDGET_ID
 mdefine_line|#define WIDGET_ID&t;&t;&t;0x00
 DECL|macro|WIDGET_STATUS
@@ -611,5 +615,5 @@ id|v_widget_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _KERNEL */
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif&t;&t;&t;&t;/* __ASM_SN_XTALK_XWIDGET_H__ */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_XTALK_XWIDGET_H */
 eof

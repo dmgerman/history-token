@@ -20,11 +20,13 @@ r_struct
 id|piomap
 (brace
 DECL|member|pio_bus
-id|uint
+r_int
+r_int
 id|pio_bus
 suffix:semicolon
 DECL|member|pio_adap
-id|uint
+r_int
+r_int
 id|pio_adap
 suffix:semicolon
 DECL|member|pio_flag

@@ -1,25 +1,14 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
+macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
+macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 multiline_comment|/* #define IOGRAPH_DEBUG */
 macro_line|#ifdef IOGRAPH_DEBUG
 DECL|macro|DBG
@@ -39,7 +28,8 @@ r_struct
 id|xswitch_vol_s
 (brace
 DECL|member|xswitch_volunteer_mutex
-id|mutex_t
+r_struct
+id|semaphore
 id|xswitch_volunteer_mutex
 suffix:semicolon
 DECL|member|xswitch_volunteer_count
@@ -292,7 +282,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|mutex_lock
+id|down
 c_func
 (paren
 op_amp
@@ -369,7 +359,7 @@ id|hubv
 suffix:semicolon
 )brace
 )brace
-id|mutex_unlock
+id|up
 c_func
 (paren
 op_amp
@@ -660,7 +650,7 @@ r_goto
 id|do_assignment
 suffix:semicolon
 )brace
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Nasid == %d, console nasid == %d&quot;
@@ -896,6 +886,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * io_xswitch_widget_init&n; *&t;&n; */
+r_static
 r_void
 DECL|function|io_xswitch_widget_init
 id|io_xswitch_widget_init
@@ -2591,7 +2582,7 @@ c_cond
 id|peer_sema
 )paren
 (brace
-id|mutex_unlock
+id|up
 c_func
 (paren
 id|peer_sema
@@ -2602,7 +2593,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Wait &squot;til master is done assigning widgets. */
-id|mutex_lock
+id|down
 c_func
 (paren
 op_amp

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
-macro_line|#ifndef _ASM_SN_XTALK_XSWITCH_H
-DECL|macro|_ASM_SN_XTALK_XSWITCH_H
-mdefine_line|#define _ASM_SN_XTALK_XSWITCH_H
+macro_line|#ifndef _ASM_IA64_SN_XTALK_XSWITCH_H
+DECL|macro|_ASM_IA64_SN_XTALK_XSWITCH_H
+mdefine_line|#define _ASM_IA64_SN_XTALK_XSWITCH_H
 multiline_comment|/*&n; * xswitch.h - controls the format of the data&n; * provided by xswitch verticies back to the&n; * xtalk bus providers.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
@@ -150,5 +150,5 @@ id|port
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_XTALK_XSWITCH_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_XTALK_XSWITCH_H */
 eof

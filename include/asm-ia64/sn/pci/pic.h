@@ -1,16 +1,14 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PIC_H
-DECL|macro|_ASM_SN_PCI_PIC_H
-mdefine_line|#define _ASM_SN_PCI_PIC_H
-multiline_comment|/*&n; * The PIC ASIC is a follow-on to the Bridge and Xbridge ASICs.&n; * It shares many of the same registers as those chips and therefore&n; * the primary structure for the PIC will be bridge_s as defined&n; * in irix/kern/sys/PCI/bridge.h.   This file is intended as a complement&n; * to bridge.h, which includes this file.  &n; */
+macro_line|#ifndef _ASM_IA64_SN_PCI_PIC_H
+DECL|macro|_ASM_IA64_SN_PCI_PIC_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PIC_H
 multiline_comment|/*&n; * PIC AS DEVICE ZERO&n; * ------------------&n; *&n; * PIC handles PCI/X busses.  PCI/X requires that the &squot;bridge&squot; (i.e. PIC)&n; * be designated as &squot;device 0&squot;.   That is a departure from earlier SGI&n; * PCI bridges.  Because of that we use config space 1 to access the&n; * config space of the first actual PCI device on the bus. &n; * Here&squot;s what the PIC manual says:&n; *&n; *     The current PCI-X bus specification now defines that the parent&n; *     hosts bus bridge (PIC for example) must be device 0 on bus 0. PIC&n; *     reduced the total number of devices from 8 to 4 and removed the&n; *     device registers and windows, now only supporting devices 0,1,2, and&n; *     3. PIC did leave all 8 configuration space windows. The reason was&n; *     there was nothing to gain by removing them. Here in lies the problem.&n; *     The device numbering we do using 0 through 3 is unrelated to the device&n; *     numbering which PCI-X requires in configuration space. In the past we&n; *     correlated Configs pace and our device space 0 &lt;-&gt; 0, 1 &lt;-&gt; 1, etc.&n; *     PCI-X requires we start a 1, not 0 and currently the PX brick&n; *     does associate our:&n; * &n; *         device 0 with configuration space window 1,&n; *         device 1 with configuration space window 2, &n; *         device 2 with configuration space window 3,&n; *         device 3 with configuration space window 4.&n; *&n; * The net effect is that all config space access are off-by-one with &n; * relation to other per-slot accesses on the PIC.   &n; * Here is a table that shows some of that:&n; *&n; *                               Internal Slot#&n; *           |&n; *           |     0         1        2         3&n; * ----------|---------------------------------------&n; * config    |  0x21000   0x22000  0x23000   0x24000&n; *           |&n; * even rrb  |  0[0]      n/a      1[0]      n/a&t;[] == implied even/odd&n; *           |&n; * odd rrb   |  n/a       0[1]     n/a       1[1]&n; *           |&n; * int dev   |  00       01        10        11&n; *           |&n; * ext slot# |  1        2         3         4&n; * ----------|---------------------------------------&n; */
-macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;&t;/* generic widget header */
+macro_line|#else
+macro_line|#include &lt;xtalk/xwidget.h&gt;
 macro_line|#endif
-singleline_comment|// #include &lt;sys/types.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 multiline_comment|/*********************************************************************&n; *    bus provider function table&n; *&n; *&t;Normally, this table is only handed off explicitly&n; *&t;during provider initialization, and the PCI generic&n; *&t;layer will stash a pointer to it in the vertex; however,&n; *&t;exporting it explicitly enables a performance hack in&n; *&t;the generic PCI provider where if we know at compile&n; *&t;time that the only possible PCI provider is a&n; *&t;pcibr, we can go directly to this ops table.&n; */
 r_extern
@@ -5380,6 +5378,5 @@ DECL|typedef|pic_px_write_buf_valid_u_t
 )brace
 id|pic_px_write_buf_valid_u_t
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
-macro_line|#endif                          /* _ASM_SN_PCI_PIC_H */
+macro_line|#endif                          /* _ASM_IA64_SN_PCI_PIC_H */
 eof

@@ -1109,7 +1109,7 @@ id|flags
 )paren
 (brace
 macro_line|#if DEBUG
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;null_xtalk_early_piotrans_addr&quot;
@@ -2707,7 +2707,7 @@ c_func
 id|widget_info-&gt;w_name
 )paren
 suffix:semicolon
-id|BZERO
+id|memset
 c_func
 (paren
 (paren
@@ -2715,6 +2715,8 @@ r_void
 op_star
 )paren
 id|widget_info
+comma
+l_int|0
 comma
 r_sizeof
 (paren

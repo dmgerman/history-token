@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_CVLINK_H
-DECL|macro|_ASM_SN_PCI_CVLINK_H
-mdefine_line|#define _ASM_SN_PCI_CVLINK_H
+macro_line|#ifndef _ASM_IA64_SN_PCI_CVLINK_H
+DECL|macro|_ASM_IA64_SN_PCI_CVLINK_H
+mdefine_line|#define _ASM_IA64_SN_PCI_CVLINK_H
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
@@ -137,5 +137,5 @@ l_int|11
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_CVLINK_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_PCI_CVLINK_H */
 eof

@@ -499,15 +499,8 @@ comma
 r_char
 op_star
 comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
 r_int
-id|init_hcl
-c_func
-(paren
-r_void
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_HCL_H */

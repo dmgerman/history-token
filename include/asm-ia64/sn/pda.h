@@ -4,7 +4,6 @@ DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

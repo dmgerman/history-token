@@ -1,22 +1,13 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#ifdef __ia64
@@ -264,7 +255,7 @@ id|cbuf-&gt;ib_in
 op_eq
 id|cbuf-&gt;ib_out
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;pcibr intr circular buffer empty, cbuf=0x%p, ib_in=ib_out=%d&bslash;n&quot;
@@ -312,13 +303,8 @@ id|cbuf
 r_int
 id|in
 suffix:semicolon
-r_int
-id|s
-suffix:semicolon
 multiline_comment|/*&n;&t; * Multiple CPUs could be executing this code simultaneously&n;&t; * if a handler has registered multiple interrupt lines and&n;&t; * the interrupts are directed to different CPUs.&n;&t; */
-id|s
-op_assign
-id|mutex_spinlock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -342,7 +328,7 @@ id|in
 op_eq
 id|cbuf-&gt;ib_out
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;pcibr intr circular buffer full, cbuf=0x%p, ib_in=%d&bslash;n&quot;
@@ -367,13 +353,11 @@ id|cbuf-&gt;ib_in
 op_assign
 id|in
 suffix:semicolon
-id|mutex_spinunlock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|cbuf-&gt;ib_lock
-comma
-id|s
 )paren
 suffix:semicolon
 r_return
@@ -1170,7 +1154,7 @@ id|pcibr_intr-&gt;bi_ibuf.ib_out
 op_assign
 l_int|0
 suffix:semicolon
-id|mutex_spinlock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -3060,7 +3044,7 @@ comma
 id|OLD_b_wid_int_lower
 )paren
 suffix:semicolon
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;PCI Bridge interrupt targetting error&bslash;n&quot;

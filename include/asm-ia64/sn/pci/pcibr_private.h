@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PCIBR_PRIVATE_H
-DECL|macro|_ASM_SN_PCI_PCIBR_PRIVATE_H
-mdefine_line|#define _ASM_SN_PCI_PCIBR_PRIVATE_H
+macro_line|#ifndef _ASM_IA64_SN_PCI_PCIBR_PRIVATE_H
+DECL|macro|_ASM_IA64_SN_PCI_PCIBR_PRIVATE_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PCIBR_PRIVATE_H
 multiline_comment|/*&n; * pcibr_private.h -- private definitions for pcibr&n; * only the pcibr driver (and its closest friends)&n; * should ever peek into this file.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
@@ -643,11 +643,11 @@ mdefine_line|#define PCIBR_BUS_IO_MAX       0x0FFFFFFF
 DECL|macro|PCIBR_BUS_IO_PAGE
 mdefine_line|#define PCIBR_BUS_IO_PAGE      0x100000
 DECL|macro|PCIBR_BUS_SWIN_BASE
-mdefine_line|#define PCIBR_BUS_SWIN_BASE    _PAGESZ
+mdefine_line|#define PCIBR_BUS_SWIN_BASE    PAGE_SIZE
 DECL|macro|PCIBR_BUS_SWIN_MAX
 mdefine_line|#define PCIBR_BUS_SWIN_MAX     0x000FFFFF
 DECL|macro|PCIBR_BUS_SWIN_PAGE
-mdefine_line|#define PCIBR_BUS_SWIN_PAGE    _PAGESZ
+mdefine_line|#define PCIBR_BUS_SWIN_PAGE    PAGE_SIZE
 DECL|macro|PCIBR_BUS_MEM_BASE
 mdefine_line|#define PCIBR_BUS_MEM_BASE     0x200000
 DECL|macro|PCIBR_BUS_MEM_MAX
@@ -942,7 +942,7 @@ id|bss_devio
 suffix:semicolon
 multiline_comment|/* Shadow value for Device(x) register,&n;&t; * so we don&squot;t have to go to the chip.&n;&t; */
 DECL|member|bss_device
-id|bridgereg_t
+r_uint64
 id|bss_device
 suffix:semicolon
 multiline_comment|/* Number of sets on GBR/REALTIME bit outstanding&n;&t; * Used by Priority I/O for tracking reservations&n;&t; */
@@ -1257,19 +1257,6 @@ DECL|macro|pcibr_soft_get
 mdefine_line|#define pcibr_soft_get(v)       ((pcibr_soft_t)hwgraph_fastinfo_get((v)))
 DECL|macro|pcibr_soft_set
 mdefine_line|#define pcibr_soft_set(v,i)     (hwgraph_fastinfo_set((v), (arbitrary_info_t)(i)))
-multiline_comment|/*&n; * mem alloc/free macros&n; */
-DECL|macro|NEWAf
-mdefine_line|#define NEWAf(ptr,n,f)&t;(ptr = snia_kmem_zalloc((n)*sizeof (*(ptr)), (f&amp;PCIIO_NOSLEEP)?KM_NOSLEEP:KM_SLEEP))
-DECL|macro|NEWA
-mdefine_line|#define NEWA(ptr,n)&t;(ptr = snia_kmem_zalloc((n)*sizeof (*(ptr)), KM_SLEEP))
-DECL|macro|DELA
-mdefine_line|#define DELA(ptr,n)&t;(kfree(ptr))
-DECL|macro|NEWf
-mdefine_line|#define NEWf(ptr,f)&t;NEWAf(ptr,1,f)
-DECL|macro|NEW
-mdefine_line|#define NEW(ptr)&t;NEWA(ptr,1)
-DECL|macro|DEL
-mdefine_line|#define DEL(ptr)&t;DELA(ptr,1)
 multiline_comment|/*&n; * Additional PIO spaces per slot are&n; * recorded in this structure.&n; */
 DECL|struct|pciio_piospace_s
 r_struct

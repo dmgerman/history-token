@@ -897,7 +897,7 @@ id|IIO_ICDR
 op_amp
 id|IIO_ICDR_PND
 )paren
-id|us_delay
+id|udelay
 c_func
 (paren
 l_int|1

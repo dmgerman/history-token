@@ -2,18 +2,14 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 multiline_comment|/*&n; * klgraph.c-&n; *      This file specifies the interface between the kernel and the PROM&squot;s&n; *      configuration data structures.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/kldir.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/router.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-singleline_comment|// #define KLGRAPH_DEBUG 1
+macro_line|#include &lt;asm/sn/sn_private.h&gt;
+multiline_comment|/* #define KLGRAPH_DEBUG 1 */
 macro_line|#ifdef KLGRAPH_DEBUG
 DECL|macro|GRPRINTF
 mdefine_line|#define GRPRINTF(x)&t;printk x
@@ -50,7 +46,9 @@ id|cpuid
 )paren
 suffix:semicolon
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_hub
 id|klhwg_add_hub
 c_func
@@ -158,7 +156,9 @@ id|cnode
 suffix:semicolon
 )brace
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_disabled_cpu
 id|klhwg_add_disabled_cpu
 c_func
@@ -270,7 +270,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_cpu
 id|klhwg_add_cpu
 c_func
@@ -424,7 +426,9 @@ id|name
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_xbow
 id|klhwg_add_xbow
 c_func
@@ -461,6 +465,16 @@ suffix:semicolon
 multiline_comment|/*REFERENCED*/
 id|graph_error_t
 id|err
+suffix:semicolon
+r_extern
+r_int
+id|is_specified
+c_func
+(paren
+r_char
+op_star
+id|s
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -665,7 +679,7 @@ l_string|&quot;klhwg_add_xbow: Check for &quot;
 l_string|&quot;working routers and router links!&quot;
 )paren
 suffix:semicolon
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;klhwg_add_xbow: Failed to add &quot;
@@ -755,7 +769,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_node
 id|klhwg_add_node
 c_func
@@ -897,7 +913,7 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Node vertex creation failed.  &quot;
@@ -1264,7 +1280,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_add_all_routers
 id|klhwg_add_all_routers
 c_func
@@ -1447,7 +1465,7 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Router vertex creation &quot;
@@ -1499,7 +1517,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ARGSUSED */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_connect_one_router
 id|klhwg_connect_one_router
 c_func
@@ -1646,7 +1666,7 @@ op_ne
 l_int|1
 )paren
 (brace
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;klhwg_connect_one_router: %d cmpts on router&bslash;n&quot;
@@ -1818,7 +1838,7 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Can&squot;t find router: %s&quot;
@@ -1909,7 +1929,7 @@ c_func
 id|arg_maxnodes
 )paren
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p error 0x%x&bslash;n&quot;
@@ -1929,7 +1949,9 @@ id|rc
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
+id|__init
 DECL|function|klhwg_connect_routers
 id|klhwg_connect_routers
 c_func
@@ -2053,7 +2075,9 @@ id|KLTYPE_ROUTER
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
+id|__init
 DECL|function|klhwg_connect_hubs
 id|klhwg_connect_hubs
 c_func
@@ -2364,7 +2388,7 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Can&squot;t find board: %s&quot;
@@ -2460,7 +2484,7 @@ id|rc
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p, error 0x%x&bslash;n&quot;
@@ -2483,7 +2507,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Store the pci/vme disabled board information as extended administrative&n; * hints which can later be used by the drivers using the device/driver&n; * admin interface. &n; */
+r_static
 r_void
+id|__init
 DECL|function|klhwg_device_disable_hints_add
 id|klhwg_device_disable_hints_add
 c_func
@@ -2670,6 +2696,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__init
 DECL|function|klhwg_add_all_modules
 id|klhwg_add_all_modules
 c_func
@@ -2842,15 +2869,13 @@ comma
 (paren
 id|arbitrary_info_t
 )paren
-(paren
-id|__psint_t
-)paren
 l_int|1
 )paren
 suffix:semicolon
 )brace
 )brace
 r_void
+id|__init
 DECL|function|klhwg_add_all_nodes
 id|klhwg_add_all_nodes
 c_func

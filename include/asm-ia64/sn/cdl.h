@@ -2,7 +2,9 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_CDL_H
 DECL|macro|_ASM_IA64_SN_CDL_H
 mdefine_line|#define _ASM_IA64_SN_CDL_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#endif
 DECL|struct|cdl
 r_struct
 id|cdl

@@ -1,23 +1,13 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
+macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/pci/pic.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 DECL|macro|PCI_BUS_NO_1
 mdefine_line|#define PCI_BUS_NO_1 1
@@ -68,6 +58,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * copy xwidget_info_t from conn_v to peer_conn_v&n; */
+r_static
 r_int
 DECL|function|pic_bus1_widget_info_dup
 id|pic_bus1_widget_info_dup
@@ -313,6 +304,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If this PIC is attached to two Cbricks (&quot;dual-ported&quot;) then&n; * attach each bus to opposite Cbricks.&n; *&n; * If successful, return a new vertex suitable for attaching the PIC bus.&n; * If not successful, return zero and both buses will attach to the&n; * vertex passed into pic_attach().&n; */
+r_static
 id|vertex_hdl_t
 DECL|function|pic_bus1_redist
 id|pic_bus1_redist

@@ -1,34 +1,9 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/pci_ids.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/param.h&gt;
-macro_line|#include &lt;asm/sn/pio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-macro_line|#include &lt;asm/sn/intr.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/nodepda.h&gt;
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
-macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 r_extern
 r_int
 id|bridge_rev_b_data_check_disable
@@ -587,12 +562,7 @@ id|flush_nasid_list
 id|MAX_NASIDS
 )braket
 suffix:semicolon
-singleline_comment|// Initialize the data structures for flushing write buffers after a PIO read.
-singleline_comment|// The theory is: 
-singleline_comment|// Take an unused int. pin and associate it with a pin that is in use.
-singleline_comment|// After a PIO read, force an interrupt on the unused pin, forcing a write buffer flush
-singleline_comment|// on the in use pin.  This will prevent the race condition between PIO read responses and 
-singleline_comment|// DMA writes.
+multiline_comment|/* Initialize the data structures for flushing write buffers after a PIO read.&n; * The theory is: &n; * Take an unused int. pin and associate it with a pin that is in use.&n; * After a PIO read, force an interrupt on the unused pin, forcing a write buffer flush&n; * on the in use pin.  This will prevent the race condition between PIO read responses and &n; * DMA writes.&n; */
 r_void
 DECL|function|sn_dma_flush_init
 id|sn_dma_flush_init
@@ -1284,8 +1254,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// if it&squot;s IO9, bus 1, we don&squot;t care about slots 1, 3, and 4.  This is
-singleline_comment|// because these are the IOC4 slots and we don&squot;t flush them.
+multiline_comment|/* if it&squot;s IO9, bus 1, we don&squot;t care about slots 1 and 4.  This is&n;&t; * because these are the IOC4 slots and we don&squot;t flush them.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1567,23 +1536,7 @@ l_int|23
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// If it&squot;s IO9, then slot 2 maps to slot 7 and slot 6 maps to slot 8.
-singleline_comment|// To see this is non-trivial.  By drawing pictures and reading manuals and talking
-singleline_comment|// to HW guys, we can see that on IO9 bus 1, slots 7 and 8 are always unused.
-singleline_comment|// Further, since we short-circuit slots  1, 3, and 4 above, we only have to worry
-singleline_comment|// about the case when there is a card in slot 2.  A multifunction card will appear
-singleline_comment|// to be in slot 6 (from an interrupt point of view) also.  That&squot;s the  most we&squot;ll
-singleline_comment|// have to worry about.  A four function card will overload the interrupt lines in
-singleline_comment|// slot 2 and 6.  
-singleline_comment|// We also need to special case the 12160 device in slot 3.  Fortunately, we have
-singleline_comment|// a spare intr. line for pin 4, so we&squot;ll use that for the 12160.
-singleline_comment|// All other buses have slot 3 and 4 and slots 7 and 8 unused.  Since we can only
-singleline_comment|// see slots 1 and 2 and slots 5 and 6 coming through here for those buses (this
-singleline_comment|// is true only on Pxbricks with 2 physical slots per bus), we just need to add
-singleline_comment|// 2 to the slot number to find an unused slot.
-singleline_comment|// We have convinced ourselves that we will never see a case where two different cards
-singleline_comment|// in two different slots will ever share an interrupt line, so there is no need to
-singleline_comment|// special case this.
+multiline_comment|/* If it&squot;s IO9, then slot 2 maps to slot 7 and slot 6 maps to slot 8.&n;&t; * To see this is non-trivial.  By drawing pictures and reading manuals and talking&n;&t; * to HW guys, we can see that on IO9 bus 1, slots 7 and 8 are always unused.&n;&t; * Further, since we short-circuit slots  1, 3, and 4 above, we only have to worry&n;&t; * about the case when there is a card in slot 2.  A multifunction card will appear&n;&t; * to be in slot 6 (from an interrupt point of view) also.  That&squot;s the  most we&squot;ll&n;&t; * have to worry about.  A four function card will overload the interrupt lines in&n;&t; * slot 2 and 6.  &n;&t; * We also need to special case the 12160 device in slot 3.  Fortunately, we have&n;&t; * a spare intr. line for pin 4, so we&squot;ll use that for the 12160.&n;&t; * All other buses have slot 3 and 4 and slots 7 and 8 unused.  Since we can only&n;&t; * see slots 1 and 2 and slots 5 and 6 coming through here for those buses (this&n;&t; * is true only on Pxbricks with 2 physical slots per bus), we just need to add&n;&t; * 2 to the slot number to find an unused slot.&n;&t; * We have convinced ourselves that we will never see a case where two different cards&n;&t; * in two different slots will ever share an interrupt line, so there is no need to&n;&t; * special case this.&n;&t; */
 r_if
 c_cond
 (paren

@@ -1,28 +1,15 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/prio.h&gt; 
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 multiline_comment|/*&n; * global variables to toggle the different levels of pcibr debugging.  &n; *   -pcibr_debug_mask is the mask of the different types of debugging&n; *    you want to enable.  See sys/PCI/pcibr_private.h &n; *   -pcibr_debug_module is the module you want to trace.  By default&n; *    all modules are trace.  For IP35 this value has the format of&n; *    something like &quot;001c10&quot;.  For IP27 this value is a node number,&n; *    i.e. &quot;1&quot;, &quot;2&quot;...  For IP30 this is undefined and should be set to&n; *    &squot;all&squot;.&n; *   -pcibr_debug_widget is the widget you want to trace.  For IP27&n; *    the widget isn&squot;t exposed in the hwpath so use the xio slot num.&n; *    i.e. for &squot;io2&squot; set pcibr_debug_widget to &quot;2&quot;.&n; *   -pcibr_debug_slot is the pci slot you want to trace.&n; */
 DECL|variable|pcibr_debug_mask
@@ -3564,9 +3551,6 @@ id|rrb_fixed
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|spl_level
-suffix:semicolon
 macro_line|#if PCI_FBBE
 r_int
 id|fast_back_to_back_enable
@@ -4909,7 +4893,7 @@ l_int|0
 comma
 id|paddr
 comma
-id|_PAGESZ
+id|PAGE_SIZE
 comma
 l_int|0
 )paren
@@ -5012,13 +4996,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Set bridge&squot;s idea of page size according to the system&squot;s&n;&t; * idea of &quot;IO page size&quot;.  TBD: The idea of IO page size&n;&t; * should really go away.&n;&t; */
 multiline_comment|/*&n;&t; * ensure that we write and read without any interruption.&n;&t; * The read following the write is required for the Bridge war&n;&t; */
-id|spl_level
-op_assign
-id|splhi
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if IOPGSIZE == 4096
 id|bridge-&gt;p_wid_control_64
 op_and_assign
@@ -5038,12 +5015,6 @@ macro_line|#endif
 id|bridge-&gt;b_wid_control
 suffix:semicolon
 multiline_comment|/* inval addr bug war */
-id|splx
-c_func
-(paren
-id|spl_level
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize internal mapping entries */
 r_for
 c_loop
@@ -5664,7 +5635,7 @@ r_struct
 id|resource
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -5719,7 +5690,7 @@ suffix:semicolon
 multiline_comment|/* Setup the Small Window Root Resource */
 id|pcibr_soft-&gt;bs_swin_root_resource.start
 op_assign
-id|_PAGESZ
+id|PAGE_SIZE
 suffix:semicolon
 id|pcibr_soft-&gt;bs_swin_root_resource.end
 op_assign
@@ -5750,7 +5721,7 @@ r_struct
 id|resource
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -6499,13 +6470,7 @@ id|pcibr_soft-&gt;bs_noslot_info-&gt;f_c
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_destroy
-c_func
-(paren
-op_amp
-id|pcibr_soft-&gt;bs_lock
-)paren
-suffix:semicolon
+multiline_comment|/*  spin_lock_destroy(&amp;pcibr_soft-&gt;bs_lock); */
 id|kfree
 c_func
 (paren
@@ -8859,7 +8824,7 @@ c_func
 (paren
 id|alignment
 op_ge
-id|NBPP
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|ASSERT

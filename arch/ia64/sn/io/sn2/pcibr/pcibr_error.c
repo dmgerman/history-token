@@ -1,24 +1,13 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern
 r_int
 id|hubii_check_widget_disabled
@@ -29,6 +18,8 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|kdebug
+mdefine_line|#define kdebug 0
 multiline_comment|/* =====================================================================&n; *    ERROR HANDLING&n; */
 macro_line|#ifdef&t;DEBUG
 macro_line|#ifdef&t;ERROR_DEBUG
@@ -40,9 +31,8 @@ mdefine_line|#define BRIDGE_PIOERR_TIMEOUT&t;40&t;/* Timeout in debug mode  */
 macro_line|#endif
 macro_line|#else
 DECL|macro|BRIDGE_PIOERR_TIMEOUT
-mdefine_line|#define BRIDGE_PIOERR_TIMEOUT&t;1&t;/* Timeout in non-debug mode                            */
+mdefine_line|#define BRIDGE_PIOERR_TIMEOUT&t;1&t;/* Timeout in non-debug mode */
 macro_line|#endif
-multiline_comment|/* PIC has 64bit interrupt error registers, but BRIDGE has 32bit registers.&n; * Thus &squot;bridge_errors_to_dump needs&squot; to default to the larger of the two.&n; */
 macro_line|#ifdef  DEBUG
 macro_line|#ifdef ERROR_DEBUG
 DECL|variable|bridge_errors_to_dump
@@ -475,7 +465,6 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|space_desc
-r_static
 r_struct
 id|reg_desc
 id|space_desc
@@ -2259,7 +2248,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;pcibr_error_intr_handler:&bslash;tmy parameter (0x%p) is not a pcibr_soft!&quot;
@@ -2943,7 +2932,7 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;PCI Bridge Error interrupt killed the system&quot;
@@ -2958,7 +2947,7 @@ op_amp
 id|BRIDGE_ISR_ERROR_FATAL
 )paren
 (brace
-id|PRINT_PANIC
+id|panic
 c_func
 (paren
 l_string|&quot;PCI Bridge Error interrupt killed the system&quot;

@@ -1,16 +1,27 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#ifndef _ASM_SN_PCI_PCIIO_H
-DECL|macro|_ASM_SN_PCI_PCIIO_H
-mdefine_line|#define _ASM_SN_PCI_PCIIO_H
+macro_line|#ifndef _ASM_IA64_SN_PCI_PCIIO_H
+DECL|macro|_ASM_IA64_SN_PCI_PCIIO_H
+mdefine_line|#define _ASM_IA64_SN_PCI_PCIIO_H
 multiline_comment|/*&n; * pciio.h -- platform-independent PCI interface&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
+macro_line|#else
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;ioerror.h&gt;
+macro_line|#include &lt;driver.h&gt;
+macro_line|#include &lt;hcl.h&gt;
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
+macro_line|#else
+macro_line|#include &lt;dmamap.h&gt;
+macro_line|#include &lt;alenlist.h&gt;
+macro_line|#endif
 DECL|typedef|pciio_vendor_id_t
 r_typedef
 r_int
@@ -1825,5 +1836,73 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* C or C++ */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIIO_H */
+multiline_comment|/*&n; * Prototypes&n; */
+r_int
+id|snia_badaddr_val
+c_func
+(paren
+r_volatile
+r_void
+op_star
+id|addr
+comma
+r_int
+id|len
+comma
+r_volatile
+r_void
+op_star
+id|ptr
+)paren
+suffix:semicolon
+id|nasid_t
+id|snia_get_console_nasid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|nasid_t
+id|snia_get_master_baseio_nasid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* XXX: should probably be called __sn2_pci_rrb_alloc */
+r_int
+id|snia_pcibr_rrb_alloc
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+r_int
+op_star
+id|count_vchan0
+comma
+r_int
+op_star
+id|count_vchan1
+)paren
+suffix:semicolon
+id|pciio_endian_t
+id|snia_pciio_endian_set
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+id|pciio_endian_t
+id|device_end
+comma
+id|pciio_endian_t
+id|desired_end
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_PCI_PCIIO_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/*&n; * This file contains definitions for accessing a platform supported high resolution&n; * clock. The clock is monitonically increasing and can be accessed from any node&n; * in the system. The clock is synchronized across nodes - all nodes see the&n; * same value.&n; * &n; *&t;RTC_COUNTER_ADDR - contains the address of the counter &n; *&n; *&t;GET_RTC_COUNTER() - macro to read the value of the clock&n; *&n; *&t;RTC_CYCLES_PER_SEC - clock frequency in ticks per second&t;&n; *&n; */
 macro_line|#ifndef _ASM_IA64_SN_CLKSUPPORT_H
 DECL|macro|_ASM_IA64_SN_CLKSUPPORT_H
@@ -19,17 +19,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|sn_rtc_usec_per_cyc
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|sn_rtc_per_itc
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|sn_rtc_delta
 suffix:semicolon
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;

@@ -171,7 +171,7 @@ id|npda-&gt;geoid.any.type
 op_assign
 id|GEO_TYPE_INVALID
 suffix:semicolon
-id|mutex_init_locked
+id|init_MUTEX_LOCKED
 c_func
 (paren
 op_amp

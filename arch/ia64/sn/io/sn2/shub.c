@@ -2,11 +2,14 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
@@ -19,12 +22,12 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr_t.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/sndrv.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 DECL|macro|SHUB_NUM_ECF_REGISTERS
 mdefine_line|#define SHUB_NUM_ECF_REGISTERS 8
 DECL|variable|shub_perf_counts
