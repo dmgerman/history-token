@@ -724,20 +724,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
-multiline_comment|/* ----------------------- MISC SUBROUTINES ------------------------ */
-r_static
-r_void
-id|cs_error
-c_func
-(paren
-id|client_handle_t
-comma
-multiline_comment|/* Report error to cardmgr */
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* ----------------- MODEM MANAGEMENT SUBROUTINES ----------------- */
 r_static
 r_inline
@@ -1152,7 +1138,7 @@ suffix:semicolon
 multiline_comment|/* &quot;detach&quot; all possible devices */
 multiline_comment|/* ---------------------- INTERRUPT HANDLING ---------------------- */
 r_static
-r_void
+id|irqreturn_t
 id|wavelan_interrupt
 c_func
 (paren

@@ -13707,20 +13707,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we need some padding */
-r_if
-c_cond
-(paren
-id|clen
-OL
-id|ETH_ZLEN
-)paren
-(brace
-id|clen
-op_assign
-id|ETH_ZLEN
-suffix:semicolon
-)brace
 multiline_comment|/* Write the length of data buffer followed by the buffer */
 id|outb
 c_func
@@ -14014,6 +14000,37 @@ l_string|&quot;skb has next&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Check if we need some padding */
+multiline_comment|/* Note : on wireless the propagation time is in the order of 1us,&n;&t; * and we don&squot;t have the Ethernet specific requirement of beeing&n;&t; * able to detect collisions, therefore in theory we don&squot;t really&n;&t; * need to pad. Jean II */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|ETH_ZLEN
+)paren
+(brace
+id|skb
+op_assign
+id|skb_padto
+c_func
+(paren
+id|skb
+comma
+id|ETH_ZLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|wv_packet_write
 c_func
 (paren
@@ -17776,7 +17793,7 @@ macro_line|#endif
 multiline_comment|/************************ INTERRUPT HANDLING ************************/
 multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; *&t;1. A packet is received.&n; *&t;2. A packet has successfully been transferred and the unit is&n; *&t;   ready to transmit another packet.&n; *&t;3. A command has completed execution.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|wavelan_interrupt
 id|wavelan_interrupt
 c_func
@@ -17843,6 +17860,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_INTERRUPT_TRACE
@@ -18613,6 +18631,10 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* We always return IRQ_HANDLED, because we will receive empty&n;   * interrupts under normal operations. Anyway, it doesn&squot;t matter&n;   * as we are dealing with an ISA interrupt that can&squot;t be shared.&n;   *&n;   * Explanation : under heavy receive, the following happens :&n;   * -&gt;wavelan_interrupt()&n;   *    (status0 &amp; SR0_INTERRUPT) != 0&n;   *       -&gt;wv_packet_rcv()&n;   *    (status0 &amp; SR0_INTERRUPT) != 0&n;   *       -&gt;wv_packet_rcv()&n;   *    (status0 &amp; SR0_INTERRUPT) == 0&t;// i.e. no more event&n;   * &lt;-wavelan_interrupt()&n;   * -&gt;wavelan_interrupt()&n;   *    (status0 &amp; SR0_INTERRUPT) == 0&t;// i.e. empty interrupt&n;   * &lt;-wavelan_interrupt()&n;   * Jean II */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* wv_interrupt */
 multiline_comment|/*------------------------------------------------------------------*/
