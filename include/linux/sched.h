@@ -692,6 +692,9 @@ suffix:semicolon
 r_struct
 id|backing_dev_info
 suffix:semicolon
+r_struct
+id|reclaim_state
+suffix:semicolon
 multiline_comment|/* POSIX.1b interval timer structure. */
 DECL|struct|k_itimer
 r_struct
@@ -1292,6 +1295,13 @@ DECL|member|journal_info
 r_void
 op_star
 id|journal_info
+suffix:semicolon
+multiline_comment|/* VM state */
+DECL|member|reclaim_state
+r_struct
+id|reclaim_state
+op_star
+id|reclaim_state
 suffix:semicolon
 DECL|member|proc_dentry
 r_struct
