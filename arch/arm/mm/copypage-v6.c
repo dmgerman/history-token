@@ -506,11 +506,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|v6_user_fns.cpu_clear_user_page
+id|cpu_user.cpu_clear_user_page
 op_assign
 id|v6_clear_user_page_aliasing
 suffix:semicolon
-id|v6_user_fns.cpu_copy_user_page
+id|cpu_user.cpu_copy_user_page
 op_assign
 id|v6_copy_user_page_aliasing
 suffix:semicolon
