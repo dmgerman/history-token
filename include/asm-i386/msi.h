@@ -15,7 +15,7 @@ DECL|macro|MSI_TARGET_CPU
 mdefine_line|#define MSI_TARGET_CPU&t;&t;logical_smp_processor_id()
 macro_line|#else
 DECL|macro|MSI_TARGET_CPU
-mdefine_line|#define MSI_TARGET_CPU&t;&t;TARGET_CPUS
+mdefine_line|#define MSI_TARGET_CPU&t;cpu_to_logical_apicid(first_cpu(cpu_online_map))
 macro_line|#endif
 macro_line|#endif /* ASM_MSI_H */
 eof
