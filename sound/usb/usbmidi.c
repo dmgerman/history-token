@@ -1100,9 +1100,7 @@ id|len
 comma
 l_int|NULL
 comma
-id|HZ
-op_div
-l_int|4
+l_int|1000
 )paren
 suffix:semicolon
 id|kfree
