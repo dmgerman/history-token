@@ -1976,7 +1976,7 @@ id|down
 c_func
 (paren
 op_amp
-id|rmidi-&gt;open_lock
+id|rmidi-&gt;open_mutex
 )paren
 suffix:semicolon
 r_while
@@ -2101,7 +2101,7 @@ id|up
 c_func
 (paren
 op_amp
-id|rmidi-&gt;open_lock
+id|rmidi-&gt;open_mutex
 )paren
 suffix:semicolon
 id|schedule
@@ -2113,7 +2113,7 @@ id|down
 c_func
 (paren
 op_amp
-id|rmidi-&gt;open_lock
+id|rmidi-&gt;open_mutex
 )paren
 suffix:semicolon
 r_if
@@ -2211,7 +2211,7 @@ id|up
 c_func
 (paren
 op_amp
-id|rmidi-&gt;open_lock
+id|rmidi-&gt;open_mutex
 )paren
 suffix:semicolon
 r_return
