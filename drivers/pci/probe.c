@@ -1869,6 +1869,42 @@ l_int|8
 op_amp
 l_int|0xFF
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If we already got to this bus through a different bridge,&n;&t;&t; * ignore it.  This can happen with the i450NX chipset.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pci_find_bus
+c_func
+(paren
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
+comma
+id|busnr
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PCI: Bus %04x:%02x already known&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
+comma
+id|busnr
+)paren
+suffix:semicolon
+r_return
+id|max
+suffix:semicolon
+)brace
 id|child
 op_assign
 id|pci_alloc_child_bus
@@ -3418,7 +3454,13 @@ multiline_comment|/* If we already got to this bus through a different bridge, i
 id|DBG
 c_func
 (paren
-l_string|&quot;PCI: Bus %02x already known&bslash;n&quot;
+l_string|&quot;PCI: Bus %04:%02x already known&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|b
+)paren
 comma
 id|bus
 )paren
