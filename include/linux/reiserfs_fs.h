@@ -3330,9 +3330,9 @@ DECL|macro|B_I_POS_UNFM_POINTER
 mdefine_line|#define B_I_POS_UNFM_POINTER(bh,ih,pos) le32_to_cpu(*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)))
 DECL|macro|PUT_B_I_POS_UNFM_POINTER
 mdefine_line|#define PUT_B_I_POS_UNFM_POINTER(bh,ih,pos, val) do {*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)) = cpu_to_le32(val); } while (0)
-DECL|struct|reiserfs_iget4_args
+DECL|struct|reiserfs_iget_args
 r_struct
-id|reiserfs_iget4_args
+id|reiserfs_iget_args
 (brace
 DECL|member|objectid
 id|__u32
@@ -4662,16 +4662,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_void
-id|reiserfs_read_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_read_inode2
+id|reiserfs_read_locked_inode
 c_func
 (paren
 r_struct
@@ -4679,9 +4670,10 @@ id|inode
 op_star
 id|inode
 comma
-r_void
+r_struct
+id|reiserfs_iget_args
 op_star
-id|p
+id|args
 )paren
 suffix:semicolon
 r_int
