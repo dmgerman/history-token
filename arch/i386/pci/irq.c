@@ -3940,6 +3940,7 @@ l_int|0x5
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|printk
 c_func
