@@ -2767,9 +2767,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Configuring %s at IO:%x, IRQ %d&bslash;n&quot;
+l_string|&quot;Configuring slot %d at IO:%x, IRQ %d&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|edev-&gt;slot
 comma
 id|slotbase
 comma
@@ -3026,17 +3026,11 @@ id|HOSTDATA
 id|shpnt
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|scsi_remove_host
+c_func
 (paren
 id|shpnt
 )paren
-)paren
-r_return
-op_minus
-id|EBUSY
 suffix:semicolon
 id|free_irq
 (paren

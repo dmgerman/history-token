@@ -2357,6 +2357,19 @@ id|mm_struct
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Grab a reference to the mm if its not already going away */
+r_extern
+r_struct
+id|mm_struct
+op_star
+id|mmgrab
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Remove the current tasks stale references to the old mm_struct */
 r_extern
 r_void
@@ -2782,11 +2795,12 @@ c_cond
 (paren
 id|mm
 )paren
-id|atomic_inc
+id|mm
+op_assign
+id|mmgrab
 c_func
 (paren
-op_amp
-id|mm-&gt;mm_users
+id|mm
 )paren
 suffix:semicolon
 id|task_unlock

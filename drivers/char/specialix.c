@@ -80,13 +80,6 @@ macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 macro_line|#endif
-DECL|variable|tq_specialix
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|tq_specialix
-)paren
-suffix:semicolon
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 macro_line|#undef RS_EVENT_WRITE_WAKEUP
 DECL|macro|RS_EVENT_WRITE_WAKEUP
@@ -3812,6 +3805,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
+r_int
 r_int
 id|again
 suffix:semicolon

@@ -26352,12 +26352,16 @@ id|devfs_remove
 c_func
 (paren
 l_string|&quot;%s/mt&quot;
+comma
+id|drive-&gt;devfs_name
 )paren
 suffix:semicolon
 id|devfs_remove
 c_func
 (paren
 l_string|&quot;%s/mtn&quot;
+comma
+id|drive-&gt;devfs_name
 )paren
 suffix:semicolon
 id|devfs_unregister_tape

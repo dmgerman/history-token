@@ -1817,6 +1817,7 @@ id|length
 )paren
 suffix:semicolon
 DECL|function|NCR5380_proc_info
+r_static
 r_int
 id|NCR5380_proc_info
 (paren

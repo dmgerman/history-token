@@ -705,11 +705,13 @@ mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
-multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
-DECL|macro|IO_BITMAP_SIZE
-mdefine_line|#define IO_BITMAP_SIZE&t;32
+multiline_comment|/*&n; * Size of io_bitmap, covering ports 0 to 0x3ff.&n; */
+DECL|macro|IO_BITMAP_BITS
+mdefine_line|#define IO_BITMAP_BITS  1024
 DECL|macro|IO_BITMAP_BYTES
-mdefine_line|#define IO_BITMAP_BYTES&t;(IO_BITMAP_SIZE * 4)
+mdefine_line|#define IO_BITMAP_BYTES (IO_BITMAP_BITS/8)
+DECL|macro|IO_BITMAP_LONGS
+mdefine_line|#define IO_BITMAP_LONGS (IO_BITMAP_BYTES/sizeof(long))
 DECL|macro|IO_BITMAP_OFFSET
 mdefine_line|#define IO_BITMAP_OFFSET offsetof(struct tss_struct,io_bitmap)
 DECL|macro|INVALID_IO_BITMAP_OFFSET
@@ -1107,19 +1109,20 @@ comma
 id|__ldth
 suffix:semicolon
 DECL|member|trace
-DECL|member|bitmap
+DECL|member|io_bitmap_base
 r_int
 r_int
 id|trace
 comma
-id|bitmap
+id|io_bitmap_base
 suffix:semicolon
+multiline_comment|/*&n;&t; * The extra 1 is there because the CPU will access an&n;&t; * additional byte beyond the end of the IO permission&n;&t; * bitmap. The extra byte must be all 1 bits, and must&n;&t; * be within the limit.&n;&t; */
 DECL|member|io_bitmap
 r_int
 r_int
 id|io_bitmap
 (braket
-id|IO_BITMAP_SIZE
+id|IO_BITMAP_LONGS
 op_plus
 l_int|1
 )braket
@@ -1143,6 +1146,13 @@ l_int|64
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|struct|thread_struct
 r_struct
@@ -1243,18 +1253,19 @@ comma
 id|saved_gs
 suffix:semicolon
 multiline_comment|/* IO permissions */
-DECL|member|ts_io_bitmap
+DECL|member|io_bitmap_ptr
 r_int
 r_int
 op_star
-id|ts_io_bitmap
+id|io_bitmap_ptr
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.ts_io_bitmap = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_ptr = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
+multiline_comment|/*&n; * Note that the .io_bitmap member must be extra-big. This is because&n; * the CPU will access an additional byte beyond the end of the IO&n; * permission bitmap. The extra byte must be all 1 bits, and must&n; * be within the limit.&n; */
 DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.bitmap&t;&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_SIZE ] = ~0 },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
 DECL|function|load_esp0
 r_static
 r_inline
