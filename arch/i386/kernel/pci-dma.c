@@ -48,8 +48,7 @@ op_eq
 l_int|NULL
 op_logical_or
 (paren
-op_star
-id|dev-&gt;dma_mask
+id|dev-&gt;coherent_dma_mask
 OL
 l_int|0xffffffff
 )paren

@@ -625,7 +625,7 @@ r_else
 (brace
 id|dma_mask
 op_assign
-id|hwdev-&gt;consistent_dma_mask
+id|hwdev-&gt;dev.coherent_dma_mask
 suffix:semicolon
 )brace
 r_if

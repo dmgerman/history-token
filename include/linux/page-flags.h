@@ -47,7 +47,7 @@ DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_compound
 mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
-multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
+multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; *&n; * NOTE: if this structure is changed then mm/page_alloc.c and&n; * arch/s390/appldata/appldata_mem.c must be updated accordingly&n; */
 DECL|struct|page_state
 r_struct
 id|page_state

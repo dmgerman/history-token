@@ -358,7 +358,7 @@ multiline_comment|/*&n;&t; * 64 bit address translations should never fail.&n;&t
 r_if
 c_cond
 (paren
-id|hwdev-&gt;consistent_dma_mask
+id|hwdev-&gt;dev.coherent_dma_mask
 op_eq
 op_complement
 l_int|0UL
@@ -465,7 +465,7 @@ op_logical_or
 op_star
 id|dma_handle
 OG
-id|hwdev-&gt;consistent_dma_mask
+id|hwdev-&gt;dev.coherent_dma_mask
 )paren
 (brace
 r_if
