@@ -1083,6 +1083,10 @@ op_assign
 op_amp
 id|pcmcia_bus_type
 suffix:semicolon
+id|driver-&gt;drv.owner
+op_assign
+id|driver-&gt;owner
+suffix:semicolon
 r_return
 id|driver_register
 c_func
