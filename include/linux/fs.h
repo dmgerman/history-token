@@ -3,6 +3,7 @@ DECL|macro|_LINUX_FS_H
 mdefine_line|#define _LINUX_FS_H
 multiline_comment|/*&n; * This file has definitions for some important file table&n; * structures etc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 multiline_comment|/*&n; * It&squot;s silly to have NR_OPEN bigger than NR_FILE, but you can change&n; * the file limit at runtime and only root can increase the per-process&n; * nr_file rlimit, so it&squot;s safe to set up a ridiculously high absolute&n; * upper limit on files-per-process.&n; *&n; * Some programs (notably those using select()) may have to be &n; * recompiled to take full advantage of the new limits..  &n; */
 multiline_comment|/* Fixed constants first: */
@@ -273,7 +274,6 @@ DECL|macro|FIGETBSZ
 mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bmap */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/linkage.h&gt;
-macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
