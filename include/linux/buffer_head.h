@@ -59,6 +59,10 @@ DECL|enumerator|BH_Ordered
 id|BH_Ordered
 comma
 multiline_comment|/* ordered write */
+DECL|enumerator|BH_Eopnotsupp
+id|BH_Eopnotsupp
+comma
+multiline_comment|/* operation not supported (barrier) */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -276,6 +280,13 @@ c_func
 id|Ordered
 comma
 id|ordered
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Eopnotsupp
+comma
+id|eopnotsupp
 )paren
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
