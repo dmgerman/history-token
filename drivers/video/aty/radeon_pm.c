@@ -3858,7 +3858,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -3898,7 +3898,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -3988,7 +3988,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

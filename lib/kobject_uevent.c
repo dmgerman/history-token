@@ -66,6 +66,12 @@ suffix:colon
 r_return
 l_string|&quot;offline&quot;
 suffix:semicolon
+r_case
+id|KOBJ_ONLINE
+suffix:colon
+r_return
+l_string|&quot;online&quot;
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -1148,9 +1154,10 @@ c_func
 (paren
 id|seq_buff
 comma
-l_string|&quot;SEQNUM=%lld&quot;
+l_string|&quot;SEQNUM=%llu&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1159,7 +1166,7 @@ id|seq
 suffix:semicolon
 id|pr_debug
 (paren
-l_string|&quot;%s: %s %s seq=%lld %s %s %s %s %s&bslash;n&quot;
+l_string|&quot;%s: %s %s seq=%llu %s %s %s %s %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1174,6 +1181,7 @@ l_int|1
 )braket
 comma
 (paren
+r_int
 r_int
 r_int
 )paren

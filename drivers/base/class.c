@@ -1402,6 +1402,34 @@ comma
 id|dev-&gt;bus-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* add driver name of physical device */
+r_if
+c_cond
+(paren
+id|dev-&gt;driver
+)paren
+id|add_hotplug_env_var
+c_func
+(paren
+id|envp
+comma
+id|num_envp
+comma
+op_amp
+id|i
+comma
+id|buffer
+comma
+id|buffer_size
+comma
+op_amp
+id|length
+comma
+l_string|&quot;PHYSDEVDRIVER=%s&quot;
+comma
+id|dev-&gt;driver-&gt;name
+)paren
+suffix:semicolon
 multiline_comment|/* terminate, set to next free slot, shrink available space */
 id|envp
 (braket
