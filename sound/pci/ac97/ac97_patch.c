@@ -2310,11 +2310,11 @@ c_cond
 (paren
 id|ac97-&gt;pci
 op_logical_and
-id|ac97-&gt;pci-&gt;subsystem_vendor
+id|ac97-&gt;subsystem_vendor
 op_eq
 l_int|0x107b
 op_logical_and
-id|ac97-&gt;pci-&gt;subsystem_device
+id|ac97-&gt;subsystem_device
 op_eq
 l_int|0x0601
 )paren
