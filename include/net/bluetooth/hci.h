@@ -20,6 +20,10 @@ DECL|macro|HCI_DEV_UP
 mdefine_line|#define HCI_DEV_UP&t;3
 DECL|macro|HCI_DEV_DOWN
 mdefine_line|#define HCI_DEV_DOWN&t;4
+DECL|macro|HCI_DEV_SUSPEND
+mdefine_line|#define HCI_DEV_SUSPEND 5
+DECL|macro|HCI_DEV_RESUME
+mdefine_line|#define HCI_DEV_RESUME  6
 multiline_comment|/* HCI device types */
 DECL|macro|HCI_VHCI
 mdefine_line|#define HCI_VHCI&t;0
