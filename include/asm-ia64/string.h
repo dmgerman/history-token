@@ -38,7 +38,7 @@ suffix:semicolon
 r_extern
 r_void
 op_star
-id|__memset_generic
+id|memset
 (paren
 r_void
 op_star
@@ -48,17 +48,5 @@ comma
 id|__kernel_size_t
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__bzero
-(paren
-r_void
-op_star
-comma
-id|__kernel_size_t
-)paren
-suffix:semicolon
-DECL|macro|memset
-mdefine_line|#define memset(s, c, count)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *_s = (s);&t;&t;&t;&t;&t;&bslash;&n;&t;int _c = (c);&t;&t;&t;&t;&t;&bslash;&n;&t;__kernel_size_t _count = (count);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__builtin_constant_p(_c) &amp;&amp; _c == 0)&t;&bslash;&n;&t;&t;__bzero(_s, _count);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__memset_generic(_s, _c, _count);&t;&bslash;&n;})
 macro_line|#endif /* _ASM_IA64_STRING_H */
 eof

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ERRNO_H
 DECL|macro|_ASM_IA64_ERRNO_H
 mdefine_line|#define _ASM_IA64_ERRNO_H
-multiline_comment|/*&n; * This is derived from the Linux/x86 version.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This is derived from the Linux/x86 version.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|EPERM
 mdefine_line|#define&t;EPERM&t;&t; 1&t;/* Operation not permitted */
 DECL|macro|ENOENT
@@ -15,7 +15,7 @@ mdefine_line|#define&t;EIO&t;&t; 5&t;/* I/O error */
 DECL|macro|ENXIO
 mdefine_line|#define&t;ENXIO&t;&t; 6&t;/* No such device or address */
 DECL|macro|E2BIG
-mdefine_line|#define&t;E2BIG&t;&t; 7&t;/* Arg list too long */
+mdefine_line|#define&t;E2BIG&t;&t; 7&t;/* Argument list too long */
 DECL|macro|ENOEXEC
 mdefine_line|#define&t;ENOEXEC&t;&t; 8&t;/* Exec format error */
 DECL|macro|EBADF

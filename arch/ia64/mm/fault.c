@@ -497,12 +497,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|isr
 op_amp
 id|IA64_ISR_SP
 )paren
+op_logical_or
+(paren
+(paren
+id|isr
+op_amp
+id|IA64_ISR_NA
+)paren
+op_logical_and
+(paren
+id|isr
+op_amp
+id|IA64_ISR_CODE_MASK
+)paren
+op_eq
+id|IA64_ISR_CODE_LFETCH
+)paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t; * This fault was due to a speculative load set the &quot;ed&quot; bit in the psr to&n;&t;&t; * ensure forward progress (target register will get a NaT).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This fault was due to a speculative load or lfetch.fault, set the &quot;ed&quot;&n;&t;&t; * bit in the psr to ensure forward progress.  (Target register will get a&n;&t;&t; * NaT for ld.s, lfetch will be canceled.)&n;&t;&t; */
 id|ia64_psr
 c_func
 (paren
