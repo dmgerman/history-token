@@ -6816,10 +6816,10 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|selinux_bprm_compute_creds
+DECL|function|selinux_bprm_apply_creds
 r_static
 r_void
-id|selinux_bprm_compute_creds
+id|selinux_bprm_apply_creds
 c_func
 (paren
 r_struct
@@ -6867,7 +6867,7 @@ id|i
 suffix:semicolon
 id|secondary_ops
 op_member_access_from_pointer
-id|bprm_compute_creds
+id|bprm_apply_creds
 c_func
 (paren
 id|bprm
@@ -10531,7 +10531,7 @@ id|current-&gt;rlim
 op_plus
 id|resource
 suffix:semicolon
-multiline_comment|/* Control the ability to change the hard limit (whether&n;&t;   lowering or raising it), so that the hard limit can&n;&t;   later be used as a safe reset point for the soft limit&n;&t;   upon context transitions. See selinux_bprm_compute_creds. */
+multiline_comment|/* Control the ability to change the hard limit (whether&n;&t;   lowering or raising it), so that the hard limit can&n;&t;   later be used as a safe reset point for the soft limit&n;&t;   upon context transitions. See selinux_bprm_apply_creds. */
 r_if
 c_cond
 (paren
@@ -16474,9 +16474,9 @@ op_assign
 id|selinux_bprm_free_security
 comma
 dot
-id|bprm_compute_creds
+id|bprm_apply_creds
 op_assign
-id|selinux_bprm_compute_creds
+id|selinux_bprm_apply_creds
 comma
 dot
 id|bprm_set_security
