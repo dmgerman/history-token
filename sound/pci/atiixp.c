@@ -1064,7 +1064,7 @@ c_cond
 (paren
 id|dma-&gt;periods
 op_eq
-id|dma-&gt;periods
+id|periods
 op_logical_and
 id|dma-&gt;period_bytes
 op_eq
