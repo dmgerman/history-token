@@ -27,6 +27,8 @@ DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD  &t;&t;256
 DECL|macro|RX_STD_MAX_SIZE
 mdefine_line|#define RX_STD_MAX_SIZE&t;&t;&t;1536
+DECL|macro|RX_STD_MAX_SIZE_5705
+mdefine_line|#define RX_STD_MAX_SIZE_5705&t;&t;512
 DECL|macro|RX_JUMBO_MAX_SIZE
 mdefine_line|#define RX_JUMBO_MAX_SIZE&t;&t;0xdeadbeef /* XXX */
 multiline_comment|/* First 256 bytes are a mirror of PCI config space. */
