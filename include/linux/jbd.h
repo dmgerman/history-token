@@ -1809,7 +1809,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * journal_head management&n; */
-r_extern
 r_struct
 id|journal_head
 op_star
@@ -1822,7 +1821,18 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-r_extern
+r_struct
+id|journal_head
+op_star
+id|journal_grab_journal_head
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
 r_void
 id|journal_remove_journal_head
 c_func
@@ -1833,7 +1843,6 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|journal_put_journal_head
 c_func
