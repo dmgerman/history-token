@@ -3415,7 +3415,8 @@ op_assign
 id|csr
 op_amp
 (paren
-multiline_comment|/*PSYCHO_PCICTRL_SBH_ERR |*/
+id|PSYCHO_PCICTRL_SBH_ERR
+op_or
 id|PSYCHO_PCICTRL_SERR
 )paren
 suffix:semicolon
@@ -4320,7 +4321,7 @@ op_or_assign
 (paren
 id|PSYCHO_PCICTRL_SERR
 op_or
-id|PSYCHO_PCICTRL_SBH_INT
+id|PSYCHO_PCICTRL_SBH_ERR
 op_or
 id|PSYCHO_PCICTRL_EEN
 )paren
@@ -4329,7 +4330,7 @@ id|tmp
 op_and_assign
 op_complement
 (paren
-id|PSYCHO_PCICTRL_SBH_ERR
+id|PSYCHO_PCICTRL_SBH_INT
 )paren
 suffix:semicolon
 id|psycho_write
@@ -4357,7 +4358,7 @@ op_or_assign
 (paren
 id|PSYCHO_PCICTRL_SERR
 op_or
-id|PSYCHO_PCICTRL_SBH_INT
+id|PSYCHO_PCICTRL_SBH_ERR
 op_or
 id|PSYCHO_PCICTRL_EEN
 )paren
@@ -4366,7 +4367,7 @@ id|tmp
 op_and_assign
 op_complement
 (paren
-id|PSYCHO_PCICTRL_SBH_ERR
+id|PSYCHO_PCICTRL_SBH_INT
 )paren
 suffix:semicolon
 id|psycho_write
