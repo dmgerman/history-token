@@ -4,7 +4,7 @@ mdefine_line|#define TRIDENTFB_DEBUG 0
 macro_line|#endif
 macro_line|#if TRIDENTFB_DEBUG
 DECL|macro|debug
-mdefine_line|#define debug(f,a...)&t;printk(&quot;%s:&quot; f,  __FUNCTION__ , ## a)
+mdefine_line|#define debug(f,a...)&t;printk(&quot;%s:&quot; f,  __FUNCTION__ , ## a);mdelay(1000);
 macro_line|#else
 DECL|macro|debug
 mdefine_line|#define debug(f,a...)
@@ -20,6 +20,10 @@ DECL|macro|CYBER9320
 mdefine_line|#define CYBER9320&t;0x9320
 DECL|macro|CYBER9388
 mdefine_line|#define CYBER9388&t;0x9388
+DECL|macro|CYBER9382
+mdefine_line|#define CYBER9382&t;0x9382&t;&t;/* the real PCI id for this is 9660 */
+DECL|macro|CYBER9385
+mdefine_line|#define CYBER9385&t;0x9385&t;&t;/* ditto */&t;&t;
 DECL|macro|CYBER9397
 mdefine_line|#define CYBER9397&t;0x9397
 DECL|macro|CYBER9397DVD
@@ -28,6 +32,8 @@ DECL|macro|CYBER9520
 mdefine_line|#define CYBER9520&t;0x9520
 DECL|macro|CYBER9525DVD
 mdefine_line|#define CYBER9525DVD&t;0x9525
+DECL|macro|TGUI9660
+mdefine_line|#define TGUI9660&t;0x9660
 DECL|macro|IMAGE975
 mdefine_line|#define IMAGE975&t;0x9750
 DECL|macro|IMAGE985
@@ -62,11 +68,11 @@ mdefine_line|#define BLADE&t;1
 DECL|macro|XP
 mdefine_line|#define XP&t;2
 DECL|macro|is_image
-mdefine_line|#define is_image()&t;(family == IMAGE)
-DECL|macro|is_blade
-mdefine_line|#define is_blade()&t;(family == BLADE)
+mdefine_line|#define is_image(id)&t;
 DECL|macro|is_xp
-mdefine_line|#define is_xp()&t;&t;(family == XP)
+mdefine_line|#define is_xp(id)&t;((id == CYBERBLADEXPAi1) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEXPm8) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEXPm16)) 
+DECL|macro|is_blade
+mdefine_line|#define is_blade(id)&t;((id == BLADE3D) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEE4) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEi7) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEi7D) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEi1) ||&bslash;&n;&t;&t;&t; (id == CYBERBLADEi1D) ||&bslash;&n;&t;&t;&t; (id ==&t;CYBERBLADEAi1) ||&bslash;&n;&t;&t;&t; (id ==&t;CYBERBLADEAi1D))
 multiline_comment|/* these defines are for &squot;lcd&squot; variable */
 DECL|macro|LCD_STRETCH
 mdefine_line|#define LCD_STRETCH&t;0
@@ -81,17 +87,6 @@ DECL|macro|DISPLAY_FP
 mdefine_line|#define DISPLAY_FP&t;1
 DECL|macro|flatpanel
 mdefine_line|#define flatpanel (displaytype == DISPLAY_FP)
-multiline_comment|/* these are for defaultaccel variable */
-DECL|macro|ACCEL
-mdefine_line|#define ACCEL&t;1
-DECL|macro|NOACCEL
-mdefine_line|#define NOACCEL&t;0
-DECL|macro|TRIDENT_IOSIZE
-mdefine_line|#define TRIDENT_IOSIZE&t;0x20000
-DECL|macro|NTSC
-mdefine_line|#define NTSC 14.31818
-DECL|macro|PAL
-mdefine_line|#define PAL  17.73448
 multiline_comment|/* General Registers */
 DECL|macro|SPR
 mdefine_line|#define SPR&t;0x1F&t;&t;/* Software Programming Register (videoram) */
@@ -99,7 +94,7 @@ multiline_comment|/* 3C4 */
 DECL|macro|RevisionID
 mdefine_line|#define RevisionID 0x09
 DECL|macro|OldOrNew
-mdefine_line|#define OldOrNew 0x0B
+mdefine_line|#define OldOrNew 0x0B&t;
 DECL|macro|ConfPort1
 mdefine_line|#define ConfPort1 0x0C
 DECL|macro|ConfPort2
