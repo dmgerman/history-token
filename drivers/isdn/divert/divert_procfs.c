@@ -746,6 +746,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|spinlock_t
+id|divert_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|divert_rule
 op_star
 id|rulep
@@ -925,15 +930,13 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -942,9 +945,12 @@ op_assign
 id|dioctl.getsetrule.rule
 suffix:semicolon
 multiline_comment|/* copy data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|divert_lock
+comma
 id|flags
 )paren
 suffix:semicolon
