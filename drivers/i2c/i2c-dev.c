@@ -224,7 +224,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;i2c-dev dummy driver&quot;
+l_string|&quot;dev driver&quot;
 comma
 dot
 id|id
@@ -319,15 +319,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_struct
 id|i2c_client
 op_star
@@ -373,23 +364,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d reading %d bytes.&bslash;n&quot;
 comma
 id|minor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
 comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ret
 op_assign
 id|i2c_master_recv
@@ -478,15 +466,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -545,23 +524,20 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d writing %d bytes.&bslash;n&quot;
 comma
 id|minor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
 comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ret
 op_assign
 id|i2c_master_send
@@ -647,11 +623,9 @@ r_int
 r_int
 id|funcs
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d ioctl, cmd: 0x%x, arg: %lx.&bslash;n&quot;
 comma
 id|minor
@@ -665,7 +639,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_switch
 c_cond
 (paren
@@ -845,6 +818,18 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/* Put an arbritrary limit on the number of messages that can&n;&t;&t; * be sent at once */
+r_if
+c_cond
+(paren
+id|rdwr_arg.nmsgs
+OG
+l_int|42
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|rdwr_pa
 op_assign
 (paren
@@ -936,6 +921,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Limit the size of the message to a sane amount */
+r_if
+c_cond
+(paren
+id|rdwr_pa
+(braket
+id|i
+)braket
+dot
+id|len
+OG
+l_int|8192
+)paren
+(brace
+id|res
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|rdwr_pa
 (braket
 id|i
@@ -1006,17 +1013,6 @@ id|len
 )paren
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|rdwr_pa
-(braket
-id|i
-)braket
-dot
-id|buf
-)paren
-suffix:semicolon
 id|res
 op_assign
 op_minus
@@ -1025,6 +1021,52 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|res
+OL
+l_int|0
+)paren
+(brace
+r_int
+id|j
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|i
+suffix:semicolon
+op_increment
+id|j
+)paren
+id|kfree
+c_func
+(paren
+id|rdwr_pa
+(braket
+id|j
+)braket
+dot
+id|buf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|rdwr_pa
+)paren
+suffix:semicolon
+r_return
+id|res
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1213,17 +1255,17 @@ id|I2C_SMBUS_BLOCK_PROC_CALL
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: size out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;size out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
 id|data_arg.size
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -1246,17 +1288,17 @@ id|I2C_SMBUS_WRITE
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: read_write out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;read_write out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
 id|data_arg.read_write
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -1314,15 +1356,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: data is NULL pointer in ioctl I2C_SMBUS.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;data is NULL pointer in ioctl I2C_SMBUS.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -1913,7 +1955,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-dev.o: i2c /dev entries driver module version %s (%s)&bslash;n&quot;
+l_string|&quot;i2c /dev entries driver module version %s (%s)&bslash;n&quot;
 comma
 id|I2C_VERSION
 comma
