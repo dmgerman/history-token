@@ -177,12 +177,46 @@ l_int|8
 )paren
 id|psw_t
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|macro|FIX_PSW
-mdefine_line|#define FIX_PSW(addr) ((unsigned long)(addr))
-DECL|macro|ADDR_BITS_REMOVE
-mdefine_line|#define ADDR_BITS_REMOVE(addr) ((addr))
-macro_line|#endif
+DECL|macro|PSW_MASK_PER
+mdefine_line|#define PSW_MASK_PER&t;&t;0x4000000000000000UL
+DECL|macro|PSW_MASK_DAT
+mdefine_line|#define PSW_MASK_DAT&t;&t;0x0400000000000000UL
+DECL|macro|PSW_MASK_IO
+mdefine_line|#define PSW_MASK_IO&t;&t;0x0200000000000000UL
+DECL|macro|PSW_MASK_EXT
+mdefine_line|#define PSW_MASK_EXT&t;&t;0x0100000000000000UL
+DECL|macro|PSW_MASK_KEY
+mdefine_line|#define PSW_MASK_KEY&t;&t;0x00F0000000000000UL
+DECL|macro|PSW_MASK_MCHECK
+mdefine_line|#define PSW_MASK_MCHECK&t;&t;0x0004000000000000UL
+DECL|macro|PSW_MASK_WAIT
+mdefine_line|#define PSW_MASK_WAIT&t;&t;0x0002000000000000UL
+DECL|macro|PSW_MASK_PSTATE
+mdefine_line|#define PSW_MASK_PSTATE&t;&t;0x0001000000000000UL
+DECL|macro|PSW_MASK_ASC
+mdefine_line|#define PSW_MASK_ASC&t;&t;0x0000C00000000000UL
+DECL|macro|PSW_MASK_CC
+mdefine_line|#define PSW_MASK_CC&t;&t;0x0000300000000000UL
+DECL|macro|PSW_MASK_PM
+mdefine_line|#define PSW_MASK_PM&t;&t;0x00000F0000000000UL
+DECL|macro|PSW_BASE_BITS
+mdefine_line|#define PSW_BASE_BITS&t;&t;0x0000000180000000UL
+DECL|macro|PSW_BASE32_BITS
+mdefine_line|#define PSW_BASE32_BITS&t;&t;0x0000000080000000UL
+DECL|macro|PSW_ASC_PRIMARY
+mdefine_line|#define PSW_ASC_PRIMARY&t;&t;0x0000000000000000UL
+DECL|macro|PSW_ASC_ACCREG
+mdefine_line|#define PSW_ASC_ACCREG&t;&t;0x0000400000000000UL
+DECL|macro|PSW_ASC_SECONDARY
+mdefine_line|#define PSW_ASC_SECONDARY&t;0x0000800000000000UL
+DECL|macro|PSW_ASC_HOME
+mdefine_line|#define PSW_ASC_HOME&t;&t;0x0000C00000000000UL
+DECL|macro|PSW_KERNEL_BITS
+mdefine_line|#define PSW_KERNEL_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_PRIMARY)
+DECL|macro|PSW_USER_BITS
+mdefine_line|#define PSW_USER_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
+DECL|macro|PSW_USER32_BITS
+mdefine_line|#define PSW_USER32_BITS (PSW_BASE32_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
 r_typedef
 r_union
 (brace
@@ -707,7 +741,7 @@ multiline_comment|/* Used to give failing instruction back to user for ieee exce
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|macro|user_mode
-mdefine_line|#define user_mode(regs) (((regs)-&gt;psw.mask &amp; PSW_PROBLEM_STATE) != 0)
+mdefine_line|#define user_mode(regs) (((regs)-&gt;psw.mask &amp; PSW_MASK_PSTATE) != 0)
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;psw.addr)
 r_extern
