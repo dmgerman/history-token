@@ -290,7 +290,7 @@ mdefine_line|#define KSTK_EIP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;psw.addr)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;gprs[15])
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
 multiline_comment|/* Only let our hackers near the condition codes */
 DECL|macro|PSW_MASK_DEBUGCHANGE

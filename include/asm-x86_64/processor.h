@@ -948,6 +948,10 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;rep;nop&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace

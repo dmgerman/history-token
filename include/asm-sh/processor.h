@@ -446,6 +446,6 @@ mdefine_line|#define init_task&t;(init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_task_union.stack)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */
 eof
