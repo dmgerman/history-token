@@ -42,11 +42,6 @@ r_int
 r_int
 id|cursor_y
 suffix:semicolon
-DECL|member|cursor_pos
-r_int
-r_int
-id|cursor_pos
-suffix:semicolon
 DECL|member|fontname
 r_char
 id|fontname
