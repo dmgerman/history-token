@@ -9,19 +9,11 @@ DECL|macro|FB_WRITEL
 macro_line|#  define FB_WRITEL fb_writel
 DECL|macro|FB_READL
 macro_line|#  define FB_READL  fb_readl
-DECL|macro|SHIFT_PER_LONG
-macro_line|#  define SHIFT_PER_LONG 5
-DECL|macro|BYTES_PER_LONG
-macro_line|#  define BYTES_PER_LONG 4
 macro_line|#else
 DECL|macro|FB_WRITEL
 macro_line|#  define FB_WRITEL fb_writeq
 DECL|macro|FB_READL
 macro_line|#  define FB_READL  fb_readq
-DECL|macro|SHIFT_PER_LONG
-macro_line|#  define SHIFT_PER_LONG 6
-DECL|macro|BYTES_PER_LONG
-macro_line|#  define BYTES_PER_LONG 8
 macro_line|#endif
 multiline_comment|/*&n;     *  Compose two values, using a bitmask as decision value&n;     *  This is equivalent to (a &amp; mask) | (b &amp; ~mask)&n;     */
 r_static
@@ -256,8 +248,8 @@ macro_line|#endif
 multiline_comment|/*&n;     *  Aligned pattern fill using 32/64-bit memory accesses&n;     */
 r_static
 r_void
-DECL|function|bitfill32
-id|bitfill32
+DECL|function|bitfill_aligned
+id|bitfill_aligned
 c_func
 (paren
 r_int
@@ -275,6 +267,9 @@ id|pat
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 (brace
 r_int
@@ -312,7 +307,7 @@ op_plus
 id|n
 )paren
 op_mod
-id|BITS_PER_LONG
+id|bits
 )paren
 )paren
 suffix:semicolon
@@ -323,7 +318,7 @@ id|dst_idx
 op_plus
 id|n
 op_le
-id|BITS_PER_LONG
+id|bits
 )paren
 (brace
 singleline_comment|// Single word
@@ -395,7 +390,7 @@ op_increment
 suffix:semicolon
 id|n
 op_sub_assign
-id|BITS_PER_LONG
+id|bits
 op_minus
 id|dst_idx
 suffix:semicolon
@@ -403,7 +398,7 @@ suffix:semicolon
 singleline_comment|// Main chunk
 id|n
 op_div_assign
-id|BITS_PER_LONG
+id|bits
 suffix:semicolon
 r_while
 c_loop
@@ -536,8 +531,8 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Unaligned generic pattern fill using 32/64-bit memory accesses&n;     *  The pattern must have been expanded to a full 32/64-bit value&n;     *  Left/right are the appropriate shifts to convert to the pattern to be&n;     *  used for the next 32/64-bit word&n;     */
 r_static
 r_void
-DECL|function|bitfill
-id|bitfill
+DECL|function|bitfill_unaligned
+id|bitfill_unaligned
 c_func
 (paren
 r_int
@@ -561,6 +556,9 @@ id|right
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 (brace
 r_int
@@ -598,7 +596,7 @@ op_plus
 id|n
 )paren
 op_mod
-id|BITS_PER_LONG
+id|bits
 )paren
 )paren
 suffix:semicolon
@@ -609,7 +607,7 @@ id|dst_idx
 op_plus
 id|n
 op_le
-id|BITS_PER_LONG
+id|bits
 )paren
 (brace
 singleline_comment|// Single word
@@ -688,7 +686,7 @@ id|right
 suffix:semicolon
 id|n
 op_sub_assign
-id|BITS_PER_LONG
+id|bits
 op_minus
 id|dst_idx
 suffix:semicolon
@@ -696,7 +694,7 @@ suffix:semicolon
 singleline_comment|// Main chunk
 id|n
 op_div_assign
-id|BITS_PER_LONG
+id|bits
 suffix:semicolon
 r_while
 c_loop
@@ -845,8 +843,8 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Aligned pattern invert using 32/64-bit memory accesses&n;     */
 r_static
 r_void
-DECL|function|bitfill32_rev
-id|bitfill32_rev
+DECL|function|bitfill_aligned_rev
+id|bitfill_aligned_rev
 c_func
 (paren
 r_int
@@ -864,6 +862,9 @@ id|pat
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 (brace
 r_int
@@ -909,7 +910,7 @@ op_plus
 id|n
 )paren
 op_mod
-id|BITS_PER_LONG
+id|bits
 )paren
 )paren
 suffix:semicolon
@@ -920,7 +921,7 @@ id|dst_idx
 op_plus
 id|n
 op_le
-id|BITS_PER_LONG
+id|bits
 )paren
 (brace
 singleline_comment|// Single word
@@ -1003,7 +1004,7 @@ op_increment
 suffix:semicolon
 id|n
 op_sub_assign
-id|BITS_PER_LONG
+id|bits
 op_minus
 id|dst_idx
 suffix:semicolon
@@ -1011,7 +1012,7 @@ suffix:semicolon
 singleline_comment|// Main chunk
 id|n
 op_div_assign
-id|BITS_PER_LONG
+id|bits
 suffix:semicolon
 r_while
 c_loop
@@ -1226,8 +1227,8 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Unaligned generic pattern invert using 32/64-bit memory accesses&n;     *  The pattern must have been expanded to a full 32/64-bit value&n;     *  Left/right are the appropriate shifts to convert to the pattern to be&n;     *  used for the next 32/64-bit word&n;     */
 r_static
 r_void
-DECL|function|bitfill_rev
-id|bitfill_rev
+DECL|function|bitfill_unaligned_rev
+id|bitfill_unaligned_rev
 c_func
 (paren
 r_int
@@ -1251,6 +1252,9 @@ id|right
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 (brace
 r_int
@@ -1290,7 +1294,7 @@ op_plus
 id|n
 )paren
 op_mod
-id|BITS_PER_LONG
+id|bits
 )paren
 )paren
 suffix:semicolon
@@ -1301,7 +1305,7 @@ id|dst_idx
 op_plus
 id|n
 op_le
-id|BITS_PER_LONG
+id|bits
 )paren
 (brace
 singleline_comment|// Single word
@@ -1394,7 +1398,7 @@ id|right
 suffix:semicolon
 id|n
 op_sub_assign
-id|BITS_PER_LONG
+id|bits
 op_minus
 id|dst_idx
 suffix:semicolon
@@ -1402,7 +1406,7 @@ suffix:semicolon
 singleline_comment|// Main chunk
 id|n
 op_div_assign
-id|BITS_PER_LONG
+id|bits
 suffix:semicolon
 r_while
 c_loop
@@ -1613,11 +1617,6 @@ op_star
 id|rect
 )paren
 (brace
-id|u32
-id|bpp
-op_assign
-id|p-&gt;var.bits_per_pixel
-suffix:semicolon
 r_int
 r_int
 id|x2
@@ -1627,24 +1626,36 @@ comma
 id|vxres
 comma
 id|vyres
-suffix:semicolon
-r_int
-r_int
+comma
 id|height
 comma
 id|width
 comma
+id|pat
+comma
 id|fg
+suffix:semicolon
+r_int
+id|bits
+op_assign
+id|BITS_PER_LONG
+comma
+id|bytes
+op_assign
+id|bits
+op_rshift
+l_int|3
+suffix:semicolon
+id|u32
+id|bpp
+op_assign
+id|p-&gt;var.bits_per_pixel
 suffix:semicolon
 r_int
 r_int
 id|__iomem
 op_star
 id|dst
-suffix:semicolon
-r_int
-r_int
-id|pat
 suffix:semicolon
 r_int
 id|dst_idx
@@ -1803,7 +1814,7 @@ id|p-&gt;screen_base
 op_amp
 op_complement
 (paren
-id|BYTES_PER_LONG
+id|bytes
 op_minus
 l_int|1
 )paren
@@ -1819,7 +1830,7 @@ r_int
 id|p-&gt;screen_base
 op_amp
 (paren
-id|BYTES_PER_LONG
+id|bytes
 op_minus
 l_int|1
 )paren
@@ -1842,7 +1853,7 @@ suffix:semicolon
 multiline_comment|/* FIXME For now we support 1-32 bpp only */
 id|left
 op_assign
-id|BITS_PER_LONG
+id|bits
 op_mod
 id|bpp
 suffix:semicolon
@@ -1887,6 +1898,9 @@ id|pat
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 op_assign
 l_int|NULL
@@ -1902,7 +1916,7 @@ id|ROP_XOR
 suffix:colon
 id|fill_op32
 op_assign
-id|bitfill32_rev
+id|bitfill_aligned_rev
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1911,7 +1925,7 @@ id|ROP_COPY
 suffix:colon
 id|fill_op32
 op_assign
-id|bitfill32
+id|bitfill_aligned
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1926,7 +1940,7 @@ l_string|&quot;cfb_fillrect(): unknown rop, defaulting to ROP_COPY&bslash;n&quot
 suffix:semicolon
 id|fill_op32
 op_assign
-id|bitfill32
+id|bitfill_aligned
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1942,12 +1956,20 @@ id|dst
 op_add_assign
 id|dst_idx
 op_rshift
-id|SHIFT_PER_LONG
+(paren
+id|ffs
+c_func
+(paren
+id|bits
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|dst_idx
 op_and_assign
 (paren
-id|BITS_PER_LONG
+id|bits
 op_minus
 l_int|1
 )paren
@@ -1964,6 +1986,8 @@ comma
 id|width
 op_star
 id|bpp
+comma
+id|bits
 )paren
 suffix:semicolon
 id|dst_idx
@@ -2020,6 +2044,9 @@ id|right
 comma
 r_int
 id|n
+comma
+r_int
+id|bits
 )paren
 op_assign
 l_int|NULL
@@ -2056,7 +2083,7 @@ id|ROP_XOR
 suffix:colon
 id|fill_op
 op_assign
-id|bitfill_rev
+id|bitfill_unaligned_rev
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2065,7 +2092,7 @@ id|ROP_COPY
 suffix:colon
 id|fill_op
 op_assign
-id|bitfill
+id|bitfill_unaligned
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2080,7 +2107,7 @@ l_string|&quot;cfb_fillrect(): unknown rop, defaulting to ROP_COPY&bslash;n&quot
 suffix:semicolon
 id|fill_op
 op_assign
-id|bitfill
+id|bitfill_unaligned
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2096,12 +2123,20 @@ id|dst
 op_add_assign
 id|dst_idx
 op_rshift
-id|SHIFT_PER_LONG
+(paren
+id|ffs
+c_func
+(paren
+id|bits
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|dst_idx
 op_and_assign
 (paren
-id|BITS_PER_LONG
+id|bits
 op_minus
 l_int|1
 )paren
@@ -2122,6 +2157,8 @@ comma
 id|width
 op_star
 id|bpp
+comma
+id|bits
 )paren
 suffix:semicolon
 id|r
