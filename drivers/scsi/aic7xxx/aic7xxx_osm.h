@@ -2216,7 +2216,7 @@ r_extern
 r_uint32
 id|aic7xxx_probe_eisa_vl
 suffix:semicolon
-r_void
+r_int
 id|ahc_linux_eisa_init
 c_func
 (paren

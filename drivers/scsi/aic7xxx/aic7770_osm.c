@@ -102,7 +102,7 @@ id|u_int
 id|eisaBase
 )paren
 suffix:semicolon
-r_void
+r_int
 DECL|function|ahc_linux_eisa_init
 id|ahc_linux_eisa_init
 c_func
@@ -132,6 +132,8 @@ op_eq
 l_int|0
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * Linux requires the EISA IDs to be specified in&n;&t; * the EISA ID string format.  Perform the conversion&n;&t; * and setup a table with a NUL terminal entry.&n;&t; */
 id|aic7770_driver.id_table
@@ -164,6 +166,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_for
 c_loop
@@ -249,6 +253,7 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
+r_return
 id|eisa_driver_register
 c_func
 (paren
@@ -271,6 +276,12 @@ suffix:semicolon
 id|u_int
 id|i
 suffix:semicolon
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -279,6 +290,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|ret
 suffix:semicolon
 id|eisaBase
 op_assign
@@ -453,6 +465,7 @@ id|entry
 op_ne
 l_int|NULL
 )paren
+(brace
 id|aic7770_linux_config
 c_func
 (paren
@@ -463,7 +476,15 @@ comma
 id|eisaBase
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+)brace
+r_return
+id|ret
+suffix:semicolon
 macro_line|#endif
 )brace
 r_void
@@ -475,23 +496,6 @@ r_void
 )paren
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-r_if
-c_cond
-(paren
-id|aic7xxx_probe_eisa_vl
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|aic7770_driver.id_table
-op_ne
-l_int|NULL
-)paren
-(brace
 id|eisa_driver_unregister
 c_func
 (paren
@@ -507,7 +511,6 @@ comma
 id|M_DEVBUF
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 r_static
