@@ -3,14 +3,11 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifdef CONFIG_ISA
-DECL|macro|HAVE_ISA_VIRT_TO_BUS
-mdefine_line|#define HAVE_ISA_VIRT_TO_BUS
-macro_line|#endif
 DECL|variable|snd_preallocate_dma
 r_static
 r_int
@@ -109,11 +106,6 @@ id|substream-&gt;dma_type
 r_case
 id|SNDRV_PCM_DMA_TYPE_CONTINUOUS
 suffix:colon
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
-r_case
-id|SNDRV_PCM_DMA_TYPE_ISA
-suffix:colon
-macro_line|#endif
 id|snd_free_pages
 c_func
 (paren
@@ -124,6 +116,23 @@ id|substream-&gt;dma_bytes
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
+r_case
+id|SNDRV_PCM_DMA_TYPE_ISA
+suffix:colon
+id|snd_free_isa_pages
+c_func
+(paren
+id|substream-&gt;dma_bytes
+comma
+id|substream-&gt;dma_area
+comma
+id|substream-&gt;dma_addr
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 r_case
 id|SNDRV_PCM_DMA_TYPE_PCI
@@ -478,38 +487,19 @@ suffix:semicolon
 multiline_comment|/* not valid */
 r_break
 suffix:semicolon
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
+macro_line|#ifdef CONFIG_ISA
 r_case
 id|SNDRV_PCM_DMA_TYPE_ISA
 suffix:colon
 id|dma_area
 op_assign
-id|snd_malloc_pages
+id|snd_malloc_isa_pages
 c_func
 (paren
 id|size
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|substream-&gt;dma_private
 op_amp
-l_int|0xffffffff
-)paren
-)paren
-suffix:semicolon
 id|dma_addr
-op_assign
-id|isa_virt_to_bus
-c_func
-(paren
-id|dma_area
 )paren
 suffix:semicolon
 r_break
@@ -711,41 +701,22 @@ suffix:semicolon
 multiline_comment|/* not valid */
 r_break
 suffix:semicolon
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
+macro_line|#ifdef CONFIG_ISA
 r_case
 id|SNDRV_PCM_DMA_TYPE_ISA
 suffix:colon
 id|dma_area
 op_assign
-id|snd_malloc_pages_fallback
+id|snd_malloc_isa_pages_fallback
 c_func
 (paren
 id|size
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|substream-&gt;dma_private
 op_amp
-l_int|0xffffffff
-)paren
+id|dma_addr
 comma
 op_amp
 id|rsize
-)paren
-suffix:semicolon
-id|dma_addr
-op_assign
-id|isa_virt_to_bus
-c_func
-(paren
-id|dma_area
 )paren
 suffix:semicolon
 r_break
@@ -925,7 +896,6 @@ r_int
 id|flags
 )paren
 (brace
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
 id|substream-&gt;dma_type
 op_assign
 id|SNDRV_PCM_DMA_TYPE_CONTINUOUS
@@ -953,18 +923,6 @@ comma
 id|max
 )paren
 suffix:semicolon
-macro_line|#else
-id|snd_printk
-c_func
-(paren
-l_string|&quot;this host has no isa_virt_to_bus!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|snd_pcm_lib_preallocate_pages_for_all
 r_int
@@ -1033,7 +991,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_pcm_lib_preallocate_isa_pages
+id|snd_pcm_lib_preallocate_pages
 c_func
 (paren
 id|substream
@@ -1070,28 +1028,15 @@ id|size
 comma
 r_int
 id|max
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
 id|substream-&gt;dma_type
 op_assign
 id|SNDRV_PCM_DMA_TYPE_ISA
 suffix:semicolon
 id|substream-&gt;dma_private
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-r_int
-r_int
-)paren
-id|flags
+l_int|NULL
 suffix:semicolon
 r_return
 id|snd_pcm_lib_preallocate_pages1
@@ -1104,18 +1049,6 @@ comma
 id|max
 )paren
 suffix:semicolon
-macro_line|#else
-id|snd_printk
-c_func
-(paren
-l_string|&quot;this host has no isa_virt_to_bus!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|snd_pcm_lib_preallocate_isa_pages_for_all
 r_int
@@ -1131,10 +1064,6 @@ id|size
 comma
 r_int
 id|max
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
 id|snd_pcm_substream_t
@@ -1192,8 +1121,6 @@ comma
 id|size
 comma
 id|max
-comma
-id|flags
 )paren
 )paren
 OL
@@ -1319,9 +1246,8 @@ c_cond
 id|substream-&gt;dma_type
 )paren
 (brace
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
 r_case
-id|SNDRV_PCM_DMA_TYPE_ISA
+id|SNDRV_PCM_DMA_TYPE_CONTINUOUS
 suffix:colon
 id|dma_area
 op_assign
@@ -1347,10 +1273,24 @@ l_int|0xffffffff
 suffix:semicolon
 id|dma_addr
 op_assign
-id|isa_virt_to_bus
+l_int|0UL
+suffix:semicolon
+multiline_comment|/* not valid */
+r_break
+suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
+r_case
+id|SNDRV_PCM_DMA_TYPE_ISA
+suffix:colon
+id|dma_area
+op_assign
+id|snd_malloc_isa_pages
 c_func
 (paren
-id|dma_area
+id|size
+comma
+op_amp
+id|dma_addr
 )paren
 suffix:semicolon
 r_break
@@ -1482,16 +1422,18 @@ c_cond
 id|substream-&gt;dma_type
 )paren
 (brace
-macro_line|#ifdef HAVE_ISA_VIRT_TO_BUS
+macro_line|#ifdef CONFIG_ISA
 r_case
 id|SNDRV_PCM_DMA_TYPE_ISA
 suffix:colon
-id|snd_free_pages
+id|snd_free_isa_pages
 c_func
 (paren
+id|runtime-&gt;dma_bytes
+comma
 id|runtime-&gt;dma_area
 comma
-id|runtime-&gt;dma_bytes
+id|runtime-&gt;dma_addr
 )paren
 suffix:semicolon
 r_break

@@ -6,6 +6,7 @@ macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/seq_device.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren

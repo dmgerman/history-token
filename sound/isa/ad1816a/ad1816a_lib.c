@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/ad1816a.h&gt;
 id|MODULE_AUTHOR
@@ -1093,7 +1094,7 @@ c_func
 (paren
 id|chip-&gt;dma1
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -1238,7 +1239,7 @@ c_func
 (paren
 id|chip-&gt;dma2
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -2103,6 +2104,10 @@ op_amp
 id|runtime-&gt;hw.period_bytes_max
 )paren
 suffix:semicolon
+id|chip-&gt;playback_substream
+op_assign
+id|substream
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2184,6 +2189,10 @@ comma
 op_amp
 id|runtime-&gt;hw.period_bytes_max
 )paren
+suffix:semicolon
+id|chip-&gt;capture_substream
+op_assign
+id|substream
 suffix:semicolon
 r_return
 l_int|0
@@ -2487,7 +2496,7 @@ c_func
 id|chip-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -3207,10 +3216,6 @@ suffix:colon
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 id|chip-&gt;pcm
@@ -4493,7 +4498,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_DOUBLE
@@ -4525,7 +4530,7 @@ l_int|0
 comma
 l_int|63
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_DOUBLE
@@ -4557,7 +4562,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_DOUBLE
@@ -4589,7 +4594,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_DOUBLE
@@ -4621,7 +4626,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_DOUBLE
@@ -4653,7 +4658,7 @@ l_int|0
 comma
 l_int|63
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_SINGLE
@@ -4681,7 +4686,7 @@ l_int|8
 comma
 l_int|63
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_SINGLE
@@ -4727,7 +4732,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_SINGLE
@@ -4753,9 +4758,9 @@ id|AD1816A_PHONE_IN_GAIN_ATT
 comma
 l_int|0
 comma
-l_int|31
+l_int|15
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1816A_SINGLE
@@ -4783,7 +4788,7 @@ l_int|0
 comma
 l_int|31
 comma
-l_int|0
+l_int|1
 )paren
 comma
 (brace

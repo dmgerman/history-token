@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/sb16_csp.h&gt;
@@ -1156,7 +1157,7 @@ c_func
 (paren
 id|dma
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -1565,7 +1566,7 @@ c_func
 (paren
 id|dma
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -4051,10 +4052,6 @@ comma
 l_int|128
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if

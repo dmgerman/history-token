@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Routines for Gravis UltraSound soundcards - Simple in
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
 macro_line|#include &quot;gus_tables.h&quot;

@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Attenuated route Plug-In&n; *  Copyright (c) 2000 by 
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;pcm_plugin.h&quot;
@@ -106,21 +108,21 @@ DECL|struct|route_private_data
 r_struct
 id|route_private_data
 (brace
-DECL|enumerator|UINT32
-DECL|enumerator|UINT64
-DECL|enumerator|FLOAT
+DECL|enumerator|R_UINT32
+DECL|enumerator|R_UINT64
+DECL|enumerator|R_FLOAT
 DECL|member|sum_type
 r_enum
 (brace
-id|UINT32
+id|R_UINT32
 op_assign
 l_int|0
 comma
-id|UINT64
+id|R_UINT64
 op_assign
 l_int|1
 comma
-id|FLOAT
+id|R_FLOAT
 op_assign
 l_int|2
 )brace
@@ -2462,7 +2464,7 @@ suffix:semicolon
 macro_line|#if ROUTE_PLUGIN_USE_FLOAT
 id|data-&gt;sum_type
 op_assign
-id|FLOAT
+id|R_FLOAT
 suffix:semicolon
 macro_line|#else
 r_if
@@ -2478,12 +2480,12 @@ l_int|32
 )paren
 id|data-&gt;sum_type
 op_assign
-id|UINT64
+id|R_UINT64
 suffix:semicolon
 r_else
 id|data-&gt;sum_type
 op_assign
-id|UINT32
+id|R_UINT32
 suffix:semicolon
 macro_line|#endif
 id|data-&gt;src_sample_size

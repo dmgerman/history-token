@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Midi Sequencer interface routines.&n; *&n; *  Copyrig
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;emux_voice.h&quot;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Prototypes for static functions */
 r_static
 r_void

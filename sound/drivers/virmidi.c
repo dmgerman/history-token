@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Dummy soundcard for virtual rawmidi devices&n; *&n; *
 multiline_comment|/*&n; * VIRTUAL RAW MIDI DEVICE CARDS&n; *&n; * This dummy card contains up to 4 virtual rawmidi devices.&n; * They are not real rawmidi devices but just associated with sequencer&n; * clients, so that any input/output sources can be connected as a raw&n; * MIDI device arbitrary.&n; * Also, multiple access is allowed to a single rawmidi device.&n; *&n; * Typical usage is like following:&n; * - Load snd-virmidi module.&n; *&t;# modprobe snd-virmidi snd_index=2&n; *   Then, sequencer clients 72:0 to 75:0 will be created, which are&n; *   mapped from /dev/snd/midiC1D0 to /dev/snd/midiC1D3, respectively.&n; *&n; * - Connect input/output via aconnect.&n; *&t;% aconnect 64:0 72:0&t;# keyboard input redirection 64:0 -&gt; 72:0&n; *&t;% aconnect 72:0 65:0&t;# output device redirection 72:0 -&gt; 65:0&n; *&n; * - Run application using a midi device (eg. /dev/snd/midiC1D0)&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/seq_kernel.h&gt;
 macro_line|#include &lt;sound/seq_virmidi.h&gt;

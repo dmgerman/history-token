@@ -2,6 +2,9 @@ multiline_comment|/*&n; *  Virtual Raw MIDI client on Sequencer&n; *&n; *  Copyr
 multiline_comment|/*&n; * Virtual Raw MIDI client&n; *&n; * The virtual rawmidi client is a sequencer client which associate&n; * a rawmidi device file.  The created rawmidi device file can be&n; * accessed as a normal raw midi, but its MIDI source and destination&n; * are arbitrary.  For example, a user-client software synth connected&n; * to this port can be used as a normal midi device as well.&n; *&n; * The virtual rawmidi device accepts also multiple opens.  Each file&n; * has its own input buffer, so that no conflict would occur.  The drain&n; * of input/output buffer acts only to the local buffer.&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/info.h&gt;

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *      MOTU Midi Timepiece ALSA Main routines&n; *      
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
@@ -156,7 +157,8 @@ c_func
 (paren
 id|snd_port
 comma
-l_string|&quot;allows:{{0x378},{0x278}},dialog:list&quot;
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{0x378},{0x278}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -180,7 +182,8 @@ c_func
 (paren
 id|snd_irq
 comma
-l_string|&quot;allows:{{7},{5}},dialog:list&quot;
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{7},{5}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -204,7 +207,8 @@ c_func
 (paren
 id|snd_hwports
 comma
-l_string|&quot;allows:{{1,8}},dialog:list&quot;
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{1,8}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *      defines&n; */
@@ -2738,7 +2742,7 @@ c_func
 id|crd-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|crd-&gt;res_port

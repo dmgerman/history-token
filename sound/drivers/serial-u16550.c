@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   serial.c&n; *   Copyright (c) by Jaroslav Kysela &lt
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 DECL|macro|SNDRV_GET_ID
@@ -2906,7 +2907,7 @@ c_func
 id|uart-&gt;res_base
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|uart-&gt;res_base

@@ -1,6 +1,16 @@
 multiline_comment|/*&n;    card-als100.c - driver for Avance Logic ALS100 based soundcards.&n;    Copyright (C) 1999-2000 by Massimo Piccioni &lt;dafastidio@libero.it&gt;&n;&n;    Thanks to Pierfrancesco &squot;qM2&squot; Passerini.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#ifndef LINUX_ISAPNP_H
+macro_line|#include &lt;linux/isapnp.h&gt;
+DECL|macro|isapnp_card
+mdefine_line|#define isapnp_card pci_bus
+DECL|macro|isapnp_dev
+mdefine_line|#define isapnp_dev pci_dev
+macro_line|#endif
 macro_line|#include &lt;sound/core.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID

@@ -3,6 +3,8 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -404,6 +406,13 @@ id|card-&gt;ctl_files
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|card-&gt;power_lock
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -1355,9 +1364,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|wait_queue_t
@@ -1410,8 +1416,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 )brace

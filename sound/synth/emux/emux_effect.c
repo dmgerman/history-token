@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Midi synth routines for the Emu8k/Emu10k1&n; *&n; *  
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;emux_voice.h&quot;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef SNDRV_EMUX_USE_RAW_EFFECT
 multiline_comment|/*&n; * effects table&n; */
 DECL|macro|xoffsetof

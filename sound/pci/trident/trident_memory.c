@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/trident.h&gt;
 multiline_comment|/* page arguments of these two macros are Trident page (4096 bytes), not like&n; * aligned pages in others&n; */
@@ -48,6 +49,8 @@ DECL|macro|aligned_page_offset
 mdefine_line|#define aligned_page_offset(page)&t;((page) &lt;&lt; 13)
 DECL|macro|page_to_ptr
 mdefine_line|#define page_to_ptr(trident,page)&t;__tlb_to_ptr(trident, (page) &lt;&lt; 1)
+DECL|macro|page_to_addr
+mdefine_line|#define page_to_addr(trident,page)&t;__tlb_to_addr(trident, (page) &lt;&lt; 1)
 multiline_comment|/* fill TLB entries -- we need to fill two entries */
 DECL|function|set_tlb_bus
 r_static

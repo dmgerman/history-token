@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  GM/GS/XG midi module.&n; *&n; *  Copyright (C) 1999 S
 multiline_comment|/*&n; * This module is used to keep track of the current midi state.&n; * It can be used for drivers that are required to emulate midi when&n; * the hardware doesn&squot;t.&n; *&n; * It was written for a AWE64 driver, but there should be no AWE specific&n; * code in here.  If there is it should be reported as a bug.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/seq_kernel.h&gt;
 macro_line|#include &lt;sound/seq_midi_emul.h&gt;

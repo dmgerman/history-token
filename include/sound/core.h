@@ -488,8 +488,8 @@ id|power_state
 suffix:semicolon
 multiline_comment|/* power state */
 DECL|member|power_lock
-r_int
-r_int
+r_struct
+id|semaphore
 id|power_lock
 suffix:semicolon
 multiline_comment|/* power lock */
@@ -522,44 +522,15 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-id|can_schedule
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|test_and_set_bit
+id|down
 c_func
 (paren
-l_int|0
-comma
 op_amp
 id|card-&gt;power_lock
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|can_schedule
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|snd_power_unlock
 r_static
@@ -573,11 +544,9 @@ op_star
 id|card
 )paren
 (brace
-id|clear_bit
+id|up
 c_func
 (paren
-l_int|0
-comma
 op_amp
 id|card-&gt;power_lock
 )paren
@@ -590,9 +559,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 DECL|function|snd_power_get_state
@@ -642,11 +608,11 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|snd_power_lock
-mdefine_line|#define snd_power_lock(card, can_schedule) do { ; } while (0)
+mdefine_line|#define snd_power_lock(card) do { ; } while (0)
 DECL|macro|snd_power_unlock
 mdefine_line|#define snd_power_unlock(card) do { ; } while (0)
 DECL|macro|snd_power_wait
-mdefine_line|#define snd_power_wait(card, can_schedule) do { ; } while (0)
+mdefine_line|#define snd_power_wait(card) do { ; } while (0)
 DECL|macro|snd_power_get_state
 mdefine_line|#define snd_power_get_state(card) SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
@@ -926,10 +892,15 @@ DECL|macro|kmalloc
 mdefine_line|#define kmalloc(size, flags) snd_hidden_kmalloc(size, flags)
 DECL|macro|kfree
 mdefine_line|#define kfree(obj) snd_hidden_kfree(obj)
+DECL|macro|kfree_nocheck
+mdefine_line|#define kfree_nocheck(obj) snd_wrapper_kfree(obj)
 DECL|macro|vmalloc
 mdefine_line|#define vmalloc(size) snd_hidden_vmalloc(size)
 DECL|macro|vfree
 mdefine_line|#define vfree(obj) snd_hidden_vfree(obj)
+macro_line|#else
+DECL|macro|kfree_nocheck
+mdefine_line|#define kfree_nocheck(obj) kfree(obj)
 macro_line|#endif
 r_void
 op_star
@@ -1003,6 +974,43 @@ r_int
 id|size
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
+r_void
+op_star
+id|snd_malloc_isa_pages
+c_func
+(paren
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+)paren
+suffix:semicolon
+r_void
+op_star
+id|snd_malloc_isa_pages_fallback
+c_func
+(paren
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+comma
+r_int
+r_int
+op_star
+id|res_size
+)paren
+suffix:semicolon
+DECL|macro|snd_free_isa_pages
+mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pages(ptr, size)
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 r_void
 op_star
@@ -1020,7 +1028,7 @@ id|size
 comma
 id|dma_addr_t
 op_star
-id|dmaaddr
+id|dma_addr
 )paren
 suffix:semicolon
 r_void
@@ -1039,7 +1047,7 @@ id|size
 comma
 id|dma_addr_t
 op_star
-id|dmaaddr
+id|dma_addr
 comma
 r_int
 r_int
@@ -1065,7 +1073,7 @@ op_star
 id|ptr
 comma
 id|dma_addr_t
-id|dmaaddr
+id|dma_addr
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1283,10 +1291,9 @@ r_int
 r_int
 id|dma
 comma
-r_const
-r_void
-op_star
-id|buf
+r_int
+r_int
+id|addr
 comma
 r_int
 r_int

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -14,7 +15,7 @@ DECL|macro|chip_t
 mdefine_line|#define chip_t cs46xx_t
 multiline_comment|/*&n; *  constants&n; */
 macro_line|#if 0
-mdefine_line|#define ACCEPT_VALID&t;&t;/* REQUIRED ONLY FOR OSS EMULATION */
+mdefine_line|#define SND_CONFIG_CS46XX_ACCEPT_VALID&t;&t;/* REQUIRED ONLY FOR OSS EMULATION */
 macro_line|#endif
 DECL|macro|CS46XX_BA0_SIZE
 mdefine_line|#define CS46XX_BA0_SIZE&t;&t;0x1000
@@ -4205,7 +4206,7 @@ suffix:colon
 (paren
 id|SNDRV_PCM_INFO_MMAP
 op_or
-macro_line|#ifdef ACCEPT_VALID
+macro_line|#ifdef SND_CONFIG_CS46XX_ACCEPT_VALID
 multiline_comment|/* NOT TRUE!!! OSS REQUIRES IT */
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
@@ -4296,7 +4297,7 @@ suffix:colon
 (paren
 id|SNDRV_PCM_INFO_MMAP
 op_or
-macro_line|#ifdef ACCEPT_VALID
+macro_line|#ifdef SND_CONFIG_CS46XX_ACCEPT_VALID
 multiline_comment|/* NOT TRUE!!! OSS REQUIRES IT */
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
@@ -7149,7 +7150,7 @@ c_func
 id|region-&gt;resource
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|region-&gt;resource
@@ -8647,9 +8648,6 @@ c_func
 id|cs46xx_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -8662,8 +8660,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -8715,9 +8711,6 @@ c_func
 id|cs46xx_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -8733,8 +8726,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -8936,8 +8927,6 @@ id|snd_cs46xx_resume
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -8952,8 +8941,6 @@ id|snd_cs46xx_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break

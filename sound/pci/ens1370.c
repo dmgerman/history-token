@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -6773,12 +6774,12 @@ r_if
 c_cond
 (paren
 id|uinfo-&gt;value.enumerated.item
-OG
+op_ge
 l_int|3
 )paren
 id|uinfo-&gt;value.enumerated.item
 op_assign
-l_int|3
+l_int|2
 suffix:semicolon
 id|sprintf
 c_func
@@ -7356,7 +7357,7 @@ c_func
 id|ensoniq-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|ensoniq-&gt;res_port

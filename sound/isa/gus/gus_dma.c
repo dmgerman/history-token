@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
 DECL|function|snd_gf1_dma_ack
@@ -69,10 +70,9 @@ r_int
 r_int
 id|addr
 comma
-r_const
-r_void
-op_star
-id|buf
+r_int
+r_int
+id|buf_addr
 comma
 r_int
 r_int
@@ -236,7 +236,7 @@ c_func
 (paren
 id|gus-&gt;gf1.dma1
 comma
-id|buf
+id|buf_addr
 comma
 id|count
 comma
@@ -577,7 +577,7 @@ id|gus
 comma
 id|block-&gt;addr
 comma
-id|block-&gt;buffer
+id|block-&gt;buf_addr
 comma
 id|block-&gt;count
 comma
@@ -1024,7 +1024,7 @@ id|gus
 comma
 id|block-&gt;addr
 comma
-id|block-&gt;buffer
+id|block-&gt;buf_addr
 comma
 id|block-&gt;count
 comma

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/cs4231.h&gt;
 id|MODULE_AUTHOR
@@ -4962,7 +4963,7 @@ c_func
 (paren
 id|chip-&gt;dma1
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -5241,7 +5242,7 @@ c_func
 (paren
 id|chip-&gt;dma2
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -7606,7 +7607,7 @@ c_func
 id|chip-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -7625,7 +7626,7 @@ c_func
 id|chip-&gt;res_cport
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -8681,10 +8682,6 @@ suffix:colon
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 id|chip-&gt;pcm
