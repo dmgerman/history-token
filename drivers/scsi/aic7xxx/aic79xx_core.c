@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#183 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#184 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
@@ -2880,16 +2880,66 @@ r_case
 id|STATUS_OVERRUN
 suffix:colon
 (brace
+r_struct
+id|scb
+op_star
+id|scb
+suffix:semicolon
+id|u_int
+id|scbid
+suffix:semicolon
+id|scbid
+op_assign
+id|ahd_get_scbptr
+c_func
+(paren
+id|ahd
+)paren
+suffix:semicolon
+id|scb
+op_assign
+id|ahd_lookup_scb
+c_func
+(paren
+id|ahd
+comma
+id|scbid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scb
+op_ne
+l_int|NULL
+)paren
+id|ahd_print_path
+c_func
+(paren
+id|ahd
+comma
+id|scb
+)paren
+suffix:semicolon
+r_else
 id|printf
 c_func
 (paren
-l_string|&quot;%s: Status Overrun&quot;
+l_string|&quot;%s: &quot;
 comma
 id|ahd_name
 c_func
 (paren
 id|ahd
 )paren
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;SCB %d Packetized Status Overrun&quot;
+comma
+id|scbid
 )paren
 suffix:semicolon
 id|ahd_dump_card_state
@@ -26083,16 +26133,6 @@ comma
 id|INVALID_ADDR
 )paren
 suffix:semicolon
-id|ahd_outw
-c_func
-(paren
-id|ahd
-comma
-id|LONGJMP_SCB
-comma
-id|SCB_LIST_NULL
-)paren
-suffix:semicolon
 id|ahd_outb
 c_func
 (paren
@@ -38581,12 +38621,20 @@ op_assign
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;n%3d &quot;
+l_string|&quot;&bslash;n%3d FIFO_USE[0x%x] &quot;
 comma
 id|SCB_GET_TAG
 c_func
 (paren
 id|scb
+)paren
+comma
+id|ahd_inb
+c_func
+(paren
+id|ahd
+comma
+id|SCB_FIFO_USE_COUNT
 )paren
 )paren
 suffix:semicolon
@@ -38628,23 +38676,6 @@ c_func
 id|ahd
 comma
 id|SCB_SCSIID
-)paren
-comma
-op_amp
-id|cur_col
-comma
-l_int|60
-)paren
-suffix:semicolon
-id|ahd_scb_tag_print
-c_func
-(paren
-id|ahd_inb
-c_func
-(paren
-id|ahd
-comma
-id|SCB_TAG
 )paren
 comma
 op_amp
@@ -39044,8 +39075,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;n%s: FIFO%d %s, LONGJMP == 0x%x, &quot;
-l_string|&quot;SCB 0x%x, LJSCB 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;n%s: FIFO%d %s, LONGJMP == 0x%x, SCB 0x%x&bslash;n&quot;
 comma
 id|ahd_name
 c_func
@@ -39079,14 +39109,6 @@ id|LONGJMP_ADDR
 )paren
 comma
 id|fifo_scbptr
-comma
-id|ahd_inw
-c_func
-(paren
-id|ahd
-comma
-id|LONGJMP_SCB
-)paren
 )paren
 suffix:semicolon
 id|cur_col
