@@ -354,6 +354,12 @@ comma
 id|mask
 )paren
 suffix:semicolon
+id|iSeries_enable_IRQ
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
