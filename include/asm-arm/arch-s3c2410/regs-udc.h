@@ -1,9 +1,9 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-udc.h&n; *&n; * Copyright (C) 2004 Herbert Poetzl &lt;herbert@13thfloor.at&gt;&n; *&n; * This include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; *  Changelog:&n; *    01-08-2004&t;Initial creation&n; *    12-09-2004&t;Cleanup for submission&n; *    24-10-2004&t;Fixed S3C2410_UDC_MAXP_REG definition&n; */
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-udc.h&n; *&n; * Copyright (C) 2004 Herbert Poetzl &lt;herbert@13thfloor.at&gt;&n; *&n; * This include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; *  Changelog:&n; *    01-08-2004&t;Initial creation&n; *    12-09-2004&t;Cleanup for submission&n; *    24-10-2004&t;Fixed S3C2410_UDC_MAXP_REG definition&n; *    10-03-2005&t;Changed S3C2410_VA to S3C24XX_VA&n; */
 macro_line|#ifndef __ASM_ARCH_REGS_UDC_H
 DECL|macro|__ASM_ARCH_REGS_UDC_H
 mdefine_line|#define __ASM_ARCH_REGS_UDC_H
 DECL|macro|S3C2410_USBDREG
-mdefine_line|#define S3C2410_USBDREG(x) ((x) + S3C2410_VA_USBDEV)
+mdefine_line|#define S3C2410_USBDREG(x) ((x) + S3C24XX_VA_USBDEV)
 DECL|macro|S3C2410_UDC_FUNC_ADDR_REG
 mdefine_line|#define S3C2410_UDC_FUNC_ADDR_REG&t;S3C2410_USBDREG(0x0140)
 DECL|macro|S3C2410_UDC_PWR_REG

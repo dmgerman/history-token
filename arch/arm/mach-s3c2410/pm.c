@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/pm.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Power Manager (Suspend-To-RAM) support&n; *&n; * See Documentation/arm/Samsung-S3C24XX/Suspend.txt for more information&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Parts based on arch/arm/mach-pxa/pm.c&n; *&n; * Thanks to Dimitry Andric for debugging&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/pm.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Power Manager (Suspend-To-RAM) support&n; *&n; * See Documentation/arm/Samsung-S3C24XX/Suspend.txt for more information&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Parts based on arch/arm/mach-pxa/pm.c&n; *&n; * Thanks to Dimitry Andric for debugging&n; *&n; * Modifications:&n; *     10-Mar-2005 LCVR  Changed S3C2410_VA_UART to S3C24XX_VA_UART&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -365,21 +365,23 @@ op_assign
 id|SAVE_UART
 c_func
 (paren
-id|S3C2410_VA_UART0
+id|S3C24XX_VA_UART0
 )paren
 comma
 id|SAVE_UART
 c_func
 (paren
-id|S3C2410_VA_UART1
+id|S3C24XX_VA_UART1
 )paren
 comma
+macro_line|#ifndef CONFIG_CPU_S3C2400
 id|SAVE_UART
 c_func
 (paren
-id|S3C2410_VA_UART2
+id|S3C24XX_VA_UART2
 )paren
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* debug&n; *&n; * we send the debug to printascii() to allow it to be seen if the&n; * system never wakes up from the sleep&n;*/

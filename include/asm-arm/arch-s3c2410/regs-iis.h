@@ -1,9 +1,11 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-iis.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 IIS register definition&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    26-06-2003     BJD     Finished off definitions for register addresses&n; *    12-03-2004     BJD     Updated include protection&n; */
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-iis.h&n; *&n; * Copyright (c) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 IIS register definition&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    26-06-2003     BJD     Finished off definitions for register addresses&n; *    12-03-2004     BJD     Updated include protection&n; *    07-03-2005     BJD     Added FIFO size flags and S3C2440 MPLL&n; */
 macro_line|#ifndef __ASM_ARCH_REGS_IIS_H
 DECL|macro|__ASM_ARCH_REGS_IIS_H
 mdefine_line|#define __ASM_ARCH_REGS_IIS_H
 DECL|macro|S3C2410_IISCON
 mdefine_line|#define S3C2410_IISCON&t; (0x00)
+DECL|macro|S3C2440_IISCON_MPLL
+mdefine_line|#define S3C2440_IISCON_MPLL&t;  (1&lt;&lt;9)
 DECL|macro|S3C2410_IISCON_LRINDEX
 mdefine_line|#define S3C2410_IISCON_LRINDEX&t;  (1&lt;&lt;8)
 DECL|macro|S3C2410_IISCON_TXFIFORDY
@@ -44,6 +46,8 @@ DECL|macro|S3C2410_IISMOD_8BIT
 mdefine_line|#define S3C2410_IISMOD_8BIT&t;  (0&lt;&lt;3)
 DECL|macro|S3C2410_IISMOD_16BIT
 mdefine_line|#define S3C2410_IISMOD_16BIT&t;  (1&lt;&lt;3)
+DECL|macro|S3C2410_IISMOD_BITMASK
+mdefine_line|#define S3C2410_IISMOD_BITMASK&t;  (1&lt;&lt;3)
 DECL|macro|S3C2410_IISMOD_256FS
 mdefine_line|#define S3C2410_IISMOD_256FS&t;  (0&lt;&lt;1)
 DECL|macro|S3C2410_IISMOD_384FS
@@ -58,8 +62,8 @@ DECL|macro|S3C2410_IISPSR
 mdefine_line|#define S3C2410_IISPSR&t;&t;(0x08)
 DECL|macro|S3C2410_IISPSR_INTMASK
 mdefine_line|#define S3C2410_IISPSR_INTMASK&t;(31&lt;&lt;5)
-DECL|macro|S3C2410_IISPSR_INTSHFIT
-mdefine_line|#define S3C2410_IISPSR_INTSHFIT&t;(5)
+DECL|macro|S3C2410_IISPSR_INTSHIFT
+mdefine_line|#define S3C2410_IISPSR_INTSHIFT&t;(5)
 DECL|macro|S3C2410_IISPSR_EXTMASK
 mdefine_line|#define S3C2410_IISPSR_EXTMASK&t;(31&lt;&lt;0)
 DECL|macro|S3C2410_IISPSR_EXTSHFIT
@@ -74,6 +78,14 @@ DECL|macro|S3C2410_IISFCON_TXENABLE
 mdefine_line|#define S3C2410_IISFCON_TXENABLE  (1&lt;&lt;13)
 DECL|macro|S3C2410_IISFCON_RXENABLE
 mdefine_line|#define S3C2410_IISFCON_RXENABLE  (1&lt;&lt;12)
+DECL|macro|S3C2410_IISFCON_TXMASK
+mdefine_line|#define S3C2410_IISFCON_TXMASK&t;  (0x3f &lt;&lt; 6)
+DECL|macro|S3C2410_IISFCON_TXSHIFT
+mdefine_line|#define S3C2410_IISFCON_TXSHIFT&t;  (6)
+DECL|macro|S3C2410_IISFCON_RXMASK
+mdefine_line|#define S3C2410_IISFCON_RXMASK&t;  (0x3f)
+DECL|macro|S3C2410_IISFCON_RXSHIFT
+mdefine_line|#define S3C2410_IISFCON_RXSHIFT&t;  (0)
 DECL|macro|S3C2410_IISFIFO
 mdefine_line|#define S3C2410_IISFIFO  (0x10)
 macro_line|#endif /* __ASM_ARCH_REGS_IIS_H */

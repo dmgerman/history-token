@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/serial/s3c2410.c&n; *&n; * Driver for onboard UARTs on the Samsung S3C24XX&n; *&n; * Based on drivers/char/serial.c and drivers/char/21285.c&n; *&n; * Ben Dooks, (c) 2003-2005 Simtec Electronics&n; *&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * Changelog:&n; *&n; * 22-Jul-2004  BJD  Finished off device rewrite&n; *&n; * 21-Jul-2004  BJD  Thanks to &lt;herbet@13thfloor.at&gt; for pointing out&n; *                   problems with baud rate and loss of IR settings. Update&n; *                   to add configuration via platform_device structure&n; *&n; * 28-Sep-2004  BJD  Re-write for the following items&n; *&t;&t;     - S3C2410 and S3C2440 serial support&n; *&t;&t;     - Power Management support&n; *&t;&t;     - Fix console via IrDA devices&n; *&t;&t;     - SysReq (Herbert P&#xfffd;tzl)&n; *&t;&t;     - Break character handling (Herbert P&#xfffd;tzl)&n; *&t;&t;     - spin-lock initialisation (Dimitry Andric)&n; *&t;&t;     - added clock control&n; *&t;&t;     - updated init code to use platform_device info&n; *&n; * 06-Mar-2005  BJD  Add s3c2440 fclk clock source&n; *&n; * 09-Mar-2005  BJD  Add s3c2400 support&n;*/
+multiline_comment|/*&n; * linux/drivers/serial/s3c2410.c&n; *&n; * Driver for onboard UARTs on the Samsung S3C24XX&n; *&n; * Based on drivers/char/serial.c and drivers/char/21285.c&n; *&n; * Ben Dooks, (c) 2003-2005 Simtec Electronics&n; *&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * Changelog:&n; *&n; * 22-Jul-2004  BJD  Finished off device rewrite&n; *&n; * 21-Jul-2004  BJD  Thanks to &lt;herbet@13thfloor.at&gt; for pointing out&n; *                   problems with baud rate and loss of IR settings. Update&n; *                   to add configuration via platform_device structure&n; *&n; * 28-Sep-2004  BJD  Re-write for the following items&n; *&t;&t;     - S3C2410 and S3C2440 serial support&n; *&t;&t;     - Power Management support&n; *&t;&t;     - Fix console via IrDA devices&n; *&t;&t;     - SysReq (Herbert P&#xfffd;tzl)&n; *&t;&t;     - Break character handling (Herbert P&#xfffd;tzl)&n; *&t;&t;     - spin-lock initialisation (Dimitry Andric)&n; *&t;&t;     - added clock control&n; *&t;&t;     - updated init code to use platform_device info&n; *&n; * 06-Mar-2005  BJD  Add s3c2440 fclk clock source&n; *&n; * 09-Mar-2005  BJD  Add s3c2400 support&n; *&n; * 10-Mar-2005  LCVR Changed S3C2410_VA_UART to S3C24XX_VA_UART&n;*/
 multiline_comment|/* Note on 2440 fclk clock source handling&n; *&n; * Whilst it is possible to use the fclk as clock source, the method&n; * of properly switching too/from this is currently un-implemented, so&n; * whichever way is configured at startup is the one that will be used.&n;*/
 multiline_comment|/* Hote on 2410 error handling&n; *&n; * The s3c2410 manual has a love/hate affair with the contents of the&n; * UERSTAT register in the UART blocks, and keeps marking some of the&n; * error bits as reserved. Having checked with the s3c2410x01,&n; * it copes with BREAKs properly, so I am happy to ignore the RESERVED&n; * feature from the latter versions of the manual.&n; *&n; * If it becomes aparrent that latter versions of the 2410 remove these&n; * bits, then action will have to be taken to differentiate the versions&n; * and change the policy on BREAK&n; *&n; * BJD, 04-Nov-2004&n;*/
 macro_line|#include &lt;linux/config.h&gt;
@@ -4021,7 +4021,7 @@ id|S3C2410_PA_UART
 suffix:semicolon
 id|port-&gt;membase
 op_add_assign
-id|S3C2410_VA_UART
+id|S3C24XX_VA_UART
 suffix:semicolon
 id|port-&gt;irq
 op_assign
@@ -5373,7 +5373,7 @@ op_assign
 id|__raw_readl
 c_func
 (paren
-id|S3C2410_VA_UART0
+id|S3C24XX_VA_UART0
 op_plus
 id|S3C2410_UCON
 )paren
@@ -5383,7 +5383,7 @@ op_assign
 id|__raw_readl
 c_func
 (paren
-id|S3C2410_VA_UART1
+id|S3C24XX_VA_UART1
 op_plus
 id|S3C2410_UCON
 )paren
@@ -5393,7 +5393,7 @@ op_assign
 id|__raw_readl
 c_func
 (paren
-id|S3C2410_VA_UART2
+id|S3C24XX_VA_UART2
 op_plus
 id|S3C2410_UCON
 )paren

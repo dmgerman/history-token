@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/devs.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Base S3C2410 platform device definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     10-Feb-2005 BJD  Added camera from guillaume.gourat@nexvision.tv&n; *     29-Aug-2004 BJD  Added timers 0 through 3&n; *     29-Aug-2004 BJD  Changed index of devices we only have one of to -1&n; *     21-Aug-2004 BJD  Added IRQ_TICK to RTC resources&n; *     18-Aug-2004 BJD  Created initial version&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/devs.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Base S3C2410 platform device definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     10-Mar-2005 LCVR Changed S3C2410_{VA,SZ} to S3C24XX_{VA,SZ}&n; *     10-Feb-2005 BJD  Added camera from guillaume.gourat@nexvision.tv&n; *     29-Aug-2004 BJD  Added timers 0 through 3&n; *     29-Aug-2004 BJD  Changed index of devices we only have one of to -1&n; *     21-Aug-2004 BJD  Added IRQ_TICK to RTC resources&n; *     18-Aug-2004 BJD  Created initial version&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -49,7 +49,7 @@ id|end
 op_assign
 id|S3C2410_PA_USBHOST
 op_plus
-id|S3C2410_SZ_USBHOST
+id|S3C24XX_SZ_USBHOST
 comma
 dot
 id|flags
@@ -168,7 +168,7 @@ id|end
 op_assign
 id|S3C2410_PA_LCD
 op_plus
-id|S3C2410_SZ_LCD
+id|S3C24XX_SZ_LCD
 comma
 dot
 id|flags
@@ -287,7 +287,7 @@ id|end
 op_assign
 id|S3C2410_PA_NAND
 op_plus
-id|S3C2410_SZ_NAND
+id|S3C24XX_SZ_NAND
 comma
 dot
 id|flags
@@ -362,7 +362,7 @@ id|end
 op_assign
 id|S3C2410_PA_USBDEV
 op_plus
-id|S3C2410_SZ_USBDEV
+id|S3C24XX_SZ_USBDEV
 comma
 dot
 id|flags
@@ -459,7 +459,7 @@ id|end
 op_assign
 id|S3C2410_PA_WATCHDOG
 op_plus
-id|S3C2410_SZ_WATCHDOG
+id|S3C24XX_SZ_WATCHDOG
 comma
 dot
 id|flags
@@ -556,7 +556,7 @@ id|end
 op_assign
 id|S3C2410_PA_IIC
 op_plus
-id|S3C2410_SZ_IIC
+id|S3C24XX_SZ_IIC
 comma
 dot
 id|flags
@@ -653,7 +653,7 @@ id|end
 op_assign
 id|S3C2410_PA_IIS
 op_plus
-id|S3C2410_SZ_IIS
+id|S3C24XX_SZ_IIS
 comma
 dot
 id|flags
@@ -868,7 +868,7 @@ id|end
 op_assign
 id|S3C2410_PA_ADC
 op_plus
-id|S3C2410_SZ_ADC
+id|S3C24XX_SZ_ADC
 comma
 dot
 id|flags
@@ -958,7 +958,7 @@ id|end
 op_assign
 id|S3C2410_PA_SDI
 op_plus
-id|S3C2410_SZ_SDI
+id|S3C24XX_SZ_SDI
 comma
 dot
 id|flags
