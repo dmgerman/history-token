@@ -106,6 +106,11 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -132,6 +137,11 @@ comma
 id|dir-&gt;i_sb-&gt;s_id
 comma
 id|dir-&gt;i_ino
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -259,6 +269,11 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -296,6 +311,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

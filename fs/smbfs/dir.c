@@ -295,6 +295,11 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -894,6 +899,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon

@@ -972,6 +972,11 @@ id|ROMFS_MAXFN
 )braket
 suffix:semicolon
 multiline_comment|/* XXX dynamic? */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|maxoff
 op_assign
 id|i-&gt;i_sb-&gt;u.romfs_sb.s_maxsize
@@ -1011,8 +1016,8 @@ id|ROMFH_SIZE
 op_le
 l_int|0
 )paren
-r_return
-id|stored
+r_goto
+id|out
 suffix:semicolon
 id|offset
 op_assign
@@ -1052,8 +1057,8 @@ id|filp-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
-id|stored
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|filp-&gt;f_pos
@@ -1079,8 +1084,8 @@ id|ROMFH_SIZE
 op_le
 l_int|0
 )paren
-r_return
-id|stored
+r_goto
+id|out
 suffix:semicolon
 id|j
 op_assign
@@ -1108,8 +1113,8 @@ id|j
 OL
 l_int|0
 )paren
-r_return
-id|stored
+r_goto
+id|out
 suffix:semicolon
 id|fsname
 (braket
@@ -1190,8 +1195,8 @@ OL
 l_int|0
 )paren
 (brace
-r_return
-id|stored
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|stored
@@ -1204,6 +1209,16 @@ op_amp
 id|ROMFH_MASK
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|stored
+suffix:semicolon
 )brace
 r_static
 r_struct

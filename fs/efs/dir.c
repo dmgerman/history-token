@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * dir.c&n; *&n; * Copyright (c) 1999 Al Smith&n; */
 macro_line|#include &lt;linux/efs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 r_static
 r_int
 id|efs_readdir
@@ -115,6 +116,11 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;EFS: WARNING: readdir(): directory size not a multiple of EFS_DIRBSIZE&bslash;n&quot;
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* work out where this entry can be found */
@@ -404,8 +410,8 @@ id|EFS_DIRBSIZE_BITS
 op_or
 id|slot
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|slot
@@ -435,6 +441,13 @@ id|EFS_DIRBSIZE_BITS
 )paren
 op_or
 id|slot
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

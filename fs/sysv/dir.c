@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/sysv/dir.c&n; *&n; *  minix/dir.c&n; *  Copy
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 r_static
 r_int
 id|sysv_readdir
@@ -336,6 +337,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pos
 op_assign
 (paren
@@ -567,6 +573,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

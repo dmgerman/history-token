@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2205,6 +2206,11 @@ suffix:semicolon
 r_int
 id|ddino
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|D3
 c_func
 (paren
@@ -2293,6 +2299,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2390,6 +2401,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2503,6 +2519,11 @@ op_amp
 id|c-&gt;fmc-&gt;biglock
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2543,6 +2564,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

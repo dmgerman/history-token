@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
 mdefine_line|#define fake_ino(pid,ino) (((pid)&lt;&lt;16)|(ino))
@@ -2863,6 +2864,11 @@ id|mnt
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2954,6 +2960,11 @@ id|mnt
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -3368,6 +3379,16 @@ id|pid_entry
 op_star
 id|p
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pid
 op_assign
 id|proc_task
@@ -3384,10 +3405,16 @@ c_cond
 op_logical_neg
 id|pid
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|i
 op_assign
 id|filp-&gt;f_pos
@@ -3422,8 +3449,8 @@ id|DT_DIR
 OL
 l_int|0
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|i
 op_increment
@@ -3456,8 +3483,8 @@ id|DT_DIR
 OL
 l_int|0
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|i
 op_increment
@@ -3490,9 +3517,15 @@ l_int|0
 )braket
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 l_int|1
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|p
 op_assign
 id|base_stuff
@@ -3534,8 +3567,8 @@ l_int|12
 OL
 l_int|0
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|filp-&gt;f_pos
 op_increment
@@ -3545,8 +3578,19 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-r_return
+id|ret
+op_assign
 l_int|1
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* building an inode */

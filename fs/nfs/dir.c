@@ -1458,6 +1458,11 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|nfs_revalidate
@@ -1473,9 +1478,16 @@ id|res
 OL
 l_int|0
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|res
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * filp-&gt;f_pos points to the file offset in the page cache.&n;&t; * but if the cache has meanwhile been zapped, we need to&n;&t; * read from the last dirent to revalidate f_pos&n;&t; * itself.&n;&t; */
 id|memset
 c_func
@@ -1629,6 +1641,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

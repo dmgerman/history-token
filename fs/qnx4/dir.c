@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|function|qnx4_readdir
 r_static
 r_int
@@ -86,6 +87,11 @@ r_int
 )paren
 id|filp-&gt;f_pos
 )paren
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_while
@@ -323,8 +329,8 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -348,6 +354,13 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

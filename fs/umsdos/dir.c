@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/umsdos_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|UMSDOS_SPECIAL_DIRFPOS
 mdefine_line|#define UMSDOS_SPECIAL_DIRFPOS&t;3
 r_extern
@@ -987,6 +988,11 @@ r_struct
 id|UMSDOS_DIR_ONCE
 id|bufk
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bufk.dirbuf
 op_assign
 id|dirbuf
@@ -1057,6 +1063,11 @@ op_add_assign
 id|bufk.count
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|Printk
 (paren
 (paren

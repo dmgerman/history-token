@@ -1824,6 +1824,11 @@ id|mtime
 op_assign
 l_int|0
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ctl.page
 op_assign
 l_int|NULL
@@ -2488,6 +2493,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon

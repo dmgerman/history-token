@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|UFS_DIR_DEBUG
@@ -144,6 +145,11 @@ id|de_reclen
 suffix:semicolon
 r_int
 id|flags
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|sb
 op_assign
@@ -425,6 +431,11 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|stored
 suffix:semicolon
@@ -465,6 +476,11 @@ suffix:semicolon
 id|brelse
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -623,6 +639,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/minix/dir.c&n; *&n; *  Copyright (C) 1991, 1992 Linus Torvalds&n; *&n; *  minix directory handling functions&n; */
 macro_line|#include &quot;minix.h&quot;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|typedef|minix_dirent
 r_typedef
 r_struct
@@ -437,6 +438,11 @@ id|chunk_size
 op_assign
 id|sbi-&gt;s_dirsize
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pos
 op_assign
 (paren
@@ -666,6 +672,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
