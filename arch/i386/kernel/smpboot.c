@@ -13,6 +13,9 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &quot;smpboot_hooks.h&quot;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -3527,12 +3530,11 @@ id|KERN_NOTICE
 l_string|&quot;SMP motherboard not detected.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|phys_cpu_present_map
 op_assign
 l_int|1
@@ -3627,12 +3629,11 @@ id|KERN_ERR
 l_string|&quot;... forcing use of dummy APIC emulation. (tell your hw vendor)&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|phys_cpu_present_map
 op_assign
 l_int|1
@@ -3664,12 +3665,11 @@ id|KERN_INFO
 l_string|&quot;SMP mode deactivated, forcing use of dummy APIC emulation.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|phys_cpu_present_map
 op_assign
 l_int|1
@@ -3867,41 +3867,11 @@ id|apicid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */
-macro_line|#ifndef CONFIG_VISWS
-(brace
-multiline_comment|/*&n;&t;&t; * Install writable page 0 entry to set BIOS data area.&n;&t;&t; */
-id|local_flush_tlb
+id|smpboot_setup_warm_reset_vector
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Paranoid:  Set warm reset code and vector here back&n;&t;&t; * to default values.&n;&t;&t; */
-id|CMOS_WRITE
-c_func
-(paren
-l_int|0
-comma
-l_int|0xf
-)paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-op_star
-)paren
-id|phys_to_virt
-c_func
-(paren
-l_int|0x467
-)paren
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Allow the user to impress friends.&n;&t; */
 id|Dprintk
 c_func
@@ -4186,22 +4156,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifndef CONFIG_VISWS
-multiline_comment|/*&n;&t; * Here we can be sure that there is an IO-APIC in the system. Let&squot;s&n;&t; * go and set it up:&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skip_ioapic_setup
-op_logical_and
-id|nr_ioapics
-)paren
-id|setup_IO_APIC
+id|smpboot_setup_io_apic
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|setup_boot_APIC_clock
 c_func
 (paren
@@ -4334,5 +4293,64 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+DECL|function|smp_intr_init
+r_void
+id|__init
+id|smp_intr_init
+c_func
+(paren
+)paren
+(brace
+multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|FIRST_DEVICE_VECTOR
+comma
+id|interrupt
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The reschedule interrupt is a CPU-to-CPU reschedule-helper&n;&t; * IPI, driven by wakeup.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|RESCHEDULE_VECTOR
+comma
+id|reschedule_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for invalidation */
+id|set_intr_gate
+c_func
+(paren
+id|INVALIDATE_TLB_VECTOR
+comma
+id|invalidate_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for generic function call */
+id|set_intr_gate
+c_func
+(paren
+id|CALL_FUNCTION_VECTOR
+comma
+id|call_function_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* thermal monitor LVT interrupt */
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+id|set_intr_gate
+c_func
+(paren
+id|THERMAL_APIC_VECTOR
+comma
+id|thermal_interrupt
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof
