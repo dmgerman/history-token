@@ -349,24 +349,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is our sync function. With this solution we probably won&squot;t sleep&n; * but that should not be a problem since tasks are stopped..&n; */
-DECL|function|do_suspend_sync
-r_static
-r_inline
-r_void
-id|do_suspend_sync
-c_func
-(paren
-r_void
-)paren
-(brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#warning This might be broken. We need to somehow wait for data to reach the disk
-)brace
 multiline_comment|/* We memorize in swapfile_used what swap devices are used for suspension */
 DECL|macro|SWAPFILE_UNUSED
 mdefine_line|#define SWAPFILE_UNUSED    0
@@ -3052,14 +3034,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* No need to invalidate any vfsmnt list -- they will be valid after resume, anyway.&n;&t;&t; *&n;&t;&t; * We sync here -- so you have consistent filesystem state when things go wrong.&n;&t;&t; * -- so that noone writes to disk after we do atomic copy of data.&n;&t;&t; */
-id|PRINTK
-c_func
-(paren
-l_string|&quot;Syncing disks before copy&bslash;n&quot;
-)paren
-suffix:semicolon
-id|do_suspend_sync
+multiline_comment|/* No need to invalidate any vfsmnt list -- &n;&t;&t; * they will be valid after resume, anyway.&n;&t;&t; */
+id|blk_run_queues
 c_func
 (paren
 )paren
@@ -3129,13 +3105,9 @@ id|software_suspend_enabled
 op_assign
 l_int|0
 suffix:semicolon
-id|BUG_ON
+id|might_sleep
 c_func
 (paren
-id|in_interrupt
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|do_software_suspend
