@@ -1003,7 +1003,7 @@ id|page_buf_t
 op_star
 comma
 multiline_comment|/* buffer to manipulate&t;&t;*/
-id|off_t
+r_int
 comma
 multiline_comment|/* starting buffer offset&t;*/
 r_int
