@@ -198,12 +198,12 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|irq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|startup_irq
 r_static

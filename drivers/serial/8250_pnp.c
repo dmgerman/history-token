@@ -1426,6 +1426,9 @@ r_void
 op_star
 )paren
 (paren
+(paren
+r_int
+)paren
 id|line
 op_plus
 l_int|1

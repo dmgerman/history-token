@@ -733,7 +733,7 @@ r_int
 r_int
 r_int
 )paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR

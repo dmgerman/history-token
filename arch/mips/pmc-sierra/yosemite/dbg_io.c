@@ -1,7 +1,5 @@
 multiline_comment|/*&n; * Copyright 2003 PMC-Sierra&n; * Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * Support for KGDB for the Yosemite board. We make use of single serial&n; * port to be used for KGDB as well as console. The second serial port&n; * seems to be having a problem. Single IRQ is allocated for both the&n; * ports. Hence, the interrupt routing code needs to figure out whether&n; * the interrupt came from channel A or B.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_KGDB
 macro_line|#include &lt;asm/serial.h&gt;
 multiline_comment|/*&n; * Baud rate, Parity, Data and Stop bit settings for the&n; * serial port on the Yosemite. Note that the Early printk&n; * patch has been added. So, we should be all set to go&n; */
 DECL|macro|YOSEMITE_BAUD_2400
@@ -414,5 +412,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

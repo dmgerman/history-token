@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
@@ -13,10 +14,6 @@ macro_line|#include &lt;asm/sn/gda.h&gt;
 macro_line|#include &lt;asm/sn/hub.h&gt;
 macro_line|#include &lt;asm/sn/mapped_kernel.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-r_extern
-r_char
-id|_end
-suffix:semicolon
 DECL|variable|ktext_repmask
 r_static
 id|cpumask_t
@@ -358,7 +355,7 @@ r_int
 r_int
 id|loadbase
 op_assign
-id|CKSEG0
+id|REP_BASE
 suffix:semicolon
 id|nasid_t
 id|nasid
@@ -375,9 +372,7 @@ id|offset
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAPPED_KERNEL
 id|loadbase
-op_assign
-id|CKSSEG
-op_plus
+op_add_assign
 l_int|16777216
 suffix:semicolon
 macro_line|#endif

@@ -27,8 +27,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * These are really magic values. Changing them can make a problem go away,&n; * as well as break everything.&n; */
-DECL|macro|SW_DEBUG
-mdefine_line|#define SW_DEBUG
+multiline_comment|/* #define SW_DEBUG */
 DECL|macro|SW_START
 mdefine_line|#define SW_START&t;400&t;/* The time we wait for the first bit [400 us] */
 DECL|macro|SW_STROBE

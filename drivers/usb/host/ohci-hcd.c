@@ -3113,7 +3113,10 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_PXA27x
 macro_line|#include &quot;ohci-pxa27x.c&quot;
 macro_line|#endif
-macro_line|#if !(defined(CONFIG_PCI) &bslash;&n;      || defined(CONFIG_SA1111) &bslash;&n;      || defined(CONFIG_ARCH_OMAP) &bslash;&n;      || defined (CONFIG_ARCH_LH7A404) &bslash;&n;      || defined (CONFIG_PXA27x) &bslash;&n;&t;)
+macro_line|#ifdef CONFIG_SOC_AU1X00
+macro_line|#include &quot;ohci-au1xxx.c&quot;
+macro_line|#endif
+macro_line|#if !(defined(CONFIG_PCI) &bslash;&n;      || defined(CONFIG_SA1111) &bslash;&n;      || defined(CONFIG_ARCH_OMAP) &bslash;&n;      || defined (CONFIG_ARCH_LH7A404) &bslash;&n;      || defined (CONFIG_PXA27x) &bslash;&n;      || defined (CONFIG_SOC_AU1X00) &bslash;&n;&t;)
 macro_line|#error &quot;missing bus glue for ohci-hcd&quot;
 macro_line|#endif
 eof

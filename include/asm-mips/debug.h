@@ -7,9 +7,9 @@ multiline_comment|/*&n; * run-time macros for catching spurious errors.  Eable C
 macro_line|#ifdef CONFIG_RUNTIME_DEBUG
 macro_line|#include &lt;linux/kernel.h&gt;
 DECL|macro|db_assert
-mdefine_line|#define db_assert(x)  if (!(x)) { &bslash;&n;&t;panic(&quot;assertion failed at %s:%d: %s&bslash;n&quot;, __FILE__, __LINE__, #x); }
+mdefine_line|#define db_assert(x)  if (!(x)) { &bslash;&n;&t;panic(&quot;assertion failed at %s:%d: %s&quot;, __FILE__, __LINE__, #x); }
 DECL|macro|db_warn
-mdefine_line|#define db_warn(x)  if (!(x)) { &bslash;&n;&t;printk(KERN_WARNING &quot;warning at %s:%d: %s&bslash;n&quot;, __FILE__, __LINE__, #x); }
+mdefine_line|#define db_warn(x)  if (!(x)) { &bslash;&n;&t;printk(KERN_WARNING &quot;warning at %s:%d: %s&quot;, __FILE__, __LINE__, #x); }
 DECL|macro|db_verify
 mdefine_line|#define db_verify(x, y) db_assert(x y)
 DECL|macro|db_verify_warn

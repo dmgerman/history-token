@@ -693,7 +693,7 @@ r_int
 r_int
 id|pc
 op_assign
-id|instruction_pointer
+id|profile_pc
 c_func
 (paren
 id|regs

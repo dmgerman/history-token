@@ -27,9 +27,9 @@ DECL|macro|BRK_NORLD
 mdefine_line|#define BRK_NORLD&t;10&t;/* No rld found - not used by Linux/MIPS */
 DECL|macro|_BRK_THREADBP
 mdefine_line|#define _BRK_THREADBP&t;11&t;/* For threads, user bp (used by debuggers) */
-DECL|macro|BRK_MULOVF
-mdefine_line|#define BRK_MULOVF&t;1023&t;/* Multiply overflow */
 DECL|macro|BRK_BUG
 mdefine_line|#define BRK_BUG&t;&t;512&t;/* Used by BUG() */
+DECL|macro|BRK_MULOVF
+mdefine_line|#define BRK_MULOVF&t;1023&t;/* Multiply overflow */
 macro_line|#endif /* __ASM_BREAK_H */
 eof

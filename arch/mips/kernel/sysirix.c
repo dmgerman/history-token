@@ -7894,7 +7894,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;[%s:%d] Wheee.. irix_statvfs(%s,%p)&bslash;n&quot;
+l_string|&quot;[%s:%d] Wheee.. irix_statvfs64(%s,%p)&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -8195,7 +8195,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;[%s:%d] Wheee.. irix_fstatvfs(%d,%p)&bslash;n&quot;
+l_string|&quot;[%s:%d] Wheee.. irix_fstatvfs64(%d,%p)&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma

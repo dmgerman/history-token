@@ -1,14 +1,8 @@
 multiline_comment|/*&n; * Copyright 2003 PMC-Sierra&n; * Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; *  This program is free software; you can redistribute&t; it and/or modify it&n; *  under  the terms of&t; the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the&t;License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED&t;  ``AS&t;IS&squot;&squot; AND   ANY&t;EXPRESS OR IMPLIED&n; *  WARRANTIES,&t;  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO&t;EVENT  SHALL   THE AUTHOR  BE&t; LIABLE FOR ANY&t;  DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED&t;  TO, PROCUREMENT OF  SUBSTITUTE GOODS&t;OR SERVICES; LOSS OF&n; *  USE, DATA,&t;OR PROFITS; OR&t;BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN&t; CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/pci.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/titan_dep.h&gt;
-multiline_comment|/*&n; * Titan PCI Config Read Byte&n; */
 DECL|function|titan_read_config
 r_static
 r_int
@@ -35,20 +29,17 @@ op_star
 id|val
 )paren
 (brace
+r_uint32
+id|address
+comma
+id|tmp
+suffix:semicolon
 r_int
 id|dev
 comma
 id|busno
 comma
 id|func
-suffix:semicolon
-r_uint32
-id|address_reg
-comma
-id|data_reg
-suffix:semicolon
-r_uint32
-id|address
 suffix:semicolon
 id|busno
 op_assign
@@ -69,14 +60,6 @@ c_func
 (paren
 id|devfn
 )paren
-suffix:semicolon
-id|address_reg
-op_assign
-id|TITAN_PCI_0_CONFIG_ADDRESS
-suffix:semicolon
-id|data_reg
-op_assign
-id|TITAN_PCI_0_CONFIG_DATA
 suffix:semicolon
 id|address
 op_assign
@@ -110,9 +93,27 @@ multiline_comment|/* start the configuration cycle */
 id|TITAN_WRITE
 c_func
 (paren
-id|address_reg
+id|TITAN_PCI_0_CONFIG_ADDRESS
 comma
 id|address
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|TITAN_READ
+c_func
+(paren
+id|TITAN_PCI_0_CONFIG_DATA
+)paren
+op_rshift
+(paren
+(paren
+id|reg
+op_amp
+l_int|3
+)paren
+op_lshift
+l_int|3
 )paren
 suffix:semicolon
 r_switch
@@ -124,65 +125,27 @@ id|size
 r_case
 l_int|1
 suffix:colon
-op_star
-id|val
-op_assign
-id|TITAN_READ_8
-c_func
-(paren
-id|data_reg
-op_plus
-(paren
-op_complement
-id|reg
-op_amp
-l_int|0x3
-)paren
-)paren
-suffix:semicolon
-r_break
+id|tmp
+op_and_assign
+l_int|0xff
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-op_star
-id|val
-op_assign
-id|TITAN_READ_16
-c_func
-(paren
-id|data_reg
-op_plus
-(paren
-op_complement
-id|reg
-op_amp
-l_int|0x2
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-op_star
-id|val
-op_assign
-id|TITAN_READ
-c_func
-(paren
-id|data_reg
-)paren
-suffix:semicolon
-r_break
+id|tmp
+op_and_assign
+l_int|0xffff
 suffix:semicolon
 )brace
+op_star
+id|val
+op_assign
+id|tmp
+suffix:semicolon
 r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Titan PCI Config Byte Write&n; */
 DECL|function|titan_write_config
 r_static
 r_int
@@ -209,10 +172,6 @@ id|val
 )paren
 (brace
 r_uint32
-id|address_reg
-comma
-id|data_reg
-comma
 id|address
 suffix:semicolon
 r_int
@@ -241,14 +200,6 @@ c_func
 (paren
 id|devfn
 )paren
-suffix:semicolon
-id|address_reg
-op_assign
-id|TITAN_PCI_0_CONFIG_ADDRESS
-suffix:semicolon
-id|data_reg
-op_assign
-id|TITAN_PCI_0_CONFIG_DATA
 suffix:semicolon
 id|address
 op_assign
@@ -282,7 +233,7 @@ multiline_comment|/* start the configuration cycle */
 id|TITAN_WRITE
 c_func
 (paren
-id|address_reg
+id|TITAN_PCI_0_CONFIG_ADDRESS
 comma
 id|address
 )paren
@@ -300,7 +251,7 @@ suffix:colon
 id|TITAN_WRITE_8
 c_func
 (paren
-id|data_reg
+id|TITAN_PCI_0_CONFIG_DATA
 op_plus
 (paren
 op_complement
@@ -320,7 +271,7 @@ suffix:colon
 id|TITAN_WRITE_16
 c_func
 (paren
-id|data_reg
+id|TITAN_PCI_0_CONFIG_DATA
 op_plus
 (paren
 op_complement
@@ -340,7 +291,7 @@ suffix:colon
 id|TITAN_WRITE
 c_func
 (paren
-id|data_reg
+id|TITAN_PCI_0_CONFIG_DATA
 comma
 id|val
 )paren

@@ -12,17 +12,19 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/mv643xx.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_MPSC_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
-macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &quot;mpsc_defs.h&quot;
+DECL|macro|MPSC_NUM_CTLRS
+mdefine_line|#define&t;MPSC_NUM_CTLRS&t;&t;2
 multiline_comment|/*&n; * Descriptors and buffers must be cache line aligned.&n; * Buffers lengths must be multiple of cache line size.&n; * Number of Tx &amp; Rx descriptors must be powers of 2.&n; */
 DECL|macro|MPSC_RXR_ENTRIES
 mdefine_line|#define&t;MPSC_RXR_ENTRIES&t;32
@@ -119,19 +121,21 @@ r_struct
 id|mpsc_shared_regs
 (brace
 DECL|member|mpsc_routing_base_p
-id|u32
+id|phys_addr_t
 id|mpsc_routing_base_p
 suffix:semicolon
 DECL|member|sdma_intr_base_p
-id|u32
+id|phys_addr_t
 id|sdma_intr_base_p
 suffix:semicolon
 DECL|member|mpsc_routing_base
-id|u32
+r_void
+op_star
 id|mpsc_routing_base
 suffix:semicolon
 DECL|member|sdma_intr_base
-id|u32
+r_void
+op_star
 id|sdma_intr_base
 suffix:semicolon
 DECL|member|MPSC_MRR_m
@@ -228,28 +232,31 @@ id|default_flow
 suffix:semicolon
 multiline_comment|/* Physical addresses of various blocks of registers (from platform) */
 DECL|member|mpsc_base_p
-id|u32
+id|phys_addr_t
 id|mpsc_base_p
 suffix:semicolon
 DECL|member|sdma_base_p
-id|u32
+id|phys_addr_t
 id|sdma_base_p
 suffix:semicolon
 DECL|member|brg_base_p
-id|u32
+id|phys_addr_t
 id|brg_base_p
 suffix:semicolon
 multiline_comment|/* Virtual addresses of various blocks of registers (from platform) */
 DECL|member|mpsc_base
-id|u32
+r_void
+op_star
 id|mpsc_base
 suffix:semicolon
 DECL|member|sdma_base
-id|u32
+r_void
+op_star
 id|sdma_base
 suffix:semicolon
 DECL|member|brg_base
-id|u32
+r_void
+op_star
 id|brg_base
 suffix:semicolon
 multiline_comment|/* Descriptor ring and buffer allocations */
@@ -350,59 +357,6 @@ id|shared_regs
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_PPC32)
-macro_line|#if defined(CONFIG_NOT_COHERENT_CACHE)
-multiline_comment|/* No-ops when coherency is off b/c dma_cache_sync() does that work */
-DECL|macro|MPSC_CACHE_INVALIDATE
-mdefine_line|#define&t;MPSC_CACHE_INVALIDATE(pi, s, e)
-DECL|macro|MPSC_CACHE_FLUSH
-mdefine_line|#define&t;MPSC_CACHE_FLUSH(pi, s, e)
-macro_line|#else /* defined(CONFIG_NOT_COHERENT_CACHE) */
-multiline_comment|/* Coherency is on so dma_cache_sync() is no-op so must do manually */
-DECL|macro|MPSC_CACHE_INVALIDATE
-mdefine_line|#define&t;MPSC_CACHE_INVALIDATE(pi, s, e) {&t;&t;&t;&bslash;&n;&t;if (pi-&gt;cache_mgmt) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;invalidate_dcache_range((ulong)s, (ulong)e);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
-DECL|macro|MPSC_CACHE_FLUSH
-mdefine_line|#define&t;MPSC_CACHE_FLUSH(pi, s, e) {&t;&t;&t;&bslash;&n;&t;if (pi-&gt;cache_mgmt) {&t;&t;&t;&t;&bslash;&n;&t;&t;flush_dcache_range((ulong)s, (ulong)e);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
-macro_line|#endif /* defined(CONFIG_NOT_COHERENT_CACHE) */
-macro_line|#else /* defined(CONFIG_PPC32) */
-multiline_comment|/* Other architectures need to fill this in */
-DECL|macro|MPSC_CACHE_INVALIDATE
-mdefine_line|#define&t;MPSC_CACHE_INVALIDATE(pi, s, e)&t;BUG()
-DECL|macro|MPSC_CACHE_FLUSH
-mdefine_line|#define&t;MPSC_CACHE_FLUSH(pi, s, e)&t;BUG()
-macro_line|#endif /* defined(CONFIG_PPC32) */
-multiline_comment|/*&n; * &squot;MASK_INSERT&squot; takes the low-order &squot;n&squot; bits of &squot;i&squot;, shifts it &squot;b&squot; bits to&n; * the left, and inserts it into the target &squot;t&squot;.  The corresponding bits in&n; * &squot;t&squot; will have been cleared before the bits in &squot;i&squot; are inserted.&n; */
-macro_line|#ifdef CONFIG_PPC32
-DECL|macro|MASK_INSERT
-mdefine_line|#define MASK_INSERT(t, i, n, b) ({&t;&t;&t;&t;&bslash;&n;&t;u32&t;rval = (t);&t;&t;&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;rlwimi %0,%2,%4,32-(%3+%4),31-%4&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (rval)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (rval), &quot;r&quot; (i), &quot;i&quot; (n), &quot;i&quot; (b));&t;&bslash;&n;&t;rval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#else
-multiline_comment|/* These macros are really just examples.  Feel free to change them --MAG */
-DECL|macro|GEN_MASK
-mdefine_line|#define GEN_MASK(n, b)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;m, sl, sr;&t;&t;&bslash;&n;&t;sl = 32 - (n);&t;&t;&t;&bslash;&n;&t;sr = sl - (b);&t;&t;&t;&bslash;&n;&t;m = (0xffffffff &lt;&lt; sl) &gt;&gt; sr;&t;&bslash;&n;})
-DECL|macro|MASK_INSERT
-mdefine_line|#define MASK_INSERT(t, i, n, b)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;m, rval = (t);&t;&t;&bslash;&n;&t;m = GEN_MASK((n), (b));&t;&t;&bslash;&n;&t;rval &amp;= ~m;&t;&t;&t;&bslash;&n;&t;rval |= (((i) &lt;&lt; (b)) &amp; m);&t;&bslash;&n;})
-macro_line|#endif
-multiline_comment|/* I/O macros for regs that you can read */
-DECL|macro|MPSC_READ
-mdefine_line|#define&t;MPSC_READ(pi, unit, offset)&t;&t;&t;&t;&t;&bslash;&n;&t;readl((volatile void *)((pi)-&gt;unit##_base + (offset)))
-DECL|macro|MPSC_WRITE
-mdefine_line|#define&t;MPSC_WRITE(pi, unit, offset, v)&t;&t;&t;&t;&t;&bslash;&n;&t;writel(v, (volatile void *)((pi)-&gt;unit##_base + (offset)))
-DECL|macro|MPSC_MOD_FIELD
-mdefine_line|#define&t;MPSC_MOD_FIELD(pi, unit, offset, num_bits, shift, val)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;v = readl((volatile void *)((pi)-&gt;unit##_base + (offset)));&t;&bslash;&n;&t;writel(MASK_INSERT(v,val,num_bits,shift),&t;&t;&t;&bslash;&n;&t;&t;(volatile void *)((pi)-&gt;unit##_base+(offset)));&t;&t;&bslash;&n;}
-multiline_comment|/* Macros for regs with erratum that are not shared between MPSC ctlrs */
-DECL|macro|MPSC_READ_M
-mdefine_line|#define&t;MPSC_READ_M(pi, unit, offset)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) v = (pi)-&gt;offset##_m;&t;&t;&t;&bslash;&n;&t;else v = readl((volatile void *)((pi)-&gt;unit##_base + (offset)));&bslash;&n;&t;v;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|MPSC_WRITE_M
-mdefine_line|#define&t;MPSC_WRITE_M(pi, unit, offset, v)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) (pi)-&gt;offset##_m = v;&t;&t;&t;&bslash;&n;&t;writel(v, (volatile void *)((pi)-&gt;unit##_base + (offset)));&t;&bslash;&n;})
-DECL|macro|MPSC_MOD_FIELD_M
-mdefine_line|#define&t;MPSC_MOD_FIELD_M(pi, unit, offset, num_bits, shift, val)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) v = (pi)-&gt;offset##_m;&t;&t;&t;&bslash;&n;&t;else v = readl((volatile void *)((pi)-&gt;unit##_base + (offset)));&bslash;&n;&t;v = MASK_INSERT(v, val, num_bits, shift);&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) (pi)-&gt;offset##_m = v;&t;&t;&t;&bslash;&n;&t;writel(v, (volatile void *)((pi)-&gt;unit##_base + (offset)));&t;&bslash;&n;})
-multiline_comment|/* Macros for regs with erratum that are shared between MPSC ctlrs */
-DECL|macro|MPSC_READ_S
-mdefine_line|#define&t;MPSC_READ_S(pi, unit, offset)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) v = (pi)-&gt;shared_regs-&gt;offset##_m;&t;&bslash;&n;&t;else v = readl((volatile void *)((pi)-&gt;shared_regs-&gt;unit##_base + &bslash;&n;&t;&t;(offset)));&t;&t;&t;&t;&t;&t;&bslash;&n;&t;v;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|MPSC_WRITE_S
-mdefine_line|#define&t;MPSC_WRITE_S(pi, unit, offset, v)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) (pi)-&gt;shared_regs-&gt;offset##_m = v;&t;&bslash;&n;&t;writel(v, (volatile void *)((pi)-&gt;shared_regs-&gt;unit##_base +&t;&bslash;&n;&t;&t;(offset)));&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|MPSC_MOD_FIELD_S
-mdefine_line|#define&t;MPSC_MOD_FIELD_S(pi, unit, offset, num_bits, shift, val)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32&t;v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) v = (pi)-&gt;shared_regs-&gt;offset##_m;&t;&bslash;&n;&t;else v = readl((volatile void *)((pi)-&gt;shared_regs-&gt;unit##_base + &bslash;&n;&t;&t;(offset)));&t;&t;&t;&t;&t;&t;&bslash;&n;&t;v = MASK_INSERT(v, val, num_bits, shift);&t;&t;&t;&bslash;&n;&t;if ((pi)-&gt;mirror_regs) (pi)-&gt;shared_regs-&gt;offset##_m = v;&t;&bslash;&n;&t;writel(v, (volatile void *)((pi)-&gt;shared_regs-&gt;unit##_base +&t;&bslash;&n;&t;&t;(offset)));&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Hooks to platform-specific code */
 r_int
 id|mpsc_platform_register_driver
@@ -439,5 +393,181 @@ r_int
 id|index
 )paren
 suffix:semicolon
+multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;Multi-Protocol Serial Controller Interface Registers&n; *&n; *****************************************************************************&n; */
+multiline_comment|/* Main Configuratino Register Offsets */
+DECL|macro|MPSC_MMCRL
+mdefine_line|#define&t;MPSC_MMCRL&t;&t;&t;0x0000
+DECL|macro|MPSC_MMCRH
+mdefine_line|#define&t;MPSC_MMCRH&t;&t;&t;0x0004
+DECL|macro|MPSC_MPCR
+mdefine_line|#define&t;MPSC_MPCR&t;&t;&t;0x0008
+DECL|macro|MPSC_CHR_1
+mdefine_line|#define&t;MPSC_CHR_1&t;&t;&t;0x000c
+DECL|macro|MPSC_CHR_2
+mdefine_line|#define&t;MPSC_CHR_2&t;&t;&t;0x0010
+DECL|macro|MPSC_CHR_3
+mdefine_line|#define&t;MPSC_CHR_3&t;&t;&t;0x0014
+DECL|macro|MPSC_CHR_4
+mdefine_line|#define&t;MPSC_CHR_4&t;&t;&t;0x0018
+DECL|macro|MPSC_CHR_5
+mdefine_line|#define&t;MPSC_CHR_5&t;&t;&t;0x001c
+DECL|macro|MPSC_CHR_6
+mdefine_line|#define&t;MPSC_CHR_6&t;&t;&t;0x0020
+DECL|macro|MPSC_CHR_7
+mdefine_line|#define&t;MPSC_CHR_7&t;&t;&t;0x0024
+DECL|macro|MPSC_CHR_8
+mdefine_line|#define&t;MPSC_CHR_8&t;&t;&t;0x0028
+DECL|macro|MPSC_CHR_9
+mdefine_line|#define&t;MPSC_CHR_9&t;&t;&t;0x002c
+DECL|macro|MPSC_CHR_10
+mdefine_line|#define&t;MPSC_CHR_10&t;&t;&t;0x0030
+DECL|macro|MPSC_CHR_11
+mdefine_line|#define&t;MPSC_CHR_11&t;&t;&t;0x0034
+DECL|macro|MPSC_MPCR_FRZ
+mdefine_line|#define&t;MPSC_MPCR_FRZ&t;&t;&t;(1 &lt;&lt; 9)
+DECL|macro|MPSC_MPCR_CL_5
+mdefine_line|#define&t;MPSC_MPCR_CL_5&t;&t;&t;0
+DECL|macro|MPSC_MPCR_CL_6
+mdefine_line|#define&t;MPSC_MPCR_CL_6&t;&t;&t;1
+DECL|macro|MPSC_MPCR_CL_7
+mdefine_line|#define&t;MPSC_MPCR_CL_7&t;&t;&t;2
+DECL|macro|MPSC_MPCR_CL_8
+mdefine_line|#define&t;MPSC_MPCR_CL_8&t;&t;&t;3
+DECL|macro|MPSC_MPCR_SBL_1
+mdefine_line|#define&t;MPSC_MPCR_SBL_1&t;&t;&t;0
+DECL|macro|MPSC_MPCR_SBL_2
+mdefine_line|#define&t;MPSC_MPCR_SBL_2&t;&t;&t;1
+DECL|macro|MPSC_CHR_2_TEV
+mdefine_line|#define&t;MPSC_CHR_2_TEV&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|MPSC_CHR_2_TA
+mdefine_line|#define&t;MPSC_CHR_2_TA&t;&t;&t;(1&lt;&lt;7)
+DECL|macro|MPSC_CHR_2_TTCS
+mdefine_line|#define&t;MPSC_CHR_2_TTCS&t;&t;&t;(1&lt;&lt;9)
+DECL|macro|MPSC_CHR_2_REV
+mdefine_line|#define&t;MPSC_CHR_2_REV&t;&t;&t;(1&lt;&lt;17)
+DECL|macro|MPSC_CHR_2_RA
+mdefine_line|#define&t;MPSC_CHR_2_RA&t;&t;&t;(1&lt;&lt;23)
+DECL|macro|MPSC_CHR_2_CRD
+mdefine_line|#define&t;MPSC_CHR_2_CRD&t;&t;&t;(1&lt;&lt;25)
+DECL|macro|MPSC_CHR_2_EH
+mdefine_line|#define&t;MPSC_CHR_2_EH&t;&t;&t;(1&lt;&lt;31)
+DECL|macro|MPSC_CHR_2_PAR_ODD
+mdefine_line|#define&t;MPSC_CHR_2_PAR_ODD&t;&t;0
+DECL|macro|MPSC_CHR_2_PAR_SPACE
+mdefine_line|#define&t;MPSC_CHR_2_PAR_SPACE&t;&t;1
+DECL|macro|MPSC_CHR_2_PAR_EVEN
+mdefine_line|#define&t;MPSC_CHR_2_PAR_EVEN&t;&t;2
+DECL|macro|MPSC_CHR_2_PAR_MARK
+mdefine_line|#define&t;MPSC_CHR_2_PAR_MARK&t;&t;3
+multiline_comment|/* MPSC Signal Routing */
+DECL|macro|MPSC_MRR
+mdefine_line|#define&t;MPSC_MRR&t;&t;&t;0x0000
+DECL|macro|MPSC_RCRR
+mdefine_line|#define&t;MPSC_RCRR&t;&t;&t;0x0004
+DECL|macro|MPSC_TCRR
+mdefine_line|#define&t;MPSC_TCRR&t;&t;&t;0x0008
+multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;Serial DMA Controller Interface Registers&n; *&n; *****************************************************************************&n; */
+DECL|macro|SDMA_SDC
+mdefine_line|#define&t;SDMA_SDC&t;&t;&t;0x0000
+DECL|macro|SDMA_SDCM
+mdefine_line|#define&t;SDMA_SDCM&t;&t;&t;0x0008
+DECL|macro|SDMA_RX_DESC
+mdefine_line|#define&t;SDMA_RX_DESC&t;&t;&t;0x0800
+DECL|macro|SDMA_RX_BUF_PTR
+mdefine_line|#define&t;SDMA_RX_BUF_PTR&t;&t;&t;0x0808
+DECL|macro|SDMA_SCRDP
+mdefine_line|#define&t;SDMA_SCRDP&t;&t;&t;0x0810
+DECL|macro|SDMA_TX_DESC
+mdefine_line|#define&t;SDMA_TX_DESC&t;&t;&t;0x0c00
+DECL|macro|SDMA_SCTDP
+mdefine_line|#define&t;SDMA_SCTDP&t;&t;&t;0x0c10
+DECL|macro|SDMA_SFTDP
+mdefine_line|#define&t;SDMA_SFTDP&t;&t;&t;0x0c14
+DECL|macro|SDMA_DESC_CMDSTAT_PE
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_PE&t;&t;(1&lt;&lt;0)
+DECL|macro|SDMA_DESC_CMDSTAT_CDL
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_CDL&t;&t;(1&lt;&lt;1)
+DECL|macro|SDMA_DESC_CMDSTAT_FR
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_FR&t;&t;(1&lt;&lt;3)
+DECL|macro|SDMA_DESC_CMDSTAT_OR
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_OR&t;&t;(1&lt;&lt;6)
+DECL|macro|SDMA_DESC_CMDSTAT_BR
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_BR&t;&t;(1&lt;&lt;9)
+DECL|macro|SDMA_DESC_CMDSTAT_MI
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_MI&t;&t;(1&lt;&lt;10)
+DECL|macro|SDMA_DESC_CMDSTAT_A
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_A&t;&t;(1&lt;&lt;11)
+DECL|macro|SDMA_DESC_CMDSTAT_AM
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_AM&t;&t;(1&lt;&lt;12)
+DECL|macro|SDMA_DESC_CMDSTAT_CT
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_CT&t;&t;(1&lt;&lt;13)
+DECL|macro|SDMA_DESC_CMDSTAT_C
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_C&t;&t;(1&lt;&lt;14)
+DECL|macro|SDMA_DESC_CMDSTAT_ES
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_ES&t;&t;(1&lt;&lt;15)
+DECL|macro|SDMA_DESC_CMDSTAT_L
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_L&t;&t;(1&lt;&lt;16)
+DECL|macro|SDMA_DESC_CMDSTAT_F
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_F&t;&t;(1&lt;&lt;17)
+DECL|macro|SDMA_DESC_CMDSTAT_P
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_P&t;&t;(1&lt;&lt;18)
+DECL|macro|SDMA_DESC_CMDSTAT_EI
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_EI&t;&t;(1&lt;&lt;23)
+DECL|macro|SDMA_DESC_CMDSTAT_O
+mdefine_line|#define&t;SDMA_DESC_CMDSTAT_O&t;&t;(1&lt;&lt;31)
+DECL|macro|SDMA_DESC_DFLT
+mdefine_line|#define SDMA_DESC_DFLT&t;&t;&t;(SDMA_DESC_CMDSTAT_O |&t;&bslash;&n;&t;&t;&t;&t;&t;SDMA_DESC_CMDSTAT_EI)
+DECL|macro|SDMA_SDC_RFT
+mdefine_line|#define&t;SDMA_SDC_RFT&t;&t;&t;(1&lt;&lt;0)
+DECL|macro|SDMA_SDC_SFM
+mdefine_line|#define&t;SDMA_SDC_SFM&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|SDMA_SDC_BLMR
+mdefine_line|#define&t;SDMA_SDC_BLMR&t;&t;&t;(1&lt;&lt;6)
+DECL|macro|SDMA_SDC_BLMT
+mdefine_line|#define&t;SDMA_SDC_BLMT&t;&t;&t;(1&lt;&lt;7)
+DECL|macro|SDMA_SDC_POVR
+mdefine_line|#define&t;SDMA_SDC_POVR&t;&t;&t;(1&lt;&lt;8)
+DECL|macro|SDMA_SDC_RIFB
+mdefine_line|#define&t;SDMA_SDC_RIFB&t;&t;&t;(1&lt;&lt;9)
+DECL|macro|SDMA_SDCM_ERD
+mdefine_line|#define&t;SDMA_SDCM_ERD&t;&t;&t;(1&lt;&lt;7)
+DECL|macro|SDMA_SDCM_AR
+mdefine_line|#define&t;SDMA_SDCM_AR&t;&t;&t;(1&lt;&lt;15)
+DECL|macro|SDMA_SDCM_STD
+mdefine_line|#define&t;SDMA_SDCM_STD&t;&t;&t;(1&lt;&lt;16)
+DECL|macro|SDMA_SDCM_TXD
+mdefine_line|#define&t;SDMA_SDCM_TXD&t;&t;&t;(1&lt;&lt;23)
+DECL|macro|SDMA_SDCM_AT
+mdefine_line|#define&t;SDMA_SDCM_AT&t;&t;&t;(1&lt;&lt;31)
+DECL|macro|SDMA_0_CAUSE_RXBUF
+mdefine_line|#define&t;SDMA_0_CAUSE_RXBUF&t;&t;(1&lt;&lt;0)
+DECL|macro|SDMA_0_CAUSE_RXERR
+mdefine_line|#define&t;SDMA_0_CAUSE_RXERR&t;&t;(1&lt;&lt;1)
+DECL|macro|SDMA_0_CAUSE_TXBUF
+mdefine_line|#define&t;SDMA_0_CAUSE_TXBUF&t;&t;(1&lt;&lt;2)
+DECL|macro|SDMA_0_CAUSE_TXEND
+mdefine_line|#define&t;SDMA_0_CAUSE_TXEND&t;&t;(1&lt;&lt;3)
+DECL|macro|SDMA_1_CAUSE_RXBUF
+mdefine_line|#define&t;SDMA_1_CAUSE_RXBUF&t;&t;(1&lt;&lt;8)
+DECL|macro|SDMA_1_CAUSE_RXERR
+mdefine_line|#define&t;SDMA_1_CAUSE_RXERR&t;&t;(1&lt;&lt;9)
+DECL|macro|SDMA_1_CAUSE_TXBUF
+mdefine_line|#define&t;SDMA_1_CAUSE_TXBUF&t;&t;(1&lt;&lt;10)
+DECL|macro|SDMA_1_CAUSE_TXEND
+mdefine_line|#define&t;SDMA_1_CAUSE_TXEND&t;&t;(1&lt;&lt;11)
+DECL|macro|SDMA_CAUSE_RX_MASK
+mdefine_line|#define&t;SDMA_CAUSE_RX_MASK&t;(SDMA_0_CAUSE_RXBUF | SDMA_0_CAUSE_RXERR | &bslash;&n;&t;SDMA_1_CAUSE_RXBUF | SDMA_1_CAUSE_RXERR)
+DECL|macro|SDMA_CAUSE_TX_MASK
+mdefine_line|#define&t;SDMA_CAUSE_TX_MASK&t;(SDMA_0_CAUSE_TXBUF | SDMA_0_CAUSE_TXEND | &bslash;&n;&t;SDMA_1_CAUSE_TXBUF | SDMA_1_CAUSE_TXEND)
+multiline_comment|/* SDMA Interrupt registers */
+DECL|macro|SDMA_INTR_CAUSE
+mdefine_line|#define&t;SDMA_INTR_CAUSE&t;&t;&t;0x0000
+DECL|macro|SDMA_INTR_MASK
+mdefine_line|#define&t;SDMA_INTR_MASK&t;&t;&t;0x0080
+multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;Baud Rate Generator Interface Registers&n; *&n; *****************************************************************************&n; */
+DECL|macro|BRG_BCR
+mdefine_line|#define&t;BRG_BCR&t;&t;&t;&t;0x0000
+DECL|macro|BRG_BTR
+mdefine_line|#define&t;BRG_BTR&t;&t;&t;&t;0x0004
 macro_line|#endif&t;&t;&t;&t;/* __MPSC_H__ */
 eof

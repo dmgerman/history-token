@@ -487,7 +487,7 @@ multiline_comment|/* To be filled in below. */
 )brace
 suffix:semicolon
 DECL|function|oprofile_arch_init
-r_void
+r_int
 id|__init
 id|oprofile_arch_init
 c_func
@@ -517,14 +517,9 @@ op_amp
 id|op_model_fsl_booke
 suffix:semicolon
 macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;oprofile enabled on unsupported processor!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 macro_line|#endif
 id|name
@@ -545,6 +540,8 @@ op_eq
 id|name
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|sprintf
 c_func
@@ -587,6 +584,9 @@ l_string|&quot;oprofile: using %s performance monitoring.&bslash;n&quot;
 comma
 id|oprof_ppc32_ops.cpu_type
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

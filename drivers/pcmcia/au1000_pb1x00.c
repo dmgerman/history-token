@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
@@ -31,7 +32,7 @@ mdefine_line|#define PCMCIA_IRQ AU1000_GPIO_15
 macro_line|#elif defined (CONFIG_MIPS_PB1500)
 macro_line|#include &lt;asm/pb1500.h&gt;
 DECL|macro|PCMCIA_IRQ
-mdefine_line|#define PCMCIA_IRQ AU1000_GPIO_11   /* fixme */
+mdefine_line|#define PCMCIA_IRQ AU1500_GPIO_203
 macro_line|#elif defined (CONFIG_MIPS_PB1100)
 macro_line|#include &lt;asm/pb1100.h&gt;
 DECL|macro|PCMCIA_IRQ
@@ -138,7 +139,7 @@ op_assign
 id|au_readw
 c_func
 (paren
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 op_amp
 op_complement
@@ -149,9 +150,9 @@ id|pcr
 op_and_assign
 op_complement
 (paren
-id|PB1100_PC_DEASSERT_RST
+id|PC_DEASSERT_RST
 op_or
-id|PB1100_PC_DRV_EN
+id|PC_DRV_EN
 )paren
 suffix:semicolon
 id|au_writew
@@ -159,7 +160,7 @@ c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay
@@ -242,7 +243,7 @@ op_assign
 id|au_readw
 c_func
 (paren
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 op_amp
 op_complement
@@ -253,9 +254,9 @@ id|pcr
 op_and_assign
 op_complement
 (paren
-id|PB1100_PC_DEASSERT_RST
+id|PC_DEASSERT_RST
 op_or
-id|PB1100_PC_DRV_EN
+id|PC_DRV_EN
 )paren
 suffix:semicolon
 id|au_writew
@@ -263,7 +264,7 @@ c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay
@@ -369,7 +370,7 @@ op_assign
 id|au_readw
 c_func
 (paren
-id|PB1100_BOARD_STATUS
+id|BOARD_STATUS_REG
 )paren
 op_rshift
 l_int|4
@@ -377,6 +378,26 @@ l_int|4
 op_amp
 l_int|0x3
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_PB1500
+id|inserted0
+op_assign
+op_logical_neg
+(paren
+(paren
+id|au_readl
+c_func
+(paren
+id|GPIO2_PINSTATE
+)paren
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x1
+)paren
+suffix:semicolon
+multiline_comment|/* gpio 201 */
+macro_line|#else /* Pb1100 */
 id|inserted0
 op_assign
 op_logical_neg
@@ -395,6 +416,11 @@ l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* gpio 9 */
+macro_line|#endif
+id|inserted1
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
 id|state-&gt;ready
 op_assign
@@ -463,6 +489,7 @@ id|vs0
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|state-&gt;detect
@@ -516,6 +543,7 @@ id|vs1
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|state-&gt;detect
@@ -1104,7 +1132,7 @@ op_assign
 id|au_readw
 c_func
 (paren
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 op_amp
 op_complement
@@ -1352,7 +1380,7 @@ c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay
@@ -1370,14 +1398,14 @@ id|configure-&gt;reset
 (brace
 id|pcr
 op_or_assign
-id|PB1100_PC_DRV_EN
+id|PC_DRV_EN
 suffix:semicolon
 id|au_writew
 c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay
@@ -1388,14 +1416,14 @@ l_int|100
 suffix:semicolon
 id|pcr
 op_or_assign
-id|PB1100_PC_DEASSERT_RST
+id|PC_DEASSERT_RST
 suffix:semicolon
 id|au_writew
 c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay
@@ -1411,9 +1439,9 @@ id|pcr
 op_and_assign
 op_complement
 (paren
-id|PB1100_PC_DEASSERT_RST
+id|PC_DEASSERT_RST
 op_or
-id|PB1100_PC_DRV_EN
+id|PC_DRV_EN
 )paren
 suffix:semicolon
 id|au_writew
@@ -1421,7 +1449,7 @@ c_func
 (paren
 id|pcr
 comma
-id|PB1100_MEM_PCMCIA
+id|PCMCIA_BOARD_REG
 )paren
 suffix:semicolon
 id|au_sync_delay

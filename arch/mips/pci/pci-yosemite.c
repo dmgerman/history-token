@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/gt64240.h&gt;
+macro_line|#include &lt;asm/titan_dep.h&gt;
 r_extern
 r_struct
 id|pci_ops
@@ -28,6 +28,8 @@ suffix:semicolon
 multiline_comment|/*&n; * PMON really reserves 16MB of I/O port space but that&squot;s stupid, nothing&n; * needs that much since allocations are limited to 256 bytes per device&n; * anyway.  So we just claim 64kB here.&n; */
 DECL|macro|TITAN_IO_SIZE
 mdefine_line|#define TITAN_IO_SIZE&t;0x0000ffffUL
+DECL|macro|TITAN_IO_BASE
+mdefine_line|#define TITAN_IO_BASE&t;0xe8000000UL
 DECL|variable|py_io_resource
 r_static
 r_struct
@@ -116,7 +118,7 @@ r_int
 id|ioremap
 c_func
 (paren
-l_int|0xe0000000UL
+id|TITAN_IO_BASE
 comma
 id|TITAN_IO_SIZE
 )paren
@@ -137,6 +139,20 @@ id|set_io_port_base
 c_func
 (paren
 id|io_v_base
+)paren
+suffix:semicolon
+id|TITAN_WRITE
+c_func
+(paren
+id|RM9000x2_OCD_LKM7
+comma
+id|TITAN_READ
+c_func
+(paren
+id|RM9000x2_OCD_LKM7
+)paren
+op_or
+l_int|1
 )paren
 suffix:semicolon
 id|ioport_resource.end

@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -353,11 +354,6 @@ DECL|variable|sleep_in_progress
 r_static
 r_int
 id|sleep_in_progress
-suffix:semicolon
-DECL|variable|can_sleep
-r_static
-r_int
-id|can_sleep
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
 DECL|variable|async_req_locks
@@ -3219,28 +3215,6 @@ id|batt_req.complete
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pmac_call_feature
-c_func
-(paren
-id|PMAC_FTR_SLEEP_STATE
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-op_minus
-l_int|1
-)paren
-op_ge
-l_int|0
-)paren
-id|can_sleep
-op_assign
-l_int|1
-suffix:semicolon
 macro_line|#endif
 r_if
 c_cond
@@ -5593,7 +5567,20 @@ id|pmu_kind
 op_eq
 id|PMU_KEYLARGO_BASED
 op_logical_and
-id|can_sleep
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_SLEEP_STATE
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)paren
+op_ge
+l_int|0
 )paren
 id|p
 op_add_assign
@@ -5819,7 +5806,20 @@ id|pmu_kind
 op_eq
 id|PMU_KEYLARGO_BASED
 op_logical_and
-id|can_sleep
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_SLEEP_STATE
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)paren
+op_ge
+l_int|0
 )paren
 r_if
 c_cond
@@ -12745,16 +12745,16 @@ c_cond
 id|ret
 )paren
 (brace
+id|broadcast_wake
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Driver sleep failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|broadcast_wake
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -12925,12 +12925,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pmu_blink
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* Force a poll of ADB interrupts */
 id|adb_int_pending
 op_assign
@@ -12958,10 +12952,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pmu_blink
+id|mdelay
 c_func
 (paren
-l_int|1
+l_int|100
 )paren
 suffix:semicolon
 id|preempt_enable
@@ -13133,29 +13127,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* (returns -1 if not available) */
-r_if
-c_cond
-(paren
-id|save_l2cr
-op_ne
-l_int|0xffffffff
-op_logical_and
-(paren
-id|save_l2cr
-op_amp
-id|L2CR_L2E
-)paren
-op_ne
-l_int|0
-)paren
-id|_set_L2CR
-c_func
-(paren
-id|save_l2cr
-op_amp
-l_int|0x7fffffff
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13470,8 +13441,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|can_sleep
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_SLEEP_STATE
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)paren
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -13486,6 +13469,26 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OG
+l_int|1
+op_logical_or
+id|cpu_is_offline
+c_func
+(paren
+l_int|0
+)paren
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
 id|ret
 op_assign
 id|pmac_suspend_devices
@@ -13510,6 +13513,19 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;HID1, before: %x&bslash;n&quot;
+comma
+id|mfspr
+c_func
+(paren
+id|SPRN_HID1
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Tell PMU what events will wake us up */
 id|pmu_request
 c_func
@@ -13572,7 +13588,7 @@ op_amp
 id|req
 )paren
 suffix:semicolon
-multiline_comment|/* Save &amp; disable L2 and L3 caches*/
+multiline_comment|/* Save the state of the L2 and L3 caches */
 id|save_l3cr
 op_assign
 id|_get_L3CR
@@ -13589,54 +13605,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* (returns -1 if not available) */
-r_if
-c_cond
-(paren
-id|save_l3cr
-op_ne
-l_int|0xffffffff
-op_logical_and
-(paren
-id|save_l3cr
-op_amp
-id|L3CR_L3E
-)paren
-op_ne
-l_int|0
-)paren
-id|_set_L3CR
-c_func
-(paren
-id|save_l3cr
-op_amp
-l_int|0x7fffffff
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|save_l2cr
-op_ne
-l_int|0xffffffff
-op_logical_and
-(paren
-id|save_l2cr
-op_amp
-id|L2CR_L2E
-)paren
-op_ne
-l_int|0
-)paren
-id|_set_L2CR
-c_func
-(paren
-id|save_l2cr
-op_amp
-l_int|0x7fffffff
-)paren
-suffix:semicolon
-multiline_comment|/* Save the state of PCI config space for some slots */
-singleline_comment|//pbook_pci_save();
 r_if
 c_cond
 (paren
@@ -13730,9 +13698,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Restore PCI config space. This should be overridable by PCI device&n;&t; * drivers as some of them may need special restore code. That&squot;s yet&n;&t; * another issue that should be handled by the common code properly,&n;&t; * maybe one day ?&n;&t; */
-multiline_comment|/* Don&squot;t restore PCI for now, it crashes. Maybe unnecessary on pbook */
-singleline_comment|//pbook_pci_restore();
+multiline_comment|/* Restore video */
+id|pmac_call_early_video_resume
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Restore L2 cache */
 r_if
 c_cond
@@ -13836,10 +13807,17 @@ op_amp
 id|req
 )paren
 suffix:semicolon
-id|pmu_blink
+id|printk
 c_func
 (paren
-l_int|1
+id|KERN_DEBUG
+l_string|&quot;HID1, after: %x&bslash;n&quot;
+comma
+id|mfspr
+c_func
+(paren
+id|SPRN_HID1
+)paren
 )paren
 suffix:semicolon
 id|pmac_wakeup_devices
@@ -15283,14 +15261,39 @@ suffix:semicolon
 r_case
 id|PMU_IOC_CAN_SLEEP
 suffix:colon
+r_if
+c_cond
+(paren
+id|pmac_call_feature
+c_func
+(paren
+id|PMAC_FTR_SLEEP_STATE
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)paren
+OL
+l_int|0
+)paren
 r_return
 id|put_user
 c_func
 (paren
-(paren
-id|u32
+l_int|0
+comma
+id|argp
 )paren
-id|can_sleep
+suffix:semicolon
+r_else
+r_return
+id|put_user
+c_func
+(paren
+l_int|1
 comma
 id|argp
 )paren

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; *&t;ITE 8172G interrupt/setup routines.&n; *&n; * Copyright 2000,2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * Part of this file was derived from Carsten Langgaard&squot;s&n; * arch/mips/mips-boards/atlas/atlas_int.c.&n; *&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -22,16 +21,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/it8172/it8172.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_dbg.h&gt;
-DECL|macro|DEBUG_IRQ
-macro_line|#undef DEBUG_IRQ
-macro_line|#ifdef DEBUG_IRQ
-multiline_comment|/* note: prints function name for you */
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...) printk(&quot;%s: &quot; fmt, __FUNCTION__ , ## args)
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...)
-macro_line|#endif
 multiline_comment|/* revisit */
 DECL|macro|EXT_IRQ0_TO_IP
 mdefine_line|#define EXT_IRQ0_TO_IP 2 /* IP 2 */
@@ -111,169 +100,8 @@ id|IT_INTC_BASE
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Function for careful CP0 interrupt mask access */
-DECL|function|modify_cp0_intmask
-r_static
-r_inline
-r_void
-id|modify_cp0_intmask
-c_func
-(paren
-r_int
-id|clr_mask
-comma
-r_int
-id|set_mask
-)paren
-(brace
-r_int
-r_int
-id|status
-op_assign
-id|read_c0_status
-c_func
-(paren
-)paren
-suffix:semicolon
-id|status
-op_and_assign
-op_complement
-(paren
-(paren
-id|clr_mask
-op_amp
-l_int|0xFF
-)paren
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-(paren
-id|set_mask
-op_amp
-l_int|0xFF
-)paren
-op_lshift
-l_int|8
-suffix:semicolon
-id|write_c0_status
-c_func
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-DECL|function|mask_irq
-r_static
-r_inline
-r_void
-id|mask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-id|modify_cp0_intmask
-c_func
-(paren
-id|irq_nr
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|unmask_irq
-r_static
-r_inline
-r_void
-id|unmask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-id|modify_cp0_intmask
-c_func
-(paren
-l_int|0
-comma
-id|irq_nr
-)paren
-suffix:semicolon
-)brace
-DECL|function|local_disable_irq
-r_void
-id|local_disable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|disable_it8172_irq
-c_func
-(paren
-id|irq_nr
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|function|local_enable_irq
-r_void
-id|local_enable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|enable_it8172_irq
-c_func
-(paren
-id|irq_nr
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
 DECL|function|disable_it8172_irq
+r_static
 r_void
 id|disable_it8172_irq
 c_func
@@ -283,14 +111,6 @@ r_int
 id|irq_nr
 )paren
 (brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;disable_it8172_irq %d&bslash;n&quot;
-comma
-id|irq_nr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -308,14 +128,6 @@ id|IT8172_SERIRQ_15
 )paren
 (brace
 multiline_comment|/* LPC interrupt */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DB lpc_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lpc_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;lpc_mask
 op_or_assign
 (paren
@@ -326,14 +138,6 @@ id|irq_nr
 op_minus
 id|IT8172_LPC_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DA lpc_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lpc_mask
 )paren
 suffix:semicolon
 )brace
@@ -355,14 +159,6 @@ id|IT8172_IOCHK_IRQ
 )paren
 (brace
 multiline_comment|/* Local Bus interrupt */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DB lb_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lb_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;lb_mask
 op_or_assign
 (paren
@@ -373,14 +169,6 @@ id|irq_nr
 op_minus
 id|IT8172_LB_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DA lb_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lb_mask
 )paren
 suffix:semicolon
 )brace
@@ -402,14 +190,6 @@ id|IT8172_DMA_IRQ
 )paren
 (brace
 multiline_comment|/* PCI and other interrupts */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DB pci_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;pci_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;pci_mask
 op_or_assign
 (paren
@@ -420,14 +200,6 @@ id|irq_nr
 op_minus
 id|IT8172_PCI_DEV_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DA pci_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;pci_mask
 )paren
 suffix:semicolon
 )brace
@@ -449,14 +221,6 @@ id|IT8172_POWER_NMI_IRQ
 )paren
 (brace
 multiline_comment|/* NMI interrupts */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DB nmi_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;nmi_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;nmi_mask
 op_or_assign
 (paren
@@ -467,14 +231,6 @@ id|irq_nr
 op_minus
 id|IT8172_NMI_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;DA nmi_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;nmi_mask
 )paren
 suffix:semicolon
 )brace
@@ -491,6 +247,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|enable_it8172_irq
+r_static
 r_void
 id|enable_it8172_irq
 c_func
@@ -500,14 +257,6 @@ r_int
 id|irq_nr
 )paren
 (brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;enable_it8172_irq %d&bslash;n&quot;
-comma
-id|irq_nr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -525,14 +274,6 @@ id|IT8172_SERIRQ_15
 )paren
 (brace
 multiline_comment|/* LPC interrupt */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EB before lpc_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lpc_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;lpc_mask
 op_and_assign
 op_complement
@@ -544,14 +285,6 @@ id|irq_nr
 op_minus
 id|IT8172_LPC_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EA after lpc_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lpc_mask
 )paren
 suffix:semicolon
 )brace
@@ -573,14 +306,6 @@ id|IT8172_IOCHK_IRQ
 )paren
 (brace
 multiline_comment|/* Local Bus interrupt */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EB lb_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lb_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;lb_mask
 op_and_assign
 op_complement
@@ -592,14 +317,6 @@ id|irq_nr
 op_minus
 id|IT8172_LB_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EA lb_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;lb_mask
 )paren
 suffix:semicolon
 )brace
@@ -621,14 +338,6 @@ id|IT8172_DMA_IRQ
 )paren
 (brace
 multiline_comment|/* PCI and other interrupts */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EB pci_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;pci_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;pci_mask
 op_and_assign
 op_complement
@@ -640,14 +349,6 @@ id|irq_nr
 op_minus
 id|IT8172_PCI_DEV_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EA pci_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;pci_mask
 )paren
 suffix:semicolon
 )brace
@@ -669,14 +370,6 @@ id|IT8172_POWER_NMI_IRQ
 )paren
 (brace
 multiline_comment|/* NMI interrupts */
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EB nmi_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;nmi_mask
-)paren
-suffix:semicolon
 id|it8172_hw0_icregs-&gt;nmi_mask
 op_and_assign
 op_complement
@@ -688,14 +381,6 @@ id|irq_nr
 op_minus
 id|IT8172_NMI_IRQ_BASE
 )paren
-)paren
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;EA nmi_mask  %x&bslash;n&quot;
-comma
-id|it8172_hw0_icregs-&gt;nmi_mask
 )paren
 suffix:semicolon
 )brace
@@ -895,15 +580,14 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|unmask_irq
+id|set_c0_status
 c_func
 (paren
-l_int|1
+l_int|0x100
 op_lshift
 id|EXT_IRQ5_TO_IP
 )paren
 suffix:semicolon
-multiline_comment|/* timer interrupt */
 id|local_irq_restore
 c_func
 (paren
@@ -1152,7 +836,6 @@ comma
 id|regs-&gt;cp0_badvaddr
 )paren
 suffix:semicolon
-singleline_comment|//&t;while(1);
 macro_line|#endif
 )brace
 DECL|function|it8172_hw0_irqdispatch
@@ -1239,7 +922,6 @@ id|irq
 op_add_assign
 id|IT8172_PCI_DEV_IRQ_BASE
 suffix:semicolon
-singleline_comment|//printk(&quot;pci int %d&bslash;n&quot;, irq);
 )brace
 r_else
 r_if
@@ -1282,7 +964,6 @@ id|irq
 op_add_assign
 id|IT8172_LB_IRQ_BASE
 suffix:semicolon
-singleline_comment|//printk(&quot;lb int %d&bslash;n&quot;, irq);
 )brace
 r_else
 r_if
@@ -1331,7 +1012,6 @@ id|irq
 op_add_assign
 id|IT8172_LPC_IRQ_BASE
 suffix:semicolon
-singleline_comment|//printk(&quot;LPC int %d&bslash;n&quot;, irq);
 )brace
 r_else
 r_return

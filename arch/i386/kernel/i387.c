@@ -181,9 +181,12 @@ op_assign
 l_int|0xffff0000u
 suffix:semicolon
 )brace
-id|tsk-&gt;used_math
-op_assign
-l_int|1
+multiline_comment|/* only the device not available exception or ptrace can call init_fpu */
+id|set_stopped_child_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * FPU lazy state save handling.&n; */
@@ -1554,15 +1557,19 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* This will cause a &quot;finit&quot; to be triggered by the next&n;&t; * attempted FPU operation by the &squot;current&squot; process.&n;&t; */
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1786,9 +1793,10 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;used_math
-op_assign
-l_int|1
+id|set_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|err
@@ -2386,7 +2394,12 @@ id|current
 suffix:semicolon
 id|fpvalid
 op_assign
-id|tsk-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2450,7 +2463,13 @@ id|fpu
 r_int
 id|fpvalid
 op_assign
-id|tsk-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|tsk_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2517,7 +2536,11 @@ id|fpu
 r_int
 id|fpvalid
 op_assign
-id|tsk-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|tsk
+)paren
 op_logical_and
 id|cpu_has_fxsr
 suffix:semicolon

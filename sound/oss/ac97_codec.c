@@ -1050,6 +1050,15 @@ id|sigmatel_9744_ops
 )brace
 comma
 (brace
+l_int|0x83847652
+comma
+l_string|&quot;SigmaTel STAC9752/53&quot;
+comma
+op_amp
+id|default_ops
+)brace
+comma
+(brace
 l_int|0x83847656
 comma
 l_string|&quot;SigmaTel STAC9756/57&quot;

@@ -39,6 +39,10 @@ DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
+DECL|macro|alloc_zeroed_user_highpage
+mdefine_line|#define alloc_zeroed_user_highpage(vma, vaddr) alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vma, vaddr)
+DECL|macro|__HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
+mdefine_line|#define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
 DECL|typedef|pte_t

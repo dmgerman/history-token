@@ -12,50 +12,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/pb1000.h&gt;
-macro_line|#ifdef CONFIG_USB_OHCI
-singleline_comment|// Enable the workaround for the OHCI DoneHead
-singleline_comment|// register corruption problem.
-DECL|macro|CONFIG_AU1000_OHCI_FIX
-mdefine_line|#define CONFIG_AU1000_OHCI_FIX
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_xor
-op_logical_neg
-op_logical_neg
-op_logical_neg
-id|I
-id|shall
-op_logical_neg
-id|define
-id|symbols
-id|starting
-id|with
-id|CONFIG_
-op_logical_neg
-op_logical_neg
-op_logical_neg
-macro_line|#endif
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#include &lt;asm/mach-pb1x00/pb1000.h&gt;
 DECL|function|board_reset
 r_void
 id|board_reset

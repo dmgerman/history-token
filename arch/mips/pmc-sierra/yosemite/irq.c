@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Copyright (C) 2003 PMC-Sierra Inc.&n; * Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Second level Interrupt handlers for the PMC-Sierra Titan/Yosemite board&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -50,7 +51,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Handle hypertransport &amp; SMP interrupts. The interrupt lines are scarce.&n; * For interprocessor interrupts, the best thing to do is to use the INTMSG&n; * register. We use the same external interrupt line, i.e. INTB3 and monitor&n; * another status bit&n; */
+multiline_comment|/*&n; * Handle hypertransport &amp; SMP interrupts. The interrupt lines are scarce.&n; * For interprocessor interrupts, the best thing to do is to use the INTMSG&n; * register. We use the same external interrupt line, i.e. INTB3 and monitor&n; * another status bit&n; */
 DECL|function|ll_ht_smp_irq_handler
 id|asmlinkage
 r_void
@@ -244,6 +245,91 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+DECL|function|do_extended_irq
+id|asmlinkage
+r_void
+id|do_extended_irq
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|intcontrol
+op_assign
+id|read_c0_intcontrol
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|cause
+op_assign
+id|read_c0_cause
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|status
+op_assign
+id|read_c0_status
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|pending_sr
+comma
+id|pending_ic
+suffix:semicolon
+id|pending_sr
+op_assign
+id|status
+op_amp
+id|cause
+op_amp
+l_int|0xff00
+suffix:semicolon
+id|pending_ic
+op_assign
+(paren
+id|cause
+op_rshift
+l_int|8
+)paren
+op_amp
+id|intcontrol
+op_amp
+l_int|0xff00
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pending_ic
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|13
+)paren
+)paren
+id|do_IRQ
+c_func
+(paren
+l_int|13
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void
@@ -288,6 +374,12 @@ id|rm7k_cpu_irq_init
 c_func
 (paren
 l_int|8
+)paren
+suffix:semicolon
+id|rm9k_cpu_irq_init
+c_func
+(paren
+l_int|12
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB

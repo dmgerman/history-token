@@ -1642,7 +1642,7 @@ c_func
 r_void
 op_star
 )paren
-id|KSEG1ADDR
+id|CKSEG1ADDR
 c_func
 (paren
 op_amp

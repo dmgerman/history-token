@@ -289,6 +289,8 @@ DECL|macro|I2C_ALGO_SIBYTE
 mdefine_line|#define I2C_ALGO_SIBYTE 0x150000&t;/* Broadcom SiByte SOCs&t;&t;*/
 DECL|macro|I2C_ALGO_SGI
 mdefine_line|#define I2C_ALGO_SGI&t;0x160000        /* SGI algorithm                */
+DECL|macro|I2C_ALGO_AU1550
+mdefine_line|#define I2C_ALGO_AU1550&t;0x170000        /* Au1550 PSC algorithm&t;&t;*/
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -389,6 +391,9 @@ mdefine_line|#define I2C_HW_SGI_MACE&t;0x01
 multiline_comment|/* --- XSCALE on-chip adapters                          */
 DECL|macro|I2C_HW_IOP3XX
 mdefine_line|#define I2C_HW_IOP3XX 0x00
+multiline_comment|/* --- Au1550 PSC adapters adapters&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_AU1550_PSC
+mdefine_line|#define I2C_HW_AU1550_PSC&t;0x00
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00

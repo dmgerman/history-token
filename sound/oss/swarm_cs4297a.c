@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;*&n;*      &quot;swarm_cs4297a.c&quot; --  Cirrus Logic-Crystal CS4297a linux audio driver.&n;*&n;*      Copyright (C) 2001  Broadcom Corporation.&n;*      Copyright (C) 2000,2001  Cirrus Logic Corp.  &n;*            -- adapted from drivers by Thomas Sailer, &n;*            -- but don&squot;t bug him; Problems should go to:&n;*            -- tom woller (twoller@crystal.cirrus.com) or&n;*               (audio@crystal.cirrus.com).&n;*            -- adapted from cs4281 PCI driver for cs4297a on&n;*               BCM1250 Synchronous Serial interface&n;*               (kwalker@broadcom.com)&n;*&n;*      This program is free software; you can redistribute it and/or modify&n;*      it under the terms of the GNU General Public License as published by&n;*      the Free Software Foundation; either version 2 of the License, or&n;*      (at your option) any later version.&n;*&n;*      This program is distributed in the hope that it will be useful,&n;*      but WITHOUT ANY WARRANTY; without even the implied warranty of&n;*      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;*      GNU General Public License for more details.&n;*&n;*      You should have received a copy of the GNU General Public License&n;*      along with this program; if not, write to the Free Software&n;*      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*&n;* Module command line parameters:&n;*   none&n;*&n;*  Supported devices:&n;*  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n;*  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n;*  /dev/midi   simple MIDI UART interface, no ioctl&n;*&n;* Modification History&n;* 08/20/00 trw - silence and no stopping DAC until release&n;* 08/23/00 trw - added CS_DBG statements, fix interrupt hang issue on DAC stop.&n;* 09/18/00 trw - added 16bit only record with conversion &n;* 09/24/00 trw - added Enhanced Full duplex (separate simultaneous &n;*                capture/playback rates)&n;* 10/03/00 trw - fixed mmap (fixed GRECORD and the XMMS mmap test plugin  &n;*                libOSSm.so)&n;* 10/11/00 trw - modified for 2.4.0-test9 kernel enhancements (NR_MAP removal)&n;* 11/03/00 trw - fixed interrupt loss/stutter, added debug.&n;* 11/10/00 bkz - added __devinit to cs4297a_hw_init()&n;* 11/10/00 trw - fixed SMP and capture spinlock hang.&n;* 12/04/00 trw - cleaned up CSDEBUG flags and added &quot;defaultorder&quot; moduleparm.&n;* 12/05/00 trw - fixed polling (myth2), and added underrun swptr fix.&n;* 12/08/00 trw - added PM support. &n;* 12/14/00 trw - added wrapper code, builds under 2.4.0, 2.2.17-20, 2.2.17-8 &n;*&t;&t; (RH/Dell base), 2.2.18, 2.2.12.  cleaned up code mods by ident.&n;* 12/19/00 trw - added PM support for 2.2 base (apm_callback). other PM cleanup.&n;* 12/21/00 trw - added fractional &quot;defaultorder&quot; inputs. if &gt;100 then use &n;*&t;&t; defaultorder-100 as power of 2 for the buffer size. example:&n;*&t;&t; 106 = 2^(106-100) = 2^6 = 64 bytes for the buffer size.&n;*&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;*&n;*      &quot;swarm_cs4297a.c&quot; --  Cirrus Logic-Crystal CS4297a linux audio driver.&n;*&n;*      Copyright (C) 2001  Broadcom Corporation.&n;*      Copyright (C) 2000,2001  Cirrus Logic Corp.  &n;*            -- adapted from drivers by Thomas Sailer, &n;*            -- but don&squot;t bug him; Problems should go to:&n;*            -- tom woller (twoller@crystal.cirrus.com) or&n;*               (audio@crystal.cirrus.com).&n;*            -- adapted from cs4281 PCI driver for cs4297a on&n;*               BCM1250 Synchronous Serial interface&n;*               (Kip Walker, Broadcom Corp.)&n;*      Copyright (C) 2004  Maciej W. Rozycki&n;*      Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)&n;*&n;*      This program is free software; you can redistribute it and/or modify&n;*      it under the terms of the GNU General Public License as published by&n;*      the Free Software Foundation; either version 2 of the License, or&n;*      (at your option) any later version.&n;*&n;*      This program is distributed in the hope that it will be useful,&n;*      but WITHOUT ANY WARRANTY; without even the implied warranty of&n;*      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;*      GNU General Public License for more details.&n;*&n;*      You should have received a copy of the GNU General Public License&n;*      along with this program; if not, write to the Free Software&n;*      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*&n;* Module command line parameters:&n;*   none&n;*&n;*  Supported devices:&n;*  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n;*  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n;*  /dev/midi   simple MIDI UART interface, no ioctl&n;*&n;* Modification History&n;* 08/20/00 trw - silence and no stopping DAC until release&n;* 08/23/00 trw - added CS_DBG statements, fix interrupt hang issue on DAC stop.&n;* 09/18/00 trw - added 16bit only record with conversion &n;* 09/24/00 trw - added Enhanced Full duplex (separate simultaneous &n;*                capture/playback rates)&n;* 10/03/00 trw - fixed mmap (fixed GRECORD and the XMMS mmap test plugin  &n;*                libOSSm.so)&n;* 10/11/00 trw - modified for 2.4.0-test9 kernel enhancements (NR_MAP removal)&n;* 11/03/00 trw - fixed interrupt loss/stutter, added debug.&n;* 11/10/00 bkz - added __devinit to cs4297a_hw_init()&n;* 11/10/00 trw - fixed SMP and capture spinlock hang.&n;* 12/04/00 trw - cleaned up CSDEBUG flags and added &quot;defaultorder&quot; moduleparm.&n;* 12/05/00 trw - fixed polling (myth2), and added underrun swptr fix.&n;* 12/08/00 trw - added PM support. &n;* 12/14/00 trw - added wrapper code, builds under 2.4.0, 2.2.17-20, 2.2.17-8 &n;*&t;&t; (RH/Dell base), 2.2.18, 2.2.12.  cleaned up code mods by ident.&n;* 12/19/00 trw - added PM support for 2.2 base (apm_callback). other PM cleanup.&n;* 12/21/00 trw - added fractional &quot;defaultorder&quot; inputs. if &gt;100 then use &n;*&t;&t; defaultorder-100 as power of 2 for the buffer size. example:&n;*&t;&t; 106 = 2^(106-100) = 2^6 = 64 bytes for the buffer size.&n;*&n;*******************************************************************************/
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -12,12 +12,12 @@ macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_syncser.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_mac.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 r_struct
 id|cs4297a_state
 suffix:semicolon
@@ -1991,7 +1990,7 @@ l_string|&quot;cs4297a: Setting up serial parameters&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_CMD_RX_RESET
@@ -2005,7 +2004,7 @@ id|R_SER_CMD
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_MSB_FIRST
@@ -2017,7 +2016,7 @@ id|R_SER_MODE
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|32
@@ -2029,7 +2028,7 @@ id|R_SER_MINFRM_SZ
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|32
@@ -2041,7 +2040,7 @@ id|R_SER_MAXFRM_SZ
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|1
@@ -2053,7 +2052,7 @@ id|R_SER_TX_RD_THRSH
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|4
@@ -2065,7 +2064,7 @@ id|R_SER_TX_WR_THRSH
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|8
@@ -2078,7 +2077,7 @@ id|R_SER_RX_RD_THRSH
 )paren
 suffix:semicolon
 multiline_comment|/* This looks good from experimentation */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -2113,7 +2112,7 @@ id|R_SER_LINE_MODE
 )paren
 suffix:semicolon
 multiline_comment|/* This looks good from experimentation */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2133,7 +2132,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2153,7 +2152,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2173,7 +2172,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2195,7 +2194,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2215,7 +2214,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2235,7 +2234,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2255,7 +2254,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SYNCSER_SEQ_COUNT
@@ -2293,7 +2292,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Just in case... */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_SEQ_LAST
@@ -2305,7 +2304,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_SEQ_LAST
@@ -2417,7 +2416,7 @@ suffix:semicolon
 multiline_comment|/* XXX bloddy mess, use proper DMA API here ...  */
 id|dma-&gt;descrtab_phys
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -2480,7 +2479,7 @@ id|DMA_BUF_SIZE
 suffix:semicolon
 id|dma-&gt;dma_buf_phys
 op_assign
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -2651,7 +2650,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -2661,7 +2660,7 @@ id|R_SER_DMA_DSCR_COUNT_RX
 )paren
 )paren
 op_logical_or
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -2762,7 +2761,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -2790,7 +2789,7 @@ id|R_SER_DMA_CONFIG0_RX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_DMA_L2CA
@@ -2802,7 +2801,7 @@ id|R_SER_DMA_CONFIG1_RX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|s-&gt;dma_adc.descrtab_phys
@@ -2814,7 +2813,7 @@ id|R_SER_DMA_DSCR_BASE_RX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_DMA_RINGSZ
@@ -2830,7 +2829,7 @@ id|R_SER_DMA_CONFIG0_TX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_DMA_L2CA
@@ -2844,7 +2843,7 @@ id|R_SER_DMA_CONFIG1_TX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|s-&gt;dma_dac.descrtab_phys
@@ -2857,7 +2856,7 @@ id|R_SER_DMA_DSCR_BASE_TX
 )paren
 suffix:semicolon
 multiline_comment|/* Prep the receive DMA descriptor ring */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|DMA_DESCR
@@ -2869,7 +2868,7 @@ id|R_SER_DMA_DSCR_COUNT_RX
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_DMA_RX_EN
@@ -2883,7 +2882,7 @@ id|R_SER_DMA_ENABLE
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -2902,7 +2901,7 @@ id|R_SER_INT_MASK
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the rx/tx; let the codec warm up to the sync and&n;           start sending good frames before the receive FIFO is&n;           enabled */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_CMD_TX_EN
@@ -2920,7 +2919,7 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SYNCSER_CMD_RX_EN
@@ -2939,7 +2938,7 @@ r_while
 c_loop
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -2973,7 +2972,7 @@ r_int
 r_int
 )paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -3159,9 +3158,13 @@ suffix:semicolon
 op_star
 id|data_p
 op_assign
+id|cpu_to_be64
+c_func
+(paren
 id|data
+)paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|1
@@ -3452,7 +3455,7 @@ id|FMODE_WRITE
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* XXXKW what do I really want here?  My theory for now is&n;           that I just flip the &quot;ena&quot; bit, and the interrupt handler&n;           will stop processing the xmit channel */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -3933,7 +3936,7 @@ op_assign
 id|intflag
 ques
 c_cond
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -3976,7 +3979,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -4086,12 +4089,16 @@ op_decrement
 id|u64
 id|data
 op_assign
+id|be64_to_cpu
+c_func
+(paren
 op_star
 (paren
 id|u64
 op_star
 )paren
 id|s_ptr
+)paren
 suffix:semicolon
 id|u64
 id|descr_a
@@ -4119,7 +4126,7 @@ op_amp
 id|M_DMA_DSCRA_A_ADDR
 )paren
 op_ne
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -4258,10 +4265,14 @@ id|left
 op_assign
 (paren
 (paren
+id|be32_to_cpu
+c_func
+(paren
 id|s_ptr
 (braket
 l_int|1
 )braket
+)paren
 op_amp
 l_int|0xff
 )paren
@@ -4271,10 +4282,14 @@ l_int|8
 op_or
 (paren
 (paren
+id|be32_to_cpu
+c_func
+(paren
 id|s_ptr
 (braket
 l_int|2
 )braket
+)paren
 op_rshift
 l_int|24
 )paren
@@ -4285,10 +4300,14 @@ suffix:semicolon
 id|right
 op_assign
 (paren
+id|be32_to_cpu
+c_func
+(paren
 id|s_ptr
 (braket
 l_int|2
 )braket
+)paren
 op_rshift
 l_int|4
 )paren
@@ -4299,13 +4318,21 @@ op_star
 id|d-&gt;sb_hwptr
 op_increment
 op_assign
+id|cpu_to_be16
+c_func
+(paren
 id|left
+)paren
 suffix:semicolon
 op_star
 id|d-&gt;sb_hwptr
 op_increment
 op_assign
+id|cpu_to_be16
+c_func
+(paren
 id|right
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4388,7 +4415,7 @@ id|diff
 op_mod
 id|d-&gt;ringsz
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|diff
@@ -4516,8 +4543,12 @@ r_do
 (brace
 id|data
 op_assign
+id|be64_to_cpu
+c_func
+(paren
 op_star
 id|data_p
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4528,7 +4559,7 @@ op_amp
 id|M_DMA_DSCRA_A_ADDR
 )paren
 op_ne
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -4542,11 +4573,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cs4297a: RX Bad address %d (%x %x)&bslash;n&quot;
+l_string|&quot;cs4297a: RX Bad address %d (%llx %lx)&bslash;n&quot;
 comma
 id|d-&gt;swptr
 comma
 (paren
+r_int
 r_int
 )paren
 (paren
@@ -4558,7 +4590,7 @@ comma
 (paren
 r_int
 )paren
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -4694,7 +4726,7 @@ op_assign
 id|d-&gt;dma_buf
 suffix:semicolon
 )brace
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|1
@@ -4794,7 +4826,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -7743,7 +7775,7 @@ c_loop
 (paren
 id|count
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -7825,7 +7857,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -8574,7 +8606,6 @@ id|left
 comma
 id|right
 suffix:semicolon
-multiline_comment|/* XXXKW check system endian here ... */
 r_int
 id|swap
 op_assign
@@ -8635,7 +8666,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -8825,52 +8856,42 @@ suffix:semicolon
 multiline_comment|/* XXXKW assuming 16-bit stereo! */
 r_do
 (brace
+id|u32
+id|tmp
+suffix:semicolon
 id|t_tmpl
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0x98000000
-suffix:semicolon
-id|left
-op_assign
-id|s_tmpl
-(braket
-l_int|0
-)braket
-op_rshift
-l_int|16
-suffix:semicolon
-r_if
-c_cond
+id|cpu_to_be32
+c_func
 (paren
-id|left
-op_amp
-l_int|0x8000
+l_int|0x98000000
 )paren
-id|left
-op_or_assign
-l_int|0xf0000
 suffix:semicolon
-id|right
+id|tmp
 op_assign
+id|be32_to_cpu
+c_func
+(paren
 id|s_tmpl
 (braket
 l_int|0
 )braket
+)paren
+suffix:semicolon
+id|left
+op_assign
+id|tmp
 op_amp
 l_int|0xffff
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|right
-op_amp
-l_int|0x8000
-)paren
-id|right
-op_or_assign
-l_int|0xf0000
+op_assign
+id|tmp
+op_rshift
+l_int|16
 suffix:semicolon
 r_if
 c_cond
@@ -8878,67 +8899,44 @@ c_cond
 id|swap
 )paren
 (brace
-id|t_tmpl
-(braket
-l_int|1
-)braket
-op_assign
 id|left
-op_amp
-l_int|0xff
+op_assign
+id|swab16
+c_func
+(paren
+id|left
+)paren
 suffix:semicolon
-id|t_tmpl
-(braket
-l_int|2
-)braket
+id|right
 op_assign
-(paren
-(paren
-id|left
-op_amp
-l_int|0xff00
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
+id|swab16
+c_func
 (paren
 id|right
-op_amp
-l_int|0xff
-)paren
-op_lshift
-l_int|12
-)paren
-op_or
-(paren
-(paren
-id|right
-op_amp
-l_int|0xff00
-)paren
-op_rshift
-l_int|4
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|t_tmpl
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_be32
+c_func
+(paren
 id|left
 op_rshift
 l_int|8
+)paren
 suffix:semicolon
 id|t_tmpl
 (braket
 l_int|2
 )braket
 op_assign
+id|cpu_to_be32
+c_func
+(paren
 (paren
 (paren
 id|left
@@ -8954,8 +8952,8 @@ id|right
 op_lshift
 l_int|4
 )paren
+)paren
 suffix:semicolon
-)brace
 id|s_tmpl
 op_increment
 suffix:semicolon
@@ -8996,7 +8994,11 @@ l_int|4
 )paren
 )paren
 op_or_assign
+id|cpu_to_be64
+c_func
+(paren
 id|s-&gt;reg_request
+)paren
 suffix:semicolon
 id|s-&gt;reg_request
 op_assign
@@ -9043,7 +9045,7 @@ id|FRAME_SAMPLE_BYTES
 op_mod
 id|d-&gt;ringsz
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|cnt
@@ -9759,6 +9761,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.count
@@ -9781,7 +9784,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -9821,6 +9824,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.count
@@ -9843,7 +9847,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -11975,7 +11979,7 @@ comma
 (paren
 r_int
 )paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12129,7 +12133,7 @@ id|FMODE_WRITE
 r_if
 c_cond
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12152,7 +12156,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12605,7 +12609,7 @@ comma
 suffix:semicolon
 DECL|function|cs4297a_interrupt
 r_static
-id|irqreturn_t
+r_void
 id|cs4297a_interrupt
 c_func
 (paren
@@ -12639,7 +12643,7 @@ id|status
 suffix:semicolon
 id|status
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12687,7 +12691,7 @@ id|M_SYNCSER_RX_SYNC_ERR
 (brace
 id|status
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12707,7 +12711,6 @@ id|status
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -12721,7 +12724,7 @@ id|M_SYNCSER_RX_SYNC_ERR
 (brace
 id|status
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12741,7 +12744,6 @@ id|status
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -12771,7 +12773,7 @@ multiline_comment|/* Fix things up: get the receive descriptor pool&n;          
 r_while
 c_loop
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12790,7 +12792,7 @@ r_int
 (paren
 (paren
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|SS_CSR
@@ -12854,7 +12856,7 @@ id|s-&gt;dma_adc.sb_hwptr
 op_assign
 id|s-&gt;dma_adc.sample_buf
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|DMA_DESCR
@@ -12904,24 +12906,18 @@ l_string|&quot;cs4297a: cs4297a_interrupt()-&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
-DECL|struct|initvol
+macro_line|#if 0
 r_static
 r_struct
 id|initvol
 (brace
-DECL|member|mixch
 r_int
 id|mixch
 suffix:semicolon
-DECL|member|vol
 r_int
 id|vol
 suffix:semicolon
-DECL|variable|__initdata
 )brace
 id|initvol
 (braket
@@ -12984,6 +12980,7 @@ l_int|0x0000
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|cs4297a_init
 r_static
 r_int
@@ -12999,9 +12996,6 @@ id|cs4297a_state
 op_star
 id|s
 suffix:semicolon
-id|u64
-id|cfg
-suffix:semicolon
 id|u32
 id|pwr
 comma
@@ -13012,9 +13006,15 @@ id|fs
 suffix:semicolon
 r_int
 id|rval
-comma
+suffix:semicolon
+macro_line|#ifndef CONFIG_BCM_CS4297A_CSWARM
+id|u64
+id|cfg
+suffix:semicolon
+r_int
 id|mdio_val
 suffix:semicolon
+macro_line|#endif
 id|CS_DBGOUT
 c_func
 (paren
@@ -13032,9 +13032,10 @@ l_string|&quot;cs4297a: cs4297a_init_module()+ &bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_BCM_CS4297A_CSWARM
 id|mdio_val
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -13057,7 +13058,7 @@ suffix:semicolon
 multiline_comment|/* Check syscfg for synchronous serial on port 1 */
 id|cfg
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -13076,7 +13077,7 @@ id|M_SYS_SER1_ENABLE
 )paren
 )paren
 (brace
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|cfg
@@ -13090,7 +13091,7 @@ id|A_SCD_SYSTEM_CFG
 suffix:semicolon
 id|cfg
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -13129,7 +13130,7 @@ l_string|&quot;cs4297a: serial port 1 switching to synchronous operation&bslash;
 )paren
 suffix:semicolon
 multiline_comment|/* Force the codec (on SWARM) to reset by clearing&n;                   GENO, preserving MDIO (no effect on CSWARM) */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|mdio_val
@@ -13153,7 +13154,7 @@ l_int|10
 suffix:semicolon
 )brace
 multiline_comment|/* Now set GENO */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|mdio_val
@@ -13178,6 +13179,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13512,6 +13514,10 @@ op_logical_neg
 id|rval
 )paren
 (brace
+r_char
+op_star
+id|sb1250_duart_present
+suffix:semicolon
 id|fs
 op_assign
 id|get_fs
@@ -13652,6 +13658,26 @@ op_amp
 id|id
 )paren
 suffix:semicolon
+id|sb1250_duart_present
+op_assign
+id|symbol_get
+c_func
+(paren
+id|sb1250_duart_present
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb1250_duart_present
+)paren
+id|sb1250_duart_present
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -13758,12 +13784,10 @@ l_string|&quot;cs4297a: cleanup_cs4297a() finished&bslash;n&quot;
 suffix:semicolon
 )brace
 singleline_comment|// --------------------------------------------------------------------- 
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Kip Walker, kwalker@broadcom.com&quot;
+l_string|&quot;Kip Walker, Broadcom Corp.&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 2000, 2001, 05 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
+macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -148,26 +149,10 @@ r_int
 r_int
 id|task_size
 suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS32
 id|task_size
 op_assign
-id|TASK_SIZE
+id|STACK_TOP
 suffix:semicolon
-macro_line|#else
-id|task_size
-op_assign
-(paren
-id|current-&gt;thread.mflags
-op_amp
-id|MF_32BIT_ADDR
-)paren
-ques
-c_cond
-id|TASK_SIZE32
-suffix:colon
-id|TASK_SIZE
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -395,6 +380,7 @@ multiline_comment|/* common code for old and new mmaps */
 r_static
 r_inline
 r_int
+r_int
 DECL|function|do_mmap2
 id|do_mmap2
 c_func
@@ -525,10 +511,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|old_mmap
 id|asmlinkage
 r_int
 r_int
+DECL|function|old_mmap
 id|old_mmap
 c_func
 (paren
@@ -536,6 +522,7 @@ r_int
 r_int
 id|addr
 comma
+r_int
 r_int
 id|len
 comma
@@ -599,6 +586,7 @@ id|result
 suffix:semicolon
 )brace
 id|asmlinkage
+r_int
 r_int
 DECL|function|sys_mmap2
 id|sys_mmap2

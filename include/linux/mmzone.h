@@ -188,11 +188,11 @@ id|pages_low
 comma
 id|pages_high
 suffix:semicolon
-multiline_comment|/*&n;&t; * protection[] is a pre-calculated number of extra pages that must be&n;&t; * available in a zone in order for __alloc_pages() to allocate memory&n;&t; * from the zone. i.e., for a GFP_KERNEL alloc of &quot;order&quot; there must&n;&t; * be &quot;(1&lt;&lt;order) + protection[ZONE_NORMAL]&quot; free pages in the zone&n;&t; * for us to choose to allocate the page from that zone.&n;&t; *&n;&t; * It uses both min_free_kbytes and sysctl_lower_zone_protection.&n;&t; * The protection values are recalculated if either of these values&n;&t; * change.  The array elements are in zonelist order:&n;&t; *&t;[0] == GFP_DMA, [1] == GFP_KERNEL, [2] == GFP_HIGHMEM.&n;&t; */
-DECL|member|protection
+multiline_comment|/*&n;&t; * We don&squot;t know if the memory that we&squot;re going to allocate will be freeable&n;&t; * or/and it will be released eventually, so to avoid totally wasting several&n;&t; * GB of ram we must reserve some of the lower zone memory (otherwise we risk&n;&t; * to run OOM on the lower zones despite there&squot;s tons of freeable ram&n;&t; * on the higher zones). This array is recalculated at runtime if the&n;&t; * sysctl_lowmem_reserve_ratio sysctl changes.&n;&t; */
+DECL|member|lowmem_reserve
 r_int
 r_int
-id|protection
+id|lowmem_reserve
 (braket
 id|MAX_NR_ZONES
 )braket
@@ -733,8 +733,17 @@ id|loff_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|lower_zone_protection_sysctl_handler
+id|sysctl_lowmem_reserve_ratio
+(braket
+id|MAX_NR_ZONES
+op_minus
+l_int|1
+)braket
+suffix:semicolon
+r_int
+id|lowmem_reserve_ratio_sysctl_handler
 c_func
 (paren
 r_struct

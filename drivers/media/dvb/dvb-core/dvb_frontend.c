@@ -3619,15 +3619,16 @@ comma
 id|fe-&gt;ops-&gt;info.name
 )paren
 suffix:semicolon
+multiline_comment|/* fe is invalid now */
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend_priv
+id|fepriv
 )paren
 id|kfree
 c_func
 (paren
-id|fe-&gt;frontend_priv
+id|fepriv
 )paren
 suffix:semicolon
 id|up

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003, 2004 Ralf Baechle (ralf@linux-mips.org)&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003, 04, 05 Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -102,9 +101,6 @@ c_func
 id|copy_page
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * An address fits into a single register so it&squot;s safe to use 64-bit registers&n; * if we have 64-bit adresses.&n; */
-DECL|macro|cpu_has_64bit_registers
-mdefine_line|#define cpu_has_64bit_registers&t;cpu_has_64bit_addresses
 multiline_comment|/*&n; * This is suboptimal for 32-bit kernels; we assume that R10000 is only used&n; * with 64-bit kernels.  The prefetch offsets have been experimentally tuned&n; * an Origin 200.&n; */
 DECL|variable|__initdata
 r_static
@@ -400,7 +396,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_64bit_registers
+id|cpu_has_64bit_gp_regs
 )paren
 (brace
 id|mi.i_format.opcode
@@ -891,7 +887,7 @@ l_int|0x7fff
 suffix:semicolon
 id|mi.i_format.opcode
 op_assign
-id|cpu_has_64bit_addresses
+id|cpu_has_64bit_gp_regs
 ques
 c_cond
 id|daddiu_op
@@ -945,7 +941,7 @@ l_int|0x7fff
 suffix:semicolon
 id|mi.i_format.opcode
 op_assign
-id|cpu_has_64bit_addresses
+id|cpu_has_64bit_gp_regs
 ques
 c_cond
 id|daddiu_op
@@ -1003,7 +999,7 @@ l_int|0x7fff
 suffix:semicolon
 id|mi.i_format.opcode
 op_assign
-id|cpu_has_64bit_addresses
+id|cpu_has_64bit_gp_regs
 ques
 c_cond
 id|daddiu_op

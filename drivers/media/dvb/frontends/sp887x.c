@@ -2426,7 +2426,9 @@ multiline_comment|/* request the firmware, this will block until someone uploads
 id|printk
 c_func
 (paren
-l_string|&quot;sp887x: waiting for firmware upload...&bslash;n&quot;
+l_string|&quot;sp887x: waiting for firmware upload (%s)...&bslash;n&quot;
+comma
+id|SP887X_DEFAULT_FIRMWARE
 )paren
 suffix:semicolon
 id|ret
@@ -2492,6 +2494,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;sp887x: firmware upload complete&bslash;n&quot;
+)paren
+suffix:semicolon
 id|state-&gt;initialised
 op_assign
 l_int|1
