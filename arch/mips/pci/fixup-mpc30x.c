@@ -23,7 +23,8 @@ comma
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_char
+r_const
+r_int
 id|irq_tab_mpc30x
 (braket
 )braket
