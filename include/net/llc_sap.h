@@ -3,7 +3,7 @@ DECL|macro|LLC_SAP_H
 mdefine_line|#define LLC_SAP_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
-multiline_comment|/**&n; * struct llc_sap - Defines the SAP component&n; *&n; * @p_bit - only lowest-order bit used&n; * @f_bit - only lowest-order bit used&n; * @req - provided by LLC layer&n; * @ind - provided by network layer&n; * @conf - provided by network layer&n; * @laddr - SAP value in this &squot;lsap&squot;&n; * @node - entry in station sap_list&n; * @sk_list - LLC sockets this one manages&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
+multiline_comment|/**&n; * struct llc_sap - Defines the SAP component&n; *&n; * @p_bit - only lowest-order bit used&n; * @f_bit - only lowest-order bit used&n; * @ind - provided by network layer&n; * @conf - provided by network layer&n; * @laddr - SAP value in this &squot;lsap&squot;&n; * @node - entry in station sap_list&n; * @sk_list - LLC sockets this one manages&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_sap
 r_struct
 id|llc_sap
@@ -25,10 +25,6 @@ suffix:semicolon
 DECL|member|f_bit
 id|u8
 id|f_bit
-suffix:semicolon
-DECL|member|req
-id|llc_prim_call_t
-id|req
 suffix:semicolon
 DECL|member|ind
 id|llc_prim_call_t

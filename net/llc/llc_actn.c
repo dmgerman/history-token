@@ -65,10 +65,6 @@ op_amp
 id|station-&gt;ack_timer
 )paren
 suffix:semicolon
-id|station-&gt;ack_tmr_running
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -555,10 +551,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|station-&gt;ack_tmr_running
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -579,10 +571,6 @@ suffix:semicolon
 id|ev-&gt;type
 op_assign
 id|LLC_STATION_EV_TYPE_ACK_TMR
-suffix:semicolon
-id|ev-&gt;data.tmr.timer_specific
-op_assign
-l_int|NULL
 suffix:semicolon
 id|llc_station_state_process
 c_func
