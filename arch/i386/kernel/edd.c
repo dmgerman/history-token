@@ -2153,7 +2153,7 @@ c_cond
 (paren
 id|info-&gt;params.info_flags
 op_amp
-id|EDD_INFO_DMA_BOUNDRY_ERROR_TRANSPARENT
+id|EDD_INFO_DMA_BOUNDARY_ERROR_TRANSPARENT
 )paren
 id|p
 op_add_assign
@@ -2164,7 +2164,7 @@ id|p
 comma
 id|left
 comma
-l_string|&quot;DMA boundry error transparent&bslash;n&quot;
+l_string|&quot;DMA boundary error transparent&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
