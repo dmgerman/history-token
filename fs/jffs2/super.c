@@ -517,7 +517,7 @@ id|jffs2_super_operations
 suffix:semicolon
 id|sb-&gt;s_flags
 op_or_assign
-id|MS_NODIRATIME
+id|MS_NOATIME
 suffix:semicolon
 id|ret
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These are the definitions needed for the sctp_ulpevent type.  The&n; * sctp_ulpevent type is used to carry information from the state machine&n; * upwards to the ULP.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *   Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *   Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These are the definitions needed for the sctp_ulpevent type.  The&n; * sctp_ulpevent type is used to carry information from the state machine&n; * upwards to the ULP.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *   Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *   Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __sctp_ulpevent_h__
 DECL|macro|__sctp_ulpevent_h__
 mdefine_line|#define __sctp_ulpevent_h__
@@ -8,10 +8,35 @@ DECL|struct|sctp_ulpevent
 r_struct
 id|sctp_ulpevent
 (brace
-DECL|member|sndrcvinfo
+DECL|member|asoc
 r_struct
-id|sctp_sndrcvinfo
-id|sndrcvinfo
+id|sctp_association
+op_star
+id|asoc
+suffix:semicolon
+DECL|member|stream
+id|__u16
+id|stream
+suffix:semicolon
+DECL|member|ssn
+id|__u16
+id|ssn
+suffix:semicolon
+DECL|member|flags
+id|__u16
+id|flags
+suffix:semicolon
+DECL|member|ppid
+id|__u32
+id|ppid
+suffix:semicolon
+DECL|member|tsn
+id|__u32
+id|tsn
+suffix:semicolon
+DECL|member|cumtsn
+id|__u32
+id|cumtsn
 suffix:semicolon
 DECL|member|msg_flags
 r_int

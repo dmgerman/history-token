@@ -81,7 +81,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_return
-id|br_ioctl
+id|br_ioctl_device
 c_func
 (paren
 id|dev-&gt;priv

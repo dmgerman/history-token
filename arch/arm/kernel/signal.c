@@ -177,6 +177,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -318,11 +319,13 @@ comma
 r_const
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -544,11 +547,13 @@ id|rt_sigframe
 DECL|member|pinfo
 r_struct
 id|siginfo
+id|__user
 op_star
 id|pinfo
 suffix:semicolon
 DECL|member|puc
 r_void
+id|__user
 op_star
 id|puc
 suffix:semicolon
@@ -582,6 +587,7 @@ id|regs
 comma
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 )paren
@@ -805,6 +811,7 @@ id|regs
 (brace
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -837,6 +844,7 @@ op_assign
 (paren
 r_struct
 id|sigframe
+id|__user
 op_star
 )paren
 id|regs-&gt;ARM_sp
@@ -1008,6 +1016,7 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -1040,6 +1049,7 @@ op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 id|regs-&gt;ARM_sp
@@ -1184,6 +1194,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1441,6 +1452,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -1493,6 +1505,7 @@ multiline_comment|/*&n;&t; * ATPCS B01 mandates 8-byte alignment&n;&t; */
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1525,10 +1538,12 @@ id|ka
 comma
 r_int
 r_int
+id|__user
 op_star
 id|rc
 comma
 r_void
+id|__user
 op_star
 id|frame
 comma
@@ -1757,6 +1772,7 @@ id|regs
 (brace
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 op_assign
@@ -1903,6 +1919,7 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 op_assign

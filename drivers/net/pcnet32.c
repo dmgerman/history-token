@@ -4474,7 +4474,7 @@ r_goto
 id|err_release_region
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *&t;On selected chips turn on the BCR18:NOUFLO bit. This stops transmit&n;     *&t;starting until the packet is loaded. Strike one for reliability, lose&n;     *&t;one for latency - although on PCI this isnt a big loss. Older chips&n;     *&t;have FIFO&squot;s smaller than a packet, so you can&squot;t do this.&n;     */
+multiline_comment|/*&n;     *&t;On selected chips turn on the BCR18:NOUFLO bit. This stops transmit&n;     *&t;starting until the packet is loaded. Strike one for reliability, lose&n;     *&t;one for latency - although on PCI this isnt a big loss. Older chips&n;     *&t;have FIFO&squot;s smaller than a packet, so you can&squot;t do this.&n;     *&t;Turn on BCR18:BurstRdEn and BCR18:BurstWrEn.&n;     */
 r_if
 c_cond
 (paren
@@ -4501,7 +4501,7 @@ comma
 l_int|18
 )paren
 op_or
-l_int|0x0800
+l_int|0x0860
 )paren
 )paren
 suffix:semicolon

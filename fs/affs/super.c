@@ -2284,6 +2284,11 @@ comma
 id|data
 )paren
 suffix:semicolon
+op_star
+id|flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 r_if
 c_cond
 (paren

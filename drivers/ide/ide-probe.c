@@ -134,7 +134,19 @@ l_string|&quot;SunDisk SDCFB&quot;
 comma
 l_int|13
 )paren
-multiline_comment|/* SunDisk */
+multiline_comment|/* old SanDisk */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;SanDisk SDCFB&quot;
+comma
+l_int|13
+)paren
+multiline_comment|/* SanDisk */
 op_logical_or
 op_logical_neg
 id|strncmp

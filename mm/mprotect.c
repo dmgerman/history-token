@@ -491,8 +491,6 @@ r_struct
 id|mm_struct
 op_star
 id|mm
-op_assign
-id|vma-&gt;vm_mm
 suffix:semicolon
 r_if
 c_cond
@@ -505,6 +503,10 @@ id|vma
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|mm
+op_assign
+id|vma-&gt;vm_mm
 suffix:semicolon
 r_if
 c_cond

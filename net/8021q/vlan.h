@@ -10,7 +10,7 @@ DECL|macro|VLAN_INF
 mdefine_line|#define VLAN_INF KERN_ALERT
 DECL|macro|VLAN_DBG
 mdefine_line|#define VLAN_DBG KERN_ALERT /* change these... to debug, having a hard time&n;                             * changing the log level at run-time..for some reason.&n;                             */
-multiline_comment|/*&n;&n;These I use for memory debugging.  I feared a leak at one time, but&n;I never found it..and the problem seems to have dissappeared.  Still,&n;I&squot;ll bet they might prove useful again... --Ben&n;&n;&n;#define VLAN_MEM_DBG(x, y, z) printk(VLAN_DBG __FUNCTION__ &quot;:  &quot;  x, y, z);&n;#define VLAN_FMEM_DBG(x, y) printk(VLAN_DBG __FUNCTION__  &quot;:  &quot; x, y);&n;*/
+multiline_comment|/*&n;&n;These I use for memory debugging.  I feared a leak at one time, but&n;I never found it..and the problem seems to have dissappeared.  Still,&n;I&squot;ll bet they might prove useful again... --Ben&n;&n;&n;#define VLAN_MEM_DBG(x, y, z) printk(VLAN_DBG &quot;%s:  &quot;  x, __FUNCTION__, y, z);&n;#define VLAN_FMEM_DBG(x, y) printk(VLAN_DBG &quot;%s:  &quot; x, __FUNCTION__, y);&n;*/
 multiline_comment|/* This way they don&squot;t do anything! */
 DECL|macro|VLAN_MEM_DBG
 mdefine_line|#define VLAN_MEM_DBG(x, y, z) 

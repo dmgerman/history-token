@@ -883,6 +883,11 @@ op_star
 id|data
 )paren
 (brace
+op_star
+id|flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 r_return
 id|parse_options
 c_func

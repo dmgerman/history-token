@@ -1414,6 +1414,35 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|function|cifs_remount
+r_static
+r_int
+id|cifs_remount
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+op_star
+id|flags
+comma
+r_char
+op_star
+id|data
+)paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|cifs_super_ops
 r_struct
 id|super_operations
@@ -1454,6 +1483,11 @@ id|cifs_show_options
 comma
 multiline_comment|/*    .umount_begin   = cifs_umount_begin, */
 multiline_comment|/* consider adding in the future */
+dot
+id|remount_fs
+op_assign
+id|cifs_remount
+comma
 )brace
 suffix:semicolon
 r_static

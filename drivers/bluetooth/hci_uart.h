@@ -11,13 +11,15 @@ DECL|macro|HCIUARTGETPROTO
 mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
 multiline_comment|/* UART protocols */
 DECL|macro|HCI_UART_MAX_PROTO
-mdefine_line|#define HCI_UART_MAX_PROTO&t;3
+mdefine_line|#define HCI_UART_MAX_PROTO&t;4
 DECL|macro|HCI_UART_H4
 mdefine_line|#define HCI_UART_H4&t;0
 DECL|macro|HCI_UART_BCSP
 mdefine_line|#define HCI_UART_BCSP&t;1
-DECL|macro|HCI_UART_NCSP
-mdefine_line|#define HCI_UART_NCSP&t;2
+DECL|macro|HCI_UART_3WIRE
+mdefine_line|#define HCI_UART_3WIRE&t;2
+DECL|macro|HCI_UART_H4DS
+mdefine_line|#define HCI_UART_H4DS&t;3
 macro_line|#ifdef __KERNEL__
 r_struct
 id|hci_uart

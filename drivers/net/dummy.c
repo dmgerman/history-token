@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|variable|numdummies
@@ -41,6 +42,57 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|function|dummy_set_address
+r_static
+r_int
+id|dummy_set_address
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|p
+)paren
+(brace
+r_struct
+id|sockaddr
+op_star
+id|sa
+op_assign
+id|p
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|sa-&gt;sa_data
+)paren
+)paren
+r_return
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dev-&gt;dev_addr
+comma
+id|sa-&gt;sa_data
+comma
+id|ETH_ALEN
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* fake multicast ability */
 DECL|function|set_multicast_list
 r_static
@@ -105,6 +157,10 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|set_multicast_list
 suffix:semicolon
+id|dev-&gt;set_mac_address
+op_assign
+id|dummy_set_address
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE
 id|dev-&gt;accept_fastpath
 op_assign
@@ -135,6 +191,12 @@ id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|random_ether_addr
+c_func
+(paren
+id|dev-&gt;dev_addr
 )paren
 suffix:semicolon
 )brace
@@ -214,6 +276,14 @@ comma
 r_int
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|numdimmies
+comma
+l_string|&quot;Number of dummy psuedo devices&quot;
 )paren
 suffix:semicolon
 DECL|function|dummy_init_one

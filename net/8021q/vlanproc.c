@@ -610,8 +610,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: dev: %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev: %p&bslash;n&quot;
 comma
 id|vlandev
 )paren

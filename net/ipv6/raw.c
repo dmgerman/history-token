@@ -2263,6 +2263,12 @@ id|err
 r_goto
 id|error_fault
 suffix:semicolon
+id|IP6_INC_STATS
+c_func
+(paren
+id|Ip6OutRequests
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|NF_HOOK

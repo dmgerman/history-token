@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &lt;net/irda/ali-ircc.h&gt;
+macro_line|#include &quot;ali-ircc.h&quot;
 DECL|macro|CHIP_IO_EXTENT
 mdefine_line|#define CHIP_IO_EXTENT 8
 DECL|macro|BROKEN_DONGLE_ID

@@ -6649,7 +6649,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*We need to align the taskfile on a taskfile size boundary */
 (brace
-id|__u32
+r_int
+r_int
 id|addr
 suffix:semicolon
 id|addr

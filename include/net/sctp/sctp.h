@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer            &lt;rmlayer@us.ibm.com&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt; &n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer            &lt;rmlayer@us.ibm.com&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt; &n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_h__
 DECL|macro|__net_sctp_h__
 mdefine_line|#define __net_sctp_h__
@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
@@ -544,67 +545,6 @@ DECL|macro|SCTP_INC_STATS_USER
 mdefine_line|#define SCTP_INC_STATS_USER(field) SNMP_INC_STATS_USER(sctp_statistics, field)
 DECL|macro|SCTP_DEC_STATS
 mdefine_line|#define SCTP_DEC_STATS(field)      SNMP_DEC_STATS(sctp_statistics, field)
-multiline_comment|/* Determine if this is a valid kernel address.  */
-DECL|function|sctp_is_valid_kaddr
-r_static
-r_inline
-r_int
-id|sctp_is_valid_kaddr
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
-multiline_comment|/* Make sure the address is not in the user address space. */
-r_if
-c_cond
-(paren
-id|addr
-OL
-id|PAGE_OFFSET
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|addr
-)paren
-suffix:semicolon
-multiline_comment|/* Is this page valid? */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|virt_addr_valid
-c_func
-(paren
-id|addr
-)paren
-op_logical_or
-id|PageReserved
-c_func
-(paren
-id|page
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#endif /* !TEST_FRAME */
 multiline_comment|/* Print debugging messages.  */
 macro_line|#if SCTP_DEBUG
@@ -926,9 +866,13 @@ id|asoc
 (brace
 r_return
 (paren
-id|sctp_assoc_t
-)paren
 id|asoc
+ques
+c_cond
+id|asoc-&gt;assoc_id
+suffix:colon
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Look up the association by its id.  */
@@ -1333,6 +1277,15 @@ id|sock
 op_star
 id|sk
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|idr
+id|sctp_assocs_id
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|sctp_assocs_id_lock
 suffix:semicolon
 multiline_comment|/* Static inline functions. */
 multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */

@@ -69,7 +69,7 @@ l_string|&quot;port numbers of tftp servers&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
-mdefine_line|#define DEBUGP(format, args...) printk(__FILE__ &quot;:&quot; __FUNCTION__ &quot;: &quot; &bslash;&n;&t;&t;&t;&t;       format, ## args)
+mdefine_line|#define DEBUGP(format, args...) printk(&quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)

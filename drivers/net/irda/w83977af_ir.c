@@ -16,8 +16,8 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &lt;net/irda/w83977af.h&gt;
-macro_line|#include &lt;net/irda/w83977af_ir.h&gt;
+macro_line|#include &quot;w83977af.h&quot;
+macro_line|#include &quot;w83977af_ir.h&quot;
 macro_line|#ifdef  CONFIG_ARCH_NETWINDER            /* Adjust to NetWinder differences */
 DECL|macro|CONFIG_NETWINDER_TX_DMA_PROBLEMS
 macro_line|#undef  CONFIG_NETWINDER_TX_DMA_PROBLEMS /* Not needed */
