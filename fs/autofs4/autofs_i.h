@@ -178,6 +178,14 @@ r_int
 r_int
 id|exp_timeout
 suffix:semicolon
+DECL|member|reghost_enabled
+r_int
+id|reghost_enabled
+suffix:semicolon
+DECL|member|needs_reghost
+r_int
+id|needs_reghost
+suffix:semicolon
 DECL|member|sb
 r_struct
 id|super_block

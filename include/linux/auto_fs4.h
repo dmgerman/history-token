@@ -83,10 +83,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|AUTOFS_IOC_EXPIRE_MULTI
-mdefine_line|#define AUTOFS_IOC_EXPIRE_MULTI _IOW(0x93,0x66,int)
+mdefine_line|#define AUTOFS_IOC_EXPIRE_MULTI&t;&t;_IOW(0x93,0x66,int)
 DECL|macro|AUTOFS_IOC_PROTOSUBVER
-mdefine_line|#define AUTOFS_IOC_PROTOSUBVER  _IOR(0x93,0x67,int)
+mdefine_line|#define AUTOFS_IOC_PROTOSUBVER&t;&t;_IOR(0x93,0x67,int)
+DECL|macro|AUTOFS_IOC_ASKREGHOST
+mdefine_line|#define AUTOFS_IOC_ASKREGHOST           _IOR(0x93,0x68,int)
+DECL|macro|AUTOFS_IOC_TOGGLEREGHOST
+mdefine_line|#define AUTOFS_IOC_TOGGLEREGHOST        _IOR(0x93,0x69,int)
 DECL|macro|AUTOFS_IOC_ASKUMOUNT
-mdefine_line|#define AUTOFS_IOC_ASKUMOUNT&t;_IOR(0x93,0x70,int)
+mdefine_line|#define AUTOFS_IOC_ASKUMOUNT&t;&t;_IOR(0x93,0x70,int)
 macro_line|#endif /* _LINUX_AUTO_FS4_H */
 eof
