@@ -1028,6 +1028,11 @@ suffix:semicolon
 r_int
 id|possible_inq_resp_len
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 op_star
 id|bflags
 op_assign
@@ -1151,6 +1156,9 @@ id|sreq-&gt;sr_result
 )paren
 )paren
 suffix:semicolon
+op_increment
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1183,12 +1191,21 @@ l_int|0xf
 op_eq
 id|UNIT_ATTENTION
 op_logical_and
+(paren
 id|sreq-&gt;sr_sense_buffer
 (braket
 l_int|12
 )braket
 op_eq
 l_int|0x28
+op_logical_or
+id|sreq-&gt;sr_sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x29
+)paren
 op_logical_and
 id|sreq-&gt;sr_sense_buffer
 (braket
@@ -1198,11 +1215,21 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* not-ready to ready transition - good */
+multiline_comment|/* not-ready to ready transition or power-on - good */
 multiline_comment|/* dpg: bogus? INQUIRY never returns UNIT_ATTENTION */
+multiline_comment|/* Supposedly, but many buggy devices do so anyway */
+r_if
+c_cond
+(paren
+id|count
+OL
+l_int|3
+)paren
+r_goto
+id|repeat_inquiry
+suffix:semicolon
 )brace
-r_else
-multiline_comment|/*&n;&t;&t;&t; * assume no peripheral if any other sort of error&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * assume no peripheral if any other sort of error&n;&t;&t; */
 r_return
 suffix:semicolon
 )brace
