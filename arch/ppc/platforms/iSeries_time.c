@@ -247,10 +247,9 @@ r_else
 id|timerRetDisabled
 op_increment
 suffix:semicolon
-id|hardirq_enter
+id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -440,10 +439,9 @@ r_int
 id|next_dec
 )paren
 suffix:semicolon
-id|hardirq_exit
+id|irq_exit
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if

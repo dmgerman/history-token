@@ -15,7 +15,7 @@ DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;spin_is_locked(&amp;kernel_flag)
 macro_line|#elif defined(CONFIG_PREEMPT)
 DECL|macro|kernel_locked
-mdefine_line|#define kernel_locked()&t;&t;preempt_get_count()
+mdefine_line|#define kernel_locked()&t;&t;preempt_count()
 macro_line|#endif
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
 DECL|macro|release_kernel_lock
