@@ -335,7 +335,7 @@ l_int|0
 suffix:semicolon
 id|cnode
 OL
-id|numnodes
+id|numionodes
 suffix:semicolon
 id|cnode
 op_increment

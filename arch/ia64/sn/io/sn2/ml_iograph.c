@@ -1125,7 +1125,7 @@ suffix:semicolon
 )brace
 id|board
 op_assign
-id|find_lboard_class
+id|find_lboard_class_nasid
 c_func
 (paren
 (paren
@@ -1137,6 +1137,8 @@ c_func
 (paren
 id|nasid
 )paren
+comma
+id|nasid
 comma
 id|KLCLASS_IOBRICK
 )paren
@@ -1160,7 +1162,7 @@ id|INVALID_NASID
 (brace
 id|board
 op_assign
-id|find_lboard_class
+id|find_lboard_class_nasid
 c_func
 (paren
 (paren
@@ -1178,6 +1180,14 @@ id|cnode
 op_member_access_from_pointer
 id|xbow_peer
 )paren
+comma
+id|NODEPDA
+c_func
+(paren
+id|cnode
+)paren
+op_member_access_from_pointer
+id|xbow_peer
 comma
 id|KLCLASS_IOBRICK
 )paren
@@ -1222,7 +1232,7 @@ id|brd
 suffix:semicolon
 id|brd
 op_assign
-id|find_lboard
+id|find_lboard_any
 c_func
 (paren
 (paren
