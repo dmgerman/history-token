@@ -847,6 +847,17 @@ comma
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_AMI
+comma
+id|PCI_DEVICE_ID_AMI_MEGARAID3
+comma
+id|PCI_VENDOR_ID_AMI
+comma
+id|PCI_SUBSYS_ID_PERC3_SC
+comma
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_LSI_LOGIC
 comma
 id|PCI_DEVICE_ID_MEGARAID_SCSI_320_0
