@@ -6536,13 +6536,6 @@ c_func
 id|bio
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|bio-&gt;bi_end_io
-)paren
-suffix:semicolon
 id|BIO_BUG_ON
 c_func
 (paren

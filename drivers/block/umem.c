@@ -2041,19 +2041,12 @@ id|bio-&gt;bi_next
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* should use bio_endio(), however already cleared&n;&t;&t; * BIO_UPTODATE. so set bio-&gt;bi_size = 0 manually to indicate&n;&t;&t; * completely done&n;&t;&t; */
-id|bio-&gt;bi_size
-op_assign
-l_int|0
-suffix:semicolon
-id|bio
-op_member_access_from_pointer
-id|bi_end_io
+id|bio_endio
 c_func
 (paren
 id|bio
 comma
-id|bytes
+id|bio-&gt;bi_size
 comma
 l_int|0
 )paren

@@ -449,6 +449,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|bio-&gt;bi_private
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * bio_alloc - allocate a bio for I/O&n; * @gfp_mask:   the GFP_ mask given to the slab allocator&n; * @nr_iovecs:&t;number of iovecs to pre-allocate&n; *&n; * Description:&n; *   bio_alloc will first try it&squot;s on mempool to satisfy the allocation.&n; *   If %__GFP_WAIT is set then we will block on the internal pool waiting&n; *   for a &amp;struct bio to become free.&n; **/
 DECL|function|bio_alloc
@@ -1486,9 +1490,9 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * bio_endio - end I/O on a bio&n; * @bio:&t;bio&n; * @bytes_done:&t;number of bytes completed&n; * @error:&t;error, if any&n; *&n; * Description:&n; *   bio_endio() will end I/O @bytes_done number of bytes. This may be just&n; *   a partial part of the bio, or it may be the whole bio. bio_endio() is&n; *   the preferred way to end I/O on a bio, it takes care of decrementing&n; *   bi_size and clearing BIO_UPTODATE on error. @error is 0 on success, and&n; *   and one of the established -Exxxx (-EIO, for instance) error values in&n; *   case something went wrong.&n; **/
+multiline_comment|/**&n; * bio_endio - end I/O on a bio&n; * @bio:&t;bio&n; * @bytes_done:&t;number of bytes completed&n; * @error:&t;error, if any&n; *&n; * Description:&n; *   bio_endio() will end I/O on @bytes_done number of bytes. This may be&n; *   just a partial part of the bio, or it may be the whole bio. bio_endio()&n; *   is the preferred way to end I/O on a bio, it takes care of decrementing&n; *   bi_size and clearing BIO_UPTODATE on error. @error is 0 on success, and&n; *   and one of the established -Exxxx (-EIO, for instance) error values in&n; *   case something went wrong. Noone should call bi_end_io() directly on&n; *   a bio unless they own it and thus know that it has an end_io function.&n; **/
 DECL|function|bio_endio
-r_int
+r_void
 id|bio_endio
 c_func
 (paren
@@ -1552,7 +1556,11 @@ id|bio-&gt;bi_size
 op_sub_assign
 id|bytes_done
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_end_io
+)paren
 id|bio
 op_member_access_from_pointer
 id|bi_end_io
@@ -1904,7 +1912,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|init_bio
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|init_bio

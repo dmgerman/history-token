@@ -288,7 +288,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|bio_endio
 c_func
 (paren
