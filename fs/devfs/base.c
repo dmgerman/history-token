@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &quot;internal.h&quot;
 DECL|macro|DEVFS_VERSION
 mdefine_line|#define DEVFS_VERSION            &quot;1.22 (20021013)&quot;
 DECL|macro|DEVFS_NAME
@@ -910,7 +911,7 @@ id|de-&gt;u.cdev.autogen
 )paren
 id|devfs_dealloc_devnum
 (paren
-id|DEVFS_SPECIAL_CHR
+id|de-&gt;mode
 comma
 id|de-&gt;u.cdev.dev
 )paren
@@ -926,9 +927,8 @@ op_logical_and
 id|de-&gt;u.bdev.autogen
 )paren
 id|devfs_dealloc_devnum
-c_func
 (paren
-id|DEVFS_SPECIAL_BLK
+id|de-&gt;mode
 comma
 id|de-&gt;u.bdev.dev
 )paren
@@ -1607,7 +1607,11 @@ id|u.cdev.dev
 op_assign
 id|devfs_alloc_devnum
 (paren
-id|DEVFS_SPECIAL_CHR
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 r_new
@@ -1660,7 +1664,11 @@ id|u.cdev.dev
 op_assign
 id|devfs_alloc_devnum
 (paren
-id|DEVFS_SPECIAL_CHR
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUGO
 )paren
 suffix:semicolon
 r_new
@@ -3099,19 +3107,6 @@ op_star
 id|info
 )paren
 (brace
-r_char
-id|devtype
-op_assign
-id|S_ISCHR
-(paren
-id|mode
-)paren
-ques
-c_cond
-id|DEVFS_SPECIAL_CHR
-suffix:colon
-id|DEVFS_SPECIAL_BLK
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -3237,7 +3232,7 @@ id|devnum
 op_assign
 id|devfs_alloc_devnum
 (paren
-id|devtype
+id|mode
 )paren
 suffix:semicolon
 r_if
@@ -3307,7 +3302,7 @@ id|devnum
 )paren
 id|devfs_dealloc_devnum
 (paren
-id|devtype
+id|mode
 comma
 id|devnum
 )paren
@@ -3493,7 +3488,7 @@ id|devnum
 )paren
 id|devfs_dealloc_devnum
 (paren
-id|devtype
+id|mode
 comma
 id|devnum
 )paren
@@ -5284,13 +5279,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_generate_path
-)paren
-suffix:semicolon
-DECL|variable|devfs_only
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_only
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;try_modload - Notify devfsd of an inode lookup by a non-devfsd process.&n; *&t;@parent: The parent devfs entry.&n; *&t;@fs_info: The filesystem info.&n; *&t;@name: The device name.&n; *&t;@namelen: The number of characters in @name.&n; *&t;@buf: A working area that will be used. This must not go out of scope&n; *            until devfsd is idle again.&n; *&n; *&t;Returns 0 on success (event was queued), else a negative error code.&n; */
