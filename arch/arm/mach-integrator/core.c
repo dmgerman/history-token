@@ -3,9 +3,12 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
+macro_line|#include &lt;asm/arch/cm.h&gt;
 DECL|variable|rtc_device
 r_static
 r_struct
@@ -390,6 +393,80 @@ id|arch_initcall
 c_func
 (paren
 id|integrator_init
+)paren
+suffix:semicolon
+DECL|macro|CM_CTRL
+mdefine_line|#define CM_CTRL&t;IO_ADDRESS(INTEGRATOR_HDR_BASE) + INTEGRATOR_HDR_CTRL_OFFSET
+DECL|variable|cm_lock
+r_static
+id|spinlock_t
+id|cm_lock
+suffix:semicolon
+multiline_comment|/**&n; * cm_control - update the CM_CTRL register.&n; * @mask: bits to change&n; * @set: bits to set&n; */
+DECL|function|cm_control
+r_void
+id|cm_control
+c_func
+(paren
+id|u32
+id|mask
+comma
+id|u32
+id|set
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|u32
+id|val
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|cm_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|readl
+c_func
+(paren
+id|CM_CTRL
+)paren
+op_amp
+op_complement
+id|mask
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|val
+op_or
+id|set
+comma
+id|CM_CTRL
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|cm_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+DECL|variable|cm_control
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cm_control
 )paren
 suffix:semicolon
 eof
