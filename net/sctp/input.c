@@ -1747,7 +1747,8 @@ id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -1862,7 +1863,8 @@ op_star
 id|ep
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -1976,7 +1978,8 @@ op_star
 id|laddr
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2150,7 +2153,8 @@ id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2268,7 +2272,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2367,7 +2372,8 @@ op_star
 id|pt
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
