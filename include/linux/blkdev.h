@@ -212,9 +212,6 @@ id|__REQ_QUEUED
 comma
 multiline_comment|/* uses queueing */
 multiline_comment|/*&n;&t; * for ATA/ATAPI devices&n;&t; */
-DECL|enumerator|__REQ_DRIVE_ACB
-id|__REQ_DRIVE_ACB
-comma
 DECL|enumerator|__REQ_PC
 id|__REQ_PC
 comma
@@ -230,7 +227,7 @@ multiline_comment|/* sense retrival */
 DECL|enumerator|__REQ_SPECIAL
 id|__REQ_SPECIAL
 comma
-multiline_comment|/* driver special command (currently reset) */
+multiline_comment|/* driver suplied command */
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -253,8 +250,6 @@ DECL|macro|REQ_DONTPREP
 mdefine_line|#define REQ_DONTPREP&t;(1 &lt;&lt; __REQ_DONTPREP)
 DECL|macro|REQ_QUEUED
 mdefine_line|#define REQ_QUEUED&t;(1 &lt;&lt; __REQ_QUEUED)
-DECL|macro|REQ_DRIVE_ACB
-mdefine_line|#define REQ_DRIVE_ACB&t;(1 &lt;&lt; __REQ_DRIVE_ACB)
 DECL|macro|REQ_PC
 mdefine_line|#define REQ_PC&t;&t;(1 &lt;&lt; __REQ_PC)
 DECL|macro|REQ_BLOCK_PC

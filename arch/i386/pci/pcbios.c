@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * BIOS32 and PCI BIOS handling.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|PCIBIOS_PCI_FUNCTION_ID
 mdefine_line|#define PCIBIOS_PCI_FUNCTION_ID &t;0xb1XX

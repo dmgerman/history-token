@@ -154,7 +154,7 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_ACB
+id|REQ_SPECIAL
 )paren
 (brace
 r_struct
@@ -2158,6 +2158,7 @@ id|rq
 r_return
 l_int|1
 suffix:semicolon
+multiline_comment|/* No DMA transfers on ATAPI devices. */
 r_if
 c_cond
 (paren
@@ -2200,41 +2201,6 @@ comma
 id|dma_timer_expiry
 )paren
 suffix:semicolon
-multiline_comment|/* issue cmd to drive */
-r_if
-c_cond
-(paren
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_DRIVE_ACB
-)paren
-op_logical_and
-(paren
-id|drive-&gt;addressing
-op_eq
-l_int|1
-)paren
-)paren
-(brace
-multiline_comment|/* FIXME: this should never happen */
-r_struct
-id|ata_taskfile
-op_star
-id|args
-op_assign
-id|rq-&gt;special
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|args-&gt;cmd
-comma
-id|IDE_COMMAND_REG
-)paren
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
