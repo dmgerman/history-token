@@ -1,5 +1,5 @@
 multiline_comment|/*************************************************************************/
-multiline_comment|/* $Id: hfc4s8s_l1.c,v 1.8 2004/07/13 14:13:34 martinb1 Exp $            */
+multiline_comment|/* $Id: hfc4s8s_l1.c,v 1.10 2005/02/09 16:31:09 martinb1 Exp $           */
 multiline_comment|/* HFC-4S/8S low layer interface for Cologne Chip HFC-4S/8S isdn chips   */
 multiline_comment|/* The low layer (L1) is implemented as a loadable module for usage with */
 multiline_comment|/* the HiSax isdn driver for passive cards.                              */
@@ -29,7 +29,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &quot;hisax_if.h&quot;
-macro_line|#include &quot;hfc48scu.h&quot;
+macro_line|#include &quot;hfc4s8s_l1.h&quot;
 DECL|variable|hfc4s8s_rev
 r_static
 r_const
@@ -38,7 +38,7 @@ id|hfc4s8s_rev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
+l_string|&quot;Revision: 1.10&quot;
 suffix:semicolon
 multiline_comment|/***************************************************************/
 multiline_comment|/* adjustable transparent mode fifo threshold                  */
@@ -55,22 +55,17 @@ multiline_comment|/* value should be raised to 7 to reduce any interrupt overhea
 multiline_comment|/***************************************************************/
 DECL|macro|TRANS_FIFO_THRES
 mdefine_line|#define TRANS_FIFO_THRES 5
-multiline_comment|/****************************************/
-multiline_comment|/* Enable 32 bit fifo access if defined */
-multiline_comment|/* Only usefull on intel pc based arch. */
-multiline_comment|/* Default is enabled (PC usage).       */
-multiline_comment|/****************************************/
-DECL|macro|FIFO_32BIT_ACCESS
-mdefine_line|#define FIFO_32BIT_ACCESS
 multiline_comment|/*************/
 multiline_comment|/* constants */
 multiline_comment|/*************/
-DECL|macro|MAX_HFC8_CARDS
-mdefine_line|#define MAX_HFC8_CARDS 4
+DECL|macro|CLOCKMODE_0
+mdefine_line|#define CLOCKMODE_0     0&t;/* ext. 24.576 MhZ clk freq, int. single clock mode */
+DECL|macro|CLOCKMODE_1
+mdefine_line|#define CLOCKMODE_1     1&t;/* ext. 49.576 MhZ clk freq, int. single clock mode */
+DECL|macro|CHIP_ID_SHIFT
+mdefine_line|#define CHIP_ID_SHIFT   4
 DECL|macro|HFC_MAX_ST
 mdefine_line|#define HFC_MAX_ST 8
-DECL|macro|HFC_MAX_CHANNELS
-mdefine_line|#define HFC_MAX_CHANNELS 32
 DECL|macro|MAX_D_FRAME_SIZE
 mdefine_line|#define MAX_D_FRAME_SIZE 270
 DECL|macro|MAX_B_FRAME_SIZE
@@ -81,185 +76,282 @@ DECL|macro|TRANS_FIFO_BYTES
 mdefine_line|#define TRANS_FIFO_BYTES (2 &lt;&lt; TRANS_FIFO_THRES)
 DECL|macro|MAX_F_CNT
 mdefine_line|#define MAX_F_CNT 0x0f
+DECL|macro|CLKDEL_NT
+mdefine_line|#define CLKDEL_NT 0x6c
+DECL|macro|CLKDEL_TE
+mdefine_line|#define CLKDEL_TE 0xf
+DECL|macro|CTRL0_NT
+mdefine_line|#define CTRL0_NT  4
+DECL|macro|CTRL0_TE
+mdefine_line|#define CTRL0_TE  0
+DECL|macro|L1_TIMER_T4
+mdefine_line|#define L1_TIMER_T4 2&t;&t;/* minimum in jiffies */
+DECL|macro|L1_TIMER_T3
+mdefine_line|#define L1_TIMER_T3 (7 * HZ)&t;/* activation timeout */
+DECL|macro|L1_TIMER_T1
+mdefine_line|#define L1_TIMER_T1 ((120 * HZ) / 1000)&t;/* NT mode deactivation timeout */
 multiline_comment|/******************/
 multiline_comment|/* types and vars */
 multiline_comment|/******************/
-r_struct
-id|hfc8s_hw
+DECL|variable|card_cnt
+r_static
+r_int
+id|card_cnt
 suffix:semicolon
-multiline_comment|/* table entry in the PCI devices list */
+multiline_comment|/* private driver_data */
 r_typedef
 r_struct
 (brace
-DECL|member|vendor_id
-r_int
-id|vendor_id
-suffix:semicolon
-DECL|member|device_id
-r_int
-id|device_id
-suffix:semicolon
 DECL|member|chip_id
 r_int
 id|chip_id
-suffix:semicolon
-DECL|member|sub_vendor_id
-r_int
-id|sub_vendor_id
-suffix:semicolon
-DECL|member|sub_device_id
-r_int
-id|sub_device_id
-suffix:semicolon
-DECL|member|vendor_name
-r_char
-op_star
-id|vendor_name
-suffix:semicolon
-DECL|member|card_name
-r_char
-op_star
-id|card_name
-suffix:semicolon
-DECL|member|max_channels
-r_int
-id|max_channels
 suffix:semicolon
 DECL|member|clock_mode
 r_int
 id|clock_mode
 suffix:semicolon
-DECL|typedef|PCI_ENTRY
-)brace
-id|PCI_ENTRY
+DECL|member|max_st_ports
+r_int
+id|max_st_ports
 suffix:semicolon
-multiline_comment|/* static list of available card types */
-DECL|variable|id_list
+DECL|member|device_name
+r_char
+op_star
+id|device_name
+suffix:semicolon
+DECL|typedef|hfc4s8s_param
+)brace
+id|hfc4s8s_param
+suffix:semicolon
+DECL|variable|hfc4s8s_ids
 r_static
-r_const
-id|PCI_ENTRY
-id|__devinitdata
-id|id_list
+r_struct
+id|pci_device_id
+id|hfc4s8s_ids
 (braket
 )braket
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_CCD
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_4S
 comma
-id|CHIP_ID_4S
-comma
+dot
+id|subvendor
+op_assign
 l_int|0x1397
 comma
-l_int|0x8b4
+dot
+id|subdevice
+op_assign
+l_int|0x08b4
 comma
-l_string|&quot;Cologne Chip&quot;
+dot
+id|driver_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+(paren
+id|hfc4s8s_param
+)paren
+(brace
+id|CHIP_ID_4S
 comma
-l_string|&quot;HFC-4S Eval&quot;
+id|CLOCKMODE_0
 comma
 l_int|4
 comma
-l_int|0
+l_string|&quot;HFC-4S Evaluation Board&quot;
+)brace
+)paren
+comma
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_CCD
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_8S
 comma
-id|CHIP_ID_8S
-comma
+dot
+id|subvendor
+op_assign
 l_int|0x1397
 comma
+dot
+id|subdevice
+op_assign
 l_int|0x16b8
 comma
-l_string|&quot;Cologne Chip&quot;
+dot
+id|driver_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+(paren
+id|hfc4s8s_param
+)paren
+(brace
+id|CHIP_ID_8S
 comma
-l_string|&quot;HFC-8S Eval&quot;
+id|CLOCKMODE_0
 comma
 l_int|8
 comma
-l_int|0
+l_string|&quot;HFC-8S Evaluation Board&quot;
+)brace
+)paren
+comma
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_CCD
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_4S
 comma
-id|CHIP_ID_4S
-comma
+dot
+id|subvendor
+op_assign
 l_int|0x1397
 comma
+dot
+id|subdevice
+op_assign
 l_int|0xb520
 comma
-l_string|&quot;Cologne Chip&quot;
+dot
+id|driver_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+(paren
+id|hfc4s8s_param
+)paren
+(brace
+id|CHIP_ID_4S
 comma
-l_string|&quot;IOB4ST&quot;
+id|CLOCKMODE_1
 comma
 l_int|4
 comma
-l_int|1
+l_string|&quot;IOB4ST&quot;
+)brace
+)paren
+comma
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_CCD
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_8S
 comma
-id|CHIP_ID_8S
-comma
+dot
+id|subvendor
+op_assign
 l_int|0x1397
 comma
+dot
+id|subdevice
+op_assign
 l_int|0xb522
 comma
-l_string|&quot;Cologne Chip&quot;
+dot
+id|driver_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+(paren
+id|hfc4s8s_param
+)paren
+(brace
+id|CHIP_ID_8S
 comma
-l_string|&quot;IOB8ST&quot;
+id|CLOCKMODE_1
 comma
 l_int|8
 comma
-l_int|1
+l_string|&quot;IOB8ST&quot;
+)brace
+)paren
+comma
 )brace
 comma
 (brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
 )brace
-comma
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|hfc4s8s_ids
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Werner Cornelius, werner@cornelius-consult.de&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISDN layer 1 for Cologne Chip HFC-4S/8S chips&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
 suffix:semicolon
 multiline_comment|/***********/
 multiline_comment|/* layer 1 */
 multiline_comment|/***********/
-DECL|struct|hfc8s_btype
+DECL|struct|hfc4s8s_btype
 r_struct
-id|hfc8s_btype
+id|hfc4s8s_btype
 (brace
 DECL|member|lock
 id|spinlock_t
@@ -272,7 +364,7 @@ id|b_if
 suffix:semicolon
 DECL|member|l1p
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1p
 suffix:semicolon
@@ -312,9 +404,12 @@ id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|hfc8s_l1
 r_struct
-id|hfc8s_l1
+id|_hfc4s8s_hw
+suffix:semicolon
+DECL|struct|hfc4s8s_l1
+r_struct
+id|hfc4s8s_l1
 (brace
 DECL|member|lock
 id|spinlock_t
@@ -322,63 +417,63 @@ id|lock
 suffix:semicolon
 DECL|member|hw
 r_struct
-id|hfc8s_hw
+id|_hfc4s8s_hw
 op_star
 id|hw
 suffix:semicolon
-singleline_comment|// pointer to hardware area
+multiline_comment|/* pointer to hardware area */
 DECL|member|l1_state
 r_int
 id|l1_state
 suffix:semicolon
-singleline_comment|// actual l1 state
+multiline_comment|/* actual l1 state */
 DECL|member|l1_timer
 r_struct
 id|timer_list
 id|l1_timer
 suffix:semicolon
-singleline_comment|// layer 1 timer structure
+multiline_comment|/* layer 1 timer structure */
 DECL|member|nt_mode
 r_int
 id|nt_mode
 suffix:semicolon
-singleline_comment|// set to nt mode
+multiline_comment|/* set to nt mode */
 DECL|member|st_num
 r_int
 id|st_num
 suffix:semicolon
-singleline_comment|// own index
+multiline_comment|/* own index */
 DECL|member|enabled
 r_int
 id|enabled
 suffix:semicolon
-singleline_comment|// interface is enabled
+multiline_comment|/* interface is enabled */
 DECL|member|d_tx_queue
 r_struct
 id|sk_buff_head
 id|d_tx_queue
 suffix:semicolon
-singleline_comment|// send queue
+multiline_comment|/* send queue */
 DECL|member|tx_cnt
 r_int
 id|tx_cnt
 suffix:semicolon
-singleline_comment|// bytes to send
+multiline_comment|/* bytes to send */
 DECL|member|d_if
 r_struct
 id|hisax_d_if
 id|d_if
 suffix:semicolon
-singleline_comment|// D-channel interface
+multiline_comment|/* D-channel interface */
 DECL|member|b_ch
 r_struct
-id|hfc8s_btype
+id|hfc4s8s_btype
 id|b_ch
 (braket
 l_int|2
 )braket
 suffix:semicolon
-singleline_comment|// B-channel data
+multiline_comment|/* B-channel data */
 DECL|member|b_table
 r_struct
 id|hisax_b_if
@@ -393,13 +488,18 @@ suffix:semicolon
 multiline_comment|/**********************/
 multiline_comment|/* hardware structure */
 multiline_comment|/**********************/
-DECL|struct|hfc8s_hw
+DECL|struct|_hfc4s8s_hw
+r_typedef
 r_struct
-id|hfc8s_hw
+id|_hfc4s8s_hw
 (brace
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|cardnum
+r_int
+id|cardnum
 suffix:semicolon
 DECL|member|ifnum
 r_int
@@ -423,23 +523,18 @@ id|u_char
 op_star
 id|hw_membase
 suffix:semicolon
-DECL|member|pci_dev
-r_struct
-id|pci_dev
+DECL|member|pdev
+r_void
 op_star
-id|pci_dev
-suffix:semicolon
-DECL|member|max_st_ports
-r_int
-id|max_st_ports
+id|pdev
 suffix:semicolon
 DECL|member|max_fifo
 r_int
 id|max_fifo
 suffix:semicolon
-DECL|member|clock_mode
-r_int
-id|clock_mode
+DECL|member|driver_data
+id|hfc4s8s_param
+id|driver_data
 suffix:semicolon
 DECL|member|irq
 r_int
@@ -456,7 +551,7 @@ id|tqueue
 suffix:semicolon
 DECL|member|l1
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 id|l1
 (braket
 id|HFC_MAX_ST
@@ -484,12 +579,12 @@ r_volatile
 id|u_char
 id|r_irq_statech
 suffix:semicolon
-singleline_comment|// active isdn l1 status
+multiline_comment|/* active isdn l1 status */
 DECL|member|r_irqmsk_statchg
 id|u_char
 id|r_irqmsk_statchg
 suffix:semicolon
-singleline_comment|// enabled isdn status ints
+multiline_comment|/* enabled isdn status ints */
 DECL|member|r_irq_fifo_blx
 id|u_char
 id|r_irq_fifo_blx
@@ -497,7 +592,7 @@ id|r_irq_fifo_blx
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// fifo status registers
+multiline_comment|/* fifo status registers */
 DECL|member|fifo_rx_trans_enables
 id|u_char
 id|fifo_rx_trans_enables
@@ -505,7 +600,7 @@ id|fifo_rx_trans_enables
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// mask for enabled transparent rx fifos
+multiline_comment|/* mask for enabled transparent rx fifos */
 DECL|member|fifo_slow_timer_service
 id|u_char
 id|fifo_slow_timer_service
@@ -513,13 +608,13 @@ id|fifo_slow_timer_service
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// mask for fifos needing slower timer service
+multiline_comment|/* mask for fifos needing slower timer service */
 DECL|member|r_irq_oview
 r_volatile
 id|u_char
 id|r_irq_oview
 suffix:semicolon
-singleline_comment|// contents of overview register
+multiline_comment|/* contents of overview register */
 DECL|member|timer_irq
 r_volatile
 id|u_char
@@ -529,40 +624,23 @@ DECL|member|timer_usg_cnt
 r_int
 id|timer_usg_cnt
 suffix:semicolon
-singleline_comment|// number of channels using timer
+multiline_comment|/* number of channels using timer */
 DECL|member|mr
 )brace
 id|mr
 suffix:semicolon
+DECL|typedef|hfc4s8s_hw
 )brace
+id|hfc4s8s_hw
 suffix:semicolon
-multiline_comment|/*************/
-multiline_comment|/* constants */
-multiline_comment|/*************/
-DECL|macro|CLKDEL_NT
-mdefine_line|#define CLKDEL_NT 0x6c
-DECL|macro|CLKDEL_TE
-mdefine_line|#define CLKDEL_TE 0xf
-DECL|macro|CTRL0_NT
-mdefine_line|#define CTRL0_NT  4
-DECL|macro|CTRL0_TE
-mdefine_line|#define CTRL0_TE  0
-DECL|macro|L1_TIMER_T4
-mdefine_line|#define L1_TIMER_T4 2 
-singleline_comment|// minimum in jiffies
-DECL|macro|L1_TIMER_T3
-mdefine_line|#define L1_TIMER_T3 (7 * HZ) 
-singleline_comment|// activation timeout
-DECL|macro|L1_TIMER_T1
-mdefine_line|#define L1_TIMER_T1 ((120 * HZ) / 1000) 
-singleline_comment|// NT mode deactivation timeout
 multiline_comment|/***************************/
 multiline_comment|/* inline function defines */
 multiline_comment|/***************************/
-singleline_comment|// memory write and dummy IO read to avoid PCI byte merge problems
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM&t;/* inline functions mempry mapped */
+multiline_comment|/* memory write and dummy IO read to avoid PCI byte merge problems */
 DECL|macro|Write_hfc8
 mdefine_line|#define Write_hfc8(a,b,c) {(*((volatile u_char *)(a-&gt;membase+b)) = c); inb(a-&gt;iobase+4);}
-singleline_comment|// memory write without dummy IO access for fifo data access
+multiline_comment|/* memory write without dummy IO access for fifo data access */
 DECL|macro|fWrite_hfc8
 mdefine_line|#define fWrite_hfc8(a,b,c) (*((volatile u_char *)(a-&gt;membase+b)) = c)
 DECL|macro|Read_hfc8
@@ -578,19 +656,435 @@ mdefine_line|#define Read_hfc32(a,b) (*((volatile unsigned long *)(a-&gt;membase
 DECL|macro|wait_busy
 mdefine_line|#define wait_busy(a) {while ((Read_hfc8(a, R_STATUS) &amp; M_BUSY));}
 DECL|macro|PCI_ENA_MEMIO
-mdefine_line|#define PCI_ENA_MEMIO    0x03
-multiline_comment|/*******************************************************************************************/
-multiline_comment|/* function to read critical counter registers that may be udpated by the chip during read */
-multiline_comment|/*******************************************************************************************/
-DECL|function|Read_hfc8_stable
+mdefine_line|#define PCI_ENA_MEMIO&t;0x03
+macro_line|#else
+multiline_comment|/* inline functions io mapped */
+r_static
+r_inline
+r_void
+DECL|function|SetRegAddr
+id|SetRegAddr
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+)paren
+(brace
+id|outb
+c_func
+(paren
+id|b
+comma
+(paren
+id|a-&gt;iobase
+)paren
+op_plus
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_char
+DECL|function|GetRegAddr
+id|GetRegAddr
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+)paren
+(brace
+r_return
+(paren
+id|inb
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+(paren
+id|a-&gt;iobase
+op_plus
+l_int|4
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|Write_hfc8
+id|Write_hfc8
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+comma
+id|u_char
+id|c
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|c
+comma
+id|a-&gt;iobase
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|fWrite_hfc8
+id|fWrite_hfc8
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|c
+)paren
+(brace
+id|outb
+c_func
+(paren
+id|c
+comma
+id|a-&gt;iobase
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|Write_hfc16
+id|Write_hfc16
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+comma
+id|u_short
+id|c
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|c
+comma
+id|a-&gt;iobase
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|Write_hfc32
+id|Write_hfc32
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+comma
+id|u_long
+id|c
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|c
+comma
+id|a-&gt;iobase
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|fWrite_hfc32
+id|fWrite_hfc32
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_long
+id|c
+)paren
+(brace
+id|outl
+c_func
+(paren
+id|c
+comma
+id|a-&gt;iobase
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_char
+DECL|function|Read_hfc8
+id|Read_hfc8
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+r_return
+(paren
+id|inb
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_char
+DECL|function|fRead_hfc8
+id|fRead_hfc8
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+)paren
+(brace
+r_return
+(paren
+id|inb
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_short
+DECL|function|Read_hfc16
+id|Read_hfc16
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+r_return
+(paren
+id|inw
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_long
+DECL|function|Read_hfc32
+id|Read_hfc32
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+comma
+id|u_char
+id|b
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+r_return
+(paren
+id|inl
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u_long
+DECL|function|fRead_hfc32
+id|fRead_hfc32
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+)paren
+(brace
+r_return
+(paren
+id|inl
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|wait_busy
+id|wait_busy
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|a
+)paren
+(brace
+id|SetRegAddr
+c_func
+(paren
+id|a
+comma
+id|R_STATUS
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|inb
+c_func
+(paren
+(paren
+r_volatile
+id|u_int
+)paren
+id|a-&gt;iobase
+)paren
+op_amp
+id|M_BUSY
+)paren
+suffix:semicolon
+)brace
+DECL|macro|PCI_ENA_REGIO
+mdefine_line|#define PCI_ENA_REGIO&t;0x01
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_HISAX_HFC4S8S_PCIMEM */
+multiline_comment|/******************************************************/
+multiline_comment|/* function to read critical counter registers that   */
+multiline_comment|/* may be udpated by the chip during read             */
+multiline_comment|/******************************************************/
 r_static
 r_volatile
 id|u_char
+DECL|function|Read_hfc8_stable
 id|Read_hfc8_stable
 c_func
 (paren
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 comma
@@ -643,15 +1137,14 @@ r_return
 id|in8
 suffix:semicolon
 )brace
-DECL|function|Read_hfc16_stable
 r_static
 r_volatile
 r_int
+DECL|function|Read_hfc16_stable
 id|Read_hfc16_stable
 c_func
 (paren
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 comma
@@ -704,29 +1197,12 @@ r_return
 id|in16
 suffix:semicolon
 )brace
-multiline_comment|/*************/
-multiline_comment|/* data area */
-multiline_comment|/*************/
-DECL|variable|hfc8s
-r_static
-r_struct
-id|hfc8s_hw
-id|hfc8s
-(braket
-id|MAX_HFC8_CARDS
-)braket
-suffix:semicolon
-DECL|variable|card_cnt
-r_static
-r_int
-id|card_cnt
-suffix:semicolon
 multiline_comment|/*****************************/
 multiline_comment|/* D-channel call from HiSax */
 multiline_comment|/*****************************/
-DECL|function|dch_l2l1
 r_static
 r_void
+DECL|function|dch_l2l1
 id|dch_l2l1
 c_func
 (paren
@@ -744,7 +1220,7 @@ id|arg
 )paren
 (brace
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1
 op_assign
@@ -1088,9 +1564,9 @@ multiline_comment|/* dch_l2l1 */
 multiline_comment|/*****************************/
 multiline_comment|/* B-channel call from HiSax */
 multiline_comment|/*****************************/
-DECL|function|bch_l2l1
 r_static
 r_void
+DECL|function|bch_l2l1
 id|bch_l2l1
 c_func
 (paren
@@ -1108,14 +1584,14 @@ id|arg
 )paren
 (brace
 r_struct
-id|hfc8s_btype
+id|hfc4s8s_btype
 op_star
 id|bch
 op_assign
 id|ifc-&gt;priv
 suffix:semicolon
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1
 op_assign
@@ -1315,9 +1791,13 @@ suffix:semicolon
 id|l1-&gt;hw-&gt;mr.timer_usg_cnt
 op_increment
 suffix:semicolon
-id|l1-&gt;hw-&gt;mr.fifo_slow_timer_service
+id|l1-&gt;hw-&gt;mr
+dot
+id|fifo_slow_timer_service
 (braket
-id|l1-&gt;st_num
+id|l1
+op_member_access_from_pointer
+id|st_num
 )braket
 op_or_assign
 (paren
@@ -1376,7 +1856,7 @@ comma
 l_int|0xc
 )paren
 suffix:semicolon
-singleline_comment|// HDLC mode, flag fill, connect ST
+multiline_comment|/* HDLC mode, flag fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -1387,7 +1867,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// 8 bits
+multiline_comment|/* 8 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -1398,18 +1878,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// enable TX interrupts for hdlc
+multiline_comment|/* enable TX interrupts for hdlc */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
@@ -1459,7 +1939,7 @@ comma
 l_int|0xc
 )paren
 suffix:semicolon
-singleline_comment|// HDLC mode, flag fill, connect ST
+multiline_comment|/* HDLC mode, flag fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -1470,7 +1950,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// 8 bits
+multiline_comment|/* 8 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -1481,18 +1961,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// enable RX interrupts for hdlc
+multiline_comment|/* enable RX interrupts for hdlc */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -1563,9 +2043,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|l1-&gt;hw-&gt;mr.fifo_rx_trans_enables
+id|l1-&gt;hw-&gt;mr
+dot
+id|fifo_rx_trans_enables
 (braket
-id|l1-&gt;st_num
+id|l1
+op_member_access_from_pointer
+id|st_num
 )braket
 op_or_assign
 (paren
@@ -1627,7 +2111,7 @@ comma
 l_int|0xf
 )paren
 suffix:semicolon
-singleline_comment|// Transparent mode, 1 fill, connect ST
+multiline_comment|/* Transparent mode, 1 fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -1638,7 +2122,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// 8 bits
+multiline_comment|/* 8 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -1649,18 +2133,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// disable TX interrupts
+multiline_comment|/* disable TX interrupts */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
@@ -1710,7 +2194,7 @@ comma
 l_int|0xf
 )paren
 suffix:semicolon
-singleline_comment|// Transparent mode, 1 fill, connect ST
+multiline_comment|/* Transparent mode, 1 fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -1721,7 +2205,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// 8 bits
+multiline_comment|/* 8 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -1732,18 +2216,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// disable RX interrupts
+multiline_comment|/* disable RX interrupts */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -1824,9 +2308,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|l1-&gt;hw-&gt;mr.fifo_slow_timer_service
+id|l1-&gt;hw-&gt;mr
+dot
+id|fifo_slow_timer_service
 (braket
-id|l1-&gt;st_num
+id|l1
+op_member_access_from_pointer
+id|st_num
 )braket
 op_and_assign
 op_complement
@@ -1843,9 +2331,13 @@ suffix:colon
 l_int|0xc
 )paren
 suffix:semicolon
-id|l1-&gt;hw-&gt;mr.fifo_rx_trans_enables
+id|l1-&gt;hw-&gt;mr
+dot
+id|fifo_rx_trans_enables
 (braket
-id|l1-&gt;st_num
+id|l1
+op_member_access_from_pointer
+id|st_num
 )braket
 op_and_assign
 op_complement
@@ -1908,7 +2400,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// disable TX interrupts
+multiline_comment|/* disable TX interrupts */
 id|wait_busy
 c_func
 (paren
@@ -1958,7 +2450,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// disable RX interrupts
+multiline_comment|/* disable RX interrupts */
 id|Write_hfc8
 c_func
 (paren
@@ -2068,7 +2560,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// timer is only used when at least one b channel is set up to transparent mode
+multiline_comment|/* timer is only used when at least one b channel */
+multiline_comment|/* is set up to transparent mode */
 r_if
 c_cond
 (paren
@@ -2141,14 +2634,14 @@ multiline_comment|/* bch_l2l1 */
 multiline_comment|/**************************/
 multiline_comment|/* layer 1 timer function */
 multiline_comment|/**************************/
-DECL|function|hfc_l1_timer
 r_static
 r_void
+DECL|function|hfc_l1_timer
 id|hfc_l1_timer
 c_func
 (paren
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1
 )paren
@@ -2351,14 +2844,14 @@ multiline_comment|/* hfc_l1_timer */
 multiline_comment|/****************************************/
 multiline_comment|/* a complete D-frame has been received */
 multiline_comment|/****************************************/
-DECL|function|rx_d_frame
 r_static
 r_void
+DECL|function|rx_d_frame
 id|rx_d_frame
 c_func
 (paren
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1p
 comma
@@ -2397,6 +2890,7 @@ r_return
 suffix:semicolon
 r_do
 (brace
+multiline_comment|/* E/D RX fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -2422,7 +2916,6 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// E/D RX fifo
 id|wait_busy
 c_func
 (paren
@@ -2485,7 +2978,7 @@ id|df
 (brace
 r_return
 suffix:semicolon
-singleline_comment|// no complete frame in fifo
+multiline_comment|/* no complete frame in fifo */
 )brace
 id|z1
 op_assign
@@ -2545,7 +3038,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-4S/8S: Could not allocate D/E channel receive buffer&quot;
+l_string|&quot;HFC-4S/8S: Could not allocate D/E &quot;
+l_string|&quot;channel receive buffer&quot;
 )paren
 suffix:semicolon
 id|Write_hfc8
@@ -2553,7 +3047,7 @@ c_func
 (paren
 id|l1p-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
@@ -2596,7 +3090,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-singleline_comment|// remove errornous D frame
+multiline_comment|/* remove errornous D frame */
 r_if
 c_cond
 (paren
@@ -2605,18 +3099,17 @@ op_eq
 l_int|1
 )paren
 (brace
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|Write_hfc8
 c_func
 (paren
 id|l1p-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
 id|wait_busy
 c_func
 (paren
@@ -2628,8 +3121,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// read errornous D frame
-macro_line|#ifdef FIFO_32BIT_ACCESS
+multiline_comment|/* read errornous D frame */
+macro_line|#ifndef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2638,6 +3140,7 @@ op_ge
 l_int|4
 )paren
 (brace
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 id|Read_hfc32
 c_func
 (paren
@@ -2646,18 +3149,26 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+id|fRead_hfc32
+c_func
+(paren
+id|l1p-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 id|z1
 op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
 r_while
 c_loop
 (paren
 id|z1
 op_decrement
 )paren
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 id|Read_hfc8
 c_func
 (paren
@@ -2666,12 +3177,20 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+id|fRead_hfc8
+c_func
+(paren
+id|l1p-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 id|Write_hfc8
 c_func
 (paren
 id|l1p-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|1
 )paren
@@ -2690,7 +3209,16 @@ id|cp
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-macro_line|#ifdef FIFO_32BIT_ACCESS
+macro_line|#ifndef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2699,6 +3227,7 @@ op_ge
 l_int|4
 )paren
 (brace
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 op_star
 (paren
 (paren
@@ -2717,6 +3246,24 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|cp
+)paren
+op_assign
+id|fRead_hfc32
+c_func
+(paren
+id|l1p-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 id|cp
 op_add_assign
 l_int|4
@@ -2726,13 +3273,13 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
 r_while
 c_loop
 (paren
 id|z1
 op_decrement
 )paren
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 op_star
 id|cp
 op_increment
@@ -2745,17 +3292,29 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+op_star
+id|cp
+op_increment
+op_assign
+id|fRead_hfc8
+c_func
+(paren
+id|l1p-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 id|Write_hfc8
 c_func
 (paren
 id|l1p-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// increment f counter
+multiline_comment|/* increment f counter */
 id|wait_busy
 c_func
 (paren
@@ -2840,14 +3399,14 @@ multiline_comment|/* rx_d_frame */
 multiline_comment|/*************************************************************/
 multiline_comment|/* a B-frame has been received (perhaps not fully completed) */
 multiline_comment|/*************************************************************/
-DECL|function|rx_b_frame
 r_static
 r_void
+DECL|function|rx_b_frame
 id|rx_b_frame
 c_func
 (paren
 r_struct
-id|hfc8s_btype
+id|hfc4s8s_btype
 op_star
 id|bch
 )paren
@@ -2865,7 +3424,7 @@ comma
 id|f2
 suffix:semicolon
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1
 op_assign
@@ -2892,6 +3451,7 @@ r_return
 suffix:semicolon
 r_do
 (brace
+multiline_comment|/* RX Fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -2919,7 +3479,6 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// RX fifo
 id|wait_busy
 c_func
 (paren
@@ -3070,7 +3629,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;HFC-4S/8S: Could not allocate B channel receive buffer&quot;
+l_string|&quot;HFC-4S/8S: Could not allocate B &quot;
+l_string|&quot;channel receive buffer&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3095,7 +3655,7 @@ id|skb-&gt;data
 op_plus
 id|z1
 suffix:semicolon
-singleline_comment|// HDLC length check
+multiline_comment|/* HDLC length check */
 r_if
 c_cond
 (paren
@@ -3141,12 +3701,12 @@ c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
@@ -3156,7 +3716,16 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef FIFO_32BIT_ACCESS
+macro_line|#ifndef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|l1-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -3165,6 +3734,7 @@ op_ge
 l_int|4
 )paren
 (brace
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 op_star
 (paren
 (paren
@@ -3183,6 +3753,24 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|bch-&gt;rx_ptr
+)paren
+op_assign
+id|fRead_hfc32
+c_func
+(paren
+id|l1-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 id|bch-&gt;rx_ptr
 op_add_assign
 l_int|4
@@ -3192,13 +3780,13 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
 r_while
 c_loop
 (paren
 id|z1
 op_decrement
 )paren
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 op_star
 (paren
 id|bch-&gt;rx_ptr
@@ -3213,30 +3801,44 @@ comma
 id|A_FIFO_DATA0
 )paren
 suffix:semicolon
+macro_line|#else
+op_star
+(paren
+id|bch-&gt;rx_ptr
+op_increment
+)paren
+op_assign
+id|fRead_hfc8
+c_func
+(paren
+id|l1-&gt;hw
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|hdlc_complete
 )paren
 (brace
+multiline_comment|/* increment f counter */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// increment f counter
 id|wait_busy
 c_func
 (paren
 id|l1-&gt;hw
 )paren
 suffix:semicolon
-singleline_comment|// hdlc crc check
+multiline_comment|/* hdlc crc check */
 id|bch-&gt;rx_ptr
 op_decrement
 suffix:semicolon
@@ -3311,14 +3913,14 @@ multiline_comment|/* rx_b_frame */
 multiline_comment|/********************************************/
 multiline_comment|/* a D-frame has been/should be transmitted */
 multiline_comment|/********************************************/
-DECL|function|tx_d_frame
 r_static
 r_void
+DECL|function|tx_d_frame
 id|tx_d_frame
 c_func
 (paren
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1p
 )paren
@@ -3349,6 +3951,7 @@ l_int|7
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* TX fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -3365,7 +3968,6 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// TX fifo
 id|wait_busy
 c_func
 (paren
@@ -3405,7 +4007,7 @@ id|MAX_F_CNT
 )paren
 r_return
 suffix:semicolon
-singleline_comment|// fifo is still filled
+multiline_comment|/* fifo is still filled */
 r_if
 c_cond
 (paren
@@ -3465,7 +4067,16 @@ id|cnt
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#ifdef FIFO_32BIT_ACCESS
+macro_line|#ifndef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -3474,7 +4085,8 @@ op_ge
 l_int|4
 )paren
 (brace
-id|Write_hfc32
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|fWrite_hfc32
 c_func
 (paren
 id|l1p-&gt;hw
@@ -3490,6 +4102,30 @@ op_star
 id|cp
 )paren
 suffix:semicolon
+macro_line|#else
+id|SetRegAddr
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+id|fWrite_hfc32
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|cp
+)paren
+suffix:semicolon
+macro_line|#endif
 id|cp
 op_add_assign
 l_int|4
@@ -3499,7 +4135,7 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 r_while
 c_loop
 (paren
@@ -3518,6 +4154,24 @@ id|cp
 op_increment
 )paren
 suffix:semicolon
+macro_line|#else
+r_while
+c_loop
+(paren
+id|cnt
+op_decrement
+)paren
+id|fWrite_hfc8
+c_func
+(paren
+id|l1p-&gt;hw
+comma
+op_star
+id|cp
+op_increment
+)paren
+suffix:semicolon
+macro_line|#endif
 id|l1p-&gt;tx_cnt
 op_assign
 id|skb-&gt;truesize
@@ -3527,12 +4181,12 @@ c_func
 (paren
 id|l1p-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// increment f counter
+multiline_comment|/* increment f counter */
 id|wait_busy
 c_func
 (paren
@@ -3551,14 +4205,14 @@ multiline_comment|/* tx_d_frame */
 multiline_comment|/******************************************************/
 multiline_comment|/* a B-frame may be transmitted (or is not completed) */
 multiline_comment|/******************************************************/
-DECL|function|tx_b_frame
 r_static
 r_void
+DECL|function|tx_b_frame
 id|tx_b_frame
 c_func
 (paren
 r_struct
-id|hfc8s_btype
+id|hfc4s8s_btype
 op_star
 id|bch
 )paren
@@ -3569,7 +4223,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1
 op_assign
@@ -3604,6 +4258,7 @@ id|L1_MODE_NULL
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* TX fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -3631,7 +4286,6 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// TX fifo
 id|wait_busy
 c_func
 (paren
@@ -3694,7 +4348,7 @@ l_int|15
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// fifo still filled up with hdlc frames
+multiline_comment|/* fifo still filled up with hdlc frames */
 )brace
 r_else
 id|hdlc_num
@@ -3730,7 +4384,9 @@ id|bch-&gt;tx_queue
 (brace
 id|l1-&gt;hw-&gt;mr.fifo_slow_timer_service
 (braket
-id|l1-&gt;st_num
+id|l1
+op_member_access_from_pointer
+id|st_num
 )braket
 op_and_assign
 op_complement
@@ -3749,7 +4405,7 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
-singleline_comment|// list empty
+multiline_comment|/* list empty */
 )brace
 id|bch-&gt;tx_skb
 op_assign
@@ -3847,7 +4503,7 @@ l_int|16
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// don&squot;t write to small amounts of bytes
+multiline_comment|/* don&squot;t write to small amounts of bytes */
 id|cnt
 op_assign
 id|skb-&gt;len
@@ -3875,7 +4531,16 @@ id|bch-&gt;tx_cnt
 op_add_assign
 id|cnt
 suffix:semicolon
-macro_line|#ifdef FIFO_32BIT_ACCESS
+macro_line|#ifndef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|l1-&gt;hw
+comma
+id|A_FIFO_DATA0
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -3884,7 +4549,8 @@ op_ge
 l_int|4
 )paren
 (brace
-id|Write_hfc32
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|fWrite_hfc32
 c_func
 (paren
 id|l1-&gt;hw
@@ -3900,6 +4566,22 @@ op_star
 id|cp
 )paren
 suffix:semicolon
+macro_line|#else
+id|fWrite_hfc32
+c_func
+(paren
+id|l1-&gt;hw
+comma
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|cp
+)paren
+suffix:semicolon
+macro_line|#endif
 id|cp
 op_add_assign
 l_int|4
@@ -3909,14 +4591,14 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
 r_while
 c_loop
 (paren
 id|cnt
 op_decrement
 )paren
-id|Write_hfc8
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|fWrite_hfc8
 c_func
 (paren
 id|l1-&gt;hw
@@ -3928,6 +4610,18 @@ id|cp
 op_increment
 )paren
 suffix:semicolon
+macro_line|#else
+id|fWrite_hfc8
+c_func
+(paren
+id|l1-&gt;hw
+comma
+op_star
+id|cp
+op_increment
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3944,17 +4638,17 @@ op_eq
 id|L1_MODE_HDLC
 )paren
 (brace
+multiline_comment|/* increment f counter */
 id|Write_hfc8
 c_func
 (paren
 id|l1-&gt;hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// increment f counter
 )brace
 id|ack_len
 op_add_assign
@@ -3976,6 +4670,7 @@ id|skb
 suffix:semicolon
 )brace
 r_else
+multiline_comment|/* Re-Select */
 id|Write_hfc8
 c_func
 (paren
@@ -4003,7 +4698,6 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// Re-Select
 id|wait_busy
 c_func
 (paren
@@ -4051,14 +4745,13 @@ multiline_comment|/* tx_b_frame */
 multiline_comment|/*************************************/
 multiline_comment|/* bottom half handler for interrupt */
 multiline_comment|/*************************************/
-DECL|function|hfc8s_bh
 r_static
 r_void
-id|hfc8s_bh
+DECL|function|hfc4s8s_bh
+id|hfc4s8s_bh
 c_func
 (paren
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 )paren
@@ -4067,7 +4760,7 @@ id|u_char
 id|b
 suffix:semicolon
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1p
 suffix:semicolon
@@ -4079,7 +4772,7 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-singleline_comment|// handle layer 1 state changes
+multiline_comment|/* handle layer 1 state changes */
 id|b
 op_assign
 l_int|1
@@ -4104,12 +4797,12 @@ id|hw-&gt;mr.r_irq_statech
 )paren
 )paren
 (brace
+multiline_comment|/* reset l1 event */
 id|hw-&gt;mr.r_irq_statech
 op_and_assign
 op_complement
 id|b
 suffix:semicolon
-singleline_comment|// reset l1 event
 r_if
 c_cond
 (paren
@@ -4127,7 +4820,6 @@ id|oldstate
 op_assign
 id|l1p-&gt;l1_state
 suffix:semicolon
-singleline_comment|// save old l1 state
 id|Write_hfc8
 c_func
 (paren
@@ -4150,7 +4842,6 @@ id|A_ST_RD_STA
 op_amp
 l_int|0xf
 suffix:semicolon
-singleline_comment|// new state
 r_if
 c_cond
 (paren
@@ -4172,7 +4863,11 @@ id|l1l2
 c_func
 (paren
 op_amp
-id|l1p-&gt;d_if.ifc
+id|l1p
+op_member_access_from_pointer
+id|d_if
+dot
+id|ifc
 comma
 id|PH_DEACTIVATE
 op_or
@@ -4210,7 +4905,9 @@ id|l1l2
 c_func
 (paren
 op_amp
-id|l1p-&gt;d_if.ifc
+id|l1p
+op_member_access_from_pointer
+id|d_if.ifc
 comma
 id|PH_ACTIVATE
 op_or
@@ -4223,6 +4920,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* allow transition */
 id|Write_hfc8
 c_func
 (paren
@@ -4233,7 +4931,6 @@ comma
 id|M_SET_G2_G3
 )paren
 suffix:semicolon
-singleline_comment|// allow transition
 id|mod_timer
 c_func
 (paren
@@ -4267,7 +4964,6 @@ id|oldstate
 op_assign
 id|l1p-&gt;l1_state
 suffix:semicolon
-singleline_comment|// save old l1 state
 id|Write_hfc8
 c_func
 (paren
@@ -4290,7 +4986,6 @@ id|A_ST_RD_STA
 op_amp
 l_int|0xf
 suffix:semicolon
-singleline_comment|// new state
 r_if
 c_cond
 (paren
@@ -4319,7 +5014,6 @@ op_logical_or
 (paren
 (paren
 id|timer_pending
-c_func
 (paren
 op_amp
 id|l1p-&gt;l1_timer
@@ -4360,17 +5054,20 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|l1p-&gt;l1_timer
+id|l1p
+op_member_access_from_pointer
+id|l1_timer
 )paren
 suffix:semicolon
-multiline_comment|/* no longer needed */
 id|l1p-&gt;d_if.ifc
 dot
 id|l1l2
 c_func
 (paren
 op_amp
-id|l1p-&gt;d_if.ifc
+id|l1p
+op_member_access_from_pointer
+id|d_if.ifc
 comma
 id|PH_ACTIVATE
 op_or
@@ -4401,13 +5098,18 @@ id|oldstate
 op_ne
 l_int|3
 )paren
-id|l1p-&gt;d_if.ifc
+id|l1p-&gt;d_if
+dot
+id|ifc
 dot
 id|l1l2
-c_func
 (paren
 op_amp
-id|l1p-&gt;d_if.ifc
+id|l1p
+op_member_access_from_pointer
+id|d_if
+dot
+id|ifc
 comma
 id|PH_DEACTIVATE
 op_or
@@ -4424,9 +5126,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;HFC-4S/8S: TE %d ch %d l1 state %d -&gt; %d&bslash;n&quot;
 comma
-id|l1p-&gt;hw
-op_minus
-id|hfc8s
+id|l1p-&gt;hw-&gt;cardnum
 comma
 id|l1p-&gt;st_num
 comma
@@ -4446,7 +5146,7 @@ id|l1p
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// now handle the fifos
+multiline_comment|/* now handle the fifos */
 id|idx
 op_assign
 l_int|0
@@ -4464,7 +5164,7 @@ c_loop
 (paren
 id|idx
 OL
-id|hw-&gt;max_st_ports
+id|hw-&gt;driver_data.max_st_ports
 )paren
 (brace
 r_if
@@ -4494,12 +5194,14 @@ id|fifo_stat
 op_or_assign
 id|hw-&gt;mr.fifo_slow_timer_service
 (braket
-id|l1p-&gt;st_num
+id|l1p
+op_member_access_from_pointer
+id|st_num
 )braket
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// ignore fifo 6 (TX E fifo)
+multiline_comment|/* ignore fifo 6 (TX E fifo) */
 op_star
 id|fifo_stat
 op_and_assign
@@ -4521,7 +5223,7 @@ op_logical_neg
 id|l1p-&gt;nt_mode
 )paren
 (brace
-singleline_comment|// RX Fifo has data to read
+multiline_comment|/* RX Fifo has data to read */
 r_if
 c_cond
 (paren
@@ -4548,7 +5250,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// E Fifo has data to read
+multiline_comment|/* E Fifo has data to read */
 r_if
 c_cond
 (paren
@@ -4575,7 +5277,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// TX Fifo completed send
+multiline_comment|/* TX Fifo completed send */
 r_if
 c_cond
 (paren
@@ -4601,7 +5303,7 @@ id|l1p
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// B1 RX Fifo has data to read
+multiline_comment|/* B1 RX Fifo has data to read */
 r_if
 c_cond
 (paren
@@ -4626,7 +5328,7 @@ id|l1p-&gt;b_ch
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// B1 TX Fifo has send completed
+multiline_comment|/* B1 TX Fifo has send completed */
 r_if
 c_cond
 (paren
@@ -4651,7 +5353,7 @@ id|l1p-&gt;b_ch
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// B2 RX Fifo has data to read
+multiline_comment|/* B2 RX Fifo has data to read */
 r_if
 c_cond
 (paren
@@ -4678,7 +5380,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// B2 TX Fifo has send completed
+multiline_comment|/* B2 TX Fifo has send completed */
 r_if
 c_cond
 (paren
@@ -4739,16 +5441,16 @@ id|hw-&gt;mr.timer_irq
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// clear requested timer irq
+multiline_comment|/* clear requested timer irq */
 )brace
-multiline_comment|/* hfc8s_bh */
+multiline_comment|/* hfc4s8s_bh */
 multiline_comment|/*********************/
 multiline_comment|/* interrupt handler */
 multiline_comment|/*********************/
-DECL|function|hfc8s_interrupt
 r_static
 id|irqreturn_t
-id|hfc8s_interrupt
+DECL|function|hfc4s8s_interrupt
+id|hfc4s8s_interrupt
 c_func
 (paren
 r_int
@@ -4764,8 +5466,7 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 op_assign
@@ -4784,6 +5485,9 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
+id|u_char
+id|old_ioreg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4800,7 +5504,17 @@ id|M_GLOB_IRQ_EN
 r_return
 id|IRQ_NONE
 suffix:semicolon
+macro_line|#ifndef&t;CONFIG_HISAX_HFC4S8S_PCIMEM
+multiline_comment|/* read current selected regsister */
+id|old_ioreg
+op_assign
+id|GetRegAddr
+c_func
+(paren
+id|hw
+)paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Layer 1 State change */
 id|hw-&gt;mr.r_irq_statech
 op_or_assign
@@ -4810,7 +5524,7 @@ c_func
 (paren
 id|hw
 comma
-id|R_IRQ_STATECH
+id|R_SCI
 )paren
 op_amp
 id|hw-&gt;mr.r_irqmsk_statchg
@@ -4843,9 +5557,21 @@ op_logical_and
 op_logical_neg
 id|hw-&gt;mr.r_irq_statech
 )paren
+(brace
+macro_line|#ifndef&t;CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|hw
+comma
+id|old_ioreg
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|IRQ_NONE
 suffix:semicolon
+)brace
 multiline_comment|/* timer event */
 r_if
 c_cond
@@ -4946,22 +5672,31 @@ op_amp
 id|hw-&gt;tqueue
 )paren
 suffix:semicolon
+macro_line|#ifndef&t;CONFIG_HISAX_HFC4S8S_PCIMEM
+id|SetRegAddr
+c_func
+(paren
+id|hw
+comma
+id|old_ioreg
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/* hfc8s_interrupt */
+multiline_comment|/* hfc4s8s_interrupt */
 multiline_comment|/***********************************************************************/
 multiline_comment|/* reset the complete chip, don&squot;t release the chips irq but disable it */
 multiline_comment|/***********************************************************************/
-DECL|function|chipreset
 r_static
 r_void
+DECL|function|chipreset
 id|chipreset
 c_func
 (paren
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 )paren
@@ -4988,18 +5723,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// use internal RAM
+multiline_comment|/* use internal RAM */
 id|Write_hfc8
 c_func
 (paren
 id|hw
 comma
-id|R_RAM_SZ
+id|R_RAM_MISC
 comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// 32k*8 RAM
+multiline_comment|/* 32k*8 RAM */
 id|Write_hfc8
 c_func
 (paren
@@ -5010,7 +5745,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// fifo mode 386 byte/fifo simple mode
+multiline_comment|/* fifo mode 386 byte/fifo simple mode */
 id|Write_hfc8
 c_func
 (paren
@@ -5021,12 +5756,12 @@ comma
 id|M_SRES
 )paren
 suffix:semicolon
-singleline_comment|// reset chip
+multiline_comment|/* reset chip */
 id|hw-&gt;mr.r_irq_ctrl
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// interrupt is inactive
+multiline_comment|/* interrupt is inactive */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5052,7 +5787,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// disable reset
+multiline_comment|/* disable reset */
 id|wait_busy
 c_func
 (paren
@@ -5069,22 +5804,22 @@ comma
 id|M_PCM_MD
 )paren
 suffix:semicolon
-singleline_comment|// master mode
+multiline_comment|/* master mode */
 id|Write_hfc8
 c_func
 (paren
 id|hw
 comma
-id|R_RAM_SZ
+id|R_RAM_MISC
 comma
-id|V_FZ_MD
+id|M_FZ_MD
 )paren
 suffix:semicolon
-singleline_comment|// transmit fifo option
+multiline_comment|/* transmit fifo option */
 r_if
 c_cond
 (paren
-id|hw-&gt;clock_mode
+id|hw-&gt;driver_data.clock_mode
 op_eq
 l_int|1
 )paren
@@ -5098,7 +5833,7 @@ comma
 id|M_PCM_CLK
 )paren
 suffix:semicolon
-singleline_comment|// PCM clk / 2
+multiline_comment|/* PCM clk / 2 */
 id|Write_hfc8
 c_func
 (paren
@@ -5109,7 +5844,7 @@ comma
 id|TRANS_TIMER_MODE
 )paren
 suffix:semicolon
-singleline_comment|// timer interval
+multiline_comment|/* timer interval */
 id|memset
 c_func
 (paren
@@ -5129,13 +5864,12 @@ multiline_comment|/* chipreset */
 multiline_comment|/********************************************/
 multiline_comment|/* disable/enable hardware in nt or te mode */
 multiline_comment|/********************************************/
-DECL|function|hfc_hardware_enable
 r_void
+DECL|function|hfc_hardware_enable
 id|hfc_hardware_enable
 c_func
 (paren
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
 comma
@@ -5164,12 +5898,12 @@ c_cond
 id|enable
 )paren
 (brace
-singleline_comment|// save system vars
+multiline_comment|/* save system vars */
 id|hw-&gt;nt_mode
 op_assign
 id|nt_mode
 suffix:semicolon
-singleline_comment|// enable fifo and state irqs, but not global irq enable
+multiline_comment|/* enable fifo and state irqs, but not global irq enable */
 id|hw-&gt;mr.r_irq_ctrl
 op_assign
 id|M_FIFO_IRQ
@@ -5193,7 +5927,7 @@ c_func
 (paren
 id|hw
 comma
-id|R_IRQMSK_STATCHG
+id|R_SCI_MSK
 comma
 id|hw-&gt;mr.r_irqmsk_statchg
 )paren
@@ -5234,7 +5968,7 @@ comma
 id|M_AUTO_SYNC
 )paren
 suffix:semicolon
-singleline_comment|// enable the line interfaces and fifos
+multiline_comment|/* enable the line interfaces and fifos */
 r_for
 c_loop
 (paren
@@ -5244,7 +5978,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hw-&gt;max_st_ports
+id|hw-&gt;driver_data.max_st_ports
 suffix:semicolon
 id|i
 op_increment
@@ -5263,7 +5997,7 @@ c_func
 (paren
 id|hw
 comma
-id|R_IRQMSK_STATCHG
+id|R_SCI_MSK
 comma
 id|hw-&gt;mr.r_irqmsk_statchg
 )paren
@@ -5340,7 +6074,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// enable state machine
+multiline_comment|/* enable state machine */
 id|hw-&gt;l1
 (braket
 id|i
@@ -5366,7 +6100,7 @@ op_logical_neg
 id|nt_mode
 )paren
 (brace
-singleline_comment|// setup E-fifo
+multiline_comment|/* setup E-fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -5381,7 +6115,7 @@ op_plus
 l_int|7
 )paren
 suffix:semicolon
-singleline_comment|// E fifo
+multiline_comment|/* E fifo */
 id|wait_busy
 c_func
 (paren
@@ -5398,7 +6132,7 @@ comma
 l_int|0x11
 )paren
 suffix:semicolon
-singleline_comment|// HDLC mode, 1 fill, connect ST
+multiline_comment|/* HDLC mode, 1 fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -5409,7 +6143,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// only 2 bits
+multiline_comment|/* only 2 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -5420,25 +6154,25 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// enable interrupt
+multiline_comment|/* enable interrupt */
 id|Write_hfc8
 c_func
 (paren
 id|hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
-singleline_comment|// setup D RX-fifo
+multiline_comment|/* setup D RX-fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -5453,7 +6187,7 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-singleline_comment|// RX fifo
+multiline_comment|/* RX fifo */
 id|wait_busy
 c_func
 (paren
@@ -5470,7 +6204,7 @@ comma
 l_int|0x11
 )paren
 suffix:semicolon
-singleline_comment|// HDLC mode, 1 fill, connect ST
+multiline_comment|/* HDLC mode, 1 fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -5481,7 +6215,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// only 2 bits
+multiline_comment|/* only 2 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -5492,25 +6226,25 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// enable interrupt
+multiline_comment|/* enable interrupt */
 id|Write_hfc8
 c_func
 (paren
 id|hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
-singleline_comment|// setup D TX-fifo
+multiline_comment|/* setup D TX-fifo */
 id|Write_hfc8
 c_func
 (paren
@@ -5525,7 +6259,7 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|// TX fifo
+multiline_comment|/* TX fifo */
 id|wait_busy
 c_func
 (paren
@@ -5542,7 +6276,7 @@ comma
 l_int|0x11
 )paren
 suffix:semicolon
-singleline_comment|// HDLC mode, 1 fill, connect ST
+multiline_comment|/* HDLC mode, 1 fill, connect ST */
 id|Write_hfc8
 c_func
 (paren
@@ -5553,7 +6287,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// only 2 bits
+multiline_comment|/* only 2 bits */
 id|Write_hfc8
 c_func
 (paren
@@ -5564,18 +6298,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// enable interrupt
+multiline_comment|/* enable interrupt */
 id|Write_hfc8
 c_func
 (paren
 id|hw
 comma
-id|R_INC_RES_FIFO
+id|A_INC_RES_FIFO
 comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* reset fifo */
 id|wait_busy
 c_func
 (paren
@@ -5590,9 +6324,7 @@ id|if_name
 comma
 l_string|&quot;hfc4s8s_%d%d_&quot;
 comma
-id|hw
-op_minus
-id|hfc8s
+id|hw-&gt;cardnum
 comma
 id|i
 )paren
@@ -5601,7 +6333,6 @@ r_if
 c_cond
 (paren
 id|hisax_register
-c_func
 (paren
 op_amp
 id|hw-&gt;l1
@@ -5656,7 +6387,7 @@ c_func
 (paren
 id|hw
 comma
-id|R_IRQMSK_STATCHG
+id|R_SCI_MSK
 comma
 id|hw-&gt;mr.r_irqmsk_statchg
 )paren
@@ -5709,6 +6440,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* disable hardware */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5747,7 +6479,7 @@ c_loop
 (paren
 id|i
 op_assign
-id|hw-&gt;max_st_ports
+id|hw-&gt;driver_data.max_st_ports
 op_minus
 l_int|1
 suffix:semicolon
@@ -5848,195 +6580,122 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* hfc_hardware_enable */
+multiline_comment|/******************************************/
+multiline_comment|/* disable memory mapped ports / io ports */
+multiline_comment|/******************************************/
+r_void
+DECL|function|release_pci_ports
+id|release_pci_ports
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|hw
+)paren
+(brace
+id|pci_write_config_word
+c_func
+(paren
+id|hw-&gt;pdev
+comma
+id|PCI_COMMAND
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+r_if
+c_cond
+(paren
+id|hw-&gt;membase
+)paren
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|hw-&gt;membase
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|hw-&gt;iobase
+)paren
+id|release_region
+c_func
+(paren
+id|hw-&gt;iobase
+comma
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+multiline_comment|/*****************************************/
+multiline_comment|/* enable memory mapped ports / io ports */
+multiline_comment|/*****************************************/
+r_void
+DECL|function|enable_pci_ports
+id|enable_pci_ports
+c_func
+(paren
+id|hfc4s8s_hw
+op_star
+id|hw
+)paren
+(brace
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|pci_write_config_word
+c_func
+(paren
+id|hw-&gt;pdev
+comma
+id|PCI_COMMAND
+comma
+id|PCI_ENA_MEMIO
+)paren
+suffix:semicolon
+macro_line|#else
+id|pci_write_config_word
+c_func
+(paren
+id|hw-&gt;pdev
+comma
+id|PCI_COMMAND
+comma
+id|PCI_ENA_REGIO
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 multiline_comment|/*************************************/
 multiline_comment|/* initialise the HFC-4s/8s hardware */
 multiline_comment|/* return 0 on success.              */
 multiline_comment|/*************************************/
-DECL|function|hfc8s_init_hw
 r_static
 r_int
-id|__init
-id|hfc8s_init_hw
+id|__devinit
+DECL|function|setup_instance
+id|setup_instance
 c_func
 (paren
-r_void
-)paren
-(brace
-r_struct
-id|pci_dev
-op_star
-id|tmp_hfc8s
-op_assign
-l_int|NULL
-suffix:semicolon
-id|PCI_ENTRY
-op_star
-id|list
-op_assign
-(paren
-id|PCI_ENTRY
-op_star
-)paren
-id|id_list
-suffix:semicolon
-r_struct
-id|hfc8s_hw
+id|hfc4s8s_hw
 op_star
 id|hw
+)paren
+(brace
+r_int
+id|err
 op_assign
-id|hfc8s
-suffix:semicolon
-id|u_long
-id|flags
+op_minus
+id|EIO
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Layer 1 driver module for HFC-4S/8S isdn chips, %s&bslash;n&quot;
-comma
-id|hfc4s8s_rev
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;(C) 2003 Cornelius Consult, www.cornelius-consult.de&bslash;n&quot;
-)paren
-suffix:semicolon
-r_do
-(brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|hw-&gt;lock
-)paren
-suffix:semicolon
-id|tmp_hfc8s
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|list-&gt;vendor_id
-comma
-id|list-&gt;device_id
-comma
-id|tmp_hfc8s
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tmp_hfc8s
-)paren
-(brace
-id|list
-op_increment
-suffix:semicolon
-singleline_comment|// next PCI-ID
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list-&gt;vendor_id
-)paren
-r_break
-suffix:semicolon
-singleline_comment|// end of list
-r_continue
-suffix:semicolon
-singleline_comment|// search PCI base again
-)brace
-r_if
-c_cond
-(paren
-id|list-&gt;sub_vendor_id
-op_logical_and
-(paren
-id|list-&gt;sub_vendor_id
-op_ne
-id|tmp_hfc8s-&gt;subsystem_vendor
-)paren
-)paren
-r_continue
-suffix:semicolon
-singleline_comment|// sub_vendor defined and not matching
-r_if
-c_cond
-(paren
-id|list-&gt;sub_device_id
-op_logical_and
-(paren
-id|list-&gt;sub_device_id
-op_ne
-id|tmp_hfc8s-&gt;subsystem_device
-)paren
-)paren
-r_continue
-suffix:semicolon
-singleline_comment|// sub_device defined and not matching
-singleline_comment|// init Layer 1 structure
-r_if
-c_cond
-(paren
-id|tmp_hfc8s-&gt;irq
-op_le
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-4S/8S: found PCI card without assigned IRQ, card ignored&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|tmp_hfc8s
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-4S/8S: Error enabling PCI card, card ignored&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|hw-&gt;irq
-op_assign
-id|tmp_hfc8s-&gt;irq
-suffix:semicolon
-id|hw-&gt;max_st_ports
-op_assign
-id|list-&gt;max_channels
-suffix:semicolon
-id|hw-&gt;max_fifo
-op_assign
-id|list-&gt;max_channels
-op_star
-l_int|4
-suffix:semicolon
-id|hw-&gt;clock_mode
-op_assign
-id|list-&gt;clock_mode
 suffix:semicolon
 r_for
 c_loop
@@ -6054,7 +6713,7 @@ op_increment
 )paren
 (brace
 r_struct
-id|hfc8s_l1
+id|hfc4s8s_l1
 op_star
 id|l1p
 suffix:semicolon
@@ -6299,56 +6958,10 @@ id|tx_queue
 )paren
 suffix:semicolon
 )brace
-id|hw-&gt;iobase
-op_assign
-id|tmp_hfc8s-&gt;resource
-(braket
-l_int|0
-)braket
-dot
-id|start
-op_amp
-id|PCI_BASE_ADDRESS_IO_MASK
-suffix:semicolon
-id|hw-&gt;hw_membase
-op_assign
-(paren
-id|u_char
-op_star
-)paren
-id|tmp_hfc8s-&gt;resource
-(braket
-l_int|1
-)braket
-dot
-id|start
-suffix:semicolon
-id|hw-&gt;membase
-op_assign
-id|ioremap
+id|enable_pci_ports
 c_func
 (paren
-(paren
-id|ulong
-)paren
-id|hw-&gt;hw_membase
-comma
-l_int|256
-)paren
-suffix:semicolon
-id|hw-&gt;pci_dev
-op_assign
-id|tmp_hfc8s
-suffix:semicolon
-multiline_comment|/* now enable memory mapped ports */
-id|pci_write_config_word
-c_func
-(paren
-id|hw-&gt;pci_dev
-comma
-id|PCI_COMMAND
-comma
-id|PCI_ENA_MEMIO
+id|hw
 )paren
 suffix:semicolon
 id|chipreset
@@ -6374,7 +6987,7 @@ c_cond
 (paren
 id|i
 op_ne
-id|list-&gt;chip_id
+id|hw-&gt;driver_data.chip_id
 )paren
 (brace
 id|printk
@@ -6385,27 +6998,11 @@ l_string|&quot;HFC-4S/8S: invalid chip id 0x%x instead of 0x%x, card ignored&bsl
 comma
 id|i
 comma
-id|list-&gt;chip_id
+id|hw-&gt;driver_data.chip_id
 )paren
 suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|hw-&gt;pci_dev
-comma
-id|PCI_COMMAND
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* disable memory mapped ports */
-id|vfree
-c_func
-(paren
-id|hw-&gt;membase
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|i
@@ -6434,24 +7031,8 @@ id|KERN_INFO
 l_string|&quot;HFC-4S/8S: chip revision 0 not supported, card ignored&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|hw-&gt;pci_dev
-comma
-id|PCI_COMMAND
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* disable memory mapped ports */
-id|vfree
-c_func
-(paren
-id|hw-&gt;membase
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|INIT_WORK
@@ -6468,41 +7049,19 @@ op_star
 r_void
 op_star
 )paren
-id|hfc8s_bh
+id|hfc4s8s_bh
 comma
 id|hw
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|hw-&gt;card_name
-comma
-l_string|&quot;hfc4s8s_%d&quot;
-comma
-id|hw
-op_minus
-id|hfc8s
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hw-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|request_irq
-c_func
 (paren
 id|hw-&gt;irq
 comma
-id|hfc8s_interrupt
+id|hfc4s8s_interrupt
 comma
 id|SA_SHIRQ
 comma
@@ -6512,21 +7071,6 @@ id|hw
 )paren
 )paren
 (brace
-id|vfree
-c_func
-(paren
-id|hw-&gt;membase
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hw-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6536,33 +7080,35 @@ comma
 id|hw-&gt;irq
 )paren
 suffix:semicolon
-id|hw-&gt;irq
-op_assign
-l_int|0
-suffix:semicolon
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hw-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-4S/8S: found PCI card at 0x%p, irq %d&bslash;n&quot;
+l_string|&quot;HFC-4S/8S: found PCI card at membase 0x%p, irq %d&bslash;n&quot;
 comma
 id|hw-&gt;hw_membase
 comma
 id|hw-&gt;irq
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: found PCI card at iobase 0x%x, irq %d&bslash;n&quot;
+comma
+id|hw-&gt;iobase
+comma
+id|hw-&gt;irq
+)paren
+suffix:semicolon
+macro_line|#endif
 id|hfc_hardware_enable
 c_func
 (paren
@@ -6573,77 +7119,337 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|card_cnt
-op_increment
+r_return
+(paren
+l_int|0
+)paren
 suffix:semicolon
+id|out
+suffix:colon
+id|hw-&gt;irq
+op_assign
+l_int|0
+suffix:semicolon
+id|release_pci_ports
+c_func
+(paren
 id|hw
-op_increment
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|card_cnt
-OL
-id|MAX_HFC8_CARDS
-)paren
-op_logical_and
-id|list-&gt;vendor_id
 )paren
 suffix:semicolon
-id|printk
+id|kfree
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-4S/8S: nominal transparent fifo transfer size is %d bytes&bslash;n&quot;
-comma
-id|TRANS_FIFO_BYTES
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-4S/8S: module successfully installed, %d cards found&bslash;n&quot;
-comma
-id|card_cnt
+id|hw
 )paren
 suffix:semicolon
 r_return
-l_int|0
+(paren
+id|err
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/* hfc8s_init_hw */
-multiline_comment|/*************************************/
-multiline_comment|/* release the HFC-4s/8s hardware    */
-multiline_comment|/*************************************/
-DECL|function|hfc8s_release_hw
+multiline_comment|/*****************************************/
+multiline_comment|/* PCI hotplug interface: probe new card */
+multiline_comment|/*****************************************/
 r_static
-r_void
-id|hfc8s_release_hw
+r_int
+id|__devinit
+DECL|function|hfc4s8s_probe
+id|hfc4s8s_probe
 c_func
 (paren
-r_void
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|ent
 )paren
 (brace
+r_int
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|hfc4s8s_param
+op_star
+id|driver_data
+op_assign
+(paren
+id|hfc4s8s_param
+op_star
+)paren
+id|ent-&gt;driver_data
+suffix:semicolon
+id|hfc4s8s_hw
+op_star
+id|hw
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|hw
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|hfc4s8s_hw
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;No kmem for HFC-4S/8S card&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|err
+)paren
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|hw
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|hfc4s8s_hw
+)paren
+)paren
+suffix:semicolon
+id|hw-&gt;pdev
+op_assign
+id|pdev
+suffix:semicolon
+id|err
+op_assign
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|hw-&gt;cardnum
+op_assign
+id|card_cnt
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|hw-&gt;card_name
+comma
+l_string|&quot;hfc4s8s_%d&quot;
+comma
+id|hw-&gt;cardnum
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: found adapter %s (%s) at %s&bslash;n&quot;
+comma
+id|driver_data-&gt;device_name
+comma
+id|hw-&gt;card_name
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|hw-&gt;lock
+)paren
+suffix:semicolon
+id|hw-&gt;driver_data
+op_assign
+op_star
+id|driver_data
+suffix:semicolon
+id|hw-&gt;irq
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
+id|hw-&gt;iobase
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_HFC4S8S_PCIMEM
+id|hw-&gt;hw_membase
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|hw-&gt;membase
+op_assign
+id|ioremap
+c_func
+(paren
+(paren
+id|ulong
+)paren
+id|hw-&gt;hw_membase
+comma
+l_int|256
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|hw-&gt;iobase
+comma
+l_int|8
+comma
+id|hw-&gt;card_name
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: failed to rquest address space at 0x%04x&bslash;n&quot;
+comma
+id|hw-&gt;iobase
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+macro_line|#endif
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|hw
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|setup_instance
+c_func
+(paren
+id|hw
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|card_cnt
+op_increment
+suffix:semicolon
+r_return
+(paren
+id|err
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|kfree
+c_func
+(paren
+id|hw
+)paren
+suffix:semicolon
+r_return
+(paren
+id|err
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**************************************/
+multiline_comment|/* PCI hotplug interface: remove card */
+multiline_comment|/**************************************/
+r_static
+r_void
+id|__devexit
+DECL|function|hfc4s8s_remove
+id|hfc4s8s_remove
+c_func
+(paren
 r_struct
-id|hfc8s_hw
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+id|hfc4s8s_hw
 op_star
 id|hw
 op_assign
-id|hfc8s
-op_plus
-id|card_cnt
-op_minus
-l_int|1
-suffix:semicolon
-r_while
-c_loop
+id|pci_get_drvdata
+c_func
 (paren
-id|card_cnt
+id|pdev
 )paren
-(brace
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: removing card %d&bslash;n&quot;
+comma
+id|hw-&gt;cardnum
+)paren
+suffix:semicolon
 id|hfc_hardware_enable
 c_func
 (paren
@@ -6671,70 +7477,204 @@ id|hw-&gt;irq
 op_assign
 l_int|0
 suffix:semicolon
-id|pci_write_config_word
+id|release_pci_ports
 c_func
 (paren
-id|hw-&gt;pci_dev
-comma
-id|PCI_COMMAND
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* disable memory mapped ports */
-id|vfree
-c_func
-(paren
-id|hw-&gt;membase
-)paren
-suffix:semicolon
 id|hw
-op_decrement
+)paren
 suffix:semicolon
 id|card_cnt
 op_decrement
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|hw
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+DECL|variable|hfc4s8s_driver
+r_static
+r_struct
+id|pci_driver
+id|hfc4s8s_driver
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;hfc4s8s_l1&quot;
+comma
+id|probe
+suffix:colon
+id|hfc4s8s_probe
+comma
+id|remove
+suffix:colon
+id|__devexit_p
+c_func
+(paren
+id|hfc4s8s_remove
+)paren
+comma
+id|id_table
+suffix:colon
+id|hfc4s8s_ids
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**********************/
+multiline_comment|/* driver Module init */
+multiline_comment|/**********************/
+r_static
+r_int
+id|__init
+DECL|function|hfc4s8s_module_init
+id|hfc4s8s_module_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: Layer 1 driver module for HFC-4S/8S isdn chips, %s&bslash;n&quot;
+comma
+id|hfc4s8s_rev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: (C) 2003 Cornelius Consult, www.cornelius-consult.de&bslash;n&quot;
+)paren
+suffix:semicolon
+id|card_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|pci_register_driver
+c_func
+(paren
+op_amp
+id|hfc4s8s_driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+(brace
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-4S/8S: module removed successfully&bslash;n&quot;
+l_string|&quot;HFC-4S/8S: found %d cards&bslash;n&quot;
+comma
+id|card_cnt
+)paren
+suffix:semicolon
+macro_line|#if !defined(CONFIG_HOTPLUG)
+r_if
+c_cond
+(paren
+id|err
+op_eq
+l_int|0
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|hfc4s8s_driver
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+(paren
+id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* hfc8s_release_hw */
-id|MODULE_AUTHOR
+multiline_comment|/* hfc4s8s_init_hw */
+multiline_comment|/*************************************/
+multiline_comment|/* driver module exit :              */
+multiline_comment|/* release the HFC-4s/8s hardware    */
+multiline_comment|/*************************************/
+r_static
+r_void
+DECL|function|hfc4s8s_module_exit
+id|hfc4s8s_module_exit
 c_func
 (paren
-l_string|&quot;Werner Cornelius, werner@cornelius-consult.de&quot;
+r_void
 )paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
+(brace
+id|pci_unregister_driver
 c_func
 (paren
-l_string|&quot;ISDN layer 1 for Cologne Chip HFC-4S/8S chips&quot;
+op_amp
+id|hfc4s8s_driver
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
+id|printk
 c_func
 (paren
-l_string|&quot;GPL&quot;
+id|KERN_INFO
+l_string|&quot;HFC-4S/8S: module removed&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|variable|hfc8s_init_hw
+)brace
+multiline_comment|/* hfc4s8s_release_hw */
+DECL|variable|hfc4s8s_module_init
 id|module_init
 c_func
 (paren
-id|hfc8s_init_hw
+id|hfc4s8s_module_init
 )paren
 suffix:semicolon
-DECL|variable|hfc8s_release_hw
+DECL|variable|hfc4s8s_module_exit
 id|module_exit
 c_func
 (paren
-id|hfc8s_release_hw
+id|hfc4s8s_module_exit
 )paren
 suffix:semicolon
-multiline_comment|/************************************************************************************************************&n;*&n;&n;$Log: hfc4s8s_l1.c,v $&n;Revision 1.8  2004/07/13 14:13:34  martinb1&n;unified chip name&n;&n;Revision 1.7  2004/07/13 09:19:52  martinb1&n;driver ported to 2.6 kernels (info@colognechip.com)&n;&n;Revision 1.6  2004/05/03 09:19:42  joergc1&n;stable counter read function added&n;D receive frame handling changed for unexpected frames&n;changes to source formatting&n;&n;Revision 1.5  2004/04/20 14:43:09  martinb1&n;memory based 8 bit PCI register access Write_hfc8 changed to avoid PCI byte merging problems&n;masking of fifo interupt bits changed&n;&n;Revision 1.4  2004/03/11 16:12:25  martinb1&n;initial version of hfc4s8s_l1.c&n;&n;*/
 eof
