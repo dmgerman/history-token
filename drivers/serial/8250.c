@@ -1701,7 +1701,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check for a National Semiconductor SuperIO chip.&n;&t; * Attempt to switch to bank 2, read the value of the LOOP bit&n;&t; * from EXCR1. Switch back to bank 0, change it in MCR. Then&n;&t; * switch back to bank 2, read it from EXCR1 again and check&n;&t; * it&squot;s changed. If so, set baud_base in EXCR2 to 921600.&n;&t; */
+multiline_comment|/*&n;&t; * Check for a National Semiconductor SuperIO chip.&n;&t; * Attempt to switch to bank 2, read the value of the LOOP bit&n;&t; * from EXCR1. Switch back to bank 0, change it in MCR. Then&n;&t; * switch back to bank 2, read it from EXCR1 again and check&n;&t; * it&squot;s changed. If so, set baud_base in EXCR2 to 921600. -- dwmw2&n;&t; * On PowerPC we don&squot;t want to change baud_base, as we have&n;&t; * a number of different divisors.  -- Tom Rini&n;&t; */
 id|serial_outp
 c_func
 (paren
@@ -1833,6 +1833,7 @@ op_amp
 id|UART_MCR_LOOP
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC
 id|serial_outp
 c_func
 (paren
@@ -1885,6 +1886,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|up-&gt;port.type
 op_assign
 id|PORT_NS16550A
