@@ -28,6 +28,16 @@ id|NR_IRQS
 r_void
 )paren
 suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|smp_thermal_interrupt
+c_func
+(paren
+r_struct
+id|pt_regs
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 id|asmlinkage
