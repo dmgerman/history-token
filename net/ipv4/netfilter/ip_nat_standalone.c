@@ -693,6 +693,8 @@ c_func
 (paren
 op_star
 id|pskb
+comma
+id|IP_DEFRAG_NAT_OUT
 )paren
 suffix:semicolon
 r_if
