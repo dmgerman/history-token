@@ -4094,7 +4094,7 @@ c_func
 (paren
 l_string|&quot;&bslash;tbase = 0x%x&bslash;n&quot;
 comma
-id|vbase
+id|base
 )paren
 suffix:semicolon
 id|prom_debug
