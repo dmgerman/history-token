@@ -22,15 +22,6 @@ macro_line|#include &quot;generic.h&quot;
 multiline_comment|/**********************************************************************&n; *  prototypes&n; */
 multiline_comment|/* init funcs */
 r_static
-r_void
-id|__init
-id|get_hackkit_scr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
 r_int
 id|__init
 id|hackkit_init

@@ -629,9 +629,6 @@ r_int
 id|length
 comma
 r_int
-id|host_no
-comma
-r_int
 id|inout
 )paren
 (brace
@@ -768,7 +765,7 @@ comma
 dot
 id|queuecommand
 op_assign
-id|fas216_queue_command
+id|fas216_noqueue_command
 comma
 dot
 id|eh_host_reset_handler

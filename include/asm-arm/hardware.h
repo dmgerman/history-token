@@ -15,6 +15,7 @@ c_func
 r_struct
 id|platform_device
 op_star
+op_star
 comma
 r_int
 )paren
