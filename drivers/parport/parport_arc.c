@@ -1,4 +1,4 @@
-multiline_comment|/* Low-level parallel port routines for Archimedes onboard hardware&n; *&n; * Author: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; */
+multiline_comment|/* Low-level parallel port routines for Archimedes onboard hardware&n; *&n; * Author: Phil Blundell &lt;philb@gnu.org&gt;&n; */
 multiline_comment|/* This driver is for the parallel port hardware found on Acorn&squot;s old&n; * range of Archimedes machines.  The A5000 and newer systems have PC-style&n; * I/O hardware and should use the parport_pc driver instead.&n; *&n; * The Acorn printer port hardware is very simple.  There is a single 8-bit&n; * write-only latch for the data port and control/status bits are handled&n; * with various auxilliary input and output lines.  The port is not&n; * bidirectional, does not support any modes other than SPP, and has only&n; * a subset of the standard printer control lines connected.&n; */
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
