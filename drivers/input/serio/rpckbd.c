@@ -1,13 +1,14 @@
-multiline_comment|/*&n; * $Id: rpckbd.c,v 1.7 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;unknown author&n; */
+multiline_comment|/*&n; * $Id: rpckbd.c,v 1.7 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Russell King&n; *&n; * Fixes by Russell King.&n; */
 multiline_comment|/*&n; * Acorn RiscPC PS/2 keyboard controller driver for Linux/ARM&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/iomd.h&gt;
+macro_line|#include &lt;asm/hardware/iomd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -27,13 +28,23 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|pt_regs
+op_star
+id|kbd_pt_regs
+suffix:semicolon
 DECL|function|rpckbd_write
 r_static
-r_inline
-r_void
+r_int
 id|rpckbd_write
 c_func
 (paren
+r_struct
+id|serio
+op_star
+id|port
+comma
 r_int
 r_char
 id|val
@@ -70,36 +81,10 @@ comma
 id|IOMD_KARTTX
 )paren
 suffix:semicolon
-)brace
-DECL|variable|rpckbd_port
-r_static
-r_struct
-id|serio
-id|rpckbd_port
-op_assign
-(brace
-dot
-id|type
-op_assign
-id|SERIO_8042
-comma
-dot
-id|write
-op_assign
-id|rpckbd_write
-comma
-dot
-id|name
-op_assign
-l_string|&quot;RiscPC PS/2 kbd port&quot;
-comma
-dot
-id|phys
-op_assign
-l_string|&quot;rpckbd/serio0&quot;
-comma
-)brace
+r_return
+l_int|0
 suffix:semicolon
+)brace
 DECL|function|rpckbd_rx
 r_static
 r_void
@@ -119,6 +104,13 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|serio
+op_star
+id|port
+op_assign
+id|dev_id
+suffix:semicolon
 r_int
 r_int
 id|byte
@@ -154,8 +146,7 @@ suffix:semicolon
 id|serio_interrupt
 c_func
 (paren
-op_amp
-id|rpckbd_port
+id|port
 comma
 id|byte
 comma
@@ -184,14 +175,16 @@ id|regs
 )paren
 (brace
 )brace
-DECL|function|rpckbd_init
+DECL|function|rpckbd_open
 r_static
 r_int
-id|__init
-id|rpckbd_init
+id|rpckbd_open
 c_func
 (paren
-r_void
+r_struct
+id|serio
+op_star
+id|port
 )paren
 (brace
 multiline_comment|/* Reset the keyboard state machine. */
@@ -231,7 +224,7 @@ l_int|0
 comma
 l_string|&quot;rpckbd&quot;
 comma
-l_int|NULL
+id|port
 )paren
 op_ne
 l_int|0
@@ -241,8 +234,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rpckbd.c: Could not allocate keyboard receive IRQ!&bslash;n&quot;
+l_string|&quot;rpckbd.c: Could not allocate keyboard receive IRQ&bslash;n&quot;
 )paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -262,7 +256,7 @@ l_int|0
 comma
 l_string|&quot;rpckbd&quot;
 comma
-l_int|NULL
+id|port
 )paren
 op_ne
 l_int|0
@@ -272,8 +266,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rpckbd.c: Could not allocate keyboard transmit IRQ!&bslash;n&quot;
+l_string|&quot;rpckbd.c: Could not allocate keyboard transmit IRQ&bslash;n&quot;
 )paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -287,7 +282,89 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|register_serio_port
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|rpckbd_close
+r_static
+r_void
+id|rpckbd_close
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|port
+)paren
+(brace
+id|free_irq
+c_func
+(paren
+id|IRQ_KEYBOARDRX
+comma
+id|port
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|IRQ_KEYBOARDTX
+comma
+id|port
+)paren
+suffix:semicolon
+)brace
+DECL|variable|rpckbd_port
+r_static
+r_struct
+id|serio
+id|rpckbd_port
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|SERIO_8042
+comma
+dot
+id|open
+op_assign
+id|rpckbd_open
+comma
+dot
+id|close
+op_assign
+id|rpckbd_close
+comma
+dot
+id|write
+op_assign
+id|rpckbd_write
+comma
+dot
+id|name
+op_assign
+l_string|&quot;RiscPC PS/2 kbd port&quot;
+comma
+dot
+id|phys
+op_assign
+l_string|&quot;rpckbd/serio0&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|rpckbd_init
+r_static
+r_int
+id|__init
+id|rpckbd_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|serio_register_port
 c_func
 (paren
 op_amp
@@ -308,23 +385,7 @@ c_func
 r_void
 )paren
 (brace
-id|free_irq
-c_func
-(paren
-id|IRQ_KEYBOARDRX
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|IRQ_KEYBOARDTX
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|unregister_serio_port
+id|serio_unregister_port
 c_func
 (paren
 op_amp
