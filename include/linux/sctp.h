@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * Various protocol defined structures.  &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;sctp-developers-list@cig.mot.com&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Various protocol defined structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developerst@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __LINUX_SCTP_H__
 DECL|macro|__LINUX_SCTP_H__
 mdefine_line|#define __LINUX_SCTP_H__
@@ -66,7 +66,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Section 3.2.  Chunk Type Values.&n; * [Chunk Type] identifies the type of information contained in the Chunk &n; * Value field. It takes a value from 0 to 254. The value of 255 is &n; * reserved for future use as an extension field. &n; */
+multiline_comment|/* Section 3.2.  Chunk Type Values.&n; * [Chunk Type] identifies the type of information contained in the Chunk&n; * Value field. It takes a value from 0 to 254. The value of 255 is&n; * reserved for future use as an extension field.&n; */
 r_typedef
 r_enum
 (brace
@@ -161,7 +161,7 @@ DECL|typedef|sctp_cid_t
 id|sctp_cid_t
 suffix:semicolon
 multiline_comment|/* enum */
-multiline_comment|/* Section 3.2  &n; *  Chunk Types are encoded such that the highest-order two bits specify&n; *  the action that must be taken if the processing endpoint does not&n; *  recognize the Chunk Type.&n; */
+multiline_comment|/* Section 3.2&n; *  Chunk Types are encoded such that the highest-order two bits specify&n; *  the action that must be taken if the processing endpoint does not&n; *  recognize the Chunk Type.&n; */
 r_typedef
 r_enum
 (brace
@@ -207,10 +207,10 @@ op_assign
 l_int|0x01
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Set the T bit&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 14   |Reserved     |T|      Length = 4               |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * &n; * Chunk Flags: 8 bits&n; *   &n; *   Reserved:  7 bits&n; *     Set to 0 on transmit and ignored on receipt.&n; * &n; *   T bit:  1 bit&n; *     The T bit is set to 0 if the sender had a TCB that it destroyed. If&n; *     the sender did NOT have a TCB it should set this bit to 1.&n; * &n; * Note: Special rules apply to this chunk for verification, please &n; * see Section 8.5.1 for details.&n; */
+multiline_comment|/*&n; *  Set the T bit&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 14   |Reserved     |T|      Length = 4               |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; * Chunk Flags: 8 bits&n; *&n; *   Reserved:  7 bits&n; *     Set to 0 on transmit and ignored on receipt.&n; *&n; *   T bit:  1 bit&n; *     The T bit is set to 0 if the sender had a TCB that it destroyed. If&n; *     the sender did NOT have a TCB it should set this bit to 1.&n; *&n; * Note: Special rules apply to this chunk for verification, please&n; * see Section 8.5.1 for details.&n; */
 DECL|macro|sctp_test_T_bit
 mdefine_line|#define sctp_test_T_bit(c)    ((c)-&gt;chunk_hdr-&gt;flags &amp; SCTP_CHUNK_FLAG_T)
-multiline_comment|/* RFC 2960 &n; * Section 3.2.1 Optional/Variable-length Parmaeter Format.&n; */
+multiline_comment|/* RFC 2960&n; * Section 3.2.1 Optional/Variable-length Parmaeter Format.&n; */
 DECL|struct|sctp_paramhdr
 r_typedef
 r_struct
@@ -1197,7 +1197,7 @@ c_func
 l_int|0x0a
 )paren
 comma
-multiline_comment|/* SCTP Implementation Guide: &n;&t; *  11              Restart of an association with new addresses&n;&t; *  12              User Initiated Abort&n;&t; */
+multiline_comment|/* SCTP Implementation Guide:&n;&t; *  11  Restart of an association with new addresses&n;&t; *  12  User Initiated Abort&n;&t; *  13  Protocol Violation&n;&t; */
 DECL|enumerator|SCTP_ERROR_RESTART
 id|SCTP_ERROR_RESTART
 op_assign
@@ -1214,6 +1214,15 @@ id|__constant_htons
 c_func
 (paren
 l_int|0x0c
+)paren
+comma
+DECL|enumerator|SCTP_ERROR_PROTO_VIOLATION
+id|SCTP_ERROR_PROTO_VIOLATION
+op_assign
+id|__constant_htons
+c_func
+(paren
+l_int|0x0d
 )paren
 comma
 multiline_comment|/* ADDIP Section 3.3  New Error Causes&n;&t; *&n;&t; * Four new Error Causes are added to the SCTP Operational Errors,&n;&t; * primarily for use in the ASCONF-ACK chunk.&n;&t; *&n;&t; * Value          Cause Code&n;&t; * ---------      ----------------&n;&t; * 0x0100          Request to Delete Last Remaining IP Address.&n;&t; * 0x0101          Operation Refused Due to Resource Shortage.&n;&t; * 0x0102          Request to Delete Source IP Address.&n;&t; * 0x0103          Association Aborted due to illegal ASCONF-ACK&n;&t; */
@@ -1257,7 +1266,7 @@ DECL|typedef|sctp_error_t
 )brace
 id|sctp_error_t
 suffix:semicolon
-multiline_comment|/* RFC 2960.  Appendix A.  Explicit Congestion Notification. &n; *   Explicit Congestion Notification Echo (ECNE) (12)&n; */
+multiline_comment|/* RFC 2960.  Appendix A.  Explicit Congestion Notification.&n; *   Explicit Congestion Notification Echo (ECNE) (12)&n; */
 DECL|struct|sctp_ecnehdr
 r_typedef
 r_struct
@@ -1295,7 +1304,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960.  Appendix A.  Explicit Congestion Notification. &n; *   Congestion Window Reduced (CWR) (13)&n; */
+multiline_comment|/* RFC 2960.  Appendix A.  Explicit Congestion Notification.&n; *   Congestion Window Reduced (CWR) (13)&n; */
 DECL|struct|sctp_cwrhdr
 r_typedef
 r_struct
@@ -1335,7 +1344,7 @@ id|packed
 suffix:semicolon
 multiline_comment|/* FIXME:  Cleanup needs to continue below this line. */
 multiline_comment|/*&n; * ADDIP Section 3.1 New Chunk Types&n; */
-multiline_comment|/* ADDIP Section 3.1.1&n; * &n; * ASCONF-Request Correlation ID: 32 bits (unsigned integer)&n; * &n; * This is an opaque integer assigned by the sender to identify each&n; * request parameter. It is in host byte order and is only meaningful&n; * to the sender. The receiver of the ASCONF Chunk will copy this 32&n; * bit value into the ASCONF Correlation ID field of the&n; * ASCONF-ACK. The sender of the ASCONF can use this same value in the&n; * ASCONF-ACK to find which request the response is for.&n; * &n; * ASCONF Parameter: TLV format&n; * &n; * Each Address configuration change is represented by a TLV parameter&n; * as defined in Section 3.2. One or more requests may be present in&n; * an ASCONF Chunk.&n; */
+multiline_comment|/* ADDIP Section 3.1.1&n; *&n; * ASCONF-Request Correlation ID: 32 bits (unsigned integer)&n; *&n; * This is an opaque integer assigned by the sender to identify each&n; * request parameter. It is in host byte order and is only meaningful&n; * to the sender. The receiver of the ASCONF Chunk will copy this 32&n; * bit value into the ASCONF Correlation ID field of the&n; * ASCONF-ACK. The sender of the ASCONF can use this same value in the&n; * ASCONF-ACK to find which request the response is for.&n; *&n; * ASCONF Parameter: TLV format&n; *&n; * Each Address configuration change is represented by a TLV parameter&n; * as defined in Section 3.2. One or more requests may be present in&n; * an ASCONF Chunk.&n; */
 r_typedef
 r_struct
 (brace
@@ -1358,7 +1367,7 @@ DECL|typedef|sctpAsconfReq_t
 )brace
 id|sctpAsconfReq_t
 suffix:semicolon
-multiline_comment|/* ADDIP&n; * 3.1.1  Address/Stream Configuration Change Chunk (ASCONF)&n; * &n; * This chunk is used to communicate to the remote endpoint one of the&n; * configuration change requests that MUST be acknowledged.  The&n; * information carried in the ASCONF Chunk uses the form of a&n; * Tag-Length-Value (TLV), as described in &quot;3.2.1&n; * Optional/Variable-length Parameter Format&quot; in [RFC2960], for all&n; * variable parameters.&n; */
+multiline_comment|/* ADDIP&n; * 3.1.1  Address/Stream Configuration Change Chunk (ASCONF)&n; *&n; * This chunk is used to communicate to the remote endpoint one of the&n; * configuration change requests that MUST be acknowledged.  The&n; * information carried in the ASCONF Chunk uses the form of a&n; * Tag-Length-Value (TLV), as described in &quot;3.2.1&n; * Optional/Variable-length Parameter Format&quot; in [RFC2960], for all&n; * variable parameters.&n; */
 r_typedef
 r_struct
 (brace
@@ -1395,7 +1404,7 @@ DECL|typedef|sctpAsconf_t
 )brace
 id|sctpAsconf_t
 suffix:semicolon
-multiline_comment|/* ADDIP&n; * 3.1.2 Address/Stream Configuration Acknowledgment Chunk (ASCONF-ACK)&n; * &n; * ASCONF-Request Correlation ID: 32 bits (unsigned integer)&n; * &n; * This value is copied from the ASCONF Correlation ID received in the&n; * ASCONF Chunk. It is used by the receiver of the ASCONF-ACK to identify&n; * which ASCONF parameter this response is associated with.&n; * &n; * ASCONF Parameter Response : TLV format&n; * &n; * The ASCONF Parameter Response is used in the ASCONF-ACK to report&n; * status of ASCONF processing. By default, if a responding endpoint&n; * does not include any Error Cause, a success is indicated. Thus a&n; * sender of an ASCONF-ACK MAY indicate complete success of all TLVs in&n; * an ASCONF by returning only the Chunk Type, Chunk Flags, Chunk Length&n; * (set to 8) and the Serial Number.&n; */
+multiline_comment|/* ADDIP&n; * 3.1.2 Address/Stream Configuration Acknowledgment Chunk (ASCONF-ACK)&n; *&n; * ASCONF-Request Correlation ID: 32 bits (unsigned integer)&n; *&n; * This value is copied from the ASCONF Correlation ID received in the&n; * ASCONF Chunk. It is used by the receiver of the ASCONF-ACK to identify&n; * which ASCONF parameter this response is associated with.&n; *&n; * ASCONF Parameter Response : TLV format&n; *&n; * The ASCONF Parameter Response is used in the ASCONF-ACK to report&n; * status of ASCONF processing. By default, if a responding endpoint&n; * does not include any Error Cause, a success is indicated. Thus a&n; * sender of an ASCONF-ACK MAY indicate complete success of all TLVs in&n; * an ASCONF by returning only the Chunk Type, Chunk Flags, Chunk Length&n; * (set to 8) and the Serial Number.&n; */
 r_typedef
 r_union
 (brace
@@ -1453,7 +1462,7 @@ DECL|typedef|sctpAsconfAckRsp_t
 )brace
 id|sctpAsconfAckRsp_t
 suffix:semicolon
-multiline_comment|/* ADDIP&n; * 3.1.2 Address/Stream Configuration Acknowledgment Chunk (ASCONF-ACK)&n; * &n; * This chunk is used by the receiver of an ASCONF Chunk to&n; * acknowledge the reception. It carries zero or more results for any&n; * ASCONF Parameters that were processed by the receiver.&n; */
+multiline_comment|/* ADDIP&n; * 3.1.2 Address/Stream Configuration Acknowledgment Chunk (ASCONF-ACK)&n; *&n; * This chunk is used by the receiver of an ASCONF Chunk to&n; * acknowledge the reception. It carries zero or more results for any&n; * ASCONF Parameters that were processed by the receiver.&n; */
 r_typedef
 r_struct
 (brace
