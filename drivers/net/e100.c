@@ -3642,9 +3642,6 @@ c_cond
 id|unlikely
 c_func
 (paren
-(paren
-id|err
-op_assign
 id|e100_exec_cmd
 c_func
 (paren
@@ -3653,7 +3650,6 @@ comma
 id|nic-&gt;cuc_cmd
 comma
 id|nic-&gt;cb_to_send-&gt;dma_addr
-)paren
 )paren
 )paren
 )paren
