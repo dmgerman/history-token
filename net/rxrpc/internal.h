@@ -165,17 +165,6 @@ id|rxrpc_conn_timeout
 suffix:semicolon
 r_extern
 r_void
-id|rxrpc_conn_do_timeout
-c_func
-(paren
-r_struct
-id|rxrpc_connection
-op_star
-id|conn
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|rxrpc_conn_clearall
 c_func
 (paren
@@ -231,17 +220,6 @@ r_struct
 id|rxrpc_transport
 op_star
 id|trans
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|rxrpc_peer_do_timeout
-c_func
-(paren
-r_struct
-id|rxrpc_peer
-op_star
-id|peer
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * proc.c&n; */
