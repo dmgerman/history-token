@@ -4888,7 +4888,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|powernowk8_init
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|powernowk8_init
