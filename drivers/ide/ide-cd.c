@@ -13743,10 +13743,6 @@ id|g-&gt;minors
 op_assign
 l_int|1
 suffix:semicolon
-id|g-&gt;minor_shift
-op_assign
-l_int|0
-suffix:semicolon
 id|snprintf
 c_func
 (paren

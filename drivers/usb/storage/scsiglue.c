@@ -615,7 +615,9 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;device_reset() called&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_if
@@ -710,8 +712,8 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* This resets the device port */
-multiline_comment|/* It refuses to work if there&squot;s more than one interface in&n;   this device, so that other users are not affected. */
+multiline_comment|/* This resets the device&squot;s USB port. */
+multiline_comment|/* It refuses to work if there&squot;s more than one interface in&n; * the device, so that other users are not affected. */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|usb_storage_bus_reset
 r_static
@@ -728,24 +730,6 @@ r_struct
 id|us_data
 op_star
 id|us
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
-multiline_comment|/* we use the usb_reset_device() function to handle this for us */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;bus_reset() called&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|srb-&gt;device-&gt;host
-)paren
-suffix:semicolon
-id|us
 op_assign
 (paren
 r_struct
@@ -757,7 +741,69 @@ id|srb-&gt;device-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t;   a device&squot;s several drivers. Therefore we reset only devices&n;&t;   with one interface which we of course own.&n;&t;*/
+r_int
+id|state
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|state
+op_ne
+id|US_STATE_IDLE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|USB_STORAGE
+l_string|&quot;Error in %s: &quot;
+l_string|&quot;invalid state %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* set the state and release the lock */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_RESETTING
+)paren
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;device-&gt;host
+)paren
+suffix:semicolon
+multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t;   a device&squot;s several drivers. Therefore we reset only devices&n;&t;   with just one interface, which we of course own.&n;&t;*/
 singleline_comment|//FIXME: needs locking against config changes
 r_if
 c_cond
@@ -767,13 +813,31 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* attempt to reset the port */
+multiline_comment|/* lock the device and attempt to reset the port */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|usb_reset_device
 c_func
 (paren
 id|us-&gt;pusb_dev
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -795,20 +859,24 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;cannot reset a multiinterface device. failing to reset.&bslash;n&quot;
+l_string|&quot;Refusing to reset a multi-interface device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;bus_reset() complete&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* lock access to the state and clear it */
 id|scsi_lock
 c_func
 (paren
 id|srb-&gt;device-&gt;host
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_IDLE
 )paren
 suffix:semicolon
 r_return

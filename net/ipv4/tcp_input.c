@@ -1690,7 +1690,7 @@ suffix:semicolon
 r_else
 id|dst-&gt;metrics
 (braket
-id|RTAX_RTT
+id|RTAX_RTTVAR
 op_minus
 l_int|1
 )braket
@@ -1698,7 +1698,7 @@ op_sub_assign
 (paren
 id|dst-&gt;metrics
 (braket
-id|RTAX_RTT
+id|RTAX_RTTVAR
 op_minus
 l_int|1
 )braket

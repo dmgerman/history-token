@@ -4,8 +4,6 @@ DECL|macro|IBMTR_DEBUG_MESSAGES
 mdefine_line|#define IBMTR_DEBUG_MESSAGES 0
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef PCMCIA
-DECL|macro|MODULE
-macro_line|#undef MODULE
 DECL|macro|ENABLE_PAGING
 macro_line|#undef ENABLE_PAGING
 macro_line|#else
@@ -1407,7 +1405,7 @@ id|tok_info
 op_star
 id|ti
 op_assign
-l_int|0
+id|dev-&gt;priv
 suffix:semicolon
 r_void
 op_star
@@ -1435,30 +1433,6 @@ r_static
 r_int
 id|version_printed
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef MODULE
-macro_line|#ifndef PCMCIA
-id|dev
-op_assign
-id|init_trdev
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*    Query the adapter PIO base port which will return&n;&t; *    indication of where MMIO was placed. We also have a&n;&t; *    coded interrupt number.&n;&t; */
 id|segment
@@ -1580,11 +1554,6 @@ c_func
 id|t_mmio
 )paren
 suffix:semicolon
-id|ti
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
-multiline_comment|/*BMS moved up here */
 id|t_mmio
 op_assign
 (paren
@@ -1837,70 +1806,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now, allocate some of the pl0 buffers for this driver.. */
+multiline_comment|/* Now, setup some of the pl0 buffers for this driver.. */
 multiline_comment|/* If called from PCMCIA, it is already set up, so no need to &n;&t;   waste the memory, just use the existing structure */
 macro_line|#ifndef PCMCIA
-id|ti
-op_assign
-(paren
-r_struct
-id|tok_info
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|tok_info
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ti
-op_eq
-l_int|NULL
-)paren
-(brace
-id|iounmap
-c_func
-(paren
-id|t_mmio
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|ti
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|tok_info
-)paren
-)paren
-suffix:semicolon
 id|ti-&gt;mmio
 op_assign
 id|t_mmio
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|ti
-suffix:semicolon
-multiline_comment|/* this seems like the logical use of the&n;&t;&t;&t;&t;   field ... let&squot;s try some empirical tests&n;&t;&t;&t;&t;   using the token-info structure -- that&n;&t;&t;&t;&t;   should fit with out future hope of multiple&n;&t;&t;&t;&t;   adapter support as well /dwm   */
 r_for
 c_loop
 (paren
@@ -3634,16 +3546,6 @@ id|dev-&gt;change_mtu
 op_assign
 id|ibmtr_change_mtu
 suffix:semicolon
-macro_line|#ifndef MODULE
-macro_line|#ifndef PCMCIA
-id|tr_setup
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -10004,22 +9906,14 @@ id|dev_ibmtr
 id|i
 )braket
 op_assign
-l_int|NULL
-suffix:semicolon
-id|dev_ibmtr
-(braket
-id|i
-)braket
-op_assign
-id|init_trdev
+id|alloc_trdev
 c_func
 (paren
-id|dev_ibmtr
-(braket
-id|i
-)braket
-comma
-l_int|0
+r_sizeof
+(paren
+r_struct
+id|tok_info
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10096,7 +9990,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|register_trdev
+id|register_netdev
 c_func
 (paren
 id|dev_ibmtr
@@ -10142,7 +10036,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ibmtr: register_trdev() returned non-zero.&bslash;n&quot;
+l_string|&quot;ibmtr: register_netdev() returned non-zero.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10188,10 +10082,8 @@ id|dev_ibmtr
 id|i
 )braket
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -10255,7 +10147,7 @@ id|ADAPTRESETREL
 )paren
 suffix:semicolon
 )brace
-id|unregister_trdev
+id|unregister_netdev
 c_func
 (paren
 id|dev_ibmtr
@@ -10334,17 +10226,6 @@ id|ti-&gt;sram_virt
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;
-id|kfree
-c_func
-(paren
-id|dev_ibmtr
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|priv
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren

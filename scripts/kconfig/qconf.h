@@ -509,6 +509,8 @@ comma
 id|menuInvPix
 comma
 id|menuBackPix
+comma
+id|voidPix
 suffix:semicolon
 r_bool
 id|showAll
