@@ -1506,17 +1506,7 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/*&n;&t; * Grab device&squot;s serialize mutex to prevent /usbfs and others from&n;&t; * sending out a command in the middle of ours (if libusb sends a&n;&t; * get_descriptor or something on pipe 0 after our CBW and before&n;&t; * our CSW, and then we get a stall, we have trouble)&n;&t; */
 multiline_comment|/* send the command to the transport layer */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;pusb_dev-&gt;serialize
-)paren
-)paren
-suffix:semicolon
 id|srb-&gt;resid
 op_assign
 l_int|0
@@ -1531,15 +1521,6 @@ c_func
 id|srb
 comma
 id|us
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;pusb_dev-&gt;serialize
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* if the command gets aborted by the higher layers, we need to&n;&t; * short-circuit all other processing&n;&t; */
@@ -1902,15 +1883,6 @@ op_xor_assign
 l_int|0x80000000
 suffix:semicolon
 multiline_comment|/* issue the auto-sense command */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;pusb_dev-&gt;serialize
-)paren
-)paren
-suffix:semicolon
 id|old_resid
 op_assign
 id|srb-&gt;resid
@@ -1929,15 +1901,6 @@ c_func
 id|us-&gt;srb
 comma
 id|us
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;pusb_dev-&gt;serialize
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s clean up right away */
