@@ -2717,7 +2717,7 @@ op_logical_neg
 id|fault_in_pages_writeable
 c_func
 (paren
-id|desc-&gt;buf
+id|desc-&gt;arg.buf
 comma
 id|size
 )paren
@@ -2738,7 +2738,7 @@ op_assign
 id|__copy_to_user
 c_func
 (paren
-id|desc-&gt;buf
+id|desc-&gt;arg.buf
 comma
 id|kaddr
 op_plus
@@ -2780,7 +2780,7 @@ op_assign
 id|__copy_to_user
 c_func
 (paren
-id|desc-&gt;buf
+id|desc-&gt;arg.buf
 comma
 id|kaddr
 op_plus
@@ -2823,7 +2823,7 @@ id|desc-&gt;written
 op_add_assign
 id|size
 suffix:semicolon
-id|desc-&gt;buf
+id|desc-&gt;arg.buf
 op_add_assign
 id|size
 suffix:semicolon
@@ -3127,7 +3127,7 @@ id|desc.written
 op_assign
 l_int|0
 suffix:semicolon
-id|desc.buf
+id|desc.arg.buf
 op_assign
 id|iov
 (braket
@@ -3409,12 +3409,7 @@ id|file
 op_star
 id|file
 op_assign
-(paren
-r_struct
-id|file
-op_star
-)paren
-id|desc-&gt;buf
+id|desc-&gt;arg.data
 suffix:semicolon
 r_if
 c_cond
@@ -3502,7 +3497,6 @@ id|read_actor_t
 id|actor
 comma
 r_void
-id|__user
 op_star
 id|target
 )paren
@@ -3527,7 +3521,7 @@ id|desc.count
 op_assign
 id|count
 suffix:semicolon
-id|desc.buf
+id|desc.arg.data
 op_assign
 id|target
 suffix:semicolon

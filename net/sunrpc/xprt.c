@@ -3884,12 +3884,7 @@ id|rpc_xprt
 op_star
 id|xprt
 op_assign
-(paren
-r_struct
-id|rpc_xprt
-op_star
-)paren
-id|rd_desc-&gt;buf
+id|rd_desc-&gt;arg.data
 suffix:semicolon
 id|skb_reader_t
 id|desc
@@ -4087,12 +4082,8 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* We use rd_desc to pass struct xprt to tcp_data_recv */
-id|rd_desc.buf
+id|rd_desc.arg.data
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|xprt
 suffix:semicolon
 id|rd_desc.count

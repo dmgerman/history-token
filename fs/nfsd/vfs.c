@@ -2301,12 +2301,7 @@ id|svc_rqst
 op_star
 id|rqstp
 op_assign
-(paren
-r_struct
-id|svc_rqst
-op_star
-)paren
-id|desc-&gt;buf
+id|desc-&gt;arg.data
 suffix:semicolon
 r_if
 c_cond
