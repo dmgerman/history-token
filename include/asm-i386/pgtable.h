@@ -230,6 +230,27 @@ mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
+DECL|function|pte_user
+r_static
+r_inline
+r_int
+id|pte_user
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pte
+)paren
+dot
+id|pte_low
+op_amp
+id|_PAGE_USER
+suffix:semicolon
+)brace
 DECL|function|pte_read
 r_static
 r_inline
