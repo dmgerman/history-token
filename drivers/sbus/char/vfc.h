@@ -223,10 +223,6 @@ r_int
 r_int
 id|control_reg
 suffix:semicolon
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
 DECL|member|device_lock_sem
 r_struct
 id|semaphore
