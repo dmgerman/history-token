@@ -409,16 +409,6 @@ id|access
 op_assign
 id|nwinfo-&gt;access
 suffix:semicolon
-id|NCP_FINFO
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|server_file_handle
-op_assign
-id|nwinfo-&gt;server_file_handle
-suffix:semicolon
 id|memcpy
 c_func
 (paren

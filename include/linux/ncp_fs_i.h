@@ -37,10 +37,6 @@ DECL|member|access
 r_int
 id|access
 suffix:semicolon
-DECL|member|server_file_handle
-id|__u32
-id|server_file_handle
-suffix:semicolon
 DECL|member|file_handle
 id|__u8
 id|file_handle
