@@ -14,9 +14,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
 macro_line|#include &quot;i2c-algo-pcf.h&quot;
-multiline_comment|/* ----- global defines ----------------------------------------------- */
-DECL|macro|DEB
-mdefine_line|#define DEB(x) if (i2c_debug&gt;=1) x
 DECL|macro|DEB2
 mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x
 DECL|macro|DEB3
@@ -31,8 +28,6 @@ DECL|variable|i2c_debug
 r_static
 r_int
 id|i2c_debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* --- setting states on the bus with the right timing: ---------------&t;*/
 DECL|macro|set_pcf
@@ -2006,12 +2001,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|i2c_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

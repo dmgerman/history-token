@@ -90,17 +90,19 @@ mdefine_line|#define ALI15X3_STS_ERR&t;&t;0xE0&t;/* all the bad error bits */
 multiline_comment|/* If force_addr is set to anything different from 0, we forcibly enable&n;   the device at the given address. */
 DECL|variable|force_addr
 r_static
-r_int
+id|u16
 id|force_addr
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|force_addr
 comma
-l_string|&quot;i&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

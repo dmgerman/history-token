@@ -12,15 +12,17 @@ DECL|macro|DEFAULT_BASE
 mdefine_line|#define DEFAULT_BASE 0x378
 DECL|variable|base
 r_static
-r_int
+id|u16
 id|base
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|base
 comma
-l_string|&quot;i&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
