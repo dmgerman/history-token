@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
+macro_line|#include &lt;linux/usb_cdc.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 macro_line|#include &quot;gadget_chips.h&quot;
 multiline_comment|/* Wait Cond */
@@ -36,203 +37,6 @@ DECL|macro|__wait_cond_interruptible_timeout
 mdefine_line|#define __wait_cond_interruptible_timeout(wq, condition, lock, flags, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;timeout, ret)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;signed long __timeout = timeout;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (__timeout == 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore(lock, flags);&t;&t;&bslash;&n;&t;&t;&t;__timeout = schedule_timeout(__timeout);&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave(lock, flags);&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|wait_cond_interruptible_timeout
 mdefine_line|#define wait_cond_interruptible_timeout(wq, condition, lock, flags,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;timeout)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_cond_interruptible_timeout(wq, condition, lock,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;flags, timeout, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/* CDC-ACM Defines and Structures */
-DECL|macro|USB_CDC_SUBCLASS_ACM
-mdefine_line|#define USB_CDC_SUBCLASS_ACM&t;&t;&t;2
-DECL|macro|USB_CDC_CTRL_PROTO_NONE
-mdefine_line|#define USB_CDC_CTRL_PROTO_NONE&t;&t;&t;0
-DECL|macro|USB_CDC_CTRL_PROTO_AT
-mdefine_line|#define USB_CDC_CTRL_PROTO_AT&t;&t;&t;1
-DECL|macro|USB_CDC_CTRL_PROTO_VENDOR
-mdefine_line|#define USB_CDC_CTRL_PROTO_VENDOR&t;&t;0xff
-DECL|macro|USB_CDC_SUBTYPE_HEADER
-mdefine_line|#define USB_CDC_SUBTYPE_HEADER&t;&t;&t;0
-DECL|macro|USB_CDC_SUBTYPE_CALL_MGMT
-mdefine_line|#define USB_CDC_SUBTYPE_CALL_MGMT&t;&t;1
-DECL|macro|USB_CDC_SUBTYPE_ACM
-mdefine_line|#define USB_CDC_SUBTYPE_ACM&t;&t;&t;2
-DECL|macro|USB_CDC_SUBTYPE_UNION
-mdefine_line|#define USB_CDC_SUBTYPE_UNION&t;&t;&t;6
-DECL|macro|USB_CDC_CALL_MGMT_CAP_CALL_MGMT
-mdefine_line|#define USB_CDC_CALL_MGMT_CAP_CALL_MGMT&t;&t;0x01
-DECL|macro|USB_CDC_CALL_MGMT_CAP_DATA_INTF
-mdefine_line|#define USB_CDC_CALL_MGMT_CAP_DATA_INTF&t;&t;0x02
-DECL|macro|USB_CDC_REQ_SET_LINE_CODING
-mdefine_line|#define USB_CDC_REQ_SET_LINE_CODING&t;&t;0x20
-DECL|macro|USB_CDC_REQ_GET_LINE_CODING
-mdefine_line|#define USB_CDC_REQ_GET_LINE_CODING&t;&t;0x21
-DECL|macro|USB_CDC_REQ_SET_CONTROL_LINE_STATE
-mdefine_line|#define USB_CDC_REQ_SET_CONTROL_LINE_STATE&t;0x22
-DECL|macro|USB_CDC_1_STOP_BITS
-mdefine_line|#define USB_CDC_1_STOP_BITS&t;&t;&t;0
-DECL|macro|USB_CDC_1_5_STOP_BITS
-mdefine_line|#define USB_CDC_1_5_STOP_BITS&t;&t;&t;1
-DECL|macro|USB_CDC_2_STOP_BITS
-mdefine_line|#define USB_CDC_2_STOP_BITS&t;&t;&t;2
-DECL|macro|USB_CDC_NO_PARITY
-mdefine_line|#define USB_CDC_NO_PARITY&t;&t;&t;0
-DECL|macro|USB_CDC_ODD_PARITY
-mdefine_line|#define USB_CDC_ODD_PARITY&t;&t;&t;1
-DECL|macro|USB_CDC_EVEN_PARITY
-mdefine_line|#define USB_CDC_EVEN_PARITY&t;&t;&t;2
-DECL|macro|USB_CDC_MARK_PARITY
-mdefine_line|#define USB_CDC_MARK_PARITY&t;&t;&t;3
-DECL|macro|USB_CDC_SPACE_PARITY
-mdefine_line|#define USB_CDC_SPACE_PARITY&t;&t;&t;4
-multiline_comment|/* Header Functional Descriptor from CDC spec 5.2.3.1 */
-DECL|struct|usb_cdc_header_desc
-r_struct
-id|usb_cdc_header_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bcdCDC
-id|u16
-id|bcdCDC
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Call Management Descriptor from CDC spec 5.2.3.3 */
-DECL|struct|usb_cdc_call_mgmt_desc
-r_struct
-id|usb_cdc_call_mgmt_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bmCapabilities
-id|u8
-id|bmCapabilities
-suffix:semicolon
-DECL|member|bDataInterface
-id|u8
-id|bDataInterface
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Abstract Control Management Descriptor from CDC spec 5.2.3.4 */
-DECL|struct|usb_cdc_acm_desc
-r_struct
-id|usb_cdc_acm_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bmCapabilities
-id|u8
-id|bmCapabilities
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Union Functional Descriptor from CDC spec 5.2.3.8 */
-DECL|struct|usb_cdc_union_desc
-r_struct
-id|usb_cdc_union_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bMasterInterface0
-id|u8
-id|bMasterInterface0
-suffix:semicolon
-DECL|member|bSlaveInterface0
-id|u8
-id|bSlaveInterface0
-suffix:semicolon
-multiline_comment|/* ... and there could be other slave interfaces */
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Line Coding Structure from CDC spec 6.2.13 */
-DECL|struct|usb_cdc_line_coding
-r_struct
-id|usb_cdc_line_coding
-(brace
-DECL|member|dwDTERate
-id|u32
-id|dwDTERate
-suffix:semicolon
-DECL|member|bCharFormat
-id|u8
-id|bCharFormat
-suffix:semicolon
-DECL|member|bParityType
-id|u8
-id|bParityType
-suffix:semicolon
-DECL|member|bDataBits
-id|u8
-id|bDataBits
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Defines */
 DECL|macro|GS_VERSION_STR
 mdefine_line|#define GS_VERSION_STR&t;&t;&t;&quot;v2.0&quot;
@@ -1760,7 +1564,7 @@ comma
 dot
 id|bInterfaceProtocol
 op_assign
-id|USB_CDC_CTRL_PROTO_AT
+id|USB_CDC_ACM_PROTO_AT_V25TER
 comma
 dot
 id|iInterface
@@ -1843,7 +1647,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-id|USB_CDC_SUBTYPE_HEADER
+id|USB_CDC_HEADER_TYPE
 comma
 dot
 id|bcdCDC
@@ -1860,7 +1664,7 @@ DECL|variable|gs_call_mgmt_descriptor
 r_static
 r_const
 r_struct
-id|usb_cdc_call_mgmt_desc
+id|usb_cdc_call_mgmt_descriptor
 id|gs_call_mgmt_descriptor
 op_assign
 (brace
@@ -1880,7 +1684,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-id|USB_CDC_SUBTYPE_CALL_MGMT
+id|USB_CDC_CALL_MANAGEMENT_TYPE
 comma
 dot
 id|bmCapabilities
@@ -1898,7 +1702,7 @@ suffix:semicolon
 DECL|variable|gs_acm_descriptor
 r_static
 r_struct
-id|usb_cdc_acm_desc
+id|usb_cdc_acm_descriptor
 id|gs_acm_descriptor
 op_assign
 (brace
@@ -1918,7 +1722,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-id|USB_CDC_SUBTYPE_ACM
+id|USB_CDC_ACM_TYPE
 comma
 dot
 id|bmCapabilities
@@ -1951,7 +1755,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-id|USB_CDC_SUBTYPE_UNION
+id|USB_CDC_UNION_TYPE
 comma
 dot
 id|bMasterInterface0
@@ -6179,6 +5983,21 @@ id|req
 op_assign
 id|dev-&gt;dev_ctrl_req
 suffix:semicolon
+id|u16
+id|wIndex
+op_assign
+id|ctrl-&gt;wIndex
+suffix:semicolon
+id|u16
+id|wValue
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
+id|u16
+id|wLength
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6229,11 +6048,11 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|ctrl-&gt;wValue
+id|wValue
 comma
-id|ctrl-&gt;wIndex
+id|wIndex
 comma
-id|ctrl-&gt;wLength
+id|wLength
 )paren
 suffix:semicolon
 r_break
@@ -6256,7 +6075,7 @@ id|req-&gt;zero
 op_assign
 id|ret
 OL
-id|ctrl-&gt;wLength
+id|wLength
 op_logical_and
 (paren
 id|ret
@@ -6356,6 +6175,21 @@ id|req
 op_assign
 id|dev-&gt;dev_ctrl_req
 suffix:semicolon
+id|u16
+id|wIndex
+op_assign
+id|ctrl-&gt;wIndex
+suffix:semicolon
+id|u16
+id|wValue
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
+id|u16
+id|wLength
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6377,7 +6211,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 op_rshift
 l_int|8
 )paren
@@ -6390,7 +6224,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6432,7 +6266,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6482,11 +6316,11 @@ id|req-&gt;buf
 comma
 id|gadget-&gt;speed
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_rshift
 l_int|8
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_amp
 l_int|0xff
 comma
@@ -6505,7 +6339,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6527,7 +6361,7 @@ c_func
 op_amp
 id|gs_string_table
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_amp
 l_int|0xff
 comma
@@ -6546,7 +6380,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6585,7 +6419,7 @@ c_func
 (paren
 id|dev
 comma
-id|ctrl-&gt;wValue
+id|wValue
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -6623,7 +6457,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6646,7 +6480,7 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;dev_config
 op_logical_or
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ge
 id|GS_MAX_NUM_INTERFACES
 )paren
@@ -6659,7 +6493,7 @@ id|dev-&gt;dev_config
 op_eq
 id|GS_BULK_CONFIG_ID
 op_logical_and
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ne
 id|GS_BULK_INTERFACE_ID
 )paren
@@ -6669,7 +6503,7 @@ multiline_comment|/* no alternate interface settings */
 r_if
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 op_ne
 l_int|0
 )paren
@@ -6719,7 +6553,7 @@ id|dev-&gt;dev_config
 op_ne
 id|GS_BULK_CONFIG_ID
 op_logical_and
-id|ctrl-&gt;wIndex
+id|wIndex
 op_eq
 id|GS_CONTROL_INTERFACE_ID
 )paren
@@ -6815,7 +6649,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ge
 id|GS_MAX_NUM_INTERFACES
 op_logical_or
@@ -6824,7 +6658,7 @@ id|dev-&gt;dev_config
 op_eq
 id|GS_BULK_CONFIG_ID
 op_logical_and
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ne
 id|GS_BULK_INTERFACE_ID
 )paren
@@ -6853,7 +6687,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -6875,11 +6709,11 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|ctrl-&gt;wValue
+id|wValue
 comma
-id|ctrl-&gt;wIndex
+id|wIndex
 comma
-id|ctrl-&gt;wLength
+id|wLength
 )paren
 suffix:semicolon
 r_break
@@ -6942,6 +6776,21 @@ id|req
 op_assign
 id|dev-&gt;dev_ctrl_req
 suffix:semicolon
+id|u16
+id|wIndex
+op_assign
+id|ctrl-&gt;wIndex
+suffix:semicolon
+id|u16
+id|wValue
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
+id|u16
+id|wLength
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6956,7 +6805,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -7018,7 +6867,7 @@ op_assign
 id|min
 c_func
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -7085,11 +6934,11 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|ctrl-&gt;wValue
+id|wValue
 comma
-id|ctrl-&gt;wIndex
+id|wIndex
 comma
-id|ctrl-&gt;wLength
+id|wLength
 )paren
 suffix:semicolon
 r_break
@@ -8605,7 +8454,11 @@ id|i
 suffix:semicolon
 id|port-&gt;port_line_coding.dwDTERate
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|GS_DEFAULT_DTE_RATE
+)paren
 suffix:semicolon
 id|port-&gt;port_line_coding.bCharFormat
 op_assign
@@ -8798,6 +8651,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
