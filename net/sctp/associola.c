@@ -259,11 +259,21 @@ suffix:semicolon
 multiline_comment|/* Set things that have constant value.  */
 id|asoc-&gt;cookie_life.tv_sec
 op_assign
-id|SCTP_DEFAULT_COOKIE_LIFE_SEC
+id|sctp_proto.valid_cookie_life
+op_div
+id|HZ
 suffix:semicolon
 id|asoc-&gt;cookie_life.tv_usec
 op_assign
-id|SCTP_DEFAULT_COOKIE_LIFE_USEC
+(paren
+id|sctp_proto.valid_cookie_life
+op_mod
+id|HZ
+)paren
+op_star
+l_int|1000000L
+op_div
+id|HZ
 suffix:semicolon
 id|asoc-&gt;pmtu
 op_assign
