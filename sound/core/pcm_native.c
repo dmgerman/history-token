@@ -1632,7 +1632,6 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_hw_params
-r_static
 r_int
 id|snd_pcm_hw_params
 c_func

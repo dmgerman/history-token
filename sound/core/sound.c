@@ -2173,6 +2173,22 @@ c_func
 id|snd_ctl_unregister_ioctl
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+DECL|variable|snd_ctl_elem_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ctl_elem_read
+)paren
+suffix:semicolon
+DECL|variable|snd_ctl_elem_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ctl_elem_write
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* misc.c */
 DECL|variable|snd_task_name
 id|EXPORT_SYMBOL
