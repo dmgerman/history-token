@@ -2227,7 +2227,7 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 0 */
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|BufferFormat
