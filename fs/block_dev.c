@@ -2319,19 +2319,6 @@ id|dev
 r_return
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;VFS: Disk change detected on device %s&bslash;n&quot;
-comma
-id|bdevname
-c_func
-(paren
-id|bdev
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
