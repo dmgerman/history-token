@@ -96,17 +96,17 @@ mdefine_line|#define PCIX_100MHZ_ECC&t;&t;0x6
 DECL|macro|PCIX_133MHZ_ECC
 mdefine_line|#define PCIX_133MHZ_ECC&t;&t;0x7
 DECL|macro|PCIX_66MHZ_266
-mdefine_line|#define PCIX_66MHZ_266&t;&t;0x8
+mdefine_line|#define PCIX_66MHZ_266&t;&t;0x9
 DECL|macro|PCIX_100MHZ_266
-mdefine_line|#define PCIX_100MHZ_266&t;&t;0x9
+mdefine_line|#define PCIX_100MHZ_266&t;&t;0xa
 DECL|macro|PCIX_133MHZ_266
-mdefine_line|#define PCIX_133MHZ_266&t;&t;0x0a
+mdefine_line|#define PCIX_133MHZ_266&t;&t;0xb
 DECL|macro|PCIX_66MHZ_533
-mdefine_line|#define PCIX_66MHZ_533&t;&t;0x0b
+mdefine_line|#define PCIX_66MHZ_533&t;&t;0x11
 DECL|macro|PCIX_100MHZ_533
-mdefine_line|#define PCIX_100MHZ_533&t;&t;0x0c
+mdefine_line|#define PCIX_100MHZ_533&t;&t;0x12
 DECL|macro|PCIX_133MHZ_533
-mdefine_line|#define PCIX_133MHZ_533&t;&t;0x0d
+mdefine_line|#define PCIX_133MHZ_533&t;&t;0x13
 multiline_comment|/* Slot Configuration */
 DECL|macro|SLOT_NUM
 mdefine_line|#define SLOT_NUM&t;&t;0x0000001F
@@ -1255,10 +1255,11 @@ l_int|0
 )paren
 ques
 c_cond
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* 0 -&gt; close; 1 -&gt; open */
 id|DBG_LEAVE_ROUTINE
 r_return
 l_int|0
@@ -5523,6 +5524,16 @@ r_goto
 id|abort_free_ctlr
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: shpc_cap_offset = %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|shpc_cap_offset
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|pci_write_config_byte
@@ -6206,7 +6217,6 @@ multiline_comment|/* start with 10 second delay */
 r_else
 (brace
 multiline_comment|/* Installs the interrupt handler */
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR 
 id|rc
 op_assign
 id|pci_enable_msi
@@ -6221,10 +6231,16 @@ c_cond
 id|rc
 )paren
 (brace
-id|err
+id|info
 c_func
 (paren
 l_string|&quot;Can&squot;t get msi for the hotplug controller&bslash;n&quot;
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Use INTx for the hotplug controller&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
@@ -6237,15 +6253,12 @@ comma
 id|rc
 )paren
 suffix:semicolon
-r_goto
-id|abort_free_ctlr
-suffix:semicolon
 )brace
+r_else
 id|php_ctlr-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|request_irq

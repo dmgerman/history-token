@@ -70,7 +70,7 @@ comma
 DECL|enumerator|PCI_SPEED_100MHz_PCIX_533
 id|PCI_SPEED_100MHz_PCIX_533
 op_assign
-l_int|0X12
+l_int|0x12
 comma
 DECL|enumerator|PCI_SPEED_133MHz_PCIX_533
 id|PCI_SPEED_133MHz_PCIX_533
