@@ -92,24 +92,33 @@ DECL|macro|ENOUGH
 mdefine_line|#define ENOUGH(v,unit)&t;(((v)-1)/(unit)+1)
 DECL|macro|EZ
 mdefine_line|#define EZ(v,unit)&t;((v)?ENOUGH(v,unit):0)
+multiline_comment|/* see hpt366.c for details */
+DECL|macro|XFER_UDMA_66_3
+mdefine_line|#define XFER_UDMA_66_3&t;0x100
+DECL|macro|XFER_UDMA_66_4
+mdefine_line|#define XFER_UDMA_66_4&t;0x200
 DECL|macro|XFER_MODE
-mdefine_line|#define XFER_MODE&t;0xf0
+mdefine_line|#define XFER_MODE&t;0xff0
 DECL|macro|XFER_UDMA_133
-mdefine_line|#define XFER_UDMA_133&t;0x48
+mdefine_line|#define XFER_UDMA_133&t;0x800
 DECL|macro|XFER_UDMA_100
-mdefine_line|#define XFER_UDMA_100&t;0x44
+mdefine_line|#define XFER_UDMA_100&t;0x400
 DECL|macro|XFER_UDMA_66
-mdefine_line|#define XFER_UDMA_66&t;0x42
+mdefine_line|#define XFER_UDMA_66&t;0x300
 DECL|macro|XFER_UDMA
-mdefine_line|#define XFER_UDMA&t;0x40
+mdefine_line|#define XFER_UDMA&t;0x040
 DECL|macro|XFER_MWDMA
-mdefine_line|#define XFER_MWDMA&t;0x20
+mdefine_line|#define XFER_MWDMA&t;0x020
 DECL|macro|XFER_SWDMA
-mdefine_line|#define XFER_SWDMA&t;0x10
+mdefine_line|#define XFER_SWDMA&t;0x010
 DECL|macro|XFER_EPIO
-mdefine_line|#define XFER_EPIO&t;0x01
+mdefine_line|#define XFER_EPIO&t;0x001
 DECL|macro|XFER_PIO
-mdefine_line|#define XFER_PIO&t;0x00
+mdefine_line|#define XFER_PIO&t;0x000
+DECL|macro|XFER_UDMA_ALL
+mdefine_line|#define XFER_UDMA_ALL&t;0xf40
+DECL|macro|XFER_UDMA_80W
+mdefine_line|#define XFER_UDMA_80W&t;0xf00
 multiline_comment|/* External interface to host chips channel timing setup.&n; *&n; * It&squot;s a bit elaborate due to the legacy we have to bear.&n; */
 r_extern
 r_int

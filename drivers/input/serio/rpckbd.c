@@ -132,14 +132,7 @@ op_lshift
 l_int|5
 )paren
 )paren
-r_if
-c_cond
-(paren
-id|rpckbd_port.dev
-)paren
-id|rpckbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp

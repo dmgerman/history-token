@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 42 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -81,10 +81,6 @@ id|acpi_tb_convert_to_xsdt
 id|acpi_table_desc
 op_star
 id|table_info
-comma
-id|u32
-op_star
-id|number_of_tables
 )paren
 (brace
 id|ACPI_SIZE
@@ -101,17 +97,6 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Get the number of tables defined in the RSDT or XSDT */
-op_star
-id|number_of_tables
-op_assign
-id|acpi_tb_get_table_count
-(paren
-id|acpi_gbl_RSDP
-comma
-id|table_info-&gt;pointer
-)paren
-suffix:semicolon
 multiline_comment|/* Compute size of the converted XSDT */
 id|table_size
 op_assign
@@ -119,8 +104,7 @@ op_assign
 (paren
 id|ACPI_SIZE
 )paren
-op_star
-id|number_of_tables
+id|acpi_gbl_rsdt_table_count
 op_star
 r_sizeof
 (paren
@@ -184,8 +168,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-op_star
-id|number_of_tables
+id|acpi_gbl_rsdt_table_count
 suffix:semicolon
 id|i
 op_increment

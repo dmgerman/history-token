@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &quot;ata-timing.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|DEFAULT_BMIBA
@@ -72,26 +73,6 @@ op_logical_neg
 id|dma_stat
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__ata_end_request
 c_func
 (paren
@@ -104,16 +85,8 @@ comma
 id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|printk
@@ -480,7 +453,7 @@ suffix:semicolon
 multiline_comment|/*&n; * 1 dma-ing, 2 error, 4 intr&n; */
 DECL|function|dma_timer_expiry
 r_static
-r_int
+id|ide_startstop_t
 id|dma_timer_expiry
 c_func
 (paren
@@ -493,6 +466,11 @@ r_struct
 id|request
 op_star
 id|rq
+comma
+r_int
+r_int
+op_star
+id|wait
 )paren
 (brace
 multiline_comment|/* FIXME: What&squot;s that? */
@@ -526,6 +504,11 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* one free ride for now */
 macro_line|#endif
+op_star
+id|wait
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -564,12 +547,19 @@ id|dma_stat
 op_amp
 l_int|1
 )paren
+(brace
 multiline_comment|/* DMAing */
-r_return
+op_star
+id|wait
+op_assign
 id|WAIT_CMD
 suffix:semicolon
 r_return
-l_int|0
+id|ATA_OP_CONTINUES
+suffix:semicolon
+)brace
+r_return
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 DECL|function|ata_start_dma
@@ -683,6 +673,291 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* generic udma_setup() function for drivers having -&gt;speedproc/tuneproc */
+DECL|function|udma_generic_setup
+r_int
+id|udma_generic_setup
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_int
+id|map
+)paren
+(brace
+r_struct
+id|hd_driveid
+op_star
+id|id
+op_assign
+id|drive-&gt;id
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|on
+op_assign
+l_int|0
+suffix:semicolon
+id|u8
+id|mode
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|id
+op_logical_or
+(paren
+id|drive-&gt;type
+op_ne
+id|ATA_DISK
+op_logical_and
+id|ch-&gt;no_atapi_autodma
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|map
+op_amp
+id|XFER_UDMA_80W
+)paren
+op_logical_and
+op_logical_neg
+id|eighty_ninty_three
+c_func
+(paren
+id|drive
+)paren
+)paren
+id|map
+op_and_assign
+op_complement
+id|XFER_UDMA_80W
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|id-&gt;capability
+op_amp
+l_int|1
+)paren
+op_logical_and
+id|ch-&gt;autodma
+op_logical_and
+id|ch-&gt;speedproc
+)paren
+(brace
+multiline_comment|/* Consult the list of known &quot;bad&quot; devices. */
+r_if
+c_cond
+(paren
+id|udma_black_list
+c_func
+(paren
+id|drive
+)paren
+)paren
+r_goto
+id|set_dma
+suffix:semicolon
+id|mode
+op_assign
+id|ata_timing_mode
+c_func
+(paren
+id|drive
+comma
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* Device is UltraDMA capable. */
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|XFER_UDMA
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|on
+op_assign
+op_logical_neg
+id|ch
+op_member_access_from_pointer
+id|speedproc
+c_func
+(paren
+id|drive
+comma
+id|mode
+)paren
+)paren
+)paren
+(brace
+r_goto
+id|set_dma
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: UDMA auto-tune failed.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+id|map
+op_and_assign
+op_complement
+id|XFER_UDMA_ALL
+suffix:semicolon
+id|mode
+op_assign
+id|ata_timing_mode
+c_func
+(paren
+id|drive
+comma
+id|map
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Device is regular DMA capable. */
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+(paren
+id|XFER_SWDMA
+op_or
+id|XFER_MWDMA
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|on
+op_assign
+op_logical_neg
+id|ch
+op_member_access_from_pointer
+id|speedproc
+c_func
+(paren
+id|drive
+comma
+id|mode
+)paren
+)paren
+)paren
+(brace
+r_goto
+id|set_dma
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: DMA auto-tune failed.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* FIXME: this seems non-functional  --bkz */
+multiline_comment|/* Consult the list of known &quot;good&quot; devices. */
+r_if
+c_cond
+(paren
+id|udma_white_list
+c_func
+(paren
+id|drive
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|id-&gt;eide_dma_time
+OG
+l_int|150
+)paren
+r_goto
+id|set_dma
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: device is on DMA whitelist.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;&t;on = 1;
+)brace
+multiline_comment|/* Revert to PIO. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|on
+op_logical_and
+id|ch-&gt;tuneproc
+)paren
+id|ch
+op_member_access_from_pointer
+id|tuneproc
+c_func
+(paren
+id|drive
+comma
+l_int|255
+)paren
+suffix:semicolon
+)brace
+id|set_dma
+suffix:colon
+id|udma_enable
+c_func
+(paren
+id|drive
+comma
+id|on
+comma
+op_logical_neg
+id|on
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Configure a device for DMA operation.&n; */
 DECL|function|udma_pci_setup
 r_int
@@ -693,6 +968,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_int
@@ -1619,7 +1897,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Teardown mappings after DMA has completed.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Teardown mappings after DMA has completed.&n; */
 DECL|function|udma_destroy_table
 r_void
 id|udma_destroy_table
@@ -1644,7 +1922,7 @@ id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; */
 DECL|function|udma_pci_start
 r_void
 id|udma_pci_start
@@ -1691,7 +1969,6 @@ id|dma_base
 suffix:semicolon
 multiline_comment|/* start DMA */
 )brace
-multiline_comment|/*&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_stop
 r_int
 id|udma_pci_stop
@@ -1786,7 +2063,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
-multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
 DECL|function|udma_pci_irq_status
 r_int
 id|udma_pci_irq_status
@@ -2150,7 +2427,7 @@ l_string|&quot; -- ERROR, UNABLE TO ALLOCATE DMA TABLES&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; */
 DECL|function|udma_pci_init
 r_int
 id|udma_pci_init
@@ -2182,7 +2459,7 @@ id|rq
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* No DMA transfers on ATAPI devices. */
 r_if
@@ -2193,7 +2470,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 r_if
 c_cond
@@ -2268,7 +2545,7 @@ id|rq
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|variable|ide_dma_intr

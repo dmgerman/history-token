@@ -2312,7 +2312,6 @@ c_loop
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The beginning here is stolen from the hard disk driver.  I hope&n;&t;&t; * it&squot;s right.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2322,12 +2321,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|dev
 op_assign
 id|minor

@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * $Id: rpcmouse.c,v 1.11 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *      Russel King&n; */
-multiline_comment|/*&n; * Acorn RiscPC mouse driver for Linux/ARM&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; *  Acorn RiscPC mouse driver for Linux/ARM&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *  Copyright (C) 1996-1998 Russell King&n; *&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; *&n; * This handles the Acorn RiscPCs mouse.  We basically have a couple of&n; * hardware registers that track the sensor count for the X-Y movement and&n; * another register holding the button state.  On every VSYNC interrupt we read&n; * the complete state and then work out if something has changed.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -9,11 +8,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/iomd.h&gt;
+macro_line|#include &lt;asm/hardware/iomd.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik, Russell King&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -28,8 +27,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|IOMD_MOUSEBTN
-mdefine_line|#define IOMD_MOUSEBTN&t;0x800C4000
 DECL|variable|rpcmouse_lastx
 DECL|variable|rpcmouse_lasty
 r_static
@@ -117,7 +114,7 @@ l_string|&quot;rpcmouse/input0&quot;
 comma
 id|idbus
 suffix:colon
-id|BUS_ISA
+id|BUS_HOST
 comma
 id|idvendor
 suffix:colon
@@ -168,7 +165,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEX
@@ -179,7 +176,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEY
@@ -190,11 +187,17 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+(paren
+id|__raw_readl
 c_func
 (paren
-id|IOMD_MOUSEBTN
+l_int|0xe0310000
 )paren
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|7
 suffix:semicolon
 id|dx
 op_assign
@@ -242,7 +245,7 @@ id|input_report_key
 c_func
 (paren
 op_amp
-id|amimouse_dev
+id|rpcmouse_dev
 comma
 id|BTN_LEFT
 comma
@@ -255,7 +258,7 @@ id|input_report_key
 c_func
 (paren
 op_amp
-id|amimouse_dev
+id|rpcmouse_dev
 comma
 id|BTN_MIDDLE
 comma
@@ -268,7 +271,7 @@ id|input_report_key
 c_func
 (paren
 op_amp
-id|amimouse_dev
+id|rpcmouse_dev
 comma
 id|BTN_RIGHT
 comma
@@ -293,7 +296,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEX
@@ -304,7 +307,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEY
@@ -351,7 +354,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: Acorn RiscPC mouse irq %d&quot;
+l_string|&quot;input: Acorn RiscPC mouse irq %d&quot;
 comma
 id|IRQ_VSYNCPULSE
 )paren

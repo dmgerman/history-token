@@ -46,7 +46,8 @@ id|software_suspend_enabled
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* #define SUSPEND_CONSOLE&t;(MAX_NR_CONSOLES-1) */
+DECL|macro|SUSPEND_CONSOLE
+mdefine_line|#define SUSPEND_CONSOLE&t;(MAX_NR_CONSOLES-1)
 multiline_comment|/* With SUSPEND_CONSOLE defined, it suspend looks *really* cool, but&n;   we probably do not take enough locks for switching consoles, etc,&n;   so bad things might happen.&n;*/
 macro_line|#if !defined(CONFIG_VT) || !defined(CONFIG_VT_CONSOLE)
 DECL|macro|SUSPEND_CONSOLE
@@ -125,9 +126,12 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|orig_fgconsole
+DECL|variable|orig_kmsg
 r_static
 r_int
 id|orig_fgconsole
+comma
+id|orig_kmsg
 suffix:semicolon
 DECL|variable|pagedir_order_check
 r_static
@@ -251,8 +255,9 @@ DECL|variable|name_suspend
 r_static
 r_const
 r_char
-op_star
 id|name_suspend
+(braket
+)braket
 op_assign
 l_string|&quot;Suspend Machine: &quot;
 suffix:semicolon
@@ -260,14 +265,15 @@ DECL|variable|name_resume
 r_static
 r_const
 r_char
-op_star
 id|name_resume
+(braket
+)braket
 op_assign
 l_string|&quot;Resume Machine: &quot;
 suffix:semicolon
 multiline_comment|/*&n; * Debug&n; */
 DECL|macro|DEBUG_DEFAULT
-mdefine_line|#define&t;DEBUG_DEFAULT&t;1
+macro_line|#undef&t;DEBUG_DEFAULT
 DECL|macro|DEBUG_PROCESS
 macro_line|#undef&t;DEBUG_PROCESS
 DECL|macro|DEBUG_SLOW
@@ -275,23 +281,11 @@ macro_line|#undef&t;DEBUG_SLOW
 DECL|macro|TEST_SWSUSP
 mdefine_line|#define TEST_SWSUSP 1&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
 macro_line|#ifdef DEBUG_DEFAULT
-DECL|macro|PRINTD
-mdefine_line|#define PRINTD(func, f, a...)&t;&bslash;&n;&t;do { &bslash;&n;&t;&t;printk(&quot;%s&quot;, func); &bslash;&n;&t;&t;printk(f, ## a); &bslash;&n;&t;} while(0)
-DECL|macro|PRINTS
-mdefine_line|#define PRINTS(f, a...)&t;PRINTD(name_suspend, f, ## a)
-DECL|macro|PRINTR
-mdefine_line|#define PRINTR(f, a...)&t;PRINTD(name_resume, f, ## a)
 DECL|macro|PRINTK
-mdefine_line|#define PRINTK(f, a...)&t;printk(f, ## a)
+macro_line|# define PRINTK(f, a...)       printk(f, ## a)
 macro_line|#else
-DECL|macro|PRINTD
-mdefine_line|#define PRINTD(func, f, a...)
-DECL|macro|PRINTS
-mdefine_line|#define PRINTS(f, a...)
-DECL|macro|PRINTR
-mdefine_line|#define PRINTR(f, a...)
 DECL|macro|PRINTK
-mdefine_line|#define PRINTK(f, a...)
+macro_line|# define PRINTK(f, a...)
 macro_line|#endif
 macro_line|#ifdef DEBUG_SLOW
 DECL|macro|MDELAY
@@ -326,11 +320,18 @@ id|current-&gt;state
 op_assign
 id|TASK_STOPPED
 suffix:semicolon
-singleline_comment|//&t;PRINTK(&quot;%s entered refrigerator&bslash;n&quot;, current-&gt;comm);
+id|PRINTK
+c_func
+(paren
+l_string|&quot;%s entered refrigerator&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;:&quot;
+l_string|&quot;=&quot;
 )paren
 suffix:semicolon
 id|current-&gt;flags
@@ -366,11 +367,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//&t;PRINTK(&quot;%s left refrigerator&bslash;n&quot;, current-&gt;comm);
-id|printk
+id|PRINTK
 c_func
 (paren
-l_string|&quot;:&quot;
+l_string|&quot;%s left refrigerator&bslash;n&quot;
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 id|current-&gt;state
@@ -397,10 +399,10 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|PRINTS
+id|printk
 c_func
 (paren
-l_string|&quot;Waiting for tasks to stop... &quot;
+l_string|&quot;Stopping tasks: &quot;
 )paren
 suffix:semicolon
 id|start_time
@@ -504,7 +506,7 @@ id|TIMEOUT
 )paren
 )paren
 (brace
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
@@ -532,10 +534,10 @@ id|todo
 (brace
 suffix:semicolon
 )brace
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot; ok&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -555,7 +557,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|PRINTR
+id|printk
 c_func
 (paren
 l_string|&quot;Restarting tasks...&quot;
@@ -616,7 +618,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot; done&bslash;n&quot;
@@ -705,17 +707,11 @@ id|sh-&gt;suspend_pagedir
 op_assign
 id|pagedir_nosave
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|pagedir_save
 op_ne
 id|pagedir_nosave
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Must not happen&quot;
 )paren
 suffix:semicolon
 id|sh-&gt;num_pbes
@@ -1141,10 +1137,10 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#if 0
-id|PRINTS
+id|printk
 c_func
 (paren
-l_string|&quot;device %s (%x != %x) ignored&bslash;n&quot;
+l_string|&quot;Resume: device %s (%x != %x) ignored&bslash;n&quot;
 comma
 id|swap_info
 (braket
@@ -1299,7 +1295,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|PRINTS
+id|printk
 c_func
 (paren
 l_string|&quot;Writing data to swap (%d pages): &quot;
@@ -1332,7 +1328,7 @@ op_mod
 l_int|100
 )paren
 )paren
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot;.&quot;
@@ -1373,7 +1369,6 @@ id|entry
 op_ne
 id|SWAPFILE_SUSPEND
 )paren
-(brace
 id|panic
 c_func
 (paren
@@ -1382,7 +1377,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 id|address
 op_assign
 (paren
@@ -1422,13 +1416,13 @@ op_assign
 id|entry
 suffix:semicolon
 )brace
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot; done&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
-id|PRINTS
+id|printk
 c_func
 (paren
 l_string|&quot;Writing pagedir (%d pages): &quot;
@@ -1468,8 +1462,7 @@ id|pagedir_nosave
 op_plus
 id|i
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 (paren
 r_char
@@ -1491,13 +1484,8 @@ op_star
 id|PAGE_SIZE
 )paren
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;Something is of wrong size&quot;
-)paren
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot;.&quot;
@@ -1569,8 +1557,7 @@ l_string|&quot;&bslash;nNot enough swapspace for pagedir on suspend device&quot;
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|BUG_ON
 (paren
 r_sizeof
 (paren
@@ -1582,14 +1569,8 @@ r_sizeof
 r_int
 )paren
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;I need swp_entry_t to be sizeof long, otherwise next assignment could damage pagedir&quot;
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|PAGE_SIZE
 op_mod
@@ -1598,11 +1579,6 @@ r_sizeof
 r_struct
 id|pbe
 )paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;I need PAGE_SIZE to be integer multiple of struct pbe, otherwise next assignment could damage pagedir&quot;
 )paren
 suffix:semicolon
 id|cur-&gt;link.next
@@ -1636,14 +1612,13 @@ op_assign
 id|entry
 suffix:semicolon
 )brace
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot;, header&quot;
+l_string|&quot;H&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 r_sizeof
 (paren
@@ -1658,20 +1633,8 @@ r_sizeof
 id|swp_entry_t
 )paren
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;sizeof(struct suspend_header) too big: %d&quot;
-comma
-r_sizeof
-(paren
-r_struct
-id|suspend_header
-)paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 r_sizeof
 (paren
@@ -1680,11 +1643,6 @@ id|diskpage
 )paren
 op_ne
 id|PAGE_SIZE
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;union diskpage has bad size&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1722,14 +1680,12 @@ id|entry
 op_ne
 id|SWAPFILE_SUSPEND
 )paren
-(brace
 id|panic
 c_func
 (paren
 l_string|&quot;&bslash;nNot enough swapspace for header on suspend device&quot;
 )paren
 suffix:semicolon
-)brace
 id|cur
 op_assign
 (paren
@@ -1748,14 +1704,12 @@ op_amp
 id|cur-&gt;sh
 )paren
 )paren
-(brace
 id|panic
 c_func
 (paren
 l_string|&quot;&bslash;nOut of memory while writing header&quot;
 )paren
 suffix:semicolon
-)brace
 id|cur-&gt;link.next
 op_assign
 id|prev
@@ -1786,31 +1740,12 @@ id|prev
 op_assign
 id|entry
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot;, signature&quot;
+l_string|&quot;S&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|swp_type
-c_func
-(paren
-id|entry
-)paren
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Need just one swapfile&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|mark_swapfiles
 c_func
 (paren
@@ -1819,10 +1754,10 @@ comma
 id|MARK_SWAP_SUSPEND
 )paren
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot;, done&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 id|MDELAY
@@ -1908,14 +1843,12 @@ op_plus
 id|loop
 )paren
 )paren
-(brace
 id|panic
 c_func
 (paren
-l_string|&quot;No highmem for me, sorry.&quot;
+l_string|&quot;Swsusp not supported on highmem boxes. Send 1GB of RAM to &lt;pavel@ucw.cz&gt; and try again ;-).&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1940,10 +1873,8 @@ op_plus
 id|loop
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1985,8 +1916,7 @@ id|loop
 )paren
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|PageNosave
 c_func
@@ -1996,14 +1926,7 @@ op_plus
 id|loop
 )paren
 )paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;What?&quot;
-)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t; * Just copy whole code segment. Hopefully it is not that big.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -2035,10 +1958,16 @@ op_amp
 id|__nosave_end
 )paren
 (brace
-id|printk
+id|PRINTK
 c_func
 (paren
-l_string|&quot;[nosave]&quot;
+l_string|&quot;[nosave %x]&quot;
+comma
+id|ADDRESS
+c_func
+(paren
+id|loop
+)paren
 )paren
 suffix:semicolon
 r_continue
@@ -2047,10 +1976,9 @@ suffix:semicolon
 multiline_comment|/* Hmm, perhaps copying all reserved pages is not too healthy as they may contain &n;&t;&t;&t;   critical bios data? */
 )brace
 r_else
-id|panic
+id|BUG
 c_func
 (paren
-l_string|&quot;No third thing should be possible&quot;
 )paren
 suffix:semicolon
 id|nr_copy_pages
@@ -2148,10 +2076,8 @@ c_func
 id|page
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2171,10 +2097,8 @@ id|i
 OL
 id|this_pagedir_end
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 multiline_comment|/* old pagedir gets freed in one */
 id|free_page
 c_func
@@ -2318,12 +2242,6 @@ op_logical_neg
 id|p-&gt;address
 )paren
 (brace
-id|panic
-c_func
-(paren
-l_string|&quot;oom&quot;
-)paren
-suffix:semicolon
 id|free_suspend_pagedir
 c_func
 (paren
@@ -2413,7 +2331,7 @@ id|SUSPEND_CONSOLE
 )paren
 )paren
 (brace
-id|PRINTS
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Bummer. Can&squot;t switch VCs.&quot;
@@ -2423,6 +2341,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|orig_kmsg
+op_assign
+id|kmsg_redirect
+suffix:semicolon
+id|kmsg_redirect
+op_assign
+id|SUSPEND_CONSOLE
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 r_return
@@ -2461,18 +2387,6 @@ c_func
 r_void
 )paren
 (brace
-id|PRINTS
-c_func
-(paren
-l_string|&quot;Stopping processes&bslash;n&quot;
-)paren
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2482,10 +2396,11 @@ c_func
 )paren
 )paren
 (brace
-id|PRINTS
+id|printk
 c_func
 (paren
-l_string|&quot;Not all processes stopped!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Suspend failed: Not all processes stopped!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|thaw_processes
@@ -2497,7 +2412,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|do_suspend_sync
+id|sys_sync
 c_func
 (paren
 )paren
@@ -2516,7 +2431,7 @@ c_func
 r_void
 )paren
 (brace
-id|PRINTS
+id|printk
 c_func
 (paren
 l_string|&quot;Freeing memory: &quot;
@@ -2548,7 +2463,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2676,6 +2591,14 @@ r_int
 id|flags
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|RESUME_PHASE1
+)paren
+(brace
 id|device_resume
 c_func
 (paren
@@ -2688,6 +2611,7 @@ c_func
 id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2773,7 +2697,7 @@ id|pagedir_nosave
 op_assign
 l_int|NULL
 suffix:semicolon
-id|PRINTS
+id|printk
 c_func
 (paren
 l_string|&quot;/critical section: Counting pages to copy&quot;
@@ -2793,7 +2717,7 @@ id|nr_copy_pages
 op_plus
 id|PAGES_FOR_IO
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot; (pages needed: %d+%d=%d free: %d)&bslash;n&quot;
@@ -2958,10 +2882,9 @@ id|pagedir_nosave
 )paren
 )paren
 multiline_comment|/* copy */
-id|panic
+id|BUG
 c_func
 (paren
-l_string|&quot;Count and copy returned another count than when counting?&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; *&n;&t; * Following line enforces not writing to disk until we choose.&n;&t; */
@@ -2977,7 +2900,7 @@ op_amp
 id|suspend_pagedir_lock
 )paren
 suffix:semicolon
-id|PRINTS
+id|printk
 c_func
 (paren
 l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
@@ -3001,13 +2924,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* This will unlock ignored swap devices since writing is finished */
-multiline_comment|/* Image is saved, call sync &amp; restart machine */
-id|PRINTS
-c_func
-(paren
-l_string|&quot;Syncing disks&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n;&t; * them synced (in case something goes wrong) but we DO not want to mark&n;&t; * filesystem clean: it is not. (And it does not matter, if we resume&n;&t; * correctly, we&squot;ll mark system clean, anyway.)&n;&t; */
 r_return
 l_int|0
@@ -3029,13 +2945,20 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;%sTrying to power down.&bslash;n&quot;
+l_string|&quot;%s%s Trying to power down.&bslash;n&quot;
 comma
 id|name_suspend
+comma
+id|TEST_SWSUSP
+ques
+c_cond
+l_string|&quot;Disable TEST_SWSUSP. NOT &quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT
-id|printk
+id|PRINTK
 c_func
 (paren
 id|KERN_EMERG
@@ -3138,7 +3061,7 @@ id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Done to disable interrupts */
-id|printk
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Waiting for DMAs to settle down...&bslash;n&quot;
@@ -3160,33 +3083,21 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|nr_copy_pages_check
 op_ne
 id|nr_copy_pages
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;nr_copy_pages changed?!&quot;
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|pagedir_order_check
 op_ne
 id|pagedir_order
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;pagedir_order changed?!&quot;
-)paren
 suffix:semicolon
-id|PRINTR
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Freeing prev allocated pagedir&bslash;n&quot;
@@ -3315,7 +3226,7 @@ multiline_comment|/* FIXME: if suspend_power_down is commented out, console is l
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_EMERG
 l_string|&quot;%sSuspend failed, trying to recover...&bslash;n&quot;
 comma
 id|name_suspend
@@ -3398,7 +3309,7 @@ comma
 id|MARK_SWAP_RESUME
 )paren
 suffix:semicolon
-id|printk
+id|PRINTK
 c_func
 (paren
 id|KERN_WARNING
@@ -3433,7 +3344,9 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;Can&squot;t allocate a console... proceeding&bslash;n&quot;
+l_string|&quot;%sCan&squot;t allocate a console... proceeding&bslash;n&quot;
+comma
+id|name_suspend
 )paren
 suffix:semicolon
 r_if
@@ -3452,7 +3365,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* No need to invalidate any vfsmnt list -- they will be valid after resume, anyway.&n;&t;&t; *&n;&t;&t; * We sync here -- so you have consistent filesystem state when things go wrong.&n;&t;&t; * -- so that noone writes to disk after we do atomic copy of data.&n;&t;&t; */
-id|PRINTS
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Syncing disks before copy&bslash;n&quot;
@@ -3482,7 +3395,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This function returns after machine woken up from resume */
-id|PRINTR
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Restarting processes...&bslash;n&quot;
@@ -3822,6 +3735,12 @@ comma
 op_star
 id|f
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Relocating pagedir&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3992,7 +3911,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;okay&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4160,8 +4079,10 @@ r_int
 id|bdev_read_page
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|pos
@@ -4176,78 +4097,10 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-r_struct
-id|block_device
-op_star
-id|bdev
-suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|pos
 op_mod
-id|PAGE_SIZE
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Sorry, dave, I can&squot;t let you do that!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|bdev
-op_assign
-id|bdget
-c_func
-(paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
-id|blkdev_get
-c_func
-(paren
-id|bdev
-comma
-id|FMODE_READ
-comma
-id|O_RDONLY
-comma
-id|BDEV_RAW
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bdev
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;No block device for %s&bslash;n&quot;
-comma
-id|__bdevname
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|set_blocksize
-c_func
-(paren
-id|bdev
-comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
@@ -4310,16 +4163,150 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|blkdev_put
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|bdev_write_page
+r_static
+r_int
+id|bdev_write_page
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+r_int
+id|pos
+comma
+r_void
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|buffer_head
+op_star
+id|bh
+suffix:semicolon
+macro_line|#if 0
+id|BUG_ON
+(paren
+id|pos
+op_mod
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|bh
+op_assign
+id|__bread
 c_func
 (paren
 id|bdev
 comma
-id|BDEV_RAW
+id|pos
+op_div
+id|PAGE_SIZE
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bh
+op_logical_or
+(paren
+op_logical_neg
+id|bh-&gt;b_data
+)paren
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|memcpy
+c_func
+(paren
+id|bh-&gt;b_data
+comma
+id|buf
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: may need kmap() */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+suffix:semicolon
+id|generic_make_request
+c_func
+(paren
+id|WRITE
+comma
+id|bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;%sWarning %s: Fixing swap signatures unsuccessful...&bslash;n&quot;
+comma
+id|name_resume
+comma
+id|resume_file
+)paren
+suffix:semicolon
+id|wait_on_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;%sWarning %s: Fixing swap signatures unimplemented...&bslash;n&quot;
+comma
+id|name_resume
+comma
+id|resume_file
+)paren
 suffix:semicolon
 )brace
 r_extern
@@ -4334,26 +4321,26 @@ op_star
 id|line
 )paren
 suffix:semicolon
-DECL|function|resume_try_to_read
+DECL|function|__read_suspend_image
 r_static
 r_int
-id|resume_try_to_read
+id|__read_suspend_image
 c_func
 (paren
-r_const
-r_char
+r_struct
+id|block_device
 op_star
-id|specialfile
+id|bdev
+comma
+r_union
+id|diskpage
+op_star
+id|cur
 comma
 r_int
 id|noresume
 )paren
 (brace
-r_union
-id|diskpage
-op_star
-id|cur
-suffix:semicolon
 id|swp_entry_t
 id|next
 suffix:semicolon
@@ -4361,86 +4348,25 @@ r_int
 id|i
 comma
 id|nr_pgdir_pages
-comma
-id|error
 suffix:semicolon
-r_int
-id|blksize
-op_assign
-l_int|0
-suffix:semicolon
-id|resume_device
-op_assign
-id|name_to_kdev_t
-c_func
-(paren
-id|specialfile
-)paren
-suffix:semicolon
-id|cur
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|get_free_page
-c_func
-(paren
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
+DECL|macro|PREPARENEXT
+mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = swp_offset(next) * PAGE_SIZE; &bslash;&n;        }
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cur
-)paren
-(brace
-id|printk
+id|bdev_read_page
 c_func
 (paren
-l_string|&quot;%sNot enough memory?&bslash;n&quot;
+id|bdev
 comma
-id|name_resume
-)paren
-suffix:semicolon
-id|error
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|resume_read_error
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;Resuming from device %x&bslash;n&quot;
-comma
-id|kdev_t_to_nr
-c_func
-(paren
-id|resume_device
-)paren
-)paren
-suffix:semicolon
-DECL|macro|READTO
-mdefine_line|#define READTO(pos, ptr) &bslash;&n;&t;if (bdev_read_page(resume_device, pos, ptr)) { error = -EIO; goto resume_read_error; }
-DECL|macro|PREPARENEXT
-mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = swp_offset(next) * PAGE_SIZE; &bslash;&n;        }
-id|error
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-id|READTO
-c_func
-(paren
 l_int|0
 comma
 id|cur
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_if
 c_cond
@@ -4481,13 +4407,9 @@ comma
 id|name_resume
 )paren
 suffix:semicolon
-id|error
-op_assign
+r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-r_goto
-id|resume_read_error
 suffix:semicolon
 )brace
 id|PREPARENEXT
@@ -4554,7 +4476,52 @@ comma
 id|cur-&gt;swh.magic.magic
 )paren
 suffix:semicolon
+multiline_comment|/* We want to panic even with noresume -- we certainly don&squot;t want to add&n;&t;&t;   out signature into your ext2 filesystem ;-) */
 )brace
+r_if
+c_cond
+(paren
+id|noresume
+)paren
+(brace
+multiline_comment|/* We don&squot;t do a sanity check here: we want to restore the swap&n;&t;&t;   whatever version of kernel made the suspend image;&n;&t;&t;   We need to write swap, but swap is *not* enabled so&n;&t;&t;   we must write the device directly */
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Fixing swap signatures %s...&bslash;n&quot;
+comma
+id|name_resume
+comma
+id|resume_file
+)paren
+suffix:semicolon
+id|bdev_write_page
+c_func
+(paren
+id|bdev
+comma
+l_int|0
+comma
+id|cur
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|prepare_suspend_console
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%sCan&squot;t allocate a console... proceeding&bslash;n&quot;
+comma
+id|name_resume
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4569,18 +4536,22 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-id|READTO
+r_if
+c_cond
+(paren
+id|bdev_read_page
 c_func
 (paren
+id|bdev
+comma
 id|next.val
 comma
 id|cur
 )paren
-suffix:semicolon
-id|error
-op_assign
+)paren
+r_return
 op_minus
-id|EPERM
+id|EIO
 suffix:semicolon
 r_if
 c_cond
@@ -4592,10 +4563,11 @@ op_amp
 id|cur-&gt;sh
 )paren
 )paren
-r_goto
-id|resume_read_error
+multiline_comment|/* Is this same machine? */
+r_return
+op_minus
+id|EPERM
 suffix:semicolon
-multiline_comment|/* Probably this is the same machine */
 id|PREPARENEXT
 suffix:semicolon
 id|pagedir_save
@@ -4622,21 +4594,6 @@ c_func
 id|nr_pgdir_pages
 )paren
 suffix:semicolon
-id|error
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|cur
-)paren
-suffix:semicolon
 id|pagedir_nosave
 op_assign
 (paren
@@ -4657,12 +4614,11 @@ c_cond
 op_logical_neg
 id|pagedir_nosave
 )paren
-(brace
-r_goto
-id|resume_read_error
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-)brace
-id|PRINTR
+id|PRINTK
 c_func
 (paren
 l_string|&quot;%sReading pagedir, &quot;
@@ -4671,11 +4627,6 @@ id|name_resume
 )paren
 suffix:semicolon
 multiline_comment|/* We get pages in reverse order of saving! */
-id|error
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4693,16 +4644,10 @@ id|i
 op_decrement
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
 (paren
 op_logical_neg
 id|next.val
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Preliminary end of suspended data?&quot;
 )paren
 suffix:semicolon
 id|cur
@@ -4722,84 +4667,62 @@ id|pagedir_nosave
 op_plus
 id|i
 suffix:semicolon
-id|READTO
+r_if
+c_cond
+(paren
+id|bdev_read_page
 c_func
 (paren
+id|bdev
+comma
 id|next.val
 comma
 id|cur
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|PREPARENEXT
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|BUG_ON
 (paren
 id|next.val
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;Suspended data too long?&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Relocating pagedir&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|error
-op_assign
 id|relocate_pagedir
 c_func
 (paren
 )paren
 )paren
-op_ne
-l_int|0
-)paren
-(brace
-r_goto
-id|resume_read_error
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-(paren
-id|error
-op_assign
 id|check_pagedir
 c_func
 (paren
 )paren
 )paren
-op_ne
-l_int|0
-)paren
-(brace
-r_goto
-id|resume_read_error
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-)brace
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot;image data (%d pages): &quot;
+l_string|&quot;Reading image data (%d pages): &quot;
 comma
 id|nr_copy_pages
 )paren
-suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
 r_for
 c_loop
@@ -4837,14 +4760,21 @@ op_mod
 l_int|100
 )paren
 )paren
-id|PRINTK
+id|printk
 c_func
 (paren
 l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-id|next.val
-op_assign
+multiline_comment|/* You do not need to check for overlaps...&n;&t;&t;   ... check_pagedir already did this work */
+r_if
+c_cond
+(paren
+id|bdev_read_page
+c_func
+(paren
+id|bdev
+comma
 id|swp_offset
 c_func
 (paren
@@ -4852,12 +4782,6 @@ id|swap_address
 )paren
 op_star
 id|PAGE_SIZE
-suffix:semicolon
-multiline_comment|/* You do not need to check for overlaps...&n;&t;&t;   ... check_pagedir already did this work */
-id|READTO
-c_func
-(paren
-id|next.val
 comma
 (paren
 r_char
@@ -4873,20 +4797,187 @@ op_member_access_from_pointer
 id|address
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
-id|PRINTK
+id|printk
 c_func
 (paren
-l_string|&quot; done&bslash;n&quot;
+l_string|&quot;|&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|read_suspend_image
+r_static
+r_int
+id|read_suspend_image
+c_func
+(paren
+r_const
+r_char
+op_star
+id|specialfile
+comma
+r_int
+id|noresume
+)paren
+(brace
+r_union
+id|diskpage
+op_star
+id|cur
+suffix:semicolon
+r_int
+r_int
+id|scratch_page
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|error
+suffix:semicolon
+id|resume_device
+op_assign
+id|name_to_kdev_t
+c_func
+(paren
+id|specialfile
+)paren
+suffix:semicolon
+id|scratch_page
+op_assign
+id|get_free_page
+c_func
+(paren
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+id|cur
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|scratch_page
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur
+)paren
+(brace
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Resuming from device %s&bslash;n&quot;
+comma
+id|__bdevname
+c_func
+(paren
+id|resume_device
+)paren
+)paren
+suffix:semicolon
+id|bdev
+op_assign
+id|bdget
+c_func
+(paren
+id|kdev_t_to_nr
+c_func
+(paren
+id|resume_device
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bdev
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;No such block device ?!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|blkdev_get
+c_func
+(paren
+id|bdev
+comma
+id|FMODE_READ
+comma
+id|O_RDONLY
+comma
+id|BDEV_RAW
+)paren
+suffix:semicolon
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|error
 op_assign
-l_int|0
+id|__read_suspend_image
+c_func
+(paren
+id|bdev
+comma
+id|cur
+comma
+id|noresume
+)paren
 suffix:semicolon
-id|resume_read_error
-suffix:colon
+id|blkdev_put
+c_func
+(paren
+id|bdev
+comma
+id|BDEV_RAW
+)paren
+suffix:semicolon
+)brace
+r_else
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scratch_page
+)paren
+id|free_page
+c_func
+(paren
+id|scratch_page
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4896,7 +4987,7 @@ id|error
 r_case
 l_int|0
 suffix:colon
-id|PRINTR
+id|PRINTK
 c_func
 (paren
 l_string|&quot;Reading resume file was successful&bslash;n&quot;
@@ -4922,12 +5013,6 @@ comma
 id|name_resume
 )paren
 suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;Wanted to resume but it did not work&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4944,10 +5029,18 @@ comma
 id|specialfile
 )paren
 suffix:semicolon
-id|panic
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ENOMEM
+suffix:colon
+id|printk
 c_func
 (paren
-l_string|&quot;Wanted to resume but it did not work&bslash;n&quot;
+l_string|&quot;%sNot enough memory&bslash;n&quot;
+comma
+id|name_resume
 )paren
 suffix:semicolon
 r_break
@@ -4962,12 +5055,6 @@ comma
 id|name_resume
 comma
 id|error
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;Wanted to resume but it did not work&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5031,7 +5118,24 @@ op_eq
 id|NORESUME
 )paren
 (brace
-multiline_comment|/* FIXME: Signature should be restored here */
+r_if
+c_cond
+(paren
+id|resume_file
+(braket
+l_int|0
+)braket
+)paren
+(brace
+id|read_suspend_image
+c_func
+(paren
+id|resume_file
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -5072,7 +5176,7 @@ id|RESUME_SPECIFIED
 id|printk
 c_func
 (paren
-l_string|&quot;nowhere to resume from&bslash;n&quot;
+l_string|&quot;suspension device unspecified&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5089,7 +5193,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|resume_try_to_read
+id|read_suspend_image
 c_func
 (paren
 id|resume_file

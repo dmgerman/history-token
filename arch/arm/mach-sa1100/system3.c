@@ -768,9 +768,11 @@ id|PT_CTRL0_LCD_EN
 )paren
 suffix:semicolon
 multiline_comment|/* brightness / contrast */
-id|SKPCR
-op_or_assign
+id|sa1111_enable_device
+c_func
+(paren
 id|SKPCR_PWMCLKEN
+)paren
 suffix:semicolon
 id|PB_DDR
 op_assign
@@ -817,10 +819,11 @@ id|SKPEN1
 op_assign
 l_int|0
 suffix:semicolon
-id|SKPCR
-op_and_assign
-op_complement
+id|sa1111_disable_device
+c_func
+(paren
 id|SKPCR_PWMCLKEN
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;system3_lcd_contrast - set system 3 contrast&n; *&t;@value:&t;&t;the new contrast&n; *&n; */

@@ -4409,7 +4409,7 @@ c_cond
 id|ieee1394_register_chardev
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
+id|IEEE1394_MINOR_BLOCK_AMDTP
 comma
 id|THIS_MODULE
 comma
@@ -4456,7 +4456,7 @@ suffix:semicolon
 id|ieee1394_unregister_chardev
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
+id|IEEE1394_MINOR_BLOCK_AMDTP
 )paren
 suffix:semicolon
 r_return
@@ -4492,7 +4492,7 @@ suffix:semicolon
 id|ieee1394_unregister_chardev
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
+id|IEEE1394_MINOR_BLOCK_AMDTP
 )paren
 suffix:semicolon
 id|HPSB_INFO

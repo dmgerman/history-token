@@ -19,6 +19,7 @@ id|dst_entry
 op_star
 id|dst_garbage_list
 suffix:semicolon
+macro_line|#if RT_CACHE_DEBUG &gt;= 2 
 DECL|variable|dst_total
 r_static
 id|atomic_t
@@ -30,6 +31,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|dst_lock
 r_static
 id|spinlock_t
@@ -399,6 +401,7 @@ id|dst-&gt;output
 op_assign
 id|dst_blackhole
 suffix:semicolon
+macro_line|#if RT_CACHE_DEBUG &gt;= 2 
 id|atomic_inc
 c_func
 (paren
@@ -406,6 +409,7 @@ op_amp
 id|dst_total
 )paren
 suffix:semicolon
+macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -612,6 +616,7 @@ c_func
 id|dst-&gt;dev
 )paren
 suffix:semicolon
+macro_line|#if RT_CACHE_DEBUG &gt;= 2 
 id|atomic_dec
 c_func
 (paren
@@ -619,6 +624,7 @@ op_amp
 id|dst_total
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kmem_cache_free
 c_func
 (paren

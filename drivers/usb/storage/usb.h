@@ -209,14 +209,13 @@ mdefine_line|#define US_FL_START_STOP      0x00000004 /* ignore START_STOP comma
 DECL|macro|US_FL_IGNORE_SER
 mdefine_line|#define US_FL_IGNORE_SER      0x00000010 /* Ignore the serial number given  */
 DECL|macro|US_FL_SCM_MULT_TARG
-mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets */
+mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets&t;    */
 DECL|macro|US_FL_FIX_INQUIRY
-mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing */
-multiline_comment|/* kernel thread actions */
-DECL|macro|US_ACT_COMMAND
-mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_EXIT
-mdefine_line|#define US_ACT_EXIT&t;&t;5
+mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing   */
+DECL|macro|US_FL_DEV_ATTACHED
+mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
+DECL|macro|US_FLIDX_IP_WANTED
+mdefine_line|#define US_FLIDX_IP_WANTED   17  /* 0x00020000&t;is an IRQ expected?&t;    */
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1
@@ -298,7 +297,7 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* next device */
-multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) DEV_ATTACHED in bitflags should change whenever pusb_dev does&n;&t; */
+multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) DEV_ATTACHED in flags should change whenever pusb_dev does&n;&t; */
 DECL|member|dev_semaphore
 r_struct
 id|semaphore
@@ -438,26 +437,16 @@ id|srb
 suffix:semicolon
 multiline_comment|/* current srb&t;&t;*/
 multiline_comment|/* thread information */
-DECL|member|queue_srb
-id|Scsi_Cmnd
-op_star
-id|queue_srb
-suffix:semicolon
-multiline_comment|/* the single queue slot */
-DECL|member|action
-r_int
-id|action
-suffix:semicolon
-multiline_comment|/* what to do&t;&t;  */
 DECL|member|pid
 r_int
 id|pid
 suffix:semicolon
-multiline_comment|/* control thread&t;  */
+multiline_comment|/* control thread&t; */
 DECL|member|sm_state
 id|atomic_t
 id|sm_state
 suffix:semicolon
+multiline_comment|/* what we are doing&t; */
 multiline_comment|/* interrupt info for CBI devices -- only good if attached */
 DECL|member|ip_waitq
 r_struct
@@ -465,16 +454,6 @@ id|semaphore
 id|ip_waitq
 suffix:semicolon
 multiline_comment|/* for CBI interrupts&t; */
-DECL|member|bitflags
-r_int
-r_int
-id|bitflags
-suffix:semicolon
-multiline_comment|/* single-bit flags:&t; */
-DECL|macro|IP_WANTED
-mdefine_line|#define IP_WANTED&t;1&t;&t;&t; /* is an IRQ expected?&t; */
-DECL|macro|DEV_ATTACHED
-mdefine_line|#define DEV_ATTACHED&t;2&t;&t;&t; /* is the dev. attached?*/
 multiline_comment|/* interrupt communications data */
 DECL|member|irq_urb_sem
 r_struct
@@ -513,7 +492,7 @@ r_struct
 id|semaphore
 id|current_urb_sem
 suffix:semicolon
-multiline_comment|/* to protect irq_urb&t; */
+multiline_comment|/* protect current_urb  */
 DECL|member|current_urb
 r_struct
 id|urb
@@ -542,11 +521,6 @@ id|completion
 id|notify
 suffix:semicolon
 multiline_comment|/* thread begin/end&t;    */
-DECL|member|queue_exclusion
-id|spinlock_t
-id|queue_exclusion
-suffix:semicolon
-multiline_comment|/* to protect data structs */
 DECL|member|unusual_dev
 r_struct
 id|us_unusual_dev
@@ -606,6 +580,7 @@ r_int
 id|data_len
 )paren
 suffix:semicolon
+multiline_comment|/* The scsi_lock() and scsi_unlock() macros protect the sm_state and the&n; * single queue element srb for write access */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,3)
 DECL|macro|scsi_unlock
 mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)

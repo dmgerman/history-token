@@ -204,26 +204,14 @@ r_int
 id|tk_flags
 suffix:semicolon
 multiline_comment|/* misc flags */
-DECL|member|tk_lock
-r_int
-r_int
-id|tk_lock
-suffix:semicolon
-multiline_comment|/* Task lock counter */
 DECL|member|tk_active
 r_int
 r_char
 id|tk_active
 suffix:colon
 l_int|1
-comma
-multiline_comment|/* Task has been activated */
-DECL|member|tk_wakeup
-id|tk_wakeup
-suffix:colon
-l_int|1
 suffix:semicolon
-multiline_comment|/* Task waiting to wake up */
+multiline_comment|/* Task has been activated */
 DECL|member|tk_runstate
 r_int
 r_int
@@ -489,25 +477,6 @@ id|timer
 )paren
 suffix:semicolon
 r_void
-id|rpc_sleep_locked
-c_func
-(paren
-r_struct
-id|rpc_wait_queue
-op_star
-comma
-r_struct
-id|rpc_task
-op_star
-comma
-id|rpc_action
-id|action
-comma
-id|rpc_action
-id|timer
-)paren
-suffix:semicolon
-r_void
 id|rpc_add_timer
 c_func
 (paren
@@ -556,24 +525,6 @@ id|rpc_wait_queue
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_int
-id|__rpc_lock_task
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
-r_void
-id|rpc_unlock_task
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
 )paren
 suffix:semicolon
 r_void

@@ -25,9 +25,9 @@ mdefine_line|#define DO_COW(m)&t;&t;((m) &amp; (FAULT_CODE_WRITE|FAULT_CODE_FORC
 DECL|macro|READ_FAULT
 mdefine_line|#define READ_FAULT(m)&t;&t;(!((m) &amp; FAULT_CODE_WRITE))
 macro_line|#else
-multiline_comment|/*&n; * On 32-bit processors, we define &quot;mode&quot; to be zero when reading,&n; * non-zero when writing.  This now ties up nicely with the polarity&n; * of the 26-bit machines, and also means that we avoid the horrible&n; * gcc code for &quot;int val = !other_val;&quot;.&n; */
+multiline_comment|/*&n; * &quot;code&quot; is actually the FSR register.  Bit 11 set means the&n; * isntruction was performing a write.&n; */
 DECL|macro|DO_COW
-mdefine_line|#define DO_COW(code)&t;&t;((code) &amp; (1 &lt;&lt; 8))
+mdefine_line|#define DO_COW(code)&t;&t;((code) &amp; (1 &lt;&lt; 11))
 DECL|macro|READ_FAULT
 mdefine_line|#define READ_FAULT(code)&t;(!DO_COW(code))
 macro_line|#endif
@@ -85,7 +85,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;*pgd = %08lx&quot;
+l_string|&quot;*pgd=%08lx&quot;
 comma
 id|pgd_val
 c_func
@@ -147,10 +147,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
+macro_line|#if PTRS_PER_PMD != 1
 id|printk
 c_func
 (paren
-l_string|&quot;, *pmd = %08lx&quot;
+l_string|&quot;, *pmd=%08lx&quot;
 comma
 id|pmd_val
 c_func
@@ -160,6 +161,7 @@ id|pmd
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -207,7 +209,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;, *pte = %08lx&quot;
+l_string|&quot;, *pte=%08lx&quot;
 comma
 id|pte_val
 c_func
@@ -221,7 +223,7 @@ macro_line|#ifdef CONFIG_CPU_32
 id|printk
 c_func
 (paren
-l_string|&quot;, *ppte = %08lx&quot;
+l_string|&quot;, *ppte=%08lx&quot;
 comma
 id|pte_val
 c_func

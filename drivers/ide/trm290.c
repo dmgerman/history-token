@@ -328,7 +328,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -370,7 +370,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
 )brace
@@ -447,7 +447,7 @@ id|IDE_COMMAND_REG
 suffix:semicolon
 )brace
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|trm290_udma_irq_status
@@ -486,6 +486,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_return
@@ -493,6 +496,8 @@ id|udma_pci_setup
 c_func
 (paren
 id|drive
+comma
+id|map
 )paren
 suffix:semicolon
 )brace
@@ -768,11 +773,6 @@ op_assign
 op_amp
 id|trm290_selectproc
 suffix:semicolon
-id|hwif-&gt;autodma
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* play it safe for now */
 macro_line|#if 1
 (brace
 multiline_comment|/*&n;&t;&t; * My trm290-based card doesn&squot;t seem to work with all possible values&n;&t;&t; * for the control basereg, so this kludge ensures that we use only&n;&t;&t; * values that are known to work.  Ugh.&t;&t;-ml&n;&t;&t; */

@@ -431,6 +431,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_int
@@ -1148,10 +1151,6 @@ r_else
 id|dma_state
 op_or_assign
 l_int|0x60
-suffix:semicolon
-id|ch-&gt;autodma
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 id|outb

@@ -2743,6 +2743,27 @@ comma
 id|pin
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * skip adding the timer int on secondary nodes, which causes&n;&t;&t; * a small but painful rift in the time-space continuum&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+op_logical_and
+(paren
+id|apic
+op_ne
+l_int|0
+)paren
+op_logical_and
+(paren
+id|irq
+op_eq
+l_int|0
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_else
 id|add_pin_to_irq
 c_func
 (paren

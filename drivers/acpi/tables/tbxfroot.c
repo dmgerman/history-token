@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -53,7 +53,7 @@ id|ACPI_STRLEN
 id|signature
 )paren
 OG
-l_int|4
+id|ACPI_NAME_SIZE
 )paren
 op_logical_or
 (paren
@@ -62,7 +62,10 @@ id|ACPI_STRLEN
 id|oem_id
 )paren
 OG
-l_int|6
+r_sizeof
+(paren
+id|table-&gt;oem_id
+)paren
 )paren
 op_logical_or
 (paren
@@ -71,7 +74,10 @@ id|ACPI_STRLEN
 id|oem_table_id
 )paren
 OG
-l_int|8
+r_sizeof
+(paren
+id|table-&gt;oem_table_id
+)paren
 )paren
 )paren
 (brace
@@ -161,7 +167,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - 0: Physical/Virtual support&n; *              Ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an Out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the Out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the Out_buffer-&gt;Buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - Physical/Virtual support&n; *              Ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an Out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the Out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the Out_buffer-&gt;Buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_firmware_table
 id|acpi_get_firmware_table
@@ -187,26 +193,17 @@ suffix:semicolon
 id|ACPI_POINTER
 id|address
 suffix:semicolon
-id|acpi_table_header
-op_star
-id|rsdt_ptr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_table_header
-op_star
-id|table_ptr
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_SIZE
-id|rsdt_size
-op_assign
-l_int|0
+id|acpi_table_header
+id|header
 suffix:semicolon
-id|ACPI_SIZE
-id|table_size
+id|acpi_table_desc
+id|table_info
+suffix:semicolon
+id|acpi_table_desc
+id|rsdt_info
 suffix:semicolon
 id|u32
 id|table_count
@@ -250,6 +247,10 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|rsdt_info.pointer
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -374,12 +375,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Nope, BAD Signature */
-id|status
-op_assign
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_SIGNATURE
-suffix:semicolon
-r_goto
-id|cleanup
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -396,12 +395,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Nope, BAD Checksum */
-id|status
-op_assign
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_CHECKSUM
-suffix:semicolon
-r_goto
-id|cleanup
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -433,20 +430,20 @@ id|address.pointer.value
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Insert Processor_mode flags */
+id|address.pointer_type
+op_or_assign
+id|flags
+suffix:semicolon
 id|status
 op_assign
-id|acpi_tb_get_table_pointer
+id|acpi_tb_get_table
 (paren
 op_amp
 id|address
 comma
-id|flags
-comma
 op_amp
-id|rsdt_size
-comma
-op_amp
-id|rsdt_ptr
+id|rsdt_info
 )paren
 suffix:semicolon
 r_if
@@ -468,7 +465,7 @@ id|status
 op_assign
 id|acpi_tb_validate_rsdt
 (paren
-id|rsdt_ptr
+id|rsdt_info.pointer
 )paren
 suffix:semicolon
 r_if
@@ -491,8 +488,14 @@ id|acpi_tb_get_table_count
 (paren
 id|acpi_gbl_RSDP
 comma
-id|rsdt_ptr
+id|rsdt_info.pointer
 )paren
+suffix:semicolon
+id|address.pointer_type
+op_assign
+id|acpi_gbl_table_flags
+op_or
+id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Search the RSDT/XSDT for the correct instance of the&n;&t; * requested table&n;&t; */
 r_for
@@ -514,11 +517,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Get the next table pointer */
-id|address.pointer_type
-op_assign
-id|acpi_gbl_table_flags
-suffix:semicolon
+multiline_comment|/* Get the next table pointer, handle RSDT vs. XSDT */
 r_if
 c_cond
 (paren
@@ -534,7 +533,7 @@ op_assign
 id|RSDT_DESCRIPTOR
 op_star
 )paren
-id|rsdt_ptr
+id|rsdt_info.pointer
 )paren
 op_member_access_from_pointer
 id|table_offset_entry
@@ -554,7 +553,7 @@ id|ACPI_GET_ADDRESS
 id|xsdt_descriptor
 op_star
 )paren
-id|rsdt_ptr
+id|rsdt_info.pointer
 )paren
 op_member_access_from_pointer
 id|table_offset_entry
@@ -564,21 +563,16 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get addressibility if necessary */
+multiline_comment|/* Get the table header */
 id|status
 op_assign
-id|acpi_tb_get_table_pointer
+id|acpi_tb_get_table_header
 (paren
 op_amp
 id|address
 comma
-id|flags
-comma
 op_amp
-id|table_size
-comma
-op_amp
-id|table_ptr
+id|header
 )paren
 suffix:semicolon
 r_if
@@ -601,18 +595,11 @@ c_cond
 op_logical_neg
 id|ACPI_STRNCMP
 (paren
-(paren
-r_char
-op_star
-)paren
-id|table_ptr
+id|header.signature
 comma
 id|signature
 comma
-id|ACPI_STRLEN
-(paren
-id|signature
-)paren
+id|ACPI_NAME_SIZE
 )paren
 )paren
 (brace
@@ -628,43 +615,43 @@ op_ge
 id|instance
 )paren
 (brace
-multiline_comment|/* Found the correct instance */
+multiline_comment|/* Found the correct instance, get the entire table */
+id|status
+op_assign
+id|acpi_tb_get_table_body
+(paren
+op_amp
+id|address
+comma
+op_amp
+id|header
+comma
+op_amp
+id|table_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 op_star
 id|table_pointer
 op_assign
-id|table_ptr
+id|table_info.pointer
 suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Delete table mapping if using virtual addressing */
-r_if
-c_cond
-(paren
-(paren
-id|table_size
-)paren
-op_logical_and
-(paren
-(paren
-id|flags
-op_amp
-id|ACPI_MEMORY_MODE
-)paren
-op_eq
-id|ACPI_LOGICAL_ADDRESSING
-)paren
-)paren
-(brace
-id|acpi_os_unmap_memory
-(paren
-id|table_ptr
-comma
-id|table_size
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Did not find the table */
@@ -674,20 +661,16 @@ id|AE_NOT_EXIST
 suffix:semicolon
 id|cleanup
 suffix:colon
-r_if
-c_cond
-(paren
-id|rsdt_size
-)paren
-(brace
 id|acpi_os_unmap_memory
 (paren
-id|rsdt_ptr
+id|rsdt_info.pointer
 comma
-id|rsdt_size
+(paren
+id|ACPI_SIZE
+)paren
+id|rsdt_info.pointer-&gt;length
 )paren
 suffix:semicolon
-)brace
 id|return_ACPI_STATUS
 (paren
 id|status

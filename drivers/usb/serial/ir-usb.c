@@ -1181,10 +1181,6 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|port-&gt;read_urb-&gt;transfer_flags
-op_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|result
 op_assign
 id|usb_submit_urb
@@ -1471,8 +1467,6 @@ id|port
 suffix:semicolon
 id|port-&gt;write_urb-&gt;transfer_flags
 op_assign
-id|USB_QUEUE_BULK
-op_or
 id|USB_ZERO_PACKET
 suffix:semicolon
 id|result
@@ -1805,10 +1799,6 @@ id|ir_read_bulk_callback
 comma
 id|port
 )paren
-suffix:semicolon
-id|port-&gt;read_urb-&gt;transfer_flags
-op_assign
-id|USB_QUEUE_BULK
 suffix:semicolon
 id|result
 op_assign
@@ -2157,8 +2147,6 @@ id|port
 suffix:semicolon
 id|port-&gt;write_urb-&gt;transfer_flags
 op_assign
-id|USB_QUEUE_BULK
-op_or
 id|USB_ZERO_PACKET
 suffix:semicolon
 id|result

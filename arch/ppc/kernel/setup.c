@@ -270,6 +270,8 @@ DECL|variable|SYSRQ_KEY
 r_int
 r_int
 id|SYSRQ_KEY
+op_assign
+l_int|0x54
 suffix:semicolon
 macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 macro_line|#ifdef CONFIG_VGA_CONSOLE

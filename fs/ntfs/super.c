@@ -327,6 +327,14 @@ id|opt
 r_goto
 id|no_mount_options
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering with mount options string: %s&quot;
+comma
+id|opt
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -795,6 +803,10 @@ r_if
 c_cond
 (paren
 id|vol-&gt;nls_map
+op_logical_and
+id|vol-&gt;nls_map
+op_ne
+id|nls_map
 )paren
 (brace
 id|ntfs_error
@@ -936,7 +948,6 @@ c_cond
 op_logical_neg
 id|vol-&gt;mft_zone_multiplier
 )paren
-multiline_comment|/* Not specified and it is the first mount, so set default. */
 id|vol-&gt;mft_zone_multiplier
 op_assign
 l_int|1
@@ -1168,7 +1179,9 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering.&quot;
+l_string|&quot;Entering with remount options string: %s&quot;
+comma
+id|opt
 )paren
 suffix:semicolon
 singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
@@ -1199,6 +1212,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+macro_line|#ifndef NTFS_RW
+op_star
+id|flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3210,13 +3234,6 @@ op_star
 id|vol
 )paren
 (brace
-id|VCN
-id|next_vcn
-comma
-id|last_vcn
-comma
-id|highest_vcn
-suffix:semicolon
 r_struct
 id|super_block
 op_star
@@ -3233,10 +3250,6 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|ATTR_RECORD
-op_star
-id|attr
-suffix:semicolon
 id|VOLUME_INFORMATION
 op_star
 id|vi
@@ -3245,197 +3258,25 @@ id|attr_search_context
 op_star
 id|ctx
 suffix:semicolon
-id|run_list_element
-op_star
-id|rl
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have $MFT already (vol-&gt;mft_ino) but we need to setup access to&n;&t; * the $MFT/$BITMAP attribute.&n;&t; */
-id|m
+multiline_comment|/* Get mft bitmap attribute inode. */
+id|vol-&gt;mftbmp_ino
 op_assign
-id|map_mft_record
-c_func
-(paren
-id|READ
-comma
-id|NTFS_I
+id|ntfs_attr_iget
 c_func
 (paren
 id|vol-&gt;mft_ino
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|m
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
 comma
-l_string|&quot;Failed to map $MFT.&quot;
-)paren
-suffix:semicolon
-r_return
-id|FALSE
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ctx
-op_assign
-id|get_attr_search_ctx
-c_func
-(paren
-id|NTFS_I
-c_func
-(paren
-id|vol-&gt;mft_ino
-)paren
-comma
-id|m
-)paren
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Failed to get attribute search context.&quot;
-)paren
-suffix:semicolon
-r_goto
-id|unmap_err_out
-suffix:semicolon
-)brace
-multiline_comment|/* Load all attribute extents. */
-id|attr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|rl
-op_assign
-l_int|NULL
-suffix:semicolon
-id|next_vcn
-op_assign
-id|last_vcn
-op_assign
-id|highest_vcn
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|lookup_attr
-c_func
-(paren
 id|AT_BITMAP
 comma
 l_int|NULL
 comma
 l_int|0
-comma
-l_int|0
-comma
-id|next_vcn
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-id|ctx
-)paren
-)paren
-(brace
-id|run_list_element
-op_star
-id|nrl
-suffix:semicolon
-multiline_comment|/* Cache the current attribute extent. */
-id|attr
-op_assign
-id|ctx-&gt;attr
-suffix:semicolon
-multiline_comment|/* $MFT/$BITMAP must be non-resident. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|attr-&gt;non_resident
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;$MFT/$BITMAP must be non-resident but &quot;
-l_string|&quot;a resident extent was found. $MFT is &quot;
-l_string|&quot;corrupt. Run chkdsk.&quot;
-)paren
-suffix:semicolon
-r_goto
-id|put_err_out
-suffix:semicolon
-)brace
-multiline_comment|/* $MFT/$BITMAP must be uncompressed and unencrypted. */
-r_if
-c_cond
-(paren
-id|attr-&gt;flags
-op_amp
-id|ATTR_COMPRESSION_MASK
-op_logical_or
-id|attr-&gt;flags
-op_amp
-id|ATTR_IS_ENCRYPTED
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;$MFT/$BITMAP must be uncompressed and &quot;
-l_string|&quot;unencrypted but a compressed/&quot;
-l_string|&quot;encrypted extent was found. $MFT is &quot;
-l_string|&quot;corrupt. Run chkdsk.&quot;
-)paren
-suffix:semicolon
-r_goto
-id|put_err_out
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Decompress the mapping pairs array of this extent&n;&t;&t; * and merge the result into the existing run list. Note we&n;&t;&t; * don&squot;t need any locking at this stage as we are already&n;&t;&t; * running exclusively as we are mount in progress task.&n;&t;&t; */
-id|nrl
-op_assign
-id|decompress_mapping_pairs
-c_func
-(paren
-id|vol
-comma
-id|attr
-comma
-id|rl
 )paren
 suffix:semicolon
 r_if
@@ -3444,7 +3285,7 @@ c_cond
 id|IS_ERR
 c_func
 (paren
-id|nrl
+id|vol-&gt;mftbmp_ino
 )paren
 )paren
 (brace
@@ -3453,318 +3294,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;decompress_mapping_pairs() failed with &quot;
-l_string|&quot;error code %ld. $MFT is corrupt.&quot;
-comma
-id|PTR_ERR
-c_func
-(paren
-id|nrl
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|put_err_out
-suffix:semicolon
-)brace
-id|rl
-op_assign
-id|nrl
-suffix:semicolon
-multiline_comment|/* Are we in the first extent? */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|next_vcn
-)paren
-(brace
-multiline_comment|/* Get the last vcn in the $BITMAP attribute. */
-id|last_vcn
-op_assign
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|allocated_size
-)paren
-)paren
-op_rshift
-id|vol-&gt;cluster_size_bits
-suffix:semicolon
-id|vol-&gt;mftbmp_size
-op_assign
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|data_size
-)paren
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_initialized_size
-op_assign
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|initialized_size
-)paren
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_allocated_size
-op_assign
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|allocated_size
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Consistency check. */
-r_if
-c_cond
-(paren
-id|vol-&gt;mftbmp_size
-OL
-(paren
-id|vol-&gt;nr_mft_records
-op_plus
-l_int|7
-)paren
-op_rshift
-l_int|3
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;$MFT/$BITMAP is too short to &quot;
-l_string|&quot;contain a complete mft &quot;
-l_string|&quot;bitmap: impossible. $MFT is &quot;
-l_string|&quot;corrupt. Run chkdsk.&quot;
-)paren
-suffix:semicolon
-r_goto
-id|put_err_out
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Get the lowest vcn for the next extent. */
-id|highest_vcn
-op_assign
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|highest_vcn
-)paren
-)paren
-suffix:semicolon
-id|next_vcn
-op_assign
-id|highest_vcn
-op_plus
-l_int|1
-suffix:semicolon
-multiline_comment|/* Only one extent or error, which we catch below. */
-r_if
-c_cond
-(paren
-id|next_vcn
-op_le
-l_int|0
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* Avoid endless loops due to corruption. */
-r_if
-c_cond
-(paren
-id|next_vcn
-OL
-id|sle64_to_cpu
-c_func
-(paren
-id|attr
-op_member_access_from_pointer
-id|_ANR
-c_func
-(paren
-id|lowest_vcn
-)paren
-)paren
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;$MFT/$BITMAP has corrupt attribute &quot;
-l_string|&quot;list attribute. Run chkdsk.&quot;
-)paren
-suffix:semicolon
-r_goto
-id|put_err_out
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|attr
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Missing or invalid $BITMAP attribute in file &quot;
-l_string|&quot;$MFT. $MFT is corrupt. Run chkdsk.&quot;
-)paren
-suffix:semicolon
-id|put_err_out
-suffix:colon
-id|put_attr_search_ctx
-c_func
-(paren
-id|ctx
-)paren
-suffix:semicolon
-id|unmap_err_out
-suffix:colon
-id|unmap_mft_record
-c_func
-(paren
-id|READ
-comma
-id|NTFS_I
-c_func
-(paren
-id|vol-&gt;mft_ino
-)paren
+l_string|&quot;Failed to load $MFT/$BITMAP attribute.&quot;
 )paren
 suffix:semicolon
 r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* We are finished with $MFT/$BITMAP. */
-id|put_attr_search_ctx
-c_func
-(paren
-id|ctx
-)paren
-suffix:semicolon
-id|unmap_mft_record
-c_func
-(paren
-id|READ
-comma
-id|NTFS_I
-c_func
-(paren
-id|vol-&gt;mft_ino
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Catch errors. */
-r_if
-c_cond
-(paren
-id|highest_vcn
-op_logical_and
-id|highest_vcn
-op_ne
-id|last_vcn
-op_minus
-l_int|1
-)paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Failed to load the complete run list for &quot;
-l_string|&quot;$MFT/$BITMAP. Driver bug or corrupt $MFT. &quot;
-l_string|&quot;Run chkdsk.&quot;
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;highest_vcn = 0x%Lx, last_vcn - 1 = 0x%Lx&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|highest_vcn
-comma
-(paren
-r_int
-r_int
-)paren
-id|last_vcn
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-r_return
-id|FALSE
-suffix:semicolon
-suffix:semicolon
-)brace
-multiline_comment|/* Setup the run list and the address space in the volume structure. */
-id|vol-&gt;mftbmp_rl.rl
-op_assign
-id|rl
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.a_ops
-op_assign
-op_amp
-id|ntfs_mftbmp_aops
-suffix:semicolon
-multiline_comment|/*&n;&t; * Not inode data, set to volume. Our mft bitmap access kludge...&n;&t; * We can only pray this is not going to cause problems... If it does&n;&t; * cause problems we will need a fake inode for this.&n;&t; */
-id|vol-&gt;mftbmp_mapping.host
-op_assign
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|vol
-suffix:semicolon
-singleline_comment|// FIXME: If mounting read-only, it would be ok to ignore errors when
-singleline_comment|// loading the mftbmp but we then need to make sure nobody remounts the
-singleline_comment|// volume read-write...
 multiline_comment|/* Get mft mirror inode. */
 id|vol-&gt;mftmirr_ino
 op_assign
@@ -3816,8 +3352,8 @@ comma
 l_string|&quot;Failed to load $MFTMirr.&quot;
 )paren
 suffix:semicolon
-r_return
-id|FALSE
+r_goto
+id|iput_mftbmp_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Compare mftmirr with mft and repair if appropriate and not
@@ -3971,7 +3507,7 @@ l_string|&quot;Failed to load $Volume.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_bmp_mirr_err_out
+id|iput_lcnbmp_err_out
 suffix:semicolon
 )brace
 id|m
@@ -4245,7 +3781,7 @@ suffix:semicolon
 singleline_comment|// FIMXE: We only want to empty the thing so pointless bailing
 singleline_comment|// out. Can recover/ignore.
 r_goto
-id|iput_vol_bmp_mirr_err_out
+id|iput_vol_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Empty the logfile, but only if not read-only.
@@ -4309,7 +3845,7 @@ l_string|&quot;Failed to load $AttrDef.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_vol_bmp_mirr_err_out
+id|iput_vol_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Parse the attribute definitions.
@@ -4371,7 +3907,7 @@ l_string|&quot;Failed to load root directory.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_vol_bmp_mirr_err_out
+id|iput_vol_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* If on NTFS versions before 3.0, we are done. */
@@ -4438,7 +3974,7 @@ l_string|&quot;Failed to load $Secure.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_root_vol_bmp_mirr_err_out
+id|iput_root_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Initialize security.
@@ -4494,7 +4030,7 @@ l_string|&quot;Failed to load $Extend.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|iput_sec_root_vol_bmp_mirr_err_out
+id|iput_sec_err_out
 suffix:semicolon
 )brace
 singleline_comment|// FIXME: Do something. E.g. want to delete the $UsnJrnl if exists.
@@ -4511,7 +4047,7 @@ suffix:semicolon
 r_return
 id|TRUE
 suffix:semicolon
-id|iput_sec_root_vol_bmp_mirr_err_out
+id|iput_sec_err_out
 suffix:colon
 id|iput
 c_func
@@ -4519,7 +4055,7 @@ c_func
 id|vol-&gt;secure_ino
 )paren
 suffix:semicolon
-id|iput_root_vol_bmp_mirr_err_out
+id|iput_root_err_out
 suffix:colon
 id|iput
 c_func
@@ -4527,7 +4063,7 @@ c_func
 id|vol-&gt;root_ino
 )paren
 suffix:semicolon
-id|iput_vol_bmp_mirr_err_out
+id|iput_vol_err_out
 suffix:colon
 id|iput
 c_func
@@ -4535,7 +4071,7 @@ c_func
 id|vol-&gt;vol_ino
 )paren
 suffix:semicolon
-id|iput_bmp_mirr_err_out
+id|iput_lcnbmp_err_out
 suffix:colon
 id|iput
 c_func
@@ -4549,6 +4085,14 @@ id|iput
 c_func
 (paren
 id|vol-&gt;mftmirr_ino
+)paren
+suffix:semicolon
+id|iput_mftbmp_err_out
+suffix:colon
+id|iput
+c_func
+(paren
+id|vol-&gt;mftbmp_ino
 )paren
 suffix:semicolon
 r_return
@@ -4665,6 +4209,30 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|vol-&gt;mftbmp_ino
+)paren
+suffix:semicolon
+id|vol-&gt;mftbmp_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren
@@ -4674,62 +4242,6 @@ suffix:semicolon
 id|vol-&gt;mft_ino
 op_assign
 l_int|NULL
-suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Clean up mft bitmap address space. Ignore the _inode_ bit in the&n;&t; * name of the function... FIXME: This destroys dirty pages!!! (AIA)&n;&t; */
-id|truncate_inode_pages
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.a_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.host
-op_assign
-l_int|NULL
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_rl.lock
-)paren
-suffix:semicolon
-id|ntfs_free
-c_func
-(paren
-id|vol-&gt;mftbmp_rl.rl
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_rl.rl
-op_assign
-l_int|NULL
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_rl.lock
-)paren
 suffix:semicolon
 id|vol-&gt;upcase_len
 op_assign
@@ -5208,10 +4720,6 @@ id|address_space
 op_star
 id|mapping
 suffix:semicolon
-id|filler_t
-op_star
-id|readpage
-suffix:semicolon
 r_struct
 id|page
 op_star
@@ -5237,40 +4745,28 @@ id|u32
 op_star
 id|b
 suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering.&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Serialize accesses to the inode bitmap. */
 id|mapping
 op_assign
-op_amp
-id|vol-&gt;mftbmp_mapping
+id|vol-&gt;mftbmp_ino-&gt;i_mapping
 suffix:semicolon
-id|readpage
-op_assign
-(paren
-id|filler_t
-op_star
-)paren
-id|mapping-&gt;a_ops-&gt;readpage
-suffix:semicolon
-multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE.&n;&t; */
+multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up to a multiple of 8&n;&t; * bytes, then convert into multiples of PAGE_CACHE_SIZE.&n;&t; */
 id|max_index
 op_assign
+(paren
+(paren
 (paren
 id|vol-&gt;nr_mft_records
 op_plus
 l_int|7
 )paren
 op_rshift
-(paren
 l_int|3
-op_plus
-id|PAGE_CACHE_SHIFT
 )paren
+op_plus
+l_int|7
+)paren
+op_rshift
+id|PAGE_CACHE_SHIFT
 suffix:semicolon
 multiline_comment|/* Use multiples of 4 bytes. */
 id|max_size
@@ -5305,27 +4801,17 @@ suffix:semicolon
 (brace
 id|handle_partial_page
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Read the page from page cache, getting it from backing store&n;&t;&t; * if necessary, and increment the use count.&n;&t;&t; */
 id|page
 op_assign
-id|read_cache_page
+id|ntfs_map_page
 c_func
 (paren
 id|mapping
 comma
 id|index
 op_increment
-comma
-(paren
-id|filler_t
-op_star
-)paren
-id|readpage
-comma
-id|vol
 )paren
 suffix:semicolon
-multiline_comment|/* Ignore pages which errored synchronously. */
 r_if
 c_cond
 (paren
@@ -5339,50 +4825,12 @@ id|page
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Sync read_cache_page() error. Skipping &quot;
-l_string|&quot;page (index 0x%lx).&quot;
+l_string|&quot;ntfs_map_page() error. Skipping page &quot;
+l_string|&quot;(index 0x%lx).&quot;
 comma
 id|index
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|wait_on_page_locked
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Async read_cache_page() error. Skipping &quot;
-l_string|&quot;page (index 0x%lx).&quot;
-comma
-id|index
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Ignore pages which errored asynchronously. */
-id|page_cache_release
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 r_continue
@@ -5394,7 +4842,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|kmap
+id|page_address
 c_func
 (paren
 id|page
@@ -5428,13 +4876,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
+id|ntfs_unmap_page
 c_func
 (paren
 id|page
@@ -5456,12 +4898,21 @@ op_assign
 (paren
 (paren
 (paren
+(paren
+(paren
 id|vol-&gt;nr_mft_records
 op_plus
 l_int|7
 )paren
 op_rshift
 l_int|3
+)paren
+op_plus
+l_int|7
+)paren
+op_amp
+op_complement
+l_int|7
 )paren
 op_amp
 op_complement
@@ -5519,12 +4970,6 @@ comma
 id|index
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Exiting.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5618,6 +5063,7 @@ id|sfs-&gt;f_bfree
 op_assign
 id|size
 suffix:semicolon
+multiline_comment|/* Serialize accesses to the inode bitmap. */
 id|down_read
 c_func
 (paren
@@ -5732,10 +5178,11 @@ id|ntfs_dirty_inode
 comma
 multiline_comment|/* VFS: Called from&n;&t;&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
 singleline_comment|//write_inode:&t;NULL,&t;&t;/* VFS: Write dirty inode to disk. */
-singleline_comment|//put_inode:&t;NULL,&t;&t;/* VFS: Called whenever the reference
-singleline_comment|//&t;&t;&t;&t;   count (i_count) of the inode is
-singleline_comment|//&t;&t;&t;&t;   going to be decreased but before the
-singleline_comment|//&t;&t;&t;&t;   actual decrease. */
+id|put_inode
+suffix:colon
+id|ntfs_put_inode
+comma
+multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;   reference count is decreased. */
 singleline_comment|//delete_inode:&t;NULL,&t;&t;/* VFS: Delete inode from disk. Called
 singleline_comment|//&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is
 singleline_comment|//&t;&t;&t;&t;   also 0. */
@@ -5814,6 +5261,16 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
+macro_line|#ifndef NTFS_RW
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Allocate a new ntfs_volume and place it in sb-&gt;u.generic_sbp. */
 id|sb-&gt;u.generic_sbp
 op_assign
@@ -5889,6 +5346,17 @@ id|vol-&gt;mft_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+id|vol-&gt;mftbmp_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
 id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
@@ -5938,130 +5406,7 @@ id|vol-&gt;nls_map
 op_assign
 l_int|NULL
 suffix:semicolon
-id|init_rwsem
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
-id|init_run_list
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_rl
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize the mftbmp address space mapping.  */
-id|INIT_RADIX_TREE
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.page_tree
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-id|rwlock_init
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.page_lock
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.clean_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.dirty_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.locked_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.io_pages
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.nrpages
-op_assign
-l_int|0
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.a_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.host
-op_assign
-l_int|NULL
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.i_mmap
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.i_mmap_shared
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.i_shared_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * private_lock and private_list are unused by ntfs.  But they&n;&t; * are available.&n;&t; */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.private_lock
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_mapping.private_list
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.assoc_mapping
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.dirtied_when
-op_assign
-l_int|0
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.gfp_mask
-op_assign
-id|GFP_HIGHUSER
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.backing_dev_info
-op_assign
-id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
-suffix:semicolon
-multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access. Further files by default&n;&t; * are not executable but directories are of course browseable.&n;&t; */
+multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access. Further, files by default&n;&t; * are not executable but directories are of course browseable.&n;&t; */
 id|vol-&gt;fmask
 op_assign
 l_int|0177
@@ -6089,15 +5434,6 @@ id|opt
 )paren
 r_goto
 id|err_out_now
-suffix:semicolon
-multiline_comment|/* We are just a read-only fs at the moment. */
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_RDONLY
-op_or
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
 suffix:semicolon
 multiline_comment|/*&n;&t; * TODO: Fail safety check. In the future we should really be able to&n;&t; * cope with this being the case, but for now just bail out.&n;&t; */
 r_if
@@ -6593,30 +5929,13 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
-id|truncate_inode_pages
+id|iput
 c_func
 (paren
-op_amp
-id|vol-&gt;mftbmp_mapping
-comma
-l_int|0
+id|vol-&gt;mftbmp_ino
 )paren
 suffix:semicolon
-id|vol-&gt;mftbmp_mapping.a_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vol-&gt;mftbmp_mapping.host
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ntfs_free
-c_func
-(paren
-id|vol-&gt;mftbmp_rl.rl
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_rl.rl
+id|vol-&gt;mftbmp_ino
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6753,7 +6072,7 @@ suffix:semicolon
 )brace
 DECL|macro|OGIN
 macro_line|#undef OGIN
-multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called ntfs_iget()/iput() on, otherwise we A)&n;&t; * leak resources and B) a subsequent mount fails automatically due to&n;&t; * ntfs_iget() never calling down into our ntfs_read_locked_inode()&n;&t; * method again...&n;&t; */
+multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called ntfs_iget()/iput() on, otherwise we A)&n;&t; * leak resources and B) a subsequent mount fails automatically due to&n;&t; * ntfs_iget() never calling down into our ntfs_read_locked_inode()&n;&t; * method again... FIXME: Do we need to do this twice now because of&n;&t; * attribute inodes? I think not, so leave as is for now... (AIA)&n;&t; */
 r_if
 c_cond
 (paren
@@ -7046,7 +6365,7 @@ id|KERN_INFO
 l_string|&quot;NTFS driver &quot;
 id|NTFS_VERSION
 l_string|&quot; [Flags: R/&quot;
-macro_line|#ifdef CONFIG_NTFS_RW
+macro_line|#ifdef NTFS_RW
 l_string|&quot;W&quot;
 macro_line|#else
 l_string|&quot;O&quot;
@@ -7057,7 +6376,7 @@ macro_line|#endif
 macro_line|#ifdef MODULE
 l_string|&quot; MODULE&quot;
 macro_line|#endif
-l_string|&quot;]. Copyright (c) 2001,2002 Anton Altaparmakov.&bslash;n&quot;
+l_string|&quot;].&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -7514,7 +6833,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NTFS 1.2/3.x driver&quot;
+l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2002 Anton Altaparmakov&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -275,6 +275,23 @@ id|saved_context.eflags
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|do_fpu_end
+id|do_fpu_end
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* restore FPU regs if necessary */
+multiline_comment|/* Do it out of line so that gcc does not move cr0 load to some stupid place */
+id|kernel_fpu_end
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * restore_processor_context&n; * &n; * Restore the processor context as it was before we went to sleep&n; * - descriptor tables&n; * - control registers&n; * - segment registers&n; * - flags&n; * &n; * Note that it is critical that this function is declared inline.  &n; * It was separated out from restore_state to make that function&n; * a little clearer, but it needs to be inlined because we won&squot;t have a&n; * stack when we get here (so we can&squot;t push a return address).&n; */
 DECL|function|restore_processor_context
 r_static
@@ -729,23 +746,6 @@ l_int|7
 )paren
 suffix:semicolon
 )brace
-)brace
-r_static
-r_void
-DECL|function|do_fpu_end
-id|do_fpu_end
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* restore FPU regs if necessary */
-multiline_comment|/* Do it out of line so that gcc does not move cr0 load to some stupid place */
-id|kernel_fpu_end
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 multiline_comment|/* Local variables for do_magic */
