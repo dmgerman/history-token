@@ -1991,22 +1991,7 @@ op_assign
 id|this_cpu
 suffix:semicolon
 multiline_comment|/* Wake to this CPU if we can */
-multiline_comment|/*&n;&t; * Passive load balancing. If the queues are very out of balance&n;&t; * we might as well balance here rather than the periodic load&n;&t; * balancing.&n;&t; */
-r_if
-c_cond
-(paren
-id|load
-OG
-id|this_load
-op_plus
-id|SCHED_LOAD_SCALE
-op_star
-l_int|2
-)paren
-r_goto
-id|out_set_cpu
-suffix:semicolon
-multiline_comment|/*&n;&t; * Migrate the task to the waking domain.&n;&t; * Do not violate hard affinity.&n;&t; */
+multiline_comment|/*&n;&t; * Scan domains for affine wakeup and passive balancing&n;&t; * possibilities.&n;&t; */
 id|for_each_domain
 c_func
 (paren
@@ -2015,21 +2000,34 @@ comma
 id|sd
 )paren
 (brace
+r_int
+r_int
+id|imbalance
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Start passive balancing when half the imbalance_pct&n;&t;&t; * limit is reached.&n;&t;&t; */
+id|imbalance
+op_assign
+id|sd-&gt;imbalance_pct
+op_plus
+(paren
+id|sd-&gt;imbalance_pct
+op_minus
+l_int|100
+)paren
+op_div
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 (paren
 id|sd-&gt;flags
 op_amp
 id|SD_WAKE_AFFINE
 )paren
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_and
+op_logical_neg
 id|task_hot
 c_func
 (paren
@@ -2040,8 +2038,25 @@ comma
 id|sd
 )paren
 )paren
-r_break
-suffix:semicolon
+op_logical_or
+(paren
+(paren
+id|sd-&gt;flags
+op_amp
+id|SD_WAKE_BALANCE
+)paren
+op_logical_and
+id|imbalance
+op_star
+id|this_load
+op_le
+l_int|100
+op_star
+id|load
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Now sd has SD_WAKE_AFFINE and p is cache cold in sd&n;&t;&t;&t; * or sd has SD_WAKE_BALANCE and there is an imbalance&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2056,6 +2071,7 @@ id|sd-&gt;span
 r_goto
 id|out_set_cpu
 suffix:semicolon
+)brace
 )brace
 id|new_cpu
 op_assign
