@@ -7442,10 +7442,14 @@ suffix:semicolon
 id|dev_t
 id|journal_dev
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|le32_to_cpu
 c_func
 (paren
 id|es-&gt;s_journal_dev
+)paren
 )paren
 suffix:semicolon
 r_int

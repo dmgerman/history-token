@@ -608,9 +608,9 @@ op_assign
 l_int|22
 suffix:semicolon
 multiline_comment|/* set default policy and cpuinfo */
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.max_freq
 op_assign

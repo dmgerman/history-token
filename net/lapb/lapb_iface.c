@@ -1621,17 +1621,6 @@ c_func
 id|lapb_data_received
 )paren
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
-id|banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4: LAPB for Linux. Version 0.01 for NET4.0&bslash;n&quot;
-suffix:semicolon
 DECL|function|lapb_init
 r_static
 r_int
@@ -1642,12 +1631,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|banner
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -567,7 +567,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SDLA
 r_extern
 r_struct
 id|net_device
@@ -578,8 +577,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_COPS
 r_extern
 r_struct
 id|net_device
@@ -591,8 +588,6 @@ r_int
 id|unit
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_LTPC
 r_extern
 r_struct
 id|net_device
@@ -603,7 +598,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Detachable devices (&quot;pocket adaptors&quot;) */
 r_extern
 r_int

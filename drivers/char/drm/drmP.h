@@ -146,10 +146,6 @@ multiline_comment|/*@}*/
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name Backward compatibility section */
 multiline_comment|/*@{*/
-macro_line|#ifndef minor
-DECL|macro|minor
-mdefine_line|#define minor(x) MINOR((x))
-macro_line|#endif
 macro_line|#ifndef MODULE_LICENSE
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(x) 

@@ -259,11 +259,7 @@ l_int|NULL
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 l_int|0
-)paren
 suffix:semicolon
 id|inode-&gt;i_security
 op_assign
@@ -4904,11 +4900,7 @@ id|def_chr_fops
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|rdev
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -4929,11 +4921,7 @@ id|def_blk_fops
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|rdev
-)paren
 suffix:semicolon
 )brace
 r_else

@@ -1215,10 +1215,14 @@ r_else
 (brace
 id|sbi-&gt;logdev
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|le32_to_cpu
 c_func
 (paren
 id|j_sb-&gt;s_logdev
+)paren
 )paren
 suffix:semicolon
 id|memcpy

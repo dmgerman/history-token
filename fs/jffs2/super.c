@@ -713,7 +713,7 @@ suffix:semicolon
 r_int
 id|mtdnr
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|dev
 suffix:semicolon
 r_if
@@ -1063,7 +1063,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
@@ -1113,7 +1113,7 @@ id|dev_name
 comma
 id|data
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|dev

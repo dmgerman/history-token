@@ -102,10 +102,6 @@ id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_mtime

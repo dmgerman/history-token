@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 r_extern
@@ -171,30 +172,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
-r_void
-id|crypto_alg_autoload
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-r_struct
-id|crypto_alg
-op_star
-id|crypto_alg_mod_lookup
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-macro_line|#else
+multiline_comment|/* A far more intelligent version of this is planned.  For now, just&n; * try an exact match on the name of the algorithm. */
 DECL|function|crypto_alg_mod_lookup
 r_static
 r_inline
@@ -211,14 +189,19 @@ id|name
 )paren
 (brace
 r_return
+id|try_then_request_module
+c_func
+(paren
 id|crypto_alg_lookup
 c_func
 (paren
 id|name
 )paren
+comma
+id|name
+)paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_CRYPTO_HMAC
 r_int
 id|crypto_alloc_hmac_block

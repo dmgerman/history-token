@@ -340,7 +340,7 @@ suffix:semicolon
 r_else
 id|i460.dynamic_apbase
 op_assign
-id|INTEL_I460_APBASE
+id|AGP_APBASE
 suffix:semicolon
 r_for
 c_loop

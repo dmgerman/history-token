@@ -117,10 +117,6 @@ id|arg
 suffix:semicolon
 DECL|macro|MAX_DEV
 mdefine_line|#define MAX_DEV (8)
-DECL|macro|MAX_MINOR
-mdefine_line|#define MAX_MINOR (MAX_DEV &lt;&lt; UBD_SHIFT)
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(n) (minor(n) &gt;&gt; UBD_SHIFT)
 DECL|variable|ubd_blops
 r_static
 r_struct

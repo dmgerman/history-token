@@ -2749,14 +2749,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef RTNL_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;Initializing RT netlink socket&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rtnl
 op_assign
 id|netlink_kernel_create

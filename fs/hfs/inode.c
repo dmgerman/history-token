@@ -1168,10 +1168,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|inode-&gt;i_atime.tv_sec

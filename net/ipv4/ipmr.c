@@ -7662,13 +7662,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Linux IP multicast router 0.06 plus PIM-SM&bslash;n&quot;
-)paren
-suffix:semicolon
 id|mrt_cachep
 op_assign
 id|kmem_cache_create

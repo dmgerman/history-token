@@ -313,15 +313,6 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
-r_int
-id|major
-op_assign
-id|MAJOR
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -346,9 +337,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot; unsupported disk (major = %u)&bslash;n&quot;
+l_string|&quot; unsupported disk (%s)&bslash;n&quot;
 comma
-id|major
+id|bdev-&gt;bd_disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_return

@@ -1285,9 +1285,9 @@ id|frequency
 op_assign
 id|CPUFREQ_TABLE_END
 suffix:semicolon
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign

@@ -962,6 +962,16 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+(brace
 id|set_current_state
 c_func
 (paren
@@ -978,6 +988,16 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|mdelay
+c_func
+(paren
+l_int|20
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Reprogram the DRAM timings with interrupts disabled, and&n;&t; * ensure that we are doing this within a complete cache line.&n;&t; * This means that we won&squot;t access SDRAM for the duration of&n;&t; * the programming.&n;&t; */
 id|local_irq_save
 c_func
@@ -1131,9 +1151,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_POWERSAVE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.min_freq
 op_assign

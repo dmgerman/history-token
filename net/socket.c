@@ -7840,6 +7840,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;NET: Registered protocol family %d&bslash;n&quot;
+comma
+id|ops-&gt;family
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -7884,6 +7893,15 @@ suffix:semicolon
 id|net_family_write_unlock
 c_func
 (paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;NET: Unregistered protocol family %d&bslash;n&quot;
+comma
+id|family
 )paren
 suffix:semicolon
 r_return

@@ -2292,13 +2292,14 @@ c_func
 id|ri.spec
 )paren
 suffix:semicolon
-multiline_comment|/* convert back and forth for typechecking and&n;&t;&t;&t; * source tagging */
-id|nextfh
-op_assign
-id|kdev_t_to_nr
+id|init_special_inode
 c_func
 (paren
-id|mk_kdev
+id|i
+comma
+id|ino
+comma
+id|MKDEV
 c_func
 (paren
 id|nextfh
@@ -2309,16 +2310,6 @@ id|nextfh
 op_amp
 l_int|0xffff
 )paren
-)paren
-suffix:semicolon
-id|init_special_inode
-c_func
-(paren
-id|i
-comma
-id|ino
-comma
-id|nextfh
 )paren
 suffix:semicolon
 )brace

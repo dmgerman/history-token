@@ -363,11 +363,7 @@ c_cond
 op_star
 id|pos
 op_ge
-(paren
-l_int|1
-op_lshift
-id|KDEV_MINOR_BITS
-)paren
+l_int|256
 op_div
 id|TAPE_MINORS_PER_DEV
 )paren

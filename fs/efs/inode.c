@@ -492,10 +492,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * BUG: irix dev_t is 32-bits. linux dev_t is only 16-bits.&n;&t; *&n;&t; * apparently linux will change to 32-bit dev_t sometime during&n;&t; * linux 2.3.&n;&t; *&n;&t; * as is, this code maps devices that can&squot;t be represented in&n;&t; * 16-bits (ie major &gt; 255 or minor &gt; 255) to major = minor = 255.&n;&t; *&n;&t; * during 2.3 when 32-bit dev_t become available, we should test&n;&t; * to see whether odev contains 65535. if this is the case then we&n;&t; * should then do device = be32_to_cpu(efs_inode-&gt;di_u.di_dev.ndev).&n;&t; */
 id|device
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|be16_to_cpu
 c_func
 (paren
 id|efs_inode-&gt;di_u.di_dev.odev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* get the number of extents for this object */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    | C5A      | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               | C5C      | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M      | v3 : multipliers, voltage &amp; FSB |&n; *  |  Nehemiah           | C5N      | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -63,699 +63,6 @@ id|fsb
 suffix:semicolon
 DECL|macro|__hlt
 mdefine_line|#define __hlt()     __asm__ __volatile__(&quot;hlt&quot;: : :&quot;memory&quot;)
-multiline_comment|/*&n; * Clock ratio tables.&n; * The eblcr ones specify the ratio read from the CPU.&n; * The clock_ratio ones specify what to write to the CPU.&n; */
-multiline_comment|/* VIA C3 Samuel 1  &amp; Samuel 2 (stepping 0)*/
-DECL|variable|longhaul1_clock_ratio
-r_static
-r_int
-id|__initdata
-id|longhaul1_clock_ratio
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0000 -&gt; RESERVED */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0011 -&gt; RESERVED */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0100 -&gt; RESERVED */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|55
-comma
-multiline_comment|/* 0111 -&gt;  5.5x */
-l_int|60
-comma
-multiline_comment|/* 1000 -&gt;  6.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|50
-comma
-multiline_comment|/* 1011 -&gt;  5.0x */
-l_int|65
-comma
-multiline_comment|/* 1100 -&gt;  6.5x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1110 -&gt; RESERVED */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1111 -&gt; RESERVED */
-)brace
-suffix:semicolon
-DECL|variable|samuel1_eblcr
-r_static
-r_int
-id|__initdata
-id|samuel1_eblcr
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|50
-comma
-multiline_comment|/* 0000 -&gt; RESERVED */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0011 -&gt; RESERVED */
-l_int|55
-comma
-multiline_comment|/* 0100 -&gt;  5.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0111 -&gt; RESERVED */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1000 -&gt; RESERVED */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|60
-comma
-multiline_comment|/* 1011 -&gt;  6.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1100 -&gt; RESERVED */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1110 -&gt; RESERVED */
-l_int|65
-comma
-multiline_comment|/* 1111 -&gt;  6.5x */
-)brace
-suffix:semicolon
-multiline_comment|/* VIA C3 Samuel2 Stepping 1-&gt;15 &amp; VIA C3 Ezra */
-DECL|variable|longhaul2_clock_ratio
-r_static
-r_int
-id|__initdata
-id|longhaul2_clock_ratio
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|100
-comma
-multiline_comment|/* 0000 -&gt; 10.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|90
-comma
-multiline_comment|/* 0011 -&gt;  9.0x */
-l_int|95
-comma
-multiline_comment|/* 0100 -&gt;  9.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|55
-comma
-multiline_comment|/* 0111 -&gt;  5.5x */
-l_int|60
-comma
-multiline_comment|/* 1000 -&gt;  6.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|50
-comma
-multiline_comment|/* 1011 -&gt;  5.0x */
-l_int|65
-comma
-multiline_comment|/* 1100 -&gt;  6.5x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|85
-comma
-multiline_comment|/* 1110 -&gt;  8.5x */
-l_int|120
-comma
-multiline_comment|/* 1111 -&gt; 12.0x */
-)brace
-suffix:semicolon
-DECL|variable|samuel2_eblcr
-r_static
-r_int
-id|__initdata
-id|samuel2_eblcr
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|50
-comma
-multiline_comment|/* 0000 -&gt;  5.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|100
-comma
-multiline_comment|/* 0011 -&gt; 10.0x */
-l_int|55
-comma
-multiline_comment|/* 0100 -&gt;  5.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|110
-comma
-multiline_comment|/* 0111 -&gt; 11.0x */
-l_int|90
-comma
-multiline_comment|/* 1000 -&gt;  9.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|60
-comma
-multiline_comment|/* 1011 -&gt;  6.0x */
-l_int|120
-comma
-multiline_comment|/* 1100 -&gt; 12.0x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|130
-comma
-multiline_comment|/* 1110 -&gt; 13.0x */
-l_int|65
-comma
-multiline_comment|/* 1111 -&gt;  6.5x */
-)brace
-suffix:semicolon
-DECL|variable|ezra_eblcr
-r_static
-r_int
-id|__initdata
-id|ezra_eblcr
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|50
-comma
-multiline_comment|/* 0000 -&gt;  5.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|100
-comma
-multiline_comment|/* 0011 -&gt; 10.0x */
-l_int|55
-comma
-multiline_comment|/* 0100 -&gt;  5.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|95
-comma
-multiline_comment|/* 0111 -&gt;  9.5x */
-l_int|90
-comma
-multiline_comment|/* 1000 -&gt;  9.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|60
-comma
-multiline_comment|/* 1011 -&gt;  6.0x */
-l_int|120
-comma
-multiline_comment|/* 1100 -&gt; 12.0x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|85
-comma
-multiline_comment|/* 1110 -&gt;  8.5x */
-l_int|65
-comma
-multiline_comment|/* 1111 -&gt;  6.5x */
-)brace
-suffix:semicolon
-multiline_comment|/* VIA C5M. */
-DECL|variable|longhaul3_clock_ratio
-r_static
-r_int
-id|__initdata
-id|longhaul3_clock_ratio
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-l_int|100
-comma
-multiline_comment|/* 0000 -&gt; 10.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|90
-comma
-multiline_comment|/* 0011 -&gt;  9.0x */
-l_int|95
-comma
-multiline_comment|/* 0100 -&gt;  9.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|55
-comma
-multiline_comment|/* 0111 -&gt;  5.5x */
-l_int|60
-comma
-multiline_comment|/* 1000 -&gt;  6.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|50
-comma
-multiline_comment|/* 1011 -&gt;  5.0x */
-l_int|65
-comma
-multiline_comment|/* 1100 -&gt;  6.5x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|85
-comma
-multiline_comment|/* 1110 -&gt;  8.5x */
-l_int|120
-comma
-multiline_comment|/* 1111 -&gt;  12.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0000 -&gt; RESERVED (10.0x) */
-l_int|110
-comma
-multiline_comment|/* 0001 -&gt; 11.0x */
-l_int|120
-comma
-multiline_comment|/* 0010 -&gt; 12.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0011 -&gt; RESERVED (9.0x)*/
-l_int|105
-comma
-multiline_comment|/* 0100 -&gt; 10.5x */
-l_int|115
-comma
-multiline_comment|/* 0101 -&gt; 11.5x */
-l_int|125
-comma
-multiline_comment|/* 0110 -&gt; 12.5x */
-l_int|135
-comma
-multiline_comment|/* 0111 -&gt; 13.5x */
-l_int|140
-comma
-multiline_comment|/* 1000 -&gt; 14.0x */
-l_int|150
-comma
-multiline_comment|/* 1001 -&gt; 15.0x */
-l_int|160
-comma
-multiline_comment|/* 1010 -&gt; 16.0x */
-l_int|130
-comma
-multiline_comment|/* 1011 -&gt; 13.0x */
-l_int|145
-comma
-multiline_comment|/* 1100 -&gt; 14.5x */
-l_int|155
-comma
-multiline_comment|/* 1101 -&gt; 15.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1110 -&gt; RESERVED (13.0x) */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1111 -&gt; RESERVED (12.0x) */
-)brace
-suffix:semicolon
-DECL|variable|c5m_eblcr
-r_static
-r_int
-id|__initdata
-id|c5m_eblcr
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-l_int|50
-comma
-multiline_comment|/* 0000 -&gt;  5.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|100
-comma
-multiline_comment|/* 0011 -&gt; 10.0x */
-l_int|55
-comma
-multiline_comment|/* 0100 -&gt;  5.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|95
-comma
-multiline_comment|/* 0111 -&gt;  9.5x */
-l_int|90
-comma
-multiline_comment|/* 1000 -&gt;  9.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|60
-comma
-multiline_comment|/* 1011 -&gt;  6.0x */
-l_int|120
-comma
-multiline_comment|/* 1100 -&gt; 12.0x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|85
-comma
-multiline_comment|/* 1110 -&gt;  8.5x */
-l_int|65
-comma
-multiline_comment|/* 1111 -&gt;  6.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0000 -&gt; RESERVED (9.0x) */
-l_int|110
-comma
-multiline_comment|/* 0001 -&gt; 11.0x */
-l_int|120
-comma
-multiline_comment|/* 0010 -&gt; 12.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 0011 -&gt; RESERVED (10.0x)*/
-l_int|135
-comma
-multiline_comment|/* 0100 -&gt; 13.5x */
-l_int|115
-comma
-multiline_comment|/* 0101 -&gt; 11.5x */
-l_int|125
-comma
-multiline_comment|/* 0110 -&gt; 12.5x */
-l_int|105
-comma
-multiline_comment|/* 0111 -&gt; 10.5x */
-l_int|130
-comma
-multiline_comment|/* 1000 -&gt; 13.0x */
-l_int|150
-comma
-multiline_comment|/* 1001 -&gt; 15.0x */
-l_int|160
-comma
-multiline_comment|/* 1010 -&gt; 16.0x */
-l_int|140
-comma
-multiline_comment|/* 1011 -&gt; 14.0x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1100 -&gt; RESERVED (12.0x) */
-l_int|155
-comma
-multiline_comment|/* 1101 -&gt; 15.5x */
-op_minus
-l_int|1
-comma
-multiline_comment|/* 1110 -&gt; RESERVED (13.0x) */
-l_int|145
-comma
-multiline_comment|/* 1111 -&gt; 14.5x */
-)brace
-suffix:semicolon
-multiline_comment|/* Voltage scales. Div by 1000 to get actual voltage. */
-DECL|variable|vrm85scales
-r_static
-r_int
-id|__initdata
-id|vrm85scales
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-l_int|1250
-comma
-l_int|1200
-comma
-l_int|1150
-comma
-l_int|1100
-comma
-l_int|1050
-comma
-l_int|1800
-comma
-l_int|1750
-comma
-l_int|1700
-comma
-l_int|1650
-comma
-l_int|1600
-comma
-l_int|1550
-comma
-l_int|1500
-comma
-l_int|1450
-comma
-l_int|1400
-comma
-l_int|1350
-comma
-l_int|1300
-comma
-l_int|1275
-comma
-l_int|1225
-comma
-l_int|1175
-comma
-l_int|1125
-comma
-l_int|1075
-comma
-l_int|1825
-comma
-l_int|1775
-comma
-l_int|1725
-comma
-l_int|1675
-comma
-l_int|1625
-comma
-l_int|1575
-comma
-l_int|1525
-comma
-l_int|1475
-comma
-l_int|1425
-comma
-l_int|1375
-comma
-l_int|1325
-comma
-)brace
-suffix:semicolon
-DECL|variable|mobilevrmscales
-r_static
-r_int
-id|__initdata
-id|mobilevrmscales
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-l_int|2000
-comma
-l_int|1950
-comma
-l_int|1900
-comma
-l_int|1850
-comma
-l_int|1800
-comma
-l_int|1750
-comma
-l_int|1700
-comma
-l_int|1650
-comma
-l_int|1600
-comma
-l_int|1550
-comma
-l_int|1500
-comma
-l_int|1450
-comma
-l_int|1500
-comma
-l_int|1350
-comma
-l_int|1300
-comma
-op_minus
-l_int|1
-comma
-l_int|1275
-comma
-l_int|1250
-comma
-l_int|1225
-comma
-l_int|1200
-comma
-l_int|1175
-comma
-l_int|1150
-comma
-l_int|1125
-comma
-l_int|1100
-comma
-l_int|1075
-comma
-l_int|1050
-comma
-l_int|1025
-comma
-l_int|1000
-comma
-l_int|975
-comma
-l_int|950
-comma
-l_int|925
-comma
-op_minus
-l_int|1
-comma
-)brace
-suffix:semicolon
 multiline_comment|/* Clock ratios multiplied by 10 */
 DECL|variable|clock_ratio
 r_static
@@ -803,14 +110,60 @@ id|cpufreq_frequency_table
 op_star
 id|longhaul_table
 suffix:semicolon
+DECL|function|calc_speed
+r_static
+r_int
+r_int
+id|calc_speed
+(paren
+r_int
+id|mult
+comma
+r_int
+id|fsb
+)paren
+(brace
+r_return
+(paren
+(paren
+id|mult
+op_div
+l_int|10
+)paren
+op_star
+id|fsb
+)paren
+op_plus
+(paren
+(paren
+id|mult
+op_mod
+l_int|10
+)paren
+op_star
+(paren
+id|fsb
+op_div
+l_int|2
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|longhaul_get_cpu_fsb
 r_static
+r_int
 r_int
 id|longhaul_get_cpu_fsb
 (paren
 r_void
 )paren
 (brace
+r_int
+r_int
+id|lo
+comma
+id|hi
+suffix:semicolon
 r_int
 r_int
 id|eblcr_fsb_table
@@ -833,10 +186,6 @@ r_int
 id|invalue
 op_assign
 l_int|0
-comma
-id|lo
-comma
-id|hi
 suffix:semicolon
 r_if
 c_cond
@@ -873,19 +222,17 @@ l_int|19
 op_rshift
 l_int|18
 suffix:semicolon
-r_return
+id|fsb
+op_assign
 id|eblcr_fsb_table
 (braket
 id|invalue
 )braket
 suffix:semicolon
 )brace
-r_else
-(brace
 r_return
 id|fsb
 suffix:semicolon
-)brace
 )brace
 DECL|function|longhaul_get_cpu_mult
 r_static
@@ -983,9 +330,9 @@ id|clock_ratio_index
 )paren
 (brace
 r_int
-id|vidindex
+id|speed
 comma
-id|i
+id|mult
 suffix:semicolon
 r_struct
 id|cpufreq_freqs
@@ -999,48 +346,43 @@ r_union
 id|msr_bcr2
 id|bcr2
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|mult
+op_assign
 id|clock_ratio
 (braket
 id|clock_ratio_index
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mult
 op_eq
 op_minus
 l_int|1
 )paren
 r_return
 suffix:semicolon
+id|speed
+op_assign
+id|calc_speed
+(paren
+id|mult
+comma
+id|fsb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-(paren
-id|clock_ratio
-(braket
-id|clock_ratio_index
-)braket
-op_star
-id|fsb
-op_star
-l_int|100
-)paren
+id|speed
 OG
 id|highest_speed
 )paren
 op_logical_or
 (paren
-(paren
-id|clock_ratio
-(braket
-id|clock_ratio_index
-)braket
-op_star
-id|fsb
-op_star
-l_int|100
-)paren
+id|speed
 OL
 id|lowest_speed
 )paren
@@ -1049,30 +391,21 @@ r_return
 suffix:semicolon
 id|freqs.old
 op_assign
+id|calc_speed
+(paren
 id|longhaul_get_cpu_mult
 c_func
 (paren
 )paren
-op_star
-id|longhaul_get_cpu_fsb
-c_func
-(paren
+comma
+id|fsb
 )paren
-op_star
-l_int|100
 suffix:semicolon
 id|freqs
 dot
 r_new
 op_assign
-id|clock_ratio
-(braket
-id|clock_ratio_index
-)braket
-op_star
-id|fsb
-op_star
-l_int|100
+id|speed
 suffix:semicolon
 id|freqs.cpu
 op_assign
@@ -1092,16 +425,17 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;FSB:%d Mult(x10):%d&bslash;n&quot;
+l_string|&quot;FSB:%d Mult:%d.%dx&bslash;n&quot;
 comma
 id|fsb
-op_star
-l_int|100
 comma
-id|clock_ratio
-(braket
-id|clock_ratio_index
-)braket
+id|mult
+op_div
+l_int|10
+comma
+id|mult
+op_mod
+l_int|10
 )paren
 suffix:semicolon
 r_switch
@@ -1162,6 +496,7 @@ id|bcr2.val
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t; * Longhaul v2. (Ezra [C5C])&n;&t; * We can scale voltage with this too, but that&squot;s currently&n;&t; * disabled until we come up with a decent &squot;match freq to voltage&squot;&n;&t; * algorithm.&n;&t; * We also need to do the voltage/freq setting in order depending&n;&t; * on the direction of scaling (like we do in powernow-k7.c)&n;&t; */
 r_case
 l_int|2
 suffix:colon
@@ -1197,146 +532,6 @@ id|longhaul.bits.RevisionKey
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|can_scale_voltage
-)paren
-(brace
-multiline_comment|/* PB: TODO fix this up */
-id|vidindex
-op_assign
-(paren
-(paren
-(paren
-id|highest_speed
-op_minus
-id|lowest_speed
-)paren
-op_div
-(paren
-id|fsb
-op_div
-l_int|2
-)paren
-)paren
-op_minus
-(paren
-(paren
-id|highest_speed
-op_minus
-(paren
-(paren
-id|clock_ratio
-(braket
-id|clock_ratio_index
-)braket
-op_star
-id|fsb
-op_star
-l_int|100
-)paren
-op_div
-l_int|1000
-)paren
-)paren
-op_div
-(paren
-id|fsb
-op_div
-l_int|2
-)paren
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|32
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dprintk
-(paren
-id|KERN_INFO
-l_string|&quot;VID hunting. Looking for %d, found %d&bslash;n&quot;
-comma
-id|minvid
-op_plus
-(paren
-id|vidindex
-op_star
-l_int|25
-)paren
-comma
-id|voltage_table
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|voltage_table
-(braket
-id|i
-)braket
-op_eq
-(paren
-id|minvid
-op_plus
-(paren
-id|vidindex
-op_star
-l_int|25
-)paren
-)paren
-)paren
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|32
-)paren
-r_goto
-id|bad_voltage
-suffix:semicolon
-id|dprintk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Desired vid index=%d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-macro_line|#if 0
-id|longhaul.bits.SoftVID
-op_assign
-id|i
-suffix:semicolon
-id|longhaul.bits.EnableSoftVID
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
-)brace
-multiline_comment|/* FIXME: Do voltage and freq seperatly like we do in powernow-k7 */
-id|bad_voltage
-suffix:colon
 id|wrmsrl
 (paren
 id|MSR_VIA_LONGHAUL
@@ -1349,39 +544,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|rdmsrl
-(paren
-id|MSR_VIA_LONGHAUL
-comma
-id|longhaul.val
-)paren
-suffix:semicolon
-id|longhaul.bits.EnableSoftBusRatio
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|can_scale_voltage
-)paren
-id|longhaul.bits.EnableSoftVID
-op_assign
-l_int|0
-suffix:semicolon
-id|longhaul.bits.RevisionKey
-op_assign
-l_int|1
-suffix:semicolon
-id|wrmsrl
-(paren
-id|MSR_VIA_LONGHAUL
-comma
-id|longhaul.val
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t; * Longhaul v3. (Ezra-T [C5M], Nehemiag [C5N])&n;&t; * This can also do voltage scaling, but see above.&n;&t; * Ezra-T was alleged to do FSB scaling too, but it never worked in practice.&n;&t; */
 r_case
 l_int|3
 suffix:colon
@@ -1578,6 +743,13 @@ r_union
 id|msr_longhaul
 id|longhaul
 suffix:semicolon
+id|fsb
+op_assign
+id|longhaul_get_cpu_fsb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1667,38 +839,54 @@ macro_line|#endif
 r_break
 suffix:semicolon
 )brace
-id|highest_speed
-op_assign
-id|maxmult
-op_star
-id|fsb
-op_star
-l_int|100
-suffix:semicolon
-id|lowest_speed
-op_assign
-id|minmult
-op_star
-id|fsb
-op_star
-l_int|100
-suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;MinMult(x10)=%d MaxMult(x10)=%d&bslash;n&quot;
+l_string|&quot;MinMult=%d.%dx MaxMult=%d.%dx&bslash;n&quot;
 comma
 id|minmult
+op_div
+l_int|10
+comma
+id|minmult
+op_mod
+l_int|10
 comma
 id|maxmult
+op_div
+l_int|10
+comma
+id|maxmult
+op_mod
+l_int|10
+)paren
+suffix:semicolon
+id|highest_speed
+op_assign
+id|calc_speed
+(paren
+id|maxmult
+comma
+id|fsb
+)paren
+suffix:semicolon
+id|lowest_speed
+op_assign
+id|calc_speed
+(paren
+id|minmult
+comma
+id|fsb
 )paren
 suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Lowestspeed=%d Highestspeed=%d&bslash;n&quot;
+l_string|&quot;FSB: %dMHz Lowestspeed=%dMHz Highestspeed=%dMHz&bslash;n&quot;
+comma
+id|fsb
 comma
 id|lowest_speed
 comma
@@ -1744,23 +932,29 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|j
 OL
 id|numscales
-)paren
 suffix:semicolon
 id|j
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+r_int
+id|ratio
+suffix:semicolon
+id|ratio
+op_assign
 id|clock_ratio
 (braket
 id|j
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ratio
 op_eq
 op_minus
 l_int|1
@@ -1770,31 +964,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|clock_ratio
-(braket
-id|j
-)braket
+id|ratio
 OG
 id|maxmult
-)paren
 op_logical_or
-(paren
-(paren
-r_int
-r_int
-)paren
-id|clock_ratio
-(braket
-id|j
-)braket
+id|ratio
 OL
 id|minmult
-)paren
 )paren
 r_continue
 suffix:semicolon
@@ -1805,14 +981,12 @@ id|k
 dot
 id|frequency
 op_assign
-id|clock_ratio
-(braket
-id|j
-)braket
-op_star
+id|calc_speed
+(paren
+id|ratio
+comma
 id|fsb
-op_star
-l_int|100
+)paren
 suffix:semicolon
 id|longhaul_table
 (braket
@@ -2231,6 +1405,12 @@ id|c
 op_assign
 id|cpu_data
 suffix:semicolon
+r_char
+op_star
+id|cpuname
+op_assign
+l_int|NULL
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -2243,7 +1423,10 @@ id|c-&gt;x86_model
 r_case
 l_int|6
 suffix:colon
-multiline_comment|/* VIA C3 Samuel C5A */
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel&squot; [C5A]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|1
@@ -2287,6 +1470,10 @@ id|c-&gt;x86_mask
 r_case
 l_int|0
 suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|1
@@ -2324,6 +1511,10 @@ dot
 dot
 l_int|15
 suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
+suffix:semicolon
 id|longhaul_version
 op_assign
 l_int|2
@@ -2360,12 +1551,10 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-multiline_comment|/* C5M/C5N */
-r_return
-op_minus
-id|ENODEV
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Ezra-T [C5M]&quot;
 suffix:semicolon
-singleline_comment|// Waiting on updated docs from VIA before this is usable
 id|longhaul_version
 op_assign
 l_int|3
@@ -2400,12 +1589,23 @@ id|c5m_eblcr
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;*/
+r_default
+suffix:colon
+id|cpuname
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;VIA CPU detected. Longhaul version %d supported&bslash;n&quot;
+l_string|&quot;VIA %s CPU detected. Longhaul v%d supported.&bslash;n&quot;
+comma
+id|cpuname
 comma
 id|longhaul_version
 )paren
@@ -2451,9 +1651,9 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
@@ -2461,22 +1661,14 @@ id|CPUFREQ_ETERNAL
 suffix:semicolon
 id|policy-&gt;cur
 op_assign
+id|calc_speed
 (paren
-r_int
-r_int
-)paren
-(paren
-id|longhaul_get_cpu_fsb
-c_func
-(paren
-)paren
-op_star
 id|longhaul_get_cpu_mult
 c_func
 (paren
 )paren
-op_star
-l_int|100
+comma
+id|fsb
 )paren
 suffix:semicolon
 r_return
@@ -2542,17 +1734,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|c-&gt;x86_vendor
 op_ne
 id|X86_VENDOR_CENTAUR
-)paren
 op_logical_or
-(paren
 id|c-&gt;x86
 op_ne
 l_int|6
-)paren
 )paren
 r_return
 op_minus
@@ -2582,9 +1770,28 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-r_return
-op_minus
-id|ENODEV
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Ezra-T unsupported: Waiting on updated docs &quot;
+l_string|&quot;from VIA before this is usable.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|9
+suffix:colon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Nehemiah unsupported: Waiting on working silicon &quot;
+l_string|&quot;from VIA before this is usable.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon

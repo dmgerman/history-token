@@ -5594,10 +5594,6 @@ op_assign
 op_amp
 id|devfs_fops
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5609,11 +5605,7 @@ id|de-&gt;mode
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|de-&gt;u.cdev.dev
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -5628,11 +5620,7 @@ id|de-&gt;mode
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|de-&gt;u.bdev.dev
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8005,13 +7993,23 @@ id|DPRINTK
 (paren
 id|DEBUG_I_MKNOD
 comma
-l_string|&quot;(%s): mode: 0%o  dev: %d&bslash;n&quot;
+l_string|&quot;(%s): mode: 0%o  dev: %u:%u&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
 id|mode
 comma
+id|MAJOR
+c_func
+(paren
 id|rdev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|rdev
+)paren
 )paren
 suffix:semicolon
 id|parent

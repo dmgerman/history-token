@@ -3129,7 +3129,7 @@ suffix:semicolon
 )brace
 r_extern
 r_int
-id|agp_amdk8_init
+id|agp_amd64_init
 c_func
 (paren
 r_void
@@ -3175,7 +3175,7 @@ op_assign
 id|no_agp
 op_logical_or
 (paren
-id|agp_amdk8_init
+id|agp_amd64_init
 c_func
 (paren
 )paren
