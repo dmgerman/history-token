@@ -28,9 +28,19 @@ id|SCTP_SAT_LEN
 )paren
 comma
 )brace
-comma
+)brace
+suffix:semicolon
+multiline_comment|/* gcc 3.2 doesn&squot;t allow initialization of zero-length arrays. So the above&n; * structure is split and the address types array is initialized using a&n; * fixed length array. &n; */
+DECL|variable|sat_addr_types
+r_static
+r_const
+id|__u16
+id|sat_addr_types
+(braket
+l_int|2
+)braket
+op_assign
 (brace
-multiline_comment|/* types[] */
 id|SCTP_PARAM_IPV4_ADDRESS
 comma
 id|SCTP_V6
@@ -39,7 +49,6 @@ c_func
 id|SCTP_PARAM_IPV6_ADDRESS
 comma
 )paren
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n; *&n; * Note 2: The ECN capable field is reserved for future use of&n; * Explicit Congestion Notification.&n; */
@@ -351,10 +360,26 @@ c_func
 (paren
 id|retval
 comma
-id|SCTP_SAT_LEN
+r_sizeof
+(paren
+id|sctp_paramhdr_t
+)paren
 comma
 op_amp
 id|sat_param
+)paren
+suffix:semicolon
+id|sctp_addto_chunk
+c_func
+(paren
+id|retval
+comma
+r_sizeof
+(paren
+id|sat_addr_types
+)paren
+comma
+id|sat_addr_types
 )paren
 suffix:semicolon
 id|sctp_addto_chunk

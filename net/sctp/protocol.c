@@ -1525,8 +1525,6 @@ l_int|0
 suffix:semicolon
 id|sctp_af_v4_specific
 op_assign
-id|sctp_af_v4_specific
-op_assign
 id|af
 suffix:semicolon
 r_break
@@ -1542,8 +1540,6 @@ id|sctp_af_v6_specific
 r_return
 l_int|0
 suffix:semicolon
-id|sctp_af_v6_specific
-op_assign
 id|sctp_af_v6_specific
 op_assign
 id|af

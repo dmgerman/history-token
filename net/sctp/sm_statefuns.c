@@ -2317,24 +2317,8 @@ id|max_interval
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-"&quot;"
-op_mod
-id|s
-suffix:colon
-id|HEARTBEAT
-id|ACK
-id|with
-id|invalid
-id|timestamp
-id|received
-r_for
-id|transport
-suffix:colon
-op_mod
-id|p
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;%s: HEARTBEAT ACK with invalid timestamp&quot;
+l_string|&quot;received for transport: %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
