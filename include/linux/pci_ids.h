@@ -499,6 +499,8 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_If
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_If&t;0x4966
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Ig
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ig&t;0x4967
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QM
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QM&t;0x514d
 multiline_comment|/* Radeon R300 (9700) */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_ND
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_ND&t;0x4e44

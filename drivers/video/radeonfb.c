@@ -145,7 +145,6 @@ id|RADEON_NG
 comma
 DECL|enumerator|RADEON_QM
 id|RADEON_QM
-multiline_comment|/* LN (my Radeon 9100) */
 )brace
 suffix:semicolon
 DECL|enum|radeon_arch
@@ -383,7 +382,6 @@ l_string|&quot;9100 QM&quot;
 comma
 id|RADEON_R200
 )brace
-multiline_comment|/* LN (my Radeon 9100) */
 )brace
 suffix:semicolon
 DECL|enum|radeon_montype
@@ -904,7 +902,6 @@ comma
 id|RADEON_QM
 )brace
 comma
-multiline_comment|/* LN (my Radeon 9100) */
 (brace
 l_int|0
 comma
@@ -3524,40 +3521,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_ATI_RADEON_ND
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_ATI_RADEON_NE
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_ATI_RADEON_NF
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_ATI_RADEON_NG
-suffix:colon
-id|rinfo-&gt;pll.ppll_max
-op_assign
-l_int|40000
-suffix:semicolon
-id|rinfo-&gt;pll.ppll_min
-op_assign
-l_int|20000
-suffix:semicolon
-id|rinfo-&gt;pll.xclk
-op_assign
-l_int|27000
-suffix:semicolon
-id|rinfo-&gt;pll.ref_div
-op_assign
-l_int|12
-suffix:semicolon
-id|rinfo-&gt;pll.ref_clk
-op_assign
-l_int|2700
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|PCI_DEVICE_ID_ATI_RADEON_QD
 suffix:colon
 r_case
@@ -5578,15 +5541,6 @@ suffix:semicolon
 id|var.activate
 op_assign
 id|FB_ACTIVATE_NOW
-suffix:semicolon
-id|fb_set_var
-c_func
-(paren
-op_amp
-id|var
-comma
-id|info
-)paren
 suffix:semicolon
 r_return
 l_int|0
