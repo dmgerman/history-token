@@ -1042,6 +1042,16 @@ comma
 id|len
 )paren
 suffix:semicolon
+id|dump_urb
+c_func
+(paren
+l_string|&quot;sending&quot;
+comma
+id|buf
+comma
+id|len
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|usb_bulk_msg
