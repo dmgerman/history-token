@@ -1353,13 +1353,6 @@ l_string|&quot;videodev: bad unregister&quot;
 )paren
 suffix:semicolon
 )brace
-id|class_device_unregister
-c_func
-(paren
-op_amp
-id|vfd-&gt;class_dev
-)paren
-suffix:semicolon
 id|devfs_remove
 c_func
 (paren
@@ -1372,6 +1365,13 @@ id|vfd-&gt;minor
 )braket
 op_assign
 l_int|NULL
+suffix:semicolon
+id|class_device_unregister
+c_func
+(paren
+op_amp
+id|vfd-&gt;class_dev
+)paren
 suffix:semicolon
 id|up
 c_func
