@@ -323,7 +323,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_ALTIMA
 comma
-id|PCI_DEVICE_ID_ALTIME_AC9100
+id|PCI_DEVICE_ID_ALTIMA_AC9100
 comma
 id|PCI_ANY_ID
 comma
