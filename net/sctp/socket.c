@@ -2190,14 +2190,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Clean up any skbs sitting on the receive queue.  */
-id|skb_queue_purge
+id|sctp_queue_purge_ulpevents
 c_func
 (paren
 op_amp
 id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
-id|skb_queue_purge
+id|sctp_queue_purge_ulpevents
 c_func
 (paren
 op_amp
@@ -4265,7 +4265,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* When only partial message is copied to the user, increase&n;&t;&t; * rwnd by that amount. If all the data in the skb is read,&n;&t;&t; * rwnd is updated when the skb&squot;s destructor is called via&n;&t;&t; * sctp_ulpevent_free().&n;&t;&t; */
+multiline_comment|/* When only partial message is copied to the user, increase&n;&t;&t; * rwnd by that amount. If all the data in the skb is read,&n;&t;&t; * rwnd is updated when the event is freed.&n;&t;&t; */
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
@@ -4306,13 +4306,32 @@ id|MSG_EOR
 suffix:semicolon
 id|out_free
 suffix:colon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_PEEK
+)paren
+(brace
+multiline_comment|/* Release the skb reference acquired after peeking the skb in&n;&t;&t; * sctp_skb_recv_datagram().&n;&t;&t; */
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Free the event which includes releasing the reference to&n;&t;&t; * the owner of the skb, freeing the skb and updating the&n;&t;&t; * rwnd.&n;&t;&t; */
 id|sctp_ulpevent_free
 c_func
 (paren
 id|event
 )paren
 suffix:semicolon
-multiline_comment|/* Free the skb. */
+)brace
 id|out
 suffix:colon
 id|sctp_release_sock
