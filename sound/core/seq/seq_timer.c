@@ -145,12 +145,15 @@ id|tmr
 suffix:semicolon
 id|tmr
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|seq_timer_t
+op_star
+id|tmr
 )paren
 comma
 id|GFP_KERNEL

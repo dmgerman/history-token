@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * OSS compatible sequencer driver&n; *&n; * registration of device and proc&n; *&n; * Copyright (C) 1998,99 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
@@ -24,12 +25,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Takashi says this is really only for sound-service-0-, but this is OK. */
@@ -718,6 +713,9 @@ id|seq_oss_devinfo_t
 op_star
 id|dp
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|dp
 op_assign
 id|file-&gt;private_data
@@ -734,7 +732,14 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|err
+op_assign
 id|snd_seq_oss_ioctl
 c_func
 (paren
@@ -744,6 +749,14 @@ id|cmd
 comma
 id|arg
 )paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static

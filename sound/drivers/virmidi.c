@@ -30,13 +30,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ALSA,Virtual rawmidi device}}&quot;
@@ -142,14 +136,6 @@ comma
 l_string|&quot;Index value for virmidi soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -168,14 +154,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for virmidi soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -198,14 +176,6 @@ comma
 l_string|&quot;Enable this soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -224,15 +194,6 @@ c_func
 id|midi_devs
 comma
 l_string|&quot;MIDI devices # (1-8)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|midi_devs
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,8}}&quot;
 )paren
 suffix:semicolon
 DECL|struct|snd_card_virmidi
@@ -434,15 +395,7 @@ id|__nodev
 suffix:semicolon
 id|rdev
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_virmidi_dev_t
-comma
 id|rmidi-&gt;private_data
-comma
-r_continue
-)paren
 suffix:semicolon
 id|vmidi-&gt;midi
 (braket

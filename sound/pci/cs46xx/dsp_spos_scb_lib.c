@@ -174,15 +174,7 @@ id|cs46xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|cs46xx_t
-comma
 id|scb_info-&gt;chip
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|j

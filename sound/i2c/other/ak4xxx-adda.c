@@ -1053,7 +1053,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -1147,7 +1147,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -1308,7 +1308,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -1372,7 +1372,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -1538,7 +1538,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -1615,7 +1615,7 @@ id|akm4xxx_t
 op_star
 id|ak
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
