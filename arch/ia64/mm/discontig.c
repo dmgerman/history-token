@@ -843,7 +843,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize the paging system.&n; *&t;- determine sizes of each node&n; *&t;- initialize the paging system for the node&n; *&t;- build the nodedir for the node. This contains pointers to&n; *&t;  the per-bank mem_map entries.&n; *&t;- fix the page struct &quot;virtual&quot; pointers. These are bank specific&n; *&t;  values that the paging system doesnt understand.&n; *&t;- replicate the nodedir structure to other nodes&t;&n; */
+multiline_comment|/*&n; * Initialize the paging system.&n; *&t;- determine sizes of each node&n; *&t;- initialize the paging system for the node&n; *&t;- build the nodedir for the node. This contains pointers to&n; *&t;  the per-bank mem_map entries.&n; *&t;- fix the page struct &quot;virtual&quot; pointers. These are bank specific&n; *&t;  values that the paging system doesn&squot;t understand.&n; *&t;- replicate the nodedir structure to other nodes&t;&n; */
 r_void
 id|__init
 DECL|function|discontig_paging_init

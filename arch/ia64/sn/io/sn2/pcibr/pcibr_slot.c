@@ -2960,7 +2960,7 @@ id|lt_time
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the PCI-X capability if running in PCI-X mode.  If the func&n;&t; * doesnt have a pcix capability, allocate a PCIIO_VENDOR_ID_NONE&n;&t; * pcibr_info struct so the device driver for that function is not&n;&t; * called.&n;&t; */
+multiline_comment|/* Get the PCI-X capability if running in PCI-X mode.  If the func&n;&t; * doesn&squot;t have a pcix capability, allocate a PCIIO_VENDOR_ID_NONE&n;&t; * pcibr_info struct so the device driver for that function is not&n;&t; * called.&n;&t; */
 r_if
 c_cond
 (paren

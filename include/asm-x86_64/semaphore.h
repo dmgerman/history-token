@@ -66,7 +66,7 @@ r_int
 id|val
 )paren
 (brace
-multiline_comment|/*&n; *&t;*sem = (struct semaphore)__SEMAPHORE_INITIALIZER((*sem),val);&n; *&n; * i&squot;d rather use the more flexible initialization above, but sadly&n; * GCC 2.7.2.3 emits a bogus warning. EGCS doesnt. Oh well.&n; */
+multiline_comment|/*&n; *&t;*sem = (struct semaphore)__SEMAPHORE_INITIALIZER((*sem),val);&n; *&n; * i&squot;d rather use the more flexible initialization above, but sadly&n; * GCC 2.7.2.3 emits a bogus warning. EGCS doesn&squot;t. Oh well.&n; */
 id|atomic_set
 c_func
 (paren

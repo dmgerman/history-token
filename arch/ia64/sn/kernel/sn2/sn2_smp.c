@@ -1793,7 +1793,7 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SHUB_1_0_SPECIFIC
-multiline_comment|/* doesnt work on shub 1.0 */
+multiline_comment|/* doesn&squot;t work on shub 1.0 */
 id|wait_piowc
 c_func
 (paren

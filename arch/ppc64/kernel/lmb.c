@@ -312,7 +312,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* This is only used here, it doesnt deserve to be in bitops.h */
+multiline_comment|/* This is only used here, it doesn&squot;t deserve to be in bitops.h */
 DECL|function|cnt_trailing_zeros
 r_static
 id|__inline__

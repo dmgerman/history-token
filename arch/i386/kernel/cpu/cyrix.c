@@ -178,7 +178,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cx86_dir0_msb is a HACK needed by check_cx686_cpuid/slop in bugs.h in&n; * order to identify the Cyrix CPU model after we&squot;re out of setup.c&n; *&n; * Actually since bugs.h doesnt even reference this perhaps someone should&n; * fix the documentation ???&n; */
+multiline_comment|/*&n; * Cx86_dir0_msb is a HACK needed by check_cx686_cpuid/slop in bugs.h in&n; * order to identify the Cyrix CPU model after we&squot;re out of setup.c&n; *&n; * Actually since bugs.h doesn&squot;t even reference this perhaps someone should&n; * fix the documentation ???&n; */
 DECL|variable|__initdata
 r_static
 r_int
