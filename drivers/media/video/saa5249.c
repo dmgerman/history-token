@@ -529,12 +529,14 @@ id|t
 )paren
 )paren
 suffix:semicolon
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|IF_NAME
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -545,8 +547,6 @@ id|t-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now create a video4linux device&n;&t; */
-id|client-&gt;data
-op_assign
 id|vd
 op_assign
 (paren
@@ -591,6 +591,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
+id|vd
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -849,7 +857,11 @@ id|video_device
 op_star
 id|vd
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 id|i2c_detach_client
 c_func
@@ -966,11 +978,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;(unset)&quot;
-comma
-dot
 id|id
 op_assign
 op_minus
@@ -981,6 +988,18 @@ id|driver
 op_assign
 op_amp
 id|i2c_driver_videotext
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;(unset)&quot;
+comma
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Wait the given number of jiffies (10ms). This calls the scheduler, so the actual&n; *&t;delay may be longer.&n; */

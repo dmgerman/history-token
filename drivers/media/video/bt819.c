@@ -394,7 +394,11 @@ id|timing
 suffix:semicolon
 id|decoder
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 id|timing
 op_assign
@@ -637,6 +641,20 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|client
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|client
+)paren
+)paren
+suffix:semicolon
 id|client_template.adapter
 op_assign
 id|adap
@@ -703,17 +721,23 @@ id|bt819
 )paren
 )paren
 suffix:semicolon
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 l_string|&quot;bt819&quot;
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
-id|client-&gt;data
-op_assign
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
 id|decoder
+)paren
 suffix:semicolon
 id|decoder-&gt;client
 op_assign
@@ -777,7 +801,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: bt819_attach: init status %d&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 id|i
 )paren
@@ -791,7 +815,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: bt819_attach: chip version %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 id|i2c_smbus_read_byte_data
 c_func
@@ -867,10 +891,10 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|kfree
+id|i2c_get_clientdata
 c_func
 (paren
-id|client-&gt;data
+id|client
 )paren
 suffix:semicolon
 id|kfree
@@ -913,7 +937,11 @@ id|bt819
 op_star
 id|decoder
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 singleline_comment|//return 0;
 r_if
@@ -1091,7 +1119,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: get status %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1125,7 +1153,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set norm %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1414,7 +1442,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set input %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1533,7 +1561,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt819: set output %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1586,7 +1614,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt819: enable output %x&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1662,7 +1690,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt819: set picture brightness %d contrast %d colour %d&bslash;n&quot;
 comma
-id|decoder-&gt;client-&gt;name
+id|decoder-&gt;client-&gt;dev.name
 comma
 id|pic-&gt;brightness
 comma
@@ -1945,11 +1973,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;bt819_client&quot;
-comma
-dot
 id|id
 op_assign
 op_minus
@@ -1960,6 +1983,18 @@ id|driver
 op_assign
 op_amp
 id|i2c_driver_bt819
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bt819_client&quot;
+comma
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|bt819_setup

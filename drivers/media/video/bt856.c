@@ -331,6 +331,20 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|client
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|client
+)paren
+)paren
+suffix:semicolon
 id|client_template.adapter
 op_assign
 id|adap
@@ -400,21 +414,27 @@ id|bt856
 )paren
 )paren
 suffix:semicolon
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 l_string|&quot;bt856&quot;
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|encoder-&gt;client
 op_assign
 id|client
 suffix:semicolon
-id|client-&gt;data
-op_assign
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
 id|encoder
+)paren
 suffix:semicolon
 id|encoder-&gt;addr
 op_assign
@@ -437,7 +457,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt856: attach&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -656,10 +676,10 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|kfree
+id|i2c_get_clientdata
 c_func
 (paren
-id|client-&gt;data
+id|client
 )paren
 suffix:semicolon
 id|kfree
@@ -699,7 +719,11 @@ id|bt856
 op_star
 id|encoder
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -726,7 +750,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt856: get capabilities&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -768,7 +792,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt856: set norm %d&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -863,7 +887,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt856: set input %d&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1043,7 +1067,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s-bt856: set output %d&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 comma
 op_star
 id|iarg
@@ -1093,7 +1117,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s-bt856: enable output %d&bslash;n&quot;
 comma
-id|encoder-&gt;client-&gt;name
+id|encoder-&gt;client-&gt;dev.name
 comma
 id|encoder-&gt;enable
 )paren
@@ -1167,11 +1191,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;bt856_client&quot;
-comma
-dot
 id|id
 op_assign
 op_minus
@@ -1182,6 +1201,18 @@ id|driver
 op_assign
 op_amp
 id|i2c_driver_bt856
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bt856_client&quot;
+comma
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|bt856_init

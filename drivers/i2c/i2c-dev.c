@@ -3,6 +3,8 @@ multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s 
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
 multiline_comment|/* $Id: i2c-dev.c,v 1.53 2003/01/21 08:08:16 kmalkki Exp $ */
+multiline_comment|/* If you want debugging uncomment: */
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -13,8 +15,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* If you want debugging uncomment: */
-multiline_comment|/* #define DEBUG */
 multiline_comment|/* struct file_operations changed too often in the 2.1 series for nice code */
 r_static
 id|ssize_t
@@ -261,9 +261,15 @@ id|i2cdev_client_template
 op_assign
 (brace
 dot
+id|dev
+op_assign
+(brace
+dot
 id|name
 op_assign
 l_string|&quot;I2C /dev entry&quot;
+comma
+)brace
 comma
 dot
 id|id
@@ -1719,11 +1725,13 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: Unknown adapter ?!?&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Unknown adapter ?!?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1739,11 +1747,13 @@ op_ge
 id|I2CDEV_ADAPS_MAX
 )paren
 (brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: Adapter number too large?!? (%d)&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Adapter number too large?!? (%d)&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1803,13 +1813,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: Registered &squot;%s&squot; as minor %d&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;Registered as minor %d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1833,17 +1843,15 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: Adapter unregistered: %s&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;Adapter unregistered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0

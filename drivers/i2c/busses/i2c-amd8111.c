@@ -1557,10 +1557,12 @@ id|smbus-&gt;adapter.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
-id|smbus-&gt;adapter.name
+id|smbus-&gt;adapter.dev.name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;SMBus2 AMD8111 adapter at %04x&quot;
 comma

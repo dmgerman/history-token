@@ -309,14 +309,14 @@ id|iface-&gt;state
 r_case
 id|state_idle
 suffix:colon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: %s, interrupt in idle state&bslash;n&quot;
+op_amp
+id|iface-&gt;adapter.dev
 comma
-id|iface-&gt;adapter.name
+l_string|&quot;interrupt in idle state&bslash;n&quot;
+comma
 )paren
 suffix:semicolon
 r_break
@@ -658,14 +658,13 @@ r_return
 suffix:semicolon
 id|error
 suffix:colon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|NAME
-l_string|&quot;: %s, %s in state %s&bslash;n&quot;
+op_amp
+id|iface-&gt;adapter.dev
 comma
-id|iface-&gt;adapter.name
+l_string|&quot;%s in state %s&bslash;n&quot;
 comma
 id|errmsg
 comma
@@ -701,14 +700,13 @@ op_star
 id|iface
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|NAME
-l_string|&quot;: %s, timeout in state %s&bslash;n&quot;
+op_amp
+id|iface-&gt;adapter.dev
 comma
-id|iface-&gt;adapter.name
+l_string|&quot;timeout in state %s&bslash;n&quot;
 comma
 id|scx200_acb_state_name
 (braket
@@ -982,7 +980,11 @@ id|scx200_acb_iface
 op_star
 id|iface
 op_assign
-id|adapter-&gt;data
+id|i2c_get_adapdata
+c_func
+(paren
+id|adapter
+)paren
 suffix:semicolon
 r_int
 id|len
@@ -1147,14 +1149,13 @@ op_eq
 id|I2C_SMBUS_READ
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: %s, zero length read&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
 comma
-id|adapter-&gt;name
+l_string|&quot;zero length read&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1171,14 +1172,13 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: %s, nonzero length but no buffer&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
 comma
-id|adapter-&gt;name
+l_string|&quot;nonzero length but no buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1694,14 +1694,20 @@ op_assign
 op_amp
 id|iface-&gt;adapter
 suffix:semicolon
-id|adapter-&gt;data
-op_assign
-id|iface
-suffix:semicolon
-id|sprintf
+id|i2c_set_adapdata
 c_func
 (paren
-id|adapter-&gt;name
+id|adapter
+comma
+id|iface
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|adapter-&gt;dev.name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;SCx200 ACB%d&quot;
 comma
@@ -1728,14 +1734,19 @@ op_amp
 id|iface-&gt;sem
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|description
 comma
+r_sizeof
+(paren
+id|description
+)paren
+comma
 l_string|&quot;NatSemi SCx200 ACCESS.bus [%s]&quot;
 comma
-id|adapter-&gt;name
+id|adapter-&gt;dev.name
 )paren
 suffix:semicolon
 r_if
@@ -1754,14 +1765,13 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|NAME
-l_string|&quot;: %s, can&squot;t allocate io 0x%x-0x%x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
 comma
-id|adapter-&gt;name
+l_string|&quot;can&squot;t allocate io 0x%x-0x%x&bslash;n&quot;
 comma
 id|base
 comma
@@ -1799,14 +1809,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: %s, probe failed&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
 comma
-id|adapter-&gt;name
+l_string|&quot;probe failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1831,14 +1840,13 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|NAME
-l_string|&quot;: %s, failed to register&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
 comma
-id|adapter-&gt;name
+l_string|&quot;failed to register&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
