@@ -2,23 +2,12 @@ multiline_comment|/*&n; * Some of the code in this file has been gleaned from th
 macro_line|#ifndef _ASM_SRAT_H_
 DECL|macro|_ASM_SRAT_H_
 mdefine_line|#define _ASM_SRAT_H_
-multiline_comment|/*&n; * each element in pfnnode_map represents 256 MB (2^28) of pages.&n; * so, to represent 64GB we need 256 elements.&n; */
-DECL|macro|MAX_ELEMENTS
-mdefine_line|#define MAX_ELEMENTS 256
-DECL|macro|PFN_TO_ELEMENT
-mdefine_line|#define PFN_TO_ELEMENT(pfn) ((pfn)&gt;&gt;(28 - PAGE_SHIFT))
 r_extern
 r_int
-id|pfnnode_map
+id|physnode_map
 (braket
 )braket
 suffix:semicolon
-DECL|macro|pfn_to_nid
-mdefine_line|#define pfn_to_nid(pfn) ({ pfnnode_map[PFN_TO_ELEMENT(pfn)]; })
-DECL|macro|pfn_to_pgdat
-mdefine_line|#define pfn_to_pgdat(pfn) NODE_DATA(pfn_to_nid(pfn))
-DECL|macro|PHYSADDR_TO_NID
-mdefine_line|#define PHYSADDR_TO_NID(pa) pfn_to_nid(pa &gt;&gt; PAGE_SHIFT)
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern
