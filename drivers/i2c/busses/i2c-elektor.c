@@ -160,6 +160,10 @@ c_func
 (paren
 id|val
 comma
+(paren
+r_void
+op_star
+)paren
 id|address
 )paren
 suffix:semicolon
@@ -173,6 +177,10 @@ c_func
 (paren
 id|val
 comma
+(paren
+r_void
+op_star
+)paren
 id|address
 )paren
 suffix:semicolon
@@ -217,6 +225,10 @@ c_cond
 id|readb
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|address
 )paren
 suffix:colon
