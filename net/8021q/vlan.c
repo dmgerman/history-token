@@ -608,17 +608,9 @@ multiline_comment|/* sanity check */
 r_if
 c_cond
 (paren
-(paren
 id|vlan_id
 op_ge
 id|VLAN_VID_MASK
-)paren
-op_logical_or
-(paren
-id|vlan_id
-OL
-l_int|0
-)paren
 )paren
 r_return
 op_minus
