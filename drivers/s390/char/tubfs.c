@@ -928,7 +928,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fs3270_bh(tubp) -- Perform back-half processing&n; */
+multiline_comment|/*&n; * fs3270_tasklet(tubp) -- Perform back-half processing&n; */
 r_static
 r_void
 DECL|function|fs3270_tasklet
@@ -1052,11 +1052,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fs3270_sched_bh(tubp) -- Schedule the back half&n; * Irq lock must be held on entry and remains held on exit.&n; */
+multiline_comment|/*&n; * fs3270_sched_tasklet(tubp) -- Schedule the back half&n; * Irq lock must be held on entry and remains held on exit.&n; */
 r_static
 r_void
-DECL|function|fs3270_sched_bh
-id|fs3270_sched_bh
+DECL|function|fs3270_sched_tasklet
+id|fs3270_sched_tasklet
 c_func
 (paren
 id|tub_t
@@ -1077,22 +1077,26 @@ id|tubp-&gt;flags
 op_or_assign
 id|TUB_BHPENDING
 suffix:semicolon
-id|INIT_WORK
+id|tasklet_init
 c_func
 (paren
 op_amp
-id|tubp-&gt;tqueue
+id|tubp-&gt;tasklet
 comma
-id|fs3270_bh
+id|fs3270_tasklet
 comma
+(paren
+r_int
+r_int
+)paren
 id|tubp
 )paren
 suffix:semicolon
-id|schedule_work
+id|tasklet_schedule
 c_func
 (paren
 op_amp
-id|tubp-&gt;tqueue
+id|tubp-&gt;tasklet
 )paren
 suffix:semicolon
 )brace
@@ -1276,7 +1280,7 @@ id|TUB_WORKING
 op_eq
 l_int|0
 )paren
-id|fs3270_sched_bh
+id|fs3270_sched_tasklet
 c_func
 (paren
 id|tubp
