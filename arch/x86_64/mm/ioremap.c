@@ -432,7 +432,7 @@ id|PUD_SIZE
 op_amp
 id|PUD_MASK
 suffix:semicolon
-id|pmd
+id|pud
 op_increment
 suffix:semicolon
 )brace
