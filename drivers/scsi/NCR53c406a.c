@@ -2275,6 +2275,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|get_options
+c_func
+(paren
+id|str
+comma
+l_int|4
+comma
+id|ints
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
