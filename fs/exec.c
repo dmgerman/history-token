@@ -4908,7 +4908,7 @@ id|out_ptr
 comma
 l_string|&quot;%d&quot;
 comma
-id|current-&gt;pid
+id|current-&gt;tgid
 )paren
 suffix:semicolon
 r_if
@@ -5228,7 +5228,7 @@ id|out_ptr
 comma
 l_string|&quot;.%d&quot;
 comma
-id|current-&gt;pid
+id|current-&gt;tgid
 )paren
 suffix:semicolon
 r_if
