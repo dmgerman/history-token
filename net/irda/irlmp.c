@@ -449,6 +449,18 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|notify-&gt;instance
+op_ne
+l_int|NULL
+comma
+r_return
+l_int|NULL
+suffix:semicolon
+)paren
+suffix:semicolon
 multiline_comment|/*  Does the client care which Source LSAP selector it gets?  */
 r_if
 c_cond
@@ -576,18 +588,6 @@ c_func
 (paren
 op_amp
 id|self-&gt;watchdog_timer
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|notify-&gt;instance
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|NULL
-suffix:semicolon
 )paren
 suffix:semicolon
 id|self-&gt;notify
