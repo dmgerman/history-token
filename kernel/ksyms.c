@@ -1796,6 +1796,13 @@ c_func
 id|set_anon_super
 )paren
 suffix:semicolon
+DECL|variable|do_select
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_select
+)paren
+suffix:semicolon
 multiline_comment|/* for stackable file systems (lofs, wrapfs, cryptfs, etc.) */
 DECL|variable|default_llseek
 id|EXPORT_SYMBOL
