@@ -296,24 +296,6 @@ id|extralen
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// FIXME remove; exported only for drivers/usb/misc/auserwald.c
-singleline_comment|// prefer usb_device-&gt;epnum[0..31]
-r_extern
-r_struct
-id|usb_endpoint_descriptor
-op_star
-id|usb_epnum_to_ep_desc
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|epnum
-)paren
-suffix:semicolon
 r_int
 id|__usb_get_extra_descriptor
 c_func
@@ -554,22 +536,6 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* one bit for each endpoint ([0] = IN, [1] = OUT) */
-DECL|member|epmaxpacketin
-r_int
-id|epmaxpacketin
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* INput endpoint specific maximums */
-DECL|member|epmaxpacketout
-r_int
-id|epmaxpacketout
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* OUTput endpoint specific maximums */
 DECL|member|parent
 r_struct
 id|usb_device
@@ -584,6 +550,11 @@ op_star
 id|bus
 suffix:semicolon
 multiline_comment|/* Bus we&squot;re part of */
+DECL|member|ep0
+r_struct
+id|usb_host_endpoint
+id|ep0
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
@@ -610,6 +581,24 @@ op_star
 id|actconfig
 suffix:semicolon
 multiline_comment|/* the active configuration */
+DECL|member|ep_in
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep_in
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|ep_out
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep_out
+(braket
+l_int|16
+)braket
+suffix:semicolon
 DECL|member|rawdescriptors
 r_char
 op_star
@@ -763,6 +752,7 @@ id|u16
 id|product_id
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* for drivers using iso endpoints */
 r_extern
 r_int
@@ -2217,8 +2207,9 @@ id|io
 )paren
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In] ...&n; *&t;&t;&t;&t;&t;like endpoint bEndpointAddress)&n; *  - device:&t;&t;bits 8-14       ... bit positions known to uhci-hcd&n; *  - endpoint:&t;&t;bits 15-18      ... bit positions known to uhci-hcd&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
+multiline_comment|/*&n; * For various legacy reasons, Linux has a small cookie that&squot;s paired with&n; * a struct usb_device to identify an endpoint queue.  Queue characteristics&n; * are defined by the endpoint&squot;s descriptor.  This cookie is called a &quot;pipe&quot;,&n; * an unsigned int encoded as:&n; *&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In] ...&n; *&t;&t;&t;&t;&t;like endpoint bEndpointAddress)&n; *  - device address:&t;bits 8-14       ... bit positions known to uhci-hcd&n; *  - endpoint:&t;&t;bits 15-18      ... bit positions known to uhci-hcd&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Given the device address and endpoint descriptor, pipes are redundant.&n; */
 multiline_comment|/* NOTE:  these are not the standard USB_ENDPOINT_XFER_* values!! */
+multiline_comment|/* (yet ... they&squot;re the values used by usbfs) */
 DECL|macro|PIPE_ISOCHRONOUS
 mdefine_line|#define PIPE_ISOCHRONOUS&t;&t;0
 DECL|macro|PIPE_INTERRUPT
@@ -2227,8 +2218,6 @@ DECL|macro|PIPE_CONTROL
 mdefine_line|#define PIPE_CONTROL&t;&t;&t;2
 DECL|macro|PIPE_BULK
 mdefine_line|#define PIPE_BULK&t;&t;&t;3
-DECL|macro|usb_maxpacket
-mdefine_line|#define usb_maxpacket(dev, pipe, out)&t;(out &bslash;&n;&t;&t;&t;&t;? (dev)-&gt;epmaxpacketout[usb_pipeendpoint(pipe)] &bslash;&n;&t;&t;&t;&t;: (dev)-&gt;epmaxpacketin [usb_pipeendpoint(pipe)] )
 DECL|macro|usb_pipein
 mdefine_line|#define usb_pipein(pipe)&t;((pipe) &amp; USB_DIR_IN)
 DECL|macro|usb_pipeout
@@ -2303,6 +2292,98 @@ DECL|macro|usb_sndintpipe
 mdefine_line|#define usb_sndintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30) | __create_pipe(dev,endpoint))
 DECL|macro|usb_rcvintpipe
 mdefine_line|#define usb_rcvintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30) | __create_pipe(dev,endpoint) | USB_DIR_IN)
+multiline_comment|/*-------------------------------------------------------------------------*/
+r_static
+r_inline
+id|__u16
+DECL|function|usb_maxpacket
+id|usb_maxpacket
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_int
+id|pipe
+comma
+r_int
+id|is_out
+)paren
+(brace
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
+suffix:semicolon
+r_int
+id|epnum
+op_assign
+id|usb_pipeendpoint
+c_func
+(paren
+id|pipe
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_out
+)paren
+(brace
+id|WARN_ON
+c_func
+(paren
+id|usb_pipein
+c_func
+(paren
+id|pipe
+)paren
+)paren
+suffix:semicolon
+id|ep
+op_assign
+id|udev-&gt;ep_out
+(braket
+id|epnum
+)braket
+suffix:semicolon
+)brace
+r_else
+(brace
+id|WARN_ON
+c_func
+(paren
+id|usb_pipeout
+c_func
+(paren
+id|pipe
+)paren
+)paren
+suffix:semicolon
+id|ep
+op_assign
+id|udev-&gt;ep_in
+(braket
+id|epnum
+)braket
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* NOTE:  only 0x07ff bits are for packet size... */
+r_return
+id|ep-&gt;desc.wMaxPacketSize
+suffix:semicolon
+)brace
 multiline_comment|/* -------------------------------------------------------------------------- */
 macro_line|#ifdef DEBUG
 DECL|macro|dbg
