@@ -157,9 +157,11 @@ mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000
 DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000
 DECL|macro|__PAGE_OFFSET
-mdefine_line|#define __PAGE_OFFSET           0x0000010000000000
+mdefine_line|#define __PAGE_OFFSET           0x0000010000000000&t;/* 1 &lt;&lt; 40 */
+DECL|macro|__PHYSICAL_MASK_SHIFT
+mdefine_line|#define __PHYSICAL_MASK_SHIFT&t;40
 DECL|macro|__PHYSICAL_MASK
-mdefine_line|#define __PHYSICAL_MASK&t;&t;0x000000ffffffffff
+mdefine_line|#define __PHYSICAL_MASK&t;&t;((1UL &lt;&lt; __PHYSICAL_MASK_SHIFT) - 1)
 DECL|macro|KERNEL_TEXT_SIZE
 mdefine_line|#define KERNEL_TEXT_SIZE  (40UL*1024*1024)
 DECL|macro|KERNEL_TEXT_START
