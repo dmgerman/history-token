@@ -3696,8 +3696,7 @@ id|__init
 id|setup_ioapic_dest
 c_func
 (paren
-id|cpumask_t
-id|mask
+r_void
 )paren
 (brace
 r_int
@@ -3790,7 +3789,7 @@ c_func
 (paren
 id|irq
 comma
-id|mask
+id|TARGET_CPUS
 )paren
 suffix:semicolon
 )brace
