@@ -60,8 +60,8 @@ DECL|macro|__HAVE_DMA_WAITQUEUE
 mdefine_line|#define __HAVE_DMA_WAITQUEUE&t;&t;1
 DECL|macro|__HAVE_DMA_WAITLIST
 mdefine_line|#define __HAVE_DMA_WAITLIST&t;&t;1
-DECL|macro|__HAVE_DMA_FREELIST
-mdefine_line|#define __HAVE_DMA_FREELIST&t;&t;1
+multiline_comment|/* removed from DRM HAVE_DMA_FREELIST */
+singleline_comment|//#define __HAVE_DMA_FREELIST&t;&t;1
 DECL|macro|__HAVE_DMA_SCHEDULE
 mdefine_line|#define __HAVE_DMA_SCHEDULE&t;&t;1
 DECL|macro|__HAVE_IRQ
