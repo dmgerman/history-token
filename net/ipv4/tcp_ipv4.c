@@ -6312,12 +6312,6 @@ id|skb-&gt;h.th-&gt;source
 )paren
 )paren
 suffix:semicolon
-id|TCP_INC_STATS_BH
-c_func
-(paren
-id|TcpAttemptFails
-)paren
-suffix:semicolon
 id|dst_release
 c_func
 (paren

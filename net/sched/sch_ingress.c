@@ -469,13 +469,13 @@ id|res.classid
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unlike normal &quot;enqueue&quot; functions, ingress_enqueue returns a&n;&t; * firewall FW_* code.&n;&t; */
+macro_line|#ifdef CONFIG_NET_CLS_POLICE
 r_switch
 c_cond
 (paren
 id|result
 )paren
 (brace
-macro_line|#ifdef CONFIG_NET_CLS_POLICE
 r_case
 id|TC_POLICE_SHOT
 suffix:colon
@@ -514,6 +514,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 macro_line|#else
 id|sch-&gt;stats.packets
 op_increment
