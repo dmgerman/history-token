@@ -10515,18 +10515,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Prevent DECnet module unloading until its fixed properly.&n;&t; * Requires an audit of the code to check for memory leaks and&n;&t; * initialisation problems etc.&n;&t; */
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|decnet_exit
+DECL|variable|decnet_init
+id|module_init
+c_func
+(paren
+id|decnet_init
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Prevent DECnet module unloading until its fixed properly.&n; * Requires an audit of the code to check for memory leaks and&n; * initialisation problems etc.&n; */
+macro_line|#if 0
 r_static
 r_void
 id|__exit
@@ -10594,18 +10595,11 @@ id|dn_sk_cachep
 )paren
 suffix:semicolon
 )brace
-DECL|variable|decnet_init
-id|module_init
-c_func
-(paren
-id|decnet_init
-)paren
-suffix:semicolon
-DECL|variable|decnet_exit
 id|module_exit
 c_func
 (paren
 id|decnet_exit
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
