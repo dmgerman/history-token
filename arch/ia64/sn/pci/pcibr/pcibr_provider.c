@@ -332,7 +332,7 @@ id|soft-&gt;pbi_buscommon.bs_base
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

@@ -13,10 +13,6 @@ r_typedef
 id|u64
 id|nic_t
 suffix:semicolon
-DECL|macro|NASID_TO_COMPACT_NODEID
-mdefine_line|#define NASID_TO_COMPACT_NODEID(nasid)  (nasid_to_cnodeid(nasid))
-DECL|macro|COMPACT_TO_NASID_NODEID
-mdefine_line|#define COMPACT_TO_NASID_NODEID(cnode)  (cnodeid_to_nasid(cnode))
 r_extern
 r_void
 id|sn_flush_all_caches
