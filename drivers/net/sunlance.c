@@ -5970,11 +5970,6 @@ id|sparc_lance_init
 c_func
 (paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
 id|sbus_dev
 op_star
 id|sdev
@@ -5995,44 +5990,21 @@ r_int
 id|version_printed
 suffix:semicolon
 r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+r_struct
 id|lance_private
 op_star
 id|lp
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
 id|dev
 op_assign
-id|init_etherdev
-(paren
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|lance_private
-)paren
-op_plus
-l_int|8
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dev-&gt;priv
-op_assign
-id|kmalloc
+id|alloc_etherdev
 c_func
 (paren
 r_sizeof
@@ -6042,38 +6014,22 @@ id|lance_private
 )paren
 op_plus
 l_int|8
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;priv
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|memset
-c_func
-(paren
+id|lp
+op_assign
 id|dev-&gt;priv
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|lance_private
-)paren
-op_plus
-l_int|8
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6091,46 +6047,6 @@ l_string|&quot;%s&quot;
 comma
 id|version
 )paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: LANCE &quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* Make certain the data structures used by the LANCE are aligned. */
-id|dev-&gt;priv
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|dev-&gt;priv
-op_plus
-l_int|7
-)paren
-op_amp
-op_complement
-l_int|7
-)paren
-suffix:semicolon
-id|lp
-op_assign
-(paren
-r_struct
-id|lance_private
-op_star
-)paren
-id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -6154,11 +6070,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x%c&quot;
-comma
 id|dev-&gt;dev_addr
 (braket
 id|i
@@ -6168,22 +6079,6 @@ id|idprom-&gt;id_ethaddr
 (braket
 id|i
 )braket
-comma
-id|i
-op_eq
-l_int|5
-ques
-c_cond
-l_char|&squot; &squot;
-suffix:colon
-l_char|&squot;:&squot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Get the IO region */
 id|lp-&gt;lregs
@@ -6216,9 +6111,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Cannot map SunLance registers.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;SunLance: Cannot map registers.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6275,9 +6168,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Cannot map SunLance PIO buffer.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;SunLance: Cannot map PIO buffer.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6346,9 +6237,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Cannot allocate consistent DMA memory.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;SunLance: Cannot allocate consistent DMA memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6500,9 +6389,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: using auto-carrier-detection.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;SunLance: using auto-carrier-detection.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Is this found at /options .attributes in all&n;&t;&t;&t; * Prom versions? XXX&n;&t;&t;&t; */
@@ -6592,20 +6479,16 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: warning: overriding option &quot;
+l_string|&quot;SunLance: warning: overriding option &quot;
 l_string|&quot;&squot;tpe-link-test?&squot;&bslash;n&quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: warning: mail any problems &quot;
+l_string|&quot;SunLance: warning: mail any problems &quot;
 l_string|&quot;to ecd@skynet.be&bslash;n&quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|auxio_set_lte
@@ -6731,9 +6614,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: ERROR: Rx and Tx rings not on even boundary.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;SunLance: ERROR: Rx and Tx rings not on even boundary.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6802,12 +6683,6 @@ id|dev-&gt;dma
 op_assign
 l_int|0
 suffix:semicolon
-id|ether_setup
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* We cannot sleep if the chip is busy during a&n;&t; * multicast list update event, because such events&n;&t; * can occur from interrupts (ex. IPv6).  So we&n;&t; * use a timer to try again later when necessary. -DaveM&n;&t; */
 id|init_timer
 c_func
@@ -6829,13 +6704,27 @@ op_assign
 op_amp
 id|lance_set_multicast_retry
 suffix:semicolon
-id|dev-&gt;ifindex
-op_assign
-id|dev_new_index
+r_if
+c_cond
+(paren
+id|register_netdev
 c_func
 (paren
+id|dev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SunLance: Cannot register device.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 id|lp-&gt;next_module
 op_assign
 id|root_lance_dev
@@ -6843,6 +6732,55 @@ suffix:semicolon
 id|root_lance_dev
 op_assign
 id|lp
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: LANCE &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x%c&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+comma
+id|i
+op_eq
+l_int|5
+ques
+c_cond
+l_char|&squot; &squot;
+suffix:colon
+l_char|&squot;:&squot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -6860,6 +6798,12 @@ id|lance_free_hwresources
 c_func
 (paren
 id|lp
+)paren
+suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -7006,8 +6950,6 @@ r_return
 id|sparc_lance_init
 c_func
 (paren
-l_int|NULL
-comma
 op_amp
 id|sdev
 comma
@@ -7045,13 +6987,6 @@ op_star
 id|sdev
 op_assign
 l_int|0
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|sbus_dma
@@ -7102,15 +7037,6 @@ id|bus
 r_if
 c_cond
 (paren
-id|cards
-)paren
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|strcmp
 c_func
 (paren
@@ -7134,8 +7060,6 @@ op_assign
 id|sparc_lance_init
 c_func
 (paren
-id|dev
-comma
 id|sdev
 comma
 l_int|0
@@ -7184,8 +7108,6 @@ op_assign
 id|sparc_lance_init
 c_func
 (paren
-id|dev
-comma
 id|sdev-&gt;child
 comma
 id|ledma
@@ -7226,8 +7148,6 @@ op_assign
 id|sparc_lance_init
 c_func
 (paren
-id|dev
-comma
 id|sdev-&gt;child
 comma
 l_int|0
