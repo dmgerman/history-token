@@ -1347,7 +1347,6 @@ id|HiSax_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULES */
-macro_line|#if CARD_TELES0
 r_extern
 r_int
 id|setup_teles0
@@ -1359,8 +1358,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELES3
 r_extern
 r_int
 id|setup_teles3
@@ -1372,8 +1369,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_S0BOX
 r_extern
 r_int
 id|setup_s0box
@@ -1385,8 +1380,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELESPCI
 r_extern
 r_int
 id|setup_telespci
@@ -1398,8 +1391,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AVM_A1
 r_extern
 r_int
 id|setup_avm_a1
@@ -1411,8 +1402,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AVM_A1_PCMCIA
 r_extern
 r_int
 id|setup_avm_a1_pcmcia
@@ -1424,8 +1413,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_FRITZPCI
 r_extern
 r_int
 id|setup_avm_pcipnp
@@ -1437,8 +1424,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ELSA
 r_extern
 r_int
 id|setup_elsa
@@ -1450,8 +1435,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_IX1MICROR2
 r_extern
 r_int
 id|setup_ix1micro
@@ -1463,8 +1446,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_DIEHLDIVA
 r_extern
 r_int
 id|setup_diva
@@ -1476,8 +1457,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ASUSCOM
 r_extern
 r_int
 id|setup_asuscom
@@ -1489,8 +1468,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELEINT
 r_extern
 r_int
 id|setup_TeleInt
@@ -1502,8 +1479,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SEDLBAUER
 r_extern
 r_int
 id|setup_sedlbauer
@@ -1515,8 +1490,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SPORTSTER
 r_extern
 r_int
 id|setup_sportster
@@ -1528,8 +1501,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_MIC
 r_extern
 r_int
 id|setup_mic
@@ -1541,8 +1512,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NETJET_S
 r_extern
 r_int
 id|setup_netjet_s
@@ -1554,8 +1523,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFCS
 r_extern
 r_int
 id|setup_hfcs
@@ -1567,8 +1534,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFC_PCI
 r_extern
 r_int
 id|setup_hfcpci
@@ -1580,8 +1545,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFC_SX
 r_extern
 r_int
 id|setup_hfcsx
@@ -1593,8 +1556,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AMD7930
 r_extern
 r_int
 id|setup_amd7930
@@ -1606,8 +1567,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NICCY
 r_extern
 r_int
 id|setup_niccy
@@ -1619,8 +1578,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ISURF
 r_extern
 r_int
 id|setup_isurf
@@ -1632,8 +1589,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HSTSAPHIR
 r_extern
 r_int
 id|setup_saphir
@@ -1645,8 +1600,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TESTEMU
 r_extern
 r_int
 id|setup_testemu
@@ -1658,8 +1611,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_BKM_A4T
 r_extern
 r_int
 id|setup_bkm_a4t
@@ -1671,8 +1622,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SCT_QUADRO
 r_extern
 r_int
 id|setup_sct_quadro
@@ -1684,8 +1633,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_GAZEL
 r_extern
 r_int
 id|setup_gazel
@@ -1697,8 +1644,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_W6692
 r_extern
 r_int
 id|setup_w6692
@@ -1710,8 +1655,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NETJET_U
 r_extern
 r_int
 id|setup_netjet_u
@@ -1723,8 +1666,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_FN_ENTERNOW_PCI
 r_extern
 r_int
 id|setup_enternow_pci
@@ -1736,7 +1677,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Find card with given driverId&n; */
 DECL|function|hisax_findcard
 r_static
@@ -3682,7 +3622,7 @@ c_cond
 id|card-&gt;typ
 )paren
 (brace
-macro_line|#if CARD_TELES0
+macro_line|#ifdef CONFIG_HISAX_16_0
 r_case
 id|ISDN_CTYPE_16_0
 suffix:colon
@@ -3700,7 +3640,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELES3
+macro_line|#ifdef CONFIG_HISAX_16_3
 r_case
 id|ISDN_CTYPE_16_3
 suffix:colon
@@ -3724,7 +3664,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_S0BOX
+macro_line|#ifdef CONFIG_HISAX_S0BOX
 r_case
 id|ISDN_CTYPE_S0BOX
 suffix:colon
@@ -3739,7 +3679,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELESPCI
+macro_line|#ifdef CONFIG_HISAX_TELESPCI
 r_case
 id|ISDN_CTYPE_TELESPCI
 suffix:colon
@@ -3754,7 +3694,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AVM_A1
+macro_line|#ifdef CONFIG_HISAX_AVM_A1
 r_case
 id|ISDN_CTYPE_A1
 suffix:colon
@@ -3769,7 +3709,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AVM_A1_PCMCIA
+macro_line|#ifdef CONFIG_HISAX_AVM_A1_PCMCIA
 r_case
 id|ISDN_CTYPE_A1_PCMCIA
 suffix:colon
@@ -3784,7 +3724,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_FRITZPCI
+macro_line|#ifdef CONFIG_HISAX_FRITZPCI
 r_case
 id|ISDN_CTYPE_FRITZPCI
 suffix:colon
@@ -3799,7 +3739,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ELSA
+macro_line|#ifdef CONFIG_HISAX_ELSA
 r_case
 id|ISDN_CTYPE_ELSA
 suffix:colon
@@ -3823,7 +3763,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_IX1MICROR2
+macro_line|#ifdef CONFIG_HISAX_IX1MICROR2
 r_case
 id|ISDN_CTYPE_IX1MICROR2
 suffix:colon
@@ -3838,7 +3778,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_DIEHLDIVA
+macro_line|#ifdef CONFIG_HISAX_DIEHLDIVA
 r_case
 id|ISDN_CTYPE_DIEHLDIVA
 suffix:colon
@@ -3853,7 +3793,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ASUSCOM
+macro_line|#ifdef CONFIG_HISAX_ASUSCOM
 r_case
 id|ISDN_CTYPE_ASUSCOM
 suffix:colon
@@ -3868,7 +3808,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELEINT
+macro_line|#ifdef CONFIG_HISAX_TELEINT
 r_case
 id|ISDN_CTYPE_TELEINT
 suffix:colon
@@ -3883,7 +3823,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_SEDLBAUER
+macro_line|#ifdef CONFIG_HISAX_SEDLBAUER
 r_case
 id|ISDN_CTYPE_SEDLBAUER
 suffix:colon
@@ -3904,7 +3844,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_SPORTSTER
+macro_line|#ifdef CONFIG_HISAX_SPORTSTER
 r_case
 id|ISDN_CTYPE_SPORTSTER
 suffix:colon
@@ -3919,7 +3859,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_MIC
+macro_line|#ifdef CONFIG_HISAX_MIC
 r_case
 id|ISDN_CTYPE_MIC
 suffix:colon
@@ -3934,7 +3874,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NETJET_S
+macro_line|#ifdef CONFIG_HISAX_NETJET
 r_case
 id|ISDN_CTYPE_NETJET_S
 suffix:colon
@@ -3949,7 +3889,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFCS
+macro_line|#ifdef CONFIG_HISAX_HFCS
 r_case
 id|ISDN_CTYPE_TELES3C
 suffix:colon
@@ -3967,7 +3907,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFC_PCI
+macro_line|#ifdef CONFIG_HISAX_HFC_PCI
 r_case
 id|ISDN_CTYPE_HFC_PCI
 suffix:colon
@@ -3982,7 +3922,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFC_SX
+macro_line|#ifdef CONFIG_HISAX_HFC_SX
 r_case
 id|ISDN_CTYPE_HFC_SX
 suffix:colon
@@ -3997,7 +3937,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NICCY
+macro_line|#ifdef CONFIG_HISAX_NICCY
 r_case
 id|ISDN_CTYPE_NICCY
 suffix:colon
@@ -4012,7 +3952,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AMD7930
+macro_line|#ifdef CONFIG_HISAX_AMD7930
 r_case
 id|ISDN_CTYPE_AMD7930
 suffix:colon
@@ -4027,7 +3967,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ISURF
+macro_line|#ifdef CONFIG_HISAX_ISURF
 r_case
 id|ISDN_CTYPE_ISURF
 suffix:colon
@@ -4042,7 +3982,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HSTSAPHIR
+macro_line|#ifdef CONFIG_HISAX_HSTSAPHIR
 r_case
 id|ISDN_CTYPE_HSTSAPHIR
 suffix:colon
@@ -4057,7 +3997,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TESTEMU
+macro_line|#ifdef CONFIG_HISAX_TESTEMU
 r_case
 id|ISDN_CTYPE_TESTEMU
 suffix:colon
@@ -4072,7 +4012,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if&t;CARD_BKM_A4T
+macro_line|#ifdef CONFIG_HISAX_BKM_A4T
 r_case
 id|ISDN_CTYPE_BKM_A4T
 suffix:colon
@@ -4087,7 +4027,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if&t;CARD_SCT_QUADRO
+macro_line|#ifdef CONFIG_HISAX_SCT_QUADRO
 r_case
 id|ISDN_CTYPE_SCT_QUADRO
 suffix:colon
@@ -4102,7 +4042,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_GAZEL
+macro_line|#ifdef CONFIG_HISAX_GAZEL
 r_case
 id|ISDN_CTYPE_GAZEL
 suffix:colon
@@ -4117,7 +4057,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_W6692
+macro_line|#ifdef CONFIG_HISAX_W6692
 r_case
 id|ISDN_CTYPE_W6692
 suffix:colon
@@ -4132,7 +4072,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NETJET_U
+macro_line|#ifdef CONFIG_HISAX_NETJET_U
 r_case
 id|ISDN_CTYPE_NETJET_U
 suffix:colon
@@ -4147,7 +4087,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_FN_ENTERNOW_PCI
+macro_line|#ifdef CONFIG_HISAX_ENTERNOW_PCI
 r_case
 id|ISDN_CTYPE_ENTERNOW
 suffix:colon
