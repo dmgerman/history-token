@@ -11475,9 +11475,7 @@ id|ha
 comma
 id|fcport
 comma
-id|BIT_1
-op_or
-id|BIT_0
+l_int|0
 )paren
 suffix:semicolon
 r_if
