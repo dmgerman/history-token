@@ -207,6 +207,11 @@ op_assign
 id|DRV_NAME
 comma
 dot
+id|ioctl
+op_assign
+id|ata_scsi_ioctl
+comma
+dot
 id|queuecommand
 op_assign
 id|ata_scsi_queuecmd

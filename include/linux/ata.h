@@ -820,6 +820,22 @@ comma
 multiline_comment|/* packet command with special DMA sauce */
 )brace
 suffix:semicolon
+DECL|enum|ata_ioctls
+r_enum
+id|ata_ioctls
+(brace
+DECL|enumerator|ATA_IOC_GET_IO32
+id|ATA_IOC_GET_IO32
+op_assign
+l_int|0x309
+comma
+DECL|enumerator|ATA_IOC_SET_IO32
+id|ATA_IOC_SET_IO32
+op_assign
+l_int|0x324
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* core structures */
 DECL|struct|ata_prd
 r_struct
