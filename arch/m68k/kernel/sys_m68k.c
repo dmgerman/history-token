@@ -1117,29 +1117,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|sys_ioperm
-id|asmlinkage
-r_int
-id|sys_ioperm
-c_func
-(paren
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-id|on
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
 multiline_comment|/* Convert virtual (user) address VADDR to physical address PADDR */
 DECL|macro|virt_to_phys_040
 mdefine_line|#define virt_to_phys_040(vaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  unsigned long _mmusr, _paddr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&quot;.chip 68040&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ptestr (%1)&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movec %%mmusr,%0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.chip 68k&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (_mmusr)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (vaddr));&t;&t;&t;&t;&t;&bslash;&n;  _paddr = (_mmusr &amp; MMU_R_040) ? (_mmusr &amp; PAGE_MASK) : 0;&t;&t;&bslash;&n;  _paddr;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
