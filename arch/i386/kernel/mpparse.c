@@ -4202,11 +4202,27 @@ op_eq
 id|entry-&gt;bus_irq
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * ACPI should use the settings in the&n;&t;&t;&t;&t; * ISO for its SCI. Do not continue.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * See the note at the end of ACPI 2.0b section&n;&t;&t;&t;&t; * 5.2.10.8 for what this is about.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|entry-&gt;bus_irq
+op_ne
+id|entry-&gt;global_irq
+)paren
+(brace
 id|acpi_fadt.sci_int
 op_assign
 id|entry-&gt;global_irq
 suffix:semicolon
+id|irq
+op_assign
+id|entry-&gt;global_irq
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_else
 r_return
 suffix:semicolon
 )brace
