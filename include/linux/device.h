@@ -1851,6 +1851,27 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|platform_device
+op_star
+id|platform_device_register_simple
+c_func
+(paren
+r_char
+op_star
+comma
+r_int
+r_int
+comma
+r_struct
+id|resource
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* drivers/base/power.c */
 r_extern
 r_void
