@@ -3309,6 +3309,13 @@ comma
 id|err
 )paren
 suffix:semicolon
+id|device_del
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon

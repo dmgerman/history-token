@@ -96,6 +96,22 @@ c_func
 id|id-&gt;bcdDevice_hi
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some modules (visor) have empty slots as placeholder for&n;&t; * run-time specification that results in catch-all alias&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|id-&gt;idVendor
+op_or
+id|id-&gt;bDeviceClass
+op_or
+id|id-&gt;bInterfaceClass
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 id|strcpy
 c_func
 (paren

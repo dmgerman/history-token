@@ -1449,10 +1449,7 @@ id|us
 comma
 id|reply
 comma
-r_sizeof
-(paren
-id|reply
-)paren
+l_int|512
 )paren
 suffix:semicolon
 r_if

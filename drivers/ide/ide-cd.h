@@ -1464,6 +1464,8 @@ DECL|macro|UNIT_ATTENTION
 mdefine_line|#define UNIT_ATTENTION          0x06
 DECL|macro|DATA_PROTECT
 mdefine_line|#define DATA_PROTECT            0x07
+DECL|macro|BLANK_CHECK
+mdefine_line|#define BLANK_CHECK             0x08
 DECL|macro|ABORTED_COMMAND
 mdefine_line|#define ABORTED_COMMAND         0x0b
 DECL|macro|MISCOMPARE
@@ -1817,7 +1819,7 @@ l_string|&quot;Unit attention&quot;
 comma
 l_string|&quot;Data protect&quot;
 comma
-l_string|&quot;(reserved)&quot;
+l_string|&quot;Blank check&quot;
 comma
 l_string|&quot;(reserved)&quot;
 comma
