@@ -33,7 +33,7 @@ macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Johan.Verrept@advalvas.be&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;Driver for the Alcatel Speed Touch USB ADSL modem&quot;
+mdefine_line|#define DRIVER_DESC&t;&quot;Driver for the Alcatel SpeedTouch USB ADSL modem&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION&t;&quot;1.5A&quot;
 DECL|macro|SPEEDTOUCH_VENDORID
@@ -785,7 +785,7 @@ id|sprintf
 (paren
 id|page
 comma
-l_string|&quot;Speed Touch USB %s-%s (%02x:%02x:%02x:%02x:%02x:%02x)&bslash;n&quot;
+l_string|&quot;SpeedTouch USB %s-%s (%02x:%02x:%02x:%02x:%02x:%02x)&bslash;n&quot;
 comma
 id|instance-&gt;usb_dev-&gt;bus-&gt;bus_name
 comma
