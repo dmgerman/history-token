@@ -1631,6 +1631,8 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
+DECL|macro|sctp_opt2sk
+mdefine_line|#define sctp_opt2sk(__sp) &amp;container_of(__sp, struct sctp_sock, sctp)-&gt;sk
 multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
