@@ -3279,6 +3279,12 @@ comma
 id|dname-&gt;namebuf
 )paren
 suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|hd
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
