@@ -27,24 +27,6 @@ multiline_comment|/* -----------------------------------------------------------
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|macro|ACPI_PCI_COMPONENT
 mdefine_line|#define ACPI_PCI_COMPONENT&t;&t;0x00400000
-multiline_comment|/* ACPI PCI Root Bridge (pci_root.c) */
-r_void
-id|acpi_pci_get_translations
-(paren
-r_struct
-id|acpi_pci_id
-op_star
-id|id
-comma
-id|u64
-op_star
-id|mem_tra
-comma
-id|u64
-op_star
-id|io_tra
-)paren
-suffix:semicolon
 multiline_comment|/* ACPI PCI Interrupt Link (pci_link.c) */
 r_int
 id|acpi_pci_link_check
