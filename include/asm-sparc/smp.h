@@ -711,30 +711,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() hard_smp_processor_id()
-multiline_comment|/* XXX We really need to implement this now.  -DaveM */
-DECL|function|smp_send_reschedule
-r_extern
-id|__inline__
-r_void
-id|smp_send_reschedule
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-)brace
-DECL|function|smp_send_stop
-r_extern
-id|__inline__
-r_void
-id|smp_send_stop
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* Sparc specific messages. */
 DECL|macro|MSG_CROSS_CALL
