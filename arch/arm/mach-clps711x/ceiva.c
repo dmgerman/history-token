@@ -43,6 +43,7 @@ id|MT_DEVICE
 )brace
 suffix:semicolon
 DECL|function|ceiva_map_io
+r_static
 r_void
 id|__init
 id|ceiva_map_io

@@ -55,13 +55,6 @@ mdefine_line|#define EP7212_VIRT_BASE&t;CLPS7111_VIRT_BASE
 DECL|macro|EP7212_BASE
 mdefine_line|#define EP7212_BASE&t;&t;CLPS7111_VIRT_BASE
 macro_line|#include &lt;asm/hardware/ep7212.h&gt;
-macro_line|#elif define (CONFIG_ARCH_CEIVA)
-DECL|macro|EP7212_VIRT_BASE
-mdefine_line|#define EP7212_VIRT_BASE&t;CLPS7111_VIRT_BASE
-DECL|macro|EP7212_BASE
-mdefine_line|#define EP7212_BASE&t;&t;CLPS7111_VIRT_BASE
-macro_line|#include &lt;asm/hardware/clps7111.h&gt;
-macro_line|#include &lt;asm/hardware/ep7212.h&gt;
 macro_line|#endif
 DECL|macro|SYSPLD_VIRT_BASE
 mdefine_line|#define SYSPLD_VIRT_BASE&t;0xfe000000
