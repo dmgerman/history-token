@@ -36,15 +36,6 @@ id|sb
 op_assign
 id|inode-&gt;i_sb
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* swapper_space */
 multiline_comment|/*&n;&t; * Don&squot;t do this for I_DIRTY_PAGES - that doesn&squot;t actually&n;&t; * dirty the inode itself&n;&t; */
 r_if
 c_cond
@@ -145,6 +136,16 @@ multiline_comment|/*&n;&t;&t; * Only add valid (hashed) inodes to the superblock
 r_if
 c_cond
 (paren
+op_logical_neg
+id|S_ISBLK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+)paren
+(brace
+r_if
+c_cond
 (paren
 id|hlist_unhashed
 c_func
@@ -152,7 +153,12 @@ c_func
 op_amp
 id|inode-&gt;i_hash
 )paren
-op_logical_or
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|inode-&gt;i_state
 op_amp
@@ -162,18 +168,10 @@ op_or
 id|I_CLEAR
 )paren
 )paren
-)paren
-op_logical_and
-op_logical_neg
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-)paren
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If the inode was already on s_dirty or s_io, don&squot;t&n;&t;&t; * reposition it (that would break s_dirty time-ordering).&n;&t;&t; */
 r_if
 c_cond

@@ -1653,6 +1653,16 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
 id|__mark_inode_dirty
 c_func
 (paren
