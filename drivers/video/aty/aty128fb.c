@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2000, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *                Michel Danzer &lt;michdaen@iiic.ethz.ch&gt;&n; *                      - 15/16 bit cleanup&n; *                      - fix panning&n; *&n; *                Benjamin Herrenschmidt&n; *                      - pmac-specific PM stuff&n; *&n; *                Andreas Hundt &lt;andi@convergence.de&gt;&n; *                      - FB_ACTIVATE fixes&n; *&n; *&t;&t;  Paul Mackerras &lt;paulus@samba.org&gt;&n; *&t;&t;&t;- Convert to new framebuffer API,&n; *&t;&t;&t;  fix colormap setting at 16 bits/pixel (565)&n; *&n; *&t;&t;  Paul Mundt &n; *&t;&t;  &t;- PCI hotplug&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&t;&t;- ioctl()&squot;s&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
+multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2003, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *                Michel Danzer &lt;michdaen@iiic.ethz.ch&gt;&n; *                      - 15/16 bit cleanup&n; *                      - fix panning&n; *&n; *                Benjamin Herrenschmidt&n; *                      - pmac-specific PM stuff&n; *&n; *                Andreas Hundt &lt;andi@convergence.de&gt;&n; *                      - FB_ACTIVATE fixes&n; *&n; *&t;&t;  Paul Mackerras &lt;paulus@samba.org&gt;&n; *&t;&t;&t;- Convert to new framebuffer API,&n; *&t;&t;&t;  fix colormap setting at 16 bits/pixel (565)&n; *&n; *&t;&t;  Paul Mundt &n; *&t;&t;  &t;- PCI hotplug&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
 multiline_comment|/*&n; * A special note of gratitude to ATI&squot;s devrel for providing documentation,&n; * example code and hardware. Thanks Nitya.&t;-atong and brad&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -581,20 +581,24 @@ id|pci_driver
 id|aty128fb_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;aty128fb&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|aty128_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|aty128_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -10299,7 +10303,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c)1999-2000 Brad Douglas &lt;brad@neruo.com&gt;&quot;
+l_string|&quot;(c)1999-2003 Brad Douglas &lt;brad@neruo.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
