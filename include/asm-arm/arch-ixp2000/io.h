@@ -48,6 +48,7 @@ DECL|macro|insw
 macro_line|#undef insw
 DECL|macro|outsw
 macro_line|#undef outsw
+macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|function|insw
 r_static
 r_inline
@@ -83,9 +84,16 @@ multiline_comment|/*&n;&t; * Is this cycle meant for the CS8900?&n;&t; */
 r_if
 c_cond
 (paren
-id|machine_is_ixdp2x01
+(paren
+id|machine_is_ixdp2401
 c_func
 (paren
+)paren
+op_logical_or
+id|machine_is_ixdp2801
+c_func
+(paren
+)paren
 )paren
 op_logical_and
 (paren
@@ -213,9 +221,16 @@ multiline_comment|/*&n;&t; * Is this cycle meant for the CS8900?&n;&t; */
 r_if
 c_cond
 (paren
-id|machine_is_ixdp2x01
+(paren
+id|machine_is_ixdp2401
 c_func
 (paren
+)paren
+op_logical_or
+id|machine_is_ixdp2801
+c_func
+(paren
+)paren
 )paren
 op_logical_and
 (paren
@@ -330,9 +345,16 @@ multiline_comment|/*&n;&t; * Is this cycle meant for the CS8900?&n;&t; */
 r_if
 c_cond
 (paren
-id|machine_is_ixdp2x01
+(paren
+id|machine_is_ixdp2401
 c_func
 (paren
+)paren
+op_logical_or
+id|machine_is_ixdp2801
+c_func
+(paren
+)paren
 )paren
 op_logical_and
 (paren
@@ -406,9 +428,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|machine_is_ixdp2x01
+(paren
+id|machine_is_ixdp2401
 c_func
 (paren
+)paren
+op_logical_or
+id|machine_is_ixdp2801
+c_func
+(paren
+)paren
 )paren
 op_logical_and
 (paren
