@@ -3500,7 +3500,7 @@ comma
 op_amp
 id|res-&gt;dma_resource
 (braket
-id|irq
+id|dma
 )braket
 )paren
 suffix:semicolon
