@@ -7667,11 +7667,15 @@ id|CE_ALERT
 comma
 id|log-&gt;l_mp
 comma
-l_string|&quot;xfs_log_recover: unknown buffer type 0x%x, dev 0x%x&quot;
+l_string|&quot;xfs_log_recover: unknown buffer type 0x%x, dev %s&quot;
 comma
 id|buf_f-&gt;blf_type
 comma
-id|log-&gt;l_dev
+id|XFS_BUFTARG_NAME
+c_func
+(paren
+id|log-&gt;l_targ
+)paren
 )paren
 suffix:semicolon
 id|XFS_ERROR_REPORT
@@ -14975,20 +14979,14 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;Starting XFS recovery on filesystem: %s (dev: %d/%d)&quot;
+l_string|&quot;Starting XFS recovery on filesystem: %s (dev: %s)&quot;
 comma
 id|log-&gt;l_mp-&gt;m_fsname
 comma
-id|MAJOR
+id|XFS_BUFTARG_NAME
 c_func
 (paren
-id|log-&gt;l_dev
-)paren
-comma
-id|MINOR
-c_func
-(paren
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 )paren
 suffix:semicolon
@@ -15094,16 +15092,10 @@ l_string|&quot;Ending XFS recovery on filesystem: %s (dev: %d/%d)&quot;
 comma
 id|log-&gt;l_mp-&gt;m_fsname
 comma
-id|MAJOR
+id|XFS_BUFTARG_NAME
 c_func
 (paren
-id|log-&gt;l_dev
-)paren
-comma
-id|MINOR
-c_func
-(paren
-id|log-&gt;l_dev
+id|log-&gt;l_targ
 )paren
 )paren
 suffix:semicolon

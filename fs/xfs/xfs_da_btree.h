@@ -478,9 +478,11 @@ op_star
 id|prev
 suffix:semicolon
 multiline_comment|/* previous in global chain */
-DECL|member|dev
-id|dev_t
-id|dev
+DECL|member|target
+r_struct
+id|xfs_buftarg
+op_star
+id|target
 suffix:semicolon
 multiline_comment|/* device for buffer */
 DECL|member|blkno

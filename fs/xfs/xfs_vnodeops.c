@@ -6254,7 +6254,7 @@ c_func
 (paren
 id|mp
 comma
-id|bdp
+id|vp
 comma
 id|DM_RIGHT_NULL
 )paren

@@ -3035,8 +3035,9 @@ id|ulong
 id|lasttime
 suffix:semicolon
 r_static
-id|dev_t
-id|lastdev
+id|xfs_buftarg_t
+op_star
+id|lasttarg
 suffix:semicolon
 id|xfs_mount_t
 op_star
@@ -3183,13 +3184,13 @@ r_if
 c_cond
 (paren
 (paren
-id|XFS_BUF_TARGET_DEV
+id|XFS_BUF_TARGET
 c_func
 (paren
 id|bp
 )paren
 op_ne
-id|lastdev
+id|lasttarg
 )paren
 op_logical_or
 (paren
@@ -3219,7 +3220,7 @@ c_func
 l_string|&quot;XFS write error in file system meta-data &quot;
 l_string|&quot;block 0x%Lx in %s&quot;
 comma
-id|XFS_BUF_TARGET_DEV
+id|XFS_BUF_TARGET
 c_func
 (paren
 id|bp
@@ -3235,9 +3236,9 @@ id|mp-&gt;m_fsname
 )paren
 suffix:semicolon
 )brace
-id|lastdev
+id|lasttarg
 op_assign
-id|XFS_BUF_TARGET_DEV
+id|XFS_BUF_TARGET
 c_func
 (paren
 id|bp
