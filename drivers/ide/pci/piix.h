@@ -248,6 +248,14 @@ c_func
 (paren
 l_string|&quot;ICH6&quot;
 )paren
+comma
+multiline_comment|/* 21 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH7&quot;
+)paren
+comma
 )brace
 suffix:semicolon
 macro_line|#endif /* PIIX_H */
