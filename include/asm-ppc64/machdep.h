@@ -323,16 +323,6 @@ id|init_IRQ
 r_void
 )paren
 suffix:semicolon
-DECL|member|init_ras_IRQ
-r_void
-(paren
-op_star
-id|init_ras_IRQ
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|get_irq
 r_int
 (paren
