@@ -1,18 +1,20 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 2001 MIPS Technologies, Inc.&n; * Copyright (C) 2001 Ralf Baechle&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines for generic manipulation of the interrupts found on the MIPS &n; * Malta board.&n; * The interrupt controller is located in the South Bridge a PIIX4 device &n; * with two internal 82C95 interrupt controllers.&n; */
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 2001 MIPS Technologies, Inc.&n; * Copyright (C) 2001 Ralf Baechle&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines for generic manipulation of the interrupts found on the MIPS&n; * Malta board.&n; * The interrupt controller is located in the South Bridge a PIIX4 device&n; * with two internal 82C95 interrupt controllers.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#include &lt;asm/mips-boards/malta.h&gt;
 macro_line|#include &lt;asm/mips-boards/maltaint.h&gt;
 macro_line|#include &lt;asm/mips-boards/piix4.h&gt;
+macro_line|#include &lt;asm/mips-boards/msc01_pci.h&gt;
 macro_line|#include &lt;asm/gt64120.h&gt;
-macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 r_extern
 id|asmlinkage
 r_void
@@ -22,37 +24,81 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|malta_hw0_irqdispatch
-r_void
-id|malta_hw0_irqdispatch
+r_extern
+r_int
+id|mips_pcibios_iack
 c_func
 (paren
-r_struct
-id|pt_regs
+r_void
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
+r_extern
+r_void
+id|breakpoint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|set_debug_traps
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|remote_debug
+suffix:semicolon
+macro_line|#endif
+DECL|variable|mips_irq_lock
+r_static
+id|spinlock_t
+id|mips_irq_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|get_int
+r_static
+r_inline
+r_int
+id|get_int
+c_func
+(paren
+r_int
 op_star
-id|regs
+id|irq
 )paren
 (brace
 r_int
-id|irq
+r_int
+id|flags
 suffix:semicolon
-multiline_comment|/*  &n;&t; * Determine highest priority pending interrupt by performing a PCI&n;&t; * Interrupt Acknowledge cycle.&n;&t; */
-id|GT_READ
+id|spin_lock_irqsave
 c_func
 (paren
-id|GT_PCI0_IACK_OFS
+op_amp
+id|mips_irq_lock
 comma
-id|irq
+id|flags
 )paren
 suffix:semicolon
+op_star
 id|irq
-op_and_assign
-l_int|0xFF
+op_assign
+id|mips_pcibios_iack
+c_func
+(paren
+)paren
 suffix:semicolon
-multiline_comment|/*  &n;&t; * IRQ7 is used to detect spurious interrupts.  The interrupt&n;&t; * acknowledge cycle returns IRQ7, if no interrupts is requested.  We&n;&t; * can differentiate between this situation and a &quot;normal&quot; IRQ7 by&n;&t; * reading the ISR.&n;&t; */
+multiline_comment|/*&n;&t; * IRQ7 is used to detect spurious interrupts.&n;&t; * The interrupt acknowledge cycle returns IRQ7, if no&n;&t; * interrupts is requested.&n;&t; * We can differentiate between this situation and a&n;&t; * &quot;Normal&quot; IRQ7 by reading the ISR.&n;&t; */
 r_if
 c_cond
 (paren
+op_star
 id|irq
 op_eq
 l_int|7
@@ -86,14 +132,279 @@ l_int|7
 )paren
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mips_irq_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;We got a spurious interrupt from PIIX4.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|irq_err_count
+)paren
+suffix:semicolon
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Spurious interrupt. */
 )brace
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mips_irq_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|malta_hw0_irqdispatch
+r_void
+id|malta_hw0_irqdispatch
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+id|irq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_int
+c_func
+(paren
+op_amp
+id|irq
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* interrupt has already been cleared */
 id|do_IRQ
 c_func
 (paren
 id|irq
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+DECL|function|corehi_irqdispatch
+r_void
+id|corehi_irqdispatch
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|data
+comma
+id|datahi
+suffix:semicolon
+multiline_comment|/* Mask out corehi interrupt. */
+id|clear_c0_status
+c_func
+(paren
+id|IE_IRQ3
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CoreHI interrupt, shouldn&squot;t happen, so we die here!!!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;epc   : %08lx&bslash;nStatus: %08lx&bslash;nCause : %08lx&bslash;nbadVaddr : %08lx&bslash;n&quot;
+comma
+id|regs-&gt;cp0_epc
+comma
+id|regs-&gt;cp0_status
+comma
+id|regs-&gt;cp0_cause
+comma
+id|regs-&gt;cp0_badvaddr
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mips_revision_corid
+)paren
+(brace
+r_case
+id|MIPS_REVISION_CORID_CORE_MSC
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|MIPS_REVISION_CORID_QED_RM5261
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_LV
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGA
+suffix:colon
+id|GT_READ
+c_func
+(paren
+id|GT_INTRCAUSE_OFS
+comma
+id|data
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;GT_INTRCAUSE = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|GT_READ
+c_func
+(paren
+l_int|0x70
+comma
+id|data
+)paren
+suffix:semicolon
+id|GT_READ
+c_func
+(paren
+l_int|0x78
+comma
+id|datahi
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;GT_CPU_ERR_ADDR = %0x2%08x&bslash;n&quot;
+comma
+id|datahi
+comma
+id|data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MIPS_REVISION_CORID_BONITO64
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_20K
+suffix:colon
+id|data
+op_assign
+id|BONITO_INTISR
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_INTISR = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|BONITO_INTEN
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_INTEN = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|BONITO_INTPOL
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_INTPOL = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|BONITO_INTEDGE
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_INTEDGE = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|BONITO_INTSTEER
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_INTSTEER = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|BONITO_PCICMD
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BONITO_PCICMD = %08x&bslash;n&quot;
+comma
+id|data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* We die here*/
+id|die
+c_func
+(paren
+l_string|&quot;CoreHi interrupt&quot;
 comma
 id|regs
 )paren
@@ -126,7 +437,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 r_if
 c_cond
 (paren

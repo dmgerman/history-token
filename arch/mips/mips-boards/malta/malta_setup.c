@@ -19,6 +19,11 @@ macro_line|#ifdef CONFIG_BLK_DEV_FD
 macro_line|#include &lt;asm/floppy.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#ifdef CONFIG_VT
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#endif
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
 r_extern
 r_void
@@ -40,15 +45,7 @@ l_int|20
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
-r_extern
-r_void
-id|set_debug_traps
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void
 id|rs_kgdb_hook
@@ -57,16 +54,7 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|remote_debug
-r_static
 r_int
 id|remote_debug
 op_assign
@@ -96,6 +84,34 @@ suffix:semicolon
 r_extern
 r_void
 id|mips_reboot_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mips_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mips_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mips_rtc_get_time
 c_func
 (paren
 r_void
@@ -153,6 +169,20 @@ comma
 suffix:semicolon
 DECL|macro|STANDARD_IO_RESOURCES
 mdefine_line|#define STANDARD_IO_RESOURCES (sizeof(standard_io_resources)/sizeof(struct resource))
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_string|&quot;MIPS Malta&quot;
+suffix:semicolon
+)brace
 DECL|function|malta_setup
 r_void
 id|__init
@@ -162,7 +192,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 r_int
 id|rs_putDebugChar
 c_func
@@ -231,7 +261,7 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Enable DMA channel 4 (cascade channel) in the PIIX4 south bridge.&n;&t; */
+multiline_comment|/*&n;&t; * Enable DMA channel 4 (cascade channel) in the PIIX4 south bridge.&n;&t; */
 id|enable_dma
 c_func
 (paren
@@ -281,7 +311,7 @@ l_string|&quot; console=ttyS0,38400&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -425,7 +455,12 @@ l_string|&quot;nofpu&quot;
 op_ne
 l_int|NULL
 )paren
-id|mips_cpu.options
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|options
 op_and_assign
 op_complement
 id|MIPS_CPU_FPU
@@ -449,17 +484,78 @@ op_amp
 id|std_fd_ops
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PC_KEYB
-id|kbd_ops
+macro_line|#ifdef CONFIG_VT
+macro_line|#if defined(CONFIG_VGA_CONSOLE)
+id|conswitchp
 op_assign
 op_amp
-id|std_kbd_ops
+id|vga_con
 suffix:semicolon
+id|screen_info
+op_assign
+(paren
+r_struct
+id|screen_info
+)paren
+(brace
+l_int|0
+comma
+l_int|25
+comma
+multiline_comment|/* orig-x, orig-y */
+l_int|0
+comma
+multiline_comment|/* unused */
+l_int|0
+comma
+multiline_comment|/* orig-video-page */
+l_int|0
+comma
+multiline_comment|/* orig-video-mode */
+l_int|80
+comma
+multiline_comment|/* orig-video-cols */
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* ega_ax, ega_bx, ega_cx */
+l_int|25
+comma
+multiline_comment|/* orig-video-lines */
+l_int|1
+comma
+multiline_comment|/* orig-video-isVGA */
+l_int|16
+multiline_comment|/* orig-video-points */
+)brace
+suffix:semicolon
+macro_line|#elif defined(CONFIG_DUMMY_CONSOLE)
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|mips_reboot_setup
 c_func
 (paren
 )paren
+suffix:semicolon
+id|board_time_init
+op_assign
+id|mips_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|mips_timer_setup
+suffix:semicolon
+id|rtc_get_time
+op_assign
+id|mips_rtc_get_time
 suffix:semicolon
 )brace
 eof
