@@ -516,7 +516,9 @@ id|count
 c_func
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 id|argv
 comma
@@ -545,6 +547,7 @@ suffix:semicolon
 )paren
 (brace
 r_char
+id|__user
 op_star
 id|p
 suffix:semicolon
@@ -604,7 +607,9 @@ r_int
 id|argc
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 id|argv
 comma
@@ -640,6 +645,7 @@ l_int|0
 )paren
 (brace
 r_char
+id|__user
 op_star
 id|str
 suffix:semicolon
@@ -1002,6 +1008,13 @@ c_func
 (paren
 id|argc
 comma
+(paren
+r_char
+id|__user
+op_star
+id|__user
+op_star
+)paren
 id|argv
 comma
 id|bprm
@@ -4364,12 +4377,16 @@ op_star
 id|filename
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 id|argv
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 id|envp
 comma
