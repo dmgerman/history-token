@@ -194,6 +194,27 @@ DECL|member|nfs_i_wait
 id|wait_queue_head_t
 id|nfs_i_wait
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_V4
+multiline_comment|/* NFSv4 state */
+DECL|member|ro_owner
+r_struct
+id|nfs4_shareowner
+op_star
+id|ro_owner
+suffix:semicolon
+DECL|member|wo_owner
+r_struct
+id|nfs4_shareowner
+op_star
+id|wo_owner
+suffix:semicolon
+DECL|member|rw_owner
+r_struct
+id|nfs4_shareowner
+op_star
+id|rw_owner
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4*/
 DECL|member|vfs_inode
 r_struct
 id|inode
@@ -1394,15 +1415,13 @@ mdefine_line|#define nfs_wait_event(clnt, wq, condition)&t;&t;&t;&t;&bslash;&n;(
 DECL|macro|NFS_JUKEBOX_RETRY_TIME
 mdefine_line|#define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
 macro_line|#ifdef CONFIG_NFS_V4
+multiline_comment|/*&n; * In a seqid-mutating op, this macro controls which error return&n; * values trigger incrementation of the seqid.&n; *&n; * from rfc 3010:&n; * The client MUST monotonically increment the sequence number for the&n; * CLOSE, LOCK, LOCKU, OPEN, OPEN_CONFIRM, and OPEN_DOWNGRADE&n; * operations.  This is true even in the event that the previous&n; * operation that used the sequence number received an error.  The only&n; * exception to this rule is if the previous operation received one of&n; * the following errors: NFSERR_STALE_CLIENTID, NFSERR_STALE_STATEID,&n; * NFSERR_BAD_STATEID, NFSERR_BAD_SEQID, NFSERR_BADXDR,&n; * NFSERR_RESOURCE, NFSERR_NOFILEHANDLE.&n; *&n; */
+DECL|macro|seqid_mutating_err
+mdefine_line|#define seqid_mutating_err(err)       &bslash;&n;(((err) != NFSERR_STALE_CLIENTID) &amp;&amp;  &bslash;&n; ((err) != NFSERR_STALE_STATEID)  &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_STATEID)    &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_SEQID)      &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_XDR)        &amp;&amp;  &bslash;&n; ((err) != NFSERR_RESOURCE)       &amp;&amp;  &bslash;&n; ((err) != NFSERR_NOFILEHANDLE))
 DECL|struct|nfs4_client
 r_struct
 id|nfs4_client
 (brace
-DECL|member|cl_count
-id|atomic_t
-id|cl_count
-suffix:semicolon
-multiline_comment|/* refcount */
 DECL|member|cl_clientid
 id|u64
 id|cl_clientid
@@ -1412,13 +1431,43 @@ DECL|member|cl_confirm
 id|nfs4_verifier
 id|cl_confirm
 suffix:semicolon
-multiline_comment|/*&n;         * Starts a list of lockowners, linked through lo_list.&n;&t; */
-DECL|member|cl_lockowners
-r_struct
-id|list_head
-id|cl_lockowners
+DECL|member|cl_lockowner_id
+id|u32
+id|cl_lockowner_id
 suffix:semicolon
-multiline_comment|/* protected by state_spinlock */
+)brace
+suffix:semicolon
+multiline_comment|/*&n;* The -&gt;so_sema is held during all shareowner seqid-mutating operations:&n;* OPEN, OPEN_DOWNGRADE, and CLOSE.&n;* Its purpose is to properly serialize so_seqid, as mandated by&n;* the protocol.&n;*/
+DECL|struct|nfs4_shareowner
+r_struct
+id|nfs4_shareowner
+(brace
+DECL|member|so_id
+id|u32
+id|so_id
+suffix:semicolon
+multiline_comment|/* 32-bit identifier, unique */
+DECL|member|so_sema
+r_struct
+id|semaphore
+id|so_sema
+suffix:semicolon
+DECL|member|so_seqid
+id|u32
+id|so_seqid
+suffix:semicolon
+multiline_comment|/* protected by so_sema */
+DECL|member|so_stateid
+id|nfs4_stateid
+id|so_stateid
+suffix:semicolon
+multiline_comment|/* protected by so_sema */
+DECL|member|so_flags
+r_int
+r_int
+id|so_flags
+suffix:semicolon
+multiline_comment|/* protected by so_sema */
 )brace
 suffix:semicolon
 multiline_comment|/* nfs4proc.c */
@@ -1433,6 +1482,22 @@ op_star
 id|server
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|nfs4_do_close
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|nfs4_shareowner
+op_star
+id|sp
+)paren
+suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
 r_extern
 r_int
@@ -1445,8 +1510,7 @@ op_star
 id|server
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_NFS_V4 */
-macro_line|#ifdef CONFIG_NFS_V4
+multiline_comment|/* nfs4state.c */
 r_extern
 r_struct
 id|nfs4_client
@@ -1466,6 +1530,99 @@ r_struct
 id|nfs4_client
 op_star
 id|clp
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|nfs4_shareowner
+op_star
+id|nfs4_get_shareowner
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
+id|nfs4_put_shareowner
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|nfs4_shareowner
+op_star
+id|sp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_set_inode_share
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|nfs4_shareowner
+op_star
+id|sp
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_increment_seqid
+c_func
+(paren
+id|u32
+id|status
+comma
+r_struct
+id|nfs4_shareowner
+op_star
+id|sp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs4_test_shareowner
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+r_int
+id|open_flags
+)paren
+suffix:semicolon
+r_struct
+id|nfs4_shareowner
+op_star
+id|nfs4_get_inode_share
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+r_int
+id|open_flags
 )paren
 suffix:semicolon
 r_struct
@@ -1550,6 +1707,8 @@ DECL|macro|create_nfsv4_state
 mdefine_line|#define create_nfsv4_state(server, data)  0
 DECL|macro|destroy_nfsv4_state
 mdefine_line|#define destroy_nfsv4_state(server)       do { } while (0)
+DECL|macro|nfs4_put_shareowner
+mdefine_line|#define nfs4_put_shareowner(inode, owner) do { } while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */
