@@ -612,13 +612,10 @@ r_char
 op_star
 id|obj
 comma
-r_const
-r_void
+r_char
 op_star
-id|buf
-comma
-r_int
-id|buflen
+op_star
+id|envp
 comma
 r_int
 id|gfp_mask
