@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; *      This
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -57,6 +58,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|function|sysrq_handle_xmon
 r_static
 r_void
@@ -108,6 +110,7 @@ l_string|&quot;Entering xmon&bslash;n&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 r_void
 DECL|function|xmon_map_scc
 id|xmon_map_scc
@@ -116,6 +119,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 multiline_comment|/* This maybe isn&squot;t the best place to register sysrq &squot;x&squot; */
 id|__sysrq_put_key_op
 c_func
@@ -126,6 +130,7 @@ op_amp
 id|sysrq_xmon_op
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 )brace
 r_int
 DECL|function|xmon_write
