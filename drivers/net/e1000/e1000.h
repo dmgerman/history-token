@@ -106,6 +106,11 @@ DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
 DECL|macro|E1000_EEPROM_APME
 mdefine_line|#define E1000_EEPROM_APME    0x0400
+macro_line|#ifndef E1000_MASTER_SLAVE
+multiline_comment|/* Switch to override PHY master/slave setting */
+DECL|macro|E1000_MASTER_SLAVE
+mdefine_line|#define E1000_MASTER_SLAVE&t;e1000_ms_hw_default
+macro_line|#endif
 multiline_comment|/* only works for sizes that are powers of 2 */
 DECL|macro|E1000_ROUNDUP
 mdefine_line|#define E1000_ROUNDUP(i, size) ((i) = (((i) + (size) - 1) &amp; ~((size) - 1)))

@@ -2961,6 +2961,10 @@ id|hw-&gt;disable_polarity_correction
 op_assign
 id|FALSE
 suffix:semicolon
+id|hw-&gt;master_slave
+op_assign
+id|E1000_MASTER_SLAVE
+suffix:semicolon
 )brace
 id|atomic_set
 c_func
