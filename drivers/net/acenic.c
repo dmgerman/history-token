@@ -4894,7 +4894,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: more then %i NICs detected, &quot;
+l_string|&quot;%s: more than %i NICs detected, &quot;
 l_string|&quot;ignoring module parameters!&bslash;n&quot;
 comma
 id|dev-&gt;name

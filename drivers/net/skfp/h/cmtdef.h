@@ -191,7 +191,7 @@ DECL|macro|EVENT_PCMA
 mdefine_line|#define EVENT_PCMA&t;5&t;&t;/* event class PCMA */
 DECL|macro|EVENT_PCMB
 mdefine_line|#define EVENT_PCMB&t;6&t;&t;/* event class PCMB */
-multiline_comment|/* WARNING :&n; * EVENT_PCM* must be last in the above list&n; * if more then two ports are used, EVENT_PCM .. EVENT_PCMA+NUM_PHYS-1&n; * are used !&n; */
+multiline_comment|/* WARNING :&n; * EVENT_PCM* must be last in the above list&n; * if more than two ports are used, EVENT_PCM .. EVENT_PCMA+NUM_PHYS-1&n; * are used !&n; */
 DECL|macro|EV_TOKEN
 mdefine_line|#define EV_TOKEN(class,event)&t;(((u_long)(class)&lt;&lt;16L)|((u_long)(event)))
 DECL|macro|EV_T_CLASS
