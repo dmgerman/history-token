@@ -2086,12 +2086,6 @@ op_member_access_from_pointer
 id|vlan_id
 )paren
 suffix:semicolon
-id|dev_put
-c_func
-(paren
-id|vlandev
-)paren
-suffix:semicolon
 id|unregister_netdevice
 c_func
 (paren
