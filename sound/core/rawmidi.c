@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -497,21 +498,18 @@ id|runtime-&gt;drain
 op_assign
 l_int|1
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|runtime-&gt;avail
-OL
-id|runtime-&gt;buffer_size
-)paren
-(brace
 id|timeout
 op_assign
-id|interruptible_sleep_on_timeout
+id|wait_event_interruptible_timeout
 c_func
 (paren
-op_amp
 id|runtime-&gt;sleep
+comma
+(paren
+id|runtime-&gt;avail
+op_ge
+id|runtime-&gt;buffer_size
+)paren
 comma
 l_int|10
 op_star
@@ -527,15 +525,11 @@ c_func
 id|current
 )paren
 )paren
-(brace
 id|err
 op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -569,9 +563,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 )brace
 id|runtime-&gt;drain
 op_assign
