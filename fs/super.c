@@ -680,11 +680,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sb-&gt;s_flags
 op_and_assign
 op_complement
@@ -695,6 +690,11 @@ id|invalidate_inodes
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
