@@ -328,6 +328,18 @@ DECL|member|gotcl
 r_uint32
 id|gotcl
 suffix:semicolon
+DECL|member|gotcl_old
+r_uint64
+id|gotcl_old
+suffix:semicolon
+DECL|member|tpt_old
+r_uint64
+id|tpt_old
+suffix:semicolon
+DECL|member|colc_old
+r_uint64
+id|colc_old
+suffix:semicolon
 DECL|member|tx_fifo_head
 r_uint32
 id|tx_fifo_head
@@ -377,6 +389,10 @@ suffix:semicolon
 DECL|member|gorcl
 r_uint32
 id|gorcl
+suffix:semicolon
+DECL|member|gorcl_old
+r_uint64
+id|gorcl_old
 suffix:semicolon
 multiline_comment|/* Interrupt Throttle Rate */
 DECL|member|itr
