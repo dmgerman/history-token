@@ -2349,6 +2349,8 @@ DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
 DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
+DECL|macro|MNT_EXPIRE
+mdefine_line|#define MNT_EXPIRE&t;0x00000004&t;/* Mark for expiry */
 r_extern
 r_struct
 id|list_head
