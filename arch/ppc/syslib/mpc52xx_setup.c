@@ -103,16 +103,14 @@ id|__iomem
 op_star
 id|gpt0
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_gpt
-id|__iomem
-op_star
-)paren
-id|MPC52xx_GPTx
+id|MPC52xx_GPTx_OFFSET
 c_func
 (paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|local_irq_disable
@@ -243,10 +241,7 @@ id|_PAGE_IO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-macro_line|#ifdef MPC52xx_PF_CONSOLE_PORT
-DECL|macro|MPC52xx_CONSOLE
-mdefine_line|#define MPC52xx_CONSOLE MPC52xx_PSCx(MPC52xx_PF_CONSOLE_PORT)
-macro_line|#else
+macro_line|#ifndef MPC52xx_PF_CONSOLE_PORT
 macro_line|#error &quot;mpc52xx PSC for console not selected&quot;
 macro_line|#endif
 r_static
@@ -314,14 +309,18 @@ id|mpc52xx_psc
 id|__iomem
 op_star
 id|psc
+suffix:semicolon
+id|psc
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_psc
-id|__iomem
-op_star
+id|MPC52xx_PSCx_OFFSET
+c_func
+(paren
+id|MPC52xx_PF_CONSOLE_PORT
 )paren
-id|MPC52xx_CONSOLE
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -417,13 +416,11 @@ suffix:semicolon
 multiline_comment|/* Temp BAT2 mapping active when this is called ! */
 id|mmap_ctl
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_mmap_ctl
-id|__iomem
-op_star
+id|MPC52xx_MMAP_CTL_OFFSET
 )paren
-id|MPC52xx_MMAP_CTL
 suffix:semicolon
 id|sdram_config_0
 op_assign
@@ -572,13 +569,13 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|MPC52xx_RTC
-comma
-r_sizeof
+id|MPC52xx_PA
+c_func
 (paren
-r_struct
-id|mpc52xx_rtc
+id|MPC52xx_RTC_OFFSET
 )paren
+comma
+id|MPC52xx_RTC_SIZE
 )paren
 suffix:semicolon
 id|cdm
@@ -586,13 +583,13 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|MPC52xx_CDM
-comma
-r_sizeof
+id|MPC52xx_PA
+c_func
 (paren
-r_struct
-id|mpc52xx_cdm
+id|MPC52xx_CDM_OFFSET
 )paren
+comma
+id|MPC52xx_CDM_SIZE
 )paren
 suffix:semicolon
 r_if
