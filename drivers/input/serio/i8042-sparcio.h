@@ -33,6 +33,10 @@ r_int
 r_int
 id|kbd_iobase
 suffix:semicolon
+DECL|macro|I8042_COMMAND_REG
+mdefine_line|#define I8042_COMMAND_REG&t;(kbd_iobase + 0x64UL)
+DECL|macro|I8042_DATA_REG
+mdefine_line|#define I8042_DATA_REG&t;&t;(kbd_iobase + 0x60UL)
 DECL|function|i8042_read_data
 r_static
 r_inline
@@ -392,18 +396,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;i8042: kbd_base[%lx] irq[kbd(%x):aux(%x)]&bslash;n&quot;
-comma
-id|kbd_iobase
-comma
-id|i8042_kbd_irq
-comma
-id|i8042_aux_irq
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
