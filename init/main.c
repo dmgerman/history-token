@@ -59,6 +59,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|init_modules
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|sock_init
 c_func
 (paren
@@ -72,6 +80,14 @@ c_func
 (paren
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|extable_init
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -154,16 +170,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
-r_extern
-r_void
-id|extable_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -1344,13 +1350,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
 id|extable_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rcu_init
 c_func
 (paren
