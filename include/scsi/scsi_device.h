@@ -420,6 +420,10 @@ suffix:semicolon
 multiline_comment|/* what device_blocked counts down from  */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
+DECL|member|timeout
+r_int
+id|timeout
+suffix:semicolon
 DECL|member|sdev_gendev
 r_struct
 id|device
