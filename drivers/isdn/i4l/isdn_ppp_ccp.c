@@ -239,18 +239,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|ccp
-op_member_access_from_pointer
-id|push_header
-c_func
-(paren
-id|ccp-&gt;priv
-comma
-id|skb
-comma
-id|proto
-)paren
-suffix:semicolon
 id|p
 op_assign
 id|skb_put
@@ -338,6 +326,8 @@ c_func
 id|ccp-&gt;priv
 comma
 id|skb
+comma
+id|proto
 )paren
 suffix:semicolon
 )brace
