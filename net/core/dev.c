@@ -9090,10 +9090,6 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 r_if
 c_cond
 (paren
