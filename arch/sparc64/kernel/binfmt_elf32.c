@@ -407,18 +407,6 @@ DECL|macro|start_thread
 mdefine_line|#define start_thread start_thread32
 DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt init_elf32_binfmt
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
-DECL|macro|CONFIG_BINFMT_ELF
-mdefine_line|#define CONFIG_BINFMT_ELF CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-mdefine_line|#define CONFIG_BINFMT_ELF_MODULE CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -226,9 +226,5 @@ DECL|macro|start_thread
 mdefine_line|#define start_thread start_thread32
 DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt init_elf32_binfmt
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-DECL|macro|CONFIG_BINFMT_ELF
-mdefine_line|#define CONFIG_BINFMT_ELF 1
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 eof

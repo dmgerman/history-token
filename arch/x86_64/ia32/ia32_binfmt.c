@@ -621,18 +621,6 @@ DECL|macro|exit_elf_binfmt
 mdefine_line|#define exit_elf_binfmt&t;&t;&t;exit_elf32_binfmt
 DECL|macro|load_elf_binary
 mdefine_line|#define load_elf_binary load_elf32_binary
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
-DECL|macro|CONFIG_BINFMT_ELF
-macro_line|# define CONFIG_BINFMT_ELF&t;&t;CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|# define CONFIG_BINFMT_ELF_MODULE&t;CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(r, load_addr)&t;elf32_init(r)
 DECL|macro|setup_arg_pages
