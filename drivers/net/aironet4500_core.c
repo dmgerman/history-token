@@ -11946,14 +11946,6 @@ id|dev-&gt;name
 suffix:semicolon
 multiline_comment|/* both_bap_lock decreases performance about 15% &n;&t; * but without it card gets screwed up &n;&t; */
 macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|smp_num_cpus
-OG
-l_int|1
-)paren
-(brace
 id|both_bap_lock
 op_assign
 l_int|1
@@ -11962,7 +11954,6 @@ id|bap_setup_spinlock
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 macro_line|#endif
 singleline_comment|//awc_dump_registers(dev);
 r_if
