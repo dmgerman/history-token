@@ -461,12 +461,12 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|for_all_properties
 mdefine_line|#define for_all_properties(sym, st, tok) &bslash;&n;&t;for (st = sym-&gt;prop; st; st = st-&gt;next) &bslash;&n;&t;&t;if (st-&gt;type == (tok))
-DECL|macro|for_all_prompts
-mdefine_line|#define for_all_prompts(sym, st) for_all_properties(sym, st, P_PROMPT)
 DECL|macro|for_all_defaults
 mdefine_line|#define for_all_defaults(sym, st) for_all_properties(sym, st, P_DEFAULT)
 DECL|macro|for_all_choices
 mdefine_line|#define for_all_choices(sym, st) for_all_properties(sym, st, P_CHOICE)
+DECL|macro|for_all_prompts
+mdefine_line|#define for_all_prompts(sym, st) &bslash;&n;&t;for (st = sym-&gt;prop; st; st = st-&gt;next) &bslash;&n;&t;&t;if (st-&gt;text)
 DECL|struct|menu
 r_struct
 id|menu

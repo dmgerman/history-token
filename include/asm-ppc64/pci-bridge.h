@@ -46,6 +46,11 @@ DECL|enumerator|phb_type_speedwagon
 id|phb_type_speedwagon
 op_assign
 l_int|0x11
+comma
+DECL|enumerator|phb_type_winnipeg
+id|phb_type_winnipeg
+op_assign
+l_int|0x12
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Structure of a PCI controller (host bridge)&n; */
