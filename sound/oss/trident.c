@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt; 
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1366,7 +1367,7 @@ id|T4D_LFO_GC_CIR
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Enable Loop Interrupts, globctl = 0x%08X&bslash;n&quot;
@@ -1442,7 +1443,7 @@ id|T4D_LFO_GC_CIR
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Disabled Loop Interrupts, globctl = 0x%08X&bslash;n&quot;
@@ -1551,7 +1552,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: enabled IRQ on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1685,7 +1686,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: disabled IRQ on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1788,7 +1789,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: start voice on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1891,7 +1892,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: stop voice on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -2007,7 +2008,7 @@ id|reg
 op_amp
 id|mask
 )paren
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: channel %d has interrupt, %s = 0x%08x&bslash;n&quot;
@@ -2135,7 +2136,7 @@ id|T4D_AINT_B
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Ack channel %d interrupt, AINT_B = 0x%08x&bslash;n&quot;
@@ -3362,7 +3363,7 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: called trident_set_dac_rate : rate = %d&bslash;n&quot;
@@ -3440,7 +3441,7 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: called trident_set_adc_rate : rate = %d&bslash;n&quot;
@@ -3629,7 +3630,7 @@ id|channel-&gt;control
 op_or_assign
 id|CHANNEL_STEREO
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_play_setup, LBA = 0x%08x, &quot;
@@ -4022,11 +4023,11 @@ id|channel-&gt;control
 op_or_assign
 id|CHANNEL_STEREO
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_rec_setup, LBA = 0x%08x, &quot;
-l_string|&quot;Delat = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
+l_string|&quot;Delta = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
 comma
 id|channel-&gt;lba
 comma
@@ -4157,7 +4158,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_get_dma_addr: chip reported channel: %d, &quot;
@@ -4765,7 +4766,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: allocated %ld (order = %d) bytes at %p&bslash;n&quot;
@@ -5475,11 +5476,12 @@ id|dmabuf-&gt;ready
 op_assign
 l_int|1
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, format = %d, numfrag = %d, &quot;
-l_string|&quot;fragsize = %d dmasize = %d&bslash;n&quot;
+l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, &quot;
+l_string|&quot;format = %d, numfrag = %d, fragsize = %d &quot;
+l_string|&quot;dmasize = %d&bslash;n&quot;
 comma
 id|dmabuf-&gt;channel-&gt;num
 comma
@@ -7334,7 +7336,7 @@ id|T4D_AINT_A
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;cyber_address_interrupt: irq_status 0x%X&bslash;n&quot;
@@ -7394,7 +7396,7 @@ id|T4D_AINT_A
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;cyber_interrupt: channel %d&bslash;n&quot;
@@ -7514,7 +7516,7 @@ id|T4D_MISCINT
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_interrupt called, MISCINT = 0x%08x&bslash;n&quot;
@@ -7744,7 +7746,7 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_read called, count = %d&bslash;n&quot;
@@ -7990,7 +7992,7 @@ id|tmo
 )paren
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -8235,7 +8237,7 @@ r_int
 r_int
 id|copy_count
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_write called, count = %d&bslash;n&quot;
@@ -8511,7 +8513,7 @@ id|tmo
 )paren
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -9418,7 +9420,7 @@ op_logical_and
 id|dmabuf-&gt;mapped
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_ioctl, command = %2d, arg = 0x%08x&bslash;n&quot;
@@ -12144,7 +12146,7 @@ op_amp
 id|card-&gt;open_sem
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: open virtual channel %d, hard channel %d&bslash;n&quot;
@@ -12242,7 +12244,7 @@ id|O_NONBLOCK
 )paren
 suffix:semicolon
 )brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: closing virtual channel %d, hard channel %d&bslash;n&quot;
@@ -13150,7 +13152,7 @@ op_logical_neg
 id|block
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;accesscodecsemaphore: try unlock&bslash;n&quot;
@@ -13563,7 +13565,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ali_ac97_read :try clear busy flag&bslash;n&quot;
@@ -13886,7 +13888,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ali_ac97_set :try clear busy flag!!&bslash;n&quot;
