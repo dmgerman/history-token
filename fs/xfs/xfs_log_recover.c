@@ -14467,15 +14467,13 @@ id|tail_blk
 r_int
 id|error
 suffix:semicolon
-r_if
-c_cond
+id|ASSERT
+c_func
 (paren
 id|head_blk
-op_eq
+op_ne
 id|tail_blk
 )paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * First do a pass to find all of the cancelled buf log items.&n;&t; * Store them in the buf_cancel_table for use in the second pass.&n;&t; */
 id|log-&gt;l_buf_cancel_table
