@@ -65,6 +65,8 @@ suffix:semicolon
 )brace
 DECL|macro|atomic_add
 mdefine_line|#define atomic_add(i, v) atomic_add_return(i, v)
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(a, v)&t;(atomic_add_return((a), (v)) &lt; 0)
 DECL|function|atomic_sub_return
 r_static
 id|__inline__
