@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -268,6 +269,26 @@ id|evbug_ids
 comma
 )brace
 suffix:semicolon
+DECL|variable|evbug_intf
+r_static
+r_struct
+id|device_interface
+id|evbug_intf
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;debug&quot;
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|input_devclass
+comma
+)brace
+suffix:semicolon
 DECL|function|evbug_init
 r_int
 id|__init
@@ -277,6 +298,13 @@ c_func
 r_void
 )paren
 (brace
+id|interface_register
+c_func
+(paren
+op_amp
+id|evbug_intf
+)paren
+suffix:semicolon
 id|input_register_handler
 c_func
 (paren
@@ -302,6 +330,13 @@ c_func
 (paren
 op_amp
 id|evbug_handler
+)paren
+suffix:semicolon
+id|interface_register
+c_func
+(paren
+op_amp
+id|evbug_intf
 )paren
 suffix:semicolon
 )brace

@@ -491,20 +491,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|amiga_mksound
-c_func
-(paren
-r_int
-r_int
-id|count
-comma
-r_int
-r_int
-id|ticks
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_AMIGA_FLOPPY
 r_extern
 r_void
@@ -621,20 +607,6 @@ op_minus
 l_int|1
 comma
 )brace
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|kd_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
 suffix:semicolon
 multiline_comment|/*&n;     *  Motherboard Resources present in all Amiga models&n;     */
 r_static
@@ -1904,10 +1876,6 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
-id|kd_mksound
-op_assign
-id|amiga_mksound
-suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT
 id|mach_heartbeat
 op_assign

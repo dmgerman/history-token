@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#ifndef CONFIG_INPUT_TSDEV_SCREEN_X
 DECL|macro|CONFIG_INPUT_TSDEV_SCREEN_X
 mdefine_line|#define CONFIG_INPUT_TSDEV_SCREEN_X&t;240
@@ -1740,6 +1741,26 @@ id|tsdev_ids
 comma
 )brace
 suffix:semicolon
+DECL|variable|tsdev_intf
+r_static
+r_struct
+id|device_interface
+id|tsdev_intf
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;touchscreen&quot;
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|input_devclass
+comma
+)brace
+suffix:semicolon
 DECL|function|tsdev_init
 r_static
 r_int
@@ -1750,6 +1771,13 @@ c_func
 r_void
 )paren
 (brace
+id|interface_register
+c_func
+(paren
+op_amp
+id|tsdev_intf
+)paren
+suffix:semicolon
 id|input_register_handler
 c_func
 (paren
@@ -1783,6 +1811,13 @@ c_func
 (paren
 op_amp
 id|tsdev_handler
+)paren
+suffix:semicolon
+id|interface_unregister
+c_func
+(paren
+op_amp
+id|tsdev_intf
 )paren
 suffix:semicolon
 )brace
