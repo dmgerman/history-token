@@ -4188,6 +4188,25 @@ op_star
 id|hwif
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+id|hwif-&gt;pci_dev
+suffix:semicolon
+multiline_comment|/* PDC20265 has problems with large LBA48 requests */
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_PROMISE_20265
+)paren
+id|hwif-&gt;rqsize
+op_assign
+l_int|256
+suffix:semicolon
 id|hwif-&gt;autodma
 op_assign
 l_int|0
