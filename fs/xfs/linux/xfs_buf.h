@@ -934,7 +934,7 @@ multiline_comment|/* buffer to check&t;&t;*/
 multiline_comment|/* Delayed Write Buffer Routines */
 r_extern
 r_void
-id|xfs_buf_delwri_flush
+id|pagebuf_delwri_flush
 c_func
 (paren
 id|xfs_buftarg_t
@@ -948,19 +948,13 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|xfs_buf_delwri_dequeue
+id|pagebuf_delwri_dequeue
 c_func
 (paren
 id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
-id|xfs_buftarg_t
-op_star
-comma
-r_int
-r_int
-comma
 multiline_comment|/* Buffer Daemon Setup Routines */
 r_extern
 r_int

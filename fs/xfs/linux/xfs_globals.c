@@ -15,7 +15,7 @@ id|xfs_param_t
 id|xfs_params
 op_assign
 (brace
-multiline_comment|/*&t;MIN&t;DFLT&t;MAX&t;*/
+multiline_comment|/*&t;MIN&t;&t;DFLT&t;&t;MAX&t;*/
 dot
 id|restrict_chown
 op_assign
