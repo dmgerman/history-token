@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#ifdef CONFIG_IA64
 macro_line|# include &lt;linux/efi.h&gt;
 macro_line|#endif

@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|macro|SREGS_PAD
 mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;
