@@ -239,7 +239,14 @@ id|xfs_bmbt_rec_32
 op_star
 id|ili_extents_buf
 suffix:semicolon
-multiline_comment|/* array of logged exts */
+multiline_comment|/* array of logged&n;&t;&t;&t;&t;&t;&t;      data exts */
+DECL|member|ili_aextents_buf
+r_struct
+id|xfs_bmbt_rec_32
+op_star
+id|ili_aextents_buf
+suffix:semicolon
+multiline_comment|/* array of logged&n;&t;&t;&t;&t;&t;&t;      attr exts */
 DECL|member|ili_pushbuf_flag
 r_int
 r_int

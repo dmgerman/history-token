@@ -1531,7 +1531,7 @@ c_func
 id|xfs_inode_t
 op_star
 comma
-id|xfs_bmbt_rec_32_t
+id|xfs_bmbt_rec_t
 op_star
 comma
 r_int

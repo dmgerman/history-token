@@ -11322,7 +11322,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|xfs_bmbt_get_all
+id|xfs_bmbt_disk_get_all
 c_func
 (paren
 (paren
