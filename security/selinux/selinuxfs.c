@@ -13,6 +13,15 @@ macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
 macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;objsec.h&quot;
+r_extern
+r_void
+id|selnl_notify_setenforce
+c_func
+(paren
+r_int
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/* Check whether a task is allowed to use a security operation. */
 DECL|function|task_has_security
 r_int
@@ -488,6 +497,12 @@ id|avc_ss_reset
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|selnl_notify_setenforce
+c_func
+(paren
+id|selinux_enforcing
 )paren
 suffix:semicolon
 )brace
