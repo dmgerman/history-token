@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 DECL|macro|ULTRASTOR_PRIVATE
 mdefine_line|#define ULTRASTOR_PRIVATE&t;/* Get the private stuff from ultrastor.h */
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;ultrastor.h&quot;
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 macro_line|#include &quot;NCR_D700.h&quot;
 DECL|variable|NCR_D700

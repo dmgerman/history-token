@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* Core SCSI definitions */
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;aiclib.h&quot;
 macro_line|#include &quot;cam.h&quot;
 macro_line|#ifndef FALSE

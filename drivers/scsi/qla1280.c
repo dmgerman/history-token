@@ -36,7 +36,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#else
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020407

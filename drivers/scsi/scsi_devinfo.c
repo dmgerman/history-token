@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
 DECL|struct|scsi_dev_info_list

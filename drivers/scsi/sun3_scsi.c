@@ -25,7 +25,7 @@ multiline_comment|/* dma on! */
 DECL|macro|REAL_DMA
 mdefine_line|#define REAL_DMA
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;sun3_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
 r_static

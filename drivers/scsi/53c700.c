@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;53c700.h&quot;

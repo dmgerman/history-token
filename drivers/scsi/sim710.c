@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 multiline_comment|/* Must be enough for both EISA and MCA */
 DECL|macro|MAX_SLOTS

@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;qlogicfas408.h&quot;
 multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n; * tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n; * drain&n; */
 DECL|macro|INT_TYPE

@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 DECL|macro|IDESCSI_DEBUG_LOG
 mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0

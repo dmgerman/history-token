@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;ibmmca.h&quot;
 multiline_comment|/* current version of this driver-source: */
 DECL|macro|IBMMCA_SCSI_DRIVER_VERSION

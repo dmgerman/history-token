@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;   
+macro_line|#include &lt;scsi/scsi_host.h&gt;   
 singleline_comment|// struct Scsi_Host definition for T handler
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;

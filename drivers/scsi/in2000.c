@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|IN2000_VERSION
 mdefine_line|#define IN2000_VERSION    &quot;1.33-2.5&quot;
 DECL|macro|IN2000_DATE

@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;sym53c416.h&quot;
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 1.0.0-ac&quot;

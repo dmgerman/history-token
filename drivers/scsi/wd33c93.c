@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;wd33c93.h&quot;
 DECL|macro|WD33C93_VERSION
 mdefine_line|#define WD33C93_VERSION    &quot;1.26&quot;
