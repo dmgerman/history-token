@@ -1945,7 +1945,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Flag internal command */
 id|tw_dev-&gt;state
@@ -9818,7 +9818,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|tw_decode_sense
@@ -9868,7 +9868,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -9904,7 +9904,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dprintk
