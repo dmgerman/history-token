@@ -3099,6 +3099,13 @@ id|iocb-&gt;ki_pos
 )paren
 suffix:semicolon
 )brace
+DECL|variable|generic_file_aio_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_aio_read
+)paren
+suffix:semicolon
 id|ssize_t
 DECL|function|generic_file_read
 id|generic_file_read
@@ -6434,6 +6441,13 @@ id|iocb-&gt;ki_pos
 )paren
 suffix:semicolon
 )brace
+DECL|variable|generic_file_aio_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_aio_write
+)paren
+suffix:semicolon
 DECL|function|generic_file_write
 id|ssize_t
 id|generic_file_write
