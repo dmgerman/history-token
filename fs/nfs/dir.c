@@ -2496,6 +2496,9 @@ id|out_bad
 suffix:semicolon
 )brace
 multiline_comment|/* Revalidate parent directory attribute cache */
+r_if
+c_cond
+(paren
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -2507,6 +2510,11 @@ id|dir
 comma
 id|dir
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|out_zap_parent
 suffix:semicolon
 multiline_comment|/* Force a full look up iff the parent directory has changed */
 r_if
@@ -3054,6 +3062,8 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Revalidate parent directory attribute cache */
+id|error
+op_assign
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -3066,6 +3076,26 @@ comma
 id|dir
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+OL
+l_int|0
+)paren
+(brace
+id|res
+op_assign
+id|ERR_PTR
+c_func
+(paren
+id|error
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 multiline_comment|/* If we&squot;re doing an exclusive create, optimize away the lookup */
 r_if
 c_cond
@@ -3383,6 +3413,9 @@ id|inode
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
 multiline_comment|/* Check that we are indeed trying to open this file */
 r_if
 c_cond
@@ -3454,6 +3487,8 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Revalidate parent directory attribute cache */
+id|error
+op_assign
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -3466,6 +3501,26 @@ comma
 id|dir
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+OL
+l_int|0
+)paren
+(brace
+id|res
+op_assign
+id|ERR_PTR
+c_func
+(paren
+id|error
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3527,7 +3582,6 @@ id|inode
 )paren
 )paren
 (brace
-r_int
 id|error
 op_assign
 id|PTR_ERR
@@ -6912,6 +6966,8 @@ id|res
 suffix:semicolon
 id|out_notsup
 suffix:colon
+id|res
+op_assign
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -6924,6 +6980,13 @@ comma
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+op_eq
+l_int|0
+)paren
 id|res
 op_assign
 id|generic_permission
