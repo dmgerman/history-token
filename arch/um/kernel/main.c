@@ -1,6 +1,6 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;unistd.h&gt;
-macro_line|#include &lt;stdio.h&gt; 
+macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;signal.h&gt;
@@ -18,7 +18,7 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
-multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.  &n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
+multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.&n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int
 r_int
@@ -277,7 +277,7 @@ id|ret
 comma
 id|i
 suffix:semicolon
-multiline_comment|/* Enable all signals except SIGIO - in some environments, we can &n;&t; * enter with some signals blocked&n;&t; */
+multiline_comment|/* Enable all signals except SIGIO - in some environments, we can&n;&t; * enter with some signals blocked&n;&t; */
 id|sigemptyset
 c_func
 (paren
