@@ -2468,11 +2468,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pci_fix_bus_sysdata
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pci_addr_cache_build
 c_func
 (paren
