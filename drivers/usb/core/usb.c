@@ -2338,7 +2338,7 @@ suffix:semicolon
 DECL|variable|usb_config_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|usb_config_entry
 op_assign
 (brace
@@ -2415,7 +2415,7 @@ suffix:semicolon
 DECL|variable|usb_altsetting_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|usb_altsetting_entry
 op_assign
 (brace
@@ -2520,7 +2520,7 @@ suffix:semicolon
 DECL|variable|usb_product_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|usb_product_entry
 op_assign
 (brace
@@ -2625,7 +2625,7 @@ suffix:semicolon
 DECL|variable|usb_manufacturer_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|usb_manufacturer_entry
 op_assign
 (brace
@@ -2730,7 +2730,7 @@ suffix:semicolon
 DECL|variable|usb_serial_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|usb_serial_entry
 op_assign
 (brace

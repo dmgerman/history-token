@@ -1579,7 +1579,7 @@ suffix:semicolon
 DECL|variable|scsi_device_type_file
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|scsi_device_type_file
 op_assign
 (brace

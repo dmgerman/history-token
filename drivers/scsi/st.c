@@ -18589,7 +18589,7 @@ suffix:semicolon
 DECL|variable|st_device_kdev_file
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|st_device_kdev_file
 op_assign
 (brace
@@ -18646,7 +18646,7 @@ suffix:semicolon
 DECL|variable|st_device_type_file
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|st_device_type_file
 op_assign
 (brace

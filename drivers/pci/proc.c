@@ -1694,7 +1694,7 @@ suffix:semicolon
 DECL|variable|pci_irq_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|pci_irq_entry
 op_assign
 (brace
@@ -1883,7 +1883,7 @@ suffix:semicolon
 DECL|variable|pci_resource_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|pci_resource_entry
 op_assign
 (brace
