@@ -32,6 +32,8 @@ id|sparc_phys_banks
 id|sp_banks
 (braket
 id|SPARC_PHYS_BANKS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_extern
@@ -176,7 +178,7 @@ r_if
 c_cond
 (paren
 id|i
-op_ge
+OG
 id|SPARC_PHYS_BANKS
 op_minus
 l_int|1

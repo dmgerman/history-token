@@ -2034,7 +2034,7 @@ id|pfn_to_page
 c_func
 (paren
 (paren
-id|pte_val
+id|iopte_val
 c_func
 (paren
 op_star

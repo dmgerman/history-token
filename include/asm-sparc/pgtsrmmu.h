@@ -104,6 +104,19 @@ mdefine_line|#define SRMMU_FAULT_ADDR         0x00000400
 DECL|macro|WINDOW_FLUSH
 mdefine_line|#define WINDOW_FLUSH(tmp1, tmp2)&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;0, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;98:&t;ld&t;[%g6 + TI_UWINMASK], tmp2;&t;&t;&t;&t;&bslash;&n;&t;orcc&t;%g0, tmp2, %g0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;98b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; save&t;%sp, -64, %sp;&t;&t;&t;&t;&t;&t;&bslash;&n;99:&t;subcc&t;tmp1, 1, tmp1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bne&t;99b;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; restore %g0, %g0, %g0;
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/* This makes sense. Honest it does - Anton */
+multiline_comment|/* XXX Yes but it&squot;s ugly as sin.  FIXME. -KMW */
+r_extern
+r_void
+op_star
+id|srmmu_nocache_pool
+suffix:semicolon
+DECL|macro|__nocache_pa
+mdefine_line|#define __nocache_pa(VADDR) (((unsigned long)VADDR) - SRMMU_NOCACHE_VADDR + __pa((unsigned long)srmmu_nocache_pool))
+DECL|macro|__nocache_va
+mdefine_line|#define __nocache_va(PADDR) (__va((unsigned long)PADDR) - (unsigned long)srmmu_nocache_pool + SRMMU_NOCACHE_VADDR)
+DECL|macro|__nocache_fix
+mdefine_line|#define __nocache_fix(VADDR) __va(__nocache_pa(VADDR))
 multiline_comment|/* Accessing the MMU control register. */
 DECL|function|srmmu_get_mmureg
 r_extern

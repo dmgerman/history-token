@@ -9,6 +9,11 @@ mdefine_line|#define SRMMU_MAXMEM&t;&t;0x0c000000
 DECL|macro|SRMMU_NOCACHE_VADDR
 mdefine_line|#define SRMMU_NOCACHE_VADDR&t;(KERNBASE + SRMMU_MAXMEM)
 multiline_comment|/* = 0x0fc000000 */
+multiline_comment|/* XXX Empiricals - this needs to go away - KMW */
+DECL|macro|SRMMU_MIN_NOCACHE_PAGES
+mdefine_line|#define SRMMU_MIN_NOCACHE_PAGES (550)
+DECL|macro|SRMMU_MAX_NOCACHE_PAGES
+mdefine_line|#define SRMMU_MAX_NOCACHE_PAGES&t;(1280)
 multiline_comment|/* The following constant is used in mm/srmmu.c::srmmu_nocache_calcsize()&n; * to determine the amount of memory that will be reserved as nocache:&n; *&n; * 256 pages will be taken as nocache per each&n; * SRMMU_NOCACHE_ALCRATIO MB of system memory.&n; *&n; * limits enforced:&t;nocache minimum = 256 pages&n; *&t;&t;&t;nocache maximum = 1280 pages&n; */
 DECL|macro|SRMMU_NOCACHE_ALCRATIO
 mdefine_line|#define SRMMU_NOCACHE_ALCRATIO&t;64&t;/* 256 pages per 64MB of system RAM */

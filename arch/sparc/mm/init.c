@@ -54,6 +54,8 @@ id|sparc_phys_banks
 id|sp_banks
 (braket
 id|SPARC_PHYS_BANKS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|variable|sparc_unmapped_base
@@ -123,19 +125,8 @@ c_func
 id|kmap_pte
 )paren
 suffix:semicolon
-multiline_comment|/* These are set in {srmmu,sun4c}_paging_init() */
-DECL|variable|fix_kmap_begin
-r_int
-r_int
-id|fix_kmap_begin
-suffix:semicolon
-DECL|variable|fix_kmap_end
-r_int
-r_int
-id|fix_kmap_end
-suffix:semicolon
-DECL|macro|kmap_get_fixed_pte
-mdefine_line|#define kmap_get_fixed_pte(vaddr) &bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
+DECL|macro|kmap_get_fixmap_pte
+mdefine_line|#define kmap_get_fixmap_pte(vaddr) &bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
 DECL|function|kmap_init
 r_void
 id|__init
@@ -148,10 +139,14 @@ r_void
 multiline_comment|/* cache the first kmap pte */
 id|kmap_pte
 op_assign
-id|kmap_get_fixed_pte
+id|kmap_get_fixmap_pte
 c_func
 (paren
-id|fix_kmap_begin
+id|__fix_to_virt
+c_func
+(paren
+id|FIX_KMAP_BEGIN
+)paren
 )paren
 suffix:semicolon
 id|kmap_prot
@@ -1616,7 +1611,7 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
-macro_line|#ifdef DEBUG_HIGHMEM
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 id|printk
 c_func
 (paren
@@ -1648,9 +1643,11 @@ id|page
 op_star
 id|page
 op_assign
-id|mem_map
-op_plus
+id|pfn_to_page
+c_func
+(paren
 id|tmp
+)paren
 suffix:semicolon
 id|ClearPageReserved
 c_func
@@ -1716,10 +1713,62 @@ id|i
 suffix:semicolon
 id|highmem_start_page
 op_assign
-id|mem_map
-op_plus
+id|pfn_to_page
+c_func
+(paren
 id|highstart_pfn
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|PKMAP_BASE
+op_plus
+id|LAST_PKMAP
+op_star
+id|PAGE_SIZE
+op_ge
+id|FIXADDR_START
+)paren
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;BUG: fixmap and pkmap areas overlap&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_printf
+c_func
+(paren
+l_string|&quot;pkbase: 0x%lx pkend: 0x%lx fixstart 0x%lx&bslash;n&quot;
+comma
+id|PKMAP_BASE
+comma
+(paren
+r_int
+r_int
+)paren
+id|PKMAP_BASE
+op_plus
+id|LAST_PKMAP
+op_star
+id|PAGE_SIZE
+comma
+id|FIXADDR_START
+)paren
+suffix:semicolon
+id|prom_printf
+c_func
+(paren
+l_string|&quot;Please mail sparclinux@vger.kernel.org.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Saves us work later. */
 id|memset
 c_func
