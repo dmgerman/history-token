@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
@@ -1393,6 +1394,13 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+DECL|variable|acpi_register_gsi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_register_gsi
+)paren
+suffix:semicolon
 r_static
 r_int
 r_int
