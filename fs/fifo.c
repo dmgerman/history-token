@@ -105,11 +105,6 @@ op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -462,11 +457,6 @@ id|inode
 )paren
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -601,11 +591,6 @@ id|inode
 suffix:semicolon
 id|err_nolock_nocleanup
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
