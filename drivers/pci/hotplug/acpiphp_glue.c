@@ -4757,6 +4757,12 @@ comma
 id|id
 )paren
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
