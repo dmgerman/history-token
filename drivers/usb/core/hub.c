@@ -5425,6 +5425,7 @@ id|status
 )paren
 suffix:semicolon
 r_else
+(brace
 id|status
 op_assign
 id|hub_port_wait_reset
@@ -5439,6 +5440,22 @@ comma
 id|delay
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|dev_dbg
+c_func
+(paren
+id|hub-&gt;intfdev
+comma
+l_string|&quot;port_wait_reset: err = %d&bslash;n&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* return on disconnect or reset */
 r_switch
 c_cond
@@ -6105,6 +6122,16 @@ id|status
 op_eq
 l_int|0
 )paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;usb suspend&bslash;n&quot;
+)paren
+suffix:semicolon
 id|usb_set_device_state
 c_func
 (paren
@@ -6113,6 +6140,7 @@ comma
 id|USB_STATE_SUSPENDED
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|status
@@ -6798,6 +6826,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;usb resume&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* TRSMRCY = 10 msec */
 id|msleep
 c_func
@@ -6811,6 +6848,10 @@ id|udev
 comma
 id|USB_STATE_CONFIGURED
 )paren
+suffix:semicolon
+id|udev-&gt;dev.power.power_state
+op_assign
+id|PMSG_ON
 suffix:semicolon
 id|status
 op_assign
