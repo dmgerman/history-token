@@ -81,12 +81,14 @@ comma
 l_string|&quot;osd&quot;
 )brace
 suffix:semicolon
+DECL|macro|DVB_MAX_ADAPTERS
+mdefine_line|#define DVB_MAX_ADAPTERS&t;8
 DECL|macro|DVB_MAX_IDS
-mdefine_line|#define DVB_MAX_IDS              6
+mdefine_line|#define DVB_MAX_IDS&t;&t;4
 DECL|macro|nums2minor
-mdefine_line|#define nums2minor(num,type,id)  ((num &lt;&lt; 6) | (id &lt;&lt; 4) | type)
+mdefine_line|#define nums2minor(num,type,id)&t;((num &lt;&lt; 6) | (id &lt;&lt; 4) | type)
 DECL|macro|MAX_DVB_MINORS
-mdefine_line|#define MAX_DVB_MINORS           (DVB_MAX_IDS*64)
+mdefine_line|#define MAX_DVB_MINORS&t;&t;(DVB_MAX_ADAPTERS*64)
 DECL|variable|dvb_class
 r_struct
 id|class_simple
@@ -1071,7 +1073,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
+id|num
+OL
+id|DVB_MAX_ADAPTERS
 )paren
 (brace
 r_struct
