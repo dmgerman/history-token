@@ -306,11 +306,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Interface functions */
 r_static
 id|u8
-DECL|function|ReadISAC
-id|ReadISAC
+DECL|function|isac_read
+id|isac_read
 c_func
 (paren
 r_struct
@@ -336,8 +335,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|WriteISAC
-id|WriteISAC
+DECL|function|isac_write
+id|isac_write
 c_func
 (paren
 r_struct
@@ -367,8 +366,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|ReadISACfifo
-id|ReadISACfifo
+DECL|function|isac_read_fifo
+id|isac_read_fifo
 c_func
 (paren
 r_struct
@@ -401,8 +400,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|WriteISACfifo
-id|WriteISACfifo
+DECL|function|isac_write_fifo
+id|isac_write_fifo
 c_func
 (paren
 r_struct
@@ -443,22 +442,22 @@ op_assign
 dot
 id|read_reg
 op_assign
-id|ReadISAC
+id|isac_read
 comma
 dot
 id|write_reg
 op_assign
-id|WriteISAC
+id|isac_write
 comma
 dot
 id|read_fifo
 op_assign
-id|ReadISACfifo
+id|isac_read_fifo
 comma
 dot
 id|write_fifo
 op_assign
-id|WriteISACfifo
+id|isac_write_fifo
 comma
 )brace
 suffix:semicolon
@@ -864,7 +863,7 @@ id|cs
 )paren
 (brace
 multiline_comment|/* 5 sec WatchDog, so read at least every 4 sec */
-id|ReadISAC
+id|isac_read
 c_func
 (paren
 id|cs

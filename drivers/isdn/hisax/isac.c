@@ -28,6 +28,134 @@ comma
 l_string|&quot;2085 V2.3&quot;
 )brace
 suffix:semicolon
+r_static
+r_inline
+id|u8
+DECL|function|isac_read
+id|isac_read
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+id|u8
+id|addr
+)paren
+(brace
+r_return
+id|cs-&gt;dc_hw_ops
+op_member_access_from_pointer
+id|read_reg
+c_func
+(paren
+id|cs
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isac_write
+id|isac_write
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+id|u8
+id|addr
+comma
+id|u8
+id|val
+)paren
+(brace
+id|cs-&gt;dc_hw_ops
+op_member_access_from_pointer
+id|write_reg
+c_func
+(paren
+id|cs
+comma
+id|addr
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isac_read_fifo
+id|isac_read_fifo
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+id|u8
+op_star
+id|p
+comma
+r_int
+id|len
+)paren
+(brace
+r_return
+id|cs-&gt;dc_hw_ops
+op_member_access_from_pointer
+id|read_fifo
+c_func
+(paren
+id|cs
+comma
+id|p
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isac_write_fifo
+id|isac_write_fifo
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+id|u8
+op_star
+id|p
+comma
+r_int
+id|len
+)paren
+(brace
+r_return
+id|cs-&gt;dc_hw_ops
+op_member_access_from_pointer
+id|write_fifo
+c_func
+(paren
+id|cs
+comma
+id|p
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|ISACVersion
 id|ISACVersion
@@ -48,7 +176,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -112,7 +240,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -594,7 +722,7 @@ op_plus
 id|count
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -631,7 +759,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -743,7 +871,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -872,7 +1000,7 @@ l_int|0x80
 multiline_comment|/* RME */
 id|exval
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -953,7 +1081,7 @@ op_increment
 suffix:semicolon
 macro_line|#endif
 )brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -968,7 +1096,7 @@ r_else
 (brace
 id|count
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1150,7 +1278,7 @@ l_int|0x04
 multiline_comment|/* CISQ */
 id|exval
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1229,7 +1357,7 @@ l_int|1
 (brace
 id|exval
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1293,7 +1421,7 @@ l_int|0x01
 multiline_comment|/* EXI */
 id|exval
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1372,7 +1500,7 @@ l_int|0x04
 multiline_comment|/* MOS */
 id|v1
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1453,7 +1581,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x0a
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1489,7 +1617,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x0a
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1528,7 +1656,7 @@ id|cs-&gt;dc.isac.mon_rxp
 op_increment
 )braket
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1570,7 +1698,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x04
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1639,7 +1767,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1675,7 +1803,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1714,7 +1842,7 @@ id|cs-&gt;dc.isac.mon_rxp
 op_increment
 )braket
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -1748,7 +1876,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x40
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1773,7 +1901,7 @@ id|cs-&gt;dc.isac.mocr
 op_and_assign
 l_int|0xf0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1787,7 +1915,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x0a
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1818,7 +1946,7 @@ id|cs-&gt;dc.isac.mocr
 op_and_assign
 l_int|0x0f
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1832,7 +1960,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1889,7 +2017,7 @@ id|cs-&gt;dc.isac.mocr
 op_and_assign
 l_int|0xf0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1903,7 +2031,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x0a
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -1960,7 +2088,7 @@ r_goto
 id|AfterMOX0
 suffix:semicolon
 )brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2037,7 +2165,7 @@ id|cs-&gt;dc.isac.mocr
 op_and_assign
 l_int|0x0f
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2051,7 +2179,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2108,7 +2236,7 @@ r_goto
 id|AfterMOX1
 suffix:semicolon
 )brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2389,7 +2517,7 @@ op_logical_neg
 id|val
 )paren
 (brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2399,7 +2527,7 @@ comma
 l_int|0xa
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2412,7 +2540,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2422,7 +2550,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2437,7 +2565,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* IOM 2 Mode */
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2452,7 +2580,7 @@ c_cond
 (paren
 id|val
 )paren
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2463,7 +2591,7 @@ l_int|0x8
 )paren
 suffix:semicolon
 r_else
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2684,7 +2812,7 @@ id|cs-&gt;HW_Flags
 (brace
 id|rbch
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2694,7 +2822,7 @@ id|ISAC_RBCH
 suffix:semicolon
 id|star
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2818,7 +2946,7 @@ l_string|&quot;D-Channel Busy no skb&quot;
 )paren
 suffix:semicolon
 )brace
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -2863,7 +2991,7 @@ id|eval
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2883,7 +3011,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2903,7 +3031,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2923,7 +3051,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2951,7 +3079,7 @@ l_int|0x01
 (brace
 id|eval
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -2971,7 +3099,7 @@ id|eval
 suffix:semicolon
 )brace
 multiline_comment|/* Disable all IRQ */
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3034,7 +3162,7 @@ op_amp
 id|cs-&gt;dbusytimer
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3062,7 +3190,7 @@ id|cs-&gt;HW_Flags
 )paren
 (brace
 multiline_comment|/* IOM 1 Mode */
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3072,7 +3200,7 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3082,7 +3210,7 @@ comma
 l_int|0xa
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3092,7 +3220,7 @@ comma
 l_int|0x2
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3102,7 +3230,7 @@ comma
 l_int|0x70
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3126,7 +3254,7 @@ id|cs-&gt;dc.isac.adf2
 op_assign
 l_int|0x80
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3136,7 +3264,7 @@ comma
 id|cs-&gt;dc.isac.adf2
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3146,7 +3274,7 @@ comma
 l_int|0x2f
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3156,7 +3284,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3166,7 +3294,7 @@ comma
 l_int|0x70
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3176,7 +3304,7 @@ comma
 l_int|0xc9
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3186,7 +3314,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3205,7 +3333,7 @@ comma
 id|ISAC_CMD_RS
 )paren
 suffix:semicolon
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
@@ -3217,7 +3345,7 @@ l_int|0x0
 suffix:semicolon
 id|val
 op_assign
-id|isac_read_reg
+id|isac_read
 c_func
 (paren
 id|cs
@@ -3254,7 +3382,7 @@ id|D_L1STATECHANGE
 )paren
 suffix:semicolon
 multiline_comment|/* RESET Receiver and Transmitter */
-id|isac_write_reg
+id|isac_write
 c_func
 (paren
 id|cs
