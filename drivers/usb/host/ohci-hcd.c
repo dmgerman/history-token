@@ -1914,6 +1914,12 @@ id|ohci_mem_cleanup
 id|ohci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;hcca
+)paren
+(brace
 id|pci_free_consistent
 (paren
 id|ohci-&gt;hcd.pdev
@@ -1927,6 +1933,15 @@ comma
 id|ohci-&gt;hcca_dma
 )paren
 suffix:semicolon
+id|ohci-&gt;hcca
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ohci-&gt;hcca_dma
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 singleline_comment|// FIXME:  this restart logic should be generic,
