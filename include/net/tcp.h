@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
@@ -1531,15 +1532,14 @@ r_struct
 id|proto
 id|tcp_prot
 suffix:semicolon
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|tcp_mib
+comma
 id|tcp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|TCP_INC_STATS
 mdefine_line|#define TCP_INC_STATS(field)&t;&t;SNMP_INC_STATS(tcp_statistics, field)
@@ -1547,6 +1547,8 @@ DECL|macro|TCP_INC_STATS_BH
 mdefine_line|#define TCP_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(tcp_statistics, field)
 DECL|macro|TCP_INC_STATS_USER
 mdefine_line|#define TCP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(tcp_statistics, field)
+DECL|macro|TCP_DEC_STATS
+mdefine_line|#define TCP_DEC_STATS(field)&t;&t;SNMP_DEC_STATS(tcp_statistics, field)
 r_extern
 r_void
 id|tcp_put_port
@@ -4884,24 +4886,11 @@ id|oldstate
 op_eq
 id|TCP_ESTABLISHED
 )paren
-id|tcp_statistics
-(braket
-id|smp_processor_id
+id|TCP_DEC_STATS
 c_func
 (paren
-)paren
-op_star
-l_int|2
-op_plus
-op_logical_neg
-id|in_softirq
-c_func
-(paren
-)paren
-)braket
-dot
 id|TcpCurrEstab
-op_decrement
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Change state AFTER socket is unhashed to avoid closed&n;&t; * socket sitting in hash tables.&n;&t; */

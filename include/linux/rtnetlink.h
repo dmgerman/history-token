@@ -14,6 +14,8 @@ DECL|macro|RTM_DELLINK
 mdefine_line|#define&t;RTM_DELLINK&t;(RTM_BASE+1)
 DECL|macro|RTM_GETLINK
 mdefine_line|#define&t;RTM_GETLINK&t;(RTM_BASE+2)
+DECL|macro|RTM_SETLINK
+mdefine_line|#define&t;RTM_SETLINK&t;(RTM_BASE+3)
 DECL|macro|RTM_NEWADDR
 mdefine_line|#define&t;RTM_NEWADDR&t;(RTM_BASE+4)
 DECL|macro|RTM_DELADDR

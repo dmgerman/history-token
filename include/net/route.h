@@ -199,10 +199,16 @@ r_int
 r_int
 id|gc_dst_overflow
 suffix:semicolon
-DECL|variable|____cacheline_aligned_in_smp
 )brace
-id|____cacheline_aligned_in_smp
 suffix:semicolon
+r_extern
+r_struct
+id|rt_cache_stat
+op_star
+id|rt_cache_stat
+suffix:semicolon
+DECL|macro|RT_CACHE_STAT_INC
+mdefine_line|#define RT_CACHE_STAT_INC(field)&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;(per_cpu_ptr(rt_cache_stat, smp_processor_id())-&gt;field++)
 r_extern
 r_struct
 id|ip_rt_acct

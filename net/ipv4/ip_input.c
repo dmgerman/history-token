@@ -27,15 +27,14 @@ macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 multiline_comment|/*&n; *&t;SNMP management statistics&n; */
-DECL|variable|ip_statistics
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|ip_mib
+comma
 id|ip_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Process Router Attention IP option&n; */
 DECL|function|ip_call_ra_chain

@@ -585,15 +585,14 @@ r_struct
 id|ipv4_config
 id|ipv4_config
 suffix:semicolon
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|ip_mib
+comma
 id|ip_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|IP_INC_STATS
 mdefine_line|#define IP_INC_STATS(field)&t;&t;SNMP_INC_STATS(ip_statistics, field)
@@ -601,15 +600,14 @@ DECL|macro|IP_INC_STATS_BH
 mdefine_line|#define IP_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(ip_statistics, field)
 DECL|macro|IP_INC_STATS_USER
 mdefine_line|#define IP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(ip_statistics, field)
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|linux_mib
+comma
 id|net_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|NET_INC_STATS
 mdefine_line|#define NET_INC_STATS(field)&t;&t;SNMP_INC_STATS(net_statistics, field)
@@ -617,6 +615,10 @@ DECL|macro|NET_INC_STATS_BH
 mdefine_line|#define NET_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(net_statistics, field)
 DECL|macro|NET_INC_STATS_USER
 mdefine_line|#define NET_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(net_statistics, field)
+DECL|macro|NET_ADD_STATS_BH
+mdefine_line|#define NET_ADD_STATS_BH(field, adnd)&t;SNMP_ADD_STATS_BH(net_statistics, field, adnd)
+DECL|macro|NET_ADD_STATS_USER
+mdefine_line|#define NET_ADD_STATS_USER(field, adnd)&t;SNMP_ADD_STATS_USER(net_statistics, field, adnd)
 r_extern
 r_int
 id|sysctl_local_port_range
