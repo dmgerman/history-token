@@ -2514,18 +2514,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-DECL|member|ide_dma_verbose
-r_int
-(paren
-op_star
-id|ide_dma_verbose
-)paren
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 DECL|member|ide_dma_lostirq
 r_int
 (paren
@@ -2949,6 +2937,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* supports nop auto-poll */
+DECL|member|sg_mapped
+r_int
+id|sg_mapped
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* sg_table and sg_nents are ready */
 DECL|member|gendev
 r_struct
 id|device
@@ -5208,23 +5203,18 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
-r_extern
-r_int
-id|ide_build_sglist
+r_void
+id|ide_dma_verbose
 c_func
 (paren
 id|ide_drive_t
 op_star
-comma
-r_struct
-id|request
-op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 r_extern
 r_int
-id|ide_raw_build_sglist
+id|ide_build_sglist
 c_func
 (paren
 id|ide_drive_t
@@ -5373,15 +5363,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__ide_dma_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|__ide_dma_lostirq
 c_func
 (paren
@@ -5414,6 +5395,20 @@ id|drive
 (brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|ide_dma_verbose
+r_static
+r_inline
+r_void
+id|ide_dma_verbose
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
