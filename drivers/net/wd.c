@@ -431,6 +431,12 @@ comma
 id|WD_IO_EXTENT
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|ei_status.mem
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|wd_probe
@@ -1538,14 +1544,6 @@ op_plus
 id|TX_PAGES
 suffix:semicolon
 multiline_comment|/* Don&squot;t map in the shared memory until the board is actually opened. */
-id|ei_status.rmem_start
-op_assign
-id|dev-&gt;mem_start
-op_plus
-id|TX_PAGES
-op_star
-l_int|256
-suffix:semicolon
 multiline_comment|/* Some cards (eg WD8003EBT) can be jumpered for more (32k!) memory. */
 r_if
 c_cond
@@ -1564,6 +1562,12 @@ id|dev-&gt;mem_start
 )paren
 op_div
 l_int|256
+suffix:semicolon
+id|ei_status.priv
+op_assign
+id|dev-&gt;mem_end
+op_minus
+id|dev-&gt;mem_start
 suffix:semicolon
 )brace
 r_else
@@ -1589,11 +1593,47 @@ id|WD_START_PG
 op_star
 l_int|256
 suffix:semicolon
-)brace
-id|ei_status.rmem_end
+id|ei_status.priv
 op_assign
-id|dev-&gt;mem_end
+(paren
+id|ei_status.stop_page
+op_minus
+id|WD_START_PG
+)paren
+op_star
+l_int|256
 suffix:semicolon
+)brace
+id|ei_status.mem
+op_assign
+id|ioremap
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+id|ei_status.priv
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ei_status.mem
+)paren
+(brace
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -1914,11 +1954,12 @@ op_minus
 id|WD_NIC_OFFSET
 suffix:semicolon
 multiline_comment|/* WD_CMDREG */
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|hdr_start
 op_assign
-id|dev-&gt;mem_start
+id|ei_status.mem
 op_plus
 (paren
 (paren
@@ -1951,7 +1992,7 @@ suffix:semicolon
 macro_line|#ifdef __BIG_ENDIAN
 multiline_comment|/* Officially this is what we are doing, but the readl() is faster */
 multiline_comment|/* unfortunately it isn&squot;t endian aware of the struct               */
-id|isa_memcpy_fromio
+id|memcpy_fromio
 c_func
 (paren
 id|hdr
@@ -1986,7 +2027,7 @@ id|hdr
 l_int|0
 )braket
 op_assign
-id|isa_readl
+id|readl
 c_func
 (paren
 id|hdr_start
@@ -2028,10 +2069,8 @@ suffix:semicolon
 multiline_comment|/* WD_CMDREG */
 r_int
 r_int
-id|xfer_start
+id|offset
 op_assign
-id|dev-&gt;mem_start
-op_plus
 id|ring_offset
 op_minus
 (paren
@@ -2040,25 +2079,34 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|xfer_start
+op_assign
+id|ei_status.mem
+op_plus
+id|offset
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|xfer_start
+id|offset
 op_plus
 id|count
 OG
-id|ei_status.rmem_end
+id|ei_status.priv
 )paren
 (brace
 multiline_comment|/* We must wrap the input move. */
 r_int
 id|semi_count
 op_assign
-id|ei_status.rmem_end
+id|ei_status.priv
 op_minus
-id|xfer_start
+id|offset
 suffix:semicolon
-id|isa_memcpy_fromio
+id|memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -2072,14 +2120,18 @@ id|count
 op_sub_assign
 id|semi_count
 suffix:semicolon
-id|isa_memcpy_fromio
+id|memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
 op_plus
 id|semi_count
 comma
-id|ei_status.rmem_start
+id|ei_status.mem
+op_plus
+id|TX_PAGES
+op_star
+l_int|256
 comma
 id|count
 )paren
@@ -2088,7 +2140,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Packet is in one chunk -- we can copy + cksum. */
-id|isa_eth_io_copy_and_sum
+id|eth_io_copy_and_sum
 c_func
 (paren
 id|skb
@@ -2150,10 +2202,12 @@ op_minus
 id|WD_NIC_OFFSET
 suffix:semicolon
 multiline_comment|/* WD_CMDREG */
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|ei_status.mem
 op_plus
 (paren
 (paren
@@ -2184,7 +2238,7 @@ op_plus
 id|WD_CMDREG5
 )paren
 suffix:semicolon
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|shmem
@@ -2206,7 +2260,7 @@ id|WD_CMDREG5
 suffix:semicolon
 )brace
 r_else
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|shmem
