@@ -1005,7 +1005,7 @@ id|SEM
 comma
 id|SIR_SCRIPT_STOPPED
 comma
-multiline_comment|/*&n;&t; *  Start the next job.&n;&t; *&n;&t; *  @DSA     = start point for this job.&n;&t; *  SCRATCHA = address of this job in the start queue.&n;&t; *&n;&t; *  We will restore startpos with SCRATCHA if we fails the &n;&t; *  arbitration or if it is the idle job.&n;&t; *&n;&t; *  The below GETJOB_BEGIN to GETJOB_END section of SCRIPTS &n;&t; *  is a critical path. If it is partially executed, it then &n;&t; *  may happen that the job address is not yet in the DSA &n;&t; *  and the the next queue position points to the next JOB.&n;&t; */
+multiline_comment|/*&n;&t; *  Start the next job.&n;&t; *&n;&t; *  @DSA     = start point for this job.&n;&t; *  SCRATCHA = address of this job in the start queue.&n;&t; *&n;&t; *  We will restore startpos with SCRATCHA if we fails the &n;&t; *  arbitration or if it is the idle job.&n;&t; *&n;&t; *  The below GETJOB_BEGIN to GETJOB_END section of SCRIPTS &n;&t; *  is a critical path. If it is partially executed, it then &n;&t; *  may happen that the job address is not yet in the DSA &n;&t; *  and the next queue position points to the next JOB.&n;&t; */
 )brace
 multiline_comment|/*-------------------------&lt; GETJOB_BEGIN &gt;---------------------*/
 comma
