@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/arch/simpad.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 r_extern
 r_int
@@ -65,24 +66,6 @@ op_star
 id|skt
 )paren
 (brace
-id|set_cs3_bit
-c_func
-(paren
-id|PCMCIA_RESET
-)paren
-suffix:semicolon
-id|clear_cs3_bit
-c_func
-(paren
-id|PCMCIA_BUFF_DIS
-)paren
-suffix:semicolon
-id|clear_cs3_bit
-c_func
-(paren
-id|PCMCIA_RESET
-)paren
-suffix:semicolon
 id|clear_cs3_bit
 c_func
 (paren
@@ -278,8 +261,6 @@ id|state
 (brace
 r_int
 r_int
-id|value
-comma
 id|flags
 suffix:semicolon
 id|local_irq_save
@@ -320,7 +301,7 @@ c_func
 (paren
 id|VCC_3V_EN
 op_or
-id|EN0
+id|EN1
 )paren
 suffix:semicolon
 id|set_cs3_bit
@@ -328,7 +309,7 @@ c_func
 (paren
 id|VCC_5V_EN
 op_or
-id|EN1
+id|EN0
 )paren
 suffix:semicolon
 r_break
@@ -390,7 +371,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Silently ignore Vpp, output enable, speaker enable. */
 id|local_irq_restore
 c_func
 (paren
@@ -452,6 +432,12 @@ c_func
 (paren
 id|irqs
 )paren
+)paren
+suffix:semicolon
+id|set_cs3_bit
+c_func
+(paren
+id|PCMCIA_RESET
 )paren
 suffix:semicolon
 )brace
