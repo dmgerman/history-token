@@ -545,6 +545,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pcibios_add_platform_entries
+r_static
+r_inline
+r_void
+id|pcibios_add_platform_entries
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase.  */
 DECL|macro|IOBASE_HOSE

@@ -855,5 +855,12 @@ op_amp
 id|pci_config_attr
 )paren
 suffix:semicolon
+multiline_comment|/* add platform-specific attributes */
+id|pcibios_add_platform_entries
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 )brace
 eof

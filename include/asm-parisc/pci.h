@@ -377,5 +377,19 @@ op_star
 id|res
 )paren
 suffix:semicolon
+DECL|function|pcibios_add_platform_entries
+r_static
+r_inline
+r_void
+id|pcibios_add_platform_entries
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
 macro_line|#endif /* __ASM_PARISC_PCI_H */
 eof
