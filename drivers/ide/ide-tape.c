@@ -10635,7 +10635,7 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
