@@ -1317,6 +1317,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|xfrm6_tunnel_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|xfrm6_fini
 r_void
@@ -1327,6 +1332,11 @@ c_func
 r_void
 )paren
 (brace
+id|xfrm6_tunnel_fini
+c_func
+(paren
+)paren
+suffix:semicolon
 singleline_comment|//xfrm6_input_fini();
 id|xfrm6_policy_fini
 c_func
