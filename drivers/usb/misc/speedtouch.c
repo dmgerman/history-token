@@ -41,10 +41,6 @@ DECL|macro|SPEEDTOUCH_VENDORID
 mdefine_line|#define SPEEDTOUCH_VENDORID&t;&t;0x06b9
 DECL|macro|SPEEDTOUCH_PRODUCTID
 mdefine_line|#define SPEEDTOUCH_PRODUCTID&t;&t;0x4061
-DECL|macro|UDSL_OBUF_SIZE
-mdefine_line|#define UDSL_OBUF_SIZE&t;&t;&t;32768
-DECL|macro|UDSL_MINOR
-mdefine_line|#define UDSL_MINOR&t;&t;&t;48
 DECL|macro|UDSL_NUMBER_RCV_URBS
 mdefine_line|#define UDSL_NUMBER_RCV_URBS&t;&t;1
 DECL|macro|UDSL_NUMBER_SND_URBS
@@ -54,8 +50,6 @@ mdefine_line|#define UDSL_RECEIVE_BUFFER_SIZE&t;64*53
 multiline_comment|/* max should be (1500 IP mtu + 2 ppp bytes + 32 * 5 cellheader overhead) for&n; * PPPoA and (1500 + 14 + 32*5 cellheader overhead) for PPPoE */
 DECL|macro|UDSL_MAX_AAL5_MRU
 mdefine_line|#define UDSL_MAX_AAL5_MRU&t;&t;2048
-DECL|macro|UDSL_SEND_CONTEXTS
-mdefine_line|#define UDSL_SEND_CONTEXTS&t;&t;8
 DECL|macro|UDSL_IOCTL_START
 mdefine_line|#define UDSL_IOCTL_START&t;&t;1
 DECL|macro|UDSL_IOCTL_STOP
