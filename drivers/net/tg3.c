@@ -22,6 +22,11 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef CONFIG_SPARC64
+macro_line|#include &lt;asm/idprom.h&gt;
+macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/pbm.h&gt;
+macro_line|#endif
 macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 DECL|macro|TG3_VLAN_TAG_USED
 mdefine_line|#define TG3_VLAN_TAG_USED 1
@@ -43,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.6&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.7&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;June 11, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;July 23, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -30570,6 +30575,125 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SPARC64
+DECL|function|tg3_get_macaddr_sparc
+r_static
+r_int
+id|__devinit
+id|tg3_get_macaddr_sparc
+c_func
+(paren
+r_struct
+id|tg3
+op_star
+id|tp
+)paren
+(brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|tp-&gt;dev
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|tp-&gt;pdev
+suffix:semicolon
+r_struct
+id|pcidev_cookie
+op_star
+id|pcp
+op_assign
+id|pdev-&gt;sysdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcp
+op_ne
+l_int|NULL
+)paren
+(brace
+r_int
+id|node
+op_assign
+id|pcp-&gt;prom_node
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prom_getproplen
+c_func
+(paren
+id|node
+comma
+l_string|&quot;local-mac-address&quot;
+)paren
+op_eq
+l_int|6
+)paren
+(brace
+id|prom_getproperty
+c_func
+(paren
+id|node
+comma
+l_string|&quot;local-mac-address&quot;
+comma
+id|dev-&gt;dev_addr
+comma
+l_int|6
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|tg3_get_default_macaddr_sparc
+r_static
+r_int
+id|__devinit
+id|tg3_get_default_macaddr_sparc
+c_func
+(paren
+r_struct
+id|tg3
+op_star
+id|tp
+)paren
+(brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|tp-&gt;dev
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dev-&gt;dev_addr
+comma
+id|idprom-&gt;id_ethaddr
+comma
+l_int|6
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|tg3_get_device_address
 r_static
 r_int
@@ -30597,6 +30721,21 @@ id|lo
 comma
 id|mac_offset
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC64
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tg3_get_macaddr_sparc
+c_func
+(paren
+id|tp
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -30960,10 +31099,27 @@ l_int|0
 )braket
 )paren
 )paren
+(brace
+macro_line|#ifdef CONFIG_SPARC64
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tg3_get_default_macaddr_sparc
+c_func
+(paren
+id|tp
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
