@@ -519,7 +519,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;H_PERFMON call returned %d&quot;
+l_string|&quot;H_PERFMON call on cpu %u &quot;
+l_string|&quot;returned %d&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|ret
 )paren
