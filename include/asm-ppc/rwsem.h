@@ -39,7 +39,7 @@ r_struct
 id|list_head
 id|wait_list
 suffix:semicolon
-macro_line|#ifdef RWSEM_DEBUG
+macro_line|#if RWSEM_DEBUG
 DECL|member|debug
 r_int
 id|debug
@@ -48,7 +48,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * initialisation&n; */
-macro_line|#ifdef RWSEM_DEBUG
+macro_line|#if RWSEM_DEBUG
 DECL|macro|__RWSEM_DEBUG_INIT
 mdefine_line|#define __RWSEM_DEBUG_INIT      , 0
 macro_line|#else
@@ -142,7 +142,7 @@ op_amp
 id|sem-&gt;wait_list
 )paren
 suffix:semicolon
-macro_line|#ifdef RWSEM_DEBUG
+macro_line|#if RWSEM_DEBUG
 id|sem-&gt;debug
 op_assign
 l_int|0
