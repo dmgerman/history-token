@@ -191,6 +191,9 @@ r_struct
 id|pci_controller
 op_star
 id|phb
+comma
+op_star
+id|tmp
 suffix:semicolon
 r_struct
 id|device_node
@@ -231,19 +234,18 @@ id|tcetable_ilog2
 op_assign
 l_int|22
 suffix:semicolon
-multiline_comment|/* XXX Should we be using pci_root_buses instead?  -ojn &n;&t; */
-r_for
-c_loop
+multiline_comment|/* XXX Should we be using pci_root_buses instead?  -ojn&n;&t; */
+id|list_for_each_entry_safe
+c_func
 (paren
 id|phb
-op_assign
-id|hose_head
-suffix:semicolon
-id|phb
-suffix:semicolon
-id|phb
-op_assign
-id|phb-&gt;next
+comma
+id|tmp
+comma
+op_amp
+id|hose_list
+comma
+id|list_node
 )paren
 (brace
 id|first_dn
