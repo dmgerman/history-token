@@ -137,10 +137,6 @@ id|lock_t
 id|xfs_dabuf_global_lock
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|xfs_refcache_size
-suffix:semicolon
 macro_line|#ifdef XFS_DABUF_DEBUG
 id|spinlock_init
 c_func
@@ -501,11 +497,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|xfs_refcache_size
-op_assign
-id|xfs_params.refcache_size
-suffix:semicolon
-multiline_comment|/*&n;&t; * The inode hash table is created on a per mounted&n;&t; * file system bases.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -568,12 +559,6 @@ id|kmem_zone_t
 op_star
 id|xfs_chashlist_zone
 suffix:semicolon
-r_extern
-id|xfs_inode_t
-op_star
-op_star
-id|xfs_refcache
-suffix:semicolon
 id|xfs_cleanup_procfs
 c_func
 (paren
@@ -584,27 +569,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|xfs_refcache
-)paren
-(brace
-id|kmem_free
-c_func
-(paren
-id|xfs_refcache
-comma
-id|XFS_REFCACHE_SIZE_MAX
-op_star
-r_sizeof
-(paren
-id|xfs_inode_t
-op_star
-)paren
-)paren
-suffix:semicolon
-)brace
 id|kmem_cache_destroy
 c_func
 (paren
@@ -2149,20 +2113,6 @@ suffix:colon
 id|DM_FLAGS_UNWANTED
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * First blow any referenced inode from this file system&n;&t; * out of the reference cache, and delete the timer.&n;&t; */
-id|xfs_refcache_purge_mp
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|mp-&gt;m_sbdirty_timer
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure there are no active users.&n;&t; */
 r_if
 c_cond
@@ -4888,22 +4838,6 @@ op_assign
 id|error
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;&t; * If this is the 30 second sync, then kick some entries out of&n;&t; * the reference cache.&t; This ensures that idle entries are&n;&t; * eventually kicked out of the cache.&n;&t; */
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|SYNC_BDFLUSH
-)paren
-(brace
-id|xfs_refcache_purge_some
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now check to see if the log needs a &quot;dummy&quot; transaction.&n;&t; */
 r_if

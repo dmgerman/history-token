@@ -933,12 +933,6 @@ id|atomic_t
 id|m_active_trans
 suffix:semicolon
 multiline_comment|/* number trans frozen */
-DECL|member|m_sbdirty_timer
-r_struct
-id|timer_list
-id|m_sbdirty_timer
-suffix:semicolon
-multiline_comment|/* superblock dirty timer&n;&t;&t;&t;&t;&t;&t; * for nfs refcache */
 DECL|typedef|xfs_mount_t
 )brace
 id|xfs_mount_t

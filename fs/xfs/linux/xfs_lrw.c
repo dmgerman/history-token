@@ -2832,26 +2832,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* (ioflags &amp; O_SYNC) */
-multiline_comment|/*&n;&t; * If we are coming from an nfsd thread then insert into the&n;&t; * reference cache.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;nfsd&quot;
-)paren
-)paren
-id|xfs_refcache_insert
-c_func
-(paren
-id|xip
-)paren
-suffix:semicolon
-multiline_comment|/* Drop lock this way - the old refcache release is in here */
 id|xfs_rwunlock
 c_func
 (paren
@@ -7102,12 +7082,6 @@ id|XFS_BHVTOM
 c_func
 (paren
 id|bdp
-)paren
-suffix:semicolon
-id|xfs_refcache_purge_mp
-c_func
-(paren
-id|mp
 )paren
 suffix:semicolon
 id|xfs_binval

@@ -2419,16 +2419,6 @@ op_rshift
 id|sbp-&gt;sb_inopblog
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|xfs_refcache_sbdirty
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * xfs_mountfs&n; *&n; * This function does the following on an initial mount of a file system:&n; *&t;- reads the superblock from disk and init the mount struct&n; *&t;- if we&squot;re a 32-bit kernel, do a size check on the superblock&n; *&t;&t;so we don&squot;t mount terabyte filesystems&n; *&t;- init mount struct realtime fields&n; *&t;- allocate inode hash table for fs&n; *&t;- init directory manager&n; *&t;- perform recovery and init the log manager&n; */
 r_int
 DECL|function|xfs_mountfs
@@ -3506,28 +3496,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Set up timer list structure for nfs refcache&n;&t; */
-id|init_timer
-c_func
-(paren
-op_amp
-id|mp-&gt;m_sbdirty_timer
-)paren
-suffix:semicolon
-id|mp-&gt;m_sbdirty_timer.function
-op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_int
-r_int
-)paren
-)paren
-id|xfs_refcache_sbdirty
-suffix:semicolon
 multiline_comment|/* Initialize the I/O function vector with XFS functions */
 id|mp-&gt;m_io_ops
 op_assign
