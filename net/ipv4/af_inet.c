@@ -3552,7 +3552,7 @@ op_amp
 id|inetsw_lock
 )paren
 suffix:semicolon
-id|synchronize_kernel
+id|synchronize_net
 c_func
 (paren
 )paren
@@ -3640,7 +3640,7 @@ op_amp
 id|inetsw_lock
 )paren
 suffix:semicolon
-id|synchronize_kernel
+id|synchronize_net
 c_func
 (paren
 )paren
