@@ -23,15 +23,15 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
 DECL|macro|OPCD
 mdefine_line|#define&t;OPCD(inst)&t;(((inst) &amp; 0xFC000000) &gt;&gt; 26)
 DECL|macro|RS
 mdefine_line|#define&t;RS(inst)&t;(((inst) &amp; 0x03E00000) &gt;&gt; 21)
 DECL|macro|RA
 mdefine_line|#define&t;RA(inst)&t;(((inst) &amp; 0x001F0000) &gt;&gt; 16)
-DECL|macro|IS_DFORM
-mdefine_line|#define&t;IS_DFORM(code)&t;((code) &gt;= 32 &amp;&amp; (code) &lt;= 55)
+DECL|macro|IS_XFORM
+mdefine_line|#define&t;IS_XFORM(code)&t;((code) == 31)
 macro_line|#endif
 DECL|macro|INVALID
 mdefine_line|#define INVALID&t;{ 0, 0 }
@@ -161,13 +161,13 @@ comma
 multiline_comment|/* 00 0 1100 */
 id|INVALID
 comma
-multiline_comment|/* 00 0 1101 */
+multiline_comment|/* 00 0 1101: ld/ldu/lwa */
 id|INVALID
 comma
 multiline_comment|/* 00 0 1110 */
 id|INVALID
 comma
-multiline_comment|/* 00 0 1111 */
+multiline_comment|/* 00 0 1111: std/stdu */
 (brace
 l_int|4
 comma
@@ -292,13 +292,13 @@ comma
 multiline_comment|/* 00 1 1111 */
 id|INVALID
 comma
-multiline_comment|/* 01 0 0000 */
+multiline_comment|/* 01 0 0000: ldx */
 id|INVALID
 comma
 multiline_comment|/* 01 0 0001 */
 id|INVALID
 comma
-multiline_comment|/* 01 0 0010 */
+multiline_comment|/* 01 0 0010: stdx */
 id|INVALID
 comma
 multiline_comment|/* 01 0 0011 */
@@ -307,7 +307,7 @@ comma
 multiline_comment|/* 01 0 0100 */
 id|INVALID
 comma
-multiline_comment|/* 01 0 0101: lwax?? */
+multiline_comment|/* 01 0 0101: lwax */
 id|INVALID
 comma
 multiline_comment|/* 01 0 0110 */
@@ -364,13 +364,13 @@ comma
 multiline_comment|/* 01 0 1111 */
 id|INVALID
 comma
-multiline_comment|/* 01 1 0000 */
+multiline_comment|/* 01 1 0000: ldux */
 id|INVALID
 comma
 multiline_comment|/* 01 1 0001 */
 id|INVALID
 comma
-multiline_comment|/* 01 1 0010 */
+multiline_comment|/* 01 1 0010: stdux */
 id|INVALID
 comma
 multiline_comment|/* 01 1 0011 */
@@ -379,7 +379,7 @@ comma
 multiline_comment|/* 01 1 0100 */
 id|INVALID
 comma
-multiline_comment|/* 01 1 0101: lwaux?? */
+multiline_comment|/* 01 1 0101: lwaux */
 id|INVALID
 comma
 multiline_comment|/* 01 1 0110 */
@@ -633,13 +633,13 @@ comma
 multiline_comment|/* 11 0 1100 */
 id|INVALID
 comma
-multiline_comment|/* 11 0 1101 */
+multiline_comment|/* 11 0 1101: lmd */
 id|INVALID
 comma
 multiline_comment|/* 11 0 1110 */
 id|INVALID
 comma
-multiline_comment|/* 11 0 1111 */
+multiline_comment|/* 11 0 1111: stmd */
 (brace
 l_int|4
 comma
@@ -778,7 +778,7 @@ id|nb
 comma
 id|flags
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
 r_int
 id|opcode
 comma
@@ -832,8 +832,8 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
-multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; */
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
+multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; * The POWER4 has a DSISR register but doesn&squot;t set it on&n;&t; * an alignment fault.  -- paulus&n;&t; */
 id|instr
 op_assign
 op_star
@@ -873,7 +873,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_DFORM
+op_logical_neg
+id|IS_XFORM
 c_func
 (paren
 id|opcode

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* undef for production */
 DECL|macro|HIGHMEM_DEBUG
 mdefine_line|#define HIGHMEM_DEBUG 1
@@ -35,9 +36,9 @@ id|__init
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
 DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE CONFIG_HIGHMEM_START
+mdefine_line|#define PKMAP_BASE &t;CONFIG_HIGHMEM_START
 DECL|macro|LAST_PKMAP
-mdefine_line|#define LAST_PKMAP 1024
+mdefine_line|#define LAST_PKMAP &t;(1 &lt;&lt; PTE_SHIFT)
 DECL|macro|LAST_PKMAP_MASK
 mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP-1)
 DECL|macro|PKMAP_NR

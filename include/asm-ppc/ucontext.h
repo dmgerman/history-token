@@ -1,7 +1,45 @@
 macro_line|#ifndef _ASMPPC_UCONTEXT_H
 DECL|macro|_ASMPPC_UCONTEXT_H
 mdefine_line|#define _ASMPPC_UCONTEXT_H
-multiline_comment|/* Copied from i386. */
+macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/signal.h&gt;
+DECL|struct|mcontext
+r_struct
+id|mcontext
+(brace
+DECL|member|mc_gregs
+id|elf_gregset_t
+id|mc_gregs
+suffix:semicolon
+DECL|member|mc_fregs
+id|elf_fpregset_t
+id|mc_fregs
+suffix:semicolon
+DECL|member|mc_pad
+r_int
+r_int
+id|mc_pad
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|mc_vregs
+id|elf_vrregset_t
+id|mc_vregs
+id|__attribute__
+c_func
+(paren
+(paren
+id|__aligned__
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|ucontext
 r_struct
 id|ucontext
@@ -21,16 +59,46 @@ DECL|member|uc_stack
 id|stack_t
 id|uc_stack
 suffix:semicolon
-DECL|member|uc_mcontext
+DECL|member|uc_pad
+r_int
+id|uc_pad
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|uc_regs
 r_struct
-id|sigcontext
-id|uc_mcontext
+id|mcontext
+op_star
+id|uc_regs
+suffix:semicolon
+multiline_comment|/* backward compat */
+DECL|member|uc_oldsigmask
+id|sigset_t
+id|uc_oldsigmask
+suffix:semicolon
+multiline_comment|/* backward compat */
+DECL|member|uc_pad2
+r_int
+id|uc_pad2
 suffix:semicolon
 DECL|member|uc_sigmask
 id|sigset_t
 id|uc_sigmask
 suffix:semicolon
-multiline_comment|/* mask last for extensibility */
+multiline_comment|/* glibc has 1024-bit signal masks, ours are 64-bit */
+DECL|member|uc_maskext
+r_int
+id|uc_maskext
+(braket
+l_int|30
+)braket
+suffix:semicolon
+DECL|member|uc_mcontext
+r_struct
+id|mcontext
+id|uc_mcontext
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* !_ASMPPC_UCONTEXT_H */
