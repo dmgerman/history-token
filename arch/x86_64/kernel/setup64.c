@@ -858,9 +858,9 @@ l_string|&quot;.bss.page_aligned&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* May not be marked __init: used by software suspend */
 DECL|function|syscall_init
 r_void
-id|__init
 id|syscall_init
 c_func
 (paren
