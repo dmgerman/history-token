@@ -1836,6 +1836,8 @@ DECL|macro|PCI_DEVICE_ID_AL_M1681
 mdefine_line|#define PCI_DEVICE_ID_AL_M1681&t;&t;0x1681
 DECL|macro|PCI_DEVICE_ID_AL_M1683
 mdefine_line|#define PCI_DEVICE_ID_AL_M1683&t;&t;0x1683
+DECL|macro|PCI_DEVICE_ID_AL_M1689
+mdefine_line|#define PCI_DEVICE_ID_AL_M1689&t;&t;0x1689
 DECL|macro|PCI_DEVICE_ID_AL_M3307
 mdefine_line|#define PCI_DEVICE_ID_AL_M3307&t;&t;0x3307
 DECL|macro|PCI_DEVICE_ID_AL_M4803
