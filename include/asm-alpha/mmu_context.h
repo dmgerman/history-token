@@ -462,6 +462,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
 DECL|macro|switch_mm
 macro_line|# define switch_mm(a,b,c,d)&t;alpha_mv.mv_switch_mm((a),(b),(c),(d))

@@ -66,6 +66,8 @@ r_int
 )paren
 DECL|macro|switch_mm
 mdefine_line|#define switch_mm(old_mm, mm, tsk, cpu) BTFIXUP_CALL(switch_mm)(old_mm, mm, tsk, cpu)
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/* Activate a new MM instance for the current task. */
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(active_mm, mm) switch_mm((active_mm), (mm), NULL, smp_processor_id())
