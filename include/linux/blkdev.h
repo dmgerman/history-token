@@ -1011,6 +1011,11 @@ r_int
 r_int
 id|max_sectors
 suffix:semicolon
+DECL|member|max_hw_sectors
+r_int
+r_int
+id|max_hw_sectors
+suffix:semicolon
 DECL|member|max_phys_segments
 r_int
 r_int

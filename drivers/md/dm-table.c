@@ -3367,9 +3367,13 @@ id|q
 )paren
 (brace
 multiline_comment|/*&n;&t; * Make sure we obey the optimistic sub devices&n;&t; * restrictions.&n;&t; */
-id|q-&gt;max_sectors
-op_assign
+id|blk_queue_max_sectors
+c_func
+(paren
+id|q
+comma
 id|t-&gt;limits.max_sectors
+)paren
 suffix:semicolon
 id|q-&gt;max_phys_segments
 op_assign
