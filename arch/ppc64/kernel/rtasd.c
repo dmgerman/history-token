@@ -803,20 +803,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;rtasd&quot;
 )paren
 suffix:semicolon
@@ -976,14 +962,7 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
-multiline_comment|/* Check all cpus for pending events before sleeping*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|first_pass
-)paren
-(brace
+multiline_comment|/*&n;&t;&t; * Check all cpus for pending events quickly, sleeping for&n;&t;&t; * at least one second since some machines have problems&n;&t;&t; * if we call event-scan too quickly&n;&t;&t; */
 id|set_current_state
 c_func
 (paren
@@ -993,6 +972,11 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
+id|first_pass
+ques
+c_cond
+id|HZ
+suffix:colon
 (paren
 id|HZ
 op_star
@@ -1004,7 +988,6 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1038,13 +1021,10 @@ l_string|&quot;surveillance enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|first_pass
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_goto
 id|repeat
 suffix:semicolon

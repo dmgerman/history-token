@@ -4859,7 +4859,11 @@ r_if
 c_cond
 (paren
 id|qd.cnum
-template_param
+OL
+l_int|0
+op_logical_or
+id|qd.cnum
+op_ge
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return
@@ -5036,7 +5040,7 @@ r_if
 c_cond
 (paren
 id|dd.cnum
-OG
+op_ge
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return
@@ -5121,7 +5125,7 @@ r_if
 c_cond
 (paren
 id|dd.cnum
-OG
+op_ge
 id|MAXIMUM_NUM_CONTAINERS
 )paren
 r_return

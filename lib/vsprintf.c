@@ -1437,6 +1437,11 @@ op_star
 id|fmt
 op_eq
 l_char|&squot;Z&squot;
+op_logical_or
+op_star
+id|fmt
+op_eq
+l_char|&squot;z&squot;
 )paren
 (brace
 id|qualifier
@@ -1812,6 +1817,10 @@ c_cond
 id|qualifier
 op_eq
 l_char|&squot;Z&squot;
+op_logical_or
+id|qualifier
+op_eq
+l_char|&squot;z&squot;
 )paren
 (brace
 r_int
@@ -2038,6 +2047,10 @@ c_cond
 id|qualifier
 op_eq
 l_char|&squot;Z&squot;
+op_logical_or
+id|qualifier
+op_eq
+l_char|&squot;z&squot;
 )paren
 (brace
 id|num
@@ -2567,6 +2580,11 @@ op_star
 id|fmt
 op_eq
 l_char|&squot;Z&squot;
+op_logical_or
+op_star
+id|fmt
+op_eq
+l_char|&squot;z&squot;
 )paren
 (brace
 id|qualifier
@@ -3220,6 +3238,9 @@ r_break
 suffix:semicolon
 r_case
 l_char|&squot;Z&squot;
+suffix:colon
+r_case
+l_char|&squot;z&squot;
 suffix:colon
 (brace
 r_int

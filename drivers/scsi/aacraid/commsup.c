@@ -2646,17 +2646,16 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Set up the name that will appear in &squot;ps&squot;&n;&t; *&t;stored in  task_struct.comm[16].&n;&t; */
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;aacraid&quot;
-)paren
-suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;aacraid&quot;
+)paren
+suffix:semicolon
+id|allow_signal
+c_func
+(paren
+id|SIGKILL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Let the DPC know it has a place to send the AIF&squot;s to.&n;&t; */

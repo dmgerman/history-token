@@ -13373,9 +13373,13 @@ id|w
 op_eq
 id|LI_HC_LINK_ENABLE
 op_logical_and
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|later
+)paren
 )paren
 suffix:semicolon
 id|li_destroy

@@ -1065,7 +1065,6 @@ r_int
 id|nr
 )paren
 (brace
-r_const
 r_int
 id|chunk
 op_assign

@@ -349,7 +349,7 @@ c_cond
 id|p-&gt;dev
 op_eq
 id|dev
-op_logical_or
+op_logical_and
 id|p-&gt;range
 op_eq
 id|range
@@ -1480,6 +1480,9 @@ id|page
 comma
 l_string|&quot;%04x&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|base
 )paren
 suffix:semicolon

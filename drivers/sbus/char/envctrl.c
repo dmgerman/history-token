@@ -3707,14 +3707,13 @@ multiline_comment|/* TODO env_mon_interval */
 id|daemonize
 c_func
 (paren
+l_string|&quot;kenvctrld&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;kenvctrld&quot;
+id|SIGKILL
 )paren
 suffix:semicolon
 id|kenvctrld_task

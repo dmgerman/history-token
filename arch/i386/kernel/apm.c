@@ -5030,26 +5030,12 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;kapmd&quot;
 )paren
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* 2002/08/01 - WT&n;&t; * This is to avoid random crashes at boot time during initialization&n;&t; * on SMP systems in case of &quot;apm=power-off&quot; mode. Seen on ASUS A7M266D.&n;&t; * Some bioses don&squot;t like being called from CPU != 0.&n;&t; * Method suggested by Ingo Molnar.&n;&t; */

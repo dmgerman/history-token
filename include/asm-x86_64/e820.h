@@ -122,7 +122,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
+r_int
 id|e820_end_of_ram
 c_func
 (paren

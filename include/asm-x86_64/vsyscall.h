@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_X86_64_VSYSCALL_H_
 DECL|macro|_ASM_X86_64_VSYSCALL_H_
 mdefine_line|#define _ASM_X86_64_VSYSCALL_H_
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/seqlock.h&gt;
 DECL|enum|vsyscall_num
 r_enum
 id|vsyscall_num
@@ -31,10 +32,12 @@ DECL|macro|__section_jiffies
 mdefine_line|#define __section_jiffies __attribute__ ((unused, __section__ (&quot;.jiffies&quot;), aligned(16)))
 DECL|macro|__section_sys_tz
 mdefine_line|#define __section_sys_tz __attribute__ ((unused, __section__ (&quot;.sys_tz&quot;), aligned(16)))
+DECL|macro|__section_sysctl_vsyscall
+mdefine_line|#define __section_sysctl_vsyscall __attribute__ ((unused, __section__ (&quot;.sysctl_vsyscall&quot;), aligned(16)))
 DECL|macro|__section_xtime
 mdefine_line|#define __section_xtime __attribute__ ((unused, __section__ (&quot;.xtime&quot;), aligned(16)))
-DECL|macro|__section_vxtime_sequence
-mdefine_line|#define __section_vxtime_sequence __attribute__ ((unused, __section__ (&quot;.vxtime_sequence&quot;), aligned(16)))
+DECL|macro|__section_xtime_lock
+mdefine_line|#define __section_xtime_lock __attribute__ ((unused, __section__ (&quot;.xtime_lock&quot;), aligned(L1_CACHE_BYTES)))
 DECL|struct|hpet_data
 r_struct
 id|hpet_data
@@ -80,13 +83,6 @@ DECL|macro|hpet_writel
 mdefine_line|#define hpet_writel(d,a)        writel(d, fix_to_virt(FIX_HPET_BASE) + a)
 multiline_comment|/* vsyscall space (readonly) */
 r_extern
-r_int
-id|__vxtime_sequence
-(braket
-l_int|2
-)braket
-suffix:semicolon
-r_extern
 r_struct
 id|hpet_data
 id|__hpet
@@ -112,14 +108,11 @@ r_struct
 id|timezone
 id|__sys_tz
 suffix:semicolon
-multiline_comment|/* kernel space (writeable) */
 r_extern
-r_int
-id|vxtime_sequence
-(braket
-l_int|2
-)braket
+id|seqlock_t
+id|__xtime_lock
 suffix:semicolon
+multiline_comment|/* kernel space (writeable) */
 r_extern
 r_struct
 id|hpet_data
@@ -135,10 +128,16 @@ r_struct
 id|timezone
 id|sys_tz
 suffix:semicolon
-DECL|macro|vxtime_lock
-mdefine_line|#define vxtime_lock() do { vxtime_sequence[0]++; wmb(); } while(0)
-DECL|macro|vxtime_unlock
-mdefine_line|#define vxtime_unlock() do { wmb(); vxtime_sequence[1]++; } while (0)
+r_extern
+r_int
+id|sysctl_vsyscall
+suffix:semicolon
+r_extern
+id|seqlock_t
+id|xtime_lock
+suffix:semicolon
+DECL|macro|ARCH_HAVE_XTIME_LOCK
+mdefine_line|#define ARCH_HAVE_XTIME_LOCK 1
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_X86_64_VSYSCALL_H_ */
 eof

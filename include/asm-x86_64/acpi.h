@@ -22,9 +22,9 @@ mdefine_line|#define ACPI_ASM_MACROS
 DECL|macro|BREAKPOINT3
 mdefine_line|#define BREAKPOINT3
 DECL|macro|ACPI_DISABLE_IRQS
-mdefine_line|#define ACPI_DISABLE_IRQS() __cli()
+mdefine_line|#define ACPI_DISABLE_IRQS() local_irq_disable()
 DECL|macro|ACPI_ENABLE_IRQS
-mdefine_line|#define ACPI_ENABLE_IRQS()  __sti()
+mdefine_line|#define ACPI_ENABLE_IRQS()  local_irq_enable()
 DECL|macro|ACPI_FLUSH_CPU_CACHE
 mdefine_line|#define ACPI_FLUSH_CPU_CACHE()&t;wbinvd()
 multiline_comment|/*&n; * A brief explanation as GNU inline assembly is a bit hairy&n; *  %0 is the output parameter in RAX (&quot;=a&quot;)&n; *  %1 and %2 are the input parameters in RCX (&quot;c&quot;)&n; *  and an immediate value (&quot;i&quot;) respectively&n; *  All actual register references are preceded with &quot;%%&quot; as in &quot;%%edx&quot;&n; *  Immediate values in the assembly are preceded by &quot;$&quot; as in &quot;$0x1&quot;&n; *  The final asm parameter are the operation altered non-output registers.&n; */
@@ -112,6 +112,12 @@ r_extern
 r_int
 id|acpi_disabled
 suffix:semicolon
+DECL|macro|dmi_broken
+mdefine_line|#define dmi_broken (0)
+DECL|macro|BROKEN_ACPI_Sx
+mdefine_line|#define BROKEN_ACPI_Sx&t;&t;0x0001
+DECL|macro|BROKEN_INIT_AFTER_S1
+mdefine_line|#define BROKEN_INIT_AFTER_S1&t;0x0002
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof

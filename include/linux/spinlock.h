@@ -164,6 +164,8 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock)&t;do { (void)(lock); } while(0)
+DECL|macro|_raw_write_trylock
+mdefine_line|#define _raw_write_trylock(lock) ({ (void)(lock); (1); })
 macro_line|#endif /* !SMP */
 multiline_comment|/*&n; * Define the various spin_lock and rw_lock methods.  Note we define these&n; * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various&n; * methods are defined as nops in the case they are not required.&n; */
 DECL|macro|spin_trylock

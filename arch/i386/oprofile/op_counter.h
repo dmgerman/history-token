@@ -3,7 +3,7 @@ macro_line|#ifndef OP_COUNTER_H
 DECL|macro|OP_COUNTER_H
 mdefine_line|#define OP_COUNTER_H
 DECL|macro|OP_MAX_COUNTER
-mdefine_line|#define OP_MAX_COUNTER 4
+mdefine_line|#define OP_MAX_COUNTER 8
 multiline_comment|/* Per-perfctr configuration as set via&n; * oprofilefs.&n; */
 DECL|struct|op_counter_config
 r_struct

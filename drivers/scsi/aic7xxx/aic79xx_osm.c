@@ -5508,7 +5508,7 @@ id|cmd
 suffix:semicolon
 id|hscb-&gt;lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|hscb-&gt;cdb_len
 op_assign
@@ -11485,13 +11485,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;ahd_dv_%d&quot;
 comma
 id|ahd-&gt;unit

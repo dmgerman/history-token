@@ -8925,16 +8925,6 @@ l_string|&quot;Launching DV Thread&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Don&squot;t care about any signals.&n;&t; */
-id|siginitsetinv
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Complete thread creation.&n;&t; */
 id|lock_kernel
 c_func
@@ -8944,13 +8934,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;ahc_dv_%d&quot;
 comma
 id|ahc-&gt;unit

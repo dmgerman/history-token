@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Simple VGA output */
 DECL|macro|VGABASE
 mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000UL
@@ -527,6 +528,7 @@ comma
 l_int|2
 )paren
 )paren
+(brace
 id|early_serial_base
 op_assign
 id|simple_strtoul
@@ -540,6 +542,7 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 r_static

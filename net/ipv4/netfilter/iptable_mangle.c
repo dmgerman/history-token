@@ -113,11 +113,13 @@ comma
 (braket
 id|NF_IP_PRE_ROUTING
 )braket
+op_assign
 l_int|0
 comma
 (braket
 id|NF_IP_LOCAL_IN
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -127,6 +129,7 @@ comma
 (braket
 id|NF_IP_FORWARD
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -138,6 +141,7 @@ comma
 (braket
 id|NF_IP_LOCAL_OUT
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -149,6 +153,7 @@ comma
 (braket
 id|NF_IP_POST_ROUTING
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -162,11 +167,13 @@ comma
 (braket
 id|NF_IP_PRE_ROUTING
 )braket
+op_assign
 l_int|0
 comma
 (braket
 id|NF_IP_LOCAL_IN
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -176,6 +183,7 @@ comma
 (braket
 id|NF_IP_FORWARD
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -187,6 +195,7 @@ comma
 (braket
 id|NF_IP_LOCAL_OUT
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -198,6 +207,7 @@ comma
 (braket
 id|NF_IP_POST_ROUTING
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct

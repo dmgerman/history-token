@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/mmsegment.h&gt;
 DECL|macro|TF_MASK
 mdefine_line|#define TF_MASK&t;&t;0x00000100
 DECL|macro|IF_MASK
@@ -220,258 +221,6 @@ DECL|macro|X86_EFLAGS_VIP
 mdefine_line|#define X86_EFLAGS_VIP&t;0x00100000 /* Virtual Interrupt Pending */
 DECL|macro|X86_EFLAGS_ID
 mdefine_line|#define X86_EFLAGS_ID&t;0x00200000 /* CPUID detection flag */
-multiline_comment|/*&n; *&t;Generic CPUID function&n; * &t;FIXME: This really belongs to msr.h&n; */
-DECL|function|cpuid
-r_extern
-r_inline
-r_void
-id|cpuid
-c_func
-(paren
-r_int
-id|op
-comma
-r_int
-op_star
-id|eax
-comma
-r_int
-op_star
-id|ebx
-comma
-r_int
-op_star
-id|ecx
-comma
-r_int
-op_star
-id|edx
-)paren
-(brace
-id|__asm__
-c_func
-(paren
-l_string|&quot;cpuid&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-op_star
-id|eax
-)paren
-comma
-l_string|&quot;=b&quot;
-(paren
-op_star
-id|ebx
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-op_star
-id|ecx
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-op_star
-id|edx
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|op
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * CPUID functions returning a single datum&n; */
-DECL|function|cpuid_eax
-r_extern
-r_inline
-r_int
-r_int
-id|cpuid_eax
-c_func
-(paren
-r_int
-r_int
-id|op
-)paren
-(brace
-r_int
-r_int
-id|eax
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;cpuid&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|eax
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|op
-)paren
-suffix:colon
-l_string|&quot;bx&quot;
-comma
-l_string|&quot;cx&quot;
-comma
-l_string|&quot;dx&quot;
-)paren
-suffix:semicolon
-r_return
-id|eax
-suffix:semicolon
-)brace
-DECL|function|cpuid_ebx
-r_extern
-r_inline
-r_int
-r_int
-id|cpuid_ebx
-c_func
-(paren
-r_int
-r_int
-id|op
-)paren
-(brace
-r_int
-r_int
-id|eax
-comma
-id|ebx
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;cpuid&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|eax
-)paren
-comma
-l_string|&quot;=b&quot;
-(paren
-id|ebx
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|op
-)paren
-suffix:colon
-l_string|&quot;cx&quot;
-comma
-l_string|&quot;dx&quot;
-)paren
-suffix:semicolon
-r_return
-id|ebx
-suffix:semicolon
-)brace
-DECL|function|cpuid_ecx
-r_extern
-r_inline
-r_int
-r_int
-id|cpuid_ecx
-c_func
-(paren
-r_int
-r_int
-id|op
-)paren
-(brace
-r_int
-r_int
-id|eax
-comma
-id|ecx
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;cpuid&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|eax
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-id|ecx
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|op
-)paren
-suffix:colon
-l_string|&quot;bx&quot;
-comma
-l_string|&quot;dx&quot;
-)paren
-suffix:semicolon
-r_return
-id|ecx
-suffix:semicolon
-)brace
-DECL|function|cpuid_edx
-r_extern
-r_inline
-r_int
-r_int
-id|cpuid_edx
-c_func
-(paren
-r_int
-r_int
-id|op
-)paren
-(brace
-r_int
-r_int
-id|eax
-comma
-id|edx
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;cpuid&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|eax
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|edx
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|op
-)paren
-suffix:colon
-l_string|&quot;bx&quot;
-comma
-l_string|&quot;cx&quot;
-)paren
-suffix:semicolon
-r_return
-id|edx
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Intel CPU features in CR4&n; */
 DECL|macro|X86_CR4_VME
 mdefine_line|#define X86_CR4_VME&t;&t;0x0001&t;/* enable vm86 extensions */
@@ -567,24 +316,6 @@ l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/*&n; *      Cyrix CPU configuration register indexes&n; */
-mdefine_line|#define CX86_CCR0 0xc0
-mdefine_line|#define CX86_CCR1 0xc1
-mdefine_line|#define CX86_CCR2 0xc2
-mdefine_line|#define CX86_CCR3 0xc3
-mdefine_line|#define CX86_CCR4 0xe8
-mdefine_line|#define CX86_CCR5 0xe9
-mdefine_line|#define CX86_CCR6 0xea
-mdefine_line|#define CX86_CCR7 0xeb
-mdefine_line|#define CX86_DIR0 0xfe
-mdefine_line|#define CX86_DIR1 0xff
-mdefine_line|#define CX86_ARR_BASE 0xc4
-mdefine_line|#define CX86_RCR_BASE 0xdc
-multiline_comment|/*&n; *      Cyrix CPU indexed register access macros&n; */
-mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
-mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
-macro_line|#endif
 multiline_comment|/*&n; * Bus types&n; */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
@@ -690,18 +421,6 @@ id|fxsave
 suffix:semicolon
 )brace
 suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|seg
-r_int
-r_int
-id|seg
-suffix:semicolon
-DECL|typedef|mm_segment_t
-)brace
-id|mm_segment_t
-suffix:semicolon
 DECL|struct|tss_struct
 r_struct
 id|tss_struct
@@ -756,6 +475,7 @@ id|io_bitmap
 id|IO_BITMAP_SIZE
 )braket
 suffix:semicolon
+DECL|variable|____cacheline_aligned
 )brace
 id|__attribute__
 c_func
@@ -764,6 +484,7 @@ c_func
 id|packed
 )paren
 )paren
+id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|thread_struct
 r_struct
@@ -876,6 +597,8 @@ DECL|macro|N_EXCEPTION_STACKS
 mdefine_line|#define N_EXCEPTION_STACKS 3  /* hw limit: 7 */
 DECL|macro|EXCEPTION_STKSZ
 mdefine_line|#define EXCEPTION_STKSZ 1024
+DECL|macro|EXCEPTION_STK_ORDER
+mdefine_line|#define EXCEPTION_STK_ORDER 0
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;asm volatile(&quot;movl %0,%%fs; movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (0));&t; &bslash;&n;&t;load_gs_index(0);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(regs)-&gt;rip = (new_rip);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;write_pda(oldrsp, (new_rsp));&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;cs = __USER_CS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;ss = __USER_DS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;eflags = 0x200;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while(0) 
 r_struct
@@ -976,6 +699,45 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Stop speculative execution */
+DECL|function|sync_core
+r_extern
+r_inline
+r_void
+id|sync_core
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|tmp
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;cpuid&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+l_int|1
+)paren
+suffix:colon
+l_string|&quot;ebx&quot;
+comma
+l_string|&quot;ecx&quot;
+comma
+l_string|&quot;edx&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu 1
 DECL|macro|ARCH_HAS_PREFETCH
@@ -1022,5 +784,7 @@ DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
+DECL|macro|stack_current
+mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

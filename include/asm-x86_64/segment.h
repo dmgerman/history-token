@@ -18,6 +18,8 @@ DECL|macro|__USER_CS
 mdefine_line|#define __USER_CS     0x33   /* 6*8+3 */ 
 DECL|macro|__USER32_DS
 mdefine_line|#define __USER32_DS&t;__USER_DS 
+DECL|macro|__KERNEL16_CS
+mdefine_line|#define __KERNEL16_CS&t;(GDT_ENTRY_KERNELCS16 * 8)
 DECL|macro|GDT_ENTRY_TLS
 mdefine_line|#define GDT_ENTRY_TLS 1
 DECL|macro|GDT_ENTRY_TSS
@@ -28,8 +30,9 @@ DECL|macro|GDT_ENTRY_TLS_MIN
 mdefine_line|#define GDT_ENTRY_TLS_MIN 11
 DECL|macro|GDT_ENTRY_TLS_MAX
 mdefine_line|#define GDT_ENTRY_TLS_MAX 13
-DECL|macro|GDT_ENTRY_LONGBASE
-mdefine_line|#define GDT_ENTRY_LONGBASE 14
+multiline_comment|/* 14 free */
+DECL|macro|GDT_ENTRY_KERNELCS16
+mdefine_line|#define GDT_ENTRY_KERNELCS16 15
 DECL|macro|GDT_ENTRY_TLS_ENTRIES
 mdefine_line|#define GDT_ENTRY_TLS_ENTRIES 3
 DECL|macro|IDT_ENTRIES

@@ -2660,6 +2660,8 @@ id|info
 comma
 op_amp
 id|scr-&gt;pt
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

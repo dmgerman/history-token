@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;,&n; *&t;&t;&t;All Rights Reserved.&n; *&t;Based on wdt.c and wdt977.c by Alan Cox and Woody Suwalski respectively.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; *&t;Changelog:&n; *&t;20020220 Zwane Mwaikambo&t;Code based on datasheet, no hardware.&n; *&t;20020221 Zwane Mwaikambo&t;Cleanups as suggested by Jeff Garzik and Alan Cox.&n; *&t;20020222 Zwane Mwaikambo&t;Added probing.&n; *&t;20020225 Zwane Mwaikambo&t;Added ISAPNP support.&n; *&t;20020412 Rob Radez&t;&t;Broke out start/stop functions&n; *&t;&t; &lt;rob@osinvestor.com&gt;&t;Return proper status instead of temperature warning&n; *&t;&t;&t;&t;&t;Add WDIOC_GETBOOTSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;&t;&t;&t;&t;Fix CONFIG_WATCHDOG_NOWAYOUT&n; *&t;20020530 Joel Becker&t;&t;Add Matt Domsch&squot;s nowayout module option&n; *&n; */
+multiline_comment|/*&n; *&t;National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;,&n; *&t;&t;&t;All Rights Reserved.&n; *&t;Based on wdt.c and wdt977.c by Alan Cox and Woody Suwalski respectively.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; *&t;Changelog:&n; *&t;20020220 Zwane Mwaikambo&t;Code based on datasheet, no hardware.&n; *&t;20020221 Zwane Mwaikambo&t;Cleanups as suggested by Jeff Garzik and Alan Cox.&n; *&t;20020222 Zwane Mwaikambo&t;Added probing.&n; *&t;20020225 Zwane Mwaikambo&t;Added ISAPNP support.&n; *&t;20020412 Rob Radez&t;&t;Broke out start/stop functions&n; *&t;&t; &lt;rob@osinvestor.com&gt;&t;Return proper status instead of temperature warning&n; *&t;&t;&t;&t;&t;Add WDIOC_GETBOOTSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;&t;&t;&t;&t;Fix CONFIG_WATCHDOG_NOWAYOUT&n; *&t;20020530 Joel Becker&t;&t;Add Matt Domsch&squot;s nowayout module option&n; *&t;20030116 Adam Belay&t;&t;Updated to the latest pnp code&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -102,7 +102,7 @@ id|spinlock_t
 id|sc1200wdt_lock
 suffix:semicolon
 multiline_comment|/* io port access serialisation */
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#if defined CONFIG_PNP
 DECL|variable|isapnp
 r_static
 r_int
@@ -113,7 +113,7 @@ suffix:semicolon
 DECL|variable|wdt_dev
 r_static
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|wdt_dev
 suffix:semicolon
@@ -1097,144 +1097,74 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
-DECL|function|sc1200wdt_isapnp_probe
+macro_line|#if defined CONFIG_PNP
+DECL|variable|scl200wdt_pnp_devices
+r_struct
+id|pnp_device_id
+id|scl200wdt_pnp_devices
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* National Semiconductor PC87307/PC97307 watchdog component */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;NSC0800&quot;
+comma
+dot
+id|driver_data
+op_assign
+l_int|0
+)brace
+comma
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;&quot;
+)brace
+)brace
+suffix:semicolon
+DECL|function|scl200wdt_pnp_probe
 r_static
 r_int
-id|__init
-id|sc1200wdt_isapnp_probe
+id|scl200wdt_pnp_probe
 c_func
 (paren
-r_void
+r_struct
+id|pnp_dev
+op_star
+id|dev
+comma
+r_const
+r_struct
+id|pnp_device_id
+op_star
+id|dev_id
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
-multiline_comment|/* The WDT is logical device 8 on the main device */
-id|wdt_dev
-op_assign
-id|isapnp_find_dev
-c_func
-(paren
-l_int|NULL
-comma
-id|ISAPNP_VENDOR
-c_func
-(paren
-l_char|&squot;N&squot;
-comma
-l_char|&squot;S&squot;
-comma
-l_char|&squot;C&squot;
-)paren
-comma
-id|ISAPNP_FUNCTION
-c_func
-(paren
-l_int|0x08
-)paren
-comma
-l_int|NULL
-)paren
-suffix:semicolon
+multiline_comment|/* this driver only supports one card at a time */
 r_if
 c_cond
 (paren
+id|wdt_dev
+op_logical_or
 op_logical_neg
-id|wdt_dev
+id|isapnp
 )paren
 r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|wdt_dev
-op_member_access_from_pointer
-id|prepare
-c_func
-(paren
-id|wdt_dev
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;ISA PnP found device that could not be autoconfigured&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|pci_resource_flags
-c_func
-(paren
-id|wdt_dev
-comma
-l_int|0
-)paren
-op_amp
-id|IORESOURCE_IO
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;ISA PnP could not find io ports&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|wdt_dev
-op_member_access_from_pointer
-id|activate
-c_func
-(paren
-id|wdt_dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_logical_and
-(paren
-id|ret
-op_ne
 op_minus
 id|EBUSY
-)paren
-)paren
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
-multiline_comment|/* io port resource overriding support? */
+id|wdt_dev
+op_assign
+id|dev
+suffix:semicolon
 id|io
 op_assign
-id|pci_resource_start
+id|pnp_port_start
 c_func
 (paren
 id|wdt_dev
@@ -1244,7 +1174,7 @@ l_int|0
 suffix:semicolon
 id|io_len
 op_assign
-id|pci_resource_len
+id|pnp_port_len
 c_func
 (paren
 id|wdt_dev
@@ -1252,12 +1182,41 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|io
+comma
+id|io_len
+comma
+id|SC1200_MODULE_NAME
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 id|PFX
-l_string|&quot;ISA PnP found device at io port %#x/%d&bslash;n&quot;
+l_string|&quot;Unable to register IO port %#x&bslash;n&quot;
+comma
+id|io
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scl200wdt: PnP device found at io port %#x/%d&bslash;n&quot;
 comma
 id|io
 comma
@@ -1268,7 +1227,68 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISAPNP */
+DECL|function|scl200wdt_pnp_remove
+r_static
+r_void
+id|scl200wdt_pnp_remove
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|wdt_dev
+)paren
+(brace
+id|release_region
+c_func
+(paren
+id|io
+comma
+id|io_len
+)paren
+suffix:semicolon
+id|wdt_dev
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+DECL|variable|scl200wdt_pnp_driver
+r_static
+r_struct
+id|pnp_driver
+id|scl200wdt_pnp_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;scl200wdt&quot;
+comma
+dot
+id|id_table
+op_assign
+id|scl200wdt_pnp_devices
+comma
+dot
+id|probe
+op_assign
+id|scl200wdt_pnp_probe
+comma
+dot
+id|remove
+op_assign
+id|scl200wdt_pnp_remove
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|sc1200wdt_init
 r_static
 r_int
@@ -1304,7 +1324,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#if defined CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -1313,9 +1333,11 @@ id|isapnp
 (brace
 id|ret
 op_assign
-id|sc1200wdt_isapnp_probe
+id|pnp_register_driver
 c_func
 (paren
+op_amp
+id|scl200wdt_pnp_driver
 )paren
 suffix:semicolon
 r_if
@@ -1354,6 +1376,18 @@ r_goto
 id|out_clean
 suffix:semicolon
 )brace
+multiline_comment|/* now that the user has specified an IO port and we haven&squot;t detected&n;&t; * any devices, disable pnp support */
+id|isapnp
+op_assign
+l_int|0
+suffix:semicolon
+id|pnp_unregister_driver
+c_func
+(paren
+op_amp
+id|scl200wdt_pnp_driver
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1385,7 +1419,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_goto
-id|out_pnp
+id|out_clean
 suffix:semicolon
 )brace
 id|ret
@@ -1486,25 +1520,6 @@ comma
 id|io_len
 )paren
 suffix:semicolon
-id|out_pnp
-suffix:colon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
-r_if
-c_cond
-(paren
-id|isapnp
-op_logical_and
-id|wdt_dev
-)paren
-id|wdt_dev
-op_member_access_from_pointer
-id|deactivate
-c_func
-(paren
-id|wdt_dev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_goto
 id|out_clean
 suffix:semicolon
@@ -1533,24 +1548,22 @@ op_amp
 id|sc1200wdt_notifier
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#if defined CONFIG_PNP
 r_if
 c_cond
 (paren
 id|isapnp
-op_logical_and
-id|wdt_dev
 )paren
 (brace
-id|wdt_dev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_unregister_driver
 c_func
 (paren
-id|wdt_dev
+op_amp
+id|scl200wdt_pnp_driver
 )paren
 suffix:semicolon
 )brace
+r_else
 macro_line|#endif
 id|release_region
 c_func
@@ -1630,7 +1643,7 @@ id|ints
 l_int|2
 )braket
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#if defined CONFIG_PNP
 r_if
 c_cond
 (paren

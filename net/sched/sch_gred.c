@@ -282,7 +282,11 @@ op_amp
 l_int|0xf
 )paren
 OG
+(paren
 id|t-&gt;DPs
+op_minus
+l_int|1
+)paren
 )paren
 op_logical_or
 op_logical_neg
