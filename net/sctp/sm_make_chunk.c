@@ -3150,7 +3150,7 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -5809,7 +5809,7 @@ comma
 id|transports
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|pos

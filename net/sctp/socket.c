@@ -2190,14 +2190,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Clean up any skbs sitting on the receive queue.  */
-id|skb_queue_purge
+id|sctp_queue_purge_ulpevents
 c_func
 (paren
 op_amp
 id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
-id|skb_queue_purge
+id|sctp_queue_purge_ulpevents
 c_func
 (paren
 op_amp
@@ -4306,10 +4306,10 @@ id|MSG_EOR
 suffix:semicolon
 id|out_free
 suffix:colon
-id|sctp_ulpevent_free
+id|sctp_ulpevent_kfree_skb
 c_func
 (paren
-id|event
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Free the skb. */

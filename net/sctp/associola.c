@@ -2420,7 +2420,7 @@ op_assign
 id|assoc-&gt;base.sk
 suffix:semicolon
 multiline_comment|/* Delete the association from the old endpoint&squot;s list of&n;&t; * associations.&n;&t; */
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
