@@ -8161,6 +8161,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|variable|ub_driver
+r_static
 r_struct
 id|usb_driver
 id|ub_driver
