@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.&n; *  membase is an &squot;ioremapped&squot; cookie.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -90,24 +91,23 @@ multiline_comment|/* defined in asm/serial.h */
 suffix:semicolon
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;(ARRAY_SIZE(old_serial_port) + CONFIG_SERIAL_8250_NR_UARTS)
-macro_line|#if defined(CONFIG_SERIAL_8250_RSA) &amp;&amp; defined(MODULE)
+macro_line|#ifdef CONFIG_SERIAL_8250_RSA
 DECL|macro|PORT_RSA_MAX
 mdefine_line|#define PORT_RSA_MAX 4
 DECL|variable|probe_rsa
 r_static
+r_int
 r_int
 id|probe_rsa
 (braket
 id|PORT_RSA_MAX
 )braket
 suffix:semicolon
-DECL|variable|force_rsa
+DECL|variable|probe_rsa_count
 r_static
 r_int
-id|force_rsa
-(braket
-id|PORT_RSA_MAX
-)braket
+r_int
+id|probe_rsa_count
 suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_8250_RSA  */
 DECL|struct|uart_8250_port
@@ -2475,7 +2475,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SERIAL_8250_RSA) &amp;&amp; defined(MODULE)
+macro_line|#ifdef CONFIG_SERIAL_8250_RSA
 multiline_comment|/*&n;&t; * Only probe for RSA ports if we got the region.&n;&t; */
 r_if
 c_cond
@@ -2501,7 +2501,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|PORT_RSA_MAX
+id|probe_rsa_count
 suffix:semicolon
 op_increment
 id|i
@@ -2510,38 +2510,12 @@ id|i
 r_if
 c_cond
 (paren
-op_logical_neg
-id|probe_rsa
-(braket
-id|i
-)braket
-op_logical_and
-op_logical_neg
-id|force_rsa
-(braket
-id|i
-)braket
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|probe_rsa
 (braket
 id|i
 )braket
 op_eq
 id|up-&gt;port.iobase
-op_logical_or
-id|force_rsa
-(braket
-id|i
-)braket
-op_eq
-id|up-&gt;port.iobase
-)paren
 op_logical_and
 id|__enable_rsa
 c_func
@@ -9069,12 +9043,14 @@ c_func
 l_string|&quot;Generic 8250/16x50 serial driver $Revision: 1.90 $&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|share_irqs
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9086,19 +9062,17 @@ l_string|&quot;Share IRQs with other non-8250/16x50 devices&quot;
 l_string|&quot; (unsafe)&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_8250_RSA) &amp;&amp; defined(MODULE)
-id|MODULE_PARM
+macro_line|#ifdef CONFIG_SERIAL_8250_RSA
+id|module_param_array
 c_func
 (paren
 id|probe_rsa
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PORT_RSA_MAX
-)paren
-l_string|&quot;i&quot;
+id|ulong
+comma
+id|probe_rsa_count
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9107,28 +9081,6 @@ c_func
 id|probe_rsa
 comma
 l_string|&quot;Probe I/O ports for RSA&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|force_rsa
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PORT_RSA_MAX
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|force_rsa
-comma
-l_string|&quot;Force I/O ports for RSA&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
