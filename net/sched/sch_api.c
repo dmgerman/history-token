@@ -5173,12 +5173,14 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|psched_us_per_tick
+r_static
 r_int
 id|psched_us_per_tick
 op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|psched_tick_per_us
+r_static
 r_int
 id|psched_tick_per_us
 op_assign
