@@ -1499,7 +1499,7 @@ id|bdev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * FIXME: What is this function actually trying to do?  Why &quot;zones[0]&quot;?&n; * Is it still correct/needed if/when blockdev mappings use GFP_HIGHUSER?&n; */
+multiline_comment|/*&n; * Kick pdflush then try to free up some ZONE_NORMAL memory.&n; */
 DECL|function|free_more_memory
 r_static
 r_void
@@ -1531,16 +1531,7 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
-)paren
-suffix:semicolon
-id|try_to_free_pages
-c_func
-(paren
-id|zone
-comma
-id|GFP_NOFS
-comma
-l_int|0
+l_int|1024
 )paren
 suffix:semicolon
 id|blk_run_queues
@@ -1551,6 +1542,16 @@ suffix:semicolon
 id|yield
 c_func
 (paren
+)paren
+suffix:semicolon
+id|try_to_free_pages
+c_func
+(paren
+id|zone
+comma
+id|GFP_NOFS
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

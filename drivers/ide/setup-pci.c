@@ -1309,20 +1309,6 @@ id|ide_hwif_t
 op_star
 id|hwif
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|dev
-op_member_access_from_pointer
-r_class
-op_rshift
-l_int|8
-)paren
-op_ne
-id|PCI_CLASS_STORAGE_IDE
-)paren
-(brace
 multiline_comment|/*  Possibly we should fail if these checks report true */
 id|ide_pci_check_iomem
 c_func
@@ -1409,7 +1395,6 @@ suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

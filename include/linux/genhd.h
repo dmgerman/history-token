@@ -217,6 +217,8 @@ DECL|macro|GENHD_FL_DRIVERFS
 mdefine_line|#define GENHD_FL_DRIVERFS  2
 DECL|macro|GENHD_FL_DEVFS
 mdefine_line|#define GENHD_FL_DEVFS&t;4
+DECL|macro|GENHD_FL_CD
+mdefine_line|#define GENHD_FL_CD&t;8
 DECL|struct|gendisk
 r_struct
 id|gendisk
@@ -265,6 +267,11 @@ DECL|member|capacity
 id|sector_t
 id|capacity
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|member|flags
 r_int
 id|flags
@@ -300,13 +307,13 @@ suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
 r_extern
 r_void
-id|add_gendisk
+id|add_disk
 c_func
 (paren
 r_struct
 id|gendisk
 op_star
-id|gp
+id|disk
 )paren
 suffix:semicolon
 r_extern
@@ -982,6 +989,26 @@ id|disk
 comma
 r_int
 id|part
+)paren
+suffix:semicolon
+multiline_comment|/* will go away */
+r_extern
+r_void
+id|blk_set_probe
+c_func
+(paren
+r_int
+id|major
+comma
+r_struct
+id|gendisk
+op_star
+(paren
+id|p
+)paren
+(paren
+r_int
+)paren
 )paren
 suffix:semicolon
 DECL|function|disk_index

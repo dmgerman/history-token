@@ -109,8 +109,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t allocate hashbin!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

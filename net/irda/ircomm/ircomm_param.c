@@ -598,8 +598,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), no room for parameter!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no room for parameter!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

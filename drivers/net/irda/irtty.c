@@ -1315,8 +1315,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Setting speed to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Setting speed to %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -1463,8 +1464,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), &lt;%ld&gt;&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -1517,8 +1519,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2170,8 +2173,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not ready yet!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not ready yet!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2306,8 +2310,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -2599,8 +2604,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2728,8 +2734,9 @@ c_func
 (paren
 l_int|5
 comma
+l_string|&quot;%s(), finished with frame!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), finished with frame!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;stats.tx_packets
@@ -2765,8 +2772,9 @@ c_func
 (paren
 l_int|5
 comma
+l_string|&quot;%s(), Changing speed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_task_execute
@@ -2948,8 +2956,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), error doing ioctl!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), error doing ioctl!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3015,8 +3024,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), mode=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), mode=%s&bslash;n&quot;
 comma
 id|infrared_mode
 (braket
@@ -3376,8 +3386,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Ready to play! */
@@ -3620,8 +3631,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

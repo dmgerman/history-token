@@ -444,7 +444,7 @@ id|iobase
 )paren
 suffix:semicolon
 r_static
-r_void
+id|__u8
 id|nsc_ircc_change_speed
 c_func
 (paren
@@ -3754,8 +3754,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3790,8 +3791,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s is not for IrDA mode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s is not for IrDA mode&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3826,8 +3828,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), invalid data_rate&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid data_rate&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3843,10 +3846,10 @@ id|BSR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function nsc_ircc_change_speed (self, baud)&n; *&n; *    Change the speed of the device&n; *&n; */
+multiline_comment|/*&n; * Function nsc_ircc_change_speed (self, baud)&n; *&n; *    Change the speed of the device&n; *&n; * This function *must* be called with irq off and spin-lock.&n; */
 DECL|function|nsc_ircc_change_speed
 r_static
-r_void
+id|__u8
 id|nsc_ircc_change_speed
 c_func
 (paren
@@ -3877,13 +3880,18 @@ suffix:semicolon
 id|__u8
 id|bank
 suffix:semicolon
+id|__u8
+id|ier
+suffix:semicolon
+multiline_comment|/* Interrupt enable register */
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), speed=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), speed=%d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -3896,6 +3904,7 @@ op_ne
 l_int|NULL
 comma
 r_return
+l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -4077,8 +4086,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 576000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 576000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4095,8 +4105,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 1152000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 1152000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4113,8 +4124,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 4000000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 4000000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4130,8 +4142,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown baud rate of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown baud rate of %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -4266,15 +4279,9 @@ id|dev-&gt;hard_start_xmit
 op_assign
 id|nsc_ircc_hard_xmit_fir
 suffix:semicolon
-id|outb
-c_func
-(paren
+id|ier
+op_assign
 id|IER_SFIF_IE
-comma
-id|iobase
-op_plus
-id|IER
-)paren
 suffix:semicolon
 id|nsc_ircc_dma_receive
 c_func
@@ -4290,17 +4297,22 @@ id|dev-&gt;hard_start_xmit
 op_assign
 id|nsc_ircc_hard_xmit_sir
 suffix:semicolon
+id|ier
+op_assign
+id|IER_RXHDL_IE
+suffix:semicolon
+)brace
+multiline_comment|/* Set our current interrupt mask */
 id|outb
 c_func
 (paren
-id|IER_RXHDL_IE
+id|ier
 comma
 id|iobase
 op_plus
 id|IER
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Restore BSR */
 id|outb
 c_func
@@ -4312,11 +4324,9 @@ op_plus
 id|BSR
 )paren
 suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
+multiline_comment|/* Make sure interrupt handlers keep the proper interrupt mask */
+r_return
+id|ier
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function nsc_ircc_hard_xmit (skb, dev)&n; *&n; *    Transmit the frame!&n; *&n; */
@@ -4386,6 +4396,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -4412,12 +4432,21 @@ l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/* Check for empty frame */
+multiline_comment|/* Check for empty frame. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|skb-&gt;len
+)paren
+(brace
+multiline_comment|/* If we just sent a frame, we get called before&n;&t;&t;&t; * the last bytes get out (because of the SIR FIFO).&n;&t;&t;&t; * If this is the case, let interrupt handler change&n;&t;&t;&t; * the speed itself... Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;io.direction
+op_eq
+id|IO_RECV
 )paren
 (brace
 id|nsc_ircc_change_speed
@@ -4426,6 +4455,31 @@ c_func
 id|self
 comma
 id|speed
+)paren
+suffix:semicolon
+multiline_comment|/* TODO : For SIR-&gt;SIR, the next packet&n;&t;&t;&t;&t; * may get corrupted - Jean II */
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|self-&gt;new_speed
+op_assign
+id|speed
+suffix:semicolon
+multiline_comment|/* Queue will be restarted after speed change&n;&t;&t;&t;&t; * to make sure packets gets through the&n;&t;&t;&t;&t; * proper xmit handler - Jean II */
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4444,15 +4498,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Save current bank */
 id|bank
 op_assign
@@ -4592,6 +4637,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -4618,12 +4673,21 @@ l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/* Check for empty frame */
+multiline_comment|/* Check for empty frame. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|skb-&gt;len
+)paren
+(brace
+multiline_comment|/* If we are currently transmitting, defer to&n;&t;&t;&t; * interrupt handler. - Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;tx_fifo.len
+op_eq
+l_int|0
 )paren
 (brace
 id|nsc_ircc_change_speed
@@ -4632,6 +4696,30 @@ c_func
 id|self
 comma
 id|speed
+)paren
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|self-&gt;new_speed
+op_assign
+id|speed
+suffix:semicolon
+multiline_comment|/* Keep queue stopped :&n;&t;&t;&t;&t; * the speed change operation may change the&n;&t;&t;&t;&t; * xmit handler, and we want to make sure&n;&t;&t;&t;&t; * the next packet get through the proper&n;&t;&t;&t;&t; * Tx path, so block the Tx queue until&n;&t;&t;&t;&t; * the speed change has been done.&n;&t;&t;&t;&t; * Jean II */
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4645,20 +4733,14 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* Change speed after current frame */
 id|self-&gt;new_speed
 op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+)brace
 multiline_comment|/* Save current bank */
 id|bank
 op_assign
@@ -4912,13 +4994,21 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-multiline_comment|/* Not busy transmitting anymore if window is not full */
+multiline_comment|/* Not busy transmitting anymore if window is not full,&n;&t; * and if we don&squot;t need to change speed */
 r_if
 c_cond
+(paren
 (paren
 id|self-&gt;tx_fifo.free
 OL
 id|MAX_TX_WINDOW
+)paren
+op_logical_and
+(paren
+id|self-&gt;new_speed
+op_eq
+l_int|0
+)paren
 )paren
 id|netif_wake_queue
 c_func
@@ -5140,8 +5230,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Save current bank */
@@ -5185,8 +5276,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), warning, FIFO not empty yet!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), warning, FIFO not empty yet!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIFO may still be filled to the Tx interrupt threshold */
@@ -5234,8 +5326,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), fifo_size %d ; %d sent of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), fifo_size %d ; %d sent of %d&bslash;n&quot;
 comma
 id|fifo_size
 comma
@@ -5288,8 +5381,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -5374,26 +5468,6 @@ id|self-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Check if we need to change the speed */
-r_if
-c_cond
-(paren
-id|self-&gt;new_speed
-)paren
-(brace
-id|nsc_ircc_change_speed
-c_func
-(paren
-id|self
-comma
-id|self-&gt;new_speed
-)paren
-suffix:semicolon
-id|self-&gt;new_speed
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Finished with this frame, so prepare for next */
 id|self-&gt;tx_fifo.ptr
 op_increment
@@ -5438,13 +5512,21 @@ op_assign
 id|self-&gt;tx_buff.head
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure we have room for more frames */
+multiline_comment|/* Make sure we have room for more frames and&n;&t; * that we don&squot;t need to change speed */
 r_if
 c_cond
+(paren
 (paren
 id|self-&gt;tx_fifo.free
 OL
 id|MAX_TX_WINDOW
+)paren
+op_logical_and
+(paren
+id|self-&gt;new_speed
+op_eq
+l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* Not busy transmitting anymore */
@@ -5780,8 +5862,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), window is full!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), window is full!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -6394,7 +6477,16 @@ op_amp
 id|EIR_TXEMP_EV
 )paren
 (brace
-multiline_comment|/* Check if we need to change the speed? */
+multiline_comment|/* Turn around and get ready to receive some data */
+id|self-&gt;io.direction
+op_assign
+id|IO_RECV
+suffix:semicolon
+id|self-&gt;ier
+op_assign
+id|IER_RXHDL_IE
+suffix:semicolon
+multiline_comment|/* Check if we need to change the speed?&n;&t;&t; * Need to be after self-&gt;io.direction to avoid race with&n;&t;&t; * nsc_ircc_hard_xmit_sir() - Jean II */
 r_if
 c_cond
 (paren
@@ -6406,10 +6498,13 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Changing speed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|self-&gt;ier
+op_assign
 id|nsc_ircc_change_speed
 c_func
 (paren
@@ -6422,6 +6517,12 @@ id|self-&gt;new_speed
 op_assign
 l_int|0
 suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|self-&gt;netdev
+)paren
+suffix:semicolon
 multiline_comment|/* Check if we are going to FIR */
 r_if
 c_cond
@@ -6431,25 +6532,11 @@ OG
 l_int|115200
 )paren
 (brace
-multiline_comment|/* Should wait for status FIFO interrupt */
-id|self-&gt;ier
-op_assign
-id|IER_SFIF_IE
-suffix:semicolon
 multiline_comment|/* No need to do anymore SIR stuff */
 r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Turn around and get ready to receive some data */
-id|self-&gt;io.direction
-op_assign
-id|IO_RECV
-suffix:semicolon
-id|self-&gt;ier
-op_assign
-id|IER_RXHDL_IE
-suffix:semicolon
 )brace
 multiline_comment|/* Rx FIFO threshold or timeout */
 r_if
@@ -6665,7 +6752,23 @@ id|self
 )paren
 )paren
 (brace
-multiline_comment|/* Check if there are more frames to be transmitted */
+r_if
+c_cond
+(paren
+id|self-&gt;new_speed
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* As we stop the Tx queue, the speed change&n;&t;&t;&t;&t; * need to be done when the Tx fifo is&n;&t;&t;&t;&t; * empty. Ask for a Tx done interrupt */
+id|self-&gt;ier
+op_assign
+id|IER_TXEMP_IE
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Check if there are more frames to be&n;&t;&t;&t;&t; * transmitted */
 r_if
 c_cond
 (paren
@@ -6688,6 +6791,17 @@ op_assign
 id|IER_SFIF_IE
 suffix:semicolon
 )brace
+r_else
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), potential &quot;
+l_string|&quot;Tx queue lockup !&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -6697,6 +6811,38 @@ op_assign
 id|IER_DMA_IE
 suffix:semicolon
 )brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|eir
+op_amp
+id|EIR_TXEMP_EV
+)paren
+(brace
+multiline_comment|/* The Tx FIFO has totally drained out, so now we can change&n;&t;&t; * the speed... - Jean II */
+id|self-&gt;ier
+op_assign
+id|nsc_ircc_change_speed
+c_func
+(paren
+id|self
+comma
+id|self-&gt;new_speed
+)paren
+suffix:semicolon
+id|self-&gt;new_speed
+op_assign
+l_int|0
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|self-&gt;netdev
+)paren
+suffix:semicolon
+multiline_comment|/* Note : nsc_ircc_change_speed() restarted Rx fifo */
 )brace
 id|outb
 c_func
@@ -7066,8 +7212,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Setup to be a normal IrDA network device driver */
@@ -7117,8 +7264,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7338,8 +7486,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7552,8 +7701,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

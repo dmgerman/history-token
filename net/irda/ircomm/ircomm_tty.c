@@ -348,8 +348,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t allocate hashbin!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -528,8 +529,9 @@ id|driver
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(): Couldn&squot;t register serial driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;Couldn&squot;t register serial driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -642,8 +644,9 @@ id|ret
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), failed to unregister driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed to unregister driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -840,8 +843,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), error attaching cable!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), error attaching cable!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1528,8 +1532,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), kmalloc failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), kmalloc failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -2064,8 +2069,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), bad serial port count for ttys%d: %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), bad serial port count for ttys%d: %d&bslash;n&quot;
 comma
 id|self-&gt;line
 comma

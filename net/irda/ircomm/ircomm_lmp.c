@@ -688,8 +688,9 @@ id|ret
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb

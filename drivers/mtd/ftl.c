@@ -46,16 +46,6 @@ macro_line|#endif
 multiline_comment|/* Funky stuff for setting up a block device */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;&t;FTL_MAJOR
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(minor)&t;((minor)&gt;&gt;5)
-DECL|macro|REGION_NR
-mdefine_line|#define REGION_NR(minor)&t;(((minor)&gt;&gt;3)&amp;3)
-DECL|macro|PART_NR
-mdefine_line|#define PART_NR(minor)&t;&t;((minor)&amp;7)
-DECL|macro|MINOR_NR
-mdefine_line|#define MINOR_NR(dev,reg,part)&t;(((dev)&lt;&lt;5)+((reg)&lt;&lt;3)+(part))
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Maximum number of separate memory devices we&squot;ll allow */
@@ -89,7 +79,7 @@ id|mtd
 suffix:semicolon
 DECL|member|disk
 r_struct
-id|gndisk
+id|gendisk
 op_star
 id|disk
 suffix:semicolon
@@ -317,15 +307,6 @@ r_struct
 id|file
 op_star
 id|file
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ftl_reread_partitions
-c_func
-(paren
-id|kdev_t
-id|dev
 )paren
 suffix:semicolon
 r_static
@@ -4873,7 +4854,6 @@ id|part-&gt;header.FormattedSize
 op_div
 id|SECTOR_SIZE
 )paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4942,7 +4922,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 (brace
 r_case
@@ -5431,31 +5415,10 @@ id|device
 op_assign
 id|partition
 suffix:semicolon
-id|add_gendisk
+id|set_capacity
 c_func
 (paren
 id|disk
-)paren
-suffix:semicolon
-id|register_disk
-c_func
-(paren
-id|disk
-comma
-id|mk_kdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|device
-op_lshift
-l_int|4
-)paren
-comma
-id|MAX_PART
-comma
-op_amp
-id|ftl_blk_fops
 comma
 id|le32_to_cpu
 c_func
@@ -5464,6 +5427,12 @@ id|partition-&gt;header.FormattedSize
 )paren
 op_div
 id|SECTOR_SIZE
+)paren
+suffix:semicolon
+id|add_disk
+c_func
+(paren
+id|disk
 )paren
 suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
@@ -5520,8 +5489,6 @@ id|mtd
 (brace
 r_int
 id|i
-comma
-id|j
 suffix:semicolon
 multiline_comment|/* Q: What happens if you try to remove a device which has&n;&t; *    a currently-open FTL partition on it?&n;&t; *&n;&t; * A: You don&squot;t. The ftl_open routine is responsible for&n;&t; *    increasing the use count of the driver module which&n;&t; *    it uses.&n;&t; */
 multiline_comment|/* That&squot;s the theory, anyway :) */
@@ -5606,7 +5573,7 @@ id|myparts
 id|i
 )braket
 op_member_access_from_pointer
-id|disk-&gt;name
+id|disk-&gt;major_name
 )paren
 suffix:semicolon
 id|kfree
@@ -5646,8 +5613,11 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|DEBUG
 c_func
@@ -5696,6 +5666,9 @@ id|FTL_MAJOR
 comma
 op_amp
 id|do_ftl_request
+comma
+op_amp
+id|lock
 )paren
 suffix:semicolon
 id|register_mtd_user
@@ -5742,12 +5715,6 @@ c_func
 (paren
 id|FTL_MAJOR
 )paren
-)paren
-suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|FTL_MAJOR
 )paren
 suffix:semicolon
 )brace

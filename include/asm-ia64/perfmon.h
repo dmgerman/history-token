@@ -52,6 +52,8 @@ mdefine_line|#define PFM_FL_SYSTEM_WIDE&t; 0x08&t;/* create a system wide contex
 multiline_comment|/*&n; * PMC flags&n; */
 DECL|macro|PFM_REGFL_OVFL_NOTIFY
 mdefine_line|#define PFM_REGFL_OVFL_NOTIFY&t;0x1&t;/* send notification on overflow */
+DECL|macro|PFM_REGFL_RANDOM
+mdefine_line|#define PFM_REGFL_RANDOM&t;0x2&t;/* randomize sampling periods    */
 multiline_comment|/*&n; * PMD/PMC/IBR/DBR return flags (ignored on input)&n; *&n; * Those flags are used on output and must be checked in case EAGAIN is returned&n; * by any of the calls using a pfarg_reg_t or pfarg_dbreg_t structure.&n; */
 DECL|macro|PFM_REG_RETFL_NOTAVAIL
 mdefine_line|#define PFM_REG_RETFL_NOTAVAIL&t;(1U&lt;&lt;31) /* set if register is implemented but not available */
@@ -158,12 +160,24 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* which other counters to reset on overflow */
+DECL|member|reg_random_seed
+r_int
+r_int
+id|reg_random_seed
+suffix:semicolon
+multiline_comment|/* seed value when randomization is used */
+DECL|member|reg_random_mask
+r_int
+r_int
+id|reg_random_mask
+suffix:semicolon
+multiline_comment|/* bitmask used to limit random value */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 (braket
-l_int|16
+l_int|14
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
@@ -289,7 +303,7 @@ DECL|macro|PFM_VERSION_MAJOR
 mdefine_line|#define PFM_VERSION_MAJOR(x)&t;(((x)&gt;&gt;16) &amp; 0xffff)
 DECL|macro|PFM_VERSION_MINOR
 mdefine_line|#define PFM_VERSION_MINOR(x)&t;((x) &amp; 0xffff)
-multiline_comment|/*&n; * Entry header in the sampling buffer.&n; * The header is directly followed with the PMDS saved in increasing index &n; * order: PMD4, PMD5, .... How many PMDs are present is determined by the &n; * user program during context creation.&n; *&n; * XXX: in this version of the entry, only up to 64 registers can be recorded&n; * This should be enough for quite some time. Always check sampling format&n; * before parsing entries!&n; *&n; * Inn the case where multiple counters have overflowed at the same time, the &n; * rate field indicate the initial value of the first PMD, based on the index.&n; * For instance, if PMD2 and PMD5 have ovewrflowed for this entry, the rate field&n; * will show the initial value of PMD2.&n; */
+multiline_comment|/*&n; * Entry header in the sampling buffer.  The header is directly followed&n; * with the PMDs saved in increasing index order: PMD4, PMD5, .... How&n; * many PMDs are present is determined by the user program during&n; * context creation.&n; *&n; * XXX: in this version of the entry, only up to 64 registers can be&n; * recorded. This should be enough for quite some time. Always check&n; * sampling format before parsing entries!&n; *&n; * In the case where multiple counters overflow at the same time, the&n; * last_reset_value member indicates the initial value of the PMD with&n; * the smallest index.  For instance, if PMD2 and PMD5 have overflowed,&n; * the last_reset_value member contains the initial value of PMD2.&n; */
 r_typedef
 r_struct
 (brace
@@ -303,12 +317,12 @@ r_int
 id|cpu
 suffix:semicolon
 multiline_comment|/* which cpu was used */
-DECL|member|rate
+DECL|member|last_reset_value
 r_int
 r_int
-id|rate
+id|last_reset_value
 suffix:semicolon
-multiline_comment|/* initial value of overflowed counter */
+multiline_comment|/* initial value of counter that overflowed */
 DECL|member|stamp
 r_int
 r_int
@@ -332,7 +346,7 @@ r_int
 r_int
 id|period
 suffix:semicolon
-multiline_comment|/* sampling period used by overflowed counter (smallest pmd index) */
+multiline_comment|/* unused */
 DECL|typedef|perfmon_smpl_entry_t
 )brace
 id|perfmon_smpl_entry_t

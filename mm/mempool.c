@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for wakeup_bdflush() */
+macro_line|#include &lt;linux/writeback.h&gt;
 DECL|function|add_element
 r_static
 r_void
@@ -746,6 +746,7 @@ multiline_comment|/*&n;&t; * Kick the VM at this point.&n;&t; */
 id|wakeup_bdflush
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

@@ -1804,13 +1804,6 @@ id|tty_std_termios
 )paren
 suffix:semicolon
 multiline_comment|/* block device driver support */
-DECL|variable|blk_size
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blk_size
-)paren
-suffix:semicolon
 DECL|variable|blk_dev
 id|EXPORT_SYMBOL
 c_func
@@ -3061,14 +3054,13 @@ c_func
 id|kill_fasync
 )paren
 suffix:semicolon
-DECL|variable|disk_name
+DECL|variable|partition_name
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|disk_name
+id|partition_name
 )paren
 suffix:semicolon
-multiline_comment|/* for md.c */
 multiline_comment|/* binfmt_aout */
 DECL|variable|get_write_access
 id|EXPORT_SYMBOL

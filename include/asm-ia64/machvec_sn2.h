@@ -117,14 +117,10 @@ DECL|macro|platform_cpu_init
 mdefine_line|#define platform_cpu_init&t;sn_cpu_init
 DECL|macro|platform_irq_init
 mdefine_line|#define platform_irq_init&t;sn1_irq_init
-DECL|macro|platform_map_nr
-mdefine_line|#define platform_map_nr&t;&t;sn2_map_nr
 DECL|macro|platform_send_ipi
 mdefine_line|#define platform_send_ipi&t;sn2_send_IPI
 DECL|macro|platform_global_tlb_purge
 mdefine_line|#define platform_global_tlb_purge       sn2_global_tlb_purge
-DECL|macro|platform_pci_fixup
-mdefine_line|#define platform_pci_fixup&t;sn1_pci_fixup
 macro_line|#ifdef Colin /* We are using the same is Generic IA64 calls defined in io.h */
 DECL|macro|platform_inb
 mdefine_line|#define platform_inb&t;&t;sn1_inb

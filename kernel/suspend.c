@@ -65,14 +65,6 @@ mdefine_line|#define TIMEOUT&t;(6 * HZ)&t;&t;&t;/* Timeout for stopping processe
 DECL|macro|ADDRESS
 mdefine_line|#define ADDRESS(x) ((unsigned long) phys_to_virt(((x) &lt;&lt; PAGE_SHIFT)))
 r_extern
-r_void
-id|wakeup_bdflush
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|C_A_D
 suffix:semicolon
