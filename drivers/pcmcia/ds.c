@@ -200,14 +200,14 @@ id|parent
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SOCKET_PRESENT
-mdefine_line|#define SOCKET_PRESENT&t;&t;0x01
-DECL|macro|SOCKET_BUSY
-mdefine_line|#define SOCKET_BUSY&t;&t;0x02
-DECL|macro|SOCKET_REMOVAL_PENDING
-mdefine_line|#define SOCKET_REMOVAL_PENDING&t;0x10
-DECL|macro|SOCKET_DEAD
-mdefine_line|#define SOCKET_DEAD&t;&t;0x80
+DECL|macro|DS_SOCKET_PRESENT
+mdefine_line|#define DS_SOCKET_PRESENT&t;&t;0x01
+DECL|macro|DS_SOCKET_BUSY
+mdefine_line|#define DS_SOCKET_BUSY&t;&t;&t;0x02
+DECL|macro|DS_SOCKET_REMOVAL_PENDING
+mdefine_line|#define DS_SOCKET_REMOVAL_PENDING&t;0x10
+DECL|macro|DS_SOCKET_DEAD
+mdefine_line|#define DS_SOCKET_DEAD&t;&t;&t;0x80
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Device driver ID passed to Card Services */
 DECL|variable|dev_info
@@ -771,7 +771,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_BUSY
+id|DS_SOCKET_BUSY
 )paren
 id|s-&gt;req_pending
 op_assign
@@ -806,7 +806,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_BUSY
+id|DS_SOCKET_BUSY
 )paren
 r_return
 id|s-&gt;req_result
@@ -844,7 +844,7 @@ suffix:semicolon
 id|s-&gt;state
 op_and_assign
 op_complement
-id|SOCKET_REMOVAL_PENDING
+id|DS_SOCKET_REMOVAL_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;&n;    The card status event handler.&n;    &n;======================================================================*/
@@ -900,7 +900,7 @@ suffix:colon
 id|s-&gt;state
 op_and_assign
 op_complement
-id|SOCKET_PRESENT
+id|DS_SOCKET_PRESENT
 suffix:semicolon
 r_if
 c_cond
@@ -909,13 +909,13 @@ op_logical_neg
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_REMOVAL_PENDING
+id|DS_SOCKET_REMOVAL_PENDING
 )paren
 )paren
 (brace
 id|s-&gt;state
 op_or_assign
-id|SOCKET_REMOVAL_PENDING
+id|DS_SOCKET_REMOVAL_PENDING
 suffix:semicolon
 id|schedule_delayed_work
 c_func
@@ -936,7 +936,7 @@ id|CS_EVENT_CARD_INSERTION
 suffix:colon
 id|s-&gt;state
 op_or_assign
-id|SOCKET_PRESENT
+id|DS_SOCKET_PRESENT
 suffix:semicolon
 id|handle_event
 c_func
@@ -1926,7 +1926,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_BUSY
+id|DS_SOCKET_BUSY
 )paren
 r_return
 op_minus
@@ -1935,7 +1935,7 @@ suffix:semicolon
 r_else
 id|s-&gt;state
 op_or_assign
-id|SOCKET_BUSY
+id|DS_SOCKET_BUSY
 suffix:semicolon
 )brace
 id|user
@@ -1992,7 +1992,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_PRESENT
+id|DS_SOCKET_PRESENT
 )paren
 id|queue_event
 c_func
@@ -2088,7 +2088,7 @@ id|O_RDONLY
 id|s-&gt;state
 op_and_assign
 op_complement
-id|SOCKET_BUSY
+id|DS_SOCKET_BUSY
 suffix:semicolon
 id|s-&gt;req_pending
 op_assign
@@ -2262,7 +2262,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_DEAD
+id|DS_SOCKET_DEAD
 )paren
 r_return
 op_minus
@@ -2419,7 +2419,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_DEAD
+id|DS_SOCKET_DEAD
 )paren
 r_return
 op_minus
@@ -2660,7 +2660,7 @@ c_cond
 (paren
 id|s-&gt;state
 op_amp
-id|SOCKET_DEAD
+id|DS_SOCKET_DEAD
 )paren
 r_return
 op_minus
@@ -3834,7 +3834,7 @@ id|socket-&gt;pcmcia-&gt;handle
 suffix:semicolon
 id|socket-&gt;pcmcia-&gt;state
 op_or_assign
-id|SOCKET_DEAD
+id|DS_SOCKET_DEAD
 suffix:semicolon
 id|pcmcia_put_bus_socket
 c_func
