@@ -5585,15 +5585,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|dest
 comma
 id|target
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|on_link
