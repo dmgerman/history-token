@@ -10,8 +10,6 @@ macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
 mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
 macro_line|#endif
-DECL|macro|DISPLAY_HPT34X_TIMINGS
-macro_line|#undef DISPLAY_HPT34X_TIMINGS
 r_static
 r_int
 r_int
