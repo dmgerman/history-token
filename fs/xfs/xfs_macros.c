@@ -6667,25 +6667,6 @@ id|v
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XLOG_BTOLRBB)
-r_int
-DECL|function|xlog_btolrbb
-id|xlog_btolrbb
-c_func
-(paren
-r_int
-id|b
-)paren
-(brace
-r_return
-id|XLOG_BTOLRBB
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XLOG_GRANT_ADD_SPACE)
 r_void
 DECL|function|xlog_grant_add_space
@@ -6740,6 +6721,26 @@ comma
 id|bytes
 comma
 id|type
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XFS_SB_VERSION_HASMOREBITS)
+r_int
+DECL|function|xfs_sb_version_hasmorebits
+id|xfs_sb_version_hasmorebits
+c_func
+(paren
+id|xfs_sb_t
+op_star
+id|sbp
+)paren
+(brace
+r_return
+id|XFS_SB_VERSION_HASMOREBITS
+c_func
+(paren
+id|sbp
 )paren
 suffix:semicolon
 )brace
