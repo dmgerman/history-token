@@ -2017,7 +2017,7 @@ id|name
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(BLOCK_DEV_RAM) || defined(CONFIG_BLK_DEV_FD)
+macro_line|#if defined(CONFIG_BLK_DEV_RAM) || defined(CONFIG_BLK_DEV_FD)
 DECL|function|change_floppy
 r_static
 r_void
