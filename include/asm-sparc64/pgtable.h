@@ -170,13 +170,19 @@ DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_CACHE)
 multiline_comment|/* Don&squot;t set the TTE _PAGE_W bit here, else the dirty bit never gets set. */
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE)
+mdefine_line|#define PAGE_SHARED&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE | _PAGE_EXEC)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS)
+mdefine_line|#define PAGE_COPY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_EXEC)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS)
+mdefine_line|#define PAGE_READONLY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_EXEC)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __PRIV_BITS | __ACCESS_BITS | __DIRTY_BITS)
+mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __PRIV_BITS | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | __DIRTY_BITS | _PAGE_EXEC)
+DECL|macro|PAGE_SHARED_NOEXEC
+mdefine_line|#define PAGE_SHARED_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE)
+DECL|macro|PAGE_COPY_NOEXEC
+mdefine_line|#define PAGE_COPY_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | __ACCESS_BITS)
+DECL|macro|PAGE_READONLY_NOEXEC
+mdefine_line|#define PAGE_READONLY_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | __ACCESS_BITS)
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;_PAGE_PADDR
 DECL|macro|pg_iobits
@@ -184,11 +190,11 @@ mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | &bs
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY
+mdefine_line|#define __P001&t;PAGE_READONLY_NOEXEC
 DECL|macro|__P010
-mdefine_line|#define __P010&t;PAGE_COPY
+mdefine_line|#define __P010&t;PAGE_COPY_NOEXEC
 DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY
+mdefine_line|#define __P011&t;PAGE_COPY_NOEXEC
 DECL|macro|__P100
 mdefine_line|#define __P100&t;PAGE_READONLY
 DECL|macro|__P101
@@ -200,11 +206,11 @@ mdefine_line|#define __P111&t;PAGE_COPY
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY
+mdefine_line|#define __S001&t;PAGE_READONLY_NOEXEC
 DECL|macro|__S010
-mdefine_line|#define __S010&t;PAGE_SHARED
+mdefine_line|#define __S010&t;PAGE_SHARED_NOEXEC
 DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED
+mdefine_line|#define __S011&t;PAGE_SHARED_NOEXEC
 DECL|macro|__S100
 mdefine_line|#define __S100&t;PAGE_READONLY
 DECL|macro|__S101
