@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   fs/cifs/dir.c&n; *&n; *   vfs operations that deal w
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
@@ -462,6 +463,11 @@ id|oplock
 op_assign
 id|REQ_OPLOCK
 suffix:semicolon
+r_int
+id|desiredAccess
+op_assign
+id|GENERIC_ALL
+suffix:semicolon
 id|__u16
 id|fileHandle
 suffix:semicolon
@@ -515,6 +521,86 @@ c_func
 id|direntry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nd
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In create nd flags = 0x%x for %s&quot;
+comma
+id|nd-&gt;flags
+comma
+id|full_path
+)paren
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Intent flags: 0x%x&quot;
+comma
+id|nd-&gt;intent.open.flags
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+id|O_ACCMODE
+)paren
+op_eq
+id|O_RDONLY
+)paren
+id|desiredAccess
+op_assign
+id|GENERIC_READ
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+id|O_ACCMODE
+)paren
+op_eq
+id|O_WRONLY
+)paren
+id|desiredAccess
+op_assign
+id|GENERIC_WRITE
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+id|O_ACCMODE
+)paren
+op_eq
+id|O_RDWR
+)paren
+id|desiredAccess
+op_assign
+id|GENERIC_ALL
+suffix:semicolon
+)brace
 multiline_comment|/* BB add processing for setting the equivalent of mode - e.g. via CreateX with ACLs */
 id|rc
 op_assign
@@ -529,8 +615,7 @@ id|full_path
 comma
 id|FILE_OVERWRITE_IF
 comma
-id|GENERIC_ALL
-multiline_comment|/* 0x20197 was used previously */
+id|desiredAccess
 comma
 id|CREATE_NOT_DIR
 comma
@@ -827,6 +912,39 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|nd
+)paren
+(brace
+multiline_comment|/* BB remove begin */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In lookup nd flags = 0x%x&quot;
+comma
+id|nd-&gt;flags
+)paren
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Intent flags: 0x%x&quot;
+comma
+id|nd-&gt;intent.open.flags
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* BB remove end BB */
+r_if
+c_cond
+(paren
 id|pTcon-&gt;ses-&gt;capabilities
 op_amp
 id|CAP_UNIX
@@ -1088,6 +1206,39 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&t;lock_kernel(); */
 multiline_comment|/* surely we do not want to lock the kernel for a whole network round trip which could take seconds */
+r_if
+c_cond
+(paren
+id|nd
+)paren
+(brace
+multiline_comment|/* BB remove begin */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In d_revalidate nd flags = 0x%x&quot;
+comma
+id|nd-&gt;flags
+)paren
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Intent flags: 0x%x&quot;
+comma
+id|nd-&gt;intent.open.flags
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* BB remove end BB */
 r_if
 c_cond
 (paren
