@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * @file op_model_xscale.c&n; * XScale Performance Monitor Driver&n; *&n; * @remark Copyright 2000-2004 Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; * @remark Copyright 2000-2004 MontaVista Software Inc&n; * @remark Copyright 2004 Dave Jiang &lt;dave.jiang@intel.com&gt;&n; * @remark Copyright 2004 Intel Corporation&n; * @remark Copyright 2004 Zwane Mwaikambo &lt;zwane@arm.linux.org.uk&gt;&n; * @remark Copyright 2004 Oprofile Authors&n; *&n; * @remark Read the file COPYING&n; *&n; * @author Zwane Mwaikambo&n; */
+multiline_comment|/**&n; * @file op_model_xscale.c&n; * XScale Performance Monitor Driver&n; *&n; * @remark Copyright 2000-2004 Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; * @remark Copyright 2000-2004 MontaVista Software Inc&n; * @remark Copyright 2004 Dave Jiang &lt;dave.jiang@intel.com&gt;&n; * @remark Copyright 2004 Intel Corporation&n; * @remark Copyright 2004 Zwane Mwaikambo &lt;zwane@arm.linux.org.uk&gt;&n; * @remark Copyright 2004 OProfile Authors&n; *&n; * @remark Read the file COPYING&n; *&n; * @author Zwane Mwaikambo&n; */
 multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -914,7 +914,7 @@ id|counter_config
 id|i
 )braket
 dot
-id|event
+id|enabled
 )paren
 r_continue
 suffix:semicolon
