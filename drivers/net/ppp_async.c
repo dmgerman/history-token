@@ -773,6 +773,29 @@ id|ap
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called on tty hangup in process context.&n; *&n; * Wait for I/O to driver to complete and unregister PPP channel.&n; * This is already done by the close routine, so just call that.&n; */
+DECL|function|ppp_asynctty_hangup
+r_static
+r_int
+id|ppp_asynctty_hangup
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+id|ppp_asynctty_close
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Read does nothing - no data is ever available this way.&n; * Pppd reads and writes packets via /dev/ppp instead.&n; */
 r_static
 id|ssize_t
@@ -1372,6 +1395,11 @@ dot
 id|close
 op_assign
 id|ppp_asynctty_close
+comma
+dot
+id|hangup
+op_assign
+id|ppp_asynctty_hangup
 comma
 dot
 id|read
