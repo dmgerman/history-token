@@ -352,12 +352,6 @@ id|nh
 suffix:semicolon
 r_union
 (brace
-DECL|member|ethernet
-r_struct
-id|ethhdr
-op_star
-id|ethernet
-suffix:semicolon
 DECL|member|raw
 r_int
 r_char

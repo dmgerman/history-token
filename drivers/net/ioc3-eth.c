@@ -1912,7 +1912,11 @@ id|ethhdr
 op_star
 id|eh
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_uint32
 id|csum
@@ -5763,7 +5767,7 @@ r_uint16
 op_star
 id|eh
 suffix:semicolon
-multiline_comment|/* The MAC header.  skb-&gt;mac.ethernet seem the logic approach&n;&t;&t;   to find the MAC header - except it&squot;s a NULL pointer ...  */
+multiline_comment|/* The MAC header.  skb-&gt;mac seem the logic approach&n;&t;&t;   to find the MAC header - except it&squot;s a NULL pointer ...  */
 id|eh
 op_assign
 (paren

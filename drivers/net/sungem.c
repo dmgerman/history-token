@@ -4186,8 +4186,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NETDEV_TX_LOCKED
 suffix:semicolon
 )brace
 multiline_comment|/* This is a hard error, log it. */
@@ -4239,7 +4238,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|NETDEV_TX_BUSY
 suffix:semicolon
 )brace
 id|entry
@@ -4698,7 +4697,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 r_return
-l_int|0
+id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Jumbo-grams don&squot;t seem to work :-( */

@@ -8608,8 +8608,6 @@ r_struct
 id|pci_bus
 op_star
 id|pci_bus
-op_assign
-id|p_slot-&gt;ctrl-&gt;pci_dev-&gt;subordinate
 suffix:semicolon
 r_struct
 id|pci_func
@@ -8624,6 +8622,10 @@ id|p_slot-&gt;ctrl
 )paren
 r_return
 l_int|1
+suffix:semicolon
+id|pci_bus
+op_assign
+id|p_slot-&gt;ctrl-&gt;pci_dev-&gt;subordinate
 suffix:semicolon
 multiline_comment|/* Check to see if (latch closed, card present, power on) */
 id|down

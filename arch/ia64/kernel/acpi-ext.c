@@ -219,7 +219,7 @@ id|id
 suffix:semicolon
 id|info.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|acpi_walk_resources
 c_func
