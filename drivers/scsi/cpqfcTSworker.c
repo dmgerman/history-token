@@ -8865,6 +8865,19 @@ op_eq
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|Cmnd-&gt;lun
+OG
+r_sizeof
+(paren
+id|pLoggedInPort-&gt;ScsiNexus.lun
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 singleline_comment|// we KNOW all the valid LUNs... 0xFF is invalid!
 id|Cmnd-&gt;SCp.have_data_in
 op_assign

@@ -18,7 +18,7 @@ mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR 5
 DECL|macro|VER_SUBMINOR
-mdefine_line|#define VER_SUBMINOR 0
+mdefine_line|#define VER_SUBMINOR 2
 singleline_comment|// Macros for kernel (esp. SMP) tracing using a PCI analyzer
 singleline_comment|// (e.g. x86).
 singleline_comment|//#define PCI_KERNEL_TRACE

@@ -47,7 +47,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA v. 2.1.1&quot;
+l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA v. 2.5.2&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1441,6 +1441,10 @@ singleline_comment|// For searching
 id|DumCmnd.target
 op_assign
 id|ScsiDev-&gt;id
+suffix:semicolon
+id|DumCmnd.lun
+op_assign
+id|ScsiDev-&gt;lun
 suffix:semicolon
 id|pLoggedInPort
 op_assign
