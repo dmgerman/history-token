@@ -770,9 +770,6 @@ mdefine_line|#define VID_FROM_REG(val,vrm) (vid_from_reg((val),(vrm)))
 DECL|macro|ALARMS_FROM_REG
 mdefine_line|#define ALARMS_FROM_REG(val) (val)
 multiline_comment|/* Unlike some other drivers we DO NOT set initial limits.  Use&n; * the config file to set limits.  Some users have reported&n; * motherboards shutting down when we set limits in a previous&n; * version of the driver.&n; */
-multiline_comment|/* Typically used with Pentium 4 systems v9.1 VRM spec */
-DECL|macro|LM85_INIT_VRM
-mdefine_line|#define LM85_INIT_VRM  91
 multiline_comment|/* Chip sampling rates&n; *&n; * Some sensors are not updated more frequently than once per second&n; *    so it doesn&squot;t make sense to read them more often than that.&n; *    We cache the results and return the saved data if the driver&n; *    is called again before a second has elapsed.&n; *&n; * Also, there is significant configuration data for this chip&n; *    given the automatic PWM fan control that is possible.  There&n; *    are about 47 bytes of config data to only 22 bytes of actual&n; *    readings.  So, we keep the config data up to date in the cache&n; *    when it is written and only sample it once every 1 *minute*&n; */
 DECL|macro|LM85_DATA_INTERVAL
 mdefine_line|#define LM85_DATA_INTERVAL  (HZ + HZ / 2)
@@ -3290,7 +3287,10 @@ suffix:semicolon
 multiline_comment|/* Set the VRM version */
 id|data-&gt;vrm
 op_assign
-id|LM85_INIT_VRM
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the LM85 chip */
 id|lm85_init_client

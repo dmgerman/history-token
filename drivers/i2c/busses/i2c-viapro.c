@@ -90,12 +90,14 @@ r_static
 r_int
 id|force
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|force
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -109,15 +111,17 @@ suffix:semicolon
 multiline_comment|/* If force_addr is set to anything different from 0, we forcibly enable&n;   the VT596 at the given address. VERY DANGEROUS! */
 DECL|variable|force_addr
 r_static
-r_int
+id|u16
 id|force_addr
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|force_addr
 comma
-l_string|&quot;i&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
