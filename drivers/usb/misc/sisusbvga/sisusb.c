@@ -1885,7 +1885,7 @@ id|bytes_transferred
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|__le32
 id|tmp
 suffix:semicolon
 r_if
@@ -2041,7 +2041,7 @@ id|bytes_transferred
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|__le32
 id|tmp
 suffix:semicolon
 r_if
