@@ -5522,9 +5522,13 @@ id|pos
 OG
 id|inode-&gt;i_size
 )paren
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|pos
+)paren
 suffix:semicolon
 id|flush_dcache_page
 c_func
