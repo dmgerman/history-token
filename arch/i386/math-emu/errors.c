@@ -34,7 +34,7 @@ id|FPU_ORIG_EIP
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-multiline_comment|/* No need to verify_area(), we have previously fetched these bytes. */
+multiline_comment|/* No need to check access_ok(), we have previously fetched these bytes. */
 id|printk
 c_func
 (paren
@@ -248,7 +248,7 @@ id|FPU_ORIG_EIP
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-multiline_comment|/* No need to verify_area(), we have previously fetched these bytes. */
+multiline_comment|/* No need to check access_ok(), we have previously fetched these bytes. */
 id|printk
 c_func
 (paren

@@ -73,15 +73,15 @@ mdefine_line|#define instruction_address&t;(*(struct address *)&amp;I387.soft.fi
 DECL|macro|operand_address
 mdefine_line|#define operand_address&t;&t;(*(struct address *)&amp;I387.soft.foo)
 DECL|macro|FPU_verify_area
-mdefine_line|#define FPU_verify_area(x,y,z)&t;if ( verify_area(x,y,z) ) &bslash;&n;&t;&t;&t;&t;math_abort(FPU_info,SIGSEGV)
+mdefine_line|#define FPU_verify_area(x,y,z)&t;if ( !access_ok(x,y,z) ) &bslash;&n;&t;&t;&t;&t;math_abort(FPU_info,SIGSEGV)
 DECL|macro|FPU_IGNORE_CODE_SEGV
 macro_line|#undef FPU_IGNORE_CODE_SEGV
 macro_line|#ifdef FPU_IGNORE_CODE_SEGV
-multiline_comment|/* verify_area() is very expensive, and causes the emulator to run&n;   about 20% slower if applied to the code. Anyway, errors due to bad&n;   code addresses should be much rarer than errors due to bad data&n;   addresses. */
+multiline_comment|/* access_ok() is very expensive, and causes the emulator to run&n;   about 20% slower if applied to the code. Anyway, errors due to bad&n;   code addresses should be much rarer than errors due to bad data&n;   addresses. */
 DECL|macro|FPU_code_verify_area
 mdefine_line|#define&t;FPU_code_verify_area(z)
 macro_line|#else
-multiline_comment|/* A simpler test than verify_area() can probably be done for&n;   FPU_code_verify_area() because the only possible error is to step&n;   past the upper boundary of a legal code area. */
+multiline_comment|/* A simpler test than access_ok() can probably be done for&n;   FPU_code_verify_area() because the only possible error is to step&n;   past the upper boundary of a legal code area. */
 DECL|macro|FPU_code_verify_area
 mdefine_line|#define&t;FPU_code_verify_area(z) FPU_verify_area(VERIFY_READ,(void __user *)FPU_EIP,z)
 macro_line|#endif

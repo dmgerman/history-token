@@ -1438,10 +1438,8 @@ multiline_comment|/* Check it now since we switch to KERNEL_DS later. */
 r_if
 c_cond
 (paren
-(paren
-id|err
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1451,11 +1449,9 @@ comma
 id|len
 )paren
 )paren
-OL
-l_int|0
-)paren
 r_return
-id|err
+op_minus
+id|EFAULT
 suffix:semicolon
 id|iov
 (braket

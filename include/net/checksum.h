@@ -41,7 +41,7 @@ id|err_ptr
 r_if
 c_cond
 (paren
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -50,8 +50,6 @@ id|src
 comma
 id|len
 )paren
-op_eq
-l_int|0
 )paren
 r_return
 id|csum_partial_copy_from_user

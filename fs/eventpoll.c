@@ -1801,10 +1801,8 @@ multiline_comment|/* Verify that the area passed by the user is writeable */
 r_if
 c_cond
 (paren
-(paren
-id|error
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1820,10 +1818,16 @@ id|epoll_event
 )paren
 )paren
 )paren
-)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|eexit_1
 suffix:semicolon
+)brace
 multiline_comment|/* Get the &quot;struct file *&quot; for the eventpoll file */
 id|error
 op_assign
