@@ -7421,7 +7421,7 @@ c_func
 (paren
 )paren
 )paren
-id|radeon_engine_init
+id|radeonfb_engine_init
 (paren
 id|rinfo
 )paren
