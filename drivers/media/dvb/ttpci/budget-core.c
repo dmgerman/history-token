@@ -227,11 +227,7 @@ id|dev
 comma
 id|BASE_EVEN3
 comma
-id|TS_WIDTH
-op_star
-id|TS_HEIGHT
-op_div
-l_int|2
+l_int|0
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -278,11 +274,7 @@ comma
 id|NUM_LINE_BYTE3
 comma
 (paren
-(paren
 id|TS_HEIGHT
-op_div
-l_int|2
-)paren
 op_lshift
 l_int|16
 )paren
