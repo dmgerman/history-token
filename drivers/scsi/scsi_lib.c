@@ -1607,7 +1607,7 @@ suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function:    scsi_init_io()&n; *&n; * Purpose:     SCSI I/O initialize function.&n; *&n; * Arguments:   SCpnt   - Command descriptor we wish to initialize&n; *&n; * Returns:     1 on success.&n; */
+multiline_comment|/*&n; * Function:    scsi_init_io()&n; *&n; * Purpose:     SCSI I/O initialize function.&n; *&n; * Arguments:   SCpnt   - Command descriptor we wish to initialize&n; *&n; * Returns:     0 on success&n; *&t;&t;BLKPREP_DEFER if the failure is retryable&n; *&t;&t;BLKPREP_KILL if the failure is fatal&n; */
 DECL|function|scsi_init_io
 r_static
 r_int
@@ -1635,6 +1635,10 @@ r_int
 id|count
 comma
 id|gfp_mask
+comma
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * if this is a rq-&gt;data based REQ_BLOCK_PC, setup for a non-sg xfer&n;&t; */
 r_if
@@ -1667,7 +1671,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * we used to not use scatter-gather for single segment request,&n;&t; * but now we do (it makes highmem I/O easier to support without&n;&t; * kmapping pages)&n;&t; */
@@ -1723,9 +1727,19 @@ op_logical_neg
 id|sgpnt
 )paren
 )paren
+(brace
+id|req-&gt;flags
+op_or_assign
+id|REQ_SPECIAL
+suffix:semicolon
+id|ret
+op_assign
+id|BLKPREP_DEFER
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|SCpnt-&gt;request_buffer
 op_assign
 (paren
@@ -1774,26 +1788,19 @@ multiline_comment|/*&n;&t; * mapped well, send it off&n;&t; */
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|count
-OG
+op_le
 id|SCpnt-&gt;use_sg
 )paren
-)paren
-r_goto
-id|incorrect
-suffix:semicolon
+(brace
 id|SCpnt-&gt;use_sg
 op_assign
 id|count
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
-id|incorrect
-suffix:colon
+)brace
 id|printk
 c_func
 (paren
@@ -1842,10 +1849,14 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|BLKPREP_KILL
+suffix:semicolon
 id|out
 suffix:colon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|scsi_prep_fn
@@ -2064,6 +2075,9 @@ id|REQ_BLOCK_PC
 )paren
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This will do a couple of things:&n;&t;&t; *  1) Fill in the actual SCSI command.&n;&t;&t; *  2) Fill in any other upper-level specific fields&n;&t;&t; * (timeout).&n;&t;&t; *&n;&t;&t; * If this returns 0, it means that the request failed&n;&t;&t; * (reading past end of disk, reading offline device,&n;&t;&t; * etc).   This won&squot;t actually talk to the device, but&n;&t;&t; * some kinds of consistency checking may cause the&t;&n;&t;&t; * request to be rejected immediately.&n;&t;&t; */
 id|STpnt
 op_assign
@@ -2084,23 +2098,19 @@ multiline_comment|/* &n;&t;&t; * This sets up the scatter-gather table (allocati
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
+id|ret
+op_assign
 id|scsi_init_io
 c_func
 (paren
 id|SCpnt
 )paren
 )paren
-(brace
-multiline_comment|/* Mark it as special --- We already have an&n;&t;&t;&t; * allocated command associated with it */
-id|req-&gt;flags
-op_or_assign
-id|REQ_SPECIAL
-suffix:semicolon
+)paren
 r_return
-id|BLKPREP_DEFER
+id|ret
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Initialize the actual SCSI command for this request.&n;&t;&t; */
 r_if
 c_cond
