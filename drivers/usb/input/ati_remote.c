@@ -3630,11 +3630,7 @@ id|ati_remote
 suffix:semicolon
 id|iface_host
 op_assign
-op_amp
-id|interface-&gt;altsetting
-(braket
-id|interface-&gt;act_altsetting
-)braket
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 r_if
 c_cond

@@ -726,11 +726,7 @@ id|__FUNCTION__
 suffix:semicolon
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-id|intf-&gt;act_altsetting
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 id|dbg
 c_func
