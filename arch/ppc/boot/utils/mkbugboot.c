@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/pp3boot/mkbugboot.c&n; *&n; * Makes a Motorola PPCBUG ROM bootable image which can be flashed&n; * into one of the FLASH banks on a Motorola PowerPlus board.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/boot/utils/mkbugboot.c&n; *&n; * Makes a Motorola PPCBUG ROM bootable image which can be flashed&n; * into one of the FLASH banks on a Motorola PowerPlus board.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 DECL|macro|ELF_HEADER_SIZE
 mdefine_line|#define ELF_HEADER_SIZE&t;65536
 macro_line|#include &lt;unistd.h&gt;
@@ -8,6 +8,11 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
+macro_line|#ifdef __sun__
+macro_line|#include &lt;inttypes.h&gt;
+macro_line|#else
+macro_line|#include &lt;stdint.h&gt;
+macro_line|#endif
 macro_line|#ifdef __i386__
 DECL|macro|cpu_to_be32
 mdefine_line|#define cpu_to_be32(x) le32_to_cpu(x)
@@ -116,25 +121,6 @@ suffix:semicolon
 multiline_comment|/* size of read buffer */
 DECL|macro|SIZE
 mdefine_line|#define SIZE 0x1000
-multiline_comment|/* typedef long int32_t; */
-DECL|typedef|uint32_t
-r_typedef
-r_int
-r_int
-r_uint32
-suffix:semicolon
-DECL|typedef|uint16_t
-r_typedef
-r_int
-r_int
-r_uint16
-suffix:semicolon
-DECL|typedef|uint8_t
-r_typedef
-r_int
-r_char
-r_uint8
-suffix:semicolon
 multiline_comment|/* PPCBUG ROM boot header */
 DECL|struct|bug_boot_header
 r_typedef

@@ -1422,30 +1422,12 @@ c_func
 (paren
 id|title
 comma
-l_string|&quot;Linux Kernel v%s.%s.%s%s Configuration&quot;
+l_string|&quot;Linux Kernel v%s Configuration&quot;
 comma
 id|getenv
 c_func
 (paren
-l_string|&quot;VERSION&quot;
-)paren
-comma
-id|getenv
-c_func
-(paren
-l_string|&quot;PATCHLEVEL&quot;
-)paren
-comma
-id|getenv
-c_func
-(paren
-l_string|&quot;SUBLEVEL&quot;
-)paren
-comma
-id|getenv
-c_func
-(paren
-l_string|&quot;EXTRAVERSION&quot;
+l_string|&quot;KERNELRELEASE&quot;
 )paren
 )paren
 suffix:semicolon

@@ -6,7 +6,11 @@ macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;netinet/in.h&gt;
+macro_line|#ifdef __sun__
+macro_line|#include &lt;inttypes.h&gt;
+macro_line|#else
 macro_line|#include &lt;stdint.h&gt;
+macro_line|#endif
 multiline_comment|/* This gets tacked on the front of the image.  There are also a few&n; * bytes allocated after the _start label used by the boot rom (see&n; * head.S for details).&n; */
 DECL|struct|boot_block
 r_typedef

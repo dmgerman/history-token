@@ -1,5 +1,9 @@
 macro_line|#include &lt;netinet/in.h&gt;
+macro_line|#ifdef __sun__
+macro_line|#include &lt;inttypes.h&gt;
+macro_line|#else
 macro_line|#include &lt;stdint.h&gt;
+macro_line|#endif
 macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;string.h&gt;

@@ -5,7 +5,9 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;assert.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#ifdef __GNU_LIBRARY__
 macro_line|#include &lt;getopt.h&gt;
+macro_line|#endif /* __GNU_LIBRARY__ */
 macro_line|#include &quot;genksyms.h&quot;
 multiline_comment|/*----------------------------------------------------------------------*/
 DECL|macro|HASH_BUCKETS
@@ -2393,12 +2395,21 @@ c_func
 l_string|&quot;Usage:&bslash;n&quot;
 l_string|&quot;genksyms [-dDwqhV] &gt; /path/to/.tmp_obj.ver&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
+macro_line|#ifdef __GNU_LIBRARY__
 l_string|&quot;  -d, --debug           Increment the debug level (repeatable)&bslash;n&quot;
 l_string|&quot;  -D, --dump            Dump expanded symbol defs (for debugging only)&bslash;n&quot;
 l_string|&quot;  -w, --warnings        Enable warnings&bslash;n&quot;
 l_string|&quot;  -q, --quiet           Disable warnings (default)&bslash;n&quot;
 l_string|&quot;  -h, --help            Print this message&bslash;n&quot;
 l_string|&quot;  -V, --version         Print the release version&bslash;n&quot;
+macro_line|#else  /* __GNU_LIBRARY__ */
+l_string|&quot;  -d                    Increment the debug level (repeatable)&bslash;n&quot;
+l_string|&quot;  -D                    Dump expanded symbol defs (for debugging only)&bslash;n&quot;
+l_string|&quot;  -w                    Enable warnings&bslash;n&quot;
+l_string|&quot;  -q                    Disable warnings (default)&bslash;n&quot;
+l_string|&quot;  -h                    Print this message&bslash;n&quot;
+l_string|&quot;  -V                    Print the release version&bslash;n&quot;
+macro_line|#endif /* __GNU_LIBRARY__ */
 comma
 id|stderr
 )paren
@@ -2421,6 +2432,7 @@ id|argv
 r_int
 id|o
 suffix:semicolon
+macro_line|#ifdef __GNU_LIBRARY__
 r_struct
 id|option
 id|long_opts
@@ -2526,6 +2538,27 @@ l_int|NULL
 op_ne
 id|EOF
 )paren
+macro_line|#else  /* __GNU_LIBRARY__ */
+r_while
+c_loop
+(paren
+(paren
+id|o
+op_assign
+id|getopt
+c_func
+(paren
+id|argc
+comma
+id|argv
+comma
+l_string|&quot;dwqVDk:p:&quot;
+)paren
+)paren
+op_ne
+id|EOF
+)paren
+macro_line|#endif /* __GNU_LIBRARY__ */
 r_switch
 c_cond
 (paren
