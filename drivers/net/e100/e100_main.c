@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License (GPL) Version 2, June 1991, available at &n;http://www.fsf.org/copyleft/gpl.html, or the Intel BSD + Patent License, the &n;text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU Public License version 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;Public License version 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU Public &n;License version 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License (GPL) Version 2, June 1991, available at &n;http://www.fsf.org/copyleft/gpl.html, or the Intel BSD + Patent License, the &n;text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU Public License version 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;Public License version 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU Public &n;License version 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************&n;&n;Portions (C) 2002 Red Hat, Inc. under the terms of the GNU GPL v2.&n;&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
 DECL|macro|__NO_VERSION__
 macro_line|#undef __NO_VERSION__
@@ -299,7 +299,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.21&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.22-pre1&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -2012,6 +2012,16 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_cmd_hi
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flushes last write, read-safe */
 )brace
 multiline_comment|/**&n; * e100_set_intr_mask - set interrupts&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine sets interrupts at the hardware, by resetting&n; * the M (mask) bit in the adapter&squot;s CSR SCB command word&n; */
 r_static
@@ -2060,6 +2070,16 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_cmd_hi
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flushes last write, read-safe */
 )brace
 r_static
 r_int
@@ -7601,8 +7621,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-singleline_comment|// we unmap using DMA_TODEVICE to avoid another memcpy from the 
-singleline_comment|// bounce buffer
 id|pci_unmap_single
 c_func
 (paren
@@ -7615,7 +7633,7 @@ r_sizeof
 id|rfd_t
 )paren
 comma
-id|PCI_DMA_TODEVICE
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 id|list_add
@@ -8881,6 +8899,16 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_port
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flushes last write, read-safe */
 multiline_comment|/* Wait at least 10 milliseconds for the self-test to complete */
 id|set_current_state
 c_func
@@ -8903,11 +8931,6 @@ id|e100_dis_intr
 c_func
 (paren
 id|bdp
-)paren
-suffix:semicolon
-id|rmb
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* if The First Self Test DWORD Still Zero, We&squot;ve timed out. If the&n;&t; * second DWORD is not zero then we have an error. */
@@ -10204,6 +10227,16 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_port
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flushes last write, read-safe */
 multiline_comment|/* wait for the reset to take effect */
 id|udelay
 c_func

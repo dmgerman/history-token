@@ -45,14 +45,8 @@ DECL|macro|E100_DEFAULT_TCB
 mdefine_line|#define E100_DEFAULT_TCB   MAX_TCB
 DECL|macro|E100_MIN_TCB
 mdefine_line|#define E100_MIN_TCB       2*TX_FRAME_CNT + 3&t;/* make room for at least 2 interrupts */
-macro_line|#ifdef __ia64__
-multiline_comment|/* We can&squot;t use too many DMAble buffers on IA64 machines with &gt;4 GB mem */
-DECL|macro|E100_MAX_TCB
-mdefine_line|#define E100_MAX_TCB       64
-macro_line|#else
 DECL|macro|E100_MAX_TCB
 mdefine_line|#define E100_MAX_TCB       1024
-macro_line|#endif /*  __ia64__ */
 DECL|macro|E100_DEFAULT_RFD
 mdefine_line|#define E100_DEFAULT_RFD   MAX_RFD
 DECL|macro|E100_MIN_RFD
