@@ -1264,9 +1264,11 @@ c_cond
 (paren
 id|dev-&gt;irq
 op_logical_and
+(paren
 id|dev-&gt;irq
-op_ge
+op_le
 l_int|0xF
+)paren
 )paren
 (brace
 id|printk
