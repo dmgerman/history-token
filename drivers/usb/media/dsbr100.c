@@ -1080,10 +1080,10 @@ id|freq
 op_assign
 id|arg
 suffix:semicolon
+id|radio-&gt;curfreq
+op_assign
 op_star
 id|freq
-op_assign
-id|radio-&gt;curfreq
 suffix:semicolon
 r_if
 c_cond
