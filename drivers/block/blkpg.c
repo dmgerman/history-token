@@ -15,8 +15,10 @@ r_int
 id|add_partition
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_struct
 id|blkpg_partition
@@ -50,6 +52,15 @@ comma
 id|end_minor
 comma
 id|minor
+suffix:semicolon
+id|kdev_t
+id|dev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 multiline_comment|/* convert bytes to sectors, check for fit in a hd_struct */
 id|ppstart
@@ -321,8 +332,10 @@ r_int
 id|del_partition
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_struct
 id|blkpg_partition
@@ -330,6 +343,15 @@ op_star
 id|p
 )paren
 (brace
+id|kdev_t
+id|dev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
+suffix:semicolon
 r_struct
 id|gendisk
 op_star
@@ -532,8 +554,10 @@ r_int
 id|blkpg_ioctl
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_struct
 id|blkpg_ioctl_arg
@@ -652,7 +676,7 @@ r_return
 id|add_partition
 c_func
 (paren
-id|dev
+id|bdev
 comma
 op_amp
 id|p
@@ -663,7 +687,7 @@ r_return
 id|del_partition
 c_func
 (paren
-id|dev
+id|bdev
 comma
 op_amp
 id|p
@@ -1067,7 +1091,7 @@ r_return
 id|blkpg_ioctl
 c_func
 (paren
-id|dev
+id|bdev
 comma
 (paren
 r_struct
