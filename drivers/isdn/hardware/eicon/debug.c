@@ -4569,6 +4569,14 @@ comma
 l_string|&quot;register&quot;
 )paren
 suffix:semicolon
+id|diva_os_free
+c_func
+(paren
+l_int|0
+comma
+id|pmem
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

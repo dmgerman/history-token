@@ -1744,10 +1744,6 @@ id|this_dev
 op_member_access_from_pointer
 id|converter
 suffix:semicolon
-id|synth-&gt;id
-op_assign
-l_string|&quot;MAUI&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1756,6 +1752,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|synth-&gt;id
+op_assign
+l_string|&quot;MAUI&quot;
+suffix:semicolon
 id|orig_load_patch
 op_assign
 id|synth-&gt;load_patch
