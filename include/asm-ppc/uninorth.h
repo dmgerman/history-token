@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uninorth.h 1.13 10/23/01 08:09:35 trini&n; */
 multiline_comment|/*&n; * uninorth.h: definitions for using the &quot;UniNorth&quot; host bridge chip&n; *             from Apple. This chip is used on &quot;Core99&quot; machines&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_UNINORTH_H__

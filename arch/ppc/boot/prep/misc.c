@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; * arch/ppc/boot/prep/misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
+multiline_comment|/*&n; * arch/ppc/boot/prep/misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

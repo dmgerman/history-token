@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef __PPC_PLATFORMS_PMAC_PIC_H
 DECL|macro|__PPC_PLATFORMS_PMAC_PIC_H
 mdefine_line|#define __PPC_PLATFORMS_PMAC_PIC_H

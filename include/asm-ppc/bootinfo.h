@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Non-machine dependent bootinfo structure.  Basic idea&n; * borrowed from the m68k.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@ppc.kernel.org&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_BOOTINFO_H

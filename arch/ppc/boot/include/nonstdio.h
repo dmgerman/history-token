@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.nonstdio.h 1.9 07/25/01 18:13:07 trini&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * This is sort of a catchall for I/O related functions.  Stuff that&n; * wouldn&squot;t be in &squot;stdio.h&squot; normally is here, and it&squot;s &squot;nonstdio.h&squot;&n; * for a reason.  -- Tom&n; */
 DECL|typedef|FILE
 r_typedef

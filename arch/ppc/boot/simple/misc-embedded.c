@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; * Originally adapted by Gary Thomas.  Much additional work by&n; * Cort Dougan &lt;cort@fsmlabs.com&gt;.  On top of that still more work by&n; * Dan Malek &lt;dmalek@jlc.net&gt;.&n; *&n; * Currently maintained by: Tom Rini &lt;trini@kernel.crashing.org&gt;&n; */
+multiline_comment|/*&n; * Originally adapted by Gary Thomas.  Much additional work by&n; * Cort Dougan &lt;cort@fsmlabs.com&gt;.  On top of that still more work by&n; * Dan Malek &lt;dmalek@jlc.net&gt;.&n; *&n; * Currently maintained by: Tom Rini &lt;trini@kernel.crashing.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;

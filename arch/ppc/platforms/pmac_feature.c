@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  arch/ppc/platforms/pmac_feature.c&n; *&n; *  Copyright (C) 1996-2001 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                          Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *  &n; *  TODO: &n; *  &n; *   - Replace mdelay with some schedule loop if possible&n; *   - Shorten some obfuscated delays on some routines (like modem&n; *     power)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

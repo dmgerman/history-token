@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ivms8.h 1.8 10/26/01 10:14:09 trini&n; */
 multiline_comment|/*&n; * Speech Design Integrated Voicemail board specific definitions&n; * - IVMS8  (small,  8 channels)&n; * - IVML24 (large, 24 channels)&n; *&n; * In 2.5 when we force a new bootloader, we can merge these two, and add&n; * in _MACH_&squot;s for them. -- Tom&n; *&n; * Copyright (c) 2000, 2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IVMS8_H__

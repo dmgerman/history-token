@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the RPCG RPX-Lite board.  Copied from the MBX stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_RPX_DEFS

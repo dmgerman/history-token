@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.types.h 1.10 10/15/01 22:51:33 paulus&n; */
 macro_line|#ifndef _PPC_TYPES_H
 DECL|macro|_PPC_TYPES_H
 mdefine_line|#define _PPC_TYPES_H

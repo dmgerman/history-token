@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fcntl.h 1.8 09/19/01 23:06:01 paulus&n; */
 macro_line|#ifndef _PPC_FCNTL_H
 DECL|macro|_PPC_FCNTL_H
 mdefine_line|#define _PPC_FCNTL_H

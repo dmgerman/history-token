@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/* Minimal serial functions needed to send messages out the serial&n; * port on the MBX console.&n; *&n; * The MBX uxes SMC1 for the serial port.  We reset the port and use&n; * only the first BD that EPPC-Bug set up as a character FIFO.&n; *&n; * Later versions (at least 1.4, maybe earlier) of the MBX EPPC-Bug&n; * use COM1 instead of SMC1 as the console port.  This kinda sucks&n; * for the rest of the kernel, so here we force the use of SMC1 again.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
