@@ -477,8 +477,12 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|pnp_drv-&gt;flags
 op_amp
+id|PNP_DRIVER_RES_DISABLE
+)paren
+op_eq
 id|PNP_DRIVER_RES_DISABLE
 )paren
 (brace

@@ -651,12 +651,6 @@ id|snd_als100_pnpids
 suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-als100&quot;
-DECL|variable|als100_pnpc_driver
-r_static
-r_struct
-id|pnp_card_driver
-id|als100_pnpc_driver
-suffix:semicolon
 DECL|function|snd_card_als100_isapnp
 r_static
 r_int
@@ -673,7 +667,7 @@ op_star
 id|acard
 comma
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|card
 comma
@@ -724,9 +718,6 @@ op_assign
 id|pnp_request_card_device
 c_func
 (paren
-op_amp
-id|als100_pnpc_driver
-comma
 id|card
 comma
 id|id-&gt;devs
@@ -763,9 +754,6 @@ op_assign
 id|pnp_request_card_device
 c_func
 (paren
-op_amp
-id|als100_pnpc_driver
-comma
 id|card
 comma
 id|id-&gt;devs
@@ -783,9 +771,6 @@ op_assign
 id|pnp_request_card_device
 c_func
 (paren
-op_amp
-id|als100_pnpc_driver
-comma
 id|card
 comma
 id|id-&gt;devs
@@ -1363,7 +1348,7 @@ r_int
 id|dev
 comma
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|pcard
 comma
@@ -1853,7 +1838,7 @@ id|snd_als100_pnp_detect
 c_func
 (paren
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|card
 comma
@@ -1936,7 +1921,7 @@ id|snd_als100_pnp_remove
 c_func
 (paren
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|pcard
 )paren
