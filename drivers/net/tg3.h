@@ -2619,8 +2619,12 @@ DECL|macro|NIC_SRAM_FW_DRV_STATE_MBOX
 mdefine_line|#define NIC_SRAM_FW_DRV_STATE_MBOX&t;0x00000c04
 DECL|macro|DRV_STATE_START
 mdefine_line|#define  DRV_STATE_START&t;&t; 0x00000001
+DECL|macro|DRV_STATE_START_DONE
+mdefine_line|#define  DRV_STATE_START_DONE&t;&t; 0x80000001
 DECL|macro|DRV_STATE_UNLOAD
 mdefine_line|#define  DRV_STATE_UNLOAD&t;&t; 0x00000002
+DECL|macro|DRV_STATE_UNLOAD_DONE
+mdefine_line|#define  DRV_STATE_UNLOAD_DONE&t;&t; 0x80000002
 DECL|macro|DRV_STATE_WOL
 mdefine_line|#define  DRV_STATE_WOL&t;&t;&t; 0x00000003
 DECL|macro|DRV_STATE_SUSPEND
@@ -3997,6 +4001,8 @@ DECL|macro|TG3_FLG2_PHY_BER_BUG
 mdefine_line|#define TG3_FLG2_PHY_BER_BUG&t;&t;0x00000100
 DECL|macro|TG3_FLG2_PCI_EXPRESS
 mdefine_line|#define TG3_FLG2_PCI_EXPRESS&t;&t;0x00000200
+DECL|macro|TG3_FLG2_ASF_NEW_HANDSHAKE
+mdefine_line|#define TG3_FLG2_ASF_NEW_HANDSHAKE&t;0x00000400
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
