@@ -437,6 +437,9 @@ comma
 id|arpinfo-&gt;arhln_mask
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|src_devaddr
 op_assign
