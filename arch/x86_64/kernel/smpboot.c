@@ -58,7 +58,6 @@ id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|variable|cpu_callin_map
-r_static
 id|cpumask_t
 id|cpu_callin_map
 suffix:semicolon

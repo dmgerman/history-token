@@ -290,18 +290,23 @@ id|cpu
 op_increment
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Check cpu_callin_map here because that is set&n;&t;&t;   after the timer is started. */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
+id|cpu_isset
 c_func
 (paren
 id|cpu
+comma
+id|cpu_callin_map
 )paren
 )paren
 r_continue
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
