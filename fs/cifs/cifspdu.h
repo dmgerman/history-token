@@ -4794,34 +4794,61 @@ multiline_comment|/* level 0x10b */
 multiline_comment|/* POSIX ACL set/query path info structures */
 DECL|macro|CIFS_ACL_VERSION
 mdefine_line|#define CIFS_ACL_VERSION 1
+DECL|struct|cifs_posix_ace
+r_struct
+id|cifs_posix_ace
+(brace
+multiline_comment|/* access control entry (ACE) */
+DECL|member|cifs_e_tag
+id|__u8
+id|cifs_e_tag
+suffix:semicolon
+DECL|member|cifs_e_perm
+id|__u8
+id|cifs_e_perm
+suffix:semicolon
+DECL|member|cifs_uid
+id|__u64
+id|cifs_uid
+suffix:semicolon
+multiline_comment|/* or gid */
+)brace
+suffix:semicolon
 DECL|struct|cifs_posix_acl
 r_struct
 id|cifs_posix_acl
 (brace
-multiline_comment|/* BB fixme add here */
+multiline_comment|/* access conrol list  (ACL) */
+DECL|member|version
+id|__le16
+id|version
+suffix:semicolon
+DECL|member|access_entry_count
+id|__le16
+id|access_entry_count
+suffix:semicolon
+multiline_comment|/* access ACL - count of entries */
+DECL|member|default_entry_count
+id|__le16
+id|default_entry_count
+suffix:semicolon
+multiline_comment|/* default ACL - count of entries */
+DECL|member|ace_array
+r_struct
+id|cifs_posix_ace
+id|ace_array
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* followed by&n;&t;struct cifs_posix_ace default_ace_arraay[] */
 )brace
 suffix:semicolon
 multiline_comment|/* level 0x204 */
-multiline_comment|/* types of access control entries */
-DECL|macro|CIFS_POSIX_ACL_USER_OBJ
-mdefine_line|#define CIFS_POSIX_ACL_USER_OBJ&t; 0x01
-DECL|macro|CIFS_POSIX_ACL_USER
-mdefine_line|#define CIFS_POSIX_ACL_USER&t; 0x02
-DECL|macro|CIFS_POSIX_ACL_GROUP_OBJ
-mdefine_line|#define CIFS_POSIX_ACL_GROUP_OBJ 0x04
-DECL|macro|CIFS_POSIX_ACL_GROUP
-mdefine_line|#define CIFS_POSIX_ACL_GROUP&t; 0x08
-DECL|macro|CIFS_POSIX_ACL_MASK
-mdefine_line|#define CIFS_POSIX_ACL_MASK&t; 0x10
-DECL|macro|CIFS_POSIX_ACL_OTHER
-mdefine_line|#define CIFS_POSIX_ACL_OTHER&t; 0x20
+multiline_comment|/* types of access control entries already defined in posix_acl.h */
+multiline_comment|/* #define CIFS_POSIX_ACL_USER_OBJ&t; 0x01&n;#define CIFS_POSIX_ACL_USER      0x02&n;#define CIFS_POSIX_ACL_GROUP_OBJ 0x04&n;#define CIFS_POSIX_ACL_GROUP     0x08&n;#define CIFS_POSIX_ACL_MASK      0x10&n;#define CIFS_POSIX_ACL_OTHER     0x20 */
 multiline_comment|/* types of perms */
-DECL|macro|CIFS_POSIX_ACL_EXECUTE
-mdefine_line|#define CIFS_POSIX_ACL_EXECUTE   0x01
-DECL|macro|CIFS_POSIX_ACL_WRITE
-mdefine_line|#define CIFS_POSIX_ACL_WRITE     0x02
-DECL|macro|CIFS_POSIX_ACL_READ
-mdefine_line|#define CIFS_POSIX_ACL_READ&t; 0x04
+multiline_comment|/* #define CIFS_POSIX_ACL_EXECUTE   0x01&n;#define CIFS_POSIX_ACL_WRITE     0x02&n;#define CIFS_POSIX_ACL_READ&t;     0x04 */
 multiline_comment|/* end of POSIX ACL definitions */
 DECL|struct|file_internal_info
 r_struct
