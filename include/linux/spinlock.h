@@ -318,17 +318,18 @@ op_star
 id|lock
 )paren
 suffix:semicolon
-r_extern
+r_int
+id|in_lock_functions
+c_func
+(paren
 r_int
 r_int
-id|__lock_text_start
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__lock_text_end
+id|addr
+)paren
 suffix:semicolon
 macro_line|#else
+DECL|macro|in_lock_functions
+mdefine_line|#define in_lock_functions(ADDR) 0
 macro_line|#if !defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_DEBUG_SPINLOCK)
 DECL|macro|atomic_dec_and_lock
 macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
@@ -537,26 +538,6 @@ mdefine_line|#define spin_trylock(lock)&t;_spin_trylock(lock)
 DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;_write_trylock(lock)
 multiline_comment|/* Where&squot;s read_trylock? */
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
-r_void
-id|__preempt_spin_lock
-c_func
-(paren
-id|spinlock_t
-op_star
-id|lock
-)paren
-suffix:semicolon
-r_void
-id|__preempt_write_lock
-c_func
-(paren
-id|rwlock_t
-op_star
-id|lock
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;_spin_lock(lock)
 DECL|macro|write_lock
