@@ -935,6 +935,12 @@ op_amp
 id|hcd-&gt;self
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|variable|usb_hcd_pci_remove
 id|EXPORT_SYMBOL
