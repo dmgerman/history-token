@@ -1410,9 +1410,9 @@ id|regs
 (brace
 r_int
 r_int
-id|eip
+id|pc
 op_assign
-id|instruction_pointer
+id|profile_pc
 c_func
 (paren
 id|regs
@@ -1499,7 +1499,7 @@ suffix:semicolon
 id|oprofile_add_sample
 c_func
 (paren
-id|eip
+id|pc
 comma
 id|is_kernel
 comma

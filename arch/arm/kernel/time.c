@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|jiffies_64
 id|u64
@@ -53,6 +54,93 @@ macro_line|#endif
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY&t;(1000000/HZ)
+macro_line|#ifdef CONFIG_SMP
+DECL|function|profile_pc
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|fp
+comma
+id|pc
+op_assign
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pc
+op_ge
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__lock_text_start
+op_logical_and
+id|pc
+op_le
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__lock_text_end
+)paren
+(brace
+id|fp
+op_assign
+id|thread_saved_fp
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|pc
+op_assign
+id|pc_pointer
+c_func
+(paren
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|fp
+)paren
+(braket
+op_minus
+l_int|1
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+id|pc
+suffix:semicolon
+)brace
+DECL|variable|profile_pc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|profile_pc
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * hook for setting the RTC&squot;s idea of the current time.&n; */
 DECL|variable|set_rtc
 r_int
