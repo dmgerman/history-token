@@ -14,20 +14,6 @@ mdefine_line|#define flush_cache_mm(mm) flush_cache_all_local()
 macro_line|#endif
 DECL|macro|flush_kernel_dcache_range
 mdefine_line|#define flush_kernel_dcache_range(start,size) &bslash;&n;&t;flush_kernel_dcache_range_asm((start), (start)+(size));
-r_static
-r_inline
-r_void
-DECL|function|flush_page_to_ram
-id|flush_page_to_ram
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-)brace
 r_extern
 r_void
 id|flush_cache_all_local

@@ -8,7 +8,7 @@ macro_line|#ifndef _LANGUAGE_ASSEMBLY
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_page_to_ram(page) write back kernel page to ram&n; *  - flush_icache_range(start, end) flush a range of instructions&n; */
+multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_icache_range(start, end) flush a range of instructions&n; */
 r_extern
 r_void
 (paren
@@ -139,8 +139,6 @@ op_star
 id|page
 )paren
 suffix:semicolon
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;_flush_cache_all()
 DECL|macro|__flush_cache_all
@@ -153,8 +151,8 @@ DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,page)&t;_flush_cache_page(vma, page)
 DECL|macro|flush_cache_sigtramp
 mdefine_line|#define flush_cache_sigtramp(addr)&t;_flush_cache_sigtramp(addr)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;_flush_page_to_ram(page)
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page)&t;&t;_flush_page_to_ram(page)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_icache_range(start,end)
 DECL|macro|flush_icache_page

@@ -1202,12 +1202,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|set_pte
 c_func
 (paren

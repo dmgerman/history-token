@@ -256,12 +256,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
