@@ -7390,7 +7390,8 @@ suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
-id|rq-&gt;waiting
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|rq-&gt;waiting
