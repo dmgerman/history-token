@@ -34,6 +34,7 @@ macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_IP_PNP
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#endif

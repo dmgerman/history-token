@@ -1993,7 +1993,15 @@ id|uts_sem
 )paren
 suffix:semicolon
 r_return
+(paren
 id|ret
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|sunos_nosys
