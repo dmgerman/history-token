@@ -237,8 +237,20 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PERCPU_PAGE_SIZE)
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+DECL|macro|VMALLOC_END_INIT
+macro_line|# define VMALLOC_END_INIT&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
+macro_line|# define VMALLOC_END&t;&t;vmalloc_end
+r_extern
+r_int
+r_int
+id|vmalloc_end
+suffix:semicolon
+macro_line|#else
+DECL|macro|VMALLOC_END
+macro_line|# define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
+macro_line|#endif
 multiline_comment|/*&n; * Conversion functions: convert page frame number (pfn) and a protection value to a page&n; * table entry (pte).&n; */
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = ((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })
@@ -804,6 +816,36 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+macro_line|#  ifdef CONFIG_VIRTUAL_MEM_MAP
+multiline_comment|/* arch mem_map init routine is needed due to holes in a virtual mem_map */
+DECL|macro|__HAVE_ARCH_MEMMAP_INIT
+macro_line|#   define __HAVE_ARCH_MEMMAP_INIT
+r_extern
+r_void
+id|memmap_init
+(paren
+r_struct
+id|page
+op_star
+id|start
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|nid
+comma
+r_int
+r_int
+id|zone
+comma
+r_int
+r_int
+id|start_pfn
+)paren
+suffix:semicolon
+macro_line|#  endif /* CONFIG_VIRTUAL_MEM_MAP */
 macro_line|# endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Identity-mapped regions use a large page size.  We&squot;ll call such large pages&n; * &quot;granules&quot;.  If you can think of a better name that&squot;s unambiguous, let me&n; * know...&n; */
 macro_line|#if defined(CONFIG_IA64_GRANULE_64MB)

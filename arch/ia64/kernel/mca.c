@@ -1609,6 +1609,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* read_trylock() would be handy... */
 r_if
 c_cond
 (paren
@@ -1622,6 +1624,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 (brace
 r_struct
 id|task_struct
@@ -1672,6 +1675,7 @@ id|t
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -1685,6 +1689,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
