@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
-macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
@@ -623,11 +622,10 @@ id|lubbock_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      type */
 (brace
-l_int|0xf0000000
+id|LUBBOCK_FPGA_VIRT
 comma
-l_int|0x08000000
+id|LUBBOCK_FPGA_PHYS
 comma
 l_int|0x00100000
 comma
@@ -635,39 +633,6 @@ id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* CPLD */
-(brace
-l_int|0xf1000000
-comma
-l_int|0x0c000000
-comma
-l_int|0x00100000
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* LAN91C96 IO */
-(brace
-l_int|0xf1100000
-comma
-l_int|0x0e000000
-comma
-l_int|0x00100000
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* LAN91C96 Attr */
-(brace
-l_int|0xf4000000
-comma
-l_int|0x10000000
-comma
-l_int|0x00800000
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* SA1111 */
 )brace
 suffix:semicolon
 DECL|function|lubbock_map_io
@@ -698,10 +663,6 @@ id|lubbock_io_desc
 )paren
 suffix:semicolon
 multiline_comment|/* This enables the BTUART */
-id|CKEN
-op_or_assign
-id|CKEN7_BTUART
-suffix:semicolon
 id|pxa_gpio_mode
 c_func
 (paren
@@ -768,7 +729,7 @@ c_func
 (paren
 id|LUBBOCK
 comma
-l_string|&quot;Intel DBPXA250 Development Platform&quot;
+l_string|&quot;Intel DBPXA250 Development Platform (aka Lubbock)&quot;
 )paren
 id|MAINTAINER
 c_func
