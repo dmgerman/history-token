@@ -94,8 +94,6 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-DECL|macro|software_resume
-mdefine_line|#define software_resume()&t;&t;do { } while(0)
 macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
 macro_line|#ifdef CONFIG_PM
 r_extern
