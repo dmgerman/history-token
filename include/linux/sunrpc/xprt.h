@@ -153,6 +153,7 @@ suffix:semicolon
 multiline_comment|/* Bytes we have sent */
 DECL|member|rq_xtime
 r_int
+r_int
 id|rq_xtime
 suffix:semicolon
 multiline_comment|/* when transmitted */

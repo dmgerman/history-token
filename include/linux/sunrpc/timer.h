@@ -9,10 +9,12 @@ id|rpc_rtt
 (brace
 DECL|member|timeo
 r_int
+r_int
 id|timeo
 suffix:semicolon
 multiline_comment|/* default timeout value */
 DECL|member|srtt
+r_int
 r_int
 id|srtt
 (braket
@@ -22,12 +24,13 @@ suffix:semicolon
 multiline_comment|/* smoothed round trip time &lt;&lt; 3 */
 DECL|member|sdrtt
 r_int
+r_int
 id|sdrtt
 (braket
 l_int|5
 )braket
 suffix:semicolon
-multiline_comment|/* soothed medium deviation of RTT */
+multiline_comment|/* smoothed medium deviation of RTT */
 DECL|member|ntimeouts
 id|atomic_t
 id|ntimeouts
@@ -45,6 +48,7 @@ id|rpc_rtt
 op_star
 id|rt
 comma
+r_int
 r_int
 id|timeo
 )paren
@@ -67,6 +71,7 @@ id|m
 )paren
 suffix:semicolon
 r_extern
+r_int
 r_int
 id|rpc_calc_rto
 c_func
