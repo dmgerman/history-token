@@ -15,25 +15,29 @@ macro_line|#include &quot;pciehp.h&quot;
 macro_line|#include &quot;pciehprm.h&quot;
 multiline_comment|/* Global variables */
 DECL|variable|pciehp_debug
+r_static
 r_int
 id|pciehp_debug
 suffix:semicolon
 DECL|variable|pciehp_poll_mode
+r_static
 r_int
 id|pciehp_poll_mode
 suffix:semicolon
 DECL|variable|pciehp_poll_time
+r_static
 r_int
 id|pciehp_poll_time
 suffix:semicolon
 DECL|variable|pciehp_ctrl_list
+r_static
 r_struct
 id|controller
 op_star
 id|pciehp_ctrl_list
 suffix:semicolon
-multiline_comment|/* = NULL */
 DECL|variable|pciehp_slot_list
+r_static
 r_struct
 id|pci_func
 op_star
