@@ -8125,7 +8125,7 @@ op_assign
 op_amp
 id|vicam_fops
 comma
-singleline_comment|//&t;.initialize = vicam_video_init,
+singleline_comment|//&t;.initialize &t;= vicam_video_init,
 dot
 id|minor
 op_assign
@@ -8174,20 +8174,24 @@ id|usb_driver
 id|vicam_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;vicam&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|vicam_probe
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|vicam_disconnect
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|vicam_table
 )brace
 suffix:semicolon
