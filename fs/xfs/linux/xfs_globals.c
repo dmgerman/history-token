@@ -70,6 +70,7 @@ c_func
 id|xfs_bmbt_get_all
 )paren
 suffix:semicolon
+macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
 DECL|variable|xfs_bmbt_disk_get_all
 id|EXPORT_SYMBOL
 c_func
@@ -77,4 +78,5 @@ c_func
 id|xfs_bmbt_disk_get_all
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

@@ -1333,7 +1333,7 @@ macro_line|#else
 DECL|macro|xfs_bmbt_disk_set_all
 mdefine_line|#define xfs_bmbt_disk_set_all(r, s) &bslash;&n;&t;xfs_bmbt_set_all(r, s)
 DECL|macro|xfs_bmbt_disk_set_allf
-mdefine_line|#define xfs_bmbt_disk_set_allf(r, 0, b, c, v) &bslash;&n;&t;xfs_bmbt_set_allf(r, 0, b, c, v)
+mdefine_line|#define xfs_bmbt_disk_set_allf(r, o, b, c, v) &bslash;&n;&t;xfs_bmbt_set_allf(r, o, b, c, v)
 macro_line|#endif
 r_void
 id|xfs_bmbt_to_bmdr

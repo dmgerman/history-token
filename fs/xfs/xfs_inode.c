@@ -2136,8 +2136,6 @@ id|ifp
 suffix:semicolon
 r_int
 id|nex
-comma
-id|i
 suffix:semicolon
 r_int
 id|real_size
@@ -2145,6 +2143,11 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
+macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
 id|xfs_bmbt_rec_t
 op_star
 id|ep
