@@ -8030,6 +8030,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|ensoniq-&gt;subsystem_vendor_id
 op_eq
 l_int|0x1274
@@ -8041,8 +8042,24 @@ op_eq
 l_int|0x2000
 )paren
 )paren
-(brace
+op_logical_or
 multiline_comment|/* GA-7DXR */
+(paren
+(paren
+id|ensoniq-&gt;subsystem_vendor_id
+op_eq
+l_int|0x1458
+)paren
+op_logical_and
+(paren
+id|ensoniq-&gt;subsystem_device_id
+op_eq
+l_int|0xa000
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* GA-8IEXP */
 id|err
 op_assign
 id|snd_ctl_add
