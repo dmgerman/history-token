@@ -678,14 +678,6 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm
-r_struct
-id|pm_dev
-op_star
-id|pm
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|UART_XMIT_SIZE
