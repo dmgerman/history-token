@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 125 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 126 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -221,14 +221,17 @@ DECL|macro|ACPI_IS_IN_ACPI_TABLE
 mdefine_line|#define ACPI_IS_IN_ACPI_TABLE(a,b)      (_segment)(a) == (_segment)(b) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; (((u8 *)(a) &gt;= (u8 *)(b + 1)) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((u8 *)(a) &lt; ((u8 *)b + b-&gt;length)))
 macro_line|#endif
 multiline_comment|/*&n; * Macros for the master AML opcode table&n; */
-macro_line|#ifdef ACPI_DISASSEMBLER
+macro_line|#if defined(ACPI_DISASSEMBLER) || defined (ACPI_DEBUG)
 DECL|macro|ACPI_OP
 mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {name,Pargs,Iargs,flags,obj_type,class,type}
-DECL|macro|ACPI_DISASM_ONLY_MEMBERS
-mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)      a;
 macro_line|#else
 DECL|macro|ACPI_OP
 mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {Pargs,Iargs,flags,obj_type,class,type}
+macro_line|#endif
+macro_line|#ifdef ACPI_DISASSEMBLER
+DECL|macro|ACPI_DISASM_ONLY_MEMBERS
+mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)      a;
+macro_line|#else
 DECL|macro|ACPI_DISASM_ONLY_MEMBERS
 mdefine_line|#define ACPI_DISASM_ONLY_MEMBERS(a)
 macro_line|#endif
