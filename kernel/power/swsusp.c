@@ -76,14 +76,6 @@ id|suspend_pagedir_t
 op_star
 id|pagedir_save
 suffix:semicolon
-DECL|variable|__nosavedata
-r_static
-r_int
-id|pagedir_order
-id|__nosavedata
-op_assign
-l_int|0
-suffix:semicolon
 DECL|macro|SWSUSP_SIG
 mdefine_line|#define SWSUSP_SIG&t;&quot;S1SUSPEND&quot;
 DECL|struct|swsusp_header
@@ -3270,10 +3262,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|device_power_down
 c_func
 (paren
 id|PMSG_FREEZE
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Some devices failed to power down, very bad&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
@@ -4420,18 +4422,6 @@ id|nr_copy_pages
 op_assign
 id|swsusp_info.image_pages
 suffix:semicolon
-id|pagedir_order
-op_assign
-id|get_bitmask_order
-c_func
-(paren
-id|SUSPEND_PD_PAGES
-c_func
-(paren
-id|nr_copy_pages
-)paren
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -4521,7 +4511,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pr_debug
+id|printk
 c_func
 (paren
 id|KERN_ERR
