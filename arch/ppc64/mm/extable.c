@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * linux/arch/ppc/mm/extable.c&n; *&n; * from linux/arch/i386/mm/extable.c&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * linux/arch/ppc64/mm/extable.c&n; *&n; * from linux/arch/i386/mm/extable.c&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_struct
@@ -16,7 +17,7 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * The exception table needs to be sorted because we use the macros&n; * which put things into the exception table in a variety of segments&n; * such as the prep, pmac, chrp, etc. segments as well as the init&n; * segment and the main kernel text segment.&n; */
+multiline_comment|/*&n; * The exception table needs to be sorted because we use the macros&n; * which put things into the exception table in a variety of segments&n; * as well as the init segment and the main kernel text segment.&n; */
 r_static
 r_inline
 r_void
@@ -250,6 +251,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
 r_int
 r_int
 DECL|function|search_exception_table
@@ -264,6 +269,8 @@ id|addr
 r_int
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
@@ -281,20 +288,28 @@ comma
 id|addr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
 r_return
 id|ret
 suffix:semicolon
 macro_line|#else
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 r_struct
 id|module
 op_star
 id|mp
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -318,6 +333,17 @@ c_cond
 id|mp-&gt;ex_table_start
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+(paren
+id|mp-&gt;flags
+op_amp
+(paren
+id|MOD_RUNNING
+op_or
+id|MOD_INITIALIZING
+)paren
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -340,13 +366,21 @@ c_cond
 (paren
 id|ret
 )paren
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

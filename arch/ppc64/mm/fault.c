@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -125,6 +126,30 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
+multiline_comment|/* On an SLB miss we can only check for a valid exception entry */
+r_if
+c_cond
+(paren
+id|regs-&gt;trap
+op_eq
+l_int|0x380
+)paren
+(brace
+id|bad_page_fault
+c_func
+(paren
+id|regs
+comma
+id|address
+comma
+id|SIGSEGV
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -150,7 +175,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren
