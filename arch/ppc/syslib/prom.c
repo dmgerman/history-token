@@ -1390,8 +1390,12 @@ id|match
 suffix:semicolon
 r_int
 id|newintrc
+op_assign
+l_int|1
 comma
 id|newaddrc
+op_assign
+l_int|1
 suffix:semicolon
 r_int
 r_int
