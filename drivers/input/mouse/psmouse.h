@@ -245,6 +245,16 @@ r_int
 id|command
 )paren
 suffix:semicolon
+r_int
+id|psmouse_reset
+c_func
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|psmouse_smartscroll
