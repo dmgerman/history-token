@@ -258,6 +258,7 @@ id|ich5_pata
 )brace
 comma
 macro_line|#endif
+multiline_comment|/* NOTE: The following PCI ids must be kept in sync with the&n;&t; * list in drivers/pci/quirks.c.&n;&t; */
 (brace
 l_int|0x8086
 comma
