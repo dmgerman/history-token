@@ -1781,13 +1781,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef __powerpc__
-multiline_comment|/* Compensate for different memory map between host CPU and PCI bus.&n;      Shouldn&squot;t we use a macro for this? */
-id|card-&gt;membase
-op_add_assign
-id|KERNELBASE
-suffix:semicolon
-macro_line|#endif /* __powerpc__ */
 id|card-&gt;membase
 op_assign
 (paren
@@ -10968,6 +10961,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|vcc-&gt;stats-&gt;rx_drop
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -11113,6 +11113,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|vcc-&gt;stats-&gt;rx_drop
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -11240,6 +11247,13 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|vcc-&gt;stats-&gt;rx_drop
 )paren
 suffix:semicolon
 )brace
@@ -11659,6 +11673,13 @@ id|dev_kfree_skb_any
 c_func
 (paren
 id|hb
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|vcc-&gt;stats-&gt;rx_drop
 )paren
 suffix:semicolon
 )brace
