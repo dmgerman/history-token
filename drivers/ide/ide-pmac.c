@@ -1477,7 +1477,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-id|ata_irq_enale
+id|ata_irq_enable
 c_func
 (paren
 id|drive
@@ -7317,7 +7317,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
@@ -7332,7 +7331,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
@@ -7572,7 +7570,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon
@@ -7712,7 +7709,6 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-op_amp
 id|drive-&gt;channel-&gt;active
 )paren
 suffix:semicolon

@@ -240,6 +240,7 @@ id|IDE_CONTROL_OFFSET
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* 0x08 is for legacy ATA-1 devices */
 r_if
 c_cond
 (paren
@@ -248,6 +249,8 @@ id|on
 id|OUT_BYTE
 c_func
 (paren
+l_int|0x08
+op_or
 l_int|0x00
 comma
 id|ch-&gt;io_ports
@@ -267,6 +270,8 @@ id|ch-&gt;intrproc
 id|OUT_BYTE
 c_func
 (paren
+l_int|0x08
+op_or
 l_int|0x02
 comma
 id|ch-&gt;io_ports
@@ -338,9 +343,12 @@ comma
 id|ch-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* 0x08 is for legacy ATA-1 devices */
 id|OUT_BYTE
 c_func
 (paren
+l_int|0x08
+op_or
 l_int|0x04
 comma
 id|ch-&gt;io_ports
@@ -355,9 +363,12 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* 0x08 is for legacy ATA-1 devices */
 id|OUT_BYTE
 c_func
 (paren
+l_int|0x08
+op_or
 l_int|0x00
 comma
 id|ch-&gt;io_ports
