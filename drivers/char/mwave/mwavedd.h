@@ -94,19 +94,10 @@ id|BOOLEAN
 id|bIsHere
 suffix:semicolon
 multiline_comment|/* entry spin lock */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|member|ipc_wait_queue
 id|wait_queue_head_t
 id|ipc_wait_queue
 suffix:semicolon
-macro_line|#else
-DECL|member|ipc_wait_queue
-r_struct
-id|wait_queue
-op_star
-id|ipc_wait_queue
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|MWAVE_IPC
 )brace
 id|MWAVE_IPC
@@ -159,10 +150,6 @@ suffix:semicolon
 DECL|member|bMwaveDevRegistered
 id|BOOLEAN
 id|bMwaveDevRegistered
-suffix:semicolon
-DECL|member|bProcEntryCreated
-id|BOOLEAN
-id|bProcEntryCreated
 suffix:semicolon
 DECL|member|sLine
 r_int

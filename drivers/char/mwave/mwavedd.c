@@ -6,23 +6,15 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;smapi.h&quot;
 macro_line|#include &quot;mwavedd.h&quot;
 macro_line|#include &quot;3780i.h&quot;
 macro_line|#include &quot;tp3780i.h&quot;
-macro_line|#ifndef __exit
-DECL|macro|__exit
-mdefine_line|#define __exit
-macro_line|#endif
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -41,95 +33,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-r_static
-r_int
-id|mwave_get_info
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-macro_line|#else
-r_static
-r_int
-id|mwave_read_proc
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|xlen
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-DECL|variable|mwave_proc
-r_static
-r_struct
-id|proc_dir_entry
-id|mwave_proc
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* unsigned short low_ino */
-l_int|5
-comma
-multiline_comment|/* unsigned short namelen */
-l_string|&quot;mwave&quot;
-comma
-multiline_comment|/* const char *name */
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-multiline_comment|/* mode_t mode */
-l_int|1
-comma
-multiline_comment|/* nlink_t nlink */
-l_int|0
-comma
-multiline_comment|/* uid_t uid */
-l_int|0
-comma
-multiline_comment|/* gid_t gid */
-l_int|0
-comma
-multiline_comment|/* unsigned long size */
-l_int|NULL
-comma
-multiline_comment|/* struct inode_operations *ops */
-op_amp
-id|mwave_read_proc
-multiline_comment|/* int (*get_info) (...) */
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;* These parameters support the setting of MWave resources. Note that no&n;* checks are made against other devices (ie. superio) for conflicts.&n;* We&squot;ll depend on users using the tpctl utility to do that for now&n;*/
 DECL|variable|mwave_debug
 r_int
@@ -447,7 +350,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RESET calling tp3780I_ResetDSP&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RESET&quot;
+l_string|&quot; calling tp3780I_ResetDSP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -464,7 +368,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RESET retval %x from tp3780I_ResetDSP&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RESET&quot;
+l_string|&quot; retval %x from tp3780I_ResetDSP&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -479,7 +384,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RUN calling tp3780I_StartDSP&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RUN&quot;
+l_string|&quot; calling tp3780I_StartDSP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -496,7 +402,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RUN retval %x from tp3780I_StartDSP&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_RUN&quot;
+l_string|&quot; retval %x from tp3780I_StartDSP&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -515,7 +422,9 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_DSP_ABILITIES calling tp3780I_QueryAbilities&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl,&quot;
+l_string|&quot; IOCTL_MW_DSP_ABILITIES calling&quot;
+l_string|&quot; tp3780I_QueryAbilities&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -535,7 +444,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_DSP_ABILITIES retval %x from tp3780I_QueryAbilities&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_DSP_ABILITIES&quot;
+l_string|&quot; retval %x from tp3780I_QueryAbilities&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -585,7 +495,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_DSP_ABILITIES exit retval %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, IOCTL_MW_DSP_ABILITIES&quot;
+l_string|&quot; exit retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -657,7 +568,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_READ_DATA, size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_READ_DATA,&quot;
+l_string|&quot; size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
 comma
 id|rReadData.ulDataLength
 comma
@@ -751,7 +663,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_READ_INST, size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_READ_INST,&quot;
+l_string|&quot; size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
 comma
 id|rReadData.ulDataLength
 op_div
@@ -845,7 +758,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_WRITE_DATA, size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_WRITE_DATA,&quot;
+l_string|&quot; size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
 comma
 id|rWriteData.ulDataLength
 comma
@@ -935,7 +849,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_WRITE_INST, size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_WRITE_INST,&quot;
+l_string|&quot; size %lx, ioarg %lx pusBuffer %p&bslash;n&quot;
 comma
 id|rWriteData.ulDataLength
 comma
@@ -983,7 +898,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_REGISTER_IPC ipcnum %x entry usIntCount %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_REGISTER_IPC&quot;
+l_string|&quot; ipcnum %x entry usIntCount %x&bslash;n&quot;
 comma
 id|ipcnum
 comma
@@ -1000,14 +916,20 @@ c_cond
 (paren
 id|ipcnum
 OG
-l_int|16
+id|ARRAY_SIZE
+c_func
+(paren
+id|pDrvData-&gt;IPCs
+)paren
 )paren
 (brace
 id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_ioctl: IOCTL_MW_REGISTER_IPC: Error: Invalid ipcnum %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl:&quot;
+l_string|&quot; IOCTL_MW_REGISTER_IPC:&quot;
+l_string|&quot; Error: Invalid ipcnum %x&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1035,20 +957,13 @@ id|bIsEnabled
 op_assign
 id|TRUE
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-macro_line|#else
-id|current-&gt;priority
-op_assign
-l_int|0x28
-suffix:semicolon
-multiline_comment|/* boost to provide priority timing */
-macro_line|#endif
 id|PRINTK_2
 c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_REGISTER_IPC ipcnum %x exit&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_REGISTER_IPC&quot;
+l_string|&quot; ipcnum %x exit&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1084,7 +999,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC ipcnum %x, usIntCount %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC&quot;
+l_string|&quot; ipcnum %x, usIntCount %x&bslash;n&quot;
 comma
 id|ipcnum
 comma
@@ -1101,14 +1017,20 @@ c_cond
 (paren
 id|ipcnum
 OG
-l_int|16
+id|ARRAY_SIZE
+c_func
+(paren
+id|pDrvData-&gt;IPCs
+)paren
 )paren
 (brace
 id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_ioctl: IOCTL_MW_GET_IPC: Error: Invalid ipcnum %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl:&quot;
+l_string|&quot; IOCTL_MW_GET_IPC: Error:&quot;
+l_string|&quot; Invalid ipcnum %x&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1136,7 +1058,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl, thread for ipc %x going to sleep&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl, thread for&quot;
+l_string|&quot; ipc %x going to sleep&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1190,7 +1113,9 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC ipcnum %x handling first int&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl&quot;
+l_string|&quot; IOCTL_MW_GET_IPC ipcnum %x&quot;
+l_string|&quot; handling first int&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1208,6 +1133,7 @@ id|bIsHere
 op_assign
 id|TRUE
 suffix:semicolon
+macro_line|#warning &quot;Sleeping on spinlock&quot;
 id|interruptible_sleep_on
 c_func
 (paren
@@ -1266,7 +1192,10 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC ipcnum %x woke up and returning to application&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl&quot;
+l_string|&quot; IOCTL_MW_GET_IPC ipcnum %x&quot;
+l_string|&quot; woke up and returning to&quot;
+l_string|&quot; application&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1277,7 +1206,9 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC, returning thread for ipc %x processing&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_GET_IPC,&quot;
+l_string|&quot; returning thread for ipc %x&quot;
+l_string|&quot; processing&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1305,7 +1236,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_UNREGISTER_IPC ipcnum %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl IOCTL_MW_UNREGISTER_IPC&quot;
+l_string|&quot; ipcnum %x&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1315,14 +1247,20 @@ c_cond
 (paren
 id|ipcnum
 OG
-l_int|16
+id|ARRAY_SIZE
+c_func
+(paren
+id|pDrvData-&gt;IPCs
+)paren
 )paren
 (brace
 id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_ioctl: IOCTL_MW_UNREGISTER_IPC: Error: Invalid ipcnum %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl:&quot;
+l_string|&quot; IOCTL_MW_UNREGISTER_IPC:&quot;
+l_string|&quot; Error: Invalid ipcnum %x&bslash;n&quot;
 comma
 id|ipcnum
 )paren
@@ -1390,7 +1328,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_ioctl: Error: Unrecognized iocmd %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_ioctl:&quot;
+l_string|&quot; Error: Unrecognized iocmd %x&bslash;n&quot;
 comma
 id|iocmd
 )paren
@@ -1490,7 +1429,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_write entry file %p, buf %p, count %x ppos %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_write entry file %p, buf %p,&quot;
+l_string|&quot; count %x ppos %p&bslash;n&quot;
 comma
 id|file
 comma
@@ -1551,7 +1491,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::register_serial_portandirq: Error: Illegal port %x&bslash;n&quot;
+l_string|&quot;mwavedd::register_serial_portandirq:&quot;
+l_string|&quot; Error: Illegal port %x&bslash;n&quot;
 comma
 id|port
 )paren
@@ -1590,7 +1531,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::register_serial_portandirq: Error: Illegal irq %x&bslash;n&quot;
+l_string|&quot;mwavedd::register_serial_portandirq:&quot;
+l_string|&quot; Error: Illegal irq %x&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -1637,7 +1579,6 @@ id|serial
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|variable|mwave_fops
 r_static
 r_struct
@@ -1676,46 +1617,6 @@ op_assign
 id|mwave_close
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|variable|mwave_fops
-r_static
-r_struct
-id|file_operations
-id|mwave_fops
-op_assign
-(brace
-l_int|NULL
-comma
-multiline_comment|/* lseek */
-id|mwave_read
-comma
-multiline_comment|/* read */
-id|mwave_write
-comma
-multiline_comment|/* write */
-l_int|NULL
-comma
-multiline_comment|/* readdir */
-l_int|NULL
-comma
-multiline_comment|/* poll */
-id|mwave_ioctl
-comma
-multiline_comment|/* ioctl */
-l_int|NULL
-comma
-multiline_comment|/* mmap */
-id|mwave_open
-comma
-multiline_comment|/* open */
-l_int|NULL
-comma
-multiline_comment|/* flush */
-id|mwave_close
-multiline_comment|/* release */
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|mwave_misc_dev
 r_static
 r_struct
@@ -1731,6 +1632,94 @@ op_amp
 id|mwave_fops
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * sysfs support &lt;paulsch@us.ibm.com&gt;&n; */
+DECL|variable|mwave_device
+r_struct
+id|device
+id|mwave_device
+suffix:semicolon
+multiline_comment|/* Prevent code redundancy, create a macro for mwave_show_* functions. */
+DECL|macro|mwave_show_function
+mdefine_line|#define mwave_show_function(attr_name, format_string, field)&t;&t;&bslash;&n;static ssize_t mwave_show_##attr_name(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DSP_3780I_CONFIG_SETTINGS *pSettings =&t;&t;&t;&t;&bslash;&n;&t;&t;&amp;mwave_s_mdd.rBDData.rDspSettings;&t;&t;&t;&bslash;&n;        return sprintf(buf, format_string, pSettings-&gt;field);&t;&t;&bslash;&n;}
+multiline_comment|/* All of our attributes are read attributes. */
+DECL|macro|mwave_dev_rd_attr
+mdefine_line|#define mwave_dev_rd_attr(attr_name, format_string, field)&t;&t;&bslash;&n;&t;mwave_show_function(attr_name, format_string, field)&t;&t;&bslash;&n;static DEVICE_ATTR(attr_name, S_IRUGO, mwave_show_##attr_name, NULL)
+id|mwave_dev_rd_attr
+(paren
+l_int|3780
+id|i_dma
+comma
+l_string|&quot;%i&bslash;n&quot;
+comma
+id|usDspDma
+)paren
+suffix:semicolon
+id|mwave_dev_rd_attr
+(paren
+l_int|3780
+id|i_irq
+comma
+l_string|&quot;%i&bslash;n&quot;
+comma
+id|usDspIrq
+)paren
+suffix:semicolon
+id|mwave_dev_rd_attr
+(paren
+l_int|3780
+id|i_io
+comma
+l_string|&quot;%#.4x&bslash;n&quot;
+comma
+id|usDspBaseIO
+)paren
+suffix:semicolon
+id|mwave_dev_rd_attr
+(paren
+id|uart_irq
+comma
+l_string|&quot;%i&bslash;n&quot;
+comma
+id|usUartIrq
+)paren
+suffix:semicolon
+id|mwave_dev_rd_attr
+(paren
+id|uart_io
+comma
+l_string|&quot;%#.4x&bslash;n&quot;
+comma
+id|usUartBaseIO
+)paren
+suffix:semicolon
+DECL|variable|mwave_dev_attrs
+r_static
+r_struct
+id|device_attribute
+op_star
+r_const
+id|mwave_dev_attrs
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|dev_attr_3780i_dma
+comma
+op_amp
+id|dev_attr_3780i_irq
+comma
+op_amp
+id|dev_attr_3780i_io
+comma
+op_amp
+id|dev_attr_uart_irq
+comma
+op_amp
+id|dev_attr_uart_io
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n;* mwave_init is called on module load&n;*&n;* mwave_exit is called on module unload&n;* mwave_exit is also used to clean up after an aborted mwave_init&n;*/
 DECL|function|mwave_exit
 r_static
@@ -1741,6 +1730,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|pMWAVE_DEVICE_DATA
 id|pDrvData
 op_assign
@@ -1755,33 +1747,45 @@ comma
 l_string|&quot;mwavedd::mwave_exit entry&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|pDrvData-&gt;bProcEntryCreated
-)paren
-(brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-id|remove_proc_entry
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
 c_func
 (paren
-l_string|&quot;mwave&quot;
-comma
-l_int|NULL
+id|mwave_dev_attrs
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_unregister
+id|i
+op_increment
+)paren
+(brace
+id|device_remove_file
 c_func
 (paren
 op_amp
-id|proc_root
+id|mwave_device
 comma
-id|mwave_proc.low_ino
+id|mwave_dev_attrs
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+id|device_unregister
+c_func
+(paren
+op_amp
+id|mwave_device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1887,15 +1891,19 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|resultMiscRegister
-suffix:semicolon
 id|pMWAVE_DEVICE_DATA
 id|pDrvData
 op_assign
 op_amp
 id|mwave_s_mdd
+suffix:semicolon
+id|PRINTK_1
+c_func
+(paren
+id|TRACE_MWAVE
+comma
+l_string|&quot;mwavedd::mwave_init entry&bslash;n&quot;
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -1909,14 +1917,6 @@ r_sizeof
 (paren
 id|MWAVE_DEVICE_DATA
 )paren
-)paren
-suffix:semicolon
-id|PRINTK_1
-c_func
-(paren
-id|TRACE_MWAVE
-comma
-l_string|&quot;mwavedd::mwave_init entry&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pDrvData-&gt;bBDInitialized
@@ -1944,10 +1944,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|pDrvData-&gt;bProcEntryCreated
-op_assign
-id|FALSE
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1957,7 +1953,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|ARRAY_SIZE
+c_func
+(paren
+id|pDrvData-&gt;IPCs
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -1991,7 +1991,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* no ints received yet */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|init_waitqueue_head
 c_func
 (paren
@@ -2004,7 +2003,6 @@ dot
 id|ipc_wait_queue
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|retval
 op_assign
@@ -2020,7 +2018,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_init, return from tp3780I_InitializeBoardData retval %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init, return from tp3780I_InitializeBoardData&quot;
+l_string|&quot; retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -2035,7 +2034,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_init: Error: Failed to initialize board data&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init: Error:&quot;
+l_string|&quot; Failed to initialize board data&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2060,7 +2060,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_init, return from tp3780I_CalcResources retval %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init, return from tp3780I_CalcResources&quot;
+l_string|&quot; retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -2075,7 +2076,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd:mwave_init: Error: Failed to calculate resources&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to calculate resources&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2096,7 +2098,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_init, return from tp3780I_ClaimResources retval %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init, return from tp3780I_ClaimResources&quot;
+l_string|&quot; retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -2111,7 +2114,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd:mwave_init: Error: Failed to claim resources&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to claim resources&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2136,7 +2140,8 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_init, return from tp3780I_EnableDSP retval %x&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init, return from tp3780I_EnableDSP&quot;
+l_string|&quot; retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -2151,7 +2156,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd:mwave_init: Error: Failed to enable DSP&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to enable DSP&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2162,19 +2168,15 @@ id|pDrvData-&gt;bDSPEnabled
 op_assign
 id|TRUE
 suffix:semicolon
-id|resultMiscRegister
-op_assign
+r_if
+c_cond
+(paren
 id|misc_register
 c_func
 (paren
 op_amp
 id|mwave_misc_dev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|resultMiscRegister
 OL
 l_int|0
 )paren
@@ -2183,7 +2185,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd:mwave_init: Error: Failed to register misc device&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to register misc device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2216,7 +2219,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd:mwave_init: Error: Failed to register serial driver&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to register serial driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2224,50 +2228,104 @@ id|cleanup_error
 suffix:semicolon
 )brace
 multiline_comment|/* uart is registered */
-r_if
-c_cond
-(paren
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-op_logical_neg
-id|create_proc_info_entry
+multiline_comment|/* sysfs */
+id|memset
 c_func
 (paren
-l_string|&quot;mwave&quot;
+op_amp
+id|mwave_device
 comma
 l_int|0
 comma
-l_int|NULL
-comma
-id|mwave_get_info
+r_sizeof
+(paren
+r_struct
+id|device
 )paren
-macro_line|#else
-id|proc_register
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|mwave_device.name
+comma
+id|DEVICE_NAME_SIZE
+comma
+l_string|&quot;mwave&quot;
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|mwave_device.bus_id
+comma
+id|BUS_ID_SIZE
+comma
+l_string|&quot;mwave&quot;
+)paren
+suffix:semicolon
+id|device_register
 c_func
 (paren
 op_amp
-id|proc_root
-comma
-op_amp
-id|mwave_proc
+id|mwave_device
 )paren
-macro_line|#endif
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|mwave_dev_attrs
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|device_create_file
+c_func
+(paren
+op_amp
+id|mwave_device
+comma
+id|mwave_dev_attrs
+(braket
+id|i
+)braket
+)paren
 )paren
 (brace
 id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_init: Error: Failed to register /proc/mwave&bslash;n&quot;
+l_string|&quot;mwavedd:mwave_init: Error:&quot;
+l_string|&quot; Failed to create sysfs file %s&bslash;n&quot;
+comma
+id|mwave_dev_attrs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|attr.name
 )paren
 suffix:semicolon
 r_goto
 id|cleanup_error
 suffix:semicolon
 )brace
-id|pDrvData-&gt;bProcEntryCreated
-op_assign
-id|TRUE
-suffix:semicolon
+)brace
 multiline_comment|/* SUCCESS! */
 r_return
 l_int|0
@@ -2278,7 +2336,8 @@ id|PRINTK_ERROR
 c_func
 (paren
 id|KERN_ERR_MWAVE
-l_string|&quot;mwavedd::mwave_init: Error: Failed to initialize&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_init: Error:&quot;
+l_string|&quot; Failed to initialize&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mwave_exit
@@ -2299,224 +2358,4 @@ c_func
 id|mwave_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n;* proc entry stuff added by Ian Pilcher &lt;pilcher@us.ibm.com&gt;&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-DECL|function|mwave_get_info
-r_static
-r_int
-id|mwave_get_info
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|len
-)paren
-(brace
-id|DSP_3780I_CONFIG_SETTINGS
-op_star
-id|pSettings
-op_assign
-op_amp
-id|mwave_s_mdd.rBDData.rDspSettings
-suffix:semicolon
-r_char
-op_star
-id|out
-op_assign
-id|buf
-suffix:semicolon
-id|out
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;3780i_IRQ %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspIrq
-)paren
-suffix:semicolon
-id|out
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;3780i_DMA %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspDma
-)paren
-suffix:semicolon
-id|out
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;3780i_IO  %#.4x&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspBaseIO
-)paren
-suffix:semicolon
-id|out
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;UART_IRQ  %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usUartIrq
-)paren
-suffix:semicolon
-id|out
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;UART_IO   %#.4x&bslash;n&quot;
-comma
-id|pSettings-&gt;usUartBaseIO
-)paren
-suffix:semicolon
-r_return
-id|out
-op_minus
-id|buf
-suffix:semicolon
-)brace
-macro_line|#else /* kernel version &lt; 2.4.0 */
-DECL|function|mwave_read_proc
-r_static
-r_int
-id|mwave_read_proc
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|xlen
-comma
-r_int
-id|unused
-)paren
-(brace
-id|DSP_3780I_CONFIG_SETTINGS
-op_star
-id|pSettings
-op_assign
-op_amp
-id|mwave_s_mdd.rBDData.rDspSettings
-suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-id|len
-op_assign
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;3780i_IRQ %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspIrq
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-op_amp
-id|buf
-(braket
-id|len
-)braket
-comma
-l_string|&quot;3780i_DMA %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspDma
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-op_amp
-id|buf
-(braket
-id|len
-)braket
-comma
-l_string|&quot;3780i_IO  %#.4x&bslash;n&quot;
-comma
-id|pSettings-&gt;usDspBaseIO
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-op_amp
-id|buf
-(braket
-id|len
-)braket
-comma
-l_string|&quot;UART_IRQ  %i&bslash;n&quot;
-comma
-id|pSettings-&gt;usUartIrq
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-op_amp
-id|buf
-(braket
-id|len
-)braket
-comma
-l_string|&quot;UART_IO   %#.4x&bslash;n&quot;
-comma
-id|pSettings-&gt;usUartBaseIO
-)paren
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

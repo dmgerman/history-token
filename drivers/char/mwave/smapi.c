@@ -1303,22 +1303,34 @@ id|mwave_uart_irq
 (brace
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port A irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
+comma
+id|usSI
+op_amp
+l_int|0xFF
+comma
+id|mwave_uart_irq
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
 l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port A irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
 comma
 id|usSI
+op_amp
+l_int|0xFF
 comma
 id|mwave_uart_irq
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 c_func
@@ -1430,31 +1442,53 @@ id|uartio_index
 (brace
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port A base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
+comma
+id|ausUartBases
+(braket
+id|usSI
+op_rshift
+l_int|8
+)braket
+comma
+id|ausUartBases
+(braket
+id|uartio_index
+)braket
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
-l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port A base I/O address index %x conflicts with uartio_index %x&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port A base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
 comma
+id|ausUartBases
+(braket
 id|usSI
 op_rshift
 l_int|8
+)braket
 comma
+id|ausUartBases
+(braket
 id|uartio_index
+)braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port A&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bRC
@@ -1618,29 +1652,41 @@ id|mwave_uart_irq
 (brace
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port B irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
+comma
+id|usSI
+op_amp
+l_int|0xFF
+comma
+id|mwave_uart_irq
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
 l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port B irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
 comma
 id|usSI
+op_amp
+l_int|0xFF
 comma
 id|mwave_uart_irq
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port B&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bRC
@@ -1745,30 +1791,52 @@ id|uartio_index
 (brace
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port B base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
+comma
+id|ausUartBases
+(braket
+id|usSI
+op_rshift
+l_int|8
+)braket
+comma
+id|ausUartBases
+(braket
+id|uartio_index
+)braket
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
-l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port B base I/O address index %x conflicts with uartio_index %x&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg: Serial port B base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
 comma
+id|ausUartBases
+(braket
 id|usSI
 op_rshift
 l_int|8
+)braket
 comma
+id|ausUartBases
+(braket
 id|uartio_index
+)braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 (paren
 id|TRACE_SMAPI
 comma
-l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg Disabling conflicting serial port B&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bRC
@@ -1948,29 +2016,53 @@ id|usCX
 op_amp
 l_int|0xff
 )paren
+op_ne
+l_int|0xff
+)paren
+(brace
+multiline_comment|/* IR port not disabled */
+r_if
+c_cond
+(paren
+(paren
+id|usCX
+op_amp
+l_int|0xff
+)paren
 op_eq
 id|mwave_uart_irq
 )paren
 (brace
-multiline_comment|/* serial port is enabled */
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: IR port irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
+comma
+id|usCX
+op_amp
+l_int|0xff
+comma
+id|mwave_uart_irq
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
 l_string|&quot;smapi::smapi_set_DSP_cfg: IR port irq %x conflicts with mwave_uart_irq %x&bslash;n&quot;
 comma
-id|usSI
+id|usCX
+op_amp
+l_int|0xff
 comma
 id|mwave_uart_irq
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 c_func
@@ -2162,24 +2254,46 @@ id|uartio_index
 (brace
 macro_line|#ifndef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_ERROR
+c_func
 (paren
 id|KERN_ERR_MWAVE
+l_string|&quot;smapi::smapi_set_DSP_cfg: IR port base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
+comma
+id|ausUartBases
+(braket
+id|usSI
+op_amp
+l_int|0xff
+)braket
+comma
+id|ausUartBases
+(braket
+id|uartio_index
+)braket
+)paren
+suffix:semicolon
 macro_line|#else
 id|PRINTK_3
 c_func
 (paren
 id|TRACE_SMAPI
 comma
-macro_line|#endif
-l_string|&quot;smapi::smapi_set_DSP_cfg: IR port base I/O address index %x conflicts with uartio_index %x&bslash;n&quot;
+l_string|&quot;smapi::smapi_set_DSP_cfg: IR port base I/O address %x conflicts with mwave uart I/O %x&bslash;n&quot;
 comma
+id|ausUartBases
+(braket
 id|usSI
 op_amp
 l_int|0xff
+)braket
 comma
+id|ausUartBases
+(braket
 id|uartio_index
+)braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MWAVE_FUTZ_WITH_OTHER_DEVICES
 id|PRINTK_1
 c_func
@@ -2354,6 +2468,7 @@ r_goto
 id|exit_conflict
 suffix:semicolon
 macro_line|#endif
+)brace
 )brace
 )brace
 )brace

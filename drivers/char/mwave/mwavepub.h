@@ -2,13 +2,7 @@ multiline_comment|/*&n;*&n;* mwavepub.h -- PUBLIC declarations for the mwave dri
 macro_line|#ifndef _LINUX_MWAVEPUB_H
 DECL|macro|_LINUX_MWAVEPUB_H
 mdefine_line|#define _LINUX_MWAVEPUB_H
-macro_line|#ifndef MWAVEM_APP_DIST
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#endif
-macro_line|#ifdef MWAVEM_APP_DIST
-DECL|macro|MWAVE_MINOR
-mdefine_line|#define MWAVE_MINOR      219
-macro_line|#endif
 DECL|struct|_MW_ABILITIES
 r_typedef
 r_struct
