@@ -267,6 +267,11 @@ id|socket_file_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|llseek
 op_assign
 id|no_llseek
@@ -1463,6 +1468,11 @@ id|file_operations
 id|bad_sock_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

@@ -187,14 +187,6 @@ id|inet_protos
 id|MAX_INET_PROTOS
 )braket
 suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|inetsw
-(braket
-id|SOCK_MAX
-)braket
-suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 r_extern
 r_struct
@@ -203,14 +195,6 @@ op_star
 id|inet6_protos
 (braket
 id|MAX_INET_PROTOS
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|inetsw6
-(braket
-id|SOCK_MAX
 )braket
 suffix:semicolon
 macro_line|#endif

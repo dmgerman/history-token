@@ -2900,6 +2900,10 @@ id|newsk-&gt;sleep
 op_assign
 l_int|NULL
 suffix:semicolon
+id|newsk-&gt;owner
+op_assign
+l_int|NULL
+suffix:semicolon
 id|newtp-&gt;tstamp_ok
 op_assign
 id|req-&gt;tstamp_ok

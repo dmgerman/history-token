@@ -653,6 +653,11 @@ id|config_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|config_open
@@ -681,6 +686,11 @@ id|file_operations
 id|status_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
@@ -1062,6 +1072,11 @@ id|file_operations
 id|wandev_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

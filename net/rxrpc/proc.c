@@ -137,6 +137,11 @@ id|rxrpc_proc_transports_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|rxrpc_proc_transports_open
@@ -248,6 +253,11 @@ id|rxrpc_proc_peers_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|start
 op_assign
 id|rxrpc_proc_peers_start
@@ -276,6 +286,11 @@ id|file_operations
 id|rxrpc_proc_peers_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
@@ -416,6 +431,11 @@ id|file_operations
 id|rxrpc_proc_conns_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
