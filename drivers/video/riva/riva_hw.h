@@ -1683,6 +1683,6 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * FIFO Free Count. Should attempt to yield processor if RIVA is busy.&n; */
 DECL|macro|RIVA_FIFO_FREE
-mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt))                          &bslash;&n;        (hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;     &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
+mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt)) {                        &bslash;&n;&t;mb();mb();&t;&t;&t;&t;&t;&t;    &bslash;&n;        (hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;     &bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
 macro_line|#endif /* __RIVA_HW_H__ */
 eof
