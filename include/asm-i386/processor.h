@@ -1335,13 +1335,19 @@ r_int
 op_star
 id|io_bitmap_ptr
 suffix:semicolon
+multiline_comment|/* max allowed port in the bitmap, in bytes: */
+DECL|member|io_bitmap_max
+r_int
+r_int
+id|io_bitmap_max
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.sysenter_cs = __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_ptr = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Note that the .io_bitmap member must be extra-big. This is because&n; * the CPU will access an additional byte beyond the end of the IO&n; * permission bitmap. The extra byte must be all 1 bits, and must&n; * be within the limit.&n; */
 DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= offsetof(struct tss_struct,io_bitmap),&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
 DECL|function|load_esp0
 r_static
 r_inline
