@@ -111,13 +111,13 @@ DECL|variable|zimage_size
 r_int
 id|zimage_size
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE)
 DECL|variable|com_port
 r_int
 r_int
 id|com_port
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#endif /* CONFIG_SERIAL_8250_CONSOLE */
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|variable|vidmem
 r_char
@@ -549,7 +549,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE)
 id|com_port
 op_assign
 id|serial_init
@@ -560,7 +560,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#endif /* CONFIG_SERIAL_8250_CONSOLE */
 macro_line|#if defined(CONFIG_VGA_CONSOLE)
 id|vga_init
 c_func

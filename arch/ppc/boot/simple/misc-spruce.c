@@ -814,7 +814,7 @@ r_int
 r_int
 id|bar0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 multiline_comment|/* Initialize the serial console port */
 id|com_port
 op_assign
