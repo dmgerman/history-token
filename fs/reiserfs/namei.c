@@ -1815,10 +1815,12 @@ suffix:semicolon
 id|paste_size
 op_assign
 (paren
-id|old_format_only
+id|get_inode_sd_version
 (paren
-id|dir-&gt;i_sb
+id|dir
 )paren
+op_eq
+id|STAT_DATA_V1
 )paren
 ques
 c_cond
