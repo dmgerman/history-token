@@ -781,6 +781,10 @@ c_func
 id|entry-&gt;link.handle
 comma
 id|entry-&gt;link.index
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1334,11 +1338,23 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure all link devices have a valid IRQ. */
+r_if
+c_cond
+(paren
 id|acpi_pci_link_check
 c_func
 (paren
 )paren
+)paren
+(brace
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_X86_IO_APIC
 multiline_comment|/* Program IOAPICs using data from PRT entries. */
 r_if
