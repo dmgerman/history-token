@@ -30236,12 +30236,20 @@ op_or
 id|RX_MODE_KEEP_VLAN_TAG
 )paren
 suffix:semicolon
+multiline_comment|/* When ASF is in use, we always keep the RX_MODE_KEEP_VLAN_TAG&n;&t; * flag clear.&n;&t; */
 macro_line|#if TG3_VLAN_TAG_USED
 r_if
 c_cond
 (paren
 op_logical_neg
 id|tp-&gt;vlgrp
+op_logical_and
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags
+op_amp
+id|TG3_FLAG_ENABLE_ASF
+)paren
 )paren
 id|rx_mode
 op_or_assign
@@ -30249,6 +30257,16 @@ id|RX_MODE_KEEP_VLAN_TAG
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* By definition, VLAN is disabled always in this&n;&t; * case.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags
+op_amp
+id|TG3_FLAG_ENABLE_ASF
+)paren
+)paren
 id|rx_mode
 op_or_assign
 id|RX_MODE_KEEP_VLAN_TAG
