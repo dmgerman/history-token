@@ -20,11 +20,24 @@ c_func
 l_string|&quot;PS/2 mouse driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|psmouse_noext
+comma
+l_string|&quot;1i&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+DECL|variable|psmouse_noext
+r_static
+r_int
+id|psmouse_noext
 suffix:semicolon
 DECL|macro|PSMOUSE_CMD_SETSCALE11
 mdefine_line|#define PSMOUSE_CMD_SETSCALE11&t;0x00e6
@@ -46,6 +59,8 @@ DECL|macro|PSMOUSE_CMD_ENABLE
 mdefine_line|#define PSMOUSE_CMD_ENABLE&t;0x00f4
 DECL|macro|PSMOUSE_CMD_RESET_DIS
 mdefine_line|#define PSMOUSE_CMD_RESET_DIS&t;0x00f6
+DECL|macro|PSMOUSE_CMD_RESET_BAT
+mdefine_line|#define PSMOUSE_CMD_RESET_BAT&t;0x02ff
 DECL|macro|PSMOUSE_RET_BAT
 mdefine_line|#define PSMOUSE_RET_BAT&t;&t;0xaa
 DECL|macro|PSMOUSE_RET_ACK
@@ -1060,6 +1075,9 @@ id|psmouse-&gt;acking
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|serio_write
 c_func
 (paren
@@ -1067,7 +1085,17 @@ id|psmouse-&gt;serio
 comma
 id|byte
 )paren
+)paren
+(brace
+id|psmouse-&gt;acking
+op_assign
+l_int|0
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1428,6 +1456,14 @@ suffix:semicolon
 id|psmouse-&gt;model
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|psmouse_noext
+)paren
+r_return
+id|PSMOUSE_PS2
 suffix:semicolon
 multiline_comment|/*&n; * Try Genius NetMouse magic init.&n; */
 id|param
@@ -2605,7 +2641,6 @@ comma
 id|PSMOUSE_CMD_ENABLE
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -2616,8 +2651,47 @@ id|psmouse-&gt;serio-&gt;phys
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * psmouse_cleanup() resets the mouse into power-on state.&n; */
+DECL|function|psmouse_cleanup
+r_static
+r_void
+id|psmouse_cleanup
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+r_struct
+id|psmouse
+op_star
+id|psmouse
+op_assign
+id|serio
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+r_int
+r_char
+id|param
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|psmouse_command
+c_func
+(paren
+id|psmouse
+comma
+id|param
+comma
+id|PSMOUSE_CMD_RESET_BAT
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * psmouse_disconnect() cleans up after we don&squot;t want talk&n; * to the mouse anymore.&n; */
+multiline_comment|/*&n; * psmouse_disconnect() closes and frees.&n; */
 DECL|function|psmouse_disconnect
 r_static
 r_void
@@ -2953,8 +3027,44 @@ dot
 id|disconnect
 op_assign
 id|psmouse_disconnect
+comma
+dot
+id|cleanup
+op_assign
+id|psmouse_cleanup
+comma
 )brace
 suffix:semicolon
+macro_line|#ifndef MODULE
+DECL|function|psmouse_setup
+r_static
+r_int
+id|__init
+id|psmouse_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|psmouse_noext
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;psmouse_noext&quot;
+comma
+id|psmouse_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|psmouse_init
 r_int
 id|__init

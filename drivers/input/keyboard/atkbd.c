@@ -28,6 +28,14 @@ comma
 l_string|&quot;1i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|atkbd_reset
+comma
+l_string|&quot;1i&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -41,6 +49,21 @@ id|atkbd_set
 op_assign
 l_int|2
 suffix:semicolon
+macro_line|#if defined(__i386__) || defined (__x86_64__)
+DECL|variable|atkbd_reset
+r_static
+r_int
+id|atkbd_reset
+suffix:semicolon
+macro_line|#else
+DECL|variable|atkbd_reset
+r_static
+r_int
+id|atkbd_reset
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */
 DECL|variable|atkbd_set2_keycode
 r_static
@@ -1366,6 +1389,8 @@ DECL|macro|ATKBD_CMD_EX_ENABLE
 mdefine_line|#define ATKBD_CMD_EX_ENABLE&t;0x10ea
 DECL|macro|ATKBD_CMD_EX_SETLEDS
 mdefine_line|#define ATKBD_CMD_EX_SETLEDS&t;0x20eb
+DECL|macro|ATKBD_CMD_OK_GETID
+mdefine_line|#define ATKBD_CMD_OK_GETID&t;0x02e8
 DECL|macro|ATKBD_RET_ACK
 mdefine_line|#define ATKBD_RET_ACK&t;&t;0xfa
 DECL|macro|ATKBD_RET_NAK
@@ -1437,6 +1462,11 @@ DECL|member|set
 r_int
 r_char
 id|set
+suffix:semicolon
+DECL|member|oldset
+r_int
+r_char
+id|oldset
 suffix:semicolon
 DECL|member|release
 r_int
@@ -1513,7 +1543,6 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Interface error.  Request that the keyboard resend. */
 r_if
 c_cond
 (paren
@@ -1773,6 +1802,9 @@ id|byte
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
 id|serio_write
 c_func
 (paren
@@ -1780,6 +1812,10 @@ id|atkbd-&gt;serio
 comma
 id|byte
 )paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 r_while
 c_loop
@@ -2221,8 +2257,30 @@ id|atkbd
 r_int
 r_char
 id|param
+(braket
+l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/*&n; * For known special keyboards we can go ahead and set the correct set.&n; */
+multiline_comment|/*&n; * Remember original scancode set value, so that we can restore it on exit.&n; */
+r_if
+c_cond
+(paren
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+op_amp
+id|atkbd-&gt;oldset
+comma
+id|ATKBD_CMD_GSCANSET
+)paren
+)paren
+id|atkbd-&gt;oldset
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/*&n; * For known special keyboards we can go ahead and set the correct set.&n; * We check for NCD PS/2 Sun, NorthGate OmniKey 101 and IBM RapidAccess&n; * keyboards.&n; */
 r_if
 c_cond
 (paren
@@ -2232,6 +2290,9 @@ l_int|0xaca1
 )paren
 (brace
 id|param
+(braket
+l_int|0
+)braket
 op_assign
 l_int|3
 suffix:semicolon
@@ -2240,7 +2301,6 @@ c_func
 (paren
 id|atkbd
 comma
-op_amp
 id|param
 comma
 id|ATKBD_CMD_SSCANSET
@@ -2250,8 +2310,43 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We check for the extra keys on an some keyboards that need extra&n; * command to get enabled. This shouldn&squot;t harm any keyboards not&n; * knowing the command.&n; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
 id|param
+comma
+id|ATKBD_CMD_OK_GETID
+)paren
+)paren
+(brace
+id|atkbd-&gt;id
+op_assign
+id|param
+(braket
+l_int|0
+)braket
+op_lshift
+l_int|8
+op_or
+id|param
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_return
+l_int|2
+suffix:semicolon
+)brace
+id|param
+(braket
+l_int|0
+)braket
 op_assign
 l_int|0x71
 suffix:semicolon
@@ -2264,7 +2359,6 @@ c_func
 (paren
 id|atkbd
 comma
-op_amp
 id|param
 comma
 id|ATKBD_CMD_EX_ENABLE
@@ -2274,10 +2368,6 @@ r_return
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n; * Try to set the set we want.&n; */
-id|param
-op_assign
-id|atkbd_set
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2287,7 +2377,7 @@ c_func
 id|atkbd
 comma
 op_amp
-id|param
+id|atkbd_set
 comma
 id|ATKBD_CMD_SSCANSET
 )paren
@@ -2297,6 +2387,9 @@ l_int|2
 suffix:semicolon
 multiline_comment|/*&n; * Read set number. Beware here. Some keyboards always send &squot;2&squot;&n; * or some other number regardless into what mode they have been&n; * attempted to be set. Other keyboards treat the &squot;0&squot; command as&n; * &squot;set to set 0&squot;, and not &squot;report current set&squot; as they should.&n; * In that case we time out, and return 2.&n; */
 id|param
+(braket
+l_int|0
+)braket
 op_assign
 l_int|0
 suffix:semicolon
@@ -2308,7 +2401,6 @@ c_func
 (paren
 id|atkbd
 comma
-op_amp
 id|param
 comma
 id|ATKBD_CMD_GSCANSET
@@ -2321,6 +2413,9 @@ multiline_comment|/*&n; * Here we return the set number the keyboard reports abo
 r_return
 (paren
 id|param
+(braket
+l_int|0
+)braket
 op_eq
 l_int|3
 )paren
@@ -2352,7 +2447,11 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Some systems, where the bit-twiddling when testing the io-lines of the&n; * controller may confuse the keyboard need a full reset of the keyboard. On&n; * these systems the BIOS also usually doesn&squot;t do it for us.&n; */
-macro_line|#ifdef CONFIG_KEYBOARD_ATKBD_RESET
+r_if
+c_cond
+(paren
+id|atkbd_reset
+)paren
 r_if
 c_cond
 (paren
@@ -2373,7 +2472,6 @@ id|KERN_WARNING
 l_string|&quot;atkbd.c: keyboard reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Next we check we can set LEDs on the keyboard. This should work on every&n; * keyboard out there. It also turns the LEDs off, which we want anyway.&n; */
 id|param
 (braket
@@ -2514,7 +2612,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * atkbd_disconnect() cleans up behind us ...&n; */
+multiline_comment|/*&n; * atkbd_cleanup() restores the keyboard state so that BIOS is happy after a&n; * reboot.&n; */
+DECL|function|atkbd_cleanup
+r_static
+r_void
+id|atkbd_cleanup
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+r_struct
+id|atkbd
+op_star
+id|atkbd
+op_assign
+id|serio
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+op_amp
+id|atkbd-&gt;oldset
+comma
+id|ATKBD_CMD_SSCANSET
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * atkbd_disconnect() closes and frees.&n; */
 DECL|function|atkbd_disconnect
 r_static
 r_void
@@ -3056,14 +3188,20 @@ dot
 id|disconnect
 op_assign
 id|atkbd_disconnect
+comma
+dot
+id|cleanup
+op_assign
+id|atkbd_cleanup
+comma
 )brace
 suffix:semicolon
 macro_line|#ifndef MODULE
-DECL|function|atkbd_setup
+DECL|function|atkbd_setup_set
 r_static
 r_int
 id|__init
-id|atkbd_setup
+id|atkbd_setup_set
 c_func
 (paren
 r_char
@@ -3114,12 +3252,75 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|atkbd_setup_reset
+r_static
+r_int
+id|__init
+id|atkbd_setup_reset
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+id|ints
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|str
+op_assign
+id|get_options
+c_func
+(paren
+id|str
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|ints
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ints
+(braket
+l_int|0
+)braket
+OG
+l_int|0
+)paren
+id|atkbd_reset
+op_assign
+id|ints
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|__setup
 c_func
 (paren
 l_string|&quot;atkbd_set=&quot;
 comma
-id|atkbd_setup
+id|atkbd_setup_set
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;atkbd_reset&quot;
+comma
+id|atkbd_setup_reset
 )paren
 suffix:semicolon
 macro_line|#endif

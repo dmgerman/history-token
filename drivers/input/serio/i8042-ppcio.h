@@ -11,6 +11,8 @@ DECL|macro|I8042_KBD_PHYS_DESC
 mdefine_line|#define I8042_KBD_PHYS_DESC &quot;walnutps2/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;walnutps2/serio1&quot;
+DECL|macro|I8042_MUX_PHYS_DESC
+mdefine_line|#define I8042_MUX_PHYS_DESC &quot;walnutps2/serio%d&quot;
 r_extern
 r_void
 op_star
@@ -80,8 +82,6 @@ comma
 id|kb_data
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|i8042_write_command
 r_static
@@ -102,8 +102,6 @@ comma
 id|kb_cs
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|i8042_platform_init
 r_static
@@ -115,8 +113,12 @@ c_func
 r_void
 )paren
 (brace
-r_return
+id|i8042_reset
+op_assign
 l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|i8042_platform_exit
@@ -139,6 +141,8 @@ DECL|macro|I8042_KBD_PHYS_DESC
 mdefine_line|#define I8042_KBD_PHYS_DESC &quot;spruceps2/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;spruceps2/serio1&quot;
+DECL|macro|I8042_MUX_PHYS_DESC
+mdefine_line|#define I8042_MUX_PHYS_DESC &quot;spruceps2/serio%d&quot;
 DECL|macro|I8042_COMMAND_REG
 mdefine_line|#define I8042_COMMAND_REG 0xff810000
 DECL|macro|I8042_DATA_REG
@@ -329,8 +333,6 @@ r_char
 )paren
 id|val
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|i8042_write_command
 r_static
@@ -358,8 +360,6 @@ r_char
 )paren
 id|val
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|i8042_platform_init
 r_static
@@ -371,8 +371,12 @@ c_func
 r_void
 )paren
 (brace
-r_return
+id|i8042_reset
+op_assign
 l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|i8042_platform_exit
