@@ -443,6 +443,7 @@ r_int
 id|list_empty
 c_func
 (paren
+r_const
 r_struct
 id|list_head
 op_star
