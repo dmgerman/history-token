@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Power management registers */
 DECL|macro|PM_CFG_REVID
 mdefine_line|#define PM_CFG_REVID&t;0x08&t;/* silicon revision code */
