@@ -354,7 +354,7 @@ op_plus
 id|depth
 op_star
 l_int|3
-op_plus
+op_minus
 l_int|1
 suffix:semicolon
 r_if
