@@ -20,7 +20,7 @@ id|u8
 id|len
 suffix:semicolon
 DECL|member|name
-id|uchar_t
+id|ntfschar
 id|name
 (braket
 l_int|0
@@ -38,7 +38,7 @@ id|ntfs_name
 suffix:semicolon
 multiline_comment|/* The little endian Unicode string $I30 as a global constant. */
 r_extern
-id|uchar_t
+id|ntfschar
 id|I30
 (braket
 l_int|5
@@ -54,7 +54,7 @@ op_star
 id|dir_ni
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|uname
 comma

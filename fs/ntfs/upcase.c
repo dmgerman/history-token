@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * upcase.c - Generate the full NTFS Unicode upcase table in little endian.&n; *&t;      Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001 Richard Russon &lt;ntfs@flatcap.org&gt;&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; *&n; * Modified for mkntfs inclusion 9 June 2001 by Anton Altaparmakov.&n; * Modified for kernel inclusion 10 September 2001 by Anton Altparmakov.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS source&n; * in the file COPYING); if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;ntfs.h&quot;
 DECL|function|generate_default_upcase
-id|uchar_t
+id|ntfschar
 op_star
 id|generate_default_upcase
 c_func
@@ -726,7 +726,7 @@ id|i
 comma
 id|r
 suffix:semicolon
-id|uchar_t
+id|ntfschar
 op_star
 id|uc
 suffix:semicolon
@@ -739,7 +739,7 @@ id|default_upcase_len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 suffix:semicolon
@@ -763,7 +763,7 @@ id|default_upcase_len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 suffix:semicolon

@@ -3,10 +3,10 @@ macro_line|#ifndef _LINUX_NTFS_TYPES_H
 DECL|macro|_LINUX_NTFS_TYPES_H
 mdefine_line|#define _LINUX_NTFS_TYPES_H
 multiline_comment|/* 2-byte Unicode character type. */
-DECL|typedef|uchar_t
+DECL|typedef|ntfschar
 r_typedef
 id|u16
-id|uchar_t
+id|ntfschar
 suffix:semicolon
 DECL|macro|UCHAR_T_SIZE_BITS
 mdefine_line|#define UCHAR_T_SIZE_BITS 1

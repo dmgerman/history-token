@@ -271,7 +271,7 @@ suffix:semicolon
 multiline_comment|/* Length of client name in bytes.  Should&n;&t;&t;&t;&t;   always be 8. */
 DECL|member|client_name
 multiline_comment|/* 32*/
-id|uchar_t
+id|ntfschar
 id|client_name
 (braket
 l_int|64

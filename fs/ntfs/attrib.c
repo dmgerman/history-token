@@ -4315,7 +4315,7 @@ id|ATTR_TYPES
 id|type
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma
@@ -4349,7 +4349,7 @@ id|ntfs_volume
 op_star
 id|vol
 suffix:semicolon
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 suffix:semicolon
@@ -4553,7 +4553,7 @@ comma
 id|name_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -4594,7 +4594,7 @@ comma
 id|name_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -4652,7 +4652,7 @@ comma
 id|name_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -5270,7 +5270,7 @@ id|ATTR_TYPES
 id|type
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma
@@ -5329,7 +5329,7 @@ id|ATTR_RECORD
 op_star
 id|a
 suffix:semicolon
-id|uchar_t
+id|ntfschar
 op_star
 id|al_name
 suffix:semicolon
@@ -5585,7 +5585,7 @@ suffix:semicolon
 id|al_name
 op_assign
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -5788,7 +5788,7 @@ id|ntfs_are_names_equal
 c_func
 (paren
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -6057,7 +6057,7 @@ id|ntfs_are_names_equal
 c_func
 (paren
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 (paren
@@ -6268,7 +6268,7 @@ id|ATTR_TYPES
 id|type
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma

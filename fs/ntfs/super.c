@@ -3837,7 +3837,7 @@ r_goto
 id|upcase_failed
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The upcase size must not be above 64k Unicode characters, must not&n;&t; * be zero and must be a multiple of sizeof(uchar_t).&n;&t; */
+multiline_comment|/*&n;&t; * The upcase size must not be above 64k Unicode characters, must not&n;&t; * be zero and must be a multiple of sizeof(ntfschar).&n;&t; */
 r_if
 c_cond
 (paren
@@ -3849,7 +3849,7 @@ op_amp
 (paren
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 op_minus
 l_int|1
@@ -3863,7 +3863,7 @@ l_int|1024
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 r_goto
@@ -3872,7 +3872,7 @@ suffix:semicolon
 id|vol-&gt;upcase
 op_assign
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 id|ntfs_malloc_nofs
@@ -4013,7 +4013,7 @@ l_int|1024
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 suffix:semicolon
@@ -7959,7 +7959,7 @@ l_int|1
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 comma
 l_int|0

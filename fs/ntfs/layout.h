@@ -946,7 +946,7 @@ r_struct
 multiline_comment|/*hex ofs*/
 DECL|member|name
 multiline_comment|/*  0*/
-id|uchar_t
+id|ntfschar
 id|name
 (braket
 l_int|0x40
@@ -1623,7 +1623,7 @@ suffix:semicolon
 multiline_comment|/* If lowest_vcn = 0, the instance of the&n;&t;&t;&t;&t;   attribute being referenced; otherwise 0. */
 DECL|member|name
 multiline_comment|/* 26*/
-id|uchar_t
+id|ntfschar
 id|name
 (braket
 l_int|0
@@ -1806,7 +1806,7 @@ suffix:semicolon
 multiline_comment|/* Namespace of the file name.*/
 DECL|member|file_name
 multiline_comment|/* 42*/
-id|uchar_t
+id|ntfschar
 id|file_name
 (braket
 l_int|0
@@ -3511,7 +3511,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|name
-id|uchar_t
+id|ntfschar
 id|name
 (braket
 l_int|0

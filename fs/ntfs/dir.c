@@ -4,7 +4,7 @@ macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
 multiline_comment|/**&n; * The little endian Unicode string $I30 as a global constant.&n; */
 DECL|variable|I30
-id|uchar_t
+id|ntfschar
 id|I30
 (braket
 l_int|5
@@ -53,7 +53,7 @@ op_star
 id|dir_ni
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|uname
 comma
@@ -399,7 +399,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -549,7 +549,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -621,7 +621,7 @@ id|len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 suffix:semicolon
 id|name
@@ -685,7 +685,7 @@ id|len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 suffix:semicolon
@@ -712,7 +712,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -759,7 +759,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -1386,7 +1386,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -1530,7 +1530,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -1608,7 +1608,7 @@ id|len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 suffix:semicolon
 id|name
@@ -1672,7 +1672,7 @@ id|len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 suffix:semicolon
@@ -1699,7 +1699,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -1746,7 +1746,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -2027,7 +2027,7 @@ op_star
 id|dir_ni
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|uname
 comma
@@ -2367,7 +2367,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -2420,7 +2420,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -2467,7 +2467,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -3077,7 +3077,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -3124,7 +3124,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -3171,7 +3171,7 @@ comma
 id|uname_len
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -3627,7 +3627,7 @@ c_func
 id|vol
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp

@@ -142,7 +142,7 @@ id|upcase_len
 suffix:semicolon
 multiline_comment|/* Number of entries in upcase[]. */
 DECL|member|upcase
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 suffix:semicolon

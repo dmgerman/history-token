@@ -118,7 +118,7 @@ id|na-&gt;name_len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 )paren
 )paren
@@ -232,13 +232,13 @@ id|na-&gt;name_len
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 suffix:semicolon
 id|ni-&gt;name
 op_assign
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 id|kmalloc
@@ -248,7 +248,7 @@ id|i
 op_plus
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 comma
 id|GFP_ATOMIC
@@ -488,7 +488,7 @@ comma
 id|ATTR_TYPES
 id|type
 comma
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma

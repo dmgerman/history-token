@@ -61,7 +61,7 @@ id|type
 suffix:semicolon
 multiline_comment|/* Attribute type of this fake inode. */
 DECL|member|name
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 suffix:semicolon
@@ -411,7 +411,7 @@ r_int
 id|mft_no
 suffix:semicolon
 DECL|member|name
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 suffix:semicolon
@@ -490,7 +490,7 @@ comma
 id|ATTR_TYPES
 id|type
 comma
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma

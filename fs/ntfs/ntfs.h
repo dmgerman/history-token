@@ -386,7 +386,7 @@ id|ntfs_are_names_equal
 c_func
 (paren
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s1
 comma
@@ -394,7 +394,7 @@ r_int
 id|s1_len
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s2
 comma
@@ -406,7 +406,7 @@ id|IGNORE_CASE_BOOL
 id|ic
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -421,7 +421,7 @@ id|ntfs_collate_names
 c_func
 (paren
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name1
 comma
@@ -430,7 +430,7 @@ id|u32
 id|name1_len
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name2
 comma
@@ -447,7 +447,7 @@ id|IGNORE_CASE_BOOL
 id|ic
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -462,12 +462,12 @@ id|ntfs_ucsncmp
 c_func
 (paren
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s1
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s2
 comma
@@ -481,12 +481,12 @@ id|ntfs_ucsncasecmp
 c_func
 (paren
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s1
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|s2
 comma
@@ -494,7 +494,7 @@ r_int
 id|n
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -508,7 +508,7 @@ r_void
 id|ntfs_upcase_name
 c_func
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma
@@ -516,7 +516,7 @@ id|u32
 id|name_len
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -535,7 +535,7 @@ op_star
 id|file_name_attr
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -566,7 +566,7 @@ id|IGNORE_CASE_BOOL
 id|ic
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|upcase
 comma
@@ -594,7 +594,7 @@ r_const
 r_int
 id|ins_len
 comma
-id|uchar_t
+id|ntfschar
 op_star
 op_star
 id|outs
@@ -611,7 +611,7 @@ op_star
 id|vol
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|ins
 comma
@@ -631,7 +631,7 @@ id|outs_len
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/upcase.c */
 r_extern
-id|uchar_t
+id|ntfschar
 op_star
 id|generate_default_upcase
 c_func

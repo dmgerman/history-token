@@ -43,7 +43,7 @@ id|inode
 op_star
 id|dent_inode
 suffix:semicolon
-id|uchar_t
+id|ntfschar
 op_star
 id|uname
 suffix:semicolon
@@ -453,7 +453,7 @@ c_func
 id|vol
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp
@@ -694,7 +694,7 @@ id|fn-&gt;file_name_length
 op_star
 r_sizeof
 (paren
-id|uchar_t
+id|ntfschar
 )paren
 op_plus
 r_sizeof
@@ -729,7 +729,7 @@ c_func
 id|vol
 comma
 (paren
-id|uchar_t
+id|ntfschar
 op_star
 )paren
 op_amp

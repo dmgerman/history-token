@@ -168,7 +168,7 @@ id|ATTR_TYPES
 id|type
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma
@@ -203,7 +203,7 @@ id|ATTR_TYPES
 id|type
 comma
 r_const
-id|uchar_t
+id|ntfschar
 op_star
 id|name
 comma
