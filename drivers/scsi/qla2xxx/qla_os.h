@@ -34,10 +34,13 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_fc.h&gt;
 singleline_comment|//TODO Fix this!!!
