@@ -2204,6 +2204,7 @@ id|urb
 suffix:semicolon
 id|no_rx_urb
 suffix:colon
+suffix:semicolon
 )brace
 id|kfree
 c_func
@@ -2213,6 +2214,7 @@ id|info
 suffix:semicolon
 id|no_private
 suffix:colon
+suffix:semicolon
 )brace
 r_return
 op_minus
