@@ -1,19 +1,9 @@
 multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; *&n; * 2002-05-27:&t;Nicolas Pitre&t;Killed sleep.h and the kmalloced save array.&n; * &t;&t;&t;&t;Storage is local on the stack now.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/cpufreq.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/leds.h&gt;
-multiline_comment|/*&n; * Debug macros&n; */
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 r_extern
 r_void
 id|sa1100_cpu_suspend
@@ -108,17 +98,6 @@ id|sleep_save
 (braket
 id|SLEEP_SAVE_SIZE
 )braket
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_stop
-)paren
 suffix:semicolon
 multiline_comment|/* preserve current time */
 id|RCNR
@@ -394,25 +373,6 @@ id|xtime.tv_sec
 op_assign
 id|RCNR
 suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_start
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Restore the CPU frequency settings.&n;&t; */
-macro_line|#ifdef CONFIG_CPU_FREQ
-id|cpufreq_restore
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -436,211 +396,4 @@ id|sp
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SYSCTL
-multiline_comment|/*&n; * ARGH!  ACPI people defined CTL_ACPI in linux/acpi.h rather than&n; * linux/sysctl.h.&n; *&n; * This means our interface here won&squot;t survive long - it needs a new&n; * interface.  Quick hack to get this working - use sysctl id 9999.&n; */
-macro_line|#warning ACPI broke the kernel, this interface needs to be fixed up.
-DECL|macro|CTL_ACPI
-mdefine_line|#define CTL_ACPI 9999
-DECL|macro|ACPI_S1_SLP_TYP
-mdefine_line|#define ACPI_S1_SLP_TYP 19
-multiline_comment|/*&n; * Send us to sleep.&n; */
-DECL|function|sysctl_pm_do_suspend
-r_static
-r_int
-id|sysctl_pm_do_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|retval
-suffix:semicolon
-multiline_comment|/*&n;&t; * Suspend &quot;legacy&quot; devices.&n;&t; */
-id|retval
-op_assign
-id|pm_send_all
-c_func
-(paren
-id|PM_SUSPEND
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Suspend LDM devices.&n;&t;&t; */
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_NOTIFY
-)paren
-suffix:semicolon
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_SAVE_STATE
-)paren
-suffix:semicolon
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_DISABLE
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|pm_do_suspend
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Resume LDM devices.&n;&t;&t; */
-id|device_resume
-c_func
-(paren
-id|RESUME_RESTORE_STATE
-)paren
-suffix:semicolon
-id|device_resume
-c_func
-(paren
-id|RESUME_ENABLE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Resume &quot;legacy&quot; devices.&n;&t;&t; */
-id|pm_send_all
-c_func
-(paren
-id|PM_RESUME
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_return
-id|retval
-suffix:semicolon
-)brace
-DECL|variable|pm_table
-r_static
-r_struct
-id|ctl_table
-id|pm_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|ACPI_S1_SLP_TYP
-comma
-l_string|&quot;suspend&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0600
-comma
-l_int|NULL
-comma
-(paren
-id|proc_handler
-op_star
-)paren
-op_amp
-id|sysctl_pm_do_suspend
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-DECL|variable|pm_dir_table
-r_static
-r_struct
-id|ctl_table
-id|pm_dir_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|CTL_ACPI
-comma
-l_string|&quot;pm&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|pm_table
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Initialize power interface&n; */
-DECL|function|pm_init
-r_static
-r_int
-id|__init
-id|pm_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|register_sysctl_table
-c_func
-(paren
-id|pm_dir_table
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|pm_init
-id|fs_initcall
-c_func
-(paren
-id|pm_init
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|pm_do_suspend
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pm_do_suspend
-)paren
-suffix:semicolon
 eof
