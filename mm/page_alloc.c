@@ -5257,7 +5257,13 @@ l_int|NULL
 comma
 id|zones_size
 comma
-l_int|0
+id|__pa
+c_func
+(paren
+id|PAGE_OFFSET
+)paren
+op_rshift
+id|PAGE_SHIFT
 comma
 l_int|NULL
 )paren
