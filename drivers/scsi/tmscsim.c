@@ -3990,7 +3990,7 @@ op_star
 id|pdev
 comma
 id|u8
-id|cd
+id|cmd
 )paren
 (brace
 id|u8
