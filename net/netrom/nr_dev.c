@@ -758,10 +758,6 @@ id|nr_header
 suffix:semicolon
 id|dev-&gt;hard_header_len
 op_assign
-id|AX25_BPQ_HEADER_LEN
-op_plus
-id|AX25_MAX_HEADER_LEN
-op_plus
 id|NR_NETWORK_LEN
 op_plus
 id|NR_TRANSPORT_LEN

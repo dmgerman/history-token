@@ -419,10 +419,6 @@ id|timeout
 suffix:semicolon
 id|len
 op_assign
-id|AX25_BPQ_HEADER_LEN
-op_plus
-id|AX25_MAX_HEADER_LEN
-op_plus
 id|NR_NETWORK_LEN
 op_plus
 id|NR_TRANSPORT_LEN
@@ -510,10 +506,6 @@ c_func
 (paren
 id|skb
 comma
-id|AX25_BPQ_HEADER_LEN
-op_plus
-id|AX25_MAX_HEADER_LEN
-op_plus
 id|NR_NETWORK_LEN
 )paren
 suffix:semicolon
@@ -843,10 +835,6 @@ id|len
 suffix:semicolon
 id|len
 op_assign
-id|AX25_BPQ_HEADER_LEN
-op_plus
-id|AX25_MAX_HEADER_LEN
-op_plus
 id|NR_NETWORK_LEN
 op_plus
 id|NR_TRANSPORT_LEN
@@ -877,9 +865,7 @@ c_func
 (paren
 id|skbn
 comma
-id|AX25_BPQ_HEADER_LEN
-op_plus
-id|AX25_MAX_HEADER_LEN
+l_int|0
 )paren
 suffix:semicolon
 id|dptr
