@@ -116,6 +116,8 @@ suffix:semicolon
 )brace
 id|pgd_t
 suffix:semicolon
+DECL|macro|boot_pte_t
+mdefine_line|#define boot_pte_t pte_t /* or would you rather have a typedef */
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte_low)
 DECL|macro|HPAGE_SHIFT
