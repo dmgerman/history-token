@@ -676,6 +676,12 @@ id|KERN_ERR
 l_string|&quot;page_remove_rmap: driver cleared PG_reserved ?&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#else
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 id|out
 suffix:colon

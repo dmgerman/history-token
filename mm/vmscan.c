@@ -685,14 +685,14 @@ op_star
 suffix:semicolon
 r_const
 r_int
-id|nr_pages
+id|cluster_size
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
 r_int
 id|nr_to_write
 op_assign
-id|nr_pages
+id|cluster_size
 suffix:semicolon
 id|writeback
 op_assign
@@ -736,7 +736,7 @@ suffix:semicolon
 id|max_scan
 op_sub_assign
 (paren
-id|nr_pages
+id|cluster_size
 op_minus
 id|nr_to_write
 )paren
