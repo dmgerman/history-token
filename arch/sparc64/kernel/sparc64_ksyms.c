@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -48,6 +49,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/ns87303.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -759,11 +761,11 @@ id|mcount
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Per-CPU information table */
-DECL|variable|cpu_data
-id|EXPORT_SYMBOL
+DECL|variable|__cpu_data
+id|EXPORT_PER_CPU_SYMBOL
 c_func
 (paren
-id|cpu_data
+id|__cpu_data
 )paren
 suffix:semicolon
 multiline_comment|/* CPU online map and active count.  */

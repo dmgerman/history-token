@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|variable|mostek_lock
 id|spinlock_t
 id|mostek_lock
@@ -4211,9 +4212,10 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_return
 id|cpu_data
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 dot
 id|clock_tick
 suffix:semicolon
@@ -4286,18 +4288,20 @@ suffix:semicolon
 id|ft-&gt;udelay_val_ref
 op_assign
 id|cpu_data
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 dot
 id|udelay_val
 suffix:semicolon
 id|ft-&gt;clock_tick_ref
 op_assign
 id|cpu_data
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 dot
 id|clock_tick
 suffix:semicolon
@@ -4331,9 +4335,10 @@ r_new
 )paren
 (brace
 id|cpu_data
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 dot
 id|udelay_val
 op_assign
@@ -4350,9 +4355,10 @@ r_new
 )paren
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 dot
 id|clock_tick
 op_assign

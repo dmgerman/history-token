@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -43,12 +44,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|cpu_data
+id|DEFINE_PER_CPU
+c_func
+(paren
 id|cpuinfo_sparc
-id|cpu_data
-(braket
-id|NR_CPUS
-)braket
+comma
+id|__cpu_data
+)paren
+op_assign
+(brace
+l_int|0
+)brace
 suffix:semicolon
 multiline_comment|/* Please don&squot;t make this stuff initdata!!!  --DaveM */
 DECL|variable|boot_cpu_id
@@ -195,9 +201,10 @@ comma
 id|i
 comma
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
 dot
 id|udelay_val
 op_div
@@ -209,9 +216,10 @@ id|HZ
 comma
 (paren
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
 dot
 id|udelay_val
 op_div
@@ -227,9 +235,10 @@ comma
 id|i
 comma
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
 dot
 id|clock_tick
 )paren
@@ -246,15 +255,14 @@ id|id
 )paren
 (brace
 r_int
-id|i
-comma
 id|cpu_node
 suffix:semicolon
 multiline_comment|/* multiplier and counter set by&n;&t;   smp_setup_percpu_timer()  */
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|udelay_val
 op_assign
@@ -270,9 +278,10 @@ id|cpu_node
 )paren
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|clock_tick
 op_assign
@@ -287,18 +296,20 @@ l_int|0
 )paren
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|pgcache_size
 op_assign
 l_int|0
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|pte_cache
 (braket
@@ -308,9 +319,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|pte_cache
 (braket
@@ -320,57 +332,34 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|pgdcache_size
 op_assign
 l_int|0
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|pgd_cache
 op_assign
 l_int|NULL
 suffix:semicolon
 id|cpu_data
-(braket
+c_func
+(paren
 id|id
-)braket
+)paren
 dot
 id|idle_volume
 op_assign
 l_int|1
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|16
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|cpu_data
-(braket
-id|id
-)braket
-dot
-id|irq_worklists
-(braket
-id|i
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -4270,9 +4259,9 @@ id|regs
 )paren
 suffix:semicolon
 DECL|macro|prof_multiplier
-mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data[(__cpu)].multiplier
+mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
 DECL|macro|prof_counter
-mdefine_line|#define prof_counter(__cpu)&t;&t;cpu_data[(__cpu)].counter
+mdefine_line|#define prof_counter(__cpu)&t;&t;cpu_data(__cpu).counter
 DECL|function|smp_percpu_timer_interrupt
 r_void
 id|smp_percpu_timer_interrupt
@@ -5413,9 +5402,10 @@ id|i
 id|bogosum
 op_add_assign
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
 dot
 id|udelay_val
 suffix:semicolon
@@ -5461,5 +5451,45 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* This needn&squot;t do anything as we do not sleep the cpu&n; * inside of the idler task, so an interrupt is not needed&n; * to get a clean fast response.&n; *&n; * XXX Reverify this assumption... -DaveM&n; *&n; * Addendum: We do want it to do something for the signal&n; *           delivery case, we detect that by just seeing&n; *           if we are trying to send this to an idler or not.&n; */
+DECL|function|smp_send_reschedule
+r_void
+id|smp_send_reschedule
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_data
+c_func
+(paren
+id|cpu
+)paren
+dot
+id|idle_volume
+op_eq
+l_int|0
+)paren
+id|smp_receive_signal
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* This is a nop because we capture all other cpus&n; * anyways when making the PROM active.&n; */
+DECL|function|smp_send_stop
+r_void
+id|smp_send_stop
+c_func
+(paren
+r_void
+)paren
+(brace
 )brace
 eof

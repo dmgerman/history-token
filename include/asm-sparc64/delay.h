@@ -4,6 +4,7 @@ DECL|macro|__SPARC64_DELAY_H
 mdefine_line|#define __SPARC64_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/smp.h&gt;
@@ -159,7 +160,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|__udelay_val
-mdefine_line|#define __udelay_val cpu_data[smp_processor_id()].udelay_val
+mdefine_line|#define __udelay_val cpu_data(smp_processor_id()).udelay_val
 macro_line|#else
 DECL|macro|__udelay_val
 mdefine_line|#define __udelay_val loops_per_jiffy
