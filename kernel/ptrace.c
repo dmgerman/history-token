@@ -46,10 +46,7 @@ id|child-&gt;parent
 op_eq
 id|new_parent
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_return
 suffix:semicolon
 id|list_add
 c_func
