@@ -1715,15 +1715,6 @@ c_func
 id|idle_cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|set_cpus_allowed
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|set_cpus_allowed
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL

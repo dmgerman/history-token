@@ -8720,6 +8720,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|set_cpus_allowed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_cpus_allowed
+)paren
+suffix:semicolon
 multiline_comment|/* Move (not current) task off this cpu, onto dest cpu. */
 DECL|function|move_task_away
 r_static
@@ -9949,13 +9956,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|schedule
-)paren
-suffix:semicolon
-DECL|variable|set_cpus_allowed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_cpus_allowed
 )paren
 suffix:semicolon
 DECL|variable|set_user_nice
