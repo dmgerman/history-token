@@ -52,7 +52,7 @@ id|max_cstate
 comma
 id|uint
 comma
-l_int|0
+l_int|0644
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Power Management&n;   -------------------------------------------------------------------------- */
