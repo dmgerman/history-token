@@ -1700,6 +1700,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|ieee1394
+comma
+id|eth1394_id_table
+)paren
+suffix:semicolon
 DECL|variable|eth1394_proto_driver
 r_static
 r_struct
