@@ -7646,19 +7646,8 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* Hole? Nothing to do */
-r_if
-c_cond
-(paren
-id|buffer_uptodate
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_goto
-id|unlock
-suffix:semicolon
+id|err
+op_assign
 id|get_block
 c_func
 (paren
@@ -7671,7 +7660,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Still unmapped? Nothing to do */
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|unlock
+suffix:semicolon
+multiline_comment|/* unmapped? It&squot;s a hole - nothing to do */
 r_if
 c_cond
 (paren
