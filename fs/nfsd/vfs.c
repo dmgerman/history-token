@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

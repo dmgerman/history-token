@@ -4,6 +4,7 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsfh.h&gt;
