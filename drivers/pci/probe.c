@@ -2358,7 +2358,7 @@ op_assign
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices and call /sbin/hotplug if we&n;&t;&t; * should.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices and add the /proc entry.&n;&t;&t; */
 id|pci_insert_device
 (paren
 id|dev
