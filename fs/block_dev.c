@@ -3802,7 +3802,6 @@ op_amp
 id|bdev-&gt;bd_sem
 )paren
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
