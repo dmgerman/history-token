@@ -167,8 +167,12 @@ DECL|macro|cpu_has_centaur_mcr
 mdefine_line|#define cpu_has_centaur_mcr&t;boot_cpu_has(X86_FEATURE_CENTAUR_MCR)
 DECL|macro|cpu_has_xstore
 mdefine_line|#define cpu_has_xstore&t;&t;boot_cpu_has(X86_FEATURE_XSTORE)
+DECL|macro|cpu_has_xstore_enabled
+mdefine_line|#define cpu_has_xstore_enabled&t;boot_cpu_has(X86_FEATURE_XSTORE_EN)
 DECL|macro|cpu_has_xcrypt
 mdefine_line|#define cpu_has_xcrypt&t;&t;boot_cpu_has(X86_FEATURE_XCRYPT)
+DECL|macro|cpu_has_xcrypt_enabled
+mdefine_line|#define cpu_has_xcrypt_enabled&t;boot_cpu_has(X86_FEATURE_XCRYPT_EN)
 macro_line|#endif /* __ASM_I386_CPUFEATURE_H */
 multiline_comment|/* &n; * Local Variables:&n; * mode:c&n; * comment-column:42&n; * End:&n; */
 eof
