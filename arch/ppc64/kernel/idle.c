@@ -139,7 +139,7 @@ r_void
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|lpaca
 suffix:semicolon
@@ -150,6 +150,8 @@ r_int
 r_int
 id|CTRL
 suffix:semicolon
+macro_line|#warning fix iseries run light
+macro_line|#if 0
 multiline_comment|/* ensure iSeries run light will be out when idle */
 id|current-&gt;thread.flags
 op_and_assign
@@ -177,6 +179,7 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|lpaca
 op_assign
 id|get_paca

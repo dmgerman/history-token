@@ -1247,7 +1247,7 @@ suffix:semicolon
 singleline_comment|// ramdisk in kernel space
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -1284,7 +1284,7 @@ suffix:semicolon
 r_else
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 (brace
-multiline_comment|/*&t;&t;ROOT_DEV = MKDEV( VIODASD_MAJOR, 1 ); */
+multiline_comment|/*&t;&t;ROOT_DEV = mk_kdev( VIODASD_MAJOR, 1 ); */
 )brace
 id|iSeries_recal_tb
 op_assign
