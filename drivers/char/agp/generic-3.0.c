@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Generic routines for AGP 3.0 compliant bridges.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
@@ -1771,8 +1772,7 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;woah!  Non-AGP device &quot;
-l_string|&quot;found on the secondary bus of an AGP 3.0 &quot;
-l_string|&quot;bridge!&bslash;n&quot;
+l_string|&quot;found on the secondary bus of an AGP 3.0 bridge!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -1956,9 +1956,10 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;woah!  Bogus AGP rate &quot;
-l_string|&quot;value found advertised behind an AGP 3.0 &quot;
-l_string|&quot;bridge!&bslash;n&quot;
+l_string|&quot;woah!  Bogus AGP rate (%d) &quot;
+l_string|&quot;value found advertised behind an AGP 3.0 bridge!&bslash;n&quot;
+comma
+id|rate
 )paren
 suffix:semicolon
 id|ret

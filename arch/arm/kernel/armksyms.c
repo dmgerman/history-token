@@ -481,11 +481,18 @@ c_func
 id|set_irq_type
 )paren
 suffix:semicolon
-DECL|variable|set_irq_wake
+DECL|variable|enable_irq_wake
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|set_irq_wake
+id|enable_irq_wake
+)paren
+suffix:semicolon
+DECL|variable|disable_irq_wake
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq_wake
 )paren
 suffix:semicolon
 DECL|variable|pm_idle
@@ -782,13 +789,6 @@ id|__arch_strnlen_user
 )paren
 suffix:semicolon
 multiline_comment|/* consistent area handling */
-DECL|variable|pci_alloc_consistent
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_alloc_consistent
-)paren
-suffix:semicolon
 DECL|variable|consistent_alloc
 id|EXPORT_SYMBOL
 c_func

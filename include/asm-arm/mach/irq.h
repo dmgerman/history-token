@@ -110,6 +110,21 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set wakeup-enable on the selected IRQ&n;&t; */
+DECL|member|wake
+r_int
+(paren
+op_star
+id|wake
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|irqdesc

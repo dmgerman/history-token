@@ -852,6 +852,7 @@ c_func
 id|next_dec
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
 id|lpq
 op_assign
 id|lpaca-&gt;lpQueuePtr
@@ -877,6 +878,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|irq_exit
 c_func
 (paren
@@ -1355,13 +1357,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
 op_logical_neg
 id|piranha_simulator
 )paren
-(brace
+macro_line|#endif
 id|ppc_md
 dot
 id|get_boot_time
@@ -1371,7 +1374,6 @@ op_amp
 id|tm
 )paren
 suffix:semicolon
-)brace
 id|write_lock_irqsave
 c_func
 (paren

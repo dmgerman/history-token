@@ -44,13 +44,13 @@ macro_line|#ifdef MODULE
 id|asm
 c_func
 (paren
-l_string|&quot;.section .plt,&bslash;&quot;aws&bslash;&quot;,@nobits; .align 3; .previous&quot;
+l_string|&quot;.section .plt,&bslash;&quot;ax&bslash;&quot;,@nobits; .align 3; .previous&quot;
 )paren
 suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.section .plt.init,&bslash;&quot;aws&bslash;&quot;,@nobits; .align 3; .previous&quot;
+l_string|&quot;.section .init.plt,&bslash;&quot;ax&bslash;&quot;,@nobits; .align 3; .previous&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -3,8 +3,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/hardware/sa1111.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -12,12 +16,6 @@ macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|macro|JORTUCR_VAL
 mdefine_line|#define JORTUCR_VAL&t;0x20000400
-DECL|macro|JORSKCR_INIT
-mdefine_line|#define JORSKCR_INIT&t;0x00002081&t;/* Turn off VCO to enable PLL, set Ready En and enable nOE assertion from DC */
-DECL|macro|JORSKCR_RCLK
-mdefine_line|#define JORSKCR_RCLK&t;0x00002083&t;/* Add turning on RCLK to above */
-DECL|macro|JORSKCR_VAL
-mdefine_line|#define JORSKCR_VAL&t;0x0000001B&t;/* sets the 1101 control register to on */
 DECL|function|jornada720_init
 r_static
 r_int
@@ -26,6 +24,21 @@ id|jornada720_init
 c_func
 (paren
 r_void
+)paren
+(brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_jornada720
+c_func
+(paren
+)paren
 )paren
 (brace
 id|GPDR
@@ -67,32 +80,6 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-id|SKCR
-op_assign
-id|JORSKCR_INIT
-suffix:semicolon
-multiline_comment|/* Turn on the PLL, enable Ready and enable nOE assertion from DC */
-id|mdelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-id|SBI_SKCR
-op_assign
-id|JORSKCR_RCLK
-suffix:semicolon
-multiline_comment|/* turn on the RCLOCK */
-id|SBI_SMCR
-op_assign
-l_int|0x35
-suffix:semicolon
-multiline_comment|/* initialize the SMC (debug SA-1111 reset */
-id|PCCR
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* initialize the S2MC (debug SA-1111 reset) */
 multiline_comment|/* LDD4 is speaker, LDD3 is microphone */
 id|PPSR
 op_and_assign
@@ -109,7 +96,8 @@ id|PPC_LDD3
 op_or
 id|PPC_LDD4
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|sa1111_init
 c_func
 (paren
@@ -117,6 +105,10 @@ l_int|0x40000000
 comma
 id|IRQ_GPIO1
 )paren
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|jornada720_init

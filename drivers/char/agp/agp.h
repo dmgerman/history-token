@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART module version 0.99&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART module&n; * Copyright (C) 2002 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
@@ -136,6 +136,13 @@ c_func
 (paren
 r_int
 id|key
+)paren
+suffix:semicolon
+r_int
+id|agp_num_entries
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|macro|PFX
@@ -891,6 +898,12 @@ mdefine_line|#define VIA_APSIZE&t;0x84
 DECL|macro|VIA_ATTBASE
 mdefine_line|#define VIA_ATTBASE&t;0x88
 multiline_comment|/* VIA KT400 */
+DECL|macro|VIA_AGP3_GARTCTRL
+mdefine_line|#define VIA_AGP3_GARTCTRL&t;0x90
+DECL|macro|VIA_AGP3_APSIZE
+mdefine_line|#define VIA_AGP3_APSIZE&t;0x94
+DECL|macro|VIA_AGP3_ATTBASE
+mdefine_line|#define VIA_AGP3_ATTBASE&t;0x98
 DECL|macro|VIA_AGPSEL
 mdefine_line|#define VIA_AGPSEL&t;0xfd
 multiline_comment|/* SiS registers */

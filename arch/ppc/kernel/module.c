@@ -384,7 +384,7 @@ r_int
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Find .plt and .pltinit sections */
+multiline_comment|/* Find .plt and .init.plt sections */
 r_for
 c_loop
 (paren
@@ -415,7 +415,7 @@ id|i
 dot
 id|sh_name
 comma
-l_string|&quot;.plt.init&quot;
+l_string|&quot;.init.plt&quot;
 )paren
 op_eq
 l_int|0
@@ -463,7 +463,7 @@ id|me-&gt;arch.init_plt_section
 id|printk
 c_func
 (paren
-l_string|&quot;Module doesn&squot;t contain .plt or .plt.init sections.&bslash;n&quot;
+l_string|&quot;Module doesn&squot;t contain .plt or .init.plt sections.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

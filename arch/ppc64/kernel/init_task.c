@@ -43,7 +43,7 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
+multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 16384-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
 DECL|variable|init_thread_union
 r_union
 id|thread_union

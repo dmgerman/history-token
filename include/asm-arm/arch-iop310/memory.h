@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_ARCH_MEMORY_H
 DECL|macro|__ASM_ARCH_MEMORY_H
 mdefine_line|#define __ASM_ARCH_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/arch/iop310.h&gt;
 multiline_comment|/*&n; * Task size: 3GB&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0xbf000000UL)

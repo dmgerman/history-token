@@ -1536,7 +1536,7 @@ suffix:semicolon
 DECL|macro|IDLE_ENOUGH
 mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&amp; ((now) - irq_stat[(cpu)].idle_timestamp &gt; 1))
 DECL|macro|IRQ_ALLOWED
-mdefine_line|#define IRQ_ALLOWED(cpu,allowed_mask) &bslash;&n;&t;&t;((1 &lt;&lt; cpu) &amp; (allowed_mask))
+mdefine_line|#define IRQ_ALLOWED(cpu,allowed_mask) &bslash;&n;&t;&t;((1UL &lt;&lt; cpu) &amp; (allowed_mask))
 DECL|macro|IRQ_BALANCE_INTERVAL
 mdefine_line|#define IRQ_BALANCE_INTERVAL (HZ/50)
 DECL|function|move
@@ -1805,7 +1805,7 @@ c_func
 (paren
 id|irq
 comma
-l_int|1
+l_int|1UL
 op_lshift
 id|new_cpu
 )paren
@@ -2467,7 +2467,8 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0xffffffff
+op_minus
+l_int|1UL
 )brace
 suffix:semicolon
 macro_line|#else  /* CONFIG_IRQ_ALL_CPUS */
@@ -2490,12 +2491,12 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0x00000000
+l_int|0x0
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRQ_ALL_CPUS */
 DECL|macro|HEX_DIGITS
-mdefine_line|#define HEX_DIGITS 8
+mdefine_line|#define HEX_DIGITS 16
 DECL|function|irq_affinity_read_proc
 r_static
 r_int
@@ -2540,16 +2541,14 @@ id|EINVAL
 suffix:semicolon
 r_return
 id|sprintf
+c_func
 (paren
 id|page
 comma
-l_string|&quot;%08x&bslash;n&quot;
+l_string|&quot;%16lx&bslash;n&quot;
 comma
 id|irq_affinity
 (braket
-(paren
-r_int
-)paren
 (paren
 r_int
 )paren
@@ -2631,7 +2630,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse the first 8 characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
+multiline_comment|/*&n;&t; * Parse the first 16 characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
 id|value
 op_assign
 l_int|0
@@ -2767,9 +2766,6 @@ op_assign
 (paren
 r_int
 )paren
-(paren
-r_int
-)paren
 id|data
 comma
 id|full_count
@@ -2810,8 +2806,6 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
-multiline_comment|/* Why is this disabled ? --BenH */
-macro_line|#if 0/*CONFIG_SMP*/
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 r_if
 c_cond
@@ -2827,7 +2821,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif
 id|irq_affinity
 (braket
 id|irq
