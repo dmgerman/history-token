@@ -2834,6 +2834,10 @@ op_member_access_from_pointer
 id|nfmark
 suffix:semicolon
 macro_line|#endif
+id|fl.proto
+op_assign
+id|iph-&gt;protocol
+suffix:semicolon
 r_if
 c_cond
 (paren
