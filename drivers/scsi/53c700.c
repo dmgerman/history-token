@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -1910,15 +1909,7 @@ r_enum
 id|dma_data_direction
 id|direction
 op_assign
-(paren
-r_enum
-id|dma_data_direction
-)paren
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCp-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8357,15 +8348,7 @@ suffix:semicolon
 multiline_comment|/* now build the scatter gather list */
 id|direction
 op_assign
-(paren
-r_enum
-id|dma_data_direction
-)paren
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCp-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
