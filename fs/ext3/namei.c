@@ -2451,7 +2451,6 @@ comma
 op_star
 id|top
 suffix:semicolon
-r_static
 r_struct
 id|dx_frame
 id|frames
