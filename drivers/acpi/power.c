@@ -13,8 +13,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_power&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_int
 id|acpi_power_add
 (paren

@@ -37,8 +37,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|US_TO_PM_TIMER_TICKS
 mdefine_line|#define US_TO_PM_TIMER_TICKS(t)&t;&t;((t * (PM_TIMER_FREQUENCY/1000)) / 1000)
 DECL|macro|C2_OVERHEAD

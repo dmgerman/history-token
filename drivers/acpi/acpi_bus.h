@@ -9,6 +9,8 @@ DECL|macro|CONFIG_LDM
 mdefine_line|#define CONFIG_LDM
 macro_line|#endif
 macro_line|#include &quot;include/acpi.h&quot;
+DECL|macro|PREFIX
+mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 multiline_comment|/* TBD: Make dynamic */
 DECL|macro|ACPI_MAX_HANDLES
 mdefine_line|#define ACPI_MAX_HANDLES&t;10

@@ -15,8 +15,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_ec&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_EC_FLAG_OBF
 mdefine_line|#define ACPI_EC_FLAG_OBF&t;0x01&t;/* Output buffer full */
 DECL|macro|ACPI_EC_FLAG_IBF

@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
-DECL|macro|PREFIX
-mdefine_line|#define&t;PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|enum|acpi_blacklist_predicates
 r_enum
 id|acpi_blacklist_predicates

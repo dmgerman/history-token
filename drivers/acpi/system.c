@@ -29,8 +29,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_system&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
 id|FADT_DESCRIPTOR
 id|acpi_fadt

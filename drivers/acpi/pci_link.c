@@ -15,8 +15,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_link&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_PCI_LINK_MAX_POSSIBLE
 mdefine_line|#define ACPI_PCI_LINK_MAX_POSSIBLE 16
 r_static

@@ -40,8 +40,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define&t;PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
 r_void
 id|eisa_set_level_irq
