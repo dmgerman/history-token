@@ -597,6 +597,34 @@ DECL|macro|PCI_EXP_DEVSTA_AUXPD
 mdefine_line|#define  PCI_EXP_DEVSTA_AUXPD&t;0x10&t;/* AUX Power Detected */
 DECL|macro|PCI_EXP_DEVSTA_TRPND
 mdefine_line|#define  PCI_EXP_DEVSTA_TRPND&t;0x20&t;/* Transactions Pending */
+DECL|macro|PCI_EXP_LNKCAP
+mdefine_line|#define PCI_EXP_LNKCAP&t;&t;12&t;/* Link Capabilities */
+DECL|macro|PCI_EXP_LNKCTL
+mdefine_line|#define PCI_EXP_LNKCTL&t;&t;16&t;/* Link Control */
+DECL|macro|PCI_EXP_LNKSTA
+mdefine_line|#define PCI_EXP_LNKSTA&t;&t;18&t;/* Link Status */
+DECL|macro|PCI_EXP_SLTCAP
+mdefine_line|#define PCI_EXP_SLTCAP&t;&t;20&t;/* Slot Capabilities */
+DECL|macro|PCI_EXP_SLTCTL
+mdefine_line|#define PCI_EXP_SLTCTL&t;&t;24&t;/* Slot Control */
+DECL|macro|PCI_EXP_SLTSTA
+mdefine_line|#define PCI_EXP_SLTSTA&t;&t;26&t;/* Slot Status */
+DECL|macro|PCI_EXP_RTCTL
+mdefine_line|#define PCI_EXP_RTCTL&t;&t;28&t;/* Root Control */
+DECL|macro|PCI_EXP_RTCTL_SECEE
+mdefine_line|#define  PCI_EXP_RTCTL_SECEE&t;0x01&t;/* System Error on Correctable Error */
+DECL|macro|PCI_EXP_RTCTL_SENFEE
+mdefine_line|#define  PCI_EXP_RTCTL_SENFEE&t;0x02&t;/* System Error on Non-Fatal Error */
+DECL|macro|PCI_EXP_RTCTL_SEFEE
+mdefine_line|#define  PCI_EXP_RTCTL_SEFEE&t;0x04&t;/* System Error on Fatal Error */
+DECL|macro|PCI_EXP_RTCTL_PMEIE
+mdefine_line|#define  PCI_EXP_RTCTL_PMEIE&t;0x08&t;/* PME Interrupt Enable */
+DECL|macro|PCI_EXP_RTCTL_CRSSVE
+mdefine_line|#define  PCI_EXP_RTCTL_CRSSVE&t;0x10&t;/* CRS Software Visibility Enable */
+DECL|macro|PCI_EXP_RTCAP
+mdefine_line|#define PCI_EXP_RTCAP&t;&t;30&t;/* Root Capabilities */
+DECL|macro|PCI_EXP_RTSTA
+mdefine_line|#define PCI_EXP_RTSTA&t;&t;32&t;/* Root Status */
 multiline_comment|/* Extended Capabilities (PCI-X 2.0 and Express) */
 DECL|macro|PCI_EXT_CAP_ID
 mdefine_line|#define PCI_EXT_CAP_ID(header)&t;&t;(header &amp; 0x0000ffff)
