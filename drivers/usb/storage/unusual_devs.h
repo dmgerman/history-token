@@ -2188,6 +2188,33 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* This entry from &lt;matthias@ma-c.de&gt; in the Debian mailing list */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x0006
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Pentax&quot;
+comma
+l_string|&quot;Optio 330GS&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
 id|UNUSUAL_DEV
 c_func
