@@ -28,7 +28,7 @@ DECL|macro|DEBUG_ON
 mdefine_line|#define DEBUG_ON(x)&t;BUG_ON(x)
 macro_line|#else
 DECL|macro|DEBUG_ON
-mdefine_line|#define DEBUG_ON(x)&t;do { if (x); } while (0)
+mdefine_line|#define DEBUG_ON(x)
 macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
@@ -2049,9 +2049,11 @@ id|ATM_CELL_PAYLOAD
 op_minus
 id|ATM_AAL5_TRAILER
 suffix:semicolon
+op_decrement
+id|ctrl-&gt;num_cells
+suffix:semicolon
 id|DEBUG_ON
 (paren
-op_decrement
 id|ctrl-&gt;num_cells
 )paren
 suffix:semicolon
@@ -5496,14 +5498,18 @@ comma
 op_amp
 id|instance-&gt;spare_receivers
 )paren
+(brace
+op_increment
+id|count
+suffix:semicolon
 id|DEBUG_ON
 (paren
-op_increment
 id|count
 OG
 id|num_rcv_urbs
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 (paren
 op_amp
@@ -5678,14 +5684,18 @@ comma
 op_amp
 id|instance-&gt;spare_senders
 )paren
+(brace
+op_increment
+id|count
+suffix:semicolon
 id|DEBUG_ON
 (paren
-op_increment
 id|count
 OG
 id|num_snd_urbs
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 (paren
 op_amp
