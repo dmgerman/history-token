@@ -216,25 +216,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Define this to initialize every k_clock function table so all its&n; * function pointers are non-null, and always do indirect calls through the&n; * table.  Leave it undefined to instead leave null function pointers and&n; * decide at the call sites between a direct call (maybe inlined) to the&n; * default function and an indirect call through the table when it&squot;s filled&n; * in.  Which style is preferable is whichever performs better in the&n; * common case of using the default functions.&n; *&n;#define CLOCK_DISPATCH_DIRECT&n; */
-macro_line|#ifdef CLOCK_DISPATCH_DIRECT
+multiline_comment|/*&n; * Call the k_clock hook function if non-null, or the default function.&n; */
 DECL|macro|CLOCK_DISPATCH
-mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;((clock) &lt; 0 ? posix_cpu_##call arglist : &bslash;&n;&t; (*posix_clocks[clock].call) arglist)
-DECL|macro|DEFHOOK
-mdefine_line|#define DEFHOOK(name)&t;if (clock-&gt;name == NULL) clock-&gt;name = common_##name
-DECL|macro|COMMONDEFN
-mdefine_line|#define COMMONDEFN&t;static
-macro_line|#else
-DECL|macro|CLOCK_DISPATCH
-mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n;&t;((clock) &lt; 0 ? posix_cpu_##call arglist : &bslash;&n;&t; (posix_clocks[clock].call != NULL &bslash;&n;&t;  ? (*posix_clocks[clock].call) arglist : common_##call arglist))
-DECL|macro|DEFHOOK
-mdefine_line|#define DEFHOOK(name)&t;&t;(void) 0 /* Nothing here.  */
-DECL|macro|COMMONDEFN
-mdefine_line|#define COMMONDEFN&t;static inline
-macro_line|#endif
+mdefine_line|#define CLOCK_DISPATCH(clock, call, arglist) &bslash;&n; &t;((clock) &lt; 0 ? posix_cpu_##call arglist : &bslash;&n; &t; (posix_clocks[clock].call != NULL &bslash;&n; &t;  ? (*posix_clocks[clock].call) arglist : common_##call arglist))
 multiline_comment|/*&n; * Default clock hook functions when the struct k_clock passed&n; * to register_posix_clock leaves a function pointer null.&n; *&n; * The function common_CALL is the default implementation for&n; * the function pointer CALL in struct k_clock.&n; */
 DECL|function|common_clock_getres
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 id|common_clock_getres
 c_func
@@ -266,7 +254,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|common_clock_get
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 id|common_clock_get
 c_func
@@ -291,7 +280,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|common_clock_set
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 id|common_clock_set
 c_func
@@ -316,7 +306,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|common_timer_create
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 id|common_timer_create
 c_func
@@ -422,71 +413,6 @@ op_star
 id|timer
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Install default functions for hooks not filled in.&n; */
-DECL|function|common_default_hooks
-r_static
-r_inline
-r_void
-id|common_default_hooks
-c_func
-(paren
-r_struct
-id|k_clock
-op_star
-id|clock
-)paren
-(brace
-id|DEFHOOK
-c_func
-(paren
-id|clock_getres
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|clock_get
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|clock_set
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|timer_create
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|timer_set
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|timer_get
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|timer_del
-)paren
-suffix:semicolon
-id|DEFHOOK
-c_func
-(paren
-id|nsleep
-)paren
-suffix:semicolon
-)brace
-DECL|macro|DEFHOOK
-macro_line|#undef&t;DEFHOOK
 multiline_comment|/*&n; * Return nonzero iff we know a priori this clockid_t value is bogus.&n; */
 DECL|function|invalid_clockid
 r_static
@@ -1667,16 +1593,6 @@ id|clock_id
 op_assign
 op_star
 id|new_clock
-suffix:semicolon
-id|common_default_hooks
-c_func
-(paren
-op_amp
-id|posix_clocks
-(braket
-id|clock_id
-)braket
-)paren
 suffix:semicolon
 )brace
 DECL|function|alloc_posix_timer
@@ -3129,7 +3045,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set a POSIX.1b interval timer. */
 multiline_comment|/* timr-&gt;it_lock is taken. */
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 DECL|function|common_timer_set
 id|common_timer_set
@@ -3610,7 +3527,8 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|common_timer_del
-id|COMMONDEFN
+r_static
+r_inline
 r_int
 id|common_timer_del
 c_func
