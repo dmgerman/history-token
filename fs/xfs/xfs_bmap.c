@@ -17695,7 +17695,7 @@ c_func
 (paren
 r_sizeof
 (paren
-id|dev_t
+id|xfs_dev_t
 )paren
 comma
 l_int|8
