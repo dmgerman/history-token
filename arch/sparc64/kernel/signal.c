@@ -3631,6 +3631,19 @@ r_int
 op_amp
 id|sf-&gt;info
 suffix:semicolon
+multiline_comment|/* The sigcontext is passed in this way because of how it&n;&t; * is defined in GLIBC&squot;s /usr/include/bits/sigcontext.h&n;&t; * for sparc64.  It includes the 128 bytes of siginfo_t.&n;&t; */
+id|regs-&gt;u_regs
+(braket
+id|UREG_I2
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|sf-&gt;info
+suffix:semicolon
 multiline_comment|/* 5. signal handler */
 id|regs-&gt;tpc
 op_assign
