@@ -4638,11 +4638,21 @@ suffix:semicolon
 multiline_comment|/* --- */
 id|__end_hw
 suffix:colon
+r_if
+c_cond
+(paren
+id|chip-&gt;irq
+op_ge
+l_int|0
+)paren
+(brace
 id|synchronize_irq
 c_func
 (paren
+id|chip-&gt;irq
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5025,6 +5035,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|pci-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* initialize offsets */
