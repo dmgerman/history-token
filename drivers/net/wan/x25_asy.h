@@ -24,6 +24,10 @@ r_int
 id|magic
 suffix:semicolon
 multiline_comment|/* Various fields. */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|tty
 r_struct
 id|tty_struct
@@ -71,65 +75,11 @@ id|xleft
 suffix:semicolon
 multiline_comment|/* bytes left in XMIT queue     */
 multiline_comment|/* X.25 interface statistics. */
-DECL|member|rx_packets
-r_int
-r_int
-id|rx_packets
+DECL|member|stats
+r_struct
+id|net_device_stats
+id|stats
 suffix:semicolon
-multiline_comment|/* inbound frames counter&t;*/
-DECL|member|tx_packets
-r_int
-r_int
-id|tx_packets
-suffix:semicolon
-multiline_comment|/* outbound frames counter      */
-DECL|member|rx_bytes
-r_int
-r_int
-id|rx_bytes
-suffix:semicolon
-multiline_comment|/* inbound byte counte&t;&t;*/
-DECL|member|tx_bytes
-r_int
-r_int
-id|tx_bytes
-suffix:semicolon
-multiline_comment|/* outbound byte counter&t;*/
-DECL|member|rx_errors
-r_int
-r_int
-id|rx_errors
-suffix:semicolon
-multiline_comment|/* Parity, etc. errors          */
-DECL|member|tx_errors
-r_int
-r_int
-id|tx_errors
-suffix:semicolon
-multiline_comment|/* Planned stuff                */
-DECL|member|rx_dropped
-r_int
-r_int
-id|rx_dropped
-suffix:semicolon
-multiline_comment|/* No memory for skb            */
-DECL|member|tx_dropped
-r_int
-r_int
-id|tx_dropped
-suffix:semicolon
-multiline_comment|/* When MTU change              */
-DECL|member|rx_over_errors
-r_int
-r_int
-id|rx_over_errors
-suffix:semicolon
-multiline_comment|/* Frame bigger then X.25 buf.  */
-DECL|member|mtu
-r_int
-id|mtu
-suffix:semicolon
-multiline_comment|/* Our mtu (to spot changes!)   */
 DECL|member|buffsize
 r_int
 id|buffsize
