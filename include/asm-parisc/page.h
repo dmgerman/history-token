@@ -297,11 +297,6 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-multiline_comment|/*&n; * Tell the user there is some problem. Beep too, so we can&n; * see^H^H^Hhear bugs in early bootup as well!&n; *&n; * We don&squot;t beep yet.  prumpf&n; */
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while (0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 DECL|macro|LINUX_GATEWAY_SPACE
 mdefine_line|#define LINUX_GATEWAY_SPACE     0
 DECL|macro|__PAGE_OFFSET

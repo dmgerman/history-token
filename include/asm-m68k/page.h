@@ -528,20 +528,6 @@ DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;((void *)(kaddr) &gt;= (void *)PAGE_OFFSET &amp;&amp; (void *)(kaddr) &lt; high_memory)
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;virt_addr_valid(pfn_to_virt(pfn))
-macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
-macro_line|#ifndef CONFIG_SUN3
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;asm volatile(&quot;illegal&quot;); &bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;panic(&quot;BUG!&quot;); &bslash;&n;} while (0)
-macro_line|#endif
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;asm volatile(&quot;illegal&quot;); &bslash;&n;} while (0)
-macro_line|#endif
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)

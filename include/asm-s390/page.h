@@ -173,10 +173,6 @@ DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;        printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;        __asm__ __volatile__(&quot;.long 0&quot;); &bslash;&n;} while (0)                                       
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;        BUG(); &bslash;&n;} while (0)                      
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for BUG() */
+macro_line|#include &lt;asm/bug.h&gt;
 r_struct
 id|vfsmount
 suffix:semicolon

@@ -208,11 +208,6 @@ macro_line|#endif
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;phys_to_page(__pa(kaddr))
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Tell the user there is some problem.&n; */
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;asm volatile(&quot;nop&quot;); &bslash;&n;} while (0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static
