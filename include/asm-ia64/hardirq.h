@@ -9,8 +9,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * No irq_cpustat_t for IA-64.  The data is held in the per-CPU data structure.&n; */
 DECL|macro|__ARCH_IRQ_STAT
 mdefine_line|#define __ARCH_IRQ_STAT&t;1
-DECL|macro|softirq_pending
-mdefine_line|#define softirq_pending(cpu)&t;&t;(cpu_data(cpu)-&gt;softirq_pending)
 DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending()&t;&t;(local_cpu_data-&gt;softirq_pending)
 DECL|macro|HARDIRQ_BITS
