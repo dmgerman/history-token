@@ -522,6 +522,17 @@ r_int
 id|len
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ipv6_get_hoplimit
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;anycast prototypes (anycast.c)&n; */
 r_extern
 r_int

@@ -5112,10 +5112,26 @@ c_cond
 (paren
 id|ra_msg-&gt;icmph.icmp6_hop_limit
 )paren
+(brace
 id|in6_dev-&gt;cnf.hop_limit
 op_assign
 id|ra_msg-&gt;icmph.icmp6_hop_limit
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt
+)paren
+id|rt-&gt;u.dst.metrics
+(braket
+id|RTAX_HOPLIMIT
+op_minus
+l_int|1
+)braket
+op_assign
+id|ra_msg-&gt;icmph.icmp6_hop_limit
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Update Reachable Time and Retrans Timer&n;&t; */
 r_if
 c_cond
