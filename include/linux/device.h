@@ -680,6 +680,11 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|rwsem
+r_struct
+id|rw_semaphore
+id|rwsem
+suffix:semicolon
 DECL|member|refcount
 id|atomic_t
 id|refcount
