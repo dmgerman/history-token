@@ -1190,6 +1190,7 @@ op_assign
 id|cifs_get_inode_info_unix
 c_func
 (paren
+op_amp
 id|inode
 comma
 id|full_path
@@ -1203,6 +1204,7 @@ op_assign
 id|cifs_get_inode_info
 c_func
 (paren
+op_amp
 id|inode
 comma
 id|full_path
@@ -1531,6 +1533,12 @@ op_member_access_from_pointer
 id|clientCanCacheAll
 op_assign
 id|FALSE
+suffix:semicolon
+id|invalidate_remote_inode
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 )brace
 r_if
