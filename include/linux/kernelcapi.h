@@ -82,43 +82,6 @@ DECL|macro|KCI_CONTRUP
 mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* struct capi_profile */
 DECL|macro|KCI_CONTRDOWN
 mdefine_line|#define&t;KCI_CONTRDOWN&t;1&t;/* NULL */
-DECL|struct|capi_interface_user
-r_struct
-id|capi_interface_user
-(brace
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* internal */
-DECL|member|user_list
-r_struct
-id|list_head
-id|user_list
-suffix:semicolon
-)brace
-suffix:semicolon
-r_void
-id|attach_capi_interface
-c_func
-(paren
-r_struct
-id|capi_interface_user
-op_star
-)paren
-suffix:semicolon
-r_void
-id|detach_capi_interface
-c_func
-(paren
-r_struct
-id|capi_interface_user
-op_star
-)paren
-suffix:semicolon
 id|u16
 id|capi20_isinstalled
 c_func
