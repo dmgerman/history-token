@@ -1,11 +1,8 @@
 multiline_comment|/*&n;  * iSeries_proc.c&n;  * Copyright (C) 2001  Kyle A. Lucke IBM Corporation&n;  * &n;  * This program is free software; you can redistribute it and/or modify&n;  * it under the terms of the GNU General Public License as published by&n;  * the Free Software Foundation; either version 2 of the License, or&n;  * (at your option) any later version.&n;  * &n;  * This program is distributed in the hope that it will be useful,&n;  * but WITHOUT ANY WARRANTY; without even the implied warranty of&n;  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;  * GNU General Public License for more details.&n;  * &n;  * You should have received a copy of the GNU General Public License&n;  * along with this program; if not, write to the Free Software&n;  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;  */
-multiline_comment|/* Change Activity: */
-multiline_comment|/* End Change Activity */
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifndef _ISERIES_PROC_H
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
-macro_line|#endif
 DECL|variable|iSeries_proc_root
 r_static
 r_struct
@@ -74,10 +71,12 @@ id|iSeries_proc_registration
 id|aQueue
 suffix:semicolon
 DECL|variable|iSeries_free
+r_static
 id|aQueue
 id|iSeries_free
 suffix:semicolon
 DECL|variable|iSeries_queued
+r_static
 id|aQueue
 id|iSeries_queued
 suffix:semicolon
@@ -146,7 +145,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|MYQUEUEENQ
 c_func
 (paren
@@ -158,7 +156,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -170,7 +167,8 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|iSeries_proc_create
-r_void
+r_static
+r_int
 id|iSeries_proc_create
 c_func
 (paren
@@ -185,8 +183,6 @@ r_struct
 id|iSeries_proc_registration
 op_star
 id|reg
-op_assign
-l_int|NULL
 suffix:semicolon
 id|printk
 c_func
@@ -274,7 +270,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|iSeries_proc_create
+id|arch_initcall
+c_func
+(paren
+id|iSeries_proc_create
+)paren
+suffix:semicolon
 DECL|function|iSeries_proc_callback
 r_void
 id|iSeries_proc_callback
@@ -302,7 +308,6 @@ c_cond
 (paren
 id|iSeries_proc_initializationDone
 )paren
-(brace
 (paren
 op_star
 id|initFunction
@@ -311,7 +316,6 @@ id|initFunction
 id|iSeries_proc_root
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 r_struct
@@ -338,7 +342,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* printk(&quot;Registering %p in reg %p&bslash;n&quot;, initFunction, reg); */
 id|reg-&gt;functionMember
 op_assign
 id|initFunction
@@ -354,14 +357,12 @@ id|reg
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Couldn&squot;t get a queue entry&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|spin_unlock_irqrestore
 c_func

@@ -40,10 +40,7 @@ macro_line|#include &lt;asm/flight_recorder.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
-multiline_comment|/************************************************************************/
-multiline_comment|/* Interface to toggle the reset line                                   */
-multiline_comment|/* Time is in .1 seconds, need for seconds.                             */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Interface to toggle the reset line&n; * Time is in .1 seconds, need for seconds.&n; */
 DECL|function|iSeries_Device_ToggleReset
 r_int
 id|iSeries_Device_ToggleReset
@@ -100,7 +97,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/********************************************************************&n;&t; * Set defaults, Assert is .5 second, Wait is 3 seconds.&n;&t; ********************************************************************/
+multiline_comment|/*&n;&t; * Set defaults, Assert is .5 second, Wait is 3 seconds.&n;&t; */
 r_if
 c_cond
 (paren
@@ -157,7 +154,7 @@ id|HZ
 op_div
 l_int|10
 suffix:semicolon
-multiline_comment|/********************************************************************&n;&t; * Assert reset&n;&t; ********************************************************************/
+multiline_comment|/*&n;&t; * Assert reset&n;&t; */
 id|DeviceNode-&gt;ReturnCode
 op_assign
 id|HvCallPci_setSlotReset
@@ -196,7 +193,7 @@ c_func
 id|AssertDelay
 )paren
 suffix:semicolon
-multiline_comment|/* Sleep for the time     */
+multiline_comment|/* Sleep for the time */
 id|DeviceNode-&gt;ReturnCode
 op_assign
 id|HvCallPci_setSlotReset
@@ -215,7 +212,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/***************************************************************&n;   &t;&t; * Wait for device to reset&n;&t;&t; ***************************************************************/
+multiline_comment|/*&n;   &t;&t; * Wait for device to reset&n;&t;&t; */
 id|set_current_state
 c_func
 (paren
@@ -236,7 +233,6 @@ id|DeviceNode-&gt;ReturnCode
 op_eq
 l_int|0
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -251,7 +247,6 @@ comma
 id|DeviceNode-&gt;AgentId
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|printk

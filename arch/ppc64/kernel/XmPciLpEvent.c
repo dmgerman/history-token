@@ -1,4 +1,5 @@
-multiline_comment|/*&n;   * File XmPciLpEvent.h created by Wayne Holm on Mon Jan 15 2001.&n;   *&n;   * This module handles PCI interrupt events sent by the iSeries Hypervisor.&n;*/
+multiline_comment|/*&n; * File XmPciLpEvent.h created by Wayne Holm on Mon Jan 15 2001.&n; *&n; * This module handles PCI interrupt events sent by the iSeries Hypervisor.&n;*/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -215,7 +216,19 @@ op_star
 id|regsParm
 )paren
 (brace
-singleline_comment|//PPCDBG(PPCDBG_BUSWALK,&quot;XmPciLpEvent_handler, type 0x%x&bslash;n&quot;,eventParm-&gt;xType );
+macro_line|#ifdef CONFIG_PCI
+macro_line|#if 0
+id|PPCDBG
+c_func
+(paren
+id|PPCDBG_BUSWALK
+comma
+l_string|&quot;XmPciLpEvent_handler, type 0x%x&bslash;n&quot;
+comma
+id|eventParm-&gt;xType
+)paren
+suffix:semicolon
+macro_line|#endif
 op_increment
 id|Pci_Event_Count
 suffix:semicolon
@@ -224,9 +237,11 @@ c_cond
 (paren
 id|eventParm
 op_logical_and
+(paren
 id|eventParm-&gt;xType
 op_eq
 id|HvLpEvent_Type_PciIo
+)paren
 )paren
 (brace
 r_switch
@@ -289,7 +304,6 @@ c_cond
 (paren
 id|eventParm
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -302,9 +316,7 @@ r_int
 id|eventParm-&gt;xType
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
@@ -312,7 +324,7 @@ id|KERN_ERR
 l_string|&quot;XmPciLpEvent.c: NULL event received&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
 )brace
 DECL|function|intReceived
 r_static
@@ -337,7 +349,16 @@ suffix:semicolon
 op_increment
 id|Pci_Interrupt_Count
 suffix:semicolon
-singleline_comment|//PPCDBG(PPCDBG_BUSWALK,&quot;PCI: XmPciLpEvent.c: intReceived&bslash;n&quot;);
+macro_line|#if 0
+id|PPCDBG
+c_func
+(paren
+id|PPCDBG_BUSWALK
+comma
+l_string|&quot;PCI: XmPciLpEvent.c: intReceived&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -474,7 +495,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* This should be called sometime prior to buswalk (init_IRQ would be good) */
 DECL|function|XmPciLpEvent_init
@@ -533,7 +553,6 @@ id|xRc
 op_ne
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -544,9 +563,7 @@ id|xRc
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
@@ -556,7 +573,6 @@ comma
 id|xRc
 )paren
 suffix:semicolon
-)brace
 r_return
 id|xRc
 suffix:semicolon
