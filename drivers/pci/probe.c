@@ -1930,6 +1930,8 @@ id|dev-&gt;transparent
 op_assign
 (paren
 (paren
+id|dev
+op_member_access_from_pointer
 r_class
 op_amp
 l_int|0xff

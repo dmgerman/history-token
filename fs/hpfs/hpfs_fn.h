@@ -2019,7 +2019,7 @@ op_star
 comma
 r_int
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 r_int

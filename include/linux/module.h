@@ -27,10 +27,6 @@ DECL|macro|MODULE_DESCRIPTION
 mdefine_line|#define MODULE_DESCRIPTION(desc)
 DECL|macro|MODULE_SUPPORTED_DEVICE
 mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
-DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
-DECL|macro|MODULE_DEVICE_TABLE
-mdefine_line|#define MODULE_DEVICE_TABLE(type,name)
 DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
 DECL|macro|print_modules
@@ -56,6 +52,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+DECL|macro|MODULE_GENERIC_TABLE
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
 multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
 r_extern
 r_struct
@@ -64,10 +62,14 @@ id|__this_module
 suffix:semicolon
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
-macro_line|#else
+macro_line|#else  /* !MODULE */
+DECL|macro|MODULE_GENERIC_TABLE
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
 macro_line|#endif
+DECL|macro|MODULE_DEVICE_TABLE
+mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 DECL|struct|kernel_symbol_group
 r_struct
 id|kernel_symbol_group

@@ -655,7 +655,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 comma
 r_int

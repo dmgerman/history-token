@@ -4455,6 +4455,7 @@ suffix:semicolon
 id|CRITEND
 )brace
 macro_line|#endif
+macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
 DECL|function|matrox_cfbX_revc
 r_static
 r_void
@@ -4571,6 +4572,7 @@ c_func
 suffix:semicolon
 id|CRITEND
 )brace
+macro_line|#endif
 DECL|function|matrox_cfbX_clear_margins
 r_static
 r_void

@@ -58,6 +58,7 @@ multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
 DECL|function|ramfs_get_inode
+r_static
 r_struct
 id|inode
 op_star
@@ -72,7 +73,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -204,9 +205,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * File creation. Allocate an inode, and we&squot;re done..&n; */
 multiline_comment|/* SMP-safe */
-DECL|function|ramfs_mknod
 r_static
 r_int
+DECL|function|ramfs_mknod
 id|ramfs_mknod
 c_func
 (paren
@@ -223,7 +224,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
