@@ -3789,6 +3789,9 @@ id|saddr
 comma
 id|dev
 comma
+op_logical_neg
+id|inc
+op_logical_or
 id|lladdr
 op_logical_or
 op_logical_neg
