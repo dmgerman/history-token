@@ -2266,7 +2266,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 id|sb_set_blocksize

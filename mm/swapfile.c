@@ -3843,11 +3843,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 )paren
 suffix:semicolon
 id|error

@@ -24,8 +24,10 @@ r_int
 id|max_block
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
 r_int
@@ -38,11 +40,7 @@ suffix:semicolon
 id|loff_t
 id|sz
 op_assign
-id|blkdev_size_in_bytes
-c_func
-(paren
-id|dev
-)paren
+id|bdev-&gt;bd_inode-&gt;i_size
 suffix:semicolon
 r_if
 c_cond
@@ -57,7 +55,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_int
@@ -486,7 +484,7 @@ op_ge
 id|max_block
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 )paren
 r_return
@@ -2987,7 +2985,7 @@ c_func
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon

@@ -1099,7 +1099,7 @@ c_func
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon

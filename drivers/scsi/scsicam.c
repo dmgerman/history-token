@@ -154,7 +154,7 @@ comma
 id|block_size
 c_func
 (paren
-id|rdev
+id|bdev
 )paren
 )paren
 suffix:semicolon

@@ -2532,15 +2532,6 @@ r_int
 id|first_part_minor
 )paren
 (brace
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_int
 id|hardblocksize
 op_assign
@@ -2556,7 +2547,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_int

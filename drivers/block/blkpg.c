@@ -1262,7 +1262,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_return

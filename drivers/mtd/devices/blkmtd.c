@@ -5167,7 +5167,7 @@ suffix:colon
 id|block_size
 c_func
 (paren
-id|rdev
+id|bdev
 )paren
 suffix:semicolon
 id|i

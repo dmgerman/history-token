@@ -1063,11 +1063,7 @@ r_return
 id|block_size
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|lo-&gt;lo_device-&gt;bd_dev
-)paren
+id|lo-&gt;lo_device
 )paren
 suffix:semicolon
 )brace
@@ -2676,11 +2672,7 @@ comma
 id|block_size
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|lo_device-&gt;bd_dev
-)paren
+id|lo_device
 )paren
 )paren
 suffix:semicolon
