@@ -1433,8 +1433,9 @@ id|self-&gt;lsap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1494,8 +1495,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unable to allocate LSAP!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to allocate LSAP!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1530,8 +1532,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(%p, %s)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%p, %s)&bslash;n&quot;
 comma
 id|self
 comma
@@ -1560,7 +1563,7 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
-l_string|&quot;%s: busy with a previous query&bslash;n&quot;
+l_string|&quot;%s(): busy with a previous query&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1693,8 +1696,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() int=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() int=%d&bslash;n&quot;
 comma
 id|self-&gt;ias_result-&gt;t.integer
 )paren
@@ -1729,8 +1733,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), bad type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), bad type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1813,8 +1818,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), name=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), name=%s&bslash;n&quot;
 comma
 id|name
 )paren
@@ -1894,8 +1900,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), trying daddr = %08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), trying daddr = %08x&bslash;n&quot;
 comma
 id|self-&gt;daddr
 )paren
@@ -1934,8 +1941,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), discovered service &squot;&squot;%s&squot;&squot; in two different devices !!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), discovered service &squot;&squot;%s&squot;&squot; in two different devices !!!&bslash;n&quot;
 comma
 id|name
 )paren
@@ -1981,8 +1989,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unexpected IAS query failure&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unexpected IAS query failure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;daddr
@@ -2024,8 +2033,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), cannot discover service &squot;&squot;%s&squot;&squot; in any device !!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), cannot discover service &squot;&squot;%s&squot;&squot; in any device !!!&bslash;n&quot;
 comma
 id|name
 )paren
@@ -2057,8 +2067,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), discovered requested service &squot;&squot;%s&squot;&squot; at address %08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), discovered requested service &squot;&squot;%s&squot;&squot; at address %08x&bslash;n&quot;
 comma
 id|name
 comma
@@ -2166,8 +2177,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), tsap_sel = %#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), tsap_sel = %#x&bslash;n&quot;
 comma
 id|saddr.sir_lsap_sel
 )paren
@@ -2177,8 +2189,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), addr = %08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), addr = %08x&bslash;n&quot;
 comma
 id|saddr.sir_addr
 )paren
@@ -2237,8 +2250,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2363,8 +2377,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%p)&bslash;n&quot;
 comma
 id|self
 )paren
@@ -2419,8 +2434,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), extension in PID not supp!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), extension in PID not supp!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2589,8 +2605,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2879,8 +2896,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), dup failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dup failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3070,8 +3088,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%p)&bslash;n&quot;
 comma
 id|self
 )paren
@@ -3211,8 +3230,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), auto-connect failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), auto-connect failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3232,8 +3252,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), daddr = %08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), daddr = %08x&bslash;n&quot;
 comma
 id|self-&gt;daddr
 )paren
@@ -3260,8 +3281,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), connect failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), connect failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3327,8 +3349,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), connect failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), connect failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

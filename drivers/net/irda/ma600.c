@@ -15,7 +15,7 @@ macro_line|#undef IRDA_DEBUG
 DECL|macro|IRDA_DEBUG
 mdefine_line|#define IRDA_DEBUG(n, args...) (printk(KERN_DEBUG args))
 DECL|macro|ASSERT
-macro_line|#undef ASSERT(expr, func)
+macro_line|#undef ASSERT
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr, func) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;        ##func}
 macro_line|#endif
@@ -129,8 +129,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -156,8 +157,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_device_unregister_dongle
@@ -190,8 +192,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qos-&gt;baud_rate.bits
@@ -253,8 +256,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Power off dongle */
@@ -401,8 +405,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -433,8 +438,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -525,8 +531,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), resetting dongle timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), resetting dongle timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -658,8 +665,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
+l_string|&quot;%s() control byte written != read!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() control byte written != read!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -721,8 +729,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() control byte write read OK&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() control byte write read OK&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -781,8 +790,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren
@@ -843,8 +853,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -875,8 +886,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -990,8 +1002,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren

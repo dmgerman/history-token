@@ -381,8 +381,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), not changing speed yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not changing speed yet&bslash;n&quot;
 )paren
 suffix:semicolon
 op_star
@@ -398,8 +399,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), changing speed to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing speed to %d&bslash;n&quot;
 comma
 id|self-&gt;new_speed
 )paren
@@ -535,8 +537,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), changing xbofs to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing xbofs to %d&bslash;n&quot;
 comma
 id|self-&gt;new_xbofs
 )paren
@@ -676,8 +679,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), speed=%d, xbofs=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), speed=%d, xbofs=%d&bslash;n&quot;
 comma
 id|self-&gt;new_speed
 comma
@@ -700,8 +704,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), URB still in use!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), URB still in use!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -784,8 +789,9 @@ id|GFP_ATOMIC
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), failed Speed URB&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed Speed URB&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -816,8 +822,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We should always have a context */
@@ -859,8 +866,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
 id|urb-&gt;status
 comma
@@ -952,8 +960,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() on %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() on %s&bslash;n&quot;
 comma
 id|netdev-&gt;name
 )paren
@@ -987,8 +996,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Device is gone...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Device is gone...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1098,8 +1108,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), URB still in use!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), URB still in use!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1124,8 +1135,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Insuficient skb headroom.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Insuficient skb headroom.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1143,8 +1155,9 @@ id|USB_IRDA_HEADER
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), failed skb_cow() !!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed skb_cow() !!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1346,8 +1359,9 @@ id|GFP_ATOMIC
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), failed Tx URB&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed Tx URB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;stats.tx_errors
@@ -1452,8 +1466,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We should always have a context */
@@ -1506,8 +1521,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
 id|urb-&gt;status
 comma
@@ -1551,8 +1567,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Network is gone...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Network is gone...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1608,8 +1625,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Changing speed now...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed now...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_usb_change_speed_xbofs
@@ -1702,8 +1720,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Network layer thinks we timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Network layer thinks we timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1738,8 +1757,9 @@ id|self-&gt;present
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), device not present!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), device not present!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -2064,8 +2084,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check that we have an urb */
@@ -2079,8 +2100,9 @@ id|urb
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), Bug : urb == NULL&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Bug : urb == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2115,8 +2137,9 @@ multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t;&t; * Bas
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), Failed to allocate Rx skb&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Failed to allocate Rx skb&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2211,8 +2234,9 @@ multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t; * Basica
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), Failed to submit Rx URB %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Failed to submit Rx URB %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -2265,8 +2289,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), len=%d&bslash;n&quot;
 comma
 id|urb-&gt;actual_length
 )paren
@@ -2332,8 +2357,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Network is gone!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Network is gone!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t re-submit the URB : will stall the Rx path */
@@ -2377,8 +2403,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Connection Reset (-104), transfer_flags 0x%04X &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Connection Reset (-104), transfer_flags 0x%04X &bslash;n&quot;
 comma
 id|urb-&gt;transfer_flags
 )paren
@@ -2393,8 +2420,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), RX status %d,transfer_flags 0x%04X &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RX status %d,transfer_flags 0x%04X &bslash;n&quot;
 comma
 id|urb-&gt;status
 comma
@@ -2420,8 +2448,9 @@ id|USB_IRDA_HEADER
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), empty frame!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), empty frame!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2636,8 +2665,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Set up to be a normal IrDA network device driver */
@@ -2685,8 +2715,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2735,8 +2766,9 @@ id|self-&gt;present
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), device not present!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), device not present!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2888,8 +2920,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3131,8 +3164,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3320,8 +3354,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|desc
@@ -3361,8 +3396,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), dongle says speed=0x%X, size=0x%X, window=0x%X, bofs=0x%X, turn=0x%X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dongle says speed=0x%X, size=0x%X, window=0x%X, bofs=0x%X, turn=0x%X&bslash;n&quot;
 comma
 id|self-&gt;qos.baud_rate.bits
 comma
@@ -3527,8 +3563,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -3613,8 +3650,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3699,8 +3737,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3740,8 +3779,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4004,8 +4044,9 @@ r_else
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), Unrecognised endpoint %02X.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unrecognised endpoint %02X.&bslash;n&quot;
 comma
 id|ep
 )paren
@@ -4018,8 +4059,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), And our endpoints are : in=%02X, out=%02X (%d), int=%02X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), And our endpoints are : in=%02X, out=%02X (%d), int=%02X&bslash;n&quot;
 comma
 id|self-&gt;bulk_in_ep
 comma
@@ -4268,8 +4310,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ret=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ret=%d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -4463,8 +4506,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), found a zombie instance !!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), found a zombie instance !!!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_usb_disconnect
@@ -4809,8 +4853,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Clearing stall on control interface&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Clearing stall on control interface&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4822,8 +4867,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown error %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown error %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -4866,8 +4912,9 @@ id|interface-&gt;bNumEndpoints
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), Bogus endpoints...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Bogus endpoints...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4977,8 +5024,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure that the Tx path is not executing. - Jean II */
@@ -5129,8 +5177,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), USB IrDA Disconnected&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), USB IrDA Disconnected&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5278,8 +5327,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), disconnect zombie now !&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), disconnect zombie now !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_usb_disconnect

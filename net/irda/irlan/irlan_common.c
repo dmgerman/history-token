@@ -1370,8 +1370,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), Unknown disconnect reason&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown disconnect reason&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

@@ -350,8 +350,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), speed=%d (was %d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), speed=%d (was %d)&bslash;n&quot;
 comma
 id|speed
 comma
