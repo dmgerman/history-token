@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_MAC_PARTITION */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren
