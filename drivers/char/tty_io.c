@@ -9368,6 +9368,16 @@ id|tp
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|driver-&gt;flags
+op_amp
+id|TTY_DRIVER_NO_DEVFS
+)paren
+)paren
 id|tty_unregister_device
 c_func
 (paren
