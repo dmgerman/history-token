@@ -2656,8 +2656,9 @@ id|file_operations
 id|kmsg_fops
 op_assign
 (brace
+dot
 id|write
-suffix:colon
+op_assign
 id|kmsg_write
 comma
 )brace
