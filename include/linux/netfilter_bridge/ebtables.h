@@ -11,25 +11,6 @@ DECL|macro|EBT_CHAIN_MAXNAMELEN
 mdefine_line|#define EBT_CHAIN_MAXNAMELEN EBT_TABLE_MAXNAMELEN
 DECL|macro|EBT_FUNCTION_MAXNAMELEN
 mdefine_line|#define EBT_FUNCTION_MAXNAMELEN EBT_TABLE_MAXNAMELEN
-singleline_comment|// [gs]etsockopt numbers
-DECL|macro|EBT_BASE_CTL
-mdefine_line|#define EBT_BASE_CTL            128
-DECL|macro|EBT_SO_SET_ENTRIES
-mdefine_line|#define EBT_SO_SET_ENTRIES      (EBT_BASE_CTL)
-DECL|macro|EBT_SO_SET_COUNTERS
-mdefine_line|#define EBT_SO_SET_COUNTERS     (EBT_SO_SET_ENTRIES+1)
-DECL|macro|EBT_SO_SET_MAX
-mdefine_line|#define EBT_SO_SET_MAX          (EBT_SO_SET_COUNTERS+1)
-DECL|macro|EBT_SO_GET_INFO
-mdefine_line|#define EBT_SO_GET_INFO         (EBT_BASE_CTL)
-DECL|macro|EBT_SO_GET_ENTRIES
-mdefine_line|#define EBT_SO_GET_ENTRIES      (EBT_SO_GET_INFO+1)
-DECL|macro|EBT_SO_GET_INIT_INFO
-mdefine_line|#define EBT_SO_GET_INIT_INFO    (EBT_SO_GET_ENTRIES+1)
-DECL|macro|EBT_SO_GET_INIT_ENTRIES
-mdefine_line|#define EBT_SO_GET_INIT_ENTRIES (EBT_SO_GET_INIT_INFO+1)
-DECL|macro|EBT_SO_GET_MAX
-mdefine_line|#define EBT_SO_GET_MAX          (EBT_SO_GET_INIT_ENTRIES+1)
 singleline_comment|// verdicts &gt;0 are &quot;branches&quot;
 DECL|macro|EBT_ACCEPT
 mdefine_line|#define EBT_ACCEPT   -1
@@ -41,11 +22,6 @@ DECL|macro|EBT_RETURN
 mdefine_line|#define EBT_RETURN   -4
 DECL|macro|NUM_STANDARD_TARGETS
 mdefine_line|#define NUM_STANDARD_TARGETS   4
-singleline_comment|// return values for match() functions
-DECL|macro|EBT_MATCH
-mdefine_line|#define EBT_MATCH 0
-DECL|macro|EBT_NOMATCH
-mdefine_line|#define EBT_NOMATCH 1
 DECL|struct|ebt_counter
 r_struct
 id|ebt_counter
@@ -53,6 +29,10 @@ id|ebt_counter
 DECL|member|pcnt
 r_uint64
 id|pcnt
+suffix:semicolon
+DECL|member|bcnt
+r_uint64
+id|bcnt
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -444,7 +424,31 @@ id|entries
 suffix:semicolon
 )brace
 suffix:semicolon
+singleline_comment|// [gs]etsockopt numbers
+DECL|macro|EBT_BASE_CTL
+mdefine_line|#define EBT_BASE_CTL            128
+DECL|macro|EBT_SO_SET_ENTRIES
+mdefine_line|#define EBT_SO_SET_ENTRIES      (EBT_BASE_CTL)
+DECL|macro|EBT_SO_SET_COUNTERS
+mdefine_line|#define EBT_SO_SET_COUNTERS     (EBT_SO_SET_ENTRIES+1)
+DECL|macro|EBT_SO_SET_MAX
+mdefine_line|#define EBT_SO_SET_MAX          (EBT_SO_SET_COUNTERS+1)
+DECL|macro|EBT_SO_GET_INFO
+mdefine_line|#define EBT_SO_GET_INFO         (EBT_BASE_CTL)
+DECL|macro|EBT_SO_GET_ENTRIES
+mdefine_line|#define EBT_SO_GET_ENTRIES      (EBT_SO_GET_INFO+1)
+DECL|macro|EBT_SO_GET_INIT_INFO
+mdefine_line|#define EBT_SO_GET_INIT_INFO    (EBT_SO_GET_ENTRIES+1)
+DECL|macro|EBT_SO_GET_INIT_ENTRIES
+mdefine_line|#define EBT_SO_GET_INIT_ENTRIES (EBT_SO_GET_INIT_INFO+1)
+DECL|macro|EBT_SO_GET_MAX
+mdefine_line|#define EBT_SO_GET_MAX          (EBT_SO_GET_INIT_ENTRIES+1)
 macro_line|#ifdef __KERNEL__
+singleline_comment|// return values for match() functions
+DECL|macro|EBT_MATCH
+mdefine_line|#define EBT_MATCH 0
+DECL|macro|EBT_NOMATCH
+mdefine_line|#define EBT_NOMATCH 1
 DECL|struct|ebt_match
 r_struct
 id|ebt_match

@@ -905,6 +905,17 @@ op_member_access_from_pointer
 id|pcnt
 op_increment
 suffix:semicolon
+(paren
+id|counter_base
+op_plus
+id|i
+)paren
+op_member_access_from_pointer
+id|bcnt
+op_add_assign
+op_star
+id|pskb.len
+suffix:semicolon
 singleline_comment|// these should only watch: not modify, nor tell us
 singleline_comment|// what to do with the packet
 id|EBT_WATCHER_ITERATE
@@ -4717,6 +4728,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|counters
 (braket
 id|i
@@ -4731,6 +4743,21 @@ id|i
 dot
 id|pcnt
 suffix:semicolon
+id|counters
+(braket
+id|i
+)braket
+dot
+id|bcnt
+op_add_assign
+id|counter_base
+(braket
+id|i
+)braket
+dot
+id|bcnt
+suffix:semicolon
+)brace
 )brace
 )brace
 singleline_comment|// replace the table
@@ -6455,6 +6482,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|t
 op_member_access_from_pointer
 r_private
@@ -6473,6 +6501,25 @@ id|i
 dot
 id|pcnt
 suffix:semicolon
+id|t
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|counters
+(braket
+id|i
+)braket
+dot
+id|bcnt
+op_add_assign
+id|tmp
+(braket
+id|i
+)braket
+dot
+id|bcnt
+suffix:semicolon
+)brace
 id|write_unlock_bh
 c_func
 (paren
