@@ -3142,6 +3142,8 @@ comma
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_vma
@@ -4846,6 +4848,8 @@ id|end
 comma
 op_amp
 id|nr_accounted
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|vm_unacct_memory
@@ -6097,6 +6101,8 @@ l_int|0UL
 comma
 op_amp
 id|nr_accounted
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|vm_unacct_memory
