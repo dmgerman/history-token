@@ -50,7 +50,6 @@ id|fp_name
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* In order to get the fpu type correct, you need to take the IDPROM&squot;s&n; * machine type value into consideration too.  I will fix this.&n; */
 DECL|variable|linux_sparc_fpu
 r_struct
 id|cpu_fp_info
@@ -183,50 +182,12 @@ comma
 suffix:semicolon
 DECL|macro|NSPARCCHIPS
 mdefine_line|#define NSPARCCHIPS  (sizeof(linux_sparc_chips)/sizeof(struct cpu_iu_info))
-macro_line|#ifdef CONFIG_SMP
 DECL|variable|sparc_cpu_type
 r_char
 op_star
 id|sparc_cpu_type
 (braket
-l_int|64
-)braket
-op_assign
-(brace
-l_string|&quot;cpu-oops&quot;
-comma
-l_string|&quot;cpu-oops1&quot;
-comma
-l_string|&quot;cpu-oops2&quot;
-comma
-l_string|&quot;cpu-oops3&quot;
-)brace
-suffix:semicolon
-DECL|variable|sparc_fpu_type
-r_char
-op_star
-id|sparc_fpu_type
-(braket
-l_int|64
-)braket
-op_assign
-(brace
-l_string|&quot;fpu-oops&quot;
-comma
-l_string|&quot;fpu-oops1&quot;
-comma
-l_string|&quot;fpu-oops2&quot;
-comma
-l_string|&quot;fpu-oops3&quot;
-)brace
-suffix:semicolon
-macro_line|#else
-DECL|variable|sparc_cpu_type
-r_char
-op_star
-id|sparc_cpu_type
-(braket
-l_int|64
+id|NR_CPUS
 )braket
 op_assign
 (brace
@@ -239,7 +200,7 @@ r_char
 op_star
 id|sparc_fpu_type
 (braket
-l_int|64
+id|NR_CPUS
 )braket
 op_assign
 (brace
@@ -247,7 +208,6 @@ l_string|&quot;fpu-oops&quot;
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|variable|fsr_storage
 r_int
 r_int
@@ -383,6 +343,7 @@ id|manuf
 op_eq
 id|manuf
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -410,6 +371,7 @@ id|cpu_name
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -474,6 +436,7 @@ id|impl
 op_eq
 id|impl
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -503,6 +466,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+)brace
 r_if
 c_cond
 (paren
@@ -521,6 +485,7 @@ comma
 id|impl
 comma
 (paren
+r_int
 r_int
 )paren
 id|fpu_vers
