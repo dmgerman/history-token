@@ -8211,6 +8211,10 @@ id|tp-&gt;usrtags
 op_assign
 id|MAX_TAGS
 suffix:semicolon
+id|tp-&gt;period
+op_assign
+l_int|0xffff
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12978,13 +12982,6 @@ id|np-&gt;maxwide
 id|tp-&gt;usrwide
 op_assign
 id|np-&gt;maxwide
-suffix:semicolon
-id|ncr_negotiate
-(paren
-id|np
-comma
-id|tp
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;**    Start script processor.&n;&t;*/
@@ -20564,13 +20561,6 @@ id|tp-&gt;lp
 id|ln
 )braket
 suffix:semicolon
-r_struct
-id|scsi_target
-op_star
-id|starget
-op_assign
-id|sdev-&gt;sdev_target
-suffix:semicolon
 multiline_comment|/* If no lcb, try to allocate it.  */
 r_if
 c_cond
@@ -20595,30 +20585,6 @@ id|ln
 )paren
 r_goto
 id|fail
-suffix:semicolon
-multiline_comment|/* Prepare negotiation */
-r_if
-c_cond
-(paren
-id|spi_support_wide
-c_func
-(paren
-id|starget
-)paren
-op_logical_or
-id|spi_support_sync
-c_func
-(paren
-id|starget
-)paren
-)paren
-id|ncr_negotiate
-c_func
-(paren
-id|np
-comma
-id|tp
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;If unit supports tagged commands, allocate the &n;&t;**&t;CCB JUMP table if not yet.&n;&t;*/
 r_if
