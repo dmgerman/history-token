@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The RAM disk size is now a parameter */
 DECL|macro|NUM_RAMDISKS
@@ -225,12 +226,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|SetPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -258,6 +253,79 @@ r_int
 id|to
 )paren
 (brace
+id|set_page_dirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * -&gt;writepage to the the blockdev&squot;s mapping has to redirty the page so that the&n; * VM doesn&squot;t go and steal it.  We return WRITEPAGE_ACTIVATE so that the VM&n; * won&squot;t try to (pointlessly) write the page again for a while.&n; *&n; * Really, these pages should not be on the LRU at all.&n; */
+DECL|function|ramdisk_writepage
+r_static
+r_int
+id|ramdisk_writepage
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+)paren
+(brace
+id|redirty_page_for_writepage
+c_func
+(paren
+id|wbc
+comma
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|wbc-&gt;for_reclaim
+)paren
+r_return
+id|WRITEPAGE_ACTIVATE
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ramdisk blockdev pages have their own -&gt;set_page_dirty() because we don&squot;t&n; * want them to contribute to dirty memory accounting.&n; */
+DECL|function|ramdisk_set_page_dirty
+r_static
+r_int
+id|ramdisk_set_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|SetPageDirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -283,6 +351,16 @@ dot
 id|commit_write
 op_assign
 id|ramdisk_commit_write
+comma
+dot
+id|writepage
+op_assign
+id|ramdisk_writepage
+comma
+dot
+id|set_page_dirty
+op_assign
+id|ramdisk_set_page_dirty
 comma
 )brace
 suffix:semicolon
@@ -598,7 +676,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
@@ -616,7 +694,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__free_page
+id|put_page
 c_func
 (paren
 id|page
@@ -837,7 +915,7 @@ id|BLKFLSBUF
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 multiline_comment|/*&n;&t; * special: we want to release the ramdisk memory, it&squot;s not like with&n;&t; * the other blockdevices where this ioctl only flushes away the buffer&n;&t; * cache&n;&t; */
 id|error
@@ -884,6 +962,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The backing_dev_info is shared between files which are backed by the ramdisk&n; * inode and by the ramdisk inode itself.  This is a bit unfortunate because&n; * they really want separate semantics.  The files *do* want full writeback&n; * and dirty-memory accounting treatment, whereas the ramdisk blockdev mapping&n; * wants neither.&n; *&n; * So we make things look like a regular blockdev and the cheat in various ways&n; * in the ramdisk inode&squot;s a_ops.&n; */
 DECL|variable|rd_backing_dev_info
 r_static
 r_struct
