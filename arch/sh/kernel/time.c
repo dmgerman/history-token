@@ -90,10 +90,11 @@ suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|variable|tmu0_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tmu0_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
