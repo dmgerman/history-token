@@ -17468,7 +17468,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|spin_lock_irq
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -17487,7 +17487,7 @@ c_func
 id|hdsp
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp

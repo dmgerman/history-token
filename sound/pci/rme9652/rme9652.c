@@ -9856,7 +9856,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock_irq
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -9875,7 +9875,7 @@ c_func
 id|rme9652
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
