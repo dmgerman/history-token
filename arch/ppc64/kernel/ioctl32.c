@@ -21782,12 +21782,6 @@ comma
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|HDIO_SET_KEEPSETTINGS
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|HDIO_SET_UNMASKINTR
 )paren
 comma
@@ -25413,14 +25407,6 @@ c_func
 id|BLKPG
 comma
 id|blkpg_ioctl_trans
-)paren
-comma
-id|HANDLE_IOCTL
-c_func
-(paren
-id|HDIO_GET_KEEPSETTINGS
-comma
-id|hdio_ioctl_trans
 )paren
 comma
 id|HANDLE_IOCTL
