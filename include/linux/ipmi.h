@@ -731,6 +731,7 @@ id|ipmi_req
 DECL|member|addr
 r_int
 r_char
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -793,6 +794,7 @@ multiline_comment|/* Is this a command, response or an&n;&t;&t;&t;      asyncron
 DECL|member|addr
 r_int
 r_char
+id|__user
 op_star
 id|addr
 suffix:semicolon
