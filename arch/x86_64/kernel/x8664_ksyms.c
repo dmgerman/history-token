@@ -167,15 +167,6 @@ c_func
 id|get_cmos_time
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IO_DEBUG
-DECL|variable|__io_virt_debug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__io_virt_debug
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__down_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -972,6 +963,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sys_ioctl
+)paren
+suffix:semicolon
+DECL|variable|memcpy_toio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_toio
+)paren
+suffix:semicolon
+DECL|variable|memcpy_fromio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_fromio
 )paren
 suffix:semicolon
 eof

@@ -311,15 +311,6 @@ c_func
 id|apm_info
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_IOVIRT
-DECL|variable|__io_virt_debug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__io_virt_debug
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__down_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func

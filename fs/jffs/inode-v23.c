@@ -123,6 +123,10 @@ id|jffs_control
 op_star
 id|c
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|D1
 c_func
 (paren

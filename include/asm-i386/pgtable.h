@@ -262,13 +262,12 @@ mdefine_line|#define __S111&t;PAGE_SHARED
 multiline_comment|/*&n; * Define this if things work differently on an i386 and an i486:&n; * it will (on an i486) warn about kernel memory accesses that are&n; * done without a &squot;verify_area(VERIFY_WRITE,..)&squot;&n; */
 DECL|macro|TEST_VERIFY_AREA
 macro_line|#undef TEST_VERIFY_AREA
-multiline_comment|/* page table for 0-4MB for everybody */
+multiline_comment|/* The boot page tables (all created as a single array) */
 r_extern
 r_int
 r_int
 id|pg0
 (braket
-l_int|1024
 )braket
 suffix:semicolon
 DECL|macro|pte_present

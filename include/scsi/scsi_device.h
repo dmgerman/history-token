@@ -377,6 +377,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* do not issue start on add */
+DECL|member|allow_restart
+r_int
+id|allow_restart
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* issue START_UNIT in error handler */
 DECL|member|device_blocked
 r_int
 r_int
@@ -401,17 +408,47 @@ r_struct
 id|class_device
 id|sdev_classdev
 suffix:semicolon
+DECL|member|transport_classdev
+r_struct
+id|class_device
+id|transport_classdev
+suffix:semicolon
 DECL|member|sdev_state
 r_enum
 id|scsi_device_state
 id|sdev_state
 suffix:semicolon
+DECL|member|transport_data
+r_int
+r_int
+id|transport_data
+(braket
+l_int|0
+)braket
+suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|macro|to_scsi_device
 mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_gendev)
 DECL|macro|class_to_sdev
 mdefine_line|#define&t;class_to_sdev(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_classdev)
+DECL|macro|transport_class_to_sdev
+mdefine_line|#define transport_class_to_sdev(class_dev) &bslash;&n;&t;container_of(class_dev, struct scsi_device, transport_classdev)
 r_extern
 r_struct
 id|scsi_device

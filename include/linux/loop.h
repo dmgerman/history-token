@@ -543,5 +543,7 @@ DECL|macro|LOOP_SET_STATUS64
 mdefine_line|#define LOOP_SET_STATUS64&t;0x4C04
 DECL|macro|LOOP_GET_STATUS64
 mdefine_line|#define LOOP_GET_STATUS64&t;0x4C05
+DECL|macro|LOOP_CHANGE_FD
+mdefine_line|#define LOOP_CHANGE_FD&t;&t;0x4C06
 macro_line|#endif
 eof

@@ -361,13 +361,6 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we return the long way (not sysenter) */
-id|set_thread_flag
-c_func
-(paren
-id|TIF_IRET
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

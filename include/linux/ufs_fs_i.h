@@ -24,6 +24,13 @@ op_star
 l_int|15
 )braket
 suffix:semicolon
+DECL|member|u2_i_data
+id|__u64
+id|u2_i_data
+(braket
+l_int|15
+)braket
+suffix:semicolon
 DECL|member|i_u1
 )brace
 id|i_u1

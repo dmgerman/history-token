@@ -8911,7 +8911,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%lx: Must oversubscribe Read Buffer Attribute Registers&quot;
+l_string|&quot;%s: Must oversubscribe Read Buffer Attribute Registers&quot;
 l_string|&quot;(RBAR).  Bus has %d RBARs but %d funcs need them.&bslash;n&quot;
 comma
 id|pcibr_soft-&gt;bs_name
@@ -9357,8 +9357,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&quot;
-comma
 l_string|&quot;%s&quot;
 comma
 id|buffer

@@ -12699,6 +12699,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 DECL|function|fb_console_exit
 r_void
 id|__exit
@@ -12758,6 +12759,7 @@ c_func
 id|fb_console_exit
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *  Visible symbols for modules&n; */
 DECL|variable|fb_display
 id|EXPORT_SYMBOL

@@ -5913,6 +5913,8 @@ op_assign
 id|FS_ODD_RENAME
 op_or
 id|FS_REVAL_DOT
+op_or
+id|FS_BINARY_MOUNTDATA
 comma
 )brace
 suffix:semicolon
@@ -7495,6 +7497,8 @@ op_assign
 id|FS_ODD_RENAME
 op_or
 id|FS_REVAL_DOT
+op_or
+id|FS_BINARY_MOUNTDATA
 comma
 )brace
 suffix:semicolon

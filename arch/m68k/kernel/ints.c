@@ -486,9 +486,9 @@ c_func
 id|free_irq
 )paren
 suffix:semicolon
-DECL|function|sys_request_irq
+DECL|function|cpu_request_irq
 r_int
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 r_int
@@ -679,9 +679,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sys_free_irq
+DECL|function|cpu_free_irq
 r_void
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 r_int

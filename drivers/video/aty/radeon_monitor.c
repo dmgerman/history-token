@@ -3525,7 +3525,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|parse_edid
+id|fb_parse_edid
 c_func
 (paren
 id|rinfo-&gt;mon1_EDID

@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Require 68020 or better.&n; *&n; * They use the standard big-endian m680x0 bit ordering.&n; */
 DECL|macro|test_and_set_bit
 mdefine_line|#define test_and_set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_set_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_set_bit(nr, vaddr))
+DECL|macro|__test_and_set_bit
+mdefine_line|#define __test_and_set_bit(nr,vaddr) test_and_set_bit(nr,vaddr)
 DECL|function|__constant_test_and_set_bit
 r_static
 r_inline

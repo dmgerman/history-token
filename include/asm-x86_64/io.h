@@ -129,32 +129,6 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 macro_line|#if defined(__KERNEL__) &amp;&amp; __x86_64__
 macro_line|#include &lt;linux/vmalloc.h&gt;
-multiline_comment|/*&n; * Temporary debugging check to catch old code using&n; * unmapped ISA addresses. Will be removed in 2.4.&n; */
-macro_line|#ifdef CONFIG_IO_DEBUG
-r_extern
-r_void
-op_star
-id|__io_virt_debug
-c_func
-(paren
-r_int
-r_int
-id|x
-comma
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
-DECL|macro|__io_virt
-mdefine_line|#define __io_virt(x) __io_virt_debug((unsigned long)(x), __FILE__, __LINE__)
-macro_line|#else
-mdefine_line|#define __io_virt(x) ((void *)(x))
-macro_line|#endif
 macro_line|#ifndef __i386__
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are pretty trivial&n; */
 DECL|function|virt_to_phys
@@ -296,13 +270,13 @@ DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
-mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))
+mdefine_line|#define readb(addr) (*(volatile unsigned char *) (addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr) (*(volatile unsigned short *) __io_virt(addr))
+mdefine_line|#define readw(addr) (*(volatile unsigned short *) (addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr) (*(volatile unsigned int *) __io_virt(addr))
+mdefine_line|#define readl(addr) (*(volatile unsigned int *) (addr))
 DECL|macro|readq
-mdefine_line|#define readq(addr) (*(volatile unsigned long *) __io_virt(addr))
+mdefine_line|#define readq(addr) (*(volatile unsigned long *) (addr))
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(a) readb(a)
 DECL|macro|readw_relaxed
@@ -320,13 +294,13 @@ mdefine_line|#define __raw_readl readl
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq readq
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) __io_virt(addr) = (b))
+mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) (addr) = (b))
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) __io_virt(addr) = (b))
+mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) (addr) = (b))
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) __io_virt(addr) = (b))
+mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) (addr) = (b))
 DECL|macro|writeq
-mdefine_line|#define writeq(b,addr) (*(volatile unsigned long *) __io_virt(addr) = (b))
+mdefine_line|#define writeq(b,addr) (*(volatile unsigned long *) (addr) = (b))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
@@ -366,7 +340,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;memset(__io_virt(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on a typical x86 system, no need to&n; * explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
 mdefine_line|#define __ISA_IO_base ((char *)(PAGE_OFFSET))
@@ -390,9 +364,9 @@ DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
 multiline_comment|/*&n; * Again, x86-64 does not require mem IO specific function.&n; */
 DECL|macro|eth_io_copy_and_sum
-mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),__io_virt(b),(c),(d))
+mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),(void *)(b),(c),(d))
 DECL|macro|isa_eth_io_copy_and_sum
-mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),__io_virt(__ISA_IO_base + (b)),(c),(d))
+mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),(void *)(__ISA_IO_base + (b)),(c),(d))
 multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static

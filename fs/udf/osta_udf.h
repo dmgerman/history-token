@@ -1,15 +1,15 @@
-multiline_comment|/*&n; * osta_udf.h&n; *&n; * This file is based on OSTA UDF(tm) 2.01 (March 15, 2000)&n; * http://www.osta.org&n; *&n; * Copyright (c) 2001-2002  Ben Fennema &lt;bfennema@falcon.csc.calpoly.edu&gt;&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * osta_udf.h&n; *&n; * This file is based on OSTA UDF(tm) 2.50 (April 30, 2003)&n; * http://www.osta.org&n; *&n; * Copyright (c) 2001-2004  Ben Fennema &lt;bfennema@falcon.csc.calpoly.edu&gt;&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 macro_line|#include &quot;ecma_167.h&quot;
 macro_line|#ifndef _OSTA_UDF_H
 DECL|macro|_OSTA_UDF_H
 mdefine_line|#define _OSTA_UDF_H 1
-multiline_comment|/* OSTA CS0 Charspec (UDF 2.01 2.1.2) */
+multiline_comment|/* OSTA CS0 Charspec (UDF 2.50 2.1.2) */
 DECL|macro|UDF_CHAR_SET_TYPE
 mdefine_line|#define UDF_CHAR_SET_TYPE&t;&t;0
 DECL|macro|UDF_CHAR_SET_INFO
 mdefine_line|#define UDF_CHAR_SET_INFO&t;&t;&quot;OSTA Compressed Unicode&quot;
-multiline_comment|/* Entity Identifier (UDF 2.01 2.1.5) */
-multiline_comment|/* Identifiers (UDF 2.01 2.1.5.2) */
+multiline_comment|/* Entity Identifier (UDF 2.50 2.1.5) */
+multiline_comment|/* Identifiers (UDF 2.50 2.1.5.2) */
 DECL|macro|UDF_ID_DEVELOPER
 mdefine_line|#define UDF_ID_DEVELOPER&t;&t;&quot;*Linux UDFFS&quot;
 DECL|macro|UDF_ID_COMPLIANT
@@ -42,7 +42,9 @@ DECL|macro|UDF_ID_ALLOC
 mdefine_line|#define UDF_ID_ALLOC&t;&t;&t;&quot;*UDF Virtual Alloc Tbl&quot;
 DECL|macro|UDF_ID_SPARING
 mdefine_line|#define UDF_ID_SPARING&t;&t;&t;&quot;*UDF Sparing Table&quot;
-multiline_comment|/* Identifier Suffix (UDF 2.01 2.1.5.3) */
+DECL|macro|UDF_ID_METADATA
+mdefine_line|#define UDF_ID_METADATA&t;&t;&t;&quot;*UDF Metadata Partition&quot;
+multiline_comment|/* Identifier Suffix (UDF 2.50 2.1.5.3) */
 DECL|macro|IS_DF_HARD_WRITE_PROTECT
 mdefine_line|#define IS_DF_HARD_WRITE_PROTECT&t;0x01
 DECL|macro|IS_DF_SOFT_WRITE_PROTECT
@@ -124,8 +126,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Logical Volume Integrity Descriptor (UDF 2.01 2.2.6) */
-multiline_comment|/* Implementation Use (UDF 2.01 2.2.6.4) */
+multiline_comment|/* Logical Volume Integrity Descriptor (UDF 2.50 2.2.6) */
+multiline_comment|/* Implementation Use (UDF 2.50 2.2.6.4) */
 DECL|struct|logicalVolIntegrityDescImpUse
 r_struct
 id|logicalVolIntegrityDescImpUse
@@ -169,8 +171,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Implementation Use Volume Descriptor (UDF 2.01 2.2.7) */
-multiline_comment|/* Implementation Use (UDF 2.01 2.2.7.2) */
+multiline_comment|/* Implementation Use Volume Descriptor (UDF 2.50 2.2.7) */
+multiline_comment|/* Implementation Use (UDF 2.50 2.2.7.2) */
 DECL|struct|impUseVolDescImpUse
 r_struct
 id|impUseVolDescImpUse
@@ -265,7 +267,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Virtual Partition Map (UDF 2.01 2.2.8) */
+multiline_comment|/* Virtual Partition Map (UDF 2.50 2.2.8) */
 DECL|struct|virtualPartitionMap
 r_struct
 id|virtualPartitionMap
@@ -312,7 +314,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Sparable Partition Map (UDF 2.01 2.2.9) */
+multiline_comment|/* Sparable Partition Map (UDF 2.50 2.2.9) */
 DECL|struct|sparablePartitionMap
 r_struct
 id|sparablePartitionMap
@@ -378,6 +380,77 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Metadata Partition Map (UDF 2.4.0 2.2.10) */
+DECL|struct|metadataPartitionMap
+r_struct
+id|metadataPartitionMap
+(brace
+DECL|member|partitionMapType
+r_uint8
+id|partitionMapType
+suffix:semicolon
+DECL|member|partitionMapLength
+r_uint8
+id|partitionMapLength
+suffix:semicolon
+DECL|member|reserved1
+r_uint8
+id|reserved1
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|partIdent
+id|regid
+id|partIdent
+suffix:semicolon
+DECL|member|volSeqNum
+r_uint16
+id|volSeqNum
+suffix:semicolon
+DECL|member|partitionNum
+r_uint16
+id|partitionNum
+suffix:semicolon
+DECL|member|metadataFileLoc
+r_uint32
+id|metadataFileLoc
+suffix:semicolon
+DECL|member|metadataMirrorFileLoc
+r_uint32
+id|metadataMirrorFileLoc
+suffix:semicolon
+DECL|member|metadataBitmapFileLoc
+r_uint32
+id|metadataBitmapFileLoc
+suffix:semicolon
+DECL|member|allocUnitSize
+r_uint32
+id|allocUnitSize
+suffix:semicolon
+DECL|member|alignUnitSize
+r_uint16
+id|alignUnitSize
+suffix:semicolon
+DECL|member|flags
+r_uint8
+id|flags
+suffix:semicolon
+DECL|member|reserved2
+r_uint8
+id|reserved2
+(braket
+l_int|5
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Virtual Allocation Table (UDF 1.5 2.2.10) */
 DECL|struct|virtualAllocationTable15
 r_struct
@@ -390,13 +463,13 @@ id|VirtualSector
 l_int|0
 )braket
 suffix:semicolon
-DECL|member|ident
+DECL|member|vatIdent
 id|regid
-id|ident
+id|vatIdent
 suffix:semicolon
-DECL|member|previousVATICB
+DECL|member|previousVATICBLoc
 r_uint32
-id|previousVATICB
+id|previousVATICBLoc
 suffix:semicolon
 )brace
 id|__attribute__
@@ -408,7 +481,7 @@ id|packed
 suffix:semicolon
 DECL|macro|ICBTAG_FILE_TYPE_VAT15
 mdefine_line|#define ICBTAG_FILE_TYPE_VAT15&t;&t;0x00U
-multiline_comment|/* Virtual Allocation Table (UDF 2.01 2.2.10) */
+multiline_comment|/* Virtual Allocation Table (UDF 2.50 2.2.11) */
 DECL|struct|virtualAllocationTable20
 r_struct
 id|virtualAllocationTable20
@@ -428,17 +501,17 @@ id|logicalVolIdent
 l_int|128
 )braket
 suffix:semicolon
-DECL|member|previousVatICBLoc
+DECL|member|previousVATICBLoc
 r_uint32
-id|previousVatICBLoc
+id|previousVATICBLoc
 suffix:semicolon
-DECL|member|numFIDSFiles
+DECL|member|numFiles
 r_uint32
-id|numFIDSFiles
+id|numFiles
 suffix:semicolon
-DECL|member|numFIDSDirectories
+DECL|member|numDirs
 r_uint32
-id|numFIDSDirectories
+id|numDirs
 suffix:semicolon
 DECL|member|minReadRevision
 r_uint16
@@ -480,7 +553,7 @@ id|packed
 suffix:semicolon
 DECL|macro|ICBTAG_FILE_TYPE_VAT20
 mdefine_line|#define ICBTAG_FILE_TYPE_VAT20&t;&t;0xF8U
-multiline_comment|/* Sparing Table (UDF 2.01 2.2.11) */
+multiline_comment|/* Sparing Table (UDF 2.50 2.2.12) */
 DECL|struct|sparingEntry
 r_struct
 id|sparingEntry
@@ -541,7 +614,14 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* struct long_ad ICB - ADImpUse (UDF 2.01 2.2.4.3) */
+multiline_comment|/* Metadata File (and Metadata Mirror File) (UDF 2.50 2.2.13.1) */
+DECL|macro|ICBTAG_FILE_TYPE_MAIN
+mdefine_line|#define ICBTAG_FILE_TYPE_MAIN&t;&t;0xFA
+DECL|macro|ICBTAG_FILE_TYPE_MIRROR
+mdefine_line|#define ICBTAG_FILE_TYPE_MIRROR&t;&t;0xFB
+DECL|macro|ICBTAG_FILE_TYPE_BITMAP
+mdefine_line|#define ICBTAG_FILE_TYPE_BITMAP&t;&t;0xFC
+multiline_comment|/* struct long_ad ICB - ADImpUse (UDF 2.50 2.2.4.3) */
 DECL|struct|allocDescImpUse
 r_struct
 id|allocDescImpUse
@@ -567,11 +647,11 @@ id|packed
 suffix:semicolon
 DECL|macro|AD_IU_EXT_ERASED
 mdefine_line|#define AD_IU_EXT_ERASED&t;&t;0x0001
-multiline_comment|/* Real-Time Files (UDF 2.01 6.11) */
+multiline_comment|/* Real-Time Files (UDF 2.50 6.11) */
 DECL|macro|ICBTAG_FILE_TYPE_REALTIME
 mdefine_line|#define ICBTAG_FILE_TYPE_REALTIME&t;0xF9U
-multiline_comment|/* Implementation Use Extended Attribute (UDF 2.01 3.3.4.5) */
-multiline_comment|/* FreeEASpace (UDF 2.01 3.3.4.5.1.1) */
+multiline_comment|/* Implementation Use Extended Attribute (UDF 2.50 3.3.4.5) */
+multiline_comment|/* FreeEASpace (UDF 2.50 3.3.4.5.1.1) */
 DECL|struct|freeEaSpace
 r_struct
 id|freeEaSpace
@@ -595,7 +675,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* DVD Copyright Management Information (UDF 2.01 3.3.4.5.1.2) */
+multiline_comment|/* DVD Copyright Management Information (UDF 2.50 3.3.4.5.1.2) */
 DECL|struct|DVDCopyrightImpUse
 r_struct
 id|DVDCopyrightImpUse
@@ -627,8 +707,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Application Use Extended Attribute (UDF 2.01 3.3.4.6) */
-multiline_comment|/* FreeAppEASpace (UDF 2.01 3.3.4.6.1) */
+multiline_comment|/* Application Use Extended Attribute (UDF 2.50 3.3.4.6) */
+multiline_comment|/* FreeAppEASpace (UDF 2.50 3.3.4.6.1) */
 DECL|struct|freeAppEASpace
 r_struct
 id|freeAppEASpace
@@ -652,7 +732,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* UDF Defined System Stream (UDF 2.01 3.3.7) */
+multiline_comment|/* UDF Defined System Stream (UDF 2.50 3.3.7) */
 DECL|macro|UDF_ID_UNIQUE_ID
 mdefine_line|#define UDF_ID_UNIQUE_ID&t;&t;&quot;*UDF Unique ID Mapping Data&quot;
 DECL|macro|UDF_ID_NON_ALLOC
@@ -661,7 +741,7 @@ DECL|macro|UDF_ID_POWER_CAL
 mdefine_line|#define UDF_ID_POWER_CAL&t;&t;&quot;*UDF Power Cal Table&quot;
 DECL|macro|UDF_ID_BACKUP
 mdefine_line|#define UDF_ID_BACKUP&t;&t;&t;&quot;*UDF Backup&quot;
-multiline_comment|/* Operating System Identifiers (UDF 2.01 6.3) */
+multiline_comment|/* Operating System Identifiers (UDF 2.50 6.3) */
 DECL|macro|UDF_OS_CLASS_UNDEF
 mdefine_line|#define UDF_OS_CLASS_UNDEF&t;&t;0x00U
 DECL|macro|UDF_OS_CLASS_DOS
@@ -690,6 +770,8 @@ DECL|macro|UDF_OS_ID_OS2
 mdefine_line|#define UDF_OS_ID_OS2&t;&t;&t;0x00U
 DECL|macro|UDF_OS_ID_MAC
 mdefine_line|#define UDF_OS_ID_MAC&t;&t;&t;0x00U
+DECL|macro|UDF_OS_ID_MAX_OSX
+mdefine_line|#define UDF_OS_ID_MAX_OSX&t;&t;0x01U
 DECL|macro|UDF_OS_ID_UNIX
 mdefine_line|#define UDF_OS_ID_UNIX&t;&t;&t;0x00U
 DECL|macro|UDF_OS_ID_AIX

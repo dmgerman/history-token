@@ -79,7 +79,7 @@ id|pt_regs
 suffix:semicolon
 r_extern
 r_int
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 r_int
@@ -113,7 +113,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 r_int

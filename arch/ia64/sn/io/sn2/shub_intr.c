@@ -675,12 +675,6 @@ r_int
 r_int
 id|xtalk_addr
 suffix:semicolon
-r_void
-op_star
-id|bridge
-op_assign
-id|intr-&gt;bi_soft-&gt;bs_base
-suffix:semicolon
 r_int
 id|irq
 suffix:semicolon
@@ -888,7 +882,7 @@ multiline_comment|/* Disable interrupts. */
 id|pcireg_intr_enable_bit_clr
 c_func
 (paren
-id|bridge
+id|intr-&gt;bi_soft
 comma
 id|bit
 )paren
@@ -897,7 +891,7 @@ multiline_comment|/* Reset Host address (Interrupt destination) */
 id|pcireg_intr_addr_addr_set
 c_func
 (paren
-id|bridge
+id|intr-&gt;bi_soft
 comma
 id|bit
 comma
@@ -908,7 +902,7 @@ multiline_comment|/* Enable interrupt */
 id|pcireg_intr_enable_bit_set
 c_func
 (paren
-id|bridge
+id|intr-&gt;bi_soft
 comma
 id|bit
 )paren
@@ -917,7 +911,7 @@ multiline_comment|/* Force an interrupt, just in case. */
 id|pcireg_force_intr_set
 c_func
 (paren
-id|bridge
+id|intr-&gt;bi_soft
 comma
 id|bit
 )paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Lin
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
@@ -67,12 +68,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -83,98 +86,14 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
-multiline_comment|/**&n; *&t;wdt_setup:&n; *&t;@str: command line string&n; *&n; *&t;Setup options. The board isn&squot;t really probe-able so we have to&n; *&t;get the user to tell us the configuration. Sane people build it&n; *&t;modular but the others come here.&n; */
-DECL|function|wdt_setup
-r_static
-r_int
-id|__init
-id|wdt_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|4
-)braket
-suffix:semicolon
-id|str
-op_assign
-id|get_options
-(paren
-id|str
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|ints
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ints
-(braket
-l_int|0
-)braket
-OG
-l_int|0
-)paren
-(brace
-id|io
-op_assign
-id|ints
-(braket
-l_int|1
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ints
-(braket
-l_int|0
-)braket
-OG
-l_int|1
-)paren
-(brace
-id|irq
-op_assign
-id|ints
-(braket
-l_int|2
-)braket
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;wdt=&quot;
-comma
-id|wdt_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* !MODULE */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -185,12 +104,14 @@ comma
 l_string|&quot;WDT io port (default=0x240)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -47,5 +47,13 @@ suffix:semicolon
 )brace
 DECL|macro|for_each_node_with_cpus
 mdefine_line|#define for_each_node_with_cpus(node) &bslash;&n;&t;for (node = 0; node &lt; numnodes; node = __next_node_with_cpus(node))
+macro_line|#ifndef node_distance
+DECL|macro|node_distance
+mdefine_line|#define node_distance(from,to)&t;(from != to)
+macro_line|#endif
+macro_line|#ifndef PENALTY_FOR_NODE_WITH_CPUS
+DECL|macro|PENALTY_FOR_NODE_WITH_CPUS
+mdefine_line|#define PENALTY_FOR_NODE_WITH_CPUS&t;(1)
+macro_line|#endif
 macro_line|#endif /* _LINUX_TOPOLOGY_H */
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
@@ -531,6 +532,8 @@ r_sizeof
 op_star
 id|sdev
 )paren
+op_plus
+id|shost-&gt;transportt-&gt;size
 comma
 id|GFP_ATOMIC
 )paren
@@ -702,6 +705,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|shost-&gt;transportt-&gt;setup
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|shost-&gt;transportt
+op_member_access_from_pointer
+id|setup
+c_func
+(paren
+id|sdev
+)paren
+)paren
+r_goto
+id|out_cleanup_slave
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|get_device
 c_func
 (paren
@@ -784,10 +808,48 @@ comma
 id|sdev-&gt;lun
 )paren
 suffix:semicolon
+id|class_device_initialize
+c_func
+(paren
+op_amp
+id|sdev-&gt;transport_classdev
+)paren
+suffix:semicolon
+id|sdev-&gt;transport_classdev.dev
+op_assign
+op_amp
+id|sdev-&gt;sdev_gendev
+suffix:semicolon
+id|sdev-&gt;transport_classdev
+dot
+r_class
+op_assign
+id|sdev-&gt;host-&gt;transportt
+op_member_access_from_pointer
+r_class
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|sdev-&gt;transport_classdev.class_id
+comma
+id|BUS_ID_SIZE
+comma
+l_string|&quot;%d:%d:%d:%d&quot;
+comma
+id|sdev-&gt;host-&gt;host_no
+comma
+id|sdev-&gt;channel
+comma
+id|sdev-&gt;id
+comma
+id|sdev-&gt;lun
+)paren
+suffix:semicolon
 )brace
 r_else
 r_goto
-id|out_cleanup_slave
+id|out_cleanup_transport
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are any same target siblings, add this to the&n;&t; * sibling list&n;&t; */
 id|spin_lock_irqsave
@@ -870,6 +932,21 @@ id|flags
 suffix:semicolon
 r_return
 id|sdev
+suffix:semicolon
+id|out_cleanup_transport
+suffix:colon
+r_if
+c_cond
+(paren
+id|shost-&gt;transportt-&gt;cleanup
+)paren
+id|shost-&gt;transportt
+op_member_access_from_pointer
+id|cleanup
+c_func
+(paren
+id|sdev
+)paren
 suffix:semicolon
 id|out_cleanup_slave
 suffix:colon
@@ -2415,6 +2492,19 @@ id|sdev-&gt;host-&gt;hostt-&gt;slave_destroy
 id|sdev-&gt;host-&gt;hostt
 op_member_access_from_pointer
 id|slave_destroy
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdev-&gt;host-&gt;transportt-&gt;cleanup
+)paren
+id|sdev-&gt;host-&gt;transportt
+op_member_access_from_pointer
+id|cleanup
 c_func
 (paren
 id|sdev
@@ -4229,6 +4319,19 @@ id|sdev-&gt;host-&gt;hostt-&gt;slave_destroy
 id|sdev-&gt;host-&gt;hostt
 op_member_access_from_pointer
 id|slave_destroy
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdev-&gt;host-&gt;transportt-&gt;cleanup
+)paren
+id|sdev-&gt;host-&gt;transportt
+op_member_access_from_pointer
+id|cleanup
 c_func
 (paren
 id|sdev

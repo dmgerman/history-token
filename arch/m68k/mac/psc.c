@@ -322,7 +322,7 @@ c_func
 r_void
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|3
@@ -340,7 +340,7 @@ op_star
 l_int|0x30
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|4
@@ -358,7 +358,7 @@ op_star
 l_int|0x40
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|5
@@ -376,7 +376,7 @@ op_star
 l_int|0x50
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|6

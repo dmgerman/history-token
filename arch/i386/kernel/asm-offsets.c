@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * Generate definitions needed by assembly language modules.&n; * This code generates raw asm output which is post-processed&n; * to extract and format the required data.&n; */
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &quot;sigframe.h&quot;
+macro_line|#include &lt;asm/fixmap.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -157,6 +159,14 @@ id|rt_sigframe
 comma
 id|uc.uc_mcontext
 )paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|PAGE_SIZE_asm
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 )brace

@@ -4845,6 +4845,10 @@ id|viotty_driver-&gt;name
 op_assign
 l_string|&quot;tty&quot;
 suffix:semicolon
+id|viotty_driver-&gt;name_base
+op_assign
+l_int|1
+suffix:semicolon
 id|viotty_driver-&gt;major
 op_assign
 id|TTY_MAJOR

@@ -3422,7 +3422,6 @@ id|MMAP_PAGE_ZERO
 )paren
 (brace
 multiline_comment|/* Why this, you ask???  Well SVr4 maps page 0 as read-only,&n;&t;&t;   and some applications &quot;depend&quot; upon this behavior.&n;&t;&t;   Since we do not have the power to recompile these, we&n;&t;&t;   emulate the SVr4 behavior.  Sigh.  */
-multiline_comment|/* N.B. Shouldn&squot;t the size here be PAGE_SIZE?? */
 id|down_write
 c_func
 (paren
@@ -3439,7 +3438,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|4096
+id|PAGE_SIZE
 comma
 id|PROT_READ
 op_or

@@ -14,6 +14,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+DECL|macro|DC395X_NAME
+mdefine_line|#define DC395X_NAME&t;&quot;dc395x&quot;
+DECL|macro|DC395X_BANNER
+mdefine_line|#define DC395X_BANNER&t;&quot;Tekram DC395(U/UW/F), DC315(U) - ASIC TRM-S1040&quot;
+DECL|macro|DC395X_VERSION
+mdefine_line|#define DC395X_VERSION&t;&quot;v2.05, 2004/03/08&quot;
 multiline_comment|/*---------------------------------------------------------------------------&n;                                  Features&n; ---------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Set to disable parts of the driver&n; */
 multiline_comment|/*#define DC395x_NO_DISCONNECT*/
@@ -28,26 +34,14 @@ DECL|macro|DBG_0
 mdefine_line|#define DBG_0&t;&t;0x0002
 DECL|macro|DBG_1
 mdefine_line|#define DBG_1&t;&t;0x0004
-DECL|macro|DBG_DCB
-mdefine_line|#define DBG_DCB&t;&t;0x0008
-DECL|macro|DBG_PARSE
-mdefine_line|#define DBG_PARSE&t;0x0010&t;&t;/* debug command line parsing */
-DECL|macro|DBG_SGPARANOIA
-mdefine_line|#define DBG_SGPARANOIA&t;0x0020
+DECL|macro|DBG_SG
+mdefine_line|#define DBG_SG&t;&t;0x0020
 DECL|macro|DBG_FIFO
 mdefine_line|#define DBG_FIFO&t;0x0040
 DECL|macro|DBG_PIO
 mdefine_line|#define DBG_PIO&t;&t;0x0080
-DECL|macro|DBG_RECURSION
-mdefine_line|#define DBG_RECURSION&t;0x0100&t;&t;/* check for excessive recursion */
-DECL|macro|DBG_MALLOC
-mdefine_line|#define DBG_MALLOC&t;0x0200&t;&t;/* report on memory allocations */
-DECL|macro|DBG_TRACE
-mdefine_line|#define DBG_TRACE&t;0x0400
-DECL|macro|DBG_TRACEALL
-mdefine_line|#define DBG_TRACEALL&t;0x0800
 multiline_comment|/*&n; * Set set of things to output debugging for.&n; * Undefine to remove all debugging&n; */
-multiline_comment|/*#define DEBUG_MASK (DBG_0|DBG_1|DBG_DCB|DBG_PARSE|DBG_SGPARANOIA|DBG_FIFO|DBG_PIO|DBG_TRACE|DBG_TRACEALL)*/
+multiline_comment|/*#define DEBUG_MASK (DBG_0|DBG_1|DBG_SG|DBG_FIFO|DBG_PIO)*/
 multiline_comment|/*#define  DEBUG_MASK&t;DBG_0*/
 multiline_comment|/*&n; * Output a kernel mesage at the specified level and append the&n; * driver name and a &quot;: &quot; to the start of the message&n; */
 DECL|macro|dprintkl
@@ -66,153 +60,6 @@ mdefine_line|#define dprintkdbg(type, format, arg...) &bslash;&n;&t;do {} while 
 DECL|macro|debug_enabled
 mdefine_line|#define debug_enabled(type)&t;(0)
 macro_line|#endif
-multiline_comment|/*&n; * The recursion debugging just counts entries into the driver and&n; * prints out a messge if it exceeds a certain limit. This variable&n; * hold the count.&n; */
-macro_line|#if debug_enabled(DBG_RECURSION)
-DECL|variable|dbg_in_driver
-r_static
-r_int
-id|dbg_in_driver
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * Memory allocation debugging&n; * Just reports when memory is allocated and/or released.&n; */
-macro_line|#if debug_enabled(DBG_MALLOC)
-DECL|function|dc395x_kmalloc
-r_inline
-r_void
-op_star
-id|dc395x_kmalloc
-c_func
-(paren
-r_int
-id|sz
-comma
-r_int
-id|fl
-)paren
-(brace
-r_void
-op_star
-id|ptr
-op_assign
-id|kmalloc
-c_func
-(paren
-id|sz
-comma
-id|fl
-)paren
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Alloc %i bytes @ %p w/ fl %08x&bslash;n&quot;
-comma
-id|sz
-comma
-id|ptr
-comma
-id|fl
-)paren
-suffix:semicolon
-r_return
-id|ptr
-suffix:semicolon
-)brace
-DECL|function|dc395x_kfree
-r_inline
-r_void
-id|dc395x_kfree
-c_func
-(paren
-r_const
-r_void
-op_star
-id|adr
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Free mem @ %p&bslash;n&quot;
-comma
-id|adr
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|adr
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|dc395x_kmalloc
-mdefine_line|#define dc395x_kmalloc(sz, fl)&t;kmalloc(sz, fl)
-DECL|macro|dc395x_kfree
-mdefine_line|#define dc395x_kfree(adr) kfree(adr)
-macro_line|#endif
-multiline_comment|/*&n; * Debug/trace stuff&n; */
-macro_line|#if debug_enabled(DBG_TRACEALL)
-DECL|macro|TRACEOUTALL
-macro_line|# define TRACEOUTALL(x...) printk ( x)
-macro_line|#else
-DECL|macro|TRACEOUTALL
-macro_line|# define TRACEOUTALL(x...) do {} while (0)
-macro_line|#endif
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-DECL|macro|DEBUGTRACEBUFSZ
-macro_line|# define DEBUGTRACEBUFSZ 512
-DECL|variable|tracebuf
-r_static
-r_char
-id|tracebuf
-(braket
-l_int|64
-)braket
-suffix:semicolon
-DECL|variable|traceoverflow
-r_static
-r_char
-id|traceoverflow
-(braket
-l_int|8
-)braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
-DECL|macro|TRACEPRINTF
-macro_line|# define TRACEPRINTF(x...) &bslash;&n;&t;do { &bslash;&n;&t;&t;int ln = sprintf(tracebuf, x); &bslash;&n;&t;&t;if (srb-&gt;debugpos + ln &gt;= DEBUGTRACEBUFSZ) { &bslash;&n;&t;&t;&t;srb-&gt;debugtrace[srb-&gt;debugpos] = 0; &bslash;&n;&t;&t;&t;srb-&gt;debugpos = DEBUGTRACEBUFSZ/5; &bslash;&n;&t;&t;&t;srb-&gt;debugtrace[srb-&gt;debugpos++] = &squot;&gt;&squot;; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;sprintf(srb-&gt;debugtrace + srb-&gt;debugpos, &quot;%s&quot;, tracebuf); &bslash;&n;&t;&t;srb-&gt;debugpos += ln - 1; &bslash;&n;&t;} while (0)
-DECL|macro|TRACEOUT
-macro_line|# define TRACEOUT(x...) printk (x)
-macro_line|#else
-DECL|macro|TRACEPRINTF
-macro_line|# define TRACEPRINTF(x...) do {} while (0)
-DECL|macro|TRACEOUT
-macro_line|# define TRACEOUT(x...) do {} while (0)
-macro_line|#endif
-multiline_comment|/*---------------------------------------------------------------------------&n; ---------------------------------------------------------------------------*/
 macro_line|#ifndef PCI_VENDOR_ID_TEKRAM
 DECL|macro|PCI_VENDOR_ID_TEKRAM
 mdefine_line|#define PCI_VENDOR_ID_TEKRAM                    0x1DE1&t;/* Vendor ID    */
@@ -225,38 +72,18 @@ DECL|macro|DC395x_LOCK_IO
 mdefine_line|#define DC395x_LOCK_IO(dev,flags)&t;&t;spin_lock_irqsave(((struct Scsi_Host *)dev)-&gt;host_lock, flags)
 DECL|macro|DC395x_UNLOCK_IO
 mdefine_line|#define DC395x_UNLOCK_IO(dev,flags)&t;&t;spin_unlock_irqrestore(((struct Scsi_Host *)dev)-&gt;host_lock, flags)
-DECL|macro|DC395x_ACB_INITLOCK
-mdefine_line|#define DC395x_ACB_INITLOCK(acb)&t;&t;spin_lock_init(&amp;acb-&gt;smp_lock)
-DECL|macro|DC395x_ACB_LOCK
-mdefine_line|#define DC395x_ACB_LOCK(acb,acb_flags)&t;&t;if (!acb-&gt;lock_level_count[cpuid]) { spin_lock_irqsave(&amp;acb-&gt;smp_lock,acb_flags); acb-&gt;lock_level_count[cpuid]++; } else { acb-&gt;lock_level_count[cpuid]++; }
-DECL|macro|DC395x_ACB_UNLOCK
-mdefine_line|#define DC395x_ACB_UNLOCK(acb,acb_flags)&t;if (--acb-&gt;lock_level_count[cpuid] == 0) { spin_unlock_irqrestore(&amp;acb-&gt;smp_lock,acb_flags); }
-DECL|macro|DC395x_SMP_IO_LOCK
-mdefine_line|#define DC395x_SMP_IO_LOCK(dev,irq_flags)&t;spin_lock_irqsave(((struct Scsi_Host*)dev)-&gt;host_lock,irq_flags)
-DECL|macro|DC395x_SMP_IO_UNLOCK
-mdefine_line|#define DC395x_SMP_IO_UNLOCK(dev,irq_flags)&t;spin_unlock_irqrestore(((struct Scsi_Host*)dev)-&gt;host_lock,irq_flags)
 DECL|macro|DC395x_read8
 mdefine_line|#define DC395x_read8(acb,address)&t;&t;(u8)(inb(acb-&gt;io_port_base + (address)))
-DECL|macro|DC395x_read8_
-mdefine_line|#define DC395x_read8_(address, base)&t;&t;(u8)(inb((USHORT)(base) + (address)))
 DECL|macro|DC395x_read16
 mdefine_line|#define DC395x_read16(acb,address)&t;&t;(u16)(inw(acb-&gt;io_port_base + (address)))
 DECL|macro|DC395x_read32
 mdefine_line|#define DC395x_read32(acb,address)&t;&t;(u32)(inl(acb-&gt;io_port_base + (address)))
 DECL|macro|DC395x_write8
 mdefine_line|#define DC395x_write8(acb,address,value)&t;outb((value), acb-&gt;io_port_base + (address))
-DECL|macro|DC395x_write8_
-mdefine_line|#define DC395x_write8_(address,value,base)&t;outb((value), (USHORT)(base) + (address))
 DECL|macro|DC395x_write16
 mdefine_line|#define DC395x_write16(acb,address,value)&t;outw((value), acb-&gt;io_port_base + (address))
 DECL|macro|DC395x_write32
 mdefine_line|#define DC395x_write32(acb,address,value)&t;outl((value), acb-&gt;io_port_base + (address))
-DECL|macro|BUS_ADDR
-mdefine_line|#define BUS_ADDR(sg)&t;&t;sg_dma_address(&amp;(sg))
-DECL|macro|CPU_ADDR
-mdefine_line|#define CPU_ADDR(sg)&t;&t;(page_address((sg).page)+(sg).offset)
-DECL|macro|PAGE_ADDRESS
-mdefine_line|#define PAGE_ADDRESS(sg)&t;page_address((sg)-&gt;page)
 multiline_comment|/* cmd-&gt;result */
 DECL|macro|RES_TARGET
 mdefine_line|#define RES_TARGET&t;&t;0x000000FF&t;/* Target State */
@@ -282,9 +109,11 @@ DECL|macro|SET_RES_DID
 mdefine_line|#define SET_RES_DID(who,did) { who &amp;= ~RES_DID; who |= (int)(did) &lt;&lt; 16; }
 DECL|macro|SET_RES_DRV
 mdefine_line|#define SET_RES_DRV(who,drv) { who &amp;= ~RES_DRV; who |= (int)(drv) &lt;&lt; 24; }
-multiline_comment|/*&n;**************************************************************************&n;*/
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE 255
+multiline_comment|/*&n; * srb-&gt;segement_x is the hw sg list. It is always allocated as a&n; * DC395x_MAX_SG_LISTENTRY entries in a linear block which does not&n; * cross a page boundy.&n; */
+DECL|macro|SEGMENTX_LEN
+mdefine_line|#define SEGMENTX_LEN&t;(sizeof(struct SGentry)*DC395x_MAX_SG_LISTENTRY)
 DECL|struct|SGentry
 r_struct
 id|SGentry
@@ -300,7 +129,7 @@ id|length
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The SEEPROM structure for TRM_S1040 &n; */
+multiline_comment|/* The SEEPROM structure for TRM_S1040 */
 DECL|struct|NVRamTarget
 r_struct
 id|NVRamTarget
@@ -437,7 +266,6 @@ suffix:semicolon
 multiline_comment|/* 126,127 */
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  SCSI Request Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|ScsiReqBlk
 r_struct
 id|ScsiReqBlk
@@ -454,50 +282,54 @@ id|DeviceCtlBlk
 op_star
 id|dcb
 suffix:semicolon
-multiline_comment|/* HW scatter list (up to 64 entries) */
+DECL|member|cmd
+id|Scsi_Cmnd
+op_star
+id|cmd
+suffix:semicolon
 DECL|member|segment_x
 r_struct
 id|SGentry
 op_star
 id|segment_x
 suffix:semicolon
-DECL|member|cmd
-id|Scsi_Cmnd
-op_star
-id|cmd
+multiline_comment|/* Linear array of hw sg entries (up to 64 entries) */
+DECL|member|sg_bus_addr
+id|u32
+id|sg_bus_addr
 suffix:semicolon
+multiline_comment|/* Bus address of sg list (ie, of segment_x) */
+DECL|member|sg_count
+id|u8
+id|sg_count
+suffix:semicolon
+multiline_comment|/* No of HW sg entries for this request */
+DECL|member|sg_index
+id|u8
+id|sg_index
+suffix:semicolon
+multiline_comment|/* Index of HW sg entry for this request */
+DECL|member|total_xfer_length
+id|u32
+id|total_xfer_length
+suffix:semicolon
+multiline_comment|/* Total number of bytes remaining to be transfered */
 DECL|member|virt_addr
 r_int
 r_char
 op_star
 id|virt_addr
 suffix:semicolon
-multiline_comment|/* set by update_sg_list */
-DECL|member|total_xfer_length
-id|u32
-id|total_xfer_length
-suffix:semicolon
+multiline_comment|/* Virtual address of current transfer position */
+multiline_comment|/*&n;&t; * The sense buffer handling function, request_sense, uses&n;&t; * the first hw sg entry (segment_x[0]) and the transfer&n;&t; * length (total_xfer_length). While doing this it stores the&n;&t; * original values into the last sg hw list&n;&t; * (srb-&gt;segment_x[DC395x_MAX_SG_LISTENTRY - 1] and the&n;&t; * total_xfer_length in xferred. These values are restored in&n;&t; * pci_unmap_srb_sense. This is the only place xferred is used.&n;&t; */
 DECL|member|xferred
 id|u32
 id|xferred
 suffix:semicolon
-multiline_comment|/* Backup for the already xferred len */
-DECL|member|sg_bus_addr
-id|u32
-id|sg_bus_addr
-suffix:semicolon
-multiline_comment|/* bus address of DC395x scatterlist */
+multiline_comment|/* Saved copy of total_xfer_length */
 DECL|member|state
 id|u16
 id|state
-suffix:semicolon
-DECL|member|sg_count
-id|u8
-id|sg_count
-suffix:semicolon
-DECL|member|sg_index
-id|u8
-id|sg_index
 suffix:semicolon
 DECL|member|msgin_buf
 id|u8
@@ -549,20 +381,8 @@ DECL|member|scsi_phase
 id|u8
 id|scsi_phase
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-DECL|member|debugpos
-id|u16
-id|debugpos
-suffix:semicolon
-DECL|member|debugtrace
-r_char
-op_star
-id|debugtrace
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  Device Control Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|DeviceCtlBlk
 r_struct
 id|DeviceCtlBlk
@@ -662,7 +482,6 @@ id|init_tcq_flag
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*-----------------------------------------------------------------------&n;  Adapter Control Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|AdapterCtlBlk
 r_struct
 id|AdapterCtlBlk
@@ -1370,14 +1189,6 @@ id|current_sync_offset
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|monitor_next_irq
-r_static
-r_char
-id|monitor_next_irq
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* &n; * dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; */
 DECL|variable|dc395x_scsi_phase0
 r_static
 r_void
@@ -1413,7 +1224,6 @@ comma
 multiline_comment|/* phase:7 */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; */
 DECL|variable|dc395x_scsi_phase1
 r_static
 r_void
@@ -1502,7 +1312,6 @@ comma
 l_int|40
 )brace
 suffix:semicolon
-multiline_comment|/* real period:48ns,72ns,100ns,124ns,148ns,172ns,200ns,248ns */
 multiline_comment|/*---------------------------------------------------------------------------&n;                                Configuration&n;  ---------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Module/boot parameters currently effect *all* instances of the&n; * card in the system.&n; */
 multiline_comment|/*&n; * Command line parameters are stored in a structure below.&n; * These are the index&squot;s into the structure for the various&n; * command line options.&n; */
@@ -1679,7 +1488,7 @@ multiline_comment|/* 10 seconds */
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Safe settings. If set to zero the the BIOS/default values with command line&n; * overrides will be used. If set to 1 then safe and slow settings will be used.&n; */
+multiline_comment|/*&n; * Safe settings. If set to zero the the BIOS/default values with&n; * command line overrides will be used. If set to 1 then safe and&n; * slow settings will be used.&n; */
 DECL|variable|use_safe_settings
 r_static
 r_int
@@ -1858,8 +1667,8 @@ l_string|&quot;Reset delay in seconds. Default 1 (0-180)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * set_safe_settings - if the use_safe_settings option is set then&n; * set all values to the safe and slow values.&n; **/
-r_static
 DECL|function|set_safe_settings
+r_static
 r_void
 id|__init
 id|set_safe_settings
@@ -1918,8 +1727,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * fix_settings - reset any boot parameters which are out of range&n; * back to the default values.&n; **/
-r_static
 DECL|function|fix_settings
+r_static
 r_void
 id|__init
 id|fix_settings
@@ -1934,9 +1743,10 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_PARSE
+id|DBG_1
 comma
-l_string|&quot;setup %08x %08x %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;setup: AdapterId=%08x MaxSpeed=%08x DevMode=%08x &quot;
+l_string|&quot;AdapterMode=%08x Tags=%08x ResetDelay=%08x&bslash;n&quot;
 comma
 id|cfg_data
 (braket
@@ -2013,7 +1823,6 @@ id|i
 dot
 id|max
 )paren
-(brace
 id|cfg_data
 (braket
 id|i
@@ -2030,10 +1839,9 @@ id|def
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/*&n; * Mapping from the eeprom delay index value (index into this array)&n; * to the the number of actual seconds that the delay should be for.&n; */
-r_static
 DECL|variable|eeprom_index_to_delay_map
+r_static
 r_char
 id|__initdata
 id|eeprom_index_to_delay_map
@@ -2059,8 +1867,8 @@ l_int|120
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * eeprom_index_to_delay - Take the eeprom delay setting and convert it&n; * into a number of seconds.&n; *&n; * @eeprom: The eeprom structure in which we find the delay index to map.&n; **/
-r_static
 DECL|function|eeprom_index_to_delay
+r_static
 r_void
 id|__init
 id|eeprom_index_to_delay
@@ -2080,7 +1888,7 @@ id|eeprom-&gt;delay_time
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * delay_to_eeprom_index - Take a delay in seconds and return the closest&n; * eeprom index which will delay for at least that amount of seconds.&n; *&n; * @delay: The delay, in seconds, to find the eeprom index for.&n; **/
+multiline_comment|/**&n; * delay_to_eeprom_index - Take a delay in seconds and return the&n; * closest eeprom index which will delay for at least that amount of&n; * seconds.&n; *&n; * @delay: The delay, in seconds, to find the eeprom index for.&n; **/
 DECL|function|delay_to_eeprom_index
 r_static
 r_int
@@ -2111,18 +1919,16 @@ id|idx
 OL
 id|delay
 )paren
-(brace
 id|idx
 op_increment
 suffix:semicolon
-)brace
 r_return
 id|idx
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * eeprom_override - Override the eeprom settings, in the provided&n; * eeprom structure, with values that have been set on the command&n; * line.&n; *&n; * @eeprom: The eeprom data to override with command line options.&n; **/
-r_static
 DECL|function|eeprom_override
+r_static
 r_void
 id|__init
 id|eeprom_override
@@ -2150,7 +1956,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;scsi_id
 op_assign
 (paren
@@ -2163,7 +1968,6 @@ id|CFG_ADAPTER_ID
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2176,7 +1980,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;channel_cfg
 op_assign
 (paren
@@ -2189,7 +1992,6 @@ id|CFG_ADAPTER_MODE
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2202,7 +2004,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;delay_time
 op_assign
 id|delay_to_eeprom_index
@@ -2216,7 +2017,6 @@ dot
 id|value
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2229,7 +2029,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;max_tag
 op_assign
 (paren
@@ -2242,7 +2041,6 @@ id|CFG_TAGS
 dot
 id|value
 suffix:semicolon
-)brace
 multiline_comment|/* Device Settings */
 r_for
 c_loop
@@ -2271,7 +2069,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;target
 (braket
 id|id
@@ -2289,7 +2086,6 @@ id|CFG_DEV_MODE
 dot
 id|value
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2302,7 +2098,6 @@ id|value
 op_ne
 id|CFG_PARAM_UNSET
 )paren
-(brace
 id|eeprom-&gt;target
 (braket
 id|id
@@ -2322,11 +2117,9 @@ id|value
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/*---------------------------------------------------------------------------&n; ---------------------------------------------------------------------------*/
-multiline_comment|/**&n; * list_size - Returns the size (in number of entries) of the&n; * supplied list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; **/
-r_static
 DECL|function|list_size
+r_static
 r_int
 r_int
 id|list_size
@@ -2363,9 +2156,8 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * dcb_get_next - Given a dcb return the next dcb in the list of&n; * dcb&squot;s, wrapping back to the start of the dcb list if required.&n; * Returns the supplied dcb if there is only one dcb in the list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; * @pos: The pointer the dcb for which we are searching for the&n; *       following dcb.&n; **/
-r_static
 DECL|function|dcb_get_next
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -2477,11 +2269,8 @@ r_return
 id|next
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Queueing philosphy:&n; * There are a couple of lists:&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
-multiline_comment|/* Nomen est omen ... */
-r_static
-r_inline
 DECL|function|free_tag
+r_static
 r_void
 id|free_tag
 c_func
@@ -2522,9 +2311,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Find cmd in SRB list */
+DECL|function|find_cmd
 r_inline
 r_static
-DECL|function|find_cmd
 r_struct
 id|ScsiReqBlk
 op_star
@@ -2569,9 +2358,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_get_free - Return a free srb from the list of free SRBs that&n; * is stored with the acb.&n; */
-r_static
 DECL|function|srb_get_free
+r_static
 r_struct
 id|ScsiReqBlk
 op_star
@@ -2596,6 +2384,8 @@ r_struct
 id|ScsiReqBlk
 op_star
 id|srb
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2632,24 +2422,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_get_free: got srb %p&bslash;n&quot;
+l_string|&quot;srb_get_free: srb=%p&bslash;n&quot;
 comma
 id|srb
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Out of Free SRBs :-(&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2657,9 +2432,8 @@ r_return
 id|srb
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_free_insert - Insert an srb to the head of the free list&n; * stored in the acb.&n; */
-r_static
 DECL|function|srb_free_insert
+r_static
 r_void
 id|srb_free_insert
 c_func
@@ -2680,7 +2454,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_free_insert: put srb %p&bslash;n&quot;
+l_string|&quot;srb_free_insert: srb=%p&bslash;n&quot;
 comma
 id|srb
 )paren
@@ -2696,9 +2470,8 @@ id|acb-&gt;srb_free_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_insert - Insert an srb to the head of the wiating list&n; * stored in the dcb.&n; */
-r_static
 DECL|function|srb_waiting_insert
+r_static
 r_void
 id|srb_waiting_insert
 c_func
@@ -2719,11 +2492,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_waiting_insert: srb %p cmd %li&bslash;n&quot;
-comma
-id|srb
+l_string|&quot;srb_waiting_insert: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
+comma
+id|srb
 )paren
 suffix:semicolon
 id|list_add
@@ -2737,10 +2514,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_append - Append an srb to the tail of the waiting list&n; * stored in the dcb.&n; */
-r_static
-r_inline
 DECL|function|srb_waiting_append
+r_static
 r_void
 id|srb_waiting_append
 c_func
@@ -2761,11 +2536,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_waiting_append: srb %p cmd %li&bslash;n&quot;
-comma
-id|srb
+l_string|&quot;srb_waiting_append: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
+comma
+id|srb
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -2779,10 +2558,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_going_append - Append an srb to the tail of the going list&n; * stored in the dcb.&n; */
-r_static
-r_inline
 DECL|function|srb_going_append
+r_static
 r_void
 id|srb_going_append
 c_func
@@ -2803,7 +2580,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_going_append: srb %p&bslash;n&quot;
+l_string|&quot;srb_going_append: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
 comma
 id|srb
 )paren
@@ -2819,9 +2602,8 @@ id|dcb-&gt;srb_going_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_going_remove - Remove an srb from the going list stored in the&n; * dcb.&n; */
-r_static
 DECL|function|srb_going_remove
+r_static
 r_void
 id|srb_going_remove
 c_func
@@ -2852,7 +2634,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_going_remove: srb %p&bslash;n&quot;
+l_string|&quot;srb_going_remove: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
 comma
 id|srb
 )paren
@@ -2888,9 +2676,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * srb_waiting_remove - Remove an srb from the waiting list stored in the&n; * dcb.&n; */
-r_static
 DECL|function|srb_waiting_remove
+r_static
 r_void
 id|srb_waiting_remove
 c_func
@@ -2921,7 +2708,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_waiting_remove: srb %p&bslash;n&quot;
+l_string|&quot;srb_waiting_remove: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
 comma
 id|srb
 )paren
@@ -2957,9 +2750,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * srb_going_to_waiting_move - Remove an srb from the going list in&n; * the dcb and insert it at the head of the waiting list in the dcb.&n; */
-r_static
 DECL|function|srb_going_to_waiting_move
+r_static
 r_void
 id|srb_going_to_waiting_move
 c_func
@@ -2980,11 +2772,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_going_waiting_move: srb %p, pid = %li&bslash;n&quot;
-comma
-id|srb
+l_string|&quot;srb_going_to_waiting_move: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
+comma
+id|srb
 )paren
 suffix:semicolon
 id|list_move
@@ -2998,9 +2794,8 @@ id|dcb-&gt;srb_waiting_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * srb_waiting_to_going_move - Remove an srb from the waiting list in&n; * the dcb and insert it at the head of the going list in the dcb.&n; */
-r_static
 DECL|function|srb_waiting_to_going_move
+r_static
 r_void
 id|srb_waiting_to_going_move
 c_func
@@ -3016,21 +2811,20 @@ op_star
 id|srb
 )paren
 (brace
-multiline_comment|/* Remove from waiting list */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;srb_waiting_to_going: srb %p&bslash;n&quot;
+l_string|&quot;srb_waiting_to_going_move: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
 comma
 id|srb
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;WtG *&quot;
 )paren
 suffix:semicolon
 id|list_move
@@ -3045,8 +2839,8 @@ id|dcb-&gt;srb_going_list
 suffix:semicolon
 )brace
 multiline_comment|/* Sets the timer to wake us up */
-r_static
 DECL|function|waiting_set_timer
+r_static
 r_void
 id|waiting_set_timer
 c_func
@@ -3137,8 +2931,8 @@ id|acb-&gt;waiting_timer
 suffix:semicolon
 )brace
 multiline_comment|/* Send the next command from the waiting list to the bus */
-r_static
 DECL|function|waiting_process_next
+r_static
 r_void
 id|waiting_process_next
 c_func
@@ -3182,9 +2976,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|acb-&gt;active_dcb
-)paren
 op_logical_or
 (paren
 id|acb-&gt;acb_flag
@@ -3433,9 +3225,11 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 comma
-l_string|&quot;Debug: Waiting queue woken up by timer.&bslash;n&quot;
+l_string|&quot;waiting_timeout: Queue woken up by timer. acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
 id|DC395x_LOCK_IO
@@ -3462,9 +3256,8 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Get the DCB for a given ID/LUN combination */
-r_static
-r_inline
 DECL|function|find_dcb
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -3493,9 +3286,9 @@ id|lun
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * Function: static void send_srb (struct AdapterCtlBlk* acb, struct ScsiReqBlk* srb)&n; *&n; * Purpose: Send SCSI Request Block (srb) to adapter (acb)&n; *&n; *            dc395x_queue_command&n; *            waiting_process_next&n; *&n; ***********************************************************************/
-r_static
+multiline_comment|/* Send SCSI Request Block (srb) to adapter (acb) */
 DECL|function|send_srb
+r_static
 r_void
 id|send_srb
 c_func
@@ -3514,8 +3307,6 @@ id|srb
 r_struct
 id|DeviceCtlBlk
 op_star
-id|dcb
-suffix:semicolon
 id|dcb
 op_assign
 id|srb-&gt;dcb
@@ -3578,7 +3369,6 @@ comma
 id|srb
 )paren
 )paren
-(brace
 id|srb_going_append
 c_func
 (paren
@@ -3587,7 +3377,6 @@ comma
 id|srb
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|srb_waiting_insert
@@ -3610,9 +3399,9 @@ l_int|50
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *********************************************************************&n; *&n; * Function: static void build_srb (Scsi_Cmd *cmd, struct DeviceCtlBlk* dcb, struct ScsiReqBlk* srb)&n; *&n; *  Purpose: Prepare SRB for being sent to Device DCB w/ command *cmd&n; *&n; *********************************************************************&n; */
-r_static
+multiline_comment|/* Prepare SRB for being sent to Device DCB w/ command *cmd */
 DECL|function|build_srb
+r_static
 r_void
 id|build_srb
 c_func
@@ -3633,44 +3422,6 @@ id|srb
 )paren
 (brace
 r_int
-id|i
-comma
-id|max
-suffix:semicolon
-r_struct
-id|SGentry
-op_star
-id|sgp
-suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sl
-suffix:semicolon
-id|u32
-id|request_size
-suffix:semicolon
-r_int
-id|dir
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_0
-comma
-l_string|&quot;build_srb..............&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*memset (srb, 0, sizeof (struct ScsiReqBlk)); */
-id|srb-&gt;dcb
-op_assign
-id|dcb
-suffix:semicolon
-id|srb-&gt;cmd
-op_assign
-id|cmd
-suffix:semicolon
-multiline_comment|/* Find out about direction */
 id|dir
 op_assign
 id|scsi_to_pci_dma_dir
@@ -3679,78 +3430,140 @@ c_func
 id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;build_srb: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
+)paren
+suffix:semicolon
+id|srb-&gt;dcb
+op_assign
+id|dcb
+suffix:semicolon
+id|srb-&gt;cmd
+op_assign
+id|cmd
+suffix:semicolon
+id|srb-&gt;sg_count
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;total_xfer_length
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;sg_bus_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;virt_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;sg_index
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;adapter_status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;target_status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;msg_count
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;flag
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;state
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;retry_count
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;tag_number
+op_assign
+id|TAG_NONE
+suffix:semicolon
+id|srb-&gt;scsi_phase
+op_assign
+id|PH_BUS_FREE
+suffix:semicolon
+multiline_comment|/* initial phase */
+id|srb-&gt;end_message
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dir
+op_eq
+id|PCI_DMA_NONE
+op_logical_or
+op_logical_neg
+id|cmd-&gt;request_buffer
+)paren
+(brace
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;build_srb: [0] len=%d buf=%p use_sg=%d !MAP=%08x&bslash;n&quot;
+comma
+id|cmd-&gt;bufflen
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|srb-&gt;segment_x
+(braket
+l_int|0
+)braket
+dot
+id|address
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
 id|cmd-&gt;use_sg
-op_logical_and
-id|dir
-op_ne
-id|PCI_DMA_NONE
 )paren
 (brace
 r_int
-r_int
-id|len
-op_assign
-l_int|0
+id|i
 suffix:semicolon
-multiline_comment|/* TODO: In case usg_sg and the no of segments differ, things&n;&t;&t; * will probably go wrong. */
-id|max
+id|u32
+id|reqlen
 op_assign
-id|srb-&gt;sg_count
-op_assign
-id|pci_map_sg
-c_func
-(paren
-id|dcb-&gt;acb-&gt;dev
-comma
-(paren
+id|cmd-&gt;request_bufflen
+suffix:semicolon
 r_struct
 id|scatterlist
 op_star
-)paren
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-comma
-id|dir
-)paren
-suffix:semicolon
-id|sgp
-op_assign
-id|srb-&gt;segment_x
-suffix:semicolon
-id|request_size
-op_assign
-id|cmd-&gt;request_bufflen
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;BuildSRB: Bufflen = %d, buffer = %p, use_sg = %d&bslash;n&quot;
-comma
-id|cmd-&gt;request_bufflen
-comma
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Mapped %i Segments to %i&bslash;n&quot;
-comma
-id|cmd-&gt;use_sg
-comma
-id|srb-&gt;sg_count
-)paren
-suffix:semicolon
 id|sl
 op_assign
 (paren
@@ -3759,6 +3572,43 @@ id|scatterlist
 op_star
 )paren
 id|cmd-&gt;request_buffer
+suffix:semicolon
+r_struct
+id|SGentry
+op_star
+id|sgp
+op_assign
+id|srb-&gt;segment_x
+suffix:semicolon
+id|srb-&gt;sg_count
+op_assign
+id|pci_map_sg
+c_func
+(paren
+id|dcb-&gt;acb-&gt;dev
+comma
+id|sl
+comma
+id|cmd-&gt;use_sg
+comma
+id|dir
+)paren
+suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;build_srb: [n] len=%d buf=%p use_sg=%d segs=%d&bslash;n&quot;
+comma
+id|reqlen
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|srb-&gt;sg_count
+)paren
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
@@ -3777,7 +3627,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|max
+id|srb-&gt;sg_count
 suffix:semicolon
 id|i
 op_increment
@@ -3830,82 +3680,40 @@ id|length
 op_assign
 id|seglen
 suffix:semicolon
-id|len
+id|srb-&gt;total_xfer_length
 op_add_assign
 id|seglen
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Setting up sgp %d, address = 0x%08x, length = %d, tot len = %d&bslash;n&quot;
-comma
-id|i
-comma
-id|busaddr
-comma
-id|seglen
-comma
-id|len
-)paren
 suffix:semicolon
 )brace
 id|sgp
 op_add_assign
-id|max
+id|srb-&gt;sg_count
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Fixup for last buffer too big as it is allocated on even page boundaries */
+multiline_comment|/*&n;&t;&t; * adjust last page if too big as it is allocated&n;&t;&t; * on even page boundaries&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|len
+id|srb-&gt;total_xfer_length
 OG
-id|request_size
+id|reqlen
 )paren
 (brace
-macro_line|#if debug_enabled(DBG_KG) || debug_enabled(DBG_SGPARANOIA)
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-op_or
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Fixup SG total length: %d-&gt;%d, last seg %d-&gt;%d&bslash;n&quot;
-comma
-id|len
-comma
-id|request_size
-comma
-id|sgp-&gt;length
-comma
-id|sgp-&gt;length
-op_minus
-(paren
-id|len
-op_minus
-id|request_size
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|sgp-&gt;length
 op_sub_assign
 (paren
-id|len
+id|srb-&gt;total_xfer_length
 op_minus
-id|request_size
+id|reqlen
 )paren
 suffix:semicolon
-id|len
+id|srb-&gt;total_xfer_length
 op_assign
-id|request_size
+id|reqlen
 suffix:semicolon
 )brace
-multiline_comment|/* WIDE padding */
+multiline_comment|/* Fixup for WIDE padding - make sure length is even */
 r_if
 c_cond
 (paren
@@ -3913,24 +3721,18 @@ id|dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 op_logical_and
-id|len
+id|srb-&gt;total_xfer_length
 op_mod
 l_int|2
 )paren
 (brace
-id|len
+id|srb-&gt;total_xfer_length
 op_increment
 suffix:semicolon
 id|sgp-&gt;length
 op_increment
 suffix:semicolon
 )brace
-id|srb-&gt;total_xfer_length
-op_assign
-id|len
-suffix:semicolon
-multiline_comment|/*? */
-multiline_comment|/* Hopefully this does not cross a page boundary ... */
 id|srb-&gt;sg_bus_addr
 op_assign
 id|pci_map_single
@@ -3940,13 +3742,7 @@ id|dcb-&gt;acb-&gt;dev
 comma
 id|srb-&gt;segment_x
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -3954,42 +3750,24 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Map SG descriptor list %p (%05x) to %08x&bslash;n&quot;
+l_string|&quot;build_srb: [n] map sg %p-&gt;%08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
-comma
 id|srb-&gt;sg_bus_addr
+comma
+id|SEGMENTX_LEN
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|cmd-&gt;request_buffer
-op_logical_and
-id|dir
-op_ne
-id|PCI_DMA_NONE
-)paren
-(brace
-id|u32
-id|len
+id|srb-&gt;total_xfer_length
 op_assign
 id|cmd-&gt;request_bufflen
 suffix:semicolon
-multiline_comment|/* Actual request size */
 id|srb-&gt;sg_count
 op_assign
 l_int|1
@@ -4008,12 +3786,12 @@ id|dcb-&gt;acb-&gt;dev
 comma
 id|cmd-&gt;request_buffer
 comma
-id|len
+id|srb-&gt;total_xfer_length
 comma
 id|dir
 )paren
 suffix:semicolon
-multiline_comment|/* WIDE padding */
+multiline_comment|/* Fixup for WIDE padding - make sure length is even */
 r_if
 c_cond
 (paren
@@ -4021,11 +3799,11 @@ id|dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 op_logical_and
-id|len
+id|srb-&gt;total_xfer_length
 op_mod
 l_int|2
 )paren
-id|len
+id|srb-&gt;total_xfer_length
 op_increment
 suffix:semicolon
 id|srb-&gt;segment_x
@@ -4035,28 +3813,20 @@ l_int|0
 dot
 id|length
 op_assign
-id|len
-suffix:semicolon
 id|srb-&gt;total_xfer_length
-op_assign
-id|len
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
 id|cmd-&gt;request_buffer
 suffix:semicolon
-id|srb-&gt;sg_bus_addr
-op_assign
-l_int|0
-suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_0
 comma
-l_string|&quot;BuildSRB: len = %d, buffer = %p, use_sg = %d, map %08x&bslash;n&quot;
+l_string|&quot;build_srb: [1] len=%d buf=%p use_sg=%d map=%08x&bslash;n&quot;
 comma
-id|len
+id|srb-&gt;total_xfer_length
 comma
 id|cmd-&gt;request_buffer
 comma
@@ -4071,176 +3841,11 @@ id|address
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|srb-&gt;sg_count
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;sg_bus_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;virt_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;BuildSRB: buflen = %d, buffer = %p, use_sg = %d, NOMAP %08x&bslash;n&quot;
-comma
-id|cmd-&gt;bufflen
-comma
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-comma
-id|srb-&gt;segment_x
-(braket
-l_int|0
-)braket
-dot
-id|address
-)paren
-suffix:semicolon
-)brace
-)brace
-id|srb-&gt;sg_index
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;adapter_status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;target_status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;msg_count
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;flag
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;state
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;retry_count
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL) &amp;&amp; debug_enabled(DBG_SGPARANOIA)
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|srb-&gt;debugtrace
-op_amp
-(paren
-id|DEBUGTRACEBUFSZ
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;SRB %i (%p): debugtrace %p corrupt!&bslash;n&quot;
-comma
-(paren
-id|srb
-op_minus
-id|dcb-&gt;acb-&gt;srb_array
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|ScsiReqBlk
-)paren
-comma
-id|srb
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-id|srb-&gt;debugpos
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;debugtrace
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;pid %li(%li):%02x %02x..(%i-%i) *&quot;
-comma
-id|cmd-&gt;pid
-comma
-id|jiffies
-comma
-id|cmd-&gt;cmnd
-(braket
-l_int|0
-)braket
-comma
-id|cmd-&gt;cmnd
-(braket
-l_int|1
-)braket
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-id|srb-&gt;tag_number
-op_assign
-id|TAG_NONE
-suffix:semicolon
-id|srb-&gt;scsi_phase
-op_assign
-id|PH_BUS_FREE
-suffix:semicolon
-multiline_comment|/* initial phase */
-id|srb-&gt;end_message
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_queue_command - queue scsi command passed from the mid&n; * layer, invoke &squot;done&squot; on completion&n; *&n; * @cmd: pointer to scsi command object&n; * @done: function pointer to be invoked on completion&n; *&n; * Returns 1 if the adapter (host) is busy, else returns 0. One&n; * reason for an adapter to be busy is that the number&n; * of outstanding queued commands is already equal to&n; * struct Scsi_Host::can_queue .&n; *&n; * Required: if struct Scsi_Host::can_queue is ever non-zero&n; *           then this function is required.&n; *&n; * Locks: struct Scsi_Host::host_lock held on entry (with &quot;irqsave&quot;)&n; *        and is expected to be held on return.&n; *&n; **/
+DECL|function|dc395x_queue_command
 r_static
 r_int
-DECL|function|dc395x_queue_command
 id|dc395x_queue_command
 c_func
 (paren
@@ -4286,44 +3891,20 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Queue Cmd=%02x,Tgt=%d,LUN=%d (pid=%li)&bslash;n&quot;
+l_string|&quot;queue_command: (pid#%li) &lt;%02i-%i&gt; cmnd=0x%02x&bslash;n&quot;
 comma
-id|cmd-&gt;cmnd
-(braket
-l_int|0
-)braket
+id|cmd-&gt;pid
 comma
 id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;device-&gt;lun
 comma
-id|cmd-&gt;pid
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-r_if
-c_cond
-(paren
-id|dbg_in_driver
-op_increment
-OG
-id|NORM_REC_LVL
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%i queue_command () recursion? (pid=%li)&bslash;n&quot;
-comma
-id|dbg_in_driver
-comma
-id|cmd-&gt;pid
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Assume BAD_TARGET; will be cleared later */
 id|cmd-&gt;result
 op_assign
@@ -4376,7 +3957,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Ignore target %02x lun %02x&bslash;n&quot;
+l_string|&quot;queue_command: Ignore target &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|cmd-&gt;device-&gt;id
 comma
@@ -4413,19 +3994,11 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;no DCB failed, target %02x lun %02x&bslash;n&quot;
+l_string|&quot;queue_command: No such device &lt;%02i-%i&gt;&quot;
 comma
 id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;No DCB in queuecommand (2)!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4441,7 +4014,6 @@ id|cmd-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* get a free SRB */
 id|srb
 op_assign
 id|srb_get_free
@@ -4463,14 +4035,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;No free SRB&squot;s in queuecommand&bslash;n&quot;
+l_string|&quot;queue_command: No free srb&squot;s&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* build srb for the command */
 id|build_srb
 c_func
 (paren
@@ -4526,25 +4097,17 @@ c_func
 (paren
 id|DBG_1
 comma
-l_string|&quot;... command (pid %li) queued successfully.&bslash;n&quot;
+l_string|&quot;queue_command: (pid#%li) done&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 )paren
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 id|complete
 suffix:colon
 multiline_comment|/*&n;&t; * Complete the command immediatey, and then return 0 to&n;&t; * indicate that we have handled the command. This is usually&n;&t; * done when the commad is for things like non existent&n;&t; * devices.&n;&t; */
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 id|done
 c_func
 (paren
@@ -4555,9 +4118,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *********************************************************************&n; *&n; * Function   : dc395x_bios_param&n; * Description: Return the disk geometry for the given SCSI device.&n; *********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
 DECL|function|dc395x_bios_param
+r_static
 r_int
 id|dc395x_bios_param
 c_func
@@ -4706,9 +4269,8 @@ id|info
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * DC395x register dump&n; */
-r_static
 DECL|function|dump_register_info
+r_static
 r_void
 id|dump_register_info
 c_func
@@ -4782,16 +4344,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|srb-&gt;cmd
-)paren
 )paren
 id|dprintkl
 c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;dump: SRB %p: cmd %p OOOPS!&bslash;n&quot;
+l_string|&quot;dump: srb=%p cmd=%p OOOPS!&bslash;n&quot;
 comma
 id|srb
 comma
@@ -4804,7 +4364,8 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;dump: SRB %p: cmd %p pid %li: %02x (%02i-%i)&bslash;n&quot;
+l_string|&quot;dump: srb=%p cmd=%p (pid#%li) &quot;
+l_string|&quot;cmnd=0x%02x &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb
 comma
@@ -4825,7 +4386,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;              SGList %p Cnt %i Idx %i Len %i&bslash;n&quot;
+l_string|&quot;  sglist=%p cnt=%i idx=%i len=%i&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 comma
@@ -4837,8 +4398,9 @@ id|srb-&gt;total_xfer_length
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
-l_string|&quot;              State %04x Status %02x Phase %02x (%sconn.)&bslash;n&quot;
+l_string|&quot;  state=0x%04x status=0x%02x phase=0x%02x (%sconn.)&bslash;n&quot;
 comma
 id|srb-&gt;state
 comma
@@ -4856,26 +4418,16 @@ suffix:colon
 l_string|&quot;not&quot;
 )paren
 suffix:semicolon
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot;        %s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
 )brace
 id|dprintkl
 c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;dump: SCSI block&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;              Status %04x FIFOCnt %02x Signals %02x IRQStat %02x&bslash;n&quot;
+l_string|&quot;dump: SCSI{status=0x%04x fifocnt=0x%02x &quot;
+l_string|&quot;signals=0x%02x irqstat=0x%02x sync=0x%02x target=0x%02x &quot;
+l_string|&quot;rselid=0x%02x ctr=0x%08x irqen=0x%02x config=0x%04x &quot;
+l_string|&quot;config2=0x%02x cmd=0x%02x selto=0x%02x}&bslash;n&quot;
 comma
 id|DC395x_read16
 c_func
@@ -4908,11 +4460,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_INTSTATUS
 )paren
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;              Sync %02x Target %02x RSelID %02x SCSICtr %08x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -4945,11 +4492,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_COUNTER
 )paren
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;              IRQEn %02x Config %04x Cfg2 %02x Cmd %02x SelTO %02x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -4997,12 +4539,9 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;dump: DMA block&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;              Cmd %04x FIFOCnt %02x FStat %02x IRQStat %02x IRQEn %02x Cfg %04x&bslash;n&quot;
+l_string|&quot;dump: DMA{cmd=0x%04x fifocnt=0x%02x fstat=0x%02x &quot;
+l_string|&quot;irqstat=0x%02x irqen=0x%02x cfg=0x%04x tctr=0x%08x &quot;
+l_string|&quot;ctctr=0x%08x addr=0x%08x:0x%08x}&bslash;n&quot;
 comma
 id|DC395x_read16
 c_func
@@ -5051,12 +4590,6 @@ id|acb
 comma
 id|TRM_S1040_DMA_CONFIG
 )paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;              TCtr %08x CTCtr %08x Addr %08x%08x&bslash;n&quot;
 comma
 id|DC395x_read32
 c_func
@@ -5096,7 +4629,8 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;dump: Misc: GCtrl %02x GStat %02x GTmr %02x&bslash;n&quot;
+l_string|&quot;dump: gen{gctrl=0x%02x gstat=0x%02x gtmr=0x%02x} &quot;
+l_string|&quot;pci{status=0x%04x}&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -5121,14 +4655,6 @@ id|acb
 comma
 id|TRM_S1040_GEN_TIMER
 )paren
-)paren
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_INFO
-comma
-l_string|&quot;dump: PCI Status %04x&bslash;n&quot;
 comma
 id|pstat
 )paren
@@ -5189,7 +4715,7 @@ c_func
 (paren
 id|DBG_FIFO
 comma
-l_string|&quot;Clr FIFO (%i bytes) on phase %02x in %s&bslash;n&quot;
+l_string|&quot;clear_fifo: (%i bytes) on phase %02x in %s&bslash;n&quot;
 comma
 id|fifocnt
 op_amp
@@ -5200,30 +4726,6 @@ comma
 id|txt
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if debug_enabled(DBG_TRACE)   
-r_if
-c_cond
-(paren
-id|acb-&gt;active_dcb
-op_logical_and
-id|acb-&gt;active_dcb-&gt;active_srb
-)paren
-(brace
-r_struct
-id|ScsiReqBlk
-op_star
-id|srb
-op_assign
-id|acb-&gt;active_dcb-&gt;active_srb
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;#*&quot;
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 id|DC395x_write16
 c_func
@@ -5236,7 +4738,6 @@ id|DO_CLRFIFO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; *&n; *&t;&t;DC395x_reset      scsi_reset_detect&n; *&n; ********************************************************************&n; */
 DECL|function|reset_dev_param
 r_static
 r_void
@@ -5267,7 +4768,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;reset_dev_param..............&bslash;n&quot;
+l_string|&quot;reset_dev_param: acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -5352,7 +4855,7 @@ id|WIDE_NEGO_ENABLE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *********************************************************************&n; * Function : int dc395x_eh_bus_reset(Scsi_Cmnd *cmd)&n; * Purpose  : perform a hard reset on the SCSI bus&n; * Inputs   : cmd - some command for this host (for fetching hooks)&n; * Returns  : SUCCESS (0x2002) on success, else FAILED (0x2003).&n; *********************************************************************&n; */
+multiline_comment|/*&n; * perform a hard reset on the SCSI bus&n; * @cmd - some command for this host (for fetching hooks)&n; * Returns: SUCCESS (0x2002) on success, else FAILED (0x2003).&n; */
 DECL|function|dc395x_eh_bus_reset
 r_static
 r_int
@@ -5368,17 +4871,6 @@ r_struct
 id|AdapterCtlBlk
 op_star
 id|acb
-suffix:semicolon
-multiline_comment|/*u32         acb_flags=0; */
-id|dprintkl
-c_func
-(paren
-id|KERN_INFO
-comma
-l_string|&quot;reset requested!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|acb
 op_assign
 (paren
 r_struct
@@ -5387,8 +4879,22 @@ op_star
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-multiline_comment|/* mid level guarantees no recursion */
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
+id|dprintkl
+c_func
+(paren
+id|KERN_INFO
+comma
+l_string|&quot;eh_bus_reset: (pid#%li) target=&lt;%02i-%i&gt; cmd=%p&bslash;n&quot;
+comma
+id|cmd-&gt;pid
+comma
+id|cmd-&gt;device-&gt;id
+comma
+id|cmd-&gt;device-&gt;lun
+comma
+id|cmd
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5491,7 +4997,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;reset&quot;
+l_string|&quot;eh_bus_reset&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Delete pending IRQ */
@@ -5542,12 +5048,11 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
 r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *********************************************************************&n; * Function : int dc395x_eh_abort(Scsi_Cmnd *cmd)&n; * Purpose  : abort an errant SCSI command&n; * Inputs   : cmd - command to be aborted&n; * Returns  : SUCCESS (0x2002) on success, else FAILED (0x2003).&n; *********************************************************************&n; */
+multiline_comment|/*&n; * abort an errant SCSI command&n; * @cmd - command to be aborted&n; * Returns: SUCCESS (0x2002) on success, else FAILED (0x2003).&n; */
 DECL|function|dc395x_eh_abort
 r_static
 r_int
@@ -5587,15 +5092,15 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;eh abort: cmd %p (pid %li, %02i-%i) &quot;
-comma
-id|cmd
+l_string|&quot;eh_abort: (pid#%li) target=&lt;%02i-%i&gt; cmd=%p&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
 id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;device-&gt;lun
+comma
+id|cmd
 )paren
 suffix:semicolon
 id|dcb
@@ -5622,7 +5127,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;abort - no DCB found&quot;
+l_string|&quot;eh_abort: No such device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5691,7 +5196,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;abort - command found in waiting commands queue&quot;
+l_string|&quot;eh_abort: Command was waiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cmd-&gt;result
@@ -5726,7 +5231,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;abort - command currently in progress&quot;
+l_string|&quot;eh_abort: Command in progress&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: Should abort the command here */
@@ -5738,7 +5243,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;abort - command not found&quot;
+l_string|&quot;eh_abort: Command not found&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5747,8 +5252,8 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* SDTR */
-r_static
 DECL|function|build_sdtr
+r_static
 r_void
 id|build_sdtr
 c_func
@@ -5790,7 +5295,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Build_SDTR: msgout_buf BUSY (%i: %02x %02x)&bslash;n&quot;
+l_string|&quot;build_sdtr: msgout_buf BUSY (%i: %02x %02x)&bslash;n&quot;
 comma
 id|srb-&gt;msg_count
 comma
@@ -5885,16 +5390,10 @@ id|srb-&gt;state
 op_or_assign
 id|SRB_DO_SYNC_NEGO
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;S *&quot;
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/* SDTR */
-r_static
+multiline_comment|/* WDTR */
 DECL|function|build_wdtr
+r_static
 r_void
 id|build_wdtr
 c_func
@@ -5926,9 +5425,7 @@ id|NTC_DO_WIDE_NEGO
 )paren
 op_amp
 (paren
-id|acb
-op_member_access_from_pointer
-id|config
+id|acb-&gt;config
 op_amp
 id|HCC_WIDE_CARD
 )paren
@@ -5960,7 +5457,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Build_WDTR: msgout_buf BUSY (%i: %02x %02x)&bslash;n&quot;
+l_string|&quot;build_wdtr: msgout_buf BUSY (%i: %02x %02x)&bslash;n&quot;
 comma
 id|srb-&gt;msg_count
 comma
@@ -6012,12 +5509,6 @@ suffix:semicolon
 id|srb-&gt;state
 op_or_assign
 id|SRB_DO_WIDE_NEGO
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;W *&quot;
-)paren
 suffix:semicolon
 )brace
 macro_line|#if 0
@@ -6181,12 +5672,6 @@ id|srb
 op_assign
 id|acb-&gt;active_dcb-&gt;active_srb
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;N/TO *&quot;
-)paren
-suffix:semicolon
 id|disconnect
 c_func
 (paren
@@ -6203,9 +5688,8 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * scsiio&n; *&t;&t;DC395x_DoWaitingSRB    srb_done &n; *&t;&t;send_srb         request_sense&n; */
-r_static
 DECL|function|start_scsi
+r_static
 id|u8
 id|start_scsi
 c_func
@@ -6249,7 +5733,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;start_scsi..............&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) &lt;%02i-%i&gt; srb=%p&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
+comma
+id|srb
 )paren
 suffix:semicolon
 id|srb-&gt;tag_number
@@ -6281,14 +5773,6 @@ comma
 id|TRM_S1040_SCSI_STATUS
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;Start %02x *&quot;
-comma
-id|s_stat
-)paren
-suffix:semicolon
 macro_line|#if 1
 r_if
 c_cond
@@ -6304,13 +5788,9 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;StartSCSI: pid %li(%02i-%i): BUSY %02x %04x&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) BUSY %02x %04x&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
-comma
-id|dcb-&gt;target_id
-comma
-id|dcb-&gt;target_lun
 comma
 id|s_stat
 comma
@@ -6318,14 +5798,7 @@ id|s_stat2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Try anyway?&n;&t;&t; *&n;&t;&t; * We could, BUT: Sometimes the TRM_S1040 misses to produce a Selection&n;&t;&t; * Timeout, a Disconnect or a Reselction IRQ, so we would be screwed!&n;&t;&t; * (This is likely to be a bug in the hardware. Obviously, most people&n;&t;&t; *  only have one initiator per SCSI bus.)&n;&t;&t; * Instead let this fail and have the timer make sure the command is &n;&t;&t; * tried again after a short time&n;&t;&t; */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;^*&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*selto_timer (acb); */
-multiline_comment|/*monitor_next_irq = 1; */
 r_return
 l_int|1
 suffix:semicolon
@@ -6342,49 +5815,17 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;We try to start a SCSI command (%li)!&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) Attempt to start a&quot;
+l_string|&quot;command while another command (pid#%li) is active.&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
-)paren
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
 comma
-l_string|&quot;While another one (%li) is active!!&bslash;n&quot;
-comma
-(paren
 id|acb-&gt;active_dcb-&gt;active_srb
 ques
 c_cond
-id|acb-&gt;active_dcb
-op_member_access_from_pointer
-id|active_srb-&gt;cmd-&gt;pid
+id|acb-&gt;active_dcb-&gt;active_srb-&gt;cmd-&gt;pid
 suffix:colon
 l_int|0
-)paren
-)paren
-suffix:semicolon
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot; %s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|acb-&gt;active_dcb-&gt;active_srb
-)paren
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot; %s&bslash;n&quot;
-comma
-id|acb-&gt;active_dcb-&gt;active_srb-&gt;debugtrace
 )paren
 suffix:semicolon
 r_return
@@ -6410,19 +5851,9 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;StartSCSI failed (busy) for pid %li(%02i-%i)&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) Failed (busy)&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
-comma
-id|dcb-&gt;target_id
-comma
-id|dcb-&gt;target_lun
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;&#xfffd;*&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6451,7 +5882,7 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;We were just reset and don&squot;t accept commands yet!&bslash;n&quot;
+l_string|&quot;start_scsi: Refuse cmds (reset wait)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6464,7 +5895,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;Start&quot;
+l_string|&quot;start_scsi&quot;
 )paren
 suffix:semicolon
 id|DC395x_write8
@@ -6701,7 +6132,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; ** Send identify message   &n;&t; */
+multiline_comment|/* Send identify message */
 id|DC395x_write8
 c_func
 (paren
@@ -6783,7 +6214,8 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-l_string|&quot;Start_SCSI: Out of tags for pid %li (%i-%i)&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) &quot;
+l_string|&quot;Out of tags target=&lt;%02i-%i&gt;)&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -6810,7 +6242,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; ** Send Tag id&n;&t;&t; */
+multiline_comment|/* Send Tag id */
 id|DC395x_write8
 c_func
 (paren
@@ -6839,14 +6271,6 @@ id|srb-&gt;tag_number
 op_assign
 id|tag_number
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;Tag %i *&quot;
-comma
-id|tag_number
-)paren
-suffix:semicolon
 id|scsicommand
 op_assign
 id|SCMD_SEL_ATN3
@@ -6858,24 +6282,24 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*polling:*/
-multiline_comment|/*&n;&t; *          Send CDB ..command block .........                     &n;&t; */
+multiline_comment|/* Send CDB ..command block ......... */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;StartSCSI (pid %li) %02x (%i-%i): Tag %i&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) &lt;%02i-%i&gt; cmnd=0x%02x tag=%i&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 comma
 id|srb-&gt;cmd-&gt;cmnd
 (braket
 l_int|0
 )braket
-comma
-id|srb-&gt;cmd-&gt;device-&gt;id
-comma
-id|srb-&gt;cmd-&gt;device-&gt;lun
 comma
 id|srb-&gt;tag_number
 )paren
@@ -7027,7 +6451,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Debug: StartSCSI failed (busy) for pid %li(%02i-%i)!&bslash;n&quot;
+l_string|&quot;start_scsi: (pid#%li) &lt;%02i-%i&gt; Failed - busy&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -7036,8 +6460,6 @@ comma
 id|dcb-&gt;target_lun
 )paren
 suffix:semicolon
-multiline_comment|/*clear_fifo (acb, &quot;Start2&quot;); */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_HWRESELECT | DO_DATALATCH); */
 id|srb-&gt;state
 op_assign
 id|SRB_READY
@@ -7093,15 +6515,7 @@ op_or
 id|DO_HWRESELECT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; ** SCSI command&n;&t;&t; */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;%02x *&quot;
-comma
-id|scsicommand
-)paren
-suffix:semicolon
+multiline_comment|/* SCSI command */
 id|DC395x_write8
 c_func
 (paren
@@ -7117,7 +6531,6 @@ r_return
 id|return_code
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;init_adapter&n; ********************************************************************&n; */
 multiline_comment|/**&n; * dc395x_handle_interrupt - Handle an interrupt that has been confirmed to&n; *                           have been triggered for this card.&n; *&n; * @acb:&t; a pointer to the adpter control block&n; * @scsi_status: the status return when we checked the card&n; **/
 DECL|function|dc395x_handle_interrupt
 r_static
@@ -7212,31 +6625,6 @@ comma
 id|scsi_status
 )paren
 suffix:semicolon
-macro_line|#if 1&t;&t;&t;&t;/*def DBG_0 */
-r_if
-c_cond
-(paren
-id|monitor_next_irq
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_INFO
-comma
-l_string|&quot;status=%04x intstatus=%02x&bslash;n&quot;
-comma
-id|scsi_status
-comma
-id|scsi_intstatus
-)paren
-suffix:semicolon
-id|monitor_next_irq
-op_decrement
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*DC395x_ACB_LOCK(acb,acb_flags); */
 r_if
 c_cond
 (paren
@@ -7259,11 +6647,11 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Sel Timeout IRQ&bslash;n&quot;
+l_string|&quot;handle_interrupt: Selection timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;DC395x_IRQ: intstatus = %02x &quot;, scsi_intstatus); */
+multiline_comment|/*dprintkl(KERN_DEBUG, &quot;handle_interrupt: intstatus = 0x%02x &quot;, scsi_intstatus); */
 r_if
 c_cond
 (paren
@@ -7428,7 +6816,7 @@ id|srb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; ************************************************************&n;&t;&t; * software sequential machine&n;&t;&t; ************************************************************&n;&t;&t; */
+multiline_comment|/* software sequential machine */
 id|phase
 op_assign
 (paren
@@ -7447,10 +6835,6 @@ multiline_comment|/* msgout_phase0,&t;phase:6 */
 multiline_comment|/* msgin_phase0,&t;phase:7 */
 id|dc395x_statev
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|dc395x_scsi_phase0
 (braket
 id|phase
@@ -7467,7 +6851,7 @@ op_amp
 id|scsi_status
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ &n;&t;&t; *&n;&t;&t; *        if there were any exception occured&n;&t;&t; *        scsi_status will be modify to bus free phase&n;&t;&t; * new scsi_status transfer out from ... previous dc395x_statev&n;&t;&t; *&n;&t;&t; *$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ &n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * if there were any exception occured scsi_status&n;&t;&t; * will be modify to bus free phase new scsi_status&n;&t;&t; * transfer out from ... previous dc395x_statev&n;&t;&t; */
 id|srb-&gt;scsi_phase
 op_assign
 id|scsi_status
@@ -7483,7 +6867,7 @@ id|scsi_status
 op_amp
 id|PHASEMASK
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * call  dc395x_scsi_phase1[]... &quot;phase entry&quot;&n;&t;&t; * handle every phase do transfer&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * call  dc395x_scsi_phase1[]... &quot;phase entry&quot; handle&n;&t;&t; * every phase to do transfer&n;&t;&t; */
 multiline_comment|/* data_out_phase1,&t;phase:0 */
 multiline_comment|/* data_in_phase1,&t;phase:1 */
 multiline_comment|/* command_phase1,&t;phase:2 */
@@ -7494,10 +6878,6 @@ multiline_comment|/* msgout_phase1,&t;phase:6 */
 multiline_comment|/* msgin_phase1,&t;phase:7 */
 id|dc395x_statev
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|dc395x_scsi_phase1
 (braket
 id|phase
@@ -7525,11 +6905,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-r_static
 DECL|function|dc395x_interrupt
+r_static
 id|irqreturn_t
 id|dc395x_interrupt
 c_func
@@ -7570,36 +6948,6 @@ id|handled
 op_assign
 id|IRQ_NONE
 suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_0
-comma
-l_string|&quot;dc395x_interrupt..............&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#if debug_enabled(DBG_RECURSION)
-r_if
-c_cond
-(paren
-id|dbg_in_driver
-op_increment
-OG
-id|NORM_REC_LVL
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%i interrupt recursion?&bslash;n&quot;
-comma
-id|dbg_in_driver
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Check for pending interupt&n;&t; */
 id|scsi_status
 op_assign
@@ -7658,7 +7006,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Interrupt from DMA engine: %02x!&bslash;n&quot;
+l_string|&quot;Interrupt from DMA engine: 0x%02x!&bslash;n&quot;
 comma
 id|dma_status
 )paren
@@ -7729,17 +7077,12 @@ op_assign
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#if debug_enabled(DBG_RECURSION)
-id|dbg_in_driver
-op_decrement
-macro_line|#endif
 r_return
 id|handled
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgout_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;           if phase =6&n; ********************************************************************&n; */
-r_static
 DECL|function|msgout_phase0
+r_static
 r_void
 id|msgout_phase0
 c_func
@@ -7764,7 +7107,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase0.....&bslash;n&quot;
+l_string|&quot;msgout_phase0: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 r_if
@@ -7778,14 +7123,12 @@ op_plus
 id|SRB_ABORT_SENT
 )paren
 )paren
-(brace
 op_star
 id|pscsi_status
 op_assign
 id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/*.. initial phase */
-)brace
 id|DC395x_write16
 c_func
 (paren
@@ -7802,16 +7145,9 @@ op_and_assign
 op_complement
 id|SRB_MSGOUT
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;MOP0 *&quot;
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgout_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;&t;if phase =6&t;    &n; ********************************************************************&n; */
-r_static
 DECL|function|msgout_phase1
+r_static
 r_void
 id|msgout_phase1
 c_func
@@ -7838,35 +7174,22 @@ id|u8
 op_star
 id|ptr
 suffix:semicolon
-r_struct
-id|DeviceCtlBlk
-op_star
-id|dcb
-suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase1..............&bslash;n&quot;
+l_string|&quot;msgout_phase1: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;MOP1*&quot;
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 id|clear_fifo
 c_func
 (paren
 id|acb
 comma
-l_string|&quot;MOP1&quot;
+l_string|&quot;msgout_phase1&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7889,7 +7212,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Debug: pid %li: MsgOut Phase unexpected.&bslash;n&quot;
+l_string|&quot;msgout_phase1: (pid#%li) Phase unexpected&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -7908,7 +7231,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Debug: pid %li: NOP Msg (no output message there).&bslash;n&quot;
+l_string|&quot;msgout_phase1: (pid#%li) NOP msg&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -7944,20 +7267,6 @@ comma
 id|SCMD_FIFO_OUT
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;&bslash;*&quot;
-)paren
-suffix:semicolon
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot; %s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -7969,14 +7278,6 @@ op_star
 )paren
 id|srb-&gt;msgout_buf
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;(*&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;Send msg: &quot;); print_msg (ptr, srb-&gt;msg_count); */
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;MsgOut: &quot;); */
 r_for
 c_loop
 (paren
@@ -7991,16 +7292,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;%02x *&quot;
-comma
-op_star
-id|ptr
-)paren
-suffix:semicolon
 id|DC395x_write8
 c_func
 (paren
@@ -8013,22 +7304,12 @@ id|ptr
 op_increment
 )paren
 suffix:semicolon
-)brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;)*&quot;
-)paren
-suffix:semicolon
 id|srb-&gt;msg_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*printk(&quot;&bslash;n&quot;); */
 r_if
 c_cond
-(paren
-multiline_comment|/*(dcb-&gt;flag &amp; ABORT_DEV_) &amp;&amp; */
 (paren
 id|srb-&gt;msgout_buf
 (braket
@@ -8037,16 +7318,10 @@ l_int|0
 op_eq
 id|MSG_ABORT
 )paren
-)paren
 id|srb-&gt;state
 op_assign
 id|SRB_ABORT_SENT
 suffix:semicolon
-multiline_comment|/*1.25 */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
-multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; ** SCSI command &n;&t; */
-multiline_comment|/*TRACEPRINTF (&quot;.*&quot;); */
 id|DC395x_write8
 c_func
 (paren
@@ -8058,9 +7333,8 @@ id|SCMD_FIFO_OUT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;command_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =2 &n; ********************************************************************&n; */
-r_static
 DECL|function|command_phase0
+r_static
 r_void
 id|command_phase0
 c_func
@@ -8080,14 +7354,16 @@ op_star
 id|pscsi_status
 )paren
 (brace
-id|TRACEPRINTF
+id|dprintkdbg
 c_func
 (paren
-l_string|&quot;COP0 *&quot;
+id|DBG_0
+comma
+l_string|&quot;command_phase0: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
-multiline_comment|/*1.25 */
-multiline_comment|/*clear_fifo (acb, COP0); */
 id|DC395x_write16
 c_func
 (paren
@@ -8099,9 +7375,8 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;command_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =2    &t; &n; ********************************************************************&n; */
-r_static
 DECL|function|command_phase1
+r_static
 r_void
 id|command_phase1
 c_func
@@ -8138,13 +7413,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;command_phase1..............&bslash;n&quot;
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;COP1*&quot;
+l_string|&quot;command_phase1: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|clear_fifo
@@ -8152,7 +7423,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;COP1&quot;
+l_string|&quot;command_phase1&quot;
 )paren
 suffix:semicolon
 id|DC395x_write16
@@ -8306,12 +7577,6 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* SCSI command */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 id|DC395x_write8
 c_func
 (paren
@@ -8323,12 +7588,11 @@ id|SCMD_FIFO_OUT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Do sanity checks for S/G list */
-DECL|function|check_sg_list
+multiline_comment|/*&n; * Verify that the remaining space in the hw sg lists is the same as&n; * the count of remaining bytes in srb-&gt;total_xfer_length&n; */
+DECL|function|sg_verify_length
 r_static
-r_inline
 r_void
-id|check_sg_list
+id|sg_verify_length
 c_func
 (paren
 r_struct
@@ -8343,7 +7607,7 @@ c_cond
 id|debug_enabled
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 )paren
 )paren
 (brace
@@ -8394,7 +7658,7 @@ id|srb-&gt;total_xfer_length
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
 l_string|&quot;Inconsistent SRB S/G lengths (Tot=%i, Count=%i) !!&bslash;n&quot;
 comma
@@ -8406,10 +7670,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Compute the next Scatter Gather list index and adjust its length&n; * and address if necessary; also compute virt_addr&n; */
-DECL|function|update_sg_list
+DECL|function|sg_update_list
 r_static
 r_void
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 r_struct
@@ -8421,18 +7685,13 @@ id|u32
 id|left
 )paren
 (brace
-r_struct
-id|SGentry
-op_star
-id|psge
-suffix:semicolon
-id|u32
-id|xferred
-op_assign
-l_int|0
-suffix:semicolon
 id|u8
 id|idx
+suffix:semicolon
+r_struct
+id|scatterlist
+op_star
+id|sg
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -8440,62 +7699,65 @@ id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
 r_int
 id|segment
 op_assign
 id|cmd-&gt;use_sg
 suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;Update SG: Total %i, Left %i&bslash;n&quot;
-comma
-id|srb-&gt;total_xfer_length
-comma
-id|left
-)paren
-suffix:semicolon
-id|check_sg_list
-c_func
-(paren
-id|srb
-)paren
-suffix:semicolon
-id|psge
-op_assign
-id|srb-&gt;segment_x
-op_plus
-id|srb-&gt;sg_index
-suffix:semicolon
-multiline_comment|/* data that has already been transferred */
+id|u32
 id|xferred
 op_assign
 id|srb-&gt;total_xfer_length
 op_minus
 id|left
 suffix:semicolon
+multiline_comment|/* bytes transfered */
+r_struct
+id|SGentry
+op_star
+id|psge
+op_assign
+id|srb-&gt;segment_x
+op_plus
+id|srb-&gt;sg_index
+suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;sg_update_list: Transfered %i of %i bytes, %i remain&bslash;n&quot;
+comma
+id|xferred
+comma
+id|srb-&gt;total_xfer_length
+comma
+id|left
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|srb-&gt;total_xfer_length
-op_ne
-id|left
+id|xferred
+op_eq
+l_int|0
 )paren
 (brace
-multiline_comment|/*check_sg_list_TX (srb, xferred); */
-multiline_comment|/* Remaining */
+multiline_comment|/* nothing to update since we did not transfer any data */
+r_return
+suffix:semicolon
+)brace
+id|sg_verify_length
+c_func
+(paren
+id|srb
+)paren
+suffix:semicolon
 id|srb-&gt;total_xfer_length
 op_assign
 id|left
 suffix:semicolon
-multiline_comment|/* parsing from last time disconnect SGIndex */
+multiline_comment|/* update remaining count */
 r_for
 c_loop
 (paren
@@ -8511,7 +7773,6 @@ id|idx
 op_increment
 )paren
 (brace
-multiline_comment|/* Complete SG entries done */
 r_if
 c_cond
 (paren
@@ -8519,23 +7780,24 @@ id|xferred
 op_ge
 id|psge-&gt;length
 )paren
+(brace
+multiline_comment|/* Complete SG entries done */
 id|xferred
 op_sub_assign
 id|psge-&gt;length
 suffix:semicolon
-multiline_comment|/* Partial SG entries done */
+)brace
 r_else
 (brace
+multiline_comment|/* Partial SG entry done */
 id|psge-&gt;length
 op_sub_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/* residue data length  */
 id|psge-&gt;address
 op_add_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/* residue data pointer */
 id|srb-&gt;sg_index
 op_assign
 id|idx
@@ -8549,13 +7811,7 @@ id|acb-&gt;dev
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -8567,15 +7823,13 @@ id|psge
 op_increment
 suffix:semicolon
 )brace
-id|check_sg_list
+id|sg_verify_length
 c_func
 (paren
 id|srb
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* We need the corresponding virtual address sg_to_virt */
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;sg_to_virt: bus %08x -&gt; virt &quot;, psge-&gt;address); */
+multiline_comment|/* we need the corresponding virtual address */
 r_if
 c_cond
 (paren
@@ -8587,7 +7841,6 @@ id|srb-&gt;virt_addr
 op_add_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/*printk(&quot;%p&bslash;n&quot;, srb-&gt;virt_addr); */
 r_return
 suffix:semicolon
 )brace
@@ -8608,7 +7861,6 @@ id|segment
 op_decrement
 )paren
 (brace
-multiline_comment|/*printk(&quot;(%08x)%p &quot;, BUS_ADDR(*sg), PAGE_ADDRESS(sg)); */
 r_int
 r_int
 id|mask
@@ -8630,10 +7882,9 @@ r_if
 c_cond
 (paren
 (paren
-id|BUS_ADDR
+id|sg_dma_address
 c_func
 (paren
-op_star
 id|sg
 )paren
 op_amp
@@ -8650,10 +7901,10 @@ id|mask
 id|srb-&gt;virt_addr
 op_assign
 (paren
-id|PAGE_ADDRESS
+id|page_address
 c_func
 (paren
-id|sg
+id|sg-&gt;page
 )paren
 op_plus
 id|psge-&gt;address
@@ -8665,7 +7916,6 @@ id|PAGE_MASK
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*printk(&quot;%p&bslash;n&quot;, srb-&gt;virt_addr); */
 r_return
 suffix:semicolon
 )brace
@@ -8678,7 +7928,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;sg_to_virt failed!&bslash;n&quot;
+l_string|&quot;sg_update_list: sg_to_virt failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|srb-&gt;virt_addr
@@ -8686,9 +7936,75 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * cleanup_after_transfer&n; * &n; * Makes sure, DMA and SCSI engine are empty, after the transfer has finished&n; * KG: Currently called from  StatusPhase1 ()&n; * Should probably also be called from other places&n; * Best might be to call it in DataXXPhase0, if new phase will differ &n; */
+multiline_comment|/*&n; * We have transfered a single byte (PIO mode?) and need to update&n; * the count of bytes remaining (total_xfer_length) and update the sg&n; * entry to either point to next byte in the current sg entry, or of&n; * already at the end to point to the start of the next sg entry&n; */
+DECL|function|sg_subtract_one
 r_static
+r_void
+id|sg_subtract_one
+c_func
+(paren
+r_struct
+id|ScsiReqBlk
+op_star
+id|srb
+)paren
+(brace
+id|srb-&gt;total_xfer_length
+op_decrement
+suffix:semicolon
+id|srb-&gt;segment_x
+(braket
+id|srb-&gt;sg_index
+)braket
+dot
+id|length
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|srb-&gt;total_xfer_length
+op_logical_and
+op_logical_neg
+id|srb-&gt;segment_x
+(braket
+id|srb-&gt;sg_index
+)braket
+dot
+id|length
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug_enabled
+c_func
+(paren
+id|DBG_PIO
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; (next segment)&quot;
+)paren
+suffix:semicolon
+id|srb-&gt;sg_index
+op_increment
+suffix:semicolon
+id|sg_update_list
+c_func
+(paren
+id|srb
+comma
+id|srb-&gt;total_xfer_length
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* &n; * cleanup_after_transfer&n; * &n; * Makes sure, DMA and SCSI engine are empty, after the transfer has finished&n; * KG: Currently called from  StatusPhase1 ()&n; * Should probably also be called from other places&n; * Best might be to call it in DataXXPhase0, if new phase will differ &n; */
 DECL|function|cleanup_after_transfer
+r_static
 r_void
 id|cleanup_after_transfer
 c_func
@@ -8704,12 +8020,6 @@ op_star
 id|srb
 )paren
 (brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot; Cln*&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*DC395x_write8 (TRM_S1040_DMA_STATUS, FORCEDMACOMP); */
 r_if
 c_cond
@@ -8747,7 +8057,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;ClnIn&quot;
+l_string|&quot;cleanup/in&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8827,11 +8137,10 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;ClnOut&quot;
+l_string|&quot;cleanup/out&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*1.25 */
 id|DC395x_write16
 c_func
 (paren
@@ -8846,9 +8155,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Those no of bytes will be transfered w/ PIO through the SCSI FIFO&n; * Seems to be needed for unknown reasons; could be a hardware bug :-(&n; */
 DECL|macro|DC395x_LASTPIO
 mdefine_line|#define DC395x_LASTPIO 4
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_out_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =0 &n; ********************************************************************&n; */
-r_static
 DECL|function|data_out_phase0
+r_static
 r_void
 id|data_out_phase0
 c_func
@@ -8868,14 +8176,6 @@ op_star
 id|pscsi_status
 )paren
 (brace
-id|u16
-id|scsi_status
-suffix:semicolon
-id|u32
-id|d_left_counter
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -8883,28 +8183,30 @@ id|dcb
 op_assign
 id|srb-&gt;dcb
 suffix:semicolon
+id|u16
+id|scsi_status
+op_assign
+op_star
+id|pscsi_status
+suffix:semicolon
+id|u32
+id|d_left_counter
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase0.....&bslash;n&quot;
+l_string|&quot;data_out_phase0: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;DOP0*&quot;
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|srb-&gt;dcb
-suffix:semicolon
-id|scsi_status
-op_assign
-op_star
-id|pscsi_status
 suffix:semicolon
 multiline_comment|/*&n;&t; * KG: We need to drain the buffers before we draw any conclusions!&n;&t; * This means telling the DMA to push the rest into SCSI, telling&n;&t; * SCSI to push the rest to the bus.&n;&t; * However, the device might have been the one to stop us (phase&n;&t; * change), and the data in transit just needs to be accounted so&n;&t; * it can be retransmitted.)&n;&t; */
 multiline_comment|/* &n;&t; * KG: Stop DMA engine pushing more data into the SCSI FIFO&n;&t; * If we need more data, the DMA SG list will be freshly set up, anyway&n;&t; */
@@ -8913,7 +8215,9 @@ c_func
 (paren
 id|DBG_PIO
 comma
-l_string|&quot;DOP0: DMA_FCNT: %02x, DMA_FSTAT: %02x, SCSI_FCNT: %02x, CTR %06x, stat %04x, Tot: %06x&bslash;n&quot;
+l_string|&quot;data_out_phase0: &quot;
+l_string|&quot;DMA{fifcnt=0x%02x fifostat=0x%02x} &quot;
+l_string|&quot;SCSI{fifocnt=0x%02x cnt=0x%06x status=0x%04x} total=0x%06x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9032,7 +8336,9 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Debug: SCSI FIFO contains %i %s in DOP0&bslash;n&quot;
+l_string|&quot;data_out_phase0: FIFO contains %i %s&bslash;n&quot;
+l_string|&quot;SCSI{fifocnt=0x%02x cnt=0x%08x} &quot;
+l_string|&quot;DMA{fifocnt=0x%04x cnt=0x%02x ctr=0x%08x}&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9043,9 +8349,7 @@ id|TRM_S1040_SCSI_FIFOCNT
 )paren
 comma
 (paren
-id|dcb
-op_member_access_from_pointer
-id|sync_period
+id|dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 )paren
@@ -9054,14 +8358,6 @@ c_cond
 l_string|&quot;words&quot;
 suffix:colon
 l_string|&quot;bytes&quot;
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;SCSI FIFOCNT %02x, SCSI CTR %08x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9078,14 +8374,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_COUNTER
 )paren
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;DMA FIFOCNT %04x, FIFOSTAT %02x, DMA CTR %08x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9112,7 +8400,6 @@ id|TRM_S1040_DMA_CXCNT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * if WIDE scsi SCSI FIFOCNT unit is word !!!&n;&t;&t;&t; * so need to *= 2&n;&t;&t;&t; */
 )brace
 multiline_comment|/*&n;&t;&t; * calculate all the residue data that not yet tranfered&n;&t;&t; * SCSI transfer counter + left in SCSI FIFO data&n;&t;&t; *&n;&t;&t; * .....TRM_S1040_SCSI_COUNTER (24bits)&n;&t;&t; * The counter always decrement by one for every SCSI byte transfer.&n;&t;&t; * .....TRM_S1040_SCSI_FIFOCNT ( 5bits)&n;&t;&t; * The counter is SCSI FIFO offset counter (in units of bytes or! words)&n;&t;&t; */
 r_if
@@ -9132,16 +8419,8 @@ comma
 id|TRM_S1040_SCSI_COUNTER
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;%06x *&quot;
-comma
-id|d_left_counter
-)paren
-suffix:semicolon
 multiline_comment|/* Is this a good idea? */
-multiline_comment|/*clear_fifo (acb, &quot;DOP1&quot;); */
+multiline_comment|/*clear_fifo(acb, &quot;DOP1&quot;); */
 multiline_comment|/* KG: What is this supposed to be useful for? WIDE padding stuff? */
 r_if
 c_cond
@@ -9168,7 +8447,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;DOP0: Discard 1 byte. (%02x)&bslash;n&quot;
+l_string|&quot;data_out_phase0: Discard 1 byte (0x%02x)&bslash;n&quot;
 comma
 id|scsi_status
 )paren
@@ -9179,15 +8458,11 @@ multiline_comment|/*&n;&t;&t; * KG: This is nonsense: We have been WRITING data 
 r_if
 c_cond
 (paren
-(paren
 id|d_left_counter
 op_eq
 l_int|0
 )paren
-multiline_comment|/*|| (scsi_status &amp; SCSIXFERCNT_2_ZERO) ) */
-)paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * int ctr = 6000000; u8 TempDMAstatus;&n;&t;&t;&t; * do&n;&t;&t;&t; * {&n;&t;&t;&t; *  TempDMAstatus = DC395x_read8(acb, TRM_S1040_DMA_STATUS);&n;&t;&t;&t; * } while( !(TempDMAstatus &amp; DMAXFERCOMP) &amp;&amp; --ctr);&n;&t;&t;&t; * if (ctr &lt; 6000000-1) dprintkl(KERN_DEBUG, &quot;DMA should be complete ... in DOP1&bslash;n&quot;);&n;&t;&t;&t; * if (!ctr) dprintkl(KERN_ERR, &quot;Deadlock in DataOutPhase0 !!&bslash;n&quot;);&n;&t;&t;&t; */
 id|srb-&gt;total_xfer_length
 op_assign
 l_int|0
@@ -9195,7 +8470,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Update SG list         */
 multiline_comment|/*&n;&t;&t;&t; * if transfer not yet complete&n;&t;&t;&t; * there were some data residue in SCSI FIFO or&n;&t;&t;&t; * SCSI transfer counter not empty&n;&t;&t;&t; */
 r_int
 id|oldxferred
@@ -9219,7 +8493,7 @@ l_int|2
 suffix:colon
 l_int|1
 suffix:semicolon
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -9265,6 +8539,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
+l_string|&quot;data_out_phase0: &quot;
 l_string|&quot;Work around chip bug (%i)?&bslash;n&quot;
 comma
 id|diff
@@ -9276,7 +8551,7 @@ id|srb-&gt;total_xfer_length
 op_minus
 id|diff
 suffix:semicolon
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -9291,47 +8566,6 @@ multiline_comment|/*      srb-&gt;sg_index++; */
 )brace
 )brace
 )brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_SCSI_FIFOCNT
-)paren
-op_amp
-l_int|0x40
-)paren
-)paren
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;DOP0(%li): %i bytes in SCSI FIFO! (Clear!)&bslash;n&quot;
-comma
-id|srb-&gt;cmd-&gt;pid
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_SCSI_FIFOCNT
-)paren
-op_amp
-l_int|0x1f
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*clear_fifo (acb, &quot;DOP0&quot;); */
-multiline_comment|/*DC395x_write8 (TRM_S1040_DMA_CONTROL, CLRXFIFO | ABORTXFER); */
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -9345,7 +8579,6 @@ op_ne
 id|PH_DATA_OUT
 )paren
 (brace
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;Debug: Clean up after Data Out ...&bslash;n&quot;); */
 id|cleanup_after_transfer
 c_func
 (paren
@@ -9355,17 +8588,9 @@ id|srb
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_out_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =0    &n; *&t;&t;62037&n; ********************************************************************&n; */
-r_static
 DECL|function|data_out_phase1
+r_static
 r_void
 id|data_out_phase1
 c_func
@@ -9390,14 +8615,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase1.....&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*1.25 */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;DOP1*&quot;
+l_string|&quot;data_out_phase1: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|clear_fifo
@@ -9405,10 +8629,10 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;DOP1&quot;
+l_string|&quot;data_out_phase1&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; ** do prepare befor transfer when data out phase&n;&t; */
+multiline_comment|/* do prepare before transfer when data out phase */
 id|data_io_transfer
 c_func
 (paren
@@ -9419,16 +8643,9 @@ comma
 id|XFERDATAOUT
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_in_phase0: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =1  &n; ********************************************************************&n; */
-r_static
 DECL|function|data_in_phase0
+r_static
 r_void
 id|data_in_phase0
 c_func
@@ -9450,32 +8667,28 @@ id|pscsi_status
 (brace
 id|u16
 id|scsi_status
+op_assign
+op_star
+id|pscsi_status
 suffix:semicolon
 id|u32
 id|d_left_counter
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*struct DeviceCtlBlk*   dcb = srb-&gt;dcb; */
-multiline_comment|/*u8 bval; */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase0..............&bslash;n&quot;
+l_string|&quot;data_in_phase0: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;DIP0*&quot;
-)paren
-suffix:semicolon
-id|scsi_status
-op_assign
-op_star
-id|pscsi_status
 suffix:semicolon
 multiline_comment|/*&n;&t; * KG: DataIn is much more tricky than DataOut. When the device is finished&n;&t; * and switches to another phase, the SCSI engine should be finished too.&n;&t; * But: There might still be bytes left in its FIFO to be fetched by the DMA&n;&t; * engine and transferred to memory.&n;&t; * We should wait for the FIFOs to be emptied by that (is there any way to &n;&t; * enforce this?) and then stop the DMA engine, because it might think, that&n;&t; * there are more bytes to follow. Yes, the device might disconnect prior to&n;&t; * having all bytes transferred! &n;&t; * Also we should make sure that all data from the DMA engine buffer&squot;s really&n;&t; * made its way to the system memory! Some documentation on this would not&n;&t; * seem to be a bad idea, actually.&n;&t; */
 r_if
@@ -9502,13 +8715,10 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Parity Error (pid %li, target %02i-%i)&bslash;n&quot;
+l_string|&quot;data_in_phase0: (pid#%li) &quot;
+l_string|&quot;Parity Error&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
-comma
-id|srb-&gt;cmd-&gt;device-&gt;id
-comma
-id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|srb-&gt;status
@@ -9608,7 +8818,8 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;DIP0: DMA_FIFO: %02x %02x&bslash;n&quot;
+l_string|&quot;data_in_phase0: &quot;
+l_string|&quot;DMA{fifocnt=0x%02x fifostat=0x%02x}&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9671,7 +8882,10 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;SCSI FIFO contains %i %s in DIP0&bslash;n&quot;
+l_string|&quot;data_in_phase0: &quot;
+l_string|&quot;SCSI{fifocnt=0x%02x%s ctr=0x%08x} &quot;
+l_string|&quot;DMA{fifocnt=0x%02x fifostat=0x%02x ctr=0x%08x} &quot;
+l_string|&quot;Remain{totxfer=%i scsi_fifo+ctr=%i}&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9680,13 +8894,9 @@ id|acb
 comma
 id|TRM_S1040_SCSI_FIFOCNT
 )paren
-op_amp
-l_int|0x1f
 comma
 (paren
-id|srb-&gt;dcb
-op_member_access_from_pointer
-id|sync_period
+id|srb-&gt;dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 )paren
@@ -9695,22 +8905,6 @@ c_cond
 l_string|&quot;words&quot;
 suffix:colon
 l_string|&quot;bytes&quot;
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;SCSI FIFOCNT %02x, SCSI CTR %08x&bslash;n&quot;
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_SCSI_FIFOCNT
-)paren
 comma
 id|DC395x_read32
 c_func
@@ -9719,14 +8913,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_COUNTER
 )paren
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;DMA FIFOCNT %02x,%02x DMA CTR %08x&bslash;n&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9751,14 +8937,6 @@ id|acb
 comma
 id|TRM_S1040_DMA_CXCNT
 )paren
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;Remaining: TotXfer: %i, SCSI FIFO+Ctr: %i&bslash;n&quot;
 comma
 id|srb-&gt;total_xfer_length
 comma
@@ -9778,13 +8956,14 @@ id|DC395x_LASTPIO
 )paren
 (brace
 multiline_comment|/*u32 addr = (srb-&gt;segment_x[srb-&gt;sg_index].address); */
-multiline_comment|/*update_sg_list (srb, d_left_counter); */
+multiline_comment|/*sg_update_list (srb, d_left_counter); */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_PIO
 comma
-l_string|&quot;DIP0: PIO (%i %s) to %p for remaining %i bytes:&quot;
+l_string|&quot;data_in_phase0: PIO (%i %s) to &quot;
+l_string|&quot;%p for remaining %i bytes:&quot;
 comma
 id|DC395x_read8
 c_func
@@ -9797,9 +8976,7 @@ op_amp
 l_int|0x1f
 comma
 (paren
-id|srb-&gt;dcb
-op_member_access_from_pointer
-id|sync_period
+id|srb-&gt;dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 )paren
@@ -9881,61 +9058,15 @@ comma
 id|byte
 )paren
 suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_decrement
-suffix:semicolon
 id|d_left_counter
 op_decrement
 suffix:semicolon
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;total_xfer_length
-op_logical_and
-op_logical_neg
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_enabled
-c_func
-(paren
-id|DBG_PIO
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (next segment)&quot;
-)paren
-suffix:semicolon
-id|srb-&gt;sg_index
-op_increment
-suffix:semicolon
-id|update_sg_list
+id|sg_subtract_one
 c_func
 (paren
 id|srb
-comma
-id|d_left_counter
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -9945,7 +9076,8 @@ op_amp
 id|WIDE_SYNC
 )paren
 (brace
-macro_line|#if 1&t;&t;&t;&t;/* Read the last byte ... */
+macro_line|#if 1
+multiline_comment|/* Read the last byte ... */
 r_if
 c_cond
 (paren
@@ -9958,6 +9090,7 @@ id|u8
 id|byte
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
@@ -10069,68 +9202,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * if WIDE scsi SCSI FIFOCNT unit is word !!!&n;&t;&t;&t; * so need to *= 2&n;&t;&t;&t; * KG: Seems to be correct ...&n;&t;&t;&t; */
 )brace
 macro_line|#endif
-multiline_comment|/*d_left_counter += DC395x_read32(acb, TRM_S1040_SCSI_COUNTER); */
-macro_line|#if 0
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;DIP0: ctr=%08x, DMA_FIFO=%02x,%02x SCSI_FIFO=%02x&bslash;n&quot;
-comma
-id|d_left_counter
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_DMA_FIFOCNT
-)paren
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_DMA_FIFOSTAT
-)paren
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_SCSI_FIFOCNT
-)paren
-)paren
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;DIP0: DMAStat %02x&bslash;n&quot;
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_DMA_STATUS
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* KG: This should not be needed any more! */
 r_if
 c_cond
 (paren
-(paren
 id|d_left_counter
 op_eq
 l_int|0
-)paren
 op_logical_or
 (paren
 id|scsi_status
@@ -10194,28 +9272,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if 0&t;&t;&t;&t;/*def DBG_KG             */
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;DIP0: DMA not yet ready: %02x: %i -&gt; %i bytes&bslash;n&quot;
-comma
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_DMA_STATUS
-)paren
-comma
-id|srb-&gt;total_xfer_length
-comma
-id|d_left_counter
-)paren
-suffix:semicolon
-macro_line|#endif
 id|srb-&gt;total_xfer_length
 op_assign
 id|d_left_counter
@@ -10225,7 +9281,7 @@ r_else
 (brace
 multiline_comment|/* phase changed */
 multiline_comment|/*&n;&t;&t;&t; * parsing the case:&n;&t;&t;&t; * when a transfer not yet complete &n;&t;&t;&t; * but be disconnected by target&n;&t;&t;&t; * if transfer not yet complete&n;&t;&t;&t; * there were some data residue in SCSI FIFO or&n;&t;&t;&t; * SCSI transfer counter not empty&n;&t;&t;&t; */
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -10249,7 +9305,6 @@ op_ne
 id|PH_DATA_IN
 )paren
 (brace
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;Debug: Clean up after Data In  ...&bslash;n&quot;); */
 id|cleanup_after_transfer
 c_func
 (paren
@@ -10259,99 +9314,9 @@ id|srb
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* KG: Make sure, no previous transfers are pending! */
-id|bval
-op_assign
-id|DC395x_read8
-c_func
-(paren
-id|acb
-comma
-id|TRM_S1040_SCSI_FIFOCNT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|bval
-op_amp
-l_int|0x40
-)paren
-)paren
-(brace
-id|bval
-op_and_assign
-l_int|0x1f
-suffix:semicolon
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;DIP0(%li): %i bytes in SCSI FIFO (stat %04x) (left %08x)!!&bslash;n&quot;
-comma
-id|srb-&gt;cmd-&gt;pid
-comma
-id|bval
-op_amp
-l_int|0x1f
-comma
-id|scsi_status
-comma
-id|d_left_counter
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|d_left_counter
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|scsi_status
-op_amp
-id|SCSIXFERCNT_2_ZERO
-)paren
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Clear FIFO!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|clear_fifo
-c_func
-(paren
-id|acb
-comma
-l_string|&quot;DIP0&quot;
-)paren
-suffix:semicolon
 )brace
-)brace
-macro_line|#endif
-multiline_comment|/*DC395x_write8 (TRM_S1040_DMA_CONTROL, CLRXFIFO | ABORTXFER); */
-multiline_comment|/*clear_fifo (acb, &quot;DIP0&quot;); */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;data_in_phase1: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =1 &n; ********************************************************************&n; */
-r_static
 DECL|function|data_in_phase1
+r_static
 r_void
 id|data_in_phase1
 c_func
@@ -10376,20 +9341,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase1.....&bslash;n&quot;
+l_string|&quot;data_in_phase1: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-multiline_comment|/* FIFO should be cleared, if previous phase was not DataPhase */
-multiline_comment|/*clear_fifo (acb, &quot;DIP1&quot;); */
-multiline_comment|/* Allow data in! */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_DATALATCH); */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;DIP1:*&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; ** do prepare before transfer when data in phase&n;&t; */
 id|data_io_transfer
 c_func
 (paren
@@ -10400,16 +9360,9 @@ comma
 id|XFERDATAIN
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;data_out_phase1&n; *&t;&t;data_in_phase1&n; ********************************************************************&n; */
-r_static
 DECL|function|data_io_transfer
+r_static
 r_void
 id|data_io_transfer
 c_func
@@ -10428,20 +9381,28 @@ id|u16
 id|io_dir
 )paren
 (brace
-id|u8
-id|bval
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|srb-&gt;dcb
+suffix:semicolon
+id|u8
+id|bval
 suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;DataIO_transfer %c (pid %li): len = %i, SG: %i/%i&bslash;n&quot;
+l_string|&quot;data_io_transfer: (pid#%li) &lt;%02i-%i&gt; %c len=%i, sg=(%i/%i)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 comma
 (paren
 (paren
@@ -10456,30 +9417,12 @@ suffix:colon
 l_char|&squot;w&squot;
 )paren
 comma
-id|srb-&gt;cmd-&gt;pid
-comma
 id|srb-&gt;total_xfer_length
 comma
 id|srb-&gt;sg_index
 comma
 id|srb-&gt;sg_count
 )paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;%05x(%i/%i)*&quot;
-comma
-id|srb-&gt;total_xfer_length
-comma
-id|srb-&gt;sg_index
-comma
-id|srb-&gt;sg_count
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|srb-&gt;dcb
 suffix:semicolon
 r_if
 c_cond
@@ -10488,24 +9431,26 @@ id|srb
 op_eq
 id|acb-&gt;tmp_srb
 )paren
-(brace
 id|dprintkl
 c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Using tmp_srb in DataPhase!&bslash;n&quot;
+l_string|&quot;data_io_transfer: Using tmp_srb!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|srb-&gt;sg_index
-OL
+op_ge
 id|srb-&gt;sg_count
 )paren
 (brace
+multiline_comment|/* can&squot;t happen? out of bounds error */
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10525,7 +9470,7 @@ comma
 id|TRM_S1040_DMA_STATUS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * KG: What should we do: Use SCSI Cmd 0x90/0x92?&n;&t;&t;&t; * Maybe, even ABORTXFER would be appropriate&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * KG: What should we do: Use SCSI Cmd 0x90/0x92?&n;&t;&t; * Maybe, even ABORTXFER would be appropriate&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10539,7 +9484,8 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Xfer pending! Expect trouble!!&bslash;n&quot;
+l_string|&quot;data_io_transfer: Xfer pending! &quot;
+l_string|&quot;Expect trouble!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_register_info
@@ -10563,8 +9509,8 @@ id|CLRXFIFO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*clear_fifo (acb, &quot;IO&quot;); */
-multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
+multiline_comment|/* clear_fifo(acb, &quot;IO&quot;); */
+multiline_comment|/* &n;&t;&t; * load what physical address of Scatter/Gather list table&n;&t;&t; * want to be transfer&n;&t;&t; */
 id|srb-&gt;state
 op_or_assign
 id|SRB_DATA_XFER
@@ -10608,7 +9554,7 @@ op_star
 id|srb-&gt;sg_index
 )paren
 suffix:semicolon
-multiline_comment|/* load how many bytes in the Scatter/Gather list table */
+multiline_comment|/* load how many bytes in the sg list table */
 id|DC395x_write32
 c_func
 (paren
@@ -10757,8 +9703,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* The last four bytes: Do PIO */
-multiline_comment|/*clear_fifo (acb, &quot;IO&quot;); */
-multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t; * load what physical address of Scatter/Gather list table&n;&t;&t; * want to be transfer&n;&t;&t; */
 id|srb-&gt;state
 op_or_assign
 id|SRB_DATA_XFER
@@ -10821,6 +9766,7 @@ op_amp
 id|WIDE_SYNC
 )paren
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -10834,7 +9780,7 @@ c_func
 (paren
 id|DBG_PIO
 comma
-l_string|&quot;DOP1: PIO %i bytes from %p:&quot;
+l_string|&quot;data_io_transfer: PIO %i bytes from %p:&quot;
 comma
 id|srb-&gt;total_xfer_length
 comma
@@ -10872,6 +9818,7 @@ id|srb-&gt;virt_addr
 )paren
 suffix:semicolon
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -10884,60 +9831,12 @@ id|srb-&gt;virt_addr
 op_increment
 )paren
 suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_decrement
-suffix:semicolon
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;total_xfer_length
-op_logical_and
-op_logical_neg
-id|srb-&gt;segment_x
-(braket
-id|srb
-op_member_access_from_pointer
-id|sg_index
-)braket
-dot
-id|length
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_enabled
-c_func
-(paren
-id|DBG_PIO
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (next segment)&quot;
-)paren
-suffix:semicolon
-id|srb-&gt;sg_index
-op_increment
-suffix:semicolon
-id|update_sg_list
+id|sg_subtract_one
 c_func
 (paren
 id|srb
-comma
-id|srb-&gt;total_xfer_length
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -10982,6 +9881,7 @@ l_string|&quot; |00&quot;
 suffix:semicolon
 )brace
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -11047,7 +9947,7 @@ op_or_assign
 id|OVER_RUN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * KG: despite the fact that we are using 16 bits I/O ops&n;&t;&t;&t; * the SCSI FIFO is only 8 bits according to the docs&n;&t;&t;&t; * (we can set bit 1 in 0x8f to serialize FIFO access ...)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * KG: despite the fact that we are using 16 bits I/O ops&n;&t;&t; * the SCSI FIFO is only 8 bits according to the docs&n;&t;&t; * (we can set bit 1 in 0x8f to serialize FIFO access ...)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11084,10 +9984,10 @@ op_amp
 id|DMACMD_DIR
 )paren
 (brace
-multiline_comment|/* read */
 id|data
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
@@ -11097,17 +9997,17 @@ suffix:semicolon
 id|data2
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
 id|TRM_S1040_SCSI_FIFO
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;DataIO: Xfer pad: %02x %02x&bslash;n&quot;, data, data2); */
 )brace
 r_else
 (brace
-multiline_comment|/* Danger, Robinson: If you find KGs scattered over the wide&n;&t;&t;&t;&t;&t; * disk, the driver or chip is to blame :-( */
+multiline_comment|/* Danger, Robinson: If you find KGs&n;&t;&t;&t;&t; * scattered over the wide disk, the driver&n;&t;&t;&t;&t; * or chip is to blame :-( */
 id|DC395x_write8
 c_func
 (paren
@@ -11152,7 +10052,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Danger, Robinson: If you find a collection of Ks on your disk&n;&t;&t;&t;&t; * something broke :-( */
+multiline_comment|/* Danger, Robinson: If you find a collection of Ks on your disk&n;&t;&t;&t; * something broke :-( */
 r_if
 c_cond
 (paren
@@ -11160,21 +10060,17 @@ id|io_dir
 op_amp
 id|DMACMD_DIR
 )paren
-(brace
-multiline_comment|/* read */
 id|data
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
 id|TRM_S1040_SCSI_FIFO
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;DataIO: Xfer pad: %02x&bslash;n&quot;, data); */
-)brace
 r_else
-(brace
 id|DC395x_write8
 c_func
 (paren
@@ -11185,7 +10081,6 @@ comma
 l_char|&squot;K&squot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|srb-&gt;state
 op_or_assign
@@ -11202,7 +10097,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t;&t;&t; * SCSI command &n;&t;&t;&t; */
+multiline_comment|/* SCSI command */
 id|bval
 op_assign
 (paren
@@ -11228,12 +10123,8 @@ id|bval
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*monitor_next_irq = 2; */
-multiline_comment|/*printk(&quot; done&bslash;n&quot;); */
-)brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;status_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =3  &n; ********************************************************************&n; */
-r_static
 DECL|function|status_phase0
+r_static
 r_void
 id|status_phase0
 c_func
@@ -11258,15 +10149,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;StatusPhase0 (pid %li)&bslash;n&quot;
+l_string|&quot;status_phase0: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;STP0 *&quot;
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|srb-&gt;target_status
@@ -11300,8 +10189,6 @@ op_assign
 id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/*.. initial phase */
-multiline_comment|/*1.25 */
-multiline_comment|/*clear_fifo (acb, &quot;STP0&quot;); */
 id|DC395x_write16
 c_func
 (paren
@@ -11313,7 +10200,6 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; ** SCSI command &n;&t; */
 id|DC395x_write8
 c_func
 (paren
@@ -11325,9 +10211,8 @@ id|SCMD_MSGACCEPT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;status_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =3 &n; ********************************************************************&n; */
-r_static
 DECL|function|status_phase1
+r_static
 r_void
 id|status_phase1
 c_func
@@ -11352,19 +10237,15 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;StatusPhase1 (pid=%li)&bslash;n&quot;
+l_string|&quot;status_phase1: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;STP1 *&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Cleanup is now done at the end of DataXXPhase0 */
-multiline_comment|/*cleanup_after_transfer (acb, srb); */
 id|srb-&gt;state
 op_assign
 id|SRB_STATUS
@@ -11380,7 +10261,6 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; * SCSI command &n;&t; */
 id|DC395x_write8
 c_func
 (paren
@@ -11392,69 +10272,6 @@ id|SCMD_COMP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Message handling */
-macro_line|#if 0
-multiline_comment|/* Print received message */
-r_static
-r_void
-id|print_msg
-c_func
-(paren
-id|u8
-op_star
-id|msg_buf
-comma
-id|u32
-id|len
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; %02x&quot;
-comma
-id|msg_buf
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; %02x&quot;
-comma
-id|msg_buf
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Check if the message is complete */
 DECL|function|msgin_completed
 r_static
@@ -11538,9 +10355,9 @@ suffix:semicolon
 DECL|macro|DC395x_ENABLE_MSGOUT
 mdefine_line|#define DC395x_ENABLE_MSGOUT &bslash;&n; DC395x_write16 (acb, TRM_S1040_SCSI_CONTROL, DO_SETATN); &bslash;&n; srb-&gt;state |= SRB_MSGOUT
 multiline_comment|/* reject_msg */
+DECL|function|msgin_reject
 r_static
 r_inline
-DECL|function|msgin_reject
 r_void
 id|msgin_reject
 c_func
@@ -11583,7 +10400,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Reject message %02x from %02i-%i&bslash;n&quot;
+l_string|&quot;msgin_reject: 0x%02x &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb-&gt;msgin_buf
 (braket
@@ -11595,17 +10412,11 @@ comma
 id|srb-&gt;dcb-&gt;target_lun
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;&bslash;*&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* abort command */
+DECL|function|enable_msgout_abort
 r_static
 r_inline
-DECL|function|enable_msgout_abort
 r_void
 id|enable_msgout_abort
 c_func
@@ -11643,16 +10454,9 @@ id|srb-&gt;state
 op_or_assign
 id|SRB_MSGOUT
 suffix:semicolon
-multiline_comment|/*&n;&t;   if (srb-&gt;dcb)&n;&t;   srb-&gt;dcb-&gt;flag &amp;= ~ABORT_DEV_;&n;&t; */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;#*&quot;
-)paren
-suffix:semicolon
 )brace
-r_static
 DECL|function|msgin_qtag
+r_static
 r_struct
 id|ScsiReqBlk
 op_star
@@ -11690,11 +10494,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;QTag Msg (SRB %p): %i&bslash;n&quot;
+l_string|&quot;msgin_qtag: (pid#%li) tag=%i srb=%p&bslash;n&quot;
 comma
-id|srb
+id|srb-&gt;cmd-&gt;pid
 comma
 id|tag
+comma
+id|srb
 )paren
 suffix:semicolon
 r_if
@@ -11716,7 +10522,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;MsgIn_QTag: tag_mask (%08x) does not reserve tag %i!&bslash;n&quot;
+l_string|&quot;msgin_qtag: tag_mask=0x%08x does not reserve tag %i!&bslash;n&quot;
 comma
 id|dcb-&gt;tag_mask
 comma
@@ -11777,7 +10583,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;pid %li (%i-%i)&bslash;n&quot;
+l_string|&quot;msgin_qtag: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -11817,47 +10623,6 @@ id|SRB_DISCONNECT
 r_goto
 id|mingx0
 suffix:semicolon
-multiline_comment|/* Tag found */
-(brace
-r_struct
-id|ScsiReqBlk
-op_star
-id|last_srb
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;[%s]*&quot;
-comma
-id|dcb-&gt;active_srb-&gt;debugtrace
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;RTag*&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Just for debugging ... */
-id|last_srb
-op_assign
-id|srb
-suffix:semicolon
-id|srb
-op_assign
-id|dcb-&gt;active_srb
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;Found.*&quot;
-)paren
-suffix:semicolon
-id|srb
-op_assign
-id|last_srb
-suffix:semicolon
-)brace
 id|memcpy
 c_func
 (paren
@@ -11911,18 +10676,12 @@ l_int|1
 suffix:semicolon
 id|DC395x_ENABLE_MSGOUT
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;?*&quot;
-)paren
-suffix:semicolon
 id|dprintkl
 c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Unknown tag received: %i: abort !!&bslash;n&quot;
+l_string|&quot;msgin_qtag: Unknown tag %i - abort&bslash;n&quot;
 comma
 id|tag
 )paren
@@ -11931,11 +10690,10 @@ r_return
 id|srb
 suffix:semicolon
 )brace
-multiline_comment|/* Reprogram registers */
+DECL|function|reprogram_regs
 r_static
 r_inline
 r_void
-DECL|function|reprogram_regs
 id|reprogram_regs
 c_func
 (paren
@@ -11990,8 +10748,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/* set async transfer mode */
-r_static
 DECL|function|msgin_set_async
+r_static
 r_void
 id|msgin_set_async
 c_func
@@ -12019,15 +10777,11 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Target %02i: No sync transfers&bslash;n&quot;
+l_string|&quot;msgin_set_async: No sync transfers &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;!S *&quot;
+comma
+id|dcb-&gt;target_lun
 )paren
 suffix:semicolon
 id|dcb-&gt;sync_mode
@@ -12100,14 +10854,14 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;SDTR(rej): Try WDTR anyway ...&bslash;n&quot;
+l_string|&quot;msgin_set_async(rej): Try WDTR anyway&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* set sync transfer mode */
-r_static
 DECL|function|msgin_set_sync
+r_static
 r_void
 id|msgin_set_sync
 c_func
@@ -12123,12 +10877,6 @@ op_star
 id|srb
 )paren
 (brace
-id|u8
-id|bval
-suffix:semicolon
-r_int
-id|fact
-suffix:semicolon
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -12136,14 +10884,19 @@ id|dcb
 op_assign
 id|srb-&gt;dcb
 suffix:semicolon
-multiline_comment|/*u8 oldsyncperiod = dcb-&gt;sync_period; */
-multiline_comment|/*u8 oldsyncoffset = dcb-&gt;sync_offset; */
+id|u8
+id|bval
+suffix:semicolon
+r_int
+id|fact
+suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_1
 comma
-l_string|&quot;Target %02i: Sync: %ins (%02i.%01i MHz) Offset %i&bslash;n&quot;
+l_string|&quot;msgin_set_sync: &lt;%02i&gt; Sync: %ins &quot;
+l_string|&quot;(%02i.%01i MHz) Offset %i&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -12309,7 +11062,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Increase sync nego period to %ins&bslash;n&quot;
+l_string|&quot;msgin_set_sync: Increase sync nego period to %ins&bslash;n&quot;
 comma
 id|clock_period
 (braket
@@ -12411,16 +11164,6 @@ op_div
 id|dcb-&gt;min_nego_period
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;S%i *&quot;
-comma
-id|dcb-&gt;min_nego_period
-op_lshift
-l_int|2
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12438,7 +11181,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot; .. answer w/  %ins %i&bslash;n&quot;
+l_string|&quot;msgin_set_sync: answer w/%ins %i&bslash;n&quot;
 comma
 id|srb-&gt;msgin_buf
 (braket
@@ -12510,7 +11253,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;SDTR: Also try WDTR ...&bslash;n&quot;
+l_string|&quot;msgin_set_sync: Also try WDTR&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -12535,9 +11278,9 @@ id|dcb
 )paren
 suffix:semicolon
 )brace
+DECL|function|msgin_set_nowide
 r_static
 r_inline
-DECL|function|msgin_set_nowide
 r_void
 id|msgin_set_nowide
 c_func
@@ -12563,17 +11306,11 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 comma
-l_string|&quot;WDTR got rejected from target %02i&bslash;n&quot;
+l_string|&quot;msgin_set_nowide: &lt;%02i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;!W *&quot;
 )paren
 suffix:semicolon
 id|dcb-&gt;sync_period
@@ -12639,13 +11376,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;WDTR(rej): Try SDTR anyway ...&bslash;n&quot;
+l_string|&quot;msgin_set_nowide: Rejected. Try SDTR anyway&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|msgin_set_wide
+r_static
 r_void
 id|msgin_set_wide
 c_func
@@ -12686,6 +11423,16 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_1
+comma
+l_string|&quot;msgin_set_wide: &lt;%02i&gt;&bslash;n&quot;
+comma
+id|dcb-&gt;target_id
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12720,7 +11467,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Target %02i initiates Wide Nego ...&bslash;n&quot;
+l_string|&quot;msgin_set_wide: Wide nego initiated &lt;%02i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 )paren
@@ -12779,30 +11526,13 @@ op_and_assign
 op_complement
 id|SRB_DO_WIDE_NEGO
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;W%i *&quot;
-comma
-(paren
-id|dcb-&gt;sync_period
-op_amp
-id|WIDE_SYNC
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*dcb-&gt;sync_mode &amp;= ~(WIDE_NEGO_ENABLE+WIDE_NEGO_DONE); */
 id|dprintkdbg
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 comma
-l_string|&quot;Wide transfers (%i bit) negotiated with target %02i&bslash;n&quot;
+l_string|&quot;msgin_set_wide: Wide (%i bit) negotiated &lt;%02i&gt;&bslash;n&quot;
 comma
 (paren
 l_int|8
@@ -12858,14 +11588,14 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;WDTR: Also try SDTR ...&bslash;n&quot;
+l_string|&quot;msgin_set_wide: Also try SDTR.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgin_phase0: one of dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t;&t;&t;&t;if phase =7   &n; *&n; * extended message codes:&n; *&n; *&t;code&t;description&n; *&n; *&t;02h&t;Reserved&n; *&t;00h&t;MODIFY DATA  POINTER&n; *&t;01h&t;SYNCHRONOUS DATA TRANSFER REQUEST&n; *&t;03h&t;WIDE DATA TRANSFER REQUEST&n; *   04h - 7Fh&t;Reserved&n; *   80h - FFh&t;Vendor specific&n; *  &n; ********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * extended message codes:&n; *&n; *&t;code&t;description&n; *&n; *&t;02h&t;Reserved&n; *&t;00h&t;MODIFY DATA  POINTER&n; *&t;01h&t;SYNCHRONOUS DATA TRANSFER REQUEST&n; *&t;03h&t;WIDE DATA TRANSFER REQUEST&n; *   04h - 7Fh&t;Reserved&n; *   80h - FFh&t;Vendor specific&n; */
 DECL|function|msgin_phase0
+r_static
 r_void
 id|msgin_phase0
 c_func
@@ -12889,24 +11619,18 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase0..............&bslash;n&quot;
+l_string|&quot;msgin_phase0: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;MIP0*&quot;
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 id|srb-&gt;msgin_buf
 (braket
@@ -12934,19 +11658,6 @@ id|acb-&gt;msg_len
 )paren
 )paren
 (brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;(%02x)*&quot;
-comma
-id|srb-&gt;msgin_buf
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-multiline_comment|/*dprintkl(KERN_INFO, &quot;MsgIn:&quot;); */
-multiline_comment|/*print_msg (srb-&gt;msgin_buf, acb-&gt;msg_len); */
 multiline_comment|/* Now eval the msg */
 r_switch
 c_cond
@@ -12975,17 +11686,6 @@ suffix:colon
 r_case
 id|ORDERED_QUEUE_TAG
 suffix:colon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;(%02x)*&quot;
-comma
-id|srb-&gt;msgin_buf
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
 id|srb
 op_assign
 id|msgin_qtag
@@ -13072,17 +11772,6 @@ suffix:semicolon
 r_case
 id|EXTENDED_MESSAGE
 suffix:colon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;(%02x)*&quot;
-comma
-id|srb-&gt;msgin_buf
-(braket
-l_int|2
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/* SDTR */
 r_if
 c_cond
@@ -13161,71 +11850,68 @@ id|srb
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* Discard  wide residual */
 r_case
 id|MSG_IGNOREWIDE
 suffix:colon
+multiline_comment|/* Discard  wide residual */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Ignore Wide Residual!&bslash;n&quot;
+l_string|&quot;msgin_phase0: Ignore Wide Residual!&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_write32 (TRM_S1040_SCSI_COUNTER, 1); */
-multiline_comment|/*DC395x_read8 (TRM_S1040_SCSI_FIFO); */
 r_break
 suffix:semicolon
-multiline_comment|/* nothing has to be done */
 r_case
 id|COMMAND_COMPLETE
 suffix:colon
+multiline_comment|/* nothing has to be done */
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * SAVE POINTER may be ignored as we have the struct ScsiReqBlk* associated with the&n;&t;&t;&t; * scsi command. Thanks, G&#xfffd;rard, for pointing it out.&n;&t;&t;&t; */
 r_case
 id|SAVE_POINTERS
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * SAVE POINTER may be ignored as we have the struct&n;&t;&t;&t; * ScsiReqBlk* associated with the scsi command.&n;&t;&t;&t; */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;SAVE POINTER message received (pid %li: rem.%i) ... ignore :-(&bslash;n&quot;
+l_string|&quot;msgin_phase0: (pid#%li) &quot;
+l_string|&quot;SAVE POINTER rem=%i Ignore&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
 id|srb-&gt;total_xfer_length
 )paren
 suffix:semicolon
-multiline_comment|/*srb-&gt;Saved_Ptr = srb-&gt;TotalxferredLen; */
 r_break
 suffix:semicolon
-multiline_comment|/* The device might want to restart transfer with a RESTORE */
 r_case
 id|RESTORE_POINTERS
 suffix:colon
-id|dprintkl
+id|dprintkdbg
 c_func
 (paren
-id|KERN_DEBUG
+id|DBG_0
 comma
-l_string|&quot;RESTORE POINTER message received ... ignore :-(&bslash;n&quot;
+l_string|&quot;msgin_phase0: RESTORE POINTER. Ignore&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*dc395x_restore_ptr (acb, srb); */
 r_break
 suffix:semicolon
 r_case
 id|ABORT
 suffix:colon
-id|dprintkl
+id|dprintkdbg
 c_func
 (paren
-id|KERN_DEBUG
+id|DBG_0
 comma
-l_string|&quot;ABORT msg received (pid %li %02i-%i)&bslash;n&quot;
+l_string|&quot;msgin_phase0: (pid#%li) &quot;
+l_string|&quot;&lt;%02i-%i&gt; ABORT msg&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -13248,11 +11934,11 @@ id|srb
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* reject unknown messages */
 r_default
 suffix:colon
 (brace
 )brace
+multiline_comment|/* reject unknown messages */
 r_if
 c_cond
 (paren
@@ -13264,15 +11950,14 @@ op_amp
 id|IDENTIFY_BASE
 )paren
 (brace
-id|dprintkl
+id|dprintkdbg
 c_func
 (paren
-id|KERN_DEBUG
+id|DBG_0
 comma
-l_string|&quot;Identify Message received?&bslash;n&quot;
+l_string|&quot;msgin_phase0: Identify msg&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*TRACEOUT (&quot; %s&bslash;n&quot;, srb-&gt;debugtrace); */
 id|srb-&gt;msg_count
 op_assign
 l_int|1
@@ -13300,21 +11985,7 @@ comma
 id|srb
 )paren
 suffix:semicolon
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot; %s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
 )brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Clear counter and MsgIn state */
 id|srb-&gt;state
 op_and_assign
@@ -13326,36 +11997,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*1.25 */
-r_if
-c_cond
-(paren
-(paren
-op_star
-id|pscsi_status
-op_amp
-id|PHASEMASK
-)paren
-op_ne
-id|PH_MSG_IN
-)paren
-macro_line|#if 0
-id|clear_fifo
-c_func
-(paren
-id|acb
-comma
-l_string|&quot;MIP0_&quot;
-)paren
-suffix:semicolon
-macro_line|#else
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;N/Cln *&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 op_star
 id|pscsi_status
 op_assign
@@ -13383,9 +12024,8 @@ id|SCMD_MSGACCEPT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;msgin_phase1: one of dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =7&t;   &n; ********************************************************************&n; */
-r_static
 DECL|function|msgin_phase1
+r_static
 r_void
 id|msgin_phase1
 c_func
@@ -13410,13 +12050,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase1..............&bslash;n&quot;
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;MIP1 *&quot;
+l_string|&quot;msgin_phase1: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|clear_fifo
@@ -13424,7 +12060,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;MIP1&quot;
+l_string|&quot;msgin_phase1&quot;
 )paren
 suffix:semicolon
 id|DC395x_write32
@@ -13469,7 +12105,7 @@ id|DO_DATALATCH
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s important for atn stop */
-multiline_comment|/*&n;&t; * SCSI command &n;&t; */
+multiline_comment|/* SCSI command */
 id|DC395x_write8
 c_func
 (paren
@@ -13481,9 +12117,8 @@ id|SCMD_FIFO_IN
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;nop0: one of dc395x_scsi_phase1[] ,dc395x_scsi_phase0[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =4 ..PH_BUS_FREE&n; ********************************************************************&n; */
-r_static
 DECL|function|nop0
+r_static
 r_void
 id|nop0
 c_func
@@ -13503,11 +12138,9 @@ op_star
 id|pscsi_status
 )paren
 (brace
-multiline_comment|/*TRACEPRINTF(&quot;NOP0 *&quot;); */
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;nop1: one of dc395x_scsi_phase0[] ,dc395x_scsi_phase1[] vectors&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase0[phase]&n; *&t; dc395x_statev = (void *)dc395x_scsi_phase1[phase]&n; *&t;&t;&t;&t;if phase =5&n; ********************************************************************&n; */
-r_static
 DECL|function|nop1
+r_static
 r_void
 id|nop1
 c_func
@@ -13527,11 +12160,9 @@ op_star
 id|pscsi_status
 )paren
 (brace
-multiline_comment|/*TRACEPRINTF(&quot;NOP1 *&quot;); */
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;msgin_phase0&n; ********************************************************************&n; */
-r_static
 DECL|function|set_xfer_rate
+r_static
 r_void
 id|set_xfer_rate
 c_func
@@ -13552,7 +12183,7 @@ id|DeviceCtlBlk
 op_star
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * set all lun device&squot;s  period , offset&n;&t; */
+multiline_comment|/* set all lun device&squot;s  period, offset */
 r_if
 c_cond
 (paren
@@ -13611,7 +12242,6 @@ id|dcb-&gt;min_nego_period
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;dc395x_interrupt&n; ********************************************************************&n; */
 DECL|function|disconnect
 r_static
 r_void
@@ -13628,25 +12258,13 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 r_struct
 id|ScsiReqBlk
 op_star
 id|srb
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_0
-comma
-l_string|&quot;Disconnect (pid=%li)&bslash;n&quot;
-comma
-id|acb-&gt;active_dcb-&gt;active_srb-&gt;cmd-&gt;pid
-)paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 r_if
 c_cond
@@ -13660,7 +12278,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Disc: Exception Disconnect dcb=NULL !!&bslash;n &quot;
+l_string|&quot;disconnect: No such device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|udelay
@@ -13687,7 +12305,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;DiscEx&quot;
+l_string|&quot;disconnectEx&quot;
 )paren
 suffix:semicolon
 id|DC395x_write16
@@ -13711,10 +12329,14 @@ id|acb-&gt;active_dcb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|TRACEPRINTF
+id|dprintkdbg
 c_func
 (paren
-l_string|&quot;DISC *&quot;
+id|DBG_0
+comma
+l_string|&quot;disconnect: (pid#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|srb-&gt;scsi_phase
@@ -13727,7 +12349,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;Disc&quot;
+l_string|&quot;disconnect&quot;
 )paren
 suffix:semicolon
 id|DC395x_write16
@@ -13753,7 +12375,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Disc: Unexpected Reselection (%i-%i)&bslash;n&quot;
+l_string|&quot;disconnect: Unexpected reselection &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -13780,7 +12402,6 @@ op_amp
 id|SRB_ABORT_SENT
 )paren
 (brace
-multiline_comment|/*Scsi_Cmnd* cmd = srb-&gt;cmd; */
 id|dcb-&gt;flag
 op_and_assign
 op_complement
@@ -13801,7 +12422,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Disc: SRB_ABORT_SENT!&bslash;n&quot;
+l_string|&quot;disconnect: SRB_ABORT_SENT&bslash;n&quot;
 )paren
 suffix:semicolon
 id|doing_srb_done
@@ -13875,7 +12496,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Unexpected Disconnection (pid %li)!&bslash;n&quot;
+l_string|&quot;disconnect: (pid#%li) Unexpected&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -13884,20 +12505,6 @@ id|srb-&gt;target_status
 op_assign
 id|SCSI_STAT_SEL_TIMEOUT
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;UnExpD *&quot;
-)paren
-suffix:semicolon
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
 r_goto
 id|disc1
 suffix:semicolon
@@ -13905,18 +12512,13 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Normal selection timeout */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;SlTO *&quot;
-)paren
-suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Disc: SelTO (pid=%li) for dev %02i-%i&bslash;n&quot;
+l_string|&quot;disconnect: (pid#%li) &quot;
+l_string|&quot;&lt;%02i-%i&gt; SelTO&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -13965,7 +12567,7 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Retry pid %li ...&bslash;n&quot;
+l_string|&quot;disconnect: (pid#%li) Retry&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -14003,13 +12605,6 @@ id|TRM_S1040_SCSI_SIGNAL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * SRB_DISCONNECT (This is what we expect!)&n;&t;&t;&t; */
-multiline_comment|/* dprintkl(KERN_DEBUG, &quot;DoWaitingSRB (pid=%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;+*&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14023,25 +12618,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Debug: DISC: SCSI bus stat %02x: ACK set! Other controllers?&bslash;n&quot;
+l_string|&quot;disconnect: SCSI bus stat &quot;
+l_string|&quot; 0x%02x: ACK set! Other controllers?&bslash;n&quot;
 comma
 id|bval
 )paren
 suffix:semicolon
 multiline_comment|/* It could come from another initiator, therefore don&squot;t do much ! */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;ACK(%02x) *&quot;
-comma
-id|bval
-)paren
-suffix:semicolon
-multiline_comment|/*dump_register_info (acb, dcb, srb); */
-multiline_comment|/*TRACEOUT (&quot; %s&bslash;n&quot;, srb-&gt;debugtrace); */
-multiline_comment|/*dcb-&gt;flag |= ABORT_DEV_; */
-multiline_comment|/*enable_msgout_abort (acb, srb); */
-multiline_comment|/*DC395x_write16 (TRM_S1040_SCSI_CONTROL, DO_CLRFIFO | DO_CLRATN | DO_HWRESELECT); */
 )brace
 r_else
 id|waiting_process_next
@@ -14079,7 +12662,6 @@ id|srb-&gt;state
 op_assign
 id|SRB_FREE
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;done (pid=%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
 id|srb_done
 c_func
 (paren
@@ -14092,10 +12674,7 @@ id|srb
 suffix:semicolon
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;reselect&n; ********************************************************************&n; */
 DECL|function|reselect
 r_static
 r_void
@@ -14112,6 +12691,8 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;active_dcb
 suffix:semicolon
 r_struct
 id|ScsiReqBlk
@@ -14138,7 +12719,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;reselect..............&bslash;n&quot;
+l_string|&quot;reselect: acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
 id|clear_fifo
@@ -14146,7 +12729,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;Resel&quot;
+l_string|&quot;reselect&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*DC395x_write16(acb, TRM_S1040_SCSI_CONTROL, DO_HWRESELECT | DO_DATALATCH); */
@@ -14160,10 +12743,6 @@ id|acb
 comma
 id|TRM_S1040_SCSI_TARGETID
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;active_dcb
 suffix:semicolon
 r_if
 c_cond
@@ -14188,7 +12767,8 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Arb lost Resel won, but active_srb == NULL!&bslash;n&quot;
+l_string|&quot;reselect: Arb lost Resel won, &quot;
+l_string|&quot;but active_srb == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DC395x_write16
@@ -14210,9 +12790,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|acb-&gt;scan_devices
-)paren
 )paren
 (brace
 id|dprintkdbg
@@ -14220,7 +12798,8 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Arb lost but Resel win pid %li (%02i-%i) Rsel %04x Stat %04x&bslash;n&quot;
+l_string|&quot;reselect: (pid#%li) &lt;%02i-%i&gt; &quot;
+l_string|&quot;Arb lost but Resel win rsel=%i stat=0x%04x&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -14239,13 +12818,6 @@ id|TRM_S1040_SCSI_STATUS
 )paren
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;ArbLResel!*&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*TRACEOUT (&quot; %s&bslash;n&quot;, srb-&gt;debugtrace); */
 id|arblostflag
 op_assign
 l_int|1
@@ -14304,7 +12876,8 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Resel expects identify msg! Got %04x!&bslash;n&quot;
+l_string|&quot;reselect: Expects identify msg. &quot;
+l_string|&quot;Got %i!&bslash;n&quot;
 comma
 id|rsel_tar_lun_id
 )paren
@@ -14349,7 +12922,8 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Reselect from non existing device (%02i-%i)&bslash;n&quot;
+l_string|&quot;reselect: From non existent device &quot;
+l_string|&quot;&lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|id
 comma
@@ -14389,7 +12963,8 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Reselection in spite of forbidden disconnection? (%02i-%i)&bslash;n&quot;
+l_string|&quot;reselect: in spite of forbidden &quot;
+l_string|&quot;disconnection? &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -14399,56 +12974,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dcb-&gt;sync_mode
 op_amp
 id|EN_TAG_QUEUEING
-)paren
 multiline_comment|/*&amp;&amp; !arblostflag */
 )paren
 (brace
-r_struct
-id|ScsiReqBlk
-op_star
-id|oldSRB
-op_assign
-id|srb
-suffix:semicolon
 id|srb
 op_assign
 id|acb-&gt;tmp_srb
 suffix:semicolon
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-id|srb-&gt;debugpos
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;debugtrace
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|dcb-&gt;active_srb
 op_assign
 id|srb
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|oldSRB
-)paren
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;ArbLResel(%li):*&quot;
-comma
-id|oldSRB-&gt;cmd-&gt;pid
-)paren
-suffix:semicolon
-multiline_comment|/*if (arblostflag) dprintkl(KERN_DEBUG, &quot;Reselect: Wait for Tag ... &bslash;n&quot;); */
 )brace
 r_else
 (brace
@@ -14456,17 +12995,6 @@ multiline_comment|/* There can be only one! */
 id|srb
 op_assign
 id|dcb-&gt;active_srb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb
-)paren
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;RSel *&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14488,7 +13016,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Reselected w/o disconnected cmds from %02i-%i?&bslash;n&quot;
+l_string|&quot;reselect: w/o disconnected cmds &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -14542,14 +13070,23 @@ op_assign
 id|SRB_DATA_XFER
 suffix:semicolon
 )brace
-multiline_comment|/*if (arblostflag) TRACEOUT (&quot; %s&bslash;n&quot;, srb-&gt;debugtrace); */
 )brace
 id|srb-&gt;scsi_phase
 op_assign
 id|PH_BUS_FREE
 suffix:semicolon
 multiline_comment|/* initial phase */
-multiline_comment|/* &n;&t; ***********************************************&n;&t; ** Program HA ID, target ID, period and offset&n;&t; ***********************************************&n;&t; */
+multiline_comment|/* Program HA ID, target ID, period and offset */
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;reselect: select &lt;%i&gt;&bslash;n&quot;
+comma
+id|dcb-&gt;target_id
+)paren
+suffix:semicolon
 id|DC395x_write8
 c_func
 (paren
@@ -14679,8 +13216,8 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-r_static
 DECL|function|disc_tagq_set
+r_static
 r_void
 id|disc_tagq_set
 c_func
@@ -14774,8 +13311,8 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|add_dev
+r_static
 r_void
 id|add_dev
 c_func
@@ -14817,9 +13354,9 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; ********************************************************************&n; * unmap mapped pci regions from SRB&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* unmap mapped pci regions from SRB */
 DECL|function|pci_unmap_srb
+r_static
 r_void
 id|pci_unmap_srb
 c_func
@@ -14835,15 +13372,13 @@ op_star
 id|srb
 )paren
 (brace
-r_int
-id|dir
-suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
+r_int
 id|dir
 op_assign
 id|scsi_to_pci_dma_dir
@@ -14866,19 +13401,13 @@ multiline_comment|/* unmap DC395x SG list */
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Unmap SG descriptor list %08x (%05x)&bslash;n&quot;
+l_string|&quot;pci_unmap_srb: list=%08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 )paren
 suffix:semicolon
 id|pci_unmap_single
@@ -14888,13 +13417,7 @@ id|acb-&gt;dev
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -14902,9 +13425,9 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Unmap %i SG segments from %p&bslash;n&quot;
+l_string|&quot;pci_unmap_srb: segs=%i buffer=%p&bslash;n&quot;
 comma
 id|cmd-&gt;use_sg
 comma
@@ -14944,9 +13467,9 @@ id|PCI_DMA_NONE
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Unmap buffer at %08x (%05x)&bslash;n&quot;
+l_string|&quot;pci_unmap_srb: buffer=%08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 (braket
@@ -14977,9 +13500,9 @@ id|dir
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; ********************************************************************&n; * unmap mapped pci sense buffer from SRB&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* unmap mapped pci sense buffer from SRB */
 DECL|function|pci_unmap_srb_sense
+r_static
 r_void
 id|pci_unmap_srb_sense
 c_func
@@ -15011,9 +13534,9 @@ multiline_comment|/* Unmap sense buffer */
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Unmap sense buffer from %08x&bslash;n&quot;
+l_string|&quot;pci_unmap_srb_sense: buffer=%08x&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 (braket
@@ -15046,7 +13569,6 @@ id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Restore SG stuff */
-multiline_comment|/*printk (&quot;Auto_ReqSense finished: Restore Counters ...&bslash;n&quot;); */
 id|srb-&gt;total_xfer_length
 op_assign
 id|srb-&gt;xferred
@@ -15084,9 +13606,9 @@ dot
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;disconnect&n; *&t;Complete execution of a SCSI command&n; *&t;Signal completion to the generic SCSI driver  &n; ********************************************************************&n; */
-r_static
+multiline_comment|/*&n; * Complete execution of a SCSI command&n; * Signal completion to the generic SCSI driver  &n; */
 DECL|function|srb_done
+r_static
 r_void
 id|srb_done
 c_func
@@ -15115,25 +13637,16 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cmd
+op_assign
+id|srb-&gt;cmd
 suffix:semicolon
 r_struct
 id|ScsiInqData
 op_star
 id|ptr
 suffix:semicolon
-multiline_comment|/*u32              drv_flags=0; */
 r_int
 id|dir
-suffix:semicolon
-id|cmd
-op_assign
-id|srb-&gt;cmd
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;DONE *&quot;
-)paren
 suffix:semicolon
 id|dir
 op_assign
@@ -15143,6 +13656,44 @@ c_func
 id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
+)paren
+(brace
+r_struct
+id|scatterlist
+op_star
+id|sg
+op_assign
+(paren
+r_struct
+id|scatterlist
+op_star
+)paren
+id|cmd-&gt;request_buffer
+suffix:semicolon
+id|ptr
+op_assign
+(paren
+r_struct
+id|ScsiInqData
+op_star
+)paren
+(paren
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ptr
 op_assign
 (paren
@@ -15154,36 +13705,29 @@ op_star
 id|cmd-&gt;request_buffer
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd-&gt;use_sg
-)paren
-id|ptr
-op_assign
-(paren
-r_struct
-id|ScsiInqData
-op_star
-)paren
-id|CPU_ADDR
+)brace
+id|dprintkdbg
 c_func
 (paren
-op_star
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
-id|ptr
+id|DBG_1
+comma
+l_string|&quot;srb_done: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+comma
+id|srb-&gt;cmd-&gt;device-&gt;id
+comma
+id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;SRBdone SG=%i (%i/%i), req_buf = %p, adr = %p&bslash;n&quot;
+l_string|&quot;srb_done: srb=%p sg=%i(%i/%i) buf=%p addr=%p&bslash;n&quot;
+comma
+id|srb
 comma
 id|cmd-&gt;use_sg
 comma
@@ -15194,20 +13738,6 @@ comma
 id|cmd-&gt;request_buffer
 comma
 id|ptr
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;SRBdone (pid %li, target %02i-%i): &quot;
-comma
-id|srb-&gt;cmd-&gt;pid
-comma
-id|srb-&gt;cmd-&gt;device-&gt;id
-comma
-id|srb-&gt;cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|status
@@ -15227,7 +13757,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;AUTO_REQSENSE1..............&bslash;n&quot;
+l_string|&quot;srb_done: AUTO_REQSENSE1&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_unmap_srb_sense
@@ -15260,7 +13790,7 @@ c_cond
 id|debug_enabled
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 )paren
 )paren
 (brace
@@ -15283,7 +13813,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;ReqSense: NOT_READY (Cmnd = 0x%02x, Dev = %i-%i, Stat = %i, Scan = %i) &quot;
+l_string|&quot;ReqSense: NOT_READY cmnd=0x%02x &lt;%02i-%i&gt; stat=%i scan=%i &quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -15309,7 +13839,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;ReqSense: UNIT_ATTENTION (Cmnd = 0x%02x, Dev = %i-%i, Stat = %i, Scan = %i) &quot;
+l_string|&quot;ReqSense: UNIT_ATTENTION cmnd=0x%02x &lt;%02i-%i&gt; stat=%i scan=%i &quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -15335,7 +13865,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;ReqSense: ILLEGAL_REQUEST (Cmnd = 0x%02x, Dev = %i-%i, Stat = %i, Scan = %i) &quot;
+l_string|&quot;ReqSense: ILLEGAL_REQUEST cmnd=0x%02x &lt;%02i-%i&gt; stat=%i scan=%i &quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -15361,7 +13891,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;ReqSense: MEDIUM_ERROR (Cmnd = 0x%02x, Dev = %i-%i, Stat = %i, Scan = %i) &quot;
+l_string|&quot;ReqSense: MEDIUM_ERROR cmnd=0x%02x &lt;%02i-%i&gt; stat=%i scan=%i &quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -15387,7 +13917,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;ReqSense: HARDWARE_ERROR (Cmnd = 0x%02x, Dev = %i-%i, Stat = %i, Scan = %i) &quot;
+l_string|&quot;ReqSense: HARDWARE_ERROR cmnd=0x%02x &lt;%02i-%i&gt; stat=%i scan=%i &quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -15416,12 +13946,11 @@ l_int|7
 op_ge
 l_int|6
 )paren
-id|dprintkl
+id|printk
 c_func
 (paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Sense=%02x, ASC=%02x, ASCQ=%02x (%08x %08x) &quot;
+l_string|&quot;sense=0x%02x ASC=0x%02x ASCQ=0x%02x &quot;
+l_string|&quot;(0x%08x 0x%08x)&bslash;n&quot;
 comma
 id|cmd-&gt;sense_buffer
 (braket
@@ -15468,12 +13997,10 @@ l_int|8
 )paren
 suffix:semicolon
 r_else
-id|dprintkl
+id|printk
 c_func
 (paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Sense=%02x, No ASC/ASCQ (%08x) &quot;
+l_string|&quot;sense=0x%02x No ASC/ASCQ (0x%08x)&bslash;n&quot;
 comma
 id|cmd-&gt;sense_buffer
 (braket
@@ -15523,21 +14050,17 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;AUTO_REQSENSE2..............&bslash;n&quot;
+l_string|&quot;srb_done: AUTO_REQSENSE2&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|srb-&gt;total_xfer_length
-)paren
 op_logical_and
-(paren
 id|srb-&gt;total_xfer_length
 op_ge
 id|cmd-&gt;underflow
-)paren
 )paren
 id|cmd-&gt;result
 op_assign
@@ -15631,9 +14154,12 @@ op_amp
 id|dcb-&gt;srb_going_list
 )paren
 suffix:semicolon
-id|printk
+id|dprintkl
+c_func
 (paren
-l_string|&quot;&bslash;nDC395x:  QUEUE_FULL for dev %02i-%i with %i cmnds&bslash;n&quot;
+id|KERN_INFO
+comma
+l_string|&quot;QUEUE_FULL for dev &lt;%02i-%i&gt; with %i cmnds&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -16028,18 +14554,19 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;pid %li: %02x (%02i-%i): Missed %i bytes&bslash;n&quot;
+l_string|&quot;srb_done: (pid#%li) &lt;%02i-%i&gt; &quot;
+l_string|&quot;cmnd=0x%02x Missed %i bytes&bslash;n&quot;
 comma
 id|cmd-&gt;pid
+comma
+id|cmd-&gt;device-&gt;id
+comma
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;cmnd
 (braket
 l_int|0
 )braket
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
 comma
 id|srb-&gt;total_xfer_length
 )paren
@@ -16066,10 +14593,23 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;ERROR! Completed Cmnd with tmp_srb!&bslash;n&quot;
+l_string|&quot;srb_done: ERROR! Completed cmd with tmp_srb&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;srb_done: (pid#%li) done result=0x%08x&bslash;n&quot;
+comma
+id|cmd-&gt;pid
+comma
+id|cmd-&gt;result
+)paren
+suffix:semicolon
 id|srb_free_insert
 c_func
 (paren
@@ -16078,45 +14618,7 @@ comma
 id|srb
 )paren
 suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_0
-comma
-l_string|&quot;SRBdone: done pid %li&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug_enabled
-c_func
-(paren
-id|DBG_KG
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; 0x%08x&bslash;n&quot;
-comma
-id|cmd-&gt;result
-)paren
-suffix:semicolon
 )brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;%08x(%li)*&quot;
-comma
-id|cmd-&gt;result
-comma
-id|jiffies
-)paren
-suffix:semicolon
 id|pci_unmap_srb
 c_func
 (paren
@@ -16125,7 +14627,6 @@ comma
 id|srb
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_UNLOCK_ACB_NI; */
 id|cmd
 op_member_access_from_pointer
 id|scsi_done
@@ -16134,28 +14635,16 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_LOCK_ACB_NI; */
-id|TRACEOUTALL
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; %s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
 id|waiting_process_next
 c_func
 (paren
 id|acb
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;DC395x_reset&n; * abort all cmds in our queues&n; ********************************************************************&n; */
-r_static
+multiline_comment|/* abort all cmds in our queues */
 DECL|function|doing_srb_done
+r_static
 r_void
 id|doing_srb_done
 c_func
@@ -16259,43 +14748,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*result = MK_RES(0,DID_RESET,0,0); */
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;Reset(%li):%08x*&quot;
-comma
-id|jiffies
-comma
-id|result
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; (G)&quot;
-)paren
-suffix:semicolon
-macro_line|#if 1&t;&t;&t;&t;/*ndef DC395x_DEBUGTRACE */
-id|printk
-c_func
-(paren
-l_string|&quot;%li(%02i-%i) &quot;
+l_string|&quot;G:%li(%02i-%i) &quot;
 comma
 id|p-&gt;pid
 comma
 id|p-&gt;device-&gt;id
 comma
 id|p-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-macro_line|#endif
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
 )paren
 suffix:semicolon
 id|srb_going_remove
@@ -16375,7 +14837,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;How could the ML send cmnds to the Going queue? (%02i-%i)!!&bslash;n&quot;
+l_string|&quot;How could the ML send cmnds to the Going queue? &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -16392,7 +14854,7 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;tag_mask for %02i-%i should be empty, is %08x!&bslash;n&quot;
+l_string|&quot;tag_mask for &lt;%02i-%i&gt; should be empty, is %08x!&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
@@ -16436,42 +14898,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;Reset(%li):%08x*&quot;
-comma
-id|jiffies
-comma
-id|result
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; (W)&quot;
-)paren
-suffix:semicolon
-macro_line|#if 1&t;&t;&t;&t;/*ndef DC395x_DEBUGTRACE */
-id|printk
-c_func
-(paren
-l_string|&quot;%li(%i-%i)&quot;
+l_string|&quot;W:%li&lt;%02i-%i&gt;&quot;
 comma
 id|p-&gt;pid
 comma
 id|p-&gt;device-&gt;id
 comma
 id|p-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-macro_line|#endif
-id|TRACEOUT
-c_func
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|srb-&gt;debugtrace
 )paren
 suffix:semicolon
 id|srb_waiting_remove
@@ -16538,9 +14974,12 @@ op_amp
 id|dcb-&gt;srb_waiting_list
 )paren
 )paren
-id|printk
+id|dprintkl
+c_func
 (paren
-l_string|&quot;&bslash;nDC395x: Debug: ML queued %i cmnds again to %02i-%i&bslash;n&quot;
+id|KERN_DEBUG
+comma
+l_string|&quot;ML queued %i cmnds again to &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|list_size
 c_func
@@ -16567,7 +15006,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;DC395x_shutdown   DC395x_reset&n; ********************************************************************&n; */
 DECL|function|reset_scsi_bus
 r_static
 r_void
@@ -16580,16 +15018,16 @@ op_star
 id|acb
 )paren
 (brace
-multiline_comment|/*u32  drv_flags=0; */
 id|dprintkdbg
 c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;reset_scsi_bus..............&bslash;n&quot;
+l_string|&quot;reset_scsi_bus: acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
-multiline_comment|/*DC395x_DRV_LOCK(drv_flags); */
 id|acb-&gt;acb_flag
 op_or_assign
 id|RESET_DEV
@@ -16621,12 +15059,9 @@ op_amp
 id|INT_SCSIRESET
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/*DC395x_DRV_UNLOCK(drv_flags); */
-r_return
+multiline_comment|/* nothing */
 suffix:semicolon
 )brace
-multiline_comment|/* Set basic config */
 DECL|function|set_basic_config
 r_static
 r_void
@@ -16769,7 +15204,6 @@ op_or
 id|DMA_ENHANCE
 multiline_comment|/*| DMA_MEM_MULTI_READ */
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_INFO, &quot;DMA_Config: %04x&bslash;n&quot;, wval); */
 id|DC395x_write16
 c_func
 (paren
@@ -16814,7 +15248,6 @@ multiline_comment|/*| EN_DMAXFERABORT | EN_DMAXFERCOMP | EN_FORCEDMACOMP */
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;dc395x_interrupt&n; ********************************************************************&n; */
 DECL|function|scsi_reset_detect
 r_static
 r_void
@@ -16832,7 +15265,9 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;scsi_reset_detect&bslash;n&quot;
+l_string|&quot;scsi_reset_detect: acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
 multiline_comment|/* delay half a second */
@@ -16900,7 +15335,7 @@ c_func
 (paren
 id|acb
 comma
-l_string|&quot;RstDet&quot;
+l_string|&quot;scsi_reset_detect&quot;
 )paren
 suffix:semicolon
 id|set_basic_config
@@ -16965,12 +15400,9 @@ id|acb
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ********************************************************************&n; * scsiio&n; *&t;&t;srb_done&n; ********************************************************************&n; */
-r_static
 DECL|function|request_sense
+r_static
 r_void
 id|request_sense
 c_func
@@ -16994,29 +15426,21 @@ id|srb
 id|Scsi_Cmnd
 op_star
 id|cmd
-suffix:semicolon
-id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 comma
-l_string|&quot;request_sense for pid %li, target %02i-%i&bslash;n&quot;
+l_string|&quot;request_sense: (pid#%li) &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
 id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;RqSn*&quot;
 )paren
 suffix:semicolon
 id|srb-&gt;flag
@@ -17128,16 +15552,11 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_SG
 comma
-l_string|&quot;Map sense buffer at %p (%05x) to %08x&bslash;n&quot;
+l_string|&quot;request_sense: map buffer %p-&gt;%08x(%05x)&bslash;n&quot;
 comma
 id|cmd-&gt;sense_buffer
-comma
-r_sizeof
-(paren
-id|cmd-&gt;sense_buffer
-)paren
 comma
 id|srb-&gt;segment_x
 (braket
@@ -17145,6 +15564,11 @@ l_int|0
 )braket
 dot
 id|address
+comma
+r_sizeof
+(paren
+id|cmd-&gt;sense_buffer
+)paren
 )paren
 suffix:semicolon
 id|srb-&gt;sg_count
@@ -17175,19 +15599,13 @@ c_func
 (paren
 id|KERN_DEBUG
 comma
-l_string|&quot;Request Sense failed for pid %li (%02i-%i)!&bslash;n&quot;
+l_string|&quot;request_sense: (pid#%li) failed &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
 id|dcb-&gt;target_id
 comma
 id|dcb-&gt;target_lun
-)paren
-suffix:semicolon
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;?*&quot;
 )paren
 suffix:semicolon
 id|srb_going_to_waiting_move
@@ -17209,16 +15627,10 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;.*&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_alloc - Allocate a new device instance. This create the&n; * devices instance and sets up all the data items. The adapter&n; * instance is required to obtain confiuration information for this&n; * device. This does *not* add this device to the adapters device&n; * list.&n; *&n; * @acb: The adapter to obtain configuration information from.&n; * @target: The target for the new device.&n; * @lun: The lun for the new device.&n; *&n; * Return the new device if succesfull or NULL on failure.&n; **/
-r_static
 DECL|function|device_alloc
+r_static
 r_struct
 id|DeviceCtlBlk
 op_star
@@ -17264,7 +15676,7 @@ id|dcb
 suffix:semicolon
 id|dcb
 op_assign
-id|dc395x_kmalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -17281,9 +15693,11 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;device_alloc: device %p&bslash;n&quot;
+l_string|&quot;device_alloc: &lt;%02i-%i&gt;&bslash;n&quot;
 comma
-id|dcb
+id|target
+comma
+id|lun
 )paren
 suffix:semicolon
 r_if
@@ -17292,11 +15706,9 @@ c_cond
 op_logical_neg
 id|dcb
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|dcb-&gt;acb
 op_assign
 l_int|NULL
@@ -17476,17 +15888,17 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_KG
+id|DBG_1
 comma
-l_string|&quot;Copy settings from %02i-%02i to %02i-%02i&bslash;n&quot;
-comma
-id|p-&gt;target_id
-comma
-id|p-&gt;target_lun
+l_string|&quot;device_alloc: &lt;%02i-%i&gt; copy from &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
 id|dcb-&gt;target_lun
+comma
+id|p-&gt;target_id
+comma
+id|p-&gt;target_lun
 )paren
 suffix:semicolon
 id|dcb-&gt;sync_mode
@@ -17515,8 +15927,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_add_device - Adds the device instance to the adaptor instance.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A newly created and intialised device instance to add.&n; **/
-r_static
 DECL|function|adapter_add_device
+r_static
 r_void
 id|adapter_add_device
 c_func
@@ -17587,8 +15999,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_device - Removes the device instance from the adaptor&n; * instance. The device instance is not check in any way or freed by this. &n; * The caller is expected to take care of that. This will simply remove the&n; * device from the adapters data strcutures.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A device that has previously been added to the adapter.&n; **/
-r_static
 DECL|function|adapter_remove_device
+r_static
 r_void
 id|adapter_remove_device
 c_func
@@ -17619,13 +16031,11 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;adapter_remove_device: Remove device (ID %i, LUN %i): %p&bslash;n&quot;
+l_string|&quot;adapter_remove_device: &lt;%02i-%i&gt;&bslash;n&quot;
 comma
 id|dcb-&gt;target_id
 comma
 id|dcb-&gt;target_lun
-comma
-id|dcb
 )paren
 suffix:semicolon
 multiline_comment|/* fix up any pointers to this device that we have in the adapter */
@@ -17718,8 +16128,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_and_free_device - Removes a single device from the adapter&n; * and then frees the device information.&n; *&n; * @acb: The adapter device to be updated&n; * @dcb: A device that has previously been added to the adapter.&n; */
-r_static
 DECL|function|adapter_remove_and_free_device
+r_static
 r_void
 id|adapter_remove_and_free_device
 c_func
@@ -17751,10 +16161,14 @@ l_int|1
 id|dprintkdbg
 c_func
 (paren
-id|DBG_DCB
+id|DBG_1
 comma
-l_string|&quot;adapter_remove_and_free_device: &quot;
-l_string|&quot;Won&squot;t remove because of %i active requests&bslash;n&quot;
+l_string|&quot;adapter_remove_and_free_device: &lt;%02i-%i&gt; &quot;
+l_string|&quot;Won&squot;t remove because of %i active requests.&bslash;n&quot;
+comma
+id|dcb-&gt;target_id
+comma
+id|dcb-&gt;target_lun
 comma
 id|list_size
 c_func
@@ -17775,7 +16189,7 @@ comma
 id|dcb
 )paren
 suffix:semicolon
-id|dc395x_kfree
+id|kfree
 c_func
 (paren
 id|dcb
@@ -17783,8 +16197,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_remove_and_free_all_devices - Removes and frees all of the&n; * devices associated with the specified adapter.&n; *&n; * @acb: The adapter from which all devices should be removed.&n; **/
-r_static
 DECL|function|adapter_remove_and_free_all_devices
+r_static
 r_void
 id|adapter_remove_and_free_all_devices
 c_func
@@ -17808,9 +16222,9 @@ suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_DCB
+id|DBG_1
 comma
-l_string|&quot;adapter_remove_and_free_all_devices: Free all devices (%i devices)&bslash;n&quot;
+l_string|&quot;adapter_remove_and_free_all_devices: num=%i&bslash;n&quot;
 comma
 id|list_size
 c_func
@@ -17842,8 +16256,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_slave_alloc - Called by the scsi mid layer to tell us about a new&n; * scsi device that we need to deal with. We allocate a new device and then&n; * insert that device into the adapters device list.&n; *&n; * @scsi_device: The new scsi device that we need to handle.&n; **/
-r_static
 DECL|function|dc395x_slave_alloc
+r_static
 r_int
 id|dc395x_slave_alloc
 c_func
@@ -17906,8 +16320,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_slave_destroy - Called by the scsi mid layer to tell us about a&n; * device that is going away.&n; *&n; * @scsi_device: The new scsi device that we need to handle.&n; **/
-r_static
 DECL|function|dc395x_slave_destroy
+r_static
 r_void
 id|dc395x_slave_destroy
 c_func
@@ -17960,8 +16374,8 @@ id|dcb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_wait_30us: wait for 30 us&n; *&n; * Waits for 30us (using the chip by the looks of it..)&n; *&n; * @io_port: base I/O address&n; **/
-r_static
 DECL|function|trms1040_wait_30us
+r_static
 r_void
 id|__init
 id|trms1040_wait_30us
@@ -18000,12 +16414,10 @@ id|GTIMEOUT
 )paren
 multiline_comment|/* nothing */
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_write_cmd - write the secified command and address to&n; * chip&n; *&n; * @io_port:&t;base I/O address&n; * @cmd:&t;SB + op code (command) to send&n; * @addr:&t;address to send&n; **/
-r_static
 DECL|function|trms1040_write_cmd
+r_static
 r_void
 id|__init
 id|trms1040_write_cmd
@@ -18191,8 +16603,8 @@ id|io_port
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_set_data - store a single byte in the eeprom&n; *&n; * Called from write all to write a single byte into the SSEEPROM&n; * Which is done one bit at a time.&n; *&n; * @io_port:&t;base I/O address&n; * @addr:&t;offset into EEPROM&n; * @byte:&t;bytes to write&n; **/
-r_static
 DECL|function|trms1040_set_data
+r_static
 r_void
 id|__init
 id|trms1040_set_data
@@ -18419,8 +16831,8 @@ id|TRM_S1040_GEN_NVRAM
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_write_all - write 128 bytes to the eeprom&n; *&n; * Write the supplied 128 bytes to the chips SEEPROM&n; *&n; * @eeprom:&t;the data to write&n; * @io_port:&t;the base io port&n; **/
-r_static
 DECL|function|trms1040_write_all
+r_static
 r_void
 id|__init
 id|trms1040_write_all
@@ -18514,7 +16926,6 @@ comma
 id|b_eeprom
 op_increment
 )paren
-(brace
 id|trms1040_set_data
 c_func
 (paren
@@ -18526,7 +16937,6 @@ op_star
 id|b_eeprom
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* write disable */
 id|trms1040_write_cmd
 c_func
@@ -18578,8 +16988,8 @@ id|TRM_S1040_GEN_CONTROL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_get_data - get a single byte from the eeprom&n; *&n; * Called from read all to read a single byte into the SSEEPROM&n; * Which is done one bit at a time.&n; *&n; * @io_port:&t;base I/O address&n; * @addr:&t;offset into SEEPROM&n; *&n; * Returns the the byte read.&n; **/
-r_static
 DECL|function|trms1040_get_data
+r_static
 id|u8
 id|__init
 id|trms1040_get_data
@@ -18709,8 +17119,8 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * trms1040_read_all - read all bytes from the eeprom&n; *&n; * Read the 128 bytes from the SEEPROM.&n; *&n; * @eeprom:&t;where to store the data&n; * @io_port:&t;the base io port&n; **/
-r_static
 DECL|function|trms1040_read_all
+r_static
 r_void
 id|__init
 id|trms1040_read_all
@@ -18777,7 +17187,6 @@ comma
 id|b_eeprom
 op_increment
 )paren
-(brace
 op_star
 id|b_eeprom
 op_assign
@@ -18789,7 +17198,6 @@ comma
 id|addr
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Disable SEEPROM */
 id|outb
 c_func
@@ -18814,8 +17222,8 @@ id|TRM_S1040_GEN_CONTROL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * check_eeprom - get and check contents of the eeprom&n; *&n; * Read seeprom 128 bytes into the memory provider in eeprom.&n; * Checks the checksum and if it&squot;s not correct it uses a set of default&n; * values.&n; *&n; * @eeprom:&t;caller allocated strcuture to read the eeprom data into&n; * @io_port:&t;io port to read from&n; **/
-r_static
 DECL|function|check_eeprom
+r_static
 r_void
 id|__init
 id|check_eeprom
@@ -19186,8 +17594,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * print_eeprom_settings - output the eeprom settings&n; * to the kernel log so people can see what they were.&n; *&n; * @eeprom: The eeprom data strucutre to show details for.&n; **/
-r_static
 DECL|function|print_eeprom_settings
+r_static
 r_void
 id|__init
 id|print_eeprom_settings
@@ -19266,295 +17674,9 @@ id|eeprom-&gt;delay_time
 )paren
 suffix:semicolon
 )brace
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-multiline_comment|/*&n; * Memory for trace buffers&n; */
-r_static
-DECL|function|free_tracebufs
-r_void
-id|free_tracebufs
-c_func
-(paren
-r_struct
-id|AdapterCtlBlk
-op_star
-id|acb
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_const
-r_int
-id|bufs_per_page
-op_assign
-id|PAGE_SIZE
-op_div
-id|DEBUGTRACEBUFSZ
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|srb_idx
-suffix:semicolon
-id|i
-op_add_assign
-id|bufs_per_page
-)paren
-r_if
-c_cond
-(paren
-id|acb-&gt;srb_array
-(braket
-id|i
-)braket
-dot
-id|debugtrace
-)paren
-id|dc395x_kfree
-c_func
-(paren
-id|acb-&gt;srb_array
-(braket
-id|i
-)braket
-dot
-id|debugtrace
-)paren
-suffix:semicolon
-)brace
-r_static
-DECL|function|alloc_tracebufs
-r_int
-id|alloc_tracebufs
-c_func
-(paren
-r_struct
-id|AdapterCtlBlk
-op_star
-id|acb
-)paren
-(brace
-r_const
-r_int
-id|mem_needed
-op_assign
-(paren
-id|DC395x_MAX_SRB_CNT
-op_plus
-l_int|1
-)paren
-op_star
-id|DEBUGTRACEBUFSZ
-suffix:semicolon
-r_int
-id|pages
-op_assign
-(paren
-id|mem_needed
-op_plus
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-op_div
-id|PAGE_SIZE
-suffix:semicolon
-r_const
-r_int
-id|bufs_per_page
-op_assign
-id|PAGE_SIZE
-op_div
-id|DEBUGTRACEBUFSZ
-suffix:semicolon
-r_int
-id|srb_idx
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_char
-op_star
-id|ptr
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|DC395x_MAX_SRB_CNT
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|acb-&gt;srb_array
-(braket
-id|i
-)braket
-dot
-id|debugtrace
-op_assign
-l_int|NULL
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|pages
-op_decrement
-)paren
-(brace
-id|ptr
-op_assign
-id|dc395x_kmalloc
-c_func
-(paren
-id|PAGE_SIZE
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ptr
-)paren
-(brace
-id|free_tracebufs
-c_func
-(paren
-id|acb
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;Alloc %li bytes at %p for tracebuf %i&bslash;n&quot;, */
-multiline_comment|/*      PAGE_SIZE, ptr, srb_idx); */
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|i
-OL
-id|bufs_per_page
-op_logical_and
-id|srb_idx
-OL
-id|DC395x_MAX_SRB_CNT
-)paren
-id|acb-&gt;srb_array
-(braket
-id|srb_idx
-op_increment
-)braket
-dot
-id|debugtrace
-op_assign
-id|ptr
-op_plus
-(paren
-id|i
-op_increment
-op_star
-id|DEBUGTRACEBUFSZ
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
-OL
-id|bufs_per_page
-)paren
-(brace
-id|acb-&gt;srb.debugtrace
-op_assign
-id|ptr
-op_plus
-(paren
-id|i
-op_star
-id|DEBUGTRACEBUFSZ
-)paren
-suffix:semicolon
-id|acb-&gt;srb.debugtrace
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;No space for tmsrb tracebuf reserved?!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|free_tracebufs
-r_static
-r_void
-id|free_tracebufs
-c_func
-(paren
-r_struct
-id|AdapterCtlBlk
-op_star
-id|acb
-)paren
-(brace
-)brace
-DECL|function|alloc_tracebufs
-r_static
-r_int
-id|alloc_tracebufs
-c_func
-(paren
-r_struct
-id|AdapterCtlBlk
-op_star
-id|acb
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Free SG tables */
-r_static
 DECL|function|adapter_sg_tables_free
+r_static
 r_void
 id|adapter_sg_tables_free
 c_func
@@ -19574,15 +17696,7 @@ id|srbs_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_for
 c_loop
@@ -19609,7 +17723,7 @@ id|i
 dot
 id|segment_x
 )paren
-id|dc395x_kfree
+id|kfree
 c_func
 (paren
 id|acb-&gt;srb_array
@@ -19622,8 +17736,8 @@ id|segment_x
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate SG tables; as we have to pci_map them, an SG list (struct SGentry*)&n; * should never cross a page boundary */
-r_static
 DECL|function|adapter_sg_tables_alloc
+r_static
 r_int
 id|__init
 id|adapter_sg_tables_alloc
@@ -19645,13 +17759,7 @@ op_plus
 l_int|1
 )paren
 op_star
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_int
 id|pages
@@ -19674,15 +17782,7 @@ id|srbs_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_int
 id|srb_idx
@@ -19746,7 +17846,7 @@ r_struct
 id|SGentry
 op_star
 )paren
-id|dc395x_kmalloc
+id|kmalloc
 c_func
 (paren
 id|PAGE_SIZE
@@ -19849,8 +17949,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_print_config - print adapter connection and termination&n; * config&n; *&n; * The io port in the adapter needs to have been set before calling&n; * this function.&n; *&n; * @acb: The adapter to print the information for.&n; **/
-r_static
 DECL|function|adapter_print_config
+r_static
 r_void
 id|__init
 id|adapter_print_config
@@ -19880,7 +17980,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;%s Connectors: &quot;
+l_string|&quot;%sConnectors: &quot;
 comma
 (paren
 (paren
@@ -19890,7 +17990,7 @@ id|WIDESCSI
 )paren
 ques
 c_cond
-l_string|&quot;(Wide)&quot;
+l_string|&quot;(Wide) &quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -20071,8 +18171,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * adapter_init_params - Initialize the various parameters in the&n; * adapter structure. Note that the pointer to the scsi_host is set&n; * early (when this instance is created) and the io_port and irq&n; * values are set later after they have been reserved. This just gets&n; * everything set to a good starting position.&n; *&n; * The eeprom structure in the adapter needs to have been set before&n; * calling this function.&n; *&n; * @acb: The adapter to initialize.&n; **/
-r_static
 DECL|function|adapter_init_params
+r_static
 r_void
 id|__init
 id|adapter_init_params
@@ -20264,8 +18364,8 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_init_host - Initialize the scsi host instance based on&n; * values that we have already stored in the adapter instance. There&squot;s&n; * some mention that a lot of these are deprecated, so we won&squot;t use&n; * them (we&squot;ll use the ones in the adapter instance) but we&squot;ll fill&n; * them in in case something else needs them.&n; *&n; * The eeprom structure, irq and io ports in the adapter need to have&n; * been set before calling this function.&n; *&n; * @host: The scsi host instance to fill in the values for.&n; **/
-r_static
 DECL|function|adapter_init_scsi_host
+r_static
 r_void
 id|__init
 id|adapter_init_scsi_host
@@ -20536,8 +18636,8 @@ multiline_comment|/*spin_lock_irq (&amp;io_request_lock); */
 )brace
 )brace
 multiline_comment|/**&n; * init_adapter - Grab the resource for the card, setup the adapter&n; * information, set the card into a known state, create the various&n; * tables etc etc. This basically gets all adapter information all up&n; * to date, intialised and gets the chip in sync with it.&n; *&n; * @host:&t;This hosts adapter structure&n; * @io_port:&t;The base I/O port&n; * @irq:&t;IRQ&n; *&n; * Returns 0 if the initialization succeeds, any other value on&n; * failure.&n; **/
-r_static
 DECL|function|adapter_init
+r_static
 r_int
 id|__init
 id|adapter_init
@@ -20688,28 +18788,6 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|alloc_tracebufs
-c_func
-(paren
-id|acb
-)paren
-)paren
-(brace
-id|dprintkl
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;Memory allocation for trace buffers failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|failed
-suffix:semicolon
-)brace
 id|adapter_init_scsi_host
 c_func
 (paren
@@ -20733,9 +18811,8 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;adapter_init: acb=%p, pdcb_map=%p &quot;
-l_string|&quot;psrb_array=%p ACB size=%04x, DCB size=%04x &quot;
-l_string|&quot;SRB size=%04x&bslash;n&quot;
+l_string|&quot;adapter_init: acb=%p, pdcb_map=%p psrb_array=%p &quot;
+l_string|&quot;size{acb=0x%04x dcb=0x%04x srb=0x%04x}&bslash;n&quot;
 comma
 id|acb
 comma
@@ -20799,19 +18876,13 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-id|free_tracebufs
-c_func
-(paren
-id|acb
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_uninit_chip - cleanly shut down the scsi controller chip,&n; * stopping all operations and disabling interrupt generation on the&n; * card.&n; *&n; * @acb: The adapter which we are to shutdown.&n; **/
-r_static
 DECL|function|adapter_uninit_chip
+r_static
 r_void
 id|adapter_uninit_chip
 c_func
@@ -20868,8 +18939,8 @@ id|TRM_S1040_SCSI_INTSTATUS
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * adapter_uninit - Shut down the chip and release any resources that&n; * we had allocated. Once this returns the adapter should not be used&n; * anymore.&n; *&n; * @acb: The adapter which we are to un-initialize.&n; **/
-r_static
 DECL|function|adapter_uninit
+r_static
 r_void
 id|adapter_uninit
 c_func
@@ -20979,15 +19050,7 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-id|free_tracebufs
-c_func
-(paren
-id|acb
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; ******************************************************************&n; * Function: dc395x_proc_info(char* buffer, char **start,&n; *&t;&t;&t; off_t offset, int length, int hostno, int inout)&n; *  Purpose: return SCSI Adapter/Device Info&n; *    Input:&n; *          buffer: Pointer to a buffer where to write info&n; *&t;&t; start :&n; *&t;&t; offset:&n; *&t;&t; hostno: Host adapter index&n; *&t;&t; inout : Read (=0) or set(!=0) info&n; *   Output:&n; *          buffer: contains info length &n; *&t;&t;         &n; *    return value: length of info in buffer&n; *&n; ******************************************************************&n; */
-multiline_comment|/* KG: dc395x_proc_info taken from driver aha152x.c */
 DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
@@ -20996,8 +19059,8 @@ DECL|macro|YESNO
 macro_line|#undef YESNO
 DECL|macro|YESNO
 mdefine_line|#define YESNO(YN) &bslash;&n; if (YN) SPRINTF(&quot; Yes &quot;);&bslash;&n; else SPRINTF(&quot; No  &quot;)
-r_static
 DECL|function|dc395x_proc_info
+r_static
 r_int
 id|dc395x_proc_info
 c_func
@@ -21620,16 +19683,6 @@ id|dcb-&gt;srb_going_list
 comma
 id|list
 )paren
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;&bslash;n  %s&quot;
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
-macro_line|#else
 id|SPRINTF
 c_func
 (paren
@@ -21638,7 +19691,6 @@ comma
 id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -21671,7 +19723,7 @@ c_cond
 id|debug_enabled
 c_func
 (paren
-id|DBG_DCB
+id|DBG_1
 )paren
 )paren
 (brace
@@ -21761,7 +19813,6 @@ r_return
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SCSI host template&n; */
 DECL|variable|dc395x_driver_template
 r_static
 id|Scsi_Host_Template
@@ -21853,8 +19904,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * banner_display - Display banner on first instance of driver&n; * initialized.&n; **/
-r_static
 DECL|function|banner_display
+r_static
 r_void
 id|banner_display
 c_func
@@ -21894,8 +19945,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * dc395x_init_one - Initialise a single instance of the adapter.&n; *&n; * The PCI layer will call this once for each instance of the adapter&n; * that it finds in the system. The pci_dev strcuture indicates which&n; * instance we are being called from.&n; * &n; * @dev: The PCI device to intialize.&n; * @id: Looks like a pointer to the entry in our pci device table&n; * that was actually matched by the PCI subsystem.&n; *&n; * Returns 0 on success, or an error code (-ve) on failure.&n; **/
-r_static
 DECL|function|dc395x_init_one
+r_static
 r_int
 id|__devinit
 id|dc395x_init_one
@@ -22085,7 +20136,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;DC395x_initAdapter initial ERROR&bslash;n&quot;
+l_string|&quot;adapter init failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|scsi_host_put
@@ -22206,7 +20257,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Removing instance&bslash;n&quot;
+l_string|&quot;dc395x_remove_one: acb=%p&bslash;n&quot;
+comma
+id|acb
 )paren
 suffix:semicolon
 id|scsi_remove_host
@@ -22236,7 +20289,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Table which identifies the PCI devices which&n; * are handled by this device driver.&n; */
 DECL|variable|dc395x_pci_table
 r_static
 r_struct
@@ -22282,7 +20334,6 @@ comma
 id|dc395x_pci_table
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * PCI driver operations.&n; * Tells the PCI sub system what can be done with the card.&n; */
 DECL|variable|dc395x_driver
 r_static
 r_struct
@@ -22317,8 +20368,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * dc395x_module_init - Module initialization function&n; *&n; * Used by both module and built-in driver to initialise this driver.&n; **/
-r_static
 DECL|function|dc395x_module_init
+r_static
 r_int
 id|__init
 id|dc395x_module_init
@@ -22337,8 +20388,8 @@ id|dc395x_driver
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_module_exit - Module cleanup function.&n; **/
-r_static
 DECL|function|dc395x_module_exit
+r_static
 r_void
 id|__exit
 id|dc395x_module_exit

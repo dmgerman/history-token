@@ -3166,7 +3166,7 @@ op_assign
 id|security_sb_copy_data
 c_func
 (paren
-id|fstype
+id|type
 comma
 id|data
 comma

@@ -19,6 +19,7 @@ mdefine_line|#define IA64_SAL_PLATFORM_FEATURE_IPI_REDIR_HINT (1&lt;&lt;IA64_SAL
 DECL|macro|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
 mdefine_line|#define IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT&t;  (1&lt;&lt;IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT_BIT)
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
@@ -533,6 +534,20 @@ id|ia64_sal_desc_ptc
 op_star
 id|ia64_ptc_domain_info
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|sal_revision
+suffix:semicolon
+multiline_comment|/* supported SAL spec revision */
+r_extern
+r_int
+r_int
+id|sal_version
+suffix:semicolon
+multiline_comment|/* SAL version; OEM dependent */
+DECL|macro|SAL_VERSION_CODE
+mdefine_line|#define SAL_VERSION_CODE(major, minor) ((BIN2BCD(major) &lt;&lt; 8) | BIN2BCD(minor))
 r_extern
 r_const
 r_char
@@ -2389,6 +2404,9 @@ id|ia64_sal_pci_config_read
 id|u64
 id|pci_config_addr
 comma
+r_int
+id|type
+comma
 id|u64
 id|size
 comma
@@ -2412,7 +2430,7 @@ id|pci_config_addr
 comma
 id|size
 comma
-l_int|0
+id|type
 comma
 l_int|0
 comma
@@ -2447,6 +2465,9 @@ id|ia64_sal_pci_config_write
 id|u64
 id|pci_config_addr
 comma
+r_int
+id|type
+comma
 id|u64
 id|size
 comma
@@ -2471,7 +2492,7 @@ id|size
 comma
 id|value
 comma
-l_int|0
+id|type
 comma
 l_int|0
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * udf_fs.h&n; *&n; * PURPOSE&n; *  Included by fs/filesystems.c&n; *&n; * DESCRIPTION&n; *  OSTA-UDF(tm) = Optical Storage Technology Association&n; *  Universal Disk Format.&n; *&n; *  This code is based on version 2.00 of the UDF specification,&n; *  and revision 3 of the ECMA 167 standard [equivalent to ISO 13346].&n; *    http://www.osta.org/ *    http://www.ecma.ch/&n; *    http://www.iso.org/&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2000 Ben Fennema&n; *  (C) 1999-2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; */
+multiline_comment|/*&n; * udf_fs.h&n; *&n; * PURPOSE&n; *  Included by fs/filesystems.c&n; *&n; * DESCRIPTION&n; *  OSTA-UDF(tm) = Optical Storage Technology Association&n; *  Universal Disk Format.&n; *&n; *  This code is based on version 2.50 of the UDF specification,&n; *  and revision 3 of the ECMA 167 standard [equivalent to ISO 13346].&n; *    http://www.osta.org/ *    http://www.ecma.ch/&n; *    http://www.iso.org/&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2004 Ben Fennema&n; *  (C) 1999-2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; */
 macro_line|#ifndef _UDF_FS_H
 DECL|macro|_UDF_FS_H
 mdefine_line|#define _UDF_FS_H 1
@@ -7,9 +7,9 @@ mdefine_line|#define UDF_PREALLOCATE
 DECL|macro|UDF_DEFAULT_PREALLOC_BLOCKS
 mdefine_line|#define UDF_DEFAULT_PREALLOC_BLOCKS&t;8
 DECL|macro|UDFFS_DATE
-mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2002/11/15&quot;
+mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2004/29/09&quot;
 DECL|macro|UDFFS_VERSION
-mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.7&quot;
+mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.8.1&quot;
 DECL|macro|UDFFS_DEBUG
 mdefine_line|#define UDFFS_DEBUG
 macro_line|#ifdef UDFFS_DEBUG

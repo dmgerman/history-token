@@ -351,12 +351,6 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 id|unlock_kernel

@@ -1661,6 +1661,10 @@ id|inode
 op_star
 id|root
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|asb
 op_assign
 id|kmalloc
