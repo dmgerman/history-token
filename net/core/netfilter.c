@@ -1610,6 +1610,7 @@ id|elem-&gt;priority
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Optimization: we don&squot;t need to hold module&n;                   reference here, since function can&squot;t sleep. --RR */
 r_switch
 c_cond
 (paren
@@ -1810,7 +1811,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Any packet that leaves via this function must come back &n; * through nf_reinject().&n; */
 DECL|function|nf_queue
 r_static
-r_void
+r_int
 id|nf_queue
 c_func
 (paren
@@ -1877,6 +1878,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* QUEUE == DROP if noone is waiting, to be safe. */
 r_if
 c_cond
 (paren
@@ -1896,6 +1898,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 id|info
@@ -1943,6 +1946,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 op_star
@@ -1970,6 +1974,20 @@ id|outdev
 comma
 id|okfn
 )brace
+suffix:semicolon
+multiline_comment|/* If it&squot;s going away, ignore hook. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|info-&gt;elem-&gt;owner
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Bump dev refs so they don&squot;t vanish while packet is out */
 r_if
@@ -2110,6 +2128,12 @@ id|physoutdev
 )paren
 suffix:semicolon
 macro_line|#endif
+id|module_put
+c_func
+(paren
+id|info-&gt;elem-&gt;owner
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2123,8 +2147,12 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|nf_hook_slow
 r_int
@@ -2270,6 +2298,8 @@ id|pf
 id|hook
 )braket
 suffix:semicolon
+id|next_hook
+suffix:colon
 id|verdict
 op_assign
 id|nf_iterate
@@ -2315,6 +2345,10 @@ c_func
 l_string|&quot;nf_hook: Verdict = QUEUE.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|nf_queue
 c_func
 (paren
@@ -2332,6 +2366,9 @@ id|outdev
 comma
 id|okfn
 )paren
+)paren
+r_goto
+id|next_hook
 suffix:semicolon
 )brace
 r_switch
@@ -2420,62 +2457,13 @@ c_func
 id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|nf_hooks
-(braket
-id|info-&gt;pf
-)braket
-(braket
-id|info-&gt;hook
-)braket
-dot
-id|next
-suffix:semicolon
-id|i
-op_ne
-id|elem
-suffix:semicolon
-id|i
-op_assign
-id|i-&gt;next
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-op_amp
-id|nf_hooks
-(braket
-id|info-&gt;pf
-)braket
-(braket
-id|info-&gt;hook
-)braket
-)paren
-(brace
-multiline_comment|/* The module which sent it to userspace is gone. */
-id|NFDEBUG
+multiline_comment|/* Drop reference to owner of hook which queued us. */
+id|module_put
 c_func
 (paren
-l_string|&quot;%s: module disappeared, dropping packet.&bslash;n&quot;
-comma
-id|__FUNCTION__
+id|info-&gt;elem-&gt;owner
 )paren
 suffix:semicolon
-id|verdict
-op_assign
-id|NF_DROP
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Continue traversal iff userspace said ok... */
 r_if
 c_cond
@@ -2502,6 +2490,8 @@ op_eq
 id|NF_ACCEPT
 )paren
 (brace
+id|next_hook
+suffix:colon
 id|verdict
 op_assign
 id|nf_iterate
@@ -2556,6 +2546,10 @@ suffix:semicolon
 r_case
 id|NF_QUEUE
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|nf_queue
 c_func
 (paren
@@ -2573,6 +2567,9 @@ id|info-&gt;outdev
 comma
 id|info-&gt;okfn
 )paren
+)paren
+r_goto
+id|next_hook
 suffix:semicolon
 r_break
 suffix:semicolon
