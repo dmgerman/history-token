@@ -27,7 +27,7 @@ suffix:semicolon
 multiline_comment|/* IP address */
 DECL|member|at
 r_struct
-id|at_addr
+id|atalk_addr
 id|at
 suffix:semicolon
 multiline_comment|/* Gateway appletalk address */

@@ -1,6 +1,7 @@
 macro_line|#ifndef _NET_P8022_H
 DECL|macro|_NET_P8022_H
 mdefine_line|#define _NET_P8022_H
+macro_line|#include &lt;net/llc_if.h&gt;
 r_extern
 r_struct
 id|datalink_proto
@@ -15,20 +16,13 @@ comma
 r_int
 (paren
 op_star
-id|rcvfunc
+id|indicate
 )paren
 (paren
 r_struct
-id|sk_buff
+id|llc_prim_if_block
 op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_struct
-id|packet_type
-op_star
+id|prim
 )paren
 )paren
 suffix:semicolon
@@ -37,9 +31,10 @@ r_void
 id|unregister_8022_client
 c_func
 (paren
-r_int
-r_char
-id|type
+r_struct
+id|datalink_proto
+op_star
+id|proto
 )paren
 suffix:semicolon
 macro_line|#endif
