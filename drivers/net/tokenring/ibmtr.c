@@ -726,7 +726,8 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|chanid
 suffix:semicolon
 r_int
@@ -1153,7 +1154,7 @@ macro_line|#endif
 id|iounmap
 c_func
 (paren
-id|ram_addr
+id|ram_mapped
 )paren
 suffix:semicolon
 )brace
