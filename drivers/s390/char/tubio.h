@@ -505,10 +505,10 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* See below for values */
-DECL|member|tqueue
+DECL|member|tasklet
 r_struct
-id|tq_struct
-id|tqueue
+id|tasklet_struct
+id|tasklet
 suffix:semicolon
 multiline_comment|/* Stuff for fs-driver support */
 DECL|member|fs_pid

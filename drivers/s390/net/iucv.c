@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;iucv.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
@@ -113,29 +113,14 @@ id|iucv_irq_queue_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|iucv_tq
-r_static
-r_struct
-id|tq_struct
-id|iucv_tq
-suffix:semicolon
-DECL|variable|iucv_bh_scheduled
-r_static
-id|atomic_t
-id|iucv_bh_scheduled
-op_assign
-id|ATOMIC_INIT
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *Internal function prototypes&n; */
 r_static
 r_void
-id|iucv_bh_handler
+id|iucv_tasklet_handler
 c_func
 (paren
-r_void
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -148,6 +133,17 @@ id|pt_regs
 op_star
 comma
 id|__u16
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_TASKLET
+c_func
+(paren
+id|iucv_tasklet
+comma
+id|iucv_tasklet_handler
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/************ FUNCTION ID&squot;S ****************************/
@@ -965,26 +961,6 @@ id|iucv_param
 op_star
 id|PARAM_POOL_SIZE
 )paren
-suffix:semicolon
-multiline_comment|/* Initialize task queue */
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|iucv_tq.list
-)paren
-suffix:semicolon
-id|iucv_tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|iucv_tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|iucv_bh_handler
 suffix:semicolon
 multiline_comment|/* Initialize irq queue */
 id|INIT_LIST_HEAD
@@ -6749,7 +6725,7 @@ id|b2f0_result
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Interrupt Handlers&n; *******************************************************************************/
-multiline_comment|/**&n; * iucv_irq_handler:&n; * @regs: Current registers&n; * @code: irq code&n; *&n; * Handles external interrupts coming in from CP.&n; * Places the interrupt buffer on a queue and schedules iucv_bh_handler().&n; */
+multiline_comment|/**&n; * iucv_irq_handler:&n; * @regs: Current registers&n; * @code: irq code&n; *&n; * Handles external interrupts coming in from CP.&n; * Places the interrupt buffer on a queue and schedules iucv_tasklet_handler().&n; */
 r_static
 r_void
 DECL|function|iucv_irq_handler
@@ -6849,38 +6825,13 @@ op_amp
 id|iucv_irq_queue_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_compare_and_swap
-(paren
-l_int|0
-comma
-l_int|1
-comma
-op_amp
-id|iucv_bh_scheduled
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|queue_task
-(paren
-op_amp
-id|iucv_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
+id|tasklet_schedule
 c_func
 (paren
-id|IMMEDIATE_BH
+op_amp
+id|iucv_tasklet
 )paren
 suffix:semicolon
-)brace
 id|irq_exit
 c_func
 (paren
@@ -6889,7 +6840,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * iucv_do_int:&n; * @int_buf: Pointer to copy of external interrupt buffer&n; *&n; * The workhorse for handling interrupts queued by iucv_irq_handler().&n; * This function is called from the bottom half iucv_bh_handler().&n; */
+multiline_comment|/**&n; * iucv_do_int:&n; * @int_buf: Pointer to copy of external interrupt buffer&n; *&n; * The workhorse for handling interrupts queued by iucv_irq_handler().&n; * This function is called from the bottom half iucv_tasklet_handler().&n; */
 r_static
 r_void
 DECL|function|iucv_do_int
@@ -7617,14 +7568,16 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * iucv_bh_handler:&n; *&n; * This function loops over the queue of irq buffers and runs iucv_do_int()&n; * on every queue element.&n; */
+multiline_comment|/**&n; * iucv_tasklet_handler:&n; *&n; * This function loops over the queue of irq buffers and runs iucv_do_int()&n; * on every queue element.&n; */
 r_static
 r_void
-DECL|function|iucv_bh_handler
-id|iucv_bh_handler
+DECL|function|iucv_tasklet_handler
+id|iucv_tasklet_handler
 c_func
 (paren
-r_void
+r_int
+r_int
+id|ignored
 )paren
 (brace
 r_struct
@@ -7638,15 +7591,6 @@ id|next
 suffix:semicolon
 id|ulong
 id|flags
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|iucv_bh_scheduled
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
