@@ -171,6 +171,9 @@ id|port
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|fd_outb
 r_static
@@ -264,6 +267,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
 )brace
 DECL|function|fd_free_irq
 r_static
