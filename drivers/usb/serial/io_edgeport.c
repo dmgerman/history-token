@@ -10846,7 +10846,11 @@ c_func
 id|record-&gt;Addr
 )paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|record-&gt;Len
+)paren
 )paren
 suffix:semicolon
 r_break
