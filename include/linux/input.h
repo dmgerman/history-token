@@ -1388,7 +1388,7 @@ multiline_comment|/*&n; * In-kernel definitions.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 DECL|macro|NBITS
-mdefine_line|#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
+mdefine_line|#define NBITS(x) (((x)/BITS_PER_LONG)+1)
 DECL|macro|BIT
 mdefine_line|#define BIT(x)&t;(1UL&lt;&lt;((x)%BITS_PER_LONG))
 DECL|macro|LONG

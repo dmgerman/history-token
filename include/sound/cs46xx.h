@@ -2532,7 +2532,7 @@ suffix:semicolon
 multiline_comment|/* accept mmap valid (for OSS) */
 DECL|member|gameport
 r_struct
-id|snd_cs46xx_gameport
+id|gameport
 op_star
 id|gameport
 suffix:semicolon
@@ -2710,7 +2710,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-r_void
+r_int
 id|snd_cs46xx_gameport
 c_func
 (paren

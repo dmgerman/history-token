@@ -3,11 +3,11 @@ multiline_comment|/*&n; * This program is free software; you can redistribute it
 DECL|macro|FF_EFFECTS_MAX
 mdefine_line|#define FF_EFFECTS_MAX 64
 DECL|macro|FF_PID_FLAGS_USED
-mdefine_line|#define FF_PID_FLAGS_USED&t;1  /* If the effect exists */
+mdefine_line|#define FF_PID_FLAGS_USED&t;1&t;/* If the effect exists */
 DECL|macro|FF_PID_FLAGS_UPDATING
-mdefine_line|#define FF_PID_FLAGS_UPDATING&t;2  /* If the effect is being updated */
+mdefine_line|#define FF_PID_FLAGS_UPDATING&t;2&t;/* If the effect is being updated */
 DECL|macro|FF_PID_FLAGS_PLAYING
-mdefine_line|#define FF_PID_FLAGS_PLAYING&t;3  /* If the effect is currently being played */
+mdefine_line|#define FF_PID_FLAGS_PLAYING&t;3&t;/* If the effect is currently being played */
 DECL|macro|FF_PID_FALSE
 mdefine_line|#define FF_PID_FALSE&t;0
 DECL|macro|FF_PID_TRUE
@@ -30,7 +30,7 @@ r_int
 r_int
 id|device_id
 suffix:semicolon
-singleline_comment|// The device-assigned ID
+multiline_comment|/* The device-assigned ID */
 DECL|member|effect
 r_struct
 id|ff_effect
@@ -51,7 +51,6 @@ suffix:semicolon
 DECL|member|gain
 r_int
 r_int
-r_int
 id|gain
 suffix:semicolon
 DECL|member|urbffout
@@ -70,6 +69,7 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|ctrl_buffer
+r_int
 r_char
 id|ctrl_buffer
 (braket

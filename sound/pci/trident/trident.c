@@ -750,7 +750,7 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#endif
-id|snd_trident_gameport
+id|snd_trident_create_gameport
 c_func
 (paren
 id|trident

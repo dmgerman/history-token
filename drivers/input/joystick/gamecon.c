@@ -824,7 +824,9 @@ multiline_comment|/*&n; * PSX support&n; *&n; * See documentation at:&n; *&t;htt
 DECL|macro|GC_PSX_DELAY
 mdefine_line|#define GC_PSX_DELAY&t;25&t;&t;/* 25 usec */
 DECL|macro|GC_PSX_LENGTH
-mdefine_line|#define GC_PSX_LENGTH&t;8&t;&t;/* talk to the controller in bytes */
+mdefine_line|#define GC_PSX_LENGTH&t;8&t;&t;/* talk to the controller in bits */
+DECL|macro|GC_PSX_BYTES
+mdefine_line|#define GC_PSX_BYTES&t;6&t;&t;/* the maximum number of bytes to read off the controller */
 DECL|macro|GC_PSX_MOUSE
 mdefine_line|#define GC_PSX_MOUSE&t;1&t;&t;/* Mouse */
 DECL|macro|GC_PSX_NEGCON
@@ -846,7 +848,7 @@ mdefine_line|#define GC_PSX_SELECT&t;0x02&t;&t;/* Pin 3 */
 DECL|macro|GC_PSX_ID
 mdefine_line|#define GC_PSX_ID(x)&t;((x) &gt;&gt; 4)&t;/* High nibble is device type */
 DECL|macro|GC_PSX_LEN
-mdefine_line|#define GC_PSX_LEN(x)&t;((x) &amp; 0xf)&t;/* Low nibble is length in words */
+mdefine_line|#define GC_PSX_LEN(x)&t;(((x) &amp; 0xf) &lt;&lt; 1)&t;/* Low nibble is length in bytes/2 */
 DECL|variable|gc_psx_delay
 r_static
 r_int
@@ -970,7 +972,7 @@ r_int
 r_char
 id|data
 (braket
-id|GC_PSX_LENGTH
+l_int|5
 )braket
 )paren
 (brace
@@ -1013,7 +1015,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|8
+id|GC_PSX_LENGTH
 suffix:semicolon
 id|i
 op_increment
@@ -1150,7 +1152,7 @@ id|data
 l_int|5
 )braket
 (braket
-id|GC_PSX_LENGTH
+id|GC_PSX_BYTES
 )braket
 comma
 r_int
@@ -1305,6 +1307,19 @@ id|i
 OG
 id|max_len
 )paren
+op_logical_and
+(paren
+id|GC_PSX_LEN
+c_func
+(paren
+id|id
+(braket
+id|i
+)braket
+)paren
+op_le
+id|GC_PSX_BYTES
+)paren
 )paren
 (brace
 id|max_len
@@ -1329,8 +1344,6 @@ suffix:semicolon
 id|i
 OL
 id|max_len
-op_star
-l_int|2
 suffix:semicolon
 id|i
 op_increment
@@ -1471,7 +1484,7 @@ id|data_psx
 l_int|5
 )braket
 (braket
-id|GC_PSX_LENGTH
+id|GC_PSX_BYTES
 )braket
 suffix:semicolon
 r_int
@@ -3954,6 +3967,7 @@ id|gc
 suffix:semicolon
 )brace
 DECL|function|gc_init
+r_static
 r_int
 id|__init
 id|gc_init
@@ -4028,6 +4042,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|gc_exit
+r_static
 r_void
 id|__exit
 id|gc_exit

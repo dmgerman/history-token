@@ -1738,6 +1738,10 @@ op_assign
 op_amp
 id|intf-&gt;dev
 suffix:semicolon
+id|pm-&gt;input.phys
+op_assign
+id|pm-&gt;phys
+suffix:semicolon
 id|input_register_device
 c_func
 (paren

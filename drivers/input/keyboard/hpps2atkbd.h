@@ -1,8 +1,6 @@
 multiline_comment|/*&n; * drivers/input/keyboard/hpps2atkbd.h&n; *&n; * Copyright (c) 2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Copyright (c) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; * Copyright (c) 2002 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; * Copyright (c) 2000 Xavier Debacker &lt;debackex@esiee.fr&gt;&n; *&n; * HP PS/2 AT-compatible Keyboard, found in PA/RISC Workstations &amp; Laptops&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
-multiline_comment|/* undefine if you have a RDI PRECISIONBOOK */
-DECL|macro|STANDARD_KEYBOARD
-mdefine_line|#define STANDARD_KEYBOARD
-macro_line|#if defined(STANDARD_KEYBOARD)
+multiline_comment|/* Is the keyboard an RDI PrecisionBook? */
+macro_line|#ifndef CONFIG_KEYBOARD_ATKBD_RDI_KEYCODES
 DECL|macro|CONFLICT
 macro_line|# define CONFLICT(x,y) x
 macro_line|#else
@@ -291,7 +289,7 @@ id|KEY_KP9
 comma
 id|KEY_SCROLLLOCK
 comma
-id|KEY_103RD
+id|KEY_102ND
 comma
 multiline_comment|/* 80 */
 id|KEY_RESERVED
@@ -332,7 +330,7 @@ id|KEY_RESERVED
 comma
 id|KEY_RIGHTALT
 comma
-id|KEY_SYSRQ
+l_int|255
 comma
 id|KEY_RESERVED
 comma
@@ -1109,8 +1107,6 @@ comma
 id|KEY_RESERVED
 comma
 id|KEY_RESERVED
-DECL|macro|STANDARD_KEYBOARD
-macro_line|#undef STANDARD_KEYBOARD
 DECL|macro|CONFLICT
 macro_line|#undef CONFLICT
 DECL|macro|C_07

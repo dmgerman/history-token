@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: parkbd.c,v 1.10 2002/03/13 10:09:20 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; *  Parallel port to Keyboard port adapter driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; *  Parallel port to Keyboard port adapter driver for Linux&n; *&n; *  Copyright (c) 1999-2004 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
+multiline_comment|/*&n; * To connect an AT or XT keyboard to the parallel port, a fairly simple adapter&n; * can be made:&n; * &n; *  Parallel port            Keyboard port&n; *&n; *     +5V --------------------- +5V (4)&n; *  &n; *                 ______&n; *     +5V -------|______|--.&n; *                          |&n; *     ACK (10) ------------|&n; *                          |--- KBD CLOCK (5)&n; *     STROBE (1) ---|&lt;|----&squot;&n; *     &n; *                 ______&n; *     +5V -------|______|--.&n; *                          |&n; *     BUSY (11) -----------|&n; *                          |--- KBD DATA (1)&n; *     AUTOFD (14) --|&lt;|----&squot;&n; *&n; *     GND (18-25) ------------- GND (3)&n; *     &n; * The diodes can be fairly any type, and the resistors should be somewhere&n; * around 5 kOhm, but the adapter will likely work without the resistors,&n; * too.&n; *&n; * The +5V source can be taken either from USB, from mouse or keyboard ports,&n; * or from a joystick port. Unfortunately, the parallel port of a PC doesn&squot;t&n; * have a +5V pin, and feeding the keyboard from signal pins is out of question&n; * with 300 mA power reqirement of a typical AT keyboard.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -632,7 +632,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|parkbd_mode
 suffix:semicolon
@@ -674,6 +674,7 @@ id|serio
 suffix:semicolon
 )brace
 DECL|function|parkbd_init
+r_static
 r_int
 id|__init
 id|parkbd_init
@@ -758,6 +759,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parkbd_exit
+r_static
 r_void
 id|__exit
 id|parkbd_exit

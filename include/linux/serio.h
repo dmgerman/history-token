@@ -3,22 +3,18 @@ DECL|macro|_SERIO_H
 mdefine_line|#define _SERIO_H
 multiline_comment|/*&n; * Copyright (C) 1999-2002 Vojtech Pavlik&n;*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|SPIOCSTYPE
 mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 DECL|struct|serio
 r_struct
 id|serio
 (brace
-DECL|member|private
-r_void
-op_star
-r_private
-suffix:semicolon
 DECL|member|port_data
 r_void
 op_star
@@ -43,35 +39,10 @@ r_int
 r_int
 id|manual_bind
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
-suffix:semicolon
-DECL|member|type
-r_int
-r_int
-id|type
-suffix:semicolon
-DECL|member|event
-r_int
-r_int
-id|event
+DECL|member|id
+r_struct
+id|serio_device_id
+id|id
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -117,6 +88,30 @@ id|serio
 op_star
 )paren
 suffix:semicolon
+DECL|member|start
+r_int
+(paren
+op_star
+id|start
+)paren
+(paren
+r_struct
+id|serio
+op_star
+)paren
+suffix:semicolon
+DECL|member|stop
+r_void
+(paren
+op_star
+id|stop
+)paren
+(paren
+r_struct
+id|serio
+op_star
+)paren
+suffix:semicolon
 DECL|member|parent
 DECL|member|child
 r_struct
@@ -145,6 +140,12 @@ r_struct
 id|device
 id|dev
 suffix:semicolon
+DECL|member|registered
+r_int
+r_int
+id|registered
+suffix:semicolon
+multiline_comment|/* port has been fully registered with driver core */
 DECL|member|node
 r_struct
 id|list_head
@@ -167,6 +168,12 @@ DECL|member|description
 r_char
 op_star
 id|description
+suffix:semicolon
+DECL|member|id_table
+r_struct
+id|serio_device_id
+op_star
+id|id_table
 suffix:semicolon
 DECL|member|manual_bind
 r_int
@@ -208,7 +215,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|connect
-r_void
+r_int
 (paren
 op_star
 id|connect
@@ -264,11 +271,6 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
-suffix:semicolon
-DECL|member|node
-r_struct
-id|list_head
-id|node
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -343,6 +345,24 @@ id|regs
 )paren
 suffix:semicolon
 r_void
+id|__serio_register_port
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+suffix:semicolon
+DECL|function|serio_register_port
+r_static
+r_inline
+r_void
 id|serio_register_port
 c_func
 (paren
@@ -351,17 +371,16 @@ id|serio
 op_star
 id|serio
 )paren
-suffix:semicolon
-r_void
-id|serio_register_port_delayed
+(brace
+id|__serio_register_port
 c_func
 (paren
-r_struct
 id|serio
-op_star
-id|serio
+comma
+id|THIS_MODULE
 )paren
 suffix:semicolon
+)brace
 r_void
 id|serio_unregister_port
 c_func
@@ -373,6 +392,24 @@ id|serio
 )paren
 suffix:semicolon
 r_void
+id|__serio_unregister_port_delayed
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+suffix:semicolon
+DECL|function|serio_unregister_port_delayed
+r_static
+r_inline
+r_void
 id|serio_unregister_port_delayed
 c_func
 (paren
@@ -381,7 +418,34 @@ id|serio
 op_star
 id|serio
 )paren
+(brace
+id|__serio_unregister_port_delayed
+c_func
+(paren
+id|serio
+comma
+id|THIS_MODULE
+)paren
 suffix:semicolon
+)brace
+r_void
+id|__serio_register_driver
+c_func
+(paren
+r_struct
+id|serio_driver
+op_star
+id|drv
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+suffix:semicolon
+DECL|function|serio_register_driver
+r_static
+r_inline
 r_void
 id|serio_register_driver
 c_func
@@ -391,7 +455,16 @@ id|serio_driver
 op_star
 id|drv
 )paren
+(brace
+id|__serio_register_driver
+c_func
+(paren
+id|drv
+comma
+id|THIS_MODULE
+)paren
 suffix:semicolon
+)brace
 r_void
 id|serio_unregister_driver
 c_func
@@ -404,7 +477,7 @@ id|drv
 suffix:semicolon
 DECL|function|serio_write
 r_static
-id|__inline__
+r_inline
 r_int
 id|serio_write
 c_func
@@ -443,7 +516,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_drv_write_wakeup
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_drv_write_wakeup
 c_func
@@ -472,7 +545,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_cleanup
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_cleanup
 c_func
@@ -499,10 +572,61 @@ id|serio
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Use the following fucntions to manipulate serio&squot;s per-port&n; * driver-specific data.&n; */
+DECL|function|serio_get_drvdata
+r_static
+r_inline
+r_void
+op_star
+id|serio_get_drvdata
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+c_func
+(paren
+op_amp
+id|serio-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|serio_set_drvdata
+r_static
+r_inline
+r_void
+id|serio_set_drvdata
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|serio-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Use the following fucntions to protect critical sections in&n; * driver code from port&squot;s interrupt handler&n; */
 DECL|function|serio_pause_rx
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_pause_rx
 c_func
@@ -523,7 +647,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_continue_rx
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_continue_rx
 c_func
@@ -545,7 +669,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Use the following fucntions to pin serio&squot;s driver in process context&n; */
 DECL|function|serio_pin_driver
 r_static
-id|__inline__
+r_inline
 r_int
 id|serio_pin_driver
 c_func
@@ -567,7 +691,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_unpin_driver
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_unpin_driver
 c_func
@@ -594,22 +718,22 @@ DECL|macro|SERIO_PARITY
 mdefine_line|#define SERIO_PARITY&t;2
 DECL|macro|SERIO_FRAME
 mdefine_line|#define SERIO_FRAME&t;4
-DECL|macro|SERIO_TYPE
-mdefine_line|#define SERIO_TYPE&t;0xff000000UL
+multiline_comment|/*&n; * Serio types&n; */
 DECL|macro|SERIO_XT
-mdefine_line|#define SERIO_XT&t;0x00000000UL
+mdefine_line|#define SERIO_XT&t;0x00
 DECL|macro|SERIO_8042
-mdefine_line|#define SERIO_8042&t;0x01000000UL
+mdefine_line|#define SERIO_8042&t;0x01
 DECL|macro|SERIO_RS232
-mdefine_line|#define SERIO_RS232&t;0x02000000UL
+mdefine_line|#define SERIO_RS232&t;0x02
 DECL|macro|SERIO_HIL_MLC
-mdefine_line|#define SERIO_HIL_MLC&t;0x03000000UL
+mdefine_line|#define SERIO_HIL_MLC&t;0x03
 DECL|macro|SERIO_PS_PSTHRU
-mdefine_line|#define SERIO_PS_PSTHRU&t;0x05000000UL
+mdefine_line|#define SERIO_PS_PSTHRU&t;0x05
 DECL|macro|SERIO_8042_XL
-mdefine_line|#define SERIO_8042_XL&t;0x06000000UL
-DECL|macro|SERIO_PROTO
-mdefine_line|#define SERIO_PROTO&t;0xFFUL
+mdefine_line|#define SERIO_8042_XL&t;0x06
+multiline_comment|/*&n; * Serio types&n; */
+DECL|macro|SERIO_UNKNOWN
+mdefine_line|#define SERIO_UNKNOWN&t;0x00
 DECL|macro|SERIO_MSC
 mdefine_line|#define SERIO_MSC&t;0x01
 DECL|macro|SERIO_SUN
@@ -662,9 +786,9 @@ DECL|macro|SERIO_SEMTECH
 mdefine_line|#define SERIO_SEMTECH&t;0x27
 DECL|macro|SERIO_LKKBD
 mdefine_line|#define SERIO_LKKBD&t;0x28
-DECL|macro|SERIO_ID
-mdefine_line|#define SERIO_ID&t;0xff00UL
-DECL|macro|SERIO_EXTRA
-mdefine_line|#define SERIO_EXTRA&t;0xff0000UL
+DECL|macro|SERIO_ELO
+mdefine_line|#define SERIO_ELO&t;0x29
+DECL|macro|SERIO_MICROTOUCH
+mdefine_line|#define SERIO_MICROTOUCH&t;0x30
 macro_line|#endif
 eof
