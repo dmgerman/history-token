@@ -3,7 +3,6 @@ macro_line|#ifndef __SPARC64_SYSTEM_H
 DECL|macro|__SPARC64_SYSTEM_H
 mdefine_line|#define __SPARC64_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/visasm.h&gt;
