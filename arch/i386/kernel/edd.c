@@ -42,6 +42,8 @@ mdefine_line|#define EDD_DEVICE_NAME_SIZE 16
 DECL|macro|REPORT_URL
 mdefine_line|#define REPORT_URL &quot;http:
 singleline_comment|//domsch.com/linux/edd30/results.html&quot;
+DECL|macro|left
+mdefine_line|#define left (count - (p - buf) - 1)
 multiline_comment|/*&n; * bios_dir may go away completely,&n; * and it definitely won&squot;t be at the root&n; * of driverfs forever.&n; */
 DECL|variable|bios_dir
 r_static
@@ -338,6 +340,9 @@ r_char
 op_star
 id|b
 comma
+r_int
+id|count
+comma
 r_void
 op_star
 id|data
@@ -353,21 +358,21 @@ op_assign
 id|b
 suffix:semicolon
 r_char
-id|buffer1
+id|hexbuf
 (braket
 l_int|80
 )braket
 comma
-id|buffer2
+id|ascbuf
 (braket
-l_int|80
+l_int|20
 )braket
 comma
 op_star
-id|b1
+id|h
 comma
 op_star
-id|b2
+id|a
 comma
 id|c
 suffix:semicolon
@@ -388,6 +393,8 @@ r_int
 id|length_printed
 op_assign
 l_int|0
+comma
+id|d
 suffix:semicolon
 r_const
 r_char
@@ -399,17 +406,17 @@ r_while
 c_loop
 (paren
 id|length_printed
-OL
-id|length
+template_param
+l_int|0
 )paren
 (brace
-id|b1
+id|h
 op_assign
-id|buffer1
+id|hexbuf
 suffix:semicolon
-id|b2
+id|a
 op_assign
-id|buffer2
+id|ascbuf
 suffix:semicolon
 r_for
 c_loop
@@ -430,12 +437,12 @@ id|column
 op_increment
 )paren
 (brace
-id|b1
+id|h
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|b1
+id|h
 comma
 l_string|&quot;%02x &quot;
 comma
@@ -450,10 +457,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|isprint
+c_func
+(paren
 op_star
 id|p
-template_param
-l_int|126
+)paren
 )paren
 id|c
 op_assign
@@ -465,12 +475,12 @@ op_assign
 op_star
 id|p
 suffix:semicolon
-id|b2
+id|a
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|b2
+id|a
 comma
 l_string|&quot;%c&quot;
 comma
@@ -497,40 +507,50 @@ id|column
 op_increment
 )paren
 (brace
-id|b1
+id|h
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|b1
+id|h
 comma
 l_string|&quot;   &quot;
 )paren
 suffix:semicolon
-id|b2
+id|a
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|b2
+id|a
 comma
 l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
-id|b
-op_add_assign
-id|sprintf
+id|d
+op_assign
+id|snprintf
 c_func
 (paren
 id|b
 comma
+id|count
+comma
 l_string|&quot;%s&bslash;t%s&bslash;n&quot;
 comma
-id|buffer1
+id|hexbuf
 comma
-id|buffer2
+id|ascbuf
 )paren
+suffix:semicolon
+id|b
+op_add_assign
+id|d
+suffix:semicolon
+id|count
+op_sub_assign
+id|d
 suffix:semicolon
 )brace
 r_return
@@ -632,10 +652,12 @@ id|i
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;%c&quot;
 comma
@@ -650,10 +672,12 @@ r_else
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot; &quot;
 )paren
@@ -677,10 +701,12 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tbase_address: %x&bslash;n&quot;
 comma
@@ -717,10 +743,12 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;t%02x:%02x.%01x  channel: %u&bslash;n&quot;
 comma
@@ -774,10 +802,12 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tTBD: %llx&bslash;n&quot;
 comma
@@ -789,10 +819,12 @@ r_else
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tunknown: %llx&bslash;n&quot;
 comma
@@ -899,10 +931,12 @@ id|i
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;%c&quot;
 comma
@@ -917,10 +951,12 @@ r_else
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot; &quot;
 )paren
@@ -944,10 +980,12 @@ l_int|5
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tdevice: %u  lun: %u&bslash;n&quot;
 comma
@@ -975,10 +1013,12 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tdevice: %u&bslash;n&quot;
 comma
@@ -1004,10 +1044,12 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tid: %u  lun: %llu&bslash;n&quot;
 comma
@@ -1035,10 +1077,12 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tserial_number: %llx&bslash;n&quot;
 comma
@@ -1064,10 +1108,12 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;teui: %llx&bslash;n&quot;
 comma
@@ -1093,10 +1139,12 @@ l_int|5
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;twwid: %llx lun: %llx&bslash;n&quot;
 comma
@@ -1124,10 +1172,12 @@ l_int|3
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tidentity_tag: %llx&bslash;n&quot;
 comma
@@ -1153,10 +1203,12 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tidentity_tag: %x&bslash;n&quot;
 comma
@@ -1182,10 +1234,12 @@ l_int|4
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tdevice: %u&bslash;n&quot;
 comma
@@ -1197,10 +1251,12 @@ r_else
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;tunknown: %llx %llx&bslash;n&quot;
 comma
@@ -1349,10 +1405,12 @@ id|info-&gt;params.length
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;int13 fn48 returned data:&bslash;n&bslash;n&quot;
 )paren
@@ -1363,6 +1421,8 @@ id|edd_dump_raw_data
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 (paren
 (paren
@@ -1380,10 +1440,12 @@ suffix:semicolon
 multiline_comment|/* Spec violation.  Adaptec AIC7899 returns 0xDDBE&n;&t;   here, when it should be 0xBEDD.&n;&t; */
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -1398,10 +1460,12 @@ l_int|0xDDBE
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Warning: Spec violation.  Key should be 0xBEDD, is 0xDDBE&bslash;n&quot;
 )paren
@@ -1482,10 +1546,12 @@ id|checksum
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Warning: Spec violation.  Device Path checksum invalid.&bslash;n&quot;
 )paren
@@ -1503,10 +1569,12 @@ id|nonzero_path
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Error: Spec violation.  Empty device path.&bslash;n&quot;
 )paren
@@ -1594,10 +1662,12 @@ id|warn_padding
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Warning: Spec violation.  Padding should be 0x20.&bslash;n&quot;
 )paren
@@ -1652,20 +1722,24 @@ id|pci_dev
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Error: BIOS says this is a PCI device, but the OS doesn&squot;t know&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;  about a PCI device at %02x:%02x.%01x&bslash;n&quot;
 comma
@@ -1710,30 +1784,36 @@ id|sd
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Error: BIOS says this is a SCSI device, but&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;  the OS doesn&squot;t know about this SCSI device.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;  Do you have it&squot;s driver module loaded?&bslash;n&quot;
 )paren
@@ -1753,10 +1833,12 @@ id|email
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;&bslash;nPlease check %s&bslash;n&quot;
 comma
@@ -1765,20 +1847,24 @@ id|REPORT_URL
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;to see if this has been reported.  If not,&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;please send the information requested there.&bslash;n&quot;
 )paren
@@ -1852,10 +1938,12 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;0x%02x&bslash;n&quot;
 comma
@@ -1938,10 +2026,12 @@ id|EDD_EXT_FIXED_DISK_ACCESS
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Fixed disk access&bslash;n&quot;
 )paren
@@ -1957,10 +2047,12 @@ id|EDD_EXT_DEVICE_LOCKING_AND_EJECTING
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Device locking and ejecting&bslash;n&quot;
 )paren
@@ -1976,10 +2068,12 @@ id|EDD_EXT_ENHANCED_DISK_DRIVE_SUPPORT
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;Enhanced Disk Drive support&bslash;n&quot;
 )paren
@@ -1995,10 +2089,12 @@ id|EDD_EXT_64BIT_EXTENSIONS
 (brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;64-bit extensions&bslash;n&quot;
 )paren
@@ -2079,10 +2175,12 @@ id|EDD_INFO_DMA_BOUNDRY_ERROR_TRANSPARENT
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;DMA boundry error transparent&bslash;n&quot;
 )paren
@@ -2096,10 +2194,12 @@ id|EDD_INFO_GEOMETRY_VALID
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;geometry valid&bslash;n&quot;
 )paren
@@ -2113,10 +2213,12 @@ id|EDD_INFO_REMOVABLE
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;removable&bslash;n&quot;
 )paren
@@ -2130,10 +2232,12 @@ id|EDD_INFO_WRITE_VERIFY
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;write verify&bslash;n&quot;
 )paren
@@ -2147,10 +2251,12 @@ id|EDD_INFO_MEDIA_CHANGE_NOTIFICATION
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;media change notification&bslash;n&quot;
 )paren
@@ -2164,10 +2270,12 @@ id|EDD_INFO_LOCKABLE
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;lockable&bslash;n&quot;
 )paren
@@ -2181,10 +2289,12 @@ id|EDD_INFO_NO_MEDIA_PRESENT
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;no media present&bslash;n&quot;
 )paren
@@ -2198,10 +2308,12 @@ id|EDD_INFO_USE_INT13_FN50
 )paren
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;use int13 fn50&bslash;n&quot;
 )paren
@@ -2274,10 +2386,12 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;0x%x&bslash;n&quot;
 comma
@@ -2352,10 +2466,12 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;0x%x&bslash;n&quot;
 comma
@@ -2430,10 +2546,12 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;0x%x&bslash;n&quot;
 comma
@@ -2508,10 +2626,12 @@ suffix:semicolon
 )brace
 id|p
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|p
+comma
+id|left
 comma
 l_string|&quot;0x%llx&bslash;n&quot;
 comma
