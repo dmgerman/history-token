@@ -1330,13 +1330,22 @@ op_star
 id|cmdline_p
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_NUMA
+macro_line|# ifdef CONFIG_ACPI_NUMA
 id|acpi_numa_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|# endif
+macro_line|#else
+macro_line|# ifdef CONFIG_SMP
+id|smp_build_cpu_map
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* happens, e.g., with the Ski simulator */
+macro_line|# endif
 macro_line|#endif /* CONFIG_APCI_BOOT */
 id|find_memory
 c_func
@@ -1843,6 +1852,19 @@ c_func
 (paren
 id|cp
 comma
+id|feature_bits
+(braket
+id|i
+)braket
+dot
+id|feature_name
+)paren
+suffix:semicolon
+id|cp
+op_add_assign
+id|strlen
+c_func
+(paren
 id|feature_bits
 (braket
 id|i

@@ -2696,12 +2696,6 @@ id|errno
 r_case
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;ERESTART_RESTARTBLOCK: ignoring&bslash;n&quot;
-)paren
-suffix:semicolon
 id|current_thread_info
 c_func
 (paren
@@ -2891,20 +2885,10 @@ id|errno
 op_eq
 id|ERESTART_RESTARTBLOCK
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ERESTART_RESTARTBLOCK: restarting at %lx&bslash;n&quot;
-comma
-id|scr-&gt;pt.cr_iip
-)paren
-suffix:semicolon
 id|scr-&gt;pt.r15
 op_assign
 id|__NR_restart_syscall
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
