@@ -24,6 +24,8 @@ DECL|macro|EvTyp_CntlProgIdent
 mdefine_line|#define EvTyp_CntlProgIdent&t;0x0B
 DECL|macro|EvTyp_SigQuiesce
 mdefine_line|#define EvTyp_SigQuiesce&t;0x1D
+DECL|macro|EvTyp_VT220Msg
+mdefine_line|#define EvTyp_VT220Msg&t;&t;0x1A
 DECL|macro|EvTyp_OpCmd_Mask
 mdefine_line|#define EvTyp_OpCmd_Mask&t;0x80000000
 DECL|macro|EvTyp_Msg_Mask
@@ -38,6 +40,8 @@ DECL|macro|EvTyp_CtlProgIdent_Mask
 mdefine_line|#define EvTyp_CtlProgIdent_Mask&t;0x00200000
 DECL|macro|EvTyp_SigQuiesce_Mask
 mdefine_line|#define EvTyp_SigQuiesce_Mask&t;0x00000008
+DECL|macro|EvTyp_VT220Msg_Mask
+mdefine_line|#define EvTyp_VT220Msg_Mask&t;0x00000040
 DECL|macro|GnrlMsgFlgs_DOM
 mdefine_line|#define GnrlMsgFlgs_DOM&t;&t;0x8000
 DECL|macro|GnrlMsgFlgs_SndAlrm
