@@ -78,7 +78,7 @@ c_func
 (paren
 id|NCP_MAX_SYMLINK_SIZE
 comma
-id|GFP_NFS
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -461,7 +461,7 @@ c_func
 (paren
 id|NCP_MAX_SYMLINK_SIZE
 comma
-id|GFP_NFS
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
