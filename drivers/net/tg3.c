@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@pobox.com)&n; */
+multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002, 2003 Jeff Garzik (jgarzik@pobox.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.9&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.0&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 3, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 23, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
