@@ -8,7 +8,7 @@ multiline_comment|/* this makes the Kernel version numbers readable */
 DECL|macro|KERNEL_VER
 mdefine_line|#define KERNEL_VER(major,minor,sublvl) (((major)&lt;&lt;16)+((minor)&lt;&lt;8)+(sublvl))
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
