@@ -2779,7 +2779,7 @@ l_int|0
 )paren
 id|align
 op_assign
-l_int|0x10000UL
+l_int|0x10000
 suffix:semicolon
 id|data.mask
 op_assign
