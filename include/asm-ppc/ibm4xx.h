@@ -102,7 +102,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_OCOTEA)
 macro_line|#include &lt;platforms/4xx/ocotea.h&gt;
 macro_line|#endif
-macro_line|#endif /* CONFIG_40x */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 r_extern
@@ -110,6 +109,7 @@ id|bd_t
 id|__res
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif /* CONFIG_40x */
 macro_line|#endif /* __ASM_IBM4XX_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof
