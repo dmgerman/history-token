@@ -3005,7 +3005,7 @@ r_if
 c_cond
 (paren
 id|par-&gt;vmode
-op_and_assign
+op_amp
 id|FB_VMODE_SMOOTH_XPAN
 )paren
 id|info-&gt;fix.xpanstep
