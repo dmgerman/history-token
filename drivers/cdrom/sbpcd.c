@@ -29039,11 +29039,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; *  Test for presence of drive and initialize it.&n; *  Called once at boot or load time.&n; */
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 multiline_comment|/* FIXME: cleanups after failed allocations are too ugly for words */
 macro_line|#ifdef MODULE
 DECL|function|__sbpcd_init
@@ -29925,8 +29920,6 @@ op_amp
 id|sbpcd_lock
 )paren
 suffix:semicolon
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL
@@ -30415,11 +30408,6 @@ op_amp
 id|sbpcd_queue
 )paren
 suffix:semicolon
-id|devfs_unregister
-(paren
-id|devfs_handle
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -30470,6 +30458,14 @@ id|j
 )braket
 dot
 id|disk
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;sbp/c0t%d&quot;
+comma
+id|j
 )paren
 suffix:semicolon
 id|vfree
@@ -30551,6 +30547,12 @@ id|sbpcd_infop
 )paren
 suffix:semicolon
 )brace
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;sbp&quot;
+)paren
+suffix:semicolon
 id|msg
 c_func
 (paren
