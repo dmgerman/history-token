@@ -1047,4 +1047,11 @@ r_int
 id|sign_CIFS_PDUs
 suffix:semicolon
 multiline_comment|/* enable smb packet signing */
+DECL|variable|linuxExtEnabled
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|linuxExtEnabled
+suffix:semicolon
+multiline_comment|/* enable Linux/Unix CIFS extensions */
 eof

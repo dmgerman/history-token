@@ -64,6 +64,13 @@ id|quotaEnabled
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|linuxExtEnabled
+r_int
+r_int
+id|linuxExtEnabled
+op_assign
+l_int|1
+suffix:semicolon
 DECL|variable|lookupCacheEnabled
 r_int
 r_int
