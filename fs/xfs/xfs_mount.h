@@ -1924,6 +1924,15 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|xfs_unmountfs_wait
+c_func
+(paren
+id|xfs_mount_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|xfs_unmountfs_close
 c_func
 (paren
