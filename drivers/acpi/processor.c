@@ -3199,7 +3199,7 @@ c_func
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;core_frequency is 0&bslash;n&quot;
+l_string|&quot;Invalid _PSS data: freq is zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5353,6 +5353,10 @@ c_cond
 (paren
 op_logical_neg
 id|cpu_has_cpufreq
+c_func
+(paren
+id|cpu
+)paren
 )paren
 r_return
 op_minus
@@ -5407,6 +5411,10 @@ c_cond
 (paren
 op_logical_neg
 id|cpu_has_cpufreq
+c_func
+(paren
+id|cpu
+)paren
 )paren
 r_return
 op_minus
