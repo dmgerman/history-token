@@ -9212,6 +9212,9 @@ c_cond
 id|wbc-&gt;sync_mode
 op_ne
 id|WB_SYNC_NONE
+op_logical_or
+op_logical_neg
+id|wbc-&gt;nonblocking
 )paren
 (brace
 id|lock_buffer
