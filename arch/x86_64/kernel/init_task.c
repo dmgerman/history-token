@@ -123,12 +123,4 @@ id|____cacheline_maxaligned_in_smp
 suffix:semicolon
 DECL|macro|ALIGN_TO_4K
 mdefine_line|#define ALIGN_TO_4K __attribute__((section(&quot;.data.init_task&quot;)))
-DECL|variable|ALIGN_TO_4K
-id|pgd_t
-id|boot_vmalloc_pgt
-(braket
-l_int|512
-)braket
-id|ALIGN_TO_4K
-suffix:semicolon
 eof
