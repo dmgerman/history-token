@@ -2478,6 +2478,8 @@ multiline_comment|/* Indicate a good result */
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4966,6 +4968,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -5042,6 +5046,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -5119,6 +5125,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -5228,6 +5236,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -5758,6 +5768,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
@@ -5902,6 +5914,8 @@ suffix:semicolon
 id|srb-&gt;result
 op_assign
 id|GOOD
+op_lshift
+l_int|1
 suffix:semicolon
 id|sendToTransport
 op_assign
