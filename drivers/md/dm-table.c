@@ -589,6 +589,8 @@ op_star
 id|dm_vcalloc
 c_func
 (paren
+id|num
+comma
 r_sizeof
 (paren
 r_struct
@@ -599,8 +601,6 @@ r_sizeof
 (paren
 id|sector_t
 )paren
-comma
-id|num
 )paren
 suffix:semicolon
 r_if

@@ -235,11 +235,13 @@ comma
 r_const
 r_struct
 id|osf_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|osf_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -425,11 +427,13 @@ comma
 r_const
 r_struct
 id|sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction
+id|__user
 op_star
 id|oact
 comma
@@ -437,6 +441,7 @@ r_int
 id|sigsetsize
 comma
 r_void
+id|__user
 op_star
 id|restorer
 )paren
@@ -664,6 +669,7 @@ id|do_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|uset
 comma
@@ -806,10 +812,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 )paren
@@ -890,6 +898,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1364,6 +1373,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1539,6 +1549,7 @@ c_func
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 comma
@@ -1714,6 +1725,7 @@ multiline_comment|/*&n; * Set up a signal frame.&n; */
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -1759,6 +1771,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1781,6 +1794,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -2379,6 +2393,7 @@ l_int|0
 suffix:semicolon
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -2664,6 +2679,7 @@ l_int|0
 suffix:semicolon
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon

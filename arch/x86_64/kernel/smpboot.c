@@ -3259,6 +3259,7 @@ id|siblings
 op_ne
 id|smp_num_siblings
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -3272,6 +3273,11 @@ comma
 id|smp_num_siblings
 )paren
 suffix:semicolon
+id|smp_num_siblings
+op_assign
+id|siblings
+suffix:semicolon
+)brace
 )brace
 id|Dprintk
 c_func

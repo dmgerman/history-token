@@ -4,21 +4,21 @@ DECL|macro|_HVCALLSC_H
 mdefine_line|#define _HVCALLSC_H
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 DECL|macro|HvCallBase
-mdefine_line|#define HvCallBase&t;&t;0x8000000000000000
+mdefine_line|#define HvCallBase&t;&t;0x8000000000000000ul
 DECL|macro|HvCallCc
-mdefine_line|#define HvCallCc&t;&t;0x8001000000000000
+mdefine_line|#define HvCallCc&t;&t;0x8001000000000000ul
 DECL|macro|HvCallCfg
-mdefine_line|#define HvCallCfg&t;&t;0x8002000000000000
+mdefine_line|#define HvCallCfg&t;&t;0x8002000000000000ul
 DECL|macro|HvCallEvent
-mdefine_line|#define HvCallEvent&t;&t;0x8003000000000000
+mdefine_line|#define HvCallEvent&t;&t;0x8003000000000000ul
 DECL|macro|HvCallHpt
-mdefine_line|#define HvCallHpt&t;&t;0x8004000000000000
+mdefine_line|#define HvCallHpt&t;&t;0x8004000000000000ul
 DECL|macro|HvCallPci
-mdefine_line|#define HvCallPci&t;&t;0x8005000000000000
+mdefine_line|#define HvCallPci&t;&t;0x8005000000000000ul
 DECL|macro|HvCallSm
-mdefine_line|#define HvCallSm&t;&t;0x8007000000000000
+mdefine_line|#define HvCallSm&t;&t;0x8007000000000000ul
 DECL|macro|HvCallXm
-mdefine_line|#define HvCallXm&t;&t;0x8009000000000000
+mdefine_line|#define HvCallXm&t;&t;0x8009000000000000ul
 id|u64
 id|HvCall0
 c_func

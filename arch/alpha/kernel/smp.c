@@ -2801,7 +2801,7 @@ r_int
 id|cpu
 )paren
 (brace
-macro_line|#if DEBUG_IPI_MSG
+macro_line|#ifdef DEBUG_IPI_MSG
 r_if
 c_cond
 (paren
@@ -2855,7 +2855,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_IPI_MSG
+macro_line|#ifdef DEBUG_IPI_MSG
 r_if
 c_cond
 (paren

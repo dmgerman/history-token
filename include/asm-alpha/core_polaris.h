@@ -6,19 +6,19 @@ macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * POLARIS is the internal name for a core logic chipset which provides&n; * memory controller and PCI access for the 21164PC chip based systems.&n; *&n; * This file is based on:&n; *&n; * Polaris System Controller&n; * Device Functional Specification&n; * 22-Jan-98&n; * Rev. 4.2&n; *&n; */
 multiline_comment|/* Polaris memory regions */
 DECL|macro|POLARIS_SPARSE_MEM_BASE
-mdefine_line|#define POLARIS_SPARSE_MEM_BASE&t;&t;(IDENT_ADDR + 0xf800000000)
+mdefine_line|#define POLARIS_SPARSE_MEM_BASE&t;&t;(IDENT_ADDR + 0xf800000000UL)
 DECL|macro|POLARIS_DENSE_MEM_BASE
-mdefine_line|#define POLARIS_DENSE_MEM_BASE&t;&t;(IDENT_ADDR + 0xf900000000)
+mdefine_line|#define POLARIS_DENSE_MEM_BASE&t;&t;(IDENT_ADDR + 0xf900000000UL)
 DECL|macro|POLARIS_SPARSE_IO_BASE
-mdefine_line|#define POLARIS_SPARSE_IO_BASE&t;&t;(IDENT_ADDR + 0xf980000000)
+mdefine_line|#define POLARIS_SPARSE_IO_BASE&t;&t;(IDENT_ADDR + 0xf980000000UL)
 DECL|macro|POLARIS_SPARSE_CONFIG_BASE
-mdefine_line|#define POLARIS_SPARSE_CONFIG_BASE&t;(IDENT_ADDR + 0xf9c0000000)
+mdefine_line|#define POLARIS_SPARSE_CONFIG_BASE&t;(IDENT_ADDR + 0xf9c0000000UL)
 DECL|macro|POLARIS_IACK_BASE
-mdefine_line|#define POLARIS_IACK_BASE&t;&t;(IDENT_ADDR + 0xf9f8000000)
+mdefine_line|#define POLARIS_IACK_BASE&t;&t;(IDENT_ADDR + 0xf9f8000000UL)
 DECL|macro|POLARIS_DENSE_IO_BASE
-mdefine_line|#define POLARIS_DENSE_IO_BASE&t;&t;(IDENT_ADDR + 0xf9fc000000)
+mdefine_line|#define POLARIS_DENSE_IO_BASE&t;&t;(IDENT_ADDR + 0xf9fc000000UL)
 DECL|macro|POLARIS_DENSE_CONFIG_BASE
-mdefine_line|#define POLARIS_DENSE_CONFIG_BASE&t;(IDENT_ADDR + 0xf9fe000000)
+mdefine_line|#define POLARIS_DENSE_CONFIG_BASE&t;(IDENT_ADDR + 0xf9fe000000UL)
 DECL|macro|POLARIS_IACK_SC
 mdefine_line|#define POLARIS_IACK_SC&t;&t;&t;POLARIS_IACK_BASE
 multiline_comment|/* The Polaris command/status registers live in PCI Config space for&n; * bus 0/device 0.  As such, they may be bytes, words, or doublewords.&n; */

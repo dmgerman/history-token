@@ -337,6 +337,7 @@ id|insn
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|pc
@@ -708,7 +709,7 @@ l_int|3
 suffix:semicolon
 id|vc
 op_assign
-l_int|0x4000000000000000
+l_int|0x4000000000000000UL
 suffix:semicolon
 multiline_comment|/* CMPTEQ, CMPTUN don&squot;t trap on QNaN,&n;&t;&t;&t;   while CMPTLT and CMPTLE do */
 r_if
@@ -1455,6 +1456,7 @@ id|insn
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 (paren

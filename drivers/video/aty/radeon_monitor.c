@@ -3192,6 +3192,12 @@ c_func
 (paren
 l_string|&quot;PowerBook6,3&quot;
 )paren
+op_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook6,5&quot;
+)paren
 )paren
 (brace
 id|rinfo-&gt;panel_info.ref_divider

@@ -875,6 +875,17 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
+id|usb_disconnect
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|usb_choose_address
 c_func
 (paren
@@ -886,13 +897,13 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|usb_disconnect
+id|usb_release_address
 c_func
 (paren
 r_struct
 id|usb_device
 op_star
-op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () */
@@ -910,17 +921,6 @@ suffix:semicolon
 r_extern
 r_void
 id|usb_destroy_configuration
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_set_address
 c_func
 (paren
 r_struct
@@ -1047,7 +1047,7 @@ mdefine_line|#define USB2_HOST_DELAY&t;5&t;/* nsec, guess */
 DECL|macro|HS_USECS
 mdefine_line|#define HS_USECS(bytes) NS_TO_US ( ((55 * 8 * 2083)/1000) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
 DECL|macro|HS_USECS_ISO
-mdefine_line|#define HS_USECS_ISO(bytes) NS_TO_US ( ((long)(38 * 8 * 2.083)) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
+mdefine_line|#define HS_USECS_ISO(bytes) NS_TO_US ( ((38 * 8 * 2083)/1000) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
 r_extern
 r_int
 id|usb_calc_bus_time

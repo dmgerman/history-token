@@ -1189,10 +1189,6 @@ comma
 id|host-&gt;csr.max_rom
 )paren
 suffix:semicolon
-id|host-&gt;csr.rom-&gt;max_rom
-op_assign
-id|host-&gt;csr.max_rom
-suffix:semicolon
 id|root
 op_assign
 id|host-&gt;csr.rom-&gt;root_kv

@@ -1176,6 +1176,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|fdptr
@@ -1189,6 +1190,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|fdptr
@@ -1443,6 +1445,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|adr
@@ -1570,12 +1573,14 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|parent_tidptr
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|child_tidptr
@@ -1747,6 +1752,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|a0
@@ -1809,14 +1815,18 @@ id|filename
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|a1
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|a2
@@ -2338,7 +2348,7 @@ id|_sp
 l_int|12
 )braket
 op_eq
-l_int|0x7265677368657265
+l_int|0x7265677368657265ul
 )paren
 (brace
 r_struct

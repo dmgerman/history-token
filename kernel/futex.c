@@ -1491,6 +1491,7 @@ id|curval
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|uaddr

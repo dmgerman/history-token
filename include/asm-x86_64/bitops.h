@@ -926,8 +926,8 @@ l_string|&quot;xorl %%eax,%%eax&bslash;n&bslash;t&quot;
 l_string|&quot;repe; scasl&bslash;n&bslash;t&quot;
 l_string|&quot;jz 1f&bslash;n&bslash;t&quot;
 l_string|&quot;leaq -4(%%rdi),%%rdi&bslash;n&bslash;t&quot;
-l_string|&quot;bsfq (%%rdi),%%rax&bslash;n&quot;
-l_string|&quot;1:&bslash;tsubl %%ebx,%%edi&bslash;n&bslash;t&quot;
+l_string|&quot;bsfl (%%rdi),%%eax&bslash;n&quot;
+l_string|&quot;1:&bslash;tsubq %%rbx,%%rdi&bslash;n&bslash;t&quot;
 l_string|&quot;shll $3,%%edi&bslash;n&bslash;t&quot;
 l_string|&quot;addl %%edi,%%eax&quot;
 suffix:colon
@@ -966,6 +966,8 @@ l_string|&quot;b&quot;
 (paren
 id|addr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

@@ -574,10 +574,12 @@ id|msf
 comma
 r_struct
 id|ip_msfilter
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -599,10 +601,12 @@ id|gsf
 comma
 r_struct
 id|group_filter
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

@@ -501,6 +501,7 @@ id|read_ldt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -643,6 +644,7 @@ id|read_default_ldt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -690,6 +692,7 @@ id|write_ldt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -993,6 +996,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma

@@ -94,7 +94,7 @@ r_else
 id|init_pyxis_irqs
 c_func
 (paren
-l_int|0xff00003f0000
+l_int|0xff00003f0000UL
 )paren
 suffix:semicolon
 id|setup_irq

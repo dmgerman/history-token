@@ -1,35 +1,35 @@
 multiline_comment|/* &n;   HCI USB driver for Linux Bluetooth protocol stack (BlueZ)&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   Copyright (C) 2003 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * $Id: hci_usb.h,v 1.2 2002/03/18 19:10:04 maxk Exp $&n; */
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* Class, SubClass, and Protocol codes that describe a Bluetooth device */
 DECL|macro|HCI_DEV_CLASS
-mdefine_line|#define HCI_DEV_CLASS        0xe0&t;/* Wireless class */
+mdefine_line|#define HCI_DEV_CLASS&t;&t;0xe0&t;/* Wireless class */
 DECL|macro|HCI_DEV_SUBCLASS
-mdefine_line|#define HCI_DEV_SUBCLASS     0x01&t;/* RF subclass */
+mdefine_line|#define HCI_DEV_SUBCLASS&t;0x01&t;/* RF subclass */
 DECL|macro|HCI_DEV_PROTOCOL
-mdefine_line|#define HCI_DEV_PROTOCOL     0x01&t;/* Bluetooth programming protocol */
+mdefine_line|#define HCI_DEV_PROTOCOL&t;0x01&t;/* Bluetooth programming protocol */
 DECL|macro|HCI_CTRL_REQ
-mdefine_line|#define HCI_CTRL_REQ&t;     0x20
+mdefine_line|#define HCI_CTRL_REQ&t;&t;0x20
 DECL|macro|HCI_DIGI_REQ
-mdefine_line|#define HCI_DIGI_REQ&t;     0x40
+mdefine_line|#define HCI_DIGI_REQ&t;&t;0x40
 DECL|macro|HCI_IGNORE
-mdefine_line|#define HCI_IGNORE           0x01
+mdefine_line|#define HCI_IGNORE&t;&t;0x01
 DECL|macro|HCI_RESET
-mdefine_line|#define HCI_RESET            0x02
+mdefine_line|#define HCI_RESET&t;&t;0x02
 DECL|macro|HCI_DIGIANSWER
-mdefine_line|#define HCI_DIGIANSWER       0x04
+mdefine_line|#define HCI_DIGIANSWER&t;&t;0x04
+DECL|macro|HCI_BROKEN_ISOC
+mdefine_line|#define HCI_BROKEN_ISOC&t;&t;0x08
 DECL|macro|HCI_MAX_IFACE_NUM
-mdefine_line|#define HCI_MAX_IFACE_NUM&t;3 
+mdefine_line|#define HCI_MAX_IFACE_NUM&t;3
 DECL|macro|HCI_MAX_BULK_TX
-mdefine_line|#define HCI_MAX_BULK_TX     &t;4
+mdefine_line|#define HCI_MAX_BULK_TX&t;&t;4
 DECL|macro|HCI_MAX_BULK_RX
-mdefine_line|#define HCI_MAX_BULK_RX     &t;1
+mdefine_line|#define HCI_MAX_BULK_RX&t;&t;1
 DECL|macro|HCI_MAX_ISOC_RX
 mdefine_line|#define HCI_MAX_ISOC_RX&t;&t;2
 DECL|macro|HCI_MAX_ISOC_TX
 mdefine_line|#define HCI_MAX_ISOC_TX&t;&t;2
 DECL|macro|HCI_MAX_ISOC_FRAMES
-mdefine_line|#define HCI_MAX_ISOC_FRAMES     10
+mdefine_line|#define HCI_MAX_ISOC_FRAMES&t;10
 DECL|struct|_urb_queue
 r_struct
 id|_urb_queue
@@ -320,10 +320,6 @@ op_star
 id|q
 )paren
 suffix:semicolon
-macro_line|#ifndef container_of
-DECL|macro|container_of
-mdefine_line|#define container_of(ptr, type, member) ({                      &bslash;&n;&t;&t;        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr);    &bslash;&n;&t;&t;&t;        (type *)( (char *)__mptr - offsetof(type,member) );})
-macro_line|#endif
 DECL|struct|hci_usb
 r_struct
 id|hci_usb
@@ -402,7 +398,7 @@ id|reassembly
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// Reassembly buffers
+multiline_comment|/* Reassembly buffers */
 DECL|member|completion_lock
 id|rwlock_t
 id|completion_lock
@@ -414,7 +410,7 @@ id|pending_tx
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// Number of pending requests 
+multiline_comment|/* Number of pending requests */
 DECL|member|pending_q
 r_struct
 id|_urb_queue
@@ -423,7 +419,7 @@ id|pending_q
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// Pending requests
+multiline_comment|/* Pending requests */
 DECL|member|completed_q
 r_struct
 id|_urb_queue
@@ -432,7 +428,7 @@ id|completed_q
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// Completed requests
+multiline_comment|/* Completed requests */
 )brace
 suffix:semicolon
 multiline_comment|/* States  */
@@ -440,5 +436,4 @@ DECL|macro|HCI_USB_TX_PROCESS
 mdefine_line|#define HCI_USB_TX_PROCESS&t;1
 DECL|macro|HCI_USB_TX_WAKEUP
 mdefine_line|#define HCI_USB_TX_WAKEUP&t;2
-macro_line|#endif /* __KERNEL__ */
 eof

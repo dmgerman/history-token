@@ -4687,6 +4687,7 @@ id|entries
 comma
 r_struct
 id|ip6t_get_entries
+id|__user
 op_star
 id|uptr
 )paren
@@ -4808,6 +4809,7 @@ id|do_replace
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5407,6 +5409,7 @@ id|do_add_counters
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5643,6 +5646,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5739,6 +5743,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma

@@ -2875,6 +2875,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2904,6 +2905,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2939,6 +2941,7 @@ id|pid
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2975,6 +2978,7 @@ id|sock-&gt;file-&gt;f_owner.pid
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

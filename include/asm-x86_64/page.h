@@ -166,17 +166,24 @@ r_int
 r_int
 id|vm_force_exec32
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/* to align the pointer to the (next) page boundary */
-DECL|macro|PAGE_ALIGN
-mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the memory map. */
+DECL|macro|__START_KERNEL
+mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000UL
+DECL|macro|__START_KERNEL_map
+mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000UL
+DECL|macro|__PAGE_OFFSET
+mdefine_line|#define __PAGE_OFFSET           0x0000010000000000UL&t;/* 1 &lt;&lt; 40 */
+macro_line|#else
 DECL|macro|__START_KERNEL
 mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000
 DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000
 DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET           0x0000010000000000&t;/* 1 &lt;&lt; 40 */
+macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* to align the pointer to the (next) page boundary */
+DECL|macro|PAGE_ALIGN
+mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
+multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the memory map. */
 DECL|macro|__PHYSICAL_MASK_SHIFT
 mdefine_line|#define __PHYSICAL_MASK_SHIFT&t;40
 DECL|macro|__PHYSICAL_MASK
@@ -186,7 +193,7 @@ mdefine_line|#define __VIRTUAL_MASK_SHIFT&t;48
 DECL|macro|__VIRTUAL_MASK
 mdefine_line|#define __VIRTUAL_MASK&t;&t;((1UL &lt;&lt; __VIRTUAL_MASK_SHIFT) - 1)
 DECL|macro|KERNEL_TEXT_SIZE
-mdefine_line|#define KERNEL_TEXT_SIZE  (40UL*1024*1024)
+mdefine_line|#define KERNEL_TEXT_SIZE  (10UL*1024*1024)
 DECL|macro|KERNEL_TEXT_START
 mdefine_line|#define KERNEL_TEXT_START 0xffffffff80000000UL 
 macro_line|#ifndef __ASSEMBLY__

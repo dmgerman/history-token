@@ -1274,7 +1274,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 DECL|macro|AMBA_DEVICE
-mdefine_line|#define AMBA_DEVICE(name,busid,base,plat)&t;&t;&t;&bslash;&n;static struct amba_device name##_device = {&t;&t;&t;&bslash;&n;&t;.dev&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.coherent_dma_mask = ~0,&t;&t;&t;&bslash;&n;&t;&t;.bus_id&t;= busid,&t;&t;&t;&t;&bslash;&n;&t;&t;.platform_data = plat,&t;&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.res&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.start&t;= VERSATILE_##base##_BASE,&t;&t;&bslash;&n;&t;&t;.end&t;= (VERSATILE_##base##_BASE) + SZ_4K - 1,&bslash;&n;&t;&t;.flags&t;= IORESOURCE_MEM,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.irq&t;&t;= base##_IRQ,&t;&t;&t;&t;&bslash;&n;&t;/* .dma&t;&t;= base##_DMA,*/&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define AMBA_DEVICE(name,busid,base,plat)&t;&t;&t;&bslash;&n;static struct amba_device name##_device = {&t;&t;&t;&bslash;&n;&t;.dev&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.coherent_dma_mask = ~0,&t;&t;&t;&bslash;&n;&t;&t;.bus_id&t;= busid,&t;&t;&t;&t;&bslash;&n;&t;&t;.platform_data = plat,&t;&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.res&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.start&t;= VERSATILE_##base##_BASE,&t;&t;&bslash;&n;&t;&t;.end&t;= (VERSATILE_##base##_BASE) + SZ_4K - 1,&bslash;&n;&t;&t;.flags&t;= IORESOURCE_MEM,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.dma_mask&t;= ~0,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq&t;&t;= base##_IRQ,&t;&t;&t;&t;&bslash;&n;&t;/* .dma&t;&t;= base##_DMA,*/&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|AACI_IRQ
 mdefine_line|#define AACI_IRQ&t;{ IRQ_AACI, NO_IRQ }
 DECL|macro|AACI_DMA

@@ -3094,6 +3094,7 @@ r_int
 id|netpoll_trap
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return

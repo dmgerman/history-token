@@ -12,6 +12,7 @@ multiline_comment|/* same structure as used by readv() Linux system */
 multiline_comment|/* call. It defines one scatter-gather element. */
 DECL|member|iov_base
 r_void
+id|__user
 op_star
 id|iov_base
 suffix:semicolon
@@ -66,6 +67,7 @@ suffix:semicolon
 multiline_comment|/* [i] byte count of data transfer */
 DECL|member|dxferp
 r_void
+id|__user
 op_star
 id|dxferp
 suffix:semicolon
@@ -73,13 +75,14 @@ multiline_comment|/* [i], [*io] points to data transfer memory&n;&t;&t;&t;&t;&t;
 DECL|member|cmdp
 r_int
 r_char
+id|__user
 op_star
 id|cmdp
 suffix:semicolon
 multiline_comment|/* [i], [*i] points to command to perform */
 DECL|member|sbp
-r_int
-r_char
+r_void
+id|__user
 op_star
 id|sbp
 suffix:semicolon
@@ -103,6 +106,7 @@ suffix:semicolon
 multiline_comment|/* [i-&gt;o] unused internally (normally) */
 DECL|member|usr_ptr
 r_void
+id|__user
 op_star
 id|usr_ptr
 suffix:semicolon
@@ -289,6 +293,7 @@ suffix:semicolon
 multiline_comment|/* pack_id associated with request */
 DECL|member|usr_ptr
 r_void
+id|__user
 op_star
 id|usr_ptr
 suffix:semicolon

@@ -5592,7 +5592,7 @@ id|vuip
 )paren
 id|phys_to_virt
 (paren
-l_int|0x120000078
+l_int|0x120000078UL
 )paren
 suffix:semicolon
 id|size
@@ -5678,7 +5678,7 @@ id|vulp
 )paren
 id|phys_to_virt
 (paren
-l_int|0xfffff000a8
+l_int|0xfffff000a8UL
 )paren
 suffix:semicolon
 id|width
@@ -5815,7 +5815,7 @@ id|vulp
 )paren
 id|phys_to_virt
 (paren
-l_int|0xfffff00008
+l_int|0xfffff00008UL
 )paren
 suffix:semicolon
 id|size

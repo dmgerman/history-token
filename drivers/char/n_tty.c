@@ -865,6 +865,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|inbuf
 comma
@@ -4691,6 +4692,7 @@ id|tty
 comma
 r_int
 r_char
+id|__user
 op_star
 op_star
 id|b
@@ -4878,6 +4880,7 @@ id|file
 comma
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4887,6 +4890,7 @@ id|nr
 (brace
 r_int
 r_char
+id|__user
 op_star
 id|b
 op_assign
@@ -5822,6 +5826,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5832,6 +5837,7 @@ id|nr
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|b
 op_assign

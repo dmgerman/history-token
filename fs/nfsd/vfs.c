@@ -3488,7 +3488,11 @@ r_else
 multiline_comment|/* called from nfsd_proc_create */
 id|dchild
 op_assign
+id|dget
+c_func
+(paren
 id|resfhp-&gt;fh_dentry
+)paren
 suffix:semicolon
 r_if
 c_cond

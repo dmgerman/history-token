@@ -95,6 +95,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -108,6 +109,7 @@ id|kiocb
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -126,6 +128,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -584,6 +587,7 @@ op_star
 id|iocb
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -717,6 +721,7 @@ id|read_actor_t
 id|actor
 comma
 r_void
+id|__user
 op_star
 id|target
 )paren
@@ -1119,6 +1124,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

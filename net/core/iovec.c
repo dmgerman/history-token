@@ -605,6 +605,7 @@ l_int|0
 )paren
 (brace
 id|u8
+id|__user
 op_star
 id|base
 op_assign

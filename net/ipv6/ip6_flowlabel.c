@@ -1149,6 +1149,7 @@ op_star
 id|freq
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1876,6 +1877,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -3305,6 +3307,7 @@ r_void
 id|ip6_flowlabel_init
 c_func
 (paren
+r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
@@ -3326,6 +3329,7 @@ r_void
 id|ip6_flowlabel_cleanup
 c_func
 (paren
+r_void
 )paren
 (brace
 id|del_timer

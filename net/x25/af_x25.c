@@ -1353,6 +1353,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1423,6 +1424,7 @@ id|opt
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -1471,10 +1473,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -5003,6 +5007,7 @@ comma
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 id|arg
@@ -5444,6 +5449,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

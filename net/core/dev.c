@@ -273,6 +273,7 @@ r_int
 id|netdev_fastroute_obstacles
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SYSFS
 r_extern
 r_int
 id|netdev_sysfs_init
@@ -292,7 +293,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|netdev_unregister_sysfs
 c_func
 (paren
@@ -301,6 +302,14 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|netdev_sysfs_init
+mdefine_line|#define netdev_sysfs_init()&t; &t;(0)
+DECL|macro|netdev_register_sysfs
+mdefine_line|#define netdev_register_sysfs(dev)&t;(0)
+DECL|macro|netdev_unregister_sysfs
+mdefine_line|#define&t;netdev_unregister_sysfs(dev)&t;do { } while(0)
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************/
 multiline_comment|/*&n; *&t;For efficiency&n; */
 DECL|variable|netdev_nit
@@ -6143,6 +6152,7 @@ op_star
 id|dev
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|pos
 suffix:semicolon
@@ -9833,7 +9843,18 @@ c_func
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* Safe outside mutex since we only care about entries that&n;&t; * this cpu put into queue while under RTNL.&n;&t; */
+r_int
+id|err
+suffix:semicolon
+multiline_comment|/* Need to guard against multiple cpu&squot;s getting out of order. */
+id|down
+c_func
+(paren
+op_amp
+id|net_todo_run_mutex
+)paren
+suffix:semicolon
+multiline_comment|/* Not safe to do outside the semaphore.  We must not return&n;&t; * until all unregister events invoked by the local processor&n;&t; * have been completed (either by this todo run, or one on&n;&t; * another cpu).&n;&t; */
 r_if
 c_cond
 (paren
@@ -9844,15 +9865,8 @@ op_amp
 id|net_todo_list
 )paren
 )paren
-r_return
-suffix:semicolon
-multiline_comment|/* Need to guard against multiple cpu&squot;s getting out of order. */
-id|down
-c_func
-(paren
-op_amp
-id|net_todo_run_mutex
-)paren
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Snapshot list, allow later requests */
 id|spin_lock
@@ -9923,10 +9937,28 @@ id|dev-&gt;reg_state
 r_case
 id|NETREG_REGISTERING
 suffix:colon
+id|err
+op_assign
 id|netdev_register_sysfs
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: failed sysfs registration (%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|err
 )paren
 suffix:semicolon
 id|dev-&gt;reg_state
@@ -10020,6 +10052,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|up
 c_func
 (paren
@@ -10040,6 +10074,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_SYSFS
 multiline_comment|/*  Compatiablity with error handling in drivers */
 r_if
 c_cond
@@ -10084,6 +10119,20 @@ op_amp
 id|dev-&gt;class_dev
 )paren
 suffix:semicolon
+macro_line|#else
+id|kfree
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|dev
+op_minus
+id|dev-&gt;padded
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Synchronize with packet receive processing. */
 DECL|function|synchronize_net

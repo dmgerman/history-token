@@ -415,7 +415,7 @@ op_star
 id|sem
 )paren
 (brace
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -469,7 +469,7 @@ op_star
 id|sem
 )paren
 (brace
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -526,7 +526,7 @@ id|sem
 r_int
 id|ret
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren
@@ -582,7 +582,7 @@ op_star
 id|sem
 )paren
 (brace
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|CHECK_MAGIC
 c_func
 (paren

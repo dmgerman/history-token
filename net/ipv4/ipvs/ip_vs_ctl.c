@@ -7022,6 +7022,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma

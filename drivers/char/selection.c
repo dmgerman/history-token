@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/selection.c&n; *&n; * This module exports the functions:&n; *&n; *     &squot;int set_selection(const unsigned long arg)&squot;&n; *     &squot;void clear_selection(void)&squot;&n; *     &squot;int paste_selection(struct tty_struct *tty)&squot;&n; *     &squot;int sel_loadlut(const unsigned long arg)&squot;&n; *&n; * Now that /dev/vcs exists, most of this can disappear again.&n; */
+multiline_comment|/*&n; * linux/drivers/char/selection.c&n; *&n; * This module exports the functions:&n; *&n; *     &squot;int set_selection(struct tiocl_selection __user *, struct tty_struct *)&squot;&n; *     &squot;void clear_selection(void)&squot;&n; *     &squot;int paste_selection(struct tty_struct *)&squot;&n; *     &squot;int sel_loadlut(char __user *)&squot;&n; *&n; * Now that /dev/vcs exists, most of this can disappear again.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -238,10 +238,10 @@ r_int
 id|sel_loadlut
 c_func
 (paren
-r_const
-r_int
-r_int
-id|arg
+r_char
+id|__user
+op_star
+id|p
 )paren
 (brace
 r_return
@@ -252,10 +252,11 @@ id|inwordLut
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
-id|arg
+id|p
 op_plus
 l_int|4
 )paren
@@ -350,6 +351,7 @@ c_func
 r_const
 r_struct
 id|tiocl_selection
+id|__user
 op_star
 id|sel
 comma
@@ -357,9 +359,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-comma
-r_int
-id|user
 )paren
 (brace
 r_int
@@ -407,12 +406,6 @@ id|xe
 comma
 id|ye
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|user
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -479,31 +472,6 @@ op_amp
 id|sel-&gt;sel_mode
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|xs
-op_assign
-id|sel-&gt;xs
-suffix:semicolon
-multiline_comment|/* set selection from kernel */
-id|ys
-op_assign
-id|sel-&gt;ys
-suffix:semicolon
-id|xe
-op_assign
-id|sel-&gt;xe
-suffix:semicolon
-id|ye
-op_assign
-id|sel-&gt;ye
-suffix:semicolon
-id|sel_mode
-op_assign
-id|sel-&gt;sel_mode
-suffix:semicolon
-)brace
 id|xs
 op_decrement
 suffix:semicolon

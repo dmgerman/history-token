@@ -4875,7 +4875,7 @@ c_cond
 id|__put_user
 c_func
 (paren
-id|epi-&gt;event.events
+id|epi-&gt;revents
 comma
 op_amp
 id|events
@@ -4885,14 +4885,7 @@ id|eventcnt
 dot
 id|events
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|__put_user
 c_func
 (paren

@@ -35,11 +35,13 @@ id|compat_sys_utime
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|compat_utimbuf
+id|__user
 op_star
 id|t
 )paren
@@ -133,11 +135,13 @@ id|compat_sys_utimes
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|t
 )paren
@@ -261,11 +265,13 @@ id|compat_sys_newstat
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 id|statbuf
 )paren
@@ -314,11 +320,13 @@ id|compat_sys_newlstat
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 id|statbuf
 )paren
@@ -372,6 +380,7 @@ id|fd
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 id|statbuf
 )paren
@@ -421,6 +430,7 @@ c_func
 (paren
 r_struct
 id|compat_statfs
+id|__user
 op_star
 id|ubuf
 comma
@@ -666,11 +676,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
 r_struct
 id|compat_statfs
+id|__user
 op_star
 id|buf
 )paren
@@ -759,6 +771,7 @@ id|fd
 comma
 r_struct
 id|compat_statfs
+id|__user
 op_star
 id|buf
 )paren
@@ -848,6 +861,7 @@ c_func
 (paren
 r_struct
 id|compat_statfs64
+id|__user
 op_star
 id|ubuf
 comma
@@ -1032,6 +1046,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -1040,6 +1055,7 @@ id|sz
 comma
 r_struct
 id|compat_statfs64
+id|__user
 op_star
 id|buf
 )paren
@@ -1146,6 +1162,7 @@ id|sz
 comma
 r_struct
 id|compat_statfs64
+id|__user
 op_star
 id|buf
 )paren
@@ -2245,6 +2262,7 @@ id|kfl
 comma
 r_struct
 id|compat_flock
+id|__user
 op_star
 id|ufl
 )paren
@@ -2333,6 +2351,7 @@ id|kfl
 comma
 r_struct
 id|compat_flock
+id|__user
 op_star
 id|ufl
 )paren
@@ -2422,6 +2441,7 @@ id|kfl
 comma
 r_struct
 id|compat_flock64
+id|__user
 op_star
 id|ufl
 )paren
@@ -2512,6 +2532,7 @@ id|kfl
 comma
 r_struct
 id|compat_flock64
+id|__user
 op_star
 id|ufl
 )paren
@@ -2998,6 +3019,7 @@ r_int
 id|nr_reqs
 comma
 id|u32
+id|__user
 op_star
 id|ctx32p
 )paren
@@ -3041,6 +3063,7 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer cast is valid because of the set_fs() */
 id|ret
 op_assign
 id|sys_io_setup
@@ -3048,6 +3071,11 @@ c_func
 (paren
 id|nr_reqs
 comma
+(paren
+id|aio_context_t
+id|__user
+op_star
+)paren
 op_amp
 id|ctx64
 )paren
@@ -3101,11 +3129,13 @@ id|nr
 comma
 r_struct
 id|io_event
+id|__user
 op_star
 id|events
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|timeout
 )paren
@@ -3119,6 +3149,7 @@ id|t
 suffix:semicolon
 r_struct
 id|timespec
+id|__user
 op_star
 id|ut
 op_assign
@@ -3243,10 +3274,15 @@ r_int
 id|nr
 comma
 id|u32
+id|__user
 op_star
 id|ptr32
 comma
-id|u64
+r_struct
+id|iocb
+id|__user
+op_star
+id|__user
 op_star
 id|ptr64
 )paren
@@ -3295,9 +3331,6 @@ c_cond
 id|put_user
 c_func
 (paren
-(paren
-id|u64
-)paren
 id|compat_ptr
 c_func
 (paren
@@ -3333,13 +3366,16 @@ r_int
 id|nr
 comma
 id|u32
+id|__user
 op_star
 id|iocb
 )paren
 (brace
 r_struct
 id|iocb
+id|__user
 op_star
+id|__user
 op_star
 id|iocb64
 suffix:semicolon
@@ -3395,10 +3431,6 @@ id|nr
 comma
 id|iocb
 comma
-(paren
-id|u64
-op_star
-)paren
 id|iocb64
 )paren
 suffix:semicolon
@@ -4936,6 +4968,7 @@ id|compat_count
 c_func
 (paren
 id|compat_uptr_t
+id|__user
 op_star
 id|argv
 comma
@@ -7052,6 +7085,7 @@ id|karg
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -7133,6 +7167,7 @@ id|karg
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -7293,6 +7328,7 @@ id|karg
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -7463,6 +7499,7 @@ id|karg
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -7571,6 +7608,7 @@ id|karg
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -7680,6 +7718,7 @@ id|kres
 comma
 r_union
 id|compat_nfsctl_res
+id|__user
 op_star
 id|res
 )paren
@@ -7726,11 +7765,13 @@ id|cmd
 comma
 r_struct
 id|compat_nfsctl_arg
+id|__user
 op_star
 id|arg
 comma
 r_union
 id|compat_nfsctl_res
+id|__user
 op_star
 id|res
 )paren
@@ -7921,6 +7962,7 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer casts are valid because of the set_fs() */
 id|err
 op_assign
 id|sys_nfsservctl
@@ -7928,8 +7970,18 @@ c_func
 (paren
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|karg
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|kres
 )paren
 suffix:semicolon

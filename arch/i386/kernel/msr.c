@@ -672,11 +672,13 @@ id|ppos
 )paren
 (brace
 id|u32
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|buf
@@ -791,6 +793,7 @@ r_return
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|tmp
@@ -826,12 +829,14 @@ id|ppos
 (brace
 r_const
 id|u32
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 r_const
 id|u32
+id|__user
 op_star
 )paren
 id|buf
@@ -944,6 +949,7 @@ r_return
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|tmp
