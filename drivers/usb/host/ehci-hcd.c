@@ -2182,7 +2182,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|ehci_irq
 r_static
-r_void
+id|irqreturn_t
 id|ehci_irq
 (paren
 r_struct
@@ -2226,6 +2226,25 @@ op_amp
 id|ehci-&gt;regs-&gt;status
 )paren
 suffix:semicolon
+multiline_comment|/* shared irq */
+r_if
+c_cond
+(paren
+id|status
+op_eq
+l_int|0
+)paren
+(brace
+id|spin_unlock
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* e.g. cardbus physical eject */
 r_if
 c_cond
@@ -2425,6 +2444,9 @@ id|spin_unlock
 op_amp
 id|ehci-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/

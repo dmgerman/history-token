@@ -8069,7 +8069,7 @@ suffix:semicolon
 )brace
 DECL|function|uhci_irq
 r_static
-r_void
+id|irqreturn_t
 id|uhci_irq
 c_func
 (paren
@@ -8132,6 +8132,7 @@ id|status
 )paren
 multiline_comment|/* shared interrupt, not mine */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outw
 c_func
@@ -8325,6 +8326,9 @@ id|hcd
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|reset_hc
