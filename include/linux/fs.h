@@ -115,10 +115,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
-DECL|macro|NR_RESERVED_FILES
-mdefine_line|#define NR_RESERVED_FILES 10 /* reserved for root */
-DECL|macro|NR_SUPER
-mdefine_line|#define NR_SUPER 256
 DECL|macro|MAY_EXEC
 mdefine_line|#define MAY_EXEC 1
 DECL|macro|MAY_WRITE
