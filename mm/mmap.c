@@ -2182,20 +2182,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MAP_NORESERVE
+)paren
+op_logical_or
 id|sysctl_overcommit_memory
 OG
 l_int|1
 )paren
-id|flags
-op_and_assign
-op_complement
-id|MAP_NORESERVE
-suffix:semicolon
-multiline_comment|/* Private writable mapping? Check memory availability.. */
+(brace
 r_if
 c_cond
-(paren
-(paren
 (paren
 (paren
 id|vm_flags
@@ -2209,22 +2209,8 @@ id|VM_WRITE
 op_eq
 id|VM_WRITE
 )paren
-op_logical_or
-(paren
-id|file
-op_eq
-l_int|NULL
-)paren
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|MAP_NORESERVE
-)paren
-)paren
 (brace
+multiline_comment|/* Private writable mapping: check memory availability */
 id|charged
 op_assign
 id|len
@@ -2249,6 +2235,7 @@ id|vm_flags
 op_or_assign
 id|VM_ACCOUNT
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Can we just expand an old anonymous mapping? */
 r_if
@@ -2451,9 +2438,9 @@ r_else
 r_if
 c_cond
 (paren
-id|flags
+id|vm_flags
 op_amp
-id|MAP_SHARED
+id|VM_SHARED
 )paren
 (brace
 id|error
