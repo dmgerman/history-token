@@ -2117,6 +2117,31 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Entry needed for flags. Moreover, all devices with this ID use&n; * bulk-only transport, but _some_ falsely report Control/Bulk instead.&n; * One example is &quot;Trumpion Digital Research MYMP3&quot;.&n; * Submitted by Bjoern Brill &lt;brill(at)fs.math.uni-frankfurt.de&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x090a
+comma
+l_int|0x1001
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Trumpion&quot;
+comma
+l_string|&quot;t33520 USB Flash Card Controller&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* Trumpion Microelectronics MP3 player (felipe_alfaro@linuxmail.org) */
 id|UNUSUAL_DEV
 c_func
