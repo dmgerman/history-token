@@ -22,23 +22,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &quot;z8530.h&quot;
-multiline_comment|/* Linux 2.2 and 2.3 compatibility */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,14)
-DECL|macro|net_device
-mdefine_line|#define net_device device
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,43)
-DECL|macro|netif_start_queue
-mdefine_line|#define netif_start_queue(dev) { dev-&gt;tbusy = 0; }
-DECL|macro|netif_stop_queue
-mdefine_line|#define netif_stop_queue(dev) { dev-&gt;tbusy = 1; }
-DECL|macro|netif_wake_queue
-mdefine_line|#define netif_wake_queue(dev) { dev-&gt;tbusy = 0; mark_bh(NET_BH); }
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,47)
-DECL|macro|netif_running
-mdefine_line|#define netif_running(dev) (dev-&gt;flags &amp; IFF_UP)
-macro_line|#endif
 multiline_comment|/* Number of buffers per channel */
 DECL|macro|NUM_TX_BUF
 mdefine_line|#define NUM_TX_BUF      2          /* NUM_TX_BUF &gt;= 1 (min. 2 recommended) */
@@ -312,15 +295,6 @@ DECL|struct|scc_priv
 r_struct
 id|scc_priv
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
-DECL|member|name
-r_char
-id|name
-(braket
-id|IFNAMSIZ
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|type
 r_int
 id|type
