@@ -106,6 +106,8 @@ mdefine_line|#define X86_FEATURE_P3&t;&t;(3*32+ 6) /* P3 */
 DECL|macro|X86_FEATURE_P4
 mdefine_line|#define X86_FEATURE_P4&t;&t;(3*32+ 7) /* P4 */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (ecx), word 4 */
+DECL|macro|X86_FEATURE_EST
+mdefine_line|#define X86_FEATURE_EST&t;&t;(4*32+ 7) /* Enhanced SpeedStep */
 multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
 DECL|macro|X86_FEATURE_XSTORE
 mdefine_line|#define X86_FEATURE_XSTORE&t;(5*32+ 2) /* on-CPU RNG present (xstore insn) */
