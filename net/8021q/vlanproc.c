@@ -664,6 +664,7 @@ multiline_comment|/****** Proc filesystem entry points *************************
 multiline_comment|/*&n; * The following few functions build the content of /proc/net/vlan/config&n; */
 multiline_comment|/* starting at dev, find a VLAN device */
 DECL|function|vlan_skip
+r_static
 r_struct
 id|net_device
 op_star

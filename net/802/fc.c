@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 multiline_comment|/*&n; *&t;Put the headers on a Fibre Channel packet. &n; */
 DECL|function|fc_header
+r_static
 r_int
 id|fc_header
 c_func
@@ -236,6 +237,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A neighbour discovery of some species (eg arp) has completed. We&n; *&t;can now send the packet.&n; */
 DECL|function|fc_rebuild_header
+r_static
 r_int
 id|fc_rebuild_header
 c_func

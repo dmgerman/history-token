@@ -242,7 +242,7 @@ id|TCA_RSVP_ACT
 )brace
 suffix:semicolon
 DECL|macro|RSVP_APPLY_RESULT
-mdefine_line|#define RSVP_APPLY_RESULT()&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int r = tcf_exts_exec(skb, &amp;f-&gt;exts, res);&t;&bslash;&n;&t;&t;if (r &lt; 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&bslash;&n;&t;&t;else if (r &gt; 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;return r;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define RSVP_APPLY_RESULT()&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int r = tcf_exts_exec(skb, &amp;f-&gt;exts, res);&t;&bslash;&n;&t;if (r &lt; 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;continue;&t;&t;&t;&t;&bslash;&n;&t;else if (r &gt; 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return r;&t;&t;&t;&t;&bslash;&n;}
 DECL|function|rsvp_classify
 r_static
 r_int

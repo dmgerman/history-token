@@ -38,11 +38,11 @@ multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU a
 r_typedef
 r_struct
 (brace
-DECL|member|lock
+DECL|member|slock
 r_volatile
 r_int
 r_int
-id|lock
+id|slock
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
@@ -76,7 +76,7 @@ DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;lock) &lt;= 0)
+mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;slock) &lt;= 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|spin_lock_string
@@ -86,7 +86,7 @@ mdefine_line|#define spin_lock_string_flags &bslash;&n;&t;&quot;&bslash;n1:&bsla
 multiline_comment|/*&n; * This works. Despite all the confusion.&n; * (except on PPro SMP or if we are using OOSTORE)&n; * (PPro errata 66, 92)&n; */
 macro_line|#if !defined(CONFIG_X86_OOSTORE) &amp;&amp; !defined(CONFIG_X86_PPRO_FENCE)
 DECL|macro|spin_unlock_string
-mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot; &bslash;&n;&t;&t;:&quot;=m&quot; (lock-&gt;lock) : : &quot;memory&quot;
+mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot; &bslash;&n;&t;&t;:&quot;=m&quot; (lock-&gt;slock) : : &quot;memory&quot;
 DECL|function|_raw_spin_unlock
 r_static
 r_inline
@@ -130,7 +130,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|spin_unlock_string
-mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;xchgb %b0, %1&quot; &bslash;&n;&t;&t;:&quot;=q&quot; (oldval), &quot;=m&quot; (lock-&gt;lock) &bslash;&n;&t;&t;:&quot;0&quot; (oldval) : &quot;memory&quot;
+mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;xchgb %b0, %1&quot; &bslash;&n;&t;&t;:&quot;=q&quot; (oldval), &quot;=m&quot; (lock-&gt;slock) &bslash;&n;&t;&t;:&quot;0&quot; (oldval) : &quot;memory&quot;
 DECL|function|_raw_spin_unlock
 r_static
 r_inline
@@ -206,7 +206,7 @@ id|oldval
 comma
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -275,7 +275,7 @@ id|spin_lock_string
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 suffix:colon
@@ -338,7 +338,7 @@ id|spin_lock_string_flags
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;r&quot;
@@ -390,8 +390,12 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { RW_LOCK_BIAS RWLOCK_MAGIC_INIT }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != RW_LOCK_BIAS)
+multiline_comment|/**&n; * read_can_lock - would read_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(x) ((int)(x)-&gt;lock &gt; 0)
+multiline_comment|/**&n; * write_can_lock - would write_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(x) ((x)-&gt;lock == RW_LOCK_BIAS)
 multiline_comment|/*&n; * On x86, we implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;contended&quot; bit.&n; *&n; * The inline assembly is non-obvious. Think about it.&n; *&n; * Changed to use the same technique as rw semaphores.  See&n; * semaphore.h for details.  -ben&n; */
 multiline_comment|/* the spinlock helpers are in arch/i386/kernel/semaphore.c */
 DECL|function|_raw_read_lock

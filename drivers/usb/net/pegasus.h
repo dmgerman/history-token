@@ -163,6 +163,11 @@ id|EthRxStat
 op_assign
 l_int|0x2d
 comma
+DECL|enumerator|WakeupControl
+id|WakeupControl
+op_assign
+l_int|0x78
+comma
 DECL|enumerator|Reg7b
 id|Reg7b
 op_assign
@@ -219,6 +224,14 @@ suffix:semicolon
 DECL|member|features
 r_int
 id|features
+suffix:semicolon
+DECL|member|msg_level
+id|u32
+id|msg_level
+suffix:semicolon
+DECL|member|wolopts
+id|u32
+id|wolopts
 suffix:semicolon
 DECL|member|dev_index
 r_int

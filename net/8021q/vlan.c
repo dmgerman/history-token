@@ -19,6 +19,7 @@ mdefine_line|#define DRV_VERSION &quot;1.8&quot;
 multiline_comment|/* Global VLAN variables */
 multiline_comment|/* Our listing of VLAN group(s) */
 DECL|variable|vlan_group_hash
+r_static
 r_struct
 id|hlist_head
 id|vlan_group_hash
@@ -104,6 +105,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|variable|vlan_notifier_block
+r_static
 r_struct
 id|notifier_block
 id|vlan_notifier_block
@@ -124,14 +126,6 @@ r_int
 id|vlan_name_type
 op_assign
 id|VLAN_NAME_TYPE_RAW_PLUS_VID_NO_PAD
-suffix:semicolon
-multiline_comment|/* DO reorder the header by default */
-DECL|variable|vlan_default_dev_flags
-r_int
-r_int
-id|vlan_default_dev_flags
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|vlan_packet_type
 r_static
@@ -1569,7 +1563,7 @@ id|new_dev
 op_member_access_from_pointer
 id|flags
 op_assign
-id|vlan_default_dev_flags
+l_int|1
 suffix:semicolon
 macro_line|#ifdef VLAN_DEBUG
 id|printk

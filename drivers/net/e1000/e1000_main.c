@@ -1290,10 +1290,24 @@ id|adapter-&gt;hw
 suffix:semicolon
 )brace
 )brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|netdev-&gt;xmit_lock
+)paren
+suffix:semicolon
 id|e1000_set_multi
 c_func
 (paren
 id|netdev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|e1000_restore_vlan
@@ -2252,11 +2266,6 @@ op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
 )brace
-multiline_comment|/* hard_start_xmit is safe against parallel locking */
-id|netdev-&gt;features
-op_or_assign
-id|NETIF_F_LLTX
-suffix:semicolon
 multiline_comment|/* before reading the EEPROM, reset the controller to &n;&t; * put the device in a known good starting state */
 id|e1000_reset_hw
 c_func
@@ -2984,13 +2993,6 @@ c_func
 (paren
 op_amp
 id|adapter-&gt;stats_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
 )paren
 suffix:semicolon
 r_return
@@ -4937,7 +4939,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_set_multi - Multicast and Promiscuous mode set&n; * @netdev: network interface device structure&n; *&n; * The set_multi entry point is called whenever the multicast address&n; * list or the network interface flags are updated.  This routine is&n; * responsible for configuring the hardware for proper multicast,&n; * promiscuous mode, and all-multi behavior.&n; **/
+multiline_comment|/**&n; * e1000_set_multi - Multicast and Promiscuous mode set&n; * @netdev: network interface device structure&n; *&n; * The set_multi entry point is called whenever the multicast address&n; * list or the network interface flags are updated.  This routine is&n; * responsible for configuring the hardware for proper multicast,&n; * promiscuous mode, and all-multi behavior.&n; *&n; * Called with netdev-&gt;xmit_lock held and IRQs disabled.&n; **/
 r_static
 r_void
 DECL|function|e1000_set_multi
@@ -4979,20 +4981,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* Check for Promiscuous and All Multicast modes */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|rctl
 op_assign
 id|E1000_READ_REG
@@ -5229,15 +5218,6 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Need to wait a few seconds after link up to get diagnostic information from&n; * the phy */
 r_static
@@ -7233,6 +7213,7 @@ suffix:semicolon
 )brace
 DECL|macro|TXD_USE_COUNT
 mdefine_line|#define TXD_USE_COUNT(S, X) (((S) &gt;&gt; (X)) + 1 )
+multiline_comment|/* Called with dev-&gt;xmit_lock held and interrupts disabled.  */
 r_static
 r_int
 DECL|function|e1000_xmit_frame
@@ -7282,10 +7263,6 @@ r_int
 id|len
 op_assign
 id|skb-&gt;len
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 r_int
@@ -7489,35 +7466,6 @@ op_add_assign
 id|nr_frags
 suffix:semicolon
 )brace
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-)paren
-)paren
-(brace
-multiline_comment|/* Collision - tell upper layer to requeue */
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|NETDEV_TX_LOCKED
-suffix:semicolon
-)brace
 multiline_comment|/* need: count + 2 desc gap to keep tail from touching&n;&t; * head, otherwise try next time */
 r_if
 c_cond
@@ -7542,15 +7490,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|netdev
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7598,15 +7537,6 @@ op_amp
 id|adapter-&gt;tx_fifo_stall_timer
 comma
 id|jiffies
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7749,15 +7679,6 @@ id|netdev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|NETDEV_TX_OK
 suffix:semicolon
@@ -9334,7 +9255,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|adapter-&gt;tx_lock
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 r_if
@@ -9370,7 +9291,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|adapter-&gt;tx_lock
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 r_return
@@ -11812,10 +11733,24 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|netdev-&gt;xmit_lock
+)paren
+suffix:semicolon
 id|e1000_set_multi
 c_func
 (paren
 id|netdev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 multiline_comment|/* turn on all-multi mode if wake on multicast is enabled */

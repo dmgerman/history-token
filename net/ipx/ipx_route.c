@@ -746,7 +746,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|ipx_opt
+id|ipx_sock
 op_star
 id|ipxs
 op_assign

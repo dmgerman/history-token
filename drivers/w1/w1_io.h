@@ -109,5 +109,18 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_void
+id|w1_search_devices
+c_func
+(paren
+r_struct
+id|w1_master
+op_star
+id|dev
+comma
+id|w1_slave_found_callback
+id|cb
+)paren
+suffix:semicolon
 macro_line|#endif /* __W1_IO_H */
 eof

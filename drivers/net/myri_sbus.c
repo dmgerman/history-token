@@ -268,6 +268,7 @@ id|mp
 (brace
 r_struct
 id|myri_shmem
+id|__iomem
 op_star
 id|shmem
 op_assign
@@ -314,6 +315,7 @@ id|mp
 (brace
 r_struct
 id|myri_shmem
+id|__iomem
 op_star
 id|shmem
 op_assign
@@ -328,6 +330,7 @@ id|mp-&gt;cregs
 suffix:semicolon
 r_struct
 id|myri_channel
+id|__iomem
 op_star
 id|chan
 op_assign
@@ -2127,7 +2130,12 @@ op_assign
 op_amp
 id|rq-&gt;myri_rxd
 (braket
+id|sbus_readl
+c_func
+(paren
+op_amp
 id|rq-&gt;tail
+)paren
 )braket
 suffix:semicolon
 r_struct
@@ -2836,6 +2844,7 @@ id|mp-&gt;lregs
 suffix:semicolon
 r_struct
 id|myri_channel
+id|__iomem
 op_star
 id|chan
 op_assign

@@ -254,10 +254,6 @@ op_star
 id|mcast_fwds
 suffix:semicolon
 multiline_comment|/* With LANEv2 it is possible that BUS (or a special multicast server)&n;           establishes multiple Multicast Forward VCCs to us. This list&n;           collects all those VCCs. LANEv1 client has only one item in this&n;           list. These entries are not aged out. */
-DECL|member|lec_arp_users
-id|atomic_t
-id|lec_arp_users
-suffix:semicolon
 DECL|member|lec_arp_lock
 id|spinlock_t
 id|lec_arp_lock

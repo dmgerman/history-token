@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
+macro_line|#include &lt;linux/pcieport_if.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;pciehp&quot;
@@ -1152,9 +1153,9 @@ op_star
 id|ctrl
 comma
 r_struct
-id|pci_dev
+id|pcie_device
 op_star
-id|pdev
+id|dev
 comma
 id|php_intr_callback_t
 id|attention_button_callback

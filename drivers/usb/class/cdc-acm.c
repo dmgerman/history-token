@@ -2420,7 +2420,7 @@ id|buffer
 id|err
 c_func
 (paren
-l_string|&quot;Wierd descriptor references&quot;
+l_string|&quot;Wierd descriptor references&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2449,7 +2449,7 @@ c_func
 op_amp
 id|intf-&gt;dev
 comma
-l_string|&quot;Seeking extra descriptors on endpoint&quot;
+l_string|&quot;Seeking extra descriptors on endpoint&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buflen
@@ -2466,7 +2466,7 @@ r_else
 id|err
 c_func
 (paren
-l_string|&quot;Zero length descriptor references&quot;
+l_string|&quot;Zero length descriptor references&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2497,7 +2497,7 @@ id|USB_DT_CS_INTERFACE
 id|err
 c_func
 (paren
-l_string|&quot;skipping garbage&quot;
+l_string|&quot;skipping garbage&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2768,36 +2768,11 @@ c_func
 op_amp
 id|intf-&gt;dev
 comma
-l_string|&quot;Seperate call control interface. That is not fully supported.&quot;
+l_string|&quot;Seperate call control interface. That is not fully supported.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skip_normal_probe
 suffix:colon
-r_if
-c_cond
-(paren
-id|usb_interface_claimed
-c_func
-(paren
-id|data_interface
-)paren
-)paren
-(brace
-multiline_comment|/* valid in this context */
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|intf-&gt;dev
-comma
-l_string|&quot;The data interface isn&squot;t available&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 multiline_comment|/*workaround for switched interfaces */
 r_if
 c_cond
@@ -2849,6 +2824,31 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|usb_interface_claimed
+c_func
+(paren
+id|data_interface
+)paren
+)paren
+(brace
+multiline_comment|/* valid in this context */
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;The data interface isn&squot;t available&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -17,20 +17,9 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/*&n; * hippi_net_init()&n; *&n; * Do nothing, this is just to pursuade the stupid linker to behave.&n; */
-DECL|function|hippi_net_init
-r_void
-id|hippi_net_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Create the HIPPI MAC header for an arbitrary protocol layer &n; *&n; * saddr=NULL&t;means use device source address&n; * daddr=NULL&t;means leave destination address (eg unresolved arp)&n; */
 DECL|function|hippi_header
+r_static
 r_int
 id|hippi_header
 c_func
@@ -257,6 +246,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Rebuild the HIPPI MAC header. This is called after an ARP has&n; * completed on this sk_buff. We now let ARP fill in the other fields.&n; */
 DECL|function|hippi_rebuild_header
+r_static
 r_int
 id|hippi_rebuild_header
 c_func

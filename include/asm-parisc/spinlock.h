@@ -308,8 +308,6 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { __SPIN_LOCK_UNLOCKED, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp)&t;do { *(lp) = RW_LOCK_UNLOCKED; } while (0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(lp) ((lp)-&gt;counter != 0)
 DECL|macro|_raw_read_trylock
 mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 multiline_comment|/* read_lock, read_unlock are pretty straightforward.  Of course it somehow&n; * sucks we end up saving/restoring flags twice for read_lock_irqsave aso. */

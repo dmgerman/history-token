@@ -996,9 +996,6 @@ id|len
 suffix:semicolon
 r_int
 id|hlimit
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_int
 id|err
@@ -1344,14 +1341,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hlimit
-OL
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|ipv6_addr_is_multicast
 c_func
 (paren
@@ -1385,7 +1374,6 @@ comma
 id|RTAX_HOPLIMIT
 )paren
 suffix:semicolon
-)brace
 id|msg.skb
 op_assign
 id|skb
@@ -1683,9 +1671,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|hlimit
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|saddr
 op_assign
@@ -1852,14 +1837,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hlimit
-OL
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|ipv6_addr_is_multicast
 c_func
 (paren
@@ -1893,7 +1870,6 @@ comma
 id|RTAX_HOPLIMIT
 )paren
 suffix:semicolon
-)brace
 id|idev
 op_assign
 id|in6_dev_get

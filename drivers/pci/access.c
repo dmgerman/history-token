@@ -2,12 +2,12 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
-DECL|variable|pci_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pci_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *  Wrappers for all PCI configuration access functions.  They just check&n; *  alignment, do locking and call the low-level functions pointed to&n; *  by pci_dev-&gt;ops.&n; */
 DECL|macro|PCI_byte_BAD

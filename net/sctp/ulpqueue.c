@@ -375,10 +375,8 @@ id|sk
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
-id|sp
-suffix:semicolon
 id|sp
 op_assign
 id|sctp_sk

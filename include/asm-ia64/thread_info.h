@@ -54,6 +54,36 @@ r_struct
 id|restart_block
 id|restart_block
 suffix:semicolon
+r_struct
+(brace
+DECL|member|signo
+r_int
+id|signo
+suffix:semicolon
+DECL|member|code
+r_int
+id|code
+suffix:semicolon
+DECL|member|addr
+r_void
+id|__user
+op_star
+id|addr
+suffix:semicolon
+DECL|member|start_time
+r_int
+r_int
+id|start_time
+suffix:semicolon
+DECL|member|pid
+id|pid_t
+id|pid
+suffix:semicolon
+DECL|member|sigdelayed
+)brace
+id|sigdelayed
+suffix:semicolon
+multiline_comment|/* Saved information for TIF_SIGDELAYED */
 )brace
 suffix:semicolon
 DECL|macro|THREAD_SIZE
@@ -85,12 +115,10 @@ DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;3&t;/* syscall trace active */
 DECL|macro|TIF_SYSCALL_AUDIT
 mdefine_line|#define TIF_SYSCALL_AUDIT&t;4&t;/* syscall auditing active */
+DECL|macro|TIF_SIGDELAYED
+mdefine_line|#define TIF_SIGDELAYED&t;&t;5&t;/* signal delayed from MCA/INIT/NMI/PMI context */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
-DECL|macro|TIF_WORK_MASK
-mdefine_line|#define TIF_WORK_MASK&t;&t;0x7&t;/* like TIF_ALLWORK_BITS but sans TIF_SYSCALL_TRACE */
-DECL|macro|TIF_ALLWORK_MASK
-mdefine_line|#define TIF_ALLWORK_MASK&t;0x1f&t;/* bits 0..4 are &quot;work to do on user-return&quot; bits */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_SYSCALL_AUDIT
@@ -103,9 +131,15 @@ DECL|macro|_TIF_SIGPENDING
 mdefine_line|#define _TIF_SIGPENDING&t;&t;(1 &lt;&lt; TIF_SIGPENDING)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1 &lt;&lt; TIF_NEED_RESCHED)
-DECL|macro|_TIF_USEDFPU
-mdefine_line|#define _TIF_USEDFPU&t;&t;(1 &lt;&lt; TIF_USEDFPU)
+DECL|macro|_TIF_SIGDELAYED
+mdefine_line|#define _TIF_SIGDELAYED&t;(1 &lt;&lt; TIF_SIGDELAYED)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1 &lt;&lt; TIF_POLLING_NRFLAG)
+multiline_comment|/* &quot;work to do on user-return&quot; bits */
+DECL|macro|TIF_ALLWORK_MASK
+mdefine_line|#define TIF_ALLWORK_MASK&t;(_TIF_NOTIFY_RESUME|_TIF_SIGPENDING|_TIF_NEED_RESCHED|_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SIGDELAYED)
+multiline_comment|/* like TIF_ALLWORK_BITS but sans TIF_SYSCALL_TRACE or TIF_SYSCALL_AUDIT */
+DECL|macro|TIF_WORK_MASK
+mdefine_line|#define TIF_WORK_MASK&t;&t;(TIF_ALLWORK_MASK&amp;~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT))
 macro_line|#endif /* _ASM_IA64_THREAD_INFO_H */
 eof

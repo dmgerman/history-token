@@ -312,10 +312,6 @@ r_struct
 id|e1000_desc_ring
 id|tx_ring
 suffix:semicolon
-DECL|member|tx_lock
-id|spinlock_t
-id|tx_lock
-suffix:semicolon
 DECL|member|txd_cmd
 r_uint32
 id|txd_cmd

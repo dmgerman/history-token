@@ -474,6 +474,33 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/* Structure for sysfs attributes on block devices */
+DECL|struct|disk_attribute
+r_struct
+id|disk_attribute
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|show
+id|ssize_t
+(paren
+op_star
+id|show
+)paren
+(paren
+r_struct
+id|gendisk
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* &n; * Macros to operate on percpu disk statistics:&n; *&n; * The __ variants should only be called in critical sections. The full&n; * variants disable/enable preemption.&n; */
 macro_line|#ifdef&t;CONFIG_SMP
 DECL|macro|__disk_stat_add

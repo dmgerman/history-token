@@ -955,11 +955,19 @@ id|tp_ops
 op_ne
 l_int|NULL
 )paren
+(brace
+id|module_put
+c_func
+(paren
+id|tp_ops-&gt;owner
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
 id|EAGAIN
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|kfree
@@ -2356,6 +2364,7 @@ id|exts
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
+(brace
 r_int
 id|err
 suffix:semicolon
@@ -2472,6 +2481,7 @@ id|exts-&gt;action
 op_assign
 id|act
 suffix:semicolon
+)brace
 )brace
 macro_line|#elif defined CONFIG_NET_CLS_POLICE
 r_if

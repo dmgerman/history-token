@@ -199,7 +199,7 @@ id|asoc
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -1583,7 +1583,7 @@ op_assign
 id|transport-&gt;asoc
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign

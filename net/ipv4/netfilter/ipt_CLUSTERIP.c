@@ -128,7 +128,7 @@ id|clusterip_configs
 )paren
 suffix:semicolon
 multiline_comment|/* clusterip_lock protects the clusterip_configs list _AND_ the configurable&n; * data within all structurses (num_local_nodes, local_nodes[]) */
-DECL|variable|clusterip_lock
+r_static
 id|DECLARE_RWLOCK
 c_func
 (paren

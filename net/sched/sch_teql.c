@@ -1228,7 +1228,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|spin_trylock
+id|spin_trylock_irq
 c_func
 (paren
 op_amp
@@ -1271,7 +1271,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1308,7 +1308,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

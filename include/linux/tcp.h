@@ -641,19 +641,6 @@ id|end_seq
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|tcp_pcount
-r_typedef
-r_struct
-id|tcp_pcount
-(brace
-DECL|member|val
-id|__u32
-id|val
-suffix:semicolon
-DECL|typedef|tcp_pcount_t
-)brace
-id|tcp_pcount_t
-suffix:semicolon
 DECL|enum|tcp_congestion_algo
 r_enum
 id|tcp_congestion_algo
@@ -934,17 +921,17 @@ id|rto
 suffix:semicolon
 multiline_comment|/* retransmit timeout&t;&t;&t;*/
 DECL|member|packets_out
-id|tcp_pcount_t
+id|__u32
 id|packets_out
 suffix:semicolon
 multiline_comment|/* Packets which are &quot;in flight&quot;&t;*/
 DECL|member|left_out
-id|tcp_pcount_t
+id|__u32
 id|left_out
 suffix:semicolon
 multiline_comment|/* Packets which leaved network&t;*/
 DECL|member|retrans_out
-id|tcp_pcount_t
+id|__u32
 id|retrans_out
 suffix:semicolon
 multiline_comment|/* Retransmitted packets out&t;&t;*/
@@ -1168,17 +1155,17 @@ id|prior_ssthresh
 suffix:semicolon
 multiline_comment|/* ssthresh saved at recovery start&t;*/
 DECL|member|lost_out
-id|tcp_pcount_t
+id|__u32
 id|lost_out
 suffix:semicolon
 multiline_comment|/* Lost packets&t;&t;&t;*/
 DECL|member|sacked_out
-id|tcp_pcount_t
+id|__u32
 id|sacked_out
 suffix:semicolon
 multiline_comment|/* SACK&squot;d packets&t;&t;&t;*/
 DECL|member|fackets_out
-id|tcp_pcount_t
+id|__u32
 id|fackets_out
 suffix:semicolon
 multiline_comment|/* FACK&squot;d packets&t;&t;&t;*/

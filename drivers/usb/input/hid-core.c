@@ -2683,7 +2683,7 @@ id|item
 )paren
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_if

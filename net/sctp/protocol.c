@@ -1263,7 +1263,7 @@ op_star
 id|addr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -1299,7 +1299,7 @@ op_star
 id|addr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -2134,7 +2134,7 @@ id|sctp_v4_addr_v4map
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 comma
@@ -2659,7 +2659,7 @@ id|sa_family_t
 id|family
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -2693,7 +2693,7 @@ op_star
 id|addr2
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren
@@ -2745,7 +2745,7 @@ id|sctp_inet_bind_verify
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -2773,7 +2773,7 @@ id|sctp_inet_send_verify
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -2796,7 +2796,7 @@ c_func
 (paren
 r_const
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma

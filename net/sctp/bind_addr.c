@@ -961,7 +961,7 @@ op_star
 id|addr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren
@@ -1045,7 +1045,7 @@ r_int
 id|addrcnt
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren

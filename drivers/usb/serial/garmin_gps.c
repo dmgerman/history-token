@@ -1116,7 +1116,7 @@ c_cond
 (paren
 id|pkt
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dev_err
@@ -2769,7 +2769,7 @@ id|garmin_data_p
 )paren
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dbg
@@ -3282,7 +3282,7 @@ c_cond
 (paren
 id|port
 op_ne
-l_int|0
+l_int|NULL
 op_logical_and
 id|garmin_data_p-&gt;flags
 op_amp
@@ -5188,7 +5188,7 @@ c_cond
 (paren
 id|pkt
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|send_to_tty

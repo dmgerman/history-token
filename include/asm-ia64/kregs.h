@@ -8,6 +8,8 @@ DECL|macro|IA64_KR_IO_BASE
 mdefine_line|#define IA64_KR_IO_BASE&t;&t;0&t;/* ar.k0: legacy I/O base address */
 DECL|macro|IA64_KR_TSSD
 mdefine_line|#define IA64_KR_TSSD&t;&t;1&t;/* ar.k1: IVE uses this as the TSSD */
+DECL|macro|IA64_KR_PA_CPU_INFO
+mdefine_line|#define IA64_KR_PA_CPU_INFO&t;3&t;/* ar.k3: phys addr of this cpu&squot;s cpu_info struct */
 DECL|macro|IA64_KR_CURRENT_STACK
 mdefine_line|#define IA64_KR_CURRENT_STACK&t;4&t;/* ar.k4: what&squot;s mapped in IA64_TR_CURRENT_STACK */
 DECL|macro|IA64_KR_FPU_OWNER

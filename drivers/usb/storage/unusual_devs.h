@@ -2697,6 +2697,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Submitted by Daniel Drake &lt;dsd@gentoo.org&gt;&n; * Reported by dayul on the Gentoo Forums */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0ea0
+comma
+l_int|0x2168
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;Ours Technology&quot;
+comma
+l_string|&quot;Flash Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Reported by Rastislav Stanik &lt;rs_kernel@yahoo.com&gt; */
 id|UNUSUAL_DEV
 c_func

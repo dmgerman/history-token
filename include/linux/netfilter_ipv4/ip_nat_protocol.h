@@ -27,7 +27,7 @@ r_int
 r_int
 id|protonum
 suffix:semicolon
-multiline_comment|/* Do a packet translation according to the ip_nat_proto_manip&n;&t; * and manip type.  Return true if succeeded. */
+multiline_comment|/* Translate a packet to the target according to manip type.&n;&t;   Return true if succeeded. */
 DECL|member|manip_pkt
 r_int
 (paren
@@ -47,9 +47,9 @@ id|iphdroff
 comma
 r_const
 r_struct
-id|ip_conntrack_manip
+id|ip_conntrack_tuple
 op_star
-id|manip
+id|tuple
 comma
 r_enum
 id|ip_nat_manip_type

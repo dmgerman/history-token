@@ -350,6 +350,10 @@ id|__u64
 id|cyc_per_usec
 suffix:semicolon
 multiline_comment|/* itc_freq/1000000 */
+DECL|member|percpu_paddr
+id|__u64
+id|percpu_paddr
+suffix:semicolon
 DECL|member|ptce_base
 id|__u64
 id|ptce_base
@@ -367,6 +371,14 @@ id|ptce_stride
 (braket
 l_int|2
 )braket
+suffix:semicolon
+DECL|member|pal_paddr
+id|__u64
+id|pal_paddr
+suffix:semicolon
+DECL|member|pal_base
+id|__u64
+id|pal_base
 suffix:semicolon
 DECL|member|ksoftirqd
 r_struct
@@ -429,6 +441,12 @@ op_star
 id|node_data
 suffix:semicolon
 macro_line|#endif
+DECL|member|ia64_pa_mca_data
+id|__u64
+op_star
+id|ia64_pa_mca_data
+suffix:semicolon
+multiline_comment|/* prt to MCA/INIT processor state */
 )brace
 suffix:semicolon
 id|DECLARE_PER_CPU

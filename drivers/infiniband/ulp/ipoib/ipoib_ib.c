@@ -963,7 +963,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|priv-&gt;tx_lock
+id|dev-&gt;xmit_lock
 comma
 id|flags
 )paren
@@ -998,7 +998,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|priv-&gt;tx_lock
+id|dev-&gt;xmit_lock
 comma
 id|flags
 )paren

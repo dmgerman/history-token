@@ -811,7 +811,7 @@ l_int|2
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;PCI: %s has unsupported PM cap regs version (%u)&bslash;n&quot;
 comma
 id|dev-&gt;slot_name

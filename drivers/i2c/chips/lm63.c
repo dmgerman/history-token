@@ -1694,7 +1694,7 @@ comma
 (paren
 id|data-&gt;config_fan
 op_amp
-l_int|0x04
+l_int|0x08
 )paren
 ques
 c_cond
@@ -1706,7 +1706,7 @@ comma
 (paren
 id|data-&gt;config_fan
 op_amp
-l_int|0x04
+l_int|0x08
 )paren
 ques
 c_cond

@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * drivers/pci/rom.c&n; *&n; * (C) Copyright 2004 Jon Smirl &lt;jonsmirl@yahoo.com&gt;&n; * (C) Copyright 2004 Silicon Graphics, Inc. Jesse Barnes &lt;jbarnes@sgi.com&gt;&n; *&n; * PCI ROM access routines&n; *&n; */
+multiline_comment|/*&n; * drivers/pci/rom.c&n; *&n; * (C) Copyright 2004 Jon Smirl &lt;jonsmirl@yahoo.com&gt;&n; * (C) Copyright 2004 Silicon Graphics, Inc. Jesse Barnes &lt;jbarnes@sgi.com&gt;&n; *&n; * PCI ROM access routines&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/**&n; * pci_enable_rom - enable ROM decoding for a PCI device&n; * @dev: PCI device to enable&n; *&n; * Enable ROM decoding on @dev.  This involves simply turning on the last&n; * bit of the PCI ROM BAR.  Note that some cards may share address decoders&n; * between the ROM and other resources, so enabling it may disable access&n; * to MMIO registers or other card memory.&n; */
+DECL|function|pci_enable_rom
 r_static
 r_void
-DECL|function|pci_enable_rom
 id|pci_enable_rom
 c_func
 (paren
@@ -46,9 +46,9 @@ id|rom_addr
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_disable_rom - disable ROM decoding for a PCI device&n; * @dev: PCI device to disable&n; *&n; * Disable ROM decoding on a PCI device by turning off the last bit in the&n; * ROM BAR.&n; */
+DECL|function|pci_disable_rom
 r_static
 r_void
-DECL|function|pci_disable_rom
 id|pci_disable_rom
 c_func
 (paren
@@ -88,7 +88,7 @@ id|rom_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_map_rom - map a PCI ROM to kernel space&n; * @dev: pointer to pci device struct&n; * @size: pointer to receive size of pci window over ROM&n; * @return: kernel virtual pointer to image of ROM&n; *&n; * Map a PCI ROM into kernel space. If ROM is boot video ROM,&n; * the shadow BIOS copy will be returned instead of the &n; * actual ROM.&n; */
+multiline_comment|/**&n; * pci_map_rom - map a PCI ROM to kernel space&n; * @dev: pointer to pci device struct&n; * @size: pointer to receive size of pci window over ROM&n; * @return: kernel virtual pointer to image of ROM&n; *&n; * Map a PCI ROM into kernel space. If ROM is boot video ROM,&n; * the shadow BIOS copy will be returned instead of the&n; * actual ROM.&n; */
 DECL|function|pci_map_rom
 r_void
 id|__iomem
@@ -133,6 +133,7 @@ suffix:semicolon
 r_int
 id|last_image
 suffix:semicolon
+multiline_comment|/* IORESOURCE_ROM_SHADOW only set on x86 */
 r_if
 c_cond
 (paren
@@ -141,7 +142,7 @@ op_amp
 id|IORESOURCE_ROM_SHADOW
 )paren
 (brace
-multiline_comment|/* IORESOURCE_ROM_SHADOW only set on x86 */
+multiline_comment|/* primary video rom always starts here */
 id|start
 op_assign
 (paren
@@ -149,7 +150,6 @@ id|loff_t
 )paren
 l_int|0xC0000
 suffix:semicolon
-multiline_comment|/* primary video rom always starts here */
 op_star
 id|size
 op_assign
@@ -297,9 +297,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Try to find the true size of the ROM since sometimes the PCI window */
-multiline_comment|/* size is much larger than the actual size of the ROM. */
-multiline_comment|/* True size is important if the ROM is going to be copied. */
+multiline_comment|/*&n;&t; * Try to find the true size of the ROM since sometimes the PCI window&n;&t; * size is much larger than the actual size of the ROM.&n;&t; * True size is important if the ROM is going to be copied.&n;&t; */
 id|image
 op_assign
 id|rom
@@ -455,7 +453,7 @@ r_return
 id|rom
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_map_rom_copy - map a PCI ROM to kernel space, create a copy&n; * @dev: pointer to pci device struct&n; * @size: pointer to receive size of pci window over ROM&n; * @return: kernel virtual pointer to image of ROM&n; *&n; * Map a PCI ROM into kernel space. If ROM is boot video ROM,&n; * the shadow BIOS copy will be returned instead of the &n; * actual ROM.&n; */
+multiline_comment|/**&n; * pci_map_rom_copy - map a PCI ROM to kernel space, create a copy&n; * @dev: pointer to pci device struct&n; * @size: pointer to receive size of pci window over ROM&n; * @return: kernel virtual pointer to image of ROM&n; *&n; * Map a PCI ROM into kernel space. If ROM is boot video ROM,&n; * the shadow BIOS copy will be returned instead of the&n; * actual ROM.&n; */
 DECL|function|pci_map_rom_copy
 r_void
 id|__iomem
@@ -590,8 +588,8 @@ id|res-&gt;start
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_unmap_rom - unmap the ROM from kernel space&n; * @dev: pointer to pci device struct&n; * @rom: virtual address of the previous mapping&n; *&n; * Remove a mapping of a previously mapped ROM&n; */
-r_void
 DECL|function|pci_unmap_rom
+r_void
 id|pci_unmap_rom
 c_func
 (paren
@@ -654,9 +652,9 @@ id|pdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_remove_rom - disable the ROM and remove its sysfs attribute&n; * @dev: pointer to pci device struct&n; *&n; */
-r_void
+multiline_comment|/**&n; * pci_remove_rom - disable the ROM and remove its sysfs attribute&n; * @dev: pointer to pci device struct&n; *&n; * Remove the rom file in sysfs and disable ROM decoding.&n; */
 DECL|function|pci_remove_rom
+r_void
 id|pci_remove_rom
 c_func
 (paren
@@ -720,9 +718,9 @@ id|pdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_cleanup_rom - internal routine for freeing the ROM copy created &n; * by pci_map_rom_copy called from remove.c&n; * @dev: pointer to pci device struct&n; *&n; */
-r_void
+multiline_comment|/**&n; * pci_cleanup_rom - internal routine for freeing the ROM copy created&n; * by pci_map_rom_copy called from remove.c&n; * @dev: pointer to pci device struct&n; *&n; * Free the copied ROM if we allocated one.&n; */
 DECL|function|pci_cleanup_rom
+r_void
 id|pci_cleanup_rom
 c_func
 (paren

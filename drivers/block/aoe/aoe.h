@@ -1,10 +1,14 @@
 multiline_comment|/* Copyright (c) 2004 Coraid, Inc.  See COPYING for GPL terms. */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;4&quot;
+mdefine_line|#define VERSION &quot;5&quot;
 DECL|macro|AOE_MAJOR
 mdefine_line|#define AOE_MAJOR 152
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;aoe&quot;
+macro_line|#ifndef AOE_PARTITIONS
+DECL|macro|AOE_PARTITIONS
+mdefine_line|#define AOE_PARTITIONS 16
+macro_line|#endif
 DECL|macro|SYSMINOR
 mdefine_line|#define SYSMINOR(aoemajor, aoeminor) ((aoemajor) * 10 + (aoeminor))
 DECL|macro|AOEMAJOR
@@ -439,6 +443,7 @@ id|ndata
 suffix:semicolon
 multiline_comment|/* largest possible */
 DECL|member|data
+r_int
 r_char
 id|data
 (braket
@@ -492,6 +497,11 @@ DECL|member|aoeminor
 id|ulong
 id|aoeminor
 suffix:semicolon
+DECL|member|nopen
+id|ulong
+id|nopen
+suffix:semicolon
+multiline_comment|/* (bd_openers isn&squot;t available without sleeping) */
 DECL|member|rttavg
 id|ulong
 id|rttavg

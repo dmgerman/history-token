@@ -1007,7 +1007,7 @@ op_star
 id|i
 suffix:semicolon
 r_struct
-id|ipx_opt
+id|ipx_sock
 op_star
 id|ipxs
 suffix:semicolon
@@ -1207,7 +1207,7 @@ op_star
 id|s
 suffix:semicolon
 r_struct
-id|ipx_opt
+id|ipx_sock
 op_star
 id|ipxs
 suffix:semicolon

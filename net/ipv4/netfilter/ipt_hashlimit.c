@@ -186,7 +186,7 @@ suffix:semicolon
 multiline_comment|/* hashtable itself */
 )brace
 suffix:semicolon
-DECL|variable|hashlimit_lock
+r_static
 id|DECLARE_RWLOCK
 c_func
 (paren
@@ -2720,7 +2720,6 @@ r_goto
 id|cleanup_nothing
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: do we really want HWCACHE_ALIGN since our objects are&n;&t; * quite small ? */
 id|hashlimit_cachep
 op_assign
 id|kmem_cache_create
@@ -2736,7 +2735,7 @@ id|dsthash_ent
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma

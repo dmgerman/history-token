@@ -453,6 +453,17 @@ op_star
 id|wrapped_parent
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pci_remove_legacy_files
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
 multiline_comment|/* Lock for read/write access to pci device and bus lists */
 r_extern
 id|spinlock_t
@@ -468,6 +479,11 @@ id|device_attribute
 id|pci_dev_attrs
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_struct
+id|class_device_attribute
+id|class_device_attr_cpuaffinity
 suffix:semicolon
 multiline_comment|/**&n; * pci_match_one_device - Tell if a PCI device structure has a matching&n; *                        PCI device id structure&n; * @id: single PCI device id structure to match&n; * @dev: the PCI device structure to match against&n; * &n; * Returns the matching pci_device_id structure or %NULL if there is no match.&n; */
 r_static

@@ -799,11 +799,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|type
-op_amp
-id|CMD_WARNED
-)paren
 )paren
 (brace
 id|cmd_type

@@ -27,14 +27,6 @@ DECL|macro|VLAN_GRP_HASH_SIZE
 mdefine_line|#define VLAN_GRP_HASH_SIZE&t;(1 &lt;&lt; VLAN_GRP_HASH_SHIFT)
 DECL|macro|VLAN_GRP_HASH_MASK
 mdefine_line|#define VLAN_GRP_HASH_MASK&t;(VLAN_GRP_HASH_SIZE - 1)
-r_extern
-r_struct
-id|hlist_head
-id|vlan_group_hash
-(braket
-id|VLAN_GRP_HASH_SIZE
-)braket
-suffix:semicolon
 multiline_comment|/*  Find a VLAN device by the MAC address of its Ethernet device, and&n; *  it&squot;s VLAN ID.  The default configuration is to have VLAN&squot;s scope&n; *  to be box-wide, so the MAC will be ignored.  The mac will only be&n; *  looked at if we are configured to have a separate set of VLANs per&n; *  each MAC addressable interface.  Note that this latter option does&n; *  NOT follow the spec for VLANs, but may be useful for doing very&n; *  large quantities of VLAN MUX/DEMUX onto FrameRelay or ATM PVCs.&n; *&n; *  Must be invoked with rcu_read_lock (ie preempt disabled)&n; *  or with RTNL.&n; */
 r_struct
 id|net_device

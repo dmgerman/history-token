@@ -91,9 +91,9 @@ id|iphdroff
 comma
 r_const
 r_struct
-id|ip_conntrack_manip
+id|ip_conntrack_tuple
 op_star
-id|manip
+id|tuple
 comma
 r_enum
 id|ip_nat_manip_type

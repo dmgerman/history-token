@@ -2099,7 +2099,7 @@ op_star
 id|addr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -2235,7 +2235,7 @@ op_star
 id|addr
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -2259,7 +2259,7 @@ op_eq
 id|IPV6_ADDR_MAPPED
 )paren
 (brace
-multiline_comment|/* Note: This routine is used in input, so v4-mapped-v6&n;&t;&t; * are disallowed here when there is no sctp_opt.&n;&t;&t; */
+multiline_comment|/* Note: This routine is used in input, so v4-mapped-v6&n;&t;&t; * are disallowed here when there is no sctp_sock.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2554,7 +2554,13 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newsctp6sk-&gt;inet.pinet6
+id|inet_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|pinet6
 op_assign
 op_amp
 id|newsctp6sk-&gt;inet6
@@ -2708,7 +2714,7 @@ id|sctp_v6_addr_v4map
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 comma
@@ -3194,7 +3200,7 @@ id|sa_family_t
 id|family
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 )paren
@@ -3261,7 +3267,7 @@ op_star
 id|addr2
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren
@@ -3351,7 +3357,7 @@ id|sctp_inet6_bind_verify
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -3460,7 +3466,7 @@ id|sctp_inet6_send_verify
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -3566,7 +3572,7 @@ c_func
 (paren
 r_const
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma

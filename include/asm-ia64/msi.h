@@ -27,8 +27,6 @@ DECL|macro|IO_APIC_VECTOR
 mdefine_line|#define IO_APIC_VECTOR(irq)&t;(irq)
 DECL|macro|ack_APIC_irq
 mdefine_line|#define ack_APIC_irq&t;&t;ia64_eoi
-DECL|macro|irq_desc
-mdefine_line|#define irq_desc&t;&t;_irq_desc
 DECL|macro|cpu_mask_to_apicid
 mdefine_line|#define cpu_mask_to_apicid(mask) cpu_physical_id(first_cpu(mask))
 DECL|macro|MSI_DEST_MODE

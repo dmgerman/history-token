@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10x PC Camera Controllers                           *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * V4L2 driver for SN9C10x PC Camera Controllers                           *&n; *                                                                         *&n; * Copyright (C) 2004-2005 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/page-flags.h&gt;
+macro_line|#include &lt;linux/byteorder/generic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sn9c102.h&quot;
@@ -112,6 +113,61 @@ l_string|&quot;&bslash;nFor example:&quot;
 l_string|&quot;&bslash;nvideo_nr=-1,2,-1 would assign minor number 2 to&quot;
 l_string|&quot;&bslash;nthe second camera and use auto for the first&quot;
 l_string|&quot;&bslash;none and for every other camera.&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+DECL|variable|force_munmap
+r_static
+r_int
+id|force_munmap
+(braket
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|SN9C102_MAX_DEVICES
+op_minus
+l_int|1
+)braket
+op_assign
+id|SN9C102_FORCE_MUNMAP
+)brace
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|force_munmap
+comma
+r_bool
+comma
+l_int|NULL
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|force_munmap
+comma
+l_string|&quot;&bslash;n&lt;0|1[,...]&gt; Force the application to unmap previously &quot;
+l_string|&quot;&bslash;nmapped buffer memory before calling any VIDIOC_S_CROP or &quot;
+l_string|&quot;&bslash;nVIDIOC_S_FMT ioctl&squot;s. Not all the applications support &quot;
+l_string|&quot;&bslash;nthis feature. This parameter is specific for each &quot;
+l_string|&quot;&bslash;ndetected camera.&quot;
+l_string|&quot;&bslash;n 0 = do not force memory unmapping&quot;
+l_string|&quot;&bslash;n 1 = force memory unmapping (save memory)&quot;
+l_string|&quot;&bslash;nDefault value is &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SN9C102_FORCE_MUNMAP
+)paren
+l_string|&quot;.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -432,9 +488,9 @@ id|mem
 )paren
 suffix:semicolon
 )brace
-DECL|function|sn9c102_request_buffers
 r_static
 id|u32
+DECL|function|sn9c102_request_buffers
 id|sn9c102_request_buffers
 c_func
 (paren
@@ -445,6 +501,10 @@ id|cam
 comma
 id|u32
 id|count
+comma
+r_enum
+id|sn9c102_io_method
+id|io
 )paren
 (brace
 r_struct
@@ -457,14 +517,41 @@ op_amp
 id|cam-&gt;sensor-&gt;pix_format
 )paren
 suffix:semicolon
+r_struct
+id|v4l2_rect
+op_star
+id|r
+op_assign
+op_amp
+(paren
+id|cam-&gt;sensor-&gt;cropcap.bounds
+)paren
+suffix:semicolon
 r_const
 r_int
 id|imagesize
 op_assign
+id|cam-&gt;module_param.force_munmap
+op_logical_or
+id|io
+op_eq
+id|IO_READ
+ques
+c_cond
 (paren
 id|p-&gt;width
 op_star
 id|p-&gt;height
+op_star
+id|p-&gt;priv
+)paren
+op_div
+l_int|8
+suffix:colon
+(paren
+id|r-&gt;width
+op_star
+id|r-&gt;height
 op_star
 id|p-&gt;priv
 )paren
@@ -4549,29 +4636,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cam-&gt;sensor-&gt;sysfs_ops
-op_amp
-id|SN9C102_I2C_WRITE
-)paren
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|sn9c102_sysfs_lock
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
 id|value
 op_assign
 id|sn9c102_strtou8
@@ -5141,6 +5205,29 @@ suffix:semicolon
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cam-&gt;sensor-&gt;sysfs_ops
+op_amp
+id|SN9C102_I2C_WRITE
+)paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|sn9c102_sysfs_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSYS
 suffix:semicolon
 )brace
 id|value
@@ -7526,6 +7613,8 @@ c_func
 id|cam
 comma
 id|cam-&gt;nreadbuffers
+comma
+id|IO_READ
 )paren
 )paren
 (brace
@@ -7904,6 +7993,8 @@ c_func
 id|cam
 comma
 l_int|2
+comma
+id|IO_READ
 )paren
 )paren
 (brace
@@ -8889,6 +8980,9 @@ id|err
 suffix:semicolon
 )brace
 r_case
+id|VIDIOC_S_CTRL_OLD
+suffix:colon
+r_case
 id|VIDIOC_S_CTRL
 suffix:colon
 (brace
@@ -9289,6 +9383,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cam-&gt;module_param.force_munmap
+)paren
 r_for
 c_loop
 (paren
@@ -9596,6 +9695,11 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cam-&gt;module_param.force_munmap
+)paren
 id|sn9c102_release_buffers
 c_func
 (paren
@@ -9698,6 +9802,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cam-&gt;module_param.force_munmap
+op_logical_and
 id|nbuffers
 op_ne
 id|sn9c102_request_buffers
@@ -9706,6 +9812,8 @@ c_func
 id|cam
 comma
 id|nbuffers
+comma
+id|cam-&gt;io
 )paren
 )paren
 (brace
@@ -10421,6 +10529,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cam-&gt;module_param.force_munmap
+)paren
 r_for
 c_loop
 (paren
@@ -10509,6 +10622,11 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cam-&gt;module_param.force_munmap
+)paren
 id|sn9c102_release_buffers
 c_func
 (paren
@@ -10642,6 +10760,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cam-&gt;module_param.force_munmap
+op_logical_and
 id|nbuffers
 op_ne
 id|sn9c102_request_buffers
@@ -10650,6 +10770,8 @@ c_func
 id|cam
 comma
 id|nbuffers
+comma
+id|cam-&gt;io
 )paren
 )paren
 (brace
@@ -10996,6 +11118,8 @@ c_func
 id|cam
 comma
 id|rb.count
+comma
+id|IO_MMAP
 )paren
 suffix:semicolon
 r_if
@@ -11774,6 +11898,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_case
+id|VIDIOC_S_PARM_OLD
+suffix:colon
 r_case
 id|VIDIOC_S_PARM
 suffix:colon
@@ -12748,6 +12875,30 @@ l_string|&quot;V4L2 device registered as /dev/video%d&quot;
 comma
 id|cam-&gt;v4ldev-&gt;minor
 )paren
+id|cam-&gt;module_param.force_munmap
+op_assign
+id|force_munmap
+(braket
+id|dev_nr
+)braket
+suffix:semicolon
+id|dev_nr
+op_assign
+(paren
+id|dev_nr
+OL
+id|SN9C102_MAX_DEVICES
+op_minus
+l_int|1
+)paren
+ques
+c_cond
+id|dev_nr
+op_plus
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
 id|sn9c102_create_sysfs
 c_func
 (paren

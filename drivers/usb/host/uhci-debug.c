@@ -467,6 +467,15 @@ id|prevactive
 op_assign
 l_int|0
 suffix:semicolon
+id|__le32
+id|element
+op_assign
+id|qh_element
+c_func
+(paren
+id|qh
+)paren
+suffix:semicolon
 multiline_comment|/* Try to make sure there&squot;s enough memory */
 r_if
 c_cond
@@ -504,14 +513,14 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|qh-&gt;element
+id|element
 )paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|qh-&gt;element
+id|element
 op_amp
 id|UHCI_PTR_QH
 )paren
@@ -532,7 +541,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|qh-&gt;element
+id|element
 op_amp
 id|UHCI_PTR_DEPTH
 )paren
@@ -553,7 +562,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|qh-&gt;element
+id|element
 op_amp
 id|cpu_to_le32
 c_func
@@ -580,7 +589,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|qh-&gt;element
+id|element
 op_amp
 op_complement
 (paren
@@ -665,7 +674,7 @@ id|td-&gt;dma_handle
 )paren
 op_ne
 (paren
-id|qh-&gt;element
+id|element
 op_amp
 op_complement
 id|UHCI_PTR_BITS
@@ -2705,7 +2714,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|qh-&gt;element
+id|qh_element
+c_func
+(paren
+id|qh
+)paren
 op_ne
 id|cpu_to_le32
 c_func

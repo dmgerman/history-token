@@ -38,7 +38,7 @@ id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/* Insmod parameters */
-id|SENSORS_INSMOD_4
+id|SENSORS_INSMOD_5
 c_func
 (paren
 id|lm85b
@@ -48,6 +48,8 @@ comma
 id|adm1027
 comma
 id|adt7463
+comma
+id|emc6d100
 )paren
 suffix:semicolon
 multiline_comment|/* The LM85 registers */
@@ -89,6 +91,10 @@ DECL|macro|LM85_COMPANY_NATIONAL
 mdefine_line|#define&t;LM85_COMPANY_NATIONAL&t;&t;0x01
 DECL|macro|LM85_COMPANY_ANALOG_DEV
 mdefine_line|#define&t;LM85_COMPANY_ANALOG_DEV&t;&t;0x41
+DECL|macro|LM85_COMPANY_SMSC
+mdefine_line|#define&t;LM85_COMPANY_SMSC      &t;&t;0x5c
+DECL|macro|LM85_VERSTEP_VMASK
+mdefine_line|#define&t;LM85_VERSTEP_VMASK              0xf0
 DECL|macro|LM85_VERSTEP_GENERIC
 mdefine_line|#define&t;LM85_VERSTEP_GENERIC&t;&t;0x60
 DECL|macro|LM85_VERSTEP_LM85C
@@ -99,6 +105,10 @@ DECL|macro|LM85_VERSTEP_ADM1027
 mdefine_line|#define&t;LM85_VERSTEP_ADM1027&t;&t;0x60
 DECL|macro|LM85_VERSTEP_ADT7463
 mdefine_line|#define&t;LM85_VERSTEP_ADT7463&t;&t;0x62
+DECL|macro|LM85_VERSTEP_EMC6D100_A0
+mdefine_line|#define&t;LM85_VERSTEP_EMC6D100_A0        0x60
+DECL|macro|LM85_VERSTEP_EMC6D100_A1
+mdefine_line|#define&t;LM85_VERSTEP_EMC6D100_A1        0x61
 DECL|macro|LM85_REG_CONFIG
 mdefine_line|#define&t;LM85_REG_CONFIG&t;&t;&t;0x40
 DECL|macro|LM85_REG_ALARM1
@@ -150,6 +160,15 @@ DECL|macro|ADT7463_REG_THERM
 mdefine_line|#define&t;ADT7463_REG_THERM&t;&t;0x79
 DECL|macro|ADT7463_REG_THERM_LIMIT
 mdefine_line|#define&t;ADT7463_REG_THERM_LIMIT&t;&t;0x7A
+DECL|macro|EMC6D100_REG_ALARM3
+mdefine_line|#define EMC6D100_REG_ALARM3             0x7d
+multiline_comment|/* IN5, IN6 and IN7 */
+DECL|macro|EMC6D100_REG_IN
+mdefine_line|#define EMC6D100_REG_IN(nr)             (0x70 + ((nr)-5))
+DECL|macro|EMC6D100_REG_IN_MIN
+mdefine_line|#define EMC6D100_REG_IN_MIN(nr)         (0x73 + ((nr)-5) * 2)
+DECL|macro|EMC6D100_REG_IN_MAX
+mdefine_line|#define EMC6D100_REG_IN_MAX(nr)         (0x74 + ((nr)-5) * 2)
 DECL|macro|LM85_ALARM_IN0
 mdefine_line|#define&t;LM85_ALARM_IN0&t;&t;&t;0x0001
 DECL|macro|LM85_ALARM_IN1
@@ -209,6 +228,13 @@ comma
 l_int|5000
 comma
 l_int|12000
+comma
+l_int|3300
+comma
+l_int|1500
+comma
+l_int|1800
+multiline_comment|/*EMC6D100*/
 )brace
 suffix:semicolon
 DECL|macro|SCALE
@@ -721,7 +747,7 @@ DECL|member|in
 id|u8
 id|in
 (braket
-l_int|5
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
@@ -729,7 +755,7 @@ DECL|member|in_max
 id|u8
 id|in_max
 (braket
-l_int|5
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
@@ -737,7 +763,7 @@ DECL|member|in_min
 id|u8
 id|in_min
 (braket
-l_int|5
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
@@ -865,7 +891,7 @@ id|therm_limit
 suffix:semicolon
 multiline_comment|/* Register value */
 DECL|member|alarms
-id|u16
+id|u32
 id|alarms
 suffix:semicolon
 multiline_comment|/* Register encoding, combined */
@@ -4530,7 +4556,7 @@ op_logical_and
 (paren
 id|verstep
 op_amp
-l_int|0xf0
+id|LM85_VERSTEP_VMASK
 )paren
 op_eq
 id|LM85_VERSTEP_GENERIC
@@ -4600,7 +4626,7 @@ op_logical_and
 (paren
 id|verstep
 op_amp
-l_int|0xf0
+id|LM85_VERSTEP_VMASK
 )paren
 op_eq
 id|LM85_VERSTEP_GENERIC
@@ -4613,14 +4639,82 @@ op_amp
 id|adapter-&gt;dev
 comma
 l_string|&quot;Unrecognized version/stepping 0x%02x&quot;
-l_string|&quot; Defaulting to ADM1027.&bslash;n&quot;
+l_string|&quot; Defaulting to Generic LM85.&bslash;n&quot;
 comma
 id|verstep
 )paren
 suffix:semicolon
 id|kind
 op_assign
-id|adm1027
+id|any_chip
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|company
+op_eq
+id|LM85_COMPANY_SMSC
+op_logical_and
+(paren
+id|verstep
+op_eq
+id|LM85_VERSTEP_EMC6D100_A0
+op_logical_or
+id|verstep
+op_eq
+id|LM85_VERSTEP_EMC6D100_A1
+)paren
+)paren
+(brace
+multiline_comment|/* Unfortunately, we can&squot;t tell a &squot;100 from a &squot;101&n;&t;&t;&t; * from the registers.  Since a &squot;101 is a &squot;100&n;&t;&t;&t; * in a package with fewer pins and therefore no&n;&t;&t;&t; * 3.3V, 1.5V or 1.8V inputs, perhaps if those&n;&t;&t;&t; * inputs read 0, then it&squot;s a &squot;101.&n;&t;&t;&t; */
+id|kind
+op_assign
+id|emc6d100
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|company
+op_eq
+id|LM85_COMPANY_SMSC
+op_logical_and
+(paren
+id|verstep
+op_amp
+id|LM85_VERSTEP_VMASK
+)paren
+op_eq
+id|LM85_VERSTEP_GENERIC
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;lm85: Detected SMSC chip&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev_err
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;lm85: Unrecognized version/stepping 0x%02x&quot;
+l_string|&quot; Defaulting to Generic LM85.&bslash;n&quot;
+comma
+id|verstep
+)paren
+suffix:semicolon
+id|kind
+op_assign
+id|any_chip
 suffix:semicolon
 )brace
 r_else
@@ -4629,15 +4723,15 @@ c_cond
 (paren
 id|kind
 op_eq
-l_int|0
+id|any_chip
 op_logical_and
 (paren
 id|verstep
 op_amp
-l_int|0xf0
+id|LM85_VERSTEP_VMASK
 )paren
 op_eq
-l_int|0x60
+id|LM85_VERSTEP_GENERIC
 )paren
 (brace
 id|dev_err
@@ -4668,7 +4762,7 @@ c_cond
 (paren
 id|kind
 op_eq
-l_int|0
+id|any_chip
 )paren
 (brace
 multiline_comment|/* User used force=x,y */
@@ -4768,6 +4862,20 @@ id|adt7463
 id|type_name
 op_assign
 l_string|&quot;adt7463&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|emc6d100
+)paren
+(brace
+id|type_name
+op_assign
+l_string|&quot;emc6d100&quot;
 suffix:semicolon
 )brace
 id|strlcpy
@@ -6333,6 +6441,16 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|data-&gt;alarms
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|LM85_REG_ALARM1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6363,16 +6481,63 @@ id|ADT7463_REG_THERM
 suffix:semicolon
 )brace
 )brace
-id|data-&gt;alarms
+r_else
+r_if
+c_cond
+(paren
+id|data-&gt;type
+op_eq
+id|emc6d100
+)paren
+(brace
+multiline_comment|/* Three more voltage sensors */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|5
+suffix:semicolon
+id|i
+op_le
+l_int|7
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|data-&gt;in
+(braket
+id|i
+)braket
 op_assign
 id|lm85_read_value
 c_func
 (paren
 id|client
 comma
-id|LM85_REG_ALARM1
+id|EMC6D100_REG_IN
+c_func
+(paren
+id|i
+)paren
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* More alarm bits */
+id|data-&gt;alarms
+op_or_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D100_REG_ALARM3
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+)brace
 id|data-&gt;last_reading
 op_assign
 id|jiffies
@@ -6454,6 +6619,65 @@ id|i
 )paren
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data-&gt;type
+op_eq
+id|emc6d100
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|5
+suffix:semicolon
+id|i
+op_le
+l_int|7
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|data-&gt;in_min
+(braket
+id|i
+)braket
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D100_REG_IN_MIN
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+id|data-&gt;in_max
+(braket
+id|i
+)braket
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D100_REG_IN_MAX
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_for
 c_loop

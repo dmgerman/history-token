@@ -244,6 +244,25 @@ suffix:semicolon
 macro_line|#  include &lt;asm/sigcontext.h&gt;
 DECL|macro|ptrace_signal_deliver
 mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
+r_void
+id|set_sigdelayed
+c_func
+(paren
+id|pid_t
+id|pid
+comma
+r_int
+id|signo
+comma
+r_int
+id|code
+comma
+r_void
+id|__user
+op_star
+id|addr
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|# endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SIGNAL_H */

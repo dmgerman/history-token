@@ -293,8 +293,6 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)  do { *(x) = RW_LOCK_UNLOCKED; } while(0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock)
 DECL|function|_raw_read_lock
 r_static
 r_inline

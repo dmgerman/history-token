@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/time.h&gt;&t;&t;/* We get struct timespec.    */
 macro_line|#include &lt;linux/socket.h&gt;&t;/* linux/in.h needs this!!    */
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* We get struct sockaddr_in. */
 macro_line|#include &lt;linux/in6.h&gt;&t;&t;/* We get struct in6_addr     */
+macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;asm/param.h&gt;&t;&t;/* We get MAXHOSTNAMELEN.     */
 macro_line|#include &lt;asm/atomic.h&gt;&t;&t;/* This gets us atomic counters.  */
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* We need sk_buff_head. */
@@ -63,9 +64,6 @@ id|sctp_bind_addr
 suffix:semicolon
 r_struct
 id|sctp_ulpq
-suffix:semicolon
-r_struct
-id|sctp_opt
 suffix:semicolon
 r_struct
 id|sctp_ep_common
@@ -370,10 +368,16 @@ DECL|typedef|sctp_socket_type_t
 id|sctp_socket_type_t
 suffix:semicolon
 multiline_comment|/* Per socket SCTP information. */
-DECL|struct|sctp_opt
+DECL|struct|sctp_sock
 r_struct
-id|sctp_opt
+id|sctp_sock
 (brace
+multiline_comment|/* inet_sock has to be the first member of sctp_sock */
+DECL|member|inet
+r_struct
+id|inet_sock
+id|inet
+suffix:semicolon
 multiline_comment|/* What kind of a socket is this? */
 DECL|member|type
 id|sctp_socket_type_t
@@ -488,6 +492,74 @@ id|pd_lobby
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|sctp_sk
+r_static
+r_inline
+r_struct
+id|sctp_sock
+op_star
+id|sctp_sk
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|sctp_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
+DECL|function|sctp_opt2sk
+r_static
+r_inline
+r_struct
+id|sock
+op_star
+id|sctp_opt2sk
+c_func
+(paren
+r_const
+r_struct
+id|sctp_sock
+op_star
+id|sp
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|sock
+op_star
+)paren
+id|sp
+suffix:semicolon
+)brace
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|struct|sctp6_sock
+r_struct
+id|sctp6_sock
+(brace
+DECL|member|sctp
+r_struct
+id|sctp_sock
+id|sctp
+suffix:semicolon
+DECL|member|inet6
+r_struct
+id|ipv6_pinfo
+id|inet6
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_IPV6 */
 multiline_comment|/* This is our APPLICATION-SPECIFIC state cookie.&n; * THIS IS NOT DICTATED BY THE SPECIFICATION.&n; */
 multiline_comment|/* These are the parts of an association which we send in the cookie.&n; * Most of these are straight out of:&n; * RFC2960 12.2 Parameters necessary per association (i.e. the TCB)&n; *&n; */
 DECL|struct|sctp_cookie
@@ -1192,7 +1264,7 @@ id|sctp_addr
 op_star
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -1248,7 +1320,7 @@ id|sctp_addr
 op_star
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -1386,7 +1458,7 @@ id|af_supported
 id|sa_family_t
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -1408,7 +1480,7 @@ id|sctp_addr
 op_star
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -1420,7 +1492,7 @@ id|bind_verify
 )paren
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 comma
 r_union
@@ -1436,7 +1508,7 @@ id|send_verify
 )paren
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 comma
 r_union
@@ -1453,7 +1525,7 @@ id|supported_addrs
 (paren
 r_const
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 comma
 id|__u16
@@ -1488,7 +1560,7 @@ id|addr_v4map
 )paren
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 comma
 r_union
@@ -2449,7 +2521,7 @@ id|sctp_addr
 op_star
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -2969,7 +3041,7 @@ id|sctp_addr
 op_star
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 )paren
 suffix:semicolon
@@ -2994,7 +3066,7 @@ r_int
 id|addrcnt
 comma
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 )paren

@@ -4,6 +4,7 @@ DECL|macro|_ASM_IA64_SN_LEDS_H
 mdefine_line|#define _ASM_IA64_SN_LEDS_H
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
+macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 DECL|macro|LED0
 mdefine_line|#define LED0&t;&t;(LOCAL_MMR_ADDR(SH_REAL_JUNK_BUS_LED0))
 DECL|macro|LED_CPU_SHIFT

@@ -28,53 +28,77 @@ id|IP_CT_FTP_EPSV
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* This structure is per expected connection */
-DECL|struct|ip_ct_ftp_expect
-r_struct
-id|ip_ct_ftp_expect
-(brace
-multiline_comment|/* We record seq number and length of ftp ip/port text here: all in&n;&t; * host order. */
-multiline_comment|/* sequence number of IP address in packet is in ip_conntrack_expect */
-DECL|member|len
-id|u_int32_t
-id|len
-suffix:semicolon
-multiline_comment|/* length of IP address */
-DECL|member|ftptype
-r_enum
-id|ip_ct_ftp_type
-id|ftptype
-suffix:semicolon
-multiline_comment|/* PORT or PASV ? */
-DECL|member|port
-id|u_int16_t
-id|port
-suffix:semicolon
-multiline_comment|/* TCP port that was to be used */
-)brace
-suffix:semicolon
+DECL|macro|NUM_SEQ_TO_REMEMBER
+mdefine_line|#define NUM_SEQ_TO_REMEMBER 2
 multiline_comment|/* This structure exists only once per master */
 DECL|struct|ip_ct_ftp_master
 r_struct
 id|ip_ct_ftp_master
 (brace
-multiline_comment|/* Next valid seq position for cmd matching after newline */
+multiline_comment|/* Valid seq positions for cmd matching after newline */
 DECL|member|seq_aft_nl
 id|u_int32_t
 id|seq_aft_nl
 (braket
 id|IP_CT_DIR_MAX
 )braket
+(braket
+id|NUM_SEQ_TO_REMEMBER
+)braket
 suffix:semicolon
 multiline_comment|/* 0 means seq_match_aft_nl not set */
-DECL|member|seq_aft_nl_set
+DECL|member|seq_aft_nl_num
 r_int
-id|seq_aft_nl_set
+id|seq_aft_nl_num
 (braket
 id|IP_CT_DIR_MAX
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|ip_conntrack_expect
+suffix:semicolon
+multiline_comment|/* For NAT to hook in when we find a packet which describes what other&n; * connection we should expect. */
+r_extern
+r_int
+r_int
+(paren
+op_star
+id|ip_nat_ftp_hook
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_enum
+id|ip_conntrack_info
+id|ctinfo
+comma
+r_enum
+id|ip_ct_ftp_type
+id|type
+comma
+r_int
+r_int
+id|matchoff
+comma
+r_int
+r_int
+id|matchlen
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+comma
+id|u32
+op_star
+id|seq
+)paren
 suffix:semicolon
 macro_line|#endif /* _IP_CONNTRACK_FTP_H */
 eof

@@ -89,6 +89,14 @@ mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
 DECL|macro|per_cpu_init
 mdefine_line|#define per_cpu_init()&t;&t;&t;&t;(__phys_per_cpu_start)
 macro_line|#endif&t;/* SMP */
+r_extern
+r_int
+r_int
+id|__per_cpu_mca
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|macro|EXPORT_PER_CPU_SYMBOL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)
 DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL

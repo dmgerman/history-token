@@ -575,11 +575,10 @@ id|sockaddr_atmsvc
 id|addr
 suffix:semicolon
 multiline_comment|/* ATM address */
-DECL|member|next
+DECL|member|entry
 r_struct
-id|atm_dev_addr
-op_star
-id|next
+id|list_head
+id|entry
 suffix:semicolon
 multiline_comment|/* next address */
 )brace
@@ -637,8 +636,7 @@ suffix:semicolon
 multiline_comment|/* device flags (ATM_DF_*) */
 DECL|member|local
 r_struct
-id|atm_dev_addr
-op_star
+id|list_head
 id|local
 suffix:semicolon
 multiline_comment|/* local ATM addresses */

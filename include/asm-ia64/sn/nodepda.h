@@ -4,8 +4,8 @@ DECL|macro|_ASM_IA64_SN_NODEPDA_H
 mdefine_line|#define _ASM_IA64_SN_NODEPDA_H
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
-macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 multiline_comment|/*&n; * NUMA Node-Specific Data structures are defined in this file.&n; * In particular, this is the location of the node PDA.&n; * A pointer to the right node PDA is saved in each CPU PDA.&n; */

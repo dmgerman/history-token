@@ -23,9 +23,10 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
-DECL|variable|jiffies_64
+DECL|variable|__cacheline_aligned_in_smp
 id|u64
 id|jiffies_64
+id|__cacheline_aligned_in_smp
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon

@@ -134,7 +134,7 @@ op_star
 id|chunk
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon

@@ -1754,7 +1754,7 @@ id|skb-&gt;dst-&gt;neighbour
 op_assign
 id|neigh
 suffix:semicolon
-multiline_comment|/*&n;&t; * We can only be called from ipoib_start_xmit, so we&squot;re&n;&t; * inside tx_lock -- no need to save/restore flags.&n;&t; */
+multiline_comment|/*&n;&t; * We can only be called from ipoib_start_xmit, so we&squot;re&n;&t; * inside dev-&gt;xmit_lock -- no need to save/restore flags.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -2110,7 +2110,7 @@ id|ipoib_path
 op_star
 id|path
 suffix:semicolon
-multiline_comment|/*&n;&t; * We can only be called from ipoib_start_xmit, so we&squot;re&n;&t; * inside tx_lock -- no need to save/restore flags.&n;&t; */
+multiline_comment|/*&n;&t; * We can only be called from ipoib_start_xmit, so we&squot;re&n;&t; * inside dev-&gt;xmit_lock -- no need to save/restore flags.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -2340,6 +2340,7 @@ id|priv-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Called with dev-&gt;xmit_lock held and IRQs disabled.  */
 DECL|function|ipoib_start_xmit
 r_static
 r_int
@@ -2373,66 +2374,6 @@ id|ipoib_neigh
 op_star
 id|neigh
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
-c_func
-(paren
-op_amp
-id|priv-&gt;tx_lock
-)paren
-)paren
-(brace
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|NETDEV_TX_LOCKED
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Check if our queue is stopped.  Since we have the LLTX bit&n;&t; * set, we can&squot;t rely on netif_stop_queue() preventing our&n;&t; * xmit function from being called with a full queue.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|netif_queue_stopped
-c_func
-(paren
-id|dev
-)paren
-)paren
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|priv-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|NETDEV_TX_BUSY
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2739,15 +2680,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|priv-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|NETDEV_TX_OK
 suffix:semicolon
@@ -3539,8 +3471,6 @@ suffix:semicolon
 id|dev-&gt;features
 op_assign
 id|NETIF_F_VLAN_CHALLENGED
-op_or
-id|NETIF_F_LLTX
 suffix:semicolon
 multiline_comment|/* MTU will be reset when mcast join happens */
 id|dev-&gt;mtu
@@ -3586,13 +3516,6 @@ c_func
 (paren
 op_amp
 id|priv-&gt;lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|priv-&gt;tx_lock
 )paren
 suffix:semicolon
 id|init_MUTEX

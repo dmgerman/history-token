@@ -2169,7 +2169,7 @@ c_cond
 (paren
 id|qh
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|status
@@ -2230,7 +2230,7 @@ id|BUG_ON
 (paren
 id|qh
 op_eq
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* ... update usbfs periodic stats */
@@ -2308,7 +2308,7 @@ id|likely
 (paren
 id|stream
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2916,7 +2916,7 @@ id|likely
 (paren
 id|stream
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 id|stream-&gt;refcount
@@ -3011,7 +3011,7 @@ id|unlikely
 (paren
 id|stream
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3030,7 +3030,7 @@ id|likely
 (paren
 id|stream
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3171,7 +3171,7 @@ id|likely
 (paren
 id|iso_sched
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3485,7 +3485,7 @@ id|unlikely
 (paren
 id|sched
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -3635,7 +3635,7 @@ c_cond
 (paren
 id|unlikely
 (paren
-l_int|0
+l_int|NULL
 op_eq
 id|itd
 )paren
@@ -5495,7 +5495,7 @@ id|unlikely
 (paren
 id|stream
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -5957,7 +5957,7 @@ c_cond
 (paren
 id|iso_sched
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 op_minus
@@ -6989,7 +6989,7 @@ c_cond
 (paren
 id|stream
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|ehci_dbg
@@ -7401,7 +7401,7 @@ c_loop
 (paren
 id|q.ptr
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_int

@@ -116,6 +116,18 @@ l_int|NULL
 suffix:semicolon
 r_int
 r_int
+id|tos
+op_assign
+(paren
+id|fxsave-&gt;swd
+op_rshift
+l_int|11
+)paren
+op_amp
+l_int|7
+suffix:semicolon
+r_int
+r_int
 id|twd
 op_assign
 (paren
@@ -138,7 +150,7 @@ r_int
 id|i
 suffix:semicolon
 DECL|macro|FPREG_ADDR
-mdefine_line|#define FPREG_ADDR(f, n)&t;((char *)&amp;(f)-&gt;st_space + (n) * 16);
+mdefine_line|#define FPREG_ADDR(f, n)&t;((void *)&amp;(f)-&gt;st_space + (n) * 16);
 r_for
 c_loop
 (paren
@@ -164,17 +176,18 @@ l_int|0x1
 (brace
 id|st
 op_assign
-(paren
-r_struct
-id|_fpxreg
-op_star
-)paren
 id|FPREG_ADDR
 c_func
 (paren
 id|fxsave
 comma
+(paren
 id|i
+op_minus
+id|tos
+)paren
+op_amp
+l_int|7
 )paren
 suffix:semicolon
 r_switch
