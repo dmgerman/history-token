@@ -2469,6 +2469,8 @@ id|t
 (brace
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -4764,9 +4766,6 @@ r_int
 id|stop_count
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 multiline_comment|/*&n;&t; * If there are no other threads in the group, or if there is&n;&t; * a group stop in progress and we are the last to stop,&n;&t; * report to the parent.  When ptraced, every thread reports itself.&n;&t; */
 r_if
 c_cond
