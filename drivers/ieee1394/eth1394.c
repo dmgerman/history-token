@@ -47,7 +47,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1043 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1079 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -604,6 +604,8 @@ comma
 l_int|16
 comma
 id|priv-&gt;broadcast_channel
+comma
+id|HPSB_ISO_DMA_PACKET_PER_BUFFER
 comma
 l_int|1
 comma
@@ -1823,6 +1825,8 @@ comma
 l_int|16
 comma
 id|priv-&gt;broadcast_channel
+comma
+id|HPSB_ISO_DMA_PACKET_PER_BUFFER
 comma
 l_int|1
 comma
@@ -5420,7 +5424,7 @@ id|p
 suffix:semicolon
 id|p
 op_assign
-id|alloc_hpsb_packet
+id|hpsb_alloc_packet
 c_func
 (paren
 l_int|0
@@ -5797,7 +5801,7 @@ id|packet-&gt;data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|free_hpsb_packet
+id|hpsb_free_packet
 c_func
 (paren
 id|packet
@@ -5918,7 +5922,7 @@ id|tx_len
 )paren
 )paren
 (brace
-id|free_hpsb_packet
+id|hpsb_free_packet
 c_func
 (paren
 id|packet
@@ -5946,12 +5950,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|hpsb_send_packet
 c_func
 (paren
 id|packet
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|ether1394_free_packet
@@ -7007,7 +7012,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1043 $&quot;
+l_string|&quot;$Rev: 1079 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */
