@@ -632,14 +632,6 @@ id|hfs_u16
 id|attrib
 suffix:semicolon
 multiline_comment|/* Attribute word */
-DECL|member|rename_wait
-id|hfs_wait_queue
-id|rename_wait
-suffix:semicolon
-DECL|member|rename_lock
-r_int
-id|rename_lock
-suffix:semicolon
 DECL|member|bitmap_wait
 id|hfs_wait_queue
 id|bitmap_wait
