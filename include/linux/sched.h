@@ -721,6 +721,11 @@ id|atomic_t
 id|files
 suffix:semicolon
 multiline_comment|/* How many open files does this user have? */
+DECL|member|sigpending
+id|atomic_t
+id|sigpending
+suffix:semicolon
+multiline_comment|/* How many pending signals does this user have? */
 multiline_comment|/* Hash table maintenance information */
 DECL|member|uidhash_list
 r_struct
