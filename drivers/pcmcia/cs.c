@@ -1306,6 +1306,13 @@ op_assign
 op_amp
 id|s-&gt;erase_busy
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|s-&gt;cis_cache
+)paren
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -1838,9 +1845,11 @@ id|s-&gt;lock_count
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;cis_used
-op_assign
-l_int|0
+id|destroy_cis_cache
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1890,12 +1899,6 @@ id|s-&gt;socket
 suffix:semicolon
 multiline_comment|/* */
 macro_line|#ifdef CONFIG_CARDBUS
-id|cb_release_cis_mem
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|cb_free
 c_func
 (paren

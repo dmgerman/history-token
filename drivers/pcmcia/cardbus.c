@@ -226,6 +226,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*=====================================================================&n;&n;    These are similar to setup_cis_mem and release_cis_mem for 16-bit&n;    cards.  The &quot;result&quot; that is used externally is the cb_cis_virt&n;    pointer in the socket_info_t structure.&n;    &n;=====================================================================*/
 DECL|function|cb_release_cis_mem
+r_static
 r_void
 id|cb_release_cis_mem
 c_func
@@ -811,6 +812,12 @@ op_star
 id|bridge
 op_assign
 id|s-&gt;cap.cb_dev
+suffix:semicolon
+id|cb_release_cis_mem
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_if
 c_cond
