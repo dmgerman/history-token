@@ -517,18 +517,22 @@ DECL|macro|WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST
 mdefine_line|#define WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST&t;0x0008  /*      - &quot; -&t;   */
 DECL|macro|WL3501_MGMT_CAPABILITY_PRIVACY
 mdefine_line|#define WL3501_MGMT_CAPABILITY_PRIVACY&t;&t;0x0010  /*      - &quot; -&t;   */
-DECL|macro|WL3501_REG_DOMAIN_FCC
-mdefine_line|#define WL3501_REG_DOMAIN_FCC    0x10&t;/* Channel 1 to 11 */
-DECL|macro|WL3501_REG_DOMAIN_IC
-mdefine_line|#define WL3501_REG_DOMAIN_IC     0x20&t;/* Channel 1 to 11 */
-DECL|macro|WL3501_REG_DOMAIN_ETSI
-mdefine_line|#define WL3501_REG_DOMAIN_ETSI   0x30&t;/* Channel 1 to 13 */
-DECL|macro|WL3501_REG_DOMAIN_SPAIN
-mdefine_line|#define WL3501_REG_DOMAIN_SPAIN  0x31&t;/* Channel 10 to 11 */
-DECL|macro|WL3501_REG_DOMAIN_FRANCE
-mdefine_line|#define WL3501_REG_DOMAIN_FRANCE 0x32&t;/* Channel 10 to 13 */
-DECL|macro|WL3501_REG_DOMAIN_MKK
-mdefine_line|#define WL3501_REG_DOMAIN_MKK    0x40&t;/* Channel 14 */
+DECL|macro|IW_REG_DOMAIN_FCC
+mdefine_line|#define IW_REG_DOMAIN_FCC&t;0x10&t;/* Channel 1 to 11&t;USA    */
+DECL|macro|IW_REG_DOMAIN_DOC
+mdefine_line|#define IW_REG_DOMAIN_DOC&t;0x20&t;/* Channel 1 to 11&t;Canada */
+DECL|macro|IW_REG_DOMAIN_ETSI
+mdefine_line|#define IW_REG_DOMAIN_ETSI&t;0x30&t;/* Channel 1 to 13&t;Europe */
+DECL|macro|IW_REG_DOMAIN_SPAIN
+mdefine_line|#define IW_REG_DOMAIN_SPAIN&t;0x31&t;/* Channel 10 to 11&t;Spain  */
+DECL|macro|IW_REG_DOMAIN_FRANCE
+mdefine_line|#define IW_REG_DOMAIN_FRANCE&t;0x32&t;/* Channel 10 to 13&t;France */
+DECL|macro|IW_REG_DOMAIN_MKK
+mdefine_line|#define IW_REG_DOMAIN_MKK&t;0x40&t;/* Channel 14&t;&t;Japan  */
+DECL|macro|IW_REG_DOMAIN_MKK1
+mdefine_line|#define IW_REG_DOMAIN_MKK1&t;0x41&t;/* Channel 1-14&t;&t;Japan  */
+DECL|macro|IW_REG_DOMAIN_ISRAEL
+mdefine_line|#define IW_REG_DOMAIN_ISRAEL&t;0x50&t;/* Channel 3 - 9&t;Israel */
 DECL|macro|WL3501_ESSID_MAX_LEN
 mdefine_line|#define WL3501_ESSID_MAX_LEN (IW_ESSID_MAX_SIZE + 2)
 DECL|struct|wl3501_tx_hdr
