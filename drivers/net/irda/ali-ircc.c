@@ -1123,6 +1123,9 @@ r_int
 id|dongle_id
 suffix:semicolon
 r_int
+id|ret
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|IRDA_DEBUG
@@ -2213,6 +2216,7 @@ id|__FUNCTION__
 l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Locking comments :&n;&t; * Most operations here need to be protected. We are called before&n;&t; * the device instance is created in ali_ircc_open(), therefore &n;&t; * nobody can bother us - Jean II */
 multiline_comment|/* Switch to FIR space */
 id|SIR2FIR
 c_func
@@ -3678,6 +3682,7 @@ comma
 id|baud
 )paren
 suffix:semicolon
+multiline_comment|/* This function *must* be called with irq off and spin-lock.&n;&t; * - Jean II */
 id|iobase
 op_assign
 id|self-&gt;io.fir_base
@@ -4184,10 +4189,6 @@ comma
 id|dongle_id
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|tmp
 op_assign
 l_int|0
@@ -4210,17 +4211,7 @@ id|dongle_id
 op_assign
 id|self-&gt;io.dongle_id
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* We are already locked, no need to do it again */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -4796,12 +4787,6 @@ comma
 id|BANK0
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -5372,6 +5357,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : you should make sure that speed changes are not going&n;&t; * to corrupt any outgoing frame. Look at nsc-ircc for the gory&n;&t; * details - Jean II */
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -5414,6 +5410,15 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -5430,15 +5435,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Register and copy this frame to DMA memory */
 id|self-&gt;tx_fifo.queue
 (braket
@@ -7402,6 +7398,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : you should make sure that speed changes are not going&n;&t; * to corrupt any outgoing frame. Look at nsc-ircc for the gory&n;&t; * details - Jean II */
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -7444,6 +7451,15 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -7460,15 +7476,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Init tx buffer */
 id|self-&gt;tx_buff.data
 op_assign
@@ -7629,18 +7636,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7681,12 +7676,30 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ali_ircc_change_speed
 c_func
 (paren
 id|self
 comma
 id|irq-&gt;ifr_baudrate
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_break
@@ -7741,6 +7754,7 @@ id|__FUNCTION__
 l_string|&quot;(), SIOCGRECEIVING&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* This is protected */
 id|irq-&gt;ifr_receiving
 op_assign
 id|ali_ircc_is_receiving
@@ -7759,12 +7773,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8351,10 +8359,6 @@ id|iobase
 )paren
 (brace
 singleline_comment|//unsigned char tmp;
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8364,17 +8368,7 @@ id|__FUNCTION__
 l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
 id|outb
 c_func
 (paren
@@ -8403,12 +8397,6 @@ comma
 id|iobase
 op_plus
 id|UART_MCR
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|outb
@@ -8460,10 +8448,6 @@ r_int
 r_char
 id|val
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8473,17 +8457,7 @@ id|__FUNCTION__
 l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
 id|outb
 c_func
 (paren
@@ -8564,12 +8538,6 @@ c_func
 id|iobase
 op_plus
 id|UART_MSR
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
