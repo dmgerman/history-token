@@ -3685,38 +3685,6 @@ suffix:semicolon
 id|udbg_printf
 c_func
 (paren
-l_string|&quot;&bslash;tcfg_addr      = 0x%016LX&bslash;n&quot;
-comma
-id|phb-&gt;cfg_addr
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&bslash;tcfg_data      = 0x%016LX&bslash;n&quot;
-comma
-id|phb-&gt;cfg_data
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&bslash;tphb_regs      = 0x%016LX&bslash;n&quot;
-comma
-id|phb-&gt;phb_regs
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&bslash;tchip_regs     = 0x%016LX&bslash;n&quot;
-comma
-id|phb-&gt;chip_regs
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
 l_string|&quot;&bslash;tResources&bslash;n&quot;
 )paren
 suffix:semicolon
