@@ -4173,10 +4173,6 @@ op_star
 id|drive
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#if 0
 r_if
 c_cond
