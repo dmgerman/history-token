@@ -28,9 +28,9 @@ mdefine_line|#define SPARC_TFAULT rd %psr, %l0; rd %wim, %l3; b sun4c_fault; mov
 DECL|macro|SPARC_DFAULT
 mdefine_line|#define SPARC_DFAULT rd %psr, %l0; rd %wim, %l3; b sun4c_fault; mov 0, %l7;
 DECL|macro|SRMMU_TFAULT
-mdefine_line|#define SRMMU_TFAULT rd %psr, %l0; rd %wim, %l3; b C_LABEL(srmmu_fault); mov 1, %l7;
+mdefine_line|#define SRMMU_TFAULT rd %psr, %l0; rd %wim, %l3; b srmmu_fault; mov 1, %l7;
 DECL|macro|SRMMU_DFAULT
-mdefine_line|#define SRMMU_DFAULT rd %psr, %l0; rd %wim, %l3; b C_LABEL(srmmu_fault); mov 0, %l7;
+mdefine_line|#define SRMMU_DFAULT rd %psr, %l0; rd %wim, %l3; b srmmu_fault; mov 0, %l7;
 multiline_comment|/* This is for traps we should NEVER get. */
 DECL|macro|BAD_TRAP
 mdefine_line|#define BAD_TRAP(num) &bslash;&n;        rd %psr, %l0; mov num, %l7; b bad_trap_handler; rd %wim, %l3;
@@ -40,10 +40,10 @@ mdefine_line|#define SKIP_TRAP(type, name) &bslash;&n;&t;jmpl %l2, %g0; rett %l2
 multiline_comment|/* Notice that for the system calls we pull a trick.  We load up a&n; * different pointer to the system call vector table in %l7, but call&n; * the same generic system call low-level entry point.  The trap table&n; * entry sequences are also HyperSparc pipeline friendly ;-)&n; */
 multiline_comment|/* Software trap for Linux system calls. */
 DECL|macro|LINUX_SYSCALL_TRAP
-mdefine_line|#define LINUX_SYSCALL_TRAP &bslash;&n;        sethi %hi(C_LABEL(sys_call_table)), %l7; &bslash;&n;        or %l7, %lo(C_LABEL(sys_call_table)), %l7; &bslash;&n;        b linux_sparc_syscall; &bslash;&n;        rd %psr, %l0;
+mdefine_line|#define LINUX_SYSCALL_TRAP &bslash;&n;        sethi %hi(sys_call_table), %l7; &bslash;&n;        or %l7, %lo(sys_call_table), %l7; &bslash;&n;        b linux_sparc_syscall; &bslash;&n;        rd %psr, %l0;
 multiline_comment|/* Software trap for SunOS4.1.x system calls. */
 DECL|macro|SUNOS_SYSCALL_TRAP
-mdefine_line|#define SUNOS_SYSCALL_TRAP &bslash;&n;        rd %psr, %l0; &bslash;&n;        sethi %hi(C_LABEL(sunos_sys_table)), %l7; &bslash;&n;        b linux_sparc_syscall; &bslash;&n;        or %l7, %lo(C_LABEL(sunos_sys_table)), %l7;
+mdefine_line|#define SUNOS_SYSCALL_TRAP &bslash;&n;        rd %psr, %l0; &bslash;&n;        sethi %hi(sunos_sys_table), %l7; &bslash;&n;        b linux_sparc_syscall; &bslash;&n;        or %l7, %lo(sunos_sys_table), %l7;
 DECL|macro|SUNOS_NO_SYSCALL_TRAP
 mdefine_line|#define SUNOS_NO_SYSCALL_TRAP &bslash;&n;        b sunos_syscall; &bslash;&n;        rd %psr, %l0; &bslash;&n;        nop; &bslash;&n;        nop;
 multiline_comment|/* Software trap for Slowaris system calls. */
@@ -55,7 +55,7 @@ DECL|macro|BREAKPOINT_TRAP
 mdefine_line|#define BREAKPOINT_TRAP &bslash;&n;&t;b breakpoint_trap; &bslash;&n;&t;rd %psr,%l0; &bslash;&n;&t;nop; &bslash;&n;&t;nop;
 multiline_comment|/* Software trap for Sparc-netbsd system calls. */
 DECL|macro|NETBSD_SYSCALL_TRAP
-mdefine_line|#define NETBSD_SYSCALL_TRAP &bslash;&n;        sethi %hi(C_LABEL(sys_call_table)), %l7; &bslash;&n;        or %l7, %lo(C_LABEL(sys_call_table)), %l7; &bslash;&n;        b bsd_syscall; &bslash;&n;        rd %psr, %l0;
+mdefine_line|#define NETBSD_SYSCALL_TRAP &bslash;&n;        sethi %hi(sys_call_table), %l7; &bslash;&n;        or %l7, %lo(sys_call_table), %l7; &bslash;&n;        b bsd_syscall; &bslash;&n;        rd %psr, %l0;
 multiline_comment|/* The Get Condition Codes software trap for userland. */
 DECL|macro|GETCC_TRAP
 mdefine_line|#define GETCC_TRAP &bslash;&n;        b getcc_trap_handler; mov %psr, %l0; nop; nop;
