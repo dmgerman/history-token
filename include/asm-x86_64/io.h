@@ -186,6 +186,7 @@ mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -207,6 +208,7 @@ DECL|function|ioremap
 r_extern
 r_inline
 r_void
+id|__iomem
 op_star
 id|ioremap
 (paren
@@ -234,6 +236,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This one maps high address device memory and turns off caching for that area.&n; * it&squot;s useful if some control registers are in such an area and write combining&n; * or read caching is not desirable:&n; */
 r_extern
 r_void
+id|__iomem
 op_star
 id|ioremap_nocache
 (paren
@@ -252,6 +255,7 @@ id|iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -270,13 +274,13 @@ DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
-mdefine_line|#define readb(addr) (*(volatile unsigned char *) (addr))
+mdefine_line|#define readb(addr) (*(__force volatile __u8 *) (__u8 __iomem *)(addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr) (*(volatile unsigned short *) (addr))
+mdefine_line|#define readw(addr) (*(__force volatile __u16 *) (__u16 __iomem *)(addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr) (*(volatile unsigned int *) (addr))
+mdefine_line|#define readl(addr) (*(__force volatile __u32 *) (__u32 __iomem *)(addr))
 DECL|macro|readq
-mdefine_line|#define readq(addr) (*(volatile unsigned long *) (addr))
+mdefine_line|#define readq(addr) (*(__force volatile __u64 *) (__u64 __iomem *)(addr))
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(a) readb(a)
 DECL|macro|readw_relaxed
@@ -301,16 +305,18 @@ r_void
 id|__writel
 c_func
 (paren
-id|u32
+id|__u32
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
 (brace
 r_volatile
-id|u32
+id|__u32
+id|__iomem
 op_star
 id|target
 op_assign
@@ -343,16 +349,17 @@ r_void
 id|__writeq
 c_func
 (paren
-id|u64
+id|__u64
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
 (brace
 r_volatile
-id|u64
+id|__u64
 op_star
 id|target
 op_assign
@@ -379,19 +386,19 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|macro|writeq
-mdefine_line|#define writeq(val,addr) __writeq((val),(void *)(addr))
+mdefine_line|#define writeq(val,addr) __writeq((val),(void __iomem *)(addr))
 DECL|macro|writel
-mdefine_line|#define writel(val,addr) __writel((val),(void *)(addr))
+mdefine_line|#define writel(val,addr) __writel((val),(void __iomem *)(addr))
 macro_line|#else
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) (addr) = (b))
+mdefine_line|#define writel(b,addr) (*(__force volatile __u32 *)(__u32 __iomem *)(addr) = (b))
 DECL|macro|writeq
-mdefine_line|#define writeq(b,addr) (*(volatile unsigned long *) (addr) = (b))
+mdefine_line|#define writeq(b,addr) (*(__force volatile __u64 *)(__u64 __iomem *)(addr) = (b))
 macro_line|#endif
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) (addr) = (b))
+mdefine_line|#define writeb(b,addr) (*(__force volatile __u8 *)(__u8 __iomem *)(addr) = (b))
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) (addr) = (b))
+mdefine_line|#define writew(b,addr) (*(__force volatile __u16 *)(__u16 __iomem *)(addr) = (b))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
@@ -430,14 +437,14 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(to,from,len) &bslash;&n;  __memcpy_fromio((to),(unsigned long)(from),(len))
+mdefine_line|#define memcpy_fromio(to,from,len) &bslash;&n;  __memcpy_fromio((to),(unsigned long)(void __iomem *)(from),(len))
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  __memcpy_toio((unsigned long)(to),(from),(len))
+mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  __memcpy_toio((unsigned long)(void __iomem *)(to),(from),(len))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;memset((__force void *)(void __iomem *)(a),(b),(c))
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on a typical x86 system, no need to&n; * explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
-mdefine_line|#define __ISA_IO_base ((char *)(PAGE_OFFSET))
+mdefine_line|#define __ISA_IO_base ((char __iomem *)(PAGE_OFFSET))
 DECL|macro|isa_readb
 mdefine_line|#define isa_readb(a) readb(__ISA_IO_base + (a))
 DECL|macro|isa_readw
