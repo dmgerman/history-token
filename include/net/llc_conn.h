@@ -316,17 +316,6 @@ id|skb
 suffix:semicolon
 r_extern
 r_void
-id|llc_conn_free_ev
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|llc_conn_resend_i_pdu_as_cmd
 c_func
 (paren

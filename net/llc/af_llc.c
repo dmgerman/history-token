@@ -2086,6 +2086,26 @@ id|timeout
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Well, if we have backlog, try to process it now.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|sk-&gt;backlog.tail
+)paren
+(brace
+id|release_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|lock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+)brace
 id|rc
 op_assign
 l_int|0

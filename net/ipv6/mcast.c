@@ -433,9 +433,15 @@ id|mc_lst-&gt;next
 r_if
 c_cond
 (paren
+(paren
+id|ifindex
+op_eq
+l_int|0
+op_logical_or
 id|mc_lst-&gt;ifindex
 op_eq
 id|ifindex
+)paren
 op_logical_and
 id|ipv6_addr_cmp
 c_func
@@ -475,7 +481,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|ifindex
+id|mc_lst-&gt;ifindex
 )paren
 )paren
 op_ne

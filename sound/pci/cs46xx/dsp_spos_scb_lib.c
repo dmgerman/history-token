@@ -5063,15 +5063,6 @@ op_assign
 id|parent_scb
 suffix:semicolon
 multiline_comment|/* update entry in DSP RAM */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|snd_cs46xx_poke
 c_func
 (paren
@@ -5094,15 +5085,6 @@ op_or
 (paren
 id|parent_scb-&gt;next_scb_ptr-&gt;address
 )paren
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

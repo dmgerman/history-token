@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_tr.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
 r_static
 r_void

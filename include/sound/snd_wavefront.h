@@ -314,6 +314,10 @@ r_char
 id|rom_samples_rdonly
 suffix:semicolon
 multiline_comment|/* can we write on ROM samples */
+DECL|member|irq_lock
+id|spinlock_t
+id|irq_lock
+suffix:semicolon
 DECL|member|interrupt_sleeper
 id|wait_queue_head_t
 id|interrupt_sleeper

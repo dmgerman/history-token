@@ -1934,7 +1934,7 @@ c_func
 id|kbd-&gt;irq
 )paren
 suffix:semicolon
-id|usb_kbd_free_buffers
+id|usb_kbd_free_mem
 c_func
 (paren
 id|dev
@@ -2164,7 +2164,7 @@ op_amp
 id|kbd-&gt;dev
 )paren
 suffix:semicolon
-id|usb_kbd_free_buffers
+id|usb_kbd_free_mem
 c_func
 (paren
 id|interface_to_usbdev

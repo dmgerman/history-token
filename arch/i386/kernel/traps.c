@@ -513,7 +513,7 @@ id|addr
 id|printk
 c_func
 (paren
-l_string|&quot; [&lt;%08lx&gt;]&quot;
+l_string|&quot; [&lt;%08lx&gt;] &quot;
 comma
 id|addr
 )paren
@@ -719,10 +719,15 @@ c_func
 r_void
 )paren
 (brace
-id|show_stack
+r_int
+r_int
+id|stack
+suffix:semicolon
+id|show_trace
 c_func
 (paren
-l_int|0
+op_amp
+id|stack
 )paren
 suffix:semicolon
 )brace

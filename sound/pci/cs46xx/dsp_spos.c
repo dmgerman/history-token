@@ -7123,15 +7123,11 @@ comma
 id|SCB_ON_PARENT_SUBLIST_SCB
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 multiline_comment|/* reset SPDIF input sample buffer pointer */
@@ -7207,10 +7203,11 @@ comma
 id|ins-&gt;spdif_input_volume
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 multiline_comment|/* set SPDIF input sample rate and unmute&n;&t;   NOTE: only 48khz support for SPDIF input this time */

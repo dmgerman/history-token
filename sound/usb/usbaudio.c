@@ -5910,13 +5910,42 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * entry point for linux usb interface&n; */
+macro_line|#ifndef OLD_USB
+r_static
+r_int
+id|usb_audio_probe
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
+)paren
+suffix:semicolon
+r_static
+r_void
+id|usb_audio_disconnect
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+suffix:semicolon
+macro_line|#else
 r_static
 r_void
 op_star
 id|usb_audio_probe
 c_func
 (paren
-r_struct
 id|usb_device
 op_star
 id|dev
@@ -5947,6 +5976,7 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_audio_ids
 r_static
 r_struct
@@ -6012,6 +6042,7 @@ id|disconnect
 op_assign
 id|usb_audio_disconnect
 comma
+macro_line|#ifdef OLD_USB
 dot
 id|driver_list
 op_assign
@@ -6021,6 +6052,7 @@ c_func
 id|usb_audio_driver.driver_list
 )paren
 comma
+macro_line|#endif
 dot
 id|id_table
 op_assign
@@ -9782,7 +9814,25 @@ id|buflen
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * probe the active usb device&n; *&n; * note that this can be called multiple times per a device, when it&n; * includes multiple audio control interfaces.&n; *&n; * thus we check the usb device pointer and creates the card instance&n; * only at the first time.  the successive calls of this function will&n; * append the pcm interface to the corresponding card.&n; */
+macro_line|#ifndef OLD_USB
 DECL|function|usb_audio_probe
+r_static
+r_int
+id|usb_audio_probe
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
+)paren
+macro_line|#else
 r_static
 r_void
 op_star
@@ -9804,7 +9854,26 @@ id|usb_device_id
 op_star
 id|id
 )paren
+macro_line|#endif
 (brace
+macro_line|#ifndef OLD_USB
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
+r_int
+id|ifnum
+op_assign
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|usb_config_descriptor
 op_star
@@ -9855,8 +9924,8 @@ id|ifnum
 op_ne
 id|quirk-&gt;ifnum
 )paren
-r_return
-l_int|NULL
+r_goto
+id|__err_val
 suffix:semicolon
 r_if
 c_cond
@@ -9881,8 +9950,8 @@ comma
 id|config-&gt;bConfigurationValue
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|__err_val
 suffix:semicolon
 )brace
 id|index
@@ -9911,8 +9980,8 @@ id|buflen
 op_le
 l_int|0
 )paren
-r_return
-l_int|NULL
+r_goto
+id|__err_val
 suffix:semicolon
 multiline_comment|/*&n;&t; * found a config.  now register to ALSA&n;&t; */
 multiline_comment|/* check whether it&squot;s already registered */
@@ -10259,9 +10328,15 @@ c_func
 id|buffer
 )paren
 suffix:semicolon
+macro_line|#ifndef OLD_USB
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
 r_return
 id|chip
 suffix:semicolon
+macro_line|#endif
 id|__error
 suffix:colon
 id|up
@@ -10277,12 +10352,33 @@ c_func
 id|buffer
 )paren
 suffix:semicolon
+id|__err_val
+suffix:colon
+macro_line|#ifndef OLD_USB
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+macro_line|#else
 r_return
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * we need to take care of counter, since disconnection can be called also&n; * many times as well as usb_audio_probe(). &n; */
+macro_line|#ifndef OLD_USB
 DECL|function|usb_audio_disconnect
+r_static
+r_void
+id|usb_audio_disconnect
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+macro_line|#else
 r_static
 r_void
 id|usb_audio_disconnect
@@ -10297,7 +10393,21 @@ r_void
 op_star
 id|ptr
 )paren
+macro_line|#endif
 (brace
+macro_line|#ifndef OLD_USB
+r_void
+op_star
+id|ptr
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#endif
 id|snd_usb_audio_t
 op_star
 id|chip

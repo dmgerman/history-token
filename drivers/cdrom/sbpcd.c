@@ -1231,6 +1231,7 @@ suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
+op_star
 id|disk
 suffix:semicolon
 DECL|variable|D_S
@@ -28880,6 +28881,7 @@ r_static
 id|devfs_handle_t
 id|devfs_handle
 suffix:semicolon
+multiline_comment|/* FIXME: cleanups after failed allocations are too ugly for words */
 macro_line|#ifdef MODULE
 DECL|function|__sbpcd_init
 r_int
@@ -30085,8 +30087,10 @@ id|sbpcd_infop
 suffix:semicolon
 id|disk
 op_assign
-op_amp
-id|p-&gt;disk
+id|alloc_disk
+c_func
+(paren
+)paren
 suffix:semicolon
 id|disk-&gt;major
 op_assign
@@ -30138,6 +30142,10 @@ id|nbuff
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+id|p-&gt;disk
+op_assign
+id|disk
 suffix:semicolon
 r_if
 c_cond
@@ -30282,7 +30290,17 @@ suffix:semicolon
 id|del_gendisk
 c_func
 (paren
-op_amp
+id|D_S
+(braket
+id|j
+)braket
+dot
+id|disk
+)paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
 id|D_S
 (braket
 id|j

@@ -17,11 +17,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
 DECL|member|next_index
 r_int
 r_int
@@ -36,17 +31,24 @@ id|SHMEM_NR_DIRECT
 suffix:semicolon
 multiline_comment|/* for the first blocks */
 DECL|member|i_indirect
-r_void
-op_star
+r_struct
+id|page
 op_star
 id|i_indirect
 suffix:semicolon
 multiline_comment|/* indirect blocks */
+DECL|member|alloced
+r_int
+r_int
+id|alloced
+suffix:semicolon
+multiline_comment|/* data pages allocated to file */
 DECL|member|swapped
 r_int
 r_int
 id|swapped
 suffix:semicolon
+multiline_comment|/* subtotal assigned to swap */
 DECL|member|flags
 r_int
 r_int

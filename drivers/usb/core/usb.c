@@ -1717,6 +1717,9 @@ op_star
 op_star
 id|envp
 comma
+r_int
+id|num_envp
+comma
 r_char
 op_star
 id|buffer

@@ -702,7 +702,7 @@ l_string|&quot;Corega FEter&quot;
 comma
 id|VENDOR_COREGA
 comma
-l_int|0x0004
+l_int|0x000d
 comma
 id|DEFAULT_GPIO_RESET
 op_or

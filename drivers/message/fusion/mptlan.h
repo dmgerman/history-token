@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 singleline_comment|// #include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

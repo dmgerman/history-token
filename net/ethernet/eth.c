@@ -171,7 +171,7 @@ id|dev-&gt;addr_len
 )paren
 suffix:semicolon
 r_return
-id|dev-&gt;hard_header_len
+id|ETH_HLEN
 suffix:semicolon
 )brace
 r_if
@@ -191,12 +191,12 @@ id|dev-&gt;addr_len
 )paren
 suffix:semicolon
 r_return
-id|dev-&gt;hard_header_len
+id|ETH_HLEN
 suffix:semicolon
 )brace
 r_return
 op_minus
-id|dev-&gt;hard_header_len
+id|ETH_HLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Rebuild the Ethernet MAC header. This is called after an ARP&n; *&t;(or in future other address resolution) has completed on this&n; *&t;sk_buff. We now let ARP fill in the other fields.&n; *&n; *&t;This routine CANNOT use cached dst-&gt;neigh!&n; *&t;Really, it is used only when dst-&gt;neigh is wrong.&n; */
@@ -324,7 +324,7 @@ c_func
 (paren
 id|skb
 comma
-id|dev-&gt;hard_header_len
+id|ETH_HLEN
 )paren
 suffix:semicolon
 id|eth

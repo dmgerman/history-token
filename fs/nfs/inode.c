@@ -2512,7 +2512,7 @@ suffix:semicolon
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|memset
@@ -4941,7 +4941,7 @@ suffix:semicolon
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|memset
