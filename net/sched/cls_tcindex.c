@@ -7,7 +7,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 multiline_comment|/*&n; * Not quite sure if we need all the xchgs Alexey uses when accessing things.&n; * Can always add them later ... :)&n; */
 multiline_comment|/*&n; * Passing parameters to the root seems to be done more awkwardly than really&n; * necessary. At least, u32 doesn&squot;t seem to use such dirty hacks. To be&n; * verified. FIXME.&n; */

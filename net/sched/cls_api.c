@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#if 0 /* control */
 mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)
 macro_line|#else
