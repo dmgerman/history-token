@@ -50,7 +50,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|drm_cards_limit
+id|cards_limit
 comma
 l_string|&quot;Maximum number of graphics cards&quot;
 )paren
@@ -58,7 +58,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|drm_debug
+id|debug
 comma
 l_string|&quot;Enable debug output&quot;
 )paren
