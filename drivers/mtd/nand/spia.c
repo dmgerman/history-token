@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.23 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.24 2004/11/04 12:53:10 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -55,36 +55,44 @@ id|spia_peddr
 op_assign
 id|SPIA_PEDDR
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|spia_io_base
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|spia_fio_base
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|spia_pedr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|spia_peddr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Define partitions for flash device&n; */
