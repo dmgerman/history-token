@@ -2027,10 +2027,9 @@ id|ata_expiry_t
 id|expiry
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
 r_extern
 id|u8
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 r_struct
@@ -2040,13 +2039,10 @@ comma
 r_struct
 id|request
 op_star
-id|rq
 comma
 r_const
 r_char
 op_star
-comma
-id|u8
 )paren
 suffix:semicolon
 r_extern
@@ -2908,7 +2904,7 @@ id|udma_new_table
 c_func
 (paren
 r_struct
-id|ata_channel
+id|ata_device
 op_star
 comma
 r_struct
@@ -3139,6 +3135,20 @@ suffix:semicolon
 r_extern
 r_void
 id|ata_out_regfile
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|hd_drive_task_hdr
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_in_regfile
 c_func
 (paren
 r_struct

@@ -1298,7 +1298,7 @@ id|pc-&gt;quiet
 )paren
 (brace
 multiline_comment|/* Otherwise, print an error. */
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1306,8 +1306,6 @@ comma
 id|rq
 comma
 l_string|&quot;packet command error&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -1456,7 +1454,7 @@ id|DATA_PROTECT
 )paren
 (brace
 multiline_comment|/* No point in retrying after an illegal&n;&t;&t;&t;   request or data protect error.*/
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1464,8 +1462,6 @@ comma
 id|rq
 comma
 l_string|&quot;command error&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 id|cdrom_end_request
@@ -1489,7 +1485,7 @@ id|MEDIUM_ERROR
 )paren
 (brace
 multiline_comment|/* No point in re-trying a zillion times on a bad&n;&t;&t;&t; * sector.  The error is not correctable at all.&n;&t;&t;&t; */
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1497,8 +1493,6 @@ comma
 id|rq
 comma
 l_string|&quot;media error (bad sector)&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 id|cdrom_end_request

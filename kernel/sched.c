@@ -1884,7 +1884,7 @@ id|run_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 DECL|macro|CAN_MIGRATE_TASK
-mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((jiffies - (p)-&gt;sleep_timestamp &gt; cache_decay_ticks) &amp;&amp;&t;&bslash;&n;&t;&t;((p) != (rq)-&gt;curr) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1 &lt;&lt; (this_cpu))))
+mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((jiffies - (p)-&gt;sleep_timestamp &gt; cache_decay_ticks) &amp;&amp;&t;&bslash;&n;&t;&t;((p) != (rq)-&gt;curr) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1UL &lt;&lt; (this_cpu))))
 r_if
 c_cond
 (paren
@@ -2494,7 +2494,7 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if entering from preempt_schedule, off a kernel preemption,&n;&t; * go straight to picking the next task.&n;&t; */
+multiline_comment|/*&n;&t; * if entering off a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2772,7 +2772,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PREEMPT
-multiline_comment|/*&n; * this is is the entry point to schedule() from in-kernel preemption.&n; */
+multiline_comment|/*&n; * this is is the entry point to schedule() from in-kernel preemption&n; * off of preempt_enable.  Kernel preemptions off return from interrupt&n; * occur there and call schedule directly.&n; */
 DECL|function|preempt_schedule
 id|asmlinkage
 r_void
@@ -2815,11 +2815,6 @@ suffix:semicolon
 id|ti-&gt;preempt_count
 op_assign
 l_int|0
-suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PREEMPT */
@@ -2953,7 +2948,7 @@ id|q
 )paren
 r_return
 suffix:semicolon
-id|wq_read_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2972,7 +2967,7 @@ comma
 id|nr_exclusive
 )paren
 suffix:semicolon
-id|wq_read_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -3139,9 +3134,9 @@ suffix:semicolon
 DECL|macro|SLEEP_ON_VAR
 mdefine_line|#define&t;SLEEP_ON_VAR&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;wait_queue_t wait;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;wait, current);
 DECL|macro|SLEEP_ON_HEAD
-mdefine_line|#define&t;SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;wq_write_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;wq_write_unlock(&amp;q-&gt;lock);
+mdefine_line|#define&t;SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;q-&gt;lock);
 DECL|macro|SLEEP_ON_TAIL
-mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wq_write_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;wq_write_unlock_irqrestore(&amp;q-&gt;lock,flags);
+mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
 DECL|function|interruptible_sleep_on
 r_void
 id|interruptible_sleep_on
@@ -5967,7 +5962,7 @@ DECL|typedef|migration_req_t
 )brace
 id|migration_req_t
 suffix:semicolon
-multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.&n; */
+multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */
 DECL|function|set_cpus_allowed
 r_void
 id|set_cpus_allowed
