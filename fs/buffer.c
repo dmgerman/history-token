@@ -229,6 +229,7 @@ id|wake_up_buffer
 suffix:semicolon
 DECL|function|unlock_buffer
 r_void
+id|fastcall
 id|unlock_buffer
 c_func
 (paren
@@ -4069,6 +4070,7 @@ multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages
 multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer,&n; * then set its backing page dirty, then attach the page to its&n; * address_space&squot;s dirty_pages list and then attach the address_space&squot;s&n; * inode to its superblock&squot;s dirty inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;page_lock and the global inode_lock.&n; */
 DECL|function|mark_buffer_dirty
 r_void
+id|fastcall
 id|mark_buffer_dirty
 c_func
 (paren

@@ -108,7 +108,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|free_pidmap
-r_inline
+id|fastcall
 r_void
 id|free_pidmap
 c_func
@@ -467,7 +467,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|find_pid
-r_inline
+id|fastcall
 r_struct
 id|pid
 op_star
@@ -546,6 +546,7 @@ suffix:semicolon
 )brace
 DECL|function|link_pid
 r_void
+id|fastcall
 id|link_pid
 c_func
 (paren
@@ -588,6 +589,7 @@ suffix:semicolon
 )brace
 DECL|function|attach_pid
 r_int
+id|fastcall
 id|attach_pid
 c_func
 (paren
@@ -822,6 +824,7 @@ suffix:semicolon
 )brace
 DECL|function|detach_pid
 r_void
+id|fastcall
 id|detach_pid
 c_func
 (paren

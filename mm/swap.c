@@ -178,6 +178,7 @@ suffix:semicolon
 multiline_comment|/*&n; * FIXME: speed this up?&n; */
 DECL|function|activate_page
 r_void
+id|fastcall
 id|activate_page
 c_func
 (paren
@@ -262,6 +263,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Mark a page as having seen activity.&n; *&n; * inactive,unreferenced&t;-&gt;&t;inactive,referenced&n; * inactive,referenced&t;&t;-&gt;&t;active,unreferenced&n; * active,unreferenced&t;&t;-&gt;&t;active,referenced&n; */
 DECL|function|mark_page_accessed
 r_void
+id|fastcall
 id|mark_page_accessed
 c_func
 (paren
@@ -367,6 +369,7 @@ comma
 suffix:semicolon
 DECL|function|lru_cache_add
 r_void
+id|fastcall
 id|lru_cache_add
 c_func
 (paren
@@ -421,6 +424,7 @@ suffix:semicolon
 )brace
 DECL|function|lru_cache_add_active
 r_void
+id|fastcall
 id|lru_cache_add_active
 c_func
 (paren
@@ -542,6 +546,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This path almost never happens for VM activity - pages are normally&n; * freed via pagevecs.  But it gets used by networking.&n; */
 DECL|function|__page_cache_release
 r_void
+id|fastcall
 id|__page_cache_release
 c_func
 (paren

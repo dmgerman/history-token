@@ -74,15 +74,6 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|smp_send_reschedule
-c_func
-(paren
-r_int
-id|cpu
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|smp_invalidate_rcv
 c_func
 (paren

@@ -37,6 +37,8 @@ mdefine_line|#define NORET_AND     noreturn,
 macro_line|#ifndef FASTCALL
 DECL|macro|FASTCALL
 mdefine_line|#define FASTCALL(x)&t;x
+DECL|macro|fastcall
+mdefine_line|#define fastcall
 macro_line|#endif
 macro_line|#endif
 eof

@@ -8321,6 +8321,7 @@ suffix:semicolon
 multiline_comment|/**&n; * kmem_ptr_validate - check if an untrusted pointer might&n; *&t;be a slab entry.&n; * @cachep: the cache we&squot;re checking against&n; * @ptr: pointer to validate&n; *&n; * This verifies that the untrusted pointer looks sane:&n; * it is _not_ a guarantee that the pointer is actually&n; * part of the slab cache in question, but it at least&n; * validates that the pointer can be dereferenced and&n; * looks half-way sane.&n; *&n; * Currently only used for dentry validation.&n; */
 DECL|function|kmem_ptr_validate
 r_int
+id|fastcall
 id|kmem_ptr_validate
 c_func
 (paren

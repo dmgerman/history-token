@@ -23,15 +23,11 @@ suffix:semicolon
 multiline_comment|/*&n; * sends a &squot;reschedule&squot; event to another CPU:&n; */
 r_extern
 r_void
-id|FASTCALL
-c_func
-(paren
 id|smp_send_reschedule
 c_func
 (paren
 r_int
 id|cpu
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prepare machine for booting other CPUs.&n; */
