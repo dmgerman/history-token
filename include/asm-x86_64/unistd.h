@@ -374,7 +374,7 @@ c_func
 (paren
 id|__NR_sendfile
 comma
-id|sys_sendfile
+id|sys_sendfile64
 )paren
 DECL|macro|__NR_socket
 mdefine_line|#define __NR_socket                             41
