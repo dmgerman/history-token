@@ -70,11 +70,6 @@ id|statfs
 )paren
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|sb-&gt;s_op
@@ -85,11 +80,6 @@ c_func
 id|sb
 comma
 id|buf
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

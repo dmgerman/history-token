@@ -729,6 +729,11 @@ op_star
 id|buf
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*if (s-&gt;s_hpfs_n_free == -1) {*/
 id|s-&gt;s_hpfs_n_free
 op_assign
@@ -782,6 +787,11 @@ suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
 l_int|254
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
