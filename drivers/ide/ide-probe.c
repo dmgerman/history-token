@@ -21,6 +21,132 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable&n; * hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting&n; * appropriate config bits.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD)&n; * devices, so in linux 2.3.x we should change this to just treat all PCMCIA&n; * drives this way, and get rid of the model-name tests below&n; * (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
+DECL|function|drive_is_flashcard
+r_inline
+r_int
+id|drive_is_flashcard
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_struct
+id|hd_driveid
+op_star
+id|id
+op_assign
+id|drive-&gt;id
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;removable
+op_logical_and
+id|id
+op_ne
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|id-&gt;config
+op_eq
+l_int|0x848a
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* CompactFlash */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;KODAK ATA_FLASH&quot;
+comma
+l_int|15
+)paren
+multiline_comment|/* Kodak */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;Hitachi CV&quot;
+comma
+l_int|10
+)paren
+multiline_comment|/* Hitachi */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;SunDisk SDCFB&quot;
+comma
+l_int|13
+)paren
+multiline_comment|/* SunDisk */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;HAGIWARA HPC&quot;
+comma
+l_int|12
+)paren
+multiline_comment|/* Hagiwara */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;LEXAR ATA_FLASH&quot;
+comma
+l_int|15
+)paren
+multiline_comment|/* Lexar */
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|id-&gt;model
+comma
+l_string|&quot;ATA_FLASH&quot;
+comma
+l_int|9
+)paren
+)paren
+multiline_comment|/* Simple Tech */
+(brace
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* yes, it is a flash memory card */
+)brace
+)brace
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* no, it is not a flash memory card */
+)brace
 DECL|function|do_identify
 r_static
 r_inline
@@ -31,7 +157,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|cmd
 )paren
 (brace
@@ -55,11 +181,13 @@ id|hd_driveid
 op_star
 id|id
 suffix:semicolon
+multiline_comment|/* called with interrupts disabled! */
 id|id
 op_assign
 id|drive-&gt;id
 op_assign
 id|kmalloc
+c_func
 (paren
 id|SECTOR_WORDS
 op_star
@@ -68,7 +196,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/* called with interrupts disabled! */
 r_if
 c_cond
 (paren
@@ -80,7 +207,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(ide-probe::do_identify) Out of memory.&bslash;n&quot;
+l_string|&quot;(ide-probe::do_identify) &quot;
+l_string|&quot;Out of memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -88,7 +216,8 @@ id|err_kmalloc
 suffix:semicolon
 )brace
 multiline_comment|/* read 512 bytes of id info */
-macro_line|#if 1
+id|hwif
+op_member_access_from_pointer
 id|ata_input_data
 c_func
 (paren
@@ -99,49 +228,6 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-macro_line|#else
-(brace
-r_int
-r_int
-op_star
-id|ptr
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|id
-suffix:semicolon
-r_int
-r_int
-id|lcount
-op_assign
-l_int|256
-op_div
-l_int|2
-suffix:semicolon
-singleline_comment|// printk(&quot;IDE_DATA_REG = %#lx&quot;,IDE_DATA_REG);
-r_while
-c_loop
-(paren
-id|lcount
-op_decrement
-)paren
-(brace
-op_star
-id|ptr
-op_increment
-op_assign
-id|inl
-c_func
-(paren
-id|IDE_DATA_REG
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|local_irq_enable
 c_func
 (paren
@@ -153,25 +239,6 @@ c_func
 id|id
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|id-&gt;word156
-op_eq
-l_int|0x4d42
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: drive-&gt;id-&gt;word156 == 0x%04x &bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|drive-&gt;id-&gt;word156
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -300,13 +367,14 @@ l_char|&squot;i&squot;
 )paren
 )paren
 multiline_comment|/* Pioneer */
+multiline_comment|/* Vertos drives may still be weird */
 id|bswap
 op_xor_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Vertos drives may still be weird */
 )brace
 id|ide_fixstring
+c_func
 (paren
 id|id-&gt;model
 comma
@@ -319,6 +387,7 @@ id|bswap
 )paren
 suffix:semicolon
 id|ide_fixstring
+c_func
 (paren
 id|id-&gt;fw_rev
 comma
@@ -331,6 +400,7 @@ id|bswap
 )paren
 suffix:semicolon
 id|ide_fixstring
+c_func
 (paren
 id|id-&gt;serial_no
 comma
@@ -356,6 +426,7 @@ l_string|&quot;E X A B Y T E N E S T&quot;
 r_goto
 id|err_misc
 suffix:semicolon
+multiline_comment|/* we depend on this a lot! */
 id|id-&gt;model
 (braket
 r_sizeof
@@ -368,7 +439,6 @@ l_int|1
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/* we depend on this a lot! */
 id|printk
 c_func
 (paren
@@ -392,7 +462,7 @@ op_eq
 id|WIN_PIDENTIFY
 )paren
 (brace
-id|byte
+id|u8
 id|type
 op_assign
 (paren
@@ -508,11 +578,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Early cdrom models used zero */
 id|type
 op_assign
 id|ide_cdrom
 suffix:semicolon
-multiline_comment|/* Early cdrom models used zero */
 r_case
 id|ide_cdrom
 suffix:colon
@@ -629,6 +699,10 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Prevent long system lockup probing later for non-existant&n;&t; * slave drive if the hwif is actually a flash memory card of&n;&t; * some variety:&n;&t; */
+id|drive-&gt;is_flash
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -667,6 +741,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|drive-&gt;is_flash
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 id|drive-&gt;media
 op_assign
@@ -675,14 +753,21 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ATA DISK drive&bslash;n&quot;
+l_string|&quot;%s DISK drive&bslash;n&quot;
+comma
+(paren
+id|drive-&gt;is_flash
+)paren
+ques
+c_cond
+l_string|&quot;CFA&quot;
+suffix:colon
+l_string|&quot;ATA&quot;
 )paren
 suffix:semicolon
 id|QUIRK_LIST
 c_func
 (paren
-id|hwif
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -715,11 +800,20 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|cmd
 )paren
 (brace
-singleline_comment|//&t;ide_hwif_t *hwif = HWIF(drive);
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -730,10 +824,14 @@ r_int
 r_int
 id|timeout
 suffix:semicolon
-id|byte
+id|u8
 id|s
+op_assign
+l_int|0
 comma
 id|a
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -749,7 +847,9 @@ c_func
 suffix:semicolon
 id|a
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_ALTSTATUS_REG
@@ -757,7 +857,9 @@ id|IDE_ALTSTATUS_REG
 suffix:semicolon
 id|s
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_STATUS_REG
@@ -779,7 +881,8 @@ id|INDEX_STAT
 id|printk
 c_func
 (paren
-l_string|&quot;%s: probing with STATUS(0x%02x) instead of ALTSTATUS(0x%02x)&bslash;n&quot;
+l_string|&quot;%s: probing with STATUS(0x%02x) instead of &quot;
+l_string|&quot;ALTSTATUS(0x%02x)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -788,19 +891,19 @@ comma
 id|a
 )paren
 suffix:semicolon
+multiline_comment|/* ancient Seagate drives, broken interfaces */
 id|hd_status
 op_assign
 id|IDE_STATUS_REG
 suffix:semicolon
-multiline_comment|/* ancient Seagate drives, broken interfaces */
 )brace
 r_else
 (brace
+multiline_comment|/* use non-intrusive polling */
 id|hd_status
 op_assign
 id|IDE_ALTSTATUS_REG
 suffix:semicolon
-multiline_comment|/* use non-intrusive polling */
 )brace
 )brace
 r_else
@@ -815,7 +918,7 @@ op_assign
 id|IDE_STATUS_REG
 suffix:semicolon
 )brace
-multiline_comment|/* set features register for atapi identify command to be sure of reply */
+multiline_comment|/* set features register for atapi&n;&t; * identify command to be sure of reply&n;&t; */
 r_if
 c_cond
 (paren
@@ -825,7 +928,10 @@ op_eq
 id|WIN_PIDENTIFY
 )paren
 )paren
-id|OUT_BYTE
+multiline_comment|/* disable dma &amp; overlap */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0
@@ -833,50 +939,35 @@ comma
 id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
-multiline_comment|/* disable dma &amp; overlap */
-macro_line|#if CONFIG_BLK_DEV_PDC4030
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
+id|hwif-&gt;identify
+op_ne
+l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|hwif
 op_member_access_from_pointer
-id|chipset
-op_eq
-id|ide_pdc4030
-)paren
-(brace
-multiline_comment|/* DC4030 hosted drives need their own identify... */
-r_extern
-r_int
-id|pdc4030_identify
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdc4030_identify
+id|identify
 c_func
 (paren
 id|drive
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
 )brace
-)brace
 r_else
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
-id|OUT_BYTE
+(brace
+multiline_comment|/* ask drive for ID */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|cmd
@@ -884,7 +975,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-multiline_comment|/* ask drive for ID */
+)brace
 id|timeout
 op_assign
 (paren
@@ -920,45 +1011,54 @@ id|timeout
 )paren
 )paren
 (brace
+multiline_comment|/* drive timed-out */
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* drive timed-out */
 )brace
+multiline_comment|/* give drive a breather */
 id|ide_delay_50ms
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* give drive a breather */
 )brace
 r_while
 c_loop
 (paren
-id|IN_BYTE
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|hd_status
+)paren
 )paren
 op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
+multiline_comment|/* wait for IRQ and DRQ_STAT */
 id|ide_delay_50ms
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* wait for IRQ and DRQ_STAT */
 r_if
 c_cond
 (paren
 id|OK_STAT
 c_func
 (paren
-id|GET_STAT
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
+)paren
 )paren
 comma
 id|DRQ_STAT
@@ -971,13 +1071,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* local CPU only; some systems need this */
 id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only; some systems need this */
+multiline_comment|/* drive returned ID */
 id|do_identify
 c_func
 (paren
@@ -986,21 +1087,23 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* drive returned ID */
+multiline_comment|/* drive responded with ID */
 id|rc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* drive responded with ID */
+multiline_comment|/* clear drive IRQ */
 (paren
 r_void
 )paren
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
-multiline_comment|/* clear drive IRQ */
 id|local_irq_restore
 c_func
 (paren
@@ -1009,11 +1112,13 @@ id|flags
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* drive refused ID */
 id|rc
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* drive refused ID */
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -1027,7 +1132,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|cmd
 )paren
 (brace
@@ -1075,7 +1180,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|OUT_BYTE
+multiline_comment|/* enable device irq */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|drive-&gt;ctl
@@ -1083,7 +1191,6 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-multiline_comment|/* enable device irq */
 )brace
 id|retval
 op_assign
@@ -1104,7 +1211,10 @@ id|autoprobe
 r_int
 id|irq
 suffix:semicolon
-id|OUT_BYTE
+multiline_comment|/* mask device irq */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|drive-&gt;ctl
@@ -1114,16 +1224,18 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-multiline_comment|/* mask device irq */
+multiline_comment|/* clear drive IRQ */
 (paren
 r_void
 )paren
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
-multiline_comment|/* clear drive IRQ */
 id|udelay
 c_func
 (paren
@@ -1160,7 +1272,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Mmmm.. multiple IRQs.. don&squot;t know which was ours */
+multiline_comment|/* Mmmm.. multiple IRQs..&n;&t;&t;&t;&t; * don&squot;t know which was ours&n;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -1184,7 +1296,8 @@ id|ide_cmd640
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Hmmm.. probably a driver problem.&bslash;n&quot;
+l_string|&quot;%s: Hmmm.. probably a driver &quot;
+l_string|&quot;problem.&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
@@ -1211,7 +1324,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|cmd
 )paren
 (brace
@@ -1279,17 +1392,15 @@ l_string|&quot;ATAPI&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* needed for some systems&n;&t; * (e.g. crw9624 as drive0 with disk as slave)&n;&t; */
 id|ide_delay_50ms
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* needed for some systems (e.g. crw9624 as drive0 with disk as slave) */
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -1301,7 +1412,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_SELECT_REG
@@ -1321,11 +1434,10 @@ op_ne
 l_int|0
 )paren
 (brace
+multiline_comment|/* exit with drive0 selected */
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
-comma
 op_amp
 id|hwif-&gt;drives
 (braket
@@ -1333,18 +1445,17 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* exit with drive0 selected */
+multiline_comment|/* allow BUSY_STAT to assert &amp; clear */
 id|ide_delay_50ms
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* allow BUSY_STAT to assert &amp; clear */
 )brace
+multiline_comment|/* no i/f present: mmm.. this should be a 4 -ml */
 r_return
 l_int|3
 suffix:semicolon
-multiline_comment|/* no i/f present: mmm.. this should be a 4 -ml */
 )brace
 r_if
 c_cond
@@ -1352,9 +1463,14 @@ c_cond
 id|OK_STAT
 c_func
 (paren
-id|GET_STAT
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
+)paren
 )paren
 comma
 id|READY_STAT
@@ -1369,6 +1485,7 @@ op_eq
 id|WIN_PIDENTIFY
 )paren
 (brace
+multiline_comment|/* send cmd and wait */
 r_if
 c_cond
 (paren
@@ -1384,7 +1501,8 @@ id|cmd
 )paren
 )paren
 )paren
-multiline_comment|/* send cmd and wait */
+(brace
+multiline_comment|/* failed: try again */
 id|rc
 op_assign
 id|try_to_identify
@@ -1395,7 +1513,27 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* failed: try again */
+)brace
+r_if
+c_cond
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
+)paren
+op_eq
+(paren
+id|BUSY_STAT
+op_or
+id|READY_STAT
+)paren
+)paren
+r_return
+l_int|4
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1419,13 +1557,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: no response (status = 0x%02x), resetting drive&bslash;n&quot;
+l_string|&quot;%s: no response (status = 0x%02x), &quot;
+l_string|&quot;resetting drive&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
 )paren
 suffix:semicolon
@@ -1434,7 +1576,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
+c_func
 (paren
 id|drive-&gt;select.all
 comma
@@ -1446,7 +1591,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_SRST
@@ -1462,9 +1609,14 @@ r_while
 c_loop
 (paren
 (paren
-id|GET_STAT
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
+)paren
 )paren
 op_amp
 id|BUSY_STAT
@@ -1510,29 +1662,35 @@ l_string|&quot;%s: no response (status = 0x%02x)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|GET_STAT
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* ensure drive irq is clear */
+(paren
+r_void
+)paren
+id|hwif
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* not present or maybe ATAPI */
 id|rc
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/* not present or maybe ATAPI */
 )brace
 r_if
 c_cond
@@ -1542,11 +1700,10 @@ op_ne
 l_int|0
 )paren
 (brace
+multiline_comment|/* exit with drive0 selected */
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
-comma
 op_amp
 id|hwif-&gt;drives
 (braket
@@ -1554,21 +1711,23 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* exit with drive0 selected */
 id|ide_delay_50ms
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* ensure drive irq is clear */
 (paren
 r_void
 )paren
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
-multiline_comment|/* ensure drive irq is clear */
 )brace
 r_return
 id|rc
@@ -1612,8 +1771,6 @@ suffix:semicolon
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -1622,7 +1779,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|EXABYTE_ENABLE_NEST
@@ -1668,9 +1827,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|GET_STAT
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
+)paren
 )paren
 op_amp
 id|BUSY_STAT
@@ -1688,9 +1852,14 @@ op_logical_neg
 id|OK_STAT
 c_func
 (paren
-id|GET_STAT
+(paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
+)paren
 )paren
 comma
 l_int|0
@@ -1698,24 +1867,32 @@ comma
 id|BAD_STAT
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
 l_string|&quot;failed (status = 0x%02x)&bslash;n&quot;
 comma
-id|GET_STAT
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
+id|IDE_STATUS_REG
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|printk
 c_func
 (paren
 l_string|&quot;success&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* if !(success||timed-out) */
 r_if
 c_cond
 (paren
@@ -1729,7 +1906,8 @@ id|WIN_IDENTIFY
 op_ge
 l_int|2
 )paren
-multiline_comment|/* if !(success||timed-out) */
+(brace
+multiline_comment|/* look for ATAPI device */
 (paren
 r_void
 )paren
@@ -1741,13 +1919,13 @@ comma
 id|WIN_PIDENTIFY
 )paren
 suffix:semicolon
-multiline_comment|/* look for ATAPI device */
+)brace
 )brace
 multiline_comment|/*&n; * probe_for_drive() tests for existence of a given drive using do_probe().&n; *&n; * Returns:&t;0  no device was found&n; *&t;&t;1  device was found (note: drive-&gt;present might still be 0)&n; */
 DECL|function|probe_for_drive
 r_static
 r_inline
-id|byte
+id|u8
 id|probe_for_drive
 (paren
 id|ide_drive_t
@@ -1755,15 +1933,16 @@ op_star
 id|drive
 )paren
 (brace
+multiline_comment|/* skip probing? */
 r_if
 c_cond
 (paren
 id|drive-&gt;noprobe
 )paren
-multiline_comment|/* skip probing? */
 r_return
 id|drive-&gt;present
 suffix:semicolon
+multiline_comment|/* if !(success||timed-out) */
 r_if
 c_cond
 (paren
@@ -1778,7 +1957,7 @@ op_ge
 l_int|2
 )paren
 (brace
-multiline_comment|/* if !(success||timed-out) */
+multiline_comment|/* look for ATAPI device */
 (paren
 r_void
 )paren
@@ -1790,7 +1969,6 @@ comma
 id|WIN_PIDENTIFY
 )paren
 suffix:semicolon
-multiline_comment|/* look for ATAPI device */
 )brace
 r_if
 c_cond
@@ -1817,10 +1995,11 @@ c_cond
 op_logical_neg
 id|drive-&gt;present
 )paren
+multiline_comment|/* drive not found */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* drive not found */
+multiline_comment|/* identification failed? */
 r_if
 c_cond
 (paren
@@ -1829,7 +2008,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* identification failed? */
 r_if
 c_cond
 (paren
@@ -1839,6 +2017,7 @@ id|ide_disk
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: non-IDE drive, CHS=%d/%d/%d&bslash;n&quot;
 comma
@@ -1872,19 +2051,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* nuke it */
 id|drive-&gt;present
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* nuke it */
 )brace
 )brace
+multiline_comment|/* drive was found */
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* drive was found */
 )brace
-multiline_comment|/*&n; * Calculate the region that this interface occupies,&n; * handling interfaces where the registers may not be&n; * ordered sanely.  We deal with the CONTROL register&n; * separately.&n; */
+DECL|macro|hwif_check_region
+mdefine_line|#define hwif_check_region(addr, num) &bslash;&n;&t;((hwif-&gt;mmio) ? check_mem_region((addr),(num)) : check_region((addr),(num)))
 DECL|function|hwif_check_regions
 r_static
 r_int
@@ -1895,18 +2075,29 @@ op_star
 id|hwif
 )paren
 (brace
+id|u32
+id|i
+op_assign
+l_int|0
+suffix:semicolon
 r_int
-id|region_errors
+id|addr_errs
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;straight8
-op_assign
+r_if
+c_cond
+(paren
+id|hwif-&gt;mmio
+op_eq
+l_int|2
+)paren
+r_return
 l_int|0
 suffix:semicolon
-id|region_errors
+id|addr_errs
 op_assign
-id|ide_check_region
+id|hwif_check_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -1917,92 +2108,28 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
+r_for
+c_loop
 (paren
-id|hwif-&gt;io_ports
-(braket
+id|i
+op_assign
 id|IDE_ERROR_OFFSET
-)braket
-comma
-l_int|1
-)paren
 suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_NSECTOR_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_LCYL_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_HCYL_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SELECT_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|region_errors
-op_add_assign
-id|ide_check_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
+id|i
+op_le
 id|IDE_STATUS_OFFSET
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|addr_errs
+op_add_assign
+id|hwif_check_region
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|i
 )braket
 comma
 l_int|1
@@ -2016,9 +2143,9 @@ id|hwif-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 )paren
-id|region_errors
+id|addr_errs
 op_add_assign
-id|ide_check_region
+id|hwif_check_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2038,9 +2165,9 @@ id|hwif-&gt;io_ports
 id|IDE_IRQ_OFFSET
 )braket
 )paren
-id|region_errors
+id|addr_errs
 op_add_assign
-id|ide_check_region
+id|hwif_check_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2052,11 +2179,18 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
-multiline_comment|/*&n;&t; * If any errors are return, we drop the hwif interface.&n;&t; */
+multiline_comment|/* If any errors are return, we drop the hwif interface. */
+id|hwif-&gt;straight8
+op_assign
+l_int|0
+suffix:semicolon
 r_return
-id|region_errors
+id|addr_errs
 suffix:semicolon
 )brace
+singleline_comment|//EXPORT_SYMBOL(hwif_check_regions);
+DECL|macro|hwif_request_region
+mdefine_line|#define hwif_request_region(addr, num, name)&t;&bslash;&n;&t;((hwif-&gt;mmio) ? request_mem_region((addr),(num),(name)) : request_region((addr),(num),(name)))
 DECL|function|hwif_register
 r_static
 r_void
@@ -2067,6 +2201,64 @@ op_star
 id|hwif
 )paren
 (brace
+id|u32
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;mmio
+op_eq
+l_int|2
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+)paren
+id|hwif_request_region
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+comma
+l_int|1
+comma
+id|hwif-&gt;name
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_MAC)
+r_if
+c_cond
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_IRQ_OFFSET
+)braket
+)paren
+id|hwif_request_region
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_IRQ_OFFSET
+)braket
+comma
+l_int|1
+comma
+id|hwif-&gt;name
+)paren
+suffix:semicolon
+macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
 r_if
 c_cond
 (paren
@@ -2095,7 +2287,7 @@ id|IDE_STATUS_OFFSET
 )paren
 )paren
 (brace
-id|ide_request_region
+id|hwif_request_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2112,171 +2304,29 @@ id|hwif-&gt;straight8
 op_assign
 l_int|1
 suffix:semicolon
-r_goto
-id|jump_straight8
+r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|hwif-&gt;io_ports
-(braket
+id|i
+op_assign
 id|IDE_DATA_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_ERROR_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_ERROR_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_NSECTOR_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_NSECTOR_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_LCYL_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_LCYL_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_HCYL_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_HCYL_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SELECT_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_SELECT_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
+id|i
+op_le
 id|IDE_STATUS_OFFSET
-)braket
+suffix:semicolon
+id|i
+op_increment
 )paren
-id|ide_request_region
+id|hwif_request_region
 c_func
 (paren
 id|hwif-&gt;io_ports
 (braket
-id|IDE_STATUS_OFFSET
+id|i
 )braket
 comma
 l_int|1
@@ -2284,56 +2334,10 @@ comma
 id|hwif-&gt;name
 )paren
 suffix:semicolon
-id|jump_straight8
-suffix:colon
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_CONTROL_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_CONTROL_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_MAC)
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-)paren
-id|ide_request_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-comma
-l_int|1
-comma
-id|hwif-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
 )brace
+singleline_comment|//EXPORT_SYMBOL(hwif_register);
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
-r_static
 r_void
 id|probe_hwif
 (paren
@@ -2379,6 +2383,7 @@ op_star
 )paren
 suffix:semicolon
 id|probe_cmos_for_drives
+c_func
 (paren
 id|hwif
 )paren
@@ -2418,7 +2423,7 @@ id|hwif
 )paren
 )paren
 (brace
-r_int
+id|u16
 id|msgout
 op_assign
 l_int|0
@@ -2489,6 +2494,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hwif-&gt;hw.ack_intr
+op_logical_and
+id|hwif-&gt;irq
+)paren
+id|disable_irq
+c_func
+(paren
+id|hwif-&gt;irq
+)paren
+suffix:semicolon
 id|local_irq_set
 c_func
 (paren
@@ -2536,10 +2554,31 @@ op_plus
 id|unit
 )paren
 suffix:semicolon
+id|hwif-&gt;drives
+(braket
+id|unit
+)braket
+dot
+id|dn
+op_assign
+(paren
+(paren
+id|hwif-&gt;channel
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|0
+)paren
+op_plus
+id|unit
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren
 id|probe_for_drive
+c_func
 (paren
 id|drive
 )paren
@@ -2596,7 +2635,7 @@ id|jiffies
 op_plus
 id|WAIT_WORSTCASE
 suffix:semicolon
-id|byte
+id|u8
 id|stat
 suffix:semicolon
 id|printk
@@ -2607,7 +2646,9 @@ comma
 id|hwif-&gt;name
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|12
@@ -2624,7 +2665,9 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|8
@@ -2644,7 +2687,9 @@ c_func
 suffix:semicolon
 id|stat
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -2677,6 +2722,19 @@ id|local_irq_restore
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;hw.ack_intr
+op_logical_and
+id|hwif-&gt;irq
+)paren
+id|enable_irq
+c_func
+(paren
+id|hwif-&gt;irq
 )paren
 suffix:semicolon
 r_for
@@ -2732,6 +2790,9 @@ comma
 l_int|255
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * MAJOR HACK BARF :-/&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: chipsets own this cruft!&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Move here to prevent module loading clashing.&n;&t;&t;&t; */
+singleline_comment|//&t;&t;drive-&gt;autodma = hwif-&gt;autodma;
 r_if
 c_cond
 (paren
@@ -2741,29 +2802,25 @@ op_ne
 l_int|2
 )paren
 op_logical_and
-id|hwif-&gt;dmaproc
-op_ne
-l_int|NULL
+(paren
+id|hwif-&gt;ide_dma_check
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Force DMAing for the beginning of the check.&n;&t;&t;&t;&t; * Some chipsets appear to do interesting&n;&t;&t;&t;&t; * things, if not checked and cleared.&n;&t;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t;&t; */
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_off_quietly
 c_func
 (paren
-id|ide_dma_off_quietly
-comma
 id|drive
 )paren
 suffix:semicolon
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_check
 c_func
 (paren
-id|ide_dma_check
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -2771,10 +2828,115 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|probe_hwif
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_hwif
+)paren
+suffix:semicolon
+r_int
+id|hwif_init
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+suffix:semicolon
+DECL|function|probe_hwif_init
+r_int
+id|probe_hwif_init
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+id|hwif-&gt;initializing
+op_assign
+l_int|1
+suffix:semicolon
+id|probe_hwif
+c_func
+(paren
+id|hwif
+)paren
+suffix:semicolon
+id|hwif_init
+c_func
+(paren
+id|hwif
+)paren
+suffix:semicolon
+macro_line|#if 1
+r_if
+c_cond
+(paren
+id|hwif-&gt;present
+)paren
+(brace
+id|u16
+id|unit
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|unit
+op_assign
+l_int|0
+suffix:semicolon
+id|unit
+OL
+id|MAX_DRIVES
+suffix:semicolon
+op_increment
+id|unit
+)paren
+(brace
+id|ide_drive_t
+op_star
+id|drive
+op_assign
+op_amp
+id|hwif-&gt;drives
+(braket
+id|unit
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;present
+)paren
+id|ata_attach
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+id|hwif-&gt;initializing
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|probe_hwif_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_hwif_init
+)paren
+suffix:semicolon
 macro_line|#if MAX_HWIFS &gt; 1
 multiline_comment|/*&n; * save_match() is used to simplify logic in init_irq() below.&n; *&n; * A loophole here is that we may not know about a particular&n; * hwif&squot;s irq until after that hwif is actually probed/initialized..&n; * This could be a problem for the case where an hwif is on a&n; * dual interface that requires serialization (eg. cmd640) and another&n; * hwif using one of the same irqs is initialized beforehand.&n; *&n; * This routine detects and reports such situations, but does not fix them.&n; */
 DECL|function|save_match
-r_static
 r_void
 id|save_match
 (paren
@@ -2855,6 +3017,13 @@ op_assign
 r_new
 suffix:semicolon
 )brace
+DECL|variable|save_match
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|save_match
+)paren
+suffix:semicolon
 macro_line|#endif /* MAX_HWIFS &gt; 1 */
 multiline_comment|/*&n; * init request queue&n; */
 DECL|function|ide_init_queue
@@ -2945,7 +3114,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
 DECL|function|init_irq
-r_static
 r_int
 id|init_irq
 (paren
@@ -2975,6 +3143,22 @@ id|match
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Allocate the buffer and no sleep allowed */
+id|new_hwgroup
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|ide_hwgroup_t
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* Allocate the buffer and potentially sleep first */
 id|new_hwgroup
 op_assign
@@ -2989,6 +3173,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3251,39 +3436,38 @@ op_ne
 id|hwif-&gt;irq
 )paren
 (brace
-macro_line|#ifdef CONFIG_IDEPCI_SHARE_IRQ
 r_int
 id|sa
 op_assign
-id|IDE_CHIPSET_IS_PCI
-c_func
-(paren
-id|hwif-&gt;chipset
-)paren
-ques
-c_cond
-id|SA_SHIRQ
-suffix:colon
 id|SA_INTERRUPT
 suffix:semicolon
-macro_line|#else /* !CONFIG_IDEPCI_SHARE_IRQ */
-r_int
+macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 id|sa
 op_assign
+id|SA_SHIRQ
+suffix:semicolon
+macro_line|#endif /* __mc68000__ || CONFIG_APUS */
+r_if
+c_cond
+(paren
 id|IDE_CHIPSET_IS_PCI
 c_func
 (paren
 id|hwif-&gt;chipset
 )paren
-ques
-c_cond
-id|SA_INTERRUPT
-op_or
+)paren
+(brace
+id|sa
+op_assign
 id|SA_SHIRQ
-suffix:colon
+suffix:semicolon
+macro_line|#ifndef CONFIG_IDEPCI_SHARE_IRQ
+id|sa
+op_or_assign
 id|SA_INTERRUPT
 suffix:semicolon
 macro_line|#endif /* CONFIG_IDEPCI_SHARE_IRQ */
+)brace
 r_if
 c_cond
 (paren
@@ -3292,7 +3476,10 @@ id|hwif-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 )paren
-id|OUT_BYTE
+multiline_comment|/* clear nIEN */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0x08
@@ -3303,11 +3490,10 @@ id|IDE_CONTROL_OFFSET
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* clear nIEN */
 r_if
 c_cond
 (paren
-id|ide_request_irq
+id|request_irq
 c_func
 (paren
 id|hwif-&gt;irq
@@ -3446,6 +3632,7 @@ id|hwif-&gt;name
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* all CPUs; safe now that hwif-&gt;hwgroup is set up */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3455,12 +3642,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs; safe now that hwif-&gt;hwgroup is set up */
 macro_line|#if !defined(__mc68000__) &amp;&amp; !defined(CONFIG_APUS) &amp;&amp; !defined(__sparc__)
 id|printk
 c_func
 (paren
-l_string|&quot;%s at 0x%03x-0x%03x,0x%03x on irq %d&quot;
+l_string|&quot;%s at 0x%03lx-0x%03lx,0x%03lx on irq %d&quot;
 comma
 id|hwif-&gt;name
 comma
@@ -3520,7 +3706,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
-l_string|&quot;%s at %p on irq 0x%08x&quot;
+l_string|&quot;%s at %x on irq 0x%08x&quot;
 comma
 id|hwif-&gt;name
 comma
@@ -3563,6 +3749,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|init_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * init_gendisk() (as opposed to ide_geninit) is called for each major device,&n; * after probing for drives, to allocate partition tables and other data&n; * structures needed for the routines in genhd.c.  ide_geninit() gets called&n; * somewhat later, during the partition check.&n; */
 DECL|function|init_gendisk
 r_static
@@ -3595,44 +3788,10 @@ r_char
 op_star
 id|names
 suffix:semicolon
-macro_line|#if 1
 id|units
 op_assign
 id|MAX_DRIVES
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* figure out maximum drive number on the interface */
-r_for
-c_loop
-(paren
-id|units
-op_assign
-id|MAX_DRIVES
-suffix:semicolon
-id|units
-OG
-l_int|0
-suffix:semicolon
-op_decrement
-id|units
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|hwif-&gt;drives
-(braket
-id|units
-op_minus
-l_int|1
-)braket
-dot
-id|present
-)paren
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif
 id|minors
 op_assign
 id|units
@@ -3687,6 +3846,7 @@ suffix:semicolon
 id|names
 op_assign
 id|kmalloc
+c_func
 (paren
 l_int|4
 op_star
@@ -3829,7 +3989,6 @@ op_increment
 id|unit
 )paren
 (brace
-macro_line|#if 1
 r_char
 id|name
 (braket
@@ -3900,79 +4059,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|hwif-&gt;drives
-(braket
-id|unit
-)braket
-dot
-id|present
-)paren
-(brace
-r_char
-id|name
-(braket
-l_int|64
-)braket
-suffix:semicolon
-id|ide_add_generic_settings
-c_func
-(paren
-id|hwif-&gt;drives
-op_plus
-id|unit
-)paren
-suffix:semicolon
-id|sprintf
-(paren
-id|name
-comma
-l_string|&quot;host%d/bus%d/target%d/lun%d&quot;
-comma
-(paren
-id|hwif-&gt;channel
-op_logical_and
-id|hwif-&gt;mate
-)paren
-ques
-c_cond
-id|hwif-&gt;mate-&gt;index
-suffix:colon
-id|hwif-&gt;index
-comma
-id|hwif-&gt;channel
-comma
-id|unit
-comma
-id|hwif-&gt;drives
-(braket
-id|unit
-)braket
-dot
-id|lun
-)paren
-suffix:semicolon
-id|hwif-&gt;drives
-(braket
-id|unit
-)braket
-dot
-id|de
-op_assign
-id|devfs_mk_dir
-(paren
-id|ide_devfs_handle
-comma
-id|name
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_return
 suffix:semicolon
@@ -3994,8 +4080,14 @@ l_string|&quot;(ide::init_gendisk) Out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|init_gendisk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_gendisk
+)paren
+suffix:semicolon
 DECL|function|hwif_init
-r_static
 r_int
 id|hwif_init
 (paren
@@ -4089,11 +4181,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_HD */
+multiline_comment|/* we set it back to 1 if all is ok below */
 id|hwif-&gt;present
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* we set it back to 1 if all is ok below */
 r_if
 c_cond
 (paren
@@ -4173,6 +4265,7 @@ suffix:semicolon
 r_void
 )paren
 id|unregister_blkdev
+c_func
 (paren
 id|hwif-&gt;major
 comma
@@ -4213,6 +4306,7 @@ suffix:semicolon
 r_void
 )paren
 id|unregister_blkdev
+c_func
 (paren
 id|hwif-&gt;major
 comma
@@ -4267,37 +4361,17 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* success */
-macro_line|#if (DEBUG_SPINLOCK &gt; 0)
-(brace
-r_static
-r_int
-id|done
-op_assign
-l_int|0
+r_return
+l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|done
-op_increment
-)paren
-id|printk
+)brace
+DECL|variable|hwif_init
+id|EXPORT_SYMBOL
 c_func
 (paren
-l_string|&quot;ide_lock is %p&bslash;n&quot;
-comma
-op_amp
-id|ide_lock
+id|hwif_init
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME */
-)brace
-macro_line|#endif
-r_return
-id|hwif-&gt;present
-suffix:semicolon
-)brace
 DECL|function|export_ide_init_queue
 r_void
 id|export_ide_init_queue
@@ -4314,8 +4388,15 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+DECL|variable|export_ide_init_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|export_ide_init_queue
+)paren
+suffix:semicolon
 DECL|function|export_probe_for_drive
-id|byte
+id|u8
 id|export_probe_for_drive
 (paren
 id|ide_drive_t
@@ -4331,13 +4412,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-DECL|variable|export_ide_init_queue
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|export_ide_init_queue
-)paren
-suffix:semicolon
 DECL|variable|export_probe_for_drive
 id|EXPORT_SYMBOL
 c_func
@@ -4504,6 +4578,7 @@ suffix:semicolon
 op_increment
 id|index
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -4558,6 +4633,7 @@ id|unit
 )braket
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
