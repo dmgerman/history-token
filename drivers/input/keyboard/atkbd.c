@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: atkbd.c,v 1.33 2002/02/12 09:34:34 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * AT and PS/2 keyboard driver&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1349,11 +1349,15 @@ mdefine_line|#define ATKBD_CMD_GSCANSET&t;0x11f0
 DECL|macro|ATKBD_CMD_SSCANSET
 mdefine_line|#define ATKBD_CMD_SSCANSET&t;0x10f0
 DECL|macro|ATKBD_CMD_GETID
-mdefine_line|#define ATKBD_CMD_GETID&t;&t;0x02f2
+mdefine_line|#define ATKBD_CMD_GETID&t;&t;0x01f2
+DECL|macro|ATKBD_CMD_GETID2
+mdefine_line|#define ATKBD_CMD_GETID2&t;0x0100
 DECL|macro|ATKBD_CMD_ENABLE
 mdefine_line|#define ATKBD_CMD_ENABLE&t;0x00f4
 DECL|macro|ATKBD_CMD_RESET_DIS
 mdefine_line|#define ATKBD_CMD_RESET_DIS&t;0x00f5
+DECL|macro|ATKBD_CMD_RESET_BAT
+mdefine_line|#define ATKBD_CMD_RESET_BAT&t;0x01ff
 DECL|macro|ATKBD_CMD_SETALL_MB
 mdefine_line|#define ATKBD_CMD_SETALL_MB&t;0x00f8
 DECL|macro|ATKBD_CMD_RESEND
@@ -1521,6 +1525,13 @@ id|SERIO_FRAME
 op_or
 id|SERIO_PARITY
 )paren
+)paren
+op_logical_and
+(paren
+op_complement
+id|flags
+op_amp
+id|SERIO_TIMEOUT
 )paren
 op_logical_and
 id|atkbd-&gt;write
@@ -2340,7 +2351,8 @@ id|param
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Full reset with selftest can on some keyboards be annoyingly slow,&n; * so we just do a reset-and-disable on the keyboard, which&n; * is considerably faster, but doesn&squot;t have to reset everything.&n; */
+multiline_comment|/*&n; * Some systems, where the bit-twiddling when testing the io-lines of the&n; * controller may confuse the keyboard need a full reset of the keyboard. On&n; * these systems the BIOS also usually doesn&squot;t do it for us.&n; */
+macro_line|#ifdef CONFIG_KEYBOARD_ATKBD_RESET
 r_if
 c_cond
 (paren
@@ -2351,7 +2363,7 @@ id|atkbd
 comma
 l_int|NULL
 comma
-id|ATKBD_CMD_RESET_DIS
+id|ATKBD_CMD_RESET_BAT
 )paren
 )paren
 id|printk
@@ -2361,19 +2373,33 @@ id|KERN_WARNING
 l_string|&quot;atkbd.c: keyboard reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Next, we check if it&squot;s a keyboard. It should send 0xab83&n; * (0xab84 on IBM ThinkPad, and 0xaca1 on a NCD Sun layout keyboard,&n; * 0xab02 on unxlated i8042 and 0xab03 on unxlated ThinkPad, 0xab7f&n; * on Fujitsu Lifebook).&n; * If it&squot;s a mouse, it&squot;ll only send 0x00 (0x03 if it&squot;s MS mouse),&n; * and we&squot;ll time out here, and report an error.&n; */
+macro_line|#endif
+multiline_comment|/*&n; * Next we check we can set LEDs on the keyboard. This should work on every&n; * keyboard out there. It also turns the LEDs off, which we want anyway.&n; */
 id|param
 (braket
 l_int|0
-)braket
-op_assign
-id|param
-(braket
-l_int|1
 )braket
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+id|param
+comma
+id|ATKBD_CMD_SETLEDS
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n; * Then we check the keyboard ID. We should get 0xab83 under normal conditions.&n; * Some keyboards report different values, but the first byte is always 0xab or&n; * 0xac. Some old AT keyboards don&squot;t report anything.&n; */
 r_if
 c_cond
 (paren
@@ -2387,86 +2413,70 @@ comma
 id|ATKBD_CMD_GETID
 )paren
 )paren
+(brace
+id|atkbd-&gt;id
+op_assign
+l_int|0xabba
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0xab
+op_logical_and
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0xac
+)paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 id|atkbd-&gt;id
 op_assign
-(paren
 id|param
 (braket
 l_int|0
 )braket
 op_lshift
 l_int|8
-)paren
-op_or
-id|param
-(braket
-l_int|1
-)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|atkbd-&gt;id
-op_ne
-l_int|0xab83
-op_logical_and
-id|atkbd-&gt;id
-op_ne
-l_int|0xab84
-op_logical_and
-id|atkbd-&gt;id
-op_ne
-l_int|0xaca1
-op_logical_and
-id|atkbd-&gt;id
-op_ne
-l_int|0xab7f
-op_logical_and
-id|atkbd-&gt;id
-op_ne
-l_int|0xab02
-op_logical_and
-id|atkbd-&gt;id
-op_ne
-l_int|0xab03
-)paren
-id|printk
+id|atkbd_command
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;atkbd.c: Unusual keyboard ID: %#x on %s&bslash;n&quot;
-comma
-id|atkbd-&gt;id
-comma
-id|atkbd-&gt;serio-&gt;phys
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * atkbd_initialize() sets the keyboard into a sane state.&n; */
-DECL|function|atkbd_initialize
-r_static
-r_void
-id|atkbd_initialize
-c_func
-(paren
-r_struct
 id|atkbd
-op_star
-id|atkbd
-)paren
-(brace
-r_int
-r_char
+comma
 id|param
+comma
+id|ATKBD_CMD_GETID2
+)paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * Disable autorepeat. We don&squot;t need it, as we do it in software anyway,&n; * because that way can get faster repeat, and have less system load&n; * (less accesses to the slow ISA hardware). If this fails, we don&squot;t care,&n; * and will just ignore the repeated keys.&n; */
+id|atkbd-&gt;id
+op_or_assign
+id|param
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * Disable autorepeat. We don&squot;t need it, as we do it in software anyway,&n; * because that way can get faster repeat, and have less system load (less&n; * accesses to the slow ISA hardware). If this fails, we don&squot;t care, and will&n; * just ignore the repeated keys.&n; */
 id|atkbd_command
 c_func
 (paren
@@ -2477,23 +2487,7 @@ comma
 id|ATKBD_CMD_SETALL_MB
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We also shut off all the leds. The console code will turn them back on,&n; * if needed.&n; */
-id|param
-op_assign
-l_int|0
-suffix:semicolon
-id|atkbd_command
-c_func
-(paren
-id|atkbd
-comma
-op_amp
-id|param
-comma
-id|ATKBD_CMD_SETLEDS
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Last, we enable the keyboard so that we get keypresses from it.&n; */
+multiline_comment|/*&n; * Last, we enable the keyboard to make sure  that we get keypresses from it.&n; */
 r_if
 c_cond
 (paren
@@ -2515,6 +2509,9 @@ l_string|&quot;atkbd.c: Failed to enable keyboard on %s&bslash;n&quot;
 comma
 id|atkbd-&gt;serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * atkbd_disconnect() cleans up behind us ...&n; */
@@ -3035,17 +3032,6 @@ comma
 id|atkbd-&gt;name
 comma
 id|serio-&gt;phys
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atkbd-&gt;write
-)paren
-id|atkbd_initialize
-c_func
-(paren
-id|atkbd
 )paren
 suffix:semicolon
 )brace
