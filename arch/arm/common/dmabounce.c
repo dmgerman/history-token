@@ -2392,7 +2392,6 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-comma
 l_string|&quot;%s: Removing from dmabounce with pending buffers!&bslash;n&quot;
 comma
 id|dev-&gt;bus_id

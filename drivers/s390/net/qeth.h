@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.100 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.102 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -745,12 +745,6 @@ id|bufs
 id|QDIO_MAX_BUFFERS_PER_Q
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * buf_to_process means &quot;buffer primed by hardware,&n;&t; * has to be read in by driver&quot;; current state PRIMED&n;&t; */
-DECL|member|next_buf_to_process
-r_volatile
-r_int
-id|next_buf_to_process
-suffix:semicolon
 multiline_comment|/*&n;&t; * buf_to_init means &quot;buffer must be initialized by driver and must&n;&t; * be made available for hardware&quot; -&gt; state is set to EMPTY&n;&t; */
 DECL|member|next_buf_to_init
 r_volatile
@@ -991,11 +985,8 @@ comma
 DECL|enumerator|CARD_STATE_SOFTSETUP
 id|CARD_STATE_SOFTSETUP
 comma
-DECL|enumerator|CARD_STATE_UP_LAN_OFFLINE
-id|CARD_STATE_UP_LAN_OFFLINE
-comma
-DECL|enumerator|CARD_STATE_UP_LAN_ONLINE
-id|CARD_STATE_UP_LAN_ONLINE
+DECL|enumerator|CARD_STATE_UP
+id|CARD_STATE_UP
 comma
 DECL|enumerator|CARD_STATE_RECOVER
 id|CARD_STATE_RECOVER
@@ -2936,6 +2927,7 @@ id|qeth_card
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|qeth_add_ipato_entry
 c_func
@@ -2949,6 +2941,7 @@ id|qeth_ipato_entry
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qeth_del_ipato_entry
 c_func
@@ -2966,6 +2959,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|qeth_add_vipa
 c_func
@@ -2982,6 +2976,7 @@ id|u8
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qeth_del_vipa
 c_func
@@ -2998,6 +2993,7 @@ id|u8
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|qeth_add_rxip
 c_func
@@ -3014,6 +3010,7 @@ id|u8
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qeth_del_rxip
 c_func
@@ -3030,6 +3027,7 @@ id|u8
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qeth_schedule_recovery
 c_func
@@ -3037,6 +3035,18 @@ c_func
 r_struct
 id|qeth_card
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|qeth_realloc_buffer_pool
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* __QETH_H__ */

@@ -647,6 +647,7 @@ suffix:semicolon
 DECL|function|move_page_tables
 r_static
 r_int
+r_int
 id|move_page_tables
 c_func
 (paren

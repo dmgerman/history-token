@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capi.c,v 1.1.2.6 2004/04/26 09:33:07 armin Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capi.c,v 1.1.2.7 2004/04/28 09:48:59 armin Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -40,7 +40,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.6 $&quot;
+l_string|&quot;$Revision: 1.1.2.7 $&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -4343,6 +4343,7 @@ id|mp-&gt;ttyopencount
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 id|up
 c_func
 (paren
@@ -4350,7 +4351,6 @@ op_amp
 id|cdev-&gt;ncci_list_sem
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 r_return
 id|count
 suffix:semicolon

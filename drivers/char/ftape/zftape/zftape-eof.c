@@ -240,12 +240,12 @@ id|ptr
 )paren
 )paren
 (brace
-op_increment
+id|ptr
+op_add_assign
+r_sizeof
 (paren
 id|__u32
-op_star
 )paren
-id|ptr
 suffix:semicolon
 )brace
 r_else

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/s390/kernel/sys_s390.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *&n; *  Derived from &quot;arch/i386/kernel/sys_i386.c&quot;&n; *&n; *  This file contains various random system calls that&n; *  have a non-standard calling sequence on the Linux/s390&n; *  platform.&n; */
+multiline_comment|/*&n; *  arch/s390/kernel/sys_s390.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Thomas Spatzier (tspat@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/kernel/sys_i386.c&quot;&n; *&n; *  This file contains various random system calls that&n; *  have a non-standard calling sequence on the Linux/s390&n; *  platform.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

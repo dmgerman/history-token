@@ -438,17 +438,27 @@ id|PAGECACHE_TAG_DIRTY
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We didn&squot;t write back all the pages.  Redirty the&n;&t;&t;&t; * inode.  It is still on sb-&gt;s_dirty.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We didn&squot;t write back all the pages.  nfs_writepages()&n;&t;&t;&t; * sometimes bales out without doing anything. Redirty&n;&t;&t;&t; * the inode.  It is still on sb-&gt;s_io.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|wbc-&gt;for_kupdate
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * For the kupdate function we leave the inode&n;&t;&t;&t;&t; * where it is on sb_dirty so it will get more&n;&t;&t;&t;&t; * writeout as soon as the queue becomes&n;&t;&t;&t;&t; * uncongested.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * For the kupdate function we leave the inode&n;&t;&t;&t;&t; * at the head of sb_dirty so it will get more&n;&t;&t;&t;&t; * writeout as soon as the queue becomes&n;&t;&t;&t;&t; * uncongested.&n;&t;&t;&t;&t; */
 id|inode-&gt;i_state
 op_or_assign
 id|I_DIRTY_PAGES
+suffix:semicolon
+id|list_move_tail
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|sb-&gt;s_dirty
+)paren
 suffix:semicolon
 )brace
 r_else

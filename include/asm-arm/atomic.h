@@ -224,7 +224,7 @@ l_string|&quot;=&amp;r&quot;
 id|result
 )paren
 comma
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren
@@ -282,7 +282,7 @@ l_string|&quot;=&amp;r&quot;
 id|result
 )paren
 comma
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren

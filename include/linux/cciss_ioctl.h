@@ -86,43 +86,6 @@ id|DriverVer_type
 suffix:semicolon
 DECL|macro|MAX_KMALLOC_SIZE
 mdefine_line|#define MAX_KMALLOC_SIZE 128000
-DECL|struct|_BIG_IOCTL_Command_struct
-r_typedef
-r_struct
-id|_BIG_IOCTL_Command_struct
-(brace
-DECL|member|LUN_info
-id|LUNAddr_struct
-id|LUN_info
-suffix:semicolon
-DECL|member|Request
-id|RequestBlock_struct
-id|Request
-suffix:semicolon
-DECL|member|error_info
-id|ErrorInfo_struct
-id|error_info
-suffix:semicolon
-DECL|member|malloc_size
-id|DWORD
-id|malloc_size
-suffix:semicolon
-multiline_comment|/* &lt; MAX_KMALLOC_SIZE in cciss.c */
-DECL|member|buf_size
-id|DWORD
-id|buf_size
-suffix:semicolon
-multiline_comment|/* size in bytes of the buf */
-multiline_comment|/* &lt; malloc_size * MAXSGENTRIES */
-DECL|member|buf
-id|BYTE
-op_star
-id|buf
-suffix:semicolon
-DECL|typedef|BIG_IOCTL_Command_struct
-)brace
-id|BIG_IOCTL_Command_struct
-suffix:semicolon
 macro_line|#ifndef CCISS_CMD_H
 singleline_comment|// This defines are duplicated in cciss_cmd.h in the driver directory 
 singleline_comment|//general boundary defintions
@@ -554,6 +517,43 @@ suffix:semicolon
 DECL|typedef|IOCTL_Command_struct
 )brace
 id|IOCTL_Command_struct
+suffix:semicolon
+DECL|struct|_BIG_IOCTL_Command_struct
+r_typedef
+r_struct
+id|_BIG_IOCTL_Command_struct
+(brace
+DECL|member|LUN_info
+id|LUNAddr_struct
+id|LUN_info
+suffix:semicolon
+DECL|member|Request
+id|RequestBlock_struct
+id|Request
+suffix:semicolon
+DECL|member|error_info
+id|ErrorInfo_struct
+id|error_info
+suffix:semicolon
+DECL|member|malloc_size
+id|DWORD
+id|malloc_size
+suffix:semicolon
+multiline_comment|/* &lt; MAX_KMALLOC_SIZE in cciss.c */
+DECL|member|buf_size
+id|DWORD
+id|buf_size
+suffix:semicolon
+multiline_comment|/* size in bytes of the buf */
+multiline_comment|/* &lt; malloc_size * MAXSGENTRIES */
+DECL|member|buf
+id|BYTE
+op_star
+id|buf
+suffix:semicolon
+DECL|typedef|BIG_IOCTL_Command_struct
+)brace
+id|BIG_IOCTL_Command_struct
 suffix:semicolon
 DECL|struct|_LogvolInfo_struct
 r_typedef

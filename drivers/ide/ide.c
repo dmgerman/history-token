@@ -612,6 +612,7 @@ comma
 id|index
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_PPC32) || !defined(CONFIG_PCI)
 id|hwif-&gt;irq
 op_assign
 id|hwif-&gt;hw.irq
@@ -625,6 +626,7 @@ id|IDE_DATA_OFFSET
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* OBSOLETE: still needed on arm26 and arm */
 macro_line|#ifdef CONFIG_ARM

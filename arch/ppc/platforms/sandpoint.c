@@ -1105,6 +1105,16 @@ c_func
 id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * openpic_init() has set up irq_desc[16-31] to be openpic&n;&t; * interrupts.  We need to set irq_desc[0-15] to be i8259&n;&t; * interrupts.&n;&t; */
 r_for
 c_loop
