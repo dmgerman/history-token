@@ -8332,8 +8332,6 @@ id|vol
 (brace
 id|s64
 id|nr_free
-op_assign
-id|vol-&gt;nr_mft_records
 suffix:semicolon
 id|u32
 op_star
@@ -8377,13 +8375,30 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE, rounding up so that if we have one&n;&t; * full and one partial page max_index = 2.&n;&t; */
+multiline_comment|/* Number of mft records in file system (at this point in time). */
+id|nr_free
+op_assign
+id|vol-&gt;mft_ino-&gt;i_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+multiline_comment|/*&n;&t; * Convert the maximum number of set bits into bytes rounded up, then&n;&t; * convert into multiples of PAGE_CACHE_SIZE, rounding up so that if we&n;&t; * have one full and one partial page max_index = 2.&n;&t; */
 id|max_index
 op_assign
 (paren
 (paren
 (paren
-id|vol-&gt;nr_mft_records
+(paren
+id|NTFS_I
+c_func
+(paren
+id|vol-&gt;mft_ino
+)paren
+op_member_access_from_pointer
+id|initialized_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+)paren
 op_plus
 l_int|7
 )paren
@@ -8710,14 +8725,14 @@ op_amp
 id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Total file nodes in file system (at this moment in time). */
+multiline_comment|/* Number of inodes in file system (at this point in time). */
 id|sfs-&gt;f_files
 op_assign
 id|vol-&gt;mft_ino-&gt;i_size
 op_rshift
 id|vol-&gt;mft_record_size_bits
 suffix:semicolon
-multiline_comment|/* Free file nodes in fs (based on current total count). */
+multiline_comment|/* Free inodes in fs (based on current total count). */
 id|sfs-&gt;f_ffree
 op_assign
 id|__get_nr_free_mft_records
