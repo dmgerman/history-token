@@ -733,6 +733,25 @@ id|clientid_t
 id|se_clientid
 suffix:semicolon
 multiline_comment|/* response */
+DECL|member|se_confirm
+id|nfs4_verifier
+id|se_confirm
+suffix:semicolon
+multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfsd4_setclientid_confirm
+r_struct
+id|nfsd4_setclientid_confirm
+(brace
+DECL|member|sc_clientid
+id|clientid_t
+id|sc_clientid
+suffix:semicolon
+DECL|member|sc_confirm
+id|nfs4_verifier
+id|sc_confirm
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* also used for NVERIFY */
@@ -918,7 +937,8 @@ id|nfsd4_setclientid
 id|setclientid
 suffix:semicolon
 DECL|member|setclientid_confirm
-id|clientid_t
+r_struct
+id|nfsd4_setclientid_confirm
 id|setclientid_confirm
 suffix:semicolon
 DECL|member|verify
