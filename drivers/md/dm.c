@@ -86,6 +86,43 @@ id|info
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|dm_get_mapinfo
+r_union
+id|map_info
+op_star
+id|dm_get_mapinfo
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|bio
+op_logical_and
+id|bio-&gt;bi_private
+)paren
+r_return
+op_amp
+(paren
+(paren
+r_struct
+id|target_io
+op_star
+)paren
+id|bio-&gt;bi_private
+)paren
+op_member_access_from_pointer
+id|info
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bits for the md-&gt;flags field.&n; */
 DECL|macro|DMF_BLOCK_IO
 mdefine_line|#define DMF_BLOCK_IO 0
@@ -4636,6 +4673,13 @@ id|owner
 op_assign
 id|THIS_MODULE
 )brace
+suffix:semicolon
+DECL|variable|dm_get_mapinfo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dm_get_mapinfo
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * module hooks&n; */
 DECL|variable|dm_init

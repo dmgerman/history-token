@@ -714,5 +714,17 @@ r_int
 id|elem_size
 )paren
 suffix:semicolon
+r_union
+id|map_info
+op_star
+id|dm_get_mapinfo
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
