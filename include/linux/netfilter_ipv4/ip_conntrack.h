@@ -88,11 +88,95 @@ id|IPS_ASSURED_BIT
 comma
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
+multiline_comment|/* per conntrack: protocol private data */
+DECL|union|ip_conntrack_proto
+r_union
+id|ip_conntrack_proto
+(brace
+multiline_comment|/* insert conntrack proto private data here */
+DECL|member|tcp
+r_struct
+id|ip_ct_tcp
+id|tcp
+suffix:semicolon
+DECL|member|icmp
+r_struct
+id|ip_ct_icmp
+id|icmp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|union|ip_conntrack_expect_proto
+r_union
+id|ip_conntrack_expect_proto
+(brace
+multiline_comment|/* insert expect proto private data here */
+)brace
+suffix:semicolon
+multiline_comment|/* Add protocol helper include file here */
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
+multiline_comment|/* per expectation: application helper private data */
+DECL|union|ip_conntrack_expect_help
+r_union
+id|ip_conntrack_expect_help
+(brace
+multiline_comment|/* insert conntrack helper private data (expect) here */
+DECL|member|exp_ftp_info
+r_struct
+id|ip_ct_ftp_expect
+id|exp_ftp_info
+suffix:semicolon
+DECL|member|exp_irc_info
+r_struct
+id|ip_ct_irc_expect
+id|exp_irc_info
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+r_union
+(brace
+multiline_comment|/* insert nat helper private data (expect) here */
+DECL|member|nat
+)brace
+id|nat
+suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
+multiline_comment|/* per conntrack: application helper private data */
+DECL|union|ip_conntrack_help
+r_union
+id|ip_conntrack_help
+(brace
+multiline_comment|/* insert conntrack helper private data (master) here */
+DECL|member|ct_ftp_info
+r_struct
+id|ip_ct_ftp_master
+id|ct_ftp_info
+suffix:semicolon
+DECL|member|ct_irc_info
+r_struct
+id|ip_ct_irc_master
+id|ct_irc_info
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
+multiline_comment|/* per conntrack: nat application helper private data */
+DECL|union|ip_conntrack_nat_help
+r_union
+id|ip_conntrack_nat_help
+(brace
+multiline_comment|/* insert nat helper private data here */
+)brace
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
 macro_line|#ifdef CONFIG_NF_DEBUG
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t;&bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;NF_IP_ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t;&bslash;&n;} while(0)
@@ -100,12 +184,6 @@ macro_line|#else
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
-macro_line|#endif
-multiline_comment|/* Add protocol helper include file here */
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
 DECL|struct|ip_conntrack_expect
 r_struct
 id|ip_conntrack_expect
@@ -115,6 +193,11 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+multiline_comment|/* reference count */
+DECL|member|use
+id|atomic_t
+id|use
 suffix:semicolon
 multiline_comment|/* expectation list for this master */
 DECL|member|expected_list
@@ -177,34 +260,19 @@ DECL|member|seq
 id|u_int32_t
 id|seq
 suffix:semicolon
+DECL|member|proto
 r_union
-(brace
-multiline_comment|/* insert conntrack helper private data (expect) here */
-DECL|member|exp_ftp_info
-r_struct
-id|ip_ct_ftp_expect
-id|exp_ftp_info
+id|ip_conntrack_expect_proto
+id|proto
 suffix:semicolon
-DECL|member|exp_irc_info
-r_struct
-id|ip_ct_irc_expect
-id|exp_irc_info
-suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-r_union
-(brace
-multiline_comment|/* insert nat helper private data (expect) here */
-DECL|member|nat
-)brace
-id|nat
-suffix:semicolon
-macro_line|#endif
 DECL|member|help
-)brace
+r_union
+id|ip_conntrack_expect_help
 id|help
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
 DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack
@@ -273,37 +341,14 @@ id|IP_CT_NUMBER
 )braket
 suffix:semicolon
 multiline_comment|/* Storage reserved for other modules: */
-r_union
-(brace
-DECL|member|tcp
-r_struct
-id|ip_ct_tcp
-id|tcp
-suffix:semicolon
-DECL|member|icmp
-r_struct
-id|ip_ct_icmp
-id|icmp
-suffix:semicolon
 DECL|member|proto
-)brace
+r_union
+id|ip_conntrack_proto
 id|proto
 suffix:semicolon
-r_union
-(brace
-multiline_comment|/* insert conntrack helper private data (master) here */
-DECL|member|ct_ftp_info
-r_struct
-id|ip_ct_ftp_master
-id|ct_ftp_info
-suffix:semicolon
-DECL|member|ct_irc_info
-r_struct
-id|ip_ct_irc_master
-id|ct_irc_info
-suffix:semicolon
 DECL|member|help
-)brace
+r_union
+id|ip_conntrack_help
 id|help
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
@@ -314,11 +359,9 @@ r_struct
 id|ip_nat_info
 id|info
 suffix:semicolon
-r_union
-(brace
-multiline_comment|/* insert nat helper private data here */
 DECL|member|help
-)brace
+r_union
+id|ip_conntrack_nat_help
 id|help
 suffix:semicolon
 macro_line|#if defined(CONFIG_IP_NF_TARGET_MASQUERADE) || &bslash;&n;&t;defined(CONFIG_IP_NF_TARGET_MASQUERADE_MODULE)
@@ -391,6 +434,44 @@ r_enum
 id|ip_conntrack_info
 op_star
 id|ctinfo
+)paren
+suffix:semicolon
+multiline_comment|/* decrement reference count on a conntrack */
+r_extern
+r_inline
+r_void
+id|ip_conntrack_put
+c_func
+(paren
+r_struct
+id|ip_conntrack
+op_star
+id|ct
+)paren
+suffix:semicolon
+multiline_comment|/* find unconfirmed expectation based on tuple */
+r_struct
+id|ip_conntrack_expect
+op_star
+id|ip_conntrack_expect_find_get
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|tuple
+)paren
+suffix:semicolon
+multiline_comment|/* decrement reference count on an expectation */
+r_void
+id|ip_conntrack_expect_put
+c_func
+(paren
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
 )paren
 suffix:semicolon
 r_extern

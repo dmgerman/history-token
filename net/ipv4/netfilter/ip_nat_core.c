@@ -791,7 +791,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* If it&squot;s really a local destination manip, it may need to do a&n;   source manip too. */
 r_static
 r_int
@@ -865,7 +864,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Simple way to iterate through all. */
 DECL|function|fake_cmp
 r_static
@@ -3134,7 +3132,7 @@ id|ret
 op_assign
 l_int|1
 suffix:semicolon
-id|READ_LOCK
+id|MUST_BE_READ_LOCKED
 c_func
 (paren
 op_amp
@@ -3169,13 +3167,6 @@ c_func
 id|exp
 comma
 id|pskb
-)paren
-suffix:semicolon
-id|READ_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_conntrack_lock
 )paren
 suffix:semicolon
 r_return
