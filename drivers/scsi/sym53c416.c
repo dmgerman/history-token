@@ -2738,7 +2738,7 @@ r_int
 id|count
 suffix:semicolon
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|idev
 op_assign
@@ -2934,7 +2934,7 @@ c_loop
 (paren
 id|idev
 op_assign
-id|isapnp_find_dev
+id|pnp_find_dev
 c_func
 (paren
 l_int|NULL
@@ -2969,9 +2969,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|idev
-op_member_access_from_pointer
-id|prepare
+id|pnp_device_attach
 c_func
 (paren
 id|idev
@@ -2984,7 +2982,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sym53c416: unable to prepare PnP card.&bslash;n&quot;
+l_string|&quot;sym53c416: unable to attach PnP device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -2993,12 +2991,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|idev
-op_member_access_from_pointer
-id|activate
+id|pnp_activate_dev
 c_func
 (paren
 id|idev
+comma
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -3008,7 +3006,13 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sym53c416: unable to activate PnP card.&bslash;n&quot;
+l_string|&quot;sym53c416: unable to activate PnP device.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pnp_device_detach
+c_func
+(paren
+id|idev
 )paren
 suffix:semicolon
 r_continue
@@ -3026,24 +3030,26 @@ id|i
 l_int|1
 )braket
 op_assign
-id|idev-&gt;resource
-(braket
+id|pnp_port_start
+c_func
+(paren
+id|idev
+comma
 l_int|0
-)braket
-dot
-id|start
+)paren
 suffix:semicolon
 id|i
 (braket
 l_int|2
 )braket
 op_assign
-id|idev-&gt;irq_resource
-(braket
+id|pnp_irq
+c_func
+(paren
+id|idev
+comma
 l_int|0
-)braket
-dot
-id|start
+)paren
 suffix:semicolon
 id|printk
 c_func

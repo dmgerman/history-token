@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * compat.c - A series of functions to make it easier to convert drivers that use&n; *            the old isapnp APIs. If possible use the new APIs instead.&n; *&n; * Copyright 2002 Adam Belay &lt;ambx1@neo.rr.com&gt;&n; *&n; */
 multiline_comment|/* TODO: see if more isapnp functions are needed here */
-macro_line|#include &lt;linux/pnp.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 DECL|function|pnp_convert_id
 r_static
 r_void
@@ -138,13 +139,13 @@ id|from
 r_char
 id|id
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 r_char
 id|any
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 r_struct
@@ -267,13 +268,13 @@ id|from
 r_char
 id|id
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 r_char
 id|any
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 id|pnp_convert_id
