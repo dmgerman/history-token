@@ -1190,6 +1190,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Submitted Alexander Oltu &lt;alexander@all-2.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0701
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;&quot;
+comma
+l_string|&quot;USB TO IDE&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; *&n; * ST818 slim drives (rev 0.02) don&squot;t need special care.&n;*/
 id|UNUSUAL_DEV
 c_func
