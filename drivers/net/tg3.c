@@ -47,9 +47,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.4c&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.5&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Feb 18, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;March 21, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -32072,6 +32072,10 @@ comma
 id|tp-&gt;dma_rwctrl
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -32091,12 +32095,8 @@ id|tp-&gt;pci_chip_rev_id
 op_ne
 id|ASIC_REV_5701
 )paren
-r_return
-l_int|0
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 r_while
 c_loop
