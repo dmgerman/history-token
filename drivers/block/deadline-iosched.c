@@ -2942,6 +2942,8 @@ comma
 r_const
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 )brace
@@ -2988,6 +2990,9 @@ r_const
 r_char
 op_star
 id|page
+comma
+r_int
+id|count
 )paren
 (brace
 r_char
@@ -2999,15 +3004,6 @@ r_char
 op_star
 )paren
 id|page
-suffix:semicolon
-r_int
-id|ret
-op_assign
-id|strlen
-c_func
-(paren
-id|p
-)paren
 suffix:semicolon
 op_star
 id|var
@@ -3024,7 +3020,7 @@ l_int|10
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|count
 suffix:semicolon
 )brace
 DECL|macro|SHOW_FUNCTION
@@ -3078,7 +3074,7 @@ suffix:semicolon
 DECL|macro|SHOW_FUNCTION
 macro_line|#undef SHOW_FUNCTION
 DECL|macro|STORE_FUNCTION
-mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, const char *page)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = deadline_var_store(__PTR, (page));&t;&t;&t;&bslash;&n;&t;if (*(__PTR) &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MIN);&t;&t;&t;&t;&t;&bslash;&n;&t;else if (*(__PTR) &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MAX);&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define STORE_FUNCTION(__FUNC, __PTR, MIN, MAX)&t;&t;&t;&t;&bslash;&n;static ssize_t __FUNC(struct deadline_data *dd, const char *page, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = deadline_var_store(__PTR, (page), count);&t;&t;&bslash;&n;&t;if (*(__PTR) &lt; (MIN))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MIN);&t;&t;&t;&t;&t;&bslash;&n;&t;else if (*(__PTR) &gt; (MAX))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__PTR) = (MAX);&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|STORE_FUNCTION
 c_func
 (paren
@@ -3382,12 +3378,6 @@ comma
 r_char
 op_star
 id|page
-comma
-r_int
-id|length
-comma
-id|loff_t
-id|offset
 )paren
 (brace
 id|elevator_t
@@ -3420,14 +3410,6 @@ c_cond
 (paren
 op_logical_neg
 id|entry-&gt;show
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
 )paren
 r_return
 l_int|0
@@ -3467,9 +3449,6 @@ id|page
 comma
 r_int
 id|length
-comma
-id|loff_t
-id|offset
 )paren
 (brace
 id|elevator_t
@@ -3507,14 +3486,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_return
 id|entry
 op_member_access_from_pointer
@@ -3524,6 +3495,8 @@ c_func
 id|e-&gt;elevator_data
 comma
 id|page
+comma
+id|length
 )paren
 suffix:semicolon
 )brace
