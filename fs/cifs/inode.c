@@ -1251,21 +1251,9 @@ op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|attr
-op_amp
-id|ATTR_REPARSE
-)paren
-(brace
-multiline_comment|/* Can IFLNK be set as it basically is on windows with IFREG or IFDIR? */
-id|inode-&gt;i_mode
-op_or_assign
-id|S_IFLNK
-suffix:semicolon
-)brace
-r_else
+multiline_comment|/*&t;&t;if (attr &amp; ATTR_REPARSE)  */
+multiline_comment|/* &t;&t;We no longer handle these as symlinks because we could not */
+multiline_comment|/* &t;&t;follow them due to the absolute path with drive letter */
 r_if
 c_cond
 (paren
