@@ -738,8 +738,8 @@ suffix:semicolon
 multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; * Callers must own the driver model&squot;s usb bus readlock.  So driver&n; * probe() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; *&n; */
 DECL|function|usb_interface_claimed
 r_static
-r_int
 r_inline
+r_int
 id|usb_interface_claimed
 c_func
 (paren
