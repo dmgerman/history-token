@@ -531,6 +531,16 @@ c_func
 (paren
 id|sys_socketcall
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys_futex
+)paren
+id|cond_syscall
+c_func
+(paren
+id|compat_sys_futex
+)paren
 DECL|function|set_one_prio
 r_static
 r_int
