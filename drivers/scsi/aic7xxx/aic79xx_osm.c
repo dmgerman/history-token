@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#128 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#130 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -9554,7 +9554,7 @@ id|host-&gt;unique_id
 op_assign
 id|ahd-&gt;unit
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE  &lt; KERNEL_VERSION(2,5,0)
 id|scsi_set_pci_device
 c_func
 (paren
@@ -9645,7 +9645,7 @@ id|target
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Skip our own ID.  Some Compaq/HP storage devices&n;&t;&t; * have enclosure management devices that respond to&n;&t;&t; * single bit selection (i.e. selecting ourselves).&n;&t;&t; * It is expected that either an external application&n;&t;&t; * or a modified kernel will be used to probe this&n;&t;&t; * ID if it is appropriate.  To accomodate these installations,&n;&t;&t; * ahc_linux_alloc_target() will allocate for our ID if&n;&t;&t; * asked to do so.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Skip our own ID.  Some Compaq/HP storage devices&n;&t;&t; * have enclosure management devices that respond to&n;&t;&t; * single bit selection (i.e. selecting ourselves).&n;&t;&t; * It is expected that either an external application&n;&t;&t; * or a modified kernel will be used to probe this&n;&t;&t; * ID if it is appropriate.  To accommodate these&n;&t;&t; * installations, ahc_linux_alloc_target() will allocate&n;&t;&t; * for our ID if asked to do so.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9689,7 +9689,7 @@ op_amp
 id|s
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 id|scsi_add_host
 c_func
 (paren
@@ -10327,7 +10327,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 id|scsi_remove_host
 c_func
 (paren
@@ -10569,8 +10569,8 @@ l_int|0x1000
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
-multiline_comment|/*&n;&t;&t; * In 2.4 we detach from the scsi midlayer before the PCI&n;&t;&t; * layer invokes our remove callback.&n;&t;&t; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) &amp;&amp; &bslash;&n;    LINUX_VERSION_CODE  &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/*&n;&t;&t; * In 2.4 we detach from the scsi midlayer before the PCI&n;&t;&t; * layer invokes our remove callback.  No per-instance&n;&t;&t; * detach is provided, so we must reach inside the PCI&n;&t;&t; * subsystem&squot;s internals and detach our driver manually.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -21807,17 +21807,17 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|ahd_linux_init
 r_static
 r_int
 id|__init
+DECL|function|ahd_linux_init
 id|ahd_linux_init
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_return
 (paren
 id|ahd_linux_detect
@@ -21874,10 +21874,10 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|ahd_linux_exit
 r_static
 r_void
 id|__exit
+DECL|function|ahd_linux_exit
 id|ahd_linux_exit
 c_func
 (paren
@@ -21885,6 +21885,7 @@ r_void
 )paren
 (brace
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/*&n;&t; * In 2.4 we have to unregister from the PCI core _after_&n;&t; * unregistering from the scsi midlayer to avoid dangling&n;&t; * references.&n;&t; */
 id|scsi_unregister_module
 c_func
 (paren
