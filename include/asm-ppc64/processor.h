@@ -1013,13 +1013,22 @@ r_int
 id|fpexc_mode
 suffix:semicolon
 multiline_comment|/* Floating-point exception mode */
+DECL|member|start_tb
+r_int
+r_int
+id|start_tb
+suffix:semicolon
+multiline_comment|/* Start purr when proc switched in */
+DECL|member|accum_tb
+r_int
+r_int
+id|accum_tb
+suffix:semicolon
+multiline_comment|/* Total accumilated purr for process */
 DECL|member|pad
 r_int
 r_int
 id|pad
-(braket
-l_int|3
-)braket
 suffix:semicolon
 multiline_comment|/* was saved_msr, saved_softe */
 macro_line|#ifdef CONFIG_ALTIVEC

@@ -301,6 +301,27 @@ op_star
 id|dr
 )paren
 suffix:semicolon
+multiline_comment|/* Used to store Processor Utilization register (purr) values */
+DECL|struct|cpu_usage
+r_struct
+id|cpu_usage
+(brace
+DECL|member|current_tb
+id|u64
+id|current_tb
+suffix:semicolon
+multiline_comment|/* Holds the current purr register values */
+)brace
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|cpu_usage
+comma
+id|cpu_usage_array
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __PPC64_TIME_H */
 eof
