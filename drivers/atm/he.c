@@ -315,7 +315,7 @@ r_static
 r_int
 id|sdh
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 DECL|variable|he_ops
 r_static
@@ -6956,7 +6956,7 @@ id|SUNI_TPOP_APM_S
 )paren
 op_or
 (paren
-l_int|0x2
+id|SUNI_TPOP_S_SDH
 op_lshift
 id|SUNI_TPOP_APM_S_SHIFT
 )paren

@@ -1572,7 +1572,6 @@ id|dev_out
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// dev zeroed in init_etherdev 
 id|dev
 op_assign
 id|alloc_etherdev

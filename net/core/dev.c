@@ -1672,6 +1672,35 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Some old buggy device drivers change get_stats after registering&n; * the device.  Try and trap them here.&n; * This can be elimnated when all devices are known fixed.&n; */
+DECL|function|get_stats_changed
+r_static
+r_inline
+r_int
+id|get_stats_changed
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|changed
+op_assign
+id|dev-&gt;last_stats
+op_ne
+id|dev-&gt;get_stats
+suffix:semicolon
+id|dev-&gt;last_stats
+op_assign
+id|dev-&gt;get_stats
+suffix:semicolon
+r_return
+id|changed
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;dev_open&t;- prepare an interface for use.&n; *&t;@dev:&t;device to open&n; *&n; *&t;Takes a device from down to up state. The device&squot;s private open&n; *&t;function is invoked and then the multicast lists are loaded. Finally&n; *&t;the device is moved into the up state and a %NETDEV_UP message is&n; *&t;sent to the netdev notifier chain.&n; *&n; *&t;Calling this function on an active interface is a nop. On a failure&n; *&t;a negative errno code is returned.&n; */
 DECL|function|dev_open
 r_int
@@ -1700,6 +1729,32 @@ id|IFF_UP
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; *&t; Check for broken device drivers.&n;&t; */
+r_if
+c_cond
+(paren
+id|get_stats_changed
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: driver changed get_stats after register&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Is it even present?&n;&t; */
 r_if
 c_cond
@@ -1753,6 +1808,32 @@ id|__LINK_STATE_START
 comma
 op_amp
 id|dev-&gt;state
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * &t;Check for more broken device drivers.&n;&t; */
+r_if
+c_cond
+(paren
+id|get_stats_changed
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: driver changed get_stats in open&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -2203,6 +2284,11 @@ id|ptype-&gt;dev
 )paren
 op_logical_and
 (paren
+id|ptype-&gt;af_packet_priv
+op_eq
+l_int|NULL
+op_logical_or
+(paren
 r_struct
 id|sock
 op_star
@@ -2210,6 +2296,7 @@ op_star
 id|ptype-&gt;af_packet_priv
 op_ne
 id|skb-&gt;sk
+)paren
 )paren
 (brace
 r_struct

@@ -3989,6 +3989,13 @@ id|mc-&gt;mca_users
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* mca_stamp should be updated upon changes */
+id|mc-&gt;mca_cstamp
+op_assign
+id|mc-&gt;mca_tstamp
+op_assign
+id|jiffies
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
