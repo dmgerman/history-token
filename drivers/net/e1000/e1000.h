@@ -134,6 +134,11 @@ r_int
 r_int
 id|time_stamp
 suffix:semicolon
+DECL|member|next_to_watch
+r_int
+r_int
+id|next_to_watch
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|e1000_desc_ring
