@@ -103,6 +103,13 @@ DECL|variable|laptop_mode
 r_int
 id|laptop_mode
 suffix:semicolon
+DECL|variable|laptop_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|laptop_mode
+)paren
+suffix:semicolon
 multiline_comment|/* End of sysctl-exported parameters */
 r_static
 r_void
