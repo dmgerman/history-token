@@ -321,34 +321,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to create new netlink socket(%u).&bslash;n&quot;
+l_string|&quot;Failed to create new netlink socket(%u) for w1 master %s.&bslash;n&quot;
 comma
 id|NETLINK_NFLOG
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|dev
 comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|w1_master
+id|dev-&gt;dev.bus_id
 )paren
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 id|err
@@ -436,6 +414,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;nls
+op_logical_and
 id|dev-&gt;nls-&gt;sk_socket
 )paren
 id|sock_release

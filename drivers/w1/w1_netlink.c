@@ -40,6 +40,14 @@ id|nlmsghdr
 op_star
 id|nlh
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;nls
+)paren
+r_return
+suffix:semicolon
 id|size
 op_assign
 id|NLMSG_SPACE
