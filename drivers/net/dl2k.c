@@ -5637,7 +5637,8 @@ id|bit
 suffix:semicolon
 r_int
 id|index
-comma
+suffix:semicolon
+r_int
 id|crc
 suffix:semicolon
 r_struct
