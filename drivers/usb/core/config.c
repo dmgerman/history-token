@@ -2035,6 +2035,17 @@ id|dev-&gt;config
 id|c
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cf-&gt;string
+)paren
+id|kfree
+c_func
+(paren
+id|cf-&gt;string
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
