@@ -397,6 +397,13 @@ id|sysfs_mount
 op_assign
 l_int|NULL
 suffix:semicolon
+id|unregister_filesystem
+c_func
+(paren
+op_amp
+id|sysfs_fs_type
+)paren
+suffix:semicolon
 r_goto
 id|out_err
 suffix:semicolon
@@ -418,6 +425,10 @@ c_func
 (paren
 id|sysfs_dir_cachep
 )paren
+suffix:semicolon
+id|sysfs_dir_cachep
+op_assign
+l_int|NULL
 suffix:semicolon
 r_goto
 id|out
