@@ -662,7 +662,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Put the laptop into System Management Mode&n; */
 DECL|function|tosh_smm
-r_static
 r_int
 id|tosh_smm
 c_func
