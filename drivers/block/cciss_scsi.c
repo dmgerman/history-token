@@ -42,6 +42,9 @@ r_int
 r_char
 op_star
 id|scsi3addr
+comma
+r_int
+id|cmd_type
 )paren
 suffix:semicolon
 r_int
