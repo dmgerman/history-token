@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
@@ -2953,7 +2953,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|function|powernow_k8_acpi_pst_values
 r_static
 r_void
