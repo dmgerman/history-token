@@ -6116,6 +6116,16 @@ l_int|31
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&n; */
+r_static
+r_void
+id|snd_ac97_powerdown
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 DECL|function|snd_ac97_bus_free
 r_static
 r_int
@@ -6295,6 +6305,13 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
+id|snd_ac97_powerdown
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
+multiline_comment|/* for avoiding click noises during shut down */
 r_return
 id|snd_ac97_free
 c_func
@@ -12560,11 +12577,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PM
-multiline_comment|/**&n; * snd_ac97_suspend - General suspend function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Suspends the codec, power down the chip.&n; * MASTER and HEADPHONE registers are muted but the register cache values&n; * are not changed, so that the values can be restored in snd_ac97_resume().&n; */
-DECL|function|snd_ac97_suspend
+multiline_comment|/*&n; * Power down the chip.&n; *&n; * MASTER and HEADPHONE registers are muted but the register cache values&n; * are not changed, so that the values can be restored in snd_ac97_resume().&n; */
+DECL|function|snd_ac97_powerdown
+r_static
 r_void
-id|snd_ac97_suspend
+id|snd_ac97_powerdown
 c_func
 (paren
 id|ac97_t
@@ -12575,20 +12592,7 @@ id|ac97
 r_int
 r_int
 id|power
-op_assign
-(paren
-id|ac97-&gt;regs
-(braket
-id|AC97_POWERDOWN
-)braket
-op_xor
-l_int|0x8000
-)paren
-op_amp
-op_complement
-l_int|0x8000
 suffix:semicolon
-multiline_comment|/* invert EAPD */
 r_if
 c_cond
 (paren
@@ -12621,6 +12625,16 @@ l_int|0x9f9f
 )paren
 suffix:semicolon
 )brace
+id|power
+op_assign
+id|ac97-&gt;regs
+(braket
+id|AC97_POWERDOWN
+)braket
+op_or
+l_int|0x8000
+suffix:semicolon
+multiline_comment|/* EAPD */
 id|power
 op_or_assign
 l_int|0x4000
@@ -12668,6 +12682,8 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* FIXME: this causes click noises on some boards at resume */
 id|power
 op_or_assign
 l_int|0x3800
@@ -12681,6 +12697,26 @@ comma
 id|AC97_POWERDOWN
 comma
 id|power
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_PM
+multiline_comment|/**&n; * snd_ac97_suspend - General suspend function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Suspends the codec, power down the chip.&n; */
+DECL|function|snd_ac97_suspend
+r_void
+id|snd_ac97_suspend
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+id|snd_ac97_powerdown
+c_func
+(paren
+id|ac97
 )paren
 suffix:semicolon
 )brace
