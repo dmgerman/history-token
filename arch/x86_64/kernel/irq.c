@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/x86_64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the lowest level x86_64-specific interrupt&n; * entry and irq statistics code. All the remaining irq logic is&n; * done by the generic kernel/hardirq.c code and in the&n; * x86_64-specific irq controller code. (e.g. i8259.c and&n; * io_apic.c.)&n; */
+multiline_comment|/*&n; *&t;linux/arch/x86_64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the lowest level x86_64-specific interrupt&n; * entry and irq statistics code. All the remaining irq logic is&n; * done by the generic kernel/irq/ code and in the&n; * x86_64-specific irq controller code. (e.g. i8259.c and&n; * io_apic.c.)&n; */
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
