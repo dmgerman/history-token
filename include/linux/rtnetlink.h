@@ -1775,6 +1775,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|rtnl_lock_interruptible
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|rtnl_unlock
 c_func
