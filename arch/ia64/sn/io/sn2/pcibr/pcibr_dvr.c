@@ -13619,12 +13619,6 @@ op_star
 id|pcibr_config_set
 comma
 (paren
-id|pciio_error_devenable_f
-op_star
-)paren
-l_int|0
-comma
-(paren
 id|pciio_error_extract_f
 op_star
 )paren

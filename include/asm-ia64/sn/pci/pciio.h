@@ -796,18 +796,6 @@ id|value
 suffix:semicolon
 multiline_comment|/* value to store */
 r_typedef
-r_int
-DECL|typedef|pciio_error_devenable_f
-id|pciio_error_devenable_f
-(paren
-id|vertex_hdl_t
-id|pconn_vhdl
-comma
-r_int
-id|error_code
-)paren
-suffix:semicolon
-r_typedef
 id|pciio_slot_t
 DECL|typedef|pciio_error_extract_f
 id|pciio_error_extract_f
@@ -1030,11 +1018,6 @@ op_star
 id|config_set
 suffix:semicolon
 multiline_comment|/* Error handling interface */
-DECL|member|error_devenable
-id|pciio_error_devenable_f
-op_star
-id|error_devenable
-suffix:semicolon
 DECL|member|error_extract
 id|pciio_error_extract_f
 op_star
@@ -1182,10 +1165,6 @@ suffix:semicolon
 r_extern
 id|pciio_config_set_f
 id|pciio_config_set
-suffix:semicolon
-r_extern
-id|pciio_error_devenable_f
-id|pciio_error_devenable
 suffix:semicolon
 r_extern
 id|pciio_error_extract_f

@@ -509,22 +509,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Error Management */
-r_typedef
-r_int
-DECL|typedef|xtalk_error_devenable_f
-id|xtalk_error_devenable_f
-(paren
-id|vertex_hdl_t
-id|xconn_vhdl
-comma
-r_int
-id|devnum
-comma
-r_int
-id|error_code
-)paren
-suffix:semicolon
 multiline_comment|/* Early Action Support */
 r_typedef
 id|caddr_t
@@ -671,11 +655,6 @@ op_star
 id|provider_shutdown
 suffix:semicolon
 multiline_comment|/* Error Management     */
-DECL|member|error_devenable
-id|xtalk_error_devenable_f
-op_star
-id|error_devenable
-suffix:semicolon
 DECL|typedef|xtalk_provider_t
 )brace
 id|xtalk_provider_t
@@ -780,10 +759,6 @@ suffix:semicolon
 r_extern
 id|xtalk_widgetdev_shutdown_f
 id|xtalk_widgetdev_shutdown
-suffix:semicolon
-r_extern
-id|xtalk_error_devenable_f
-id|xtalk_error_devenable
 suffix:semicolon
 r_extern
 id|xtalk_early_piotrans_addr_f
