@@ -1021,6 +1021,8 @@ DECL|macro|PCI_DEVICE_ID_SI_751
 mdefine_line|#define PCI_DEVICE_ID_SI_751&t;&t;0x0751
 DECL|macro|PCI_DEVICE_ID_SI_752
 mdefine_line|#define PCI_DEVICE_ID_SI_752&t;&t;0x0752
+DECL|macro|PCI_DEVICE_ID_SI_755
+mdefine_line|#define PCI_DEVICE_ID_SI_755&t;&t;0x0755
 DECL|macro|PCI_DEVICE_ID_SI_900
 mdefine_line|#define PCI_DEVICE_ID_SI_900&t;&t;0x0900
 DECL|macro|PCI_DEVICE_ID_SI_961
