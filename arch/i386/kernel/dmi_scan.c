@@ -883,42 +883,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * early nForce2 reference BIOS shipped with a&n; * bogus ACPI IRQ0 -&gt; pin2 interrupt override -- ignore it&n; */
-DECL|function|ignore_timer_override
-r_static
-id|__init
-r_int
-id|ignore_timer_override
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-r_extern
-r_int
-id|acpi_skip_timer_override
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;%s detected: BIOS IRQ0 pin2 override&quot;
-l_string|&quot; will be ignored&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-id|acpi_skip_timer_override
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_ACPI_PCI
 DECL|function|disable_acpi_irq
