@@ -469,6 +469,12 @@ DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;&t;1257
 DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;&t;1258
+DECL|macro|__NR_reserved1
+mdefine_line|#define __NR_reserved1&t;&t;&t;1259&t;/* reserved for NUMA interface */
+DECL|macro|__NR_reserved2
+mdefine_line|#define __NR_reserved2&t;&t;&t;1260&t;/* reserved for NUMA interface */
+DECL|macro|__NR_reserved3
+mdefine_line|#define __NR_reserved3&t;&t;&t;1261&t;/* reserved for NUMA interface */
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
