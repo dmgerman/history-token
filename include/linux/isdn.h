@@ -538,16 +538,11 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
-DECL|member|isdn_device
+DECL|member|isdn_slot
 r_int
-id|isdn_device
+id|isdn_slot
 suffix:semicolon
-multiline_comment|/* Index to isdn-device             */
-DECL|member|isdn_channel
-r_int
-id|isdn_channel
-suffix:semicolon
-multiline_comment|/* Index to isdn-channel            */
+multiline_comment|/* Index to isdn device/channel     */
 DECL|member|ppp_slot
 r_int
 id|ppp_slot
@@ -1226,16 +1221,11 @@ r_int
 id|rcvsched
 suffix:semicolon
 multiline_comment|/* Receive needs schedule         */
-DECL|member|isdn_driver
+DECL|member|isdn_slot
 r_int
-id|isdn_driver
+id|isdn_slot
 suffix:semicolon
-multiline_comment|/* Index to isdn-driver           */
-DECL|member|isdn_channel
-r_int
-id|isdn_channel
-suffix:semicolon
-multiline_comment|/* Index to isdn-channel          */
+multiline_comment|/* Index to isdn-driver/channel   */
 DECL|member|drv_index
 r_int
 id|drv_index
@@ -1779,22 +1769,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|chanmap
-r_int
-id|chanmap
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Map minor-&gt;device-channel  */
-DECL|member|drvmap
-r_int
-id|drvmap
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Map minor-&gt;driver-index    */
 DECL|member|usage
 r_int
 id|usage

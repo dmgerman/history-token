@@ -3757,11 +3757,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;isdn_device
-OL
-l_int|0
-op_logical_or
-id|lp-&gt;isdn_channel
+id|lp-&gt;isdn_slot
 OL
 l_int|0
 )paren
@@ -3780,7 +3776,11 @@ c_cond
 (paren
 id|dev-&gt;drv
 (braket
-id|lp-&gt;isdn_device
+id|isdn_slot_driver
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 )braket
 op_member_access_from_pointer
 id|flags
@@ -3811,12 +3811,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * we need to reserve enought space in front of&n;&t;&t;&t; * sk_buff. old call to dev_alloc_skb only reserved&n;&t;&t;&t; * 16 bytes, now we are looking what the driver want&n;&t;&t;&t; */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 suffix:semicolon
 id|skb
 op_assign
@@ -5838,14 +5837,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * we need to reserve enought space in front of&n;&t;&t; * sk_buff. old call to dev_alloc_skb only reserved&n;&t;&t; * 16 bytes, now we are looking what the driver want.&n;&t;&t; */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 op_plus
 id|IPPP_MAX_HEADER
+suffix:semicolon
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Note: hl might still be insufficient because the method&n;&t;&t; * above does not account for a possibible MPPP slave channel&n;&t;&t; * which had larger HL header space requirements than the&n;&t;&t; * master.&n;&t;&t; */
 id|new_skb
@@ -9566,12 +9565,11 @@ suffix:semicolon
 multiline_comment|/* Alloc large enough skb */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 suffix:semicolon
 id|skb
 op_assign
