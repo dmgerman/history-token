@@ -5355,6 +5355,10 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_int
+r_int
+id|oldflags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5485,6 +5489,10 @@ r_goto
 id|out_lock
 suffix:semicolon
 )brace
+id|oldflags
+op_assign
+id|inode-&gt;i_flags
+suffix:semicolon
 id|dqopt-&gt;files
 (braket
 id|type
@@ -5512,7 +5520,7 @@ id|type
 )paren
 )paren
 r_goto
-id|out_lock
+id|out_file_init
 suffix:semicolon
 multiline_comment|/* We don&squot;t want quota on quota files */
 id|dquot_drop_nolock
@@ -5579,7 +5587,7 @@ id|dqopt-&gt;dqio_sem
 )paren
 suffix:semicolon
 r_goto
-id|out_lock
+id|out_file_init
 suffix:semicolon
 )brace
 id|up
@@ -5615,12 +5623,11 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out_lock
+id|out_file_init
 suffix:colon
 id|inode-&gt;i_flags
-op_and_assign
-op_complement
-id|S_NOQUOTA
+op_assign
+id|oldflags
 suffix:semicolon
 id|dqopt-&gt;files
 (braket
@@ -5629,6 +5636,8 @@ id|type
 op_assign
 l_int|NULL
 suffix:semicolon
+id|out_lock
+suffix:colon
 id|up_write
 c_func
 (paren
