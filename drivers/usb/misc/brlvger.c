@@ -545,10 +545,6 @@ id|urb
 op_star
 id|intr_urb
 suffix:semicolon
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
 DECL|member|subminor
 r_int
 id|subminor
@@ -1390,8 +1386,6 @@ comma
 id|priv-&gt;subminor
 )paren
 suffix:semicolon
-id|priv-&gt;devfs
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -1423,22 +1417,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|priv-&gt;devfs
-)paren
-(brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|err
-c_func
-(paren
-l_string|&quot;devfs node registration failed&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 id|display_table
 (braket
 id|i
@@ -1567,10 +1545,12 @@ comma
 id|priv-&gt;subminor
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|priv-&gt;devfs
+l_string|&quot;usb/brlvger%d&quot;
+comma
+id|priv-&gt;subminor
 )paren
 suffix:semicolon
 id|usb_deregister_dev

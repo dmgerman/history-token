@@ -487,11 +487,6 @@ r_int
 id|dtindex
 suffix:semicolon
 multiline_comment|/* index in the device table */
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device node */
 DECL|member|usbdev
 r_struct
 id|usb_device
@@ -7241,8 +7236,6 @@ id|dev_table_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the devfs node for this device and register it */
-id|cp-&gt;devfs
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -7737,9 +7730,10 @@ id|dev_table_mutex
 suffix:semicolon
 multiline_comment|/* remove our devfs node */
 multiline_comment|/* Nobody can see this device any more */
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|cp-&gt;devfs
+id|cp-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* give back our USB minor number */
