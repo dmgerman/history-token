@@ -3703,6 +3703,10 @@ c_func
 id|clp
 )paren
 suffix:semicolon
+id|server-&gt;nfs4_state
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon
