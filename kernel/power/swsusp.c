@@ -3847,16 +3847,6 @@ id|pagedir_order
 )paren
 )paren
 (brace
-id|memset
-c_func
-(paren
-id|m
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
