@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 168 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 170 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -332,7 +332,7 @@ l_string|&quot;&bslash;&bslash;_S4B&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; * Names built-in to the interpreter&n; *&n; * Initial values are currently supported only for types String and Number.&n; * To avoid type punning, both are specified as strings in this table.&n; *&n; * NOTES:&n; * 1) _SB_ is defined to be a device to allow _SB_/_INI to be run&n; *    during the initialization sequence.&n; */
+multiline_comment|/*&n; * Predefined ACPI Names (Built-in to the Interpreter)&n; *&n; * Initial values are currently supported only for types String and Number.&n; * Both are specified as strings in this table.&n; *&n; * NOTES:&n; * 1) _SB_ is defined to be a device to allow _SB_/_INI to be run&n; *    during the initialization sequence.&n; */
 DECL|variable|acpi_gbl_pre_defined_names
 r_const
 id|acpi_predefined_names
@@ -344,7 +344,7 @@ op_assign
 (brace
 l_string|&quot;_GPE&quot;
 comma
-id|INTERNAL_TYPE_DEF_ANY
+id|INTERNAL_TYPE_SCOPE
 comma
 l_int|NULL
 )brace
@@ -352,7 +352,7 @@ comma
 (brace
 l_string|&quot;_PR_&quot;
 comma
-id|INTERNAL_TYPE_DEF_ANY
+id|INTERNAL_TYPE_SCOPE
 comma
 l_int|NULL
 )brace
@@ -368,7 +368,7 @@ comma
 (brace
 l_string|&quot;_SI_&quot;
 comma
-id|INTERNAL_TYPE_DEF_ANY
+id|INTERNAL_TYPE_SCOPE
 comma
 l_int|NULL
 )brace
@@ -376,7 +376,7 @@ comma
 (brace
 l_string|&quot;_TZ_&quot;
 comma
-id|INTERNAL_TYPE_DEF_ANY
+id|INTERNAL_TYPE_SCOPE
 comma
 l_int|NULL
 )brace
@@ -425,7 +425,7 @@ l_int|NULL
 multiline_comment|/* Table terminator */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Properties of the ACPI Object Types, both internal and external.&n; *&n; * Elements of Acpi_ns_properties are bit significant&n; * and the table is indexed by values of acpi_object_type&n; */
+multiline_comment|/*&n; * Properties of the ACPI Object Types, both internal and external.&n; * The table is indexed by values of acpi_object_type&n; */
 DECL|variable|acpi_gbl_ns_properties
 r_const
 id|u8
@@ -1414,7 +1414,7 @@ id|obj_desc
 suffix:semicolon
 )brace
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*&n; * Strings and procedures used for debug only&n; *&n; */
+multiline_comment|/*&n; * Strings and procedures used for debug only&n; */
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 id|NATIVE_CHAR
 op_star
@@ -2206,6 +2206,10 @@ suffix:semicolon
 id|acpi_gbl_gpe_number_info
 op_assign
 l_int|NULL
+suffix:semicolon
+id|acpi_gbl_events_initialized
+op_assign
+id|FALSE
 suffix:semicolon
 multiline_comment|/* Namespace */
 id|acpi_gbl_root_node
