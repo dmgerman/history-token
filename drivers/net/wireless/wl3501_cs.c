@@ -57,7 +57,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(n, format, args...) &bslash;&n;&t;{ if (pc_debug &gt; (n)) &bslash;&n;&t;&t;printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot;, __FUNCTION__, ##args); }
+mdefine_line|#define dprintk(n, format, args...) &bslash;&n;&t;{ if (pc_debug &gt; (n)) &bslash;&n;&t;&t;printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot;, __FUNCTION__ , ##args); }
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(n, format, args...)
