@@ -1006,6 +1006,8 @@ r_struct
 id|device_node
 op_star
 id|dp
+op_assign
+l_int|NULL
 comma
 op_star
 id|boot_disp
