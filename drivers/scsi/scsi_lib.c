@@ -3504,7 +3504,6 @@ suffix:semicolon
 )brace
 DECL|function|scsi_exit_queue
 r_void
-id|__exit
 id|scsi_exit_queue
 c_func
 (paren
