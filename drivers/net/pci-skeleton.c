@@ -3052,28 +3052,6 @@ id|pci_release_regions
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifndef NETDRV_NDEBUG
-multiline_comment|/* poison memory before freeing */
-id|memset
-(paren
-id|dev
-comma
-l_int|0xBC
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|netdrv_private
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* NETDRV_NDEBUG */
 id|free_netdev
 (paren
 id|dev
