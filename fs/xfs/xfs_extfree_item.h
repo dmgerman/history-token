@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_EXTFREE_ITEM_H__
+multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_EXTFREE_ITEM_H__
 DECL|macro|__XFS_EXTFREE_ITEM_H__
-mdefine_line|#define __XFS_EXTFREE_ITEM_H__
+mdefine_line|#define&t;__XFS_EXTFREE_ITEM_H__
 r_struct
 id|xfs_mount
 suffix:semicolon
@@ -25,7 +25,7 @@ DECL|typedef|xfs_extent_t
 )brace
 id|xfs_extent_t
 suffix:semicolon
-multiline_comment|/*&n; * This is the structure used to lay out an efi log item in the&n; * log.&t; The efi_extents field is a variable size array whose&n; * size is given by efi_nextents.&n; */
+multiline_comment|/*&n; * This is the structure used to lay out an efi log item in the&n; * log.  The efi_extents field is a variable size array whose&n; * size is given by efi_nextents.&n; */
 DECL|struct|xfs_efi_log_format
 r_typedef
 r_struct
@@ -65,7 +65,7 @@ DECL|typedef|xfs_efi_log_format_t
 )brace
 id|xfs_efi_log_format_t
 suffix:semicolon
-multiline_comment|/*&n; * This is the structure used to lay out an efd log item in the&n; * log.&t; The efd_extents array is a variable size array whose&n; * size is given by efd_nextents;&n; */
+multiline_comment|/*&n; * This is the structure used to lay out an efd log item in the&n; * log.  The efd_extents array is a variable size array whose&n; * size is given by efd_nextents;&n; */
 DECL|struct|xfs_efd_log_format
 r_typedef
 r_struct
@@ -108,14 +108,14 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Max number of extents in fast allocation path.&n; */
 DECL|macro|XFS_EFI_MAX_FAST_EXTENTS
-mdefine_line|#define XFS_EFI_MAX_FAST_EXTENTS&t;16
+mdefine_line|#define&t;XFS_EFI_MAX_FAST_EXTENTS&t;16
 multiline_comment|/*&n; * Define EFI flags.&n; */
 DECL|macro|XFS_EFI_RECOVERED
-mdefine_line|#define XFS_EFI_RECOVERED&t;0x1
+mdefine_line|#define&t;XFS_EFI_RECOVERED&t;0x1
 DECL|macro|XFS_EFI_COMMITTED
-mdefine_line|#define XFS_EFI_COMMITTED&t;0x2
+mdefine_line|#define&t;XFS_EFI_COMMITTED&t;0x2
 DECL|macro|XFS_EFI_CANCELED
-mdefine_line|#define XFS_EFI_CANCELED&t;0x4
+mdefine_line|#define&t;XFS_EFI_CANCELED&t;0x4
 multiline_comment|/*&n; * This is the &quot;extent free intention&quot; log item.  It is used&n; * to log the fact that some extents need to be free.  It is&n; * used in conjunction with the &quot;extent free done&quot; log item&n; * described below.&n; */
 DECL|struct|xfs_efi_log_item
 r_typedef
@@ -172,7 +172,7 @@ id|xfs_efd_log_item_t
 suffix:semicolon
 multiline_comment|/*&n; * Max number of extents in fast allocation path.&n; */
 DECL|macro|XFS_EFD_MAX_FAST_EXTENTS
-mdefine_line|#define XFS_EFD_MAX_FAST_EXTENTS&t;16
+mdefine_line|#define&t;XFS_EFD_MAX_FAST_EXTENTS&t;16
 r_extern
 r_struct
 id|kmem_zone

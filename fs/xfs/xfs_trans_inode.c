@@ -1,5 +1,28 @@
-multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#ifdef XFS_TRANS_DEBUG
 id|STATIC
 r_void
@@ -13,9 +36,9 @@ id|ip
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_trans_inode_broot_debug
-mdefine_line|#define xfs_trans_inode_broot_debug(ip)
+mdefine_line|#define&t;xfs_trans_inode_broot_debug(ip)
 macro_line|#endif
-multiline_comment|/*&n; * Get and lock the inode for the caller if it is not already&n; * locked within the given transaction.&t; If it is already locked&n; * within the transaction, just increment its lock recursion count&n; * and return a pointer to it.&n; *&n; * For an inode to be locked in a transaction, the inode lock, as&n; * opposed to the io lock, must be taken exclusively.  This ensures&n; * that the inode can be involved in only 1 transaction at a time.&n; * Lock recursion is handled on the io lock, but only for lock modes&n; * of equal or lesser strength.&t; That is, you can recur on the io lock&n; * held EXCL with a SHARED request but not vice versa.&t;Also, if&n; * the inode is already a part of the transaction then you cannot&n; * go from not holding the io lock to having it EXCL or SHARED.&n; *&n; * Use the inode cache routine xfs_inode_incore() to find the inode&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the inode, use xfs_iget() to get it.&n; * Since the inode log item structure is embedded in the incore&n; * inode structure and is initialized when the inode is brought&n; * into memory, there is nothing to do with it here.&n; *&n; * If the given transaction pointer is NULL, just call xfs_iget().&n; * This simplifies code which must handle both cases.&n; */
+multiline_comment|/*&n; * Get and lock the inode for the caller if it is not already&n; * locked within the given transaction.  If it is already locked&n; * within the transaction, just increment its lock recursion count&n; * and return a pointer to it.&n; *&n; * For an inode to be locked in a transaction, the inode lock, as&n; * opposed to the io lock, must be taken exclusively.  This ensures&n; * that the inode can be involved in only 1 transaction at a time.&n; * Lock recursion is handled on the io lock, but only for lock modes&n; * of equal or lesser strength.  That is, you can recur on the io lock&n; * held EXCL with a SHARED request but not vice versa.  Also, if&n; * the inode is already a part of the transaction then you cannot&n; * go from not holding the io lock to having it EXCL or SHARED.&n; *&n; * Use the inode cache routine xfs_inode_incore() to find the inode&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the inode, use xfs_iget() to get it.&n; * Since the inode log item structure is embedded in the incore&n; * inode structure and is initialized when the inode is brought&n; * into memory, there is nothing to do with it here.&n; *&n; * If the given transaction pointer is NULL, just call xfs_iget().&n; * This simplifies code which must handle both cases.&n; */
 r_int
 DECL|function|xfs_trans_iget
 id|xfs_trans_iget
@@ -580,7 +603,7 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * If the release is just for a recursive lock on the inode lock,&n;&t; * then decrement the count and return.&t; We can assert that&n;&t; * the caller is dropping an EXCL lock on the inode, because&n;&t; * inode must be locked EXCL within transactions.&n;&t; */
+multiline_comment|/*&n;&t; * If the release is just for a recursive lock on the inode lock,&n;&t; * then decrement the count and return.  We can assert that&n;&t; * the caller is dropping an EXCL lock on the inode, because&n;&t; * inode must be locked EXCL within transactions.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -689,7 +712,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Add the locked inode to the transaction.&n; * The inode must be locked, and it cannot be associated with any&n; * transaction.&t; The caller must specify the locks already held&n; * on the inode.&n; */
+multiline_comment|/*&n; * Add the locked inode to the transaction.&n; * The inode must be locked, and it cannot be associated with any&n; * transaction.  The caller must specify the locks already held&n; * on the inode.&n; */
 r_void
 DECL|function|xfs_trans_ijoin
 id|xfs_trans_ijoin

@@ -1,5 +1,33 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_trans_space.h&quot;
 id|STATIC
 r_void
 id|xfs_trans_apply_sb_deltas
@@ -551,7 +579,7 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to create a new transaction which will share the&n; * permanent log reservation of the given transaction.&t;The remaining&n; * unused block and rt extent reservations are also inherited.&t;This&n; * implies that the original transaction is no longer allowed to allocate&n; * blocks.  Locks and log items, however, are no inherited.  They must&n; * be added to the new transaction explicitly.&n; */
+multiline_comment|/*&n; * This is called to create a new transaction which will share the&n; * permanent log reservation of the given transaction.  The remaining&n; * unused block and rt extent reservations are also inherited.  This&n; * implies that the original transaction is no longer allowed to allocate&n; * blocks.  Locks and log items, however, are no inherited.  They must&n; * be added to the new transaction explicitly.&n; */
 id|xfs_trans_t
 op_star
 DECL|function|xfs_trans_dup
@@ -755,7 +783,7 @@ id|current-&gt;flags
 op_or_assign
 id|PF_FSTRANS
 suffix:semicolon
-multiline_comment|/*&n;&t; * Attempt to reserve the needed disk blocks by decrementing&n;&t; * the number needed from the number available.&t; This will&n;&t; * fail if the count would go below zero.&n;&t; */
+multiline_comment|/*&n;&t; * Attempt to reserve the needed disk blocks by decrementing&n;&t; * the number needed from the number available.  This will&n;&t; * fail if the count would go below zero.&n;&t; */
 r_if
 c_cond
 (paren
@@ -929,7 +957,7 @@ op_assign
 id|logcount
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Attempt to reserve the needed realtime extents by decrementing&n;&t; * the number needed from the number available.&t; This will&n;&t; * fail if the count would go below zero.&n;&t; */
+multiline_comment|/*&n;&t; * Attempt to reserve the needed realtime extents by decrementing&n;&t; * the number needed from the number available.  This will&n;&t; * fail if the count would go below zero.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1164,7 +1192,7 @@ suffix:semicolon
 r_case
 id|XFS_TRANS_SB_FDBLOCKS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Track the number of blocks allocated in the&n;&t;&t; * transaction.&t; Make sure it does not exceed the&n;&t;&t; * number reserved.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Track the number of blocks allocated in the&n;&t;&t; * transaction.  Make sure it does not exceed the&n;&t;&t; * number reserved.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1217,7 +1245,7 @@ suffix:semicolon
 r_case
 id|XFS_TRANS_SB_FREXTENTS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Track the number of blocks allocated in the&n;&t;&t; * transaction.&t; Make sure it does not exceed the&n;&t;&t; * number reserved.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Track the number of blocks allocated in the&n;&t;&t; * transaction.  Make sure it does not exceed the&n;&t;&t; * number reserved.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1826,7 +1854,7 @@ id|XFS_TRANS_RESERVE
 op_ne
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Release any reserved blocks.&t; Any that were allocated&n;&t; * will be taken back again by fdblocks_delta below.&n;&t; */
+multiline_comment|/*&n;&t; * Release any reserved blocks.  Any that were allocated&n;&t; * will be taken back again by fdblocks_delta below.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2238,7 +2266,7 @@ r_int
 id|sync
 suffix:semicolon
 DECL|macro|XFS_TRANS_LOGVEC_COUNT
-mdefine_line|#define XFS_TRANS_LOGVEC_COUNT&t;16
+mdefine_line|#define&t;XFS_TRANS_LOGVEC_COUNT&t;16
 id|xfs_log_iovec_t
 id|log_vector_fast
 (braket
@@ -2710,7 +2738,7 @@ id|tp-&gt;t_flags
 op_amp
 id|XFS_TRANS_SYNC
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tell the LM to call the transaction completion routine&n;&t; * when the log write with LSN commit_lsn completes (e.g.&n;&t; * when the transaction commit really hits the on-disk log).&n;&t; * After this call we cannot reference tp, because the call&n;&t; * can happen at any time and the call will free the transaction&n;&t; * structure pointed to by tp.&t;The only case where we call&n;&t; * the completion routine (xfs_trans_committed) directly is&n;&t; * if the log is turned off on a debug kernel or we&squot;re&n;&t; * running in simulation mode (the log is explicitly turned&n;&t; * off).&n;&t; */
+multiline_comment|/*&n;&t; * Tell the LM to call the transaction completion routine&n;&t; * when the log write with LSN commit_lsn completes (e.g.&n;&t; * when the transaction commit really hits the on-disk log).&n;&t; * After this call we cannot reference tp, because the call&n;&t; * can happen at any time and the call will free the transaction&n;&t; * structure pointed to by tp.  The only case where we call&n;&t; * the completion routine (xfs_trans_committed) directly is&n;&t; * if the log is turned off on a debug kernel or we&squot;re&n;&t; * running in simulation mode (the log is explicitly turned&n;&t; * off).&n;&t; */
 macro_line|#if defined(XLOG_NOLOG) || defined(DEBUG)
 r_if
 c_cond
@@ -2878,7 +2906,7 @@ id|error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Total up the number of log iovecs needed to commit this&n; * transaction.&t; The transaction itself needs one for the&n; * transaction header.&t;Ask each dirty item in turn how many&n; * it needs to get the total.&n; */
+multiline_comment|/*&n; * Total up the number of log iovecs needed to commit this&n; * transaction.  The transaction itself needs one for the&n; * transaction header.  Ask each dirty item in turn how many&n; * it needs to get the total.&n; */
 id|STATIC
 id|uint
 DECL|function|xfs_trans_count_vecs
@@ -3085,7 +3113,7 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Fill in the vector with pointers to data to be logged&n; * by this transaction.&t; The transaction header takes&n; * the first vector, and then each dirty item takes the&n; * number of vectors it indicated it needed in xfs_trans_count_vecs().&n; *&n; * As each item fills in the entries it needs, also pin the item&n; * so that it cannot be flushed out until the log write completes.&n; */
+multiline_comment|/*&n; * Fill in the vector with pointers to data to be logged&n; * by this transaction.  The transaction header takes&n; * the first vector, and then each dirty item takes the&n; * number of vectors it indicated it needed in xfs_trans_count_vecs().&n; *&n; * As each item fills in the entries it needs, also pin the item&n; * so that it cannot be flushed out until the log write completes.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_trans_fill_vecs
@@ -3299,7 +3327,7 @@ op_and_assign
 op_complement
 id|XFS_TRANS_ABORT
 suffix:semicolon
-multiline_comment|/*&n;&t; * See if the caller is relying on us to shut down the&n;&t; * filesystem.&t;This happens in paths where we detect&n;&t; * corruption and decide to give up.&n;&t; */
+multiline_comment|/*&n;&t; * See if the caller is relying on us to shut down the&n;&t; * filesystem.  This happens in paths where we detect&n;&t; * corruption and decide to give up.&n;&t; */
 r_if
 c_cond
 (paren

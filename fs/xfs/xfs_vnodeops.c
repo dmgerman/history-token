@@ -1,5 +1,43 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_itable.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_rtalloc.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_utils.h&quot;
+macro_line|#include &quot;xfs_trans_space.h&quot;
+macro_line|#include &quot;xfs_dir_leaf.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mac.h&quot;
+macro_line|#include &quot;xfs_log_priv.h&quot;
 multiline_comment|/*&n; * The maximum pathlen is 1024 bytes. Since the minimum file system&n; * blocksize is 512 bytes, we can get a max of 2 extents back from&n; * bmapi.&n; */
 DECL|macro|SYMLINK_MAPS
 mdefine_line|#define SYMLINK_MAPS 2
@@ -26,7 +64,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * For xfs, we check that the file isn&squot;t too big to be opened by this kernel.&n; * No other open action is required for regular files.&t;Devices are handled&n; * through the specfs file system, pipes through fifofs.  Device and&n; * fifo vnodes are &quot;wrapped&quot; by specfs and fifofs vnodes, respectively,&n; * when a new vnode is first looked up or created.&n; */
+multiline_comment|/*&n; * For xfs, we check that the file isn&squot;t too big to be opened by this kernel.&n; * No other open action is required for regular files.  Devices are handled&n; * through the specfs file system, pipes through fifofs.  Device and&n; * fifo vnodes are &quot;wrapped&quot; by specfs and fifofs vnodes, respectively,&n; * when a new vnode is first looked up or created.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_open
@@ -602,6 +640,19 @@ id|XFS_DIFLAG_PREALLOC
 ques
 c_cond
 id|XFS_XFLAG_PREALLOC
+suffix:colon
+l_int|0
+)paren
+op_or
+(paren
+id|XFS_IFORK_Q
+c_func
+(paren
+id|ip
+)paren
+ques
+c_cond
+id|XFS_XFLAG_HASATTR
 suffix:colon
 l_int|0
 )paren
@@ -2072,7 +2123,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * Now we can make the changes.&t; Before we join the inode&n;&t; * to the transaction, if XFS_AT_SIZE is set then take care of&n;&t; * the part of the truncation that must be done without the&n;&t; * inode lock.&t;This needs to be done before joining the inode&n;&t; * to the transaction, because the inode cannot be unlocked&n;&t; * once it is a part of the transaction.&n;&t; */
+multiline_comment|/*&n;&t; * Now we can make the changes.  Before we join the inode&n;&t; * to the transaction, if XFS_AT_SIZE is set then take care of&n;&t; * the part of the truncation that must be done without the&n;&t; * inode lock.  This needs to be done before joining the inode&n;&t; * to the transaction, because the inode cannot be unlocked&n;&t; * once it is a part of the transaction.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3426,7 +3477,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Symlink not inline.&t;Call bmap to get it in.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Symlink not inline.  Call bmap to get it in.&n;&t;&t; */
 id|nmaps
 op_assign
 id|SYMLINK_MAPS
@@ -3895,7 +3946,7 @@ id|error2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We always need to make sure that the required inode state&n;&t; * is safe on disk.  The vnode might be clean but because&n;&t; * of committed transactions that haven&squot;t hit the disk yet.&n;&t; * Likewise, there could be unflushed non-transactional&n;&t; * changes to the inode core that have to go to disk.&n;&t; *&n;&t; * The following code depends on one assumption:  that&n;&t; * any transaction that changes an inode logs the core&n;&t; * because it has to change some field in the inode core&n;&t; * (typically nextents or nblocks).  That assumption&n;&t; * implies that any transactions against an inode will&n;&t; * catch any non-transactional updates.&t; If inode-altering&n;&t; * transactions exist that violate this assumption, the&n;&t; * code breaks.&t; Right now, it figures that if the involved&n;&t; * update_* field is clear and the inode is unpinned, the&n;&t; * inode is clean.  Either it&squot;s been flushed or it&squot;s been&n;&t; * committed and the commit has hit the disk unpinning the inode.&n;&t; * (Note that xfs_inode_item_format() called at commit clears&n;&t; * the update_* fields.)&n;&t; */
+multiline_comment|/*&n;&t; * We always need to make sure that the required inode state&n;&t; * is safe on disk.  The vnode might be clean but because&n;&t; * of committed transactions that haven&squot;t hit the disk yet.&n;&t; * Likewise, there could be unflushed non-transactional&n;&t; * changes to the inode core that have to go to disk.&n;&t; *&n;&t; * The following code depends on one assumption:  that&n;&t; * any transaction that changes an inode logs the core&n;&t; * because it has to change some field in the inode core&n;&t; * (typically nextents or nblocks).  That assumption&n;&t; * implies that any transactions against an inode will&n;&t; * catch any non-transactional updates.  If inode-altering&n;&t; * transactions exist that violate this assumption, the&n;&t; * code breaks.  Right now, it figures that if the involved&n;&t; * update_* field is clear and the inode is unpinned, the&n;&t; * inode is clean.  Either it&squot;s been flushed or it&squot;s been&n;&t; * committed and the commit has hit the disk unpinning the inode.&n;&t; * (Note that xfs_inode_item_format() called at commit clears&n;&t; * the update_* fields.)&n;&t; */
 id|xfs_ilock
 c_func
 (paren
@@ -4130,7 +4181,7 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#if 0
-multiline_comment|/*&n; * This is a utility routine for xfs_inactive.&t;It is called when a&n; * transaction attempting to free up the disk space for a file encounters&n; * an error.  It cancels the old transaction and starts up a new one&n; * to be used to free up the inode.  It also sets the inode size and extent&n; * counts to 0 and frees up any memory being used to store inline data,&n; * extents, or btree roots.&n; */
+multiline_comment|/*&n; * This is a utility routine for xfs_inactive.  It is called when a&n; * transaction attempting to free up the disk space for a file encounters&n; * an error.  It cancels the old transaction and starts up a new one&n; * to be used to free up the inode.  It also sets the inode size and extent&n; * counts to 0 and frees up any memory being used to store inline data,&n; * extents, or btree roots.&n; */
 id|STATIC
 r_void
 id|xfs_itruncate_cleanup
@@ -4355,7 +4406,7 @@ suffix:semicolon
 id|xfs_bmbt_irec_t
 id|imap
 suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out if there are any blocks beyond the end&n;&t; * of the file.&t; If not, then there is nothing to do.&n;&t; */
+multiline_comment|/*&n;&t; * Figure out if there are any blocks beyond the end&n;&t; * of the file.  If not, then there is nothing to do.&n;&t; */
 id|end_fsb
 op_assign
 id|XFS_B_TO_FSB
@@ -4763,7 +4814,7 @@ id|ip
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We&squot;re freeing a symlink that has some&n;&t; * blocks allocated to it.  Free the&n;&t; * blocks here.&t; We know that we&squot;ve got&n;&t; * either 1 or 2 extents and that we can&n;&t; * free them all in one bunmapi call.&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;re freeing a symlink that has some&n;&t; * blocks allocated to it.  Free the&n;&t; * blocks here.  We know that we&squot;ve got&n;&t; * either 1 or 2 extents and that we can&n;&t; * free them all in one bunmapi call.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -6607,7 +6658,7 @@ c_cond
 id|error
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If we fail to free the inode, shut down.  The cancel&n;&t;&t; * might do that, we need to make sure.&t; Otherwise the&n;&t;&t; * inode might be lost for a long time or forever.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we fail to free the inode, shut down.  The cancel&n;&t;&t; * might do that, we need to make sure.  Otherwise the&n;&t;&t; * inode might be lost for a long time or forever.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6869,7 +6920,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|macro|XFS_CREATE_NEW_MAXTRIES
-mdefine_line|#define XFS_CREATE_NEW_MAXTRIES 10000
+mdefine_line|#define&t;XFS_CREATE_NEW_MAXTRIES&t;10000
 multiline_comment|/*&n; * xfs_create (create a new file).&n; */
 id|STATIC
 r_int
@@ -7205,7 +7256,7 @@ comma
 id|namelen
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initially assume that the file does not exist and&n;&t; * reserve the resources for that case.&t; If that is not&n;&t; * the case we&squot;ll drop the one we have and get a more&n;&t; * appropriate transaction later.&n;&t; */
+multiline_comment|/*&n;&t; * Initially assume that the file does not exist and&n;&t; * reserve the resources for that case.  If that is not&n;&t; * the case we&squot;ll drop the one we have and get a more&n;&t; * appropriate transaction later.&n;&t; */
 id|error
 op_assign
 id|xfs_trans_reserve
@@ -8513,7 +8564,7 @@ macro_line|#endif
 )brace
 macro_line|#ifdef&t;DEBUG
 DECL|macro|REMOVE_DEBUG_TRACE
-mdefine_line|#define REMOVE_DEBUG_TRACE(x)&t;{remove_which_error_return = (x);}
+mdefine_line|#define&t;REMOVE_DEBUG_TRACE(x)&t;{remove_which_error_return = (x);}
 DECL|variable|remove_which_error_return
 r_int
 id|remove_which_error_return
@@ -8522,7 +8573,7 @@ l_int|0
 suffix:semicolon
 macro_line|#else /* ! DEBUG */
 DECL|macro|REMOVE_DEBUG_TRACE
-mdefine_line|#define REMOVE_DEBUG_TRACE(x)
+mdefine_line|#define&t;REMOVE_DEBUG_TRACE(x)
 macro_line|#endif&t;/* ! DEBUG */
 multiline_comment|/*&n; * xfs_remove&n; *&n; */
 id|STATIC
@@ -9379,7 +9430,7 @@ id|std_return
 suffix:semicolon
 id|error_rele
 suffix:colon
-multiline_comment|/*&n;&t; * In this case make sure to not release the inode until after&n;&t; * the current transaction is aborted.&t;Releasing it beforehand&n;&t; * can cause us to go to xfs_inactive and start a recursive&n;&t; * transaction which can easily deadlock with the current one.&n;&t; */
+multiline_comment|/*&n;&t; * In this case make sure to not release the inode until after&n;&t; * the current transaction is aborted.  Releasing it beforehand&n;&t; * can cause us to go to xfs_inactive and start a recursive&n;&t; * transaction which can easily deadlock with the current one.&n;&t; */
 id|xfs_bmap_cancel
 c_func
 (paren
@@ -11372,7 +11423,7 @@ id|cdp
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to get a reference to cdp before we get our log&n;&t; * reservation.&t; The reason for this is that we cannot call&n;&t; * xfs_iget for an inode for which we do not have a reference&n;&t; * once we&squot;ve acquired a log reservation.  This is because the&n;&t; * inode we are trying to get might be in xfs_inactive going&n;&t; * for a log reservation.  Since we&squot;ll have to wait for the&n;&t; * inactive code to complete before returning from xfs_iget,&n;&t; * we need to make sure that we don&squot;t have log space reserved&n;&t; * when we call xfs_iget.  Instead we get an unlocked referece&n;&t; * to the inode before getting our log reservation.&n;&t; */
+multiline_comment|/*&n;&t; * We need to get a reference to cdp before we get our log&n;&t; * reservation.  The reason for this is that we cannot call&n;&t; * xfs_iget for an inode for which we do not have a reference&n;&t; * once we&squot;ve acquired a log reservation.  This is because the&n;&t; * inode we are trying to get might be in xfs_inactive going&n;&t; * for a log reservation.  Since we&squot;ll have to wait for the&n;&t; * inactive code to complete before returning from xfs_iget,&n;&t; * we need to make sure that we don&squot;t have log space reserved&n;&t; * when we call xfs_iget.  Instead we get an unlocked referece&n;&t; * to the inode before getting our log reservation.&n;&t; */
 id|error
 op_assign
 id|xfs_get_dir_entry
@@ -11638,7 +11689,7 @@ op_ne
 id|cdp
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Only increment the parent directory vnode count if&n;&t;&t; * we didn&squot;t bump it in looking up cdp.&t; The only time&n;&t;&t; * we don&squot;t bump it is when we&squot;re looking up &quot;.&quot;.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Only increment the parent directory vnode count if&n;&t;&t; * we didn&squot;t bump it in looking up cdp.  The only time&n;&t;&t; * we don&squot;t bump it is when we&squot;re looking up &quot;.&quot;.&n;&t;&t; */
 id|VN_HOLD
 c_func
 (paren
@@ -15135,7 +15186,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_alloc_file_space()&n; *&t;This routine allocates disk space for the given file.&n; *&n; *&t;If alloc_type == 0, this request is for an ALLOCSP type&n; *&t;request which will change the file size.  In this case, no&n; *&t;DMAPI event will be generated by the call.  A TRUNCATE event&n; *&t;will be generated later by xfs_setattr.&n; *&n; *&t;If alloc_type != 0, this request is for a RESVSP type&n; *&t;request, and a DMAPI DM_EVENT_WRITE will be generated if the&n; *&t;lower block boundary byte address is less than the file&squot;s&n; *&t;length.&n; *&n; * RETURNS:&n; *&t; 0 on success&n; *&t;errno on error&n; *&n; */
+multiline_comment|/*&n; * xfs_alloc_file_space()&n; *      This routine allocates disk space for the given file.&n; *&n; *&t;If alloc_type == 0, this request is for an ALLOCSP type&n; *&t;request which will change the file size.  In this case, no&n; *&t;DMAPI event will be generated by the call.  A TRUNCATE event&n; *&t;will be generated later by xfs_setattr.&n; *&n; *&t;If alloc_type != 0, this request is for a RESVSP type&n; *&t;request, and a DMAPI DM_EVENT_WRITE will be generated if the&n; *&t;lower block boundary byte address is less than the file&squot;s&n; *&t;length.&n; *&n; * RETURNS:&n; *       0 on success&n; *      errno on error&n; *&n; */
 r_int
 DECL|function|xfs_alloc_file_space
 id|xfs_alloc_file_space
@@ -16356,7 +16407,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_free_file_space()&n; *&t;This routine frees disk space for the given file.&n; *&n; *&t;This routine is only called by xfs_change_file_space&n; *&t;for an UNRESVSP type call.&n; *&n; * RETURNS:&n; *&t; 0 on success&n; *&t;errno on error&n; *&n; */
+multiline_comment|/*&n; * xfs_free_file_space()&n; *      This routine frees disk space for the given file.&n; *&n; *&t;This routine is only called by xfs_change_file_space&n; *&t;for an UNRESVSP type call.&n; *&n; * RETURNS:&n; *       0 on success&n; *      errno on error&n; *&n; */
 id|STATIC
 r_int
 DECL|function|xfs_free_file_space
@@ -17310,7 +17361,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_change_file_space()&n; *&t;This routine allocates or frees disk space for the given file.&n; *&t;The user specified parameters are checked for alignment and size&n; *&t;limitations.&n; *&n; * RETURNS:&n; *&t; 0 on success&n; *&t;errno on error&n; *&n; */
+multiline_comment|/*&n; * xfs_change_file_space()&n; *      This routine allocates or frees disk space for the given file.&n; *      The user specified parameters are checked for alignment and size&n; *      limitations.&n; *&n; * RETURNS:&n; *       0 on success&n; *      errno on error&n; *&n; */
 r_int
 DECL|function|xfs_change_file_space
 id|xfs_change_file_space

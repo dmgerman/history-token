@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_MOUNT_H__
 DECL|macro|__XFS_MOUNT_H__
-mdefine_line|#define __XFS_MOUNT_H__
+mdefine_line|#define&t;__XFS_MOUNT_H__
 DECL|struct|xfs_trans_reservations
 r_typedef
 r_struct
@@ -157,17 +157,17 @@ r_struct
 id|xfs_bmap_free
 suffix:semicolon
 DECL|macro|SPLDECL
-mdefine_line|#define SPLDECL(s)&t;&t;unsigned long s
+mdefine_line|#define&t;SPLDECL(s)&t;&t;unsigned long s
 DECL|macro|AIL_LOCK_T
-mdefine_line|#define AIL_LOCK_T&t;&t;lock_t
+mdefine_line|#define&t;AIL_LOCK_T&t;&t;lock_t
 DECL|macro|AIL_LOCKINIT
-mdefine_line|#define AIL_LOCKINIT(x,y)&t;spinlock_init(x,y)
+mdefine_line|#define&t;AIL_LOCKINIT(x,y)&t;spinlock_init(x,y)
 DECL|macro|AIL_LOCK_DESTROY
-mdefine_line|#define AIL_LOCK_DESTROY(x)&t;spinlock_destroy(x)
+mdefine_line|#define&t;AIL_LOCK_DESTROY(x)&t;spinlock_destroy(x)
 DECL|macro|AIL_LOCK
-mdefine_line|#define AIL_LOCK(mp,s)&t;&t;s=mutex_spinlock(&amp;(mp)-&gt;m_ail_lock)
+mdefine_line|#define&t;AIL_LOCK(mp,s)&t;&t;s=mutex_spinlock(&amp;(mp)-&gt;m_ail_lock)
 DECL|macro|AIL_UNLOCK
-mdefine_line|#define AIL_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_ail_lock, s)
+mdefine_line|#define&t;AIL_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_ail_lock, s)
 multiline_comment|/*&n; * Prototypes and functions for the Data Migration subsystem.&n; */
 DECL|typedef|xfs_send_data_t
 r_typedef
@@ -1582,10 +1582,10 @@ id|xfs_mount_t
 suffix:semicolon
 multiline_comment|/*&n; * Flags for m_flags.&n; */
 DECL|macro|XFS_MOUNT_WSYNC
-mdefine_line|#define XFS_MOUNT_WSYNC&t;&t;0x00000001&t;/* for nfs - all metadata ops&n;&t;&t;&t;&t;&t;&t;   must be synchronous except&n;&t;&t;&t;&t;&t;&t;   for space allocations */
+mdefine_line|#define&t;XFS_MOUNT_WSYNC&t;&t;0x00000001&t;/* for nfs - all metadata ops&n;&t;&t;&t;&t;&t;&t;   must be synchronous except&n;&t;&t;&t;&t;&t;&t;   for space allocations */
 macro_line|#if XFS_BIG_FILESYSTEMS
 DECL|macro|XFS_MOUNT_INO64
-mdefine_line|#define XFS_MOUNT_INO64&t;&t;0x00000002
+mdefine_line|#define&t;XFS_MOUNT_INO64&t;&t;0x00000002
 macro_line|#endif
 multiline_comment|/* 0x00000004&t;-- currently unused */
 multiline_comment|/* 0x00000008&t;-- currently unused */
@@ -1594,7 +1594,7 @@ mdefine_line|#define XFS_MOUNT_FS_SHUTDOWN&t;0x00000010&t;/* atomic stop of all 
 DECL|macro|XFS_MOUNT_NOATIME
 mdefine_line|#define XFS_MOUNT_NOATIME&t;0x00000020&t;/* don&squot;t modify inode access&n;&t;&t;&t;&t;&t;&t;   times on reads */
 DECL|macro|XFS_MOUNT_RETERR
-mdefine_line|#define XFS_MOUNT_RETERR&t;0x00000040&t;/* return alignment errors to&n;&t;&t;&t;&t;&t;&t;   user */
+mdefine_line|#define XFS_MOUNT_RETERR&t;0x00000040      /* return alignment errors to&n;&t;&t;&t;&t;&t;&t;   user */
 DECL|macro|XFS_MOUNT_NOALIGN
 mdefine_line|#define XFS_MOUNT_NOALIGN&t;0x00000080&t;/* turn off stripe alignment&n;&t;&t;&t;&t;&t;&t;   allocations */
 multiline_comment|/* 0x00000100&t;-- currently unused */
@@ -1615,7 +1615,7 @@ mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inode
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
 mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
 DECL|macro|XFS_FORCED_SHUTDOWN
-mdefine_line|#define XFS_FORCED_SHUTDOWN(mp) ((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
+mdefine_line|#define XFS_FORCED_SHUTDOWN(mp)&t;((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16
@@ -1624,16 +1624,16 @@ mdefine_line|#define XFS_WRITEIO_LOG_LARGE&t;16
 multiline_comment|/*&n; * Default allocation size&n; */
 DECL|macro|XFS_WRITE_IO_LOG
 mdefine_line|#define XFS_WRITE_IO_LOG&t;16
-multiline_comment|/*&n; * Max and min values for UIO and mount-option defined I/O sizes;&n; * min value can&squot;t be less than a page.&t; Currently unused.&n; */
+multiline_comment|/*&n; * Max and min values for UIO and mount-option defined I/O sizes;&n; * min value can&squot;t be less than a page.  Currently unused.&n; */
 DECL|macro|XFS_MAX_IO_LOG
 mdefine_line|#define XFS_MAX_IO_LOG&t;&t;16&t;/* 64K */
 DECL|macro|XFS_MIN_IO_LOG
 mdefine_line|#define XFS_MIN_IO_LOG&t;&t;PAGE_SHIFT
 multiline_comment|/*&n; * Synchronous read and write sizes.  This should be&n; * better for NFSv2 wsync filesystems.&n; */
 DECL|macro|XFS_WSYNC_READIO_LOG
-mdefine_line|#define XFS_WSYNC_READIO_LOG&t;15&t;/* 32K */
+mdefine_line|#define&t;XFS_WSYNC_READIO_LOG&t;15&t;/* 32K */
 DECL|macro|XFS_WSYNC_WRITEIO_LOG
-mdefine_line|#define XFS_WSYNC_WRITEIO_LOG&t;14&t;/* 16K */
+mdefine_line|#define&t;XFS_WSYNC_WRITEIO_LOG&t;14&t;/* 16K */
 DECL|macro|xfs_force_shutdown
 mdefine_line|#define xfs_force_shutdown(m,f)&t;&bslash;&n;&t;VFS_FORCE_SHUTDOWN((XFS_MTOVFS(m)), f, __FILE__, __LINE__)
 multiline_comment|/*&n; * Flags sent to xfs_force_shutdown.&n; */
@@ -1672,10 +1672,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_MTOVFS
-mdefine_line|#define XFS_MTOVFS(mp)&t;&t;xfs_mtovfs(mp)
+mdefine_line|#define&t;XFS_MTOVFS(mp)&t;&t;xfs_mtovfs(mp)
 macro_line|#else
 DECL|macro|XFS_MTOVFS
-mdefine_line|#define XFS_MTOVFS(mp)&t;&t;(bhvtovfs(&amp;(mp)-&gt;m_bhv))
+mdefine_line|#define&t;XFS_MTOVFS(mp)&t;&t;(bhvtovfs(&amp;(mp)-&gt;m_bhv))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BHVTOM)
 id|xfs_mount_t
@@ -1689,7 +1689,7 @@ id|bdp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BHVTOM
-mdefine_line|#define XFS_BHVTOM(bdp) xfs_bhvtom(bdp)
+mdefine_line|#define&t;XFS_BHVTOM(bdp)&t;xfs_bhvtom(bdp)
 macro_line|#else
 DECL|macro|XFS_BHVTOM
 mdefine_line|#define XFS_BHVTOM(bdp)&t;&t;((xfs_mount_t *)BHV_PDATA(bdp))
@@ -1727,7 +1727,7 @@ id|d
 )paren
 suffix:semicolon
 DECL|macro|XFS_DADDR_TO_AGNO
-mdefine_line|#define XFS_DADDR_TO_AGNO(mp,d)&t;&t;xfs_daddr_to_agno(mp,d)
+mdefine_line|#define XFS_DADDR_TO_AGNO(mp,d)         xfs_daddr_to_agno(mp,d)
 macro_line|#else
 DECL|function|XFS_DADDR_TO_AGNO
 r_static
@@ -1785,7 +1785,7 @@ id|d
 )paren
 suffix:semicolon
 DECL|macro|XFS_DADDR_TO_AGBNO
-mdefine_line|#define XFS_DADDR_TO_AGBNO(mp,d)&t;xfs_daddr_to_agbno(mp,d)
+mdefine_line|#define XFS_DADDR_TO_AGBNO(mp,d)        xfs_daddr_to_agbno(mp,d)
 macro_line|#else
 DECL|function|XFS_DADDR_TO_AGBNO
 r_static
@@ -1847,13 +1847,13 @@ DECL|typedef|xfs_mod_sb_t
 id|xfs_mod_sb_t
 suffix:semicolon
 DECL|macro|XFS_MOUNT_ILOCK
-mdefine_line|#define XFS_MOUNT_ILOCK(mp)&t;mutex_lock(&amp;((mp)-&gt;m_ilock), PINOD)
+mdefine_line|#define&t;XFS_MOUNT_ILOCK(mp)&t;mutex_lock(&amp;((mp)-&gt;m_ilock), PINOD)
 DECL|macro|XFS_MOUNT_IUNLOCK
-mdefine_line|#define XFS_MOUNT_IUNLOCK(mp)&t;mutex_unlock(&amp;((mp)-&gt;m_ilock))
+mdefine_line|#define&t;XFS_MOUNT_IUNLOCK(mp)&t;mutex_unlock(&amp;((mp)-&gt;m_ilock))
 DECL|macro|XFS_SB_LOCK
-mdefine_line|#define XFS_SB_LOCK(mp)&t;&t;mutex_spinlock(&amp;(mp)-&gt;m_sb_lock)
+mdefine_line|#define&t;XFS_SB_LOCK(mp)&t;&t;mutex_spinlock(&amp;(mp)-&gt;m_sb_lock)
 DECL|macro|XFS_SB_UNLOCK
-mdefine_line|#define XFS_SB_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_sb_lock,(s))
+mdefine_line|#define&t;XFS_SB_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_sb_lock,(s))
 r_extern
 id|xfs_mount_t
 op_star

@@ -1,6 +1,34 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * xfs_attr_leaf.c&n; *&n; * GROT: figure out how to recover gracefully when bmap returns ENOSPC.&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
+macro_line|#include &quot;xfs_attr_leaf.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
 multiline_comment|/*&n; * xfs_attr_leaf.c&n; *&n; * Routines to implement leaf blocks of attributes as Btrees of hashed names.&n; */
 multiline_comment|/*========================================================================&n; * Function prototypes for the kernel.&n; *========================================================================*/
 multiline_comment|/*&n; * Routines used for growing the Btree.&n; */
@@ -4220,7 +4248,7 @@ comma
 id|bp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * After compaction, the block is guaranteed to have only one&n;&t; * free region, in freemap[0].&t;If it is not big enough, give up.&n;&t; */
+multiline_comment|/*&n;&t; * After compaction, the block is guaranteed to have only one&n;&t; * free region, in freemap[0].  If it is not big enough, give up.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5450,7 +5478,7 @@ id|mp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Redistribute the attribute list entries between two leaf nodes,&n; * taking into account the size of the new entry.&n; *&n; * NOTE: if new block is empty, then it will get the upper half of the&n; * old block.  At present, all (one) callers pass in an empty second block.&n; *&n; * This code adjusts the args-&gt;index/blkno and args-&gt;index2/blkno2 fields&n; * to match what it is doing in splitting the attribute leaf block.  Those&n; * values are used in &quot;atomic rename&quot; operations on attributes.&t; Note that&n; * the &quot;new&quot; and &quot;old&quot; values can end up in different blocks.&n; */
+multiline_comment|/*&n; * Redistribute the attribute list entries between two leaf nodes,&n; * taking into account the size of the new entry.&n; *&n; * NOTE: if new block is empty, then it will get the upper half of the&n; * old block.  At present, all (one) callers pass in an empty second block.&n; *&n; * This code adjusts the args-&gt;index/blkno and args-&gt;index2/blkno2 fields&n; * to match what it is doing in splitting the attribute leaf block.  Those&n; * values are used in &quot;atomic rename&quot; operations on attributes.  Note that&n; * the &quot;new&quot; and &quot;old&quot; values can end up in different blocks.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_attr_leaf_rebalance
@@ -6322,7 +6350,7 @@ op_increment
 )paren
 (brace
 DECL|macro|XFS_ATTR_ABS
-mdefine_line|#define XFS_ATTR_ABS(A) (((A) &lt; 0) ? -(A) : (A))
+mdefine_line|#define XFS_ATTR_ABS(A)&t;(((A) &lt; 0) ? -(A) : (A))
 multiline_comment|/*&n;&t;&t; * The new entry is in the first block, account for it.&n;&t;&t; */
 r_if
 c_cond
@@ -10011,7 +10039,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifdef GROT
-multiline_comment|/*&n;&t;&t; * Code to drop INCOMPLETE entries.  Difficult to use as we&n;&t;&t; * may also need to change the insertion index.&t; Code turned&n;&t;&t; * off for 6.2, should be revisited later.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Code to drop INCOMPLETE entries.  Difficult to use as we&n;&t;&t; * may also need to change the insertion index.  Code turned&n;&t;&t; * off for 6.2, should be revisited later.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11582,9 +11610,9 @@ id|retval
 suffix:semicolon
 )brace
 DECL|macro|ATTR_ENTBASESIZE
-mdefine_line|#define ATTR_ENTBASESIZE&t;&t;/* minimum bytes used by an attr */ &bslash;&n;&t;(((struct attrlist_ent *) 0)-&gt;a_name - (char *) 0)
+mdefine_line|#define&t;ATTR_ENTBASESIZE&t;&t;/* minimum bytes used by an attr */ &bslash;&n;&t;(((struct attrlist_ent *) 0)-&gt;a_name - (char *) 0)
 DECL|macro|ATTR_ENTSIZE
-mdefine_line|#define ATTR_ENTSIZE(namelen)&t;&t;/* actual bytes used by an attr */ &bslash;&n;&t;((ATTR_ENTBASESIZE + (namelen) + 1 + sizeof(u_int32_t)-1) &bslash;&n;&t; &amp; ~(sizeof(u_int32_t)-1))
+mdefine_line|#define&t;ATTR_ENTSIZE(namelen)&t;&t;/* actual bytes used by an attr */ &bslash;&n;&t;((ATTR_ENTBASESIZE + (namelen) + 1 + sizeof(u_int32_t)-1) &bslash;&n;&t; &amp; ~(sizeof(u_int32_t)-1))
 multiline_comment|/*&n; * Format an attribute and copy it out to the user&squot;s buffer.&n; * Take care to check values and protect against them changing later,&n; * we may be reading them directly out of a user buffer.&n; */
 multiline_comment|/*ARGSUSED*/
 r_int
@@ -14511,7 +14539,7 @@ op_assign
 op_star
 id|transp
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reserve space in the log for th next transaction.&n;&t; * This also pushes items in the &quot;AIL&quot;, the list of logged items,&n;&t; * out to disk if they are taking up space at the tail of the log&n;&t; * that we want to use.&t; This requires that either nothing be locked&n;&t; * across this call, or that anything that is locked be logged in&n;&t; * the prior and the next transactions.&n;&t; */
+multiline_comment|/*&n;&t; * Reserve space in the log for th next transaction.&n;&t; * This also pushes items in the &quot;AIL&quot;, the list of logged items,&n;&t; * out to disk if they are taking up space at the tail of the log&n;&t; * that we want to use.  This requires that either nothing be locked&n;&t; * across this call, or that anything that is locked be logged in&n;&t; * the prior and the next transactions.&n;&t; */
 id|error
 op_assign
 id|xfs_trans_reserve

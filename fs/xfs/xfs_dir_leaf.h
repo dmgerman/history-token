@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_DIR_LEAF_H__
 DECL|macro|__XFS_DIR_LEAF_H__
-mdefine_line|#define __XFS_DIR_LEAF_H__
-multiline_comment|/*&n; * Directory layout, internal structure, access macros, etc.&n; *&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.&t; The&n; * internal links in the Btree are logical block offsets into the file.&n; */
+mdefine_line|#define&t;__XFS_DIR_LEAF_H__
+multiline_comment|/*&n; * Directory layout, internal structure, access macros, etc.&n; *&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.  The&n; * internal links in the Btree are logical block offsets into the file.&n; */
 r_struct
 id|uio
 suffix:semicolon
@@ -34,7 +34,7 @@ r_struct
 id|xfs_trans
 suffix:semicolon
 multiline_comment|/*========================================================================&n; * Directory Structure when equal to XFS_LBSIZE(mp) bytes.&n; *========================================================================*/
-multiline_comment|/*&n; * This is the structure of the leaf nodes in the Btree.&n; *&n; * Struct leaf_entry&squot;s are packed from the top.&t; Names grow from the bottom&n; * but are not packed.&t;The freemap contains run-length-encoded entries&n; * for the free bytes after the leaf_entry&squot;s, but only the N largest such,&n; * smaller runs are dropped.  When the freemap doesn&squot;t show enough space&n; * for an allocation, we compact the namelist area and try again.  If we&n; * still don&squot;t have enough space, then we have to split the block.&n; *&n; * Since we have duplicate hash keys, for each key that matches, compare&n; * the actual string.  The root and intermediate node search always takes&n; * the first-in-the-block key match found, so we should only have to work&n; * &quot;forw&quot;ard.  If none matches, continue with the &quot;forw&quot;ard leaf nodes&n; * until the hash key changes or the filename is found.&n; *&n; * The parent directory and the self-pointer are explicitly represented&n; * (ie: there are entries for &quot;.&quot; and &quot;..&quot;).&n; *&n; * Note that the count being a __uint16_t limits us to something like a&n; * blocksize of 1.3MB in the face of worst case (short) filenames.&n; */
+multiline_comment|/*&n; * This is the structure of the leaf nodes in the Btree.&n; *&n; * Struct leaf_entry&squot;s are packed from the top.  Names grow from the bottom&n; * but are not packed.  The freemap contains run-length-encoded entries&n; * for the free bytes after the leaf_entry&squot;s, but only the N largest such,&n; * smaller runs are dropped.  When the freemap doesn&squot;t show enough space&n; * for an allocation, we compact the namelist area and try again.  If we&n; * still don&squot;t have enough space, then we have to split the block.&n; *&n; * Since we have duplicate hash keys, for each key that matches, compare&n; * the actual string.  The root and intermediate node search always takes&n; * the first-in-the-block key match found, so we should only have to work&n; * &quot;forw&quot;ard.  If none matches, continue with the &quot;forw&quot;ard leaf nodes&n; * until the hash key changes or the filename is found.&n; *&n; * The parent directory and the self-pointer are explicitly represented&n; * (ie: there are entries for &quot;.&quot; and &quot;..&quot;).&n; *&n; * Note that the count being a __uint16_t limits us to something like a&n; * blocksize of 1.3MB in the face of worst case (short) filenames.&n; */
 DECL|macro|XFS_DIR_LEAF_MAPSIZE
 mdefine_line|#define XFS_DIR_LEAF_MAPSIZE&t;3&t;/* how many freespace slots */
 DECL|struct|xfs_dir_leafblock
@@ -190,7 +190,7 @@ id|xfs_dir_leaf_name_t
 suffix:semicolon
 multiline_comment|/*&n; * Length of name for which a 512-byte block filesystem&n; * can get a double split.&n; */
 DECL|macro|XFS_DIR_LEAF_CAN_DOUBLE_SPLIT_LEN
-mdefine_line|#define XFS_DIR_LEAF_CAN_DOUBLE_SPLIT_LEN&t;&bslash;&n;&t;(512 - (uint)sizeof(xfs_dir_leaf_hdr_t) - &bslash;&n;&t; (uint)sizeof(xfs_dir_leaf_entry_t) * 2 - &bslash;&n;&t; (uint)sizeof(xfs_dir_leaf_name_t) * 2 - (MAXNAMELEN - 2) + 1 + 1)
+mdefine_line|#define&t;XFS_DIR_LEAF_CAN_DOUBLE_SPLIT_LEN&t;&bslash;&n;&t;(512 - (uint)sizeof(xfs_dir_leaf_hdr_t) - &bslash;&n;&t; (uint)sizeof(xfs_dir_leaf_entry_t) * 2 - &bslash;&n;&t; (uint)sizeof(xfs_dir_leaf_name_t) * 2 - (MAXNAMELEN - 2) + 1 + 1)
 DECL|typedef|xfs_dir_put_t
 r_typedef
 r_int
@@ -246,11 +246,11 @@ DECL|typedef|xfs_dircook_t
 id|xfs_dircook_t
 suffix:semicolon
 DECL|macro|XFS_PUT_COOKIE
-mdefine_line|#define XFS_PUT_COOKIE(c,mp,bno,entry,hash)&t;&bslash;&n;&t;((c).s.be = XFS_DA_MAKE_BNOENTRY(mp, bno, entry), (c).s.h = (hash))
+mdefine_line|#define&t;XFS_PUT_COOKIE(c,mp,bno,entry,hash)&t;&bslash;&n;&t;((c).s.be = XFS_DA_MAKE_BNOENTRY(mp, bno, entry), (c).s.h = (hash))
 DECL|macro|XFS_GET_DIR_INO_ARCH
-mdefine_line|#define XFS_GET_DIR_INO_ARCH(mp,di,arch) &bslash;&n;    DIRINO_GET_ARCH(&amp;(di),arch)
+mdefine_line|#define&t;XFS_GET_DIR_INO_ARCH(mp,di,arch) &bslash;&n;    DIRINO_GET_ARCH(&amp;(di),arch)
 DECL|macro|XFS_GET_DIR_INO
-mdefine_line|#define XFS_GET_DIR_INO(mp,di) &bslash;&n;    XFS_GET_DIR_INO_ARCH(mp,di,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_GET_DIR_INO(mp,di) &bslash;&n;    XFS_GET_DIR_INO_ARCH(mp,di,ARCH_NOCONVERT)
 DECL|struct|xfs_dir_put_args
 r_typedef
 r_struct

@@ -1,5 +1,38 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
+macro_line|#include &quot;xfs_attr_leaf.h&quot;
+macro_line|#include &quot;xfs_dir_leaf.h&quot;
+macro_line|#include &quot;xfs_dir2_data.h&quot;
+macro_line|#include &quot;xfs_dir2_leaf.h&quot;
+macro_line|#include &quot;xfs_dir2_block.h&quot;
+macro_line|#include &quot;xfs_dir2_node.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#if defined(XFSDEBUG) &amp;&amp; defined(CONFIG_KDB)
 DECL|macro|xfs_buftrace
 macro_line|#undef xfs_buftrace
@@ -3330,7 +3363,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We have only one entry in the root.&t;Copy the only remaining child of&n; * the old root to block 0 as the new root node.&n; */
+multiline_comment|/*&n; * We have only one entry in the root.  Copy the only remaining child of&n; * the old root to block 0 as the new root node.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_da_root_join
@@ -7787,7 +7820,7 @@ id|xfs_dahash_t
 id|hash
 suffix:semicolon
 DECL|macro|ROTL
-mdefine_line|#define ROTL(x,y)&t;(((x) &lt;&lt; (y)) | ((x) &gt;&gt; (32 - (y))))
+mdefine_line|#define&t;ROTL(x,y)&t;(((x) &lt;&lt; (y)) | ((x) &gt;&gt; (32 - (y))))
 macro_line|#ifdef SLOWVERSION
 multiline_comment|/*&n;&t; * This is the old one-byte-at-a-time version.&n;&t; */
 r_for
@@ -8263,7 +8296,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we didn&squot;t get it and the block might work if fragmented,&n;&t; * try without the CONTIG flag.&t; Loop until we get it all.&n;&t; */
+multiline_comment|/*&n;&t; * If we didn&squot;t get it and the block might work if fragmented,&n;&t; * try without the CONTIG flag.  Loop until we get it all.&n;&t; */
 r_else
 r_if
 c_cond
@@ -8655,7 +8688,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Ick.&t; We need to always be able to remove a btree block, even&n; * if there&squot;s no space reservation because the filesystem is full.&n; * This is called if xfs_bunmapi on a btree block fails due to ENOSPC.&n; * It swaps the target block with the last block in the file.  The&n; * last block in the file can always be removed since it can&squot;t cause&n; * a bmap btree split to do that.&n; */
+multiline_comment|/*&n; * Ick.  We need to always be able to remove a btree block, even&n; * if there&squot;s no space reservation because the filesystem is full.&n; * This is called if xfs_bunmapi on a btree block fails due to ENOSPC.&n; * It swaps the target block with the last block in the file.  The&n; * last block in the file can always be removed since it can&squot;t cause&n; * a bmap btree split to do that.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_da_swap_lastblock

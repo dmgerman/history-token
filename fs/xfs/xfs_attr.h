@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_ATTR_H__
 DECL|macro|__XFS_ATTR_H__
-mdefine_line|#define __XFS_ATTR_H__
+mdefine_line|#define&t;__XFS_ATTR_H__
 multiline_comment|/*&n; * xfs_attr.h&n; *&n; * Large attribute lists are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Attribute names are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of an attribute name may not be unique, we may have duplicate keys.&n; * The internal links in the Btree are logical block offsets into the file.&n; *&n; * Small attribute lists use a different format and are packed as tightly&n; * as possible so as to fit into the literal area of the inode.&n; */
 macro_line|#ifdef XFS_ALL_TRACE
 DECL|macro|XFS_ATTR_TRACE
-mdefine_line|#define XFS_ATTR_TRACE
+mdefine_line|#define&t;XFS_ATTR_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_ATTR_TRACE
@@ -26,10 +26,10 @@ DECL|macro|ATTR_KERNAMELS
 mdefine_line|#define ATTR_KERNAMELS&t;0x4000&t;/* [kernel] list attr names (simple list) */
 DECL|macro|ATTR_KERNFULLS
 mdefine_line|#define ATTR_KERNFULLS&t;0x8000&t;/* [kernel] full attr list, ie. root+user */
-multiline_comment|/*&n; * The maximum size (into the kernel or returned from the kernel) of an&n; * attribute value or the buffer used for an attr_list() call.&t;Larger&n; * sizes will result in an ERANGE return code.&n; */
+multiline_comment|/*&n; * The maximum size (into the kernel or returned from the kernel) of an&n; * attribute value or the buffer used for an attr_list() call.  Larger&n; * sizes will result in an ERANGE return code.&n; */
 DECL|macro|ATTR_MAX_VALUELEN
-mdefine_line|#define ATTR_MAX_VALUELEN&t;(64*1024)&t;/* max length of a value */
-multiline_comment|/*&n; * Define how lists of attribute names are returned to the user from&n; * the attr_list() call.  A large, 32bit aligned, buffer is passed in&n; * along with its size.&t; We put an array of offsets at the top that each&n; * reference an attrlist_ent_t and pack the attrlist_ent_t&squot;s at the bottom.&n; */
+mdefine_line|#define&t;ATTR_MAX_VALUELEN&t;(64*1024)&t;/* max length of a value */
+multiline_comment|/*&n; * Define how lists of attribute names are returned to the user from&n; * the attr_list() call.  A large, 32bit aligned, buffer is passed in&n; * along with its size.  We put an array of offsets at the top that each&n; * reference an attrlist_ent_t and pack the attrlist_ent_t&squot;s at the bottom.&n; */
 DECL|struct|attrlist
 r_typedef
 r_struct
@@ -83,7 +83,7 @@ id|attrlist_ent_t
 suffix:semicolon
 multiline_comment|/*&n; * Given a pointer to the (char*) buffer containing the attr_list() result,&n; * and an index, return a pointer to the indicated attribute in the buffer.&n; */
 DECL|macro|ATTR_ENTRY
-mdefine_line|#define ATTR_ENTRY(buffer, index)&t;&t;&bslash;&n;&t;((attrlist_ent_t *)&t;&t;&t;&bslash;&n;&t; &amp;((char *)buffer)[ ((attrlist_t *)(buffer))-&gt;al_offset[index] ])
+mdefine_line|#define&t;ATTR_ENTRY(buffer, index)&t;&t;&bslash;&n;&t;((attrlist_ent_t *)&t;&t;&t;&bslash;&n;&t; &amp;((char *)buffer)[ ((attrlist_t *)(buffer))-&gt;al_offset[index] ])
 multiline_comment|/*&n; * Multi-attribute operation vector.&n; */
 DECL|struct|attr_multiop
 r_typedef

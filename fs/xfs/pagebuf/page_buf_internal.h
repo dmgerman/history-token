@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Written by Steve Lord at SGI&n; */
 macro_line|#ifndef __PAGE_BUF_PRIVATE_H__
 DECL|macro|__PAGE_BUF_PRIVATE_H__
@@ -108,10 +108,10 @@ suffix:semicolon
 DECL|macro|PB_TRACE_BUFSIZE
 mdefine_line|#define PB_TRACE_BUFSIZE&t;1024
 DECL|macro|CIRC_INC
-mdefine_line|#define CIRC_INC(i)&t;(((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
+mdefine_line|#define CIRC_INC(i)     (((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
 multiline_comment|/*&n; * Tunable pagebuf parameters&n; */
 DECL|macro|P_PARAM
-mdefine_line|#define P_PARAM 4
+mdefine_line|#define P_PARAM&t;4
 DECL|union|pagebuf_param
 r_typedef
 r_union
@@ -123,12 +123,12 @@ DECL|member|flush_interval
 id|ulong
 id|flush_interval
 suffix:semicolon
-multiline_comment|/* interval between runs of the&n;&t;&t;&t;&t;&t; * delwri flush daemon.&t; */
+multiline_comment|/* interval between runs of the&n;&t;&t;&t;&t;&t; * delwri flush daemon.  */
 DECL|member|age_buffer
 id|ulong
 id|age_buffer
 suffix:semicolon
-multiline_comment|/* time for buffer to age before&n;&t;&t;&t;&t;&t; * we flush it.&t; */
+multiline_comment|/* time for buffer to age before&n;&t;&t;&t;&t;&t; * we flush it.  */
 DECL|member|debug
 id|ulong
 id|debug
@@ -233,7 +233,7 @@ DECL|macro|PB_STATS_INC
 mdefine_line|#define PB_STATS_INC(count)&t;( count ++ )
 macro_line|#ifndef STATIC
 DECL|macro|STATIC
-macro_line|# define STATIC static
+macro_line|# define STATIC&t;static
 macro_line|#endif
 macro_line|#endif /* __PAGE_BUF_PRIVATE_H__ */
 eof

@@ -1,6 +1,31 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * xfs_dir_leaf.c&n; *&n; * GROT: figure out how to recover gracefully when bmap returns ENOSPC.&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_dir_leaf.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
 multiline_comment|/*&n; * xfs_dir_leaf.c&n; *&n; * Routines to implement leaf blocks of directories as Btrees of hashed names.&n; */
 multiline_comment|/*========================================================================&n; * Function prototypes for the kernel.&n; *========================================================================*/
 multiline_comment|/*&n; * Routines used for growing the Btree.&n; */
@@ -4463,7 +4488,7 @@ id|error
 r_return
 id|error
 suffix:semicolon
-multiline_comment|/*&n;&t; * After compaction, the block is guaranteed to have only one&n;&t; * free region, in freemap[0].&t;If it is not big enough, give up.&n;&t; */
+multiline_comment|/*&n;&t; * After compaction, the block is guaranteed to have only one&n;&t; * free region, in freemap[0].  If it is not big enough, give up.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11350,7 +11375,7 @@ op_assign
 id|XFS_DA_MAXHASH
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Save off the cookie so we can fall back should the&n;&t;&t; * &squot;put&squot; into the outgoing buffer fails.  To handle a run&n;&t;&t; * of equal-hashvals, the off_t structure on 64bit&n;&t;&t; * builds has entno built into the cookie to ID the&n;&t;&t; * entry.  On 32bit builds, we only have space for the&n;&t;&t; * hashval so we can&squot;t ID specific entries within a group&n;&t;&t; * of same hashval entries.   For this, lastoffset is set&n;&t;&t; * to the first in the run of equal hashvals so we don&squot;t&n;&t;&t; * include any entries unless we can include all entries&n;&t;&t; * that share the same hashval.&t; Hopefully the buffer&n;&t;&t; * provided is big enough to handle it (see pv763517).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Save off the cookie so we can fall back should the&n;&t;&t; * &squot;put&squot; into the outgoing buffer fails.  To handle a run&n;&t;&t; * of equal-hashvals, the off_t structure on 64bit&n;&t;&t; * builds has entno built into the cookie to ID the&n;&t;&t; * entry.  On 32bit builds, we only have space for the&n;&t;&t; * hashval so we can&squot;t ID specific entries within a group&n;&t;&t; * of same hashval entries.   For this, lastoffset is set&n;&t;&t; * to the first in the run of equal hashvals so we don&squot;t&n;&t;&t; * include any entries unless we can include all entries&n;&t;&t; * that share the same hashval.  Hopefully the buffer&n;&t;&t; * provided is big enough to handle it (see pv763517).&n;&t;&t; */
 macro_line|#if (BITS_PER_LONG == 32)
 r_if
 c_cond

@@ -1,6 +1,24 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * High level interface routines for log manager&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_log_priv.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_log_recover.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
 DECL|macro|xlog_write_adv_cnt
 mdefine_line|#define xlog_write_adv_cnt(ptr, len, off, bytes) &bslash;&n;&t;{ (ptr) += (bytes); &bslash;&n;&t;  (len) -= (bytes); &bslash;&n;&t;  (off) += (bytes);}
 multiline_comment|/* Local miscellaneous function prototypes */
@@ -1133,9 +1151,9 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|xlog_trace_loggrant
-mdefine_line|#define xlog_trace_loggrant(log,tic,string)
+mdefine_line|#define&t;xlog_trace_loggrant(log,tic,string)
 DECL|macro|xlog_trace_iclog
-mdefine_line|#define xlog_trace_iclog(iclog,state)
+mdefine_line|#define&t;xlog_trace_iclog(iclog,state)
 macro_line|#endif /* XFS_LOG_TRACE */
 multiline_comment|/*&n; * NOTES:&n; *&n; *&t;1. currblock field gets updated at startup and after in-core logs&n; *&t;&t;marked as with WANT_SYNC.&n; */
 multiline_comment|/*&n; * This routine is called when a user of a log manager ticket is done with&n; * the reservation.  If the ticket was ever used, then a commit record for&n; * the associated transaction is written out as a log operation header with&n; * no data.  The flag XLOG_TIC_INITED is set when the first write occurs with&n; * a given ticket.  If the ticket was one with a permanent reservation, then&n; * a few operations are done differently.  Permanent reservation tickets by&n; * default don&squot;t release the reservation.  They just commit the current&n; * transaction with the belief that the reservation is still needed.  A flag&n; * must be passed in before permanent reservations are actually released.&n; * When these type of tickets are not released, they need to be set into&n; * the inited state again.  By doing this, a start record will be written&n; * out when the next write occurs.&n; */
@@ -1334,7 +1352,7 @@ id|lsn
 suffix:semicolon
 )brace
 multiline_comment|/* xfs_log_done */
-multiline_comment|/*&n; * Force the in-core log to disk.  If flags == XFS_LOG_SYNC,&n; *&t;the force is done synchronously.&n; *&n; * Asynchronous forces are implemented by setting the WANT_SYNC&n; * bit in the appropriate in-core log and then returning.&n; *&n; * Synchronous forces are implemented with a semaphore.&t; All callers&n; * to force a given lsn to disk will wait on a semaphore attached to the&n; * specific in-core log.  When given in-core log finally completes its&n; * write to disk, that thread will wake up all threads waiting on the&n; * semaphore.&n; */
+multiline_comment|/*&n; * Force the in-core log to disk.  If flags == XFS_LOG_SYNC,&n; *&t;the force is done synchronously.&n; *&n; * Asynchronous forces are implemented by setting the WANT_SYNC&n; * bit in the appropriate in-core log and then returning.&n; *&n; * Synchronous forces are implemented with a semaphore.  All callers&n; * to force a given lsn to disk will wait on a semaphore attached to the&n; * specific in-core log.  When given in-core log finally completes its&n; * write to disk, that thread will wake up all threads waiting on the&n; * semaphore.&n; */
 r_int
 DECL|function|xfs_log_force
 id|xfs_log_force
@@ -1655,7 +1673,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize log manager data.&t; This routine is intended to be called when&n; * a system boots up.  It is not a per filesystem initialization.&n; *&n; * As you can see, we currently do nothing.&n; */
+multiline_comment|/*&n; * Initialize log manager data.  This routine is intended to be called when&n; * a system boots up.  It is not a per filesystem initialization.&n; *&n; * As you can see, we currently do nothing.&n; */
 r_int
 DECL|function|xfs_log_init
 id|xfs_log_init
@@ -2714,7 +2732,7 @@ id|mp-&gt;m_log
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write region vectors to log.&t; The write happens using the space reservation&n; * of the ticket (tic).&t; It is not a requirement that all writes for a given&n; * transaction occur with one call to xfs_log_write().&n; */
+multiline_comment|/*&n; * Write region vectors to log.  The write happens using the space reservation&n; * of the ticket (tic).  It is not a requirement that all writes for a given&n; * transaction occur with one call to xfs_log_write().&n; */
 r_int
 DECL|function|xfs_log_write
 id|xfs_log_write
@@ -2942,7 +2960,7 @@ c_func
 id|log
 )paren
 suffix:semicolon
-multiline_comment|/* Also an illegal lsn.&t; 1 implies that we aren&squot;t passing in a legal&n;&t; * tail_lsn.&n;&t; */
+multiline_comment|/* Also an illegal lsn.  1 implies that we aren&squot;t passing in a legal&n;&t; * tail_lsn.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3355,7 +3373,7 @@ id|tail_lsn
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_assign_tail_lsn */
-multiline_comment|/*&n; * Return the space in the log between the tail and the head.  The head&n; * is passed in the cycle/bytes formal parms.  In the special case where&n; * the reserve head has wrapped passed the tail, this calculation is no&n; * longer valid.  In this case, just return 0 which means there is no space&n; * in the log.&t;This works for all places where this function is called&n; * with the reserve head.  Of course, if the write head were to ever&n; * wrap the tail, we should blow up.  Rather than catch this case here,&n; * we depend on other ASSERTions in other parts of the code.   XXXmiken&n; *&n; * This code also handles the case where the reservation head is behind&n; * the tail.  The details of this case are described below, but the end&n; * result is that we return the size of the log as the amount of space left.&n; */
+multiline_comment|/*&n; * Return the space in the log between the tail and the head.  The head&n; * is passed in the cycle/bytes formal parms.  In the special case where&n; * the reserve head has wrapped passed the tail, this calculation is no&n; * longer valid.  In this case, just return 0 which means there is no space&n; * in the log.  This works for all places where this function is called&n; * with the reserve head.  Of course, if the write head were to ever&n; * wrap the tail, we should blow up.  Rather than catch this case here,&n; * we depend on other ASSERTions in other parts of the code.   XXXmiken&n; *&n; * This code also handles the case where the reservation head is behind&n; * the tail.  The details of this case are described below, but the end&n; * result is that we return the size of the log as the amount of space left.&n; */
 r_int
 DECL|function|xlog_space_left
 id|xlog_space_left
@@ -3746,7 +3764,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return size of each in-core log record buffer.&n; *&n; * Low memory machines only get 2 16KB buffers.&t; We don&squot;t want to waste&n; * memory here.&t; However, all other machines get at least 2 32KB buffers.&n; * The number is hard coded because we don&squot;t care about the minimum&n; * memory size, just 32MB systems.&n; *&n; * If the filesystem blocksize is too large, we may need to choose a&n; * larger size since the directory code currently logs entire blocks.&n; * XXXmiken XXXcurtis&n; */
+multiline_comment|/*&n; * Return size of each in-core log record buffer.&n; *&n; * Low memory machines only get 2 16KB buffers.  We don&squot;t want to waste&n; * memory here.  However, all other machines get at least 2 32KB buffers.&n; * The number is hard coded because we don&squot;t care about the minimum&n; * memory size, just 32MB systems.&n; *&n; * If the filesystem blocksize is too large, we may need to choose a&n; * larger size since the directory code currently logs entire blocks.&n; * XXXmiken XXXcurtis&n; */
 id|STATIC
 r_void
 DECL|function|xlog_get_iclog_buffer_size
@@ -4799,7 +4817,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_commit_record */
-multiline_comment|/*&n; * Push on the buffer cache code if we ever use more than 75% of the on-disk&n; * log space.  This code pushes on the lsn which would supposedly free up&n; * the 25% which we want to leave free.&t; We may need to adopt a policy which&n; * pushes on an lsn which is further along in the log once we reach the high&n; * water mark.&t;In this manner, we would be creating a low water mark.&n; */
+multiline_comment|/*&n; * Push on the buffer cache code if we ever use more than 75% of the on-disk&n; * log space.  This code pushes on the lsn which would supposedly free up&n; * the 25% which we want to leave free.  We may need to adopt a policy which&n; * pushes on an lsn which is further along in the log once we reach the high&n; * water mark.  In this manner, we would be creating a low water mark.&n; */
 r_void
 DECL|function|xlog_grant_push_ail
 id|xlog_grant_push_ail
@@ -5043,7 +5061,7 @@ id|threshold_lsn
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_grant_push_ail */
-multiline_comment|/*&n; * Flush out the in-core log (iclog) to the on-disk log in a synchronous or&n; * asynchronous fashion.  Previously, we should have moved the current iclog&n; * ptr in the log to point to the next available iclog.&t; This allows further&n; * write to continue while this code syncs out an iclog ready to go.&n; * Before an in-core log can be written out, the data section must be scanned&n; * to save away the 1st word of each BBSIZE block into the header.  We replace&n; * it with the current cycle count.  Each BBSIZE block is tagged with the&n; * cycle count because there in an implicit assumption that drives will&n; * guarantee that entire 512 byte blocks get written at once.  In other words,&n; * we can&squot;t have part of a 512 byte block written and part not written.&t; By&n; * tagging each block, we will know which blocks are valid when recovering&n; * after an unclean shutdown.&n; *&n; * This routine is single threaded on the iclog.  No other thread can be in&n; * this routine with the same iclog.  Changing contents of iclog can there-&n; * fore be done without grabbing the state machine lock.  Updating the global&n; * log will require grabbing the lock though.&n; *&n; * The entire log manager uses a logical block numbering scheme.  Only&n; * log_sync (and then only bwrite()) know about the fact that the log may&n; * not start with block zero on a given device.&t; The log block start offset&n; * is added immediately before calling bwrite().&n; */
+multiline_comment|/*&n; * Flush out the in-core log (iclog) to the on-disk log in a synchronous or&n; * asynchronous fashion.  Previously, we should have moved the current iclog&n; * ptr in the log to point to the next available iclog.  This allows further&n; * write to continue while this code syncs out an iclog ready to go.&n; * Before an in-core log can be written out, the data section must be scanned&n; * to save away the 1st word of each BBSIZE block into the header.  We replace&n; * it with the current cycle count.  Each BBSIZE block is tagged with the&n; * cycle count because there in an implicit assumption that drives will&n; * guarantee that entire 512 byte blocks get written at once.  In other words,&n; * we can&squot;t have part of a 512 byte block written and part not written.  By&n; * tagging each block, we will know which blocks are valid when recovering&n; * after an unclean shutdown.&n; *&n; * This routine is single threaded on the iclog.  No other thread can be in&n; * this routine with the same iclog.  Changing contents of iclog can there-&n; * fore be done without grabbing the state machine lock.  Updating the global&n; * log will require grabbing the lock though.&n; *&n; * The entire log manager uses a logical block numbering scheme.  Only&n; * log_sync (and then only bwrite()) know about the fact that the log may&n; * not start with block zero on a given device.  The log block start offset&n; * is added immediately before calling bwrite().&n; */
 r_int
 DECL|function|xlog_sync
 id|xlog_sync
@@ -5671,7 +5689,7 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Bump the cycle numbers at the start of each block&n;&t;&t; * since this part of the buffer is at the start of&n;&t;&t; * a new cycle.&t; Watch out for the header magic number&n;&t;&t; * case, though.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Bump the cycle numbers at the start of each block&n;&t;&t; * since this part of the buffer is at the start of&n;&t;&t; * a new cycle.  Watch out for the header magic number&n;&t;&t; * case, though.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -6148,7 +6166,7 @@ id|s
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_state_finish_copy */
-multiline_comment|/*&n; * Write some region out to in-core log&n; *&n; * This will be called when writing externally provided regions or when&n; * writing out a commit record for a given transaction.&n; *&n; * General algorithm:&n; *&t;1. Find total length of this write.  This may include adding to the&n; *&t;&t;lengths passed in.&n; *&t;2. Check whether we violate the tickets reservation.&n; *&t;3. While writing to this iclog&n; *&t;    A. Reserve as much space in this iclog as can get&n; *&t;    B. If this is first write, save away start lsn&n; *&t;    C. While writing this region:&n; *&t;&t;1. If first write of transaction, write start record&n; *&t;&t;2. Write log operation header (header per region)&n; *&t;&t;3. Find out if we can fit entire region into this iclog&n; *&t;&t;4. Potentially, verify destination memcpy ptr&n; *&t;&t;5. Memcpy (partial) region&n; *&t;&t;6. If partial copy, release iclog; otherwise, continue&n; *&t;&t;&t;copying more regions into current iclog&n; *&t;4. Mark want sync bit (in simulation mode)&n; *&t;5. Release iclog for potential flush to on-disk log.&n; *&n; * ERRORS:&n; * 1.&t;Panic if reservation is overrun.  This should never happen since&n; *&t;reservation amounts are generated internal to the filesystem.&n; * NOTES:&n; * 1. Tickets are single threaded data structures.&n; * 2. The XLOG_END_TRANS &amp; XLOG_CONTINUE_TRANS flags are passed down to the&n; *&t;syncing routine.  When a single log_write region needs to span&n; *&t;multiple in-core logs, the XLOG_CONTINUE_TRANS bit should be set&n; *&t;on all log operation writes which don&squot;t contain the end of the&n; *&t;region.&t; The XLOG_END_TRANS bit is used for the in-core log&n; *&t;operation which contains the end of the continued log_write region.&n; * 3. When xlog_state_get_iclog_space() grabs the rest of the current iclog,&n; *&t;we don&squot;t really know exactly how much space will be used.  As a result,&n; *&t;we don&squot;t update ic_offset until the end when we know exactly how many&n; *&t;bytes have been written out.&n; */
+multiline_comment|/*&n; * Write some region out to in-core log&n; *&n; * This will be called when writing externally provided regions or when&n; * writing out a commit record for a given transaction.&n; *&n; * General algorithm:&n; *&t;1. Find total length of this write.  This may include adding to the&n; *&t;&t;lengths passed in.&n; *&t;2. Check whether we violate the tickets reservation.&n; *&t;3. While writing to this iclog&n; *&t;    A. Reserve as much space in this iclog as can get&n; *&t;    B. If this is first write, save away start lsn&n; *&t;    C. While writing this region:&n; *&t;&t;1. If first write of transaction, write start record&n; *&t;&t;2. Write log operation header (header per region)&n; *&t;&t;3. Find out if we can fit entire region into this iclog&n; *&t;&t;4. Potentially, verify destination memcpy ptr&n; *&t;&t;5. Memcpy (partial) region&n; *&t;&t;6. If partial copy, release iclog; otherwise, continue&n; *&t;&t;&t;copying more regions into current iclog&n; *&t;4. Mark want sync bit (in simulation mode)&n; *&t;5. Release iclog for potential flush to on-disk log.&n; *&n; * ERRORS:&n; * 1.&t;Panic if reservation is overrun.  This should never happen since&n; *&t;reservation amounts are generated internal to the filesystem.&n; * NOTES:&n; * 1. Tickets are single threaded data structures.&n; * 2. The XLOG_END_TRANS &amp; XLOG_CONTINUE_TRANS flags are passed down to the&n; *&t;syncing routine.  When a single log_write region needs to span&n; *&t;multiple in-core logs, the XLOG_CONTINUE_TRANS bit should be set&n; *&t;on all log operation writes which don&squot;t contain the end of the&n; *&t;region.  The XLOG_END_TRANS bit is used for the in-core log&n; *&t;operation which contains the end of the continued log_write region.&n; * 3. When xlog_state_get_iclog_space() grabs the rest of the current iclog,&n; *&t;we don&squot;t really know exactly how much space will be used.  As a result,&n; *&t;we don&squot;t update ic_offset until the end when we know exactly how many&n; *&t;bytes have been written out.&n; */
 r_int
 DECL|function|xlog_write
 id|xlog_write
@@ -7105,7 +7123,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* xlog_write */
 multiline_comment|/*****************************************************************************&n; *&n; *&t;&t;State Machine functions&n; *&n; *****************************************************************************&n; */
-multiline_comment|/* Clean iclogs starting from the head.&t; This ordering must be&n; * maintained, so an iclog doesn&squot;t become ACTIVE beyond one that&n; * is SYNCING.&t;This is also required to maintain the notion that we use&n; * a counting semaphore to hold off would be writers to the log when every&n; * iclog is trying to sync to disk.&n; *&n; * State Change: DIRTY -&gt; ACTIVE&n; */
+multiline_comment|/* Clean iclogs starting from the head.  This ordering must be&n; * maintained, so an iclog doesn&squot;t become ACTIVE beyond one that&n; * is SYNCING.  This is also required to maintain the notion that we use&n; * a counting semaphore to hold off would be writers to the log when every&n; * iclog is trying to sync to disk.&n; *&n; * State Change: DIRTY -&gt; ACTIVE&n; */
 r_void
 DECL|function|xlog_state_clean_log
 id|xlog_state_clean_log
@@ -7520,7 +7538,7 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/*&n;&t;&t; * Scan all iclogs starting with the one pointed to by the&n;&t;&t; * log.&t; Reset this starting point each time the log is&n;&t;&t; * unlocked (during callbacks).&n;&t;&t; *&n;&t;&t; * Keep looping through iclogs until one full pass is made&n;&t;&t; * without running any callbacks.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Scan all iclogs starting with the one pointed to by the&n;&t;&t; * log.  Reset this starting point each time the log is&n;&t;&t; * unlocked (during callbacks).&n;&t;&t; *&n;&t;&t; * Keep looping through iclogs until one full pass is made&n;&t;&t; * without running any callbacks.&n;&t;&t; */
 id|first_iclog
 op_assign
 id|log-&gt;l_iclog
@@ -7570,7 +7588,7 @@ id|XLOG_STATE_IOERROR
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Can only perform callbacks in order.&t; Since&n;&t;&t;&t;&t; * this iclog is not in the DONE_SYNC/&n;&t;&t;&t;&t; * DO_CALLBACK state, we skip the rest and&n;&t;&t;&t;&t; * just try to clean up.  If we set our iclog&n;&t;&t;&t;&t; * to DO_CALLBACK, we will not process it when&n;&t;&t;&t;&t; * we retry since a previous iclog is in the&n;&t;&t;&t;&t; * CALLBACK and the state cannot change since&n;&t;&t;&t;&t; * we are holding the LOG_LOCK.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Can only perform callbacks in order.  Since&n;&t;&t;&t;&t; * this iclog is not in the DONE_SYNC/&n;&t;&t;&t;&t; * DO_CALLBACK state, we skip the rest and&n;&t;&t;&t;&t; * just try to clean up.  If we set our iclog&n;&t;&t;&t;&t; * to DO_CALLBACK, we will not process it when&n;&t;&t;&t;&t; * we retry since a previous iclog is in the&n;&t;&t;&t;&t; * CALLBACK and the state cannot change since&n;&t;&t;&t;&t; * we are holding the LOG_LOCK.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7917,7 +7935,7 @@ op_ne
 id|XLOG_STATE_DO_CALLBACK
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Terminate the loop if iclogs are found in states&n;&t;&t;&t; * which will cause other threads to clean up iclogs.&n;&t;&t;&t; *&n;&t;&t;&t; * SYNCING - i/o completion will go through logs&n;&t;&t;&t; * DONE_SYNC - interrupt thread should be waiting for&n;&t;&t;&t; *&t;&t;LOG_LOCK&n;&t;&t;&t; * IOERROR - give up hope all ye who enter here&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Terminate the loop if iclogs are found in states&n;&t;&t;&t; * which will cause other threads to clean up iclogs.&n;&t;&t;&t; *&n;&t;&t;&t; * SYNCING - i/o completion will go through logs&n;&t;&t;&t; * DONE_SYNC - interrupt thread should be waiting for&n;&t;&t;&t; *              LOG_LOCK&n;&t;&t;&t; * IOERROR - give up hope all ye who enter here&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7994,7 +8012,7 @@ id|log-&gt;l_flushsema
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_state_do_callback */
-multiline_comment|/*&n; * Finish transitioning this iclog to the dirty state.&n; *&n; * Make sure that we completely execute this routine only when this is&n; * the last call to the iclog.&t;There is a good chance that iclog flushes,&n; * when we reach the end of the physical log, get turned into 2 separate&n; * calls to bwrite.  Hence, one iclog flush could generate two calls to this&n; * routine.  By using the reference count bwritecnt, we guarantee that only&n; * the second completion goes through.&n; *&n; * Callbacks could take time, so they are done outside the scope of the&n; * global state machine log lock.  Assume that the calls to cvsema won&squot;t&n; * take a long time.  At least we know it won&squot;t sleep.&n; */
+multiline_comment|/*&n; * Finish transitioning this iclog to the dirty state.&n; *&n; * Make sure that we completely execute this routine only when this is&n; * the last call to the iclog.  There is a good chance that iclog flushes,&n; * when we reach the end of the physical log, get turned into 2 separate&n; * calls to bwrite.  Hence, one iclog flush could generate two calls to this&n; * routine.  By using the reference count bwritecnt, we guarantee that only&n; * the second completion goes through.&n; *&n; * Callbacks could take time, so they are done outside the scope of the&n; * global state machine log lock.  Assume that the calls to cvsema won&squot;t&n; * take a long time.  At least we know it won&squot;t sleep.&n; */
 r_void
 DECL|function|xlog_state_done_syncing
 id|xlog_state_done_syncing
@@ -8123,7 +8141,7 @@ suffix:semicolon
 multiline_comment|/* also cleans log */
 )brace
 multiline_comment|/* xlog_state_done_syncing */
-multiline_comment|/*&n; * If the head of the in-core log ring is not (ACTIVE or DIRTY), then we must&n; * sleep.  The flush semaphore is set to the number of in-core buffers and&n; * decremented around disk syncing.  Therefore, if all buffers are syncing,&n; * this semaphore will cause new writes to sleep until a sync completes.&n; * Otherwise, this code just does p() followed by v().&t;This approximates&n; * a sleep/wakeup except we can&squot;t race.&n; *&n; * The in-core logs are used in a circular fashion. They are not used&n; * out-of-order even when an iclog past the head is free.&n; *&n; * return:&n; *&t;* log_offset where xlog_write() can start writing into the in-core&n; *&t;&t;log&squot;s data space.&n; *&t;* in-core log pointer to which xlog_write() should write.&n; *&t;* boolean indicating this is a continued write to an in-core log.&n; *&t;&t;If this is the last write, then the in-core log&squot;s offset field&n; *&t;&t;needs to be incremented, depending on the amount of data which&n; *&t;&t;is copied.&n; */
+multiline_comment|/*&n; * If the head of the in-core log ring is not (ACTIVE or DIRTY), then we must&n; * sleep.  The flush semaphore is set to the number of in-core buffers and&n; * decremented around disk syncing.  Therefore, if all buffers are syncing,&n; * this semaphore will cause new writes to sleep until a sync completes.&n; * Otherwise, this code just does p() followed by v().  This approximates&n; * a sleep/wakeup except we can&squot;t race.&n; *&n; * The in-core logs are used in a circular fashion. They are not used&n; * out-of-order even when an iclog past the head is free.&n; *&n; * return:&n; *&t;* log_offset where xlog_write() can start writing into the in-core&n; *&t;&t;log&squot;s data space.&n; *&t;* in-core log pointer to which xlog_write() should write.&n; *&t;* boolean indicating this is a continued write to an in-core log.&n; *&t;&t;If this is the last write, then the in-core log&squot;s offset field&n; *&t;&t;needs to be incremented, depending on the amount of data which&n; *&t;&t;is copied.&n; */
 r_int
 DECL|function|xlog_state_get_iclog_space
 id|xlog_state_get_iclog_space
@@ -8422,7 +8440,7 @@ r_goto
 id|restart
 suffix:semicolon
 )brace
-multiline_comment|/* Do we have enough room to write the full amount in the remainder&n;&t; * of this iclog?  Or must we continue a write on the next iclog and&n;&t; * mark this iclog as completely taken?&t; In the case where we switch&n;&t; * iclogs (to mark it taken), this particular iclog will release/sync&n;&t; * to disk in xlog_write().&n;&t; */
+multiline_comment|/* Do we have enough room to write the full amount in the remainder&n;&t; * of this iclog?  Or must we continue a write on the next iclog and&n;&t; * mark this iclog as completely taken?  In the case where we switch&n;&t; * iclogs (to mark it taken), this particular iclog will release/sync&n;&t; * to disk in xlog_write().&n;&t; */
 r_if
 c_cond
 (paren
@@ -9696,7 +9714,7 @@ id|ticket-&gt;t_unit_res
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_regrant_reserve_log_space */
-multiline_comment|/*&n; * Give back the space left from a reservation.&n; *&n; * All the information we need to make a correct determination of space left&n; * is present.&t;For non-permanent reservations, things are quite easy.&t;The&n; * count should have been decremented to zero.&t;We only need to deal with the&n; * space remaining in the current reservation part of the ticket.  If the&n; * ticket contains a permanent reservation, there may be left over space which&n; * needs to be released.  A count of N means that N-1 refills of the current&n; * reservation can be done before we need to ask for more space.  The first&n; * one goes to fill up the first current reservation.  Once we run out of&n; * space, the count will stay at zero and the only space remaining will be&n; * in the current reservation field.&n; */
+multiline_comment|/*&n; * Give back the space left from a reservation.&n; *&n; * All the information we need to make a correct determination of space left&n; * is present.  For non-permanent reservations, things are quite easy.  The&n; * count should have been decremented to zero.  We only need to deal with the&n; * space remaining in the current reservation part of the ticket.  If the&n; * ticket contains a permanent reservation, there may be left over space which&n; * needs to be released.  A count of N means that N-1 refills of the current&n; * reservation can be done before we need to ask for more space.  The first&n; * one goes to fill up the first current reservation.  Once we run out of&n; * space, the count will stay at zero and the only space remaining will be&n; * in the current reservation field.&n; */
 id|STATIC
 r_void
 DECL|function|xlog_ungrant_log_space
@@ -10058,7 +10076,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_state_release_iclog */
-multiline_comment|/*&n; * This routine will mark the current iclog in the ring as WANT_SYNC&n; * and move the current iclog pointer to the next iclog in the ring.&n; * When this routine is called from xlog_state_get_iclog_space(), the&n; * exact size of the iclog has not yet been determined.&t; All we know is&n; * that every data block.  We have run out of space in this log record.&n; */
+multiline_comment|/*&n; * This routine will mark the current iclog in the ring as WANT_SYNC&n; * and move the current iclog pointer to the next iclog in the ring.&n; * When this routine is called from xlog_state_get_iclog_space(), the&n; * exact size of the iclog has not yet been determined.  All we know is&n; * that every data block.  We have run out of space in this log record.&n; */
 id|STATIC
 r_void
 DECL|function|xlog_state_switch_iclogs
@@ -10234,7 +10252,7 @@ id|iclog-&gt;ic_next
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_state_switch_iclogs */
-multiline_comment|/*&n; * Write out all data in the in-core log as of this exact moment in time.&n; *&n; * Data may be written to the in-core log during this call.  However,&n; * we don&squot;t guarantee this data will be written out.  A change from past&n; * implementation means this routine will *not* write out zero length LRs.&n; *&n; * Basically, we try and perform an intelligent scan of the in-core logs.&n; * If we determine there is no flushable data, we just return.&t;There is no&n; * flushable data if:&n; *&n; *&t;1. the current iclog is active and has no data; the previous iclog&n; *&t;&t;is in the active or dirty state.&n; *&t;2. the current iclog is drity, and the previous iclog is in the&n; *&t;&t;active or dirty state.&n; *&n; * We may sleep (call psema) if:&n; *&n; *&t;1. the current iclog is not in the active nor dirty state.&n; *&t;2. the current iclog dirty, and the previous iclog is not in the&n; *&t;&t;active nor dirty state.&n; *&t;3. the current iclog is active, and there is another thread writing&n; *&t;&t;to this particular iclog.&n; *&t;4. a) the current iclog is active and has no other writers&n; *&t;   b) when we return from flushing out this iclog, it is still&n; *&t;&t;not in the active nor dirty state.&n; */
+multiline_comment|/*&n; * Write out all data in the in-core log as of this exact moment in time.&n; *&n; * Data may be written to the in-core log during this call.  However,&n; * we don&squot;t guarantee this data will be written out.  A change from past&n; * implementation means this routine will *not* write out zero length LRs.&n; *&n; * Basically, we try and perform an intelligent scan of the in-core logs.&n; * If we determine there is no flushable data, we just return.  There is no&n; * flushable data if:&n; *&n; *&t;1. the current iclog is active and has no data; the previous iclog&n; *&t;&t;is in the active or dirty state.&n; *&t;2. the current iclog is drity, and the previous iclog is in the&n; *&t;&t;active or dirty state.&n; *&n; * We may sleep (call psema) if:&n; *&n; *&t;1. the current iclog is not in the active nor dirty state.&n; *&t;2. the current iclog dirty, and the previous iclog is not in the&n; *&t;&t;active nor dirty state.&n; *&t;3. the current iclog is active, and there is another thread writing&n; *&t;&t;to this particular iclog.&n; *&t;4. a) the current iclog is active and has no other writers&n; *&t;   b) when we return from flushing out this iclog, it is still&n; *&t;&t;not in the active nor dirty state.&n; */
 id|STATIC
 r_int
 DECL|function|xlog_state_sync_all
@@ -10311,7 +10329,7 @@ op_eq
 id|XLOG_STATE_DIRTY
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If the head is dirty or (active and empty), then&n;&t;&t; * we need to look at the previous iclog.  If the previous&n;&t;&t; * iclog is active or dirty we are done.  There is nothing&n;&t;&t; * to sync out.&t; Otherwise, we attach ourselves to the&n;&t;&t; * previous iclog and go to sleep.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the head is dirty or (active and empty), then&n;&t;&t; * we need to look at the previous iclog.  If the previous&n;&t;&t; * iclog is active or dirty we are done.  There is nothing&n;&t;&t; * to sync out.  Otherwise, we attach ourselves to the&n;&t;&t; * previous iclog and go to sleep.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10456,7 +10474,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Someone else is writing to this iclog.&n;&t;&t;&t;&t; * Use its call to flush out the data.&t;However,&n;&t;&t;&t;&t; * the other thread may not force out this LR,&n;&t;&t;&t;&t; * so we mark it WANT_SYNC.&n;&t;&t;&t;&t; */
+multiline_comment|/* Someone else is writing to this iclog.&n;&t;&t;&t;&t; * Use its call to flush out the data.  However,&n;&t;&t;&t;&t; * the other thread may not force out this LR,&n;&t;&t;&t;&t; * so we mark it WANT_SYNC.&n;&t;&t;&t;&t; */
 id|xlog_state_switch_iclogs
 c_func
 (paren
@@ -11031,7 +11049,7 @@ c_func
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The kmem_zalloc may sleep, so we shouldn&squot;t be holding the&n;&t; * global lock.&t; XXXmiken: may want to use zone allocator.&n;&t; */
+multiline_comment|/*&n;&t; * The kmem_zalloc may sleep, so we shouldn&squot;t be holding the&n;&t; * global lock.  XXXmiken: may want to use zone allocator.&n;&t; */
 id|buf
 op_assign
 (paren
@@ -11187,7 +11205,7 @@ op_amp
 id|ticket-&gt;t_sema
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t think caching will make that much difference.&t;It&squot;s&n;&t; * more important to make debug easier.&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t think caching will make that much difference.  It&squot;s&n;&t; * more important to make debug easier.&n;&t; */
 macro_line|#if 0
 multiline_comment|/* real code will want to use LIFO for caching */
 id|ticket-&gt;t_next
@@ -11351,7 +11369,7 @@ comma
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.&t;A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; * The following line of code adds one log record header length&n;&t; * for each part of an operation which may fall on a different&n;&t; * log record.&n;&t; *&n;&t; * One more XLOG_HEADER_SIZE is added to account for possible&n;&t; * round off errors when syncing a LR to disk.&t;The bytes are&n;&t; * subtracted if the thread using this ticket is the first writer&n;&t; * to a new LR.&n;&t; *&n;&t; * We add an extra log header for the possibility that the commit&n;&t; * record is the first data written to a new log record.  In this&n;&t; * case it is separate from the rest of the transaction data and&n;&t; * will be charged for the log record header.&n;&t; */
+multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.  A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; * The following line of code adds one log record header length&n;&t; * for each part of an operation which may fall on a different&n;&t; * log record.&n;&t; *&n;&t; * One more XLOG_HEADER_SIZE is added to account for possible&n;&t; * round off errors when syncing a LR to disk.  The bytes are&n;&t; * subtracted if the thread using this ticket is the first writer&n;&t; * to a new LR.&n;&t; *&n;&t; * We add an extra log header for the possibility that the commit&n;&t; * record is the first data written to a new log record.  In this&n;&t; * case it is separate from the rest of the transaction data and&n;&t; * will be charged for the log record header.&n;&t; */
 id|unit_bytes
 op_add_assign
 id|log-&gt;l_iclog_hsize

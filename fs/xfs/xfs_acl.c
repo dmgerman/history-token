@@ -1,5 +1,20 @@
-multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_acl.h&quot;
+macro_line|#include &quot;xfs_mac.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &lt;linux/posix_acl_xattr.h&gt;
 id|STATIC
 r_int
@@ -1714,7 +1729,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Note: cr is only used here for the capability check if the ACL test fails.&n; *&t; It is not used to find out the credentials uid or groups etc, as was&n; *&t; done in IRIX. It is assumed that the uid and groups for the current&n; *&t; thread are taken from &quot;current&quot; instead of the cr parameter.&n; */
+multiline_comment|/*&n; * Note: cr is only used here for the capability check if the ACL test fails.&n; *       It is not used to find out the credentials uid or groups etc, as was&n; *       done in IRIX. It is assumed that the uid and groups for the current&n; *       thread are taken from &quot;current&quot; instead of the cr parameter.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_acl_access
@@ -2962,7 +2977,7 @@ op_amp
 id|basicperms
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the Default and Access ACL on the file.&t;The mode is already&n;&t; * set on the file, so we don&squot;t need to worry about that.&n;&t; *&n;&t; * If the new file is a directory, its default ACL is a copy of&n;&t; * the containing directory&squot;s default ACL.&n;&t; */
+multiline_comment|/*&n;&t; * Set the Default and Access ACL on the file.  The mode is already&n;&t; * set on the file, so we don&squot;t need to worry about that.&n;&t; *&n;&t; * If the new file is a directory, its default ACL is a copy of&n;&t; * the containing directory&squot;s default ACL.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3238,7 +3253,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The permissions for the special ACL entries (u::, g::[m::], o::) are&n; * actually stored in the file mode (if there is both a group and a mask,&n; * the group is stored in the ACL entry and the mask is stored on the file).&n; * This allows the mode to remain automatically in sync with the ACL without&n; * the need for a call-back to the ACL system at every point where the mode&n; * could change.  This function takes the permissions from the specified mode&n; * and places it in the supplied ACL.&n; *&n; * This implementation draws its validity from the fact that, when the ACL&n; * was assigned, the mode was copied from the ACL.&n; * If the mode did not change, therefore, the mode remains exactly what was&n; * taken from the special ACL entries at assignment.&n; * If a subsequent chmod() was done, the POSIX spec says that the change in&n; * mode must cause an update to the ACL seen at user level and used for&n; * access checks.  Before and after a mode change, therefore, the file mode&n; * most accurately reflects what the special ACL entries should permit/deny.&n; *&n; * CAVEAT: If someone sets the SGI_ACL_FILE attribute directly,&n; *&t;   the existing mode bits will override whatever is in the&n; *&t;   ACL. Similarly, if there is a pre-existing ACL that was&n; *&t;   never in sync with its mode (owing to a bug in 6.5 and&n; *&t;   before), it will now magically (or mystically) be&n; *&t;   synchronized.  This could cause slight astonishment, but&n; *&t;   it is better than inconsistent permissions.&n; *&n; * The supplied ACL is a template that may contain any combination&n; * of special entries.&t;These are treated as place holders when we fill&n; * out the ACL.&t; This routine does not add or remove special entries, it&n; * simply unites each special entry with its associated set of permissions.&n; */
+multiline_comment|/*&n; * The permissions for the special ACL entries (u::, g::[m::], o::) are&n; * actually stored in the file mode (if there is both a group and a mask,&n; * the group is stored in the ACL entry and the mask is stored on the file).&n; * This allows the mode to remain automatically in sync with the ACL without&n; * the need for a call-back to the ACL system at every point where the mode&n; * could change.  This function takes the permissions from the specified mode&n; * and places it in the supplied ACL.&n; *&n; * This implementation draws its validity from the fact that, when the ACL&n; * was assigned, the mode was copied from the ACL.&n; * If the mode did not change, therefore, the mode remains exactly what was&n; * taken from the special ACL entries at assignment.&n; * If a subsequent chmod() was done, the POSIX spec says that the change in&n; * mode must cause an update to the ACL seen at user level and used for&n; * access checks.  Before and after a mode change, therefore, the file mode&n; * most accurately reflects what the special ACL entries should permit/deny.&n; *&n; * CAVEAT: If someone sets the SGI_ACL_FILE attribute directly,&n; *         the existing mode bits will override whatever is in the&n; *         ACL. Similarly, if there is a pre-existing ACL that was&n; *         never in sync with its mode (owing to a bug in 6.5 and&n; *         before), it will now magically (or mystically) be&n; *         synchronized.  This could cause slight astonishment, but&n; *         it is better than inconsistent permissions.&n; *&n; * The supplied ACL is a template that may contain any combination&n; * of special entries.  These are treated as place holders when we fill&n; * out the ACL.  This routine does not add or remove special entries, it&n; * simply unites each special entry with its associated set of permissions.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_acl_sync_mode

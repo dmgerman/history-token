@@ -1,5 +1,31 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode_item.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_utils.h&quot;
+macro_line|#include &quot;xfs_trans_space.h&quot;
+macro_line|#include &quot;xfs_da_btree.h&quot;
+macro_line|#include &quot;xfs_dir_leaf.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
 multiline_comment|/*&n; * Given an array of up to 4 inode pointers, unlock the pointed to inodes.&n; * If there are fewer than 4 entries in the array, the empty entries will&n; * be at the end and will have NULL pointers in them.&n; */
 id|STATIC
 r_void
@@ -337,7 +363,7 @@ id|ip2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * i_tab contains a list of pointers to inodes.&t; We initialize&n;&t; * the table here &amp; we&squot;ll sort it.  We will then use it to&n;&t; * order the acquisition of the inode locks.&n;&t; *&n;&t; * Note that the table may contain duplicates.&t;e.g., dp1 == dp2.&n;&t; */
+multiline_comment|/*&n;&t; * i_tab contains a list of pointers to inodes.  We initialize&n;&t; * the table here &amp; we&squot;ll sort it.  We will then use it to&n;&t; * order the acquisition of the inode locks.&n;&t; *&n;&t; * Note that the table may contain duplicates.  e.g., dp1 == dp2.&n;&t; */
 id|i_tab
 (braket
 l_int|0
@@ -1903,7 +1929,7 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Take refs. for vop_link_removed calls below.&t; No need to worry&n;&t; * about directory refs. because the caller holds them.&n;&t; *&n;&t; * Do holds before the xfs_bmap_finish since it might rele them down&n;&t; * to zero.&n;&t; */
+multiline_comment|/*&n;&t; * Take refs. for vop_link_removed calls below.  No need to worry&n;&t; * about directory refs. because the caller holds them.&n;&t; *&n;&t; * Do holds before the xfs_bmap_finish since it might rele them down&n;&t; * to zero.&n;&t; */
 r_if
 c_cond
 (paren
