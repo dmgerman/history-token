@@ -2655,6 +2655,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|agp_bridge.dev
+op_assign
+id|dev
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2752,10 +2756,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|agp_bridge.dev
-op_assign
-id|dev
-suffix:semicolon
 id|agp_register_driver
 c_func
 (paren
