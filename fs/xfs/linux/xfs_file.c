@@ -21,7 +21,6 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &lt;linux/dcache.h&gt;
-macro_line|#include &lt;linux/mman.h&gt; /* for PROT_WRITE */
 DECL|variable|linvfs_file_vm_ops
 r_static
 r_struct
