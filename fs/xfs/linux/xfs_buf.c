@@ -6063,14 +6063,7 @@ id|pb-&gt;pb_flags
 op_or_assign
 id|PBF_WRITE
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|pb-&gt;pb_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
