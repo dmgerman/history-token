@@ -110,10 +110,6 @@ id|peer-&gt;max_retrans
 op_assign
 id|sctp_max_retrans_path
 suffix:semicolon
-id|peer-&gt;error_threshold
-op_assign
-l_int|0
-suffix:semicolon
 id|peer-&gt;error_count
 op_assign
 l_int|0

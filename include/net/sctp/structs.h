@@ -2340,12 +2340,6 @@ r_int
 r_int
 id|error_count
 suffix:semicolon
-multiline_comment|/* Error       : Current error threshold for this destination&n;&t; * Threshold   : i.e. what value marks the destination down if&n;&t; *&t;       : errorCount reaches this value.&n;&t; */
-DECL|member|error_threshold
-r_int
-r_int
-id|error_threshold
-suffix:semicolon
 multiline_comment|/* This is the max_retrans value for the transport and will&n;&t; * be initialized to proto.max_retrans.path.  This can be changed&n;&t; * using SCTP_SET_PEER_ADDR_PARAMS socket option.&n;&t; */
 DECL|member|max_retrans
 r_int

@@ -1122,7 +1122,7 @@ op_logical_and
 id|transport-&gt;error_count
 op_increment
 op_ge
-id|transport-&gt;error_threshold
+id|transport-&gt;max_retrans
 )paren
 )paren
 (brace

@@ -1303,10 +1303,6 @@ id|peer-&gt;flight_size
 op_assign
 l_int|0
 suffix:semicolon
-id|peer-&gt;error_threshold
-op_assign
-id|peer-&gt;max_retrans
-suffix:semicolon
 multiline_comment|/* By default, enable heartbeat for peer address. */
 id|peer-&gt;hb_allowed
 op_assign
@@ -1324,7 +1320,7 @@ suffix:semicolon
 multiline_comment|/* Set the path max_retrans.  */
 id|peer-&gt;max_retrans
 op_assign
-id|asoc-&gt;max_retrans
+id|sp-&gt;paddrparam.spp_pathmaxrxt
 suffix:semicolon
 multiline_comment|/* Set the transport&squot;s RTO.initial value */
 id|peer-&gt;rto

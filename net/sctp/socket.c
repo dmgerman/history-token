@@ -5579,6 +5579,19 @@ id|params.spp_address
 )paren
 )paren
 (brace
+multiline_comment|/* Manual heartbeat on an endpoint is invalid. */
+r_if
+c_cond
+(paren
+l_int|0xffffffff
+op_eq
+id|params.spp_hbinterval
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -5597,7 +5610,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_max_retrans_path
+id|params.spp_pathmaxrxt
 )paren
 id|sctp_sk
 c_func
@@ -5692,7 +5705,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* spp_pathmaxrxt contains the maximum number of retransmissions&n;&t; * before this address shall be considered unreachable.&n;&t; */
-id|trans-&gt;error_threshold
+r_if
+c_cond
+(paren
+id|params.spp_pathmaxrxt
+)paren
+id|trans-&gt;max_retrans
 op_assign
 id|params.spp_pathmaxrxt
 suffix:semicolon
@@ -9871,7 +9889,7 @@ suffix:semicolon
 multiline_comment|/* spp_pathmaxrxt contains the maximum number of retransmissions&n;&t; * before this address shall be considered unreachable.&n;&t; */
 id|params.spp_pathmaxrxt
 op_assign
-id|trans-&gt;error_threshold
+id|trans-&gt;max_retrans
 suffix:semicolon
 id|done
 suffix:colon
