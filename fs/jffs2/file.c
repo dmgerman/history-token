@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_extern
 r_int

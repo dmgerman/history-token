@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;&t;/* for SIOCDEVPRIVATE */
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
