@@ -4141,6 +4141,13 @@ op_amp
 id|modlist_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Arch-specific cleanup. */
+id|module_arch_cleanup
+c_func
+(paren
+id|mod
+)paren
+suffix:semicolon
 multiline_comment|/* Module unload stuff */
 id|module_unload_free
 c_func
@@ -6173,6 +6180,12 @@ op_assign
 id|ptr
 suffix:semicolon
 multiline_comment|/* Transfer each section which specifies SHF_ALLOC */
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;final section addresses:&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6298,6 +6311,28 @@ r_int
 r_int
 )paren
 id|dest
+suffix:semicolon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;&bslash;t0x%lx %s&bslash;n&quot;
+comma
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_addr
+comma
+id|secstrings
+op_plus
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_name
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Module has been moved. */
