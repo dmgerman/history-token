@@ -84,9 +84,9 @@ DECL|macro|REALLY_FAST_IO
 macro_line|#undef REALLY_FAST_IO
 macro_line|#endif
 DECL|macro|HWIF
-mdefine_line|#define HWIF(drive)&t;&t;((ide_hwif_t *)((drive)-&gt;hwif))
+mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;hwif)
 DECL|macro|HWGROUP
-mdefine_line|#define HWGROUP(drive)&t;&t;((ide_hwgroup_t *)(HWIF(drive)-&gt;hwgroup))
+mdefine_line|#define HWGROUP(drive)&t;&t;(HWIF(drive)-&gt;hwgroup)
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
 DECL|macro|IDE_NR_PORTS
 mdefine_line|#define IDE_NR_PORTS&t;&t;(10)
@@ -1266,7 +1266,8 @@ id|next
 suffix:semicolon
 multiline_comment|/* for linked-list in ide_hwgroup_t */
 DECL|member|hwgroup
-r_void
+r_struct
+id|hwgroup_s
 op_star
 id|hwgroup
 suffix:semicolon
@@ -2015,19 +2016,6 @@ DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 macro_line|#endif
 multiline_comment|/*&n; * Subdrivers support.&n; */
-DECL|macro|IDE_SUBDRIVER_VERSION
-mdefine_line|#define IDE_SUBDRIVER_VERSION&t;1
-DECL|typedef|ide_setting_proc
-r_typedef
-r_void
-(paren
-id|ide_setting_proc
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|struct|ide_driver_s
 r_typedef
 r_struct
@@ -2251,6 +2239,16 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
+DECL|member|driver_init
+r_int
+(paren
+op_star
+id|driver_init
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|driver_reinit
 r_int
 (paren
@@ -2262,71 +2260,34 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Single linked list of drivers for iteration.&n;&t; */
+DECL|member|next
+r_struct
+id|ide_driver_s
+op_star
+id|next
+suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace
 id|ide_driver_t
 suffix:semicolon
 DECL|macro|DRIVER
-mdefine_line|#define DRIVER(drive)&t;&t;((ide_driver_t *)((drive)-&gt;driver))
-multiline_comment|/*&n; * IDE modules.&n; */
-DECL|macro|IDE_CHIPSET_MODULE
-mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
-DECL|macro|IDE_PROBE_MODULE
-mdefine_line|#define IDE_PROBE_MODULE&t;&t;1
-DECL|macro|IDE_DRIVER_MODULE
-mdefine_line|#define IDE_DRIVER_MODULE&t;&t;2
-DECL|struct|ide_module_s
-r_typedef
-r_struct
-id|ide_module_s
-(brace
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|info
-r_void
-op_star
-id|info
-suffix:semicolon
-DECL|member|next
-r_struct
-id|ide_module_s
-op_star
-id|next
-suffix:semicolon
-DECL|typedef|ide_module_t
-)brace
-id|ide_module_t
-suffix:semicolon
+mdefine_line|#define DRIVER(drive)&t;&t;((drive)-&gt;driver)
 multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
 macro_line|#ifndef _IDE_C
 r_extern
-id|ide_hwif_t
+r_struct
+id|hwif_s
 id|ide_hwifs
 (braket
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
 r_extern
-id|ide_module_t
+r_struct
+id|ide_driver_s
 op_star
-id|ide_modules
-suffix:semicolon
-r_extern
-id|ide_module_t
-op_star
-id|ide_probe
+id|ide_drivers
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -3482,14 +3443,16 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#ifdef _IDE_C
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
+macro_line|# ifdef CONFIG_BLK_DEV_IDE
+multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
+r_extern
 r_int
 id|ideprobe_init
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
+macro_line|# endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_int
 id|idedisk_reinit
@@ -3571,20 +3534,24 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
 macro_line|#endif /* _IDE_C */
+r_extern
 r_int
 id|ide_register_module
 (paren
-id|ide_module_t
+r_struct
+id|ide_driver_s
 op_star
-id|module
+id|d
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_unregister_module
 (paren
-id|ide_module_t
+r_struct
+id|ide_driver_s
 op_star
-id|module
+id|d
 )paren
 suffix:semicolon
 id|ide_drive_t
@@ -3607,8 +3574,10 @@ r_int
 id|n
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_register_subdriver
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3617,19 +3586,19 @@ comma
 id|ide_driver_t
 op_star
 id|driver
-comma
-r_int
-id|version
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_unregister_subdriver
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_replace_subdriver
 c_func
