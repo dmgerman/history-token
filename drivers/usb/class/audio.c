@@ -30,7 +30,7 @@ mdefine_line|#define DRIVER_DESC &quot;USB Audio Class driver&quot;
 DECL|macro|AUDIO_DEBUG
 mdefine_line|#define AUDIO_DEBUG 1
 DECL|macro|SND_DEV_DSP16
-mdefine_line|#define SND_DEV_DSP16   5 
+mdefine_line|#define SND_DEV_DSP16   5
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
 DECL|macro|abs
@@ -43,12 +43,7 @@ c_func
 r_int
 id|__x
 )paren
-id|__attribute__
-(paren
-(paren
-id|__const__
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 multiline_comment|/* Shut up warning */
 multiline_comment|/* --------------------------------------------------------------------- */

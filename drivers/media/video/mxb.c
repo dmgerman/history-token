@@ -1258,11 +1258,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* all devices are present, probe was successful */
 multiline_comment|/* we store the pointer in our private data field */
-(paren
-r_struct
-id|mxb
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|mxb

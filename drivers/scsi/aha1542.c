@@ -2962,6 +2962,8 @@ c_func
 (paren
 l_int|512
 comma
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 )paren
 suffix:semicolon
@@ -2990,12 +2992,25 @@ id|cptr
 op_eq
 l_int|NULL
 )paren
-id|panic
+(brace
+multiline_comment|/* free the claimed mailbox slot */
+id|HOSTDATA
 c_func
 (paren
-l_string|&quot;aha1542.c: unable to allocate DMA memory&bslash;n&quot;
+id|SCpnt-&gt;device-&gt;host
 )paren
+op_member_access_from_pointer
+id|SCint
+(braket
+id|mbo
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
+r_return
+id|SCSI_MLQUEUE_HOST_BUSY
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
@@ -10,10 +11,6 @@ macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
-DECL|macro|NEW
-mdefine_line|#define&t;NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
-DECL|macro|DEL
-mdefine_line|#define&t;DEL(ptr)&t;(kfree(ptr))
 multiline_comment|/*&n; * This file provides generic support for Crosstalk&n; * Switches, in a way that insulates crosstalk providers&n; * from specifics about the switch chips being used.&n; */
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 DECL|macro|XSWITCH_CENSUS_BIT
@@ -290,12 +287,39 @@ l_int|NULL
 r_int
 id|port
 suffix:semicolon
-id|NEW
+id|xswitch_info
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
 id|xswitch_info
 )paren
+comma
+id|GFP_KERNEL
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xswitch_info
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;xswitch_info_new(): Unable to &quot;
+l_string|&quot;allocate memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|xswitch_info-&gt;census
 op_assign
 l_int|0

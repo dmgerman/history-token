@@ -21,12 +21,7 @@ r_int
 r_int
 id|addr
 )paren
-id|__attribute__
-(paren
-(paren
-r_const
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 r_extern
 r_int
@@ -38,12 +33,7 @@ r_int
 r_int
 id|addr
 )paren
-id|__attribute__
-(paren
-(paren
-r_const
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 macro_line|#else
 DECL|function|mm_vtop

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SiS 300/630/730/540/315/550/650/740 frame buffer driver&n; * for Linux kernels 2.4.x and 2.5.x&n; *&n; * 2D acceleration part&n; *&n; * Based on the X driver&squot;s sis300_accel.c which is&n; *     Copyright Xavier Ducoin &lt;x.ducoin@lectra.com&gt;&n; *     Copyright 2002 by Thomas Winischhofer, Vienna, Austria&n; * and sis310_accel.c which is&n; *     Copyright 2002 by Thomas Winischhofer, Vienna, Austria&n; *&n; * Author: Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&t;&t;&t;(see http://www.winischhofer.net/&n; *&t;&t;&t;for more information and updates)&n; */
+multiline_comment|/*&n; * SiS 300/630/730/540/315/550/65x/74x/330/760 frame buffer driver&n; * for Linux kernels 2.4.x and 2.6.x&n; *&n; * 2D acceleration part&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the named License,&n; * or any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Based on the XFree86 driver&squot;s sis300_accel.c which is&n; *     Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; * and sis310_accel.c which is&n; *     Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * Author: Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&t;&t;&t;(see http://www.winischhofer.net/&n; *&t;&t;&t;for more information and updates)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -218,7 +218,8 @@ l_int|3
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* 300 series */
+multiline_comment|/* 300 series ----------------------------------------------------- */
+macro_line|#ifdef CONFIG_FB_SIS_300
 r_static
 r_void
 DECL|function|SiS300Sync
@@ -229,17 +230,6 @@ r_void
 )paren
 (brace
 id|SiS300Idle
-)brace
-r_static
-r_void
-DECL|function|SiS310Sync
-id|SiS310Sync
-c_func
-(paren
-r_void
-)paren
-(brace
-id|SiS310Idle
 )brace
 r_static
 r_void
@@ -630,7 +620,20 @@ id|BITBLT
 )paren
 id|SiS300DoCMD
 )brace
-multiline_comment|/* 310/325 series ------------------------------------------------ */
+macro_line|#endif
+multiline_comment|/* 315/330 series ------------------------------------------------- */
+macro_line|#ifdef CONFIG_FB_SIS_315
+r_static
+r_void
+DECL|function|SiS310Sync
+id|SiS310Sync
+c_func
+(paren
+r_void
+)paren
+(brace
+id|SiS310Idle
+)brace
 r_static
 r_void
 DECL|function|SiS310SetupForScreenToScreenCopy
@@ -716,7 +719,7 @@ c_func
 (paren
 id|ivideo.SiS310_AccelDepth
 )paren
-multiline_comment|/* TW: The 310/325 series is smart enough to know the direction */
+multiline_comment|/* The 315 series is smart enough to know the direction */
 )brace
 r_static
 r_void
@@ -1029,6 +1032,7 @@ id|BITBLT
 )paren
 id|SiS310DoCMD
 )brace
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/* The exported routines */
 DECL|function|sisfb_initaccel
@@ -1068,22 +1072,26 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|SiS300Sync
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|SiS310Sync
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,34)  /* --- KERNEL 2.5.34 and later --- */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)  /* --------------- 2.5 --------------- */
 DECL|function|fbcon_sis_sync
 r_int
 id|fbcon_sis_sync
@@ -1095,18 +1103,18 @@ op_star
 id|info
 )paren
 (brace
+id|CRITFLAGS
 r_if
 c_cond
 (paren
 op_logical_neg
-id|sisfb_accel
+id|ivideo.accel
 )paren
 (brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|CRITFLAGS
 r_if
 c_cond
 (paren
@@ -1115,19 +1123,23 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|SiS300Sync
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|SiS310Sync
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|CRITEND
 r_return
@@ -1180,7 +1192,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sisfb_accel
+id|ivideo.accel
 )paren
 (brace
 id|cfb_fillrect
@@ -1258,6 +1270,7 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|CRITBEGIN
 id|SiS300SetupForSolidFill
 c_func
@@ -1290,9 +1303,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|CRITBEGIN
 id|SiS310SetupForSolidFill
 c_func
@@ -1325,6 +1340,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|fbcon_sis_copyarea
@@ -1360,7 +1376,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sisfb_accel
+id|ivideo.accel
 )paren
 (brace
 id|cfb_copyarea
@@ -1431,6 +1447,7 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|CRITBEGIN
 id|SiS300SetupForScreenToScreenCopy
 c_func
@@ -1469,9 +1486,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|CRITBEGIN
 id|SiS310SetupForScreenToScreenCopy
 c_func
@@ -1510,10 +1529,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,33)  /* ------ KERNEL &lt;2.5.34 ------ */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)  /* -------------- 2.4 --------------- */
 DECL|function|fbcon_sis_bmove
 r_void
 id|fbcon_sis_bmove
@@ -1733,6 +1753,7 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|CRITBEGIN
 id|SiS300SetupForScreenToScreenCopy
 c_func
@@ -1771,9 +1792,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|CRITBEGIN
 id|SiS310SetupForScreenToScreenCopy
 c_func
@@ -1812,7 +1835,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if 0&t;   
+macro_line|#if 0
 id|printk
 c_func
 (paren
@@ -1832,7 +1855,8 @@ comma
 id|height
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
+macro_line|#endif
 )brace
 )brace
 DECL|function|fbcon_sis_clear
@@ -1908,6 +1932,7 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|CRITBEGIN
 id|SiS300SetupForSolidFill
 c_func
@@ -1937,9 +1962,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|CRITBEGIN
 id|SiS310SetupForSolidFill
 c_func
@@ -1969,6 +1996,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|fbcon_sis_clear8
@@ -2346,6 +2374,7 @@ op_eq
 id|SIS_300_VGA
 )paren
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_300
 id|CRITBEGIN
 id|SiS300SetupForSolidFill
 c_func
@@ -2383,9 +2412,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_FB_SIS_315
 id|CRITBEGIN
 id|SiS310SetupForSolidFill
 c_func
@@ -2423,6 +2454,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 macro_line|#ifdef FBCON_HAS_CFB8
@@ -2432,36 +2464,44 @@ id|display_switch
 id|fbcon_sis8
 op_assign
 (brace
+dot
 id|setup
-suffix:colon
+op_assign
 id|fbcon_cfb8_setup
 comma
+dot
 id|bmove
-suffix:colon
+op_assign
 id|fbcon_sis_bmove
 comma
+dot
 id|clear
-suffix:colon
+op_assign
 id|fbcon_sis_clear8
 comma
+dot
 id|putc
-suffix:colon
+op_assign
 id|fbcon_cfb8_putc
 comma
+dot
 id|putcs
-suffix:colon
+op_assign
 id|fbcon_cfb8_putcs
 comma
+dot
 id|revc
-suffix:colon
+op_assign
 id|fbcon_cfb8_revc
 comma
+dot
 id|clear_margins
-suffix:colon
+op_assign
 id|fbcon_cfb8_clear_margins
 comma
+dot
 id|fontwidthmask
-suffix:colon
+op_assign
 id|FONTWIDTH
 c_func
 (paren
@@ -2495,36 +2535,44 @@ id|display_switch
 id|fbcon_sis16
 op_assign
 (brace
+dot
 id|setup
-suffix:colon
+op_assign
 id|fbcon_cfb16_setup
 comma
+dot
 id|bmove
-suffix:colon
+op_assign
 id|fbcon_sis_bmove
 comma
+dot
 id|clear
-suffix:colon
+op_assign
 id|fbcon_sis_clear16
 comma
+dot
 id|putc
-suffix:colon
+op_assign
 id|fbcon_cfb16_putc
 comma
+dot
 id|putcs
-suffix:colon
+op_assign
 id|fbcon_cfb16_putcs
 comma
+dot
 id|revc
-suffix:colon
+op_assign
 id|fbcon_sis_revc
 comma
+dot
 id|clear_margins
-suffix:colon
+op_assign
 id|fbcon_cfb16_clear_margins
 comma
+dot
 id|fontwidthmask
-suffix:colon
+op_assign
 id|FONTWIDTH
 c_func
 (paren
@@ -2558,36 +2606,44 @@ id|display_switch
 id|fbcon_sis32
 op_assign
 (brace
+dot
 id|setup
-suffix:colon
+op_assign
 id|fbcon_cfb32_setup
 comma
+dot
 id|bmove
-suffix:colon
+op_assign
 id|fbcon_sis_bmove
 comma
+dot
 id|clear
-suffix:colon
+op_assign
 id|fbcon_sis_clear32
 comma
+dot
 id|putc
-suffix:colon
+op_assign
 id|fbcon_cfb32_putc
 comma
+dot
 id|putcs
-suffix:colon
+op_assign
 id|fbcon_cfb32_putcs
 comma
+dot
 id|revc
-suffix:colon
+op_assign
 id|fbcon_sis_revc
 comma
+dot
 id|clear_margins
-suffix:colon
+op_assign
 id|fbcon_cfb32_clear_margins
 comma
+dot
 id|fontwidthmask
-suffix:colon
+op_assign
 id|FONTWIDTH
 c_func
 (paren

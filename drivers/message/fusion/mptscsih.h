@@ -40,8 +40,9 @@ macro_line|#else
 DECL|macro|MPT_SCSI_SG_DEPTH
 mdefine_line|#define MPT_SCSI_SG_DEPTH&t;40
 macro_line|#endif
-multiline_comment|/* To disable domain validation, uncomment the&n; * following line. No effect for FC devices.&n; * For SCSI devices, driver will negotiate to&n; * NVRAM settings (if available) or to maximum adapter&n; * capabilities.&n; */
-multiline_comment|/* #define MPTSCSIH_DISABLE_DOMAIN_VALIDATION */
+multiline_comment|/* To disable domain validation, comment the&n; * following line. No effect for FC devices.&n; * For SCSI devices, driver will negotiate to&n; * NVRAM settings (if available) or to maximum adapter&n; * capabilities.&n; */
+DECL|macro|MPTSCSIH_ENABLE_DOMAIN_VALIDATION
+mdefine_line|#define MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 multiline_comment|/* SCSI driver setup structure. Settings can be overridden&n; * by command line options.&n; */
 DECL|macro|MPTSCSIH_DOMAIN_VALIDATION
 mdefine_line|#define MPTSCSIH_DOMAIN_VALIDATION      1
@@ -71,19 +72,12 @@ DECL|macro|MPTSCSIH_DRIVER_SETUP
 mdefine_line|#define MPTSCSIH_DRIVER_SETUP                   &bslash;&n;{                                               &bslash;&n;        MPTSCSIH_DOMAIN_VALIDATION,             &bslash;&n;        MPTSCSIH_MAX_WIDTH,                     &bslash;&n;        MPTSCSIH_MIN_SYNC,                      &bslash;&n;}
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;Various bits and pieces broke within the lk-2.4.0-testN series:-(&n; *&t;So here are various HACKS to work around them.&n; */
-multiline_comment|/*&n; *&t;Conditionalizing with &quot;#ifdef MODULE/#endif&quot; around:&n; *&t;&t;static Scsi_Host_Template driver_template = XX;&n; *&t;&t;#include &lt;../../scsi/scsi_module.c&gt;&n; *&t;lines was REMOVED @ lk-2.4.0-test9&n; *&t;Issue discovered 20001213 by: sshirron&n; */
-DECL|macro|MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
-mdefine_line|#define MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS&t;&t;&t;1
 multiline_comment|/*&n; *&t;tq_scheduler disappeared @ lk-2.4.0-test12&n; *&t;(right when &lt;linux/sched.h&gt; newly defined TQ_ACTIVE)&n; *&t;tq_struct reworked in 2.5.41. Include workqueue.h.&n; */
 macro_line|#&t;include &lt;linux/sched.h&gt;
 macro_line|#&t;include &lt;linux/workqueue.h&gt;
 DECL|macro|SCHEDULE_TASK
 mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;if (schedule_work(x) == 0) {&t;&bslash;&n;&t;&t;/*MOD_DEC_USE_COUNT*/;&t;&bslash;&n;&t;}
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-DECL|macro|x_scsi_detect
-mdefine_line|#define x_scsi_detect&t;&t;mptscsih_detect
-DECL|macro|x_scsi_release
-mdefine_line|#define x_scsi_release&t;&t;mptscsih_release
 DECL|macro|x_scsi_info
 mdefine_line|#define x_scsi_info&t;&t;mptscsih_info
 DECL|macro|x_scsi_queuecommand
@@ -98,12 +92,6 @@ DECL|macro|x_scsi_host_reset
 mdefine_line|#define x_scsi_host_reset&t;mptscsih_host_reset
 DECL|macro|x_scsi_bios_param
 mdefine_line|#define x_scsi_bios_param&t;mptscsih_bios_param
-DECL|macro|x_scsi_taskmgmt_bh
-mdefine_line|#define x_scsi_taskmgmt_bh&t;mptscsih_taskmgmt_bh
-DECL|macro|x_scsi_old_abort
-mdefine_line|#define x_scsi_old_abort&t;mptscsih_old_abort
-DECL|macro|x_scsi_old_reset
-mdefine_line|#define x_scsi_old_reset&t;mptscsih_old_reset
 DECL|macro|x_scsi_slave_alloc
 mdefine_line|#define x_scsi_slave_alloc&t;mptscsih_slave_alloc
 DECL|macro|x_scsi_slave_configure
@@ -114,26 +102,6 @@ DECL|macro|x_scsi_proc_info
 mdefine_line|#define x_scsi_proc_info&t;mptscsih_proc_info
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;MPT SCSI Host / Initiator decls...&n; */
-r_extern
-r_int
-id|x_scsi_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|x_scsi_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-suffix:semicolon
 r_extern
 r_const
 r_char
@@ -220,17 +188,9 @@ id|sector_t
 id|capacity
 comma
 r_int
-op_star
-id|ip
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|x_scsi_taskmgmt_bh
-c_func
-(paren
-r_void
-op_star
+id|geom
+(braket
+)braket
 )paren
 suffix:semicolon
 r_extern

@@ -1009,7 +1009,6 @@ macro_line|#ifndef PCI_DEVICE_ID_ECRA
 DECL|macro|PCI_DEVICE_ID_ECRA
 mdefine_line|#define&t;PCI_DEVICE_ID_ECRA&t;&t;0x0004
 macro_line|#endif
-macro_line|#endif
 DECL|variable|istallion_pci_tbl
 r_static
 r_struct
@@ -1048,6 +1047,7 @@ comma
 id|istallion_pci_tbl
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Hardware configuration info for ECP boards. These defines apply&n; *&t;to the directly accessible io ports of the ECP. There is a set of&n; *&t;defines for each ECP board type, ISA, EISA, MCA and PCI.&n; */
 DECL|macro|ECP_IOSIZE

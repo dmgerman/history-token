@@ -109,16 +109,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|kgdb_map_scc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|ppc6xx_idle
@@ -2572,6 +2562,13 @@ l_int|0x3eab
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_KGDB)
+r_if
+c_cond
+(paren
+id|ppc_md.kgdb_map_scc
+)paren
+id|ppc_md
+dot
 id|kgdb_map_scc
 c_func
 (paren

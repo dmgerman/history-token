@@ -12,23 +12,12 @@ mdefine_line|#define cpu_to_node(cpu) (int)(cpu_to_node_map[cpu])
 multiline_comment|/*&n; * Returns a bitmask of CPUs on Node &squot;node&squot;.&n; */
 DECL|macro|node_to_cpumask
 mdefine_line|#define node_to_cpumask(node) (node_to_cpu_mask[node])
-multiline_comment|/*&n; * Returns the number of the node containing MemBlk &squot;memblk&squot;&n; */
-macro_line|#ifdef CONFIG_ACPI_NUMA
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk) (node_memblk[memblk].nid)
-macro_line|#else
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk) (memblk)
-macro_line|#endif
 multiline_comment|/*&n; * Returns the number of the node containing Node &squot;nid&squot;.&n; * Not implemented here. Multi-level hierarchies detected with&n; * the help of node_distance().&n; */
 DECL|macro|parent_node
 mdefine_line|#define parent_node(nid) (nid)
 multiline_comment|/*&n; * Returns the number of the first CPU on Node &squot;node&squot;.&n; */
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) (__ffs(node_to_cpumask(node)))
-multiline_comment|/*&n; * Returns the number of the first MemBlk on Node &squot;node&squot;&n; * Should be fixed when IA64 discontigmem goes in.&n; */
-DECL|macro|node_to_memblk
-mdefine_line|#define node_to_memblk(node) (node)
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 10

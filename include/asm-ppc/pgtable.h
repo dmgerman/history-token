@@ -1386,12 +1386,7 @@ r_int
 r_int
 id|addr
 )paren
-id|__attribute__
-(paren
-(paren
-r_const
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 multiline_comment|/* Values for nocacheflag and cmode */
 multiline_comment|/* These are not used by the APUS kernel_map, but prevents&n;   compilation errors. */

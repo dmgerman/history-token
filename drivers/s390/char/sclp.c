@@ -1185,7 +1185,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Now clear the running bit */
+multiline_comment|/* Now clear the running bit if SCLP indicated a finished SCCB */
+r_if
+c_cond
+(paren
+id|finished_sccb
+op_ne
+l_int|0U
+)paren
 id|clear_bit
 c_func
 (paren

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
@@ -867,6 +868,44 @@ id|acpi_pic_sci_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BUS */
+macro_line|#ifdef CONFIG_X86_IO_APIC
+DECL|function|acpi_irq_to_vector
+r_int
+id|acpi_irq_to_vector
+c_func
+(paren
+id|u32
+id|irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|irq
+)paren
+)paren
+id|irq
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_return
+id|irq
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_int
 r_int

@@ -71,10 +71,6 @@ r_int
 id|net_msg_burst
 op_assign
 l_int|10
-op_star
-l_int|5
-op_star
-id|HZ
 suffix:semicolon
 multiline_comment|/* &n; * This enforces a rate limit: not more than one kernel message&n; * every 5secs to make a denial-of-service attack impossible.&n; *&n; * All warning printk()s should be guarded by this function. &n; */
 DECL|function|net_ratelimit

@@ -412,6 +412,18 @@ id|pml4_t
 op_star
 id|pml4
 suffix:semicolon
+id|pgd_t
+op_star
+id|pgd
+suffix:semicolon
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+id|pte_t
+op_star
+id|pte
+suffix:semicolon
 id|asm
 c_func
 (paren
@@ -484,8 +496,6 @@ id|pml4
 r_goto
 id|ret
 suffix:semicolon
-id|pgd_t
-op_star
 id|pgd
 op_assign
 id|__pgd_offset_k
@@ -544,8 +554,6 @@ id|pgd
 r_goto
 id|ret
 suffix:semicolon
-id|pmd_t
-op_star
 id|pmd
 op_assign
 id|pmd_offset
@@ -595,8 +603,6 @@ id|pmd
 r_goto
 id|ret
 suffix:semicolon
-id|pte_t
-op_star
 id|pte
 op_assign
 id|pte_offset_kernel

@@ -15,6 +15,8 @@ macro_line|#else
 DECL|macro|pcidev_is_sa1111
 mdefine_line|#define pcidev_is_sa1111(dev) (0)
 macro_line|#endif
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|function|pcibios_set_master
 r_static
 r_inline

@@ -73,10 +73,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-DECL|macro|lock_cpu_hotplug
-mdefine_line|#define lock_cpu_hotplug()&t;down(&amp;cpucontrol)
-DECL|macro|unlock_cpu_hotplug
-mdefine_line|#define unlock_cpu_hotplug()&t;up(&amp;cpucontrol)
 macro_line|#else
 DECL|function|register_cpu_notifier
 r_static
@@ -109,21 +105,28 @@ id|nb
 )paren
 (brace
 )brace
-DECL|macro|lock_cpu_hotplug
-mdefine_line|#define lock_cpu_hotplug()&t;do { } while (0)
-DECL|macro|unlock_cpu_hotplug
-mdefine_line|#define unlock_cpu_hotplug()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_SMP */
 r_extern
 r_struct
 id|sysdev_class
 id|cpu_sysdev_class
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/* Stop CPUs going up and down. */
 r_extern
 r_struct
 id|semaphore
 id|cpucontrol
 suffix:semicolon
+DECL|macro|lock_cpu_hotplug
+mdefine_line|#define lock_cpu_hotplug()&t;down(&amp;cpucontrol)
+DECL|macro|unlock_cpu_hotplug
+mdefine_line|#define unlock_cpu_hotplug()&t;up(&amp;cpucontrol)
+macro_line|#else
+DECL|macro|lock_cpu_hotplug
+mdefine_line|#define lock_cpu_hotplug()&t;do { } while (0)
+DECL|macro|unlock_cpu_hotplug
+mdefine_line|#define unlock_cpu_hotplug()&t;do { } while (0)
+macro_line|#endif
 macro_line|#endif /* _LINUX_CPU_H_ */
 eof

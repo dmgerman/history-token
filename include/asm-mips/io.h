@@ -271,6 +271,14 @@ DECL|macro|readl
 mdefine_line|#define readl(addr)&t;&t;__ioswab32(__raw_readl(addr))
 DECL|macro|readq
 mdefine_line|#define readq(addr)&t;&t;__ioswab64(__raw_readq(addr))
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr)&t;readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr)&t;readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr)&t;readl(addr)
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(addr)&t;readq(addr)
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb(b,addr)&t;((*(volatile unsigned char *)(addr)) = (b))
 DECL|macro|__raw_writew

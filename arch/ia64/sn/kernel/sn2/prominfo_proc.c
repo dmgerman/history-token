@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 multiline_comment|/* to lookup nasids */
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;

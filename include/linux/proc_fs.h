@@ -531,6 +531,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_DEVICETREE
 r_extern
 r_void
 id|proc_device_tree_add_node
@@ -545,6 +546,29 @@ id|proc_dir_entry
 op_star
 )paren
 suffix:semicolon
+macro_line|#else /* !CONFIG_PROC_DEVICETREE */
+DECL|function|proc_device_tree_add_node
+r_static
+r_inline
+r_void
+id|proc_device_tree_add_node
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+comma
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROC_DEVICETREE */
 multiline_comment|/*&n; * proc_rtas.c&n; */
 r_extern
 r_void

@@ -1522,6 +1522,13 @@ id|files
 suffix:semicolon
 )brace
 )brace
+DECL|variable|put_files_struct
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_files_struct
+)paren
+suffix:semicolon
 DECL|function|__exit_files
 r_static
 r_inline
@@ -3060,6 +3067,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_exit
+)paren
+suffix:semicolon
 DECL|function|complete_and_exit
 id|NORET_TYPE
 r_void

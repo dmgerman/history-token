@@ -548,6 +548,12 @@ DECL|macro|writeb
 mdefine_line|#define writeb(val,addr)  out_8((addr),(val))
 DECL|macro|writew
 mdefine_line|#define writew(val,addr)  out_le16((addr),(val))
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 macro_line|#ifndef CONFIG_ISA
 DECL|macro|inb
 mdefine_line|#define inb(port)      in_8(port)

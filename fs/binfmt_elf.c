@@ -306,7 +306,7 @@ mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) - (items))
 DECL|macro|STACK_ROUND
 mdefine_line|#define STACK_ROUND(sp, items) &bslash;&n;&t;(((unsigned long) (sp - items)) &amp;~ 15UL)
 DECL|macro|STACK_ALLOC
-mdefine_line|#define STACK_ALLOC(sp, len) sp -= len
+mdefine_line|#define STACK_ALLOC(sp, len) ({ sp -= len ; sp; })
 macro_line|#endif
 r_static
 r_void
@@ -6354,14 +6354,45 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|DUMP_WRITE
+r_if
+c_cond
+(paren
+(paren
+id|size
+op_add_assign
+id|PAGE_SIZE
+)paren
+OG
+id|limit
+op_logical_or
+op_logical_neg
+id|dump_write
 c_func
 (paren
+id|file
+comma
 id|kaddr
 comma
 id|PAGE_SIZE
 )paren
+)paren
+(brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_goto
+id|end_coredump
+suffix:semicolon
+)brace
 id|kunmap
 c_func
 (paren

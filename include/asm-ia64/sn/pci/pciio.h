@@ -346,6 +346,7 @@ id|byte_count_max
 comma
 multiline_comment|/* maximum size of a mapping */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -412,6 +413,7 @@ id|byte_count
 comma
 multiline_comment|/* map this many bytes */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -445,6 +447,7 @@ op_star
 id|mapp
 comma
 multiline_comment|/* in case a piomap was needed */
+r_int
 r_int
 id|flags
 )paren
@@ -516,6 +519,7 @@ id|byte_count_max
 comma
 multiline_comment|/* max size of a mapping */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -577,6 +581,7 @@ r_int
 id|byte_count
 comma
 multiline_comment|/* length */
+r_int
 r_int
 id|flags
 )paren
@@ -715,16 +720,6 @@ id|conn
 suffix:semicolon
 multiline_comment|/* pci connection point */
 r_typedef
-r_int
-DECL|typedef|pciio_write_gather_flush_f
-id|pciio_write_gather_flush_f
-(paren
-id|vertex_hdl_t
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Device flushing buffers */
-r_typedef
 id|pciio_endian_t
 multiline_comment|/* actual endianness */
 DECL|typedef|pciio_endian_set_f
@@ -744,18 +739,6 @@ id|desired_end
 suffix:semicolon
 multiline_comment|/* desired endianness */
 r_typedef
-id|pciio_priority_t
-DECL|typedef|pciio_priority_set_f
-id|pciio_priority_set_f
-(paren
-id|vertex_hdl_t
-id|pcicard
-comma
-id|pciio_priority_t
-id|device_prio
-)paren
-suffix:semicolon
-r_typedef
 r_uint64
 DECL|typedef|pciio_config_get_f
 id|pciio_config_get_f
@@ -765,9 +748,11 @@ id|conn
 comma
 multiline_comment|/* pci connection point */
 r_int
+r_int
 id|reg
 comma
 multiline_comment|/* register byte offset */
+r_int
 r_int
 id|size
 )paren
@@ -783,9 +768,11 @@ id|conn
 comma
 multiline_comment|/* pci connection point */
 r_int
+r_int
 id|reg
 comma
 multiline_comment|/* register byte offset */
+r_int
 r_int
 id|size
 comma
@@ -858,21 +845,17 @@ id|vertex_hdl_t
 id|conn
 )paren
 suffix:semicolon
-r_typedef
-id|pciio_businfo_t
-DECL|typedef|pciio_businfo_get_f
-id|pciio_businfo_get_f
-(paren
-id|vertex_hdl_t
-id|conn
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Adapters that provide a PCI interface adhere to this software interface.&n; */
 DECL|struct|pciio_provider_s
 r_typedef
 r_struct
 id|pciio_provider_s
 (brace
+multiline_comment|/* ASIC PROVIDER ID */
+DECL|member|provider_asic
+id|pciio_asic_type_t
+id|provider_asic
+suffix:semicolon
 multiline_comment|/* PIO MANAGEMENT */
 DECL|member|piomap_alloc
 id|pciio_piomap_alloc_f
@@ -992,20 +975,10 @@ id|pciio_reset_f
 op_star
 id|reset
 suffix:semicolon
-DECL|member|write_gather_flush
-id|pciio_write_gather_flush_f
-op_star
-id|write_gather_flush
-suffix:semicolon
 DECL|member|endian_set
 id|pciio_endian_set_f
 op_star
 id|endian_set
-suffix:semicolon
-DECL|member|priority_set
-id|pciio_priority_set_f
-op_star
-id|priority_set
 suffix:semicolon
 DECL|member|config_get
 id|pciio_config_get_f
@@ -1038,12 +1011,6 @@ DECL|member|device_unregister
 id|pciio_device_unregister_f
 op_star
 id|device_unregister
-suffix:semicolon
-multiline_comment|/* GENERIC BUS INFO */
-DECL|member|businfo_get
-id|pciio_businfo_get_f
-op_star
-id|businfo_get
 suffix:semicolon
 DECL|typedef|pciio_provider_t
 )brace
@@ -1147,16 +1114,8 @@ id|pciio_reset_f
 id|pciio_reset
 suffix:semicolon
 r_extern
-id|pciio_write_gather_flush_f
-id|pciio_write_gather_flush
-suffix:semicolon
-r_extern
 id|pciio_endian_set_f
 id|pciio_endian_set
-suffix:semicolon
-r_extern
-id|pciio_priority_set_f
-id|pciio_priority_set
 suffix:semicolon
 r_extern
 id|pciio_config_get_f
@@ -1165,10 +1124,6 @@ suffix:semicolon
 r_extern
 id|pciio_config_set_f
 id|pciio_config_set
-suffix:semicolon
-r_extern
-id|pciio_error_extract_f
-id|pciio_error_extract
 suffix:semicolon
 multiline_comment|/* Widgetdev in the IOERROR structure is encoded as follows.&n; *&t;+---------------------------+&n; *&t;| slot (7:3) | function(2:0)|&n; *&t;+---------------------------+&n; * Following are the convenience interfaces to get at form&n; * a widgetdev or to break it into its constituents.&n; */
 DECL|macro|PCIIO_WIDGETDEV_SLOT_SHFT
@@ -1201,6 +1156,7 @@ op_star
 id|driver_prefix
 comma
 multiline_comment|/* driver prefix */
+r_int
 r_int
 id|flags
 )paren
@@ -1601,15 +1557,6 @@ id|vhdl
 )paren
 suffix:semicolon
 r_extern
-id|pciio_info_t
-id|pciio_hostinfo_get
-c_func
-(paren
-id|vertex_hdl_t
-id|vhdl
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|pciio_info_set
 c_func
@@ -1624,15 +1571,6 @@ suffix:semicolon
 r_extern
 id|vertex_hdl_t
 id|pciio_info_dev_get
-c_func
-(paren
-id|pciio_info_t
-id|pciio_info
-)paren
-suffix:semicolon
-r_extern
-id|vertex_hdl_t
-id|pciio_info_hostdev_get
 c_func
 (paren
 id|pciio_info_t

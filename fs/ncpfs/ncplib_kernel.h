@@ -853,7 +853,6 @@ mdefine_line|#define ncp_io2vol(S,m,i,n,k,U)&t;ncp__io2vol(m,i,n,k,U)
 DECL|macro|ncp_vol2io
 mdefine_line|#define ncp_vol2io(S,m,i,n,k,U)&t;ncp__vol2io(m,i,n,k,U)
 macro_line|#endif /* CONFIG_NCPFS_NLS */
-r_inline
 r_int
 id|ncp_strnicmp
 c_func

@@ -264,6 +264,16 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|member|kgdb_map_scc
+r_void
+(paren
+op_star
+id|kgdb_map_scc
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|nvram_read_val
 r_int
 r_char

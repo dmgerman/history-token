@@ -2,20 +2,12 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/memblk.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
-DECL|variable|sysfs_memblks
-r_static
-r_struct
-id|memblk
-op_star
-id|sysfs_memblks
-suffix:semicolon
 DECL|variable|sysfs_nodes
 r_static
 r_struct
@@ -31,16 +23,16 @@ op_star
 id|sysfs_cpus
 suffix:semicolon
 multiline_comment|/*&n; * The following structures are usually initialized by ACPI or&n; * similar mechanisms and describe the NUMA characteristics of the machine.&n; */
-DECL|variable|num_memblks
+DECL|variable|num_node_memblks
 r_int
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 DECL|variable|node_memblk
 r_struct
 id|node_memblk_s
 id|node_memblk
 (braket
-id|NR_MEMBLKS
+id|NR_NODE_MEMBLKS
 )braket
 suffix:semicolon
 DECL|variable|node_cpuid
@@ -84,7 +76,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 id|i
 op_increment
@@ -123,7 +115,7 @@ r_return
 (paren
 id|i
 OL
-id|num_memblks
+id|num_node_memblks
 )paren
 ques
 c_cond
@@ -135,7 +127,7 @@ dot
 id|nid
 suffix:colon
 (paren
-id|num_memblks
+id|num_node_memblks
 ques
 c_cond
 op_minus
@@ -210,60 +202,6 @@ op_star
 id|numnodes
 )paren
 suffix:semicolon
-id|sysfs_memblks
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|memblk
-)paren
-op_star
-id|num_memblks
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sysfs_memblks
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|sysfs_nodes
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|sysfs_memblks
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|memblk
-)paren
-op_star
-id|num_memblks
-)paren
-suffix:semicolon
 id|sysfs_cpus
 op_assign
 id|kmalloc
@@ -287,12 +225,6 @@ op_logical_neg
 id|sysfs_cpus
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|sysfs_memblks
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -356,52 +288,6 @@ comma
 id|i
 comma
 l_int|0
-)paren
-)paren
-)paren
-r_goto
-id|out
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|num_memblks
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|register_memblk
-c_func
-(paren
-op_amp
-id|sysfs_memblks
-(braket
-id|i
-)braket
-comma
-id|i
-comma
-op_amp
-id|sysfs_nodes
-(braket
-id|memblk_to_node
-c_func
-(paren
-id|i
-)paren
-)braket
 )paren
 )paren
 )paren

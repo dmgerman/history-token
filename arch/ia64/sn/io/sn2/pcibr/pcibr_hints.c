@@ -139,9 +139,19 @@ c_cond
 op_logical_neg
 id|hint
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;pcibr_hints_get(): unable to allocate &quot;
+l_string|&quot;memory&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|abnormal_exit
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

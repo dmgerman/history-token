@@ -4,6 +4,8 @@ DECL|macro|__V850_PCI_H__
 mdefine_line|#define __V850_PCI_H__
 multiline_comment|/* Get any platform-dependent definitions.  */
 macro_line|#include &lt;asm/machdep.h&gt;
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 multiline_comment|/* Generic declarations.  */
 r_struct
 id|scatterlist

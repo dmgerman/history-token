@@ -98,7 +98,7 @@ r_static
 r_int
 id|synchronous
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 DECL|variable|reset_delay
 r_static
@@ -955,15 +955,6 @@ id|link-&gt;conf
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* A bad hack... */
-id|release_region
-c_func
-(paren
-id|link-&gt;io.BasePort1
-comma
-id|link-&gt;io.NumPorts1
-)paren
-suffix:semicolon
 multiline_comment|/* Set configuration options for the aha152x driver */
 id|memset
 c_func
@@ -1048,21 +1039,6 @@ r_goto
 id|cs_failed
 suffix:semicolon
 )brace
-id|scsi_add_host
-c_func
-(paren
-id|host
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* XXX handle failure */
-id|scsi_scan_host
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -1127,7 +1103,7 @@ id|info
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|scsi_remove_host
+id|aha152x_release
 c_func
 (paren
 id|info-&gt;host
@@ -1165,12 +1141,6 @@ id|link-&gt;state
 op_and_assign
 op_complement
 id|DEV_CONFIG
-suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|info-&gt;host
-)paren
 suffix:semicolon
 )brace
 DECL|function|aha152x_event

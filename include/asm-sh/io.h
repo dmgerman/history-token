@@ -138,6 +138,12 @@ macro_line|#ifdef __raw_writel
 DECL|macro|writel
 macro_line|# define writel(v,a)&t;({ __raw_writel((v),(unsigned long)(a)); mb(); })
 macro_line|#endif
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(a) readb(a)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(a) readw(a)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(a) readl(a)
 multiline_comment|/*&n; * If the platform has PC-like I/O, this function converts the offset into&n; * an address.&n; */
 DECL|function|isa_port2addr
 r_static

@@ -265,11 +265,6 @@ r_int
 id|__init_end
 suffix:semicolon
 multiline_comment|/*&n; * paging_init() sets up the page tables&n; */
-DECL|variable|last_valid_pfn
-r_int
-r_int
-id|last_valid_pfn
-suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|function|paging_init
 r_void

@@ -224,7 +224,7 @@ c_cond
 (paren
 id|ctr
 (braket
-l_int|0
+id|i
 )braket
 dot
 id|enabled

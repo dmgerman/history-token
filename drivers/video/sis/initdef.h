@@ -1,15 +1,40 @@
-multiline_comment|/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/sis/initdef.h,v 1.4 2000/12/02 01:16:17 dawes Exp $ */
+multiline_comment|/* $XFree86$ */
+multiline_comment|/*&n; * Global definitions for init.c and init301.c&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) All advertising materials mentioning features or use of this software&n; * *    must display the following acknowledgement: &quot;This product includes&n; * *    software developed by Thomas Winischhofer, Vienna, Austria.&quot;&n; * * 4) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _INITDEF_
 DECL|macro|_INITDEF_
 mdefine_line|#define _INITDEF_
-DECL|macro|SiS300
-mdefine_line|#define SiS300                  0x0300
-DECL|macro|SiS540
-mdefine_line|#define SiS540                  0x5300
-DECL|macro|SiS630
-mdefine_line|#define SiS630                  0x6300
-DECL|macro|SiS730
-mdefine_line|#define SiS730                  0x6300
+DECL|macro|IS_SIS330
+mdefine_line|#define IS_SIS330&t;&t;(HwInfo-&gt;jChipType == SIS_330)
+DECL|macro|IS_SIS550
+mdefine_line|#define IS_SIS550&t;&t;(HwInfo-&gt;jChipType == SIS_550)
+DECL|macro|IS_SIS650
+mdefine_line|#define IS_SIS650&t;&t;(HwInfo-&gt;jChipType == SIS_650)  /* All versions, incl 651, M65x */
+DECL|macro|IS_SIS740
+mdefine_line|#define IS_SIS740&t;&t;(HwInfo-&gt;jChipType == SIS_740)
+DECL|macro|IS_SIS651
+mdefine_line|#define IS_SIS651&t;        (SiS_Pr-&gt;SiS_SysFlags &amp; (SF_Is651 | SF_Is652))
+DECL|macro|IS_SISM650
+mdefine_line|#define IS_SISM650&t;        (SiS_Pr-&gt;SiS_SysFlags &amp; (SF_IsM650 | SF_IsM652 | SF_IsM653))
+DECL|macro|IS_SIS65x
+mdefine_line|#define IS_SIS65x               (IS_SIS651 || IS_SISM650)       /* Only special versions of 65x */
+DECL|macro|IS_SIS661
+mdefine_line|#define IS_SIS661&t;&t;(HwInfo-&gt;jChipType == SIS_661)
+DECL|macro|IS_SIS741
+mdefine_line|#define IS_SIS741&t;&t;(HwInfo-&gt;jChipType == SIS_741)
+DECL|macro|IS_SIS660
+mdefine_line|#define IS_SIS660&t;&t;(HwInfo-&gt;jChipType == SIS_660)
+DECL|macro|IS_SIS760
+mdefine_line|#define IS_SIS760&t;&t;(HwInfo-&gt;jChipType == SIS_760)
+DECL|macro|IS_SIS661741660760
+mdefine_line|#define IS_SIS661741660760&t;(IS_SIS661 || IS_SIS741 || IS_SIS660 || IS_SIS760)
+DECL|macro|IS_SIS650740
+mdefine_line|#define IS_SIS650740            ((HwInfo-&gt;jChipType &gt;= SIS_650) &amp;&amp; (HwInfo-&gt;jChipType &lt; SIS_330))
+DECL|macro|IS_SIS550650740
+mdefine_line|#define IS_SIS550650740         (IS_SIS550 || IS_SIS650740)
+DECL|macro|IS_SIS650740660
+mdefine_line|#define IS_SIS650740660         (IS_SIS650 || IS_SIS740 || IS_SIS661741660760)
+DECL|macro|IS_SIS550650740660
+mdefine_line|#define IS_SIS550650740660      (IS_SIS550 || IS_SIS650740660)
 multiline_comment|/* SiS_VBType */
 DECL|macro|VB_SIS301
 mdefine_line|#define VB_SIS301&t;      &t;0x0001
@@ -21,34 +46,70 @@ DECL|macro|VB_SIS301LV
 mdefine_line|#define VB_SIS301LV     &t;0x0008
 DECL|macro|VB_SIS302LV
 mdefine_line|#define VB_SIS302LV     &t;0x0010
-DECL|macro|VB_SIS30xLV
-mdefine_line|#define VB_SIS30xLV&t;&t;VB_SIS301LV
-DECL|macro|VB_SIS30xNEW
-mdefine_line|#define VB_SIS30xNEW&t;&t;VB_SIS302LV
+DECL|macro|VB_SIS302ELV
+mdefine_line|#define VB_SIS302ELV&t;&t;0x0020
+DECL|macro|VB_SIS301C
+mdefine_line|#define VB_SIS301C              0x0040
 DECL|macro|VB_NoLCD
 mdefine_line|#define VB_NoLCD        &t;0x8000
 DECL|macro|VB_SIS301BLV302BLV
-mdefine_line|#define VB_SIS301BLV302BLV      (VB_SIS301B|VB_SIS302B|VB_SIS301LV|VB_SIS302LV)
+mdefine_line|#define VB_SIS301BLV302BLV      (VB_SIS301B|VB_SIS301C|VB_SIS302B|VB_SIS301LV|VB_SIS302LV|VB_SIS302ELV)
 DECL|macro|VB_SIS301B302B
-mdefine_line|#define VB_SIS301B302B          (VB_SIS301B|VB_SIS302B)
+mdefine_line|#define VB_SIS301B302B          (VB_SIS301B|VB_SIS301C|VB_SIS302B)
 DECL|macro|VB_SIS301LV302LV
-mdefine_line|#define VB_SIS301LV302LV        (VB_SIS301LV|VB_SIS302LV)
-DECL|macro|IS_SIS650740
-mdefine_line|#define IS_SIS650740            ((HwDeviceExtension-&gt;jChipType &gt;= SIS_650) &amp;&amp; (HwDeviceExtension-&gt;jChipType &lt; SIS_330))
-DECL|macro|IS_SIS650
-mdefine_line|#define IS_SIS650&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_650)
-DECL|macro|IS_SIS740
-mdefine_line|#define IS_SIS740&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_740)
-DECL|macro|IS_SIS330
-mdefine_line|#define IS_SIS330&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_330)
-DECL|macro|IS_SIS550
-mdefine_line|#define IS_SIS550&t;&t;(HwDeviceExtension-&gt;jChipType == SIS_550)
-DECL|macro|CRT1Len
-mdefine_line|#define CRT1Len                 17
-DECL|macro|LVDSCRT1Len
-mdefine_line|#define LVDSCRT1Len             15
-DECL|macro|CHTVRegDataLen
-mdefine_line|#define CHTVRegDataLen          5
+mdefine_line|#define VB_SIS301LV302LV        (VB_SIS301LV|VB_SIS302LV|VB_SIS302ELV)
+DECL|macro|VB_SISVB
+mdefine_line|#define VB_SISVB&t;&t;(VB_SIS301 | VB_SIS301BLV302BLV)
+multiline_comment|/* VBInfo */
+DECL|macro|SetSimuScanMode
+mdefine_line|#define SetSimuScanMode         0x0001   /* CR 30 */
+DECL|macro|SwitchCRT2
+mdefine_line|#define SwitchCRT2              0x0002
+DECL|macro|SetCRT2ToAVIDEO
+mdefine_line|#define SetCRT2ToAVIDEO         0x0004
+DECL|macro|SetCRT2ToSVIDEO
+mdefine_line|#define SetCRT2ToSVIDEO         0x0008
+DECL|macro|SetCRT2ToSCART
+mdefine_line|#define SetCRT2ToSCART          0x0010
+DECL|macro|SetCRT2ToLCD
+mdefine_line|#define SetCRT2ToLCD            0x0020
+DECL|macro|SetCRT2ToRAMDAC
+mdefine_line|#define SetCRT2ToRAMDAC         0x0040
+DECL|macro|SetCRT2ToHiVision
+mdefine_line|#define SetCRT2ToHiVision       0x0080   &t;&t;/* for SiS bridge */
+DECL|macro|SetCRT2ToCHYPbPr
+mdefine_line|#define SetCRT2ToCHYPbPr       &t;SetCRT2ToHiVision&t;/* for Chrontel   */
+DECL|macro|SetNTSCTV
+mdefine_line|#define SetNTSCTV               0x0000   /* CR 31 */
+DECL|macro|SetPALTV
+mdefine_line|#define SetPALTV                0x0100   &t;&t;/* Deprecated here, now in TVMode */
+DECL|macro|SetInSlaveMode
+mdefine_line|#define SetInSlaveMode          0x0200
+DECL|macro|SetNotSimuMode
+mdefine_line|#define SetNotSimuMode          0x0400
+DECL|macro|SetNotSimuTVMode
+mdefine_line|#define SetNotSimuTVMode        SetNotSimuMode
+DECL|macro|SetDispDevSwitch
+mdefine_line|#define SetDispDevSwitch        0x0800
+DECL|macro|SetCRT2ToYPbPr525750
+mdefine_line|#define SetCRT2ToYPbPr525750    0x0800
+DECL|macro|LoadDACFlag
+mdefine_line|#define LoadDACFlag             0x1000
+DECL|macro|DisableCRT2Display
+mdefine_line|#define DisableCRT2Display      0x2000
+DECL|macro|DriverMode
+mdefine_line|#define DriverMode              0x4000
+DECL|macro|HotKeySwitch
+mdefine_line|#define HotKeySwitch            0x8000
+DECL|macro|SetCRT2ToLCDA
+mdefine_line|#define SetCRT2ToLCDA           0x8000
+multiline_comment|/* v-- Needs change in sis_vga.c if changed (GPIO) --v */
+DECL|macro|SetCRT2ToTV
+mdefine_line|#define SetCRT2ToTV             (SetCRT2ToYPbPr525750|SetCRT2ToHiVision|SetCRT2ToSCART|SetCRT2ToSVIDEO|SetCRT2ToAVIDEO)
+DECL|macro|SetCRT2ToTVNoYPbPrHiVision
+mdefine_line|#define SetCRT2ToTVNoYPbPrHiVision (SetCRT2ToSCART | SetCRT2ToSVIDEO | SetCRT2ToAVIDEO)
+DECL|macro|SetCRT2ToTVNoHiVision
+mdefine_line|#define SetCRT2ToTVNoHiVision  &t;(SetCRT2ToYPbPr525750 | SetCRT2ToSCART | SetCRT2ToSVIDEO | SetCRT2ToAVIDEO)
 multiline_comment|/* SiS_ModeType */
 DECL|macro|ModeText
 mdefine_line|#define ModeText                0x00
@@ -90,30 +151,30 @@ mdefine_line|#define NoSupportSimuTV         0x2000
 DECL|macro|DoubleScanMode
 mdefine_line|#define DoubleScanMode          0x8000
 multiline_comment|/* Infoflag */
-DECL|macro|SupportAllCRT2
-mdefine_line|#define SupportAllCRT2          0x0078
 DECL|macro|SupportTV
 mdefine_line|#define SupportTV               0x0008
-DECL|macro|SupportHiVisionTV
-mdefine_line|#define SupportHiVisionTV       0x0010
+DECL|macro|SupportTV1024
+mdefine_line|#define SupportTV1024           0x0800
+DECL|macro|SupportCHTV
+mdefine_line|#define SupportCHTV &t;&t;0x0800
+DECL|macro|Support64048060Hz
+mdefine_line|#define Support64048060Hz       0x0800  /* Special for 640x480 LCD */
+DECL|macro|SupportHiVision
+mdefine_line|#define SupportHiVision         0x0010
+DECL|macro|SupportYPbPr
+mdefine_line|#define SupportYPbPr            0x1000  /* TODO */
 DECL|macro|SupportLCD
 mdefine_line|#define SupportLCD              0x0020
 DECL|macro|SupportRAMDAC2
-mdefine_line|#define SupportRAMDAC2          0x0040  
-DECL|macro|NoSupportTV
-mdefine_line|#define NoSupportTV             0x0070
-DECL|macro|NoSupportHiVisionTV
-mdefine_line|#define NoSupportHiVisionTV     0x0060
-DECL|macro|NoSupportLCD
-mdefine_line|#define NoSupportLCD            0x0058
-DECL|macro|SupportCHTV
-mdefine_line|#define SupportCHTV &t;&t;0x0800
-DECL|macro|SupportTV1024
-mdefine_line|#define SupportTV1024           0x0800            
+mdefine_line|#define SupportRAMDAC2          0x0040&t;/* All           (&lt;= 100Mhz) */
+DECL|macro|SupportRAMDAC2_135
+mdefine_line|#define SupportRAMDAC2_135      0x0100  /* All except DH (&lt;= 135Mhz) */
+DECL|macro|SupportRAMDAC2_162
+mdefine_line|#define SupportRAMDAC2_162      0x0200  /* B, C          (&lt;= 162Mhz) */
+DECL|macro|SupportRAMDAC2_202
+mdefine_line|#define SupportRAMDAC2_202      0x0400  /* C             (&lt;= 202Mhz) */
 DECL|macro|InterlaceMode
 mdefine_line|#define InterlaceMode           0x0080
-DECL|macro|SupportHiVisionTV2
-mdefine_line|#define SupportHiVisionTV2      0x1000
 DECL|macro|SyncPP
 mdefine_line|#define SyncPP                  0x0000
 DECL|macro|SyncPN
@@ -122,139 +183,141 @@ DECL|macro|SyncNP
 mdefine_line|#define SyncNP                  0x8000
 DECL|macro|SyncNN
 mdefine_line|#define SyncNN                  0xc000
-DECL|macro|ECLKindex0
-mdefine_line|#define ECLKindex0              0x0000
-DECL|macro|ECLKindex1
-mdefine_line|#define ECLKindex1              0x0100
-DECL|macro|ECLKindex2
-mdefine_line|#define ECLKindex2              0x0200
-DECL|macro|ECLKindex3
-mdefine_line|#define ECLKindex3              0x0300
-DECL|macro|ECLKindex4
-mdefine_line|#define ECLKindex4              0x0400
-multiline_comment|/* VBInfo */
-DECL|macro|SetSimuScanMode
-mdefine_line|#define SetSimuScanMode         0x0001   /* CR 30 */
-DECL|macro|SwitchToCRT2
-mdefine_line|#define SwitchToCRT2            0x0002
-DECL|macro|SetCRT2ToAVIDEO
-mdefine_line|#define SetCRT2ToAVIDEO         0x0004
-DECL|macro|SetCRT2ToSVIDEO
-mdefine_line|#define SetCRT2ToSVIDEO         0x0008
-DECL|macro|SetCRT2ToSCART
-mdefine_line|#define SetCRT2ToSCART          0x0010
-DECL|macro|SetCRT2ToLCD
-mdefine_line|#define SetCRT2ToLCD            0x0020
-DECL|macro|SetCRT2ToRAMDAC
-mdefine_line|#define SetCRT2ToRAMDAC         0x0040
-DECL|macro|SetCRT2ToHiVisionTV
-mdefine_line|#define SetCRT2ToHiVisionTV     0x0080
-DECL|macro|SetCRT2ToTV
-mdefine_line|#define SetCRT2ToTV             0x009C   /* alias */
-DECL|macro|SetNTSCTV
-mdefine_line|#define SetNTSCTV               0x0000   /* CR 31 */
-DECL|macro|SetPALTV
-mdefine_line|#define SetPALTV                0x0100
-DECL|macro|SetInSlaveMode
-mdefine_line|#define SetInSlaveMode          0x0200
-DECL|macro|SetNotSimuMode
-mdefine_line|#define SetNotSimuMode          0x0400
-DECL|macro|SetNotSimuTVMode
-mdefine_line|#define SetNotSimuTVMode        0x0400
-DECL|macro|SetDispDevSwitch
-mdefine_line|#define SetDispDevSwitch        0x0800
-DECL|macro|LoadDACFlag
-mdefine_line|#define LoadDACFlag             0x1000
-DECL|macro|SetCHTVOverScan
-mdefine_line|#define SetCHTVOverScan  &t;0x1000  /* TW: Re-defined (from 0x8000) */
-DECL|macro|DisableCRT2Display
-mdefine_line|#define DisableCRT2Display      0x2000
-DECL|macro|CRT2DisplayFlag
-mdefine_line|#define CRT2DisplayFlag         0x2000
-DECL|macro|DriverMode
-mdefine_line|#define DriverMode              0x4000
-DECL|macro|HotKeySwitch
-mdefine_line|#define HotKeySwitch            0x8000  /* TW: ? */
-DECL|macro|SetCRT2ToLCDA
-mdefine_line|#define SetCRT2ToLCDA           0x8000
-DECL|macro|PanelRGB18Bit
-mdefine_line|#define PanelRGB18Bit           0x0100
-DECL|macro|PanelRGB24Bit
-mdefine_line|#define PanelRGB24Bit           0x0000
+multiline_comment|/* SetFlag */
+DECL|macro|ProgrammingCRT2
+mdefine_line|#define ProgrammingCRT2         0x0001
+DECL|macro|LowModeTests
+mdefine_line|#define LowModeTests&t;&t;0x0002
+multiline_comment|/* #define TVSimuMode           0x0002 - deprecated */
+multiline_comment|/* #define RPLLDIV2XO           0x0004 - deprecated */
+DECL|macro|LCDVESATiming
+mdefine_line|#define LCDVESATiming           0x0008
+DECL|macro|EnableLVDSDDA
+mdefine_line|#define EnableLVDSDDA           0x0010
+DECL|macro|SetDispDevSwitchFlag
+mdefine_line|#define SetDispDevSwitchFlag    0x0020
+DECL|macro|CheckWinDos
+mdefine_line|#define CheckWinDos             0x0040
+DECL|macro|SetDOSMode
+mdefine_line|#define SetDOSMode              0x0080
+multiline_comment|/* TVMode flag */
+DECL|macro|TVSetPAL
+mdefine_line|#define TVSetPAL&t;&t;0x0001
+DECL|macro|TVSetNTSCJ
+mdefine_line|#define TVSetNTSCJ&t;&t;0x0002
+DECL|macro|TVSetPALM
+mdefine_line|#define TVSetPALM&t;&t;0x0004
+DECL|macro|TVSetPALN
+mdefine_line|#define TVSetPALN&t;&t;0x0008
+DECL|macro|TVSetCHOverScan
+mdefine_line|#define TVSetCHOverScan&t;&t;0x0010
+DECL|macro|TVSetYPbPr525i
+mdefine_line|#define TVSetYPbPr525i&t;&t;0x0020
+DECL|macro|TVSetYPbPr525p
+mdefine_line|#define TVSetYPbPr525p&t;&t;0x0040
+DECL|macro|TVSetYPbPr750p
+mdefine_line|#define TVSetYPbPr750p&t;&t;0x0080
+DECL|macro|TVSetHiVision
+mdefine_line|#define TVSetHiVision&t;&t;0x0100  /* = 1080i, software-wise identical */
+DECL|macro|TVSetTVSimuMode
+mdefine_line|#define TVSetTVSimuMode&t;&t;0x0800
+DECL|macro|TVRPLLDIV2XO
+mdefine_line|#define TVRPLLDIV2XO&t;&t;0x1000
+DECL|macro|TVSetNTSC1024
+mdefine_line|#define TVSetNTSC1024&t;&t;0x2000
+multiline_comment|/* YPbPr flag (&gt;=315, &lt;661) */
+DECL|macro|YPbPr525p
+mdefine_line|#define YPbPr525p               0x0001&t;/* 525p */
+DECL|macro|YPbPr750p
+mdefine_line|#define YPbPr750p               0x0002&t;/* 750p */
+DECL|macro|YPbPr525i
+mdefine_line|#define YPbPr525i               0x0004&t;/* 525p */
+DECL|macro|YPbPrHiVision
+mdefine_line|#define YPbPrHiVision           0x0008&t;/* HiVision or 1080i (bridge type dependent) */
+DECL|macro|YPbPrModeMask
+mdefine_line|#define YPbPrModeMask           (YPbPr750p | YPbPr525p | YPbPr525i | YPbPrHiVision)
+multiline_comment|/* SysFlags (to identify special versions) */
+DECL|macro|SF_Is651
+mdefine_line|#define SF_Is651                0x0001
+DECL|macro|SF_IsM650
+mdefine_line|#define SF_IsM650               0x0002
+DECL|macro|SF_Is652
+mdefine_line|#define SF_Is652&t;&t;0x0004
+DECL|macro|SF_IsM652
+mdefine_line|#define SF_IsM652&t;&t;0x0008
+DECL|macro|SF_IsM653
+mdefine_line|#define SF_IsM653&t;&t;0x0010
+DECL|macro|SF_IsM661
+mdefine_line|#define SF_IsM661&t;&t;0x0020
+DECL|macro|SF_IsM741
+mdefine_line|#define SF_IsM741&t;&t;0x0040
+DECL|macro|SF_IsM760
+mdefine_line|#define SF_IsM760&t;&t;0x0080
+multiline_comment|/* CR32 (Newer 630, and 315 series)&n;&n;   [0]   VB connected with CVBS&n;   [1]   VB connected with SVHS&n;   [2]   VB connected with SCART&n;   [3]   VB connected with LCD&n;   [4]   VB connected with CRT2 (secondary VGA)&n;   [5]   CRT1 monitor is connected&n;   [6]   VB connected with Hi-Vision TV&n;   [7]   &lt;= 330: VB connected with DVI combo connector&n;         &gt;= 661: VB connected to YPbPr&n;*/
+multiline_comment|/* CR35 (300 series only) */
 DECL|macro|TVOverScan
-mdefine_line|#define TVOverScan              0x10    /* Bit in CR35 (300 series only) */
+mdefine_line|#define TVOverScan              0x10
 DECL|macro|TVOverScanShift
 mdefine_line|#define TVOverScanShift         4
-DECL|macro|ClearBufferFlag
-mdefine_line|#define ClearBufferFlag         0x20
-multiline_comment|/* CR32 (Newer 630, and 310/325 series)&n;&n;   [0]   VB connected with CVBS&n;   [1]   VB connected with SVHS&n;   [2]   VB connected with SCART&n;   [3]   VB connected with LCD&n;   [4]   VB connected with CRT2 (secondary VGA)&n;   [5]   CRT1 monitor is connected&n;   [6]   VB connected with Hi-Vision TV&n;   [7]   VB connected with DVI combo connector&n;&n;&n;   CR37&n;&n;   [0]   Set 24/18 bit (0/1) RGB to LVDS/TMDS transmitter (set by BIOS)&n;   [3:1] External chip&n;         300 series:&n;&t;    001   SiS301 (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Tumpion Zurac&n;&t;    100   LVDS + Chrontel 7005&n;&t;    110   Chrontel 7005&n;&t;  310/325 series&n;&t;    001   SiS30x (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Chrontel 7019&n;&t;  All other combinations reserved&n;   [4]    LVDS: 0: Panel Link expands / 1: Panel Link does not expand&n;          30x:  0: Bridge scales      / 1: Bridge does not scale = Panel scales (if possible)&n;   [5]    LCD polarity select&n;          0: VESA DMT Standard&n;&t;  1: EDID 2.x defined&n;   [6]    LCD horizontal polarity select&n;          0: High active&n;&t;  1: Low active&n;   [7]    LCD vertical polarity select&n;          0: High active&n;&t;  1: Low active&n;*/
+multiline_comment|/* CR35 (661 series only)&n;&n;   [0]    1 = PAL, 0 = NTSC&n;   [1]    1 = NTSC-J (if D0 = 0)&n;   [2]    1 = PALM (if D0 = 1)&n;   [3]    1 = PALN (if D0 = 1)&n;   [4]    1 = Overscan (Chrontel only)&n;   [7:5]  (only if D2 in CR38 is set)&n;          000  525i&n; &t;  001  525p&n;&t;  010  750p&n;&t;  011  1080i (or HiVision on 301, 301B)&n;&n;   These bits are being translated to TVMode flag.&n;&n;*/
+multiline_comment|/*&n;   CR37&n;&n;   [0]   Set 24/18 bit (0/1) RGB to LVDS/TMDS transmitter (set by BIOS)&n;   [3:1] External chip&n;         300 series:&n;&t;    001   SiS301 (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Tumpion Zurac&n;&t;    100   LVDS + Chrontel 7005&n;&t;    110   Chrontel 7005&n;&t;  315/330 series&n;&t;    001   SiS30x (never seen)&n;&t;    010   LVDS&n;&t;    011   LVDS + Chrontel 7019&n;&t;  660 series [2:1] only:&n;&t;     reserved (now in CR38)&n;&t;  All other combinations reserved&n;   [3]    661 only: Pass 1:1 data&n;   [4]    LVDS: 0: Panel Link expands / 1: Panel Link does not expand&n;          30x:  0: Bridge scales      / 1: Bridge does not scale = Panel scales (if possible)&n;   [5]    LCD polarity select&n;          0: VESA DMT Standard&n;&t;  1: EDID 2.x defined&n;   [6]    LCD horizontal polarity select&n;          0: High active&n;&t;  1: Low active&n;   [7]    LCD vertical polarity select&n;          0: High active&n;&t;  1: Low active&n;*/
 multiline_comment|/* CR37: LCDInfo */
 DECL|macro|LCDRGB18Bit
 mdefine_line|#define LCDRGB18Bit           0x0001
 DECL|macro|LCDNonExpanding
 mdefine_line|#define LCDNonExpanding       0x0010
+DECL|macro|LCDSync
+mdefine_line|#define LCDSync               0x0020
+DECL|macro|LCDPass11
+mdefine_line|#define LCDPass11             0x0100
+DECL|macro|LCDDualLink
+mdefine_line|#define LCDDualLink&t;      0x0200
 DECL|macro|DontExpandLCD
 mdefine_line|#define DontExpandLCD&t;      LCDNonExpanding
 DECL|macro|LCDNonExpandingShift
 mdefine_line|#define LCDNonExpandingShift       4
 DECL|macro|DontExpandLCDShift
 mdefine_line|#define DontExpandLCDShift    LCDNonExpandingShift
-DECL|macro|LCDSync
-mdefine_line|#define LCDSync               0x0020
-DECL|macro|LCDPass11
-mdefine_line|#define LCDPass11             0x0100 
 DECL|macro|LCDSyncBit
 mdefine_line|#define LCDSyncBit            0x00e0
 DECL|macro|LCDSyncShift
 mdefine_line|#define LCDSyncShift               6
-multiline_comment|/* CR38 (310/325 series) */
+multiline_comment|/* CR38 (315 series) */
 DECL|macro|EnableDualEdge
-mdefine_line|#define EnableDualEdge &t;&t;0x01   
+mdefine_line|#define EnableDualEdge &t;&t;0x01
 DECL|macro|SetToLCDA
-mdefine_line|#define SetToLCDA&t;&t;0x02   /* LCD channel A (302B/LV and 650+LVDS only) */
-DECL|macro|EnableSiSHiVision
-mdefine_line|#define EnableSiSHiVision       0x04   /* HiVision (HDTV) on SiS bridge */
-DECL|macro|EnableLVDSScart
-mdefine_line|#define EnableLVDSScart         0x04   /* Scart on Ch7019 (unofficial definition - TW) */
-DECL|macro|EnableLVDSHiVision
-mdefine_line|#define EnableLVDSHiVision      0x08   /* YPbPr color format (480i HDTV); only on 650/Ch7019 systems */
-DECL|macro|SiSHiVision1
-mdefine_line|#define SiSHiVision1            0x10   /* See SetHiVision() */
-DECL|macro|SiSHiVision2
-mdefine_line|#define SiSHiVision2            0x20
+mdefine_line|#define SetToLCDA&t;&t;0x02   /* LCD channel A (301C/302B/30x(E)LV and 650+LVDS only) */
+DECL|macro|EnableCHScart
+mdefine_line|#define EnableCHScart           0x04   /* Scart on Ch7019 (unofficial definition - TW) */
+DECL|macro|EnableCHYPbPr
+mdefine_line|#define EnableCHYPbPr           0x08   /* YPbPr on Ch7019 (480i HDTV); only on 650/Ch7019 systems */
+DECL|macro|EnableSiSYPbPr
+mdefine_line|#define EnableSiSYPbPr          0x08   /* Enable YPbPr mode (30xLV/301C only) */
+DECL|macro|EnableYPbPr525i
+mdefine_line|#define EnableYPbPr525i         0x00   /* Enable 525i YPbPr mode (30xLV/301C only) (mask 0x30) */
+DECL|macro|EnableYPbPr525p
+mdefine_line|#define EnableYPbPr525p         0x10   /* Enable 525p YPbPr mode (30xLV/301C only) (mask 0x30) */
+DECL|macro|EnableYPbPr750p
+mdefine_line|#define EnableYPbPr750p         0x20   /* Enable 750p YPbPr mode (30xLV/301C only) (mask 0x30) */
+DECL|macro|EnableYPbPr1080i
+mdefine_line|#define EnableYPbPr1080i        0x30   /* Enable 1080i YPbPr mode (30xLV/301C only) (mask 0x30) */
 DECL|macro|EnablePALM
 mdefine_line|#define EnablePALM              0x40   /* 1 = Set PALM */
 DECL|macro|EnablePALN
 mdefine_line|#define EnablePALN              0x80   /* 1 = Set PALN */
-DECL|macro|SetSCARTOutput
-mdefine_line|#define SetSCARTOutput          0x01
-DECL|macro|BoardTVType
-mdefine_line|#define BoardTVType             0x02
+DECL|macro|EnableNTSCJ
+mdefine_line|#define EnableNTSCJ             EnablePALM  /* Not BIOS */
+multiline_comment|/* CR38 (661 and later)&n;  D[7:5]  000 No VB&n;          001 301 series VB&n;&t;  010 LVDS&n;&t;  011 Chrontel 7019&n;&t;  100 Conexant&n;  D2      Enable YPbPr output (see CR35)&n;  D[1:0]  LCDA (like before)&n;*/
 DECL|macro|EnablePALMN
 mdefine_line|#define EnablePALMN             0x40   /* Romflag: 1 = Allow PALM/PALN */
-multiline_comment|/* CR39 (650) */
+multiline_comment|/* CR39 (650 only) */
 DECL|macro|LCDPass1_1
 mdefine_line|#define LCDPass1_1&t;&t;0x01   /* LVDS only; set by driver to pass 1:1 data to LVDS output  */
 DECL|macro|Enable302LV_DualLink
-mdefine_line|#define Enable302LV_DualLink    0x04   /* 30xNEW (302LV) only; set by mode switching function */
-multiline_comment|/* CR79 (310/325 series only)&n;   [3-0] Notify driver&n;         0001 Mode Switch event (set by BIOS)&n;&t; 0010 Epansion On/Off event&n;&t; 0011 TV UnderScan/OverScan event&n;&t; 0100 Set Brightness event&n;&t; 0101 Set Contrast event&n;&t; 0110 Set Mute event&n;&t; 0111 Set Volume Up/Down event&n;   [4]   Enable Backlight Control by BIOS/driver &n;         (set by driver; set means that the BIOS should&n;&t; not touch the backlight registers because eg.&n;&t; the driver already switched off the backlight)&n;   [5]   PAL/NTSC (set by BIOS)&n;   [6]   Expansion On/Off (set by BIOS; copied to CR32[4])&n;   [7]   TV UnderScan/OverScan (set by BIOS)&n;*/
-multiline_comment|/* SetFlag */
-DECL|macro|ProgrammingCRT2
-mdefine_line|#define ProgrammingCRT2         0x01
-DECL|macro|TVSimuMode
-mdefine_line|#define TVSimuMode              0x02
-DECL|macro|RPLLDIV2XO
-mdefine_line|#define RPLLDIV2XO              0x04
-DECL|macro|LCDVESATiming
-mdefine_line|#define LCDVESATiming           0x08
-DECL|macro|EnableLVDSDDA
-mdefine_line|#define EnableLVDSDDA           0x10
-DECL|macro|SetDispDevSwitchFlag
-mdefine_line|#define SetDispDevSwitchFlag    0x20
-DECL|macro|CheckWinDos
-mdefine_line|#define CheckWinDos             0x40
-DECL|macro|SetDOSMode
-mdefine_line|#define SetDOSMode              0x80
+mdefine_line|#define Enable302LV_DualLink    0x04   /* 302LV only; enable dual link */
+multiline_comment|/* CR39 (661 and later)&n;   D[1:0] YPbPr Aspect Ratio&n;          00 4:3 letterbox&n;&t;  01 4:3&n;&t;  10 16:9&n;&t;  11 4:3&n;*/
+multiline_comment|/* CR3B (651+301C)&n;   D[1:0] YPbPr Aspect Ratio&n;          ?&n;*/
+multiline_comment|/* CR79 (315/330 series only; not 661 and later)&n;   [3-0] Notify driver&n;         0001 Mode Switch event (set by BIOS)&n;&t; 0010 Epansion On/Off event&n;&t; 0011 TV UnderScan/OverScan event&n;&t; 0100 Set Brightness event&n;&t; 0101 Set Contrast event&n;&t; 0110 Set Mute event&n;&t; 0111 Set Volume Up/Down event&n;   [4]   Enable Backlight Control by BIOS/driver &n;         (set by driver; set means that the BIOS should&n;&t; not touch the backlight registers because eg.&n;&t; the driver already switched off the backlight)&n;   [5]   PAL/NTSC (set by BIOS)&n;   [6]   Expansion On/Off (set by BIOS; copied to CR32[4])&n;   [7]   TV UnderScan/OverScan (set by BIOS)&n;*/
 multiline_comment|/* LCDResInfo */
 DECL|macro|Panel300_800x600
 mdefine_line|#define Panel300_800x600        0x01&t;/* CR36 */
@@ -270,8 +333,14 @@ DECL|macro|Panel300_1024x600
 mdefine_line|#define Panel300_1024x600       0x06
 DECL|macro|Panel300_1152x768
 mdefine_line|#define Panel300_1152x768       0x07
+DECL|macro|Panel300_1280x768
+mdefine_line|#define Panel300_1280x768       0x0a
 DECL|macro|Panel300_320x480
-mdefine_line|#define Panel300_320x480        0x08 &t;/* fstn - TW: This is fake, can be any */
+mdefine_line|#define Panel300_320x480        0x0e &t;/* fstn - TW: This is fake, can be any */
+DECL|macro|Panel300_Custom
+mdefine_line|#define Panel300_Custom&t;&t;0x0f
+DECL|macro|Panel300_Barco1366
+mdefine_line|#define Panel300_Barco1366      0x10
 DECL|macro|Panel310_800x600
 mdefine_line|#define Panel310_800x600        0x01
 DECL|macro|Panel310_1024x768
@@ -291,11 +360,17 @@ mdefine_line|#define Panel310_1152x768       0x08&t;/* LVDS only */
 DECL|macro|Panel310_1400x1050
 mdefine_line|#define Panel310_1400x1050      0x09
 DECL|macro|Panel310_1280x768
-mdefine_line|#define Panel310_1280x768       0x0a    /* LVDS only */
+mdefine_line|#define Panel310_1280x768       0x0a
 DECL|macro|Panel310_1600x1200
 mdefine_line|#define Panel310_1600x1200      0x0b
+DECL|macro|Panel310_640x480_2
+mdefine_line|#define Panel310_640x480_2      0x0c
+DECL|macro|Panel310_640x480_3
+mdefine_line|#define Panel310_640x480_3      0x0d
 DECL|macro|Panel310_320x480
-mdefine_line|#define Panel310_320x480        0x0c    /* fstn - TW: This is fake, can be any */
+mdefine_line|#define Panel310_320x480        0x0e    /* fstn - TW: This is fake, can be any */
+DECL|macro|Panel310_Custom
+mdefine_line|#define Panel310_Custom&t;&t;0x0f
 DECL|macro|Panel_800x600
 mdefine_line|#define Panel_800x600           0x01&t;/* Unified values */
 DECL|macro|Panel_1024x768
@@ -318,32 +393,85 @@ DECL|macro|Panel_1280x768
 mdefine_line|#define Panel_1280x768          0x0a    /* LVDS only */
 DECL|macro|Panel_1600x1200
 mdefine_line|#define Panel_1600x1200         0x0b
+DECL|macro|Panel_640x480_2
+mdefine_line|#define Panel_640x480_2&t;&t;0x0c
+DECL|macro|Panel_640x480_3
+mdefine_line|#define Panel_640x480_3&t;&t;0x0d
 DECL|macro|Panel_320x480
-mdefine_line|#define Panel_320x480           0x0c    /* fstn - TW: This is fake, can be any */
-DECL|macro|ExtChipType
-mdefine_line|#define ExtChipType             0x0e
-DECL|macro|ExtChip301
-mdefine_line|#define ExtChip301              0x02
-DECL|macro|ExtChipLVDS
-mdefine_line|#define ExtChipLVDS             0x04
-DECL|macro|ExtChipTrumpion
-mdefine_line|#define ExtChipTrumpion         0x06
-DECL|macro|ExtChipCH7005
-mdefine_line|#define ExtChipCH7005           0x08
-DECL|macro|ExtChipMitacTV
-mdefine_line|#define ExtChipMitacTV          0x0a    /* TW: Incorrect, 0x0a = Chrontel 7005 only */
+mdefine_line|#define Panel_320x480           0x0e    /* fstn - TW: This is fake, can be any */
+DECL|macro|Panel_Custom
+mdefine_line|#define Panel_Custom&t;&t;0x0f
+DECL|macro|Panel_Barco1366
+mdefine_line|#define Panel_Barco1366         0x10
+DECL|macro|Panel_848x480
+mdefine_line|#define Panel_848x480&t;&t;0x11
+DECL|macro|Panel_1280x800
+mdefine_line|#define Panel_1280x800&t;&t;0x12    /* 661etc: 0x0c */
+DECL|macro|Panel_1680x1050
+mdefine_line|#define Panel_1680x1050         0x13    /* 661etc: 0x0d */
+multiline_comment|/* Index in ModeResInfo table */
+DECL|macro|SIS_RI_320x200
+mdefine_line|#define SIS_RI_320x200    0
+DECL|macro|SIS_RI_320x240
+mdefine_line|#define SIS_RI_320x240    1
+DECL|macro|SIS_RI_320x400
+mdefine_line|#define SIS_RI_320x400    2
+DECL|macro|SIS_RI_400x300
+mdefine_line|#define SIS_RI_400x300    3
+DECL|macro|SIS_RI_512x384
+mdefine_line|#define SIS_RI_512x384    4
+DECL|macro|SIS_RI_640x400
+mdefine_line|#define SIS_RI_640x400    5
+DECL|macro|SIS_RI_640x480
+mdefine_line|#define SIS_RI_640x480    6
+DECL|macro|SIS_RI_800x600
+mdefine_line|#define SIS_RI_800x600    7
+DECL|macro|SIS_RI_1024x768
+mdefine_line|#define SIS_RI_1024x768   8
+DECL|macro|SIS_RI_1280x1024
+mdefine_line|#define SIS_RI_1280x1024  9
+DECL|macro|SIS_RI_1600x1200
+mdefine_line|#define SIS_RI_1600x1200 10
+DECL|macro|SIS_RI_1920x1440
+mdefine_line|#define SIS_RI_1920x1440 11
+DECL|macro|SIS_RI_2048x1536
+mdefine_line|#define SIS_RI_2048x1536 12
+DECL|macro|SIS_RI_720x480
+mdefine_line|#define SIS_RI_720x480   13
+DECL|macro|SIS_RI_720x576
+mdefine_line|#define SIS_RI_720x576   14
+DECL|macro|SIS_RI_1280x960
+mdefine_line|#define SIS_RI_1280x960  15
+DECL|macro|SIS_RI_800x480
+mdefine_line|#define SIS_RI_800x480   16
+DECL|macro|SIS_RI_1024x576
+mdefine_line|#define SIS_RI_1024x576  17
+DECL|macro|SIS_RI_1280x720
+mdefine_line|#define SIS_RI_1280x720  18
+DECL|macro|SIS_RI_856x480
+mdefine_line|#define SIS_RI_856x480   19
+DECL|macro|SIS_RI_1280x768
+mdefine_line|#define SIS_RI_1280x768  20
+DECL|macro|SIS_RI_1400x1050
+mdefine_line|#define SIS_RI_1400x1050 21
+DECL|macro|SIS_RI_1152x864
+mdefine_line|#define SIS_RI_1152x864  22  /* Up to this SiS conforming */
+DECL|macro|SIS_RI_848x480
+mdefine_line|#define SIS_RI_848x480   23
+DECL|macro|SIS_RI_1360x768
+mdefine_line|#define SIS_RI_1360x768  24
+DECL|macro|SIS_RI_1024x600
+mdefine_line|#define SIS_RI_1024x600  25
+DECL|macro|SIS_RI_1152x768
+mdefine_line|#define SIS_RI_1152x768  26
+DECL|macro|SIS_RI_768x576
+mdefine_line|#define SIS_RI_768x576   27
+DECL|macro|SIS_RI_1360x1024
+mdefine_line|#define SIS_RI_1360x1024 28
+multiline_comment|/* CR5F */
 DECL|macro|IsM650
-mdefine_line|#define IsM650                  0x80   &t;/* TW: CR5F */
-DECL|macro|LCDDataLen
-mdefine_line|#define LCDDataLen              8
-DECL|macro|HiTVDataLen
-mdefine_line|#define HiTVDataLen             12
-DECL|macro|TVDataLen
-mdefine_line|#define TVDataLen               16
-DECL|macro|SetPALTV
-mdefine_line|#define SetPALTV                0x0100
-DECL|macro|HalfDCLK
-mdefine_line|#define HalfDCLK                0x1000  /* modeflag */
+mdefine_line|#define IsM650                  0x80
+multiline_comment|/* Timing data */
 DECL|macro|NTSCHT
 mdefine_line|#define NTSCHT                  1716
 DECL|macro|NTSC2HT
@@ -366,60 +494,68 @@ DECL|macro|ExtHiTVHT
 mdefine_line|#define ExtHiTVHT               2100
 DECL|macro|ExtHiTVVT
 mdefine_line|#define ExtHiTVVT               1125
-DECL|macro|VCLKStartFreq
-mdefine_line|#define VCLKStartFreq           25
-DECL|macro|SoftDramType
-mdefine_line|#define SoftDramType            0x80
+multiline_comment|/* Indices in (VB)VCLKData tables */
+DECL|macro|VCLK28
+mdefine_line|#define VCLK28                  0x00   /* Index in VCLKData table (300 and 315) */
 DECL|macro|VCLK40
-mdefine_line|#define VCLK40                  0x04   /* Index in VCLKData array */
-DECL|macro|VCLK65
-mdefine_line|#define VCLK65                  0x09   /* Index in VCLKData array */
-DECL|macro|VCLK108_2
-mdefine_line|#define VCLK108_2               0x14   /* Index in VCLKData array */
+mdefine_line|#define VCLK40                  0x04   /* Index in VCLKData table (300 and 315) */
+DECL|macro|VCLK65_300
+mdefine_line|#define VCLK65_300              0x09   /* Index in VCLKData table (300) */
+DECL|macro|VCLK108_2_300
+mdefine_line|#define VCLK108_2_300           0x14   /* Index in VCLKData table (300) */
+DECL|macro|VCLK81_300
+mdefine_line|#define VCLK81_300&t;&t;0x3f   /* Index in VCLKData table (300) */
+DECL|macro|VCLK108_3_300
+mdefine_line|#define VCLK108_3_300           0x42   /* Index in VCLKData table (300) */
+DECL|macro|VCLK100_300
+mdefine_line|#define VCLK100_300             0x43   /* Index in VCLKData table (300) */
+DECL|macro|VCLK34_300
+mdefine_line|#define VCLK34_300              0x3d   /* Index in VCLKData table (300) */
+DECL|macro|VCLK65_315
+mdefine_line|#define VCLK65_315              0x0b   /* Index in (VB)VCLKData table (315) */
+DECL|macro|VCLK108_2_315
+mdefine_line|#define VCLK108_2_315           0x19   /* Index in (VB)VCLKData table (315) */
+DECL|macro|VCLK81_315
+mdefine_line|#define VCLK81_315&t;&t;0x5b   /* Index in (VB)VCLKData table (315) */
+DECL|macro|VCLK162_315
+mdefine_line|#define VCLK162_315             0x21   /* Index in (VB)VCLKData table (315) */
+DECL|macro|VCLK108_3_315
+mdefine_line|#define VCLK108_3_315           0x45   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK100_315
+mdefine_line|#define VCLK100_315             0x46   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK34_315
+mdefine_line|#define VCLK34_315              0x55   /* Index in VBVCLKData table (315) */
+DECL|macro|VCLK68_315
+mdefine_line|#define VCLK68_315&t;&t;0x0d
+DECL|macro|TVCLKBASE_300
+mdefine_line|#define TVCLKBASE_300&t;&t;0x21   /* Indices on TV clocks in VCLKData table (300) */
+DECL|macro|TVCLKBASE_315
+mdefine_line|#define TVCLKBASE_315&t;        0x3a   /* Indices on TV clocks in (VB)VCLKData table (315) */
 DECL|macro|TVVCLKDIV2
-mdefine_line|#define TVVCLKDIV2              0x21   /* Indices in (VB)VCLKData arrays */
+mdefine_line|#define TVVCLKDIV2              0x00   /* Index relative to TVCLKBASE */
 DECL|macro|TVVCLK
-mdefine_line|#define TVVCLK                  0x22
+mdefine_line|#define TVVCLK                  0x01   /* Index relative to TVCLKBASE */
 DECL|macro|HiTVVCLKDIV2
-mdefine_line|#define HiTVVCLKDIV2            0x23
+mdefine_line|#define HiTVVCLKDIV2            0x02   /* Index relative to TVCLKBASE */
 DECL|macro|HiTVVCLK
-mdefine_line|#define HiTVVCLK                0x24
+mdefine_line|#define HiTVVCLK                0x03   /* Index relative to TVCLKBASE */
 DECL|macro|HiTVSimuVCLK
-mdefine_line|#define HiTVSimuVCLK            0x25
+mdefine_line|#define HiTVSimuVCLK            0x04   /* Index relative to TVCLKBASE */
 DECL|macro|HiTVTextVCLK
-mdefine_line|#define HiTVTextVCLK            0x26
-DECL|macro|LoadDACFlag
-mdefine_line|#define LoadDACFlag             0x1000
-DECL|macro|AfterLockCRT2
-mdefine_line|#define AfterLockCRT2           0x4000
-DECL|macro|SetCRT2ToAVIDEO
-mdefine_line|#define SetCRT2ToAVIDEO         0x0004
-DECL|macro|SetCRT2ToSCART
-mdefine_line|#define SetCRT2ToSCART          0x0010
-DECL|macro|Ext2StructSize
-mdefine_line|#define Ext2StructSize          5
+mdefine_line|#define HiTVTextVCLK            0x05   /* Index relative to TVCLKBASE */
+DECL|macro|YPbPr750pVCLK
+mdefine_line|#define YPbPr750pVCLK&t;&t;0x0f   /* NOT relative to TVCLKBASE ! */
+multiline_comment|/* ------------------------------ */
 DECL|macro|SetSCARTOutput
 mdefine_line|#define SetSCARTOutput          0x01
-DECL|macro|AVIDEOSense
-mdefine_line|#define AVIDEOSense             0x01
-DECL|macro|SVIDEOSense
-mdefine_line|#define SVIDEOSense             0x02
-DECL|macro|SCARTSense
-mdefine_line|#define SCARTSense              0x04
-DECL|macro|LCDSense
-mdefine_line|#define LCDSense                0x08
-DECL|macro|Monitor1Sense
-mdefine_line|#define Monitor1Sense           0x20
-DECL|macro|Monitor2Sense
-mdefine_line|#define Monitor2Sense           0x10
-DECL|macro|HiTVSense
-mdefine_line|#define HiTVSense               0x40
-DECL|macro|BoardTVType
-mdefine_line|#define BoardTVType             0x02
 DECL|macro|HotPlugFunction
 mdefine_line|#define HotPlugFunction         0x08
 DECL|macro|StStructSize
 mdefine_line|#define StStructSize            0x06
+DECL|macro|SIS_VIDEO_CAPTURE
+mdefine_line|#define SIS_VIDEO_CAPTURE       0x00 - 0x30
+DECL|macro|SIS_VIDEO_PLAYBACK
+mdefine_line|#define SIS_VIDEO_PLAYBACK      0x02 - 0x30
 DECL|macro|SIS_CRT2_PORT_04
 mdefine_line|#define SIS_CRT2_PORT_04        0x04 - 0x30
 DECL|macro|SIS_CRT2_PORT_10
@@ -440,10 +576,14 @@ DECL|macro|ADR_CHTVVCLKPtr
 mdefine_line|#define ADR_CHTVVCLKPtr         0x216
 DECL|macro|ADR_CHTVRegDataPtr
 mdefine_line|#define ADR_CHTVRegDataPtr      0x218
+DECL|macro|LCDDataLen
+mdefine_line|#define LCDDataLen              8
+DECL|macro|HiTVDataLen
+mdefine_line|#define HiTVDataLen             12
+DECL|macro|TVDataLen
+mdefine_line|#define TVDataLen               16
 DECL|macro|LVDSDataLen
 mdefine_line|#define LVDSDataLen             6
-DECL|macro|EnableLVDSDDA
-mdefine_line|#define EnableLVDSDDA           0x10
 DECL|macro|LVDSDesDataLen
 mdefine_line|#define LVDSDesDataLen          3
 DECL|macro|ActiveNonExpanding
@@ -462,8 +602,6 @@ DECL|macro|SoftSettingAddr
 mdefine_line|#define SoftSettingAddr         0x52
 DECL|macro|ModeSettingAddr
 mdefine_line|#define ModeSettingAddr         0x53
-DECL|macro|SelectCRT1Rate
-mdefine_line|#define SelectCRT1Rate          0x4
 DECL|macro|_PanelType00
 mdefine_line|#define _PanelType00             0x00
 DECL|macro|_PanelType01
@@ -499,7 +637,7 @@ mdefine_line|#define _PanelType0F             0x78
 DECL|macro|PRIMARY_VGA
 mdefine_line|#define PRIMARY_VGA       &t;0     /* 1: SiS is primary vga 0:SiS is secondary vga */
 DECL|macro|BIOSIDCodeAddr
-mdefine_line|#define BIOSIDCodeAddr          0x235  /* TW: Offsets to ptrs in BIOS image */
+mdefine_line|#define BIOSIDCodeAddr          0x235  /* Offsets to ptrs in BIOS image */
 DECL|macro|OEMUtilIDCodeAddr
 mdefine_line|#define OEMUtilIDCodeAddr       0x237
 DECL|macro|VBModeIDTableAddr
@@ -570,7 +708,7 @@ DECL|macro|OEMTVFilterEnable
 mdefine_line|#define OEMTVFilterEnable       0x1000
 DECL|macro|OEMLCDPanelIDSupport
 mdefine_line|#define OEMLCDPanelIDSupport    0x0080
-multiline_comment|/*&n;  =============================================================&n;   &t;&t;&t;for 310/325 series&n;  =============================================================&n;*/
+multiline_comment|/*&n;  =============================================================&n;   &t;&t;&t;  for 315 series&n;  =============================================================&n;*/
 DECL|macro|SoftDRAMType
 mdefine_line|#define SoftDRAMType        0x80
 DECL|macro|SoftSetting_OFFSET

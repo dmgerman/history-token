@@ -4035,10 +4035,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x %08Zx %08x %08x(%02x) %08x %08x&bslash;n&quot;
+l_string|&quot;%02x %08llx %08x %08x(%02x) %08x %08x&bslash;n&quot;
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|np-&gt;tx_ring_dma
 op_plus
 id|i
@@ -4891,11 +4896,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -8033,10 +8033,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x %08Zx %08x %08x(%02x) %08x %08x&bslash;n&quot;
+l_string|&quot;%02x %08llx %08x %08x(%02x) %08x %08x&bslash;n&quot;
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|np-&gt;tx_ring_dma
 op_plus
 id|i

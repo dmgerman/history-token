@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/ppc64/kernel/ptrace-common.h&n; *&n; *    Copyright (c) 2002 Stephen Rothwell, IBM Coproration&n; *    Extracted from ptrace.c and ptrace32.c&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file README.legal in the main directory of&n; * this archive for more details.&n; */
+macro_line|#ifndef _PPC64_PTRACE_COMMON_H
+DECL|macro|_PPC64_PTRACE_COMMON_H
+mdefine_line|#define _PPC64_PTRACE_COMMON_H
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
 DECL|macro|MSR_DEBUGCHANGE
 mdefine_line|#define MSR_DEBUGCHANGE&t;(MSR_FE0 | MSR_SE | MSR_BE | MSR_FE1)
@@ -233,4 +236,5 @@ op_complement
 id|MSR_SE
 suffix:semicolon
 )brace
+macro_line|#endif /* _PPC64_PTRACE_COMMON_H */
 eof

@@ -420,8 +420,6 @@ r_return
 id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
-DECL|macro|PSEUDO_DIRENT_SIZE
-mdefine_line|#define PSEUDO_DIRENT_SIZE&t;20
 r_extern
 r_struct
 id|file_operations

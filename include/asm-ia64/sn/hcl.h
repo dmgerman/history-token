@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_HCL_H
 DECL|macro|_ASM_IA64_SN_HCL_H
 mdefine_line|#define _ASM_IA64_SN_HCL_H
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 r_extern
 id|vertex_hdl_t
@@ -89,8 +90,6 @@ DECL|macro|hwgraph_generate_path
 mdefine_line|#define hwgraph_generate_path hwgfs_generate_path
 DECL|macro|hwgraph_path_to_vertex
 mdefine_line|#define hwgraph_path_to_vertex(a) hwgfs_find_handle(NULL, a, 0, 0, 0, 1)
-DECL|macro|hwgraph_edge_remove
-mdefine_line|#define hwgraph_edge_remove(a,b,c)
 DECL|macro|hwgraph_vertex_unref
 mdefine_line|#define hwgraph_vertex_unref(a)
 multiline_comment|/*&n; * External declarations of EXPORTED SYMBOLS in hcl.c&n; */

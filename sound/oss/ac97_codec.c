@@ -7314,7 +7314,7 @@ c_func
 id|ac97_register_driver
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ac97_unregister_driver&t;-&t;unregister a codec helper&n; *&t;@driver: Driver handler&n; *&n; *&t;Register a handler for codecs matching the codec id. The handler&n; *&t;attach function is called for all present codecs and will be &n; *&t;called when new codecs are discovered.&n; */
+multiline_comment|/**&n; *&t;ac97_unregister_driver&t;-&t;unregister a codec helper&n; *&t;@driver: Driver handler&n; *&n; *&t;Unregister a handler for codecs matching the codec id. The handler&n; *&t;remove function is called for all matching codecs.&n; */
 DECL|function|ac97_unregister_driver
 r_void
 id|ac97_unregister_driver
@@ -7390,11 +7390,11 @@ comma
 id|driver
 )paren
 suffix:semicolon
-)brace
 id|c-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 id|up
 c_func

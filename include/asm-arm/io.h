@@ -254,6 +254,12 @@ DECL|macro|readw
 mdefine_line|#define readw(c) ({ unsigned int __v = le16_to_cpu(__raw_readw(__mem_pci(c))); __v; })
 DECL|macro|readl
 mdefine_line|#define readl(c) ({ unsigned int __v = le32_to_cpu(__raw_readl(__mem_pci(c))); __v; })
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|readsb
 mdefine_line|#define readsb(p,d,l)&t;&t;__raw_readsb((unsigned int)__mem_pci(p),d,l)
 DECL|macro|readsw

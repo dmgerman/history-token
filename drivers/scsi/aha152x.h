@@ -1,12 +1,12 @@
 macro_line|#ifndef _AHA152X_H
 DECL|macro|_AHA152X_H
 mdefine_line|#define _AHA152X_H
-multiline_comment|/*&n; * $Id: aha152x.h,v 2.5 2002/04/14 11:24:12 fischer Exp $&n; */
+multiline_comment|/*&n; * $Id: aha152x.h,v 2.7 2004/01/24 11:39:03 fischer Exp $&n; */
 multiline_comment|/* number of queueable commands&n;   (unless we support more than 1 cmd_per_lun this should do) */
 DECL|macro|AHA152X_MAXQUEUE
 mdefine_line|#define AHA152X_MAXQUEUE 7
 DECL|macro|AHA152X_REVID
-mdefine_line|#define AHA152X_REVID &quot;Adaptec 152x SCSI driver; $Revision: 2.5 $&quot;
+mdefine_line|#define AHA152X_REVID &quot;Adaptec 152x SCSI driver; $Revision: 2.7 $&quot;
 multiline_comment|/* port addresses */
 DECL|macro|SCSISEQ
 mdefine_line|#define SCSISEQ      (HOSTIOPORT0+0x00)    /* SCSI sequence control */
@@ -652,12 +652,20 @@ id|aha152x_setup
 op_star
 )paren
 suffix:semicolon
+r_void
+id|aha152x_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 r_int
 id|aha152x_host_reset
 c_func
 (paren
-r_struct
-id|scsi_cmnd
+id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon

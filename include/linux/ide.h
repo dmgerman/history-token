@@ -363,7 +363,10 @@ comma
 id|ide_acorn
 comma
 DECL|enumerator|ide_pc9800
+DECL|enumerator|ide_forced
 id|ide_pc9800
+comma
+id|ide_forced
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
@@ -4345,16 +4348,6 @@ id|ide_hwifs
 suffix:semicolon
 multiline_comment|/* master data repository */
 r_extern
-r_int
-(paren
-op_star
-id|ide_probe
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 id|ide_devices_t
 op_star
 id|idedisk
@@ -4786,7 +4779,6 @@ DECL|typedef|pkt_task_t
 id|pkt_task_t
 suffix:semicolon
 r_extern
-r_inline
 id|u32
 id|ide_read_24
 c_func
@@ -4796,7 +4788,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_DRIVE
 c_func
@@ -4806,7 +4797,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_INTERRUPT
 c_func
@@ -4816,7 +4806,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_MASK
 c_func
@@ -4828,7 +4817,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|QUIRK_LIST
 c_func

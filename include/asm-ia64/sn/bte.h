@@ -5,8 +5,7 @@ mdefine_line|#define _ASM_IA64_SN_BTE_H
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/sn/types.h&gt;
 multiline_comment|/* #define BTE_DEBUG */
 multiline_comment|/* #define BTE_DEBUG_VERBOSE */
 macro_line|#ifdef BTE_DEBUG
