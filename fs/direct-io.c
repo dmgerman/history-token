@@ -1807,6 +1807,18 @@ op_eq
 id|dio-&gt;cur_page_len
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Decrement count only, if we are done with this page&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dio-&gt;cur_page_len
+op_plus
+id|dio-&gt;cur_page_offset
+)paren
+op_eq
+id|PAGE_SIZE
+)paren
 id|dio-&gt;pages_in_io
 op_decrement
 suffix:semicolon
