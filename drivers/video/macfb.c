@@ -2907,6 +2907,18 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* XXX: I think this will catch any program that tries&n;&t;&t;   to do FBIO_PUTCMAP when the visual is monochrome */
+id|macfb_defined.red.length
+op_assign
+id|macfb_defined.bits_per_pixel
+suffix:semicolon
+id|macfb_defined.green.length
+op_assign
+id|macfb_defined.bits_per_pixel
+suffix:semicolon
+id|macfb_defined.blue.length
+op_assign
+id|macfb_defined.bits_per_pixel
+suffix:semicolon
 id|video_cmap_len
 op_assign
 l_int|0
