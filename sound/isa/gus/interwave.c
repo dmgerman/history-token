@@ -1248,10 +1248,19 @@ id|iwcard-&gt;i2c_res
 op_eq
 l_int|NULL
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;interwave: can&squot;t grab i2c bus port&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|sprintf
 c_func
 (paren

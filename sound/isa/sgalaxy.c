@@ -765,10 +765,21 @@ comma
 l_int|NULL
 )paren
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sgalaxy: can&squot;t grab irq %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 id|outb
 c_func
 (paren

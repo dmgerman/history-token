@@ -1552,6 +1552,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opl3: can&squot;t grab left port 0x%lx&bslash;n&quot;
+comma
+id|l_port
+)paren
+suffix:semicolon
 id|snd_opl3_free
 c_func
 (paren
@@ -1587,6 +1596,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opl3: can&squot;t grab right port 0x%lx&bslash;n&quot;
+comma
+id|r_port
+)paren
+suffix:semicolon
 id|snd_opl3_free
 c_func
 (paren

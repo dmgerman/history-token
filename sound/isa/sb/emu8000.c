@@ -6588,6 +6588,19 @@ l_string|&quot;Emu8000-3&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sbawe: can&squot;t grab ports 0x%lx, 0x%lx, 0x%lx&bslash;n&quot;
+comma
+id|hw-&gt;port1
+comma
+id|hw-&gt;port2
+comma
+id|hw-&gt;port3
+)paren
+suffix:semicolon
 id|snd_emu8000_free
 c_func
 (paren

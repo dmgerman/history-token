@@ -1018,6 +1018,15 @@ id|chip
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sb: can&squot;t grab irq %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|snd_sbdsp_free
 c_func
 (paren
@@ -1063,6 +1072,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sb: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|snd_sbdsp_free
 c_func
 (paren
@@ -1091,6 +1109,15 @@ l_string|&quot;SoundBlaster - 8bit&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sb: can&squot;t grab DMA8 %d&bslash;n&quot;
+comma
+id|dma8
+)paren
+suffix:semicolon
 id|snd_sbdsp_free
 c_func
 (paren
@@ -1148,6 +1175,15 @@ l_string|&quot;SoundBlaster - 16bit&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sb: can&squot;t grab DMA16 %d&bslash;n&quot;
+comma
+id|dma16
+)paren
+suffix:semicolon
 id|snd_sbdsp_free
 c_func
 (paren

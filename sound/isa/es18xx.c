@@ -7363,10 +7363,22 @@ l_string|&quot;ES18xx - CTRL&quot;
 op_eq
 l_int|NULL
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;unable go grab port 0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;ctrl_port
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -2201,6 +2201,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mpu401_uart: unable to grab port 0x%lx size %d&bslash;n&quot;
+comma
+id|port
+comma
+id|res_size
+)paren
+suffix:semicolon
 id|snd_device_free
 c_func
 (paren
@@ -2306,7 +2317,8 @@ id|mpu
 id|snd_printk
 c_func
 (paren
-l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mpu401_uart: unable to grab IRQ %d&bslash;n&quot;
 comma
 id|irq
 )paren

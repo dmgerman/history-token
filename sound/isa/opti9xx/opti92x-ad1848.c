@@ -5701,6 +5701,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;wss_base
+op_plus
+l_int|4
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5724,6 +5735,15 @@ l_string|&quot;OPTI93x - 1&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab DMA1 %d&bslash;n&quot;
+comma
+id|dma1
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5751,6 +5771,15 @@ l_string|&quot;OPTI93x - 2&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab DMA2 %d&bslash;n&quot;
+comma
+id|dma2
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5785,6 +5814,15 @@ id|codec
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|chip-&gt;irq
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren

@@ -4307,6 +4307,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sscape: can&squot;t grab port 0x%x&bslash;n&quot;
+comma
+id|params-&gt;port
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -4331,6 +4340,15 @@ OL
 l_int|0
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sscape: can&squot;t grab DMA %d&bslash;n&quot;
+comma
+id|params-&gt;dma1
+)paren
+suffix:semicolon
 r_goto
 id|_release_region
 suffix:semicolon

@@ -1214,10 +1214,21 @@ l_string|&quot;OPL3-SA control&quot;
 op_eq
 l_int|NULL
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opl3sa2: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 singleline_comment|// snd_printk(&quot;REG 0A = 0x%x&bslash;n&quot;, snd_opl3sa2_read(chip, 0x0a));
 id|chip-&gt;version
 op_assign
@@ -4617,6 +4628,15 @@ id|chip
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opl3sa2: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|xirq
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus

@@ -1462,10 +1462,21 @@ id|uart-&gt;res_base
 op_eq
 l_int|NULL
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;u16550: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|io_base
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 id|ok
 op_assign
 l_int|1
