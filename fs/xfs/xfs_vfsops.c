@@ -1887,12 +1887,12 @@ id|VFS_DMI
 (brace
 id|error
 op_assign
-id|XFS_SEND_NAMESP
+id|XFS_SEND_PREUNMOUNT
 c_func
 (paren
 id|mp
 comma
-id|DM_EVENT_PREUNMOUNT
+id|vfsp
 comma
 id|rvp
 comma

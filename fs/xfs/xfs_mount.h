@@ -235,6 +235,10 @@ id|xfs_send_namesp_t
 id|dm_eventtype_t
 comma
 r_struct
+id|vfs
+op_star
+comma
+r_struct
 id|vnode
 op_star
 comma
@@ -320,7 +324,9 @@ mdefine_line|#define XFS_SEND_MMAP(mp, vma,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops
 DECL|macro|XFS_SEND_DESTROY
 mdefine_line|#define XFS_SEND_DESTROY(mp, vp,right) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_destroy)(vp,right)
 DECL|macro|XFS_SEND_NAMESP
-mdefine_line|#define XFS_SEND_NAMESP(mp, ev,b1,r1,b2,r2,n1,n2,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_namesp)(ev,b1,r1,b2,r2,n1,n2,mode,rval,fl)
+mdefine_line|#define XFS_SEND_NAMESP(mp, ev,b1,r1,b2,r2,n1,n2,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_namesp)(ev,NULL,b1,r1,b2,r2,n1,n2,mode,rval,fl)
+DECL|macro|XFS_SEND_PREUNMOUNT
+mdefine_line|#define XFS_SEND_PREUNMOUNT(mp, vfs,b1,r1,b2,r2,n1,n2,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_namesp)(DM_EVENT_PREUNMOUNT,vfs,b1,r1,b2,r2,n1,n2,mode,rval,fl)
 DECL|macro|XFS_SEND_UNMOUNT
 mdefine_line|#define XFS_SEND_UNMOUNT(mp, vfsp,vp,right,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_unmount)(vfsp,vp,right,mode,rval,fl)
 multiline_comment|/*&n; * Prototypes and functions for the Quota Management subsystem.&n; */
