@@ -7,10 +7,6 @@ macro_line|#include &lt;linux/ppp-comp.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
-macro_line|#ifndef PPP_IPX
-DECL|macro|PPP_IPX
-mdefine_line|#define PPP_IPX 0x002b
-macro_line|#endif
 multiline_comment|/* Prototypes */
 r_static
 r_int
@@ -1567,49 +1563,16 @@ id|is-&gt;lp
 )paren
 (brace
 multiline_comment|/* a lp address says: this link is still up */
-id|isdn_net_dev
-op_star
-id|p
-op_assign
-id|is-&gt;lp-&gt;netdev
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: no lp-&gt;netdev&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t; * isdn_net_hangup() calls isdn_ppp_free()&n;&t;&t; * isdn_ppp_free() sets is-&gt;lp to NULL and lp-&gt;ppp_slot to -1&n;&t;&t; * removing the IPPP_CONNECT flag omits calling of isdn_ppp_wakeup_daemon()&n;&t;&t; */
 id|is-&gt;state
 op_and_assign
 op_complement
 id|IPPP_CONNECT
 suffix:semicolon
-multiline_comment|/* -&gt; effect: no call of wakeup */
-multiline_comment|/*&n;&t;&t; * isdn_net_hangup() calls isdn_ppp_free()&n;&t;&t; * isdn_ppp_free() sets is-&gt;lp to NULL and lp-&gt;ppp_slot to -1&n;&t;&t; * removing the IPPP_CONNECT flag omits calling of isdn_ppp_wakeup_daemon()&n;&t;&t; */
 id|isdn_net_hangup
 c_func
 (paren
-op_amp
-id|p-&gt;dev
+id|is-&gt;lp
 )paren
 suffix:semicolon
 )brace
@@ -9381,6 +9344,11 @@ suffix:semicolon
 id|isdn_net_local
 op_star
 id|lp
+comma
+op_star
+id|mlp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|net_device
@@ -9432,8 +9400,6 @@ c_loop
 id|sdev
 )paren
 (brace
-id|isdn_net_local
-op_star
 id|mlp
 op_assign
 (paren
@@ -9499,7 +9465,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|sdev
+id|mlp
 )paren
 suffix:semicolon
 r_return
