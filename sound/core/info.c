@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
-macro_line|#include &lt;sound/version.h&gt;
+macro_line|#include &lt;sound/utsname.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
@@ -3866,7 +3866,7 @@ r_char
 op_star
 id|kernel_version
 op_assign
-id|UTS_RELEASE
+id|system_utsname.release
 suffix:semicolon
 id|snd_iprintf
 c_func
