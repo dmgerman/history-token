@@ -117,7 +117,7 @@ id|polarity
 comma
 r_int
 r_int
-id|edge_triggered
+id|trigger
 )paren
 suffix:semicolon
 r_extern
@@ -138,7 +138,7 @@ id|polarity
 comma
 r_int
 r_int
-id|edge_triggered
+id|trigger
 )paren
 suffix:semicolon
 r_extern
@@ -167,7 +167,7 @@ id|polarity
 comma
 r_int
 r_int
-id|edge_triggered
+id|trigger
 )paren
 suffix:semicolon
 r_extern
