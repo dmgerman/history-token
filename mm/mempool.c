@@ -724,6 +724,11 @@ r_return
 id|element
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the pool is less than 50% full and we can perform effective&n;&t; * page reclaim then try harder to allocate an element.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -862,6 +867,11 @@ comma
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -912,6 +922,11 @@ id|pool
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
