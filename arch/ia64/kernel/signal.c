@@ -2536,6 +2536,18 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* start executing in first slot */
+id|ia64_psr
+c_func
+(paren
+op_amp
+id|scr-&gt;pt
+)paren
+op_member_access_from_pointer
+id|be
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* force little-endian byte-order */
 multiline_comment|/*&n;&t; * Force the interruption function mask to zero.  This has no effect when a&n;&t; * system-call got interrupted by a signal (since, in that case, scr-&gt;pt_cr_ifs is&n;&t; * ignored), but it has the desirable effect of making it possible to deliver a&n;&t; * signal with an incomplete register frame (which happens when a mandatory RSE&n;&t; * load faults).  Furthermore, it has no negative effect on the getting the user&squot;s&n;&t; * dirty partition preserved, because that&squot;s governed by scr-&gt;pt.loadrs.&n;&t; */
 id|scr-&gt;pt.cr_ifs
 op_assign
