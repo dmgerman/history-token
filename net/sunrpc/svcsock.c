@@ -3490,9 +3490,20 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;rpc-srv/tcp: %s: sent only %d bytes of %d - should shutdown socket&bslash;n&quot;
+l_string|&quot;rpc-srv/tcp: %s: %s %d when sending %d bytes - shutting down socket&bslash;n&quot;
 comma
 id|rqstp-&gt;rq_sock-&gt;sk_server-&gt;sv_name
+comma
+(paren
+id|sent
+OL
+l_int|0
+)paren
+ques
+c_cond
+l_string|&quot;got error&quot;
+suffix:colon
+l_string|&quot;sent only&quot;
 comma
 id|sent
 comma
