@@ -40,6 +40,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -3198,4 +3199,13 @@ c_func
 id|pidhash
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(__GENERIC_PER_CPU)
+DECL|variable|__per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_offset
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
