@@ -12753,7 +12753,7 @@ op_assign
 id|device_suspend
 c_func
 (paren
-id|PM_SUSPEND_MEM
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 r_if
