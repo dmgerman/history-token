@@ -12730,9 +12730,9 @@ c_func
 (paren
 l_string|&quot;rt_acct&quot;
 comma
-id|proc_net
-comma
 l_int|0
+comma
+id|proc_net
 comma
 id|ip_rt_acct_read
 comma
