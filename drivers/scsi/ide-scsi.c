@@ -1355,6 +1355,18 @@ op_star
 )paren
 id|failed_command-&gt;special
 suffix:semicolon
+id|pc-&gt;scsi_cmd
+op_assign
+(paren
+(paren
+id|idescsi_pc_t
+op_star
+)paren
+id|failed_command-&gt;special
+)paren
+op_member_access_from_pointer
+id|scsi_cmd
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4731,6 +4743,8 @@ r_if
 c_cond
 (paren
 id|scsi-&gt;pc
+op_logical_and
+id|scsi-&gt;pc-&gt;scsi_cmd
 op_logical_and
 id|scsi-&gt;pc-&gt;scsi_cmd-&gt;serial_number
 op_eq
