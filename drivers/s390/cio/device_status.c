@@ -1062,6 +1062,12 @@ id|irb-&gt;scsw.dstat
 op_amp
 id|DEV_STAT_UNIT_CHECK
 )paren
+op_logical_and
+(paren
+id|irb-&gt;scsw.dstat
+op_amp
+id|DEV_STAT_CHN_END
+)paren
 )paren
 (brace
 id|cdev
