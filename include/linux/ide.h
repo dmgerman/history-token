@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|macro|DEBUG_PM
 mdefine_line|#define DEBUG_PM
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda)         minor=0; (hdb)         minor=64&n; * Secondary i/f:  ide1: major=22; (hdc or hd1a) minor=0; (hdd or hd1b) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde)         minor=0; (hdf)         minor=64&n; * Quaternary i/f: ide3: major=34; (hdg)         minor=0; (hdh)         minor=64&n; */
@@ -1903,6 +1904,12 @@ r_struct
 id|device
 id|gendev
 suffix:semicolon
+DECL|member|gendev_rel_sem
+r_struct
+id|semaphore
+id|gendev_rel_sem
+suffix:semicolon
+multiline_comment|/* to deal with device release() */
 DECL|member|disk
 r_struct
 id|gendisk
@@ -3505,6 +3512,12 @@ r_struct
 id|device
 id|gendev
 suffix:semicolon
+DECL|member|gendev_rel_sem
+r_struct
+id|semaphore
+id|gendev_rel_sem
+suffix:semicolon
+multiline_comment|/* To deal with device release() */
 DECL|member|hwif_data
 r_void
 op_star
