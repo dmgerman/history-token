@@ -146,6 +146,11 @@ id|NUBUS_DRSW_APPLE_SN
 op_assign
 l_int|0x010f
 comma
+DECL|enumerator|NUBUS_DRSW_DAYNA2
+id|NUBUS_DRSW_DAYNA2
+op_assign
+l_int|0x0115
+comma
 DECL|enumerator|NUBUS_DRSW_FOCUS
 id|NUBUS_DRSW_FOCUS
 op_assign
@@ -157,6 +162,11 @@ op_assign
 l_int|0x011d
 comma
 multiline_comment|/* use asante SMC9194 driver */
+DECL|enumerator|NUBUS_DRSW_DAYNA_LC
+id|NUBUS_DRSW_DAYNA_LC
+op_assign
+l_int|0x011e
+comma
 multiline_comment|/* NUBUS_CAT_CPU */
 DECL|enumerator|NUBUS_DRSW_NONE
 id|NUBUS_DRSW_NONE
@@ -178,6 +188,12 @@ op_assign
 l_int|0x0001
 comma
 multiline_comment|/* Toby frame buffer card */
+DECL|enumerator|NUBUS_DRHW_APPLE_HRVC
+id|NUBUS_DRHW_APPLE_HRVC
+op_assign
+l_int|0x0013
+comma
+multiline_comment|/* Mac II High Res Video card */
 DECL|enumerator|NUBUS_DRHW_APPLE_RBV1
 id|NUBUS_DRHW_APPLE_RBV1
 op_assign
@@ -196,17 +212,23 @@ op_assign
 l_int|0x0022
 comma
 multiline_comment|/* Sonora built-in video */
-DECL|enumerator|NUBUS_DRHW_APPLE_VALKYRIE
-id|NUBUS_DRHW_APPLE_VALKYRIE
-op_assign
-l_int|0x002e
-comma
 DECL|enumerator|NUBUS_DRHW_APPLE_JET
 id|NUBUS_DRHW_APPLE_JET
 op_assign
 l_int|0x0029
 comma
 multiline_comment|/* Jet framebuffer (DuoDock) */
+DECL|enumerator|NUBUS_DRHW_APPLE_VALKYRIE
+id|NUBUS_DRHW_APPLE_VALKYRIE
+op_assign
+l_int|0x002e
+comma
+DECL|enumerator|NUBUS_DRHW_THUNDER24
+id|NUBUS_DRHW_THUNDER24
+op_assign
+l_int|0x02cb
+comma
+multiline_comment|/* SuperMac Thunder/24 */
 multiline_comment|/* NUBUS_CAT_NETWORK */
 DECL|enumerator|NUBUS_DRHW_INTERLAN
 id|NUBUS_DRHW_INTERLAN
@@ -237,6 +259,22 @@ DECL|enumerator|NUBUS_DRHW_SONIC
 id|NUBUS_DRHW_SONIC
 op_assign
 l_int|0x0110
+comma
+DECL|enumerator|NUBUS_DRHW_SONIC_NB
+id|NUBUS_DRHW_SONIC_NB
+op_assign
+l_int|0x0118
+comma
+DECL|enumerator|NUBUS_DRHW_SONIC_LC
+id|NUBUS_DRHW_SONIC_LC
+op_assign
+l_int|0x0119
+comma
+multiline_comment|/* NUBUS_CAT_COMMUNICATIONS */
+DECL|enumerator|NUBUS_DRHW_DOVEFAX
+id|NUBUS_DRHW_DOVEFAX
+op_assign
+l_int|0x0100
 comma
 )brace
 suffix:semicolon
