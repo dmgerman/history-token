@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Functions which are too large to be inlined.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|copy_from_user
 r_int
@@ -189,4 +190,25 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|copy_from_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_from_user
+)paren
+suffix:semicolon
+DECL|variable|copy_to_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_to_user
+)paren
+suffix:semicolon
+DECL|variable|copy_in_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_in_user
+)paren
+suffix:semicolon
 eof
