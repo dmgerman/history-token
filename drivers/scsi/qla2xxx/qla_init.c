@@ -3951,18 +3951,10 @@ id|wtime
 r_break
 suffix:semicolon
 multiline_comment|/* Delay for a while */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 id|DEBUG3
