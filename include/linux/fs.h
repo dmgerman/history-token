@@ -928,6 +928,12 @@ r_struct
 id|list_head
 id|bd_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * Private data.  You must have bd_claim&squot;ed the block_device&n;&t; * to use this.  NOTE:  bd_claim allows an owner to claim&n;&t; * the same device multiple times, the owner must take special&n;&t; * care to not mess up bd_private for that case.&n;&t; */
+DECL|member|bd_private
+r_int
+r_int
+id|bd_private
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
