@@ -21,10 +21,6 @@ DECL|member|head_position
 id|sector_t
 id|head_position
 suffix:semicolon
-DECL|member|nr_pending
-id|atomic_t
-id|nr_pending
-suffix:semicolon
 multiline_comment|/*&n;&t; * State bits:&n;&t; */
 DECL|member|operational
 r_int

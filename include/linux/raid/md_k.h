@@ -534,6 +534,11 @@ r_int
 id|raid_disk
 suffix:semicolon
 multiline_comment|/* role of device in array */
+DECL|member|nr_pending
+id|atomic_t
+id|nr_pending
+suffix:semicolon
+multiline_comment|/* number of pending requests.&n;&t;&t;&t;&t;&t; * only maintained for arrays that&n;&t;&t;&t;&t;&t; * support hot removal&n;&t;&t;&t;&t;&t; */
 )brace
 suffix:semicolon
 DECL|typedef|mdk_personality_t

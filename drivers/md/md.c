@@ -3957,6 +3957,15 @@ id|rdev-&gt;faulty
 op_assign
 l_int|0
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|rdev-&gt;nr_pending
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|size
 op_assign
 id|rdev-&gt;bdev-&gt;bd_inode-&gt;i_size
