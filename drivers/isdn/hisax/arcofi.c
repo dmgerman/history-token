@@ -142,9 +142,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|writeisac
+id|isac_write_reg
 c_func
 (paren
 id|cs
@@ -156,9 +154,7 @@ id|cs-&gt;dc.isac.mocr
 suffix:semicolon
 id|val
 op_assign
-id|cs
-op_member_access_from_pointer
-id|readisac
+id|isac_read_reg
 c_func
 (paren
 id|cs
@@ -166,9 +162,7 @@ comma
 id|ISAC_MOSR
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|writeisac
+id|isac_write_reg
 c_func
 (paren
 id|cs
@@ -186,9 +180,7 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x10
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|writeisac
+id|isac_write_reg
 c_func
 (paren
 id|cs
