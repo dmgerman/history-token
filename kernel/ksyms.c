@@ -327,6 +327,13 @@ c_func
 id|__vmalloc
 )paren
 suffix:semicolon
+DECL|variable|vmalloc_to_page
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|vmalloc_to_page
+)paren
+suffix:semicolon
 DECL|variable|mem_map
 id|EXPORT_SYMBOL
 c_func
