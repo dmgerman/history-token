@@ -17775,7 +17775,7 @@ macro_line|#endif
 id|ahc-&gt;init_level
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * DMA tag for our command fifos and other data in system memory&n;&t; * the card&squot;s sequencer must be able to access.  For initiator&n;&t; * roles, we need to allocate space for the the qinfifo and qoutfifo.&n;&t; * The qinfifo and qoutfifo are composed of 256 1 byte elements. &n;&t; * When providing for the target mode role, we must additionally&n;&t; * provide space for the incoming target command fifo and an extra&n;&t; * byte to deal with a dma bug in some chip versions.&n;&t; */
+multiline_comment|/*&n;&t; * DMA tag for our command fifos and other data in system memory&n;&t; * the card&squot;s sequencer must be able to access.  For initiator&n;&t; * roles, we need to allocate space for the qinfifo and qoutfifo.&n;&t; * The qinfifo and qoutfifo are composed of 256 1 byte elements. &n;&t; * When providing for the target mode role, we must additionally&n;&t; * provide space for the incoming target command fifo and an extra&n;&t; * byte to deal with a dma bug in some chip versions.&n;&t; */
 id|driver_data_size
 op_assign
 l_int|2
@@ -30024,7 +30024,7 @@ c_func
 l_string|&quot;ahc_update_scsiid called on non-multitid unit&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since we will rely on the the TARGID mask&n;&t; * for selection enables, ensure that OID&n;&t; * in SCSIID is not set to some other ID&n;&t; * that we don&squot;t want to allow selections on.&n;&t; */
+multiline_comment|/*&n;&t; * Since we will rely on the TARGID mask&n;&t; * for selection enables, ensure that OID&n;&t; * in SCSIID is not set to some other ID&n;&t; * that we don&squot;t want to allow selections on.&n;&t; */
 r_if
 c_cond
 (paren
