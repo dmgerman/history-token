@@ -537,7 +537,7 @@ suffix:semicolon
 id|PU8
 id|p_msgbuf
 op_assign
-id|pDpa-&gt;PLanApiPA
+id|pDpa-&gt;msgbuf
 suffix:semicolon
 id|PU8
 id|p_phymsgbuf
@@ -545,27 +545,17 @@ op_assign
 (paren
 id|PU8
 )paren
-id|virt_to_bus
-(paren
-(paren
-r_void
-op_star
-)paren
-id|p_msgbuf
-)paren
+id|pDpa-&gt;msgbuf_dma
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:0x%08ulx phymsgbuf:0x%08ulx&bslash;n&quot;
+l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:%p phymsgbuf:0x%08ulx&bslash;n&quot;
 l_string|&quot;TransmitCallbackFunction:0x%08ulx  ReceiveCallbackFunction:0x%08ulx&bslash;n&quot;
 comma
 id|pDpa-&gt;id
 comma
 id|pciBaseAddr
 comma
-(paren
-id|u32
-)paren
 id|p_msgbuf
 comma
 (paren
