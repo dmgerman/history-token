@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *                    Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -413,10 +413,10 @@ suffix:semicolon
 )brace
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
@@ -430,7 +430,7 @@ l_int|2
 op_plus
 id|EXTRA_BYTES
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
@@ -1001,7 +1001,7 @@ id|pkt_info.return_info
 op_member_access_from_pointer
 id|nr_frags
 )paren
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -1010,11 +1010,11 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_else
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 l_int|NULL
@@ -1023,7 +1023,7 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb_irq
@@ -1056,7 +1056,7 @@ op_decrement
 suffix:semicolon
 )brace
 r_else
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -1065,7 +1065,7 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -2436,7 +2436,7 @@ suffix:semicolon
 multiline_comment|/* Assumes allocated ring is 16 bytes alligned */
 id|mp-&gt;p_tx_desc_area
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 l_int|NULL
@@ -2445,6 +2445,8 @@ id|size
 comma
 op_amp
 id|mp-&gt;tx_desc_dma
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2518,7 +2520,7 @@ suffix:semicolon
 multiline_comment|/* Assumes allocated ring is 16 bytes aligned */
 id|mp-&gt;p_rx_desc_area
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 l_int|NULL
@@ -2527,6 +2529,8 @@ id|size
 comma
 op_amp
 id|mp-&gt;rx_desc_dma
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2556,17 +2560,13 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|mp-&gt;tx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_tx_desc_area
 comma
 id|mp-&gt;tx_desc_dma
@@ -2824,17 +2824,13 @@ comma
 id|mp-&gt;tx_ring_skbs
 )paren
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 l_int|0
 comma
 id|mp-&gt;tx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_tx_desc_area
 comma
 id|mp-&gt;tx_desc_dma
@@ -2947,17 +2943,13 @@ comma
 id|mp-&gt;rx_ring_skbs
 )paren
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|mp-&gt;rx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_rx_desc_area
 comma
 id|mp-&gt;rx_desc_dma
@@ -3189,7 +3181,7 @@ id|pkt_info.return_info
 op_member_access_from_pointer
 id|nr_frags
 )paren
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -3198,11 +3190,11 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_else
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 l_int|NULL
@@ -3211,7 +3203,7 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb_irq
@@ -3230,7 +3222,7 @@ op_decrement
 suffix:semicolon
 )brace
 r_else
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -3239,7 +3231,7 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3775,16 +3767,16 @@ id|skb-&gt;len
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
@@ -3904,10 +3896,10 @@ id|skb
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
@@ -3917,7 +3909,7 @@ c_func
 id|skb
 )paren
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
@@ -4162,7 +4154,7 @@ id|this_frag-&gt;size
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_page
+id|dma_map_page
 c_func
 (paren
 l_int|NULL
@@ -4173,7 +4165,7 @@ id|this_frag-&gt;page_offset
 comma
 id|this_frag-&gt;size
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|status
@@ -4257,16 +4249,16 @@ id|skb-&gt;len
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
