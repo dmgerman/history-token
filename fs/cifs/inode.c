@@ -3046,14 +3046,9 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* can not grab this sem since kernel filesys locking&n;&t;&t;documentation indicates i_sem may be taken by the kernel &n;&t;&t;on lookup and rename which could deadlock if we grab&n;&t;&t;the i_sem here as well */
+multiline_comment|/*&t;down(&amp;direntry-&gt;d_inode-&gt;i_sem);*/
 multiline_comment|/* need to write out dirty pages here  */
-id|down
-c_func
-(paren
-op_amp
-id|direntry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3113,13 +3108,7 @@ id|direntry-&gt;d_inode
 suffix:semicolon
 )brace
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|direntry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
+multiline_comment|/*&t;up(&amp;direntry-&gt;d_inode-&gt;i_sem);*/
 r_if
 c_cond
 (paren
