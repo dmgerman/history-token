@@ -1733,7 +1733,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* ignore devices with bad status */
-multiline_comment|/* Weed out PHBs or other bad nodes. */
+multiline_comment|/* Ignore bad nodes. */
 r_if
 c_cond
 (paren
@@ -1745,40 +1745,6 @@ id|vendor_id
 op_logical_or
 op_logical_neg
 id|device_id
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Ignore known PHBs and EADs bridges */
-r_if
-c_cond
-(paren
-op_star
-id|vendor_id
-op_eq
-id|PCI_VENDOR_ID_IBM
-op_logical_and
-(paren
-op_star
-id|device_id
-op_eq
-l_int|0x0102
-op_logical_or
-op_star
-id|device_id
-op_eq
-l_int|0x008b
-op_logical_or
-op_star
-id|device_id
-op_eq
-l_int|0x0188
-op_logical_or
-op_star
-id|device_id
-op_eq
-l_int|0x0302
-)paren
 )paren
 r_return
 l_int|NULL
@@ -1887,33 +1853,7 @@ op_or_assign
 id|EEH_MODE_NOCHECK
 suffix:semicolon
 )brace
-multiline_comment|/* This device may already have an EEH parent. */
-r_if
-c_cond
-(paren
-id|dn-&gt;parent
-op_logical_and
-(paren
-id|dn-&gt;parent-&gt;eeh_mode
-op_amp
-id|EEH_MODE_SUPPORTED
-)paren
-)paren
-(brace
-multiline_comment|/* Parent supports EEH. */
-id|dn-&gt;eeh_mode
-op_or_assign
-id|EEH_MODE_SUPPORTED
-suffix:semicolon
-id|dn-&gt;eeh_config_addr
-op_assign
-id|dn-&gt;parent-&gt;eeh_config_addr
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/* Ok... see if this device supports EEH. */
+multiline_comment|/* Ok... see if this device supports EEH.  Some do, some don&squot;t,&n;&t; * and the only way to find out is to check each and every one. */
 id|regs
 op_assign
 (paren
@@ -2000,17 +1940,32 @@ macro_line|#endif
 )brace
 r_else
 (brace
-id|printk
-c_func
+multiline_comment|/* This device doesn&squot;t support EEH, but it may have an&n;&t;&t;&t; * EEH parent, in which case we mark it as supported. */
+r_if
+c_cond
 (paren
-id|KERN_WARNING
-l_string|&quot;EEH: %s: could not enable EEH, rtas_call failed; rc=%d&bslash;n&quot;
-comma
-id|dn-&gt;full_name
-comma
-id|ret
+id|dn-&gt;parent
+op_logical_and
+(paren
+id|dn-&gt;parent-&gt;eeh_mode
+op_amp
+id|EEH_MODE_SUPPORTED
 )paren
+)paren
+(brace
+multiline_comment|/* Parent supports EEH. */
+id|dn-&gt;eeh_mode
+op_or_assign
+id|EEH_MODE_SUPPORTED
 suffix:semicolon
+id|dn-&gt;eeh_config_addr
+op_assign
+id|dn-&gt;parent-&gt;eeh_config_addr
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
