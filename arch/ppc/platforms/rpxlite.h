@@ -117,8 +117,6 @@ mdefine_line|#define _IO_BASE_SIZE 0x1000
 macro_line|#ifdef CONFIG_IDE
 DECL|macro|MAX_HWIFS
 macro_line|# define MAX_HWIFS 1
-DECL|macro|request_irq
-macro_line|# define request_irq(irq,hand,flg,dev,id)    request_8xxirq((irq),(hand),(flg),(dev),(id))
 macro_line|#endif
 multiline_comment|/* CPM Ethernet through SCCx.&n; *&n; * This ENET stuff is for the MPC850 with ethernet on SCC2.  Some of&n; * this may be unique to the RPX-Lite configuration.&n; * Note TENA is on Port B.&n; */
 DECL|macro|PA_ENET_RXD

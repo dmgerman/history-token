@@ -174,6 +174,11 @@ DECL|member|bits
 r_int
 id|bits
 suffix:semicolon
+multiline_comment|/* Keep track of &squot;odd&squot; SMC2 wirings */
+DECL|member|is_portb
+r_int
+id|is_portb
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

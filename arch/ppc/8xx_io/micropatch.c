@@ -13,15 +13,8 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/commproc.h&gt;
-multiline_comment|/* Define this to get SMC patches as well.  You need to modify the uart&n; * driver as well......&n;#define USE_SMC_PATCH 1&n; */
-macro_line|#ifdef CONFIG_USB_MPC8xx
-DECL|macro|USE_USB_SOF_PATCH
-mdefine_line|#define USE_USB_SOF_PATCH
-macro_line|#endif
-macro_line|#ifdef USE_IIC_PATCH
-DECL|macro|PATCH_DEFINED
-mdefine_line|#define PATCH_DEFINED
-multiline_comment|/* IIC/SPI */
+multiline_comment|/*&n; * I2C/SPI relocation patch arrays.&n; */
+macro_line|#ifdef CONFIG_I2C_SPI_UCODE_PATCH
 DECL|variable|patch_2000
 id|uint
 id|patch_2000
@@ -329,11 +322,8 @@ l_int|0x79376935
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef USE_SMC_PATCH
-DECL|macro|PATCH_DEFINED
-mdefine_line|#define PATCH_DEFINED
-multiline_comment|/* SMC2/IIC/SPI Patch */
-multiline_comment|/* This is the area from 0x2000 to 0x23ff.&n;*/
+multiline_comment|/*&n; * I2C/SPI/SMC1 relocation patch arrays.&n; */
+macro_line|#ifdef CONFIG_I2C_SPI_SMC1_UCODE_PATCH
 DECL|variable|patch_2000
 id|uint
 id|patch_2000
@@ -982,7 +972,6 @@ comma
 l_int|0x6079e2bb
 )brace
 suffix:semicolon
-multiline_comment|/* This is from 0x2f00 to 0x2fff&n;&t;*/
 DECL|variable|patch_2f00
 id|uint
 id|patch_2f00
@@ -1126,7 +1115,6 @@ id|patch_2e00
 )braket
 op_assign
 (brace
-multiline_comment|/* This is from 0x2e00 to 0x2e3c&n;&t;*/
 l_int|0x27eeeeee
 comma
 l_int|0xeeeeeeee
@@ -1161,9 +1149,8 @@ l_int|0xff9ff22f
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef USE_USB_SOF_PATCH
-DECL|macro|PATCH_DEFINED
-mdefine_line|#define PATCH_DEFINED
+multiline_comment|/*&n; *  USB SOF patch arrays.&n; */
+macro_line|#ifdef CONFIG_USB_SOF_UCODE_PATCH
 DECL|variable|patch_2000
 id|uint
 id|patch_2000
@@ -1211,7 +1198,6 @@ l_int|0xa1aaf220
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Load the microcode patch.  This is called early in the CPM initialization&n; * with the controller in the reset state.  We enable the processor after&n; * we load the patch.&n; */
 r_void
 DECL|function|cpm_load_patch
 id|cpm_load_patch
@@ -1223,12 +1209,12 @@ op_star
 id|immr
 )paren
 (brace
-macro_line|#ifdef PATCH_DEFINED
 r_volatile
 id|uint
 op_star
 id|dp
 suffix:semicolon
+multiline_comment|/* Dual-ported RAM. */
 r_volatile
 id|cpm8xx_t
 op_star
@@ -1244,6 +1230,11 @@ id|spi_t
 op_star
 id|spp
 suffix:semicolon
+r_volatile
+id|smc_uart_t
+op_star
+id|smp
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1256,12 +1247,11 @@ op_star
 op_amp
 id|immr-&gt;im_cpm
 suffix:semicolon
-multiline_comment|/* We work closely with commproc.c.  We know it only allocates&n;&t; * from data only space.&n;&t; * For this particular patch, we only use the bottom 512 bytes&n;&t; * and the upper 256 byte extension.  We will use the space&n;&t; * starting at 1K for the relocated parameters, as the general&n;&t; * CPM allocation won&squot;t come from that area.&n;&t; */
+macro_line|#ifdef CONFIG_USB_SOF_UCODE_PATCH
 id|commproc-&gt;cp_rccr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Copy the patch into DPRAM.&n;&t;*/
 id|dp
 op_assign
 (paren
@@ -1346,60 +1336,6 @@ id|patch_2f00
 id|i
 )braket
 suffix:semicolon
-macro_line|#ifdef USE_USB_SOF_PATCH
-macro_line|#if 0 /* usb patch should not relocate iic */
-id|iip
-op_assign
-(paren
-id|iic_t
-op_star
-)paren
-op_amp
-id|commproc-&gt;cp_dparam
-(braket
-id|PROFF_IIC
-)braket
-suffix:semicolon
-mdefine_line|#define RPBASE 0x0030
-id|iip-&gt;iic_rpbase
-op_assign
-id|RPBASE
-suffix:semicolon
-multiline_comment|/* Put SPI above the IIC, also 32-byte aligned.&n;&t;*/
-id|i
-op_assign
-(paren
-id|RPBASE
-op_plus
-r_sizeof
-(paren
-id|iic_t
-)paren
-op_plus
-l_int|31
-)paren
-op_amp
-op_complement
-l_int|31
-suffix:semicolon
-id|spp
-op_assign
-(paren
-id|spi_t
-op_star
-)paren
-op_amp
-id|commproc-&gt;cp_dparam
-(braket
-id|PROFF_SPI
-)braket
-suffix:semicolon
-id|spp-&gt;spi_rpbase
-op_assign
-id|i
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Enable uCode fetches from DPRAM. */
 id|commproc-&gt;cp_rccr
 op_assign
 l_int|0x0009
@@ -1407,11 +1343,99 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;USB uCode patch installed&bslash;n&quot;
+l_string|&quot;USB SOF microcode patch installed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_USB_SOF_PATCH */
-macro_line|#if defined(USE_SMC_PATCH) || defined(USE_IIC_PATCH)
+macro_line|#endif /* CONFIG_USB_SOF_UCODE_PATCH */
+macro_line|#if defined(CONFIG_I2C_SPI_UCODE_PATCH) || &bslash;&n;    defined(CONFIG_I2C_SPI_SMC1_UCODE_PATCH)
+id|commproc-&gt;cp_rccr
+op_assign
+l_int|0
+suffix:semicolon
+id|dp
+op_assign
+(paren
+id|uint
+op_star
+)paren
+(paren
+id|commproc-&gt;cp_dpmem
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+r_sizeof
+(paren
+id|patch_2000
+)paren
+op_div
+l_int|4
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+op_star
+id|dp
+op_increment
+op_assign
+id|patch_2000
+(braket
+id|i
+)braket
+suffix:semicolon
+id|dp
+op_assign
+(paren
+id|uint
+op_star
+)paren
+op_amp
+(paren
+id|commproc-&gt;cp_dpmem
+(braket
+l_int|0x0f00
+)braket
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+r_sizeof
+(paren
+id|patch_2f00
+)paren
+op_div
+l_int|4
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+op_star
+id|dp
+op_increment
+op_assign
+id|patch_2f00
+(braket
+id|i
+)braket
+suffix:semicolon
 id|iip
 op_assign
 (paren
@@ -1425,7 +1449,7 @@ id|PROFF_IIC
 )braket
 suffix:semicolon
 DECL|macro|RPBASE
-mdefine_line|#define RPBASE 0x0400
+macro_line|# define RPBASE 0x0500
 id|iip-&gt;iic_rpbase
 op_assign
 id|RPBASE
@@ -1463,7 +1487,35 @@ id|spp-&gt;spi_rpbase
 op_assign
 id|i
 suffix:semicolon
-macro_line|#ifdef USE_SMC_PATCH
+macro_line|# if defined(CONFIG_I2C_SPI_UCODE_PATCH)
+id|commproc-&gt;cp_cpmcr1
+op_assign
+l_int|0x802a
+suffix:semicolon
+id|commproc-&gt;cp_cpmcr2
+op_assign
+l_int|0x8028
+suffix:semicolon
+id|commproc-&gt;cp_cpmcr3
+op_assign
+l_int|0x802e
+suffix:semicolon
+id|commproc-&gt;cp_cpmcr4
+op_assign
+l_int|0x802c
+suffix:semicolon
+id|commproc-&gt;cp_rccr
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;I2C/SPI microcode patch installed.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|# endif /* CONFIG_I2C_SPI_UCODE_PATCH */
+macro_line|# if defined(CONFIG_I2C_SPI_SMC1_UCODE_PATCH)
 id|dp
 op_assign
 (paren
@@ -1508,7 +1560,6 @@ id|patch_2e00
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* Enable the traps to get to it.&n;&t;*/
 id|commproc-&gt;cp_cpmcr1
 op_assign
 l_int|0x8080
@@ -1525,97 +1576,38 @@ id|commproc-&gt;cp_cpmcr4
 op_assign
 l_int|0x802a
 suffix:semicolon
-multiline_comment|/* Enable uCode fetches from DPRAM.&n;&t;*/
 id|commproc-&gt;cp_rccr
 op_assign
 l_int|3
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef USE_IIC_PATCH
-multiline_comment|/* Enable the traps to get to it.&n;&t;*/
-id|commproc-&gt;cp_cpmcr1
+id|smp
 op_assign
-l_int|0x802a
+(paren
+id|smc_uart_t
+op_star
+)paren
+op_amp
+id|commproc-&gt;cp_dparam
+(braket
+id|PROFF_SMC1
+)braket
 suffix:semicolon
-id|commproc-&gt;cp_cpmcr2
+id|smp-&gt;smc_rpbase
 op_assign
-l_int|0x8028
-suffix:semicolon
-id|commproc-&gt;cp_cpmcr3
-op_assign
-l_int|0x802e
-suffix:semicolon
-id|commproc-&gt;cp_cpmcr4
-op_assign
-l_int|0x802c
-suffix:semicolon
-multiline_comment|/* Enable uCode fetches from DPRAM.&n;&t;*/
-id|commproc-&gt;cp_rccr
-op_assign
-l_int|1
+l_int|0x1FC0
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;I2C uCode patch installed&bslash;n&quot;
+l_string|&quot;I2C/SPI/SMC1 microcode patch installed.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Relocate the IIC and SPI parameter areas.  These have to&n;&t; * aligned on 32-byte boundaries.&n;&t; */
-id|iip
-op_assign
-(paren
-id|iic_t
-op_star
-)paren
-op_amp
-id|commproc-&gt;cp_dparam
-(braket
-id|PROFF_IIC
-)braket
-suffix:semicolon
-id|iip-&gt;iic_rpbase
-op_assign
-id|RPBASE
-suffix:semicolon
-multiline_comment|/* Put SPI above the IIC, also 32-byte aligned.&n;&t;*/
-id|i
-op_assign
-(paren
-id|RPBASE
-op_plus
-r_sizeof
-(paren
-id|iic_t
-)paren
-op_plus
-l_int|31
-)paren
-op_amp
-op_complement
-l_int|31
-suffix:semicolon
-id|spp
-op_assign
-(paren
-id|spi_t
-op_star
-)paren
-op_amp
-id|commproc-&gt;cp_dparam
-(braket
-id|PROFF_SPI
-)braket
-suffix:semicolon
-id|spp-&gt;spi_rpbase
-op_assign
-id|i
-suffix:semicolon
-macro_line|#endif /* USE_SMC_PATCH || USE_IIC_PATCH */
-macro_line|#endif /* PATCH_DEFINED */
+macro_line|# endif /* CONFIG_I2C_SPI_SMC1_UCODE_PATCH) */
+macro_line|#endif /* some variation of the I2C/SPI patch was selected */
 )brace
+multiline_comment|/*&n; *  Take this entire routine out, since no one calls it and its &n; * logic is suspect.&n; */
+macro_line|#if 0
 r_void
-DECL|function|verify_patch
 id|verify_patch
 c_func
 (paren
@@ -1625,7 +1617,6 @@ op_star
 id|immr
 )paren
 (brace
-macro_line|#ifdef PATCH_DEFINED
 r_volatile
 id|uint
 op_star
@@ -1812,6 +1803,6 @@ id|commproc-&gt;cp_rccr
 op_assign
 l_int|0x0009
 suffix:semicolon
-macro_line|#endif /* PATCH_DEFINED */
 )brace
+macro_line|#endif
 eof

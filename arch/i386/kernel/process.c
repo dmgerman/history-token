@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -692,7 +692,7 @@ c_func
 (paren
 )paren
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|printk
