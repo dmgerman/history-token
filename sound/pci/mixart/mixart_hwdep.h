@@ -137,9 +137,8 @@ DECL|macro|MIXART_ALLOW_OUTBOUND_DOORBELL
 mdefine_line|#define MIXART_ALLOW_OUTBOUND_DOORBELL          0x023   /* 0000 0010 0011 */
 DECL|macro|MIXART_OIDI
 mdefine_line|#define MIXART_OIDI                             0x008   /* 0000 0000 1000 */
-multiline_comment|/* exported */
 r_int
-id|snd_mixart_hwdep_new
+id|snd_mixart_setup_firmware
 c_func
 (paren
 id|mixart_mgr_t

@@ -1019,13 +1019,20 @@ comma
 id|vx-&gt;core.irq
 )paren
 suffix:semicolon
+macro_line|#ifdef SND_VX_FW_LOADER
+id|vx-&gt;core.dev
+op_assign
+op_amp
+id|pci-&gt;dev
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 (paren
 id|err
 op_assign
-id|snd_vx_hwdep_new
+id|snd_vx_setup_firmware
 c_func
 (paren
 op_amp
@@ -1150,6 +1157,7 @@ c_func
 id|snd_vx222_remove
 )paren
 comma
+id|SND_PCI_PM_CALLBACKS
 )brace
 suffix:semicolon
 DECL|function|alsa_card_vx222_init
