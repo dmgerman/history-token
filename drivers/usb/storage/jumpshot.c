@@ -1987,6 +1987,8 @@ id|cpu_to_be32
 c_func
 (paren
 id|info-&gt;sectors
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 (paren
