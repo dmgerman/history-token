@@ -17,12 +17,6 @@ macro_line|#else
 DECL|macro|GRPRINTF
 mdefine_line|#define GRPRINTF(x)
 macro_line|#endif
-r_extern
-r_char
-id|arg_maxnodes
-(braket
-)braket
-suffix:semicolon
 r_void
 id|mark_cpuvertex_as_cpu
 c_func
@@ -710,7 +704,7 @@ l_string|&quot;klhwg_add_xbow: Check for &quot;
 l_string|&quot;working routers and router links!&quot;
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;klhwg_add_xbow: Failed to add &quot;
@@ -1599,7 +1593,7 @@ op_ne
 l_int|1
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;klhwg_connect_one_router: %d cmpts on router&bslash;n&quot;

@@ -61,6 +61,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|variable|master_baseio_nasid
+id|nasid_t
+id|master_baseio_nasid
+suffix:semicolon
+DECL|variable|master_nasid
+id|nasid_t
+id|master_nasid
+op_assign
+id|INVALID_NASID
+suffix:semicolon
+multiline_comment|/* This is the partition master nasid */
 multiline_comment|/*&n; * This routine is responsible for the setup of all the IRIX hwgraph style&n; * stuff that&squot;s been pulled into linux.  It&squot;s called by sn_pci_find_bios which&n; * is called just before the generic Linux PCI layer does its probing (by &n; * platform_pci_fixup aka sn_pci_fixup).&n; *&n; * It is very IMPORTANT that this call is only made by the Master CPU!&n; *&n; */
 r_void
 id|__init

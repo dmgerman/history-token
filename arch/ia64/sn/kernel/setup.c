@@ -872,6 +872,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Setup hubinfo stuff. Has to happen AFTER sn_cpu_init(),&n;&t; * because it uses the cnode to nasid tables.&n;&t; */
+id|init_platform_hubinfo
+c_func
+(paren
+id|nodepdaindr
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|init_smp_config
 c_func
