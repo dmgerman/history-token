@@ -444,11 +444,6 @@ id|gameport-&gt;drv
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drv-&gt;connect
-)paren
 id|drv
 op_member_access_from_pointer
 id|connect
@@ -543,8 +538,6 @@ r_if
 c_cond
 (paren
 id|gameport-&gt;drv
-op_logical_and
-id|gameport-&gt;drv-&gt;disconnect
 )paren
 id|gameport-&gt;drv
 op_member_access_from_pointer
@@ -596,8 +589,6 @@ c_cond
 (paren
 op_logical_neg
 id|gameport-&gt;drv
-op_logical_and
-id|drv-&gt;connect
 )paren
 id|drv
 op_member_access_from_pointer
@@ -650,8 +641,6 @@ c_cond
 id|gameport-&gt;drv
 op_eq
 id|drv
-op_logical_and
-id|drv-&gt;disconnect
 )paren
 id|drv
 op_member_access_from_pointer
