@@ -2575,17 +2575,6 @@ id|wrapped_parent
 suffix:semicolon
 r_extern
 r_int
-id|pci_is_dev_in_use
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|pci_remove_device_safe
 c_func
 (paren
