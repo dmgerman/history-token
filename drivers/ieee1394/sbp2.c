@@ -9682,7 +9682,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by scsi stack to get bios parameters (used by fdisk, and at boot).&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,44)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,43)
 DECL|function|sbp2scsi_biosparam
 r_static
 r_int

@@ -28,11 +28,6 @@ r_typedef
 r_struct
 id|SHT
 (brace
-DECL|member|shtp_list
-r_struct
-id|list_head
-id|shtp_list
-suffix:semicolon
 multiline_comment|/* Used with loadable modules so that we know when it is safe to unload */
 DECL|member|module
 r_struct
@@ -88,18 +83,6 @@ id|detect
 (paren
 r_struct
 id|SHT
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     * This function is only used by one driver and will be going away&n;     * once it switches over to using the slave_detach() function instead.&n;     */
-DECL|member|revoke
-r_int
-(paren
-op_star
-id|revoke
-)paren
-(paren
-id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
@@ -780,12 +763,6 @@ DECL|typedef|Scsi_Host_Name
 id|Scsi_Host_Name
 suffix:semicolon
 r_extern
-r_struct
-id|Scsi_Device_Template
-op_star
-id|scsi_devicelist
-suffix:semicolon
-r_extern
 r_void
 id|scsi_proc_host_mkdir
 c_func
@@ -825,29 +802,6 @@ id|scsi_init
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_register
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_unregister
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -985,31 +939,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|nr_dev
-r_int
-r_int
-id|nr_dev
-suffix:semicolon
-multiline_comment|/* Number currently attached */
-DECL|member|dev_noticed
-r_int
-r_int
-id|dev_noticed
-suffix:semicolon
-multiline_comment|/* Number of devices detected. */
-DECL|member|dev_max
-r_int
-r_int
-id|dev_max
-suffix:semicolon
-multiline_comment|/* Current size of arrays */
-DECL|member|blk
-r_int
-id|blk
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0 if character device */
 DECL|member|detect
 r_int
 (paren
@@ -1022,17 +951,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Returns 1 if we can attach this device */
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Sizes arrays based upon number of devices&n;&t;&t;   *  detected */
 DECL|member|attach
 r_int
 (paren
@@ -1087,7 +1005,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Driver registration/unregistration.&n; */
+multiline_comment|/*&n; * Highlevel driver registration/unregistration.&n; */
 r_extern
 r_int
 id|scsi_register_device
@@ -1108,6 +1026,52 @@ id|Scsi_Device_Template
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * HBA allocation/freeing.&n; */
+r_extern
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_register
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_unregister
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * HBA registration/unregistration.&n; */
+r_extern
+r_int
+id|scsi_add_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_remove_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Legacy HBA template registration/unregistration.&n; */
 r_extern
 r_int
 id|scsi_register_host
@@ -1213,13 +1177,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is an ugly hack.  If we expect to be able to load devices at run time,&n; * we need to leave extra room in some of the data structures.&t;Doing a&n; * realloc to enlarge the structures would be riddled with race conditions,&n; * so until a better solution is discovered, we use this crude approach&n; *&n; * Even bigger hack for SparcSTORAGE arrays. Those are at least 6 disks, but&n; * usually up to 30 disks, so everyone would need to change this. -jj&n; *&n; * Note: These things are all evil and all need to go away.  My plan is to&n; * tackle the character devices first, as there aren&squot;t any locking implications&n; * in the block device layer.   The block devices will require more work.&n; *&n; * The generics driver has been updated to resize as required.  So as the tape&n; * driver. Two down, two more to go.&n; */
-macro_line|#ifndef CONFIG_SR_EXTRA_DEVS
-DECL|macro|CONFIG_SR_EXTRA_DEVS
-mdefine_line|#define CONFIG_SR_EXTRA_DEVS 2
-macro_line|#endif
-DECL|macro|SR_EXTRA_DEVS
-mdefine_line|#define SR_EXTRA_DEVS CONFIG_SR_EXTRA_DEVS
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
 r_static
