@@ -60,6 +60,10 @@ id|task_struct
 op_star
 id|last_task
 suffix:semicolon
+DECL|member|last_is_kernel
+r_int
+id|last_is_kernel
+suffix:semicolon
 DECL|member|buffer
 r_struct
 id|op_sample
@@ -96,6 +100,16 @@ id|oprofile_cpu_buffer
 id|cpu_buffer
 (braket
 )braket
+suffix:semicolon
+r_void
+id|cpu_buffer_reset
+c_func
+(paren
+r_struct
+id|oprofile_cpu_buffer
+op_star
+id|cpu_buf
+)paren
 suffix:semicolon
 macro_line|#endif /* OPROFILE_CPU_BUFFER_H */
 eof

@@ -30,11 +30,15 @@ multiline_comment|/* Each escaped entry is prefixed by ESCAPE_CODE&n; * then one
 DECL|macro|ESCAPE_CODE
 mdefine_line|#define ESCAPE_CODE&t;&t;~0UL
 DECL|macro|CTX_SWITCH_CODE
-mdefine_line|#define CTX_SWITCH_CODE &t;1
+mdefine_line|#define CTX_SWITCH_CODE &t;&t;1
 DECL|macro|CPU_SWITCH_CODE
-mdefine_line|#define CPU_SWITCH_CODE &t;2
+mdefine_line|#define CPU_SWITCH_CODE &t;&t;2
 DECL|macro|COOKIE_SWITCH_CODE
-mdefine_line|#define COOKIE_SWITCH_CODE &t;3
+mdefine_line|#define COOKIE_SWITCH_CODE &t;&t;3
+DECL|macro|KERNEL_ENTER_SWITCH_CODE
+mdefine_line|#define KERNEL_ENTER_SWITCH_CODE&t;4
+DECL|macro|KERNEL_EXIT_SWITCH_CODE
+mdefine_line|#define KERNEL_EXIT_SWITCH_CODE&t;&t;5
 multiline_comment|/* add data to the event buffer */
 r_void
 id|add_event_entry

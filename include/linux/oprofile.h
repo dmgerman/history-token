@@ -114,6 +114,10 @@ id|eip
 comma
 r_int
 r_int
+id|is_kernel
+comma
+r_int
+r_int
 id|event
 comma
 r_int
