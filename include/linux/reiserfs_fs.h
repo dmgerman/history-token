@@ -471,6 +471,22 @@ DECL|macro|REISERFS_VALID_FS
 mdefine_line|#define REISERFS_VALID_FS    1
 DECL|macro|REISERFS_ERROR_FS
 mdefine_line|#define REISERFS_ERROR_FS    2
+singleline_comment|//
+singleline_comment|// there are 5 item types currently
+singleline_comment|//
+DECL|macro|TYPE_STAT_DATA
+mdefine_line|#define TYPE_STAT_DATA 0
+DECL|macro|TYPE_INDIRECT
+mdefine_line|#define TYPE_INDIRECT 1
+DECL|macro|TYPE_DIRECT
+mdefine_line|#define TYPE_DIRECT 2
+DECL|macro|TYPE_DIRENTRY
+mdefine_line|#define TYPE_DIRENTRY 3 
+DECL|macro|TYPE_MAXTYPE
+mdefine_line|#define TYPE_MAXTYPE 3 
+DECL|macro|TYPE_ANY
+mdefine_line|#define TYPE_ANY 15 
+singleline_comment|// FIXME: comment is required
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                       KEY &amp; ITEM HEAD                                   */
 multiline_comment|/***************************************************************************/
@@ -593,7 +609,16 @@ id|tmp.linear
 )paren
 suffix:semicolon
 r_return
+(paren
 id|tmp.offset_v2.k_type
+op_le
+id|TYPE_MAXTYPE
+)paren
+ques
+c_cond
+id|tmp.offset_v2.k_type
+suffix:colon
+id|TYPE_ANY
 suffix:semicolon
 )brace
 DECL|function|set_offset_v2_k_type
@@ -948,20 +973,6 @@ DECL|macro|get_block_num
 mdefine_line|#define get_block_num(p, i) le32_to_cpu(get_unaligned((p) + (i)))
 DECL|macro|put_block_num
 mdefine_line|#define put_block_num(p, i, v) put_unaligned(cpu_to_le32(v), (p) + (i))
-singleline_comment|//
-singleline_comment|// there are 5 item types currently
-singleline_comment|//
-DECL|macro|TYPE_STAT_DATA
-mdefine_line|#define TYPE_STAT_DATA 0
-DECL|macro|TYPE_INDIRECT
-mdefine_line|#define TYPE_INDIRECT 1
-DECL|macro|TYPE_DIRECT
-mdefine_line|#define TYPE_DIRECT 2
-DECL|macro|TYPE_DIRENTRY
-mdefine_line|#define TYPE_DIRENTRY 3 
-DECL|macro|TYPE_ANY
-mdefine_line|#define TYPE_ANY 15 
-singleline_comment|// FIXME: comment is required
 singleline_comment|//
 singleline_comment|// in old version uniqueness field shows key type
 singleline_comment|//
@@ -3234,7 +3245,9 @@ id|item_operations
 op_star
 id|item_ops
 (braket
-l_int|4
+id|TYPE_ANY
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|macro|op_bytes_number
