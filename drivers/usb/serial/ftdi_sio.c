@@ -7670,29 +7670,12 @@ c_cond
 (paren
 id|port-&gt;read_urb
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
-OL
-l_int|0
-)paren
-(brace
-multiline_comment|/* Generally, this isn&squot;t an error.  If the previous&n;&t;&t;&t;   read bulk callback occurred (or is about to occur)&n;&t;&t;&t;   while the port was being closed or was throtted&n;&t;&t;&t;   (and is still throttled), the read urb will not&n;&t;&t;&t;   have been submitted. */
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - failed to unlink read urb (generally not an error)&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/* ftdi_close */
 multiline_comment|/* The SIO requires the first byte to have:&n; *  B0 1&n; *  B1 0&n; *  B2..7 length of message excluding byte 0&n; *&n; * The new devices do not require this byte&n; */
