@@ -1154,7 +1154,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
@@ -1172,7 +1172,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
