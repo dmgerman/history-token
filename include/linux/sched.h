@@ -3129,6 +3129,36 @@ id|__user
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|set_task_comm
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_char
+op_star
+id|from
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|get_task_comm
+c_func
+(paren
+r_char
+op_star
+id|to
+comma
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -3225,7 +3255,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info and synchronises with&n; * wait4().&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
+multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info, -&gt;comm and&n; * synchronises with wait4().&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline
