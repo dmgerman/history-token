@@ -3742,8 +3742,6 @@ DECL|macro|E1000_FDX_COLLISION_DISTANCE
 mdefine_line|#define E1000_FDX_COLLISION_DISTANCE    E1000_COLLISION_DISTANCE
 DECL|macro|E1000_HDX_COLLISION_DISTANCE
 mdefine_line|#define E1000_HDX_COLLISION_DISTANCE    E1000_COLLISION_DISTANCE
-DECL|macro|E1000_GB_HDX_COLLISION_DISTANCE
-mdefine_line|#define E1000_GB_HDX_COLLISION_DISTANCE 512
 DECL|macro|E1000_COLD_SHIFT
 mdefine_line|#define E1000_COLD_SHIFT                12
 multiline_comment|/* The number of Transmit and Receive Descriptors must be a multiple of 8 */

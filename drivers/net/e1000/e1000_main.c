@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.0.43&t;3/5/03&n; *   o Feature: Added support for 82541 and 82547 hardware.&n; *   o Feature: Added support for Intel Gigabit PHY (IGP) and a variety of&n; *   eeproms.&n; *   o Feature: Added support for TCP Segmentation Offload (TSO).&n; *   o Feature: Added MII ioctl.&n; *   o Feature: Added support for statistics reporting through ethtool.&n; *   o Cleanup: Removed proprietary hooks for ANS.&n; *   o Cleanup: Miscellaneous code changes to improve CPU utilization.&n; *   &t;- Replaced &quot;%&quot; with conditionals and &quot;+-&quot; operators.&n; *   &t;- Implemented dynamic Interrupt Throttle Rate (ITR).&n; *   &t;- Reduced expensive PCI reads of ICR in interrupt.&n; *   o Bug fix: Request IRQ after descriptor ring setup to avoid panic in&n; *   shared interrupt instances.&n; *&n; * 4.4.18       11/27/02&n; *   o Feature: Added user-settable knob for interrupt throttle rate (ITR).&n; *   o Cleanup: removed large static array allocations.&n; *   o Cleanup: C99 struct initializer format.&n; *   o Bug fix: restore VLAN settings when interface is brought up.&n; *   o Bug fix: return cleanly in probe if error in detecting MAC type.&n; *   o Bug fix: Wake up on magic packet by default only if enabled in eeprom.&n; *   o Bug fix: Validate MAC address in set_mac.&n; *   o Bug fix: Throw away zero-length Tx skbs.&n; *   o Bug fix: Make ethtool EEPROM acceses work on older versions of ethtool.&n; * &n; * 4.4.12       10/15/02&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.1.11&t;5/6/03&n; *   o Feature: Added support for 82546EB (Quad-port) hardware.&n; *   o Feature: Added support for Diagnostics through Ethtool.&n; *   o Cleanup: Removed /proc support.&n; *   o Cleanup: Removed proprietary IDIAG interface.&n; *   o Bug fix: TSO bug fixes.&n; *&n; * 5.0.42&t;3/5/03&n; *   o Feature: Added support for 82541 and 82547 hardware.&n; *   o Feature: Added support for Intel Gigabit PHY (IGP) and a variety of&n; *   eeproms.&n; *   o Feature: Added support for TCP Segmentation Offload (TSO).&n; *   o Feature: Added MII ioctl.&n; *   o Feature: Added support for statistics reporting through ethtool.&n; *   o Cleanup: Removed proprietary hooks for ANS.&n; *   o Cleanup: Miscellaneous code changes to improve CPU utilization.&n; *   &t;- Replaced &quot;%&quot; with conditionals and &quot;+-&quot; operators.&n; *   &t;- Implemented dynamic Interrupt Throttle Rate (ITR).&n; *   &t;- Reduced expensive PCI reads of ICR in interrupt.&n; *   o Bug fix: Request IRQ after descriptor ring setup to avoid panic in&n; *   shared interrupt instances.&n; *&n; * 4.4.18       11/27/02&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.0.43-k3&quot;
+l_string|&quot;5.1.11-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -426,6 +426,7 @@ id|ent
 suffix:semicolon
 r_static
 r_void
+id|__devexit
 id|e1000_remove
 c_func
 (paren
@@ -8123,6 +8124,12 @@ c_cond
 id|hw-&gt;mac_type
 op_le
 id|e1000_82546
+)paren
+op_logical_and
+(paren
+id|hw-&gt;phy_type
+op_eq
+id|e1000_phy_m88
 )paren
 op_logical_and
 op_logical_neg
