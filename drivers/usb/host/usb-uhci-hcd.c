@@ -77,9 +77,6 @@ mdefine_line|#define init_dbg dbg
 multiline_comment|/*--------------------------------------------------------------------------*/
 singleline_comment|//                   NO serviceable parts below!
 multiline_comment|/*--------------------------------------------------------------------------*/
-singleline_comment|// How much URBs with -&gt;next are walked
-DECL|macro|MAX_NEXT_COUNT
-mdefine_line|#define MAX_NEXT_COUNT 2048
 DECL|variable|devs
 r_static
 r_struct

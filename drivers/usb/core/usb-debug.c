@@ -879,13 +879,6 @@ id|urb
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;next                  :%p&bslash;n&quot;
-comma
-id|urb-&gt;next
-)paren
-suffix:semicolon
-id|printk
-(paren
 l_string|&quot;dev                   :%p&bslash;n&quot;
 comma
 id|urb-&gt;dev
