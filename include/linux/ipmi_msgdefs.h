@@ -3,12 +3,17 @@ macro_line|#ifndef __LINUX_IPMI_MSGDEFS_H
 DECL|macro|__LINUX_IPMI_MSGDEFS_H
 mdefine_line|#define __LINUX_IPMI_MSGDEFS_H
 multiline_comment|/* Various definitions for IPMI messages used by almost everything in&n;   the IPMI stack. */
+multiline_comment|/* NetFNs and commands used inside the IPMI stack. */
+DECL|macro|IPMI_NETFN_SENSOR_EVENT_REQUEST
+mdefine_line|#define IPMI_NETFN_SENSOR_EVENT_REQUEST&t;&t;0x04
+DECL|macro|IPMI_NETFN_SENSOR_EVENT_RESPONSE
+mdefine_line|#define IPMI_NETFN_SENSOR_EVENT_RESPONSE&t;0x05
+DECL|macro|IPMI_GET_EVENT_RECEIVER_CMD
+mdefine_line|#define IPMI_GET_EVENT_RECEIVER_CMD&t;0x01
 DECL|macro|IPMI_NETFN_APP_REQUEST
-mdefine_line|#define IPMI_NETFN_APP_REQUEST&t;0x06
+mdefine_line|#define IPMI_NETFN_APP_REQUEST&t;&t;&t;0x06
 DECL|macro|IPMI_NETFN_APP_RESPONSE
-mdefine_line|#define IPMI_NETFN_APP_RESPONSE&t;0x07
-DECL|macro|IPMI_BMC_SLAVE_ADDR
-mdefine_line|#define IPMI_BMC_SLAVE_ADDR&t;0x20
+mdefine_line|#define IPMI_NETFN_APP_RESPONSE&t;&t;&t;0x07
 DECL|macro|IPMI_GET_DEVICE_ID_CMD
 mdefine_line|#define IPMI_GET_DEVICE_ID_CMD&t;&t;0x01
 DECL|macro|IPMI_CLEAR_MSG_FLAGS_CMD
@@ -25,7 +30,18 @@ DECL|macro|IPMI_GET_BMC_GLOBAL_ENABLES_CMD
 mdefine_line|#define IPMI_GET_BMC_GLOBAL_ENABLES_CMD&t;0x2f
 DECL|macro|IPMI_READ_EVENT_MSG_BUFFER_CMD
 mdefine_line|#define IPMI_READ_EVENT_MSG_BUFFER_CMD&t;0x35
+DECL|macro|IPMI_NETFN_STORAGE_REQUEST
+mdefine_line|#define IPMI_NETFN_STORAGE_REQUEST&t;&t;0x0a
+DECL|macro|IPMI_NETFN_STORAGE_RESPONSE
+mdefine_line|#define IPMI_NETFN_STORAGE_RESPONSE&t;&t;0x0b
+DECL|macro|IPMI_ADD_SEL_ENTRY_CMD
+mdefine_line|#define IPMI_ADD_SEL_ENTRY_CMD&t;&t;0x44
+multiline_comment|/* The default slave address */
+DECL|macro|IPMI_BMC_SLAVE_ADDR
+mdefine_line|#define IPMI_BMC_SLAVE_ADDR&t;0x20
 DECL|macro|IPMI_MAX_MSG_LENGTH
 mdefine_line|#define IPMI_MAX_MSG_LENGTH&t;80
+DECL|macro|IPMI_CC_NO_ERROR
+mdefine_line|#define IPMI_CC_NO_ERROR&t;0
 macro_line|#endif /* __LINUX_IPMI_MSGDEFS_H */
 eof
