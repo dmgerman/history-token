@@ -14662,7 +14662,7 @@ id|Scsi_Cmnd
 )paren
 )paren
 suffix:semicolon
-id|scsicmd-&gt;host
+id|scsicmd-&gt;device-&gt;host
 op_assign
 id|shpnt
 suffix:semicolon
@@ -15262,7 +15262,7 @@ id|Scsi_Cmnd
 )paren
 )paren
 suffix:semicolon
-id|scsicmd-&gt;host
+id|scsicmd-&gt;device-&gt;host
 op_assign
 id|shpnt
 suffix:semicolon
