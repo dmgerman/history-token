@@ -3324,6 +3324,17 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hc-&gt;new_map
+)paren
+id|dm_table_put
+c_func
+(paren
+id|hc-&gt;new_map
+)paren
+suffix:semicolon
 id|hc-&gt;new_map
 op_assign
 id|t
