@@ -10,7 +10,7 @@ DECL|macro|debug
 mdefine_line|#define debug(f,a...)
 macro_line|#endif
 DECL|macro|output
-mdefine_line|#define output(f, a...) printk(&quot;tridentfb: &quot; f, ## a)
+mdefine_line|#define output(f, a...) pr_info(&quot;tridentfb: &quot; f, ## a)
 DECL|macro|Kb
 mdefine_line|#define Kb&t;(1024)
 DECL|macro|Mb

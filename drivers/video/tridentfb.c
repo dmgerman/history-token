@@ -6086,10 +6086,11 @@ OL
 l_int|0
 )paren
 (brace
-id|output
+id|printk
 c_func
 (paren
-l_string|&quot;Could not register Trident framebuffer&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;tridentfb: could not register Trident framebuffer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
