@@ -139,8 +139,8 @@ DECL|macro|HCI_SCODATA_PKT
 mdefine_line|#define HCI_SCODATA_PKT&t;&t;0x03
 DECL|macro|HCI_EVENT_PKT
 mdefine_line|#define HCI_EVENT_PKT&t;&t;0x04
-DECL|macro|HCI_UNKNOWN_PKT
-mdefine_line|#define HCI_UNKNOWN_PKT&t;&t;0xff
+DECL|macro|HCI_VENDOR_PKT
+mdefine_line|#define HCI_VENDOR_PKT&t;&t;0xff
 multiline_comment|/* HCI Packet types */
 DECL|macro|HCI_DM1
 mdefine_line|#define HCI_DM1&t;&t;0x0008
