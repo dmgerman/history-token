@@ -35,8 +35,8 @@ r_static
 r_int
 id|cons_hold_cnt
 suffix:semicolon
-multiline_comment|/* If defined, enables serial console.  The value (1 through 4)&n; * should designate which SCC is used, but this isn&squot;t complete.  Only&n; * SCC1 is known to work at this time.&n; */
-macro_line|#ifdef CONFIG_SCC_CONSOLE
+multiline_comment|/* If defined, enables serial console.  The value (1 through 4)&n; * should designate which SCC is used, but this isn&squot;t complete.  Only&n; * SCC1 is known to work at this time.&n; * We&squot;re only linked if SERIAL_CPM_CONSOLE=y, so we only need to test&n; * SERIAL_CPM_SCC1.&n; */
+macro_line|#ifdef CONFIG_SERIAL_CPM_SCC1
 DECL|macro|SCC_CONSOLE
 mdefine_line|#define SCC_CONSOLE 1
 macro_line|#endif
@@ -54,16 +54,6 @@ op_star
 id|bd
 )paren
 (brace
-r_volatile
-id|smc_t
-op_star
-id|sp
-suffix:semicolon
-r_volatile
-id|smc_uart_t
-op_star
-id|up
-suffix:semicolon
 macro_line|#ifdef SCC_CONSOLE
 r_volatile
 id|scc_t
@@ -74,6 +64,17 @@ r_volatile
 id|scc_uart_t
 op_star
 id|sup
+suffix:semicolon
+macro_line|#else
+r_volatile
+id|smc_t
+op_star
+id|sp
+suffix:semicolon
+r_volatile
+id|smc_uart_t
+op_star
+id|up
 suffix:semicolon
 macro_line|#endif
 r_volatile
@@ -704,16 +705,19 @@ r_char
 op_star
 id|buf
 suffix:semicolon
-r_volatile
-id|smc_uart_t
-op_star
-id|up
-suffix:semicolon
+macro_line|#ifdef SCC_CONSOLE
 r_volatile
 id|scc_uart_t
 op_star
 id|sup
 suffix:semicolon
+macro_line|#else
+r_volatile
+id|smc_uart_t
+op_star
+id|up
+suffix:semicolon
+macro_line|#endif
 r_volatile
 id|cpm2_map_t
 op_star
@@ -870,25 +874,23 @@ r_char
 op_star
 id|buf
 suffix:semicolon
-r_volatile
-id|smc_uart_t
-op_star
-id|up
-suffix:semicolon
+macro_line|#ifdef SCC_CONSOLE
 r_volatile
 id|scc_uart_t
 op_star
 id|sup
 suffix:semicolon
+macro_line|#else
+r_volatile
+id|smc_uart_t
+op_star
+id|up
+suffix:semicolon
+macro_line|#endif
 r_volatile
 id|cpm2_map_t
 op_star
 id|ip
-suffix:semicolon
-r_extern
-id|bd_t
-op_star
-id|board_info
 suffix:semicolon
 id|ip
 op_assign
@@ -1054,16 +1056,19 @@ id|cbd_t
 op_star
 id|rbdf
 suffix:semicolon
-r_volatile
-id|smc_uart_t
-op_star
-id|up
-suffix:semicolon
+macro_line|#ifdef SCC_CONSOLE
 r_volatile
 id|scc_uart_t
 op_star
 id|sup
 suffix:semicolon
+macro_line|#else
+r_volatile
+id|smc_uart_t
+op_star
+id|up
+suffix:semicolon
+macro_line|#endif
 r_volatile
 id|cpm2_map_t
 op_star
