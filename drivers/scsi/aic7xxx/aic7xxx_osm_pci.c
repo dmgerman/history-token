@@ -544,6 +544,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|ahc_pci_set_dma_mask
 c_func
 (paren
@@ -551,7 +554,22 @@ id|pdev
 comma
 l_int|0xFFFFFFFF
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
 id|ahc-&gt;platform_data-&gt;hw_dma_mask
 op_assign
 l_int|0xFFFFFFFF

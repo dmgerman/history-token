@@ -776,7 +776,7 @@ l_int|0
 comma
 l_string|&quot;WLAN/802.11b PC CARD&quot;
 comma
-l_string|&quot;atmel_at76c502d.bin&quot;
+l_string|&quot;atmel_at76c502d%s.bin&quot;
 comma
 l_string|&quot;Actiontec 802CAT1&quot;
 )brace
@@ -788,7 +788,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR&quot;
 comma
-l_string|&quot;atmel_at76c502.bin&quot;
+l_string|&quot;atmel_at76c502%s.bin&quot;
 comma
 l_string|&quot;NoName-RFMD&quot;
 )brace
@@ -800,7 +800,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR_D&quot;
 comma
-l_string|&quot;atmel_at76c502d.bin&quot;
+l_string|&quot;atmel_at76c502d%s.bin&quot;
 comma
 l_string|&quot;NoName-revD&quot;
 )brace
@@ -812,7 +812,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR_E&quot;
 comma
-l_string|&quot;atmel_at76c502e.bin&quot;
+l_string|&quot;atmel_at76c502e%s.bin&quot;
 comma
 l_string|&quot;NoName-revE&quot;
 )brace
@@ -824,7 +824,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C504&quot;
 comma
-l_string|&quot;atmel_at76c504.bin&quot;
+l_string|&quot;atmel_at76c504%s.bin&quot;
 comma
 l_string|&quot;NoName-504&quot;
 )brace
@@ -836,7 +836,7 @@ l_int|0x0620
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502_3com.bin&quot;
+l_string|&quot;atmel_at76c502_3com%s.bin&quot;
 comma
 l_string|&quot;3com 3CRWE62092B&quot;
 )brace
@@ -848,7 +848,7 @@ l_int|0x0696
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502_3com.bin&quot;
+l_string|&quot;atmel_at76c502_3com%s.bin&quot;
 comma
 l_string|&quot;3com 3CRSHPW_96&quot;
 )brace
@@ -860,7 +860,7 @@ l_int|0
 comma
 l_string|&quot;SMC/2632W-V2&quot;
 comma
-l_string|&quot;atmel_at76c502.bin&quot;
+l_string|&quot;atmel_at76c502%s.bin&quot;
 comma
 l_string|&quot;SMC 2632W-V2&quot;
 )brace
@@ -872,7 +872,7 @@ l_int|0
 comma
 l_string|&quot;SMC/2632W&quot;
 comma
-l_string|&quot;atmel_at76c502d.bin&quot;
+l_string|&quot;atmel_at76c502d%s.bin&quot;
 comma
 l_string|&quot;SMC 2632W-V3&quot;
 )brace
@@ -884,7 +884,7 @@ l_int|0x0007
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502.bin&quot;
+l_string|&quot;atmel_at76c502%s.bin&quot;
 comma
 l_string|&quot;Sitecom WLAN-011&quot;
 )brace
@@ -897,7 +897,7 @@ l_int|0x3302
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502d.bin&quot;
+l_string|&quot;atmel_at76c502d%s.bin&quot;
 comma
 l_string|&quot;Belkin F5D6060u&quot;
 )brace
@@ -910,7 +910,7 @@ l_int|0
 comma
 l_string|&quot;BT/Voyager 1020 Laptop Adapter&quot;
 comma
-l_string|&quot;atmel_at76c502.bin&quot;
+l_string|&quot;atmel_at76c502%s.bin&quot;
 comma
 l_string|&quot;BT Voyager 1020&quot;
 )brace
@@ -922,7 +922,7 @@ l_int|0
 comma
 l_string|&quot;IEEE 802.11b/Wireless LAN PC Card&quot;
 comma
-l_string|&quot;atmel_at76c502.bin&quot;
+l_string|&quot;atmel_at76c502%s.bin&quot;
 comma
 l_string|&quot;Siemens Gigaset PC Card II&quot;
 )brace
@@ -934,7 +934,7 @@ l_int|0
 comma
 l_string|&quot;CNet/CNWLC 11Mbps Wireless PC Card V-5&quot;
 comma
-l_string|&quot;atmel_at76c502e.bin&quot;
+l_string|&quot;atmel_at76c502e%s.bin&quot;
 comma
 l_string|&quot;CNet CNWLC-811ARL&quot;
 )brace

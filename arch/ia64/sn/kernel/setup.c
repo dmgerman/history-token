@@ -1207,23 +1207,6 @@ c_func
 id|cpuphyid
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;CPU %d: nasid %d, slice %d, cnode %d&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|nasid
-comma
-id|slice
-comma
-id|cnode
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren

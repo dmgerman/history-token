@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -49,6 +50,13 @@ id|__per_cpu_offset
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|__per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_offset
+)paren
 suffix:semicolon
 macro_line|#endif
 id|DEFINE_PER_CPU
@@ -105,6 +113,13 @@ r_int
 id|ia64_iobase
 suffix:semicolon
 multiline_comment|/* virtual address for I/O accesses */
+DECL|variable|ia64_iobase
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_iobase
+)paren
+suffix:semicolon
 DECL|variable|io_space
 r_struct
 id|io_space
@@ -112,6 +127,13 @@ id|io_space
 (braket
 id|MAX_IO_SPACES
 )braket
+suffix:semicolon
+DECL|variable|io_space
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_space
+)paren
 suffix:semicolon
 DECL|variable|num_io_spaces
 r_int
@@ -134,6 +156,13 @@ id|ia64_max_iommu_merge_mask
 op_assign
 op_complement
 l_int|0UL
+suffix:semicolon
+DECL|variable|ia64_max_iommu_merge_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_max_iommu_merge_mask
+)paren
 suffix:semicolon
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;512
@@ -1060,6 +1089,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 macro_line|#ifdef CONFIG_SERIAL_8250_HCDP
 r_if
 c_cond
@@ -1083,7 +1113,6 @@ id|efi.hcdp
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 multiline_comment|/*&n;&t; * Without HCDP, we won&squot;t discover any serial ports until the serial driver looks&n;&t; * in the ACPI namespace.  If ACPI claims there are some legacy devices, register&n;&t; * the legacy COM ports so serial console works earlier.  This is slightly dangerous&n;&t; * because we don&squot;t *really* know whether there&squot;s anything there, but we hope that&n;&t; * all new boxes will implement HCDP.&n;&t; */
 (brace
 r_extern
@@ -1856,24 +1885,6 @@ op_assign
 id|vm1.pal_vm_info_1_s.phys_add_size
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU %d: %lu virtual and %lu physical address bits&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|impl_va_msb
-op_plus
-l_int|1
-comma
-id|phys_addr_size
-)paren
-suffix:semicolon
 id|c-&gt;unimpl_va_mask
 op_assign
 op_complement

@@ -343,7 +343,7 @@ c_func
 (paren
 id|scmd
 comma
-id|TIMEOUT
+id|TIMEOUT_ERROR
 )paren
 suffix:semicolon
 r_if

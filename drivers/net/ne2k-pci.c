@@ -241,6 +241,9 @@ comma
 DECL|enumerator|CH_Holtek_HT80229
 id|CH_Holtek_HT80229
 comma
+DECL|enumerator|CH_Winbond_89C940_8c4a
+id|CH_Winbond_89C940_8c4a
+comma
 )brace
 suffix:semicolon
 r_static
@@ -327,6 +330,12 @@ op_or
 id|HOLTEK_FDX
 op_or
 id|STOP_PG_0x60
+)brace
+comma
+(brace
+l_string|&quot;Winbond W89C940(misprogrammed)&quot;
+comma
+l_int|0
 )brace
 comma
 (brace
@@ -502,6 +511,22 @@ comma
 l_int|0
 comma
 id|CH_Holtek_HT80229
+)brace
+comma
+(brace
+l_int|0x8c4a
+comma
+l_int|0x1980
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_Winbond_89C940_8c4a
 )brace
 comma
 (brace

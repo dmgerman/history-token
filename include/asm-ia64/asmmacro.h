@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ASMMACRO_H
 DECL|macro|_ASM_IA64_ASMMACRO_H
 mdefine_line|#define _ASM_IA64_ASMMACRO_H
-multiline_comment|/*&n; * Copyright (C) 2000-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2000-2001, 2003-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(name)&t;&t;&t;&t;&bslash;&n;&t;.align 32;&t;&t;&t;&t;&bslash;&n;&t;.proc name;&t;&t;&t;&t;&bslash;&n;name:
@@ -63,6 +63,13 @@ DECL|macro|FSYS_RETURN
 macro_line|# define FSYS_RETURN&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;.data.patch.mckinley_e9&quot;, 1f-.;&t;&bslash;&n;1:{ .mib;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&t;&bslash;&n;&t;mov r16=ar.pfs;&t;&t;&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=2f;;&t;&t;&t;&bslash;&n;  };&t;&t;&t;&t;&t;&t;&t;&bslash;&n;2:{ .mib;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&t;&bslash;&n;&t;mov ar.pfs=r16;&t;&t;&t;&t;&t;&bslash;&n;&t;br.ret.sptk.many b6;;&t;&t;&t;&t;&bslash;&n;  }
 macro_line|#else
 macro_line|# define FSYS_RETURN&t;br.ret.sptk.many b6
+macro_line|#endif
+multiline_comment|/*&n; * Up until early 2004, use of .align within a function caused bad unwind info.&n; * TEXT_ALIGN(n) expands into &quot;.align n&quot; if a fixed GAS is available or into nothing&n; * otherwise.&n; */
+macro_line|#ifdef HAVE_WORKING_TEXT_ALIGN
+DECL|macro|TEXT_ALIGN
+macro_line|# define TEXT_ALIGN(n)&t;.align n
+macro_line|#else
+macro_line|# define TEXT_ALIGN(n)
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof
