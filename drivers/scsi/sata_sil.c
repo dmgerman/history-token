@@ -389,6 +389,16 @@ id|scr_write
 op_assign
 id|sil_scr_write
 comma
+dot
+id|port_start
+op_assign
+id|ata_port_start
+comma
+dot
+id|port_stop
+op_assign
+id|ata_port_stop
+comma
 )brace
 suffix:semicolon
 DECL|variable|sil_port_info
