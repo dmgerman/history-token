@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &quot;libata.h&quot;
 multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator&n; *&t;    used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS) &n; *&t;    mapping. Some situations may arise where the disk is not &n; *&t;    bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
@@ -14,49 +13,53 @@ r_int
 id|ata_std_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
-multiline_comment|/* SCSI disk */
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
-multiline_comment|/* Device major, minor */
+id|sector_t
+id|capacity
+comma
 r_int
-op_star
-id|ip
-multiline_comment|/* Heads, sectors, cylinders in that order */
+id|geom
+(braket
+)braket
 )paren
 (brace
-id|ip
+id|geom
 (braket
 l_int|0
 )braket
 op_assign
 l_int|255
 suffix:semicolon
-id|ip
+id|geom
 (braket
 l_int|1
 )braket
 op_assign
 l_int|63
 suffix:semicolon
-id|ip
+id|geom
 (braket
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
-id|ip
+id|geom
 (braket
 l_int|0
 )braket
 op_star
-id|ip
+id|geom
 (braket
 l_int|1
 )braket
