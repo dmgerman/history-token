@@ -729,6 +729,12 @@ op_star
 id|cifs_oplock_cachep
 suffix:semicolon
 macro_line|#ifdef CIFS_EXPERIMENTAL
+DECL|variable|cifs_sm_req_cachep
+r_static
+id|kmem_cache_t
+op_star
+id|cifs_sm_req_cachep
+suffix:semicolon
 DECL|variable|cifs_sm_req_poolp
 id|mempool_t
 op_star
