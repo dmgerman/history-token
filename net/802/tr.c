@@ -2,6 +2,7 @@ multiline_comment|/*&n; * NET3:&t;Token ring device handling subroutines&n; * &n
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -2672,6 +2673,20 @@ id|module_init
 c_func
 (paren
 id|rif_init
+)paren
+suffix:semicolon
+DECL|variable|tr_source_route
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tr_source_route
+)paren
+suffix:semicolon
+DECL|variable|tr_type_trans
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tr_type_trans
 )paren
 suffix:semicolon
 eof

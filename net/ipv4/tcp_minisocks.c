@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_minisocks.c,v 1.15 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -3814,4 +3815,48 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|tcp_check_req
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_check_req
+)paren
+suffix:semicolon
+DECL|variable|tcp_child_process
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_child_process
+)paren
+suffix:semicolon
+DECL|variable|tcp_create_openreq_child
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_create_openreq_child
+)paren
+suffix:semicolon
+DECL|variable|tcp_timewait_state_process
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_timewait_state_process
+)paren
+suffix:semicolon
+DECL|variable|tcp_tw_deschedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_tw_deschedule
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+DECL|variable|sysctl_tcp_tw_recycle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_tcp_tw_recycle
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

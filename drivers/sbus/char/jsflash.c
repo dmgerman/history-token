@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;JSFD_MAJOR
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -469,33 +470,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;cmd
-op_eq
-id|WRITE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;jsfd: write&bslash;n&quot;
-)paren
-suffix:semicolon
-id|end_request
+id|rq_data_dir
 c_func
 (paren
 id|req
-comma
-l_int|0
 )paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|req-&gt;cmd
 op_ne
 id|READ
 )paren
@@ -504,9 +483,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;jsfd: bad req-&gt;cmd %d&bslash;n&quot;
-comma
-id|req-&gt;cmd
+l_string|&quot;jsfd: write&bslash;n&quot;
 )paren
 suffix:semicolon
 id|end_request
@@ -555,8 +532,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* printk(&quot;%s: read buf %p off %x len %x&bslash;n&quot;, req-&gt;rq_disk-&gt;disk_name, req-&gt;buffer, (int)offset, (int)len); */
-multiline_comment|/* P3 */
 id|jsfd_read
 c_func
 (paren
@@ -711,23 +686,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|buf
-comma
-id|togo
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|p
 OL
 id|JSF_BASE_ALL
@@ -847,6 +805,9 @@ c_func
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -856,6 +817,10 @@ id|b.s
 comma
 l_int|4
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tmp
 op_add_assign
@@ -1119,24 +1084,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-id|JSFPRGSZ
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
 id|copy_from_user
 c_func
 (paren
@@ -1151,6 +1098,10 @@ id|arg
 comma
 id|JSFPRGSZ
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|p
 op_assign
@@ -1191,23 +1142,6 @@ r_int
 )paren
 id|abuf.data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|uptr
-comma
-id|togo
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1220,6 +1154,9 @@ id|togo
 op_sub_assign
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1233,6 +1170,10 @@ id|uptr
 comma
 l_int|4
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|jsf_write4
 c_func
@@ -1312,27 +1253,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+id|copy_to_user
 c_func
 (paren
-id|VERIFY_WRITE
-comma
 (paren
 r_void
 op_star
 )paren
-id|arg
-comma
-id|JSFIDSZ
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|copy_to_user
-c_func
-(paren
 id|arg
 comma
 op_amp
@@ -1340,10 +1267,10 @@ id|jsf0.id
 comma
 id|JSFIDSZ
 )paren
-suffix:semicolon
-id|error
-op_assign
-l_int|0
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
