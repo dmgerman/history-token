@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_PROC_H
 DECL|macro|_GDTH_PROC_H
 mdefine_line|#define _GDTH_PROC_H
-multiline_comment|/* gdth_proc.h &n; * $Id: gdth_proc.h,v 1.14 2003/08/27 11:37:35 achim Exp $&n; */
+multiline_comment|/* gdth_proc.h &n; * $Id: gdth_proc.h,v 1.16 2004/01/14 13:09:01 achim Exp $&n; */
 r_static
 r_int
 id|gdth_set_info
@@ -13,6 +13,11 @@ id|buffer
 comma
 r_int
 id|length
+comma
+r_struct
+id|Scsi_Host
+op_star
+id|host
 comma
 r_int
 id|hanum
@@ -41,6 +46,11 @@ comma
 r_int
 id|length
 comma
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_int
 id|hanum
 comma
@@ -48,7 +58,7 @@ r_int
 id|busnum
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020503
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 r_static
 r_void
 id|gdth_do_req
@@ -90,29 +100,7 @@ op_star
 id|scp
 )paren
 suffix:semicolon
-macro_line|#ifdef GDTH_IOCTL_PROC
-r_static
-r_int
-id|gdth_set_bin_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-comma
-r_int
-id|hanum
-comma
-id|Scsi_Request
-op_star
-id|scp
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#elif LINUX_VERSION_CODE &gt;= 0x020322
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 r_void
 id|gdth_do_cmd
@@ -154,28 +142,6 @@ op_star
 id|scp
 )paren
 suffix:semicolon
-macro_line|#ifdef GDTH_IOCTL_PROC
-r_static
-r_int
-id|gdth_set_bin_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-comma
-r_int
-id|hanum
-comma
-id|Scsi_Cmnd
-op_star
-id|scp
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#else 
 r_static
 r_void
@@ -217,27 +183,6 @@ id|Scsi_Cmnd
 id|scp
 )paren
 suffix:semicolon
-macro_line|#ifdef GDTH_IOCTL_PROC
-r_static
-r_int
-id|gdth_set_bin_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-comma
-r_int
-id|hanum
-comma
-id|Scsi_Cmnd
-id|scp
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 r_static
 r_char
@@ -254,7 +199,7 @@ comma
 r_int
 id|scratch
 comma
-id|ulong32
+id|ulong64
 op_star
 id|paddr
 )paren
@@ -274,24 +219,10 @@ r_char
 op_star
 id|buf
 comma
-id|ulong32
+id|ulong64
 id|paddr
 )paren
 suffix:semicolon
-macro_line|#ifdef GDTH_IOCTL_PROC
-r_static
-r_int
-id|gdth_ioctl_check_bin
-c_func
-(paren
-r_int
-id|hanum
-comma
-id|ushort
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|gdth_wait_completion
