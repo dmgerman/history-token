@@ -228,10 +228,10 @@ r_static
 r_int
 id|standbys_pending
 suffix:semicolon
-DECL|variable|waiting_for_resume
+DECL|variable|ignore_sys_suspend
 r_static
 r_int
-id|waiting_for_resume
+id|ignore_sys_suspend
 suffix:semicolon
 DECL|variable|ignore_normal_resume
 r_static
@@ -2777,7 +2777,7 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|0
 suffix:semicolon
@@ -3249,11 +3249,11 @@ multiline_comment|/*&n;&t;&t;&t; * If we are already processing a SUSPEND,&n;&t;
 r_if
 c_cond
 (paren
-id|waiting_for_resume
+id|ignore_sys_suspend
 )paren
 r_return
 suffix:semicolon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|1
 suffix:semicolon
@@ -3292,7 +3292,7 @@ suffix:colon
 r_case
 id|APM_STANDBY_RESUME
 suffix:colon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|0
 suffix:semicolon
