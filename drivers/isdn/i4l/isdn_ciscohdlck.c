@@ -112,6 +112,12 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 r_int
 id|len
@@ -318,7 +324,7 @@ id|KERN_INFO
 l_string|&quot;%s: Keepalive period set &quot;
 l_string|&quot;to %d seconds.&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|lp-&gt;cisco_keepalive_period
 )paren
@@ -476,6 +482,12 @@ op_star
 )paren
 id|data
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -542,7 +554,7 @@ id|KERN_WARNING
 l_string|&quot;UPDOWN: Line protocol on Interface %s,&quot;
 l_string|&quot; changed state to down&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* should stop routing higher-level data accross */
@@ -580,7 +592,7 @@ id|KERN_WARNING
 l_string|&quot;UPDOWN: Line protocol on Interface %s,&quot;
 l_string|&quot; changed state to up&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* restart routing higher-level data accross */
@@ -596,13 +608,12 @@ id|KERN_DEBUG
 l_string|&quot;%s: HDLC &quot;
 l_string|&quot;myseq %lu, mineseen %lu%c, yourseen %lu, %s&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|last_cisco_myseq
 comma
 id|lp-&gt;cisco_mineseen
 comma
-(paren
 (paren
 id|last_cisco_myseq
 op_eq
@@ -613,11 +624,9 @@ c_cond
 l_char|&squot;*&squot;
 suffix:colon
 l_int|040
-)paren
 comma
 id|lp-&gt;cisco_yourseq
 comma
-(paren
 (paren
 id|lp-&gt;cisco_line_state
 )paren
@@ -626,7 +635,6 @@ c_cond
 l_string|&quot;line up&quot;
 suffix:colon
 l_string|&quot;line down&quot;
-)paren
 )paren
 suffix:semicolon
 id|skb
@@ -1223,6 +1231,12 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 r_char
 op_star
@@ -1375,7 +1389,7 @@ l_string|&quot;remote ip: %d.%d.%d.%d, &quot;
 l_string|&quot;local ip: %d.%d.%d.%d &quot;
 l_string|&quot;mask: %d.%d.%d.%d&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|HIPQUAD
 c_func
@@ -1408,7 +1422,7 @@ l_string|&quot;%s: got invalid slarp &quot;
 l_string|&quot;reply (%d.%d.%d.%d/%d.%d.%d.%d) &quot;
 l_string|&quot;- ignored&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|HIPQUAD
 c_func
@@ -1470,7 +1484,7 @@ id|KERN_DEBUG
 l_string|&quot;%s: Keepalive period mismatch - &quot;
 l_string|&quot;is %d but should be %d.&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|period
 comma
@@ -1645,7 +1659,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: Unknown Cisco header %#02x %#02x&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|addr
 comma
@@ -1691,7 +1705,7 @@ id|KERN_DEBUG
 l_string|&quot;%s: Received CDP packet. use &quot;
 l_string|&quot;&bslash;&quot;no cdp enable&bslash;&quot; on cisco.&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_goto

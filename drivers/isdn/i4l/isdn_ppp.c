@@ -767,6 +767,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1001,7 +1007,7 @@ op_assign
 id|isdn_ppp_if_get_unit
 c_func
 (paren
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* get unit number from interface name .. ugly! */
@@ -1019,7 +1025,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;isdn_ppp_bind: illegal interface name %s.&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|retval
@@ -1913,6 +1919,10 @@ id|ippp_struct
 op_star
 id|is
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|idev
+suffix:semicolon
 id|isdn_net_local
 op_star
 id|lp
@@ -1933,6 +1943,10 @@ suffix:semicolon
 id|lp
 op_assign
 id|is-&gt;lp
+suffix:semicolon
+id|idev
+op_assign
+id|lp-&gt;netdev
 suffix:semicolon
 r_if
 c_cond
@@ -2123,12 +2137,12 @@ op_star
 )paren
 id|arg
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|strlen
 c_func
 (paren
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 )paren
 )paren

@@ -725,14 +725,6 @@ DECL|member|magic
 id|ulong
 id|magic
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|10
-)braket
-suffix:semicolon
-multiline_comment|/* Name of device                   */
 DECL|member|dial_timer
 r_struct
 id|timer_list
@@ -1118,6 +1110,14 @@ id|spinlock_t
 id|queue_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|10
+)braket
+suffix:semicolon
+multiline_comment|/* Name of device                   */
 DECL|member|global_list
 r_struct
 id|list_head

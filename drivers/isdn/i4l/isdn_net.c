@@ -1200,6 +1200,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
 id|ST_ACTIVE
@@ -1262,7 +1268,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;isdn_net: %s connected&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* If first Chargeinfo comes before B-Channel connect,&n;&t; * we correct the timestamp here.&n;&t; */
@@ -1824,7 +1830,7 @@ id|arg
 (brace
 id|isdn_net_dev
 op_star
-id|p
+id|idev
 op_assign
 id|lp-&gt;netdev
 suffix:semicolon
@@ -1943,7 +1949,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: remote hangup&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|printk
@@ -1952,7 +1958,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Chargesum is %d&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|lp-&gt;charge
 )paren
@@ -2062,7 +2068,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: hangup waiting for callback ...&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_hangup
@@ -2144,7 +2150,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: remote hangup&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_unbind_channel
@@ -2236,7 +2242,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: remote hangup&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_unbind_channel
@@ -2341,7 +2347,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: remote hangup&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_unbind_channel
@@ -2391,7 +2397,7 @@ c_func
 (paren
 id|lp-&gt;isdn_slot
 comma
-id|p
+id|idev
 )paren
 suffix:semicolon
 id|isdn_net_connected
@@ -2425,7 +2431,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: remote hangup&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_unbind_channel
@@ -2496,6 +2502,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 id|isdn_ctrl
 id|cmd
 suffix:semicolon
@@ -2534,6 +2546,12 @@ op_star
 )paren
 id|lp-&gt;slave-&gt;priv
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|sidev
+op_assign
+id|slp-&gt;netdev
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2550,9 +2568,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;isdn_net: hang up slave %s before %s&bslash;n&quot;
 comma
-id|slp-&gt;name
+id|sidev-&gt;name
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|isdn_net_hangup
@@ -2569,7 +2587,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;isdn_net: local hangup %s&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2608,7 +2626,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Chargesum is %d&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|lp-&gt;charge
 )paren
@@ -2704,6 +2722,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 id|u_char
 op_star
 id|p
@@ -2769,7 +2793,7 @@ l_string|&quot;isdn_net: protocol %04x is buggy, dev %s&bslash;n&quot;
 comma
 id|skb-&gt;protocol
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|p
@@ -3390,6 +3414,12 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -3464,7 +3494,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: HL driver queue full&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -3677,7 +3707,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: %d bogocps&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|lp-&gt;netdev-&gt;name
 comma
 id|lp-&gt;cps
 )paren
@@ -4596,6 +4626,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 id|slot
 suffix:semicolon
@@ -4619,7 +4655,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;incoming call for callback, interface %s `off&squot; -&gt; rejected&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -4632,7 +4668,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: start callback&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Grab a free ISDN-Channel */
@@ -4984,7 +5020,7 @@ id|isdn_net_devs
 (brace
 id|isdn_net_dev
 op_star
-id|p
+id|idev
 op_assign
 id|list_entry
 c_func
@@ -5001,7 +5037,7 @@ op_star
 id|lp
 op_assign
 op_amp
-id|p-&gt;local
+id|idev-&gt;local
 suffix:semicolon
 multiline_comment|/* check acceptable call types for DOV */
 id|dbg_net_icall
@@ -5296,7 +5332,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;incoming call, interface %s `stopped&squot; -&gt; rejected&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -5311,7 +5347,7 @@ op_logical_neg
 id|isdn_net_device_started
 c_func
 (paren
-id|p
+id|idev
 )paren
 )paren
 (brace
@@ -5327,7 +5363,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: incoming call, interface down -&gt; rejected&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -5357,7 +5393,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;ICALLslv: %s&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 )paren
 suffix:semicolon
 id|printk
@@ -5366,7 +5402,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;master=%s&bslash;n&quot;
 comma
-id|mlp-&gt;name
+id|mlp-&gt;netdev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -5485,7 +5521,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: call from %s -&gt; %s accepted&bslash;n&quot;
 comma
-id|lp-&gt;name
+id|idev-&gt;name
 comma
 id|nr
 comma
@@ -5694,7 +5730,7 @@ op_logical_neg
 id|strcmp
 c_func
 (paren
-id|p-&gt;local.name
+id|p-&gt;name
 comma
 id|name
 )paren
@@ -6017,7 +6053,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|netdev-&gt;local.name
+id|netdev-&gt;name
 comma
 id|name
 )paren
@@ -7746,7 +7782,7 @@ op_star
 id|lp-&gt;slave-&gt;priv
 )paren
 op_member_access_from_pointer
-id|name
+id|netdev-&gt;name
 )paren
 suffix:semicolon
 r_else
@@ -7775,7 +7811,7 @@ op_star
 id|lp-&gt;master-&gt;priv
 )paren
 op_member_access_from_pointer
-id|name
+id|netdev-&gt;name
 )paren
 suffix:semicolon
 r_else
@@ -8721,7 +8757,7 @@ id|p-&gt;local.slave-&gt;priv
 )paren
 )paren
 op_member_access_from_pointer
-id|name
+id|netdev-&gt;name
 suffix:semicolon
 r_struct
 id|list_head
@@ -8758,7 +8794,7 @@ op_logical_neg
 id|strcmp
 c_func
 (paren
-id|n-&gt;local.name
+id|n-&gt;name
 comma
 id|slavename
 )paren
@@ -8838,7 +8874,7 @@ op_logical_neg
 id|strcmp
 c_func
 (paren
-id|p-&gt;local.name
+id|p-&gt;name
 comma
 id|name
 )paren
