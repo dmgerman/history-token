@@ -2873,17 +2873,6 @@ id|O_dqpp
 op_assign
 id|dqp
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-op_logical_neg
-id|XFS_DQ_IS_LOCKED
-c_func
-(paren
-id|dqp
-)paren
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -3697,17 +3686,6 @@ id|dqret
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Dquot lock comes after hashlock in the lock ordering&n;&t; */
-id|ASSERT
-c_func
-(paren
-op_logical_neg
-id|XFS_DQ_IS_LOCKED
-c_func
-(paren
-id|dqp
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
