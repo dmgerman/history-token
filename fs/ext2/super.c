@@ -3909,6 +3909,13 @@ id|u32
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|sbi-&gt;s_next_gen_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; */
 id|sb-&gt;s_op
 op_assign

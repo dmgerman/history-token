@@ -129,6 +129,10 @@ DECL|member|s_first_ino
 r_int
 id|s_first_ino
 suffix:semicolon
+DECL|member|s_next_gen_lock
+id|spinlock_t
+id|s_next_gen_lock
+suffix:semicolon
 DECL|member|s_next_generation
 id|u32
 id|s_next_generation
