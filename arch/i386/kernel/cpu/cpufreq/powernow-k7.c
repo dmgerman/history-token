@@ -1081,10 +1081,9 @@ op_eq
 l_int|1
 )paren
 multiline_comment|/* A0 errata 5 */
-id|__asm__
+id|local_irq_disable
 c_func
 (paren
-l_string|&quot;&bslash;tcli&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1134,10 +1133,9 @@ id|have_a0
 op_eq
 l_int|1
 )paren
-id|__asm__
+id|local_irq_enable
 c_func
 (paren
-l_string|&quot;&bslash;tsti&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cpufreq_notify_transition

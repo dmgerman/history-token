@@ -5349,14 +5349,6 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_device-&gt;use_10_for_rw
-op_assign
-l_int|1
-suffix:semicolon
-id|SRpnt-&gt;sr_device-&gt;use_10_for_ms
-op_assign
-l_int|0
-suffix:semicolon
 id|SRpnt-&gt;sr_device-&gt;remap
 op_assign
 l_int|1

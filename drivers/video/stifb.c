@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/grfioctl.h&gt;&t;/* for HP-UX compatibility */
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sticore.h&quot;
 multiline_comment|/* REGION_BASE(fb_info, index) returns the virtual address for region &lt;index&gt; */
 macro_line|#ifdef __LP64__
@@ -146,6 +147,15 @@ id|deviceSpecificConfig
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|variable|bpp
+r_static
+r_int
+id|__initdata
+id|bpp
+op_assign
+l_int|8
+suffix:semicolon
+multiline_comment|/* parameter from modprobe */
 DECL|variable|stifb_force_bpp
 r_static
 r_int
@@ -4960,6 +4970,20 @@ id|sti
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bpp
+OG
+l_int|0
+)paren
+id|stifb_force_bpp
+(braket
+id|i
+)braket
+op_assign
+id|bpp
+suffix:semicolon
 id|stifb_init_fb
 c_func
 (paren
@@ -5031,12 +5055,50 @@ c_cond
 (paren
 id|sti-&gt;info
 )paren
+(brace
+r_struct
+id|fb_info
+op_star
+id|info
+op_assign
+id|sti-&gt;info
+suffix:semicolon
 id|unregister_framebuffer
 c_func
 (paren
 id|sti-&gt;info
 )paren
 suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|info-&gt;fix.mmio_start
+comma
+id|info-&gt;fix.mmio_len
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|info-&gt;fix.smem_start
+comma
+id|info-&gt;fix.smem_len
+)paren
+suffix:semicolon
+id|fb_dealloc_cmap
+c_func
+(paren
+op_amp
+id|info-&gt;cmap
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 id|sti-&gt;info
 op_assign
 l_int|NULL
@@ -5114,6 +5176,7 @@ op_increment
 op_eq
 l_char|&squot;:&squot;
 )paren
+(brace
 id|stifb_force_bpp
 (braket
 id|i
@@ -5130,6 +5193,12 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+id|bpp
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_else
 r_break
 suffix:semicolon
@@ -5178,7 +5247,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;GPL v2&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

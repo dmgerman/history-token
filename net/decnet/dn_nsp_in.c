@@ -3306,9 +3306,8 @@ r_int
 )paren
 id|cb-&gt;dst_port
 comma
-(paren
-r_int
-)paren
+op_logical_neg
+op_logical_neg
 id|sock_owned_by_user
 c_func
 (paren

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * linux/include/asm/arch/pcmcia.h&n; *&n; * Copyright (C
 macro_line|#ifndef _ASM_ARCH_PCMCIA
 DECL|macro|_ASM_ARCH_PCMCIA
 mdefine_line|#define _ASM_ARCH_PCMCIA
-macro_line|#include &lt;linux/proc_fs.h&gt;
 multiline_comment|/* include the world */
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
