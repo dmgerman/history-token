@@ -196,12 +196,10 @@ id|offs
 comma
 id|count
 )paren
-op_ne
-l_int|0
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EFAULT
 suffix:semicolon
 id|pr_debug
 c_func
