@@ -196,7 +196,7 @@ id|jiffies
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called under bridge lock */
+multiline_comment|/* NO locks held */
 DECL|function|br_stp_disable_bridge
 r_void
 id|br_stp_disable_bridge
@@ -212,6 +212,13 @@ r_struct
 id|net_bridge_port
 op_star
 id|p
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
 suffix:semicolon
 id|br-&gt;topology_change
 op_assign
@@ -285,6 +292,13 @@ op_assign
 id|p-&gt;next
 suffix:semicolon
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 id|del_timer_sync
 c_func
 (paren
