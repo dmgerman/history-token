@@ -1189,6 +1189,11 @@ id|release
 op_assign
 id|cifs_closedir
 comma
+dot
+id|read
+op_assign
+id|generic_read_dir
+comma
 )brace
 suffix:semicolon
 r_static
