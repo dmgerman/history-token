@@ -1,10 +1,7 @@
 multiline_comment|/*&n; * Copyright 2003 PathScale, Inc.&n; *&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;errno.h&gt;
-DECL|macro|__FRAME_OFFSETS
-mdefine_line|#define __FRAME_OFFSETS
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_constants.h&quot;
 DECL|function|ptrace_getregs
@@ -150,7 +147,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -162,10 +159,10 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER CS failed&quot;
+l_string|&quot;POKEUSR CS failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -176,7 +173,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -188,10 +185,10 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER DS failed&quot;
+l_string|&quot;POKEUSR DS failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -201,7 +198,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -213,13 +210,12 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER ES failed&quot;
+l_string|&quot;POKEUSR ES failed&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

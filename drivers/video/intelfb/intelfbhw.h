@@ -64,6 +64,10 @@ DECL|macro|INTEL_855_GMCH_GMS_STOLEN_16M
 mdefine_line|#define INTEL_855_GMCH_GMS_STOLEN_16M&t;(0x4 &lt;&lt; 4)
 DECL|macro|INTEL_855_GMCH_GMS_STOLEN_32M
 mdefine_line|#define INTEL_855_GMCH_GMS_STOLEN_32M&t;(0x5 &lt;&lt; 4)
+DECL|macro|INTEL_915G_GMCH_GMS_STOLEN_48M
+mdefine_line|#define INTEL_915G_GMCH_GMS_STOLEN_48M&t;(0x6 &lt;&lt; 4)
+DECL|macro|INTEL_915G_GMCH_GMS_STOLEN_64M
+mdefine_line|#define INTEL_915G_GMCH_GMS_STOLEN_64M&t;(0x7 &lt;&lt; 4)
 multiline_comment|/* HW registers */
 multiline_comment|/* Fence registers */
 DECL|macro|FENCE

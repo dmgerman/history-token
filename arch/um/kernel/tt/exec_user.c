@@ -5,8 +5,6 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;

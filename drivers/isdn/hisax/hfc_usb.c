@@ -1,17 +1,19 @@
-multiline_comment|/*&n; * hfc_usb.c&n; *&n; * modular HiSax ISDN driver for Colognechip HFC-USB chip&n; *&n; * Authors : Peter Sprenger  (sprenger@moving-byters.de)&n; *           Martin Bachem   (info@colognechip.com)&n; *           based on the first hfc_usb driver of Werner Cornelius (werner@isdn-development.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n;*/
+multiline_comment|/*&n; * hfc_usb.c&n; *&n; * $Id: hfc_usb.c,v 4.34 2005/01/26 17:25:53 martinb1 Exp $&n; *&n; * modular HiSax ISDN driver for Colognechip HFC-S USB chip&n; *&n; * Authors : Peter Sprenger  (sprenger@moving-bytes.de)&n; *           Martin Bachem   (info@colognechip.com)&n; *&n; *           based on the first hfc_usb driver of&n; *           Werner Cornelius (werner@isdn-development.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * See Version Histroy at the bottom of this file&n; *&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;hisax_if.h&quot;
+macro_line|#include &quot;hfc_usb.h&quot;
+multiline_comment|/*&n;* Version Information&n;* (do not modify the CVS Makros $Revision: 4.34 $ and $Date: 2005/01/26 17:25:53 $ !)&n;*/
 DECL|variable|hfcusb_revision
 r_static
 r_const
@@ -19,203 +21,400 @@ r_char
 op_star
 id|hfcusb_revision
 op_assign
-l_string|&quot;4.0&quot;
+l_string|&quot;Revision: 4.34 $ Date: 2005/01/26 17:25:53 $ &quot;
 suffix:semicolon
-multiline_comment|/*&n;&t;to enable much mire debug messages in this driver, define&n;&t;&t;&t;VERBOSE_USB_DEBUG and VERBOSE_ISDN_DEBUG&n;&t;below&n;*/
-DECL|macro|VERBOSE_USB_DEBUG
-mdefine_line|#define VERBOSE_USB_DEBUG
-DECL|macro|VERBOSE_ISDN_DEBUG
-mdefine_line|#define VERBOSE_ISDN_DEBUG
-DECL|macro|INCLUDE_INLINE_FUNCS
-mdefine_line|#define INCLUDE_INLINE_FUNCS
-DECL|macro|TRUE
-mdefine_line|#define TRUE  1
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-multiline_comment|/***********/
-multiline_comment|/* defines */
-multiline_comment|/***********/
-DECL|macro|HFC_CTRL_TIMEOUT
-mdefine_line|#define HFC_CTRL_TIMEOUT&t;20  
-singleline_comment|//(HZ * USB_CTRL_GET_TIMEOUT)
-multiline_comment|/* 5ms timeout writing/reading regs */
-DECL|macro|HFC_TIMER_T3
-mdefine_line|#define HFC_TIMER_T3     8000      /* timeout for l1 activation timer */
-DECL|macro|HFC_TIMER_T4
-mdefine_line|#define HFC_TIMER_T4     500       /* time for state change interval */
-DECL|macro|HFCUSB_L1_STATECHANGE
-mdefine_line|#define HFCUSB_L1_STATECHANGE   0  /* L1 state changed */
-DECL|macro|HFCUSB_L1_DRX
-mdefine_line|#define HFCUSB_L1_DRX           1  /* D-frame received */
-DECL|macro|HFCUSB_L1_ERX
-mdefine_line|#define HFCUSB_L1_ERX           2  /* E-frame received */
-DECL|macro|HFCUSB_L1_DTX
-mdefine_line|#define HFCUSB_L1_DTX           4  /* D-frames completed */
-DECL|macro|MAX_BCH_SIZE
-mdefine_line|#define MAX_BCH_SIZE        2048   /* allowed B-channel packet size */
-DECL|macro|HFCUSB_RX_THRESHOLD
-mdefine_line|#define HFCUSB_RX_THRESHOLD 64     /* threshold for fifo report bit rx */
-DECL|macro|HFCUSB_TX_THRESHOLD
-mdefine_line|#define HFCUSB_TX_THRESHOLD 64     /* threshold for fifo report bit tx */
-DECL|macro|HFCUSB_CHIP_ID
-mdefine_line|#define HFCUSB_CHIP_ID    0x16     /* Chip ID register index */
-DECL|macro|HFCUSB_CIRM
-mdefine_line|#define HFCUSB_CIRM       0x00     /* cirm register index */
-DECL|macro|HFCUSB_USB_SIZE
-mdefine_line|#define HFCUSB_USB_SIZE   0x07     /* int length register */
-DECL|macro|HFCUSB_USB_SIZE_I
-mdefine_line|#define HFCUSB_USB_SIZE_I 0x06     /* iso length register */
-DECL|macro|HFCUSB_F_CROSS
-mdefine_line|#define HFCUSB_F_CROSS    0x0b     /* bit order register */
-DECL|macro|HFCUSB_CLKDEL
-mdefine_line|#define HFCUSB_CLKDEL     0x37     /* bit delay register */
-DECL|macro|HFCUSB_CON_HDLC
-mdefine_line|#define HFCUSB_CON_HDLC   0xfa     /* channel connect register */
-DECL|macro|HFCUSB_HDLC_PAR
-mdefine_line|#define HFCUSB_HDLC_PAR   0xfb
-DECL|macro|HFCUSB_SCTRL
-mdefine_line|#define HFCUSB_SCTRL      0x31     /* S-bus control register (tx) */
-DECL|macro|HFCUSB_SCTRL_E
-mdefine_line|#define HFCUSB_SCTRL_E    0x32     /* same for E and special funcs */
-DECL|macro|HFCUSB_SCTRL_R
-mdefine_line|#define HFCUSB_SCTRL_R    0x33     /* S-bus control register (rx) */
-DECL|macro|HFCUSB_F_THRES
-mdefine_line|#define HFCUSB_F_THRES    0x0c     /* threshold register */
-DECL|macro|HFCUSB_FIFO
-mdefine_line|#define HFCUSB_FIFO       0x0f     /* fifo select register */
-DECL|macro|HFCUSB_F_USAGE
-mdefine_line|#define HFCUSB_F_USAGE    0x1a     /* fifo usage register */
-DECL|macro|HFCUSB_MST_MODE0
-mdefine_line|#define HFCUSB_MST_MODE0  0x14
-DECL|macro|HFCUSB_MST_MODE1
-mdefine_line|#define HFCUSB_MST_MODE1  0x15
-DECL|macro|HFCUSB_P_DATA
-mdefine_line|#define HFCUSB_P_DATA     0x1f
-DECL|macro|HFCUSB_INC_RES_F
-mdefine_line|#define HFCUSB_INC_RES_F  0x0e
-DECL|macro|HFCUSB_STATES
-mdefine_line|#define HFCUSB_STATES     0x30
-DECL|macro|HFCUSB_CHIPID
-mdefine_line|#define HFCUSB_CHIPID 0x40         /* ID value of HFC-USB */
-multiline_comment|/******************/
-multiline_comment|/* fifo registers */
-multiline_comment|/******************/
-DECL|macro|HFCUSB_NUM_FIFOS
-mdefine_line|#define HFCUSB_NUM_FIFOS   8       /* maximum number of fifos */
-DECL|macro|HFCUSB_B1_TX
-mdefine_line|#define HFCUSB_B1_TX       0       /* index for B1 transmit bulk/int */
-DECL|macro|HFCUSB_B1_RX
-mdefine_line|#define HFCUSB_B1_RX       1       /* index for B1 receive bulk/int */
-DECL|macro|HFCUSB_B2_TX
-mdefine_line|#define HFCUSB_B2_TX       2
-DECL|macro|HFCUSB_B2_RX
-mdefine_line|#define HFCUSB_B2_RX       3
-DECL|macro|HFCUSB_D_TX
-mdefine_line|#define HFCUSB_D_TX        4
-DECL|macro|HFCUSB_D_RX
-mdefine_line|#define HFCUSB_D_RX        5
-DECL|macro|HFCUSB_PCM_TX
-mdefine_line|#define HFCUSB_PCM_TX      6
-DECL|macro|HFCUSB_PCM_RX
-mdefine_line|#define HFCUSB_PCM_RX      7
-multiline_comment|/*&n;* used to switch snd_transfer_mode for different TA modes e.g. the Billion USB TA just&n;* supports ISO out, while the Cologne Chip EVAL TA just supports BULK out&n;*/
-DECL|macro|USB_INT
-mdefine_line|#define USB_INT&t;&t;0
-DECL|macro|USB_BULK
-mdefine_line|#define USB_BULK&t;1
-DECL|macro|USB_ISOC
-mdefine_line|#define USB_ISOC&t;2
-DECL|macro|ISOC_PACKETS_D
-mdefine_line|#define ISOC_PACKETS_D&t;8
-DECL|macro|ISOC_PACKETS_B
-mdefine_line|#define ISOC_PACKETS_B&t;8
-DECL|macro|ISO_BUFFER_SIZE
-mdefine_line|#define ISO_BUFFER_SIZE&t;128
-singleline_comment|// ISO send definitions
-DECL|macro|SINK_MAX
-mdefine_line|#define SINK_MAX&t;68
-DECL|macro|SINK_MIN
-mdefine_line|#define SINK_MIN&t;48
-DECL|macro|SINK_DMIN
-mdefine_line|#define SINK_DMIN&t;12
-DECL|macro|SINK_DMAX
-mdefine_line|#define SINK_DMAX&t;18
-DECL|macro|BITLINE_INF
-mdefine_line|#define BITLINE_INF&t;(-64*8)
-multiline_comment|/**********/
-multiline_comment|/* macros */
-multiline_comment|/**********/
-DECL|macro|write_usb
-mdefine_line|#define write_usb(a,b,c) usb_control_msg((a)-&gt;dev,(a)-&gt;ctrl_out_pipe,0,0x40,(c),(b),NULL,0,HFC_CTRL_TIMEOUT)
-DECL|macro|read_usb
-mdefine_line|#define read_usb(a,b,c) usb_control_msg((a)-&gt;dev,(a)-&gt;ctrl_in_pipe,1,0xC0,0,(b),(c),1,HFC_CTRL_TIMEOUT)
-multiline_comment|/*************************************************/
-multiline_comment|/* entry and size of output/input control buffer */
-multiline_comment|/*************************************************/
-DECL|macro|HFC_CTRL_BUFSIZE
-mdefine_line|#define HFC_CTRL_BUFSIZE 32
-r_typedef
+multiline_comment|/* Hisax debug support&n;* use &quot;modprobe debug=x&quot; where x is bitfield of USB_DBG &amp; ISDN_DBG&n;*/
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+macro_line|#include &lt;linux/moduleparam.h&gt;
+DECL|macro|__debug_variable
+mdefine_line|#define __debug_variable hfc_debug
+macro_line|#include &quot;hisax_debug.h&quot;
+DECL|variable|debug
+r_static
+id|u_int
+id|debug
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+DECL|variable|hfc_debug
+r_int
+id|hfc_debug
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/****************************************/
+multiline_comment|/* data defining the devices to be used */
+multiline_comment|/****************************************/
+DECL|variable|hfc_usb_idtab
+r_static
 r_struct
-(brace
-DECL|member|hfc_reg
-id|__u8
-id|hfc_reg
-suffix:semicolon
-multiline_comment|/* register number */
-DECL|member|reg_val
-id|__u8
-id|reg_val
-suffix:semicolon
-multiline_comment|/* value to be written (or read) */
-DECL|member|action
-r_int
-id|action
-suffix:semicolon
-multiline_comment|/* data for action handler */
-DECL|typedef|ctrl_buft
-)brace
-id|ctrl_buft
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|vendor
-r_int
-id|vendor
-suffix:semicolon
-singleline_comment|// vendor id
-DECL|member|prod_id
-r_int
-id|prod_id
-suffix:semicolon
-singleline_comment|// product id
-DECL|member|vend_name
-r_char
-op_star
-id|vend_name
-suffix:semicolon
-singleline_comment|// vendor string
-DECL|member|led_scheme
-id|__u8
-id|led_scheme
-suffix:semicolon
-singleline_comment|// led display scheme
-DECL|member|led_invert
-id|__u8
-id|led_invert
-suffix:semicolon
-singleline_comment|// invert led aux port settings
-DECL|member|led_bits
-id|__u8
-id|led_bits
+id|usb_device_id
+id|hfc_usb_idtab
 (braket
-l_int|8
 )braket
-suffix:semicolon
-singleline_comment|// array of 8 possible LED bitmask settings
-DECL|typedef|vendor_data
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0959
+comma
+l_int|0x2bd0
+)paren
 )brace
+comma
+multiline_comment|/* Colognechip USB eval TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0675
+comma
+l_int|0x1688
+)paren
+)brace
+comma
+multiline_comment|/* DrayTek miniVigor 128 USB ISDN TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b0
+comma
+l_int|0x0007
+)paren
+)brace
+comma
+multiline_comment|/* Billion USB TA 2 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0742
+comma
+l_int|0x2008
+)paren
+)brace
+comma
+multiline_comment|/* Stollmann USB TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0742
+comma
+l_int|0x2009
+)paren
+)brace
+comma
+multiline_comment|/* Aceex USB ISDN TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0742
+comma
+l_int|0x200A
+)paren
+)brace
+comma
+multiline_comment|/* OEM USB ISDN TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08e3
+comma
+l_int|0x0301
+)paren
+)brace
+comma
+multiline_comment|/* OliTec ISDN USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07fa
+comma
+l_int|0x0846
+)paren
+)brace
+comma
+multiline_comment|/* Bewan ISDN USB TA */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07fa
+comma
+l_int|0x0847
+)paren
+)brace
+comma
+multiline_comment|/* Djinn Numeris USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b0
+comma
+l_int|0x0006
+)paren
+)brace
+comma
+multiline_comment|/* Twister ISDN USB TA */
+(brace
+)brace
+multiline_comment|/* end with an all-zeroes entry */
+)brace
+suffix:semicolon
+multiline_comment|/* driver internal device specific data:&n;*   VendorID, ProductID, Devicename, LED_SCHEME,&n;*   LED&squot;s BitMask in HFCUSB_P_DATA Register : LED_USB, LED_S0, LED_B1, LED_B2&n;*/
+DECL|variable|vdata
 id|vendor_data
+id|vdata
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* CologneChip Eval TA */
+(brace
+l_int|0x0959
+comma
+l_int|0x2bd0
+comma
+l_string|&quot;ISDN USB TA (Cologne Chip HFC-S USB based)&quot;
+comma
+id|LED_OFF
+comma
+(brace
+l_int|4
+comma
+l_int|0
+comma
+l_int|2
+comma
+l_int|1
+)brace
+)brace
+comma
+multiline_comment|/* DrayTek miniVigor 128 USB ISDN TA */
+(brace
+l_int|0x0675
+comma
+l_int|0x1688
+comma
+l_string|&quot;DrayTek miniVigor 128 USB ISDN TA&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|1
+comma
+l_int|2
+comma
+l_int|0
+comma
+l_int|0
+)brace
+)brace
+comma
+multiline_comment|/* Billion TA */
+(brace
+l_int|0x07b0
+comma
+l_int|0x0007
+comma
+l_string|&quot;Billion tiny USB ISDN TA 128&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|0x80
+comma
+op_minus
+l_int|64
+comma
+op_minus
+l_int|32
+comma
+op_minus
+l_int|16
+)brace
+)brace
+comma
+multiline_comment|/* Stollmann TA */
+(brace
+l_int|0x0742
+comma
+l_int|0x2008
+comma
+l_string|&quot;Stollmann USB TA&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|4
+comma
+l_int|0
+comma
+l_int|2
+comma
+l_int|1
+)brace
+)brace
+comma
+multiline_comment|/* Aceex USB ISDN TA */
+(brace
+l_int|0x0742
+comma
+l_int|0x2009
+comma
+l_string|&quot;Aceex USB ISDN TA&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|4
+comma
+l_int|0
+comma
+l_int|2
+comma
+l_int|1
+)brace
+)brace
+comma
+multiline_comment|/* OEM USB ISDN TA */
+(brace
+l_int|0x0742
+comma
+l_int|0x200A
+comma
+l_string|&quot;OEM USB ISDN TA&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|4
+comma
+l_int|0
+comma
+l_int|2
+comma
+l_int|1
+)brace
+)brace
+comma
+multiline_comment|/* Olitec TA  */
+(brace
+l_int|0x08e3
+comma
+l_int|0x0301
+comma
+l_string|&quot;Olitec USB RNIS&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|2
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|4
+)brace
+)brace
+comma
+multiline_comment|/* Bewan TA   */
+(brace
+l_int|0x07fa
+comma
+l_int|0x0846
+comma
+l_string|&quot;Bewan Modem RNIS USB&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|0x80
+comma
+op_minus
+l_int|64
+comma
+op_minus
+l_int|32
+comma
+op_minus
+l_int|16
+)brace
+)brace
+comma
+multiline_comment|/* Bewan TA   */
+(brace
+l_int|0x07fa
+comma
+l_int|0x0847
+comma
+l_string|&quot;Djinn Numeris USB&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|0x80
+comma
+op_minus
+l_int|64
+comma
+op_minus
+l_int|32
+comma
+op_minus
+l_int|16
+)brace
+)brace
+comma
+multiline_comment|/* Twister ISDN TA   */
+(brace
+l_int|0x07b0
+comma
+l_int|0x0006
+comma
+l_string|&quot;Twister ISDN TA&quot;
+comma
+id|LED_SCHEME1
+comma
+(brace
+l_int|0x80
+comma
+op_minus
+l_int|64
+comma
+op_minus
+l_int|32
+comma
+op_minus
+l_int|16
+)brace
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+multiline_comment|/* EOL element */
+)brace
 suffix:semicolon
 multiline_comment|/***************************************************************/
 multiline_comment|/* structure defining input+output fifos (interrupt/bulk mode) */
@@ -249,7 +448,7 @@ id|usb_fifo
 op_star
 id|owner_fifo
 suffix:semicolon
-singleline_comment|// pointer to owner fifo
+multiline_comment|/* pointer to owner fifo */
 DECL|typedef|iso_urb_struct
 )brace
 id|iso_urb_struct
@@ -371,7 +570,7 @@ r_typedef
 r_struct
 id|hfcusb_data
 (brace
-singleline_comment|// HiSax Interface for loadable Layer1 drivers
+multiline_comment|/* HiSax Interface for loadable Layer1 drivers */
 DECL|member|d_if
 r_struct
 id|hisax_d_if
@@ -430,7 +629,7 @@ DECL|member|vend_idx
 r_int
 id|vend_idx
 suffix:semicolon
-singleline_comment|// vendor found
+multiline_comment|/* vendor found */
 DECL|member|b_mode
 r_int
 id|b_mode
@@ -438,12 +637,17 @@ id|b_mode
 l_int|2
 )braket
 suffix:semicolon
-singleline_comment|// B-channel mode
+multiline_comment|/* B-channel mode */
 DECL|member|l1_activated
 r_int
 id|l1_activated
 suffix:semicolon
-singleline_comment|// layer 1 activated
+multiline_comment|/* layer 1 activated */
+DECL|member|disc_flag
+r_int
+id|disc_flag
+suffix:semicolon
+multiline_comment|/* TRUE if device was disonnected to avoid some USB actions */
 DECL|member|packet_size
 DECL|member|iso_packet_size
 r_int
@@ -462,13 +666,13 @@ suffix:semicolon
 multiline_comment|/* buffer holding queued data */
 DECL|member|ctrl_in_idx
 DECL|member|ctrl_out_idx
+DECL|member|ctrl_cnt
 r_volatile
 r_int
 id|ctrl_in_idx
 comma
 id|ctrl_out_idx
 comma
-DECL|member|ctrl_cnt
 id|ctrl_cnt
 suffix:semicolon
 multiline_comment|/* input/output pointer + count */
@@ -491,10 +695,13 @@ id|usb_ctrlrequest
 id|ctrl_read
 suffix:semicolon
 multiline_comment|/* same for read request */
+DECL|member|old_led_state
 DECL|member|led_state
 DECL|member|led_new_data
 DECL|member|led_b_active
 id|__u8
+id|old_led_state
+comma
 id|led_state
 comma
 id|led_new_data
@@ -569,12 +776,80 @@ r_int
 id|finish
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_const
+r_char
+op_star
+DECL|function|symbolic
+id|symbolic
+c_func
+(paren
+r_struct
+id|hfcusb_symbolic_list
+id|list
+(braket
+)braket
+comma
+r_const
+r_int
+id|num
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|list
+(braket
+id|i
+)braket
+dot
+id|name
+op_ne
+l_int|NULL
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|list
+(braket
+id|i
+)braket
+dot
+id|num
+op_eq
+id|num
+)paren
+r_return
+(paren
+id|list
+(braket
+id|i
+)braket
+dot
+id|name
+)paren
+suffix:semicolon
+r_return
+l_string|&quot;&lt;unkown&gt;&quot;
+suffix:semicolon
+)brace
 multiline_comment|/******************************************************/
 multiline_comment|/* start next background transfer for control channel */
 multiline_comment|/******************************************************/
-DECL|function|ctrl_start_transfer
 r_static
 r_void
+DECL|function|ctrl_start_transfer
 id|ctrl_start_transfer
 c_func
 (paren
@@ -583,9 +858,6 @@ op_star
 id|hfc
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -631,8 +903,6 @@ id|hfc-&gt;ctrl_out_idx
 dot
 id|reg_val
 suffix:semicolon
-id|err
-op_assign
 id|usb_submit_urb
 c_func
 (paren
@@ -642,15 +912,6 @@ id|GFP_ATOMIC
 )paren
 suffix:semicolon
 multiline_comment|/* start transfer */
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ctrl_start_transfer: submit %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ctrl_start_transfer */
@@ -658,9 +919,9 @@ multiline_comment|/************************************/
 multiline_comment|/* queue a control transfer request */
 multiline_comment|/* return 0 on success.             */
 multiline_comment|/************************************/
-DECL|function|queue_control_request
 r_static
 r_int
+DECL|function|queue_control_request
 id|queue_control_request
 c_func
 (paren
@@ -682,17 +943,6 @@ id|ctrl_buft
 op_star
 id|buf
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-(paren
-l_string|&quot;HFC_USB: queue_control_request reg: %x, val: %x&bslash;n&quot;
-comma
-id|reg
-comma
-id|val
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -700,11 +950,11 @@ id|hfc-&gt;ctrl_cnt
 op_ge
 id|HFC_CTRL_BUFSIZE
 )paren
-(brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* no space left */
 id|buf
 op_assign
@@ -755,13 +1005,15 @@ id|hfc
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* queue_control_request */
-DECL|function|control_action_handler
 r_static
 r_int
+DECL|function|control_action_handler
 id|control_action_handler
 c_func
 (paren
@@ -785,22 +1037,24 @@ c_cond
 op_logical_neg
 id|action
 )paren
-(brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
-)brace
-singleline_comment|// no action defined
+multiline_comment|/* no action defined */
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************/
 multiline_comment|/* control completion routine handling background control cmds */
 multiline_comment|/***************************************************************/
-DECL|function|ctrl_complete
 r_static
 r_void
+DECL|function|ctrl_complete
 id|ctrl_complete
 c_func
 (paren
@@ -828,15 +1082,6 @@ suffix:semicolon
 id|ctrl_buft
 op_star
 id|buf
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ctrl_complete cnt %d&bslash;n&quot;
-comma
-id|hfc-&gt;ctrl_cnt
-)paren
 suffix:semicolon
 id|urb-&gt;dev
 op_assign
@@ -880,12 +1125,10 @@ id|hfc-&gt;ctrl_out_idx
 op_ge
 id|HFC_CTRL_BUFSIZE
 )paren
-(brace
 id|hfc-&gt;ctrl_out_idx
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* pointer wrap */
 id|ctrl_start_transfer
 c_func
@@ -897,201 +1140,12 @@ multiline_comment|/* start next transfer */
 )brace
 )brace
 multiline_comment|/* ctrl_complete */
-DECL|macro|LED_OFF
-mdefine_line|#define LED_OFF      0   
-singleline_comment|// no LED support
-DECL|macro|LED_SCHEME1
-mdefine_line|#define LED_SCHEME1  1&t; 
-singleline_comment|// LED standard scheme
-DECL|macro|LED_SCHEME2
-mdefine_line|#define LED_SCHEME2  2&t; 
-singleline_comment|// not used yet...
-DECL|macro|LED_POWER_ON
-mdefine_line|#define LED_POWER_ON&t;1
-DECL|macro|LED_POWER_OFF
-mdefine_line|#define LED_POWER_OFF&t;2
-DECL|macro|LED_S0_ON
-mdefine_line|#define LED_S0_ON&t;&t;3
-DECL|macro|LED_S0_OFF
-mdefine_line|#define LED_S0_OFF&t;&t;4
-DECL|macro|LED_B1_ON
-mdefine_line|#define LED_B1_ON&t;&t;5
-DECL|macro|LED_B1_OFF
-mdefine_line|#define LED_B1_OFF&t;&t;6
-DECL|macro|LED_B1_DATA
-mdefine_line|#define LED_B1_DATA&t;&t;7
-DECL|macro|LED_B2_ON
-mdefine_line|#define LED_B2_ON&t;&t;8
-DECL|macro|LED_B2_OFF
-mdefine_line|#define LED_B2_OFF&t;&t;9
-DECL|macro|LED_B2_DATA
-mdefine_line|#define LED_B2_DATA&t;   10
-DECL|macro|LED_NORMAL
-mdefine_line|#define LED_NORMAL   0&t; 
-singleline_comment|// LEDs are normal
-DECL|macro|LED_INVERTED
-mdefine_line|#define LED_INVERTED 1   
-singleline_comment|// LEDs are inverted
-singleline_comment|// time for LED flashing
-DECL|macro|LED_TIME
-mdefine_line|#define LED_TIME      250
-DECL|variable|vdata
-id|vendor_data
-id|vdata
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0x959
-comma
-l_int|0x2bd0
-comma
-l_string|&quot;ISDN USB TA (Cologne Chip HFC-S USB based)&quot;
-comma
-id|LED_OFF
-comma
-id|LED_NORMAL
-comma
-(brace
-l_int|4
-comma
-l_int|0
-comma
-l_int|2
-comma
-l_int|1
-)brace
-)brace
-comma
-multiline_comment|/* CologneChip Eval TA */
-(brace
-l_int|0x7b0
-comma
-l_int|0x0007
-comma
-l_string|&quot;Billion tiny USB ISDN TA 128&quot;
-comma
-id|LED_SCHEME1
-comma
-id|LED_INVERTED
-comma
-(brace
-l_int|8
-comma
-l_int|0x40
-comma
-l_int|0x20
-comma
-l_int|0x10
-)brace
-)brace
-comma
-multiline_comment|/* Billion TA */
-(brace
-l_int|0x742
-comma
-l_int|0x2008
-comma
-l_string|&quot;Stollmann USB TA&quot;
-comma
-id|LED_SCHEME1
-comma
-id|LED_NORMAL
-comma
-(brace
-l_int|4
-comma
-l_int|0
-comma
-l_int|2
-comma
-l_int|1
-)brace
-)brace
-comma
-multiline_comment|/* Stollmann TA */
-(brace
-l_int|0x8e3
-comma
-l_int|0x0301
-comma
-l_string|&quot;Olitec USB RNIS&quot;
-comma
-id|LED_SCHEME1
-comma
-id|LED_NORMAL
-comma
-(brace
-l_int|2
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|4
-)brace
-)brace
-comma
-multiline_comment|/* Olitec TA  */
-(brace
-l_int|0x675
-comma
-l_int|0x1688
-comma
-l_string|&quot;DrayTec USB ISDN TA&quot;
-comma
-id|LED_SCHEME1
-comma
-id|LED_NORMAL
-comma
-(brace
-l_int|4
-comma
-l_int|0
-comma
-l_int|2
-comma
-l_int|1
-)brace
-)brace
-comma
-multiline_comment|/* Draytec TA */
-(brace
-l_int|0x7fa
-comma
-l_int|0x0846
-comma
-l_string|&quot;Bewan Modem RNIS USB&quot;
-comma
-id|LED_SCHEME1
-comma
-id|LED_INVERTED
-comma
-(brace
-l_int|8
-comma
-l_int|0x40
-comma
-l_int|0x20
-comma
-l_int|0x10
-)brace
-)brace
-comma
-multiline_comment|/* Bewan TA   */
-(brace
-l_int|0
-)brace
-singleline_comment|// EOL element
-)brace
-suffix:semicolon
 multiline_comment|/***************************************************/
 multiline_comment|/* write led data to auxport &amp; invert if necessary */
 multiline_comment|/***************************************************/
-DECL|function|write_led
 r_static
 r_void
+DECL|function|write_led
 id|write_led
 c_func
 (paren
@@ -1108,10 +1162,10 @@ c_cond
 (paren
 id|led_state
 op_ne
-id|hfc-&gt;led_state
+id|hfc-&gt;old_led_state
 )paren
 (brace
-id|hfc-&gt;led_state
+id|hfc-&gt;old_led_state
 op_assign
 id|led_state
 suffix:semicolon
@@ -1122,19 +1176,6 @@ id|hfc
 comma
 id|HFCUSB_P_DATA
 comma
-(paren
-id|vdata
-(braket
-id|hfc-&gt;vend_idx
-)braket
-dot
-id|led_invert
-)paren
-ques
-c_cond
-op_complement
-id|led_state
-suffix:colon
 id|led_state
 comma
 l_int|1
@@ -1142,12 +1183,86 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**************************/
+multiline_comment|/* handle LED bits        */
+multiline_comment|/**************************/
+r_static
+r_void
+DECL|function|set_led_bit
+id|set_led_bit
+c_func
+(paren
+id|hfcusb_data
+op_star
+id|hfc
+comma
+r_int
+r_int
+id|led_bits
+comma
+r_int
+id|unset
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unset
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|led_bits
+OL
+l_int|0
+)paren
+id|hfc-&gt;led_state
+op_or_assign
+id|abs
+c_func
+(paren
+id|led_bits
+)paren
+suffix:semicolon
+r_else
+id|hfc-&gt;led_state
+op_and_assign
+op_complement
+id|led_bits
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|led_bits
+OL
+l_int|0
+)paren
+id|hfc-&gt;led_state
+op_and_assign
+op_complement
+id|abs
+c_func
+(paren
+id|led_bits
+)paren
+suffix:semicolon
+r_else
+id|hfc-&gt;led_state
+op_or_assign
+id|led_bits
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/******************************************/
 multiline_comment|/* invert B-channel LEDs if data is sent  */
 multiline_comment|/******************************************/
-DECL|function|led_timer
 r_static
 r_void
+DECL|function|led_timer
 id|led_timer
 c_func
 (paren
@@ -1162,11 +1277,6 @@ id|cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|__u8
-id|led_state
-op_assign
-id|hfc-&gt;led_state
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1180,9 +1290,11 @@ id|hfc-&gt;led_b_active
 op_amp
 l_int|1
 )paren
-(brace
-id|led_state
-op_or_assign
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1192,8 +1304,10 @@ id|led_bits
 (braket
 l_int|2
 )braket
+comma
+l_int|0
+)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1201,9 +1315,11 @@ id|hfc-&gt;led_b_active
 op_amp
 l_int|2
 )paren
-(brace
-id|led_state
-op_or_assign
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1213,8 +1329,10 @@ id|led_bits
 (braket
 l_int|3
 )braket
+comma
+l_int|0
+)paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -1232,10 +1350,11 @@ id|hfc-&gt;led_new_data
 op_amp
 l_int|1
 )paren
-(brace
-id|led_state
-op_and_assign
-op_complement
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1245,8 +1364,10 @@ id|led_bits
 (braket
 l_int|2
 )braket
+comma
+l_int|1
+)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1261,10 +1382,11 @@ id|hfc-&gt;led_new_data
 op_amp
 l_int|2
 )paren
-(brace
-id|led_state
-op_and_assign
-op_complement
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1274,15 +1396,17 @@ id|led_bits
 (braket
 l_int|3
 )braket
+comma
+l_int|1
+)paren
 suffix:semicolon
-)brace
 )brace
 id|write_led
 c_func
 (paren
 id|hfc
 comma
-id|led_state
+id|hfc-&gt;led_state
 )paren
 suffix:semicolon
 id|hfc-&gt;led_new_data
@@ -1294,19 +1418,7 @@ op_assign
 op_logical_neg
 id|cnt
 suffix:semicolon
-singleline_comment|// restart 4 hz timer
-id|hfc-&gt;led_timer.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|LED_TIME
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
-suffix:semicolon
+multiline_comment|/* restart 4 hz timer */
 r_if
 c_cond
 (paren
@@ -1326,14 +1438,26 @@ op_amp
 id|hfc-&gt;led_timer
 )paren
 suffix:semicolon
+id|hfc-&gt;led_timer.expires
+op_assign
+id|jiffies
+op_plus
+(paren
+id|LED_TIME
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/**************************/
 multiline_comment|/* handle LED requests    */
 multiline_comment|/**************************/
-DECL|function|handle_led
 r_static
 r_void
+DECL|function|handle_led
 id|handle_led
 c_func
 (paren
@@ -1345,12 +1469,7 @@ r_int
 id|event
 )paren
 (brace
-id|__u8
-id|led_state
-op_assign
-id|hfc-&gt;led_state
-suffix:semicolon
-singleline_comment|// if no scheme -&gt; no LED action
+multiline_comment|/* if no scheme -&gt; no LED action */
 r_if
 c_cond
 (paren
@@ -1363,10 +1482,8 @@ id|led_scheme
 op_eq
 id|LED_OFF
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -1376,8 +1493,11 @@ id|event
 r_case
 id|LED_POWER_ON
 suffix:colon
-id|led_state
-op_or_assign
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1387,20 +1507,80 @@ id|led_bits
 (braket
 l_int|0
 )braket
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
+id|vdata
+(braket
+id|hfc-&gt;vend_idx
+)braket
+dot
+id|led_bits
+(braket
+l_int|1
+)braket
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
+id|vdata
+(braket
+id|hfc-&gt;vend_idx
+)braket
+dot
+id|led_bits
+(braket
+l_int|2
+)braket
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
+id|vdata
+(braket
+id|hfc-&gt;vend_idx
+)braket
+dot
+id|led_bits
+(braket
+l_int|3
+)braket
+comma
+l_int|1
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LED_POWER_OFF
 suffix:colon
-singleline_comment|// no Power off handling
+multiline_comment|/* no Power off handling */
 r_break
 suffix:semicolon
 r_case
 id|LED_S0_ON
 suffix:colon
-id|led_state
-op_or_assign
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1410,15 +1590,20 @@ id|led_bits
 (braket
 l_int|1
 )braket
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LED_S0_OFF
 suffix:colon
-id|led_state
-op_and_assign
-op_complement
+id|set_led_bit
+c_func
+(paren
+id|hfc
+comma
 id|vdata
 (braket
 id|hfc-&gt;vend_idx
@@ -1428,6 +1613,9 @@ id|led_bits
 (braket
 l_int|1
 )braket
+comma
+l_int|1
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1493,16 +1681,16 @@ c_func
 (paren
 id|hfc
 comma
-id|led_state
+id|hfc-&gt;led_state
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/********************************/
 multiline_comment|/* called when timer t3 expires */
 multiline_comment|/********************************/
-DECL|function|l1_timer_expire_t3
 r_static
 r_void
+DECL|function|l1_timer_expire_t3
 id|l1_timer_expire_t3
 c_func
 (paren
@@ -1511,7 +1699,6 @@ op_star
 id|hfc
 )paren
 (brace
-singleline_comment|//printk (KERN_INFO &quot;HFC-USB: l1_timer_expire_t3&bslash;n&quot;);
 id|hfc-&gt;d_if.ifc
 dot
 id|l1l2
@@ -1527,12 +1714,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;PH_DEACTIVATE | INDICATION sent&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_DEACTIVATE | INDICATION sent (T3 expire)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1548,13 +1736,38 @@ comma
 id|LED_S0_OFF
 )paren
 suffix:semicolon
+multiline_comment|/* deactivate : */
+id|queue_control_request
+c_func
+(paren
+id|hfc
+comma
+id|HFCUSB_STATES
+comma
+l_int|0x10
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|queue_control_request
+c_func
+(paren
+id|hfc
+comma
+id|HFCUSB_STATES
+comma
+l_int|3
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/********************************/
 multiline_comment|/* called when timer t4 expires */
 multiline_comment|/********************************/
-DECL|function|l1_timer_expire_t4
 r_static
 r_void
+DECL|function|l1_timer_expire_t4
 id|l1_timer_expire_t4
 c_func
 (paren
@@ -1563,7 +1776,6 @@ op_star
 id|hfc
 )paren
 (brace
-singleline_comment|//printk (KERN_INFO &quot;HFC-USB: l1_timer_expire_t4&bslash;n&quot;);
 id|hfc-&gt;d_if.ifc
 dot
 id|l1l2
@@ -1579,12 +1791,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;PH_DEACTIVATE | INDICATION sent&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_DEACTIVATE | INDICATION sent (T4 expire)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1604,9 +1817,9 @@ suffix:semicolon
 multiline_comment|/*****************************/
 multiline_comment|/* handle S0 state changes   */
 multiline_comment|/*****************************/
-DECL|function|state_handler
 r_static
 r_void
+DECL|function|state_handler
 id|state_handler
 c_func
 (paren
@@ -1625,7 +1838,6 @@ id|old_state
 op_assign
 id|hfc-&gt;l1_state
 suffix:semicolon
-singleline_comment|// range check
 r_if
 c_cond
 (paren
@@ -1634,18 +1846,18 @@ op_eq
 id|old_state
 op_logical_or
 id|state
+template_param
 l_int|8
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: new S0 state:%d old_state:%d&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: new S0 state:%d old_state:%d&quot;
 comma
 id|state
 comma
@@ -1679,7 +1891,6 @@ op_amp
 id|hfc-&gt;t3_timer
 )paren
 )paren
-(brace
 id|del_timer
 c_func
 (paren
@@ -1687,8 +1898,16 @@ op_amp
 id|hfc-&gt;t3_timer
 )paren
 suffix:semicolon
-)brace
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: T3 deactivated&bslash;n&quot;);
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: T3 deactivated&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1708,7 +1927,6 @@ op_amp
 id|hfc-&gt;t4_timer
 )paren
 )paren
-(brace
 id|del_timer
 c_func
 (paren
@@ -1716,8 +1934,16 @@ op_amp
 id|hfc-&gt;t4_timer
 )paren
 suffix:semicolon
-)brace
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: T4 deactivated&bslash;n&quot;);
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: T4 deactivated&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1745,7 +1971,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: PH_ACTIVATE | INDICATION sent&bslash;n&quot;);
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_ACTIVATE | INDICATION sent&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|hfc-&gt;l1_activated
 op_assign
 id|TRUE
@@ -1766,7 +2001,7 @@ c_cond
 id|state
 op_le
 l_int|3
-multiline_comment|/* &amp;&amp; activated*/
+multiline_comment|/* &amp;&amp; activated */
 )paren
 (brace
 r_if
@@ -1781,19 +2016,16 @@ op_eq
 l_int|8
 )paren
 (brace
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: T4 activated&bslash;n&quot;);
-id|hfc-&gt;t4_timer.expires
-op_assign
-id|jiffies
-op_plus
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|HFC_TIMER_T4
-op_star
-id|HZ
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: T4 activated&quot;
 )paren
-op_div
-l_int|1000
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1806,6 +2038,18 @@ id|hfc-&gt;t4_timer
 )paren
 )paren
 (brace
+id|hfc-&gt;t4_timer.expires
+op_assign
+id|jiffies
+op_plus
+(paren
+id|HFC_TIMER_T4
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
+suffix:semicolon
 id|add_timer
 c_func
 (paren
@@ -1832,7 +2076,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: PH_DEACTIVATE | INDICATION sent&bslash;n&quot;);
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_DEACTIVATE | INDICATION sent&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|hfc-&gt;l1_activated
 op_assign
 id|FALSE
@@ -1853,9 +2106,9 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/* prepare iso urb */
-DECL|function|fill_isoc_urb
 r_static
 r_void
+DECL|function|fill_isoc_urb
 id|fill_isoc_urb
 c_func
 (paren
@@ -1904,7 +2157,6 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
-singleline_comment|// do we really need spin_lock_init ?
 id|urb-&gt;dev
 op_assign
 id|dev
@@ -1934,10 +2186,6 @@ suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
 id|buf
-suffix:semicolon
-id|urb-&gt;transfer_flags
-op_assign
-l_int|0
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
@@ -1997,10 +2245,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* allocs urbs and start isoc transfer with two pending urbs to avoid gaps in the transfer chain */
-DECL|function|start_isoc_chain
+multiline_comment|/* allocs urbs and start isoc transfer with two pending urbs to avoid&n;   gaps in the transfer chain */
 r_static
 r_int
+DECL|function|start_isoc_chain
 id|start_isoc_chain
 c_func
 (paren
@@ -2025,18 +2273,16 @@ id|k
 comma
 id|errcode
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: starting ISO-chain for Fifo %i&bslash;n&quot;
+l_string|&quot;HFC-S USB: starting ISO-chain for Fifo %i&bslash;n&quot;
 comma
 id|fifo-&gt;fifonum
 )paren
 suffix:semicolon
-macro_line|#endif
-singleline_comment|// allocate Memory for Iso out Urbs
+multiline_comment|/* allocate Memory for Iso out Urbs */
 r_for
 c_loop
 (paren
@@ -2081,6 +2327,30 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|fifo-&gt;iso
+(braket
+id|i
+)braket
+dot
+id|purb
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;alloc urb for fifo %i failed!!!&quot;
+comma
+id|fifo-&gt;fifonum
+)paren
+suffix:semicolon
+)brace
 id|fifo-&gt;iso
 (braket
 id|i
@@ -2095,7 +2365,7 @@ op_star
 )paren
 id|fifo
 suffix:semicolon
-singleline_comment|// Init the first iso
+multiline_comment|/* Init the first iso */
 r_if
 c_cond
 (paren
@@ -2167,7 +2437,7 @@ id|buffer
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// defining packet delimeters in fifo-&gt;buffer
+multiline_comment|/* defining packet delimeters in fifo-&gt;buffer */
 r_for
 c_loop
 (paren
@@ -2188,7 +2458,9 @@ id|fifo-&gt;iso
 id|i
 )braket
 dot
-id|purb-&gt;iso_frame_desc
+id|purb
+op_member_access_from_pointer
+id|iso_frame_desc
 (braket
 id|k
 )braket
@@ -2204,7 +2476,9 @@ id|fifo-&gt;iso
 id|i
 )braket
 dot
-id|purb-&gt;iso_frame_desc
+id|purb
+op_member_access_from_pointer
+id|iso_frame_desc
 (braket
 id|k
 )braket
@@ -2214,6 +2488,16 @@ op_assign
 id|packet_size
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: ISO Buffer size to small!&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 )brace
 id|fifo-&gt;bit_line
@@ -2260,9 +2544,15 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: error submitting ISO URB: %i.%i &bslash;n&quot;
+l_string|&quot;HFC-S USB: %s  URB nr:%d&bslash;n&quot;
+comma
+id|symbolic
+c_func
+(paren
+id|urb_errlist
 comma
 id|errcode
+)paren
 comma
 id|i
 )paren
@@ -2270,15 +2560,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-singleline_comment|// errcode = (usb_submit_urb(fifo-&gt;iso[0].purb, GFP_KERNEL));
 r_return
+(paren
 id|fifo-&gt;active
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* stops running iso chain and frees their pending urbs */
-DECL|function|stop_isoc_chain
 r_static
 r_void
+DECL|function|stop_isoc_chain
 id|stop_isoc_chain
 c_func
 (paren
@@ -2316,12 +2607,13 @@ dot
 id|purb
 )paren
 (brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: Stopping iso chain for fifo %i.%i&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: Stopping iso chain for fifo %i.%i&quot;
 comma
 id|fifo-&gt;fifonum
 comma
@@ -2390,7 +2682,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// defines how much ISO packets are handled in one URB
+multiline_comment|/* defines how much ISO packets are handled in one URB */
 DECL|variable|iso_packets
 r_static
 r_int
@@ -2399,14 +2691,30 @@ id|iso_packets
 l_int|8
 )braket
 op_assign
-initialization_block
+(brace
+id|ISOC_PACKETS_B
+comma
+id|ISOC_PACKETS_B
+comma
+id|ISOC_PACKETS_B
+comma
+id|ISOC_PACKETS_B
+comma
+id|ISOC_PACKETS_D
+comma
+id|ISOC_PACKETS_D
+comma
+id|ISOC_PACKETS_D
+comma
+id|ISOC_PACKETS_D
+)brace
 suffix:semicolon
 multiline_comment|/*****************************************************/
 multiline_comment|/* transmit completion routine for all ISO tx fifos */
 multiline_comment|/*****************************************************/
-DECL|function|tx_iso_complete
 r_static
 r_void
+DECL|function|tx_iso_complete
 id|tx_iso_complete
 c_func
 (paren
@@ -2457,12 +2765,15 @@ comma
 id|current_len
 comma
 id|errcode
-comma
+suffix:semicolon
+r_int
 id|frame_complete
 comma
 id|transp_mode
 comma
 id|fifon
+comma
+id|status
 suffix:semicolon
 id|__u8
 id|threshbit
@@ -2495,43 +2806,21 @@ id|fifon
 op_assign
 id|fifo-&gt;fifonum
 suffix:semicolon
+id|status
+op_assign
+id|urb-&gt;status
+suffix:semicolon
 id|tx_offset
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// very weird error code when using ohci drivers, for now : ignore this error ...  (MB)
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-op_eq
-op_minus
-id|EOVERFLOW
-)paren
-(brace
-id|urb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: ignoring USB DATAOVERRUN  for fifo  %i &bslash;n&quot;
-comma
-id|fifon
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 r_if
 c_cond
 (paren
 id|fifo-&gt;active
 op_logical_and
 op_logical_neg
-id|urb-&gt;status
+id|status
 )paren
 (brace
 id|transp_mode
@@ -2554,12 +2843,11 @@ l_int|2
 op_eq
 id|L1_MODE_TRANS
 )paren
-(brace
 id|transp_mode
 op_assign
 id|TRUE
 suffix:semicolon
-)brace
+multiline_comment|/* is FifoFull-threshold set for our channel? */
 id|threshbit
 op_assign
 id|threshtable
@@ -2569,7 +2857,6 @@ id|fifon
 op_amp
 id|hfc-&gt;threshold_mask
 suffix:semicolon
-singleline_comment|// is threshold set for our channel?
 id|num_isoc_packets
 op_assign
 id|iso_packets
@@ -2577,6 +2864,7 @@ id|iso_packets
 id|fifon
 )braket
 suffix:semicolon
+multiline_comment|/* predict dataflow to avoid fifo overflow */
 r_if
 c_cond
 (paren
@@ -2596,7 +2884,6 @@ id|SINK_DMIN
 suffix:colon
 id|SINK_DMAX
 suffix:semicolon
-singleline_comment|// how much bit go to the sink for D-channel?
 )brace
 r_else
 (brace
@@ -2611,9 +2898,7 @@ id|SINK_MIN
 suffix:colon
 id|SINK_MAX
 suffix:semicolon
-singleline_comment|// how much bit go to the sink for B-channel?
 )brace
-singleline_comment|// prepare ISO Urb
 id|fill_isoc_urb
 c_func
 (paren
@@ -2653,7 +2938,7 @@ id|frame_complete
 op_assign
 id|FALSE
 suffix:semicolon
-singleline_comment|// Generate Iso Packets
+multiline_comment|/* Generate next Iso Packets */
 r_for
 c_loop
 (paren
@@ -2679,12 +2964,11 @@ id|len
 op_assign
 id|fifo-&gt;skbuff-&gt;len
 suffix:semicolon
-singleline_comment|// remaining length
+multiline_comment|/* we lower data margin every msec */
 id|fifo-&gt;bit_line
 op_sub_assign
 id|sink
 suffix:semicolon
-singleline_comment|// we lower data margin every msec
 id|current_len
 op_assign
 (paren
@@ -2695,6 +2979,7 @@ id|fifo-&gt;bit_line
 op_div
 l_int|8
 suffix:semicolon
+multiline_comment|/* maximum 15 byte for every ISO packet makes our life easier */
 r_if
 c_cond
 (paren
@@ -2702,13 +2987,10 @@ id|current_len
 OG
 l_int|14
 )paren
-(brace
 id|current_len
 op_assign
 l_int|14
 suffix:semicolon
-)brace
-singleline_comment|// maximum 15 byte for every ISO packet makes our life easier
 id|current_len
 op_assign
 (paren
@@ -2722,13 +3004,13 @@ id|len
 suffix:colon
 id|current_len
 suffix:semicolon
+multiline_comment|/* how much bit do we put on the line? */
 id|fifo-&gt;bit_line
 op_add_assign
 id|current_len
 op_star
 l_int|8
 suffix:semicolon
-singleline_comment|// how much bit do we put on the line?
 id|context_iso_urb-&gt;buffer
 (braket
 id|tx_offset
@@ -2751,26 +3033,27 @@ op_logical_neg
 id|transp_mode
 )paren
 (brace
-id|context_iso_urb-&gt;buffer
+multiline_comment|/* here frame completion */
+id|context_iso_urb
+op_member_access_from_pointer
+id|buffer
 (braket
 id|tx_offset
 )braket
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// here frame completion
+multiline_comment|/* add 2 byte flags and 16bit CRC at end of ISDN frame */
 id|fifo-&gt;bit_line
 op_add_assign
 l_int|32
 suffix:semicolon
-singleline_comment|// add 2 byte flags and 16bit CRC at end of ISDN frame
 )brace
 id|frame_complete
 op_assign
 id|TRUE
 suffix:semicolon
 )brace
-singleline_comment|// copy bytes from buffer into ISO_URB
 id|memcpy
 c_func
 (paren
@@ -2793,7 +3076,7 @@ comma
 id|current_len
 )paren
 suffix:semicolon
-singleline_comment|// define packet delimeters within the URB buffer
+multiline_comment|/* define packet delimeters within the URB buffer */
 id|urb-&gt;iso_frame_desc
 (braket
 id|k
@@ -2822,7 +3105,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// printk(KERN_INFO &quot;HFC-USB: fifonum:%d,%d bytes to send, %d bytes ISO packet,bitline:%d,sink:%d,threshbit:%d,threshmask:%x&bslash;n&quot;,fifon,len,current_len,fifo-&gt;bit_line,sink,threshbit,hfc-&gt;threshold_mask);
 r_if
 c_cond
 (paren
@@ -2837,7 +3119,6 @@ id|fifon
 op_eq
 id|HFCUSB_B1_TX
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -2846,7 +3127,6 @@ comma
 id|LED_B1_DATA
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2854,7 +3134,6 @@ id|fifon
 op_eq
 id|HFCUSB_B2_TX
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -2865,10 +3144,8 @@ id|LED_B2_DATA
 suffix:semicolon
 )brace
 )brace
-)brace
 r_else
 (brace
-singleline_comment|// we have no more data - generate 1 byte ISO packets
 id|urb-&gt;iso_frame_desc
 (braket
 id|k
@@ -2892,7 +3169,7 @@ id|fifo-&gt;bit_line
 op_sub_assign
 id|sink
 suffix:semicolon
-singleline_comment|// we lower data margin every msec
+multiline_comment|/* we lower data margin every msec */
 r_if
 c_cond
 (paren
@@ -2905,7 +3182,6 @@ id|fifo-&gt;bit_line
 op_assign
 id|BITLINE_INF
 suffix:semicolon
-singleline_comment|//printk (KERN_INFO &quot;HFC-USB: BITLINE_INF underrun&bslash;n&quot;);
 )brace
 )brace
 r_if
@@ -2914,7 +3190,6 @@ c_cond
 id|frame_complete
 )paren
 (brace
-singleline_comment|// delete the buffer only once, here or in hfc_usb_l2l1() in a PH_DATA|REQUEST
 id|fifo-&gt;delete_flg
 op_assign
 id|TRUE
@@ -2934,7 +3209,9 @@ comma
 r_void
 op_star
 )paren
-id|fifo-&gt;skbuff-&gt;truesize
+id|fifo-&gt;skbuff
+op_member_access_from_pointer
+id|truesize
 )paren
 suffix:semicolon
 r_if
@@ -2951,7 +3228,6 @@ c_func
 id|fifo-&gt;skbuff
 )paren
 suffix:semicolon
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: skbuff=NULL on fifo:%d&bslash;n&quot;,fifo-&gt;fifonum);
 id|fifo-&gt;skbuff
 op_assign
 l_int|NULL
@@ -2989,7 +3265,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: error submitting ISO URB: %i &bslash;n&quot;
+l_string|&quot;HFC-S USB: error submitting ISO URB: %d &bslash;n&quot;
 comma
 id|errcode
 )paren
@@ -3001,16 +3277,27 @@ r_else
 r_if
 c_cond
 (paren
-id|urb-&gt;status
+id|status
+op_logical_and
+op_logical_neg
+id|hfc-&gt;disc_flag
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: tx_iso_complete : urb-&gt;status %i, fifonum %i&bslash;n&quot;
+l_string|&quot;HFC-S USB: tx_iso_complete : urb-&gt;status %s (%i), fifonum=%d&bslash;n&quot;
 comma
-id|urb-&gt;status
+id|symbolic
+c_func
+(paren
+id|urb_errlist
+comma
+id|status
+)paren
+comma
+id|status
 comma
 id|fifon
 )paren
@@ -3022,9 +3309,9 @@ multiline_comment|/* tx_iso_complete */
 multiline_comment|/*****************************************************/
 multiline_comment|/* receive completion routine for all ISO tx fifos   */
 multiline_comment|/*****************************************************/
-DECL|function|rx_iso_complete
 r_static
 r_void
+DECL|function|rx_iso_complete
 id|rx_iso_complete
 c_func
 (paren
@@ -3073,16 +3360,39 @@ comma
 id|num_isoc_packets
 comma
 id|fifon
+comma
+id|maxlen
+comma
+id|status
+suffix:semicolon
+r_int
+r_int
+id|iso_status
 suffix:semicolon
 id|__u8
 op_star
 id|buf
 suffix:semicolon
+r_static
+id|__u8
+id|eof
+(braket
+l_int|8
+)braket
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|__u8
+id|i
+suffix:semicolon
+macro_line|#endif
 id|fifon
 op_assign
 id|fifo-&gt;fifonum
 suffix:semicolon
-singleline_comment|// very weird error code when using ohci drivers, for now : ignore this error ...  (MB)
+id|status
+op_assign
+id|urb-&gt;status
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3092,21 +3402,22 @@ op_minus
 id|EOVERFLOW
 )paren
 (brace
-id|urb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
+id|USB_DBG
+comma
 l_string|&quot;HFC-USB: ignoring USB DATAOVERRUN  for fifo  %i &bslash;n&quot;
 comma
 id|fifon
 )paren
 suffix:semicolon
 macro_line|#endif
+id|status
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3114,7 +3425,7 @@ c_cond
 id|fifo-&gt;active
 op_logical_and
 op_logical_neg
-id|urb-&gt;status
+id|status
 )paren
 (brace
 id|num_isoc_packets
@@ -3124,7 +3435,10 @@ id|iso_packets
 id|fifon
 )braket
 suffix:semicolon
-singleline_comment|// Generate D-Channel Iso Packets
+id|maxlen
+op_assign
+id|fifo-&gt;usb_packet_maxlen
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3164,15 +3478,112 @@ id|context_iso_urb-&gt;buffer
 op_plus
 id|offset
 suffix:semicolon
+id|iso_status
+op_assign
+id|urb-&gt;iso_frame_desc
+(braket
+id|k
+)braket
+dot
+id|status
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+r_if
+c_cond
+(paren
+id|iso_status
+op_logical_and
+op_logical_neg
+id|hfc-&gt;disc_flag
+)paren
+id|DBG
+c_func
+(paren
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: ISO packet failure - status:%x&quot;
+comma
+id|iso_status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|fifon
+op_eq
+l_int|5
+)paren
+op_logical_and
+(paren
+id|debug
+OG
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: ISO-D-RX lst_urblen:%2d &quot;
+l_string|&quot;act_urblen:%2d max-urblen:%2d &quot;
+l_string|&quot;EOF:0x%0x DATA: &quot;
+comma
+id|fifo-&gt;last_urblen
+comma
+id|len
+comma
+id|maxlen
+comma
+id|eof
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%.2x &quot;
+comma
+id|buf
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|fifo-&gt;last_urblen
 op_ne
-id|fifo-&gt;usb_packet_maxlen
+id|maxlen
 )paren
 (brace
-singleline_comment|// the threshold mask is in the 2nd status byte
+multiline_comment|/* the threshold mask is in the 2nd status byte */
 id|hfc-&gt;threshold_mask
 op_assign
 id|buf
@@ -3180,7 +3591,16 @@ id|buf
 l_int|1
 )braket
 suffix:semicolon
-singleline_comment|// the S0 state is in the upper half of the 1st status byte
+multiline_comment|/* care for L1 state only for D-Channel&n;&t;&t;&t;&t;   to avoid overlapped iso completions */
+r_if
+c_cond
+(paren
+id|fifon
+op_eq
+l_int|5
+)paren
+(brace
+multiline_comment|/* the S0 state is in the upper half&n;&t;&t;&t;&t;&t;   of the 1st status byte */
 id|state_handler
 c_func
 (paren
@@ -3194,7 +3614,19 @@ op_rshift
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|// if we have more than the 2 status bytes -&gt; collect data
+)brace
+id|eof
+(braket
+id|fifon
+)braket
+op_assign
+id|buf
+(braket
+l_int|0
+)braket
+op_amp
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3202,7 +3634,6 @@ id|len
 OG
 l_int|2
 )paren
-(brace
 id|collect_rx_frame
 c_func
 (paren
@@ -3216,17 +3647,24 @@ id|len
 op_minus
 l_int|2
 comma
-id|buf
+(paren
+id|len
+OL
+id|maxlen
+)paren
+ques
+c_cond
+id|eof
 (braket
-l_int|0
+id|fifon
 )braket
-op_amp
-l_int|1
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
+(brace
 id|collect_rx_frame
 c_func
 (paren
@@ -3236,15 +3674,27 @@ id|buf
 comma
 id|len
 comma
+(paren
+id|len
+OL
+id|maxlen
+)paren
+ques
+c_cond
+id|eof
+(braket
+id|fifon
+)braket
+suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|fifo-&gt;last_urblen
 op_assign
 id|len
 suffix:semicolon
 )brace
-singleline_comment|// prepare ISO Urb
 id|fill_isoc_urb
 c_func
 (paren
@@ -3289,7 +3739,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: error submitting ISO URB: %i &bslash;n&quot;
+l_string|&quot;HFC-S USB: error submitting ISO URB: %d &bslash;n&quot;
 comma
 id|errcode
 )paren
@@ -3301,16 +3751,20 @@ r_else
 r_if
 c_cond
 (paren
-id|urb-&gt;status
+id|status
+op_logical_and
+op_logical_neg
+id|hfc-&gt;disc_flag
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: rx_iso_complete : urb-&gt;status %i, fifonum %i&bslash;n&quot;
+l_string|&quot;HFC-S USB: rx_iso_complete : &quot;
+l_string|&quot;urb-&gt;status %d, fifonum %d&bslash;n&quot;
 comma
-id|urb-&gt;status
+id|status
 comma
 id|fifon
 )paren
@@ -3322,9 +3776,9 @@ multiline_comment|/* rx_iso_complete */
 multiline_comment|/*****************************************************/
 multiline_comment|/* collect data from interrupt or isochron in        */
 multiline_comment|/*****************************************************/
-DECL|function|collect_rx_frame
 r_static
 r_void
+DECL|function|collect_rx_frame
 id|collect_rx_frame
 c_func
 (paren
@@ -3354,6 +3808,11 @@ id|transp_mode
 comma
 id|fifon
 suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
 id|fifon
 op_assign
 id|fifo-&gt;fifonum
@@ -3378,13 +3837,10 @@ l_int|2
 op_eq
 id|L1_MODE_TRANS
 )paren
-(brace
 id|transp_mode
 op_assign
 id|TRUE
 suffix:semicolon
-)brace
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: got %d bytes finish:%d max_size:%d fifo:%d&bslash;n&quot;,len,finish,fifo-&gt;max_size,fifon);
 r_if
 c_cond
 (paren
@@ -3392,7 +3848,6 @@ op_logical_neg
 id|fifo-&gt;skbuff
 )paren
 (brace
-singleline_comment|// allocate sk buffer
 id|fifo-&gt;skbuff
 op_assign
 id|dev_alloc_skb
@@ -3414,7 +3869,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: cannot allocate buffer (dev_alloc_skb) fifo:%d&bslash;n&quot;
+l_string|&quot;HFC-S USB: cannot allocate buffer (dev_alloc_skb) fifo:%d&bslash;n&quot;
 comma
 id|fifon
 )paren
@@ -3427,7 +3882,11 @@ r_if
 c_cond
 (paren
 id|len
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|fifo-&gt;skbuff-&gt;len
 op_plus
 id|len
@@ -3453,16 +3912,66 @@ id|len
 suffix:semicolon
 )brace
 r_else
+(brace
+macro_line|#ifdef CONFIG_HISAX_DEBUG
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HCF-USB: got frame exceeded fifo-&gt;max_size:%d&bslash;n&quot;
-comma
-id|fifo-&gt;max_size
+l_string|&quot;HFC-S USB: &quot;
 )paren
 suffix:semicolon
-singleline_comment|// give transparent data up, when 128 byte are available
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|15
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%.2x &quot;
+comma
+id|fifo-&gt;skbuff-&gt;data
+(braket
+id|fifo-&gt;skbuff
+op_member_access_from_pointer
+id|len
+op_minus
+l_int|15
+op_plus
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HCF-USB: got frame exceeded fifo-&gt;max_size:%d on fifo:%d&bslash;n&quot;
+comma
+id|fifo-&gt;max_size
+comma
+id|fifon
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -3491,11 +4000,10 @@ id|fifo-&gt;skbuff
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// buffer was freed from upper layer
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// we have a complete hdlc packet
+multiline_comment|/* we have a complete hdlc packet */
 r_if
 c_cond
 (paren
@@ -3505,6 +4013,7 @@ id|finish
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|fifo-&gt;skbuff-&gt;data
 (braket
@@ -3513,7 +4022,15 @@ op_minus
 l_int|1
 )braket
 )paren
+op_logical_and
+(paren
+id|fifo-&gt;skbuff-&gt;len
+OG
+l_int|3
+)paren
+)paren
 (brace
+multiline_comment|/* remove CRC &amp; status */
 id|skb_trim
 c_func
 (paren
@@ -3524,8 +4041,6 @@ op_minus
 l_int|3
 )paren
 suffix:semicolon
-singleline_comment|// remove CRC &amp; status
-singleline_comment|//printk(KERN_INFO &quot;HFC-USB: got frame %d bytes on fifo:%d&bslash;n&quot;,fifo-&gt;skbuff-&gt;len,fifon);
 r_if
 c_cond
 (paren
@@ -3568,19 +4083,101 @@ id|fifo-&gt;skbuff
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// buffer was freed from upper layer
+multiline_comment|/* buffer was freed from upper layer */
 )brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|fifo-&gt;skbuff-&gt;len
+OG
+l_int|3
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: got frame %d bytes but CRC ERROR on fifo:%d!!!&bslash;n&quot;
+comma
+id|fifo-&gt;skbuff-&gt;len
+comma
+id|fifon
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|15
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%.2x &quot;
+comma
+id|fifo-&gt;skbuff
+op_member_access_from_pointer
+id|data
+(braket
+id|fifo-&gt;skbuff
+op_member_access_from_pointer
+id|len
+op_minus
+l_int|15
+op_plus
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_HISAX_DEBUG
 r_else
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: got frame %d bytes but CRC ERROR!!!&bslash;n&quot;
+l_string|&quot;HFC-S USB: frame to small (%d bytes)!!!&bslash;n&quot;
 comma
 id|fifo-&gt;skbuff-&gt;len
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 id|skb_trim
 c_func
 (paren
@@ -3589,10 +4186,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// clear whole buffer
 )brace
 )brace
-singleline_comment|// LED flashing only in HDLC mode
+multiline_comment|/* LED flashing only in HDLC mode */
 r_if
 c_cond
 (paren
@@ -3607,7 +4203,6 @@ id|fifon
 op_eq
 id|HFCUSB_B1_RX
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -3616,7 +4211,6 @@ comma
 id|LED_B1_DATA
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3624,7 +4218,6 @@ id|fifon
 op_eq
 id|HFCUSB_B2_RX
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -3635,13 +4228,12 @@ id|LED_B2_DATA
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/***********************************************/
 multiline_comment|/* receive completion routine for all rx fifos */
 multiline_comment|/***********************************************/
-DECL|function|rx_complete
 r_static
 r_void
+DECL|function|rx_complete
 id|rx_complete
 c_func
 (paren
@@ -3659,9 +4251,16 @@ id|regs
 r_int
 id|len
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|__u8
 op_star
 id|buf
+comma
+id|maxlen
+comma
+id|fifon
 suffix:semicolon
 id|usb_fifo
 op_star
@@ -3673,18 +4272,33 @@ op_star
 )paren
 id|urb-&gt;context
 suffix:semicolon
-multiline_comment|/* pointer to our fifo */
 id|hfcusb_data
 op_star
 id|hfc
 op_assign
 id|fifo-&gt;hfc
 suffix:semicolon
+r_static
+id|__u8
+id|eof
+(braket
+l_int|8
+)braket
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|__u8
+id|i
+suffix:semicolon
+macro_line|#endif
 id|urb-&gt;dev
 op_assign
 id|hfc-&gt;dev
 suffix:semicolon
 multiline_comment|/* security init */
+id|fifon
+op_assign
+id|fifo-&gt;fifonum
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3698,14 +4312,15 @@ id|urb-&gt;status
 )paren
 )paren
 (brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: RX-Fifo %i is going down (%i)&bslash;n&quot;
+id|USB_DBG
 comma
-id|fifo-&gt;fifonum
+l_string|&quot;HFC-S USB: RX-Fifo %i is going down (%i)&quot;
+comma
+id|fifon
 comma
 id|urb-&gt;status
 )paren
@@ -3744,6 +4359,78 @@ id|buf
 op_assign
 id|fifo-&gt;buffer
 suffix:semicolon
+id|maxlen
+op_assign
+id|fifo-&gt;usb_packet_maxlen
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+r_if
+c_cond
+(paren
+(paren
+id|fifon
+op_eq
+l_int|5
+)paren
+op_logical_and
+(paren
+id|debug
+OG
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: INT-D-RX lst_urblen:%2d act_urblen:%2d max-urblen:%2d EOF:0x%0x DATA: &quot;
+comma
+id|fifo-&gt;last_urblen
+comma
+id|len
+comma
+id|maxlen
+comma
+id|eof
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%.2x &quot;
+comma
+id|buf
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3752,7 +4439,7 @@ op_ne
 id|fifo-&gt;usb_packet_maxlen
 )paren
 (brace
-singleline_comment|// the threshold mask is in the 2nd status byte
+multiline_comment|/* the threshold mask is in the 2nd status byte */
 id|hfc-&gt;threshold_mask
 op_assign
 id|buf
@@ -3760,7 +4447,7 @@ id|buf
 l_int|1
 )braket
 suffix:semicolon
-singleline_comment|// the S0 state is in the upper half of the 1st status byte
+multiline_comment|/* the S0 state is in the upper half of the 1st status byte */
 id|state_handler
 c_func
 (paren
@@ -3774,7 +4461,19 @@ op_rshift
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|// if we have more than the 2 status bytes -&gt; collect data
+id|eof
+(braket
+id|fifon
+)braket
+op_assign
+id|buf
+(braket
+l_int|0
+)braket
+op_amp
+l_int|1
+suffix:semicolon
+multiline_comment|/* if we have more than the 2 status bytes -&gt; collect data */
 r_if
 c_cond
 (paren
@@ -3782,7 +4481,6 @@ id|len
 OG
 l_int|2
 )paren
-(brace
 id|collect_rx_frame
 c_func
 (paren
@@ -3796,17 +4494,24 @@ id|urb-&gt;actual_length
 op_minus
 l_int|2
 comma
-id|buf
+(paren
+id|len
+OL
+id|maxlen
+)paren
+ques
+c_cond
+id|eof
 (braket
-l_int|0
+id|fifon
 )braket
-op_amp
-l_int|1
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
+(brace
 id|collect_rx_frame
 c_func
 (paren
@@ -3816,21 +4521,58 @@ id|buf
 comma
 id|urb-&gt;actual_length
 comma
+(paren
+id|len
+OL
+id|maxlen
+)paren
+ques
+c_cond
+id|eof
+(braket
+id|fifon
+)braket
+suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|fifo-&gt;last_urblen
 op_assign
 id|urb-&gt;actual_length
 suffix:semicolon
+id|status
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: error resubmitting URN at rx_complete...&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* rx_complete */
 multiline_comment|/***************************************************/
 multiline_comment|/* start the interrupt transfer for the given fifo */
 multiline_comment|/***************************************************/
-DECL|function|start_int_fifo
 r_static
 r_void
+DECL|function|start_int_fifo
 id|start_int_fifo
 c_func
 (paren
@@ -3842,17 +4584,15 @@ id|fifo
 r_int
 id|errcode
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: starting intr IN fifo:%d&bslash;n&quot;
+l_string|&quot;HFC-S USB: starting intr IN fifo:%d&bslash;n&quot;
 comma
 id|fifo-&gt;fifonum
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3924,7 +4664,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: submit URB error(start_int_info): status:%i&bslash;n&quot;
+l_string|&quot;HFC-S USB: submit URB error(start_int_info): status:%i&bslash;n&quot;
 comma
 id|errcode
 )paren
@@ -3943,9 +4683,9 @@ multiline_comment|/* start_int_fifo */
 multiline_comment|/*****************************/
 multiline_comment|/* set the B-channel mode    */
 multiline_comment|/*****************************/
-DECL|function|set_hfcmode
 r_static
 r_void
+DECL|function|set_hfcmode
 id|set_hfcmode
 c_func
 (paren
@@ -3968,13 +4708,28 @@ id|idx_table
 l_int|2
 )braket
 op_assign
-initialization_block
+(brace
+l_int|0
+comma
+l_int|2
+)brace
 suffix:semicolon
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+r_if
+c_cond
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: setting channel %d to mode %d&bslash;n&quot;
+id|hfc-&gt;disc_flag
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: setting channel %d to mode %d&quot;
 comma
 id|channel
 comma
@@ -3989,7 +4744,7 @@ id|channel
 op_assign
 id|mode
 suffix:semicolon
-singleline_comment|// setup CON_HDLC
+multiline_comment|/* setup CON_HDLC */
 id|val
 op_assign
 l_int|0
@@ -4001,13 +4756,11 @@ id|mode
 op_ne
 id|L1_MODE_NULL
 )paren
-(brace
 id|val
 op_assign
 l_int|8
 suffix:semicolon
-)brace
-singleline_comment|// enable fifo?
+multiline_comment|/* enable fifo? */
 r_if
 c_cond
 (paren
@@ -4015,13 +4768,12 @@ id|mode
 op_eq
 id|L1_MODE_TRANS
 )paren
-(brace
 id|val
 op_or_assign
 l_int|2
 suffix:semicolon
-)brace
-singleline_comment|// set transparent bit
+multiline_comment|/* set transparent bit */
+multiline_comment|/* set FIFO to transmit register */
 id|queue_control_request
 c_func
 (paren
@@ -4037,7 +4789,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// set FIFO to transmit register
 id|queue_control_request
 c_func
 (paren
@@ -4050,6 +4801,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* reset fifo */
 id|queue_control_request
 c_func
 (paren
@@ -4062,7 +4814,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
+multiline_comment|/* set FIFO to receive register */
 id|queue_control_request
 c_func
 (paren
@@ -4080,7 +4832,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// set FIFO to receive register
 id|queue_control_request
 c_func
 (paren
@@ -4093,6 +4844,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* reset fifo */
 id|queue_control_request
 c_func
 (paren
@@ -4105,7 +4857,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// reset fifo
 id|val
 op_assign
 l_int|0x40
@@ -4118,12 +4869,10 @@ id|hfc-&gt;b_mode
 l_int|0
 )braket
 )paren
-(brace
 id|val
 op_or_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4132,12 +4881,10 @@ id|hfc-&gt;b_mode
 l_int|1
 )braket
 )paren
-(brace
 id|val
 op_or_assign
 l_int|2
 suffix:semicolon
-)brace
 id|queue_control_request
 c_func
 (paren
@@ -4162,12 +4909,10 @@ id|hfc-&gt;b_mode
 l_int|0
 )braket
 )paren
-(brace
 id|val
 op_or_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4176,12 +4921,10 @@ id|hfc-&gt;b_mode
 l_int|1
 )braket
 )paren
-(brace
 id|val
 op_or_assign
 l_int|2
 suffix:semicolon
-)brace
 id|queue_control_request
 c_func
 (paren
@@ -4207,7 +4950,6 @@ c_cond
 (paren
 id|channel
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -4216,7 +4958,6 @@ comma
 id|LED_B2_OFF
 )paren
 suffix:semicolon
-)brace
 r_else
 id|handle_led
 c_func
@@ -4234,7 +4975,6 @@ c_cond
 (paren
 id|channel
 )paren
-(brace
 id|handle_led
 c_func
 (paren
@@ -4243,7 +4983,6 @@ comma
 id|LED_B2_ON
 )paren
 suffix:semicolon
-)brace
 r_else
 id|handle_led
 c_func
@@ -4255,9 +4994,8 @@ id|LED_B1_ON
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;   --------------------------------------------------------------------------------------&n;   from here : hisax_if callback routines :&n;     - void hfc_usb_d_l2l1(struct hisax_if *hisax_d_if, int pr, void *arg) {&n;&n;   l1 to l2 routines :&n;     - static void hfc_usb_l1l2(hfcusb_data * hfc)&n;&n;*/
-DECL|function|hfc_usb_l2l1
 r_void
+DECL|function|hfc_usb_l2l1
 id|hfc_usb_l2l1
 c_func
 (paren
@@ -4305,14 +5043,98 @@ op_eq
 id|HFCUSB_D_TX
 )paren
 (brace
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC_USB: hfc_usb_d_l2l1 D-chan: PH_ACTIVATE | REQUEST&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC_USB: hfc_usb_d_l2l1 D-chan: PH_ACTIVATE | REQUEST&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|hfc-&gt;l1_state
+op_ne
+l_int|3
+op_logical_and
+id|hfc-&gt;l1_state
+op_ne
+l_int|7
+)paren
+(brace
+id|hfc-&gt;d_if.ifc
+dot
+id|l1l2
+c_func
+(paren
+op_amp
+id|hfc-&gt;d_if.ifc
+comma
+id|PH_DEACTIVATE
+op_or
+id|INDICATION
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_DEACTIVATE | INDICATION sent (not state 3 or 7)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|hfc-&gt;l1_state
+op_eq
+l_int|7
+)paren
+(brace
+multiline_comment|/* l1 already active */
+id|hfc-&gt;d_if.ifc
+dot
+id|l1l2
+c_func
+(paren
+op_amp
+id|hfc
+op_member_access_from_pointer
+id|d_if
+dot
+id|ifc
+comma
+id|PH_ACTIVATE
+op_or
+id|INDICATION
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|ISDN_DBG
+comma
+l_string|&quot;HFC-S USB: PH_ACTIVATE | INDICATION sent again ;)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+multiline_comment|/* force sending sending INFO1 */
 id|queue_control_request
 c_func
 (paren
@@ -4320,13 +5142,44 @@ id|hfc
 comma
 id|HFCUSB_STATES
 comma
-l_int|0x60
+l_int|0x14
 comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* make activation */
-id|hfc-&gt;t3_timer.expires
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* start l1 activation */
+id|queue_control_request
+c_func
+(paren
+id|hfc
+comma
+id|HFCUSB_STATES
+comma
+l_int|0x04
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timer_pending
+(paren
+op_amp
+id|hfc-&gt;t3_timer
+)paren
+)paren
+(brace
+id|hfc-&gt;t3_timer
+dot
+id|expires
 op_assign
 id|jiffies
 op_plus
@@ -4338,34 +5191,28 @@ id|HZ
 op_div
 l_int|1000
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|timer_pending
-c_func
-(paren
-op_amp
-id|hfc-&gt;t3_timer
-)paren
-)paren
-(brace
 id|add_timer
 c_func
 (paren
 op_amp
-id|hfc-&gt;t3_timer
+id|hfc
+op_member_access_from_pointer
+id|t3_timer
 )paren
 suffix:semicolon
 )brace
 )brace
+)brace
+)brace
 r_else
 (brace
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC_USB: hfc_usb_d_l2l1 Bx-chan: PH_ACTIVATE | REQUEST&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC_USB: hfc_usb_d_l2l1 Bx-chan: PH_ACTIVATE | REQUEST&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4421,28 +5268,33 @@ op_eq
 id|HFCUSB_D_TX
 )paren
 (brace
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC_USB: hfc_usb_d_l2l1 D-chan: PH_DEACTIVATE | REQUEST&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC_USB: hfc_usb_d_l2l1 D-chan: PH_DEACTIVATE | REQUEST&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: ISDN TE device should not deativate...&bslash;n&quot;
+l_string|&quot;HFC-S USB: ISDN TE device should not deativate...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef VERBOSE_ISDN_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC_USB: hfc_usb_d_l2l1 Bx-chan: PH_DEACTIVATE | REQUEST&bslash;n&quot;
+id|ISDN_DBG
+comma
+l_string|&quot;HFC_USB: hfc_usb_d_l2l1 Bx-chan: PH_DEACTIVATE | REQUEST&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4504,7 +5356,6 @@ c_func
 id|fifo-&gt;skbuff
 )paren
 suffix:semicolon
-singleline_comment|//printk(KERN_INFO &quot;skbuff=NULL on fifo:%d&bslash;n&quot;,fifo-&gt;fifonum);
 id|fifo-&gt;skbuff
 op_assign
 l_int|NULL
@@ -4518,14 +5369,13 @@ id|fifo-&gt;skbuff
 op_assign
 id|arg
 suffix:semicolon
-singleline_comment|// we have a new buffer
-singleline_comment|//if(fifo-&gt;fifonum==HFCUSB_D_TX) printk (KERN_INFO &quot;HFC_USB: hfc_usb_d_l2l1 D-chan: PH_DATA | REQUEST&bslash;n&quot;);
-singleline_comment|//else printk (KERN_INFO &quot;HFC_USB: hfc_usb_d_l2l1 Bx-chan: PH_DATA | REQUEST&bslash;n&quot;);
+multiline_comment|/* we have a new buffer */
 r_break
 suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;HFC_USB: hfc_usb_d_l2l1: unkown state : %#x&bslash;n&quot;
@@ -4537,28 +5387,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// valid configurations
-DECL|macro|CNF_4INT3ISO
-mdefine_line|#define CNF_4INT3ISO  1      
-singleline_comment|// 4 INT IN, 3 ISO OUT
-DECL|macro|CNF_3INT3ISO
-mdefine_line|#define CNF_3INT3ISO  2      
-singleline_comment|// 3 INT IN, 3 ISO OUT
-DECL|macro|CNF_4ISO3ISO
-mdefine_line|#define CNF_4ISO3ISO  3      
-singleline_comment|// 4 ISO IN, 3 ISO OUT
-DECL|macro|CNF_3ISO3ISO
-mdefine_line|#define CNF_3ISO3ISO  4 &t; 
-singleline_comment|// 3 ISO IN, 3 ISO OUT
-multiline_comment|/*&n;   --------------------------------------------------------------------------------------&n;   From here on USB initialization and deactivation related routines are implemented :&n;&n;   - hfc_usb_init :&n;      is the main Entry Point for the USB Subsystem when the device get plugged&n;      in. This function calls usb_register with usb_driver as parameter.&n;      Here, further entry points for probing (hfc_usb_probe) and disconnecting&n;      the device (hfc_usb_disconnect) are published, as the id_table&n;&n;   - hfc_usb_probe&n;      this function is called by the usb subsystem, and steps through the alternate&n;      settings of the currently plugged in device to detect all Endpoints needed to&n;      run an ISDN TA.&n;      Needed EndPoints are&n;      3 (+1) IntIn EndPoints   (D-in,  E-in, B1-in, B2-in, (E-in)) or&n;      3 (+1) Isochron In Endpoints (D-out, B1-out, B2-out) and 3 IsoOut Endpoints&n;      The currently used transfer mode of on the Out-Endpoints will be stored in&n;      hfc-&gt;usb_transfer_mode and is either USB_INT or USB_ISO&n;      When a valid alternate setting could be found, the usb_init (see blow)&n;      function is called&n;&n;   - usb_init&n;      Here, the HFC_USB Chip itself gets initialized and the USB framework to send/receive&n;      Data to/from the several EndPoints are initialized:&n;       The E- and D-Channel Int-In chain gets started&n;       The IsoChain for the Iso-Out traffic get started&n;&n;   - hfc_usb_disconnect&n;      this function is called by the usb subsystem and has to free all resources&n;      and stop all usb traffic to allow a proper hotplugging disconnect.&n;&n;*/
 multiline_comment|/***************************************************************************/
 multiline_comment|/* usb_init is called once when a new matching device is detected to setup */
-multiline_comment|/* main parameters. It registers the driver at the main hisax module.       */
+multiline_comment|/* main parameters. It registers the driver at the main hisax module.      */
 multiline_comment|/* on success 0 is returned.                                               */
 multiline_comment|/***************************************************************************/
-DECL|function|usb_init
 r_static
 r_int
+DECL|function|usb_init
 id|usb_init
 c_func
 (paren
@@ -4588,13 +5424,6 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* check the chip id */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFCUSB_CHIP_ID begin&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4620,18 +5449,11 @@ l_string|&quot;HFC-USB: cannot read chip id&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFCUSB_CHIP_ID %x&bslash;n&quot;
-comma
-id|b
+l_int|1
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4644,31 +5466,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: Invalid chip id 0x%02x&bslash;n&quot;
+l_string|&quot;HFC-S USB: Invalid chip id 0x%02x&bslash;n&quot;
 comma
 id|b
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* first set the needed config, interface and alternate */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;usb_init 1&bslash;n&quot;
-)paren
-suffix:semicolon
-singleline_comment|//&t;usb_set_configuration(hfc-&gt;dev, 1);
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;usb_init 2&bslash;n&quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|usb_set_interface
@@ -4681,16 +5490,7 @@ comma
 id|hfc-&gt;alt_used
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;usb_init usb_set_interface return %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
-multiline_comment|/* now we initialize the chip */
+multiline_comment|/* do Chip reset */
 id|write_usb
 c_func
 (paren
@@ -4701,7 +5501,7 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-singleline_comment|// do reset
+multiline_comment|/* aux = output, reset off */
 id|write_usb
 c_func
 (paren
@@ -4712,8 +5512,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-singleline_comment|// aux = output, reset off
-singleline_comment|// set USB_SIZE to match the the wMaxPacketSize for INT or BULK transfers
+multiline_comment|/* set USB_SIZE to match the the wMaxPacketSize for INT or BULK transfers */
 id|write_usb
 c_func
 (paren
@@ -4738,7 +5537,7 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// set USB_SIZE_I to match the the wMaxPacketSize for ISO transfers
+multiline_comment|/* set USB_SIZE_I to match the the wMaxPacketSize for ISO transfers */
 id|write_usb
 c_func
 (paren
@@ -4864,6 +5663,7 @@ id|last_urblen
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* set 2 bit for D- &amp; E-channel */
 id|write_usb
 c_func
 (paren
@@ -4885,7 +5685,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// set 2 bit for D- &amp; E-channel
+multiline_comment|/* rx hdlc, enable IFF for D-channel */
 id|write_usb
 c_func
 (paren
@@ -4907,7 +5707,6 @@ l_int|0x08
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// rx hdlc, enable IFF for D-channel
 id|write_usb
 c_func
 (paren
@@ -4977,7 +5776,7 @@ l_int|0x40
 )paren
 suffix:semicolon
 multiline_comment|/* disable B transmitters + capacitive mode */
-singleline_comment|// set both B-channel to not connected
+multiline_comment|/* set both B-channel to not connected */
 id|hfc-&gt;b_mode
 (braket
 l_int|0
@@ -4996,11 +5795,19 @@ id|hfc-&gt;l1_activated
 op_assign
 id|FALSE
 suffix:semicolon
+id|hfc-&gt;disc_flag
+op_assign
+id|FALSE
+suffix:semicolon
 id|hfc-&gt;led_state
 op_assign
 l_int|0
 suffix:semicolon
 id|hfc-&gt;led_new_data
+op_assign
+l_int|0
+suffix:semicolon
+id|hfc-&gt;old_led_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -5073,19 +5880,7 @@ op_star
 )paren
 id|led_timer
 suffix:semicolon
-singleline_comment|// trigger 4 hz led timer
-id|hfc-&gt;led_timer.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|LED_TIME
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
-suffix:semicolon
+multiline_comment|/* trigger 4 hz led timer */
 r_if
 c_cond
 (paren
@@ -5098,6 +5893,18 @@ id|hfc-&gt;led_timer
 )paren
 )paren
 (brace
+id|hfc-&gt;led_timer.expires
+op_assign
+id|jiffies
+op_plus
+(paren
+id|LED_TIME
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
+suffix:semicolon
 id|add_timer
 c_func
 (paren
@@ -5106,7 +5913,7 @@ id|hfc-&gt;led_timer
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// init the background machinery for control requests
+multiline_comment|/* init the background machinery for control requests */
 id|hfc-&gt;ctrl_read.bRequestType
 op_assign
 l_int|0xc0
@@ -5210,7 +6017,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// register like Germaschewski :
+multiline_comment|/* register Modul to upper Hisax Layers */
 id|hfc-&gt;d_if.owner
 op_assign
 id|THIS_MODULE
@@ -5280,11 +6087,11 @@ id|i
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/* default Prot: EURO ISDN, should be a module_param */
 id|hfc-&gt;protocol
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* default EURO ISDN, should be a module_param */
 id|hisax_register
 c_func
 (paren
@@ -5298,6 +6105,12 @@ comma
 id|hfc-&gt;protocol
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|hfc_debug
+op_assign
+id|debug
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -5353,7 +6166,7 @@ op_assign
 op_amp
 id|hfc-&gt;d_if.ifc
 suffix:semicolon
-singleline_comment|// 3 (+1) INT IN + 3 ISO OUT
+multiline_comment|/* 3 (+1) INT IN + 3 ISO OUT */
 r_if
 c_cond
 (paren
@@ -5374,7 +6187,6 @@ op_plus
 id|HFCUSB_D_RX
 )paren
 suffix:semicolon
-singleline_comment|// Int IN D-fifo
 r_if
 c_cond
 (paren
@@ -5385,7 +6197,6 @@ id|HFCUSB_PCM_RX
 dot
 id|pipe
 )paren
-(brace
 id|start_int_fifo
 c_func
 (paren
@@ -5394,8 +6205,6 @@ op_plus
 id|HFCUSB_PCM_RX
 )paren
 suffix:semicolon
-)brace
-singleline_comment|// E-fifo
 id|start_int_fifo
 c_func
 (paren
@@ -5404,7 +6213,6 @@ op_plus
 id|HFCUSB_B1_RX
 )paren
 suffix:semicolon
-singleline_comment|// Int IN B1-fifo
 id|start_int_fifo
 c_func
 (paren
@@ -5413,9 +6221,8 @@ op_plus
 id|HFCUSB_B2_RX
 )paren
 suffix:semicolon
-singleline_comment|// Int IN B2-fifo
 )brace
-singleline_comment|// 3 (+1) ISO IN + 3 ISO OUT
+multiline_comment|/* 3 (+1) ISO IN + 3 ISO OUT */
 r_if
 c_cond
 (paren
@@ -5452,7 +6259,6 @@ id|HFCUSB_PCM_RX
 dot
 id|pipe
 )paren
-(brace
 id|start_isoc_chain
 c_func
 (paren
@@ -5467,7 +6273,6 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-)brace
 id|start_isoc_chain
 c_func
 (paren
@@ -5548,361 +6353,18 @@ id|LED_POWER_ON
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* usb_init */
-multiline_comment|/****************************************/
-multiline_comment|/* data defining the devices to be used */
-multiline_comment|/****************************************/
-singleline_comment|// static __devinitdata const struct usb_device_id hfc_usb_idtab[3] = {
-DECL|variable|hfc_usb_idtab
-r_static
-r_struct
-id|usb_device_id
-id|hfc_usb_idtab
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x7b0
-comma
-l_int|0x0007
-)paren
-)brace
-comma
-multiline_comment|/* Billion USB TA 2 */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x742
-comma
-l_int|0x2008
-)paren
-)brace
-comma
-multiline_comment|/* Stollmann USB TA */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x959
-comma
-l_int|0x2bd0
-)paren
-)brace
-comma
-multiline_comment|/* Colognechip USB eval TA */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x8e3
-comma
-l_int|0x0301
-)paren
-)brace
-comma
-multiline_comment|/* OliTec ISDN USB */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x675
-comma
-l_int|0x1688
-)paren
-)brace
-comma
-multiline_comment|/* DrayTec ISDN USB */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x7fa
-comma
-l_int|0x0846
-)paren
-)brace
-comma
-multiline_comment|/* Bewan ISDN USB TA */
-(brace
-)brace
-multiline_comment|/* end with an all-zeroes entry */
-)brace
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Peter Sprenger (sprenger@moving-byters.de)/Martin Bachem (info@colognechip.com)&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;HFC I4L USB driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|usb
-comma
-id|hfc_usb_idtab
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-DECL|macro|EP_NUL
-mdefine_line|#define EP_NUL 1    
-singleline_comment|// Endpoint at this position not allowed
-DECL|macro|EP_NOP
-mdefine_line|#define EP_NOP 2&t;
-singleline_comment|// all type of endpoints allowed at this position
-DECL|macro|EP_ISO
-mdefine_line|#define EP_ISO 3&t;
-singleline_comment|// Isochron endpoint mandatory at this position
-DECL|macro|EP_BLK
-mdefine_line|#define EP_BLK 4&t;
-singleline_comment|// Bulk endpoint mandatory at this position
-DECL|macro|EP_INT
-mdefine_line|#define EP_INT 5&t;
-singleline_comment|// Interrupt endpoint mandatory at this position
-singleline_comment|// this array represents all endpoints possible in the HCF-USB
-singleline_comment|// the last 2 entries are the configuration number and the minimum interval for Interrupt endpoints
-DECL|variable|validconf
-r_int
-id|validconf
-(braket
-)braket
-(braket
-l_int|18
-)braket
-op_assign
-(brace
-singleline_comment|// INT in, ISO out config
-(brace
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NOP
-comma
-id|EP_INT
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|CNF_4INT3ISO
-comma
-l_int|2
-)brace
-comma
-(brace
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NUL
-comma
-id|EP_INT
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|CNF_3INT3ISO
-comma
-l_int|2
-)brace
-comma
-singleline_comment|// ISO in, ISO out config
-(brace
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_NOP
-comma
-id|EP_ISO
-comma
-id|CNF_4ISO3ISO
-comma
-l_int|2
-)brace
-comma
-(brace
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_ISO
-comma
-id|EP_NUL
-comma
-id|EP_NUL
-comma
-id|CNF_3ISO3ISO
-comma
-l_int|2
-)brace
-comma
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-singleline_comment|// EOL element
-)brace
-suffix:semicolon
-singleline_comment|// string description of chosen config
-DECL|variable|conf_str
-r_char
-op_star
-id|conf_str
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;4 Interrupt IN + 3 Isochron OUT&quot;
-comma
-l_string|&quot;3 Interrupt IN + 3 Isochron OUT&quot;
-comma
-l_string|&quot;4 Isochron IN + 3 Isochron OUT&quot;
-comma
-l_string|&quot;3 Isochron IN + 3 Isochron OUT&quot;
-)brace
-suffix:semicolon
 multiline_comment|/*************************************************/
 multiline_comment|/* function called to probe a new plugged device */
 multiline_comment|/*************************************************/
-DECL|function|hfc_usb_probe
 r_static
 r_int
+DECL|function|hfc_usb_probe
 id|hfc_usb_probe
 c_func
 (paren
@@ -5997,9 +6459,6 @@ id|alt_used
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//        usb_show_device(dev);
-singleline_comment|//&t;usb_show_device_descriptor(&amp;dev-&gt;descriptor);
-singleline_comment|//&t;usb_show_interface_descriptor(&amp;iface-&gt;desc);
 id|vend_idx
 op_assign
 l_int|0xffff
@@ -6025,11 +6484,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|le16_to_cpu
-c_func
-(paren
 id|dev-&gt;descriptor.idVendor
-)paren
 op_eq
 id|vdata
 (braket
@@ -6038,11 +6493,7 @@ id|i
 dot
 id|vendor
 op_logical_and
-id|le16_to_cpu
-c_func
-(paren
 id|dev-&gt;descriptor.idProduct
-)paren
 op_eq
 id|vdata
 (braket
@@ -6056,11 +6507,12 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-macro_line|#ifdef VERBOSE_USB_DEBUG&t;
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
+id|USB_DBG
+comma
 l_string|&quot;HFC-USB: probing interface(%d) actalt(%d) minor(%d)&bslash;n&quot;
 comma
 id|ifnum
@@ -6071,6 +6523,19 @@ id|intf-&gt;minor
 )paren
 suffix:semicolon
 macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: probing interface(%d) actalt(%d) minor(%d)&bslash;n&quot;
+comma
+id|ifnum
+comma
+id|iface-&gt;desc.bAlternateSetting
+comma
+id|intf-&gt;minor
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6079,12 +6544,13 @@ op_ne
 l_int|0xffff
 )paren
 (brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: found vendor idx:%d  name:%s&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: found vendor idx:%d  name:%s&quot;
 comma
 id|vend_idx
 comma
@@ -6097,7 +6563,7 @@ id|vend_name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* if vendor and product ID is OK, start probing a matching alternate setting ... */
+multiline_comment|/* if vendor and product ID is OK, start probing alternate settings */
 id|alt_idx
 op_assign
 l_int|0
@@ -6106,7 +6572,7 @@ id|small_match
 op_assign
 l_int|0xffff
 suffix:semicolon
-singleline_comment|// default settings
+multiline_comment|/* default settings */
 id|iso_packet_size
 op_assign
 l_int|16
@@ -6137,18 +6603,7 @@ id|cfg_used
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: test alt_setting %d&bslash;n&quot;
-comma
-id|probe_alt_setting
-)paren
-suffix:semicolon
-macro_line|#endif
-singleline_comment|// check for config EOL element
+multiline_comment|/* check for config EOL element */
 r_while
 c_loop
 (paren
@@ -6172,17 +6627,18 @@ id|validconf
 id|cfg_used
 )braket
 suffix:semicolon
+multiline_comment|/* first endpoint descriptor */
 id|ep
 op_assign
 id|iface-&gt;endpoint
 suffix:semicolon
-multiline_comment|/* first endpoint descriptor */
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: (if=%d alt=%d cfg_used=%d)&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: (if=%d alt=%d cfg_used=%d)&bslash;n&quot;
 comma
 id|ifnum
 comma
@@ -6192,7 +6648,6 @@ id|cfg_used
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// copy table
 id|memcpy
 c_func
 (paren
@@ -6208,7 +6663,7 @@ r_int
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// check for all endpoints in this alternate setting
+multiline_comment|/* check for all endpoints in this alternate setting */
 r_for
 c_loop
 (paren
@@ -6228,6 +6683,7 @@ id|ep_addr
 op_assign
 id|ep-&gt;desc.bEndpointAddress
 suffix:semicolon
+multiline_comment|/* get endpoint base */
 id|idx
 op_assign
 (paren
@@ -6242,7 +6698,6 @@ l_int|1
 op_star
 l_int|2
 suffix:semicolon
-multiline_comment|/* get endpoint base */
 r_if
 c_cond
 (paren
@@ -6268,24 +6723,6 @@ op_eq
 id|EP_NUL
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: cfg_found=FALSE in idx:%d  attr:%d  cmptbl[%d]:%d&bslash;n&quot;
-comma
-id|idx
-comma
-id|attr
-comma
-id|idx
-comma
-id|cmptbl
-(braket
-id|idx
-)braket
-)paren
-suffix:semicolon
 id|cfg_found
 op_assign
 id|FALSE
@@ -6354,7 +6791,7 @@ id|idx
 op_assign
 id|EP_NUL
 suffix:semicolon
-singleline_comment|// check if all INT endpoints match minimum interval
+multiline_comment|/* check if all INT endpoints match minimum interval */
 r_if
 c_cond
 (paren
@@ -6370,17 +6807,18 @@ l_int|17
 )braket
 )paren
 (brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
+macro_line|#ifdef CONFIG_HISAX_DEBUG
 r_if
 c_cond
 (paren
 id|cfg_found
 )paren
-id|printk
+id|DBG
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: Interrupt Endpoint interval &lt; %d found - skipping config&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: Interrupt Endpoint interval &lt; %d found - skipping config&quot;
 comma
 id|vcf
 (braket
@@ -6413,8 +6851,7 @@ id|i
 op_increment
 )paren
 (brace
-singleline_comment|// printk(KERN_INFO &quot;HFC-USB: cmptbl[%d]:%d&bslash;n&quot;, i, cmptbl[i]);
-singleline_comment|// all entries must be EP_NOP or EP_NUL for a valid config
+multiline_comment|/* all entries must be EP_NOP or EP_NUL for a valid config */
 r_if
 c_cond
 (paren
@@ -6437,8 +6874,6 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-singleline_comment|// we check for smallest match, to provide configuration priority
-singleline_comment|// configurations with smaller index have higher priority
 r_if
 c_cond
 (paren
@@ -6466,11 +6901,12 @@ op_assign
 id|iface
 suffix:semicolon
 )brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
 c_func
 (paren
-id|KERN_INFO
+id|USB_DBG
+comma
 l_string|&quot;HFC-USB: small_match=%x %x&bslash;n&quot;
 comma
 id|small_match
@@ -6489,20 +6925,7 @@ op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* (alt_idx &lt; intf-&gt;num_altsetting) */
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: final small_match=%x alt_used=%x&bslash;n&quot;
-comma
-id|small_match
-comma
-id|alt_used
-)paren
-suffix:semicolon
-macro_line|#endif
-singleline_comment|// yiipiee, we found a valid config
+multiline_comment|/* found a valid USB Ta Endpint config */
 r_if
 c_cond
 (paren
@@ -6535,8 +6958,10 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|ENOMEM
+)paren
 suffix:semicolon
 multiline_comment|/* got no mem */
 id|memset
@@ -6552,12 +6977,10 @@ id|hfcusb_data
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* clear the structure */
 id|ep
 op_assign
 id|iface-&gt;endpoint
 suffix:semicolon
-multiline_comment|/* first endpoint descriptor */
 id|vcf
 op_assign
 id|validconf
@@ -6584,6 +7007,7 @@ id|ep_addr
 op_assign
 id|ep-&gt;desc.bEndpointAddress
 suffix:semicolon
+multiline_comment|/* get endpoint base */
 id|idx
 op_assign
 (paren
@@ -6598,7 +7022,6 @@ l_int|1
 op_star
 l_int|2
 suffix:semicolon
-multiline_comment|/* get endpoint base */
 r_if
 c_cond
 (paren
@@ -6619,7 +7042,7 @@ id|attr
 op_assign
 id|ep-&gt;desc.bmAttributes
 suffix:semicolon
-singleline_comment|// only initialize used endpoints
+multiline_comment|/* init Endpoints */
 r_if
 c_cond
 (paren
@@ -6647,7 +7070,9 @@ id|attr
 r_case
 id|USB_ENDPOINT_XFER_INT
 suffix:colon
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6655,14 +7080,17 @@ dot
 id|pipe
 op_assign
 id|usb_rcvintpipe
-c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep-&gt;desc
+dot
+id|bEndpointAddress
 )paren
 suffix:semicolon
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6673,27 +7101,10 @@ id|USB_INT
 suffix:semicolon
 id|packet_size
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|ep-&gt;desc.wMaxPacketSize
-)paren
+id|ep-&gt;desc
+dot
+id|wMaxPacketSize
 suffix:semicolon
-singleline_comment|// remember max packet size
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: Interrupt-In Endpoint found %d ms(idx:%d cidx:%d)!&bslash;n&quot;
-comma
-id|ep-&gt;desc.bInterval
-comma
-id|idx
-comma
-id|cidx
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -6706,7 +7117,9 @@ id|ep_addr
 op_amp
 l_int|0x80
 )paren
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6714,15 +7127,20 @@ dot
 id|pipe
 op_assign
 id|usb_rcvbulkpipe
-c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep
+op_member_access_from_pointer
+id|desc
+dot
+id|bEndpointAddress
 )paren
 suffix:semicolon
 r_else
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6730,14 +7148,19 @@ dot
 id|pipe
 op_assign
 id|usb_sndbulkpipe
-c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep
+op_member_access_from_pointer
+id|desc
+dot
+id|bEndpointAddress
 )paren
 suffix:semicolon
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6748,25 +7171,10 @@ id|USB_BULK
 suffix:semicolon
 id|packet_size
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|ep-&gt;desc.wMaxPacketSize
-)paren
+id|ep-&gt;desc
+dot
+id|wMaxPacketSize
 suffix:semicolon
-singleline_comment|// remember max packet size
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: Bulk Endpoint found (idx:%d cidx:%d)!&bslash;n&quot;
-comma
-id|idx
-comma
-id|cidx
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -6779,7 +7187,9 @@ id|ep_addr
 op_amp
 l_int|0x80
 )paren
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6787,15 +7197,20 @@ dot
 id|pipe
 op_assign
 id|usb_rcvisocpipe
-c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep
+op_member_access_from_pointer
+id|desc
+dot
+id|bEndpointAddress
 )paren
 suffix:semicolon
 r_else
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6803,14 +7218,19 @@ dot
 id|pipe
 op_assign
 id|usb_sndisocpipe
-c_func
 (paren
 id|dev
 comma
-id|ep-&gt;desc.bEndpointAddress
+id|ep
+op_member_access_from_pointer
+id|desc
+dot
+id|bEndpointAddress
 )paren
 suffix:semicolon
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6821,30 +7241,17 @@ id|USB_ISOC
 suffix:semicolon
 id|iso_packet_size
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|ep-&gt;desc.wMaxPacketSize
-)paren
+id|ep-&gt;desc
+dot
+id|wMaxPacketSize
 suffix:semicolon
-singleline_comment|// remember max packet size
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: ISO Endpoint found (idx:%d cidx:%d)!&bslash;n&quot;
-comma
-id|idx
-comma
-id|cidx
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|context-&gt;fifos
+id|context
+op_member_access_from_pointer
+id|fifos
 (braket
 id|cidx
 )braket
@@ -6853,7 +7260,6 @@ id|pipe
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* reset data */
 )brace
 multiline_comment|/* switch attribute */
 r_if
@@ -6892,11 +7298,9 @@ id|cidx
 dot
 id|usb_packet_maxlen
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|ep-&gt;desc.wMaxPacketSize
-)paren
+id|ep-&gt;desc
+dot
+id|wMaxPacketSize
 suffix:semicolon
 id|context-&gt;fifos
 (braket
@@ -6916,42 +7320,12 @@ id|skbuff
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: fifo%d pktlen %d interval %d&bslash;n&quot;
-comma
-id|context-&gt;fifos
-(braket
-id|cidx
-)braket
-dot
-id|fifonum
-comma
-id|context-&gt;fifos
-(braket
-id|cidx
-)braket
-dot
-id|usb_packet_maxlen
-comma
-id|context-&gt;fifos
-(braket
-id|cidx
-)braket
-dot
-id|intervall
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|ep
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// now share our luck
 id|context-&gt;dev
 op_assign
 id|dev
@@ -6979,12 +7353,12 @@ id|vcf
 l_int|16
 )braket
 suffix:semicolon
-singleline_comment|// store used config
+multiline_comment|/* store used config */
 id|context-&gt;vend_idx
 op_assign
 id|vend_idx
 suffix:semicolon
-singleline_comment|// store found vendor
+multiline_comment|/* store found vendor */
 id|context-&gt;packet_size
 op_assign
 id|packet_size
@@ -7028,7 +7402,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: detected &bslash;&quot;%s&bslash;&quot; configuration: %s (if=%d alt=%d)&bslash;n&quot;
+l_string|&quot;HFC-S USB: detected &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|vdata
 (braket
@@ -7036,6 +7410,15 @@ id|vend_idx
 )braket
 dot
 id|vend_name
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
+(paren
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: Endpoint-Config: %s (if=%d alt=%d)&bslash;n&quot;
 comma
 id|conf_str
 (braket
@@ -7047,6 +7430,38 @@ comma
 id|context-&gt;alt_used
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: E-channel (&bslash;&quot;ECHO:&bslash;&quot;) logging &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|validconf
+(braket
+id|small_match
+)braket
+(braket
+l_int|18
+)braket
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; possible&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;NOT possible&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* init the chip and register the driver */
 r_if
 c_cond
@@ -7088,8 +7503,10 @@ id|context
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 id|usb_set_intfdata
@@ -7101,21 +7518,35 @@ id|context
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: no valid vendor found in USB descriptor&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************/
 multiline_comment|/* function called when an active device is removed */
 multiline_comment|/****************************************************/
-DECL|function|hfc_usb_disconnect
 r_static
 r_void
+DECL|function|hfc_usb_disconnect
 id|hfc_usb_disconnect
 c_func
 (paren
@@ -7142,8 +7573,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: device disconnect&bslash;n&quot;
+l_string|&quot;HFC-S USB: device disconnect&bslash;n&quot;
 )paren
+suffix:semicolon
+id|context-&gt;disc_flag
+op_assign
+id|TRUE
 suffix:semicolon
 id|usb_set_intfdata
 c_func
@@ -7210,13 +7645,6 @@ c_func
 (paren
 op_amp
 id|context-&gt;led_timer
-)paren
-suffix:semicolon
-id|hisax_unregister
-c_func
-(paren
-op_amp
-id|context-&gt;d_if
 )paren
 suffix:semicolon
 multiline_comment|/* tell all fifos to terminate */
@@ -7271,11 +7699,13 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: hfc_usb_disconnect: stopping ISOC chain Fifo no %i&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: hfc_usb_disconnect: stopping ISOC chain Fifo no %i&quot;
 comma
 id|i
 )paren
@@ -7307,11 +7737,13 @@ id|active
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;HFC-USB: hfc_usb_disconnect: unlinking URB for Fifo no %i&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: hfc_usb_disconnect: unlinking URB for Fifo no %i&quot;
 comma
 id|i
 )paren
@@ -7372,6 +7804,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* wait for all URBS to terminate */
+id|mdelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7395,6 +7834,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|hisax_unregister
+c_func
+(paren
+op_amp
+id|context-&gt;d_if
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -7441,20 +7887,23 @@ id|hfc_usb_disconnect
 comma
 )brace
 suffix:semicolon
-DECL|function|hfc_usb_exit
 r_static
 r_void
 id|__exit
+DECL|function|hfc_usb_exit
 id|hfc_usb_exit
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef VERBOSE_USB_DEBUG
-id|printk
+macro_line|#ifdef CONFIG_HISAX_DEBUG
+id|DBG
+c_func
 (paren
-l_string|&quot;HFC-USB: calling &bslash;&quot;hfc_usb_exit&bslash;&quot; ...&bslash;n&quot;
+id|USB_DBG
+comma
+l_string|&quot;HFC-S USB: calling &bslash;&quot;hfc_usb_exit&bslash;&quot; ...&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7470,25 +7919,74 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB module removed&bslash;n&quot;
+l_string|&quot;HFC-S USB: module removed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|hfc_usb_init
 r_static
 r_int
 id|__init
+DECL|function|hfc_usb_init
 id|hfc_usb_init
 c_func
 (paren
 r_void
 )paren
 (brace
-id|printk
-(paren
-l_string|&quot;HFC-USB: driver module revision %s loaded&bslash;n&quot;
+macro_line|#ifndef CONFIG_HISAX_DEBUG
+r_int
+r_int
+id|debug
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_char
+id|revstr
+(braket
+l_int|30
+)braket
 comma
+id|datestr
+(braket
+l_int|30
+)braket
+comma
+id|dummy
+(braket
+l_int|30
+)braket
+suffix:semicolon
+id|sscanf
+c_func
+(paren
 id|hfcusb_revision
+comma
+l_string|&quot;%s %s $ %s %s %s $ &quot;
+comma
+id|dummy
+comma
+id|revstr
+comma
+id|dummy
+comma
+id|datestr
+comma
+id|dummy
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HFC-S USB: driver module revision %s date %s loaded, (debug=%i)&bslash;n&quot;
+comma
+id|revstr
+comma
+id|datestr
+comma
+id|debug
 )paren
 suffix:semicolon
 r_if
@@ -7506,17 +8004,21 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HFC-USB: Unable to register HFC-USB module at usb stack&bslash;n&quot;
+l_string|&quot;HFC-S USB: Unable to register HFC-S USB module at usb stack&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* unable to register */
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|variable|hfc_usb_init
@@ -7531,6 +8033,34 @@ id|module_exit
 c_func
 (paren
 id|hfc_usb_exit
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
+id|MODULE_AUTHOR
+c_func
+(paren
+id|DRIVER_AUTHOR
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_DESC
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|usb
+comma
+id|hfc_usb_idtab
 )paren
 suffix:semicolon
 eof

@@ -56,6 +56,7 @@ id|direct_rcv
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Not static because it&squot;s called directly by the tt mode gdb code */
 DECL|function|xterm_init
 r_void
 op_star
@@ -310,7 +311,7 @@ l_string|&quot;    The default values are &squot;xterm=xterm,-T,-e&squot;.  Valu
 l_string|&quot;    are &squot;xterm=gnome-terminal,-t,-x&squot;.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* XXX This badly needs some cleaning up in the error paths */
+multiline_comment|/* XXX This badly needs some cleaning up in the error paths&n; * Not static because it&squot;s called directly by the tt mode gdb code&n; */
 DECL|function|xterm_open
 r_int
 id|xterm_open
@@ -764,6 +765,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
+multiline_comment|/* Not static because it&squot;s called directly by the tt mode gdb code */
 DECL|function|xterm_close
 r_void
 id|xterm_close
@@ -838,6 +840,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|xterm_free
+r_static
 r_void
 id|xterm_free
 c_func
@@ -855,6 +858,7 @@ id|d
 suffix:semicolon
 )brace
 DECL|function|xterm_console_write
+r_static
 r_int
 id|xterm_console_write
 c_func

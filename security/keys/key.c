@@ -169,12 +169,14 @@ id|rb_node
 op_star
 op_star
 id|p
+suffix:semicolon
+id|try_again
+suffix:colon
+id|p
 op_assign
 op_amp
 id|key_user_tree.rb_node
 suffix:semicolon
-id|try_again
-suffix:colon
 id|spin_lock
 c_func
 (paren

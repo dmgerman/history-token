@@ -1309,22 +1309,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|atyfb_cursor
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_struct
-id|fb_cursor
-op_star
-id|cursor
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     *  Hardware acceleration&n;     */
 DECL|function|wait_for_fifo
 r_static

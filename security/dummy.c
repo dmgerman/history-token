@@ -1683,6 +1683,10 @@ id|file
 comma
 r_int
 r_int
+id|reqprot
+comma
+r_int
+r_int
 id|prot
 comma
 r_int
@@ -1703,6 +1707,10 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
+comma
+r_int
+r_int
+id|reqprot
 comma
 r_int
 r_int

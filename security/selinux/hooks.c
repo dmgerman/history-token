@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  NSA Security-Enhanced Linux (SELinux) security module&n; *&n; *  This file contains the SELinux hook function implementations.&n; *&n; *  Authors:  Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; *            Chris Vance, &lt;cvance@nai.com&gt;&n; *            Wayne Salamon, &lt;wsalamon@nai.com&gt;&n; *            James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *  Copyright (C) 2001,2002 Networks Associates Technology, Inc.&n; *  Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License version 2,&n; *      as published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  NSA Security-Enhanced Linux (SELinux) security module&n; *&n; *  This file contains the SELinux hook function implementations.&n; *&n; *  Authors:  Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; *            Chris Vance, &lt;cvance@nai.com&gt;&n; *            Wayne Salamon, &lt;wsalamon@nai.com&gt;&n; *            James Morris &lt;jmorris@redhat.com&gt;&n; *&n; *  Copyright (C) 2001,2002 Networks Associates Technology, Inc.&n; *  Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *  Copyright (C) 2004-2005 Trusted Computer Solutions, Inc.&n; *                          &lt;dgoeddel@trustedcs.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License version 2,&n; *      as published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9103,6 +9103,28 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+id|rc
+op_assign
+id|security_validate_transition
+c_func
+(paren
+id|isec-&gt;sid
+comma
+id|newsid
+comma
+id|tsec-&gt;sid
+comma
+id|isec-&gt;sclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 r_return
 id|avc_has_perm
 c_func
@@ -9955,6 +9977,7 @@ r_int
 id|shared
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC32
 r_if
 c_cond
 (paren
@@ -10004,6 +10027,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10072,6 +10096,10 @@ id|file
 comma
 r_int
 r_int
+id|reqprot
+comma
+r_int
+r_int
 id|prot
 comma
 r_int
@@ -10091,6 +10119,8 @@ c_func
 (paren
 id|file
 comma
+id|reqprot
+comma
 id|prot
 comma
 id|flags
@@ -10103,6 +10133,15 @@ id|rc
 )paren
 r_return
 id|rc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|selinux_checkreqprot
+)paren
+id|prot
+op_assign
+id|reqprot
 suffix:semicolon
 r_return
 id|file_map_prot_check
@@ -10135,6 +10174,10 @@ id|vma
 comma
 r_int
 r_int
+id|reqprot
+comma
+r_int
+r_int
 id|prot
 )paren
 (brace
@@ -10150,6 +10193,8 @@ c_func
 (paren
 id|vma
 comma
+id|reqprot
+comma
 id|prot
 )paren
 suffix:semicolon
@@ -10161,6 +10206,16 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|selinux_checkreqprot
+)paren
+id|prot
+op_assign
+id|reqprot
+suffix:semicolon
+macro_line|#ifndef CONFIG_PPC32
 r_if
 c_cond
 (paren
@@ -10202,6 +10257,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|file_map_prot_check
 c_func
@@ -17052,6 +17108,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_char
+op_star
+id|str
+op_assign
+id|value
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17160,11 +17222,46 @@ r_if
 c_cond
 (paren
 id|size
+op_logical_and
+id|str
+(braket
+l_int|1
+)braket
+op_logical_and
+id|str
+(braket
+l_int|1
+)braket
+op_ne
+l_char|&squot;&bslash;n&squot;
 )paren
 (brace
-r_int
-id|error
+r_if
+c_cond
+(paren
+id|str
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+(brace
+id|str
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
+id|size
+op_decrement
+suffix:semicolon
+)brace
 id|error
 op_assign
 id|security_context_to_sid

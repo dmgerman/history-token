@@ -715,6 +715,12 @@ DECL|member|rd_vlen
 r_int
 id|rd_vlen
 suffix:semicolon
+DECL|member|rd_filp
+r_struct
+id|file
+op_star
+id|rd_filp
+suffix:semicolon
 DECL|member|rd_rqstp
 r_struct
 id|svc_rqst

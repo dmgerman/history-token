@@ -6,8 +6,6 @@ macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/user.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -189,7 +187,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -671,6 +669,12 @@ r_int
 id|local_using_sysemu
 suffix:semicolon
 multiline_comment|/*To prevent races if using_sysemu changes under us.*/
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 id|restore_registers
 c_func
 (paren
@@ -679,6 +683,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/* Now we set local_using_sysemu to be used for one loop */
 id|local_using_sysemu
 op_assign
 id|get_using_sysemu
@@ -688,12 +693,17 @@ c_func
 suffix:semicolon
 id|op
 op_assign
+id|SELECT_PTRACE_OPERATION
+c_func
+(paren
 id|local_using_sysemu
-ques
-c_cond
-id|PTRACE_SYSEMU
-suffix:colon
-id|PTRACE_SYSCALL
+comma
+id|singlestepping
+c_func
+(paren
+l_int|NULL
+)paren
+)paren
 suffix:semicolon
 id|err
 op_assign
@@ -718,25 +728,15 @@ id|err
 id|panic
 c_func
 (paren
-l_string|&quot;userspace - PTRACE_%s failed, errno = %d&bslash;n&quot;
+l_string|&quot;userspace - could not resume userspace process, &quot;
+l_string|&quot;pid=%d, ptrace operation = %d, errno = %d&bslash;n&quot;
 comma
-id|local_using_sysemu
-ques
-c_cond
-l_string|&quot;SYSEMU&quot;
-suffix:colon
-l_string|&quot;SYSCALL&quot;
+id|op
 comma
 id|errno
 )paren
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
 id|CATCH_EINTR
 c_func
 (paren
@@ -916,73 +916,6 @@ id|regs-&gt;skas.regs
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-)brace
-id|restore_registers
-c_func
-(paren
-id|pid
-comma
-id|regs
-)paren
-suffix:semicolon
-multiline_comment|/*Now we ended the syscall, so re-read local_using_sysemu.*/
-id|local_using_sysemu
-op_assign
-id|get_using_sysemu
-c_func
-(paren
-)paren
-suffix:semicolon
-id|op
-op_assign
-id|SELECT_PTRACE_OPERATION
-c_func
-(paren
-id|local_using_sysemu
-comma
-id|singlestepping
-c_func
-(paren
-l_int|NULL
-)paren
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|ptrace
-c_func
-(paren
-id|op
-comma
-id|pid
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;userspace - PTRACE_%s failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
-comma
-id|local_using_sysemu
-ques
-c_cond
-l_string|&quot;SYSEMU&quot;
-suffix:colon
-l_string|&quot;SYSCALL&quot;
-comma
-id|errno
-)paren
 suffix:semicolon
 )brace
 )brace

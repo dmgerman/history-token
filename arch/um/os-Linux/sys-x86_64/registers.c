@@ -1,8 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2004 PathScale, Inc&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &quot;sysdep/ptrace.h&quot;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;skas_ptregs.h&quot;
 macro_line|#include &quot;registers.h&quot;

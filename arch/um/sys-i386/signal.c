@@ -7,8 +7,8 @@ macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
-macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
+macro_line|#include &quot;registers.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef CONFIG_MODE_SKAS
 macro_line|#include &quot;skas.h&quot;
@@ -230,7 +230,7 @@ id|sc.trapno
 suffix:semicolon
 id|err
 op_assign
-id|ptrace_setfpregs
+id|restore_fp_registers
 c_func
 (paren
 id|userspace_pid
@@ -460,7 +460,7 @@ id|regs-&gt;regs.skas.trap_type
 suffix:semicolon
 id|err
 op_assign
-id|ptrace_getfpregs
+id|save_fp_registers
 c_func
 (paren
 id|userspace_pid
@@ -557,6 +557,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_MODE_TT
+multiline_comment|/* These copy a sigcontext to/from userspace.  They copy the fpstate pointer,&n; * blowing away the old, good one.  So, that value is saved, and then restored&n; * after the sigcontext copy.  In copy_from, the variable holding the saved&n; * fpstate pointer, and the sigcontext that it should be restored to are both&n; * in the kernel, so we can just restore using an assignment.  In copy_to, the&n; * saved pointer is in the kernel, but the sigcontext is in userspace, so we&n; * copy_to_user it.&n; */
 DECL|function|copy_sc_from_user_tt
 r_int
 id|copy_sc_from_user_tt
@@ -623,6 +624,10 @@ id|to-&gt;oldmask
 op_assign
 id|sigs
 suffix:semicolon
+id|to-&gt;fpstate
+op_assign
+id|to_fp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -631,23 +636,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|err
-op_or_assign
-id|copy_from_user
-c_func
-(paren
-op_amp
-id|to-&gt;fpstate
-comma
-op_amp
-id|to_fp
-comma
-r_sizeof
-(paren
-id|to-&gt;fpstate
-)paren
-)paren
-suffix:semicolon
 id|err
 op_or_assign
 id|copy_from_user
@@ -1774,7 +1762,6 @@ id|regs
 (brace
 r_int
 r_int
-id|__user
 id|sp
 op_assign
 id|PT_REGS_SP

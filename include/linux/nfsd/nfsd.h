@@ -430,6 +430,10 @@ r_struct
 id|svc_fh
 op_star
 comma
+r_struct
+id|file
+op_star
+comma
 id|loff_t
 comma
 r_struct
@@ -453,6 +457,10 @@ op_star
 comma
 r_struct
 id|svc_fh
+op_star
+comma
+r_struct
+id|file
 op_star
 comma
 id|loff_t
@@ -701,7 +709,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* &n; * NFSv4 State&n; */
 macro_line|#ifdef CONFIG_NFSD_V4
-r_void
+r_int
 id|nfs4_state_init
 c_func
 (paren
@@ -732,9 +740,21 @@ id|leasetime
 suffix:semicolon
 macro_line|#else
 DECL|function|nfs4_state_init
-r_void
+r_int
 r_static
 r_inline
+(def_block
+id|nfs4_state_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)def_block
 DECL|function|nfs4_state_shutdown
 r_void
 r_static
@@ -894,6 +914,8 @@ DECL|macro|nfserr_reclaim_bad
 mdefine_line|#define&t;nfserr_reclaim_bad&t;__constant_htonl(NFSERR_RECLAIM_BAD)
 DECL|macro|nfserr_badname
 mdefine_line|#define&t;nfserr_badname&t;&t;__constant_htonl(NFSERR_BADNAME)
+DECL|macro|nfserr_cb_path_down
+mdefine_line|#define&t;nfserr_cb_path_down&t;__constant_htonl(NFSERR_CB_PATH_DOWN)
 multiline_comment|/* error codes for internal use */
 multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -461,6 +462,19 @@ l_int|1
 )braket
 op_and_assign
 id|endmask
+suffix:semicolon
+multiline_comment|/* Update current mems_allowed */
+id|cpuset_update_current_mems_allowed
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Ignore nodes not set in current-&gt;mems_allowed */
+id|cpuset_restrict_to_mems_allowed
+c_func
+(paren
+id|nodes
+)paren
 suffix:semicolon
 r_return
 id|mpol_check_policy
@@ -3187,12 +3201,22 @@ r_case
 id|MPOL_BIND
 suffix:colon
 multiline_comment|/* Lower zones don&squot;t get a policy applied */
+multiline_comment|/* Careful: current-&gt;mems_allowed might have moved */
 r_if
 c_cond
 (paren
 id|gfp
 op_ge
 id|policy_zone
+)paren
+r_if
+c_cond
+(paren
+id|cpuset_zonelist_valid_mems_allowed
+c_func
+(paren
+id|policy-&gt;v.zonelist
+)paren
 )paren
 r_return
 id|policy-&gt;v.zonelist
@@ -3572,6 +3596,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
+id|cpuset_update_current_mems_allowed
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3703,6 +3732,20 @@ op_star
 id|pol
 op_assign
 id|current-&gt;mempolicy
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+id|cpuset_update_current_mems_allowed
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

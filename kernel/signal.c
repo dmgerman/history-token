@@ -1218,6 +1218,12 @@ c_func
 id|sig
 )paren
 suffix:semicolon
+id|exit_thread_group_keys
+c_func
+(paren
+id|sig
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren

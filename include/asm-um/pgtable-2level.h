@@ -13,8 +13,6 @@ mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 multiline_comment|/*&n; * entries per page directory level: the i386 is two-level, so&n; * we don&squot;t really have any PMD directory physically.&n; */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;1024
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;1
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD ((TASK_SIZE + (PGDIR_SIZE - 1)) / PGDIR_SIZE)
 DECL|macro|PTRS_PER_PGD
