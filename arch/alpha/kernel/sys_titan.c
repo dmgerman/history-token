@@ -557,8 +557,7 @@ r_int
 r_int
 id|irq
 comma
-r_int
-r_int
+id|cpumask_t
 id|affinity
 )paren
 (brace
@@ -583,12 +582,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|affinity
-op_amp
+id|cpu_isset
+c_func
 (paren
-l_int|1UL
-op_lshift
 id|cpu
+comma
+id|affinity
 )paren
 )paren
 id|titan_cpu_irq_affinity
@@ -625,8 +624,7 @@ r_int
 r_int
 id|irq
 comma
-r_int
-r_int
+id|cpumask_t
 id|affinity
 )paren
 (brace
