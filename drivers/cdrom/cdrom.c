@@ -1045,15 +1045,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;cdrom: %s: unknown mrw mode page&bslash;n&quot;
-comma
-id|cdi-&gt;name
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
