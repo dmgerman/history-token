@@ -6486,6 +6486,18 @@ macro_line|#ifdef NETIF_F_TSO
 r_int
 r_int
 id|mss
+suffix:semicolon
+macro_line|#endif
+r_int
+r_int
+id|nr_frags
+suffix:semicolon
+r_int
+r_int
+id|f
+suffix:semicolon
+macro_line|#ifdef NETIF_F_TSO
+id|mss
 op_assign
 id|skb_shinfo
 c_func
@@ -6501,7 +6513,6 @@ c_cond
 (paren
 id|mss
 )paren
-(brace
 id|max_per_txd
 op_assign
 id|min
@@ -6514,10 +6525,7 @@ comma
 id|max_per_txd
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
-r_int
-r_int
 id|nr_frags
 op_assign
 id|skb_shinfo
@@ -6527,10 +6535,6 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|nr_frags
-suffix:semicolon
-r_int
-r_int
-id|f
 suffix:semicolon
 id|len
 op_sub_assign
