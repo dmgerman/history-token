@@ -2646,7 +2646,7 @@ r_return
 id|bh_backup
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
+multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol.  Return TRUE on success and FALSE on error.&n; */
 DECL|function|parse_ntfs_boot_sector
 r_static
 id|BOOL
@@ -2837,7 +2837,7 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Sector sizes above the cluster size are &quot;
-l_string|&quot;not supported. Sorry.&quot;
+l_string|&quot;not supported.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2858,7 +2858,7 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Cluster sizes smaller than the device &quot;
-l_string|&quot;sector size are not supported. Sorry.&quot;
+l_string|&quot;sector size are not supported.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2953,6 +2953,37 @@ comma
 id|vol-&gt;mft_record_size_bits
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We cannot support mft record sizes above the PAGE_CACHE_SIZE since&n;&t; * we store $MFT/$DATA, the table of mft records in the page cache.&n;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_record_size
+OG
+id|PAGE_CACHE_SIZE
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Mft record size %i (0x%x) exceeds the &quot;
+l_string|&quot;page cache size on your system %lu (0x%lx).  &quot;
+l_string|&quot;This is not supported.  Sorry.&quot;
+comma
+id|vol-&gt;mft_record_size
+comma
+id|vol-&gt;mft_record_size
+comma
+id|PAGE_CACHE_SIZE
+comma
+id|PAGE_CACHE_SIZE
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
 id|clusters_per_index_record
 op_assign
 id|b-&gt;clusters_per_index_record
@@ -3070,7 +3101,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Cannot handle 64-bit clusters. Sorry.&quot;
+l_string|&quot;Cannot handle 64-bit clusters.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3128,8 +3159,8 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Volume size (%lluTiB) is too &quot;
-l_string|&quot;large for this architecture. Maximum &quot;
-l_string|&quot;supported is 2TiB. Sorry.&quot;
+l_string|&quot;large for this architecture.  &quot;
+l_string|&quot;Maximum supported is 2TiB.  Sorry.&quot;
 comma
 (paren
 r_int
@@ -3171,7 +3202,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;MFT LCN is beyond end of volume. Weird.&quot;
+l_string|&quot;MFT LCN is beyond end of volume.  Weird.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3215,7 +3246,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;MFTMirr LCN is beyond end of volume. &quot;
+l_string|&quot;MFTMirr LCN is beyond end of volume.  &quot;
 l_string|&quot;Weird.&quot;
 )paren
 suffix:semicolon
