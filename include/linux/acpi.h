@@ -263,6 +263,33 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Fixed ACPI Description Table (FADT) */
+DECL|struct|acpi_table_fadt
+r_struct
+id|acpi_table_fadt
+(brace
+DECL|member|header
+r_struct
+id|acpi_table_header
+id|header
+suffix:semicolon
+DECL|member|facs_addr
+id|u32
+id|facs_addr
+suffix:semicolon
+DECL|member|dsdt_addr
+id|u32
+id|dsdt_addr
+suffix:semicolon
+multiline_comment|/* ... */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Multiple APIC Description Table (MADT) */
 DECL|struct|acpi_table_madt
 r_struct
@@ -1034,8 +1061,8 @@ comma
 DECL|enumerator|ACPI_ETDT
 id|ACPI_ETDT
 comma
-DECL|enumerator|ACPI_FACP
-id|ACPI_FACP
+DECL|enumerator|ACPI_FADT
+id|ACPI_FADT
 comma
 DECL|enumerator|ACPI_FACS
 id|ACPI_FACS
@@ -1156,6 +1183,20 @@ id|id
 comma
 id|acpi_table_handler
 id|handler
+)paren
+suffix:semicolon
+r_int
+id|acpi_get_table_header_early
+(paren
+r_enum
+id|acpi_table_id
+id|id
+comma
+r_struct
+id|acpi_table_header
+op_star
+op_star
+id|header
 )paren
 suffix:semicolon
 r_int
@@ -1332,6 +1373,13 @@ macro_line|#endif /*CONFIG_ACPI_PCI*/
 macro_line|#ifdef CONFIG_ACPI
 r_int
 id|acpi_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|acpi_blacklisted
 c_func
 (paren
 r_void

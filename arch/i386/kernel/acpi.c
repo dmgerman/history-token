@@ -20,6 +20,10 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+r_extern
+r_int
+id|acpi_disabled
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
 r_enum
@@ -805,6 +809,36 @@ id|result
 )paren
 r_return
 id|result
+suffix:semicolon
+id|result
+op_assign
+id|acpi_blacklisted
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+id|PREFIX
+l_string|&quot;BIOS passes blacklist&bslash;n&quot;
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
