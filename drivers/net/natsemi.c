@@ -3525,7 +3525,7 @@ id|NATSEMI_HW_TIMEOUT
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARN
 l_string|&quot;%s: reset did not complete in %d usec.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3805,7 +3805,7 @@ id|NATSEMI_HW_TIMEOUT
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARN
 l_string|&quot;%s: EEPROM did not reload in %d usec.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3937,7 +3937,7 @@ id|NATSEMI_HW_TIMEOUT
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARN
 l_string|&quot;%s: Tx/Rx process did not stop in %d usec.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5900,7 +5900,7 @@ id|np
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARN
 l_string|&quot;%s: going OOM.&bslash;n&quot;
 comma
 id|dev-&gt;name
