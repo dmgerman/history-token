@@ -978,7 +978,7 @@ id|pdev
 suffix:semicolon
 id|agp_bridge-&gt;type
 op_assign
-id|VIA_APOLLO_KT400_3
+id|VIA_GENERIC
 suffix:semicolon
 id|agp_bridge-&gt;masks
 op_assign
@@ -1369,11 +1369,6 @@ op_assign
 id|PCI_DEVICE_ID_VIA_82C597_0
 comma
 dot
-id|chipset
-op_assign
-id|VIA_VP3
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;VP3&quot;
@@ -1385,11 +1380,6 @@ dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_82C598_0
-comma
-dot
-id|chipset
-op_assign
-id|VIA_MVP3
 comma
 dot
 id|chipset_name
@@ -1405,11 +1395,6 @@ op_assign
 id|PCI_DEVICE_ID_VIA_8501_0
 comma
 dot
-id|chipset
-op_assign
-id|VIA_MVP4
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;MVP4&quot;
@@ -1417,18 +1402,13 @@ comma
 )brace
 comma
 multiline_comment|/* VT8601 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8601_0,&t;// 0x0601&n;&t;&t;.chipset&t;= ,&n;&t;&t;.chipset_name&t;= &quot;PLE133 ProMedia&quot;,&n;&t;},*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8601_0,&t;// 0x0601&n;&t;&t;.chipset_name&t;= &quot;PLE133 ProMedia&quot;,&n;&t;},*/
 multiline_comment|/* VT82C693A / VT28C694T */
 (brace
 dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_82C691
-comma
-dot
-id|chipset
-op_assign
-id|VIA_APOLLO_PRO
 comma
 dot
 id|chipset_name
@@ -1442,11 +1422,6 @@ dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8371_0
-comma
-dot
-id|chipset
-op_assign
-id|VIA_APOLLO_KX133
 comma
 dot
 id|chipset_name
@@ -1463,11 +1438,6 @@ op_assign
 id|PCI_DEVICE_ID_VIA_8633_0
 comma
 dot
-id|chipset
-op_assign
-id|VIA_APOLLO_PRO_266
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;Apollo Pro 266&quot;
@@ -1475,18 +1445,13 @@ comma
 )brace
 comma
 multiline_comment|/* VT8361 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8361,&t;// 0x3112&n;&t;&t;.chipset&t;= ?,&n;&t;&t;.chipset_name&t;= &quot;Apollo KLE133&quot;,&n;&t;}, */
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8361,&t;// 0x3112&n;&t;&t;.chipset_name&t;= &quot;Apollo KLE133&quot;,&n;&t;}, */
 multiline_comment|/* VT8365 / VT8362 */
 (brace
 dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8363_0
-comma
-dot
-id|chipset
-op_assign
-id|VIA_APOLLO_KT133
 comma
 dot
 id|chipset_name
@@ -1496,18 +1461,13 @@ comma
 )brace
 comma
 multiline_comment|/* VT8753A */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8753_0,&t;// 0x3128&n;&t;&t;.chipset&t;= VIA_P4X266,&n;&t;&t;.chipset_name&t;= &quot;P4X266&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8753_0,&t;// 0x3128&n;&t;&t;.chipset_name&t;= &quot;P4X266&quot;,&n;&t;},&t;*/
 multiline_comment|/* VT8366 */
 (brace
 dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8367_0
-comma
-dot
-id|chipset
-op_assign
-id|VIA_APOLLO_KT133
 comma
 dot
 id|chipset_name
@@ -1524,11 +1484,6 @@ op_assign
 id|PCI_DEVICE_ID_VIA_8653_0
 comma
 dot
-id|chipset
-op_assign
-id|VIA_APOLLO_PRO
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;Apollo Pro 266T&quot;
@@ -1536,19 +1491,14 @@ comma
 )brace
 comma
 multiline_comment|/* KM266 / PM266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM266,&t;// 0x3116&n;&t;&t;.chipset&t;= VIA_KM266,&n;&t;&t;.chipset_name&t;= &quot;KM266/PM266&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM266,&t;// 0x3116&n;&t;&t;.chipset_name&t;= &quot;KM266/PM266&quot;,&n;&t;},&t;*/
 multiline_comment|/* CLE266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_CLE266,&t;// 0x3123&n;&t;&t;.chipset&t;= VIA_CLE266,&n;&t;&t;.chipset_name&t;= &quot;CLE266&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_CLE266,&t;// 0x3123&n;&t;&t;.chipset_name&t;= &quot;CLE266&quot;,&n;&t;},&t;*/
 (brace
 dot
 id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8377_0
-comma
-dot
-id|chipset
-op_assign
-id|VIA_APOLLO_KT400
 comma
 dot
 id|chipset_name
@@ -1570,20 +1520,15 @@ op_assign
 id|PCI_DEVICE_ID_VIA_82C694X_0
 comma
 dot
-id|chipset
-op_assign
-id|VIA_VT8605
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;Apollo ProSavage PM133/PL133/PN133/Twister&quot;
 )brace
 comma
 multiline_comment|/* VT8752*/
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8752,&t;// 0x3148&n;&t;&t;.chipset&t;= VIA_P4M266,&n;&t;&t;.chipset_name&t;= &quot;ProSavage DDR P4M266&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8752,&t;// 0x3148&n;&t;&t;.chipset_name&t;= &quot;ProSavage DDR P4M266&quot;,&n;&t;},&t;*/
 multiline_comment|/* KN266/PN266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_KN266,&t;// 0x3156&n;&t;&t;.chipset&t;= VIA_KN266,&n;&t;&t;.chipset_name&t;= &quot;KN266/PN266&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_KN266,&t;// 0x3156&n;&t;&t;.chipset_name&t;= &quot;KN266/PN266&quot;,&n;&t;},&t;*/
 multiline_comment|/* VT8754 */
 (brace
 dot
@@ -1592,24 +1537,19 @@ op_assign
 id|PCI_DEVICE_ID_VIA_8754
 comma
 dot
-id|chipset
-op_assign
-id|VIA_P4X
-comma
-dot
 id|chipset_name
 op_assign
 l_string|&quot;Apollo P4X333/P4X400&quot;
 )brace
 comma
 multiline_comment|/* P4N333 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4N333,&t;// 0x3178&n;&t;&t;.chipset&t;= VIA_P4N,&n;&t;&t;.chipset_name&t;= &quot;P4N333&quot;,&n;&t;}, */
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4N333,&t;// 0x3178&n;&t;&t;.chipset_name&t;= &quot;P4N333&quot;,&n;&t;}, */
 multiline_comment|/* P4X600 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4X600,&t;// 0x0198&n;&t;&t;.chipset&t;= VIA_P4X600,&n;&t;&t;.chipset_name&t;= &quot;P4X600&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4X600,&t;// 0x0198&n;&t;&t;.chipset_name&t;= &quot;P4X600&quot;,&n;&t;},&t;*/
 multiline_comment|/* KM400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM400,&t;// 0x3205&n;&t;&t;.chipset&t;= VIA_KM400,&n;&t;&t;.chipset_name&t;= &quot;KM400&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM400,&t;// 0x3205&n;&t;&t;.chipset_name&t;= &quot;KM400&quot;,&n;&t;},&t;*/
 multiline_comment|/* P4M400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4M400,&t;// 0x3209&n;&t;&t;.chipset&t;= VIA_P4M400,&n;&t;&t;.chipset_name&t;= &quot;PM400&quot;,&n;&t;},&t;*/
+multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4M400,&t;// 0x3209&n;&t;&t;.chipset_name&t;= &quot;PM400&quot;,&n;&t;},&t;*/
 (brace
 )brace
 comma
@@ -1685,12 +1625,7 @@ id|chipset_name
 suffix:semicolon
 id|agp_bridge-&gt;type
 op_assign
-id|devs
-(braket
-id|j
-)braket
-dot
-id|chipset
+id|VIA_GENERIC
 suffix:semicolon
 r_if
 c_cond
