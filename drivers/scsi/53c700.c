@@ -7862,11 +7862,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
-r_struct
 id|NCR_700_Host_Parameters
 op_star
 id|hostdata
