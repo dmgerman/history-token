@@ -90,10 +90,6 @@ id|__nosave_end
 suffix:semicolon
 r_extern
 r_int
-id|console_loglevel
-suffix:semicolon
-r_extern
-r_int
 id|is_head_of_free_region
 c_func
 (paren

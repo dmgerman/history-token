@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/kernel/printk.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; * Modified to make sys_syslog() more flexible: added commands to&n; * return the last 4k of kernel messages, regardless of whether&n; * they&squot;ve been read or not.  Added option to suppress kernel printk&squot;s&n; * to the console.  Added hook for sending the console messages&n; * elsewhere, in preparation for a serial line console (someday).&n; * Ted Ts&squot;o, 2/11/93.&n; * Modified for sysctl support, 1/8/97, Chris Horn.&n; * Fixed SMP synchronization, 08/08/99, Manfred Spraul &n; *     manfreds@colorfullife.com&n; * Rewrote bits to get rid of console_lock&n; *&t;01Mar01 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
@@ -44,30 +45,27 @@ c_func
 id|log_wait
 )paren
 suffix:semicolon
-multiline_comment|/* Keep together for sysctl support */
-DECL|variable|console_loglevel
+DECL|variable|console_printk
 r_int
-id|console_loglevel
+id|console_printk
+(braket
+l_int|4
+)braket
 op_assign
+(brace
 id|DEFAULT_CONSOLE_LOGLEVEL
-suffix:semicolon
-DECL|variable|default_message_loglevel
-r_int
-id|default_message_loglevel
-op_assign
+comma
+multiline_comment|/* console_loglevel */
 id|DEFAULT_MESSAGE_LOGLEVEL
-suffix:semicolon
-DECL|variable|minimum_console_loglevel
-r_int
-id|minimum_console_loglevel
-op_assign
+comma
+multiline_comment|/* default_message_loglevel */
 id|MINIMUM_CONSOLE_LOGLEVEL
-suffix:semicolon
-DECL|variable|default_console_loglevel
-r_int
-id|default_console_loglevel
-op_assign
+comma
+multiline_comment|/* minimum_console_loglevel */
 id|DEFAULT_CONSOLE_LOGLEVEL
+comma
+multiline_comment|/* default_console_loglevel */
+)brace
 suffix:semicolon
 DECL|variable|oops_in_progress
 r_int

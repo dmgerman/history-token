@@ -42,11 +42,16 @@ r_int
 id|preempt_count
 suffix:semicolon
 multiline_comment|/* 0 =&gt; preemptable */
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -107,6 +112,8 @@ DECL|macro|TIF_SIGPENDING
 mdefine_line|#define TIF_SIGPENDING&t;&t;2&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
+DECL|macro|TIF_RESTART_SVC
+mdefine_line|#define TIF_RESTART_SVC&t;&t;4&t;/* restart svc with new svc number */
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
@@ -119,6 +126,8 @@ DECL|macro|_TIF_SIGPENDING
 mdefine_line|#define _TIF_SIGPENDING&t;&t;(1&lt;&lt;TIF_SIGPENDING)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
+DECL|macro|_TIF_RESTART_SVC
+mdefine_line|#define _TIF_RESTART_SVC&t;(1&lt;&lt;TIF_RESTART_SVC)
 DECL|macro|_TIF_USEDFPU
 mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG

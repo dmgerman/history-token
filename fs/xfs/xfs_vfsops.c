@@ -1317,7 +1317,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_mount&n; *&n; * The file system configurations are:&n; *&t;(1) device (partition) with data and internal log&n; *&t;(2) logical volume with data and log subvolumes.&n; *&t;(3) logical volume with data, log, and realtime subvolumes.&n; *&n; * The Linux VFS took care of finding and opening the data volume for&n; * us.  We have to handle the other two (if present) here.&n; */
+multiline_comment|/*&n; * xfs_mount&n; *&n; * The file system configurations are:&n; *&t;(1) device (partition) with data and internal log&n; *&t;(2) logical volume with data and log subvolumes.&n; *&t;(3) logical volume with data, log, and realtime subvolumes.&n; *&n; * We only have to handle opening the log and realtime volumes here if&n; * they are present.  The data subvolume has already been opened by&n; * get_sb_bdev() and is stored in vfsp-&gt;vfs_super-&gt;s_bdev.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_mount
@@ -1379,6 +1379,14 @@ id|rtdev
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t; * Allocate VFS private data (xfs mount structure).&n;&t; */
+id|mp
+op_assign
+id|xfs_mount_init
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Open real time and log devices - order is important.&n;&t; */
 r_if
 c_cond
@@ -1394,6 +1402,8 @@ op_assign
 id|xfs_blkdev_get
 c_func
 (paren
+id|mp
+comma
 id|args-&gt;logname
 comma
 op_amp
@@ -1405,8 +1415,8 @@ c_cond
 (paren
 id|error
 )paren
-r_return
-id|error
+r_goto
+id|free_mp
 suffix:semicolon
 )brace
 r_if
@@ -1423,6 +1433,8 @@ op_assign
 id|xfs_blkdev_get
 c_func
 (paren
+id|mp
+comma
 id|args-&gt;rtname
 comma
 op_amp
@@ -1441,8 +1453,8 @@ c_func
 id|logdev
 )paren
 suffix:semicolon
-r_return
-id|error
+r_goto
+id|free_mp
 suffix:semicolon
 )brace
 r_if
@@ -1477,19 +1489,15 @@ c_func
 id|rtdev
 )paren
 suffix:semicolon
-r_return
+id|error
+op_assign
 id|EINVAL
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * Allocate VFS private data (xfs mount structure).&n;&t; */
-id|mp
-op_assign
-id|xfs_mount_init
-c_func
-(paren
-)paren
+r_goto
+id|free_mp
 suffix:semicolon
+)brace
+)brace
 id|vfs_insertbhv
 c_func
 (paren
@@ -1667,7 +1675,7 @@ id|rtdev
 id|xfs_size_buftarg
 c_func
 (paren
-id|mp-&gt;m_logdev_targp
+id|mp-&gt;m_rtdev_targp
 comma
 id|mp-&gt;m_sb.sb_blocksize
 comma
@@ -1749,6 +1757,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|free_mp
+suffix:colon
 id|xfs_mount_free
 c_func
 (paren

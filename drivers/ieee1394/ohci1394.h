@@ -165,6 +165,12 @@ id|dma_addr_t
 op_star
 id|prg_bus
 suffix:semicolon
+DECL|member|prg_pool
+r_struct
+id|pci_pool
+op_star
+id|prg_pool
+suffix:semicolon
 multiline_comment|/* dma buffers */
 DECL|member|buf_cpu
 id|quadlet_t
@@ -252,6 +258,12 @@ DECL|member|prg_bus
 id|dma_addr_t
 op_star
 id|prg_bus
+suffix:semicolon
+DECL|member|prg_pool
+r_struct
+id|pci_pool
+op_star
+id|prg_pool
 suffix:semicolon
 DECL|member|prg_ind
 r_int
@@ -746,6 +758,12 @@ DECL|macro|OHCI1394_IsoRecvIntMaskSet
 mdefine_line|#define OHCI1394_IsoRecvIntMaskSet            0x0A8
 DECL|macro|OHCI1394_IsoRecvIntMaskClear
 mdefine_line|#define OHCI1394_IsoRecvIntMaskClear          0x0AC
+DECL|macro|OHCI1394_InitialBandwidthAvailable
+mdefine_line|#define OHCI1394_InitialBandwidthAvailable    0x0B0
+DECL|macro|OHCI1394_InitialChannelsAvailableHi
+mdefine_line|#define OHCI1394_InitialChannelsAvailableHi   0x0B4
+DECL|macro|OHCI1394_InitialChannelsAvailableLo
+mdefine_line|#define OHCI1394_InitialChannelsAvailableLo   0x0B8
 DECL|macro|OHCI1394_FairnessControl
 mdefine_line|#define OHCI1394_FairnessControl              0x0DC
 DECL|macro|OHCI1394_LinkControlSet

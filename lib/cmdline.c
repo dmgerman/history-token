@@ -91,7 +91,9 @@ DECL|function|get_options
 r_char
 op_star
 id|get_options
+c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -123,6 +125,11 @@ id|res
 op_assign
 id|get_option
 (paren
+(paren
+r_char
+op_star
+op_star
+)paren
 op_amp
 id|str
 comma
@@ -164,8 +171,10 @@ l_int|1
 suffix:semicolon
 r_return
 (paren
-id|str
+r_char
+op_star
 )paren
+id|str
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;memparse - parse a string with mem suffixes into a number&n; *&t;@ptr: Where parse begins&n; *&t;@retptr: (output) Pointer to next char after parse completes&n; *&n; *&t;Parses a string into a number.  The number stored at @ptr is&n; *&t;potentially suffixed with %K (for kilobytes, or 1024 bytes),&n; *&t;%M (for megabytes, or 1048576 bytes), or %G (for gigabytes, or&n; *&t;1073741824).  If the number is suffixed with K, M, or G, then&n; *&t;the return value is the number multiplied by one kilobyte, one&n; *&t;megabyte, or one gigabyte, respectively.&n; */

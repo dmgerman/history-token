@@ -417,6 +417,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|error
+op_assign
 id|devclass_register
 c_func
 (paren
@@ -425,6 +428,11 @@ id|node_devclass
 )paren
 suffix:semicolon
 r_return
+id|error
+ques
+c_cond
+id|error
+suffix:colon
 id|driver_register
 c_func
 (paren

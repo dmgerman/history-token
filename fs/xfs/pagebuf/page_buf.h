@@ -301,16 +301,6 @@ l_int|19
 )paren
 comma
 multiline_comment|/* page_buf_t may be locked&t;&t;   */
-DECL|enumerator|_PBF_PRIVATE_BH
-id|_PBF_PRIVATE_BH
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|20
-)paren
-comma
-multiline_comment|/* do not use public buffer heads&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
@@ -520,6 +510,28 @@ r_typedef
 r_struct
 id|page_buf_s
 (brace
+DECL|member|pb_sema
+r_struct
+id|semaphore
+id|pb_sema
+suffix:semicolon
+multiline_comment|/* semaphore for lockables  */
+DECL|member|pb_flushtime
+r_int
+r_int
+id|pb_flushtime
+suffix:semicolon
+multiline_comment|/* time to flush pagebuf    */
+DECL|member|pb_pin_count
+id|atomic_t
+id|pb_pin_count
+suffix:semicolon
+multiline_comment|/* pin count&t;&t;    */
+DECL|member|pb_waiters
+id|wait_queue_head_t
+id|pb_waiters
+suffix:semicolon
+multiline_comment|/* unpin waiters&t;    */
 DECL|member|pb_list
 r_struct
 id|list_head
@@ -667,6 +679,12 @@ id|PB_PAGES
 )braket
 suffix:semicolon
 multiline_comment|/* inline pages */
+macro_line|#ifdef PAGEBUF_LOCK_TRACKING
+DECL|member|pb_last_holder
+r_int
+id|pb_last_holder
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|page_buf_t
 )brace
 id|page_buf_t
@@ -719,31 +737,6 @@ id|page_buf_flags_t
 suffix:semicolon
 multiline_comment|/* PBF_LOCK, PBF_READ,&t;&t;*/
 multiline_comment|/* PBF_ASYNC&t;&t;&t;*/
-r_extern
-id|page_buf_t
-op_star
-id|pagebuf_lookup
-c_func
-(paren
-r_struct
-id|pb_target
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-id|loff_t
-comma
-multiline_comment|/* starting offset of range&t;*/
-r_int
-comma
-multiline_comment|/* length of range&t;&t;*/
-id|page_buf_flags_t
-)paren
-suffix:semicolon
-multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
-multiline_comment|/* PBF_FORCEIO, _PBF_LOCKABLE&t;*/
 r_extern
 id|page_buf_t
 op_star
@@ -1003,7 +996,7 @@ id|page_buf_t
 op_star
 comma
 multiline_comment|/* buffer to manipulate&t;&t;*/
-id|off_t
+r_int
 comma
 multiline_comment|/* starting buffer offset&t;*/
 r_int

@@ -6822,8 +6822,9 @@ id|net_device
 id|dev_82596
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|i82596_probe
 )brace
 suffix:semicolon

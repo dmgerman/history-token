@@ -577,6 +577,20 @@ c_func
 id|xdr_shift_buf
 )paren
 suffix:semicolon
+DECL|variable|xdr_write_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_write_pages
+)paren
+suffix:semicolon
+DECL|variable|xdr_read_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_read_pages
+)paren
+suffix:semicolon
 multiline_comment|/* Debugging symbols */
 macro_line|#ifdef RPC_DEBUG
 DECL|variable|rpc_debug

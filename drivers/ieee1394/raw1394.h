@@ -50,13 +50,15 @@ DECL|macro|RAW1394_REQ_PHYPACKET
 mdefine_line|#define RAW1394_REQ_PHYPACKET       500
 multiline_comment|/* kernel to user */
 DECL|macro|RAW1394_REQ_BUS_RESET
-mdefine_line|#define RAW1394_REQ_BUS_RESET     10000
+mdefine_line|#define RAW1394_REQ_BUS_RESET        10000
 DECL|macro|RAW1394_REQ_ISO_RECEIVE
-mdefine_line|#define RAW1394_REQ_ISO_RECEIVE   10001
+mdefine_line|#define RAW1394_REQ_ISO_RECEIVE      10001
 DECL|macro|RAW1394_REQ_FCP_REQUEST
-mdefine_line|#define RAW1394_REQ_FCP_REQUEST   10002
+mdefine_line|#define RAW1394_REQ_FCP_REQUEST      10002
 DECL|macro|RAW1394_REQ_ARM
-mdefine_line|#define RAW1394_REQ_ARM           10003
+mdefine_line|#define RAW1394_REQ_ARM              10003
+DECL|macro|RAW1394_REQ_RAWISO_ACTIVITY
+mdefine_line|#define RAW1394_REQ_RAWISO_ACTIVITY  10004
 multiline_comment|/* error codes */
 DECL|macro|RAW1394_ERROR_NONE
 mdefine_line|#define RAW1394_ERROR_NONE        0
@@ -250,6 +252,133 @@ DECL|typedef|arm_request_response_t
 op_star
 id|arm_request_response_t
 suffix:semicolon
+multiline_comment|/* rawiso API */
+multiline_comment|/* ioctls */
+DECL|macro|RAW1394_ISO_XMIT_INIT
+mdefine_line|#define RAW1394_ISO_XMIT_INIT        1  /* arg: raw1394_iso_status* */
+DECL|macro|RAW1394_ISO_RECV_INIT
+mdefine_line|#define RAW1394_ISO_RECV_INIT        2  /* arg: raw1394_iso_status* */
+DECL|macro|RAW1394_ISO_RECV_START
+mdefine_line|#define RAW1394_ISO_RECV_START       3  /* arg: int, starting cycle */
+DECL|macro|RAW1394_ISO_XMIT_START
+mdefine_line|#define RAW1394_ISO_XMIT_START       8  /* arg: int[2], { starting cycle, prebuffer } */
+DECL|macro|RAW1394_ISO_STOP
+mdefine_line|#define RAW1394_ISO_STOP             4
+DECL|macro|RAW1394_ISO_GET_STATUS
+mdefine_line|#define RAW1394_ISO_GET_STATUS       5  /* arg: raw1394_iso_status* */
+DECL|macro|RAW1394_ISO_PRODUCE_CONSUME
+mdefine_line|#define RAW1394_ISO_PRODUCE_CONSUME  6  /* arg: int, # of packets */
+DECL|macro|RAW1394_ISO_SHUTDOWN
+mdefine_line|#define RAW1394_ISO_SHUTDOWN         7
+multiline_comment|/* per-packet metadata embedded in the ringbuffer */
+multiline_comment|/* must be identical to hpsb_iso_packet_info in iso.h! */
+DECL|struct|raw1394_iso_packet_info
+r_struct
+id|raw1394_iso_packet_info
+(brace
+DECL|member|len
+r_int
+r_int
+id|len
+suffix:semicolon
+DECL|member|cycle
+r_int
+r_int
+id|cycle
+suffix:semicolon
+DECL|member|channel
+r_int
+r_char
+id|channel
+suffix:semicolon
+multiline_comment|/* recv only */
+DECL|member|tag
+r_int
+r_char
+id|tag
+suffix:semicolon
+DECL|member|sy
+r_int
+r_char
+id|sy
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|raw1394_iso_config
+r_struct
+id|raw1394_iso_config
+(brace
+DECL|member|buf_packets
+r_int
+r_int
+id|buf_packets
+suffix:semicolon
+DECL|member|max_packet_size
+r_int
+r_int
+id|max_packet_size
+suffix:semicolon
+DECL|member|channel
+r_int
+id|channel
+suffix:semicolon
+DECL|member|speed
+r_int
+id|speed
+suffix:semicolon
+multiline_comment|/* xmit only */
+DECL|member|irq_interval
+r_int
+id|irq_interval
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* argument to RAW1394_ISO_XMIT/RECV_INIT and RAW1394_ISO_GET_STATUS */
+DECL|struct|raw1394_iso_status
+r_struct
+id|raw1394_iso_status
+(brace
+multiline_comment|/* current settings */
+DECL|member|config
+r_struct
+id|raw1394_iso_config
+id|config
+suffix:semicolon
+multiline_comment|/* byte offset between successive packets in the buffer */
+DECL|member|buf_stride
+r_int
+id|buf_stride
+suffix:semicolon
+multiline_comment|/* byte offset of data payload within each packet */
+DECL|member|packet_data_offset
+r_int
+id|packet_data_offset
+suffix:semicolon
+multiline_comment|/* byte offset of struct iso_packet_info within each packet */
+DECL|member|packet_info_offset
+r_int
+id|packet_info_offset
+suffix:semicolon
+multiline_comment|/* index of next packet to fill with data (ISO transmission)&n;&t;   or next packet containing data recieved (ISO reception) */
+DECL|member|first_packet
+r_int
+r_int
+id|first_packet
+suffix:semicolon
+multiline_comment|/* number of packets waiting to be filled with data (ISO transmission)&n;&t;   or containing data received (ISO reception) */
+DECL|member|n_packets
+r_int
+r_int
+id|n_packets
+suffix:semicolon
+multiline_comment|/* approximate number of packets dropped due to overflow or&n;&t;   underflow of the packet buffer (a value of zero guarantees&n;&t;   that no packets have been dropped) */
+DECL|member|overflows
+r_int
+r_int
+id|overflows
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|struct|iso_block_store
 r_struct
@@ -270,6 +399,26 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|raw1394_iso_state
+DECL|enumerator|RAW1394_ISO_INACTIVE
+r_enum
+id|raw1394_iso_state
+(brace
+id|RAW1394_ISO_INACTIVE
+op_assign
+l_int|0
+comma
+DECL|enumerator|RAW1394_ISO_RECV
+id|RAW1394_ISO_RECV
+op_assign
+l_int|1
+comma
+DECL|enumerator|RAW1394_ISO_XMIT
+id|RAW1394_ISO_XMIT
+op_assign
+l_int|2
 )brace
 suffix:semicolon
 DECL|struct|file_info
@@ -339,6 +488,7 @@ id|u8
 op_star
 id|fcp_buffer
 suffix:semicolon
+multiline_comment|/* old ISO API */
 DECL|member|listen_channels
 id|u64
 id|listen_channels
@@ -357,6 +507,18 @@ id|u8
 id|notification
 suffix:semicolon
 multiline_comment|/* (busreset-notification) RAW1394_NOTIFY_OFF/ON */
+multiline_comment|/* new rawiso API */
+DECL|member|iso_state
+r_enum
+id|raw1394_iso_state
+id|iso_state
+suffix:semicolon
+DECL|member|iso_handle
+r_struct
+id|hpsb_iso
+op_star
+id|iso_handle
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|arm_addr
@@ -428,11 +590,6 @@ r_struct
 id|hpsb_packet
 op_star
 id|packet
-suffix:semicolon
-DECL|member|tq
-r_struct
-id|hpsb_queue_struct
-id|tq
 suffix:semicolon
 DECL|member|ibs
 r_struct

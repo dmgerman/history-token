@@ -292,6 +292,7 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Writes the given message to S390 system console&n; */
+r_static
 r_void
 DECL|function|sclp_console_write
 id|sclp_console_write
@@ -538,6 +539,7 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* returns the device number of the SCLP console */
+r_static
 id|kdev_t
 DECL|function|sclp_console_device
 id|sclp_console_device
@@ -560,6 +562,7 @@ id|sclp_console_minor
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine is called from panic when the kernel&n; * is going to give up. We have to make sure that all buffers&n; * will be flushed to the SCLP.&n; */
+r_static
 r_void
 DECL|function|sclp_console_unblank
 id|sclp_console_unblank
@@ -661,6 +664,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * used to register the SCLP console to the kernel and to&n; * give printk necessary information&n; */
 DECL|variable|sclp_console
+r_static
 r_struct
 id|console
 id|sclp_console

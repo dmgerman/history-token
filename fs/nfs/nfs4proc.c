@@ -2679,7 +2679,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 comma
 dot
@@ -5266,7 +5266,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 suffix:semicolon
 id|msg-&gt;rpc_argp
@@ -6958,7 +6958,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 comma
 dot
@@ -7199,7 +7199,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 comma
 dot
@@ -7472,7 +7472,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 comma
 dot
@@ -7711,7 +7711,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
 )braket
 comma
 )brace
