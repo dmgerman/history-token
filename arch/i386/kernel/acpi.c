@@ -1558,17 +1558,16 @@ id|acpi_wakeup_address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * (KG): Since we affect stack here, we make this function as flat and easy&n; * as possible in order to not provoke gcc to use local variables on the stack.&n; * Note that on resume, all (expect nosave) variables will have the state from&n; * the time of writing (suspend_save_image) and the registers (including the&n; * stack pointer, but excluding the instruction pointer) will be loaded with &n; * the values saved at save_processor_context() time.&n; */
-DECL|function|do_suspend_magic
+DECL|function|do_suspend_lowlevel
 r_void
-id|do_suspend_magic
+id|do_suspend_lowlevel
 c_func
 (paren
 r_int
 id|resume
 )paren
 (brace
-multiline_comment|/* DANGER WILL ROBINSON!&n;&t; *&n;&t; * If this function is too difficult for gcc to optimize, it will crash and burn!&n;&t; * see above.&n;&t; *&n;&t; * DO NOT TOUCH.&n;&t; */
+multiline_comment|/*&n; * FIXME: This function should really be written in assembly. Actually&n; * requirement is that it does not touch stack, because %esp will be&n; * wrong during resume before restore_processor_context(). Check&n; * assembly if you modify this.&n; */
 r_if
 c_cond
 (paren
@@ -1606,12 +1605,6 @@ suffix:colon
 id|restore_processor_context
 c_func
 (paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;CPU context restored...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

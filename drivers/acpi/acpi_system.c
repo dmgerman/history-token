@@ -470,7 +470,7 @@ suffix:colon
 r_case
 id|ACPI_STATE_S3
 suffix:colon
-id|do_suspend_magic
+id|do_suspend_lowlevel
 c_func
 (paren
 l_int|0
