@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/4xx/ocotea.c&n; *&n; * Ocotea board specific routines&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2003-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/ocotea.c&n; *&n; * Ocotea board specific routines&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2003-2005 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -410,7 +410,7 @@ c_func
 (paren
 id|PCIX0_REG_BASE
 comma
-id|PCIX0_REG_SIZE
+id|PCIX_REG_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Enable PCIX0 I/O, Mem, and Busmaster cycles */
