@@ -47,7 +47,7 @@ id|AE_NO_ACPI_TABLES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose acpi_events prior. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from occuring&n;&t; * before handers are installed.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose acpi_events prior. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from occurring&n;&t; * before handers are installed.&n;&t; */
 id|status
 op_assign
 id|acpi_ev_fixed_event_initialize

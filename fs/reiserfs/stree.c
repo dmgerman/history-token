@@ -5847,7 +5847,7 @@ comma
 id|n_cut_size
 )paren
 suffix:semicolon
-multiline_comment|/* Repeat this loop until we either cut the item without needing&n;       to balance, or we fix_nodes without schedule occuring */
+multiline_comment|/* Repeat this loop until we either cut the item without needing&n;       to balance, or we fix_nodes without schedule occurring */
 r_while
 c_loop
 (paren

@@ -5112,7 +5112,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via set_termios(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
+multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via set_termios(), which will be occurring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
 id|up-&gt;ier
 op_assign
 id|UART_IER_RLSI

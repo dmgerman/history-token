@@ -13211,7 +13211,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** used to get memory back from async commits that are floating around&n;** and to reclaim any blocks deleted but unusable because their commits&n;** haven&squot;t hit disk yet.  called from bitmap.c&n;**&n;** if it starts flushing things, it ors SCHEDULE_OCCURRED into repeat.&n;** note, this is just if schedule has a chance of occuring.  I need to &n;** change flush_commit_lists to have a repeat parameter too.&n;**&n;*/
+multiline_comment|/*&n;** used to get memory back from async commits that are floating around&n;** and to reclaim any blocks deleted but unusable because their commits&n;** haven&squot;t hit disk yet.  called from bitmap.c&n;**&n;** if it starts flushing things, it ors SCHEDULE_OCCURRED into repeat.&n;** note, this is just if schedule has a chance of occurring.  I need to &n;** change flush_commit_lists to have a repeat parameter too.&n;**&n;*/
 DECL|function|flush_async_commits
 r_void
 id|flush_async_commits

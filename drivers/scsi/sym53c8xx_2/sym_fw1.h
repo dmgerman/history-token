@@ -3904,7 +3904,7 @@ comma
 multiline_comment|/*-------------------------&lt; SEL_FOR_ABORT &gt;--------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t; *  We are jumped here by the C code, if we have &n;&t; *  some target to reset or some disconnected &n;&t; *  job to abort. Since error recovery is a serious &n;&t; *  busyness, we will really reset the SCSI BUS, if &n;&t; *  case of a SCSI interrupt occuring in this path.&n;&t; */
+multiline_comment|/*&n;&t; *  We are jumped here by the C code, if we have &n;&t; *  some target to reset or some disconnected &n;&t; *  job to abort. Since error recovery is a serious &n;&t; *  busyness, we will really reset the SCSI BUS, if &n;&t; *  case of a SCSI interrupt occurring in this path.&n;&t; */
 macro_line|#ifdef SYM_CONF_TARGET_ROLE_SUPPORT
 multiline_comment|/*&n;&t; *  Set initiator mode.&n;&t; */
 id|SCR_CLR

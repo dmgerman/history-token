@@ -2547,7 +2547,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* A restart is occuring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
+multiline_comment|/* A restart is occurring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
 DECL|function|sctp_sf_check_restart_addrs
 r_static
 r_int

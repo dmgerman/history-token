@@ -9419,7 +9419,7 @@ comma
 multiline_comment|/*-----------------------&lt; SEL_FOR_ABORT &gt;------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t;**&t;We are jumped here by the C code, if we have &n;&t;**&t;some target to reset or some disconnected &n;&t;**&t;job to abort. Since error recovery is a serious &n;&t;**&t;busyness, we will really reset the SCSI BUS, if &n;&t;**&t;case of a SCSI interrupt occuring in this path.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;We are jumped here by the C code, if we have &n;&t;**&t;some target to reset or some disconnected &n;&t;**&t;job to abort. Since error recovery is a serious &n;&t;**&t;busyness, we will really reset the SCSI BUS, if &n;&t;**&t;case of a SCSI interrupt occurring in this path.&n;&t;*/
 multiline_comment|/*&n;&t;**&t;Set initiator mode.&n;&t;*/
 id|SCR_CLR
 (paren

@@ -11617,7 +11617,7 @@ l_int|0x7fffffff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure any pending DEC interrupt occuring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
+multiline_comment|/* Make sure any pending DEC interrupt occurring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
 id|mb
 c_func
 (paren
@@ -12230,7 +12230,7 @@ l_int|0x7fffffff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure any pending DEC interrupt occuring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
+multiline_comment|/* Make sure any pending DEC interrupt occurring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
 id|mb
 c_func
 (paren
@@ -12850,7 +12850,7 @@ l_int|0x7fffffff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure any pending DEC interrupt occuring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
+multiline_comment|/* Make sure any pending DEC interrupt occurring while we did&n;&t; * the above didn&squot;t re-enable the DEC */
 id|mb
 c_func
 (paren

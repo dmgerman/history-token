@@ -7194,7 +7194,7 @@ id|tb-&gt;tb_sb
 comma
 l_string|&quot;vs-12335: check_before_balancing: &quot;
 l_string|&quot;suspect that schedule occurred based on cur_tb not being null at this point in code. &quot;
-l_string|&quot;do_balance cannot properly handle schedule occuring while it runs.&quot;
+l_string|&quot;do_balance cannot properly handle schedule occurring while it runs.&quot;
 )paren
 suffix:semicolon
 )brace

@@ -938,7 +938,7 @@ id|iop310_sec_write_config
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * When a PCI device does not exist during config cycles, the 80200 gets&n; * an external abort instead of returning 0xffffffff.  If it was an&n; * imprecise abort, we need to correct the return address to point after&n; * the instruction.  Also note that the Xscale manual says:&n; *&n; *  &quot;if a stall-until-complete LD or ST instruction triggers an&n; *  imprecise fault, then that fault will be seen by the program&n; *  within 3 instructions.&quot;&n; *&n; * This does not appear to be the case.  With 8 NOPs after the load, we&n; * see the imprecise abort occuring on the STM of iop310_sec_pci_status()&n; * which is about 10 instructions away.&n; *&n; * Always trust reality!&n; */
+multiline_comment|/*&n; * When a PCI device does not exist during config cycles, the 80200 gets&n; * an external abort instead of returning 0xffffffff.  If it was an&n; * imprecise abort, we need to correct the return address to point after&n; * the instruction.  Also note that the Xscale manual says:&n; *&n; *  &quot;if a stall-until-complete LD or ST instruction triggers an&n; *  imprecise fault, then that fault will be seen by the program&n; *  within 3 instructions.&quot;&n; *&n; * This does not appear to be the case.  With 8 NOPs after the load, we&n; * see the imprecise abort occurring on the STM of iop310_sec_pci_status()&n; * which is about 10 instructions away.&n; *&n; * Always trust reality!&n; */
 r_static
 r_int
 DECL|function|iop310_pci_abort
