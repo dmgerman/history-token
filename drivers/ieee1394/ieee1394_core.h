@@ -236,16 +236,6 @@ r_int
 id|__opaque
 )paren
 suffix:semicolon
-r_void
-id|abort_requests
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
 r_struct
 id|hpsb_packet
 op_star
@@ -470,6 +460,10 @@ r_return
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_cindex
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|hpsb_disable_irm
+suffix:semicolon
 multiline_comment|/* Our sysfs bus entry */
 r_extern
 r_struct
@@ -480,6 +474,12 @@ r_extern
 r_struct
 r_class
 id|hpsb_host_class
+suffix:semicolon
+r_extern
+r_struct
+id|class_simple
+op_star
+id|hpsb_protocol_class
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_CORE_H */
 eof

@@ -601,6 +601,7 @@ mdefine_line|#define OHCI1394_CONTEXT_DEAD        0x00000800
 DECL|macro|OHCI1394_CONTEXT_ACTIVE
 mdefine_line|#define OHCI1394_CONTEXT_ACTIVE      0x00000400
 DECL|function|ohci1394_start_it_ctx
+r_static
 r_void
 id|ohci1394_start_it_ctx
 c_func
@@ -695,6 +696,7 @@ id|OHCI1394_CONTEXT_RUN
 suffix:semicolon
 )brace
 DECL|function|ohci1394_wake_it_ctx
+r_static
 r_void
 id|ohci1394_wake_it_ctx
 c_func
@@ -724,6 +726,7 @@ id|OHCI1394_CONTEXT_WAKE
 suffix:semicolon
 )brace
 DECL|function|ohci1394_stop_it_ctx
+r_static
 r_void
 id|ohci1394_stop_it_ctx
 c_func
@@ -1649,6 +1652,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|packet_initialize
+r_static
 r_void
 id|packet_initialize
 c_func
@@ -1729,6 +1733,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|packet_list_alloc
+r_static
 r_struct
 id|packet_list
 op_star
@@ -1886,6 +1891,7 @@ id|pl
 suffix:semicolon
 )brace
 DECL|function|packet_list_free
+r_static
 r_void
 id|packet_list_free
 c_func
@@ -3722,6 +3728,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|stream_alloc
+r_static
 r_struct
 id|stream
 op_star
@@ -3970,6 +3977,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|stream_free
+r_static
 r_void
 id|stream_free
 c_func

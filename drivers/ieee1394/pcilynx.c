@@ -1531,6 +1531,12 @@ op_lshift
 l_int|8
 suffix:semicolon
 multiline_comment|/* max speed */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
 id|lsid
 op_or_assign
 (paren
@@ -2208,7 +2214,7 @@ l_int|14
 op_or
 id|packet-&gt;header_size
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -7163,15 +7169,6 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-multiline_comment|/* needed for i2c communication with serial eeprom */
-r_struct
-id|i2c_adapter
-id|i2c_adapter
-suffix:semicolon
-r_struct
-id|i2c_algo_bit_data
-id|i2c_adapter_data
-suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -8034,7 +8031,7 @@ id|PCL_CMD_RCV
 op_or
 l_int|16
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -8588,7 +8585,14 @@ op_logical_neg
 id|lynx-&gt;phyic.reg_1394a
 )paren
 (brace
-multiline_comment|/* attempt to enable contender bit -FIXME- would this work&n;                 * elsewhere? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
+(brace
+multiline_comment|/* attempt to enable contender bit -FIXME- would this&n;&t;&t;&t; * work elsewhere? */
 id|reg_set_bits
 c_func
 (paren
@@ -8612,9 +8616,10 @@ l_int|0x1
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 (brace
-multiline_comment|/* set the contender and LCtrl bit in the extended PHY register&n;                 * set. (Should check that bis 0,1,2 (=0xE0) is set&n;                 * in register 2?)&n;                 */
+multiline_comment|/* set the contender (if appropriate) and LCtrl bit in the&n;&t;&t; * extended PHY register set. (Should check that PHY_02_EXTENDED&n;&t;&t; * is set in register 2?)&n;&t;&t; */
 id|i
 op_assign
 id|get_phy_reg
@@ -8624,6 +8629,25 @@ id|lynx
 comma
 l_int|4
 )paren
+suffix:semicolon
+id|i
+op_or_assign
+id|PHY_04_LCTRL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpsb_disable_irm
+)paren
+id|i
+op_and_assign
+op_logical_neg
+id|PHY_04_CONTENDER
+suffix:semicolon
+r_else
+id|i
+op_or_assign
+id|PHY_04_CONTENDER
 suffix:semicolon
 r_if
 c_cond
@@ -8641,8 +8665,6 @@ comma
 l_int|4
 comma
 id|i
-op_or
-l_int|0xc0
 )paren
 suffix:semicolon
 )brace
@@ -8653,15 +8675,67 @@ op_logical_neg
 id|skip_eeprom
 )paren
 (brace
+multiline_comment|/* needed for i2c communication with serial eeprom */
+r_struct
 id|i2c_adapter
+op_star
+id|i2c_ad
+suffix:semicolon
+r_struct
+id|i2c_algo_bit_data
+id|i2c_adapter_data
+suffix:semicolon
+id|error
 op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|i2c_ad
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|i2c_adapter
+)paren
+comma
+id|SLAB_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i2c_ad
+)paren
+id|FAIL
+c_func
+(paren
+l_string|&quot;failed to allocate I2C adapter memory&quot;
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|i2c_ad
+comma
+op_amp
 id|bit_ops
+comma
+r_sizeof
+(paren
+r_struct
+id|i2c_adapter
+)paren
+)paren
 suffix:semicolon
 id|i2c_adapter_data
 op_assign
 id|bit_data
 suffix:semicolon
-id|i2c_adapter.algo_data
+id|i2c_ad-&gt;algo_data
 op_assign
 op_amp
 id|i2c_adapter_data
@@ -8709,13 +8783,18 @@ c_cond
 id|i2c_bit_add_bus
 c_func
 (paren
-op_amp
-id|i2c_adapter
+id|i2c_ad
 )paren
 OL
 l_int|0
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|i2c_ad
+)paren
+suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -8783,8 +8862,7 @@ c_cond
 id|i2c_smbus_xfer
 c_func
 (paren
-op_amp
-id|i2c_adapter
+id|i2c_ad
 comma
 l_int|80
 comma
@@ -8835,8 +8913,7 @@ c_cond
 id|i2c_smbus_xfer
 c_func
 (paren
-op_amp
-id|i2c_adapter
+id|i2c_ad
 comma
 l_int|80
 comma
@@ -8893,8 +8970,7 @@ c_cond
 id|i2c_transfer
 c_func
 (paren
-op_amp
-id|i2c_adapter
+id|i2c_ad
 comma
 id|msg
 comma
@@ -9014,6 +9090,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|kfree
+c_func
+(paren
+id|i2c_ad
+)paren
+suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -9030,8 +9112,13 @@ suffix:semicolon
 id|i2c_bit_del_bus
 c_func
 (paren
-op_amp
-id|i2c_adapter
+id|i2c_ad
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|i2c_ad
 )paren
 suffix:semicolon
 )brace
