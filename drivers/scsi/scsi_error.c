@@ -634,7 +634,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon
@@ -691,7 +691,7 @@ r_int
 id|answer
 )paren
 (brace
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon
@@ -1527,7 +1527,7 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
@@ -1611,7 +1611,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon

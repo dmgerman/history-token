@@ -360,7 +360,7 @@ op_assign
 id|readwrite
 suffix:semicolon
 multiline_comment|/* use ISA DMA buffer if necessary */
-id|SRpnt-&gt;sr_request.buffer
+id|SRpnt-&gt;sr_request-&gt;buffer
 op_assign
 id|buffer
 suffix:semicolon
@@ -480,7 +480,6 @@ id|IOCTL_RETRIES
 suffix:semicolon
 id|req
 op_assign
-op_amp
 id|SRpnt-&gt;sr_request
 suffix:semicolon
 r_if
