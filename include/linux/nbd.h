@@ -126,7 +126,6 @@ id|bytesize
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* This now IS in some kind of include file...&t;*/
 multiline_comment|/* These are send over network in request/reply magic field */
 DECL|macro|NBD_REQUEST_MAGIC
