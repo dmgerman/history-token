@@ -57,9 +57,8 @@ mdefine_line|#define N_DRSIZE(a)&t;((a).a_drsize)
 DECL|macro|N_SYMSIZE
 mdefine_line|#define N_SYMSIZE(a)&t;((a).a_syms)
 macro_line|#ifdef __KERNEL__
-multiline_comment|/* 64-bit user address space is less PGDIR_SIZE due to pgd_index() bug. */
 DECL|macro|STACK_TOP_USER64
-mdefine_line|#define STACK_TOP_USER64 (TASK_SIZE_USER64 - PGDIR_SIZE)
+mdefine_line|#define STACK_TOP_USER64 (TASK_SIZE_USER64)
 multiline_comment|/* Give 32-bit user space a full 4G address space to live in. */
 DECL|macro|STACK_TOP_USER32
 mdefine_line|#define STACK_TOP_USER32 (TASK_SIZE_USER32)

@@ -19040,10 +19040,10 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|function|sys32_personality
+DECL|function|ppc64_personality
 id|asmlinkage
 r_int
-id|sys32_personality
+id|ppc64_personality
 c_func
 (paren
 r_int

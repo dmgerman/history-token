@@ -306,10 +306,6 @@ r_int
 id|_addr
 suffix:semicolon
 multiline_comment|/* faulting insn/memory ref. */
-DECL|member|_trapno
-r_int
-id|_trapno
-suffix:semicolon
 DECL|member|_sigfault
 )brace
 id|_sigfault
