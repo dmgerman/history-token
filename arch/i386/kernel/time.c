@@ -22,6 +22,10 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+r_extern
+id|spinlock_t
+id|i8259A_lock
+suffix:semicolon
 macro_line|#include &quot;do_timer.h&quot;
 multiline_comment|/*&n; * for x86_do_profile()&n; */
 macro_line|#include &lt;linux/irq.h&gt;
@@ -146,10 +150,6 @@ c_func
 (paren
 id|i8253_lock
 )paren
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|i8259A_lock
 suffix:semicolon
 macro_line|#ifndef CONFIG_X86_TSC
 multiline_comment|/* This function must be called with interrupts disabled &n; * It was inspired by Steve McCanne&squot;s microtime-i386 for BSD.  -- jrs&n; * &n; * However, the pc-audio speaker driver changes the divisor so that&n; * it gets interrupted rather more often - it loads 64 into the&n; * counter rather than 11932! This has an adverse impact on&n; * do_gettimeoffset() -- it stops working! What is also not&n; * good is that the interval that our timer function gets called&n; * is no longer 10.0002 ms, but 9.9767 ms. To get around this&n; * would require using a different timing source. Maybe someone&n; * could use the RTC - I know that this can interrupt at frequencies&n; * ranging from 8192Hz to 2Hz. If I had the energy, I&squot;d somehow fix&n; * it so that at startup, the timer code in sched.c would select&n; * using either the RTC or the 8253 timer. The decision would be&n; * based on whether there was any other device around that needed&n; * to trample on the 8253. I&squot;d set up the RTC to interrupt at 1024 Hz,&n; * and then do some jiggery to have a version of do_timer that &n; * advanced the clock by 1/1024 s. Every time that reached over 1/100&n; * of a second, then do all the old code. If the time was kept correct&n; * then do_gettimeoffset could just return 0 - there is no low order&n; * divider that can be accessed.&n; *&n; * Ideally, you would be able to use the RTC for the speaker driver,&n; * but it appears that the speaker driver really needs interrupt more&n; * often than every 120 us or so.&n; *&n; * Anyway, this needs more thought....&t;&t;pjsg (1993-08-28)&n; * &n; * If you are really that interested, you should be reading&n; * comp.protocols.time.ntp!&n; */
@@ -279,9 +279,6 @@ id|i8253_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * avoiding timer inconsistencies (they are rare, but they happen)...&n;&t; * there are two kinds of problems that must be avoided here:&n;&t; *  1. the timer counter underflows&n;&t; *  2. hardware problem with the timer, not giving us continuous time,&n;&t; *     the counter does small &quot;jumps&quot; upwards on some Pentium systems,&n;&t; *     (see c&squot;t 95/10 page 335 for Neptun bug.)&n;&t; */
-multiline_comment|/* you can safely undefine this if you don&squot;t have the Neptune chipset */
-DECL|macro|BUGGY_NEPTUN_TIMER
-mdefine_line|#define BUGGY_NEPTUN_TIMER
 r_if
 c_cond
 (paren
@@ -299,64 +296,14 @@ id|count_p
 )paren
 (brace
 multiline_comment|/* the nutcase */
-r_int
-id|i
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|i8259A_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * This is tricky when I/O APICs are used;&n;&t;&t;&t; * see do_timer_interrupt().&n;&t;&t;&t; */
-id|i
+id|count
 op_assign
-id|inb
+id|do_timer_overflow
 c_func
 (paren
-l_int|0x20
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|i8259A_lock
-)paren
-suffix:semicolon
-multiline_comment|/* assumption about timer being IRQ0 */
-r_if
-c_cond
-(paren
-id|i
-op_amp
-l_int|0x01
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We cannot detect lost timer interrupts ... &n;&t;&t;&t;&t; * well, that&squot;s why we call them lost, don&squot;t we? :)&n;&t;&t;&t;&t; * [hmm, on the Pentium and Alpha we can ... sort of]&n;&t;&t;&t;&t; */
 id|count
-op_sub_assign
-id|LATCH
-suffix:semicolon
-)brace
-r_else
-(brace
-macro_line|#ifdef BUGGY_NEPTUN_TIMER
-multiline_comment|/*&n;&t;&t;&t;&t; * for the Neptun bug we know that the &squot;latch&squot;&n;&t;&t;&t;&t; * command doesnt latch the high and low value&n;&t;&t;&t;&t; * of the counter atomically. Thus we have to &n;&t;&t;&t;&t; * substract 256 from the counter &n;&t;&t;&t;&t; * ... funny, isnt it? :)&n;&t;&t;&t;&t; */
-id|count
-op_sub_assign
-l_int|256
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;do_slow_gettimeoffset(): hardware timer problem?&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-)brace
 )brace
 )brace
 r_else

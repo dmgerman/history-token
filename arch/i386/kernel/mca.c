@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 multiline_comment|/* This structure holds MCA information. Each (plug-in) adapter has&n; * eight POS registers. Then the machine may have integrated video and&n; * SCSI subsystems, which also have eight POS registers.&n; * Finally, the motherboard (planar) has got POS-registers.&n; * Other miscellaneous information follows.&n; */
 r_typedef
 r_enum

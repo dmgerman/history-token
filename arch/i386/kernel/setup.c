@@ -3166,7 +3166,7 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef CONFIG_X86_FIND_SMP_CONFIG
 multiline_comment|/*&n;&t; * Find and reserve possible boot-time SMP configuration:&n;&t; */
 id|find_smp_config
 c_func
