@@ -8302,9 +8302,7 @@ r_void
 )paren
 (brace
 r_int
-id|e1
-comma
-id|e2
+id|error
 suffix:semicolon
 r_struct
 id|async_struct
@@ -8330,7 +8328,7 @@ r_if
 c_cond
 (paren
 (paren
-id|e1
+id|error
 op_assign
 id|tty_unregister_driver
 c_func
@@ -8344,7 +8342,7 @@ c_func
 (paren
 l_string|&quot;SERIAL: failed to unregister serial driver (%d)&bslash;n&quot;
 comma
-id|e1
+id|error
 )paren
 suffix:semicolon
 id|put_tty_driver

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Amiga Linux/m68k and Linux/PPC Ariadne II and X-Surf Ethernet Driver&n; *&n; *  (C) Copyright 1998-2000 by some Elitist 680x0 Users(TM)&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This program is based on all the other NE2000 drivers for Linux&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of the Linux&n; *  distribution for more details.&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  The Ariadne II and X-Surf are Zorro-II boards containing Realtek RTL8019AS&n; *  Ethernet Controllers.&n; */
+multiline_comment|/*&n; *  Amiga Linux/m68k and Linux/PPC Zorro NS8390 Ethernet Driver&n; *&n; *  (C) Copyright 1998-2000 by some Elitist 680x0 Users(TM)&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This program is based on all the other NE2000 drivers for Linux&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of the Linux&n; *  distribution for more details.&n; *&n; *  ---------------------------------------------------------------------------&n; *&n; *  The Ariadne II and X-Surf are Zorro-II boards containing Realtek RTL8019AS&n; *  Ethernet Controllers.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -47,12 +47,12 @@ mdefine_line|#define NESM_STOP_PG&t;0x80&t;/* Last page +1 of RX ring */
 DECL|macro|WORDSWAP
 mdefine_line|#define WORDSWAP(a)&t;((((a)&gt;&gt;8)&amp;0xff) | ((a)&lt;&lt;8))
 macro_line|#ifdef MODULE
-DECL|variable|root_ariadne2_dev
+DECL|variable|root_zorro8390_dev
 r_static
 r_struct
 id|net_device
 op_star
-id|root_ariadne2_dev
+id|root_zorro8390_dev
 suffix:semicolon
 macro_line|#endif
 DECL|struct|card_info
@@ -105,7 +105,7 @@ suffix:semicolon
 r_static
 r_int
 id|__init
-id|ariadne2_probe
+id|zorro8390_probe
 c_func
 (paren
 r_void
@@ -114,7 +114,7 @@ suffix:semicolon
 r_static
 r_int
 id|__init
-id|ariadne2_init
+id|zorro8390_init
 c_func
 (paren
 r_struct
@@ -138,7 +138,7 @@ id|ioaddr
 suffix:semicolon
 r_static
 r_int
-id|ariadne2_open
+id|zorro8390_open
 c_func
 (paren
 r_struct
@@ -149,7 +149,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|ariadne2_close
+id|zorro8390_close
 c_func
 (paren
 r_struct
@@ -160,7 +160,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|ariadne2_reset_8390
+id|zorro8390_reset_8390
 c_func
 (paren
 r_struct
@@ -171,7 +171,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|ariadne2_get_8390_hdr
+id|zorro8390_get_8390_hdr
 c_func
 (paren
 r_struct
@@ -190,7 +190,7 @@ id|ring_page
 suffix:semicolon
 r_static
 r_void
-id|ariadne2_block_input
+id|zorro8390_block_input
 c_func
 (paren
 r_struct
@@ -212,7 +212,7 @@ id|ring_offset
 suffix:semicolon
 r_static
 r_void
-id|ariadne2_block_output
+id|zorro8390_block_output
 c_func
 (paren
 r_struct
@@ -238,17 +238,17 @@ suffix:semicolon
 r_static
 r_void
 id|__exit
-id|ariadne2_cleanup
+id|zorro8390_cleanup
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|function|ariadne2_probe
+DECL|function|zorro8390_probe
 r_static
 r_int
 id|__init
-id|ariadne2_probe
+id|zorro8390_probe
 c_func
 (paren
 r_void
@@ -413,7 +413,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|ariadne2_init
+id|zorro8390_init
 c_func
 (paren
 id|dev
@@ -479,11 +479,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|ariadne2_init
+DECL|function|zorro8390_init
 r_static
 r_int
 id|__init
-id|ariadne2_init
+id|zorro8390_init
 c_func
 (paren
 r_struct
@@ -522,7 +522,7 @@ id|stop_page
 suffix:semicolon
 r_static
 id|u32
-id|ariadne2_offsets
+id|zorro8390_offsets
 (braket
 l_int|16
 )braket
@@ -1018,36 +1018,36 @@ suffix:semicolon
 id|ei_status.reset_8390
 op_assign
 op_amp
-id|ariadne2_reset_8390
+id|zorro8390_reset_8390
 suffix:semicolon
 id|ei_status.block_input
 op_assign
 op_amp
-id|ariadne2_block_input
+id|zorro8390_block_input
 suffix:semicolon
 id|ei_status.block_output
 op_assign
 op_amp
-id|ariadne2_block_output
+id|zorro8390_block_output
 suffix:semicolon
 id|ei_status.get_8390_hdr
 op_assign
 op_amp
-id|ariadne2_get_8390_hdr
+id|zorro8390_get_8390_hdr
 suffix:semicolon
 id|ei_status.reg_offset
 op_assign
-id|ariadne2_offsets
+id|zorro8390_offsets
 suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
-id|ariadne2_open
+id|zorro8390_open
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
 op_amp
-id|ariadne2_close
+id|zorro8390_close
 suffix:semicolon
 macro_line|#ifdef MODULE
 id|ei_status.priv
@@ -1056,9 +1056,9 @@ op_assign
 r_int
 r_int
 )paren
-id|root_ariadne2_dev
+id|root_zorro8390_dev
 suffix:semicolon
-id|root_ariadne2_dev
+id|root_zorro8390_dev
 op_assign
 id|dev
 suffix:semicolon
@@ -1075,10 +1075,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ariadne2_open
+DECL|function|zorro8390_open
 r_static
 r_int
-id|ariadne2_open
+id|zorro8390_open
 c_func
 (paren
 r_struct
@@ -1097,10 +1097,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ariadne2_close
+DECL|function|zorro8390_close
 r_static
 r_int
-id|ariadne2_close
+id|zorro8390_close
 c_func
 (paren
 r_struct
@@ -1135,10 +1135,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Hard reset the card.  This used to pause for the same period that a&n;   8390 reset command required, but that shouldn&squot;t be necessary. */
-DECL|function|ariadne2_reset_8390
+DECL|function|zorro8390_reset_8390
 r_static
 r_void
-id|ariadne2_reset_8390
+id|zorro8390_reset_8390
 c_func
 (paren
 r_struct
@@ -1248,10 +1248,10 @@ suffix:semicolon
 multiline_comment|/* Ack intr. */
 )brace
 multiline_comment|/* Grab the 8390 specific header. Similar to the block_input routine, but&n;   we don&squot;t need to be concerned with ring wrap as the header will be at&n;   the start of a page, so we optimize accordingly. */
-DECL|function|ariadne2_get_8390_hdr
+DECL|function|zorro8390_get_8390_hdr
 r_static
 r_void
-id|ariadne2_get_8390_hdr
+id|zorro8390_get_8390_hdr
 c_func
 (paren
 r_struct
@@ -1456,10 +1456,10 @@ l_int|0x01
 suffix:semicolon
 )brace
 multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using z_writeb. */
-DECL|function|ariadne2_block_input
+DECL|function|zorro8390_block_input
 r_static
 r_void
-id|ariadne2_block_input
+id|zorro8390_block_input
 c_func
 (paren
 r_struct
@@ -1685,10 +1685,10 @@ op_complement
 l_int|0x01
 suffix:semicolon
 )brace
-DECL|function|ariadne2_block_output
+DECL|function|zorro8390_block_output
 r_static
 r_void
-id|ariadne2_block_output
+id|zorro8390_block_output
 c_func
 (paren
 r_struct
@@ -1926,7 +1926,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|ariadne2_reset_8390
+id|zorro8390_reset_8390
 c_func
 (paren
 id|dev
@@ -1962,11 +1962,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ariadne2_cleanup
+DECL|function|zorro8390_cleanup
 r_static
 r_void
 id|__exit
-id|ariadne2_cleanup
+id|zorro8390_cleanup
 c_func
 (paren
 r_void
@@ -1987,7 +1987,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|root_ariadne2_dev
+id|root_zorro8390_dev
 )paren
 )paren
 (brace
@@ -2036,25 +2036,25 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|root_ariadne2_dev
+id|root_zorro8390_dev
 op_assign
 id|next
 suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|variable|ariadne2_probe
+DECL|variable|zorro8390_probe
 id|module_init
 c_func
 (paren
-id|ariadne2_probe
+id|zorro8390_probe
 )paren
 suffix:semicolon
-DECL|variable|ariadne2_cleanup
+DECL|variable|zorro8390_cleanup
 id|module_exit
 c_func
 (paren
-id|ariadne2_cleanup
+id|zorro8390_cleanup
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

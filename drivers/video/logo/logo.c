@@ -166,7 +166,7 @@ c_cond
 (paren
 id|mips_machgroup
 op_eq
-id|MACH_GROUP_SGI
+id|MACH_GROUP_DEC
 )paren
 id|logo
 op_assign

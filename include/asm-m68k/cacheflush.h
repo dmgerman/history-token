@@ -219,18 +219,15 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;__flush_page_to_ram(page_address(page))
+mdefine_line|#define flush_dcache_page(page)&t;&t;__flush_page_to_ram(page_address(page))
 DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)              do { } while (0)
+mdefine_line|#define flush_icache_page(vma, page)&t;__flush_page_to_ram(page_address(page))
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
-multiline_comment|/* Push n pages at kernel virtual address and clear the icache */
-multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
-DECL|function|flush_icache_range
 r_extern
-r_inline
 r_void
 id|flush_icache_range
+c_func
 (paren
 r_int
 r_int
@@ -240,93 +237,6 @@ r_int
 r_int
 id|endaddr
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|CPU_IS_040_OR_060
-)paren
-(brace
-r_int
-id|n
-op_assign
-(paren
-id|endaddr
-op_minus
-id|address
-op_plus
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-op_div
-id|PAGE_SIZE
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_decrement
-id|n
-op_ge
-l_int|0
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;.chip 68040&bslash;n&bslash;t&quot;
-l_string|&quot;cpushp %%bc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;.chip 68k&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|virt_to_phys
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|address
-)paren
-)paren
-)paren
-suffix:semicolon
-id|address
-op_add_assign
-id|PAGE_SIZE
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;movec %%cacr,%0&bslash;n&bslash;t&quot;
-l_string|&quot;orw %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;movec %0,%%cacr&quot;
-suffix:colon
-l_string|&quot;=&amp;d&quot;
-(paren
-id|tmp
-)paren
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|FLUSH_I
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
 macro_line|#endif /* _M68K_CACHEFLUSH_H */
 eof

@@ -556,19 +556,6 @@ id|__softirq_pending
 )paren
 )paren
 suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|CPUSTAT_SYSCALL_COUNT
-comma
-m_offsetof
-(paren
-id|irq_cpustat_t
-comma
-id|__syscall_count
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* offsets into the bi_record struct */
 id|DEFINE
 c_func
