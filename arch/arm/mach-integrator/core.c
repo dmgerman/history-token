@@ -401,6 +401,8 @@ DECL|variable|cm_lock
 r_static
 id|spinlock_t
 id|cm_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/**&n; * cm_control - update the CM_CTRL register.&n; * @mask: bits to change&n; * @set: bits to set&n; */
 DECL|function|cm_control
