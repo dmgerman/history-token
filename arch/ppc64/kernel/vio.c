@@ -22,6 +22,7 @@ id|subsystem
 id|devices_subsys
 suffix:semicolon
 multiline_comment|/* needed for vio_find_name() */
+r_static
 r_struct
 id|iommu_table
 op_star
@@ -31,7 +32,25 @@ c_func
 r_struct
 id|vio_dev
 op_star
-id|dev
+)paren
+suffix:semicolon
+r_static
+r_const
+r_struct
+id|vio_device_id
+op_star
+id|vio_match_device
+c_func
+(paren
+r_const
+r_struct
+id|vio_device_id
+op_star
+comma
+r_const
+r_struct
+id|vio_dev
+op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PSERIES
@@ -376,6 +395,7 @@ id|vio_unregister_driver
 suffix:semicolon
 multiline_comment|/**&n; * vio_match_device: - Tell if a VIO device has a matching VIO device id structure.&n; * @ids: &t;array of VIO device id structures to search in&n; * @dev: &t;the VIO device structure to match against&n; *&n; * Used by a driver to check whether a VIO device present in the&n; * system is in its list of supported devices. Returns the matching&n; * vio_device_id structure or NULL if there is no match.&n; */
 DECL|function|vio_match_device
+r_static
 r_const
 r_struct
 id|vio_device_id
@@ -415,7 +435,16 @@ c_cond
 id|strncmp
 c_func
 (paren
-id|dev-&gt;archdata-&gt;type
+(paren
+(paren
+r_struct
+id|device_node
+op_star
+)paren
+id|dev-&gt;dev.platform_data
+)paren
+op_member_access_from_pointer
+id|type
 comma
 id|ids-&gt;type
 comma
@@ -432,12 +461,7 @@ op_logical_and
 id|device_is_compatible
 c_func
 (paren
-(paren
-r_struct
-id|device_node
-op_star
-)paren
-id|dev-&gt;archdata
+id|dev-&gt;dev.platform_data
 comma
 id|ids-&gt;compat
 )paren
@@ -880,7 +904,7 @@ multiline_comment|/* XXX free TCE table */
 id|of_node_put
 c_func
 (paren
-id|viodev-&gt;archdata
+id|viodev-&gt;dev.platform_data
 )paren
 suffix:semicolon
 id|kfree
@@ -907,22 +931,11 @@ id|buf
 )paren
 (brace
 r_struct
-id|vio_dev
-op_star
-id|viodev
-op_assign
-id|to_vio_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|device_node
 op_star
 id|of_node
 op_assign
-id|viodev-&gt;archdata
+id|dev-&gt;platform_data
 suffix:semicolon
 r_return
 id|sprintf
@@ -969,22 +982,11 @@ id|buf
 )paren
 (brace
 r_struct
-id|vio_dev
-op_star
-id|viodev
-op_assign
-id|to_vio_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|device_node
 op_star
 id|of_node
 op_assign
-id|viodev-&gt;archdata
+id|dev-&gt;platform_data
 suffix:semicolon
 r_return
 id|sprintf
@@ -1014,7 +1016,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * vio_register_device: - Register a new vio device.&n; * @of_node:&t;The OF node for this device.&n; *&n; * Creates and initializes a vio_dev structure from the data in&n; * of_node (archdata) and adds it to the list of virtual devices.&n; * Returns a pointer to the created vio_dev or NULL if node has&n; * NULL device_type or compatible fields.&n; */
+multiline_comment|/**&n; * vio_register_device: - Register a new vio device.&n; * @of_node:&t;The OF node for this device.&n; *&n; * Creates and initializes a vio_dev structure from the data in&n; * of_node (dev.platform_data) and adds it to the list of virtual devices.&n; * Returns a pointer to the created vio_dev or NULL if node has&n; * NULL device_type or compatible fields.&n; */
 DECL|function|vio_register_device
 r_struct
 id|vio_dev
@@ -1164,12 +1166,8 @@ id|vio_dev
 )paren
 )paren
 suffix:semicolon
-id|viodev-&gt;archdata
+id|viodev-&gt;dev.platform_data
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|of_node_get
 c_func
 (paren
@@ -1425,12 +1423,7 @@ r_return
 id|get_property
 c_func
 (paren
-(paren
-r_struct
-id|device_node
-op_star
-)paren
-id|vdev-&gt;archdata
+id|vdev-&gt;dev.platform_data
 comma
 (paren
 r_char
@@ -1586,6 +1579,7 @@ id|vio_find_node
 suffix:semicolon
 multiline_comment|/**&n; * vio_build_iommu_table: - gets the dma information from OF and builds the TCE tree.&n; * @dev: the virtual device.&n; *&n; * Returns a pointer to the built tce tree, or NULL if it can&squot;t&n; * find property.&n;*/
 DECL|function|vio_build_iommu_table
+r_static
 r_struct
 id|iommu_table
 op_star
@@ -1629,12 +1623,7 @@ op_star
 id|get_property
 c_func
 (paren
-(paren
-r_struct
-id|device_node
-op_star
-)paren
-id|dev-&gt;archdata
+id|dev-&gt;dev.platform_data
 comma
 l_string|&quot;ibm,my-dma-window&quot;
 comma

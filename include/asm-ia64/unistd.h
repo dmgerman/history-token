@@ -512,6 +512,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 macro_line|# define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+macro_line|# define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;

@@ -428,12 +428,6 @@ OL
 l_int|2
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nNo ES7000 found.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|es7000_plat
 op_assign
 l_int|0

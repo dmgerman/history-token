@@ -9042,7 +9042,7 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#endif /* __ARCH_WANT_SYS_SIGPROCMASK */
-macro_line|#ifndef __sparc__
+macro_line|#ifdef __ARCH_WANT_SYS_RT_SIGACTION
 id|asmlinkage
 r_int
 DECL|function|sys_rt_sigaction
@@ -9184,7 +9184,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* __sparc__ */
+macro_line|#endif /* __ARCH_WANT_SYS_RT_SIGACTION */
 macro_line|#ifdef __ARCH_WANT_SYS_SGETMASK
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
