@@ -602,7 +602,7 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;ixdp2x01_clock&quot;
+l_string|&quot;ixdp2x01_clock=&quot;
 comma
 id|ixdp2x01_clock_setup
 )paren
