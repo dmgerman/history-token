@@ -187,6 +187,8 @@ DECL|macro|RADEON_CMD_PACKET3_CLIP
 mdefine_line|#define RADEON_CMD_PACKET3_CLIP 6 /* emit hw packet wrapped in cliprects */
 DECL|macro|RADEON_CMD_SCALARS2
 mdefine_line|#define RADEON_CMD_SCALARS2     7 /* r200 stopgap */
+DECL|macro|RADEON_CMD_WAIT
+mdefine_line|#define RADEON_CMD_WAIT         8 /* emit hw wait commands -- note:&n;&t;&t;&t;&t;   *  doesn&squot;t make the cpu wait, just&n;&t;&t;&t;&t;   *  the graphics hardware */
 r_typedef
 r_union
 (brace
@@ -294,10 +296,34 @@ DECL|member|dma
 )brace
 id|dma
 suffix:semicolon
+r_struct
+(brace
+DECL|member|cmd_type
+DECL|member|flags
+DECL|member|pad0
+DECL|member|pad1
+r_int
+r_char
+id|cmd_type
+comma
+id|flags
+comma
+id|pad0
+comma
+id|pad1
+suffix:semicolon
+DECL|member|wait
+)brace
+id|wait
+suffix:semicolon
 DECL|typedef|drm_radeon_cmd_header_t
 )brace
 id|drm_radeon_cmd_header_t
 suffix:semicolon
+DECL|macro|RADEON_WAIT_2D
+mdefine_line|#define RADEON_WAIT_2D  0x1
+DECL|macro|RADEON_WAIT_3D
+mdefine_line|#define RADEON_WAIT_3D  0x2
 DECL|macro|RADEON_FRONT
 mdefine_line|#define RADEON_FRONT&t;&t;&t;0x1
 DECL|macro|RADEON_BACK
@@ -850,6 +876,16 @@ DECL|macro|DRM_IOCTL_RADEON_GETPARAM
 mdefine_line|#define DRM_IOCTL_RADEON_GETPARAM   DRM_IOWR(0x51, drm_radeon_getparam_t)
 DECL|macro|DRM_IOCTL_RADEON_FLIP
 mdefine_line|#define DRM_IOCTL_RADEON_FLIP&t;    DRM_IO(  0x52)
+DECL|macro|DRM_IOCTL_RADEON_ALLOC
+mdefine_line|#define DRM_IOCTL_RADEON_ALLOC      DRM_IOWR( 0x53, drm_radeon_mem_alloc_t)
+DECL|macro|DRM_IOCTL_RADEON_FREE
+mdefine_line|#define DRM_IOCTL_RADEON_FREE       DRM_IOW( 0x54, drm_radeon_mem_free_t)
+DECL|macro|DRM_IOCTL_RADEON_INIT_HEAP
+mdefine_line|#define DRM_IOCTL_RADEON_INIT_HEAP  DRM_IOW( 0x55, drm_radeon_mem_init_heap_t)
+DECL|macro|DRM_IOCTL_RADEON_IRQ_EMIT
+mdefine_line|#define DRM_IOCTL_RADEON_IRQ_EMIT   DRM_IOWR( 0x56, drm_radeon_irq_emit_t)
+DECL|macro|DRM_IOCTL_RADEON_IRQ_WAIT
+mdefine_line|#define DRM_IOCTL_RADEON_IRQ_WAIT   DRM_IOW( 0x57, drm_radeon_irq_wait_t)
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct
@@ -1317,13 +1353,17 @@ id|drm_radeon_indirect_t
 suffix:semicolon
 multiline_comment|/* 1.3: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
 DECL|macro|RADEON_PARAM_AGP_BUFFER_OFFSET
-mdefine_line|#define RADEON_PARAM_AGP_BUFFER_OFFSET 0x1
+mdefine_line|#define RADEON_PARAM_AGP_BUFFER_OFFSET     1 /* card offset of 1st agp buffer */
 DECL|macro|RADEON_PARAM_LAST_FRAME
-mdefine_line|#define RADEON_PARAM_LAST_FRAME 0x2
+mdefine_line|#define RADEON_PARAM_LAST_FRAME            2
 DECL|macro|RADEON_PARAM_LAST_DISPATCH
-mdefine_line|#define RADEON_PARAM_LAST_DISPATCH 0x3
+mdefine_line|#define RADEON_PARAM_LAST_DISPATCH         3
 DECL|macro|RADEON_PARAM_LAST_CLEAR
-mdefine_line|#define RADEON_PARAM_LAST_CLEAR 0x4
+mdefine_line|#define RADEON_PARAM_LAST_CLEAR            4
+DECL|macro|RADEON_PARAM_IRQ_ACTIVE
+mdefine_line|#define RADEON_PARAM_IRQ_ACTIVE            5
+DECL|macro|RADEON_PARAM_AGP_BASE
+mdefine_line|#define RADEON_PARAM_AGP_BASE              6 /* card offset of agp base */
 DECL|struct|drm_radeon_getparam
 r_typedef
 r_struct
@@ -1341,6 +1381,104 @@ suffix:semicolon
 DECL|typedef|drm_radeon_getparam_t
 )brace
 id|drm_radeon_getparam_t
+suffix:semicolon
+multiline_comment|/* 1.6: Set up a memory manager for regions of shared memory:&n; */
+DECL|macro|RADEON_MEM_REGION_AGP
+mdefine_line|#define RADEON_MEM_REGION_AGP 1
+DECL|macro|RADEON_MEM_REGION_FB
+mdefine_line|#define RADEON_MEM_REGION_FB  2
+DECL|struct|drm_radeon_mem_alloc
+r_typedef
+r_struct
+id|drm_radeon_mem_alloc
+(brace
+DECL|member|region
+r_int
+id|region
+suffix:semicolon
+DECL|member|alignment
+r_int
+id|alignment
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|region_offset
+r_int
+op_star
+id|region_offset
+suffix:semicolon
+multiline_comment|/* offset from start of fb or agp */
+DECL|typedef|drm_radeon_mem_alloc_t
+)brace
+id|drm_radeon_mem_alloc_t
+suffix:semicolon
+DECL|struct|drm_radeon_mem_free
+r_typedef
+r_struct
+id|drm_radeon_mem_free
+(brace
+DECL|member|region
+r_int
+id|region
+suffix:semicolon
+DECL|member|region_offset
+r_int
+id|region_offset
+suffix:semicolon
+DECL|typedef|drm_radeon_mem_free_t
+)brace
+id|drm_radeon_mem_free_t
+suffix:semicolon
+DECL|struct|drm_radeon_mem_init_heap
+r_typedef
+r_struct
+id|drm_radeon_mem_init_heap
+(brace
+DECL|member|region
+r_int
+id|region
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|start
+r_int
+id|start
+suffix:semicolon
+DECL|typedef|drm_radeon_mem_init_heap_t
+)brace
+id|drm_radeon_mem_init_heap_t
+suffix:semicolon
+multiline_comment|/* 1.6: Userspace can request &amp; wait on irq&squot;s:&n; */
+DECL|struct|drm_radeon_irq_emit
+r_typedef
+r_struct
+id|drm_radeon_irq_emit
+(brace
+DECL|member|irq_seq
+r_int
+op_star
+id|irq_seq
+suffix:semicolon
+DECL|typedef|drm_radeon_irq_emit_t
+)brace
+id|drm_radeon_irq_emit_t
+suffix:semicolon
+DECL|struct|drm_radeon_irq_wait
+r_typedef
+r_struct
+id|drm_radeon_irq_wait
+(brace
+DECL|member|irq_seq
+r_int
+id|irq_seq
+suffix:semicolon
+DECL|typedef|drm_radeon_irq_wait_t
+)brace
+id|drm_radeon_irq_wait_t
 suffix:semicolon
 macro_line|#endif
 eof
