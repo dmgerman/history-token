@@ -1093,7 +1093,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|no_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon
