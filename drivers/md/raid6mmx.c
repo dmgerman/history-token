@@ -1,6 +1,6 @@
 multiline_comment|/* -*- linux-c -*- ------------------------------------------------------- *&n; *&n; *   Copyright 2002 H. Peter Anvin - All Rights Reserved&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation, Inc., 53 Temple Place Ste 330,&n; *   Bostom MA 02111-1307, USA; either version 2 of the License, or&n; *   (at your option) any later version; incorporated herein by reference.&n; *&n; * ----------------------------------------------------------------------- */
 multiline_comment|/*&n; * raid6mmx.c&n; *&n; * MMX implementation of RAID-6 syndrome functions&n; */
-macro_line|#if defined(__i386__) || defined(__x86_64__)
+macro_line|#if defined(__i386__)
 macro_line|#include &quot;raid6.h&quot;
 macro_line|#include &quot;raid6x86.h&quot;
 multiline_comment|/* Shared with raid6sse1.c */

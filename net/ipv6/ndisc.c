@@ -1950,6 +1950,8 @@ c_func
 id|solicited_addr
 comma
 id|dev
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -3294,6 +3296,8 @@ op_amp
 id|skb-&gt;nh.ipv6h-&gt;saddr
 comma
 id|dev
+comma
+l_int|1
 )paren
 )paren
 id|saddr
@@ -3712,6 +3716,8 @@ op_amp
 id|msg-&gt;target
 comma
 id|dev
+comma
+l_int|1
 )paren
 )paren
 op_ne
@@ -4700,6 +4706,8 @@ op_amp
 id|msg-&gt;target
 comma
 id|dev
+comma
+l_int|1
 )paren
 )paren
 )paren

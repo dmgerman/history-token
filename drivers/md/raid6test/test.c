@@ -365,6 +365,26 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+id|NDISKS
+op_minus
+l_int|2
+op_logical_and
+id|j
+op_eq
+id|NDISKS
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* We don&squot;t implement the DQ failure scenario, since it&squot;s&n;&t;&t;&t;&t;&t;&t;   equivalent to a RAID-5 failure (XOR, then recompute Q) */
+)brace
+r_else
+(brace
 id|printf
 c_func
 (paren
@@ -439,6 +459,7 @@ suffix:colon
 l_string|&quot;ERRAB&quot;
 )paren
 suffix:semicolon
+)brace
 id|dataptrs
 (braket
 id|i
