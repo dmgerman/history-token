@@ -3093,7 +3093,7 @@ op_logical_neg
 id|hd_queue
 )paren
 (brace
-id|unegister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

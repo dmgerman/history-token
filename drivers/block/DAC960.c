@@ -9684,6 +9684,10 @@ id|Controller-&gt;disks
 id|n
 )braket
 suffix:semicolon
+id|disk-&gt;queue
+op_assign
+id|RequestQueue
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -10619,15 +10623,6 @@ r_void
 op_star
 )paren
 id|i
-suffix:semicolon
-id|Controller-&gt;disks
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|queue
-op_assign
-id|Controller-&gt;RequestQueue
 suffix:semicolon
 )brace
 id|init_waitqueue_head

@@ -1336,6 +1336,47 @@ id|Config2_Reg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Same as conf2_write(), but defers I/O if we&squot;re powered down */
+DECL|function|conf2_write_if_powerup
+r_static
+r_inline
+r_void
+id|conf2_write_if_powerup
+c_func
+(paren
+r_const
+r_struct
+id|lanai_dev
+op_star
+id|lanai
+)paren
+(brace
+macro_line|#ifdef USE_POWERDOWN
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+id|lanai-&gt;conf1
+op_amp
+id|CONFIG1_POWERDOWN
+)paren
+op_ne
+l_int|0
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif /* USE_POWERDOWN */
+id|conf2_write
+c_func
+(paren
+id|lanai
+)paren
+suffix:semicolon
+)brace
 DECL|function|reset_board
 r_static
 r_inline
@@ -1527,9 +1568,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|readback
 op_eq
 id|pattern
+)paren
 )paren
 r_return
 l_int|0
@@ -1545,8 +1590,16 @@ id|lanai-&gt;number
 comma
 id|offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|pattern
 comma
+(paren
+r_int
+r_int
+)paren
 id|readback
 )paren
 suffix:semicolon
@@ -1991,11 +2044,16 @@ l_int|0
 comma
 l_string|&quot;cardvcc_write: bad val 0x%X (vci=%d, addr=0x%02X)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|val
 comma
 id|lvcc-&gt;vci
 comma
 (paren
+r_int
 r_int
 )paren
 id|offset
@@ -2010,9 +2068,14 @@ id|lvcc-&gt;vci
 comma
 (paren
 r_int
+r_int
 )paren
 id|offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|val
 )paren
 suffix:semicolon
@@ -3429,8 +3492,16 @@ c_func
 (paren
 l_string|&quot;EEPROM 0x%04X %02X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|address
 comma
+(paren
+r_int
+r_int
+)paren
 id|data
 )paren
 suffix:semicolon
@@ -3680,8 +3751,16 @@ l_string|&quot;(wanted 0x%02X, got 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_CHECKSUM
@@ -3718,8 +3797,16 @@ l_string|&quot;bad (wanted 0x%02X, got 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_CHECKSUM_REV
@@ -3778,6 +3865,10 @@ l_string|&quot;(0x%02X, inverse 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_MAC
@@ -3785,6 +3876,10 @@ op_plus
 id|i
 )braket
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_MAC_REV
@@ -3889,8 +3984,16 @@ l_string|&quot;don&squot;t match (0x%08X, inverse 0x%08X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|v
 )paren
 suffix:semicolon
@@ -3904,6 +4007,10 @@ c_func
 (paren
 l_string|&quot;eeprom: Serial number = %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 )paren
 suffix:semicolon
@@ -3985,8 +4092,16 @@ l_string|&quot;magic not what expected (got 0x%08X, not 0x%08X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;magicno
 comma
+(paren
+r_int
+r_int
+)paren
 id|EEPROM_MAGIC_VALUE
 )paren
 suffix:semicolon
@@ -5194,9 +5309,13 @@ op_increment
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|i
 OG
 l_int|50
+)paren
 )paren
 (brace
 id|printk
@@ -6401,7 +6520,7 @@ op_amp
 l_int|15
 )paren
 comma
-l_string|&quot;vcc_rx_aal5: n out of range (%d/%d)&bslash;n&quot;
+l_string|&quot;vcc_rx_aal5: n out of range (%d/%Zu)&bslash;n&quot;
 comma
 id|n
 comma
@@ -6452,12 +6571,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|n
 op_ne
 id|aal5_size
 c_func
 (paren
 id|size
+)paren
 )paren
 )paren
 (brace
@@ -6501,9 +6624,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|lvcc-&gt;stats.rx_nomem
@@ -6705,9 +6832,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lanai-&gt;vccs
 op_eq
 l_int|NULL
+)paren
 )paren
 r_return
 op_minus
@@ -6802,9 +6933,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|lvcc
 op_ne
 l_int|NULL
+)paren
 )paren
 (brace
 id|lvcc-&gt;vbase
@@ -6903,9 +7038,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|max_sdu
 OL
 l_int|1
+)paren
 )paren
 id|max_sdu
 op_assign
@@ -6946,9 +7085,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|buf-&gt;start
 op_eq
 l_int|NULL
+)paren
 )paren
 r_return
 op_minus
@@ -6956,6 +7099,9 @@ id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|lanai_buf_size
 c_func
@@ -6965,13 +7111,14 @@ id|buf
 OL
 id|size
 )paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 id|DEV_LABEL
 l_string|&quot;(itf %d): wanted %d bytes &quot;
-l_string|&quot;for %s buffer, got only %d&bslash;n&quot;
+l_string|&quot;for %s buffer, got only %Zu&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
@@ -6989,7 +7136,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;Allocated %d byte %s buffer&bslash;n&quot;
+l_string|&quot;Allocated %Zu byte %s buffer&bslash;n&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -7379,9 +7526,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lanai-&gt;service.start
 op_eq
 l_int|NULL
+)paren
 )paren
 r_return
 op_minus
@@ -7390,7 +7541,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;allocated service buffer at 0x%08lX, size %d(%d)&bslash;n&quot;
+l_string|&quot;allocated service buffer at 0x%08lX, size %Zu(%d)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7539,9 +7690,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|vcclist_read_unlock
@@ -7557,6 +7712,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7592,9 +7751,13 @@ multiline_comment|/* segmentation interrupt */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc-&gt;tx.atmvcc
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|vcclist_read_unlock
@@ -7610,6 +7773,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7650,9 +7817,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc-&gt;rx.atmvcc
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|vcclist_read_unlock
@@ -7668,6 +7839,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7683,9 +7858,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc-&gt;rx.atmvcc-&gt;qos.aal
 op_ne
 id|ATM_AAL5
+)paren
 )paren
 (brace
 id|vcclist_read_unlock
@@ -7701,6 +7880,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7723,6 +7906,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
+op_logical_neg
 (paren
 id|s
 op_amp
@@ -7734,8 +7921,7 @@ op_or
 id|SERVICE_CRCERR
 )paren
 )paren
-op_eq
-l_int|0
+)paren
 )paren
 (brace
 id|vcc_rx_aal5
@@ -8438,6 +8624,17 @@ id|lanai
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* The rest of the interrupts are pretty rare */
+r_if
+c_cond
+(paren
+id|ack
+op_eq
+id|reason
+)paren
+r_goto
+id|done
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8483,9 +8680,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|reason
 op_amp
 id|INT_DMASHUT
+)paren
 )paren
 (brace
 id|printk
@@ -8498,10 +8699,20 @@ l_string|&quot;shutdown, reason=0x%08X, address=0x%08X&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 id|INT_DMASHUT
+)paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|reg_read
 c_func
 (paren
@@ -8567,9 +8778,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|reason
 op_amp
 id|INT_TABORTSENT
+)paren
 )paren
 (brace
 id|ack
@@ -8602,9 +8817,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|reason
 op_amp
 id|INT_SEGSHUT
+)paren
 )paren
 (brace
 id|printk
@@ -8617,9 +8836,15 @@ l_string|&quot;segmentation shutdown, reason=0x%08X&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 id|INT_SEGSHUT
+)paren
 )paren
 suffix:semicolon
 id|lanai_reset
@@ -8634,12 +8859,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|reason
 op_amp
 (paren
 id|INT_PING
 op_or
 id|INT_WAKE
+)paren
 )paren
 )paren
 (brace
@@ -8653,12 +8882,18 @@ l_string|&quot;unexpected interrupt 0x%08X, resetting&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 (paren
 id|INT_PING
 op_or
 id|INT_WAKE
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -8675,9 +8910,13 @@ macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ack
 op_ne
 id|reason
+)paren
 )paren
 (brace
 id|DPRINTK
@@ -8685,10 +8924,16 @@ c_func
 (paren
 l_string|&quot;unacked ints: 0x%08X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 op_complement
 id|ack
+)paren
 )paren
 suffix:semicolon
 id|ack
@@ -8697,6 +8942,8 @@ id|reason
 suffix:semicolon
 )brace
 macro_line|#endif
+id|done
+suffix:colon
 r_if
 c_cond
 (paren
@@ -8749,11 +8996,6 @@ suffix:semicolon
 id|u32
 id|reason
 suffix:semicolon
-r_int
-id|handled
-op_assign
-l_int|0
-suffix:semicolon
 (paren
 r_void
 )paren
@@ -8766,54 +9008,22 @@ id|regs
 suffix:semicolon
 multiline_comment|/* unused variables */
 macro_line|#ifdef USE_POWERDOWN
+multiline_comment|/*&n;&t; * If we&squot;re powered down we shouldn&squot;t be generating any interrupts -&n;&t; * so assume that this is a shared interrupt line and it&squot;s for someone&n;&t; * else&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|lanai-&gt;conf1
 op_amp
 id|CONFIG1_POWERDOWN
 )paren
-(brace
-id|lanai-&gt;conf1
-op_and_assign
-op_complement
-id|CONFIG1_POWERDOWN
-suffix:semicolon
-id|conf1_write
-c_func
-(paren
-id|lanai
 )paren
+r_return
+id|IRQ_NONE
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|DEV_LABEL
-l_string|&quot;(itf %d): Got interrupt &quot;
-l_string|&quot;0x%08X while in POWERDOWN, powering up&bslash;n&quot;
-comma
-id|lanai-&gt;conf1
-comma
-id|intr_pending
-c_func
-(paren
-id|lanai
-)paren
-)paren
-suffix:semicolon
-id|conf2_write
-c_func
-(paren
-id|lanai
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
-r_while
-c_loop
-(paren
-(paren
 id|reason
 op_assign
 id|intr_pending
@@ -8821,15 +9031,34 @@ c_func
 (paren
 id|lanai
 )paren
-)paren
-op_ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_eq
 l_int|0
 )paren
-(brace
-id|handled
-op_assign
-l_int|1
+r_return
+id|IRQ_NONE
 suffix:semicolon
+multiline_comment|/* Must be for someone else */
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|reason
+op_eq
+l_int|0xFFFFFFFF
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Maybe we&squot;ve been unplugged? */
 id|lanai_int_1
 c_func
 (paren
@@ -8838,13 +9067,25 @@ comma
 id|reason
 )paren
 suffix:semicolon
-)brace
-r_return
-id|IRQ_RETVAL
+id|reason
+op_assign
+id|intr_pending
 c_func
 (paren
-id|handled
+id|lanai
 )paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|reason
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* TODO - it would be nice if we could use the &quot;delayed interrupt&quot; system&n; *   to some advantage&n; */
@@ -8876,12 +9117,18 @@ l_string|&quot;%s says board_id=%d, board_rev=%d&bslash;n&quot;
 comma
 id|name
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_ID
 c_func
 (paren
 id|val
 )paren
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_REV
 c_func
 (paren
@@ -8911,6 +9158,9 @@ l_string|&quot;Lanai 25.6&bslash;n&quot;
 comma
 id|name
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_ID
 c_func
 (paren
@@ -9141,10 +9391,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|result
 op_assign
 id|check_board_id_and_rev
@@ -9156,7 +9402,11 @@ id|w
 comma
 l_int|NULL
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
 op_ne
 l_int|0
 )paren
@@ -9279,20 +9529,7 @@ id|lanai-&gt;conf2
 op_or_assign
 id|CONFIG2_VCI0_NORMAL
 suffix:semicolon
-macro_line|#ifdef USE_POWERDOWN
-r_if
-c_cond
-(paren
-(paren
-id|lanai-&gt;conf1
-op_amp
-id|CONFIG1_POWERDOWN
-)paren
-op_eq
-l_int|0
-)paren
-macro_line|#endif
-id|conf2_write
+id|conf2_write_if_powerup
 c_func
 (paren
 id|lanai
@@ -9367,9 +9604,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc
 op_ne
 l_int|NULL
+)paren
 )paren
 (brace
 r_if
@@ -9473,20 +9714,7 @@ op_and_assign
 op_complement
 id|CONFIG2_VCI0_NORMAL
 suffix:semicolon
-macro_line|#ifdef USE_POWERDOWN
-r_if
-c_cond
-(paren
-(paren
-id|lanai-&gt;conf1
-op_amp
-id|CONFIG1_POWERDOWN
-)paren
-op_eq
-l_int|0
-)paren
-macro_line|#endif
-id|conf2_write
+id|conf2_write_if_powerup
 c_func
 (paren
 id|lanai
@@ -10466,14 +10694,18 @@ c_func
 (paren
 id|KERN_NOTICE
 id|DEV_LABEL
-l_string|&quot;(itf %d): rev.%d, base=0x%lx, irq=%d &quot;
+l_string|&quot;(itf %d): rev.%d, base=0x%lx, irq=%u &quot;
 l_string|&quot;(%02X-%02X-%02X-%02X-%02X-%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|lanai-&gt;pci_revision
 comma
 (paren
+r_int
 r_int
 )paren
 id|lanai-&gt;base
@@ -10516,7 +10748,7 @@ c_func
 (paren
 id|KERN_NOTICE
 id|DEV_LABEL
-l_string|&quot;(itf %d): LANAI%s, serialno=%d(0x%X), &quot;
+l_string|&quot;(itf %d): LANAI%s, serialno=%u(0x%X), &quot;
 l_string|&quot;board_rev=%d&bslash;n&quot;
 comma
 id|lanai-&gt;number
@@ -10530,8 +10762,16 @@ l_string|&quot;2&quot;
 suffix:colon
 l_string|&quot;HB&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
 id|lanai-&gt;board_rev
@@ -11025,10 +11265,6 @@ op_star
 )paren
 id|atmvcc-&gt;dev-&gt;dev_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|result
 op_assign
 id|lanai_normalize_ci
@@ -11044,9 +11280,17 @@ comma
 op_amp
 id|vci
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|result
 op_ne
 l_int|0
+)paren
 )paren
 r_goto
 id|out
@@ -11095,10 +11339,13 @@ id|DPRINTK
 c_func
 (paren
 id|DEV_LABEL
-l_string|&quot;(itf %d): open %d.%d flags=0x%X&bslash;n&quot;
+l_string|&quot;(itf %d): open %d.%d flags=0x%lX&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|vpi
 comma
 id|vci
@@ -11119,6 +11366,9 @@ l_string|&quot;(itf %d): open %d.%d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|vpi
 comma
 id|vci
@@ -11131,17 +11381,25 @@ c_cond
 id|lvcc
 op_eq
 l_int|NULL
-op_logical_and
-(paren
+)paren
+(brace
 id|lvcc
 op_assign
 id|new_lanai_vcc
 c_func
 (paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|lvcc
 op_eq
 l_int|NULL
+)paren
 )paren
 r_return
 op_minus
@@ -11151,6 +11409,7 @@ id|atmvcc-&gt;dev_data
 op_assign
 id|lvcc
 suffix:semicolon
+)brace
 id|lvcc-&gt;nref
 op_increment
 suffix:semicolon
@@ -11215,9 +11474,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|result
 op_ne
 l_int|0
+)paren
 )paren
 r_goto
 id|out_free
@@ -11293,9 +11556,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|result
 op_ne
 l_int|0
+)paren
 )paren
 r_goto
 id|out_free
@@ -11530,6 +11797,7 @@ l_int|2200003
 suffix:colon
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -11569,7 +11837,8 @@ comma
 id|i
 comma
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|readl
 c_func
@@ -11652,6 +11921,10 @@ c_func
 (paren
 l_string|&quot;vendor = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11674,6 +11947,10 @@ c_func
 (paren
 l_string|&quot;device = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11696,6 +11973,10 @@ c_func
 (paren
 l_string|&quot;command = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11718,6 +11999,10 @@ c_func
 (paren
 l_string|&quot;status = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11740,6 +12025,10 @@ c_func
 (paren
 l_string|&quot;class/revision = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|dw
 )paren
 suffix:semicolon
@@ -11762,6 +12051,10 @@ c_func
 (paren
 l_string|&quot;cache line size = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11784,8 +12077,15 @@ c_func
 (paren
 l_string|&quot;latency = %d (0x%X)&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|b
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11808,6 +12108,10 @@ c_func
 (paren
 l_string|&quot;header type = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11830,6 +12134,10 @@ c_func
 (paren
 l_string|&quot;bist = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11853,6 +12161,10 @@ c_func
 (paren
 l_string|&quot;pci_int_line = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11875,6 +12187,10 @@ c_func
 (paren
 l_string|&quot;pci_int_pin = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11897,6 +12213,10 @@ c_func
 (paren
 l_string|&quot;min_gnt = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11919,6 +12239,10 @@ c_func
 (paren
 l_string|&quot;max_lat = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -12033,6 +12357,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lvcc
 op_eq
 l_int|NULL
@@ -12045,6 +12372,7 @@ id|lvcc-&gt;tx.atmvcc
 op_ne
 id|atmvcc
 )paren
+)paren
 r_goto
 id|einval
 suffix:semicolon
@@ -12052,9 +12380,13 @@ macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|DPRINTK
@@ -12072,9 +12404,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lanai
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|DPRINTK
@@ -12146,11 +12482,15 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb-&gt;len
 op_ne
 id|ATM_CELL_SIZE
 op_minus
 l_int|1
+)paren
 )paren
 r_goto
 id|einval
@@ -12203,6 +12543,9 @@ c_func
 (paren
 l_string|&quot;lanai_send: bad aal=%d on vci=%d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|atmvcc-&gt;qos.aal
 comma
 id|atmvcc-&gt;vci
@@ -12313,7 +12656,7 @@ id|page
 comma
 id|DEV_LABEL
 l_string|&quot;(itf %d): chip=LANAI%s, &quot;
-l_string|&quot;serial=%d, magic=0x%08X, num_vci=%d&bslash;n&quot;
+l_string|&quot;serial=%u, magic=0x%08X, num_vci=%d&bslash;n&quot;
 comma
 id|atmdev-&gt;number
 comma
@@ -12326,8 +12669,16 @@ l_string|&quot;2&quot;
 suffix:colon
 l_string|&quot;HB&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;magicno
 comma
 id|lanai-&gt;num_vci
@@ -12351,6 +12702,9 @@ l_string|&quot;revision: board=%d, pci_if=%d&bslash;n&quot;
 comma
 id|lanai-&gt;board_rev
 comma
+(paren
+r_int
+)paren
 id|lanai-&gt;pci_revision
 )paren
 suffix:semicolon
@@ -12490,8 +12844,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;global buffer sizes: service=%d, &quot;
-l_string|&quot;aal0_rx=%d&bslash;n&quot;
+l_string|&quot;global buffer sizes: service=%Zu, &quot;
+l_string|&quot;aal0_rx=%Zu&bslash;n&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -12534,8 +12888,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;cells in error: overflow=%d, &quot;
-l_string|&quot;closed_vci=%d, bad_HEC=%d, rx_fifo=%d&bslash;n&quot;
+l_string|&quot;cells in error: overflow=%u, &quot;
+l_string|&quot;closed_vci=%u, bad_HEC=%u, rx_fifo=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.ovfl_trash
 comma
@@ -12561,8 +12915,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;PCI errors: parity_detect=%d, &quot;
-l_string|&quot;master_abort=%d, master_target_abort=%d,&bslash;n&quot;
+l_string|&quot;PCI errors: parity_detect=%u, &quot;
+l_string|&quot;master_abort=%u, master_target_abort=%u,&bslash;n&quot;
 comma
 id|lanai-&gt;stats.pcierr_parity_detect
 comma
@@ -12585,8 +12939,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;            slave_target_abort=%d, &quot;
-l_string|&quot;master_parity=%d&bslash;n&quot;
+l_string|&quot;            slave_target_abort=%u, &quot;
+l_string|&quot;master_parity=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.pcierr_s_target_abort
 comma
@@ -12607,8 +12961,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;service list errors: no_vcc_rx=%d, &quot;
-l_string|&quot;no_vcc_tx=%d,&bslash;n&quot;
+l_string|&quot;service list errors: no_vcc_rx=%u, &quot;
+l_string|&quot;no_vcc_tx=%u,&bslash;n&quot;
 comma
 id|lanai-&gt;stats.service_novcc_rx
 comma
@@ -12629,8 +12983,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;                     no_tx=%d, &quot;
-l_string|&quot;no_rx=%d, bad_rx_aal=%d&bslash;n&quot;
+l_string|&quot;                     no_tx=%u, &quot;
+l_string|&quot;no_rx=%u, bad_rx_aal=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.service_norx
 comma
@@ -12653,7 +13007,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;resets: dma=%d, card=%d&bslash;n&quot;
+l_string|&quot;resets: dma=%u, card=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.dma_reenable
 comma
@@ -12722,7 +13076,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;VCI %4d: nref=%d, rx_nomem=%d&quot;
+l_string|&quot;VCI %4d: nref=%d, rx_nomem=%u&quot;
 comma
 (paren
 id|vci_t
@@ -12783,9 +13137,9 @@ id|page
 id|left
 )braket
 comma
-l_string|&quot;, rx_buf_size=%d, &quot;
-l_string|&quot;rx_bad_len=%d,&bslash;n          rx_service_trash=%d, &quot;
-l_string|&quot;rx_service_stream=%d, rx_bad_crc=%d&quot;
+l_string|&quot;, rx_buf_size=%Zu, &quot;
+l_string|&quot;rx_bad_len=%u,&bslash;n          rx_service_trash=%u, &quot;
+l_string|&quot;rx_service_stream=%u, rx_bad_crc=%u&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -12823,7 +13177,7 @@ id|left
 )braket
 comma
 l_string|&quot;,&bslash;n          tx_AAL=%d, &quot;
-l_string|&quot;tx_buf_size=%d, tx_qos=%cBR, tx_backlogged=%c&quot;
+l_string|&quot;tx_buf_size=%Zu, tx_qos=%cBR, tx_backlogged=%c&quot;
 comma
 id|lvcc-&gt;tx.atmvcc-&gt;qos.aal
 op_eq

@@ -1349,11 +1349,7 @@ id|client
 comma
 id|ADM1021_REG_TOS_W
 comma
-id|TEMP_TO_REG
-c_func
-(paren
 id|adm1021_INIT_TOS
-)paren
 )paren
 suffix:semicolon
 id|adm1021_write_value
@@ -1363,11 +1359,7 @@ id|client
 comma
 id|ADM1021_REG_THYST_W
 comma
-id|TEMP_TO_REG
-c_func
-(paren
 id|adm1021_INIT_THYST
-)paren
 )paren
 suffix:semicolon
 id|adm1021_write_value
@@ -1377,11 +1369,7 @@ id|client
 comma
 id|ADM1021_REG_REMOTE_TOS_W
 comma
-id|TEMP_TO_REG
-c_func
-(paren
 id|adm1021_INIT_REMOTE_TOS
-)paren
 )paren
 suffix:semicolon
 id|adm1021_write_value
@@ -1391,11 +1379,7 @@ id|client
 comma
 id|ADM1021_REG_REMOTE_THYST_W
 comma
-id|TEMP_TO_REG
-c_func
-(paren
 id|adm1021_INIT_REMOTE_THYST
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Enable ADC and disable suspend mode */

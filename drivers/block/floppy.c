@@ -19433,6 +19433,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;floppy&quot;
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

@@ -700,6 +700,9 @@ l_string|&quot;Bad inode number on dev %s: %ld is out of range&bslash;n&quot;
 comma
 id|sb-&gt;s_id
 comma
+(paren
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon
@@ -836,6 +839,9 @@ l_string|&quot;Bad inode number on dev %s: %ld is out of range&bslash;n&quot;
 comma
 id|sb-&gt;s_id
 comma
+(paren
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon

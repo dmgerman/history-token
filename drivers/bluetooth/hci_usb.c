@@ -3657,7 +3657,6 @@ id|ifnum
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|udev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
@@ -3806,7 +3805,6 @@ op_increment
 (brace
 id|iface
 op_assign
-op_amp
 id|udev-&gt;actconfig-&gt;interface
 (braket
 id|i
