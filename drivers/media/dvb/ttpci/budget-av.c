@@ -20,6 +20,10 @@ DECL|member|cur_input
 r_int
 id|cur_input
 suffix:semicolon
+DECL|member|has_saa7113
+r_int
+id|has_saa7113
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * INITIALIZATION&n; ****************************************************************************/
@@ -612,6 +616,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+l_int|1
+op_ne
+id|budget_av-&gt;has_saa7113
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|input
 op_eq
 l_int|1
@@ -725,6 +740,14 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|1
+op_eq
+id|budget_av-&gt;has_saa7113
+)paren
+(brace
 id|saa7146_setgpio
 c_func
 (paren
@@ -749,6 +772,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
+)brace
 id|err
 op_assign
 id|ttpci_budget_deinit
@@ -958,29 +982,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|err
-op_assign
+l_int|0
+op_eq
 id|saa7113_init
+c_func
 (paren
 id|budget_av
 )paren
 )paren
-)paren
 (brace
-multiline_comment|/* fixme: proper cleanup here */
-id|ERR
-c_func
-(paren
-(paren
-l_string|&quot;cannot init saa7113.&bslash;n&quot;
-)paren
-)paren
+id|budget_av-&gt;has_saa7113
+op_assign
+l_int|1
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1061,8 +1075,24 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* what is this? since we don&squot;t support open()/close()&n;&t;   notifications, we simply put this into the release handler... */
-multiline_comment|/*&n;&t;saa7146_setgpio(dev, 0, SAA7146_GPIO_OUTLO);&n;&t;set_current_state(TASK_INTERRUPTIBLE);&n;&t;schedule_timeout (20);&n;*/
+)brace
+r_else
+(brace
+id|budget_av-&gt;has_saa7113
+op_assign
+l_int|0
+suffix:semicolon
+id|saa7146_setgpio
+c_func
+(paren
+id|dev
+comma
+l_int|0
+comma
+id|SAA7146_GPIO_OUTLO
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* fixme: find some sane values here... */
 id|saa7146_write
 c_func
@@ -1458,11 +1488,6 @@ op_assign
 l_int|288
 comma
 dot
-id|v_calc
-op_assign
-l_int|576
-comma
-dot
 id|h_offset
 op_assign
 l_int|0x14
@@ -1473,13 +1498,6 @@ op_assign
 l_int|680
 comma
 dot
-id|h_calc
-op_assign
-l_int|680
-op_plus
-l_int|1
-comma
-dot
 id|v_max_out
 op_assign
 l_int|576
@@ -1488,7 +1506,6 @@ dot
 id|h_max_out
 op_assign
 l_int|768
-comma
 )brace
 comma
 (brace
@@ -1513,11 +1530,6 @@ op_assign
 l_int|240
 comma
 dot
-id|v_calc
-op_assign
-l_int|480
-comma
-dot
 id|h_offset
 op_assign
 l_int|0x06
@@ -1526,13 +1538,6 @@ dot
 id|h_pixels
 op_assign
 l_int|708
-comma
-dot
-id|h_calc
-op_assign
-l_int|708
-op_plus
-l_int|1
 comma
 dot
 id|v_max_out
