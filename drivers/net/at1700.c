@@ -3731,6 +3731,17 @@ comma
 id|mc_filter
 )paren
 suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0x02
+comma
+id|ioaddr
+op_plus
+id|RX_MODE
+)paren
+suffix:semicolon
+multiline_comment|/* Use normal mode. */
 )brace
 id|save_flags
 c_func

@@ -862,8 +862,26 @@ DECL|macro|BD_FLG_IP_SUM
 mdefine_line|#define BD_FLG_IP_SUM&t;&t;0x02
 DECL|macro|BD_FLG_END
 mdefine_line|#define BD_FLG_END&t;&t;0x04
+DECL|macro|BD_FLG_MORE
+mdefine_line|#define BD_FLG_MORE&t;&t;0x08
 DECL|macro|BD_FLG_JUMBO
 mdefine_line|#define BD_FLG_JUMBO&t;&t;0x10
+DECL|macro|BD_FLG_UCAST
+mdefine_line|#define BD_FLG_UCAST&t;&t;0x20
+DECL|macro|BD_FLG_MCAST
+mdefine_line|#define BD_FLG_MCAST&t;&t;0x40
+DECL|macro|BD_FLG_BCAST
+mdefine_line|#define BD_FLG_BCAST&t;&t;0x60
+DECL|macro|BD_FLG_TYP_MASK
+mdefine_line|#define BD_FLG_TYP_MASK&t;&t;0x60
+DECL|macro|BD_FLG_IP_FRAG
+mdefine_line|#define BD_FLG_IP_FRAG&t;&t;0x80
+DECL|macro|BD_FLG_IP_FRAG_END
+mdefine_line|#define BD_FLG_IP_FRAG_END&t;0x100
+DECL|macro|BD_FLG_VLAN_TAG
+mdefine_line|#define BD_FLG_VLAN_TAG&t;&t;0x200
+DECL|macro|BD_FLG_FRAME_ERROR
+mdefine_line|#define BD_FLG_FRAME_ERROR&t;0x400
 DECL|macro|BD_FLG_COAL_NOW
 mdefine_line|#define BD_FLG_COAL_NOW&t;&t;0x800
 DECL|macro|BD_FLG_MINI
@@ -887,13 +905,15 @@ DECL|macro|RCB_FLG_EXT_RX_BD
 mdefine_line|#define RCB_FLG_EXT_RX_BD&t;0x100
 DECL|macro|RCB_FLG_RNG_DISABLE
 mdefine_line|#define RCB_FLG_RNG_DISABLE&t;0x200
-multiline_comment|/*&n; * TX ring&n; */
-DECL|macro|TX_RING_ENTRIES
-mdefine_line|#define TX_RING_ENTRIES&t;256&t;
+multiline_comment|/*&n; * TX ring - maximum TX ring entries for Tigon I&squot;s is 128&n; */
+DECL|macro|MAX_TX_RING_ENTRIES
+mdefine_line|#define MAX_TX_RING_ENTRIES&t;256
+DECL|macro|TIGON_I_TX_RING_ENTRIES
+mdefine_line|#define TIGON_I_TX_RING_ENTRIES&t;128
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;(TX_RING_ENTRIES * sizeof(struct tx_desc))
+mdefine_line|#define TX_RING_SIZE&t;&t;(MAX_TX_RING_ENTRIES * sizeof(struct tx_desc))
 DECL|macro|TX_RING_BASE
-mdefine_line|#define TX_RING_BASE&t;0x3800
+mdefine_line|#define TX_RING_BASE&t;&t;0x3800
 DECL|struct|tx_desc
 r_struct
 id|tx_desc
@@ -1335,7 +1355,7 @@ r_struct
 id|tx_ring_info
 id|tx_skbuff
 (braket
-id|TX_RING_ENTRIES
+id|MAX_TX_RING_ENTRIES
 )braket
 suffix:semicolon
 DECL|member|rx_std_skbuff
@@ -1393,6 +1413,14 @@ id|dma_addr_t
 id|info_dma
 suffix:semicolon
 multiline_comment|/* 32/64 bit */
+macro_line|#if ACENIC_DO_VLAN
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
+macro_line|#endif
 DECL|member|version
 DECL|member|link
 r_int
@@ -1427,6 +1455,10 @@ DECL|member|timer
 r_struct
 id|timer_list
 id|timer
+suffix:semicolon
+DECL|member|tx_ring_entries
+r_int
+id|tx_ring_entries
 suffix:semicolon
 multiline_comment|/*&n;&t; * RX elements&n;&t; */
 DECL|member|std_refill_busy
@@ -1643,6 +1675,11 @@ r_inline
 r_int
 id|tx_space
 (paren
+r_struct
+id|ace_private
+op_star
+id|ap
+comma
 id|u32
 id|csm
 comma
@@ -1660,20 +1697,24 @@ l_int|1
 )paren
 op_amp
 (paren
-id|TX_RING_ENTRIES
+id|ACE_TX_RING_ENTRIES
+c_func
+(paren
+id|ap
+)paren
 op_minus
 l_int|1
 )paren
 suffix:semicolon
 )brace
 DECL|macro|tx_free
-mdefine_line|#define tx_free(ap) &t;&t;tx_space((ap)-&gt;tx_ret_csm, (ap)-&gt;tx_prd)
+mdefine_line|#define tx_free(ap) &t;&t;tx_space((ap)-&gt;tx_ret_csm, (ap)-&gt;tx_prd, ap)
 macro_line|#if MAX_SKB_FRAGS
 DECL|macro|tx_ring_full
-mdefine_line|#define tx_ring_full(csm, prd)&t;(tx_space(csm, prd) &lt;= TX_RESERVED)
+mdefine_line|#define tx_ring_full(ap, csm, prd)&t;(tx_space(ap, csm, prd) &lt;= TX_RESERVED)
 macro_line|#else
 DECL|macro|tx_ring_full
-mdefine_line|#define tx_ring_full&t;&t;0
+mdefine_line|#define tx_ring_full&t;&t;&t;0
 macro_line|#endif
 DECL|function|set_aceaddr
 r_static
@@ -1710,7 +1751,7 @@ id|baddr
 op_rshift
 l_int|32
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -2083,5 +2124,38 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+r_static
+r_void
+id|ace_vlan_rx_register
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ace_vlan_rx_kill_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ACENIC_H_ */
 eof
