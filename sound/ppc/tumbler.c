@@ -3550,7 +3550,7 @@ macro_line|#endif /* PMAC_SUPPORT_AUTOMUTE */
 multiline_comment|/* interrupt - headphone plug changed */
 DECL|function|headphone_intr
 r_static
-r_void
+id|irqreturn_t
 id|headphone_intr
 c_func
 (paren
@@ -3588,6 +3588,7 @@ id|chip-&gt;update_automute
 op_logical_and
 id|chip-&gt;initialized
 )paren
+(brace
 id|chip
 op_member_access_from_pointer
 id|update_automute
@@ -3597,6 +3598,13 @@ id|chip
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* look for audio-gpio device */

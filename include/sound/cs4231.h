@@ -793,7 +793,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|snd_cs4231_interrupt
 c_func
 (paren

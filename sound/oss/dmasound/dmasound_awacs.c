@@ -1228,7 +1228,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pmac_awacs_tx_intr
 c_func
 (paren
@@ -1246,7 +1246,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pmac_awacs_rx_intr
 c_func
 (paren
@@ -1264,7 +1264,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pmac_awacs_intr
 c_func
 (paren
@@ -1951,7 +1951,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|headphone_intr
 id|headphone_intr
 c_func
@@ -1969,6 +1969,11 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1988,6 +1993,10 @@ op_eq
 id|gpio_headphone_detect_pol
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2015,6 +2024,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2045,6 +2058,13 @@ c_func
 (paren
 op_amp
 id|dmasound.lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
@@ -4181,7 +4201,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* if the TX status comes up &quot;DEAD&quot; - reported on some Power Computing machines&n;   we need to re-start the dbdma - but from a different physical start address&n;   and with a different transfer length.  It would get very messy to do this&n;   with the normal dbdma_cmd blocks - we would have to re-write the buffer start&n;   addresses each time.  So, we will keep a single dbdma_cmd block which can be&n;   fiddled with.&n;   When DEAD status is first reported the content of the faulted dbdma block is&n;   copied into the emergency buffer and we note that the buffer is in use.&n;   we then bump the start physical address by the amount that was successfully&n;   output before it died.&n;   On any subsequent DEAD result we just do the bump-ups (we know that we are&n;   already using the emergency dbdma_cmd).&n;   CHECK: this just tries to &quot;do it&quot;.  It is possible that we should abandon&n;   xfers when the number of residual bytes gets below a certain value - I can&n;   see that this might cause a loop-forever if too small a transfer causes&n;   DEAD status.  However this is a TODO for now - we&squot;ll see what gets reported.&n;   When we get a successful transfer result with the emergency buffer we just&n;   pretend that it completed using the original dmdma_cmd and carry on.  The&n;   &squot;next_cmd&squot; field will already point back to the original loop of blocks.&n;*/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pmac_awacs_tx_intr
 id|pmac_awacs_tx_intr
 c_func
@@ -4660,9 +4680,12 @@ op_amp
 id|dmasound.lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pmac_awacs_rx_intr
 id|pmac_awacs_rx_intr
 c_func
@@ -4697,6 +4720,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* We also want to blow &squot;em off when shutting down.&n;&t;*/
 r_if
@@ -4707,6 +4731,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4870,6 +4895,7 @@ id|dmasound.lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* try this block again */
 )brace
@@ -4940,9 +4966,12 @@ op_amp
 id|dmasound.lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pmac_awacs_intr
 id|pmac_awacs_intr
 c_func
@@ -5051,6 +5080,9 @@ c_func
 op_amp
 id|dmasound.lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

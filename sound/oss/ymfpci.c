@@ -4538,7 +4538,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ymf_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|ymf_interrupt
 c_func
 (paren
@@ -4774,6 +4775,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ymf_pcm_free_substream
 r_static

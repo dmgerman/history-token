@@ -4805,7 +4805,7 @@ suffix:semicolon
 )brace
 DECL|function|es1371_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|es1371_interrupt
 c_func
 (paren
@@ -4862,6 +4862,7 @@ l_int|0x80000000
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4949,6 +4950,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

@@ -9659,7 +9659,7 @@ suffix:semicolon
 )brace
 DECL|function|solo1_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|solo1_interrupt
 c_func
 (paren
@@ -9711,6 +9711,7 @@ op_logical_neg
 id|intsrc
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 (paren
 r_void
@@ -9775,6 +9776,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|solo1_midi_timer

@@ -8290,7 +8290,8 @@ l_int|48000
 suffix:semicolon
 )brace
 DECL|function|snd_rme9652_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|snd_rme9652_interrupt
 c_func
 (paren
@@ -8335,6 +8336,7 @@ id|RME9652_IRQ
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|rme9652_write
@@ -8383,6 +8385,9 @@ id|substream
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_rme9652_hw_pointer
 r_static

@@ -17651,7 +17651,7 @@ suffix:semicolon
 )brace
 DECL|function|cs4281_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cs4281_interrupt
 c_func
 (paren
@@ -17759,6 +17759,7 @@ l_string|&quot;cs4281: cs4281_interrupt(): returning not cs4281 interrupt.&bslas
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -17834,6 +17835,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|// **************************************************************************

@@ -5418,7 +5418,7 @@ macro_line|#endif
 )brace
 DECL|function|i810_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|i810_interrupt
 c_func
 (paren
@@ -5486,6 +5486,7 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* not for us */
 )brace
@@ -5529,6 +5530,9 @@ c_func
 op_amp
 id|card-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is&n;   waiting to be copied to the user&squot;s buffer.  It is filled by the dma&n;   machine and drained by this loop. */

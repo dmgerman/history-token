@@ -826,7 +826,7 @@ r_int
 id|irq
 suffix:semicolon
 DECL|member|interrupt
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|interrupt
@@ -3749,7 +3749,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Handle a potential interrupt for the device referred to by DEV_ID. &n; *&n; * I don&squot;t like the cut-n-paste job here either between the two routines,&n; * but there are sufficient differences between the two interrupt handlers&n; * that parameterizing it isn&squot;t all that great either.  (Could use a macro,&n; * I suppose...yucky bleah.)&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_nm256_interrupt
 id|snd_nm256_interrupt
 c_func
@@ -3813,6 +3813,7 @@ id|chip
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|chip-&gt;badintrcount
@@ -4026,10 +4027,13 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle a potential interrupt for the device referred to by DEV_ID.&n; * This handler is for the 256ZX, and is very similar to the non-ZX&n; * routine.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_nm256_interrupt_zx
 id|snd_nm256_interrupt_zx
 c_func
@@ -4093,6 +4097,7 @@ id|chip
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|chip-&gt;badintrcount
@@ -4295,6 +4300,9 @@ c_func
 op_amp
 id|chip-&gt;reg_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * AC97 interface&n; */

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
 DECL|function|snd_emu10k1_interrupt
-r_void
+id|irqreturn_t
 id|snd_emu10k1_interrupt
 c_func
 (paren
@@ -39,6 +39,11 @@ r_int
 r_int
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -58,6 +63,10 @@ l_int|0
 )paren
 (brace
 singleline_comment|// printk(&quot;irq - status = 0x%x&bslash;n&quot;, status);
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -785,5 +794,12 @@ id|IPR
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 eof

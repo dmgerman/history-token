@@ -6549,7 +6549,7 @@ suffix:semicolon
 multiline_comment|/*&n; * interrupt handler&n; */
 DECL|function|snd_cmipci_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_cmipci_interrupt
 c_func
 (paren
@@ -6610,6 +6610,7 @@ id|CM_INTR
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* acknowledge interrupt */
 id|spin_lock
@@ -6750,6 +6751,9 @@ id|substream
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * h/w infos&n; */
 multiline_comment|/* playback on channel A */

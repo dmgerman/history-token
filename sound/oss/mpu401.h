@@ -22,7 +22,7 @@ op_star
 id|hw_config
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|uart401intr
 (paren
 r_int
@@ -83,7 +83,7 @@ op_star
 id|dev_id
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|mpuintr
 c_func
 (paren

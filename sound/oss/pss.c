@@ -215,6 +215,7 @@ id|data
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|limit
@@ -1019,11 +1020,13 @@ id|flags
 r_int
 id|i
 comma
-id|limit
-comma
 id|val
 comma
 id|count
+suffix:semicolon
+r_int
+r_int
+id|limit
 suffix:semicolon
 r_if
 c_cond

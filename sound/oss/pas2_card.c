@@ -326,7 +326,8 @@ suffix:semicolon
 )brace
 multiline_comment|/******************* Begin of the Interrupt Handler ********************/
 DECL|function|pasintr
-r_void
+r_static
+id|irqreturn_t
 id|pasintr
 c_func
 (paren
@@ -404,6 +405,9 @@ op_complement
 l_int|0x10
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|pas_set_intr
 r_int

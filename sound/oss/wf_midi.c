@@ -884,9 +884,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_void
+r_static
+id|irqreturn_t
 DECL|function|wf_mpuintr
 id|wf_mpuintr
+c_func
 (paren
 r_int
 id|irq
@@ -944,6 +946,7 @@ c_func
 (brace
 multiline_comment|/* not for us */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -952,6 +955,7 @@ c_cond
 id|mi-&gt;m_busy
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|spin_lock
 c_func
@@ -1104,6 +1108,9 @@ c_func
 op_amp
 id|lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

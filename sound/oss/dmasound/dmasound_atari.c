@@ -589,7 +589,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|AtaInterrupt
 c_func
 (paren
@@ -5746,7 +5746,7 @@ suffix:semicolon
 )brace
 DECL|function|AtaInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|AtaInterrupt
 c_func
 (paren
@@ -5793,6 +5793,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -5817,6 +5818,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -5834,6 +5836,7 @@ id|write_sq.sync_queue
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Probably ;) one frame is finished. Well, in fact it may be that a&n;&t; * pre-programmed one is also finished because there has been a long&n;&t; * delay in interrupt delivery and we&squot;ve completely lost one, but&n;&t; * there&squot;s no way to detect such a situation. In such a case the last&n;&t; * frame will be played more than once and the situation will recover&n;&t; * as soon as the irq gets through.&n;&t; */
@@ -5906,6 +5909,9 @@ c_func
 op_amp
 id|dmasound.lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*** Mid level stuff *********************************************************/

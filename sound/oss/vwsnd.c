@@ -8362,7 +8362,7 @@ suffix:semicolon
 )brace
 DECL|function|vwsnd_audio_intr
 r_static
-r_void
+id|irqreturn_t
 id|vwsnd_audio_intr
 c_func
 (paren
@@ -8429,6 +8429,9 @@ id|devc
 comma
 id|status
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|vwsnd_audio_do_read

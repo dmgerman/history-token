@@ -2106,7 +2106,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_mtpav_irqh
 r_static
-r_void
+id|irqreturn_t
 id|snd_mtpav_irqh
 c_func
 (paren
@@ -2157,6 +2157,9 @@ c_func
 op_amp
 id|mcard-&gt;spinlock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * get ISA resources&n; */

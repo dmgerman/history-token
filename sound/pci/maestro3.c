@@ -4744,7 +4744,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_m3_interrupt
 id|snd_m3_interrupt
 c_func
@@ -4799,6 +4799,7 @@ op_eq
 l_int|0xff
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* presumably acking the ints? */
 id|outw
@@ -4945,6 +4946,9 @@ id|chip-&gt;iobase
 op_plus
 l_int|0x1A
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; */

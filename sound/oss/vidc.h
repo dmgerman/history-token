@@ -140,7 +140,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/*&n; * DMA Interrupt handler&n; */
 r_extern
-r_void
+id|irqreturn_t
 id|vidc_sound_dma_irq
 c_func
 (paren
