@@ -66,6 +66,11 @@ id|fsync
 op_assign
 id|reiserfs_dir_fsync
 comma
+dot
+id|ioctl
+op_assign
+id|reiserfs_ioctl
+comma
 )brace
 suffix:semicolon
 DECL|function|reiserfs_dir_fsync
