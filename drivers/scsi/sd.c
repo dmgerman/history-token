@@ -517,6 +517,13 @@ op_star
 id|sdkp
 )paren
 (brace
+r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|sdkp-&gt;device
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -536,7 +543,7 @@ suffix:semicolon
 id|scsi_device_put
 c_func
 (paren
-id|sdkp-&gt;device
+id|sdev
 )paren
 suffix:semicolon
 id|up
