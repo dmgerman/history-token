@@ -405,6 +405,33 @@ id|COMMON_PPC64_FW
 )brace
 comma
 (brace
+multiline_comment|/* Power5 */
+l_int|0xffff0000
+comma
+l_int|0x003b0000
+comma
+l_string|&quot;POWER5 (gs)&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_PPCAS_ARCH_V2
+comma
+id|COMMON_USER_PPC64
+comma
+l_int|128
+comma
+l_int|128
+comma
+id|__setup_cpu_power4
+comma
+id|COMMON_PPC64_FW
+)brace
+comma
+(brace
 multiline_comment|/* default match */
 l_int|0x00000000
 comma
