@@ -162,6 +162,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_SHARED
+)paren
+id|mapping-&gt;i_mmap_writable
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|unlikely
 c_func
 (paren
@@ -175,23 +185,6 @@ c_func
 (paren
 op_amp
 id|vma-&gt;shared.vm_set.list
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_SHARED
-)paren
-id|vma_prio_tree_remove
-c_func
-(paren
-id|vma
-comma
-op_amp
-id|mapping-&gt;i_mmap_shared
 )paren
 suffix:semicolon
 r_else
@@ -1110,6 +1103,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_SHARED
+)paren
+id|mapping-&gt;i_mmap_writable
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|unlikely
 c_func
 (paren
@@ -1126,23 +1129,6 @@ id|vma-&gt;shared.vm_set.list
 comma
 op_amp
 id|mapping-&gt;i_mmap_nonlinear
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_SHARED
-)paren
-id|vma_prio_tree_insert
-c_func
-(paren
-id|vma
-comma
-op_amp
-id|mapping-&gt;i_mmap_shared
 )paren
 suffix:semicolon
 r_else
@@ -1346,7 +1332,7 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the inode&squot;s&n; * i_mmap ring. The caller should hold mm-&gt;page_table_lock and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
+multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the&n; * inode&squot;s i_mmap tree. The caller should hold mm-&gt;page_table_lock and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
 r_static
 r_void
 DECL|function|__insert_vm_struct
@@ -1446,7 +1432,7 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We cannot adjust vm_start, vm_end, vm_pgoff fields of a vma that is&n; * already present in an i_mmap{_shared} tree without adjusting the tree.&n; * The following helper function should be used when such adjustments&n; * are necessary.  The &quot;next&quot; vma (if any) is to be removed or inserted&n; * before we drop the necessary locks.&n; */
+multiline_comment|/*&n; * We cannot adjust vm_start, vm_end, vm_pgoff fields of a vma that&n; * is already present in an i_mmap tree without adjusting the tree.&n; * The following helper function should be used when such adjustments&n; * are necessary.  The &quot;next&quot; vma (if any) is to be removed or inserted&n; * before we drop the necessary locks.&n; */
 DECL|function|vma_adjust
 r_void
 id|vma_adjust
@@ -1519,29 +1505,13 @@ op_logical_neg
 (paren
 id|vma-&gt;vm_flags
 op_amp
-id|VM_SHARED
-)paren
-)paren
-id|root
-op_assign
-op_amp
-id|mapping-&gt;i_mmap
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|vma-&gt;vm_flags
-op_amp
 id|VM_NONLINEAR
 )paren
 )paren
 id|root
 op_assign
 op_amp
-id|mapping-&gt;i_mmap_shared
+id|mapping-&gt;i_mmap
 suffix:semicolon
 id|spin_lock
 c_func
@@ -6461,7 +6431,7 @@ id|next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap ring.  If vm_file is non-NULL&n; * then i_mmap_lock is taken here.&n; */
+multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap tree.  If vm_file is non-NULL&n; * then i_mmap_lock is taken here.&n; */
 DECL|function|insert_vm_struct
 r_void
 id|insert_vm_struct

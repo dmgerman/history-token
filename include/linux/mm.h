@@ -91,7 +91,7 @@ r_struct
 id|rb_node
 id|vm_rb
 suffix:semicolon
-multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * one of the address_space-&gt;i_mmap{,shared} trees.&n;&t; */
+multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * linkage into the address_space-&gt;i_mmap prio tree, or&n;&t; * linkage to the list of like vmas hanging off its node, or&n;&t; * linkage of vma in the address_space-&gt;i_mmap_nonlinear list.&n;&t; */
 r_union
 (brace
 r_struct

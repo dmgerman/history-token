@@ -1126,6 +1126,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * h_pgoff is in HPAGE_SIZE units.&n; * vma-&gt;vm_pgoff is in PAGE_SIZE units.&n; */
 r_static
+r_inline
 r_void
 DECL|function|hugetlb_vmtruncate_list
 id|hugetlb_vmtruncate_list
@@ -1323,26 +1324,6 @@ c_func
 (paren
 op_amp
 id|mapping-&gt;i_mmap
-comma
-id|pgoff
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prio_tree_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
-)paren
-)paren
-id|hugetlb_vmtruncate_list
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
 comma
 id|pgoff
 )paren

@@ -754,77 +754,7 @@ op_minus
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-multiline_comment|/* We have ensured in arch_get_unmapped_area() that all shared&n;&t; * mappings are mapped at equivalent addresses, so we only need&n;&t; * to flush one for them all to become coherent */
-r_while
-c_loop
-(paren
-(paren
-id|mpnt
-op_assign
-id|vma_prio_tree_next
-c_func
-(paren
-id|mpnt
-comma
-op_amp
-id|mapping-&gt;i_mmap_shared
-comma
-op_amp
-id|iter
-comma
-id|pgoff
-comma
-id|pgoff
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|offset
-op_assign
-(paren
-id|pgoff
-op_minus
-id|mpnt-&gt;vm_pgoff
-)paren
-op_lshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|addr
-op_assign
-id|mpnt-&gt;vm_start
-op_plus
-id|offset
-suffix:semicolon
-multiline_comment|/* flush instructions produce non access tlb misses.&n;&t;&t; * On PA, we nullify these instructions rather than &n;&t;&t; * taking a page fault if the pte doesn&squot;t exist, so we&n;&t;&t; * have to find a congruent address with an existing&n;&t;&t; * translation */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|translation_exists
-c_func
-(paren
-id|mpnt
-comma
-id|addr
-)paren
-)paren
-r_continue
-suffix:semicolon
-id|__flush_cache_page
-c_func
-(paren
-id|mpnt
-comma
-id|addr
-)paren
-suffix:semicolon
-multiline_comment|/* If we find an address to flush, that will also&n;&t;&t; * bring all the private mappings up to date (see&n;&t;&t; * comment below) */
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* we have carefully arranged in arch_get_unmapped_area() that&n;&t; * *any* mappings of a file are always congruently mapped (whether&n;&t; * declared as MAP_PRIVATE or MAP_SHARED), so we only need&n;&t; * to flush one address here too */
+multiline_comment|/* We have carefully arranged in arch_get_unmapped_area() that&n;&t; * *any* mappings of a file are always congruently mapped (whether&n;&t; * declared as MAP_PRIVATE or MAP_SHARED), so we only need&n;&t; * to flush one address here for them all to become coherent */
 r_while
 c_loop
 (paren
@@ -867,7 +797,7 @@ id|mpnt-&gt;vm_start
 op_plus
 id|offset
 suffix:semicolon
-multiline_comment|/* This is just for speed.  If the page translation isn&squot;t&n;&t;&t; * there there&squot;s no point exciting the nadtlb handler into&n;&t;&t; * a nullification frenzy */
+multiline_comment|/* Flush instructions produce non access tlb misses.&n;&t;&t; * On PA, we nullify these instructions rather than&n;&t;&t; * taking a page fault if the pte doesn&squot;t exist.&n;&t;&t; * This is just for speed.  If the page translation&n;&t;&t; * isn&squot;t there, there&squot;s no point exciting the&n;&t;&t; * nadtlb handler into a nullification frenzy */
 r_if
 c_cond
 (paren
@@ -880,10 +810,8 @@ comma
 id|addr
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|__flush_cache_page
 c_func
 (paren

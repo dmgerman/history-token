@@ -790,23 +790,23 @@ id|prio_tree_root
 id|i_mmap
 suffix:semicolon
 multiline_comment|/* tree of private mappings */
-DECL|member|i_mmap_shared
-r_struct
-id|prio_tree_root
-id|i_mmap_shared
+DECL|member|i_mmap_writable
+r_int
+r_int
+id|i_mmap_writable
 suffix:semicolon
-multiline_comment|/* tree of shared mappings */
+multiline_comment|/* count VM_SHARED mappings */
 DECL|member|i_mmap_nonlinear
 r_struct
 id|list_head
 id|i_mmap_nonlinear
 suffix:semicolon
-multiline_comment|/*list of nonlinear mappings */
+multiline_comment|/*list VM_NONLINEAR mappings */
 DECL|member|i_mmap_lock
 id|spinlock_t
 id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* protect trees &amp; list above */
+multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
 id|atomic_t
 id|truncate_count
@@ -982,14 +982,6 @@ id|mapping-&gt;i_mmap
 )paren
 op_logical_or
 op_logical_neg
-id|prio_tree_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
-)paren
-op_logical_or
-op_logical_neg
 id|list_empty
 c_func
 (paren
@@ -998,7 +990,7 @@ id|mapping-&gt;i_mmap_nonlinear
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_shared holds all the VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
+multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_writable counts all VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
 DECL|function|mapping_writably_mapped
 r_static
 r_inline
@@ -1013,21 +1005,9 @@ id|mapping
 )paren
 (brace
 r_return
-op_logical_neg
-id|prio_tree_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
-)paren
-op_logical_or
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_nonlinear
-)paren
+id|mapping-&gt;i_mmap_writable
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */

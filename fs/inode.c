@@ -565,13 +565,6 @@ op_amp
 id|inode-&gt;i_data.i_mmap
 )paren
 suffix:semicolon
-id|INIT_PRIO_TREE_ROOT
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.i_mmap_shared
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

@@ -5031,6 +5031,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Helper function for unmap_mapping_range().&n; */
 DECL|function|unmap_mapping_range_list
 r_static
+r_inline
 r_void
 id|unmap_mapping_range_list
 c_func
@@ -5349,36 +5350,6 @@ c_func
 (paren
 op_amp
 id|mapping-&gt;i_mmap
-comma
-op_amp
-id|details
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t waste time to check mapping on fully shared vmas */
-id|details.check_mapping
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|prio_tree_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
-)paren
-)paren
-)paren
-id|unmap_mapping_range_list
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
 comma
 op_amp
 id|details

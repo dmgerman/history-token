@@ -790,7 +790,7 @@ c_func
 id|vma
 comma
 op_amp
-id|mapping-&gt;i_mmap_shared
+id|mapping-&gt;i_mmap
 )paren
 suffix:semicolon
 id|vma_prio_tree_init
