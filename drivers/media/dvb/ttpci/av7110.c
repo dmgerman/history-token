@@ -24663,6 +24663,9 @@ r_struct
 id|saa7146_ext_vv
 id|av7110_vv_data_c
 suffix:semicolon
+macro_line|#ifdef CONFIG_DVB_AV7110_FIRMWARE_FILE
+macro_line|#include &quot;av7110_firm.h&quot;
+macro_line|#endif
 DECL|function|av7110_attach
 r_static
 r_int
@@ -24679,12 +24682,14 @@ op_star
 id|pci_ext
 )paren
 (brace
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE
 r_const
 r_struct
 id|firmware
 op_star
 id|fw
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|av7110
 op_star
@@ -24723,6 +24728,7 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 multiline_comment|/* request the av7110 firmware, this will block until someone uploads it */
 id|ret
 op_assign
@@ -24776,6 +24782,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* prepare the av7110 device struct */
 r_if
 c_cond
@@ -24823,6 +24830,7 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 multiline_comment|/* check if the firmware is available */
 id|av7110-&gt;bin_fw
 op_assign
@@ -24878,6 +24886,17 @@ id|av7110-&gt;size_fw
 op_assign
 id|fw-&gt;size
 suffix:semicolon
+macro_line|#else
+id|av7110-&gt;bin_fw
+op_assign
+id|dvb_ttpci_fw
+suffix:semicolon
+id|av7110-&gt;size_fw
+op_assign
+r_sizeof
+id|dvb_ttpci_fw
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* check for firmware magic */
 id|ptr
 op_assign
@@ -26739,12 +26758,14 @@ id|ret
 suffix:semicolon
 id|fw_error
 suffix:colon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 id|vfree
 c_func
 (paren
 id|av7110-&gt;bin_fw
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -26949,6 +26970,7 @@ suffix:semicolon
 id|av7110_num
 op_decrement
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 r_if
 c_cond
 (paren
@@ -26964,6 +26986,7 @@ id|av7110-&gt;bin_fw
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|kfree
 (paren
 id|av7110

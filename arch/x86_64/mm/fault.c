@@ -1449,7 +1449,7 @@ comma
 id|error_code
 )paren
 suffix:semicolon
-multiline_comment|/* Execute summary in case the body of the oops scrolled away */
+multiline_comment|/* Executive summary in case the body of the oops scrolled away */
 id|printk
 c_func
 (paren
