@@ -3593,6 +3593,13 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Run TX completion thread */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_tx
 c_func
 (paren
@@ -3601,6 +3608,13 @@ comma
 id|gp
 comma
 id|gp-&gt;status
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3954,6 +3968,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gp-&gt;reset_task_pending
 op_assign
 l_int|2
@@ -3963,6 +3984,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;reset_task
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -4106,7 +4134,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|gp-&gt;lock
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 multiline_comment|/* This is a hard error, log it. */
@@ -4142,7 +4170,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|gp-&gt;lock
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|printk
@@ -4605,7 +4633,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|gp-&gt;lock
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -4693,6 +4721,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|dev-&gt;mtu
 op_assign
 id|new_mtu
@@ -4706,6 +4741,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;reset_task
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -4726,7 +4768,7 @@ suffix:semicolon
 )brace
 DECL|macro|STOP_TRIES
 mdefine_line|#define STOP_TRIES 32
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_stop
 r_static
 r_void
@@ -4833,7 +4875,7 @@ id|gp-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_start_dma
 r_static
 r_void
@@ -4979,7 +5021,7 @@ id|RXDMA_KICK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 singleline_comment|// XXX dbl check what that function should do when called on PCS PHY
 DECL|function|gem_begin_auto_negotiation
 r_static
@@ -5329,7 +5371,7 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* A link-up condition has occurred, initialize and enable the&n; * rest of the chip.&n; *&n; * Must be invoked under gp-&gt;lock.&n; */
+multiline_comment|/* A link-up condition has occurred, initialize and enable the&n; * rest of the chip.&n; *&n; * Must be invoked under gp-&gt;lock and gp-&gt;tx_lock.&n; */
 DECL|function|gem_set_link_modes
 r_static
 r_int
@@ -5848,7 +5890,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_mdio_link_not_up
 r_static
 r_int
@@ -6088,6 +6130,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6137,6 +6186,13 @@ suffix:semicolon
 id|gp-&gt;reset_task_pending
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -6193,6 +6249,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 multiline_comment|/* If the link of task is still pending, we just&n;&t; * reschedule the link timer&n;&t; */
@@ -6527,6 +6590,13 @@ l_int|10
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -6535,7 +6605,7 @@ id|gp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_clean_rings
 r_static
 r_void
@@ -6804,7 +6874,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_rings
 r_static
 r_void
@@ -7064,7 +7134,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_phy
 r_static
 r_void
@@ -7609,7 +7679,7 @@ id|PCS_SCTRL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_dma
 r_static
 r_void
@@ -7882,7 +7952,7 @@ id|RXDMA_BLANK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 r_static
 id|u32
 DECL|function|gem_setup_multicast
@@ -8124,7 +8194,7 @@ r_return
 id|rxcfg
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_mac
 r_static
 r_void
@@ -8665,7 +8735,7 @@ id|MAC_MCMASK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_pause_thresholds
 r_static
 r_void
@@ -9267,7 +9337,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Must be invoked under gp-&gt;lock. */
+multiline_comment|/* Must be invoked under gp-&gt;lock and gp-&gt;tx_lock. */
 DECL|function|gem_init_hw
 r_static
 r_void
@@ -9642,6 +9712,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_stop
 c_func
 (paren
@@ -9666,6 +9743,13 @@ comma
 id|gp-&gt;regs
 op_plus
 id|MAC_RXRST
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -9858,10 +9942,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_stop
 c_func
 (paren
 id|gp
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -10062,10 +10160,24 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_stop
 c_func
 (paren
 id|gp
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -10119,6 +10231,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
@@ -10160,6 +10279,13 @@ op_amp
 id|gp-&gt;pm_sem
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -10177,6 +10303,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate &amp; setup ring buffers */
@@ -10199,6 +10332,13 @@ suffix:semicolon
 id|gp-&gt;opened
 op_assign
 l_int|1
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -10254,6 +10394,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gp-&gt;opened
 op_assign
 l_int|0
@@ -10289,6 +10436,13 @@ r_void
 op_star
 )paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -10403,6 +10557,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Stop traffic, mark us closed */
 id|netif_device_detach
 c_func
@@ -10422,6 +10583,13 @@ id|gem_clean_rings
 c_func
 (paren
 id|gp
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -10551,6 +10719,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_stop
 c_func
 (paren
@@ -10573,6 +10748,13 @@ c_func
 id|gp
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -10654,6 +10836,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 r_if
@@ -10773,6 +10962,13 @@ id|MAC_LCOLL
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -10827,6 +11023,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -10933,6 +11136,13 @@ id|netif_wake_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -11072,6 +11282,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|cmd-&gt;autoneg
 op_assign
 id|gp-&gt;want_autoneg
@@ -11099,6 +11316,13 @@ l_int|0
 id|cmd-&gt;advertising
 op_assign
 id|cmd-&gt;supported
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -11256,12 +11480,26 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_begin_auto_negotiation
 c_func
 (paren
 id|gp
 comma
 id|cmd
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -11312,12 +11550,26 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_begin_auto_negotiation
 c_func
 (paren
 id|gp
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -12465,6 +12717,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -12613,10 +12872,24 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gem_stop
 c_func
 (paren
 id|gp
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -12867,6 +13140,13 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
+)paren
+suffix:semicolon
 id|gp-&gt;hw_running
 op_assign
 l_int|1
@@ -12883,6 +13163,13 @@ c_func
 id|gp
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|gp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
