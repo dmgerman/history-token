@@ -1401,7 +1401,7 @@ id|tp-&gt;mdev
 op_assign
 id|m
 op_lshift
-l_int|2
+l_int|1
 suffix:semicolon
 multiline_comment|/* make sure rto = 3*rtt */
 id|tp-&gt;mdev_max
