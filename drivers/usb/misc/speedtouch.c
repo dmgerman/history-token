@@ -2835,6 +2835,16 @@ id|instance-&gt;send_tasklet
 suffix:semicolon
 id|PDEBUG
 (paren
+l_string|&quot;udsl_atm_dev_close: freeing USB device&bslash;n&quot;
+)paren
+suffix:semicolon
+id|usb_put_dev
+(paren
+id|instance-&gt;usb_dev
+)paren
+suffix:semicolon
+id|PDEBUG
+(paren
 l_string|&quot;udsl_atm_dev_close: freeing instance&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4085,6 +4095,11 @@ id|usb_set_intfdata
 id|intf
 comma
 id|instance
+)paren
+suffix:semicolon
+id|usb_get_dev
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
