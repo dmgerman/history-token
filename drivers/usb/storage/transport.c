@@ -692,14 +692,31 @@ id|srb-&gt;request_bufflen
 suffix:semicolon
 )brace
 multiline_comment|/* According to the linux-scsi people, any command sent which&n;&t; * violates this invariant is a bug.  In the hopes of removing&n;&t; * all the complex logic above, let&squot;s find them and eliminate them.&n;&t; */
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 id|len
 op_ne
 id|srb-&gt;request_bufflen
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;USB len=%d, request_bufflen=%d&bslash;n&quot;
+comma
+id|len
+comma
+id|srb-&gt;request_bufflen
+)paren
 suffix:semicolon
+id|show_trace
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 r_return
 id|len
 suffix:semicolon

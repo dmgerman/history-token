@@ -2083,11 +2083,11 @@ id|p
 r_if
 c_cond
 (paren
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 )paren
 id|p-&gt;next_line
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 r_else
 id|p-&gt;next_line

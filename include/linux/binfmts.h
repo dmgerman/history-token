@@ -1,7 +1,6 @@
 macro_line|#ifndef _LINUX_BINFMTS_H
 DECL|macro|_LINUX_BINFMTS_H
 mdefine_line|#define _LINUX_BINFMTS_H
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 multiline_comment|/*&n; * MAX_ARG_PAGES defines the number of pages allocated for arguments&n; * and envelope for the new program. 32 should suffice, this gives&n; * a maximum env+arg of 128kB w/4KB pages!&n; */
 DECL|macro|MAX_ARG_PAGES
