@@ -720,7 +720,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;kobj.name
