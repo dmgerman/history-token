@@ -2051,8 +2051,7 @@ OG
 l_int|1500
 )paren
 (brace
-r_int
-r_char
+id|u8
 id|addr4
 (braket
 id|ETH_ALEN
@@ -4440,8 +4439,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_int
-r_char
+id|u8
 id|rssi
 comma
 id|addr4
@@ -7701,8 +7699,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_static
 r_const
-r_int
-r_char
+id|u8
 id|bcast
 (braket
 id|ETH_ALEN
@@ -9481,7 +9478,7 @@ id|last_ret
 suffix:semicolon
 r_int
 r_char
-id|buf
+id|bf
 (braket
 l_int|64
 )braket
@@ -9513,11 +9510,14 @@ id|tuple
 suffix:semicolon
 id|tuple.TupleData
 op_assign
-id|buf
+id|bf
 suffix:semicolon
 id|tuple.TupleDataMax
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|bf
+)paren
 suffix:semicolon
 id|tuple.TupleOffset
 op_assign
