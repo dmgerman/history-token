@@ -6327,6 +6327,7 @@ suffix:semicolon
 id|cards_found
 op_increment
 suffix:semicolon
+multiline_comment|/* enable LED writes */
 id|a
 op_member_access_from_pointer
 id|write_bcr
@@ -6336,10 +6337,19 @@ id|ioaddr
 comma
 l_int|2
 comma
-l_int|0x1002
+id|a
+op_member_access_from_pointer
+id|read_bcr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|2
+)paren
+op_or
+l_int|0x1000
 )paren
 suffix:semicolon
-multiline_comment|/* enable LED writes */
 r_return
 l_int|0
 suffix:semicolon

@@ -24,14 +24,15 @@ macro_line|#else
 DECL|macro|DRIVERNAPI
 mdefine_line|#define DRIVERNAPI &quot;-NAPI&quot;
 macro_line|#endif
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION &quot;5.7.6-k2&quot;DRIVERNAPI
 DECL|variable|e1000_driver_version
 r_char
 id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.7.6-k2&quot;
-id|DRIVERNAPI
+id|DRV_VERSION
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -524,6 +525,17 @@ id|data
 suffix:semicolon
 r_static
 r_void
+id|e1000_watchdog_task
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
+r_static
+r_void
 id|e1000_82547_tx_fifo_stall
 c_func
 (paren
@@ -1005,6 +1017,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|debug
@@ -2444,6 +2463,27 @@ r_int
 )paren
 id|adapter
 suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|adapter-&gt;watchdog_task
+comma
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+)paren
+)paren
+id|e1000_watchdog_task
+comma
+id|adapter
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -2739,6 +2779,11 @@ id|netdev-&gt;priv
 suffix:semicolon
 r_uint32
 id|manc
+suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5978,7 +6023,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * e1000_watchdog - Timer Call-back&n; * @data: pointer to netdev cast into an unsigned long&n; **/
+multiline_comment|/**&n; * e1000_watchdog - Timer Call-back&n; * @data: pointer to adapter cast into an unsigned long&n; **/
 r_static
 r_void
 DECL|function|e1000_watchdog
@@ -6002,6 +6047,27 @@ op_star
 )paren
 id|data
 suffix:semicolon
+multiline_comment|/* Do the rest outside of interrupt context */
+id|schedule_work
+c_func
+(paren
+op_amp
+id|adapter-&gt;watchdog_task
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|e1000_watchdog_task
+id|e1000_watchdog_task
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+(brace
 r_struct
 id|net_device
 op_star
