@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -1957,6 +1958,25 @@ id|file-&gt;f_op-&gt;mmap
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_EXEC
+)paren
+op_logical_and
+(paren
+id|file-&gt;f_vfsmnt-&gt;mnt_flags
+op_amp
+id|MNT_NOEXEC
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
 suffix:semicolon
 r_if
 c_cond
