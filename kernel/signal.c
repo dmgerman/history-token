@@ -4872,7 +4872,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Joy. Or not. Pthread wants us to wake up every thread&n; * in our parent group.&n; */
 DECL|function|__wake_up_parent
 r_static
-r_inline
 r_void
 id|__wake_up_parent
 c_func
