@@ -1120,6 +1120,16 @@ id|hcd
 suffix:semicolon
 r_extern
 r_void
+id|usb_hcd_resume_root_hub
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|usb_set_device_state
 c_func
 (paren

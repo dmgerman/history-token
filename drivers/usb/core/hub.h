@@ -473,6 +473,12 @@ id|activating
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|resume_root_hub
+r_int
+id|resume_root_hub
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|has_indicators
 r_int
 id|has_indicators
