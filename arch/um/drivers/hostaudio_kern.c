@@ -9,7 +9,31 @@ macro_line|#include &quot;linux/soundcard.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;init.h&quot;
-macro_line|#include &quot;hostaudio.h&quot;
+macro_line|#include &quot;os.h&quot;
+DECL|struct|hostaudio_state
+r_struct
+id|hostaudio_state
+(brace
+DECL|member|fd
+r_int
+id|fd
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|hostmixer_state
+r_struct
+id|hostmixer_state
+(brace
+DECL|member|fd
+r_int
+id|fd
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|HOSTAUDIO_DEV_DSP
+mdefine_line|#define HOSTAUDIO_DEV_DSP &quot;/dev/sound/dsp&quot;
+DECL|macro|HOSTAUDIO_DEV_MIXER
+mdefine_line|#define HOSTAUDIO_DEV_MIXER &quot;/dev/sound/mixer&quot;
 multiline_comment|/* Only changed from linux_main at boot time */
 DECL|variable|dsp
 r_char
@@ -168,7 +192,7 @@ op_star
 id|kbuf
 suffix:semicolon
 r_int
-id|err
+id|ret
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -203,24 +227,22 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
-id|hostaudio_read_user
+id|os_read_file
 c_func
 (paren
-id|state
+id|state-&gt;fd
 comma
 id|kbuf
 comma
 id|count
-comma
-id|ppos
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|ret
 OL
 l_int|0
 )paren
@@ -239,11 +261,11 @@ id|buffer
 comma
 id|kbuf
 comma
-id|err
+id|ret
 )paren
 )paren
 (brace
-id|err
+id|ret
 op_assign
 op_minus
 id|EFAULT
@@ -258,7 +280,7 @@ id|kbuf
 )paren
 suffix:semicolon
 r_return
-id|err
+id|ret
 suffix:semicolon
 )brace
 DECL|function|hostaudio_write
@@ -297,7 +319,7 @@ op_star
 id|kbuf
 suffix:semicolon
 r_int
-id|err
+id|ret
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -332,7 +354,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
 op_minus
 id|EFAULT
@@ -355,24 +377,22 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
-id|hostaudio_write_user
+id|os_write_file
 c_func
 (paren
-id|state
+id|state-&gt;fd
 comma
 id|kbuf
 comma
 id|count
-comma
-id|ppos
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|ret
 OL
 l_int|0
 )paren
@@ -390,7 +410,7 @@ id|kbuf
 )paren
 suffix:semicolon
 r_return
-id|err
+id|ret
 suffix:semicolon
 )brace
 DECL|function|hostaudio_poll
@@ -468,7 +488,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|err
+id|ret
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -532,12 +552,12 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|err
+id|ret
 op_assign
-id|hostaudio_ioctl_user
+id|os_ioctl_generic
 c_func
 (paren
-id|state
+id|state-&gt;fd
 comma
 id|cmd
 comma
@@ -602,7 +622,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|err
+id|ret
 suffix:semicolon
 )brace
 DECL|function|hostaudio_open
@@ -704,16 +724,25 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|hostaudio_open_user
+id|os_open_file
 c_func
 (paren
-id|state
+id|dsp
+comma
+id|of_set_rw
+c_func
+(paren
+id|OPENFLAGS
+c_func
+(paren
+)paren
 comma
 id|r
 comma
 id|w
+)paren
 comma
-id|dsp
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -724,6 +753,17 @@ OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;hostaudio_open failed to open &squot;%s&squot;, err = %d&bslash;n&quot;
+comma
+id|dsp
+comma
+op_minus
+id|ret
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -734,6 +774,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|state-&gt;fd
+op_assign
+id|ret
+suffix:semicolon
 id|file-&gt;private_data
 op_assign
 id|state
@@ -766,9 +810,6 @@ id|state
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -777,14 +818,26 @@ l_string|&quot;hostaudio: release called&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ret
-op_assign
-id|hostaudio_release_user
+r_if
+c_cond
+(paren
+id|state-&gt;fd
+op_ge
+l_int|0
+)paren
+(brace
+id|os_close_file
 c_func
 (paren
-id|state
+id|state-&gt;fd
 )paren
 suffix:semicolon
+id|state-&gt;fd
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -792,7 +845,7 @@ id|state
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* /dev/mixer file operations */
@@ -837,10 +890,10 @@ l_string|&quot;hostmixer: ioctl called&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-id|hostmixer_ioctl_mixdev_user
+id|os_ioctl_generic
 c_func
 (paren
-id|state
+id|state-&gt;fd
 comma
 id|cmd
 comma
@@ -947,16 +1000,25 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|hostmixer_open_mixdev_user
+id|os_open_file
 c_func
 (paren
-id|state
+id|mixer
+comma
+id|of_set_rw
+c_func
+(paren
+id|OPENFLAGS
+c_func
+(paren
+)paren
 comma
 id|r
 comma
 id|w
+)paren
 comma
-id|mixer
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -967,6 +1029,17 @@ OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;hostaudio_open_mixdev failed to open &squot;%s&squot;, err = %d&bslash;n&quot;
+comma
+id|dsp
+comma
+op_minus
+id|ret
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -977,6 +1050,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|state-&gt;fd
+op_assign
+id|ret
+suffix:semicolon
 id|file-&gt;private_data
 op_assign
 id|state
@@ -1009,9 +1086,6 @@ id|state
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -1020,14 +1094,26 @@ l_string|&quot;hostmixer: release called&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ret
-op_assign
-id|hostmixer_release_mixdev_user
+r_if
+c_cond
+(paren
+id|state-&gt;fd
+op_ge
+l_int|0
+)paren
+(brace
+id|os_close_file
 c_func
 (paren
-id|state
+id|state-&gt;fd
 )paren
 suffix:semicolon
+id|state-&gt;fd
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -1035,7 +1121,7 @@ id|state
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* kernel module operations */
