@@ -490,9 +490,16 @@ suffix:semicolon
 )brace
 id|frag
 op_assign
+(paren
+r_struct
+id|fraghdr
+op_star
+)paren
+(paren
 id|skb-&gt;data
 op_plus
 id|ptr
+)paren
 suffix:semicolon
 id|DEBUGP
 c_func

@@ -31,28 +31,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-DECL|struct|ahhdr
-r_struct
-id|ahhdr
-(brace
-DECL|member|nexthdr
-id|__u8
-id|nexthdr
-suffix:semicolon
-DECL|member|hdrlen
-id|__u8
-id|hdrlen
-suffix:semicolon
-DECL|member|reserved
-id|__u16
-id|reserved
-suffix:semicolon
-DECL|member|spi
-id|__u32
-id|spi
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Returns 1 if the spi is matched by the range, 0 otherwise */
 r_static
 r_inline
@@ -175,7 +153,7 @@ id|hotdrop
 )paren
 (brace
 r_struct
-id|ahhdr
+id|ip_auth_hdr
 op_star
 id|ah
 op_assign
@@ -459,7 +437,7 @@ r_int
 r_sizeof
 (paren
 r_struct
-id|ahhdr
+id|ip_auth_hdr
 )paren
 )paren
 (brace
@@ -474,9 +452,16 @@ suffix:semicolon
 )brace
 id|ah
 op_assign
+(paren
+r_struct
+id|ip_auth_hdr
+op_star
+)paren
+(paren
 id|skb-&gt;data
 op_plus
 id|ptr
+)paren
 suffix:semicolon
 id|DEBUGP
 c_func
