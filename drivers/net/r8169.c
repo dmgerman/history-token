@@ -3043,7 +3043,7 @@ ques
 c_cond
 id|TxVlanTag
 op_or
-id|cpu_to_be16
+id|swab16
 c_func
 (paren
 id|vlan_tx_tag_get
@@ -3234,7 +3234,11 @@ id|skb
 id|u32
 id|opts2
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc-&gt;opts2
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -3258,7 +3262,7 @@ id|skb
 comma
 id|tp-&gt;vlgrp
 comma
-id|be16_to_cpu
+id|swab16
 c_func
 (paren
 id|opts2
@@ -9588,7 +9592,11 @@ id|desc
 id|u32
 id|opts1
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc-&gt;opts1
+)paren
 suffix:semicolon
 id|u32
 id|status
