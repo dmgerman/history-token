@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.94 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.98 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -8801,9 +8801,23 @@ op_plus
 id|irq_ptr-&gt;irq
 suffix:semicolon
 multiline_comment|/* enables the time delay disablement facility. Don&squot;t care&n;&t; * whether it is really there (i.e. we haven&squot;t checked for&n;&t; * it) */
+r_if
+c_cond
+(paren
+id|css_general_characteristics.aif_tdd
+)paren
 id|scssc_area-&gt;word_with_d_bit
 op_assign
 l_int|0x10000000
+suffix:semicolon
+r_else
+id|QDIO_PRINT_WARN
+c_func
+(paren
+l_string|&quot;Time delay disablement facility &quot;
+"&bslash;"
+l_string|&quot;not available&bslash;n&quot;
+)paren
 suffix:semicolon
 id|result
 op_assign
