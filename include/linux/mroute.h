@@ -276,6 +276,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *&t;That&squot;s all usermode folks&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;net/sock.h&gt;
 r_extern
 r_int
 id|ip_mroute_setsockopt

@@ -49,8 +49,6 @@ DECL|macro|CRYPTO_UNSPEC
 mdefine_line|#define CRYPTO_UNSPEC&t;&t;&t;0
 DECL|macro|CRYPTO_MAX_ALG_NAME
 mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;&t;64
-DECL|macro|CRYPTO_MAX_CIPHER_BLOCK_SIZE
-mdefine_line|#define CRYPTO_MAX_CIPHER_BLOCK_SIZE&t;16
 r_struct
 id|scatterlist
 suffix:semicolon
@@ -411,6 +409,23 @@ comma
 r_int
 r_int
 id|nsg
+)paren
+suffix:semicolon
+DECL|member|cit_xor_block
+r_void
+(paren
+op_star
+id|cit_xor_block
+)paren
+(paren
+id|u8
+op_star
+id|dst
+comma
+r_const
+id|u8
+op_star
+id|src
 )paren
 suffix:semicolon
 )brace
