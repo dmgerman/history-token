@@ -1518,8 +1518,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|up_write

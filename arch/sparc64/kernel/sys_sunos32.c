@@ -489,8 +489,6 @@ comma
 id|oldbrk
 op_minus
 id|newbrk
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_goto
