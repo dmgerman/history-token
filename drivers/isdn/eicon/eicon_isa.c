@@ -267,7 +267,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;eicon_isa: illegal membase 0x%x for %s&bslash;n&quot;
+l_string|&quot;eicon_isa: invalid membase 0x%x for %s&bslash;n&quot;
 comma
 id|Mem
 comma
@@ -1544,7 +1544,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;eicon_isa_load: illegal irq: %d&bslash;n&quot;
+l_string|&quot;eicon_isa_load: invalid irq: %d&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren

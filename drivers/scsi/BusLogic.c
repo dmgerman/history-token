@@ -2362,7 +2362,7 @@ l_int|0
 id|BusLogic_Error
 c_func
 (paren
-l_string|&quot;BusLogic: IRQ Channel %d illegal for &quot;
+l_string|&quot;BusLogic: IRQ Channel %d invalid for &quot;
 l_string|&quot;MultiMaster Host Adapter&bslash;n&quot;
 comma
 l_int|NULL
@@ -3353,7 +3353,7 @@ l_int|0
 id|BusLogic_Error
 c_func
 (paren
-l_string|&quot;BusLogic: IRQ Channel %d illegal for &quot;
+l_string|&quot;BusLogic: IRQ Channel %d invalid for &quot;
 l_string|&quot;FlashPoint Host Adapter&bslash;n&quot;
 comma
 l_int|NULL
@@ -15409,7 +15409,7 @@ id|BusLogic_Error
 c_func
 (paren
 l_string|&quot;BusLogic: Invalid Driver Options &quot;
-l_string|&quot;(illegal I/O Address 0x%X)&bslash;n&quot;
+l_string|&quot;(invalid I/O Address 0x%X)&bslash;n&quot;
 comma
 l_int|NULL
 comma
@@ -15589,7 +15589,7 @@ id|BusLogic_Error
 c_func
 (paren
 l_string|&quot;BusLogic: Invalid Driver Options &quot;
-l_string|&quot;(illegal Queue Depth %d)&bslash;n&quot;
+l_string|&quot;(invalid Queue Depth %d)&bslash;n&quot;
 comma
 l_int|NULL
 comma
@@ -15730,7 +15730,7 @@ id|BusLogic_Error
 c_func
 (paren
 l_string|&quot;BusLogic: Invalid Driver Options &quot;
-l_string|&quot;(illegal Queue Depth %d)&bslash;n&quot;
+l_string|&quot;(invalid Queue Depth %d)&bslash;n&quot;
 comma
 l_int|NULL
 comma
@@ -16236,7 +16236,7 @@ id|BusLogic_Error
 c_func
 (paren
 l_string|&quot;BusLogic: Invalid Driver Options &quot;
-l_string|&quot;(illegal Bus Settle Time %d)&bslash;n&quot;
+l_string|&quot;(invalid Bus Settle Time %d)&bslash;n&quot;
 comma
 l_int|NULL
 comma

@@ -2903,7 +2903,6 @@ r_int
 id|irq
 )paren
 (brace
-r_static
 r_const
 r_int
 id|valid_irq

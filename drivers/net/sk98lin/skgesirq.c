@@ -1,7 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgesirq.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.65 $&n; * Date:&t;$Date: 2001/02/23 13:41:51 $&n; * Purpose:&t;Special IRQ module&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2000 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgesirq.c,v $&n; *&t;Revision 1.65  2001/02/23 13:41:51  gklug&n; *&t;fix: PHYS2INST should be used correctly for Dual Net operation&n; *&t;chg: do no longer work with older PNMI&n; *&t;&n; *&t;Revision 1.64  2001/02/15 11:27:04  rassmann&n; *&t;Working with RLMT v1 if SK_MAX_NETS undefined.&n; *&t;&n; *&t;Revision 1.63  2001/02/06 10:44:23  mkunz&n; *&t;- NetIndex added to interface functions of pnmi V4 with dual net support&n; *&t;&n; *&t;Revision 1.62  2001/01/31 15:31:41  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.61  2000/11/09 11:30:09  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&n; *&t;Revision 1.60  2000/10/18 12:37:48  cgoos&n; *&t;Reinserted the comment for version 1.56.&n; *&t;&n; *&t;Revision 1.59  2000/10/18 12:22:20  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.58  2000/09/28 13:06:04  gklug&n; *&t;fix: BCOM may NOT be touched if XMAC is in RESET state&n; *&t;&n; *&t;Revision 1.57  2000/09/08 12:38:39  cgoos&n; *&t;Added forgotten variable declaration.&n; *&t;&n; *&t;Revision 1.56  2000/09/08 08:12:13  cgoos&n; *&t;Changed handling of parity errors in SkGeHwErr (correct reset of error).&n; *&n; *&t;Revision 1.55  2000/06/19 08:36:25  cgoos&n; *&t;Changed comment.&n; *&t;&n; *&t;Revision 1.54  2000/05/22 08:45:57  malthoff&n; *&t;Fix: #10523 is valid for all BCom PHYs.&n; *&t;&n; *&t;Revision 1.53  2000/05/19 10:20:30  cgoos&n; *&t;Removed Solaris debug output code.&n; *&t;&n; *&t;Revision 1.52  2000/05/19 10:19:37  cgoos&n; *&t;Added PHY state check in HWLinkDown.&n; *&t;Move PHY interrupt code to IS_EXT_REG case in SkGeSirqIsr.&n; *&t;&n; *&t;Revision 1.51  2000/05/18 05:56:20  cgoos&n; *&t;Fixed typo.&n; *&t;&n; *&t;Revision 1.50  2000/05/17 12:49:49  malthoff&n; *&t;Fixes BCom link bugs (#10523).&n; *&t;&n; *&t;Revision 1.49  1999/12/17 11:02:50  gklug&n; *&t;fix: read PHY_STAT of Broadcom chip more often to assure good status&n; *&t;&n; *&t;Revision 1.48  1999/12/06 10:01:17  cgoos&n; *&t;Added SET function for Role.&n; *&t;&n; *&t;Revision 1.47  1999/11/22 13:34:24  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.46  1999/09/16 10:30:07  cgoos&n; *&t;Removed debugging output statement from Linux.&n; *&t;&n; *&t;Revision 1.45  1999/09/16 07:32:55  cgoos&n; *&t;Fixed dual-port copperfield bug (PHY_READ from resetted port).&n; *&t;Removed some unused variables.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:25:04  cgoos&n; *&t;Removed workaround for disabled interrupts in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 14:27:58  cgoos&n; *&t;Removed SENSE mode code from SkGePortCheckUpBcom.&n; *&t;&n; *&t;Revision 1.42  1999/07/26 09:16:54  cgoos&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.41  1999/05/19 07:28:59  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.40  1999/04/08 13:59:39  gklug&n; *&t;fix: problem with 3Com switches endless RESTARTs&n; *&t;&n; *&t;Revision 1.39  1999/03/08 10:10:52  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&t;&n; *&t;Revision 1.38  1999/03/08 09:49:03  gklug&n; *&t;fix: Bug using pAC instead of IoC, causing AIX problems&n; *&t;fix: change compare for Linux compiler bug workaround&n; *&t;&n; *&t;Revision 1.37  1999/01/28 14:51:33  gklug&n; *&t;fix: monitor for autosensing and extra RESETS the RX on wire counters&n; *&t;&n; *&t;Revision 1.36  1999/01/22 09:19:55  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&t;&n; *&t;Revision 1.35  1998/12/11 15:22:59  gklug&n; *&t;chg: autosensing: check for receive if manual mode was guessed&n; *&t;chg: simplified workaround for XMAC errata&n; *&t;chg: wait additional 100 ms before link goes up.&n; *&t;chg: autoneg timeout to 600 ms&n; *&t;chg: restart autoneg even if configured to autonegotiation&n; *&t;&n; *&t;Revision 1.34  1998/12/10 10:33:14  gklug&n; *&t;add: more debug messages&n; *&t;fix: do a new InitPhy if link went down (AutoSensing problem)&n; *&t;chg: Check for zero shorts if link is NOT up&n; *&t;chg: reset Port if link goes down&n; *&t;chg: wait additional 100 ms when link comes up to check shorts&n; *&t;fix: dummy read extended autoneg status to prevent link going down immediately&n; *&t;&n; *&t;Revision 1.33  1998/12/07 12:18:29  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&t;&n; *&t;Revision 1.32  1998/12/07 07:11:21  gklug&n; *&t;fix: compiler warning&n; *&t;&n; *&t;Revision 1.31  1998/12/02 09:29:05  gklug&n; *&t;fix: WA XMAC Errata: FCSCt check was not correct.&n; *&t;fix: WA XMAC Errata: Prec Counter were NOT updated in case of short checks.&n; *&t;fix: Clear Stat : now clears the Prev counters of all known Ports&n; *&t;&n; *&t;Revision 1.30  1998/12/01 10:54:15  gklug&n; *&t;dd: workaround for XMAC errata changed. Check RX count and CRC err Count, too.&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:01:53  gklug&n; *&t;fix: if MAC IRQ occurs during port down, this will be handled correctly&n; *&t;&n; *&t;Revision 1.28  1998/11/26 16:22:11  gklug&n; *&t;fix: bug in autosense if manual modes are used&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:50:06  gklug&n; *&t;fix: PNMI needs to set PLinkModeConf&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:51:58  gklug&n; *&t;add: AutoSensing functionalty&n; *&t;&n; *&t;Revision 1.25  1998/11/26 07:34:37  gklug&n; *&t;fix: Init PrevShorts when restarting port due to Link connection&n; *&t;&n; *&t;Revision 1.24  1998/11/25 10:57:32  gklug&n; *&t;fix: remove unreferenced local vars&n; *&t;&n; *&t;Revision 1.23  1998/11/25 08:26:40  gklug&n; *&t;fix: don&squot;t do a RESET on a starting or stopping port&n; *&t;&n; *&t;Revision 1.22  1998/11/24 13:29:44  gklug&n; *&t;add: Workaround for MAC parity errata&n; *&t;&n; *&t;Revision 1.21  1998/11/18 15:31:06  gklug&n; *&t;fix: lint bugs&n; *&t;&n; *&t;Revision 1.20  1998/11/18 12:58:54  gklug&n; *&t;fix: use PNMI query instead of hardware access&n; *&t;&n; *&t;Revision 1.19  1998/11/18 12:54:55  gklug&n; *&t;chg: add new workaround for XMAC Errata&n; *&t;add: short event counter monitoring on active link too&n; *&t;&n; *&t;Revision 1.18  1998/11/13 14:27:41  malthoff&n; *&t;Bug Fix: Packet Arbiter Timeout was not cleared correctly&n; *&t;for timeout on TX1 and TX2.&n; *&t;&n; *&t;Revision 1.17  1998/11/04 07:01:59  cgoos&n; *&t;Moved HW link poll sequence.&n; *&t;Added call to SkXmRxTxEnable.&n; *&t;&n; *&t;Revision 1.16  1998/11/03 13:46:03  gklug&n; *&t;add: functionality of SET_LMODE and SET_FLOW_MODE&n; *&t;fix: send RLMT LinkDown event when Port stop is given with LinkUp&n; *&t;&n; *&t;Revision 1.15  1998/11/03 12:56:47  gklug&n; *&t;fix: Needs more events&n; *&t;&n; *&t;Revision 1.14  1998/10/30 07:36:35  gklug&n; *&t;rmv: unnecessary code&n; *&t;&n; *&t;Revision 1.13  1998/10/29 15:21:57  gklug&n; *&t;add: Poll link feature for activating HW link&n; *&t;fix: Deactivate HWLink when Port STOP is given&n; *&t;&n; *&t;Revision 1.12  1998/10/28 07:38:57  cgoos&n; *&t;Checking link status at begin of SkHWLinkUp.&n; *&t;&n; *&t;Revision 1.11  1998/10/22 09:46:50  gklug&n; *&t;fix SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.10  1998/10/14 13:57:47  gklug&n; *&t;add: Port start/stop event&n; *&t;&n; *&t;Revision 1.9  1998/10/14 05:48:29  cgoos&n; *&t;Added definition for Para.&n; *&t;&n; *&t;Revision 1.8  1998/10/14 05:40:09  gklug&n; *&t;add: Hardware Linkup signal used&n; *&t;&n; *&t;Revision 1.7  1998/10/09 06:50:20  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&n; *&t;Revision 1.6  1998/10/08 09:11:49  gklug&n; *&t;add: clear IRQ commands&n; *&t;&n; *&t;Revision 1.5  1998/10/02 14:27:35  cgoos&n; *&t;Fixed some typos and wrong event names.&n; *&t;&n; *&t;Revision 1.4  1998/10/02 06:24:17  gklug&n; *&t;add: HW error function&n; *&t;fix: OUT macros&n; *&t;&n; *&t;Revision 1.3  1998/10/01 07:03:00  gklug&n; *&t;add: ISR for the usual interrupt source register&n; *&t;&n; *&t;Revision 1.2  1998/09/03 13:50:33  gklug&n; *&t;add: function prototypes&n; *&t;&n; *&t;Revision 1.1  1998/08/27 11:50:21  gklug&n; *&t;initial revision&n; *&t;&n; *&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *&t;Special Interrupt handler&n; *&n; *&t;The following abstract should show how this module is included&n; *&t;in the driver path:&n; *&n; *&t;In the ISR of the driver the bits for frame transmission complete and&n; *&t;for receive complete are checked and handled by the driver itself.&n; *&t;The bits of the slow path mask are checked after this and then the&n; *&t;entry into the so-called &quot;slow path&quot; is prepared. It is an implemetors&n; *&t;decision whether this is executed directly or just scheduled by&n; *&t;disabling the mask. In the interrupt service routine events may be&n; *&t;generated, so it would be a good idea to call the EventDispatcher&n; *&t;right after this ISR.&n; *&n; *&t;The Interrupt service register of the adapter is NOT read by this&n; *&t;module. SO if the drivers implemetor needs a while loop around the&n; *&t;slow data paths Interrupt bits, he needs to call the SkGeIsr() for&n; *&t;each loop entered.&n; *&n; *&t;However, the XMAC Interrupt status registers are read in a while loop.&n; *&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgesirq.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.91 $&n; * Date:&t;$Date: 2003/07/04 12:46:22 $&n; * Purpose:&t;Special IRQ module&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgesirq.c,v $&n; *&t;Revision 1.91  2003/07/04 12:46:22  rschmidt&n; *&t;Added debug messages in SkGePortCheckUpGmac().&n; *&t;Added error log message and new driver event SK_DRV_DOWNSHIFT_DET&n; *&t;for Downshift detection (Yukon-Copper).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/05/28 15:35:45  rschmidt&n; *&t;Added parameter AutoNeg in all SkGePortCheckUp...() to save code.&n; *&t;Added setting for AutoNeg only once in SkGePortCheckUp().&n; *&t;Moved defines for return codes of SkGePortCheckUp() to header file.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/05/13 17:32:20  mkarl&n; *&t;Removed links to RLMT and PNMI for SLIM driver (SK_SLIM).&n; *&t;Separated GENESIS and YUKON only code to reduce code size.&n; *&t;&n; *&t;Revision 1.88  2003/05/06 13:20:34  rschmidt&n; *&t;Changed workaround for Tx hang in half duplex only for Genesis.&n; *&t;Replaced SkPnmiGetVar() calls for Tx Octets Counter&n; *&t;with SkXmMacStatistic() in SkGeSirqIsr().&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.87  2003/04/28 09:18:31  rschmidt&n; *&t;Added increment for GITimeStampCnt (high dword for&n; *&t;Time Stamp Timer counter), when overflow IRQ occurs.&n; *&t;Disabled HW Error IRQ on 32-bit Yukon if sensor IRQ occurs&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Changed handling for HW Error IRQ in SkGeSirqIsr().&n; *&t;Added clearing of the software forced IRQ in SkGeSirqIsr().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/04/09 13:03:24  rschmidt&n; *&t;Added workaround for configuration of GPHY&squot;s Auto-negotiation&n; *&t;advertisement register after link down event in SkPhyIsrGmac().&n; *&t;&n; *&t;Revision 1.85  2003/04/08 16:39:02  rschmidt&n; *&t;Changed handling for different PhyTypes for source code&n; *&t;portability to PXE, UNDI.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/03/31 07:01:43  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2003/02/05 15:10:59  rschmidt&n; *&t;Fixed setting of PLinkSpeedUsed in SkHWLinkUp() when&n; *&t;auto-negotiation is disabled.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2003/01/29 13:34:33  rschmidt&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.81  2002/12/05 10:49:51  rschmidt&n; *&t;Fixed missing Link Down Event for fiber (Bug Id #10768)&n; *&t;Added reading of cable length when link is up&n; *&t;Removed testing of unused error bits in PHY ISR&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:15:21  rschmidt&n; *&t;Replaced SkPnmiGetVar() by ...MacStatistic() in SkMacParity().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/14 15:14:51  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() depending on GIChipRev (HW-Bug #8).&n; *&t;Added error messages for GPHY Auto-Negotiation Error and&n; *&t;FIFO Overflow/Underrun in SkPhyIsrGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.78  2002/10/10 15:54:29  mkarl&n; *&t;changes for PLinkSpeedUsed&n; *&t;&n; *&t;Revision 1.77  2002/09/12 08:58:51  rwahl&n; *&t;Retrieve counters needed for XMAC errata workarounds directly because&n; *&t;PNMI returns corrected counter values (e.g. #10620).&n; *&t;&n; *&t;Revision 1.76  2002/08/16 15:21:54  rschmidt&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.75  2002/08/12 13:50:47  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() by GMF_CLI_TX_FC instead of GMF_CLI_TX_PE (HW-Bug #8).&n; *&t;Added clearing of IS_IRQ_TIST_OV and IS_IRQ_SENSOR in SkGeHwErr().&n; *&t;Corrected handling of Link Up and Auto-Negotiation Over for GPHY.&n; *&t;in SkGePortCheckUpGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.74  2002/08/08 16:17:04  rschmidt&n; *&t;Added PhyType check for SK_HWEV_SET_ROLE event (copper only)&n; *&t;Changed Link Up check reading PHY Specific Status (YUKON)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.73  2002/07/15 18:36:53  rwahl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.72  2002/07/15 15:46:26  rschmidt&n; *&t;Added new event: SK_HWEV_SET_SPEED&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.71  2002/06/10 09:34:19  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.70  2002/06/05 08:29:18  rschmidt&n; *&t;SkXmRxTxEnable() replaced by SkMacRxTxEnable().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.69  2002/04/25 13:03:49  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Use of #ifdef OTHER_PHY to eliminate code for unused Phy types.&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacIrqDisable().&n; *&t;Added handling for GMAC FIFO in SkMacParity().&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Macros for XMAC PHY access PHY_READ(), PHY_WRITE() replaced&n; *&t;by functions SkXmPhyRead(), SkXmPhyWrite().&n; *&t;Disabling all PHY interrupts moved to SkMacIrqDisable().&n; *&t;Added handling for GPHY IRQ in SkGeSirqIsr().&n; *&t;Removed status parameter from MAC IRQ handler SkMacIrq().&n; *&t;Added SkGePortCheckUpGmac(), SkPhyIsrGmac() for GMAC.&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.68  2002/02/26 15:24:53  rwahl&n; *&t;Fix: no link with manual configuration (#10673). The previous fix for&n; *&t;#10639 was removed. So for RLMT mode = CLS the RLMT may switch to&n; *&t;misconfigured port. It should not occur for the other RLMT modes.&n; *&t;&n; *&t;Revision 1.67  2001/11/20 09:19:58  rwahl&n; *&t;Reworked bugfix #10639 (no dependency to RLMT mode).&n; *&t;&n; *&t;Revision 1.66  2001/10/26 07:52:53  afischer&n; *&t;Port switching bug in `check local link` mode&n; *&t;&n; *&t;Revision 1.65  2001/02/23 13:41:51  gklug&n; *&t;fix: PHYS2INST should be used correctly for Dual Net operation&n; *&t;chg: do no longer work with older PNMI&n; *&t;&n; *&t;Revision 1.64  2001/02/15 11:27:04  rassmann&n; *&t;Working with RLMT v1 if SK_MAX_NETS undefined.&n; *&t;&n; *&t;Revision 1.63  2001/02/06 10:44:23  mkunz&n; *&t;- NetIndex added to interface functions of pnmi V4 with dual net support&n; *&t;&n; *&t;Revision 1.62  2001/01/31 15:31:41  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.61  2000/11/09 11:30:09  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&n; *&t;Revision 1.60  2000/10/18 12:37:48  cgoos&n; *&t;Reinserted the comment for version 1.56.&n; *&t;&n; *&t;Revision 1.59  2000/10/18 12:22:20  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.58  2000/09/28 13:06:04  gklug&n; *&t;fix: BCom may NOT be touched if XMAC is in RESET state&n; *&t;&n; *&t;Revision 1.57  2000/09/08 12:38:39  cgoos&n; *&t;Added forgotten variable declaration.&n; *&t;&n; *&t;Revision 1.56  2000/09/08 08:12:13  cgoos&n; *&t;Changed handling of parity errors in SkGeHwErr (correct reset of error).&n; *&n; *&t;Revision 1.55  2000/06/19 08:36:25  cgoos&n; *&t;Changed comment.&n; *&t;&n; *&t;Revision 1.54  2000/05/22 08:45:57  malthoff&n; *&t;Fix: #10523 is valid for all BCom PHYs.&n; *&t;&n; *&t;Revision 1.53  2000/05/19 10:20:30  cgoos&n; *&t;Removed Solaris debug output code.&n; *&t;&n; *&t;Revision 1.52  2000/05/19 10:19:37  cgoos&n; *&t;Added PHY state check in HWLinkDown.&n; *&t;Move PHY interrupt code to IS_EXT_REG case in SkGeSirqIsr.&n; *&t;&n; *&t;Revision 1.51  2000/05/18 05:56:20  cgoos&n; *&t;Fixed typo.&n; *&t;&n; *&t;Revision 1.50  2000/05/17 12:49:49  malthoff&n; *&t;Fixes BCom link bugs (#10523).&n; *&t;&n; *&t;Revision 1.49  1999/12/17 11:02:50  gklug&n; *&t;fix: read PHY_STAT of Broadcom chip more often to assure good status&n; *&t;&n; *&t;Revision 1.48  1999/12/06 10:01:17  cgoos&n; *&t;Added SET function for Role.&n; *&t;&n; *&t;Revision 1.47  1999/11/22 13:34:24  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.46  1999/09/16 10:30:07  cgoos&n; *&t;Removed debugging output statement from Linux.&n; *&t;&n; *&t;Revision 1.45  1999/09/16 07:32:55  cgoos&n; *&t;Fixed dual-port copperfield bug (PHY_READ from resetted port).&n; *&t;Removed some unused variables.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:25:04  cgoos&n; *&t;Removed workaround for disabled interrupts in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 14:27:58  cgoos&n; *&t;Removed SENSE mode code from SkGePortCheckUpBcom.&n; *&t;&n; *&t;Revision 1.42  1999/07/26 09:16:54  cgoos&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.41  1999/05/19 07:28:59  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.40  1999/04/08 13:59:39  gklug&n; *&t;fix: problem with 3Com switches endless RESTARTs&n; *&t;&n; *&t;Revision 1.39  1999/03/08 10:10:52  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&t;&n; *&t;Revision 1.38  1999/03/08 09:49:03  gklug&n; *&t;fix: Bug using pAC instead of IoC, causing AIX problems&n; *&t;fix: change compare for Linux compiler bug workaround&n; *&t;&n; *&t;Revision 1.37  1999/01/28 14:51:33  gklug&n; *&t;fix: monitor for autosensing and extra RESETS the RX on wire counters&n; *&t;&n; *&t;Revision 1.36  1999/01/22 09:19:55  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&t;&n; *&t;Revision 1.35  1998/12/11 15:22:59  gklug&n; *&t;chg: autosensing: check for receive if manual mode was guessed&n; *&t;chg: simplified workaround for XMAC errata&n; *&t;chg: wait additional 100 ms before link goes up.&n; *&t;chg: autoneg timeout to 600 ms&n; *&t;chg: restart autoneg even if configured to autonegotiation&n; *&t;&n; *&t;Revision 1.34  1998/12/10 10:33:14  gklug&n; *&t;add: more debug messages&n; *&t;fix: do a new InitPhy if link went down (AutoSensing problem)&n; *&t;chg: Check for zero shorts if link is NOT up&n; *&t;chg: reset Port if link goes down&n; *&t;chg: wait additional 100 ms when link comes up to check shorts&n; *&t;fix: dummy read extended autoneg status to prevent link going down immediately&n; *&t;&n; *&t;Revision 1.33  1998/12/07 12:18:29  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&t;&n; *&t;Revision 1.32  1998/12/07 07:11:21  gklug&n; *&t;fix: compiler warning&n; *&t;&n; *&t;Revision 1.31  1998/12/02 09:29:05  gklug&n; *&t;fix: WA XMAC Errata: FCSCt check was not correct.&n; *&t;fix: WA XMAC Errata: Prec Counter were NOT updated in case of short checks.&n; *&t;fix: Clear Stat : now clears the Prev counters of all known Ports&n; *&t;&n; *&t;Revision 1.30  1998/12/01 10:54:15  gklug&n; *&t;dd: workaround for XMAC errata changed. Check RX count and CRC err Count, too.&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:01:53  gklug&n; *&t;fix: if MAC IRQ occurs during port down, this will be handled correctly&n; *&t;&n; *&t;Revision 1.28  1998/11/26 16:22:11  gklug&n; *&t;fix: bug in autosense if manual modes are used&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:50:06  gklug&n; *&t;fix: PNMI needs to set PLinkModeConf&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:51:58  gklug&n; *&t;add: AutoSensing functionalty&n; *&t;&n; *&t;Revision 1.25  1998/11/26 07:34:37  gklug&n; *&t;fix: Init PrevShorts when restarting port due to Link connection&n; *&t;&n; *&t;Revision 1.24  1998/11/25 10:57:32  gklug&n; *&t;fix: remove unreferenced local vars&n; *&t;&n; *&t;Revision 1.23  1998/11/25 08:26:40  gklug&n; *&t;fix: don&squot;t do a RESET on a starting or stopping port&n; *&t;&n; *&t;Revision 1.22  1998/11/24 13:29:44  gklug&n; *&t;add: Workaround for MAC parity errata&n; *&t;&n; *&t;Revision 1.21  1998/11/18 15:31:06  gklug&n; *&t;fix: lint bugs&n; *&t;&n; *&t;Revision 1.20  1998/11/18 12:58:54  gklug&n; *&t;fix: use PNMI query instead of hardware access&n; *&t;&n; *&t;Revision 1.19  1998/11/18 12:54:55  gklug&n; *&t;chg: add new workaround for XMAC Errata&n; *&t;add: short event counter monitoring on active link too&n; *&t;&n; *&t;Revision 1.18  1998/11/13 14:27:41  malthoff&n; *&t;Bug Fix: Packet Arbiter Timeout was not cleared correctly&n; *&t;for timeout on TX1 and TX2.&n; *&t;&n; *&t;Revision 1.17  1998/11/04 07:01:59  cgoos&n; *&t;Moved HW link poll sequence.&n; *&t;Added call to SkXmRxTxEnable.&n; *&t;&n; *&t;Revision 1.16  1998/11/03 13:46:03  gklug&n; *&t;add: functionality of SET_LMODE and SET_FLOW_MODE&n; *&t;fix: send RLMT LinkDown event when Port stop is given with LinkUp&n; *&t;&n; *&t;Revision 1.15  1998/11/03 12:56:47  gklug&n; *&t;fix: Needs more events&n; *&t;&n; *&t;Revision 1.14  1998/10/30 07:36:35  gklug&n; *&t;rmv: unnecessary code&n; *&t;&n; *&t;Revision 1.13  1998/10/29 15:21:57  gklug&n; *&t;add: Poll link feature for activating HW link&n; *&t;fix: Deactivate HWLink when Port STOP is given&n; *&t;&n; *&t;Revision 1.12  1998/10/28 07:38:57  cgoos&n; *&t;Checking link status at begin of SkHWLinkUp.&n; *&t;&n; *&t;Revision 1.11  1998/10/22 09:46:50  gklug&n; *&t;fix SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.10  1998/10/14 13:57:47  gklug&n; *&t;add: Port start/stop event&n; *&t;&n; *&t;Revision 1.9  1998/10/14 05:48:29  cgoos&n; *&t;Added definition for Para.&n; *&t;&n; *&t;Revision 1.8  1998/10/14 05:40:09  gklug&n; *&t;add: Hardware Linkup signal used&n; *&t;&n; *&t;Revision 1.7  1998/10/09 06:50:20  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&n; *&t;Revision 1.6  1998/10/08 09:11:49  gklug&n; *&t;add: clear IRQ commands&n; *&t;&n; *&t;Revision 1.5  1998/10/02 14:27:35  cgoos&n; *&t;Fixed some typos and wrong event names.&n; *&t;&n; *&t;Revision 1.4  1998/10/02 06:24:17  gklug&n; *&t;add: HW error function&n; *&t;fix: OUT macros&n; *&t;&n; *&t;Revision 1.3  1998/10/01 07:03:00  gklug&n; *&t;add: ISR for the usual interrupt source register&n; *&t;&n; *&t;Revision 1.2  1998/09/03 13:50:33  gklug&n; *&t;add: function prototypes&n; *&t;&n; *&t;Revision 1.1  1998/08/27 11:50:21  gklug&n; *&t;initial revision&n; *&t;&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *&t;Special Interrupt handler&n; *&n; *&t;The following abstract should show how this module is included&n; *&t;in the driver path:&n; *&n; *&t;In the ISR of the driver the bits for frame transmission complete and&n; *&t;for receive complete are checked and handled by the driver itself.&n; *&t;The bits of the slow path mask are checked after that and then the&n; *&t;entry into the so-called &quot;slow path&quot; is prepared. It is an implementors&n; *&t;decision whether this is executed directly or just scheduled by&n; *&t;disabling the mask. In the interrupt service routine some events may be&n; *&t;generated, so it would be a good idea to call the EventDispatcher&n; *&t;right after this ISR.&n; *&n; *&t;The Interrupt source register of the adapter is NOT read by this module.&n; *  SO if the drivers implementor needs a while loop around the&n; *&t;slow data paths interrupt bits, he needs to call the SkGeSirqIsr() for&n; *&t;each loop entered.&n; *&n; *&t;However, the MAC Interrupt status registers are read in a while loop.&n; *&n; */
+macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -10,13 +11,17 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: skgesirq.c,v 1.65 2001/02/23 13:41:51 gklug Exp $&quot;
+l_string|&quot;@(#) $Id: skgesirq.c,v 1.91 2003/07/04 12:46:22 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
+macro_line|#ifndef SK_SLIM
 macro_line|#include &quot;h/skgepnmi.h&quot;&t;&t;/* PNMI Definitions */
 macro_line|#include &quot;h/skrlmt.h&quot;&t;&t;/* RLMT Definitions */
-macro_line|#include &quot;h/skdrv2nd.h&quot;&t;&t;/* Adapter Control- and Driver specific Def. */
+macro_line|#endif
+macro_line|#include &quot;h/skdrv2nd.h&quot;&t;&t;/* Adapter Control and Driver specific Def. */
 multiline_comment|/* local function prototypes */
+macro_line|#ifdef GENESIS
 r_static
 r_int
 id|SkGePortCheckUpXmac
@@ -28,6 +33,8 @@ comma
 id|SK_IOC
 comma
 r_int
+comma
+id|SK_BOOL
 )paren
 suffix:semicolon
 r_static
@@ -41,32 +48,8 @@ comma
 id|SK_IOC
 comma
 r_int
-)paren
-suffix:semicolon
-r_static
-r_int
-id|SkGePortCheckUpLone
-c_func
-(paren
-id|SK_AC
-op_star
 comma
-id|SK_IOC
-comma
-r_int
-)paren
-suffix:semicolon
-r_static
-r_int
-id|SkGePortCheckUpNat
-c_func
-(paren
-id|SK_AC
-op_star
-comma
-id|SK_IOC
-comma
-r_int
+id|SK_BOOL
 )paren
 suffix:semicolon
 r_static
@@ -84,6 +67,70 @@ comma
 id|SK_U16
 )paren
 suffix:semicolon
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_static
+r_int
+id|SkGePortCheckUpGmac
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
+r_static
+r_void
+id|SkPhyIsrGmac
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_U16
+)paren
+suffix:semicolon
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+r_static
+r_int
+id|SkGePortCheckUpLone
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
+r_static
+r_int
+id|SkGePortCheckUpNat
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
 r_static
 r_void
 id|SkPhyIsrLone
@@ -99,30 +146,32 @@ comma
 id|SK_U16
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Define an array of RX counter which are checked&n; * in AutoSense mode to check whether a link is not able to autonegotiate.&n; */
-DECL|variable|SkGeRxOids
+macro_line|#endif /* OTHER_PHY */
+macro_line|#ifdef GENESIS
+multiline_comment|/*&n; * array of Rx counter from XMAC which are checked&n; * in AutoSense mode to check whether a link is not able to auto-negotiate.&n; */
+DECL|variable|SkGeRxRegs
 r_static
 r_const
-id|SK_U32
-id|SkGeRxOids
+id|SK_U16
+id|SkGeRxRegs
 (braket
 )braket
 op_assign
 (brace
-id|OID_SKGE_STAT_RX_64
+id|XM_RXF_64B
 comma
-id|OID_SKGE_STAT_RX_127
+id|XM_RXF_127B
 comma
-id|OID_SKGE_STAT_RX_255
+id|XM_RXF_255B
 comma
-id|OID_SKGE_STAT_RX_511
+id|XM_RXF_511B
 comma
-id|OID_SKGE_STAT_RX_1023
+id|XM_RXF_1023B
 comma
-id|OID_SKGE_STAT_RX_MAX
-comma
+id|XM_RXF_MAX_SZ
 )brace
 suffix:semicolon
+macro_line|#endif /* GENESIS */
 macro_line|#ifdef __C2MAN__
 multiline_comment|/*&n; *&t;Special IRQ function&n; *&n; *&t;General Description:&n; *&n; */
 DECL|function|intro
@@ -133,15 +182,9 @@ c_func
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/* Define return codes of SkGePortCheckUp and CheckShort. */
-DECL|macro|SK_HW_PS_NONE
-mdefine_line|#define&t;SK_HW_PS_NONE&t;&t;0&t;/* No action needed */
-DECL|macro|SK_HW_PS_RESTART
-mdefine_line|#define&t;SK_HW_PS_RESTART&t;1&t;/* Restart needed */
-DECL|macro|SK_HW_PS_LINK
-mdefine_line|#define&t;SK_HW_PS_LINK&t;&t;2&t;/* Link Up actions needed */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWInitDefSense() - Default Autosensing mode initialization&n; *&n; * Description:&n; *&t;This function handles the Hardware link down signal&n; *&n; * Note:&n; *&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWInitDefSense() - Default Autosensing mode initialization&n; *&n; * Description: sets the PLinkMode for HWInit&n; *&n; * Returns: N/A&n; */
 DECL|function|SkHWInitDefSense
+r_static
 r_void
 id|SkHWInitDefSense
 c_func
@@ -164,6 +207,7 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|pPrt
 op_assign
 op_amp
@@ -220,8 +264,10 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* SkHWInitDefSense */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWSenseGetNext() - GetNextAutosensing Mode&n; *&n; * Description:&n; *&t;This function handles the AutoSensing&n; *&n; * Note:&n; *&n; */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWSenseGetNext() - Get Next Autosensing Mode&n; *&n; * Description: gets the appropriate next mode&n; *&n; * Note:&n; *&n; */
 DECL|function|SkHWSenseGetNext
+r_static
 id|SK_U8
 id|SkHWSenseGetNext
 c_func
@@ -244,6 +290,7 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|pPrt
 op_assign
 op_amp
@@ -261,14 +308,15 @@ c_cond
 (paren
 id|pPrt-&gt;PLinkModeConf
 op_ne
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOSENSE
 )paren
 (brace
 multiline_comment|/* Leave all as configured */
 r_return
-(paren
 id|pPrt-&gt;PLinkModeConf
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -276,12 +324,18 @@ c_cond
 (paren
 id|pPrt-&gt;PLinkMode
 op_eq
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOFULL
 )paren
 (brace
 multiline_comment|/* Return next mode AUTOBOTH */
 r_return
 (paren
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOBOTH
 )paren
 suffix:semicolon
@@ -289,13 +343,17 @@ suffix:semicolon
 multiline_comment|/* Return default autofull */
 r_return
 (paren
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOFULL
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkHWSenseGetNext */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWSenseSetNext() - Autosensing Set next mode&n; *&n; * Description:&n; *&t;This function sets the appropriate next mode.&n; *&n; * Note:&n; *&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWSenseSetNext() - Autosensing Set next mode&n; *&n; * Description:&t;sets the appropriate next mode&n; *&n; * Returns: N/A&n; */
 DECL|function|SkHWSenseSetNext
+r_static
 r_void
 id|SkHWSenseSetNext
 c_func
@@ -322,6 +380,7 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|pPrt
 op_assign
 op_amp
@@ -339,6 +398,9 @@ c_cond
 (paren
 id|pPrt-&gt;PLinkModeConf
 op_ne
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOSENSE
 )paren
 (brace
@@ -374,7 +436,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* SkHWSenseSetNext */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWLinkDown() - Link Down handling&n; *&n; * Description:&n; *&t;This function handles the Hardware link down signal&n; *&n; * Note:&n; *&n; */
+macro_line|#endif /* GENESIS */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWLinkDown() - Link Down handling&n; *&n; * Description: handles the hardware link down signal&n; *&n; * Returns: N/A&n; */
 DECL|function|SkHWLinkDown
 r_void
 id|SkHWLinkDown
@@ -398,9 +461,7 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
-id|SK_U16
-id|Word
-suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|pPrt
 op_assign
 op_amp
@@ -409,152 +470,29 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-multiline_comment|/* Disable all XMAC interrupts. */
-id|XM_OUT16
+multiline_comment|/* Disable all MAC interrupts */
+id|SkMacIrqDisable
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
 id|Port
-comma
-id|XM_IMSK
-comma
-l_int|0xffff
 )paren
 suffix:semicolon
-multiline_comment|/* Disable Receiver and Transmitter. */
-id|XM_IN16
+multiline_comment|/* Disable Receiver and Transmitter */
+id|SkMacRxTxDisable
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
 id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
-id|Word
 )paren
 suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-id|Word
-op_amp
-op_complement
-(paren
-id|XM_MMU_ENA_RX
-op_or
-id|XM_MMU_ENA_TX
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Disable all PHY interrupts. */
-r_switch
-c_cond
-(paren
-id|pPrt-&gt;PhyType
-)paren
-(brace
-r_case
-id|SK_PHY_BCOM
-suffix:colon
-multiline_comment|/* Make sure that PHY is initialized. */
-r_if
-c_cond
-(paren
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PState
-)paren
-(brace
-multiline_comment|/* NOT allowed if BCOM is in RESET state */
-multiline_comment|/* Workaround BCOM Errata (#10523) all BCom. */
-multiline_comment|/* Disable Power Management if link is down. */
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_BCOM_AUX_CTRL
-comma
-op_amp
-id|Word
-)paren
-suffix:semicolon
-id|PHY_WRITE
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_BCOM_AUX_CTRL
-comma
-id|Word
-op_or
-id|PHY_B_AC_DIS_PM
-)paren
-suffix:semicolon
-id|PHY_WRITE
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_BCOM_INT_MASK
-comma
-l_int|0xffff
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_LONE
-suffix:colon
-id|PHY_WRITE
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_LONE_INT_ENAB
-comma
-l_int|0x0
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_NAT
-suffix:colon
-multiline_comment|/* todo: National&n;&t;&t;&t;PHY_WRITE(IoC, pPrt, Port, PHY_NAT_INT_MASK, 0xffff); */
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* Init default sense mode. */
+multiline_comment|/* Init default sense mode */
 id|SkHWInitDefSense
 c_func
 (paren
@@ -568,8 +506,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pPrt-&gt;PHWLinkUp
+op_eq
+id|SK_FALSE
 )paren
 (brace
 r_return
@@ -591,7 +530,7 @@ id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set Link to DOWN. */
+multiline_comment|/* Set Link to DOWN */
 id|pPrt-&gt;PHWLinkUp
 op_assign
 id|SK_FALSE
@@ -599,14 +538,24 @@ suffix:semicolon
 multiline_comment|/* Reset Port stati */
 id|pPrt-&gt;PLinkModeStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_STAT_UNKNOWN
 suffix:semicolon
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_FLOW_STAT_NONE
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reinit Phy especially when the AutoSense default is set now.&n;&t; */
-id|SkXmInitPhy
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_INDETERMINATED
+suffix:semicolon
+multiline_comment|/* Re-init Phy especially when the AutoSense default is set now */
+id|SkMacInitPhy
 c_func
 (paren
 id|pAC
@@ -618,12 +567,12 @@ comma
 id|SK_FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* GP0: used for workaround of Rev. C Errata 2. */
-multiline_comment|/* Do NOT signal to RLMT. */
-multiline_comment|/* Do NOT start the timer here. */
+multiline_comment|/* GP0: used for workaround of Rev. C Errata 2 */
+multiline_comment|/* Do NOT signal to RLMT */
+multiline_comment|/* Do NOT start the timer here */
 )brace
 multiline_comment|/* SkHWLinkDown */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWLinkUp() - Link Up handling&n; *&n; * Description:&n; *&t;This function handles the Hardware link up signal&n; *&n; * Note:&n; *&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkHWLinkUp() - Link Up handling&n; *&n; * Description: handles the hardware link up signal&n; *&n; * Returns: N/A&n; */
 DECL|function|SkHWLinkUp
 r_void
 id|SkHWLinkUp
@@ -647,6 +596,7 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|pPrt
 op_assign
 op_amp
@@ -675,6 +625,9 @@ id|SK_FALSE
 suffix:semicolon
 id|pPrt-&gt;PLinkModeStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_STAT_UNKNOWN
 suffix:semicolon
 r_if
@@ -682,20 +635,67 @@ c_cond
 (paren
 id|pPrt-&gt;PLinkMode
 op_ne
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOHALF
 op_logical_and
 id|pPrt-&gt;PLinkMode
 op_ne
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOFULL
 op_logical_and
 id|pPrt-&gt;PLinkMode
 op_ne
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOBOTH
 )paren
 (brace
-multiline_comment|/* Link is up and no Autonegotiation should be done */
-multiline_comment|/* Configure Port */
-multiline_comment|/* Set Link Mode */
+multiline_comment|/* Link is up and no Auto-negotiation should be done */
+multiline_comment|/* Link speed should be the configured one */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+)paren
+(brace
+r_case
+id|SK_LSPEED_AUTO
+suffix:colon
+multiline_comment|/* default is 1000 Mbps */
+r_case
+id|SK_LSPEED_1000MBPS
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_1000MBPS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_100MBPS
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_100MBPS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_10MBPS
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_10MBPS
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Set Link Mode Status */
 r_if
 c_cond
 (paren
@@ -713,16 +713,25 @@ r_else
 (brace
 id|pPrt-&gt;PLinkModeStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_STAT_HALF
 suffix:semicolon
 )brace
-multiline_comment|/* No flow control without autonegotiation */
+multiline_comment|/* No flow control without auto-negotiation */
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_FLOW_STAT_NONE
 suffix:semicolon
-multiline_comment|/* RX/TX enable */
-id|SkXmRxTxEnable
+multiline_comment|/* enable Rx/Tx */
+(paren
+r_void
+)paren
+id|SkMacRxTxEnable
 c_func
 (paren
 id|pAC
@@ -735,7 +744,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkHWLinkUp */
-multiline_comment|/******************************************************************************&n; *&n; * SkMacParity&t;- does everything to handle MAC parity errors correctly&n; *&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacParity() - MAC parity workaround&n; *&n; * Description: handles MAC parity errors correctly&n; *&n; * Returns: N/A&n; */
 DECL|function|SkMacParity
 r_static
 r_void
@@ -764,13 +773,10 @@ op_star
 id|pPrt
 suffix:semicolon
 multiline_comment|/* GIni Port struct pointer */
-id|SK_U64
+id|SK_U32
 id|TxMax
 suffix:semicolon
-multiline_comment|/* TxMax Counter */
-r_int
-id|Len
-suffix:semicolon
+multiline_comment|/* Tx Max Size Counter */
 id|pPrt
 op_assign
 op_amp
@@ -779,7 +785,14 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-multiline_comment|/* Clear IRQ */
+multiline_comment|/* Clear IRQ Tx Parity Error */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 id|SK_OUT16
 c_func
 (paren
@@ -796,6 +809,52 @@ comma
 id|MFF_CLR_PERR
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* HW-Bug #8: cleared by GMF_CLI_TX_FC instead of GMF_CLI_TX_PE */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+(paren
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON
+op_logical_and
+id|pAC-&gt;GIni.GIChipRev
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+id|GMF_CLI_TX_FC
+suffix:colon
+id|GMF_CLI_TX_PE
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
 r_if
 c_cond
 (paren
@@ -877,51 +936,74 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Check whether frames with a size of 1k were sent */
-id|Len
-op_assign
-r_sizeof
+macro_line|#ifdef GENESIS
+r_if
+c_cond
 (paren
-id|SK_U64
+id|pAC-&gt;GIni.GIGenesis
 )paren
-suffix:semicolon
-id|SkPnmiGetVar
+(brace
+multiline_comment|/* Snap statistic counters */
+(paren
+r_void
+)paren
+id|SkXmUpdateStats
 c_func
 (paren
 id|pAC
 comma
 id|IoC
 comma
-id|OID_SKGE_STAT_TX_MAX
-comma
-(paren
-r_char
-op_star
+id|Port
 )paren
-op_amp
-id|TxMax
-comma
-op_amp
-id|Len
-comma
+suffix:semicolon
 (paren
-id|SK_U32
+r_void
 )paren
-id|SK_PNMI_PORT_PHYS2INST
+id|SkXmMacStatistic
 c_func
 (paren
 id|pAC
 comma
-id|Port
-)paren
+id|IoC
 comma
-id|pAC-&gt;Rlmt.Port
-(braket
 id|Port
-)braket
-dot
-id|Net-&gt;NetNumber
+comma
+id|XM_TXF_MAX_SZ
+comma
+op_amp
+id|TxMax
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+(paren
+r_void
+)paren
+id|SkGmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|GM_TXF_1518B
+comma
+op_amp
+id|TxMax
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
 r_if
 c_cond
 (paren
@@ -938,7 +1020,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkMacParity */
-multiline_comment|/******************************************************************************&n; *&n; *&t;Hardware Error service routine&n; *&n; * Description:&n; *&n; * Notes:&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeHwErr() - Hardware Error service routine&n; *&n; * Description: handles all HW Error interrupts&n; *&n; * Returns: N/A&n; */
 DECL|function|SkGeHwErr
 r_static
 r_void
@@ -971,22 +1053,27 @@ c_cond
 (paren
 id|HwStatus
 op_amp
-id|IS_IRQ_MST_ERR
-)paren
-op_logical_or
 (paren
-id|HwStatus
-op_amp
+id|IS_IRQ_MST_ERR
+op_or
 id|IS_IRQ_STAT
 )paren
 )paren
+op_ne
+l_int|0
+)paren
 (brace
+multiline_comment|/* PCI Errors occured */
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_IRQ_STAT
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_ERR_LOG
@@ -1018,16 +1105,6 @@ id|SKERR_SIRQ_E012MSG
 suffix:semicolon
 )brace
 multiline_comment|/* Reset all bits in the PCI STATUS register */
-id|SK_OUT8
-c_func
-(paren
-id|IoC
-comma
-id|B2_TST_CTRL1
-comma
-id|TST_CFG_WRITE_ON
-)paren
-suffix:semicolon
 id|SK_IN16
 c_func
 (paren
@@ -1043,6 +1120,16 @@ op_amp
 id|Word
 )paren
 suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_TST_CTRL1
+comma
+id|TST_CFG_WRITE_ON
+)paren
+suffix:semicolon
 id|SK_OUT16
 c_func
 (paren
@@ -1054,9 +1141,14 @@ c_func
 id|PCI_STATUS
 )paren
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|Word
 op_or
 id|PCI_ERRBITS
+)paren
 )paren
 suffix:semicolon
 id|SK_OUT8
@@ -1086,13 +1178,24 @@ id|Para
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef GENESIS
 r_if
 c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|HwStatus
 op_amp
 id|IS_NO_STAT_M1
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/* Ignore it */
 multiline_comment|/* This situation is also indicated in the descriptor */
@@ -1115,11 +1218,15 @@ suffix:semicolon
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|HwStatus
 op_amp
 id|IS_NO_STAT_M2
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/* Ignore it */
 multiline_comment|/* This situation is also indicated in the descriptor */
@@ -1143,9 +1250,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_NO_TIST_M1
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Ignore it */
@@ -1170,9 +1281,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_NO_TIST_M2
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Ignore it */
@@ -1194,12 +1309,86 @@ id|MFF_CLR_INTIST
 )paren
 suffix:semicolon
 )brace
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
 r_if
 c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* This is necessary only for Rx timing measurements */
+r_if
+c_cond
+(paren
+(paren
+id|HwStatus
+op_amp
+id|IS_IRQ_TIST_OV
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* increment Time Stamp Timer counter (high) */
+id|pAC-&gt;GIni.GITimeStampCnt
+op_increment
+suffix:semicolon
+multiline_comment|/* Clear Time Stamp Timer IRQ */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_TI_ST_CTRL
+comma
+(paren
+id|SK_U8
+)paren
+id|GMT_ST_CLR_IRQ
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|HwStatus
+op_amp
+id|IS_IRQ_SENSOR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* no sensors on 32-bit Yukon */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon32Bit
+)paren
+(brace
+multiline_comment|/* disable HW Error IRQ */
+id|pAC-&gt;GIni.GIValIrqMask
+op_and_assign
+op_complement
+id|IS_HW_ERR
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif /* YUKON */
+r_if
+c_cond
+(paren
 (paren
 id|HwStatus
 op_amp
 id|IS_RAM_RD_PAR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_OUT16
@@ -1244,9 +1433,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_RAM_WR_PAR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_OUT16
@@ -1291,9 +1484,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_M1_PAR_ERR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkMacParity
@@ -1310,9 +1507,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_M2_PAR_ERR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkMacParity
@@ -1329,9 +1530,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_R1_PAR_ERR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -1396,9 +1601,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|HwStatus
 op_amp
 id|IS_R2_PAR_ERR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -1462,7 +1671,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkGeHwErr */
-multiline_comment|/******************************************************************************&n; *&n; *&t;Interrupt service routine&n; *&n; * Description:&n; *&n; * Notes:&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeSirqIsr() - Special Interrupt Service Routine&n; *&n; * Description: handles all non data transfer specific interrupts (slow path)&n; *&n; * Returns: N/A&n; */
 DECL|function|SkGeSirqIsr
 r_void
 id|SkGeSirqIsr
@@ -1488,18 +1697,35 @@ suffix:semicolon
 id|SK_U32
 id|RegVal32
 suffix:semicolon
-multiline_comment|/* Read register Value */
+multiline_comment|/* Read register value */
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
 id|SK_U16
-id|XmIsr
+id|PhyInt
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
+(paren
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_HW_ERR
 )paren
+op_amp
+id|pAC-&gt;GIni.GIValIrqMask
+)paren
+op_ne
+l_int|0
+)paren
 (brace
+multiline_comment|/* read the HW Error Interrupt source */
 id|SK_IN32
 c_func
 (paren
@@ -1523,9 +1749,10 @@ id|RegVal32
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Packet Timeout interrupts&n;&t; */
-multiline_comment|/* Check whether XMACs are correctly initialized */
+multiline_comment|/* Check whether MACs are correctly initialized */
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|Istatus
@@ -1536,17 +1763,21 @@ op_or
 id|IS_PA_TO_TX1
 )paren
 )paren
+op_ne
+l_int|0
+)paren
 op_logical_and
-op_logical_neg
 id|pAC-&gt;GIni.GP
 (braket
 id|MAC_1
 )braket
 dot
 id|PState
+op_eq
+id|SK_PRT_RESET
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
+multiline_comment|/* MAC 1 was not initialized but Packet timeout occured */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -1566,6 +1797,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|Istatus
 op_amp
 (paren
@@ -1574,17 +1806,21 @@ op_or
 id|IS_PA_TO_TX2
 )paren
 )paren
+op_ne
+l_int|0
+)paren
 op_logical_and
-op_logical_neg
 id|pAC-&gt;GIni.GP
 (braket
 id|MAC_2
 )braket
 dot
 id|PState
+op_eq
+id|SK_PRT_RESET
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
+multiline_comment|/* MAC 2 was not initialized but Packet timeout occured */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -1603,9 +1839,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_PA_TO_RX1
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Means network is filling us up */
@@ -1637,9 +1877,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_PA_TO_RX2
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Means network is filling us up */
@@ -1671,20 +1915,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_PA_TO_TX1
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-r_int
-r_int
-id|Len
-suffix:semicolon
-id|SK_U64
-id|Octets
-suffix:semicolon
-id|SK_GEPORT
-op_star
 id|pPrt
 op_assign
 op_amp
@@ -1704,7 +1943,14 @@ comma
 id|PA_CLR_TO_TX1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * workaround: if in half duplex mode, check for tx hangup.&n;&t;&t; * Read number of TX&squot;ed bytes, wait for 10 ms, then compare&n;&t;&t; * the number with current value. If nothing changed, we&n;&t;&t; * assume that tx is hanging and do a FIFO flush (see event&n;&t;&t; * routine).&n;&t;&t; */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * workaround: if in half duplex mode, check for Tx hangup.&n;&t;&t;&t; * Read number of TX&squot;ed bytes, wait for 10 ms, then compare&n;&t;&t;&t; * the number with current value. If nothing changed, we assume&n;&t;&t;&t; * that Tx is hanging and do a FIFO flush (see event routine).&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1722,11 +1968,12 @@ op_logical_neg
 id|pPrt-&gt;HalfDupTimerActive
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * many more pack. arb. timeouts may come in between,&n;&t;&t;&t; * we ignore those&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * many more pack. arb. timeouts may come in between,&n;&t;&t;&t;&t; * we ignore those&n;&t;&t;&t;&t; */
 id|pPrt-&gt;HalfDupTimerActive
 op_assign
 id|SK_TRUE
 suffix:semicolon
+macro_line|#ifdef XXX
 id|Len
 op_assign
 r_sizeof
@@ -1776,6 +2023,70 @@ id|pPrt-&gt;LastOctets
 op_assign
 id|Octets
 suffix:semicolon
+macro_line|#endif /* XXX */
+multiline_comment|/* Snap statistic counters */
+(paren
+r_void
+)paren
+id|SkXmUpdateStats
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|0
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|0
+comma
+id|XM_TXO_OK_HI
+comma
+op_amp
+id|RegVal32
+)paren
+suffix:semicolon
+id|pPrt-&gt;LastOctets
+op_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal32
+op_lshift
+l_int|32
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|0
+comma
+id|XM_TXO_OK_LO
+comma
+op_amp
+id|RegVal32
+)paren
+suffix:semicolon
+id|pPrt-&gt;LastOctets
+op_add_assign
+id|RegVal32
+suffix:semicolon
 id|Para.Para32
 (braket
 l_int|0
@@ -1804,23 +2115,20 @@ id|Para
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* GENESIS */
+)brace
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_PA_TO_TX2
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-r_int
-r_int
-id|Len
-suffix:semicolon
-id|SK_U64
-id|Octets
-suffix:semicolon
-id|SK_GEPORT
-op_star
 id|pPrt
 op_assign
 op_amp
@@ -1840,7 +2148,14 @@ comma
 id|PA_CLR_TO_TX2
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * workaround: see above&n;&t;&t; */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* workaround: see above */
 r_if
 c_cond
 (paren
@@ -1862,6 +2177,7 @@ id|pPrt-&gt;HalfDupTimerActive
 op_assign
 id|SK_TRUE
 suffix:semicolon
+macro_line|#ifdef XXX
 id|Len
 op_assign
 r_sizeof
@@ -1911,6 +2227,70 @@ id|pPrt-&gt;LastOctets
 op_assign
 id|Octets
 suffix:semicolon
+macro_line|#endif /* XXX */
+multiline_comment|/* Snap statistic counters */
+(paren
+r_void
+)paren
+id|SkXmUpdateStats
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|1
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|1
+comma
+id|XM_TXO_OK_HI
+comma
+op_amp
+id|RegVal32
+)paren
+suffix:semicolon
+id|pPrt-&gt;LastOctets
+op_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal32
+op_lshift
+l_int|32
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+l_int|1
+comma
+id|XM_TXO_OK_LO
+comma
+op_amp
+id|RegVal32
+)paren
+suffix:semicolon
+id|pPrt-&gt;LastOctets
+op_add_assign
+id|RegVal32
+suffix:semicolon
 id|Para.Para32
 (braket
 l_int|0
@@ -1939,13 +2319,19 @@ id|Para
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Check interrupts of the particular queues.&n;&t; */
+macro_line|#endif /* GENESIS */
+)brace
+multiline_comment|/* Check interrupts of the particular queues */
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_R1_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2012,9 +2398,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_R2_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2081,9 +2471,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_XS1_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2150,9 +2544,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_XA1_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2219,9 +2617,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_XS2_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2288,9 +2690,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_XA2_C
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Clear IRQ */
@@ -2354,30 +2760,20 @@ id|Para
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * External reg interrupt.&n;&t; */
+multiline_comment|/* External reg interrupt */
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_EXT_REG
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-id|SK_U16
-id|PhyInt
-suffix:semicolon
-id|SK_U16
-id|PhyIMsk
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-multiline_comment|/* GIni Port struct pointer */
-multiline_comment|/* Test IRQs from PHY. */
+multiline_comment|/* Test IRQs from PHY */
 r_for
 c_loop
 (paren
@@ -2401,6 +2797,24 @@ id|pAC-&gt;GIni.GP
 id|i
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PState
+op_eq
+id|SK_PRT_RESET
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 r_switch
 c_cond
 (paren
@@ -2415,18 +2829,12 @@ suffix:semicolon
 r_case
 id|SK_PHY_BCOM
 suffix:colon
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PState
-)paren
-(brace
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|i
 comma
@@ -2436,61 +2844,17 @@ op_amp
 id|PhyInt
 )paren
 suffix:semicolon
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|i
-comma
-id|PHY_BCOM_INT_MASK
-comma
-op_amp
-id|PhyIMsk
-)paren
-suffix:semicolon
-macro_line|#ifdef xDEBUG
 r_if
 c_cond
 (paren
-id|PhyInt
-op_amp
-id|PhyIMsk
-)paren
-(brace
-id|CMSMPrintString
-c_func
-(paren
-id|pAC-&gt;pConfigTable
-comma
-id|MSG_TYPE_RUNTIME_INFO
-comma
-l_string|&quot;SirqIsr - Stat: %x&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|PhyInt
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* DEBUG */
-r_if
-c_cond
 (paren
 id|PhyInt
 op_amp
 op_complement
-id|PhyIMsk
+id|PHY_B_DEF_MSK
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_DBG_MSG
@@ -2503,13 +2867,11 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;Port %d Bcom Int: %x Mask: %x&bslash;n&quot;
+l_string|&quot;Port %d Bcom Int: 0x%04X&bslash;n&quot;
 comma
 id|i
 comma
 id|PhyInt
-comma
-id|PhyIMsk
 )paren
 )paren
 suffix:semicolon
@@ -2526,18 +2888,18 @@ id|PhyInt
 )paren
 suffix:semicolon
 )brace
-)brace
 r_break
 suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|i
 comma
@@ -2547,27 +2909,16 @@ op_amp
 id|PhyInt
 )paren
 suffix:semicolon
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|i
-comma
-id|PHY_LONE_INT_ENAB
-comma
-op_amp
-id|PhyIMsk
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|PhyInt
 op_amp
-id|PhyIMsk
+id|PHY_L_DEF_MSK
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_DBG_MSG
@@ -2580,13 +2931,11 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;Port %d  Lone Int: %x Mask: %x&bslash;n&quot;
+l_string|&quot;Port %d Lone Int: %x&bslash;n&quot;
 comma
 id|i
 comma
 id|PhyInt
-comma
-id|PhyIMsk
 )paren
 )paren
 suffix:semicolon
@@ -2605,24 +2954,105 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|SK_PHY_NAT
-suffix:colon
-multiline_comment|/* todo: National */
-r_break
+macro_line|#endif /* OTHER_PHY */
+)brace
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* Read PHY Interrupt Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|i
+comma
+id|PHY_MARV_INT_STAT
+comma
+op_amp
+id|PhyInt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|PhyInt
+op_amp
+id|PHY_M_DEF_MSK
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_IRQ
+comma
+(paren
+l_string|&quot;Port %d Marv Int: 0x%04X&bslash;n&quot;
+comma
+id|i
+comma
+id|PhyInt
+)paren
+)paren
+suffix:semicolon
+id|SkPhyIsrGmac
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|i
+comma
+id|PhyInt
+)paren
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* YUKON */
 )brace
-multiline_comment|/*&n;&t; * I2C Ready interrupt&n;&t; */
+)brace
+multiline_comment|/* I2C Ready interrupt */
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_I2C_READY
 )paren
+op_ne
+l_int|0
+)paren
 (brace
+macro_line|#ifdef SK_SLIM
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|B2_I2C_IRQ
+comma
+id|I2C_CLR_IRQ
+)paren
+suffix:semicolon
+macro_line|#else&t;&t;
 id|SkI2cIsr
 c_func
 (paren
@@ -2631,14 +3061,44 @@ comma
 id|IoC
 )paren
 suffix:semicolon
+macro_line|#endif&t;&t;
+)brace
+multiline_comment|/* SW forced interrupt */
+r_if
+c_cond
+(paren
+(paren
+id|Istatus
+op_amp
+id|IS_IRQ_SW
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* clear the software IRQ */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B0_CTST
+comma
+id|CS_CL_SW_IRQ
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_LNK_SYNC_M1
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/*&n;&t;&t; * We do NOT need the Link Sync interrupt, because it shows&n;&t;&t; * us only a link going down.&n;&t;&t; */
 multiline_comment|/* clear interrupt */
@@ -2662,26 +3122,18 @@ suffix:semicolon
 multiline_comment|/* Check MAC after link sync counter */
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_MAC1
 )paren
-(brace
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|MAC_1
-comma
-id|XM_ISRC
-comma
-op_amp
-id|XmIsr
+op_ne
+l_int|0
 )paren
-suffix:semicolon
-id|SkXmIrq
+(brace
+multiline_comment|/* IRQ from MAC 1 */
+id|SkMacIrq
 c_func
 (paren
 id|pAC
@@ -2689,17 +3141,19 @@ comma
 id|IoC
 comma
 id|MAC_1
-comma
-id|XmIsr
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_LNK_SYNC_M2
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We do NOT need the Link Sync interrupt, because it shows&n;&t;&t; * us only a link going down.&n;&t;&t; */
@@ -2725,25 +3179,17 @@ multiline_comment|/* Check MAC after link sync counter */
 r_if
 c_cond
 (paren
+(paren
 id|Istatus
 op_amp
 id|IS_MAC2
 )paren
-(brace
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|MAC_2
-comma
-id|XM_ISRC
-comma
-op_amp
-id|XmIsr
+op_ne
+l_int|0
 )paren
-suffix:semicolon
-id|SkXmIrq
+(brace
+multiline_comment|/* IRQ from MAC 2 */
+id|SkMacIrq
 c_func
 (paren
 id|pAC
@@ -2751,20 +3197,63 @@ comma
 id|IoC
 comma
 id|MAC_2
-comma
-id|XmIsr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Timer interrupt&n;&t; *  To be served last&n;&t; */
+multiline_comment|/* Timer interrupt (served last) */
 r_if
 c_cond
+(paren
 (paren
 id|Istatus
 op_amp
 id|IS_TIMINT
 )paren
+op_ne
+l_int|0
+)paren
 (brace
+multiline_comment|/* check for HW Errors */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|Istatus
+op_amp
+id|IS_HW_ERR
+)paren
+op_amp
+op_complement
+id|pAC-&gt;GIni.GIValIrqMask
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* read the HW Error Interrupt source */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|B0_HWE_ISRC
+comma
+op_amp
+id|RegVal32
+)paren
+suffix:semicolon
+id|SkGeHwErr
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|RegVal32
+)paren
+suffix:semicolon
+)brace
 id|SkHwtIsr
 c_func
 (paren
@@ -2776,8 +3265,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkGeSirqIsr */
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckShorts - Implementing of the Workaround Errata # 2&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckShorts() - Implementing XMAC Workaround Errata # 2&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; */
 DECL|function|SkGePortCheckShorts
+r_static
 r_int
 id|SkGePortCheckShorts
 c_func
@@ -2796,23 +3287,23 @@ id|Port
 )paren
 multiline_comment|/* Which port should be checked */
 (brace
-id|SK_U64
+id|SK_U32
 id|Shorts
 suffix:semicolon
 multiline_comment|/* Short Event Counter */
-id|SK_U64
+id|SK_U32
 id|CheckShorts
 suffix:semicolon
 multiline_comment|/* Check value for Short Event Counter */
 id|SK_U64
 id|RxCts
 suffix:semicolon
-multiline_comment|/* RX Counter (packets on network) */
-id|SK_U64
+multiline_comment|/* Rx Counter (packets on network) */
+id|SK_U32
 id|RxTmp
 suffix:semicolon
-multiline_comment|/* RX temp. Counter */
-id|SK_U64
+multiline_comment|/* Rx temp. Counter */
+id|SK_U32
 id|FcsErrCts
 suffix:semicolon
 multiline_comment|/* FCS Error Counter */
@@ -2821,9 +3312,6 @@ op_star
 id|pPrt
 suffix:semicolon
 multiline_comment|/* GIni Port struct pointer */
-r_int
-id|Len
-suffix:semicolon
 r_int
 id|Rtv
 suffix:semicolon
@@ -2844,60 +3332,39 @@ id|Rtv
 op_assign
 id|SK_HW_PS_NONE
 suffix:semicolon
-multiline_comment|/*&n;&t; * Extra precaution: check for short Event counter&n;&t; */
-id|Len
-op_assign
-r_sizeof
 (paren
-id|SK_U64
+r_void
 )paren
-suffix:semicolon
-id|SkPnmiGetVar
+id|SkXmUpdateStats
 c_func
 (paren
 id|pAC
 comma
 id|IoC
 comma
-id|OID_SKGE_STAT_RX_SHORTS
-comma
-(paren
-r_char
-op_star
+id|Port
 )paren
-op_amp
-id|Shorts
-comma
-op_amp
-id|Len
-comma
+suffix:semicolon
+multiline_comment|/* Extra precaution: check for short Event counter */
 (paren
-id|SK_U32
+r_void
 )paren
-id|SK_PNMI_PORT_PHYS2INST
+id|SkXmMacStatistic
 c_func
 (paren
 id|pAC
 comma
-id|Port
-)paren
+id|IoC
 comma
-id|pAC-&gt;Rlmt.Port
-(braket
 id|Port
-)braket
-dot
-id|Net-&gt;NetNumber
+comma
+id|XM_RXE_SHT_ERR
+comma
+op_amp
+id|Shorts
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read RX counter (packets seen on the network and not neccesarily&n;&t; * really received.&n;&t; */
-id|Len
-op_assign
-r_sizeof
-(paren
-id|SK_U64
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Read Rx counters (packets seen on the network and not necessarily&n;&t; * really received.&n;&t; */
 id|RxCts
 op_assign
 l_int|0
@@ -2913,61 +3380,47 @@ id|i
 OL
 r_sizeof
 (paren
-id|SkGeRxOids
+id|SkGeRxRegs
 )paren
 op_div
 r_sizeof
 (paren
-id|SK_U32
+id|SkGeRxRegs
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|SkPnmiGetVar
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
 c_func
 (paren
 id|pAC
 comma
 id|IoC
 comma
-id|SkGeRxOids
+id|Port
+comma
+id|SkGeRxRegs
 (braket
 id|i
 )braket
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|RxTmp
-comma
-op_amp
-id|Len
-comma
-(paren
-id|SK_U32
-)paren
-id|SK_PNMI_PORT_PHYS2INST
-c_func
-(paren
-id|pAC
-comma
-id|Port
-)paren
-comma
-id|pAC-&gt;Rlmt.Port
-(braket
-id|Port
-)braket
-dot
-id|Net-&gt;NetNumber
 )paren
 suffix:semicolon
 id|RxCts
 op_add_assign
+(paren
+id|SK_U64
+)paren
 id|RxTmp
 suffix:semicolon
 )brace
@@ -2976,14 +3429,14 @@ id|CheckShorts
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Extra extra precaution on active links:&n;&t; */
+multiline_comment|/* Extra precaution on active links */
 r_if
 c_cond
 (paren
 id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Reset Link Restart counter&n;&t;&t; */
+multiline_comment|/* Reset Link Restart counter */
 id|pPrt-&gt;PLinkResCt
 op_assign
 l_int|0
@@ -2997,49 +3450,22 @@ id|CheckShorts
 op_assign
 l_int|2
 suffix:semicolon
-id|Len
-op_assign
-r_sizeof
 (paren
-id|SK_U64
+r_void
 )paren
-suffix:semicolon
-id|SkPnmiGetVar
+id|SkXmMacStatistic
 c_func
 (paren
 id|pAC
 comma
 id|IoC
 comma
-id|OID_SKGE_STAT_RX_FCS
+id|Port
 comma
-(paren
-r_char
-op_star
-)paren
+id|XM_RXF_FCS_ERR
+comma
 op_amp
 id|FcsErrCts
-comma
-op_amp
-id|Len
-comma
-(paren
-id|SK_U32
-)paren
-id|SK_PNMI_PORT_PHYS2INST
-c_func
-(paren
-id|pAC
-comma
-id|Port
-)paren
-comma
-id|pAC-&gt;Rlmt.Port
-(braket
-id|Port
-)braket
-dot
-id|Net-&gt;NetNumber
 )paren
 suffix:semicolon
 r_if
@@ -3073,7 +3499,7 @@ op_eq
 id|pPrt-&gt;PPrevRx
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Nothing received&n;&t;&t;&t;&t; * restart link&n;&t;&t;&t;&t; */
+multiline_comment|/* Nothing received, restart link */
 id|pPrt-&gt;PPrevFcs
 op_assign
 id|FcsErrCts
@@ -3083,9 +3509,7 @@ op_assign
 id|Shorts
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3120,7 +3544,7 @@ id|pPrt-&gt;PPrevFcs
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Note: The compare with zero above has to be done the way shown,&n;&t;&t;&t; * otherwise the Linux driver will have a problem.&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * We received a bunch of frames or no CRC error occurred on the&n;&t;&t;&t; * network -&gt; ok.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We received a bunch of frames or no CRC error occured on the&n;&t;&t;&t; * network -&gt; ok.&n;&t;&t;&t; */
 id|pPrt-&gt;PPrevRx
 op_assign
 id|RxCts
@@ -3134,9 +3558,7 @@ op_assign
 id|Shorts
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 id|pPrt-&gt;PPrevFcs
@@ -3186,14 +3608,14 @@ op_assign
 id|RxCts
 suffix:semicolon
 r_return
-(paren
 id|Rtv
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkGePortCheckShorts*/
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUp - Implementation of the Workaround for Errata #2&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+multiline_comment|/* SkGePortCheckShorts */
+macro_line|#endif /* GENESIS */
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUp() - Check if the link is up&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
 DECL|function|SkGePortCheckUp
+r_static
 r_int
 id|SkGePortCheckUp
 c_func
@@ -3212,22 +3634,73 @@ id|Port
 )paren
 multiline_comment|/* Which port should be checked */
 (brace
-r_switch
-c_cond
-(paren
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
+id|SK_BOOL
+id|AutoNeg
+suffix:semicolon
+multiline_comment|/* Is Auto-negotiation used ? */
+r_int
+id|Rtv
+suffix:semicolon
+multiline_comment|/* Return value */
+id|Rtv
+op_assign
+id|SK_HW_PS_NONE
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
 id|pAC-&gt;GIni.GP
 (braket
 id|Port
 )braket
-dot
-id|PhyType
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_HALF
+op_logical_or
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_FULL
+)paren
+(brace
+id|AutoNeg
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|AutoNeg
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PhyType
 )paren
 (brace
 r_case
 id|SK_PHY_XMAC
 suffix:colon
-r_return
-(paren
+id|Rtv
+op_assign
 id|SkGePortCheckUpXmac
 c_func
 (paren
@@ -3236,14 +3709,17 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|AutoNeg
 )paren
-)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|SK_PHY_BCOM
 suffix:colon
-r_return
-(paren
+id|Rtv
+op_assign
 id|SkGePortCheckUpBcom
 c_func
 (paren
@@ -3252,14 +3728,18 @@ comma
 id|IoC
 comma
 id|Port
-)paren
+comma
+id|AutoNeg
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
-r_return
-(paren
+id|Rtv
+op_assign
 id|SkGePortCheckUpLone
 c_func
 (paren
@@ -3268,14 +3748,17 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|AutoNeg
 )paren
-)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|SK_PHY_NAT
 suffix:colon
-r_return
-(paren
+id|Rtv
+op_assign
 id|SkGePortCheckUpNat
 c_func
 (paren
@@ -3284,18 +3767,46 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|AutoNeg
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
+)brace
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|Rtv
+op_assign
+id|SkGePortCheckUpGmac
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|AutoNeg
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* YUKON */
 r_return
-(paren
-id|SK_HW_PS_NONE
-)paren
+id|Rtv
 suffix:semicolon
 )brace
 multiline_comment|/* SkGePortCheckUp */
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpXmac - Implementing of the Workaround Errata # 2&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpXmac() - Implementing of the Workaround Errata # 2&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
 DECL|function|SkGePortCheckUpXmac
 r_static
 r_int
@@ -3313,10 +3824,14 @@ comma
 multiline_comment|/* IO Context */
 r_int
 id|Port
-)paren
+comma
 multiline_comment|/* Which port should be checked */
+id|SK_BOOL
+id|AutoNeg
+)paren
+multiline_comment|/* Is Auto-negotiation used ? */
 (brace
-id|SK_U64
+id|SK_U32
 id|Shorts
 suffix:semicolon
 multiline_comment|/* Short Event Counter */
@@ -3325,9 +3840,6 @@ op_star
 id|pPrt
 suffix:semicolon
 multiline_comment|/* GIni Port struct pointer */
-r_int
-id|Len
-suffix:semicolon
 r_int
 id|Done
 suffix:semicolon
@@ -3355,10 +3867,6 @@ id|SK_U16
 id|ExtStat
 suffix:semicolon
 multiline_comment|/* Extended Status Register */
-id|SK_BOOL
-id|AutoNeg
-suffix:semicolon
-multiline_comment|/* Is Autonegotiation used ? */
 id|SK_U8
 id|NextMode
 suffix:semicolon
@@ -3386,15 +3894,12 @@ id|SK_PHY_XMAC
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
 r_return
-(paren
 id|SkGePortCheckShorts
 c_func
 (paren
@@ -3403,7 +3908,6 @@ comma
 id|IoC
 comma
 id|Port
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3416,31 +3920,7 @@ id|pPrt-&gt;PIsave
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Now wait for each port&squot;s link. */
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_HALF
-op_logical_or
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_FULL
-)paren
-(brace
-id|AutoNeg
-op_assign
-id|SK_FALSE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|AutoNeg
-op_assign
-id|SK_TRUE
-suffix:semicolon
-)brace
+multiline_comment|/* Now wait for each port&squot;s link */
 r_if
 c_cond
 (paren
@@ -3515,7 +3995,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* It has been in sync since last Time */
+multiline_comment|/* It has been in sync since last time */
 multiline_comment|/* Restart the PORT */
 id|SK_DBG_MSG
 c_func
@@ -3533,72 +4013,48 @@ id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* We now need to reinitialize the PrevShorts counter. */
-id|Len
-op_assign
-r_sizeof
 (paren
-id|SK_U64
+r_void
 )paren
-suffix:semicolon
-id|SkPnmiGetVar
+id|SkXmUpdateStats
 c_func
 (paren
 id|pAC
 comma
 id|IoC
 comma
-id|OID_SKGE_STAT_RX_SHORTS
-comma
-(paren
-r_char
-op_star
+id|Port
 )paren
-op_amp
-id|Shorts
-comma
-op_amp
-id|Len
-comma
+suffix:semicolon
+multiline_comment|/* We now need to reinitialize the PrevShorts counter */
 (paren
-id|SK_U32
+r_void
 )paren
-id|SK_PNMI_PORT_PHYS2INST
+id|SkXmMacStatistic
 c_func
 (paren
 id|pAC
 comma
-id|Port
-)paren
+id|IoC
 comma
-id|pAC-&gt;Rlmt.Port
-(braket
 id|Port
-)braket
-dot
-id|Net-&gt;NetNumber
+comma
+id|XM_RXE_SHT_ERR
+comma
+op_amp
+id|Shorts
 )paren
 suffix:semicolon
 id|pPrt-&gt;PPrevShorts
 op_assign
 id|Shorts
 suffix:semicolon
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PLinkBroken
+id|pPrt-&gt;PLinkBroken
 op_assign
 id|SK_FALSE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Link Restart Workaround:&n;&t;&t;&t;&t; *  it may be possible that the other Link side&n;&t;&t;&t;&t; *  restarts its link as well an we detect&n;&t;&t;&t;&t; *  another LinkBroken. To prevent this&n;&t;&t;&t;&t; *  happening we check for a maximum number&n;&t;&t;&t;&t; *  of consecutive restart. If those happens,&n;&t;&t;&t;&t; *  we do NOT restart the active link and&n;&t;&t;&t;&t; *  check whether the lionk is now o.k.&n;&t;&t;&t;&t; */
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PLinkResCt
+multiline_comment|/*&n;&t;&t;&t;&t; * Link Restart Workaround:&n;&t;&t;&t;&t; *  it may be possible that the other Link side&n;&t;&t;&t;&t; *  restarts its link as well an we detect&n;&t;&t;&t;&t; *  another LinkBroken. To prevent this&n;&t;&t;&t;&t; *  happening we check for a maximum number&n;&t;&t;&t;&t; *  of consecutive restart. If those happens,&n;&t;&t;&t;&t; *  we do NOT restart the active link and&n;&t;&t;&t;&t; *  check whether the link is now o.k.&n;&t;&t;&t;&t; */
+id|pPrt-&gt;PLinkResCt
 op_increment
 suffix:semicolon
 id|pPrt-&gt;PAutoNegTimeOut
@@ -3608,22 +4064,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PLinkResCt
+id|pPrt-&gt;PLinkResCt
 OL
 id|SK_MAX_LRESTART
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
+id|pPrt-&gt;PLinkResCt
+op_assign
+l_int|0
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -3644,15 +4097,6 @@ id|IsrcSum
 )paren
 )paren
 suffix:semicolon
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PLinkResCt
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -3664,9 +4108,7 @@ id|SK_U16
 (paren
 id|IsrcSum
 op_amp
-(paren
 id|XM_IS_AND
-)paren
 )paren
 suffix:semicolon
 id|SK_DBG_MSG
@@ -3691,9 +4133,7 @@ id|IsrcSum
 suffix:semicolon
 multiline_comment|/* Do nothing more if link is broken */
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3701,9 +4141,7 @@ r_else
 (brace
 multiline_comment|/* Do nothing more if link is broken */
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3735,8 +4173,8 @@ id|Isrc
 op_amp
 id|XM_IS_INP_ASS
 )paren
-op_eq
-id|XM_IS_INP_ASS
+op_ne
+l_int|0
 )paren
 (brace
 id|XM_IN16
@@ -3764,8 +4202,8 @@ id|Isrc
 op_amp
 id|XM_IS_INP_ASS
 )paren
-op_eq
-id|XM_IS_INP_ASS
+op_ne
+l_int|0
 )paren
 (brace
 id|XM_IN16
@@ -3793,15 +4231,15 @@ id|Isrc
 op_amp
 id|XM_IS_INP_ASS
 )paren
-op_eq
-id|XM_IS_INP_ASS
+op_ne
+l_int|0
 )paren
 (brace
 id|pPrt-&gt;PLinkBroken
 op_assign
 id|SK_TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Re-Init Link partner Autoneg flag&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Re-Init Link partner Autoneg flag */
 id|pPrt-&gt;PLipaAutoNeg
 op_assign
 id|SK_LIPA_UNKNOWN
@@ -3822,8 +4260,7 @@ id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Cable removed-&gt; reinit sense mode. */
-multiline_comment|/* Init default sense mode. */
+multiline_comment|/* Cable removed-&gt; reinit sense mode */
 id|SkHWInitDefSense
 c_func
 (paren
@@ -3835,9 +4272,7 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3873,14 +4308,12 @@ id|SK_HW_PS_RESTART
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * here we usually can check whether the link is in sync and&n;&t; * autonegotiation is done.&n;&t; */
+multiline_comment|/*&n;&t; * here we usually can check whether the link is in sync and&n;&t; * auto-negotiation is done.&n;&t; */
 id|XM_IN32
 c_func
 (paren
@@ -3955,7 +4388,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* Save Autonegotiation Done interrupt only if link is in sync. */
+multiline_comment|/* Save Auto-negotiation Done interrupt only if link is in sync */
 id|pPrt-&gt;PIsave
 op_assign
 (paren
@@ -3964,21 +4397,21 @@ id|SK_U16
 (paren
 id|IsrcSum
 op_amp
-(paren
 id|XM_IS_AND
-)paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;DEBUG
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
+(paren
 id|pPrt-&gt;PIsave
 op_amp
-(paren
 id|XM_IS_AND
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_DBG_MSG
@@ -3998,11 +4431,9 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -4014,9 +4445,13 @@ id|AutoNeg
 r_if
 c_cond
 (paren
+(paren
 id|IsrcSum
 op_amp
 id|XM_IS_AND
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkHWLinkUp
@@ -4031,7 +4466,7 @@ id|Port
 suffix:semicolon
 id|Done
 op_assign
-id|SkXmAutoNegDone
+id|SkMacAutoNegDone
 c_func
 (paren
 id|pAC
@@ -4049,13 +4484,13 @@ op_ne
 id|SK_AND_OK
 )paren
 (brace
-multiline_comment|/* Get PHY parameters, for debuging only */
-id|PHY_READ
+multiline_comment|/* Get PHY parameters, for debugging only */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4065,12 +4500,12 @@ op_amp
 id|LpAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4146,20 +4581,16 @@ id|NextMode
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Dummy Read extended status to prevent extra link down/ups&n;&t;&t;&t;&t; * (clear Page Received bit if set)&n;&t;&t;&t;&t; */
-id|PHY_READ
+multiline_comment|/*&n;&t;&t;&t; * Dummy Read extended status to prevent extra link down/ups&n;&t;&t;&t; * (clear Page Received bit if set)&n;&t;&t;&t; */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4186,13 +4617,10 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;&t;&t; * AutoNeg not done, but HW link is up. Check for timeouts&n;&t;&t; */
+multiline_comment|/* AutoNeg not done, but HW link is up. Check for timeouts */
 id|pPrt-&gt;PAutoNegTimeOut
 op_increment
 suffix:semicolon
@@ -4204,11 +4632,11 @@ op_ge
 id|SK_AND_MAX_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Increase the Timeout counter.&n;&t;&t;&t; */
+multiline_comment|/* Increase the Timeout counter */
 id|pPrt-&gt;PAutoNegTOCt
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/* Timeout occured */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4237,7 +4665,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/* Set Link manually up */
 id|SkHWSenseSetNext
 c_func
 (paren
@@ -4283,7 +4711,7 @@ op_ge
 id|SK_MAX_ANEG_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * This is rather complicated.&n;&t;&t;&t;&t; * we need to check here whether the LIPA_AUTO&n;&t;&t;&t;&t; * we saw before is false alert. We saw at one &n;&t;&t;&t;&t; * switch ( SR8800) that on boot time it sends&n;&t;&t;&t;&t; * just one autoneg packet and does no further&n;&t;&t;&t;&t; * autonegotiation.&n;&t;&t;&t;&t; * Solution: we restart the autosensing after&n;&t;&t;&t;&t; * a few timeouts.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * This is rather complicated.&n;&t;&t;&t;&t; * we need to check here whether the LIPA_AUTO&n;&t;&t;&t;&t; * we saw before is false alert. We saw at one&n;&t;&t;&t;&t; * switch ( SR8800) that on boot time it sends&n;&t;&t;&t;&t; * just one auto-neg packet and does no further&n;&t;&t;&t;&t; * auto-negotiation.&n;&t;&t;&t;&t; * Solution: we restart the autosensing after&n;&t;&t;&t;&t; * a few timeouts.&n;&t;&t;&t;&t; */
 id|pPrt-&gt;PAutoNegTOCt
 op_assign
 l_int|0
@@ -4303,18 +4731,16 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Do the restart&n;&t;&t;&t; */
+multiline_comment|/* Do the restart */
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Link is up and we don&squot;t need more.&n;&t;&t; */
-macro_line|#ifdef&t;DEBUG
+multiline_comment|/* Link is up and we don&squot;t need more */
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -4340,7 +4766,7 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4367,20 +4793,17 @@ comma
 id|Port
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Link sync (GP) and so assume a good connection. But if not received&n;&t;&t; * a bunch of frames received in a time slot (maybe broken tx cable)&n;&t;&t; * the port is restart.&n;&t;&t; */
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGePortCheckUpXmac */
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpBcom - Check, if the link is up&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpBcom() - Check if the link is up on Bcom PHY&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
 DECL|function|SkGePortCheckUpBcom
 r_static
 r_int
@@ -4398,8 +4821,12 @@ comma
 multiline_comment|/* IO Context */
 r_int
 id|Port
-)paren
+comma
 multiline_comment|/* Which port should be checked */
+id|SK_BOOL
+id|AutoNeg
+)paren
+multiline_comment|/* Is Auto-negotiation used ? */
 (brace
 id|SK_GEPORT
 op_star
@@ -4432,11 +4859,7 @@ suffix:semicolon
 id|SK_U16
 id|ExtStat
 suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
-id|SK_BOOL
-id|AutoNeg
-suffix:semicolon
-multiline_comment|/* Is Autonegotiation used ? */
+macro_line|#endif /* DEBUG */
 id|pPrt
 op_assign
 op_amp
@@ -4446,12 +4869,12 @@ id|Port
 )braket
 suffix:semicolon
 multiline_comment|/* Check for No HCD Link events (#10523) */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4469,10 +4892,19 @@ c_cond
 id|Isrc
 op_amp
 op_complement
-l_int|0x1800
+(paren
+id|PHY_B_IS_HCT
+op_or
+id|PHY_B_IS_LCT
 )paren
 op_eq
-l_int|0x70
+(paren
+id|PHY_B_IS_SCR_S_ER
+op_or
+id|PHY_B_IS_RRS_CHANGE
+op_or
+id|PHY_B_IS_LRS_CHANGE
+)paren
 )paren
 (brace
 id|SK_U32
@@ -4486,12 +4918,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4527,12 +4959,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4546,12 +4978,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4573,12 +5005,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4592,12 +5024,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4641,12 +5073,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4660,12 +5092,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4687,12 +5119,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4706,12 +5138,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4755,12 +5187,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4774,12 +5206,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4801,12 +5233,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4820,12 +5252,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4866,7 +5298,7 @@ id|Stat2
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -4882,13 +5314,13 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Workaround BCOM Errata:&n;&t;&t; *&t;enable and disable loopback mode if &quot;NO HCD&quot; occurs.&n;&t;&t; */
-id|PHY_READ
+multiline_comment|/*&n;&t;&t; * Workaround BCom Errata:&n;&t;&t; *&t;enable and disable loopback mode if &quot;NO HCD&quot; occurs.&n;&t;&t; */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4898,37 +5330,47 @@ op_amp
 id|Ctrl
 )paren
 suffix:semicolon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_BCOM_CTRL
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|Ctrl
 op_or
 id|PHY_CT_LOOP
 )paren
+)paren
 suffix:semicolon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_BCOM_CTRL
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|Ctrl
 op_amp
 op_complement
 id|PHY_CT_LOOP
+)paren
 )paren
 suffix:semicolon
 id|SK_DBG_MSG
@@ -4970,15 +5412,15 @@ op_star
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 )brace
 multiline_comment|/* Not obsolete: link status bit is latched to 0 and autoclearing! */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4995,9 +5437,7 @@ id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef xDEBUG
@@ -5013,12 +5453,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5054,12 +5494,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5073,12 +5513,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5100,12 +5540,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5119,12 +5559,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5168,12 +5608,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5187,12 +5627,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5214,12 +5654,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5233,12 +5673,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5282,12 +5722,12 @@ id|Stat1
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5301,12 +5741,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5328,12 +5768,12 @@ id|Stat2
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5347,12 +5787,12 @@ id|Stat3
 op_assign
 l_int|0
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
 id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5393,55 +5833,14 @@ id|Stat2
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* DEBUG */
-multiline_comment|/* Now wait for each port&squot;s link. */
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_HALF
-op_logical_or
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_FULL
-)paren
-(brace
-id|AutoNeg
-op_assign
-id|SK_FALSE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|AutoNeg
-op_assign
-id|SK_TRUE
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Here we usually can check whether the link is in sync and&n;&t; * autonegotiation is done.&n;&t; */
-macro_line|#if 0
-multiline_comment|/* RA;:;: obsolete */
-id|XM_IN16
+macro_line|#endif /* DEBUG */
+multiline_comment|/*&n;&t; * Here we usually can check whether the link is in sync and&n;&t; * auto-negotiation is done.&n;&t; */
+id|SkXmPhyRead
 c_func
 (paren
+id|pAC
+comma
 id|IoC
-comma
-id|Port
-comma
-id|XM_ISRC
-comma
-op_amp
-id|Isrc
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
 comma
 id|Port
 comma
@@ -5451,52 +5850,7 @@ op_amp
 id|PhyStat
 )paren
 suffix:semicolon
-macro_line|#ifdef xDEBUG
-r_if
-c_cond
-(paren
-(paren
-id|PhyStat
-op_amp
-id|PHY_ST_LSYNC
-)paren
-op_rshift
-l_int|2
-op_ne
-(paren
-id|ExtStat
-op_amp
-id|PHY_B_PES_LS
-)paren
-op_rshift
-l_int|8
-)paren
-(brace
-id|CMSMPrintString
-c_func
-(paren
-id|pAC-&gt;pConfigTable
-comma
-id|MSG_TYPE_RUNTIME_INFO
-comma
-l_string|&quot;PhyStat != ExtStat: %x %x&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|PhyStat
-comma
-(paren
-r_void
-op_star
-)paren
-id|ExtStat
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* DEBUG */
-id|SkXmAutoNegLipaBcom
+id|SkMacAutoNegLipaPhy
 c_func
 (paren
 id|pAC
@@ -5518,7 +5872,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg:%d, PhyStat: %Xh.&bslash;n&quot;
+l_string|&quot;AutoNeg: %d, PhyStat: 0x%04X&bslash;n&quot;
 comma
 id|AutoNeg
 comma
@@ -5526,12 +5880,12 @@ id|PhyStat
 )paren
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5544,9 +5898,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ResAb
 op_amp
 id|PHY_B_1000S_MSF
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Error */
@@ -5575,9 +5933,7 @@ op_assign
 id|SK_MS_STAT_FAULT
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -5593,32 +5949,26 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
+id|pPrt-&gt;PMSStatus
+op_assign
+(paren
 (paren
 id|ResAb
 op_amp
 id|PHY_B_1000S_MSR
 )paren
-(brace
-id|pPrt-&gt;PMSStatus
-op_assign
+op_ne
+l_int|0
+)paren
+ques
+c_cond
 id|SK_MS_STAT_MASTER
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pPrt-&gt;PMSStatus
-op_assign
+suffix:colon
 id|SK_MS_STAT_SLAVE
 suffix:semicolon
-)brace
 id|SK_DBG_MSG
 c_func
 (paren
@@ -5629,11 +5979,11 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg:%d, PhyStat: %Xh.&bslash;n&quot;
+l_string|&quot;Port %d, ResAb: 0x%04X&bslash;n&quot;
 comma
-id|AutoNeg
+id|Port
 comma
-id|PhyStat
+id|ResAb
 )paren
 )paren
 suffix:semicolon
@@ -5646,9 +5996,13 @@ id|AutoNeg
 r_if
 c_cond
 (paren
+(paren
 id|PhyStat
 op_amp
 id|PHY_ST_AN_OVER
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkHWLinkUp
@@ -5663,7 +6017,7 @@ id|Port
 suffix:semicolon
 id|Done
 op_assign
-id|SkXmAutoNegDone
+id|SkMacAutoNegDone
 c_func
 (paren
 id|pAC
@@ -5682,13 +6036,13 @@ id|SK_AND_OK
 )paren
 (brace
 macro_line|#ifdef DEBUG
-multiline_comment|/* Get PHY parameters, for debugging only. */
-id|PHY_READ
+multiline_comment|/* Get PHY parameters, for debugging only */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5698,12 +6052,12 @@ op_amp
 id|LpAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5733,23 +6087,21 @@ id|ExtStat
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
 macro_line|#ifdef xDEBUG
-multiline_comment|/* Dummy read ISR to prevent extra link downs/ups. */
-id|PHY_READ
+multiline_comment|/* Dummy read ISR to prevent extra link downs/ups */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5766,7 +6118,11 @@ c_cond
 id|ExtStat
 op_amp
 op_complement
-l_int|0x1800
+(paren
+id|PHY_B_IS_HCT
+op_or
+id|PHY_B_IS_LCT
+)paren
 )paren
 op_ne
 l_int|0
@@ -5795,7 +6151,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -5813,9 +6169,7 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -5823,8 +6177,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* !AutoNeg */
-multiline_comment|/*&n;&t;&t; * Link is up and we don&squot;t need more.&n;&t;&t; */
-macro_line|#ifdef&t;DEBUG
+multiline_comment|/* Link is up and we don&squot;t need more. */
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -5850,15 +6204,15 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 macro_line|#ifdef xDEBUG
-multiline_comment|/* Dummy read ISR to prevent extra link downs/ups. */
-id|PHY_READ
+multiline_comment|/* Dummy read ISR to prevent extra link downs/ups */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5875,7 +6229,11 @@ c_cond
 id|ExtStat
 op_amp
 op_complement
-l_int|0x1800
+(paren
+id|PHY_B_IS_HCT
+op_or
+id|PHY_B_IS_LCT
+)paren
 )paren
 op_ne
 l_int|0
@@ -5904,7 +6262,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -5932,19 +6290,553 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGePortCheckUpBcom */
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpLone - Check if the link is up&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpGmac() - Check if the link is up on Marvell PHY&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+DECL|function|SkGePortCheckUpGmac
+r_static
+r_int
+id|SkGePortCheckUpGmac
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Which port should be checked */
+id|SK_BOOL
+id|AutoNeg
+)paren
+multiline_comment|/* Is Auto-negotiation used ? */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
+r_int
+id|Done
+suffix:semicolon
+id|SK_U16
+id|PhyIsrc
+suffix:semicolon
+multiline_comment|/* PHY Interrupt source */
+id|SK_U16
+id|PhyStat
+suffix:semicolon
+multiline_comment|/* PPY Status */
+id|SK_U16
+id|PhySpecStat
+suffix:semicolon
+multiline_comment|/* PHY Specific Status */
+id|SK_U16
+id|ResAb
+suffix:semicolon
+multiline_comment|/* Master/Slave resolution */
+id|SK_EVPARA
+id|Para
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* Read PHY Interrupt Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_INT_STAT
+comma
+op_amp
+id|PhyIsrc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|PhyIsrc
+op_amp
+id|PHY_M_IS_AN_COMPL
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Auto-Negotiation Completed, PhyIsrc: 0x%04X&bslash;n&quot;
+comma
+id|PhyIsrc
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|PhyIsrc
+op_amp
+id|PHY_M_IS_LSP_CHANGE
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Link Speed Changed, PhyIsrc: 0x%04X&bslash;n&quot;
+comma
+id|PhyIsrc
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PHWLinkUp
+)paren
+(brace
+r_return
+id|SK_HW_PS_NONE
+suffix:semicolon
+)brace
+multiline_comment|/* Read PHY Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_STAT
+comma
+op_amp
+id|PhyStat
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNeg: %d, PhyStat: 0x%04X&bslash;n&quot;
+comma
+id|AutoNeg
+comma
+id|PhyStat
+)paren
+)paren
+suffix:semicolon
+id|SkMacAutoNegLipaPhy
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PhyStat
+)paren
+suffix:semicolon
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_1000T_STAT
+comma
+op_amp
+id|ResAb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ResAb
+op_amp
+id|PHY_B_1000S_MSF
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Error */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Master/Slave Fault port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|pPrt-&gt;PAutoNegFail
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pPrt-&gt;PMSStatus
+op_assign
+id|SK_MS_STAT_FAULT
+suffix:semicolon
+r_return
+id|SK_HW_PS_RESTART
+suffix:semicolon
+)brace
+multiline_comment|/* Read PHY Specific Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_STAT
+comma
+op_amp
+id|PhySpecStat
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNeg: %d, PhySpecStat: 0x%04X&bslash;n&quot;
+comma
+id|AutoNeg
+comma
+id|PhySpecStat
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|PhySpecStat
+op_amp
+id|PHY_M_PS_LINK_UP
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+id|SK_HW_PS_NONE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|PhySpecStat
+op_amp
+id|PHY_M_PS_DOWNS_STAT
+)paren
+op_ne
+l_int|0
+op_logical_or
+(paren
+id|PhyIsrc
+op_amp
+id|PHY_M_IS_DOWNSH_DET
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Downshift detected */
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_SIRQ_E025
+comma
+id|SKERR_SIRQ_E025MSG
+)paren
+suffix:semicolon
+id|Para.Para64
+op_assign
+id|Port
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_DRV
+comma
+id|SK_DRV_DOWNSHIFT_DET
+comma
+id|Para
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Downshift detected, PhyIsrc: 0x%04X&bslash;n&quot;
+comma
+id|PhyIsrc
+)paren
+)paren
+suffix:semicolon
+)brace
+id|pPrt-&gt;PMSStatus
+op_assign
+(paren
+(paren
+id|ResAb
+op_amp
+id|PHY_B_1000S_MSR
+)paren
+op_ne
+l_int|0
+)paren
+ques
+c_cond
+id|SK_MS_STAT_MASTER
+suffix:colon
+id|SK_MS_STAT_SLAVE
+suffix:semicolon
+id|pPrt-&gt;PCableLen
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+(paren
+id|PhySpecStat
+op_amp
+id|PHY_M_PS_CABLE_MSK
+)paren
+op_rshift
+l_int|7
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|AutoNeg
+)paren
+(brace
+multiline_comment|/* Auto-Negotiation Over ? */
+r_if
+c_cond
+(paren
+(paren
+id|PhyStat
+op_amp
+id|PHY_ST_AN_OVER
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SkHWLinkUp
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+id|Done
+op_assign
+id|SkMacAutoNegDone
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Done
+op_ne
+id|SK_AND_OK
+)paren
+(brace
+r_return
+id|SK_HW_PS_RESTART
+suffix:semicolon
+)brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNeg done Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+r_return
+id|SK_HW_PS_LINK
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* !AutoNeg */
+multiline_comment|/* Link is up and we don&squot;t need more */
+macro_line|#ifdef DEBUG
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLipaAutoNeg
+op_eq
+id|SK_LIPA_AUTO
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;ERROR: Lipa auto detected on port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* DEBUG */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_IRQ
+comma
+(paren
+l_string|&quot;Link sync, Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|SkHWLinkUp
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_return
+id|SK_HW_PS_LINK
+suffix:semicolon
+)brace
+r_return
+id|SK_HW_PS_NONE
+suffix:semicolon
+)brace
+multiline_comment|/* SkGePortCheckUpGmac */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpLone() - Check if the link is up on Level One PHY&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
 DECL|function|SkGePortCheckUpLone
 r_static
 r_int
@@ -5962,8 +6854,12 @@ comma
 multiline_comment|/* IO Context */
 r_int
 id|Port
-)paren
+comma
 multiline_comment|/* Which port should be checked */
+id|SK_BOOL
+id|AutoNeg
+)paren
+multiline_comment|/* Is Auto-negotiation used ? */
 (brace
 id|SK_GEPORT
 op_star
@@ -5992,10 +6888,6 @@ multiline_comment|/* Phy Status Register */
 id|SK_U16
 id|StatSum
 suffix:semicolon
-id|SK_BOOL
-id|AutoNeg
-suffix:semicolon
-multiline_comment|/* Is Autonegotiation used ? */
 id|SK_U8
 id|NextMode
 suffix:semicolon
@@ -6015,9 +6907,7 @@ id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 id|StatSum
@@ -6028,51 +6918,13 @@ id|pPrt-&gt;PIsave
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Now wait for each ports link */
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_HALF
-op_logical_or
-id|pPrt-&gt;PLinkMode
-op_eq
-id|SK_LMODE_FULL
-)paren
-(brace
-id|AutoNeg
-op_assign
-id|SK_FALSE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|AutoNeg
-op_assign
-id|SK_TRUE
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * here we usually can check whether the link is in sync and&n;&t; * autonegotiation is done.&n;&t; */
-id|XM_IN16
+multiline_comment|/*&n;&t; * here we usually can check whether the link is in sync and&n;&t; * auto-negotiation is done.&n;&t; */
+id|SkXmPhyRead
 c_func
 (paren
+id|pAC
+comma
 id|IoC
-comma
-id|Port
-comma
-id|XM_ISRC
-comma
-op_amp
-id|Isrc
-)paren
-suffix:semicolon
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
 comma
 id|Port
 comma
@@ -6086,7 +6938,7 @@ id|StatSum
 op_or_assign
 id|PhyStat
 suffix:semicolon
-id|SkXmAutoNegLipaLone
+id|SkMacAutoNegLipaPhy
 c_func
 (paren
 id|pAC
@@ -6110,7 +6962,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Save Autonegotiation Done bit&n;&t;&t; */
+multiline_comment|/* Save Auto-negotiation Done bit */
 id|pPrt-&gt;PIsave
 op_assign
 (paren
@@ -6126,9 +6978,13 @@ macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
+(paren
 id|pPrt-&gt;PIsave
 op_amp
 id|PHY_ST_AN_OVER
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_DBG_MSG
@@ -6148,11 +7004,9 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -6164,9 +7018,13 @@ id|AutoNeg
 r_if
 c_cond
 (paren
+(paren
 id|StatSum
 op_amp
 id|PHY_ST_AN_OVER
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkHWLinkUp
@@ -6181,7 +7039,7 @@ id|Port
 suffix:semicolon
 id|Done
 op_assign
-id|SkXmAutoNegDone
+id|SkMacAutoNegDone
 c_func
 (paren
 id|pAC
@@ -6199,13 +7057,13 @@ op_ne
 id|SK_AND_OK
 )paren
 (brace
-multiline_comment|/* Get PHY parameters, for debuging only */
-id|PHY_READ
+multiline_comment|/* Get PHY parameters, for debugging only */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -6215,12 +7073,12 @@ op_amp
 id|LpAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -6296,20 +7154,18 @@ id|NextMode
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Dummy Read interrupt status to prevent&n;&t;&t;&t;&t; * extra link down/ups&n;&t;&t;&t;&t; */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -6336,13 +7192,11 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * AutoNeg not done, but HW link is up. Check for timeouts&n;&t;&t; */
+multiline_comment|/* AutoNeg not done, but HW link is up. Check for timeouts */
 id|pPrt-&gt;PAutoNegTimeOut
 op_increment
 suffix:semicolon
@@ -6354,7 +7208,7 @@ op_ge
 id|SK_AND_MAX_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/* Timeout occured */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6383,7 +7237,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/* Set Link manually up */
 id|SkHWSenseSetNext
 c_func
 (paren
@@ -6413,18 +7267,16 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Do the restart&n;&t;&t;&t; */
+multiline_comment|/* Do the restart */
 r_return
-(paren
 id|SK_HW_PS_RESTART
-)paren
 suffix:semicolon
 )brace
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Link is up and we don&squot;t need more.&n;&t;&t; */
-macro_line|#ifdef&t;DEBUG
+multiline_comment|/* Link is up and we don&squot;t need more */
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -6450,14 +7302,14 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 multiline_comment|/*&n;&t;&t; * Dummy Read interrupt status to prevent&n;&t;&t; * extra link down/ups&n;&t;&t; */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -6494,19 +7346,15 @@ id|Port
 )paren
 suffix:semicolon
 r_return
-(paren
 id|SK_HW_PS_LINK
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkGePortCheckUpLone*/
-multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpNat - Check if the link is up&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
+multiline_comment|/* SkGePortCheckUpLone */
+multiline_comment|/******************************************************************************&n; *&n; * SkGePortCheckUpNat() - Check if the link is up on National PHY&n; *&n; * return:&n; *&t;0&t;o.k. nothing needed&n; *&t;1&t;Restart needed on this port&n; *&t;2&t;Link came up&n; */
 DECL|function|SkGePortCheckUpNat
 r_static
 r_int
@@ -6524,18 +7372,21 @@ comma
 multiline_comment|/* IO Context */
 r_int
 id|Port
-)paren
+comma
 multiline_comment|/* Which port should be checked */
+id|SK_BOOL
+id|AutoNeg
+)paren
+multiline_comment|/* Is Auto-negotiation used ? */
 (brace
 multiline_comment|/* todo: National */
 r_return
-(paren
 id|SK_HW_PS_NONE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGePortCheckUpNat */
-multiline_comment|/******************************************************************************&n; *&n; *&t;Event service routine&n; *&n; * Description:&n; *&n; * Notes:&n; */
+macro_line|#endif /* OTHER_PHY */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeSirqEvent() - Event Service Routine&n; *&n; * Description:&n; *&n; * Notes:&n; */
 DECL|function|SkGeSirqEvent
 r_int
 id|SkGeSirqEvent
@@ -6559,9 +7410,6 @@ id|Para
 )paren
 multiline_comment|/* Event specific Parameter */
 (brace
-id|SK_U64
-id|Octets
-suffix:semicolon
 id|SK_GEPORT
 op_star
 id|pPrt
@@ -6571,10 +7419,7 @@ id|SK_U32
 id|Port
 suffix:semicolon
 id|SK_U32
-id|Time
-suffix:semicolon
-r_int
-id|Len
+id|Val32
 suffix:semicolon
 r_int
 id|PortStat
@@ -6582,6 +7427,11 @@ suffix:semicolon
 id|SK_U8
 id|Val8
 suffix:semicolon
+macro_line|#ifdef GENESIS
+id|SK_U64
+id|Octets
+suffix:semicolon
+macro_line|#endif /* GENESIS */
 id|Port
 op_assign
 id|Para.Para32
@@ -6616,6 +7466,9 @@ id|pAC
 comma
 id|IoC
 comma
+(paren
+r_int
+)paren
 id|Port
 )paren
 suffix:semicolon
@@ -6634,7 +7487,7 @@ c_cond
 id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Set Link to down.&n;&t;&t;&t;&t; */
+multiline_comment|/* Set Link to down */
 id|SkHWLinkDown
 c_func
 (paren
@@ -6642,6 +7495,9 @@ id|pAC
 comma
 id|IoC
 comma
+(paren
+r_int
+)paren
 id|Port
 )paren
 suffix:semicolon
@@ -6700,20 +7556,20 @@ c_cond
 id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
-id|Time
+id|Val32
 op_assign
 id|SK_WA_ACT_TIME
 suffix:semicolon
 )brace
 r_else
 (brace
-id|Time
+id|Val32
 op_assign
 id|SK_WA_INA_TIME
 suffix:semicolon
 )brace
 multiline_comment|/* Todo: still needed for non-XMAC PHYs??? */
-multiline_comment|/* Start workaround Errata #2 timer. */
+multiline_comment|/* Start workaround Errata #2 timer */
 id|SkTimerStart
 c_func
 (paren
@@ -6722,14 +7578,9 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PWaTimer
+id|pPrt-&gt;PWaTimer
 comma
-id|Time
+id|Val32
 comma
 id|SKGE_HWAC
 comma
@@ -6770,6 +7621,9 @@ id|pAC
 comma
 id|IoC
 comma
+(paren
+r_int
+)paren
 id|Port
 )paren
 suffix:semicolon
@@ -6814,12 +7668,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PHWLinkUp
+id|pPrt-&gt;PHWLinkUp
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Signal directly to RLMT to ensure correct&n;&t;&t;&t; * sequence of SWITCH and RESET event.&n;&t;&t;&t; */
@@ -6855,6 +7704,9 @@ id|pAC
 comma
 id|IoC
 comma
+(paren
+r_int
+)paren
 id|Port
 )paren
 suffix:semicolon
@@ -7014,6 +7866,17 @@ suffix:semicolon
 r_case
 id|SK_HWEV_SET_ROLE
 suffix:colon
+multiline_comment|/* not possible for fiber */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GICopperType
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 id|Val8
 op_assign
 (paren
@@ -7032,7 +7895,7 @@ op_ne
 id|Val8
 )paren
 (brace
-multiline_comment|/* Set New link mode */
+multiline_comment|/* Set New Role (Master/Slave) mode */
 id|pPrt-&gt;PMSMode
 op_assign
 id|Val8
@@ -7066,9 +7929,81 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SK_HWEV_SET_SPEED
+suffix:colon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_MARV_COPPER
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|Val8
+op_assign
+(paren
+id|SK_U8
+)paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+op_ne
+id|Val8
+)paren
+(brace
+multiline_comment|/* Set New Speed parameter */
+id|pPrt-&gt;PLinkSpeed
+op_assign
+id|Val8
+suffix:semicolon
+multiline_comment|/* Restart Port */
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_HWAC
+comma
+id|SK_HWEV_PORT_STOP
+comma
+id|Para
+)paren
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_HWAC
+comma
+id|SK_HWEV_PORT_START
+comma
+id|Para
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_case
 id|SK_HWEV_HALFDUP_CHK
 suffix:colon
-multiline_comment|/*&n;&t;&t; * half duplex hangup workaround. See packet arbiter timeout&n;&t;&t; * interrupt for description&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * half duplex hangup workaround.&n;&t;&t;&t; * See packet arbiter timeout interrupt for description&n;&t;&t;&t; */
 id|pPrt-&gt;HalfDupTimerActive
 op_assign
 id|SK_FALSE
@@ -7085,6 +8020,7 @@ op_eq
 id|SK_LMODE_STAT_AUTOHALF
 )paren
 (brace
+macro_line|#ifdef XXX
 id|Len
 op_assign
 r_sizeof
@@ -7130,6 +8066,70 @@ dot
 id|Net-&gt;NetNumber
 )paren
 suffix:semicolon
+macro_line|#endif /* XXX */
+multiline_comment|/* Snap statistic counters */
+(paren
+r_void
+)paren
+id|SkXmUpdateStats
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|XM_TXO_OK_HI
+comma
+op_amp
+id|Val32
+)paren
+suffix:semicolon
+id|Octets
+op_assign
+(paren
+id|SK_U64
+)paren
+id|Val32
+op_lshift
+l_int|32
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkXmMacStatistic
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|XM_TXO_OK_LO
+comma
+op_amp
+id|Val32
+)paren
+suffix:semicolon
+id|Octets
+op_add_assign
+id|Val32
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7138,8 +8138,8 @@ op_eq
 id|Octets
 )paren
 (brace
-multiline_comment|/* TX hanging, do a FIFO flush restarts it. */
-id|SkXmFlushTxFifo
+multiline_comment|/* Tx hanging, a FIFO flush restarts it */
+id|SkMacFlushTxFifo
 c_func
 (paren
 id|pAC
@@ -7151,8 +8151,10 @@ id|Port
 suffix:semicolon
 )brace
 )brace
+)brace
 r_break
 suffix:semicolon
+macro_line|#endif /* GENESIS */
 r_default
 suffix:colon
 id|SK_ERR_LOG
@@ -7171,13 +8173,12 @@ r_break
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeSirqEvent */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkPhyIsrBcom - PHY interrupt service routine&n; *&n; * Description: handle all interrupts from BCOM PHY&n; *&n; * Returns: N/A&n; */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkPhyIsrBcom() - PHY interrupt service routine&n; *&n; * Description: handles all interrupts from BCom PHY&n; *&n; * Returns: N/A&n; */
 DECL|function|SkPhyIsrBcom
 r_static
 r_void
@@ -7221,18 +8222,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|PHY_B_IS_PSE
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* Incorrectable pair swap error. */
+multiline_comment|/* Incorrectable pair swap error */
 id|SK_ERR_LOG
 c_func
 (paren
 id|pAC
 comma
-id|SK_ERRCL_SW
+id|SK_ERRCL_HW
 op_or
 id|SK_ERRCL_INIT
 comma
@@ -7245,35 +8250,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IStatus
-op_amp
-id|PHY_B_IS_MDXI_SC
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_HCT
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_LCT
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
 (paren
 id|IStatus
 op_amp
@@ -7283,17 +8259,10 @@ op_or
 id|PHY_B_IS_LST_CHANGE
 )paren
 )paren
-(brace
-id|Para.Para32
-(braket
+op_ne
 l_int|0
-)braket
-op_assign
-(paren
-id|SK_U32
 )paren
-id|Port
-suffix:semicolon
+(brace
 id|SkHWLinkDown
 c_func
 (paren
@@ -7303,6 +8272,16 @@ id|IoC
 comma
 id|Port
 )paren
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Port
 suffix:semicolon
 multiline_comment|/* Signal to RLMT */
 id|SkEventQueue
@@ -7338,98 +8317,224 @@ id|Para
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_NO_HDCL
-)paren
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_NO_HDC
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_NEG_USHDC
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_SCR_S_ER
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_RRS_CHANGE
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_LRS_CHANGE
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_DUP_CHANGE
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_LSP_CHANGE
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_B_IS_CRC_ER
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
 )brace
 multiline_comment|/* SkPhyIsrBcom */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkPhyIsrLone - PHY interrupt service routine&n; *&n; * Description: handle all interrupts from LONE PHY&n; *&n; * Returns: N/A&n; */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkPhyIsrGmac() - PHY interrupt service routine&n; *&n; * Description: handles all interrupts from Marvell PHY&n; *&n; * Returns: N/A&n; */
+DECL|function|SkPhyIsrGmac
+r_static
+r_void
+id|SkPhyIsrGmac
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* Io Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Num = PHY Num */
+id|SK_U16
+id|IStatus
+)paren
+multiline_comment|/* Interrupt Status */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+multiline_comment|/* GIni Port struct pointer */
+id|SK_EVPARA
+id|Para
+suffix:semicolon
+id|SK_U16
+id|Word
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+(paren
+id|PHY_M_IS_AN_PR
+op_or
+id|PHY_M_IS_LST_CHANGE
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SkHWLinkDown
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_AUNE_ADV
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNeg.Adv: 0x%04X&bslash;n&quot;
+comma
+id|Word
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Set Auto-negotiation advertisement */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PFlowCtrlMode
+op_eq
+id|SK_FLOW_MODE_SYM_OR_REM
+)paren
+(brace
+multiline_comment|/* restore Asymmetric Pause bit */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_AUNE_ADV
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|Word
+op_or
+id|PHY_M_AN_ASP
+)paren
+)paren
+suffix:semicolon
+)brace
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Port
+suffix:semicolon
+multiline_comment|/* Signal to RLMT */
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_RLMT
+comma
+id|SK_RLMT_LINK_DOWN
+comma
+id|Para
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|PHY_M_IS_AN_ERROR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Auto-Negotiation Error */
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_SIRQ_E023
+comma
+id|SKERR_SIRQ_E023MSG
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|PHY_M_IS_FIFO_ERROR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* FIFO Overflow/Underrun Error */
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_SIRQ_E024
+comma
+id|SKERR_SIRQ_E024MSG
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkPhyIsrGmac */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkPhyIsrLone() - PHY interrupt service routine&n; *&n; * Description: handles all interrupts from LONE PHY&n; *&n; * Returns: N/A&n; */
 DECL|function|SkPhyIsrLone
 r_static
 r_void
@@ -7462,76 +8567,6 @@ c_cond
 (paren
 id|IStatus
 op_amp
-id|PHY_L_IS_CROSS
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_POL
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_SS
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_CFULL
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_AN_C
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_SPEED
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_CFULL
-)paren
-(brace
-multiline_comment|/* not used */
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
 (paren
 id|PHY_L_IS_DUP
 op_or
@@ -7549,7 +8584,6 @@ comma
 id|Port
 )paren
 suffix:semicolon
-multiline_comment|/* Signal to RLMT */
 id|Para.Para32
 (braket
 l_int|0
@@ -7560,6 +8594,7 @@ id|SK_U32
 )paren
 id|Port
 suffix:semicolon
+multiline_comment|/* Signal to RLMT */
 id|SkEventQueue
 c_func
 (paren
@@ -7572,43 +8607,9 @@ comma
 id|Para
 )paren
 suffix:semicolon
-multiline_comment|/* Start workaround Errata #2 timer */
-id|SkTimerStart
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PWaTimer
-comma
-id|SK_WA_INA_TIME
-comma
-id|SKGE_HWAC
-comma
-id|SK_HWEV_WATIM
-comma
-id|Para
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
-id|PHY_L_IS_MDINT
-)paren
-(brace
-multiline_comment|/* not used */
 )brace
 )brace
 multiline_comment|/* SkPhyIsrLone */
+macro_line|#endif /* OTHER_PHY */
 multiline_comment|/* End of File */
 eof

@@ -198,7 +198,7 @@ op_star
 id|value
 )paren
 (brace
-multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and seperate with&n;&t; * one divide.&n;&t; */
+multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and separate with&n;&t; * one divide.&n;&t; */
 id|u64
 id|nsec
 op_assign
@@ -329,7 +329,7 @@ op_star
 id|value
 )paren
 (brace
-multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and seperate with&n;&t; * one divide.&n;&t; */
+multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and separate with&n;&t; * one divide.&n;&t; */
 id|u64
 id|nsec
 op_assign

@@ -25921,7 +25921,7 @@ comma
 id|dprintf
 c_func
 (paren
-l_string|&quot;MWI_REQ illegal parameter&quot;
+l_string|&quot;MWI_REQ invalid parameter&quot;
 )paren
 )paren
 suffix:semicolon

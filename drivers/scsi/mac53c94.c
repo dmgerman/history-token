@@ -1651,7 +1651,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;53c94: illegal cmd, intr=%x stat=%x seq=%x phase=%d&bslash;n&quot;
+l_string|&quot;53c94: invalid cmd, intr=%x stat=%x seq=%x phase=%d&bslash;n&quot;
 comma
 id|intr
 comma

@@ -1079,7 +1079,7 @@ id|n_path_offset
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
 comma
-l_string|&quot;PAP-5010: illegal offset in the path&quot;
+l_string|&quot;PAP-5010: invalid offset in the path&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* While not higher in path than first element. */
@@ -1275,7 +1275,7 @@ id|n_path_offset
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
 comma
-l_string|&quot;PAP-5030: illegal offset in the path&quot;
+l_string|&quot;PAP-5030: invalid offset in the path&quot;
 )paren
 suffix:semicolon
 r_while
@@ -1471,7 +1471,7 @@ id|p_s_chk_path-&gt;path_length
 template_param
 id|MAX_HEIGHT
 comma
-l_string|&quot;PAP-5050: pointer to the key(%p) is NULL or illegal path length(%d)&quot;
+l_string|&quot;PAP-5050: pointer to the key(%p) is NULL or invalid path length(%d)&quot;
 comma
 id|p_s_key
 comma
@@ -1620,7 +1620,7 @@ id|EXTENDED_MAX_HEIGHT
 op_minus
 l_int|1
 comma
-l_string|&quot;PAP-5080: illegal path offset of %d&quot;
+l_string|&quot;PAP-5080: invalid path offset of %d&quot;
 comma
 id|n_path_offset
 )paren
@@ -1713,7 +1713,7 @@ id|n_path_offset
 OL
 id|ILLEGAL_PATH_ELEMENT_OFFSET
 comma
-l_string|&quot;clm-4000: illegal path offset&quot;
+l_string|&quot;clm-4000: invalid path offset&quot;
 )paren
 suffix:semicolon
 r_while
@@ -1780,7 +1780,7 @@ id|n_path_offset
 OL
 id|ILLEGAL_PATH_ELEMENT_OFFSET
 comma
-l_string|&quot;PAP-5090: illegal path offset&quot;
+l_string|&quot;PAP-5090: invalid path offset&quot;
 )paren
 suffix:semicolon
 r_while
@@ -3955,7 +3955,7 @@ l_int|1
 op_ne
 id|n_unfm_number
 comma
-l_string|&quot;PAP-5240: illegal item %h &quot;
+l_string|&quot;PAP-5240: invalid item %h &quot;
 l_string|&quot;n_unfm_number = %d *p_n_pos_in_item = %d&quot;
 comma
 op_amp
@@ -4084,7 +4084,7 @@ id|p_s_path
 OG
 id|n_unfm_number
 comma
-l_string|&quot;PAP-5250: illegal position in the item&quot;
+l_string|&quot;PAP-5250: invalid position in the item&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Either convert last unformatted node of indirect item to direct item or increase&n;&t;&t;       its free space.  */
@@ -4149,7 +4149,7 @@ id|pos_in_item
 id|p_s_path
 )paren
 comma
-l_string|&quot;PAP-5260: illegal position in the indirect item&quot;
+l_string|&quot;PAP-5260: invalid position in the indirect item&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* pointers to be cut */
@@ -6193,7 +6193,7 @@ id|c_mode
 op_eq
 id|M_INSERT
 comma
-l_string|&quot;illegal mode&quot;
+l_string|&quot;invalid mode&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate number of bytes that need to be cut from the item. */

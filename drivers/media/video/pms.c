@@ -3201,6 +3201,11 @@ id|dt
 )paren
 )paren
 r_return
+id|len
+ques
+c_cond
+id|len
+suffix:colon
 op_minus
 id|EFAULT
 suffix:semicolon

@@ -186,6 +186,12 @@ r_int
 r_char
 id|i8042_last_e0
 suffix:semicolon
+DECL|variable|i8042_last_release
+r_static
+r_int
+r_char
+id|i8042_last_release
+suffix:semicolon
 DECL|variable|i8042_mux_open
 r_static
 r_int
@@ -1920,6 +1926,26 @@ op_lshift
 l_int|7
 )paren
 suffix:semicolon
+multiline_comment|/* work around hardware that doubles key releases */
+r_if
+c_cond
+(paren
+id|index
+op_eq
+id|i8042_last_release
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;i8042 skipped double release (%d)&bslash;n&quot;
+comma
+id|index
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1973,6 +1999,10 @@ op_amp
 l_int|0x7f
 )braket
 suffix:semicolon
+id|i8042_last_release
+op_assign
+id|index
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -1997,6 +2027,10 @@ id|i8042_unxlate_table
 (braket
 id|data
 )braket
+suffix:semicolon
+id|i8042_last_release
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|i8042_last_e0

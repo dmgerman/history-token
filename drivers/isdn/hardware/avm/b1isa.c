@@ -238,7 +238,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;b1isa: illegal port 0x%x.&bslash;n&quot;
+l_string|&quot;b1isa: invalid port 0x%x.&bslash;n&quot;
 comma
 id|card-&gt;port
 )paren

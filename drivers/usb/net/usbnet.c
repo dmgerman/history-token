@@ -2231,7 +2231,7 @@ l_int|0
 (brace
 id|dbg
 (paren
-l_string|&quot;genelink: illegal received packet count %d&quot;
+l_string|&quot;genelink: invalid received packet count %d&quot;
 comma
 id|header-&gt;packet_count
 )paren
@@ -2278,7 +2278,7 @@ id|GL_MAX_PACKET_LEN
 (brace
 id|dbg
 (paren
-l_string|&quot;genelink: illegal rx length %d&quot;
+l_string|&quot;genelink: invalid rx length %d&quot;
 comma
 id|size
 )paren
@@ -2397,7 +2397,7 @@ id|GL_MAX_PACKET_LEN
 (brace
 id|dbg
 (paren
-l_string|&quot;genelink: illegal rx length %d&quot;
+l_string|&quot;genelink: invalid rx length %d&quot;
 comma
 id|skb-&gt;len
 )paren
@@ -9593,6 +9593,51 @@ r_int
 )paren
 op_amp
 id|zaurus_slc700_info
+comma
+)brace
+comma
+(brace
+dot
+id|match_flags
+op_assign
+id|USB_DEVICE_ID_MATCH_INT_INFO
+op_or
+id|USB_DEVICE_ID_MATCH_DEVICE
+comma
+dot
+id|idVendor
+op_assign
+l_int|0x04DD
+comma
+dot
+id|idProduct
+op_assign
+l_int|0x9031
+comma
+dot
+id|bInterfaceClass
+op_assign
+l_int|0x02
+comma
+dot
+id|bInterfaceSubClass
+op_assign
+l_int|0x0a
+comma
+dot
+id|bInterfaceProtocol
+op_assign
+l_int|0x00
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|zaurus_sla300_info
 comma
 )brace
 comma

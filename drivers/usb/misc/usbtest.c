@@ -1710,7 +1710,7 @@ id|i
 (brace
 id|dbg
 (paren
-l_string|&quot;%s, illegal alt [%d].bAltSetting = %d&quot;
+l_string|&quot;%s, invalid alt [%d].bAltSetting = %d&quot;
 comma
 id|dev-&gt;id
 comma

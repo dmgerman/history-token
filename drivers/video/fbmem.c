@@ -1139,6 +1139,16 @@ id|rivafb_setup
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_FB_3DFX
+(brace
+l_string|&quot;tdfxfb&quot;
+comma
+id|tdfxfb_init
+comma
+id|tdfxfb_setup
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_FB_RADEON
 (brace
 l_string|&quot;radeonfb&quot;
@@ -1361,16 +1371,6 @@ id|vesafb_setup
 comma
 macro_line|#endif 
 multiline_comment|/*&n;&t; * Chipset specific drivers that don&squot;t use resource management (yet)&n;&t; */
-macro_line|#ifdef CONFIG_FB_3DFX
-(brace
-l_string|&quot;tdfxfb&quot;
-comma
-id|tdfxfb_init
-comma
-id|tdfxfb_setup
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SGIVW
 (brace
 l_string|&quot;sgivwfb&quot;
