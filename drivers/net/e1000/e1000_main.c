@@ -12172,7 +12172,11 @@ id|netdev-&gt;priv
 suffix:semicolon
 r_uint32
 id|manc
+comma
+id|ret
 suffix:semicolon
+id|ret
+op_assign
 id|pci_enable_device
 c_func
 (paren
