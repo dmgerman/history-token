@@ -4132,8 +4132,6 @@ id|handle
 suffix:semicolon
 r_int
 id|error
-comma
-id|error2
 suffix:semicolon
 id|handle
 op_assign
@@ -4154,6 +4152,7 @@ c_func
 id|handle
 )paren
 )paren
+(brace
 id|error
 op_assign
 id|PTR_ERR
@@ -4162,7 +4161,12 @@ c_func
 id|handle
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+r_int
+id|error2
+suffix:semicolon
 id|error
 op_assign
 id|ext3_xattr_set_handle
@@ -4191,13 +4195,20 @@ c_func
 id|handle
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+l_int|0
+)paren
+id|error
+op_assign
+id|error2
+suffix:semicolon
+)brace
 r_return
 id|error
-ques
-c_cond
-id|error
-suffix:colon
-id|error2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ext3_xattr_delete_inode()&n; *&n; * Free extended attribute resources associated with this inode. This&n; * is called immediately before an inode is freed.&n; */
