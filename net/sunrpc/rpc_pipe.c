@@ -1503,9 +1503,9 @@ id|mode
 op_assign
 id|S_IFDIR
 op_or
-id|S_IRUSR
+id|S_IRUGO
 op_or
-id|S_IXUSR
+id|S_IXUGO
 comma
 )brace
 comma
@@ -1524,9 +1524,9 @@ id|mode
 op_assign
 id|S_IFDIR
 op_or
-id|S_IRUSR
+id|S_IRUGO
 op_or
-id|S_IXUSR
+id|S_IXUGO
 comma
 )brace
 comma
@@ -1545,9 +1545,9 @@ id|mode
 op_assign
 id|S_IFDIR
 op_or
-id|S_IRUSR
+id|S_IRUGO
 op_or
-id|S_IXUSR
+id|S_IXUGO
 comma
 )brace
 comma
@@ -1566,9 +1566,9 @@ id|mode
 op_assign
 id|S_IFDIR
 op_or
-id|S_IRUSR
+id|S_IRUGO
 op_or
-id|S_IXUSR
+id|S_IXUGO
 comma
 )brace
 comma
@@ -1863,7 +1863,7 @@ op_assign
 id|dget
 c_func
 (paren
-id|rpc_mount-&gt;mnt_sb-&gt;s_root
+id|rpc_mount-&gt;mnt_root
 )paren
 suffix:semicolon
 id|nd-&gt;last_type
