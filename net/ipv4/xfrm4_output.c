@@ -148,10 +148,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* TTL disclosed */
 id|top_iph-&gt;ttl
 op_assign
-id|iph-&gt;ttl
+id|dst_path_metric
+c_func
+(paren
+id|dst
+comma
+id|RTAX_HOPLIMIT
+)paren
 suffix:semicolon
 id|top_iph-&gt;saddr
 op_assign
