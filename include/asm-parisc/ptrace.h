@@ -111,10 +111,6 @@ mdefine_line|#define task_regs(task) ((struct pt_regs *) ((char *)(task) + TASK_
 multiline_comment|/*&n; * The numbers chosen here are somewhat arbitrary but absolutely MUST&n; * not overlap with any of the number assigned in &lt;linux/ptrace.h&gt;.&n; *&n; * These ones are taken from IA-64 on the assumption that theirs are&n; * the most correct (and we also want to support PTRACE_SINGLEBLOCK&n; * since we have taken branch traps too)&n; */
 DECL|macro|PTRACE_SINGLEBLOCK
 mdefine_line|#define PTRACE_SINGLEBLOCK&t;12&t;/* resume execution until next branch */
-DECL|macro|PTRACE_GETSIGINFO
-mdefine_line|#define PTRACE_GETSIGINFO&t;13&t;/* get child&squot;s siginfo structure */
-DECL|macro|PTRACE_SETSIGINFO
-mdefine_line|#define PTRACE_SETSIGINFO&t;14&t;/* set child&squot;s siginfo structure */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* XXX should we use iaoq[1] or iaoq[0] ? */
 DECL|macro|user_mode

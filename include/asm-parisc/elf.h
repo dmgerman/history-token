@@ -57,6 +57,20 @@ id|elf_fpregset_t
 id|ELF_NFPREG
 )braket
 suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
 r_struct
 id|pt_regs
 suffix:semicolon
