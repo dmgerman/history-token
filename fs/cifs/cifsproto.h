@@ -262,8 +262,10 @@ id|AllocOplockQEntry
 c_func
 (paren
 r_struct
-id|file
+id|inode
 op_star
+comma
+id|u16
 comma
 r_struct
 id|cifsTconInfo
@@ -376,6 +378,10 @@ r_int
 r_char
 op_star
 id|search_path
+comma
+id|FILE_ALL_INFO
+op_star
+id|pfile_info
 comma
 r_struct
 id|super_block
@@ -1380,6 +1386,9 @@ comma
 r_int
 op_star
 id|pOplock
+comma
+id|FILE_ALL_INFO
+op_star
 comma
 r_const
 r_struct

@@ -733,6 +733,38 @@ id|SECMODE_SIGN_REQUIRED
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|sign_CIFS_PDUs
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|server-&gt;secMode
+op_amp
+id|SECMODE_SIGN_REQUIRED
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|server-&gt;secMode
+op_and_assign
+op_complement
+(paren
+id|SECMODE_SIGN_ENABLED
+op_or
+id|SECMODE_SIGN_REQUIRED
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 r_if
 c_cond
@@ -1988,6 +2020,10 @@ r_int
 op_star
 id|pOplock
 comma
+id|FILE_ALL_INFO
+op_star
+id|pfile_info
+comma
 r_const
 r_struct
 id|nls_table
@@ -2275,6 +2311,7 @@ c_func
 id|pSMB-&gt;ByteCount
 )paren
 suffix:semicolon
+multiline_comment|/* long_op set to 1 to allow for oplock break timeouts */
 id|rc
 op_assign
 id|SendReceive
@@ -2301,7 +2338,7 @@ comma
 op_amp
 id|bytes_returned
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2338,7 +2375,50 @@ id|pSMBr-&gt;Fid
 suffix:semicolon
 multiline_comment|/* cifs fid stays in le */
 multiline_comment|/* Do we care about the CreateAction in any cases? */
-multiline_comment|/* BB add code to update inode file sizes from create response */
+r_if
+c_cond
+(paren
+id|pfile_info
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|pfile_info
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|pSMBr-&gt;CreationTime
+comma
+l_int|36
+multiline_comment|/* CreationTime to Attributes */
+)paren
+suffix:semicolon
+multiline_comment|/* the file_info buf is endian converted by caller */
+id|pfile_info-&gt;AllocationSize
+op_assign
+id|pSMBr-&gt;AllocationSize
+suffix:semicolon
+id|pfile_info-&gt;EndOfFile
+op_assign
+id|pSMBr-&gt;EndOfFile
+suffix:semicolon
+id|pfile_info-&gt;NumberOfLinks
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -6481,6 +6561,11 @@ id|EIO
 suffix:semicolon
 multiline_comment|/* bad smb */
 r_else
+r_if
+c_cond
+(paren
+id|pFindData
+)paren
 (brace
 id|memcpy
 c_func
@@ -6507,6 +6592,12 @@ id|FILE_ALL_INFO
 )paren
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
 r_if
 c_cond
