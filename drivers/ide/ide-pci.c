@@ -12,11 +12,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;pcihost.h&quot;
-multiline_comment|/* Missing PCI device IDs: */
-DECL|macro|PCI_VENDOR_ID_HINT
-mdefine_line|#define PCI_VENDOR_ID_HINT 0x3388
-DECL|macro|PCI_DEVICE_ID_HINT
-mdefine_line|#define PCI_DEVICE_ID_HINT 0x8013
 multiline_comment|/*&n; * This is the list of registered PCI chipset driver data structures.&n; */
 DECL|variable|ata_pci_device_list
 r_static
@@ -1433,7 +1428,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* no room in ide_hwifs[] */
+multiline_comment|/* no room */
 r_if
 c_cond
 (paren
@@ -3275,7 +3270,7 @@ id|PCI_VENDOR_ID_HINT
 comma
 id|device
 suffix:colon
-id|PCI_DEVICE_ID_HINT
+id|PCI_DEVICE_ID_HINT_VXPROII_IDE
 comma
 id|bootable
 suffix:colon

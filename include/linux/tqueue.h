@@ -65,8 +65,6 @@ id|tq_timer
 comma
 id|tq_immediate
 comma
-id|tq_disk
-comma
 id|tq_bdflush
 suffix:semicolon
 multiline_comment|/*&n; * To implement your own list of active bottom halfs, use the following&n; * two definitions:&n; *&n; * DECLARE_TASK_QUEUE(my_tqueue);&n; * struct tq_struct my_task = {&n; * &t;routine: (void (*)(void *)) my_routine,&n; *&t;data: &amp;my_data&n; * };&n; *&n; * To activate a bottom half on a list, use:&n; *&n; *&t;queue_task(&amp;my_task, &amp;my_tqueue);&n; *&n; * To later run the queued tasks use&n; *&n; *&t;run_task_queue(&amp;my_tqueue);&n; *&n; * This allows you to do deferred processing.  For example, you could&n; * have a task queue called tq_timer, which is executed within the timer&n; * interrupt.&n; */

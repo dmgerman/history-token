@@ -3,6 +3,7 @@ macro_line|#ifndef _AVMCARD_H_
 DECL|macro|_AVMCARD_H_
 mdefine_line|#define _AVMCARD_H_
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|AVMB1_PORTLEN
 mdefine_line|#define&t;AVMB1_PORTLEN&t;&t;0x1f
 DECL|macro|AVM_MAXVERSION
@@ -160,7 +161,6 @@ suffix:semicolon
 DECL|member|capi_ctrl
 r_struct
 id|capi_ctr
-op_star
 id|capi_ctrl
 suffix:semicolon
 DECL|member|ncci_head
@@ -259,9 +259,18 @@ id|avmctrl_info
 op_star
 id|ctrlinfo
 suffix:semicolon
+DECL|member|nr_controllers
+r_int
+id|nr_controllers
+suffix:semicolon
 DECL|member|nlogcontr
 r_int
 id|nlogcontr
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|typedef|avmcard
 )brace
@@ -1957,20 +1966,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* b1.c */
-r_void
-id|b1_set_revision
-c_func
-(paren
-r_struct
-id|capi_driver
-op_star
-id|driver
-comma
-r_char
-op_star
-id|rev
-)paren
-suffix:semicolon
 id|avmcard
 op_star
 id|b1_alloc_card

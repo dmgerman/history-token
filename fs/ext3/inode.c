@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO
@@ -4592,7 +4593,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_page_dirty
+multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Put the page back on mapping-&gt;dirty_pages, but leave its buffer&squot;s&n;&t; * dirty state as-is.&n;&t; */
+id|__set_page_dirty_nobuffers
 c_func
 (paren
 id|page
@@ -4626,10 +4628,44 @@ id|page
 )paren
 (brace
 r_return
-id|block_read_full_page
+id|mpage_readpage
 c_func
 (paren
 id|page
+comma
+id|ext3_get_block
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|ext3_readpages
+id|ext3_readpages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+(brace
+r_return
+id|mpage_readpages
+c_func
+(paren
+id|mapping
+comma
+id|pages
+comma
+id|nr_pages
 comma
 id|ext3_get_block
 )paren
@@ -4719,6 +4755,11 @@ op_assign
 id|readpage
 suffix:colon
 id|ext3_readpage
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|readpages
+suffix:colon
+id|ext3_readpages
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
 id|writepage
@@ -4957,19 +4998,6 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* Hole? Nothing to do */
-r_if
-c_cond
-(paren
-id|buffer_uptodate
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_goto
-id|unlock
-suffix:semicolon
 id|ext3_get_block
 c_func
 (paren
@@ -4982,7 +5010,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Still unmapped? Nothing to do */
+multiline_comment|/* unmapped? It&squot;s a hole - nothing to do */
 r_if
 c_cond
 (paren
@@ -7680,7 +7708,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* inode-&gt;i_attr_flags = 0;&t;&t;&t;&t;unused */
 r_if
 c_cond
 (paren
@@ -7688,13 +7715,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_SYNC_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_SYNCRONOUS; unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_SYNC
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7702,13 +7726,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_APPEND_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_APPEND;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_APPEND
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7716,13 +7737,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_IMMUTABLE_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_IMMUTABLE;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_IMMUTABLE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7730,13 +7748,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_NOATIME_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_NOATIME;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_NOATIME
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 id|bad_inode
@@ -8790,8 +8805,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: called with no handle!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: called with no handle!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -9023,8 +9039,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: transactions do not match!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: transactions do not match!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

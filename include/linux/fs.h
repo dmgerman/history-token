@@ -159,6 +159,8 @@ DECL|macro|MS_REMOUNT
 mdefine_line|#define MS_REMOUNT&t;32&t;/* Alter flags of a mounted FS */
 DECL|macro|MS_MANDLOCK
 mdefine_line|#define MS_MANDLOCK&t;64&t;/* Allow mandatory locks on an FS */
+DECL|macro|MS_DIRSYNC
+mdefine_line|#define MS_DIRSYNC&t;128&t;/* Directory modifications are synchronous */
 DECL|macro|MS_NOATIME
 mdefine_line|#define MS_NOATIME&t;1024&t;/* Do not update access times. */
 DECL|macro|MS_NODIRATIME
@@ -198,13 +200,17 @@ DECL|macro|S_DEAD
 mdefine_line|#define S_DEAD&t;&t;32&t;/* removed, but still open directory */
 DECL|macro|S_NOQUOTA
 mdefine_line|#define S_NOQUOTA&t;64&t;/* Inode is not counted to quota */
+DECL|macro|S_DIRSYNC
+mdefine_line|#define S_DIRSYNC&t;128&t;/* Directory modifications are synchronous */
 multiline_comment|/*&n; * Note that nosuid etc flags are inode-specific: setting some file-system&n; * flags just means all the inodes inherit those flags by default. It might be&n; * possible to override it selectively if you really wanted to with some&n; * ioctl() that is not currently implemented.&n; *&n; * Exception: MS_RDONLY is always applied to the entire file system.&n; *&n; * Unfortunately, it is possible to change a filesystems flags with it mounted&n; * with files in use.  This means that all of the inodes will not have their&n; * i_flags updated.  Hence, i_flags no longer inherit the superblock mount&n; * flags, so these have to be checked separately. -- rmk@arm.uk.linux.org&n; */
 DECL|macro|__IS_FLG
 mdefine_line|#define __IS_FLG(inode,flg) ((inode)-&gt;i_sb-&gt;s_flags &amp; (flg))
 DECL|macro|IS_RDONLY
 mdefine_line|#define IS_RDONLY(inode) ((inode)-&gt;i_sb-&gt;s_flags &amp; MS_RDONLY)
 DECL|macro|IS_SYNC
-mdefine_line|#define IS_SYNC(inode)&t;&t;(__IS_FLG(inode, MS_SYNCHRONOUS) || ((inode)-&gt;i_flags &amp; S_SYNC))
+mdefine_line|#define IS_SYNC(inode)&t;&t;(__IS_FLG(inode, MS_SYNCHRONOUS) || &bslash;&n;&t;&t;&t;&t;&t;((inode)-&gt;i_flags &amp; S_SYNC))
+DECL|macro|IS_DIRSYNC
+mdefine_line|#define IS_DIRSYNC(inode)&t;(__IS_FLG(inode, MS_SYNCHRONOUS|MS_DIRSYNC) || &bslash;&n;&t;&t;&t;&t;&t;((inode)-&gt;i_flags &amp; (S_SYNC|S_DIRSYNC)))
 DECL|macro|IS_MANDLOCK
 mdefine_line|#define IS_MANDLOCK(inode)&t;__IS_FLG(inode, MS_MANDLOCK)
 DECL|macro|IS_QUOTAINIT
@@ -472,11 +478,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Write back some dirty pages from this mapping. */
-DECL|member|writeback_mapping
+DECL|member|writepages
 r_int
 (paren
 op_star
-id|writeback_mapping
+id|writepages
 )paren
 (paren
 r_struct
@@ -517,6 +523,27 @@ r_struct
 id|page
 op_star
 id|page
+)paren
+suffix:semicolon
+DECL|member|readpages
+r_int
+(paren
+op_star
+id|readpages
+)paren
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * ext3 requires that a successful prepare_write() call be followed&n;&t; * by a commit_write() call - they must be balanced&n;&t; */
@@ -1049,11 +1076,6 @@ suffix:semicolon
 DECL|member|i_writecount
 id|atomic_t
 id|i_writecount
-suffix:semicolon
-DECL|member|i_attr_flags
-r_int
-r_int
-id|i_attr_flags
 suffix:semicolon
 DECL|member|i_generation
 id|__u32
@@ -4653,6 +4675,14 @@ id|block_device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|blk_run_queues
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* fs/devices.c */
 r_extern
 r_const
@@ -5272,6 +5302,17 @@ id|super_block
 op_star
 comma
 id|ino_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|inode_needs_sync
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
 )paren
 suffix:semicolon
 r_extern

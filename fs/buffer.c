@@ -376,11 +376,9 @@ id|wait
 suffix:semicolon
 r_do
 (brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|set_task_state
@@ -528,7 +526,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Buffer I/O error on device %s, logical block %Ld&bslash;n&quot;
+l_string|&quot;Buffer I/O error on device %s, logical block %Lu&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -537,7 +535,9 @@ id|bh-&gt;b_bdev
 )paren
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|bh-&gt;b_blocknr
 )paren
@@ -1634,11 +1634,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|__set_current_state
@@ -1859,6 +1857,28 @@ id|page
 )paren
 )paren
 id|SetPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * swap page handling is a bit hacky.  A standalone completion handler&n;&t; * for swapout pages would fix that up.  swapin can use this function.&n;&t; */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+id|end_page_writeback
 c_func
 (paren
 id|page
@@ -2413,7 +2433,7 @@ c_func
 id|sync_mapping_buffers
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * write_mapping_buffers - Start writeout of a mapping&squot;s &quot;associated&quot; buffers.&n; * @mapping - the mapping which wants those buffers written.&n; *&n; * Starts I/O against dirty buffers which are on @mapping-&gt;private_list.&n; * Those buffers must be backed by @mapping-&gt;assoc_mapping.&n; *&n; * The private_list buffers generally contain filesystem indirect blocks.&n; * The idea is that the filesystem can start I/O against the indirects at&n; * the same time as running generic_writeback_mapping(), so the indirect&squot;s&n; * I/O will be merged with the data.&n; *&n; * We sneakliy write the buffers in probable tail-to-head order.  This is&n; * because generic_writeback_mapping writes in probable head-to-tail&n; * order.  If the file is so huge that the data or the indirects overflow&n; * the request queue we will at least get some merging this way.&n; *&n; * Any clean+unlocked buffers are de-listed.  clean/locked buffers must be&n; * left on the list for an fsync() to wait on.&n; *&n; * Couldn&squot;t think of a smart way of avoiding livelock, so chose the dumb&n; * way instead.&n; *&n; * FIXME: duplicates fsync_inode_buffers() functionality a bit.&n; */
+multiline_comment|/**&n; * write_mapping_buffers - Start writeout of a mapping&squot;s &quot;associated&quot; buffers.&n; * @mapping - the mapping which wants those buffers written.&n; *&n; * Starts I/O against dirty buffers which are on @mapping-&gt;private_list.&n; * Those buffers must be backed by @mapping-&gt;assoc_mapping.&n; *&n; * The private_list buffers generally contain filesystem indirect blocks.&n; * The idea is that the filesystem can start I/O against the indirects at&n; * the same time as running generic_writepages(), so the indirect&squot;s&n; * I/O will be merged with the data.&n; *&n; * We sneakliy write the buffers in probable tail-to-head order.  This is&n; * because generic_writepages() writes in probable head-to-tail&n; * order.  If the file is so huge that the data or the indirects overflow&n; * the request queue we will at least get some merging this way.&n; *&n; * Any clean+unlocked buffers are de-listed.  clean/locked buffers must be&n; * left on the list for an fsync() to wait on.&n; *&n; * Couldn&squot;t think of a smart way of avoiding livelock, so chose the dumb&n; * way instead.&n; *&n; * FIXME: duplicates fsync_inode_buffers() functionality a bit.&n; */
 DECL|function|write_mapping_buffers
 r_int
 id|write_mapping_buffers
@@ -2651,6 +2671,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|write_mapping_buffers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|write_mapping_buffers
+)paren
+suffix:semicolon
 DECL|function|mark_buffer_dirty_inode
 r_void
 id|mark_buffer_dirty_inode
@@ -3229,11 +3256,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re _really_ low on memory. Now we just&n;&t; * wait for old buffer heads to become free due to&n;&t; * finishing IO.  Since this is an async request and&n;&t; * the reserve list is empty, we&squot;re sure there are &n;&t; * async buffer heads in use.&n;&t; */
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|free_more_memory
@@ -4520,10 +4545,6 @@ id|head
 suffix:semicolon
 r_do
 (brace
-id|bh-&gt;b_end_io
-op_assign
-l_int|NULL
-suffix:semicolon
 id|bh-&gt;b_state
 op_or_assign
 id|b_state
@@ -4645,15 +4666,17 @@ id|create_empty_buffers
 suffix:semicolon
 multiline_comment|/*&n; * We are taking a block for data and we don&squot;t want any output from any&n; * buffer-cache aliases starting from return from that function and&n; * until the moment when something will explicitly mark the buffer&n; * dirty (hopefully that will not happen until we will free that block ;-)&n; * We don&squot;t even need to mark it not-uptodate - nobody can expect&n; * anything from a newly allocated buffer anyway. We used to used&n; * unmap_buffer() for such invalidation, but that was wrong. We definitely&n; * don&squot;t want to mark the alias unmapped, for example - it would confuse&n; * anyone who might pick it with bread() afterwards...&n; *&n; * Also..  Note that bforget() doesn&squot;t lock the buffer.  So there can&n; * be writeout I/O going on against recently-freed buffers.  We don&squot;t&n; * wait on that I/O in bforget() - it&squot;s more efficient to wait on the I/O&n; * only if we really need to.  That happens here.&n; */
 DECL|function|unmap_underlying_metadata
-r_static
 r_void
 id|unmap_underlying_metadata
 c_func
 (paren
 r_struct
-id|buffer_head
+id|block_device
 op_star
-id|bh
+id|bdev
+comma
+id|sector_t
+id|block
 )paren
 (brace
 r_struct
@@ -4666,9 +4689,9 @@ op_assign
 id|__get_hash_table
 c_func
 (paren
-id|bh-&gt;b_bdev
+id|bdev
 comma
-id|bh-&gt;b_blocknr
+id|block
 comma
 l_int|0
 )paren
@@ -4975,7 +4998,9 @@ suffix:semicolon
 id|unmap_underlying_metadata
 c_func
 (paren
-id|bh
+id|bh-&gt;b_bdev
+comma
+id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
 )brace
@@ -5589,15 +5614,36 @@ c_func
 id|page
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
 id|set_buffer_uptodate
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
+)brace
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|buffer_new
+c_func
+(paren
+id|bh
+)paren
+)paren
 id|clear_buffer_new
 c_func
 (paren
@@ -5656,7 +5702,9 @@ suffix:semicolon
 id|unmap_underlying_metadata
 c_func
 (paren
-id|bh
+id|bh-&gt;b_bdev
+comma
+id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
 r_if
@@ -5766,6 +5814,16 @@ id|page
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
 id|set_buffer_uptodate
 c_func
 (paren
@@ -7610,19 +7668,8 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* Hole? Nothing to do */
-r_if
-c_cond
-(paren
-id|buffer_uptodate
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_goto
-id|unlock
-suffix:semicolon
+id|err
+op_assign
 id|get_block
 c_func
 (paren
@@ -7635,7 +7682,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Still unmapped? Nothing to do */
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|unlock
+suffix:semicolon
+multiline_comment|/* unmapped? It&squot;s a hole - nothing to do */
 r_if
 c_cond
 (paren
@@ -8135,8 +8190,9 @@ id|bh
 id|unmap_underlying_metadata
 c_func
 (paren
-op_amp
-id|bh
+id|bh.b_bdev
+comma
+id|bh.b_blocknr
 )paren
 suffix:semicolon
 r_if
@@ -8427,7 +8483,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; *&n; * Swap pages are also marked PageWriteback when they are being written&n; * so that memory allocators will throttle on them.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page
@@ -8572,6 +8628,31 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|WRITE
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|SetPageWriteback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Stage 2: start the IO */
 r_do
 (brace
@@ -9206,11 +9287,9 @@ op_star
 id|page
 )paren
 (brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 r_return

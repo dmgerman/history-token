@@ -1329,7 +1329,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %lu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d&bslash;n&quot;
+l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %lu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d %lu %lu&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -1460,6 +1460,10 @@ comma
 id|task-&gt;exit_signal
 comma
 id|task-&gt;thread_info-&gt;cpu
+comma
+id|task-&gt;rt_priority
+comma
+id|task-&gt;policy
 )paren
 suffix:semicolon
 r_if

@@ -1891,8 +1891,8 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;error: %s[%d] exited with preempt_count %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;note: %s[%d] exited with preempt_count %d&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma

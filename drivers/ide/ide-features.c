@@ -1128,9 +1128,10 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|OUT_BYTE
@@ -1152,15 +1153,11 @@ r_do
 r_if
 c_cond
 (paren
-l_int|0
-OL
-(paren
-r_int
-r_int
-)paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|timeout
 )paren
 )paren
@@ -1180,9 +1177,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* drive timed-out */
 )brace
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* give drive a breather */
@@ -1199,9 +1197,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|mdelay
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* wait for IRQ and DRQ_STAT */

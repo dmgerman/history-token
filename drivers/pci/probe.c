@@ -837,10 +837,6 @@ id|limit
 op_plus
 l_int|0xfff
 suffix:semicolon
-id|res-&gt;name
-op_assign
-id|child-&gt;name
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -943,10 +939,6 @@ op_assign
 id|limit
 op_plus
 l_int|0xfffff
-suffix:semicolon
-id|res-&gt;name
-op_assign
-id|child-&gt;name
 suffix:semicolon
 )brace
 r_else
@@ -1138,10 +1130,6 @@ id|limit
 op_plus
 l_int|0xfffff
 suffix:semicolon
-id|res-&gt;name
-op_assign
-id|child-&gt;name
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1325,7 +1313,7 @@ id|child-&gt;subordinate
 op_assign
 l_int|0xff
 suffix:semicolon
-multiline_comment|/* Set up default resource pointers.. */
+multiline_comment|/* Set up default resource pointers and names.. */
 r_for
 c_loop
 (paren
@@ -1340,6 +1328,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|child-&gt;resource
 (braket
 id|i
@@ -1353,6 +1342,16 @@ op_plus
 id|i
 )braket
 suffix:semicolon
+id|child-&gt;resource
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|name
+op_assign
+id|child-&gt;name
+suffix:semicolon
+)brace
 r_return
 id|child
 suffix:semicolon

@@ -214,8 +214,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -252,8 +250,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -290,8 +286,6 @@ c_func
 (paren
 op_amp
 id|hw
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

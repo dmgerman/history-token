@@ -238,7 +238,7 @@ id|sync
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write a single inode&squot;s dirty pages and inode data out to disk.&n; * If `sync&squot; is set, wait on the writeout.&n; * If `nr_to_write&squot; is not NULL, subtract the number of written pages&n; * from *nr_to_write.&n; *&n; * Normally it is not legal for a single process to lock more than one&n; * page at a time, due to ab/ba deadlock problems.  But writeback_mapping()&n; * does want to lock a large number of pages, without immediately submitting&n; * I/O against them (starting I/O is a &quot;deferred unlock_page&quot;).&n; *&n; * However it *is* legal to lock multiple pages, if this is only ever performed&n; * by a single process.  We provide that exclusion via locking in the&n; * filesystem&squot;s -&gt;writeback_mapping a_op. This ensures that only a single&n; * process is locking multiple pages against this inode.  And as I/O is&n; * submitted against all those locked pages, there is no deadlock.&n; *&n; * Called under inode_lock.&n; */
+multiline_comment|/*&n; * Write a single inode&squot;s dirty pages and inode data out to disk.&n; * If `sync&squot; is set, wait on the writeout.&n; * If `nr_to_write&squot; is not NULL, subtract the number of written pages&n; * from *nr_to_write.&n; *&n; * Normally it is not legal for a single process to lock more than one&n; * page at a time, due to ab/ba deadlock problems.  But writepages()&n; * does want to lock a large number of pages, without immediately submitting&n; * I/O against them (starting I/O is a &quot;deferred unlock_page&quot;).&n; *&n; * However it *is* legal to lock multiple pages, if this is only ever performed&n; * by a single process.  We provide that exclusion via locking in the&n; * filesystem&squot;s -&gt;writepages a_op. This ensures that only a single&n; * process is locking multiple pages against this inode.  And as I/O is&n; * submitted against all those locked pages, there is no deadlock.&n; *&n; * Called under inode_lock.&n; */
 DECL|function|__sync_single_inode
 r_static
 r_void
@@ -336,7 +336,7 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 id|mapping
@@ -851,7 +851,7 @@ id|nr_to_write
 op_logical_and
 op_star
 id|nr_to_write
-op_eq
+op_le
 l_int|0
 )paren
 r_break
@@ -1006,7 +1006,7 @@ id|nr_to_write
 op_logical_and
 op_star
 id|nr_to_write
-op_eq
+op_le
 l_int|0
 )paren
 r_break
@@ -1106,7 +1106,7 @@ id|inode_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; */
+multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; *&n; * A finite limit is set on the number of pages which will be written.&n; * To prevent infinite livelock of sys_sync().&n; */
 DECL|function|sync_inodes_sb
 r_void
 id|sync_inodes_sb
@@ -1121,6 +1121,28 @@ r_int
 id|wait
 )paren
 (brace
+r_struct
+id|page_state
+id|ps
+suffix:semicolon
+r_int
+id|nr_to_write
+suffix:semicolon
+id|get_page_state
+c_func
+(paren
+op_amp
+id|ps
+)paren
+suffix:semicolon
+id|nr_to_write
+op_assign
+id|ps.nr_dirty
+op_plus
+id|ps.nr_dirty
+op_div
+l_int|4
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1140,7 +1162,8 @@ id|WB_SYNC_ALL
 suffix:colon
 id|WB_SYNC_HOLD
 comma
-l_int|NULL
+op_amp
+id|nr_to_write
 comma
 l_int|NULL
 )paren

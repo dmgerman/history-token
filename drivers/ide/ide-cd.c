@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;linux/atapi.h&gt;
 macro_line|#include &quot;ide-cd.h&quot;
 multiline_comment|/****************************************************************************&n; * Generic packet command support and error handling routines.&n; */
 multiline_comment|/* Mark that we&squot;ve seen a media change, and invalidate our internal&n;   buffers. */
@@ -11728,7 +11729,7 @@ id|drive
 op_minus
 id|channel-&gt;drives
 suffix:semicolon
-id|ide_revalidate_disk
+id|ata_revalidate
 c_func
 (paren
 id|mk_kdev

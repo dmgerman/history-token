@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_JIFFIES_H
 DECL|macro|_LINUX_JIFFIES_H
 mdefine_line|#define _LINUX_JIFFIES_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/param.h&gt;&t;&t;&t;/* for HZ */
 multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock)&n; */
 r_extern
 id|u64

@@ -4014,8 +4014,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: truncating inode %ld to %Ld bytes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: truncating inode %ld to %Ld bytes&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
@@ -4050,8 +4051,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: deleting unreferenced inode %ld&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: deleting unreferenced inode %ld&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 )paren

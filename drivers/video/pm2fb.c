@@ -53,10 +53,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif 
-DECL|macro|PICOS2KHZ
-mdefine_line|#define PICOS2KHZ(a) (1000000000UL/(a))
-DECL|macro|KHZ2PICOS
-mdefine_line|#define KHZ2PICOS(a) (1000000000UL/(a))
 multiline_comment|/*&n; * The _DEFINITIVE_ memory mapping/unmapping functions.&n; * This is due to the fact that they&squot;re changing soooo often...&n; */
 DECL|macro|MMAP
 mdefine_line|#define MMAP(a,b)&t;ioremap((unsigned long )(a), b)
