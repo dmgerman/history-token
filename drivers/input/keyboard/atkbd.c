@@ -1780,6 +1780,7 @@ r_default
 suffix:colon
 (brace
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1830,6 +1831,7 @@ id|code
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 id|input_regs
 c_func
 (paren
