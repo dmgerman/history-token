@@ -786,10 +786,14 @@ DECL|enumerator|SNDRV_PCM_STATE_SUSPENDED
 id|SNDRV_PCM_STATE_SUSPENDED
 comma
 multiline_comment|/* hardware is suspended */
+DECL|enumerator|SNDRV_PCM_STATE_DISCONNECTED
+id|SNDRV_PCM_STATE_DISCONNECTED
+comma
+multiline_comment|/* hardware is disconnected */
 DECL|enumerator|SNDRV_PCM_STATE_LAST
 id|SNDRV_PCM_STATE_LAST
 op_assign
-id|SNDRV_PCM_STATE_SUSPENDED
+id|SNDRV_PCM_STATE_DISCONNECTED
 comma
 )brace
 suffix:semicolon
