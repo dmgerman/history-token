@@ -2053,6 +2053,7 @@ id|offset
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
