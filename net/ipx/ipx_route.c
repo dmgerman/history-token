@@ -13,10 +13,11 @@ id|ipx_routes
 )paren
 suffix:semicolon
 DECL|variable|ipx_routes_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipx_routes_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 r_struct

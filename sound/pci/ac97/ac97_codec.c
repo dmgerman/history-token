@@ -9431,8 +9431,6 @@ multiline_comment|/* build 3D controls */
 r_if
 c_cond
 (paren
-id|ac97-&gt;build_ops
-op_logical_and
 id|ac97-&gt;build_ops-&gt;build_3d
 )paren
 (brace
@@ -9623,8 +9621,6 @@ id|AC97_EI_SPDIF
 r_if
 c_cond
 (paren
-id|ac97-&gt;build_ops
-op_logical_and
 id|ac97-&gt;build_ops-&gt;build_spdif
 )paren
 (brace
@@ -9698,8 +9694,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ac97-&gt;build_ops
-op_logical_and
 id|ac97-&gt;build_ops-&gt;build_post_spdif
 )paren
 (brace
@@ -9757,8 +9751,6 @@ multiline_comment|/* build chip specific controls */
 r_if
 c_cond
 (paren
-id|ac97-&gt;build_ops
-op_logical_and
 id|ac97-&gt;build_ops-&gt;build_specific
 )paren
 r_if
@@ -11201,6 +11193,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* build_ops to do nothing */
+DECL|variable|null_build_ops
+r_static
+r_struct
+id|snd_ac97_build_ops
+id|null_build_ops
+suffix:semicolon
 multiline_comment|/**&n; * snd_ac97_mixer - create an Codec97 component&n; * @bus: the AC97 bus which codec is attached to&n; * @template: the template of ac97, including index, callbacks and&n; *         the private data.&n; * @rac97: the pointer to store the new ac97 instance.&n; *&n; * Creates an Codec97 component.  An ac97_t instance is newly&n; * allocated and initialized from the template.  The codec&n; * is then initialized by the standard procedure.&n; *&n; * The template must include the codec number (num) and address (addr),&n; * and the private data (private_data).&n; * &n; * The ac97 instance is registered as a low-level device, so you don&squot;t&n; * have to release it manually.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ac97_mixer
 r_int
@@ -12677,6 +12676,17 @@ singleline_comment|// ac97-&gt;id might be changed in the special setup code
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ac97-&gt;build_ops
+)paren
+id|ac97-&gt;build_ops
+op_assign
+op_amp
+id|null_build_ops
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ac97_is_audio
 c_func
 (paren
@@ -13235,6 +13245,19 @@ op_star
 id|ac97
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ac97-&gt;build_ops-&gt;suspend
+)paren
+id|ac97-&gt;build_ops
+op_member_access_from_pointer
+id|suspend
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
 id|snd_ac97_powerdown
 c_func
 (paren

@@ -1117,6 +1117,9 @@ op_amp
 id|dirent-&gt;d_reclen
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1126,6 +1129,10 @@ id|name
 comma
 id|namlen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|put_user
 c_func
@@ -1513,6 +1520,9 @@ op_amp
 id|dirent-&gt;d_reclen
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1522,6 +1532,10 @@ id|name
 comma
 id|namlen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|put_user
 c_func

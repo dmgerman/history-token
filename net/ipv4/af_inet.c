@@ -78,12 +78,12 @@ id|inetsw
 id|SOCK_MAX
 )braket
 suffix:semicolon
-DECL|variable|inetsw_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inetsw_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* New destruction routine */
 DECL|function|inet_sock_destruct

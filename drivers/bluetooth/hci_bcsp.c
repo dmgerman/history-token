@@ -922,11 +922,6 @@ id|bcsp_struct
 op_star
 id|bcsp
 op_assign
-(paren
-r_struct
-id|bcsp_struct
-op_star
-)paren
 id|hu-&gt;priv
 suffix:semicolon
 r_int
@@ -2733,11 +2728,6 @@ id|bcsp_struct
 op_star
 id|bcsp
 op_assign
-(paren
-r_struct
-id|bcsp_struct
-op_star
-)paren
 id|hu-&gt;priv
 suffix:semicolon
 r_struct

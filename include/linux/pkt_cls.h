@@ -461,6 +461,9 @@ comma
 DECL|enumerator|TCA_RSVP_POLICE
 id|TCA_RSVP_POLICE
 comma
+DECL|enumerator|TCA_RSVP_ACT
+id|TCA_RSVP_ACT
+comma
 DECL|enumerator|__TCA_RSVP_MAX
 id|__TCA_RSVP_MAX
 )brace
@@ -534,6 +537,9 @@ comma
 DECL|enumerator|TCA_ROUTE4_POLICE
 id|TCA_ROUTE4_POLICE
 comma
+DECL|enumerator|TCA_ROUTE4_ACT
+id|TCA_ROUTE4_ACT
+comma
 DECL|enumerator|__TCA_ROUTE4_MAX
 id|__TCA_ROUTE4_MAX
 )brace
@@ -589,6 +595,9 @@ id|TCA_TCINDEX_CLASSID
 comma
 DECL|enumerator|TCA_TCINDEX_POLICE
 id|TCA_TCINDEX_POLICE
+comma
+DECL|enumerator|TCA_TCINDEX_ACT
+id|TCA_TCINDEX_ACT
 comma
 DECL|enumerator|__TCA_TCINDEX_MAX
 id|__TCA_TCINDEX_MAX

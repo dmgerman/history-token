@@ -2585,7 +2585,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -2630,7 +2630,7 @@ op_star
 id|sk
 comma
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 )paren
@@ -2918,7 +2918,7 @@ id|ipv6_txoptions
 id|opt_space
 suffix:semicolon
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -4193,7 +4193,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -4394,7 +4394,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign

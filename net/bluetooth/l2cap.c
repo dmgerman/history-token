@@ -31,7 +31,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.6&quot;
+mdefine_line|#define VERSION &quot;2.7&quot;
 DECL|variable|l2cap_sock_ops
 r_static
 r_struct
@@ -39,6 +39,7 @@ id|proto_ops
 id|l2cap_sock_ops
 suffix:semicolon
 DECL|variable|l2cap_sk_list
+r_static
 r_struct
 id|bt_sock_list
 id|l2cap_sk_list
@@ -3792,6 +3793,14 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;sk %p&quot;
+comma
+id|sk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3851,6 +3860,10 @@ id|sk
 )paren
 op_member_access_from_pointer
 id|flush_to
+suffix:semicolon
+id|opts.mode
+op_assign
+l_int|0x00
 suffix:semicolon
 id|len
 op_assign
@@ -3953,6 +3966,22 @@ id|sk
 )paren
 op_member_access_from_pointer
 id|conn-&gt;hcon-&gt;handle
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|cinfo.dev_class
+comma
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|conn-&gt;hcon-&gt;dev_class
+comma
+l_int|3
+)paren
 suffix:semicolon
 id|len
 op_assign

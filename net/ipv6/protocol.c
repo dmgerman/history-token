@@ -22,12 +22,12 @@ id|inet6_protos
 id|MAX_INET_PROTOS
 )braket
 suffix:semicolon
-DECL|variable|inet6_proto_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inet6_proto_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|inet6_add_protocol
 r_int

@@ -46,12 +46,12 @@ suffix:semicolon
 multiline_comment|/* ICMP packet source address */
 )brace
 suffix:semicolon
-DECL|variable|rxrpc_transports_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rxrpc_transports_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rxrpc_transports
 r_static

@@ -1783,7 +1783,7 @@ id|sk
 comma
 l_int|0
 comma
-id|tp-&gt;mss_cache
+l_int|0
 comma
 id|sk-&gt;sk_allocation
 )paren
@@ -1917,6 +1917,18 @@ id|copy
 suffix:semicolon
 id|skb-&gt;data_len
 op_add_assign
+id|copy
+suffix:semicolon
+id|skb-&gt;truesize
+op_add_assign
+id|copy
+suffix:semicolon
+id|sk-&gt;sk_wmem_queued
+op_add_assign
+id|copy
+suffix:semicolon
+id|sk-&gt;sk_forward_alloc
+op_sub_assign
 id|copy
 suffix:semicolon
 id|skb-&gt;ip_summed

@@ -62,12 +62,12 @@ DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 multiline_comment|/* Use lock to serialize, so printks don&squot;t overlap */
-DECL|variable|log_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|log_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* One level of recursion won&squot;t kill us */
 DECL|function|dump_packet
@@ -1510,6 +1510,52 @@ c_func
 l_string|&quot;PROTO=%u &quot;
 comma
 id|ih-&gt;protocol
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Max length: 15 &quot;UID=4294967295 &quot; */
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;logflags
+op_amp
+id|IPT_LOG_UID
+)paren
+op_logical_and
+op_logical_neg
+id|iphoff
+op_logical_and
+id|skb-&gt;sk
+)paren
+(brace
+id|read_lock_bh
+c_func
+(paren
+op_amp
+id|skb-&gt;sk-&gt;sk_callback_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;sk-&gt;sk_socket
+op_logical_and
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;UID=%u &quot;
+comma
+id|skb-&gt;sk-&gt;sk_socket-&gt;file-&gt;f_uid
+)paren
+suffix:semicolon
+id|read_unlock_bh
+c_func
+(paren
+op_amp
+id|skb-&gt;sk-&gt;sk_callback_lock
 )paren
 suffix:semicolon
 )brace

@@ -126,12 +126,12 @@ r_int
 id|unresolved_count
 suffix:semicolon
 multiline_comment|/* One lock protects it all. */
-DECL|variable|aarp_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|aarp_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Used to walk the list and purge/kick entries.  */
 DECL|variable|aarp_timer

@@ -74,6 +74,7 @@ id|datamsg
 suffix:semicolon
 multiline_comment|/* An array to make it easy to pretty print the debug information&n; * to the proc fs.&n; */
 DECL|variable|sctp_dbg_objcnt
+r_static
 id|sctp_dbg_objcnt_entry_t
 id|sctp_dbg_objcnt
 (braket

@@ -129,12 +129,12 @@ comma
 id|tunnels_r_l
 )brace
 suffix:semicolon
-DECL|variable|ipip_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipip_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ipip_tunnel_lookup
 r_static

@@ -34,12 +34,12 @@ c_func
 id|lapb_list
 )paren
 suffix:semicolon
-DECL|variable|lapb_list_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|lapb_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Free an allocated lapb control block. &n; */
 DECL|function|lapb_free_cb

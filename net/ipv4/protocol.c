@@ -30,12 +30,12 @@ id|inet_protos
 id|MAX_INET_PROTOS
 )braket
 suffix:semicolon
-DECL|variable|inet_proto_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inet_proto_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Add a protocol handler to the hash tables&n; */
 DECL|function|inet_add_protocol

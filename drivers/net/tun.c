@@ -1487,9 +1487,11 @@ id|addr
 comma
 id|skb-&gt;data
 comma
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 r_sizeof
 id|addr
 comma

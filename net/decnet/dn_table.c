@@ -107,12 +107,12 @@ DECL|macro|DN_FIB_SCAN_KEY
 mdefine_line|#define DN_FIB_SCAN_KEY(f, fp, key) &bslash;&n;for( ; ((f) = *(fp)) != NULL &amp;&amp; dn_key_eq((f)-&gt;fn_key, (key)); (fp) = &amp;(f)-&gt;fn_next)
 DECL|macro|RT_TABLE_MIN
 mdefine_line|#define RT_TABLE_MIN 1
-DECL|variable|dn_fib_tables_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dn_fib_tables_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dn_fib_tables
 r_struct

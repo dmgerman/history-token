@@ -65,10 +65,11 @@ op_star
 id|ip6_ra_chain
 suffix:semicolon
 DECL|variable|ip6_ra_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6_ra_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ip6_ra_control
 r_int

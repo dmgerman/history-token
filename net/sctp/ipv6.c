@@ -58,6 +58,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ICMP error handler. */
 DECL|function|sctp_v6_err
+id|SCTP_STATIC
 r_void
 id|sctp_v6_err
 c_func
@@ -259,6 +260,35 @@ id|info
 suffix:semicolon
 r_goto
 id|out_unlock
+suffix:semicolon
+r_case
+id|ICMPV6_PARAMPROB
+suffix:colon
+r_if
+c_cond
+(paren
+id|ICMPV6_UNK_NEXTHDR
+op_eq
+id|code
+)paren
+(brace
+id|sctp_icmp_proto_unreachable
+c_func
+(paren
+id|sk
+comma
+id|ep
+comma
+id|asoc
+comma
+id|transport
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -560,6 +590,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns the dst cache entry for the given source and destination ip&n; * addresses.&n; */
 DECL|function|sctp_v6_get_dst
+r_static
 r_struct
 id|dst_entry
 op_star
@@ -847,6 +878,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fills in the source address(saddr) based on the destination address(daddr)&n; * and asoc&squot;s bind address list.&n; */
 DECL|function|sctp_v6_get_saddr
+r_static
 r_void
 id|sctp_v6_get_saddr
 c_func
@@ -2376,6 +2408,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new sk for the socket to be returned by accept(). */
 DECL|function|sctp_v6_create_accept_sk
+r_static
 r_struct
 id|sock
 op_star

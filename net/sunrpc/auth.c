@@ -331,12 +331,12 @@ id|auth
 )paren
 suffix:semicolon
 )brace
-DECL|variable|rpc_credcache_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rpc_credcache_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialize RPC credential cache&n; */
 r_void

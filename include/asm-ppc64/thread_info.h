@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
@@ -27,12 +28,6 @@ op_star
 id|exec_domain
 suffix:semicolon
 multiline_comment|/* execution domain */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* low level flags */
 DECL|member|cpu
 r_int
 id|cpu
@@ -53,11 +48,18 @@ r_int
 r_char
 id|syscall_noerror
 suffix:semicolon
+multiline_comment|/* low level flags - has atomic operations done on it */
+DECL|member|____cacheline_aligned_in_smp
+r_int
+r_int
+id|flags
+id|____cacheline_aligned_in_smp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

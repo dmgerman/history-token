@@ -94,33 +94,6 @@ id|start
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Create a new tsnmap.  */
-r_struct
-id|sctp_tsnmap
-op_star
-id|sctp_tsnmap_new
-c_func
-(paren
-id|__u16
-id|len
-comma
-id|__u32
-id|init_tsn
-comma
-r_int
-id|gfp
-)paren
-suffix:semicolon
-multiline_comment|/* Dispose of a tsnmap.  */
-r_void
-id|sctp_tsnmap_free
-c_func
-(paren
-r_struct
-id|sctp_tsnmap
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* This macro assists in creation of external storage for variable length&n; * internal buffers.  We double allocate so the overflow map works.&n; */
 DECL|macro|sctp_tsnmap_storage_size
 mdefine_line|#define sctp_tsnmap_storage_size(count) (sizeof(__u8) * (count) * 2)
@@ -393,44 +366,6 @@ r_const
 r_struct
 id|sctp_tsnmap
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize a gap ack block interator from user-provided memory.  */
-r_void
-id|sctp_tsnmap_iter_init
-c_func
-(paren
-r_const
-r_struct
-id|sctp_tsnmap
-op_star
-comma
-r_struct
-id|sctp_tsnmap_iter
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Get the next gap ack blocks.  We return 0 if there are no more&n; * gap ack blocks.&n; */
-r_int
-id|sctp_tsnmap_next_gap_ack
-c_func
-(paren
-r_const
-r_struct
-id|sctp_tsnmap
-op_star
-comma
-r_struct
-id|sctp_tsnmap_iter
-op_star
-comma
-id|__u16
-op_star
-id|start
-comma
-id|__u16
-op_star
-id|end
 )paren
 suffix:semicolon
 macro_line|#endif /* __sctp_tsnmap_h__ */

@@ -21,10 +21,11 @@ id|atm_devs
 )paren
 suffix:semicolon
 DECL|variable|atm_dev_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|atm_dev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__alloc_atm_dev
 r_static

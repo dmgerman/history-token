@@ -85,6 +85,10 @@ op_amp
 op_complement
 l_int|3
 suffix:semicolon
+id|dev-&gt;divert
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -93,15 +97,6 @@ op_eq
 id|ARPHRD_ETHER
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;divert: allocating divert_blk for %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 id|dev-&gt;divert
 op_assign
 (paren
@@ -128,7 +123,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 l_string|&quot;divert: unable to allocate divert_blk for %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -139,8 +134,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-r_else
-(brace
 id|memset
 c_func
 (paren
@@ -155,28 +148,11 @@ id|divert_blk
 )paren
 )paren
 suffix:semicolon
-)brace
 id|dev_hold
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;divert: not allocating divert_blk for non-ethernet device %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|dev-&gt;divert
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -215,27 +191,6 @@ id|dev_put
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;divert: freeing divert_blk for %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;divert: no divert_blk to free, %s not ethernet&bslash;n&quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -586,8 +541,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * control function of the diverter&n; */
-DECL|macro|DVDBG
+macro_line|#if 0
 mdefine_line|#define&t;DVDBG(a)&t;&bslash;&n;&t;printk(KERN_DEBUG &quot;divert_ioctl() line %d %s&bslash;n&quot;, __LINE__, (a))
+macro_line|#else
+DECL|macro|DVDBG
+mdefine_line|#define&t;DVDBG(a)
+macro_line|#endif
 DECL|function|divert_ioctl
 r_int
 id|divert_ioctl

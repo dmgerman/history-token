@@ -44,14 +44,15 @@ mdefine_line|#define s6_addr32&t;&t;in6_u.u6_addr32
 )brace
 suffix:semicolon
 multiline_comment|/* IPv6 Wildcard Address (::) and Loopback Address (::1) defined in RFC2553&n; * NOTE: Be aware the IN6ADDR_* constants and in6addr_* externals are defined&n; * in network byte order, not in host byte order as are the IPv4 equivalents&n; */
+macro_line|#if 0
 r_extern
 r_const
 r_struct
 id|in6_addr
 id|in6addr_any
 suffix:semicolon
-DECL|macro|IN6ADDR_ANY_INIT
 mdefine_line|#define IN6ADDR_ANY_INIT { { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } } }
+macro_line|#endif
 r_extern
 r_const
 r_struct

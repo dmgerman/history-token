@@ -47,12 +47,12 @@ multiline_comment|/* Setting this will sample the queue lengths and thus congest
 DECL|macro|OFFLINE_SAMPLE
 macro_line|#undef OFFLINE_SAMPLE
 multiline_comment|/*&n; *&t;The list of packet types we will receive (as opposed to discard)&n; *&t;and the routines to invoke.&n; *&n; *&t;Why 16. Because with 16 the only overlap we get on a hash of the&n; *&t;low nibble of the protocol value is RARP/SNAP/X.25.&n; *&n; *      NOTE:  That is no longer true with the addition of VLAN tags.  Not&n; *             sure which should go first, but I bet it won&squot;t make much&n; *             difference if we are running VLANs.  The good news is that&n; *             this protocol won&squot;t be in the list unless compiled in, so&n; *             the average user (w/out VLANs) will not be adversly affected.&n; *             --BLG&n; *&n; *&t;&t;0800&t;IP&n; *&t;&t;8100    802.1Q VLAN&n; *&t;&t;0001&t;802.3&n; *&t;&t;0002&t;AX.25&n; *&t;&t;0004&t;802.2&n; *&t;&t;8035&t;RARP&n; *&t;&t;0005&t;SNAP&n; *&t;&t;0805&t;X.25&n; *&t;&t;0806&t;ARP&n; *&t;&t;8137&t;IPX&n; *&t;&t;0009&t;Localtalk&n; *&t;&t;86DD&t;IPv6&n; */
-DECL|variable|ptype_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ptype_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ptype_base
 r_static
@@ -107,6 +107,7 @@ op_star
 id|dev_base
 suffix:semicolon
 DECL|variable|dev_tail
+r_static
 r_struct
 id|net_device
 op_star
@@ -117,10 +118,11 @@ op_amp
 id|dev_base
 suffix:semicolon
 DECL|variable|dev_base_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dev_base_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dev_base
 id|EXPORT_SYMBOL
@@ -549,6 +551,7 @@ id|NETDEV_BOOT_SETUP_MAX
 suffix:semicolon
 multiline_comment|/**&n; *&t;netdev_boot_setup_add&t;- add new setup entry&n; *&t;@name: name of the device&n; *&t;@map: configured settings for the device&n; *&n; *&t;Adds new setup entry to the dev_boot_setup list.  The function&n; *&t;returns 0 on error and 1 on success.  This is a generic routine to&n; *&t;all netdevices.&n; */
 DECL|function|netdev_boot_setup_add
+r_static
 r_int
 id|netdev_boot_setup_add
 c_func
@@ -1541,6 +1544,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;dev_valid_name - check if name is okay for network device&n; *&t;@name: name string&n; *&n; *&t;Network device names need to be valid file names to&n; *&t;to allow sysfs to work&n; */
 DECL|function|dev_valid_name
+r_static
 r_int
 id|dev_valid_name
 c_func
@@ -4650,6 +4654,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 multiline_comment|/* TODO: Maybe we should just force sch_ingress to be compiled in&n; * when CONFIG_NET_CLS_ACT is? otherwise some useless instructions&n; * a compare and 2 stores extra right now if we dont have it on&n; * but have CONFIG_NET_CLS_ACT&n; * NOTE: This doesnt stop any functionality; if you dont have &n; * the ingress scheduler, you just cant add policies on ingress.&n; *&n; */
 DECL|function|ing_filter
+r_static
 r_int
 id|ing_filter
 c_func
@@ -8802,12 +8807,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Delayed registration/unregisteration */
-DECL|variable|net_todo_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|net_todo_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|net_todo_list
 r_static
@@ -11131,15 +11136,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dev_load
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-DECL|variable|ing_filter
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ing_filter
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -24,44 +24,44 @@ id|__ip_vs_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* lock for service table */
-DECL|variable|__ip_vs_svc_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|__ip_vs_svc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock for table with the real services */
-DECL|variable|__ip_vs_rs_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|__ip_vs_rs_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock for state and timeout tables */
-DECL|variable|__ip_vs_securetcp_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|__ip_vs_securetcp_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock for drop entry handling */
-DECL|variable|__ip_vs_dropentry_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|__ip_vs_dropentry_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock for drop packet handling */
-DECL|variable|__ip_vs_droppacket_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|__ip_vs_droppacket_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* 1/rate drop and drop-entry variables */
 DECL|variable|ip_vs_drop_rate

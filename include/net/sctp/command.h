@@ -595,16 +595,6 @@ DECL|typedef|sctp_cmd_seq_t
 )brace
 id|sctp_cmd_seq_t
 suffix:semicolon
-multiline_comment|/* Create a new sctp_command_sequence.&n; * Return NULL if creating a new sequence fails.&n; */
-id|sctp_cmd_seq_t
-op_star
-id|sctp_new_cmd_seq
-c_func
-(paren
-r_int
-id|gfp
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize a block of memory as a command sequence.&n; * Return 0 if the initialization fails.&n; */
 r_int
 id|sctp_init_cmd_seq
@@ -631,30 +621,10 @@ id|sctp_arg_t
 id|obj
 )paren
 suffix:semicolon
-multiline_comment|/* Rewind an sctp_cmd_seq_t to iterate from the start.&n; * Return 0 if the rewind fails.&n; */
-r_int
-id|sctp_rewind_sequence
-c_func
-(paren
-id|sctp_cmd_seq_t
-op_star
-id|seq
-)paren
-suffix:semicolon
 multiline_comment|/* Return the next command structure in an sctp_cmd_seq.&n; * Return NULL at the end of the sequence.&n; */
 id|sctp_cmd_t
 op_star
 id|sctp_next_cmd
-c_func
-(paren
-id|sctp_cmd_seq_t
-op_star
-id|seq
-)paren
-suffix:semicolon
-multiline_comment|/* Dispose of a command sequence.  */
-r_void
-id|sctp_free_cmd_seq
 c_func
 (paren
 id|sctp_cmd_seq_t

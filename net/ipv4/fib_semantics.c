@@ -28,12 +28,12 @@ macro_line|#include &lt;net/ip_fib.h&gt;
 macro_line|#include &quot;fib_lookup.h&quot;
 DECL|macro|FSprintk
 mdefine_line|#define FSprintk(a...)
-DECL|variable|fib_info_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|fib_info_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|fib_info_hash
 r_static
@@ -75,12 +75,12 @@ id|DEVINDEX_HASHSIZE
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH
-DECL|variable|fib_multipath_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|fib_multipath_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|for_nexthops
 mdefine_line|#define for_nexthops(fi) { int nhsel; const struct fib_nh * nh; &bslash;&n;for (nhsel=0, nh = (fi)-&gt;fib_nh; nhsel &lt; (fi)-&gt;fib_nhs; nh++, nhsel++)

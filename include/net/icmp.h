@@ -122,10 +122,16 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-DECL|struct|raw_opt
+DECL|struct|raw_sock
 r_struct
-id|raw_opt
+id|raw_sock
 (brace
+multiline_comment|/* inet_sock has to be the first member */
+DECL|member|inet
+r_struct
+id|inet_sock
+id|inet
+suffix:semicolon
 DECL|member|filter
 r_struct
 id|icmp_filter
@@ -133,24 +139,30 @@ id|filter
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* WARNING: don&squot;t change the layout of the members in raw_sock! */
-DECL|struct|raw_sock
+DECL|function|raw_sk
+r_static
+r_inline
 r_struct
 id|raw_sock
+op_star
+id|raw_sk
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+)paren
 (brace
-DECL|member|inet
+r_return
+(paren
 r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
-DECL|member|raw4
-r_struct
-id|raw_opt
-id|raw4
+id|raw_sock
+op_star
+)paren
+id|sk
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|macro|raw4_sk
-mdefine_line|#define raw4_sk(__sk) (&amp;((struct raw_sock *)__sk)-&gt;raw4)
 macro_line|#endif&t;/* _ICMP_H */
 eof

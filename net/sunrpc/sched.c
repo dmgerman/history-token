@@ -141,12 +141,12 @@ op_star
 id|rpciod_workqueue
 suffix:semicolon
 multiline_comment|/*&n; * Spinlock for other critical sections of code.&n; */
-DECL|variable|rpc_sched_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rpc_sched_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Disable the timer for a given RPC task. Should be called with&n; * queue-&gt;lock and bh_disabled in order to avoid races within&n; * rpc_run_timer().&n; */
 r_static

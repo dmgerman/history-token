@@ -15,10 +15,11 @@ id|x25_route_list
 )paren
 suffix:semicolon
 DECL|variable|x25_route_list_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|x25_route_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Add a new route.&n; */
 DECL|function|x25_add_route

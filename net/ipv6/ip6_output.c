@@ -70,10 +70,11 @@ op_assign
 l_int|1
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ip6_id_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|spin_lock_bh
 c_func
@@ -1255,6 +1256,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ip6_call_ra_chain
+r_static
 r_int
 id|ip6_call_ra_chain
 c_func

@@ -985,13 +985,6 @@ id|name
 id|IP6T_TABLE_MAXNAMELEN
 )braket
 suffix:semicolon
-multiline_comment|/* Seed table: copied in register_table */
-DECL|member|table
-r_struct
-id|ip6t_replace
-op_star
-id|table
-suffix:semicolon
 multiline_comment|/* What hooks you will enter on */
 DECL|member|valid_hooks
 r_int
@@ -1028,6 +1021,12 @@ r_struct
 id|ip6t_table
 op_star
 id|table
+comma
+r_const
+r_struct
+id|ip6t_replace
+op_star
+id|repl
 )paren
 suffix:semicolon
 r_extern

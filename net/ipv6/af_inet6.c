@@ -174,12 +174,12 @@ id|inetsw6
 id|SOCK_MAX
 )braket
 suffix:semicolon
-DECL|variable|inetsw6_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inetsw6_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|inet6_sock_destruct
 r_static

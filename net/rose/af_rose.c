@@ -108,12 +108,12 @@ c_func
 id|rose_list
 )paren
 suffix:semicolon
-DECL|variable|rose_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rose_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rose_proto_ops
 r_static

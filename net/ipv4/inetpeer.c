@@ -15,10 +15,11 @@ macro_line|#include &lt;net/inetpeer.h&gt;
 multiline_comment|/*&n; *  Theory of operations.&n; *  We keep one entry for each peer IP address.  The nodes contains long-living&n; *  information about the peer which doesn&squot;t depend on routes.&n; *  At this moment this information consists only of ID field for the next&n; *  outgoing IP packet.  This field is incremented with each packet as encoded&n; *  in inet_getid() function (include/net/inetpeer.h).&n; *  At the moment of writing this notes identifier of IP packets is generated&n; *  to be unpredictable using this code only for packets subjected&n; *  (actually or potentially) to defragmentation.  I.e. DF packets less than&n; *  PMTU in size uses a constant ID and do not use this code (see&n; *  ip_select_ident() in include/net/ip.h).&n; *&n; *  Route cache entries hold references to our nodes.&n; *  New cache entries get references via lookup by destination IP address in&n; *  the avl tree.  The reference is grabbed only when it&squot;s needed i.e. only&n; *  when we try to output IP packet which needs an unpredictable ID (see&n; *  __ip_select_ident() in net/ipv4/route.c).&n; *  Nodes are removed only when reference counter goes to 0.&n; *  When it&squot;s happened the node may be removed when a sufficient amount of&n; *  time has been passed since its last use.  The less-recently-used entry can&n; *  also be removed if the pool is overloaded i.e. if the total amount of&n; *  entries is greater-or-equal than the threshold.&n; *&n; *  Node pool is organised as an AVL tree.&n; *  Such an implementation has been chosen not just for fun.  It&squot;s a way to&n; *  prevent easy and efficient DoS attacks by creating hash collisions.  A huge&n; *  amount of long living nodes in a single hash slot would significantly delay&n; *  lookups performed with disabled BHs.&n; *&n; *  Serialisation issues.&n; *  1.  Nodes may appear in the tree only with the pool write lock held.&n; *  2.  Nodes may disappear from the tree only with the pool write lock held&n; *      AND reference count being 0.&n; *  3.  Nodes appears and disappears from unused node list only under&n; *      &quot;inet_peer_unused_lock&quot;.&n; *  4.  Global variable peer_total is modified under the pool lock.&n; *  5.  struct inet_peer fields modification:&n; *&t;&t;avl_left, avl_right, avl_parent, avl_height: pool lock&n; *&t;&t;unused_next, unused_prevp: unused node list lock&n; *&t;&t;refcnt: atomically against modifications on other CPU;&n; *&t;&t;   usually under some other lock to prevent node disappearing&n; *&t;&t;dtime: unused node list lock&n; *&t;&t;v4daddr: unchangeable&n; *&t;&t;ip_id_count: idlock&n; */
 multiline_comment|/* Exported for inet_getid inline function.  */
 DECL|variable|inet_peer_idlock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inet_peer_idlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|peer_cachep
 r_static
@@ -64,12 +65,12 @@ id|peer_root
 op_assign
 id|peer_avl_empty
 suffix:semicolon
-DECL|variable|peer_pool_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|peer_pool_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|PEER_MAXDEPTH
 mdefine_line|#define PEER_MAXDEPTH 40 /* sufficient for about 2^27 nodes */
@@ -125,10 +126,11 @@ op_amp
 id|inet_peer_unused_head
 suffix:semicolon
 DECL|variable|inet_peer_unused_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|inet_peer_unused_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|PEER_MAX_CLEANUP_WORK
 mdefine_line|#define PEER_MAX_CLEANUP_WORK 30

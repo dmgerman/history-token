@@ -214,20 +214,6 @@ mdefine_line|#define NETLINK_CB(skb)&t;&t;(*(struct netlink_skb_parms*)&amp;((sk
 DECL|macro|NETLINK_CREDS
 mdefine_line|#define NETLINK_CREDS(skb)&t;(&amp;NETLINK_CB((skb)).creds)
 r_extern
-r_int
-id|netlink_post
-c_func
-(paren
-r_int
-id|unit
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|sock
 op_star

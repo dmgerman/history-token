@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;DDP:&t;An implementation of the AppleTalk DDP protocol for&n; *&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;&t;With more than a little assistance from&n; *&n; *&t;&t;Wesley Craig &lt;netatalk@umich.edu&gt;&n; *&n; *&t;Fixes:&n; *&t;&t;Michael Callahan&t;:&t;Made routing work&n; *&t;&t;Wesley Craig&t;&t;:&t;Fix probing to listen to a&n; *&t;&t;&t;&t;&t;&t;passed node id.&n; *&t;&t;Alan Cox&t;&t;:&t;Added send/recvmsg support&n; *&t;&t;Alan Cox&t;&t;:&t;Moved at. to protinfo in&n; *&t;&t;&t;&t;&t;&t;socket.&n; *&t;&t;Alan Cox&t;&t;:&t;Added firewall hooks.&n; *&t;&t;Alan Cox&t;&t;:&t;Supports new ARPHRD_LOOPBACK&n; *&t;&t;Christer Weinigel&t;: &t;Routing and /proc fixes.&n; *&t;&t;Bradford Johnson&t;:&t;LocalTalk.&n; *&t;&t;Tom Dyas&t;&t;:&t;Module support.&n; *&t;&t;Alan Cox&t;&t;:&t;Hooks for PPP (based on the&n; *&t;&t;&t;&t;&t;&t;LocalTalk hook).&n; *&t;&t;Alan Cox&t;&t;:&t;Posix bits&n; *&t;&t;Alan Cox/Mike Freeman&t;:&t;Possible fix to NBP problems&n; *&t;&t;Bradford Johnson&t;:&t;IP-over-DDP (experimental)&n; *&t;&t;Jay Schulist&t;&t;:&t;Moved IP-over-DDP to its own&n; *&t;&t;&t;&t;&t;&t;driver file. (ipddp.c &amp; ipddp.h)&n; *&t;&t;Jay Schulist&t;&t;:&t;Made work as module with &n; *&t;&t;&t;&t;&t;&t;AppleTalk drivers, cleaned it.&n; *&t;&t;Rob Newberry&t;&t;:&t;Added proxy AARP and AARP&n; *&t;&t;&t;&t;&t;&t;procfs, moved probing to AARP&n; *&t;&t;&t;&t;&t;&t;module.&n; *              Adrian Sun/ &n; *              Michael Zuelsdorff      :       fix for net.0 packets. don&squot;t &n; *                                              allow illegal ether/tokentalk&n; *                                              port assignment. we lose a &n; *                                              valid localtalk port as a &n; *                                              result.&n; *&t;&t;Arnaldo C. de Melo&t;:&t;Cleanup, in preparation for&n; *&t;&t;&t;&t;&t;&t;shared skb support 8)&n; *&t;&t;Arnaldo C. de Melo&t;:&t;Move proc stuff to atalk_proc.c,&n; *&t;&t;&t;&t;&t;&t;use seq_file&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; */
+multiline_comment|/*&n; *&t;DDP:&t;An implementation of the AppleTalk DDP protocol for&n; *&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;&t;With more than a little assistance from&n; *&n; *&t;&t;Wesley Craig &lt;netatalk@umich.edu&gt;&n; *&n; *&t;Fixes:&n; *&t;&t;Neil Horman&t;&t;:&t;Added missing device ioctls&n; *&t;&t;Michael Callahan&t;:&t;Made routing work&n; *&t;&t;Wesley Craig&t;&t;:&t;Fix probing to listen to a&n; *&t;&t;&t;&t;&t;&t;passed node id.&n; *&t;&t;Alan Cox&t;&t;:&t;Added send/recvmsg support&n; *&t;&t;Alan Cox&t;&t;:&t;Moved at. to protinfo in&n; *&t;&t;&t;&t;&t;&t;socket.&n; *&t;&t;Alan Cox&t;&t;:&t;Added firewall hooks.&n; *&t;&t;Alan Cox&t;&t;:&t;Supports new ARPHRD_LOOPBACK&n; *&t;&t;Christer Weinigel&t;: &t;Routing and /proc fixes.&n; *&t;&t;Bradford Johnson&t;:&t;LocalTalk.&n; *&t;&t;Tom Dyas&t;&t;:&t;Module support.&n; *&t;&t;Alan Cox&t;&t;:&t;Hooks for PPP (based on the&n; *&t;&t;&t;&t;&t;&t;LocalTalk hook).&n; *&t;&t;Alan Cox&t;&t;:&t;Posix bits&n; *&t;&t;Alan Cox/Mike Freeman&t;:&t;Possible fix to NBP problems&n; *&t;&t;Bradford Johnson&t;:&t;IP-over-DDP (experimental)&n; *&t;&t;Jay Schulist&t;&t;:&t;Moved IP-over-DDP to its own&n; *&t;&t;&t;&t;&t;&t;driver file. (ipddp.c &amp; ipddp.h)&n; *&t;&t;Jay Schulist&t;&t;:&t;Made work as module with &n; *&t;&t;&t;&t;&t;&t;AppleTalk drivers, cleaned it.&n; *&t;&t;Rob Newberry&t;&t;:&t;Added proxy AARP and AARP&n; *&t;&t;&t;&t;&t;&t;procfs, moved probing to AARP&n; *&t;&t;&t;&t;&t;&t;module.&n; *              Adrian Sun/ &n; *              Michael Zuelsdorff      :       fix for net.0 packets. don&squot;t &n; *                                              allow illegal ether/tokentalk&n; *                                              port assignment. we lose a &n; *                                              valid localtalk port as a &n; *                                              result.&n; *&t;&t;Arnaldo C. de Melo&t;:&t;Cleanup, in preparation for&n; *&t;&t;&t;&t;&t;&t;shared skb support 8)&n; *&t;&t;Arnaldo C. de Melo&t;:&t;Move proc stuff to atalk_proc.c,&n; *&t;&t;&t;&t;&t;&t;use seq_file&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -34,10 +34,11 @@ id|atalk_sockets
 )paren
 suffix:semicolon
 DECL|variable|atalk_sockets_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_sockets_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__atalk_insert_socket
 r_static
@@ -509,10 +510,11 @@ op_star
 id|atalk_routes
 suffix:semicolon
 DECL|variable|atalk_routes_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_routes_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|atalk_interfaces
 r_struct
@@ -521,10 +523,11 @@ op_star
 id|atalk_interfaces
 suffix:semicolon
 DECL|variable|atalk_interfaces_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_interfaces_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* For probing devices or in a routerless network */
 DECL|variable|atrtr_default
@@ -7114,6 +7117,12 @@ id|SIOCGIFFLAGS
 suffix:colon
 r_case
 id|SIOCSIFFLAGS
+suffix:colon
+r_case
+id|SIOCGIFTXQLEN
+suffix:colon
+r_case
+id|SIOCSIFTXQLEN
 suffix:colon
 r_case
 id|SIOCGIFMTU

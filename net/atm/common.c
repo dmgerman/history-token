@@ -39,10 +39,11 @@ id|VCC_HTABLE_SIZE
 )braket
 suffix:semicolon
 DECL|variable|vcc_sklist_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|vcc_sklist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__vcc_insert_socket
 r_void

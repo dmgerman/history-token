@@ -98,12 +98,12 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Estimator array lock */
-DECL|variable|est_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|est_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|est_timer
 r_static

@@ -65,12 +65,12 @@ c_func
 id|lweventlist
 )paren
 suffix:semicolon
-DECL|variable|lweventlist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lweventlist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|lw_event
 r_struct

@@ -101,12 +101,12 @@ id|queue_maxlen
 op_assign
 id|IPQ_QMAX_DEFAULT
 suffix:semicolon
-DECL|variable|queue_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|queue_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|peer_pid
 r_static

@@ -57,8 +57,8 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (get_paca()-&gt;paca_index)
+DECL|macro|__smp_processor_id
+mdefine_line|#define __smp_processor_id() (get_paca()-&gt;paca_index)
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;hw_cpu_id)
 r_extern

@@ -44,12 +44,12 @@ r_struct
 id|hlist_head
 id|econet_sklist
 suffix:semicolon
-DECL|variable|econet_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|econet_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Since there are only 256 possible network numbers (or fewer, depends&n;   how you count) it makes sense to use a simple lookup table. */
 DECL|variable|net2dev_map

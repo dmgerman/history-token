@@ -46,12 +46,12 @@ mdefine_line|#define CA_RUN_AS_MACHINE  0x00000200
 multiline_comment|/* dump the buffer in `emacs-hexl&squot; style */
 DECL|macro|isprint
 mdefine_line|#define isprint(c)      ((c &gt; 0x1f) &amp;&amp; (c &lt; 0x7f))
-DECL|variable|gss_ctx_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|gss_ctx_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|gss_auth
 r_struct

@@ -1655,21 +1655,6 @@ id|dn_neigh_output_packet
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unfortunately, the neighbour code uses the device in its hash&n; * function, so we don&squot;t get any advantage from it. This function&n; * basically does a neigh_lookup(), but without comparing the device&n; * field. This is required for the On-Ethernet cache&n; */
-multiline_comment|/*&n; * Any traffic on a pointopoint link causes the timer to be reset&n; * for the entry in the neighbour table.&n; */
-DECL|function|dn_neigh_pointopoint_notify
-r_void
-id|dn_neigh_pointopoint_notify
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Pointopoint link receives a hello message&n; */
 DECL|function|dn_neigh_pointopoint_hello
 r_void

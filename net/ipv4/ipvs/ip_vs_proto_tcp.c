@@ -2775,12 +2775,12 @@ id|tcp_apps
 id|TCP_APP_TAB_SIZE
 )braket
 suffix:semicolon
-DECL|variable|tcp_app_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tcp_app_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|tcp_app_hashkey
 r_static

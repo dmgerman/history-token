@@ -191,6 +191,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|mld2_all_mcr
+r_static
 r_struct
 id|in6_addr
 id|mld2_all_mcr
@@ -198,12 +199,12 @@ op_assign
 id|MLD2_ALL_MCR_INIT
 suffix:semicolon
 multiline_comment|/* Big mc list lock for all the sockets */
-DECL|variable|ipv6_sk_mc_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipv6_sk_mc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|igmp6_socket
 r_static
@@ -366,6 +367,7 @@ op_star
 id|pmc
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip6_mc_del_src
 c_func
@@ -395,6 +397,7 @@ r_int
 id|delta
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip6_mc_add_src
 c_func
@@ -424,6 +427,7 @@ r_int
 id|delta
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip6_mc_leave_src
 c_func
@@ -950,6 +954,7 @@ id|ENOENT
 suffix:semicolon
 )brace
 DECL|function|ip6_mc_find_dev
+r_static
 r_struct
 id|inet6_dev
 op_star
@@ -8590,6 +8595,7 @@ id|rv
 suffix:semicolon
 )brace
 DECL|function|ip6_mc_del_src
+r_static
 r_int
 id|ip6_mc_del_src
 c_func
@@ -9247,6 +9253,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add multicast source filter list to the interface list&n; */
 DECL|function|ip6_mc_add_src
+r_static
 r_int
 id|ip6_mc_add_src
 c_func
@@ -9816,6 +9823,7 @@ id|ma-&gt;mca_lock
 suffix:semicolon
 )brace
 DECL|function|ip6_mc_leave_src
+r_static
 r_int
 id|ip6_mc_leave_src
 c_func

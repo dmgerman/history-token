@@ -4642,7 +4642,6 @@ macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
-op_amp
 id|ad18xx_resume
 macro_line|#endif
 )brace
@@ -5153,7 +5152,6 @@ macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
-op_amp
 id|ad18xx_resume
 macro_line|#endif
 )brace
@@ -8186,6 +8184,26 @@ l_int|0x7a
 )paren
 suffix:semicolon
 multiline_comment|/* misc control */
+r_if
+c_cond
+(paren
+id|ac97-&gt;id
+op_eq
+l_int|0x414c4780
+)paren
+multiline_comment|/* ALC658 */
+id|val
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Pin 47 is spdif input pin */
+r_else
+multiline_comment|/* ALC655 */
 id|val
 op_or_assign
 (paren
@@ -8194,7 +8212,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* spdif input pin */
+multiline_comment|/* Pin 47 is spdif input pin */
 id|val
 op_and_assign
 op_complement

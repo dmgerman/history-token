@@ -4,12 +4,12 @@ macro_line|#include &lt;linux/netfilter_bridge/ebt_limit.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-DECL|variable|limit_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|limit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|MAX_CPJ
 mdefine_line|#define MAX_CPJ (0xFFFFFFFF / (HZ*60*60*24))

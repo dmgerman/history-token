@@ -36,12 +36,12 @@ id|ax25_uid_assoc
 op_star
 id|ax25_uid_list
 suffix:semicolon
-DECL|variable|ax25_uid_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ax25_uid_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ax25_uid_policy
 r_int

@@ -1027,7 +1027,7 @@ DECL|member|uh
 id|sctp_chunkhdr_t
 id|uh
 suffix:semicolon
-DECL|typedef|sctp_abort_chunkt_t
+DECL|typedef|sctp_abort_chunk_t
 )brace
 id|__attribute__
 c_func
@@ -1036,7 +1036,7 @@ c_func
 id|packed
 )paren
 )paren
-id|sctp_abort_chunkt_t
+id|sctp_abort_chunk_t
 suffix:semicolon
 multiline_comment|/* For the graceful shutdown we must carry the tag (in common header)&n; * and the highest consecutive acking value.&n; */
 DECL|struct|sctp_shutdownhdr

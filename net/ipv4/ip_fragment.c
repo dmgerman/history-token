@@ -167,12 +167,12 @@ id|ipq_hash
 id|IPQ_HASHSZ
 )braket
 suffix:semicolon
-DECL|variable|ipfrag_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipfrag_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ipfrag_hash_rnd
 r_static

@@ -25,10 +25,11 @@ macro_line|#include &lt;net/pkt_sched.h&gt;
 multiline_comment|/* Main transmission queue. */
 multiline_comment|/* Main qdisc structure lock. &n;&n;   However, modifications&n;   to data, participating in scheduling must be additionally&n;   protected with dev-&gt;queue_lock spinlock.&n;&n;   The idea is the following:&n;   - enqueue, dequeue are serialized via top level device&n;     spinlock dev-&gt;queue_lock.&n;   - tree walking is protected by read_lock_bh(qdisc_tree_lock)&n;     and this lock is used only in process context.&n;   - updates to tree are made under rtnl semaphore or&n;     from softirq context (__qdisc_destroy rcu-callback)&n;     hence this lock needs local bh disabling.&n;&n;   qdisc_tree_lock must be grabbed BEFORE dev-&gt;queue_lock!&n; */
 DECL|variable|qdisc_tree_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|qdisc_tree_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|qdisc_lock_tree
 r_void

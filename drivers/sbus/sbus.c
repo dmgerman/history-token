@@ -1026,6 +1026,7 @@ r_struct
 id|linux_prom_ranges
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC32
 r_if
 c_cond
 (paren
@@ -1099,6 +1100,7 @@ id|num_iounit_ranges
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 DECL|function|__apply_ranges_to_regs
 r_static

@@ -14,12 +14,12 @@ id|ip_vs_schedulers
 )paren
 suffix:semicolon
 multiline_comment|/* lock for service table */
-DECL|variable|__ip_vs_sched_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|__ip_vs_sched_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *  Bind a service with a scheduler&n; */
 DECL|function|ip_vs_bind_scheduler

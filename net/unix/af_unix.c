@@ -58,10 +58,11 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|variable|unix_table_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|unix_table_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|unix_nr_socks
 r_static

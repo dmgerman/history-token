@@ -881,6 +881,7 @@ r_int
 id|find_next_zero_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

@@ -22,12 +22,12 @@ c_func
 id|registered_mechs
 )paren
 suffix:semicolon
-DECL|variable|registered_mechs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|registered_mechs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

@@ -39,10 +39,16 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
-DECL|struct|udp_opt
+DECL|struct|udp_sock
 r_struct
-id|udp_opt
+id|udp_sock
 (brace
+multiline_comment|/* inet_sock has to be the first member */
+DECL|member|inet
+r_struct
+id|inet_sock
+id|inet
+suffix:semicolon
 DECL|member|pending
 r_int
 id|pending
@@ -67,28 +73,11 @@ suffix:semicolon
 multiline_comment|/* total length of pending frames */
 )brace
 suffix:semicolon
-multiline_comment|/* WARNING: don&squot;t change the layout of the members in udp_sock! */
-DECL|struct|udp_sock
-r_struct
-id|udp_sock
-(brace
-DECL|member|inet
-r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
-DECL|member|udp
-r_struct
-id|udp_opt
-id|udp
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|udp_sk
 r_static
 r_inline
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|udp_sk
 c_func
@@ -97,21 +86,16 @@ r_const
 r_struct
 id|sock
 op_star
-id|__sk
+id|sk
 )paren
 (brace
 r_return
-op_amp
-(paren
 (paren
 r_struct
 id|udp_sock
 op_star
 )paren
-id|__sk
-)paren
-op_member_access_from_pointer
-id|udp
+id|sk
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -53,12 +53,12 @@ c_func
 id|wanpipe_sklist
 )paren
 suffix:semicolon
-DECL|variable|wanpipe_sklist_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|wanpipe_sklist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|wanpipe_socks_nr
 id|atomic_t

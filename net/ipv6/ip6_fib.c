@@ -91,10 +91,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|fib6_walker_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|fib6_walker_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_SUBTREES
 DECL|macro|FWS_INIT
@@ -4129,12 +4130,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|fib6_gc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|fib6_gc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|fib6_run_gc
 r_void

@@ -29,12 +29,12 @@ id|ax25_route
 op_star
 id|ax25_route_list
 suffix:semicolon
-DECL|variable|ax25_route_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ax25_route_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|ax25_route

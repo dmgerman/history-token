@@ -358,12 +358,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|net_family_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|net_family_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* The strategy is: modifications net_family vector are short, do not&n;   sleep and veeery rare, but read access should be free of any exclusive&n;   locks.&n; */
 DECL|function|net_family_write_lock

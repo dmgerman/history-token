@@ -44,12 +44,12 @@ op_star
 id|mroute_socket
 suffix:semicolon
 multiline_comment|/* Big lock, protecting vif table, mrt cache and mroute socket state.&n;   Note that the changes are semaphored via rtnl_lock.&n; */
-DECL|variable|mrt_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|mrt_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Multicast router control variables&n; */
 DECL|variable|vif_table
@@ -106,12 +106,12 @@ id|cache_resolve_queue_len
 suffix:semicolon
 multiline_comment|/* Size of unresolved&t;*/
 multiline_comment|/* Special spinlock for queue of unresolved entries */
-DECL|variable|mfc_unres_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mfc_unres_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* We return to original Alan&squot;s scheme. Hash table of resolved&n;   entries is changed only in process context and protected&n;   with weak lock mrt_lock. Queue of unresolved entries is protected&n;   with strong spinlock mfc_unres_lock.&n;&n;   In this case data path is free of exclusive locks at all.&n; */
 DECL|variable|mrt_cachep

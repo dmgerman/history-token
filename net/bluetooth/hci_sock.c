@@ -1961,6 +1961,7 @@ id|done
 suffix:semicolon
 )brace
 DECL|function|hci_sock_setsockopt
+r_static
 r_int
 id|hci_sock_setsockopt
 c_func
@@ -2317,6 +2318,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hci_sock_getsockopt
+r_static
 r_int
 id|hci_sock_getsockopt
 c_func
@@ -2573,6 +2575,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hci_sock_ops
+r_static
 r_struct
 id|proto_ops
 id|hci_sock_ops
@@ -2946,6 +2949,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|hci_sock_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|hci_sock_family_ops
@@ -2969,6 +2973,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|hci_sock_nblock
+r_static
 r_struct
 id|notifier_block
 id|hci_sock_nblock

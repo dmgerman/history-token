@@ -38,10 +38,11 @@ id|idr
 id|sctp_assocs_id
 suffix:semicolon
 DECL|variable|sctp_assocs_id_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sctp_assocs_id_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* This is the global socket data structure used for responding to&n; * the Out-of-the-blue (OOTB) packets.  A control sock will be created&n; * for this socket at the initialization time.&n; */
 DECL|variable|sctp_ctl_socket
@@ -154,6 +155,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_init
+r_static
 id|__init
 r_int
 id|sctp_proc_init
@@ -249,6 +251,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. &n; * Note: Do not make this __exit as it is used in the init error&n; * path.&n; */
 DECL|function|sctp_proc_exit
+r_static
 r_void
 id|sctp_proc_exit
 c_func
@@ -1426,6 +1429,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source address that matches an address in the bind address list.&n; */
 DECL|function|sctp_v4_get_dst
+r_static
 r_struct
 id|dst_entry
 op_star
@@ -1795,6 +1799,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* For v4, the source address is cached in the route entry(dst). So no need&n; * to cache it separately and hence this is an empty routine.&n; */
 DECL|function|sctp_v4_get_saddr
+r_static
 r_void
 id|sctp_v4_get_saddr
 c_func
@@ -1903,6 +1908,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new sk for the socket returned by accept(). */
 DECL|function|sctp_v4_create_accept_sk
+r_static
 r_struct
 id|sock
 op_star
@@ -2231,6 +2237,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the control inode/socket with a control endpoint data&n; * structure.  This endpoint is reserved exclusively for the OOTB processing.&n; */
 DECL|function|sctp_ctl_sock_init
+r_static
 r_int
 id|sctp_ctl_sock_init
 c_func
@@ -2891,6 +2898,7 @@ id|ipfragok
 suffix:semicolon
 )brace
 DECL|variable|sctp_ipv4_specific
+r_static
 r_struct
 id|sctp_af
 id|sctp_ipv4_specific
@@ -2972,6 +2980,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Socket operations.  */
 DECL|variable|inet_seqpacket_ops
+r_static
 r_struct
 id|proto_ops
 id|inet_seqpacket_ops
@@ -3193,6 +3202,7 @@ comma
 suffix:semicolon
 multiline_comment|/* IPv4 address related functions.  */
 DECL|variable|sctp_ipv4_specific
+r_static
 r_struct
 id|sctp_af
 id|sctp_ipv4_specific
@@ -3539,6 +3549,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize the universe into something sensible.  */
 DECL|function|sctp_init
+id|SCTP_STATIC
 id|__init
 r_int
 id|sctp_init
@@ -4509,6 +4520,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Exit handler for the SCTP protocol.  */
 DECL|function|sctp_exit
+id|SCTP_STATIC
 id|__exit
 r_void
 id|sctp_exit

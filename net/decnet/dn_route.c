@@ -88,6 +88,8 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|dn_rt_min_delay
+r_static
+r_const
 r_int
 id|dn_rt_min_delay
 op_assign
@@ -96,6 +98,8 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|dn_rt_max_delay
+r_static
+r_const
 r_int
 id|dn_rt_max_delay
 op_assign
@@ -104,6 +108,8 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|dn_rt_mtu_expires
+r_static
+r_const
 r_int
 id|dn_rt_mtu_expires
 op_assign
@@ -1350,12 +1356,12 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-DECL|variable|dn_rt_flush_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dn_rt_flush_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dn_rt_cache_flush
 r_void

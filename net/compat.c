@@ -433,7 +433,7 @@ mdefine_line|#define CMSG_COMPAT_LEN(len)&t;&t;&t;&t;&bslash;&n;&t;(CMSG_COMPAT_
 DECL|macro|CMSG_COMPAT_FIRSTHDR
 mdefine_line|#define CMSG_COMPAT_FIRSTHDR(msg)&t;&t;&t;&bslash;&n;&t;(((msg)-&gt;msg_controllen) &gt;= sizeof(struct compat_cmsghdr) ?&t;&bslash;&n;&t; (struct compat_cmsghdr __user *)((msg)-&gt;msg_control) :&t;&t;&bslash;&n;&t; (struct compat_cmsghdr __user *)NULL)
 DECL|macro|CMSG_COMPAT_OK
-mdefine_line|#define CMSG_COMPAT_OK(ucmlen, ucmsg, mhdr) &bslash;&n;&t;((ucmlen) &gt;= sizeof(struct cmsghdr) &amp;&amp; &bslash;&n;&t; (ucmlen) &lt;= (unsigned long) &bslash;&n;&t; ((mhdr)-&gt;msg_controllen - &bslash;&n;&t;  ((char *)(ucmsg) - (char *)(mhdr)-&gt;msg_control)))
+mdefine_line|#define CMSG_COMPAT_OK(ucmlen, ucmsg, mhdr) &bslash;&n;&t;((ucmlen) &gt;= sizeof(struct compat_cmsghdr) &amp;&amp; &bslash;&n;&t; (ucmlen) &lt;= (unsigned long) &bslash;&n;&t; ((mhdr)-&gt;msg_controllen - &bslash;&n;&t;  ((char *)(ucmsg) - (char *)(mhdr)-&gt;msg_control)))
 DECL|function|cmsg_compat_nxthdr
 r_static
 r_inline
@@ -2652,6 +2652,11 @@ id|optlen
 r_if
 c_cond
 (paren
+id|level
+op_eq
+id|SOL_SOCKET
+op_logical_and
+(paren
 id|optname
 op_eq
 id|SO_RCVTIMEO
@@ -2659,6 +2664,7 @@ op_logical_or
 id|optname
 op_eq
 id|SO_SNDTIMEO
+)paren
 )paren
 r_return
 id|do_get_sock_timeout

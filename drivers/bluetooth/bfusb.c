@@ -21,6 +21,13 @@ mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;1.1&quot;
+DECL|variable|ignore
+r_static
+r_int
+id|ignore
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|bfusb_driver
 r_static
 r_struct
@@ -2933,6 +2940,15 @@ comma
 id|id
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ignore
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* Check number of endpoints */
 r_if
 c_cond
@@ -3482,6 +3498,24 @@ id|module_exit
 c_func
 (paren
 id|bfusb_exit
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ignore
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ignore
+comma
+l_string|&quot;Ignore devices from the matching table&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

@@ -442,10 +442,11 @@ comma
 suffix:semicolon
 multiline_comment|/* Protects all the ip6 fib */
 DECL|variable|rt6_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|rt6_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* allocate dst with ip6_dst_ops */
 DECL|function|ip6_dst_alloc
@@ -752,16 +753,18 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;pointer to the last default router chosen. BH is disabled locally.&n; */
 DECL|variable|rt6_dflt_pointer
+r_static
 r_struct
 id|rt6_info
 op_star
 id|rt6_dflt_pointer
 suffix:semicolon
-DECL|variable|rt6_dflt_lock
-id|spinlock_t
+r_static
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rt6_dflt_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|rt6_reset_dflt_pointer
 r_void

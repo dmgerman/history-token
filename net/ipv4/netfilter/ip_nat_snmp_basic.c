@@ -40,12 +40,12 @@ r_static
 r_int
 id|debug
 suffix:semicolon
-DECL|variable|snmp_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|snmp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* &n; * Application layer address mapping mimics the NAT mapping, but &n; * only for the first octet in this case (a more flexible system&n; * can be implemented if needed).&n; */
 DECL|struct|oct1_map

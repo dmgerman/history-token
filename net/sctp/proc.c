@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 DECL|variable|sctp_snmp_list
+r_static
 r_struct
 id|snmp_mib
 id|sctp_snmp_list
