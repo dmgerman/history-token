@@ -949,7 +949,10 @@ id|sport-&gt;port
 id|sa1100_stop_tx
 c_func
 (paren
-id|sport
+op_amp
+id|sport-&gt;port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1040,7 +1043,10 @@ id|xmit
 id|sa1100_stop_tx
 c_func
 (paren
-id|sport
+op_amp
+id|sport-&gt;port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
