@@ -1356,10 +1356,6 @@ mdefine_line|#define ITERATIONS_SHORT&t;10
 DECL|macro|wait_on_command
 mdefine_line|#define wait_on_command(quiet, command, iterations) { &bslash;&n;&t;unsigned int n = iterations; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s (line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
 macro_line|#ifdef CONFIG_ACPI
-r_extern
-r_int
-id|acpi_disabled
-suffix:semicolon
 DECL|macro|SONYPI_ACPI_ACTIVE
 mdefine_line|#define SONYPI_ACPI_ACTIVE (!acpi_disabled)
 macro_line|#else
