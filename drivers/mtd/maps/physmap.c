@@ -167,6 +167,20 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|NUM_PARTITIONS
 mdefine_line|#define NUM_PARTITIONS&t;(sizeof(physmap_partitions)/sizeof(struct mtd_partition))
+DECL|variable|part_probes
+r_const
+r_char
+op_star
+id|part_probes
+op_assign
+(brace
+l_string|&quot;cmdlinepart&quot;
+comma
+l_string|&quot;RedBoot&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 macro_line|#endif /* CONFIG_MTD_PARTITIONS */
 DECL|function|init_physmap
 r_int
@@ -304,7 +318,7 @@ c_func
 (paren
 id|mymtd
 comma
-id|probes
+id|part_probes
 comma
 op_amp
 id|mtd_parts
@@ -424,7 +438,7 @@ c_cond
 id|NUM_PARTITIONS
 )paren
 (brace
-id|del_mtd_partions
+id|del_mtd_partitions
 c_func
 (paren
 id|mymtd

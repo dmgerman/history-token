@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.7 2003/05/21 12:45:17 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.8 2003/05/28 15:44:28 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -468,6 +468,7 @@ op_plus
 id|window-&gt;size
 op_minus
 id|rom_size
+suffix:semicolon
 id|info-&gt;map.virt
 op_assign
 id|info-&gt;window_addr

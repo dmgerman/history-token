@@ -1,8 +1,9 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.34 2003/05/16 18:55:44 dwmw2 Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.35 2003/05/28 15:37:32 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
