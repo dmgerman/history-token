@@ -1661,7 +1661,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|dev_load
-r_extern
+r_static
 r_inline
 r_void
 (def_block
