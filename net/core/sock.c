@@ -3157,6 +3157,7 @@ id|errcode
 suffix:semicolon
 )brace
 DECL|function|__lock_sock
+r_static
 r_void
 id|__lock_sock
 c_func
@@ -3238,6 +3239,7 @@ id|wait
 suffix:semicolon
 )brace
 DECL|function|__release_sock
+r_static
 r_void
 id|__release_sock
 c_func
@@ -5127,20 +5129,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sk_free_slab
-)paren
-suffix:semicolon
-DECL|variable|__lock_sock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__lock_sock
-)paren
-suffix:semicolon
-DECL|variable|__release_sock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__release_sock
 )paren
 suffix:semicolon
 DECL|variable|sk_alloc
