@@ -57,7 +57,7 @@ l_string|&quot;sample rate (valid are: 32000,48000)&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (oss_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/oss: &quot; fmt, dev-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (oss_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/oss: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|dsp_buffer_conf
 r_static
@@ -1313,13 +1313,28 @@ op_amp
 id|dev-&gt;oss.lock
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|dev-&gt;oss.read_count
+)paren
 id|schedule
 c_func
 (paren
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|down
@@ -1463,10 +1478,6 @@ comma
 op_amp
 id|wait
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 r_return
 id|ret
@@ -3766,9 +3777,7 @@ id|dev-&gt;oss.dma_blk
 id|dprintk
 c_func
 (paren
-l_string|&quot;irq: recording stopped%s&bslash;n&quot;
-comma
-l_string|&quot;&quot;
+l_string|&quot;irq: recording stopped&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
