@@ -7,7 +7,7 @@ r_static
 r_int
 id|new_loglevel
 op_assign
-l_int|7
+l_int|10
 suffix:semicolon
 DECL|variable|orig_loglevel
 r_static
