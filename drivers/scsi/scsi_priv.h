@@ -37,6 +37,9 @@ DECL|macro|SCSI_EH_REC_TIMEOUT
 mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0002&t;/* EH retry timed out */
 DECL|macro|SCSI_SENSE_VALID
 mdefine_line|#define SCSI_SENSE_VALID(scmd) &bslash;&n;&t;(((scmd)-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
+multiline_comment|/*&n; * Special value for scanning to specify scanning or rescanning of all&n; * possible channels, (target) ids, or luns on a given shost.&n; */
+DECL|macro|SCAN_WILD_CARD
+mdefine_line|#define SCAN_WILD_CARD&t;~0
 multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
 DECL|struct|scsi_target
 r_struct
@@ -451,6 +454,26 @@ DECL|macro|scsi_exit_procfs
 macro_line|# define scsi_exit_procfs()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
+r_int
+id|scsi_scan_host_selected
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|scsi_forget_host
