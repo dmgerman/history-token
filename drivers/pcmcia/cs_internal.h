@@ -558,6 +558,8 @@ DECL|macro|SOCKET_REGION_INFO
 mdefine_line|#define SOCKET_REGION_INFO&t;0x4000
 DECL|macro|SOCKET_CARDBUS
 mdefine_line|#define SOCKET_CARDBUS&t;&t;0x8000
+DECL|macro|SOCKET_CARDBUS_CONFIG
+mdefine_line|#define SOCKET_CARDBUS_CONFIG&t;0x10000
 DECL|macro|CHECK_HANDLE
 mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;client_magic != CLIENT_MAGIC))
 DECL|macro|CHECK_SOCKET
