@@ -712,11 +712,10 @@ id|bp
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG
-DECL|variable|xfs_error_dev
-id|dev_t
-id|xfs_error_dev
-op_assign
-l_int|0
+DECL|variable|xfs_error_target
+id|xfs_buftarg_t
+op_star
+id|xfs_error_target
 suffix:semicolon
 DECL|variable|xfs_do_error
 r_int
@@ -894,9 +893,9 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|xfs_error_dev
+id|xfs_error_target
 op_eq
-id|target-&gt;pbr_dev
+id|target
 )paren
 (brace
 r_if
@@ -1372,9 +1371,9 @@ id|XFS_TRANS_DIRTY
 r_if
 c_cond
 (paren
-id|xfs_error_dev
+id|xfs_error_target
 op_eq
-id|target-&gt;pbr_dev
+id|target
 )paren
 (brace
 r_if
