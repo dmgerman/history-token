@@ -37,7 +37,7 @@ DECL|macro|CONFIG_PACKET_MULTICAST
 mdefine_line|#define CONFIG_PACKET_MULTICAST&t;1
 multiline_comment|/*&n;   Assumptions:&n;   - if device has no dev-&gt;hard_header routine, it adds and removes ll header&n;     inside itself. In this case ll header is invisible outside of device,&n;     but higher levels still should reserve dev-&gt;hard_header_len.&n;     Some devices are enough clever to reallocate skb, when header&n;     will not fit to reserved space (tunnel), another ones are silly&n;     (PPP).&n;   - packet socket receives packets with pulled ll header,&n;     so that SOCK_RAW should push it back.&n;&n;On receive:&n;-----------&n;&n;Incoming, dev-&gt;hard_header!=NULL&n;   mac.raw -&gt; ll header&n;   data    -&gt; data&n;&n;Outgoing, dev-&gt;hard_header!=NULL&n;   mac.raw -&gt; ll header&n;   data    -&gt; ll header&n;&n;Incoming, dev-&gt;hard_header==NULL&n;   mac.raw -&gt; UNKNOWN position. It is very likely, that it points to ll header.&n;              PPP makes it, that is wrong, because introduce assymetry&n;&t;      between rx and tx paths.&n;   data    -&gt; data&n;&n;Outgoing, dev-&gt;hard_header==NULL&n;   mac.raw -&gt; data. ll header is still not built!&n;   data    -&gt; data&n;&n;Resume&n;  If dev-&gt;hard_header==NULL we are unlikely to restore sensible ll header.&n;&n;&n;On transmit:&n;------------&n;&n;dev-&gt;hard_header != NULL&n;   mac.raw -&gt; ll header&n;   data    -&gt; ll header&n;&n;dev-&gt;hard_header == NULL (ll header is added by device, we cannot control it)&n;   mac.raw -&gt; data&n;   data -&gt; data&n;&n;   We should set nh.raw on output to correct posistion,&n;   packet classifier depends on it.&n; */
 multiline_comment|/* List of all packet sockets. */
-DECL|variable|packet_sklist
+r_static
 id|HLIST_HEAD
 c_func
 (paren
@@ -52,6 +52,7 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|packet_socks_nr
+r_static
 id|atomic_t
 id|packet_socks_nr
 suffix:semicolon
@@ -286,6 +287,7 @@ macro_line|#endif
 DECL|macro|pkt_sk
 mdefine_line|#define pkt_sk(__sk) ((struct packet_opt *)(__sk)-&gt;sk_protinfo)
 DECL|function|packet_sock_destruct
+r_static
 r_void
 id|packet_sock_destruct
 c_func
@@ -389,13 +391,15 @@ id|packet_socks_nr
 suffix:semicolon
 macro_line|#endif
 )brace
-r_extern
+DECL|variable|packet_ops
+r_static
 r_struct
 id|proto_ops
 id|packet_ops
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOCK_PACKET
-r_extern
+DECL|variable|packet_ops_spkt
+r_static
 r_struct
 id|proto_ops
 id|packet_ops_spkt
@@ -4914,6 +4918,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|packet_getsockopt
+r_static
 r_int
 id|packet_getsockopt
 c_func
@@ -5596,6 +5601,7 @@ DECL|macro|packet_poll
 mdefine_line|#define packet_poll datagram_poll
 macro_line|#else
 DECL|function|packet_poll
+r_static
 r_int
 r_int
 id|packet_poll
@@ -6877,6 +6883,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SOCK_PACKET
 DECL|variable|packet_ops_spkt
+r_static
 r_struct
 id|proto_ops
 id|packet_ops_spkt
@@ -6976,6 +6983,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 DECL|variable|packet_ops
+r_static
 r_struct
 id|proto_ops
 id|packet_ops
