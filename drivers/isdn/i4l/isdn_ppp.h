@@ -63,6 +63,7 @@ macro_line|#else
 r_static
 r_inline
 r_int
+DECL|function|isdn_ppp_xmit
 id|isdn_ppp_xmit
 c_func
 (paren
@@ -74,7 +75,6 @@ r_struct
 id|net_device
 op_star
 )paren
-suffix:semicolon
 (brace
 r_return
 l_int|0
