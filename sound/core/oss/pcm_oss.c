@@ -6,7 +6,6 @@ macro_line|#if 0
 mdefine_line|#define OSS_DEBUG
 macro_line|#endif
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
