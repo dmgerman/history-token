@@ -86,7 +86,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The use of kmap_atomic/kunmap_atomic is discouraged - kmap/kunmap&n; * gives a more generic (and caching) interface. But kmap_atomic can&n; * be used in IRQ contexts, so in some (very limited) cases we need&n; * it.&n; */
+multiline_comment|/*&n; * kmap_atomic/kunmap_atomic is significantly faster than kmap/kunmap because&n; * no global lock is needed and because the kmap code must perform a global TLB&n; * invalidation when the kmap pool wraps.&n; *&n; * However when holding an atomic kmap is is not legal to sleep, so atomic&n; * kmaps are appropriate for short, tight code paths only.&n; */
 DECL|function|kmap_atomic
 r_void
 op_star
