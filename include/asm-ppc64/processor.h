@@ -863,7 +863,6 @@ DECL|macro|IOCR_SCS
 mdefine_line|#define&t;  IOCR_SCS&t;0x00000002
 DECL|macro|IOCR_SPC
 mdefine_line|#define&t;  IOCR_SPC&t;0x00000001
-multiline_comment|/* Processor Version Register */
 multiline_comment|/* Processor Version Register (PVR) field extraction */
 DECL|macro|PVR_VER
 mdefine_line|#define&t;PVR_VER(pvr)  (((pvr) &gt;&gt;  16) &amp; 0xFFFF)&t;/* Version field */
@@ -1117,13 +1116,25 @@ r_int
 r_int
 id|fpscr
 suffix:semicolon
-multiline_comment|/* Floating point status */
+multiline_comment|/* Floating point status (plus pad) */
 DECL|member|fpexc_mode
 r_int
 r_int
 id|fpexc_mode
 suffix:semicolon
 multiline_comment|/* Floating-point exception mode */
+DECL|member|saved_msr
+r_int
+r_int
+id|saved_msr
+suffix:semicolon
+multiline_comment|/* Save MSR across signal handlers */
+DECL|member|saved_softe
+r_int
+r_int
+id|saved_softe
+suffix:semicolon
+multiline_comment|/* Ditto for Soft Enable/Disable */
 )brace
 suffix:semicolon
 DECL|macro|INIT_SP
