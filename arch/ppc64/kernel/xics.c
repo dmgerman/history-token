@@ -2051,7 +2051,8 @@ id|xics_status
 l_int|2
 )braket
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|newmask
 suffix:semicolon
 id|virq
@@ -2131,7 +2132,8 @@ c_cond
 (paren
 id|cpumask
 op_eq
-l_int|0xffffffff
+op_minus
+l_int|1UL
 )paren
 (brace
 id|newmask
@@ -2162,7 +2164,13 @@ c_func
 op_amp
 id|cpumask
 comma
-l_int|32
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )paren
 suffix:semicolon
 )brace
