@@ -1048,14 +1048,20 @@ r_struct
 id|efi_memory_map
 id|memmap
 suffix:semicolon
+multiline_comment|/*&n; * We play games with efi_enabled so that the compiler will, if possible, remove&n; * EFI-related code altogether.&n; */
 macro_line|#ifdef CONFIG_EFI
+macro_line|# ifdef CONFIG_X86
 r_extern
 r_int
 id|efi_enabled
 suffix:semicolon
+macro_line|# else
+DECL|macro|efi_enabled
+macro_line|#  define efi_enabled 1
+macro_line|# endif
 macro_line|#else
 DECL|macro|efi_enabled
-mdefine_line|#define efi_enabled 0
+macro_line|# define efi_enabled 0
 macro_line|#endif
 multiline_comment|/*&n; * Variable Attributes&n; */
 DECL|macro|EFI_VARIABLE_NON_VOLATILE
