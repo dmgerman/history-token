@@ -3295,6 +3295,11 @@ id|nfs4_reclaim_locks
 c_func
 (paren
 r_struct
+id|nfs4_state_recovery_ops
+op_star
+id|ops
+comma
+r_struct
 id|nfs4_state
 op_star
 id|state
@@ -3365,7 +3370,9 @@ r_continue
 suffix:semicolon
 id|status
 op_assign
-id|nfs4_lock_reclaim
+id|ops
+op_member_access_from_pointer
+id|recover_lock
 c_func
 (paren
 id|state
@@ -3445,6 +3452,11 @@ id|nfs4_reclaim_open_state
 c_func
 (paren
 r_struct
+id|nfs4_state_recovery_ops
+op_star
+id|ops
+comma
+r_struct
 id|nfs4_state_owner
 op_star
 id|sp
@@ -3488,7 +3500,9 @@ r_continue
 suffix:semicolon
 id|status
 op_assign
-id|nfs4_open_reclaim
+id|ops
+op_member_access_from_pointer
+id|recover_open
 c_func
 (paren
 id|sp
@@ -3524,6 +3538,8 @@ op_assign
 id|nfs4_reclaim_locks
 c_func
 (paren
+id|ops
+comma
 id|state
 )paren
 suffix:semicolon
@@ -3679,6 +3695,11 @@ id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
+r_struct
+id|nfs4_state_recovery_ops
+op_star
+id|ops
+suffix:semicolon
 r_int
 id|status
 op_assign
@@ -3768,6 +3789,11 @@ id|NFS4ERR_CB_PATH_DOWN
 r_goto
 id|out
 suffix:semicolon
+id|ops
+op_assign
+op_amp
+id|nfs4_reboot_recovery_ops
+suffix:semicolon
 id|status
 op_assign
 id|__nfs4_init_client
@@ -3808,6 +3834,8 @@ op_assign
 id|nfs4_reclaim_open_state
 c_func
 (paren
+id|ops
+comma
 id|sp
 )paren
 suffix:semicolon
