@@ -6,57 +6,6 @@ macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
-multiline_comment|/* 32bit compatibility types */
-DECL|typedef|__kernel_ipc_pid_t32
-r_typedef
-r_int
-r_int
-id|__kernel_ipc_pid_t32
-suffix:semicolon
-DECL|typedef|__kernel_uid32_t32
-r_typedef
-r_int
-r_int
-id|__kernel_uid32_t32
-suffix:semicolon
-DECL|typedef|__kernel_gid32_t32
-r_typedef
-r_int
-r_int
-id|__kernel_gid32_t32
-suffix:semicolon
-DECL|typedef|__kernel_umode_t32
-r_typedef
-r_int
-r_int
-id|__kernel_umode_t32
-suffix:semicolon
-DECL|typedef|__kernel_nlink_t32
-r_typedef
-r_int
-id|__kernel_nlink_t32
-suffix:semicolon
-DECL|typedef|__kernel_daddr_t32
-r_typedef
-r_int
-id|__kernel_daddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_caddr_t32
-r_typedef
-r_int
-r_int
-id|__kernel_caddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_loff_t32
-r_typedef
-r_int
-id|__kernel_loff_t32
-suffix:semicolon
-DECL|typedef|__kernel_fsid_t32
-r_typedef
-id|__kernel_fsid_t
-id|__kernel_fsid_t32
-suffix:semicolon
 DECL|macro|IA32_PAGE_SHIFT
 mdefine_line|#define IA32_PAGE_SHIFT&t;&t;12&t;/* 4KB pages */
 DECL|macro|IA32_PAGE_SIZE
@@ -781,7 +730,7 @@ r_int
 id|f_ffree
 suffix:semicolon
 DECL|member|f_fsid
-id|__kernel_fsid_t32
+id|compat_fsid_t
 id|f_fsid
 suffix:semicolon
 DECL|member|f_namelen
