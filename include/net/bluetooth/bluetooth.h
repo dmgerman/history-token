@@ -420,6 +420,16 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+r_void
+id|bt_accept_unlink
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
 r_struct
 id|sock
 op_star

@@ -589,7 +589,6 @@ id|bt_accept_enqueue
 )paren
 suffix:semicolon
 DECL|function|bt_accept_unlink
-r_static
 r_void
 id|bt_accept_unlink
 c_func
@@ -649,6 +648,13 @@ id|sk
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bt_accept_unlink
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_accept_unlink
+)paren
+suffix:semicolon
 DECL|function|bt_accept_dequeue
 r_struct
 id|sock
@@ -729,6 +735,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Is this check still needed */
 r_if
 c_cond
 (paren
