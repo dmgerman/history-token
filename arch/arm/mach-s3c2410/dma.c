@@ -23,6 +23,7 @@ multiline_comment|/* io map for dma */
 DECL|variable|dma_base
 r_static
 r_void
+id|__iomem
 op_star
 id|dma_base
 suffix:semicolon
@@ -3216,10 +3217,6 @@ id|IRQ_DMA0
 suffix:semicolon
 id|cp-&gt;regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|dma_base
 op_plus
 (paren
@@ -3248,7 +3245,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DMA channel %d at %08lx, irq %d&bslash;n&quot;
+l_string|&quot;DMA channel %d at %p, irq %d&bslash;n&quot;
 comma
 id|cp-&gt;number
 comma
