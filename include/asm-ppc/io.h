@@ -1312,7 +1312,7 @@ mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
 DECL|macro|consistent_alloc
 mdefine_line|#define consistent_alloc(gfp, size, handle)&t;NULL
 DECL|macro|consistent_free
-mdefine_line|#define consistent_free(addr, size)&t;&t;do { } while (0)
+mdefine_line|#define consistent_free(addr)&t;&t;&t;do { } while (0)
 DECL|macro|consistent_sync
 mdefine_line|#define consistent_sync(addr, size, rw)&t;&t;do { } while (0)
 DECL|macro|consistent_sync_page

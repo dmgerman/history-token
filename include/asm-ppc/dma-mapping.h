@@ -178,8 +178,6 @@ id|consistent_free
 c_func
 (paren
 id|vaddr
-comma
-id|size
 )paren
 suffix:semicolon
 )brace
