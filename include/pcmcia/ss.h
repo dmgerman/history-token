@@ -170,6 +170,10 @@ id|sys_start
 comma
 id|sys_stop
 suffix:semicolon
+DECL|member|static_start
+id|u_long
+id|static_start
+suffix:semicolon
 DECL|member|card_start
 id|u_int
 id|card_start

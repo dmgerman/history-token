@@ -326,7 +326,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;static_start
 comma
 id|s-&gt;map_size
 )paren
