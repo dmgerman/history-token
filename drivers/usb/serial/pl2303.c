@@ -669,7 +669,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -2892,7 +2891,6 @@ id|kfree
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -2903,7 +2901,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

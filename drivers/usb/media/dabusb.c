@@ -3197,16 +3197,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|usb_reset_configuration
 (paren
 id|usbdev
-comma
-id|usbdev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -3215,7 +3208,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;set_configuration failed&quot;
+l_string|&quot;reset_configuration failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3434,16 +3427,7 @@ id|dabusb_ids
 )braket
 op_assign
 (brace
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0547
-comma
-l_int|0x2131
-)paren
-)brace
-comma
+singleline_comment|// { USB_DEVICE(0x0547, 0x2131) },&t;/* An2131 chip, no boot ROM */
 (brace
 id|USB_DEVICE
 c_func

@@ -901,9 +901,6 @@ id|usb_hcd_pci_remove
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_PM
-multiline_comment|/*&n; * Some &quot;sleep&quot; power levels imply updating struct usb_driver&n; * to include a callback asking hcds to do their bit by checking&n; * if all the drivers can suspend.  Gets involved with remote wakeup.&n; *&n; * If there are pending urbs, then HCs will need to access memory,&n; * causing extra power drain.  New sleep()/wakeup() PM calls might&n; * be needed, beyond PCI suspend()/resume().  The root hub timer&n; * still be accessing memory though ...&n; *&n; * FIXME:  USB should have some power budgeting support working with&n; * all kinds of hubs.&n; *&n; * FIXME:  This assumes only D0-&gt;D3 suspend and D3-&gt;D0 resume.&n; * D1 and D2 states should do something, yes?&n; *&n; * FIXME:  Should provide generic enable_wake(), calling pci_enable_wake()&n; * for all supported states, so that USB remote wakeup can work for any&n; * devices that support it (and are connected via powered hubs).&n; *&n; * FIXME:  resume doesn&squot;t seem to work right any more...&n; */
-singleline_comment|// 2.4 kernels have issued concurrent resumes (w/APM)
-singleline_comment|// we defend against that error; PCI doesn&squot;t yet.
 multiline_comment|/**&n; * usb_hcd_pci_suspend - power management suspend of a PCI-based HCD&n; * @dev: USB Host Controller being suspended&n; * @state: state that the controller is going into&n; *&n; * Store this function in the HCD&squot;s struct pci_driver as suspend().&n; */
 DECL|function|usb_hcd_pci_suspend
 r_int
@@ -925,6 +922,8 @@ id|hcd
 suffix:semicolon
 r_int
 id|retval
+op_assign
+l_int|0
 suffix:semicolon
 id|hcd
 op_assign
@@ -934,7 +933,43 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev_info
+r_switch
+c_cond
+(paren
+id|hcd-&gt;state
+)paren
+(brace
+r_case
+id|USB_STATE_HALT
+suffix:colon
+id|dev_dbg
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;halted; hcd not suspended&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_STATE_SUSPENDED
+suffix:colon
+id|dev_dbg
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;suspend D%d --&gt; D%d&bslash;n&quot;
+comma
+id|dev-&gt;current_state
+comma
+id|state
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|dev_dbg
 (paren
 id|hcd-&gt;controller
 comma
@@ -943,6 +978,8 @@ comma
 id|state
 )paren
 suffix:semicolon
+multiline_comment|/* remote wakeup needs hub-&gt;suspend() cooperation */
+singleline_comment|// pci_enable_wake (dev, 3, 1);
 id|pci_save_state
 (paren
 id|dev
@@ -950,9 +987,6 @@ comma
 id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
-singleline_comment|// FIXME for all connected devices, leaf-to-root:
-singleline_comment|// driver-&gt;suspend()
-singleline_comment|// proposed &quot;new 2.5 driver model&quot; will automate that
 multiline_comment|/* driver may want to disable DMA etc */
 id|retval
 op_assign
@@ -967,6 +1001,7 @@ id|hcd-&gt;state
 op_assign
 id|USB_STATE_SUSPENDED
 suffix:semicolon
+)brace
 id|pci_set_power_state
 (paren
 id|dev
@@ -1011,52 +1046,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev_info
-(paren
-id|hcd-&gt;controller
-comma
-l_string|&quot;resume&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* guard against multiple resumes (APM bug?) */
-id|atomic_inc
-(paren
-op_amp
-id|hcd-&gt;resume_count
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-(paren
-op_amp
-id|hcd-&gt;resume_count
-)paren
-op_ne
-l_int|1
-)paren
-(brace
-id|dev_err
-(paren
-id|hcd-&gt;controller
-comma
-l_string|&quot;concurrent PCI resumes&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
-id|retval
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1072,8 +1061,9 @@ comma
 l_string|&quot;can&squot;t resume, not suspended!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|done
+r_return
+op_minus
+id|EL3HLT
 suffix:semicolon
 )brace
 id|hcd-&gt;state
@@ -1094,6 +1084,8 @@ comma
 id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
+multiline_comment|/* remote wakeup needs hub-&gt;suspend() cooperation */
+singleline_comment|// pci_enable_wake (dev, 3, 0);
 id|retval
 op_assign
 id|hcd-&gt;driver-&gt;resume
@@ -1125,22 +1117,7 @@ id|usb_hc_died
 id|hcd
 )paren
 suffix:semicolon
-singleline_comment|// FIXME:  recover, reset etc.
 )brace
-r_else
-(brace
-singleline_comment|// FIXME for all connected devices, root-to-leaf:
-singleline_comment|// driver-&gt;resume ();
-singleline_comment|// proposed &quot;new 2.5 driver model&quot; will automate that
-)brace
-id|done
-suffix:colon
-id|atomic_dec
-(paren
-op_amp
-id|hcd-&gt;resume_count
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

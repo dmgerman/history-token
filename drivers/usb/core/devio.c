@@ -3899,9 +3899,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|usb_set_configuration
 c_func
 (paren
@@ -3909,15 +3907,6 @@ id|ps-&gt;dev
 comma
 id|u
 )paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|proc_submiturb

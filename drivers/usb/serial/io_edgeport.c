@@ -2481,7 +2481,6 @@ id|txCredits
 (brace
 id|port
 op_assign
-op_amp
 id|edge_serial-&gt;serial-&gt;port
 (braket
 id|portNumber
@@ -3212,7 +3211,6 @@ id|usb_serial_port
 op_star
 id|port0
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0
@@ -7174,7 +7172,6 @@ id|rxLen
 (brace
 id|port
 op_assign
-op_amp
 id|edge_serial-&gt;serial-&gt;port
 (braket
 id|edge_serial-&gt;rxPort
@@ -7368,7 +7365,6 @@ suffix:semicolon
 multiline_comment|/* switch the port pointer to the one being currently talked about */
 id|port
 op_assign
-op_amp
 id|edge_serial-&gt;serial-&gt;port
 (braket
 id|edge_serial-&gt;rxPort
@@ -11129,7 +11125,6 @@ id|edgeport_port
 suffix:semicolon
 id|edge_port-&gt;port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -11138,7 +11133,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -11196,7 +11190,6 @@ id|kfree
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -11207,7 +11200,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

@@ -54,16 +54,9 @@ id|dev
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|usb_reset_configuration
 (paren
 id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -1242,19 +1235,14 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+singleline_comment|// NOTE:  it&squot;s already in this config, this shouldn&squot;t be needed.
+singleline_comment|// is this working around some hardware bug?
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|usb_reset_configuration
 (paren
 id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -1262,7 +1250,7 @@ l_int|0
 (brace
 id|err
 (paren
-l_string|&quot;tiglusb_probe: set_configuration failed&quot;
+l_string|&quot;tiglusb_probe: reset_configuration failed&quot;
 )paren
 suffix:semicolon
 r_return

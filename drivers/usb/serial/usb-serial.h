@@ -202,6 +202,11 @@ r_int
 r_char
 id|num_ports
 suffix:semicolon
+DECL|member|num_port_pointers
+r_int
+r_char
+id|num_port_pointers
+suffix:semicolon
 DECL|member|num_interrupt_in
 r_char
 id|num_interrupt_in
@@ -225,6 +230,7 @@ suffix:semicolon
 DECL|member|port
 r_struct
 id|usb_serial_port
+op_star
 id|port
 (braket
 id|MAX_NUM_PORTS
