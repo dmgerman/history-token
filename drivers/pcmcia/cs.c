@@ -4257,6 +4257,7 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* get_card_services_info */
+macro_line|#ifdef CONFIG_PCMCIA_OBSOLETE
 multiline_comment|/*======================================================================&n;&n;    Note that get_first_client() *does* recognize the Socket field&n;    in the request structure.&n;    &n;======================================================================*/
 DECL|function|pcmcia_get_first_client
 r_int
@@ -4333,6 +4334,13 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* get_first_client */
+DECL|variable|pcmcia_get_first_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_get_first_client
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|pcmcia_get_next_client
 r_int
@@ -4436,8 +4444,17 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* get_next_client */
+DECL|variable|pcmcia_get_next_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_get_next_client
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PCMCIA_OBSOLETE */
 multiline_comment|/*====================================================================*/
 DECL|function|pcmcia_get_window
+r_static
 r_int
 id|pcmcia_get_window
 c_func
@@ -5543,6 +5560,7 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* modify_configuration */
+macro_line|#ifdef CONFIG_PCMCIA_OBSOLETE
 multiline_comment|/*======================================================================&n;&n;    Modify the attributes of a window returned by RequestWindow.&n;&n;======================================================================*/
 DECL|function|pcmcia_modify_window
 r_int
@@ -5648,6 +5666,14 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* modify_window */
+DECL|variable|pcmcia_modify_window
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_modify_window
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PCMCIA_OBSOLETE */
 multiline_comment|/*======================================================================&n;&n;    Register_client() uses the dev_info_t handle to match the&n;    caller with a socket.  The driver must have already been bound&n;    to a socket with bind_device() -- in fact, bind_device()&n;    allocates the client structure that will be used.&n;    &n;======================================================================*/
 DECL|function|pcmcia_register_client
 r_int
@@ -9021,6 +9047,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* insert_card */
 multiline_comment|/*======================================================================&n;&n;    Maybe this should send a CS_EVENT_CARD_INSERTION event if we&n;    haven&squot;t sent one to this client yet?&n;    &n;======================================================================*/
+macro_line|#ifdef CONFIG_PCMCIA_OBSOLETE
 DECL|function|pcmcia_set_event_mask
 r_int
 id|pcmcia_set_event_mask
@@ -9121,6 +9148,14 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* set_event_mask */
+DECL|variable|pcmcia_set_event_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_set_event_mask
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PCMCIA_OBSOLETE */
 multiline_comment|/*======================================================================&n;&n;    OS-specific module glue goes here&n;    &n;======================================================================*/
 multiline_comment|/* in alpha order */
 DECL|variable|pcmcia_access_configuration_register
@@ -9151,13 +9186,6 @@ c_func
 id|pcmcia_eject_card
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_get_first_client
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_get_first_client
-)paren
-suffix:semicolon
 DECL|variable|pcmcia_get_card_services_info
 id|EXPORT_SYMBOL
 c_func
@@ -9177,13 +9205,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pcmcia_get_mem_page
-)paren
-suffix:semicolon
-DECL|variable|pcmcia_get_next_client
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_get_next_client
 )paren
 suffix:semicolon
 DECL|variable|pcmcia_get_first_tuple
@@ -9247,13 +9268,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pcmcia_modify_configuration
-)paren
-suffix:semicolon
-DECL|variable|pcmcia_modify_window
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_modify_window
 )paren
 suffix:semicolon
 DECL|variable|pcmcia_parse_tuple
@@ -9345,13 +9359,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pcmcia_resume_card
-)paren
-suffix:semicolon
-DECL|variable|pcmcia_set_event_mask
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_set_event_mask
 )paren
 suffix:semicolon
 DECL|variable|pcmcia_suspend_card
