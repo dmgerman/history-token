@@ -1971,7 +1971,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We play buffer_head aliasing tricks to write data/metadata blocks to&n; * the journal without copying their contents, but for journal&n; * descriptor blocks we do need to generate bona fide buffers.&n; */
+multiline_comment|/*&n; * We play buffer_head aliasing tricks to write data/metadata blocks to&n; * the journal without copying their contents, but for journal&n; * descriptor blocks we do need to generate bona fide buffers.&n; *&n; * After the caller of journal_get_descriptor_buffer() has finished modifying&n; * the buffer&squot;s contents they really should run flush_dcache_page(bh-&gt;b_page).&n; * But we don&squot;t bother doing that, so there will be coherency problems with&n; * mmaps of blockdevs which hold live JBD-controlled filesystems.&n; */
 DECL|function|journal_get_descriptor_buffer
 r_struct
 id|journal_head
@@ -2027,6 +2027,12 @@ comma
 id|journal-&gt;j_blocksize
 )paren
 suffix:semicolon
+id|lock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2037,12 +2043,16 @@ comma
 id|journal-&gt;j_blocksize
 )paren
 suffix:semicolon
-id|bh-&gt;b_state
-op_or_assign
+id|set_buffer_uptodate
+c_func
 (paren
-l_int|1
-op_lshift
-id|BH_Dirty
+id|bh
+)paren
+suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 id|BUFFER_TRACE
