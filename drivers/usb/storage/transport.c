@@ -982,7 +982,6 @@ r_int
 r_char
 op_star
 )paren
-op_amp
 id|dr
 comma
 id|data
