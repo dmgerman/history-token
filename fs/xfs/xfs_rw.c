@@ -607,7 +607,7 @@ c_func
 id|CE_ALERT
 comma
 l_string|&quot;I/O error in filesystem (&bslash;&quot;%s&bslash;&quot;) meta-data dev 0x%x block 0x%llx&quot;
-l_string|&quot;&t; (&bslash;&quot;%s&bslash;&quot;) error %d buf count %u&quot;
+l_string|&quot;       (&bslash;&quot;%s&bslash;&quot;) error %d buf count %u&quot;
 comma
 (paren
 op_logical_neg

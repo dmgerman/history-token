@@ -504,7 +504,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&t;log: uuid = &quot;
+l_string|&quot;    log: uuid = &quot;
 )paren
 suffix:semicolon
 r_for
