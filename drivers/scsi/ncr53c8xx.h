@@ -130,5 +130,21 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ncr53c8xx_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ncr53c8xx_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* NCR53C8XX_H */
 eof
