@@ -763,7 +763,7 @@ id|value
 comma
 id|kvalue
 comma
-id|size
+id|error
 )paren
 )paren
 id|error
@@ -1116,7 +1116,7 @@ id|list
 comma
 id|klist
 comma
-id|size
+id|error
 )paren
 )paren
 id|error
