@@ -28,15 +28,7 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* must follow &quot;hosts.h&quot; */
 macro_line|#include &lt;linux/genhd.h&gt;
-DECL|variable|sd_version_str
-r_static
-r_char
-id|sd_version_str
-(braket
-)braket
-op_assign
-l_string|&quot;Version: 2.0.3 (20020417)&quot;
-suffix:semicolon
+multiline_comment|/* static char sd_version_str[] = &quot;Version: 2.0.3 (20020417)&quot;; */
 DECL|macro|SD_MAJOR
 mdefine_line|#define SD_MAJOR(i) (!(i) ? SCSI_DISK0_MAJOR : SCSI_DISK1_MAJOR-1+(i))
 DECL|macro|SCSI_DISKS_PER_MAJOR
