@@ -169,12 +169,12 @@ DECL|macro|W83627HF_LD_HWM
 mdefine_line|#define W83627HF_LD_HWM&t;&t;0x0b
 DECL|macro|DEVID
 mdefine_line|#define&t;DEVID&t;0x20&t;/* Register: Device ID */
+DECL|macro|W83627THF_GPIO5_EN
+mdefine_line|#define W83627THF_GPIO5_EN&t;0x30 /* w83627thf only */
 DECL|macro|W83627THF_GPIO5_IOSR
 mdefine_line|#define W83627THF_GPIO5_IOSR&t;0xf3 /* w83627thf only */
 DECL|macro|W83627THF_GPIO5_DR
 mdefine_line|#define W83627THF_GPIO5_DR&t;0xf4 /* w83627thf only */
-DECL|macro|W83627THF_GPIO5_INVR
-mdefine_line|#define W83627THF_GPIO5_INVR&t;0xf5 /* w83627thf only */
 r_static
 r_inline
 r_void
@@ -4538,28 +4538,12 @@ op_star
 id|client
 )paren
 (brace
-r_struct
-id|w83627hf_data
-op_star
-id|data
-op_assign
-id|i2c_get_clientdata
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
 r_int
 id|res
+op_assign
+l_int|0xff
 comma
-id|inv
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|data-&gt;lock
-)paren
+id|sel
 suffix:semicolon
 id|superio_enter
 c_func
@@ -4572,6 +4556,83 @@ c_func
 id|W83627HF_LD_GPIO5
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure these GPIO pins are enabled */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|superio_inb
+c_func
+(paren
+id|W83627THF_GPIO5_EN
+)paren
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+)paren
+)paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;GPIO5 disabled, no VID function&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure the pins are configured for input&n;&t;   There must be at least five (VRM 9), and possibly 6 (VRM 10) */
+id|sel
+op_assign
+id|superio_inb
+c_func
+(paren
+id|W83627THF_GPIO5_IOSR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sel
+op_amp
+l_int|0x1f
+)paren
+op_ne
+l_int|0x1f
+)paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;GPIO5 not configured for VID &quot;
+l_string|&quot;function&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Reading VID from GPIO5&bslash;n&quot;
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|superio_inb
@@ -4579,25 +4640,14 @@ c_func
 (paren
 id|W83627THF_GPIO5_DR
 )paren
+op_amp
+id|sel
 suffix:semicolon
-id|inv
-op_assign
-id|superio_inb
-c_func
-(paren
-id|W83627THF_GPIO5_INVR
-)paren
-suffix:semicolon
+m_exit
+suffix:colon
 id|superio_exit
 c_func
 (paren
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|data-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5001,7 +5051,7 @@ c_func
 id|client
 )paren
 op_amp
-l_int|0x1f
+l_int|0x3f
 suffix:semicolon
 )brace
 multiline_comment|/* Read VRM &amp; OVT Config only once */
