@@ -16,6 +16,13 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpa11.inl&quot;
 multiline_comment|/* kernel symbols required for signal handling */
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
+DECL|macro|NWFPE_BITS
+mdefine_line|#define NWFPE_BITS &quot;extended&quot;
+macro_line|#else
+DECL|macro|NWFPE_BITS
+mdefine_line|#define NWFPE_BITS &quot;double&quot;
+macro_line|#endif
 macro_line|#ifdef MODULE
 r_void
 id|fp_send_sig
@@ -44,7 +51,9 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NWFPE floating point emulator&quot;
+l_string|&quot;NWFPE floating point emulator (&quot;
+id|NWFPE_BITS
+l_string|&quot; precision)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -209,8 +218,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NetWinder Floating Point Emulator V0.95 &quot;
-l_string|&quot;(c) 1998-1999 Rebel.com&bslash;n&quot;
+l_string|&quot;NetWinder Floating Point Emulator V0.97 (&quot;
+id|NWFPE_BITS
+l_string|&quot; precision)&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Save pointer to the old FP handler and then patch ourselves in */

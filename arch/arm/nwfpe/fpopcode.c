@@ -5,6 +5,7 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpsr.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpmodule.inl&quot;
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|variable|floatx80Constant
 r_const
 id|floatx80
@@ -70,6 +71,7 @@ l_int|0xa000000000000000ULL
 multiline_comment|/* extended 10.0 */
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|float64Constant
 r_const
 id|float64

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;    (c) Philip Blundell, 2001&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef __FPOPCODE_H__
 DECL|macro|__FPOPCODE_H__
 mdefine_line|#define __FPOPCODE_H__
@@ -278,6 +278,7 @@ mdefine_line|#define getRd(opcode)&t;&t;((opcode &amp; MASK_Rd) &gt;&gt; 12)
 multiline_comment|/* Get the rounding mode from the opcode. */
 DECL|macro|getRoundingMode
 mdefine_line|#define getRoundingMode(opcode)&t;&t;((opcode &amp; MASK_ROUNDING_MODE) &gt;&gt; 5)
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|function|getExtendedConstant
 r_static
 r_inline
@@ -306,6 +307,7 @@ id|nIndex
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|getDoubleConstant
 r_static
 r_inline
