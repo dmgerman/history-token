@@ -642,6 +642,7 @@ id|elf_addr_t
 )paren
 (paren
 r_int
+r_int
 )paren
 id|u_platform
 )paren
