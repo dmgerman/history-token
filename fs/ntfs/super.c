@@ -504,7 +504,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;show_system_files&quot;
+l_string|&quot;show_sys_files&quot;
 )paren
 )paren
 (brace
@@ -518,7 +518,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Option show_system_files is &quot;
+l_string|&quot;Option show_sys_files is &quot;
 l_string|&quot;deprecated. Please use option &quot;
 l_string|&quot;show_inodes=system in the future.&quot;
 )paren
