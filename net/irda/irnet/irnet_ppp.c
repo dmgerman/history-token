@@ -4049,4 +4049,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+l_int|10
+comma
+l_int|187
+)paren
+suffix:semicolon
 eof
