@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Implementation independent bits of the Floppy driver.&
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|floppy_hardint
 c_func
 (paren
@@ -538,7 +538,7 @@ suffix:semicolon
 multiline_comment|/* this is the only truly Q40 specific function */
 DECL|function|floppy_hardint
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|floppy_hardint
 c_func
 (paren
@@ -602,6 +602,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef TRACE_FLPY_INT
@@ -740,6 +741,7 @@ l_int|0x20
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -802,6 +804,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef TRACE_FLPY_INT
@@ -817,6 +820,9 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|EXTRA_FLOPPY_PARAMS
 mdefine_line|#define EXTRA_FLOPPY_PARAMS
