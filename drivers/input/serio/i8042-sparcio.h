@@ -332,6 +332,8 @@ l_int|0
 )braket
 dot
 id|start
+comma
+l_int|8
 )paren
 suffix:semicolon
 )brace
