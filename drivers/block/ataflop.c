@@ -1174,7 +1174,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|floppy_irq
 (paren
 r_int
@@ -2136,7 +2136,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|floppy_irq
 r_static
-r_void
+id|irqreturn_t
 id|floppy_irq
 (paren
 r_int
@@ -2229,6 +2229,9 @@ l_string|&quot;FDC irq, no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* Error handling: If some error happened, retry some times, then&n; * recalibrate, then try again, and fail after MAX_ERRORS.&n; */
 DECL|function|fd_error
