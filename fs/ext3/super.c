@@ -5105,6 +5105,10 @@ r_goto
 id|failed_mount
 suffix:semicolon
 id|sb-&gt;s_flags
+op_or_assign
+id|MS_ONE_SECOND
+suffix:semicolon
+id|sb-&gt;s_flags
 op_assign
 (paren
 id|sb-&gt;s_flags
