@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_HDREG_H
 DECL|macro|_LINUX_HDREG_H
 mdefine_line|#define _LINUX_HDREG_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/ata.h&gt;
 multiline_comment|/*&n; * This file contains some defines for the AT-hd-controller.&n; * Various sources.&n; */
 multiline_comment|/* ide.c has its own port definitions in &quot;ide.h&quot; */
@@ -81,6 +82,7 @@ DECL|macro|REL
 mdefine_line|#define REL&t;&t;&t;0x04
 DECL|macro|TAG_MASK
 mdefine_line|#define TAG_MASK&t;&t;0xf8
+macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; */
 DECL|macro|HDIO_DRIVE_CMD_HDR_SIZE
 mdefine_line|#define HDIO_DRIVE_CMD_HDR_SIZE&t;&t;(4 * sizeof(u8))
