@@ -13462,11 +13462,6 @@ op_assign
 id|ide_do_rw_cdrom
 comma
 dot
-id|sense
-op_assign
-id|ide_dump_atapi_status
-comma
-dot
 id|error
 op_assign
 id|ide_cdrom_error

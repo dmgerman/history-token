@@ -7077,11 +7077,6 @@ op_assign
 id|ide_do_rw_disk
 comma
 dot
-id|sense
-op_assign
-id|idedisk_dump_status
-comma
-dot
 id|error
 op_assign
 id|idedisk_error
