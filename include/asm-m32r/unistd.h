@@ -568,13 +568,33 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify          (__NR_mq_open+4)
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr      (__NR_mq_open+5)
-DECL|macro|__NR_kexec_load
-mdefine_line|#define __NR_kexec_load&t;&t;283
+DECL|macro|__NR_sys_kexec_load
+mdefine_line|#define __NR_sys_kexec_load    283
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid            284
+DECL|macro|__NR_perfctr_info
+mdefine_line|#define __NR_perfctr_info      285
+DECL|macro|__NR_vperfctr_open
+mdefine_line|#define __NR_vperfctr_open     (__NR_perfctr_info+1)
+DECL|macro|__NR_vperfctr_control
+mdefine_line|#define __NR_vperfctr_control  (__NR_perfctr_info+2)
+DECL|macro|__NR_vperfctr_unlink
+mdefine_line|#define __NR_vperfctr_unlink   (__NR_perfctr_info+3)
+DECL|macro|__NR_vperfctr_iresume
+mdefine_line|#define __NR_vperfctr_iresume  (__NR_perfctr_info+4)
+DECL|macro|__NR_vperfctr_read
+mdefine_line|#define __NR_vperfctr_read     (__NR_perfctr_info+5)
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key           291
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key       292
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl            293
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls     284
-multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-m32r/errno.h&gt; */
+mdefine_line|#define NR_syscalls 294
+multiline_comment|/* user-visible error numbers are in the range -1 - -128: see&n; * &lt;asm-m32r/errno.h&gt;&n; */
 DECL|macro|__syscall_return
-mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
+mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-(128 + 1))) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;register long __scno __asm__ (&quot;r7&quot;) = __NR_##name; &bslash;&n;register long __res __asm__(&quot;r0&quot;); &bslash;&n;__asm__ __volatile__ (&bslash;&n;&t;&quot;trap #&quot; SYSCALL_VECTOR &bslash;&n;&t;: &quot;=r&quot; (__res) &bslash;&n;&t;: &quot;r&quot; (__scno) &bslash;&n;&t;: &quot;memory&quot;); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
 DECL|macro|_syscall1
