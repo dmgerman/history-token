@@ -793,7 +793,7 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+macro_line|#if 0
 r_static
 id|ide_pci_device_t
 id|unknown_chipset
@@ -906,5 +906,6 @@ comma
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* IDE_GENERIC_H */
 eof
