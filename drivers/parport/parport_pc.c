@@ -9511,7 +9511,7 @@ l_int|0
 suffix:semicolon
 id|priv-&gt;dma_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|priv-&gt;dma_handle
 op_assign

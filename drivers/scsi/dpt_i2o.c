@@ -3459,7 +3459,7 @@ suffix:semicolon
 singleline_comment|//&t;spin_unlock_irqrestore(&amp;adpt_post_wait_lock, flags);
 id|adpt_post_wait_queue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func

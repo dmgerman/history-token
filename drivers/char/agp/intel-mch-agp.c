@@ -735,7 +735,7 @@ id|size-&gt;num_entries
 suffix:semicolon
 id|agp_bridge-&gt;gatt_table_real
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pci_read_config_dword
 c_func

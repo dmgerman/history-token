@@ -4068,7 +4068,7 @@ suffix:semicolon
 )brace
 id|rqstp-&gt;rq_skbuff
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|rqstp-&gt;rq_prot
 op_assign

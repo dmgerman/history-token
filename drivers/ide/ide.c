@@ -9920,7 +9920,7 @@ c_func
 (paren
 l_string|&quot;ide&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -246,7 +246,7 @@ id|key_maps
 id|s
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -820,14 +820,15 @@ r_else
 id|result
 op_assign
 id|ext3_new_block
+c_func
 (paren
 id|inode
 comma
 id|goal
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|err
 )paren
@@ -838,6 +839,7 @@ macro_line|#else
 id|result
 op_assign
 id|ext3_new_block
+c_func
 (paren
 id|handle
 comma
@@ -845,9 +847,9 @@ id|inode
 comma
 id|goal
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|err
 )paren
@@ -2928,7 +2930,7 @@ id|handle_t
 op_star
 id|handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|ret

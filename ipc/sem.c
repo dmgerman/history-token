@@ -144,7 +144,7 @@ l_string|&quot;sysvipc/sem&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|sysvipc_sem_read_proc
 comma

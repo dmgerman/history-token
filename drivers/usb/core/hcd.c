@@ -672,7 +672,7 @@ id|u8
 op_star
 id|bufp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u8
 op_star
@@ -1486,7 +1486,7 @@ l_int|0
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -1659,7 +1659,7 @@ id|flags
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|usb_hcd_giveback_urb
 (paren
@@ -3643,14 +3643,14 @@ id|usb_hcd
 op_star
 id|hcd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|device
 op_star
 id|sys
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int

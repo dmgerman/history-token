@@ -274,7 +274,7 @@ id|snd_pcm_plugin_channel_t
 op_star
 id|src_channel
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -528,7 +528,7 @@ l_int|4
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 op_logical_and
 id|norm_int32_8_noatt
@@ -539,7 +539,7 @@ comma
 op_logical_and
 id|norm_int32_24_noatt
 comma
-l_int|0
+l_int|NULL
 comma
 op_logical_and
 id|norm_int32_8_att
@@ -1965,7 +1965,7 @@ suffix:semicolon
 r_else
 id|dptr-&gt;srcs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dptr
 op_increment

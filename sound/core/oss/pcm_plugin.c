@@ -4098,7 +4098,7 @@ suffix:semicolon
 r_else
 id|dst_channels
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pdprintf
 c_func
@@ -4216,7 +4216,7 @@ id|frames
 suffix:semicolon
 id|src_channels
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plugin
 op_assign

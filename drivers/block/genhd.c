@@ -345,7 +345,7 @@ id|p-&gt;name
 suffix:semicolon
 id|p-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|index
 op_assign

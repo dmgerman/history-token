@@ -12816,7 +12816,7 @@ id|Sg_fd
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15069,7 +15069,7 @@ c_func
 (paren
 id|buff
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|10
 )paren
@@ -15218,7 +15218,7 @@ c_func
 (paren
 id|buff
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|10
 )paren

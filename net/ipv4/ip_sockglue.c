@@ -3603,14 +3603,14 @@ id|ip_msfilter
 op_star
 id|msf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|group_filter
 op_star
 id|gsf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|msize
@@ -3892,7 +3892,7 @@ id|gsf
 suffix:semicolon
 id|gsf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|err
 op_assign

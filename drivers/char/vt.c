@@ -11630,7 +11630,7 @@ l_int|NULL
 suffix:semicolon
 id|tty-&gt;driver_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|release_console_sem
 c_func
