@@ -4198,7 +4198,8 @@ id|generic_subdriver_entries
 suffix:semicolon
 macro_line|#endif
 r_int
-id|ide_reinit_drive
+id|ata_attach
+c_func
 (paren
 id|ide_drive_t
 op_star
