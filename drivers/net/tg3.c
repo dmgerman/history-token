@@ -32998,7 +32998,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__devinit
 id|tg3_nvram_read_using_eeprom
 c_func
 (paren
@@ -35480,7 +35479,6 @@ suffix:semicolon
 DECL|function|tg3_nvram_read_using_eeprom
 r_static
 r_int
-id|__devinit
 id|tg3_nvram_read_using_eeprom
 c_func
 (paren
