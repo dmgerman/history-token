@@ -4534,7 +4534,7 @@ c_func
 (paren
 id|SIZEOF_STRUCT_IP_FW_KERNEL
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
