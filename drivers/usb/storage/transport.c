@@ -2729,13 +2729,6 @@ r_int
 id|result
 suffix:semicolon
 multiline_comment|/* issue the command */
-id|us-&gt;iobuf
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 id|result
 op_assign
 id|usb_stor_control_msg
@@ -2782,7 +2775,7 @@ r_if
 c_cond
 (paren
 id|result
-op_ge
+OG
 l_int|0
 )paren
 r_return
@@ -2817,15 +2810,10 @@ comma
 id|us-&gt;send_bulk_pipe
 )paren
 suffix:semicolon
-multiline_comment|/* return the default -- no LUNs */
+)brace
+multiline_comment|/*&n;&t; * Some devices don&squot;t like GetMaxLUN.  They may STALL the control&n;&t; * pipe, they may return a zero-length result, they may do nothing at&n;&t; * all and timeout, or they may fail in even more bizarrely creative&n;&t; * ways.  In these cases the best approach is to use the default&n;&t; * value: only one LUN.&n;&t; */
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* An answer or a STALL are the only valid responses.  If we get&n;&t; * something else, return an indication of error */
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|usb_stor_Bulk_transport
