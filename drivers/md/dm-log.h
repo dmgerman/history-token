@@ -123,7 +123,7 @@ id|log
 suffix:semicolon
 multiline_comment|/*&n;&t; * Retrieves the smallest size of region that the log can&n;&t; * deal with.&n;&t; */
 DECL|member|get_region_size
-id|sector_t
+r_uint32
 (paren
 op_star
 id|get_region_size
