@@ -27,7 +27,6 @@ macro_line|#include &quot;lmc_var.h&quot;
 macro_line|#include &quot;lmc_debug.h&quot;
 macro_line|#include &quot;lmc_ioctl.h&quot;
 macro_line|#include &quot;lmc_proto.h&quot;
-singleline_comment|//#include &quot;lmc_proto_raw.h&quot;
 multiline_comment|/*&n; * The compile-time variable SPPPSTUP causes the module to be&n; * compiled without referencing any of the sync ppp routines.&n; */
 macro_line|#ifdef SPPPSTUB
 DECL|macro|SPPP_detach
