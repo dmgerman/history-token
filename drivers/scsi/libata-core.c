@@ -3596,7 +3596,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ata%u: dev %u ATA, max %s, %Lu sectors%s&bslash;n&quot;
+l_string|&quot;ata%u: dev %u ATA, max %s, %Lu sectors: %s&bslash;n&quot;
 comma
 id|ap-&gt;id
 comma
@@ -3620,7 +3620,7 @@ op_amp
 id|ATA_DFLAG_LBA48
 ques
 c_cond
-l_string|&quot; (lba48)&quot;
+l_string|&quot; lba48&quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -7948,6 +7948,10 @@ op_assign
 id|qc-&gt;cursg
 op_assign
 id|qc-&gt;cursg_ofs
+op_assign
+l_int|0
+suffix:semicolon
+id|qc-&gt;nsect
 op_assign
 l_int|0
 suffix:semicolon
