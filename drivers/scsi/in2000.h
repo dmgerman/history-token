@@ -658,6 +658,7 @@ DECL|macro|CLISPIN_LOCK
 macro_line|# define CLISPIN_LOCK(host,flags)   spin_lock_irqsave(host-&gt;host_lock, flags)
 DECL|macro|CLISPIN_UNLOCK
 macro_line|# define CLISPIN_UNLOCK(host,flags) spin_unlock_irqrestore(host-&gt;host_lock, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;   flags)
+r_static
 r_int
 id|in2000_detect
 c_func
@@ -667,6 +668,7 @@ op_star
 )paren
 id|in2000__INIT
 suffix:semicolon
+r_static
 r_int
 id|in2000_queuecommand
 c_func
@@ -685,6 +687,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|in2000_abort
 c_func
@@ -693,6 +696,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|in2000_setup
 c_func
@@ -705,6 +709,7 @@ op_star
 )paren
 id|in2000__INIT
 suffix:semicolon
+r_static
 r_int
 id|in2000_proc_info
 c_func
@@ -725,6 +730,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|in2000_biosparam
 c_func
@@ -741,15 +747,31 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|in2000_reset
+id|in2000_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
+)paren
+suffix:semicolon
+r_static
 r_int
+id|in2000_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
+id|in2000_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
 )paren
 suffix:semicolon
 DECL|macro|IN2000_CAN_Q
@@ -761,6 +783,6 @@ mdefine_line|#define IN2000_CPL      2
 DECL|macro|IN2000_HOST_ID
 mdefine_line|#define IN2000_HOST_ID  7
 DECL|macro|IN2000
-mdefine_line|#define IN2000 {  proc_name:       &quot;in2000&quot;,&t;&t;/* name of /proc/scsi directory entry */ &bslash;&n;                  proc_info:       in2000_proc_info,    /* pointer to proc info function */ &bslash;&n;                  name:            &quot;Always IN2000&quot;,     /* device name */ &bslash;&n;                  detect:          in2000_detect,       /* returns number of in2000&squot;s found */ &bslash;&n;                  queuecommand:    in2000_queuecommand, /* queue scsi command, don&squot;t wait */ &bslash;&n;                  abort:           in2000_abort,        /* abort current command */ &bslash;&n;                  reset:           in2000_reset,        /* reset scsi bus */ &bslash;&n;                  bios_param:      in2000_biosparam,    /* figures out BIOS parameters for lilo, etc */ &bslash;&n;                  can_queue:       IN2000_CAN_Q,        /* max commands we can queue up */ &bslash;&n;                  this_id:         IN2000_HOST_ID,      /* host-adapter scsi id */ &bslash;&n;                  sg_tablesize:    IN2000_SG,           /* scatter-gather table size */ &bslash;&n;                  cmd_per_lun:     IN2000_CPL,          /* commands per lun */ &bslash;&n;                  use_clustering:  DISABLE_CLUSTERING,  /* ENABLE_CLUSTERING may speed things up */ &bslash;&n;                }
+mdefine_line|#define IN2000 {  proc_name:       &t;&t;&quot;in2000&quot;,&t;     /* name of /proc/scsi directory entry */ &bslash;&n;                  proc_info:       &t;&t;in2000_proc_info,    /* pointer to proc info function */ &bslash;&n;                  name:            &t;&t;&quot;Always IN2000&quot;,     /* device name */ &bslash;&n;                  detect:          &t;&t;in2000_detect,       /* returns number of in2000&squot;s found */ &bslash;&n;                  queuecommand:    &t;&t;in2000_queuecommand, /* queue scsi command, don&squot;t wait */ &bslash;&n;                  eh_abort_handler:&t;&t;in2000_abort,        /* abort current command */ &bslash;&n;                  eh_bus_reset_handler:&t;&t;in2000_bus_reset,    /* reset scsi bus */ &bslash;&n;                  eh_device_reset_handler:&t;in2000_device_reset, /* reset scsi device */ &bslash;&n;                  eh_host_reset_handler:&t;in2000_host_reset,   /* reset scsi hba */ &bslash;&n;                  bios_param:      &t;&t;in2000_biosparam,    /* figures out BIOS parameters for lilo, etc */ &bslash;&n;                  can_queue:       &t;&t;IN2000_CAN_Q,        /* max commands we can queue up */ &bslash;&n;                  this_id:         &t;&t;IN2000_HOST_ID,      /* host-adapter scsi id */ &bslash;&n;                  sg_tablesize:    &t;&t;IN2000_SG,           /* scatter-gather table size */ &bslash;&n;                  cmd_per_lun:     &t;&t;IN2000_CPL,          /* commands per lun */ &bslash;&n;                  use_clustering:  &t;&t;DISABLE_CLUSTERING,  /* ENABLE_CLUSTERING may speed things up */ &bslash;&n;                }
 macro_line|#endif /* IN2000_H */
 eof
