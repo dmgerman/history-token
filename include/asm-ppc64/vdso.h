@@ -13,7 +13,7 @@ mdefine_line|#define VDSO32_MBASE&t;0x100000
 DECL|macro|VDSO64_MBASE
 mdefine_line|#define VDSO64_MBASE&t;0x100000
 DECL|macro|VDSO_VERSION_STRING
-mdefine_line|#define VDSO_VERSION_STRING&t;LINUX_2.6.11
+mdefine_line|#define VDSO_VERSION_STRING&t;LINUX_2.6.12
 multiline_comment|/* Define if 64 bits VDSO has procedure descriptors */
 DECL|macro|VDS64_HAS_DESCRIPTORS
 macro_line|#undef VDS64_HAS_DESCRIPTORS
