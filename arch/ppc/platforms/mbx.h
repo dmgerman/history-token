@@ -150,10 +150,30 @@ DECL|macro|COMM_L_INT
 mdefine_line|#define COMM_L_INT&t;SIU_IRQ6&t;/* MBX Comm expansion connector pin */
 DECL|macro|STOP_ABRT_INT
 mdefine_line|#define STOP_ABRT_INT&t;SIU_IRQ7&t;/* Stop/Abort header pin */
-macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* CPM Ethernet through SCCx.&n; *&n; * Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.  The TCLK and RCLK seem unique&n; * to the MBX860 board.  Any two of the four available clocks could be&n; * used, and the MPC860 cookbook manual has an example using different&n; * clock pins.&n; */
+DECL|macro|PA_ENET_RXD
+mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0001)
+DECL|macro|PA_ENET_TXD
+mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0002)
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0200)
+DECL|macro|PA_ENET_RCLK
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0800)
+DECL|macro|PC_ENET_TENA
+mdefine_line|#define PC_ENET_TENA&t;((ushort)0x0001)
+DECL|macro|PC_ENET_CLSN
+mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0010)
+DECL|macro|PC_ENET_RENA
+mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0020)
+multiline_comment|/* Control bits in the SICR to route TCLK (CLK2) and RCLK (CLK4) to&n; * SCC1.  Also, make sure GR1 (bit 24) and SC1 (bit 25) are zero.&n; */
+DECL|macro|SICR_ENET_MASK
+mdefine_line|#define SICR_ENET_MASK&t;((uint)0x000000ff)
+DECL|macro|SICR_ENET_CLKRT
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x0000003d)
 multiline_comment|/* The MBX uses the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;16
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* __MACH_MBX_DEFS */
 macro_line|#endif /* __KERNEL__ */
 eof

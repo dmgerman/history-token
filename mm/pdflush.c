@@ -7,6 +7,12 @@ macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;&t;
+singleline_comment|// Needed by writeback.h
+macro_line|#include &lt;linux/fs.h&gt;&t;&t;
+singleline_comment|// Needed by writeback.h
+macro_line|#include &lt;linux/writeback.h&gt;&t;
+singleline_comment|// Prototypes pdflush_operation()
 multiline_comment|/*&n; * Minimum and maximum number of pdflush instances&n; */
 DECL|macro|MIN_PDFLUSH_THREADS
 mdefine_line|#define MIN_PDFLUSH_THREADS&t;2
@@ -36,9 +42,8 @@ id|pdflush_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * The count of currently-running pdflush threads.  Protected&n; * by pdflush_lock.&n; */
+multiline_comment|/*&n; * The count of currently-running pdflush threads.  Protected&n; * by pdflush_lock.&n; *&n; * Readable by sysctl, but not writable.  Published to userspace at&n; * /proc/sys/vm/nr_pdflush_threads.&n; */
 DECL|variable|nr_pdflush_threads
-r_static
 r_int
 id|nr_pdflush_threads
 op_assign

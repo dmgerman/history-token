@@ -721,12 +721,7 @@ suffix:semicolon
 id|openpic_init
 c_func
 (paren
-l_int|1
-comma
 id|NUM_8259_INTERRUPTS
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Map i8259 interrupts */

@@ -9587,19 +9587,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Add anon_list2 back to anon_list */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|TxAnchor.anon_list2
-)paren
-)paren
-(brace
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -9609,14 +9597,6 @@ op_amp
 id|TxAnchor.anon_list
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|TxAnchor.anon_list2
-)paren
-suffix:semicolon
-)brace
 id|add_wait_queue
 c_func
 (paren

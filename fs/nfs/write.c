@@ -4468,19 +4468,13 @@ comma
 id|len
 suffix:semicolon
 multiline_comment|/* Set up the RPC argument and reply structs&n;&t; * NB: take care not to mess about with data-&gt;commit et al. */
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 id|head
 comma
 op_amp
 id|data-&gt;pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-id|head
 )paren
 suffix:semicolon
 id|first

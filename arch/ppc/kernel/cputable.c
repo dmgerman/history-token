@@ -681,8 +681,6 @@ id|CPU_FTR_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
-id|CPU_FTR_TAU
-op_or
 id|CPU_FTR_ALTIVEC_COMP
 op_or
 id|CPU_FTR_L3CR
@@ -718,8 +716,6 @@ id|CPU_FTR_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
-id|CPU_FTR_TAU
-op_or
 id|CPU_FTR_ALTIVEC_COMP
 op_or
 id|CPU_FTR_L3CR
@@ -754,8 +750,6 @@ op_or
 id|CPU_FTR_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
-op_or
-id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_ALTIVEC_COMP
 op_or

@@ -1754,7 +1754,7 @@ mdefine_line|#define&t;MOT_PROC2_BIT&t;&t;0x800
 DECL|variable|__initdata
 r_static
 id|u_char
-id|mvme2600_openpic_initsenses
+id|prep_openpic_initsenses
 (braket
 )braket
 id|__initdata
@@ -1763,17 +1763,17 @@ op_assign
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
-id|IRQ_POLARITY_NEGATIVE
+id|IRQ_POLARITY_POSITIVE
 )paren
 comma
 multiline_comment|/* MVME2600_INT_SIO */
 (paren
 id|IRQ_SENSE_EDGE
 op_or
-id|IRQ_POLARITY_POSITIVE
+id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* MVME2600_INT_FALCN_ECC_ERR */
+multiline_comment|/* MVME2600_INT_FALCON_ECC_ERR */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
@@ -2054,13 +2054,13 @@ l_int|0x22000
 suffix:semicolon
 id|OpenPIC_InitSenses
 op_assign
-id|mvme2600_openpic_initsenses
+id|prep_openpic_initsenses
 suffix:semicolon
 id|OpenPIC_NumInitSenses
 op_assign
 r_sizeof
 (paren
-id|mvme2600_openpic_initsenses
+id|prep_openpic_initsenses
 )paren
 suffix:semicolon
 id|ppc_md.get_irq
@@ -2849,6 +2849,17 @@ suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|openpic_get_irq
+suffix:semicolon
+id|OpenPIC_InitSenses
+op_assign
+id|prep_openpic_initsenses
+suffix:semicolon
+id|OpenPIC_NumInitSenses
+op_assign
+r_sizeof
+(paren
+id|prep_openpic_initsenses
+)paren
 suffix:semicolon
 )brace
 )brace

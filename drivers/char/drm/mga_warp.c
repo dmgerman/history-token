@@ -3,6 +3,8 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;mga.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
 macro_line|#include &quot;mga_ucode.h&quot;
 DECL|macro|MGA_WARP_CODE_ALIGN

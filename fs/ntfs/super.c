@@ -2439,13 +2439,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 op_assign
 id|ll
 suffix:semicolon
@@ -2458,13 +2452,7 @@ comma
 r_int
 r_int
 )paren
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 )paren
 suffix:semicolon
 id|ll
@@ -2480,13 +2468,7 @@ c_cond
 (paren
 id|ll
 op_ge
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 )paren
 (brace
 id|ntfs_error
@@ -2530,13 +2512,7 @@ c_cond
 (paren
 id|ll
 op_ge
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 )paren
 (brace
 id|ntfs_error
@@ -2592,13 +2568,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Determine MFT zone size. This is not strictly the right place to do&n;&t; * this, but I am too lazy to create a function especially for it...&n;&t; */
 id|vol-&gt;mft_zone_end
 op_assign
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 suffix:semicolon
 r_switch
 c_cond
@@ -2779,7 +2749,7 @@ suffix:semicolon
 multiline_comment|/* Read upcase table and setup vol-&gt;upcase and vol-&gt;upcase_len. */
 id|ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -2790,8 +2760,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -2803,7 +2776,12 @@ id|ino
 r_if
 c_cond
 (paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|ino
+)paren
 )paren
 id|iput
 c_func
@@ -3567,13 +3545,7 @@ c_cond
 id|vol-&gt;mftbmp_size
 OL
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VMM
-c_func
-(paren
-id|nr_mft_records
-)paren
+id|vol-&gt;nr_mft_records
 op_plus
 l_int|7
 )paren
@@ -3796,7 +3768,7 @@ singleline_comment|// volume read-write...
 multiline_comment|/* Get mft mirror inode. */
 id|vol-&gt;mftmirr_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -3807,8 +3779,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|vol-&gt;mftmirr_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -3820,7 +3795,8 @@ id|vol-&gt;mftmirr_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|vol-&gt;mftmirr_ino
@@ -3863,7 +3839,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the cluster allocation bitmap inode and verify the size, no&n;&t; * need for any locking at this stage as we are already running&n;&t; * exclusively as we are mount in progress task.&n;&t; */
 id|vol-&gt;lcnbmp_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -3874,8 +3850,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|vol-&gt;lcnbmp_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -3887,7 +3866,8 @@ id|vol-&gt;lcnbmp_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|vol-&gt;lcnbmp_ino
@@ -3907,13 +3887,7 @@ r_if
 c_cond
 (paren
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_lcn_bits
-)paren
+id|vol-&gt;nr_clusters
 op_plus
 l_int|7
 )paren
@@ -3946,7 +3920,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the volume inode and setup our cache of the volume flags and&n;&t; * version.&n;&t; */
 id|vol-&gt;vol_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -3957,8 +3931,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|vol-&gt;vol_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -3970,7 +3947,8 @@ id|vol-&gt;vol_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|vol-&gt;vol_ino
@@ -4216,7 +4194,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the inode for the logfile and empty it if this is a read-write&n;&t; * mount.&n;&t; */
 id|tmp_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -4227,8 +4205,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|tmp_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -4240,7 +4221,8 @@ id|tmp_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|tmp_ino
@@ -4278,7 +4260,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the inode for the attribute definitions file and parse the&n;&t; * attribute definitions.&n;&t; */
 id|tmp_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -4289,8 +4271,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|tmp_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -4302,7 +4287,8 @@ id|tmp_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|tmp_ino
@@ -4336,7 +4322,7 @@ suffix:semicolon
 multiline_comment|/* Get the root directory inode. */
 id|vol-&gt;root_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -4347,8 +4333,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|vol-&gt;root_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -4360,7 +4349,8 @@ id|vol-&gt;root_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|vol-&gt;root_ino
@@ -4399,7 +4389,7 @@ multiline_comment|/* NTFS 3.0+ specific initialization. */
 multiline_comment|/* Get the security descriptors inode. */
 id|vol-&gt;secure_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -4410,8 +4400,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|vol-&gt;secure_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -4423,7 +4416,8 @@ id|vol-&gt;secure_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|vol-&gt;secure_ino
@@ -4451,7 +4445,7 @@ singleline_comment|// FIXME: Initialize security.
 multiline_comment|/* Get the extended system files&squot; directory inode. */
 id|tmp_ino
 op_assign
-id|iget
+id|ntfs_iget
 c_func
 (paren
 id|sb
@@ -4462,8 +4456,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|tmp_ino
+)paren
 op_logical_or
 id|is_bad_inode
 c_func
@@ -4475,7 +4472,8 @@ id|tmp_ino
 r_if
 c_cond
 (paren
-id|is_bad_inode
+op_logical_neg
+id|IS_ERR
 c_func
 (paren
 id|tmp_ino
@@ -4502,8 +4500,8 @@ suffix:semicolon
 singleline_comment|// FIXME: Do something. E.g. want to delete the $UsnJrnl if exists.
 singleline_comment|// Note we might be doing this at the wrong level; we might want to
 singleline_comment|// d_alloc_root() and then do a &quot;normal&quot; open(2) of $Extend&bslash;$UsnJrnl
-singleline_comment|// rather than using iget here, as we don&squot;t know the inode number for
-singleline_comment|// the files in $Extend directory.
+singleline_comment|// rather than using ntfs_iget here, as we don&squot;t know the inode number
+singleline_comment|// for the files in $Extend directory.
 id|iput
 c_func
 (paren
@@ -4559,6 +4557,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_put_super - called by the vfs to unmount a volume&n; * @vfs_sb:&t;vfs superblock of volume to unmount&n; *&n; * ntfs_put_super() is called by the VFS (from fs/super.c::do_umount()) when&n; * the volume is being unmounted (umount system call has been invoked) and it&n; * releases all inodes and memory belonging to the NTFS specific part of the&n; * super block.&n; */
 DECL|function|ntfs_put_super
+r_static
 r_void
 id|ntfs_put_super
 c_func
@@ -4855,6 +4854,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_nr_free_clusters - return the number of free clusters on a volume&n; * @vol:&t;ntfs volume for which to obtain free cluster count&n; *&n; * Calculate the number of free clusters on the mounted NTFS volume @vol.&n; *&n; * Errors are ignored and we just return the number of free clusters we have&n; * found. This means we return an underestimate on error.&n; */
 DECL|function|get_nr_free_clusters
+r_static
 id|s64
 id|get_nr_free_clusters
 c_func
@@ -4925,13 +4925,7 @@ multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, t
 id|max_index
 op_assign
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 op_plus
 l_int|7
 )paren
@@ -5132,13 +5126,7 @@ op_assign
 (paren
 (paren
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 op_plus
 l_int|7
 )paren
@@ -5202,11 +5190,12 @@ r_return
 id|nr_free
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; */
-DECL|function|get_nr_free_mft_records
+multiline_comment|/**&n; * __get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; *&n; * NOTE: Caller must hold mftbmp_lock rw_semaphore for reading or writing.&n; */
+DECL|function|__get_nr_free_mft_records
+r_static
 r_int
 r_int
-id|get_nr_free_mft_records
+id|__get_nr_free_mft_records
 c_func
 (paren
 id|ntfs_volume
@@ -5255,13 +5244,6 @@ l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Serialize accesses to the inode bitmap. */
-id|down_read
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
 id|mapping
 op_assign
 op_amp
@@ -5279,13 +5261,7 @@ multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, t
 id|max_index
 op_assign
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VMM
-c_func
-(paren
-id|nr_mft_records
-)paren
+id|vol-&gt;nr_mft_records
 op_plus
 l_int|7
 )paren
@@ -5480,13 +5456,7 @@ op_assign
 (paren
 (paren
 (paren
-id|vol
-op_member_access_from_pointer
-id|_VMM
-c_func
-(paren
-id|nr_mft_records
-)paren
+id|vol-&gt;nr_mft_records
 op_plus
 l_int|7
 )paren
@@ -5517,13 +5487,7 @@ c_cond
 (paren
 id|i
 op_assign
-id|vol
-op_member_access_from_pointer
-id|_VMM
-c_func
-(paren
-id|nr_mft_records
-)paren
+id|vol-&gt;nr_mft_records
 op_amp
 l_int|31
 )paren
@@ -5557,13 +5521,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|up_read
-c_func
-(paren
-op_amp
-id|vol-&gt;mftbmp_lock
-)paren
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -5576,6 +5533,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_statfs - return information about mounted NTFS volume&n; * @sb:&t;&t;super block of mounted volume&n; * @sfs:&t;statfs structure in which to return the information&n; *&n; * Return information about the mounted NTFS volume @sb in the statfs structure&n; * pointed to by @sfs (this is initialized with zeros before ntfs_statfs is&n; * called). We interpret the values to be correct of the moment in time at&n; * which we are called. Most values are variable otherwise and this isn&squot;t just&n; * the free values but the totals as well. For example we can increase the&n; * total number of file nodes if we run out and we can keep doing this until&n; * there is no more space on the volume left at all.&n; *&n; * Called from vfs_statfs which is used to handle the statfs, fstatfs, and&n; * ustat system calls.&n; *&n; * Return 0 on success or -errno on error.&n; */
 DECL|function|ntfs_statfs
+r_static
 r_int
 id|ntfs_statfs
 c_func
@@ -5623,13 +5581,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Total data blocks in file system in units of f_bsize and since&n;&t; * inodes are also stored in data blocs ($MFT is a file) this is just&n;&t; * the total clusters.&n;&t; */
 id|sfs-&gt;f_blocks
 op_assign
-id|vol
-op_member_access_from_pointer
-id|_VCL
-c_func
-(paren
-id|nr_clusters
-)paren
+id|vol-&gt;nr_clusters
 op_lshift
 id|vol-&gt;cluster_size_bits
 op_rshift
@@ -5666,6 +5618,13 @@ id|sfs-&gt;f_bfree
 op_assign
 id|size
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Total file nodes in file system (at this moment in time). */
 id|sfs-&gt;f_files
 op_assign
@@ -5676,10 +5635,17 @@ suffix:semicolon
 multiline_comment|/* Free file nodes in fs (based on current total count). */
 id|sfs-&gt;f_ffree
 op_assign
-id|get_nr_free_mft_records
+id|__get_nr_free_mft_records
 c_func
 (paren
 id|vol
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * File system id. This is extremely *nix flavour dependent and even&n;&t; * within Linux itself all fs do their own thing. I interpret this to&n;&t; * mean a unique id associated with the mounted fs and not the id&n;&t; * associated with the file system driver, the latter is already given&n;&t; * by the file system type in sfs-&gt;f_type. Thus we use the 64-bit&n;&t; * volume serial number splitting it into two 32-bit parts. We enter&n;&t; * the least significant 32-bits in f_fsid[0] and the most significant&n;&t; * 32-bits in f_fsid[1].&n;&t; */
@@ -5760,11 +5726,6 @@ suffix:colon
 id|ntfs_destroy_big_inode
 comma
 multiline_comment|/* VFS: Deallocate an inode. */
-id|read_inode
-suffix:colon
-id|ntfs_read_inode
-comma
-multiline_comment|/* VFS: Load inode from disk,&n;&t;&t;&t;&t;&t;&t;   called from iget(). */
 id|dirty_inode
 suffix:colon
 id|ntfs_dirty_inode
@@ -6302,7 +6263,7 @@ id|sb-&gt;s_maxbytes
 op_assign
 id|MAX_LFS_FILESIZE
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now load the metadata required for the page cache and our address&n;&t; * space operations to function. We do this by setting up a specialised&n;&t; * read_inode method and then just calling iget() to obtain the inode&n;&t; * for $MFT which is sufficient to allow our normal inode operations&n;&t; * and associated address space operations to function.&n;&t; */
+multiline_comment|/*&n;&t; * Now load the metadata required for the page cache and our address&n;&t; * space operations to function. We do this by setting up a specialised&n;&t; * read_inode method and then just calling the normal iget() to obtain&n;&t; * the inode for $MFT which is sufficient to allow our normal inode&n;&t; * operations and associated address space operations to function.&n;&t; */
 multiline_comment|/*&n;&t; * Poison vol-&gt;mft_ino so we know whether iget() called into our&n;&t; * ntfs_read_inode_mount() method.&n;&t; */
 DECL|macro|OGIN
 mdefine_line|#define OGIN&t;((struct inode*)le32_to_cpu(0x4e49474f))&t;/* OGIN */
@@ -6509,7 +6470,7 @@ id|vol-&gt;root_ino
 )paren
 )paren
 (brace
-multiline_comment|/* We increment i_count simulating an iget(). */
+multiline_comment|/* We increment i_count simulating an ntfs_iget(). */
 id|atomic_inc
 c_func
 (paren
@@ -6792,7 +6753,7 @@ suffix:semicolon
 )brace
 DECL|macro|OGIN
 macro_line|#undef OGIN
-multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_inode() called for each inode we&n;&t; * have ever called iget()/iput() on, otherwise we A) leak resources&n;&t; * and B) a subsequent mount fails automatically due to iget() never&n;&t; * calling down into our ntfs_read_inode{_mount}() methods again...&n;&t; */
+multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called ntfs_iget()/iput() on, otherwise we A)&n;&t; * leak resources and B) a subsequent mount fails automatically due to&n;&t; * ntfs_iget() never calling down into our ntfs_read_locked_inode()&n;&t; * method again...&n;&t; */
 r_if
 c_cond
 (paren

@@ -4003,7 +4003,7 @@ id|SCSI_SETUP_LATENCY
 suffix:semicolon
 id|delay
 op_add_assign
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 op_star
 id|SCSI_DATARATE
 suffix:semicolon

@@ -22,8 +22,13 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Cesar Miquel &lt;miquel@df.uba.ar&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Rio 500 driver&quot;
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
 DECL|macro|RIO_MINOR
-mdefine_line|#define RIO_MINOR   64
+mdefine_line|#define RIO_MINOR&t;0
+macro_line|#else
+DECL|macro|RIO_MINOR
+mdefine_line|#define RIO_MINOR&t;64
+macro_line|#endif
 multiline_comment|/* stall/wait timeout for rio */
 DECL|macro|NAK_TIMEOUT
 mdefine_line|#define NAK_TIMEOUT (HZ)
@@ -64,6 +69,11 @@ r_int
 id|present
 suffix:semicolon
 multiline_comment|/* Device is present on the bus */
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+multiline_comment|/* minor number assigned to us */
 DECL|member|obuf
 DECL|member|ibuf
 r_char
@@ -1771,6 +1781,9 @@ op_assign
 op_amp
 id|rio_instance
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 id|info
 c_func
 (paren
@@ -1779,6 +1792,38 @@ comma
 id|dev-&gt;devnum
 )paren
 suffix:semicolon
+id|retval
+op_assign
+id|usb_register_dev
+c_func
+(paren
+op_amp
+id|usb_rio_fops
+comma
+id|RIO_MINOR
+comma
+l_int|1
+comma
+op_amp
+id|rio-&gt;minor
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|rio-&gt;present
 op_assign
 l_int|1
@@ -1962,6 +2007,14 @@ c_func
 id|rio-&gt;devfs
 )paren
 suffix:semicolon
+id|usb_deregister_dev
+c_func
+(paren
+l_int|1
+comma
+id|rio-&gt;minor
+)paren
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -2080,19 +2133,6 @@ comma
 id|disconnect
 suffix:colon
 id|disconnect_rio
-comma
-id|fops
-suffix:colon
-op_amp
-id|usb_rio_fops
-comma
-id|minor
-suffix:colon
-id|RIO_MINOR
-comma
-id|num_minors
-suffix:colon
-l_int|1
 comma
 id|id_table
 suffix:colon

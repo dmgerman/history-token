@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1357,13 +1358,29 @@ id|task-&gt;maj_flt
 comma
 id|task-&gt;cmaj_flt
 comma
-id|task-&gt;times.tms_utime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;utime
+)paren
 comma
-id|task-&gt;times.tms_stime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;stime
+)paren
 comma
-id|task-&gt;times.tms_cutime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;cutime
+)paren
 comma
-id|task-&gt;times.tms_cstime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;cstime
+)paren
 comma
 id|priority
 comma
@@ -1372,9 +1389,17 @@ comma
 l_int|0UL
 multiline_comment|/* removed */
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|task-&gt;it_real_value
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|task-&gt;start_time
+)paren
 comma
 id|vsize
 comma
@@ -2261,12 +2286,12 @@ multiline_comment|/*&n; * The way we support synthetic files &gt; 4K&n; * - with
 multiline_comment|/*&n; * For the /proc/&lt;pid&gt;/maps file, we use fixed length records, each containing&n; * a single line.&n; *&n; * f_pos = (number of the vma in the task-&gt;mm-&gt;mmap list) * PAGE_SIZE&n; *         + (index into the line)&n; */
 multiline_comment|/* for systems with sizeof(void*) == 4: */
 DECL|macro|MAPS_LINE_FORMAT4
-mdefine_line|#define MAPS_LINE_FORMAT4&t;  &quot;%08lx-%08lx %s %08lx %s %lu&quot;
+mdefine_line|#define MAPS_LINE_FORMAT4&t;  &quot;%08lx-%08lx %s %08lx %02x:%02x %lu&quot;
 DECL|macro|MAPS_LINE_MAX4
 mdefine_line|#define MAPS_LINE_MAX4&t;49 /* sum of 8  1  8  1 4 1 8 1 5 1 10 1 */
 multiline_comment|/* for systems with sizeof(void*) == 8: */
 DECL|macro|MAPS_LINE_FORMAT8
-mdefine_line|#define MAPS_LINE_FORMAT8&t;  &quot;%016lx-%016lx %s %016lx %s %lu&quot;
+mdefine_line|#define MAPS_LINE_FORMAT8&t;  &quot;%016lx-%016lx %s %016lx %02x:%02x %lu&quot;
 DECL|macro|MAPS_LINE_MAX8
 mdefine_line|#define MAPS_LINE_MAX8&t;73 /* sum of 16  1  16  1 4 1 16 1 5 1 10 1 */
 DECL|macro|MAPS_LINE_FORMAT
@@ -2302,7 +2327,7 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|dev
 suffix:semicolon
 r_int
@@ -2381,7 +2406,7 @@ l_int|0
 suffix:semicolon
 id|dev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 id|ino
 op_assign
@@ -2468,7 +2493,13 @@ id|map-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 comma
-id|kdevname
+id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MINOR
 c_func
 (paren
 id|dev
@@ -2992,9 +3023,17 @@ id|buffer
 comma
 l_string|&quot;cpu  %lu %lu&bslash;n&quot;
 comma
-id|task-&gt;times.tms_utime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;utime
+)paren
 comma
-id|task-&gt;times.tms_stime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;stime
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -3034,15 +3073,23 @@ l_string|&quot;cpu%d %lu %lu&bslash;n&quot;
 comma
 id|i
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|task-&gt;per_cpu_utime
 (braket
 id|i
 )braket
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|task-&gt;per_cpu_stime
 (braket
 id|i
 )braket
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -3,12 +3,14 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;radeon.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#include &quot;radeon_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|RADEON_FIFO_DEBUG
 mdefine_line|#define RADEON_FIFO_DEBUG&t;0
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__powerpc__)
 DECL|macro|PCIGART_ENABLED
 macro_line|# define PCIGART_ENABLED
 macro_line|#else
@@ -2789,6 +2791,18 @@ id|tmp_ofs
 suffix:semicolon
 )brace
 multiline_comment|/* Set ring buffer size */
+macro_line|#ifdef __BIG_ENDIAN
+id|RADEON_WRITE
+c_func
+(paren
+id|RADEON_CP_RB_CNTL
+comma
+id|dev_priv-&gt;ring.size_l2qw
+op_or
+id|RADEON_BUF_SWAP_32BIT
+)paren
+suffix:semicolon
+macro_line|#else
 id|RADEON_WRITE
 c_func
 (paren
@@ -2797,6 +2811,7 @@ comma
 id|dev_priv-&gt;ring.size_l2qw
 )paren
 suffix:semicolon
+macro_line|#endif
 id|radeon_do_wait_for_idle
 c_func
 (paren

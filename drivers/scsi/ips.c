@@ -2746,6 +2746,7 @@ r_return
 l_int|1
 )paren
 suffix:semicolon
+)brace
 id|__setup
 c_func
 (paren
@@ -2942,8 +2943,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_detect                                                 */

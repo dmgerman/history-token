@@ -141,6 +141,9 @@ comma
 DECL|enumerator|NET_RX_SOFTIRQ
 id|NET_RX_SOFTIRQ
 comma
+DECL|enumerator|SCSI_SOFTIRQ
+id|SCSI_SOFTIRQ
+comma
 DECL|enumerator|TASKLET_SOFTIRQ
 id|TASKLET_SOFTIRQ
 )brace
