@@ -18,8 +18,7 @@ mdefine_line|#define assert(expr) &bslash;&n;        if(!(expr)) {&t;&t;&t;&t;&t
 macro_line|#else
 DECL|macro|assert
 mdefine_line|#define assert(expr) do {} while (0)
-macro_line|#endif&t;
-singleline_comment|// end of #ifdef RTL8169_DEBUG
+macro_line|#endif
 multiline_comment|/* media options */
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8
@@ -80,25 +79,25 @@ multiline_comment|/* max supported gigabit ethernet frame size -- must be at lea
 DECL|macro|MAX_ETH_FRAME_SIZE
 mdefine_line|#define MAX_ETH_FRAME_SIZE&t;1536
 DECL|macro|TX_FIFO_THRESH
-mdefine_line|#define TX_FIFO_THRESH 256&t;&t;/* In bytes */
+mdefine_line|#define TX_FIFO_THRESH 256&t;/* In bytes */
 DECL|macro|RX_FIFO_THRESH
-mdefine_line|#define RX_FIFO_THRESH&t;7&t;&t;/* 7 means NO threshold, Rx buffer level before first PCI xfer.  */
+mdefine_line|#define RX_FIFO_THRESH&t;7&t;/* 7 means NO threshold, Rx buffer level before first PCI xfer.  */
 DECL|macro|RX_DMA_BURST
-mdefine_line|#define RX_DMA_BURST&t;6&t;&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
+mdefine_line|#define RX_DMA_BURST&t;6&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
 DECL|macro|TX_DMA_BURST
-mdefine_line|#define TX_DMA_BURST&t;6&t;&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
+mdefine_line|#define TX_DMA_BURST&t;6&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
 DECL|macro|EarlyTxThld
-mdefine_line|#define EarlyTxThld &t;0x3F&t;&t;/* 0x3F means NO early transmit */
+mdefine_line|#define EarlyTxThld &t;0x3F&t;/* 0x3F means NO early transmit */
 DECL|macro|RxPacketMaxSize
-mdefine_line|#define RxPacketMaxSize&t;0x0800&t;&t;/* Maximum size supported is 16K-1 */
+mdefine_line|#define RxPacketMaxSize&t;0x0800&t;/* Maximum size supported is 16K-1 */
 DECL|macro|InterFrameGap
-mdefine_line|#define InterFrameGap&t;0x03&t;&t;/* 3 means InterFrameGap = the shortest one */
+mdefine_line|#define InterFrameGap&t;0x03&t;/* 3 means InterFrameGap = the shortest one */
 DECL|macro|NUM_TX_DESC
-mdefine_line|#define NUM_TX_DESC&t;64&t;&t;/* Number of Tx descriptor registers*/
+mdefine_line|#define NUM_TX_DESC&t;64&t;/* Number of Tx descriptor registers */
 DECL|macro|NUM_RX_DESC
-mdefine_line|#define NUM_RX_DESC&t;64&t;&t;/* Number of Rx descriptor registers*/
+mdefine_line|#define NUM_RX_DESC&t;64&t;/* Number of Rx descriptor registers */
 DECL|macro|RX_BUF_SIZE
-mdefine_line|#define RX_BUF_SIZE&t;1536&t;&t;/* Rx Buffer size */
+mdefine_line|#define RX_BUF_SIZE&t;1536&t;/* Rx Buffer size */
 DECL|macro|RTL_MIN_IO_SIZE
 mdefine_line|#define RTL_MIN_IO_SIZE 0x80
 DECL|macro|TX_TIMEOUT
@@ -173,6 +172,7 @@ comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
+c_func
 (paren
 id|pci
 comma
@@ -361,7 +361,7 @@ DECL|enum|RTL8169_register_content
 r_enum
 id|RTL8169_register_content
 (brace
-multiline_comment|/*InterruptStatusBits*/
+multiline_comment|/*InterruptStatusBits */
 DECL|enumerator|SYSErr
 id|SYSErr
 op_assign
@@ -417,7 +417,7 @@ id|RxOK
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*RxStatusDesc*/
+multiline_comment|/*RxStatusDesc */
 DECL|enumerator|RxRES
 id|RxRES
 op_assign
@@ -438,7 +438,7 @@ id|RxRWT
 op_assign
 l_int|0x00400000
 comma
-multiline_comment|/*ChipCmdBits*/
+multiline_comment|/*ChipCmdBits */
 DECL|enumerator|CmdReset
 id|CmdReset
 op_assign
@@ -459,7 +459,7 @@ id|RxBufEmpty
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*Cfg9346Bits*/
+multiline_comment|/*Cfg9346Bits */
 DECL|enumerator|Cfg9346_Lock
 id|Cfg9346_Lock
 op_assign
@@ -470,7 +470,7 @@ id|Cfg9346_Unlock
 op_assign
 l_int|0xC0
 comma
-multiline_comment|/*rx_mode_bits*/
+multiline_comment|/*rx_mode_bits */
 DECL|enumerator|AcceptErr
 id|AcceptErr
 op_assign
@@ -501,7 +501,7 @@ id|AcceptAllPhys
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*RxConfigBits*/
+multiline_comment|/*RxConfigBits */
 DECL|enumerator|RxCfgFIFOShift
 id|RxCfgFIFOShift
 op_assign
@@ -512,7 +512,7 @@ id|RxCfgDMAShift
 op_assign
 l_int|8
 comma
-multiline_comment|/*TxConfigBits*/
+multiline_comment|/*TxConfigBits */
 DECL|enumerator|TxInterFrameGapShift
 id|TxInterFrameGapShift
 op_assign
@@ -524,7 +524,7 @@ op_assign
 l_int|8
 comma
 multiline_comment|/* DMA burst value (0-7) is shift this many bits */
-multiline_comment|/*rtl8169_PHYstatus*/
+multiline_comment|/*rtl8169_PHYstatus */
 DECL|enumerator|TBI_Enable
 id|TBI_Enable
 op_assign
@@ -565,7 +565,7 @@ id|FullDup
 op_assign
 l_int|0x01
 comma
-multiline_comment|/*GIGABIT_PHY_registers*/
+multiline_comment|/*GIGABIT_PHY_registers */
 DECL|enumerator|PHY_CTRL_REG
 id|PHY_CTRL_REG
 op_assign
@@ -586,7 +586,7 @@ id|PHY_1000_CTRL_REG
 op_assign
 l_int|9
 comma
-multiline_comment|/*GIGABIT_PHY_REG_BIT*/
+multiline_comment|/*GIGABIT_PHY_REG_BIT */
 DECL|enumerator|PHY_Restart_Auto_Nego
 id|PHY_Restart_Auto_Nego
 op_assign
@@ -786,7 +786,7 @@ r_void
 op_star
 id|mmio_addr
 suffix:semicolon
-multiline_comment|/* memory map physical address*/
+multiline_comment|/* memory map physical address */
 DECL|member|pci_dev
 r_struct
 id|pci_dev
@@ -884,16 +884,19 @@ multiline_comment|/* Index of Transmit data buffer */
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
+c_func
 (paren
 l_string|&quot;Realtek&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
+c_func
 (paren
 l_string|&quot;RealTek RTL-8169 Gigabit Ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
+c_func
 (paren
 id|media
 comma
@@ -909,6 +912,7 @@ suffix:semicolon
 r_static
 r_int
 id|rtl8169_open
+c_func
 (paren
 r_struct
 id|net_device
@@ -919,6 +923,7 @@ suffix:semicolon
 r_static
 r_int
 id|rtl8169_start_xmit
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -934,6 +939,7 @@ suffix:semicolon
 r_static
 r_void
 id|rtl8169_interrupt
+c_func
 (paren
 r_int
 id|irq
@@ -951,6 +957,7 @@ suffix:semicolon
 r_static
 r_void
 id|rtl8169_init_ring
+c_func
 (paren
 r_struct
 id|net_device
@@ -961,6 +968,7 @@ suffix:semicolon
 r_static
 r_void
 id|rtl8169_hw_start
+c_func
 (paren
 r_struct
 id|net_device
@@ -971,6 +979,7 @@ suffix:semicolon
 r_static
 r_int
 id|rtl8169_close
+c_func
 (paren
 r_struct
 id|net_device
@@ -982,6 +991,7 @@ r_static
 r_inline
 id|u32
 id|ether_crc
+c_func
 (paren
 r_int
 id|length
@@ -995,6 +1005,7 @@ suffix:semicolon
 r_static
 r_void
 id|rtl8169_set_rx_mode
+c_func
 (paren
 r_struct
 id|net_device
@@ -1005,6 +1016,7 @@ suffix:semicolon
 r_static
 r_void
 id|rtl8169_tx_timeout
+c_func
 (paren
 r_struct
 id|net_device
@@ -1068,17 +1080,9 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-singleline_comment|//=================================================================
-singleline_comment|//&t;PHYAR
-singleline_comment|//&t;bit&t;&t;Symbol
-singleline_comment|//&t;31&t;&t;Flag
-singleline_comment|//&t;30-21&t;reserved
-singleline_comment|//&t;20-16&t;5-bit GMII/MII register address
-singleline_comment|//&t;15-0&t;16-bit GMII/MII register data
-singleline_comment|//=================================================================
-DECL|function|RTL8169_WRITE_GMII_REG
 r_void
-id|RTL8169_WRITE_GMII_REG
+DECL|function|mdio_write
+id|mdio_write
 c_func
 (paren
 r_void
@@ -1096,6 +1100,7 @@ r_int
 id|i
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|PHYAR
 comma
@@ -1161,14 +1166,11 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// end of if( ! (RTL_R32(PHYAR)&amp;0x80000000) )
 )brace
-singleline_comment|// end of for() loop
 )brace
-singleline_comment|//=================================================================
-DECL|function|RTL8169_READ_GMII_REG
 r_int
-id|RTL8169_READ_GMII_REG
+DECL|function|mdio_read
+id|mdio_read
 c_func
 (paren
 r_void
@@ -1188,6 +1190,7 @@ op_minus
 l_int|1
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|PHYAR
 comma
@@ -1263,20 +1266,17 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// end of if( RTL_R32(PHYAR) &amp; 0x80000000 )
 )brace
-singleline_comment|// end of for() loop
 r_return
 id|value
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_init_board
 r_static
 r_int
 id|__devinit
+DECL|function|rtl8169_init_board
 id|rtl8169_init_board
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -1357,6 +1357,7 @@ singleline_comment|// dev zeroed in init_etherdev
 id|dev
 op_assign
 id|init_etherdev
+c_func
 (paren
 l_int|NULL
 comma
@@ -1376,6 +1377,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|PFX
@@ -1401,6 +1403,7 @@ singleline_comment|// enable device (incl. PCI PM wakeup and hotplug setup)
 id|rc
 op_assign
 id|pci_enable_device
+c_func
 (paren
 id|pdev
 )paren
@@ -1416,6 +1419,7 @@ suffix:semicolon
 id|mmio_start
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -1425,6 +1429,7 @@ suffix:semicolon
 id|mmio_end
 op_assign
 id|pci_resource_end
+c_func
 (paren
 id|pdev
 comma
@@ -1434,6 +1439,7 @@ suffix:semicolon
 id|mmio_flags
 op_assign
 id|pci_resource_flags
+c_func
 (paren
 id|pdev
 comma
@@ -1443,6 +1449,7 @@ suffix:semicolon
 id|mmio_len
 op_assign
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -1462,6 +1469,7 @@ id|IORESOURCE_MEM
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|PFX
@@ -1487,6 +1495,7 @@ id|RTL_MIN_IO_SIZE
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|PFX
@@ -1505,6 +1514,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_request_regions
+c_func
 (paren
 id|pdev
 comma
@@ -1521,6 +1531,7 @@ id|err_out
 suffix:semicolon
 singleline_comment|// enable PCI bus-mastering
 id|pci_set_master
+c_func
 (paren
 id|pdev
 )paren
@@ -1529,6 +1540,7 @@ singleline_comment|// ioremap MMIO region
 id|ioaddr
 op_assign
 id|ioremap
+c_func
 (paren
 id|mmio_start
 comma
@@ -1544,6 +1556,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|PFX
@@ -1561,6 +1574,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Soft reset the chip. 
 id|RTL_W8
+c_func
 (paren
 id|ChipCmd
 comma
@@ -1601,6 +1615,7 @@ r_break
 suffix:semicolon
 r_else
 id|udelay
+c_func
 (paren
 l_int|10
 )paren
@@ -1609,6 +1624,7 @@ singleline_comment|// identify chip attached to board
 id|tmp
 op_assign
 id|RTL_R32
+c_func
 (paren
 id|TxConfig
 )paren
@@ -1641,6 +1657,7 @@ c_loop
 id|i
 op_assign
 id|ARRAY_SIZE
+c_func
 (paren
 id|rtl_chip_info
 )paren
@@ -1677,6 +1694,7 @@ suffix:semicolon
 )brace
 singleline_comment|//if unknown chip, assume array element #0, original RTL-8169 in this case
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
 id|PFX
@@ -1686,6 +1704,7 @@ id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
 id|PFX
@@ -1732,6 +1751,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|iounmap
+c_func
 (paren
 id|ioaddr
 )paren
@@ -1739,6 +1759,7 @@ suffix:semicolon
 id|err_out_free_res
 suffix:colon
 id|pci_release_regions
+c_func
 (paren
 id|pdev
 )paren
@@ -1746,11 +1767,13 @@ suffix:semicolon
 id|err_out
 suffix:colon
 id|unregister_netdev
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|dev
 )paren
@@ -1759,12 +1782,12 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_init_one
 r_static
 r_int
 id|__devinit
+DECL|function|rtl8169_init_one
 id|rtl8169_init_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -1853,6 +1876,7 @@ id|printed_version
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 id|RTL8169_DRIVER_NAME
@@ -1867,6 +1891,7 @@ suffix:semicolon
 id|i
 op_assign
 id|rtl8169_init_board
+c_func
 (paren
 id|pdev
 comma
@@ -1984,7 +2009,7 @@ r_int
 )paren
 id|ioaddr
 suffix:semicolon
-singleline_comment|//&t;dev-&gt;do_ioctl &t;&t;= mii_ioctl;
+singleline_comment|//      dev-&gt;do_ioctl           = mii_ioctl;
 id|tp
 op_assign
 id|dev-&gt;priv
@@ -1999,6 +2024,7 @@ op_assign
 id|ioaddr
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;%s: Identified chip type is &squot;%s&squot;.&bslash;n&quot;
@@ -2014,6 +2040,7 @@ id|name
 )paren
 suffix:semicolon
 id|spin_lock_init
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -2024,6 +2051,7 @@ op_assign
 id|dev
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: %s at 0x%lx, &quot;
@@ -2093,7 +2121,7 @@ id|TBI_Enable
 r_int
 id|val
 op_assign
-id|RTL8169_READ_GMII_REG
+id|mdio_read
 c_func
 (paren
 id|ioaddr
@@ -2219,7 +2247,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|RTL8169_WRITE_GMII_REG
+id|mdio_write
 c_func
 (paren
 id|ioaddr
@@ -2236,7 +2264,7 @@ l_int|0x1F
 )paren
 suffix:semicolon
 singleline_comment|//leave PHY_AUTO_NEGO_REG bit4:0 unchanged
-id|RTL8169_WRITE_GMII_REG
+id|mdio_write
 c_func
 (paren
 id|ioaddr
@@ -2259,7 +2287,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 singleline_comment|// enable 10/100 Full/Half Mode, leave PHY_AUTO_NEGO_REG bit4:0 unchanged
-id|RTL8169_WRITE_GMII_REG
+id|mdio_write
 c_func
 (paren
 id|ioaddr
@@ -2282,7 +2310,7 @@ l_int|0x1F
 )paren
 suffix:semicolon
 singleline_comment|// enable 1000 Full Mode
-id|RTL8169_WRITE_GMII_REG
+id|mdio_write
 c_func
 (paren
 id|ioaddr
@@ -2293,9 +2321,8 @@ id|PHY_Cap_1000_Full
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// end of if( option &gt; 0 )
 singleline_comment|// Enable auto-negotiation and restart auto-nigotiation
-id|RTL8169_WRITE_GMII_REG
+id|mdio_write
 c_func
 (paren
 id|ioaddr
@@ -2333,7 +2360,7 @@ singleline_comment|//check if auto-negotiation complete
 r_if
 c_cond
 (paren
-id|RTL8169_READ_GMII_REG
+id|mdio_read
 c_func
 (paren
 id|ioaddr
@@ -2422,11 +2449,9 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// end of if( RTL8169_READ_GMII_REG(ioaddr, 1) &amp; 0x20 )
 )brace
 singleline_comment|// end for-loop to wait for auto-negotiation process
 )brace
-singleline_comment|// end of TBI is not enabled
 r_else
 (brace
 id|udelay
@@ -2460,17 +2485,16 @@ l_string|&quot;Failed&quot;
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// end of TBI is not enabled
 r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_remove_one
 r_static
 r_void
 id|__devexit
+DECL|function|rtl8169_remove_one
 id|rtl8169_remove_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -2514,22 +2538,26 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|unregister_netdev
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|iounmap
+c_func
 (paren
 id|tp-&gt;mmio_addr
 )paren
 suffix:semicolon
 id|pci_release_regions
+c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
 singleline_comment|// poison memory before freeing 
 id|memset
+c_func
 (paren
 id|dev
 comma
@@ -2549,6 +2577,7 @@ id|rtl8169_private
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|dev
 )paren
@@ -2558,11 +2587,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_open
 r_static
 r_int
+DECL|function|rtl8169_open
 id|rtl8169_open
+c_func
 (paren
 r_struct
 id|net_device
@@ -2591,6 +2620,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|request_irq
+c_func
 (paren
 id|dev-&gt;irq
 comma
@@ -2822,11 +2852,13 @@ suffix:semicolon
 )brace
 singleline_comment|//////////////////////////////////////////////////////////////////////////////
 id|rtl8169_init_ring
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|rtl8169_hw_start
+c_func
 (paren
 id|dev
 )paren
@@ -2835,12 +2867,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//end of rtl8169_open (struct net_device *dev)
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_hw_start
 r_static
 r_void
+DECL|function|rtl8169_hw_start
 id|rtl8169_hw_start
+c_func
 (paren
 r_struct
 id|net_device
@@ -2866,6 +2897,7 @@ id|i
 suffix:semicolon
 multiline_comment|/* Soft reset the chip. */
 id|RTL_W8
+c_func
 (paren
 id|ChipCmd
 comma
@@ -2907,12 +2939,14 @@ r_break
 suffix:semicolon
 r_else
 id|udelay
+c_func
 (paren
 l_int|10
 )paren
 suffix:semicolon
 )brace
 id|RTL_W8
+c_func
 (paren
 id|Cfg9346
 comma
@@ -2920,6 +2954,7 @@ id|Cfg9346_Unlock
 )paren
 suffix:semicolon
 id|RTL_W8
+c_func
 (paren
 id|ChipCmd
 comma
@@ -2929,6 +2964,7 @@ id|CmdRxEnb
 )paren
 suffix:semicolon
 id|RTL_W8
+c_func
 (paren
 id|EarlyTxThres
 comma
@@ -2937,6 +2973,7 @@ id|EarlyTxThld
 suffix:semicolon
 singleline_comment|// For gigabit rtl8169
 id|RTL_W16
+c_func
 (paren
 id|RxMaxSize
 comma
@@ -2964,6 +3001,7 @@ id|RxConfigMask
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|RxConfig
 comma
@@ -2972,6 +3010,7 @@ id|i
 suffix:semicolon
 multiline_comment|/* Set DMA burst size and Interframe Gap Time */
 id|RTL_W32
+c_func
 (paren
 id|TxConfig
 comma
@@ -2993,6 +3032,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|TxDescStartAddr
 comma
@@ -3004,6 +3044,7 @@ id|tp-&gt;TxDescArray
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|RxDescStartAddr
 comma
@@ -3015,6 +3056,7 @@ id|tp-&gt;RxDescArray
 )paren
 suffix:semicolon
 id|RTL_W8
+c_func
 (paren
 id|Cfg9346
 comma
@@ -3022,11 +3064,13 @@ id|Cfg9346_Lock
 )paren
 suffix:semicolon
 id|udelay
+c_func
 (paren
 l_int|10
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|RxMissed
 comma
@@ -3034,12 +3078,14 @@ l_int|0
 )paren
 suffix:semicolon
 id|rtl8169_set_rx_mode
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* no early-rx interrupts */
 id|RTL_W16
+c_func
 (paren
 id|MultiIntr
 comma
@@ -3054,6 +3100,7 @@ l_int|0xF000
 suffix:semicolon
 multiline_comment|/* Enable all known interrupts by setting the interrupt mask. */
 id|RTL_W16
+c_func
 (paren
 id|IntrMask
 comma
@@ -3061,17 +3108,17 @@ id|rtl8169_intr_mask
 )paren
 suffix:semicolon
 id|netif_start_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//end of rtl8169_hw_start (struct net_device *dev)
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_init_ring
 r_static
 r_void
+DECL|function|rtl8169_init_ring
 id|rtl8169_init_ring
+c_func
 (paren
 r_struct
 id|net_device
@@ -3182,7 +3229,6 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 id|tp-&gt;RxDescArray
 (braket
 id|i
@@ -3198,7 +3244,6 @@ id|EORbit
 op_plus
 id|RX_BUF_SIZE
 suffix:semicolon
-)brace
 r_else
 id|tp-&gt;RxDescArray
 (braket
@@ -3244,11 +3289,11 @@ id|i
 suffix:semicolon
 )brace
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_tx_clear
 r_static
 r_void
+DECL|function|rtl8169_tx_clear
 id|rtl8169_tx_clear
+c_func
 (paren
 r_struct
 id|rtl8169_private
@@ -3290,6 +3335,7 @@ l_int|NULL
 )paren
 (brace
 id|dev_kfree_skb
+c_func
 (paren
 id|tp-&gt;Tx_skbuff
 (braket
@@ -3310,11 +3356,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_tx_timeout
 r_static
 r_void
+DECL|function|rtl8169_tx_timeout
 id|rtl8169_tx_timeout
+c_func
 (paren
 r_struct
 id|net_device
@@ -3356,6 +3402,7 @@ id|CmdTxEnb
 )paren
 (brace
 id|RTL_W8
+c_func
 (paren
 id|ChipCmd
 comma
@@ -3368,6 +3415,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
 id|RTL_W16
+c_func
 (paren
 id|IntrMask
 comma
@@ -3376,17 +3424,20 @@ l_int|0x0000
 suffix:semicolon
 multiline_comment|/* Stop a shared interrupt from scavenging while we are. */
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
 id|rtl8169_tx_clear
+c_func
 (paren
 id|tp
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -3394,21 +3445,23 @@ id|tp-&gt;lock
 suffix:semicolon
 multiline_comment|/* ...and finally, reset everything */
 id|rtl8169_hw_start
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_start_xmit
 r_static
 r_int
+DECL|function|rtl8169_start_xmit
 id|rtl8169_start_xmit
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -3442,6 +3495,7 @@ op_mod
 id|NUM_TX_DESC
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -3495,7 +3549,6 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 id|tp-&gt;TxDescArray
 (braket
 id|entry
@@ -3524,7 +3577,6 @@ suffix:colon
 id|ETH_ZLEN
 )paren
 suffix:semicolon
-)brace
 r_else
 id|tp-&gt;TxDescArray
 (braket
@@ -3557,6 +3609,7 @@ id|ETH_ZLEN
 )paren
 suffix:semicolon
 id|RTL_W8
+c_func
 (paren
 id|TxPoll
 comma
@@ -3572,8 +3625,8 @@ id|tp-&gt;cur_tx
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|//end of if( (tp-&gt;TxDescArray[entry].status &amp; 0x80000000)==0 )
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -3592,6 +3645,7 @@ id|tp-&gt;dirty_tx
 )paren
 (brace
 id|netif_stop_queue
+c_func
 (paren
 id|dev
 )paren
@@ -3601,11 +3655,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_tx_interrupt
 r_static
 r_void
+DECL|function|rtl8169_tx_interrupt
 id|rtl8169_tx_interrupt
+c_func
 (paren
 r_struct
 id|net_device
@@ -3696,7 +3750,9 @@ l_int|0
 id|dev_kfree_skb_irq
 c_func
 (paren
-id|tp-&gt;Tx_skbuff
+id|tp
+op_member_access_from_pointer
+id|Tx_skbuff
 (braket
 id|dirty_tx
 op_mod
@@ -3743,22 +3799,24 @@ r_if
 c_cond
 (paren
 id|netif_queue_stopped
+c_func
 (paren
 id|dev
 )paren
 )paren
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 )brace
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_rx_interrupt
 r_static
 r_void
+DECL|function|rtl8169_rx_interrupt
 id|rtl8169_rx_interrupt
+c_func
 (paren
 r_struct
 id|net_device
@@ -3933,6 +3991,7 @@ op_assign
 id|dev
 suffix:semicolon
 id|skb_reserve
+c_func
 (paren
 id|skb
 comma
@@ -3974,6 +4033,7 @@ id|dev
 )paren
 suffix:semicolon
 id|netif_rx
+c_func
 (paren
 id|skb
 )paren
@@ -3989,7 +4049,6 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 id|tp-&gt;RxDescArray
 (braket
 id|cur_rx
@@ -4005,7 +4064,6 @@ id|EORbit
 op_plus
 id|RX_BUF_SIZE
 suffix:semicolon
-)brace
 r_else
 id|tp-&gt;RxDescArray
 (braket
@@ -4057,14 +4115,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* We should check that some rx space is free.&n;&t;&t;   &t;&t;If not, free one and mark stats-&gt;rx_dropped++. */
+multiline_comment|/* We should check that some rx space is free.&n;&t;&t;&t;&t;   If not, free one and mark stats-&gt;rx_dropped++. */
 id|tp-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// end of if (skb != NULL)
 )brace
-singleline_comment|// end of if( tp-&gt;RxDescArray[cur_rx].status &amp; RxRES )
 id|cur_rx
 op_assign
 (paren
@@ -4076,18 +4132,17 @@ op_mod
 id|NUM_RX_DESC
 suffix:semicolon
 )brace
-singleline_comment|// end of while ( (tp-&gt;RxDescArray[cur_rx].status &amp; 0x80000000)== 0)
 id|tp-&gt;cur_rx
 op_assign
 id|cur_rx
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up after the Tx thread. */
-DECL|function|rtl8169_interrupt
 r_static
 r_void
+DECL|function|rtl8169_interrupt
 id|rtl8169_interrupt
+c_func
 (paren
 r_int
 id|irq
@@ -4228,6 +4283,7 @@ id|RxFIFOOver
 )paren
 (brace
 id|rtl8169_rx_interrupt
+c_func
 (paren
 id|dev
 comma
@@ -4251,12 +4307,14 @@ id|TxErr
 )paren
 (brace
 id|spin_lock
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
 id|rtl8169_tx_interrupt
+c_func
 (paren
 id|dev
 comma
@@ -4266,6 +4324,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -4293,6 +4352,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Too much work at interrupt!&bslash;n&quot;
@@ -4311,11 +4371,11 @@ l_int|0xffff
 suffix:semicolon
 )brace
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_close
 r_static
 r_int
+DECL|function|rtl8169_close
 id|rtl8169_close
+c_func
 (paren
 r_struct
 id|net_device
@@ -4340,11 +4400,13 @@ r_int
 id|i
 suffix:semicolon
 id|netif_stop_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|spin_lock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -4352,6 +4414,7 @@ id|tp-&gt;lock
 suffix:semicolon
 multiline_comment|/* Stop the chip&squot;s Tx and Rx DMA processes. */
 id|RTL_W8
+c_func
 (paren
 id|ChipCmd
 comma
@@ -4360,6 +4423,7 @@ l_int|0x00
 suffix:semicolon
 multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
 id|RTL_W16
+c_func
 (paren
 id|IntrMask
 comma
@@ -4384,17 +4448,20 @@ l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
 id|synchronize_irq
+c_func
 (paren
 id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq
+c_func
 (paren
 id|dev-&gt;irq
 comma
@@ -4402,6 +4469,7 @@ id|dev
 )paren
 suffix:semicolon
 id|rtl8169_tx_clear
+c_func
 (paren
 id|tp
 )paren
@@ -4467,7 +4535,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
 DECL|variable|ethernet_polynomial
 r_static
 r_int
@@ -4476,11 +4543,12 @@ id|ethernet_polynomial
 op_assign
 l_int|0x04c11db7U
 suffix:semicolon
-DECL|function|ether_crc
 r_static
 r_inline
 id|u32
+DECL|function|ether_crc
 id|ether_crc
+c_func
 (paren
 r_int
 id|length
@@ -4567,11 +4635,11 @@ r_return
 id|crc
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_set_rx_mode
 r_static
 r_void
+DECL|function|rtl8169_set_rx_mode
 id|rtl8169_set_rx_mode
+c_func
 (paren
 r_struct
 id|net_device
@@ -4623,6 +4691,7 @@ id|IFF_PROMISC
 (brace
 multiline_comment|/* Unconditionally log net taps. */
 id|printk
+c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s: Promiscuous mode enabled.&bslash;n&quot;
@@ -4744,8 +4813,10 @@ op_assign
 id|mclist-&gt;next
 )paren
 id|set_bit
+c_func
 (paren
 id|ether_crc
+c_func
 (paren
 id|ETH_ALEN
 comma
@@ -4759,6 +4830,7 @@ id|mc_filter
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -4788,6 +4860,7 @@ id|RxConfigMask
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|RxConfig
 comma
@@ -4795,6 +4868,7 @@ id|tmp
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|MAR0
 op_plus
@@ -4807,6 +4881,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|RTL_W32
+c_func
 (paren
 id|MAR0
 op_plus
@@ -4819,6 +4894,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|tp-&gt;lock
@@ -4827,12 +4903,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//end of rtl8169_set_rx_mode (struct net_device *dev)
-singleline_comment|//================================================================================
-DECL|function|rtl8169_get_stats
 r_struct
 id|net_device_stats
 op_star
+DECL|function|rtl8169_get_stats
 id|rtl8169_get_stats
 c_func
 (paren
@@ -4854,7 +4928,6 @@ op_amp
 id|tp-&gt;stats
 suffix:semicolon
 )brace
-singleline_comment|//================================================================================
 DECL|variable|rtl8169_pci_driver
 r_static
 r_struct
@@ -4862,69 +4935,75 @@ id|pci_driver
 id|rtl8169_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|MODULENAME
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|rtl8169_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|rtl8169_init_one
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|rtl8169_remove_one
 comma
+dot
 id|suspend
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 l_int|NULL
 comma
 )brace
 suffix:semicolon
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_init_module
 r_static
 r_int
 id|__init
+DECL|function|rtl8169_init_module
 id|rtl8169_init_module
+c_func
 (paren
 r_void
 )paren
 (brace
 r_return
 id|pci_module_init
+c_func
 (paren
 op_amp
 id|rtl8169_pci_driver
 )paren
 suffix:semicolon
-singleline_comment|// pci_register_driver (drv)
 )brace
-singleline_comment|//======================================================================================================
-DECL|function|rtl8169_cleanup_module
 r_static
 r_void
 id|__exit
+DECL|function|rtl8169_cleanup_module
 id|rtl8169_cleanup_module
+c_func
 (paren
 r_void
 )paren
 (brace
 id|pci_unregister_driver
+c_func
 (paren
 op_amp
 id|rtl8169_pci_driver
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//======================================================================================================
 DECL|variable|rtl8169_init_module
 id|module_init
 c_func
