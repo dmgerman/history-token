@@ -2209,7 +2209,7 @@ id|printk
 c_func
 (paren
 id|CARD_DEBUG
-l_string|&quot;illegal clipzone (%d,%d,%d,%d) not in (0,0,%d,%d), adapting&bslash;n&quot;
+l_string|&quot;invalid clipzone (%d,%d,%d,%d) not in (0,0,%d,%d), adapting&bslash;n&quot;
 comma
 id|CARD
 comma
