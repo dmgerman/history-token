@@ -1,11 +1,12 @@
 multiline_comment|/*&n; * arch/ppc/syslib/cpc700.h&n; *&n; * Header file for IBM CPC700 Host Bridge, et. al.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 multiline_comment|/*&n; * This file contains the defines and macros for the IBM CPC700 host bridge,&n; * memory controller, PIC, UARTs, IIC, and Timers.&n; */
-macro_line|#ifndef&t;_ASMPPC_CPC700_H
-DECL|macro|_ASMPPC_CPC700_H
-mdefine_line|#define&t;_ASMPPC_CPC700_H
+macro_line|#ifndef&t;__PPC_SYSLIB_CPC700_H__
+DECL|macro|__PPC_SYSLIB_CPC700_H__
+mdefine_line|#define&t;__PPC_SYSLIB_CPC700_H__
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+multiline_comment|/* XXX no barriers? not even any volatiles?  -- paulus */
 DECL|macro|CPC700_OUT_32
 mdefine_line|#define CPC700_OUT_32(a,d)  (*(u_int *)a = d)
 DECL|macro|CPC700_IN_32
@@ -15,14 +16,16 @@ DECL|macro|CPC700_PCI_CONFIG_ADDR
 mdefine_line|#define CPC700_PCI_CONFIG_ADDR          0xfec00000
 DECL|macro|CPC700_PCI_CONFIG_DATA
 mdefine_line|#define CPC700_PCI_CONFIG_DATA          0xfec00004
+multiline_comment|/* CPU -&gt; PCI memory window 0 */
 DECL|macro|CPC700_PMM0_LOCAL
-mdefine_line|#define CPC700_PMM0_LOCAL&t;&t;0xff400000
+mdefine_line|#define CPC700_PMM0_LOCAL&t;&t;0xff400000&t;/* CPU physical addr */
 DECL|macro|CPC700_PMM0_MASK_ATTR
-mdefine_line|#define CPC700_PMM0_MASK_ATTR&t;&t;0xff400004
+mdefine_line|#define CPC700_PMM0_MASK_ATTR&t;&t;0xff400004&t;/* size and attrs */
 DECL|macro|CPC700_PMM0_PCI_LOW
-mdefine_line|#define CPC700_PMM0_PCI_LOW&t;&t;0xff400008
+mdefine_line|#define CPC700_PMM0_PCI_LOW&t;&t;0xff400008&t;/* PCI addr, low word */
 DECL|macro|CPC700_PMM0_PCI_HIGH
-mdefine_line|#define CPC700_PMM0_PCI_HIGH&t;&t;0xff40000c
+mdefine_line|#define CPC700_PMM0_PCI_HIGH&t;&t;0xff40000c&t;/* PCI addr, high wd */
+multiline_comment|/* CPU -&gt; PCI memory window 1 */
 DECL|macro|CPC700_PMM1_LOCAL
 mdefine_line|#define CPC700_PMM1_LOCAL&t;&t;0xff400010
 DECL|macro|CPC700_PMM1_MASK_ATTR
@@ -31,6 +34,7 @@ DECL|macro|CPC700_PMM1_PCI_LOW
 mdefine_line|#define CPC700_PMM1_PCI_LOW&t;&t;0xff400018
 DECL|macro|CPC700_PMM1_PCI_HIGH
 mdefine_line|#define CPC700_PMM1_PCI_HIGH&t;&t;0xff40001c
+multiline_comment|/* CPU -&gt; PCI memory window 2 */
 DECL|macro|CPC700_PMM2_LOCAL
 mdefine_line|#define CPC700_PMM2_LOCAL&t;&t;0xff400020
 DECL|macro|CPC700_PMM2_MASK_ATTR
@@ -39,12 +43,14 @@ DECL|macro|CPC700_PMM2_PCI_LOW
 mdefine_line|#define CPC700_PMM2_PCI_LOW&t;&t;0xff400028
 DECL|macro|CPC700_PMM2_PCI_HIGH
 mdefine_line|#define CPC700_PMM2_PCI_HIGH&t;&t;0xff40002c
+multiline_comment|/* PCI memory -&gt; CPU window 1 */
 DECL|macro|CPC700_PTM1_MEMSIZE
-mdefine_line|#define CPC700_PTM1_MEMSIZE&t;&t;0xff400030
+mdefine_line|#define CPC700_PTM1_MEMSIZE&t;&t;0xff400030&t;/* window size */
 DECL|macro|CPC700_PTM1_LOCAL
-mdefine_line|#define CPC700_PTM1_LOCAL&t;&t;0xff400034
+mdefine_line|#define CPC700_PTM1_LOCAL&t;&t;0xff400034&t;/* CPU phys addr */
+multiline_comment|/* PCI memory -&gt; CPU window 2 */
 DECL|macro|CPC700_PTM2_MEMSIZE
-mdefine_line|#define CPC700_PTM2_MEMSIZE&t;&t;0xff400038
+mdefine_line|#define CPC700_PTM2_MEMSIZE&t;&t;0xff400038&t;/* size and enable */
 DECL|macro|CPC700_PTM2_LOCAL
 mdefine_line|#define CPC700_PTM2_LOCAL&t;&t;0xff40003c
 multiline_comment|/*&n; * PIC Section&n; *&n; * IBM calls the CPC700&squot;s programmable interrupt controller the Universal&n; * Interrupt Controller or UIC.&n; */
@@ -116,5 +122,5 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* _ASMPPC_CPC700_H */
+macro_line|#endif&t;/* __PPC_SYSLIB_CPC700_H__ */
 eof

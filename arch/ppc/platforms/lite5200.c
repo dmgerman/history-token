@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
+macro_line|#include &lt;syslib/mpc52xx_pci.h&gt;
 r_extern
 r_int
 id|powersave_nap
@@ -32,6 +33,7 @@ multiline_comment|/* For board/shared resources like PSCs                       
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Be sure not to load conficting devices : e.g. loading the UART drivers for&n; * PSC1 and then also loading a AC97 for this same PSC.&n; * For details about how to create an entry, look in the doc of the concerned&n; * driver ( eg drivers/serial/mpc52xx_uart.c for the PSC in uart mode )&n; */
 DECL|variable|board_ocp
+r_static
 r_struct
 id|ocp_def
 id|board_ocp
@@ -108,6 +110,48 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
+r_static
+r_int
+DECL|function|lite5200_map_irq
+id|lite5200_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+r_char
+id|idsel
+comma
+r_int
+r_char
+id|pin
+)paren
+(brace
+r_return
+(paren
+id|pin
+op_eq
+l_int|1
+)paren
+op_logical_and
+(paren
+id|idsel
+op_eq
+l_int|24
+)paren
+ques
+c_cond
+id|MPC52xx_IRQ0
+suffix:colon
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_void
 id|__init
@@ -120,20 +164,36 @@ r_void
 (brace
 r_struct
 id|mpc52xx_intr
+id|__iomem
 op_star
 id|intr
+suffix:semicolon
+r_struct
+id|mpc52xx_xlb
+id|__iomem
+op_star
+id|xlb
 suffix:semicolon
 id|u32
 id|intr_ctrl
 suffix:semicolon
 multiline_comment|/* Map zones */
-id|intr
+id|xlb
 op_assign
+id|ioremap
+c_func
+(paren
+id|MPC52xx_XLB
+comma
+r_sizeof
 (paren
 r_struct
-id|mpc52xx_intr
-op_star
+id|mpc52xx_xlb
 )paren
+)paren
+suffix:semicolon
+id|intr
+op_assign
 id|ioremap
 c_func
 (paren
@@ -150,19 +210,70 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|xlb
+op_logical_or
+op_logical_neg
 id|intr
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;lite5200.c: Error while mapping INTR during lite5200_setup_cpu&bslash;n&quot;
+l_string|&quot;lite5200.c: Error while mapping XLB/INTR during &quot;
+l_string|&quot;lite5200_setup_cpu&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
 id|unmap_regs
 suffix:semicolon
 )brace
+multiline_comment|/* Configure the XLB Arbiter */
+id|out_be32
+c_func
+(paren
+op_amp
+id|xlb-&gt;master_pri_enable
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+id|out_be32
+c_func
+(paren
+op_amp
+id|xlb-&gt;master_priority
+comma
+l_int|0x11111111
+)paren
+suffix:semicolon
+multiline_comment|/* Enable ram snooping for 1GB window */
+id|out_be32
+c_func
+(paren
+op_amp
+id|xlb-&gt;config
+comma
+id|in_be32
+c_func
+(paren
+op_amp
+id|xlb-&gt;config
+)paren
+op_or
+id|MPC52xx_XLB_CFG_SNOOP
+)paren
+suffix:semicolon
+id|out_be32
+c_func
+(paren
+op_amp
+id|xlb-&gt;snoop_window
+comma
+id|MPC52xx_PCI_TARGET_MEM
+op_or
+l_int|0x1d
+)paren
+suffix:semicolon
 multiline_comment|/* IRQ[0-3] setup : IRQ0     - Level Active Low  */
 multiline_comment|/*                  IRQ[1-3] - Level Active High */
 id|intr_ctrl
@@ -198,6 +309,17 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|xlb
+)paren
+id|iounmap
+c_func
+(paren
+id|xlb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|intr
 )paren
 id|iounmap
@@ -230,6 +352,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+multiline_comment|/* PCI Bridge setup */
+id|mpc52xx_find_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -381,7 +511,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* No ISA bus AFAIK */
+multiline_comment|/* No ISA bus by default */
 id|isa_io_base
 op_assign
 l_int|0
@@ -417,6 +547,12 @@ id|ppc_md.get_irq
 op_assign
 id|mpc52xx_get_irq
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+id|ppc_md.pci_map_irq
+op_assign
+id|lite5200_map_irq
+suffix:semicolon
+macro_line|#endif
 id|ppc_md.find_end_of_memory
 op_assign
 id|mpc52xx_find_end_of_memory

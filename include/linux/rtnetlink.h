@@ -497,6 +497,9 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
+DECL|enumerator|RTA_MP_ALGO
+id|RTA_MP_ALGO
+comma
 DECL|enumerator|__RTA_MAX
 id|__RTA_MAX
 )brace

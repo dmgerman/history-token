@@ -18,6 +18,8 @@ macro_line|#elif defined(CONFIG_MCPN765)
 macro_line|#include &lt;platforms/mcpn765.h&gt;
 macro_line|#elif defined(CONFIG_MVME5100)
 macro_line|#include &lt;platforms/mvme5100.h&gt;
+macro_line|#elif defined(CONFIG_PAL4)
+macro_line|#include &lt;platforms/pal4_serial.h&gt;
 macro_line|#elif defined(CONFIG_PRPMC750)
 macro_line|#include &lt;platforms/prpmc750.h&gt;
 macro_line|#elif defined(CONFIG_PRPMC800)

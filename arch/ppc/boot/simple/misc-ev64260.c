@@ -1,0 +1,146 @@
+multiline_comment|/*&n; * arch/ppc/boot/simple/misc-ev64260.c&n; *&n; * Host bridge init code for the Marvell/Galileo EV-64260-BP evaluation board&n; * with a GT64260 onboard.&n; *&n; * Author: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/mv64x60_defs.h&gt;
+macro_line|#include &lt;platforms/ev64260.h&gt;
+macro_line|#ifdef CONFIG_SERIAL_MPSC_CONSOLE
+r_extern
+id|u32
+id|mv64x60_console_baud
+suffix:semicolon
+r_extern
+id|u32
+id|mv64x60_mpsc_clk_src
+suffix:semicolon
+r_extern
+id|u32
+id|mv64x60_mpsc_clk_freq
+suffix:semicolon
+macro_line|#endif
+r_void
+DECL|function|mv64x60_board_init
+id|mv64x60_board_init
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|old_base
+comma
+r_void
+id|__iomem
+op_star
+id|new_base
+)paren
+(brace
+id|u32
+id|p
+comma
+id|v
+suffix:semicolon
+multiline_comment|/* DINK doesn&squot;t enable 745x timebase, so enable here (Adrian Cox) */
+id|p
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_PVR
+)paren
+suffix:semicolon
+id|p
+op_rshift_assign
+l_int|16
+suffix:semicolon
+multiline_comment|/* Reasonable SWAG at a 745x PVR value */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|p
+op_amp
+l_int|0xfff0
+)paren
+op_eq
+l_int|0x8000
+)paren
+op_logical_and
+(paren
+id|p
+op_ne
+l_int|0x800c
+)paren
+)paren
+(brace
+id|v
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_HID0
+)paren
+suffix:semicolon
+id|v
+op_or_assign
+id|HID0_TBEN
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_HID0
+comma
+id|v
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+multiline_comment|/*&n;&t; * Change device bus 2 window so that bootoader can do I/O thru&n;&t; * 8250/16550 UART that&squot;s mapped in that window.&n;&t; */
+id|out_le32
+c_func
+(paren
+id|new_base
+op_plus
+id|MV64x60_CPU2DEV_2_BASE
+comma
+id|EV64260_UART_BASE
+op_rshift
+l_int|20
+)paren
+suffix:semicolon
+id|out_le32
+c_func
+(paren
+id|new_base
+op_plus
+id|MV64x60_CPU2DEV_2_SIZE
+comma
+id|EV64260_UART_END
+op_rshift
+l_int|20
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;sync&quot;
+)paren
+suffix:semicolon
+macro_line|#elif defined(CONFIG_SERIAL_MPSC_CONSOLE)
+id|mv64x60_console_baud
+op_assign
+id|EV64260_DEFAULT_BAUD
+suffix:semicolon
+id|mv64x60_mpsc_clk_src
+op_assign
+id|EV64260_MPSC_CLK_SRC
+suffix:semicolon
+id|mv64x60_mpsc_clk_freq
+op_assign
+id|EV64260_MPSC_CLK_FREQ
+suffix:semicolon
+macro_line|#endif
+)brace
+eof

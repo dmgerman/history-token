@@ -479,8 +479,29 @@ id|S390_lowcore.int_clock
 OL
 id|S390_lowcore.jiffy_timer
 )paren
+(brace
+multiline_comment|/*&n;&t;&t; * We have to program the clock comparator even if&n;&t;&t; * no tick has passed. That happens if e.g. an i/o&n;&t;&t; * interrupt wakes up an idle processor that has&n;&t;&t; * switched off its hz timer.&n;&t;&t; */
+id|tmp
+op_assign
+id|S390_lowcore.jiffy_timer
+op_plus
+id|CPU_DEVIATION
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;SCKC %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|tmp
 op_assign
 id|S390_lowcore.int_clock

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
@@ -28,15 +29,11 @@ id|viopathStatus
 DECL|member|isOpen
 r_int
 id|isOpen
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* Did we open the path?            */
 DECL|member|isActive
 r_int
 id|isActive
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* Do we have a mon msg outstanding */
 DECL|member|users
@@ -110,14 +107,13 @@ id|event
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We use this structure to handle asynchronous responses.  The caller&n; * blocks on the semaphore and the handler posts the semaphore.  However,&n; * if system_state is not SYSTEM_RUNNING, then wait_atomic is used ...&n; */
-DECL|struct|doneAllocParms_t
+DECL|struct|alloc_parms
 r_struct
-id|doneAllocParms_t
+id|alloc_parms
 (brace
 DECL|member|sem
 r_struct
 id|semaphore
-op_star
 id|sem
 suffix:semicolon
 DECL|member|number
@@ -126,7 +122,6 @@ id|number
 suffix:semicolon
 DECL|member|wait_atomic
 id|atomic_t
-op_star
 id|wait_atomic
 suffix:semicolon
 DECL|member|used_wait_atomic
@@ -148,9 +143,8 @@ DECL|variable|viopath_hostLp
 id|HvLpIndex
 id|viopath_hostLp
 op_assign
-l_int|0xff
+id|HvLpIndexInvalid
 suffix:semicolon
-multiline_comment|/* HvLpIndexInvalid */
 DECL|variable|viopath_hostLp
 id|EXPORT_SYMBOL
 c_func
@@ -162,7 +156,7 @@ DECL|variable|viopath_ourLp
 id|HvLpIndex
 id|viopath_ourLp
 op_assign
-l_int|0xff
+id|HvLpIndexInvalid
 suffix:semicolon
 DECL|variable|viopath_ourLp
 id|EXPORT_SYMBOL
@@ -630,7 +624,7 @@ c_func
 id|viopath_isactive
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We cache the source and target instance ids for each&n; * partition.  &n; */
+multiline_comment|/*&n; * We cache the source and target instance ids for each&n; * partition.&n; */
 DECL|function|viopath_sourceinst
 id|HvLpInstanceId
 id|viopath_sourceinst
@@ -1529,15 +1523,10 @@ id|number
 )paren
 (brace
 r_struct
-id|doneAllocParms_t
+id|alloc_parms
 op_star
 id|parmsp
 op_assign
-(paren
-r_struct
-id|doneAllocParms_t
-op_star
-)paren
 id|parm
 suffix:semicolon
 id|parmsp-&gt;number
@@ -1552,6 +1541,7 @@ id|parmsp-&gt;used_wait_atomic
 id|atomic_set
 c_func
 (paren
+op_amp
 id|parmsp-&gt;wait_atomic
 comma
 l_int|0
@@ -1561,6 +1551,7 @@ r_else
 id|up
 c_func
 (paren
+op_amp
 id|parmsp-&gt;sem
 )paren
 suffix:semicolon
@@ -1579,17 +1570,8 @@ id|numEvents
 )paren
 (brace
 r_struct
-id|doneAllocParms_t
+id|alloc_parms
 id|parms
-suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|Semaphore
-)paren
-suffix:semicolon
-id|atomic_t
-id|wait_atomic
 suffix:semicolon
 r_if
 c_cond
@@ -1607,15 +1589,10 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|wait_atomic
+id|parms.wait_atomic
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|parms.wait_atomic
-op_assign
-op_amp
-id|wait_atomic
 suffix:semicolon
 )brace
 r_else
@@ -1624,10 +1601,12 @@ id|parms.used_wait_atomic
 op_assign
 l_int|0
 suffix:semicolon
-id|parms.sem
-op_assign
+id|init_MUTEX_LOCKED
+c_func
+(paren
 op_amp
-id|Semaphore
+id|parms.sem
+)paren
 suffix:semicolon
 )brace
 id|mf_allocate_lp_events
@@ -1664,7 +1643,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|wait_atomic
+id|parms.wait_atomic
 )paren
 )paren
 id|mb
@@ -1678,7 +1657,7 @@ id|down
 c_func
 (paren
 op_amp
-id|Semaphore
+id|parms.sem
 )paren
 suffix:semicolon
 r_return
@@ -2067,14 +2046,8 @@ r_int
 id|numOpen
 suffix:semicolon
 r_struct
-id|doneAllocParms_t
-id|doneAllocParms
-suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|Semaphore
-)paren
+id|alloc_parms
+id|parms
 suffix:semicolon
 r_if
 c_cond
@@ -2165,14 +2138,16 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|doneAllocParms.used_wait_atomic
+id|parms.used_wait_atomic
 op_assign
 l_int|0
 suffix:semicolon
-id|doneAllocParms.sem
-op_assign
+id|init_MUTEX_LOCKED
+c_func
+(paren
 op_amp
-id|Semaphore
+id|parms.sem
+)paren
 suffix:semicolon
 id|mf_deallocate_lp_events
 c_func
@@ -2187,14 +2162,14 @@ op_amp
 id|viopath_donealloc
 comma
 op_amp
-id|doneAllocParms
+id|parms
 )paren
 suffix:semicolon
 id|down
 c_func
 (paren
 op_amp
-id|Semaphore
+id|parms.sem
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

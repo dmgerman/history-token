@@ -3700,11 +3700,13 @@ id|ide_driver_t
 suffix:semicolon
 DECL|macro|DRIVER
 mdefine_line|#define DRIVER(drive)&t;&t;((drive)-&gt;driver)
-r_extern
 r_int
 id|generic_ide_ioctl
 c_func
 (paren
+id|ide_drive_t
+op_star
+comma
 r_struct
 id|file
 op_star

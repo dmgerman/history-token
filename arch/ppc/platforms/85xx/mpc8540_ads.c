@@ -216,7 +216,7 @@ id|MPC85xx_FEC
 suffix:semicolon
 id|pdata-&gt;board_flags
 op_assign
-id|FSL_GIANFAR_BRD_HAS_PHY_INTR
+l_int|0
 suffix:semicolon
 id|pdata-&gt;interruptPHY
 op_assign

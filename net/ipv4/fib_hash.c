@@ -1086,6 +1086,10 @@ id|flp
 comma
 id|res
 comma
+id|f-&gt;fn_key
+comma
+id|fz-&gt;fz_mask
+comma
 id|fz-&gt;fz_order
 )paren
 suffix:semicolon

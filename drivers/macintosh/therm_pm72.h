@@ -265,7 +265,7 @@ id|processor_part_num
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* 0x54 - Processor part number */
+multiline_comment|/* 0x54 - Processor part number XX pumps min/max */
 DECL|member|processor_lot_num
 id|u32
 id|processor_lot_num
@@ -325,7 +325,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This option is &quot;weird&quot; :) Basically, if you define this to 1&n; * the control loop for the RPMs fans (not PWMs) will apply the&n; * correction factor obtained from the PID to the _actual_ RPM&n; * speed read from the FCU.&n; * If you define the below constant to 0, then it will be&n; * applied to the setpoint RPM speed, that is basically the&n; * speed we proviously &quot;asked&quot; for.&n; *&n; * I&squot;m not sure which of these Apple&squot;s algorithm is supposed&n; * to use&n; */
 DECL|macro|RPM_PID_USE_ACTUAL_SPEED
 mdefine_line|#define RPM_PID_USE_ACTUAL_SPEED&t;&t;0
-multiline_comment|/*&n; * i2c IDs. Currently, we hard code those and assume that&n; * the FCU is on U3 bus 1 while all sensors are on U3 bus&n; * 0. This appear to be safe enough for this first version&n; * of the driver, though I would accept any clean patch&n; * doing a better use of the device-tree without turning the&n; * while i2c registration mecanism into a racy mess&n; */
+multiline_comment|/*&n; * i2c IDs. Currently, we hard code those and assume that&n; * the FCU is on U3 bus 1 while all sensors are on U3 bus&n; * 0. This appear to be safe enough for this first version&n; * of the driver, though I would accept any clean patch&n; * doing a better use of the device-tree without turning the&n; * while i2c registration mecanism into a racy mess&n; *&n; * Note: Xserve changed this. We have some bits on the K2 bus,&n; * which I arbitrarily set to 0x200. Ultimately, we really want&n; * too lookup these in the device-tree though&n; */
 DECL|macro|FAN_CTRLER_ID
 mdefine_line|#define FAN_CTRLER_ID&t;&t;0x15e
 DECL|macro|SUPPLY_MONITOR_ID
@@ -336,13 +336,17 @@ DECL|macro|DRIVES_DALLAS_ID
 mdefine_line|#define DRIVES_DALLAS_ID&t;0x94
 DECL|macro|BACKSIDE_MAX_ID
 mdefine_line|#define BACKSIDE_MAX_ID&t;&t;0x98
-multiline_comment|/*&n; * Some MAX6690 &amp; DS1775 register definitions&n; */
+DECL|macro|XSERVE_DIMMS_LM87
+mdefine_line|#define XSERVE_DIMMS_LM87&t;0x25a
+multiline_comment|/*&n; * Some MAX6690, DS1775, LM87 register definitions&n; */
 DECL|macro|MAX6690_INT_TEMP
 mdefine_line|#define MAX6690_INT_TEMP&t;0
 DECL|macro|MAX6690_EXT_TEMP
 mdefine_line|#define MAX6690_EXT_TEMP&t;1
 DECL|macro|DS1775_TEMP
 mdefine_line|#define DS1775_TEMP&t;&t;0
+DECL|macro|LM87_INT_TEMP
+mdefine_line|#define LM87_INT_TEMP&t;&t;0x27
 multiline_comment|/*&n; * Scaling factors for the AD7417 ADC converters (except&n; * for the CPU diode which is obtained from the EEPROM).&n; * Those values are obtained from the property list of&n; * the darwin driver&n; */
 DECL|macro|ADC_12V_CURRENT_SCALE
 mdefine_line|#define ADC_12V_CURRENT_SCALE&t;0x0320&t;/* _AD2 */
@@ -359,22 +363,30 @@ DECL|macro|BACKSIDE_PID_U3_G_d
 mdefine_line|#define BACKSIDE_PID_U3_G_d&t;&t;0x02800000
 DECL|macro|BACKSIDE_PID_U3H_G_d
 mdefine_line|#define BACKSIDE_PID_U3H_G_d&t;&t;0x01400000
+DECL|macro|BACKSIDE_PID_RACK_G_d
+mdefine_line|#define BACKSIDE_PID_RACK_G_d&t;&t;0x00500000
 DECL|macro|BACKSIDE_PID_G_p
 mdefine_line|#define BACKSIDE_PID_G_p&t;&t;0x00500000
+DECL|macro|BACKSIDE_PID_RACK_G_p
+mdefine_line|#define BACKSIDE_PID_RACK_G_p&t;&t;0x0004cccc
 DECL|macro|BACKSIDE_PID_G_r
 mdefine_line|#define BACKSIDE_PID_G_r&t;&t;0x00000000
 DECL|macro|BACKSIDE_PID_U3_INPUT_TARGET
 mdefine_line|#define BACKSIDE_PID_U3_INPUT_TARGET&t;0x00410000
 DECL|macro|BACKSIDE_PID_U3H_INPUT_TARGET
 mdefine_line|#define BACKSIDE_PID_U3H_INPUT_TARGET&t;0x004b0000
+DECL|macro|BACKSIDE_PID_RACK_INPUT_TARGET
+mdefine_line|#define BACKSIDE_PID_RACK_INPUT_TARGET&t;0x00460000
 DECL|macro|BACKSIDE_PID_INTERVAL
 mdefine_line|#define BACKSIDE_PID_INTERVAL&t;&t;5
+DECL|macro|BACKSIDE_PID_RACK_INTERVAL
+mdefine_line|#define BACKSIDE_PID_RACK_INTERVAL&t;1
 DECL|macro|BACKSIDE_PID_OUTPUT_MAX
 mdefine_line|#define BACKSIDE_PID_OUTPUT_MAX&t;&t;100
 DECL|macro|BACKSIDE_PID_U3_OUTPUT_MIN
 mdefine_line|#define BACKSIDE_PID_U3_OUTPUT_MIN&t;20
 DECL|macro|BACKSIDE_PID_U3H_OUTPUT_MIN
-mdefine_line|#define BACKSIDE_PID_U3H_OUTPUT_MIN&t;30
+mdefine_line|#define BACKSIDE_PID_U3H_OUTPUT_MIN&t;20
 DECL|macro|BACKSIDE_PID_HISTORY_SIZE
 mdefine_line|#define BACKSIDE_PID_HISTORY_SIZE&t;2
 DECL|struct|basckside_pid_params
@@ -404,6 +416,14 @@ suffix:semicolon
 DECL|member|output_max
 id|s32
 id|output_max
+suffix:semicolon
+DECL|member|interval
+id|s32
+id|interval
+suffix:semicolon
+DECL|member|additive
+r_int
+id|additive
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -526,7 +546,70 @@ DECL|macro|SLOTS_FAN_PWM_INDEX
 mdefine_line|#define SLOTS_FAN_PWM_INDEX&t;&t;2
 DECL|macro|SLOTS_FAN_DEFAULT_PWM
 mdefine_line|#define&t;SLOTS_FAN_DEFAULT_PWM&t;&t;50 /* Do better here ! */
-multiline_comment|/*&n; * IDs in Darwin for the sensors &amp; fans&n; *&n; * CPU A AD7417_TEMP&t;10&t;(CPU A ambient temperature)&n; * CPU A AD7417_AD1&t;11&t;(CPU A diode temperature)&n; * CPU A AD7417_AD2&t;12&t;(CPU A 12V current)&n; * CPU A AD7417_AD3&t;13&t;(CPU A voltage)&n; * CPU A AD7417_AD4&t;14&t;(CPU A current)&n; *&n; * CPU A FAKE POWER&t;48&t;(I_V_inputs: 13, 14)&n; *&n; * CPU B AD7417_TEMP&t;15&t;(CPU B ambient temperature)&n; * CPU B AD7417_AD1&t;16&t;(CPU B diode temperature)&n; * CPU B AD7417_AD2&t;17&t;(CPU B 12V current)&n; * CPU B AD7417_AD3&t;18&t;(CPU B voltage)&n; * CPU B AD7417_AD4&t;19&t;(CPU B current)&n; *&n; * CPU B FAKE POWER&t;49&t;(I_V_inputs: 18, 19)&n; */
+multiline_comment|/*&n; * PID factors for the Xserve DIMM control loop&n; */
+DECL|macro|DIMM_PID_G_d
+mdefine_line|#define DIMM_PID_G_d&t;&t;&t;0
+DECL|macro|DIMM_PID_G_p
+mdefine_line|#define DIMM_PID_G_p&t;&t;&t;0
+DECL|macro|DIMM_PID_G_r
+mdefine_line|#define DIMM_PID_G_r&t;&t;&t;0x6553600
+DECL|macro|DIMM_PID_INPUT_TARGET
+mdefine_line|#define DIMM_PID_INPUT_TARGET&t;&t;3276800
+DECL|macro|DIMM_PID_INTERVAL
+mdefine_line|#define DIMM_PID_INTERVAL    &t;&t;1
+DECL|macro|DIMM_PID_OUTPUT_MAX
+mdefine_line|#define DIMM_PID_OUTPUT_MAX&t;&t;14000
+DECL|macro|DIMM_PID_OUTPUT_MIN
+mdefine_line|#define DIMM_PID_OUTPUT_MIN&t;&t;4000
+DECL|macro|DIMM_PID_HISTORY_SIZE
+mdefine_line|#define DIMM_PID_HISTORY_SIZE&t;&t;20
+DECL|struct|dimm_pid_state
+r_struct
+id|dimm_pid_state
+(brace
+DECL|member|ticks
+r_int
+id|ticks
+suffix:semicolon
+DECL|member|monitor
+r_struct
+id|i2c_client
+op_star
+id|monitor
+suffix:semicolon
+DECL|member|sample_history
+id|s32
+id|sample_history
+(braket
+id|DIMM_PID_HISTORY_SIZE
+)braket
+suffix:semicolon
+DECL|member|error_history
+id|s32
+id|error_history
+(braket
+id|DIMM_PID_HISTORY_SIZE
+)braket
+suffix:semicolon
+DECL|member|cur_sample
+r_int
+id|cur_sample
+suffix:semicolon
+DECL|member|last_temp
+id|s32
+id|last_temp
+suffix:semicolon
+DECL|member|first
+r_int
+id|first
+suffix:semicolon
+DECL|member|output
+r_int
+id|output
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Desktops */
 DECL|macro|CPUA_INTAKE_FAN_RPM_DEFAULT_ID
 mdefine_line|#define CPUA_INTAKE_FAN_RPM_DEFAULT_ID&t;3
 DECL|macro|CPUA_EXHAUST_FAN_RPM_DEFAULT_ID
@@ -558,9 +641,22 @@ mdefine_line|#define CPUA_PUMP_RPM_INDEX&t;&t;7
 DECL|macro|CPUB_PUMP_RPM_INDEX
 mdefine_line|#define CPUB_PUMP_RPM_INDEX&t;&t;8
 DECL|macro|CPU_PUMP_OUTPUT_MAX
-mdefine_line|#define CPU_PUMP_OUTPUT_MAX&t;&t;3700
+mdefine_line|#define CPU_PUMP_OUTPUT_MAX&t;&t;3200
 DECL|macro|CPU_PUMP_OUTPUT_MIN
-mdefine_line|#define CPU_PUMP_OUTPUT_MIN&t;&t;1000
+mdefine_line|#define CPU_PUMP_OUTPUT_MIN&t;&t;1250
+multiline_comment|/* Xserve */
+DECL|macro|CPU_A1_FAN_RPM_INDEX
+mdefine_line|#define CPU_A1_FAN_RPM_INDEX&t;&t;9
+DECL|macro|CPU_A2_FAN_RPM_INDEX
+mdefine_line|#define CPU_A2_FAN_RPM_INDEX&t;&t;10
+DECL|macro|CPU_A3_FAN_RPM_INDEX
+mdefine_line|#define CPU_A3_FAN_RPM_INDEX&t;&t;11
+DECL|macro|CPU_B1_FAN_RPM_INDEX
+mdefine_line|#define CPU_B1_FAN_RPM_INDEX&t;&t;12
+DECL|macro|CPU_B2_FAN_RPM_INDEX
+mdefine_line|#define CPU_B2_FAN_RPM_INDEX&t;&t;13
+DECL|macro|CPU_B3_FAN_RPM_INDEX
+mdefine_line|#define CPU_B3_FAN_RPM_INDEX&t;&t;14
 DECL|struct|cpu_pid_state
 r_struct
 id|cpu_pid_state
@@ -648,6 +744,14 @@ suffix:semicolon
 DECL|member|adc_config
 id|u8
 id|adc_config
+suffix:semicolon
+DECL|member|pump_min
+id|s32
+id|pump_min
+suffix:semicolon
+DECL|member|pump_max
+id|s32
+id|pump_max
 suffix:semicolon
 )brace
 suffix:semicolon
