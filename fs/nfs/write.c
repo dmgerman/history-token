@@ -3437,13 +3437,6 @@ op_amp
 id|data-&gt;res
 suffix:semicolon
 r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|data-&gt;inode
-suffix:semicolon
-r_struct
 id|nfs_page
 op_star
 id|req
@@ -3556,7 +3549,7 @@ comma
 id|NFS_SERVER
 c_func
 (paren
-id|inode
+id|data-&gt;inode
 )paren
 op_member_access_from_pointer
 id|hostname

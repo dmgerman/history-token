@@ -89,7 +89,7 @@ id|mach_tick
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* The following establishes aliases for various mach_ functions to the&n;   name by which the rest of the kernal calls them.  These statements&n;   should only have an effect in the file that defines the actual functions. */
+multiline_comment|/* The following establishes aliases for various mach_ functions to the&n;   name by which the rest of the kernel calls them.  These statements&n;   should only have an effect in the file that defines the actual functions. */
 DECL|macro|MACH_ALIAS
 mdefine_line|#define MACH_ALIAS(to, from)&t;&t;&t;&t;&t;&t;      &bslash;&n;   asm (&quot;.global &quot; macrology_stringify (C_SYMBOL_NAME (to)) &quot;;&quot;&t;&t;      &bslash;&n;&t;macrology_stringify (C_SYMBOL_NAME (to))&t;&t;&t;      &bslash;&n;&t;&quot; = &quot; macrology_stringify (C_SYMBOL_NAME (from)))
 multiline_comment|/* e.g.: MACH_ALIAS (kernel_name,&t;arch_spec_name);  */
