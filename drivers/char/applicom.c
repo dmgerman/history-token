@@ -27,24 +27,9 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;applicom.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300 
-multiline_comment|/* These probably want adding to &lt;linux/compatmac.h&gt; */
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(x) do { *(x) = NULL; } while (0)
-DECL|macro|PCI_BASE_ADDRESS
-mdefine_line|#define PCI_BASE_ADDRESS(dev) (dev-&gt;base_address[0])
-DECL|macro|DECLARE_WAIT_QUEUE_HEAD
-mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(x) struct wait_queue *x
-DECL|macro|__setup
-mdefine_line|#define __setup(x,y) /* */
-macro_line|#else
-DECL|macro|PCI_BASE_ADDRESS
-mdefine_line|#define PCI_BASE_ADDRESS(dev) (dev-&gt;resource[0].start)
-macro_line|#endif
 multiline_comment|/* NOTE: We use for loops with {write,read}b() instead of &n;   memcpy_{from,to}io throughout this driver. This is because&n;   the board doesn&squot;t correctly handle word accesses - only&n;   bytes. &n;*/
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -849,11 +834,12 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|PCI_BASE_ADDRESS
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 comma
 id|LEN_RAM_IO
 )paren
@@ -871,11 +857,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;ac.o: Failed to ioremap PCI memory space at 0x%lx&bslash;n&quot;
 comma
-id|PCI_BASE_ADDRESS
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 )paren
 suffix:semicolon
 r_return
@@ -896,11 +883,12 @@ op_minus
 l_int|1
 )braket
 comma
-id|PCI_BASE_ADDRESS
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 comma
 id|dev-&gt;irq
 )paren
@@ -915,11 +903,12 @@ op_assign
 id|ac_register_board
 c_func
 (paren
-id|PCI_BASE_ADDRESS
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 comma
 (paren
 r_int
