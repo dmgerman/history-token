@@ -3035,6 +3035,12 @@ DECL|member|dma_handle
 id|dma_addr_t
 id|dma_handle
 suffix:semicolon
+DECL|member|sibling
+r_struct
+id|ipr_cmnd
+op_star
+id|sibling
+suffix:semicolon
 r_union
 (brace
 DECL|member|shutdown_type
@@ -3063,12 +3069,6 @@ r_struct
 id|ipr_resource_entry
 op_star
 id|res
-suffix:semicolon
-DECL|member|sibling
-r_struct
-id|ipr_cmnd
-op_star
-id|sibling
 suffix:semicolon
 DECL|member|sdev
 r_struct
