@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.54 2004/05/28 08:04:14 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.54 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.57 2004/06/30 09:26:40 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.57 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -141,10 +141,6 @@ DECL|member|max_buffsize
 r_int
 id|max_buffsize
 suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
 DECL|member|timer
 id|fsm_timer
 id|timer
@@ -174,8 +170,6 @@ l_int|9
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|CONN_FLAGS_BUFSIZE_CHANGED
-mdefine_line|#define CONN_FLAGS_BUFSIZE_CHANGED 1
 multiline_comment|/**&n; * Linked list of all connection structs.&n; */
 DECL|variable|connections
 r_static
@@ -233,10 +227,6 @@ r_struct
 id|device
 op_star
 id|dev
-suffix:semicolon
-DECL|member|timer
-id|fsm_timer
-id|timer
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -606,9 +596,6 @@ comma
 DECL|enumerator|DEV_EVENT_CONDOWN
 id|DEV_EVENT_CONDOWN
 comma
-DECL|enumerator|DEV_EVENT_TIMER
-id|DEV_EVENT_TIMER
-comma
 multiline_comment|/**&n;&t; * MUST be always the last element!!&n;&t; */
 DECL|enumerator|NR_DEV_EVENTS
 id|NR_DEV_EVENTS
@@ -631,8 +618,6 @@ comma
 l_string|&quot;Connection up&quot;
 comma
 l_string|&quot;Connection down&quot;
-comma
-l_string|&quot;Timer&quot;
 comma
 )brace
 suffix:semicolon
@@ -2365,7 +2350,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: IR pathid %d does not match original pathid %d&bslash;n&quot;
+l_string|&quot;%s: IR Connection Pending; pathid %d does not match original pathid %d&bslash;n&quot;
 comma
 id|netdev-&gt;name
 comma
@@ -2485,7 +2470,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: IR pathid %d does not match original pathid %d&bslash;n&quot;
+l_string|&quot;%s: IR Connection Complete; pathid %d does not match original pathid %d&bslash;n&quot;
 comma
 id|netdev-&gt;name
 comma
@@ -5183,10 +5168,6 @@ id|NETIUCV_HDRLEN
 op_minus
 id|NETIUCV_HDRLEN
 suffix:semicolon
-id|priv-&gt;conn-&gt;flags
-op_or_assign
-id|CONN_FLAGS_BUFSIZE_CHANGED
-suffix:semicolon
 r_return
 id|count
 suffix:semicolon
@@ -6803,18 +6784,6 @@ id|privptr
 r_if
 c_cond
 (paren
-id|privptr-&gt;fsm
-)paren
-id|fsm_deltimer
-c_func
-(paren
-op_amp
-id|privptr-&gt;timer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|privptr-&gt;conn
 )paren
 id|netiucv_remove_connection
@@ -7066,15 +7035,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|fsm_settimer
-c_func
-(paren
-id|privptr-&gt;fsm
-comma
-op_amp
-id|privptr-&gt;timer
-)paren
-suffix:semicolon
 id|fsm_newstate
 c_func
 (paren
@@ -7725,7 +7685,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.54 $&quot;
+l_string|&quot;$Revision: 1.57 $&quot;
 suffix:semicolon
 r_char
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000, 01 Ralf Baechle&n; * Copyright (C) 1995, 1996 Paul M. Antoine&n; * Copyright (C) 1998 Ulf Carlsson&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; * Copyright (C) 2002, 2003  Maciej W. Rozycki&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000, 01 Ralf Baechle&n; * Copyright (C) 1995, 1996 Paul M. Antoine&n; * Copyright (C) 1998 Ulf Carlsson&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; * Copyright (C) 2002, 2003, 2004  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/break.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
@@ -2314,14 +2315,14 @@ id|opcode
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * There is the ancient bug in the MIPS assemblers that the break&n;&t; * code starts left to bit 16 instead to bit 6 in the opcode.&n;&t; * Gas is bug-compatible ...&n;&t; */
+multiline_comment|/*&n;&t; * There is the ancient bug in the MIPS assemblers that the break&n;&t; * code starts left to bit 16 instead to bit 6 in the opcode.&n;&t; * Gas is bug-compatible, but not always, grrr...&n;&t; * We handle both cases with a simple heuristics.  --macro&n;&t; */
 id|bcode
 op_assign
 (paren
 (paren
 id|opcode
 op_rshift
-l_int|16
+l_int|6
 )paren
 op_amp
 (paren
@@ -2335,6 +2336,21 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bcode
+OL
+(paren
+l_int|1
+op_lshift
+l_int|10
+)paren
+)paren
+id|bcode
+op_lshift_assign
+l_int|10
+suffix:semicolon
 multiline_comment|/*&n;&t; * (A short test says that IRIX 5.3 sends SIGTRAP for all break&n;&t; * insns, even for break codes that indicate arithmetic failures.&n;&t; * Weird ...)&n;&t; * But should we continue the brokenness???  --macro&n;&t; */
 r_switch
 c_cond
@@ -2343,17 +2359,25 @@ id|bcode
 )paren
 (brace
 r_case
-l_int|6
+id|BRK_OVERFLOW
+op_lshift
+l_int|10
 suffix:colon
 r_case
-l_int|7
+id|BRK_DIVZERO
+op_lshift
+l_int|10
 suffix:colon
 r_if
 c_cond
 (paren
 id|bcode
 op_eq
-l_int|7
+(paren
+id|BRK_DIVZERO
+op_lshift
+l_int|10
+)paren
 )paren
 id|info.si_code
 op_assign
@@ -2474,7 +2498,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-l_int|20
+l_int|10
 )paren
 op_minus
 l_int|1
@@ -2489,17 +2513,17 @@ id|tcode
 )paren
 (brace
 r_case
-l_int|6
+id|BRK_OVERFLOW
 suffix:colon
 r_case
-l_int|7
+id|BRK_DIVZERO
 suffix:colon
 r_if
 c_cond
 (paren
 id|tcode
 op_eq
-l_int|7
+id|BRK_DIVZERO
 )paren
 id|info.si_code
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.28 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.30 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1738,19 +1738,6 @@ id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cdev-&gt;dev.driver_data
-)paren
-r_return
-(paren
-r_struct
-id|dasd_devmap
-op_star
-)paren
-id|cdev-&gt;dev.driver_data
-suffix:semicolon
 id|devmap
 op_assign
 id|dasd_find_busid
@@ -1762,22 +1749,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|IS_ERR
 c_func
 (paren
 id|devmap
 )paren
 )paren
-(brace
-id|cdev-&gt;dev.driver_data
-op_assign
-id|devmap
-suffix:semicolon
-r_return
-id|devmap
-suffix:semicolon
-)brace
 id|devmap
 op_assign
 id|dasd_add_busid
@@ -1787,20 +1764,6 @@ id|cdev-&gt;dev.bus_id
 comma
 id|DASD_FEATURE_DEFAULT
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_ERR
-c_func
-(paren
-id|devmap
-)paren
-)paren
-id|cdev-&gt;dev.driver_data
-op_assign
-id|devmap
 suffix:semicolon
 r_return
 id|devmap
@@ -1855,6 +1818,10 @@ r_return
 r_void
 op_star
 )paren
+id|devmap
+suffix:semicolon
+id|cdev-&gt;dev.driver_data
+op_assign
 id|devmap
 suffix:semicolon
 id|device

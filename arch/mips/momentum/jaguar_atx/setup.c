@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -190,17 +191,17 @@ suffix:semicolon
 singleline_comment|//&t;/* m-sys and internal SRAM */
 singleline_comment|//&t;add_wired_entry(ENTRYLO(0xfe000000), ENTRYLO(0xff000000),
 singleline_comment|//&t;                0xfe000000UL, PM_16M);
-id|mv64340_base
+id|marvell_base
 op_assign
 l_int|0xf4000000
 suffix:semicolon
 singleline_comment|//mv64340_sram_base = 0xfe000000;&t;/* Currently unused */
 macro_line|#endif
 )brace
-DECL|variable|mv64340_base
+DECL|variable|marvell_base
 r_int
 r_int
-id|mv64340_base
+id|marvell_base
 op_assign
 l_int|0xf4000000L
 suffix:semicolon
@@ -232,6 +233,13 @@ op_star
 )paren
 l_int|0xfc800000L
 suffix:semicolon
+DECL|variable|marvell_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|marvell_base
+)paren
+suffix:semicolon
 DECL|function|per_cpu_mappings
 r_static
 id|__init
@@ -242,7 +250,7 @@ c_func
 r_void
 )paren
 (brace
-id|mv64340_base
+id|marvell_base
 op_assign
 (paren
 r_int
@@ -694,23 +702,22 @@ op_assign
 id|IORESOURCE_MEM
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|pci_ops
-id|mv64340_bus0_pci_ops
-suffix:semicolon
 DECL|variable|mv_bus0_controller
 r_static
 r_struct
-id|pci_controller
+id|mv_pci_controller
 id|mv_bus0_controller
+op_assign
+(brace
+dot
+id|pcic
 op_assign
 (brace
 dot
 id|pci_ops
 op_assign
 op_amp
-id|mv64340_bus0_pci_ops
+id|mv_pci_ops
 comma
 dot
 id|mem_resource
@@ -723,6 +730,18 @@ id|io_resource
 op_assign
 op_amp
 id|mv_pci_io_mem0_resource
+comma
+)brace
+comma
+dot
+id|config_addr
+op_assign
+id|MV64340_PCI_0_CONFIG_ADDR
+comma
+dot
+id|config_vreg
+op_assign
+id|MV64340_PCI_0_CONFIG_DATA_VIRTUAL_REG
 comma
 )brace
 suffix:semicolon
@@ -823,11 +842,11 @@ id|mem0_size
 op_minus
 l_int|1
 suffix:semicolon
-id|mv_bus0_controller.mem_offset
+id|mv_bus0_controller.pcic.mem_offset
 op_assign
 id|mem0_base
 suffix:semicolon
-id|mv_bus0_controller.io_offset
+id|mv_bus0_controller.pcic.io_offset
 op_assign
 l_int|0
 suffix:semicolon
@@ -841,7 +860,7 @@ id|register_pci_controller
 c_func
 (paren
 op_amp
-id|mv_bus0_controller
+id|mv_bus0_controller.pcic
 )paren
 suffix:semicolon
 id|mv_io_base
@@ -889,23 +908,22 @@ op_assign
 id|IORESOURCE_MEM
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|pci_ops
-id|mv64340_bus1_pci_ops
-suffix:semicolon
 DECL|variable|mv_bus1_controller
 r_static
 r_struct
-id|pci_controller
+id|mv_pci_controller
 id|mv_bus1_controller
+op_assign
+(brace
+dot
+id|pcic
 op_assign
 (brace
 dot
 id|pci_ops
 op_assign
 op_amp
-id|mv64340_bus1_pci_ops
+id|mv_pci_ops
 comma
 dot
 id|mem_resource
@@ -918,6 +936,18 @@ id|io_resource
 op_assign
 op_amp
 id|mv_pci_io_mem1_resource
+comma
+)brace
+comma
+dot
+id|config_addr
+op_assign
+id|MV64340_PCI_1_CONFIG_ADDR
+comma
+dot
+id|config_vreg
+op_assign
+id|MV64340_PCI_1_CONFIG_DATA_VIRTUAL_REG
 comma
 )brace
 suffix:semicolon
@@ -1014,11 +1044,11 @@ id|mem0_size
 op_minus
 l_int|1
 suffix:semicolon
-id|mv_bus1_controller.mem_offset
+id|mv_bus1_controller.pcic.mem_offset
 op_assign
 id|mem0_base
 suffix:semicolon
-id|mv_bus1_controller.io_offset
+id|mv_bus1_controller.pcic.io_offset
 op_assign
 l_int|0
 suffix:semicolon
@@ -1036,7 +1066,7 @@ id|register_pci_controller
 c_func
 (paren
 op_amp
-id|mv_bus1_controller
+id|mv_bus1_controller.pcic
 )paren
 suffix:semicolon
 id|mv_io_size

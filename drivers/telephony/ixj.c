@@ -41293,6 +41293,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|j-&gt;DSPbase
+op_assign
+id|pnp_port_start
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|request_region
 c_func
 (paren

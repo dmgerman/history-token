@@ -314,6 +314,8 @@ op_star
 id|data
 )paren
 suffix:semicolon
+DECL|macro|needed
+mdefine_line|#define needed 0
 macro_line|#if needed
 r_extern
 r_int

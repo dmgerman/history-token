@@ -872,6 +872,28 @@ id|bit
 )paren
 )paren
 suffix:semicolon
+macro_line|#if (NR_UICS == 2)
+id|mtdcr
+c_func
+(paren
+id|DCRN_UIC_SR
+c_func
+(paren
+id|UIC0
+)paren
+comma
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|31
+op_minus
+id|UIC0_UIC1NC
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if (NR_UICS &gt; 2)
 id|mtdcr
 c_func
@@ -1133,6 +1155,28 @@ id|bit
 )paren
 )paren
 suffix:semicolon
+macro_line|#if (NR_UICS == 2)
+id|mtdcr
+c_func
+(paren
+id|DCRN_UIC_SR
+c_func
+(paren
+id|UIC0
+)paren
+comma
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|31
+op_minus
+id|UIC0_UIC1NC
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if (NR_UICS &gt; 2)
 id|mtdcr
 c_func
@@ -1728,6 +1772,7 @@ id|word
 )braket
 op_or_assign
 (paren
+op_complement
 id|sense
 op_amp
 id|IRQ_SENSE_MASK

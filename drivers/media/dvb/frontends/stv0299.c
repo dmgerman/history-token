@@ -1618,8 +1618,6 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-DECL|macro|ABS
-mdefine_line|#define ABS(x) ((x) &lt; 0 ? -(x) : (x))
 DECL|macro|MIN2
 mdefine_line|#define MIN2(a,b) ((a) &lt; (b) ? (a) : (b))
 DECL|macro|MIN3
@@ -1717,13 +1715,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ABS
+id|abs
 c_func
 (paren
 id|MIN2
 c_func
 (paren
-id|ABS
+id|abs
 c_func
 (paren
 id|first_ZF
@@ -1731,7 +1729,7 @@ op_minus
 l_int|1190
 )paren
 comma
-id|ABS
+id|abs
 c_func
 (paren
 id|first_ZF
@@ -1741,13 +1739,13 @@ l_int|1790
 )paren
 )paren
 OL
-id|ABS
+id|abs
 c_func
 (paren
 id|MIN3
 c_func
 (paren
-id|ABS
+id|abs
 c_func
 (paren
 id|first_ZF
@@ -1755,7 +1753,7 @@ op_minus
 l_int|1202
 )paren
 comma
-id|ABS
+id|abs
 c_func
 (paren
 id|first_ZF
@@ -1763,7 +1761,7 @@ op_minus
 l_int|1542
 )paren
 comma
-id|ABS
+id|abs
 c_func
 (paren
 id|first_ZF

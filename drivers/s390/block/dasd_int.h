@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.58 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.60 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -225,11 +225,10 @@ id|data
 suffix:semicolon
 multiline_comment|/* pointer to data area */
 multiline_comment|/* these are important for recovering erroneous requests          */
-DECL|member|dstat
+DECL|member|irb
 r_struct
 id|irb
-op_star
-id|dstat
+id|irb
 suffix:semicolon
 multiline_comment|/* device status in case of an error */
 DECL|member|refers
@@ -311,6 +310,8 @@ DECL|macro|DASD_CQR_ERROR
 mdefine_line|#define DASD_CQR_ERROR    0x04&t;/* request is completed with error */
 DECL|macro|DASD_CQR_FAILED
 mdefine_line|#define DASD_CQR_FAILED   0x05&t;/* request is finally failed */
+DECL|macro|DASD_CQR_CLEAR
+mdefine_line|#define DASD_CQR_CLEAR    0x06&t;/* request is clear pending */
 multiline_comment|/* per dasd_ccw_req flags */
 DECL|macro|DASD_CQR_FLAGS_USE_ERP
 mdefine_line|#define DASD_CQR_FLAGS_USE_ERP   0&t;/* use ERP for this request */

@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
 DECL|macro|scanhex
@@ -7911,7 +7912,7 @@ l_string|&quot;  Local Processor Control Area (LpPaca): &bslash;n&quot;
 suffix:semicolon
 id|ptrLpPaca
 op_assign
-id|ptrPaca-&gt;xLpPacaPtr
+id|ptrPaca-&gt;lppaca_ptr
 suffix:semicolon
 id|printf
 c_func
@@ -7949,7 +7950,7 @@ l_string|&quot;  Local Processor Register Save Area (LpRegSave): &bslash;n&quot;
 suffix:semicolon
 id|ptrLpRegSave
 op_assign
-id|ptrPaca-&gt;xLpRegSavePtr
+id|ptrPaca-&gt;reg_save_ptr
 suffix:semicolon
 id|printf
 c_func
@@ -12610,7 +12611,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.virt
+id|stab_addr
 suffix:semicolon
 id|printf
 c_func

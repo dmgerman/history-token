@@ -1365,6 +1365,10 @@ id|flags
 op_or_assign
 id|IF_MASK
 suffix:semicolon
+id|flags
+op_or_assign
+id|IOPL_MASK
+suffix:semicolon
 r_return
 id|flags
 op_or

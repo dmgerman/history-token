@@ -49,11 +49,6 @@ id|args
 l_int|16
 )braket
 suffix:semicolon
-macro_line|#if 0
-id|spinlock_t
-id|lock
-suffix:semicolon
-macro_line|#endif
 DECL|member|rets
 id|rtas_arg_t
 op_star
@@ -61,6 +56,11 @@ id|rets
 suffix:semicolon
 multiline_comment|/* Pointer to return values in args[]. */
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|rtas_args
+id|rtas_stop_self_args
 suffix:semicolon
 DECL|struct|rtas_t
 r_struct
@@ -86,6 +86,11 @@ suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|args
+r_struct
+id|rtas_args
+id|args
 suffix:semicolon
 DECL|member|dev
 r_struct

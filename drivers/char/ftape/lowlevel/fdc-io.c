@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -3093,7 +3094,7 @@ c_func
 )paren
 )paren
 op_div
-id|ABS
+id|abs
 c_func
 (paren
 id|track
@@ -3110,7 +3111,7 @@ template_param
 l_int|3100
 )paren
 op_logical_and
-id|ABS
+id|abs
 c_func
 (paren
 id|track

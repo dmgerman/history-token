@@ -93,7 +93,7 @@ r_int
 r_char
 id|ctrl
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 r_int
 r_int
 id|real_year
@@ -191,7 +191,7 @@ c_func
 id|RTC_YEAR
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 id|real_year
 op_assign
 id|CMOS_READ
@@ -266,7 +266,7 @@ id|time-&gt;tm_year
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 id|time-&gt;tm_year
 op_add_assign
 id|real_year
@@ -329,7 +329,7 @@ r_int
 r_int
 id|yrs
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 r_int
 r_int
 id|real_yrs
@@ -383,7 +383,7 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 id|real_yrs
 op_assign
 id|yrs
@@ -577,7 +577,7 @@ comma
 id|RTC_FREQ_SELECT
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 id|CMOS_WRITE
 c_func
 (paren

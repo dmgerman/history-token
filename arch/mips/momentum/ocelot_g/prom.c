@@ -18,7 +18,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|gt64240_base
+id|marvell_base
 suffix:semicolon
 r_extern
 r_int
@@ -230,7 +230,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|gt64240_base
+id|marvell_base
 op_assign
 id|simple_strtol
 c_func

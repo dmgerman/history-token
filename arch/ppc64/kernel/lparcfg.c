@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 DECL|macro|MODULE_VERS
 mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
@@ -351,7 +352,7 @@ op_assign
 r_int
 )paren
 (paren
-id|lpaca-&gt;xLpPacaPtr-&gt;xSharedProc
+id|lpaca-&gt;lppaca.xSharedProc
 )paren
 suffix:semicolon
 id|n

@@ -78,7 +78,7 @@ mdefine_line|#define _CACHE_FPC&t;&t;&t;(7 &lt;&lt; 9)
 DECL|macro|_CACHE_UNCACHED
 mdefine_line|#define _CACHE_UNCACHED&t;&t;&t;_CACHE_UC_B
 DECL|macro|_CACHE_CACHABLE_NONCOHERENT
-mdefine_line|#define _CACHE_CACHABLE_NONCOHERENT&t;_CACHE_UC_B
+mdefine_line|#define _CACHE_CACHABLE_NONCOHERENT&t;_CACHE_WB
 macro_line|#else
 DECL|macro|_CACHE_CACHABLE_NO_WA
 mdefine_line|#define _CACHE_CACHABLE_NO_WA       (0&lt;&lt;9)  /* R4600 only              */

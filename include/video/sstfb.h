@@ -72,10 +72,6 @@ DECL|macro|BIT
 mdefine_line|#define BIT(x)&t;&t;(1ul&lt;&lt;(x))
 DECL|macro|POW2
 mdefine_line|#define POW2(x)&t;&t;(1ul&lt;&lt;(x))
-macro_line|#ifndef ABS
-DECL|macro|ABS
-macro_line|# define ABS(x)&t;&t;(((x)&lt;0)?-(x):(x))
-macro_line|#endif
 multiline_comment|/*&n; *&n; *  Const&n; *&n; */
 multiline_comment|/* pci stuff */
 DECL|macro|PCI_INIT_ENABLE

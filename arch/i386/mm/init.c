@@ -1746,10 +1746,9 @@ id|noexec_setup
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_PAE
-DECL|variable|use_nx
-r_static
+DECL|variable|nx_enabled
 r_int
-id|use_nx
+id|nx_enabled
 op_assign
 l_int|0
 suffix:semicolon
@@ -1864,7 +1863,7 @@ comma
 id|h
 )paren
 suffix:semicolon
-id|use_nx
+id|nx_enabled
 op_assign
 l_int|1
 suffix:semicolon
@@ -1926,14 +1925,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pte_val
+op_logical_neg
+id|pte_exec_kernel
 c_func
 (paren
 op_star
 id|pte
 )paren
-op_amp
-id|_PAGE_NX
 )paren
 id|ret
 op_assign
@@ -1999,7 +1997,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|use_nx
+id|nx_enabled
 )paren
 id|printk
 c_func

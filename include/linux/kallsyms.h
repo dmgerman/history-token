@@ -3,6 +3,8 @@ macro_line|#ifndef _LINUX_KALLSYMS_H
 DECL|macro|_LINUX_KALLSYMS_H
 mdefine_line|#define _LINUX_KALLSYMS_H
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|KSYM_NAME_LEN
+mdefine_line|#define KSYM_NAME_LEN 127
 macro_line|#ifdef CONFIG_KALLSYMS
 multiline_comment|/* Lookup the address for a symbol. Returns 0 if not found. */
 r_int

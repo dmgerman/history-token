@@ -1,18 +1,6 @@
 macro_line|#ifndef _I386_PGTABLE_2LEVEL_H
 DECL|macro|_I386_PGTABLE_2LEVEL_H
 mdefine_line|#define _I386_PGTABLE_2LEVEL_H
-multiline_comment|/*&n; * traditional i386 two-level paging structure:&n; */
-DECL|macro|PGDIR_SHIFT
-mdefine_line|#define PGDIR_SHIFT&t;22
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;1024
-multiline_comment|/*&n; * the i386 is two-level, so we don&squot;t really have any&n; * PMD directory physically.&n; */
-DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;22
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;1
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;1024
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, (e).pte_low)
 DECL|macro|pmd_ERROR
@@ -118,6 +106,42 @@ DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 DECL|macro|pfn_pmd
 mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+multiline_comment|/*&n; * All present user pages are user-executable:&n; */
+DECL|function|pte_exec
+r_static
+r_inline
+r_int
+id|pte_exec
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_user
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * All present pages are kernel-executable:&n; */
+DECL|function|pte_exec_kernel
+r_static
+r_inline
+r_int
+id|pte_exec_kernel
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bits 0, 6 and 7 are taken, split up the 29 bits of offset&n; * into this range:&n; */
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS&t;29

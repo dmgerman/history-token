@@ -350,7 +350,7 @@ id|callback
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|pm_unregister

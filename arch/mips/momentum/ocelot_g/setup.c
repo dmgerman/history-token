@@ -33,10 +33,10 @@ l_int|6
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|variable|gt64240_base
+DECL|variable|marvell_base
 r_int
 r_int
-id|gt64240_base
+id|marvell_base
 suffix:semicolon
 multiline_comment|/* These functions are used for rebooting or halting the machine*/
 r_extern
@@ -213,7 +213,7 @@ comma
 id|PM_64K
 )paren
 suffix:semicolon
-id|gt64240_base
+id|marvell_base
 op_assign
 l_int|0xf4000000
 suffix:semicolon
@@ -248,12 +248,12 @@ l_string|&quot;Enabling L3 cache...&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the L3 cache in the GT64120A&squot;s CPU Configuration register */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 l_int|0
 comma
-id|GT_READ
+id|MV_READ
 c_func
 (paren
 l_int|0
@@ -788,7 +788,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Fix up the DiskOnChip mapping */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 l_int|0x468

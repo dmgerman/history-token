@@ -91,7 +91,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.next_round_robin
+id|stab_next_rr
 op_assign
 l_int|1
 suffix:semicolon
@@ -216,7 +216,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.next_round_robin
+id|stab_next_rr
 op_assign
 l_int|0
 suffix:semicolon
@@ -535,7 +535,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.next_round_robin
+id|stab_next_rr
 suffix:semicolon
 r_for
 c_loop
@@ -676,7 +676,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.next_round_robin
+id|stab_next_rr
 op_assign
 (paren
 id|castout_entry
@@ -844,7 +844,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.virt
+id|stab_addr
 comma
 id|esid
 comma
@@ -1305,7 +1305,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xStab_data.virt
+id|stab_addr
 suffix:semicolon
 id|STE
 op_star
@@ -1536,7 +1536,7 @@ multiline_comment|/*&n;&t; * We take the next entry, round robin. Previously we 
 multiline_comment|/* &n;&t; * Never cast out the segment for our kernel stack. Since we&n;&t; * dont invalidate the ERAT we could have a valid translation&n;&t; * for the kernel stack during the first part of exception exit &n;&t; * which gets invalidated due to a tlbie from another cpu at a&n;&t; * non recoverable point (after setting srr0/1) - Anton&n;&t; *&n;&t; * paca Ksave is always valid (even when on the interrupt stack)&n;&t; * so we use that.&n;&t; */
 id|castout_entry
 op_assign
-id|lpaca-&gt;xStab_data.next_round_robin
+id|lpaca-&gt;stab_next_rr
 suffix:semicolon
 r_do
 (brace
@@ -1586,11 +1586,11 @@ op_eq
 id|GET_ESID
 c_func
 (paren
-id|lpaca-&gt;xKsave
+id|lpaca-&gt;kstack
 )paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;xStab_data.next_round_robin
+id|lpaca-&gt;stab_next_rr
 op_assign
 id|castout_entry
 suffix:semicolon

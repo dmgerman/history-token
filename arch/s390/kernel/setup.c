@@ -37,10 +37,10 @@ id|console_mode
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|console_device
+DECL|variable|console_devno
 r_int
 r_int
-id|console_device
+id|console_devno
 op_assign
 op_minus
 l_int|1
@@ -513,7 +513,7 @@ OL
 l_int|65536
 )paren
 (brace
-id|console_device
+id|console_devno
 op_assign
 id|vdev
 suffix:semicolon
@@ -664,7 +664,7 @@ comma
 l_int|1024
 )paren
 suffix:semicolon
-id|console_device
+id|console_devno
 op_assign
 id|simple_strtoul
 c_func
@@ -2762,5 +2762,17 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * For compatibilty only. S/390 specific setup of interrupts et al. is done&n; * much later in init_channel_subsystem().&n; */
+r_void
+id|__init
+DECL|function|init_IRQ
+id|init_IRQ
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* nothing... */
 )brace
 eof

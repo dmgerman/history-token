@@ -347,7 +347,7 @@ c_func
 (paren
 id|HvCallBaseSendIPI
 comma
-id|targetPaca-&gt;xPacaIndex
+id|targetPaca-&gt;paca_index
 )paren
 suffix:semicolon
 )brace

@@ -12,7 +12,6 @@ macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#endif
 DECL|macro|LINE_LENGTH

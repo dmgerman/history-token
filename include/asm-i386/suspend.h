@@ -117,22 +117,6 @@ id|packed
 suffix:semicolon
 DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movl %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg[register]))
-r_extern
-r_void
-id|save_processor_state
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|restore_processor_state
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 r_extern
 r_int

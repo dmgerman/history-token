@@ -4,7 +4,7 @@ DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 macro_line|#include &lt;asm/qeth.h&gt;
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.35 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.36 $&quot;
 r_extern
 r_const
 r_char
@@ -45,7 +45,7 @@ mdefine_line|#define QETH_TIMEOUT &t;&t;(10 * HZ)
 DECL|macro|QETH_IPA_TIMEOUT
 mdefine_line|#define QETH_IPA_TIMEOUT &t;(45 * HZ)
 DECL|macro|QETH_IDX_COMMAND_SEQNO
-mdefine_line|#define QETH_IDX_COMMAND_SEQNO &t;-1
+mdefine_line|#define QETH_IDX_COMMAND_SEQNO &t;0xffff0000
 DECL|macro|SR_INFO_LEN
 mdefine_line|#define SR_INFO_LEN&t;&t;16
 DECL|macro|QETH_CLEAR_CHANNEL_PARM

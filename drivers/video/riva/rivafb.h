@@ -182,6 +182,10 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+DECL|member|bus
+r_int
+id|bus
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
 DECL|member|vram_valid

@@ -211,5 +211,13 @@ op_star
 id|hose
 )paren
 suffix:semicolon
+multiline_comment|/* For MPC107 boards that use the built-in openpic */
+r_void
+id|mpc10x_set_openpic
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __PPC_KERNEL_MPC10X_H */
 eof
