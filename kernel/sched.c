@@ -7,6 +7,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;linux
+singleline_comment|//pagemap.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -3273,6 +3276,13 @@ c_func
 (paren
 op_amp
 id|req.done
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * we want a new context here. This eliminates TLB&n;&t;&t; * flushes on the cpus where the process executed prior to&n;&t;&t; * the migration.&n;&t;&t; */
+id|tlb_migrate_prepare
+c_func
+(paren
+id|current-&gt;mm
 )paren
 suffix:semicolon
 r_return
