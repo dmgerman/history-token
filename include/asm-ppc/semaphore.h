@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.semaphore.h 1.15 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_SEMAPHORE_H
 DECL|macro|_PPC_SEMAPHORE_H
 mdefine_line|#define _PPC_SEMAPHORE_H
-multiline_comment|/*&n; * Swiped from asm-sparc/semaphore.h and modified&n; * -- Cort (cort@cs.nmt.edu)&n; *&n; * Stole some rw spinlock-based semaphore stuff from asm-alpha/semaphore.h&n; * -- Ani Joshi (ajoshi@unixbox.com)&n; *&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
+multiline_comment|/*&n; * Swiped from asm-sparc/semaphore.h and modified&n; * -- Cort (cort@cs.nmt.edu)&n; *&n; * Stole some rw spinlock-based semaphore stuff from asm-alpha/semaphore.h&n; * -- Ani Joshi (ajoshi@unixbox.com)&n; *&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
