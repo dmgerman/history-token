@@ -589,12 +589,14 @@ op_star
 id|op
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 r_void
 id|acpi_ps_delete_parse_cache
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 id|u8
 id|acpi_ps_is_leading_char
 (paren

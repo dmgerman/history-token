@@ -2358,6 +2358,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_walk_state_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_walk_state_cache
@@ -2379,4 +2380,5 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

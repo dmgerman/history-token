@@ -842,6 +842,21 @@ id|string
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Any string left? */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|string
+)paren
+)paren
+(brace
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
 multiline_comment|/* Main loop: convert the string to a 64-bit integer */
 r_while
 c_loop
@@ -1360,9 +1375,6 @@ id|acpi_status
 id|status
 suffix:semicolon
 id|u32
-id|i
-suffix:semicolon
-id|u32
 id|this_thread_id
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
@@ -1390,7 +1402,12 @@ id|acpi_os_get_thread_id
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Deadlock prevention.  Check if this thread owns any mutexes of value&n;&t; * greater than or equal to this one.  If so, the thread has violated&n;&t; * the mutex ordering rule.  This indicates a coding error somewhere in&n;&t; * the ACPI subsystem code.&n;&t; */
+macro_line|#ifdef ACPI_MUTEX_DEBUG
+(brace
+id|u32
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Mutex debug code, for internal debugging only.&n;&t;&t; *&n;&t;&t; * Deadlock prevention.  Check if this thread owns any mutexes of value&n;&t;&t; * greater than or equal to this one.  If so, the thread has violated&n;&t;&t; * the mutex ordering rule.  This indicates a coding error somewhere in&n;&t;&t; * the ACPI subsystem code.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1477,6 +1494,8 @@ id|AE_ACQUIRE_DEADLOCK
 suffix:semicolon
 )brace
 )brace
+)brace
+macro_line|#endif
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -2390,6 +2409,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_delete_generic_state_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_generic_state_cache
@@ -2411,6 +2431,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_walk_package_tree&n; *&n; * PARAMETERS:  obj_desc        - The Package object on which to resolve refs&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk through a package&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_walk_package_tree

@@ -1107,12 +1107,14 @@ op_star
 id|thread
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 r_void
 id|acpi_ds_delete_walk_state_cache
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ds_result_insert

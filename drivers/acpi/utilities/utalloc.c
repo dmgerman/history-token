@@ -29,7 +29,6 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* If walk cache is full, just free this wallkstate object */
 id|cache_info
 op_assign
 op_amp
@@ -38,6 +37,8 @@ id|acpi_gbl_memory_lists
 id|list_id
 )braket
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
+multiline_comment|/* If walk cache is full, just free this wallkstate object */
 r_if
 c_cond
 (paren
@@ -134,6 +135,20 @@ id|ACPI_MTX_CACHES
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/* Object cache is disabled; just free the object */
+id|ACPI_MEM_FREE
+(paren
+id|object
+)paren
+suffix:semicolon
+id|ACPI_MEM_TRACKING
+(paren
+id|cache_info-&gt;total_freed
+op_increment
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_acquire_from_cache&n; *&n; * PARAMETERS:  list_id             - Memory list ID&n; *&n; * RETURN:      A requested object.  NULL if the object could not be&n; *              allocated.&n; *&n; * DESCRIPTION: Get an object from the specified cache.  If cache is empty,&n; *              the object is allocated.&n; *&n; ******************************************************************************/
 r_void
@@ -167,6 +182,7 @@ id|acpi_gbl_memory_lists
 id|list_id
 )braket
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 r_if
 c_cond
 (paren
@@ -321,12 +337,29 @@ op_increment
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/* Object cache is disabled; just allocate the object */
+id|object
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+id|cache_info-&gt;object_size
+)paren
+suffix:semicolon
+id|ACPI_MEM_TRACKING
+(paren
+id|cache_info-&gt;total_allocated
+op_increment
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 id|object
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_delete_generic_cache&n; *&n; * PARAMETERS:  list_id         - Memory list ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects within the requested cache.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_generic_cache
@@ -402,6 +435,7 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_validate_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer descriptor to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform parameter validation checks on an struct acpi_buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_validate_buffer

@@ -471,7 +471,7 @@ comma
 r_char
 op_star
 )paren
-l_int|0
+l_int|1
 )brace
 comma
 macro_line|#if !defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)

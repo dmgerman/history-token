@@ -350,9 +350,13 @@ op_assign
 (paren
 id|u8
 )paren
+(paren
 id|ACPI_TO_INTEGER
 (paren
 id|val
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if

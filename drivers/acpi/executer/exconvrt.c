@@ -160,6 +160,20 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+multiline_comment|/* Check for zero-length buffer */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|count
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BUFFER_LIMIT
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Transfer no more than an integer&squot;s worth of data */
 r_if
 c_cond

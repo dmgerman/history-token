@@ -1404,6 +1404,7 @@ op_star
 id|state
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 r_void
 id|acpi_ut_delete_generic_state_cache
 (paren
@@ -1416,6 +1417,7 @@ id|acpi_ut_delete_object_cache
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * utmisc&n; */
 r_void
 id|acpi_ut_print_string
@@ -1580,6 +1582,7 @@ op_star
 id|object
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 r_void
 id|acpi_ut_delete_generic_cache
 (paren
@@ -1587,6 +1590,7 @@ id|u32
 id|list_id
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_ut_validate_buffer
 (paren
