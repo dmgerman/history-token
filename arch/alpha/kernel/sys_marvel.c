@@ -2037,11 +2037,6 @@ op_assign
 id|marvel_agp_info
 comma
 dot
-id|srmcons_allowed
-op_assign
-id|marvel_srmcons_allowed
-comma
-dot
 id|smp_callin
 op_assign
 id|marvel_smp_callin
