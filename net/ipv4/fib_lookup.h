@@ -205,5 +205,24 @@ op_star
 id|req
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|fib_alias
+op_star
+id|fib_find_alias
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|fah
+comma
+id|u8
+id|tos
+comma
+id|u32
+id|prio
+)paren
+suffix:semicolon
 macro_line|#endif /* _FIB_LOOKUP_H */
 eof
