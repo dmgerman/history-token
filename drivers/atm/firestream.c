@@ -348,13 +348,13 @@ id|val
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_struct
 id|reginit_item
 id|PHY_NTC_INIT
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -4560,7 +4560,7 @@ suffix:semicolon
 DECL|function|undocumented_pci_fix
 r_static
 r_void
-id|__init
+id|__devinit
 id|undocumented_pci_fix
 (paren
 r_struct
@@ -4612,7 +4612,7 @@ multiline_comment|/*************************************************************
 DECL|function|write_phy
 r_static
 r_void
-id|__init
+id|__devinit
 id|write_phy
 (paren
 r_struct
@@ -4649,7 +4649,7 @@ suffix:semicolon
 DECL|function|init_phy
 r_static
 r_int
-id|__init
+id|__devinit
 id|init_phy
 (paren
 r_struct
@@ -4910,7 +4910,7 @@ suffix:semicolon
 DECL|function|aligned_kmalloc
 r_static
 r_void
-id|__init
+id|__devinit
 op_star
 id|aligned_kmalloc
 (paren
@@ -5003,7 +5003,7 @@ suffix:semicolon
 DECL|function|init_q
 r_static
 r_int
-id|__init
+id|__devinit
 id|init_q
 (paren
 r_struct
@@ -5204,7 +5204,7 @@ suffix:semicolon
 DECL|function|init_fp
 r_static
 r_int
-id|__init
+id|__devinit
 id|init_fp
 (paren
 r_struct
@@ -6417,7 +6417,7 @@ macro_line|#endif
 DECL|function|fs_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|fs_init
 (paren
 r_struct
@@ -7542,7 +7542,7 @@ suffix:semicolon
 DECL|function|firestream_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|firestream_init_one
 (paren
 r_struct

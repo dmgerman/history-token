@@ -15,16 +15,5 @@ DECL|macro|CLIP_CHECK_INTERVAL
 mdefine_line|#define CLIP_CHECK_INTERVAL&t; 10&t;/* check every ten seconds */
 DECL|macro|SIOCMKCLIP
 mdefine_line|#define&t;SIOCMKCLIP&t;_IO(&squot;a&squot;,ATMIOC_CLIP)&t;/* create IP interface */
-macro_line|#ifdef __KERNEL__
-r_extern
-r_const
-r_int
-r_char
-id|llc_oui
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

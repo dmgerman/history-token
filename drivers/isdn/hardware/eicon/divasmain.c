@@ -187,11 +187,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|struct|_diva_os_thread_dpc
 r_typedef
 r_struct

@@ -491,26 +491,6 @@ suffix:semicolon
 multiline_comment|/* current buffer for S508 firmware */
 )brace
 suffix:semicolon
-r_int
-id|register_frad
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-r_int
-id|unregister_frad
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|dlci_ioctl_set

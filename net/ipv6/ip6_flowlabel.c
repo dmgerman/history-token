@@ -2896,6 +2896,8 @@ id|seq
 comma
 op_star
 id|pos
+op_minus
+l_int|1
 )paren
 suffix:colon
 id|SEQ_START_TOKEN
@@ -3306,34 +3308,16 @@ c_func
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_struct
-id|proc_dir_entry
-op_star
-id|p
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|p
-op_assign
-id|create_proc_entry
+id|proc_net_fops_create
 c_func
 (paren
 l_string|&quot;ip6_flowlabel&quot;
 comma
 id|S_IRUGO
 comma
-id|proc_net
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-)paren
-id|p-&gt;proc_fops
-op_assign
 op_amp
 id|ip6fl_seq_fops
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace

@@ -781,6 +781,8 @@ id|seq
 comma
 op_star
 id|pos
+op_minus
+l_int|1
 )paren
 suffix:colon
 id|SEQ_START_TOKEN

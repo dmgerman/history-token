@@ -33,13 +33,13 @@ macro_line|#ifdef CONFIG_PPC
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#endif /* CONFIG_PPC */
 macro_line|#include &quot;de4x5.h&quot;
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;de4x5.c:V0.546 2001/02/22 davies@maniac.ultranet.com&bslash;n&quot;
 suffix:semicolon
@@ -2922,7 +2922,7 @@ mdefine_line|#define PHY_HARD_RESET {&bslash;&n;    outl(GEP_HRST, DE4X5_GEP);  
 "&f;"
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|de4x5_hw_init
 id|de4x5_hw_init
 c_func
@@ -8081,7 +8081,7 @@ macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;** This function searches the current bus (which is &gt;0) for a DECchip with an&n;** SROM, so that in multiport cards that have one SROM shared between multiple &n;** DECchips, we can find the base SROM irrespective of the BIOS scan direction.&n;** For single port cards this is a time waster...&n;*/
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|srom_search
 id|srom_search
 c_func
@@ -8463,7 +8463,7 @@ multiline_comment|/*&n;** PCI bus I/O device probe&n;** NB: PCI I/O accesses and
 DECL|function|de4x5_pci_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|de4x5_pci_probe
 (paren
 r_struct

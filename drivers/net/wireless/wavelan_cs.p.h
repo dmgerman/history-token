@@ -1083,15 +1083,8 @@ c_func
 id|dev_link_t
 op_star
 )paren
-comma
-multiline_comment|/* Remove a device */
-id|wv_flush_stale_links
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
-multiline_comment|/* &quot;detach&quot; all possible devices */
+multiline_comment|/* Remove a device */
 multiline_comment|/* ---------------------- INTERRUPT HANDLING ---------------------- */
 r_static
 id|irqreturn_t

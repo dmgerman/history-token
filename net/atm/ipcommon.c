@@ -15,32 +15,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
-DECL|variable|llc_oui
-r_const
-r_int
-r_char
-id|llc_oui
-(braket
-)braket
-op_assign
-(brace
-l_int|0xaa
-comma
-multiline_comment|/* DSAP: non-ISO */
-l_int|0xaa
-comma
-multiline_comment|/* SSAP: non-ISO */
-l_int|0x03
-comma
-multiline_comment|/* Ctrl: Unnumbered Information Command PDU */
-l_int|0x00
-comma
-multiline_comment|/* OUI: EtherType */
-l_int|0x00
-comma
-l_int|0x00
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * skb_migrate appends the list at &quot;from&quot; to &quot;to&quot;, emptying &quot;from&quot; in the&n; * process. skb_migrate is atomic with respect to all other skb operations on&n; * &quot;from&quot; and &quot;to&quot;. Note that it locks both lists at the same time, so beware&n; * of potential deadlocks.&n; *&n; * This function should live in skbuff.c or skbuff.h.&n; */
 DECL|function|skb_migrate
 r_void
@@ -184,13 +158,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|llc_oui
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|llc_oui
-)paren
-suffix:semicolon
 DECL|variable|skb_migrate
 id|EXPORT_SYMBOL
 c_func

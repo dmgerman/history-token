@@ -20,11 +20,15 @@ mdefine_line|#define CMD_MEM_WRT_INVALIDATE PCI_COMMAND_INVALIDATE
 r_typedef
 r_enum
 (brace
+DECL|macro|FALSE
+macro_line|#undef FALSE
 DECL|enumerator|FALSE
 id|FALSE
 op_assign
 l_int|0
 comma
+DECL|macro|TRUE
+macro_line|#undef TRUE
 DECL|enumerator|TRUE
 id|TRUE
 op_assign
@@ -33,6 +37,8 @@ DECL|typedef|boolean_t
 )brace
 id|boolean_t
 suffix:semicolon
+DECL|macro|ASSERT
+macro_line|#undef ASSERT
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(x)&t;if(!(x)) BUG()
 DECL|macro|MSGOUT

@@ -87,8 +87,6 @@ op_amp
 id|dev-&gt;dev
 comma
 id|state
-comma
-id|SUSPEND_SAVE_STATE
 )paren
 suffix:semicolon
 )brace
@@ -109,8 +107,6 @@ c_func
 (paren
 op_amp
 id|dev-&gt;dev
-comma
-id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
 )brace
@@ -255,7 +251,7 @@ multiline_comment|/* shortcut */
 DECL|function|i82092aa_pci_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|i82092aa_pci_probe
 c_func
 (paren

@@ -678,7 +678,7 @@ mdefine_line|#define SA1111_DEV(_d)&t;container_of((_d), struct sa1111_dev, dev)
 DECL|macro|sa1111_get_drvdata
 mdefine_line|#define sa1111_get_drvdata(d)&t;dev_get_drvdata(&amp;(d)-&gt;dev)
 DECL|macro|sa1111_set_drvdata
-mdefine_line|#define sa1111_set_drvdata(d,p)&t;dev_get_drvdata(&amp;(d)-&gt;dev, p)
+mdefine_line|#define sa1111_set_drvdata(d,p)&t;dev_set_drvdata(&amp;(d)-&gt;dev, p)
 DECL|struct|sa1111_driver
 r_struct
 id|sa1111_driver
@@ -749,21 +749,6 @@ DECL|macro|SA1111_DRV
 mdefine_line|#define SA1111_DRV(_d)&t;container_of((_d), struct sa1111_driver, drv)
 DECL|macro|SA1111_DRIVER_NAME
 mdefine_line|#define SA1111_DRIVER_NAME(_sadev) ((_sadev)-&gt;dev.driver-&gt;name)
-multiline_comment|/*&n; * Probe for a SA1111 chip.&n; */
-r_extern
-r_int
-id|sa1111_init
-c_func
-(paren
-r_int
-r_int
-id|phys
-comma
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These frob the SKPCR register.&n; */
 r_void
 id|sa1111_enable_device

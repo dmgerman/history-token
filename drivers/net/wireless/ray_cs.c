@@ -1452,56 +1452,6 @@ id|rcsid
 op_assign
 l_string|&quot;Raylink/WebGear wireless LAN - Corey &lt;Thomas corey@world.std.com&gt;&quot;
 suffix:semicolon
-multiline_comment|/*======================================================================&n;&n;    This bit of code is used to avoid unregistering network devices&n;    at inappropriate times.  2.2 and later kernels are fairly picky&n;    about when this can happen.&n;    &n;======================================================================*/
-DECL|function|flush_stale_links
-r_static
-r_void
-id|flush_stale_links
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-comma
-op_star
-id|next
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|link
-op_assign
-id|dev_list
-suffix:semicolon
-id|link
-suffix:semicolon
-id|link
-op_assign
-id|next
-)paren
-(brace
-id|next
-op_assign
-id|link-&gt;next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_LINK
-)paren
-id|ray_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*=============================================================================&n;    ray_attach() creates an &quot;instance&quot; of the driver, allocating&n;    local data structures for one device.  The device is registered&n;    with Card Services.&n;    The dev_link structure is initialized, but we don&squot;t actually&n;    configure the card at this point -- we wait until we receive a&n;    card insertion event.&n;=============================================================================*/
 DECL|function|ray_attach
 r_static
@@ -1538,11 +1488,6 @@ c_func
 l_int|1
 comma
 l_string|&quot;ray_attach()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|flush_stale_links
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
@@ -2071,10 +2016,6 @@ op_amp
 id|DEV_STALE_CONFIG
 )paren
 (brace
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4423,8 +4364,20 @@ comma
 l_string|&quot;ray_release ending&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_STALE_CONFIG
+)paren
+id|ray_detach
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* ray_release */
 multiline_comment|/*=============================================================================&n;    The card status event handler.  Mostly, this schedules other&n;    stuff to run after an event is received.  A CARD_REMOVAL event&n;    also sets some flags to discourage the net drivers from trying&n;    to talk to the card any more.&n;&n;    When a CARD_REMOVAL event is received, we immediately set a flag&n;    to block future accesses to this device.  All the functions that&n;    actually access the device should check this flag to make sure&n;    the card is still present.&n;=============================================================================*/
 DECL|function|ray_event
 r_static
