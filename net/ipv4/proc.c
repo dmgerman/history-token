@@ -1439,7 +1439,7 @@ id|v
 r_int
 id|i
 suffix:semicolon
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq

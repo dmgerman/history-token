@@ -9623,7 +9623,7 @@ op_eq
 id|SEQ_START_TOKEN
 )paren
 (brace
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq
