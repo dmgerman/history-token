@@ -3424,6 +3424,16 @@ r_void
 r_if
 c_cond
 (paren
+id|_machine
+op_ne
+id|_MACH_prep
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|OpenPIC_Addr
 op_ne
 l_int|NULL

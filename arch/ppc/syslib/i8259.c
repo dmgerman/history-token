@@ -41,6 +41,11 @@ DECL|variable|i8259_pic_irq_offset
 r_int
 id|i8259_pic_irq_offset
 suffix:semicolon
+DECL|variable|i8259_present
+r_static
+r_int
+id|i8259_present
+suffix:semicolon
 multiline_comment|/*&n; * Acknowledge the IRQ using either the PCI host bridge&squot;s interrupt&n; * acknowledge feature or poll.  How i8259_init() is called determines&n; * which is called.  It should be noted that polling is broken on some&n; * IBM and Motorola PReP boxes so we must use the int-ack feature on them.&n; */
 r_int
 DECL|function|i8259_irq
@@ -623,6 +628,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i8259_present
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* reserve our resources */
 id|request_irq
 c_func
@@ -838,6 +852,10 @@ id|intack_addr
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|i8259_present
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 eof
