@@ -1214,10 +1214,6 @@ id|size
 op_sub_assign
 id|nbytes
 suffix:semicolon
-id|offset
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1332,6 +1328,10 @@ id|i
 )braket
 op_assign
 id|page
+suffix:semicolon
+id|offset
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
