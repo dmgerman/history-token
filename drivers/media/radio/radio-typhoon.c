@@ -1332,13 +1332,6 @@ id|typhoon_unit.iobase
 op_assign
 id|io
 suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|typhoon_unit.lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1376,6 +1369,13 @@ c_func
 (paren
 id|KERN_INFO
 id|BANNER
+)paren
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|typhoon_unit.lock
 )paren
 suffix:semicolon
 id|io
