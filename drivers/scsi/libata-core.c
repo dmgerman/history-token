@@ -13251,6 +13251,16 @@ id|ATA_FLAG_NO_LEGACY
 )paren
 op_eq
 l_int|0
+op_logical_and
+(paren
+id|pdev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+)paren
+op_eq
+id|PCI_CLASS_STORAGE_IDE
 )paren
 (brace
 multiline_comment|/* TODO: support transitioning to native mode? */
