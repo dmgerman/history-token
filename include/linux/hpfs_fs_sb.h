@@ -147,17 +147,12 @@ r_int
 id|sb_c_bitmap
 suffix:semicolon
 multiline_comment|/* current bitmap */
-DECL|member|sb_creation_de
-id|wait_queue_head_t
-id|sb_creation_de
+DECL|member|hpfs_creation_de
+r_struct
+id|semaphore
+id|hpfs_creation_de
 suffix:semicolon
 multiline_comment|/* when creating dirents, nobody else&n;&t;&t;&t;&t;&t;   can alloc blocks */
-DECL|member|sb_creation_de_lock
-r_int
-id|sb_creation_de_lock
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/*unsigned sb_mounting : 1;*/
 DECL|member|sb_timeshift
 r_int
@@ -210,10 +205,6 @@ DECL|macro|s_hpfs_bmp_dir
 mdefine_line|#define s_hpfs_bmp_dir u.hpfs_sb.sb_bmp_dir
 DECL|macro|s_hpfs_c_bitmap
 mdefine_line|#define s_hpfs_c_bitmap u.hpfs_sb.sb_c_bitmap
-DECL|macro|s_hpfs_creation_de
-mdefine_line|#define s_hpfs_creation_de u.hpfs_sb.sb_creation_de
-DECL|macro|s_hpfs_creation_de_lock
-mdefine_line|#define s_hpfs_creation_de_lock u.hpfs_sb.sb_creation_de_lock
 DECL|macro|s_hpfs_iget_q
 mdefine_line|#define s_hpfs_iget_q u.hpfs_sb.sb_iget_q
 multiline_comment|/*#define s_hpfs_mounting u.hpfs_sb.sb_mounting*/
