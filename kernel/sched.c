@@ -14334,7 +14334,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NUMA
+multiline_comment|/*&n; * To enable disjoint top-level NUMA domains, define SD_NODES_PER_DOMAIN&n; * in arch code. That defines the number of nearby nodes in a node&squot;s top&n; * level scheduling domain.&n; */
+macro_line|#if defined(CONFIG_NUMA) &amp;&amp; defined(SD_NODES_PER_DOMAIN)
 multiline_comment|/**&n; * find_next_best_node - find the next node to include in a sched_domain&n; * @node: node whose sched_domain we&squot;re building&n; * @used_nodes: nodes already in the sched_domain&n; *&n; * Find the next node to include in a given scheduling domain.  Simply&n; * finds the closest node not already in the @used_nodes map.&n; *&n; * Should use nodemask_t.&n; */
 DECL|function|find_next_best_node
 r_static
@@ -14459,9 +14460,6 @@ c_func
 (paren
 r_int
 id|node
-comma
-r_int
-id|size
 )paren
 (brace
 r_int
@@ -14501,7 +14499,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|size
+id|SD_NODES_PER_DOMAIN
 suffix:semicolon
 id|i
 op_increment
@@ -14544,7 +14542,22 @@ r_return
 id|span
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_NUMA */
+macro_line|#else /* CONFIG_NUMA &amp;&amp; SD_NODES_PER_DOMAIN */
+DECL|function|sched_domain_node_span
+id|cpumask_t
+id|__init
+id|sched_domain_node_span
+c_func
+(paren
+r_int
+id|node
+)paren
+(brace
+r_return
+id|cpu_possible_map
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_NUMA &amp;&amp; SD_NODES_PER_DOMAIN */
 macro_line|#ifdef CONFIG_SCHED_SMT
 r_static
 id|DEFINE_PER_CPU
@@ -14629,9 +14642,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* Number of nearby nodes in a node&squot;s scheduling domain */
-DECL|macro|SD_NODES_PER_DOMAIN
-mdefine_line|#define SD_NODES_PER_DOMAIN 4
 r_static
 id|DEFINE_PER_CPU
 c_func
@@ -15153,8 +15163,6 @@ id|sched_domain_node_span
 c_func
 (paren
 id|i
-comma
-id|SD_NODES_PER_DOMAIN
 )paren
 suffix:semicolon
 id|cpus_and
