@@ -41,8 +41,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|ORINOCO_INTEN
-mdefine_line|#define ORINOCO_INTEN&t; &t;( HERMES_EV_RX | HERMES_EV_ALLOC | HERMES_EV_TX | &bslash;&n;&t;&t;&t;&t;HERMES_EV_TXEXC | HERMES_EV_WTERR | HERMES_EV_INFO | &bslash;&n;&t;&t;&t;&t;HERMES_EV_INFDROP )
 DECL|struct|orinoco_private
 r_struct
 id|orinoco_private
