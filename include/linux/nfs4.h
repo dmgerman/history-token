@@ -994,6 +994,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_GETATTR
 id|NFSPROC4_CLNT_GETATTR
 comma
+DECL|enumerator|NFSPROC4_CLNT_LOOKUP
+id|NFSPROC4_CLNT_LOOKUP
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
