@@ -782,7 +782,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Timeouts */
 DECL|macro|HERMES_BAP_BUSY_TIMEOUT
-mdefine_line|#define HERMES_BAP_BUSY_TIMEOUT (500) /* In iterations of ~1us */
+mdefine_line|#define HERMES_BAP_BUSY_TIMEOUT (10000) /* In iterations of ~1us */
 multiline_comment|/* Basic control structure */
 DECL|struct|hermes
 r_typedef
