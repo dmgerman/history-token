@@ -1,9 +1,9 @@
-multiline_comment|/* $Id: sni.h,v 1.2 1998/09/19 19:19:39 ralf Exp $&n; *&n; * SNI specific definitions&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_SNI_H 
-DECL|macro|__ASM_MIPS_SNI_H
-mdefine_line|#define __ASM_MIPS_SNI_H 
+multiline_comment|/*&n; * SNI specific definitions&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998 by Ralf Baechle&n; */
+macro_line|#ifndef __ASM_SNI_H
+DECL|macro|__ASM_SNI_H
+mdefine_line|#define __ASM_SNI_H
 DECL|macro|SNI_PORT_BASE
-mdefine_line|#define SNI_PORT_BASE&t;0xb4000000
+mdefine_line|#define SNI_PORT_BASE&t;&t;0xb4000000
 multiline_comment|/*&n; * ASIC PCI registers for little endian configuration.&n; */
 macro_line|#ifndef __MIPSEL__
 macro_line|#error &quot;Fix me for big endian&quot;
@@ -139,5 +139,5 @@ mdefine_line|#define PCIMT_EISA_BASE&t;&t;0xb0000000
 multiline_comment|/* PCI EISA Interrupt acknowledge  */
 DECL|macro|PCIMT_INT_ACKNOWLEDGE
 mdefine_line|#define PCIMT_INT_ACKNOWLEDGE&t;0xba000000
-macro_line|#endif /* __ASM_MIPS_SNI_H */
+macro_line|#endif /* __ASM_SNI_H */
 eof

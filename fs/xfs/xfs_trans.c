@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -708,6 +708,16 @@ id|tp-&gt;t_rtx_res
 op_assign
 id|tp-&gt;t_rtx_res_used
 suffix:semicolon
+id|PFLAGS_DUP
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+comma
+op_amp
+id|ntp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|XFS_TRANS_DUP_DQINFO
 c_func
 (paren
@@ -779,9 +789,12 @@ op_ne
 l_int|0
 suffix:semicolon
 multiline_comment|/* Mark this thread as being in a transaction */
-id|current-&gt;flags
-op_or_assign
-id|PF_FSTRANS
+id|PFLAGS_SET_FSTRANS
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to reserve the needed disk blocks by decrementing&n;&t; * the number needed from the number available.  This will&n;&t; * fail if the count would go below zero.&n;&t; */
 r_if
@@ -815,10 +828,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -1094,10 +1109,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -2222,7 +2239,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * xfs_trans_commit&n; *&n; * Commit the given transaction to the log a/synchronously.&n; *&n; * XFS disk error handling mechanism is not based on a typical&n; * transaction abort mechanism. Logically after the filesystem&n; * gets marked &squot;SHUTDOWN&squot;, we can&squot;t let any new transactions&n; * be durable - ie. committed to disk - because some metadata might&n; * be inconsistent. In such cases, this returns an error, and the&n; * caller may assume that all locked objects joined to the transaction&n; * have already been unlocked as if the commit had succeeded.&n; * It&squot;s illegal to reference the transaction structure after this call.&n; */
+multiline_comment|/*&n; * xfs_trans_commit&n; *&n; * Commit the given transaction to the log a/synchronously.&n; *&n; * XFS disk error handling mechanism is not based on a typical&n; * transaction abort mechanism. Logically after the filesystem&n; * gets marked &squot;SHUTDOWN&squot;, we can&squot;t let any new transactions&n; * be durable - ie. committed to disk - because some metadata might&n; * be inconsistent. In such cases, this returns an error, and the&n; * caller may assume that all locked objects joined to the transaction&n; * have already been unlocked as if the commit had succeeded.&n; * Do not reference the transaction structure after this call.&n; */
 multiline_comment|/*ARGSUSED*/
 r_int
 DECL|function|xfs_trans_commit
@@ -2410,6 +2427,13 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_free_items
 c_func
 (paren
@@ -2450,11 +2474,6 @@ op_star
 id|commit_lsn_p
 op_assign
 id|commit_lsn
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 r_return
 (paren
@@ -2702,6 +2721,13 @@ op_minus
 l_int|1
 )paren
 (brace
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_uncommit
 c_func
 (paren
@@ -2711,11 +2737,6 @@ id|flags
 op_or
 id|XFS_TRANS_ABORT
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 r_return
 id|XFS_ERROR
@@ -2773,6 +2794,14 @@ op_amp
 (paren
 id|tp-&gt;t_logcb
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* mark this thread as no longer being in a transaction */
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Once all the items of the transaction have been copied&n;&t; * to the in core log and the callback is attached, the&n;&t; * items can be unlocked.&n;&t; *&n;&t; * This will free descriptors pointing to items which were&n;&t; * not logged since there is nothing more to do with them.&n;&t; * For items which were logged, we will keep pointers to them&n;&t; * so they can be unpinned after the transaction commits to disk.&n;&t; * This will also stamp each modified meta-data item with&n;&t; * the commit lsn of this transaction for dependency tracking&n;&t; * purposes.&n;&t; */
@@ -2838,12 +2867,6 @@ id|xfsstats.xs_trans_async
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* mark this thread as no longer being in a transaction */
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
-suffix:semicolon
 r_return
 (paren
 id|error
@@ -3454,6 +3477,14 @@ id|log_flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* mark this thread as no longer being in a transaction */
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_free_items
 c_func
 (paren
@@ -3473,12 +3504,6 @@ c_func
 (paren
 id|tp
 )paren
-suffix:semicolon
-multiline_comment|/* mark this thread as no longer being in a transaction */
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free the transaction structure.  If there is more clean up&n; * to do when the structure is freed, add it here.&n; */

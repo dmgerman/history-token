@@ -36,14 +36,13 @@ DECL|macro|VRC4173_SYSINT1REG
 mdefine_line|#define VRC4173_SYSINT1REG&t;0x060
 DECL|macro|VRC4173_MSYSINT1REG
 mdefine_line|#define VRC4173_MSYSINT1REG&t;0x06c
-DECL|variable|__devinitdata
+DECL|variable|vrc4173_table
 r_static
 r_struct
 id|pci_device_id
 id|vrc4173_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

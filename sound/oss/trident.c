@@ -154,14 +154,13 @@ comma
 l_string|&quot;Tvia/IGST CyberPro 5050&quot;
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|trident_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|trident_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

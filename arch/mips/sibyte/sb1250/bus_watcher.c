@@ -2,14 +2,15 @@ multiline_comment|/*&n; * Copyright (C) 2002,2003 Broadcom Corporation&n; *&n; *
 multiline_comment|/* &n; * The Bus Watcher monitors internal bus transactions and maintains&n; * counts of transactions with error status, logging details and&n; * causing one of several interrupts.  This driver provides a handler&n; * for those interrupts which aggregates the counts (to avoid&n; * saturating the 8-bit counters) and provides a presence in&n; * /proc/bus_watcher if PROC_FS is on.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 DECL|struct|bw_stats_struct
 r_struct
 id|bw_stats_struct
@@ -631,7 +632,7 @@ macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * sibyte_bw_int - handle bus watcher interrupts and accumulate counts&n; *&n; * notes: possible re-entry due to multiple sources&n; *        should check/indicate saturation&n; */
 DECL|function|sibyte_bw_int
 r_static
-r_void
+id|irqreturn_t
 id|sibyte_bw_int
 c_func
 (paren
@@ -798,6 +799,9 @@ id|bw_buf
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sibyte_bus_watcher
 r_int

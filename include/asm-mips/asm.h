@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997 by Ralf Baechle&n; * Copyright (C) 2002  Maciej W. Rozycki&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
-macro_line|#ifndef&t;__ASM_ASM_H
-DECL|macro|__ASM_ASM_H
-mdefine_line|#define&t;__ASM_ASM_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1999, 2001 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
+macro_line|#ifndef&t;_ASM_ASM_H
+DECL|macro|_ASM_ASM_H
+mdefine_line|#define&t;_ASM_ASM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sgidefs.h&gt;
 macro_line|#ifndef CAT
@@ -60,7 +60,7 @@ multiline_comment|/*&n; * Build text tables&n; */
 DECL|macro|TTABLE
 mdefine_line|#define TTABLE(string)                                  &bslash;&n;&t;&t;.pushsection .text;&t;&t;&t;&bslash;&n;&t;&t;.word&t;1f;                             &bslash;&n;&t;&t;.popsection&t;&t;&t;&t;&bslash;&n;&t;&t;.pushsection .data;&t;&t;&t;&bslash;&n;1:&t;&t;.asciiz&t;string;                         &bslash;&n;&t;&t;.popsection
 multiline_comment|/*&n; * MIPS IV pref instruction.&n; * Use with .set noreorder only!&n; *&n; * MIPS IV implementations are free to treat this as a nop.  The R5000&n; * is one of them.  So we should have an option not to use this instruction.&n; */
-macro_line|#if CONFIG_CPU_HAS_PREFETCH
+macro_line|#ifdef CONFIG_CPU_HAS_PREFETCH
 DECL|macro|PREF
 mdefine_line|#define PREF(hint,addr)                                 &bslash;&n;&t;&t;.set&t;push;&t;&t;&t;&t;&bslash;&n;&t;&t;.set&t;mips4;&t;&t;&t;&t;&bslash;&n;&t;&t;pref&t;hint,addr;&t;&t;&t;&bslash;&n;&t;&t;.set&t;pop
 DECL|macro|PREFX
@@ -224,6 +224,14 @@ DECL|macro|LONG_SRA
 mdefine_line|#define LONG_SRA&t;sra
 DECL|macro|LONG_SRAV
 mdefine_line|#define LONG_SRAV&t;srav
+DECL|macro|LONG
+mdefine_line|#define LONG&t;&t;.word
+DECL|macro|LONGSIZE
+mdefine_line|#define LONGSIZE&t;4
+DECL|macro|LONGMASK
+mdefine_line|#define LONGMASK&t;3
+DECL|macro|LONGLOG
+mdefine_line|#define LONGLOG&t;&t;2
 macro_line|#endif
 macro_line|#if (_MIPS_SZLONG == 64)
 DECL|macro|LONG_ADD
@@ -254,6 +262,14 @@ DECL|macro|LONG_SRA
 mdefine_line|#define LONG_SRA&t;dsra
 DECL|macro|LONG_SRAV
 mdefine_line|#define LONG_SRAV&t;dsrav
+DECL|macro|LONG
+mdefine_line|#define LONG&t;&t;.dword
+DECL|macro|LONGSIZE
+mdefine_line|#define LONGSIZE&t;8
+DECL|macro|LONGMASK
+mdefine_line|#define LONGMASK&t;7
+DECL|macro|LONGLOG
+mdefine_line|#define LONGLOG&t;&t;3
 macro_line|#endif
 multiline_comment|/*&n; * How to add/sub/load/store/shift pointers.&n; */
 macro_line|#if (_MIPS_SZPTR == 32)
@@ -351,5 +367,5 @@ mdefine_line|#define MTC0&t;&t;dmtc0
 macro_line|#endif
 DECL|macro|SSNOP
 mdefine_line|#define SSNOP&t;&t;sll zero,zero,1
-macro_line|#endif /* __ASM_ASM_H */
+macro_line|#endif /* _ASM_ASM_H */
 eof

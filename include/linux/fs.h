@@ -381,6 +381,29 @@ r_int
 id|create
 )paren
 suffix:semicolon
+DECL|typedef|dio_iodone_t
+r_typedef
+r_void
+(paren
+id|dio_iodone_t
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|loff_t
+id|offset
+comma
+id|ssize_t
+id|bytes
+comma
+r_void
+op_star
+r_private
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -783,6 +806,11 @@ id|semaphore
 id|i_shared_sem
 suffix:semicolon
 multiline_comment|/* protect both above lists */
+DECL|member|truncate_count
+id|atomic_t
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Cover race condition with truncate */
 DECL|member|dirtied_when
 r_int
 r_int
@@ -6257,6 +6285,27 @@ id|loff_t
 suffix:semicolon
 r_extern
 id|ssize_t
+id|__generic_file_aio_read
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+comma
+r_const
+r_struct
+id|iovec
+op_star
+comma
+r_int
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|ssize_t
 id|generic_file_aio_write
 c_func
 (paren
@@ -6495,6 +6544,10 @@ comma
 id|get_blocks_t
 op_star
 id|get_blocks
+comma
+id|dio_iodone_t
+op_star
+id|end_io
 )paren
 suffix:semicolon
 r_extern
@@ -6660,6 +6713,8 @@ r_struct
 id|file_operations
 id|generic_ro_fops
 suffix:semicolon
+DECL|macro|special_file
+mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
 r_extern
 r_int
 id|vfs_readlink

@@ -459,14 +459,13 @@ id|NV_ARCH_20
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|rivafb_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rivafb_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

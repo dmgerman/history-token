@@ -1866,6 +1866,12 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* APS flag */
+DECL|member|no_ac97
+id|no_ac97
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* no AC&squot;97 */
 DECL|member|tos_link
 id|tos_link
 suffix:colon
@@ -3622,13 +3628,13 @@ mdefine_line|#define SNDRV_EMU10K1_IOCTL_INFO&t;_IOR (&squot;H&squot;, 0x10, emu
 DECL|macro|SNDRV_EMU10K1_IOCTL_CODE_POKE
 mdefine_line|#define SNDRV_EMU10K1_IOCTL_CODE_POKE&t;_IOW (&squot;H&squot;, 0x11, emu10k1_fx8010_code_t)
 DECL|macro|SNDRV_EMU10K1_IOCTL_CODE_PEEK
-mdefine_line|#define SNDRV_EMU10K1_IOCTL_CODE_PEEK&t;_IOW (&squot;H&squot;, 0x12, emu10k1_fx8010_code_t)
+mdefine_line|#define SNDRV_EMU10K1_IOCTL_CODE_PEEK&t;_IOWR(&squot;H&squot;, 0x12, emu10k1_fx8010_code_t)
 DECL|macro|SNDRV_EMU10K1_IOCTL_TRAM_SETUP
 mdefine_line|#define SNDRV_EMU10K1_IOCTL_TRAM_SETUP&t;_IOW (&squot;H&squot;, 0x20, int)
 DECL|macro|SNDRV_EMU10K1_IOCTL_TRAM_POKE
 mdefine_line|#define SNDRV_EMU10K1_IOCTL_TRAM_POKE&t;_IOW (&squot;H&squot;, 0x21, emu10k1_fx8010_tram_t)
 DECL|macro|SNDRV_EMU10K1_IOCTL_TRAM_PEEK
-mdefine_line|#define SNDRV_EMU10K1_IOCTL_TRAM_PEEK&t;_IOR (&squot;H&squot;, 0x22, emu10k1_fx8010_tram_t)
+mdefine_line|#define SNDRV_EMU10K1_IOCTL_TRAM_PEEK&t;_IOWR(&squot;H&squot;, 0x22, emu10k1_fx8010_tram_t)
 DECL|macro|SNDRV_EMU10K1_IOCTL_PCM_POKE
 mdefine_line|#define SNDRV_EMU10K1_IOCTL_PCM_POKE&t;_IOW (&squot;H&squot;, 0x30, emu10k1_fx8010_pcm_t)
 DECL|macro|SNDRV_EMU10K1_IOCTL_PCM_PEEK

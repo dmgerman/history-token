@@ -10,7 +10,9 @@ macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/lasat/lasat.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/lasat/serial.h&gt;
 macro_line|#ifdef CONFIG_PICVUE
@@ -485,7 +487,8 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//#define DYNAMIC_SERIAL_INIT
+DECL|macro|DYNAMIC_SERIAL_INIT
+mdefine_line|#define DYNAMIC_SERIAL_INIT
 macro_line|#ifdef DYNAMIC_SERIAL_INIT
 DECL|function|serial_init
 r_void
@@ -496,9 +499,9 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SERIAL
+macro_line|#ifdef CONFIG_SERIAL_8250
 r_struct
-id|serial_struct
+id|uart_port
 id|s
 suffix:semicolon
 id|memset
@@ -518,8 +521,10 @@ suffix:semicolon
 id|s.flags
 op_assign
 id|STD_COM_FLAGS
+op_or
+id|UPF_RESOURCES
 suffix:semicolon
-id|s.io_type
+id|s.iotype
 op_assign
 id|SERIAL_IO_MEM
 suffix:semicolon
@@ -531,22 +536,24 @@ op_eq
 id|MACH_LASAT_100
 )paren
 (brace
-id|s.baud_base
+id|s.uartclk
 op_assign
 id|LASAT_BASE_BAUD_100
+op_star
+l_int|16
 suffix:semicolon
 id|s.irq
 op_assign
 id|LASATINT_UART_100
 suffix:semicolon
-id|s.iomem_reg_shift
+id|s.regshift
 op_assign
 id|LASAT_UART_REGS_SHIFT_100
 suffix:semicolon
-id|s.iomem_base
+id|s.membase
 op_assign
 (paren
-id|u8
+r_char
 op_star
 )paren
 id|KSEG1ADDR
@@ -558,22 +565,24 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|s.baud_base
+id|s.uartclk
 op_assign
 id|LASAT_BASE_BAUD_200
+op_star
+l_int|16
 suffix:semicolon
 id|s.irq
 op_assign
 id|LASATINT_UART_200
 suffix:semicolon
-id|s.iomem_reg_shift
+id|s.regshift
 op_assign
 id|LASAT_UART_REGS_SHIFT_200
 suffix:semicolon
-id|s.iomem_base
+id|s.membase
 op_assign
 (paren
-id|u8
+r_char
 op_star
 )paren
 id|KSEG1ADDR

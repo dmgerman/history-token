@@ -2899,14 +2899,13 @@ suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 multiline_comment|/* Vortex only makes RAID controllers.&n; * We do not really want to specify all 550 ids here, so wildcard match.&n; */
-DECL|variable|__devinitdata
+DECL|variable|gdthtable
 r_static
 r_struct
 id|pci_device_id
 id|gdthtable
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -20806,11 +20805,11 @@ l_string|&quot;GDT HA %u, Fault bus %u, ID %u: old disk detected&quot;
 comma
 multiline_comment|/*32*/
 l_string|&quot;&bslash;007&bslash;000&bslash;002&bslash;012&bslash;001&bslash;013&bslash;001&quot;
-l_string|&quot;GDT HA %u, Fault bus %u, ID %u: plugging an active disk is illegal&quot;
+l_string|&quot;GDT HA %u, Fault bus %u, ID %u: plugging an active disk is invalid&quot;
 comma
 multiline_comment|/*33*/
 l_string|&quot;&bslash;007&bslash;000&bslash;002&bslash;012&bslash;001&bslash;013&bslash;001&quot;
-l_string|&quot;GDT HA %u, Fault bus %u, ID %u: illegal device detected&quot;
+l_string|&quot;GDT HA %u, Fault bus %u, ID %u: invalid device detected&quot;
 comma
 multiline_comment|/*34*/
 l_string|&quot;&bslash;011&bslash;000&bslash;002&bslash;012&bslash;001&bslash;013&bslash;001&bslash;006&bslash;004&quot;

@@ -1388,8 +1388,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 r_static
 r_struct
 (brace
@@ -1911,7 +1909,6 @@ id|lapic_suspend
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* not static, needed by child devices */
 DECL|variable|device_lapic
 r_static
 r_struct

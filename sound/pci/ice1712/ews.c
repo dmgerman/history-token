@@ -1768,6 +1768,33 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * initialize the chip&n; */
+multiline_comment|/* 6fire specific */
+DECL|macro|PCF9554_REG_INPUT
+mdefine_line|#define PCF9554_REG_INPUT      0
+DECL|macro|PCF9554_REG_OUTPUT
+mdefine_line|#define PCF9554_REG_OUTPUT     1
+DECL|macro|PCF9554_REG_POLARITY
+mdefine_line|#define PCF9554_REG_POLARITY   2
+DECL|macro|PCF9554_REG_CONFIG
+mdefine_line|#define PCF9554_REG_CONFIG     3
+r_static
+r_int
+id|snd_ice1712_6fire_write_pca
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+comma
+r_int
+r_char
+id|reg
+comma
+r_int
+r_char
+id|data
+)paren
+suffix:semicolon
 DECL|function|snd_ice1712_ews_init
 r_static
 r_int
@@ -1920,6 +1947,16 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_ice1712_6fire_write_pca
+c_func
+(paren
+id|ice
+comma
+id|PCF9554_REG_CONFIG
+comma
+l_int|0x80
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2096,6 +2133,22 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+id|snd_cs8427_reg_write
+c_func
+(paren
+id|ice-&gt;cs8427
+comma
+id|CS8427_REG_RECVERRMASK
+comma
+id|CS8427_UNLOCK
+op_or
+id|CS8427_CONF
+op_or
+id|CS8427_BIP
+op_or
+id|CS8427_PAR
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2120,6 +2173,22 @@ l_int|0
 )paren
 r_return
 id|err
+suffix:semicolon
+id|snd_cs8427_reg_write
+c_func
+(paren
+id|ice-&gt;cs8427
+comma
+id|CS8427_REG_RECVERRMASK
+comma
+id|CS8427_UNLOCK
+op_or
+id|CS8427_CONF
+op_or
+id|CS8427_BIP
+op_or
+id|CS8427_PAR
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3723,14 +3792,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * DMX 6Fire specific controls&n; */
-DECL|macro|PCF9554_REG_INPUT
-mdefine_line|#define PCF9554_REG_INPUT&t;0
-DECL|macro|PCF9554_REG_OUTPUT
-mdefine_line|#define PCF9554_REG_OUTPUT&t;1
-DECL|macro|PCF9554_REG_POLARITY
-mdefine_line|#define PCF9554_REG_POLARITY&t;2
-DECL|macro|PCF9554_REG_CONFIG
-mdefine_line|#define PCF9554_REG_CONFIG&t;3
 DECL|function|snd_ice1712_6fire_read_pca
 r_static
 r_int

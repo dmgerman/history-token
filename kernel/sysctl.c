@@ -2380,8 +2380,6 @@ DECL|variable|zero
 r_static
 r_int
 id|zero
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|one_hundred
 r_static

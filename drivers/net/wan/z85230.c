@@ -2466,7 +2466,7 @@ op_assign
 r_void
 op_star
 )paren
-id|get_zeroed_page
+id|get_free_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -2513,7 +2513,7 @@ op_assign
 r_void
 op_star
 )paren
-id|get_zeroed_page
+id|get_free_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -3209,7 +3209,7 @@ op_assign
 r_void
 op_star
 )paren
-id|get_zeroed_page
+id|get_free_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -3760,13 +3760,6 @@ op_assign
 id|DCD
 suffix:semicolon
 multiline_comment|/* Set up the chip level lock */
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|dev-&gt;lock
-)paren
-suffix:semicolon
 id|dev-&gt;chanA.lock
 op_assign
 op_amp
@@ -4346,12 +4339,6 @@ id|c-&gt;tx_ptr
 op_assign
 id|c-&gt;tx_next_ptr
 suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|c-&gt;netdevice
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4564,7 +4551,6 @@ comma
 id|RES_Tx_CRC
 )paren
 suffix:semicolon
-singleline_comment|//???&t;&t;&t;write_zsctrl(c, RES_EOM_L);
 r_while
 c_loop
 (paren
@@ -4601,6 +4587,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/*&n;&t; *&t;Since we emptied tx_skb we can ask for more&n;&t; */
+id|netif_wake_queue
+c_func
+(paren
+id|c-&gt;netdevice
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;z8530_tx_done - TX complete callback&n; *&t;@c: The channel that completed a transmit.&n; *&n; *&t;This is called when we complete a packet send. We wake the queue,&n; *&t;start the next packet going and then free the buffer of the existing&n; *&t;packet. This code is fairly timing sensitive.&n; *&n; *&t;Called with the register lock held.&n; */
 DECL|function|z8530_tx_done
@@ -4619,12 +4612,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|c-&gt;netdevice
-)paren
 suffix:semicolon
 multiline_comment|/* Actually this can happen.*/
 r_if
@@ -4864,7 +4851,7 @@ id|RES_Rx_CRC
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* Can&squot;t occur as we don&squot;t reenable the DMA irq until&n;&t;&t;&t;   after the flip is done */
+multiline_comment|/* Can&squot;t occur as we dont reenable the DMA irq until&n;&t;&t;&t;   after the flip is done */
 id|printk
 c_func
 (paren
@@ -5262,12 +5249,6 @@ c_func
 id|c-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|c-&gt;netdevice
 )paren
 suffix:semicolon
 r_return

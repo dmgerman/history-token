@@ -147,7 +147,7 @@ op_assign
 id|strrchr
 c_func
 (paren
-id|bprm-&gt;filename
+id|bprm-&gt;interp
 comma
 l_char|&squot;.&squot;
 )paren
@@ -480,7 +480,7 @@ c_func
 l_int|1
 comma
 op_amp
-id|bprm-&gt;filename
+id|bprm-&gt;interp
 comma
 id|bprm
 )paren
@@ -524,7 +524,7 @@ suffix:semicolon
 id|bprm-&gt;argc
 op_increment
 suffix:semicolon
-id|bprm-&gt;filename
+id|bprm-&gt;interp
 op_assign
 id|iname
 suffix:semicolon

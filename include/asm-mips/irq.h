@@ -4,8 +4,35 @@ DECL|macro|_ASM_IRQ_H
 mdefine_line|#define _ASM_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#ifdef CONFIG_SGI_IP27
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 128&t;&t;/* Largest number of ints of all machines.  */
+mdefine_line|#define NR_IRQS 256
+multiline_comment|/*&n; * Number of levels in INT_PEND0. Can be set to 128 if we also&n; * consider INT_PEND1.&n; */
+DECL|macro|PERNODE_LEVELS
+mdefine_line|#define PERNODE_LEVELS&t;64
+r_extern
+r_int
+id|node_level_to_irq
+(braket
+id|MAX_COMPACT_NODES
+)braket
+(braket
+id|PERNODE_LEVELS
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * we need to map irq&squot;s up to at least bit 7 of the INT_MASK0_A register&n; * since bits 0-6 are pre-allocated for other purposes.&n; */
+DECL|macro|LEAST_LEVEL
+mdefine_line|#define LEAST_LEVEL&t;7
+DECL|macro|FAST_IRQ_TO_LEVEL
+mdefine_line|#define FAST_IRQ_TO_LEVEL(i)&t;((i) + LEAST_LEVEL)
+DECL|macro|LEVEL_TO_IRQ
+mdefine_line|#define LEVEL_TO_IRQ(c, l) &bslash;&n;&t;&t;&t;(node_level_to_irq[CPUID_TO_COMPACT_NODEID(c)][(l)])
+macro_line|#else
+multiline_comment|/*&n; * Largest number of ints of all machines except IP27&n; */
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS 128
+macro_line|#endif
 macro_line|#ifdef CONFIG_I8259
 DECL|function|irq_canonicalize
 r_static

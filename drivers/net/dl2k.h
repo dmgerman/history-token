@@ -3009,14 +3009,13 @@ DECL|macro|PCI_IOTYPE
 mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
 macro_line|#endif
 multiline_comment|/* The struct pci_device_id consist of:&n;        vendor, device          Vendor and device ID to match (or PCI_ANY_ID)&n;        subvendor, subdevice    Subsystem vendor and device ID to match (or PCI_ANY_ID)&n;        class                   Device class to match. The class_mask tells which bits&n;        class_mask              of the class are honored during the comparison.&n;        driver_data             Data private to the driver.&n;*/
-DECL|variable|__devinitdata
+DECL|variable|rio_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rio_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

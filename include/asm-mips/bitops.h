@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994 - 1997, 1999, 2000  Ralf Baechle (ralf@gnu.org)&n; * Copyright (c) 2000  Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994 - 1997, 1999, 2000  Ralf Baechle (ralf@gnu.org)&n; * Copyright (c) 1999, 2000  Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_BITOPS_H
 DECL|macro|_ASM_BITOPS_H
 mdefine_line|#define _ASM_BITOPS_H
@@ -11,11 +11,19 @@ DECL|macro|SZLONG_LOG
 mdefine_line|#define SZLONG_LOG 5
 DECL|macro|SZLONG_MASK
 mdefine_line|#define SZLONG_MASK 31UL
+DECL|macro|__LL
+mdefine_line|#define __LL&t;&quot;ll&quot;
+DECL|macro|__SC
+mdefine_line|#define __SC&t;&quot;sc&quot;
 macro_line|#elif (_MIPS_SZLONG == 64)
 DECL|macro|SZLONG_LOG
 mdefine_line|#define SZLONG_LOG 6
 DECL|macro|SZLONG_MASK
-mdefine_line|#define SZLONG_MASK 63UL 
+mdefine_line|#define SZLONG_MASK 63UL
+DECL|macro|__LL
+mdefine_line|#define __LL&t;&quot;lld&quot;
+DECL|macro|__SC
+mdefine_line|#define __SC&t;&quot;scd&quot;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sgidefs.h&gt;
@@ -53,11 +61,12 @@ multiline_comment|/*&n; * These functions for MIPS ISA &gt; 1 are interrupt and 
 multiline_comment|/*&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -85,7 +94,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -96,9 +105,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;t&bslash;t# set_bit&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;t&bslash;t# set_bit&bslash;n&bslash;t&quot;
 l_string|&quot;or&bslash;t%0, %2&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%0, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%0, 1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -119,7 +131,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 comma
@@ -134,11 +146,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __set_bit - Set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike set_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -166,7 +179,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 op_star
@@ -177,18 +190,19 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|31
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * clear_bit() is atomic and may not be reordered.  However, it does&n; * not contain a memory barrier, so if it is used for locking purposes,&n; * you should call smp_mb__before_clear_bit() and/or smp_mb__after_clear_bit()&n; * in order to ensure changes are visible on other processors.&n; */
 DECL|function|clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -216,7 +230,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -227,9 +241,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;t&bslash;t# clear_bit&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;t&bslash;t# clear_bit&bslash;n&bslash;t&quot;
 l_string|&quot;and&bslash;t%0, %2&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%0, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%0, 1b&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -252,7 +269,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 )paren
@@ -268,11 +285,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * Unlike clear_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -300,7 +318,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 op_star
@@ -313,19 +331,20 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|31
+id|SZLONG_MASK
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
+multiline_comment|/*&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -353,7 +372,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -364,9 +383,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;t&bslash;t# change_bit&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;t&bslash;t# change_bit&bslash;n&bslash;t&quot;
 l_string|&quot;xor&bslash;t%0, %2&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%0, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%0, 1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -387,7 +409,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 comma
@@ -402,11 +424,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to change&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -434,7 +457,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 op_star
@@ -445,18 +468,19 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|31
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -484,14 +508,13 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
 r_int
 id|temp
-suffix:semicolon
-r_int
+comma
 id|res
 suffix:semicolon
 id|__asm__
@@ -499,9 +522,12 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t# test_and_set_bit&bslash;n&quot;
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;or&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%2, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; and&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
 macro_line|#ifdef CONFIG_SMP
@@ -532,7 +558,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 comma
@@ -554,11 +580,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -588,7 +615,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -597,7 +624,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
@@ -623,11 +650,12 @@ suffix:semicolon
 multiline_comment|/*&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -655,7 +683,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -669,10 +697,13 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t# test_and_clear_bit&bslash;n&quot;
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;or&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
 l_string|&quot;xor&bslash;t%2, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%2, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; and&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
 macro_line|#ifdef CONFIG_SMP
@@ -703,7 +734,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 comma
@@ -725,11 +756,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -751,27 +783,31 @@ suffix:semicolon
 r_int
 r_int
 id|mask
-comma
+suffix:semicolon
+r_int
 id|retval
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
+)paren
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
 op_assign
+(paren
 (paren
 id|mask
 op_amp
@@ -780,6 +816,7 @@ id|a
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|a
@@ -794,11 +831,12 @@ suffix:semicolon
 multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -826,7 +864,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -840,9 +878,12 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t# test_and_change_bit&bslash;n&quot;
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;t&quot;
+id|__LL
+l_string|&quot;&bslash;t%0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;xor&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
+id|__SC
+l_string|&quot;&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%2, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; and&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
 macro_line|#ifdef CONFIG_SMP
@@ -873,7 +914,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 )paren
 comma
@@ -895,11 +936,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -927,22 +969,25 @@ id|retval
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
+)paren
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
 op_assign
+(paren
 (paren
 id|mask
 op_amp
@@ -951,6 +996,7 @@ id|a
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|a
@@ -965,11 +1011,12 @@ macro_line|#else /* MIPS I */
 multiline_comment|/*&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -998,7 +1045,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1007,7 +1054,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1031,11 +1078,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __set_bit - Set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike set_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1062,7 +1110,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1071,7 +1119,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 op_star
@@ -1083,11 +1131,12 @@ suffix:semicolon
 multiline_comment|/*&n; * clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * clear_bit() is atomic and may not be reordered.  However, it does&n; * not contain a memory barrier, so if it is used for locking purposes,&n; * you should call smp_mb__before_clear_bit() and/or smp_mb__after_clear_bit()&n; * in order to ensure changes are visible on other processors.&n; */
 DECL|function|clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1116,7 +1165,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1125,7 +1174,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1149,11 +1198,12 @@ suffix:semicolon
 )brace
 DECL|function|__clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1180,7 +1230,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1189,7 +1239,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 op_star
@@ -1202,11 +1252,12 @@ suffix:semicolon
 multiline_comment|/*&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1235,7 +1286,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1244,7 +1295,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1268,11 +1319,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to change&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1300,7 +1352,7 @@ op_plus
 (paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 op_star
@@ -1311,18 +1363,19 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|31
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1354,7 +1407,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1363,7 +1416,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1401,11 +1454,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_set_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1435,7 +1489,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1444,7 +1498,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
@@ -1470,11 +1524,12 @@ suffix:semicolon
 multiline_comment|/*&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1506,7 +1561,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1515,7 +1570,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1554,11 +1609,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_clear_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1586,22 +1642,25 @@ id|retval
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
+)paren
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
 op_assign
+(paren
 (paren
 id|mask
 op_amp
@@ -1610,6 +1669,7 @@ id|a
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|a
@@ -1624,11 +1684,12 @@ suffix:semicolon
 multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1659,7 +1720,7 @@ id|a
 op_add_assign
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
@@ -1668,7 +1729,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|__bi_local_irq_save
@@ -1706,11 +1767,12 @@ suffix:semicolon
 multiline_comment|/*&n; * __test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.&n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_change_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1738,9 +1800,11 @@ id|retval
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
-l_int|5
+id|SZLONG_LOG
+)paren
 suffix:semicolon
 id|mask
 op_assign
@@ -1749,7 +1813,7 @@ op_lshift
 (paren
 id|nr
 op_amp
-l_int|0x1f
+id|SZLONG_MASK
 )paren
 suffix:semicolon
 id|retval
@@ -1789,6 +1853,7 @@ r_int
 id|test_bit
 c_func
 (paren
+r_int
 r_int
 id|nr
 comma
@@ -1831,7 +1896,7 @@ suffix:semicolon
 multiline_comment|/*&n; * ffz - find first zero in word.&n; * @word: The word to search&n; *&n; * Undefined if no zero exists, so code should check against ~0UL first.&n; */
 DECL|function|ffz
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|ffz
@@ -1854,6 +1919,7 @@ op_assign
 op_complement
 id|word
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS32
 id|s
 op_assign
 l_int|16
@@ -1975,6 +2041,155 @@ id|b
 op_add_assign
 id|s
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|s
+op_assign
+l_int|32
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|32
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+id|word
+op_rshift_assign
+id|s
+suffix:semicolon
+id|s
+op_assign
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|48
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+id|word
+op_rshift_assign
+id|s
+suffix:semicolon
+id|s
+op_assign
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|56
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+id|word
+op_rshift_assign
+id|s
+suffix:semicolon
+id|s
+op_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|60
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+id|word
+op_rshift_assign
+id|s
+suffix:semicolon
+id|s
+op_assign
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|62
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+id|word
+op_rshift_assign
+id|s
+suffix:semicolon
+id|s
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|word
+op_lshift
+l_int|63
+op_ne
+l_int|0
+)paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|b
+op_add_assign
+id|s
+suffix:semicolon
+macro_line|#endif
 r_return
 id|b
 suffix:semicolon
@@ -1982,7 +2197,7 @@ suffix:semicolon
 multiline_comment|/*&n; * __ffs - find first bit in word.&n; * @word: The word to search&n; *&n; * Undefined if no bit exists, so code should check against 0 first.&n; */
 DECL|function|__ffs
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|__ffs
@@ -2425,7 +2640,7 @@ multiline_comment|/*&n; * find_first_bit - find the first set bit in a memory re
 DECL|macro|find_first_bit
 mdefine_line|#define find_first_bit(addr, size) &bslash;&n;&t;find_next_bit((addr), (size), 0)
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 168-bit bitmap where the first 128 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 168&n; * bits is cleared.&n; */
+multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 DECL|function|sched_find_first_bit
 r_static
 r_inline
@@ -2439,6 +2654,7 @@ op_star
 id|b
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIPS32
 r_if
 c_cond
 (paren
@@ -2512,14 +2728,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|b
 (braket
 l_int|3
 )braket
-)paren
 )paren
 r_return
 id|__ffs
@@ -2533,13 +2745,31 @@ l_int|3
 op_plus
 l_int|96
 suffix:semicolon
+r_return
+id|__ffs
+c_func
+(paren
+id|b
+(braket
+l_int|4
+)braket
+)paren
+op_plus
+l_int|128
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|b
 (braket
-l_int|4
+l_int|0
 )braket
+)paren
 )paren
 r_return
 id|__ffs
@@ -2547,11 +2777,33 @@ c_func
 (paren
 id|b
 (braket
-l_int|4
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|b
+(braket
+l_int|1
+)braket
+)paren
+)paren
+r_return
+id|__ffs
+c_func
+(paren
+id|b
+(braket
+l_int|1
 )braket
 )paren
 op_plus
-l_int|128
+l_int|64
 suffix:semicolon
 r_return
 id|__ffs
@@ -2559,25 +2811,24 @@ c_func
 (paren
 id|b
 (braket
-l_int|5
+l_int|2
 )braket
 )paren
 op_plus
-l_int|32
-op_plus
 l_int|128
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * ffs - find first bit set&n; * @x: the word to search&n; *&n; * This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs(x)
 multiline_comment|/*&n; * hweightN - returns the hamming weight of a N-bit word&n; * @x: the word to weigh&n; *&n; * The Hamming Weight of a number is the total number of bits set in it.&n; */
 DECL|macro|hweight32
-mdefine_line|#define hweight32(x) generic_hweight32(x)
+mdefine_line|#define hweight32(x)&t;generic_hweight32(x)
 DECL|macro|hweight16
-mdefine_line|#define hweight16(x) generic_hweight16(x)
+mdefine_line|#define hweight16(x)&t;generic_hweight16(x)
 DECL|macro|hweight8
-mdefine_line|#define hweight8(x) generic_hweight8(x)
+mdefine_line|#define hweight8(x)&t;generic_hweight8(x)
 DECL|function|__test_and_set_le_bit
 r_static
 r_inline
@@ -2972,7 +3223,7 @@ op_plus
 (paren
 id|offset
 op_rshift
-l_int|5
+id|SZLONG_LOG
 )paren
 suffix:semicolon
 r_int
@@ -2982,7 +3233,7 @@ op_assign
 id|offset
 op_amp
 op_complement
-l_int|31
+id|SZLONG_MASK
 suffix:semicolon
 r_int
 r_int
@@ -3004,7 +3255,7 @@ id|result
 suffix:semicolon
 id|offset
 op_and_assign
-l_int|31
+id|SZLONG_MASK
 suffix:semicolon
 r_if
 c_cond

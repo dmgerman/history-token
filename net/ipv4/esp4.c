@@ -1,5 +1,6 @@
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/esp.h&gt;
@@ -540,6 +541,19 @@ op_assign
 id|iph-&gt;tos
 suffix:semicolon
 multiline_comment|/* DS disclosed */
+r_if
+c_cond
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+id|IP_ECN_clear
+c_func
+(paren
+id|top_iph
+)paren
+suffix:semicolon
 id|top_iph-&gt;tot_len
 op_assign
 id|htons

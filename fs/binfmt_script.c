@@ -304,7 +304,7 @@ c_func
 l_int|1
 comma
 op_amp
-id|bprm-&gt;filename
+id|bprm-&gt;interp
 comma
 id|bprm
 )paren
@@ -378,6 +378,10 @@ id|retval
 suffix:semicolon
 id|bprm-&gt;argc
 op_increment
+suffix:semicolon
+id|bprm-&gt;interp
+op_assign
+id|interp
 suffix:semicolon
 multiline_comment|/*&n;&t; * OK, now restart the process with the interpreter&squot;s dentry.&n;&t; */
 id|file

@@ -20,7 +20,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;HDLC support module revision 1.15&quot;
+l_string|&quot;HDLC support module revision 1.16&quot;
 suffix:semicolon
 DECL|macro|DEBUG_LINK
 macro_line|#undef DEBUG_LINK
@@ -128,6 +128,7 @@ c_cond
 (paren
 id|hdlc-&gt;proto.netif_rx
 )paren
+r_return
 id|hdlc-&gt;proto
 dot
 id|netif_rx
@@ -136,8 +137,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_else
-(brace
 id|hdlc-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
@@ -148,9 +147,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-)brace
 r_return
-l_int|0
+id|NET_RX_DROP
 suffix:semicolon
 )brace
 DECL|function|hdlc_set_carrier
@@ -940,6 +938,7 @@ id|unregister_hdlc_device
 )paren
 suffix:semicolon
 DECL|variable|hdlc_packet_type
+r_static
 r_struct
 id|packet_type
 id|hdlc_packet_type
@@ -958,6 +957,15 @@ dot
 id|func
 op_assign
 id|hdlc_rcv
+comma
+dot
+id|data
+op_assign
+(paren
+r_void
+op_star
+)paren
+l_int|1
 comma
 )brace
 suffix:semicolon

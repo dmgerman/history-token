@@ -2116,8 +2116,26 @@ id|__NR_epoll_ctl
 comma
 id|sys_epoll_ctl
 )paren
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;234
+id|__SYSCALL
+c_func
+(paren
+id|__NR_tgkill
+comma
+id|sys_tgkill
+)paren
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;235
+id|__SYSCALL
+c_func
+(paren
+id|__NR_utimes
+comma
+id|sys_utimes
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_epoll_ctl
+mdefine_line|#define __NR_syscall_max __NR_utimes
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

@@ -190,8 +190,6 @@ DECL|variable|indent
 r_static
 r_int
 id|indent
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ios_org
 r_static

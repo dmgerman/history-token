@@ -537,8 +537,10 @@ id|CPUFREQ_TABLE_END
 suffix:semicolon
 DECL|macro|OP
 macro_line|#undef OP
+DECL|macro|_CPU
+mdefine_line|#define _CPU(max, name)&t;&bslash;&n;&t;{ &quot;Intel(R) Pentium(R) M processor &quot; name &quot;MHz&quot;, (max)*1000, op_##max }
 DECL|macro|CPU
-mdefine_line|#define CPU(max)&t;&bslash;&n;&t;{ &quot;Intel(R) Pentium(R) M processor &quot; #max &quot;MHz&quot;, (max)*1000, op_##max }
+mdefine_line|#define CPU(max)&t;_CPU(max, #max)
 multiline_comment|/* CPU models, their operating frequency range, and freq/voltage&n;   operating points */
 DECL|variable|models
 r_static
@@ -550,10 +552,12 @@ id|models
 )braket
 op_assign
 (brace
-id|CPU
+id|_CPU
 c_func
 (paren
 l_int|900
+comma
+l_string|&quot; 900&quot;
 )paren
 comma
 id|CPU

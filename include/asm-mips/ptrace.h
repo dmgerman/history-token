@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; *&n; * Machine dependent structs and defines to help the user use&n; * the ptrace system call.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 95, 96, 97, 98, 99, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PTRACE_H
 DECL|macro|_ASM_PTRACE_H
 mdefine_line|#define _ASM_PTRACE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/isadep.h&gt;
 multiline_comment|/* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
 DECL|macro|FPR_BASE
@@ -26,6 +27,7 @@ DECL|struct|pt_regs
 r_struct
 id|pt_regs
 (brace
+macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/* Pad bytes for argument save space on the stack. */
 DECL|member|pad0
 r_int
@@ -35,6 +37,7 @@ id|pad0
 l_int|6
 )braket
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Saved main processor registers. */
 DECL|member|regs
 r_int
@@ -78,15 +81,6 @@ id|cp0_cause
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|__str2
-mdefine_line|#define __str2(x) #x
-DECL|macro|__str
-mdefine_line|#define __str(x) __str2(x)
-DECL|macro|save_static_function
-mdefine_line|#define save_static_function(symbol)                                    &bslash;&n;__asm__ (                                                               &bslash;&n;&t;&quot;.text&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        &quot;.globl&bslash;t&quot; #symbol &quot;&bslash;n&bslash;t&quot;                                       &bslash;&n;        &quot;.align&bslash;t2&bslash;n&bslash;t&quot;                                                 &bslash;&n;        &quot;.type&bslash;t&quot; #symbol &quot;, @function&bslash;n&bslash;t&quot;                             &bslash;&n;        &quot;.ent&bslash;t&quot; #symbol &quot;, 0&bslash;n&quot;                                        &bslash;&n;        #symbol&quot;:&bslash;n&bslash;t&quot;                                                  &bslash;&n;        &quot;.frame&bslash;t$29, 0, $31&bslash;n&bslash;t&quot;                                       &bslash;&n;        &quot;sw&bslash;t$16,&quot;__str(PT_R16)&quot;($29)&bslash;t&bslash;t&bslash;t# save_static_function&bslash;n&bslash;t&quot;  &bslash;&n;        &quot;sw&bslash;t$17,&quot;__str(PT_R17)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$18,&quot;__str(PT_R18)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$19,&quot;__str(PT_R19)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$20,&quot;__str(PT_R20)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$21,&quot;__str(PT_R21)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$22,&quot;__str(PT_R22)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$23,&quot;__str(PT_R23)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;sw&bslash;t$30,&quot;__str(PT_R30)&quot;($29)&bslash;n&bslash;t&quot;                              &bslash;&n;        &quot;.end&bslash;t&quot; #symbol &quot;&bslash;n&bslash;t&quot;                                         &bslash;&n;        &quot;.size&bslash;t&quot; #symbol&quot;,. - &quot; #symbol)
-multiline_comment|/* Used in declaration of save_static functions.  */
-DECL|macro|static_unused
-mdefine_line|#define static_unused static __attribute__((unused))
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
 multiline_comment|/* #define PTRACE_GETREGS&t;&t;12 */

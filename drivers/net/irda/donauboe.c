@@ -141,14 +141,13 @@ DECL|macro|CONFIG0H_DMA_ON_NORX
 mdefine_line|#define CONFIG0H_DMA_ON_NORX CONFIG0H_DMA_OFF| OBOE_CONFIG0H_ENDMAC
 DECL|macro|CONFIG0H_DMA_ON
 mdefine_line|#define CONFIG0H_DMA_ON CONFIG0H_DMA_ON_NORX | OBOE_CONFIG0H_ENRX
-DECL|variable|__initdata
+DECL|variable|toshoboe_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|toshoboe_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -1277,7 +1277,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;PCI: Enabling device: (%s), cmd %x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|cmd
 )paren
@@ -1338,7 +1342,11 @@ c_func
 (paren
 l_string|&quot;PCI: Setting latency timer of device %s to 64&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|pci_write_config_byte

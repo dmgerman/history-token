@@ -520,7 +520,11 @@ c_func
 (paren
 l_string|&quot;%s: enabling expansion ROM&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -710,14 +714,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * PCI device ID table&n; */
-DECL|variable|__devinitdata
+DECL|variable|mtd_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|mtd_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1399,7 +1402,11 @@ id|mtd_pci_map
 suffix:semicolon
 id|map-&gt;map.name
 op_assign
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|map-&gt;dev
 op_assign

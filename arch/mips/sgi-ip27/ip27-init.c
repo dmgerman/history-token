@@ -1495,11 +1495,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|TLBMISS_HANDLER_SETUP
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if 0
 id|intr_init
 c_func
@@ -1924,7 +1919,7 @@ r_int
 )paren
 id|idle-&gt;thread_info
 op_plus
-id|KERNEL_STACK_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|32
 )paren

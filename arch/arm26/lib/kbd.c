@@ -613,8 +613,6 @@ id|raw_mode
 r_static
 r_int
 id|prev_scancode
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* special prefix scancodes.. */
 r_if

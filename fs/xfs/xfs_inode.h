@@ -918,9 +918,6 @@ DECL|macro|XFS_ITRUNC_DEFINITE
 mdefine_line|#define&t;XFS_ITRUNC_DEFINITE&t;0x1
 DECL|macro|XFS_ITRUNC_MAYBE
 mdefine_line|#define&t;XFS_ITRUNC_MAYBE&t;0x2
-multiline_comment|/*&n; * max file offset is 2^(31+PAGE_SHIFT) - 1 (due to linux page cache)&n; *&n; * NOTE: XFS itself can handle 2^63 - 1 (largest positive value of xfs_fsize_t)&n; * but this is the Linux limit.&n; */
-DECL|macro|XFS_MAX_FILE_OFFSET
-mdefine_line|#define XFS_MAX_FILE_OFFSET&t;MAX_LFS_FILESIZE
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ITOV)
 r_struct
 id|vnode

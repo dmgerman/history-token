@@ -380,7 +380,11 @@ id|rets
 l_int|0
 )braket
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;dev.name
 )paren

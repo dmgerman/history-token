@@ -381,6 +381,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 id|txAbort
@@ -867,6 +868,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 id|txAbort
@@ -1281,6 +1283,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 id|txAbort
@@ -1752,6 +1755,7 @@ c_cond
 (paren
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 id|txAbort
@@ -2079,10 +2083,8 @@ suffix:semicolon
 multiline_comment|/* Marks FS Dirty */
 id|rc
 op_assign
-op_minus
 id|new_size
 suffix:semicolon
-multiline_comment|/* We return -rc */
 )brace
 r_else
 id|rc

@@ -1478,7 +1478,11 @@ c_func
 (paren
 l_string|&quot;PCI: %s swizzling pin %d =&gt; pin %d slot %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|oldpin
 comma
@@ -1552,7 +1556,11 @@ c_func
 (paren
 l_string|&quot;PCI: %s mapping slot %d pin %d =&gt; irq %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|slot
 comma
@@ -2065,7 +2073,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because&quot;
 l_string|&quot; of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2129,7 +2141,11 @@ c_func
 (paren
 l_string|&quot;PCI: enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma

@@ -3,9 +3,57 @@ DECL|macro|__ASM_MSR_H
 mdefine_line|#define __ASM_MSR_H
 multiline_comment|/*&n; * Access to machine-specific registers (available on 586 and better only)&n; * Note: the rd* operations modify the parameters directly (without using&n; * pointer indirection), this allows gcc to optimize better&n; */
 DECL|macro|rdmsr
-mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;     __asm__ __volatile__(&quot;rdmsr&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (val1), &quot;=d&quot; (val2) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr))
+mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&quot;rdmsr&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (val1), &quot;=d&quot; (val2) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr))
 DECL|macro|wrmsr
-mdefine_line|#define wrmsr(msr,val1,val2) &bslash;&n;     __asm__ __volatile__(&quot;wrmsr&quot; &bslash;&n;&t;&t;&t;  : /* no outputs */ &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr), &quot;a&quot; (val1), &quot;d&quot; (val2))
+mdefine_line|#define wrmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&quot;wrmsr&quot; &bslash;&n;&t;&t;&t;  : /* no outputs */ &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr), &quot;a&quot; (val1), &quot;d&quot; (val2))
+DECL|macro|rdmsrl
+mdefine_line|#define rdmsrl(msr,val) do { &bslash;&n;&t;unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);  &bslash;&n;&t;val = l__;  &bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);  &bslash;&n;} while(0)
+DECL|function|wrmsrl
+r_static
+r_inline
+r_void
+id|wrmsrl
+(paren
+r_int
+r_int
+id|msr
+comma
+r_int
+r_int
+r_int
+id|val
+)paren
+(brace
+r_int
+r_int
+id|lo
+comma
+id|hi
+suffix:semicolon
+id|lo
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|val
+suffix:semicolon
+id|hi
+op_assign
+id|val
+op_rshift
+l_int|32
+suffix:semicolon
+id|wrmsr
+(paren
+id|msr
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+)brace
 DECL|macro|rdtsc
 mdefine_line|#define rdtsc(low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdtsc&quot; : &quot;=a&quot; (low), &quot;=d&quot; (high))
 DECL|macro|rdtscl
@@ -315,8 +363,8 @@ DECL|macro|MSR_K7_CLK_CTL
 mdefine_line|#define MSR_K7_CLK_CTL&t;&t;&t;0xC001001b
 DECL|macro|MSR_K7_FID_VID_CTL
 mdefine_line|#define MSR_K7_FID_VID_CTL&t;&t;0xC0010041
-DECL|macro|MSR_K7_VID_STATUS
-mdefine_line|#define MSR_K7_VID_STATUS&t;&t;0xC0010042
+DECL|macro|MSR_K7_FID_VID_STATUS
+mdefine_line|#define MSR_K7_FID_VID_STATUS&t;&t;0xC0010042
 multiline_comment|/* Centaur-Hauls/IDT defined MSRs. */
 DECL|macro|MSR_IDT_FCR1
 mdefine_line|#define MSR_IDT_FCR1&t;&t;&t;0x107

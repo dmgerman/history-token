@@ -35,8 +35,6 @@ DECL|variable|mode
 r_static
 r_int
 id|mode
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|xbuf
 r_static

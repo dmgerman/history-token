@@ -1,4 +1,7 @@
 multiline_comment|/* H8MAX RTL8019AS Config */
+macro_line|#ifndef __H8300_H8MAX_NE__
+DECL|macro|__H8300_H8MAX_NE__
+mdefine_line|#define __H8300_H8MAX_NE__
 DECL|macro|NE2000_ADDR
 mdefine_line|#define NE2000_ADDR&t;&t;0x800600
 DECL|macro|NE2000_IRQ
@@ -50,6 +53,18 @@ macro_line|# undef insw
 macro_line|#endif
 DECL|macro|insw
 mdefine_line|#define insw(a,p,l)             h8max_insw((a) - NE2000_ADDR,(unsigned short *)p,l)
+macro_line|#if defined(outsb)
+DECL|macro|outsb
+macro_line|# undef outsb
+macro_line|#endif
+DECL|macro|outsb
+mdefine_line|#define outsb(a,p,l)            h8max_outsb((a) - NE2000_ADDR,(unsigned char *)p,l)
+macro_line|#if defined(insb)
+DECL|macro|insb
+macro_line|# undef insb
+macro_line|#endif
+DECL|macro|insb
+mdefine_line|#define insb(a,p,l)             h8max_insb((a) - NE2000_ADDR,(unsigned char *)p,l)
 DECL|macro|H8300_INIT_NE
 mdefine_line|#define H8300_INIT_NE()                  &bslash;&n;do {                                     &bslash;&n;&t;wordlength = 2;                  &bslash;&n;&t;h8max_outb(0x49, ioaddr + EN0_DCFG); &bslash;&n;&t;SA_prom[14] = SA_prom[15] = 0x57;&bslash;&n;} while(0)
 DECL|function|h8max_outb
@@ -283,4 +298,123 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
+DECL|function|h8max_outsb
+r_static
+r_inline
+r_void
+id|h8max_outsb
+c_func
+(paren
+r_int
+r_char
+id|a
+comma
+r_int
+r_char
+op_star
+id|p
+comma
+r_int
+r_int
+id|l
+)paren
+(brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|l
+op_ne
+l_int|0
+suffix:semicolon
+op_decrement
+id|l
+comma
+id|p
+op_increment
+)paren
+(brace
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|NE2000_ADDR
+op_plus
+(paren
+id|a
+op_lshift
+l_int|1
+)paren
+)paren
+op_assign
+op_star
+id|p
+suffix:semicolon
+)brace
+)brace
+DECL|function|h8max_insb
+r_static
+r_inline
+r_void
+id|h8max_insb
+c_func
+(paren
+r_int
+r_char
+id|a
+comma
+r_int
+r_char
+op_star
+id|p
+comma
+r_int
+r_int
+id|l
+)paren
+(brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|l
+op_ne
+l_int|0
+suffix:semicolon
+op_decrement
+id|l
+comma
+id|p
+op_increment
+)paren
+(brace
+op_star
+id|p
+op_assign
+op_star
+(paren
+(paren
+r_int
+r_char
+op_star
+)paren
+(paren
+id|NE2000_ADDR
+op_plus
+(paren
+id|a
+op_lshift
+l_int|1
+)paren
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 eof

@@ -2294,7 +2294,7 @@ id|version
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|//printk(KERN_INFO &quot;xircom_init_one(%s)&bslash;n&quot;, pdev-&gt;slot_name);
+singleline_comment|//printk(KERN_INFO &quot;xircom_init_one(%s)&bslash;n&quot;, pci_name(pdev));
 id|board_idx
 op_increment
 suffix:semicolon
@@ -7041,7 +7041,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|tp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|tp-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -8147,14 +8151,13 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|xircom_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|xircom_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

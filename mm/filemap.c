@@ -2399,7 +2399,6 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the &quot;read()&quot; routine for all filesystems&n; * that can use the page cache directly.&n; */
-r_static
 id|ssize_t
 DECL|function|__generic_file_aio_read
 id|__generic_file_aio_read
@@ -2834,6 +2833,13 @@ c_func
 id|generic_file_aio_read
 )paren
 suffix:semicolon
+DECL|variable|__generic_file_aio_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__generic_file_aio_read
+)paren
+suffix:semicolon
 id|ssize_t
 DECL|function|generic_file_read
 id|generic_file_read
@@ -3155,7 +3161,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|mapping
@@ -4349,7 +4355,7 @@ c_cond
 op_logical_neg
 id|nonblock
 )paren
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|mapping
@@ -6900,23 +6906,13 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageReferenced
-c_func
-(paren
-id|page
-)paren
-)paren
-id|SetPageReferenced
+id|unlock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-id|unlock_page
+id|mark_page_accessed
 c_func
 (paren
 id|page

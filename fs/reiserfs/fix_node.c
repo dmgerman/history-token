@@ -7742,7 +7742,7 @@ id|FIRST_PATH_ELEMENT_OFFSET
 op_minus
 l_int|1
 comma
-l_string|&quot;PAP-8260: illegal offset in the path&quot;
+l_string|&quot;PAP-8260: invalid offset in the path&quot;
 )paren
 suffix:semicolon
 r_if

@@ -6243,7 +6243,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;unable to read i-node block (i_pos %llu)&quot;
+l_string|&quot;unable to read i-node block (i_pos %lld)&quot;
 comma
 id|i_pos
 )paren

@@ -11214,8 +11214,6 @@ id|j-&gt;flags.cidcw_ack
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12270,8 +12268,6 @@ comma
 op_amp
 id|j-&gt;busyflags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

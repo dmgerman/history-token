@@ -2941,7 +2941,7 @@ c_func
 id|log
 )paren
 suffix:semicolon
-multiline_comment|/* Also an illegal lsn.  1 implies that we aren&squot;t passing in a legal&n;&t; * tail_lsn.&n;&t; */
+multiline_comment|/* Also an invalid lsn.  1 implies that we aren&squot;t passing in a valid&n;&t; * tail_lsn.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3819,7 +3819,7 @@ id|log-&gt;l_dev
 suffix:semicolon
 id|log-&gt;l_iclog_bufs
 op_assign
-id|XLOG_NUM_ICLOGS
+id|XLOG_MIN_ICLOGS
 suffix:semicolon
 )brace
 r_else
@@ -3834,10 +3834,60 @@ op_eq
 op_minus
 l_int|1
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|xfs_physmem
+op_le
+id|btoc
+c_func
+(paren
+l_int|128
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+)paren
+(brace
 id|log-&gt;l_iclog_bufs
 op_assign
-id|XLOG_NUM_ICLOGS
+id|XLOG_MIN_ICLOGS
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|xfs_physmem
+op_le
+id|btoc
+c_func
+(paren
+l_int|400
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+)paren
+(brace
+id|log-&gt;l_iclog_bufs
+op_assign
+id|XLOG_MED_ICLOGS
+suffix:semicolon
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* 256K with 32K bufs */
+id|log-&gt;l_iclog_bufs
+op_assign
+id|XLOG_MAX_ICLOGS
+suffix:semicolon
+)brace
+)brace
 r_else
 id|log-&gt;l_iclog_bufs
 op_assign
@@ -4085,7 +4135,7 @@ suffix:colon
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;XFS: Illegal blocksize&quot;
+l_string|&quot;XFS: Invalid blocksize&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4347,32 +4397,12 @@ id|log
 suffix:semicolon
 id|bp
 op_assign
-id|log-&gt;l_xbuf
-op_assign
-id|XFS_getrbuf
+id|xfs_buf_get_empty
 c_func
 (paren
-l_int|0
-comma
-id|mp
-)paren
-suffix:semicolon
-multiline_comment|/* get my locked buffer */
-multiline_comment|/* mp needed for pagebuf/linux only */
-id|XFS_BUF_SET_TARGET
-c_func
-(paren
-id|bp
+id|log-&gt;l_iclog_size
 comma
 id|mp-&gt;m_logdev_targp
-)paren
-suffix:semicolon
-id|XFS_BUF_SET_SIZE
-c_func
-(paren
-id|bp
-comma
-id|log-&gt;l_iclog_size
 )paren
 suffix:semicolon
 id|XFS_BUF_SET_IODONE_FUNC
@@ -4409,7 +4439,7 @@ c_func
 id|XFS_BUF_ISBUSY
 c_func
 (paren
-id|log-&gt;l_xbuf
+id|bp
 )paren
 )paren
 suffix:semicolon
@@ -4419,11 +4449,15 @@ c_func
 id|XFS_BUF_VALUSEMA
 c_func
 (paren
-id|log-&gt;l_xbuf
+id|bp
 )paren
 op_le
 l_int|0
 )paren
+suffix:semicolon
+id|log-&gt;l_xbuf
+op_assign
+id|bp
 suffix:semicolon
 id|spinlock_init
 c_func
@@ -4655,32 +4689,12 @@ id|uuid_t
 suffix:semicolon
 id|bp
 op_assign
-id|iclog-&gt;ic_bp
-op_assign
-id|XFS_getrbuf
+id|xfs_buf_get_empty
 c_func
 (paren
-l_int|0
-comma
-id|mp
-)paren
-suffix:semicolon
-multiline_comment|/* my locked buffer */
-multiline_comment|/* mp need for pagebuf/linux only */
-id|XFS_BUF_SET_TARGET
-c_func
-(paren
-id|bp
+id|log-&gt;l_iclog_size
 comma
 id|mp-&gt;m_logdev_targp
-)paren
-suffix:semicolon
-id|XFS_BUF_SET_SIZE
-c_func
-(paren
-id|bp
-comma
-id|log-&gt;l_iclog_size
 )paren
 suffix:semicolon
 id|XFS_BUF_SET_IODONE_FUNC
@@ -4710,6 +4724,10 @@ r_int
 )paren
 l_int|1
 )paren
+suffix:semicolon
+id|iclog-&gt;ic_bp
+op_assign
+id|bp
 suffix:semicolon
 id|iclog-&gt;ic_size
 op_assign
@@ -6014,7 +6032,7 @@ op_amp
 id|iclog-&gt;ic_writesema
 )paren
 suffix:semicolon
-id|XFS_freerbuf
+id|xfs_buf_free
 c_func
 (paren
 id|iclog-&gt;ic_bp
@@ -6150,7 +6168,7 @@ id|next_tic
 suffix:semicolon
 )brace
 )brace
-id|XFS_freerbuf
+id|xfs_buf_free
 c_func
 (paren
 id|log-&gt;l_xbuf
@@ -12020,6 +12038,10 @@ id|xlog_in_core_t
 op_star
 id|icptr
 suffix:semicolon
+id|xlog_in_core_2_t
+op_star
+id|xhdr
+suffix:semicolon
 id|xfs_caddr_t
 id|ptr
 suffix:semicolon
@@ -12051,22 +12073,6 @@ c_func
 (paren
 id|s
 )paren
-suffix:semicolon
-r_union
-id|ich
-(brace
-id|xlog_rec_ext_header_t
-id|hic_xheader
-suffix:semicolon
-r_char
-id|hic_sector
-(braket
-id|XLOG_HEADER_SIZE
-)braket
-suffix:semicolon
-)brace
-op_star
-id|xhdr
 suffix:semicolon
 multiline_comment|/* check validity of iclog pointers */
 id|s
@@ -12106,7 +12112,7 @@ l_int|0
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;xlog_verify_iclog: illegal ptr&quot;
+l_string|&quot;xlog_verify_iclog: invalid ptr&quot;
 )paren
 suffix:semicolon
 id|icptr
@@ -12167,7 +12173,7 @@ id|XLOG_HEADER_MAGIC_NUM
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;xlog_verify_iclog: illegal magic num&quot;
+l_string|&quot;xlog_verify_iclog: invalid magic num&quot;
 )paren
 suffix:semicolon
 r_for
@@ -12251,8 +12257,7 @@ suffix:semicolon
 id|xhdr
 op_assign
 (paren
-r_union
-id|ich
+id|xlog_in_core_2_t
 op_star
 )paren
 op_amp
@@ -12420,7 +12425,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xlog_verify_iclog: illegal clientid %d op 0x%p offset 0x%x&quot;
+l_string|&quot;xlog_verify_iclog: invalid clientid %d op 0x%p offset 0x%x&quot;
 comma
 id|clientid
 comma

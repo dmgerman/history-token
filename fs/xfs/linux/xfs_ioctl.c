@@ -2434,14 +2434,28 @@ r_struct
 id|dioattr
 id|da
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * this only really needs to be BBSIZE.&n;&t;&t; * it is set to the file system block size to&n;&t;&t; * avoid having to do block zeroing on short writes.&n;&t;&t; */
-id|da.d_miniosz
+id|pb_target_t
+op_star
+id|target
 op_assign
-id|mp-&gt;m_sb.sb_blocksize
+(paren
+id|ip-&gt;i_d.di_flags
+op_amp
+id|XFS_DIFLAG_REALTIME
+)paren
+ques
+c_cond
+id|mp-&gt;m_rtdev_targp
+suffix:colon
+id|mp-&gt;m_ddev_targp
 suffix:semicolon
 id|da.d_mem
 op_assign
-id|mp-&gt;m_sb.sb_blocksize
+id|da.d_miniosz
+op_assign
+l_int|1
+op_lshift
+id|target-&gt;pbr_sshift
 suffix:semicolon
 multiline_comment|/* The size dio will do in one go */
 id|da.d_maxiosz

@@ -50,8 +50,6 @@ DECL|variable|eth
 r_static
 r_int
 id|eth
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Use &quot;eth&quot; or &quot;irlan&quot; name for devices */
 DECL|variable|access

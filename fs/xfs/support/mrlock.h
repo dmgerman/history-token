@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPPORT_MRLOCK_H__
 DECL|macro|__XFS_SUPPORT_MRLOCK_H__
 mdefine_line|#define __XFS_SUPPORT_MRLOCK_H__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;

@@ -1,10 +1,11 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sni.h&gt;
 DECL|variable|pciasic_lock
@@ -20,20 +21,6 @@ id|sni_rm200_pci_handle_int
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_IRQ
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
 )paren
 suffix:semicolon
 r_static

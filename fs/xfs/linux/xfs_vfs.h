@@ -35,12 +35,12 @@ id|vfs_flag
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|member|vfs_fsid
-id|fsid_t
+id|__kernel_fsid_t
 id|vfs_fsid
 suffix:semicolon
 multiline_comment|/* file system ID */
 DECL|member|vfs_altfsid
-id|fsid_t
+id|__kernel_fsid_t
 op_star
 id|vfs_altfsid
 suffix:semicolon

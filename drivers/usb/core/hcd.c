@@ -2089,7 +2089,7 @@ id|EXPORT_SYMBOL
 id|usb_deregister_bus
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the driverfs tree, and then calls usb_new_device() to register the&n; * usb device.&n; */
+multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the driverfs tree, and then calls usb_new_device() to register the&n; * usb device.  It also assigns the root hub&squot;s USB address (always 1).&n; */
 DECL|function|usb_register_root_hub
 r_int
 id|usb_register_root_hub
@@ -2105,6 +2105,12 @@ op_star
 id|parent_dev
 )paren
 (brace
+r_const
+r_int
+id|devnum
+op_assign
+l_int|1
+suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
@@ -2124,6 +2130,23 @@ suffix:semicolon
 id|usb_dev-&gt;state
 op_assign
 id|USB_STATE_DEFAULT
+suffix:semicolon
+id|usb_dev-&gt;devnum
+op_assign
+id|devnum
+suffix:semicolon
+id|usb_dev-&gt;bus-&gt;devnum_next
+op_assign
+id|devnum
+op_plus
+l_int|1
+suffix:semicolon
+id|set_bit
+(paren
+id|devnum
+comma
+id|usb_dev-&gt;bus-&gt;devmap.devicemap
+)paren
 suffix:semicolon
 id|retval
 op_assign
@@ -3784,10 +3807,6 @@ r_int
 id|endpoint
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|hcd_dev
 op_star
@@ -3817,6 +3836,10 @@ suffix:semicolon
 id|hcd
 op_assign
 id|udev-&gt;bus-&gt;hcpriv
+suffix:semicolon
+id|local_irq_disable
+(paren
+)paren
 suffix:semicolon
 id|rescan
 suffix:colon
@@ -3866,11 +3889,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* then kill any current requests */
-id|local_irq_save
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -4096,9 +4114,8 @@ op_amp
 id|hcd_data_lock
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|local_irq_enable
 (paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* synchronize with the hardware, so old configuration state&n;&t; * clears out immediately (and will be freed).&n;&t; */

@@ -1252,7 +1252,11 @@ c_func
 (paren
 l_string|&quot;ISA bridge at %s&bslash;n&quot;
 comma
-id|ppc64_isabridge_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ppc64_isabridge_dev
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -1406,7 +1410,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;PCI: Enabling device: (%s), cmd %x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|cmd
 )paren

@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995 Waldorf GmbH&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 FSMLabs, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995 Waldorf GmbH&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_IO_H
 DECL|macro|_ASM_IO_H
 mdefine_line|#define _ASM_IO_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable-bits.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#ifdef CONFIG_SGI_IP27
 r_extern
 r_int
@@ -35,7 +35,7 @@ macro_line|#if defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)
 DECL|macro|__ioswab8
 mdefine_line|#define __ioswab8(x) (x)
 macro_line|#ifdef CONFIG_SGI_IP22
-multiline_comment|/* IP22 seems braindead enough to swap 16bits values in hardware, but&n;   not 32bits.  Go figure... Can&squot;t tell without documentation. */
+multiline_comment|/*&n; * IP22 seems braindead enough to swap 16bits values in hardware, but&n; * not 32bits.  Go figure... Can&squot;t tell without documentation.&n; */
 DECL|macro|__ioswab16
 mdefine_line|#define __ioswab16(x) (x)
 macro_line|#else
@@ -44,6 +44,8 @@ mdefine_line|#define __ioswab16(x) swab16(x)
 macro_line|#endif
 DECL|macro|__ioswab32
 mdefine_line|#define __ioswab32(x) swab32(x)
+DECL|macro|__ioswab64
+mdefine_line|#define __ioswab64(x) swab64(x)
 macro_line|#else
 DECL|macro|__ioswab8
 mdefine_line|#define __ioswab8(x) (x)
@@ -51,8 +53,9 @@ DECL|macro|__ioswab16
 mdefine_line|#define __ioswab16(x) (x)
 DECL|macro|__ioswab32
 mdefine_line|#define __ioswab32(x) (x)
+DECL|macro|__ioswab64
+mdefine_line|#define __ioswab64(x) (x)
 macro_line|#endif
-multiline_comment|/*&n; * &lt;Bacchus&gt; Historically I wrote this stuff the same way as Linus did&n; * because I was young and clueless.  And now it&squot;s so jucky that I&n; * don&squot;t want to put my eyes on it again to get rid of it :-)&n; *&n; * I&squot;ll do it then, because this code offends both me and my compiler&n; * - particularly the bits of inline asm which end up doing crap like&n; * &squot;lb $2,$2($5)&squot; -- dwmw2&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 multiline_comment|/*&n; * On MIPS I/O ports are memory mapped, so we access them using normal&n; * load/store instructions. mips_io_port_base is the virtual address to&n; * which all ports are being mapped.  For sake of efficiency some code&n; * assumes that this is an address that can be loaded with a single lui&n; * instruction, so the lower 16 bits must be zero.  Should be true on&n; * on any sane architecture; generic code does not use this assumption.&n; */
@@ -95,11 +98,13 @@ id|address
 )paren
 (brace
 r_return
-id|PHYSADDR
-c_func
 (paren
-id|address
+r_int
+r_int
 )paren
+id|address
+op_minus
+id|PAGE_OFFSET
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *     phys_to_virt    -       map physical address to virtual&n; *     @address: address to remap&n; *&n; *     The returned virtual address is a current CPU mapping for&n; *     the memory address given. It is only valid to use this function on&n; *     addresses that have a kernel mapping&n; *&n; *     This function does not handle bus mappings for DMA transfers. In&n; *     almost all conceivable cases a device driver should not be using&n; *     this function&n; */
@@ -121,10 +126,10 @@ r_return
 r_void
 op_star
 )paren
-id|KSEG0ADDR
-c_func
 (paren
 id|address
+op_plus
+id|PAGE_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -144,11 +149,13 @@ id|address
 )paren
 (brace
 r_return
-id|PHYSADDR
-c_func
 (paren
-id|address
+r_int
+r_int
 )paren
+id|address
+op_minus
+id|PAGE_OFFSET
 suffix:semicolon
 )brace
 DECL|function|isa_bus_to_virt
@@ -169,10 +176,10 @@ r_return
 r_void
 op_star
 )paren
-id|KSEG0ADDR
-c_func
 (paren
 id|address
+op_plus
+id|PAGE_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -183,7 +190,7 @@ DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
-multiline_comment|/*&n; * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped&n; * for the processor.&n; */
+multiline_comment|/*&n; * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped&n; * for the processor.  This implies the assumption that there is only&n; * one of these busses.&n; */
 r_extern
 r_int
 r_int
@@ -209,6 +216,16 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__iounmap
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ioremap     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; */
 DECL|macro|ioremap
 mdefine_line|#define ioremap(offset, size)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ioremap((offset), (size), _CACHE_UNCACHED)
@@ -230,30 +247,54 @@ id|addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * XXX We need system specific versions of these to handle EISA address bits&n; * 24-31 on SNI.&n; * XXX more SNI hacks.&n; */
-DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;(*(volatile unsigned char *)(addr))
-DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;__ioswab16((*(volatile unsigned short *)(addr)))
-DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;__ioswab32((*(volatile unsigned int *)(addr)))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(addr)&t;(*(volatile unsigned char *)(addr))
 DECL|macro|__raw_readw
 mdefine_line|#define __raw_readw(addr)&t;(*(volatile unsigned short *)(addr))
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl(addr)&t;(*(volatile unsigned int *)(addr))
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) ((*(volatile unsigned char *)(addr)) = (__ioswab8(b)))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr) ((*(volatile unsigned short *)(addr)) = (__ioswab16(b)))
-DECL|macro|writel
-mdefine_line|#define writel(b,addr) ((*(volatile unsigned int *)(addr)) = (__ioswab32(b)))
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|____raw_readq
+mdefine_line|#define ____raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;# ____raw_readq&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;ld&t;%L0, (%1)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsra32&t;%M0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sll&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (addr));&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|____raw_readq
+mdefine_line|#define ____raw_readq(addr)&t;(*(volatile unsigned long *)(addr))
+macro_line|#endif
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;__res = ____raw_readq(addr);&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|readb
+mdefine_line|#define readb(addr)&t;&t;__ioswab8(__raw_readb(addr))
+DECL|macro|readw
+mdefine_line|#define readw(addr)&t;&t;__ioswab16(__raw_readw(addr))
+DECL|macro|readl
+mdefine_line|#define readl(addr)&t;&t;__ioswab32(__raw_readl(addr))
+DECL|macro|readq
+mdefine_line|#define readq(addr)&t;&t;__ioswab64(__raw_readq(addr))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb(b,addr)&t;((*(volatile unsigned char *)(addr)) = (b))
 DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew(w,addr)&t;((*(volatile unsigned short *)(addr)) = (w))
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel(l,addr)&t;((*(volatile unsigned int *)(addr)) = (l))
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|____raw_writeq
+mdefine_line|#define ____raw_writeq(val,addr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%L0, %L0, 0&t;# ____raw_writeq&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsrl32&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%M0, %M0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;or&t;%L0, %L0, %M0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sd&t;%L0, (%2)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; ((unsigned long long)val), &quot;r&quot; (addr));&t;&t;&bslash;&n;})
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|____raw_writeq
+mdefine_line|#define ____raw_writeq(l,addr)&t;((*(volatile unsigned long *)(addr)) = (l))
+macro_line|#endif
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq(val,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;____raw_writeq(val, addr);&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(__flags);&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|writeb
+mdefine_line|#define writeb(b,addr)&t;&t;__raw_writeb(__ioswab8(b),(addr))
+DECL|macro|writew
+mdefine_line|#define writew(w,addr)&t;&t;__raw_writew(__ioswab16(w),(addr))
+DECL|macro|writel
+mdefine_line|#define writel(l,addr)&t;&t;__raw_writel(__ioswab32(l),(addr))
+DECL|macro|writeq
+mdefine_line|#define writeq(q,addr)&t;&t;__raw_writeq(__ioswab64(q),(addr))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
@@ -264,23 +305,27 @@ multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on currently 
 DECL|macro|__ISA_IO_base
 mdefine_line|#define __ISA_IO_base ((char *)(isa_slot_offset))
 DECL|macro|isa_readb
-mdefine_line|#define isa_readb(a) readb(__ISA_IO_base + (a))
+mdefine_line|#define isa_readb(a)&t;&t;readb(__ISA_IO_base + (a))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(a) readw(__ISA_IO_base + (a))
+mdefine_line|#define isa_readw(a)&t;&t;readw(__ISA_IO_base + (a))
 DECL|macro|isa_readl
-mdefine_line|#define isa_readl(a) readl(__ISA_IO_base + (a))
+mdefine_line|#define isa_readl(a)&t;&t;readl(__ISA_IO_base + (a))
+DECL|macro|isa_readq
+mdefine_line|#define isa_readq(a)&t;&t;readq(__ISA_IO_base + (a))
 DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(b,a) writeb(b,__ISA_IO_base + (a))
+mdefine_line|#define isa_writeb(b,a)&t;&t;writeb(b,__ISA_IO_base + (a))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(w,a) writew(w,__ISA_IO_base + (a))
+mdefine_line|#define isa_writew(w,a)&t;&t;writew(w,__ISA_IO_base + (a))
 DECL|macro|isa_writel
-mdefine_line|#define isa_writel(l,a) writel(l,__ISA_IO_base + (a))
+mdefine_line|#define isa_writel(l,a)&t;&t;writel(l,__ISA_IO_base + (a))
+DECL|macro|isa_writeq
+mdefine_line|#define isa_writeq(q,a)&t;&t;writeq(q,__ISA_IO_base + (a))
 DECL|macro|isa_memset_io
-mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ISA_IO_base + (a),(b),(c))
+mdefine_line|#define isa_memset_io(a,b,c)&t;memset_io(__ISA_IO_base + (a),(b),(c))
 DECL|macro|isa_memcpy_fromio
-mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ISA_IO_base + (b),(c))
+mdefine_line|#define isa_memcpy_fromio(a,b,c) memcpy_fromio((a),__ISA_IO_base + (b),(c))
 DECL|macro|isa_memcpy_toio
-mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
+mdefine_line|#define isa_memcpy_toio(a,b,c)&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
 multiline_comment|/*&n; * We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and&n; * just copy it. The net code will then do the checksum later.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) memcpy_fromio((skb)-&gt;data,(src),(len))
@@ -358,11 +403,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *     isa_check_signature             -       find BIOS signatures&n; *     @io_addr: mmio address to check&n; *     @signature:  signature block&n; *     @length: length of signature&n; *&n; *     Perform a signature comparison with the ISA mmio address io_addr.&n; *     Returns 1 on a match.&n; *&n; *     This function is deprecated. New drivers should use ioremap and&n; *     check_signature.&n; */
 DECL|macro|isa_check_signature
-mdefine_line|#define isa_check_signature(io, s, l) check_signature(i,s,l)
+mdefine_line|#define isa_check_signature(io, s, l)&t;check_signature(i,s,l)
 DECL|macro|outb
 mdefine_line|#define outb(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u8 *)(mips_io_port_base + (port)) = __ioswab8(val);&t;&bslash;&n;} while(0)
 DECL|macro|outw
-mdefine_line|#define outw(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u16 *)(mips_io_port_base + (port)) = __ioswab16(val);&t;&bslash;&n;} while(0)
+mdefine_line|#define outw(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u16 *)(mips_io_port_base + (port)) = __ioswab16(val);&bslash;&n;} while(0)
 DECL|macro|outl
 mdefine_line|#define outl(val,port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u32 *)(mips_io_port_base + (port)) = __ioswab32(val);&bslash;&n;} while(0)
 DECL|macro|outb_p
@@ -371,18 +416,6 @@ DECL|macro|outw_p
 mdefine_line|#define outw_p(val,port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u16 *)(mips_io_port_base + (port)) = __ioswab16(val);&bslash;&n;&t;SLOW_DOWN_IO;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|outl_p
 mdefine_line|#define outl_p(val,port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile u32 *)(mips_io_port_base + (port)) = __ioswab32(val);&bslash;&n;&t;SLOW_DOWN_IO;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
-DECL|macro|inb
-mdefine_line|#define inb(port) __inb(port)
-DECL|macro|inw
-mdefine_line|#define inw(port) __inw(port)
-DECL|macro|inl
-mdefine_line|#define inl(port) __inl(port)
-DECL|macro|inb_p
-mdefine_line|#define inb_p(port) __inb_p(port)
-DECL|macro|inw_p
-mdefine_line|#define inw_p(port) __inw_p(port)
-DECL|macro|inl_p
-mdefine_line|#define inl_p(port) __inl_p(port)
 DECL|function|__inb
 r_static
 r_inline
@@ -596,18 +629,18 @@ id|__val
 )paren
 suffix:semicolon
 )brace
-DECL|macro|outsb
-mdefine_line|#define outsb(port, addr, count) __outsb(port, addr, count)
-DECL|macro|insb
-mdefine_line|#define insb(port, addr, count) __insb(port, addr, count)
-DECL|macro|outsw
-mdefine_line|#define outsw(port, addr, count) __outsw(port, addr, count)
-DECL|macro|insw
-mdefine_line|#define insw(port, addr, count) __insw(port, addr, count)
-DECL|macro|outsl
-mdefine_line|#define outsl(port, addr, count) __outsl(port, addr, count)
-DECL|macro|insl
-mdefine_line|#define insl(port, addr, count) __insl(port, addr, count)
+DECL|macro|inb
+mdefine_line|#define inb(port)&t;__inb(port)
+DECL|macro|inw
+mdefine_line|#define inw(port)&t;__inw(port)
+DECL|macro|inl
+mdefine_line|#define inl(port)&t;__inl(port)
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port)&t;__inb_p(port)
+DECL|macro|inw_p
+mdefine_line|#define inw_p(port)&t;__inw_p(port)
+DECL|macro|inl_p
+mdefine_line|#define inl_p(port)&t;__inl_p(port)
 DECL|function|__outsb
 r_static
 r_inline
@@ -882,6 +915,18 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
+DECL|macro|outsb
+mdefine_line|#define outsb(port, addr, count)&t;__outsb(port, addr, count)
+DECL|macro|insb
+mdefine_line|#define insb(port, addr, count)&t;&t;__insb(port, addr, count)
+DECL|macro|outsw
+mdefine_line|#define outsw(port, addr, count)&t;__outsw(port, addr, count)
+DECL|macro|insw
+mdefine_line|#define insw(port, addr, count)&t;&t;__insw(port, addr, count)
+DECL|macro|outsl
+mdefine_line|#define outsl(port, addr, count)&t;__outsl(port, addr, count)
+DECL|macro|insl
+mdefine_line|#define insl(port, addr, count)&t;&t;__insl(port, addr, count)
 multiline_comment|/*&n; * The caches on some architectures aren&squot;t dma-coherent and have need to&n; * handle this in software.  There are three types of operations that&n; * can be applied to dma buffers.&n; *&n; *  - dma_cache_wback_inv(start, size) makes caches and coherent by&n; *    writing the content of the caches back to memory, if necessary.&n; *    The function also invalidates the affected part of the caches as&n; *    necessary before DMA transfers from outside to memory.&n; *  - dma_cache_wback(start, size) makes caches and coherent by&n; *    writing the content of the caches back to memory, if necessary.&n; *    The function also invalidates the affected part of the caches as&n; *    necessary before DMA transfers from outside to memory.&n; *  - dma_cache_inv(start, size) invalidates the affected parts of the&n; *    caches.  Dirty lines of the caches may be written back or simply&n; *    be discarded.  This operation is necessary before dma operations&n; *    to the memory.&n; */
 macro_line|#ifdef CONFIG_NONCOHERENT_IO
 r_extern
@@ -933,11 +978,11 @@ id|size
 )paren
 suffix:semicolon
 DECL|macro|dma_cache_wback_inv
-mdefine_line|#define dma_cache_wback_inv(start, size)_dma_cache_wback_inv(start,size)
+mdefine_line|#define dma_cache_wback_inv(start, size)&t;_dma_cache_wback_inv(start,size)
 DECL|macro|dma_cache_wback
-mdefine_line|#define dma_cache_wback(start, size)&t;_dma_cache_wback(start,size)
+mdefine_line|#define dma_cache_wback(start, size)&t;&t;_dma_cache_wback(start,size)
 DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(start, size)&t;_dma_cache_inv(start,size)
+mdefine_line|#define dma_cache_inv(start, size)&t;&t;_dma_cache_inv(start,size)
 macro_line|#else /* Sane hardware */
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(start,size)&t;&bslash;&n;&t;do { (void) (start); (void) (size); } while (0)
@@ -946,5 +991,17 @@ mdefine_line|#define dma_cache_wback(start,size)&t;&bslash;&n;&t;do { (void) (st
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(start,size)&t;&bslash;&n;&t;do { (void) (start); (void) (size); } while (0)
 macro_line|#endif /* CONFIG_NONCOHERENT_IO */
+multiline_comment|/*&n; * Read a 32-bit register that requires a 64-bit read cycle on the bus.&n; * Avoid interrupt mucking, just adjust the address for 4-byte access.&n; * Assume the addresses are 8-byte aligned.&n; */
+macro_line|#ifdef __MIPSEB__
+DECL|macro|__CSR_32_ADJUST
+mdefine_line|#define __CSR_32_ADJUST 4
+macro_line|#else
+DECL|macro|__CSR_32_ADJUST
+mdefine_line|#define __CSR_32_ADJUST 0
+macro_line|#endif
+DECL|macro|csr_out32
+mdefine_line|#define csr_out32(v,a) (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST) = (v))
+DECL|macro|csr_in32
+mdefine_line|#define csr_in32(a)    (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST))
 macro_line|#endif /* _ASM_IO_H */
 eof

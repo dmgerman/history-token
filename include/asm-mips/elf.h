@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
-macro_line|#ifndef __ASM_ELF_H
-DECL|macro|__ASM_ELF_H
-mdefine_line|#define __ASM_ELF_H
+macro_line|#ifndef _ASM_ELF_H
+DECL|macro|_ASM_ELF_H
+mdefine_line|#define _ASM_ELF_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* ELF header e_flags defines. */
 multiline_comment|/* MIPS architecture level. */
 DECL|macro|EF_MIPS_ARCH_1
@@ -166,6 +167,7 @@ DECL|macro|SHT_MIPS_UCODE
 mdefine_line|#define SHT_MIPS_UCODE&t;&t;0x70000004
 DECL|macro|SHF_MIPS_GPREL
 mdefine_line|#define SHF_MIPS_GPREL&t;0x10000000
+macro_line|#ifndef ELF_ARCH
 multiline_comment|/* ELF register definitions */
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;45
@@ -198,15 +200,23 @@ id|elf_fpregset_t
 id|ELF_NFPREG
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS32)&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_flags &amp; EF_MIPS_ABI2) != 0)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((__h-&gt;e_flags &amp; EF_MIPS_ABI) != 0) &amp;&amp;&t;&t;&t;&bslash;&n;&t;    ((__h-&gt;e_flags &amp; EF_MIPS_ABI) != EF_MIPS_ABI_O32))&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/* This one accepts IRIX binaries.  */
-DECL|macro|irix_elf_check_arch
-mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_machine == EM_MIPS)
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS64) &t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
+macro_line|#endif /* CONFIG_MIPS32 */
+macro_line|#ifdef CONFIG_MIPS64
+multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
+DECL|macro|elf_check_arch
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS32)&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_flags &amp; EF_MIPS_ABI2) != 0)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((__h-&gt;e_flags &amp; EF_MIPS_ABI) != 0) &amp;&amp;&t;&t;&t;&bslash;&n;&t;    ((__h-&gt;e_flags &amp; EF_MIPS_ABI) != EF_MIPS_ABI_O32))&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
+DECL|macro|ELF_CLASS
+mdefine_line|#define ELF_CLASS&t;ELFCLASS64
+macro_line|#endif /* CONFIG_MIPS64 */
+multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 macro_line|#ifdef __MIPSEB__
 DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2MSB
@@ -216,6 +226,20 @@ mdefine_line|#define ELF_DATA&t;ELFDATA2LSB
 macro_line|#endif
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_MIPS
+macro_line|#endif /* !defined(ELF_ARCH) */
+macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|SET_PERSONALITY
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;set_personality(PER_LINUX);&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif /* CONFIG_MIPS32 */
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|SET_PERSONALITY
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&t;&bslash;&n;do {&t;current-&gt;thread.mflags &amp;= ~MF_ABI_MASK;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32) {&t;&t;&bslash;&n;&t;&t;if ((((ex).e_flags &amp; EF_MIPS_ABI2) != 0) &amp;&amp;&t;&bslash;&n;&t;&t;     ((ex).e_flags &amp; EF_MIPS_ABI) == 0)&t;&t;&bslash;&n;&t;&t;&t;current-&gt;thread.mflags |= MF_N32;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;current-&gt;thread.mflags |= MF_O32;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;current-&gt;thread.mflags |= MF_N64;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif /* CONFIG_MIPS64 */
+macro_line|#endif /* __KERNEL__ */
+multiline_comment|/* This one accepts IRIX binaries.  */
+DECL|macro|irix_elf_check_arch
+mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_machine == EM_MIPS)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
@@ -232,11 +256,9 @@ multiline_comment|/*&n; * See comments in asm-alpha/elf.h, this is the same thin
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;do { &bslash;&n;&t;_r-&gt;regs[1] = _r-&gt;regs[2] = _r-&gt;regs[3] = _r-&gt;regs[4] = 0;&t;&bslash;&n;&t;_r-&gt;regs[5] = _r-&gt;regs[6] = _r-&gt;regs[7] = _r-&gt;regs[8] = 0;&t;&bslash;&n;&t;_r-&gt;regs[9] = _r-&gt;regs[10] = _r-&gt;regs[11] = _r-&gt;regs[12] = 0;&t;&bslash;&n;&t;_r-&gt;regs[13] = _r-&gt;regs[14] = _r-&gt;regs[15] = _r-&gt;regs[16] = 0;&t;&bslash;&n;&t;_r-&gt;regs[17] = _r-&gt;regs[18] = _r-&gt;regs[19] = _r-&gt;regs[20] = 0;&t;&bslash;&n;&t;_r-&gt;regs[21] = _r-&gt;regs[22] = _r-&gt;regs[23] = _r-&gt;regs[24] = 0;&t;&bslash;&n;&t;_r-&gt;regs[25] = _r-&gt;regs[26] = _r-&gt;regs[27] = _r-&gt;regs[28] = 0;&t;&bslash;&n;&t;_r-&gt;regs[30] = _r-&gt;regs[31] = 0;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
+macro_line|#ifndef ELF_ET_DYN_BASE
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
-macro_line|#ifdef __KERNEL__
-DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
 macro_line|#endif
-macro_line|#endif /* __ASM_ELF_H */
+macro_line|#endif /* _ASM_ELF_H */
 eof

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/jazzdma.h&gt;
@@ -19,6 +18,7 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 multiline_comment|/*&n; * Initial irq handlers.&n; */
 DECL|function|no_action
 r_static
@@ -216,7 +216,7 @@ id|JAZZ_R4030_INVAL_ADDR
 )paren
 suffix:semicolon
 multiline_comment|/* clear error bits */
-id|change_cp0_status
+id|change_c0_status
 c_func
 (paren
 id|ST0_IM
@@ -278,6 +278,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* Map 0xe0000000 -&gt; 0x0:800005C0, 0xe0010000 -&gt; 0x1:30000580 */
 id|add_wired_entry
 (paren
 l_int|0x02000017
@@ -289,6 +290,7 @@ comma
 id|PM_64K
 )paren
 suffix:semicolon
+multiline_comment|/* Map 0xe2000000 -&gt; 0x0:900005C0, 0xe3010000 -&gt; 0x0:910005C0 */
 id|add_wired_entry
 (paren
 l_int|0x02400017
@@ -300,6 +302,7 @@ comma
 id|PM_16M
 )paren
 suffix:semicolon
+multiline_comment|/* Map 0xe4000000 -&gt; 0x0:600005C0, 0xe4100000 -&gt; 400005C0 */
 id|add_wired_entry
 (paren
 l_int|0x01800017
@@ -315,10 +318,13 @@ id|irq_setup
 op_assign
 id|jazz_irq_setup
 suffix:semicolon
-id|mips_io_port_base
-op_assign
+id|set_io_port_base
+c_func
+(paren
 id|JAZZ_PORT_BASE
+)paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EISA
 r_if
 c_cond
 (paren
@@ -330,6 +336,7 @@ id|EISA_bus
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|isa_slot_offset
 op_assign
 l_int|0xe3000000

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000 by Ralf Baechle&n; */
-macro_line|#include &lt;asm/ptrace.h&gt;
+multiline_comment|/*&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2003 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -11,16 +10,17 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/pc_keyb.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/sni.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 r_extern
 r_void
 id|sni_machine_restart
@@ -57,29 +57,11 @@ r_struct
 id|rtc_ops
 id|std_rtc_ops
 suffix:semicolon
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
-DECL|variable|board_time_init
-r_void
-(paren
-op_star
-id|board_time_init
-)paren
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-suffix:semicolon
-DECL|function|sni_rm200_pci_time_init
+DECL|function|sni_rm200_pci_timer_setup
 r_static
 r_void
 id|__init
-id|sni_rm200_pci_time_init
+id|sni_rm200_pci_timer_setup
 c_func
 (paren
 r_struct
@@ -129,11 +111,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-suffix:semicolon
 r_extern
 r_int
 r_char
@@ -299,9 +276,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mips_io_port_base
-op_assign
+id|set_io_port_base
+c_func
+(paren
 id|SNI_PORT_BASE
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup (E)ISA I/O memory access stuff&n;&t; */
 id|isa_slot_offset
@@ -309,10 +288,12 @@ op_assign
 l_int|0xb0000000
 suffix:semicolon
 singleline_comment|// sni_map_isa_cache = 0;
+macro_line|#ifdef CONFIG_EISA
 id|EISA_bus
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|request_region
 c_func
 (paren
@@ -364,9 +345,9 @@ comma
 l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
-id|board_time_init
+id|board_timer_setup
 op_assign
-id|sni_rm200_pci_time_init
+id|sni_rm200_pci_timer_setup
 suffix:semicolon
 id|_machine_restart
 op_assign
@@ -379,10 +360,6 @@ suffix:semicolon
 id|_machine_power_off
 op_assign
 id|sni_machine_power_off
-suffix:semicolon
-id|aux_device_present
-op_assign
-l_int|0xaa
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some cluefull person has placed the PCI config data directly in&n;&t; * the I/O port space ...&n;&t; */
 id|request_region
@@ -453,16 +430,5 @@ op_assign
 op_amp
 id|std_rtc_ops
 suffix:semicolon
-id|kbd_ops
-op_assign
-op_amp
-id|std_kbd_ops
-suffix:semicolon
-macro_line|#ifdef CONFIG_PSMOUSE
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

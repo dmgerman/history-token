@@ -951,7 +951,11 @@ c_func
 (paren
 l_string|&quot;PCI: Fixing base addresses for IOC3 device %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 id|d-&gt;resource
@@ -1037,7 +1041,11 @@ c_func
 (paren
 l_string|&quot;PCI: Fixing isp1020 in [bus:slot.fn] %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Configure device to allow bus mastering, i/o and memory mapping.&n;&t; * Older qlogicisp driver expects to have the IO space enable&n;&t; * bit set. Things stop working if we program the controllers as not&n;&t; * having PCI_COMMAND_MEMORY, so we have to fudge the mem_flags.&n;&t; */
@@ -1164,7 +1172,11 @@ c_func
 (paren
 l_string|&quot;PCI: Fixing isp2x00 in [bus:slot.fn] %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* set the resource struct for this device */

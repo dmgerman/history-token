@@ -1,41 +1,121 @@
-multiline_comment|/*&n; * asmmacro.h: Assembler macros to make things easier to read.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998 Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003 Ralf Baechle&n; */
 macro_line|#ifndef _ASM_ASMMACRO_H
 DECL|macro|_ASM_ASMMACRO_H
 mdefine_line|#define _ASM_ASMMACRO_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/offset.h&gt;
+macro_line|#ifdef CONFIG_MIPS32
+macro_line|#include &lt;asm/asmmacro-32.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+macro_line|#include &lt;asm/asmmacro-64.h&gt;
+macro_line|#endif
+dot
+id|macro
+id|local_irq_enable
+id|reg
+op_assign
+id|t0
+id|mfc0
+"&bslash;"
+id|reg
+comma
+id|CP0_STATUS
+DECL|variable|reg
+DECL|variable|reg
+id|ori
+"&bslash;"
+id|reg
+comma
+"&bslash;"
+id|reg
+comma
+l_int|1
+DECL|variable|reg
+id|mtc0
+"&bslash;"
+id|reg
+comma
+id|CP0_STATUS
+dot
+id|endm
+dot
+id|macro
+id|local_irq_disable
+id|reg
+op_assign
+id|t0
+id|mfc0
+"&bslash;"
+id|reg
+comma
+id|CP0_STATUS
+DECL|variable|reg
+DECL|variable|reg
+id|ori
+"&bslash;"
+id|reg
+comma
+"&bslash;"
+id|reg
+comma
+l_int|1
+DECL|variable|reg
+DECL|variable|reg
+id|xori
+"&bslash;"
+id|reg
+comma
+"&bslash;"
+id|reg
+comma
+l_int|1
+DECL|variable|reg
+id|mtc0
+"&bslash;"
+id|reg
+comma
+id|CP0_STATUS
+DECL|variable|SSNOP
+id|SSNOP
+suffix:semicolon
+id|SSNOP
+suffix:semicolon
+id|SSNOP
+dot
+id|endm
 macro_line|#ifdef CONFIG_CPU_SB1
-DECL|macro|FPU_ENABLE_HAZARD
-mdefine_line|#define FPU_ENABLE_HAZARD&t;&t;&bslash;&n;&t;.set&t;push;&t;&t;&t;&bslash;&n;&t;.set&t;noreorder;&t;&t;&bslash;&n;&t;.set&t;mips2;&t;&t;&t;&bslash;&n;&t;SSNOP;&t;&t;&t;&t;&bslash;&n;&t;bnezl&t;$0, .+4;&t;&t;&bslash;&n;&t; SSNOP;&t;&t;&t;&t;&bslash;&n;&t;.set&t;pop
+dot
+id|macro
+id|fpu_enable_hazard
+dot
+id|set
+id|push
+dot
+id|set
+id|noreorder
+dot
+id|set
+id|mips2
+id|SSNOP
+id|bnezl
+"$"
+l_int|0
+comma
+dot
+op_plus
+l_int|4
+id|SSNOP
+dot
+id|set
+id|pop
+dot
+id|endm
 macro_line|#else
-DECL|macro|FPU_ENABLE_HAZARD
-mdefine_line|#define FPU_ENABLE_HAZARD
+dot
+id|macro
+id|fpu_enable_hazard
+dot
+id|endm
 macro_line|#endif
-DECL|macro|FPU_SAVE_DOUBLE
-mdefine_line|#define FPU_SAVE_DOUBLE(thread, tmp) &bslash;&n;&t;cfc1&t;tmp,  fcr31;                    &bslash;&n;&t;sdc1&t;$f0,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;sdc1&t;$f2,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;sdc1&t;$f4,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;sdc1&t;$f6,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;sdc1&t;$f8,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;sdc1&t;$f10, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;sdc1&t;$f12, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;sdc1&t;$f14, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;sdc1&t;$f16, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;sdc1&t;$f18, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;sdc1&t;$f20, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;sdc1&t;$f22, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;sdc1&t;$f24, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;sdc1&t;$f26, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;sdc1&t;$f28, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;sdc1&t;$f30, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;sw&t;tmp,  (THREAD_FPU + 0x100)(thread)
-macro_line|#if defined (__MIPSEL__)
-DECL|macro|FPU_SAVE_SINGLE
-mdefine_line|#define FPU_SAVE_SINGLE(thread,tmp)                 &bslash;&n;&t;cfc1&t;tmp,  fcr31;                        &bslash;&n;&t;swc1&t;$f0,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;swc1&t;$f1,  (THREAD_FPU + 0x004)(thread); &bslash;&n;&t;swc1&t;$f2,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;swc1&t;$f3,  (THREAD_FPU + 0x014)(thread); &bslash;&n;&t;swc1&t;$f4,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;swc1&t;$f5,  (THREAD_FPU + 0x024)(thread); &bslash;&n;&t;swc1&t;$f6,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;swc1&t;$f7,  (THREAD_FPU + 0x034)(thread); &bslash;&n;&t;swc1&t;$f8,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;swc1&t;$f9,  (THREAD_FPU + 0x044)(thread); &bslash;&n;&t;swc1&t;$f10, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;swc1&t;$f11, (THREAD_FPU + 0x054)(thread); &bslash;&n;&t;swc1&t;$f12, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;swc1&t;$f13, (THREAD_FPU + 0x064)(thread); &bslash;&n;&t;swc1&t;$f14, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;swc1&t;$f15, (THREAD_FPU + 0x074)(thread); &bslash;&n;&t;swc1&t;$f16, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;swc1&t;$f17, (THREAD_FPU + 0x084)(thread); &bslash;&n;&t;swc1&t;$f18, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;swc1&t;$f19, (THREAD_FPU + 0x094)(thread); &bslash;&n;&t;swc1&t;$f20, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;swc1&t;$f21, (THREAD_FPU + 0x0a4)(thread); &bslash;&n;&t;swc1&t;$f22, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;swc1&t;$f23, (THREAD_FPU + 0x0b4)(thread); &bslash;&n;&t;swc1&t;$f24, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;swc1&t;$f25, (THREAD_FPU + 0x0c4)(thread); &bslash;&n;&t;swc1&t;$f26, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;swc1&t;$f27, (THREAD_FPU + 0x0d4)(thread); &bslash;&n;&t;swc1&t;$f28, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;swc1&t;$f29, (THREAD_FPU + 0x0e4)(thread); &bslash;&n;&t;swc1&t;$f30, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;swc1&t;$f31, (THREAD_FPU + 0x0f4)(thread); &bslash;&n;&t;sw&t;tmp,  (THREAD_FPU + 0x100)(thread)
-macro_line|#elif defined (__MIPSEB__)
-DECL|macro|FPU_SAVE_SINGLE
-mdefine_line|#define FPU_SAVE_SINGLE(thread,tmp)                 &bslash;&n;&t;cfc1&t;tmp,  fcr31;                        &bslash;&n;&t;swc1&t;$f0,  (THREAD_FPU + 0x004)(thread); &bslash;&n;&t;swc1&t;$f1,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;swc1&t;$f2,  (THREAD_FPU + 0x014)(thread); &bslash;&n;&t;swc1&t;$f3,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;swc1&t;$f4,  (THREAD_FPU + 0x024)(thread); &bslash;&n;&t;swc1&t;$f5,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;swc1&t;$f6,  (THREAD_FPU + 0x034)(thread); &bslash;&n;&t;swc1&t;$f7,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;swc1&t;$f8,  (THREAD_FPU + 0x044)(thread); &bslash;&n;&t;swc1&t;$f9,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;swc1&t;$f10, (THREAD_FPU + 0x054)(thread); &bslash;&n;&t;swc1&t;$f11, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;swc1&t;$f12, (THREAD_FPU + 0x064)(thread); &bslash;&n;&t;swc1&t;$f13, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;swc1&t;$f14, (THREAD_FPU + 0x074)(thread); &bslash;&n;&t;swc1&t;$f15, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;swc1&t;$f16, (THREAD_FPU + 0x084)(thread); &bslash;&n;&t;swc1&t;$f17, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;swc1&t;$f18, (THREAD_FPU + 0x094)(thread); &bslash;&n;&t;swc1&t;$f19, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;swc1&t;$f20, (THREAD_FPU + 0x0a4)(thread); &bslash;&n;&t;swc1&t;$f21, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;swc1&t;$f22, (THREAD_FPU + 0x0b4)(thread); &bslash;&n;&t;swc1&t;$f23, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;swc1&t;$f24, (THREAD_FPU + 0x0c4)(thread); &bslash;&n;&t;swc1&t;$f25, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;swc1&t;$f26, (THREAD_FPU + 0x0d4)(thread); &bslash;&n;&t;swc1&t;$f27, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;swc1&t;$f28, (THREAD_FPU + 0x0e4)(thread); &bslash;&n;&t;swc1&t;$f29, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;swc1&t;$f30, (THREAD_FPU + 0x0f4)(thread); &bslash;&n;&t;swc1&t;$f31, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;sw&t;tmp,  (THREAD_FPU + 0x100)(thread)
-macro_line|#else
-macro_line|#error &quot;MIPS, but neither __MIPSEB__, nor __MIPSEL__???&quot;
-macro_line|#endif
-DECL|macro|FPU_RESTORE_DOUBLE
-mdefine_line|#define FPU_RESTORE_DOUBLE(thread, tmp) &bslash;&n;&t;lw&t;tmp,  (THREAD_FPU + 0x100)(thread); &bslash;&n;&t;ldc1&t;$f0,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;ldc1&t;$f2,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;ldc1&t;$f4,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;ldc1&t;$f6,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;ldc1&t;$f8,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;ldc1&t;$f10, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;ldc1&t;$f12, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;ldc1&t;$f14, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;ldc1&t;$f16, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;ldc1&t;$f18, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;ldc1&t;$f20, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;ldc1&t;$f22, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;ldc1&t;$f24, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;ldc1&t;$f26, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;ldc1&t;$f28, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;ldc1&t;$f30, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;ctc1&t;tmp,  fcr31
-macro_line|#if defined (__MIPSEL__)
-DECL|macro|FPU_RESTORE_SINGLE
-mdefine_line|#define FPU_RESTORE_SINGLE(thread,tmp)              &bslash;&n;&t;lw&t;tmp,  (THREAD_FPU + 0x100)(thread); &bslash;&n;&t;lwc1&t;$f0,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;lwc1&t;$f1,  (THREAD_FPU + 0x004)(thread); &bslash;&n;&t;lwc1&t;$f2,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;lwc1&t;$f3,  (THREAD_FPU + 0x014)(thread); &bslash;&n;&t;lwc1&t;$f4,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;lwc1&t;$f5,  (THREAD_FPU + 0x024)(thread); &bslash;&n;&t;lwc1&t;$f6,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;lwc1&t;$f7,  (THREAD_FPU + 0x034)(thread); &bslash;&n;&t;lwc1&t;$f8,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;lwc1&t;$f9,  (THREAD_FPU + 0x044)(thread); &bslash;&n;&t;lwc1&t;$f10, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;lwc1&t;$f11, (THREAD_FPU + 0x054)(thread); &bslash;&n;&t;lwc1&t;$f12, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;lwc1&t;$f13, (THREAD_FPU + 0x064)(thread); &bslash;&n;&t;lwc1&t;$f14, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;lwc1&t;$f15, (THREAD_FPU + 0x074)(thread); &bslash;&n;&t;lwc1&t;$f16, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;lwc1&t;$f17, (THREAD_FPU + 0x084)(thread); &bslash;&n;&t;lwc1&t;$f18, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;lwc1&t;$f19, (THREAD_FPU + 0x094)(thread); &bslash;&n;&t;lwc1&t;$f20, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;lwc1&t;$f21, (THREAD_FPU + 0x0a4)(thread); &bslash;&n;&t;lwc1&t;$f22, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;lwc1&t;$f23, (THREAD_FPU + 0x0b4)(thread); &bslash;&n;&t;lwc1&t;$f24, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;lwc1&t;$f25, (THREAD_FPU + 0x0c4)(thread); &bslash;&n;&t;lwc1&t;$f26, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;lwc1&t;$f27, (THREAD_FPU + 0x0d4)(thread); &bslash;&n;&t;lwc1&t;$f28, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;lwc1&t;$f29, (THREAD_FPU + 0x0e4)(thread); &bslash;&n;&t;lwc1&t;$f30, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;lwc1&t;$f31, (THREAD_FPU + 0x0f4)(thread); &bslash;&n;&t;ctc1&t;tmp,  fcr31
-macro_line|#elif defined (__MIPSEB__)
-DECL|macro|FPU_RESTORE_SINGLE
-mdefine_line|#define FPU_RESTORE_SINGLE(thread,tmp)              &bslash;&n;&t;lw&t;tmp,  (THREAD_FPU + 0x100)(thread); &bslash;&n;&t;lwc1&t;$f0,  (THREAD_FPU + 0x004)(thread); &bslash;&n;&t;lwc1&t;$f1,  (THREAD_FPU + 0x000)(thread); &bslash;&n;&t;lwc1&t;$f2,  (THREAD_FPU + 0x014)(thread); &bslash;&n;&t;lwc1&t;$f3,  (THREAD_FPU + 0x010)(thread); &bslash;&n;&t;lwc1&t;$f4,  (THREAD_FPU + 0x024)(thread); &bslash;&n;&t;lwc1&t;$f5,  (THREAD_FPU + 0x020)(thread); &bslash;&n;&t;lwc1&t;$f6,  (THREAD_FPU + 0x034)(thread); &bslash;&n;&t;lwc1&t;$f7,  (THREAD_FPU + 0x030)(thread); &bslash;&n;&t;lwc1&t;$f8,  (THREAD_FPU + 0x044)(thread); &bslash;&n;&t;lwc1&t;$f9,  (THREAD_FPU + 0x040)(thread); &bslash;&n;&t;lwc1&t;$f10, (THREAD_FPU + 0x054)(thread); &bslash;&n;&t;lwc1&t;$f11, (THREAD_FPU + 0x050)(thread); &bslash;&n;&t;lwc1&t;$f12, (THREAD_FPU + 0x064)(thread); &bslash;&n;&t;lwc1&t;$f13, (THREAD_FPU + 0x060)(thread); &bslash;&n;&t;lwc1&t;$f14, (THREAD_FPU + 0x074)(thread); &bslash;&n;&t;lwc1&t;$f15, (THREAD_FPU + 0x070)(thread); &bslash;&n;&t;lwc1&t;$f16, (THREAD_FPU + 0x084)(thread); &bslash;&n;&t;lwc1&t;$f17, (THREAD_FPU + 0x080)(thread); &bslash;&n;&t;lwc1&t;$f18, (THREAD_FPU + 0x094)(thread); &bslash;&n;&t;lwc1&t;$f19, (THREAD_FPU + 0x090)(thread); &bslash;&n;&t;lwc1&t;$f20, (THREAD_FPU + 0x0a4)(thread); &bslash;&n;&t;lwc1&t;$f21, (THREAD_FPU + 0x0a0)(thread); &bslash;&n;&t;lwc1&t;$f22, (THREAD_FPU + 0x0b4)(thread); &bslash;&n;&t;lwc1&t;$f23, (THREAD_FPU + 0x0b0)(thread); &bslash;&n;&t;lwc1&t;$f24, (THREAD_FPU + 0x0c4)(thread); &bslash;&n;&t;lwc1&t;$f25, (THREAD_FPU + 0x0c0)(thread); &bslash;&n;&t;lwc1&t;$f26, (THREAD_FPU + 0x0d4)(thread); &bslash;&n;&t;lwc1&t;$f27, (THREAD_FPU + 0x0d0)(thread); &bslash;&n;&t;lwc1&t;$f28, (THREAD_FPU + 0x0e4)(thread); &bslash;&n;&t;lwc1&t;$f29, (THREAD_FPU + 0x0e0)(thread); &bslash;&n;&t;lwc1&t;$f30, (THREAD_FPU + 0x0f4)(thread); &bslash;&n;&t;lwc1&t;$f31, (THREAD_FPU + 0x0f0)(thread); &bslash;&n;&t;ctc1&t;tmp,  fcr31
-macro_line|#else
-macro_line|#error &quot;MIPS, but neither __MIPSEB__, nor __MIPSEL__???&quot;
-macro_line|#endif
-DECL|macro|CPU_SAVE_NONSCRATCH
-mdefine_line|#define CPU_SAVE_NONSCRATCH(thread) &bslash;&n;&t;sw&t;s0, THREAD_REG16(thread); &bslash;&n;&t;sw&t;s1, THREAD_REG17(thread); &bslash;&n;&t;sw&t;s2, THREAD_REG18(thread); &bslash;&n;&t;sw&t;s3, THREAD_REG19(thread); &bslash;&n;&t;sw&t;s4, THREAD_REG20(thread); &bslash;&n;&t;sw&t;s5, THREAD_REG21(thread); &bslash;&n;&t;sw&t;s6, THREAD_REG22(thread); &bslash;&n;&t;sw&t;s7, THREAD_REG23(thread); &bslash;&n;&t;sw&t;sp, THREAD_REG29(thread); &bslash;&n;&t;sw&t;fp, THREAD_REG30(thread)
-DECL|macro|CPU_RESTORE_NONSCRATCH
-mdefine_line|#define CPU_RESTORE_NONSCRATCH(thread) &bslash;&n;&t;lw&t;s0, THREAD_REG16(thread); &bslash;&n;&t;lw&t;s1, THREAD_REG17(thread); &bslash;&n;&t;lw&t;s2, THREAD_REG18(thread); &bslash;&n;&t;lw&t;s3, THREAD_REG19(thread); &bslash;&n;&t;lw&t;s4, THREAD_REG20(thread); &bslash;&n;&t;lw&t;s5, THREAD_REG21(thread); &bslash;&n;&t;lw&t;s6, THREAD_REG22(thread); &bslash;&n;&t;lw&t;s7, THREAD_REG23(thread); &bslash;&n;&t;lw&t;sp, THREAD_REG29(thread); &bslash;&n;&t;lw&t;fp, THREAD_REG30(thread); &bslash;&n;&t;lw&t;ra, THREAD_REG31(thread)
 macro_line|#endif /* _ASM_ASMMACRO_H */
 eof

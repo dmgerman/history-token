@@ -45,14 +45,13 @@ DECL|macro|PC300_DEBUG_RX
 macro_line|#undef&t;PC300_DEBUG_RX
 DECL|macro|PC300_DEBUG_OTHER
 macro_line|#undef&t;PC300_DEBUG_OTHER
-DECL|variable|__devinitdata
+DECL|variable|cpc_pci_dev_id
 r_static
 r_struct
 id|pci_device_id
 id|cpc_pci_dev_id
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* PC300/RSV or PC300/X21, 2 chan */
@@ -16103,13 +16102,13 @@ id|PC300_PROTO_MLPPP
 (brace
 id|conf-&gt;proto
 op_assign
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 suffix:semicolon
 )brace
 macro_line|#else
 id|conf-&gt;proto
 op_assign
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 suffix:semicolon
 macro_line|#endif
 id|memcpy
@@ -16310,7 +16309,7 @@ id|pc300chconf_t
 )paren
 )paren
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|conf-&gt;proto
 suffix:semicolon
@@ -16331,7 +16330,7 @@ id|pc300chconf_t
 )paren
 )paren
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|conf-&gt;proto
 suffix:semicolon
@@ -19486,7 +19485,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren
@@ -19508,7 +19507,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren
@@ -19655,7 +19654,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_eq
 id|IF_PROTO_PPP
 )paren

@@ -159,14 +159,13 @@ l_string|&quot;3c359: Level of reported messages &bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* &n; *&t;This is a real nasty way of doing this, but otherwise you&n; *&t;will be stuck with 1555 lines of hex #&squot;s in the code.&n; */
 macro_line|#include &quot;3c359_microcode.h&quot; 
-DECL|variable|__devinitdata
+DECL|variable|xl_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|xl_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -5398,7 +5397,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;aint error: Host tried to perform illegal operation &bslash;n&quot;
+l_string|&quot;aint error: Host tried to perform invalid operation &bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

@@ -17,11 +17,12 @@ op_star
 id|pcurrent
 suffix:semicolon
 multiline_comment|/* Current process */
-DECL|member|cpudata_offset
+DECL|member|data_offset
 r_int
 r_int
-id|cpudata_offset
+id|data_offset
 suffix:semicolon
+multiline_comment|/* Per cpu data offset from linker address */
 DECL|member|me
 r_struct
 id|x8664_pda

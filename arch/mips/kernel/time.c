@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * Common time service routines for MIPS machines. See&n; * Documents/mips/README.txt.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; * Copyright (c) 2003  Maciej W. Rozycki&n; *&n; * Common time service routines for MIPS machines. See&n; * Documentation/mips/time.README.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,9 +13,10 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
@@ -116,6 +117,17 @@ r_int
 )paren
 op_assign
 id|null_rtc_set_time
+suffix:semicolon
+DECL|variable|rtc_set_mmss
+r_int
+(paren
+op_star
+id|rtc_set_mmss
+)paren
+(paren
+r_int
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution and better than&n; * microsecond precision on fast machines with cycle counter.&n; */
 DECL|function|do_gettimeofday
@@ -371,17 +383,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Gettimeoffset routines.  These routines returns the time duration&n; * since last timer interrupt in usecs.&n; *&n; * If the exact CPU counter frequency is known, use fixed_rate_gettimeoffset.&n; * Otherwise use calibrate_gettimeoffset()&n; *&n; * If the CPU does not have counter register all, you can either supply&n; * your own gettimeoffset() routine, or use null_gettimeoffset() routines,&n; * which gives the same resolution as HZ.&n; */
-multiline_comment|/* This is for machines which generate the exact clock. */
-DECL|macro|USECS_PER_JIFFY
-mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 multiline_comment|/* usecs per counter cycle, shifted to left by 32 bits */
 DECL|variable|sll32_usecs_per_cycle
 r_static
 r_int
 r_int
 id|sll32_usecs_per_cycle
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* how many counter cycles in a jiffy */
 DECL|variable|cycles_per_jiffy
@@ -389,8 +396,6 @@ r_static
 r_int
 r_int
 id|cycles_per_jiffy
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Cycle counter value at the previous timer interrupt.. */
 DECL|variable|timerhi
@@ -474,10 +479,9 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;multu&bslash;t%1,%2&bslash;n&bslash;t&quot;
-l_string|&quot;mfhi&bslash;t%0&quot;
+l_string|&quot;multu&t;%1,%2&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=h&quot;
 (paren
 id|res
 )paren
@@ -491,6 +495,10 @@ l_string|&quot;r&quot;
 (paren
 id|sll32_usecs_per_cycle
 )paren
+suffix:colon
+l_string|&quot;lo&quot;
+comma
+l_string|&quot;accum&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -511,7 +519,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cached &quot;1/(clocks per usec)*2^32&quot; value.&n; * It has to be recalculated once each jiffy.&n; */
+multiline_comment|/*&n; * Cached &quot;1/(clocks per usec) * 2^32&quot; value.&n; * It has to be recalculated once each jiffy.&n; */
 DECL|variable|cached_quotient
 r_static
 r_int
@@ -524,10 +532,8 @@ r_static
 r_int
 r_int
 id|last_jiffies
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * This is copied from dec/time.c:do_ioasic_gettimeoffset() by Mercij.&n; */
+multiline_comment|/*&n; * This is copied from dec/time.c:do_ioasic_gettimeoffset() by Maciej.&n; */
 DECL|function|calibrate_div32_gettimeoffset
 r_int
 r_int
@@ -628,13 +634,8 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;multu  %2,%3&quot;
+l_string|&quot;multu  %1,%2&quot;
 suffix:colon
-l_string|&quot;=l&quot;
-(paren
-id|tmp
-)paren
-comma
 l_string|&quot;=h&quot;
 (paren
 id|res
@@ -649,6 +650,10 @@ l_string|&quot;r&quot;
 (paren
 id|quotient
 )paren
+suffix:colon
+l_string|&quot;lo&quot;
+comma
+l_string|&quot;accum&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -716,21 +721,20 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
-l_string|&quot;lwu&bslash;t%0,%2&bslash;n&bslash;t&quot;
-l_string|&quot;dsll32&bslash;t$1,%1,0&bslash;n&bslash;t&quot;
-l_string|&quot;or&bslash;t$1,$1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;ddivu&bslash;t$0,$1,%3&bslash;n&bslash;t&quot;
-l_string|&quot;mflo&bslash;t$1&bslash;n&bslash;t&quot;
-l_string|&quot;dsll32&bslash;t%0,%4,0&bslash;n&bslash;t&quot;
+l_string|&quot;.set&t;push&bslash;n&bslash;t&quot;
+l_string|&quot;.set&t;noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set&t;noat&bslash;n&bslash;t&quot;
+l_string|&quot;.set&t;mips3&bslash;n&bslash;t&quot;
+l_string|&quot;lwu&t;%0,%2&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&t;$1,%1,0&bslash;n&bslash;t&quot;
+l_string|&quot;or&t;$1,$1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;ddivu&t;$0,$1,%3&bslash;n&bslash;t&quot;
+l_string|&quot;mflo&t;$1&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&t;%0,%4,0&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;ddivu&bslash;t$0,%0,$1&bslash;n&bslash;t&quot;
-l_string|&quot;mflo&bslash;t%0&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tmips0&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;treorder&quot;
+l_string|&quot;ddivu&t;$0,%0,$1&bslash;n&bslash;t&quot;
+l_string|&quot;mflo&t;%0&bslash;n&bslash;t&quot;
+l_string|&quot;.set&t;pop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -779,10 +783,9 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;multu&bslash;t%1,%2&bslash;n&bslash;t&quot;
-l_string|&quot;mfhi&bslash;t%0&quot;
+l_string|&quot;multu&t;%1,%2&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=h&quot;
 (paren
 id|res
 )paren
@@ -796,6 +799,10 @@ l_string|&quot;r&quot;
 (paren
 id|quotient
 )paren
+suffix:colon
+l_string|&quot;lo&quot;
+comma
+l_string|&quot;accum&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -854,10 +861,6 @@ op_logical_and
 id|current-&gt;pid
 )paren
 (brace
-r_extern
-r_int
-id|_stext
-suffix:semicolon
 r_int
 r_int
 id|pc
@@ -870,7 +873,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|pc
@@ -983,7 +985,7 @@ OL
 l_int|0x7fffffff
 )paren
 (brace
-multiline_comment|/* missed_timer_count ++; */
+multiline_comment|/* missed_timer_count++; */
 id|expirelo
 op_assign
 id|count
@@ -1080,7 +1082,7 @@ l_int|2
 r_if
 c_cond
 (paren
-id|rtc_set_time
+id|rtc_set_mmss
 c_func
 (paren
 id|xtime.tv_sec
@@ -1096,13 +1098,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* do it again in 60 s */
 id|last_rtc_update
 op_assign
 id|xtime.tv_sec
 op_minus
 l_int|600
 suffix:semicolon
-multiline_comment|/* do it again in 60 s */
 )brace
 )brace
 id|write_sequnlock
@@ -1132,9 +1134,9 @@ multiline_comment|/*&n;&t; * In UP mode, we call local_timer_interrupt() to do p
 id|local_timer_interrupt
 c_func
 (paren
-l_int|0
+id|irq
 comma
-l_int|NULL
+id|dev_id
 comma
 id|regs
 )paren
@@ -1174,26 +1176,12 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket
@@ -1215,20 +1203,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|ll_local_timer_interrupt
 id|asmlinkage
@@ -1245,26 +1219,12 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket
@@ -1286,20 +1246,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * time_init() - it does the following things.&n; *&n; * 1) board_time_init() -&n; * &t;a) (optional) set up RTC routines,&n; *      b) (optional) calibrate and set the mips_counter_frequency&n; *&t;    (only needed if you intended to use fixed_rate_gettimeoffset&n; *&t;     or use cpu counter as timer interrupt source)&n; * 2) setup xtime based on rtc_get_time().&n; * 3) choose a appropriate gettimeoffset routine.&n; * 4) calculate a couple of cached variables for later usage&n; * 5) board_timer_setup() -&n; *&t;a) (optional) over-write any choices made above by time_init().&n; *&t;b) machine specific code should setup the timer irqaction.&n; *&t;c) enable the timer interrupt&n; */
 DECL|variable|board_time_init
@@ -1311,8 +1257,6 @@ id|board_time_init
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|board_timer_setup
 r_void
@@ -1326,15 +1270,11 @@ id|irqaction
 op_star
 id|irq
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mips_counter_frequency
 r_int
 r_int
 id|mips_counter_frequency
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|timer_irqaction
 r_static
@@ -1343,17 +1283,21 @@ id|irqaction
 id|timer_irqaction
 op_assign
 (brace
+dot
+id|handler
+op_assign
 id|timer_interrupt
 comma
+dot
+id|flags
+op_assign
 id|SA_INTERRUPT
 comma
-l_int|0
-comma
+dot
+id|name
+op_assign
 l_string|&quot;timer&quot;
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|time_init
@@ -1374,6 +1318,16 @@ id|board_time_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rtc_set_mmss
+)paren
+id|rtc_set_mmss
+op_assign
+id|rtc_set_time
 suffix:semicolon
 id|xtime.tv_sec
 op_assign
@@ -1532,11 +1486,11 @@ mdefine_line|#define SECDAY&t;&t;&t;86400L
 DECL|macro|SECYR
 mdefine_line|#define SECYR&t;&t;&t;(SECDAY * 365)
 DECL|macro|leapyear
-mdefine_line|#define leapyear(year)&t;&t;((year) % 4 == 0)
+mdefine_line|#define leapyear(y)&t;&t;((!((y) % 4) &amp;&amp; ((y) % 100)) || !((y) % 400))
 DECL|macro|days_in_year
-mdefine_line|#define days_in_year(a)&t;&t;(leapyear(a) ? 366 : 365)
+mdefine_line|#define days_in_year(y)&t;&t;(leapyear(y) ? 366 : 365)
 DECL|macro|days_in_month
-mdefine_line|#define days_in_month(a)&t;(month_days[(a) - 1])
+mdefine_line|#define days_in_month(m)&t;(month_days[(m) - 1])
 DECL|variable|month_days
 r_static
 r_int
@@ -1752,6 +1706,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtc_lock
+)paren
+suffix:semicolon
+DECL|variable|to_tm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|to_tm
+)paren
+suffix:semicolon
+DECL|variable|rtc_set_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtc_set_time
+)paren
+suffix:semicolon
+DECL|variable|rtc_get_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtc_get_time
 )paren
 suffix:semicolon
 eof

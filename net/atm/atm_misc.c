@@ -302,15 +302,11 @@ id|vci
 r_static
 r_int
 id|p
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* poor man&squot;s per-device cache */
 r_static
 r_int
 id|c
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|old_p

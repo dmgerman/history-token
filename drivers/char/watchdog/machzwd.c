@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  MachZ ZF-Logic Watchdog Timer driver for Linux&n; *  &n; * &n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  The author does NOT admit liability nor provide warranty for&n; *  any of this software. This material is provided &quot;AS-IS&quot; in&n; *  the hope that it may be useful for others.&n; *&n; *  Author: Fernando Fuganti &lt;fuganti@conectiva.com.br&gt;&n; *&n; *  Based on sbc60xxwdt.c by Jakob Oestergaard&n; * &n; *&n; *  We have two timers (wd#1, wd#2) driven by a 32 KHz clock with the &n; *  following periods:&n; *      wd#1 - 2 seconds;&n; *      wd#2 - 7.2 ms;&n; *  After the expiration of wd#1, it can generate a NMI, SCI, SMI, or &n; *  a system RESET and it starts wd#2 that unconditionaly will RESET &n; *  the system when the counter reaches zero.&n; *&n; *  14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -141,22 +142,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|action
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|action
-comma
-l_string|&quot;after watchdog resets, generate: 0 = RESET(*)  1 = SMI  2 = NMI  3 = SCI&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
 r_static
@@ -174,12 +159,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -224,6 +211,24 @@ r_int
 id|action
 op_assign
 l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|action
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|action
+comma
+l_string|&quot;after watchdog resets, generate: 0 = RESET(*)  1 = SMI  2 = NMI  3 = SCI&quot;
+)paren
 suffix:semicolon
 DECL|variable|zf_action
 r_static

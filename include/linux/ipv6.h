@@ -478,6 +478,10 @@ id|flowi
 op_star
 id|fl
 suffix:semicolon
+DECL|member|hop_limit
+r_int
+id|hop_limit
+suffix:semicolon
 DECL|member|cork
 )brace
 id|cork

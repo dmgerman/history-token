@@ -97,7 +97,7 @@ l_int|0x05
 )paren
 op_logical_or
 (paren
-id|reg
+id|val
 op_amp
 l_int|0x80
 )paren

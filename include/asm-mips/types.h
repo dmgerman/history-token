@@ -4,12 +4,22 @@ DECL|macro|_ASM_TYPES_H
 mdefine_line|#define _ASM_TYPES_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_MIPS32
 DECL|typedef|umode_t
 r_typedef
 r_int
 r_int
 id|umode_t
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|typedef|umode_t
+r_typedef
+r_int
+r_int
+id|umode_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * __xx is ok: it doesn&squot;t pollute the POSIX namespace. Use these in the&n; * header files exported to user space&n; */
 DECL|typedef|__s8
 r_typedef
@@ -151,7 +161,7 @@ id|u64
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_HIGHMEM) &amp;&amp; defined(CONFIG_64BIT_PHYS_ADDR)
+macro_line|#if (defined(CONFIG_HIGHMEM) &amp;&amp; defined(CONFIG_64BIT_PHYS_ADDR)) &bslash;&n;    || defined(CONFIG_MIPS64)
 DECL|typedef|dma_addr_t
 r_typedef
 id|u64
@@ -169,6 +179,7 @@ r_typedef
 id|u64
 id|dma64_addr_t
 suffix:semicolon
+multiline_comment|/*&n; * Don&squot;t use phys_t.  You&squot;ve been warned.&n; */
 macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
 DECL|typedef|phys_t
 r_typedef

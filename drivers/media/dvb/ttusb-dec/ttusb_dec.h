@@ -2,7 +2,10 @@ multiline_comment|/*&n; * TTUSB DEC Driver&n; *&n; * Copyright (C) 2003 Alex Woo
 macro_line|#ifndef _TTUSB_DEC_H
 DECL|macro|_TTUSB_DEC_H
 mdefine_line|#define _TTUSB_DEC_H
-macro_line|#include &quot;asm/semaphore.h&quot;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
@@ -165,11 +168,6 @@ r_struct
 id|dvb_filter_pes2ts
 id|v_pes2ts
 suffix:semicolon
-DECL|member|pes2ts_sem
-r_struct
-id|semaphore
-id|pes2ts_sem
-suffix:semicolon
 DECL|member|v_pes
 id|u8
 id|v_pes
@@ -186,6 +184,42 @@ suffix:semicolon
 DECL|member|v_pes_postbytes
 r_int
 id|v_pes_postbytes
+suffix:semicolon
+DECL|member|urb_frame_list
+r_struct
+id|list_head
+id|urb_frame_list
+suffix:semicolon
+DECL|member|urb_tasklet
+r_struct
+id|tasklet_struct
+id|urb_tasklet
+suffix:semicolon
+DECL|member|urb_frame_list_lock
+id|spinlock_t
+id|urb_frame_list_lock
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|urb_frame
+r_struct
+id|urb_frame
+(brace
+DECL|member|data
+id|u8
+id|data
+(braket
+id|ISO_FRAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|length
+r_int
+id|length
+suffix:semicolon
+DECL|member|urb_frame_list
+r_struct
+id|list_head
+id|urb_frame_list
 suffix:semicolon
 )brace
 suffix:semicolon

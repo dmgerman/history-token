@@ -401,6 +401,11 @@ op_assign
 id|this_fe-&gt;info-&gt;frequency_stepsize
 suffix:semicolon
 r_int
+id|this_fe_adap_num
+op_assign
+id|this_fe-&gt;frontend.i2c-&gt;adapter-&gt;num
+suffix:semicolon
+r_int
 id|frequency
 suffix:semicolon
 r_if
@@ -482,6 +487,15 @@ id|dvb_frontend_data
 comma
 id|list_head
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fe-&gt;frontend.i2c-&gt;adapter-&gt;num
+op_ne
+id|this_fe_adap_num
+)paren
+r_continue
 suffix:semicolon
 id|f
 op_assign

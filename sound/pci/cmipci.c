@@ -4274,7 +4274,7 @@ macro_line|#else
 r_char
 id|buf
 (braket
-l_int|1920
+l_int|480
 )braket
 suffix:semicolon
 multiline_comment|/* bits can be divided by 20, 24, 16 */
@@ -4583,7 +4583,7 @@ macro_line|# ifdef USE_AES_IEC958
 r_char
 id|buf
 (braket
-l_int|1920
+l_int|480
 )braket
 suffix:semicolon
 multiline_comment|/* bits can be divided by 20, 24, 16 */
@@ -12781,14 +12781,13 @@ id|snd_cmipci_proc_read
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|snd_cmipci_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_cmipci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

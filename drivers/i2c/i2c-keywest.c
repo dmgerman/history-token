@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &quot;i2c-keywest.h&quot;
-DECL|macro|POLLED_MODE
-macro_line|#undef POLLED_MODE
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) do {&bslash;&n;&t;if (debug &gt; 0) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;KW:&quot; x); &bslash;&n;&t;} while(0)
 id|MODULE_AUTHOR
@@ -78,77 +76,6 @@ id|ifaces
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef POLLED_MODE
-multiline_comment|/* This isn&squot;t fast, but will go once I implement interrupt with&n; * proper timeout&n; */
-r_static
-id|u8
-DECL|function|wait_interrupt
-id|wait_interrupt
-c_func
-(paren
-r_struct
-id|keywest_iface
-op_star
-id|iface
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|u8
-id|isr
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|POLL_TIMEOUT
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|isr
-op_assign
-id|read_reg
-c_func
-(paren
-id|reg_isr
-)paren
-op_amp
-id|KW_I2C_IRQ_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|isr
-op_ne
-l_int|0
-)paren
-r_return
-id|isr
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_return
-id|isr
-suffix:semicolon
-)brace
-macro_line|#endif /* POLLED_MODE */
 r_static
 r_void
 DECL|function|do_stop
@@ -189,7 +116,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Main state machine for standard &amp; standard sub mode */
 r_static
-r_void
+r_int
 DECL|function|handle_interrupt
 id|handle_interrupt
 c_func
@@ -205,6 +132,11 @@ id|isr
 (brace
 r_int
 id|ack
+suffix:semicolon
+r_int
+id|rearm_timer
+op_assign
+l_int|1
 suffix:semicolon
 id|DBG
 c_func
@@ -244,6 +176,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
+id|rearm_timer
 suffix:semicolon
 )brace
 r_if
@@ -644,6 +577,10 @@ l_int|1
 suffix:semicolon
 r_else
 (brace
+id|rearm_timer
+op_assign
+l_int|0
+suffix:semicolon
 id|iface-&gt;state
 op_assign
 id|state_idle
@@ -664,7 +601,6 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-macro_line|#ifndef POLLED_MODE
 id|complete
 c_func
 (paren
@@ -672,7 +608,6 @@ op_amp
 id|iface-&gt;complete
 )paren
 suffix:semicolon
-macro_line|#endif /* POLLED_MODE */&t;&t;&t;
 )brace
 r_break
 suffix:semicolon
@@ -685,8 +620,10 @@ comma
 id|isr
 )paren
 suffix:semicolon
+r_return
+id|rearm_timer
+suffix:semicolon
 )brace
-macro_line|#ifndef POLLED_MODE
 multiline_comment|/* Interrupt handler */
 r_static
 id|irqreturn_t
@@ -733,6 +670,9 @@ op_amp
 id|iface-&gt;timeout_timer
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|handle_interrupt
 c_func
 (paren
@@ -744,29 +684,18 @@ c_func
 id|reg_isr
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|iface-&gt;state
-op_ne
-id|state_idle
 )paren
-(brace
-id|iface-&gt;timeout_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|POLL_TIMEOUT
-suffix:semicolon
-id|add_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|iface-&gt;timeout_timer
+comma
+id|jiffies
+op_plus
+id|POLL_TIMEOUT
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -814,6 +743,9 @@ op_amp
 id|iface-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|handle_interrupt
 c_func
 (paren
@@ -825,29 +757,18 @@ c_func
 id|reg_isr
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|iface-&gt;state
-op_ne
-id|state_idle
 )paren
-(brace
-id|iface-&gt;timeout_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|POLL_TIMEOUT
-suffix:semicolon
-id|add_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|iface-&gt;timeout_timer
+comma
+id|jiffies
+op_plus
+id|POLL_TIMEOUT
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -856,7 +777,6 @@ id|iface-&gt;lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* POLLED_MODE */
 multiline_comment|/*&n; * SMBUS-type transfer entrypoint&n; */
 r_static
 id|s32
@@ -1210,17 +1130,15 @@ id|command
 )paren
 suffix:semicolon
 multiline_comment|/* Arm timeout */
-id|iface-&gt;timeout_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|POLL_TIMEOUT
-suffix:semicolon
-id|add_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|iface-&gt;timeout_timer
+comma
+id|jiffies
+op_plus
+id|POLL_TIMEOUT
 )paren
 suffix:semicolon
 multiline_comment|/* Start sending address &amp; enable interrupt*/
@@ -1246,47 +1164,6 @@ comma
 id|KW_I2C_IRQ_MASK
 )paren
 suffix:semicolon
-macro_line|#ifdef POLLED_MODE
-id|DBG
-c_func
-(paren
-l_string|&quot;using polled mode...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* State machine, to turn into an interrupt handler */
-r_while
-c_loop
-(paren
-id|iface-&gt;state
-op_ne
-id|state_idle
-)paren
-(brace
-id|u8
-id|isr
-op_assign
-id|wait_interrupt
-c_func
-(paren
-id|iface
-)paren
-suffix:semicolon
-id|handle_interrupt
-c_func
-(paren
-id|iface
-comma
-id|isr
-)paren
-suffix:semicolon
-)brace
-macro_line|#else /* POLLED_MODE */
-id|DBG
-c_func
-(paren
-l_string|&quot;using interrupt mode...&bslash;n&quot;
-)paren
-suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
@@ -1294,7 +1171,6 @@ op_amp
 id|iface-&gt;complete
 )paren
 suffix:semicolon
-macro_line|#endif /* POLLED_MODE */&t;
 id|rc
 op_assign
 id|iface-&gt;result
@@ -1608,17 +1484,15 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* Arm timeout */
-id|iface-&gt;timeout_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|POLL_TIMEOUT
-suffix:semicolon
-id|add_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|iface-&gt;timeout_timer
+comma
+id|jiffies
+op_plus
+id|POLL_TIMEOUT
 )paren
 suffix:semicolon
 multiline_comment|/* Start sending address &amp; enable interrupt*/
@@ -1644,47 +1518,6 @@ comma
 id|KW_I2C_IRQ_MASK
 )paren
 suffix:semicolon
-macro_line|#ifdef POLLED_MODE
-id|DBG
-c_func
-(paren
-l_string|&quot;using polled mode...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* State machine, to turn into an interrupt handler */
-r_while
-c_loop
-(paren
-id|iface-&gt;state
-op_ne
-id|state_idle
-)paren
-(brace
-id|u8
-id|isr
-op_assign
-id|wait_interrupt
-c_func
-(paren
-id|iface
-)paren
-suffix:semicolon
-id|handle_interrupt
-c_func
-(paren
-id|iface
-comma
-id|isr
-)paren
-suffix:semicolon
-)brace
-macro_line|#else /* POLLED_MODE */
-id|DBG
-c_func
-(paren
-l_string|&quot;using interrupt mode...&bslash;n&quot;
-)paren
-suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
@@ -1692,7 +1525,6 @@ op_amp
 id|iface-&gt;complete
 )paren
 suffix:semicolon
-macro_line|#endif /* POLLED_MODE */&t;
 id|rc
 op_assign
 id|iface-&gt;result
@@ -2186,10 +2018,10 @@ id|prate
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Select standard sub mode */
+multiline_comment|/* Select standard mode by default */
 id|iface-&gt;cur_mode
 op_or_assign
-id|KW_I2C_MODE_STANDARDSUB
+id|KW_I2C_MODE_STANDARD
 suffix:semicolon
 multiline_comment|/* Write mode */
 id|write_reg
@@ -2217,7 +2049,6 @@ comma
 id|KW_I2C_IRQ_MASK
 )paren
 suffix:semicolon
-macro_line|#ifndef POLLED_MODE
 multiline_comment|/* Request chip interrupt */
 id|rc
 op_assign
@@ -2271,7 +2102,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#endif /* POLLED_MODE */
 r_for
 c_loop
 (paren
@@ -2515,7 +2345,6 @@ op_amp
 id|iface-&gt;sem
 )paren
 suffix:semicolon
-macro_line|#ifndef POLLED_MODE
 id|spin_lock_irq
 c_func
 (paren
@@ -2538,9 +2367,20 @@ op_amp
 id|iface-&gt;lock
 )paren
 suffix:semicolon
-id|schedule
+id|set_task_state
 c_func
 (paren
+id|current
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -2551,12 +2391,10 @@ id|iface-&gt;lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* POLLED_MODE */
 id|iface-&gt;state
 op_assign
 id|state_dead
 suffix:semicolon
-macro_line|#ifndef POLLED_MODE
 id|spin_unlock_irq
 c_func
 (paren
@@ -2572,7 +2410,6 @@ comma
 id|iface
 )paren
 suffix:semicolon
-macro_line|#endif /* POLLED_MODE */
 id|up
 c_func
 (paren

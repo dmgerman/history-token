@@ -89,7 +89,13 @@ r_char
 op_star
 id|filename
 suffix:semicolon
-multiline_comment|/* Name of binary */
+multiline_comment|/* Name of binary as seen by procps */
+DECL|member|interp
+r_char
+op_star
+id|interp
+suffix:semicolon
+multiline_comment|/* Name of the binary really executed. Most&n;&t;&t;&t;&t;   of the time same as filename, but could be&n;&t;&t;&t;&t;   different for binfmt_{misc,script} */
 DECL|member|loader
 DECL|member|exec
 r_int

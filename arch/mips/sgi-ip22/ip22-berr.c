@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ip22-berr.c: Bus error handling.&n; *&n; * Copyright (C) 2002 Ladislav Michl&n; */
+multiline_comment|/*&n; * ip22-berr.c: Bus error handling.&n; *&n; * Copyright (C) 2002, 2003 Ladislav Michl (ladis@linux-mips.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,6 +8,8 @@ macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/sgi/mc.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
+macro_line|#include &lt;asm/sgi/ioc.h&gt;
+macro_line|#include &lt;asm/sgi/ip22.h&gt;
 DECL|variable|cpu_err_stat
 r_static
 r_int
@@ -36,6 +38,19 @@ r_int
 id|gio_err_addr
 suffix:semicolon
 multiline_comment|/* Error address reg for GIO */
+DECL|variable|extio_stat
+r_static
+r_int
+r_int
+id|extio_stat
+suffix:semicolon
+DECL|variable|hpc3_berr_stat
+r_static
+r_int
+r_int
+id|hpc3_berr_stat
+suffix:semicolon
+multiline_comment|/* Bus error interrupt status */
 DECL|function|save_and_clear_buserr
 r_static
 r_void
@@ -45,7 +60,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* save memory controler&squot;s error status registers */
+multiline_comment|/* save status registers */
 id|cpu_err_addr
 op_assign
 id|sgimc-&gt;cerr
@@ -61,6 +76,26 @@ suffix:semicolon
 id|gio_err_stat
 op_assign
 id|sgimc-&gt;gstat
+suffix:semicolon
+id|extio_stat
+op_assign
+id|ip22_is_fullhouse
+c_func
+(paren
+)paren
+ques
+c_cond
+id|sgioc-&gt;extio
+suffix:colon
+(paren
+id|sgint-&gt;errstat
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+id|hpc3_berr_stat
+op_assign
+id|hpc3c0-&gt;bestat
 suffix:semicolon
 id|sgimc-&gt;cstat
 op_assign
@@ -82,6 +117,73 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|extio_stat
+op_amp
+id|EXTIO_MC_BUSERR
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;MC Bus Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|extio_stat
+op_amp
+id|EXTIO_HPC3_BUSERR
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;HPC3 Bus Error 0x%x:&lt;id=0x%x,%s,lane=0x%x&gt;&bslash;n&quot;
+comma
+id|hpc3_berr_stat
+comma
+(paren
+id|hpc3_berr_stat
+op_amp
+id|HPC3_BESTAT_PIDMASK
+)paren
+op_rshift
+id|HPC3_BESTAT_PIDSHIFT
+comma
+(paren
+id|hpc3_berr_stat
+op_amp
+id|HPC3_BESTAT_CTYPE
+)paren
+ques
+c_cond
+l_string|&quot;PIO&quot;
+suffix:colon
+l_string|&quot;DMA&quot;
+comma
+id|hpc3_berr_stat
+op_amp
+id|HPC3_BESTAT_BLMASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|extio_stat
+op_amp
+id|EXTIO_EISA_BUSERR
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;EISA Bus Error&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

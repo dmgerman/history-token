@@ -5781,7 +5781,11 @@ c_func
 id|KERN_CRIT
 l_string|&quot;ioc3eth(%s): ioremap failed, goodbye.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -5854,7 +5858,11 @@ c_func
 id|KERN_CRIT
 l_string|&quot;ioc3-eth(%s): Didn&squot;t find a PHY, goodbye.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -6102,14 +6110,13 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|ioc3_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ioc3_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

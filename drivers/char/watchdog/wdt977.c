@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;Wdt977&t;0.02:&t;A Watchdog Device for Netwinder W83977AF chip&n; *&n; *&t;(c) Copyright 1998 Rebel.com (Woody Suwalski &lt;woody@netwinder.org&gt;)&n; *&n; *&t;&t;&t;-----------------------&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;&t;&t;-----------------------&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;19-Dec-2001 Woody Suwalski: Netwinder fixes, ioctl interface&n; *&t;06-Jan-2002 Woody Suwalski: For compatibility, convert all timeouts&n; *&t;&t;&t;&t;    from minutes to seconds.&n; *      07-Jul-2003 Daniele Bellucci: Audit return code of misc_register in&n; *                                    nwwatchdog_init.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -51,12 +52,14 @@ id|expect_close
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -67,12 +70,14 @@ comma
 l_string|&quot;Watchdog timeout in seconds (60..15300), default=60&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|testmode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -100,12 +105,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

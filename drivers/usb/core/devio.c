@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;hcd.h&quot;&t;/* for usbcore internals */
+macro_line|#include &quot;usb.h&quot;
 DECL|struct|async
 r_struct
 id|async
@@ -1532,7 +1533,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|intf
@@ -1671,7 +1671,6 @@ id|ps-&gt;ifclaimed
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|intf
@@ -1845,7 +1844,6 @@ op_increment
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i
@@ -1978,7 +1976,6 @@ op_increment
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i
@@ -3677,7 +3674,6 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-op_amp
 id|ps-&gt;dev-&gt;actconfig-&gt;interface
 (braket
 id|i
@@ -3713,7 +3709,7 @@ op_logical_and
 id|ps-&gt;dev
 )paren
 (brace
-id|usb_device_probe
+id|usb_probe_interface
 (paren
 op_amp
 id|intf-&gt;dev
@@ -6030,7 +6026,7 @@ comma
 id|ctrl.ifno
 )paren
 suffix:semicolon
-id|usb_device_remove
+id|usb_unbind_interface
 c_func
 (paren
 op_amp
@@ -6062,7 +6058,7 @@ c_func
 suffix:semicolon
 id|retval
 op_assign
-id|usb_device_probe
+id|usb_probe_interface
 (paren
 op_amp
 id|ifp-&gt;dev

@@ -6191,8 +6191,8 @@ c_func
 (paren
 id|tty
 )paren
-OL
-id|WAKEUP_CHARS
+template_param
+l_int|0
 )paren
 id|mask
 op_or_assign

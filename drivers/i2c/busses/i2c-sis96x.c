@@ -124,29 +124,6 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Internally used pause function */
-DECL|function|sis96x_do_pause
-r_static
-r_void
-id|sis96x_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|amount
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Execute a SMBus transaction.&n;   int size is from SIS96x_QUICK to SIS96x_BLOCK_DATA&n; */
 DECL|function|sis96x_transaction
 r_static
@@ -320,7 +297,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! */
 r_do
 (brace
-id|sis96x_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|1
@@ -951,14 +928,13 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|sis96x_ids
 r_static
 r_struct
 id|pci_device_id
 id|sis96x_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

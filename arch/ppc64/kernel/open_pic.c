@@ -228,13 +228,13 @@ DECL|macro|CHECK_THIS_CPU
 mdefine_line|#define CHECK_THIS_CPU
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#if 0
-mdefine_line|#define check_arg_ipi(ipi) &bslash;&n;    if (ipi &lt; 0 || ipi &gt;= OPENPIC_NUM_IPI) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal ipi %d&bslash;n&quot;, __LINE__, ipi);
-mdefine_line|#define check_arg_timer(timer) &bslash;&n;    if (timer &lt; 0 || timer &gt;= OPENPIC_NUM_TIMERS) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal timer %d&bslash;n&quot;, __LINE__, timer);
-mdefine_line|#define check_arg_vec(vec) &bslash;&n;    if (vec &lt; 0 || vec &gt;= OPENPIC_NUM_VECTORS) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal vector %d&bslash;n&quot;, __LINE__, vec);
-mdefine_line|#define check_arg_pri(pri) &bslash;&n;    if (pri &lt; 0 || pri &gt;= OPENPIC_NUM_PRI) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal priority %d&bslash;n&quot;, __LINE__, pri);
+mdefine_line|#define check_arg_ipi(ipi) &bslash;&n;    if (ipi &lt; 0 || ipi &gt;= OPENPIC_NUM_IPI) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: invalid ipi %d&bslash;n&quot;, __LINE__, ipi);
+mdefine_line|#define check_arg_timer(timer) &bslash;&n;    if (timer &lt; 0 || timer &gt;= OPENPIC_NUM_TIMERS) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: invalid timer %d&bslash;n&quot;, __LINE__, timer);
+mdefine_line|#define check_arg_vec(vec) &bslash;&n;    if (vec &lt; 0 || vec &gt;= OPENPIC_NUM_VECTORS) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: invalid vector %d&bslash;n&quot;, __LINE__, vec);
+mdefine_line|#define check_arg_pri(pri) &bslash;&n;    if (pri &lt; 0 || pri &gt;= OPENPIC_NUM_PRI) &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: invalid priority %d&bslash;n&quot;, __LINE__, pri);
 multiline_comment|/*&n; * Print out a backtrace if it&squot;s out of range, since if it&squot;s larger than NR_IRQ&squot;s&n; * data has probably been corrupted and we&squot;re going to panic or deadlock later&n; * anyway --Troy&n; */
-mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= (NumSources+open_pic_irq_offset)){ &bslash;&n;      printk(KERN_ERR &quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      dump_stack(); }
-mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= OPENPIC_MAX_PROCESSORS){ &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;dump_stack(); }
+mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= (NumSources+open_pic_irq_offset)){ &bslash;&n;      printk(KERN_ERR &quot;open_pic.c:%d: invalid irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      dump_stack(); }
+mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= OPENPIC_MAX_PROCESSORS){ &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: invalid cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;dump_stack(); }
 macro_line|#else
 DECL|macro|check_arg_ipi
 mdefine_line|#define check_arg_ipi(ipi)&t;do {} while (0)

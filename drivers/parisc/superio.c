@@ -336,7 +336,11 @@ id|printk
 id|KERN_INFO
 l_string|&quot;SuperIO: Found NS87560 Legacy I/O device at %s (IRQ %i) &bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|sio-&gt;iosapic_irq
 )paren
@@ -1166,7 +1170,11 @@ c_func
 (paren
 l_string|&quot;superio_fixup_irq(%s) ven 0x%x dev 0x%x from %p&bslash;n&quot;
 comma
-id|pcidev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pcidev
+)paren
 comma
 id|pcidev-&gt;vendor
 comma
@@ -1653,7 +1661,11 @@ c_func
 (paren
 l_string|&quot;superio_probe(%s) ven 0x%x dev 0x%x sv 0x%x sd 0x%x class 0x%x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;vendor
 comma
@@ -1707,14 +1719,13 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__devinitdata
+DECL|variable|superio_tbl
 r_static
 r_struct
 id|pci_device_id
 id|superio_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

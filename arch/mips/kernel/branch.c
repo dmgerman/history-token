@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Branch and jump emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Compute the return address and do emulate branch simulation, if required.&n; */
 DECL|function|__compute_return_epc
 r_int
@@ -57,10 +56,6 @@ op_assign
 r_int
 r_int
 op_star
-)paren
-(paren
-r_int
-r_int
 )paren
 id|epc
 suffix:semicolon
@@ -565,7 +560,7 @@ id|cpu_has_fpu
 )paren
 id|fcr31
 op_assign
-id|current-&gt;thread.fpu.soft.sr
+id|current-&gt;thread.fpu.soft.fcr31
 suffix:semicolon
 r_else
 id|asm

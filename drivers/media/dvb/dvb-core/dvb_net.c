@@ -2897,6 +2897,9 @@ comma
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|parg
 )paren
 suffix:semicolon

@@ -30,8 +30,6 @@ DECL|variable|ports_c
 r_static
 r_int
 id|ports_c
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func

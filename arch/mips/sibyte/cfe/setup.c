@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -81,6 +81,12 @@ r_int
 id|reboot_smp
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_KGDB
+r_extern
+r_int
+id|kgdb_port
 suffix:semicolon
 macro_line|#endif
 DECL|function|cfe_linux_exit
@@ -554,6 +560,78 @@ op_star
 id|str
 )paren
 (brace
+r_char
+id|rdarg
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
+multiline_comment|/* Make a copy of the initrd argument so we can smash it up here */
+r_for
+c_loop
+(paren
+id|idx
+op_assign
+l_int|0
+suffix:semicolon
+id|idx
+OL
+r_sizeof
+(paren
+id|rdarg
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|idx
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|str
+(braket
+id|idx
+)braket
+op_logical_or
+(paren
+id|str
+(braket
+id|idx
+)braket
+op_eq
+l_char|&squot; &squot;
+)paren
+)paren
+r_break
+suffix:semicolon
+id|rdarg
+(braket
+id|idx
+)braket
+op_assign
+id|str
+(braket
+id|idx
+)braket
+suffix:semicolon
+)brace
+id|rdarg
+(braket
+id|idx
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|str
+op_assign
+id|rdarg
+suffix:semicolon
 multiline_comment|/*&n;&t; *Initrd location comes in the form &quot;&lt;hex size of ramdisk in bytes&gt;@&lt;location in memory&gt;&quot;&n;&t; *  e.g. initrd=3abfd@80010000.  This is set up by the loader.&n;&t; */
 r_char
 op_star
@@ -687,7 +765,7 @@ id|initrd_start
 op_plus
 id|initrd_size
 suffix:semicolon
-id|printk
+id|prom_printf
 c_func
 (paren
 l_string|&quot;Found initrd of %lx@%lx&bslash;n&quot;
@@ -702,7 +780,7 @@ l_int|1
 suffix:semicolon
 id|fail
 suffix:colon
-id|printk
+id|prom_printf
 c_func
 (paren
 l_string|&quot;Bad initrd argument.  Disabling initrd&bslash;n&quot;
@@ -755,6 +833,12 @@ r_int
 r_int
 id|cfe_eptseal
 suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
+r_char
+op_star
+id|arg
+suffix:semicolon
+macro_line|#endif
 id|_machine_restart
 op_assign
 (paren
@@ -921,7 +1005,19 @@ op_ne
 id|CFE_EPTSEAL
 )paren
 (brace
-multiline_comment|/* XXXKW what?  way too early to panic... */
+multiline_comment|/* too early for panic to do any good */
+id|prom_printf
+c_func
+(paren
+l_string|&quot;CFE&squot;s entrypoint seal doesn&squot;t match. Spinning.&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 id|cfe_init
 c_func
@@ -987,14 +1083,61 @@ macro_line|#endif
 r_else
 (brace
 multiline_comment|/* The loader should have set the command line */
-id|panic
+multiline_comment|/* too early for panic to do any good */
+id|prom_printf
 c_func
 (paren
 l_string|&quot;LINUX_CMDLINE not defined in cfe.&quot;
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_KGDB
+r_if
+c_cond
+(paren
+(paren
+id|arg
+op_assign
+id|strstr
+c_func
+(paren
+id|arcs_cmdline
+comma
+l_string|&quot;kgdb=duart&quot;
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+id|kgdb_port
+op_assign
+(paren
+id|arg
+(braket
+l_int|10
+)braket
+op_eq
+l_char|&squot;0&squot;
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
+suffix:semicolon
+r_else
+id|kgdb_port
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 (brace
 r_char
@@ -1111,79 +1254,6 @@ r_void
 )paren
 (brace
 multiline_comment|/* Not sure what I&squot;m supposed to do here.  Nothing, I think */
-)brace
-DECL|function|page_is_ram
-r_int
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-id|phys_t
-id|addr
-op_assign
-id|pagenr
-op_lshift
-id|PAGE_SHIFT
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|board_mem_region_count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|addr
-op_ge
-id|board_mem_region_addrs
-(braket
-id|i
-)braket
-)paren
-op_logical_and
-(paren
-id|addr
-OL
-(paren
-id|board_mem_region_addrs
-(braket
-id|i
-)braket
-op_plus
-id|board_mem_region_sizes
-(braket
-id|i
-)braket
-)paren
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|prom_putchar
 r_void

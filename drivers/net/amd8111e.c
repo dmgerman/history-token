@@ -115,14 +115,13 @@ comma
 l_string|&quot;Enable or Disable dynamic IPG, 1: Enable, 0: Disable&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|amd8111e_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|amd8111e_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -6049,7 +6048,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 id|info.eedump_len

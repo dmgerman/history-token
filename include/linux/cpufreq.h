@@ -291,9 +291,28 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* pass a target to the cpufreq driver &n; */
-r_inline
+r_extern
 r_int
 id|cpufreq_driver_target
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_int
+r_int
+id|target_freq
+comma
+r_int
+r_int
+id|relation
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__cpufreq_driver_target
 c_func
 (paren
 r_struct
@@ -368,12 +387,6 @@ id|name
 (braket
 id|CPUFREQ_NAME_LEN
 )braket
-suffix:semicolon
-DECL|member|policy
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
 suffix:semicolon
 multiline_comment|/* needed by all drivers */
 DECL|member|init

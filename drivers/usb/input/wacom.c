@@ -4210,6 +4210,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|result
+op_assign
 id|usb_register
 c_func
 (paren
@@ -4217,6 +4220,13 @@ op_amp
 id|wacom_driver
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
 id|info
 c_func
 (paren
@@ -4226,7 +4236,7 @@ id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 DECL|function|wacom_exit

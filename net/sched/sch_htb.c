@@ -1,4 +1,4 @@
-multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *              Stef Coene &lt;stef.coene@docum.org&gt;&n; *&t;&t;&t;HTB support at LARTC mailing list&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.20 2003/06/18 19:55:49 devik Exp devik $&n; */
+multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *              Stef Coene &lt;stef.coene@docum.org&gt;&n; *&t;&t;&t;HTB support at LARTC mailing list&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;Wilfried Weissmann&n; *&t;&t;&t;spotted bug in dequeue code and helped with fix&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.24 2003/07/28 15:25:23 devik Exp devik $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -44,14 +44,16 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000c&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000d&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
 multiline_comment|/* debugging support; S is subsystem, these are defined:&n;  0 - netlink messages&n;  1 - enqueue&n;  2 - drop &amp; requeue&n;  3 - dequeue main&n;  4 - dequeue one prio DRR part&n;  5 - dequeue class accounting&n;  6 - class overlimit status computation&n;  7 - hint tree&n;  8 - event queue&n; 10 - rate estimator&n; 11 - classifier &n; 12 - fast dequeue cache&n;&n; L is level; 0 = none, 1 = basic info, 2 = detailed, 3 = full&n; q-&gt;debug uint32 contains 16 2-bit fields one for subsystem starting&n; from LSB&n; */
 macro_line|#ifdef HTB_DEBUG
+DECL|macro|HTB_DBG_COND
+mdefine_line|#define HTB_DBG_COND(S,L) (((q-&gt;debug&gt;&gt;(2*S))&amp;3) &gt;= L)
 DECL|macro|HTB_DBG
-mdefine_line|#define HTB_DBG(S,L,FMT,ARG...) if (((q-&gt;debug&gt;&gt;(2*S))&amp;3) &gt;= L) &bslash;&n;&t;printk(KERN_DEBUG FMT,##ARG)
+mdefine_line|#define HTB_DBG(S,L,FMT,ARG...) if (HTB_DBG_COND(S,L)) &bslash;&n;&t;printk(KERN_DEBUG FMT,##ARG)
 DECL|macro|HTB_CHCL
 mdefine_line|#define HTB_CHCL(cl) BUG_TRAP((cl)-&gt;magic == HTB_CMAGIC)
 DECL|macro|HTB_PASSQ
@@ -73,6 +75,8 @@ mdefine_line|#define HTB_CMAGIC 0xFEFAFEF1
 DECL|macro|htb_safe_rb_erase
 mdefine_line|#define htb_safe_rb_erase(N,R) do { BUG_TRAP((N)-&gt;rb_color != -1); &bslash;&n;&t;&t;if ((N)-&gt;rb_color == -1) break; &bslash;&n;&t;&t;rb_erase(N,R); &bslash;&n;&t;&t;(N)-&gt;rb_color = -1; } while (0)
 macro_line|#else
+DECL|macro|HTB_DBG_COND
+mdefine_line|#define HTB_DBG_COND(S,L) (0)
 DECL|macro|HTB_DBG
 mdefine_line|#define HTB_DBG(S,L,FMT,ARG...)
 DECL|macro|HTB_PASSQ
@@ -3833,6 +3837,12 @@ id|sp
 op_assign
 id|stk
 suffix:semicolon
+id|BUG_TRAP
+c_func
+(paren
+id|tree-&gt;rb_node
+)paren
+suffix:semicolon
 id|sp-&gt;root
 op_assign
 id|tree-&gt;rb_node
@@ -4026,7 +4036,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|//struct htb_sched *q = (struct htb_sched *)sch-&gt;data;
 r_struct
 id|htb_class
 op_star
@@ -4061,12 +4070,12 @@ id|prio
 suffix:semicolon
 r_do
 (brace
+id|next
+suffix:colon
 id|BUG_TRAP
 c_func
 (paren
 id|cl
-op_logical_and
-id|cl-&gt;un.leaf.q-&gt;q.qlen
 )paren
 suffix:semicolon
 r_if
@@ -4099,6 +4108,95 @@ id|level
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* class can be empty - it is unlikely but can be true if leaf&n;&t;&t;   qdisc drops packets in enqueue routine or if someone used&n;&t;&t;   graft operation on the leaf since last dequeue; &n;&t;&t;   simply deactivate and skip such class */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|cl-&gt;un.leaf.q-&gt;q.qlen
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+r_struct
+id|htb_class
+op_star
+id|next
+suffix:semicolon
+id|htb_deactivate
+c_func
+(paren
+id|q
+comma
+id|cl
+)paren
+suffix:semicolon
+multiline_comment|/* row/level might become empty */
+r_if
+c_cond
+(paren
+(paren
+id|q-&gt;row_mask
+(braket
+id|level
+)braket
+op_amp
+(paren
+l_int|1
+op_lshift
+id|prio
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|next
+op_assign
+id|htb_lookup_leaf
+(paren
+id|q-&gt;row
+(braket
+id|level
+)braket
+op_plus
+id|prio
+comma
+id|prio
+comma
+id|q-&gt;ptr
+(braket
+id|level
+)braket
+op_plus
+id|prio
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cl
+op_eq
+id|start
+)paren
+multiline_comment|/* fix start if we just deleted it */
+id|start
+op_assign
+id|next
+suffix:semicolon
+id|cl
+op_assign
+id|next
+suffix:semicolon
+r_goto
+id|next
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5619,6 +5717,17 @@ op_assign
 id|q-&gt;direct_pkts
 suffix:semicolon
 macro_line|#ifdef HTB_DEBUG
+r_if
+c_cond
+(paren
+id|HTB_DBG_COND
+c_func
+(paren
+l_int|0
+comma
+l_int|2
+)paren
+)paren
 id|htb_debug_dump
 c_func
 (paren
@@ -6134,6 +6243,23 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cl-&gt;prio_activity
+)paren
+id|htb_deactivate
+(paren
+(paren
+r_struct
+id|htb_sched
+op_star
+)paren
+id|sch-&gt;data
+comma
+id|cl
+)paren
+suffix:semicolon
 multiline_comment|/* TODO: is it correct ? Why CBQ doesn&squot;t do it ? */
 id|sch-&gt;q.qlen
 op_sub_assign

@@ -3701,7 +3701,7 @@ r_return
 id|rv
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 multiline_comment|/* Retrieve the base physical address from ACPI tables.  Originally&n;   from Hewlett-Packard simple bmc.c, a GPL KCS driver. */
 macro_line|#include &lt;linux/acpi.h&gt;
 DECL|struct|SPMITable
@@ -3930,7 +3930,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 r_int
 r_int
 id|physaddr
@@ -4046,7 +4046,7 @@ c_cond
 id|kcs_trydefaults
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 r_if
 c_cond
 (paren

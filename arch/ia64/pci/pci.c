@@ -1570,7 +1570,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1628,7 +1632,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma
@@ -1694,7 +1702,11 @@ l_string|&quot;PCI: Found IRQ %d for device %s&bslash;n&quot;
 comma
 id|dev-&gt;irq
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2021,7 +2033,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;PCI: slot %s has incorrect PCI cache line size of %lu bytes,&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|current_linesize
 )paren

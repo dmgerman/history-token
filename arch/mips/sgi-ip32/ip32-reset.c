@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ds17287rtc.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
@@ -563,7 +564,7 @@ suffix:semicolon
 )brace
 DECL|function|ip32_rtc_int
 r_static
-r_void
+id|irqreturn_t
 id|ip32_rtc_int
 c_func
 (paren
@@ -656,6 +657,9 @@ id|ip32_power_button
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|panic_event

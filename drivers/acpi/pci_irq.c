@@ -953,7 +953,11 @@ id|ACPI_DB_WARN
 comma
 l_string|&quot;Unable to derive IRQ for device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1054,7 +1058,11 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;No interrupt pin configured for device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1148,7 +1156,11 @@ op_plus
 id|pin
 )paren
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Interrupt Line values above 0xF are forbidden */
@@ -1205,7 +1217,11 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;Device %s using IRQ %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;irq
 )paren
@@ -1261,6 +1277,21 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSAPIC
+r_if
+c_cond
+(paren
+id|acpi_irq_model
+op_eq
+id|ACPI_IRQ_MODEL_IOSAPIC
+)paren
+id|iosapic_enable_intr
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
 macro_line|#endif
 id|return_VALUE
 c_func

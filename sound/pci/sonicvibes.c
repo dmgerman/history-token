@@ -719,7 +719,7 @@ id|snd_kcontrol_t
 op_star
 id|master_volume
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|member|gameport
 r_struct
 id|gameport
@@ -728,14 +728,13 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_sonic_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_sonic_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -6927,7 +6926,7 @@ op_star
 id|sonic
 )paren
 (brace
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -9063,7 +9062,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 id|sonic-&gt;gameport.io
 op_assign
 id|sonic-&gt;game_port

@@ -187,14 +187,13 @@ macro_line|#ifndef PCI_DEVICE_ID_VT1724
 DECL|macro|PCI_DEVICE_ID_VT1724
 mdefine_line|#define PCI_DEVICE_ID_VT1724&t;&t;0x1724
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_vt1724_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_vt1724_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -8295,13 +8294,11 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ICE1724 has not detected EEPROM&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
+singleline_comment|// return -EIO;
 )brace
 id|ice-&gt;eeprom.subvendor
 op_assign

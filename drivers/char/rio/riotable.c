@@ -502,7 +502,7 @@ id|rio_dprintk
 (paren
 id|RIO_DEBUG_TABLE
 comma
-l_string|&quot;RIO: RTA %s has been allocated an illegal ID %d&bslash;n&quot;
+l_string|&quot;RIO: RTA %s has been allocated an invalid ID %d&bslash;n&quot;
 comma
 id|MapP-&gt;Name
 comma

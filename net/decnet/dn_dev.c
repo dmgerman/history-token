@@ -7180,12 +7180,6 @@ id|addr
 (braket
 l_int|2
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func

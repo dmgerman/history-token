@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/h8300/platform/h8300h/generic/timer.c&n; *&n; *  Yoshinori Sato &lt;qzb04471@nifty.ne.jp&gt;&n; *&n; *  Platform depend Timer Handler&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/h8300/platform/h8300h/generic/timer.c&n; *&n; *  Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; *&n; *  Platform depend Timer Handler&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,13 +11,43 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+r_extern
+r_int
+id|request_irq_boot
+c_func
+(paren
+r_int
+r_int
+comma
+id|irqreturn_t
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+r_int
+comma
+r_const
+r_char
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
-DECL|macro|TMR8CMA2
-mdefine_line|#define TMR8CMA2 0x00ffff94
-DECL|macro|TMR8TCSR2
-mdefine_line|#define TMR8TCSR2 0x00ffff92
-DECL|macro|TMR8TCNT2
-mdefine_line|#define TMR8TCNT2 0x00ffff90
+macro_line|#include &lt;asm/regs306x.h&gt;
 DECL|function|platform_timer_setup
 r_int
 id|platform_timer_setup
@@ -56,7 +86,7 @@ comma
 id|TMR8TCSR2
 )paren
 suffix:semicolon
-id|request_irq
+id|request_irq_boot
 c_func
 (paren
 l_int|40
@@ -94,15 +124,26 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-c_func
+op_star
 (paren
-l_string|&quot;bclr #6,@0xffff92:8&quot;
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|_8TCSR2
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|CMFA
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(H8_3002) || defined(CONFIG_H83048)
+multiline_comment|/* FIXME! */
 DECL|macro|TSTR
 mdefine_line|#define TSTR 0x00ffff60
 DECL|macro|TSNC
@@ -187,7 +228,7 @@ comma
 id|TIOR
 )paren
 suffix:semicolon
-id|request_irq
+id|request_timer_irq
 c_func
 (paren
 l_int|26

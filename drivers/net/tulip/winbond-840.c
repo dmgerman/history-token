@@ -411,14 +411,13 @@ macro_line|#else
 DECL|macro|W840_FLAGS
 mdefine_line|#define W840_FLAGS (PCI_USES_MEM | PCI_ADDR1 | PCI_USES_MASTER)
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|w840_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|w840_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1507,7 +1506,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Winbond-840: Device %s disabled due to DMA limitations.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6964,7 +6967,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

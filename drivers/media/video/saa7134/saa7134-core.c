@@ -3687,7 +3687,11 @@ l_string|&quot;latency: %d, mmio: 0x%lx&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|dev-&gt;pci_rev
 comma

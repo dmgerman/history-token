@@ -141,14 +141,13 @@ l_string|&quot;RealTek RTL8169 Gigabit Ethernet&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|rtl8169_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rtl8169_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1695,7 +1694,11 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;PCI device %s: unknown chip version, assuming RTL-8169&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -1705,7 +1708,11 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;PCI device %s: TxConfig = 0x%lx&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 (paren
 r_int

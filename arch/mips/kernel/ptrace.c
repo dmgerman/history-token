@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Ross Biro&n; * Copyright (C) Linus Torvalds&n; * Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; * Copyright (C) 1996 David S. Miller&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999 MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Ross Biro&n; * Copyright (C) Linus Torvalds&n; * Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; * Copyright (C) 1996 David S. Miller&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999 MIPS Technologies, Inc.&n; * Copyright (C) 2000 Ulf Carlsson&n; *&n; * At this time Linux/MIPS64 only supports syscall tracing, even for 32-bit&n; * binaries.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,14 +10,14 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/cpu.h&gt;
-macro_line|#include &lt;asm/fpu.h&gt;
 multiline_comment|/*&n; * Called by kernel/ptrace.c when detaching..&n; *&n; * Make sure single step bits etc are not set.&n; */
 DECL|function|ptrace_disable
 r_void
@@ -260,6 +260,7 @@ c_cond
 id|request
 )paren
 (brace
+multiline_comment|/* when I and D space are separate, these will need to be fixed. */
 r_case
 id|PTRACE_PEEKTEXT
 suffix:colon
@@ -330,7 +331,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Read the word at location addr in the USER area.  */
+multiline_comment|/* Read the word at location addr in the USER area. */
 r_case
 id|PTRACE_PEEKUSR
 suffix:colon
@@ -358,7 +359,7 @@ r_int
 )paren
 id|child-&gt;thread_info
 op_plus
-id|KERNEL_STACK_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|32
 op_minus
@@ -369,7 +370,7 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
-id|tmp
+id|ret
 op_assign
 l_int|0
 suffix:semicolon
@@ -411,9 +412,7 @@ c_cond
 id|child-&gt;used_math
 )paren
 (brace
-r_int
-r_int
-r_int
+id|fpureg_t
 op_star
 id|fregs
 op_assign
@@ -423,6 +422,7 @@ c_func
 id|child
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/*&n;&t;&t;&t;&t; * The odd registers are actually the high&n;&t;&t;&t;&t; * order bits of the values stored in the even&n;&t;&t;&t;&t; * registers - unless we&squot;re using r2k_switch.S.&n;&t;&t;&t;&t; */
 r_if
 c_cond
@@ -475,6 +475,18 @@ op_amp
 l_int|0xffffffff
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|tmp
+op_assign
+id|fregs
+(braket
+id|addr
+op_minus
+id|FPR_BASE
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -538,17 +550,16 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|cpu_has_fpu
 )paren
 id|tmp
 op_assign
-id|child-&gt;thread.fpu.soft.sr
+id|child-&gt;thread.fpu.hard.fcr31
 suffix:semicolon
 r_else
 id|tmp
 op_assign
-id|child-&gt;thread.fpu.hard.control
+id|child-&gt;thread.fpu.soft.fcr31
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -635,6 +646,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* when I and D space are separate, this will have to be fixed. */
 r_case
 id|PTRACE_POKETEXT
 suffix:colon
@@ -708,7 +720,7 @@ r_int
 )paren
 id|child-&gt;thread_info
 op_plus
-id|KERNEL_STACK_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|32
 op_minus
@@ -751,20 +763,10 @@ op_plus
 l_int|31
 suffix:colon
 (brace
-r_int
-r_int
-r_int
+id|fpureg_t
 op_star
-id|fregs
-suffix:semicolon
 id|fregs
 op_assign
-(paren
-r_int
-r_int
-r_int
-op_star
-)paren
 id|get_fpu_regs
 c_func
 (paren
@@ -794,11 +796,12 @@ id|child-&gt;thread.fpu.hard
 )paren
 )paren
 suffix:semicolon
-id|child-&gt;thread.fpu.hard.control
+id|child-&gt;thread.fpu.hard.fcr31
 op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/*&n;&t;&t;&t; * The odd registers are actually the high order bits&n;&t;&t;&t; * of the values stored in the even registers - unless&n;&t;&t;&t; * we&squot;re using r2k_switch.S.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -868,6 +871,18 @@ op_or_assign
 id|data
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|fregs
+(braket
+id|addr
+op_minus
+id|FPR_BASE
+)braket
+op_assign
+id|data
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -904,15 +919,14 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|cpu_has_fpu
 )paren
-id|child-&gt;thread.fpu.soft.sr
+id|child-&gt;thread.fpu.hard.fcr31
 op_assign
 id|data
 suffix:semicolon
 r_else
-id|child-&gt;thread.fpu.hard.control
+id|child-&gt;thread.fpu.soft.fcr31
 op_assign
 id|data
 suffix:semicolon

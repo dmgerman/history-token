@@ -3390,7 +3390,7 @@ suffix:semicolon
 multiline_comment|/*&n;** Two address ranges are DMA contiguous *iff* &quot;end of prev&quot; and&n;** &quot;start of next&quot; are both on a page boundry.&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
 DECL|macro|DMA_CONTIG
 mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - PAGE_SHIFT)) == 0UL)
-multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill seperate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
+multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill separate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
 r_static
 id|SBA_INLINE
 r_int

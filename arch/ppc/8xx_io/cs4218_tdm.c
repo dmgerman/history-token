@@ -13108,7 +13108,7 @@ id|MAX_CATCH_RADIUS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal catch radius, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid catch radius, using default = %d&bslash;n&quot;
 comma
 id|catchRadius
 )paren
@@ -13138,7 +13138,7 @@ id|MIN_BUFFERS
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal number of buffers, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid number of buffers, using default = %d&bslash;n&quot;
 comma
 id|numBufs
 )paren
@@ -13164,7 +13164,7 @@ id|MAX_BUFSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal buffer size, using default = %d&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid buffer size, using default = %d&bslash;n&quot;
 comma
 id|bufSize
 )paren
@@ -13189,7 +13189,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;dmasound_setup: illegal number of arguments&bslash;n&quot;
+l_string|&quot;dmasound_setup: invalid number of arguments&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1,8 +1,14 @@
-multiline_comment|/*&n; * Definitions for page handling&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000, 03 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PAGE_H
 DECL|macro|_ASM_PAGE_H
 mdefine_line|#define _ASM_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_MIPS32
+macro_line|#include &lt;asm/page-32.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+macro_line|#include &lt;asm/page-64.h&gt;
+macro_line|#endif
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
@@ -300,7 +306,7 @@ DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
+r_static
 id|__inline__
 r_int
 id|get_order
@@ -357,17 +363,13 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr) + PAGE_SIZE - 1) &amp; PAGE_MASK)
-multiline_comment|/*&n; * This handles the memory map.&n; * We handle pages at KSEG0 for kernels with 32 bit address space.&n; */
-DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;&t;0x80000000UL
-DECL|macro|UNCAC_BASE
-mdefine_line|#define UNCAC_BASE&t;&t;0xa0000000UL
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long) (x) - PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) + PAGE_OFFSET))
 DECL|macro|pfn_to_kaddr
 mdefine_line|#define pfn_to_kaddr(pfn)&t;__va((pfn) &lt;&lt; PAGE_SHIFT)
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
@@ -378,15 +380,13 @@ DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+macro_line|#endif
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|UNCAC_ADDR
 mdefine_line|#define UNCAC_ADDR(addr)&t;((addr) - PAGE_OFFSET + UNCAC_BASE)
 DECL|macro|CAC_ADDR
 mdefine_line|#define CAC_ADDR(addr)&t;&t;((addr) - UNCAC_BASE + PAGE_OFFSET)
-multiline_comment|/*&n; * Memory above this physical address will be considered highmem.&n; */
-DECL|macro|HIGHMEM_START
-mdefine_line|#define HIGHMEM_START&t;&t;0x20000000UL
 macro_line|#endif /* defined (__KERNEL__) */
 macro_line|#endif /* _ASM_PAGE_H */
 eof

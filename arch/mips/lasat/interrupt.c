@@ -541,13 +541,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-l_int|0
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket

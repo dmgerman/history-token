@@ -385,13 +385,8 @@ op_star
 id|resource
 suffix:semicolon
 )brace
-singleline_comment|// driver-&gt;start(), later on, will transfer device from
+singleline_comment|// driver-&gt;reset(), later on, will transfer device from
 singleline_comment|// control by SMM/BIOS to control by Linux (if needed)
-id|pci_set_master
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|hcd
 op_assign
 id|driver-&gt;hcd_alloc
@@ -462,6 +457,14 @@ id|retval
 suffix:semicolon
 )brace
 )brace
+id|hcd-&gt;regs
+op_assign
+id|base
+suffix:semicolon
+id|hcd-&gt;region
+op_assign
+id|region
+suffix:semicolon
 id|pci_set_drvdata
 (paren
 id|dev
@@ -537,6 +540,40 @@ comma
 id|hcd-&gt;product_desc
 )paren
 suffix:semicolon
+multiline_comment|/* till now HC has been in an indeterminate state ... */
+r_if
+c_cond
+(paren
+id|driver-&gt;reset
+op_logical_and
+(paren
+id|retval
+op_assign
+id|driver-&gt;reset
+(paren
+id|hcd
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|dev_err
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;can&squot;t reset&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|clean_3
+suffix:semicolon
+)brace
+id|pci_set_master
+(paren
+id|dev
+)paren
+suffix:semicolon
 macro_line|#ifndef __sparc__
 id|sprintf
 (paren
@@ -557,9 +594,8 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|request_irq
 (paren
 id|dev-&gt;irq
@@ -572,6 +608,11 @@ id|hcd-&gt;description
 comma
 id|hcd
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 op_ne
 l_int|0
 )paren
@@ -585,11 +626,6 @@ comma
 id|bufp
 )paren
 suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
 r_goto
 id|clean_3
 suffix:semicolon
@@ -597,14 +633,6 @@ suffix:semicolon
 id|hcd-&gt;irq
 op_assign
 id|dev-&gt;irq
-suffix:semicolon
-id|hcd-&gt;regs
-op_assign
-id|base
-suffix:semicolon
-id|hcd-&gt;region
-op_assign
-id|region
 suffix:semicolon
 id|dev_info
 (paren

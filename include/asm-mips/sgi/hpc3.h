@@ -563,18 +563,20 @@ id|u32
 id|istat1
 suffix:semicolon
 multiline_comment|/* Irq status, only bits &lt;9:5&gt; reliable. */
-DECL|member|gio_estat
+DECL|member|bestat
 r_volatile
 id|u32
-id|gio_estat
+id|bestat
 suffix:semicolon
-multiline_comment|/* GIO error interrupt status reg. */
-DECL|macro|HPC3_GIOESTAT_BLMASK
-mdefine_line|#define HPC3_GIOESTAT_BLMASK&t;0x000ff&t;/* Bus lane where bad parity occurred */
-DECL|macro|HPC3_GIOESTAT_CTYPE
-mdefine_line|#define HPC3_GIOESTAT_CTYPE&t;0x00100&t;/* Bus cycle type, 0=PIO 1=DMA */
-DECL|macro|HPC3_GIOESTAT_PIDMSK
-mdefine_line|#define HPC3_GIOESTAT_PIDMSK&t;0x3f700&t;/* DMA channel parity identifier */
+multiline_comment|/* Bus error interrupt status reg. */
+DECL|macro|HPC3_BESTAT_BLMASK
+mdefine_line|#define HPC3_BESTAT_BLMASK&t;0x000ff&t;/* Bus lane where bad parity occurred */
+DECL|macro|HPC3_BESTAT_CTYPE
+mdefine_line|#define HPC3_BESTAT_CTYPE&t;0x00100&t;/* Bus cycle type, 0=PIO 1=DMA */
+DECL|macro|HPC3_BESTAT_PIDSHIFT
+mdefine_line|#define HPC3_BESTAT_PIDSHIFT&t;9
+DECL|macro|HPC3_BESTAT_PIDMASK
+mdefine_line|#define HPC3_BESTAT_PIDMASK&t;0x3f700&t;/* DMA channel parity identifier */
 DECL|member|_unused1
 id|u32
 id|_unused1

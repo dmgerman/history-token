@@ -145,7 +145,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|dev
 suffix:semicolon
 )brace
@@ -2949,8 +2949,12 @@ op_star
 id|hub
 op_assign
 id|usb_get_intfdata
+c_func
 (paren
 id|dev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_int
@@ -3025,6 +3029,8 @@ DECL|macro|HUB_RESET_TRIES
 mdefine_line|#define HUB_RESET_TRIES&t;&t;5
 DECL|macro|HUB_PROBE_TRIES
 mdefine_line|#define HUB_PROBE_TRIES&t;&t;2
+DECL|macro|HUB_ROOT_RESET_TIME
+mdefine_line|#define HUB_ROOT_RESET_TIME&t;50&t;/* times are in msec */
 DECL|macro|HUB_SHORT_RESET_TIME
 mdefine_line|#define HUB_SHORT_RESET_TIME&t;10
 DECL|macro|HUB_LONG_RESET_TIME
@@ -3800,6 +3806,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* root hub ports have a slightly longer reset period&n;&t; * (from USB 2.0 spec, section 7.1.7.5)&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hub-&gt;parent
+)paren
+id|delay
+op_assign
+id|HUB_ROOT_RESET_TIME
+suffix:semicolon
 multiline_comment|/* Some low speed devices have problems with the quick delay, so */
 multiline_comment|/*  be a bit pessimistic with those devices. RHbug #23670 */
 r_if
@@ -3910,7 +3927,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Find a new address for it */
-id|usb_connect
+id|usb_choose_address
 c_func
 (paren
 id|dev
@@ -5418,14 +5435,17 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|dev-&gt;actconfig
-op_assign
-id|dev-&gt;config
-suffix:semicolon
-id|usb_set_maxpacket
+id|usb_set_configuration
 c_func
 (paren
 id|dev
+comma
+id|dev-&gt;config
+(braket
+l_int|0
+)braket
+dot
+id|desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_return
@@ -5490,7 +5510,6 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2001 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_WATCH_H
-DECL|macro|__ASM_WATCH_H
-mdefine_line|#define __ASM_WATCH_H
+macro_line|#ifndef _ASM_WATCH_H
+DECL|macro|_ASM_WATCH_H
+mdefine_line|#define _ASM_WATCH_H
 macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * Types of reference for watch_set()&n; */
 DECL|enum|wref_type
@@ -58,5 +58,5 @@ DECL|macro|watch_clear
 mdefine_line|#define watch_clear()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpu_has_watch)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_clear()
 DECL|macro|watch_reenable
 mdefine_line|#define watch_reenable()&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpu_has_watch)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_reenable()
-macro_line|#endif /* __ASM_WATCH_H */
+macro_line|#endif /* _ASM_WATCH_H */
 eof

@@ -34,7 +34,7 @@ mdefine_line|#define DRIVER_VERSION &quot;v2.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;USB HandSpring Visor, Palm m50x, Sony Cli&#xfffd; driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;USB HandSpring Visor / Palm OS driver&quot;
 multiline_comment|/* function prototypes for a handspring visor */
 r_static
 r_int
@@ -928,7 +928,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Handspring Visor / Treo / Palm 4.0 / Cli&#xfffd; 4.x&quot;
+l_string|&quot;Handspring Visor / Palm OS&quot;
 comma
 dot
 id|short_name
@@ -1058,7 +1058,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Sony Cli&#xfffd; 3.5&quot;
+l_string|&quot;Sony Clie 3.5&quot;
 comma
 dot
 id|short_name

@@ -460,7 +460,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;Detected Orinoco/Prism2 PCI device at %s, mem:0x%lX to 0x%lX -&gt; 0x%p, irq:%d&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|dev-&gt;mem_start
 comma
@@ -1019,14 +1023,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|orinoco_pci_pci_id_table
 r_static
 r_struct
 id|pci_device_id
 id|orinoco_pci_pci_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

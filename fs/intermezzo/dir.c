@@ -145,8 +145,6 @@ DECL|variable|izo_authorized_uid
 r_static
 r_int
 id|izo_authorized_uid
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|izo_dentry_is_ilookup
 r_int

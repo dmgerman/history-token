@@ -1085,8 +1085,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|pcf8563_init
 id|module_init
 c_func

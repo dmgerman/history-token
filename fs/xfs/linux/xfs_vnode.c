@@ -696,10 +696,6 @@ id|inode-&gt;i_gid
 op_assign
 id|va.va_gid
 suffix:semicolon
-id|inode-&gt;i_size
-op_assign
-id|va.va_size
-suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
 id|va.va_nblocks
@@ -715,6 +711,14 @@ suffix:semicolon
 id|inode-&gt;i_atime
 op_assign
 id|va.va_atime
+suffix:semicolon
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
+id|va.va_size
+)paren
 suffix:semicolon
 id|VUNMODIFY
 c_func

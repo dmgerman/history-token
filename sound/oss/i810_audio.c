@@ -542,14 +542,13 @@ comma
 multiline_comment|/* AMD8111 */
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|i810_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|i810_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

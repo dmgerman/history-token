@@ -3569,7 +3569,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;yenta %s: Preassigned resource %d busy, reconfiguring...&bslash;n&quot;
 comma
-id|socket-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|socket-&gt;dev
+)paren
 comma
 id|nr
 )paren
@@ -3781,7 +3785,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;yenta %s: no resource of type %x available, trying to continue...&bslash;n&quot;
 comma
-id|socket-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|socket-&gt;dev
+)paren
 comma
 id|type
 )paren
@@ -4759,7 +4767,7 @@ id|dev-&gt;dev
 comma
 id|state
 comma
-l_int|0
+id|SUSPEND_SAVE_STATE
 )paren
 suffix:semicolon
 )brace
@@ -4785,14 +4793,13 @@ id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|yenta_table
 r_static
 r_struct
 id|pci_device_id
 id|yenta_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * IP Payload Compression Protocol (IPComp) for IPv6 - RF
 multiline_comment|/* &n; * [Memo]&n; *&n; * Outbound:&n; *  The compression of IP datagram MUST be done before AH/ESP processing, &n; *  fragmentation, and the addition of Hop-by-Hop/Routing header. &n; *&n; * Inbound:&n; *  The decompression of IP datagram MUST be done after the reassembly, &n; *  AH/ESP processing.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ipcomp.h&gt;
@@ -918,6 +919,23 @@ id|kfree
 c_func
 (paren
 id|tmp_iph
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;props.mode
+op_logical_and
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+)paren
+id|IP6_ECN_clear
+c_func
+(paren
+id|top_iph
 )paren
 suffix:semicolon
 id|top_iph-&gt;payload_len

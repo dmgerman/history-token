@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Written by Steve Lord, Jim Mostek, Russell Cattelan at
 macro_line|#ifndef __PAGE_BUF_H__
 DECL|macro|__PAGE_BUF_H__
 mdefine_line|#define __PAGE_BUF_H__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -89,8 +88,14 @@ DECL|enumerator|PBMF_UNWRITTEN
 id|PBMF_UNWRITTEN
 op_assign
 l_int|0x20
+comma
 multiline_comment|/* mapping covers allocated&t;*/
 multiline_comment|/* but uninitialized file data&t;*/
+DECL|enumerator|PBMF_NEW
+id|PBMF_NEW
+op_assign
+l_int|0x40
+multiline_comment|/* just allocated&t;&t;*/
 DECL|typedef|bmap_flags_t
 )brace
 id|bmap_flags_t
@@ -190,6 +195,16 @@ l_int|8
 )paren
 comma
 multiline_comment|/* non-blocking request */
+DECL|enumerator|BMAP_DEVICE
+id|BMAP_DEVICE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|9
+)paren
+comma
+multiline_comment|/* we only want to know the device */
 DECL|typedef|bmapi_flags_t
 )brace
 id|bmapi_flags_t
@@ -847,6 +862,9 @@ c_func
 (paren
 multiline_comment|/* allocate pagebuf struct with&t;*/
 multiline_comment|/*  no memory or disk address&t;*/
+r_int
+id|len
+comma
 r_struct
 id|pb_target
 op_star

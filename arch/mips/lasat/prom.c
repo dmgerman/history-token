@@ -295,8 +295,8 @@ r_if
 c_cond
 (paren
 id|version
-op_eq
-l_int|306
+op_ge
+l_int|307
 )paren
 (brace
 id|prom_display

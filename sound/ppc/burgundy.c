@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;burgundy.h&quot;
@@ -21,8 +22,14 @@ op_star
 id|chip
 )paren
 (brace
+r_int
+id|timeout
+op_assign
+l_int|50
+suffix:semicolon
 r_while
 c_loop
+(paren
 (paren
 id|in_le32
 c_func
@@ -32,6 +39,28 @@ id|chip-&gt;awacs-&gt;codec_ctrl
 )paren
 op_amp
 id|MASK_NEWECMD
+)paren
+op_logical_and
+id|timeout
+op_decrement
+)paren
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;burgundy_busy_wait: timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -47,6 +76,13 @@ op_star
 id|chip
 )paren
 (brace
+r_int
+id|timeout
+suffix:semicolon
+id|timeout
+op_assign
+l_int|50
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -61,10 +97,36 @@ id|chip-&gt;awacs-&gt;codec_stat
 op_amp
 id|MASK_EXTEND
 )paren
+op_logical_and
+id|timeout
+op_decrement
 )paren
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;burgundy_extend_wait: timeout #1&bslash;n&quot;
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+l_int|50
 suffix:semicolon
 r_while
 c_loop
+(paren
 (paren
 id|in_le32
 c_func
@@ -74,6 +136,28 @@ id|chip-&gt;awacs-&gt;codec_stat
 )paren
 op_amp
 id|MASK_EXTEND
+)paren
+op_logical_and
+id|timeout
+op_decrement
+)paren
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;burgundy_extend_wait: timeout #2&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -222,7 +306,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* should have timeouts here */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -476,7 +559,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* should have timeouts here */
 id|spin_lock_irqsave
 c_func
 (paren

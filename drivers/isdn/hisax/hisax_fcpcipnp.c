@@ -43,14 +43,13 @@ c_func
 l_string|&quot;AVM Fritz!PCI/PnP ISDN driver&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|fcpci_ids
 r_static
 r_struct
 id|pci_device_id
 id|fcpci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -4199,7 +4198,11 @@ op_star
 )paren
 id|ent-&gt;driver_data
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|retval

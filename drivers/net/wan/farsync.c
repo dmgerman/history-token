@@ -775,14 +775,13 @@ mdefine_line|#define printk_warn(fmt,A...)   printk ( KERN_WARNING FST_NAME &quo
 DECL|macro|printk_info
 mdefine_line|#define printk_info(fmt,A...)   printk ( KERN_INFO    FST_NAME &quot;: &quot; fmt, ## A )
 multiline_comment|/*&n; *      PCI ID lookup table&n; */
-DECL|variable|__devinitdata
+DECL|variable|fst_pci_dev_id
 r_static
 r_struct
 id|pci_device_id
 id|fst_pci_dev_id
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

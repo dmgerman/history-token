@@ -7847,7 +7847,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;capidrv-%d: WARNING: illegal leased linedefinition &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;capidrv-%d: WARNING: invalid leased linedefinition &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|card-&gt;contrnr
 comma

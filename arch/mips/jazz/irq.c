@@ -1,10 +1,10 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994 - 2001 Ralf Baechle&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 r_extern
@@ -16,7 +16,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * On systems with i8259-style interrupt controllers we assume for&n; * driver compatibility reasons interrupts 0 - 15 to be the i8295&n; * interrupts even if the hardware uses a different interrupt numbering.&n; */
+multiline_comment|/*&n; * On systems with i8259-style interrupt controllers we assume for&n; * driver compatibility reasons interrupts 0 - 15 to be the i8259&n; * interrupts even if the hardware uses a different interrupt numbering.&n; */
 DECL|function|init_IRQ
 r_void
 id|__init

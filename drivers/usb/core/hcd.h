@@ -427,6 +427,19 @@ mdefine_line|#define&t;HCD_USB11&t;0x0010&t;&t;/* USB 1.1 */
 DECL|macro|HCD_USB2
 mdefine_line|#define&t;HCD_USB2&t;0x0020&t;&t;/* USB 2.0 */
 multiline_comment|/* called to init HCD and root hub */
+DECL|member|reset
+r_int
+(paren
+op_star
+id|reset
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 DECL|member|start
 r_int
 (paren
@@ -854,7 +867,7 @@ id|parent
 suffix:semicolon
 r_extern
 r_void
-id|usb_connect
+id|usb_choose_address
 c_func
 (paren
 r_struct
@@ -878,17 +891,6 @@ multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () 
 r_extern
 r_int
 id|usb_get_configuration
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_set_maxpacket
 c_func
 (paren
 r_struct

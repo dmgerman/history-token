@@ -2387,7 +2387,7 @@ r_else
 id|TRACE_PE
 c_func
 (paren
-l_string|&quot;TRANSMITTING - got illegal char&quot;
+l_string|&quot;TRANSMITTING - got invalid char&quot;
 )paren
 suffix:semicolon
 id|pInfo-&gt;state

@@ -23,20 +23,6 @@ comma
 id|dcache_size
 suffix:semicolon
 multiline_comment|/* Size in bytes */
-DECL|variable|icache_way_size
-DECL|variable|dcache_way_size
-r_static
-r_int
-r_int
-id|icache_way_size
-comma
-id|dcache_way_size
-suffix:semicolon
-multiline_comment|/* Size divided by ways */
-DECL|macro|scache_size
-mdefine_line|#define scache_size 0
-DECL|macro|scache_way_size
-mdefine_line|#define scache_way_size 0
 macro_line|#include &lt;asm/r4kcache.h&gt;
 r_extern
 r_void
@@ -1906,13 +1892,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|icache_way_size
+id|current_cpu_data.icache.waysize
 op_assign
 id|icache_size
 op_div
 id|current_cpu_data.icache.ways
 suffix:semicolon
-id|dcache_way_size
+id|current_cpu_data.dcache.waysize
 op_assign
 id|dcache_size
 op_div
@@ -1920,20 +1906,20 @@ id|current_cpu_data.dcache.ways
 suffix:semicolon
 id|current_cpu_data.icache.sets
 op_assign
-id|icache_way_size
+id|current_cpu_data.icache.waysize
 op_div
 id|current_cpu_data.icache.linesz
 suffix:semicolon
 id|current_cpu_data.dcache.sets
 op_assign
-id|dcache_way_size
+id|current_cpu_data.dcache.waysize
 op_div
 id|current_cpu_data.dcache.linesz
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dcache_way_size
+id|current_cpu_data.dcache.waysize
 OG
 id|PAGE_SIZE
 )paren

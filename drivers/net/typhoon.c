@@ -305,14 +305,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Notes on the new subsystem numbering scheme:&n; * bits 0-1 indicate crypto capabilites: (0) variable, (1) DES, or (2) 3DES&n; * bit 4 indicates if this card has secured firmware (we don&squot;t support it)&n; * bit 8 indicates if this is a (0) copper or (1) fiber card&n; * bits 12-16 indicate card type: (0) client and (1) server&n; */
-DECL|variable|__devinitdata
+DECL|variable|typhoon_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|typhoon_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -4125,7 +4124,11 @@ c_func
 (paren
 id|info-&gt;bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10091,7 +10094,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: unable to alloc new net device&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10140,7 +10147,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: unable to enable device&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10180,7 +10191,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: No usable DMA configuration&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10211,7 +10226,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: region #1 not a PCI MMIO resource, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10243,7 +10262,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: Invalid PCI MMIO region size, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10279,7 +10302,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: could not request regions&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10336,7 +10363,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: cannot remap MMIO, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10383,7 +10414,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: could not allocate DMA memory&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10466,7 +10501,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: could not reset 3XP&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10481,7 +10520,11 @@ suffix:semicolon
 multiline_comment|/* dev-&gt;name is not valid until we register, but we need to&n;&t; * use some common routines to initialize the card. So that those&n;&t; * routines print the right name, we keep our oun pointer to the name&n;&t; */
 id|tp-&gt;name
 op_assign
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|typhoon_init_interface
 c_func
@@ -10515,7 +10558,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: cannot boot 3XP sleep image&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10564,7 +10611,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: cannot read MAC address&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err
@@ -10636,7 +10687,11 @@ id|ERR_PFX
 l_string|&quot;%s: Could not obtain valid ethernet address, &quot;
 l_string|&quot;aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10665,7 +10720,11 @@ c_func
 id|ERR_PFX
 l_string|&quot;%s: cannot put adapter to sleep&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|err

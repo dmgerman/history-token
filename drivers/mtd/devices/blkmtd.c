@@ -3187,8 +3187,6 @@ id|b
 id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
-l_int|21
-id|e3
 op_star
 id|retlen
 op_assign
@@ -5460,6 +5458,17 @@ op_amp
 (paren
 id|mtd_rawdevice-&gt;as.i_shared_sem
 )paren
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+(paren
+id|mtd_rawdevice-&gt;as.truncate_count
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|mtd_rawdevice-&gt;as.a_ops

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2001 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 98, 99, 2000, 01, 03 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 01 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -325,15 +325,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Kernel hacking ...&n; */
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#ifdef CONFIG_VT
-DECL|variable|screen_info
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|screen_info
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 DECL|variable|ide_ops
 id|EXPORT_SYMBOL

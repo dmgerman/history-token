@@ -6,6 +6,40 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cacheops.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
+r_extern
+r_void
+id|sb1_dma_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sb1_clear_page_dma
+c_func
+(paren
+r_void
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sb1_copy_page_dma
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+suffix:semicolon
+macro_line|#else
 r_extern
 r_void
 id|sb1_clear_page
@@ -30,6 +64,7 @@ op_star
 id|from
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* These are probed at ld_mmu time */
 DECL|variable|icache_size
 r_static
@@ -103,154 +138,11 @@ r_int
 r_int
 id|dcache_range_cutoff
 suffix:semicolon
-DECL|function|pgd_init
-r_void
-id|pgd_init
-c_func
-(paren
-r_int
-r_int
-id|page
-)paren
-(brace
-r_int
-r_int
-op_star
-id|p
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|page
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|USER_PTRS_PER_PGD
-suffix:semicolon
-id|i
-op_add_assign
-l_int|8
-)paren
-(brace
-id|p
-(braket
-id|i
-op_plus
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|1
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|2
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|3
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|4
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|5
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|6
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-id|p
-(braket
-id|i
-op_plus
-l_int|7
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|invalid_pte_table
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * The dcache is fully coherent to the system, with one&n; * big caveat:  the instruction stream.  In other words,&n; * if we miss in the icache, and have dirty data in the&n; * L1 dcache, then we&squot;ll go out to memory (or the L2) and&n; * get the not-as-recent data.&n; *&n; * So the only time we have to flush the dcache is when&n; * we&squot;re flushing the icache.  Since the L2 is fully&n; * coherent to everything, including I/O, we never have&n; * to flush it&n; */
+DECL|macro|cache_set_op
+mdefine_line|#define cache_set_op(op, addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;noreorder&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;mips64&bslash;n&bslash;t&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;cache&t;%0, (0&lt;&lt;13)(%1)&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;cache&t;%0, (1&lt;&lt;13)(%1)&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;cache&t;%0, (2&lt;&lt;13)(%1)&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;cache&t;%0, (3&lt;&lt;13)(%1)&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;mips0&t;&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;reorder&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;i&quot; (op), &quot;r&quot; (addr))
+DECL|macro|sync
+mdefine_line|#define sync()&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;mips64&bslash;n&bslash;t&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;sync&t;&t;&t;&t;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;mips0&quot;)
 multiline_comment|/*&n; * Writeback and invalidate the entire dcache&n; */
 DECL|function|__sb1_writeback_inv_dcache_all
 r_static
@@ -262,48 +154,35 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+r_int
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
 (paren
-l_string|&quot;.set push                  &bslash;n&quot;
-l_string|&quot;.set noreorder             &bslash;n&quot;
-l_string|&quot;.set noat                  &bslash;n&quot;
-l_string|&quot;.set mips4                 &bslash;n&quot;
-l_string|&quot;     move   $1, $0         &bslash;n&quot;
-multiline_comment|/* Start at index 0 */
-l_string|&quot;1:   cache  %2, 0($1)      &bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (1&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (2&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (3&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     addiu  %1, %1, -1     &bslash;n&quot;
-multiline_comment|/* Decrement loop count */
-l_string|&quot;     bnez   %1, 1b         &bslash;n&quot;
-multiline_comment|/* loop test */
-l_string|&quot;      addu  $1, $1, %0     &bslash;n&quot;
-multiline_comment|/* Next address */
-l_string|&quot;.set pop                   &bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+id|addr
+OL
 id|dcache_line_size
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+op_star
 id|dcache_sets
 )paren
-comma
-l_string|&quot;i&quot;
+(brace
+id|cache_set_op
+c_func
 (paren
 id|Index_Writeback_Inv_D
-)paren
+comma
+id|addr
 )paren
 suffix:semicolon
+id|addr
+op_add_assign
+id|dcache_line_size
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Writeback and invalidate a range of the dcache.  The addresses are&n; * virtual, and since we&squot;re using index ops and bit 12 is part of both&n; * the virtual frame and physical index, we have to clear both sets&n; * (bit 12 set and cleared).&n; */
 DECL|function|__sb1_writeback_inv_dcache_range
@@ -322,57 +201,17 @@ r_int
 id|end
 )paren
 (brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;&t;.set&t;push&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;noreorder&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;noat&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips4&t;&t;&bslash;n&quot;
-l_string|&quot;&t;and&t;$1, %0, %3&t;&bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;1:&t;cache&t;%4, (0&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (1&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (2&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (3&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;xori&t;$1, $1, 1&lt;&lt;12 &t;&bslash;n&quot;
-multiline_comment|/* flip bit 12 (va/pa alias) */
-l_string|&quot;&t;cache&t;%4, (0&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (1&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (2&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (3&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;addu&t;%0, %0, %2&t;&bslash;n&quot;
-multiline_comment|/* next line */
-l_string|&quot;&t;bne&t;%0, %1, 1b&t;&bslash;n&quot;
-multiline_comment|/* loop test */
-l_string|&quot;&t; and&t;$1, %0, %3&t;&bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;&t;sync&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set pop&t;&t;&bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|start
-op_amp
+op_and_assign
 op_complement
 (paren
 id|dcache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+suffix:semicolon
+id|end
+op_assign
 (paren
 id|end
 op_plus
@@ -387,24 +226,42 @@ id|dcache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+r_while
+c_loop
 (paren
-id|dcache_line_size
+id|start
+op_ne
+id|end
 )paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|dcache_index_mask
-)paren
-comma
-l_string|&quot;i&quot;
+(brace
+id|cache_set_op
+c_func
 (paren
 id|Index_Writeback_Inv_D
+comma
+id|start
+)paren
+suffix:semicolon
+id|cache_set_op
+c_func
+(paren
+id|Index_Writeback_Inv_D
+comma
+id|start
+op_xor
+(paren
+l_int|1
+op_lshift
+l_int|12
 )paren
 )paren
 suffix:semicolon
+id|start
+op_add_assign
+id|dcache_line_size
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Writeback and invalidate a range of the dcache.  With physical&n; * addresseses, we don&squot;t have to worry about possible bit 12 aliasing.&n; * XXXKW is it worth turning on KX and using hit ops with xkphys?&n; */
 DECL|function|__sb1_writeback_inv_dcache_phys_range
@@ -423,47 +280,17 @@ r_int
 id|end
 )paren
 (brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;&t;.set&t;push&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;noreorder&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;noat&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips4&t;&t;&bslash;n&quot;
-l_string|&quot;&t;and&t;$1, %0, %3&t;&bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;1:&t;cache&t;%4, (0&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (1&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (2&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;cache&t;%4, (3&lt;&lt;13)($1)&t;&bslash;n&quot;
-multiline_comment|/* Index-WB-inval this address */
-l_string|&quot;&t;addu&t;%0, %0, %2&t;&bslash;n&quot;
-multiline_comment|/* next line */
-l_string|&quot;&t;bne&t;%0, %1, 1b&t;&bslash;n&quot;
-multiline_comment|/* loop test */
-l_string|&quot;&t; and&t;$1, %0, %3&t;&bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;&t;sync&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set pop&t;&t;&bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|start
-op_amp
+op_and_assign
 op_complement
 (paren
 id|dcache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+suffix:semicolon
+id|end
+op_assign
 (paren
 id|end
 op_plus
@@ -478,22 +305,33 @@ id|dcache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+r_while
+c_loop
 (paren
-id|dcache_line_size
+id|start
+op_ne
+id|end
 )paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|dcache_index_mask
-)paren
-comma
-l_string|&quot;i&quot;
+(brace
+id|cache_set_op
+c_func
 (paren
 id|Index_Writeback_Inv_D
+comma
+id|start
+op_amp
+id|dcache_index_mask
 )paren
+suffix:semicolon
+id|start
+op_add_assign
+id|dcache_line_size
+suffix:semicolon
+)brace
+id|sync
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -508,52 +346,35 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+r_int
+r_int
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
 (paren
-l_string|&quot;.set push                  &bslash;n&quot;
-l_string|&quot;.set noreorder             &bslash;n&quot;
-l_string|&quot;.set noat                  &bslash;n&quot;
-l_string|&quot;.set mips4                 &bslash;n&quot;
-l_string|&quot;     move   $1, $0         &bslash;n&quot;
-multiline_comment|/* Start at index 0 */
-l_string|&quot;1:   cache  %2, 0($1)      &bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (1&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (2&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     cache  %2, (3&lt;&lt;13)($1)&bslash;n&quot;
-multiline_comment|/* Invalidate this index */
-l_string|&quot;     addiu  %1, %1, -1     &bslash;n&quot;
-multiline_comment|/* Decrement loop count */
-l_string|&quot;     bnez   %1, 1b         &bslash;n&quot;
-multiline_comment|/* loop test */
-l_string|&quot;      addu  $1, $1, %0     &bslash;n&quot;
-multiline_comment|/* Next address */
-l_string|&quot;     bnezl  $0, 2f         &bslash;n&quot;
-multiline_comment|/* Force mispredict */
-l_string|&quot;      nop                  &bslash;n&quot;
-l_string|&quot;2:   sync                  &bslash;n&quot;
-l_string|&quot;.set pop                   &bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+id|addr
+OL
 id|icache_line_size
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+op_star
 id|icache_sets
 )paren
-comma
-l_string|&quot;i&quot;
+(brace
+id|cache_set_op
+c_func
 (paren
 id|Index_Invalidate_I
-)paren
+comma
+id|addr
 )paren
 suffix:semicolon
+id|addr
+op_add_assign
+id|icache_line_size
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Flush the icache for a given physical page.  Need to writeback the&n; * dcache first, then invalidate the icache.  If the page isn&squot;t&n; * executable, nothing is required.&n; */
 DECL|function|local_sb1_flush_cache_page
@@ -770,50 +591,17 @@ r_int
 id|end
 )paren
 (brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;.set push                  &bslash;n&quot;
-l_string|&quot;.set noreorder             &bslash;n&quot;
-l_string|&quot;.set noat                  &bslash;n&quot;
-l_string|&quot;.set mips4                 &bslash;n&quot;
-l_string|&quot;     and    $1, %0, %3     &bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;1:   cache  %4, (0&lt;&lt;13)($1) &bslash;n&quot;
-multiline_comment|/* Index-inval this address */
-l_string|&quot;     cache  %4, (1&lt;&lt;13)($1) &bslash;n&quot;
-multiline_comment|/* Index-inval this address */
-l_string|&quot;     cache  %4, (2&lt;&lt;13)($1) &bslash;n&quot;
-multiline_comment|/* Index-inval this address */
-l_string|&quot;     cache  %4, (3&lt;&lt;13)($1) &bslash;n&quot;
-multiline_comment|/* Index-inval this address */
-l_string|&quot;     addu   %0, %0, %2     &bslash;n&quot;
-multiline_comment|/* next line */
-l_string|&quot;     bne    %0, %1, 1b     &bslash;n&quot;
-multiline_comment|/* loop test */
-l_string|&quot;      and   $1, %0, %3     &bslash;n&quot;
-multiline_comment|/* mask non-index bits */
-l_string|&quot;     bnezl  $0, 2f         &bslash;n&quot;
-multiline_comment|/* Force mispredict */
-l_string|&quot;      nop                  &bslash;n&quot;
-l_string|&quot;2:   sync                  &bslash;n&quot;
-l_string|&quot;.set pop                   &bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|start
-op_amp
+op_and_assign
 op_complement
 (paren
 id|icache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
+suffix:semicolon
+id|end
+op_assign
 (paren
 id|end
 op_plus
@@ -828,22 +616,42 @@ id|icache_line_size
 op_minus
 l_int|1
 )paren
-)paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+r_while
+c_loop
 (paren
-id|icache_line_size
+id|start
+op_ne
+id|end
 )paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|icache_index_mask
-)paren
-comma
-l_string|&quot;i&quot;
+(brace
+id|cache_set_op
+c_func
 (paren
 id|Index_Invalidate_I
+comma
+id|start
+op_amp
+id|icache_index_mask
 )paren
+suffix:semicolon
+id|start
+op_add_assign
+id|icache_line_size
+suffix:semicolon
+)brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;bnezl  $0, 1f&t;&t;&bslash;n&quot;
+multiline_comment|/* Force mispredict */
+l_string|&quot;1:&t;&t;&t;&t;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|sync
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1745,10 +1553,6 @@ r_extern
 r_char
 id|except_vec2_sb1
 suffix:semicolon
-r_int
-r_int
-id|temp
-suffix:semicolon
 multiline_comment|/* Special cache error handler for SB1 */
 id|memcpy
 c_func
@@ -1793,6 +1597,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
+id|_clear_page
+op_assign
+id|sb1_clear_page_dma
+suffix:semicolon
+id|_copy_page
+op_assign
+id|sb1_copy_page_dma
+suffix:semicolon
+id|sb1_dma_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|_clear_page
 op_assign
 id|sb1_clear_page
@@ -1801,6 +1620,7 @@ id|_copy_page
 op_assign
 id|sb1_copy_page
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * None of these are needed for the SB1 - the Dcache is&n;&t; * physically indexed and tagged, so no virtual aliasing can&n;&t; * occur&n;&t; */
 id|flush_cache_range
 op_assign
@@ -1873,20 +1693,28 @@ id|CONF_CM_DEFAULT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is the only way to force the update of K0 to complete&n;&t; * before subsequent instruction fetch.&n;&t; */
+id|write_c0_epc
+c_func
+(paren
+op_logical_and
+id|here
+)paren
+suffix:semicolon
+id|here
+suffix:colon
 id|__asm__
 id|__volatile__
+c_func
 (paren
-l_string|&quot;&t;.set&t;push&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips4&t;&t;&bslash;n&quot;
-l_string|&quot;&t;la&t;%0, 1f&t;&t;&bslash;n&quot;
-l_string|&quot;&t;mtc0&t;%0, $14&t;&t;&bslash;n&quot;
-l_string|&quot;&t;eret&t;&t;&t;&bslash;n&quot;
-l_string|&quot;1:&t;.set&t;pop&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;noreorder&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;mips3&bslash;n&bslash;t&t;&t;&bslash;n&quot;
+l_string|&quot;&t;eret&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;mips0&bslash;n&bslash;t&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;reorder&quot;
 suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|temp
-)paren
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|flush_cache_all

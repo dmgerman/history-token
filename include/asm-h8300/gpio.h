@@ -13,7 +13,8 @@ DECL|macro|H8300_GPIO_P5
 mdefine_line|#define H8300_GPIO_P5 4
 DECL|macro|H8300_GPIO_P6
 mdefine_line|#define H8300_GPIO_P6 5
-multiline_comment|/*#define H8300_GPIO_P7 6*/
+DECL|macro|H8300_GPIO_P7
+mdefine_line|#define H8300_GPIO_P7 6
 DECL|macro|H8300_GPIO_P8
 mdefine_line|#define H8300_GPIO_P8 7
 DECL|macro|H8300_GPIO_P9
@@ -22,6 +23,18 @@ DECL|macro|H8300_GPIO_PA
 mdefine_line|#define H8300_GPIO_PA 9
 DECL|macro|H8300_GPIO_PB
 mdefine_line|#define H8300_GPIO_PB 10
+DECL|macro|H8300_GPIO_PC
+mdefine_line|#define H8300_GPIO_PC 11
+DECL|macro|H8300_GPIO_PD
+mdefine_line|#define H8300_GPIO_PD 12
+DECL|macro|H8300_GPIO_PE
+mdefine_line|#define H8300_GPIO_PE 13
+DECL|macro|H8300_GPIO_PF
+mdefine_line|#define H8300_GPIO_PF 14
+DECL|macro|H8300_GPIO_PG
+mdefine_line|#define H8300_GPIO_PG 15
+DECL|macro|H8300_GPIO_PH
+mdefine_line|#define H8300_GPIO_PH 16
 DECL|macro|H8300_GPIO_B7
 mdefine_line|#define H8300_GPIO_B7 0x80
 DECL|macro|H8300_GPIO_B6
@@ -47,9 +60,9 @@ mdefine_line|#define H8300_GPIO_RESERVE(port, bits) &bslash;&n;        h8300_res
 DECL|macro|H8300_GPIO_FREE
 mdefine_line|#define H8300_GPIO_FREE(port, bits) &bslash;&n;        h8300_free_gpio(port, bits)
 DECL|macro|H8300_GPIO_DDR
-mdefine_line|#define H8300_GPIO_DDR(port, bit, dir) &bslash;&n;        h8300_set_gpio_dir(((port) &lt;&lt; 8) | bit, dir)
+mdefine_line|#define H8300_GPIO_DDR(port, bit, dir) &bslash;&n;        h8300_set_gpio_dir(((port) &lt;&lt; 8) | (bit), dir)
 DECL|macro|H8300_GPIO_GETDIR
-mdefine_line|#define H8300_GPIO_GETDIR(port, bit) &bslash;&n;        h8300_get_gpio_dir(((port) &lt;&lt; 8) | bit)
+mdefine_line|#define H8300_GPIO_GETDIR(port, bit) &bslash;&n;        h8300_get_gpio_dir(((port) &lt;&lt; 8) | (bit))
 r_extern
 r_int
 id|h8300_reserved_gpio

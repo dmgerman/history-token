@@ -1,8 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skaddr.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.40 $&n; * Date:&t;$Date: 2001/02/14 14:04:59 $&n; * Purpose:&t;Manage Addresses (Multicast and Unicast) and Promiscuous Mode.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skaddr.c,v $&n; *&t;Revision 1.40  2001/02/14 14:04:59  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.39  2001/01/30 10:30:04  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.38  2001/01/25 16:26:52  rassmann&n; *&t;Ensured that logical address overrides are done on net&squot;s active port.&n; *&t;&n; *&t;Revision 1.37  2001/01/22 13:41:34  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.36  2000/08/07 11:10:39  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.35  2000/05/04 09:38:41  rassmann&n; *&t;Editorial changes.&n; *&t;Corrected multicast address hashing.&n; *&t;&n; *&t;Revision 1.34  1999/11/22 13:23:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.33  1999/05/28 10:56:06  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.32  1999/03/31 10:59:20  rassmann&n; *&t;Returning Success instead of DupAddr if address shall be overridden&n; *&t;with same value.&n; *&t;&n; *&t;Revision 1.31  1999/01/14 16:18:17  rassmann&n; *&t;Corrected multicast initialization.&n; *&t;&n; *&t;Revision 1.30  1999/01/04 10:30:35  rassmann&n; *&t;SkAddrOverride only possible after SK_INIT_IO phase.&n; *&t;&n; *&t;Revision 1.29  1998/12/29 13:13:10  rassmann&n; *&t;An address override is now preserved in the SK_INIT_IO phase.&n; *&t;All functions return an int now.&n; *&t;Extended parameter checking.&n; *&t;&n; *&t;Revision 1.28  1998/12/01 11:45:53  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.27  1998/12/01 09:22:49  rassmann&n; *&t;SkAddrMcAdd and SkAddrMcUpdate returned SK_MC_FILTERING_INEXACT&n; *&t;too often.&n; *&t;&n; *&t;Revision 1.26  1998/11/24 12:39:44  rassmann&n; *&t;Reserved multicast entry for BPDU address.&n; *&t;13 multicast entries left for protocol.&n; *&t;&n; *&t;Revision 1.25  1998/11/17 16:54:23  rassmann&n; *&t;Using exact match for up to 14 multicast addresses.&n; *&t;Still receiving all multicasts if more addresses are added.&n; *&t;&n; *&t;Revision 1.24  1998/11/13 17:24:31  rassmann&n; *&t;Changed return value of SkAddrOverride to int.&n; *&t;&n; *&t;Revision 1.23  1998/11/13 16:56:18  rassmann&n; *&t;Added macro SK_ADDR_COMPARE.&n; *&t;Changed return type of SkAddrOverride to SK_BOOL.&n; *&t;&n; *&t;Revision 1.22  1998/11/04 17:06:17  rassmann&n; *&t;Corrected McUpdate and PromiscuousChange functions.&n; *&t;&n; *&t;Revision 1.21  1998/10/29 14:34:04  rassmann&n; *&t;Clearing SK_ADDR struct at startup.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:16:34  rassmann&n; *&t;Avoiding I/Os before SK_INIT_RUN level.&n; *&t;Aligning InexactFilter.&n; *&t;&n; *&t;Revision 1.19  1998/10/28 11:29:28  rassmann&n; *&t;Programming physical address in SkAddrMcUpdate.&n; *&t;Corrected programming of exact match entries.&n; *&t;&n; *&t;Revision 1.18  1998/10/28 10:34:48  rassmann&n; *&t;Corrected reading of physical addresses.&n; *&t;&n; *&t;Revision 1.17  1998/10/28 10:26:13  rassmann&n; *&t;Getting ports&squot; current MAC addresses from EPROM now.&n; *&t;Added debug output.&n; *&t;&n; *&t;Revision 1.16  1998/10/27 16:20:12  rassmann&n; *&t;Reading MAC address byte by byte.&n; *&t;&n; *&t;Revision 1.15  1998/10/22 11:39:09  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;&n; *&t;Revision 1.14  1998/10/19 17:12:35  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.13  1998/10/19 17:02:19  rassmann&n; *&t;Now reading permanent MAC addresses from CRF.&n; *&t;&n; *&t;Revision 1.12  1998/10/15 15:15:48  rassmann&n; *&t;Changed Flags Parameters from SK_U8 to int.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.11  1998/09/24 19:15:12  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.10  1998/09/18 20:18:54  rassmann&n; *&t;Added HW access.&n; *&t;Implemented swapping.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 11:32:00  rassmann&n; *&t;Including skdrv1st.h again. :(&n; *&t;&n; *&t;Revision 1.8  1998/09/16 11:09:34  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.7  1998/09/14 17:06:34  rassmann&n; *&t;Minor changes.&n; *&t;&n; *&t;Revision 1.6  1998/09/07 08:45:41  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 19:40:19  rassmann&n; *&t;Interface enhancements.&n; *&t;&n; *&t;Revision 1.4  1998/09/04 12:14:12  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.3  1998/09/02 16:56:40  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:09  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:30:22  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This module is intended to manage multicast addresses, address override,&n; * and promiscuous mode on GEnesis adapters.&n; *&n; * Address Layout:&n; *&t;port address:&t;&t;physical MAC address&n; *&t;1st exact match:&t;logical MAC address&n; *&t;2nd exact match:&t;RLMT multicast&n; *&t;exact match 3-13:&t;OS-specific multicasts&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;skdrv1st.h&quot;&n; *&t;&quot;skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
-macro_line|#ifndef&t;lint
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skaddr.c&n; * Project:&t;Gigabit Ethernet Adapters, ADDR-Module&n; * Version:&t;$Revision: 1.52 $&n; * Date:&t;$Date: 2003/06/02 13:46:15 $&n; * Purpose:&t;Manage Addresses (Multicast and Unicast) and Promiscuous Mode.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skaddr.c,v $&n; *&t;Revision 1.52  2003/06/02 13:46:15  tschilli&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.51  2003/05/13 17:12:43  mkarl&n; *&t;Changes for SLIM Driver via SK_SLIM.&n; *&t;Changes for driver not using RLMT via SK_NO_RLMT.&n; *&t;Changes for driver not supporting MAC address override via SK_NO_MAO.&n; *&t;Separeted GENESIS and YUKON only code to reduce code size.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.50  2003/05/08 12:29:31  rschmidt&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Changed initialisation for Next0[SK_MAX_MACS] to avoid&n; *&t;compiler errors when SK_MAX_MACS=1.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.49  2003/04/15 09:30:51  tschilli&n; *&t;Copyright messages changed.&n; *&t;&quot;#error C++ is not yet supported.&quot; removed.&n; *&t;&n; *&t;Revision 1.48  2003/02/12 17:09:37  tschilli&n; *&t;Fix in SkAddrOverride() to set both (physical and logical) MAC addresses&n; *&t;in case that both addresses are identical.&n; *&t;&n; *&t;Revision 1.47  2002/09/17 06:31:10  tschilli&n; *&t;Handling of SK_PROM_MODE_ALL_MC flag in SkAddrGmacMcUpdate()&n; *&t;and SkAddrGmacPromiscuousChange() fixed.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.46  2002/08/22 07:55:41  tschilli&n; *&t;New function SkGmacMcHash() for GMAC multicast hashing algorithm added.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.45  2002/08/15 12:29:35  tschilli&n; *&t;SkAddrGmacMcUpdate() and SkAddrGmacPromiscuousChange() changed.&n; *&t;&n; *&t;Revision 1.44  2002/08/14 12:18:03  rschmidt&n; *&t;Replaced direct handling of MAC Hashing (XMAC and GMAC)&n; *&t;with routine SkMacHashing().&n; *&t;Replaced wrong 3rd para &squot;i&squot; with &squot;PortNumber&squot; in SkMacPromiscMode().&n; *&t;&n; *&t;Revision 1.43  2002/08/13 09:37:43  rschmidt&n; *&t;Corrected some SK_DBG_MSG outputs.&n; *&t;Replaced wrong 2nd para pAC with IoC in SkMacPromiscMode().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.42  2002/08/12 11:24:36  rschmidt&n; *&t;Remove setting of logical MAC address GM_SRC_ADDR_2 in SkAddrInit().&n; *&t;Replaced direct handling of MAC Promiscuous Mode (XMAC and GMAC)&n; *&t;with routine SkMacPromiscMode().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.41  2002/06/10 13:52:18  tschilli&n; *&t;Changes for handling YUKON.&n; *&t;All changes are internally and not visible to the programmer&n; *&t;using this module.&n; *&t;&n; *&t;Revision 1.40  2001/02/14 14:04:59  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.39  2001/01/30 10:30:04  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.38  2001/01/25 16:26:52  rassmann&n; *&t;Ensured that logical address overrides are done on net&squot;s active port.&n; *&t;&n; *&t;Revision 1.37  2001/01/22 13:41:34  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.36  2000/08/07 11:10:39  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.35  2000/05/04 09:38:41  rassmann&n; *&t;Editorial changes.&n; *&t;Corrected multicast address hashing.&n; *&t;&n; *&t;Revision 1.34  1999/11/22 13:23:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.33  1999/05/28 10:56:06  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.32  1999/03/31 10:59:20  rassmann&n; *&t;Returning Success instead of DupAddr if address shall be overridden&n; *&t;with same value.&n; *&t;&n; *&t;Revision 1.31  1999/01/14 16:18:17  rassmann&n; *&t;Corrected multicast initialization.&n; *&t;&n; *&t;Revision 1.30  1999/01/04 10:30:35  rassmann&n; *&t;SkAddrOverride only possible after SK_INIT_IO phase.&n; *&t;&n; *&t;Revision 1.29  1998/12/29 13:13:10  rassmann&n; *&t;An address override is now preserved in the SK_INIT_IO phase.&n; *&t;All functions return an int now.&n; *&t;Extended parameter checking.&n; *&t;&n; *&t;Revision 1.28  1998/12/01 11:45:53  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.27  1998/12/01 09:22:49  rassmann&n; *&t;SkAddrMcAdd and SkAddrMcUpdate returned SK_MC_FILTERING_INEXACT&n; *&t;too often.&n; *&t;&n; *&t;Revision 1.26  1998/11/24 12:39:44  rassmann&n; *&t;Reserved multicast entry for BPDU address.&n; *&t;13 multicast entries left for protocol.&n; *&t;&n; *&t;Revision 1.25  1998/11/17 16:54:23  rassmann&n; *&t;Using exact match for up to 14 multicast addresses.&n; *&t;Still receiving all multicasts if more addresses are added.&n; *&t;&n; *&t;Revision 1.24  1998/11/13 17:24:31  rassmann&n; *&t;Changed return value of SkAddrOverride to int.&n; *&t;&n; *&t;Revision 1.23  1998/11/13 16:56:18  rassmann&n; *&t;Added macro SK_ADDR_COMPARE.&n; *&t;Changed return type of SkAddrOverride to SK_BOOL.&n; *&t;&n; *&t;Revision 1.22  1998/11/04 17:06:17  rassmann&n; *&t;Corrected McUpdate and PromiscuousChange functions.&n; *&t;&n; *&t;Revision 1.21  1998/10/29 14:34:04  rassmann&n; *&t;Clearing SK_ADDR struct at startup.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:16:34  rassmann&n; *&t;Avoiding I/Os before SK_INIT_RUN level.&n; *&t;Aligning InexactFilter.&n; *&t;&n; *&t;Revision 1.19  1998/10/28 11:29:28  rassmann&n; *&t;Programming physical address in SkAddrMcUpdate.&n; *&t;Corrected programming of exact match entries.&n; *&t;&n; *&t;Revision 1.18  1998/10/28 10:34:48  rassmann&n; *&t;Corrected reading of physical addresses.&n; *&t;&n; *&t;Revision 1.17  1998/10/28 10:26:13  rassmann&n; *&t;Getting ports&squot; current MAC addresses from EPROM now.&n; *&t;Added debug output.&n; *&t;&n; *&t;Revision 1.16  1998/10/27 16:20:12  rassmann&n; *&t;Reading MAC address byte by byte.&n; *&t;&n; *&t;Revision 1.15  1998/10/22 11:39:09  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;&n; *&t;Revision 1.14  1998/10/19 17:12:35  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.13  1998/10/19 17:02:19  rassmann&n; *&t;Now reading permanent MAC addresses from CRF.&n; *&t;&n; *&t;Revision 1.12  1998/10/15 15:15:48  rassmann&n; *&t;Changed Flags Parameters from SK_U8 to int.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.11  1998/09/24 19:15:12  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.10  1998/09/18 20:18:54  rassmann&n; *&t;Added HW access.&n; *&t;Implemented swapping.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 11:32:00  rassmann&n; *&t;Including skdrv1st.h again. :(&n; *&t;&n; *&t;Revision 1.8  1998/09/16 11:09:34  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.7  1998/09/14 17:06:34  rassmann&n; *&t;Minor changes.&n; *&t;&n; *&t;Revision 1.6  1998/09/07 08:45:41  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 19:40:19  rassmann&n; *&t;Interface enhancements.&n; *&t;&n; *&t;Revision 1.4  1998/09/04 12:14:12  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.3  1998/09/02 16:56:40  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:09  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:30:22  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This module is intended to manage multicast addresses, address override,&n; * and promiscuous mode on GEnesis and Yukon adapters.&n; *&n; * Address Layout:&n; *&t;port address:&t;&t;physical MAC address&n; *&t;1st exact match:&t;logical MAC address (GEnesis only)&n; *&t;2nd exact match:&t;RLMT multicast (GEnesis only)&n; *&t;exact match 3-13:&t;OS-specific multicasts (GEnesis only)&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;skdrv1st.h&quot;&n; *&t;&quot;skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
+macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -11,13 +11,12 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skaddr.c,v 1.40 2001/02/14 14:04:59 rassmann Exp $ (C) SysKonnect.&quot;
+l_string|&quot;@(#) $Id: skaddr.c,v 1.52 2003/06/02 13:46:15 tschilli Exp $ (C) Marvell.&quot;
 suffix:semicolon
-macro_line|#endif&t;/* !defined(lint) */
+macro_line|#endif /* DEBUG ||!LINT || !SK_SLIM */
 DECL|macro|__SKADDR_C
 mdefine_line|#define __SKADDR_C
 macro_line|#ifdef __cplusplus
-macro_line|#error C++ is not yet supported.
 r_extern
 l_string|&quot;C&quot;
 (brace
@@ -25,6 +24,10 @@ macro_line|#endif&t;/* cplusplus */
 macro_line|#include &quot;h/skdrv1st.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;
 multiline_comment|/* defines ********************************************************************/
+DECL|macro|XMAC_POLY
+mdefine_line|#define XMAC_POLY&t;0xEDB88320UL&t;/* CRC32-Poly - XMAC: Little Endian */
+DECL|macro|GMAC_POLY
+mdefine_line|#define GMAC_POLY&t;0x04C11DB7L&t;/* CRC16-Poly - GMAC: Little Endian */
 DECL|macro|HASH_BITS
 mdefine_line|#define HASH_BITS&t;6&t;&t;&t;&t;/* #bits in hash */
 DECL|macro|SK_MC_BIT
@@ -71,13 +74,11 @@ id|SK_MAX_MACS
 op_assign
 (brace
 l_int|0
-comma
-l_int|0
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/* functions ******************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrInit - initialize data, set state to init&n; *&n; * Description:&n; *&n; *&t;SK_INIT_DATA&n; *&t;============&n; *&n; *&t;This routine clears the multicast tables and resets promiscuous mode.&n; *&t;Some entries are reserved for the &quot;logical MAC address&quot;, the&n; *&t;SK-RLMT multicast address, and the BPDU multicast address.&n; *&n; *&n; *&t;SK_INIT_IO&n; *&t;==========&n; *&n; *&t;All permanent MAC addresses are read from EPROM.&n; *&t;If the current MAC addresses are not already set in software,&n; *&t;they are set to the values of the permanent addresses.&n; *&t;The current addresses are written to the corresponding XMAC.&n; *&n; *&n; *&t;SK_INIT_RUN&n; *&t;===========&n; *&n; *&t;Nothing.&n; *&n; * Context:&n; *&t;init, pageable&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrInit - initialize data, set state to init&n; *&n; * Description:&n; *&n; *&t;SK_INIT_DATA&n; *&t;============&n; *&n; *&t;This routine clears the multicast tables and resets promiscuous mode.&n; *&t;Some entries are reserved for the &quot;logical MAC address&quot;, the&n; *&t;SK-RLMT multicast address, and the BPDU multicast address.&n; *&n; *&n; *&t;SK_INIT_IO&n; *&t;==========&n; *&n; *&t;All permanent MAC addresses are read from EPROM.&n; *&t;If the current MAC addresses are not already set in software,&n; *&t;they are set to the values of the permanent addresses.&n; *&t;The current addresses are written to the corresponding MAC.&n; *&n; *&n; *&t;SK_INIT_RUN&n; *&t;===========&n; *&n; *&t;Nothing.&n; *&n; * Context:&n; *&t;init, pageable&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; */
 DECL|function|SkAddrInit
 r_int
 id|SkAddrInit
@@ -134,8 +135,14 @@ op_star
 op_amp
 id|pAC-&gt;Addr
 comma
+(paren
+id|SK_U8
+)paren
 l_int|0
 comma
+(paren
+id|SK_U16
+)paren
 r_sizeof
 (paren
 id|SK_ADDR
@@ -185,27 +192,8 @@ id|pAPort-&gt;NextExactMatchDrv
 op_assign
 id|SK_ADDR_FIRST_MATCH_DRV
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Don&squot;t do this here ... */
-multiline_comment|/* Reset Promiscuous mode. */
-(paren
-r_void
-)paren
-id|SkAddrPromiscuousChange
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|i
-comma
-id|SK_PROM_MODE_NONE
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
 )brace
-macro_line|#ifdef DEBUG
+macro_line|#ifdef xDEBUG
 r_for
 c_loop
 (paren
@@ -250,6 +238,7 @@ suffix:semicolon
 r_case
 id|SK_INIT_IO
 suffix:colon
+macro_line|#ifndef SK_NO_RLMT
 r_for
 c_loop
 (paren
@@ -280,7 +269,8 @@ dot
 id|ActivePort
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
+macro_line|#endif /* !SK_NO_RLMT */
+macro_line|#ifdef xDEBUG
 r_for
 c_loop
 (paren
@@ -491,110 +481,177 @@ id|SK_TRUE
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* SK_MAX_NETS &gt; 1 */
-macro_line|#ifdef xDEBUG
-id|SK_DBG_MSG
-c_func
+macro_line|#ifdef DEBUG
+r_for
+c_loop
 (paren
-id|pAC
-comma
-id|SK_DBGMOD_ADDR
-comma
-id|SK_DBGCAT_INIT
-comma
-(paren
-l_string|&quot;Permanent MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
+id|i
+op_assign
 l_int|0
-)braket
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
-l_int|1
-)braket
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
-l_int|2
-)braket
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
-l_int|3
-)braket
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
-l_int|4
-)braket
-comma
-id|pAC-&gt;Addr.PermanentMacAddress.a
-(braket
-l_int|5
-)braket
-)paren
-)paren
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_ADDR
-comma
-id|SK_DBGCAT_INIT
-comma
-(paren
-l_string|&quot;Logical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|0
-)braket
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|1
-)braket
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|2
-)braket
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|3
-)braket
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|4
-)braket
-comma
-id|pAC-&gt;Addr.CurrentMacAddress.a
-(braket
-l_int|5
-)braket
-)paren
-)paren
-macro_line|#endif&t;/* DEBUG */
-macro_line|#if 0
-multiline_comment|/* Don&squot;t do this here ... */
-(paren
-r_void
-)paren
-id|SkAddrMcUpdate
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|pAC-&gt;Addr.ActivePort
-)paren
 suffix:semicolon
-macro_line|#endif&t;/* 0 */
+id|i
+OL
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_INIT
+comma
+(paren
+l_string|&quot;Permanent MAC Address (Net%d): %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|i
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|PermanentMacAddress.a
+(braket
+l_int|5
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_INIT
+comma
+(paren
+l_string|&quot;Logical MAC Address (Net%d): %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|i
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Net
+(braket
+id|i
+)braket
+dot
+id|CurrentMacAddress.a
+(braket
+l_int|5
+)braket
+)paren
+)paren
+)brace
+macro_line|#endif&t;/* DEBUG */
 r_for
 c_loop
 (paren
@@ -687,7 +744,7 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 )brace
-multiline_comment|/* Set port&squot;s current MAC addresses. */
+multiline_comment|/* Set port&squot;s current physical MAC address. */
 id|OutAddr
 op_assign
 (paren
@@ -700,6 +757,13 @@ id|pAPort-&gt;CurrentMacAddress.a
 l_int|0
 )braket
 suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 id|XM_OUTADDR
 c_func
 (paren
@@ -712,7 +776,31 @@ comma
 id|OutAddr
 )paren
 suffix:semicolon
-macro_line|#ifdef xDEBUG
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|GM_OUTADDR
+c_func
+(paren
+id|IoC
+comma
+id|i
+comma
+id|GM_SRC_ADDR_1L
+comma
+id|OutAddr
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+macro_line|#ifdef DEBUG
 id|SK_DBG_MSG
 c_func
 (paren
@@ -723,7 +811,7 @@ comma
 id|SK_DBGCAT_INIT
 comma
 (paren
-l_string|&quot;Permanent Physical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+l_string|&quot;SkAddrInit: Permanent Physical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
 comma
 id|pAPort-&gt;PermanentMacAddress.a
 (braket
@@ -766,7 +854,7 @@ comma
 id|SK_DBGCAT_INIT
 comma
 (paren
-l_string|&quot;Phsical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+l_string|&quot;SkAddrInit: Physical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
 comma
 id|pAPort-&gt;CurrentMacAddress.a
 (braket
@@ -799,7 +887,7 @@ l_int|5
 )braket
 )paren
 )paren
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 )brace
 multiline_comment|/* pAC-&gt;Addr.InitDone = SK_INIT_IO; */
 r_break
@@ -807,7 +895,7 @@ suffix:semicolon
 r_case
 id|SK_INIT_RUN
 suffix:colon
-macro_line|#ifdef DEBUG
+macro_line|#ifdef xDEBUG
 r_for
 c_loop
 (paren
@@ -862,10 +950,102 @@ id|SK_ADDR_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* SkAddrInit */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcClear - clear the multicast table&n; *&n; * Description:&n; *&t;This routine clears the multicast table&n; *&t;(either entry 2 or entries 3-16 and InexactFilter) of the given port.&n; *&t;If not suppressed by Flag SK_MC_SW_ONLY, the hardware is updated&n; *&t;immediately.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called starting with SK_INIT_DATA with flag SK_MC_SW_ONLY&n; *&t;may be called after SK_INIT_IO without limitation&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcClear - clear the multicast table&n; *&n; * Description:&n; *&t;This routine clears the multicast table.&n; *&n; *&t;If not suppressed by Flag SK_MC_SW_ONLY, the hardware is updated&n; *&t;immediately.&n; *&n; *&t;It calls either SkAddrXmacMcClear or SkAddrGmacMcClear, according&n; *&t;to the adapter in use. The real work is done there.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called starting with SK_INIT_DATA with flag SK_MC_SW_ONLY&n; *&t;may be called after SK_INIT_IO without limitation&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
 DECL|function|SkAddrMcClear
 r_int
 id|SkAddrMcClear
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* Index of affected port */
+r_int
+id|Flags
+)paren
+multiline_comment|/* permanent/non-perm, sw-only */
+(brace
+r_int
+id|ReturnCode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PortNumber
+op_ge
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+r_return
+(paren
+id|SK_ADDR_ILLEGAL_PORT
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrXmacMcClear
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|Flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrGmacMcClear
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|Flags
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|ReturnCode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrMcClear */
+macro_line|#endif /* !SK_SLIM */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrXmacMcClear - clear the multicast table&n; *&n; * Description:&n; *&t;This routine clears the multicast table&n; *&t;(either entry 2 or entries 3-16 and InexactFilter) of the given port.&n; *&t;If not suppressed by Flag SK_MC_SW_ONLY, the hardware is updated&n; *&t;immediately.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called starting with SK_INIT_DATA with flag SK_MC_SW_ONLY&n; *&t;may be called after SK_INIT_IO without limitation&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrXmacMcClear
+r_int
+id|SkAddrXmacMcClear
 c_func
 (paren
 id|SK_AC
@@ -892,28 +1072,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PortNumber
-op_ge
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
-)paren
-(brace
-r_return
-(paren
-id|SK_ADDR_ILLEGAL_PORT
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|Flags
 op_amp
 id|SK_ADDR_PERMANENT
 )paren
 (brace
+multiline_comment|/* permanent =&gt; RLMT */
 multiline_comment|/* Clear RLMT multicast addresses. */
 id|pAC-&gt;Addr.Port
 (braket
@@ -928,7 +1092,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* not permanent =&gt; DRV */
-multiline_comment|/* Clear InexactFilter. */
+multiline_comment|/* Clear InexactFilter */
 r_for
 c_loop
 (paren
@@ -982,7 +1146,7 @@ id|SK_MC_SW_ONLY
 (paren
 r_void
 )paren
-id|SkAddrMcUpdate
+id|SkAddrXmacMcUpdate
 c_func
 (paren
 id|pAC
@@ -999,12 +1163,406 @@ id|SK_ADDR_SUCCESS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkAddrMcClear */
-macro_line|#ifndef SK_ADDR_CHEAT
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkCrc32McHash - hash multicast address&n; *&n; * Description:&n; *&t;This routine computes the hash value for a multicast address.&n; *&n; * Notes:&n; *&t;The code was adapted from the XaQti data sheet.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&n; * Returns:&n; *&t;Hash value of multicast address.&n; */
-DECL|function|SkCrc32McHash
+multiline_comment|/* SkAddrXmacMcClear */
+macro_line|#endif /* !SK_SLIM */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrGmacMcClear - clear the multicast table&n; *&n; * Description:&n; *&t;This routine clears the multicast hashing table (InexactFilter)&n; *&t;(either the RLMT or the driver bits) of the given port.&n; *&n; *&t;If not suppressed by Flag SK_MC_SW_ONLY, the hardware is updated&n; *&t;immediately.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called starting with SK_INIT_DATA with flag SK_MC_SW_ONLY&n; *&t;may be called after SK_INIT_IO without limitation&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrGmacMcClear
 r_int
-id|SkCrc32McHash
+id|SkAddrGmacMcClear
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* Index of affected port */
+r_int
+id|Flags
+)paren
+multiline_comment|/* permanent/non-perm, sw-only */
+(brace
+r_int
+id|i
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;GMAC InexactFilter (not cleared): %02X %02X %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|5
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|6
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|7
+)braket
+)paren
+)paren
+macro_line|#endif&t;/* DEBUG */
+multiline_comment|/* Clear InexactFilter */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|Flags
+op_amp
+id|SK_ADDR_PERMANENT
+)paren
+(brace
+multiline_comment|/* permanent =&gt; RLMT */
+multiline_comment|/* Copy DRV bits to InexactFilter. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_or_assign
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+id|i
+)braket
+suffix:semicolon
+multiline_comment|/* Clear InexactRlmtFilter. */
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* not permanent =&gt; DRV */
+multiline_comment|/* Copy RLMT bits to InexactFilter. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_or_assign
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+id|i
+)braket
+suffix:semicolon
+multiline_comment|/* Clear InexactDrvFilter. */
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;GMAC InexactFilter (cleared): %02X %02X %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|5
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|6
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|7
+)braket
+)paren
+)paren
+macro_line|#endif&t;/* DEBUG */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|Flags
+op_amp
+id|SK_MC_SW_ONLY
+)paren
+)paren
+(brace
+(paren
+r_void
+)paren
+id|SkAddrGmacMcUpdate
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|SK_ADDR_SUCCESS
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrGmacMcClear */
+macro_line|#ifndef SK_ADDR_CHEAT
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmacMcHash - hash multicast address&n; *&n; * Description:&n; *&t;This routine computes the hash value for a multicast address.&n; *&t;A CRC32 algorithm is used.&n; *&n; * Notes:&n; *&t;The code was adapted from the XaQti data sheet.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&n; * Returns:&n; *&t;Hash value of multicast address.&n; */
+DECL|function|SkXmacMcHash
+id|SK_U32
+id|SkXmacMcHash
 c_func
 (paren
 r_int
@@ -1014,19 +1572,89 @@ id|pMc
 )paren
 multiline_comment|/* Multicast address */
 (brace
-id|u32
+id|SK_U32
+id|Idx
+suffix:semicolon
+id|SK_U32
+id|Bit
+suffix:semicolon
+id|SK_U32
+id|Data
+suffix:semicolon
+id|SK_U32
 id|Crc
 suffix:semicolon
 id|Crc
 op_assign
-id|ether_crc_le
-c_func
+l_int|0xFFFFFFFFUL
+suffix:semicolon
+r_for
+c_loop
 (paren
+id|Idx
+op_assign
+l_int|0
+suffix:semicolon
+id|Idx
+OL
 id|SK_MAC_ADDR_LEN
-comma
+suffix:semicolon
+id|Idx
+op_increment
+)paren
+(brace
+id|Data
+op_assign
+op_star
 id|pMc
+op_increment
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|Bit
+op_assign
+l_int|0
+suffix:semicolon
+id|Bit
+OL
+l_int|8
+suffix:semicolon
+id|Bit
+op_increment
+comma
+id|Data
+op_rshift_assign
+l_int|1
+)paren
+(brace
+id|Crc
+op_assign
+(paren
+id|Crc
+op_rshift
+l_int|1
+)paren
+op_xor
+(paren
+(paren
+(paren
+id|Crc
+op_xor
+id|Data
+)paren
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+id|XMAC_POLY
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
+)brace
+)brace
 r_return
 (paren
 id|Crc
@@ -1043,12 +1671,296 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkCrc32McHash */
-macro_line|#endif&t;/* not SK_ADDR_CHEAT */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcAdd - add a multicast address to a port&n; *&n; * Description:&n; *&t;This routine enables reception for a given address on the given port.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; *&t;In the current version, only RLMT may add addresses to the non-active&n; *&t;port.&n; *&n; *&t;The multicast bit is only checked if there are no free exact match&n; *&t;entries.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_DATA&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_MC_ILLEGAL_ADDRESS&n; *&t;SK_MC_ILLEGAL_PORT&n; *&t;SK_MC_RLMT_OVERFLOW&n; */
+multiline_comment|/* SkXmacMcHash */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmacMcHash - hash multicast address&n; *&n; * Description:&n; *&t;This routine computes the hash value for a multicast address.&n; *&t;A CRC16 algorithm is used.&n; *&n; * Notes:&n; *&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&n; * Returns:&n; *&t;Hash value of multicast address.&n; */
+DECL|function|SkGmacMcHash
+id|SK_U32
+id|SkGmacMcHash
+c_func
+(paren
+r_int
+r_char
+op_star
+id|pMc
+)paren
+multiline_comment|/* Multicast address */
+(brace
+id|SK_U32
+id|Data
+suffix:semicolon
+id|SK_U32
+id|TmpData
+suffix:semicolon
+id|SK_U32
+id|Crc
+suffix:semicolon
+r_int
+id|Byte
+suffix:semicolon
+r_int
+id|Bit
+suffix:semicolon
+id|Crc
+op_assign
+l_int|0xFFFFFFFFUL
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|Byte
+op_assign
+l_int|0
+suffix:semicolon
+id|Byte
+OL
+l_int|6
+suffix:semicolon
+id|Byte
+op_increment
+)paren
+(brace
+multiline_comment|/* Get next byte. */
+id|Data
+op_assign
+(paren
+id|SK_U32
+)paren
+id|pMc
+(braket
+id|Byte
+)braket
+suffix:semicolon
+multiline_comment|/* Change bit order in byte. */
+id|TmpData
+op_assign
+id|Data
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|Bit
+op_assign
+l_int|0
+suffix:semicolon
+id|Bit
+OL
+l_int|8
+suffix:semicolon
+id|Bit
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|TmpData
+op_amp
+l_int|1L
+)paren
+(brace
+id|Data
+op_or_assign
+l_int|1L
+op_lshift
+(paren
+l_int|7
+op_minus
+id|Bit
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Data
+op_and_assign
+op_complement
+(paren
+l_int|1L
+op_lshift
+(paren
+l_int|7
+op_minus
+id|Bit
+)paren
+)paren
+suffix:semicolon
+)brace
+id|TmpData
+op_rshift_assign
+l_int|1
+suffix:semicolon
+)brace
+id|Crc
+op_xor_assign
+(paren
+id|Data
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|Bit
+op_assign
+l_int|0
+suffix:semicolon
+id|Bit
+OL
+l_int|8
+suffix:semicolon
+id|Bit
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|Crc
+op_amp
+l_int|0x80000000
+)paren
+(brace
+id|Crc
+op_assign
+(paren
+id|Crc
+op_lshift
+l_int|1
+)paren
+op_xor
+id|GMAC_POLY
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Crc
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+)brace
+r_return
+(paren
+id|Crc
+op_amp
+(paren
+(paren
+l_int|1
+op_lshift
+id|HASH_BITS
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmacMcHash */
+macro_line|#endif&t;/* !SK_ADDR_CHEAT */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcAdd - add a multicast address to a port&n; *&n; * Description:&n; *&t;This routine enables reception for a given address on the given port.&n; *&n; *&t;It calls either SkAddrXmacMcAdd or SkAddrGmacMcAdd, according to the&n; *&t;adapter in use. The real work is done there.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_DATA&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_MC_ILLEGAL_ADDRESS&n; *&t;SK_MC_ILLEGAL_PORT&n; *&t;SK_MC_RLMT_OVERFLOW&n; */
 DECL|function|SkAddrMcAdd
 r_int
 id|SkAddrMcAdd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* Port Number */
+id|SK_MAC_ADDR
+op_star
+id|pMc
+comma
+multiline_comment|/* multicast address to be added */
+r_int
+id|Flags
+)paren
+multiline_comment|/* permanent/non-permanent */
+(brace
+r_int
+id|ReturnCode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PortNumber
+op_ge
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+r_return
+(paren
+id|SK_ADDR_ILLEGAL_PORT
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrXmacMcAdd
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|pMc
+comma
+id|Flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrGmacMcAdd
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|pMc
+comma
+id|Flags
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|ReturnCode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrMcAdd */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrXmacMcAdd - add a multicast address to a port&n; *&n; * Description:&n; *&t;This routine enables reception for a given address on the given port.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; *&t;The multicast bit is only checked if there are no free exact match&n; *&t;entries.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_DATA&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_MC_ILLEGAL_ADDRESS&n; *&t;SK_MC_RLMT_OVERFLOW&n; */
+DECL|function|SkAddrXmacMcAdd
+r_int
+id|SkAddrXmacMcAdd
 c_func
 (paren
 id|SK_AC
@@ -1081,27 +1993,10 @@ id|SK_U8
 id|Inexact
 suffix:semicolon
 macro_line|#ifndef SK_ADDR_CHEAT
-r_int
+id|SK_U32
 id|HashBit
 suffix:semicolon
 macro_line|#endif&t;/* !defined(SK_ADDR_CHEAT) */
-r_if
-c_cond
-(paren
-id|PortNumber
-op_ge
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
-)paren
-(brace
-r_return
-(paren
-id|SK_ADDR_ILLEGAL_PORT
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1110,7 +2005,8 @@ op_amp
 id|SK_ADDR_PERMANENT
 )paren
 (brace
-macro_line|#ifdef DEBUG
+multiline_comment|/* permanent =&gt; RLMT */
+macro_line|#ifdef xDEBUG
 r_if
 c_cond
 (paren
@@ -1157,7 +2053,7 @@ id|SK_MC_RLMT_OVERFLOW
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set an RLMT multicast address. */
+multiline_comment|/* Set a RLMT multicast address. */
 id|pAC-&gt;Addr.Port
 (braket
 id|PortNumber
@@ -1183,25 +2079,7 @@ id|SK_MC_FILTERING_EXACT
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* Not PERMANENT =&gt; DRV */
-r_if
-c_cond
-(paren
-id|PortNumber
-op_ne
-id|pAC-&gt;Addr.ActivePort
-)paren
-(brace
-multiline_comment|/* Only RLMT is allowed to do this. */
-r_return
-(paren
-id|SK_MC_ILLEGAL_PORT
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* 0 */
-macro_line|#ifdef DEBUG
+macro_line|#ifdef xDEBUG
 r_if
 c_cond
 (paren
@@ -1262,7 +2140,7 @@ op_assign
 op_star
 id|pMc
 suffix:semicolon
-multiline_comment|/* Clear InexactFilter. */
+multiline_comment|/* Clear InexactFilter */
 r_for
 c_loop
 (paren
@@ -1308,7 +2186,7 @@ id|SK_MC_BIT
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Hashing only possible with&n;&t;&t;&t; * multicast addresses.&n;&t;&t;&t; */
+multiline_comment|/* Hashing only possible with multicast addresses */
 r_return
 (paren
 id|SK_MC_ILLEGAL_ADDRESS
@@ -1321,7 +2199,7 @@ id|HashBit
 op_assign
 l_int|63
 op_minus
-id|SkCrc32McHash
+id|SkXmacMcHash
 c_func
 (paren
 op_amp
@@ -1448,11 +2326,535 @@ id|SK_MC_FILTERING_INEXACT
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* SkAddrMcAdd */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcUpdate - update the HW MC address table and set the MAC address&n; *&n; * Description:&n; *&t;This routine enables reception of the addresses contained in a local&n; *&t;table for a given port.&n; *&t;It also programs the port&squot;s current physical MAC address.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+multiline_comment|/* SkAddrXmacMcAdd */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrGmacMcAdd - add a multicast address to a port&n; *&n; * Description:&n; *&t;This routine enables reception for a given address on the given port.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_DATA&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_MC_ILLEGAL_ADDRESS&n; */
+DECL|function|SkAddrGmacMcAdd
+r_int
+id|SkAddrGmacMcAdd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* Port Number */
+id|SK_MAC_ADDR
+op_star
+id|pMc
+comma
+multiline_comment|/* multicast address to be added */
+r_int
+id|Flags
+)paren
+multiline_comment|/* permanent/non-permanent */
+(brace
+r_int
+id|i
+suffix:semicolon
+macro_line|#ifndef SK_ADDR_CHEAT
+id|SK_U32
+id|HashBit
+suffix:semicolon
+macro_line|#endif&t;/* !defined(SK_ADDR_CHEAT) */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pMc-&gt;a
+(braket
+l_int|0
+)braket
+op_amp
+id|SK_MC_BIT
+)paren
+)paren
+(brace
+multiline_comment|/* Hashing only possible with multicast addresses */
+r_return
+(paren
+id|SK_MC_ILLEGAL_ADDRESS
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifndef SK_ADDR_CHEAT
+multiline_comment|/* Compute hash value of address. */
+id|HashBit
+op_assign
+id|SkGmacMcHash
+c_func
+(paren
+op_amp
+id|pMc-&gt;a
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Flags
+op_amp
+id|SK_ADDR_PERMANENT
+)paren
+(brace
+multiline_comment|/* permanent =&gt; RLMT */
+multiline_comment|/* Add bit to InexactRlmtFilter. */
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+id|HashBit
+op_div
+l_int|8
+)braket
+op_or_assign
+l_int|1
+op_lshift
+(paren
+id|HashBit
+op_mod
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* Copy bit to InexactFilter. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_or_assign
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;GMAC InexactRlmtFilter: %02X %02X %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|5
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|6
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactRlmtFilter.Bytes
+(braket
+l_int|7
+)braket
+)paren
+)paren
+macro_line|#endif&t;/* DEBUG */
+)brace
+r_else
+(brace
+multiline_comment|/* not permanent =&gt; DRV */
+multiline_comment|/* Add bit to InexactDrvFilter. */
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+id|HashBit
+op_div
+l_int|8
+)braket
+op_or_assign
+l_int|1
+op_lshift
+(paren
+id|HashBit
+op_mod
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* Copy bit to InexactFilter. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_or_assign
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;GMAC InexactDrvFilter: %02X %02X %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|0
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|1
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|2
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|3
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|4
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|5
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|6
+)braket
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactDrvFilter.Bytes
+(braket
+l_int|7
+)braket
+)paren
+)paren
+macro_line|#endif&t;/* DEBUG */
+)brace
+macro_line|#else&t;/* SK_ADDR_CHEAT */
+multiline_comment|/* Set all bits in InexactFilter. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+id|i
+)braket
+op_assign
+l_int|0xFF
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* SK_ADDR_CHEAT */
+r_return
+(paren
+id|SK_MC_FILTERING_INEXACT
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrGmacMcAdd */
+macro_line|#endif /* !SK_SLIM */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrMcUpdate - update the HW MC address table and set the MAC address&n; *&n; * Description:&n; *&t;This routine enables reception of the addresses contained in a local&n; *&t;table for a given port.&n; *&t;It also programs the port&squot;s current physical MAC address.&n; *&n; *&t;It calls either SkAddrXmacMcUpdate or SkAddrGmacMcUpdate, according&n; *&t;to the adapter in use. The real work is done there.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
 DECL|function|SkAddrMcUpdate
 r_int
 id|SkAddrMcUpdate
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+)paren
+multiline_comment|/* Port Number */
+(brace
+r_int
+id|ReturnCode
+suffix:semicolon
+macro_line|#if (!defined(SK_SLIM) || defined(DEBUG))
+r_if
+c_cond
+(paren
+id|PortNumber
+op_ge
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+r_return
+(paren
+id|SK_ADDR_ILLEGAL_PORT
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* !SK_SLIM || DEBUG */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrXmacMcUpdate
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrGmacMcUpdate
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+r_return
+(paren
+id|ReturnCode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrMcUpdate */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrXmacMcUpdate - update the HW MC address table and set the MAC address&n; *&n; * Description:&n; *&t;This routine enables reception of the addresses contained in a local&n; *&t;table for a given port.&n; *&t;It also programs the port&squot;s current physical MAC address.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrXmacMcUpdate
+r_int
+id|SkAddrXmacMcUpdate
 c_func
 (paren
 id|SK_AC
@@ -1479,31 +2881,10 @@ id|SK_U16
 op_star
 id|OutAddr
 suffix:semicolon
-id|SK_U16
-id|LoMode
-suffix:semicolon
-multiline_comment|/* Lower 16 bits of XMAC Mode Reg. */
 id|SK_ADDR_PORT
 op_star
 id|pAPort
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PortNumber
-op_ge
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
-)paren
-(brace
-r_return
-(paren
-id|SK_ADDR_ILLEGAL_PORT
-)paren
-suffix:semicolon
-)brace
 id|SK_DBG_MSG
 c_func
 (paren
@@ -1514,7 +2895,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SkAddrMcUpdate on Port %u.&bslash;n&quot;
+l_string|&quot;SkAddrXmacMcUpdate on Port %u.&bslash;n&quot;
 comma
 id|PortNumber
 )paren
@@ -1548,7 +2929,7 @@ id|PortNumber
 )braket
 )paren
 )paren
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 multiline_comment|/* Start with 0 to also program the logical MAC address. */
 r_for
 c_loop
@@ -1565,7 +2946,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Set exact match address i on HW. */
+multiline_comment|/* Set exact match address i on XMAC */
 id|OutAddr
 op_assign
 (paren
@@ -1600,7 +2981,7 @@ id|OutAddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear other permanent exact match addresses on HW. */
+multiline_comment|/* Clear other permanent exact match addresses on XMAC */
 r_if
 c_cond
 (paren
@@ -1673,7 +3054,7 @@ id|OutAddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear other non-permanent exact match addresses on HW. */
+multiline_comment|/* Clear other non-permanent exact match addresses on XMAC */
 r_if
 c_cond
 (paren
@@ -1746,34 +3127,20 @@ op_amp
 id|OnesHash
 )paren
 suffix:semicolon
-multiline_comment|/* Set bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_or_assign
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_TRUE
 )paren
 suffix:semicolon
 )brace
@@ -1803,68 +3170,39 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Set bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_or_assign
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_TRUE
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Clear bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Disable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_and_assign
-op_complement
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_FALSE
 )paren
 suffix:semicolon
 )brace
@@ -1879,7 +3217,7 @@ id|SK_PROM_MODE_NONE
 (paren
 r_void
 )paren
-id|SkAddrPromiscuousChange
+id|SkAddrXmacPromiscuousChange
 c_func
 (paren
 id|pAC
@@ -1892,7 +3230,7 @@ id|pAPort-&gt;PromMode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set port&squot;s current MAC address. */
+multiline_comment|/* Set port&squot;s current physical MAC address. */
 id|OutAddr
 op_assign
 (paren
@@ -1982,7 +3320,9 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;MC address %d on Port %u: %02x %02x %02x %02x %02x %02x --  %02x %02x %02x %02x %02x %02x.&bslash;n&quot;
+l_string|&quot;SkAddrXmacMcUpdate: MC address %d on Port %u: &quot;
+comma
+l_string|&quot;%02x %02x %02x %02x %02x %02x -- %02x %02x %02x %02x %02x %02x&bslash;n&quot;
 comma
 id|i
 comma
@@ -2080,7 +3420,7 @@ l_int|5
 )paren
 )paren
 )brace
-macro_line|#endif&t;/* DEBUG */&t;&t;
+macro_line|#endif /* DEBUG */
 multiline_comment|/* Determine return value. */
 r_if
 c_cond
@@ -2109,7 +3449,476 @@ id|SK_MC_FILTERING_INEXACT
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* SkAddrMcUpdate */
+multiline_comment|/* SkAddrXmacMcUpdate */
+macro_line|#endif  /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrGmacMcUpdate - update the HW MC address table and set the MAC address&n; *&n; * Description:&n; *&t;This routine enables reception of the addresses contained in a local&n; *&t;table for a given port.&n; *&t;It also programs the port&squot;s current physical MAC address.&n; *&n; * Notes:&n; *&t;The return code is only valid for SK_PROM_MODE_NONE.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_MC_FILTERING_EXACT&n; *&t;SK_MC_FILTERING_INEXACT&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrGmacMcUpdate
+r_int
+id|SkAddrGmacMcUpdate
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+)paren
+multiline_comment|/* Port Number */
+(brace
+macro_line|#ifndef SK_SLIM
+id|SK_U32
+id|i
+suffix:semicolon
+id|SK_U8
+id|Inexact
+suffix:semicolon
+macro_line|#endif&t;/* not SK_SLIM */
+id|SK_U16
+op_star
+id|OutAddr
+suffix:semicolon
+id|SK_ADDR_PORT
+op_star
+id|pAPort
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SkAddrGmacMcUpdate on Port %u.&bslash;n&quot;
+comma
+id|PortNumber
+)paren
+)paren
+id|pAPort
+op_assign
+op_amp
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Next0 on Port %d: %d&bslash;n&quot;
+comma
+id|PortNumber
+comma
+id|Next0
+(braket
+id|PortNumber
+)braket
+)paren
+)paren
+macro_line|#endif /* DEBUG */
+macro_line|#ifndef SK_SLIM
+r_for
+c_loop
+(paren
+id|Inexact
+op_assign
+l_int|0
+comma
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|Inexact
+op_or_assign
+id|pAPort-&gt;InexactFilter.Bytes
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/* Set 64-bit hash register to InexactFilter. */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_MC_ADDR_H1
+comma
+op_amp
+id|pAPort-&gt;InexactFilter.Bytes
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAPort-&gt;PromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+(brace
+multiline_comment|/* Set all bits in 64-bit hash register. */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_MC_ADDR_H1
+comma
+op_amp
+id|OnesHash
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Enable Hashing. */
+id|SkMacHashing
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAPort-&gt;PromMode
+op_ne
+id|SK_PROM_MODE_NONE
+)paren
+(brace
+(paren
+r_void
+)paren
+id|SkAddrGmacPromiscuousChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|pAPort-&gt;PromMode
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* SK_SLIM */
+multiline_comment|/* Set all bits in 64-bit hash register. */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_MC_ADDR_H1
+comma
+op_amp
+id|OnesHash
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|SkAddrGmacPromiscuousChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|pAPort-&gt;PromMode
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_SLIM */
+multiline_comment|/* Set port&squot;s current physical MAC address. */
+id|OutAddr
+op_assign
+(paren
+id|SK_U16
+op_star
+)paren
+op_amp
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|GM_OUTADDR
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_SRC_ADDR_1L
+comma
+id|OutAddr
+)paren
+suffix:semicolon
+multiline_comment|/* Set port&squot;s current logical MAC address. */
+id|OutAddr
+op_assign
+(paren
+id|SK_U16
+op_star
+)paren
+op_amp
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|GM_OUTADDR
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_SRC_ADDR_2L
+comma
+id|OutAddr
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SkAddrGmacMcUpdate: Permanent Physical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|0
+)braket
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|1
+)braket
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|2
+)braket
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|3
+)braket
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|4
+)braket
+comma
+id|pAPort-&gt;Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+(braket
+l_int|5
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_ADDR
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SkAddrGmacMcUpdate: Physical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|0
+)braket
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|1
+)braket
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|2
+)braket
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|3
+)braket
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|4
+)braket
+comma
+id|pAPort-&gt;CurrentMacAddress.a
+(braket
+l_int|5
+)braket
+)paren
+)paren
+macro_line|#endif /* DEBUG */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/* Determine return value. */
+r_if
+c_cond
+(paren
+id|Inexact
+op_eq
+l_int|0
+op_logical_and
+id|pAPort-&gt;PromMode
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+(paren
+id|SK_MC_FILTERING_EXACT
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+(paren
+id|SK_MC_FILTERING_INEXACT
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* SK_SLIM */
+r_return
+(paren
+id|SK_MC_FILTERING_INEXACT
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_SLIM */
+)brace
+multiline_comment|/* SkAddrGmacMcUpdate */
+macro_line|#endif /* YUKON */
+macro_line|#ifndef SK_NO_MAO
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrOverride - override a port&squot;s MAC address&n; *&n; * Description:&n; *&t;This routine overrides the MAC address of one port.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS if successful.&n; *&t;SK_ADDR_DUPLICATE_ADDRESS if duplicate MAC address.&n; *&t;SK_ADDR_MULTICAST_ADDRESS if multicast or broadcast address.&n; *&t;SK_ADDR_TOO_EARLY if SK_INIT_IO was not executed before.&n; */
 DECL|function|SkAddrOverride
 r_int
@@ -2130,6 +3939,7 @@ id|PortNumber
 comma
 multiline_comment|/* Port Number */
 id|SK_MAC_ADDR
+id|SK_FAR
 op_star
 id|pNewAddr
 comma
@@ -2139,9 +3949,11 @@ id|Flags
 )paren
 multiline_comment|/* logical/physical MAC address */
 (brace
+macro_line|#ifndef SK_NO_RLMT
 id|SK_EVPARA
 id|Para
 suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
 id|SK_U32
 id|NetNumber
 suffix:semicolon
@@ -2149,9 +3961,11 @@ id|SK_U32
 id|i
 suffix:semicolon
 id|SK_U16
+id|SK_FAR
 op_star
 id|OutAddr
 suffix:semicolon
+macro_line|#ifndef SK_NO_RLMT
 id|NetNumber
 op_assign
 id|pAC-&gt;Rlmt.Port
@@ -2161,6 +3975,13 @@ id|PortNumber
 dot
 id|Net-&gt;NetNumber
 suffix:semicolon
+macro_line|#else
+id|NetNumber
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* SK_NO_RLMT */
+macro_line|#if (!defined(SK_SLIM) || defined(DEBUG))
 r_if
 c_cond
 (paren
@@ -2178,6 +3999,7 @@ id|SK_ADDR_ILLEGAL_PORT
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !SK_SLIM || DEBUG */
 r_if
 c_cond
 (paren
@@ -2268,6 +4090,7 @@ id|SK_ADDR_TOO_EARLY
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef SK_NO_RLMT
 multiline_comment|/* Set PortNumber to number of net&squot;s active port. */
 id|PortNumber
 op_assign
@@ -2288,6 +4111,7 @@ id|ActivePort
 op_member_access_from_pointer
 id|PortNumber
 suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
 id|pAC-&gt;Addr.Port
 (braket
 id|PortNumber
@@ -2368,6 +4192,7 @@ id|SK_ADDR_TOO_EARLY
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef SK_NO_RLMT
 multiline_comment|/* Set PortNumber to number of net&squot;s active port. */
 id|PortNumber
 op_assign
@@ -2388,6 +4213,7 @@ id|ActivePort
 op_member_access_from_pointer
 id|PortNumber
 suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
 r_for
 c_loop
 (paren
@@ -2570,15 +4396,23 @@ op_assign
 op_star
 id|pNewAddr
 suffix:semicolon
-multiline_comment|/* Change port&squot;s address. */
+multiline_comment|/* Change port&squot;s physical MAC address. */
 id|OutAddr
 op_assign
 (paren
 id|SK_U16
+id|SK_FAR
 op_star
 )paren
 id|pNewAddr
 suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 id|XM_OUTADDR
 c_func
 (paren
@@ -2591,6 +4425,31 @@ comma
 id|OutAddr
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|GM_OUTADDR
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_SRC_ADDR_1L
+comma
+id|OutAddr
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+macro_line|#ifndef SK_NO_RLMT
 multiline_comment|/* Report address change to RLMT. */
 id|Para.Para32
 (braket
@@ -2619,6 +4478,7 @@ comma
 id|Para
 )paren
 suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
 )brace
 r_else
 (brace
@@ -2706,6 +4566,90 @@ id|SK_ADDR_DUPLICATE_ADDRESS
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t;&t; * In case that the physical and the logical MAC addresses are equal&n;&t;&t; * we must also change the physical MAC address here.&n;&t;&t; * In this case we have an adapter which initially was programmed with&n;&t;&t; * two identical MAC addresses.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|SK_ADDR_EQUAL
+c_func
+(paren
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|CurrentMacAddress.a
+comma
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Exact
+(braket
+l_int|0
+)braket
+dot
+id|a
+)paren
+)paren
+(brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|PreviousMacAddress
+op_assign
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|CurrentMacAddress
+suffix:semicolon
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|CurrentMacAddress
+op_assign
+op_star
+id|pNewAddr
+suffix:semicolon
+macro_line|#ifndef SK_NO_RLMT
+multiline_comment|/* Report address change to RLMT. */
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_RLMT
+comma
+id|SK_RLMT_PORT_ADDR
+comma
+id|Para
+)paren
+suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
+)brace
+macro_line|#ifndef SK_NO_RLMT
 multiline_comment|/* Set PortNumber to number of net&squot;s active port. */
 id|PortNumber
 op_assign
@@ -2726,6 +4670,7 @@ id|ActivePort
 op_member_access_from_pointer
 id|PortNumber
 suffix:semicolon
+macro_line|#endif /* !SK_NO_RLMT */
 id|pAC-&gt;Addr.Net
 (braket
 id|NetNumber
@@ -2760,7 +4705,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;Permanent MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+l_string|&quot;SkAddrOverride: Permanent MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
 comma
 id|pAC-&gt;Addr.Net
 (braket
@@ -2833,7 +4778,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;New logical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
+l_string|&quot;SkAddrOverride: New logical MAC Address: %02X %02X %02X %02X %02X %02X&bslash;n&quot;
 comma
 id|pAC-&gt;Addr.Net
 (braket
@@ -2896,7 +4841,7 @@ l_int|5
 )braket
 )paren
 )paren
-macro_line|#endif&t;/* DEBUG */
+macro_line|#endif /* DEBUG */
 multiline_comment|/* Write address to first exact match entry of active port. */
 (paren
 r_void
@@ -2919,10 +4864,112 @@ id|SK_ADDR_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* SkAddrOverride */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrPromiscuousChange - set promiscuous mode for given port&n; *&n; * Description:&n; *&t;This routine manages promiscuous mode:&n; *&t;- none&n; *&t;- all LLC frames&n; *&t;- all MC frames&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+macro_line|#endif /* SK_NO_MAO */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrPromiscuousChange - set promiscuous mode for given port&n; *&n; * Description:&n; *&t;This routine manages promiscuous mode:&n; *&t;- none&n; *&t;- all LLC frames&n; *&t;- all MC frames&n; *&n; *&t;It calls either SkAddrXmacPromiscuousChange or&n; *&t;SkAddrGmacPromiscuousChange, according to the adapter in use.&n; *&t;The real work is done there.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
 DECL|function|SkAddrPromiscuousChange
 r_int
 id|SkAddrPromiscuousChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* port whose promiscuous mode changes */
+r_int
+id|NewPromMode
+)paren
+multiline_comment|/* new promiscuous mode */
+(brace
+r_int
+id|ReturnCode
+suffix:semicolon
+macro_line|#if (!defined(SK_SLIM) || defined(DEBUG))
+r_if
+c_cond
+(paren
+id|PortNumber
+op_ge
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+r_return
+(paren
+id|SK_ADDR_ILLEGAL_PORT
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* !SK_SLIM || DEBUG */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrXmacPromiscuousChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|NewPromMode
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|ReturnCode
+op_assign
+id|SkAddrGmacPromiscuousChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PortNumber
+comma
+id|NewPromMode
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+r_return
+(paren
+id|ReturnCode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrPromiscuousChange */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrXmacPromiscuousChange - set promiscuous mode for given port&n; *&n; * Description:&n; *&t;This routine manages promiscuous mode:&n; *&t;- none&n; *&t;- all LLC frames&n; *&t;- all MC frames&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrXmacPromiscuousChange
+r_int
+id|SkAddrXmacPromiscuousChange
 c_func
 (paren
 id|SK_AC
@@ -2967,23 +5014,6 @@ id|CurPromMode
 op_assign
 id|SK_PROM_MODE_NONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PortNumber
-op_ge
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
-)paren
-(brace
-r_return
-(paren
-id|SK_ADDR_ILLEGAL_PORT
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Read CurPromMode from Hardware. */
 id|XM_IN16
 c_func
@@ -3001,11 +5031,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|LoMode
 op_amp
 id|XM_MD_ENA_PROM
 )paren
+op_ne
+l_int|0
+)paren
 (brace
+multiline_comment|/* Promiscuous mode! */
 id|CurPromMode
 op_or_assign
 id|SK_PROM_MODE_LLC
@@ -3067,7 +5102,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Read InexactModeBit (bit 15 in mode register). */
+multiline_comment|/* Get InexactModeBit (bit XM_MD_ENA_HASH in mode register) */
 id|XM_IN16
 c_func
 (paren
@@ -3086,12 +5121,12 @@ op_assign
 (paren
 id|LoMode
 op_amp
-id|XM_MD_ENA_HSH
+id|XM_MD_ENA_HASH
 )paren
 op_ne
 l_int|0
 suffix:semicolon
-multiline_comment|/* Read 64-bit hash register from HW. */
+multiline_comment|/* Read 64-bit hash register from XMAC */
 id|XM_INHASH
 c_func
 (paren
@@ -3208,34 +5243,20 @@ op_amp
 id|OnesHash
 )paren
 suffix:semicolon
-multiline_comment|/* Set bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_or_assign
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_TRUE
 )paren
 suffix:semicolon
 )brace
@@ -3298,35 +5319,20 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* Clear bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Disable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_and_assign
-op_complement
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_FALSE
 )paren
 suffix:semicolon
 )brace
@@ -3354,34 +5360,20 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Set bit 15 in mode register. */
-id|XM_IN16
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-id|LoMode
-op_or_assign
-id|XM_MD_ENA_HSH
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_TRUE
 )paren
 suffix:semicolon
 )brace
@@ -3404,41 +5396,20 @@ id|SK_PROM_MODE_LLC
 )paren
 (brace
 multiline_comment|/* Prom. LLC */
-multiline_comment|/* Set promiscuous bit in mode register. */
-id|XM_IN16
+multiline_comment|/* Set the MAC in Promiscuous Mode */
+id|SkMacPromiscMode
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Receive MAC frames. */
-id|LoMode
-op_or_assign
-id|XM_MD_RX_MCTRL
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
-id|LoMode
-op_or_assign
-id|XM_MD_ENA_PROM
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_TRUE
 )paren
 suffix:semicolon
 )brace
@@ -3461,43 +5432,20 @@ id|SK_PROM_MODE_LLC
 )paren
 (brace
 multiline_comment|/* Norm. LLC. */
-multiline_comment|/* Clear promiscuous bit in mode register. */
-id|XM_IN16
+multiline_comment|/* Clear Promiscuous Mode */
+id|SkMacPromiscMode
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
-id|PortNumber
-comma
-id|XM_MODE
-comma
-op_amp
-id|LoMode
+(paren
+r_int
 )paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Don&squot;t receive MAC frames. */
-id|LoMode
-op_and_assign
-op_complement
-id|XM_MD_RX_MCTRL
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
-id|LoMode
-op_and_assign
-op_complement
-id|XM_MD_ENA_PROM
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
 id|PortNumber
 comma
-id|XM_MODE
-comma
-id|LoMode
+id|SK_FALSE
 )paren
 suffix:semicolon
 )brace
@@ -3507,7 +5455,314 @@ id|SK_ADDR_SUCCESS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkAddrPromiscuousChange */
+multiline_comment|/* SkAddrXmacPromiscuousChange */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrGmacPromiscuousChange - set promiscuous mode for given port&n; *&n; * Description:&n; *&t;This routine manages promiscuous mode:&n; *&t;- none&n; *&t;- all LLC frames&n; *&t;- all MC frames&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
+DECL|function|SkAddrGmacPromiscuousChange
+r_int
+id|SkAddrGmacPromiscuousChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O context */
+id|SK_U32
+id|PortNumber
+comma
+multiline_comment|/* port whose promiscuous mode changes */
+r_int
+id|NewPromMode
+)paren
+multiline_comment|/* new promiscuous mode */
+(brace
+id|SK_U16
+id|ReceiveControl
+suffix:semicolon
+multiline_comment|/* GMAC Receive Control Register */
+r_int
+id|CurPromMode
+op_assign
+id|SK_PROM_MODE_NONE
+suffix:semicolon
+multiline_comment|/* Read CurPromMode from Hardware. */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_RX_CTRL
+comma
+op_amp
+id|ReceiveControl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ReceiveControl
+op_amp
+(paren
+id|GM_RXCR_UCF_ENA
+op_or
+id|GM_RXCR_MCF_ENA
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Promiscuous mode! */
+id|CurPromMode
+op_or_assign
+id|SK_PROM_MODE_LLC
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|ReceiveControl
+op_amp
+id|GM_RXCR_MCF_ENA
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* All Multicast mode! */
+id|CurPromMode
+op_or_assign
+(paren
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|PromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+suffix:semicolon
+)brace
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|PromMode
+op_assign
+id|NewPromMode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|NewPromMode
+op_eq
+id|CurPromMode
+)paren
+(brace
+r_return
+(paren
+id|SK_ADDR_SUCCESS
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|NewPromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|CurPromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+)paren
+(brace
+multiline_comment|/* All MC */
+multiline_comment|/* Set all bits in 64-bit hash register. */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_MC_ADDR_H1
+comma
+op_amp
+id|OnesHash
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Hashing */
+id|SkMacHashing
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|CurPromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|NewPromMode
+op_amp
+id|SK_PROM_MODE_ALL_MC
+)paren
+)paren
+(brace
+multiline_comment|/* Norm. MC */
+multiline_comment|/* Set 64-bit hash register to InexactFilter. */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|PortNumber
+comma
+id|GM_MC_ADDR_H1
+comma
+op_amp
+id|pAC-&gt;Addr.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|InexactFilter.Bytes
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Hashing. */
+id|SkMacHashing
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|NewPromMode
+op_amp
+id|SK_PROM_MODE_LLC
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|CurPromMode
+op_amp
+id|SK_PROM_MODE_LLC
+)paren
+)paren
+(brace
+multiline_comment|/* Prom. LLC */
+multiline_comment|/* Set the MAC to Promiscuous Mode. */
+id|SkMacPromiscMode
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_TRUE
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|CurPromMode
+op_amp
+id|SK_PROM_MODE_LLC
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|NewPromMode
+op_amp
+id|SK_PROM_MODE_LLC
+)paren
+)paren
+(brace
+multiline_comment|/* Norm. LLC */
+multiline_comment|/* Clear Promiscuous Mode. */
+id|SkMacPromiscMode
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+(paren
+r_int
+)paren
+id|PortNumber
+comma
+id|SK_FALSE
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|SK_ADDR_SUCCESS
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkAddrGmacPromiscuousChange */
+macro_line|#endif /* YUKON */
+macro_line|#ifndef SK_SLIM
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkAddrSwap - swap address info&n; *&n; * Description:&n; *&t;This routine swaps address info of two ports.&n; *&n; * Context:&n; *&t;runtime, pageable&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;SK_ADDR_SUCCESS&n; *&t;SK_ADDR_ILLEGAL_PORT&n; */
 DECL|function|SkAddrSwap
 r_int
@@ -3602,7 +5857,7 @@ id|SK_ADDR_ILLEGAL_PORT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Swap&n;&t; * - Exact Match Entries&n;&t; * - FirstExactMatchRlmt;&n;&t; * - NextExactMatchRlmt;&n;&t; * - FirstExactMatchDrv;&n;&t; * - NextExactMatchDrv;&n;&t; * - 64-bit filter&n;&t; * - Promiscuous Mode&n;&t; * of ports.&n;&t; */
+multiline_comment|/*&n;&t; * Swap:&n;&t; * - Exact Match Entries (GEnesis and Yukon)&n;&t; *   Yukon uses first entry for the logical MAC&n;&t; *   address (stored in the second GMAC register).&n;&t; * - FirstExactMatchRlmt (GEnesis only)&n;&t; * - NextExactMatchRlmt (GEnesis only)&n;&t; * - FirstExactMatchDrv (GEnesis only)&n;&t; * - NextExactMatchDrv (GEnesis only)&n;&t; * - 64-bit filter (InexactFilter)&n;&t; * - Promiscuous Mode&n;&t; * of ports.&n;&t; */
 r_for
 c_loop
 (paren
@@ -3755,6 +6010,12 @@ id|PromMode
 op_assign
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 id|DWord
 op_assign
 id|pAC-&gt;Addr.Port
@@ -3883,6 +6144,7 @@ id|NextExactMatchDrv
 op_assign
 id|DWord
 suffix:semicolon
+)brace
 multiline_comment|/* CAUTION: Solution works if only ports of one adapter are in use. */
 r_for
 c_loop
@@ -3985,6 +6247,7 @@ id|SK_ADDR_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* SkAddrSwap */
+macro_line|#endif /* !SK_SLIM */
 macro_line|#ifdef __cplusplus
 )brace
 macro_line|#endif&t;/* __cplusplus */

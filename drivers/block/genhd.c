@@ -1569,16 +1569,11 @@ id|disk-&gt;first_minor
 )paren
 suffix:semicolon
 r_return
-id|sprintf
+id|print_dev_t
 c_func
 (paren
 id|page
 comma
-l_string|&quot;%04x&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
 id|base
 )paren
 suffix:semicolon

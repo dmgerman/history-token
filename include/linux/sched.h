@@ -1409,7 +1409,7 @@ mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
 DECL|macro|PF_SWAPOFF
 mdefine_line|#define PF_SWAPOFF&t;0x00080000&t;/* I am in swapoff */
 DECL|macro|PF_LESS_THROTTLE
-mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
+mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean memory */
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 DECL|macro|PF_READAHEAD

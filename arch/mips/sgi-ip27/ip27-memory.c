@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 multiline_comment|/* ip27-klnuma.c   */
 r_extern
 id|pfn_t
@@ -841,21 +842,6 @@ id|numpages
 )paren
 suffix:semicolon
 )brace
-DECL|function|page_is_ram
-r_int
-id|__init
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_void
 id|__init
 DECL|function|prom_free_prom_memory
@@ -1118,22 +1104,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-comma
-id|_fdata
-comma
-id|_edata
-suffix:semicolon
-r_extern
-r_char
-id|__init_begin
-comma
-id|__init_end
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -1402,14 +1372,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|datasize
@@ -1418,14 +1386,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_edata
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|_fdata
 suffix:semicolon
 id|initsize
@@ -1434,14 +1400,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|__init_end
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|__init_begin
 suffix:semicolon
 id|tmp

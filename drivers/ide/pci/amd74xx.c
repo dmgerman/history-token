@@ -2467,7 +2467,11 @@ op_amp
 id|AMD_UDMA
 )braket
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Register /proc/ide/amd74xx entry&n; */
@@ -2801,14 +2805,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|amd74xx_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|amd74xx_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

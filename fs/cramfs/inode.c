@@ -84,12 +84,6 @@ r_static
 r_struct
 id|timespec
 id|zerotime
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 r_if
 c_cond

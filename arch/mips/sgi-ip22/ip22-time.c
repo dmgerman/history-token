@@ -377,19 +377,15 @@ id|SGINT_TCWORD_MRGEN
 suffix:semicolon
 id|sgint-&gt;tcnt2
 op_assign
-(paren
 id|SGINT_TCSAMP_COUNTER
 op_amp
 l_int|0xff
-)paren
 suffix:semicolon
 id|sgint-&gt;tcnt2
 op_assign
-(paren
 id|SGINT_TCSAMP_COUNTER
 op_rshift
 l_int|8
-)paren
 suffix:semicolon
 multiline_comment|/* Get initial counter invariant */
 id|ct0
@@ -404,11 +400,9 @@ r_do
 (brace
 id|sgint-&gt;tcword
 op_assign
-(paren
 id|SGINT_TCWORD_CNT2
 op_or
 id|SGINT_TCWORD_CLAT
-)paren
 suffix:semicolon
 id|lsb
 op_assign
@@ -443,19 +437,26 @@ op_or
 id|SGINT_TCWORD_MSWST
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Return the difference, this is how far the r4k counter increments&n;&t; * for every 1/HZ seconds. We round off the nearest 1 MHz of master&n;&t; * clock (= 1000000 / 100 / 2 = 5000 count).&n;&t; */
+multiline_comment|/*&n;&t; * Return the difference, this is how far the r4k counter increments&n;&t; * for every 1/HZ seconds. We round off the nearest 1 MHz of master&n;&t; * clock (= 1000000 / HZ / 2).&n;&t; */
+singleline_comment|//return (ct1 - ct0 + (500000/HZ/2)) / (500000/HZ) * (500000/HZ);
 r_return
-(paren
 (paren
 id|ct1
 op_minus
 id|ct0
 )paren
 op_div
-l_int|5000
+(paren
+l_int|500000
+op_div
+id|HZ
 )paren
 op_star
-l_int|5000
+(paren
+l_int|500000
+op_div
+id|HZ
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Here we need to calibrate the cycle counter to at least be close.&n; */
@@ -480,7 +481,7 @@ r_int
 r_int
 id|r4k_tick
 suffix:semicolon
-multiline_comment|/* &n;&t; * Figure out the r4k offset, the algorithm is very simple&n;&t; * and works in _all_ cases as long as the 8254 counter&n;&t; * register itself works ok (as an interrupt driving timer&n;&t; * it does not because of bug, this is why we are using&n;&t; * the onchip r4k counter/compare register to serve this&n;&t; * purpose, but for r4k_offset calculation it will work&n;&t; * ok for us).  There are other very complicated ways&n;&t; * of performing this calculation but this one works just&n;&t; * fine so I am not going to futz around. ;-)&n;&t; */
+multiline_comment|/* &n;&t; * Figure out the r4k offset, the algorithm is very simple and works in&n;&t; * _all_ cases as long as the 8254 counter register itself works ok (as&n;&t; * an interrupt driving timer it does not because of bug, this is why&n;&t; * we are using the onchip r4k counter/compare register to serve this&n;&t; * purpose, but for r4k_offset calculation it will work ok for us).&n;&t; * There are other very complicated ways of performing this calculation&n;&t; * but this one works just fine so I am not going to futz around. ;-)&n;&t; */
 id|printk
 c_func
 (paren
@@ -649,7 +650,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%d [%d.%02d MHz CPU]&bslash;n&quot;
+l_string|&quot;%d [%d.%04d MHz CPU]&bslash;n&quot;
 comma
 (paren
 r_int
@@ -662,7 +663,11 @@ r_int
 (paren
 id|r4k_tick
 op_div
-l_int|5000
+(paren
+l_int|500000
+op_div
+id|HZ
+)paren
 )paren
 comma
 (paren
@@ -671,10 +676,12 @@ r_int
 (paren
 id|r4k_tick
 op_mod
-l_int|5000
-)paren
+(paren
+l_int|500000
 op_div
-l_int|50
+id|HZ
+)paren
+)paren
 )paren
 suffix:semicolon
 id|mips_counter_frequency
@@ -697,14 +704,6 @@ id|regs
 )paren
 (brace
 r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
 id|irq
 op_assign
 id|SGI_8254_0_IRQ
@@ -720,13 +719,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket
@@ -776,14 +769,6 @@ id|regs
 )paren
 (brace
 r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
 id|irq
 op_assign
 id|SGI_TIMER_IRQ
@@ -793,13 +778,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket
@@ -816,20 +795,6 @@ id|regs
 )paren
 suffix:semicolon
 id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
 c_func
 (paren
 )paren

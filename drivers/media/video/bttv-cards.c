@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;bttvp.h&quot;
 macro_line|#include &quot;bt832.h&quot;

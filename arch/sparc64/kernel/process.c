@@ -815,6 +815,24 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;tstate
+op_amp
+id|TSTATE_PRIV
+)paren
+id|print_symbol
+c_func
+(paren
+l_string|&quot;I7: &lt;%s&gt;&bslash;n&quot;
+comma
+id|rw-&gt;ins
+(braket
+l_int|7
+)braket
+)paren
+suffix:semicolon
 )brace
 DECL|function|show_stackframe
 r_void
@@ -1465,6 +1483,17 @@ id|regs-&gt;u_regs
 (braket
 l_int|14
 )braket
+comma
+id|regs-&gt;u_regs
+(braket
+l_int|15
+)braket
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;RPC: &lt;%s&gt;&bslash;n&quot;
 comma
 id|regs-&gt;u_regs
 (braket

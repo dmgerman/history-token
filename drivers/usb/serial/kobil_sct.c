@@ -627,6 +627,9 @@ suffix:semicolon
 id|interface
 op_assign
 id|actconfig-&gt;interface
+(braket
+l_int|0
+)braket
 suffix:semicolon
 id|altsetting
 op_assign

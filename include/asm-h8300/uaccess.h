@@ -11,19 +11,17 @@ mdefine_line|#define VERIFY_READ&t;0
 DECL|macro|VERIFY_WRITE
 mdefine_line|#define VERIFY_WRITE&t;1
 multiline_comment|/* We let the MMU do all checking */
-DECL|function|access_ok
-r_extern
+DECL|macro|access_ok
+mdefine_line|#define access_ok(type, addr, size) __access_ok((unsigned long)addr,size)
+DECL|function|__access_ok
+r_static
 r_inline
 r_int
-id|access_ok
+id|__access_ok
 c_func
 (paren
 r_int
-id|type
-comma
-r_const
-r_void
-op_star
+r_int
 id|addr
 comma
 r_int
@@ -42,10 +40,6 @@ r_return
 id|RANGE_CHECK_OK
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 comma
 id|size
@@ -62,7 +56,7 @@ id|_ramend
 suffix:semicolon
 )brace
 DECL|function|verify_area
-r_extern
+r_static
 r_inline
 r_int
 id|verify_area

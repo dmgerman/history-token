@@ -4823,6 +4823,7 @@ id|bpsuper
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EMFILE
 suffix:semicolon
 multiline_comment|/* Is there a better rc? */

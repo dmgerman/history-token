@@ -871,7 +871,11 @@ l_string|&quot;%s, VID=%04x, DID=%04x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;vendor
 comma
@@ -889,7 +893,11 @@ l_string|&quot;%s: IDE controller at PCI slot %s&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -26,9 +26,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* so far, pre-defined allocation is only for hammerfall cards... */
-multiline_comment|/* #define ENABLE_PREALLOC */
-macro_line|#ifdef ENABLE_PREALLOC
 macro_line|#ifndef SNDRV_CARDS
 DECL|macro|SNDRV_CARDS
 mdefine_line|#define SNDRV_CARDS&t;8
@@ -79,7 +76,6 @@ comma
 l_string|&quot;Enable cards to allocate buffers.&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; */
 r_static
 id|DECLARE_MUTEX
@@ -395,6 +391,9 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_case
 id|SNDRV_DMA_TYPE_PCI
+suffix:colon
+r_case
+id|SNDRV_DMA_TYPE_PCI_SG
 suffix:colon
 r_return
 id|a-&gt;dev.pci
@@ -969,7 +968,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_dma_set_reserved - reserve the buffer&n; * @dev: the buffer device info&n; * @dmab: the buffer to reserve&n; *&n; * Reserves the given buffer as a reserved buffer.&n; * When an old reserved buffer already exists, the old one is released&n; * and replaced with the new one.&n; *&n; * When NULL buffer pointer or zero buffer size is given, the existing&n; * release buffer is released and the entry is removed.&n; * &n; * Returns zero if successful, or a negative code at error.&n; */
+multiline_comment|/**&n; * snd_dma_set_reserved - reserve the buffer&n; * @dev: the buffer device info&n; * @dmab: the buffer to reserve&n; *&n; * Reserves the given buffer as a reserved buffer.&n; * When an old reserved buffer already exists, the old one is released&n; * and replaced with the new one.&n; *&n; * When NULL buffer pointer or zero buffer size is given, the existing&n; * buffer is released and the entry is removed.&n; * &n; * Returns zero if successful, or a negative code at error.&n; */
 DECL|function|snd_dma_set_reserved
 r_int
 id|snd_dma_set_reserved
@@ -2527,7 +2526,6 @@ id|dma_addr
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SBUS */
-macro_line|#ifdef ENABLE_PREALLOC
 multiline_comment|/*&n; * allocation of buffers for pre-defined devices&n; */
 multiline_comment|/* FIXME: for pci only - other bus? */
 DECL|struct|prealloc_dev
@@ -2880,7 +2878,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; * proc file interface&n; */
 DECL|function|snd_mem_proc_read
@@ -2929,6 +2926,26 @@ op_minus
 l_int|12
 )paren
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|p
+suffix:semicolon
+r_struct
+id|snd_mem_list
+op_star
+id|mem
+suffix:semicolon
+r_int
+id|devno
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|list_mutex
+)paren
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -2951,6 +2968,250 @@ op_div
 l_int|1024
 )paren
 suffix:semicolon
+id|devno
+op_assign
+l_int|0
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|p
+comma
+op_amp
+id|mem_list_head
+)paren
+(brace
+id|mem
+op_assign
+id|list_entry
+c_func
+(paren
+id|p
+comma
+r_struct
+id|snd_mem_list
+comma
+id|list
+)paren
+suffix:semicolon
+id|devno
+op_increment
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;buffer %d : &quot;
+comma
+id|devno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem-&gt;dev.id
+op_eq
+id|SNDRV_DMA_DEVICE_UNUSED
+)paren
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;UNUSED&quot;
+)paren
+suffix:semicolon
+r_else
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;ID %08x&quot;
+comma
+id|mem-&gt;dev.id
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot; : type &quot;
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mem-&gt;dev.type
+)paren
+(brace
+r_case
+id|SNDRV_DMA_TYPE_CONTINUOUS
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;CONT [%x]&quot;
+comma
+id|mem-&gt;dev.dev.flags
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+r_case
+id|SNDRV_DMA_TYPE_PCI
+suffix:colon
+r_case
+id|SNDRV_DMA_TYPE_PCI_SG
+suffix:colon
+r_if
+c_cond
+(paren
+id|mem-&gt;dev.dev.pci
+)paren
+(brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;PCI [%04x:%04x]&quot;
+comma
+id|mem-&gt;dev.dev.pci-&gt;vendor
+comma
+id|mem-&gt;dev.dev.pci-&gt;device
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISA
+r_case
+id|SNDRV_DMA_TYPE_ISA
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;ISA [%x]&quot;
+comma
+id|mem-&gt;dev.dev.flags
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+r_case
+id|SNDRV_DMA_TYPE_SBUS
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;SBUS [%x]&quot;
+comma
+id|mem-&gt;dev.dev.sbus-&gt;slot
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;UNKNOWN&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;n  addr = 0x%lx, size = %d bytes, used = %s&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|mem-&gt;buffer.addr
+comma
+(paren
+r_int
+)paren
+id|mem-&gt;buffer.bytes
+comma
+id|mem-&gt;used
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+)paren
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|list_mutex
+)paren
+suffix:semicolon
 r_return
 id|len
 suffix:semicolon
@@ -2967,6 +3228,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_read_entry
 c_func
 (paren
@@ -2981,13 +3243,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef ENABLE_PREALLOC
+macro_line|#endif
 id|preallocate_cards
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3042,14 +3303,82 @@ c_func
 (paren
 id|snd_mem_exit
 )paren
+macro_line|#ifndef MODULE
+multiline_comment|/* format is: snd-page-alloc=enable */
+DECL|function|snd_mem_setup
+r_static
+r_int
+id|__init
+id|snd_mem_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_static
+r_int
+id|__initdata
+id|nr_dev
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr_dev
+op_ge
+id|SNDRV_CARDS
+)paren
+r_return
+l_int|0
+suffix:semicolon
+(paren
+r_void
+)paren
+(paren
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|enable
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+id|nr_dev
+op_increment
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;snd-page-alloc=&quot;
+comma
+id|snd_mem_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * exports&n; */
+DECL|variable|snd_dma_alloc_pages
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_dma_alloc_pages
 )paren
 suffix:semicolon
-DECL|variable|EXPORT_SYMBOL
+DECL|variable|snd_dma_free_pages
 id|EXPORT_SYMBOL
 c_func
 (paren

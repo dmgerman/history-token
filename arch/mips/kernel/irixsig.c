@@ -1397,7 +1397,7 @@ suffix:semicolon
 id|__get_user
 c_func
 (paren
-id|current-&gt;thread.fpu.hard.control
+id|current-&gt;thread.fpu.hard.fcr31
 comma
 op_amp
 id|context-&gt;fpcsr

@@ -163,7 +163,7 @@ id|num_bblks
 suffix:semicolon
 )brace
 r_return
-id|XFS_ngetrbuf
+id|xfs_buf_get_noaddr
 c_func
 (paren
 id|BBTOB
@@ -172,7 +172,7 @@ c_func
 id|num_bblks
 )paren
 comma
-id|log-&gt;l_mp
+id|log-&gt;l_mp-&gt;m_logdev_targp
 )paren
 suffix:semicolon
 )brace
@@ -186,7 +186,7 @@ op_star
 id|bp
 )paren
 (brace
-id|XFS_nfreerbuf
+id|xfs_buf_free
 c_func
 (paren
 id|bp
@@ -1674,7 +1674,7 @@ OL
 id|start_blk
 )paren
 (brace
-multiline_comment|/* legal log record not found */
+multiline_comment|/* valid log record not found */
 id|xlog_warn
 c_func
 (paren
@@ -2149,7 +2149,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the 1st half cycle number is equal to the last half cycle number,&n;&t; * then the entire log is stamped with the same cycle number.  In this&n;&t; * case, head_blk can&squot;t be set to zero (which makes sense).  The below&n;&t; * math doesn&squot;t work out properly with head_blk equal to zero.  Instead,&n;&t; * we set it to log_bbnum which is an illegal block number, but this&n;&t; * value makes the math correct.  If head_blk doesn&squot;t changed through&n;&t; * all the tests below, *head_blk is set to zero at the very end rather&n;&t; * than log_bbnum.  In a sense, log_bbnum and zero are the same block&n;&t; * in a circular file.&n;&t; */
+multiline_comment|/*&n;&t; * If the 1st half cycle number is equal to the last half cycle number,&n;&t; * then the entire log is stamped with the same cycle number.  In this&n;&t; * case, head_blk can&squot;t be set to zero (which makes sense).  The below&n;&t; * math doesn&squot;t work out properly with head_blk equal to zero.  Instead,&n;&t; * we set it to log_bbnum which is an invalid block number, but this&n;&t; * value makes the math correct.  If head_blk doesn&squot;t changed through&n;&t; * all the tests below, *head_blk is set to zero at the very end rather&n;&t; * than log_bbnum.  In a sense, log_bbnum and zero are the same block&n;&t; * in a circular file.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9101,7 +9101,7 @@ suffix:colon
 id|xlog_warn
 c_func
 (paren
-l_string|&quot;XFS: xlog_recover_do_inode_trans: Illegal flag&quot;
+l_string|&quot;XFS: xlog_recover_do_inode_trans: Invalid flag&quot;
 )paren
 suffix:semicolon
 id|ASSERT

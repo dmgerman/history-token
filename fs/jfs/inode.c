@@ -195,9 +195,6 @@ id|inode-&gt;i_rdev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* This define is from fs/open.c */
-DECL|macro|special_file
-mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
 multiline_comment|/*&n; * Workhorse of both fsync &amp; write_inode&n; */
 DECL|function|jfs_commit_inode
 r_int
@@ -369,7 +366,6 @@ id|commit_sem
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
@@ -1233,6 +1229,8 @@ comma
 id|nr_segs
 comma
 id|jfs_get_blocks
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

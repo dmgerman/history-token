@@ -2957,8 +2957,6 @@ suffix:semicolon
 r_static
 id|dev_t
 id|last_dev
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Gathered writes: If another process is currently&n;&t;&t; * writing to the file, there&squot;s a high chance&n;&t;&t; * this is another nfsd (triggered by a bulk write&n;&t;&t; * from a client&squot;s biod). Rather than syncing the&n;&t;&t; * file with each write request, we sleep for 10 msec.&n;&t;&t; *&n;&t;&t; * I don&squot;t know if this roughly approximates&n;&t;&t; * C. Juszak&squot;s idea of gathered writes, but it&squot;s a&n;&t;&t; * nice and simple solution (IMHO), and it seems to&n;&t;&t; * work:-)&n;&t;&t; */
 r_if

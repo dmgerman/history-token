@@ -113,12 +113,12 @@ DECL|macro|IT8172_PMER_NMI_IRQ
 mdefine_line|#define IT8172_PMER_NMI_IRQ      (IT8172_NMI_IRQ_BASE + 4)
 DECL|macro|IT8172_POWER_NMI_IRQ
 mdefine_line|#define IT8172_POWER_NMI_IRQ     (IT8172_NMI_IRQ_BASE + 5)
-multiline_comment|/* Finally, let&squot;s move over here the mips cpu timer interrupt.&n; * This is more or less strictly for statistics.&n; */
+DECL|macro|IT8172_LAST_IRQ
+mdefine_line|#define IT8172_LAST_IRQ          (IT8172_POWER_NMI_IRQ)
+multiline_comment|/* Finally, let&squot;s move over here the mips cpu timer interrupt.&n; */
 DECL|macro|MIPS_CPU_TIMER_IRQ
-mdefine_line|#define MIPS_CPU_TIMER_IRQ       (IT8172_NMI_IRQ_BASE + 6)
-DECL|macro|IT8172_INT_END
-mdefine_line|#define IT8172_INT_END           MIPS_CPU_TIMER_IRQ
-multiline_comment|/* &n; * IT8172 Interrupt Controller Registers&n; */
+mdefine_line|#define MIPS_CPU_TIMER_IRQ       (NR_IRQS-1)
+multiline_comment|/*&n; * IT8172 Interrupt Controller Registers&n; */
 DECL|struct|it8172_intc_regs
 r_struct
 id|it8172_intc_regs

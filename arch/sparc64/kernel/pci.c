@@ -784,11 +784,12 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|variable|pci_controller_table
+DECL|variable|__initdata
 )brace
 id|pci_controller_table
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -864,6 +865,7 @@ mdefine_line|#define PCI_NUM_CONTROLLER_TYPES (sizeof(pci_controller_table) / &b
 DECL|function|pci_controller_init
 r_static
 r_int
+id|__init
 id|pci_controller_init
 c_func
 (paren
@@ -955,6 +957,7 @@ suffix:semicolon
 DECL|function|pci_is_controller
 r_static
 r_int
+id|__init
 id|pci_is_controller
 c_func
 (paren
@@ -1019,6 +1022,7 @@ suffix:semicolon
 DECL|function|pci_controller_scan
 r_static
 r_int
+id|__init
 id|pci_controller_scan
 c_func
 (paren
@@ -1191,6 +1195,7 @@ suffix:semicolon
 multiline_comment|/* Is there some PCI controller in the system?  */
 DECL|function|pcic_present
 r_int
+id|__init
 id|pcic_present
 c_func
 (paren
@@ -1209,6 +1214,7 @@ multiline_comment|/* Find each controller in the system, attach and initialize&n
 DECL|function|pci_controller_probe
 r_static
 r_void
+id|__init
 id|pci_controller_probe
 c_func
 (paren
@@ -1231,6 +1237,7 @@ suffix:semicolon
 DECL|function|pci_scan_each_controller_bus
 r_static
 r_void
+id|__init
 id|pci_scan_each_controller_bus
 c_func
 (paren

@@ -80,12 +80,12 @@ id|resource_map_t
 id|mem_db
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|next
+op_assign
 op_amp
 id|mem_db
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* IO port resource database */
@@ -95,12 +95,12 @@ id|resource_map_t
 id|io_db
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|next
+op_assign
 op_amp
 id|io_db
+comma
 )brace
 suffix:semicolon
 r_static
@@ -145,18 +145,6 @@ id|irq_table
 (braket
 id|NR_IRQS
 )braket
-op_assign
-(brace
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* etc */
-)brace
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*======================================================================&n;&n;    Linux resource management extensions&n;&n;======================================================================*/

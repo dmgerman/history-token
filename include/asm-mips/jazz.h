@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: jazz.h,v 1.9 1998/09/19 19:19:37 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 1998 by Andreas Busse and Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_JAZZ_H 
-DECL|macro|__ASM_MIPS_JAZZ_H
-mdefine_line|#define __ASM_MIPS_JAZZ_H 
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 1998 by Andreas Busse and Ralf Baechle&n; */
+macro_line|#ifndef __ASM_JAZZ_H
+DECL|macro|__ASM_JAZZ_H
+mdefine_line|#define __ASM_JAZZ_H
 multiline_comment|/*&n; * The addresses below are virtual address. The mappings are&n; * created on startup via wired entries in the tlb. The Mips&n; * Magnum R3000 and R4000 machines are similar in many aspects,&n; * but many hardware register are accessible at 0xb9000000 in&n; * instead of 0xe0000000.&n; */
 DECL|macro|JAZZ_LOCAL_IO_SPACE
 mdefine_line|#define JAZZ_LOCAL_IO_SPACE     0xe0000000
@@ -48,9 +48,9 @@ DECL|macro|LED_E
 mdefine_line|#define LED_E                   0x9e
 DECL|macro|LED_F
 mdefine_line|#define LED_F                   0x8e
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 DECL|function|pica_set_led
-r_extern
+r_static
 id|__inline__
 r_void
 id|pica_set_led
@@ -80,7 +80,7 @@ op_assign
 id|bits
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Base address of the Sonic Ethernet adapter in Jazz machines.&n; */
 DECL|macro|JAZZ_ETHERNET_BASE
 mdefine_line|#define JAZZ_ETHERNET_BASE  0xe0001000
@@ -94,7 +94,7 @@ DECL|macro|JAZZ_KEYBOARD_DATA
 mdefine_line|#define JAZZ_KEYBOARD_DATA      0xe0005000
 DECL|macro|JAZZ_KEYBOARD_COMMAND
 mdefine_line|#define JAZZ_KEYBOARD_COMMAND   0xe0005001
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 r_typedef
 r_struct
 (brace
@@ -148,7 +148,7 @@ suffix:semicolon
 multiline_comment|/*&n; * For now. Needs to be changed for RC3xxx support. See below.&n; */
 DECL|macro|keyboard_hardware
 mdefine_line|#define keyboard_hardware       jazz_keyboard_hardware
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * i8042 keyboard controller for most other Mips machines.&n; */
 DECL|macro|MIPS_KEYBOARD_ADDRESS
 mdefine_line|#define MIPS_KEYBOARD_ADDRESS   0xb9005000
@@ -172,7 +172,7 @@ mdefine_line|#define JAZZ_TIMER_INTERVAL     0xe0000228
 DECL|macro|JAZZ_TIMER_REGISTER
 mdefine_line|#define JAZZ_TIMER_REGISTER     0xe0000230
 multiline_comment|/*&n; * DRAM configuration register&n; */
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef __MIPSEL__
 r_typedef
 r_struct
@@ -274,7 +274,7 @@ DECL|typedef|dram_configuration
 id|dram_configuration
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|PICA_DRAM_CONFIG
 mdefine_line|#define PICA_DRAM_CONFIG        0xe00fffe0
 multiline_comment|/*&n; * JAZZ interrupt control registers&n; */
@@ -362,7 +362,7 @@ DECL|macro|JAZZ_R4030_CACHE_BMASK
 mdefine_line|#define JAZZ_R4030_CACHE_BMASK  0xE0000058&t;/* I/O Cache Byte Mask */
 DECL|macro|JAZZ_R4030_CACHE_BWIN
 mdefine_line|#define JAZZ_R4030_CACHE_BWIN   0xE0000060&t;/* I/O Cache Buffer Window */
-multiline_comment|/*&n; * Remote Speed Registers. &n; *&n; *  0: free,      1: Ethernet,  2: SCSI,      3: Floppy,&n; *  4: RTC,       5: Kb./Mouse  6: serial 1,  7: serial 2,&n; *  8: parallel,  9: NVRAM,    10: CPU,      11: PROM,&n; * 12: reserved, 13: free,     14: 7seg LED, 15: ???&n; */
+multiline_comment|/*&n; * Remote Speed Registers.&n; *&n; *  0: free,      1: Ethernet,  2: SCSI,      3: Floppy,&n; *  4: RTC,       5: Kb./Mouse  6: serial 1,  7: serial 2,&n; *  8: parallel,  9: NVRAM,    10: CPU,      11: PROM,&n; * 12: reserved, 13: free,     14: 7seg LED, 15: ???&n; */
 DECL|macro|JAZZ_R4030_REM_SPEED
 mdefine_line|#define JAZZ_R4030_REM_SPEED&t;0xE0000070&t;/* 16 Remote Speed Registers */
 multiline_comment|/* 0xE0000070,78,80... 0xE00000E8 */
@@ -378,9 +378,9 @@ multiline_comment|/*&n; * Virtual (E)ISA controller address&n; */
 DECL|macro|JAZZ_EISA_IRQ_ACK
 mdefine_line|#define JAZZ_EISA_IRQ_ACK&t;0xE0000238&t;/* EISA interrupt acknowledge */
 multiline_comment|/*&n; * Access the R4030 DMA and I/O Controller&n; */
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 DECL|function|r4030_delay
-r_extern
+r_static
 r_inline
 r_void
 id|r4030_delay
@@ -403,7 +403,7 @@ l_string|&quot;.set&bslash;treorder&quot;
 suffix:semicolon
 )brace
 DECL|function|r4030_read_reg16
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -439,7 +439,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|r4030_read_reg32
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -475,7 +475,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|r4030_write_reg16
-r_extern
+r_static
 r_inline
 r_void
 id|r4030_write_reg16
@@ -508,7 +508,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|r4030_write_reg32
-r_extern
+r_static
 r_inline
 r_void
 id|r4030_write_reg32
@@ -540,7 +540,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !LANGUAGE_ASSEMBLY__ */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|JAZZ_FDC_BASE
 mdefine_line|#define JAZZ_FDC_BASE&t;0xe0003000
 DECL|macro|JAZZ_RTC_BASE
@@ -549,5 +549,5 @@ DECL|macro|JAZZ_PORT_BASE
 mdefine_line|#define JAZZ_PORT_BASE&t;0xe2000000
 DECL|macro|JAZZ_EISA_BASE
 mdefine_line|#define JAZZ_EISA_BASE&t;0xe3000000
-macro_line|#endif /* __ASM_MIPS_JAZZ_H */
+macro_line|#endif /* __ASM_JAZZ_H */
 eof

@@ -83,14 +83,13 @@ DECL|macro|PCI_DEVICE_ID_SGI_ACENIC
 mdefine_line|#define PCI_DEVICE_ID_SGI_ACENIC&t;0x0009
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20400
-DECL|variable|__initdata
+DECL|variable|acenic_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|acenic_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace
@@ -11244,7 +11243,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|ap-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ap-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -391,14 +391,13 @@ id|reg_lock
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_azf3328_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_azf3328_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

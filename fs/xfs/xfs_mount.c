@@ -3117,6 +3117,14 @@ id|mp-&gt;m_maxicount
 op_assign
 l_int|0
 suffix:semicolon
+id|mp-&gt;m_maxioffset
+op_assign
+id|xfs_max_file_offset
+c_func
+(paren
+id|sbp-&gt;sb_blocklog
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * XFS uses the uuid from the superblock as the unique&n;&t; * identifier for fsid.  We can not use the uuid from the volume&n;&t; * since a single partition filesystem is identical to a single&n;&t; * partition volume/filesystem.&n;&t; */
 r_if
 c_cond
@@ -3742,7 +3750,7 @@ multiline_comment|/*&n;&t; *  The vfs structure needs to have a file system inde
 id|vfsp-&gt;vfs_altfsid
 op_assign
 (paren
-id|fsid_t
+id|__kernel_fsid_t
 op_star
 )paren
 id|mp-&gt;m_fixedfsid
