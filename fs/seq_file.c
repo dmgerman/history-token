@@ -80,6 +80,16 @@ id|file-&gt;private_data
 op_assign
 id|p
 suffix:semicolon
+multiline_comment|/* SEQ files support lseek, but not pread/pwrite */
+id|file-&gt;f_mode
+op_and_assign
+op_complement
+(paren
+id|FMODE_PREAD
+op_or
+id|FMODE_PWRITE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -146,18 +156,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|EPIPE
 suffix:semicolon
 id|down
 c_func

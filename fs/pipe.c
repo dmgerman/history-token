@@ -329,23 +329,6 @@ suffix:semicolon
 r_int
 id|total_len
 suffix:semicolon
-multiline_comment|/* pread is not allowed on pipes. */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|total_len
 op_assign
 id|iov_length
@@ -844,23 +827,6 @@ id|_iov
 suffix:semicolon
 r_int
 id|total_len
-suffix:semicolon
-multiline_comment|/* pwrite is not allowed on pipes. */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-)paren
-r_return
-op_minus
-id|ESPIPE
 suffix:semicolon
 id|total_len
 op_assign

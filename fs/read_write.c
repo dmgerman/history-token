@@ -1532,7 +1532,7 @@ c_cond
 (paren
 id|file-&gt;f_mode
 op_amp
-id|FMODE_LSEEK
+id|FMODE_PREAD
 )paren
 id|ret
 op_assign
@@ -1637,7 +1637,7 @@ c_cond
 (paren
 id|file-&gt;f_mode
 op_amp
-id|FMODE_LSEEK
+id|FMODE_PWRITE
 )paren
 id|ret
 op_assign

@@ -155,10 +155,14 @@ id|filp-&gt;f_version
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* We can only do regular read/write on fifos */
 id|filp-&gt;f_mode
 op_and_assign
-op_complement
-id|FMODE_LSEEK
+(paren
+id|FMODE_READ
+op_or
+id|FMODE_WRITE
+)paren
 suffix:semicolon
 r_switch
 c_cond

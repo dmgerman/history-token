@@ -3519,6 +3519,10 @@ id|O_ACCMODE
 )paren
 op_or
 id|FMODE_LSEEK
+op_or
+id|FMODE_PREAD
+op_or
+id|FMODE_PWRITE
 suffix:semicolon
 id|inode
 op_assign
