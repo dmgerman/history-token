@@ -1167,12 +1167,12 @@ op_complement
 l_int|0UL
 suffix:semicolon
 )brace
-multiline_comment|/* compute number of filled slots in cpu_buffer queue */
-DECL|function|nr_filled_slots
+multiline_comment|/* &quot;acquire&quot; as many cpu buffer slots as we can */
+DECL|function|get_slots
 r_static
 r_int
 r_int
-id|nr_filled_slots
+id|get_slots
 c_func
 (paren
 r_struct
@@ -1192,6 +1192,13 @@ r_int
 id|tail
 op_assign
 id|b-&gt;tail_pos
+suffix:semicolon
+multiline_comment|/*&n;&t; * Subtle. This resets the persistent last_task&n;&t; * and in_kernel values used for switching notes.&n;&t; * BUT, there is a small window between reading&n;&t; * head_pos, and this call, that means samples&n;&t; * can appear at the new head position, but not&n;&t; * be prefixed with the notes for switching&n;&t; * kernel mode or a task switch. This small hole&n;&t; * can lead to mis-attribution or samples where&n;&t; * we don&squot;t know if it&squot;s in the kernel or not,&n;&t; * at the start of an event buffer.&n;&t; */
+id|cpu_buffer_reset
+c_func
+(paren
+id|b
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1301,9 +1308,9 @@ multiline_comment|/* Remember, only we can modify tail_pos */
 r_int
 r_int
 r_const
-id|available_elements
+id|available
 op_assign
-id|nr_filled_slots
+id|get_slots
 c_func
 (paren
 id|cpu_buf
@@ -1318,7 +1325,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|available_elements
+id|available
 suffix:semicolon
 op_increment
 id|i
@@ -1435,12 +1442,6 @@ id|release_mm
 c_func
 (paren
 id|mm
-)paren
-suffix:semicolon
-id|cpu_buffer_reset
-c_func
-(paren
-id|cpu_buf
 )paren
 suffix:semicolon
 )brace
