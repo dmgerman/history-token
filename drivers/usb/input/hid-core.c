@@ -4124,6 +4124,13 @@ id|ESHUTDOWN
 suffix:colon
 r_return
 suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+multiline_comment|/* NAK */
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* error */
@@ -8957,16 +8964,16 @@ c_func
 r_void
 )paren
 (brace
-id|hiddev_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 id|usb_deregister
 c_func
 (paren
 op_amp
 id|hid_driver
+)paren
+suffix:semicolon
+id|hiddev_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

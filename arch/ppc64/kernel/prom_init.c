@@ -2559,6 +2559,15 @@ c_func
 id|mem_reserve_cnt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* We need to always keep one empty entry so that we&n;&t; * have our terminator with &quot;size&quot; set to 0 since we are&n;&t; * dumb and just copy this entire array to the boot params&n;&t; */
 id|base
 op_assign
@@ -2572,7 +2581,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|top
 op_assign
-id|_ALIGN_DOWN
+id|_ALIGN_UP
 c_func
 (paren
 id|top
