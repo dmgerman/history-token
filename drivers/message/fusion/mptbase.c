@@ -4412,7 +4412,7 @@ suffix:semicolon
 id|u64
 id|mask
 op_assign
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 suffix:semicolon
 r_if
 c_cond
