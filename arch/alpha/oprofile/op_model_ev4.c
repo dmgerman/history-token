@@ -308,6 +308,13 @@ c_func
 (paren
 id|regs-&gt;pc
 comma
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+comma
 id|which
 comma
 id|smp_processor_id
