@@ -13,6 +13,24 @@ macro_line|#include &lt;linux/pm.h&gt;
 multiline_comment|/* SA1100 serial defines */
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@transvirtual.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;H3600 touchscreen driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Definitions &amp; global arrays.&n; */
 multiline_comment|/* The start and end of frame characters SOF and EOF */
 DECL|macro|CHAR_SOF
@@ -134,7 +152,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|action_button_handler
 r_static
-r_void
+id|irqreturn_t
 id|action_button_handler
 c_func
 (paren
@@ -201,10 +219,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|npower_button_handler
 r_static
-r_void
+id|irqreturn_t
 id|npower_button_handler
 c_func
 (paren
@@ -282,6 +303,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 DECL|variable|flite_brightness
@@ -328,7 +352,6 @@ r_char
 id|brightness
 op_assign
 (paren
-(paren
 id|pwr
 op_eq
 id|FLITE_PWR_OFF
@@ -338,7 +361,6 @@ c_cond
 l_int|0
 suffix:colon
 id|flite_brightness
-)paren
 suffix:semicolon
 r_struct
 id|h3600_dev
@@ -888,7 +910,7 @@ DECL|macro|STATE_EOF
 mdefine_line|#define STATE_EOF       3       /* state where we decode checksum or EOF */
 DECL|function|h3600ts_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|h3600ts_interrupt
 c_func
 (paren
@@ -904,6 +926,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -936,7 +963,7 @@ id|state
 op_assign
 id|STATE_ID
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 id|STATE_ID
@@ -1049,6 +1076,8 @@ id|h3600ts_process_packet
 c_func
 (paren
 id|ts
+comma
+id|regs
 )paren
 suffix:semicolon
 r_break
@@ -1064,6 +1093,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * h3600ts_connect() is the routine that is called when someone adds a&n; * new serio device. It looks whether it was registered as a H3600 touchscreen&n; * and if yes, registers it as an input device.&n; */
 DECL|function|h3600ts_connect
