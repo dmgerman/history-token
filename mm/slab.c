@@ -9109,6 +9109,9 @@ r_if
 c_cond
 (paren
 id|ac-&gt;touched
+op_logical_and
+op_logical_neg
+id|force
 )paren
 (brace
 id|ac-&gt;touched
