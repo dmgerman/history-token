@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * class.c - basic device class management&n; */
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -793,15 +793,23 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|interface_add
+id|interface_add_dev
 c_func
 (paren
-id|cls
-comma
 id|dev
 )paren
 suffix:semicolon
 )brace
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|dev-&gt;class_list
+comma
+op_amp
+id|cls-&gt;devices
+)paren
+suffix:semicolon
 multiline_comment|/* notify userspace (call /sbin/hotplug) */
 id|class_hotplug
 (paren
@@ -883,11 +891,9 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|interface_remove
+id|interface_remove_dev
 c_func
 (paren
-id|cls
-comma
 id|dev
 )paren
 suffix:semicolon
@@ -897,6 +903,13 @@ c_func
 id|cls
 comma
 id|dev
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|dev-&gt;class_list
 )paren
 suffix:semicolon
 multiline_comment|/* notify userspace (call /sbin/hotplug) */
@@ -1007,6 +1020,13 @@ c_func
 (paren
 op_amp
 id|cls-&gt;drivers
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|cls-&gt;devices
 )paren
 suffix:semicolon
 id|pr_debug

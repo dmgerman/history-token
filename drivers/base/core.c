@@ -462,6 +462,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|dev-&gt;class_list
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|dev-&gt;intf_list
 )paren
 suffix:semicolon
