@@ -719,7 +719,7 @@ c_cond
 (paren
 id|cpu
 op_ge
-id|smp_num_cpus
+id|NR_CPUS
 )paren
 id|cpu
 op_assign
@@ -741,7 +741,7 @@ l_int|1
 )paren
 id|cpu
 op_assign
-id|smp_num_cpus
+id|NR_CPUS
 op_minus
 l_int|1
 suffix:semicolon
@@ -750,6 +750,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|cpu
+)paren
+op_logical_or
 op_logical_neg
 id|IRQ_ALLOWED
 c_func

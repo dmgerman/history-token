@@ -556,7 +556,10 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|1
 )paren
@@ -1029,7 +1032,10 @@ c_func
 op_amp
 id|params-&gt;unfinished_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* The atomic_set above can hit memory *after* the update&n;&t; * to ptcParamsEmpty below, which opens a timing window&n;&t; * that other cpus can squeeze into!&n;&t; */
@@ -1420,7 +1426,7 @@ c_func
 l_string|&quot;SMP: Can&squot;t find PTC domain info. Forcing UP mode&bslash;n&quot;
 )paren
 suffix:semicolon
-id|smp_num_cpus
+id|cpu_online_map
 op_assign
 l_int|1
 suffix:semicolon

@@ -1568,11 +1568,24 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|cpu
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|cpu
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1589,6 +1602,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * ia64_mca_rendez_interrupt_handler&n; *&n; *&t;This is handler used to put slave processors into spinloop&n; *&t;while the monarch processor does the mca handling and later&n; *&t;wake each slave up once the monarch is done.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
 r_void

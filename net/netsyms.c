@@ -2076,6 +2076,13 @@ id|arp_find
 suffix:semicolon
 macro_line|#endif  /* CONFIG_INET */
 macro_line|#ifdef CONFIG_TR
+DECL|variable|tr_source_route
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tr_source_route
+)paren
+suffix:semicolon
 DECL|variable|tr_type_trans
 id|EXPORT_SYMBOL
 c_func
@@ -2162,6 +2169,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__dev_get_by_name
+)paren
+suffix:semicolon
+DECL|variable|dev_getbyhwaddr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_getbyhwaddr
 )paren
 suffix:semicolon
 DECL|variable|netdev_finish_unregister

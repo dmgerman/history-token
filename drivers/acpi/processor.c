@@ -7341,16 +7341,23 @@ id|EINVAL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* FIXME: What should this be? -- RR */
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OG
 l_int|1
 )paren
 id|errata.smp
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 id|acpi_processor_errata

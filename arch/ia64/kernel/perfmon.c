@@ -2817,9 +2817,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
 id|cpu
-OG
-id|smp_num_cpus
+)paren
 )paren
 (brace
 id|DBprintk

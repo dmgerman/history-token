@@ -2816,6 +2816,25 @@ l_string|&quot;Leaving scsi_do_cmd()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_void
+id|scsi_tasklet_func
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_TASKLET
+c_func
+(paren
+id|scsi_tasklet
+comma
+id|scsi_tasklet_func
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function is the mid-level interrupt routine, which decides how&n; *  to handle error conditions.  Each invocation of this function must&n; *  do one and *only* one of the following:&n; *&n; *      1) Insert command in BH queue.&n; *      2) Activate error handler for host.&n; *&n; * FIXME(eric) - I am concerned about stack overflow (still).  An&n; * interrupt could come while we are processing the bottom queue,&n; * which would cause another command to be stuffed onto the bottom&n; * queue, and it would in turn be processed as that interrupt handler&n; * is returning.  Given a sufficiently steady rate of returning&n; * commands, this could cause the stack to overflow.  I am not sure&n; * what is the most appropriate solution here - we should probably&n; * keep a depth count, and not process any commands while we still&n; * have a bottom handler active higher in the stack.&n; *&n; * There is currently code in the bottom half handler to monitor&n; * recursion in the bottom handler and report if it ever happens.  If&n; * this becomes a problem, it won&squot;t be hard to engineer something to&n; * deal with it so that only the outer layer ever does any real&n; * processing.  &n; */
 DECL|function|scsi_done
 r_void
@@ -2952,20 +2971,23 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Mark the bottom half handler to be run.&n;&t; */
-id|mark_bh
+id|tasklet_hi_schedule
 c_func
 (paren
-id|SCSI_BH
+op_amp
+id|scsi_tasklet
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Procedure:   scsi_bottom_half_handler&n; *&n; * Purpose:     Called after we have finished processing interrupts, it&n; *              performs post-interrupt handling for commands that may&n; *              have completed.&n; *&n; * Notes:       This is called with all interrupts enabled.  This should reduce&n; *              interrupt latency, stack depth, and reentrancy of the low-level&n; *              drivers.&n; *&n; * The io_request_lock is required in all the routine. There was a subtle&n; * race condition when scsi_done is called after a command has already&n; * timed out but before the time out is processed by the error handler.&n; * (DB)&n; *&n; * I believe I have corrected this.  We simply monitor the return status of&n; * del_timer() - if this comes back as 0, it means that the timer has fired&n; * and that a timeout is in progress.   I have modified scsi_done() such&n; * that in this instance the command is never inserted in the bottom&n; * half queue.  Thus the only time we hold the lock here is when&n; * we wish to atomically remove the contents of the queue.&n; */
-DECL|function|scsi_bottom_half_handler
+DECL|function|scsi_tasklet_func
 r_void
-id|scsi_bottom_half_handler
+id|scsi_tasklet_func
 c_func
 (paren
-r_void
+r_int
+r_int
+id|ignore
 )paren
 (brace
 id|Scsi_Cmnd
@@ -8018,15 +8040,6 @@ id|scsi_host_no_init
 id|scsihosts
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is where the processing takes place for most everything&n;&t; * when commands are completed.&n;&t; */
-id|init_bh
-c_func
-(paren
-id|SCSI_BH
-comma
-id|scsi_bottom_half_handler
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8053,10 +8066,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|remove_bh
+id|tasklet_kill
 c_func
 (paren
-id|SCSI_BH
+op_amp
+id|scsi_tasklet
 )paren
 suffix:semicolon
 id|devfs_unregister

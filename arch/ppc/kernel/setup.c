@@ -481,7 +481,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
@@ -489,11 +489,9 @@ id|i
 r_if
 c_cond
 (paren
-id|cpu_online_map
-op_amp
+id|cpu_online
+c_func
 (paren
-l_int|1
-op_lshift
 id|i
 )paren
 )paren

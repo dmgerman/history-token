@@ -237,6 +237,21 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Halt and power-off the machine. */
+r_extern
+r_void
+id|prom_halt_power_off
+c_func
+(paren
+r_void
+)paren
+id|__attribute__
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set the PROM &squot;sync&squot; callback function to the passed function pointer.&n; * When the user gives the &squot;sync&squot; command at the prom prompt while the&n; * kernel is still active, the prom will call this routine.&n; *&n; */
 DECL|typedef|callback_func_t
 r_typedef

@@ -212,7 +212,10 @@ c_func
 op_amp
 id|cpus_waiting
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren

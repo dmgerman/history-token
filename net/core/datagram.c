@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;SUCS NET3:&n; *&n; *&t;Generic datagram handling routines. These are generic for all protocols. Possibly a generic IP version on top&n; *&t;of these would make sense. Not tonight however 8-).&n; *&t;This is used because UDP, RAW, PACKET, DDP, IPX, AX.25 and NetROM layer all have identical poll code and mostly&n; *&t;identical recvmsg() code. So we share it here. The poll was shared before but buried in udp.c so I moved it.&n; *&n; *&t;Authors:&t;Alan Cox &lt;alan@redhat.com&gt;. (datagram_poll() from old udp.c code)&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;NULL return from skb_peek_copy() understood&n; *&t;&t;Alan Cox&t;:&t;Rewrote skb_read_datagram to avoid the skb_peek_copy stuff.&n; *&t;&t;Alan Cox&t;:&t;Added support for SOCK_SEQPACKET. IPX can no longer use the SO_TYPE hack but&n; *&t;&t;&t;&t;&t;AX.25 now works right, and SPX is feasible.&n; *&t;&t;Alan Cox&t;:&t;Fixed write poll of non IP protocol crash.&n; *&t;&t;Florian  La Roche:&t;Changed for my new skbuff handling.&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_SEQPACKET.&n; *&t;&t;Linus Torvalds&t;:&t;BSD semantic fixes.&n; *&t;&t;Alan Cox&t;:&t;Datagram iovec handling&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_STREAM.&n; *&t;&t;Alan Cox&t;:&t;POSIXisms&n; *&t;&t;Pete Wyckoff    :       Unconnected accept() fix.&n; *&n; */
+multiline_comment|/*&n; *&t;SUCS NET3:&n; *&n; *&t;Generic datagram handling routines. These are generic for all&n; *&t;protocols. Possibly a generic IP version on top of these would&n; *&t;make sense. Not tonight however 8-).&n; *&t;This is used because UDP, RAW, PACKET, DDP, IPX, AX.25 and&n; *&t;NetROM layer all have identical poll code and mostly&n; *&t;identical recvmsg() code. So we share it here. The poll was&n; *&t;shared before but buried in udp.c so I moved it.&n; *&n; *&t;Authors:&t;Alan Cox &lt;alan@redhat.com&gt;. (datagram_poll() from old&n; *&t;&t;&t;&t;&t;&t;     udp.c code)&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;NULL return from skb_peek_copy()&n; *&t;&t;&t;&t;&t;understood&n; *&t;&t;Alan Cox&t;:&t;Rewrote skb_read_datagram to avoid the&n; *&t;&t;&t;&t;&t;skb_peek_copy stuff.&n; *&t;&t;Alan Cox&t;:&t;Added support for SOCK_SEQPACKET.&n; *&t;&t;&t;&t;&t;IPX can no longer use the SO_TYPE hack&n; *&t;&t;&t;&t;&t;but AX.25 now works right, and SPX is&n; *&t;&t;&t;&t;&t;feasible.&n; *&t;&t;Alan Cox&t;:&t;Fixed write poll of non IP protocol&n; *&t;&t;&t;&t;&t;crash.&n; *&t;&t;Florian  La Roche:&t;Changed for my new skbuff handling.&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_SEQPACKET.&n; *&t;&t;Linus Torvalds&t;:&t;BSD semantic fixes.&n; *&t;&t;Alan Cox&t;:&t;Datagram iovec handling&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_STREAM.&n; *&t;&t;Alan Cox&t;:&t;POSIXisms&n; *&t;&t;Pete Wyckoff    :       Unconnected accept() fix.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -32,7 +32,6 @@ id|sk
 )paren
 (brace
 r_return
-(paren
 id|sk-&gt;type
 op_eq
 id|SOCK_SEQPACKET
@@ -40,7 +39,6 @@ op_logical_or
 id|sk-&gt;type
 op_eq
 id|SOCK_STREAM
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for a packet..&n; */
@@ -119,7 +117,7 @@ id|sk-&gt;receive_queue
 )paren
 )paren
 r_goto
-id|ready
+id|out
 suffix:semicolon
 multiline_comment|/* Socket shut down? */
 r_if
@@ -132,7 +130,7 @@ id|RCV_SHUTDOWN
 r_goto
 id|out_noerr
 suffix:semicolon
-multiline_comment|/* Sequenced packets can come disconnected. If so we report the problem */
+multiline_comment|/* Sequenced packets can come disconnected.&n;&t; * If so we report the problem&n;&t; */
 id|error
 op_assign
 op_minus
@@ -158,11 +156,9 @@ op_eq
 id|TCP_LISTEN
 )paren
 )paren
-(brace
 r_goto
 id|out_err
 suffix:semicolon
-)brace
 multiline_comment|/* handle signals */
 r_if
 c_cond
@@ -176,6 +172,10 @@ id|current
 r_goto
 id|interrupted
 suffix:semicolon
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 op_star
 id|timeo_p
 op_assign
@@ -186,7 +186,7 @@ op_star
 id|timeo_p
 )paren
 suffix:semicolon
-id|ready
+id|out
 suffix:colon
 id|current-&gt;state
 op_assign
@@ -202,7 +202,7 @@ id|wait
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 id|interrupted
 suffix:colon
@@ -222,23 +222,8 @@ id|err
 op_assign
 id|error
 suffix:semicolon
+r_goto
 id|out
-suffix:colon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-id|sk-&gt;sleep
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-r_return
-id|error
 suffix:semicolon
 id|out_noerr
 suffix:colon
@@ -255,7 +240,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Get a datagram skbuff, understands the peeking, nonblocking wakeups and possible&n; *&t;races. This replaces identical code in packet,raw and udp, as well as the IPX&n; *&t;AX.25 and Appletalk. It also finally fixes the long standing peek and read&n; *&t;race for datagram sockets. If you alter this routine remember it must be&n; *&t;re-entrant.&n; *&n; *&t;This function will lock the socket if a skb is returned, so the caller&n; *&t;needs to unlock the socket in that case (usually by calling skb_free_datagram)&n; *&n; *&t;* It does not lock socket since today. This function is&n; *&t;* free of race conditions. This measure should/can improve&n; *&t;* significantly datagram socket latencies at high loads,&n; *&t;* when data copying to user space takes lots of time.&n; *&t;* (BTW I&squot;ve just killed the last cli() in IP/IPv6/core/netlink/packet&n; *&t;*  8) Great win.)&n; *&t;*&t;&t;&t;                    --ANK (980729)&n; *&n; *&t;The order of the tests when we find no data waiting are specified&n; *&t;quite explicitly by POSIX 1003.1g, don&squot;t change them without having&n; *&t;the standard around please.&n; */
+multiline_comment|/**&n; *&t;skb_recv_datagram - Receive a datagram skbuff&n; *&t;@sk - socket&n; *&t;@flags - MSG_ flags&n; *&t;@noblock - blocking operation?&n; *&t;@err - error code returned&n; *&n; *&t;Get a datagram skbuff, understands the peeking, nonblocking wakeups&n; *&t;and possible races. This replaces identical code in packet, raw and&n; *&t;udp, as well as the IPX AX.25 and Appletalk. It also finally fixes&n; *&t;the long standing peek and read race for datagram sockets. If you&n; *&t;alter this routine remember it must be re-entrant.&n; *&n; *&t;This function will lock the socket if a skb is returned, so the caller&n; *&t;needs to unlock the socket in that case (usually by calling&n; *&t;skb_free_datagram)&n; *&n; *&t;* It does not lock socket since today. This function is&n; *&t;* free of race conditions. This measure should/can improve&n; *&t;* significantly datagram socket latencies at high loads,&n; *&t;* when data copying to user space takes lots of time.&n; *&t;* (BTW I&squot;ve just killed the last cli() in IP/IPv6/core/netlink/packet&n; *&t;*  8) Great win.)&n; *&t;*&t;&t;&t;                    --ANK (980729)&n; *&n; *&t;The order of the tests when we find no data waiting are specified&n; *&t;quite explicitly by POSIX 1003.1g, don&squot;t change them without having&n; *&t;the standard around please.&n; */
 DECL|function|skb_recv_datagram
 r_struct
 id|sk_buff
@@ -279,9 +264,6 @@ op_star
 id|err
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -291,6 +273,7 @@ r_int
 id|timeo
 suffix:semicolon
 multiline_comment|/* Caller is allowed not to check sk-&gt;err before skb_recv_datagram() */
+r_int
 id|error
 op_assign
 id|sock_error
@@ -319,7 +302,7 @@ id|noblock
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/* Again only user level code calls this function, so nothing interrupt level&n;&t;&t;   will suddenly eat the receive_queue.&n;&n;&t;&t;   Look at current nfs client by the way...&n;&t;&t;   However, this function was corrent in any case. 8)&n;&t;&t; */
+multiline_comment|/* Again only user level code calls this function, so nothing&n;&t;&t; * interrupt level will suddenly eat the receive_queue.&n;&t;&t; *&n;&t;&t; * Look at current nfs client by the way...&n;&t;&t; * However, this function was corrent in any case. 8)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -354,10 +337,7 @@ r_if
 c_cond
 (paren
 id|skb
-op_ne
-l_int|NULL
 )paren
-(brace
 id|atomic_inc
 c_func
 (paren
@@ -365,7 +345,6 @@ op_amp
 id|skb-&gt;users
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -413,6 +392,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 id|wait_for_packet
 c_func
 (paren
@@ -423,8 +403,6 @@ comma
 op_amp
 id|timeo
 )paren
-op_eq
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -492,9 +470,14 @@ id|iovec
 id|iov
 op_assign
 (brace
+id|iov_base
+suffix:colon
 id|to
 comma
+id|iov_len
+suffix:colon
 id|size
+comma
 )brace
 suffix:semicolon
 r_return
@@ -512,7 +495,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Copy a datagram to an iovec.&n; *&t;Note: the iovec is modified during the copy.&n; */
+multiline_comment|/**&n; *&t;skb_copy_datagram_iovec - Copy a datagram to an iovec.&n; *&t;@skb - buffer to copy&n; *&t;@offset - offset in the buffer to start copying from&n; *&t;@iovec - io vector to copy to&n; *&t;@len - amount of data to copy from buffer to iovec&n; *&n; *&t;Note: the iovec is modified during the copy.&n; */
 DECL|function|skb_copy_datagram_iovec
 r_int
 id|skb_copy_datagram_iovec
@@ -537,28 +520,26 @@ id|len
 )paren
 (brace
 r_int
-id|i
-comma
-id|copy
-suffix:semicolon
-r_int
 id|start
 op_assign
 id|skb-&gt;len
 op_minus
 id|skb-&gt;data_len
 suffix:semicolon
-multiline_comment|/* Copy header. */
-r_if
-c_cond
-(paren
-(paren
+r_int
+id|i
+comma
 id|copy
 op_assign
 id|start
 op_minus
 id|offset
-)paren
+suffix:semicolon
+multiline_comment|/* Copy header. */
+r_if
+c_cond
+(paren
+id|copy
 OG
 l_int|0
 )paren
@@ -797,11 +778,6 @@ r_struct
 id|sk_buff
 op_star
 id|list
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|list
 op_assign
 id|skb_shinfo
 c_func
@@ -810,6 +786,10 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|frag_list
+suffix:semicolon
+r_for
+c_loop
+(paren
 suffix:semicolon
 id|list
 suffix:semicolon
@@ -910,9 +890,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|len
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -952,11 +931,6 @@ id|csump
 )paren
 (brace
 r_int
-id|i
-comma
-id|copy
-suffix:semicolon
-r_int
 id|start
 op_assign
 id|skb-&gt;len
@@ -968,17 +942,20 @@ id|pos
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Copy header. */
-r_if
-c_cond
-(paren
-(paren
+r_int
+id|i
+comma
 id|copy
 op_assign
 id|start
 op_minus
 id|offset
-)paren
+suffix:semicolon
+multiline_comment|/* Copy header. */
+r_if
+c_cond
+(paren
+id|copy
 OG
 l_int|0
 )paren
@@ -1273,11 +1250,6 @@ r_struct
 id|sk_buff
 op_star
 id|list
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|list
 op_assign
 id|skb_shinfo
 c_func
@@ -1286,6 +1258,10 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|frag_list
+suffix:semicolon
+r_for
+c_loop
+(paren
 suffix:semicolon
 id|list
 suffix:semicolon
@@ -1417,9 +1393,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|len
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -1431,7 +1406,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/* Copy and checkum skb to user iovec. Caller _must_ check that&n;   skb will fit to this iovec.&n;&n;   Returns: 0       - success.&n;            -EINVAL - checksum failure.&n;&t;    -EFAULT - fault during copy. Beware, in this case iovec can be&n;&t;              modified!&n; */
+multiline_comment|/**&n; *&t;skb_copy_and_csum_datagram_iovec - Copy and checkum skb to user iovec.&n; *&t;@skb - skbuff&n; *&t;@hlen - hardware length&n; *&t;@iovec - io vector&n; * &n; *&t;Caller _must_ check that skb will fit to this iovec.&n; *&n; *&t;Returns: 0       - success.&n; *&t;&t; -EINVAL - checksum failure.&n; *&t;&t; -EFAULT - fault during copy. Beware, in this case iovec&n; *&t;&t;&t;   can be modified!&n; */
 DECL|function|skb_copy_and_csum_datagram_iovec
 r_int
 id|skb_copy_and_csum_datagram_iovec
@@ -1463,13 +1438,12 @@ id|skb-&gt;len
 op_minus
 id|hlen
 suffix:semicolon
-multiline_comment|/* Skip filled elements. Pretty silly, look at memcpy_toiovec, though 8) */
+multiline_comment|/* Skip filled elements.&n;&t; * Pretty silly, look at memcpy_toiovec, though 8)&n;&t; */
 r_while
 c_loop
 (paren
+op_logical_neg
 id|iov-&gt;iov_len
-op_eq
-l_int|0
 )paren
 id|iov
 op_increment
@@ -1605,7 +1579,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Datagram poll: Again totally generic. This also handles&n; *&t;sequenced packet sockets providing the socket receive queue&n; *&t;is only ever holding data ready to receive.&n; *&n; *&t;Note: when you _don&squot;t_ use this routine for this protocol,&n; *&t;and you use a different write policy from sock_writeable()&n; *&t;then please supply your own write_space callback.&n; */
+multiline_comment|/**&n; * &t;datagram_poll - generic datagram poll&n; *&t;@file - file struct&n; *&t;@sock - socket&n; *&t;@wait - poll table&n; *&n; *&t;Datagram poll: Again totally generic. This also handles&n; *&t;sequenced packet sockets providing the socket receive queue&n; *&t;is only ever holding data ready to receive.&n; *&n; *&t;Note: when you _don&squot;t_ use this routine for this protocol,&n; *&t;and you use a different write policy from sock_writeable()&n; *&t;then please supply your own write_space callback.&n; */
 DECL|function|datagram_poll
 r_int
 r_int

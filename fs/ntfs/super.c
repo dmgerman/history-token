@@ -6451,7 +6451,7 @@ c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;Failed to allocate per CPU buffers &quot;
+l_string|&quot;Failed to allocate buffers &quot;
 l_string|&quot;for compression engine.&quot;
 )paren
 suffix:semicolon

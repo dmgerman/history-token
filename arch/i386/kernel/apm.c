@@ -1600,13 +1600,9 @@ multiline_comment|/* Some bioses don&squot;t like being called from CPU != 0 */
 r_while
 c_loop
 (paren
-id|cpu_number_map
-c_func
-(paren
 id|smp_processor_id
 c_func
 (paren
-)paren
 )paren
 op_ne
 l_int|0
@@ -4524,7 +4520,10 @@ r_if
 c_cond
 (paren
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|1
 )paren
@@ -4916,7 +4915,10 @@ c_cond
 id|debug
 op_logical_and
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|1
 )paren
@@ -5174,7 +5176,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|1
 )paren
@@ -5933,11 +5938,15 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OG
 l_int|1
 )paren
@@ -6306,10 +6315,14 @@ op_or
 id|SIGCHLD
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OG
 l_int|1
 )paren
