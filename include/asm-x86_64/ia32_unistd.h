@@ -546,7 +546,27 @@ DECL|macro|__NR_ia32_utimes
 mdefine_line|#define __NR_ia32_utimes&t;&t;271
 DECL|macro|__NR_ia32_fadvise64_64
 mdefine_line|#define __NR_ia32_fadvise64_64&t;&t;272
+DECL|macro|__NR_ia32_vserver
+mdefine_line|#define __NR_ia32_vserver&t;&t;273
+DECL|macro|__NR_ia32_mbind
+mdefine_line|#define __NR_ia32_mbind&t;&t;274
+DECL|macro|__NR_ia32_get_mempolicy
+mdefine_line|#define __NR_ia32_get_mempolicy&t;275
+DECL|macro|__NR_ia32_set_mempolicy
+mdefine_line|#define __NR_ia32_set_mempolicy&t;276
+DECL|macro|__NR_ia32_mq_open
+mdefine_line|#define __NR_ia32_mq_open &t;&t;277
+DECL|macro|__NR_ia32_mq_unlink
+mdefine_line|#define __NR_ia32_mq_unlink&t;&t;(__NR_ia32_mq_open+1)
+DECL|macro|__NR_ia32_mq_timedsend
+mdefine_line|#define __NR_ia32_mq_timedsend&t;(__NR_ia32_mq_open+2)
+DECL|macro|__NR_ia32_mq_timedreceive
+mdefine_line|#define __NR_ia32_mq_timedreceive&t;(__NR_ia32_mq_open+3)
+DECL|macro|__NR_ia32_mq_notify
+mdefine_line|#define __NR_ia32_mq_notify&t;&t;(__NR_ia32_mq_open+4)
+DECL|macro|__NR_ia32_mq_getsetattr
+mdefine_line|#define __NR_ia32_mq_getsetattr&t;(__NR_ia32_mq_open+5)
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 275&t;/* must be &gt; than biggest syscall! */&t;
+mdefine_line|#define IA32_NR_syscalls 285&t;/* must be &gt; than biggest syscall! */
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof
