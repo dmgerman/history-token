@@ -1864,6 +1864,10 @@ c_cond
 (paren
 op_logical_neg
 id|exp
+op_logical_or
+id|exp-&gt;module
+op_eq
+id|mod
 )paren
 (brace
 r_if
@@ -2429,11 +2433,6 @@ id|buf
 op_assign
 (brace
 )brace
-suffix:semicolon
-r_struct
-id|symbol
-op_star
-id|s
 suffix:semicolon
 r_char
 id|fname
