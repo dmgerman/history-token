@@ -415,6 +415,12 @@ r_struct
 id|i2c_client
 (brace
 DECL|member|id
+id|__attribute__
+(paren
+(paren
+id|deprecated
+)paren
+)paren
 r_int
 id|id
 suffix:semicolon
