@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/mm/nommu.c&n; *&n; *  Replacement code for mm functions to support CPU&squot;s that don&squot;t&n; *  have any form of memory management unit (thus no virtual memory).&n; *&n; *  Copyright (c) 2004      David Howells &lt;dhowells@redhat.com&gt;&n; *  Copyright (c) 2000-2003 David McCullough &lt;davidm@snapgear.com&gt;&n; *  Copyright (c) 2000-2001 D Jeff Dionne &lt;jeff@uClinux.org&gt;&n; *  Copyright (c) 2002      Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
+multiline_comment|/*&n; *  linux/mm/nommu.c&n; *&n; *  Replacement code for mm functions to support CPU&squot;s that don&squot;t&n; *  have any form of memory management unit (thus no virtual memory).&n; *&n; *  See Documentation/nommu-mmap.txt&n; *&n; *  Copyright (c) 2004-2005 David Howells &lt;dhowells@redhat.com&gt;&n; *  Copyright (c) 2000-2003 David McCullough &lt;davidm@snapgear.com&gt;&n; *  Copyright (c) 2000-2001 D Jeff Dionne &lt;jeff@uClinux.org&gt;&n; *  Copyright (c) 2002      Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
