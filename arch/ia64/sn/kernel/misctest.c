@@ -346,7 +346,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|flags
+id|psr
 comma
 id|dcr
 comma
@@ -461,10 +461,11 @@ comma
 id|val
 )paren
 suffix:semicolon
+id|psr
+op_assign
 id|ia64_clear_ic
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 id|ia64_itc
@@ -497,10 +498,10 @@ comma
 id|_PAGE_SIZE_256M
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|ia64_set_psr
 c_func
 (paren
-id|flags
+id|psr
 )paren
 suffix:semicolon
 id|ia64_srlz_i

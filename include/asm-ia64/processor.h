@@ -1728,9 +1728,60 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Save the processor status flags in FLAGS and then clear the interrupt collection and&n; * interrupt enable bits.  Don&squot;t trigger any mandatory RSE references while this bit is&n; * off!&n; */
-DECL|macro|ia64_clear_ic
-mdefine_line|#define ia64_clear_ic(flags)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;mov %0=psr;; rsm psr.i | psr.ic;; srlz.i;;&quot;&t;&bslash;&n;&t;&t;&t;      : &quot;=r&quot;(flags) :: &quot;memory&quot;);
+r_static
+r_inline
+id|__u64
+DECL|function|ia64_clear_ic
+id|ia64_clear_ic
+(paren
+r_void
+)paren
+(brace
+id|__u64
+id|psr
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov %0=psr;; rsm psr.i | psr.ic;; srlz.i;;&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|psr
+)paren
+op_scope_resolution
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|psr
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Restore the psr.&n; */
+r_static
+r_inline
+r_void
+DECL|function|ia64_set_psr
+id|ia64_set_psr
+(paren
+id|__u64
+id|psr
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;;; mov psr.l=%0;; srlz.d&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|psr
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Insert a translation into an instruction and/or data translation&n; * register.&n; */
 r_static
 r_inline

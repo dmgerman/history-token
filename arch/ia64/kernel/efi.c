@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -884,7 +884,7 @@ suffix:semicolon
 id|u64
 id|mask
 comma
-id|flags
+id|psr
 suffix:semicolon
 id|u64
 id|vaddr
@@ -1067,10 +1067,11 @@ id|IA64_GRANULE_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Cannot write to CRx with PSR.ic=1&n;&t;&t; */
+id|psr
+op_assign
 id|ia64_clear_ic
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 id|ia64_itr
@@ -1099,10 +1100,10 @@ comma
 id|IA64_GRANULE_SHIFT
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|ia64_set_psr
 c_func
 (paren
-id|flags
+id|psr
 )paren
 suffix:semicolon
 id|ia64_srlz_i
@@ -2253,7 +2254,8 @@ id|u32
 DECL|function|efi_mem_type
 id|efi_mem_type
 (paren
-id|u64
+r_int
+r_int
 id|phys_addr
 )paren
 (brace
@@ -2349,7 +2351,8 @@ id|u64
 DECL|function|efi_mem_attributes
 id|efi_mem_attributes
 (paren
-id|u64
+r_int
+r_int
 id|phys_addr
 )paren
 (brace
