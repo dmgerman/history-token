@@ -6191,10 +6191,17 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|cap_ptr
+)paren
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 id|PFX
 l_string|&quot;Unsupported Intel chipset (device id: %04x)&bslash;n&quot;
 comma
