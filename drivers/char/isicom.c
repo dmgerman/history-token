@@ -6440,10 +6440,6 @@ id|tty-&gt;driver_data
 suffix:semicolon
 r_int
 r_int
-id|arg
-suffix:semicolon
-r_int
-r_int
 id|flags
 suffix:semicolon
 r_if
