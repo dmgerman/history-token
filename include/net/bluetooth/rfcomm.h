@@ -861,6 +861,24 @@ r_int
 id|err
 )paren
 suffix:semicolon
+r_void
+id|rfcomm_session_getaddr
+c_func
+(paren
+r_struct
+id|rfcomm_session
+op_star
+id|s
+comma
+id|bdaddr_t
+op_star
+id|src
+comma
+id|bdaddr_t
+op_star
+id|dst
+)paren
+suffix:semicolon
 DECL|function|rfcomm_session_hold
 r_static
 r_inline
@@ -939,7 +957,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|rfcomm_pi
-mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *) &amp;sk-&gt;protinfo)
+mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *) sk-&gt;protinfo)
 DECL|struct|rfcomm_pinfo
 r_struct
 id|rfcomm_pinfo
