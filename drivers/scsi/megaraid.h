@@ -42,7 +42,7 @@ mdefine_line|#define M_RD_IOCTL_CMD_NEW&t;&t;0x81
 DECL|macro|M_RD_DRIVER_IOCTL_INTERFACE
 mdefine_line|#define M_RD_DRIVER_IOCTL_INTERFACE&t;0x82
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION &quot;v1.18 (Release Date: Thu Oct 11 15:02:53 EDT 2001&bslash;n)&quot;
+mdefine_line|#define MEGARAID_VERSION &quot;v1.18 (Release Date: Thu Oct 11 15:02:53 EDT 2001)&bslash;n&quot;
 DECL|macro|MEGARAID_IOCTL_VERSION
 mdefine_line|#define MEGARAID_IOCTL_VERSION &t;114
 multiline_comment|/* Methods */
