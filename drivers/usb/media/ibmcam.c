@@ -24219,7 +24219,7 @@ suffix:semicolon
 id|__u8
 id|ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 r_int
 r_char
@@ -24537,7 +24537,7 @@ op_increment
 (brace
 r_const
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -24563,7 +24563,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
@@ -24579,7 +24579,7 @@ comma
 r_int
 )paren
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 )paren
 suffix:semicolon
@@ -24595,6 +24595,8 @@ id|interface-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond

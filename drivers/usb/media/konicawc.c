@@ -1781,7 +1781,7 @@ r_int
 id|pktsz
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -1808,7 +1808,7 @@ id|interface-&gt;endpoint
 l_int|1
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1946,7 +1946,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -2044,7 +2044,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -3940,7 +3940,7 @@ op_increment
 (brace
 r_const
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -3961,7 +3961,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 )paren
@@ -3971,13 +3971,13 @@ c_func
 (paren
 l_string|&quot;Interface %d. has %u. endpoints!&quot;
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 comma
 (paren
 r_int
 )paren
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 )paren
 suffix:semicolon
@@ -3993,6 +3993,8 @@ id|interface-&gt;endpoint
 (braket
 l_int|1
 )braket
+dot
+id|desc
 suffix:semicolon
 id|DEBUG
 c_func
@@ -4054,7 +4056,7 @@ c_func
 (paren
 l_string|&quot;Interface %d. has non-ISO endpoint!&quot;
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 r_return
@@ -4079,7 +4081,7 @@ c_func
 (paren
 l_string|&quot;Interface %d. has ISO OUT endpoint!&quot;
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 r_return
@@ -4338,7 +4340,7 @@ id|dev
 suffix:semicolon
 id|uvd-&gt;iface
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 id|uvd-&gt;ifaceAltInactive
 op_assign

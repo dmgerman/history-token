@@ -1063,7 +1063,7 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -1540,7 +1540,7 @@ id|first_byte
 )paren
 suffix:semicolon
 multiline_comment|/* send the data out the bulk port */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;write_urb
@@ -2139,7 +2139,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb

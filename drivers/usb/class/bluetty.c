@@ -927,7 +927,7 @@ id|u16
 id|len
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|urb
 comma
@@ -1095,7 +1095,7 @@ l_int|0
 suffix:semicolon
 macro_line|#ifndef BTBUGGYHARDWARE
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|bluetooth-&gt;read_urb
 comma
@@ -1144,7 +1144,7 @@ id|result
 )paren
 suffix:semicolon
 macro_line|#endif
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|bluetooth-&gt;interrupt_in_urb
 comma
@@ -1784,7 +1784,7 @@ id|buffer_size
 )paren
 suffix:semicolon
 multiline_comment|/* build up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -2538,7 +2538,7 @@ c_cond
 id|bluetooth-&gt;read_urb
 )paren
 (brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|bluetooth-&gt;read_urb
@@ -3445,7 +3445,7 @@ id|urb-&gt;actual_length
 op_assign
 l_int|0
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|bluetooth-&gt;read_urb
@@ -3699,7 +3699,7 @@ id|bluetooth-&gt;open_count
 )paren
 r_return
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|bluetooth-&gt;read_urb
@@ -3962,7 +3962,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -4032,7 +4032,7 @@ l_int|0
 suffix:semicolon
 id|control_out_endpoint
 op_assign
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 suffix:semicolon
 multiline_comment|/* find the endpoints that we need */
 r_for
@@ -4044,7 +4044,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -4057,6 +4057,8 @@ id|interface-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4474,7 +4476,7 @@ r_goto
 id|probe_error
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|bluetooth-&gt;read_urb
@@ -4671,7 +4673,7 @@ r_goto
 id|probe_error
 suffix:semicolon
 )brace
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|bluetooth-&gt;interrupt_in_urb

@@ -976,7 +976,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 singleline_comment|// fill irq urb
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|priv-&gt;irq_urb
 comma
@@ -4870,7 +4870,7 @@ id|entry-&gt;length
 op_assign
 l_int|0
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -4894,14 +4894,14 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 macro_line|#if 0
 singleline_comment|// Idle-but-posted reads with UHCI really chew up
 singleline_comment|// PCI bandwidth unless FSBR is disabled
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
@@ -6880,7 +6880,7 @@ l_int|0
 id|skb-&gt;len
 op_increment
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -6904,7 +6904,7 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 singleline_comment|// FIXME urb-&gt;timeout = ... jiffies ... ;
 id|spin_lock_irqsave
@@ -7545,7 +7545,7 @@ op_star
 id|net
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -7601,9 +7601,9 @@ id|usb_set_interface
 (paren
 id|xdev
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 comma
-id|interface-&gt;bAlternateSetting
+id|interface-&gt;desc.bAlternateSetting
 )paren
 OL
 l_int|0

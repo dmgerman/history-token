@@ -930,7 +930,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -1057,7 +1057,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign

@@ -2820,7 +2820,7 @@ comma
 id|ret
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|idesc
 suffix:semicolon
@@ -2912,7 +2912,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|idesc-&gt;bNumEndpoints
+id|idesc-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -2926,7 +2926,7 @@ id|idesc-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0xF
 )paren
@@ -2941,7 +2941,7 @@ id|idesc-&gt;endpoint
 id|i
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3130,7 +3130,7 @@ id|pdev-&gt;vendpoint
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -6240,14 +6240,14 @@ id|udev-&gt;descriptor.idVendor
 comma
 id|udev-&gt;descriptor.idProduct
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 multiline_comment|/* the interfaces are probed one by one. We are only interested in the&n;&t;   video interface (0) now.&n;&t;   Interface 1 is the Audio Control, and interface 2 Audio itself.&n;&t; */
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 OG
 l_int|0
 )paren

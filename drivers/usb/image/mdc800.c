@@ -1001,7 +1001,7 @@ comma
 id|j
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intf_desc
 suffix:semicolon
@@ -1076,25 +1076,25 @@ r_if
 c_cond
 (paren
 (paren
-id|intf_desc-&gt;bInterfaceClass
+id|intf_desc-&gt;desc.bInterfaceClass
 op_ne
 l_int|0xff
 )paren
 op_logical_or
 (paren
-id|intf_desc-&gt;bInterfaceSubClass
+id|intf_desc-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|0
 )paren
 op_logical_or
 (paren
-id|intf_desc-&gt;bInterfaceProtocol
+id|intf_desc-&gt;desc.bInterfaceProtocol
 op_ne
 l_int|0
 )paren
 op_logical_or
 (paren
-id|intf_desc-&gt;bNumEndpoints
+id|intf_desc-&gt;desc.bNumEndpoints
 op_ne
 l_int|4
 )paren
@@ -1159,6 +1159,8 @@ id|intf_desc-&gt;endpoint
 (braket
 id|j
 )braket
+dot
+id|desc
 comma
 op_amp
 id|mdc800_ed
@@ -1178,7 +1180,7 @@ id|intf_desc-&gt;endpoint
 id|j
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 r_if
 c_cond
@@ -1195,7 +1197,7 @@ id|intf_desc-&gt;endpoint
 id|j
 )braket
 dot
-id|bInterval
+id|desc.bInterval
 suffix:semicolon
 )brace
 r_continue
@@ -1242,7 +1244,7 @@ id|usb_set_interface
 (paren
 id|dev
 comma
-id|intf_desc-&gt;bInterfaceNumber
+id|intf_desc-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -1318,7 +1320,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Setup URB Structs */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|mdc800-&gt;irq_urb
 comma
@@ -1345,7 +1347,7 @@ comma
 id|irq_interval
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|mdc800-&gt;write_urb
 comma
@@ -1370,7 +1372,7 @@ comma
 id|mdc800
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|mdc800-&gt;download_urb
 comma

@@ -442,7 +442,7 @@ op_assign
 id|port-&gt;tty
 suffix:semicolon
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -834,7 +834,7 @@ id|port-&gt;tty
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
