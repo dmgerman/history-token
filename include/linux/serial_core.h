@@ -709,15 +709,17 @@ r_int
 r_int
 id|close_delay
 suffix:semicolon
+multiline_comment|/* msec */
 DECL|member|closing_wait
 r_int
 r_int
 id|closing_wait
 suffix:semicolon
+multiline_comment|/* msec */
 DECL|macro|USF_CLOSING_WAIT_INF
 mdefine_line|#define USF_CLOSING_WAIT_INF&t;(0)
 DECL|macro|USF_CLOSING_WAIT_NONE
-mdefine_line|#define USF_CLOSING_WAIT_NONE&t;(65535)
+mdefine_line|#define USF_CLOSING_WAIT_NONE&t;(~0U)
 DECL|member|count
 r_int
 id|count
