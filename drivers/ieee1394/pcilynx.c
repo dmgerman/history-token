@@ -6923,7 +6923,7 @@ comma
 id|lynx
 )paren
 suffix:semicolon
-multiline_comment|/* Disable IRM Contender */
+multiline_comment|/* Disable IRM Contender and LCtrl */
 r_if
 c_cond
 (paren
@@ -8629,7 +8629,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* set the contender bit in the extended PHY register&n;                 * set. (Should check that bis 0,1,2 (=0xE0) is set&n;                 * in register 2?)&n;                 */
+multiline_comment|/* set the contender and LCtrl bit in the extended PHY register&n;                 * set. (Should check that bis 0,1,2 (=0xE0) is set&n;                 * in register 2?)&n;                 */
 id|i
 op_assign
 id|get_phy_reg
@@ -8657,7 +8657,7 @@ l_int|4
 comma
 id|i
 op_or
-l_int|0x40
+l_int|0xc0
 )paren
 suffix:semicolon
 )brace
