@@ -852,6 +852,16 @@ op_minus
 id|dend
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|via
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

@@ -7784,7 +7784,8 @@ macro_line|#else
 r_int
 id|err
 op_assign
-l_int|0
+op_minus
+id|EIO
 suffix:semicolon
 id|u8
 id|args

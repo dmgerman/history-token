@@ -414,13 +414,15 @@ multiline_comment|/* Identify the system */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;System Identification: IBM Spruce&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IBM Spruce port (C) 2001 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Port by MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

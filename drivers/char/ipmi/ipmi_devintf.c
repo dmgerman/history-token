@@ -1625,7 +1625,7 @@ id|MAX_DEVICES
 )paren
 r_return
 suffix:semicolon
-id|snprinf
+id|snprintf
 c_func
 (paren
 id|name

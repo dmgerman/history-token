@@ -7700,10 +7700,6 @@ c_func
 id|task-&gt;tk_calldata
 )paren
 suffix:semicolon
-id|task-&gt;tk_calldata
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_int
 DECL|function|nfs4_proc_renew

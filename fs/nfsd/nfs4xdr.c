@@ -1011,6 +1011,7 @@ DECL|macro|SAVEMEM
 mdefine_line|#define SAVEMEM(x,nbytes) do {&t;&t;&t;&bslash;&n;&t;if (!(x = (p==argp-&gt;tmp || p == argp-&gt;tmpp) ? &bslash;&n; &t;&t;savemem(argp, p, nbytes) :&t;&bslash;&n; &t;&t;(char *)p)) {&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_NOTICE &quot;xdr error! (%s:%d)&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;&t;goto xdr_error;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&bslash;&n;} while (0)
 DECL|macro|COPYMEM
 mdefine_line|#define COPYMEM(x,nbytes) do {&t;&t;&t;&bslash;&n;&t;memcpy((x), p, nbytes);&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* READ_BUF, read_buf(): nbytes must be &lt;= PAGE_SIZE */
 DECL|macro|READ_BUF
 mdefine_line|#define READ_BUF(nbytes)  do {&t;&t;&t;&bslash;&n;&t;if (nbytes &lt;= (u32)((char *)argp-&gt;end - (char *)argp-&gt;p)) {&t;&bslash;&n;&t;&t;p = argp-&gt;p;&t;&t;&t;&bslash;&n;&t;&t;argp-&gt;p += XDR_QUADLEN(nbytes);&t;&bslash;&n;&t;} else if (!(p = read_buf(argp, nbytes))) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;xdr error! (%s:%d)&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;&t;goto xdr_error;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|function|read_buf
@@ -1028,7 +1029,7 @@ r_int
 id|nbytes
 )paren
 (brace
-multiline_comment|/* We want more bytes than seem to be available.&n;&t; * Maybe we need a new page, may wehave just run out&n;&t; */
+multiline_comment|/* We want more bytes than seem to be available.&n;&t; * Maybe we need a new page, maybe we have just run out&n;&t; */
 r_int
 id|avail
 op_assign
@@ -1066,14 +1067,14 @@ c_cond
 id|avail
 op_plus
 id|PAGE_SIZE
-OG
+OL
 id|nbytes
 )paren
 multiline_comment|/* need more than a page !! */
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* ok, we can do it with the tail plus the next page */
+multiline_comment|/* ok, we can do it with the current plus the next page */
 r_if
 c_cond
 (paren
@@ -3931,7 +3932,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|argp-&gt;pagelen
+id|len
 op_ge
 id|PAGE_SIZE
 )paren
@@ -3962,8 +3963,8 @@ op_assign
 id|argp-&gt;pagelen
 suffix:semicolon
 id|argp-&gt;pagelen
-op_assign
-l_int|0
+op_sub_assign
+id|len
 suffix:semicolon
 )brace
 )brace
@@ -4003,7 +4004,15 @@ id|v
 dot
 id|iov_base
 op_plus
+(paren
+id|XDR_QUADLEN
+c_func
+(paren
 id|len
+)paren
+op_lshift
+l_int|2
+)paren
 )paren
 suffix:semicolon
 id|write-&gt;wr_vec
@@ -7872,7 +7881,8 @@ suffix:semicolon
 r_int
 r_int
 id|maxcount
-comma
+suffix:semicolon
+r_int
 id|len
 suffix:semicolon
 id|ENCODE_HEAD
@@ -8069,6 +8079,18 @@ id|resp-&gt;xbuf-&gt;page_len
 op_assign
 id|maxcount
 suffix:semicolon
+multiline_comment|/* read zero bytes -&gt; don&squot;t set up tail */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|maxcount
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* set up page for remaining responses */
 id|svc_take_page
 c_func
