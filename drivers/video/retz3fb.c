@@ -7148,8 +7148,6 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: This driver cannot be unloaded yet */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|res
 op_assign
 l_int|0
@@ -7344,16 +7342,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Not reached because the usecount will never&n;&t; * be decremented to zero&n;&t; *&n;&t; * FIXME: clean up ... *&n;&t; */
 )brace
 macro_line|#endif
 multiline_comment|/*&n; *  Text console acceleration&n; */
