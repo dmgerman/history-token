@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/linux/sunrpc/timer.h&n; *&n; *  Declara
 macro_line|#ifndef _LINUX_SUNRPC_TIMER_H
 DECL|macro|_LINUX_SUNRPC_TIMER_H
 mdefine_line|#define _LINUX_SUNRPC_TIMER_H
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|rpc_rtt
 r_struct
 id|rpc_rtt
@@ -27,6 +28,11 @@ l_int|5
 )braket
 suffix:semicolon
 multiline_comment|/* soothed medium deviation of RTT */
+DECL|member|ntimeouts
+id|atomic_t
+id|ntimeouts
+suffix:semicolon
+multiline_comment|/* Global count of the number of timeouts */
 )brace
 suffix:semicolon
 r_extern
@@ -74,5 +80,71 @@ r_int
 id|timer
 )paren
 suffix:semicolon
+DECL|function|rpc_inc_timeo
+r_static
+r_inline
+r_void
+id|rpc_inc_timeo
+c_func
+(paren
+r_struct
+id|rpc_rtt
+op_star
+id|rt
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|rt-&gt;ntimeouts
+)paren
+suffix:semicolon
+)brace
+DECL|function|rpc_clear_timeo
+r_static
+r_inline
+r_void
+id|rpc_clear_timeo
+c_func
+(paren
+r_struct
+id|rpc_rtt
+op_star
+id|rt
+)paren
+(brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|rt-&gt;ntimeouts
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|rpc_ntimeo
+r_static
+r_inline
+r_int
+id|rpc_ntimeo
+c_func
+(paren
+r_struct
+id|rpc_rtt
+op_star
+id|rt
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rt-&gt;ntimeouts
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_SUNRPC_TIMER_H */
 eof

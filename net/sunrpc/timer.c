@@ -83,6 +83,15 @@ op_assign
 id|RPC_RTO_INIT
 suffix:semicolon
 )brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|rt-&gt;ntimeouts
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|rpc_update_rtt

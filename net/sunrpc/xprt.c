@@ -1813,6 +1813,14 @@ id|req-&gt;rq_xtime
 )paren
 suffix:semicolon
 )brace
+id|rpc_clear_timeo
+c_func
+(paren
+op_amp
+id|clnt-&gt;cl_rtt
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef RPC_PROFILE
 multiline_comment|/* Profile only reads for now */
 r_if
@@ -3803,6 +3811,13 @@ id|out
 suffix:semicolon
 id|req-&gt;rq_nresend
 op_increment
+suffix:semicolon
+id|rpc_inc_timeo
+c_func
+(paren
+op_amp
+id|task-&gt;tk_client-&gt;cl_rtt
+)paren
 suffix:semicolon
 id|xprt_adjust_cwnd
 c_func
