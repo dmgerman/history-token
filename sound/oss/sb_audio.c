@@ -3819,7 +3819,11 @@ op_logical_neg
 id|devc-&gt;fullduplex
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
+c_func
 (paren
 id|localbuf
 op_plus
@@ -3831,6 +3835,10 @@ id|useroffs
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 op_star
 id|used
@@ -3920,7 +3928,11 @@ id|c
 )paren
 suffix:semicolon
 multiline_comment|/* &lt;&lt; 1 in order to get 16 bit samples */
+r_if
+c_cond
+(paren
 id|copy_from_user
+c_func
 (paren
 id|lbuf16
 comma
@@ -3938,6 +3950,10 @@ id|locallen
 op_lshift
 l_int|1
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_for
 c_loop
@@ -4069,7 +4085,11 @@ suffix:colon
 id|c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
+c_func
 (paren
 id|lbuf8
 comma
@@ -4081,6 +4101,10 @@ id|p
 comma
 id|locallen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_for
 c_loop
