@@ -885,7 +885,7 @@ id|type
 op_assign
 l_int|NULL
 suffix:semicolon
-id|write_unlock
+id|read_unlock
 c_func
 (paren
 op_amp
