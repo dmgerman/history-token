@@ -1025,12 +1025,14 @@ DECL|macro|A_FXWC2
 mdefine_line|#define A_FXWC2&t;&t;&t;0x75&t;&t;/* Selects 0x9f-0x80 for FX recording           */
 DECL|macro|A_SPDIF_SAMPLERATE
 mdefine_line|#define A_SPDIF_SAMPLERATE&t;0x76&t;&t;/* Set the sample rate of SPDIF output&t;&t;*/
+DECL|macro|A_SPDIF_RATE_MASK
+mdefine_line|#define A_SPDIF_RATE_MASK&t;0x000000c0
 DECL|macro|A_SPDIF_48000
-mdefine_line|#define A_SPDIF_48000&t;&t;0x00000080
+mdefine_line|#define A_SPDIF_48000&t;&t;0x00000000
 DECL|macro|A_SPDIF_44100
-mdefine_line|#define A_SPDIF_44100&t;&t;0x00000000
+mdefine_line|#define A_SPDIF_44100&t;&t;0x00000040
 DECL|macro|A_SPDIF_96000
-mdefine_line|#define A_SPDIF_96000&t;&t;0x00000040
+mdefine_line|#define A_SPDIF_96000&t;&t;0x00000080
 DECL|macro|A_FXRT2
 mdefine_line|#define A_FXRT2&t;&t;&t;0x7c
 DECL|macro|A_FXRT_CHANNELE

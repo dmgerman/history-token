@@ -3958,7 +3958,7 @@ id|rates
 op_assign
 id|SNDRV_PCM_RATE_CONTINUOUS
 op_or
-id|SNDRV_PCM_RATE_8000_48000
+id|SNDRV_PCM_RATE_8000_96000
 comma
 dot
 id|rate_min
@@ -3968,7 +3968,7 @@ comma
 dot
 id|rate_max
 op_assign
-l_int|48000
+l_int|96000
 comma
 dot
 id|channels_min
