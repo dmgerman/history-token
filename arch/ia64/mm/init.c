@@ -1164,7 +1164,7 @@ id|PAGE_KERNEL
 )paren
 )paren
 comma
-id|PAGE_SHIFT
+id|PERCPU_PAGE_SHIFT
 )paren
 suffix:semicolon
 id|ia64_set_psr
@@ -1766,11 +1766,6 @@ l_int|1
 )braket
 op_assign
 id|num_pgt_pages
-suffix:semicolon
-id|show_mem
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* install the gate page in the global page table: */
 id|put_gate_page
