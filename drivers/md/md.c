@@ -9093,10 +9093,10 @@ id|ENODEV
 suffix:semicolon
 id|q
 op_assign
-id|blk_get_queue
+id|bdev_get_queue
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 r_if

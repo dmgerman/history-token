@@ -1049,10 +1049,10 @@ c_cond
 (paren
 id|q
 op_assign
-id|blk_get_queue
+id|bdev_get_queue
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 op_eq

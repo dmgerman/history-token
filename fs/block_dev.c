@@ -160,15 +160,6 @@ id|size
 r_int
 id|oldsize
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 multiline_comment|/* Size must be a power of two, and between 512 and PAGE_SIZE */
 r_if
 c_cond
@@ -201,10 +192,10 @@ c_cond
 (paren
 id|size
 OL
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 r_return
