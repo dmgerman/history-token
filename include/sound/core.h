@@ -1228,6 +1228,7 @@ op_star
 id|dst
 comma
 r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1241,6 +1242,7 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
