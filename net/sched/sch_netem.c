@@ -6277,6 +6277,17 @@ op_amp
 id|q-&gt;timer
 )paren
 suffix:semicolon
+id|qdisc_destroy
+c_func
+(paren
+id|q-&gt;qdisc
+)paren
+suffix:semicolon
+id|q-&gt;qdisc
+op_assign
+op_amp
+id|noop_qdisc
+suffix:semicolon
 )brace
 DECL|function|netem_dump
 r_static
