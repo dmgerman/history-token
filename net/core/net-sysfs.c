@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net-sysfs.c - network device class and attributes&n; *&n; * Copyright (c) 2003 Stephen Hemminber &lt;shemminger@osdl.org&gt;&n; * &n; */
+multiline_comment|/*&n; * net-sysfs.c - network device class and attributes&n; *&n; * Copyright (c) 2003 Stephen Hemminger &lt;shemminger@osdl.org&gt;&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

@@ -23,6 +23,33 @@ id|firewall_ops
 op_star
 id|fwops
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_VS
+multiline_comment|/* From ip_vs_core.c */
+r_extern
+r_int
+r_int
+id|check_for_ip_vs_out
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|skb_p
+comma
+r_int
+(paren
+op_star
+id|okfn
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* They call these; we do what they want. */
 DECL|function|register_firewall
 r_int
@@ -578,6 +605,26 @@ id|hooknum
 op_eq
 id|NF_IP_FORWARD
 )paren
+(brace
+macro_line|#ifdef CONFIG_IP_VS
+multiline_comment|/* check if it is for ip_vs */
+r_if
+c_cond
+(paren
+id|check_for_ip_vs_out
+c_func
+(paren
+id|pskb
+comma
+id|okfn
+)paren
+op_eq
+id|NF_STOLEN
+)paren
+r_return
+id|NF_STOLEN
+suffix:semicolon
+macro_line|#endif
 r_return
 id|do_masquerade
 c_func
@@ -587,6 +634,7 @@ comma
 id|out
 )paren
 suffix:semicolon
+)brace
 r_else
 r_return
 id|NF_ACCEPT
