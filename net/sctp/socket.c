@@ -3776,6 +3776,18 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Applicable to UDP-style socket only */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5064,6 +5076,24 @@ op_star
 id|optlen
 )paren
 (brace
+multiline_comment|/* Applicable to UDP-style socket only */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5176,12 +5206,12 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* An association cannot be branched off from an already peeled-off&n;&t; * socket.&n;&t; */
+multiline_comment|/* An association cannot be branched off from an already peeled-off&n;&t; * socket, nor is this supported for tcp style sockets.&n;&t; */
 r_if
 c_cond
 (paren
-id|SCTP_SOCKET_UDP_HIGH_BANDWIDTH
-op_eq
+id|SCTP_SOCKET_UDP
+op_ne
 id|sctp_sk
 c_func
 (paren
@@ -5192,7 +5222,7 @@ id|type
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* Create a new socket.  */
 id|err
