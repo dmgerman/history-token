@@ -1798,7 +1798,7 @@ id|cpu_policy
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* CPUFREQ_RELATION_H or CPUFREQ_RELATION_L have the same effect here, as cpu_policy-&gt;cur is known&n;&t; * to be a valid and exact target frequency&n;&t; */
+multiline_comment|/* CPUFREQ_RELATION_H or CPUFREQ_RELATION_L have the same effect here, as cpu_policy-&gt;cur is known&n;&t;&t; * to be a valid and exact target frequency&n;&t;&t; */
 id|ret
 op_assign
 id|cpufreq_driver
