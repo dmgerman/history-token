@@ -1454,8 +1454,8 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * The next routines deal with comparing 32 bit unsigned ints&n; * and worry about wraparound (automatic with unsigned arithmetic).&n; */
 DECL|function|before
-r_extern
-id|__inline
+r_static
+r_inline
 r_int
 id|before
 c_func
@@ -1481,8 +1481,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|after
-r_extern
-id|__inline
+r_static
+r_inline
 r_int
 id|after
 c_func
@@ -1509,8 +1509,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* is s2&lt;=s1&lt;=s3 ? */
 DECL|function|between
-r_extern
-id|__inline
+r_static
+r_inline
 r_int
 id|between
 c_func
@@ -1562,7 +1562,7 @@ mdefine_line|#define TCP_ADD_STATS_BH(field, val)&t;SNMP_ADD_STATS_BH(tcp_statis
 DECL|macro|TCP_ADD_STATS_USER
 mdefine_line|#define TCP_ADD_STATS_USER(field, val)&t;SNMP_ADD_STATS_USER(tcp_statistics, field, val)
 r_extern
-id|__inline__
+r_inline
 r_void
 id|tcp_put_port
 c_func

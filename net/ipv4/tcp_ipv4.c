@@ -468,7 +468,7 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_inherit_port
-id|__inline__
+r_inline
 r_void
 id|tcp_inherit_port
 c_func
@@ -1214,7 +1214,7 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_put_port
-id|__inline__
+r_inline
 r_void
 id|tcp_put_port
 c_func
@@ -1843,7 +1843,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Optimize the common listener case. */
 DECL|function|tcp_v4_lookup_listener
-id|__inline__
+r_inline
 r_struct
 id|sock
 op_star
@@ -2232,7 +2232,7 @@ id|dif
 suffix:semicolon
 )brace
 DECL|function|tcp_v4_lookup
-id|__inline__
+r_inline
 r_struct
 id|sock
 op_star

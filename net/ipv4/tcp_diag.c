@@ -2987,8 +2987,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|tcpdiag_rcv_skb
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|tcpdiag_rcv_skb
 c_func

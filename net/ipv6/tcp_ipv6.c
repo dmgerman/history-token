@@ -1767,7 +1767,7 @@ id|dif
 suffix:semicolon
 )brace
 DECL|function|tcp_v6_lookup
-id|__inline__
+r_inline
 r_struct
 id|sock
 op_star
