@@ -956,6 +956,9 @@ id|opcode
 )paren
 (brace
 r_case
+id|SEND_DIAGNOSTIC
+suffix:colon
+r_case
 id|FORMAT_UNIT
 suffix:colon
 id|timeout
