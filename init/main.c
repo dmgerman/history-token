@@ -192,11 +192,11 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Are we up and running (ie do we have all the infrastructure&n; * set up)&n; */
-DECL|variable|system_running
+DECL|variable|system_state
 r_int
-id|system_running
+id|system_state
 suffix:semicolon
+multiline_comment|/* SYSTEM_BOOTING/RUNNING/SHUTDOWN */
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
 mdefine_line|#define MAX_INIT_ARGS 8
@@ -2061,9 +2061,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|1
+id|SYSTEM_RUNNING
 suffix:semicolon
 r_if
 c_cond

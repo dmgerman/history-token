@@ -1460,9 +1460,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|0
+id|SYSTEM_SHUTDOWN
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1516,9 +1516,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|0
+id|SYSTEM_SHUTDOWN
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1564,9 +1564,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|0
+id|SYSTEM_SHUTDOWN
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1659,9 +1659,9 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|0
+id|SYSTEM_SHUTDOWN
 suffix:semicolon
 id|device_shutdown
 c_func

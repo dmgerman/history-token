@@ -612,8 +612,9 @@ id|panic_on_oops
 suffix:semicolon
 r_extern
 r_int
-id|system_running
+id|system_state
 suffix:semicolon
+multiline_comment|/* See values below */
 r_extern
 r_int
 id|tainted
@@ -628,6 +629,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Values used for system_state */
+DECL|macro|SYSTEM_BOOTING
+mdefine_line|#define SYSTEM_BOOTING 0
+DECL|macro|SYSTEM_RUNNING
+mdefine_line|#define SYSTEM_RUNNING 1
+DECL|macro|SYSTEM_SHUTDOWN
+mdefine_line|#define SYSTEM_SHUTDOWN 2
 DECL|macro|TAINT_PROPRIETARY_MODULE
 mdefine_line|#define TAINT_PROPRIETARY_MODULE&t;(1&lt;&lt;0)
 DECL|macro|TAINT_FORCED_MODULE

@@ -10252,7 +10252,9 @@ c_func
 )paren
 )paren
 op_logical_and
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 )paren
 (brace
 r_if

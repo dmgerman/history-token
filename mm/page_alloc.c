@@ -3168,8 +3168,9 @@ c_cond
 id|unlikely
 c_func
 (paren
-op_logical_neg
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_BOOTING
 )paren
 )paren
 r_return
