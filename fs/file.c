@@ -116,8 +116,7 @@ id|array
 id|printk
 (paren
 id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot;array = 0 (num = %d)&bslash;n&quot;
+l_string|&quot;free_fd_array: array = 0 (num = %d)&bslash;n&quot;
 comma
 id|num
 )paren
@@ -545,25 +544,6 @@ id|num
 op_div
 l_int|8
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|array
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot;array = 0 (num = %d)&bslash;n&quot;
-comma
-id|num
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
