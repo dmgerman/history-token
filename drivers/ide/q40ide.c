@@ -151,7 +151,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  Probe for Q40 IDE interfaces&n; */
+multiline_comment|/*&n;     *  Probe for Q40 IDE interfaces&n;     */
 DECL|function|q40ide_init
 r_void
 id|q40ide_init
@@ -209,9 +209,6 @@ op_star
 )paren
 id|pcide_offsets
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|pcide_bases
 (braket
 id|i
@@ -238,6 +235,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

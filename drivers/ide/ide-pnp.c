@@ -1,5 +1,4 @@
-multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * This file provides autodetection for ISA PnP IDE interfaces.&n; * It was tested with &quot;ESS ES1868 Plug and Play AudioDrive&quot; IDE interface.&n; *&n; * Copyright (C) 2000 Andrey Panin &lt;pazke@orbita.don.sitek.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/types.h&gt;
+multiline_comment|/*&n; * linux/drivers/ide/ide-pnp.c&n; *&n; * This file provides autodetection for ISA PnP IDE interfaces.&n; * It was tested with &quot;ESS ES1868 Plug and Play AudioDrive&quot; IDE interface.&n; *&n; * Copyright (C) 2000 Andrey Panin &lt;pazke@orbita.don.sitek.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n; */
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
@@ -17,6 +16,55 @@ DECL|macro|DEV_IRQ
 mdefine_line|#define DEV_IRQ(dev, index) (dev-&gt;irq_resource[index].start)
 DECL|macro|DEV_NAME
 mdefine_line|#define DEV_NAME(dev) (dev-&gt;bus-&gt;name ? dev-&gt;bus-&gt;name : &quot;ISA PnP&quot;)
+DECL|macro|GENERIC_HD_DATA
+mdefine_line|#define GENERIC_HD_DATA&t;&t;0
+DECL|macro|GENERIC_HD_ERROR
+mdefine_line|#define GENERIC_HD_ERROR&t;1
+DECL|macro|GENERIC_HD_NSECTOR
+mdefine_line|#define GENERIC_HD_NSECTOR&t;2
+DECL|macro|GENERIC_HD_SECTOR
+mdefine_line|#define GENERIC_HD_SECTOR&t;3
+DECL|macro|GENERIC_HD_LCYL
+mdefine_line|#define GENERIC_HD_LCYL&t;&t;4
+DECL|macro|GENERIC_HD_HCYL
+mdefine_line|#define GENERIC_HD_HCYL&t;&t;5
+DECL|macro|GENERIC_HD_SELECT
+mdefine_line|#define GENERIC_HD_SELECT&t;6
+DECL|macro|GENERIC_HD_STATUS
+mdefine_line|#define GENERIC_HD_STATUS&t;7
+DECL|variable|__initdata
+r_static
+r_int
+id|generic_ide_offsets
+(braket
+id|IDE_NR_PORTS
+)braket
+id|__initdata
+op_assign
+(brace
+id|GENERIC_HD_DATA
+comma
+id|GENERIC_HD_ERROR
+comma
+id|GENERIC_HD_NSECTOR
+comma
+id|GENERIC_HD_SECTOR
+comma
+id|GENERIC_HD_LCYL
+comma
+id|GENERIC_HD_HCYL
+comma
+id|GENERIC_HD_SELECT
+comma
+id|GENERIC_HD_STATUS
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
 multiline_comment|/* ISA PnP device table entry */
 DECL|struct|pnp_dev_t
 r_struct
@@ -77,9 +125,6 @@ suffix:semicolon
 r_int
 id|index
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -122,26 +167,15 @@ l_int|0
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* Initialize register access base values. */
-r_for
-c_loop
+id|ide_setup_ports
+c_func
 (paren
-id|i
-op_assign
-id|IDE_DATA_OFFSET
-suffix:semicolon
-id|i
-op_le
-id|IDE_STATUS_OFFSET
-suffix:semicolon
-op_increment
-id|i
+op_amp
+id|hw
+comma
+(paren
+id|ide_ioreg_t
 )paren
-id|hw.io_ports
-(braket
-id|i
-)braket
-op_assign
 id|DEV_IO
 c_func
 (paren
@@ -149,14 +183,12 @@ id|dev
 comma
 l_int|0
 )paren
-op_plus
-id|i
-suffix:semicolon
-id|hw.io_ports
-(braket
-id|IDE_CONTROL_OFFSET
-)braket
-op_assign
+comma
+id|generic_ide_offsets
+comma
+(paren
+id|ide_ioreg_t
+)paren
 id|DEV_IO
 c_func
 (paren
@@ -164,9 +196,11 @@ id|dev
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|hw.irq
-op_assign
+comma
+l_int|0
+comma
+l_int|NULL
+comma
 id|DEV_IRQ
 c_func
 (paren
@@ -174,14 +208,7 @@ id|dev
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|hw.dma
-op_assign
-id|NO_DMA
-suffix:semicolon
-id|hw.ack_intr
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 id|index
 op_assign
@@ -190,6 +217,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -201,27 +230,9 @@ op_minus
 l_int|1
 )paren
 (brace
-r_struct
-id|ata_channel
-op_star
-id|ch
-suffix:semicolon
-id|ch
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|index
-)braket
-suffix:semicolon
-id|ch-&gt;pci_dev
-op_assign
-id|dev
-suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;ide%d: %s IDE interface&bslash;n&quot;
 comma
 id|index
@@ -243,10 +254,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Add your devices here :)) */
 DECL|variable|__initdata
-r_static
 r_struct
 id|pnp_dev_t
-id|pnp_devices
+id|idepnp_devices
 (braket
 )braket
 id|__initdata
@@ -439,7 +449,7 @@ c_loop
 (paren
 id|dev_type
 op_assign
-id|pnp_devices
+id|idepnp_devices
 suffix:semicolon
 id|dev_type-&gt;vendor
 suffix:semicolon
@@ -500,7 +510,6 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;ide: %s prepare failed&bslash;n&quot;
 comma
 id|DEV_NAME
@@ -539,7 +548,6 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;ide: %s activate failed&bslash;n&quot;
 comma
 id|DEV_NAME

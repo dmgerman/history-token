@@ -214,8 +214,7 @@ r_int
 id|buddha_ack_intr
 c_func
 (paren
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 )paren
@@ -258,8 +257,7 @@ r_int
 id|xsurf_ack_intr
 c_func
 (paren
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 )paren
@@ -672,6 +670,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

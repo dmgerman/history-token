@@ -7,24 +7,24 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Turn this on to have the driver print out the meanings of the&n;   ATAPI error codes.  This will use up additional kernel-space&n;   memory, though. */
 macro_line|#ifndef VERBOSE_IDE_CD_ERRORS
 DECL|macro|VERBOSE_IDE_CD_ERRORS
-macro_line|# define VERBOSE_IDE_CD_ERRORS 1
+mdefine_line|#define VERBOSE_IDE_CD_ERRORS 1
 macro_line|#endif
 multiline_comment|/* Turning this on will remove code to work around various nonstandard&n;   ATAPI implementations.  If you know your drive follows the standard,&n;   this will give you a slightly smaller kernel. */
 macro_line|#ifndef STANDARD_ATAPI
 DECL|macro|STANDARD_ATAPI
-macro_line|# define STANDARD_ATAPI 0
+mdefine_line|#define STANDARD_ATAPI 0
 macro_line|#endif
 multiline_comment|/* Turning this on will disable the door-locking functionality.&n;   This is apparently needed for supermount. */
 macro_line|#ifndef NO_DOOR_LOCKING
 DECL|macro|NO_DOOR_LOCKING
-macro_line|# define NO_DOOR_LOCKING 0
+mdefine_line|#define NO_DOOR_LOCKING 0
 macro_line|#endif
 multiline_comment|/************************************************************************/
 DECL|macro|SECTOR_BITS
-mdefine_line|#define SECTOR_BITS&t;&t;9
+mdefine_line|#define SECTOR_BITS &t;&t;9
 macro_line|#ifndef SECTOR_SIZE
 DECL|macro|SECTOR_SIZE
-macro_line|# define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
+mdefine_line|#define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
 macro_line|#endif
 DECL|macro|SECTORS_PER_FRAME
 mdefine_line|#define SECTORS_PER_FRAME&t;(CD_FRAMESIZE &gt;&gt; SECTOR_BITS)
@@ -38,6 +38,13 @@ DECL|macro|BLOCKS_PER_FRAME
 mdefine_line|#define BLOCKS_PER_FRAME&t;(CD_FRAMESIZE / BLOCK_SIZE)
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
+multiline_comment|/* special command codes for strategy routine. */
+DECL|macro|PACKET_COMMAND
+mdefine_line|#define PACKET_COMMAND        4315
+DECL|macro|REQUEST_SENSE_COMMAND
+mdefine_line|#define REQUEST_SENSE_COMMAND 4316
+DECL|macro|RESET_DRIVE_COMMAND
+mdefine_line|#define RESET_DRIVE_COMMAND   4317
 multiline_comment|/* Configuration flags.  These describe the capabilities of the drive.&n;   They generally do not change after initialization, unless we learn&n;   more about the drive from stuff failing. */
 DECL|struct|ide_cd_config_flags
 r_struct
@@ -197,7 +204,7 @@ suffix:colon
 l_int|3
 suffix:semicolon
 DECL|member|max_speed
-id|u8
+id|byte
 id|max_speed
 suffix:semicolon
 multiline_comment|/* Max speed of the drive */
@@ -245,7 +252,7 @@ suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|current_speed
-id|u8
+id|byte
 id|current_speed
 suffix:semicolon
 multiline_comment|/* Current speed of the drive */
@@ -284,12 +291,13 @@ id|request_sense
 op_star
 id|sense
 suffix:semicolon
-multiline_comment|/* This is currently used to pass failed commands through the request&n;&t; * queue.  Is this for asynchronos error reporting?&n;&t; *&n;&t; * Can we always be sure that this didn&squot;t valish from stack beneath us&n;&t; * - we can&squot;t!&n;&t; */
-DECL|member|failed_command
-r_struct
-id|packet_command
-op_star
-id|failed_command
+DECL|member|c
+r_int
+r_char
+id|c
+(braket
+l_int|12
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -298,30 +306,23 @@ DECL|struct|atapi_msf
 r_struct
 id|atapi_msf
 (brace
-DECL|member|__reserved
-id|u8
-id|__reserved
+DECL|member|reserved
+id|byte
+id|reserved
 suffix:semicolon
 DECL|member|minute
-id|u8
+id|byte
 id|minute
 suffix:semicolon
 DECL|member|second
-id|u8
+id|byte
 id|second
 suffix:semicolon
 DECL|member|frame
-id|u8
+id|byte
 id|frame
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Space to hold the disk TOC. */
 DECL|macro|MAX_TRACKS
@@ -331,32 +332,26 @@ r_struct
 id|atapi_toc_header
 (brace
 DECL|member|toc_length
-id|u16
+r_int
+r_int
 id|toc_length
 suffix:semicolon
 DECL|member|first_track
-id|u8
+id|byte
 id|first_track
 suffix:semicolon
 DECL|member|last_track
-id|u8
+id|byte
 id|last_track
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|struct|atapi_toc_entry
 r_struct
 id|atapi_toc_entry
 (brace
 DECL|member|reserved1
-id|u8
+id|byte
 id|reserved1
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
@@ -389,11 +384,11 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|track
-id|u8
+id|byte
 id|track
 suffix:semicolon
 DECL|member|reserved2
-id|u8
+id|byte
 id|reserved2
 suffix:semicolon
 r_union
@@ -426,7 +421,8 @@ r_int
 id|xa_flag
 suffix:semicolon
 DECL|member|capacity
-id|u32
+r_int
+r_int
 id|capacity
 suffix:semicolon
 DECL|member|hdr
@@ -444,7 +440,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* one extra for the leadout. */
+multiline_comment|/* One extra for the leadout. */
 )brace
 suffix:semicolon
 multiline_comment|/* This structure is annoyingly close to, but not identical with,&n;   the cdrom_subchnl structure from cdrom.h. */
@@ -453,43 +449,43 @@ r_struct
 id|atapi_cdrom_subchnl
 (brace
 DECL|member|acdsc_reserved
-id|u8
+id|u_char
 id|acdsc_reserved
 suffix:semicolon
 DECL|member|acdsc_audiostatus
-id|u8
+id|u_char
 id|acdsc_audiostatus
 suffix:semicolon
 DECL|member|acdsc_length
-id|u16
+id|u_short
 id|acdsc_length
 suffix:semicolon
 DECL|member|acdsc_format
-id|u8
+id|u_char
 id|acdsc_format
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|acdsc_ctrl
-id|u8
+id|u_char
 id|acdsc_ctrl
 suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|acdsc_adr
-id|u8
+id|u_char
 id|acdsc_adr
 suffix:colon
 l_int|4
 suffix:semicolon
 macro_line|#elif defined(__LITTLE_ENDIAN_BITFIELD)
 DECL|member|acdsc_adr
-id|u8
+id|u_char
 id|acdsc_adr
 suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|acdsc_ctrl
-id|u8
+id|u_char
 id|acdsc_ctrl
 suffix:colon
 l_int|4
@@ -498,11 +494,11 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|acdsc_trk
-id|u8
+id|u_char
 id|acdsc_trk
 suffix:semicolon
 DECL|member|acdsc_ind
-id|u8
+id|u_char
 id|acdsc_ind
 suffix:semicolon
 r_union
@@ -589,7 +585,7 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|page_length
-id|u8
+id|byte
 id|page_length
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
@@ -1313,18 +1309,19 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|curlba
-id|u8
+id|byte
 id|curlba
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|nslots
-id|u8
+id|byte
 id|nslots
 suffix:semicolon
 DECL|member|slot_tablelen
-id|__u16
+id|__u8
+r_int
 id|slot_tablelen
 suffix:semicolon
 )brace
@@ -1372,7 +1369,7 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|reserved2
-id|u8
+id|byte
 id|reserved2
 (braket
 l_int|3

@@ -1,5 +1,9 @@
-multiline_comment|/*&n; * Copyright (C) 1995 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *&n; * This driver was constructed as a student project in the software laboratory&n; * of the faculty of electrical engineering in the Technion - Israel&squot;s&n; * Institute Of Technology, with the guide of Avner Lottem and Dr. Ilana David.&n; *&n; * It is hereby placed under the terms of the GNU general public license.&n; * (See linux/COPYING).&n; *&n; * Contributors:&n; *&n; * Oct 1999&t;&t;Arnold Niessen, &lt;niessen@iae.nl&gt;, &lt;arnold.niessen@philips.com&gt;&n; * Nov 2000, Jan 2001&t;Marcel Mol,&t;&lt;marcel@mesa.nl&gt;&n; * Apr 2001&t;&t;Willem Riede,&t;&lt;osst@riede.org&gt;&n; */
-multiline_comment|/*&n; * FIXME: clean tape-&gt;spinlock locking  --bzolnier&n; */
+multiline_comment|/*&n; * linux/drivers/ide/ide-tape.c&t;&t;Version 1.17a&t;Jan, 2001&n; *&n; * Copyright (C) 1995 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *&n; * $Header$&n; *&n; * This driver was constructed as a student project in the software laboratory&n; * of the faculty of electrical engineering in the Technion - Israel&squot;s&n; * Institute Of Technology, with the guide of Avner Lottem and Dr. Ilana David.&n; *&n; * It is hereby placed under the terms of the GNU general public license.&n; * (See linux/COPYING).&n; */
+multiline_comment|/*&n; * IDE ATAPI streaming tape driver.&n; *&n; * This driver is a part of the Linux ide driver and works in co-operation&n; * with linux/drivers/block/ide.c.&n; *&n; * The driver, in co-operation with ide.c, basically traverses the &n; * request-list for the block device interface. The character device&n; * interface, on the other hand, creates new requests, adds them&n; * to the request-list of the block device, and waits for their completion.&n; *&n; * Pipelined operation mode is now supported on both reads and writes.&n; *&n; * The block device major and minor numbers are determined from the&n; * tape&squot;s relative position in the ide interfaces, as explained in ide.c.&n; *&n; * The character device interface consists of the following devices:&n; *&n; * ht0&t;&t;major 37, minor 0&t;first  IDE tape, rewind on close.&n; * ht1&t;&t;major 37, minor 1&t;second IDE tape, rewind on close.&n; * ...&n; * nht0&t;&t;major 37, minor 128&t;first  IDE tape, no rewind on close.&n; * nht1&t;&t;major 37, minor 129&t;second IDE tape, no rewind on close.&n; * ...&n; *&n; * Run linux/scripts/MAKEDEV.ide to create the above entries.&n; *&n; * The general magnetic tape commands compatible interface, as defined by&n; * include/linux/mtio.h, is accessible through the character device.&n; *&n; * General ide driver configuration options, such as the interrupt-unmask&n; * flag, can be configured by issuing an ioctl to the block device interface,&n; * as any other ide device.&n; *&n; * Our own ide-tape ioctl&squot;s can be issued to either the block device or&n; * the character device interface.&n; *&n; * Maximal throughput with minimal bus load will usually be achieved in the&n; * following scenario:&n; *&n; *&t;1.&t;ide-tape is operating in the pipelined operation mode.&n; *&t;2.&t;No buffering is performed by the user backup program.&n; *&n; * Testing was done with a 2 GB CONNER CTMA 4000 IDE ATAPI Streaming Tape Drive.&n; * &n; * Ver 0.1   Nov  1 95   Pre-working code :-)&n; * Ver 0.2   Nov 23 95   A short backup (few megabytes) and restore procedure&n; *                        was successful ! (Using tar cvf ... on the block&n; *                        device interface).&n; *                       A longer backup resulted in major swapping, bad&n; *                        overall Linux performance and eventually failed as&n; *                        we received non serial read-ahead requests from the&n; *                        buffer cache.&n; * Ver 0.3   Nov 28 95   Long backups are now possible, thanks to the&n; *                        character device interface. Linux&squot;s responsiveness&n; *                        and performance doesn&squot;t seem to be much affected&n; *                        from the background backup procedure.&n; *                       Some general mtio.h magnetic tape operations are&n; *                        now supported by our character device. As a result,&n; *                        popular tape utilities are starting to work with&n; *                        ide tapes :-)&n; *                       The following configurations were tested:&n; *                       &t;1. An IDE ATAPI TAPE shares the same interface&n; *                       &t;   and irq with an IDE ATAPI CDROM.&n; *                        &t;2. An IDE ATAPI TAPE shares the same interface&n; *                          &t;   and irq with a normal IDE disk.&n; *                        Both configurations seemed to work just fine !&n; *                        However, to be on the safe side, it is meanwhile&n; *                        recommended to give the IDE TAPE its own interface&n; *                        and irq.&n; *                       The one thing which needs to be done here is to&n; *                        add a &quot;request postpone&quot; feature to ide.c,&n; *                        so that we won&squot;t have to wait for the tape to finish&n; *                        performing a long media access (DSC) request (such&n; *                        as a rewind) before we can access the other device&n; *                        on the same interface. This effect doesn&squot;t disturb&n; *                        normal operation most of the time because read/write&n; *                        requests are relatively fast, and once we are&n; *                        performing one tape r/w request, a lot of requests&n; *                        from the other device can be queued and ide.c will&n; *&t;&t;&t;  service all of them after this single tape request.&n; * Ver 1.0   Dec 11 95   Integrated into Linux 1.3.46 development tree.&n; *                       On each read / write request, we now ask the drive&n; *                        if we can transfer a constant number of bytes&n; *                        (a parameter of the drive) only to its buffers,&n; *                        without causing actual media access. If we can&squot;t,&n; *                        we just wait until we can by polling the DSC bit.&n; *                        This ensures that while we are not transferring&n; *                        more bytes than the constant referred to above, the&n; *                        interrupt latency will not become too high and&n; *                        we won&squot;t cause an interrupt timeout, as happened&n; *                        occasionally in the previous version.&n; *                       While polling for DSC, the current request is&n; *                        postponed and ide.c is free to handle requests from&n; *                        the other device. This is handled transparently to&n; *                        ide.c. The hwgroup locking method which was used&n; *                        in the previous version was removed.&n; *                       Use of new general features which are provided by&n; *                        ide.c for use with atapi devices.&n; *                        (Programming done by Mark Lord)&n; *                       Few potential bug fixes (Again, suggested by Mark)&n; *                       Single character device data transfers are now&n; *                        not limited in size, as they were before.&n; *                       We are asking the tape about its recommended&n; *                        transfer unit and send a larger data transfer&n; *                        as several transfers of the above size.&n; *                        For best results, use an integral number of this&n; *                        basic unit (which is shown during driver&n; *                        initialization). I will soon add an ioctl to get&n; *                        this important parameter.&n; *                       Our data transfer buffer is allocated on startup,&n; *                        rather than before each data transfer. This should&n; *                        ensure that we will indeed have a data buffer.&n; * Ver 1.1   Dec 14 95   Fixed random problems which occurred when the tape&n; *                        shared an interface with another device.&n; *                        (poll_for_dsc was a complete mess).&n; *                       Removed some old (non-active) code which had&n; *                        to do with supporting buffer cache originated&n; *                        requests.&n; *                       The block device interface can now be opened, so&n; *                        that general ide driver features like the unmask&n; *                        interrupts flag can be selected with an ioctl.&n; *                        This is the only use of the block device interface.&n; *                       New fast pipelined operation mode (currently only on&n; *                        writes). When using the pipelined mode, the&n; *                        throughput can potentially reach the maximum&n; *                        tape supported throughput, regardless of the&n; *                        user backup program. On my tape drive, it sometimes&n; *                        boosted performance by a factor of 2. Pipelined&n; *                        mode is enabled by default, but since it has a few&n; *                        downfalls as well, you may want to disable it.&n; *                        A short explanation of the pipelined operation mode&n; *                        is available below.&n; * Ver 1.2   Jan  1 96   Eliminated pipelined mode race condition.&n; *                       Added pipeline read mode. As a result, restores&n; *                        are now as fast as backups.&n; *                       Optimized shared interface behavior. The new behavior&n; *                        typically results in better IDE bus efficiency and&n; *                        higher tape throughput.&n; *                       Pre-calculation of the expected read/write request&n; *                        service time, based on the tape&squot;s parameters. In&n; *                        the pipelined operation mode, this allows us to&n; *                        adjust our polling frequency to a much lower value,&n; *                        and thus to dramatically reduce our load on Linux,&n; *                        without any decrease in performance.&n; *                       Implemented additional mtio.h operations.&n; *                       The recommended user block size is returned by&n; *                        the MTIOCGET ioctl.&n; *                       Additional minor changes.&n; * Ver 1.3   Feb  9 96   Fixed pipelined read mode bug which prevented the&n; *                        use of some block sizes during a restore procedure.&n; *                       The character device interface will now present a&n; *                        continuous view of the media - any mix of block sizes&n; *                        during a backup/restore procedure is supported. The&n; *                        driver will buffer the requests internally and&n; *                        convert them to the tape&squot;s recommended transfer&n; *                        unit, making performance almost independent of the&n; *                        chosen user block size.&n; *                       Some improvements in error recovery.&n; *                       By cooperating with ide-dma.c, bus mastering DMA can&n; *                        now sometimes be used with IDE tape drives as well.&n; *                        Bus mastering DMA has the potential to dramatically&n; *                        reduce the CPU&squot;s overhead when accessing the device,&n; *                        and can be enabled by using hdparm -d1 on the tape&squot;s&n; *                        block device interface. For more info, read the&n; *                        comments in ide-dma.c.&n; * Ver 1.4   Mar 13 96   Fixed serialize support.&n; * Ver 1.5   Apr 12 96   Fixed shared interface operation, broken in 1.3.85.&n; *                       Fixed pipelined read mode inefficiency.&n; *                       Fixed nasty null dereferencing bug.&n; * Ver 1.6   Aug 16 96   Fixed FPU usage in the driver.&n; *                       Fixed end of media bug.&n; * Ver 1.7   Sep 10 96   Minor changes for the CONNER CTT8000-A model.&n; * Ver 1.8   Sep 26 96   Attempt to find a better balance between good&n; *                        interactive response and high system throughput.&n; * Ver 1.9   Nov  5 96   Automatically cross encountered filemarks rather&n; *                        than requiring an explicit FSF command.&n; *                       Abort pending requests at end of media.&n; *                       MTTELL was sometimes returning incorrect results.&n; *                       Return the real block size in the MTIOCGET ioctl.&n; *                       Some error recovery bug fixes.&n; * Ver 1.10  Nov  5 96   Major reorganization.&n; *                       Reduced CPU overhead a bit by eliminating internal&n; *                        bounce buffers.&n; *                       Added module support.&n; *                       Added multiple tape drives support.&n; *                       Added partition support.&n; *                       Rewrote DSC handling.&n; *                       Some portability fixes.&n; *                       Removed ide-tape.h.&n; *                       Additional minor changes.&n; * Ver 1.11  Dec  2 96   Bug fix in previous DSC timeout handling.&n; *                       Use ide_stall_queue() for DSC overlap.&n; *                       Use the maximum speed rather than the current speed&n; *                        to compute the request service time.&n; * Ver 1.12  Dec  7 97   Fix random memory overwriting and/or last block data&n; *                        corruption, which could occur if the total number&n; *                        of bytes written to the tape was not an integral&n; *                        number of tape blocks.&n; *                       Add support for INTERRUPT DRQ devices.&n; * Ver 1.13  Jan  2 98   Add &quot;speed == 0&quot; work-around for HP COLORADO 5GB&n; * Ver 1.14  Dec 30 98   Partial fixes for the Sony/AIWA tape drives.&n; *                       Replace cli()/sti() with hwgroup spinlocks.&n; * Ver 1.15  Mar 25 99   Fix SMP race condition by replacing hwgroup&n; *                        spinlock with private per-tape spinlock.&n; * Ver 1.16  Sep  1 99   Add OnStream tape support.&n; *                       Abort read pipeline on EOD.&n; *                       Wait for the tape to become ready in case it returns&n; *                        &quot;in the process of becoming ready&quot; on open().&n; *                       Fix zero padding of the last written block in&n; *                        case the tape block size is larger than PAGE_SIZE.&n; *                       Decrease the default disconnection time to tn.&n; * Ver 1.16e Oct  3 99   Minor fixes.&n; * Ver 1.16e1 Oct 13 99  Patches by Arnold Niessen,&n; *                          niessen@iae.nl / arnold.niessen@philips.com&n; *                   GO-1)  Undefined code in idetape_read_position&n; *&t;&t;&t;&t;according to Gadi&squot;s email&n; *                   AJN-1) Minor fix asc == 11 should be asc == 0x11&n; *                               in idetape_issue_packet_command (did effect&n; *                               debugging output only)&n; *                   AJN-2) Added more debugging output, and&n; *                              added ide-tape: where missing. I would also&n; *&t;&t;&t;&t;like to add tape-&gt;name where possible&n; *                   AJN-3) Added different debug_level&squot;s &n; *                              via /proc/ide/hdc/settings&n; * &t;&t;&t;&t;&quot;debug_level&quot; determines amount of debugging output;&n; * &t;&t;&t;&t;can be changed using /proc/ide/hdx/settings&n; * &t;&t;&t;&t;0 : almost no debugging output&n; * &t;&t;&t;&t;1 : 0+output errors only&n; * &t;&t;&t;&t;2 : 1+output all sensekey/asc&n; * &t;&t;&t;&t;3 : 2+follow all chrdev related procedures&n; * &t;&t;&t;&t;4 : 3+follow all procedures&n; * &t;&t;&t;&t;5 : 4+include pc_stack rq_stack info&n; * &t;&t;&t;&t;6 : 5+USE_COUNT updates&n; *                   AJN-4) Fixed timeout for retension in idetape_queue_pc_tail&n; *&t;&t;&t;&t;from 5 to 10 minutes&n; *                   AJN-5) Changed maximum number of blocks to skip when&n; *                              reading tapes with multiple consecutive write&n; *                              errors from 100 to 1000 in idetape_get_logical_blk&n; *                   Proposed changes to code:&n; *                   1) output &quot;logical_blk_num&quot; via /proc&n; *                   2) output &quot;current_operation&quot; via /proc&n; *                   3) Either solve or document the fact that `mt rewind&squot; is&n; *                      required after reading from /dev/nhtx to be&n; *&t;&t;&t;able to rmmod the idetape module;&n; *&t;&t;&t;Also, sometimes an application finishes but the&n; *&t;&t;&t;device remains `busy&squot; for some time. Same cause ?&n; *                   Proposed changes to release-notes:&n; *&t;&t;     4) write a simple `quickstart&squot; section in the&n; *                      release notes; I volunteer if you don&squot;t want to&n; * &t;&t;     5) include a pointer to video4linux in the doc&n; *                      to stimulate video applications&n; *                   6) release notes lines 331 and 362: explain what happens&n; *&t;&t;&t;if the application data rate is higher than 1100 KB/s; &n; *&t;&t;&t;similar approach to lower-than-500 kB/s ?&n; *&t;&t;     7) 6.6 Comparison; wouldn&squot;t it be better to allow different &n; *&t;&t;&t;strategies for read and write ?&n; *&t;&t;&t;Wouldn&squot;t it be better to control the tape buffer&n; *&t;&t;&t;contents instead of the bandwidth ?&n; *&t;&t;     8) line 536: replace will by would (if I understand&n; *&t;&t;&t;this section correctly, a hypothetical and unwanted situation&n; *&t;&t;&t; is being described)&n; * Ver 1.16f Dec 15 99   Change place of the secondary OnStream header frames.&n; * Ver 1.17  Nov 2000 / Jan 2001  Marcel Mol, marcel@mesa.nl&n; *&t;&t;&t;- Add idetape_onstream_mode_sense_tape_parameter_page&n; *&t;&t;&t;  function to get tape capacity in frames: tape-&gt;capacity.&n; *&t;&t;&t;- Add support for DI-50 drives( or any DI- drive).&n; *&t;&t;&t;- &squot;workaround&squot; for read error/blank block arround block 3000.&n; *&t;&t;&t;- Implement Early warning for end of media for Onstream.&n; *&t;&t;&t;- Cosmetic code changes for readability.&n; *&t;&t;&t;- Idetape_position_tape should not use SKIP bit during&n; *&t;&t;&t;  Onstream read recovery.&n; *&t;&t;&t;- Add capacity, logical_blk_num and first/last_frame_position&n; *&t;&t;&t;  to /proc/ide/hd?/settings.&n; *&t;&t;&t;- Module use count was gone in the Linux 2.4 driver.&n; * Ver 1.17a Apr 2001 Willem Riede osst@riede.org&n; * &t;&t;&t;- Get drive&squot;s actual block size from mode sense block descriptor&n; * &t;&t;&t;- Limit size of pipeline&n; *&n; * Here are some words from the first releases of hd.c, which are quoted&n; * in ide.c and apply here as well:&n; *&n; * | Special care is recommended.  Have Fun!&n; *&n; */
+multiline_comment|/*&n; * An overview of the pipelined operation mode.&n; *&n; * In the pipelined write mode, we will usually just add requests to our&n; * pipeline and return immediately, before we even start to service them. The&n; * user program will then have enough time to prepare the next request while&n; * we are still busy servicing previous requests. In the pipelined read mode,&n; * the situation is similar - we add read-ahead requests into the pipeline,&n; * before the user even requested them.&n; *&n; * The pipeline can be viewed as a &quot;safety net&quot; which will be activated when&n; * the system load is high and prevents the user backup program from keeping up&n; * with the current tape speed. At this point, the pipeline will get&n; * shorter and shorter but the tape will still be streaming at the same speed.&n; * Assuming we have enough pipeline stages, the system load will hopefully&n; * decrease before the pipeline is completely empty, and the backup program&n; * will be able to &quot;catch up&quot; and refill the pipeline again.&n; * &n; * When using the pipelined mode, it would be best to disable any type of&n; * buffering done by the user program, as ide-tape already provides all the&n; * benefits in the kernel, where it can be done in a more efficient way.&n; * As we will usually not block the user program on a request, the most&n; * efficient user code will then be a simple read-write-read-... cycle.&n; * Any additional logic will usually just slow down the backup process.&n; *&n; * Using the pipelined mode, I get a constant over 400 KBps throughput,&n; * which seems to be the maximum throughput supported by my tape.&n; *&n; * However, there are some downfalls:&n; *&n; *&t;1.&t;We use memory (for data buffers) in proportional to the number&n; *&t;&t;of pipeline stages (each stage is about 26 KB with my tape).&n; *&t;2.&t;In the pipelined write mode, we cheat and postpone error codes&n; *&t;&t;to the user task. In read mode, the actual tape position&n; *&t;&t;will be a bit further than the last requested block.&n; *&n; * Concerning (1):&n; *&n; *&t;1.&t;We allocate stages dynamically only when we need them. When&n; *&t;&t;we don&squot;t need them, we don&squot;t consume additional memory. In&n; *&t;&t;case we can&squot;t allocate stages, we just manage without them&n; *&t;&t;(at the expense of decreased throughput) so when Linux is&n; *&t;&t;tight in memory, we will not pose additional difficulties.&n; *&n; *&t;2.&t;The maximum number of stages (which is, in fact, the maximum&n; *&t;&t;amount of memory) which we allocate is limited by the compile&n; *&t;&t;time parameter IDETAPE_MAX_PIPELINE_STAGES.&n; *&n; *&t;3.&t;The maximum number of stages is a controlled parameter - We&n; *&t;&t;don&squot;t start from the user defined maximum number of stages&n; *&t;&t;but from the lower IDETAPE_MIN_PIPELINE_STAGES (again, we&n; *&t;&t;will not even allocate this amount of stages if the user&n; *&t;&t;program can&squot;t handle the speed). We then implement a feedback&n; *&t;&t;loop which checks if the pipeline is empty, and if it is, we&n; *&t;&t;increase the maximum number of stages as necessary until we&n; *&t;&t;reach the optimum value which just manages to keep the tape&n; *&t;&t;busy with minimum allocated memory or until we reach&n; *&t;&t;IDETAPE_MAX_PIPELINE_STAGES.&n; *&n; * Concerning (2):&n; *&n; *&t;In pipelined write mode, ide-tape can not return accurate error codes&n; *&t;to the user program since we usually just add the request to the&n; *      pipeline without waiting for it to be serviced. In case an error&n; *      occurs, I will report it on the next user request.&n; *&n; *&t;In the pipelined read mode, subsequent read requests or forward&n; *&t;filemark spacing will perform correctly, as we preserve all blocks&n; *&t;and filemarks which we encountered during our excess read-ahead.&n; * &n; *&t;For accurate tape positioning and error reporting, disabling&n; *&t;pipelined mode might be the best option.&n; *&n; * You can enable/disable/tune the pipelined operation mode by adjusting&n; * the compile time parameters below.&n; */
+multiline_comment|/*&n; *&t;Possible improvements.&n; *&n; *&t;1.&t;Support for the ATAPI overlap protocol.&n; *&n; *&t;&t;In order to maximize bus throughput, we currently use the DSC&n; *&t;&t;overlap method which enables ide.c to service requests from the&n; *&t;&t;other device while the tape is busy executing a command. The&n; *&t;&t;DSC overlap method involves polling the tape&squot;s status register&n; *&t;&t;for the DSC bit, and servicing the other device while the tape&n; *&t;&t;isn&squot;t ready.&n; *&n; *&t;&t;In the current QIC development standard (December 1995),&n; *&t;&t;it is recommended that new tape drives will *in addition* &n; *&t;&t;implement the ATAPI overlap protocol, which is used for the&n; *&t;&t;same purpose - efficient use of the IDE bus, but is interrupt&n; *&t;&t;driven and thus has much less CPU overhead.&n; *&n; *&t;&t;ATAPI overlap is likely to be supported in most new ATAPI&n; *&t;&t;devices, including new ATAPI cdroms, and thus provides us&n; *&t;&t;a method by which we can achieve higher throughput when&n; *&t;&t;sharing a (fast) ATA-2 disk with any (slow) new ATAPI device.&n; */
+DECL|macro|IDETAPE_VERSION
+mdefine_line|#define IDETAPE_VERSION &quot;1.17a&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -15,13 +19,9 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/atapi.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -427,6 +427,9 @@ mdefine_line|#define IDETAPE_DEBUG_BUGS&t;&t;1
 multiline_comment|/*&n; *&t;After each failed packet command we issue a request sense command&n; *&t;and retry the packet command IDETAPE_MAX_PC_RETRIES times.&n; *&n; *&t;Setting IDETAPE_MAX_PC_RETRIES to 0 will disable retries.&n; */
 DECL|macro|IDETAPE_MAX_PC_RETRIES
 mdefine_line|#define IDETAPE_MAX_PC_RETRIES&t;&t;3
+multiline_comment|/*&n; *&t;With each packet command, we allocate a buffer of&n; *&t;IDETAPE_PC_BUFFER_SIZE bytes. This is used for several packet&n; *&t;commands (Not for READ/WRITE commands).&n; */
+DECL|macro|IDETAPE_PC_BUFFER_SIZE
+mdefine_line|#define IDETAPE_PC_BUFFER_SIZE&t;&t;256
 multiline_comment|/*&n; *&t;In various places in the driver, we need to allocate storage&n; *&t;for packet commands and requests, which will remain valid while&n; *&t;we leave the driver to wait for an interrupt or a timeout event.&n; */
 DECL|macro|IDETAPE_PC_STACK
 mdefine_line|#define IDETAPE_PC_STACK&t;&t;(10 + IDETAPE_MAX_PC_RETRIES)
@@ -480,6 +483,115 @@ DECL|typedef|idetape_chrdev_direction_t
 )brace
 id|idetape_chrdev_direction_t
 suffix:semicolon
+multiline_comment|/*&n; *&t;Our view of a packet command.&n; */
+DECL|struct|idetape_packet_command_s
+r_typedef
+r_struct
+id|idetape_packet_command_s
+(brace
+DECL|member|c
+id|u8
+id|c
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* Actual packet bytes */
+DECL|member|retries
+r_int
+id|retries
+suffix:semicolon
+multiline_comment|/* On each retry, we increment retries */
+DECL|member|error
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* Error code */
+DECL|member|request_transfer
+r_int
+id|request_transfer
+suffix:semicolon
+multiline_comment|/* Bytes to transfer */
+DECL|member|actually_transferred
+r_int
+id|actually_transferred
+suffix:semicolon
+multiline_comment|/* Bytes actually transferred */
+DECL|member|buffer_size
+r_int
+id|buffer_size
+suffix:semicolon
+multiline_comment|/* Size of our data buffer */
+DECL|member|bio
+r_struct
+id|bio
+op_star
+id|bio
+suffix:semicolon
+DECL|member|b_data
+r_char
+op_star
+id|b_data
+suffix:semicolon
+DECL|member|b_count
+r_int
+id|b_count
+suffix:semicolon
+DECL|member|buffer
+id|byte
+op_star
+id|buffer
+suffix:semicolon
+multiline_comment|/* Data buffer */
+DECL|member|current_position
+id|byte
+op_star
+id|current_position
+suffix:semicolon
+multiline_comment|/* Pointer into the above buffer */
+DECL|member|callback
+id|ide_startstop_t
+(paren
+op_star
+id|callback
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Called when this packet command is completed */
+DECL|member|pc_buffer
+id|byte
+id|pc_buffer
+(braket
+id|IDETAPE_PC_BUFFER_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* Temporary buffer */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Status/Action bit flags: long for set_bit */
+DECL|typedef|idetape_pc_t
+)brace
+id|idetape_pc_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;Packet command flag bits.&n; */
+DECL|macro|PC_ABORT
+mdefine_line|#define&t;PC_ABORT&t;&t;&t;0&t;/* Set when an error is considered normal - We won&squot;t retry */
+DECL|macro|PC_WAIT_FOR_DSC
+mdefine_line|#define PC_WAIT_FOR_DSC&t;&t;&t;1&t;/* 1 When polling for DSC on a media access command */
+DECL|macro|PC_DMA_RECOMMENDED
+mdefine_line|#define PC_DMA_RECOMMENDED&t;&t;2&t;/* 1 when we prefer to use DMA if possible */
+DECL|macro|PC_DMA_IN_PROGRESS
+mdefine_line|#define&t;PC_DMA_IN_PROGRESS&t;&t;3&t;/* 1 while DMA in progress */
+DECL|macro|PC_DMA_ERROR
+mdefine_line|#define&t;PC_DMA_ERROR&t;&t;&t;4&t;/* 1 when encountered problem during DMA */
+DECL|macro|PC_WRITING
+mdefine_line|#define&t;PC_WRITING&t;&t;&t;5&t;/* Data direction */
 multiline_comment|/*&n; *&t;Capabilities and Mechanical Status Page&n; */
 r_typedef
 r_struct
@@ -492,26 +604,26 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* Page code - Should be 0x2a */
 DECL|member|reserved0_6
-id|u8
+id|__u8
 id|reserved0_6
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|ps
-id|u8
+id|__u8
 id|ps
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* parameters saveable */
 DECL|member|page_length
-id|u8
+id|__u8
 id|page_length
 suffix:semicolon
 multiline_comment|/* Page Length - Should be 0x12 */
 DECL|member|reserved2
 DECL|member|reserved3
-id|u8
+id|__u8
 id|reserved2
 comma
 id|reserved3
@@ -603,14 +715,14 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* The device can eject the volume */
 DECL|member|disconnect
-id|u8
+id|__u8
 id|disconnect
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* The device can break request &gt; ctl */
 DECL|member|reserved6_5
-id|u8
+id|__u8
 id|reserved6_5
 suffix:colon
 l_int|1
@@ -665,35 +777,35 @@ multiline_comment|/* slowb - the device restricts the byte count for PIO */
 multiline_comment|/* transfers for slow buffer memory ??? */
 multiline_comment|/* Also 32768 block size in some cases */
 DECL|member|max_speed
-id|u16
+id|__u16
 id|max_speed
 suffix:semicolon
 multiline_comment|/* Maximum speed supported in KBps */
 DECL|member|reserved10
 DECL|member|reserved11
-id|u8
+id|__u8
 id|reserved10
 comma
 id|reserved11
 suffix:semicolon
 DECL|member|ctl
-id|u16
+id|__u16
 id|ctl
 suffix:semicolon
 multiline_comment|/* Continuous Transfer Limit in blocks */
 DECL|member|speed
-id|u16
+id|__u16
 id|speed
 suffix:semicolon
 multiline_comment|/* Current Speed, in KBps */
 DECL|member|buffer_size
-id|u16
+id|__u16
 id|buffer_size
 suffix:semicolon
 multiline_comment|/* Buffer Size, in 512 bytes */
 DECL|member|reserved18
 DECL|member|reserved19
-id|u8
+id|__u8
 id|reserved18
 comma
 id|reserved19
@@ -726,12 +838,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|page_length
-id|u8
+id|__u8
 id|page_length
 suffix:semicolon
 multiline_comment|/* Page Length - Should be 2 */
 DECL|member|reserved2
-id|u8
+id|__u8
 id|reserved2
 suffix:semicolon
 DECL|member|play32
@@ -816,13 +928,143 @@ DECL|typedef|idetape_stage_t
 )brace
 id|idetape_stage_t
 suffix:semicolon
+multiline_comment|/*&n; *&t;REQUEST SENSE packet command result - Data Format.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|error_code
+r_int
+id|error_code
+suffix:colon
+l_int|7
+suffix:semicolon
+multiline_comment|/* Current of deferred errors */
+DECL|member|valid
+r_int
+id|valid
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The information field conforms to QIC-157C */
+DECL|member|reserved1
+id|__u8
+id|reserved1
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* Segment Number - Reserved */
+DECL|member|sense_key
+r_int
+id|sense_key
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Sense Key */
+DECL|member|reserved2_4
+r_int
+id|reserved2_4
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|ili
+r_int
+id|ili
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Incorrect Length Indicator */
+DECL|member|eom
+r_int
+id|eom
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* End Of Medium */
+DECL|member|filemark
+r_int
+id|filemark
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Filemark */
+DECL|member|information
+id|__u32
+id|information
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|member|asl
+id|__u8
+id|asl
+suffix:semicolon
+multiline_comment|/* Additional sense length (n-7) */
+DECL|member|command_specific
+id|__u32
+id|command_specific
+suffix:semicolon
+multiline_comment|/* Additional command specific information */
+DECL|member|asc
+id|__u8
+id|asc
+suffix:semicolon
+multiline_comment|/* Additional Sense Code */
+DECL|member|ascq
+id|__u8
+id|ascq
+suffix:semicolon
+multiline_comment|/* Additional Sense Code Qualifier */
+DECL|member|replaceable_unit_code
+id|__u8
+id|replaceable_unit_code
+suffix:semicolon
+multiline_comment|/* Field Replaceable Unit Code */
+DECL|member|sk_specific1
+r_int
+id|sk_specific1
+suffix:colon
+l_int|7
+suffix:semicolon
+multiline_comment|/* Sense Key Specific */
+DECL|member|sksv
+r_int
+id|sksv
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Sense Key Specific information is valid */
+DECL|member|sk_specific2
+id|__u8
+id|sk_specific2
+suffix:semicolon
+multiline_comment|/* Sense Key Specific */
+DECL|member|sk_specific3
+id|__u8
+id|sk_specific3
+suffix:semicolon
+multiline_comment|/* Sense Key Specific */
+DECL|member|pad
+id|__u8
+id|pad
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* Padding to 20 bytes */
+DECL|typedef|idetape_request_sense_result_t
+)brace
+id|idetape_request_sense_result_t
+suffix:semicolon
 multiline_comment|/*&n; *&t;Most of our global data which we need to save even as we leave the&n; *&t;driver due to an interrupt or a timer event is stored in a variable&n; *&t;of type idetape_tape_t, defined below.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|drive
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
@@ -835,22 +1077,19 @@ id|de_n
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Since a typical character device operation requires more&n;&t; *&t;than one packet command, we provide here enough memory&n;&t; *&t;for the maximum of interconnected packet commands.&n;&t; *&t;The packet commands are stored in the circular array pc_stack.&n;&t; *&t;pc_stack_index points to the last used entry, and warps around&n;&t; *&t;to the start when we get to the last array entry.&n;&t; *&n;&t; *&t;pc points to the current processed packet command.&n;&t; *&n;&t; *&t;failed_pc points to the last failed packet command, or contains&n;&t; *&t;NULL if we do not need to retry any packet command. This is&n;&t; *&t;required since an additional packet command is needed before the&n;&t; *&t;retry, to get detailed information on what went wrong.&n;&t; */
 DECL|member|pc
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 suffix:semicolon
 multiline_comment|/* Current packet command */
 DECL|member|failed_pc
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|failed_pc
 suffix:semicolon
 multiline_comment|/* Last failed packet command */
 DECL|member|pc_stack
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc_stack
 (braket
 id|IDETAPE_PC_STACK
@@ -914,7 +1153,7 @@ suffix:semicolon
 multiline_comment|/* Maximum waiting time */
 multiline_comment|/*&n;&t; *&t;Read position information&n;&t; */
 DECL|member|partition
-id|u8
+id|byte
 id|partition
 suffix:semicolon
 DECL|member|first_frame_position
@@ -937,7 +1176,7 @@ multiline_comment|/*&n;&t; *&t;Last error information&n;&t; */
 DECL|member|sense_key
 DECL|member|asc
 DECL|member|ascq
-id|u8
+id|byte
 id|sense_key
 comma
 id|asc
@@ -1103,7 +1342,7 @@ r_int
 id|avg_speed
 suffix:semicolon
 DECL|member|sense
-id|atapi_request_sense_result_t
+id|idetape_request_sense_result_t
 id|sense
 suffix:semicolon
 multiline_comment|/* last sense information */
@@ -1476,19 +1715,573 @@ DECL|macro|IDETAPE_ERROR_FILEMARK
 mdefine_line|#define&t;IDETAPE_ERROR_FILEMARK&t;&t;102
 DECL|macro|IDETAPE_ERROR_EOD
 mdefine_line|#define&t;IDETAPE_ERROR_EOD&t;&t;103
-multiline_comment|/*&n; *&t;idetape_chrdev_t provides the link between out character device&n; *&t;interface and our block device interface and the corresponding&n; *&t;ata_device structure.&n; */
+multiline_comment|/*&n; *&t;The ATAPI Status Register.&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|check
+r_int
+id|check
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Error occurred */
+DECL|member|idx
+r_int
+id|idx
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|corr
+r_int
+id|corr
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Correctable error occurred */
+DECL|member|drq
+r_int
+id|drq
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Data is request by the device */
+DECL|member|dsc
+r_int
+id|dsc
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Buffer availability / Media access command finished */
+DECL|member|reserved5
+r_int
+id|reserved5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|drdy
+r_int
+id|drdy
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Ignored for ATAPI commands (ready to accept ATA command) */
+DECL|member|bsy
+r_int
+id|bsy
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The device has access to the command block */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_status_reg_t
+)brace
+id|idetape_status_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;The ATAPI error register.&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|ili
+r_int
+id|ili
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Illegal Length Indication */
+DECL|member|eom
+r_int
+id|eom
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* End Of Media Detected */
+DECL|member|abrt
+r_int
+id|abrt
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Aborted command - As defined by ATA */
+DECL|member|mcr
+r_int
+id|mcr
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Media Change Requested - As defined by ATA */
+DECL|member|sense_key
+r_int
+id|sense_key
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Sense key of the last failed packet command */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_error_reg_t
+)brace
+id|idetape_error_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;ATAPI Feature Register&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|dma
+r_int
+id|dma
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Using DMA or PIO */
+DECL|member|reserved321
+r_int
+id|reserved321
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|reserved654
+r_int
+id|reserved654
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* Reserved (Tag Type) */
+DECL|member|reserved7
+r_int
+id|reserved7
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_feature_reg_t
+)brace
+id|idetape_feature_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;ATAPI Byte Count Register.&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|16
+suffix:semicolon
+r_struct
+(brace
+DECL|member|low
+r_int
+id|low
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* LSB */
+DECL|member|high
+r_int
+id|high
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* MSB */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_bcount_reg_t
+)brace
+id|idetape_bcount_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;ATAPI Interrupt Reason Register.&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|cod
+r_int
+id|cod
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Information transferred is command (1) or data (0) */
+DECL|member|io
+r_int
+id|io
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The device requests us to read (1) or write (0) */
+DECL|member|reserved
+r_int
+id|reserved
+suffix:colon
+l_int|6
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_ireason_reg_t
+)brace
+id|idetape_ireason_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;ATAPI Drive Select Register&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|sam_lun
+r_int
+id|sam_lun
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Should be zero with ATAPI (not used) */
+DECL|member|drv
+r_int
+id|drv
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The responding drive will be drive 0 (0) or drive 1 (1) */
+DECL|member|one5
+r_int
+id|one5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Should be set to 1 */
+DECL|member|reserved6
+r_int
+id|reserved6
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|one7
+r_int
+id|one7
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Should be set to 1 */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_drivesel_reg_t
+)brace
+id|idetape_drivesel_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;ATAPI Device Control Register&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+DECL|member|zero0
+r_int
+id|zero0
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Should be set to zero */
+DECL|member|nien
+r_int
+id|nien
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Device interrupt is disabled (1) or enabled (0) */
+DECL|member|srst
+r_int
+id|srst
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ATA software reset. ATAPI devices should use the new ATAPI srst. */
+DECL|member|one3
+r_int
+id|one3
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Should be set to 1 */
+DECL|member|reserved4567
+r_int
+id|reserved4567
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|idetape_control_reg_t
+)brace
+id|idetape_control_reg_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;idetape_chrdev_t provides the link between out character device&n; *&t;interface and our block device interface and the corresponding&n; *&t;ide_drive_t structure.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|drive
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
 DECL|typedef|idetape_chrdev_t
 )brace
 id|idetape_chrdev_t
+suffix:semicolon
+multiline_comment|/*&n; *&t;The following is used to format the general configuration word of&n; *&t;the ATAPI IDENTIFY DEVICE command.&n; */
+DECL|struct|idetape_id_gcw
+r_struct
+id|idetape_id_gcw
+(brace
+DECL|member|packet_size
+r_int
+id|packet_size
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* Packet Size */
+DECL|member|reserved234
+r_int
+id|reserved234
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|drq_type
+r_int
+id|drq_type
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* Command packet DRQ type */
+DECL|member|removable
+r_int
+id|removable
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Removable media */
+DECL|member|device_type
+r_int
+id|device_type
+suffix:colon
+l_int|5
+suffix:semicolon
+multiline_comment|/* Device type */
+DECL|member|reserved13
+r_int
+id|reserved13
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|protocol
+r_int
+id|protocol
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* Protocol type */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;INQUIRY packet command - Data Format (From Table 6-8 of QIC-157C)&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|device_type
+r_int
+id|device_type
+suffix:colon
+l_int|5
+suffix:semicolon
+multiline_comment|/* Peripheral Device Type */
+DECL|member|reserved0_765
+r_int
+id|reserved0_765
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* Peripheral Qualifier - Reserved */
+DECL|member|reserved1_6t0
+r_int
+id|reserved1_6t0
+suffix:colon
+l_int|7
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|rmb
+r_int
+id|rmb
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Removable Medium Bit */
+DECL|member|ansi_version
+r_int
+id|ansi_version
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* ANSI Version */
+DECL|member|ecma_version
+r_int
+id|ecma_version
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* ECMA Version */
+DECL|member|iso_version
+r_int
+id|iso_version
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* ISO Version */
+DECL|member|response_format
+r_int
+id|response_format
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Response Data Format */
+DECL|member|reserved3_45
+r_int
+id|reserved3_45
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|reserved3_6
+r_int
+id|reserved3_6
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* TrmIOP - Reserved */
+DECL|member|reserved3_7
+r_int
+id|reserved3_7
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* AENC - Reserved */
+DECL|member|additional_length
+id|__u8
+id|additional_length
+suffix:semicolon
+multiline_comment|/* Additional Length (total_length-4) */
+DECL|member|rsv5
+DECL|member|rsv6
+DECL|member|rsv7
+id|__u8
+id|rsv5
+comma
+id|rsv6
+comma
+id|rsv7
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|vendor_id
+id|__u8
+id|vendor_id
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Vendor Identification */
+DECL|member|product_id
+id|__u8
+id|product_id
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Product Identification */
+DECL|member|revision_level
+id|__u8
+id|revision_level
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Revision Level */
+DECL|member|vendor_specific
+id|__u8
+id|vendor_specific
+(braket
+l_int|20
+)braket
+suffix:semicolon
+multiline_comment|/* Vendor Specific - Optional */
+DECL|member|reserved56t95
+id|__u8
+id|reserved56t95
+(braket
+l_int|40
+)braket
+suffix:semicolon
+multiline_comment|/* Reserved - Optional */
+multiline_comment|/* Additional information may be returned */
+DECL|typedef|idetape_inquiry_result_t
+)brace
+id|idetape_inquiry_result_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;READ POSITION packet command - Data Format (From Table 6-57)&n; */
 r_typedef
@@ -1917,7 +2710,7 @@ DECL|typedef|idetape_config_t
 )brace
 id|idetape_config_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;The variables below are used for the character device interface.&n; *&t;Additional state variables are defined in our ata_device structure.&n; */
+multiline_comment|/*&n; *&t;The variables below are used for the character device interface.&n; *&t;Additional state variables are defined in our ide_drive_t structure.&n; */
 DECL|variable|idetape_chrdevs
 r_static
 id|idetape_chrdev_t
@@ -1941,9 +2734,8 @@ DECL|function|idetape_sense_key_verbose
 r_char
 op_star
 id|idetape_sense_key_verbose
-c_func
 (paren
-id|u8
+id|byte
 id|idetape_sense_key
 )paren
 (brace
@@ -1984,9 +2776,8 @@ DECL|function|idetape_command_key_verbose
 r_char
 op_star
 id|idetape_command_key_verbose
-c_func
 (paren
-id|u8
+id|byte
 id|idetape_command_key
 )paren
 (brace
@@ -2132,8 +2923,7 @@ r_void
 id|idetape_onstream_mode_sense_tape_parameter_page
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -2166,19 +2956,44 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Too bad. The drive wants to send us data which we are not ready to accept.&n; * Just throw it away.&n; */
+DECL|function|idetape_discard_data
+r_static
+r_void
+id|idetape_discard_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_int
+r_int
+id|bcount
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|bcount
+op_decrement
+)paren
+id|IN_BYTE
+c_func
+(paren
+id|IDE_DATA_REG
+)paren
+suffix:semicolon
+)brace
 DECL|function|idetape_input_buffers
 r_static
 r_void
 id|idetape_input_buffers
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -2213,12 +3028,14 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: bio == NULL in idetape_input_buffers&bslash;n&quot;
+l_string|&quot;ide-tape: bio == NULL in &quot;
+l_string|&quot;idetape_input_buffers&bslash;n&quot;
 )paren
 suffix:semicolon
-id|atapi_discard_data
+id|idetape_discard_data
 c_func
 (paren
 id|drive
@@ -2229,7 +3046,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
 id|min
@@ -2242,7 +3059,7 @@ comma
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_read
+id|atapi_input_bytes
 c_func
 (paren
 id|drive
@@ -2298,15 +3115,12 @@ DECL|function|idetape_output_buffers
 r_static
 r_void
 id|idetape_output_buffers
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -2341,30 +3155,41 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: bio == NULL in idetape_output_buffers&bslash;n&quot;
+l_string|&quot;ide-tape: bio == NULL in &quot;
+l_string|&quot;idetape_output_buffers&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|pc-&gt;b_count
 comma
+(paren
+r_int
+r_int
+)paren
 id|bcount
 )paren
 suffix:semicolon
-id|atapi_write
+id|atapi_output_bytes
 c_func
 (paren
 id|drive
 comma
+multiline_comment|/*(void *)*/
 id|bio_data
 c_func
 (paren
@@ -2426,10 +3251,8 @@ DECL|function|idetape_update_buffers
 r_static
 r_void
 id|idetape_update_buffers
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
@@ -2470,7 +3293,7 @@ c_loop
 id|bcount
 )paren
 (brace
-macro_line|# if IDETAPE_DEBUG_BUGS
+macro_line|#if IDETAPE_DEBUG_BUGS
 r_if
 c_cond
 (paren
@@ -2480,22 +3303,32 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: bio == NULL in idetape_update_buffers&bslash;n&quot;
+l_string|&quot;ide-tape: bio == NULL in &quot;
+l_string|&quot;idetape_update_buffers&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|# endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|bio-&gt;bi_size
 comma
+(paren
+r_int
+r_int
+)paren
 id|bcount
 )paren
 suffix:semicolon
@@ -2524,18 +3357,15 @@ op_assign
 id|bio
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; *&t;idetape_next_pc_storage returns a pointer to a place in which we can&n; *&t;safely store a packet command, even though we intend to leave the&n; *&t;driver. A storage space for a maximum of IDETAPE_PC_STACK packet&n; *&t;commands is allocated at initialization time.&n; */
 DECL|function|idetape_next_pc_storage
 r_static
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|idetape_next_pc_storage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -2555,6 +3385,7 @@ op_ge
 l_int|5
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: pc_stack_index=%d&bslash;n&quot;
@@ -2593,10 +3424,8 @@ r_struct
 id|request
 op_star
 id|idetape_next_rq_storage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -2616,6 +3445,7 @@ op_ge
 l_int|5
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: rq_stack_index=%d&bslash;n&quot;
@@ -2623,7 +3453,7 @@ comma
 id|tape-&gt;rq_stack_index
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -2646,19 +3476,67 @@ op_increment
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;idetape_init_pc initializes a packet command.&n; */
+DECL|function|idetape_init_pc
+r_static
+r_void
+id|idetape_init_pc
+(paren
+id|idetape_pc_t
+op_star
+id|pc
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|pc-&gt;c
+comma
+l_int|0
+comma
+l_int|12
+)paren
+suffix:semicolon
+id|pc-&gt;retries
+op_assign
+l_int|0
+suffix:semicolon
+id|pc-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
+id|pc-&gt;request_transfer
+op_assign
+l_int|0
+suffix:semicolon
+id|pc-&gt;buffer
+op_assign
+id|pc-&gt;pc_buffer
+suffix:semicolon
+id|pc-&gt;buffer_size
+op_assign
+id|IDETAPE_PC_BUFFER_SIZE
+suffix:semicolon
+id|pc-&gt;bio
+op_assign
+l_int|NULL
+suffix:semicolon
+id|pc-&gt;b_data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;idetape_analyze_error is called on each failed packet command retry&n; *&t;to analyze the request sense. We currently do not utilize this&n; *&t;information.&n; */
 DECL|function|idetape_analyze_error
 r_static
 r_void
 id|idetape_analyze_error
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|atapi_request_sense_result_t
+id|idetape_request_sense_result_t
 op_star
 id|result
 )paren
@@ -2669,8 +3547,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 op_assign
@@ -2703,9 +3580,11 @@ op_ge
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: pc = %x, sense key = %x, asc = %x, ascq = %x&bslash;n&quot;
+l_string|&quot;ide-tape: pc = %x, sense key = %x, &quot;
+l_string|&quot;asc = %x, ascq = %x&bslash;n&quot;
 comma
 id|pc-&gt;c
 (braket
@@ -2719,7 +3598,7 @@ comma
 id|result-&gt;ascq
 )paren
 suffix:semicolon
-macro_line|# if IDETAPE_DEBUG_LOG_VERBOSE
+macro_line|#if IDETAPE_DEBUG_LOG_VERBOSE
 r_if
 c_cond
 (paren
@@ -2728,13 +3607,18 @@ op_ge
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: pc = %s, sense key = %x, asc = %x, ascq = %x&bslash;n&quot;
+l_string|&quot;ide-tape: pc = %s, sense key = %x, &quot;
+l_string|&quot;asc = %x, ascq = %x&bslash;n&quot;
 comma
 id|idetape_command_key_verbose
 c_func
 (paren
+(paren
+id|byte
+)paren
 id|pc-&gt;c
 (braket
 l_int|0
@@ -2748,8 +3632,8 @@ comma
 id|result-&gt;ascq
 )paren
 suffix:semicolon
-macro_line|# endif
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG_VERBOSE */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -2777,15 +3661,14 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: we should use timeouts here */
-id|mdelay
+id|ide_stall_queue
 c_func
 (paren
+id|drive
+comma
 id|HZ
 op_div
 l_int|2
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -2797,6 +3680,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|PC_DMA_ERROR
 comma
@@ -2812,8 +3696,10 @@ op_minus
 id|tape-&gt;tape_block_size
 op_star
 id|ntohl
+c_func
 (paren
 id|get_unaligned
+c_func
 (paren
 op_amp
 id|result-&gt;information
@@ -2827,7 +3713,7 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -2946,6 +3832,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_ABORT
 comma
@@ -2971,10 +3858,8 @@ DECL|function|idetape_abort_pipeline
 r_static
 r_void
 id|idetape_abort_pipeline
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -3044,15 +3929,13 @@ id|stage-&gt;next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;idetape_active_next_stage will declare the next stage as &quot;active&quot;.&n; */
+multiline_comment|/*&n; * idetape_active_next_stage will declare the next stage as &quot;active&quot;.&n; */
 DECL|function|idetape_active_next_stage
 r_static
 r_void
 id|idetape_active_next_stage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -3086,12 +3969,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_active_next_stage&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#if IDETAPE_DEBUG_BUGS
 r_if
 c_cond
@@ -3102,6 +3986,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: Trying to activate a non existing stage&bslash;n&quot;
@@ -3110,7 +3995,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */&t;
 id|rq-&gt;buffer
 op_assign
 l_int|NULL
@@ -3137,10 +4022,8 @@ DECL|function|idetape_increase_max_pipeline_stages
 r_static
 r_void
 id|idetape_increase_max_pipeline_stages
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -3176,7 +4059,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_increase_max_pipeline_stages&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|tape-&gt;max_stages
 op_add_assign
 id|increase
@@ -3262,6 +4145,7 @@ l_int|0
 )paren
 (brace
 id|free_page
+c_func
 (paren
 (paren
 r_int
@@ -3293,12 +4177,14 @@ op_assign
 id|bio-&gt;bi_next
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|prev_bio
 )paren
 suffix:semicolon
 )brace
 id|kfree
+c_func
 (paren
 id|stage
 )paren
@@ -3319,6 +4205,7 @@ id|stage
 )paren
 (brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -3329,10 +4216,8 @@ DECL|function|idetape_remove_stage_head
 r_static
 r_void
 id|idetape_remove_stage_head
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -3356,12 +4241,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_remove_stage_head&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#if IDETAPE_DEBUG_BUGS
 r_if
 c_cond
@@ -3372,6 +4258,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: tape-&gt;first_stage is NULL&bslash;n&quot;
@@ -3389,6 +4276,7 @@ id|tape-&gt;first_stage
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: Trying to free our active pipeline stage&bslash;n&quot;
@@ -3397,7 +4285,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|stage
 op_assign
 id|tape-&gt;first_stage
@@ -3407,6 +4295,7 @@ op_assign
 id|stage-&gt;next
 suffix:semicolon
 id|idetape_kfree_stage
+c_func
 (paren
 id|tape
 comma
@@ -3437,6 +4326,7 @@ op_ne
 l_int|NULL
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: tape-&gt;next_stage != NULL&bslash;n&quot;
@@ -3448,12 +4338,13 @@ c_cond
 id|tape-&gt;nr_stages
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: nr_stages should be 0 now&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 )brace
 )brace
 multiline_comment|/*&n; *&t;idetape_end_request is used to finish servicing a request, and to&n; *&t;insert a pending pipeline request into the main device queue.&n; */
@@ -3461,22 +4352,28 @@ DECL|function|idetape_end_request
 r_static
 r_int
 id|idetape_end_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 comma
 r_int
 id|uptodate
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|rq
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -3486,8 +4383,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-comma
-id|flags2
 suffix:semicolon
 r_int
 id|error
@@ -3521,6 +4416,7 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_end_request&bslash;n&quot;
@@ -3580,6 +4476,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* The request was a pipelined data transfer request */
 r_if
 c_cond
 (paren
@@ -3588,7 +4485,6 @@ op_eq
 id|rq
 )paren
 (brace
-multiline_comment|/* The request was a pipelined data transfer request */
 id|tape-&gt;active_stage
 op_assign
 l_int|NULL
@@ -3744,6 +4640,7 @@ id|error
 )paren
 (brace
 id|set_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -3759,6 +4656,7 @@ op_eq
 id|IDETAPE_ERROR_EOD
 )paren
 id|idetape_abort_pipeline
+c_func
 (paren
 id|drive
 )paren
@@ -3781,6 +4679,7 @@ l_int|3
 )paren
 (brace
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -3848,6 +4747,7 @@ id|IDETAPE_ERROR_EOD
 )paren
 (brace
 id|set_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -3875,11 +4775,15 @@ id|tape-&gt;onstream_write_error
 )paren
 (brace
 id|idetape_active_next_stage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Insert the next request into the request queue.&n;&t;&t;&t; */
+(paren
+r_void
+)paren
 id|ide_do_drive_cmd
 c_func
 (paren
@@ -3912,39 +4816,19 @@ id|drive
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: replace tape-&gt;spinlock with channel-&gt;spinlock  --bzolnier */
-id|spin_lock_irqsave
+id|ide_end_drive_cmd
 c_func
 (paren
-id|drive-&gt;channel-&gt;lock
+id|drive
 comma
-id|flags2
-)paren
-suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-id|drive-&gt;rq
-op_assign
-l_int|NULL
-suffix:semicolon
-id|end_that_request_last
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|drive-&gt;channel-&gt;lock
+l_int|0
 comma
-id|flags2
+l_int|0
 )paren
 suffix:semicolon
+singleline_comment|//&t;blkdev_dequeue_request(rq);
+singleline_comment|//&t;drive-&gt;rq = NULL;
+singleline_comment|//&t;end_that_request_last(rq);
 r_if
 c_cond
 (paren
@@ -3987,19 +4871,12 @@ suffix:semicolon
 )brace
 DECL|function|idetape_request_sense_callback
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_request_sense_callback
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -4017,12 +4894,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_request_sense_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -4031,11 +4909,12 @@ id|tape-&gt;pc-&gt;error
 )paren
 (brace
 id|idetape_analyze_error
+c_func
 (paren
 id|drive
 comma
 (paren
-id|atapi_request_sense_result_t
+id|idetape_request_sense_result_t
 op_star
 )paren
 id|tape-&gt;pc-&gt;buffer
@@ -4046,8 +4925,6 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4055,6 +4932,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Error in REQUEST SENSE itself - Aborting request!&bslash;n&quot;
@@ -4065,26 +4943,25 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ide_stopped
+suffix:semicolon
 )brace
 DECL|function|idetape_create_request_sense_cmd
 r_static
 r_void
 id|idetape_create_request_sense_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -4119,15 +4996,12 @@ DECL|function|idetape_queue_pc_head
 r_static
 r_void
 id|idetape_queue_pc_head
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -4137,18 +5011,10 @@ op_star
 id|rq
 )paren
 (brace
-id|memset
+id|ide_init_drive_cmd
 c_func
 (paren
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|rq
-)paren
 )paren
 suffix:semicolon
 id|rq-&gt;buffer
@@ -4163,6 +5029,9 @@ id|rq-&gt;flags
 op_assign
 id|IDETAPE_PC_RQ1
 suffix:semicolon
+(paren
+r_void
+)paren
 id|ide_do_drive_cmd
 c_func
 (paren
@@ -4177,12 +5046,10 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;idetape_retry_pc is called when an error was detected during the&n; *&t;last packet command. We queue a request sense packet command in&n; *&t;the head of the request list.&n; */
 DECL|function|idetape_retry_pc
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_retry_pc
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -4193,8 +5060,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 suffix:semicolon
@@ -4203,12 +5069,13 @@ id|request
 op_star
 id|rq
 suffix:semicolon
-id|atapi_error_reg_t
+id|idetape_error_reg_t
 id|error
 suffix:semicolon
 id|error.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_ERROR_REG
 )paren
@@ -4216,6 +5083,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -4223,16 +5091,19 @@ suffix:semicolon
 id|rq
 op_assign
 id|idetape_next_rq_storage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_create_request_sense_cmd
+c_func
 (paren
 id|pc
 )paren
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|IDETAPE_IGNORE_DSC
 comma
@@ -4241,6 +5112,7 @@ id|tape-&gt;flags
 )paren
 suffix:semicolon
 id|idetape_queue_pc_head
+c_func
 (paren
 id|drive
 comma
@@ -4249,23 +5121,19 @@ comma
 id|rq
 )paren
 suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_postpone_request postpones the current request so that&n; *&t;ide.c will be able to service requests from another device on&n; *&t;the same interface while we are polling for DSC.&n; */
+multiline_comment|/*&n; *&t;idetape_postpone_request postpones the current request so that&n; *&t;ide.c will be able to service requests from another device on&n; *&t;the same hwgroup while we are polling for DSC.&n; */
 DECL|function|idetape_postpone_request
 r_static
 r_void
 id|idetape_postpone_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -4292,15 +5160,20 @@ suffix:semicolon
 macro_line|#endif
 id|tape-&gt;postponed_rq
 op_assign
-id|rq
-suffix:semicolon
-multiline_comment|/* FIXME: we should use timeouts here */
-id|mdelay
+id|HWGROUP
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
+suffix:semicolon
+id|ide_stall_queue
+c_func
+(paren
+id|drive
+comma
 id|tape-&gt;dsc_polling_frequency
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -4309,17 +5182,10 @@ DECL|function|idetape_pc_intr
 r_static
 id|ide_startstop_t
 id|idetape_pc_intr
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -4328,17 +5194,16 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_status_reg_t
+id|idetape_status_reg_t
 id|status
 suffix:semicolon
-id|atapi_bcount_reg_t
+id|idetape_bcount_reg_t
 id|bcount
 suffix:semicolon
-id|atapi_ireason_reg_t
+id|idetape_ireason_reg_t
 id|ireason
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 op_assign
@@ -4369,25 +5234,20 @@ op_ge
 l_int|4
 )paren
 id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;ide-tape: Reached idetape_pc_intr interrupt handler&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-id|ata_status
 c_func
 (paren
-id|drive
-comma
-l_int|0
-comma
-l_int|0
+id|KERN_INFO
+l_string|&quot;ide-tape: Reached idetape_pc_intr &quot;
+l_string|&quot;interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif /* IDETAPE_DEBUG_LOG */&t;
 id|status.all
 op_assign
-id|drive-&gt;status
+id|GET_STAT
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Clear the interrupt */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
@@ -4395,6 +5255,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -4406,15 +5267,24 @@ id|pc-&gt;flags
 r_if
 c_cond
 (paren
-id|udma_stop
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_end
+comma
 id|drive
 )paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * A DMA error is sometimes expected. For example,&n;&t;&t;&t; * if the tape is crossing a filemark during a&n;&t;&t;&t; * READ command, it will issue an irq and position&n;&t;&t;&t; * itself before the filemark, so that only a partial&n;&t;&t;&t; * data transfer will occur (which causes the DMA&n;&t;&t;&t; * error). In that case, we will later ask the tape&n;&t;&t;&t; * how much bytes of the original request were&n;&t;&t;&t; * actually transferred (we can&squot;t receive that&n;&t;&t;&t; * information from the DMA engine on most chipsets).&n;&t;&t;&t; */
 id|set_bit
+c_func
 (paren
 id|PC_DMA_ERROR
 comma
@@ -4436,6 +5306,7 @@ op_assign
 id|pc-&gt;request_transfer
 suffix:semicolon
 id|idetape_update_buffers
+c_func
 (paren
 id|pc
 )paren
@@ -4450,14 +5321,15 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: DMA finished&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -4497,6 +5369,7 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Packet command completed, %d bytes transferred&bslash;n&quot;
@@ -4504,7 +5377,7 @@ comma
 id|pc-&gt;actually_transferred
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|clear_bit
 c_func
 (paren
@@ -4586,6 +5459,7 @@ c_cond
 id|status.b.check
 op_logical_or
 id|test_bit
+c_func
 (paren
 id|PC_DMA_ERROR
 comma
@@ -4604,6 +5478,7 @@ op_ge
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: %s: I/O error, &quot;
@@ -4611,7 +5486,7 @@ comma
 id|tape-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -4624,13 +5499,18 @@ id|IDETAPE_REQUEST_SENSE_CMD
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: I/O error in request sense command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_LOG
@@ -4654,6 +5534,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
 id|idetape_retry_pc
 c_func
 (paren
@@ -4661,9 +5542,6 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* Retry operation */
-r_return
-id|ATA_OP_FINISHED
-suffix:semicolon
 )brace
 id|pc-&gt;error
 op_assign
@@ -4676,6 +5554,7 @@ op_logical_neg
 id|tape-&gt;onstream
 op_logical_and
 id|test_bit
+c_func
 (paren
 id|PC_WAIT_FOR_DSC
 comma
@@ -4706,13 +5585,11 @@ id|idetape_postpone_request
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* Allow ide.c to handle other requests */
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -4726,26 +5603,23 @@ id|tape-&gt;failed_pc
 op_assign
 l_int|NULL
 suffix:semicolon
+r_return
 id|pc
 op_member_access_from_pointer
 id|callback
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* Command finished - Call the callback function */
-r_return
-id|ATA_OP_FINISHED
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -4755,35 +5629,50 @@ id|pc-&gt;flags
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: The tape wants to issue more interrupts in DMA mode&bslash;n&quot;
+l_string|&quot;ide-tape: The tape wants to issue more &quot;
+l_string|&quot;interrupts in DMA mode&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-id|udma_enable
+(paren
+r_void
+)paren
+id|HWIF
 c_func
 (paren
 id|drive
+)paren
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_off
 comma
-l_int|0
-comma
-l_int|1
+id|drive
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|bcount.b.high
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_BCOUNTH_REG
 )paren
@@ -4792,6 +5681,7 @@ multiline_comment|/* Get the number of bytes to transfer */
 id|bcount.b.low
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_BCOUNTL_REG
 )paren
@@ -4800,6 +5690,7 @@ multiline_comment|/* on this interrupt */
 id|ireason.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_IREASON_REG
 )paren
@@ -4811,13 +5702,18 @@ id|ireason.b.cod
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: CoD != 0 in idetape_pc_intr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -4826,6 +5722,7 @@ c_cond
 id|ireason.b.io
 op_eq
 id|test_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -4836,6 +5733,7 @@ id|pc-&gt;flags
 (brace
 multiline_comment|/* Hopefully, we will never get here */
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: We wanted to %s, &quot;
@@ -4849,6 +5747,7 @@ l_string|&quot;Read&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: but the tape wants us to %s !&bslash;n&quot;
@@ -4862,7 +5761,11 @@ l_string|&quot;Write&quot;
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -4870,6 +5773,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -4902,23 +5806,45 @@ id|pc-&gt;buffer_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: The tape wants to send us more data than expected - discarding data&bslash;n&quot;
 )paren
 suffix:semicolon
-id|atapi_discard_data
+id|idetape_discard_data
+c_func
 (paren
 id|drive
 comma
 id|bcount.all
 )paren
 suffix:semicolon
-id|ata_set_handler
+r_if
+c_cond
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+op_ne
+l_int|NULL
+)paren
+multiline_comment|/* paranoia check */
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ide_set_handler
 c_func
 (paren
 id|drive
 comma
+op_amp
 id|idetape_pc_intr
 comma
 id|IDETAPE_WAIT_CMD
@@ -4927,7 +5853,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_CONTINUES
+id|ide_started
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_LOG
@@ -4939,18 +5865,20 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;ide-tape: The tape wants to send us more data than expected - allowing transfer&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 )brace
 )brace
 r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -4967,6 +5895,7 @@ op_ne
 l_int|NULL
 )paren
 id|idetape_output_buffers
+c_func
 (paren
 id|drive
 comma
@@ -4976,7 +5905,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
-id|atapi_write
+id|atapi_output_bytes
 c_func
 (paren
 id|drive
@@ -4998,6 +5927,7 @@ op_ne
 l_int|NULL
 )paren
 id|idetape_input_buffers
+c_func
 (paren
 id|drive
 comma
@@ -5007,7 +5937,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
-id|atapi_read
+id|atapi_input_bytes
 c_func
 (paren
 id|drive
@@ -5051,11 +5981,31 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ata_set_handler
+r_if
+c_cond
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+op_ne
+l_int|NULL
+)paren
+multiline_comment|/* paranoia check */
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ide_set_handler
 c_func
 (paren
 id|drive
 comma
+op_amp
 id|idetape_pc_intr
 comma
 id|IDETAPE_WAIT_CMD
@@ -5065,25 +6015,19 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* And set the interrupt handler again */
 r_return
-id|ATA_OP_CONTINUES
+id|ide_started
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Packet Command Interface&n; *&n; *&t;The current Packet Command is available in tape-&gt;pc, and will not&n; *&t;change until we finish handling it. Each packet command is associated&n; *&t;with a callback function that will be called when the command is&n; *&t;finished.&n; *&n; *&t;The handling will be done in three stages:&n; *&n; *&t;1.&t;idetape_issue_packet_command will send the packet command to the&n; *&t;&t;drive, and will set the interrupt handler to idetape_pc_intr.&n; *&n; *&t;2.&t;On each interrupt, idetape_pc_intr will be called. This step&n; *&t;&t;will be repeated until the device signals us that no more&n; *&t;&t;interrupts will be issued.&n; *&n; *&t;3.&t;ATAPI Tape media access commands have immediate status with a&n; *&t;&t;delayed process. In case of a successful initiation of a&n; *&t;&t;media access packet command, the DSC bit will be set when the&n; *&t;&t;actual execution of the command is finished.&n; *&t;&t;Since the tape drive will not issue an interrupt, we have to&n; *&t;&t;poll for this event. In this case, we define the request as&n; *&t;&t;&quot;low priority request&quot; by setting rq_status to&n; *&t;&t;IDETAPE_RQ_POSTPONED,&t;set a timer to poll for DSC and exit&n; *&t;&t;the driver.&n; *&n; *&t;&t;ide.c will then give higher priority to requests which&n; *&t;&t;originate from the other device, until will change rq_status&n; *&t;&t;to RQ_ACTIVE.&n; *&n; *&t;4.&t;When the packet command is finished, it will be checked for errors.&n; *&n; *&t;5.&t;In case an error was found, we queue a request sense packet command&n; *&t;&t;in front of the request queue and retry the operation up to&n; *&t;&t;IDETAPE_MAX_PC_RETRIES times.&n; *&n; *&t;6.&t;In case no error was found, or we decided to give up and not&n; *&t;&t;to retry again, the callback function will be called and then&n; *&t;&t;we will handle the next request.&n; *&n; */
+multiline_comment|/*&n; *&t;Packet Command Interface&n; *&n; *&t;The current Packet Command is available in tape-&gt;pc, and will not&n; *&t;change until we finish handling it. Each packet command is associated&n; *&t;with a callback function that will be called when the command is&n; *&t;finished.&n; *&n; *&t;The handling will be done in three stages:&n; *&n; *&t;1.&t;idetape_issue_packet_command will send the packet command to the&n; *&t;&t;drive, and will set the interrupt handler to idetape_pc_intr.&n; *&n; *&t;2.&t;On each interrupt, idetape_pc_intr will be called. This step&n; *&t;&t;will be repeated until the device signals us that no more&n; *&t;&t;interrupts will be issued.&n; *&n; *&t;3.&t;ATAPI Tape media access commands have immediate status with a&n; *&t;&t;delayed process. In case of a successful initiation of a&n; *&t;&t;media access packet command, the DSC bit will be set when the&n; *&t;&t;actual execution of the command is finished. &n; *&t;&t;Since the tape drive will not issue an interrupt, we have to&n; *&t;&t;poll for this event. In this case, we define the request as&n; *&t;&t;&quot;low priority request&quot; by setting rq_status to&n; *&t;&t;IDETAPE_RQ_POSTPONED, &t;set a timer to poll for DSC and exit&n; *&t;&t;the driver.&n; *&n; *&t;&t;ide.c will then give higher priority to requests which&n; *&t;&t;originate from the other device, until will change rq_status&n; *&t;&t;to RQ_ACTIVE.&n; *&n; *&t;4.&t;When the packet command is finished, it will be checked for errors.&n; *&n; *&t;5.&t;In case an error was found, we queue a request sense packet command&n; *&t;&t;in front of the request queue and retry the operation up to&n; *&t;&t;IDETAPE_MAX_PC_RETRIES times.&n; *&n; *&t;6.&t;In case no error was found, or we decided to give up and not&n; *&t;&t;to retry again, the callback function will be called and then&n; *&t;&t;we will handle the next request.&n; *&n; */
 DECL|function|idetape_transfer_pc
 r_static
 id|ide_startstop_t
 id|idetape_transfer_pc
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -5092,14 +6036,13 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 op_assign
 id|tape-&gt;pc
 suffix:semicolon
-id|atapi_ireason_reg_t
+id|idetape_ireason_reg_t
 id|ireason
 suffix:semicolon
 r_int
@@ -5107,14 +6050,18 @@ id|retries
 op_assign
 l_int|100
 suffix:semicolon
-r_int
-id|ret
+id|ide_startstop_t
+id|startstop
 suffix:semicolon
-id|ret
-op_assign
-id|ata_status_poll
+r_if
+c_cond
+(paren
+id|ide_wait_stat
 c_func
 (paren
+op_amp
+id|startstop
+comma
 id|drive
 comma
 id|DRQ_STAT
@@ -5122,31 +6069,24 @@ comma
 id|BUSY_STAT
 comma
 id|WAIT_READY
-comma
-id|rq
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|ATA_OP_READY
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|startstop
 suffix:semicolon
 )brace
 id|ireason.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_IREASON_REG
 )paren
@@ -5169,7 +6109,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: (IO,CoD != (0,1) while issuing a packet command, retrying&bslash;n&quot;
+l_string|&quot;ide-tape: (IO,CoD != (0,1) while issuing &quot;
+l_string|&quot;a packet command, retrying&bslash;n&quot;
 )paren
 suffix:semicolon
 id|udelay
@@ -5198,7 +6139,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: (IO,CoD != (0,1) while issuing a packet command, ignoring&bslash;n&quot;
+l_string|&quot;ide-tape: (IO,CoD != (0,1) while &quot;
+l_string|&quot;issuing a packet command, ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ireason.b.cod
@@ -5221,27 +6163,50 @@ id|ireason.b.io
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
+l_string|&quot;ide-tape: (IO,CoD) != (0,1) while issuing &quot;
+l_string|&quot;a packet command&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|ATA_OP_FINISHED
+r_return
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|tape-&gt;cmd_start_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|ata_set_handler
+r_if
+c_cond
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+op_ne
+l_int|NULL
+)paren
+multiline_comment|/* paranoia check */
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ide_set_handler
 c_func
 (paren
 id|drive
 comma
+op_amp
 id|idetape_pc_intr
 comma
 id|IDETAPE_WAIT_CMD
@@ -5250,7 +6215,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt routine */
-id|atapi_write
+id|atapi_output_bytes
 c_func
 (paren
 id|drive
@@ -5261,33 +6226,20 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
-id|ret
-op_assign
-id|ATA_OP_CONTINUES
-suffix:semicolon
-)brace
 r_return
-id|ret
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|idetape_issue_packet_command
 r_static
 id|ide_startstop_t
 id|idetape_issue_packet_command
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
@@ -5298,7 +6250,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_bcount_reg_t
+id|idetape_bcount_reg_t
 id|bcount
 suffix:semicolon
 r_int
@@ -5326,9 +6278,11 @@ id|IDETAPE_REQUEST_SENSE_CMD
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: possible ide-tape.c bug - Two request sense in serial were issued&bslash;n&quot;
+l_string|&quot;ide-tape: possible ide-tape.c bug - &quot;
+l_string|&quot;Two request sense in serial were issued&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5379,6 +6333,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|PC_ABORT
 comma
@@ -5420,9 +6375,12 @@ l_int|8
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: %s: I/O error, pc = %2x, key = %2x, asc = %2x, ascq = %2x&bslash;n&quot;
+l_string|&quot;ide-tape: %s: I/O error, &quot;
+l_string|&quot;pc = %2x, key = %2x, &quot;
+l_string|&quot;asc = %2x, ascq = %2x&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -5479,18 +6437,14 @@ id|tape-&gt;failed_pc
 op_assign
 l_int|NULL
 suffix:semicolon
+r_return
 id|pc
 op_member_access_from_pointer
 id|callback
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
-suffix:semicolon
-r_return
-id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_LOG
@@ -5502,6 +6456,7 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Retry number - %d&bslash;n&quot;
@@ -5509,7 +6464,7 @@ comma
 id|pc-&gt;retries
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|pc-&gt;retries
 op_increment
 suffix:semicolon
@@ -5532,6 +6487,7 @@ r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|PC_DMA_ERROR
 comma
@@ -5541,19 +6497,28 @@ id|pc-&gt;flags
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
+l_string|&quot;ide-tape: DMA disabled, &quot;
+l_string|&quot;reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-id|udma_enable
+(paren
+r_void
+)paren
+id|HWIF
 c_func
 (paren
 id|drive
+)paren
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_off
 comma
-l_int|0
-comma
-l_int|1
+id|drive
 )paren
 suffix:semicolon
 )brace
@@ -5561,6 +6526,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|PC_DMA_RECOMMENDED
 comma
@@ -5572,24 +6538,49 @@ id|drive-&gt;using_dma
 )paren
 id|dma_ok
 op_assign
-id|udma_init
+op_logical_neg
+id|HWIF
 c_func
 (paren
 id|drive
+)paren
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|test_bit
+c_func
+(paren
+id|PC_WRITING
 comma
-id|rq
+op_amp
+id|pc-&gt;flags
+)paren
+ques
+c_cond
+id|ide_dma_write
+suffix:colon
+id|ide_dma_read
+comma
+id|drive
 )paren
 suffix:semicolon
-macro_line|#endif
-id|ata_irq_enable
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+r_if
+c_cond
+(paren
+id|IDE_CONTROL_REG
+)paren
+id|OUT_BYTE
 c_func
 (paren
-id|drive
+id|drive-&gt;ctl
 comma
-l_int|1
+id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|dma_ok
 ques
@@ -5603,6 +6594,7 @@ id|IDE_FEATURE_REG
 suffix:semicolon
 multiline_comment|/* Use PIO/DMA */
 id|OUT_BYTE
+c_func
 (paren
 id|bcount.b.high
 comma
@@ -5610,6 +6602,7 @@ id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|bcount.b.low
 comma
@@ -5617,6 +6610,7 @@ id|IDE_BCOUNTL_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|drive-&gt;select.all
 comma
@@ -5640,16 +6634,27 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-id|udma_start
+(paren
+r_void
+)paren
+(paren
+id|HWIF
 c_func
 (paren
 id|drive
+)paren
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_begin
 comma
-id|rq
+id|drive
+)paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -5663,11 +6668,31 @@ id|tape-&gt;flags
 )paren
 )paren
 (brace
-id|ata_set_handler
+r_if
+c_cond
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+op_ne
+l_int|NULL
+)paren
+multiline_comment|/* paranoia check */
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ide_set_handler
 c_func
 (paren
 id|drive
 comma
+op_amp
 id|idetape_transfer_pc
 comma
 id|IDETAPE_WAIT_CMD
@@ -5684,7 +6709,7 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_CONTINUES
+id|ide_started
 suffix:semicolon
 )brace
 r_else
@@ -5702,8 +6727,6 @@ id|idetape_transfer_pc
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 )brace
@@ -5711,19 +6734,12 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;General packet command callback function.&n; */
 DECL|function|idetape_pc_callback
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_pc_callback
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -5741,18 +6757,17 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_pc_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|idetape_end_request
 c_func
 (paren
 id|drive
-comma
-id|rq
 comma
 id|tape-&gt;pc-&gt;error
 ques
@@ -5762,24 +6777,25 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A mode sense command is used to &quot;sense&quot; tape parameters.&n; */
 DECL|function|idetape_create_mode_sense_cmd
 r_static
 r_void
 id|idetape_create_mode_sense_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
-id|u8
+id|byte
 id|page_code
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -5860,23 +6876,18 @@ l_int|50
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
 DECL|function|idetape_onstream_buffer_fill_callback
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_onstream_buffer_fill_callback
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -6004,8 +7015,6 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 id|tape-&gt;pc-&gt;error
 ques
 c_cond
@@ -6014,21 +7023,21 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
 )brace
 DECL|function|idetape_queue_onstream_buffer_fill
 r_static
 r_void
 id|idetape_queue_onstream_buffer_fill
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 suffix:semicolon
@@ -6040,6 +7049,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -6047,11 +7057,13 @@ suffix:semicolon
 id|rq
 op_assign
 id|idetape_next_rq_storage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 id|pc
 comma
@@ -6063,6 +7075,7 @@ op_assign
 id|idetape_onstream_buffer_fill_callback
 suffix:semicolon
 id|idetape_queue_pc_head
+c_func
 (paren
 id|drive
 comma
@@ -6078,8 +7091,7 @@ r_void
 id|calculate_speeds
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -6102,13 +7114,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;controlled_pipeline_head_time
 op_plus
 l_int|120
 op_star
 id|HZ
+)paren
 )paren
 (brace
 id|tape-&gt;controlled_previous_pipeline_head
@@ -6131,13 +7147,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;controlled_pipeline_head_time
 op_plus
 l_int|60
 op_star
 id|HZ
+)paren
 )paren
 id|tape-&gt;controlled_pipeline_head_speed
 op_assign
@@ -6161,9 +7181,13 @@ r_else
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;controlled_previous_head_time
+)paren
 )paren
 id|tape-&gt;controlled_pipeline_head_speed
 op_assign
@@ -6196,13 +7220,17 @@ multiline_comment|/* -1 for read mode error recovery */
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;uncontrolled_previous_head_time
 op_plus
 l_int|10
 op_star
 id|HZ
+)paren
 )paren
 (brace
 id|tape-&gt;uncontrolled_pipeline_head_time
@@ -6242,13 +7270,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;uncontrolled_pipeline_head_time
 op_plus
 l_int|30
 op_star
 id|HZ
+)paren
 )paren
 (brace
 id|tape-&gt;uncontrolled_pipeline_head_time
@@ -6407,19 +7439,12 @@ suffix:semicolon
 )brace
 DECL|function|idetape_media_access_finished
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_media_access_finished
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -6428,14 +7453,13 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 op_assign
 id|tape-&gt;pc
 suffix:semicolon
-id|atapi_status_reg_t
+id|idetape_status_reg_t
 id|status
 suffix:semicolon
 r_if
@@ -6450,19 +7474,12 @@ id|KERN_INFO
 l_string|&quot;ide-tape: bug: onstream, media_access_finished&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ata_status
-c_func
-(paren
-id|drive
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|status.all
 op_assign
-id|drive-&gt;status
+id|GET_STAT
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6478,6 +7495,7 @@ id|status.b.check
 (brace
 multiline_comment|/* Error detected */
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: %s: I/O error, &quot;
@@ -6485,6 +7503,7 @@ comma
 id|tape-&gt;name
 )paren
 suffix:semicolon
+r_return
 id|idetape_retry_pc
 c_func
 (paren
@@ -6492,8 +7511,6 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* Retry operation */
-r_return
-suffix:semicolon
 )brace
 id|pc-&gt;error
 op_assign
@@ -6522,32 +7539,24 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_return
 id|pc
 op_member_access_from_pointer
 id|callback
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 )brace
 DECL|function|idetape_rw_callback
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_rw_callback
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -6555,6 +7564,19 @@ op_star
 id|tape
 op_assign
 id|drive-&gt;driver_data
+suffix:semicolon
+r_struct
+id|request
+op_star
+id|rq
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
 suffix:semicolon
 r_int
 id|blocks
@@ -6610,9 +7632,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;insert_time
+)paren
 )paren
 id|tape-&gt;insert_speed
 op_assign
@@ -6661,7 +7687,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
-macro_line|#if IDETAPE_DEBUG_LOG
+macro_line|#if IDETAPE_DEBUG_LOG&t;
 r_if
 c_cond
 (paren
@@ -6670,12 +7696,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_rw_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|tape-&gt;first_frame_position
 op_add_assign
 id|blocks
@@ -6695,8 +7722,6 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|1
 )paren
 suffix:semicolon
@@ -6706,24 +7731,23 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 id|tape-&gt;pc-&gt;error
 )paren
+suffix:semicolon
+r_return
+id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|idetape_create_read_cmd
 r_static
 r_void
 id|idetape_create_read_cmd
-c_func
 (paren
 id|idetape_tape_t
 op_star
 id|tape
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -6755,7 +7779,8 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|atapi_init_pc
+multiline_comment|/* effective page bh */
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -6769,8 +7794,10 @@ op_assign
 id|IDETAPE_READ_CMD
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htonl
+c_func
 (paren
 id|length
 )paren
@@ -6796,6 +7823,7 @@ l_int|1
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_rw_callback
 suffix:semicolon
 id|pc-&gt;bio
@@ -6907,8 +7935,7 @@ id|idetape_tape_t
 op_star
 id|tape
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -6934,7 +7961,7 @@ id|p
 op_assign
 id|bio
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -6974,6 +8001,7 @@ l_int|0xff
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 id|pc-&gt;bio
@@ -7019,14 +8047,12 @@ DECL|function|idetape_create_write_cmd
 r_static
 r_void
 id|idetape_create_write_cmd
-c_func
 (paren
 id|idetape_tape_t
 op_star
 id|tape
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -7058,7 +8084,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -7072,8 +8098,10 @@ op_assign
 id|IDETAPE_WRITE_CMD
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htonl
+c_func
 (paren
 id|length
 )paren
@@ -7099,9 +8127,11 @@ l_int|1
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_rw_callback
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|PC_WRITING
 comma
@@ -7199,6 +8229,7 @@ op_plus
 l_int|512
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|PC_DMA_RECOMMENDED
 comma
@@ -7214,15 +8245,170 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is our request handling function.&n; */
+multiline_comment|/*&n; * This is our end_request replacement function.&n; */
+DECL|function|idetape_do_end_request
+r_static
+r_int
+id|idetape_do_end_request
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_int
+id|uptodate
+)paren
+(brace
+r_struct
+id|request
+op_star
+id|rq
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|rq
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_STARTED
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * decide whether to reenable DMA -- 3 is a random magic for now,&n;&t; * if we DMA timeout more than 3 times, just stay in PIO&n;&t; */
+r_if
+c_cond
+(paren
+id|drive-&gt;state
+op_eq
+id|DMA_PIO_RETRY
+op_logical_and
+id|drive-&gt;retry_pio
+op_le
+l_int|3
+)paren
+(brace
+id|drive-&gt;state
+op_assign
+l_int|0
+suffix:semicolon
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|hwif
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_on
+comma
+id|drive
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|end_that_request_first
+c_func
+(paren
+id|rq
+comma
+id|uptodate
+comma
+id|rq-&gt;hard_cur_sectors
+)paren
+)paren
+(brace
+id|add_blkdev_randomness
+c_func
+(paren
+id|major
+c_func
+(paren
+id|rq-&gt;rq_dev
+)paren
+)paren
+suffix:semicolon
+id|blkdev_dequeue_request
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
+op_assign
+l_int|NULL
+suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * idetape_do_request is our request handling function.&t;&n; */
 DECL|function|idetape_do_request
 r_static
 id|ide_startstop_t
 id|idetape_do_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -7231,7 +8417,8 @@ id|request
 op_star
 id|rq
 comma
-id|sector_t
+r_int
+r_int
 id|block
 )paren
 (brace
@@ -7241,8 +8428,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 suffix:semicolon
@@ -7253,11 +8439,39 @@ id|postponed_rq
 op_assign
 id|tape-&gt;postponed_rq
 suffix:semicolon
-id|atapi_status_reg_t
+id|idetape_status_reg_t
 id|status
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG
-multiline_comment|/*&t;if (tape-&gt;debug_level &gt;= 5)&n;&t;&t;printk (KERN_INFO &quot;ide-tape: rq_status: %d, rq_dev: %u, cmd: %ld, errors: %d&bslash;n&quot;,rq-&gt;rq_status,(unsigned int) rq-&gt;rq_dev,rq-&gt;flags,rq-&gt;errors); */
+macro_line|#if 0
+r_if
+c_cond
+(paren
+id|tape-&gt;debug_level
+op_ge
+l_int|5
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: rq_status: %d, &quot;
+l_string|&quot;rq_dev: %u, cmd: %ld, errors: %d&bslash;n&quot;
+comma
+id|rq-&gt;rq_status
+comma
+(paren
+r_int
+r_int
+)paren
+id|rq-&gt;rq_dev
+comma
+id|rq-&gt;flags
+comma
+id|rq-&gt;errors
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7266,9 +8480,11 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: sector: %ld, nr_sectors: %ld, current_nr_sectors: %d&bslash;n&quot;
+l_string|&quot;ide-tape: sector: %ld, &quot;
+l_string|&quot;nr_sectors: %ld, current_nr_sectors: %d&bslash;n&quot;
 comma
 id|rq-&gt;sector
 comma
@@ -7277,43 +8493,41 @@ comma
 id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|IDETAPE_RQ_CMD
+c_func
 (paren
 id|rq-&gt;flags
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;We do not support buffer cache originated requests.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We do not support buffer cache originated requests.&n;&t;&t; */
 id|printk
+c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ide-tape: %s: Unsupported command in request queue (%ld)&bslash;n&quot;
+l_string|&quot;ide-tape: %s: Unsupported command in &quot;
+l_string|&quot;request queue (%ld)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|ata_end_request
+id|idetape_do_end_request
 c_func
 (paren
 id|drive
 comma
-id|rq
-comma
-l_int|0
-comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Let the common code handle it */
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Retry a failed packet command&n;&t; */
@@ -7338,8 +8552,6 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 id|tape-&gt;failed_pc
 )paren
 suffix:semicolon
@@ -7361,9 +8573,11 @@ id|postponed_rq
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: ide-tape.c bug - Two DSC requests were queued&bslash;n&quot;
+l_string|&quot;ide-tape: ide-tape.c bug - &quot;
+l_string|&quot;Two DSC requests were queued&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idetape_end_request
@@ -7371,34 +8585,25 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|tape-&gt;postponed_rq
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the tape is still busy, postpone our request and service&n;&t; * the other device meanwhile.&n;&t; */
-id|ata_status
-c_func
-(paren
-id|drive
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|status.all
 op_assign
-id|drive-&gt;status
+id|GET_STAT
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The OnStream tape drive doesn&squot;t support DSC. Assume&n;&t; * that DSC is always set.&n;&t; */
 r_if
@@ -7486,9 +8691,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;insert_time
+)paren
 )paren
 id|tape-&gt;insert_speed
 op_assign
@@ -7505,15 +8714,19 @@ id|tape-&gt;insert_time
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;insert_time
+)paren
 )paren
 id|tape-&gt;insert_speed
 op_assign
@@ -7618,7 +8831,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: postponing request, cmd %ld, cur %d, max %d&bslash;n&quot;
+l_string|&quot;ide-tape: postponing request, &quot;
+l_string|&quot;cmd %ld, cur %d, max %d&bslash;n&quot;
 comma
 id|rq-&gt;flags
 comma
@@ -7673,6 +8887,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_and_clear_bit
+c_func
 (paren
 id|IDETAPE_IGNORE_DSC
 comma
@@ -7725,6 +8940,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: %s: DSC timeout&bslash;n&quot;
@@ -7739,17 +8955,27 @@ id|rq-&gt;flags
 op_eq
 id|IDETAPE_PC_RQ2
 )paren
+(brace
 id|idetape_media_access_finished
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+id|ide_do_reset
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -7769,12 +8995,10 @@ id|idetape_postpone_request
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
 r_switch
@@ -7834,8 +9058,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;last_buffer_fill
 op_plus
 l_int|5
@@ -7843,6 +9070,7 @@ op_star
 id|HZ
 op_div
 l_int|100
+)paren
 )paren
 id|tape-&gt;req_buffer_fill
 op_assign
@@ -7922,8 +9150,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|tape-&gt;last_buffer_fill
 op_plus
 l_int|5
@@ -7931,6 +9162,7 @@ op_star
 id|HZ
 op_div
 l_int|100
+)paren
 )paren
 id|tape-&gt;req_buffer_fill
 op_assign
@@ -7946,6 +9178,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -7974,6 +9207,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -8004,13 +9238,11 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 id|IDETAPE_ERROR_EOD
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 r_case
 id|IDETAPE_ABORTED_READ_RQ
@@ -8042,23 +9274,19 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 id|IDETAPE_ERROR_EOD
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 r_case
 id|IDETAPE_PC_RQ1
 suffix:colon
-multiline_comment|/* FIXME: --mdcki */
 id|pc
 op_assign
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 )paren
 id|rq-&gt;buffer
@@ -8076,16 +9304,15 @@ id|idetape_media_access_finished
 c_func
 (paren
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug in IDETAPE_RQ_CMD macro&bslash;n&quot;
@@ -8096,13 +9323,11 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ATA_OP_FINISHED
+id|ide_stopped
 suffix:semicolon
 )brace
 r_return
@@ -8110,8 +9335,6 @@ id|idetape_issue_packet_command
 c_func
 (paren
 id|drive
-comma
-id|rq
 comma
 id|pc
 )paren
@@ -8324,23 +9547,11 @@ id|bv-&gt;bv_len
 op_eq
 id|full
 )paren
-(brace
 id|bv-&gt;bv_len
 op_assign
 id|bio-&gt;bi_size
 suffix:semicolon
-)brace
-macro_line|#if 0
-multiline_comment|/* FIXME: What what this supposed to achieve? */
-id|set_bit
-(paren
-id|BH_Lock
-comma
-op_amp
-id|bio-&gt;bi_flags
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|//&t;set_bit(BH_Lock, &amp;bio-&gt;bi_flags);
 r_while
 c_loop
 (paren
@@ -8477,6 +9688,7 @@ l_int|NULL
 )paren
 (brace
 id|free_page
+c_func
 (paren
 (paren
 r_int
@@ -8516,17 +9728,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME: What what this supposed to achieve? */
-id|set_bit
-(paren
-id|BH_Lock
-comma
-op_amp
-id|bio-&gt;bi_flags
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|//&t;&t;set_bit(BH_Lock, &amp;bio-&gt;bi_flags);
 id|prev_bio-&gt;bi_next
 op_assign
 id|bio
@@ -8579,6 +9781,7 @@ suffix:semicolon
 m_abort
 suffix:colon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -8613,6 +9816,7 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_kmalloc_stage&bslash;n&quot;
@@ -8647,6 +9851,7 @@ suffix:semicolon
 )brace
 r_return
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -8660,7 +9865,6 @@ DECL|function|idetape_copy_stage_from_user
 r_static
 r_void
 id|idetape_copy_stage_from_user
-c_func
 (paren
 id|idetape_tape_t
 op_star
@@ -8675,7 +9879,6 @@ r_char
 op_star
 id|buf
 comma
-r_int
 r_int
 id|n
 )paren
@@ -8706,9 +9909,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: bio == NULL in idetape_copy_stage_from_user&bslash;n&quot;
+l_string|&quot;ide-tape: bio == NULL in &quot;
+l_string|&quot;idetape_copy_stage_from_user&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8720,14 +9925,25 @@ op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|bio-&gt;bi_size
 op_minus
 id|tape-&gt;b_count
+)paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|n
 )paren
 suffix:semicolon
 id|copy_from_user
+c_func
 (paren
 id|bio_data
 c_func
@@ -8829,15 +10045,17 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: bio == NULL in idetape_copy_stage_to_user&bslash;n&quot;
+l_string|&quot;ide-tape: bio == NULL in &quot;
+l_string|&quot;idetape_copy_stage_to_user&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 id|count
 op_assign
 id|min
@@ -8849,6 +10067,7 @@ id|n
 )paren
 suffix:semicolon
 id|copy_to_user
+c_func
 (paren
 id|buf
 comma
@@ -9014,6 +10233,7 @@ op_assign
 id|tmp_aux
 suffix:semicolon
 id|idetape_init_merge_stage
+c_func
 (paren
 id|tape
 )paren
@@ -9024,10 +10244,8 @@ DECL|function|idetape_add_stage_tail
 r_static
 r_void
 id|idetape_add_stage_tail
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -9060,7 +10278,7 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_stage_tail&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -9128,10 +10346,8 @@ DECL|function|idetape_init_stage
 r_static
 r_void
 id|idetape_init_stage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -9504,10 +10720,8 @@ DECL|function|idetape_wait_for_request
 r_static
 r_void
 id|idetape_wait_for_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -9596,19 +10810,12 @@ suffix:semicolon
 )brace
 DECL|function|idetape_read_position_callback
 r_static
-r_void
+id|ide_startstop_t
 id|idetape_read_position_callback
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
 id|idetape_tape_t
@@ -9630,12 +10837,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -9660,6 +10868,7 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: BOP - %s&bslash;n&quot;
@@ -9680,6 +10889,7 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: EOP - %s&bslash;n&quot;
@@ -9692,7 +10902,7 @@ suffix:colon
 l_string|&quot;No&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -9700,12 +10910,14 @@ id|result-&gt;bpu
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Block location is unknown to the tape&bslash;n&quot;
 )paren
 suffix:semicolon
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_ADDRESS_VALID
 comma
@@ -9717,8 +10929,6 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
-comma
-id|rq
 comma
 l_int|0
 )paren
@@ -9735,17 +10945,19 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Block Location - %u&bslash;n&quot;
 comma
 id|ntohl
+c_func
 (paren
 id|result-&gt;first_block
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|tape-&gt;partition
 op_assign
 id|result-&gt;partition
@@ -9753,6 +10965,7 @@ suffix:semicolon
 id|tape-&gt;first_frame_position
 op_assign
 id|ntohl
+c_func
 (paren
 id|result-&gt;first_block
 )paren
@@ -9760,6 +10973,7 @@ suffix:semicolon
 id|tape-&gt;last_frame_position
 op_assign
 id|ntohl
+c_func
 (paren
 id|result-&gt;last_block
 )paren
@@ -9772,6 +10986,7 @@ l_int|2
 )braket
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|IDETAPE_ADDRESS_VALID
 comma
@@ -9783,8 +10998,6 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
-comma
-id|rq
 comma
 l_int|1
 )paren
@@ -9798,27 +11011,25 @@ c_func
 (paren
 id|drive
 comma
-id|rq
-comma
 l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ide_stopped
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idetape_create_write_filemark_cmd will:&n; *&n; *&t;&t;1.&t;Write a filemark if write_filemark=1.&n; *&t;&t;2.&t;Flush the device buffers without writing a filemark&n; *&t;&t;&t;if write_filemark=0.&n; *&n; */
 DECL|function|idetape_create_write_filemark_cmd
 r_static
 r_void
 id|idetape_create_write_filemark_cmd
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -9832,7 +11043,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -9877,6 +11088,7 @@ id|pc-&gt;flags
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -9886,13 +11098,12 @@ r_void
 id|idetape_create_test_unit_ready_cmd
 c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -9907,6 +11118,7 @@ id|IDETAPE_TEST_UNIT_READY_CMD
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -9915,15 +11127,12 @@ DECL|function|__idetape_queue_pc_tail
 r_static
 r_int
 id|__idetape_queue_pc_tail
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
@@ -9932,21 +11141,13 @@ r_struct
 id|request
 id|rq
 suffix:semicolon
-id|memset
+id|ide_init_drive_cmd
 c_func
 (paren
 op_amp
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|rq
-)paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: --mdcki */
 id|rq.buffer
 op_assign
 (paren
@@ -9976,15 +11177,12 @@ DECL|function|idetape_create_load_unload_cmd
 r_static
 r_void
 id|idetape_create_load_unload_cmd
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -9998,7 +11196,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -10048,6 +11246,7 @@ l_int|4
 suffix:semicolon
 )brace
 id|set_bit
+c_func
 (paren
 id|PC_WAIT_FOR_DSC
 comma
@@ -10057,6 +11256,7 @@ id|pc-&gt;flags
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -10064,10 +11264,8 @@ DECL|function|idetape_wait_ready
 r_static
 r_int
 id|idetape_wait_ready
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -10083,8 +11281,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for the tape to become ready&n;&t; */
@@ -10095,9 +11292,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
 )paren
 (brace
 id|idetape_create_test_unit_ready_cmd
@@ -10140,6 +11341,7 @@ l_int|2
 )paren
 (brace
 id|idetape_create_load_unload_cmd
+c_func
 (paren
 id|drive
 comma
@@ -10230,15 +11432,12 @@ DECL|function|idetape_queue_pc_tail
 r_static
 r_int
 id|idetape_queue_pc_tail
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
@@ -10284,6 +11483,8 @@ op_amp
 id|pc-&gt;flags
 )paren
 )paren
+(brace
+multiline_comment|/* AJN-4: Changed from 5 to 10 minutes;&n;&t;&t; * because retension takes approx.&n;&t;&t; * 8:20 with Onstream 30GB tape&n;&t;&t; */
 id|rc
 op_assign
 id|idetape_wait_ready
@@ -10298,7 +11499,7 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-multiline_comment|/* AJN-4: Changed from 5 to 10 minutes;&n;                          because retension takes approx. 8:20 with Onstream 30GB tape */
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -10307,16 +11508,13 @@ DECL|function|idetape_flush_tape_buffers
 r_static
 r_int
 id|idetape_flush_tape_buffers
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -10340,6 +11538,7 @@ c_cond
 id|rc
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -10371,15 +11570,13 @@ DECL|function|idetape_create_read_position_cmd
 r_static
 r_void
 id|idetape_create_read_position_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -10398,6 +11595,7 @@ l_int|20
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_read_position_callback
 suffix:semicolon
 )brace
@@ -10405,10 +11603,8 @@ DECL|function|idetape_read_position
 r_static
 r_int
 id|idetape_read_position
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -10419,8 +11615,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -10435,12 +11630,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#ifdef NO_LONGER_REQUIRED
 id|idetape_flush_tape_buffers
 c_func
@@ -10460,6 +11656,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -10544,15 +11741,12 @@ DECL|function|idetape_create_locate_cmd
 r_static
 r_void
 id|idetape_create_locate_cmd
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -10560,7 +11754,7 @@ r_int
 r_int
 id|block
 comma
-id|u8
+id|byte
 id|partition
 comma
 r_int
@@ -10573,7 +11767,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -10608,8 +11802,10 @@ op_assign
 l_int|2
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htonl
+c_func
 (paren
 id|block
 )paren
@@ -10649,6 +11845,7 @@ op_lshift
 l_int|7
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|PC_WAIT_FOR_DSC
 comma
@@ -10658,6 +11855,7 @@ id|pc-&gt;flags
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -10665,15 +11863,12 @@ DECL|function|idetape_create_prevent_cmd
 r_static
 r_int
 id|idetape_create_prevent_cmd
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -10696,7 +11891,7 @@ id|tape-&gt;capabilities.lock
 r_return
 l_int|0
 suffix:semicolon
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -10718,6 +11913,7 @@ id|prevent
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 r_return
@@ -10728,10 +11924,8 @@ DECL|function|__idetape_discard_read_pipeline
 r_static
 r_int
 id|__idetape_discard_read_pipeline
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -10772,6 +11966,7 @@ l_int|NULL
 )paren
 (brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -10812,6 +12007,7 @@ r_if
 c_cond
 (paren
 id|idetape_pipeline_active
+c_func
 (paren
 id|tape
 )paren
@@ -10847,6 +12043,7 @@ op_ne
 l_int|NULL
 )paren
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -10863,15 +12060,13 @@ r_return
 id|cnt
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_position_tape positions the tape to the requested block&n; *&t;using the LOCATE packet command. A READ POSITION command is then&n; *&t;issued to check where we are positioned.&n; *&n; *&t;Like all higher level operations, we queue the commands at the tail&n; *&t;of the request queue and wait for their completion.&n; *&n; */
+multiline_comment|/*&n; *&t;idetape_position_tape positions the tape to the requested block&n; *&t;using the LOCATE packet command. A READ POSITION command is then&n; *&t;issued to check where we are positioned.&n; *&n; *&t;Like all higher level operations, we queue the commands at the tail&n; *&t;of the request queue and wait for their completion.&n; *&t;&n; */
 DECL|function|idetape_position_tape
 r_static
 r_int
 id|idetape_position_tape
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -10879,7 +12074,7 @@ r_int
 r_int
 id|block
 comma
-id|u8
+id|byte
 id|partition
 comma
 r_int
@@ -10895,8 +12090,7 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_if
@@ -10925,6 +12119,7 @@ id|HZ
 )paren
 suffix:semicolon
 id|idetape_create_locate_cmd
+c_func
 (paren
 id|drive
 comma
@@ -10941,6 +12136,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -10959,6 +12155,7 @@ id|retval
 )paren
 suffix:semicolon
 id|idetape_create_read_position_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -10967,6 +12164,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -10980,10 +12178,8 @@ DECL|function|idetape_discard_read_pipeline
 r_static
 r_void
 id|idetape_discard_read_pipeline
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -11094,19 +12290,17 @@ DECL|function|idetape_update_stats
 r_static
 r_void
 id|idetape_update_stats
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -11131,15 +12325,13 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_queue_rw_tail generates a read/write request for the block&n; *&t;device interface and wait for it to be serviced.&n; */
+multiline_comment|/*&n; * idetape_queue_rw_tail generates a read/write request for the block&n; * device interface and wait for it to be serviced.&n; */
 DECL|function|idetape_queue_rw_tail
 r_static
 r_int
 id|idetape_queue_rw_tail
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -11174,6 +12366,7 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: idetape_queue_rw_tail: cmd=%d&bslash;n&quot;
@@ -11181,18 +12374,20 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#if IDETAPE_DEBUG_BUGS
 r_if
 c_cond
 (paren
 id|idetape_pipeline_active
+c_func
 (paren
 id|tape
 )paren
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: the pipeline is active in idetape_queue_rw_tail&bslash;n&quot;
@@ -11204,28 +12399,21 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-id|memset
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */&t;
+id|ide_init_drive_cmd
 c_func
 (paren
 op_amp
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|rq
 )paren
-)paren
-suffix:semicolon
-id|rq.flags
-op_assign
-id|cmd
 suffix:semicolon
 id|rq.bio
 op_assign
 id|bio
+suffix:semicolon
+id|rq.flags
+op_assign
+id|cmd
 suffix:semicolon
 id|rq.sector
 op_assign
@@ -11250,6 +12438,7 @@ suffix:semicolon
 r_void
 )paren
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma
@@ -11279,6 +12468,7 @@ c_cond
 id|tape-&gt;merge_stage
 )paren
 id|idetape_init_merge_stage
+c_func
 (paren
 id|tape
 )paren
@@ -11311,10 +12501,8 @@ DECL|function|idetape_onstream_read_back_buffer
 r_static
 r_void
 id|idetape_onstream_read_back_buffer
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -11497,18 +12685,10 @@ op_assign
 op_amp
 id|stage-&gt;rq
 suffix:semicolon
-id|memset
+id|ide_init_drive_cmd
 c_func
 (paren
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|rq
-)paren
 )paren
 suffix:semicolon
 id|rq-&gt;flags
@@ -11631,10 +12811,8 @@ DECL|function|idetape_onstream_write_error_recovery
 r_static
 r_void
 id|idetape_onstream_write_error_recovery
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -11899,10 +13077,8 @@ DECL|function|idetape_insert_pipeline_into_queue
 r_static
 r_void
 id|idetape_insert_pipeline_into_queue
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -11927,6 +13103,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_pipeline_active
+c_func
 (paren
 id|tape
 )paren
@@ -11953,6 +13130,7 @@ id|tape-&gt;flags
 )paren
 suffix:semicolon
 id|idetape_active_next_stage
+c_func
 (paren
 id|drive
 )paren
@@ -11961,6 +13139,7 @@ suffix:semicolon
 r_void
 )paren
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma
@@ -11975,15 +13154,13 @@ DECL|function|idetape_create_inquiry_cmd
 r_static
 r_void
 id|idetape_create_inquiry_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -12007,6 +13184,7 @@ l_int|254
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -12014,15 +13192,12 @@ DECL|function|idetape_create_rewind_cmd
 r_static
 r_void
 id|idetape_create_rewind_cmd
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
@@ -12033,8 +13208,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|atapi_init_pc
-c_func
+id|idetape_init_pc
 (paren
 id|pc
 )paren
@@ -12069,6 +13243,7 @@ id|pc-&gt;flags
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -12076,10 +13251,8 @@ DECL|function|idetape_create_mode_select_cmd
 r_static
 r_void
 id|idetape_create_mode_select_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
@@ -12087,7 +13260,7 @@ r_int
 id|length
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -12117,6 +13290,7 @@ op_assign
 l_int|0x10
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htons
 c_func
@@ -12142,6 +13316,7 @@ l_int|255
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -12149,15 +13324,13 @@ DECL|function|idetape_create_erase_cmd
 r_static
 r_void
 id|idetape_create_erase_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -12188,6 +13361,7 @@ id|pc-&gt;flags
 suffix:semicolon
 id|pc-&gt;callback
 op_assign
+op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
@@ -12195,21 +13369,19 @@ DECL|function|idetape_create_space_cmd
 r_static
 r_void
 id|idetape_create_space_cmd
-c_func
 (paren
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 op_star
 id|pc
 comma
 r_int
 id|count
 comma
-id|u8
+id|byte
 id|cmd
 )paren
 (brace
-id|atapi_init_pc
+id|idetape_init_pc
 c_func
 (paren
 id|pc
@@ -12223,6 +13395,7 @@ op_assign
 id|IDETAPE_SPACE_CMD
 suffix:semicolon
 id|put_unaligned
+c_func
 (paren
 id|htonl
 (paren
@@ -12268,10 +13441,8 @@ DECL|function|idetape_verify_stage
 r_static
 r_int
 id|idetape_verify_stage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -12725,10 +13896,8 @@ DECL|function|idetape_wait_first_stage
 r_static
 r_void
 id|idetape_wait_first_stage
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -12791,10 +13960,8 @@ DECL|function|idetape_add_chrdev_write_request
 r_static
 r_int
 id|idetape_add_chrdev_write_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -12830,13 +13997,14 @@ op_ge
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_chrdev_write_request&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
+multiline_comment|/*&n;     &t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
 r_while
 c_loop
 (paren
@@ -12844,6 +14012,7 @@ c_loop
 id|new_stage
 op_assign
 id|idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 )paren
@@ -12865,6 +14034,7 @@ r_if
 c_cond
 (paren
 id|idetape_pipeline_active
+c_func
 (paren
 id|tape
 )paren
@@ -12900,6 +14070,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -12908,6 +14079,7 @@ r_if
 c_cond
 (paren
 id|idetape_pipeline_active
+c_func
 (paren
 id|tape
 )paren
@@ -12917,6 +14089,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *&t;Linux is short on memory. Fallback to&n;&t;&t;&t; *&t;non-pipelined operation mode for this request.&n;&t;&t;&t; */
 r_return
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -12934,18 +14107,10 @@ op_assign
 op_amp
 id|new_stage-&gt;rq
 suffix:semicolon
-id|memset
+id|ide_init_drive_cmd
 c_func
 (paren
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|rq
-)paren
 )paren
 suffix:semicolon
 id|rq-&gt;flags
@@ -12964,6 +14129,7 @@ op_assign
 id|blocks
 suffix:semicolon
 id|idetape_switch_buffers
+c_func
 (paren
 id|tape
 comma
@@ -12986,6 +14152,7 @@ id|tape-&gt;logical_blk_num
 op_increment
 suffix:semicolon
 id|idetape_add_stage_tail
+c_func
 (paren
 id|drive
 comma
@@ -13070,6 +14237,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -13096,6 +14264,7 @@ OG
 l_int|5
 )paren
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -13106,6 +14275,7 @@ r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -13127,10 +14297,8 @@ DECL|function|idetape_wait_for_pipeline
 r_static
 r_void
 id|idetape_wait_for_pipeline
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -13158,6 +14326,7 @@ id|tape
 )paren
 (brace
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -13203,10 +14372,8 @@ DECL|function|idetape_empty_write_pipeline
 r_static
 r_void
 id|idetape_empty_write_pipeline
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -13237,6 +14404,7 @@ id|idetape_direction_write
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: Trying to empty write pipeline, but we are not writing.&bslash;n&quot;
@@ -13254,6 +14422,7 @@ id|tape-&gt;stage_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: merge_buffer too big&bslash;n&quot;
@@ -13264,7 +14433,7 @@ op_assign
 id|tape-&gt;stage_size
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 r_if
 c_cond
 (paren
@@ -13408,6 +14577,7 @@ suffix:semicolon
 r_void
 )paren
 id|idetape_add_chrdev_write_request
+c_func
 (paren
 id|drive
 comma
@@ -13420,6 +14590,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|idetape_wait_for_pipeline
+c_func
 (paren
 id|drive
 )paren
@@ -13433,6 +14604,7 @@ l_int|NULL
 )paren
 (brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -13443,6 +14615,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -13481,10 +14654,12 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: ide-tape pipeline bug, &quot;
-l_string|&quot;first_stage %p, next_stage %p, last_stage %p, nr_stages %d&bslash;n&quot;
+l_string|&quot;first_stage %p, next_stage %p, &quot;
+l_string|&quot;last_stage %p, nr_stages %d&bslash;n&quot;
 comma
 id|tape-&gt;first_stage
 comma
@@ -13502,10 +14677,8 @@ DECL|function|idetape_restart_speed_control
 r_static
 r_void
 id|idetape_restart_speed_control
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -13569,10 +14742,8 @@ DECL|function|idetape_initiate_read
 r_static
 r_int
 id|idetape_initiate_read
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -13658,6 +14829,7 @@ c_cond
 id|tape-&gt;merge_stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -13685,6 +14857,7 @@ multiline_comment|/*&n;&t;&t; *&t;Issue a read 0 command to ensure that DSC hand
 id|bytes_read
 op_assign
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -13704,6 +14877,7 @@ l_int|0
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -13732,18 +14906,11 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|memset
+id|ide_init_drive_cmd
 c_func
 (paren
 op_amp
 id|rq
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|rq
-)paren
 )paren
 suffix:semicolon
 id|rq.flags
@@ -13781,6 +14948,7 @@ id|max_stages
 id|new_stage
 op_assign
 id|idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 )paren
@@ -13798,6 +14966,7 @@ op_assign
 id|rq
 suffix:semicolon
 id|idetape_add_stage_tail
+c_func
 (paren
 id|drive
 comma
@@ -13816,6 +14985,7 @@ suffix:semicolon
 id|new_stage
 op_assign
 id|idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 )paren
@@ -13862,6 +15032,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -13890,6 +15061,7 @@ op_minus
 l_int|5
 )paren
 id|idetape_insert_pipeline_into_queue
+c_func
 (paren
 id|drive
 )paren
@@ -13904,10 +15076,8 @@ DECL|function|idetape_get_logical_blk
 r_static
 r_int
 id|idetape_get_logical_blk
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -14290,10 +15460,8 @@ DECL|function|idetape_add_chrdev_read_request
 r_static
 r_int
 id|idetape_add_chrdev_read_request
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -14328,6 +15496,7 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_chrdev_read_request, %d blocks&bslash;n&quot;
@@ -14390,6 +15559,7 @@ l_int|0
 suffix:semicolon
 r_return
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -14476,6 +15646,7 @@ id|IDETAPE_ERROR_FILEMARK
 )paren
 (brace
 id|idetape_switch_buffers
+c_func
 (paren
 id|tape
 comma
@@ -14483,6 +15654,7 @@ id|tape-&gt;first_stage
 )paren
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|IDETAPE_FILEMARK
 comma
@@ -14516,6 +15688,7 @@ suffix:semicolon
 r_else
 (brace
 id|idetape_switch_buffers
+c_func
 (paren
 id|tape
 comma
@@ -14550,6 +15723,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_FILEMARK
 comma
@@ -14567,6 +15741,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -14621,6 +15796,7 @@ id|tape-&gt;tape_block_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: trying to return more bytes than requested&bslash;n&quot;
@@ -14633,7 +15809,7 @@ op_star
 id|tape-&gt;tape_block_size
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 r_return
 (paren
 id|bytes_read
@@ -14644,10 +15820,8 @@ DECL|function|idetape_pad_zeros
 r_static
 r_void
 id|idetape_pad_zeros
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -14725,6 +15899,7 @@ id|bio-&gt;bi_size
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|bio_data
 c_func
@@ -14752,6 +15927,7 @@ id|bio-&gt;bi_next
 suffix:semicolon
 )brace
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -14768,10 +15944,8 @@ DECL|function|idetape_pipeline_size
 r_static
 r_int
 id|idetape_pipeline_size
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -14797,6 +15971,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|idetape_wait_for_pipeline
+c_func
 (paren
 id|drive
 )paren
@@ -14857,10 +16032,8 @@ DECL|function|idetape_rewind_tape
 r_static
 r_int
 id|idetape_rewind_tape
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -14868,8 +16041,7 @@ id|drive
 r_int
 id|retval
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_tape_t
@@ -14887,13 +16059,15 @@ op_ge
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_rewind_tape&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */&t;
 id|idetape_create_rewind_cmd
+c_func
 (paren
 id|drive
 comma
@@ -14904,6 +16078,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -14920,6 +16095,7 @@ r_return
 id|retval
 suffix:semicolon
 id|idetape_create_read_position_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -14928,6 +16104,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -14956,10 +16133,8 @@ DECL|function|idetape_blkdev_ioctl
 r_static
 r_int
 id|idetape_blkdev_ioctl
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -14991,7 +16166,7 @@ suffix:semicolon
 id|idetape_config_t
 id|config
 suffix:semicolon
-macro_line|#if IDETAPE_DEBUG_LOG
+macro_line|#if IDETAPE_DEBUG_LOG&t;
 r_if
 c_cond
 (paren
@@ -15000,12 +16175,13 @@ op_ge
 l_int|4
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_blkdev_ioctl&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_switch
 c_cond
 (paren
@@ -15071,6 +16247,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -15113,7 +16290,6 @@ DECL|function|idetape_blkdev_open
 r_static
 r_int
 id|idetape_blkdev_open
-c_func
 (paren
 r_struct
 id|inode
@@ -15125,8 +16301,7 @@ id|file
 op_star
 id|filp
 comma
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -15150,7 +16325,6 @@ DECL|function|idetape_blkdev_release
 r_static
 r_void
 id|idetape_blkdev_release
-c_func
 (paren
 r_struct
 id|inode
@@ -15162,8 +16336,7 @@ id|file
 op_star
 id|filp
 comma
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -15180,11 +16353,44 @@ l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_blkdev_release&bslash;n&qu
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; *&t;idetape_pre_reset is called before an ATAPI/ATA software reset.&n; */
+DECL|function|idetape_pre_reset
+r_static
+r_void
+id|idetape_pre_reset
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|idetape_tape_t
+op_star
+id|tape
+op_assign
+id|drive-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tape
+op_ne
+l_int|NULL
+)paren
+id|set_bit
+c_func
+(paren
+id|IDETAPE_IGNORE_DSC
+comma
+op_amp
+id|tape-&gt;flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Character device interface functions&n; */
 DECL|function|get_drive_ptr
 r_static
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|get_drive_ptr
 (paren
@@ -15232,10 +16438,8 @@ DECL|function|idetape_onstream_space_over_filemarks_backward
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_backward
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -15432,6 +16636,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -15458,10 +16663,8 @@ DECL|function|idetape_onstream_space_over_filemarks_forward_slow
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_forward_slow
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -15617,6 +16820,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -15649,6 +16853,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -15675,10 +16880,8 @@ DECL|function|idetape_onstream_space_over_filemarks_forward_fast
 r_static
 r_int
 id|idetape_onstream_space_over_filemarks_forward_fast
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -16086,6 +17289,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -16112,10 +17316,8 @@ DECL|function|idetape_space_over_filemarks
 r_static
 r_int
 id|idetape_space_over_filemarks
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -16132,8 +17334,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -16255,6 +17456,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_FILEMARK
 comma
@@ -16313,6 +17515,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -16350,6 +17553,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idetape_remove_stage_head
+c_func
 (paren
 id|drive
 )paren
@@ -16365,6 +17569,7 @@ id|flags
 suffix:semicolon
 )brace
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -16383,6 +17588,7 @@ r_case
 id|MTFSF
 suffix:colon
 id|idetape_create_space_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -16397,6 +17603,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -16423,6 +17630,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -16446,6 +17654,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -16471,6 +17680,7 @@ id|EIO
 )paren
 suffix:semicolon
 id|idetape_create_space_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -16488,6 +17698,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -16514,6 +17725,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -16537,6 +17749,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -16549,6 +17762,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: MTIO operation %d not supported&bslash;n&quot;
@@ -16594,12 +17808,12 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -16675,6 +17889,7 @@ op_ge
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_chrdev_read, count %Zd&bslash;n&quot;
@@ -16695,6 +17910,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|IDETAPE_DETECT_BS
 comma
@@ -16767,12 +17983,23 @@ op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|tape-&gt;merge_stage_size
+)paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|count
 )paren
 suffix:semicolon
 id|idetape_copy_stage_to_user
+c_func
 (paren
 id|tape
 comma
@@ -16807,6 +18034,7 @@ id|tape-&gt;stage_size
 id|bytes_read
 op_assign
 id|idetape_add_chrdev_read_request
+c_func
 (paren
 id|drive
 comma
@@ -16824,6 +18052,7 @@ r_goto
 id|finish
 suffix:semicolon
 id|idetape_copy_stage_to_user
+c_func
 (paren
 id|tape
 comma
@@ -16856,6 +18085,7 @@ id|count
 id|bytes_read
 op_assign
 id|idetape_add_chrdev_read_request
+c_func
 (paren
 id|drive
 comma
@@ -16877,12 +18107,21 @@ op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|count
 comma
+(paren
+r_int
+r_int
+)paren
 id|bytes_read
 )paren
 suffix:semicolon
 id|idetape_copy_stage_to_user
+c_func
 (paren
 id|tape
 comma
@@ -16913,6 +18152,7 @@ op_logical_neg
 id|actually_read
 op_logical_and
 id|test_bit
+c_func
 (paren
 id|IDETAPE_FILEMARK
 comma
@@ -16940,6 +18180,7 @@ id|tape-&gt;name
 suffix:semicolon
 macro_line|#endif
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -16974,7 +18215,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: %s: unrecovered read error on logical block number %d, skipping&bslash;n&quot;
+l_string|&quot;ide-tape: %s: unrecovered read error on &quot;
+l_string|&quot;logical block number %d, skipping&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -16997,10 +18239,8 @@ DECL|function|idetape_update_last_marker
 r_static
 r_void
 id|idetape_update_last_marker
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -17095,7 +18335,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: current position (2) %d, lblk %d&bslash;n&quot;
+l_string|&quot;ide-tape: current position (2) %d, &quot;
+l_string|&quot;lblk %d&bslash;n&quot;
 comma
 id|position
 comma
@@ -17113,7 +18354,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: current position (2) tape block %d&bslash;n&quot;
+l_string|&quot;ide-tape: current position (2) &quot;
+l_string|&quot;tape block %d&bslash;n&quot;
 comma
 id|tape-&gt;last_frame_position
 )paren
@@ -17136,6 +18378,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -17157,6 +18400,7 @@ id|tape-&gt;name
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17192,7 +18436,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: expected to find marker at addr %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: expected to find marker &quot;
+l_string|&quot;at addr %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -17200,6 +18445,7 @@ id|last_mark_addr
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17260,6 +18506,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -17275,7 +18522,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: couldn&squot;t write back marker frame at %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: couldn&squot;t write back marker &quot;
+l_string|&quot;frame at %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -17283,6 +18531,7 @@ id|last_mark_addr
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17303,11 +18552,13 @@ r_return
 suffix:semicolon
 )brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -17331,10 +18582,8 @@ DECL|function|idetape_write_filler
 r_static
 r_void
 id|idetape_write_filler
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -17445,9 +18694,9 @@ id|rc
 op_ne
 l_int|0
 )paren
+multiline_comment|/* don&squot;t write fillers if we cannot position the tape. */
 r_return
 suffix:semicolon
-multiline_comment|/* don&squot;t write fillers if we cannot position the tape. */
 id|strcpy
 c_func
 (paren
@@ -17472,6 +18721,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -17487,12 +18737,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: write_filler: couldn&squot;t write header frame&bslash;n&quot;
+l_string|&quot;ide-tape: %s: write_filler: &quot;
+l_string|&quot;couldn&squot;t write header frame&bslash;n&quot;
 comma
 id|tape-&gt;name
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17502,6 +18754,7 @@ suffix:semicolon
 )brace
 )brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17511,10 +18764,8 @@ DECL|function|__idetape_write_header
 r_static
 r_void
 id|__idetape_write_header
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -17699,6 +18950,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -17714,12 +18966,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: couldn&squot;t write header frame&bslash;n&quot;
+l_string|&quot;ide-tape: %s: couldn&squot;t write &quot;
+l_string|&quot;header frame&bslash;n&quot;
 comma
 id|tape-&gt;name
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -17729,11 +18983,13 @@ suffix:semicolon
 )brace
 )brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -17743,10 +18999,8 @@ DECL|function|idetape_write_header
 r_static
 r_void
 id|idetape_write_header
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -17830,7 +19084,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: locating back to eod frame addr %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: locating back to eod &quot;
+l_string|&quot;frame addr %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -17856,7 +19111,6 @@ DECL|function|idetape_chrdev_write
 r_static
 id|ssize_t
 id|idetape_chrdev_write
-c_func
 (paren
 r_struct
 id|file
@@ -17883,12 +19137,12 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -17933,14 +19187,16 @@ op_ge
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: Reached idetape_chrdev_write, count %Zd&bslash;n&quot;
+l_string|&quot;ide-tape: Reached idetape_chrdev_write, &quot;
+l_string|&quot;count %Zd&bslash;n&quot;
 comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -17959,7 +19215,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: %s: chrdev_write: use %d bytes as block size (%Zd used)&bslash;n&quot;
+l_string|&quot;ide-tape: %s: chrdev_write: use %d &quot;
+l_string|&quot;bytes as block size (%Zd used)&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -17973,7 +19230,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Check if we reach the end of the tape. Just assume the whole pipeline&n;&t;&t; * is filled with write requests!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if we reach the end of the tape. Just assume the&n;&t;&t; * whole pipeline is filled with write requests!&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -17992,7 +19249,8 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;chrdev_write: Write truncated at EOM early warning&quot;
+l_string|&quot;chrdev_write: Write truncated at &quot;
+l_string|&quot;EOM early warning&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -18032,6 +19290,7 @@ op_eq
 id|idetape_direction_read
 )paren
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -18048,9 +19307,11 @@ id|tape-&gt;merge_stage_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: merge_stage_size should be 0 now&bslash;n&quot;
+l_string|&quot;ide-tape: merge_stage_size &quot;
+l_string|&quot;should be 0 now&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape-&gt;merge_stage_size
@@ -18058,7 +19319,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_BUGS */
 r_if
 c_cond
 (paren
@@ -18066,6 +19327,7 @@ c_cond
 id|tape-&gt;merge_stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -18086,6 +19348,7 @@ op_assign
 id|idetape_direction_write
 suffix:semicolon
 id|idetape_init_merge_stage
+c_func
 (paren
 id|tape
 )paren
@@ -18193,7 +19456,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: positioning tape to eod at %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: positioning &quot;
+l_string|&quot;tape to eod at %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -18240,7 +19504,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: first_frame_position %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: &quot;
+l_string|&quot;first_frame_position %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -18253,6 +19518,7 @@ multiline_comment|/*&n;&t;&t; *&t;Issue a write 0 command to ensure that DSC han
 id|retval
 op_assign
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -18272,6 +19538,7 @@ l_int|0
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -18345,6 +19612,7 @@ id|tape-&gt;stage_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: bug: merge buffer too big&bslash;n&quot;
@@ -18361,14 +19629,25 @@ op_assign
 id|min
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|tape-&gt;stage_size
 op_minus
 id|tape-&gt;merge_stage_size
+)paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|count
 )paren
 suffix:semicolon
 id|idetape_copy_stage_from_user
+c_func
 (paren
 id|tape
 comma
@@ -18406,6 +19685,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_add_chrdev_write_request
+c_func
 (paren
 id|drive
 comma
@@ -18420,9 +19700,7 @@ op_le
 l_int|0
 )paren
 r_return
-(paren
 id|retval
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -18435,6 +19713,7 @@ id|tape-&gt;stage_size
 )paren
 (brace
 id|idetape_copy_stage_from_user
+c_func
 (paren
 id|tape
 comma
@@ -18456,6 +19735,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_add_chrdev_write_request
+c_func
 (paren
 id|drive
 comma
@@ -18474,9 +19754,7 @@ op_le
 l_int|0
 )paren
 r_return
-(paren
 id|retval
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -18490,6 +19768,7 @@ op_add_assign
 id|count
 suffix:semicolon
 id|idetape_copy_stage_from_user
+c_func
 (paren
 id|tape
 comma
@@ -18515,10 +19794,8 @@ DECL|function|idetape_write_filemark
 r_static
 r_int
 id|idetape_write_filemark
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -18532,8 +19809,7 @@ suffix:semicolon
 r_int
 id|last_mark_addr
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_if
@@ -18559,6 +19835,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -18568,6 +19845,7 @@ id|pc
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Couldn&squot;t write a filemark&bslash;n&quot;
@@ -18598,6 +19876,7 @@ suffix:semicolon
 id|tape-&gt;merge_stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -18627,6 +19906,7 @@ id|tape-&gt;logical_blk_num
 )paren
 suffix:semicolon
 id|idetape_pad_zeros
+c_func
 (paren
 id|drive
 comma
@@ -18637,6 +19917,7 @@ id|tape-&gt;logical_blk_num
 op_increment
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -18686,10 +19967,8 @@ DECL|function|idetape_write_eod
 r_static
 r_void
 id|idetape_write_eod
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -18713,6 +19992,7 @@ suffix:semicolon
 id|tape-&gt;merge_stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -18750,6 +20030,7 @@ id|tape-&gt;logical_blk_num
 )paren
 suffix:semicolon
 id|idetape_pad_zeros
+c_func
 (paren
 id|drive
 comma
@@ -18757,6 +20038,7 @@ id|tape-&gt;stage_size
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -18772,10 +20054,8 @@ suffix:semicolon
 DECL|function|idetape_seek_logical_blk
 r_int
 id|idetape_seek_logical_blk
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -18939,7 +20219,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: couldn&squot;t seek to logical block %d (at %d), %d retries&bslash;n&quot;
+l_string|&quot;ide-tape: %s: couldn&squot;t seek to logical block %d &quot;
+l_string|&quot;(at %d), %d retries&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -18968,15 +20249,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_mtioctop is called from idetape_chrdev_ioctl when&n; *&t;the general mtio MTIOCTOP ioctl is requested.&n; *&n; *&t;We currently support the following mtio.h operations:&n; *&n; *&t;MTFSF&t;-&t;Space over mt_count filemarks in the positive direction.&n; *&t;&t;&t;The tape is positioned after the last spaced filemark.&n; *&n; *&t;MTFSFM&t;-&t;Same as MTFSF, but the tape is positioned before the&n; *&t;&t;&t;last filemark.&n; *&n; *&t;MTBSF&t;-&t;Steps background over mt_count filemarks, tape is&n; *&t;&t;&t;positioned before the last filemark.&n; *&n; *&t;MTBSFM&t;-&t;Like MTBSF, only tape is positioned after the last filemark.&n; *&n; *&t;Note:&n; *&n; *&t;&t;MTBSF and MTBSFM are not supported when the tape doesn&squot;t&n; *&t;&t;supports spacing over filemarks in the reverse direction.&n; *&t;&t;In this case, MTFSFM is also usually not supported (it is&n; *&t;&t;supported in the rare case in which we crossed the filemark&n; *&t;&t;during our read-ahead pipelined operation mode).&n; *&n; *&t;MTWEOF&t;-&t;Writes mt_count filemarks. Tape is positioned after&n; *&t;&t;&t;the last written filemark.&n; *&n; *&t;MTREW&t;-&t;Rewinds tape.&n; *&n; *&t;MTLOAD&t;-&t;Loads the tape.&n; *&n; *&t;MTOFFL&t;-&t;Puts the tape drive &quot;Offline&quot;: Rewinds the tape and&n; *&t;MTUNLOAD&t;prevents further access until the media is replaced.&n; *&n; *&t;MTNOP&t;-&t;Flushes tape buffers.&n; *&n; *&t;MTRETEN&t;-&t;Retension media. This typically consists of one end&n; *&t;&t;&t;to end pass on the media.&n; *&n; *&t;MTEOM&t;-&t;Moves to the end of recorded data.&n; *&n; *&t;MTERASE&t;-&t;Erases tape.&n; *&n; *&t;MTSETBLK -&t;Sets the user block size to mt_count bytes. If&n; *&t;&t;&t;mt_count is 0, we will attempt to autodetect&n; *&t;&t;&t;the block size.&n; *&n; *&t;MTSEEK&t;-&t;Positions the tape in a specific block number, where&n; *&t;&t;&t;each block is assumed to contain which user_block_size&n; *&t;&t;&t;bytes.&n; *&n; *&t;MTSETPART -&t;Switches to another tape partition.&n; *&n; *&t;MTLOCK -&t;Locks the tape door.&n; *&n; *&t;MTUNLOCK -&t;Unlocks the tape door.&n; *&n; *&t;The following commands are currently not supported:&n; *&n; *&t;MTFSS, MTBSS, MTWSM, MTSETDENSITY,&n; *&t;MTSETDRVBUFFER, MT_ST_BOOLEANS, MT_ST_WRITE_THRESHOLD.&n; */
+multiline_comment|/*&n; *&t;idetape_mtioctop is called from idetape_chrdev_ioctl when&n; *&t;the general mtio MTIOCTOP ioctl is requested.&n; *&n; *&t;We currently support the following mtio.h operations:&n; *&n; *&t;MTFSF&t;-&t;Space over mt_count filemarks in the positive direction.&n; *&t;&t;&t;The tape is positioned after the last spaced filemark.&n; *&n; *&t;MTFSFM&t;-&t;Same as MTFSF, but the tape is positioned before the&n; *&t;&t;&t;last filemark.&n; *&n; *&t;MTBSF&t;-&t;Steps background over mt_count filemarks, tape is&n; *&t;&t;&t;positioned before the last filemark.&n; *&n; *&t;MTBSFM&t;-&t;Like MTBSF, only tape is positioned after the last filemark.&n; *&n; *&t;Note:&n; *&n; *&t;&t;MTBSF and MTBSFM are not supported when the tape doesn&squot;t&n; *&t;&t;supports spacing over filemarks in the reverse direction.&n; *&t;&t;In this case, MTFSFM is also usually not supported (it is&n; *&t;&t;supported in the rare case in which we crossed the filemark&n; *&t;&t;during our read-ahead pipelined operation mode).&n; *&t;&t;&n; *&t;MTWEOF&t;-&t;Writes mt_count filemarks. Tape is positioned after&n; *&t;&t;&t;the last written filemark.&n; *&n; *&t;MTREW&t;-&t;Rewinds tape.&n; *&n; *&t;MTLOAD&t;-&t;Loads the tape.&n; *&n; *&t;MTOFFL&t;-&t;Puts the tape drive &quot;Offline&quot;: Rewinds the tape and&n; *&t;MTUNLOAD&t;prevents further access until the media is replaced.&n; *&n; *&t;MTNOP&t;-&t;Flushes tape buffers.&n; *&n; *&t;MTRETEN&t;-&t;Retension media. This typically consists of one end&n; *&t;&t;&t;to end pass on the media.&n; *&n; *&t;MTEOM&t;-&t;Moves to the end of recorded data.&n; *&n; *&t;MTERASE&t;-&t;Erases tape.&n; *&n; *&t;MTSETBLK - &t;Sets the user block size to mt_count bytes. If&n; *&t;&t;&t;mt_count is 0, we will attempt to autodetect&n; *&t;&t;&t;the block size.&n; *&n; *&t;MTSEEK&t;-&t;Positions the tape in a specific block number, where&n; *&t;&t;&t;each block is assumed to contain which user_block_size&n; *&t;&t;&t;bytes.&n; *&n; *&t;MTSETPART - &t;Switches to another tape partition.&n; *&n; *&t;MTLOCK - &t;Locks the tape door.&n; *&n; *&t;MTUNLOCK - &t;Unlocks the tape door.&n; *&n; *&t;The following commands are currently not supported:&n; *&n; *&t;MTFSS, MTBSS, MTWSM, MTSETDENSITY,&n; *&t;MTSETDRVBUFFER, MT_ST_BOOLEANS, MT_ST_WRITE_THRESHOLD.&n; */
 DECL|function|idetape_mtioctop
 r_static
 r_int
 id|idetape_mtioctop
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -18993,8 +20272,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -19011,9 +20289,11 @@ op_ge
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: Handling MTIOCTOP ioctl: mt_op=%d, mt_count=%d&bslash;n&quot;
+l_string|&quot;ide-tape: Handling MTIOCTOP ioctl: &quot;
+l_string|&quot;mt_op=%d, mt_count=%d&bslash;n&quot;
 comma
 id|mt_op
 comma
@@ -19054,6 +20334,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_space_over_filemarks
+c_func
 (paren
 id|drive
 comma
@@ -19078,6 +20359,7 @@ r_case
 id|MTWEOF
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19125,6 +20407,7 @@ r_case
 id|MTREW
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19172,6 +20455,7 @@ r_case
 id|MTLOAD
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19179,6 +20463,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|idetape_create_load_unload_cmd
+c_func
 (paren
 id|drive
 comma
@@ -19191,6 +20476,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19206,6 +20492,7 @@ r_case
 id|MTOFFL
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19213,6 +20500,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|idetape_create_load_unload_cmd
+c_func
 (paren
 id|drive
 comma
@@ -19226,6 +20514,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19238,6 +20527,7 @@ r_case
 id|MTNOP
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19247,6 +20537,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -19256,6 +20547,7 @@ r_case
 id|MTRETEN
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19263,6 +20555,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|idetape_create_load_unload_cmd
+c_func
 (paren
 id|drive
 comma
@@ -19277,6 +20570,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19363,6 +20657,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|idetape_create_space_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -19375,6 +20670,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19426,6 +20722,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -19462,6 +20759,7 @@ l_int|10
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -19470,6 +20768,7 @@ suffix:semicolon
 r_void
 )paren
 id|idetape_rewind_tape
+c_func
 (paren
 id|drive
 )paren
@@ -19482,11 +20781,13 @@ suffix:semicolon
 r_void
 )paren
 id|idetape_rewind_tape
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_create_erase_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -19495,6 +20796,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19570,6 +20872,7 @@ op_div
 id|tape-&gt;tape_block_size
 suffix:semicolon
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_DETECT_BS
 comma
@@ -19580,6 +20883,7 @@ suffix:semicolon
 )brace
 r_else
 id|set_bit
+c_func
 (paren
 id|IDETAPE_DETECT_BS
 comma
@@ -19603,6 +20907,7 @@ id|tape-&gt;raw
 )paren
 (brace
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19611,6 +20916,7 @@ l_int|0
 suffix:semicolon
 r_return
 id|idetape_position_tape
+c_func
 (paren
 id|drive
 comma
@@ -19637,6 +20943,7 @@ r_case
 id|MTSETPART
 suffix:colon
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19655,6 +20962,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_position_tape
+c_func
 (paren
 id|drive
 comma
@@ -19720,6 +21028,7 @@ suffix:semicolon
 r_else
 (brace
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -19763,6 +21072,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19809,6 +21119,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -19834,9 +21145,11 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-tape: MTIO operation %d not supported&bslash;n&quot;
+l_string|&quot;ide-tape: MTIO operation %d not &quot;
+l_string|&quot;supported&bslash;n&quot;
 comma
 id|mt_op
 )paren
@@ -19874,12 +21187,12 @@ r_int
 id|arg
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -19920,9 +21233,11 @@ op_ge
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: Reached idetape_chrdev_ioctl, cmd=%u&bslash;n&quot;
+l_string|&quot;ide-tape: Reached idetape_chrdev_ioctl, &quot;
+l_string|&quot;cmd=%u&bslash;n&quot;
 comma
 id|cmd
 )paren
@@ -19941,11 +21256,13 @@ id|idetape_direction_write
 )paren
 (brace
 id|idetape_empty_write_pipeline
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -19966,6 +21283,7 @@ id|MTIOCPOS
 id|block_offset
 op_assign
 id|idetape_pipeline_size
+c_func
 (paren
 id|drive
 )paren
@@ -20009,6 +21327,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 (paren
 r_char
@@ -20037,6 +21356,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_mtioctop
+c_func
 (paren
 id|drive
 comma
@@ -20050,6 +21370,7 @@ r_case
 id|MTIOCGET
 suffix:colon
 id|memset
+c_func
 (paren
 op_amp
 id|mtget
@@ -20178,6 +21499,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -20257,6 +21579,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -20297,6 +21620,7 @@ op_eq
 id|idetape_direction_read
 )paren
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -20306,6 +21630,7 @@ suffix:semicolon
 r_return
 (paren
 id|idetape_blkdev_ioctl
+c_func
 (paren
 id|drive
 comma
@@ -20325,10 +21650,8 @@ DECL|function|__idetape_analyze_headers
 r_static
 r_int
 id|__idetape_analyze_headers
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -20401,6 +21724,7 @@ suffix:semicolon
 id|stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -20454,6 +21778,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_rw_tail
+c_func
 (paren
 id|drive
 comma
@@ -20475,6 +21800,7 @@ id|tape-&gt;name
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -20525,6 +21851,7 @@ id|tape-&gt;name
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -20550,7 +21877,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: warning: revision %d.%d detected (up to 1.%d supported)&bslash;n&quot;
+l_string|&quot;ide-tape: warning: revision %d.%d &quot;
+l_string|&quot;detected (up to 1.%d supported)&bslash;n&quot;
 comma
 id|header-&gt;major_rev
 comma
@@ -20680,7 +22008,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: Linux media version %d detected (current 3)&bslash;n&quot;
+l_string|&quot;ide-tape: %s: Linux media version &quot;
+l_string|&quot;%d detected (current 3)&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -20694,7 +22023,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: non Linux media detected (%s)&bslash;n&quot;
+l_string|&quot;ide-tape: %s: non Linux media detected &quot;
+l_string|&quot;(%s)&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -20718,7 +22048,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s: detected write pass counter %d, eod frame addr %d&bslash;n&quot;
+l_string|&quot;ide-tape: %s: detected write pass counter &quot;
+l_string|&quot;%d, eod frame addr %d&bslash;n&quot;
 comma
 id|tape-&gt;name
 comma
@@ -20729,6 +22060,7 @@ id|tape-&gt;eod_frame_addr
 suffix:semicolon
 macro_line|#endif
 id|__idetape_kfree_stage
+c_func
 (paren
 id|stage
 )paren
@@ -20741,10 +22073,8 @@ DECL|function|idetape_analyze_headers
 r_static
 r_int
 id|idetape_analyze_headers
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -20912,8 +22242,7 @@ op_star
 id|filp
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
@@ -20921,8 +22250,7 @@ id|idetape_tape_t
 op_star
 id|tape
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -20937,12 +22265,13 @@ id|inode-&gt;i_rdev
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_chrdev_open&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -20950,6 +22279,7 @@ c_cond
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -20969,6 +22299,7 @@ r_if
 c_cond
 (paren
 id|test_and_set_bit
+c_func
 (paren
 id|IDETAPE_BUSY
 comma
@@ -21000,6 +22331,7 @@ c_cond
 (paren
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|IDETAPE_ADDRESS_VALID
 comma
@@ -21011,6 +22343,7 @@ id|tape-&gt;flags
 r_void
 )paren
 id|idetape_rewind_tape
+c_func
 (paren
 id|drive
 )paren
@@ -21109,6 +22442,7 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_PIPELINE_ERROR
 comma
@@ -21146,6 +22480,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -21207,12 +22542,12 @@ op_star
 id|inode
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -21234,6 +22569,7 @@ id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 id|idetape_empty_write_pipeline
+c_func
 (paren
 id|drive
 )paren
@@ -21241,6 +22577,7 @@ suffix:semicolon
 id|tape-&gt;merge_stage
 op_assign
 id|__idetape_kmalloc_stage
+c_func
 (paren
 id|tape
 comma
@@ -21258,6 +22595,7 @@ l_int|NULL
 )paren
 (brace
 id|idetape_pad_zeros
+c_func
 (paren
 id|drive
 comma
@@ -21271,6 +22609,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;merge_stage
 )paren
@@ -21293,6 +22632,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -21308,6 +22648,7 @@ l_int|128
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -21332,12 +22673,12 @@ op_star
 id|filp
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
 id|get_drive_ptr
+c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -21346,8 +22687,7 @@ id|idetape_tape_t
 op_star
 id|tape
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 r_int
@@ -21358,6 +22698,11 @@ id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tape
@@ -21373,6 +22718,7 @@ op_ge
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_chrdev_release&bslash;n&quot;
@@ -21410,6 +22756,7 @@ OL
 l_int|128
 )paren
 id|idetape_discard_read_pipeline
+c_func
 (paren
 id|drive
 comma
@@ -21418,6 +22765,7 @@ l_int|1
 suffix:semicolon
 r_else
 id|idetape_wait_for_pipeline
+c_func
 (paren
 id|drive
 )paren
@@ -21432,6 +22780,7 @@ l_int|NULL
 )paren
 (brace
 id|__idetape_kfree_stage
+c_func
 (paren
 id|tape-&gt;cache_stage
 )paren
@@ -21452,6 +22801,7 @@ l_int|128
 r_void
 )paren
 id|idetape_rewind_tape
+c_func
 (paren
 id|drive
 )paren
@@ -21491,6 +22841,7 @@ c_cond
 (paren
 op_logical_neg
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -21507,6 +22858,7 @@ id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 id|clear_bit
+c_func
 (paren
 id|IDETAPE_BUSY
 comma
@@ -21514,19 +22866,22 @@ op_amp
 id|tape-&gt;flags
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_identify_device is called to check the contents of the&n; *&t;ATAPI IDENTIFY command results. We return:&n; *&n; *&t;1&t;If the tape can be supported by us, based on the information&n; *&t;&t;we have so far.&n; *&n; *&t;0&t;If this tape driver is not currently supported by us.&n; */
+multiline_comment|/*&n; *&t;idetape_identify_device is called to check the contents of the&n; *&t;ATAPI IDENTIFY command results. We return:&n; *&n; *&t;1&t;If the tape can be supported by us, based on the information&n; *&t;&t;we have so far.&n; *&n; *&t;0 &t;If this tape driver is not currently supported by us.&n; */
 DECL|function|idetape_identify_device
 r_static
 r_int
 id|idetape_identify_device
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -21537,7 +22892,7 @@ id|id
 )paren
 (brace
 r_struct
-id|atapi_id_gcw
+id|idetape_id_gcw
 id|gcw
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_INFO
@@ -21572,12 +22927,14 @@ id|id-&gt;config
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_INFO
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Dumping ATAPI Identify Device tape parameters&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Protocol Type: &quot;
@@ -21596,6 +22953,7 @@ r_case
 l_int|1
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ATA&bslash;n&quot;
@@ -21607,6 +22965,7 @@ r_case
 l_int|2
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ATAPI&bslash;n&quot;
@@ -21618,6 +22977,7 @@ r_case
 l_int|3
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved (Unknown to ide-tape)&bslash;n&quot;
@@ -21627,6 +22987,7 @@ r_break
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Device Type: %x - &quot;
@@ -21644,6 +23005,7 @@ r_case
 l_int|0
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Direct-access Device&bslash;n&quot;
@@ -21655,6 +23017,7 @@ r_case
 l_int|1
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Streaming Tape Device&bslash;n&quot;
@@ -21672,6 +23035,7 @@ r_case
 l_int|4
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved&bslash;n&quot;
@@ -21683,6 +23047,7 @@ r_case
 l_int|5
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;CD-ROM Device&bslash;n&quot;
@@ -21694,6 +23059,7 @@ r_case
 l_int|6
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved&bslash;n&quot;
@@ -21703,6 +23069,7 @@ r_case
 l_int|7
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Optical memory Device&bslash;n&quot;
@@ -21714,6 +23081,7 @@ r_case
 l_int|0x1f
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Unknown or no Device type&bslash;n&quot;
@@ -21724,6 +23092,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved&bslash;n&quot;
@@ -21731,6 +23100,7 @@ l_string|&quot;Reserved&bslash;n&quot;
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Removable: %s&quot;
@@ -21744,6 +23114,7 @@ l_string|&quot;No&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Command Packet DRQ Type: &quot;
@@ -21759,6 +23130,7 @@ r_case
 l_int|0
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Microprocessor DRQ&bslash;n&quot;
@@ -21770,6 +23142,7 @@ r_case
 l_int|1
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Interrupt DRQ&bslash;n&quot;
@@ -21781,6 +23154,7 @@ r_case
 l_int|2
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Accelerated DRQ&bslash;n&quot;
@@ -21792,6 +23166,7 @@ r_case
 l_int|3
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved&bslash;n&quot;
@@ -21801,6 +23176,7 @@ r_break
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Command Packet Size: &quot;
@@ -21816,6 +23192,7 @@ r_case
 l_int|0
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;12 bytes&bslash;n&quot;
@@ -21827,6 +23204,7 @@ r_case
 l_int|1
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;16 bytes&bslash;n&quot;
@@ -21837,6 +23215,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Reserved&bslash;n&quot;
@@ -21846,6 +23225,7 @@ r_break
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Model: %.40s&bslash;n&quot;
@@ -21854,6 +23234,7 @@ id|id-&gt;model
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Firmware Revision: %.8s&bslash;n&quot;
@@ -21862,6 +23243,7 @@ id|id-&gt;fw_rev
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Serial Number: %.20s&bslash;n&quot;
@@ -21870,6 +23252,7 @@ id|id-&gt;serial_no
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Write buffer size: %d bytes&bslash;n&quot;
@@ -21880,6 +23263,7 @@ l_int|512
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: DMA: %s&quot;
@@ -21895,6 +23279,7 @@ l_string|&quot;No&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: LBA: %s&quot;
@@ -21910,6 +23295,7 @@ l_string|&quot;No&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: IORDY can be disabled: %s&quot;
@@ -21925,6 +23311,7 @@ l_string|&quot;No&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: IORDY supported: %s&quot;
@@ -21940,6 +23327,7 @@ l_string|&quot;Unknown&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: ATAPI overlap supported: %s&quot;
@@ -21955,6 +23343,7 @@ l_string|&quot;No&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: PIO Cycle Timing Category: %d&bslash;n&quot;
@@ -21963,6 +23352,7 @@ id|id-&gt;tPIO
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: DMA Cycle Timing Category: %d&bslash;n&quot;
@@ -21971,6 +23361,7 @@ id|id-&gt;tDMA
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Single Word DMA supported modes: &quot;
@@ -22009,6 +23400,7 @@ op_amp
 id|mask
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d &quot;
@@ -22028,6 +23420,7 @@ l_int|8
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(active) &quot;
@@ -22035,12 +23428,14 @@ l_string|&quot;(active) &quot;
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Multi Word DMA supported modes: &quot;
@@ -22079,6 +23474,7 @@ op_amp
 id|mask
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d &quot;
@@ -22098,6 +23494,7 @@ l_int|8
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(active) &quot;
@@ -22105,6 +23502,7 @@ l_string|&quot;(active) &quot;
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;&bslash;n&quot;
@@ -22119,6 +23517,7 @@ l_int|0x0002
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Enhanced PIO Modes: %s&bslash;n&quot;
@@ -22134,6 +23533,7 @@ l_string|&quot;None&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Minimum Multi-word DMA cycle per word: &quot;
@@ -22147,6 +23547,7 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Not supported&bslash;n&quot;
@@ -22154,6 +23555,7 @@ l_string|&quot;Not supported&bslash;n&quot;
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d ns&bslash;n&quot;
@@ -22162,6 +23564,7 @@ id|id-&gt;eide_dma_min
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Manufacturer&bslash;&squot;s Recommended Multi-word cycle: &quot;
@@ -22175,6 +23578,7 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Not supported&bslash;n&quot;
@@ -22182,6 +23586,7 @@ l_string|&quot;Not supported&bslash;n&quot;
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d ns&bslash;n&quot;
@@ -22190,6 +23595,7 @@ id|id-&gt;eide_dma_time
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Minimum PIO cycle without IORDY: &quot;
@@ -22203,6 +23609,7 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Not supported&bslash;n&quot;
@@ -22210,6 +23617,7 @@ l_string|&quot;Not supported&bslash;n&quot;
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d ns&bslash;n&quot;
@@ -22218,6 +23626,7 @@ id|id-&gt;eide_pio
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Minimum PIO cycle with IORDY: &quot;
@@ -22231,6 +23640,7 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Not supported&bslash;n&quot;
@@ -22238,6 +23648,7 @@ l_string|&quot;Not supported&bslash;n&quot;
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%d ns&bslash;n&quot;
@@ -22248,6 +23659,7 @@ suffix:semicolon
 )brace
 r_else
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: According to the device, fields 64-70 are not valid.&bslash;n&quot;
@@ -22263,6 +23675,7 @@ op_ne
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Protocol is not ATAPI&bslash;n&quot;
@@ -22277,6 +23690,7 @@ op_ne
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Device type is not set to tape&bslash;n&quot;
@@ -22290,6 +23704,7 @@ op_logical_neg
 id|gcw.removable
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: The removable flag is not set&bslash;n&quot;
@@ -22305,6 +23720,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Packet size is not 12 bytes long&bslash;n&quot;
@@ -22318,6 +23734,7 @@ op_eq
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Sorry, padding to 16 bytes is still not supported&bslash;n&quot;
@@ -22337,10 +23754,8 @@ DECL|function|idetape_onstream_set_vendor
 r_static
 r_void
 id|idetape_onstream_set_vendor
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -22349,8 +23764,7 @@ op_star
 id|vendor
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_mode_parameter_header_t
@@ -22500,6 +23914,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -22508,6 +23923,7 @@ id|pc
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Couldn&squot;t set vendor name to %s&bslash;n&quot;
@@ -22522,10 +23938,8 @@ DECL|function|idetape_onstream_set_retries
 r_static
 r_void
 id|idetape_onstream_set_retries
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -22533,8 +23947,7 @@ r_int
 id|retries
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_create_mode_select_cmd
@@ -22630,6 +24043,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -22638,6 +24052,7 @@ id|pc
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Couldn&squot;t set retries to %d&bslash;n&quot;
@@ -22652,16 +24067,13 @@ DECL|function|idetape_onstream_configure_block_size
 r_static
 r_void
 id|idetape_onstream_configure_block_size
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_mode_parameter_header_t
@@ -22674,6 +24086,7 @@ id|bs
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the current block size from the block size mode page&n;&t; */
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -22685,6 +24098,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -22693,6 +24107,7 @@ id|pc
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: can&squot;t get tape block size mode page&bslash;n&quot;
@@ -22825,6 +24240,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -22833,6 +24249,7 @@ id|pc
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Couldn&squot;t set tape block size mode page&bslash;n&quot;
@@ -22855,10 +24272,8 @@ DECL|function|idetape_get_inquiry_results
 r_static
 r_void
 id|idetape_get_inquiry_results
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -22873,11 +24288,10 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
-id|atapi_inquiry_result_t
+id|idetape_inquiry_result_t
 op_star
 id|inquiry
 suffix:semicolon
@@ -22892,6 +24306,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -22901,6 +24316,7 @@ id|pc
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: %s: can&squot;t get INQUIRY results&bslash;n&quot;
@@ -22914,7 +24330,7 @@ suffix:semicolon
 id|inquiry
 op_assign
 (paren
-id|atapi_inquiry_result_t
+id|idetape_inquiry_result_t
 op_star
 )paren
 id|pc.buffer
@@ -23090,10 +24506,8 @@ DECL|function|idetape_configure_onstream
 r_static
 r_void
 id|idetape_configure_onstream
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -23157,8 +24571,7 @@ r_void
 id|idetape_onstream_mode_sense_tape_parameter_page
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -23172,8 +24585,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_mode_parameter_header_t
@@ -23185,6 +24597,7 @@ op_star
 id|prm
 suffix:semicolon
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -23196,6 +24609,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -23205,6 +24619,7 @@ id|pc
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Can&squot;t get tape parameters page - probably no tape inserted in onstream drive&bslash;n&quot;
@@ -23259,6 +24674,7 @@ id|debug
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: %s &lt;-&gt; %s: Tape length %dMB (%d frames/track, %d tracks = %d blocks, density: %dKbpi)&bslash;n&quot;
@@ -23297,10 +24713,8 @@ DECL|function|idetape_get_mode_sense_results
 r_static
 r_void
 id|idetape_get_mode_sense_results
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -23311,8 +24725,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_mode_parameter_header_t
@@ -23324,6 +24737,7 @@ op_star
 id|capabilities
 suffix:semicolon
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -23335,6 +24749,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -23344,6 +24759,7 @@ id|pc
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Can&squot;t get tape parameters - assuming some default values&bslash;n&quot;
@@ -23504,18 +24920,21 @@ l_int|32768
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_INFO
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Dumping the results of the MODE SENSE packet command&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Mode Parameter Header:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Mode Data Length - %d&bslash;n&quot;
@@ -23524,6 +24943,7 @@ id|header-&gt;mode_data_length
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Medium Type - %d&bslash;n&quot;
@@ -23532,6 +24952,7 @@ id|header-&gt;medium_type
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Device Specific Parameter - %d&bslash;n&quot;
@@ -23540,6 +24961,7 @@ id|header-&gt;dsp
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Block Descriptor Length - %d&bslash;n&quot;
@@ -23548,12 +24970,14 @@ id|header-&gt;bdl
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Capabilities and Mechanical Status Page:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Page code - %d&bslash;n&quot;
@@ -23562,6 +24986,7 @@ id|capabilities-&gt;page_code
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Page length - %d&bslash;n&quot;
@@ -23570,6 +24995,7 @@ id|capabilities-&gt;page_length
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Read only - %s&bslash;n&quot;
@@ -23583,6 +25009,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports reverse space - %s&bslash;n&quot;
@@ -23596,6 +25023,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports erase initiated formatting - %s&bslash;n&quot;
@@ -23609,6 +25037,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports QFA two Partition format - %s&bslash;n&quot;
@@ -23622,6 +25051,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports locking the medium - %s&bslash;n&quot;
@@ -23635,6 +25065,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: The volume is currently locked - %s&bslash;n&quot;
@@ -23648,6 +25079,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: The device defaults in the prevent state - %s&bslash;n&quot;
@@ -23661,6 +25093,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports ejecting the medium - %s&bslash;n&quot;
@@ -23674,6 +25107,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports error correction - %s&bslash;n&quot;
@@ -23687,6 +25121,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports data compression - %s&bslash;n&quot;
@@ -23700,6 +25135,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports 512 bytes block size - %s&bslash;n&quot;
@@ -23713,6 +25149,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports 1024 bytes block size - %s&bslash;n&quot;
@@ -23726,6 +25163,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Supports 32768 bytes block size / Restricted byte count for PIO transfers - %s&bslash;n&quot;
@@ -23739,6 +25177,7 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Maximum supported speed in KBps - %d&bslash;n&quot;
@@ -23747,6 +25186,7 @@ id|capabilities-&gt;max_speed
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Continuous transfer limits in blocks - %d&bslash;n&quot;
@@ -23755,6 +25195,7 @@ id|capabilities-&gt;ctl
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Current speed in KBps - %d&bslash;n&quot;
@@ -23763,6 +25204,7 @@ id|capabilities-&gt;speed
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Buffer size - %d&bslash;n&quot;
@@ -23781,8 +25223,7 @@ r_void
 id|idetape_get_blocksize_from_block_descriptor
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -23793,8 +25234,7 @@ id|tape
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_struct
-id|atapi_packet_command
+id|idetape_pc_t
 id|pc
 suffix:semicolon
 id|idetape_mode_parameter_header_t
@@ -23806,6 +25246,7 @@ op_star
 id|block_descrp
 suffix:semicolon
 id|idetape_create_mode_sense_cmd
+c_func
 (paren
 op_amp
 id|pc
@@ -23817,6 +25258,7 @@ r_if
 c_cond
 (paren
 id|idetape_queue_pc_tail
+c_func
 (paren
 id|drive
 comma
@@ -23826,6 +25268,7 @@ id|pc
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-tape: Can&squot;t get block descriptor&bslash;n&quot;
@@ -23904,6 +25347,7 @@ l_int|2
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_INFO
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Adjusted block size - %d&bslash;n&quot;
@@ -23911,17 +25355,794 @@ comma
 id|tape-&gt;tape_block_size
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IDETAPE_DEBUG_INFO */
+)brace
+DECL|function|idetape_add_settings
+r_static
+r_void
+id|idetape_add_settings
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|idetape_tape_t
+op_star
+id|tape
+op_assign
+id|drive-&gt;driver_data
+suffix:semicolon
+multiline_comment|/*&n; *&t;&t;&t;drive&t;setting name&t;read/write&t;ioctl&t;ioctl&t;&t;data type&t;min&t;&t;&t;max&t;&t;&t;mul_factor&t;&t;&t;div_factor&t;&t;&t;data pointer&t;&t;&t;&t;set function&n; */
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;buffer&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_SHORT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|2
+comma
+op_amp
+id|tape-&gt;capabilities.buffer_size
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_min&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|2
+comma
+l_int|0xffff
+comma
+id|tape-&gt;stage_size
+op_div
+l_int|1024
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;min_pipeline
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|2
+comma
+l_int|0xffff
+comma
+id|tape-&gt;stage_size
+op_div
+l_int|1024
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;max_stages
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_max&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|2
+comma
+l_int|0xffff
+comma
+id|tape-&gt;stage_size
+op_div
+l_int|1024
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;max_pipeline
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_used&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+id|tape-&gt;stage_size
+op_div
+l_int|1024
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;nr_stages
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_pending&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+id|tape-&gt;stage_size
+op_div
+l_int|1024
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;nr_pending_stages
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;speed&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_SHORT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;capabilities.speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;stage&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1024
+comma
+op_amp
+id|tape-&gt;stage_size
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;tdsc&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+id|IDETAPE_DSC_RW_MIN
+comma
+id|IDETAPE_DSC_RW_MAX
+comma
+l_int|1000
+comma
+id|HZ
+comma
+op_amp
+id|tape-&gt;best_dsc_rw_frequency
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;dsc_overlap&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_BYTE
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|drive-&gt;dsc_overlap
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_head_speed_c&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;controlled_pipeline_head_speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;pipeline_head_speed_u&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;uncontrolled_pipeline_head_speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;avg_speed&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;avg_speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;debug_level&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;debug_level
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tape-&gt;onstream
+)paren
+(brace
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;cur_frames&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_SHORT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;cur_frames
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;max_frames&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_SHORT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;max_frames
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;insert_speed&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;insert_speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;speed_control&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;speed_control
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;tape_still_time&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;tape_still_time
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;max_insert_speed&quot;
+comma
+id|SETTING_RW
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;max_insert_speed
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;insert_size&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;insert_size
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;capacity&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;capacity
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;first_frame&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;first_frame_position
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|ide_add_setting
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;logical_blk&quot;
+comma
+id|SETTING_READ
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|TYPE_INT
+comma
+l_int|0
+comma
+l_int|0xffff
+comma
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|tape-&gt;logical_blk_num
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; *&t;ide_setup is called to:&n; *&n; *&t;&t;1.&t;Initialize our various state variables.&n; *&t;&t;2.&t;Ask the tape for its capabilities.&n; *&t;&t;3.&t;Allocate a buffer which will be used for data&n; *&t;&t;&t;transfer. The buffer size is chosen based on&n; *&t;&t;&t;the recommendation which we received in step (2).&n; *&n; *&t;Note that at this point ide.c already assigned us an irq, so that&n; *&t;we can queue requests here and wait for their completion.&n; */
 DECL|function|idetape_setup
 r_static
 r_void
 id|idetape_setup
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -23940,16 +26161,14 @@ comma
 id|tmid
 comma
 id|tn
-suffix:semicolon
-r_int
-r_int
+comma
 id|t
 suffix:semicolon
 r_int
 id|speed
 suffix:semicolon
 r_struct
-id|atapi_id_gcw
+id|idetape_id_gcw
 id|gcw
 suffix:semicolon
 r_int
@@ -23960,6 +26179,7 @@ id|sysinfo
 id|si
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|tape
 comma
@@ -24006,14 +26226,20 @@ id|drive-&gt;dsc_overlap
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if
 c_cond
 (paren
 op_logical_neg
 id|tape-&gt;onstream
 op_logical_and
-id|drive-&gt;channel-&gt;pci_dev
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|pci_dev
 op_ne
 l_int|NULL
 )paren
@@ -24023,13 +26249,25 @@ r_if
 c_cond
 (paren
 (paren
-id|drive-&gt;channel-&gt;pci_dev-&gt;device
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_ARTOP_ATP850UF
 )paren
 op_logical_or
 (paren
-id|drive-&gt;channel-&gt;pci_dev-&gt;device
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_TTI_HPT343
 )paren
@@ -24050,7 +26288,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 id|tape-&gt;drive
 op_assign
 id|drive
@@ -24193,6 +26431,7 @@ l_int|0xffff
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;ide-tape: decreasing stage size&bslash;n&quot;
@@ -24380,6 +26619,10 @@ op_assign
 id|max
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|min
 c_func
 (paren
@@ -24400,9 +26643,11 @@ id|IDETAPE_DSC_RW_MIN
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide-tape: %s &lt;-&gt; %s: %dKBps, %d*%dkB buffer, %dkB pipeline, %lums tDSC%s&bslash;n&quot;
+l_string|&quot;ide-tape: %s &lt;-&gt; %s: %dKBps, %d*%dkB buffer, &quot;
+l_string|&quot;%dkB pipeline, %lums tDSC%s&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -24442,15 +26687,19 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
+id|idetape_add_settings
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
 )brace
 DECL|function|idetape_cleanup
 r_static
 r_int
 id|idetape_cleanup
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -24471,14 +26720,14 @@ r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
-id|tape-&gt;spinlock
+id|ide_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* overkill? */
 r_if
 c_cond
 (paren
@@ -24490,20 +26739,20 @@ op_amp
 id|tape-&gt;flags
 )paren
 op_logical_or
+id|drive-&gt;usage
+op_logical_or
 id|tape-&gt;first_stage
 op_ne
 l_int|NULL
 op_logical_or
 id|tape-&gt;merge_stage_size
-op_logical_or
-id|drive-&gt;usage
 )paren
 (brace
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|tape-&gt;spinlock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -24525,14 +26774,25 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|tape-&gt;spinlock
+id|ide_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_assign
+l_int|0
 suffix:semicolon
-id|ata_unregister_device
+(paren
+r_void
+)paren
+id|ide_unregister_subdriver
 c_func
 (paren
 id|drive
@@ -24543,11 +26803,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|devfs_unregister
+c_func
 (paren
 id|tape-&gt;de_r
 )paren
 suffix:semicolon
 id|devfs_unregister
+c_func
 (paren
 id|tape-&gt;de_n
 )paren
@@ -24589,6 +26851,7 @@ r_return
 l_int|0
 suffix:semicolon
 id|unregister_chrdev
+c_func
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -24603,68 +26866,282 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|function|proc_idetape_read_name
 r_static
-r_void
-id|idetape_attach
-c_func
+r_int
+id|proc_idetape_read_name
 (paren
-r_struct
-id|ata_device
+r_char
+op_star
+id|page
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|off
+comma
+r_int
+id|count
+comma
+r_int
+op_star
+id|eof
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|ide_drive_t
+op_star
+id|drive
+op_assign
+(paren
+id|ide_drive_t
 op_star
 )paren
+id|data
 suffix:semicolon
+id|idetape_tape_t
+op_star
+id|tape
+op_assign
+id|drive-&gt;driver_data
+suffix:semicolon
+r_char
+op_star
+id|out
+op_assign
+id|page
+suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+id|len
+op_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|tape-&gt;name
+)paren
+suffix:semicolon
+id|PROC_IDE_READ_RETURN
+c_func
+(paren
+id|page
+comma
+id|start
+comma
+id|off
+comma
+id|count
+comma
+id|eof
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
+DECL|variable|idetape_proc
+r_static
+id|ide_proc_entry_t
+id|idetape_proc
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;name&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+comma
+id|proc_idetape_read_name
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+)brace
+suffix:semicolon
+macro_line|#else
+DECL|macro|idetape_proc
+mdefine_line|#define&t;idetape_proc&t;NULL
+macro_line|#endif
+r_int
+id|idetape_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|idetape_reinit
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idetape_driver
 r_static
-r_struct
-id|ata_operations
+id|ide_driver_t
 id|idetape_driver
 op_assign
 (brace
-dot
-id|owner
-op_assign
-id|THIS_MODULE
+id|name
+suffix:colon
+l_string|&quot;ide-tape&quot;
 comma
-dot
-id|attach
-op_assign
-id|idetape_attach
+id|version
+suffix:colon
+id|IDETAPE_VERSION
 comma
-dot
+id|media
+suffix:colon
+id|ide_tape
+comma
+id|busy
+suffix:colon
+l_int|1
+comma
+macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
+id|supports_dma
+suffix:colon
+l_int|0
+comma
+macro_line|#else
+id|supports_dma
+suffix:colon
+l_int|1
+comma
+macro_line|#endif
+id|supports_dsc_overlap
+suffix:colon
+l_int|1
+comma
 id|cleanup
-op_assign
+suffix:colon
 id|idetape_cleanup
 comma
-dot
 id|standby
-op_assign
+suffix:colon
 l_int|NULL
 comma
-dot
+id|suspend
+suffix:colon
+l_int|NULL
+comma
+id|resume
+suffix:colon
+l_int|NULL
+comma
+id|flushcache
+suffix:colon
+l_int|NULL
+comma
 id|do_request
-op_assign
+suffix:colon
 id|idetape_do_request
 comma
-dot
 id|end_request
-op_assign
+suffix:colon
 id|idetape_end_request
 comma
-dot
+id|sense
+suffix:colon
+l_int|NULL
+comma
+id|error
+suffix:colon
+l_int|NULL
+comma
 id|ioctl
-op_assign
+suffix:colon
 id|idetape_blkdev_ioctl
 comma
-dot
 id|open
-op_assign
+suffix:colon
 id|idetape_blkdev_open
 comma
-dot
 id|release
-op_assign
+suffix:colon
 id|idetape_blkdev_release
 comma
+id|media_change
+suffix:colon
+l_int|NULL
+comma
+id|revalidate
+suffix:colon
+l_int|NULL
+comma
+id|pre_reset
+suffix:colon
+id|idetape_pre_reset
+comma
+id|capacity
+suffix:colon
+l_int|NULL
+comma
+id|special
+suffix:colon
+l_int|NULL
+comma
+id|proc
+suffix:colon
+id|idetape_proc
+comma
+id|init
+suffix:colon
+id|idetape_init
+comma
+id|reinit
+suffix:colon
+id|idetape_reinit
+comma
+id|ata_prebuilder
+suffix:colon
+l_int|NULL
+comma
+id|atapi_prebuilder
+suffix:colon
+l_int|NULL
+comma
+)brace
+suffix:semicolon
+DECL|variable|idetape_module
+r_static
+id|ide_module_t
+id|idetape_module
+op_assign
+(brace
+id|IDE_DRIVER_MODULE
+comma
+id|idetape_init
+comma
+op_amp
+id|idetape_driver
+comma
+l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Our character device supporting functions, passed to register_chrdev.&n; */
@@ -24675,50 +27152,42 @@ id|file_operations
 id|idetape_fops
 op_assign
 (brace
-dot
 id|owner
-op_assign
+suffix:colon
 id|THIS_MODULE
 comma
-dot
 id|read
-op_assign
+suffix:colon
 id|idetape_chrdev_read
 comma
-dot
 id|write
-op_assign
+suffix:colon
 id|idetape_chrdev_write
 comma
-dot
 id|ioctl
-op_assign
+suffix:colon
 id|idetape_chrdev_ioctl
 comma
-dot
 id|open
-op_assign
+suffix:colon
 id|idetape_chrdev_open
 comma
-dot
 id|release
-op_assign
+suffix:colon
 id|idetape_chrdev_release
 comma
 )brace
 suffix:semicolon
-DECL|function|idetape_attach
-r_static
-r_void
-id|idetape_attach
-c_func
+DECL|function|idetape_reinit
+r_int
+id|idetape_reinit
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
+macro_line|#if 0
 id|idetape_tape_t
 op_star
 id|tape
@@ -24726,55 +27195,26 @@ suffix:semicolon
 r_int
 id|minor
 comma
+id|failed
+op_assign
+l_int|0
+comma
 id|supported
 op_assign
 l_int|0
 suffix:semicolon
-r_char
-op_star
-id|req
+multiline_comment|/* DRIVER(drive)-&gt;busy++; */
+id|MOD_INC_USE_COUNT
 suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|channel
-suffix:semicolon
-r_int
-id|unit
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;type
-op_ne
-id|ATA_TAPE
-)paren
-r_return
-suffix:semicolon
-id|req
-op_assign
-id|drive-&gt;driver_req
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|req
-(braket
-l_int|0
-)braket
-op_ne
-l_char|&squot;&bslash;0&squot;
-op_logical_and
-id|strcmp
+macro_line|#if ONSTREAM_DEBUG
+id|printk
 c_func
 (paren
-id|req
-comma
-l_string|&quot;ide-tape&quot;
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_INC_USE_COUNT in idetape_init&bslash;n&quot;
 )paren
-)paren
-r_return
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -24809,10 +27249,56 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|drive
+op_assign
+id|ide_scan_devices
+c_func
+(paren
+id|ide_tape
+comma
+id|idetape_driver.name
+comma
+l_int|NULL
+comma
+id|failed
+op_increment
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|ide_register_module
+c_func
+(paren
+op_amp
+id|idetape_module
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|idetape_chrdev_present
 op_logical_and
 id|register_chrdev
+c_func
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -24830,14 +27316,30 @@ id|KERN_ERR
 l_string|&quot;ide-tape: Failed to register character device interface&bslash;n&quot;
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
+r_do
+(brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|idetape_identify_device
+c_func
 (paren
 id|drive
 comma
@@ -24854,7 +27356,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -24871,14 +27373,13 @@ c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
-l_string|&quot;OnStream DI-&quot;
+l_string|&quot;OnStream DI-30&quot;
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;ide-tape: ide-scsi emulation is not supported for %s.&bslash;n&quot;
 comma
 id|drive-&gt;id-&gt;model
@@ -24890,13 +27391,12 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;ide-tape: passing drive %s to ide-scsi emulation.&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 )brace
@@ -24919,8 +27419,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|tape
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -24932,19 +27433,20 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|ata_register_device
-c_func
+id|ide_register_subdriver
 (paren
 id|drive
 comma
 op_amp
 id|idetape_driver
+comma
+id|IDE_SUBDRIVER_VERSION
 )paren
 )paren
 (brace
@@ -24958,11 +27460,12 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|tape
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
 r_for
@@ -24986,6 +27489,7 @@ op_increment
 )paren
 suffix:semicolon
 id|idetape_setup
+c_func
 (paren
 id|drive
 comma
@@ -25013,7 +27517,13 @@ l_string|&quot;mt&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|drive-&gt;channel-&gt;major
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|major
 comma
 id|minor
 comma
@@ -25039,7 +27549,13 @@ l_string|&quot;mtn&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|drive-&gt;channel-&gt;major
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|major
 comma
 id|minor
 op_plus
@@ -25058,12 +27574,40 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register_tape
+c_func
 (paren
 id|tape-&gt;de_r
 )paren
 suffix:semicolon
 id|supported
 op_increment
+suffix:semicolon
+id|failed
+op_decrement
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|drive
+op_assign
+id|ide_scan_devices
+c_func
+(paren
+id|ide_tape
+comma
+id|idetape_driver.name
+comma
+l_int|NULL
+comma
+id|failed
+op_increment
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -25075,7 +27619,8 @@ op_logical_neg
 id|supported
 )paren
 (brace
-id|unregister_chrdev
+id|devfs_unregister_chrdev
+c_func
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -25088,6 +27633,32 @@ id|idetape_chrdev_present
 op_assign
 l_int|1
 suffix:semicolon
+id|ide_register_module
+c_func
+(paren
+op_amp
+id|idetape_module
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
 )brace
 id|MODULE_DESCRIPTION
 c_func
@@ -25106,35 +27677,549 @@ r_static
 r_void
 id|__exit
 id|idetape_exit
-c_func
 (paren
 r_void
 )paren
 (brace
-id|unregister_ata_driver
+id|ide_drive_t
+op_star
+id|drive
+suffix:semicolon
+r_int
+id|minor
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|minor
+op_assign
+l_int|0
+suffix:semicolon
+id|minor
+OL
+id|MAX_HWIFS
+op_star
+id|MAX_DRIVES
+suffix:semicolon
+id|minor
+op_increment
+)paren
+(brace
+id|drive
+op_assign
+id|idetape_chrdevs
+(braket
+id|minor
+)braket
+dot
+id|drive
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive
+op_ne
+l_int|NULL
+op_logical_and
+id|idetape_cleanup
+(paren
+id|drive
+)paren
+)paren
+id|printk
 c_func
 (paren
-op_amp
-id|idetape_driver
+id|KERN_ERR
+l_string|&quot;ide-tape: %s: cleanup_module() called while still busy&bslash;n&quot;
+comma
+id|drive-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|ide_unregister_module
+c_func
+(paren
+op_amp
+id|idetape_module
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;idetape_init will register the driver for each tape.&n; */
 DECL|function|idetape_init
 r_int
-id|__init
 id|idetape_init
-c_func
 (paren
 r_void
 )paren
 (brace
-r_return
-id|ata_driver_module
+id|ide_drive_t
+op_star
+id|drive
+suffix:semicolon
+id|idetape_tape_t
+op_star
+id|tape
+suffix:semicolon
+r_int
+id|minor
+comma
+id|failed
+op_assign
+l_int|0
+comma
+id|supported
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* DRIVER(drive)-&gt;busy++; */
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_INC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idetape_chrdev_present
+)paren
+r_for
+c_loop
+(paren
+id|minor
+op_assign
+l_int|0
+suffix:semicolon
+id|minor
+OL
+id|MAX_HWIFS
+op_star
+id|MAX_DRIVES
+suffix:semicolon
+id|minor
+op_increment
+)paren
+id|idetape_chrdevs
+(braket
+id|minor
+)braket
+dot
+id|drive
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|drive
+op_assign
+id|ide_scan_devices
+c_func
+(paren
+id|ide_tape
+comma
+id|idetape_driver.name
+comma
+l_int|NULL
+comma
+id|failed
+op_increment
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|ide_register_module
 c_func
 (paren
 op_amp
-id|idetape_driver
+id|idetape_module
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idetape_chrdev_present
+op_logical_and
+id|register_chrdev
+c_func
+(paren
+id|IDETAPE_MAJOR
+comma
+l_string|&quot;ht&quot;
+comma
+op_amp
+id|idetape_fops
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ide-tape: Failed to register character device interface&bslash;n&quot;
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+r_do
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idetape_identify_device
+(paren
+id|drive
+comma
+id|drive-&gt;id
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ide-tape: %s: not supported by this version of ide-tape&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|drive-&gt;scsi
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;OnStream DI-&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ide-tape: ide-scsi emulation is not supported for %s.&bslash;n&quot;
+comma
+id|drive-&gt;id-&gt;model
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ide-tape: passing drive %s to ide-scsi emulation.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+)brace
+id|tape
+op_assign
+(paren
+id|idetape_tape_t
+op_star
+)paren
+id|kmalloc
+(paren
+r_sizeof
+(paren
+id|idetape_tape_t
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tape
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ide-tape: %s: Can&squot;t allocate a tape structure&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ide_register_subdriver
+(paren
+id|drive
+comma
+op_amp
+id|idetape_driver
+comma
+id|IDE_SUBDRIVER_VERSION
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ide-tape: %s: Failed to register the driver with ide.c&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|tape
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|minor
+op_assign
+l_int|0
+suffix:semicolon
+id|idetape_chrdevs
+(braket
+id|minor
+)braket
+dot
+id|drive
+op_ne
+l_int|NULL
+suffix:semicolon
+id|minor
+op_increment
+)paren
+suffix:semicolon
+id|idetape_setup
+c_func
+(paren
+id|drive
+comma
+id|tape
+comma
+id|minor
+)paren
+suffix:semicolon
+id|idetape_chrdevs
+(braket
+id|minor
+)braket
+dot
+id|drive
+op_assign
+id|drive
+suffix:semicolon
+id|tape-&gt;de_r
+op_assign
+id|devfs_register
+(paren
+id|drive-&gt;de
+comma
+l_string|&quot;mt&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|major
+comma
+id|minor
+comma
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUGO
+comma
+op_amp
+id|idetape_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|tape-&gt;de_n
+op_assign
+id|devfs_register
+(paren
+id|drive-&gt;de
+comma
+l_string|&quot;mtn&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|major
+comma
+id|minor
+op_plus
+l_int|128
+comma
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUGO
+comma
+op_amp
+id|idetape_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|devfs_register_tape
+c_func
+(paren
+id|tape-&gt;de_r
+)paren
+suffix:semicolon
+id|supported
+op_increment
+suffix:semicolon
+id|failed
+op_decrement
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|drive
+op_assign
+id|ide_scan_devices
+c_func
+(paren
+id|ide_tape
+comma
+id|idetape_driver.name
+comma
+l_int|NULL
+comma
+id|failed
+op_increment
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idetape_chrdev_present
+op_logical_and
+op_logical_neg
+id|supported
+)paren
+(brace
+id|unregister_chrdev
+c_func
+(paren
+id|IDETAPE_MAJOR
+comma
+l_string|&quot;ht&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+id|idetape_chrdev_present
+op_assign
+l_int|1
+suffix:semicolon
+id|ide_register_module
+c_func
+(paren
+op_amp
+id|idetape_module
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#if ONSTREAM_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-tape: MOD_DEC_USE_COUNT in idetape_init&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|idetape_init

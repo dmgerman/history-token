@@ -1,5 +1,7 @@
-multiline_comment|/*&n; *  Copyright (C) 1995-1996  Linus Torvalds &amp; authors (see below)&n; */
-multiline_comment|/*&n; *  Original authors:&t;abramov@cecmow.enet.dec.com (Igor Abramov)&n; *&t;&t;&t;mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for the advanced features and bugs&n; *  of IDE interfaces using the CMD Technologies 0640 IDE interface chip.&n; *&n; *  These chips are basically fucked by design, and getting this driver&n; *  to work on every motherboard design that uses this screwed chip seems&n; *  bloody well impossible.  However, we&squot;re still trying.&n; *&n; *  Version 0.97 worked for everybody.&n; *&n; *  User feedback is essential.  Many thanks to the beta test team:&n; *&n; *  A.Hartgers@stud.tue.nl, JZDQC@CUNYVM.CUNY.edu, abramov@cecmow.enet.dec.com,&n; *  bardj@utopia.ppp.sn.no, bart@gaga.tue.nl, bbol001@cs.auckland.ac.nz,&n; *  chrisc@dbass.demon.co.uk, martin@dalecki.de,&n; *  derekn@vw.ece.cmu.edu, florian@btp2x3.phy.uni-bayreuth.de,&n; *  flynn@dei.unipd.it, gadio@netvision.net.il, godzilla@futuris.net,&n; *  j@pobox.com, jkemp1@mises.uni-paderborn.de, jtoppe@hiwaay.net,&n; *  kerouac@ssnet.com, meskes@informatik.rwth-aachen.de, hzoli@cs.elte.hu,&n; *  peter@udgaard.isgtec.com, phil@tazenda.demon.co.uk, roadcapw@cfw.com,&n; *  s0033las@sun10.vsz.bme.hu, schaffer@tam.cornell.edu, sjd@slip.net,&n; *  steve@ei.org, ulrpeg@bigcomm.gun.de, ism@tardis.ed.ac.uk, mack@cray.com&n; *  liug@mama.indstate.edu, and others.&n; *&n; *  Version 0.01&t;Initial version, hacked out of ide.c,&n; *&t;&t;&t;and #include&squot;d rather than compiled separately.&n; *&t;&t;&t;This will get cleaned up in a subsequent release.&n; *&n; *  Version 0.02&t;Fixes for vlb initialization code, enable prefetch&n; *&t;&t;&t;for versions &squot;B&squot; and &squot;C&squot; of chip by default,&n; *&t;&t;&t;some code cleanup.&n; *&n; *  Version 0.03&t;Added reset of secondary interface,&n; *&t;&t;&t;and black list for devices which are not compatible&n; *&t;&t;&t;with prefetch mode. Separate function for setting&n; *&t;&t;&t;prefetch is added, possibly it will be called some&n; *&t;&t;&t;day from ioctl processing code.&n; *&n; *  Version 0.04&t;Now configs/compiles separate from ide.c&n; *&n; *  Version 0.05&t;Major rewrite of interface timing code.&n; *&t;&t;&t;Added new function cmd640_set_mode to set PIO mode&n; *&t;&t;&t;from ioctl call. New drives added to black list.&n; *&n; *  Version 0.06&t;More code cleanup. Prefetch is enabled only for&n; *&t;&t;&t;detected hard drives, not included in prefetch&n; *&t;&t;&t;black list.&n; *&n; *  Version 0.07&t;Changed to more conservative drive tuning policy.&n; *&t;&t;&t;Unknown drives, which report PIO &lt; 4 are set to&n; *&t;&t;&t;(reported_PIO - 1) if it is supported, or to PIO0.&n; *&t;&t;&t;List of known drives extended by info provided by&n; *&t;&t;&t;CMD at their ftp site.&n; *&n; *  Version 0.08&t;Added autotune/noautotune support.&n; *&n; *  Version 0.09&t;Try to be smarter about 2nd port enabling.&n; *  Version 0.10&t;Be nice and don&squot;t reset 2nd port.&n; *  Version 0.11&t;Try to handle more weird situations.&n; *&n; *  Version 0.12&t;Lots of bug fixes from Laszlo Peter&n; *&t;&t;&t;irq unmasking disabled for reliability.&n; *&t;&t;&t;try to be even smarter about the second port.&n; *&t;&t;&t;tidy up source code formatting.&n; *  Version 0.13&t;permit irq unmasking again.&n; *  Version 0.90&t;massive code cleanup, some bugs fixed.&n; *&t;&t;&t;defaults all drives to PIO mode0, prefetch off.&n; *&t;&t;&t;autotune is OFF by default, with compile time flag.&n; *&t;&t;&t;prefetch can be turned OFF/ON using &quot;hdparm -p8/-p9&quot;&n; *&t;&t;&t; (requires hdparm-3.1 or newer)&n; *  Version 0.91&t;first release to linux-kernel list.&n; *  Version 0.92&t;move initial reg dump to separate callable function&n; *&t;&t;&t;change &quot;readahead&quot; to &quot;prefetch&quot; to avoid confusion&n; *  Version 0.95&t;respect original BIOS timings unless autotuning.&n; *&t;&t;&t;tons of code cleanup and rearrangement.&n; *&t;&t;&t;added CONFIG_BLK_DEV_CMD640_ENHANCED option&n; *&t;&t;&t;prevent use of unmask when prefetch is on&n; *  Version 0.96&t;prevent use of io_32bit when prefetch is off&n; *  Version 0.97&t;fix VLB secondary interface for sjd@slip.net&n; *&t;&t;&t;other minor tune-ups:  0.96 was very good.&n; *  Version 0.98&t;ignore PCI version when disabled by BIOS&n; *  Version 0.99&t;display setup/active/recovery clocks with PIO mode&n; *  Version 1.00&t;Mmm.. cannot depend on PCMD_ENA in all systems&n; *  Version 1.01&t;slow/fast devsel can be selected with &quot;hdparm -p6/-p7&quot;&n; *&t;&t;&t; (&quot;fast&quot; is necessary for 32bit I/O in some systems)&n; *  Version 1.02&t;fix bug that resulted in slow &quot;setup times&quot;&n; *&t;&t;&t; (patch courtesy of Zoltan Hidvegi)&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/cmd640.c&t;&t;Version 1.02  Sep 01, 1996&n; *&n; *  Copyright (C) 1995-1996  Linus Torvalds &amp; authors (see below)&n; */
+multiline_comment|/*&n; *  Original authors:&t;abramov@cecmow.enet.dec.com (Igor Abramov)&n; *  &t;&t;&t;mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for the advanced features and bugs&n; *  of IDE interfaces using the CMD Technologies 0640 IDE interface chip.&n; *&n; *  These chips are basically fucked by design, and getting this driver&n; *  to work on every motherboard design that uses this screwed chip seems&n; *  bloody well impossible.  However, we&squot;re still trying.&n; *&n; *  Version 0.97 worked for everybody.&n; *&n; *  User feedback is essential.  Many thanks to the beta test team:&n; *&n; *  A.Hartgers@stud.tue.nl, JZDQC@CUNYVM.CUNY.edu, abramov@cecmow.enet.dec.com,&n; *  bardj@utopia.ppp.sn.no, bart@gaga.tue.nl, bbol001@cs.auckland.ac.nz,&n; *  chrisc@dbass.demon.co.uk, dalecki@namu26.Num.Math.Uni-Goettingen.de,&n; *  derekn@vw.ece.cmu.edu, florian@btp2x3.phy.uni-bayreuth.de,&n; *  flynn@dei.unipd.it, gadio@netvision.net.il, godzilla@futuris.net,&n; *  j@pobox.com, jkemp1@mises.uni-paderborn.de, jtoppe@hiwaay.net,&n; *  kerouac@ssnet.com, meskes@informatik.rwth-aachen.de, hzoli@cs.elte.hu,&n; *  peter@udgaard.isgtec.com, phil@tazenda.demon.co.uk, roadcapw@cfw.com,&n; *  s0033las@sun10.vsz.bme.hu, schaffer@tam.cornell.edu, sjd@slip.net,&n; *  steve@ei.org, ulrpeg@bigcomm.gun.de, ism@tardis.ed.ac.uk, mack@cray.com&n; *  liug@mama.indstate.edu, and others.&n; *&n; *  Version 0.01&t;Initial version, hacked out of ide.c,&n; *&t;&t;&t;and #include&squot;d rather than compiled separately.&n; *&t;&t;&t;This will get cleaned up in a subsequent release.&n; *&n; *  Version 0.02&t;Fixes for vlb initialization code, enable prefetch&n; *&t;&t;&t;for versions &squot;B&squot; and &squot;C&squot; of chip by default,&n; *&t;&t;&t;some code cleanup.&n; *&n; *  Version 0.03&t;Added reset of secondary interface,&n; *&t;&t;&t;and black list for devices which are not compatible&n; *&t;&t;&t;with prefetch mode. Separate function for setting&n; *&t;&t;&t;prefetch is added, possibly it will be called some&n; *&t;&t;&t;day from ioctl processing code.&n; *&n; *  Version 0.04&t;Now configs/compiles separate from ide.c&n; *&n; *  Version 0.05&t;Major rewrite of interface timing code.&n; *&t;&t;&t;Added new function cmd640_set_mode to set PIO mode&n; *&t;&t;&t;from ioctl call. New drives added to black list.&n; *&n; *  Version 0.06&t;More code cleanup. Prefetch is enabled only for&n; *&t;&t;&t;detected hard drives, not included in prefetch&n; *&t;&t;&t;black list.&n; *&n; *  Version 0.07&t;Changed to more conservative drive tuning policy.&n; *&t;&t;&t;Unknown drives, which report PIO &lt; 4 are set to&n; *&t;&t;&t;(reported_PIO - 1) if it is supported, or to PIO0.&n; *&t;&t;&t;List of known drives extended by info provided by&n; *&t;&t;&t;CMD at their ftp site.&n; *&n; *  Version 0.08&t;Added autotune/noautotune support.&n; *&n; *  Version 0.09&t;Try to be smarter about 2nd port enabling.&n; *  Version 0.10&t;Be nice and don&squot;t reset 2nd port.&n; *  Version 0.11&t;Try to handle more weird situations.&n; *&n; *  Version 0.12&t;Lots of bug fixes from Laszlo Peter&n; *&t;&t;&t;irq unmasking disabled for reliability.&n; *&t;&t;&t;try to be even smarter about the second port.&n; *&t;&t;&t;tidy up source code formatting.&n; *  Version 0.13&t;permit irq unmasking again.&n; *  Version 0.90&t;massive code cleanup, some bugs fixed.&n; *&t;&t;&t;defaults all drives to PIO mode0, prefetch off.&n; *&t;&t;&t;autotune is OFF by default, with compile time flag.&n; *&t;&t;&t;prefetch can be turned OFF/ON using &quot;hdparm -p8/-p9&quot;&n; *&t;&t;&t; (requires hdparm-3.1 or newer)&n; *  Version 0.91&t;first release to linux-kernel list.&n; *  Version 0.92&t;move initial reg dump to separate callable function&n; *&t;&t;&t;change &quot;readahead&quot; to &quot;prefetch&quot; to avoid confusion&n; *  Version 0.95&t;respect original BIOS timings unless autotuning.&n; *&t;&t;&t;tons of code cleanup and rearrangement.&n; *&t;&t;&t;added CONFIG_BLK_DEV_CMD640_ENHANCED option&n; *&t;&t;&t;prevent use of unmask when prefetch is on&n; *  Version 0.96&t;prevent use of io_32bit when prefetch is off&n; *  Version 0.97&t;fix VLB secondary interface for sjd@slip.net&n; *&t;&t;&t;other minor tune-ups:  0.96 was very good.&n; *  Version 0.98&t;ignore PCI version when disabled by BIOS&n; *  Version 0.99&t;display setup/active/recovery clocks with PIO mode&n; *  Version 1.00&t;Mmm.. cannot depend on PCMD_ENA in all systems&n; *  Version 1.01&t;slow/fast devsel can be selected with &quot;hdparm -p6/-p7&quot;&n; *&t;&t;&t; (&quot;fast&quot; is necessary for 32bit I/O in some systems)&n; *  Version 1.02&t;fix bug that resulted in slow &quot;setup times&quot;&n; *&t;&t;&t; (patch courtesy of Zoltan Hidvegi)&n; */
+DECL|macro|REALLY_SLOW_IO
+macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 DECL|macro|CMD640_PREFETCH_MASKS
 mdefine_line|#define CMD640_PREFETCH_MASKS 1
 macro_line|#include &lt;linux/config.h&gt;
@@ -10,12 +12,11 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;timing.h&quot;
+macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; * This flag is set in ide.c by the parameter:  ide0=cmd640_vlb&n; */
 DECL|variable|cmd640_vlb
 r_int
@@ -83,7 +84,7 @@ mdefine_line|#define&t;ARTTIM0&t;&t;0x53
 DECL|macro|DRWTIM0
 mdefine_line|#define&t;DRWTIM0&t;&t;0x54
 DECL|macro|ARTTIM1
-mdefine_line|#define ARTTIM1&t;&t;0x55
+mdefine_line|#define ARTTIM1 &t;0x55
 DECL|macro|DRWTIM1
 mdefine_line|#define DRWTIM1&t;&t;0x56
 DECL|macro|ARTTIM23
@@ -96,19 +97,10 @@ DECL|macro|DRWTIM23
 mdefine_line|#define DRWTIM23&t;0x58
 DECL|macro|BRST
 mdefine_line|#define BRST&t;&t;0x59
-multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
-DECL|variable|__cacheline_aligned
-r_static
-id|spinlock_t
-id|cmd640_lock
-id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 DECL|variable|prefetch_regs
 r_static
-id|u8
+id|byte
 id|prefetch_regs
 (braket
 l_int|4
@@ -126,7 +118,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|prefetch_masks
 r_static
-id|u8
+id|byte
 id|prefetch_masks
 (braket
 l_int|4
@@ -145,7 +137,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 DECL|variable|arttim_regs
 r_static
-id|u8
+id|byte
 id|arttim_regs
 (braket
 l_int|4
@@ -163,7 +155,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|drwtim_regs
 r_static
-id|u8
+id|byte
 id|drwtim_regs
 (braket
 l_int|4
@@ -182,7 +174,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Current cmd640 timing values for each drive.&n; * The defaults for each are the slowest possible timings.&n; */
 DECL|variable|setup_counts
 r_static
-id|u8
+id|byte
 id|setup_counts
 (braket
 l_int|4
@@ -201,7 +193,7 @@ suffix:semicolon
 multiline_comment|/* Address setup count (in clocks) */
 DECL|variable|active_counts
 r_static
-id|u8
+id|byte
 id|active_counts
 (braket
 l_int|4
@@ -220,7 +212,7 @@ suffix:semicolon
 multiline_comment|/* Active count   (encoded) */
 DECL|variable|recovery_counts
 r_static
-id|u8
+id|byte
 id|recovery_counts
 (braket
 l_int|4
@@ -237,13 +229,12 @@ l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/* Recovery count (encoded) */
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 multiline_comment|/*&n; * These are initialized to point at the devices we control&n; */
 DECL|variable|cmd_hwif0
 DECL|variable|cmd_hwif1
 r_static
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|cmd_hwif0
 comma
@@ -252,8 +243,7 @@ id|cmd_hwif1
 suffix:semicolon
 DECL|variable|cmd_drives
 r_static
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|cmd_drives
 (braket
@@ -279,13 +269,13 @@ r_int
 r_int
 id|reg
 comma
-id|u8
+id|byte
 id|val
 )paren
 suffix:semicolon
 DECL|variable|get_cmd640_reg
 r_static
-id|u8
+id|byte
 (paren
 op_star
 id|get_cmd640_reg
@@ -314,7 +304,7 @@ r_int
 r_int
 id|reg
 comma
-id|u8
+id|byte
 id|val
 )paren
 (brace
@@ -326,7 +316,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -363,7 +353,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -371,7 +361,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci1
 r_static
-id|u8
+id|byte
 id|get_cmd640_reg_pci1
 (paren
 r_int
@@ -379,7 +369,7 @@ r_int
 id|reg
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
 r_int
@@ -390,7 +380,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -427,7 +417,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -446,7 +436,7 @@ r_int
 r_int
 id|reg
 comma
-id|u8
+id|byte
 id|val
 )paren
 (brace
@@ -458,7 +448,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -493,7 +483,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -501,7 +491,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci2
 r_static
-id|u8
+id|byte
 id|get_cmd640_reg_pci2
 (paren
 r_int
@@ -509,7 +499,7 @@ r_int
 id|reg
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
 r_int
@@ -520,7 +510,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -555,7 +545,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -574,7 +564,7 @@ r_int
 r_int
 id|reg
 comma
-id|u8
+id|byte
 id|val
 )paren
 (brace
@@ -586,7 +576,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -613,7 +603,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -621,7 +611,7 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_vlb
 r_static
-id|u8
+id|byte
 id|get_cmd640_reg_vlb
 (paren
 r_int
@@ -629,7 +619,7 @@ r_int
 id|reg
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
 r_int
@@ -640,7 +630,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -667,7 +657,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -686,7 +676,7 @@ r_void
 )paren
 (brace
 r_const
-id|u8
+id|byte
 id|ven_dev
 (braket
 l_int|4
@@ -884,7 +874,7 @@ id|probe_for_cmd640_vlb
 r_void
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
 id|get_cmd640_reg
@@ -982,7 +972,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1061,7 +1051,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1076,7 +1066,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1176,8 +1166,7 @@ r_int
 id|index
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
@@ -1186,7 +1175,7 @@ id|cmd_drives
 id|index
 )braket
 suffix:semicolon
-id|u8
+id|byte
 id|b
 op_assign
 id|get_cmd640_reg
@@ -1210,15 +1199,15 @@ id|index
 )paren
 (brace
 multiline_comment|/* is prefetch off? */
-id|drive-&gt;channel-&gt;no_unmask
+id|drive-&gt;no_unmask
 op_assign
 l_int|0
 suffix:semicolon
-id|drive-&gt;channel-&gt;no_io_32bit
+id|drive-&gt;no_io_32bit
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;channel-&gt;io_32bit
+id|drive-&gt;io_32bit
 op_assign
 l_int|0
 suffix:semicolon
@@ -1226,16 +1215,16 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#if CMD640_PREFETCH_MASKS
-id|drive-&gt;channel-&gt;no_unmask
+id|drive-&gt;no_unmask
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;channel-&gt;unmask
+id|drive-&gt;unmask
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|drive-&gt;channel-&gt;no_io_32bit
+id|drive-&gt;no_io_32bit
 op_assign
 l_int|0
 suffix:semicolon
@@ -1288,8 +1277,7 @@ id|i
 op_increment
 )paren
 (brace
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 op_assign
@@ -1402,8 +1390,7 @@ r_int
 id|mode
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
@@ -1420,7 +1407,7 @@ id|prefetch_regs
 id|index
 )braket
 suffix:semicolon
-id|u8
+id|byte
 id|b
 suffix:semicolon
 r_int
@@ -1431,7 +1418,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1451,17 +1438,17 @@ id|mode
 )paren
 (brace
 multiline_comment|/* want prefetch on? */
-macro_line|# if CMD640_PREFETCH_MASKS
-id|drive-&gt;channel-&gt;no_unmask
+macro_line|#if CMD640_PREFETCH_MASKS
+id|drive-&gt;no_unmask
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;channel-&gt;unmask
+id|drive-&gt;unmask
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|# endif
-id|drive-&gt;channel-&gt;no_io_32bit
+macro_line|#endif
+id|drive-&gt;no_io_32bit
 op_assign
 l_int|0
 suffix:semicolon
@@ -1477,15 +1464,15 @@ multiline_comment|/* enable prefetch */
 )brace
 r_else
 (brace
-id|drive-&gt;channel-&gt;no_unmask
+id|drive-&gt;no_unmask
 op_assign
 l_int|0
 suffix:semicolon
-id|drive-&gt;channel-&gt;no_io_32bit
+id|drive-&gt;no_io_32bit
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;channel-&gt;io_32bit
+id|drive-&gt;io_32bit
 op_assign
 l_int|0
 suffix:semicolon
@@ -1510,7 +1497,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1527,7 +1514,7 @@ r_int
 id|index
 )paren
 (brace
-id|u8
+id|byte
 id|active_count
 comma
 id|recovery_count
@@ -1600,15 +1587,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Pack active and recovery counts into single byte representation&n; * used by controller&n; */
 DECL|function|pack_nibbles
-r_static
 r_inline
-id|u8
+r_static
+id|byte
 id|pack_nibbles
 (paren
-id|u8
+id|byte
 id|upper
 comma
-id|u8
+id|byte
 id|lower
 )paren
 (brace
@@ -1642,7 +1629,7 @@ r_int
 id|index
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the internal setup timing, and convert to clock count&n;&t; */
@@ -1777,7 +1764,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|u8
+id|byte
 id|setup_count
 op_assign
 id|setup_counts
@@ -1785,7 +1772,7 @@ id|setup_counts
 id|index
 )braket
 suffix:semicolon
-id|u8
+id|byte
 id|active_count
 op_assign
 id|active_counts
@@ -1793,7 +1780,7 @@ id|active_counts
 id|index
 )braket
 suffix:semicolon
-id|u8
+id|byte
 id|recovery_count
 op_assign
 id|recovery_counts
@@ -1932,7 +1919,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1983,7 +1970,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -1999,39 +1986,70 @@ r_int
 r_int
 id|index
 comma
-id|u8
+id|byte
 id|pio_mode
 comma
 r_int
 r_int
 id|cycle_time
-comma
-r_int
-r_int
-id|active_time
-comma
-r_int
-r_int
-id|setup_time
 )paren
 (brace
 r_int
+id|setup_time
+comma
+id|active_time
+comma
 id|recovery_time
 comma
 id|clock_time
 suffix:semicolon
-id|u8
+id|byte
 id|setup_count
 comma
 id|active_count
-suffix:semicolon
-id|u8
+comma
 id|recovery_count
 comma
 id|recovery_count2
-suffix:semicolon
-id|u8
+comma
 id|cycle_count
+suffix:semicolon
+r_int
+id|bus_speed
+op_assign
+id|system_bus_clock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio_mode
+OG
+l_int|5
+)paren
+id|pio_mode
+op_assign
+l_int|5
+suffix:semicolon
+id|setup_time
+op_assign
+id|ide_pio_timings
+(braket
+id|pio_mode
+)braket
+dot
+id|setup_time
+suffix:semicolon
+id|active_time
+op_assign
+id|ide_pio_timings
+(braket
+id|pio_mode
+)braket
+dot
+id|active_time
 suffix:semicolon
 id|recovery_time
 op_assign
@@ -2045,9 +2063,9 @@ id|active_time
 suffix:semicolon
 id|clock_time
 op_assign
-l_int|1000000
+l_int|1000
 op_div
-id|system_bus_speed
+id|bus_speed
 suffix:semicolon
 id|cycle_count
 op_assign
@@ -2218,7 +2236,7 @@ id|index
 op_assign
 id|recovery_count
 suffix:semicolon
-multiline_comment|/*&n;&t; * In a perfect world, we might set the drive pio mode here&n;&t; * (using WIN_SETFEATURE) before continuing.&n;&t; *&n;&t; * But we do not, because:&n;&t; *&t;1) this is the wrong place to do it (proper is do_special() in ide.c)&n;&t; *&t;2) in practice this is rarely, if ever, necessary&n;&t; */
+multiline_comment|/*&n;&t; * In a perfect world, we might set the drive pio mode here&n;&t; * (using WIN_SETFEATURE) before continuing.&n;&t; *&n;&t; * But we do not, because:&n;&t; *&t;1) this is the wrong place to do it (proper is do_special() in ide.c)&n;&t; * &t;2) in practice this is rarely, if ever, necessary&n;&t; */
 id|program_drive_counts
 (paren
 id|index
@@ -2230,43 +2248,26 @@ DECL|function|cmd640_tune_drive
 r_static
 r_void
 id|cmd640_tune_drive
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|mode_wanted
 )paren
 (brace
-id|u8
+id|byte
 id|b
 suffix:semicolon
-r_struct
-id|ata_timing
-op_star
-id|t
+id|ide_pio_data_t
+id|d
 suffix:semicolon
 r_int
 r_int
 id|index
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|cmd640_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2291,14 +2292,12 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: bad news in cmd640_tune_drive&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_goto
-id|out_lock
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2351,7 +2350,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: %sabled cmd640 fast host timing (devsel)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2364,8 +2362,7 @@ suffix:colon
 l_string|&quot;dis&quot;
 )paren
 suffix:semicolon
-r_goto
-id|out_lock
+r_return
 suffix:semicolon
 r_case
 l_int|8
@@ -2402,77 +2399,49 @@ suffix:colon
 l_string|&quot;dis&quot;
 )paren
 suffix:semicolon
-r_goto
-id|out_lock
+r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
 (paren
-id|mode_wanted
-op_eq
-l_int|255
+r_void
 )paren
-id|t
-op_assign
-id|ata_timing_data
-c_func
-(paren
-id|ata_timing_mode
-c_func
+id|ide_get_best_pio_mode
 (paren
 id|drive
 comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
-)paren
-)paren
-suffix:semicolon
-r_else
-id|t
-op_assign
-id|ata_timing_data
-c_func
-(paren
-id|XFER_PIO_0
-op_plus
-id|min_t
-c_func
-(paren
-id|u8
-comma
 id|mode_wanted
 comma
-l_int|4
-)paren
+l_int|5
+comma
+op_amp
+id|d
 )paren
 suffix:semicolon
 id|cmd640_set_mode
-c_func
 (paren
 id|index
 comma
-id|t-&gt;mode
-op_minus
-id|XFER_PIO_0
+id|d.pio_mode
 comma
-id|t-&gt;cycle
-comma
-id|t-&gt;active
-comma
-id|t-&gt;setup
+id|d.cycle_time
 )paren
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s: selected cmd640 PIO mode%d (%dns)&quot;
+l_string|&quot;%s: selected cmd640 PIO mode%d (%dns)%s&quot;
 comma
 id|drive-&gt;name
 comma
-id|t-&gt;mode
+id|d.pio_mode
 comma
-id|t-&gt;cycle
+id|d.cycle_time
+comma
+id|d.overridden
+ques
+c_cond
+l_string|&quot; (overriding vendor mode)&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 id|display_clocks
@@ -2481,22 +2450,10 @@ c_func
 id|index
 )paren
 suffix:semicolon
-id|out_lock
-suffix:colon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|cmd640_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-multiline_comment|/**&n; *&t;pci_conf1&t;-&t;check for PCI type 1 configuration&n; *&t;&n; *&t;Issues a safe probe sequence for PCI configuration type 1 and&n; *&t;returns non-zero if conf1 is supported. Takes the pci_config lock&n; */
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 DECL|function|pci_conf1
 r_static
 r_int
@@ -2517,7 +2474,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -2558,21 +2515,21 @@ op_eq
 l_int|0x80000000
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pci_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|outl
 c_func
 (paren
 id|tmp
 comma
 l_int|0xCF8
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2591,7 +2548,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -2600,7 +2557,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pci_conf2&t;-&t;check for PCI type 2 configuration&n; *&t;&n; *&t;Issues a safe probe sequence for PCI configuration type 2 and&n; *&t;returns non-zero if conf2 is supported. Takes the pci_config lock.&n; */
 DECL|function|pci_conf2
 r_static
 r_int
@@ -2618,7 +2574,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -2661,7 +2617,7 @@ op_logical_and
 id|IN_BYTE
 c_func
 (paren
-l_int|0xCFA
+l_int|0xCF8
 )paren
 op_eq
 l_int|0x00
@@ -2671,7 +2627,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -2684,7 +2640,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pci_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -2698,7 +2654,6 @@ DECL|function|ide_probe_for_cmd640x
 r_int
 id|__init
 id|ide_probe_for_cmd640x
-c_func
 (paren
 r_void
 )paren
@@ -2727,7 +2682,7 @@ r_int
 r_int
 id|index
 suffix:semicolon
-id|u8
+id|byte
 id|b
 comma
 id|cfr
@@ -2754,6 +2709,7 @@ id|cmd640_vlb
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Find out what kind of PCI probing is supported otherwise&n;&t;&t;   Justin Gibbs will sulk.. */
 r_if
 c_cond
 (paren
@@ -2904,7 +2860,7 @@ op_assign
 op_amp
 id|cmd640_tune_drive
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 multiline_comment|/*&n;&t; * Ensure compatibility by always using the slowest timings&n;&t; * for access to the drive&squot;s command register block,&n;&t; * and reset the prefetch burstsize to default (512 bytes).&n;&t; *&n;&t; * Maybe we need a way to NOT do these on *some* systems?&n;&t; */
 id|put_cmd640_reg
 c_func
@@ -3025,7 +2981,7 @@ id|second_port_toggled
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 id|port2
 op_assign
 l_string|&quot;enabled&quot;
@@ -3068,9 +3024,17 @@ id|cmd_hwif1-&gt;chipset
 op_assign
 id|ide_cmd640
 suffix:semicolon
-id|cmd_hwif1-&gt;unit
+id|cmd_hwif0-&gt;mate
 op_assign
-id|ATA_SECONDARY
+id|cmd_hwif1
+suffix:semicolon
+id|cmd_hwif1-&gt;mate
+op_assign
+id|cmd_hwif0
+suffix:semicolon
+id|cmd_hwif1-&gt;channel
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 id|cmd_hwif1-&gt;tuneproc
@@ -3078,7 +3042,7 @@ op_assign
 op_amp
 id|cmd640_tune_drive
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 )brace
 id|printk
 c_func
@@ -3121,8 +3085,7 @@ id|index
 op_increment
 )paren
 (brace
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign
@@ -3148,7 +3111,7 @@ id|second_port_toggled
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Reset timing to the slowest speed and turn off prefetch.&n;&t;&t;&t; * This way, the drive identify code has a better chance.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t; &t;&t; * Reset timing to the slowest speed and turn off prefetch.&n;&t;&t;&t; * This way, the drive identify code has a better chance.&n;&t;&t;&t; */
 id|setup_counts
 (braket
 id|index
@@ -3214,7 +3177,7 @@ l_string|&quot;cmd640: drive%d timings/prefetch(%s) preserved&quot;
 comma
 id|index
 comma
-id|drive-&gt;channel-&gt;no_io_32bit
+id|drive-&gt;no_io_32bit
 ques
 c_cond
 l_string|&quot;off&quot;
@@ -3243,7 +3206,7 @@ l_string|&quot;cmd640: drive%d timings/prefetch(%s) preserved&bslash;n&quot;
 comma
 id|index
 comma
-id|drive-&gt;channel-&gt;no_io_32bit
+id|drive-&gt;no_io_32bit
 ques
 c_cond
 l_string|&quot;off&quot;
@@ -3251,7 +3214,7 @@ suffix:colon
 l_string|&quot;on&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 )brace
 macro_line|#ifdef CMD640_DUMP_REGS
 id|CMD640_DUMP_REGS

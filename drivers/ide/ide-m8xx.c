@@ -17,9 +17,8 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -30,7 +29,7 @@ macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;timing.h&quot;
+macro_line|#include &quot;ide_modes.h&quot;
 r_static
 r_int
 id|identify
@@ -71,13 +70,12 @@ id|base
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|ide_interrupt_ack
-c_func
 (paren
-r_struct
-id|ata_channel
+r_void
 op_star
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -85,12 +83,11 @@ r_void
 id|m8xx_ide_tuneproc
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|pio
 )paren
 suffix:semicolon
@@ -195,30 +192,6 @@ comma
 macro_line|#endif /* IDE1_BASE_OFFSET */
 macro_line|#endif&t;/* IDE0_BASE_OFFSET */
 )brace
-suffix:semicolon
-DECL|struct|ide_pio_timings_s
-r_typedef
-r_struct
-id|ide_pio_timings_s
-(brace
-DECL|member|setup_time
-r_int
-id|setup_time
-suffix:semicolon
-multiline_comment|/* Address setup (ns) minimum */
-DECL|member|active_time
-r_int
-id|active_time
-suffix:semicolon
-multiline_comment|/* Active pulse (ns) minimum */
-DECL|member|cycle_time
-r_int
-id|cycle_time
-suffix:semicolon
-multiline_comment|/* Cycle time (ns) minimum = (setup + active + recovery) */
-DECL|typedef|ide_pio_timings_t
-)brace
-id|ide_pio_timings_t
 suffix:semicolon
 DECL|variable|ide_pio_clocks
 id|ide_pio_timings_t
@@ -654,21 +627,6 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-r_struct
-id|ata_timing
-op_star
-id|t
-suffix:semicolon
-id|t
-op_assign
-id|ata_timing_data
-c_func
-(paren
-id|i
-op_plus
-id|XFER_PIO_0
-)paren
-suffix:semicolon
 id|hold_time
 (braket
 id|i
@@ -693,7 +651,12 @@ id|setup_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|t-&gt;setup
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|setup_time
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -707,7 +670,12 @@ id|active_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|t-&gt;active
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|active_time
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -721,7 +689,12 @@ id|cycle_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|t-&gt;cycle
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|cycle_time
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -761,16 +734,33 @@ id|i
 dot
 id|cycle_time
 comma
-id|t-&gt;setup
-comma
-id|t-&gt;active
-comma
-id|hold_time
+id|ide_pio_timings
 (braket
 id|i
 )braket
+dot
+id|setup_time
 comma
-id|t-&gt;cycle
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|active_time
+comma
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|hold_time
+comma
+id|ide_pio_timings
+(braket
+id|i
+)braket
+dot
+id|cycle_time
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1076,6 +1066,10 @@ id|m8xx_ide_tuneproc
 suffix:semicolon
 id|hw-&gt;ack_intr
 op_assign
+(paren
+id|ide_ack_intr_t
+op_star
+)paren
 id|ide_interrupt_ack
 suffix:semicolon
 multiline_comment|/* Enable Harddisk Interrupt,&n;&t; * and make it edge sensitive&n;&t; */
@@ -1384,6 +1378,10 @@ id|m8xx_ide_tuneproc
 suffix:semicolon
 id|hw-&gt;ack_intr
 op_assign
+(paren
+id|ide_ack_intr_t
+op_star
+)paren
 id|ide_interrupt_ack
 suffix:semicolon
 multiline_comment|/* Enable Harddisk Interrupt,&n;&t; * and make it edge sensitive&n;&t; */
@@ -1411,7 +1409,7 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/* m8xx_ide_init_hwif_ports() for CONFIG_IDE_8xx_DIRECT */
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_IDE_8xx_DIRECT */
 multiline_comment|/* -------------------------------------------------------------------- */
 multiline_comment|/* PCMCIA Timing */
 macro_line|#ifndef&t;PCMCIA_SHT
@@ -1429,15 +1427,17 @@ DECL|function|m8xx_ide_tuneproc
 id|m8xx_ide_tuneproc
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|pio
 )paren
 (brace
+id|ide_pio_data_t
+id|d
+suffix:semicolon
 macro_line|#if defined(CONFIG_IDE_8xx_PCCARD) || defined(CONFIG_IDE_8xx_DIRECT)
 r_volatile
 id|pcmconf8xx_t
@@ -1452,26 +1452,20 @@ comma
 id|reg
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pio
-op_eq
-l_int|255
-)paren
 id|pio
 op_assign
-id|ata_timing_mode
+id|ide_get_best_pio_mode
 c_func
 (paren
 id|drive
 comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
+id|pio
+comma
+l_int|4
+comma
+op_amp
+id|d
 )paren
-op_minus
-id|XFER_PIO_0
 suffix:semicolon
 macro_line|#if 1
 id|printk
@@ -1740,18 +1734,16 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* defined(CONFIG_IDE_8xx_PCCARD) || defined(CONFIG_IDE_8xx_PCMCIA */
 )brace
-DECL|function|ide_interrupt_ack
 r_static
-r_int
+r_void
+DECL|function|ide_interrupt_ack
 id|ide_interrupt_ack
-c_func
 (paren
-r_struct
-id|ata_channel
+r_void
 op_star
-id|ch
+id|dev
 )paren
 (brace
 macro_line|#ifdef CONFIG_IDE_8xx_PCCARD
@@ -1860,12 +1852,9 @@ id|im_pcmcia.pcmc_pscr
 op_assign
 id|pscr
 suffix:semicolon
-macro_line|#else
+macro_line|#else /* ! CONFIG_IDE_8xx_PCCARD */
 multiline_comment|/*&n;&t; * Only CONFIG_IDE_8xx_PCCARD is using the interrupt of the&n;&t; * MPC8xx&squot;s PCMCIA controller, so there is nothing to be done here&n;&t; * for CONFIG_IDE_8xx_DIRECT and CONFIG_IDE_EXT_DIRECT.&n;&t; * The interrupt is handled somewhere else.&t;-- Steven&n;&t; */
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
+macro_line|#endif /* CONFIG_IDE_8xx_PCCARD */
 )brace
 multiline_comment|/*&n; * CIS Tupel codes&n; */
 DECL|macro|CISTPL_NULL
@@ -2164,7 +2153,7 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif&t;/* DEBUG_PCMCIA */
 r_switch
 c_cond
 (paren

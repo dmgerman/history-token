@@ -87,8 +87,7 @@ r_int
 id|macide_ack_intr
 c_func
 (paren
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 )paren
@@ -214,6 +213,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -250,6 +251,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -286,6 +289,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -310,8 +315,7 @@ multiline_comment|/* Fix breakage in ide-disk.c: drive capacity&t;*/
 multiline_comment|/* is not initialized for drives without a &t;*/
 multiline_comment|/* hardware ID, and we cna&squot;t get that without&t;*/
 multiline_comment|/* probing the drive which freezes a 190.&t;*/
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 op_assign

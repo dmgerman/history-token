@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *  Copyright (C) 1996  Linus Torvalds &amp; author (see below)&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/dtc2278.c&t;&t;Version 0.02&t;Feb 10, 1996&n; *&n; *  Copyright (C) 1996  Linus Torvalds &amp; author (see below)&n; */
+DECL|macro|REALLY_SLOW_IO
+macro_line|#undef REALLY_SLOW_IO           /* most systems can safely undef this */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -6,11 +8,11 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;timing.h&quot;
+macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; * Changing this #undef to #define may solve start up problems in some systems.&n; */
 DECL|macro|ALWAYS_SET_DTC2278_PIO_MODE
 macro_line|#undef ALWAYS_SET_DTC2278_PIO_MODE
@@ -45,7 +47,7 @@ op_increment
 id|i
 )paren
 (brace
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -59,7 +61,7 @@ comma
 l_int|0xb0
 )paren
 suffix:semicolon
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -73,7 +75,7 @@ comma
 l_int|0xb4
 )paren
 suffix:semicolon
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -82,7 +84,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0xb4
@@ -99,7 +101,7 @@ comma
 l_int|0xb0
 )paren
 suffix:semicolon
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -111,35 +113,36 @@ multiline_comment|/* success */
 )brace
 )brace
 )brace
-multiline_comment|/* Assumes IRQ&squot;s are disabled or at least that no other process will&n;   attempt to access the IDE registers concurrently. */
 DECL|function|tune_dtc2278
 r_static
 r_void
 id|tune_dtc2278
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|pio
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|pio
 op_assign
-id|ata_timing_mode
+id|ide_get_best_pio_mode
 c_func
 (paren
 id|drive
 comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
+id|pio
+comma
+l_int|4
+comma
+l_int|NULL
 )paren
-op_minus
-id|XFER_PIO_0
 suffix:semicolon
 r_if
 c_cond
@@ -149,6 +152,15 @@ op_ge
 l_int|3
 )paren
 (brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This enables PIO mode4 (3?) on the first interface&n;&t;&t; */
 id|sub22
 c_func
@@ -166,13 +178,38 @@ comma
 l_int|0xa0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* we don&squot;t know how to set it back again.. */
 )brace
 multiline_comment|/*&n;&t; * 32bit I/O has to be enabled for *both* drives at the same time.&n;&t; */
-id|drive-&gt;channel-&gt;io_32bit
+id|drive-&gt;io_32bit
+op_assign
+l_int|1
+suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|drives
+(braket
+op_logical_neg
+id|drive-&gt;select.b.unit
+)braket
+dot
+id|io_32bit
 op_assign
 l_int|1
 suffix:semicolon
@@ -204,7 +241,7 @@ comma
 l_int|0xb0
 )paren
 suffix:semicolon
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -218,7 +255,7 @@ comma
 l_int|0xb4
 )paren
 suffix:semicolon
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x3f6
@@ -295,8 +332,40 @@ op_assign
 op_amp
 id|tune_dtc2278
 suffix:semicolon
-multiline_comment|/* FIXME: What about the following?!&n;&t;ide_hwifs[1].tuneproc = &amp;tune_dtc2278;&n;&t; */
 id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|drives
+(braket
+l_int|0
+)braket
+dot
+id|no_unmask
+op_assign
+l_int|1
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|drives
+(braket
+l_int|1
+)braket
+dot
+id|no_unmask
+op_assign
+l_int|1
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|drives
 (braket
 l_int|0
 )braket
@@ -310,6 +379,11 @@ id|ide_hwifs
 l_int|1
 )braket
 dot
+id|drives
+(braket
+l_int|1
+)braket
+dot
 id|no_unmask
 op_assign
 l_int|1
@@ -319,18 +393,35 @@ id|ide_hwifs
 l_int|0
 )braket
 dot
-id|unit
+id|mate
 op_assign
-id|ATA_PRIMARY
+op_amp
+id|ide_hwifs
+(braket
+l_int|1
+)braket
 suffix:semicolon
 id|ide_hwifs
 (braket
 l_int|1
 )braket
 dot
-id|unit
+id|mate
 op_assign
-id|ATA_SECONDARY
+op_amp
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|channel
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 eof

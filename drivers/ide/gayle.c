@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -109,8 +110,7 @@ r_int
 id|gayle_ack_intr_a4000
 c_func
 (paren
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 )paren
@@ -121,7 +121,7 @@ id|ch
 suffix:semicolon
 id|ch
 op_assign
-id|inb
+id|z_readb
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -153,8 +153,7 @@ r_int
 id|gayle_ack_intr_a1200
 c_func
 (paren
-r_struct
-id|ata_channel
+id|ide_hwif_t
 op_star
 id|hwif
 )paren
@@ -165,7 +164,7 @@ id|ch
 suffix:semicolon
 id|ch
 op_assign
-id|inb
+id|z_readb
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -190,7 +189,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|z_readb
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -199,7 +198,7 @@ id|IDE_STATUS_OFFSET
 )braket
 )paren
 suffix:semicolon
-id|outb
+id|z_writeb
 c_func
 (paren
 l_int|0x7c
@@ -214,7 +213,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Probe for a Gayle IDE interface (and optionally for an IDE doubler)&n; */
+multiline_comment|/*&n;     *  Probe for a Gayle IDE interface (and optionally for an IDE doubler)&n;     */
 DECL|function|gayle_init
 r_void
 id|__init
@@ -282,16 +281,9 @@ id|ctrlport
 comma
 id|irqport
 suffix:semicolon
-r_int
-(paren
+id|ide_ack_intr_t
 op_star
 id|ack_intr
-)paren
-(paren
-r_struct
-id|ata_channel
-op_star
-)paren
 suffix:semicolon
 id|hw_regs_t
 id|hw
@@ -448,6 +440,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -1,13 +1,69 @@
-multiline_comment|/*&n; * $Id: ata-timing.c,v 2.0 2002/03/12 15:48:43 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program; if not, write to the Free Software Foundation, Inc., 59 Temple&n; * Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by e-mail -&n; * mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail: Vojtech Pavlik,&n; * Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#ifndef _IDE_TIMING_H
+DECL|macro|_IDE_TIMING_H
+mdefine_line|#define _IDE_TIMING_H
+multiline_comment|/*&n; * $Id: ide-timing.h,v 1.6 2001/12/23 22:47:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &quot;timing.h&quot;
-multiline_comment|/*&n; * PIO 0-5, MWDMA 0-2 and UDMA 0-6 timings (in nanoseconds).  These were taken&n; * from ATA/ATAPI-6 standard, rev 0a, except for PIO 5, which is a nonstandard&n; * extension and UDMA6, which is currently supported only by Maxtor drives.&n; */
-DECL|variable|ata_timing
+DECL|macro|XFER_PIO_5
+mdefine_line|#define XFER_PIO_5&t;&t;0x0d
+DECL|macro|XFER_UDMA_SLOW
+mdefine_line|#define XFER_UDMA_SLOW&t;&t;0x4f
+DECL|struct|ide_timing
 r_struct
-id|ata_timing
-id|ata_timing
+id|ide_timing
+(brace
+DECL|member|mode
+r_int
+id|mode
+suffix:semicolon
+DECL|member|setup
+r_int
+id|setup
+suffix:semicolon
+multiline_comment|/* t1 */
+DECL|member|act8b
+r_int
+id|act8b
+suffix:semicolon
+multiline_comment|/* t2 for 8-bit io */
+DECL|member|rec8b
+r_int
+id|rec8b
+suffix:semicolon
+multiline_comment|/* t2i for 8-bit io */
+DECL|member|cyc8b
+r_int
+id|cyc8b
+suffix:semicolon
+multiline_comment|/* t0 for 8-bit io */
+DECL|member|active
+r_int
+id|active
+suffix:semicolon
+multiline_comment|/* t2 or tD */
+DECL|member|recover
+r_int
+id|recover
+suffix:semicolon
+multiline_comment|/* t2i or tK */
+DECL|member|cycle
+r_int
+id|cycle
+suffix:semicolon
+multiline_comment|/* t0 */
+DECL|member|udma
+r_int
+id|udma
+suffix:semicolon
+multiline_comment|/* t2CYCTYP/2 */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * PIO 0-5, MWDMA 0-2 and UDMA 0-6 timings (in nanoseconds).&n; * These were taken from ATA/ATAPI-6 standard, rev 0a, except&n; * for PIO 5, which is a nonstandard extension and UDMA6, which&n; * is currently supported only by Maxtor drives. &n; */
+DECL|variable|ide_timing
+r_static
+r_struct
+id|ide_timing
+id|ide_timing
 (braket
 )braket
 op_assign
@@ -438,14 +494,61 @@ l_int|1
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Determine the best transfer mode appilcable to a particular drive.  This has&n; * then to be matched agains in esp. other drives no the same channel or even&n; * the whole particular host chip.&n; */
-DECL|function|ata_timing_mode
+DECL|macro|IDE_TIMING_SETUP
+mdefine_line|#define IDE_TIMING_SETUP&t;0x01
+DECL|macro|IDE_TIMING_ACT8B
+mdefine_line|#define IDE_TIMING_ACT8B&t;0x02
+DECL|macro|IDE_TIMING_REC8B
+mdefine_line|#define IDE_TIMING_REC8B&t;0x04
+DECL|macro|IDE_TIMING_CYC8B
+mdefine_line|#define IDE_TIMING_CYC8B&t;0x08
+DECL|macro|IDE_TIMING_8BIT
+mdefine_line|#define IDE_TIMING_8BIT&t;&t;0x0e
+DECL|macro|IDE_TIMING_ACTIVE
+mdefine_line|#define IDE_TIMING_ACTIVE&t;0x10
+DECL|macro|IDE_TIMING_RECOVER
+mdefine_line|#define IDE_TIMING_RECOVER&t;0x20
+DECL|macro|IDE_TIMING_CYCLE
+mdefine_line|#define IDE_TIMING_CYCLE&t;0x40
+DECL|macro|IDE_TIMING_UDMA
+mdefine_line|#define IDE_TIMING_UDMA&t;&t;0x80
+DECL|macro|IDE_TIMING_ALL
+mdefine_line|#define IDE_TIMING_ALL&t;&t;0xff
+DECL|macro|MIN
+mdefine_line|#define MIN(a,b)&t;((a)&lt;(b)?(a):(b))
+DECL|macro|MAX
+mdefine_line|#define MAX(a,b)&t;((a)&gt;(b)?(a):(b))
+DECL|macro|FIT
+mdefine_line|#define FIT(v,min,max)&t;MAX(MIN(v,max),min)
+DECL|macro|ENOUGH
+mdefine_line|#define ENOUGH(v,unit)&t;(((v)-1)/(unit)+1)
+DECL|macro|EZ
+mdefine_line|#define EZ(v,unit)&t;((v)?ENOUGH(v,unit):0)
+DECL|macro|XFER_MODE
+mdefine_line|#define XFER_MODE&t;0xf0
+DECL|macro|XFER_UDMA_133
+mdefine_line|#define XFER_UDMA_133&t;0x48
+DECL|macro|XFER_UDMA_100
+mdefine_line|#define XFER_UDMA_100&t;0x44
+DECL|macro|XFER_UDMA_66
+mdefine_line|#define XFER_UDMA_66&t;0x42
+DECL|macro|XFER_UDMA
+mdefine_line|#define XFER_UDMA&t;0x40
+DECL|macro|XFER_MWDMA
+mdefine_line|#define XFER_MWDMA&t;0x20
+DECL|macro|XFER_SWDMA
+mdefine_line|#define XFER_SWDMA&t;0x10
+DECL|macro|XFER_EPIO
+mdefine_line|#define XFER_EPIO&t;0x01
+DECL|macro|XFER_PIO
+mdefine_line|#define XFER_PIO&t;0x00
+DECL|function|ide_find_best_mode
+r_static
 r_int
-id|ata_timing_mode
+id|ide_find_best_mode
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -474,7 +577,6 @@ id|id
 r_return
 id|XFER_PIO_SLOW
 suffix:semicolon
-multiline_comment|/* Want UDMA and UDMA bitmap valid */
 r_if
 c_cond
 (paren
@@ -491,6 +593,7 @@ l_int|4
 )paren
 )paren
 (brace
+multiline_comment|/* Want UDMA and UDMA bitmap valid */
 r_if
 c_cond
 (paren
@@ -561,10 +664,10 @@ c_cond
 (paren
 id|map
 op_amp
-id|XFER_UDMA_66_4
+id|XFER_UDMA_66
 )paren
 op_eq
-id|XFER_UDMA_66_4
+id|XFER_UDMA_66
 )paren
 r_if
 c_cond
@@ -581,29 +684,6 @@ ques
 c_cond
 id|XFER_UDMA_4
 suffix:colon
-l_int|0
-)paren
-)paren
-r_return
-id|best
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|map
-op_amp
-id|XFER_UDMA_66_3
-)paren
-op_eq
-id|XFER_UDMA_66_3
-)paren
-r_if
-c_cond
-(paren
-(paren
-id|best
-op_assign
 (paren
 id|id-&gt;dma_ultra
 op_amp
@@ -659,7 +739,6 @@ r_return
 id|best
 suffix:semicolon
 )brace
-multiline_comment|/* Want MWDMA and drive has EIDE fields */
 r_if
 c_cond
 (paren
@@ -676,6 +755,7 @@ l_int|2
 )paren
 )paren
 (brace
+multiline_comment|/* Want MWDMA and drive has EIDE fields */
 r_if
 c_cond
 (paren
@@ -716,7 +796,6 @@ r_return
 id|best
 suffix:semicolon
 )brace
-multiline_comment|/* Want SWDMA */
 r_if
 c_cond
 (paren
@@ -725,7 +804,7 @@ op_amp
 id|XFER_SWDMA
 )paren
 (brace
-multiline_comment|/* EIDE SWDMA */
+multiline_comment|/* Want SWDMA */
 r_if
 c_cond
 (paren
@@ -734,6 +813,7 @@ op_amp
 l_int|2
 )paren
 (brace
+multiline_comment|/* EIDE SWDMA */
 r_if
 c_cond
 (paren
@@ -774,7 +854,6 @@ r_return
 id|best
 suffix:semicolon
 )brace
-multiline_comment|/* Pre-EIDE style SWDMA */
 r_if
 c_cond
 (paren
@@ -783,6 +862,7 @@ op_amp
 l_int|1
 )paren
 (brace
+multiline_comment|/* Pre-EIDE style SWDMA */
 r_if
 c_cond
 (paren
@@ -824,7 +904,6 @@ id|best
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* EIDE PIO modes */
 r_if
 c_cond
 (paren
@@ -841,6 +920,7 @@ l_int|2
 )paren
 )paren
 (brace
+multiline_comment|/* EIDE PIO modes */
 r_if
 c_cond
 (paren
@@ -912,64 +992,19 @@ suffix:colon
 id|XFER_PIO_SLOW
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Just get a pointer to the struct describing the timing values used commonly&n; * for a particular mode.&n; */
-DECL|function|ata_timing_data
-r_struct
-id|ata_timing
-op_star
-id|ata_timing_data
-c_func
-(paren
-r_int
-id|speed
-)paren
-(brace
-r_struct
-id|ata_timing
-op_star
-id|t
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|t
-op_assign
-id|ata_timing
-suffix:semicolon
-id|t-&gt;mode
-op_ne
-id|speed
-suffix:semicolon
-id|t
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|t-&gt;mode
-OL
-l_int|0
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_return
-id|t
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is just unit conversion.&n; */
-DECL|function|ata_timing_quantize
+DECL|function|ide_timing_quantize
+r_static
 r_void
-id|ata_timing_quantize
+id|ide_timing_quantize
 c_func
 (paren
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|t
 comma
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|q
 comma
@@ -1077,24 +1112,24 @@ id|UT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Match against each other the timing setup for two devices on one channel.&n; * Becouse they share the electrical interface we can unsually only use the&n; * lowest common denominator between them.&n; */
-DECL|function|ata_timing_merge
+DECL|function|ide_timing_merge
+r_static
 r_void
-id|ata_timing_merge
+id|ide_timing_merge
 c_func
 (paren
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|a
 comma
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|b
 comma
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|m
 comma
@@ -1112,7 +1147,7 @@ id|IDE_TIMING_SETUP
 )paren
 id|m-&gt;setup
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;setup
@@ -1129,7 +1164,7 @@ id|IDE_TIMING_ACT8B
 )paren
 id|m-&gt;act8b
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;act8b
@@ -1146,7 +1181,7 @@ id|IDE_TIMING_REC8B
 )paren
 id|m-&gt;rec8b
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;rec8b
@@ -1163,7 +1198,7 @@ id|IDE_TIMING_CYC8B
 )paren
 id|m-&gt;cyc8b
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;cyc8b
@@ -1180,7 +1215,7 @@ id|IDE_TIMING_ACTIVE
 )paren
 id|m-&gt;active
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;active
@@ -1197,7 +1232,7 @@ id|IDE_TIMING_RECOVER
 )paren
 id|m-&gt;recover
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;recover
@@ -1214,7 +1249,7 @@ id|IDE_TIMING_CYCLE
 )paren
 id|m-&gt;cycle
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;cycle
@@ -1231,7 +1266,7 @@ id|IDE_TIMING_UDMA
 )paren
 id|m-&gt;udma
 op_assign
-id|max
+id|MAX
 c_func
 (paren
 id|a-&gt;udma
@@ -1240,56 +1275,58 @@ id|b-&gt;udma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Not all controllers can do separate timing for 8-bit command transfers&n; * and 16-bit data transfers.&n; */
-DECL|function|ata_timing_merge_8bit
-r_void
-id|ata_timing_merge_8bit
+DECL|function|ide_timing_find_mode
+r_static
+r_struct
+id|ide_timing
+op_star
+id|ide_timing_find_mode
 c_func
 (paren
-r_struct
-id|ata_timing
-op_star
-id|t
+r_int
+id|speed
 )paren
 (brace
-id|t-&gt;active
-op_assign
-id|max
-c_func
-(paren
-id|t-&gt;active
-comma
-id|t-&gt;act8b
-)paren
+r_struct
+id|ide_timing
+op_star
+id|t
 suffix:semicolon
-id|t-&gt;recover
-op_assign
-id|max
-c_func
+r_for
+c_loop
 (paren
-id|t-&gt;recover
-comma
-id|t-&gt;rec8b
-)paren
+id|t
+op_assign
+id|ide_timing
 suffix:semicolon
-id|t-&gt;cycle
-op_assign
-id|max
-c_func
-(paren
-id|t-&gt;cycle
-comma
-id|t-&gt;cyc8b
+id|t-&gt;mode
+op_ne
+id|speed
+suffix:semicolon
+id|t
+op_increment
 )paren
+r_if
+c_cond
+(paren
+id|t-&gt;mode
+OL
+l_int|0
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_return
+id|t
 suffix:semicolon
 )brace
-DECL|function|ata_timing_compute
+DECL|function|ide_timing_compute
+r_static
 r_int
-id|ata_timing_compute
+id|ide_timing_compute
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
@@ -1297,7 +1334,7 @@ r_int
 id|speed
 comma
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|t
 comma
@@ -1316,13 +1353,13 @@ op_assign
 id|drive-&gt;id
 suffix:semicolon
 r_struct
-id|ata_timing
+id|ide_timing
 op_star
 id|s
 comma
 id|p
 suffix:semicolon
-multiline_comment|/* Find the mode.&n;&t; */
+multiline_comment|/*&n; * Find the mode.&n; */
 r_if
 c_cond
 (paren
@@ -1330,7 +1367,7 @@ op_logical_neg
 (paren
 id|s
 op_assign
-id|ata_timing_data
+id|ide_timing_find_mode
 c_func
 (paren
 id|speed
@@ -1341,22 +1378,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|t
-comma
-id|s
-comma
-r_sizeof
-(paren
-r_struct
-id|ata_timing
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* If the drive is an EIDE drive, it can tell us it needs extended&n;&t; * PIO/MWDMA cycle timing.&n;&t; */
-multiline_comment|/* EIDE drive */
+multiline_comment|/*&n; * If the drive is an EIDE drive, it can tell us it needs extended&n; * PIO/MWDMA cycle timing.&n; */
 r_if
 c_cond
 (paren
@@ -1367,6 +1389,7 @@ op_amp
 l_int|2
 )paren
 (brace
+multiline_comment|/* EIDE drive */
 id|memset
 c_func
 (paren
@@ -1424,7 +1447,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|ata_timing_merge
+id|ide_timing_merge
 c_func
 (paren
 op_amp
@@ -1440,11 +1463,11 @@ id|IDE_TIMING_CYC8B
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Convert the timing to bus clock counts.&n;&t; */
-id|ata_timing_quantize
+multiline_comment|/*&n; * Convert the timing to bus clock counts.&n; */
+id|ide_timing_quantize
 c_func
 (paren
-id|t
+id|s
 comma
 id|t
 comma
@@ -1453,7 +1476,7 @@ comma
 id|UT
 )paren
 suffix:semicolon
-multiline_comment|/* Even in DMA/UDMA modes we still use PIO access for IDENTIFY,&n;&t; * S.M.A.R.T and some other commands. We have to ensure that the DMA&n;&t; * cycle timing is slower/equal than the fastest PIO timing.&n;&t; */
+multiline_comment|/*&n; * Even in DMA/UDMA modes we still use PIO access for IDENTIFY, S.M.A.R.T&n; * and some other commands. We have to ensure that the DMA cycle timing is&n; * slower/equal than the fastest PIO timing.&n; */
 r_if
 c_cond
 (paren
@@ -1466,12 +1489,12 @@ op_ne
 id|XFER_PIO
 )paren
 (brace
-id|ata_timing_compute
+id|ide_timing_compute
 c_func
 (paren
 id|drive
 comma
-id|ata_timing_mode
+id|ide_find_best_mode
 c_func
 (paren
 id|drive
@@ -1489,7 +1512,7 @@ comma
 id|UT
 )paren
 suffix:semicolon
-id|ata_timing_merge
+id|ide_timing_merge
 c_func
 (paren
 op_amp
@@ -1503,7 +1526,7 @@ id|IDE_TIMING_ALL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Lenghten active &amp; recovery time so that cycle time is correct.&n;&t; */
+multiline_comment|/*&n; * Lenghten active &amp; recovery time so that cycle time is correct.&n; */
 r_if
 c_cond
 (paren
@@ -1570,116 +1593,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ata_best_pio_mode
-id|u8
-id|ata_best_pio_mode
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_static
-id|u16
-id|eide_pio_timing
-(braket
-l_int|6
-)braket
-op_assign
-(brace
-l_int|600
-comma
-l_int|383
-comma
-l_int|240
-comma
-l_int|180
-comma
-l_int|120
-comma
-l_int|90
-)brace
-suffix:semicolon
-id|u16
-id|pio_min
-suffix:semicolon
-id|u8
-id|pio
-suffix:semicolon
-id|pio
-op_assign
-id|ata_timing_mode
-c_func
-(paren
-id|drive
-comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
-)paren
-op_minus
-id|XFER_PIO_0
-suffix:semicolon
-multiline_comment|/* downgrade mode if necessary */
-id|pio_min
-op_assign
-(paren
-id|pio
-OG
-l_int|2
-)paren
-ques
-c_cond
-id|drive-&gt;id-&gt;eide_pio_iordy
-suffix:colon
-id|drive-&gt;id-&gt;eide_pio
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pio_min
-)paren
-r_while
-c_loop
-(paren
-id|pio
-op_logical_and
-id|pio_min
-OG
-id|eide_pio_timing
-(braket
-id|pio
-)braket
-)paren
-id|pio
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pio
-op_logical_and
-id|drive-&gt;id-&gt;tPIO
-)paren
-r_return
-id|XFER_PIO_SLOW
-suffix:semicolon
-multiline_comment|/* don&squot;t allow XFER_PIO_5 for now */
-r_return
-id|XFER_PIO_0
-op_plus
-id|min_t
-c_func
-(paren
-id|u8
-comma
-id|pio
-comma
-l_int|4
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 eof

@@ -228,6 +228,15 @@ DECL|enumerator|__REQ_SPECIAL
 id|__REQ_SPECIAL
 comma
 multiline_comment|/* driver suplied command */
+DECL|enumerator|__REQ_DRIVE_CMD
+id|__REQ_DRIVE_CMD
+comma
+DECL|enumerator|__REQ_DRIVE_TASK
+id|__REQ_DRIVE_TASK
+comma
+DECL|enumerator|__REQ_DRIVE_TASKFILE
+id|__REQ_DRIVE_TASKFILE
+comma
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -258,6 +267,12 @@ DECL|macro|REQ_SENSE
 mdefine_line|#define REQ_SENSE&t;(1 &lt;&lt; __REQ_SENSE)
 DECL|macro|REQ_SPECIAL
 mdefine_line|#define REQ_SPECIAL&t;(1 &lt;&lt; __REQ_SPECIAL)
+DECL|macro|REQ_DRIVE_CMD
+mdefine_line|#define REQ_DRIVE_CMD&t;(1 &lt;&lt; __REQ_DRIVE_CMD)
+DECL|macro|REQ_DRIVE_TASK
+mdefine_line|#define REQ_DRIVE_TASK&t;(1 &lt;&lt; __REQ_DRIVE_TASK)
+DECL|macro|REQ_DRIVE_TASKFILE
+mdefine_line|#define REQ_DRIVE_TASKFILE&t;(1 &lt;&lt; __REQ_DRIVE_TASKFILE)
 macro_line|#include &lt;linux/elevator.h&gt;
 DECL|typedef|merge_request_fn
 r_typedef

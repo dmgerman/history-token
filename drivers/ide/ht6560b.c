@@ -1,6 +1,9 @@
-multiline_comment|/*&n; *  Copyright (C) 1995-2000  Linus Torvalds &amp; author (see below)&n; *&n; *  Version 0.01        Initial version hacked out of ide.c&n; *&n; *  Version 0.02        Added support for PIO modes, auto-tune&n; *&n; *  Version 0.03        Some cleanups&n; *&n; *  Version 0.05        PIO mode cycle timings auto-tune using bus-speed&n; *&n; *  Version 0.06        Prefetch mode now defaults no OFF. To set&n; *                      prefetch mode OFF/ON use &quot;hdparm -p8/-p9&quot;.&n; *                      Unmask irq is disabled when prefetch mode&n; *                      is enabled.&n; *&n; *  Version 0.07        Trying to fix CD-ROM detection problem.&n; *                      &quot;Prefetch&quot; mode bit OFF for ide disks and&n; *                      ON for anything else.&n; *&n; *&n; *  HT-6560B EIDE-controller support&n; *  To activate controller support use kernel parameter &quot;ide0=ht6560b&quot;.&n; *  Use hdparm utility to enable PIO mode support.&n; *&n; *  Author:    Mikko Ala-Fossi            &lt;maf@iki.fi&gt;&n; *             Jan Evert van Grootheest   &lt;janevert@iae.nl&gt;&n; *&n; *  Try:  http://www.maf.iki.fi/~maf/ht6560b/&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ht6560b.c&t;&t;Version 0.07&t;Feb  1, 2000&n; *&n; *  Copyright (C) 1995-2000  Linus Torvalds &amp; author (see below)&n; */
+multiline_comment|/*&n; *&n; *  Version 0.01        Initial version hacked out of ide.c&n; *&n; *  Version 0.02        Added support for PIO modes, auto-tune&n; *&n; *  Version 0.03        Some cleanups&n; *&n; *  Version 0.05        PIO mode cycle timings auto-tune using bus-speed&n; *&n; *  Version 0.06        Prefetch mode now defaults no OFF. To set&n; *                      prefetch mode OFF/ON use &quot;hdparm -p8/-p9&quot;.&n; *                      Unmask irq is disabled when prefetch mode&n; *                      is enabled.&n; *&n; *  Version 0.07        Trying to fix CD-ROM detection problem.&n; *                      &quot;Prefetch&quot; mode bit OFF for ide disks and&n; *                      ON for anything else.&n; *&n; *&n; *  HT-6560B EIDE-controller support&n; *  To activate controller support use kernel parameter &quot;ide0=ht6560b&quot;.&n; *  Use hdparm utility to enable PIO mode support.&n; *&n; *  Author:    Mikko Ala-Fossi            &lt;maf@iki.fi&gt;&n; *             Jan Evert van Grootheest   &lt;janevert@iae.nl&gt;&n; *&n; *  Try:  http://www.maf.iki.fi/~maf/ht6560b/&n; */
 DECL|macro|HT6560B_VERSION
 mdefine_line|#define HT6560B_VERSION &quot;v0.07&quot;
+DECL|macro|REALLY_SLOW_IO
+macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -8,18 +11,18 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;timing.h&quot;
+macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/* remove comments for DEBUG messages */
 multiline_comment|/*&n; * The special i/o-port that HT-6560B uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit2 (0x04): &quot;1&quot; enables FIFO function&n; *    bit5 (0x20): &quot;1&quot; enables prefetched data read function  (???)&n; *&n; * The special i/o-port that HT-6560A uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit1 (0x02): &quot;1&quot; enables prefetched data read function&n; *    bit2 (0x04): &quot;0&quot; enables multi-master system&t;      (?)&n; *    bit3 (0x08): &quot;1&quot; 3 cycle time, &quot;0&quot; 2 cycle time&t;      (?)&n; */
 DECL|macro|HT_CONFIG_PORT
 mdefine_line|#define HT_CONFIG_PORT&t;  0x3e6
 DECL|macro|HT_CONFIG
-mdefine_line|#define HT_CONFIG(drivea) (u8)(((drivea)-&gt;drive_data &amp; 0xff00) &gt;&gt; 8)
+mdefine_line|#define HT_CONFIG(drivea) (byte)(((drivea)-&gt;drive_data &amp; 0xff00) &gt;&gt; 8)
 multiline_comment|/*&n; * FIFO + PREFETCH (both a/b-model)&n; */
 DECL|macro|HT_CONFIG_DEFAULT
 mdefine_line|#define HT_CONFIG_DEFAULT 0x1c /* no prefetch */
@@ -31,7 +34,7 @@ DECL|macro|HT_PREFETCH_MODE
 mdefine_line|#define HT_PREFETCH_MODE  0x20
 multiline_comment|/*&n; * ht6560b Timing values:&n; *&n; * I reviewed some assembler source listings of htide drivers and found&n; * out how they setup those cycle time interfacing values, as they at Holtek&n; * call them. IDESETUP.COM that is supplied with the drivers figures out&n; * optimal values and fetches those values to drivers. I found out that&n; * they use IDE_SELECT_REG to fetch timings to the ide board right after&n; * interface switching. After that it was quite easy to add code to&n; * ht6560b.c.&n; *&n; * IDESETUP.COM gave me values 0x24, 0x45, 0xaa, 0xff that worked fine&n; * for hda and hdc. But hdb needed higher values to work, so I guess&n; * that sometimes it is necessary to give higher value than IDESETUP&n; * gives.   [see cmd640.c for an extreme example of this. -ml]&n; *&n; * Perhaps I should explain something about these timing values:&n; * The higher nibble of value is the Recovery Time  (rt) and the lower nibble&n; * of the value is the Active Time  (at). Minimum value 2 is the fastest and&n; * the maximum value 15 is the slowest. Default values should be 15 for both.&n; * So 0x24 means 2 for rt and 4 for at. Each of the drives should have&n; * both values, and IDESETUP gives automatically rt=15 st=15 for CDROMs or&n; * similar. If value is too small there will be all sorts of failures.&n; *&n; * Timing byte consists of&n; *&t;High nibble:  Recovery Cycle Time  (rt)&n; *&t;     The valid values range from 2 to 15. The default is 15.&n; *&n; *&t;Low nibble:   Active Cycle Time&t;   (at)&n; *&t;     The valid values range from 2 to 15. The default is 15.&n; *&n; * You can obtain optimized timing values by running Holtek IDESETUP.COM&n; * for DOS. DOS drivers get their timing values from command line, where&n; * the first value is the Recovery Time and the second value is the&n; * Active Time for each drive. Smaller value gives higher speed.&n; * In case of failures you should probably fall back to a higher value.&n; */
 DECL|macro|HT_TIMING
-mdefine_line|#define HT_TIMING(drivea) (u8)((drivea)-&gt;drive_data &amp; 0x00ff)
+mdefine_line|#define HT_TIMING(drivea) (byte)((drivea)-&gt;drive_data &amp; 0x00ff)
 DECL|macro|HT_TIMING_DEFAULT
 mdefine_line|#define HT_TIMING_DEFAULT 0xff
 multiline_comment|/*&n; * This routine handles interface switching for the peculiar hardware design&n; * on the F.G.I./Holtek HT-6560B VLB IDE interface.&n; * The HT-6560B can only enable one IDE port at a time, and requires a&n; * silly sequence (below) whenever we switch between primary and secondary.&n; */
@@ -40,10 +43,8 @@ DECL|function|ht6560b_selectproc
 r_static
 r_void
 id|ht6560b_selectproc
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 )paren
@@ -53,18 +54,18 @@ r_int
 id|flags
 suffix:semicolon
 r_static
-id|u8
+id|byte
 id|current_select
 op_assign
 l_int|0
 suffix:semicolon
 r_static
-id|u8
+id|byte
 id|current_timing
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|byte
 id|select
 comma
 id|timing
@@ -114,9 +115,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;type
+id|drive-&gt;media
 op_ne
-id|ATA_DISK
+id|ide_disk
 op_logical_or
 op_logical_neg
 id|drive-&gt;present
@@ -128,7 +129,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -137,7 +138,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -146,7 +147,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -155,13 +156,13 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
 )paren
 suffix:semicolon
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|select
@@ -170,7 +171,7 @@ id|HT_CONFIG_PORT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set timing for this drive:&n;&t;&t; */
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|timing
@@ -178,14 +179,13 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-id|ata_status
+(paren
+r_void
+)paren
+id|IN_BYTE
 c_func
 (paren
-id|drive
-comma
-l_int|0
-comma
-l_int|0
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -221,7 +221,7 @@ c_func
 r_void
 )paren
 (brace
-id|u8
+id|byte
 id|orig_value
 suffix:semicolon
 r_int
@@ -234,7 +234,7 @@ c_cond
 (paren
 id|orig_value
 op_assign
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -261,7 +261,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 l_int|0x00
@@ -276,7 +276,7 @@ op_logical_neg
 (paren
 (paren
 op_complement
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -287,7 +287,7 @@ l_int|0x3f
 )paren
 )paren
 (brace
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|orig_value
@@ -300,7 +300,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 l_int|0x00
@@ -313,7 +313,7 @@ c_cond
 (paren
 (paren
 op_complement
-id|inb
+id|IN_BYTE
 c_func
 (paren
 id|HT_CONFIG_PORT
@@ -323,7 +323,7 @@ op_amp
 l_int|0x3f
 )paren
 (brace
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|orig_value
@@ -336,7 +336,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Ht6560b autodetected&n;&t; */
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|HT_CONFIG_DEFAULT
@@ -344,7 +344,7 @@ comma
 id|HT_CONFIG_PORT
 )paren
 suffix:semicolon
-id|outb
+id|OUT_BYTE
 c_func
 (paren
 id|HT_TIMING_DEFAULT
@@ -352,17 +352,17 @@ comma
 l_int|0x1f6
 )paren
 suffix:semicolon
-multiline_comment|/* SELECT */
+multiline_comment|/* IDE_SELECT_REG */
 (paren
 r_void
 )paren
-id|inb
+id|IN_BYTE
 c_func
 (paren
 l_int|0x1f7
 )paren
 suffix:semicolon
-multiline_comment|/* STATUS */
+multiline_comment|/* IDE_STATUS_REG */
 id|printk
 c_func
 (paren
@@ -380,16 +380,15 @@ suffix:semicolon
 )brace
 DECL|function|ht_pio2timings
 r_static
-id|u8
+id|byte
 id|ht_pio2timings
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|pio
 )paren
 (brace
@@ -403,10 +402,16 @@ id|active_cycles
 comma
 id|recovery_cycles
 suffix:semicolon
-r_struct
-id|ata_timing
-op_star
-id|t
+id|ide_pio_data_t
+id|d
+suffix:semicolon
+r_int
+id|bus_speed
+op_assign
+id|system_bus_clock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -414,60 +419,43 @@ c_cond
 id|pio
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pio
-op_eq
-l_int|255
-)paren
 id|pio
 op_assign
-id|ata_timing_mode
+id|ide_get_best_pio_mode
 c_func
 (paren
 id|drive
 comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
-)paren
-suffix:semicolon
-r_else
-id|pio
-op_assign
-id|XFER_PIO_0
-op_plus
-id|min_t
-c_func
-(paren
-id|u8
-comma
 id|pio
 comma
-l_int|4
-)paren
-suffix:semicolon
-id|t
-op_assign
-id|ata_timing_data
-c_func
-(paren
-id|pio
+l_int|5
+comma
+op_amp
+id|d
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Just like opti621.c we try to calculate the&n;&t;&t; *  actual cycle time for recovery and activity&n;&t;&t; *  according system bus speed.&n;&t;&t; */
 id|active_time
 op_assign
-id|t-&gt;active
+id|ide_pio_timings
+(braket
+id|pio
+)braket
+dot
+id|active_time
 suffix:semicolon
 id|recovery_time
 op_assign
-id|t-&gt;cycle
+id|d.cycle_time
 op_minus
 id|active_time
 op_minus
-id|t-&gt;setup
+id|ide_pio_timings
+(braket
+id|pio
+)braket
+dot
+id|setup_time
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Cycle times should be Vesa bus cycles&n;&t;&t; */
 id|active_cycles
@@ -475,24 +463,24 @@ op_assign
 (paren
 id|active_time
 op_star
-id|system_bus_speed
+id|bus_speed
 op_plus
-l_int|999999
+l_int|999
 )paren
 op_div
-l_int|1000000
+l_int|1000
 suffix:semicolon
 id|recovery_cycles
 op_assign
 (paren
 id|recovery_time
 op_star
-id|system_bus_speed
+id|bus_speed
 op_plus
-l_int|999999
+l_int|999
 )paren
 op_div
-l_int|1000000
+l_int|1000
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Upper and lower limits&n;&t;&t; */
 r_if
@@ -549,8 +537,6 @@ comma
 id|drive-&gt;name
 comma
 id|pio
-op_minus
-id|XFER_PIO_0
 comma
 id|recovery_cycles
 comma
@@ -564,7 +550,7 @@ suffix:semicolon
 macro_line|#endif
 r_return
 (paren
-id|u8
+id|byte
 )paren
 (paren
 (paren
@@ -602,21 +588,33 @@ r_void
 id|ht_set_prefetch
 c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|state
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_int
 id|t
 op_assign
 id|HT_PREFETCH_MODE
 op_lshift
 l_int|8
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Prefetch mode and unmask irq seems to conflict&n;&t; */
 r_if
@@ -630,11 +628,11 @@ op_or_assign
 id|t
 suffix:semicolon
 multiline_comment|/* enable prefetch mode */
-id|drive-&gt;channel-&gt;no_unmask
+id|drive-&gt;no_unmask
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;channel-&gt;unmask
+id|drive-&gt;unmask
 op_assign
 l_int|0
 suffix:semicolon
@@ -647,11 +645,20 @@ op_complement
 id|t
 suffix:semicolon
 multiline_comment|/* disable prefetch mode */
-id|drive-&gt;channel-&gt;no_unmask
+id|drive-&gt;no_unmask
 op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -672,23 +679,24 @@ l_string|&quot;dis&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Assumes IRQ&squot;s are disabled or at least that no other process will attempt to&n; * access the IDE registers concurrently.&n; */
 DECL|function|tune_ht6560b
 r_static
 r_void
 id|tune_ht6560b
-c_func
 (paren
-r_struct
-id|ata_device
+id|ide_drive_t
 op_star
 id|drive
 comma
-id|u8
+id|byte
 id|pio
 )paren
 (brace
-id|u8
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|byte
 id|timing
 suffix:semicolon
 r_switch
@@ -728,6 +736,15 @@ comma
 id|pio
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|drive-&gt;drive_data
 op_and_assign
 l_int|0xff00
@@ -735,6 +752,15 @@ suffix:semicolon
 id|drive-&gt;drive_data
 op_or_assign
 id|timing
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ide_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -893,18 +919,35 @@ id|ide_hwifs
 l_int|0
 )braket
 dot
-id|unit
+id|mate
 op_assign
-id|ATA_PRIMARY
+op_amp
+id|ide_hwifs
+(braket
+l_int|1
+)braket
 suffix:semicolon
 id|ide_hwifs
 (braket
 l_int|1
 )braket
 dot
-id|unit
+id|mate
 op_assign
-id|ATA_SECONDARY
+op_amp
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|ide_hwifs
+(braket
+l_int|1
+)braket
+dot
+id|channel
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Setting default configurations for drives&n;&t;&t;&t; */
 id|t
