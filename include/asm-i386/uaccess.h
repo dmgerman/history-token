@@ -64,7 +64,7 @@ DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) (__range_ok(addr,size) == 0)
 macro_line|#else
 DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size) ( (__range_ok(addr,size) == 0) &amp;&amp; &bslash;&n;&t;&t;&t; ((type) == VERIFY_READ || boot_cpu_data.wp_works_ok || &bslash;&n;&t;&t;&t; segment_eq(get_fs(),KERNEL_DS) || &bslash;&n;&t;&t;&t;  __verify_write((void *)(addr),(size))))
+mdefine_line|#define access_ok(type,addr,size) ( (__range_ok(addr,size) == 0) &amp;&amp; &bslash;&n;&t;&t;&t; ((type) == VERIFY_READ || boot_cpu_data.wp_works_ok || &bslash;&n;&t;&t;&t;  __verify_write((void *)(addr),(size))))
 macro_line|#endif
 DECL|function|verify_area
 r_static
