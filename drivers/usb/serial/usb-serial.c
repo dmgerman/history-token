@@ -4206,24 +4206,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|snprintf
-(paren
-op_amp
-id|port-&gt;dev.name
-(braket
-l_int|0
-)braket
-comma
-r_sizeof
-(paren
-id|port-&gt;dev.name
-)paren
-comma
-l_string|&quot;usb serial port %d&quot;
-comma
-id|port-&gt;number
-)paren
-suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;%s - registering %s&quot;

@@ -6617,10 +6617,10 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-singleline_comment|// deferred work (task, timer, softirq) must also stop
-id|flush_scheduled_work
-(paren
-)paren
+multiline_comment|/* deferred work (task, timer, softirq) must also stop.&n;&t; * can&squot;t flush_scheduled_work() until we drop rtnl (later),&n;&t; * else workers could deadlock; so make workers a NOP.&n;&t; */
+id|dev-&gt;flags
+op_assign
+l_int|0
 suffix:semicolon
 id|del_timer_sync
 (paren
@@ -8464,6 +8464,11 @@ suffix:semicolon
 id|unregister_netdev
 (paren
 id|dev-&gt;net
+)paren
+suffix:semicolon
+multiline_comment|/* we don&squot;t hold rtnl here ... */
+id|flush_scheduled_work
+(paren
 )paren
 suffix:semicolon
 r_if
