@@ -4,12 +4,12 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#ifdef CONFIG_44x
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Default cmdline */

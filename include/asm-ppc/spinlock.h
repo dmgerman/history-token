@@ -2,7 +2,6 @@ macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Simple spin lock operations.&n; */
 r_typedef
 r_struct

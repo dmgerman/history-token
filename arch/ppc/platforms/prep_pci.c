@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;

@@ -3,7 +3,6 @@ macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * low level task data.&n; * If you change this, change the TI_* offsets below to match.&n; */
 DECL|struct|thread_info

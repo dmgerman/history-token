@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;

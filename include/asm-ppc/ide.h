@@ -5,7 +5,6 @@ DECL|macro|__ASMPPC_IDE_H
 mdefine_line|#define __ASMPPC_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS

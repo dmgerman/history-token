@@ -4,7 +4,6 @@ macro_line|#ifndef __ARCH_PPC_CACHE_H
 DECL|macro|__ARCH_PPC_CACHE_H
 mdefine_line|#define __ARCH_PPC_CACHE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* bytes per L1 cache line */
 macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_403GCX)
 DECL|macro|L1_CACHE_LINE_SIZE

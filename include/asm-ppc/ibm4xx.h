@@ -4,26 +4,6 @@ macro_line|#ifndef __ASM_IBM4XX_H__
 DECL|macro|__ASM_IBM4XX_H__
 mdefine_line|#define __ASM_IBM4XX_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_4xx
-macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* Device Control Registers */
-DECL|macro|stringify
-mdefine_line|#define stringify(s)&t;tostring(s)
-DECL|macro|tostring
-mdefine_line|#define tostring(s)&t;#s
-DECL|macro|mfdcr
-mdefine_line|#define mfdcr(rn) mfdcr_or_dflt(rn, 0)
-DECL|macro|mfdcr_or_dflt
-mdefine_line|#define mfdcr_or_dflt(rn,default_rval) &bslash;&n;&t;({unsigned int rval;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (rn == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;rval = default_rval;&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;mfdcr %0,&quot; stringify(rn) : &quot;=r&quot; (rval));&t;&bslash;&n;&t;rval;})
-DECL|macro|mtdcr
-mdefine_line|#define mtdcr(rn, v)  &bslash;&n;do {                  &bslash;&n;&t;if (rn != 0) &bslash;&n;&t;&t;asm volatile(&quot;mtdcr &quot; stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v));&t;&bslash;&n;} while (0)
-multiline_comment|/* R/W of indirect DCRs make use of standard naming conventions for DCRs */
-DECL|macro|mfdcri
-mdefine_line|#define mfdcri(base, reg)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;     mtdcr(base##_CFGADDR, base##_##reg);&t;&bslash;&n;     mfdcr(base##_CFGDATA);&t;&t;&t;&bslash;&n;})
-DECL|macro|mtdcri
-mdefine_line|#define mtdcri(base, reg, data)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;     mtdcr(base##_CFGADDR, base##_##reg);&t;&bslash;&n;     mtdcr(base##_CFGDATA, data);&t;&t;&bslash;&n;} while (0)
-macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#endif /* CONFIG_4xx */
 macro_line|#ifdef CONFIG_40x
 macro_line|#if defined(CONFIG_ASH)
 macro_line|#include &lt;platforms/4xx/ash.h&gt;
