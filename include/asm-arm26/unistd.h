@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001-2003 Russell King&n; *  Modified 25/11/04 Ian Molton for arm26.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to spyro@f2s.com&n; * no matter what the change is.  Thanks!&n; */
 macro_line|#ifndef __ASM_ARM_UNISTD_H
 DECL|macro|__ASM_ARM_UNISTD_H
 mdefine_line|#define __ASM_ARM_UNISTD_H
@@ -20,8 +20,7 @@ DECL|macro|__NR_open
 mdefine_line|#define __NR_open&t;&t;&t;(__NR_SYSCALL_BASE+  5)
 DECL|macro|__NR_close
 mdefine_line|#define __NR_close&t;&t;&t;(__NR_SYSCALL_BASE+  6)
-DECL|macro|__NR_waitpid
-mdefine_line|#define __NR_waitpid&t;&t;&t;(__NR_SYSCALL_BASE+  7)
+multiline_comment|/* 7 was sys_waitpid */
 DECL|macro|__NR_creat
 mdefine_line|#define __NR_creat&t;&t;&t;(__NR_SYSCALL_BASE+  8)
 DECL|macro|__NR_link
@@ -40,8 +39,8 @@ DECL|macro|__NR_chmod
 mdefine_line|#define __NR_chmod&t;&t;&t;(__NR_SYSCALL_BASE+ 15)
 DECL|macro|__NR_lchown
 mdefine_line|#define __NR_lchown&t;&t;&t;(__NR_SYSCALL_BASE+ 16)
-DECL|macro|__NR_break
-mdefine_line|#define __NR_break&t;&t;&t;(__NR_SYSCALL_BASE+ 17)
+multiline_comment|/* 17 was sys_break */
+multiline_comment|/* 18 was sys_stat */
 DECL|macro|__NR_lseek
 mdefine_line|#define __NR_lseek&t;&t;&t;(__NR_SYSCALL_BASE+ 19)
 DECL|macro|__NR_getpid
@@ -60,20 +59,18 @@ DECL|macro|__NR_ptrace
 mdefine_line|#define __NR_ptrace&t;&t;&t;(__NR_SYSCALL_BASE+ 26)
 DECL|macro|__NR_alarm
 mdefine_line|#define __NR_alarm&t;&t;&t;(__NR_SYSCALL_BASE+ 27)
+multiline_comment|/* 28 was sys_fstat */
 DECL|macro|__NR_pause
 mdefine_line|#define __NR_pause&t;&t;&t;(__NR_SYSCALL_BASE+ 29)
 DECL|macro|__NR_utime
 mdefine_line|#define __NR_utime&t;&t;&t;(__NR_SYSCALL_BASE+ 30)
-DECL|macro|__NR_stty
-mdefine_line|#define __NR_stty&t;&t;&t;(__NR_SYSCALL_BASE+ 31)
-DECL|macro|__NR_gtty
-mdefine_line|#define __NR_gtty&t;&t;&t;(__NR_SYSCALL_BASE+ 32)
+multiline_comment|/* 31 was sys_stty */
+multiline_comment|/* 32 was sys_gtty */
 DECL|macro|__NR_access
 mdefine_line|#define __NR_access&t;&t;&t;(__NR_SYSCALL_BASE+ 33)
 DECL|macro|__NR_nice
 mdefine_line|#define __NR_nice&t;&t;&t;(__NR_SYSCALL_BASE+ 34)
-DECL|macro|__NR_ftime
-mdefine_line|#define __NR_ftime&t;&t;&t;(__NR_SYSCALL_BASE+ 35)
+multiline_comment|/* 35 was sys_ftime */
 DECL|macro|__NR_sync
 mdefine_line|#define __NR_sync&t;&t;&t;(__NR_SYSCALL_BASE+ 36)
 DECL|macro|__NR_kill
@@ -90,16 +87,14 @@ DECL|macro|__NR_pipe
 mdefine_line|#define __NR_pipe&t;&t;&t;(__NR_SYSCALL_BASE+ 42)
 DECL|macro|__NR_times
 mdefine_line|#define __NR_times&t;&t;&t;(__NR_SYSCALL_BASE+ 43)
-DECL|macro|__NR_prof
-mdefine_line|#define __NR_prof&t;&t;&t;(__NR_SYSCALL_BASE+ 44)
+multiline_comment|/* 44 was sys_prof */
 DECL|macro|__NR_brk
 mdefine_line|#define __NR_brk&t;&t;&t;(__NR_SYSCALL_BASE+ 45)
 DECL|macro|__NR_setgid
 mdefine_line|#define __NR_setgid&t;&t;&t;(__NR_SYSCALL_BASE+ 46)
 DECL|macro|__NR_getgid
 mdefine_line|#define __NR_getgid&t;&t;&t;(__NR_SYSCALL_BASE+ 47)
-DECL|macro|__NR_signal
-mdefine_line|#define __NR_signal&t;&t;&t;(__NR_SYSCALL_BASE+ 48)
+multiline_comment|/* 48 was sys_signal */
 DECL|macro|__NR_geteuid
 mdefine_line|#define __NR_geteuid&t;&t;&t;(__NR_SYSCALL_BASE+ 49)
 DECL|macro|__NR_getegid
@@ -108,18 +103,16 @@ DECL|macro|__NR_acct
 mdefine_line|#define __NR_acct&t;&t;&t;(__NR_SYSCALL_BASE+ 51)
 DECL|macro|__NR_umount2
 mdefine_line|#define __NR_umount2&t;&t;&t;(__NR_SYSCALL_BASE+ 52)
-DECL|macro|__NR_lock
-mdefine_line|#define __NR_lock&t;&t;&t;(__NR_SYSCALL_BASE+ 53)
+multiline_comment|/* 53 was sys_lock */
 DECL|macro|__NR_ioctl
 mdefine_line|#define __NR_ioctl&t;&t;&t;(__NR_SYSCALL_BASE+ 54)
 DECL|macro|__NR_fcntl
 mdefine_line|#define __NR_fcntl&t;&t;&t;(__NR_SYSCALL_BASE+ 55)
-DECL|macro|__NR_mpx
-mdefine_line|#define __NR_mpx&t;&t;&t;(__NR_SYSCALL_BASE+ 56)
+multiline_comment|/* 56 was sys_mpx */
 DECL|macro|__NR_setpgid
 mdefine_line|#define __NR_setpgid&t;&t;&t;(__NR_SYSCALL_BASE+ 57)
-DECL|macro|__NR_ulimit
-mdefine_line|#define __NR_ulimit&t;&t;&t;(__NR_SYSCALL_BASE+ 58)
+multiline_comment|/* 58 was sys_ulimit */
+multiline_comment|/* 59 was sys_olduname */
 DECL|macro|__NR_umask
 mdefine_line|#define __NR_umask&t;&t;&t;(__NR_SYSCALL_BASE+ 60)
 DECL|macro|__NR_chroot
@@ -136,10 +129,8 @@ DECL|macro|__NR_setsid
 mdefine_line|#define __NR_setsid&t;&t;&t;(__NR_SYSCALL_BASE+ 66)
 DECL|macro|__NR_sigaction
 mdefine_line|#define __NR_sigaction&t;&t;&t;(__NR_SYSCALL_BASE+ 67)
-DECL|macro|__NR_sgetmask
-mdefine_line|#define __NR_sgetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 68)
-DECL|macro|__NR_ssetmask
-mdefine_line|#define __NR_ssetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 69)
+multiline_comment|/* 68 was sys_sgetmask */
+multiline_comment|/* 69 was sys_ssetmask */
 DECL|macro|__NR_setreuid
 mdefine_line|#define __NR_setreuid&t;&t;&t;(__NR_SYSCALL_BASE+ 70)
 DECL|macro|__NR_setregid
@@ -168,6 +159,7 @@ DECL|macro|__NR_select
 mdefine_line|#define __NR_select&t;&t;&t;(__NR_SYSCALL_BASE+ 82)
 DECL|macro|__NR_symlink
 mdefine_line|#define __NR_symlink&t;&t;&t;(__NR_SYSCALL_BASE+ 83)
+multiline_comment|/* 84 was sys_lstat */
 DECL|macro|__NR_readlink
 mdefine_line|#define __NR_readlink&t;&t;&t;(__NR_SYSCALL_BASE+ 85)
 DECL|macro|__NR_uselib
@@ -194,14 +186,12 @@ DECL|macro|__NR_getpriority
 mdefine_line|#define __NR_getpriority&t;&t;(__NR_SYSCALL_BASE+ 96)
 DECL|macro|__NR_setpriority
 mdefine_line|#define __NR_setpriority&t;&t;(__NR_SYSCALL_BASE+ 97)
-DECL|macro|__NR_profil
-mdefine_line|#define __NR_profil&t;&t;&t;(__NR_SYSCALL_BASE+ 98)
+multiline_comment|/* 98 was sys_profil */
 DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs&t;&t;&t;(__NR_SYSCALL_BASE+ 99)
 DECL|macro|__NR_fstatfs
 mdefine_line|#define __NR_fstatfs&t;&t;&t;(__NR_SYSCALL_BASE+100)
-DECL|macro|__NR_ioperm
-mdefine_line|#define __NR_ioperm&t;&t;&t;(__NR_SYSCALL_BASE+101)
+multiline_comment|/* 101 was sys_ioperm */
 DECL|macro|__NR_socketcall
 mdefine_line|#define __NR_socketcall&t;&t;&t;(__NR_SYSCALL_BASE+102)
 DECL|macro|__NR_syslog
@@ -216,10 +206,11 @@ DECL|macro|__NR_lstat
 mdefine_line|#define __NR_lstat&t;&t;&t;(__NR_SYSCALL_BASE+107)
 DECL|macro|__NR_fstat
 mdefine_line|#define __NR_fstat&t;&t;&t;(__NR_SYSCALL_BASE+108)
+multiline_comment|/* 109 was sys_uname */
+multiline_comment|/* 110 was sys_iopl */
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup&t;&t;&t;(__NR_SYSCALL_BASE+111)
-DECL|macro|__NR_idle
-mdefine_line|#define __NR_idle&t;&t;&t;(__NR_SYSCALL_BASE+112)
+multiline_comment|/* 112 was sys_idle */
 DECL|macro|__NR_syscall
 mdefine_line|#define __NR_syscall&t;&t;&t;(__NR_SYSCALL_BASE+113) /* syscall to call a syscall! */
 DECL|macro|__NR_wait4
@@ -240,22 +231,19 @@ DECL|macro|__NR_setdomainname
 mdefine_line|#define __NR_setdomainname&t;&t;(__NR_SYSCALL_BASE+121)
 DECL|macro|__NR_uname
 mdefine_line|#define __NR_uname&t;&t;&t;(__NR_SYSCALL_BASE+122)
-DECL|macro|__NR_modify_ldt
-mdefine_line|#define __NR_modify_ldt&t;&t;&t;(__NR_SYSCALL_BASE+123)
+multiline_comment|/* 123 was sys_modify_ldt */
 DECL|macro|__NR_adjtimex
 mdefine_line|#define __NR_adjtimex&t;&t;&t;(__NR_SYSCALL_BASE+124)
 DECL|macro|__NR_mprotect
 mdefine_line|#define __NR_mprotect&t;&t;&t;(__NR_SYSCALL_BASE+125)
 DECL|macro|__NR_sigprocmask
 mdefine_line|#define __NR_sigprocmask&t;&t;(__NR_SYSCALL_BASE+126)
-DECL|macro|__NR_create_module
-mdefine_line|#define __NR_create_module&t;&t;(__NR_SYSCALL_BASE+127)
+multiline_comment|/* 127 was sys_create_module */
 DECL|macro|__NR_init_module
 mdefine_line|#define __NR_init_module&t;&t;(__NR_SYSCALL_BASE+128)
 DECL|macro|__NR_delete_module
 mdefine_line|#define __NR_delete_module&t;&t;(__NR_SYSCALL_BASE+129)
-DECL|macro|__NR_get_kernel_syms
-mdefine_line|#define __NR_get_kernel_syms&t;&t;(__NR_SYSCALL_BASE+130)
+multiline_comment|/* 130 was sys_get_kernel_syms */
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl&t;&t;&t;(__NR_SYSCALL_BASE+131)
 DECL|macro|__NR_getpgid
@@ -268,8 +256,7 @@ DECL|macro|__NR_sysfs
 mdefine_line|#define __NR_sysfs&t;&t;&t;(__NR_SYSCALL_BASE+135)
 DECL|macro|__NR_personality
 mdefine_line|#define __NR_personality&t;&t;(__NR_SYSCALL_BASE+136)
-DECL|macro|__NR_afs_syscall
-mdefine_line|#define __NR_afs_syscall&t;&t;(__NR_SYSCALL_BASE+137) /* Syscall for Andrew File System */
+multiline_comment|/* 137 was sys_afs_syscall */
 DECL|macro|__NR_setfsuid
 mdefine_line|#define __NR_setfsuid&t;&t;&t;(__NR_SYSCALL_BASE+138)
 DECL|macro|__NR_setfsgid
@@ -326,10 +313,8 @@ DECL|macro|__NR_setresuid
 mdefine_line|#define __NR_setresuid&t;&t;&t;(__NR_SYSCALL_BASE+164)
 DECL|macro|__NR_getresuid
 mdefine_line|#define __NR_getresuid&t;&t;&t;(__NR_SYSCALL_BASE+165)
-DECL|macro|__NR_vm86
-mdefine_line|#define __NR_vm86&t;&t;&t;(__NR_SYSCALL_BASE+166)
-DECL|macro|__NR_query_module
-mdefine_line|#define __NR_query_module&t;&t;(__NR_SYSCALL_BASE+167)
+multiline_comment|/* 166 was sys_vm86 */
+multiline_comment|/* 167 was sys_query_module */
 DECL|macro|__NR_poll
 mdefine_line|#define __NR_poll&t;&t;&t;(__NR_SYSCALL_BASE+168)
 DECL|macro|__NR_nfsservctl
@@ -437,8 +422,7 @@ mdefine_line|#define __NR_madvise&t;&t;&t;(__NR_SYSCALL_BASE+220)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_SYSCALL_BASE+221)
 multiline_comment|/* 222 for tux */
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;&t;(__NR_SYSCALL_BASE+223)
+multiline_comment|/* 223 is unused */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_SYSCALL_BASE+224)
 DECL|macro|__NR_readahead
@@ -469,7 +453,88 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_SYSCALL_BASE+237)
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_SYSCALL_BASE+238)
-multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;&t;(__NR_SYSCALL_BASE+239)
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;&t;(__NR_SYSCALL_BASE+240)
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;&t;(__NR_SYSCALL_BASE+241)
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;&t;(__NR_SYSCALL_BASE+242)
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;&t;(__NR_SYSCALL_BASE+243)
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;&t;(__NR_SYSCALL_BASE+244)
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;&t;(__NR_SYSCALL_BASE+245)
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;&t;(__NR_SYSCALL_BASE+246)
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;&t;(__NR_SYSCALL_BASE+247)
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;&t;(__NR_SYSCALL_BASE+248)
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;&t;(__NR_SYSCALL_BASE+249)
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;&t;(__NR_SYSCALL_BASE+250)
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;&t;(__NR_SYSCALL_BASE+251)
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;&t;(__NR_SYSCALL_BASE+252)
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;&t;(__NR_SYSCALL_BASE+253)
+multiline_comment|/* 254 for set_thread_area */
+multiline_comment|/* 255 for get_thread_area */
+multiline_comment|/* 256 for set_tid_address */
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;&t;(__NR_SYSCALL_BASE+257)
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;&t;(__NR_SYSCALL_BASE+258)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;&t;(__NR_SYSCALL_BASE+259)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;&t;(__NR_SYSCALL_BASE+260)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;&t;(__NR_SYSCALL_BASE+261)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;&t;(__NR_SYSCALL_BASE+262)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;&t;(__NR_SYSCALL_BASE+263)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;&t;(__NR_SYSCALL_BASE+264)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;&t;(__NR_SYSCALL_BASE+265)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;&t;(__NR_SYSCALL_BASE+266)
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;&t;(__NR_SYSCALL_BASE+267)
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_SYSCALL_BASE+268)
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_SYSCALL_BASE+269)
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;&t;(__NR_SYSCALL_BASE+270)
+DECL|macro|__NR_pciconfig_iobase
+mdefine_line|#define __NR_pciconfig_iobase&t;&t;(__NR_SYSCALL_BASE+271)
+DECL|macro|__NR_pciconfig_read
+mdefine_line|#define __NR_pciconfig_read&t;&t;(__NR_SYSCALL_BASE+272)
+DECL|macro|__NR_pciconfig_write
+mdefine_line|#define __NR_pciconfig_write&t;&t;(__NR_SYSCALL_BASE+273)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;(__NR_SYSCALL_BASE+274)
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;(__NR_SYSCALL_BASE+275)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;(__NR_SYSCALL_BASE+276)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;(__NR_SYSCALL_BASE+277)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;(__NR_SYSCALL_BASE+278)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_SYSCALL_BASE+279)
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;&t;(__NR_SYSCALL_BASE+280)
+multiline_comment|/*&n; * The following SWIs are ARM private. FIXME - make appropriate for arm26&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
 DECL|macro|__ARM_NR_breakpoint
@@ -478,37 +543,35 @@ DECL|macro|__ARM_NR_cacheflush
 mdefine_line|#define __ARM_NR_cacheflush&t;&t;(__ARM_NR_BASE+2)
 DECL|macro|__ARM_NR_usr26
 mdefine_line|#define __ARM_NR_usr26&t;&t;&t;(__ARM_NR_BASE+3)
-DECL|macro|__ARM_NR_usr32
-mdefine_line|#define __ARM_NR_usr32&t;&t;&t;(__ARM_NR_BASE+4)
 DECL|macro|__sys2
 mdefine_line|#define __sys2(x) #x
 DECL|macro|__sys1
 mdefine_line|#define __sys1(x) __sys2(x)
 macro_line|#ifndef __syscall
 DECL|macro|__syscall
-mdefine_line|#define __syscall(name) &quot;swi&bslash;t&quot; __sys1(__NR_##name) &quot;&bslash;n&bslash;t&quot;
+mdefine_line|#define __syscall(name) &quot;swi&bslash;t&quot; __sys1(__NR_##name) &quot;&quot;
 macro_line|#endif
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) {&t;&t;&bslash;&n;&t;&t;errno = -(res);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (type) (res);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_syscall0
-mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;&t;&t;&bslash;&n;type name(void) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov %0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  :&quot;=r&quot; (__res) : : &quot;r0&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;&t;&t;&bslash;&n;type name(void) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall1
-mdefine_line|#define _syscall1(type,name,type1,arg1)&t;&t;&t;&t;&t;&bslash;&n;type name(type1 arg1) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov %0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;r&quot; ((long)(arg1))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r0&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall1(type,name,type1,arg1) &t;&t;&t;&t;&bslash;&n;type name(type1 arg1) { &t;&t;&t;&t;&t;&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall2
-mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;&t;&t;&bslash;&n;type name(type1 arg1,type2 arg2) {&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;t%0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;r&quot; ((long)(arg1)),&quot;r&quot; ((long)(arg2))&t;&t;&t;&t;&bslash;&n;&t;: &quot;r0&quot;,&quot;r1&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;&t;&t;&bslash;&n;type name(type1 arg1,type2 arg2) {&t;&t;&t;&t;&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __r1 __asm__(&quot;r1&quot;) = (long)arg2;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0),&quot;r&quot; (__r1) &t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&t;&t;&bslash;&n;type name(type1 arg1,type2 arg2,type3 arg3) {&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr2,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;t%0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;r&quot; ((long)(arg1)),&quot;r&quot; ((long)(arg2)),&quot;r&quot; ((long)(arg3))&t;&bslash;&n;        : &quot;r0&quot;,&quot;r1&quot;,&quot;r2&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&t;&t;&bslash;&n;type name(type1 arg1,type2 arg2,type3 arg3) {&t;&t;&t;&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __r1 __asm__(&quot;r1&quot;) = (long)arg2;&t;&t;&t;&bslash;&n;  register long __r2 __asm__(&quot;r2&quot;) = (long)arg3;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0),&quot;r&quot; (__r1),&quot;r&quot; (__r2)&t;&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall4
-mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4)&t;&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4) {&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr2,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr3,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;t%0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;r&quot; ((long)(arg1)),&quot;r&quot; ((long)(arg2)),&quot;r&quot; ((long)(arg3)),&quot;r&quot; ((long)(arg4))&t;&bslash;&n;  &t;: &quot;r0&quot;,&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4)&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4) {&t;&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __r1 __asm__(&quot;r1&quot;) = (long)arg2;&t;&t;&t;&bslash;&n;  register long __r2 __asm__(&quot;r2&quot;) = (long)arg3;&t;&t;&t;&bslash;&n;  register long __r3 __asm__(&quot;r3&quot;) = (long)arg4;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0),&quot;r&quot; (__r1),&quot;r&quot; (__r2),&quot;r&quot; (__r3)&t;&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall5
-mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5)&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5) {&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr2,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr3,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr4,%5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;t%0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;r&quot; ((long)(arg1)),&quot;r&quot; ((long)(arg2)),&quot;r&quot; ((long)(arg3)),&quot;r&quot; ((long)(arg4)),&t;&bslash;&n;&t;  &quot;r&quot; ((long)(arg5))&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r0&quot;,&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;,&quot;r4&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5)&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5) {&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __r1 __asm__(&quot;r1&quot;) = (long)arg2;&t;&t;&t;&bslash;&n;  register long __r2 __asm__(&quot;r2&quot;) = (long)arg3;&t;&t;&t;&bslash;&n;  register long __r3 __asm__(&quot;r3&quot;) = (long)arg4;&t;&t;&t;&bslash;&n;  register long __r4 __asm__(&quot;r4&quot;) = (long)arg5;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0),&quot;r&quot; (__r1),&quot;r&quot; (__r2),&quot;r&quot; (__r3),&quot;r&quot; (__r4)&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|_syscall6
+mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6)&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6) {&t;&bslash;&n;  register long __r0 __asm__(&quot;r0&quot;) = (long)arg1;&t;&t;&t;&bslash;&n;  register long __r1 __asm__(&quot;r1&quot;) = (long)arg2;&t;&t;&t;&bslash;&n;  register long __r2 __asm__(&quot;r2&quot;) = (long)arg3;&t;&t;&t;&bslash;&n;  register long __r3 __asm__(&quot;r3&quot;) = (long)arg4;&t;&t;&t;&bslash;&n;  register long __r4 __asm__(&quot;r4&quot;) = (long)arg5;&t;&t;&t;&bslash;&n;  register long __r5 __asm__(&quot;r5&quot;) = (long)arg6;&t;&t;&t;&bslash;&n;  register long __res_r0 __asm__(&quot;r0&quot;);&t;&t;&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res_r0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (__r0),&quot;r&quot; (__r1),&quot;r&quot; (__r2),&quot;r&quot; (__r3), &quot;r&quot; (__r4),&quot;r&quot; (__r5)&t;&t;&bslash;&n;&t;: &quot;lr&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __res = __res_r0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifdef __KERNEL__
 DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
 mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
 DECL|macro|__ARCH_WANT_OLD_READDIR
 mdefine_line|#define __ARCH_WANT_OLD_READDIR
-DECL|macro|__ARCH_WANT_OLD_STAT
-mdefine_line|#define __ARCH_WANT_OLD_STAT
 DECL|macro|__ARCH_WANT_STAT64
 mdefine_line|#define __ARCH_WANT_STAT64
 DECL|macro|__ARCH_WANT_SYS_ALARM
@@ -517,16 +580,10 @@ DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
 mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
 DECL|macro|__ARCH_WANT_SYS_PAUSE
 mdefine_line|#define __ARCH_WANT_SYS_PAUSE
-DECL|macro|__ARCH_WANT_SYS_SGETMASK
-mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
-DECL|macro|__ARCH_WANT_SYS_SIGNAL
-mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
 DECL|macro|__ARCH_WANT_SYS_TIME
 mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
-DECL|macro|__ARCH_WANT_SYS_WAITPID
-mdefine_line|#define __ARCH_WANT_SYS_WAITPID
 DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
 mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
 DECL|macro|__ARCH_WANT_SYS_FADVISE64
@@ -552,196 +609,9 @@ macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-DECL|function|idle
-r_static
-r_inline
-r_int
-id|idle
-c_func
-(paren
-r_void
-)paren
-(brace
 r_extern
 r_int
-id|sys_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_return
-id|sys_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|pause
-r_static
-r_inline
-r_int
-id|pause
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|sys_pause
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|sync
-r_static
-r_inline
-r_int
-id|sync
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|sys_sync
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|setsid
-r_static
-r_inline
-id|pid_t
-id|setsid
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|sys_setsid
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|write
-r_static
-r_inline
-r_int
-id|write
-c_func
-(paren
-r_int
-id|fd
-comma
-r_const
-r_char
-op_star
-id|buf
-comma
-id|off_t
-id|count
-)paren
-(brace
-r_return
-id|sys_write
-c_func
-(paren
-id|fd
-comma
-id|buf
-comma
-id|count
-)paren
-suffix:semicolon
-)brace
-DECL|function|read
-r_static
-r_inline
-r_int
-id|read
-c_func
-(paren
-r_int
-id|fd
-comma
-r_char
-op_star
-id|buf
-comma
-id|off_t
-id|count
-)paren
-(brace
-r_return
-id|sys_read
-c_func
-(paren
-id|fd
-comma
-id|buf
-comma
-id|count
-)paren
-suffix:semicolon
-)brace
-DECL|function|lseek
-r_static
-r_inline
-id|off_t
-id|lseek
-c_func
-(paren
-r_int
-id|fd
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|count
-)paren
-(brace
-r_return
-id|sys_lseek
-c_func
-(paren
-id|fd
-comma
-id|offset
-comma
-id|count
-)paren
-suffix:semicolon
-)brace
-DECL|function|dup
-r_static
-r_inline
-r_int
-id|dup
-c_func
-(paren
-r_int
-id|fd
-)paren
-(brace
-r_return
-id|sys_dup
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-)brace
-DECL|function|open
-r_static
-r_inline
-r_int
-id|open
+id|execve
 c_func
 (paren
 r_const
@@ -749,148 +619,17 @@ r_char
 op_star
 id|file
 comma
-r_int
-id|flag
-comma
-r_int
-id|mode
-)paren
-(brace
-r_return
-id|sys_open
-c_func
-(paren
-id|file
-comma
-id|flag
-comma
-id|mode
-)paren
-suffix:semicolon
-)brace
-DECL|function|close
-r_static
-r_inline
-r_int
-id|close
-c_func
-(paren
-r_int
-id|fd
-)paren
-(brace
-r_return
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-)brace
-DECL|function|_exit
-r_static
-r_inline
-r_int
-id|_exit
-c_func
-(paren
-r_int
-id|exitcode
-)paren
-(brace
-r_return
-id|sys_exit
-c_func
-(paren
-id|exitcode
-)paren
-suffix:semicolon
-)brace
-DECL|function|waitpid
-r_static
-r_inline
-id|pid_t
-id|waitpid
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-op_star
-id|wait_stat
-comma
-r_int
-id|options
-)paren
-(brace
-r_return
-id|sys_wait4
-c_func
-(paren
-(paren
-r_int
-)paren
-id|pid
-comma
-id|wait_stat
-comma
-id|options
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-DECL|function|delete_module
-r_static
-r_inline
-r_int
-id|delete_module
-c_func
-(paren
-r_const
 r_char
 op_star
-id|name
-)paren
-(brace
-r_return
-id|sys_delete_module
-c_func
-(paren
-id|name
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|wait
-r_static
-r_inline
-id|pid_t
-id|wait
-c_func
-(paren
-r_int
 op_star
-id|wait_stat
-)paren
-(brace
-r_return
-id|sys_wait4
-c_func
-(paren
-op_minus
-l_int|1
+id|argv
 comma
-id|wait_stat
-comma
-l_int|0
-comma
-l_int|NULL
+r_char
+op_star
+op_star
+id|envp
 )paren
 suffix:semicolon
-)brace
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -1015,35 +754,6 @@ id|oact
 comma
 r_int
 id|sigsetsize
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * The following two can&squot;t be eliminated yet - they rely on&n; * specific conditions.&n; */
-r_static
-r_inline
-id|_syscall3
-c_func
-(paren
-r_int
-comma
-id|execve
-comma
-r_const
-r_char
-op_star
-comma
-id|file
-comma
-r_char
-op_star
-op_star
-comma
-id|argv
-comma
-r_char
-op_star
-op_star
-comma
-id|envp
 )paren
 suffix:semicolon
 macro_line|#endif
