@@ -182,6 +182,12 @@ DECL|struct|isdn_ppp_compressor
 r_struct
 id|isdn_ppp_compressor
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|next
 DECL|member|prev
 r_struct
