@@ -2742,12 +2742,13 @@ id|shpnt-&gt;io_port
 op_assign
 id|port_base
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|shpnt
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|shpnt-&gt;n_io_port
@@ -4093,7 +4094,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4109,7 +4110,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4148,7 +4149,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 comma
 id|SCSI_Data_NoACK_port
@@ -4209,7 +4210,7 @@ c_cond
 id|fdomain_select
 c_func
 (paren
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -4224,7 +4225,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4240,7 +4241,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4468,7 +4469,7 @@ c_func
 (paren
 l_string|&quot;scsi: &lt;fdomain&gt; target = %d, command = %x, status = %x&bslash;n&quot;
 comma
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 comma
 id|current_SC-&gt;cmnd
 (braket
@@ -5121,7 +5122,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5155,7 +5156,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_SC-&gt;host-&gt;host_lock
+id|current_SC-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5529,7 +5530,10 @@ op_logical_neg
 id|SCpnt
 op_logical_or
 op_logical_neg
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device
+op_logical_or
+op_logical_neg
+id|SCpnt-&gt;device-&gt;host
 )paren
 (brace
 id|printk
@@ -5551,14 +5555,14 @@ comma
 id|fdomain_16x0_info
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 )paren
 suffix:semicolon
 id|print_banner
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_switch
@@ -5618,7 +5622,7 @@ l_string|&quot; (%d), target = %d cmnd = 0x%02x pieces = %d size = %u&bslash;n&q
 comma
 id|SCpnt-&gt;SCp.phase
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 op_star
 (paren

@@ -712,6 +712,7 @@ r_int
 id|is_update
 suffix:semicolon
 r_int
+r_int
 id|flags
 op_assign
 l_int|0

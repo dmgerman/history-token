@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -2756,7 +2757,7 @@ id|TIMEOUT_PUN
 )paren
 op_logical_and
 (paren
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_eq
 id|TIMEOUT_LUN
 )paren
@@ -2769,7 +2770,7 @@ l_string|&quot;IBM MCA SCSI: Ignoring interrupt from pun=%x, lun=%x.&bslash;n&qu
 comma
 id|cmd-&gt;target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_return
@@ -10508,7 +10509,7 @@ id|sl
 suffix:semicolon
 id|shpnt
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* search for the right hostadapter */
 r_for
@@ -10588,7 +10589,7 @@ id|max_pun
 op_minus
 l_int|1
 op_minus
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 r_if
 c_cond
@@ -10604,7 +10605,7 @@ id|host_index
 )paren
 op_logical_and
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_le
 id|subsystem_pun
 c_func
@@ -10631,7 +10632,7 @@ id|host_index
 )paren
 op_logical_and
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_ge
 id|subsystem_pun
 c_func
@@ -10647,7 +10648,7 @@ suffix:semicolon
 r_else
 id|target
 op_assign
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 multiline_comment|/* if (target,lun) is NO LUN or not existing at all, return error */
 r_if
@@ -10663,7 +10664,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 op_eq
 id|TYPE_NO_LUN
@@ -10679,7 +10680,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 op_eq
 id|TYPE_NO_DEVICE
@@ -10719,7 +10720,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 r_if
@@ -10819,7 +10820,7 @@ l_string|&quot;              Reporting DID_NO_CONNECT for device (%d,%d).&bslash
 comma
 id|target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|cmd-&gt;result
@@ -10947,7 +10948,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 op_assign
 id|next_ldn
@@ -10988,7 +10989,7 @@ id|host_index
 comma
 id|target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|ldn
 comma
@@ -11055,7 +11056,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 op_assign
 id|ld
@@ -11103,7 +11104,7 @@ id|ldn
 comma
 id|target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* unassign again all ldns (pun,lun,ldn does not matter for remove) */
@@ -11219,7 +11220,7 @@ id|ldn
 comma
 id|target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12447,7 +12448,7 @@ suffix:semicolon
 macro_line|#endif
 id|shpnt
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* search for the right hostadapter */
 r_for
@@ -12506,7 +12507,7 @@ id|cmd
 suffix:semicolon
 id|shpnt
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 macro_line|#ifdef IM_DEBUG_PROBE
 id|printk
@@ -12541,7 +12542,7 @@ id|max_pun
 op_minus
 l_int|1
 op_minus
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 r_if
 c_cond
@@ -12557,7 +12558,7 @@ id|host_index
 )paren
 op_logical_and
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_le
 id|subsystem_pun
 c_func
@@ -12584,7 +12585,7 @@ id|host_index
 )paren
 op_logical_and
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_ge
 id|subsystem_pun
 c_func
@@ -12600,7 +12601,7 @@ suffix:semicolon
 r_else
 id|target
 op_assign
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 multiline_comment|/* get logical device number, and disable system interrupts */
 id|printk
@@ -12611,7 +12612,7 @@ l_string|&quot;IBM MCA SCSI: Sending abort to device pun=%d, lun=%d.&bslash;n&qu
 comma
 id|target
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|ldn
@@ -12625,7 +12626,7 @@ id|host_index
 id|target
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 multiline_comment|/*if cmd for this ldn has already finished, no need to abort */
@@ -12970,7 +12971,7 @@ id|HZ
 suffix:semicolon
 id|shpnt
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* search for the right hostadapter */
 r_for

@@ -459,6 +459,7 @@ id|state
 )paren
 (brace
 r_int
+r_int
 id|chip
 suffix:semicolon
 r_int
@@ -1709,9 +1710,11 @@ id|ice
 )paren
 (brace
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|ak4524_t
 op_star

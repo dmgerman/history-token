@@ -15,12 +15,25 @@ DECL|macro|assert
 mdefine_line|#define assert(p) KERNEL_ASSERT(#p, p)
 macro_line|#else
 DECL|macro|assert
-mdefine_line|#define assert(p) {&bslash;&n;if (!(p))&bslash;&n;&t;{&bslash;&n;&t;&t;printk(&quot;assert(%s)&bslash;n&quot;,#p);&bslash;&n;&t;&t;BUG();&bslash;&n;&t;}&bslash;&n;}
+mdefine_line|#define assert(p) do {&t;&bslash;&n;&t;if (!(p)) {&t;&bslash;&n;&t;&t;printk(KERN_CRIT &quot;BUG at %s:%d assert(%s)&bslash;n&quot;,&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, #p);&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&bslash;&n;&t;}&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 multiline_comment|/*&n; *&t;debug ON&n; *&t;--------&n; */
 macro_line|#ifdef CONFIG_JFS_DEBUG
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(p) assert(p)
+multiline_comment|/* printk verbosity */
+DECL|macro|JFS_LOGLEVEL_ERR
+mdefine_line|#define JFS_LOGLEVEL_ERR 1
+DECL|macro|JFS_LOGLEVEL_WARN
+mdefine_line|#define JFS_LOGLEVEL_WARN 2
+DECL|macro|JFS_LOGLEVEL_DEBUG
+mdefine_line|#define JFS_LOGLEVEL_DEBUG 3
+DECL|macro|JFS_LOGLEVEL_INFO
+mdefine_line|#define JFS_LOGLEVEL_INFO 4
+r_extern
+r_int
+id|jfsloglevel
+suffix:semicolon
 multiline_comment|/* dump memory contents */
 r_extern
 r_void
@@ -39,35 +52,32 @@ r_int
 id|length
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|jfsloglevel
-suffix:semicolon
 multiline_comment|/* information message: e.g., configuration, major event */
-DECL|macro|jFYI
-mdefine_line|#define jFYI(button, prspec) &bslash;&n;&t;do { if (button &amp;&amp; jfsloglevel &gt; 1) printk prspec; } while (0)
+DECL|macro|jfs_info
+mdefine_line|#define jfs_info(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_INFO)&t;&t;&bslash;&n;&t;&t;printk(KERN_INFO fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
+multiline_comment|/* debug message: ad hoc */
+DECL|macro|jfs_debug
+mdefine_line|#define jfs_debug(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_DEBUG)&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
+multiline_comment|/* warn message: */
+DECL|macro|jfs_warn
+mdefine_line|#define jfs_warn(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_WARN)&t;&t;&bslash;&n;&t;&t;printk(KERN_WARNING fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
 multiline_comment|/* error event message: e.g., i/o error */
-r_extern
-r_int
-id|jfsERROR
-suffix:semicolon
-DECL|macro|jERROR
-mdefine_line|#define jERROR(button, prspec) &bslash;&n;&t;do { if (button &amp;&amp; jfsloglevel &gt; 0) { printk prspec; } } while (0)
-multiline_comment|/* debug event message: */
-DECL|macro|jEVENT
-mdefine_line|#define jEVENT(button,prspec) &bslash;&n;&t;do { if (button) printk prspec; } while (0)
+DECL|macro|jfs_err
+mdefine_line|#define jfs_err(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_ERR)&t;&t;&bslash;&n;&t;&t;printk(KERN_ERR fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; *&t;debug OFF&n; *&t;---------&n; */
 macro_line|#else&t;&t;&t;&t;/* CONFIG_JFS_DEBUG */
 DECL|macro|dump_mem
-mdefine_line|#define dump_mem(label,data,length)
+mdefine_line|#define dump_mem(label,data,length) do {} while (0)
 DECL|macro|ASSERT
-mdefine_line|#define ASSERT(p)
-DECL|macro|jEVENT
-mdefine_line|#define jEVENT(button,prspec)
-DECL|macro|jERROR
-mdefine_line|#define jERROR(button,prspec)
-DECL|macro|jFYI
-mdefine_line|#define jFYI(button,prspec)
+mdefine_line|#define ASSERT(p) do {} while (0)
+DECL|macro|jfs_info
+mdefine_line|#define jfs_info(fmt, arg...) do {} while (0)
+DECL|macro|jfs_debug
+mdefine_line|#define jfs_debug(fmt, arg...) do {} while (0)
+DECL|macro|jfs_warn
+mdefine_line|#define jfs_warn(fmt, arg...) do {} while (0)
+DECL|macro|jfs_err
+mdefine_line|#define jfs_err(fmt, arg...) do {} while (0)
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_JFS_DEBUG */
 multiline_comment|/*&n; *&t;statistics&n; *&t;----------&n; */
 macro_line|#ifdef&t;CONFIG_JFS_STATISTICS

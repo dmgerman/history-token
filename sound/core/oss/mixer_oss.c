@@ -168,10 +168,6 @@ id|file-&gt;private_data
 op_assign
 id|fmixer
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -189,10 +185,6 @@ c_func
 id|fmixer
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_card_file_remove
 c_func
 (paren
@@ -251,10 +243,6 @@ c_func
 id|fmixer-&gt;card-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_card_file_remove
 c_func
 (paren
@@ -2510,6 +2498,7 @@ id|present
 suffix:semicolon
 DECL|member|channels
 r_int
+r_int
 id|channels
 suffix:semicolon
 DECL|member|kcontrol
@@ -4528,6 +4517,7 @@ op_star
 id|fmixer
 comma
 r_int
+r_int
 op_star
 id|active_index
 )paren
@@ -4837,6 +4827,7 @@ op_star
 id|fmixer
 comma
 r_int
+r_int
 id|active_index
 )paren
 (brace
@@ -4877,7 +4868,9 @@ id|uctl
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|idx
 suffix:semicolon
 id|uinfo
@@ -7177,6 +7170,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+r_int
 r_int
 id|idx
 suffix:semicolon

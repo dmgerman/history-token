@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
+macro_line|#include &lt;asm/msr.h&gt;
 r_extern
 r_void
 id|default_do_nmi
@@ -161,12 +162,20 @@ id|KERN_INFO
 l_string|&quot;testing NMI watchdog ... &quot;
 )paren
 suffix:semicolon
-id|for_each_cpu
-c_func
+r_for
+c_loop
 (paren
 id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
 )paren
-(brace
 id|counts
 (braket
 id|cpu
@@ -179,7 +188,6 @@ id|cpu
 dot
 id|__nmi_count
 suffix:semicolon
-)brace
 id|local_irq_enable
 c_func
 (paren
@@ -198,12 +206,33 @@ id|nmi_hz
 )paren
 suffix:semicolon
 singleline_comment|// wait 10 ticks
-id|for_each_cpu
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
 c_func
 (paren
 id|cpu
 )paren
-(brace
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -529,7 +558,6 @@ multiline_comment|/*&n; * Activate the NMI watchdog via the local APIC.&n; * Ori
 DECL|function|setup_k7_watchdog
 r_static
 r_void
-id|__pminit
 id|setup_k7_watchdog
 c_func
 (paren
@@ -563,28 +591,30 @@ op_increment
 id|i
 )paren
 (brace
-id|wrmsr
+multiline_comment|/* Simulator may not support it */
+r_if
+c_cond
+(paren
+id|checking_wrmsrl
 c_func
 (paren
 id|MSR_K7_EVNTSEL0
 op_plus
 id|i
 comma
-l_int|0
-comma
-l_int|0
+l_int|0UL
 )paren
+)paren
+r_return
 suffix:semicolon
-id|wrmsr
+id|wrmsrl
 c_func
 (paren
 id|MSR_K7_PERFCTR0
 op_plus
 id|i
 comma
-l_int|0
-comma
-l_int|0
+l_int|0UL
 )paren
 suffix:semicolon
 )brace
@@ -667,7 +697,6 @@ suffix:semicolon
 )brace
 DECL|function|setup_apic_nmi_watchdog
 r_void
-id|__pminit
 id|setup_apic_nmi_watchdog
 (paren
 r_void
@@ -688,20 +717,6 @@ c_cond
 id|boot_cpu_data.x86
 OL
 l_int|6
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* Simics masquerades as AMD, but does not support &n;&t;&t;   performance counters */
-r_if
-c_cond
-(paren
-id|strstr
-c_func
-(paren
-id|boot_cpu_data.x86_model_id
-comma
-l_string|&quot;Screwdriver&quot;
-)paren
 )paren
 r_return
 suffix:semicolon

@@ -138,6 +138,7 @@ op_star
 id|csocket
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * cifs tcp session reconnection&n;&t; * &n;&t; * mark tcp session as reconnecting so temporarily locked&n;&t; * mark all smb sessions as reconnecting for tcp session  (TBD BB)&n;&t; * reconnect tcp session&n;&t; * wake up waiters on reconnection? - (not needed currently)&n;&t; */
 r_int
 DECL|function|cifs_reconnect
 id|cifs_reconnect
@@ -154,27 +155,105 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|tmp
+suffix:semicolon
+r_struct
+id|cifsSesInfo
+op_star
+id|ses
+suffix:semicolon
+id|server-&gt;tcpStatus
+op_assign
+id|CifsNeedReconnect
+suffix:semicolon
+id|server-&gt;maxBuf
+op_assign
+l_int|0
+suffix:semicolon
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nReconnecting tcp session &quot;
+l_string|&quot;Reconnecting tcp session &quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* lock tcp session */
-multiline_comment|/* mark all smb sessions as reconnecting which use this tcp session */
-multiline_comment|/* reconnect tcp session */
-multiline_comment|/* wake up waiters on reconnection */
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|tmp
+comma
+op_amp
+id|GlobalSMBSessionList
+)paren
+(brace
+id|ses
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|cifsSesInfo
+comma
+id|cifsSessionList
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ses-&gt;server
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ses-&gt;server
+op_eq
+id|server
+)paren
+(brace
+id|ses-&gt;status
+op_assign
+id|CifsNeedReconnect
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* else tcp and smb sessions need reconnection */
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|server-&gt;ssocket
+)paren
+(brace
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nState: 0x%x Flags: 0x%lx&quot;
+l_string|&quot;State: 0x%x Flags: 0x%lx&quot;
 comma
 id|server-&gt;ssocket-&gt;state
 comma
@@ -182,6 +261,60 @@ id|server-&gt;ssocket-&gt;flags
 )paren
 )paren
 suffix:semicolon
+id|server-&gt;ssocket-&gt;ops
+op_member_access_from_pointer
+id|shutdown
+c_func
+(paren
+id|server-&gt;ssocket
+comma
+id|SEND_SHUTDOWN
+)paren
+suffix:semicolon
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Post shutdown state: 0x%x Flags: 0x%lx&quot;
+comma
+id|server-&gt;ssocket-&gt;state
+comma
+id|server-&gt;ssocket-&gt;flags
+)paren
+)paren
+suffix:semicolon
+id|sock_release
+c_func
+(paren
+id|server-&gt;ssocket
+)paren
+suffix:semicolon
+id|server-&gt;ssocket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|server-&gt;tcpStatus
+op_ne
+id|CifsExiting
+)paren
+op_logical_and
+(paren
+id|server-&gt;tcpStatus
+op_ne
+id|CifsGood
+)paren
+)paren
+(brace
+id|rc
+op_assign
 id|ipv4_connect
 c_func
 (paren
@@ -192,6 +325,35 @@ op_amp
 id|server-&gt;ssocket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|3
+op_star
+id|HZ
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|server-&gt;tcpStatus
+op_assign
+id|CifsGood
+suffix:semicolon
+)brace
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -270,6 +432,13 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;cifsd&quot;
+)paren
+suffix:semicolon
+id|allow_signal
+c_func
+(paren
+id|SIGKILL
 )paren
 suffix:semicolon
 id|server-&gt;tsk
@@ -283,7 +452,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nDemultiplex PID: %d&quot;
+l_string|&quot;Demultiplex PID: %d&quot;
 comma
 id|current-&gt;pid
 )paren
@@ -357,7 +526,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Error - can not get mem for SMB response buffer &quot;
+l_string|&quot;Can not get mem for SMB response buffer &quot;
 )paren
 )paren
 suffix:semicolon
@@ -444,12 +613,22 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nConnection reset by peer &quot;
+l_string|&quot;Connection reset by peer &quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB fix call below */
-multiline_comment|/* cifs_reconnect(server);       */
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -460,7 +639,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nReceived error on sock_recvmsg( peek) with length = %d&bslash;n&quot;
+l_string|&quot;Received error on sock_recvmsg( peek) with length = %d&quot;
 comma
 id|length
 )paren
@@ -484,12 +663,21 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nZero length peek received - dead session?? &quot;
+l_string|&quot;Zero length peek received - dead session?&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* schedule_timeout(HZ/4); &n;&t;&t;&t;   continue; */
-r_break
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 id|pdu_length
@@ -508,7 +696,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nPeek length rcvd: %d with smb length: %d&quot;
+l_string|&quot;Peek length rcvd: %d with smb length: %d&quot;
 comma
 id|length
 comma
@@ -576,7 +764,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nReceived 4 byte keep alive packet &quot;
+l_string|&quot;Received 4 byte keep alive packet &quot;
 )paren
 )paren
 suffix:semicolon
@@ -611,7 +799,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNegative RFC 1002 Session response. Error = 0x%x&quot;
+l_string|&quot;Negative RFC 1002 Session response. Error = 0x%x&quot;
 comma
 id|temp
 (braket
@@ -644,7 +832,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nUnknown RFC 1001 frame received not 0x00 nor 0x85&quot;
+l_string|&quot;Unknown RFC 1001 frame received not 0x00 nor 0x85&quot;
 )paren
 )paren
 suffix:semicolon
@@ -715,7 +903,7 @@ l_int|1
 comma
 (paren
 id|KERN_ERR
-l_string|&quot;&bslash;nInvalid size or format for SMB found with length %d and pdu_lenght %d&bslash;n&quot;
+l_string|&quot;Invalid size or format for SMB found with length %d and pdu_lenght %d&quot;
 comma
 id|length
 comma
@@ -778,7 +966,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* cERROR(1,(&quot;&bslash;nFor iovlen %d Length received: %d with total read %d&quot;,&n;&t;&t;&t;&t;&t;&t;   iov.iov_len, length,total_read));       */
+multiline_comment|/* cERROR(1,(&quot;For iovlen %d Length received: %d with total read %d&quot;,&n;&t;&t;&t;&t;&t;&t;   iov.iov_len, length,total_read));       */
 r_if
 c_cond
 (paren
@@ -793,7 +981,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nZero length receive when expecting %d &quot;
+l_string|&quot;Zero length receive when expecting %d &quot;
 comma
 id|pdu_length
 op_minus
@@ -834,7 +1022,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Bad SMB Received &quot;
+l_string|&quot;Bad SMB Received &quot;
 )paren
 )paren
 suffix:semicolon
@@ -888,7 +1076,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Mid 0x%x matched - waking up&bslash;n &quot;
+l_string|&quot; Mid 0x%x matched - waking up &quot;
 comma
 id|mid_entry-&gt;mid
 )paren
@@ -952,7 +1140,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n No task to wake, unknown frame rcvd!&bslash;n&quot;
+l_string|&quot;No task to wake, unknown frame rcvd!&quot;
 )paren
 )paren
 suffix:semicolon
@@ -967,7 +1155,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nFrame less than four bytes received  %d bytes long.&quot;
+l_string|&quot;Frame less than four bytes received  %d bytes long.&quot;
 comma
 id|length
 )paren
@@ -1003,7 +1191,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; with junk  0x%x in it&bslash;n&quot;
+l_string|&quot; with junk  0x%x in it &quot;
 comma
 op_star
 (paren
@@ -1127,7 +1315,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nThere are still active MIDs in queue and we are exiting but we can not delete mid_q_entries or TCP_Server_Info structure due to pending requests MEMORY LEAK!!&bslash;n &quot;
+l_string|&quot;There are still active MIDs in queue and we are exiting but we can not delete mid_q_entries or TCP_Server_Info structure due to pending requests MEMORY LEAK!!&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1146,7 +1334,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nAbout to exit from demultiplex thread&bslash;n&quot;
+l_string|&quot;About to exit from demultiplex thread&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1304,8 +1492,8 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: invalid or missing username&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: invalid or missing username&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1337,8 +1525,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: username too long&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: username too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1404,8 +1592,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: password too long&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: password too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1474,8 +1662,8 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: invalid path to network resource&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: invalid path to network resource&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1552,8 +1740,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: UNC Path does not begin with // or &bslash;&bslash;&bslash;&bslash;&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: UNC Path does not begin with // or &bslash;&bslash;&bslash;&bslash; &bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1574,8 +1762,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: UNC name too long&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: UNC name too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1630,8 +1818,8 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: invalid domain name&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: invalid domain name&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1663,7 +1851,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nDomain name set&quot;
+l_string|&quot;Domain name set&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1673,8 +1861,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: domain name too long&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: domain name too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1891,12 +2079,10 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: Unrecognized mount option %s = %s&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: Unknown mount option %s&bslash;n&quot;
 comma
 id|data
-comma
-id|value
 )paren
 suffix:semicolon
 )brace
@@ -1977,8 +2163,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: UNC Path does not begin with // or &bslash;&bslash;&bslash;&bslash;&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: UNC Path does not begin with // or &bslash;&bslash;&bslash;&bslash; &bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1999,8 +2185,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;CIFS: UNC name too long&quot;
+id|KERN_WARNING
+l_string|&quot;CIFS: UNC name too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2192,7 +2378,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNext tcon - &quot;
+l_string|&quot;Next tcon - &quot;
 )paren
 )paren
 suffix:semicolon
@@ -2256,7 +2442,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nMatched ip, old UNC: %s == new: %s ?&quot;
+l_string|&quot;Matched ip, old UNC: %s == new: %s ?&quot;
 comma
 id|tcon-&gt;treeName
 comma
@@ -2285,7 +2471,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nMatched UNC, old user: %s == new: %s ?&quot;
+l_string|&quot;Matched UNC, old user: %s == new: %s ?&quot;
 comma
 id|tcon-&gt;treeName
 comma
@@ -2500,7 +2686,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS Tcon rc = %d ipc_tid = %d&bslash;n&quot;
+l_string|&quot;CIFS Tcon rc = %d ipc_tid = %d&quot;
 comma
 id|rc
 comma
@@ -2546,7 +2732,317 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* BB remove and add return rc; */
+multiline_comment|/* BB remove and add return code processing */
+)brace
+DECL|function|setup_session
+r_int
+id|setup_session
+c_func
+(paren
+r_int
+r_int
+id|xid
+comma
+r_struct
+id|cifsSesInfo
+op_star
+id|pSesInfo
+comma
+r_struct
+id|nls_table
+op_star
+id|nls_info
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_char
+id|session_key
+(braket
+id|CIFS_SESSION_KEY_SIZE
+)braket
+suffix:semicolon
+r_char
+id|ntlm_session_key
+(braket
+id|CIFS_SESSION_KEY_SIZE
+)braket
+suffix:semicolon
+r_int
+id|ntlmv2_flag
+op_assign
+id|FALSE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pSesInfo-&gt;server-&gt;maxBuf
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* no need to send on reconnect */
+id|rc
+op_assign
+id|CIFSSMBNegotiate
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+)paren
+suffix:semicolon
+)brace
+id|pSesInfo-&gt;capabilities
+op_assign
+id|pSesInfo-&gt;server-&gt;capabilities
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Security Mode: 0x%x Capabilities: 0x%x Time Zone: %d&quot;
+comma
+id|pSesInfo-&gt;server-&gt;secMode
+comma
+id|pSesInfo-&gt;server-&gt;capabilities
+comma
+id|pSesInfo-&gt;server-&gt;timeZone
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|extended_security
+op_logical_and
+(paren
+id|pSesInfo-&gt;capabilities
+op_amp
+id|CAP_EXTENDED_SECURITY
+)paren
+op_logical_and
+(paren
+id|pSesInfo-&gt;server-&gt;secType
+op_eq
+id|NTLMSSP
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;New style sesssetup &quot;
+)paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSSpnegoSessSetup
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+comma
+l_int|NULL
+multiline_comment|/* security blob */
+comma
+l_int|0
+multiline_comment|/* blob length */
+comma
+id|nls_info
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|extended_security
+op_logical_and
+(paren
+id|pSesInfo-&gt;capabilities
+op_amp
+id|CAP_EXTENDED_SECURITY
+)paren
+op_logical_and
+(paren
+id|pSesInfo-&gt;server-&gt;secType
+op_eq
+id|RawNTLMSSP
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;NTLMSSP sesssetup &quot;
+)paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSNTLMSSPNegotiateSessSetup
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+comma
+op_amp
+id|ntlmv2_flag
+comma
+id|nls_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ntlmv2_flag
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Able to use the more secure NTLM version 2 password hash&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* SMBNTv2encrypt( ...);  */
+multiline_comment|/* BB fix this up - &n;&t;&t;&t;   and note that Samba client equivalent looks wrong */
+)brace
+r_else
+id|SMBNTencrypt
+c_func
+(paren
+id|pSesInfo-&gt;password_with_pad
+comma
+id|pSesInfo-&gt;server-&gt;cryptKey
+comma
+id|ntlm_session_key
+)paren
+suffix:semicolon
+multiline_comment|/* for better security the weaker lanman hash not sent &n;&t;&t;&t;&t;   in AuthSessSetup so why bother calculating it */
+multiline_comment|/* toUpper(nls_info,&n;&t;&t;&t;&t;&t;password_with_pad);&n;&t;&t;&t;&t;SMBencrypt(password_with_pad,&n;&t;&t;&t;&t;&t;   pSesInfo-&gt;server-&gt;cryptKey, session_key); */
+id|rc
+op_assign
+id|CIFSNTLMSSPAuthSessSetup
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+comma
+id|ntlm_session_key
+comma
+id|session_key
+comma
+id|ntlmv2_flag
+comma
+id|nls_info
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* old style NTLM 0.12 session setup */
+id|SMBNTencrypt
+c_func
+(paren
+id|pSesInfo-&gt;password_with_pad
+comma
+id|pSesInfo-&gt;server-&gt;cryptKey
+comma
+id|ntlm_session_key
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSSessSetup
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+comma
+id|session_key
+comma
+id|ntlm_session_key
+comma
+id|nls_info
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Send error in SessSetup = %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;CIFS Session Established successfully&quot;
+)paren
+)paren
+suffix:semicolon
+id|pSesInfo-&gt;status
+op_assign
+id|CifsGood
+suffix:semicolon
+)brace
+)brace
+r_return
+id|rc
+suffix:semicolon
 )brace
 r_int
 DECL|function|ipv4_connect
@@ -2570,6 +3066,15 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|csocket
+op_eq
+l_int|NULL
+)paren
+(brace
 id|rc
 op_assign
 id|sock_create
@@ -2598,13 +3103,34 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error creating socket. Aborting operation&bslash;n&quot;
+l_string|&quot;Error %d creating socket&quot;
+comma
+id|rc
 )paren
 )paren
+suffix:semicolon
+op_star
+id|csocket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Socket created&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|psin_server-&gt;sin_family
 op_assign
@@ -2647,7 +3173,6 @@ id|sockaddr_in
 )paren
 comma
 l_int|0
-multiline_comment|/* Is there a way to fix a polling timeout -&n;         and find out what more of the flags really mean? */
 )paren
 suffix:semicolon
 r_if
@@ -2711,7 +3236,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error connecting to socket. %d&bslash;n&quot;
+l_string|&quot;Error connecting to socket. %d&quot;
 comma
 id|rc
 )paren
@@ -2789,7 +3314,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error creating socket. Aborting operation&bslash;n&quot;
+l_string|&quot;Error creating socket. Aborting operation&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2902,7 +3427,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error connecting to socket (via ipv6). %d&bslash;n&quot;
+l_string|&quot;Error connecting to socket (via ipv6). %d&quot;
 comma
 id|rc
 )paren
@@ -2961,15 +3486,12 @@ suffix:semicolon
 r_int
 id|xid
 suffix:semicolon
-r_int
-id|ntlmv2_flag
-op_assign
-id|FALSE
-suffix:semicolon
 r_struct
 id|socket
 op_star
 id|csocket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|sockaddr_in
@@ -3008,30 +3530,6 @@ id|srvTcp
 op_assign
 l_int|NULL
 suffix:semicolon
-r_char
-id|cryptKey
-(braket
-id|CIFS_CRYPTO_KEY_SIZE
-)braket
-suffix:semicolon
-r_char
-id|session_key
-(braket
-id|CIFS_SESSION_KEY_SIZE
-)braket
-suffix:semicolon
-r_char
-id|ntlm_session_key
-(braket
-id|CIFS_SESSION_KEY_SIZE
-)braket
-suffix:semicolon
-r_char
-id|password_with_pad
-(braket
-id|CIFS_ENCPWD_SIZE
-)braket
-suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -3045,7 +3543,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nEntering cifs_mount. Xid: %d with: %s&bslash;n&quot;
+l_string|&quot;Entering cifs_mount. Xid: %d with: %s&quot;
 comma
 id|xid
 comma
@@ -3091,7 +3589,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nUsername: %s &quot;
+l_string|&quot;Username: %s &quot;
 comma
 id|volume_info.username
 )paren
@@ -3100,17 +3598,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cERROR
+id|cifserror
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nNo username specified &quot;
-)paren
+l_string|&quot;No username specified &quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Could add ways to allow getting user name from alternate locations */
+multiline_comment|/* In userspace mount helper we can get user name from alternate&n;           locations such as env variables and files on disk */
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3132,7 +3636,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nUNC: %s  &quot;
+l_string|&quot;UNC: %s  &quot;
 comma
 id|volume_info.UNC
 )paren
@@ -3148,7 +3652,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS mount error: No UNC path (e.g. -o unc=//192.168.1.100/public) specified  &quot;
+l_string|&quot;CIFS mount error: No UNC path (e.g. -o unc=//192.168.1.100/public) specified  &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3189,7 +3693,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExisting tcp session with server found &quot;
+l_string|&quot;Existing tcp session with server found &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3223,10 +3727,25 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error connecting to IPv4 socket. Aborting operation&bslash;n&quot;
+l_string|&quot;Error connecting to IPv4 socket. Aborting operation&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|csocket
+op_ne
+l_int|NULL
+)paren
+(brace
+id|sock_release
+c_func
+(paren
+id|csocket
+)paren
+suffix:semicolon
+)brace
 id|FreeXid
 c_func
 (paren
@@ -3331,6 +3850,10 @@ op_amp
 id|srvTcp-&gt;pending_mid_q
 )paren
 suffix:semicolon
+id|srvTcp-&gt;tcpStatus
+op_assign
+id|CifsGood
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren
@@ -3371,7 +3894,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExisting smb sess found &quot;
+l_string|&quot;Existing smb sess found &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3390,7 +3913,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExisting smb sess not found &quot;
+l_string|&quot;Existing smb sess not found &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3419,10 +3942,6 @@ id|pSesInfo-&gt;server
 op_assign
 id|srvTcp
 suffix:semicolon
-id|pSesInfo-&gt;status
-op_assign
-id|CifsGood
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -3438,37 +3957,6 @@ id|sin_server.sin_addr.s_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* send negotiate protocol smb */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rc
-)paren
-id|rc
-op_assign
-id|CIFSSMBNegotiate
-c_func
-(paren
-id|xid
-comma
-id|pSesInfo
-comma
-id|cryptKey
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;&bslash;nNegotiate rc = %d &quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3476,50 +3964,17 @@ op_logical_neg
 id|rc
 )paren
 (brace
-id|cFYI
+r_if
+c_cond
+(paren
+id|volume_info.password
+)paren
+id|strncpy
 c_func
 (paren
-l_int|1
+id|pSesInfo-&gt;password_with_pad
 comma
-(paren
-l_string|&quot;&bslash;nSecurity Mode: %x&quot;
-comma
-id|pSesInfo-&gt;secMode
-)paren
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Server Capabilities: %x&quot;
-comma
-id|pSesInfo-&gt;capabilities
-)paren
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Time Zone: 0x%x %d&bslash;n&quot;
-comma
-id|pSesInfo-&gt;timeZone
-comma
-id|pSesInfo-&gt;timeZone
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|password_with_pad
-comma
-l_int|0
+id|volume_info.password
 comma
 id|CIFS_ENCPWD_SIZE
 )paren
@@ -3527,255 +3982,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|volume_info.password
-)paren
-id|strcpy
-c_func
-(paren
-id|password_with_pad
-comma
-id|volume_info.password
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|extended_security
-op_logical_and
-(paren
-id|pSesInfo-&gt;capabilities
-op_amp
-id|CAP_EXTENDED_SECURITY
-)paren
-op_logical_and
-(paren
-id|pSesInfo-&gt;secType
-op_eq
-id|NTLMSSP
-)paren
-)paren
-(brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nNew style sesssetup &quot;
-)paren
-)paren
-suffix:semicolon
-id|rc
-op_assign
-id|CIFSSpnegoSessSetup
-c_func
-(paren
-id|xid
-comma
-id|pSesInfo
-comma
-id|volume_info
-dot
-id|username
-comma
-id|volume_info
-dot
-id|domainname
-comma
-l_int|NULL
-multiline_comment|/* security blob */
-comma
-l_int|0
-multiline_comment|/* blob length */
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|extended_security
-op_logical_and
-(paren
-id|pSesInfo
-op_member_access_from_pointer
-id|capabilities
-op_amp
-id|CAP_EXTENDED_SECURITY
-)paren
-op_logical_and
-(paren
-id|pSesInfo-&gt;secType
-op_eq
-id|RawNTLMSSP
-)paren
-)paren
-(brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nNTLMSSP sesssetup &quot;
-)paren
-)paren
-suffix:semicolon
-id|rc
-op_assign
-id|CIFSNTLMSSPNegotiateSessSetup
-c_func
-(paren
-id|xid
-comma
-id|pSesInfo
-comma
-id|cryptKey
-comma
-id|volume_info.domainname
-comma
-op_amp
-id|ntlmv2_flag
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ntlmv2_flag
-)paren
-(brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nAble to use the more secure NTLM version 2 password hash&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* SMBNTv2encrypt( ...);  */
-multiline_comment|/* BB fix this up - &n;&t;&t;&t;&t;   and note that Samba client equivalent looks wrong */
-)brace
-r_else
-id|SMBNTencrypt
-c_func
-(paren
-id|password_with_pad
-comma
-id|cryptKey
-comma
-id|ntlm_session_key
-)paren
-suffix:semicolon
-multiline_comment|/* for better security the weaker lanman hash not sent &n;                       in AuthSessSetup so why bother calculating it */
-multiline_comment|/* toUpper(cifs_sb-&gt;local_nls,&n;&t;&t;&t;&t;&t;&t;password_with_pad);&n;&t;&t;&t;&t;&t;SMBencrypt(password_with_pad,&n;&t;&t;&t;&t;&t;&t;   cryptKey, session_key); */
-id|rc
-op_assign
-id|CIFSNTLMSSPAuthSessSetup
-c_func
-(paren
-id|xid
-comma
-id|pSesInfo
-comma
-id|volume_info
-dot
-id|username
-comma
-id|volume_info.domainname
-comma
-id|ntlm_session_key
-comma
-id|session_key
-comma
-id|ntlmv2_flag
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* old style NTLM 0.12 session setup */
-id|SMBNTencrypt
-c_func
-(paren
-id|password_with_pad
-comma
-id|cryptKey
-comma
-id|ntlm_session_key
-)paren
-suffix:semicolon
-multiline_comment|/* Removed following few lines to not send old style password &n;                  hash ever - for better security */
-multiline_comment|/* toUpper(cifs_sb-&gt;local_nls, password_with_pad);&n;&t;&t;&t;&t;   SMBencrypt(password_with_pad, cryptKey,session_key); */
-id|rc
-op_assign
-id|CIFSSessSetup
-c_func
-(paren
-id|xid
-comma
-id|pSesInfo
-comma
 id|volume_info.username
-comma
-id|volume_info
-dot
-id|domainname
-comma
-id|session_key
-comma
-id|ntlm_session_key
-comma
-id|cifs_sb-&gt;local_nls
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nSend error in SessSetup = %d&bslash;n&quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;CIFS Session Established successfully &quot;
-)paren
-)paren
-suffix:semicolon
 id|strncpy
 c_func
 (paren
@@ -3786,6 +3994,40 @@ comma
 id|MAX_USERNAME_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|volume_info.domainname
+)paren
+id|strncpy
+c_func
+(paren
+id|pSesInfo-&gt;domainName
+comma
+id|volume_info.domainname
+comma
+id|MAX_USERNAME_SIZE
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|setup_session
+c_func
+(paren
+id|xid
+comma
+id|pSesInfo
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
 id|atomic_inc
 c_func
 (paren
@@ -3828,7 +4070,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFound match on UNC path &quot;
+l_string|&quot;Found match on UNC path &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3941,7 +4183,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS Tcon rc = %d&bslash;n&quot;
+l_string|&quot;CIFS Tcon rc = %d&quot;
 comma
 id|rc
 )paren
@@ -3978,7 +4220,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nLarge files supported &quot;
+l_string|&quot;Large files supported &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4043,16 +4285,6 @@ c_cond
 id|pSesInfo-&gt;server
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;&bslash;nAbout to check if we need to do SMBLogoff &quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4066,10 +4298,38 @@ comma
 id|pSesInfo
 )paren
 suffix:semicolon
-id|wake_up_process
-c_func
+r_if
+c_cond
 (paren
 id|pSesInfo-&gt;server-&gt;tsk
+)paren
+(brace
+id|send_sig
+c_func
+(paren
+id|SIGINT
+comma
+id|pSesInfo-&gt;server-&gt;tsk
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Can not wake captive thread on cleanup of failed mount&quot;
+)paren
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 id|schedule_timeout
@@ -4089,7 +4349,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNo session or bad tcon&quot;
+l_string|&quot;No session or bad tcon&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4184,14 +4444,6 @@ op_star
 id|ses
 comma
 r_char
-op_star
-id|user
-comma
-r_char
-op_star
-id|domain
-comma
-r_char
 id|session_key
 (braket
 id|CIFS_SESSION_KEY_SIZE
@@ -4232,6 +4484,18 @@ r_char
 op_star
 id|bcc_ptr
 suffix:semicolon
+r_char
+op_star
+id|user
+op_assign
+id|ses-&gt;userName
+suffix:semicolon
+r_char
+op_star
+id|domain
+op_assign
+id|ses-&gt;domainName
+suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -4256,7 +4520,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn sesssetup &quot;
+l_string|&quot;In sesssetup &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4318,7 +4582,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxBuf
+id|ses-&gt;server-&gt;maxBuf
 )paren
 suffix:semicolon
 id|pSMB-&gt;req_no_secext.MaxMpxCount
@@ -4326,13 +4590,13 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxReq
+id|ses-&gt;server-&gt;maxReq
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -5617,14 +5881,6 @@ id|ses
 comma
 r_char
 op_star
-id|user
-comma
-r_char
-op_star
-id|domain
-comma
-r_char
-op_star
 id|SecurityBlob
 comma
 r_int
@@ -5659,6 +5915,18 @@ r_char
 op_star
 id|bcc_ptr
 suffix:semicolon
+r_char
+op_star
+id|user
+op_assign
+id|ses-&gt;userName
+suffix:semicolon
+r_char
+op_star
+id|domain
+op_assign
+id|ses-&gt;domainName
+suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -5683,7 +5951,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn v2 sesssetup &quot;
+l_string|&quot;In v2 sesssetup &quot;
 )paren
 )paren
 suffix:semicolon
@@ -5749,7 +6017,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxBuf
+id|ses-&gt;server-&gt;maxBuf
 )paren
 suffix:semicolon
 id|pSMB-&gt;req.MaxMpxCount
@@ -5757,13 +6025,13 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxReq
+id|ses-&gt;server-&gt;maxReq
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -6409,7 +6677,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSecurity Blob Length %d &quot;
+l_string|&quot;Security Blob Length %d &quot;
 comma
 id|pSMBr-&gt;resp.SecurityBlobLength
 )paren
@@ -7038,14 +7306,6 @@ id|cifsSesInfo
 op_star
 id|ses
 comma
-r_char
-op_star
-id|challenge_from_server
-comma
-r_char
-op_star
-id|domain
-comma
 r_int
 op_star
 id|pNTLMv2_flag
@@ -7078,6 +7338,12 @@ suffix:semicolon
 r_char
 op_star
 id|bcc_ptr
+suffix:semicolon
+r_char
+op_star
+id|domain
+op_assign
+id|ses-&gt;domainName
 suffix:semicolon
 r_int
 id|rc
@@ -7117,7 +7383,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn NTLMSSP sesssetup (negotiate) &quot;
+l_string|&quot;In NTLMSSP sesssetup (negotiate) &quot;
 )paren
 )paren
 suffix:semicolon
@@ -7202,7 +7468,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxBuf
+id|ses-&gt;server-&gt;maxBuf
 )paren
 suffix:semicolon
 id|pSMB-&gt;req.MaxMpxCount
@@ -7210,13 +7476,13 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxReq
+id|ses-&gt;server-&gt;maxReq
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -7864,7 +8130,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nUnexpected NTLMSSP message type received %d&quot;
+l_string|&quot;Unexpected NTLMSSP message type received %d&quot;
 comma
 id|SecurityBlob2-&gt;MessageType
 )paren
@@ -7937,7 +8203,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSecurity Blob Length %d &quot;
+l_string|&quot;Security Blob Length %d &quot;
 comma
 id|pSMBr-&gt;resp.SecurityBlobLength
 )paren
@@ -7950,14 +8216,14 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNTLMSSP Challenge rcvd &quot;
+l_string|&quot;NTLMSSP Challenge rcvd &quot;
 )paren
 )paren
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|challenge_from_server
+id|ses-&gt;server-&gt;cryptKey
 comma
 id|SecurityBlob2-&gt;Challenge
 comma
@@ -8609,14 +8875,6 @@ id|ses
 comma
 r_char
 op_star
-id|user
-comma
-r_char
-op_star
-id|domain
-comma
-r_char
-op_star
 id|ntlm_session_key
 comma
 r_char
@@ -8655,6 +8913,18 @@ r_char
 op_star
 id|bcc_ptr
 suffix:semicolon
+r_char
+op_star
+id|user
+op_assign
+id|ses-&gt;userName
+suffix:semicolon
+r_char
+op_star
+id|domain
+op_assign
+id|ses-&gt;domainName
+suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -8690,7 +8960,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn NTLMSSPSessSetup (Authenticate)&quot;
+l_string|&quot;In NTLMSSPSessSetup (Authenticate)&quot;
 )paren
 )paren
 suffix:semicolon
@@ -8770,7 +9040,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxBuf
+id|ses-&gt;server-&gt;maxBuf
 )paren
 suffix:semicolon
 id|pSMB-&gt;req.MaxMpxCount
@@ -8778,7 +9048,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|ses-&gt;maxReq
+id|ses-&gt;server-&gt;maxReq
 )paren
 suffix:semicolon
 id|pSMB-&gt;req.hdr.Uid
@@ -8788,7 +9058,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -9681,7 +9951,7 @@ l_string|&quot; Guest login&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* BB do we want to set anything in SesInfo struct ? */
-multiline_comment|/*        if(SecurityBlob2-&gt;MessageType != NtLm??){                               &n;                 cFYI(&quot;&bslash;nUnexpected message type on auth response is %d &quot;)); &n;        } */
+multiline_comment|/*        if(SecurityBlob2-&gt;MessageType != NtLm??){                               &n;                 cFYI(&quot;Unexpected message type on auth response is %d &quot;)); &n;        } */
 r_if
 c_cond
 (paren
@@ -9758,7 +10028,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSecurity Blob Length %d &quot;
+l_string|&quot;Security Blob Length %d &quot;
 comma
 id|pSMBr-&gt;resp.SecurityBlobLength
 )paren
@@ -9771,7 +10041,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNTLMSSP response to Authenticate &quot;
+l_string|&quot;NTLMSSP response to Authenticate &quot;
 )paren
 )paren
 suffix:semicolon
@@ -10559,7 +10829,7 @@ multiline_comment|/* skip password */
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -10999,7 +11269,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nTcon flags: 0x%x &quot;
+l_string|&quot;Tcon flags: 0x%x &quot;
 comma
 id|tcon-&gt;Flags
 )paren
@@ -11144,7 +11414,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nAbout to do SMBLogoff &quot;
+l_string|&quot;About to do SMBLogoff &quot;
 )paren
 )paren
 suffix:semicolon
@@ -11167,7 +11437,6 @@ op_minus
 id|EBUSY
 )paren
 (brace
-multiline_comment|/* BB this looks wrong - why is this here? */
 id|FreeXid
 c_func
 (paren
@@ -11178,6 +11447,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
@@ -11205,7 +11480,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nWaking up socket by sending it signal &quot;
+l_string|&quot;Waking up socket by sending it signal &quot;
 )paren
 )paren
 suffix:semicolon
@@ -11228,7 +11503,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNo session or bad tcon&quot;
+l_string|&quot;No session or bad tcon&quot;
 )paren
 )paren
 suffix:semicolon
@@ -11244,6 +11519,12 @@ c_cond
 id|ses
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
@@ -11252,7 +11533,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* if ((ses-&gt;server) &amp;&amp; (ses-&gt;server-&gt;ssocket)) {&n;               cFYI(1,(&quot;&bslash;nReleasing socket &quot;));        &n;               sock_release(ses-&gt;server-&gt;ssocket); &n;               kfree(ses-&gt;server); &n;          } */
+multiline_comment|/* if ((ses-&gt;server) &amp;&amp; (ses-&gt;server-&gt;ssocket)) {&n;               cFYI(1,(&quot;Releasing socket &quot;));        &n;               sock_release(ses-&gt;server-&gt;ssocket); &n;               kfree(ses-&gt;server); &n;          } */
 )brace
 r_if
 c_cond

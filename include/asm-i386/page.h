@@ -33,7 +33,7 @@ mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 DECL|member|pte_low
 DECL|member|pte_high
 DECL|typedef|pte_t

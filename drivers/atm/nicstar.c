@@ -7057,7 +7057,13 @@ id|vc
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* not CBR */
+r_if
+c_cond
+(paren
+id|vcc-&gt;qos.txtp.traffic_class
+op_eq
+id|ATM_UBR
+)paren
 (brace
 id|vc-&gt;cbr_scd
 op_assign

@@ -843,7 +843,7 @@ mdefine_line|#define SYM_UCMD_PTR(cmd)  ((ucmd_p)(&amp;(cmd)-&gt;SCp))
 DECL|macro|SYM_SCMD_PTR
 mdefine_line|#define SYM_SCMD_PTR(ucmd) sym_que_entry(ucmd, Scsi_Cmnd, SCp)
 DECL|macro|SYM_SOFTC_PTR
-mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;host-&gt;hostdata)-&gt;ncb)
+mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;device-&gt;host-&gt;hostdata)-&gt;ncb)
 multiline_comment|/*&n; *  Deal with DMA mapping/unmapping.&n; */
 macro_line|#ifndef SYM_LINUX_DYNAMIC_DMA_MAPPING
 multiline_comment|/* Linux versions prior to pci bus iommu kernel interface */
@@ -1305,9 +1305,9 @@ id|cmd
 )paren
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -1847,9 +1847,9 @@ c_func
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 (paren
 id|u_char
@@ -1885,7 +1885,7 @@ comma
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 )paren
 suffix:semicolon
@@ -2207,15 +2207,15 @@ multiline_comment|/*&n;&t; *  Minimal checkings, so that we will not &n;&t; *  g
 r_if
 c_cond
 (paren
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 op_eq
 id|np-&gt;myaddr
 op_logical_or
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 op_ge
 id|SYM_CONF_MAX_TARGET
 op_logical_or
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 op_ge
 id|SYM_CONF_MAX_LUN
 )paren
@@ -2240,7 +2240,7 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Complete the 1st INQUIRY command with error &n;&t; *  condition if the device is flagged NOSCAN &n;&t; *  at BOOT in the NVRAM. This may speed up &n;&t; *  the boot and maintain coherency with BIOS &n;&t; *  device numbering. Clearing the flag allows &n;&t; *  user to rescan skipped devices later.&n;&t; *  We also return error for devices not flagged &n;&t; *  for SCAN LUNS in the NVRAM since some mono-lun &n;&t; *  devices behave badly when asked for some non &n;&t; *  zero LUN. Btw, this is an absolute hack.:-)&n;&t; */
@@ -2278,7 +2278,7 @@ op_amp
 id|SYM_SCAN_LUNS_DISABLED
 )paren
 op_logical_and
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -2314,7 +2314,7 @@ id|np
 comma
 id|tp
 comma
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|order
@@ -2338,9 +2338,9 @@ c_func
 (paren
 id|np
 comma
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 comma
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 comma
 id|order
 )paren
@@ -3697,9 +3697,9 @@ c_func
 id|np
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|printf_warning
@@ -3895,7 +3895,7 @@ c_func
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -6775,7 +6775,7 @@ id|np-&gt;ram_ws
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Free O/S independant resources.&n;&t; */
+multiline_comment|/*&n;&t; *  Free O/S independent resources.&n;&t; */
 id|sym_hcb_free
 c_func
 (paren
@@ -6890,7 +6890,6 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_set_dma_mask
 c_func
 (paren
@@ -7432,7 +7431,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n;&t; *  Perform O/S independant stuff.&n;&t; */
+multiline_comment|/*&n;&t; *  Perform O/S independent stuff.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7696,12 +7695,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|instance
 comma
-id|dev-&gt;pdev
+op_amp
+id|dev-&gt;pdev-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Now let the generic SCSI driver&n;&t; *  look for the SCSI devices on the bus ..&n;&t; */

@@ -55,7 +55,7 @@ r_void
 op_star
 id|card
 suffix:semicolon
-multiline_comment|/* Pointer to card dependant structure */
+multiline_comment|/* Pointer to card dependent structure */
 DECL|member|hard_reset
 r_int
 (paren

@@ -191,6 +191,12 @@ DECL|member|pcm_devs
 r_int
 id|pcm_devs
 suffix:semicolon
+DECL|member|midi_list
+r_struct
+id|list_head
+id|midi_list
+suffix:semicolon
+multiline_comment|/* list of midi interfaces */
 DECL|member|next_midi_device
 r_int
 id|next_midi_device
@@ -206,8 +212,14 @@ DECL|macro|QUIRK_MIDI_YAMAHA
 mdefine_line|#define QUIRK_MIDI_YAMAHA&t;&t;1
 DECL|macro|QUIRK_MIDI_MIDIMAN
 mdefine_line|#define QUIRK_MIDI_MIDIMAN&t;&t;2
-DECL|macro|QUIRK_ROLAND_UA100
-mdefine_line|#define QUIRK_ROLAND_UA100&t;&t;3
+DECL|macro|QUIRK_COMPOSITE
+mdefine_line|#define QUIRK_COMPOSITE&t;&t;&t;3
+DECL|macro|QUIRK_AUDIO_FIXED_ENDPOINT
+mdefine_line|#define QUIRK_AUDIO_FIXED_ENDPOINT&t;4
+DECL|macro|QUIRK_BOOT_MASK
+mdefine_line|#define QUIRK_BOOT_MASK&t;&t;&t;0x80
+DECL|macro|QUIRK_BOOT_EXTIGY
+mdefine_line|#define QUIRK_BOOT_EXTIGY&t;&t;(QUIRK_BOOT_MASK | 0)
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -257,11 +269,14 @@ DECL|struct|snd_usb_midi_endpoint_info
 r_struct
 id|snd_usb_midi_endpoint_info
 (brace
-DECL|member|epnum
-r_int16
-id|epnum
+DECL|member|out_ep
+DECL|member|in_ep
+r_int8
+id|out_ep
+comma
+id|in_ep
 suffix:semicolon
-multiline_comment|/* ep number, -1 autodetect */
+multiline_comment|/* ep number, 0 autodetect */
 DECL|member|out_cables
 r_uint16
 id|out_cables
@@ -276,7 +291,8 @@ multiline_comment|/* bitmask */
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
-multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
+multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
+multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -389,6 +405,16 @@ op_star
 id|quirk
 )paren
 suffix:semicolon
+r_void
+id|snd_usbmidi_disconnect
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|p
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */
 macro_line|#ifndef get_iface_desc
 DECL|macro|get_iface_desc
@@ -403,6 +429,10 @@ macro_line|#endif
 macro_line|#ifndef usb_pipe_needs_resubmit
 DECL|macro|usb_pipe_needs_resubmit
 mdefine_line|#define usb_pipe_needs_resubmit(pipe) 1
+macro_line|#endif
+macro_line|#ifndef snd_usb_complete_callback
+DECL|macro|snd_usb_complete_callback
+mdefine_line|#define snd_usb_complete_callback(x) (x)
 macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/prctl.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -583,6 +584,31 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|thread_info
+op_star
+id|t
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;flags
+op_amp
+id|_TIF_ABI_PENDING
+)paren
+id|t-&gt;flags
+op_xor_assign
+(paren
+id|_TIF_ABI_PENDING
+op_or
+id|_TIF_32BIT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

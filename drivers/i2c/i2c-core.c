@@ -35,14 +35,14 @@ DECL|macro|DEB2
 mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x;
 multiline_comment|/* ----- global variables -------------------------------------------------- */
 multiline_comment|/**** lock for writing to global variables: the adapter &amp; driver list */
-DECL|variable|adap_lock
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
 id|adap_lock
 )paren
 suffix:semicolon
-DECL|variable|driver_lock
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren

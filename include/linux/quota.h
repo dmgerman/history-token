@@ -912,12 +912,18 @@ id|semaphore
 id|dqio_sem
 suffix:semicolon
 multiline_comment|/* lock device while I/O in progress */
-DECL|member|dqoff_sem
+DECL|member|dqonoff_sem
+r_struct
+id|semaphore
+id|dqonoff_sem
+suffix:semicolon
+multiline_comment|/* Serialize quotaon &amp; quotaoff */
+DECL|member|dqptr_sem
 r_struct
 id|rw_semaphore
-id|dqoff_sem
+id|dqptr_sem
 suffix:semicolon
-multiline_comment|/* serialize quota_off() and quota_on() on device and ops using quota_info struct, pointers from inode to dquots */
+multiline_comment|/* serialize ops using quota_info struct, pointers from inode to dquots */
 DECL|member|files
 r_struct
 id|file

@@ -112,7 +112,7 @@ multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK is not currently
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00000002 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x00000002
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO&t;0x00000004
 DECL|macro|SA_ONSTACK
@@ -265,5 +265,7 @@ DECL|typedef|stack_t
 )brace
 id|stack_t
 suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* _ASMPPC64_SIGNAL_H */
 eof

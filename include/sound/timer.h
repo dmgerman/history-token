@@ -3,6 +3,7 @@ DECL|macro|__SOUND_TIMER_H
 mdefine_line|#define __SOUND_TIMER_H
 multiline_comment|/*&n; *  Timer abstract layer&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/asound.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|typedef|snd_timer_class_t
 r_typedef
 r_enum
@@ -73,20 +74,24 @@ DECL|macro|SNDRV_TIMER_HW_SLAVE
 mdefine_line|#define SNDRV_TIMER_HW_SLAVE&t;0x00000004&t;/* only slave timer (variable resolution) */
 DECL|macro|SNDRV_TIMER_HW_FIRST
 mdefine_line|#define SNDRV_TIMER_HW_FIRST&t;0x00000008&t;/* first tick can be incomplete */
+DECL|macro|SNDRV_TIMER_HW_TASKLET
+mdefine_line|#define SNDRV_TIMER_HW_TASKLET&t;0x00000010&t;/* timer is called from tasklet */
 DECL|macro|SNDRV_TIMER_IFLG_SLAVE
-mdefine_line|#define SNDRV_TIMER_IFLG_SLAVE&t;0x00000001
+mdefine_line|#define SNDRV_TIMER_IFLG_SLAVE&t;  0x00000001
 DECL|macro|SNDRV_TIMER_IFLG_RUNNING
-mdefine_line|#define SNDRV_TIMER_IFLG_RUNNING&t;0x00000002
+mdefine_line|#define SNDRV_TIMER_IFLG_RUNNING  0x00000002
 DECL|macro|SNDRV_TIMER_IFLG_START
-mdefine_line|#define SNDRV_TIMER_IFLG_START&t;0x00000004
+mdefine_line|#define SNDRV_TIMER_IFLG_START&t;  0x00000004
 DECL|macro|SNDRV_TIMER_IFLG_AUTO
-mdefine_line|#define SNDRV_TIMER_IFLG_AUTO&t;0x00000008&t;/* auto restart */
-DECL|macro|SNDRV_TIMER_FLG_SYSTEM
-mdefine_line|#define SNDRV_TIMER_FLG_SYSTEM&t;0x00000001&t;/* system timer */
+mdefine_line|#define SNDRV_TIMER_IFLG_AUTO&t;  0x00000008&t;/* auto restart */
+DECL|macro|SNDRV_TIMER_IFLG_FAST
+mdefine_line|#define SNDRV_TIMER_IFLG_FAST&t;  0x00000010&t;/* fast callback (do not use tasklet) */
+DECL|macro|SNDRV_TIMER_IFLG_CALLBACK
+mdefine_line|#define SNDRV_TIMER_IFLG_CALLBACK 0x00000020&t;/* timer callback is active */
 DECL|macro|SNDRV_TIMER_FLG_CHANGE
-mdefine_line|#define SNDRV_TIMER_FLG_CHANGE&t;0x00000002
+mdefine_line|#define SNDRV_TIMER_FLG_CHANGE&t;0x00000001
 DECL|macro|SNDRV_TIMER_FLG_RESCHED
-mdefine_line|#define SNDRV_TIMER_FLG_RESCHED&t;0x00000004&t;/* need reschedule */
+mdefine_line|#define SNDRV_TIMER_FLG_RESCHED&t;0x00000002&t;/* need reschedule */
 DECL|typedef|snd_timer_callback_t
 r_typedef
 r_void
@@ -106,10 +111,6 @@ comma
 r_int
 r_int
 id|resolution
-comma
-r_void
-op_star
-id|data
 )paren
 suffix:semicolon
 DECL|struct|_snd_timer_hardware
@@ -291,6 +292,22 @@ r_struct
 id|list_head
 id|active_list_head
 suffix:semicolon
+DECL|member|ack_list_head
+r_struct
+id|list_head
+id|ack_list_head
+suffix:semicolon
+DECL|member|sack_list_head
+r_struct
+id|list_head
+id|sack_list_head
+suffix:semicolon
+multiline_comment|/* slow ack list head */
+DECL|member|task_queue
+r_struct
+id|tasklet_struct
+id|task_queue
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|_snd_timer_instance
@@ -343,11 +360,25 @@ r_int
 r_int
 id|ticks
 suffix:semicolon
+multiline_comment|/* auto-load ticks when expired */
 DECL|member|cticks
 r_int
 r_int
 id|cticks
 suffix:semicolon
+multiline_comment|/* current ticks */
+DECL|member|pticks
+r_int
+r_int
+id|pticks
+suffix:semicolon
+multiline_comment|/* accumulated ticks for callback */
+DECL|member|resolution
+r_int
+r_int
+id|resolution
+suffix:semicolon
+multiline_comment|/* current resolution for tasklet */
 DECL|member|lost
 r_int
 r_int
@@ -373,6 +404,11 @@ r_struct
 id|list_head
 id|active_list
 suffix:semicolon
+DECL|member|ack_list
+r_struct
+id|list_head
+id|ack_list
+suffix:semicolon
 DECL|member|slave_list_head
 r_struct
 id|list_head
@@ -388,11 +424,6 @@ id|snd_timer_instance_t
 op_star
 id|master
 suffix:semicolon
-DECL|member|in_use
-id|atomic_t
-id|in_use
-suffix:semicolon
-multiline_comment|/* don&squot;t free */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Registering&n; */
@@ -564,16 +595,6 @@ suffix:semicolon
 r_extern
 r_int
 id|snd_timer_stop
-c_func
-(paren
-id|snd_timer_instance_t
-op_star
-id|timeri
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|snd_timer_del
 c_func
 (paren
 id|snd_timer_instance_t

@@ -3268,6 +3268,9 @@ l_string|&quot;NFS call  mknod %s %x&bslash;n&quot;
 comma
 id|name-&gt;name
 comma
+(paren
+r_int
+)paren
 id|rdev
 )paren
 suffix:semicolon

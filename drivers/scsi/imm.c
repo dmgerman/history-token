@@ -3105,7 +3105,7 @@ id|cmd
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_int
 id|k
@@ -3167,7 +3167,7 @@ multiline_comment|/* Return codes:&n;     * -1     Error&n;     *  0     Told to
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_int
 r_int
@@ -3532,7 +3532,7 @@ suffix:semicolon
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_if
 c_cond
@@ -3645,7 +3645,7 @@ multiline_comment|/* Only disconnect if we have connected */
 id|imm_disconnect
 c_func
 (paren
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 )paren
 suffix:semicolon
 id|imm_pb_release
@@ -3700,7 +3700,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 r_int
 r_int
@@ -3898,7 +3898,7 @@ l_int|1
 id|imm_disconnect
 c_func
 (paren
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 )paren
 suffix:semicolon
 r_if
@@ -3911,7 +3911,7 @@ l_int|0
 id|imm_pb_release
 c_func
 (paren
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -3963,7 +3963,7 @@ id|cmd
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_int
 r_int
@@ -4066,7 +4066,7 @@ c_func
 (paren
 id|host_no
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -4627,7 +4627,7 @@ op_star
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_if
 c_cond
@@ -4869,7 +4869,7 @@ id|cmd
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 multiline_comment|/*&n;     * There is no method for aborting commands since Iomega&n;     * have tied the SCSI_MESSAGE line high in the interface&n;     */
 r_switch
@@ -4995,7 +4995,7 @@ id|cmd
 r_int
 id|host_no
 op_assign
-id|cmd-&gt;host-&gt;unique_id
+id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
 r_if
 c_cond

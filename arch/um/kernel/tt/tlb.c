@@ -738,9 +738,9 @@ id|vmchange_seq
 suffix:semicolon
 )brace
 )brace
-DECL|function|flush_tlb_kernel_range
+DECL|function|flush_tlb_kernel_range_tt
 r_void
-id|flush_tlb_kernel_range
+id|flush_tlb_kernel_range_tt
 c_func
 (paren
 r_int

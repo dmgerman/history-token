@@ -821,6 +821,25 @@ comma
 l_int|0x0003
 )paren
 comma
+multiline_comment|/* Unnamed CS4236 card (Made in Taiwan) */
+id|ISAPNP_CS4232
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_int|0x4236
+comma
+l_int|0x0000
+comma
+l_int|0x0010
+comma
+l_int|0x0003
+)paren
+comma
 multiline_comment|/* Turtle Beach TBS-2000 (CS4232) */
 id|ISAPNP_CS4232
 c_func
@@ -2081,6 +2100,9 @@ c_cond
 op_minus
 l_int|1
 suffix:colon
+(paren
+r_int
+)paren
 id|pdev-&gt;dma_resource
 (braket
 l_int|1

@@ -1710,6 +1710,16 @@ comma
 id|f_list
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If this file descriptor has been closed, ignore it; it&n;&t;&t; * will be going away shortly. (We don&squot;t test filp-&gt;f_count&n;&t;&t; * for zero since that could open another race.) --rmk&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|filp-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2239,8 +2249,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-op_assign
-id|current-&gt;tty
 suffix:semicolon
 r_struct
 id|task_struct
@@ -2267,6 +2275,10 @@ id|lock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+id|tty
+op_assign
+id|current-&gt;tty
 suffix:semicolon
 r_if
 c_cond
@@ -8631,6 +8643,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The default put_char routine if the driver did not define one.&n; */
 DECL|function|tty_default_put_char
+r_static
 r_void
 id|tty_default_put_char
 c_func

@@ -514,9 +514,11 @@ suffix:semicolon
 multiline_comment|/* spdif channel status,&n;&t;   left right and user validity bits */
 DECL|member|spdif_csuv_default
 r_int
+r_int
 id|spdif_csuv_default
 suffix:semicolon
 DECL|member|spdif_csuv_stream
+r_int
 r_int
 id|spdif_csuv_stream
 suffix:semicolon

@@ -597,6 +597,26 @@ l_int|0
 )braket
 op_assign
 l_int|2
+op_star
+(paren
+id|strlen
+(paren
+id|buf
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|data
+(braket
+l_int|1
+)braket
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* type == string */
+r_return
+l_int|2
 op_plus
 id|ascii2utf
 (paren
@@ -610,20 +630,6 @@ id|len
 op_minus
 l_int|2
 )paren
-suffix:semicolon
-id|data
-(braket
-l_int|1
-)braket
-op_assign
-l_int|3
-suffix:semicolon
-multiline_comment|/* type == string */
-r_return
-id|data
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 multiline_comment|/* Root hub control transfers execute synchronously */
@@ -2941,7 +2947,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* lower level hcd code should use *_dma exclusively */
+multiline_comment|/* lower level hcd code should use *_dma exclusively,&n;&t; * unless it uses pio or talks to another transport.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2951,6 +2957,8 @@ id|urb-&gt;transfer_flags
 op_amp
 id|URB_NO_DMA_MAP
 )paren
+op_logical_and
+id|hcd-&gt;controller-&gt;dma_mask
 )paren
 (brace
 r_if

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/agp.h&gt;&t;/* for flush_agp_cache() */
 r_extern
 r_struct
 id|agp_bridge_data
+op_star
 id|agp_bridge
 suffix:semicolon
 DECL|macro|PFX
@@ -77,6 +78,7 @@ suffix:semicolon
 macro_line|#else
 DECL|function|global_cache_flush
 r_static
+r_inline
 r_void
 id|global_cache_flush
 c_func
@@ -354,6 +356,12 @@ DECL|member|cant_use_aperture
 r_int
 id|cant_use_aperture
 suffix:semicolon
+DECL|member|vm_ops
+r_struct
+id|vm_operations_struct
+op_star
+id|vm_ops
+suffix:semicolon
 multiline_comment|/* Links to driver specific functions */
 DECL|member|fetch_size
 r_int
@@ -571,7 +579,7 @@ mdefine_line|#define MB(x)&t;(KB (KB (x)))
 DECL|macro|GB
 mdefine_line|#define GB(x)&t;(MB (KB (x)))
 DECL|macro|CACHE_FLUSH
-mdefine_line|#define CACHE_FLUSH&t;agp_bridge.cache_flush
+mdefine_line|#define CACHE_FLUSH&t;agp_bridge-&gt;cache_flush
 DECL|macro|A_SIZE_8
 mdefine_line|#define A_SIZE_8(x)&t;((struct aper_size_info_8 *) x)
 DECL|macro|A_SIZE_16
@@ -583,19 +591,19 @@ mdefine_line|#define A_SIZE_LVL2(x)&t;((struct aper_size_info_lvl2 *) x)
 DECL|macro|A_SIZE_FIX
 mdefine_line|#define A_SIZE_FIX(x)&t;((struct aper_size_info_fixed *) x)
 DECL|macro|A_IDX8
-mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge.aperture_sizes) + i)
+mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX16
-mdefine_line|#define A_IDX16()&t;(A_SIZE_16(agp_bridge.aperture_sizes) + i)
+mdefine_line|#define A_IDX16()&t;(A_SIZE_16(agp_bridge-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX32
-mdefine_line|#define A_IDX32()&t;(A_SIZE_32(agp_bridge.aperture_sizes) + i)
+mdefine_line|#define A_IDX32()&t;(A_SIZE_32(agp_bridge-&gt;aperture_sizes) + i)
 DECL|macro|A_IDXLVL2
-mdefine_line|#define A_IDXLVL2()&t;(A_SIZE_LVL2(agp_bridge.aperture_sizes) + i)
+mdefine_line|#define A_IDXLVL2()&t;(A_SIZE_LVL2(agp_bridge-&gt;aperture_sizes) + i)
 DECL|macro|A_IDXFIX
-mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge.aperture_sizes) + i)
+mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge-&gt;aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
 DECL|macro|PGE_EMPTY
-mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge.scratch_page)
+mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge-&gt;scratch_page)
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
 mdefine_line|#define INTEL_APBASE&t;0x10
@@ -931,7 +939,7 @@ id|u32
 id|mode
 )paren
 suffix:semicolon
-r_int
+r_void
 id|agp_generic_agp_3_0_enable
 c_func
 (paren

@@ -3,10 +3,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|ACPI_BATTERY_VALUE_UNKNOWN
 mdefine_line|#define ACPI_BATTERY_VALUE_UNKNOWN 0xFFFFFFFF
 DECL|macro|ACPI_BATTERY_FORMAT_BIF

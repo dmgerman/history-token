@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_BUFFER_HEAD_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|bh_state_bits
 r_enum
@@ -504,8 +505,9 @@ id|buffer_head
 op_star
 )paren
 suffix:semicolon
-r_void
-id|sleep_on_buffer
+id|wait_queue_head_t
+op_star
+id|bh_waitq_head
 c_func
 (paren
 r_struct
@@ -663,6 +665,16 @@ op_star
 id|bh
 (braket
 )braket
+)paren
+suffix:semicolon
+r_void
+id|sync_dirty_buffer
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
 )paren
 suffix:semicolon
 r_int

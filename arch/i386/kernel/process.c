@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -130,10 +131,10 @@ r_void
 r_if
 c_cond
 (paren
-id|current_cpu_data.hlt_works_ok
-op_logical_and
 op_logical_neg
 id|hlt_counter
+op_logical_and
+id|current_cpu_data.hlt_works_ok
 )paren
 (brace
 id|local_irq_disable

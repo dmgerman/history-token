@@ -712,14 +712,10 @@ l_int|0
 )paren
 )paren
 (brace
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;txLockAlloc TlocksLow&bslash;n&quot;
-)paren
+l_string|&quot;txLockAlloc TlocksLow&quot;
 )paren
 suffix:semicolon
 id|TxAnchor.TlocksLow
@@ -776,14 +772,10 @@ id|TxLockLWM
 )paren
 )paren
 (brace
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;txLockFree TlocksLow no more&bslash;n&quot;
-)paren
+l_string|&quot;txLockFree TlocksLow no more&quot;
 )paren
 suffix:semicolon
 id|TxAnchor.TlocksLow
@@ -1138,16 +1130,12 @@ id|jfs_log
 op_star
 id|log
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txBegin: flag = 0x%x&bslash;n&quot;
+l_string|&quot;txBegin: flag = 0x%x&quot;
 comma
 id|flag
-)paren
 )paren
 suffix:semicolon
 id|log
@@ -1271,14 +1259,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txBegin: waiting for free tid&bslash;n&quot;
-)paren
+l_string|&quot;txBegin: waiting for free tid&quot;
 )paren
 suffix:semicolon
 id|INCREMENT
@@ -1323,14 +1307,10 @@ id|jfsCommitTask
 )paren
 (brace
 multiline_comment|/* Save one tblk for jfsCommit thread */
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txBegin: waiting for free tid&bslash;n&quot;
-)paren
+l_string|&quot;txBegin: waiting for free tid&quot;
 )paren
 suffix:semicolon
 id|INCREMENT
@@ -1403,16 +1383,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txBegin: returning tid = %d&bslash;n&quot;
+l_string|&quot;txBegin: returning tid = %d&quot;
 comma
 id|t
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1555,16 +1531,12 @@ id|jfs_log
 op_star
 id|log
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txEnd: tid = %d&bslash;n&quot;
+l_string|&quot;txEnd: tid = %d&quot;
 comma
 id|tid
-)paren
 )paren
 suffix:semicolon
 id|TXN_LOCK
@@ -1599,18 +1571,14 @@ op_amp
 id|tblkGC_LAZY
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txEnd called w/lazy tid: %d, tblk = 0x%p&bslash;n&quot;
+l_string|&quot;txEnd called w/lazy tid: %d, tblk = 0x%p&quot;
 comma
 id|tid
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 id|TXN_UNLOCK
@@ -1641,18 +1609,14 @@ singleline_comment|// LOGGC_UNLOCK
 r_return
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txEnd: tid: %d, tblk = 0x%p&bslash;n&quot;
+l_string|&quot;txEnd: tid: %d, tblk = 0x%p&quot;
 comma
 id|tid
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 m_assert
@@ -1695,16 +1659,12 @@ l_int|0
 (brace
 multiline_comment|/* forward log syncpt */
 multiline_comment|/* lmSync(log); */
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;     log barrier off: 0x%x&bslash;n&quot;
+l_string|&quot;     log barrier off: 0x%x&quot;
 comma
 id|log-&gt;lsn
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* enable new transactions start */
@@ -1737,16 +1697,6 @@ suffix:semicolon
 id|TXN_UNLOCK
 c_func
 (paren
-)paren
-suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;txEnd: exitting&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1875,13 +1825,10 @@ l_int|0
 r_goto
 id|allocateLock
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txLock: tid:%d ip:0x%p mp:0x%p lid:%d&bslash;n&quot;
+l_string|&quot;txLock: tid:%d ip:0x%p mp:0x%p lid:%d&quot;
 comma
 id|tid
 comma
@@ -1890,7 +1837,6 @@ comma
 id|mp
 comma
 id|lid
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* is page locked by the requester transaction ? */
@@ -2115,13 +2061,10 @@ op_amp
 id|mp-&gt;nohomeok
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;locking mp = 0x%p, nohomeok = %d tid = %d tlck = 0x%p&bslash;n&quot;
+l_string|&quot;locking mp = 0x%p, nohomeok = %d tid = %d tlck = 0x%p&quot;
 comma
 id|mp
 comma
@@ -2135,7 +2078,6 @@ comma
 id|tid
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* if anonymous transaction, and buffer is on the group&n;&t;&t; * commit synclist, mark inode to show this.  This will&n;&t;&t; * prevent the buffer from being marked nohomeok for too&n;&t;&t; * long a time.&n;&t;&t; */
@@ -2425,16 +2367,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;UFO tlock:0x%p&bslash;n&quot;
+l_string|&quot;UFO tlock:0x%p&quot;
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2466,14 +2404,10 @@ op_ne
 id|AGGREGATE_I
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txLock: trying to lock locked page!&bslash;n&quot;
-)paren
+l_string|&quot;txLock: trying to lock locked page!&quot;
 )paren
 suffix:semicolon
 id|dump_mem
@@ -2555,20 +2489,16 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;txLock: in waitLock, tid = %d, xtid = %d, lid = %d&bslash;n&quot;
+l_string|&quot;txLock: in waitLock, tid = %d, xtid = %d, lid = %d&quot;
 comma
 id|tid
 comma
 id|xtid
 comma
 id|lid
-)paren
 )paren
 suffix:semicolon
 id|TXN_SLEEP_DROP_LOCK
@@ -2584,18 +2514,14 @@ op_member_access_from_pointer
 id|waitor
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;txLock: awakened     tid = %d, lid = %d&bslash;n&quot;
+l_string|&quot;txLock: awakened     tid = %d, lid = %d&quot;
 comma
 id|tid
 comma
 id|lid
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2749,16 +2675,12 @@ id|difft
 comma
 id|diffp
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txUnlock: tblk = 0x%p&bslash;n&quot;
+l_string|&quot;txUnlock: tblk = 0x%p&quot;
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 id|log
@@ -2798,18 +2720,14 @@ id|next
 op_assign
 id|tlck-&gt;next
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;unlocking lid = %d, tlck = 0x%p&bslash;n&quot;
+l_string|&quot;unlocking lid = %d, tlck = 0x%p&quot;
 comma
 id|lid
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* unbind page from tlock */
@@ -3440,18 +3358,14 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txCommit, tid = %d, flag = %d&bslash;n&quot;
+l_string|&quot;txCommit, tid = %d, flag = %d&quot;
 comma
 id|tid
 comma
 id|flag
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* is read-only file system ? */
@@ -3990,18 +3904,14 @@ id|rc1
 suffix:semicolon
 id|TheEnd
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txCommit: tid = %d, returning %d&bslash;n&quot;
+l_string|&quot;txCommit: tid = %d, returning %d&quot;
 comma
 id|tid
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4230,16 +4140,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;UFO tlock:0x%p&bslash;n&quot;
+l_string|&quot;UFO tlock:0x%p&quot;
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4503,20 +4409,14 @@ id|tlckWRITEPAGE
 suffix:semicolon
 )brace
 r_else
-(brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|2
-comma
-(paren
-l_string|&quot;diLog: UFO type tlck:0x%p&bslash;n&quot;
+l_string|&quot;diLog: UFO type tlck:0x%p&quot;
 comma
 id|tlck
 )paren
-)paren
 suffix:semicolon
-)brace
 macro_line|#ifdef  _JFS_WIP
 multiline_comment|/*&n;&t; *      alloc/free external EA extent&n;&t; *&n;&t; * a maplock for txUpdateMap() to update bPWMAP for alloc/free&n;&t; * of the extent has been formatted at txLock() time;&n;&t; */
 r_else
@@ -5533,13 +5433,11 @@ op_complement
 id|COMMIT_LAZY
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLog: alloc ip:0x%p mp:0x%p tlck:0x%p lwm:%d count:%d&bslash;n&quot;
+l_string|&quot;xtLog: alloc ip:0x%p mp:0x%p tlck:0x%p lwm:%d &quot;
+l_string|&quot;count:%d&quot;
 comma
 id|tlck-&gt;ip
 comma
@@ -5550,7 +5448,6 @@ comma
 id|lwm
 comma
 id|xadlock-&gt;count
-)paren
 )paren
 suffix:semicolon
 id|maplock-&gt;index
@@ -5824,20 +5721,16 @@ op_complement
 id|COMMIT_LAZY
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLog: free ip:0x%p mp:0x%p count:%d lwm:2&bslash;n&quot;
+l_string|&quot;xtLog: free ip:0x%p mp:0x%p count:%d lwm:2&quot;
 comma
 id|tlck-&gt;ip
 comma
 id|mp
 comma
 id|xadlock-&gt;count
-)paren
 )paren
 suffix:semicolon
 id|maplock-&gt;index
@@ -6180,13 +6073,11 @@ id|p-&gt;xad
 id|lwm
 )braket
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLog: alloc ip:0x%p mp:0x%p count:%d lwm:%d next:%d&bslash;n&quot;
+l_string|&quot;xtLog: alloc ip:0x%p mp:0x%p count:%d &quot;
+l_string|&quot;lwm:%d next:%d&quot;
 comma
 id|tlck-&gt;ip
 comma
@@ -6197,7 +6088,6 @@ comma
 id|lwm
 comma
 id|next
-)paren
 )paren
 suffix:semicolon
 id|maplock-&gt;index
@@ -6249,13 +6139,11 @@ id|pxdlock-&gt;pxd
 op_assign
 id|tpxd
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLog: truncate ip:0x%p mp:0x%p count:%d hwm:%d&bslash;n&quot;
+l_string|&quot;xtLog: truncate ip:0x%p mp:0x%p count:%d &quot;
+l_string|&quot;hwm:%d&quot;
 comma
 id|ip
 comma
@@ -6264,7 +6152,6 @@ comma
 id|pxdlock-&gt;count
 comma
 id|hwm
-)paren
 )paren
 suffix:semicolon
 id|maplock-&gt;index
@@ -6308,13 +6195,11 @@ id|p-&gt;xad
 id|next
 )braket
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;xtLog: free ip:0x%p mp:0x%p count:%d next:%d hwm:%d&bslash;n&quot;
+l_string|&quot;xtLog: free ip:0x%p mp:0x%p count:%d &quot;
+l_string|&quot;next:%d hwm:%d&quot;
 comma
 id|tlck-&gt;ip
 comma
@@ -6325,7 +6210,6 @@ comma
 id|next
 comma
 id|hwm
-)paren
 )paren
 suffix:semicolon
 id|maplock-&gt;index
@@ -6591,13 +6475,10 @@ l_int|NULL
 )paren
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;mapLog: xaddr:0x%lx xlen:0x%x&bslash;n&quot;
+l_string|&quot;mapLog: xaddr:0x%lx xlen:0x%x&quot;
 comma
 (paren
 id|ulong
@@ -6614,7 +6495,6 @@ c_func
 (paren
 op_amp
 id|pxdlock-&gt;pxd
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -7641,13 +7521,10 @@ op_or
 id|XAD_EXTENDED
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -7655,7 +7532,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7714,13 +7590,10 @@ comma
 id|tblk
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -7728,7 +7601,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7799,13 +7671,10 @@ comma
 id|tblk
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;allocPMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -7813,7 +7682,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7889,20 +7757,16 @@ suffix:semicolon
 r_int
 id|n
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txFreeMap: tblk:0x%p maplock:0x%p maptype:0x%x&bslash;n&quot;
+l_string|&quot;txFreeMap: tblk:0x%p maplock:0x%p maptype:0x%x&quot;
 comma
 id|tblk
 comma
 id|maplock
 comma
 id|maptype
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * free from persistent map;&n;&t; */
@@ -8001,13 +7865,11 @@ comma
 id|tblk
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freePMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freePMap: xaddr:0x%lx &quot;
+l_string|&quot;xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8015,7 +7877,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8074,13 +7935,10 @@ comma
 id|tblk
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freePMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freePMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8088,7 +7946,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8159,13 +8016,10 @@ comma
 id|tblk
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freePMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freePMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8173,7 +8027,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8264,13 +8117,10 @@ id|xad-&gt;flag
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8278,7 +8128,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8332,13 +8181,10 @@ id|s64
 id|xlen
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8346,7 +8192,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8413,13 +8258,10 @@ id|s64
 id|xlen
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&bslash;n&quot;
+l_string|&quot;freeWMap: xaddr:0x%lx xlen:%d&quot;
 comma
 (paren
 id|ulong
@@ -8427,7 +8269,6 @@ id|ulong
 id|xaddr
 comma
 id|xlen
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -8608,18 +8449,14 @@ c_func
 id|tid
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txAbort: tid:%d dirty:0x%x&bslash;n&quot;
+l_string|&quot;txAbort: tid:%d dirty:0x%x&quot;
 comma
 id|tid
 comma
 id|dirty
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * free tlocks of the transaction&n;&t; */
@@ -8770,16 +8607,12 @@ op_eq
 id|ENOMEM
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txAbortCommit: cd:0x%p&bslash;n&quot;
+l_string|&quot;txAbortCommit: cd:0x%p&quot;
 comma
 id|cd
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * free tlocks of the transaction&n;&t; */
@@ -8937,16 +8770,12 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We must have gotten ahead of the user thread&n;&t;&t; */
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_lazycommit: tblk 0x%p not unlocked&bslash;n&quot;
+l_string|&quot;jfs_lazycommit: tblk 0x%p not unlocked&quot;
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 id|schedule
@@ -8955,16 +8784,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txLazyCommit: processing tblk 0x%p&bslash;n&quot;
+l_string|&quot;txLazyCommit: processing tblk 0x%p&quot;
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 id|txUpdateMap
@@ -9010,14 +8835,7 @@ id|tblkGC_READY
 id|log-&gt;gcrtc
 op_decrement
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tblk-&gt;flag
-op_amp
-id|tblkGC_READY
-)paren
-id|wake_up
+id|wake_up_all
 c_func
 (paren
 op_amp
@@ -9072,16 +8890,12 @@ id|log-&gt;gclock
 )paren
 suffix:semicolon
 singleline_comment|// LOGGC_UNLOCK
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txLazyCommit: done: tblk = 0x%p&bslash;n&quot;
+l_string|&quot;txLazyCommit: done: tblk = 0x%p&quot;
 comma
 id|tblk
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -9108,58 +8922,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;jfsCommit&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|jfsCommitTask
 op_assign
 id|current
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
 suffix:semicolon
 id|LAZY_LOCK_INIT
 c_func
@@ -9240,7 +9011,7 @@ c_func
 id|tblk
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can be running indefinately if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We can be running indefinitely if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
 id|cond_resched
 c_func
 (paren
@@ -9347,25 +9118,17 @@ c_cond
 (paren
 id|TxAnchor.unlock_queue
 )paren
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_lazycommit being killed with pending transactions!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_lazycommit being killed w/pending transactions!&quot;
 )paren
 suffix:semicolon
 r_else
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
 l_string|&quot;jfs_lazycommit being killed&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|complete
@@ -9808,53 +9571,10 @@ suffix:semicolon
 id|tid_t
 id|tid
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;jfsSync&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|complete
@@ -10089,14 +9809,10 @@ op_logical_neg
 id|jfs_stop_threads
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_sync being killed&bslash;n&quot;
-)paren
+l_string|&quot;jfs_sync being killed&quot;
 )paren
 suffix:semicolon
 id|complete

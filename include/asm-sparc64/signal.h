@@ -131,10 +131,6 @@ DECL|macro|_NSIG_BPW
 mdefine_line|#define _NSIG_BPW     &t;64
 DECL|macro|_NSIG_WORDS
 mdefine_line|#define _NSIG_WORDS   &t;(__NEW_NSIG / _NSIG_BPW)
-DECL|macro|_NSIG_BPW32
-mdefine_line|#define _NSIG_BPW32   &t;32
-DECL|macro|_NSIG_WORDS32
-mdefine_line|#define _NSIG_WORDS32 &t;(__NEW_NSIG / _NSIG_BPW32)
 DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN       32
 DECL|macro|SIGRTMAX
@@ -144,16 +140,12 @@ DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;&t;__NEW_NSIG
 DECL|macro|__new_sigset_t
 mdefine_line|#define __new_sigset_t&t;&t;sigset_t
-DECL|macro|__new_sigset_t32
-mdefine_line|#define __new_sigset_t32&t;sigset_t32
 DECL|macro|__new_sigaction
 mdefine_line|#define __new_sigaction&t;&t;sigaction
 DECL|macro|__new_sigaction32
 mdefine_line|#define __new_sigaction32&t;sigaction32
 DECL|macro|__old_sigset_t
 mdefine_line|#define __old_sigset_t&t;&t;old_sigset_t
-DECL|macro|__old_sigset_t32
-mdefine_line|#define __old_sigset_t32&t;old_sigset_t32
 DECL|macro|__old_sigaction
 mdefine_line|#define __old_sigaction&t;&t;old_sigaction
 DECL|macro|__old_sigaction32
@@ -165,8 +157,6 @@ DECL|macro|NSIG
 mdefine_line|#define NSIG&t;&t;&t;_NSIG
 DECL|macro|__old_sigset_t
 mdefine_line|#define __old_sigset_t&t;&t;sigset_t
-DECL|macro|__old_sigset_t32
-mdefine_line|#define __old_sigset_t32&t;sigset_t32
 DECL|macro|__old_sigaction
 mdefine_line|#define __old_sigaction&t;&t;sigaction
 DECL|macro|__old_sigaction32
@@ -180,12 +170,6 @@ r_int
 id|__old_sigset_t
 suffix:semicolon
 multiline_comment|/* at least 32 bits */
-DECL|typedef|__old_sigset_t32
-r_typedef
-r_int
-r_int
-id|__old_sigset_t32
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -200,21 +184,6 @@ suffix:semicolon
 DECL|typedef|__new_sigset_t
 )brace
 id|__new_sigset_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_NSIG_WORDS32
-)braket
-suffix:semicolon
-DECL|typedef|__new_sigset_t32
-)brace
-id|__new_sigset_t32
 suffix:semicolon
 multiline_comment|/* A SunOS sigstack */
 DECL|struct|sigstack
@@ -260,7 +229,7 @@ mdefine_line|#define SA_NOMASK&t;0x20
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;0x40
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT    0x100 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT    0x100
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO      0x200
 DECL|macro|SIG_BLOCK
@@ -353,6 +322,7 @@ id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|__new_sigaction32
 r_struct
 id|__new_sigaction32
@@ -372,12 +342,11 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 DECL|member|sa_mask
-id|__new_sigset_t32
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|struct|k_sigaction
 r_struct
 id|k_sigaction
@@ -425,6 +394,7 @@ suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|__old_sigaction32
 r_struct
 id|__old_sigaction32
@@ -434,7 +404,7 @@ r_int
 id|sa_handler
 suffix:semicolon
 DECL|member|sa_mask
-id|__old_sigset_t32
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 DECL|member|sa_flags
@@ -449,6 +419,7 @@ suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|struct|sigaltstack
 r_typedef
 r_struct
@@ -493,8 +464,23 @@ DECL|typedef|stack_t32
 )brace
 id|stack_t32
 suffix:semicolon
-DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
-mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+DECL|struct|signal_deliver_cookie
+r_struct
+id|signal_deliver_cookie
+(brace
+DECL|member|restart_syscall
+r_int
+id|restart_syscall
+suffix:semicolon
+DECL|member|orig_i0
+r_int
+r_int
+id|orig_i0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(REGS, COOKIE) &bslash;&n;do {&t;struct signal_deliver_cookie *cp = (COOKIE); &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    (regs-&gt;u_regs[UREG_I0] == ERESTARTNOHAND || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTSYS || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTNOINTR)) { &bslash;&n;&t;&t;/* replay the system call when we are done */ &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_I0] = cp-&gt;orig_i0; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    regs-&gt;u_regs[UREG_I0] == ERESTART_RESTARTBLOCK) { &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_G1] = __NR_restart_syscall; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;} while (0)
 DECL|macro|HAVE_ARCH_SYS_PAUSE
 mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif

@@ -1,7 +1,7 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;actables.h&quot;
+macro_line|#include &lt;acpi/acpi.h&gt;
+macro_line|#include &lt;acpi/actables.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
 id|ACPI_MODULE_NAME
@@ -53,6 +53,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|acpi_gbl_acpi_table_data
 (braket
@@ -61,10 +62,8 @@ id|i
 dot
 id|flags
 op_amp
-id|ACPI_TABLE_TYPE_MASK
-)paren
-op_ne
 id|search_type
+)paren
 )paren
 (brace
 r_continue
@@ -114,7 +113,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Table [%4.4s] matched and is a required ACPI table&bslash;n&quot;
+l_string|&quot;Table [%4.4s] is an ACPI table consumed by the core subsystem&bslash;n&quot;
 comma
 (paren
 r_char
@@ -141,7 +140,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Table [%4.4s] is not a required ACPI table - ignored&bslash;n&quot;
+l_string|&quot;Table [%4.4s] is not an ACPI table consumed by the core subsystem - ignored&bslash;n&quot;
 comma
 (paren
 r_char
@@ -235,7 +234,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Could not install ACPI table [%s], %s&bslash;n&quot;
+l_string|&quot;Could not install ACPI table [%4.4s], %s&bslash;n&quot;
 comma
 id|table_info-&gt;pointer-&gt;signature
 comma

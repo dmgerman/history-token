@@ -33,6 +33,8 @@ DECL|macro|CIA_DEFAULT_MEM_BASE
 mdefine_line|#define CIA_DEFAULT_MEM_BASE ((32+2)*1024*1024)
 DECL|macro|IRONGATE_DEFAULT_MEM_BASE
 mdefine_line|#define IRONGATE_DEFAULT_MEM_BASE ((256*8-16)*1024*1024)
+DECL|macro|DEFAULT_AGP_APER_SIZE
+mdefine_line|#define DEFAULT_AGP_APER_SIZE&t;(64*1024*1024)
 multiline_comment|/* &n; * A small note about bridges and interrupts.  The DECchip 21050 (and&n; * later) adheres to the PCI-PCI bridge specification.  This says that&n; * the interrupts on the other side of a bridge are swizzled in the&n; * following manner:&n; *&n; * Dev    Interrupt   Interrupt &n; *        Pin on      Pin on &n; *        Device      Connector&n; *&n; *   4    A           A&n; *        B           B&n; *        C           C&n; *        D           D&n; * &n; *   5    A           B&n; *        B           C&n; *        C           D&n; *        D           A&n; *&n; *   6    A           C&n; *        B           D&n; *        C           A&n; *        D           B&n; *&n; *   7    A           D&n; *        B           A&n; *        C           B&n; *        D           C&n; *&n; *   Where A = pin 1, B = pin 2 and so on and pin=0 = default = A.&n; *   Thus, each swizzle is ((pin-1) + (device#-4)) % 4&n; *&n; *   The following code swizzles for exactly one bridge.  The routine&n; *   common_swizzle below handles multiple bridges.  But there are a&n; *   couple boards that do strange things, so we define this here.&n; */
 DECL|function|bridge_swizzle
 r_static
@@ -137,6 +139,11 @@ multiline_comment|/* Indicate that we trust the console to configure things prop
 r_extern
 r_int
 id|pci_probe_only
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|alpha_agpgart_size
 suffix:semicolon
 r_extern
 r_void

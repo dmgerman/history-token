@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/aec62xx.c&t;&t;Version 0.11&t;March 27, 2002&n; *&n; * Copyright (C) 1999-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/aec62xx.c&t;&t;Version 0.11&t;March 27, 2002&n; *&n; * Copyright (C) 1999-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3119,6 +3119,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
 id|name

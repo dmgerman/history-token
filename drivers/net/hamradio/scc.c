@@ -6301,7 +6301,7 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/*&n;&t; * Start transmission if the trx state is idle or&n;&t; * t_idle hasn&squot;t expired yet. Use dwait/persistance/slottime&n;&t; * algorithm for normal halfduplex operation.&n;&t; */
+multiline_comment|/*&n;&t; * Start transmission if the trx state is idle or&n;&t; * t_idle hasn&squot;t expired yet. Use dwait/persistence/slottime&n;&t; * algorithm for normal halfduplex operation.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6522,7 +6522,11 @@ r_if
 c_cond
 (paren
 id|hwcfg.irq
-template_param
+OL
+l_int|0
+op_logical_or
+id|hwcfg.irq
+op_ge
 id|NR_IRQS
 )paren
 r_return

@@ -48,7 +48,7 @@ DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE&t;isa_mem_base
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET&t;pci_dram_offset
-macro_line|#endif /* Platform-dependant I/O */
+macro_line|#endif /* Platform-dependent I/O */
 r_extern
 r_int
 r_int

@@ -3007,10 +3007,10 @@ suffix:semicolon
 multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy support.&n;&t;** For Astro based systems this isn&squot;t a big deal WRT performance.&n;&t;** As long as 2.4 kernels copyin/copyout data from/to userspace,&n;&t;** we don&squot;t need the syncdma. The issue here is I/O MMU cachelines&n;&t;** are *not* coherent in all cases.  May be hwrev dependent.&n;&t;** Need to investigate more.&n;&t;asm volatile(&quot;syncdma&quot;);&t;&n;&t;*/
 )brace
 multiline_comment|/**&n; * sba_alloc_consistent - allocate/map shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+DECL|function|sba_alloc_consistent
 r_static
 r_void
 op_star
-DECL|function|sba_alloc_consistent
 id|sba_alloc_consistent
 c_func
 (paren
@@ -3025,6 +3025,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|gfp
 )paren
 (brace
 r_void
@@ -3057,7 +3060,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|gfp
 comma
 id|get_order
 c_func
@@ -3490,7 +3493,7 @@ suffix:semicolon
 multiline_comment|/*&n;** Two address ranges are DMA contiguous *iff* &quot;end of prev&quot; and&n;** &quot;start of next&quot; are both on a page boundry.&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
 DECL|macro|DMA_CONTIG
 mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - PAGE_SHIFT)) == 0UL)
-multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill seperate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
+multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill separate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
 r_static
 id|SBA_INLINE
 r_int

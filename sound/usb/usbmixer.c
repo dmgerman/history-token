@@ -3442,10 +3442,12 @@ id|unitid
 )paren
 (brace
 r_int
+r_int
 id|len
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
 id|mapped_name
 op_assign
 l_int|0
@@ -4375,6 +4377,7 @@ op_star
 id|cval
 suffix:semicolon
 r_int
+r_int
 id|num_ins
 op_assign
 id|desc
@@ -4382,6 +4385,7 @@ id|desc
 l_int|4
 )braket
 suffix:semicolon
+r_int
 r_int
 id|num_outs
 op_assign
@@ -4392,6 +4396,7 @@ op_plus
 id|num_ins
 )braket
 suffix:semicolon
+r_int
 r_int
 id|i
 comma
@@ -6171,6 +6176,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|uinfo-&gt;value.enumerated.item
 op_ge
 id|cval-&gt;max
@@ -6577,6 +6585,7 @@ id|desc
 )paren
 (brace
 r_int
+r_int
 id|num_ins
 op_assign
 id|desc
@@ -6585,13 +6594,15 @@ l_int|4
 )braket
 suffix:semicolon
 r_int
+r_int
 id|i
-comma
-id|err
 comma
 id|nameid
 comma
 id|len
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|usb_mixer_elem_info_t
 op_star

@@ -130,7 +130,7 @@ multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK indicates that a
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP    0x00000001
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT    0x00000002 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT    0x00000002
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO      0x00000004
 DECL|macro|SA_ONSTACK
@@ -320,6 +320,8 @@ DECL|macro|sa_handler
 mdefine_line|#define sa_handler      _u._sa_handler
 DECL|macro|sa_sigaction
 mdefine_line|#define sa_sigaction    _u._sa_sigaction
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 DECL|struct|sigaltstack
 r_typedef

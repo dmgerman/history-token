@@ -34,4 +34,5 @@ mdefine_line|#define BUG()&t;&t;(*(int *)0 = 0)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;(*(int *)0 = 0)
 macro_line|#endif
+macro_line|#endif
 eof

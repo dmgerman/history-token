@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
@@ -223,21 +224,12 @@ id|current-&gt;thread.regs.regs
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|n
-op_eq
-l_int|2
-)paren
-(brace
 id|do_exit
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|new_thread_proc
 r_void
@@ -404,21 +396,21 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|p-&gt;thread.regs.regs.mode.skas
+id|p-&gt;thread.regs.regs.skas
 comma
 op_amp
-id|current-&gt;thread.regs.regs.mode.skas
+id|current-&gt;thread.regs.regs.skas
 comma
 r_sizeof
 (paren
-id|p-&gt;thread.regs.regs.mode.skas
+id|p-&gt;thread.regs.regs.skas
 )paren
 )paren
 suffix:semicolon
 id|REGS_SET_SYSCALL_RETURN
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.regs
+id|p-&gt;thread.regs.regs.skas.regs
 comma
 l_int|0
 )paren
@@ -434,7 +426,7 @@ l_int|0
 id|REGS_SP
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.regs
+id|p-&gt;thread.regs.regs.skas.regs
 )paren
 op_assign
 id|sp
@@ -450,39 +442,39 @@ r_else
 id|memcpy
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.regs
+id|p-&gt;thread.regs.regs.skas.regs
 comma
 id|exec_regs
 comma
 r_sizeof
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.regs
+id|p-&gt;thread.regs.regs.skas.regs
 )paren
 )paren
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.fp
+id|p-&gt;thread.regs.regs.skas.fp
 comma
 id|exec_fp_regs
 comma
 r_sizeof
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.fp
+id|p-&gt;thread.regs.regs.skas.fp
 )paren
 )paren
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.xfp
+id|p-&gt;thread.regs.regs.skas.xfp
 comma
 id|exec_fpx_regs
 comma
 r_sizeof
 (paren
-id|p-&gt;thread.regs.regs.mode.skas.xfp
+id|p-&gt;thread.regs.regs.skas.xfp
 )paren
 )paren
 suffix:semicolon

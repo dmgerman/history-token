@@ -53,7 +53,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNull session passed in to AllocMidQEntry &quot;
+l_string|&quot;Null session passed in to AllocMidQEntry &quot;
 )paren
 )paren
 suffix:semicolon
@@ -61,20 +61,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|temp
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|mid_q_entry
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 id|temp
 op_assign
 (paren
@@ -135,7 +121,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFor smb_command %d&quot;
+l_string|&quot;For smb_command %d&quot;
 comma
 id|temp-&gt;command
 )paren
@@ -160,7 +146,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;status
+id|ses-&gt;server-&gt;tcpStatus
 op_eq
 id|CifsGood
 )paren
@@ -203,14 +189,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* BB add reconnect code here BB */
+multiline_comment|/* could add more reconnect code here BB */
 id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNeed to reconnect after session died to server&bslash;n&quot;
+l_string|&quot;Need to reconnect after session died to server&quot;
 )paren
 )paren
 suffix:semicolon
@@ -429,7 +415,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSending smb of length %d &quot;
+l_string|&quot;Sending smb of length %d &quot;
 comma
 id|smb_buf_length
 )paren
@@ -497,7 +483,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError %d sending data on socket to server.&bslash;n&quot;
+l_string|&quot;Error %d sending data on socket to server.&quot;
 comma
 id|rc
 )paren
@@ -601,7 +587,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIllegal length, greater than maximum frame, %d &quot;
+l_string|&quot;Illegal length, greater than maximum frame, %d &quot;
 comma
 id|in_buf-&gt;smb_buf_length
 )paren
@@ -651,7 +637,7 @@ id|long_op
 OG
 l_int|1
 )paren
-multiline_comment|/* writes past end of file can take a looooooong time */
+multiline_comment|/* writes past end of file can take looooong time */
 id|timeout
 op_assign
 l_int|300
@@ -679,9 +665,7 @@ l_int|15
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* wait for 15 seconds or until woken up due to response arriving or due to &n;&t;   last connection to this server being unmounted */
-multiline_comment|/* timeout = interruptible_sleep_on_timeout(&amp;ses-&gt;server-&gt;response_q,timeout); */
-multiline_comment|/* Replace above line with wait_event to get rid of sleep_on per lk guidelines */
+multiline_comment|/* wait for 15 seconds or until woken up due to response arriving or &n;&t;   due to last connection to this server being unmounted */
 id|timeout
 op_assign
 id|wait_event_interruptible_timeout
@@ -696,22 +680,6 @@ op_amp
 id|MID_RESPONSE_RECEIVED
 comma
 id|timeout
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; with timeout %ld and Out_buf: %p  midQ-&gt;resp_buf: %p &quot;
-comma
-id|timeout
-comma
-id|out_buf
-comma
-id|midQ-&gt;resp_buf
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -730,8 +698,7 @@ c_func
 l_int|1
 comma
 (paren
-id|KERN_ERR
-l_string|&quot;&bslash;nCIFS: caught signal&quot;
+l_string|&quot;CIFS: caught signal&quot;
 )paren
 )paren
 suffix:semicolon
@@ -789,7 +756,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nTimeout on receive. Assume response SMB is invalid.&bslash;n&quot;
+l_string|&quot;Timeout on receive. Assume response SMB is invalid.&quot;
 )paren
 )paren
 suffix:semicolon
@@ -816,7 +783,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFrame too large received.  Length: %d  Xid: %d&bslash;n&quot;
+l_string|&quot;Frame too large received.  Length: %d  Xid: %d&quot;
 comma
 id|receive_len
 comma

@@ -523,6 +523,8 @@ op_amp
 l_int|0xff
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace

@@ -84,6 +84,11 @@ r_struct
 id|gunze
 op_star
 id|gunze
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -144,6 +149,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_abs
 c_func
 (paren
@@ -230,6 +243,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -253,6 +271,8 @@ id|gunze_process_packet
 c_func
 (paren
 id|gunze
+comma
+id|regs
 )paren
 suffix:semicolon
 id|gunze-&gt;idx

@@ -2725,7 +2725,6 @@ comma
 r_int
 id|gfp_mask
 comma
-r_const
 r_int
 id|nr_pages
 comma
@@ -2993,7 +2992,7 @@ id|WRITE
 comma
 id|HZ
 op_div
-l_int|4
+l_int|10
 )paren
 suffix:semicolon
 id|shrink_slab
@@ -3210,7 +3209,7 @@ id|zone
 comma
 id|max_scan
 comma
-id|GFP_KSWAPD
+id|GFP_KERNEL
 comma
 id|to_reclaim
 comma
@@ -3229,7 +3228,7 @@ id|max_scan
 op_plus
 id|nr_mapped
 comma
-id|GFP_KSWAPD
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3267,7 +3266,7 @@ id|WRITE
 comma
 id|HZ
 op_div
-l_int|4
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -3314,6 +3313,9 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;kswapd%d&quot;
+comma
+id|pgdat-&gt;node_id
 )paren
 suffix:semicolon
 id|set_cpus_allowed
@@ -3321,28 +3323,11 @@ c_func
 (paren
 id|tsk
 comma
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|pgdat-&gt;node_id
 )paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|tsk-&gt;comm
-comma
-l_string|&quot;kswapd%d&quot;
-comma
-id|pgdat-&gt;node_id
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|tsk-&gt;blocked
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot;memory allocator&quot;,&n;&t; * and that if we need more memory we should get access to it&n;&t; * regardless (see &quot;__alloc_pages()&quot;). &quot;kswapd&quot; should&n;&t; * never get caught in the normal page freeing logic.&n;&t; *&n;&t; * (Kswapd normally doesn&squot;t need memory anyway, but sometimes&n;&t; * you need a small amount of memory in order to be able to&n;&t; * page out something else, and this flag essentially protects&n;&t; * us from recursively trying to free more memory as we&squot;re&n;&t; * trying to free the first piece of memory in the first place).&n;&t; */
@@ -3419,11 +3404,6 @@ l_int|0
 comma
 op_amp
 id|ps
-)paren
-suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/buddha.c -- Amiga Buddha, Catweasel and X-Surf IDE Driver&n; *&n; *&t;Copyright (C) 1997, 2001 by Geert Uytterhoeven and others&n; *&n; *  This driver was written based on the specifications in README.buddha and&n; *  the X-Surf info from Inside_XSurf.txt available at&n; *  http://www.jschoenfeld.com&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *  TODO:&n; *    - test it :-)&n; *    - tune the timings using the speed-register&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/legacy/buddha.c -- Amiga Buddha, Catweasel and X-Surf IDE Driver&n; *&n; *&t;Copyright (C) 1997, 2001 by Geert Uytterhoeven and others&n; *&n; *  This driver was written based on the specifications in README.buddha and&n; *  the X-Surf info from Inside_XSurf.txt available at&n; *  http://www.jschoenfeld.com&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *  TODO:&n; *    - test it :-)&n; *    - tune the timings using the speed-register&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -589,9 +589,6 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
-)paren
-(paren
 id|buddha_board
 op_plus
 id|buddha_bases
@@ -604,9 +601,6 @@ id|buddha_offsets
 comma
 l_int|0
 comma
-(paren
-id|ide_ioreg_t
-)paren
 (paren
 id|buddha_board
 op_plus
@@ -632,9 +626,6 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
-)paren
-(paren
 id|buddha_board
 op_plus
 id|xsurf_bases
@@ -647,9 +638,6 @@ id|xsurf_offsets
 comma
 l_int|0
 comma
-(paren
-id|ide_ioreg_t
-)paren
 (paren
 id|buddha_board
 op_plus

@@ -1064,9 +1064,11 @@ comma
 id|ver2
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|reg
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 op_star
 id|rchip
@@ -1149,6 +1151,14 @@ id|CS4231_HW_CS4236B_MASK
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+l_string|&quot;CS4236+: MODE3 and extended registers not available, hardware=0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;hardware
+)paren
+suffix:semicolon
 id|snd_device_free
 c_func
 (paren
@@ -5840,11 +5850,13 @@ op_star
 id|card
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
 comma
 id|count
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|snd_kcontrol_new_t
 op_star
@@ -6042,8 +6054,7 @@ r_default
 suffix:colon
 id|count
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|kcontrol
 op_assign

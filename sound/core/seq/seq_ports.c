@@ -2602,6 +2602,9 @@ comma
 r_int
 id|type
 comma
+r_int
+id|midi_channels
+comma
 r_char
 op_star
 id|portname
@@ -2670,6 +2673,10 @@ suffix:semicolon
 id|portinfo.kernel
 op_assign
 id|pcbp
+suffix:semicolon
+id|portinfo.midi_channels
+op_assign
+id|midi_channels
 suffix:semicolon
 multiline_comment|/* Create it */
 id|ret

@@ -1,6 +1,7 @@
 macro_line|#ifndef _X86_64_PAGE_H
 DECL|macro|_X86_64_PAGE_H
 mdefine_line|#define _X86_64_PAGE_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
@@ -15,8 +16,15 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PHYSICAL_PAGE_MASK
 mdefine_line|#define PHYSICAL_PAGE_MASK&t;(~(PAGE_SIZE-1) &amp; (__PHYSICAL_MASK &lt;&lt; PAGE_SHIFT))
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 1 
+macro_line|#ifdef __ASSEMBLY__
 DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
+mdefine_line|#define THREAD_SIZE  (1 &lt;&lt; (PAGE_SHIFT + THREAD_ORDER))
+macro_line|#else
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE  (1UL &lt;&lt; (PAGE_SHIFT + THREAD_ORDER))
+macro_line|#endif
 DECL|macro|CURRENT_MASK
 mdefine_line|#define CURRENT_MASK (~(THREAD_SIZE-1))
 DECL|macro|LARGE_PAGE_MASK
@@ -143,7 +151,7 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the layout. */
+multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the memory map. */
 DECL|macro|__START_KERNEL
 mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000
 DECL|macro|__START_KERNEL_map
@@ -224,14 +232,16 @@ DECL|macro|__pa_symbol
 mdefine_line|#define __pa_symbol(x)&t;&t;&bslash;&n;&t;({unsigned long v;  &bslash;&n;&t;  asm(&quot;&quot; : &quot;=r&quot; (v) : &quot;0&quot; (x)); &bslash;&n;&t;  __pa(v); })
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+macro_line|#endif
+DECL|macro|virt_to_page
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_to_kaddr

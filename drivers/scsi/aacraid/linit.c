@@ -1016,12 +1016,13 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|host_ptr
 comma
-id|dev
+op_amp
+id|dev-&gt;dev
 )paren
 suffix:semicolon
 id|dprintk
@@ -2062,7 +2063,7 @@ id|dev-&gt;id
 comma
 id|dev-&gt;lun
 comma
-id|dev-&gt;new_queue_depth
+id|dev-&gt;queue_depth
 comma
 id|dev-&gt;online
 ques

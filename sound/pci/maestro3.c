@@ -3699,6 +3699,7 @@ id|subs
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/*&n;&t; * some per client initializers&n;&t; */
@@ -3793,19 +3794,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-r_sizeof
-(paren
-id|pv
-)paren
-op_div
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|pv
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 id|i
@@ -4067,6 +4059,7 @@ id|subs
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/*&n;&t; * some per client initializers&n;&t; */
@@ -4121,19 +4114,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-r_sizeof
-(paren
-id|rv
-)paren
-op_div
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|rv
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 id|i
@@ -9485,6 +9469,7 @@ id|chip
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* zero kernel data */
@@ -10508,12 +10493,6 @@ id|i
 comma
 id|index
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10521,8 +10500,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -10637,14 +10615,6 @@ comma
 id|SNDRV_CTL_POWER_D3hot
 )paren
 suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 )brace
 DECL|function|m3_resume
 r_static
@@ -10668,12 +10638,6 @@ id|i
 comma
 id|index
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10681,8 +10645,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D0
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 multiline_comment|/* first lets just bring everything back. .*/
 id|snd_m3_outw
@@ -10836,14 +10799,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace
@@ -11306,16 +11261,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
-id|subsystem_vendor
-op_assign
-id|pci-&gt;subsystem_vendor
-suffix:semicolon
-id|subsystem_device
-op_assign
-id|pci-&gt;subsystem_device
-suffix:semicolon
-macro_line|#else
 id|pci_read_config_word
 c_func
 (paren
@@ -11338,7 +11283,6 @@ op_amp
 id|subsystem_device
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren

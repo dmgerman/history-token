@@ -4979,13 +4979,23 @@ suffix:semicolon
 id|wait_queue_t
 id|wait
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate the timeout by checking for the &quot;infinite&quot; value ( -1 ).&n;&t; * The passed timeout is in milliseconds, that why (t * HZ) / 1000.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate the timeout by checking for the &quot;infinite&quot; value ( -1 )&n;&t; * and the overflow condition. The passed timeout is in milliseconds,&n;&t; * that why (t * HZ) / 1000.&n;&t; */
 id|jtimeout
 op_assign
 id|timeout
 op_eq
 op_minus
 l_int|1
+op_logical_or
+id|timeout
+OG
+(paren
+id|MAX_SCHEDULE_TIMEOUT
+op_minus
+l_int|1000
+)paren
+op_div
+id|HZ
 ques
 c_cond
 id|MAX_SCHEDULE_TIMEOUT
@@ -4994,6 +5004,8 @@ suffix:colon
 id|timeout
 op_star
 id|HZ
+op_plus
+l_int|999
 )paren
 op_div
 l_int|1000
@@ -5370,7 +5382,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll epi&quot;
+l_string|&quot;eventpoll_epi&quot;
 comma
 r_sizeof
 (paren
@@ -5409,7 +5421,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll pwq&quot;
+l_string|&quot;eventpoll_pwq&quot;
 comma
 r_sizeof
 (paren

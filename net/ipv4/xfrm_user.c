@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|xfrm_nl
@@ -1297,6 +1298,14 @@ op_star
 id|x-&gt;aalg
 )paren
 )paren
+op_plus
+(paren
+id|x-&gt;aalg-&gt;alg_key_len
+op_plus
+l_int|7
+)paren
+op_div
+l_int|8
 comma
 id|x-&gt;aalg
 )paren
@@ -1320,6 +1329,14 @@ op_star
 id|x-&gt;ealg
 )paren
 )paren
+op_plus
+(paren
+id|x-&gt;ealg-&gt;alg_key_len
+op_plus
+l_int|7
+)paren
+op_div
+l_int|8
 comma
 id|x-&gt;ealg
 )paren
@@ -3112,6 +3129,10 @@ id|info.nlmsg_seq
 op_assign
 id|cb-&gt;nlh-&gt;nlmsg_seq
 suffix:semicolon
+id|info.this_idx
+op_assign
+l_int|0
+suffix:semicolon
 id|info.start_idx
 op_assign
 id|cb-&gt;args
@@ -3688,8 +3709,6 @@ r_int
 id|type
 comma
 id|min_len
-comma
-id|kind
 suffix:semicolon
 r_if
 c_cond
@@ -3734,14 +3753,6 @@ id|type
 op_sub_assign
 id|XFRM_MSG_BASE
 suffix:semicolon
-id|kind
-op_assign
-(paren
-id|type
-op_amp
-l_int|3
-)paren
-suffix:semicolon
 id|link
 op_assign
 op_amp
@@ -3754,19 +3765,10 @@ multiline_comment|/* All operations require privileges, even GET */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cap_raised
-c_func
-(paren
-id|NETLINK_CB
+id|security_netlink_recv
 c_func
 (paren
 id|skb
-)paren
-dot
-id|eff_cap
-comma
-id|CAP_NET_ADMIN
 )paren
 )paren
 (brace
@@ -3784,9 +3786,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kind
+(paren
+id|type
 op_eq
 l_int|2
+op_logical_or
+id|type
+op_eq
+l_int|5
+)paren
 op_logical_and
 (paren
 id|nlh-&gt;nlmsg_flags

@@ -341,14 +341,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diMount: kmalloc returned NULL!&bslash;n&quot;
-)paren
+l_string|&quot;diMount: kmalloc returned NULL!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -759,14 +755,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diSync: get_metapage failed!&bslash;n&quot;
-)paren
+l_string|&quot;diSync: get_metapage failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1037,16 +1029,12 @@ suffix:semicolon
 r_int
 id|rel_inode
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diRead: ino = %ld&bslash;n&quot;
+l_string|&quot;diRead: ino = %ld&quot;
 comma
 id|ip-&gt;i_ino
-)paren
 )paren
 suffix:semicolon
 id|ipimap
@@ -1114,16 +1102,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diRead: diIAGRead returned %d&bslash;n&quot;
+l_string|&quot;diRead: diIAGRead returned %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1332,14 +1316,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diRead: read_metapage failed&bslash;n&quot;
-)paren
+l_string|&quot;diRead: read_metapage failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1372,14 +1352,10 @@ id|dp-&gt;di_number
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diRead: i_ino != di_number&bslash;n&quot;
-)paren
+l_string|&quot;diRead: i_ino != di_number&quot;
 )paren
 suffix:semicolon
 id|updateSuper
@@ -1528,14 +1504,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diReadSpecial: new_inode returned NULL!&bslash;n&quot;
-)paren
+l_string|&quot;diReadSpecial: new_inode returned NULL!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1609,23 +1581,6 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* 8 inodes per 4K page */
 multiline_comment|/* read the page of fixed disk inode (AIT) in raw mode */
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;Reading aggregate inode %d from block %d&bslash;n&quot;
-comma
-(paren
-id|uint
-)paren
-id|inum
-comma
-id|address
-)paren
-)paren
-suffix:semicolon
 id|mp
 op_assign
 id|read_metapage
@@ -1885,23 +1840,6 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* 8 inodes per 4K page */
 multiline_comment|/* read the page of fixed disk inode (AIT) in raw mode */
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;Reading aggregate inode %d from block %d&bslash;n&quot;
-comma
-(paren
-id|uint
-)paren
-id|inum
-comma
-id|address
-)paren
-)paren
-suffix:semicolon
 id|mp
 op_assign
 id|read_metapage
@@ -1926,14 +1864,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diWriteSpecial: failed to read aggregate inode extent!&bslash;n&quot;
-)paren
+l_string|&quot;diWriteSpecial: failed to read aggregate inode &quot;
+l_string|&quot;extent!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2028,14 +1963,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diFreeSpecial called with NULL ip!&bslash;n&quot;
-)paren
+l_string|&quot;diFreeSpecial called with NULL ip!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2840,14 +2771,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diWrite: UFO tlock&bslash;n&quot;
-)paren
+l_string|&quot;diWrite: UFO tlock&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3232,13 +3159,10 @@ op_ge
 id|imap-&gt;im_nextiag
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diFree: inum = %d, iagno = %d, nextiag = %d&bslash;n&quot;
+l_string|&quot;diFree: inum = %d, iagno = %d, nextiag = %d&quot;
 comma
 (paren
 id|uint
@@ -3248,7 +3172,6 @@ comma
 id|iagno
 comma
 id|imap-&gt;im_nextiag
-)paren
 )paren
 suffix:semicolon
 id|dump_mem
@@ -3462,14 +3385,10 @@ dot
 id|numinos
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diFree: numfree &gt; numinos&bslash;n&quot;
-)paren
+l_string|&quot;diFree: numfree &gt; numinos&quot;
 )paren
 suffix:semicolon
 id|release_metapage
@@ -5980,14 +5899,10 @@ OG
 id|numinos
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diAllocAG: numfree &gt; numinos&bslash;n&quot;
-)paren
+l_string|&quot;diAllocAG: numfree &gt; numinos&quot;
 )paren
 suffix:semicolon
 id|updateSuper
@@ -6383,28 +6298,20 @@ op_logical_neg
 id|iagp-&gt;nfreeinos
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diAllocIno: nfreeinos = 0, but iag on freelist&bslash;n&quot;
-)paren
+l_string|&quot;diAllocIno: nfreeinos = 0, but iag on freelist&quot;
 )paren
 suffix:semicolon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;  agno = %d, iagno = %d&bslash;n&quot;
+l_string|&quot;  agno = %d, iagno = %d&quot;
 comma
 id|agno
 comma
 id|iagno
-)paren
 )paren
 suffix:semicolon
 id|dump_mem
@@ -9462,7 +9369,6 @@ id|TRUE
 )paren
 (brace
 multiline_comment|/* The inode should have been allocated both in working&n;&t;&t; * map and in persistent map;&n;&t;&t; * the inode will be freed from working map at the release&n;&t;&t; * of last reference release;&n;&t;&t; */
-singleline_comment|//              assert(le32_to_cpu(iagp-&gt;wmap[extno]) &amp; mask);
 r_if
 c_cond
 (paren
@@ -9481,16 +9387,13 @@ id|mask
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diUpdatePMap: inode %ld not marked as allocated in wmap!&bslash;n&quot;
+l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
+l_string|&quot;allocated in wmap!&quot;
 comma
 id|inum
-)paren
 )paren
 suffix:semicolon
 id|updateSuper
@@ -9502,7 +9405,6 @@ id|FM_DIRTY
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//              assert(le32_to_cpu(iagp-&gt;pmap[extno]) &amp; mask);
 r_if
 c_cond
 (paren
@@ -9521,16 +9423,13 @@ id|mask
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;diUpdatePMap: inode %ld not marked as allocated in pmap!&bslash;n&quot;
+l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
+l_string|&quot;allocated in pmap!&quot;
 comma
 id|inum
-)paren
 )paren
 suffix:semicolon
 id|updateSuper
@@ -9880,13 +9779,10 @@ suffix:semicolon
 id|s64
 id|agstart
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;diExtendFS: nextiag:%d numinos:%d numfree:%d&bslash;n&quot;
+l_string|&quot;diExtendFS: nextiag:%d numinos:%d numfree:%d&quot;
 comma
 id|imap-&gt;im_nextiag
 comma
@@ -9902,7 +9798,6 @@ c_func
 (paren
 op_amp
 id|imap-&gt;im_numfree
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -10523,18 +10418,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|ll_rw_block
-c_func
-(paren
-id|WRITE
-comma
-l_int|1
-comma
-op_amp
-id|bh
-)paren
-suffix:semicolon
-id|wait_on_buffer
+id|sync_dirty_buffer
 c_func
 (paren
 id|bh

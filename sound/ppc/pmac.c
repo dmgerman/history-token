@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &lt;sound/pcm_params.h&gt;
@@ -2893,6 +2894,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n; * beep stuff&n; */
 multiline_comment|/*&n; * Stuff for outputting a beep.  The values range from -327 to +327&n; * so we can multiply by an amplitude in the range 0..100 to get a&n; * signed short value to put in the output buffer.&n; */
 DECL|variable|beep_wform
@@ -4513,6 +4515,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* beep stuff */
 DECL|function|snd_pmac_dbdma_reset
 r_static
 r_void
@@ -7011,12 +7014,6 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7024,8 +7021,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -7111,14 +7107,6 @@ comma
 id|SNDRV_CTL_POWER_D3hot
 )paren
 suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 )brace
 DECL|function|snd_pmac_resume
 r_static
@@ -7137,12 +7125,6 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7150,8 +7132,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D0
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|snd_pmac_sound_feature
 c_func
@@ -7240,14 +7221,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace

@@ -748,6 +748,8 @@ comma
 id|kvalue
 comma
 id|size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|up
@@ -1123,6 +1125,8 @@ comma
 id|klist
 comma
 id|size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|up
@@ -1495,6 +1499,8 @@ c_func
 id|d
 comma
 id|kname
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|up

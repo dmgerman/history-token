@@ -5,7 +5,7 @@ macro_line|#undef HAVE_REALLY_SLOW_DMA_CONTROLLER
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-multiline_comment|/*&n; *&n; */
+multiline_comment|/**&n; * snd_dma_program - program an ISA DMA transfer&n; * @dma: the dma number&n; * @addr: the physical address of the buffer&n; * @size: the DMA transfer size&n; * @mode: the DMA transfer mode, DMA_MODE_XXX&n; *&n; * Programs an ISA DMA transfer for the given buffer.&n; */
 DECL|function|snd_dma_program
 r_void
 id|snd_dma_program
@@ -98,6 +98,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_dma_disable - stop the ISA DMA transfer&n; * @dma: the dma number&n; *&n; * Stops the ISA DMA transfer.&n; */
 DECL|function|snd_dma_disable
 r_void
 id|snd_dma_disable
@@ -138,15 +139,20 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_dma_residue
+multiline_comment|/**&n; * snd_dma_pointer - return the current pointer to DMA transfer buffer in bytes&n; * @dma: the dma number&n; * @size: the dma transfer size&n; *&n; * Returns the current pointer in DMA tranfer buffer in bytes&n; */
+DECL|function|snd_dma_pointer
 r_int
 r_int
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 r_int
 r_int
 id|dma
+comma
+r_int
+r_int
+id|size
 )paren
 (brace
 r_int
@@ -208,7 +214,38 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|result
+OG
+id|size
+)paren
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;pointer (0x%x) for DMA #%ld is greater than transfer size (0x%x)&bslash;n&quot;
+comma
+id|result
+comma
+id|dma
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
+id|result
+op_ge
+id|size
+ques
+c_cond
+l_int|0
+suffix:colon
+id|size
+op_minus
 id|result
 suffix:semicolon
 )brace

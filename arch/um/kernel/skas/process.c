@@ -16,10 +16,10 @@ macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;skas.h&quot;
-macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
+macro_line|#include &quot;skas_ptrace.h&quot;
 DECL|variable|exec_regs
 r_int
 r_int
@@ -125,7 +125,7 @@ c_func
 r_int
 id|pid
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -143,7 +143,7 @@ op_assign
 id|PT_SYSCALL_NR
 c_func
 (paren
-id|regs-&gt;mode.skas.regs
+id|regs-&gt;skas.regs
 )paren
 suffix:semicolon
 r_if
@@ -341,6 +341,9 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|start_userspace
@@ -581,7 +584,7 @@ r_void
 id|userspace
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -665,7 +668,7 @@ id|errno
 )paren
 suffix:semicolon
 )brace
-id|regs-&gt;is_user
+id|regs-&gt;skas.is_user
 op_assign
 l_int|1
 suffix:semicolon
@@ -961,7 +964,7 @@ comma
 r_int
 id|fp_op
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -984,7 +987,7 @@ id|userspace_pid
 comma
 l_int|0
 comma
-id|regs-&gt;mode.skas.regs
+id|regs-&gt;skas.regs
 )paren
 OL
 l_int|0
@@ -1027,7 +1030,7 @@ r_void
 id|save_registers
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -1055,7 +1058,7 @@ id|PTRACE_GETFPXREGS
 suffix:semicolon
 id|fp_regs
 op_assign
-id|regs-&gt;mode.skas.xfp
+id|regs-&gt;skas.xfp
 suffix:semicolon
 )brace
 r_else
@@ -1066,7 +1069,7 @@ id|PTRACE_GETFPREGS
 suffix:semicolon
 id|fp_regs
 op_assign
-id|regs-&gt;mode.skas.fp
+id|regs-&gt;skas.fp
 suffix:semicolon
 )brace
 id|err
@@ -1104,7 +1107,7 @@ r_void
 id|restore_registers
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -1132,7 +1135,7 @@ id|PTRACE_SETFPXREGS
 suffix:semicolon
 id|fp_regs
 op_assign
-id|regs-&gt;mode.skas.xfp
+id|regs-&gt;skas.xfp
 suffix:semicolon
 )brace
 r_else
@@ -1143,7 +1146,7 @@ id|PTRACE_SETFPREGS
 suffix:semicolon
 id|fp_regs
 op_assign
-id|regs-&gt;mode.skas.fp
+id|regs-&gt;skas.fp
 suffix:semicolon
 )brace
 id|err
@@ -1376,6 +1379,10 @@ op_eq
 l_int|3
 )paren
 (brace
+id|kmalloc_ok
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1389,6 +1396,10 @@ op_eq
 l_int|4
 )paren
 (brace
+id|kmalloc_ok
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1497,6 +1508,11 @@ op_assign
 op_amp
 id|here
 suffix:semicolon
+id|block_signals
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1516,6 +1532,11 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+id|unblock_signals
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cb_proc
 op_assign
 l_int|NULL
@@ -1660,10 +1681,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|copy
 comma

@@ -43,7 +43,7 @@ DECL|macro|ALI_DMA_MASK
 mdefine_line|#define ALI_DMA_MASK&t;&t;0xffffffff /* ALI Tridents lack the 30-bit limitation */
 DECL|macro|NR_HW_CH
 mdefine_line|#define NR_HW_CH&t;&t;32
-multiline_comment|/* maxinum nuber of AC97 codecs connected, AC97 2.0 defined 4, but 7018 and 4D-NX only&n;   have 2 SDATA_IN lines (currently) */
+multiline_comment|/* maximum number of AC97 codecs connected, AC97 2.0 defined 4, but 7018 and 4D-NX only&n;   have 2 SDATA_IN lines (currently) */
 DECL|macro|NR_AC97
 mdefine_line|#define NR_AC97&t;&t;2&t;
 multiline_comment|/* minor number of /dev/swmodem (temporary, experimental) */
@@ -4839,7 +4839,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* allocate the main DMA buffer, playback and recording buffer should be */
-multiline_comment|/* allocated seperately */
+multiline_comment|/* allocated separately */
 DECL|function|alloc_main_dmabuf
 r_static
 r_int

@@ -26026,7 +26026,7 @@ r_int
 id|sh_unwritten
 suffix:semicolon
 multiline_comment|/* true, if unwritten */
-multiline_comment|/* extents listed seperately */
+multiline_comment|/* extents listed separately */
 r_int
 id|bmapi_flags
 suffix:semicolon

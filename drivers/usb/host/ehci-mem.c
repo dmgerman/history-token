@@ -185,15 +185,6 @@ comma
 id|dma
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ehci-&gt;async
-)paren
-id|qtd-&gt;hw_alt_next
-op_assign
-id|ehci-&gt;async-&gt;hw_alt_next
-suffix:semicolon
 )brace
 r_return
 id|qtd

@@ -501,6 +501,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_mca_platform_init: failed to register Corrected &quot;
 l_string|&quot;Platform Error interrupt vector with SAL.&bslash;n&quot;
 )paren
@@ -875,6 +876,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_mca_init: Failed to register rendezvous interrupt &quot;
 l_string|&quot;with SAL.  rc = %ld&bslash;n&quot;
 comma
@@ -910,7 +912,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ia64_mca_init: Failed to register wakeup interrupt with SAL.  rc = %ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ia64_mca_init: Failed to register wakeup interrupt with SAL.  &quot;
+l_string|&quot;rc = %ld&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -967,7 +971,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ia64_mca_init: Failed to register os mca handler with SAL.  rc = %ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ia64_mca_init: Failed to register os mca handler with SAL.  &quot;
+l_string|&quot;rc = %ld&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -1062,7 +1068,9 @@ id|ia64_mc_info.imi_slave_init_handler_size
 id|printk
 c_func
 (paren
-l_string|&quot;ia64_mca_init: Failed to register m/s init handlers with SAL. rc = %ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ia64_mca_init: Failed to register m/s init handlers with SAL. &quot;
+l_string|&quot;rc = %ld&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -1203,6 +1211,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ia64_mca_init: Failed to get routed CPEI vector from ACPI.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1242,6 +1251,7 @@ macro_line|#endif /* #if defined(MCA_TEST) */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Mca related initialization done&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1750,6 +1760,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Entered OS INIT handler&bslash;n&quot;
 )paren
 suffix:semicolon

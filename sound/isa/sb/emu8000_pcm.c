@@ -698,6 +698,9 @@ c_cond
 (paren
 id|rec-&gt;period_pos
 op_ge
+(paren
+r_int
+)paren
 id|rec-&gt;period_size
 )paren
 (brace
@@ -2497,7 +2500,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* in word */
 multiline_comment|/* at least dma_bytes must be set for non-interleaved mode */
-id|subs-&gt;dma_bytes
+id|subs-&gt;dma_buffer.bytes
 op_assign
 id|params_buffer_bytes
 c_func

@@ -3,7 +3,6 @@ DECL|macro|_LINUX_PTRACE_H
 mdefine_line|#define _LINUX_PTRACE_H
 multiline_comment|/* ptrace.h */
 multiline_comment|/* structs and defines to help the user use the ptrace system call. */
-macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* has the defines to get at the registers. */
 DECL|macro|PTRACE_TRACEME
 mdefine_line|#define PTRACE_TRACEME&t;&t;   0
@@ -36,6 +35,10 @@ DECL|macro|PTRACE_SETOPTIONS
 mdefine_line|#define PTRACE_SETOPTIONS&t;0x4200
 DECL|macro|PTRACE_GETEVENTMSG
 mdefine_line|#define PTRACE_GETEVENTMSG&t;0x4201
+DECL|macro|PTRACE_GETSIGINFO
+mdefine_line|#define PTRACE_GETSIGINFO&t;0x4202
+DECL|macro|PTRACE_SETSIGINFO
+mdefine_line|#define PTRACE_SETSIGINFO&t;0x4203
 multiline_comment|/* options set using PTRACE_SETOPTIONS */
 DECL|macro|PTRACE_O_TRACESYSGOOD
 mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
@@ -47,6 +50,12 @@ DECL|macro|PTRACE_O_TRACECLONE
 mdefine_line|#define PTRACE_O_TRACECLONE&t;0x00000008
 DECL|macro|PTRACE_O_TRACEEXEC
 mdefine_line|#define PTRACE_O_TRACEEXEC&t;0x00000010
+DECL|macro|PTRACE_O_TRACEVFORKDONE
+mdefine_line|#define PTRACE_O_TRACEVFORKDONE&t;0x00000020
+DECL|macro|PTRACE_O_TRACEEXIT
+mdefine_line|#define PTRACE_O_TRACEEXIT&t;0x00000040
+DECL|macro|PTRACE_O_MASK
+mdefine_line|#define PTRACE_O_MASK&t;&t;0x0000007f
 multiline_comment|/* Wait extended result codes for the above trace options.  */
 DECL|macro|PTRACE_EVENT_FORK
 mdefine_line|#define PTRACE_EVENT_FORK&t;1
@@ -56,8 +65,37 @@ DECL|macro|PTRACE_EVENT_CLONE
 mdefine_line|#define PTRACE_EVENT_CLONE&t;3
 DECL|macro|PTRACE_EVENT_EXEC
 mdefine_line|#define PTRACE_EVENT_EXEC&t;4
+DECL|macro|PTRACE_EVENT_VFORK_DONE
+mdefine_line|#define PTRACE_EVENT_VFORK_DONE&t;5
+DECL|macro|PTRACE_EVENT_EXIT
+mdefine_line|#define PTRACE_EVENT_EXIT&t;6
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Ptrace flags&n; */
+DECL|macro|PT_PTRACED
+mdefine_line|#define PT_PTRACED&t;0x00000001
+DECL|macro|PT_DTRACE
+mdefine_line|#define PT_DTRACE&t;0x00000002&t;/* delayed trace (used on m68k, i386) */
+DECL|macro|PT_TRACESYSGOOD
+mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
+DECL|macro|PT_PTRACE_CAP
+mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
+DECL|macro|PT_TRACE_FORK
+mdefine_line|#define PT_TRACE_FORK&t;0x00000010
+DECL|macro|PT_TRACE_VFORK
+mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
+DECL|macro|PT_TRACE_CLONE
+mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
+DECL|macro|PT_TRACE_EXEC
+mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
+DECL|macro|PT_TRACE_VFORK_DONE
+mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
+DECL|macro|PT_TRACE_EXIT
+mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
+DECL|macro|PT_TRACE_MASK
+mdefine_line|#define PT_TRACE_MASK&t;0x000003f4
+macro_line|#include &lt;linux/compiler.h&gt;&t;&t;/* For unlikely.  */
+macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* For struct task_struct.  */
 r_extern
 r_int
 id|ptrace_readdata
@@ -271,5 +309,6 @@ id|child
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif
 eof

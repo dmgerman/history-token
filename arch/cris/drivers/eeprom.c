@@ -419,7 +419,7 @@ suffix:semicolon
 multiline_comment|/* Im not sure this will work... :) */
 multiline_comment|/* assume 2kB, if failure go for 16kB */
 multiline_comment|/* Test with 16kB settings.. */
-multiline_comment|/* If it&squot;s a 2kB EEPROM and we address it outside it&squot;s range&n;     * it will mirror the address space:&n;     * 1. We read two locations (that are mirrored), &n;     *    if the content differs * it&squot;s a 16kB EEPROM.&n;     * 2. if it doesn&squot;t differ - write diferent value to one of the locations,&n;     *    check the other - if content still is the same it&squot;s a 2k EEPROM,&n;     *    restore original data.&n;     */
+multiline_comment|/* If it&squot;s a 2kB EEPROM and we address it outside it&squot;s range&n;     * it will mirror the address space:&n;     * 1. We read two locations (that are mirrored), &n;     *    if the content differs * it&squot;s a 16kB EEPROM.&n;     * 2. if it doesn&squot;t differ - write different value to one of the locations,&n;     *    check the other - if content still is the same it&squot;s a 2k EEPROM,&n;     *    restore original data.&n;     */
 DECL|macro|LOC1
 mdefine_line|#define LOC1 8
 DECL|macro|LOC2

@@ -299,6 +299,10 @@ mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
 DECL|macro|AC97_CXR_SPDIF_AC3
 mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
 multiline_comment|/* specific - ALC */
+DECL|macro|AC97_ALC650_SURR_DAC_VOL
+mdefine_line|#define AC97_ALC650_SURR_DAC_VOL&t;0x64
+DECL|macro|AC97_ALC650_LFE_DAC_VOL
+mdefine_line|#define AC97_ALC650_LFE_DAC_VOL&t;&t;0x66
 DECL|macro|AC97_ALC650_MULTICH
 mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
 DECL|macro|AC97_ALC650_CLOCK
@@ -422,16 +426,6 @@ id|ac97_t
 op_star
 id|ac97
 )paren
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
-DECL|member|proc_regs_entry
-id|snd_info_entry_t
-op_star
-id|proc_regs_entry
 suffix:semicolon
 DECL|member|private_data
 r_void
@@ -794,5 +788,53 @@ id|ac97
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|enumerator|AC97_TUNE_HP_ONLY
+DECL|enumerator|AC97_TUNE_SWAP_HP
+r_enum
+(brace
+id|AC97_TUNE_HP_ONLY
+comma
+id|AC97_TUNE_SWAP_HP
+)brace
+suffix:semicolon
+DECL|struct|ac97_quirk
+r_struct
+id|ac97_quirk
+(brace
+DECL|member|vendor
+r_int
+r_int
+id|vendor
+suffix:semicolon
+DECL|member|device
+r_int
+r_int
+id|device
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|snd_ac97_tune_hardware
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+r_struct
+id|ac97_quirk
+op_star
+id|quirk
+)paren
+suffix:semicolon
 macro_line|#endif /* __SOUND_AC97_CODEC_H */
 eof

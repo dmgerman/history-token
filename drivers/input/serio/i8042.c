@@ -197,12 +197,6 @@ r_struct
 id|timer_list
 id|i8042_timer
 suffix:semicolon
-r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
 DECL|variable|i8042_unxlate_seen
 r_static
 r_int
@@ -1565,12 +1559,6 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1801,6 +1789,8 @@ comma
 id|data
 comma
 id|dfl
+comma
+id|regs
 )paren
 suffix:semicolon
 r_continue
@@ -1866,6 +1856,8 @@ comma
 id|data
 comma
 id|dfl
+comma
+id|regs
 )paren
 suffix:semicolon
 r_continue
@@ -1894,6 +1886,8 @@ comma
 id|data
 comma
 id|dfl
+comma
+id|regs
 )paren
 suffix:semicolon
 r_continue
@@ -1963,6 +1957,8 @@ comma
 l_int|0xf0
 comma
 id|dfl
+comma
+id|regs
 )paren
 suffix:semicolon
 id|data
@@ -2017,6 +2013,8 @@ comma
 id|data
 comma
 id|dfl
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace

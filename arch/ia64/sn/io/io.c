@@ -1712,7 +1712,7 @@ id|hub
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check that an address is in teh real small window widget 0 space&n; * or else in the big window we&squot;re using to emulate small window 0&n; * in the kernel.&n; */
+multiline_comment|/*&n; * Check that an address is in the real small window widget 0 space&n; * or else in the big window we&squot;re using to emulate small window 0&n; * in the kernel.&n; */
 r_int
 DECL|function|hub_check_is_widget0
 id|hub_check_is_widget0
@@ -1952,7 +1952,7 @@ id|nasidb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hub_setup_prb(nasid, prbnum, credits, conveyor)&n; *&n; * &t;Put a PRB into fire-and-forget mode if conveyor isn&squot;t set.  Otehrwise,&n; * &t;put it into conveyor belt mode with the specified number of credits.&n; */
+multiline_comment|/*&n; * hub_setup_prb(nasid, prbnum, credits, conveyor)&n; *&n; * &t;Put a PRB into fire-and-forget mode if conveyor isn&squot;t set.  Otherwise,&n; * &t;put it into conveyor belt mode with the specified number of credits.&n; */
 r_void
 DECL|function|hub_setup_prb
 id|hub_setup_prb

@@ -5,10 +5,7 @@ r_struct
 id|page
 suffix:semicolon
 macro_line|#include &quot;asm/arch/page.h&quot;
-DECL|macro|BUG
-macro_line|#undef BUG
-DECL|macro|PAGE_BUG
-macro_line|#undef PAGE_BUG
+macro_line|#include &quot;asm/bug.h&quot;
 DECL|macro|__pa
 macro_line|#undef __pa
 DECL|macro|__va
@@ -38,20 +35,6 @@ DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET (uml_physmem)
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE PAGE_OFFSET
-macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_void
-id|stop
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;panic(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while (0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
-macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|__va_space
 mdefine_line|#define __va_space (8*1024*1024)
 r_extern

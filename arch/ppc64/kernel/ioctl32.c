@@ -21194,6 +21194,12 @@ comma
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|TCSBRKP
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|TCXONC
 )paren
 comma
@@ -26342,6 +26348,11 @@ id|additional_ioctls
 (brace
 id|additional_ioctls
 op_assign
+(paren
+r_struct
+id|ioctl_trans
+op_star
+)paren
 id|get_zeroed_page
 c_func
 (paren

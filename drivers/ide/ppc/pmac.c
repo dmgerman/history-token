@@ -47,7 +47,8 @@ r_struct
 id|pmac_ide_hwif
 (brace
 DECL|member|regbase
-id|ide_ioreg_t
+r_int
+r_int
 id|regbase
 suffix:semicolon
 DECL|member|irq
@@ -690,10 +691,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -2762,7 +2765,8 @@ op_assign
 id|value
 suffix:semicolon
 )brace
-id|ide_ioreg_t
+r_int
+r_int
 id|__pmac
 DECL|function|pmac_ide_get_base
 id|pmac_ide_get_base
@@ -2787,7 +2791,8 @@ DECL|function|pmac_ide_check_base
 id|pmac_ide_check_base
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -2834,7 +2839,8 @@ DECL|function|pmac_ide_get_irq
 id|pmac_ide_get_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace

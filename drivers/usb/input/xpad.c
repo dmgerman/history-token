@@ -246,6 +246,11 @@ r_int
 r_char
 op_star
 id|data
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -255,6 +260,14 @@ id|dev
 op_assign
 op_amp
 id|xpad-&gt;dev
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/* left stick */
 id|input_report_abs
@@ -714,6 +727,8 @@ comma
 l_int|0
 comma
 id|xpad-&gt;idata
+comma
+id|regs
 )paren
 suffix:semicolon
 m_exit

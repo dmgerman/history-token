@@ -577,10 +577,6 @@ r_extern
 r_int
 id|pic_mode
 suffix:semicolon
-r_extern
-r_int
-id|using_apic_timer
-suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 r_extern
 r_void
@@ -649,5 +645,9 @@ r_void
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#endif
+r_extern
+r_int
+id|using_apic_timer
+suffix:semicolon
 macro_line|#endif
 eof

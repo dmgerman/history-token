@@ -3823,7 +3823,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -3864,7 +3864,7 @@ multiline_comment|/* FIXME: This doesn&squot;t seem right at all.  So, like,&n;&
 r_if
 c_cond
 (paren
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|SIGINT
 op_minus
@@ -3886,7 +3886,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|SIGQUIT
 op_minus
@@ -3924,7 +3924,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -3969,7 +3969,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -3987,7 +3987,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren

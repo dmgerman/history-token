@@ -78,6 +78,8 @@ id|i
 )braket
 dot
 id|page
+comma
+l_int|0
 )paren
 op_plus
 id|sg
@@ -108,6 +110,8 @@ id|crypto_kunmap
 c_func
 (paren
 id|p
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|crypto_yield
@@ -210,6 +214,8 @@ id|i
 )braket
 dot
 id|page
+comma
+l_int|0
 )paren
 op_plus
 id|sg
@@ -240,6 +246,8 @@ id|crypto_kunmap
 c_func
 (paren
 id|p
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|crypto_yield

@@ -149,15 +149,6 @@ id|page
 op_star
 )paren
 suffix:semicolon
-r_void
-id|hugetlb_release_key
-c_func
-(paren
-r_struct
-id|hugetlb_key
-op_star
-)paren
-suffix:semicolon
 r_int
 id|hugetlb_report_meminfo
 c_func
@@ -173,10 +164,126 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_struct
+id|page
+op_star
+id|follow_huge_addr
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+r_int
+id|write
+)paren
+suffix:semicolon
+r_struct
+id|vm_area_struct
+op_star
+id|hugepage_vma
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|follow_huge_pmd
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+comma
+id|pmd_t
+op_star
+id|pmd
+comma
+r_int
+id|write
+)paren
+suffix:semicolon
+r_int
+id|is_aligned_hugepage_range
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+r_int
+id|pmd_huge
+c_func
+(paren
+id|pmd_t
+id|pmd
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|htlbpage_max
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|mark_mm_hugetlb
+id|mark_mm_hugetlb
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+id|mm-&gt;used_hugetlb
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|function|is_vm_hugetlb_page
 r_static
@@ -196,7 +303,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|follow_hugetlb_page
-mdefine_line|#define follow_hugetlb_page(m,v,p,vs,a,b,i)&t;&t;({ BUG(); 0; })
+mdefine_line|#define follow_hugetlb_page(m,v,p,vs,a,b,i)&t;({ BUG(); 0; })
+DECL|macro|follow_huge_addr
+mdefine_line|#define follow_huge_addr(mm, vma, addr, write)&t;0
 DECL|macro|copy_hugetlb_page_range
 mdefine_line|#define copy_hugetlb_page_range(src, dst, vma)&t;({ BUG(); 0; })
 DECL|macro|hugetlb_prefault
@@ -211,6 +320,20 @@ DECL|macro|is_hugepage_mem_enough
 mdefine_line|#define is_hugepage_mem_enough(size)&t;&t;0
 DECL|macro|hugetlb_report_meminfo
 mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
+DECL|macro|hugepage_vma
+mdefine_line|#define hugepage_vma(mm, addr)&t;&t;&t;0
+DECL|macro|mark_mm_hugetlb
+mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
+DECL|macro|follow_huge_pmd
+mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;0
+DECL|macro|is_aligned_hugepage_range
+mdefine_line|#define is_aligned_hugepage_range(addr, len)&t;0
+DECL|macro|pmd_huge
+mdefine_line|#define pmd_huge(x)&t;0
+macro_line|#ifndef HPAGE_MASK
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;0&t;&t;/* Keep the compiler happy */
+macro_line|#endif
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
 r_extern

@@ -214,6 +214,11 @@ r_struct
 id|twidjoy
 op_star
 id|twidjoy
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -273,6 +278,14 @@ l_int|0
 )braket
 op_amp
 l_int|0x7f
+)paren
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
 )paren
 suffix:semicolon
 r_for
@@ -473,6 +486,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+id|struc
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -539,6 +557,8 @@ id|twidjoy_process_packet
 c_func
 (paren
 id|twidjoy
+comma
+id|regs
 )paren
 suffix:semicolon
 id|twidjoy-&gt;idx

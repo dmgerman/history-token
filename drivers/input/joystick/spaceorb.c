@@ -161,6 +161,11 @@ r_struct
 id|spaceorb
 op_star
 id|spaceorb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -229,6 +234,14 @@ c_cond
 id|c
 )paren
 r_return
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -734,6 +747,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -763,6 +781,8 @@ id|spaceorb_process_packet
 c_func
 (paren
 id|spaceorb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|spaceorb-&gt;idx

@@ -3,6 +3,7 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -51,6 +52,19 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|variable|rtas_data_buf_lock
+id|spinlock_t
+id|rtas_data_buf_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|rtas_data_buf
+r_char
+id|rtas_data_buf
+(braket
+id|RTAS_DATA_BUF_SIZE
+)braket
 suffix:semicolon
 r_void
 DECL|function|phys_call_rtas
@@ -1343,4 +1357,46 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|rtas_proc_dir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_proc_dir
+)paren
+suffix:semicolon
+DECL|variable|rtas_firmware_flash_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_firmware_flash_list
+)paren
+suffix:semicolon
+DECL|variable|rtas_token
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_token
+)paren
+suffix:semicolon
+DECL|variable|rtas_call
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_call
+)paren
+suffix:semicolon
+DECL|variable|rtas_data_buf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_data_buf
+)paren
+suffix:semicolon
+DECL|variable|rtas_data_buf_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_data_buf_lock
+)paren
+suffix:semicolon
 eof

@@ -1512,6 +1512,7 @@ multiline_comment|/* The actual rates supported by the card. */
 DECL|variable|samplerates
 r_static
 r_int
+r_int
 id|samplerates
 (braket
 l_int|8
@@ -1569,9 +1570,11 @@ id|snd_nm256_fixed_rate
 c_func
 (paren
 r_int
+r_int
 id|rate
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -4698,8 +4701,6 @@ id|AC97_3D_CONTROL
 comma
 id|AC97_EXTENDED_ID
 comma
-id|AC97_EXTENDED_STATUS
-comma
 id|AC97_VENDOR_ID1
 comma
 id|AC97_VENDOR_ID2
@@ -4972,12 +4973,6 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4985,8 +4980,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -5004,14 +4998,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace
@@ -5032,12 +5018,6 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5045,8 +5025,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D0
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 multiline_comment|/* Perform a full reset on the hardware */
 id|pci_enable_device
@@ -5074,14 +5053,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace
@@ -6227,9 +6198,9 @@ c_func
 (paren
 id|chip
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 r_goto
 id|__error

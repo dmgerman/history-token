@@ -447,7 +447,7 @@ r_return
 id|pci_hp_change_slot_info
 c_func
 (paren
-id|hotplug_slot-&gt;name
+id|hotplug_slot
 comma
 op_amp
 id|info
@@ -512,7 +512,7 @@ r_return
 id|pci_hp_change_slot_info
 c_func
 (paren
-id|hotplug_slot-&gt;name
+id|hotplug_slot
 comma
 op_amp
 id|info
@@ -2585,13 +2585,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;cpci_hp_eventd&quot;
 )paren
 suffix:semicolon
@@ -2849,13 +2842,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;cpci_hp_polld&quot;
 )paren
 suffix:semicolon

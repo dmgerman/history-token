@@ -1400,8 +1400,6 @@ DECL|macro|DE4X5_SET_OMR
 mdefine_line|#define DE4X5_SET_OMR           0x0d /* Set the OMR Register contents */
 DECL|macro|DE4X5_GET_REG
 mdefine_line|#define DE4X5_GET_REG           0x0e /* Get the DE4X5 Registers */
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
 DECL|macro|MOTO_SROM_BUG
 mdefine_line|#define MOTO_SROM_BUG    ((lp-&gt;active == 8) &amp;&amp; (((le32_to_cpu(get_unaligned(((s32 *)dev-&gt;dev_addr))))&amp;0x00ffffff)==0x3e0008))
 eof

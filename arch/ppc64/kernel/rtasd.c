@@ -78,6 +78,12 @@ DECL|macro|SURVEILLANCE_TIMEOUT
 mdefine_line|#define SURVEILLANCE_TIMEOUT&t;1
 DECL|macro|SURVEILLANCE_SCANRATE
 mdefine_line|#define SURVEILLANCE_SCANRATE&t;1
+DECL|variable|proc_rtas
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_rtas
+suffix:semicolon
 multiline_comment|/*&n; * Since we use 32 bit RTAS, the physical address of this must be below&n; * 4G or else bad things happen. Allocate this in the kernel data and&n; * make it big enough.&n; */
 DECL|macro|RTAS_ERROR_LOG_MAX
 mdefine_line|#define RTAS_ERROR_LOG_MAX 1024
@@ -797,20 +803,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;rtasd&quot;
 )paren
 suffix:semicolon
@@ -970,14 +962,7 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
-multiline_comment|/* Check all cpus for pending events before sleeping*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|first_pass
-)paren
-(brace
+multiline_comment|/*&n;&t;&t; * Check all cpus for pending events quickly, sleeping for&n;&t;&t; * at least one second since some machines have problems&n;&t;&t; * if we call event-scan too quickly&n;&t;&t; */
 id|set_current_state
 c_func
 (paren
@@ -987,6 +972,11 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
+id|first_pass
+ques
+c_cond
+id|HZ
+suffix:colon
 (paren
 id|HZ
 op_star
@@ -998,7 +988,6 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1032,13 +1021,10 @@ l_string|&quot;surveillance enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|first_pass
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_goto
 id|repeat
 suffix:semicolon
@@ -1071,12 +1057,17 @@ r_void
 r_struct
 id|proc_dir_entry
 op_star
-id|rtas_dir
-comma
-op_star
 id|entry
 suffix:semicolon
-id|rtas_dir
+r_if
+c_cond
+(paren
+id|proc_rtas
+op_eq
+l_int|NULL
+)paren
+(brace
+id|proc_rtas
 op_assign
 id|proc_mkdir
 c_func
@@ -1086,18 +1077,20 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|rtas_dir
+id|proc_rtas
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to create rtas proc directory&bslash;n&quot;
+l_string|&quot;Failed to create /proc/rtas in rtas_init&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1112,7 +1105,7 @@ l_string|&quot;error_log&quot;
 comma
 id|S_IRUSR
 comma
-id|rtas_dir
+id|proc_rtas
 )paren
 suffix:semicolon
 r_if

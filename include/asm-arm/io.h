@@ -254,12 +254,24 @@ DECL|macro|readw
 mdefine_line|#define readw(c) ({ unsigned int __v = le16_to_cpu(__raw_readw(__mem_pci(c))); __v; })
 DECL|macro|readl
 mdefine_line|#define readl(c) ({ unsigned int __v = le32_to_cpu(__raw_readl(__mem_pci(c))); __v; })
+DECL|macro|readsb
+mdefine_line|#define readsb(p,d,l)&t;&t;__raw_readsb((unsigned int)__mem_pci(p),d,l)
+DECL|macro|readsw
+mdefine_line|#define readsw(p,d,l)&t;&t;__raw_readsw((unsigned int)__mem_pci(p),d,l)
+DECL|macro|readsl
+mdefine_line|#define readsl(p,d,l)&t;&t;__raw_readsl((unsigned int)__mem_pci(p),d,l)
 DECL|macro|writeb
 mdefine_line|#define writeb(v,c)&t;&t;__raw_writeb(v,__mem_pci(c))
 DECL|macro|writew
 mdefine_line|#define writew(v,c)&t;&t;__raw_writew(cpu_to_le16(v),__mem_pci(c))
 DECL|macro|writel
 mdefine_line|#define writel(v,c)&t;&t;__raw_writel(cpu_to_le32(v),__mem_pci(c))
+DECL|macro|writesb
+mdefine_line|#define writesb(p,d,l)&t;&t;__raw_writesb((unsigned int)__mem_pci(p),d,l)
+DECL|macro|writesw
+mdefine_line|#define writesw(p,d,l)&t;&t;__raw_writesw((unsigned int)__mem_pci(p),d,l)
+DECL|macro|writesl
+mdefine_line|#define writesl(p,d,l)&t;&t;__raw_writesl((unsigned int)__mem_pci(p),d,l)
 DECL|macro|memset_io
 mdefine_line|#define memset_io(c,v,l)&t;_memset_io(__mem_pci(c),(v),(l))
 DECL|macro|memcpy_fromio

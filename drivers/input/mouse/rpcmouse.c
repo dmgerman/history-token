@@ -240,6 +240,14 @@ id|rpcmouse_lasty
 op_assign
 id|y
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_rel
 c_func
 (paren
@@ -385,9 +393,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input: Acorn RiscPC mouse irq %d&quot;
-comma
-id|IRQ_VSYNCPULSE
+l_string|&quot;input: Acorn RiscPC mouse&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

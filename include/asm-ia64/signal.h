@@ -81,7 +81,7 @@ multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK indicates that a
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00000002 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x00000002
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO&t;0x00000004
 DECL|macro|SA_ONSTACK
@@ -234,6 +234,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#  include &lt;asm/sigcontext.h&gt;
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 DECL|macro|HAVE_ARCH_SYS_PAUSE
 mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif /* __KERNEL__ */

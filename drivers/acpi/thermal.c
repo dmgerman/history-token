@@ -3,13 +3,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|ACPI_THERMAL_COMPONENT
 mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000
 DECL|macro|ACPI_THERMAL_CLASS
@@ -171,6 +170,24 @@ id|file
 suffix:semicolon
 r_static
 r_int
+id|acpi_thermal_write_trip_points
+(paren
+r_struct
+id|file
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
 id|acpi_thermal_cooling_open_fs
 c_func
 (paren
@@ -187,6 +204,24 @@ id|file
 suffix:semicolon
 r_static
 r_int
+id|acpi_thermal_write_cooling_mode
+(paren
+r_struct
+id|file
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
 id|acpi_thermal_polling_open_fs
 c_func
 (paren
@@ -199,6 +234,25 @@ r_struct
 id|file
 op_star
 id|file
+)paren
+suffix:semicolon
+r_static
+r_int
+id|acpi_thermal_write_polling
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 DECL|variable|acpi_thermal_driver
@@ -583,6 +637,11 @@ op_assign
 id|seq_read
 comma
 dot
+id|write
+op_assign
+id|acpi_thermal_write_trip_points
+comma
+dot
 id|llseek
 op_assign
 id|seq_lseek
@@ -612,6 +671,11 @@ op_assign
 id|seq_read
 comma
 dot
+id|write
+op_assign
+id|acpi_thermal_write_cooling_mode
+comma
+dot
 id|llseek
 op_assign
 id|seq_lseek
@@ -639,6 +703,11 @@ dot
 id|read
 op_assign
 id|seq_read
+comma
+dot
+id|write
+op_assign
+id|acpi_thermal_write_polling
 comma
 dot
 id|llseek
@@ -1722,6 +1791,8 @@ comma
 id|argv
 comma
 id|envp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|return_VALUE
@@ -3592,14 +3663,25 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
-id|data
+id|ppos
 )paren
 (brace
+r_struct
+id|seq_file
+op_star
+id|m
+op_assign
+(paren
+r_struct
+id|seq_file
+op_star
+)paren
+id|file-&gt;private_data
+suffix:semicolon
 r_struct
 id|acpi_thermal
 op_star
@@ -3610,7 +3692,9 @@ r_struct
 id|acpi_thermal
 op_star
 )paren
-id|data
+id|m
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_char
 id|limit_string
@@ -3954,18 +4038,24 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
-id|data
+id|ppos
 )paren
 (brace
-r_int
-id|result
+r_struct
+id|seq_file
+op_star
+id|m
 op_assign
-l_int|0
+(paren
+r_struct
+id|seq_file
+op_star
+)paren
+id|file-&gt;private_data
 suffix:semicolon
 r_struct
 id|acpi_thermal
@@ -3977,7 +4067,14 @@ r_struct
 id|acpi_thermal
 op_star
 )paren
-id|data
+id|m
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+r_int
+id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 id|mode_string
@@ -4230,18 +4327,24 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
-id|data
+id|ppos
 )paren
 (brace
-r_int
-id|result
+r_struct
+id|seq_file
+op_star
+id|m
 op_assign
-l_int|0
+(paren
+r_struct
+id|seq_file
+op_star
+)paren
+id|file-&gt;private_data
 suffix:semicolon
 r_struct
 id|acpi_thermal
@@ -4253,7 +4356,14 @@ r_struct
 id|acpi_thermal
 op_star
 )paren
-id|data
+id|m
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+r_int
+id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 id|polling_string
@@ -4581,7 +4691,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unable to create &squot;%s&squot; fs entry&bslash;n&quot;
 comma
-id|ACPI_THERMAL_FILE_POLLING_FREQ
+id|ACPI_THERMAL_FILE_TRIP_POINTS
 )paren
 )paren
 suffix:semicolon
@@ -4591,10 +4701,6 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|acpi_thermal_trip_fops
-suffix:semicolon
-id|entry-&gt;write_proc
-op_assign
-id|acpi_thermal_write_trip_points
 suffix:semicolon
 id|entry-&gt;data
 op_assign
@@ -4651,10 +4757,6 @@ op_assign
 op_amp
 id|acpi_thermal_cooling_fops
 suffix:semicolon
-id|entry-&gt;write_proc
-op_assign
-id|acpi_thermal_write_cooling_mode
-suffix:semicolon
 id|entry-&gt;data
 op_assign
 id|acpi_driver_data
@@ -4709,10 +4811,6 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|acpi_thermal_polling_fops
-suffix:semicolon
-id|entry-&gt;write_proc
-op_assign
-id|acpi_thermal_write_polling
 suffix:semicolon
 id|entry-&gt;data
 op_assign

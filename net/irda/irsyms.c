@@ -739,6 +739,13 @@ c_func
 id|irda_calc_crc16
 )paren
 suffix:semicolon
+DECL|variable|irda_crc16_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_crc16_table
+)paren
+suffix:semicolon
 DECL|variable|irda_start_timer
 id|EXPORT_SYMBOL
 c_func

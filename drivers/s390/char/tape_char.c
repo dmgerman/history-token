@@ -166,7 +166,7 @@ id|device
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Terminate write command (we write two TMs and skip backward over last)&n; * This ensures that the tape is always correctly terminated.&n; * When the user writes afterwards a new file, he will overwrite the&n; * second TM and therefore one TM will remain to seperate the&n; * two files on the tape...&n; */
+multiline_comment|/*&n; * Terminate write command (we write two TMs and skip backward over last)&n; * This ensures that the tape is always correctly terminated.&n; * When the user writes afterwards a new file, he will overwrite the&n; * second TM and therefore one TM will remain to separate the&n; * two files on the tape...&n; */
 r_static
 r_inline
 r_void

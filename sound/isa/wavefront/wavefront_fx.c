@@ -445,8 +445,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -457,14 +455,10 @@ c_func
 id|hw-&gt;card-&gt;module
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|file-&gt;private_data
 op_assign
 id|hw
@@ -492,8 +486,6 @@ c_func
 (paren
 id|hw-&gt;card-&gt;module
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -694,6 +686,9 @@ id|r.data
 l_int|2
 )braket
 OG
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|page_data

@@ -1,29 +1,48 @@
-multiline_comment|/*&n; *  linux/arch/x86-64/kernel/time.c&n; *&n; *  &quot;High Precision Event Timer&quot; based timekeeping.&n; *&n; *  Copyright (c) 1991,1992,1995  Linus Torvalds&n; *  Copyright (c) 1994  Alan Modra&n; *  Copyright (c) 1995  Markus Kuhn&n; *  Copyright (c) 1996  Ingo Molnar&n; *  Copyright (c) 1998  Andrea Arcangeli&n; *  Copyright (c) 2002  Vojtech Pavlik&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/x86-64/kernel/time.c&n; *&n; *  &quot;High Precision Event Timer&quot; based timekeeping.&n; *&n; *  Copyright (c) 1991,1992,1995  Linus Torvalds&n; *  Copyright (c) 1994  Alan Modra&n; *  Copyright (c) 1995  Markus Kuhn&n; *  Copyright (c) 1996  Ingo Molnar&n; *  Copyright (c) 1998  Andrea Arcangeli&n; *  Copyright (c) 2002  Vojtech Pavlik&n; *  Copyright (c) 2003  Andi Kleen&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#endif
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
 suffix:semicolon
 r_extern
-id|rwlock_t
-id|xtime_lock
+r_int
+id|using_apic_timer
 suffix:semicolon
 DECL|variable|rtc_lock
 id|spinlock_t
 id|rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+r_extern
+r_int
+id|using_apic_timer
+suffix:semicolon
+r_extern
+r_void
+id|smp_local_timer_interrupt
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
 suffix:semicolon
 DECL|variable|cpu_khz
 r_int
@@ -81,21 +100,6 @@ id|__sys_tz
 id|__section_sys_tz
 suffix:semicolon
 multiline_comment|/*&n; * do_gettimeoffset() returns microseconds since last timer interrupt was&n; * triggered by hardware. A memory read of HPET is slower than a register read&n; * of TSC, but much more reliable. It&squot;s also synchronized to the timer&n; * interrupt. Note that do_gettimeoffset() may return more than hpet_tick, if a&n; * timer interrupt has happened already, but hpet.trigger wasn&squot;t updated yet.&n; * This is not a problem, because jiffies hasn&squot;t updated either. They are bound&n; * together by xtime_lock.&n;         */
-DECL|variable|time_offset_lock
-r_static
-id|spinlock_t
-id|time_offset_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|timeoffset
-r_static
-r_int
-r_int
-id|timeoffset
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|do_gettimeoffset
 r_inline
 r_int
@@ -109,6 +113,11 @@ r_void
 r_int
 r_int
 id|t
+suffix:semicolon
+id|sync_core
+c_func
+(paren
+)paren
 suffix:semicolon
 id|rdtscll
 c_func
@@ -148,7 +157,7 @@ id|tv
 (brace
 r_int
 r_int
-id|flags
+id|seq
 comma
 id|t
 suffix:semicolon
@@ -158,20 +167,15 @@ id|sec
 comma
 id|usec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|time_offset_lock
 )paren
 suffix:semicolon
 id|sec
@@ -203,35 +207,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|t
-OG
-id|timeoffset
-)paren
-id|timeoffset
-op_assign
-id|t
-suffix:semicolon
 id|usec
 op_add_assign
-id|timeoffset
+id|t
 suffix:semicolon
-id|spin_unlock
-c_func
+)brace
+r_while
+c_loop
 (paren
-op_amp
-id|time_offset_lock
-)paren
-suffix:semicolon
-id|read_unlock_irqrestore
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
-id|flags
+id|seq
+)paren
 )paren
 suffix:semicolon
 id|tv-&gt;tv_sec
@@ -261,16 +252,11 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
 id|xtime_lock
-)paren
-suffix:semicolon
-id|vxtime_lock
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tv-&gt;tv_usec
@@ -316,11 +302,6 @@ op_star
 l_int|1000
 )paren
 suffix:semicolon
-id|vxtime_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|time_adjust
 op_assign
 l_int|0
@@ -338,7 +319,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -580,22 +561,22 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Here we are in the timer irq handler. We have irqs locally disabled (so we&n; * don&squot;t need spin_lock_irqsave()) but we don&squot;t know if the timer_bh is running&n; * on the other CPU, so we need a lock. We also need to lock the vsyscall&n; * variables, because both do_timer() and us change them -arca+vojtech&n;&t; */
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-id|vxtime_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 (brace
 r_int
 r_int
 id|t
+suffix:semicolon
+id|sync_core
+c_func
+(paren
+)paren
 suffix:semicolon
 id|rdtscll
 c_func
@@ -767,12 +748,7 @@ op_plus
 l_int|660
 suffix:semicolon
 )brace
-id|vxtime_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -1090,6 +1066,11 @@ c_func
 id|start
 )paren
 suffix:semicolon
+id|sync_core
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1104,6 +1085,11 @@ l_int|0x20
 )paren
 op_eq
 l_int|0
+)paren
+suffix:semicolon
+id|sync_core
+c_func
+(paren
 )paren
 suffix:semicolon
 id|rdtscll
@@ -1249,15 +1235,6 @@ id|KERN_INFO
 l_string|&quot;time.c: Using 1.1931816 MHz PIT timer.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|setup_irq
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|irq0
-)paren
-suffix:semicolon
 id|cpu_khz
 op_assign
 id|pit_calibrate_tsc
@@ -1294,6 +1271,15 @@ id|rdtscll
 c_func
 (paren
 id|hpet.last_tsc
+)paren
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|irq0
 )paren
 suffix:semicolon
 )brace

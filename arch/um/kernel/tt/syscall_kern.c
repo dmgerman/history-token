@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/types.h&quot;
 macro_line|#include &quot;linux/utime.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
@@ -55,15 +56,19 @@ c_func
 r_void
 op_star
 )paren
-id|regs-&gt;regs.args
-(braket
-l_int|1
-)braket
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
-id|regs-&gt;regs.args
-(braket
-l_int|2
-)braket
+id|UPT_SYSCALL_ARG2
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -87,10 +92,12 @@ c_func
 r_void
 op_star
 )paren
-id|regs-&gt;regs.args
-(braket
-l_int|1
-)braket
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
 r_sizeof
 (paren
@@ -120,10 +127,12 @@ c_func
 r_void
 op_star
 )paren
-id|regs-&gt;regs.args
-(braket
-l_int|1
-)braket
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
 r_sizeof
 (paren
@@ -153,10 +162,12 @@ c_func
 r_void
 op_star
 )paren
-id|regs-&gt;regs.args
-(braket
-l_int|1
-)braket
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
 r_sizeof
 (paren
@@ -186,10 +197,12 @@ c_func
 r_void
 op_star
 )paren
-id|regs-&gt;regs.args
-(braket
-l_int|1
-)braket
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
 r_sizeof
 (paren
@@ -583,7 +596,12 @@ op_assign
 op_amp
 id|this_is_bogus
 (braket
-id|regs-&gt;regs.syscall
+id|UPT_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 )braket
 suffix:semicolon
 r_if
@@ -664,7 +682,12 @@ op_increment
 suffix:semicolon
 id|syscall
 op_assign
-id|regs-&gt;regs.syscall
+id|UPT_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -775,7 +775,7 @@ r_int64
 id|ri_per_minute
 suffix:semicolon
 multiline_comment|/* Ticks per minute&t;&t;    */
-multiline_comment|/*&n;&t; * Everything below here is for kernel use only and may change at&t;&n;&t; * at any time with or without a change in teh revision number&n;&t; *&n;&t; * Any pointers or things that come and go with DEBUG must go at&n; &t; * the bottom of the structure, below the user stuff.&n;&t; */
+multiline_comment|/*&n;&t; * Everything below here is for kernel use only and may change at&t;&n;&t; * at any time with or without a change in the revision number&n;&t; *&n;&t; * Any pointers or things that come and go with DEBUG must go at&n; &t; * the bottom of the structure, below the user stuff.&n;&t; */
 DECL|member|ri_hist_type
 r_char
 id|ri_hist_type

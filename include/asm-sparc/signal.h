@@ -218,7 +218,7 @@ mdefine_line|#define SA_NOMASK&t;0x20
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;0x40
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x100&t;/* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x100
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO&t;0x200
 DECL|macro|SIG_BLOCK
@@ -386,8 +386,23 @@ DECL|typedef|stack_t
 )brace
 id|stack_t
 suffix:semicolon
-DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
-mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+DECL|struct|sparc_deliver_cookie
+r_struct
+id|sparc_deliver_cookie
+(brace
+DECL|member|restart_syscall
+r_int
+id|restart_syscall
+suffix:semicolon
+DECL|member|orig_i0
+r_int
+r_int
+id|orig_i0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(REGS, COOKIE) &bslash;&n;do {&t;struct sparc_deliver_cookie *cp = (COOKIE); &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    (regs-&gt;u_regs[UREG_I0] == ERESTARTNOHAND || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTSYS || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTNOINTR)) { &bslash;&n;&t;&t;/* replay the system call when we are done */ &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_I0] = cp-&gt;orig_i0; &bslash;&n;&t;&t;regs-&gt;pc -= 4; &bslash;&n;&t;&t;regs-&gt;npc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    regs-&gt;u_regs[UREG_I0] == ERESTART_RESTARTBLOCK) { &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_G1] = __NR_restart_syscall; &bslash;&n;&t;&t;regs-&gt;pc -= 4; &bslash;&n;&t;&t;regs-&gt;npc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;} while (0)
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_ASMSPARC_SIGNAL_H) */
 eof

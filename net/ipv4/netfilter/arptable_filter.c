@@ -106,11 +106,13 @@ comma
 (braket
 id|NF_ARP_IN
 )braket
+op_assign
 l_int|0
 comma
 (braket
 id|NF_ARP_OUT
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -122,11 +124,13 @@ comma
 (braket
 id|NF_ARP_IN
 )braket
+op_assign
 l_int|0
 comma
 (braket
 id|NF_ARP_OUT
 )braket
+op_assign
 r_sizeof
 (paren
 r_struct

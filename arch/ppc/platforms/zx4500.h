@@ -1,4 +1,4 @@
-multiline_comment|/* * arch/ppc/platforms/zx4500.h&n; * &n; * Board setup routines for Znyx ZX4500 cPCI board.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/* * arch/ppc/platforms/zx4500.h&n; * &n; * Board setup routines for Znyx ZX4500 cPCI board.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef&t;__PPC_PLATFORMS_ZX4500_H_
 DECL|macro|__PPC_PLATFORMS_ZX4500_H_
 mdefine_line|#define&t;__PPC_PLATFORMS_ZX4500_H_

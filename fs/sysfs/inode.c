@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Random magic number */
 DECL|macro|SYSFS_MAGIC
@@ -774,7 +775,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+id|ssize_t
 id|count
 suffix:semicolon
 r_if
@@ -2771,6 +2772,125 @@ id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sysfs_update_file - update the modified timestamp on an object attribute.&n; * @kobj: object we&squot;re acting for.&n; * @attr: attribute descriptor.&n; *&n; * Also call dnotify for the dentry, which lots of userspace programs&n; * use.&n; */
+DECL|function|sysfs_update_file
+r_int
+id|sysfs_update_file
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+id|kobj
+comma
+r_struct
+id|attribute
+op_star
+id|attr
+)paren
+(brace
+r_struct
+id|dentry
+op_star
+id|dir
+op_assign
+id|kobj-&gt;dentry
+suffix:semicolon
+r_struct
+id|dentry
+op_star
+id|victim
+suffix:semicolon
+r_int
+id|res
+op_assign
+op_minus
+id|ENOENT
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|dir-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
+id|victim
+op_assign
+id|get_dentry
+c_func
+(paren
+id|dir
+comma
+id|attr-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|victim
+)paren
+)paren
+(brace
+multiline_comment|/* make sure dentry is really there */
+r_if
+c_cond
+(paren
+id|victim-&gt;d_inode
+op_logical_and
+(paren
+id|victim-&gt;d_parent-&gt;d_inode
+op_eq
+id|dir-&gt;d_inode
+)paren
+)paren
+(brace
+id|victim-&gt;d_inode-&gt;i_mtime
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
+id|dnotify_parent
+c_func
+(paren
+id|victim
+comma
+id|DN_MODIFY
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t;&t;&t; * Drop reference from initial get_dentry().&n;&t;&t;&t; */
+id|dput
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
+id|res
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n;&t;&t; * Drop the reference acquired from get_dentry() above.&n;&t;&t; */
+id|dput
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|dir-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
+r_return
+id|res
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;sysfs_remove_file - remove an object attribute.&n; *&t;@kobj:&t;object we&squot;re acting for.&n; *&t;@attr:&t;attribute descriptor.&n; *&n; *&t;Hash the attribute name and kill the victim.&n; */
 DECL|function|sysfs_remove_file
 r_void
@@ -3067,6 +3187,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sysfs_create_file
+)paren
+suffix:semicolon
+DECL|variable|sysfs_update_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysfs_update_file
 )paren
 suffix:semicolon
 DECL|variable|sysfs_remove_file

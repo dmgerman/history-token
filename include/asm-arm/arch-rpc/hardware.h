@@ -62,6 +62,24 @@ DECL|macro|IO_EC_MEMC8_BASE
 mdefine_line|#define IO_EC_MEMC8_BASE&t;0x8000ac00
 DECL|macro|IO_EC_MEMC_BASE
 mdefine_line|#define IO_EC_MEMC_BASE&t;&t;0x80000000
+DECL|macro|NETSLOT_BASE
+mdefine_line|#define NETSLOT_BASE&t;&t;0x0302b000
+DECL|macro|NETSLOT_SIZE
+mdefine_line|#define NETSLOT_SIZE&t;&t;0x00001000
+DECL|macro|PODSLOT_IOC0_BASE
+mdefine_line|#define PODSLOT_IOC0_BASE&t;0x03240000
+DECL|macro|PODSLOT_IOC4_BASE
+mdefine_line|#define PODSLOT_IOC4_BASE&t;0x03270000
+DECL|macro|PODSLOT_IOC_SIZE
+mdefine_line|#define PODSLOT_IOC_SIZE&t;(1 &lt;&lt; 14)
+DECL|macro|PODSLOT_MEMC_BASE
+mdefine_line|#define PODSLOT_MEMC_BASE&t;0x03000000
+DECL|macro|PODSLOT_MEMC_SIZE
+mdefine_line|#define PODSLOT_MEMC_SIZE&t;(1 &lt;&lt; 14)
+DECL|macro|PODSLOT_EASI_BASE
+mdefine_line|#define PODSLOT_EASI_BASE&t;0x08000000
+DECL|macro|PODSLOT_EASI_SIZE
+mdefine_line|#define PODSLOT_EASI_SIZE&t;(1 &lt;&lt; 24)
 DECL|macro|EXPMASK_STATUS
 mdefine_line|#define&t;EXPMASK_STATUS&t;&t;(EXPMASK_BASE + 0x00)
 DECL|macro|EXPMASK_ENABLE

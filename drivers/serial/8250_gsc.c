@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 DECL|function|setup_parisc_serial
@@ -55,6 +56,10 @@ suffix:semicolon
 id|serial-&gt;line
 op_assign
 id|line
+suffix:semicolon
+id|serial-&gt;iomap_base
+op_assign
+id|address
 suffix:semicolon
 id|serial-&gt;iomem_base
 op_assign
@@ -291,12 +296,12 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Hack.  Dino&squot;s serial port will get listed first on some machines.&n; * So we register this driver first which knows about Lasi&squot;s serial port.&n; * This needs to get fixed properly somehow.&n; */
-DECL|variable|serial1_tbl
+multiline_comment|/* Hack.  Some machines have SERIAL_0 attached to Lasi and SERIAL_1&n; * attached to Dino.  Unfortunately, Dino appears before Lasi in the device&n; * tree.  To ensure that ttyS0 == SERIAL_0, we register two drivers; one&n; * which only knows about Lasi and then a second which will find all the&n; * other serial ports.  HPUX ignores this problem.&n; */
+DECL|variable|lasi_tbl
 r_static
 r_struct
 id|parisc_device_id
-id|serial1_tbl
+id|lasi_tbl
 (braket
 )braket
 op_assign
@@ -413,22 +418,22 @@ comma
 id|serial_tbl
 )paren
 suffix:semicolon
-DECL|variable|serial1_driver
+DECL|variable|lasi_driver
 r_static
 r_struct
 id|parisc_driver
-id|serial1_driver
+id|lasi_driver
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;Serial RS232&quot;
+l_string|&quot;Lasi RS232&quot;
 comma
 dot
 id|id_table
 op_assign
-id|serial1_tbl
+id|lasi_tbl
 comma
 dot
 id|probe
@@ -474,7 +479,7 @@ id|register_parisc_driver
 c_func
 (paren
 op_amp
-id|serial1_driver
+id|lasi_driver
 )paren
 suffix:semicolon
 id|register_parisc_driver

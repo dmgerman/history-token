@@ -4471,15 +4471,13 @@ multiline_comment|/*&n;&t; * This thread doesn&squot;t need any user-level acces
 id|daemonize
 c_func
 (paren
+l_string|&quot;khubd&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Setup a nice name */
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;khubd&quot;
+id|SIGKILL
 )paren
 suffix:semicolon
 multiline_comment|/* Send me a signal to get me die (for debugging) */

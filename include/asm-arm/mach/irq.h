@@ -83,12 +83,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Re-run the IRQ&n;&t; */
-DECL|member|rerun
-r_void
+multiline_comment|/*&n;&t; * Ask the hardware to re-trigger the IRQ.&n;&t; * Note: This method _must_ _not_ call the interrupt handler.&n;&t; * If you are unable to retrigger the interrupt, do not&n;&t; * provide a function, or if you do, return non-zero.&n;&t; */
+DECL|member|retrigger
+r_int
 (paren
 op_star
-id|rerun
+id|retrigger
 )paren
 (paren
 r_int
@@ -147,14 +147,16 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
-DECL|member|enabled
-r_int
-r_int
-id|enabled
-suffix:colon
-l_int|1
+DECL|member|pend
+r_struct
+id|list_head
+id|pend
 suffix:semicolon
-multiline_comment|/* IRQ is currently enabled   */
+DECL|member|disable_depth
+r_int
+r_int
+id|disable_depth
+suffix:semicolon
 DECL|member|triggered
 r_int
 r_int
@@ -216,14 +218,8 @@ r_int
 r_int
 id|unused
 suffix:colon
-l_int|23
+l_int|25
 suffix:semicolon
-DECL|member|depth
-r_int
-r_int
-id|depth
-suffix:semicolon
-multiline_comment|/* disable depth&t;      */
 multiline_comment|/*&n;&t; * IRQ lock detection&n;&t; */
 DECL|member|lck_cnt
 r_int

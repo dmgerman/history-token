@@ -1023,6 +1023,22 @@ comma
 l_int|0x0041
 )paren
 comma
+multiline_comment|/* Sound Blaster 16 &squot;value&squot; PnP. It says model ct4130 on the pcb, */
+multiline_comment|/* but ct4131 on a sticker on the board.. */
+id|ISAPNP_SB16
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;T&squot;
+comma
+l_char|&squot;L&squot;
+comma
+l_int|0x0086
+comma
+l_int|0x0041
+)paren
+comma
 multiline_comment|/* Sound Blaster Vibra16X */
 id|ISAPNP_SB16
 c_func

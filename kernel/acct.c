@@ -7,7 +7,9 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/*&n; * These constants control the amount of freespace that suspend and&n; * resume the process accounting system, and the time delay between&n; * each check.&n; * Turned into sysctl-controllable parameters. AV, 12/11/98&n; */
 DECL|variable|acct_parm
 r_int
@@ -852,6 +854,9 @@ r_int
 r_int
 id|flim
 suffix:semicolon
+id|u64
+id|elapsed
+suffix:semicolon
 multiline_comment|/*&n;&t; * First check to see if there is enough free_space to continue&n;&t; * the process accounting system.&n;&t; */
 r_if
 c_cond
@@ -903,33 +908,57 @@ l_int|1
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|ac.ac_btime
+id|elapsed
 op_assign
-id|CT_TO_SECS
+id|get_jiffies_64
 c_func
 (paren
-id|current-&gt;start_time
 )paren
-op_plus
-(paren
-id|xtime.tv_sec
 op_minus
-(paren
-id|jiffies
-op_div
-id|HZ
-)paren
-)paren
+id|current-&gt;start_time
 suffix:semicolon
 id|ac.ac_etime
 op_assign
 id|encode_comp_t
 c_func
 (paren
-id|jiffies
-op_minus
-id|current-&gt;start_time
+id|elapsed
+OL
+(paren
+r_int
+r_int
 )paren
+op_minus
+l_int|1l
+ques
+c_cond
+(paren
+r_int
+r_int
+)paren
+id|elapsed
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_minus
+l_int|1l
+)paren
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|elapsed
+comma
+id|HZ
+)paren
+suffix:semicolon
+id|ac.ac_btime
+op_assign
+id|xtime.tv_sec
+op_minus
+id|elapsed
 suffix:semicolon
 id|ac.ac_utime
 op_assign

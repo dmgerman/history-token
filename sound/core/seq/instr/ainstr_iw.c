@@ -227,6 +227,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|__u32
@@ -296,6 +299,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|rx
@@ -627,6 +633,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|xp
@@ -859,6 +868,9 @@ id|IWFFFF_WAVE_ROM
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|real_size
 OG
 op_star
@@ -1251,6 +1263,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|ix
@@ -1376,6 +1391,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|iwffff_xlayer_t
@@ -1679,6 +1697,9 @@ c_loop
 (paren
 id|len
 OG
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|__u32
@@ -1894,6 +1915,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|rx
@@ -2184,6 +2208,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|xp
@@ -2415,6 +2442,9 @@ c_cond
 op_star
 id|len
 OL
+(paren
+r_int
+)paren
 id|real_size
 )paren
 r_return
@@ -2560,6 +2590,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|ix
@@ -2701,6 +2734,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|lx

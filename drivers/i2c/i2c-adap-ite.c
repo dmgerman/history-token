@@ -136,9 +136,13 @@ c_func
 (brace
 r_while
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|j
+)paren
 )paren
 id|schedule
 c_func

@@ -1803,6 +1803,7 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1897,10 +1898,12 @@ comma
 id|val
 suffix:semicolon
 r_int
+r_int
 id|i
 comma
 id|j
-comma
+suffix:semicolon
+r_int
 id|change
 op_assign
 l_int|0
@@ -2981,7 +2984,7 @@ id|diff
 op_add_assign
 id|runtime-&gt;boundary
 suffix:semicolon
-id|pcm-&gt;sw_ready
+id|frames
 op_add_assign
 id|diff
 suffix:semicolon
@@ -3197,6 +3200,7 @@ id|substream-&gt;number
 )braket
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -3279,6 +3283,7 @@ id|emu-&gt;fx8010.pcm
 id|substream-&gt;number
 )braket
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -5266,6 +5271,7 @@ id|icode
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 id|snd_ctl_elem_id_t
@@ -5538,6 +5544,7 @@ op_star
 id|icode
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
@@ -5946,6 +5953,7 @@ id|icode
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 id|snd_ctl_elem_id_t
@@ -6055,6 +6063,7 @@ op_star
 id|icode
 )paren
 (brace
+r_int
 r_int
 id|i
 op_assign
@@ -6570,11 +6579,13 @@ id|ipcm
 )paren
 (brace
 r_int
+r_int
+id|i
+suffix:semicolon
+r_int
 id|err
 op_assign
 l_int|0
-comma
-id|i
 suffix:semicolon
 id|snd_emu10k1_fx8010_pcm_t
 op_star
@@ -6778,11 +6789,13 @@ id|ipcm
 )paren
 (brace
 r_int
+r_int
+id|i
+suffix:semicolon
+r_int
 id|err
 op_assign
 l_int|0
-comma
-id|i
 suffix:semicolon
 id|snd_emu10k1_fx8010_pcm_t
 op_star

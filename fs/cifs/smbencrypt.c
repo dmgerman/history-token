@@ -1576,7 +1576,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;CIFS make_oem_passwd_hash: new password is too long.&bslash;n&quot;
+l_string|&quot;CIFS make_oem_passwd_hash: new password is too long.&quot;
 )paren
 )paren
 suffix:semicolon

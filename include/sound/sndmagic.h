@@ -35,6 +35,13 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * snd_magic_kmalloc - allocate a record with a magic-prefix&n; * @type: the type to allocate a record (like xxx_t)&n; * @extra: the extra size to allocate in bytes&n; * @flags: the allocation condition (GFP_XXX)&n; *&n; * Allocates a record of the given type with the extra space and&n; * returns its pointer.  The allocated record has a secret magic-key&n; * to be checked via snd_magic_cast() for safe casts.&n; *&n; * The allocated pointer must be released via snd_magic_kfree().&n; *&n; * The &quot;struct xxx&quot; style cannot be used as the type argument&n; * because the magic-key constant is generated from the type-name&n; * string.&n; */
+DECL|macro|snd_magic_kmalloc
+mdefine_line|#define snd_magic_kmalloc(type, extra, flags) &bslash;&n;&t;(type *) _snd_magic_kmalloc(type##_magic, sizeof(type) + extra, flags)
+multiline_comment|/**&n; * snd_magic_kcalloc - allocate a record with a magic-prefix and initialize&n; * @type: the type to allocate a record (like xxx_t)&n; * @extra: the extra size to allocate in bytes&n; * @flags: the allocation condition (GFP_XXX)&n; *&n; * Works like snd_magic_kmalloc() but this clears the area with zero&n; * automatically.&n; */
+DECL|macro|snd_magic_kcalloc
+mdefine_line|#define snd_magic_kcalloc(type, extra, flags) &bslash;&n;&t;(type *) _snd_magic_kcalloc(type##_magic, sizeof(type) + extra, flags)
+multiline_comment|/**&n; * snd_magic_kfree - release the allocated area&n; * @ptr: the pointer allocated via snd_magic_kmalloc() or snd_magic_kcalloc()&n; *&n; * Releases the memory area allocated via snd_magic_kmalloc() or&n; * snd_magic_kcalloc() function.&n; */
 r_void
 id|snd_magic_kfree
 c_func
@@ -44,10 +51,6 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
-DECL|macro|snd_magic_kcalloc
-mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) _snd_magic_kcalloc(type##_magic, sizeof(type) + extra, flags)
-DECL|macro|snd_magic_kmalloc
-mdefine_line|#define snd_magic_kmalloc(type, extra, flags) (type *) _snd_magic_kmalloc(type##_magic, sizeof(type) + extra, flags)
 DECL|function|_snd_magic_value
 r_static
 r_inline
@@ -67,6 +70,10 @@ op_eq
 l_int|NULL
 ques
 c_cond
+(paren
+r_int
+r_int
+)paren
 op_minus
 l_int|1
 suffix:colon
@@ -113,8 +120,9 @@ suffix:semicolon
 )brace
 DECL|macro|snd_magic_cast1
 mdefine_line|#define snd_magic_cast1(t, expr, cmd) snd_magic_cast(t, expr, cmd)
+multiline_comment|/**&n; * snd_magic_cast - check and cast the magic-allocated pointer&n; * @type: the type of record to cast&n; * @ptr: the magic-allocated pointer&n; * @action...: the action to do if failed&n; *&n; * This macro provides a safe cast for the given type, which was&n; * allocated via snd_magic_kmalloc() or snd_magic_kcallc().&n; * If the pointer is invalid, i.e. the cast-type doesn&squot;t match,&n; * the action arguments are called with a debug message.&n; */
 DECL|macro|snd_magic_cast
-mdefine_line|#define snd_magic_cast(type, ptr, action...) (type *) ({&bslash;&n;&t;void *__ptr = ptr;&bslash;&n;&t;unsigned long __magic = _snd_magic_value(__ptr);&bslash;&n;&t;if (__magic != type##_magic) {&bslash;&n;&t;&t;snd_printk(&quot;bad MAGIC (0x%lx)&bslash;n&quot;, __magic);&bslash;&n;&t;&t;action;&bslash;&n;&t;}&bslash;&n;&t;__ptr;&bslash;&n;})
+mdefine_line|#define snd_magic_cast(type, ptr, action...) &bslash;&n;&t;(type *) ({&bslash;&n;&t;void *__ptr = ptr;&bslash;&n;&t;unsigned long __magic = _snd_magic_value(__ptr);&bslash;&n;&t;if (__magic != type##_magic) {&bslash;&n;&t;&t;snd_printk(&quot;bad MAGIC (0x%lx)&bslash;n&quot;, __magic);&bslash;&n;&t;&t;action;&bslash;&n;&t;}&bslash;&n;&t;__ptr;&bslash;&n;})
 DECL|macro|snd_device_t_magic
 mdefine_line|#define snd_device_t_magic&t;&t;&t;0xa15a00ff
 DECL|macro|snd_pcm_t_magic
@@ -133,6 +141,8 @@ DECL|macro|snd_pcm_sgbuf_t_magic
 mdefine_line|#define snd_pcm_sgbuf_t_magic&t;&t;&t;0xa15a0107
 DECL|macro|snd_info_private_data_t_magic
 mdefine_line|#define snd_info_private_data_t_magic&t;&t;0xa15a0201
+DECL|macro|snd_info_entry_t_magic
+mdefine_line|#define snd_info_entry_t_magic&t;&t;&t;0xa15a0202
 DECL|macro|snd_ctl_file_t_magic
 mdefine_line|#define snd_ctl_file_t_magic&t;&t;&t;0xa15a0301
 DECL|macro|snd_kcontrol_t_magic

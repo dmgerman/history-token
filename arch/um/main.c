@@ -11,10 +11,12 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
+macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
+macro_line|#include &quot;uml-config.h&quot;
 multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.  &n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int
@@ -33,31 +35,6 @@ DECL|macro|STACKSIZE
 mdefine_line|#define STACKSIZE (8 * 1024 * 1024)
 DECL|macro|THREAD_NAME_LEN
 mdefine_line|#define THREAD_NAME_LEN (256)
-multiline_comment|/* Never changed */
-DECL|variable|padding
-r_static
-r_char
-id|padding
-(braket
-id|THREAD_NAME_LEN
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|THREAD_NAME_LEN
-op_minus
-l_int|2
-)braket
-op_assign
-l_char|&squot; &squot;
-comma
-l_char|&squot;&bslash;0&squot;
-)brace
-suffix:semicolon
 DECL|function|set_stklim
 r_static
 r_void
@@ -205,6 +182,64 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+DECL|function|last_ditch_exit
+r_static
+r_void
+id|last_ditch_exit
+c_func
+(paren
+r_int
+id|sig
+)paren
+(brace
+id|CHOOSE_MODE
+c_func
+(paren
+id|kmalloc_ok
+op_assign
+l_int|0
+comma
+(paren
+r_void
+)paren
+l_int|0
+)paren
+suffix:semicolon
+id|signal
+c_func
+(paren
+id|SIGINT
+comma
+id|SIG_DFL
+)paren
+suffix:semicolon
+id|signal
+c_func
+(paren
+id|SIGTERM
+comma
+id|SIG_DFL
+)paren
+suffix:semicolon
+id|signal
+c_func
+(paren
+id|SIGHUP
+comma
+id|SIG_DFL
+)paren
+suffix:semicolon
+id|uml_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|uml_exitcode
@@ -228,6 +263,11 @@ op_star
 id|envp
 )paren
 (brace
+r_char
+op_star
+op_star
+id|new_argv
+suffix:semicolon
 id|sigset_t
 id|mask
 suffix:semicolon
@@ -236,17 +276,21 @@ id|ret
 comma
 id|i
 suffix:semicolon
-r_char
-op_star
-op_star
-id|new_argv
-suffix:semicolon
-multiline_comment|/* Enable all signals - in some environments, we can enter with&n;&t; * some signals blocked&n;&t; */
+multiline_comment|/* Enable all signals except SIGIO - in some environments, we can &n;&t; * enter with some signals blocked&n;&t; */
 id|sigemptyset
 c_func
 (paren
 op_amp
 id|mask
+)paren
+suffix:semicolon
+id|sigaddset
+c_func
+(paren
+op_amp
+id|mask
+comma
+id|SIGIO
 )paren
 suffix:semicolon
 r_if
@@ -278,6 +322,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef UML_CONFIG_MODE_TT
 multiline_comment|/* Allocate memory for thread command lines */
 r_if
 c_cond
@@ -300,6 +345,28 @@ op_minus
 l_int|1
 )paren
 (brace
+r_char
+id|padding
+(braket
+id|THREAD_NAME_LEN
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|THREAD_NAME_LEN
+op_minus
+l_int|2
+)braket
+op_assign
+l_char|&squot; &squot;
+comma
+l_char|&squot;&bslash;0&squot;
+)brace
+suffix:semicolon
 id|new_argv
 op_assign
 id|malloc
@@ -414,6 +481,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|linux_prog
 op_assign
 id|argv
@@ -520,6 +588,51 @@ id|argc
 )braket
 op_assign
 l_int|NULL
+suffix:semicolon
+id|set_handler
+c_func
+(paren
+id|SIGINT
+comma
+id|last_ditch_exit
+comma
+id|SA_ONESHOT
+op_or
+id|SA_NODEFER
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|set_handler
+c_func
+(paren
+id|SIGTERM
+comma
+id|last_ditch_exit
+comma
+id|SA_ONESHOT
+op_or
+id|SA_NODEFER
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|set_handler
+c_func
+(paren
+id|SIGHUP
+comma
+id|last_ditch_exit
+comma
+id|SA_ONESHOT
+op_or
+id|SA_NODEFER
+comma
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|do_uml_initcalls
 c_func

@@ -512,7 +512,7 @@ op_assign
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_do
 (brace
@@ -1198,7 +1198,7 @@ id|cmd
 suffix:semicolon
 id|sh
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|base
 op_assign
@@ -1323,9 +1323,9 @@ l_string|&quot; %x, y %d&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|y
 )paren
@@ -1362,7 +1362,7 @@ multiline_comment|/* Input mode  */
 id|cp-&gt;Interpret
 op_assign
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|hd-&gt;hostid
 )paren
@@ -1397,11 +1397,11 @@ l_int|0
 suffix:semicolon
 id|cp-&gt;cp_id
 op_assign
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 id|cp-&gt;cp_lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|cp-&gt;cp_dispri
 op_assign
@@ -1538,7 +1538,7 @@ id|KERN_NOTICE
 l_string|&quot;eata_pio_queue target %d, pid %ld, HBA busy, &quot;
 l_string|&quot;returning DID_BUS_BUSY, done.&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 id|cmd-&gt;pid
 )paren
@@ -1646,9 +1646,9 @@ id|sh-&gt;base
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|y
 comma
@@ -1692,9 +1692,9 @@ l_string|&quot;target: %x lun: %x reason %x&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;abort_reason
 )paren
@@ -1706,7 +1706,7 @@ c_loop
 id|inb
 c_func
 (paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 op_plus
 id|HA_RAUXSTAT
 )paren
@@ -1894,7 +1894,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|DBG
 c_func
@@ -1910,9 +1910,9 @@ l_string|&quot; %x lun: %x reason %x&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;abort_reason
 )paren
@@ -1953,7 +1953,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment
@@ -2045,7 +2045,7 @@ comma
 (paren
 id|uint
 )paren
-id|cmd-&gt;host-&gt;base
+id|cmd-&gt;device-&gt;host-&gt;base
 op_plus
 id|HA_WCOMMAND
 )paren
@@ -2124,7 +2124,7 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|cmd-&gt;host-&gt;can_queue
+id|cmd-&gt;device-&gt;host-&gt;can_queue
 suffix:semicolon
 id|x
 op_increment

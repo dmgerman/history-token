@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#endif
@@ -2109,6 +2110,19 @@ id|condition
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* It&squot;s safe to allow irq&squot;s after DR6 has been saved */
+r_if
+c_cond
+(paren
+id|regs-&gt;eflags
+op_amp
+id|X86_EFLAGS_IF
+)paren
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Mask out spurious debug traps due to lazy DR7 setting */
 r_if
 c_cond
@@ -3170,7 +3184,7 @@ op_amp
 id|divide_error
 )paren
 suffix:semicolon
-id|set_trap_gate
+id|set_intr_gate
 c_func
 (paren
 l_int|1

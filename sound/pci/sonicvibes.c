@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -14,9 +15,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -701,11 +699,6 @@ DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
 suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
 DECL|member|p_dma_size
 r_int
 r_int
@@ -726,7 +719,7 @@ id|snd_kcontrol_t
 op_star
 id|master_volume
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|member|gameport
 r_struct
 id|gameport
@@ -6516,8 +6509,10 @@ op_star
 id|kctl
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|snd_assert
@@ -6863,104 +6858,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|sonic-&gt;card
 comma
 l_string|&quot;sonicvibes&quot;
 comma
-id|sonic-&gt;card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|sonic
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|256
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_sonicvibes_proc_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|sonic-&gt;proc_entry
-op_assign
-id|entry
-suffix:semicolon
-)brace
-DECL|function|snd_sonicvibes_proc_done
-r_static
-r_void
-id|snd_sonicvibes_proc_done
-c_func
-(paren
-id|sonicvibes_t
-op_star
-id|sonic
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sonic-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|sonic-&gt;proc_entry
-)paren
-suffix:semicolon
-id|sonic-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&n; */
 DECL|variable|__devinitdata
@@ -6996,7 +6915,7 @@ op_star
 id|sonic
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren
@@ -7010,12 +6929,6 @@ id|sonic-&gt;gameport
 )paren
 suffix:semicolon
 macro_line|#endif
-id|snd_sonicvibes_proc_done
-c_func
-(paren
-id|sonic
-)paren
-suffix:semicolon
 id|pci_write_config_dword
 c_func
 (paren
@@ -8679,8 +8592,10 @@ op_star
 id|dir
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|mpu-&gt;private_data
@@ -9136,7 +9051,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 id|sonic-&gt;gameport.io
 op_assign
 id|sonic-&gt;game_port

@@ -17,7 +17,7 @@ macro_line|#include &quot;max1617.h&quot;
 DECL|macro|ENVCTRL_TRACE
 macro_line|#undef ENVCTRL_TRACE
 multiline_comment|/* WARNING: Making changes to this driver is very dangerous.&n; *          If you misprogram the sensor chips they can&n; *          cut the power on you instantly.&n; */
-multiline_comment|/* Two temperature sensors exist in the SunBLADE-1000 enclosure.&n; * Both are implemented using max1617 i2c devices.  Each max1617&n; * monitors 2 temperatures, one for one of the cpu dies and the other&n; * for the ambient temperature.&n; *&n; * The max1617 is capable of being programmed with power-off&n; * temperature values, one low limit and one high limit.  These&n; * can be controlled independantly for the cpu or ambient temperature.&n; * If a limit is violated, the power is simply shut off.  The frequency&n; * with which the max1617 does temperature sampling can be controlled&n; * as well.&n; *&n; * Three fans exist inside the machine, all three are controlled with&n; * an i2c digital to analog converter.  There is a fan directed at the&n; * two processor slots, another for the rest of the enclosure, and the&n; * third is for the power supply.  The first two fans may be speed&n; * controlled by changing the voltage fed to them.  The third fan may&n; * only be completely off or on.  The third fan is meant to only be&n; * disabled/enabled when entering/exiting the lowest power-saving&n; * mode of the machine.&n; *&n; * An environmental control kernel thread periodically monitors all&n; * temperature sensors.  Based upon the samples it will adjust the&n; * fan speeds to try and keep the system within a certain temperature&n; * range (the goal being to make the fans as quiet as possible without&n; * allowing the system to get too hot).&n; *&n; * If the temperature begins to rise/fall outside of the acceptable&n; * operating range, a periodic warning will be sent to the kernel log.&n; * The fans will be put on full blast to attempt to deal with this&n; * situation.  After exceeding the acceptable operating range by a&n; * certain threshold, the kernel thread will shut down the system.&n; * Here, the thread is attempting to shut the machine down cleanly&n; * before the hardware based power-off event is triggered.&n; */
+multiline_comment|/* Two temperature sensors exist in the SunBLADE-1000 enclosure.&n; * Both are implemented using max1617 i2c devices.  Each max1617&n; * monitors 2 temperatures, one for one of the cpu dies and the other&n; * for the ambient temperature.&n; *&n; * The max1617 is capable of being programmed with power-off&n; * temperature values, one low limit and one high limit.  These&n; * can be controlled independently for the cpu or ambient temperature.&n; * If a limit is violated, the power is simply shut off.  The frequency&n; * with which the max1617 does temperature sampling can be controlled&n; * as well.&n; *&n; * Three fans exist inside the machine, all three are controlled with&n; * an i2c digital to analog converter.  There is a fan directed at the&n; * two processor slots, another for the rest of the enclosure, and the&n; * third is for the power supply.  The first two fans may be speed&n; * controlled by changing the voltage fed to them.  The third fan may&n; * only be completely off or on.  The third fan is meant to only be&n; * disabled/enabled when entering/exiting the lowest power-saving&n; * mode of the machine.&n; *&n; * An environmental control kernel thread periodically monitors all&n; * temperature sensors.  Based upon the samples it will adjust the&n; * fan speeds to try and keep the system within a certain temperature&n; * range (the goal being to make the fans as quiet as possible without&n; * allowing the system to get too hot).&n; *&n; * If the temperature begins to rise/fall outside of the acceptable&n; * operating range, a periodic warning will be sent to the kernel log.&n; * The fans will be put on full blast to attempt to deal with this&n; * situation.  After exceeding the acceptable operating range by a&n; * certain threshold, the kernel thread will shut down the system.&n; * Here, the thread is attempting to shut the machine down cleanly&n; * before the hardware based power-off event is triggered.&n; */
 multiline_comment|/* These settings are in celcius.  We use these defaults only&n; * if we cannot interrogate the cpu-fru SEEPROM.&n; */
 DECL|struct|temp_limits
 r_struct
@@ -1814,14 +1814,13 @@ id|__unused
 id|daemonize
 c_func
 (paren
+l_string|&quot;kenvctrld&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;kenvctrld&quot;
+id|SIGKILL
 )paren
 suffix:semicolon
 id|kenvctrld_task

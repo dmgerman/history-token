@@ -513,6 +513,12 @@ id|dumpable
 suffix:colon
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|member|used_hugetlb
+r_int
+id|used_hugetlb
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t
@@ -554,9 +560,9 @@ r_extern
 r_int
 id|mmlist_nr
 suffix:semicolon
-DECL|struct|signal_struct
+DECL|struct|sighand_struct
 r_struct
-id|signal_struct
+id|sighand_struct
 (brace
 DECL|member|count
 id|atomic_t
@@ -573,6 +579,17 @@ suffix:semicolon
 DECL|member|siglock
 id|spinlock_t
 id|siglock
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * NOTE! &quot;signal_struct&quot; does not have it&squot;s own&n; * locking, because a shared signal_struct always&n; * implies a shared sighand_struct, so locking&n; * sighand_struct is always a proper superset of&n; * the locking of signal_struct.&n; */
+DECL|struct|signal_struct
+r_struct
+id|signal_struct
+(brace
+DECL|member|count
+id|atomic_t
+id|count
 suffix:semicolon
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
@@ -600,6 +617,11 @@ r_struct
 id|task_struct
 op_star
 id|group_exit_task
+suffix:semicolon
+multiline_comment|/* thread group stop support, overloads group_exit_code too */
+DECL|member|group_stop_count
+r_int
+id|group_stop_count
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -669,6 +691,81 @@ id|prio_array_t
 suffix:semicolon
 r_struct
 id|backing_dev_info
+suffix:semicolon
+multiline_comment|/* POSIX.1b interval timer structure. */
+DECL|struct|k_itimer
+r_struct
+id|k_itimer
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* free/ allocate list */
+DECL|member|it_lock
+id|spinlock_t
+id|it_lock
+suffix:semicolon
+DECL|member|it_clock
+id|clockid_t
+id|it_clock
+suffix:semicolon
+multiline_comment|/* which timer type */
+DECL|member|it_id
+id|timer_t
+id|it_id
+suffix:semicolon
+multiline_comment|/* timer id */
+DECL|member|it_overrun
+r_int
+id|it_overrun
+suffix:semicolon
+multiline_comment|/* overrun on pending signal  */
+DECL|member|it_overrun_last
+r_int
+id|it_overrun_last
+suffix:semicolon
+multiline_comment|/* overrun on last delivered signal */
+DECL|member|it_requeue_pending
+r_int
+id|it_requeue_pending
+suffix:semicolon
+multiline_comment|/* waiting to requeue this timer */
+DECL|member|it_sigev_notify
+r_int
+id|it_sigev_notify
+suffix:semicolon
+multiline_comment|/* notify word of sigevent struct */
+DECL|member|it_sigev_signo
+r_int
+id|it_sigev_signo
+suffix:semicolon
+multiline_comment|/* signo word of sigevent struct */
+DECL|member|it_sigev_value
+id|sigval_t
+id|it_sigev_value
+suffix:semicolon
+multiline_comment|/* value word of sigevent struct */
+DECL|member|it_incr
+r_int
+r_int
+id|it_incr
+suffix:semicolon
+multiline_comment|/* interval specified in jiffies */
+DECL|member|it_process
+r_struct
+id|task_struct
+op_star
+id|it_process
+suffix:semicolon
+multiline_comment|/* process to send signal to */
+DECL|member|it_timer
+r_struct
+id|timer_list
+id|it_timer
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|struct|task_struct
 r_struct
@@ -930,6 +1027,12 @@ r_struct
 id|timer_list
 id|real_timer
 suffix:semicolon
+DECL|member|posix_timers
+r_struct
+id|list_head
+id|posix_timers
+suffix:semicolon
+multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
@@ -945,8 +1048,7 @@ comma
 id|cstime
 suffix:semicolon
 DECL|member|start_time
-r_int
-r_int
+id|u64
 id|start_time
 suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
@@ -1106,11 +1208,17 @@ op_star
 r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
-DECL|member|sig
+DECL|member|signal
 r_struct
 id|signal_struct
 op_star
-id|sig
+id|signal
+suffix:semicolon
+DECL|member|sighand
+r_struct
+id|sighand_struct
+op_star
+id|sighand
 suffix:semicolon
 DECL|member|blocked
 DECL|member|real_blocked
@@ -1202,6 +1310,12 @@ r_int
 r_int
 id|ptrace_message
 suffix:semicolon
+DECL|member|last_siginfo
+id|siginfo_t
+op_star
+id|last_siginfo
+suffix:semicolon
+multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
 r_extern
@@ -1251,23 +1365,6 @@ DECL|macro|PF_FSTRANS
 mdefine_line|#define PF_FSTRANS&t;0x00020000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
-multiline_comment|/*&n; * Ptrace flags&n; */
-DECL|macro|PT_PTRACED
-mdefine_line|#define PT_PTRACED&t;0x00000001
-DECL|macro|PT_DTRACE
-mdefine_line|#define PT_DTRACE&t;0x00000002&t;/* delayed trace (used on m68k, i386) */
-DECL|macro|PT_TRACESYSGOOD
-mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
-DECL|macro|PT_PTRACE_CAP
-mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
-DECL|macro|PT_TRACE_FORK
-mdefine_line|#define PT_TRACE_FORK&t;0x00000010
-DECL|macro|PT_TRACE_VFORK
-mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
-DECL|macro|PT_TRACE_CLONE
-mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
-DECL|macro|PT_TRACE_EXEC
-mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
@@ -1429,6 +1526,30 @@ r_int
 id|pid
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|set_special_pids
+c_func
+(paren
+id|pid_t
+id|session
+comma
+id|pid_t
+id|pgrp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__set_special_pids
+c_func
+(paren
+id|pid_t
+id|session
+comma
+id|pid_t
+id|pgrp
+)paren
+suffix:semicolon
 multiline_comment|/* per-UID process charging. */
 r_extern
 r_struct
@@ -1443,6 +1564,16 @@ suffix:semicolon
 r_extern
 r_void
 id|free_uid
+c_func
+(paren
+r_struct
+id|user_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|switch_uid
 c_func
 (paren
 r_struct
@@ -1469,6 +1600,25 @@ c_func
 r_struct
 id|pt_regs
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|wake_up_state
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|state
+)paren
 )paren
 suffix:semicolon
 r_extern
@@ -1582,24 +1732,15 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|sig_exit
-c_func
-(paren
-r_int
-comma
-r_int
-comma
-r_struct
-id|siginfo
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|dequeue_signal
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
 id|sigset_t
 op_star
 id|mask
@@ -1807,17 +1948,14 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|__broadcast_thread_group
+r_void
+id|zap_other_threads
 c_func
 (paren
 r_struct
 id|task_struct
 op_star
 id|p
-comma
-r_int
-id|sig
 )paren
 suffix:semicolon
 r_extern
@@ -2161,6 +2299,26 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|exit_sighand
 c_func
 (paren
@@ -2181,6 +2339,25 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|exit_itimers
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|NORET_TYPE
+r_void
+id|do_group_exit
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|reparent_to_init
 c_func
 (paren
@@ -2192,7 +2369,21 @@ r_void
 id|daemonize
 c_func
 (paren
-r_void
+r_const
+r_char
+op_star
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|allow_signal
+c_func
+(paren
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -2749,7 +2940,7 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
+multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern
 id|FASTCALL
 c_func
@@ -2771,6 +2962,20 @@ id|recalc_sigpending
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|signal_wake_up
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+r_int
+id|resume_stopped
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wrappers for p-&gt;thread_info-&gt;cpu access. No-op on UP.&n; */

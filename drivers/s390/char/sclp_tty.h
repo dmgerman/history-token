@@ -75,7 +75,7 @@ mdefine_line|#define TIOCSCLPSINIT&t;_IO(SCLP_IOCTL_LETTER, 6)
 multiline_comment|/* enable/disable conversion from upper to lower case of input */
 DECL|macro|TIOCSCLPSCASE
 mdefine_line|#define TIOCSCLPSCASE&t;_IOW(SCLP_IOCTL_LETTER, 7, unsigned char)
-multiline_comment|/* set special character used for seperating upper and lower case, */
+multiline_comment|/* set special character used for separating upper and lower case, */
 multiline_comment|/* 0x00 disables this feature */
 DECL|macro|TIOCSCLPSDELIM
 mdefine_line|#define TIOCSCLPSDELIM&t;_IOW(SCLP_IOCTL_LETTER, 9, unsigned char)
@@ -97,7 +97,7 @@ mdefine_line|#define TIOCSCLPGOBUF&t;_IOR(SCLP_IOCTL_LETTER, 15, unsigned short)
 multiline_comment|/* Is conversion from upper to lower case of input enabled ? */
 DECL|macro|TIOCSCLPGCASE
 mdefine_line|#define TIOCSCLPGCASE&t;_IOR(SCLP_IOCTL_LETTER, 17, unsigned char)
-multiline_comment|/* get special character used for seperating upper and lower case, */
+multiline_comment|/* get special character used for separating upper and lower case, */
 multiline_comment|/* 0x00 disables this feature */
 DECL|macro|TIOCSCLPGDELIM
 mdefine_line|#define TIOCSCLPGDELIM&t;_IOR(SCLP_IOCTL_LETTER, 19, unsigned char)

@@ -292,7 +292,7 @@ id|pci_dev
 op_star
 id|td
 op_assign
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
 op_star
 id|dev
@@ -438,7 +438,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x0c
 comma
@@ -451,7 +451,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -677,7 +677,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x20
 comma
@@ -705,7 +705,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x20
 comma
@@ -718,7 +718,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x0c
 comma
@@ -1247,9 +1247,9 @@ suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -1392,7 +1392,7 @@ id|pci_dev
 op_star
 id|td
 op_assign
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
 op_star
 id|dev
@@ -1587,7 +1587,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -2034,7 +2034,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x08
 comma
@@ -2077,7 +2077,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x08
 comma
@@ -2224,7 +2224,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Entry point to AGP 3.0 host bridge init.  Check to see if we &n; * have an AGP 3.0 device operating in 3.0 mode.  Call &n; * agp_3_0_node_enable or agp_generic_agp_enable if we don&squot;t &n; * (AGP 3.0 devices are required to operate as AGP 2.0 devices &n; * when not using 3.0 electricals.&n; */
 DECL|function|agp_generic_agp_3_0_enable
-r_int
+r_void
 id|agp_generic_agp_3_0_enable
 c_func
 (paren
@@ -2244,9 +2244,9 @@ suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 comma
 op_amp
 id|ncapid
@@ -2295,9 +2295,9 @@ l_int|3
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x4
 comma
@@ -2326,14 +2326,8 @@ comma
 id|minor
 )paren
 suffix:semicolon
-r_return
-id|TRUE
-suffix:semicolon
 )brace
 )brace
-r_return
-id|FALSE
-suffix:semicolon
 )brace
 DECL|variable|agp_generic_agp_3_0_enable
 id|EXPORT_SYMBOL

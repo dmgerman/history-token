@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
+macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 multiline_comment|/* page arguments of these two macros are Emu page (4096 bytes), not like&n; * aligned pages in others&n; */
 DECL|macro|__set_ptb_entry
 mdefine_line|#define __set_ptb_entry(emu,page,addr) &bslash;&n;&t;((emu)-&gt;ptb_pages[page] = cpu_to_le32(((addr) &lt;&lt; 1) | (page)))
@@ -842,7 +843,13 @@ l_int|0x7fffffffUL
 id|snd_printk
 c_func
 (paren
-l_string|&quot;max memory size is 2GB!!&bslash;n&quot;
+l_string|&quot;max memory size is 2GB (addr = 0x%lx)!!&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|addr
 )paren
 suffix:semicolon
 r_return
@@ -1077,12 +1084,31 @@ id|emu10k1_t
 op_star
 id|emu
 comma
+id|snd_pcm_substream_t
+op_star
+id|substream
+)paren
+(brace
 r_struct
 id|snd_sg_buf
 op_star
 id|sgbuf
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|snd_pcm_sgbuf_t
+comma
+id|_snd_pcm_substream_sgbuf
+c_func
+(paren
+id|substream
 )paren
-(brace
+comma
+r_return
+l_int|NULL
+)paren
+suffix:semicolon
 id|snd_util_memhdr_t
 op_star
 id|hdr
@@ -1173,7 +1199,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* fill buffer addresses but pointers are not stored so that&n;&t; * snd_free_pci_pages() is not called in in synth_free()&n;&t; */
+multiline_comment|/* fill buffer addresses but pointers are not stored so that&n;&t; * snd_free_pci_page() is not called in in synth_free()&n;&t; */
 id|idx
 op_assign
 l_int|0
@@ -1198,6 +1224,42 @@ op_increment
 (brace
 id|dma_addr_t
 id|addr
+suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|idx
+op_ge
+id|sgbuf-&gt;pages
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;emu: pages overflow! (%d-%d) for %d&bslash;n&quot;
+comma
+id|blk-&gt;first_page
+comma
+id|blk-&gt;last_page
+comma
+id|sgbuf-&gt;pages
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|hdr-&gt;block_mutex
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif
+id|addr
 op_assign
 id|sgbuf-&gt;table
 (braket
@@ -1217,6 +1279,15 @@ id|addr
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;emu: failure page = %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -1764,12 +1835,10 @@ op_increment
 (brace
 id|ptr
 op_assign
-id|snd_malloc_pci_pages
+id|snd_malloc_pci_page
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|PAGE_SIZE
 comma
 op_amp
 id|addr
@@ -1796,12 +1865,10 @@ id|addr
 )paren
 )paren
 (brace
-id|snd_free_pci_pages
+id|snd_free_pci_page
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|PAGE_SIZE
 comma
 id|ptr
 comma
@@ -1854,12 +1921,10 @@ id|page
 op_increment
 )paren
 (brace
-id|snd_free_pci_pages
+id|snd_free_pci_page
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|PAGE_SIZE
 comma
 id|emu-&gt;page_ptr_table
 (braket
@@ -1952,12 +2017,10 @@ id|emu-&gt;page_ptr_table
 id|page
 )braket
 )paren
-id|snd_free_pci_pages
+id|snd_free_pci_page
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|PAGE_SIZE
 comma
 id|emu-&gt;page_ptr_table
 (braket

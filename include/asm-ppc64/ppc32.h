@@ -178,16 +178,8 @@ DECL|typedef|siginfo_t32
 )brace
 id|siginfo_t32
 suffix:semicolon
-DECL|macro|__old_sigset_t32
-mdefine_line|#define __old_sigset_t32&t;old_sigset_t32
 DECL|macro|__old_sigaction32
 mdefine_line|#define __old_sigaction32&t;old_sigaction32
-DECL|typedef|__old_sigset_t32
-r_typedef
-r_int
-r_int
-id|__old_sigset_t32
-suffix:semicolon
 DECL|struct|__old_sigaction32
 r_struct
 id|__old_sigaction32
@@ -197,7 +189,7 @@ r_int
 id|sa_handler
 suffix:semicolon
 DECL|member|sa_mask
-id|__old_sigset_t32
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 DECL|member|sa_flags
@@ -211,27 +203,6 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* not used by Linux/SPARC yet */
 )brace
-suffix:semicolon
-DECL|macro|_PPC32_NSIG
-mdefine_line|#define _PPC32_NSIG&t;       64
-DECL|macro|_PPC32_NSIG_BPW
-mdefine_line|#define _PPC32_NSIG_BPW&t;       32
-DECL|macro|_PPC32_NSIG_WORDS
-mdefine_line|#define _PPC32_NSIG_WORDS&t;       (_PPC32_NSIG / _PPC32_NSIG_BPW)
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_PPC32_NSIG_WORDS
-)braket
-suffix:semicolon
-DECL|typedef|sigset32_t
-)brace
-id|sigset32_t
 suffix:semicolon
 DECL|struct|sigaction32
 r_struct
@@ -255,7 +226,7 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 DECL|member|sa_mask
-id|sigset32_t
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */

@@ -2936,6 +2936,9 @@ id|nxp-&gt;ex_client
 comma
 id|nxp-&gt;ex_path
 comma
+(paren
+r_int
+)paren
 id|nxp-&gt;ex_dev
 comma
 (paren
@@ -3269,7 +3272,7 @@ c_func
 op_amp
 r_new
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -3549,6 +3552,9 @@ c_func
 (paren
 l_string|&quot;nfsd: no export %x/%lx for %s&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|nxp-&gt;ex_dev
 comma
 (paren

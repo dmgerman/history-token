@@ -108,34 +108,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ips_biosparam
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-comma
-r_struct
-id|block_device
-op_star
-comma
-id|sector_t
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ips_slave_configure
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_const
 r_char
 op_star
@@ -147,25 +119,15 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|do_ips
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;    * Some handy macros&n;    */
-macro_line|#ifndef LinuxVersionCode
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(x,y,z)  (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || defined CONFIG_HIGHIO
+DECL|macro|IPS_HIGHIO
+mdefine_line|#define IPS_HIGHIO
+DECL|macro|IPS_HIGHMEM_IO
+mdefine_line|#define IPS_HIGHMEM_IO     .highmem_io = 1,
+macro_line|#else
+DECL|macro|IPS_HIGHMEM_IO
+mdefine_line|#define IPS_HIGHMEM_IO
 macro_line|#endif
 DECL|macro|IPS_HA
 mdefine_line|#define IPS_HA(x)                   ((ips_ha_t *) x-&gt;hostdata)
@@ -177,15 +139,74 @@ DECL|macro|IPS_IS_CLARINET
 mdefine_line|#define IPS_IS_CLARINET(ha)         (((ha-&gt;device_id == IPS_DEVICEID_COPPERHEAD) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &gt;= IPS_REVID_CLARINETP1) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &lt;= IPS_REVID_CLARINETP3)) ? 1 : 0)
 DECL|macro|IPS_IS_MORPHEUS
 mdefine_line|#define IPS_IS_MORPHEUS(ha)         (ha-&gt;device_id == IPS_DEVICEID_MORPHEUS)
+DECL|macro|IPS_IS_MARCO
+mdefine_line|#define IPS_IS_MARCO(ha)            (ha-&gt;device_id == IPS_DEVICEID_MARCO)
 DECL|macro|IPS_USE_I2O_DELIVER
 mdefine_line|#define IPS_USE_I2O_DELIVER(ha)     ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         (IPS_IS_TROMBONE(ha) &amp;&amp; &bslash;&n;                                          (ips_force_i2o))) ? 1 : 0)
-DECL|macro|IPS_USE_I2O_STATUS
-mdefine_line|#define IPS_USE_I2O_STATUS(ha)      (IPS_IS_MORPHEUS(ha))
 DECL|macro|IPS_USE_MEMIO
 mdefine_line|#define IPS_USE_MEMIO(ha)           ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         ((IPS_IS_TROMBONE(ha) || IPS_IS_CLARINET(ha)) &amp;&amp; &bslash;&n;                                          (ips_force_memio))) ? 1 : 0)
+DECL|macro|IPS_HAS_ENH_SGLIST
+mdefine_line|#define IPS_HAS_ENH_SGLIST(ha)    (IPS_IS_MORPHEUS(ha) || IPS_IS_MARCO(ha))
+DECL|macro|IPS_USE_ENH_SGLIST
+mdefine_line|#define IPS_USE_ENH_SGLIST(ha)    ((ha)-&gt;flags &amp; IPS_HA_ENH_SG)
+DECL|macro|IPS_SGLIST_SIZE
+mdefine_line|#define IPS_SGLIST_SIZE(ha)       (IPS_USE_ENH_SGLIST(ha) ? &bslash;&n;                                         sizeof(IPS_ENH_SG_LIST) : sizeof(IPS_STD_SG_LIST))
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
+DECL|macro|pci_set_dma_mask
+mdefine_line|#define pci_set_dma_mask(dev,mask) (1)
+DECL|macro|scsi_set_pci_device
+mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|macro|IPS_REGISTER_HOSTS
+mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      scsi_register_module(MODULE_SCSI_HA,SHT)
+DECL|macro|IPS_UNREGISTER_HOSTS
+mdefine_line|#define IPS_UNREGISTER_HOSTS(SHT)    scsi_unregister_module(MODULE_SCSI_HA,SHT)
+DECL|macro|IPS_ADD_HOST
+mdefine_line|#define IPS_ADD_HOST(shost,device)
+DECL|macro|IPS_REMOVE_HOST
+mdefine_line|#define IPS_REMOVE_HOST(shost)
+macro_line|#else
+DECL|macro|IPS_REGISTER_HOSTS
+mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
+DECL|macro|IPS_UNREGISTER_HOSTS
+mdefine_line|#define IPS_UNREGISTER_HOSTS(SHT)
+DECL|macro|IPS_ADD_HOST
+mdefine_line|#define IPS_ADD_HOST(shost,device)   scsi_add_host(shost,device)
+DECL|macro|IPS_REMOVE_HOST
+mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
+macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
 mdefine_line|#define MDELAY mdelay
+macro_line|#endif
+macro_line|#ifndef min
+DECL|macro|min
+mdefine_line|#define min(x,y) ((x) &lt; (y) ? x : y)
+macro_line|#endif
+DECL|macro|pci_dma_lo32
+mdefine_line|#define pci_dma_lo32(a)         (a &amp; 0xffffffff)
+macro_line|#if (BITS_PER_LONG &gt; 32) || (defined CONFIG_HIGHMEM64G &amp;&amp; defined IPS_HIGHIO)
+DECL|macro|IPS_ENABLE_DMA64
+mdefine_line|#define IPS_ENABLE_DMA64        (1)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         (a &gt;&gt; 32)
+macro_line|#else
+DECL|macro|IPS_ENABLE_DMA64
+mdefine_line|#define IPS_ENABLE_DMA64        (0)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         (0)
+macro_line|#endif
+macro_line|#if defined(__ia64__)
+DECL|macro|IPS_ATOMIC_GFP
+mdefine_line|#define IPS_ATOMIC_GFP&t;(GFP_DMA | GFP_ATOMIC)
+DECL|macro|IPS_INIT_GFP
+mdefine_line|#define IPS_INIT_GFP&t;GFP_DMA
+macro_line|#else
+DECL|macro|IPS_ATOMIC_GFP
+mdefine_line|#define IPS_ATOMIC_GFP    GFP_ATOMIC
+DECL|macro|IPS_INIT_GFP
+mdefine_line|#define IPS_INIT_GFP&t;GFP_KERNEL
 macro_line|#endif
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
@@ -287,7 +308,7 @@ mdefine_line|#define IPS_CMD_DCDB_SG              0x84
 DECL|macro|IPS_CMD_EXTENDED_DCDB
 mdefine_line|#define IPS_CMD_EXTENDED_DCDB &t;    0x95
 DECL|macro|IPS_CMD_EXTENDED_DCDB_SG
-mdefine_line|#define IPS_CMD_EXTENDED_DCDB_SG&t;&t; 0x96
+mdefine_line|#define IPS_CMD_EXTENDED_DCDB_SG&t;    0x96
 DECL|macro|IPS_CMD_CONFIG_SYNC
 mdefine_line|#define IPS_CMD_CONFIG_SYNC          0x58
 DECL|macro|IPS_CMD_ERROR_TABLE
@@ -307,6 +328,8 @@ DECL|macro|IPS_POCL
 mdefine_line|#define IPS_POCL                     0x30
 DECL|macro|IPS_NORM_STATE
 mdefine_line|#define IPS_NORM_STATE               0x00
+DECL|macro|IPS_MAX_ADAPTER_TYPES
+mdefine_line|#define IPS_MAX_ADAPTER_TYPES        3
 DECL|macro|IPS_MAX_ADAPTERS
 mdefine_line|#define IPS_MAX_ADAPTERS             16
 DECL|macro|IPS_MAX_IOCTL
@@ -351,12 +374,16 @@ DECL|macro|IPS_FFDC
 mdefine_line|#define IPS_FFDC                     99
 DECL|macro|IPS_ADAPTER_ID
 mdefine_line|#define IPS_ADAPTER_ID               0xF
-DECL|macro|IPS_VENDORID
-mdefine_line|#define IPS_VENDORID                 0x1014
+DECL|macro|IPS_VENDORID_IBM
+mdefine_line|#define IPS_VENDORID_IBM             0x1014
+DECL|macro|IPS_VENDORID_ADAPTEC
+mdefine_line|#define IPS_VENDORID_ADAPTEC         0x9005
 DECL|macro|IPS_DEVICEID_COPPERHEAD
 mdefine_line|#define IPS_DEVICEID_COPPERHEAD      0x002E
 DECL|macro|IPS_DEVICEID_MORPHEUS
 mdefine_line|#define IPS_DEVICEID_MORPHEUS        0x01BD
+DECL|macro|IPS_DEVICEID_MARCO
+mdefine_line|#define IPS_DEVICEID_MARCO           0x0250
 DECL|macro|IPS_SUBDEVICEID_4M
 mdefine_line|#define IPS_SUBDEVICEID_4M           0x01BE
 DECL|macro|IPS_SUBDEVICEID_4L
@@ -369,6 +396,10 @@ DECL|macro|IPS_SUBDEVICEID_5I2
 mdefine_line|#define IPS_SUBDEVICEID_5I2          0x0259
 DECL|macro|IPS_SUBDEVICEID_5I1
 mdefine_line|#define IPS_SUBDEVICEID_5I1          0x0258
+DECL|macro|IPS_SUBDEVICEID_6M
+mdefine_line|#define IPS_SUBDEVICEID_6M           0x0279
+DECL|macro|IPS_SUBDEVICEID_6I
+mdefine_line|#define IPS_SUBDEVICEID_6I           0x028C
 DECL|macro|IPS_IOCTL_SIZE
 mdefine_line|#define IPS_IOCTL_SIZE               8192
 DECL|macro|IPS_STATUS_SIZE
@@ -491,6 +522,10 @@ DECL|macro|IPS_ADTYPE_SERVERAID5I2
 mdefine_line|#define IPS_ADTYPE_SERVERAID5I2      0x0C
 DECL|macro|IPS_ADTYPE_SERVERAID5I1
 mdefine_line|#define IPS_ADTYPE_SERVERAID5I1      0x0D
+DECL|macro|IPS_ADTYPE_SERVERAID6M
+mdefine_line|#define IPS_ADTYPE_SERVERAID6M       0x0E
+DECL|macro|IPS_ADTYPE_SERVERAID6I
+mdefine_line|#define IPS_ADTYPE_SERVERAID6I       0x0F
 multiline_comment|/*&n;    * Adapter Command/Status Packet Definitions&n;    */
 DECL|macro|IPS_SUCCESS
 mdefine_line|#define IPS_SUCCESS                  0x01 /* Successfully completed       */
@@ -587,6 +622,9 @@ DECL|macro|IPS_SCSI_MP3_Removeable
 mdefine_line|#define IPS_SCSI_MP3_Removeable      0x04
 DECL|macro|IPS_SCSI_MP3_AllocateSurface
 mdefine_line|#define IPS_SCSI_MP3_AllocateSurface 0x08
+multiline_comment|/*&n;    * HA Flags&n;    */
+DECL|macro|IPS_HA_ENH_SG
+mdefine_line|#define IPS_HA_ENH_SG                0x1
 multiline_comment|/*&n;    * SCB Flags&n;    */
 DECL|macro|IPS_SCB_MAP_SG
 mdefine_line|#define IPS_SCB_MAP_SG               0x00008
@@ -634,14 +672,78 @@ mdefine_line|#define IPS_DAYS_LEAP_YEAR           366
 DECL|macro|IPS_EPOCH_YEAR
 mdefine_line|#define IPS_EPOCH_YEAR               1970
 multiline_comment|/*&n;    * Scsi_Host Template&n;    */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+r_static
+r_void
+id|ips_select_queue_depth
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ips_biosparam
+c_func
+(paren
+id|Disk
+op_star
+id|disk
+comma
+id|kdev_t
+id|dev
+comma
+r_int
+id|geom
+(braket
+)braket
+)paren
+suffix:semicolon
 DECL|macro|IPS
-mdefine_line|#define IPS{&t;&bslash;&n;&t;.module&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_device_reset_handler&t;= NULL,&t;&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.abort&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.reset&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.slave_attach&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 3,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&bslash;&n;&t;.use_new_eh_code&t;&t;= 1 &bslash;&n;}
+mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.select_queue_depths&t;&t;= ips_select_queue_depth, &bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 16,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&bslash;&n;&t;.use_new_eh_code&t;&t;= 1, &bslash;&n;&t;IPS_HIGHMEM_IO &bslash;&n;}
 macro_line|#else
+r_static
+r_int
+id|ips_biosparam
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+comma
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+id|sector_t
+id|capacity
+comma
+r_int
+id|geom
+(braket
+)braket
+)paren
+suffix:semicolon
+r_int
+id|ips_slave_configure
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|SDptr
+)paren
+suffix:semicolon
 DECL|macro|IPS
 mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;= ips_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= ips_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= ips_info,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= ips_queue,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= ips_eh_abort,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= ips_eh_reset,&t;&t;&bslash;&n;&t;.slave_configure&t;= ips_slave_configure,&t;&bslash;&n;&t;.bios_param&t;&t;= ips_biosparam,&t;&bslash;&n;&t;.can_queue&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= IPS_MAX_SG,&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= 3,&t;&t;&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.highmem_io&t;&t;= 1 &bslash;&n;}
 macro_line|#endif
-multiline_comment|/*&n; * IBM PCI Raid Command Formats&n; */
+multiline_comment|/*&n; * Raid Command Formats&n; */
 r_typedef
 r_struct
 (brace
@@ -673,9 +775,13 @@ DECL|member|sector_count
 r_uint16
 id|sector_count
 suffix:semicolon
-DECL|member|reserved
-r_uint16
-id|reserved
+DECL|member|segment_4G
+r_uint8
+id|segment_4G
+suffix:semicolon
+DECL|member|enhanced_sg
+r_uint8
+id|enhanced_sg
 suffix:semicolon
 DECL|member|ccsar
 r_uint32
@@ -874,8 +980,16 @@ r_uint32
 id|dcdb_address
 suffix:semicolon
 DECL|member|reserved3
-r_uint32
+r_uint16
 id|reserved3
+suffix:semicolon
+DECL|member|segment_4G
+r_uint8
+id|segment_4G
+suffix:semicolon
+DECL|member|enhanced_sg
+r_uint8
+id|enhanced_sg
 suffix:semicolon
 DECL|member|ccsar
 r_uint32
@@ -1768,7 +1882,11 @@ id|usAddrDeadDisk
 (braket
 id|IPS_MAX_CHANNELS
 op_star
+(paren
 id|IPS_MAX_TARGETS
+op_plus
+l_int|1
+)paren
 )braket
 suffix:semicolon
 DECL|typedef|IPS_ENQ
@@ -2124,11 +2242,19 @@ id|bios_low
 l_int|4
 )braket
 suffix:semicolon
+DECL|member|adapter_order
+r_uint8
+id|adapter_order
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* BIOS Telling us the Sort Order   */
 DECL|member|Filler
 r_uint8
 id|Filler
 (braket
-l_int|76
+l_int|60
 )braket
 suffix:semicolon
 DECL|typedef|IPS_NVRAM_P5
@@ -2510,6 +2636,46 @@ DECL|typedef|IPS_SCSI_MODE_PAGE4
 )brace
 id|IPS_SCSI_MODE_PAGE4
 suffix:semicolon
+multiline_comment|/*&n; * Sense Data Format - Page 8&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|PageCode
+r_uint8
+id|PageCode
+suffix:semicolon
+DECL|member|PageLength
+r_uint8
+id|PageLength
+suffix:semicolon
+DECL|member|flags
+r_uint8
+id|flags
+suffix:semicolon
+DECL|member|RetentPrio
+r_uint8
+id|RetentPrio
+suffix:semicolon
+DECL|member|DisPrefetchLen
+r_uint16
+id|DisPrefetchLen
+suffix:semicolon
+DECL|member|MinPrefetchLen
+r_uint16
+id|MinPrefetchLen
+suffix:semicolon
+DECL|member|MaxPrefetchLen
+r_uint16
+id|MaxPrefetchLen
+suffix:semicolon
+DECL|member|MaxPrefetchCeiling
+r_uint16
+id|MaxPrefetchCeiling
+suffix:semicolon
+DECL|typedef|IPS_SCSI_MODE_PAGE8
+)brace
+id|IPS_SCSI_MODE_PAGE8
+suffix:semicolon
 multiline_comment|/*&n; * Sense Data Format - Block Descriptor (DASD)&n; */
 r_typedef
 r_struct
@@ -2579,6 +2745,10 @@ DECL|member|pg4
 id|IPS_SCSI_MODE_PAGE4
 id|pg4
 suffix:semicolon
+DECL|member|pg8
+id|IPS_SCSI_MODE_PAGE8
+id|pg8
+suffix:semicolon
 DECL|member|pdata
 )brace
 id|pdata
@@ -2601,13 +2771,56 @@ DECL|member|length
 r_uint32
 id|length
 suffix:semicolon
+DECL|typedef|IPS_STD_SG_LIST
+)brace
+id|IPS_STD_SG_LIST
+suffix:semicolon
+DECL|struct|ips_enh_sglist
+r_typedef
+r_struct
+id|ips_enh_sglist
+(brace
+DECL|member|address_lo
+r_uint32
+id|address_lo
+suffix:semicolon
+DECL|member|address_hi
+r_uint32
+id|address_hi
+suffix:semicolon
+DECL|member|length
+r_uint32
+id|length
+suffix:semicolon
+DECL|member|reserved
+r_uint32
+id|reserved
+suffix:semicolon
+DECL|typedef|IPS_ENH_SG_LIST
+)brace
+id|IPS_ENH_SG_LIST
+suffix:semicolon
+r_typedef
+r_union
+(brace
+DECL|member|list
+r_void
+op_star
+id|list
+suffix:semicolon
+DECL|member|std_list
+id|IPS_STD_SG_LIST
+op_star
+id|std_list
+suffix:semicolon
+DECL|member|enh_list
+id|IPS_ENH_SG_LIST
+op_star
+id|enh_list
+suffix:semicolon
 DECL|typedef|IPS_SG_LIST
-DECL|typedef|PIPS_SG_LIST
 )brace
 id|IPS_SG_LIST
-comma
-op_star
-id|PIPS_SG_LIST
 suffix:semicolon
 DECL|struct|_IPS_INFOSTR
 r_typedef
@@ -3117,6 +3330,11 @@ r_uint32
 id|cmd_in_progress
 suffix:semicolon
 multiline_comment|/* Current command in progress*/
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*                            */
 DECL|member|waitflag
 r_uint8
 id|waitflag
@@ -3166,11 +3384,6 @@ r_uint8
 id|ioctl_order
 suffix:semicolon
 multiline_comment|/* Number of pages in ioctl   */
-DECL|member|reserved2
-r_uint8
-id|reserved2
-suffix:semicolon
-multiline_comment|/* Empty                      */
 DECL|member|bios_version
 r_uint8
 id|bios_version
@@ -3228,12 +3441,17 @@ DECL|member|flash_order
 id|u8
 id|flash_order
 suffix:semicolon
-multiline_comment|/* Save Area for flash size order  */
+multiline_comment|/* Save Area for flash size order */
 DECL|member|flash_datasize
 id|u32
 id|flash_datasize
 suffix:semicolon
 multiline_comment|/* Save Area for flash data size */
+DECL|member|requires_esl
+r_uint8
+id|requires_esl
+suffix:semicolon
+multiline_comment|/* Requires an EraseStripeLock */
 DECL|typedef|ips_ha_t
 )brace
 id|ips_ha_t
@@ -3333,7 +3551,6 @@ id|op_code
 suffix:semicolon
 DECL|member|sg_list
 id|IPS_SG_LIST
-op_star
 id|sg_list
 suffix:semicolon
 DECL|member|scsi_cmd
@@ -3525,51 +3742,55 @@ mdefine_line|#define IPS_VER_MAJOR 5
 DECL|macro|IPS_VER_MAJOR_STRING
 mdefine_line|#define IPS_VER_MAJOR_STRING &quot;5&quot;
 DECL|macro|IPS_VER_MINOR
-mdefine_line|#define IPS_VER_MINOR 10
+mdefine_line|#define IPS_VER_MINOR 99
 DECL|macro|IPS_VER_MINOR_STRING
-mdefine_line|#define IPS_VER_MINOR_STRING &quot;10&quot;
+mdefine_line|#define IPS_VER_MINOR_STRING &quot;99&quot;
+DECL|macro|IPS_VER_BUILD
+mdefine_line|#define IPS_VER_BUILD 00
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;13&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING  &quot;5.10.13-BETA&quot;
-DECL|macro|IPS_LEGALCOPYRIGHT_STRING
-mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2002. All Rights Reserved.&quot;
-DECL|macro|IPS_NT_LEGALCOPYRIGHT_STRING
-mdefine_line|#define IPS_NT_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2002.&quot;
+mdefine_line|#define IPS_VER_STRING &quot;5.99.00&quot;
+DECL|macro|IPS_BUILD_IDENT
+mdefine_line|#define IPS_BUILD_IDENT 1132
 multiline_comment|/* Version numbers for various adapters */
 DECL|macro|IPS_VER_SERVERAID1
-mdefine_line|#define IPS_VER_SERVERAID1    &quot;2.25.01&quot;
+mdefine_line|#define IPS_VER_SERVERAID1 &quot;2.25.01&quot;
 DECL|macro|IPS_VER_SERVERAID2
-mdefine_line|#define IPS_VER_SERVERAID2    &quot;2.88.13&quot;
+mdefine_line|#define IPS_VER_SERVERAID2 &quot;2.88.13&quot;
 DECL|macro|IPS_VER_NAVAJO
-mdefine_line|#define IPS_VER_NAVAJO        &quot;2.88.13&quot;
+mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
-mdefine_line|#define IPS_VER_SERVERAID3    &quot;5.10.01&quot;
+mdefine_line|#define IPS_VER_SERVERAID3 &quot;5.11.05&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H   &quot;5.10.01&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;5.11.05&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;5.10.01&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;5.11.05&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA      &quot;5.10.05&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;5.11.05&quot;
+DECL|macro|IPS_VER_MARCO
+mdefine_line|#define IPS_VER_MARCO &quot;0.00.00&quot;
+DECL|macro|IPS_VER_SEBRING
+mdefine_line|#define IPS_VER_SEBRING &quot;0.00.00&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
-mdefine_line|#define IPS_COMPAT_UNKNOWN      &quot;&quot;
+mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;
 DECL|macro|IPS_COMPAT_CURRENT
-mdefine_line|#define IPS_COMPAT_CURRENT      &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_CURRENT &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID1
-mdefine_line|#define IPS_COMPAT_SERVERAID1   &quot;2.25.01&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID1 &quot;2.25.01&quot;
 DECL|macro|IPS_COMPAT_SERVERAID2
-mdefine_line|#define IPS_COMPAT_SERVERAID2   &quot;2.88.13&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID2 &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_NAVAJO
-mdefine_line|#define IPS_COMPAT_NAVAJO       &quot;2.88.13&quot;
+mdefine_line|#define IPS_COMPAT_NAVAJO  &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_KIOWA
-mdefine_line|#define IPS_COMPAT_KIOWA        &quot;2.88.13&quot;
+mdefine_line|#define IPS_COMPAT_KIOWA &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3H
-mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;5.10.01&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3L
-mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;5.10.01&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4H
-mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;5.10.01&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4M
 mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4L
@@ -3580,13 +3801,17 @@ DECL|macro|IPS_COMPAT_SERVERAID4Lx
 mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_SARASOTA
 mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SA510&quot;
+DECL|macro|IPS_COMPAT_MARCO
+mdefine_line|#define IPS_COMPAT_MARCO        &quot;SA000&quot;
+DECL|macro|IPS_COMPAT_SEBRING
+mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SA000&quot;
 DECL|macro|IPS_COMPAT_BIOS
-mdefine_line|#define IPS_COMPAT_BIOS         &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_BIOS &quot;SA510&quot;
 DECL|macro|IPS_COMPAT_MAX_ADAPTER_TYPE
-mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 14
+mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 16
 DECL|macro|IPS_COMPAT_ID_LENGTH
-mdefine_line|#define IPS_COMPAT_ID_LENGTH         8
+mdefine_line|#define IPS_COMPAT_ID_LENGTH 8
 DECL|macro|IPS_DEFINE_COMPAT_TABLE
-mdefine_line|#define IPS_DEFINE_COMPAT_TABLE(tablename) &bslash;&n;   char tablename[IPS_COMPAT_MAX_ADAPTER_TYPE] [IPS_COMPAT_ID_LENGTH] = { &bslash;&n;      IPS_COMPAT_UNKNOWN,      &bslash;&n;      IPS_COMPAT_SERVERAID1,   &bslash;&n;      IPS_COMPAT_SERVERAID2,   &bslash;&n;      IPS_COMPAT_NAVAJO,       &bslash;&n;      IPS_COMPAT_KIOWA,        &bslash;&n;      IPS_COMPAT_SERVERAID3H,  &bslash;&n;      IPS_COMPAT_SERVERAID3L,  &bslash;&n;      IPS_COMPAT_SERVERAID4H,  &bslash;&n;      IPS_COMPAT_SERVERAID4M,  &bslash;&n;      IPS_COMPAT_SERVERAID4L,  &bslash;&n;      IPS_COMPAT_SERVERAID4Mx, &bslash;&n;      IPS_COMPAT_SERVERAID4Lx, &bslash;&n;      IPS_COMPAT_SARASOTA,     &bslash;&n;      IPS_COMPAT_SARASOTA      &bslash;&n;   }
+mdefine_line|#define IPS_DEFINE_COMPAT_TABLE(tablename) &bslash;&n;   char tablename[IPS_COMPAT_MAX_ADAPTER_TYPE] [IPS_COMPAT_ID_LENGTH] = { &bslash;&n;      IPS_COMPAT_UNKNOWN, &bslash;&n;      IPS_COMPAT_SERVERAID1, &bslash;&n;      IPS_COMPAT_SERVERAID2, &bslash;&n;      IPS_COMPAT_NAVAJO, &bslash;&n;      IPS_COMPAT_KIOWA, &bslash;&n;      IPS_COMPAT_SERVERAID3H, &bslash;&n;      IPS_COMPAT_SERVERAID3L, &bslash;&n;      IPS_COMPAT_SERVERAID4H, &bslash;&n;      IPS_COMPAT_SERVERAID4M, &bslash;&n;      IPS_COMPAT_SERVERAID4L, &bslash;&n;      IPS_COMPAT_SERVERAID4Mx, &bslash;&n;      IPS_COMPAT_SERVERAID4Lx, &bslash;&n;      IPS_COMPAT_SARASOTA,         /* one-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_SARASOTA,         /* two-channel variety of SARASOTA */  &bslash;&n;      IPS_COMPAT_MARCO, &bslash;&n;      IPS_COMPAT_SEBRING &bslash;&n;   }
 multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 2&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -2&n; * c-argdecl-indent: 2&n; * c-label-offset: -2&n; * c-continued-statement-offset: 2&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

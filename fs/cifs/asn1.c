@@ -1290,6 +1290,12 @@ id|use_ntlmssp
 op_assign
 id|FALSE
 suffix:semicolon
+op_star
+id|secType
+op_assign
+id|NTLM
+suffix:semicolon
+multiline_comment|/* BB eventually make Kerberos or NLTMSSP the default */
 multiline_comment|/* cifs_dump_mem(&quot; Received SecBlob &quot;, security_blob, length); */
 id|asn1_open
 c_func
@@ -1333,7 +1339,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding negTokenInit header &quot;
+l_string|&quot;Error decoding negTokenInit header &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1370,7 +1376,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncls = %d con = %d tag = %d&quot;
+l_string|&quot;cls = %d con = %d tag = %d&quot;
 comma
 id|cls
 comma
@@ -1494,7 +1500,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding negTokenInit header&quot;
+l_string|&quot;Error decoding negTokenInit header&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1533,7 +1539,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding negTokenInit &quot;
+l_string|&quot;Error decoding negTokenInit &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1570,7 +1576,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncls = %d con = %d tag = %d end = %p (%d) exit 0&quot;
+l_string|&quot;cls = %d con = %d tag = %d end = %p (%d) exit 0&quot;
 comma
 id|cls
 comma
@@ -1620,7 +1626,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding negTokenInit &quot;
+l_string|&quot;Error decoding negTokenInit &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1657,7 +1663,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncls = %d con = %d tag = %d end = %p (%d) exit 1&quot;
+l_string|&quot;cls = %d con = %d tag = %d end = %p (%d) exit 1&quot;
 comma
 id|cls
 comma
@@ -1707,7 +1713,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding 2nd part of negTokenInit &quot;
+l_string|&quot;Error decoding 2nd part of negTokenInit &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1744,7 +1750,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncls = %d con = %d tag = %d end = %p (%d) exit 0&quot;
+l_string|&quot;cls = %d con = %d tag = %d end = %p (%d) exit 0&quot;
 comma
 id|cls
 comma
@@ -1793,7 +1799,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding 2nd part of negTokenInit &quot;
+l_string|&quot;Error decoding 2nd part of negTokenInit &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1830,7 +1836,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncls = %d con = %d tag = %d end = %p (%d) exit 1&quot;
+l_string|&quot;cls = %d con = %d tag = %d end = %p (%d) exit 1&quot;
 comma
 id|cls
 comma
@@ -1897,7 +1903,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError 1 decoding negTokenInit header exit 2&quot;
+l_string|&quot;Error 1 decoding negTokenInit header exit 2&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1942,7 +1948,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nOID len = %d oid = 0x%lx 0x%lx 0x%lx 0x%lx&quot;
+l_string|&quot;OID len = %d oid = 0x%lx 0x%lx 0x%lx 0x%lx&quot;
 comma
 id|oidlen
 comma
@@ -2010,7 +2016,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nThis should be an oid what is going on? &quot;
+l_string|&quot;This should be an oid what is going on? &quot;
 )paren
 )paren
 suffix:semicolon
@@ -2047,7 +2053,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding last part of negTokenInit exit 3&quot;
+l_string|&quot;Error decoding last part of negTokenInit exit 3&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2079,7 +2085,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExit 4 cls = %d con = %d tag = %d end = %p (%d)&quot;
+l_string|&quot;Exit 4 cls = %d con = %d tag = %d end = %p (%d)&quot;
 comma
 id|cls
 comma
@@ -2129,7 +2135,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding last part of negTokenInit exit 5&quot;
+l_string|&quot;Error decoding last part of negTokenInit exit 5&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2166,7 +2172,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExit 6 cls = %d con = %d tag = %d end = %p (%d)&quot;
+l_string|&quot;Exit 6 cls = %d con = %d tag = %d end = %p (%d)&quot;
 comma
 id|cls
 comma
@@ -2213,7 +2219,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding last part of negTokenInit exit 7&quot;
+l_string|&quot;Error decoding last part of negTokenInit exit 7&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2244,7 +2250,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExit 8 cls = %d con = %d tag = %d end = %p (%d)&quot;
+l_string|&quot;Exit 8 cls = %d con = %d tag = %d end = %p (%d)&quot;
 comma
 id|cls
 comma
@@ -2294,7 +2300,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError decoding last part of negTokenInit exit 9&quot;
+l_string|&quot;Error decoding last part of negTokenInit exit 9&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2331,7 +2337,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nExit 10 cls = %d con = %d tag = %d end = %p (%d)&quot;
+l_string|&quot;Exit 10 cls = %d con = %d tag = %d end = %p (%d)&quot;
 comma
 id|cls
 comma
@@ -2356,7 +2362,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNeed to call asn1_octets_decode() function for this %s&quot;
+l_string|&quot;Need to call asn1_octets_decode() function for this %s&quot;
 comma
 id|ctx.pointer
 )paren

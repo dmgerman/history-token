@@ -2,6 +2,7 @@ multiline_comment|/*&n; * video1394.h - driver for OHCI 1394 boards&n; * Copyrig
 macro_line|#ifndef _VIDEO_1394_H
 DECL|macro|_VIDEO_1394_H
 mdefine_line|#define _VIDEO_1394_H
+macro_line|#include &quot;ieee1394-ioctl.h&quot;
 DECL|macro|VIDEO1394_DRIVER_NAME
 mdefine_line|#define VIDEO1394_DRIVER_NAME &quot;video1394&quot;
 DECL|macro|VIDEO1394_MAX_SIZE
@@ -18,40 +19,6 @@ id|VIDEO1394_BUFFER_QUEUED
 comma
 DECL|enumerator|VIDEO1394_BUFFER_READY
 id|VIDEO1394_BUFFER_READY
-)brace
-suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|VIDEO1394_LISTEN_CHANNEL
-id|VIDEO1394_LISTEN_CHANNEL
-op_assign
-l_int|0
-comma
-DECL|enumerator|VIDEO1394_UNLISTEN_CHANNEL
-id|VIDEO1394_UNLISTEN_CHANNEL
-comma
-DECL|enumerator|VIDEO1394_LISTEN_QUEUE_BUFFER
-id|VIDEO1394_LISTEN_QUEUE_BUFFER
-comma
-DECL|enumerator|VIDEO1394_LISTEN_WAIT_BUFFER
-id|VIDEO1394_LISTEN_WAIT_BUFFER
-comma
-singleline_comment|// wait until buffer is ready
-DECL|enumerator|VIDEO1394_TALK_CHANNEL
-id|VIDEO1394_TALK_CHANNEL
-comma
-DECL|enumerator|VIDEO1394_UNTALK_CHANNEL
-id|VIDEO1394_UNTALK_CHANNEL
-comma
-DECL|enumerator|VIDEO1394_TALK_QUEUE_BUFFER
-id|VIDEO1394_TALK_QUEUE_BUFFER
-comma
-DECL|enumerator|VIDEO1394_TALK_WAIT_BUFFER
-id|VIDEO1394_TALK_WAIT_BUFFER
-comma
-DECL|enumerator|VIDEO1394_LISTEN_POLL_BUFFER
-id|VIDEO1394_LISTEN_POLL_BUFFER
-singleline_comment|// return immediately with -EINTR if not ready
 )brace
 suffix:semicolon
 DECL|macro|VIDEO1394_SYNC_FRAMES

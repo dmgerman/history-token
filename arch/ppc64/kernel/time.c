@@ -45,10 +45,6 @@ id|time_t
 id|last_rtc_update
 suffix:semicolon
 r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
-r_extern
 r_int
 id|piranha_simulator
 suffix:semicolon
@@ -719,11 +715,6 @@ id|cpu
 op_assign
 id|lpaca-&gt;xPacaIndex
 suffix:semicolon
-r_struct
-id|ItLpQueue
-op_star
-id|lpq
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
@@ -772,7 +763,7 @@ op_eq
 id|boot_cpuid
 )paren
 (brace
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -800,7 +791,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -853,6 +844,10 @@ id|next_dec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
+(brace
+r_struct
+id|ItLpQueue
+op_star
 id|lpq
 op_assign
 id|lpaca-&gt;lpQueuePtr
@@ -878,6 +873,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|irq_exit
 c_func
@@ -1025,7 +1021,7 @@ r_int
 r_int
 id|new_xsec
 suffix:semicolon
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 c_func
 (paren
 op_amp
@@ -1190,7 +1186,7 @@ op_assign
 id|tb_last_stamp
 suffix:semicolon
 )brace
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1374,7 +1370,7 @@ op_amp
 id|tm
 )paren
 suffix:semicolon
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 c_func
 (paren
 op_amp
@@ -1474,7 +1470,7 @@ id|last_rtc_update
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1840,7 +1836,7 @@ comma
 id|new_tb_to_xs
 )paren
 suffix:semicolon
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 c_func
 (paren
 op_amp
@@ -1925,7 +1921,7 @@ id|do_gtod.var_idx
 op_assign
 id|temp_idx
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp

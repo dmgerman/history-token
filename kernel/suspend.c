@@ -29,17 +29,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
-r_void
-id|signal_wake_up
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|sys_sync
 c_func
@@ -457,7 +446,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -466,13 +455,15 @@ id|signal_wake_up
 c_func
 (paren
 id|p
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|p-&gt;sig-&gt;siglock
+id|p-&gt;sighand-&gt;siglock
 comma
 id|flags
 )paren
@@ -4577,6 +4568,15 @@ l_int|10
 suffix:semicolon
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|noresume
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|panic
 c_func
 (paren
@@ -4587,7 +4587,6 @@ comma
 id|cur-&gt;swh.magic.magic
 )paren
 suffix:semicolon
-multiline_comment|/* We want to panic even with noresume -- we certainly don&squot;t want to add&n;&t;&t;   out signature into your ext2 filesystem ;-) */
 )brace
 r_if
 c_cond
@@ -5205,10 +5204,8 @@ c_cond
 op_logical_neg
 id|resume_status
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -5350,12 +5347,12 @@ r_if
 c_cond
 (paren
 id|resume_status
+op_eq
+id|NORESUME
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|strncpy
 c_func
 (paren
@@ -5374,11 +5371,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|software_noresume
+DECL|function|noresume_setup
 r_static
 r_int
 id|__init
-id|software_noresume
+id|noresume_setup
 c_func
 (paren
 r_char
@@ -5386,21 +5383,6 @@ op_star
 id|str
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|resume_status
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;noresume option lacks a resume= option&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|resume_status
 op_assign
 id|NORESUME
@@ -5414,7 +5396,7 @@ c_func
 (paren
 l_string|&quot;noresume&quot;
 comma
-id|software_noresume
+id|noresume_setup
 )paren
 suffix:semicolon
 id|__setup

@@ -2255,19 +2255,23 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
 r_if
 c_cond
 (paren
-id|regs-&gt;r12
-op_ge
-id|TASK_SIZE
+op_logical_neg
+id|user_stack
+c_func
+(paren
+id|current
+comma
+id|regs
+)paren
 )paren
 (brace
 id|DPRINT
 c_func
 (paren
-l_string|&quot;ignoring kernel write to r%lu; register isn&squot;t on the RBS!&quot;
+l_string|&quot;ignoring kernel write to r%lu; register isn&squot;t on the kernel RBS!&quot;
 comma
 id|r1
 )paren
@@ -2772,13 +2776,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
 r_if
 c_cond
 (paren
-id|regs-&gt;r12
-op_ge
-id|TASK_SIZE
+op_logical_neg
+id|user_stack
+c_func
+(paren
+id|current
+comma
+id|regs
+)paren
 )paren
 (brace
 id|DPRINT
@@ -5685,14 +5693,6 @@ id|regs
 )paren
 (brace
 r_struct
-id|exception_fixup
-id|fix
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-r_struct
 id|ia64_psr
 op_star
 id|ipsr
@@ -5725,6 +5725,14 @@ suffix:semicolon
 r_struct
 id|siginfo
 id|si
+suffix:semicolon
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|eh
+op_assign
+l_int|NULL
 suffix:semicolon
 r_union
 (brace
@@ -5782,8 +5790,7 @@ c_func
 id|regs
 )paren
 )paren
-(brace
-id|fix
+id|eh
 op_assign
 id|SEARCH_EXCEPTION_TABLE
 c_func
@@ -5791,7 +5798,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5801,7 +5807,7 @@ c_func
 id|regs
 )paren
 op_logical_or
-id|fix.cont
+id|eh
 )paren
 (brace
 r_if
@@ -6355,7 +6361,7 @@ id|regs
 r_if
 c_cond
 (paren
-id|fix.cont
+id|eh
 )paren
 (brace
 id|handle_exception
@@ -6363,7 +6369,7 @@ c_func
 (paren
 id|regs
 comma
-id|fix
+id|eh
 )paren
 suffix:semicolon
 r_goto

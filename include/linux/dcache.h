@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 r_struct
 id|vfsmount
@@ -34,6 +35,13 @@ DECL|member|hash
 r_int
 r_int
 id|hash
+suffix:semicolon
+DECL|member|name_str
+r_char
+id|name_str
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -205,11 +213,28 @@ DECL|member|d_count
 id|atomic_t
 id|d_count
 suffix:semicolon
+DECL|member|d_vfs_flags
+r_int
+r_int
+id|d_vfs_flags
+suffix:semicolon
+multiline_comment|/* moved here to be on same cacheline */
+DECL|member|d_lock
+id|spinlock_t
+id|d_lock
+suffix:semicolon
+multiline_comment|/* per dentry lock */
 DECL|member|d_flags
 r_int
 r_int
 id|d_flags
 suffix:semicolon
+DECL|member|d_move_count
+r_int
+r_int
+id|d_move_count
+suffix:semicolon
+multiline_comment|/* to indicated moved dentry while lockless lookup */
 DECL|member|d_inode
 r_struct
 id|inode
@@ -224,6 +249,13 @@ op_star
 id|d_parent
 suffix:semicolon
 multiline_comment|/* parent directory */
+DECL|member|d_bucket
+r_struct
+id|list_head
+op_star
+id|d_bucket
+suffix:semicolon
+multiline_comment|/* lookup hash bucket */
 DECL|member|d_hash
 r_struct
 id|list_head
@@ -235,7 +267,7 @@ r_struct
 id|list_head
 id|d_lru
 suffix:semicolon
-multiline_comment|/* d_count = 0 LRU list */
+multiline_comment|/* LRU list */
 DECL|member|d_child
 r_struct
 id|list_head
@@ -263,6 +295,13 @@ r_struct
 id|qstr
 id|d_name
 suffix:semicolon
+DECL|member|d_qstr
+r_struct
+id|qstr
+op_star
+id|d_qstr
+suffix:semicolon
+multiline_comment|/* quick str ptr used in lockless lookup and concurrent d_move */
 DECL|member|d_time
 r_int
 r_int
@@ -282,17 +321,17 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
-DECL|member|d_vfs_flags
-r_int
-r_int
-id|d_vfs_flags
-suffix:semicolon
 DECL|member|d_fsdata
 r_void
 op_star
 id|d_fsdata
 suffix:semicolon
 multiline_comment|/* fs-specific data */
+DECL|member|d_rcu
+r_struct
+id|rcu_head
+id|d_rcu
+suffix:semicolon
 DECL|member|d_cookie
 r_struct
 id|dcookie_struct
@@ -423,6 +462,8 @@ mdefine_line|#define&t;DCACHE_DISCONNECTED 0x0004
 multiline_comment|/* This dentry is possibly not currently connected to the dcache tree,&n;      * in which case its parent will either be itself, or will have this&n;      * flag as well.  nfsd will not use a dentry with this bit set, but will&n;      * first endeavour to clear the bit either by discovering that it is&n;      * connected, or by performing lookup operations.   Any filesystem which&n;      * supports nfsd_operations MUST have a lookup function which, if it finds&n;      * a directory inode with a DCACHE_DISCONNECTED dentry, will d_move&n;      * that dentry into place and return that dentry rather than the passed one,&n;      * typically using d_splice_alias.&n;      */
 DECL|macro|DCACHE_REFERENCED
 mdefine_line|#define DCACHE_REFERENCED&t;0x0008  /* Recently used, don&squot;t discard. */
+DECL|macro|DCACHE_UNHASHED
+mdefine_line|#define DCACHE_UNHASHED&t;&t;0x0010&t;
 r_extern
 id|spinlock_t
 id|dcache_lock
@@ -445,7 +486,11 @@ op_star
 id|dentry
 )paren
 (brace
-id|list_del_init
+id|dentry-&gt;d_vfs_flags
+op_or_assign
+id|DCACHE_UNHASHED
+suffix:semicolon
+id|list_del_rcu
 c_func
 (paren
 op_amp
@@ -751,22 +796,6 @@ id|qstr
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|dentry
-op_star
-id|__d_lookup
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|qstr
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* validate &quot;insecure&quot; dentry pointer */
 r_extern
 r_int
@@ -825,28 +854,16 @@ c_cond
 id|dentry
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_count
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|atomic_inc
 c_func
 (paren
 op_amp
 id|dentry-&gt;d_count
 )paren
+suffix:semicolon
+id|dentry-&gt;d_vfs_flags
+op_or_assign
+id|DCACHE_REFERENCED
 suffix:semicolon
 )brace
 r_return
@@ -880,11 +897,10 @@ id|dentry
 )paren
 (brace
 r_return
-id|list_empty
-c_func
 (paren
+id|dentry-&gt;d_vfs_flags
 op_amp
-id|dentry-&gt;d_hash
+id|DCACHE_UNHASHED
 )paren
 suffix:semicolon
 )brace

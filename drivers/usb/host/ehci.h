@@ -504,7 +504,6 @@ id|list_head
 id|qtd_list
 suffix:semicolon
 multiline_comment|/* sw qtd list */
-multiline_comment|/* dma same in urb&squot;s qtds, except 1st control qtd (setup buffer) */
 DECL|member|urb
 r_struct
 id|urb
@@ -528,6 +527,8 @@ l_int|32
 )paren
 )paren
 suffix:semicolon
+DECL|macro|QTD_MASK
+mdefine_line|#define QTD_MASK cpu_to_le32 (~0x1f)&t;/* mask NakCnt+T in qh-&gt;hw_alt_next */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* type tag from {qh,itd,sitd,fstn}-&gt;hw_next */
 DECL|macro|Q_NEXT_TYPE
@@ -667,6 +668,13 @@ id|ehci_qtd
 op_star
 id|dummy
 suffix:semicolon
+DECL|member|reclaim
+r_struct
+id|ehci_qh
+op_star
+id|reclaim
+suffix:semicolon
+multiline_comment|/* next to reclaim */
 DECL|member|refcount
 id|atomic_t
 id|refcount
@@ -685,6 +693,10 @@ DECL|macro|QH_STATE_UNLINK
 mdefine_line|#define&t;QH_STATE_UNLINK&t;&t;2&t;&t;/* HC may still see this */
 DECL|macro|QH_STATE_IDLE
 mdefine_line|#define&t;QH_STATE_IDLE&t;&t;3&t;&t;/* HC doesn&squot;t see this */
+DECL|macro|QH_STATE_UNLINK_WAIT
+mdefine_line|#define&t;QH_STATE_UNLINK_WAIT&t;4&t;&t;/* LINKED and on reclaim q */
+DECL|macro|QH_STATE_COMPLETING
+mdefine_line|#define&t;QH_STATE_COMPLETING&t;5&t;&t;/* don&squot;t touch token.HALT */
 multiline_comment|/* periodic schedule info */
 DECL|member|usecs
 id|u8
@@ -998,54 +1010,6 @@ id|root_hub
 suffix:semicolon
 )brace
 macro_line|#else&t;/* LINUX_VERSION_CODE */
-singleline_comment|// hcd_to_bus() eventually moves to hcd.h on 2.5 too
-DECL|function|hcd_to_bus
-r_static
-r_inline
-r_struct
-id|usb_bus
-op_star
-id|hcd_to_bus
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-r_return
-op_amp
-id|hcd-&gt;self
-suffix:semicolon
-)brace
-singleline_comment|// ... as does hcd_register_root()
-DECL|function|hcd_register_root
-r_static
-r_inline
-r_int
-id|hcd_register_root
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-r_return
-id|usb_register_root_hub
-(paren
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
-comma
-op_amp
-id|hcd-&gt;pdev-&gt;dev
-)paren
-suffix:semicolon
-)brace
 DECL|macro|SUBMIT_URB
 mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb,mem_flags)
 macro_line|#ifndef DEBUG

@@ -284,13 +284,6 @@ id|SCTP_EVENT_TIMEOUT_T3_RTX
 op_assign
 l_int|0
 suffix:semicolon
-id|ep-&gt;timeouts
-(braket
-id|SCTP_EVENT_TIMEOUT_T4_RTO
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* sctpimpguide-05 Section 2.12.2&n;&t; * If the &squot;T5-shutdown-guard&squot; timer is used, it SHOULD be set to the&n;&t; * recommended value of 5 times &squot;RTO.Max&squot;.&n;&t; */
 id|ep-&gt;timeouts
 (braket
@@ -323,13 +316,6 @@ op_assign
 id|sp-&gt;autoclose
 op_star
 id|HZ
-suffix:semicolon
-id|ep-&gt;timeouts
-(braket
-id|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-)braket
-op_assign
-id|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE
 suffix:semicolon
 multiline_comment|/* Set up the default send/receive buffer space.  */
 multiline_comment|/* FIXME - Should the min and max window size be configurable&n;&t; * sysctl parameters as opposed to be constants?&n;&t; */
@@ -669,7 +655,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transport
@@ -783,7 +770,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 id|transport
@@ -941,7 +929,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon

@@ -28,6 +28,10 @@ DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
 suffix:semicolon
+DECL|variable|sysctl_tcp_low_latency
+r_int
+id|sysctl_tcp_low_latency
+suffix:semicolon
 multiline_comment|/* Check TCP sequence numbers in ICMP packets. */
 DECL|macro|ICMP_MIN_LENGTH
 mdefine_line|#define ICMP_MIN_LENGTH 8
@@ -7098,31 +7102,6 @@ op_star
 id|skb
 )paren
 (brace
-macro_line|#ifdef CONFIG_FILTER
-r_struct
-id|sk_filter
-op_star
-id|filter
-op_assign
-id|sk-&gt;filter
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|filter
-op_logical_and
-id|sk_filter
-c_func
-(paren
-id|skb
-comma
-id|filter
-)paren
-)paren
-r_goto
-id|discard
-suffix:semicolon
-macro_line|#endif /* CONFIG_FILTER */
 r_if
 c_cond
 (paren
@@ -7576,6 +7555,22 @@ comma
 id|XFRM_POLICY_IN
 comma
 id|skb
+)paren
+)paren
+r_goto
+id|discard_and_relse
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk_filter
+c_func
+(paren
+id|sk
+comma
+id|skb
+comma
+l_int|0
 )paren
 )paren
 r_goto

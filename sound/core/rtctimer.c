@@ -13,9 +13,6 @@ macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#else
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#endif
-multiline_comment|/* use tasklet for interrupt handling */
-DECL|macro|USE_TASKLET
-mdefine_line|#define USE_TASKLET
 DECL|macro|RTC_FREQ
 mdefine_line|#define RTC_FREQ&t;1024&t;&t;/* default frequency */
 DECL|macro|NANO_SEC
@@ -133,15 +130,6 @@ r_static
 id|rtc_task_t
 id|rtc_task
 suffix:semicolon
-multiline_comment|/* tasklet */
-macro_line|#ifdef USE_TASKLET
-DECL|variable|rtc_tq
-r_static
-r_struct
-id|tasklet_struct
-id|rtc_tq
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 DECL|function|rtctimer_open
@@ -179,8 +167,6 @@ id|t-&gt;private_data
 op_assign
 op_amp
 id|rtc_task
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -220,8 +206,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -343,6 +327,9 @@ op_star
 id|private_data
 )paren
 (brace
+r_int
+id|ticks
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -350,17 +337,6 @@ op_amp
 id|rtc_inc
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_TASKLET
-id|tasklet_hi_schedule
-c_func
-(paren
-op_amp
-id|rtc_tq
-)paren
-suffix:semicolon
-macro_line|#else
-(brace
-r_int
 id|ticks
 op_assign
 id|atomic_read
@@ -392,79 +368,6 @@ id|rtc_inc
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* USE_TASKLET */
-)brace
-macro_line|#ifdef USE_TASKLET
-DECL|function|rtctimer_interrupt2
-r_static
-r_void
-id|rtctimer_interrupt2
-c_func
-(paren
-r_int
-r_int
-id|private_data
-)paren
-(brace
-id|snd_timer_t
-op_star
-id|timer
-op_assign
-(paren
-id|snd_timer_t
-op_star
-)paren
-id|private_data
-suffix:semicolon
-r_int
-id|ticks
-suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|timer
-op_ne
-l_int|NULL
-comma
-r_return
-)paren
-suffix:semicolon
-r_do
-(brace
-id|ticks
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|rtc_inc
-)paren
-suffix:semicolon
-id|snd_timer_interrupt
-c_func
-(paren
-id|timer
-comma
-id|ticks
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|atomic_sub_and_test
-c_func
-(paren
-id|ticks
-comma
-op_amp
-id|rtc_inc
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* USE_TASKLET */
 multiline_comment|/*&n; *  ENTRY functions&n; */
 DECL|function|rtctimer_init
 r_static
@@ -569,23 +472,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#ifdef USE_TASKLET
-id|tasklet_init
-c_func
-(paren
-op_amp
-id|rtc_tq
-comma
-id|rtctimer_interrupt2
-comma
-(paren
-r_int
-r_int
-)paren
-id|timer
-)paren
-suffix:semicolon
-macro_line|#endif /* USE_TASKLET */
 id|strcpy
 c_func
 (paren

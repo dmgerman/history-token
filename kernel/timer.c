@@ -6,7 +6,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/*&n; * per-CPU timer vector definitions:&n; */
 DECL|macro|TVN_BITS
 mdefine_line|#define TVN_BITS 6
@@ -62,12 +65,6 @@ DECL|typedef|tvec_root_t
 )brace
 id|tvec_root_t
 suffix:semicolon
-DECL|typedef|timer_t
-r_typedef
-r_struct
-id|timer_list
-id|timer_t
-suffix:semicolon
 DECL|struct|tvec_t_base_s
 r_struct
 id|tvec_t_base_s
@@ -82,7 +79,8 @@ r_int
 id|timer_jiffies
 suffix:semicolon
 DECL|member|running_timer
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|running_timer
 suffix:semicolon
@@ -136,7 +134,8 @@ r_void
 id|check_timer_failed
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -204,7 +203,8 @@ r_void
 id|check_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -234,7 +234,8 @@ id|tvec_base_t
 op_star
 id|base
 comma
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -477,7 +478,8 @@ r_void
 id|add_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -650,7 +652,8 @@ r_int
 id|mod_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 comma
@@ -902,7 +905,8 @@ r_int
 id|del_timer
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -997,7 +1001,8 @@ r_int
 id|del_timer_sync
 c_func
 (paren
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 )paren
@@ -1161,7 +1166,8 @@ op_ne
 id|head
 )paren
 (brace
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|tmp
 suffix:semicolon
@@ -1172,7 +1178,8 @@ c_func
 (paren
 id|curr
 comma
-id|timer_t
+r_struct
+id|timer_list
 comma
 id|entry
 )paren
@@ -1354,7 +1361,8 @@ r_int
 r_int
 id|data
 suffix:semicolon
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 suffix:semicolon
@@ -1365,7 +1373,8 @@ c_func
 (paren
 id|curr
 comma
-id|timer_t
+r_struct
+id|timer_list
 comma
 id|entry
 )paren
@@ -1705,6 +1714,11 @@ id|time_state
 op_assign
 id|TIME_OOP
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1738,6 +1752,11 @@ suffix:semicolon
 id|time_state
 op_assign
 id|TIME_WAIT
+suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2678,11 +2697,11 @@ id|wall_jiffies
 suffix:semicolon
 multiline_comment|/*&n; * This read-write spinlock protects us from races in SMP while&n; * playing with xtime and avenrun.&n; */
 DECL|variable|__cacheline_aligned_in_smp
-id|rwlock_t
+id|seqlock_t
 id|xtime_lock
 id|__cacheline_aligned_in_smp
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SEQLOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|last_time_offset
 r_int
@@ -2804,7 +2823,7 @@ id|ticks
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
+multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without sampling the sequence number in xtime_lock.&n; * jiffies is defined in the linker script...&n; */
 DECL|function|do_timer
 r_void
 id|do_timer
@@ -3107,7 +3126,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|timer_t
+r_struct
+id|timer_list
 id|timer
 suffix:semicolon
 r_int
@@ -3251,6 +3271,7 @@ r_return
 id|current-&gt;pid
 suffix:semicolon
 )brace
+macro_line|#ifndef FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 DECL|function|nanosleep_restart
 r_static
 r_int
@@ -3562,6 +3583,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif 
+singleline_comment|// ! FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 multiline_comment|/*&n; * sys_sysinfo - fill in sysinfo struct&n; */
 DECL|function|sys_sysinfo
 id|asmlinkage
@@ -3579,6 +3602,9 @@ r_struct
 id|sysinfo
 id|val
 suffix:semicolon
+id|u64
+id|uptime
+suffix:semicolon
 r_int
 r_int
 id|mem_total
@@ -3590,6 +3616,10 @@ r_int
 id|mem_unit
 comma
 id|bitcount
+suffix:semicolon
+r_int
+r_int
+id|seq
 suffix:semicolon
 id|memset
 c_func
@@ -3610,18 +3640,36 @@ id|sysinfo
 )paren
 )paren
 suffix:semicolon
-id|read_lock_irq
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|uptime
+op_assign
+id|jiffies_64
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|uptime
+comma
+id|HZ
+)paren
+suffix:semicolon
 id|val.uptime
 op_assign
-id|jiffies
-op_div
-id|HZ
+(paren
+r_int
+r_int
+)paren
+id|uptime
 suffix:semicolon
 id|val.loads
 (braket
@@ -3675,11 +3723,18 @@ id|val.procs
 op_assign
 id|nr_threads
 suffix:semicolon
-id|read_unlock_irq
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 id|si_meminfo

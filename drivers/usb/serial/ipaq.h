@@ -26,6 +26,10 @@ DECL|macro|COMPAQ_IPAQ_ID
 mdefine_line|#define COMPAQ_IPAQ_ID&t;&t;0x0003
 DECL|macro|COMPAQ_0032_ID
 mdefine_line|#define COMPAQ_0032_ID&t;&t;0x0032
+DECL|macro|DELL_VENDOR_ID
+mdefine_line|#define DELL_VENDOR_ID&t;&t;0x413c
+DECL|macro|DELL_AXIM_ID
+mdefine_line|#define DELL_AXIM_ID&t;&t;0x4001
 DECL|macro|HP_VENDOR_ID
 mdefine_line|#define HP_VENDOR_ID&t;&t;0x03f0
 DECL|macro|HP_JORNADA_548_ID
@@ -80,6 +84,8 @@ DECL|macro|TOSHIBA_VENDOR_ID
 mdefine_line|#define TOSHIBA_VENDOR_ID&t;0x0930
 DECL|macro|TOSHIBA_PRODUCT_ID
 mdefine_line|#define TOSHIBA_PRODUCT_ID&t;0x0700
+DECL|macro|TOSHIBA_E740_ID
+mdefine_line|#define TOSHIBA_E740_ID&t;&t;0x0706
 DECL|macro|HTC_VENDOR_ID
 mdefine_line|#define HTC_VENDOR_ID&t;&t;0x0bb4
 DECL|macro|HTC_PRODUCT_ID

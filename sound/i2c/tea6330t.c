@@ -1287,8 +1287,10 @@ op_star
 id|knew
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 op_assign
 op_minus

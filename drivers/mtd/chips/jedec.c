@@ -3138,7 +3138,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* We could split this into a timer routine and return early, performing&n;      background erasure.. Maybe later if the need warrents */
-multiline_comment|/* Poll the flash for erasure completion, specs say this can take as long&n;      as 480 seconds to do all the sectors (for a 2 meg flash). &n;      Erasure time is dependant on chip age, temp and wear.. */
+multiline_comment|/* Poll the flash for erasure completion, specs say this can take as long&n;      as 480 seconds to do all the sectors (for a 2 meg flash). &n;      Erasure time is dependent on chip age, temp and wear.. */
 multiline_comment|/* This being a generic routine assumes a 32 bit bus. It does read32s&n;      and bundles interleved chips into the same grouping. This will work &n;      for all bus widths */
 id|Time
 op_assign
@@ -3994,7 +3994,7 @@ op_star
 id|buf
 )paren
 (brace
-multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisable by the chip size) adds the necesary lower bits&n;      of addrshift (interleve index) and then adds the control register index. */
+multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisible by the chip size) adds the necessary lower bits&n;      of addrshift (interleve index) and then adds the control register index. */
 DECL|macro|flread
 mdefine_line|#define flread(x) map-&gt;read8(map,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
 DECL|macro|flwrite

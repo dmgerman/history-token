@@ -501,6 +501,8 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;248
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;249
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;250
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;252
 DECL|macro|__NR_lookup_dcookie
@@ -515,6 +517,26 @@ DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;257
 DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;258
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;259
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;(__NR_timer_create+1)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;(__NR_timer_create+2)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;(__NR_timer_create+3)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;(__NR_timer_create+4)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;(__NR_timer_create+5)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;(__NR_timer_create+6)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
+DECL|macro|NR_syscalls
+mdefine_line|#define NR_syscalls 268
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

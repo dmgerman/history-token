@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#include &lt;asm/mips-boards/prom.h&gt;
@@ -45,10 +46,6 @@ r_int
 id|r4k_cur
 suffix:semicolon
 multiline_comment|/* What counter should be at next timer irq */
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 DECL|macro|ALLINTS
 mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
 macro_line|#if defined(CONFIG_MIPS_ATLAS)
@@ -319,9 +316,17 @@ id|regs
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|irq
 op_assign
 l_int|7
+suffix:semicolon
+r_int
+r_int
+id|seq
 suffix:semicolon
 r_if
 c_cond
@@ -354,11 +359,17 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* Historical comment/code:&n; &t;&t; * RTC time of day s updated approx. every 11 &n; &t;&t; * minutes.  Because of how the numbers work out &n; &t;&t; * we need to make absolutely sure we do this update&n; &t;&t; * within 500ms before the * next second starts, &n; &t;&t; * thus the following code.&n; &t;&t; */
-id|read_lock
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -421,11 +432,20 @@ id|xtime.tv_sec
 op_minus
 l_int|600
 suffix:semicolon
-id|read_unlock
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+comma
+id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -927,7 +947,7 @@ id|ALLINTS
 )paren
 suffix:semicolon
 multiline_comment|/* Read time from the RTC chipset. */
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 (paren
 op_amp
 id|xtime_lock
@@ -946,7 +966,7 @@ id|xtime.tv_usec
 op_assign
 l_int|0
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1202,7 +1222,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|read_lock_irqsave
+r_int
+r_int
+id|seq
+suffix:semicolon
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
+c_func
 (paren
 op_amp
 id|xtime_lock
@@ -1222,7 +1251,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t; */
+multiline_comment|/*&n;&t;&t; * xtime is atomically updated in timer_bh. &n;&t;&t; * jiffies - wall_jiffies&n;&t;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1234,12 +1263,20 @@ id|tv-&gt;tv_usec
 op_add_assign
 id|USECS_PER_JIFFY
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
+c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1270,7 +1307,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 (paren
 op_amp
 id|xtime_lock
@@ -1322,7 +1359,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 (paren
 op_amp
 id|xtime_lock

@@ -2083,6 +2083,8 @@ comma
 id|argv
 comma
 id|envp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kfree
@@ -2129,14 +2131,13 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;kpnpbiosd&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;kpnpbiosd&quot;
+id|SIGKILL
 )paren
 suffix:semicolon
 r_while

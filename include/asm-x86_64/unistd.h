@@ -1997,8 +1997,17 @@ id|__NR_semtimedop
 comma
 id|sys_semtimedop
 )paren
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;221
+id|__SYSCALL
+c_func
+(paren
+id|__NR_fadvise64
+comma
+id|sys_fadvise64
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_semtimedop
+mdefine_line|#define __NR_syscall_max __NR_fadvise64
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

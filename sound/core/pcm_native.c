@@ -2275,11 +2275,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|params-&gt;silence_threshold
+op_ne
+l_int|0
+op_logical_or
+id|params-&gt;silence_size
+OL
+id|runtime-&gt;boundary
+)paren
+op_logical_and
+(paren
 id|params-&gt;silence_threshold
 op_plus
 id|params-&gt;silence_size
 OG
 id|runtime-&gt;buffer_size
+)paren
 )paren
 r_return
 op_minus
@@ -2377,6 +2389,8 @@ id|snd_pcm_playback_silence
 c_func
 (paren
 id|substream
+comma
+id|ULONG_MAX
 )paren
 suffix:semicolon
 id|wake_up
@@ -3128,6 +3142,8 @@ id|snd_pcm_playback_silence
 c_func
 (paren
 id|substream
+comma
+id|ULONG_MAX
 )paren
 suffix:semicolon
 r_if
@@ -3142,6 +3158,7 @@ id|substream
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_sart&n; */
 DECL|function|snd_pcm_start
 r_int
 id|snd_pcm_start
@@ -3281,6 +3298,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_stop&n; */
 DECL|function|snd_pcm_stop
 r_int
 id|snd_pcm_stop
@@ -3643,6 +3661,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend&n; */
 DECL|function|snd_pcm_suspend
 r_int
 id|snd_pcm_suspend
@@ -3664,6 +3683,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend_all&n; */
 DECL|function|snd_pcm_suspend_all
 r_int
 id|snd_pcm_suspend_all
@@ -4287,15 +4307,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|runtime-&gt;status-&gt;hw_ptr
-OL
-id|runtime-&gt;buffer_size
-comma
-)paren
-suffix:semicolon
+singleline_comment|// snd_assert(runtime-&gt;status-&gt;hw_ptr &lt; runtime-&gt;buffer_size, );
 id|runtime-&gt;hw_ptr_base
 op_assign
 l_int|0
@@ -4307,6 +4319,14 @@ op_minus
 id|runtime-&gt;status-&gt;hw_ptr
 op_mod
 id|runtime-&gt;period_size
+suffix:semicolon
+id|runtime-&gt;silenced_start
+op_assign
+id|runtime-&gt;status-&gt;hw_ptr
+suffix:semicolon
+id|runtime-&gt;silenced_size
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -4336,6 +4356,25 @@ suffix:semicolon
 id|runtime-&gt;control-&gt;appl_ptr
 op_assign
 id|runtime-&gt;status-&gt;hw_ptr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream-&gt;stream
+op_eq
+id|SNDRV_PCM_STREAM_PLAYBACK
+op_logical_and
+id|runtime-&gt;silence_size
+OG
+l_int|0
+)paren
+id|snd_pcm_playback_silence
+c_func
+(paren
+id|substream
+comma
+id|ULONG_MAX
+)paren
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_reset
@@ -4510,6 +4549,7 @@ op_assign
 id|SNDRV_PCM_STATE_PREPARED
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_prepare&n; */
 DECL|function|snd_pcm_prepare
 r_int
 id|snd_pcm_prepare
@@ -4984,6 +5024,10 @@ suffix:colon
 r_goto
 id|_end
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5434,6 +5478,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|runtime-&gt;control-&gt;appl_ptr
 op_assign
@@ -5668,6 +5716,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|_end
 suffix:colon
@@ -5846,6 +5898,10 @@ comma
 id|SNDRV_PCM_STATE_SETUP
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -8723,10 +8779,6 @@ suffix:semicolon
 id|wait_queue_t
 id|wait
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_runtime_check
 c_func
 (paren
@@ -9002,10 +9054,6 @@ id|file
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -9160,10 +9208,6 @@ comma
 id|file
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -9295,6 +9339,9 @@ c_cond
 (paren
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|hw_avail
 )paren
 id|frames
@@ -9488,6 +9535,9 @@ c_cond
 (paren
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|hw_avail
 )paren
 id|frames
@@ -13569,6 +13619,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|size
 OG
 id|dma_bytes

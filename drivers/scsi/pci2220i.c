@@ -4307,7 +4307,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|padapter-&gt;SCpnt-&gt;host
+id|padapter-&gt;SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|POUR_DEVICE
 id|pdev
@@ -5077,7 +5077,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|padapter-&gt;SCpnt-&gt;host
+id|padapter-&gt;SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|POUR_DEVICE
 id|pdev
@@ -8554,7 +8554,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -8564,7 +8564,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information
@@ -8682,9 +8682,9 @@ id|printk
 (paren
 l_string|&quot;&bslash;nPCI2242I: ID %d, LUN %d opcode %X &quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 op_star
 id|cdb
@@ -8701,7 +8701,7 @@ c_cond
 op_logical_neg
 id|pdev-&gt;byte6
 op_logical_or
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 (brace
 id|OpDone
@@ -8976,12 +8976,12 @@ r_if
 c_cond
 (paren
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_ge
 id|padapter-&gt;numberOfDrives
 )paren
 op_logical_or
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 (brace
 id|OpDone
@@ -10880,12 +10880,13 @@ id|pcidev
 r_goto
 id|unregister
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|pshost
 comma
-id|pcidev
+op_amp
+id|pcidev-&gt;dev
 )paren
 suffix:semicolon
 id|pshost-&gt;max_id
@@ -12485,7 +12486,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -12495,7 +12496,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information
@@ -12564,7 +12565,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -12574,7 +12575,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information

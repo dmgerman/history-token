@@ -3506,6 +3506,8 @@ comma
 id|argv
 comma
 id|envp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kfree
@@ -4839,20 +4841,9 @@ id|ne
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;%s removed: Node[&quot;
+l_string|&quot;Device removed: Node[&quot;
 id|NODE_BUS_FMT
 l_string|&quot;]  GUID[%016Lx]  [%s]&quot;
-comma
-(paren
-id|ne-&gt;host-&gt;node_id
-op_eq
-id|ne-&gt;nodeid
-)paren
-ques
-c_cond
-l_string|&quot;Host&quot;
-suffix:colon
-l_string|&quot;Device&quot;
 comma
 id|NODE_BUS_ARGS
 c_func
@@ -5301,14 +5292,13 @@ multiline_comment|/* No userlevel access needed */
 id|daemonize
 c_func
 (paren
+l_string|&quot;knodemgrd&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;knodemgrd&quot;
+id|SIGTERM
 )paren
 suffix:semicolon
 multiline_comment|/* Sit and wait for a signal to probe the nodes on the bus. This&n;&t; * happens when we get a bus reset. */

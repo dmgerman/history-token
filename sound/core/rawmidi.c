@@ -754,10 +754,6 @@ id|rfile-&gt;output
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|rmidi
 op_assign
 id|snd_rawmidi_devices
@@ -850,6 +846,10 @@ id|subdevice
 op_ge
 l_int|0
 op_logical_and
+(paren
+r_int
+r_int
+)paren
 id|subdevice
 op_ge
 id|rmidi-&gt;streams
@@ -932,6 +932,10 @@ id|subdevice
 op_ge
 l_int|0
 op_logical_and
+(paren
+r_int
+r_int
+)paren
 id|subdevice
 op_ge
 id|rmidi-&gt;streams
@@ -1596,10 +1600,6 @@ id|rmidi-&gt;open_mutex
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -2450,10 +2450,6 @@ c_func
 id|rmidi-&gt;card-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2829,6 +2825,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|substream-&gt;number
 op_eq
 id|info-&gt;subdevice
@@ -4091,6 +4091,7 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_receive - receive the input data from the device&n; * @substream: the rawmidi substream&n; * @buffer: the buffer pointer&n; * @count: the data size to read&n; *&n; * Reads the data from the internal buffer.&n; *&n; * Returns the size of read data, or a negative error code on failure.&n; */
 DECL|function|snd_rawmidi_receive
 r_int
 id|snd_rawmidi_receive
@@ -4232,9 +4233,14 @@ c_cond
 (paren
 id|count1
 OG
+(paren
+r_int
+)paren
+(paren
 id|runtime-&gt;buffer_size
 op_minus
 id|runtime-&gt;avail
+)paren
 )paren
 id|count1
 op_assign
@@ -4295,9 +4301,14 @@ c_cond
 (paren
 id|count1
 OG
+(paren
+r_int
+)paren
+(paren
 id|runtime-&gt;buffer_size
 op_minus
 id|runtime-&gt;avail
+)paren
 )paren
 (brace
 id|count1
@@ -4485,6 +4496,9 @@ c_cond
 (paren
 id|count1
 OG
+(paren
+r_int
+)paren
 id|runtime-&gt;avail
 )paren
 id|count1
@@ -4926,6 +4940,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_transmit_empty - check whether the output buffer is empty&n; * @substream: the rawmidi substream&n; * &n; * Returns 1 if the internal output buffer is empty, 0 if not.&n; */
 DECL|function|snd_rawmidi_transmit_empty
 r_int
 id|snd_rawmidi_transmit_empty
@@ -5004,6 +5019,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_transmit_peek - copy data from the internal buffer&n; * @substream: the rawmidi substream&n; * @buffer: the buffer pointer&n; * @count: data size to transfer&n; *&n; * Copies data from the internal output buffer to the given buffer.&n; *&n; * Call this in the interrupt handler when the midi output is ready,&n; * and call snd_rawmidi_transmit_ack() after the transmission is&n; * finished.&n; *&n; * Returns the size of copied data, or a negative error code on failure.&n; */
 DECL|function|snd_rawmidi_transmit_peek
 r_int
 id|snd_rawmidi_transmit_peek
@@ -5131,9 +5147,14 @@ c_cond
 (paren
 id|count1
 OG
+(paren
+r_int
+)paren
+(paren
 id|runtime-&gt;buffer_size
 op_minus
 id|runtime-&gt;avail
+)paren
 )paren
 id|count1
 op_assign
@@ -5196,6 +5217,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_transmit_ack - acknowledge the transmission&n; * @substream: the rawmidi substream&n; * @count: the tranferred count&n; *&n; * Advances the hardware pointer for the internal output buffer with&n; * the given size and updates the condition.&n; * Call after the transmission is finished.&n; *&n; * Returns the advanced size if successful, or a negative error code on failure.&n; */
 DECL|function|snd_rawmidi_transmit_ack
 r_int
 id|snd_rawmidi_transmit_ack
@@ -5344,6 +5366,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_transmit - copy from the buffer to the device&n; * @substream: the rawmidi substream&n; * @buf: the buffer pointer&n; * @count: the data size to transfer&n; * &n; * Copies data from the buffer to the device and advances the pointer.&n; *&n; * Returns the copied size if successful, or a negative error code on failure.&n; */
 DECL|function|snd_rawmidi_transmit
 r_int
 id|snd_rawmidi_transmit
@@ -5478,6 +5501,9 @@ id|substream-&gt;append
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|runtime-&gt;avail
 OL
 id|count
@@ -5532,6 +5558,9 @@ c_cond
 (paren
 id|count1
 OG
+(paren
+r_int
+)paren
 id|runtime-&gt;avail
 )paren
 id|count1
@@ -5986,6 +6015,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|count1
 OL
 id|count
@@ -6743,6 +6775,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_new - create a rawmidi instance&n; * @card: the card instance&n; * @id: the id string&n; * @device: the device index&n; * @output_count: the number of output streams&n; * @input_count: the number of input streams&n; * @rrawmidi: the pointer to store the new rawmidi instance&n; *&n; * Creates a new rawmidi instance.&n; * Use snd_rawmidi_set_ops() to set the operators to the new instance.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_rawmidi_new
 r_int
 id|snd_rawmidi_new
@@ -7425,6 +7458,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|rmidi-&gt;device
 op_eq
 id|midi_map
@@ -7488,6 +7524,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|rmidi-&gt;device
 op_eq
 id|amidi_map
@@ -7842,6 +7881,9 @@ id|rmidi-&gt;ossreg
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|rmidi-&gt;device
 op_eq
 id|midi_map
@@ -7874,6 +7916,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|rmidi-&gt;device
 op_eq
 id|amidi_map
@@ -7958,6 +8003,7 @@ id|rmidi
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_rawmidi_set_ops - set the rawmidi operators&n; * @rmidi: the rawmidi instance&n; * @stream: the stream direction, SNDRV_RAWMIDI_STREAM_XXX&n; * @ops: the operator table&n; *&n; * Sets the rawmidi operators for the given stream direction.&n; */
 DECL|function|snd_rawmidi_set_ops
 r_void
 id|snd_rawmidi_set_ops

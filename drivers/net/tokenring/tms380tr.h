@@ -1510,6 +1510,11 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* SMP protection */
 DECL|member|tmspriv
 r_void
 op_star

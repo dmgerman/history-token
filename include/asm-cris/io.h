@@ -325,7 +325,7 @@ mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 multiline_comment|/*&n; * Again, CRIS does not require mem IO specific function.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),(void *)(b),(c),(d))
-multiline_comment|/* The following is junk needed for the arch-independant code but which&n; * we never use in the CRIS port&n; */
+multiline_comment|/* The following is junk needed for the arch-independent code but which&n; * we never use in the CRIS port&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 DECL|macro|inb

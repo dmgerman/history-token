@@ -697,6 +697,7 @@ id|MAX_APICS
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Processor #%d INVALID. (Max ID: %d).&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -734,6 +735,7 @@ l_int|0x0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;BIOS bug, APIC version is 0 for CPU#%d! fixing up to 0x10. (tell your hw vendor)&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -950,10 +952,41 @@ id|MP_BUS_MCA
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+id|BUSTYPE_NEC98
+comma
+r_sizeof
+(paren
+id|BUSTYPE_NEC98
+)paren
+op_minus
+l_int|1
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|mp_bus_id_to_type
+(braket
+id|m-&gt;mpc_busid
+)braket
+op_assign
+id|MP_BUS_NEC98
+suffix:semicolon
+)brace
+r_else
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Unknown bustype %s - ignoring&bslash;n&quot;
 comma
 id|str
@@ -988,6 +1021,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;I/O APIC #%d Version %d at 0x%lX.&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -1008,6 +1042,7 @@ id|MAX_IO_APICS
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;Max # of I/O APICs (%d) exceeded (found %d).&bslash;n&quot;
 comma
 id|MAX_IO_APICS
@@ -1215,6 +1250,7 @@ id|m
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Translation: record %d, type %d, quad %d, global %d, local %d&bslash;n&quot;
 comma
 id|mpc_record
@@ -1238,6 +1274,7 @@ id|MAX_MPC_ENTRY
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;MAX_MPC_ENTRY exceeded!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1318,6 +1355,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Found an OEM MPC table at %8p - parsing it ... &bslash;n&quot;
 comma
 id|oemtable
@@ -1340,6 +1378,7 @@ l_int|4
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;SMP mpc oemtable: bad signature [%c%c%c%c]!&bslash;n&quot;
 comma
 id|oemtable-&gt;oem_signature
@@ -1386,6 +1425,7 @@ id|oemtable-&gt;oem_length
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;SMP oem mptable: checksum error!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1459,6 +1499,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Unrecognised OEM table entry type! - %d&bslash;n&quot;
 comma
 (paren
@@ -1660,6 +1701,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;OEM ID: %s &quot;
 comma
 id|oem
@@ -2095,6 +2137,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ISA/PCI bus type with no IRQ information... falling back to ELCR&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2128,6 +2171,7 @@ l_int|13
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ELCR contains invalid data... not using ELCR&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2136,6 +2180,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Using ELCR to identify PCI interrupts&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2420,7 +2465,14 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;???&bslash;nUnknown standard configuration %d&bslash;n&quot;
+l_string|&quot;???&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Unknown standard configuration %d&bslash;n&quot;
 comma
 id|mpc_default_type
 )paren
@@ -2674,7 +2726,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Intel MultiProcessor Specification v1.%d&bslash;n&quot;
+l_string|&quot;KERN_INFO Intel MultiProcessor Specification v1.%d&bslash;n&quot;
 comma
 id|mpf-&gt;mpf_specification
 )paren
@@ -2694,6 +2746,7 @@ l_int|7
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    IMCR and PIC compatibility mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2707,6 +2760,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    Virtual Wire compatibility mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2727,6 +2781,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Default MP configuration #%d&bslash;n&quot;
 comma
 id|mpf-&gt;mpf_feature1
@@ -2798,6 +2853,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;BIOS bug, no explicit IRQ entries, using default mptable. (tell your hw vendor)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2843,6 +2899,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Processors: %d&bslash;n&quot;
 comma
 id|num_processors
@@ -2977,6 +3034,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;found SMP MP-table at %08lx&bslash;n&quot;
 comma
 id|virt_to_phys
@@ -3101,18 +3159,6 @@ c_func
 id|address
 comma
 l_int|0x400
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_found_config
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;WARNING: MP table in the EBDA can be UNSAFE, contact linux-smp@vger.kernel.org if you experience SMP problems!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

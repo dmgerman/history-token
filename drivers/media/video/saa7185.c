@@ -641,6 +641,7 @@ id|encoder
 suffix:semicolon
 r_struct
 id|i2c_client
+op_star
 id|client
 suffix:semicolon
 id|client
@@ -699,7 +700,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|decoder
+id|encoder
 )paren
 comma
 id|GFP_KERNEL
@@ -734,7 +735,7 @@ comma
 r_sizeof
 (paren
 op_star
-id|decoder
+id|encoder
 )paren
 )paren
 suffix:semicolon
@@ -849,7 +850,7 @@ id|init_MUTEX
 c_func
 (paren
 op_amp
-id|decoder-&gt;lock
+id|encoder-&gt;lock
 )paren
 suffix:semicolon
 id|i2c_attach_client
@@ -1287,6 +1288,11 @@ id|i2c_driver
 id|i2c_driver_saa7185
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* Transport &amp; Protocol Driver for In-System Design, Inc. ISD200 ASIC&n; *&n; * $Id: isd200.c,v 1.16 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance:&n; *   (C) 2001-2002 Bj&#xfffd;rn Stenberg (bjorn@haxx.se)&n; *&n; * Developed with the assistance of:&n; *   (C) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Initial work:&n; *   (C) 2000 In-System Design, Inc. (support@in-system.com)&n; *&n; * The ISD200 ASIC does not natively support ATA devices.  The chip&n; * does implement an interface, the ATA Command Block (ATACB) which provides&n; * a means of passing ATA commands and ATA register accesses to a device.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * History:&n; *&n; *  2002-10-19: Removed the specialized transfer routines.&n; *&t;&t;(Alan Stern &lt;stern@rowland.harvard.edu&gt;)&n; *  2001-02-24: Removed lots of duplicate code and simplified the structure.&n; *              (bjorn@haxx.se)&n; *  2002-01-16: Fixed endianness bug so it works on the ppc arch.&n; *              (Luc Saillard &lt;luc@saillard.org&gt;)&n; *  2002-01-17: All bitfields removed.&n; *              (bjorn@haxx.se)&n; */
+multiline_comment|/* Transport &amp; Protocol Driver for In-System Design, Inc. ISD200 ASIC&n; *&n; * $Id: isd200.c,v 1.16 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance:&n; *   (C) 2001-2002 Bj&#xfffd;rn Stenberg (bjorn@haxx.se)&n; *&n; * Developed with the assistance of:&n; *   (C) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Initial work:&n; *   (C) 2000 In-System Design, Inc. (support@in-system.com)&n; *&n; * The ISD200 ASIC does not natively support ATA devices.  The chip&n; * does implement an interface, the ATA Command Block (ATACB) which provides&n; * a means of passing ATA commands and ATA register accesses to a device.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * History:&n; *&n; *  2002-10-19: Removed the specialized transfer routines.&n; *&t;&t;(Alan Stern &lt;stern@rowland.harvard.edu&gt;)&n; *  2001-02-24: Removed lots of duplicate code and simplified the structure.&n; *&t;      (bjorn@haxx.se)&n; *  2002-01-16: Fixed endianness bug so it works on the ppc arch.&n; *&t;      (Luc Saillard &lt;luc@saillard.org&gt;)&n; *  2002-01-17: All bitfields removed.&n; *&t;      (bjorn@haxx.se)&n; */
 multiline_comment|/* Include files */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
@@ -13,18 +13,18 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 multiline_comment|/* Timeout defines (in Seconds) */
 DECL|macro|ISD200_ENUM_BSY_TIMEOUT
-mdefine_line|#define ISD200_ENUM_BSY_TIMEOUT         35
+mdefine_line|#define ISD200_ENUM_BSY_TIMEOUT&t;&t;35
 DECL|macro|ISD200_ENUM_DETECT_TIMEOUT
 mdefine_line|#define ISD200_ENUM_DETECT_TIMEOUT      30
 DECL|macro|ISD200_DEFAULT_TIMEOUT
-mdefine_line|#define ISD200_DEFAULT_TIMEOUT          30
+mdefine_line|#define ISD200_DEFAULT_TIMEOUT&t;&t;30
 multiline_comment|/* device flags */
 DECL|macro|DF_ATA_DEVICE
-mdefine_line|#define DF_ATA_DEVICE               0x0001
+mdefine_line|#define DF_ATA_DEVICE&t;&t;0x0001
 DECL|macro|DF_MEDIA_STATUS_ENABLED
-mdefine_line|#define DF_MEDIA_STATUS_ENABLED     0x0002
+mdefine_line|#define DF_MEDIA_STATUS_ENABLED&t;0x0002
 DECL|macro|DF_REMOVABLE_MEDIA
-mdefine_line|#define DF_REMOVABLE_MEDIA          0x0004
+mdefine_line|#define DF_REMOVABLE_MEDIA&t;0x0004
 multiline_comment|/* capability bit definitions */
 DECL|macro|CAPABILITY_DMA
 mdefine_line|#define CAPABILITY_DMA&t;&t;0x01
@@ -44,64 +44,64 @@ DECL|macro|ATA_ADDRESS_DEVHEAD_SLAVE
 mdefine_line|#define ATA_ADDRESS_DEVHEAD_SLAVE    0x10
 multiline_comment|/* Action Select bits */
 DECL|macro|ACTION_SELECT_0
-mdefine_line|#define ACTION_SELECT_0             0x01
+mdefine_line|#define ACTION_SELECT_0&t;     0x01
 DECL|macro|ACTION_SELECT_1
-mdefine_line|#define ACTION_SELECT_1             0x02
+mdefine_line|#define ACTION_SELECT_1&t;     0x02
 DECL|macro|ACTION_SELECT_2
-mdefine_line|#define ACTION_SELECT_2             0x04
+mdefine_line|#define ACTION_SELECT_2&t;     0x04
 DECL|macro|ACTION_SELECT_3
-mdefine_line|#define ACTION_SELECT_3             0x08
+mdefine_line|#define ACTION_SELECT_3&t;     0x08
 DECL|macro|ACTION_SELECT_4
-mdefine_line|#define ACTION_SELECT_4             0x10
+mdefine_line|#define ACTION_SELECT_4&t;     0x10
 DECL|macro|ACTION_SELECT_5
-mdefine_line|#define ACTION_SELECT_5             0x20
+mdefine_line|#define ACTION_SELECT_5&t;     0x20
 DECL|macro|ACTION_SELECT_6
-mdefine_line|#define ACTION_SELECT_6             0x40
+mdefine_line|#define ACTION_SELECT_6&t;     0x40
 DECL|macro|ACTION_SELECT_7
-mdefine_line|#define ACTION_SELECT_7             0x80
+mdefine_line|#define ACTION_SELECT_7&t;     0x80
 multiline_comment|/* Register Select bits */
 DECL|macro|REG_ALTERNATE_STATUS
-mdefine_line|#define REG_ALTERNATE_STATUS 0x01
+mdefine_line|#define REG_ALTERNATE_STATUS&t;0x01
 DECL|macro|REG_DEVICE_CONTROL
-mdefine_line|#define REG_DEVICE_CONTROL   0x01
+mdefine_line|#define REG_DEVICE_CONTROL&t;0x01
 DECL|macro|REG_ERROR
-mdefine_line|#define REG_ERROR            0x02
+mdefine_line|#define REG_ERROR&t;&t;0x02
 DECL|macro|REG_FEATURES
-mdefine_line|#define REG_FEATURES         0x02
+mdefine_line|#define REG_FEATURES&t;&t;0x02
 DECL|macro|REG_SECTOR_COUNT
-mdefine_line|#define REG_SECTOR_COUNT     0x04
+mdefine_line|#define REG_SECTOR_COUNT&t;0x04
 DECL|macro|REG_SECTOR_NUMBER
-mdefine_line|#define REG_SECTOR_NUMBER    0x08
+mdefine_line|#define REG_SECTOR_NUMBER&t;0x08
 DECL|macro|REG_CYLINDER_LOW
-mdefine_line|#define REG_CYLINDER_LOW     0x10
+mdefine_line|#define REG_CYLINDER_LOW&t;0x10
 DECL|macro|REG_CYLINDER_HIGH
-mdefine_line|#define REG_CYLINDER_HIGH    0x20
+mdefine_line|#define REG_CYLINDER_HIGH&t;0x20
 DECL|macro|REG_DEVICE_HEAD
-mdefine_line|#define REG_DEVICE_HEAD      0x40
+mdefine_line|#define REG_DEVICE_HEAD&t;&t;0x40
 DECL|macro|REG_STATUS
-mdefine_line|#define REG_STATUS           0x80
+mdefine_line|#define REG_STATUS&t;&t;0x80
 DECL|macro|REG_COMMAND
-mdefine_line|#define REG_COMMAND          0x80
+mdefine_line|#define REG_COMMAND&t;&t;0x80
 multiline_comment|/* ATA error definitions not in &lt;linux/hdreg.h&gt; */
 DECL|macro|ATA_ERROR_MEDIA_CHANGE
-mdefine_line|#define ATA_ERROR_MEDIA_CHANGE       0x20
+mdefine_line|#define ATA_ERROR_MEDIA_CHANGE&t;&t;0x20
 multiline_comment|/* ATA command definitions not in &lt;linux/hdreg.h&gt; */
 DECL|macro|ATA_COMMAND_GET_MEDIA_STATUS
-mdefine_line|#define ATA_COMMAND_GET_MEDIA_STATUS        0xDA
+mdefine_line|#define ATA_COMMAND_GET_MEDIA_STATUS&t;0xDA
 DECL|macro|ATA_COMMAND_MEDIA_EJECT
-mdefine_line|#define ATA_COMMAND_MEDIA_EJECT             0xED
+mdefine_line|#define ATA_COMMAND_MEDIA_EJECT&t;&t;0xED
 multiline_comment|/* ATA drive control definitions */
 DECL|macro|ATA_DC_DISABLE_INTERRUPTS
-mdefine_line|#define ATA_DC_DISABLE_INTERRUPTS    0x02
+mdefine_line|#define ATA_DC_DISABLE_INTERRUPTS&t;0x02
 DECL|macro|ATA_DC_RESET_CONTROLLER
-mdefine_line|#define ATA_DC_RESET_CONTROLLER      0x04
+mdefine_line|#define ATA_DC_RESET_CONTROLLER&t;&t;0x04
 DECL|macro|ATA_DC_REENABLE_CONTROLLER
-mdefine_line|#define ATA_DC_REENABLE_CONTROLLER   0x00
+mdefine_line|#define ATA_DC_REENABLE_CONTROLLER&t;0x00
 multiline_comment|/*&n; *  General purpose return codes&n; */
 DECL|macro|ISD200_ERROR
-mdefine_line|#define ISD200_ERROR                -1
+mdefine_line|#define ISD200_ERROR&t;&t;-1
 DECL|macro|ISD200_GOOD
-mdefine_line|#define ISD200_GOOD                 0
+mdefine_line|#define ISD200_GOOD&t;&t; 0
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|ISD200_TRANSPORT_GOOD
 mdefine_line|#define ISD200_TRANSPORT_GOOD       0   /* Transport good, command good     */
@@ -369,9 +369,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Inquiry data structure. This is the data returned from the target&n; * after it receives an inquiry.&n; *&n; * This structure may be extended by the number of bytes specified&n; * in the field AdditionalLength. The defined size constant only&n; * includes fields through ProductRevisionLevel.&n; */
 multiline_comment|/*&n; * DeviceType field&n; */
 DECL|macro|DIRECT_ACCESS_DEVICE
-mdefine_line|#define DIRECT_ACCESS_DEVICE            0x00    /* disks */
+mdefine_line|#define DIRECT_ACCESS_DEVICE&t;    0x00    /* disks */
 DECL|macro|DEVICE_REMOVABLE
-mdefine_line|#define DEVICE_REMOVABLE                0x80
+mdefine_line|#define DEVICE_REMOVABLE&t;&t;0x80
 DECL|struct|inquiry_data
 r_struct
 id|inquiry_data
@@ -467,11 +467,11 @@ DECL|macro|INQUIRYDATABUFFERSIZE
 mdefine_line|#define INQUIRYDATABUFFERSIZE 36
 multiline_comment|/*&n; * ISD200 CONFIG data struct&n; */
 DECL|macro|ATACFG_TIMING
-mdefine_line|#define ATACFG_TIMING          0x0f
+mdefine_line|#define ATACFG_TIMING&t;  0x0f
 DECL|macro|ATACFG_ATAPI_RESET
 mdefine_line|#define ATACFG_ATAPI_RESET     0x10
 DECL|macro|ATACFG_MASTER
-mdefine_line|#define ATACFG_MASTER          0x20
+mdefine_line|#define ATACFG_MASTER&t;  0x20
 DECL|macro|ATACFG_BLOCKSIZE
 mdefine_line|#define ATACFG_BLOCKSIZE       0xa0
 DECL|macro|ATACFGE_LAST_LUN
@@ -633,7 +633,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Sense Data Format&n; */
 DECL|macro|SENSE_ERRCODE
-mdefine_line|#define SENSE_ERRCODE           0x7f
+mdefine_line|#define SENSE_ERRCODE&t;   0x7f
 DECL|macro|SENSE_ERRCODE_VALID
 mdefine_line|#define SENSE_ERRCODE_VALID     0x80
 DECL|macro|SENSE_FLAG_SENSE_KEY
@@ -719,7 +719,7 @@ multiline_comment|/*&n; * Default request sense buffer size&n; */
 DECL|macro|SENSE_BUFFER_SIZE
 mdefine_line|#define SENSE_BUFFER_SIZE 18
 multiline_comment|/***********************************************************************&n; * Helper routines&n; ***********************************************************************/
-multiline_comment|/**************************************************************************&n; * isd200_build_sense&n; *                                                                         &n; *  Builds an artificial sense buffer to report the results of a &n; *  failed command.&n; *                                                                       &n; * RETURNS:&n; *    void&n; */
+multiline_comment|/**************************************************************************&n; * isd200_build_sense&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; *  Builds an artificial sense buffer to report the results of a &n; *  failed command.&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * RETURNS:&n; *    void&n; */
 DECL|function|isd200_build_sense
 r_void
 id|isd200_build_sense
@@ -1304,7 +1304,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_read_regs&n; *                                                                         &n; * Read ATA Registers&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_read_regs&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Read ATA Registers&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_read_regs
 r_int
 id|isd200_read_regs
@@ -1901,7 +1901,7 @@ id|CFG_CAPABILITY_SRST
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**************************************************************************&n; * isd200_write_config&n; *                                                                         &n; * Write the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_write_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Write the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_write_config
 r_int
 id|isd200_write_config
@@ -2028,7 +2028,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_read_config&n; *                                                                         &n; * Reads the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_read_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Reads the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_read_config
 r_int
 id|isd200_read_config
@@ -2067,7 +2067,7 @@ l_string|&quot;Entering isd200_read_config&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* read the configuration information from ISD200.  Use this to */
-multiline_comment|/* determine what the special ATA CDB bytes are.                */
+multiline_comment|/* determine what the special ATA CDB bytes are.&t;&t;*/
 id|result
 op_assign
 id|usb_stor_ctrl_transfer
@@ -2150,7 +2150,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_atapi_soft_reset&n; *                                                                         &n; * Perform an Atapi Soft Reset on the device&n; *&n; * RETURNS:&n; *    NT status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_atapi_soft_reset&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Perform an Atapi Soft Reset on the device&n; *&n; * RETURNS:&n; *    NT status code&n; */
 DECL|function|isd200_atapi_soft_reset
 r_int
 id|isd200_atapi_soft_reset
@@ -2221,7 +2221,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_srst&n; *                                                                         &n; * Perform an SRST on the device&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_srst&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Perform an SRST on the device&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_srst
 r_int
 id|isd200_srst
@@ -2346,7 +2346,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_try_enum&n; *                                                                         &n; * Helper function for isd200_manual_enum(). Does ENUM and READ_STATUS&n; * and tries to analyze the status registers&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_try_enum&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Helper function for isd200_manual_enum(). Does ENUM and READ_STATUS&n; * and tries to analyze the status registers&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_try_enum
 r_static
 r_int
@@ -2722,7 +2722,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_manual_enum&n; *                                                                         &n; * Determines if the drive attached is an ATA or ATAPI and if it is a&n; * master or slave.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_manual_enum&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Determines if the drive attached is an ATA or ATAPI and if it is a&n; * master or slave.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_manual_enum
 r_int
 id|isd200_manual_enum
@@ -3540,7 +3540,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_data_copy&n; *                                                                         &n; * Copy data into the srb request buffer.  Use scatter gather if required.&n; *&n; * RETURNS:&n; *    void&n; */
+multiline_comment|/**************************************************************************&n; * isd200_data_copy&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Copy data into the srb request buffer.  Use scatter gather if required.&n; *&n; * RETURNS:&n; *    void&n; */
 DECL|function|isd200_data_copy
 r_void
 id|isd200_data_copy
@@ -3781,7 +3781,7 @@ id|len
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_scsi_to_ata&n; *                                                                         &n; * Translate SCSI commands to ATA commands.&n; *&n; * RETURNS:&n; *    TRUE if the command needs to be sent to the transport layer&n; *    FALSE otherwise&n; */
+multiline_comment|/**************************************************************************&n; * isd200_scsi_to_ata&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Translate SCSI commands to ATA commands.&n; *&n; * RETURNS:&n; *    TRUE if the command needs to be sent to the transport layer&n; *    FALSE otherwise&n; */
 DECL|function|isd200_scsi_to_ata
 r_int
 id|isd200_scsi_to_ata
@@ -4919,7 +4919,7 @@ r_return
 id|sendToTransport
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_init_info&n; *                                                                         &n; * Allocates (if necessary) and initializes the driver structure.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_init_info&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Allocates (if necessary) and initializes the driver structure.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_init_info
 r_int
 id|isd200_init_info

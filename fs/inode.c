@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - inode_has_buffers&n; *  - invalidate_inode_buffers&n; *  - fsync_bdev&n; *  - invalidate_bdev&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -543,6 +544,13 @@ c_func
 (paren
 op_amp
 id|inode-&gt;i_data.i_mmap_shared
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|inode-&gt;i_lock
 )paren
 suffix:semicolon
 )brace
@@ -1353,6 +1361,12 @@ suffix:semicolon
 r_int
 id|nr_scanned
 suffix:semicolon
+r_int
+r_int
+id|reap
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1465,6 +1479,8 @@ c_func
 id|inode
 )paren
 )paren
+id|reap
+op_add_assign
 id|invalidate_inode_pages
 c_func
 (paren
@@ -1558,6 +1574,28 @@ c_func
 (paren
 op_amp
 id|freeable
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current_is_kswapd
+)paren
+id|mod_page_state
+c_func
+(paren
+id|kswapd_inodesteal
+comma
+id|reap
+)paren
+suffix:semicolon
+r_else
+id|mod_page_state
+c_func
+(paren
+id|pginodesteal
+comma
+id|reap
 )paren
 suffix:semicolon
 )brace

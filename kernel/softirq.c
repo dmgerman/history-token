@@ -1185,6 +1185,9 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;ksoftirqd/%d&quot;
+comma
+id|cpu
 )paren
 suffix:semicolon
 id|set_user_nice
@@ -1198,13 +1201,6 @@ suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
 suffix:semicolon
 multiline_comment|/* Migrate to the right CPU */
 id|set_cpus_allowed
@@ -1230,16 +1226,6 @@ id|cpu
 id|BUG
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;ksoftirqd/%d&quot;
-comma
-id|cpu
 )paren
 suffix:semicolon
 id|__set_current_state

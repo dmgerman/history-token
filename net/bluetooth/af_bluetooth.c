@@ -164,7 +164,7 @@ r_if
 c_cond
 (paren
 id|proto
-OG
+op_ge
 id|BT_MAX_PROTO
 )paren
 r_return

@@ -136,7 +136,7 @@ id|sndrv_mask
 id|snd_mask_t
 suffix:semicolon
 DECL|macro|_snd_pcm_substream_chip
-mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;pcm-&gt;private_data)
+mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_substream_chip
 mdefine_line|#define snd_pcm_substream_chip(substream) snd_magic_cast1(chip_t, _snd_pcm_substream_chip(substream), return -ENXIO)
 DECL|macro|_snd_pcm_chip
@@ -452,14 +452,18 @@ DECL|macro|SNDRV_PCM_TRIGGER_SUSPEND
 mdefine_line|#define SNDRV_PCM_TRIGGER_SUSPEND&t;5
 DECL|macro|SNDRV_PCM_TRIGGER_RESUME
 mdefine_line|#define SNDRV_PCM_TRIGGER_RESUME&t;6
+DECL|macro|SNDRV_PCM_DMA_TYPE_UNKNOWN
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_UNKNOWN&t;0&t;/* not defined */
 DECL|macro|SNDRV_PCM_DMA_TYPE_CONTINUOUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_CONTINUOUS&t;0&t;/* continuous no-DMA memory */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_CONTINUOUS&t;1&t;/* continuous no-DMA memory */
 DECL|macro|SNDRV_PCM_DMA_TYPE_ISA
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;1&t;/* ISA continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;2&t;/* ISA continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;2&t;/* PCI continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;3&t;/* PCI continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;3&t;/* SBUS continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;4&t;/* SBUS continuous */
+DECL|macro|SNDRV_PCM_DMA_TYPE_PCI_SG
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI_SG&t;5&t;/* PCI SG-buffer */
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -885,6 +889,33 @@ DECL|typedef|snd_pcm_hw_constraint_list_t
 )brace
 id|snd_pcm_hw_constraint_list_t
 suffix:semicolon
+DECL|struct|snd_pcm_dma_buffer
+r_struct
+id|snd_pcm_dma_buffer
+(brace
+DECL|member|area
+r_int
+r_char
+op_star
+id|area
+suffix:semicolon
+DECL|member|addr
+id|dma_addr_t
+id|addr
+suffix:semicolon
+DECL|member|bytes
+r_int
+r_int
+id|bytes
+suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+multiline_comment|/* for allocator */
+)brace
+suffix:semicolon
 DECL|struct|_snd_pcm_runtime
 r_struct
 id|_snd_pcm_runtime
@@ -1175,6 +1206,12 @@ r_int
 id|dma_bytes
 suffix:semicolon
 multiline_comment|/* size of DMA area */
+DECL|member|dma_private
+r_void
+op_star
+id|dma_private
+suffix:semicolon
+multiline_comment|/* private DMA data for the memory allocator */
 macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
@@ -1198,6 +1235,12 @@ id|snd_pcm_str_t
 op_star
 id|pstr
 suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+multiline_comment|/* copied from pcm-&gt;private_data */
 DECL|member|number
 r_int
 id|number
@@ -1224,18 +1267,10 @@ DECL|member|dma_type
 r_int
 id|dma_type
 suffix:semicolon
-DECL|member|dma_area
-r_void
-op_star
-id|dma_area
-suffix:semicolon
-DECL|member|dma_addr
-id|dma_addr_t
-id|dma_addr
-suffix:semicolon
-DECL|member|dma_bytes
-r_int
-id|dma_bytes
+DECL|member|dma_buffer
+r_struct
+id|snd_pcm_dma_buffer
+id|dma_buffer
 suffix:semicolon
 DECL|member|dma_max
 r_int
@@ -3167,6 +3202,29 @@ id|dir
 )paren
 suffix:semicolon
 r_int
+id|snd_pcm_hw_param_set
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|pcm
+comma
+id|snd_pcm_hw_params_t
+op_star
+id|params
+comma
+id|snd_pcm_hw_param_t
+id|var
+comma
+r_int
+r_int
+id|val
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
+r_int
 id|snd_pcm_hw_params_choose
 c_func
 (paren
@@ -3649,6 +3707,9 @@ c_func
 id|snd_pcm_substream_t
 op_star
 id|substream
+comma
+id|snd_pcm_uframes_t
+id|new_hw_ptr
 )paren
 suffix:semicolon
 r_int

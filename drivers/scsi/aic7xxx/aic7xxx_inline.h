@@ -2026,7 +2026,7 @@ op_increment
 op_assign
 id|scb-&gt;hscb-&gt;tag
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure our data is consistant from the&n;&t; * perspective of the adapter.&n;&t; */
+multiline_comment|/*&n;&t; * Make sure our data is consistent from the&n;&t; * perspective of the adapter.&n;&t; */
 id|ahc_sync_scb
 c_func
 (paren

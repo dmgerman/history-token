@@ -271,6 +271,10 @@ DECL|macro|ptep_get_and_clear
 mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(a, b)&t;&t;((a).pte == (b).pte)
+DECL|macro|PML4_SIZE
+mdefine_line|#define PML4_SIZE&t;(1UL &lt;&lt; PML4_SHIFT)
+DECL|macro|PML4_MASK
+mdefine_line|#define PML4_MASK       (~(PML4_SIZE-1))
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
@@ -1270,7 +1274,7 @@ multiline_comment|/* PMD  - Level 2 access */
 DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PTE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)        (mem_map + ((pmd_val(pmd) &amp; PTE_MASK)&gt;&gt;PAGE_SHIFT))
+mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 DECL|macro|__pmd_offset
 mdefine_line|#define __pmd_offset(address) (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 DECL|macro|pmd_offset
@@ -1398,8 +1402,10 @@ op_star
 id|pte_addr_t
 suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
+macro_line|#endif
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA

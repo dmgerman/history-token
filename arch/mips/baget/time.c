@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -15,10 +16,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;  
 macro_line|#include &lt;asm/baget/baget.h&gt;
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 multiline_comment|/* &n; *  To have precision clock, we need to fix available clock frequency&n; */
 DECL|macro|FREQ_NOM
 mdefine_line|#define FREQ_NOM  79125  /* Baget frequency ratio */
@@ -235,14 +232,17 @@ id|tv
 (brace
 r_int
 r_int
-id|flags
+id|seq
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
+c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 op_star
@@ -250,12 +250,18 @@ id|tv
 op_assign
 id|xtime
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
+c_func
 (paren
 op_amp
 id|xtime_lock
 comma
-id|flags
+id|seq
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -270,7 +276,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 (paren
 op_amp
 id|xtime_lock
@@ -298,7 +304,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 (paren
 op_amp
 id|xtime_lock

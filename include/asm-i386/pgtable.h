@@ -39,10 +39,11 @@ mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-time dual-mode&squot;, it&n; * implements both the traditional 2-level x86 page tables and the&n; * newer 3-level PAE-mode page tables.&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 macro_line|# include &lt;asm/pgtable-3level.h&gt;
-multiline_comment|/*&n; * Need to initialise the X86 PAE caches&n; */
-r_extern
+macro_line|#else
+macro_line|# include &lt;asm/pgtable-2level.h&gt;
+macro_line|#endif
 r_void
 id|pgtable_cache_init
 c_func
@@ -50,12 +51,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|# include &lt;asm/pgtable-2level.h&gt;
-multiline_comment|/*&n; * No page table caches to initialise&n; */
-DECL|macro|pgtable_cache_init
-mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
-macro_line|#endif
 macro_line|#endif
 DECL|macro|__beep
 mdefine_line|#define __beep() asm(&quot;movb $0x3,%al; outb %al,$0x61&quot;)
@@ -89,7 +84,7 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(((unsigned long) high_memory + 2*VMALLOC_OFFSET-1) &amp; &bslash;&n;&t;&t;&t;&t;&t;&t;~(VMALLOC_OFFSET-1))
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|VMALLOC_END
 macro_line|# define VMALLOC_END&t;(PKMAP_BASE-2*PAGE_SIZE)
 macro_line|#else
@@ -705,7 +700,7 @@ DECL|macro|pmd_large
 mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 DECL|macro|__pgd_offset
 mdefine_line|#define __pgd_offset(address) pgd_index(address)
 DECL|macro|pgd_offset

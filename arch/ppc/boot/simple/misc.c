@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/common/misc-simple.c&n; *&n; * Misc. bootloader code for many machines.  This assumes you have are using&n; * a 6xx/7xx/74xx CPU in your machine.  This assumes the chunk of memory&n; * below 8MB is free.  Finally, it assumes you have a NS16550-style uart for&n; * your serial console.  If a machine meets these requirements, it can quite&n; * likely use this code during boot.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; * Derived from arch/ppc/boot/prep/misc.c&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/common/misc-simple.c&n; *&n; * Misc. bootloader code for many machines.  This assumes you have are using&n; * a 6xx/7xx/74xx CPU in your machine.  This assumes the chunk of memory&n; * below 8MB is free.  Finally, it assumes you have a NS16550-style uart for&n; * your serial console.  If a machine meets these requirements, it can quite&n; * likely use this code during boot.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; * Derived from arch/ppc/boot/prep/misc.c&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -237,7 +237,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_LOPEC) || defined(CONFIG_PAL4)
-multiline_comment|/*&n;&t; * Call get_mem_size(), which is memory controller dependant,&n;&t; * and we must have the correct file linked in here.&n;&t; */
+multiline_comment|/*&n;&t; * Call get_mem_size(), which is memory controller dependent,&n;&t; * and we must have the correct file linked in here.&n;&t; */
 id|TotalMemory
 op_assign
 id|get_mem_size

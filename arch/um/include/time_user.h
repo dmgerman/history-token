@@ -46,7 +46,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
+r_int
 id|time_lock
 c_func
 (paren
@@ -58,7 +59,8 @@ r_void
 id|time_unlock
 c_func
 (paren
-r_void
+r_int
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -66,5 +66,19 @@ DECL|macro|SIU_PFC_ILLEGAL_REQUEST
 mdefine_line|#define&t;&t;SIU_PFC_ILLEGAL_REQUEST&t;&t;7
 DECL|macro|SIU_SENSE_OFFSET
 mdefine_line|#define SIU_SENSE_OFFSET(siu)&t;&t;&t;&t;&bslash;&n;    (12 + (((siu)-&gt;flags &amp; SIU_RSPVALID)&t;&t;&bslash;&n;&t;? scsi_4btoul((siu)-&gt;pkt_failures_length)&t;&bslash;&n;&t;: 0))
+DECL|macro|SIU_TASKMGMT_NONE
+mdefine_line|#define&t;SIU_TASKMGMT_NONE&t;&t;0x00
+DECL|macro|SIU_TASKMGMT_ABORT_TASK
+mdefine_line|#define&t;SIU_TASKMGMT_ABORT_TASK&t;&t;0x01
+DECL|macro|SIU_TASKMGMT_ABORT_TASK_SET
+mdefine_line|#define&t;SIU_TASKMGMT_ABORT_TASK_SET&t;0x02
+DECL|macro|SIU_TASKMGMT_CLEAR_TASK_SET
+mdefine_line|#define&t;SIU_TASKMGMT_CLEAR_TASK_SET&t;0x04
+DECL|macro|SIU_TASKMGMT_LUN_RESET
+mdefine_line|#define&t;SIU_TASKMGMT_LUN_RESET&t;&t;0x08
+DECL|macro|SIU_TASKMGMT_TARGET_RESET
+mdefine_line|#define&t;SIU_TASKMGMT_TARGET_RESET&t;0x20
+DECL|macro|SIU_TASKMGMT_CLEAR_ACA
+mdefine_line|#define&t;SIU_TASKMGMT_CLEAR_ACA&t;&t;0x40
 macro_line|#endif /*_SCSI_SCSI_IU_H*/
 eof

@@ -2726,7 +2726,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -2960,7 +2960,7 @@ c_func
 (paren
 id|hd
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -3000,7 +3000,7 @@ c_func
 (paren
 id|hd
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -3195,7 +3195,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -3416,7 +3416,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -5540,11 +5540,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc-&gt;host
+id|sc-&gt;device
+op_logical_and
+id|sc-&gt;device-&gt;host
 op_ne
 l_int|NULL
 op_logical_and
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 op_ne
 l_int|NULL
 )paren
@@ -5555,7 +5557,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_member_access_from_pointer
 id|ioc-&gt;name
@@ -5570,9 +5572,9 @@ id|ioc_str
 comma
 l_int|0
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
-id|sc-&gt;lun
+id|sc-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|last_queue_full
@@ -6148,12 +6150,13 @@ id|numSGE
 suffix:semicolon
 )brace
 multiline_comment|/* Set the pci device pointer in Scsi_Host structure.&n;&t;&t;&t;&t; */
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|sh
 comma
-id|this-&gt;pcidev
+op_amp
+id|this-&gt;pcidev-&gt;dev
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -9366,15 +9369,15 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|SCpnt-&gt;scsi_done
 op_assign
@@ -11442,7 +11445,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -11681,9 +11684,9 @@ id|hd
 comma
 id|MPI_SCSITASKMGMT_TASKTYPE_ABORT_TASK
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|ctx2abort
 comma
@@ -11749,7 +11752,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -11843,7 +11846,7 @@ id|hd
 comma
 id|MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 l_int|0
 comma
@@ -11910,7 +11913,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -12079,7 +12082,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 )paren
 op_eq
 l_int|NULL
@@ -15422,9 +15425,9 @@ l_string|&quot;%d:%d:%d&quot;
 comma
 id|hd-&gt;ioc-&gt;id
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
-id|sc-&gt;lun
+id|sc-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|thisIo.DevIDStr
@@ -15506,7 +15509,7 @@ op_assign
 id|MPT_SCSI_HOST
 op_star
 )paren
-id|sc-&gt;host-&gt;hostdata
+id|sc-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_for
 c_loop

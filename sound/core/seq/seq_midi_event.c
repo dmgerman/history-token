@@ -594,8 +594,6 @@ multiline_comment|/*{SNDRV_SEQ_EVENT_NONREGPARAM, extra_decode_nrpn},*/
 multiline_comment|/*{SNDRV_SEQ_EVENT_REGPARAM, extra_decode_rpn},*/
 )brace
 suffix:semicolon
-DECL|macro|numberof
-mdefine_line|#define numberof(ary)&t;(sizeof(ary)/sizeof(ary[0]))
 multiline_comment|/*&n; *  new/delete record&n; */
 DECL|function|snd_midi_event_new
 r_int
@@ -1664,6 +1662,7 @@ id|ev
 )paren
 (brace
 r_int
+r_int
 id|cmd
 comma
 id|type
@@ -1688,7 +1687,7 @@ l_int|0
 suffix:semicolon
 id|type
 OL
-id|numberof
+id|ARRAY_SIZE
 c_func
 (paren
 id|status_event
@@ -1723,7 +1722,7 @@ l_int|0
 suffix:semicolon
 id|type
 OL
-id|numberof
+id|ARRAY_SIZE
 c_func
 (paren
 id|extra_event

@@ -133,7 +133,7 @@ mdefine_line|#define SA_NODEFER&t;0x00000008
 DECL|macro|SA_RESETHAND
 mdefine_line|#define SA_RESETHAND&t;0x00000010
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00000020 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x00000020
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO&t;0x00000040
 DECL|macro|SA_ONESHOT
@@ -332,6 +332,8 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 DECL|macro|HAVE_ARCH_SYS_PAUSE
 mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif

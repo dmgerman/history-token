@@ -1227,7 +1227,6 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags
@@ -1274,7 +1273,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -1288,17 +1287,17 @@ singleline_comment|// command return code
 id|UCHAR
 id|bus
 op_assign
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 suffix:semicolon
 id|UCHAR
 id|pun
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|UCHAR
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|UCHAR
 id|cmd
@@ -2708,12 +2707,13 @@ r_goto
 id|unregister
 suffix:semicolon
 )brace
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|pshost
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|pshost-&gt;irq

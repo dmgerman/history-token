@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * scan.c - support for transforming the ACPI namespace into individual objects&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;acpi_drivers.h&quot;
-macro_line|#include &quot;include/acinterp.h&quot;&t;/* for acpi_ex_eisa_id_to_string() */
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
+macro_line|#include &lt;acpi/acinterp.h&gt;&t;/* for acpi_ex_eisa_id_to_string() */
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_BUS_COMPONENT
 id|ACPI_MODULE_NAME

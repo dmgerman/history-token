@@ -796,7 +796,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*MOD_INC_USE_COUNT;*/
 r_return
 l_int|0
 suffix:semicolon

@@ -25293,7 +25293,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Translate scan data returned from the card to a card independant&n; * format that the Wireless Tools will understand - Jean II&n; */
+multiline_comment|/*&n; * Translate scan data returned from the card to a card independent&n; * format that the Wireless Tools will understand - Jean II&n; */
 DECL|function|airo_translate_scan
 r_static
 r_inline

@@ -1347,15 +1347,14 @@ c_cond
 id|unlikely
 c_func
 (paren
-(paren
 id|fsindex
 op_or
 id|next-&gt;fsindex
-)paren
-op_logical_or
+op_or
 id|prev-&gt;fs
 )paren
 )paren
+(brace
 id|loadsegment
 c_func
 (paren
@@ -1364,22 +1363,17 @@ comma
 id|next-&gt;fsindex
 )paren
 suffix:semicolon
-multiline_comment|/* check if the user changed the selector&n;&t;&t;   if yes clear 64bit base. */
+multiline_comment|/* check if the user used a selector != 0&n;&t;                 * if yes clear 64bit base, since overloaded base&n;                         * is always mapped to the Null selector&n;                         */
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|fsindex
-op_ne
-id|prev-&gt;fsindex
-)paren
 )paren
 id|prev-&gt;fs
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* when next process has a 64bit base use it */
 r_if
 c_cond
@@ -1420,15 +1414,14 @@ c_cond
 id|unlikely
 c_func
 (paren
-(paren
 id|gsindex
 op_or
 id|next-&gt;gsindex
-)paren
-op_logical_or
+op_or
 id|prev-&gt;gs
 )paren
 )paren
+(brace
 id|load_gs_index
 c_func
 (paren
@@ -1438,18 +1431,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|gsindex
-op_ne
-id|prev-&gt;gsindex
-)paren
 )paren
 id|prev-&gt;gs
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2113,13 +2101,6 @@ id|code
 r_case
 id|ARCH_SET_GS
 suffix:colon
-macro_line|#if 1
-multiline_comment|/* For now. We still have one unsolved bug in long gs base context&n;&t;&t;   switch handling. */
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -2139,12 +2120,12 @@ suffix:semicolon
 id|load_gs_index
 c_func
 (paren
-id|__USER_LONGBASE
+l_int|0
 )paren
 suffix:semicolon
 id|current-&gt;thread.gsindex
 op_assign
-id|__USER_LONGBASE
+l_int|0
 suffix:semicolon
 id|current-&gt;thread.gs
 op_assign
@@ -2167,7 +2148,6 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|ARCH_SET_FS
 suffix:colon
@@ -2195,13 +2175,13 @@ l_string|&quot;movl %0,%%fs&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|__USER_LONGBASE
+l_int|0
 )paren
 )paren
 suffix:semicolon
 id|current-&gt;thread.fsindex
 op_assign
-id|__USER_LONGBASE
+l_int|0
 suffix:semicolon
 id|current-&gt;thread.fs
 op_assign

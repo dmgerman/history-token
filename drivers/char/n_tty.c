@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * n_tty.c --- implements the N_TTY line discipline.&n; * &n; * This code used to be in tty_io.c, but things are getting hairy&n; * enough that it made sense to split things off.  (The N_TTY&n; * processing has changed so much that it&squot;s hardly recognizable,&n; * anyway...)&n; *&n; * Note that the open routine for N_TTY is guaranteed never to return&n; * an error.  This is because Linux will fall back to setting a line&n; * to N_TTY if it can not switch to any other line discipline.  &n; *&n; * Written by Theodore Ts&squot;o, Copyright 1994.&n; * &n; * This file also contains code originally written by Linus Torvalds,&n; * Copyright 1991, 1992, 1993, and by Julian Cowley, Copyright 1994.&n; * &n; * This file may be redistributed under the terms of the GNU General Public&n; * License.&n; *&n; * Reduced memory usage for older ARM systems  - Russell King.&n; *&n; * 2000/01/20   Fixed SMP locking on put_tty_queue using bits of &n; *&t;&t;the patch by Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n; *&t;&t;who actually finally proved there really was a race.&n; */
+multiline_comment|/*&n; * n_tty.c --- implements the N_TTY line discipline.&n; * &n; * This code used to be in tty_io.c, but things are getting hairy&n; * enough that it made sense to split things off.  (The N_TTY&n; * processing has changed so much that it&squot;s hardly recognizable,&n; * anyway...)&n; *&n; * Note that the open routine for N_TTY is guaranteed never to return&n; * an error.  This is because Linux will fall back to setting a line&n; * to N_TTY if it can not switch to any other line discipline.  &n; *&n; * Written by Theodore Ts&squot;o, Copyright 1994.&n; * &n; * This file also contains code originally written by Linus Torvalds,&n; * Copyright 1991, 1992, 1993, and by Julian Cowley, Copyright 1994.&n; * &n; * This file may be redistributed under the terms of the GNU General Public&n; * License.&n; *&n; * Reduced memory usage for older ARM systems  - Russell King.&n; *&n; * 2000/01/20   Fixed SMP locking on put_tty_queue using bits of &n; *&t;&t;the patch by Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n; *&t;&t;who actually finally proved there really was a race.&n; *&n; * 2002/03/18   Implemented n_tty_wakeup to send SIGIO POLL_OUTs to&n; *&t;&t;waiting writing processes-Sapan Bhatia &lt;sapan@corewars.org&gt;.&n; *&t;&t;Also fixed a bug in BLOCKING mode where write_chan returns&n; *&t;&t;EAGAIN&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3363,6 +3363,49 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Required for the ptys, serial driver etc. since processes&n; * that attach themselves to the master and rely on ASYNC&n; * IO must be woken up&n; */
+DECL|function|n_tty_write_wakeup
+r_static
+r_void
+id|n_tty_write_wakeup
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tty-&gt;fasync
+)paren
+(brace
+id|set_bit
+c_func
+(paren
+id|TTY_DO_WRITE_WAKEUP
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+suffix:semicolon
+id|kill_fasync
+c_func
+(paren
+op_amp
+id|tty-&gt;fasync
+comma
+id|SIGIO
+comma
+id|POLL_OUT
+)paren
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
 DECL|function|n_tty_receive_buf
 r_static
 r_void
@@ -3797,7 +3840,7 @@ comma
 id|sig
 )paren
 op_logical_or
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -5732,6 +5775,16 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|num
+op_eq
+op_minus
+id|EAGAIN
+)paren
+r_break
+suffix:semicolon
 id|retval
 op_assign
 id|num
@@ -6151,7 +6204,7 @@ multiline_comment|/* receive_buf */
 id|n_tty_receive_room
 comma
 multiline_comment|/* receive_room */
-l_int|0
+id|n_tty_write_wakeup
 multiline_comment|/* write_wakeup */
 )brace
 suffix:semicolon

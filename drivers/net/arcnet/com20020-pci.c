@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux ARCnet driver - COM20020 PCI support (Contemporary Controls PCI20)&n; * &n; * Written 1994-1999 by Avery Pennarun,&n; *    based on an ISA version by David Woodhouse.&n; * Written 1999-2000 by Martin Mares &lt;mj@ucw.cz&gt;.&n; * Derived from skeleton.c by Donald Becker.&n; *&n; * Special thanks to Contemporary Controls, Inc. (www.ccontrols.com)&n; *  for sponsoring the further development of this driver.&n; *&n; * **********************&n; *&n; * The original copyright of skeleton.c was as follows:&n; *&n; * skeleton.c Written 1993 by Donald Becker.&n; * Copyright 1993 United States Government as represented by the&n; * Director, National Security Agency.  This software may only be used&n; * and distributed according to the terms of the GNU General Public License as&n; * modified by SRC, incorporated herein by reference.&n; *&n; * **********************&n; *&n; * For more details, see drivers/net/arcnet.c&n; *&n; * **********************&n; */
+multiline_comment|/*&n; * Linux ARCnet driver - COM20020 PCI support&n; * Contemporary Controls PCI20 and SOHARD SH-ARC PCI&n; * &n; * Written 1994-1999 by Avery Pennarun,&n; *    based on an ISA version by David Woodhouse.&n; * Written 1999-2000 by Martin Mares &lt;mj@ucw.cz&gt;.&n; * Derived from skeleton.c by Donald Becker.&n; *&n; * Special thanks to Contemporary Controls, Inc. (www.ccontrols.com)&n; *  for sponsoring the further development of this driver.&n; *&n; * **********************&n; *&n; * The original copyright of skeleton.c was as follows:&n; *&n; * skeleton.c Written 1993 by Donald Becker.&n; * Copyright 1993 United States Government as represented by the&n; * Director, National Security Agency.  This software may only be used&n; * and distributed according to the terms of the GNU General Public License as&n; * modified by SRC, incorporated herein by reference.&n; *&n; * **********************&n; *&n; * For more details, see drivers/net/arcnet.c&n; *&n; * **********************&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -253,6 +253,44 @@ comma
 id|dev
 )paren
 suffix:semicolon
+singleline_comment|// SOHARD needs PCI base addr 4
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+l_int|0x10B5
+)paren
+(brace
+id|BUGMSG
+c_func
+(paren
+id|D_NORMAL
+comma
+l_string|&quot;SOHARD&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ioaddr
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|BUGMSG
+c_func
+(paren
+id|D_NORMAL
+comma
+l_string|&quot;Contemporary Controls&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ioaddr
 op_assign
 id|pci_resource_start
@@ -261,6 +299,27 @@ c_func
 id|pdev
 comma
 l_int|2
+)paren
+suffix:semicolon
+)brace
+singleline_comment|// Dummy access after Reset
+singleline_comment|// ARCNET controller needs this access to detect bustype
+id|outb
+c_func
+(paren
+l_int|0x00
+comma
+id|ioaddr
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|dev-&gt;base_addr
@@ -766,6 +825,22 @@ comma
 l_int|0x1571
 comma
 l_int|0xa206
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|ARC_CAN_10MBIT
+)brace
+comma
+(brace
+l_int|0x10B5
+comma
+l_int|0x9050
 comma
 id|PCI_ANY_ID
 comma

@@ -100,7 +100,7 @@ mdefine_line|#define WRITE            1
 DECL|macro|OTHER
 mdefine_line|#define OTHER            2
 DECL|macro|HD
-mdefine_line|#define HD(cmd)&t; ((hostdata *)&amp;(cmd-&gt;host-&gt;hostdata))
+mdefine_line|#define HD(cmd)&t; ((hostdata *)&amp;(cmd-&gt;device-&gt;host-&gt;hostdata))
 DECL|macro|CD
 mdefine_line|#define CD(cmd)&t; ((struct eata_ccb *)(cmd-&gt;host_scribble))
 DECL|macro|SD

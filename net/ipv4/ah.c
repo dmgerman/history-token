@@ -1460,6 +1460,10 @@ id|GFP_ATOMIC
 r_goto
 id|out
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 id|ah
 op_assign
 (paren
@@ -1881,7 +1885,7 @@ id|ahp-&gt;icv
 op_assign
 id|ah_hmac_digest
 suffix:semicolon
-multiline_comment|/*&n;&t; * Lookup the algorithm description maintained by pfkey,&n;&t; * verify crypto transform properties, and store information&n;&t; * we need for AH processing.  This lookup cannot fail here&n;&t; * after a successful crypto_alloc_tfm().&n;&t; */
+multiline_comment|/*&n;&t; * Lookup the algorithm description maintained by xfrm_algo,&n;&t; * verify crypto transform properties, and store information&n;&t; * we need for AH processing.  This lookup cannot fail here&n;&t; * after a successful crypto_alloc_tfm().&n;&t; */
 id|aalg_desc
 op_assign
 id|xfrm_aalg_get_byname

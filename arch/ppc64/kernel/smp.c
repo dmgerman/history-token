@@ -107,15 +107,6 @@ r_int
 id|wait
 )paren
 suffix:semicolon
-DECL|variable|iSeries_smp_message
-r_static
-r_int
-r_int
-id|iSeries_smp_message
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 r_void
 id|xics_setup_cpu
 c_func
@@ -193,6 +184,15 @@ id|lower
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
+DECL|variable|iSeries_smp_message
+r_static
+r_int
+r_int
+id|iSeries_smp_message
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|function|iSeries_smp_message_recv
 r_void
 id|iSeries_smp_message_recv
@@ -1789,6 +1789,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1800,6 +1801,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -1861,6 +1863,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1872,6 +1875,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2042,9 +2046,6 @@ r_int
 id|max_cpus
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/* Fixup boot cpu */
 id|smp_store_cpu_info
 c_func

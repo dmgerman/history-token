@@ -1211,7 +1211,7 @@ r_else
 (brace
 id|err
 (paren
-l_string|&quot;%s - inconsistant lengths %d:%d&quot;
+l_string|&quot;%s - inconsistent lengths %d:%d&quot;
 comma
 id|__FUNCTION__
 comma

@@ -185,19 +185,6 @@ id|SCp-&gt;this_residual
 op_sub_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|SCp-&gt;this_residual
-op_eq
-l_int|0
-)paren
-id|next_SCp
-c_func
-(paren
-id|SCp
-)paren
-suffix:semicolon
 r_return
 id|c
 suffix:semicolon
@@ -230,19 +217,6 @@ suffix:semicolon
 id|SCp-&gt;this_residual
 op_sub_assign
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|SCp-&gt;this_residual
-op_eq
-l_int|0
-)paren
-id|next_SCp
-c_func
-(paren
-id|SCp
-)paren
 suffix:semicolon
 )brace
 DECL|function|init_SCp
@@ -354,11 +328,11 @@ id|KERN_WARNING
 l_string|&quot;scsi%d.%c: bad request buffer &quot;
 l_string|&quot;length %d, should be %ld&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;request_bufflen
 comma
@@ -406,7 +380,8 @@ op_logical_and
 id|SCpnt-&gt;SCp.ptr
 )paren
 (brace
-macro_line|#ifdef BELT_AND_BRACES
+macro_line|#if 0 
+singleline_comment|//def BELT_AND_BRACES
 id|printk
 c_func
 (paren

@@ -568,7 +568,8 @@ r_int
 id|dword_count
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|dst
 op_assign
 id|chip-&gt;region.idx
@@ -5368,7 +5369,7 @@ op_amp
 id|DSP_SPDIF_STATUS_PLAYBACK_OPEN
 )paren
 (brace
-multiline_comment|/* when cs46xx_iec958_post_close(...) is called it&n;&t;&t;   will call this function if necesary depending on&n;&t;&t;   this bit */
+multiline_comment|/* when cs46xx_iec958_post_close(...) is called it&n;&t;&t;   will call this function if necessary depending on&n;&t;&t;   this bit */
 id|ins-&gt;spdif_status_out
 op_or_assign
 id|DSP_SPDIF_STATUS_OUTPUT_ENABLED

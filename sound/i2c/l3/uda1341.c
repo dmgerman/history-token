@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13&t;Tomas Kasparek&t;Initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  Proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;Proc interface update, code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.5 2002/11/09 13:12:19 perex Exp $ */
+multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;proc interface update, code cleanup&n; * 2002-05-12   Tomas Kasparek  another code cleanup&n; */
+multiline_comment|/* $Id: uda1341.c,v 1.7 2003/02/13 19:19:19 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -331,16 +330,6 @@ DECL|member|card
 id|snd_card_t
 op_star
 id|card
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
-DECL|member|proc_regs_entry
-id|snd_info_entry_t
-op_star
-id|proc_regs_entry
 suffix:semicolon
 DECL|member|cfg
 id|uda1341_cfg
@@ -2510,215 +2499,60 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|card
 comma
 l_string|&quot;uda1341&quot;
 comma
-id|card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|clnt
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|512
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_uda1341_proc_read
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
-)paren
-suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|uda-&gt;proc_entry
-op_assign
-id|entry
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|card
 comma
 l_string|&quot;uda1341-regs&quot;
 comma
-id|card-&gt;proc_root
+op_amp
+id|entry
 )paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|clnt
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|1024
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_uda1341_proc_regs_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|uda-&gt;proc_regs_entry
-op_assign
-id|entry
-suffix:semicolon
-)brace
-DECL|function|snd_uda1341_proc_done
-r_static
-r_void
-id|snd_uda1341_proc_done
-c_func
-(paren
-r_struct
-id|l3_client
-op_star
-id|clnt
-)paren
-(brace
-r_struct
-id|uda1341
-op_star
-id|uda
-op_assign
-id|clnt-&gt;driver_data
-suffix:semicolon
-id|DEBUG_NAME
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;proc_done&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|uda-&gt;proc_regs_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|uda-&gt;proc_regs_entry
-)paren
-suffix:semicolon
-id|uda-&gt;proc_regs_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|uda-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|uda-&gt;proc_entry
-)paren
-suffix:semicolon
-id|uda-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ Mixer controls setting */
 multiline_comment|/* {{{ UDA1341 single functions */
 DECL|macro|UDA1341_SINGLE
-mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, .put = snd_uda1341_put_single, &bslash;&n;  .private_value = where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
-DECL|function|snd_uda1341_info_single
+mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, .put = snd_uda1341_put_single, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 r_static
 r_int
 id|snd_uda1341_info_single
@@ -2782,7 +2616,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_get_single
 r_static
 r_int
 id|snd_uda1341_get_single
@@ -2888,7 +2721,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_put_single
 r_static
 r_int
 id|snd_uda1341_put_single
@@ -3044,8 +2876,7 @@ suffix:semicolon
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 enum functions */
 DECL|macro|UDA1341_ENUM
-mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, .put = snd_uda1341_put_enum, &bslash;&n;  .private_value = where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
-DECL|function|snd_uda1341_info_enum
+mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, .put = snd_uda1341_put_enum, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 r_static
 r_int
 id|snd_uda1341_info_enum
@@ -3152,7 +2983,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_get_enum
 r_static
 r_int
 id|snd_uda1341_get_enum
@@ -3219,7 +3049,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_put_enum
 r_static
 r_int
 id|snd_uda1341_put_enum
@@ -3350,7 +3179,6 @@ multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 2regs functions */
 DECL|macro|UDA1341_2REGS
 mdefine_line|#define UDA1341_2REGS(xname, where, reg_1, reg_2, shift_1, shift_2, mask_1, mask_2, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = (xname), .info = snd_uda1341_info_2regs, &bslash;&n;  .get = snd_uda1341_get_2regs, .put = snd_uda1341_put_2regs, &bslash;&n;  .private_value = where | (reg_1 &lt;&lt; 5) | (reg_2 &lt;&lt; 9) | (shift_1 &lt;&lt; 13) | (shift_2 &lt;&lt; 16) | &bslash;&n;                         (mask_1 &lt;&lt; 19) | (mask_2 &lt;&lt; 25) | (invert &lt;&lt; 31) &bslash;&n;}
-DECL|function|snd_uda1341_info_2regs
 r_static
 r_int
 id|snd_uda1341_info_2regs
@@ -3444,7 +3272,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_get_2regs
 r_static
 r_int
 id|snd_uda1341_get_2regs
@@ -3580,7 +3407,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_uda1341_put_2regs
 r_static
 r_int
 id|snd_uda1341_put_2regs
@@ -3847,7 +3673,6 @@ suffix:semicolon
 multiline_comment|/* }}} */
 DECL|macro|UDA1341_CONTROLS
 mdefine_line|#define UDA1341_CONTROLS (sizeof(snd_uda1341_controls)/sizeof(snd_kcontrol_new_t))
-DECL|variable|snd_uda1341_controls
 r_static
 id|snd_kcontrol_new_t
 id|snd_uda1341_controls
@@ -4167,7 +3992,6 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|function|snd_chip_uda1341_mixer_new
 r_int
 id|__init
 id|snd_chip_uda1341_mixer_new
@@ -4335,7 +4159,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_chip_uda1341_mixer_del
 r_void
 id|__init
 id|snd_chip_uda1341_mixer_del
@@ -4351,12 +4174,6 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;uda1341 mixer_del&bslash;n&quot;
-)paren
-suffix:semicolon
-id|snd_uda1341_proc_done
-c_func
-(paren
-id|uda1341
 )paren
 suffix:semicolon
 id|l3_detach_client
@@ -4378,7 +4195,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ L3 operations */
-DECL|function|uda1341_attach
 r_static
 r_int
 id|uda1341_attach
@@ -4498,7 +4314,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|uda1341_detach
 r_static
 r_void
 id|uda1341_detach
@@ -4526,7 +4341,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|uda1341_command
 id|uda1341_command
 c_func
 (paren
@@ -4586,7 +4400,6 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-DECL|function|uda1341_open
 r_static
 r_int
 id|uda1341_open
@@ -4907,7 +4720,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|uda1341_close
 r_static
 r_void
 id|uda1341_close
@@ -4940,7 +4752,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ Module and L3 initialization */
-DECL|variable|uda1341_ops
 r_static
 r_struct
 id|l3_ops
@@ -4964,7 +4775,6 @@ id|uda1341_close
 comma
 )brace
 suffix:semicolon
-DECL|variable|uda1341_driver
 r_static
 r_struct
 id|l3_driver
@@ -4999,7 +4809,6 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-DECL|function|uda1341_init
 r_static
 r_int
 id|__init
@@ -5018,7 +4827,6 @@ id|uda1341_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|uda1341_exit
 r_static
 r_void
 id|__exit
@@ -5036,14 +4844,12 @@ id|uda1341_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|uda1341_init
 id|module_init
 c_func
 (paren
 id|uda1341_init
 )paren
 suffix:semicolon
-DECL|variable|uda1341_exit
 id|module_exit
 c_func
 (paren
@@ -5080,14 +4886,12 @@ c_func
 l_string|&quot;{{UDA1341,UDA1341TS}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_chip_uda1341_mixer_new
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_chip_uda1341_mixer_new
 )paren
 suffix:semicolon
-DECL|variable|snd_chip_uda1341_mixer_del
 id|EXPORT_SYMBOL
 c_func
 (paren

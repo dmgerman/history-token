@@ -413,6 +413,13 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|link-&gt;release
+)paren
+suffix:semicolon
 id|link-&gt;release.function
 op_assign
 op_amp
@@ -1471,7 +1478,7 @@ comma
 id|link
 )paren
 suffix:semicolon
-macro_line|#warning This doesn&squot;t protect you.  You need some real fix for your races.
+macro_line|#warning This does not protect you.  You need some real fix for your races.
 macro_line|#if 0
 r_if
 c_cond
@@ -1718,7 +1725,7 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-id|tmp.host
+id|tmp.device-&gt;host
 op_assign
 id|info-&gt;host
 suffix:semicolon

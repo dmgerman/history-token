@@ -36,7 +36,11 @@ c_func
 (paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|br_inc_use_count
@@ -46,7 +50,11 @@ c_func
 (paren
 )paren
 (brace
-id|MOD_INC_USE_COUNT
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|br_init

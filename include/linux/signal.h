@@ -425,21 +425,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_extern
-r_char
-op_star
-id|render_sigset_t
-c_func
-(paren
-id|sigset_t
-op_star
-id|set
-comma
-r_char
-op_star
-id|buffer
-)paren
-suffix:semicolon
 multiline_comment|/* Some extensions for manipulating the low 32 signals in particular.  */
 DECL|function|sigaddsetmask
 r_static
@@ -709,6 +694,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sigprocmask
+c_func
+(paren
+r_int
+comma
+id|sigset_t
+op_star
+comma
+id|sigset_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 r_struct
 id|pt_regs
@@ -726,9 +725,15 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_void
+op_star
+id|cookie
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|macro|FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
+mdefine_line|#define FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SIGNAL_H */
 eof

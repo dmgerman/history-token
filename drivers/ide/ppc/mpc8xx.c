@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/ide-m8xx.c&n; *&n; *  Copyright (C) 2000, 2001 Wolfgang Denk, wd@denx.de&n; *  Modified for direct IDE interface&n; *&t;by Thomas Lange, thomas@corelatus.com&n; *  Modified for direct IDE interface on 8xx without using the PCMCIA&n; *  controller&n; *&t;by Steven.Scholz@imc-berlin.de&n; *  Moved out of arch/ppc/kernel/m8xx_setup.c, other minor cleanups&n; *&t;by Mathew Locke &lt;mattl@mvista.com&gt;&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ppc/ide-m8xx.c&n; *&n; *  Copyright (C) 2000, 2001 Wolfgang Denk, wd@denx.de&n; *  Modified for direct IDE interface&n; *&t;by Thomas Lange, thomas@corelatus.com&n; *  Modified for direct IDE interface on 8xx without using the PCMCIA&n; *  controller&n; *&t;by Steven.Scholz@imc-berlin.de&n; *  Moved out of arch/ppc/kernel/m8xx_setup.c, other minor cleanups&n; *&t;by Mathew Locke &lt;mattl@mvista.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -101,7 +101,8 @@ id|base_off
 suffix:semicolon
 multiline_comment|/* Offset to PCMCIA memory&t;*/
 DECL|member|reg_off
-id|ide_ioreg_t
+r_int
+r_int
 id|reg_off
 (braket
 id|IDE_NR_PORTS
@@ -240,7 +241,8 @@ DECL|function|m8xx_ide_default_irq
 id|m8xx_ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -287,7 +289,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 DECL|function|m8xx_ide_default_io_base
 id|m8xx_ide_default_io_base
 c_func
@@ -340,10 +343,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -351,7 +356,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 op_star
 id|p
 op_assign
@@ -1132,10 +1138,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -1143,7 +1151,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 op_star
 id|p
 op_assign

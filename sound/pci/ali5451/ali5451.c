@@ -233,7 +233,7 @@ macro_line|#else
 DECL|macro|snd_ali_printk
 mdefine_line|#define snd_ali_printk(format, args...)
 macro_line|#endif
-multiline_comment|/*&n; *  Constants defination&n; */
+multiline_comment|/*&n; *  Constants definition&n; */
 macro_line|#ifndef PCI_VENDOR_ID_ALI
 DECL|macro|PCI_VENDOR_ID_ALI
 mdefine_line|#define PCI_VENDOR_ID_ALI&t;0x10b9
@@ -2257,13 +2257,8 @@ l_int|5000
 )paren
 suffix:semicolon
 )brace
-id|snd_printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ali5451: reset time out&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* non-fatal if you have a non PM capable codec */
+multiline_comment|/* snd_printk(KERN_WARNING &quot;ali5451: reset time out&bslash;n&quot;); */
 r_return
 l_int|0
 suffix:semicolon
@@ -9158,9 +9153,11 @@ id|ac97_t
 id|ac97
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|memset
 c_func
@@ -10488,7 +10485,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* check, if we can restrict PCI DMA transfers to 30 bits */
+multiline_comment|/* check, if we can restrict PCI DMA transfers to 31 bits */
 r_if
 c_cond
 (paren
@@ -10498,14 +10495,14 @@ c_func
 (paren
 id|pci
 comma
-l_int|0x3fffffff
+l_int|0x7fffffff
 )paren
 )paren
 (brace
 id|snd_printk
 c_func
 (paren
-l_string|&quot;architecture does not support 30bit PCI busmaster DMA&bslash;n&quot;
+l_string|&quot;architecture does not support 31bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10518,7 +10515,7 @@ c_func
 (paren
 id|pci
 comma
-l_int|0x3fffffff
+l_int|0x7fffffff
 )paren
 suffix:semicolon
 r_if

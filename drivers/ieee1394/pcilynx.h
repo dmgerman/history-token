@@ -256,6 +256,12 @@ r_struct
 id|list_head
 id|queue
 suffix:semicolon
+DECL|member|pcl_queue
+r_struct
+id|list_head
+id|pcl_queue
+suffix:semicolon
+multiline_comment|/* this queue contains at most one packet */
 DECL|member|queue_lock
 id|spinlock_t
 id|queue_lock
@@ -1591,7 +1597,7 @@ multiline_comment|/* bus info block     offset (hex) */
 id|_
 c_func
 (paren
-l_int|0x04040000
+l_int|0x04046aaf
 )paren
 comma
 multiline_comment|/* info/CRC length, CRC              400  */
@@ -1627,7 +1633,7 @@ multiline_comment|/* root directory */
 id|_
 c_func
 (paren
-l_int|0x00090000
+l_int|0x00095778
 )paren
 comma
 multiline_comment|/* directory length, CRC             414  */
@@ -1698,7 +1704,7 @@ multiline_comment|/* module vendor ID textual */
 id|_
 c_func
 (paren
-l_int|0x00070000
+l_int|0x00070812
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   43c  */
@@ -1755,7 +1761,7 @@ multiline_comment|/* node unique ID leaf */
 id|_
 c_func
 (paren
-l_int|0x00020000
+l_int|0x00022ead
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   45c  */
@@ -1777,7 +1783,7 @@ multiline_comment|/* module dependent info */
 id|_
 c_func
 (paren
-l_int|0x00050000
+l_int|0x0005d837
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   468  */
@@ -1820,7 +1826,7 @@ multiline_comment|/* module textual ID */
 id|_
 c_func
 (paren
-l_int|0x00050000
+l_int|0x000594df
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   480  */
@@ -1863,7 +1869,7 @@ multiline_comment|/* part number */
 id|_
 c_func
 (paren
-l_int|0x00060000
+l_int|0x00068405
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   498  */
@@ -1913,7 +1919,7 @@ multiline_comment|/* module hardware version textual */
 id|_
 c_func
 (paren
-l_int|0x00050000
+l_int|0x00056501
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   4b4  */
@@ -1956,7 +1962,7 @@ multiline_comment|/* node hardware version textual */
 id|_
 c_func
 (paren
-l_int|0x00050000
+l_int|0x0005d805
 )paren
 comma
 multiline_comment|/* CRC length, CRC                   4d0  */
