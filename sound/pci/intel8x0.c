@@ -4365,15 +4365,6 @@ op_assign
 id|substream-&gt;runtime
 suffix:semicolon
 r_int
-id|size
-op_assign
-id|params_buffer_bytes
-c_func
-(paren
-id|hw_params
-)paren
-suffix:semicolon
-r_int
 id|dbl
 op_assign
 id|params_rate
