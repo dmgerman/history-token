@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt; /* had the declarations for init_fcdev among&n;&t;&t;&t;       others + includes if_fcdevice.h */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;../../fc4/fcp.h&quot;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

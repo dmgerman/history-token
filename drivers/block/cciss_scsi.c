@@ -2,7 +2,7 @@ multiline_comment|/*&n; *    Disk Array driver for Compaq SA53xx Controllers, SC
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 multiline_comment|/* Here we have code to present the driver as a scsi driver &n;   as it is simultaneously presented as a block driver.  The &n;   reason for doing this is to allow access to SCSI tape drives&n;   through the array controller.  Note in particular, neither &n;   physical nor logical disks are presented through the scsi layer. */
 macro_line|#include &quot;../scsi/scsi.h&quot; 
-macro_line|#include &quot;../scsi/hosts.h&quot; 
+macro_line|#include &lt;scsi/scsi_host.h&gt; 
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;

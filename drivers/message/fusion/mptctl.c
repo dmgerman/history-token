@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;&t;/* needed for access to Scsi_Host struct */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 LSI Logic Corporation&quot;
 DECL|macro|MODULEAUTHOR

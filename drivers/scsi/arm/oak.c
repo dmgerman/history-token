@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../scsi.h&quot;
-macro_line|#include &quot;../hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|AUTOSENSE
 mdefine_line|#define AUTOSENSE
 multiline_comment|/*#define PSEUDO_DMA*/

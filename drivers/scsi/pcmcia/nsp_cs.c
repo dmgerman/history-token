@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;../drivers/scsi/scsi.h&gt;
-macro_line|#include &lt;../drivers/scsi/hosts.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
