@@ -92,14 +92,13 @@ comma
 id|tower_table
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Get a minor range for your devices from the usb maintainer */
 DECL|macro|LEGO_USB_TOWER_MINOR_BASE
-mdefine_line|#define LEGO_USB_TOWER_MINOR_BASE&t;0xB3
+mdefine_line|#define LEGO_USB_TOWER_MINOR_BASE&t;160
 multiline_comment|/* we can have up to this number of device plugged in at once */
 DECL|macro|MAX_DEVICES
 mdefine_line|#define MAX_DEVICES&t;&t;16
 DECL|macro|COMMAND_TIMEOUT
-mdefine_line|#define COMMAND_TIMEOUT    (2*HZ)  /* 60 second timeout for a command */
+mdefine_line|#define COMMAND_TIMEOUT&t;&t;(2*HZ)  /* 2 second timeout for a command */
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|lego_usb_tower
 r_struct
@@ -231,29 +230,6 @@ comma
 id|loff_t
 op_star
 id|ppos
-)paren
-suffix:semicolon
-r_static
-r_int
-id|tower_ioctl
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
 )paren
 suffix:semicolon
 r_static
@@ -402,11 +378,6 @@ dot
 id|write
 op_assign
 id|tower_write
-comma
-dot
-id|ioctl
-op_assign
-id|tower_ioctl
 comma
 dot
 id|open
@@ -633,48 +604,21 @@ id|dev-&gt;interrupt_out_urb
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|dev-&gt;read_buffer
-op_ne
-l_int|NULL
-)paren
-(brace
 id|kfree
 (paren
 id|dev-&gt;read_buffer
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;interrupt_in_buffer
-op_ne
-l_int|NULL
-)paren
-(brace
 id|kfree
 (paren
 id|dev-&gt;interrupt_in_buffer
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;interrupt_out_buffer
-op_ne
-l_int|NULL
-)paren
-(brace
 id|kfree
 (paren
 id|dev-&gt;interrupt_out_buffer
 )paren
 suffix:semicolon
-)brace
 id|kfree
 (paren
 id|dev
@@ -2006,42 +1950,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;Number of reasons why this isn&squot;t supported - GKH doesn&squot;t like them&n; *      since they are non-portable and also most of this is derived from&n; *      proprietary information&n; */
-DECL|function|tower_ioctl
-r_static
-r_int
-id|tower_ioctl
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-r_int
-id|retval
-op_assign
-op_minus
-id|ENOTTY
-suffix:semicolon
-multiline_comment|/* default: we don&squot;t understand ioctl */
-r_return
-id|retval
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;tower_interrupt_in_callback&n; */
 DECL|function|tower_interrupt_in_callback
 r_static
@@ -2834,7 +2742,6 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* initialize the devfs node for this device and register it */
 multiline_comment|/* we can register the device now, as it is ready */
 id|usb_set_intfdata
 (paren
