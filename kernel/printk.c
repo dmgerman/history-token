@@ -22,6 +22,10 @@ mdefine_line|#define LOG_BUF_LEN&t;(16384)&t;&t;&t;/* This must be a power of tw
 macro_line|#endif
 DECL|macro|LOG_BUF_MASK
 mdefine_line|#define LOG_BUF_MASK&t;(LOG_BUF_LEN-1)
+macro_line|#ifndef arch_consoles_callable
+DECL|macro|arch_consoles_callable
+mdefine_line|#define arch_consoles_callable() (1)
+macro_line|#endif
 multiline_comment|/* printk&squot;s without a loglevel use this.. */
 DECL|macro|DEFAULT_MESSAGE_LOGLEVEL
 mdefine_line|#define DEFAULT_MESSAGE_LOGLEVEL 4 /* KERN_WARNING */
@@ -1815,6 +1819,30 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|arch_consoles_callable
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * On some architectures, the consoles are not usable&n;&t;&t; * on secondary CPUs early in the boot process.&n;&t;&t; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|logbuf_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|down_trylock
 c_func
 (paren
@@ -1856,6 +1884,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_return
 id|printed_len
 suffix:semicolon
