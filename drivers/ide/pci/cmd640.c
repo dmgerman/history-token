@@ -4,6 +4,7 @@ DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 DECL|macro|CMD640_PREFETCH_MASKS
 mdefine_line|#define CMD640_PREFETCH_MASKS 1
+singleline_comment|//#define CMD640_DUMP_REGS
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2728,7 +2729,10 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CMD640_DUMP_REGS
-id|CMD640_DUMP_REGS
+id|cmd640_dump_regs
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Documented magic begins here&n;&t; */
@@ -3156,7 +3160,10 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_CMD640_ENHANCED */
 )brace
 macro_line|#ifdef CMD640_DUMP_REGS
-id|CMD640_DUMP_REGS
+id|cmd640_dump_regs
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 r_return

@@ -1433,7 +1433,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* TCP sequence number adjustment.  Returns true or false.  */
+multiline_comment|/* TCP sequence number adjustment.  Returns 1 on success, 0 on failure */
 r_int
 DECL|function|ip_nat_seq_adjust
 id|ip_nat_seq_adjust
@@ -1719,7 +1719,10 @@ id|tcph-&gt;ack_seq
 op_assign
 id|newack
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+op_logical_neg
 id|ip_nat_sack_adjust
 c_func
 (paren
@@ -1731,6 +1734,23 @@ id|ct
 comma
 id|ctinfo
 )paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|ip_conntrack_tcp_update
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|ct
+comma
+id|dir
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 r_static

@@ -1669,17 +1669,13 @@ op_star
 )paren
 id|page
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;The current code can&squot;t handle a driverless&n;&t;&t; *&t;identify query taskfile. Now the right fix is&n;&t;&t; *&t;to add a &squot;default&squot; driver but that is a bit&n;&t;&t; *&t;more work. &n;&t;&t; *&n;&t;&t; *&t;FIXME: this has to be fixed for hotswap devices&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|DRIVER
+id|BUG_ON
 c_func
 (paren
-id|drive
+op_logical_neg
+id|drive-&gt;driver
 )paren
-)paren
-(brace
+suffix:semicolon
 id|err
 op_assign
 id|taskfile_lib_get_identify
@@ -1689,18 +1685,6 @@ id|drive
 comma
 id|page
 )paren
-suffix:semicolon
-)brace
-r_else
-multiline_comment|/* This relies on the ID changes */
-id|val
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|drive-&gt;id
 suffix:semicolon
 r_if
 c_cond
