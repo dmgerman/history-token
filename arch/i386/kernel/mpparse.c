@@ -3418,7 +3418,7 @@ id|processor
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
 DECL|macro|MP_ISA_BUS
 mdefine_line|#define MP_ISA_BUS&t;&t;0
 DECL|macro|MP_MAX_IOAPIC_PIN
@@ -4182,8 +4182,6 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef&t;CONFIG_ACPI
-multiline_comment|/* Ensure the ACPI SCI interrupt level is active low, edge-triggered */
 r_extern
 id|FADT_DESCRIPTOR
 id|acpi_fadt
@@ -4215,6 +4213,9 @@ op_star
 id|entry
 op_assign
 l_int|NULL
+suffix:semicolon
+id|acpi_interrupt_flags
+id|flags
 suffix:semicolon
 r_void
 op_star
@@ -4315,14 +4316,10 @@ id|entry-&gt;bus_irq
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * See the note at the end of ACPI 2.0b section&n;&t;&t;&t;&t; * 5.2.10.8 for what this is about.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|entry-&gt;bus_irq
-op_ne
-id|entry-&gt;global_irq
-)paren
-(brace
+id|flags
+op_assign
+id|entry-&gt;flags
+suffix:semicolon
 id|acpi_fadt.sci_int
 op_assign
 id|entry-&gt;global_irq
@@ -4332,10 +4329,6 @@ op_assign
 id|entry-&gt;global_irq
 suffix:semicolon
 r_break
-suffix:semicolon
-)brace
-r_else
-r_return
 suffix:semicolon
 )brace
 id|entry
@@ -4376,6 +4369,30 @@ id|ioapic
 dot
 id|irq_start
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags.polarity
+op_eq
+l_int|0
+)paren
+id|flags.polarity
+op_assign
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* Active low */
+r_if
+c_cond
+(paren
+id|flags.trigger
+op_eq
+l_int|0
+)paren
+id|flags.trigger
+op_assign
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* Level-triggered */
 id|io_apic_set_pci_routing
 c_func
 (paren
@@ -4385,14 +4402,20 @@ id|ioapic_pin
 comma
 id|irq
 comma
-l_int|1
-comma
+(paren
+id|flags.trigger
+op_rshift
 l_int|1
 )paren
+comma
+(paren
+id|flags.polarity
+op_rshift
+l_int|1
+)paren
+)paren
 suffix:semicolon
-singleline_comment|// Active low, level triggered
 )brace
-macro_line|#endif&t;/* CONFIG_ACPI */
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt
 r_void
@@ -4740,6 +4763,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
-macro_line|#endif&t;/* CONFIG_X86_IO_APIC */
+macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof

@@ -112,7 +112,7 @@ c_func
 id|mmu_cr4_features
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_ACPI
+macro_line|#ifdef&t;CONFIG_ACPI_INTERPRETER
 DECL|variable|__initdata
 r_int
 id|acpi_disabled
