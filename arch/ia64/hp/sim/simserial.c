@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_KDB
 macro_line|# include &lt;linux/kdb.h&gt;
