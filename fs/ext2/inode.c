@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/ext2/inode.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Goal-directed block allocation by Stephen Tweedie&n; * &t;(sct@dcs.ed.ac.uk), 1993, 1998&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; *  64-bit file support on 64-bit platforms by Jakub Jelinek&n; * &t;(jj@sunsite.ms.mff.cuni.cz)&n; *&n; *  Assorted race fixes, rewrite of ext2_get_block() by Al Viro, 2000&n; */
-macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
@@ -8,6 +7,8 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &quot;ext2.h&quot;
+macro_line|#include &quot;acl.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -3979,6 +3980,16 @@ suffix:semicolon
 r_int
 id|n
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
+id|ei-&gt;i_acl
+op_assign
+id|EXT2_ACL_NOT_CACHED
+suffix:semicolon
+id|ei-&gt;i_default_acl
+op_assign
+id|EXT2_ACL_NOT_CACHED
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5075,6 +5086,77 @@ id|inode
 comma
 l_int|1
 )paren
+suffix:semicolon
+)brace
+DECL|function|ext2_setattr
+r_int
+id|ext2_setattr
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|iattr
+op_star
+id|iattr
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
+r_int
+id|error
+suffix:semicolon
+id|error
+op_assign
+id|inode_change_ok
+c_func
+(paren
+id|inode
+comma
+id|iattr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
+id|inode_setattr
+c_func
+(paren
+id|inode
+comma
+id|iattr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iattr-&gt;ia_valid
+op_amp
+id|ATTR_MODE
+)paren
+id|error
+op_assign
+id|ext2_acl_chmod
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 eof

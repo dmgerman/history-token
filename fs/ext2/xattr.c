@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/* These symbols may be needed by a module. */
 DECL|variable|ext2_xattr_register
 id|EXPORT_SYMBOL
@@ -5105,6 +5106,23 @@ id|err
 r_return
 id|err
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
+id|err
+op_assign
+id|init_ext2_acl
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
+suffix:semicolon
+macro_line|#endif
 id|ext2_xattr_cache
 op_assign
 id|mb_cache_create
@@ -5138,6 +5156,29 @@ op_logical_neg
 id|ext2_xattr_cache
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|out1
+suffix:colon
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
+id|exit_ext2_acl
+c_func
+(paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+macro_line|#endif
 id|ext2_xattr_unregister
 c_func
 (paren
@@ -5148,12 +5189,7 @@ id|ext2_xattr_user_handler
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 r_void
@@ -5170,6 +5206,13 @@ c_func
 id|ext2_xattr_cache
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
+id|exit_ext2_acl
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ext2_xattr_unregister
 c_func
 (paren

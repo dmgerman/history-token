@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/fs/ext2/namei.c&n; *&n; * Rewrite to pagecache. 
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * Couple of helper functions - make the code slightly cleaner.&n; */
 DECL|function|ext2_inc_count
 r_static
@@ -497,11 +498,18 @@ c_func
 (paren
 id|inode
 comma
-id|mode
+id|inode-&gt;i_mode
 comma
 id|rdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_EXT_ATTR
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|ext2_special_inode_operations
+suffix:semicolon
+macro_line|#endif
 id|mark_inode_dirty
 c_func
 (paren
@@ -1606,6 +1614,16 @@ id|removexattr
 op_assign
 id|ext2_removexattr
 comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
+comma
 )brace
 suffix:semicolon
 DECL|variable|ext2_special_inode_operations
@@ -1633,6 +1651,16 @@ dot
 id|removexattr
 op_assign
 id|ext2_removexattr
+comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
 comma
 )brace
 suffix:semicolon

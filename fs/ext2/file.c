@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/ext2/file.c&n; *&n; * Copyright (C) 1992, 19
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * Called when an inode is released. Note that this is different&n; * from ext2_open_file: open gets called at every open, but release&n; * gets called only when /all/ the files are closed.&n; */
 DECL|function|ext2_release_file
 r_static
@@ -139,6 +140,16 @@ dot
 id|removexattr
 op_assign
 id|ext2_removexattr
+comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
 comma
 )brace
 suffix:semicolon

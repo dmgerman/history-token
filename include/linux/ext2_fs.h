@@ -549,6 +549,8 @@ DECL|macro|EXT2_MOUNT_NO_UID32
 mdefine_line|#define EXT2_MOUNT_NO_UID32&t;&t;0x0200  /* Disable 32-bit UIDs */
 DECL|macro|EXT2_MOUNT_XATTR_USER
 mdefine_line|#define EXT2_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
+DECL|macro|EXT2_MOUNT_POSIX_ACL
+mdefine_line|#define EXT2_MOUNT_POSIX_ACL&t;&t;0x8000&t;/* POSIX Access Control Lists */
 DECL|macro|clear_opt
 mdefine_line|#define clear_opt(o, opt)&t;&t;o &amp;= ~EXT2_MOUNT_##opt
 DECL|macro|set_opt
