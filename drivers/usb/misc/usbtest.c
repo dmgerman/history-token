@@ -2647,7 +2647,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -2664,7 +2664,13 @@ id|u
 op_assign
 id|ctx-&gt;urb
 (braket
+(paren
 id|i
+op_plus
+id|subcase-&gt;number
+)paren
+op_mod
+id|ctx-&gt;param-&gt;sglen
 )braket
 suffix:semicolon
 r_if
@@ -3540,6 +3546,13 @@ id|context.lock
 suffix:semicolon
 multiline_comment|/* FIXME  set timer and time out; provide a disconnect hook */
 multiline_comment|/* wait for the last one to complete */
+r_if
+c_cond
+(paren
+id|context.pending
+OG
+l_int|0
+)paren
 id|wait_for_completion
 (paren
 op_amp
@@ -5633,6 +5646,11 @@ id|info
 l_string|&quot;unbound %s&quot;
 comma
 id|dev-&gt;id
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
