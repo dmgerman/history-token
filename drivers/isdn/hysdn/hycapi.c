@@ -3646,11 +3646,9 @@ comma
 id|cinfo-&gt;cardname
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|ctrl
-)paren
+id|ctrl-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|retval
 op_assign

@@ -1949,11 +1949,9 @@ c_cond
 (paren
 id|apm_proc
 )paren
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|apm_proc
-)paren
+id|apm_proc-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|misc_register
 c_func
