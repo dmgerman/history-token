@@ -26,7 +26,7 @@ multiline_comment|/* degrade to linked list for small systems */
 DECL|macro|MAX_PROBE_HASH
 mdefine_line|#define MAX_PROBE_HASH (CONFIG_BASE_SMALL ? 1 : 255)
 r_static
-id|DEFINE_RWLOCK
+id|DECLARE_MUTEX
 c_func
 (paren
 id|chrdevs_lock
@@ -133,7 +133,7 @@ comma
 l_string|&quot;Character devices:&bslash;n&quot;
 )paren
 suffix:semicolon
-id|read_lock
+id|down
 c_func
 (paren
 op_amp
@@ -192,7 +192,7 @@ id|cd-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
@@ -289,7 +289,7 @@ id|char_device_struct
 )paren
 )paren
 suffix:semicolon
-id|write_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -493,7 +493,7 @@ id|cp
 op_assign
 id|cd
 suffix:semicolon
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -505,7 +505,7 @@ id|cd
 suffix:semicolon
 id|out
 suffix:colon
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -564,7 +564,7 @@ c_func
 id|major
 )paren
 suffix:semicolon
-id|write_lock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -645,7 +645,7 @@ op_assign
 id|cd-&gt;next
 suffix:semicolon
 )brace
-id|write_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -1927,17 +1927,6 @@ id|p-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-r_static
-id|decl_subsys
-c_func
-(paren
-id|cdev
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 DECL|function|cdev_default_release
 r_static
 r_void
@@ -2234,14 +2223,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n; * Keep cdev_subsys around because (and only because) the kobj_map code&n; * depends on the rwsem it contains.  We don&squot;t make it public in sysfs,&n; * however.&n; */
-id|subsystem_init
-c_func
-(paren
-op_amp
-id|cdev_subsys
-)paren
-suffix:semicolon
 id|cdev_map
 op_assign
 id|kobj_map_init
@@ -2250,7 +2231,7 @@ c_func
 id|base_probe
 comma
 op_amp
-id|cdev_subsys
+id|chrdevs_lock
 )paren
 suffix:semicolon
 )brace

@@ -1905,11 +1905,15 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;aoe: aoecmd_ata_rsp: ata error cmd=%2.2Xh &quot;
-l_string|&quot;stat=%2.2Xh&bslash;n&quot;
+l_string|&quot;stat=%2.2Xh from e%ld.%ld&bslash;n&quot;
 comma
 id|ahout-&gt;cmdstat
 comma
 id|ahin-&gt;cmdstat
+comma
+id|d-&gt;aoemajor
+comma
+id|d-&gt;aoeminor
 )paren
 suffix:semicolon
 r_if
@@ -2114,12 +2118,17 @@ l_int|0
 (brace
 id|n
 op_assign
-op_logical_neg
 (paren
 id|buf-&gt;flags
 op_amp
 id|BUFFL_FAIL
 )paren
+ques
+c_cond
+op_minus
+id|EIO
+suffix:colon
+l_int|0
 suffix:semicolon
 id|bio_endio
 c_func
@@ -2128,7 +2137,7 @@ id|buf-&gt;bio
 comma
 id|buf-&gt;bio-&gt;bi_size
 comma
-l_int|0
+id|n
 )paren
 suffix:semicolon
 id|mempool_free

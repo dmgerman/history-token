@@ -66,7 +66,7 @@ l_int|255
 suffix:semicolon
 DECL|member|sem
 r_struct
-id|rw_semaphore
+id|semaphore
 op_star
 id|sem
 suffix:semicolon
@@ -234,7 +234,7 @@ op_assign
 id|data
 suffix:semicolon
 )brace
-id|down_write
+id|down
 c_func
 (paren
 id|domain-&gt;sem
@@ -315,7 +315,7 @@ op_assign
 id|p
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 id|domain-&gt;sem
@@ -394,7 +394,7 @@ id|n
 op_assign
 l_int|255
 suffix:semicolon
-id|down_write
+id|down
 c_func
 (paren
 id|domain-&gt;sem
@@ -491,7 +491,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|up_write
+id|up
 c_func
 (paren
 id|domain-&gt;sem
@@ -543,7 +543,7 @@ l_int|0UL
 suffix:semicolon
 id|retry
 suffix:colon
-id|down_read
+id|down
 c_func
 (paren
 id|domain-&gt;sem
@@ -690,7 +690,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|up_read
+id|up
 c_func
 (paren
 id|domain-&gt;sem
@@ -727,7 +727,7 @@ r_goto
 id|retry
 suffix:semicolon
 )brace
-id|up_read
+id|up
 c_func
 (paren
 id|domain-&gt;sem
@@ -749,9 +749,9 @@ op_star
 id|base_probe
 comma
 r_struct
-id|subsystem
+id|semaphore
 op_star
-id|s
+id|sem
 )paren
 (brace
 r_struct
@@ -873,8 +873,7 @@ id|base
 suffix:semicolon
 id|p-&gt;sem
 op_assign
-op_amp
-id|s-&gt;rwsem
+id|sem
 suffix:semicolon
 r_return
 id|p

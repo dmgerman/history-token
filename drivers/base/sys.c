@@ -252,6 +252,8 @@ id|sysdev_remove_file
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * declare system_subsys&n; */
+DECL|variable|decl_subsys
+r_static
 id|decl_subsys
 c_func
 (paren
@@ -366,10 +368,17 @@ r_static
 id|LIST_HEAD
 c_func
 (paren
-id|global_drivers
+id|sysdev_drivers
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be&n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented.&n; *&t;Otherwise, @drv is inserted into global_drivers, and called for&n; *&t;each device.&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|sysdev_drivers_lock
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be&n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented.&n; *&t;Otherwise, @drv is inserted into sysdev_drivers, and called for&n; *&t;each device.&n; */
 DECL|function|sysdev_driver_register
 r_int
 id|sysdev_driver_register
@@ -386,11 +395,11 @@ op_star
 id|drv
 )paren
 (brace
-id|down_write
+id|down
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 r_if
@@ -456,14 +465,14 @@ op_amp
 id|drv-&gt;entry
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 )paren
 suffix:semicolon
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 r_return
@@ -487,11 +496,11 @@ op_star
 id|drv
 )paren
 (brace
-id|down_write
+id|down
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 id|list_del_init
@@ -545,11 +554,11 @@ id|cls-&gt;kset
 )paren
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 )brace
@@ -674,11 +683,11 @@ id|sysdev_driver
 op_star
 id|drv
 suffix:semicolon
-id|down_write
+id|down
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Generic notification is implicit, because it&squot;s that&n;&t;&t; * code that should have called us.&n;&t;&t; */
@@ -689,7 +698,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -734,11 +743,11 @@ id|sysdev
 )paren
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 )brace
@@ -762,11 +771,11 @@ id|sysdev_driver
 op_star
 id|drv
 suffix:semicolon
-id|down_write
+id|down
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -775,7 +784,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -819,11 +828,11 @@ id|sysdev
 )paren
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 id|kobject_unregister
@@ -854,11 +863,11 @@ c_func
 l_string|&quot;Shutting Down System Devices&bslash;n&quot;
 )paren
 suffix:semicolon
-id|down_write
+id|down
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 id|list_for_each_entry_reverse
@@ -926,7 +935,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -987,11 +996,11 @@ id|sysdev
 suffix:semicolon
 )brace
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|system_subsys.rwsem
+id|sysdev_drivers_lock
 )paren
 suffix:semicolon
 )brace
@@ -1081,7 +1090,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -1277,7 +1286,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
