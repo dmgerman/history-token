@@ -433,6 +433,10 @@ macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO&t;0x00da
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+DECL|macro|PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO&t;0x00ea
+macro_line|#endif
 DECL|enumerator|DEVICE_INTEL
 DECL|enumerator|DEVICE_INTEL_ICH4
 DECL|enumerator|DEVICE_SIS
@@ -1579,6 +1583,23 @@ id|DEVICE_NFORCE
 )brace
 comma
 multiline_comment|/* NFORCE3 */
+(brace
+l_int|0x10de
+comma
+l_int|0x00ea
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_NFORCE
+)brace
+comma
+multiline_comment|/* CK8S */
 (brace
 l_int|0x1022
 comma
@@ -3568,6 +3589,8 @@ c_cond
 (paren
 id|status
 )paren
+(brace
+multiline_comment|/* ack */
 id|iputdword
 c_func
 (paren
@@ -3578,6 +3601,17 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|status
+op_xor_assign
+id|igetdword
+c_func
+(paren
+id|chip
+comma
+id|chip-&gt;int_sta_reg
+)paren
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -3596,10 +3630,9 @@ id|err_count
 id|err_count
 op_decrement
 suffix:semicolon
-id|snd_printk
+id|snd_printd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;intel8x0: unknown IRQ bits 0x%x (sta_mask=0x%x)&bslash;n&quot;
 comma
 id|status
@@ -12966,6 +12999,12 @@ comma
 id|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 comma
 l_string|&quot;NVidia nForce3&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+comma
+l_string|&quot;NVidia CK8S&quot;
 )brace
 comma
 (brace
