@@ -11316,6 +11316,7 @@ r_int
 id|rval
 suffix:semicolon
 id|mega_passthru
+id|__user
 op_star
 id|upthru
 suffix:semicolon
@@ -11343,6 +11344,7 @@ id|megacmd_t
 id|mc
 suffix:semicolon
 id|megastat_t
+id|__user
 op_star
 id|ustats
 suffix:semicolon
@@ -11420,6 +11422,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -11455,6 +11458,7 @@ id|driver_ver
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|uioc.uioc_uaddr
@@ -11483,6 +11487,7 @@ id|hba_count
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|uioc.uioc_uaddr
@@ -11593,10 +11598,6 @@ id|adapno
 suffix:semicolon
 id|ustats
 op_assign
-(paren
-id|megastat_t
-op_star
-)paren
 id|uioc.uioc_uaddr
 suffix:semicolon
 r_if
@@ -11914,6 +11915,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -12036,6 +12038,7 @@ id|upthru
 op_assign
 (paren
 id|mega_passthru
+id|__user
 op_star
 )paren
 id|MBOX
@@ -12055,10 +12058,6 @@ c_func
 (paren
 id|pthru
 comma
-(paren
-r_char
-op_star
-)paren
 id|upthru
 comma
 r_sizeof
@@ -12186,6 +12185,7 @@ id|data
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|uxferaddr
@@ -12252,6 +12252,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -12291,6 +12292,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|uxferaddr
@@ -12446,6 +12448,7 @@ id|data
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|uxferaddr
@@ -12526,6 +12529,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -12590,6 +12594,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|uxferaddr
@@ -12659,6 +12664,7 @@ id|mega_m_to_n
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|arg
 comma
@@ -12696,10 +12702,6 @@ c_func
 (paren
 id|signature
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 l_int|7
@@ -12743,10 +12745,6 @@ c_func
 (paren
 id|uioc
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -12778,10 +12776,6 @@ c_func
 op_amp
 id|uioc_mimd
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -13005,6 +12999,7 @@ id|mega_n_to_m
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|arg
 comma
@@ -13014,19 +13009,23 @@ id|mc
 )paren
 (brace
 id|nitioctl_t
+id|__user
 op_star
 id|uiocp
 suffix:semicolon
 id|megacmd_t
+id|__user
 op_star
 id|umc
 suffix:semicolon
 id|mega_passthru
+id|__user
 op_star
 id|upthru
 suffix:semicolon
 r_struct
 id|uioctl_t
+id|__user
 op_star
 id|uioc_mimd
 suffix:semicolon
@@ -13049,10 +13048,6 @@ c_func
 (paren
 id|signature
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 l_int|7
@@ -13082,10 +13077,6 @@ l_int|0
 (brace
 id|uiocp
 op_assign
-(paren
-id|nitioctl_t
-op_star
-)paren
 id|arg
 suffix:semicolon
 r_if
@@ -13098,6 +13089,7 @@ id|mc-&gt;status
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 op_amp
@@ -13144,7 +13136,9 @@ id|upthru
 comma
 (paren
 id|mega_passthru
+id|__user
 op_star
+id|__user
 op_star
 )paren
 op_amp
@@ -13152,10 +13146,8 @@ id|umc-&gt;xferaddr
 )paren
 )paren
 r_return
-(paren
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -13167,6 +13159,7 @@ id|mc-&gt;status
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 op_amp
@@ -13187,11 +13180,6 @@ r_else
 (brace
 id|uioc_mimd
 op_assign
-(paren
-r_struct
-id|uioctl_t
-op_star
-)paren
 id|arg
 suffix:semicolon
 r_if
@@ -13204,6 +13192,7 @@ id|mc-&gt;status
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 op_amp
@@ -13233,6 +13222,7 @@ id|umc
 op_assign
 (paren
 id|megacmd_t
+id|__user
 op_star
 )paren
 id|uioc_mimd-&gt;mbox
@@ -13247,7 +13237,9 @@ id|upthru
 comma
 (paren
 id|mega_passthru
+id|__user
 op_star
+id|__user
 op_star
 )paren
 op_amp
@@ -13270,6 +13262,7 @@ id|mc-&gt;status
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 op_amp

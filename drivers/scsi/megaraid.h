@@ -1679,6 +1679,7 @@ suffix:semicolon
 macro_line|#if BITS_PER_LONG == 32
 DECL|member|data
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -1694,6 +1695,7 @@ macro_line|#endif
 macro_line|#if BITS_PER_LONG == 64
 DECL|member|data
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -1884,7 +1886,9 @@ l_int|18
 )braket
 suffix:semicolon
 DECL|member|__uaddr
-id|caddr_t
+r_void
+id|__user
+op_star
 id|__uaddr
 suffix:semicolon
 multiline_comment|/* xferaddr for non-mbox cmds */
@@ -1897,7 +1901,7 @@ mdefine_line|#define uioc_rmbox&t;__ua.__raw_mbox
 DECL|macro|MBOX
 mdefine_line|#define MBOX(uioc)&t;((megacmd_t *)&amp;((uioc).__ua.__raw_mbox[0]))
 DECL|macro|MBOX_P
-mdefine_line|#define MBOX_P(uioc)&t;((megacmd_t *)&amp;((uioc)-&gt;__ua.__raw_mbox[0]))
+mdefine_line|#define MBOX_P(uioc)&t;((megacmd_t __user *)&amp;((uioc)-&gt;__ua.__raw_mbox[0]))
 DECL|macro|uioc_uaddr
 mdefine_line|#define uioc_uaddr&t;__ua.__uaddr
 DECL|member|xferlen
