@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Indirect stringification */
@@ -52,8 +53,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
 r_extern
 r_struct
