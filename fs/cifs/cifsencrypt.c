@@ -3,8 +3,10 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot; 
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#include &quot;md5.h&quot;
 multiline_comment|/* Calculate and return the CIFS signature based on the mac key and the smb pdu */
-multiline_comment|/* the eight byte signature must be allocated by the caller. */
+multiline_comment|/* the 16 byte signature must be allocated by the caller  */
+multiline_comment|/* Note we only use the 1st eight bytes */
 multiline_comment|/* Note that the smb header signature field on input contains the  &n;&t;sequence number before this function is called */
 DECL|function|cifs_calculate_signature
 r_static
@@ -21,13 +23,17 @@ comma
 r_const
 r_char
 op_star
-id|mac_key
+id|key
 comma
 r_char
 op_star
 id|signature
 )paren
 (brace
+r_struct
+id|MD5Context
+id|context
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -49,8 +55,55 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* MD5(mac_key, text) */
-multiline_comment|/* return 1st eight bytes in signature */
+id|MD5Init
+c_func
+(paren
+op_amp
+id|context
+)paren
+suffix:semicolon
+id|MD5Update
+c_func
+(paren
+op_amp
+id|context
+comma
+id|key
+comma
+id|CIFS_SESSION_KEY_SIZE
+)paren
+suffix:semicolon
+id|MD5Update
+c_func
+(paren
+op_amp
+id|context
+comma
+id|cifs_pdu-&gt;Protocol
+comma
+id|cifs_pdu-&gt;smb_buf_length
+)paren
+suffix:semicolon
+id|MD5Final
+c_func
+(paren
+id|signature
+comma
+op_amp
+id|context
+)paren
+suffix:semicolon
+id|cifs_dump_mem
+c_func
+(paren
+l_string|&quot;signature: &quot;
+comma
+id|signature
+comma
+l_int|16
+)paren
+suffix:semicolon
+multiline_comment|/* BB remove BB */
 r_return
 l_int|0
 suffix:semicolon
@@ -69,6 +122,10 @@ r_struct
 id|cifsSesInfo
 op_star
 id|ses
+comma
+id|__u32
+op_star
+id|pexpected_response_sequence_number
 )paren
 (brace
 r_int
@@ -79,7 +136,7 @@ suffix:semicolon
 r_char
 id|smb_signature
 (braket
-l_int|8
+l_int|20
 )braket
 suffix:semicolon
 multiline_comment|/* BB remember to initialize sequence number elsewhere and initialize mac_signing key elsewhere BB */
@@ -125,6 +182,13 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 id|cifs_pdu-&gt;Signature.Sequence.SequenceNumber
 op_assign
 id|ses-&gt;sequence_number
@@ -132,6 +196,22 @@ suffix:semicolon
 id|cifs_pdu-&gt;Signature.Sequence.Reserved
 op_assign
 l_int|0
+suffix:semicolon
+op_star
+id|pexpected_response_sequence_number
+op_assign
+id|ses-&gt;sequence_number
+op_increment
+suffix:semicolon
+id|ses-&gt;sequence_number
+op_increment
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
 suffix:semicolon
 id|rc
 op_assign
@@ -227,6 +307,36 @@ suffix:semicolon
 multiline_comment|/* BB no need to verify negprot or if flag is not on for session (or for frame?? */
 multiline_comment|/* BB what if signatures are supposed to be on for session but server does not&n;&t;&t;send one? BB */
 multiline_comment|/* BB also do not verify oplock breaks for signature */
+multiline_comment|/* Do not need to verify session setups with signature &quot;BSRSPYL &quot;  */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|cifs_pdu-&gt;Signature.SecuritySignature
+comma
+l_string|&quot;BSRSPYL &quot;
+comma
+l_int|8
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;dummy signature received for smb command 0x%x&quot;
+comma
+id|cifs_pdu-&gt;Command
+)paren
+)paren
+suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon

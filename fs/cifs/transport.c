@@ -830,6 +830,9 @@ c_func
 id|in_buf
 comma
 id|ses
+comma
+op_amp
+id|midQ-&gt;sequence_number
 )paren
 suffix:semicolon
 id|midQ-&gt;midState
@@ -1055,7 +1058,19 @@ l_int|4
 multiline_comment|/* include 4 byte RFC1001 header */
 )paren
 suffix:semicolon
-multiline_comment|/* int cifs_verify_signature(out_buf, ses-&gt;mac_signing_key,&n;        __u32 expected_sequence_number); */
+id|rc
+op_assign
+id|cifs_verify_signature
+c_func
+(paren
+id|out_buf
+comma
+id|ses-&gt;mac_signing_key
+comma
+id|midQ-&gt;sequence_number
+)paren
+suffix:semicolon
+multiline_comment|/* BB fix BB */
 id|dump_smb
 c_func
 (paren

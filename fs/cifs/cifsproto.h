@@ -1633,6 +1633,9 @@ comma
 r_struct
 id|cifsSesInfo
 op_star
+comma
+id|__u32
+op_star
 )paren
 suffix:semicolon
 r_extern
