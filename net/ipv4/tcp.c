@@ -3635,7 +3635,7 @@ comma
 id|skb-&gt;list
 )paren
 suffix:semicolon
-id|tcp_free_skb
+id|sk_stream_free_skb
 c_func
 (paren
 id|sk

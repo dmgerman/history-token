@@ -2840,7 +2840,7 @@ id|tp-&gt;fackets_out
 id|tp-&gt;fackets_out
 op_decrement
 suffix:semicolon
-id|tcp_free_skb
+id|sk_stream_free_skb
 c_func
 (paren
 id|sk
@@ -4389,7 +4389,7 @@ comma
 id|nskb
 )paren
 suffix:semicolon
-id|tcp_free_skb
+id|sk_stream_free_skb
 c_func
 (paren
 id|sk

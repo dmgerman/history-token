@@ -847,16 +847,12 @@ DECL|member|unused_pad
 id|__u8
 id|unused_pad
 suffix:semicolon
-DECL|member|queue_shrunk
-id|__u8
-id|queue_shrunk
-suffix:semicolon
-multiline_comment|/* Write queue has been shrunk recently.*/
 DECL|member|defer_accept
 id|__u8
 id|defer_accept
 suffix:semicolon
 multiline_comment|/* User waits for some data after accept() */
+multiline_comment|/* one byte hole, try to pack */
 multiline_comment|/* RTT measurement */
 DECL|member|backoff
 id|__u8
