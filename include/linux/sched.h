@@ -3873,7 +3873,7 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * cond_resched() and cond_resched_lock(): latency reduction via&n; * explicit rescheduling in places that are safe. The return&n; * value indicates whether a reschedule was done in fact.&n; */
+multiline_comment|/*&n; * cond_resched() and cond_resched_lock(): latency reduction via&n; * explicit rescheduling in places that are safe. The return&n; * value indicates whether a reschedule was done in fact.&n; * cond_resched_lock() will drop the spinlock before scheduling,&n; * cond_resched_softirq() will enable bhs before scheduling.&n; */
 r_extern
 r_int
 id|cond_resched
@@ -3890,6 +3890,14 @@ c_func
 id|spinlock_t
 op_star
 id|lock
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cond_resched_softirq
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting?:&n; */
