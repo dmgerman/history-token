@@ -4,7 +4,8 @@ macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-DECL|function|udf_filead_read
+macro_line|#if 0
+r_static
 r_uint8
 op_star
 id|udf_filead_read
@@ -297,6 +298,7 @@ r_return
 id|ad
 suffix:semicolon
 )brace
+macro_line|#endif
 r_struct
 id|fileIdentDesc
 op_star
@@ -1342,9 +1344,10 @@ r_return
 id|fi
 suffix:semicolon
 )brace
+macro_line|#if 0
+r_static
 id|extent_ad
 op_star
-DECL|function|udf_get_fileextent
 id|udf_get_fileextent
 c_func
 (paren
@@ -1502,6 +1505,7 @@ r_return
 id|ext
 suffix:semicolon
 )brace
+macro_line|#endif
 id|short_ad
 op_star
 DECL|function|udf_get_fileshortad
