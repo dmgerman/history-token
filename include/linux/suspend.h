@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* page backup entry */
 DECL|struct|pbe
 r_typedef
@@ -159,6 +159,8 @@ r_int
 id|resume
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PM */
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_extern
 r_int
 id|software_suspend
