@@ -285,6 +285,46 @@ multiline_comment|/* slot 11 */
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* FIXME: more various mappings for ADC? */
+DECL|variable|rate_cregs
+r_static
+r_int
+r_char
+id|rate_cregs
+(braket
+l_int|9
+)braket
+op_assign
+(brace
+id|AC97_PCM_LR_ADC_RATE
+comma
+multiline_comment|/* 3 */
+id|AC97_PCM_LR_ADC_RATE
+comma
+multiline_comment|/* 4 */
+l_int|0xff
+comma
+multiline_comment|/* 5 */
+id|AC97_PCM_MIC_ADC_RATE
+comma
+multiline_comment|/* 6 */
+l_int|0xff
+comma
+multiline_comment|/* 7 */
+l_int|0xff
+comma
+multiline_comment|/* 8 */
+l_int|0xff
+comma
+multiline_comment|/* 9 */
+l_int|0xff
+comma
+multiline_comment|/* 10 */
+l_int|0xff
+comma
+multiline_comment|/* 11 */
+)brace
+suffix:semicolon
 DECL|function|get_slot_reg
 r_static
 r_int
@@ -329,8 +369,15 @@ l_int|11
 r_return
 l_int|0xff
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcm-&gt;stream
+op_eq
+id|SNDRV_PCM_STREAM_PLAYBACK
+)paren
 r_return
-id|rate_reg_tables
+id|rate_preg_tables
 (braket
 id|dbl
 )braket
@@ -345,6 +392,15 @@ id|rate_table
 id|cidx
 )braket
 )braket
+(braket
+id|slot
+op_minus
+l_int|3
+)braket
+suffix:semicolon
+r_else
+r_return
+id|rate_cregs
 (braket
 id|slot
 op_minus
@@ -1649,16 +1705,6 @@ l_int|4
 )braket
 suffix:semicolon
 r_int
-r_int
-id|all_slots
-(braket
-l_int|2
-)braket
-(braket
-l_int|4
-)braket
-suffix:semicolon
-r_int
 r_char
 id|rate_table
 (braket
@@ -1725,13 +1771,13 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|all_slots
+id|rate_table
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|all_slots
+id|rate_table
 )paren
 )paren
 suffix:semicolon
@@ -1845,38 +1891,6 @@ id|j
 )braket
 suffix:semicolon
 )brace
-id|all_slots
-(braket
-l_int|0
-)braket
-(braket
-id|i
-)braket
-op_assign
-id|avail_slots
-(braket
-l_int|0
-)braket
-(braket
-id|i
-)braket
-suffix:semicolon
-id|all_slots
-(braket
-l_int|1
-)braket
-(braket
-id|i
-)braket
-op_assign
-id|avail_slots
-(braket
-l_int|1
-)braket
-(braket
-id|i
-)braket
-suffix:semicolon
 )brace
 multiline_comment|/* FIXME: add double rate allocation */
 multiline_comment|/* first step - exclusive devices */
@@ -2075,7 +2089,7 @@ id|j
 op_assign
 id|rate_table
 (braket
-l_int|0
+id|pcm-&gt;stream
 )braket
 (braket
 id|j
