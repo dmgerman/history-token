@@ -959,11 +959,6 @@ comma
 l_int|0x14000
 )paren
 suffix:semicolon
-id|cfb-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -1034,10 +1029,6 @@ id|cfb-&gt;fbops
 op_assign
 op_amp
 id|clps7111fb_ops
-suffix:semicolon
-id|cfb-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|cfb-&gt;flags
 op_assign

@@ -3548,6 +3548,11 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|fb_info-&gt;currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|registered_fb
 (braket
 id|i

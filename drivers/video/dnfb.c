@@ -861,10 +861,6 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -873,11 +869,6 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|dn_fb_ops
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|fb_info.fix
 op_assign

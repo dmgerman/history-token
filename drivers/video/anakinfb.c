@@ -286,11 +286,6 @@ id|fb_info.node
 op_assign
 id|NODEV
 suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -315,10 +310,6 @@ id|fb_info.fontname
 comma
 l_string|&quot;VGA8x16&quot;
 )paren
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 r_if
 c_cond

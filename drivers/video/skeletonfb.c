@@ -617,37 +617,6 @@ id|info.par
 op_assign
 id|current_par
 suffix:semicolon
-multiline_comment|/* The following has to be set but in th efuture will go away */
-id|strcpy
-c_func
-(paren
-id|info.modename
-comma
-id|xxxfb_fix.id
-)paren
-suffix:semicolon
-id|info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 multiline_comment|/*&n;     * This should give a reasonable default video mode. The following is&n;     * done when we can set a video mode. &n;     */
 r_if
 c_cond

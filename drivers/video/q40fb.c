@@ -384,15 +384,6 @@ op_star
 id|q40fb_fix.smem_start
 suffix:semicolon
 multiline_comment|/* The below feilds will go away !!!! */
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren

@@ -1629,11 +1629,6 @@ id|fb_info.fix
 op_assign
 id|vesafb_fix
 suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|gen_update_var

@@ -1175,21 +1175,6 @@ id|devfs_handle_t
 id|devfs_lhandle
 suffix:semicolon
 multiline_comment|/* Devfs handle for compat. symlink  */
-DECL|member|updatevar
-r_int
-(paren
-op_star
-id|updatevar
-)paren
-(paren
-r_int
-comma
-r_struct
-id|fb_info
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* tell fb to update the vars */
 DECL|member|pseudo_palette
 r_void
 op_star

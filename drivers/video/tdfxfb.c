@@ -5950,24 +5950,6 @@ id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-multiline_comment|/* The below fields will go away !!!! */
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|info-&gt;fix.id
-)paren
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 r_if
 c_cond
 (paren
