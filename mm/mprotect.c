@@ -1134,10 +1134,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_mprotect
@@ -1147,7 +1143,11 @@ id|vma
 comma
 id|prot
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out
