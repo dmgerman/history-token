@@ -267,6 +267,7 @@ id|VT6105M
 op_assign
 l_int|0x90
 comma
+multiline_comment|/* Management adapter */
 )brace
 suffix:semicolon
 DECL|enum|rhine_quirks
@@ -1012,12 +1013,10 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
 DECL|member|pioaddr
 r_int
 id|pioaddr
 suffix:semicolon
-macro_line|#endif
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -1578,6 +1577,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Woke system up. Reason: %s.&bslash;n&quot;
 comma
 id|DRV_NAME
@@ -2054,9 +2054,6 @@ r_const
 r_char
 op_star
 id|name
-comma
-op_star
-id|mname
 suffix:semicolon
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
@@ -2105,10 +2102,6 @@ id|name
 op_assign
 l_string|&quot;Rhine&quot;
 suffix:semicolon
-id|mname
-op_assign
-l_string|&quot;unknown&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2124,10 +2117,6 @@ suffix:semicolon
 id|io_size
 op_assign
 l_int|128
-suffix:semicolon
-id|mname
-op_assign
-l_string|&quot;VT86C100A&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2162,72 +2151,9 @@ op_or_assign
 id|rqStatusWBRace
 suffix:semicolon
 multiline_comment|/* Rhine-II exclusive */
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VT8231
-)paren
-id|mname
-op_assign
-l_string|&quot;VT6102&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VT8233
-)paren
-id|mname
-op_assign
-l_string|&quot;VT8231&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VT8235
-)paren
-id|mname
-op_assign
-l_string|&quot;VT8233&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VT8237
-)paren
-id|mname
-op_assign
-l_string|&quot;VT8235&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VTunknown1
-)paren
-id|mname
-op_assign
-l_string|&quot;VT8237&quot;
-suffix:semicolon
 )brace
 r_else
 (brace
-id|name
-op_assign
-l_string|&quot;Rhine III&quot;
-suffix:semicolon
 id|phy_id
 op_assign
 l_int|1
@@ -2249,47 +2175,16 @@ c_cond
 (paren
 id|pci_rev
 OL
-id|VT6105L
-)paren
-id|mname
-op_assign
-l_string|&quot;VT6105&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
-id|VT6107
-)paren
-id|mname
-op_assign
-l_string|&quot;VT6105L&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-OL
 id|VT6105M
 )paren
-id|mname
+id|name
 op_assign
-l_string|&quot;VT6107&quot;
+l_string|&quot;Rhine III&quot;
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-id|pci_rev
-op_ge
-id|VT6105M
-)paren
-id|mname
+id|name
 op_assign
-l_string|&quot;Management Adapter VT6105M&quot;
+l_string|&quot;Rhine III (Management Adapter)&quot;
 suffix:semicolon
 )brace
 )brace
@@ -2459,6 +2354,26 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+id|rp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|rp-&gt;quirks
+op_assign
+id|quirks
+suffix:semicolon
+id|rp-&gt;pioaddr
+op_assign
+id|pioaddr
+suffix:semicolon
+id|rp-&gt;pdev
+op_assign
+id|pdev
+suffix:semicolon
 id|rc
 op_assign
 id|pci_request_regions
@@ -2622,24 +2537,6 @@ id|dev-&gt;base_addr
 op_assign
 id|ioaddr
 suffix:semicolon
-id|rp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|rp-&gt;quirks
-op_assign
-id|quirks
-suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-id|rp-&gt;pioaddr
-op_assign
-id|pioaddr
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get chip registers into a sane state */
 id|rhine_power_init
 c_func
@@ -2739,10 +2636,6 @@ op_amp
 id|rp-&gt;lock
 )paren
 suffix:semicolon
-id|rp-&gt;pdev
-op_assign
-id|pdev
-suffix:semicolon
 id|rp-&gt;mii_if.dev
 op_assign
 id|dev
@@ -2841,13 +2734,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: VIA %s (%s) at 0x%lx, &quot;
+l_string|&quot;%s: VIA %s at 0x%lx, &quot;
 comma
 id|dev-&gt;name
 comma
 id|name
-comma
-id|mname
 comma
 macro_line|#ifdef USE_MMIO
 id|memaddr
@@ -4439,16 +4330,7 @@ comma
 id|rp-&gt;quirks
 )paren
 suffix:semicolon
-id|writeb
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|MIICmd
-)paren
-suffix:semicolon
+multiline_comment|/* rhine_disable_linkmon already cleared MIICmd */
 id|writeb
 c_func
 (paren
@@ -4562,16 +4444,7 @@ comma
 id|rp-&gt;quirks
 )paren
 suffix:semicolon
-id|writeb
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|MIICmd
-)paren
-suffix:semicolon
+multiline_comment|/* rhine_disable_linkmon already cleared MIICmd */
 id|writeb
 c_func
 (paren
