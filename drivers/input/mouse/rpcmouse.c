@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Acorn RiscPC mouse driver for Linux/ARM&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *  Copyright (C) 1996-1998 Russell King&n; *&n; */
+multiline_comment|/*&n; *  Acorn RiscPC mouse driver for Linux/ARM&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *  Copyright (C) 1996-2002 Russell King&n; *&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; *&n; * This handles the Acorn RiscPCs mouse.  We basically have a couple of&n; * hardware registers that track the sensor count for the X-Y movement and&n; * another register holding the button state.  On every VSYNC interrupt we read&n; * the complete state and then work out if something has changed.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -35,12 +35,6 @@ r_int
 id|rpcmouse_lastx
 comma
 id|rpcmouse_lasty
-suffix:semicolon
-DECL|variable|rpcmouse_lastb
-r_static
-r_int
-r_int
-id|rpcmouse_lastb
 suffix:semicolon
 DECL|variable|rpcmouse_dev
 r_static
@@ -186,9 +180,7 @@ comma
 id|dx
 comma
 id|dy
-suffix:semicolon
-r_int
-r_int
+comma
 id|b
 suffix:semicolon
 id|x
@@ -224,11 +216,9 @@ c_func
 (paren
 l_int|0xe0310000
 )paren
-op_rshift
-l_int|4
+op_xor
+l_int|0x70
 )paren
-op_amp
-l_int|7
 suffix:semicolon
 id|dx
 op_assign
@@ -250,11 +240,6 @@ id|rpcmouse_lasty
 op_assign
 id|y
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dx
-)paren
 id|input_report_rel
 c_func
 (paren
@@ -265,11 +250,6 @@ comma
 id|dx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dy
-)paren
 id|input_report_rel
 c_func
 (paren
@@ -281,24 +261,6 @@ op_minus
 id|dy
 )paren
 suffix:semicolon
-id|b
-op_assign
-id|__raw_readl
-c_func
-(paren
-l_int|0xe0310000
-)paren
-op_xor
-l_int|0x70
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|b
-op_ne
-id|rpcmouse_lastb
-)paren
-(brace
 id|input_report_key
 c_func
 (paren
@@ -335,27 +297,11 @@ op_amp
 l_int|0x10
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|b
-op_ne
-id|rpcmouse_lastb
-op_logical_or
-id|dx
-op_logical_or
-id|dy
-)paren
 id|input_sync
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|rpcmouse_lastb
-op_assign
-id|b
 suffix:semicolon
 )brace
 DECL|function|rpcmouse_init
