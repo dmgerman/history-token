@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;fs/libfs.c&n; *&t;Library for filesystems writers.&n; */
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 DECL|function|simple_getattr
 r_int
 id|simple_getattr

@@ -147,6 +147,29 @@ DECL|member|cursor_reset
 r_int
 id|cursor_reset
 suffix:semicolon
+DECL|member|EDID
+r_int
+r_char
+op_star
+id|EDID
+suffix:semicolon
+DECL|member|Chipset
+r_int
+r_int
+id|Chipset
+suffix:semicolon
+DECL|member|forceCRTC
+r_int
+id|forceCRTC
+suffix:semicolon
+DECL|member|SecondCRTC
+id|Bool
+id|SecondCRTC
+suffix:semicolon
+DECL|member|FlatPanel
+r_int
+id|FlatPanel
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
 DECL|member|vram_valid
@@ -164,6 +187,15 @@ id|mtrr
 suffix:semicolon
 macro_line|#endif
 )brace
+suffix:semicolon
+r_void
+id|riva_common_setup
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
 suffix:semicolon
 macro_line|#endif /* __RIVAFB_H */
 eof

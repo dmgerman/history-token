@@ -1391,12 +1391,6 @@ r_char
 op_star
 id|bios_seg
 suffix:semicolon
-DECL|member|disp
-r_struct
-id|display
-id|disp
-suffix:semicolon
-multiline_comment|/* Will disappear */
 DECL|member|pseudo_palette
 id|u32
 id|pseudo_palette
@@ -5489,14 +5483,11 @@ id|var.activate
 op_assign
 id|FB_ACTIVATE_NOW
 suffix:semicolon
-id|gen_set_var
+id|fb_set_var
 c_func
 (paren
 op_amp
 id|var
-comma
-op_minus
-l_int|1
 comma
 id|info
 )paren
@@ -6515,9 +6506,6 @@ comma
 r_int
 r_int
 id|arg
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -8348,10 +8336,12 @@ l_int|16
 )paren
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN)
+multiline_comment|/*&n;&t; * It looks like recent chips have a problem with SURFACE_CNTL,&n;&t; * setting SURF_TRANSLATION_DIS completely disables the&n;&t; * swapper as well, so we leave it unset now.&n;&t; */
 id|newmode.surface_cntl
 op_assign
-id|SURF_TRANSLATION_DIS
+l_int|0
 suffix:semicolon
+multiline_comment|/* Setup swapping on both apertures, though we currently&n;&t; * only use aperture 0, enabling swapper on aperture 1&n;&t; * won&squot;t harm&n;&t; */
 r_switch
 c_cond
 (paren
@@ -8365,6 +8355,10 @@ id|newmode.surface_cntl
 op_or_assign
 id|NONSURF_AP0_SWP_16BPP
 suffix:semicolon
+id|newmode.surface_cntl
+op_or_assign
+id|NONSURF_AP1_SWP_16BPP
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -8376,6 +8370,10 @@ suffix:colon
 id|newmode.surface_cntl
 op_or_assign
 id|NONSURF_AP0_SWP_32BPP
+suffix:semicolon
+id|newmode.surface_cntl
+op_or_assign
+id|NONSURF_AP1_SWP_32BPP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8616,6 +8614,26 @@ id|newmode.vclk_ecp_cntl
 op_assign
 id|rinfo-&gt;init_state.vclk_ecp_cntl
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALL_PPC
+multiline_comment|/* Gross hack for iBook with M7 until I find out a proper fix */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook4,3&quot;
+)paren
+op_logical_and
+id|rinfo-&gt;arch
+op_eq
+id|RADEON_M7
+)paren
+id|newmode.ppll_div_3
+op_assign
+l_int|0x000600ad
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALL_PPC */&t;
 id|RTRACE
 c_func
 (paren
@@ -10013,19 +10031,6 @@ op_assign
 op_amp
 id|rinfo-&gt;info
 suffix:semicolon
-singleline_comment|// XXX ???
-id|strncpy
-(paren
-id|info-&gt;modename
-comma
-id|rinfo-&gt;name
-comma
-r_sizeof
-(paren
-id|info-&gt;modename
-)paren
-)paren
-suffix:semicolon
 id|info-&gt;currcon
 op_assign
 op_minus
@@ -10034,11 +10039,6 @@ suffix:semicolon
 id|info-&gt;par
 op_assign
 id|rinfo
-suffix:semicolon
-id|info-&gt;disp
-op_assign
-op_amp
-id|rinfo-&gt;disp
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
@@ -10299,12 +10299,26 @@ r_int
 op_star
 id|conv_table
 suffix:semicolon
+multiline_comment|/* Pardon me for that hack... maybe some day we can figure&n;&t; * out in what direction backlight should work on a given&n;&t; * panel ?&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|rinfo-&gt;arch
 op_eq
 id|RADEON_M7
+op_logical_or
+id|rinfo-&gt;arch
+op_eq
+id|RADEON_M9
+)paren
+op_logical_and
+op_logical_neg
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook4,3&quot;
+)paren
 )paren
 id|conv_table
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.h&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.h,v 1.20 2002/10/17 20:16:00 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.h&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.h,v 1.21 2002/12/03 21:26:35 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef SCSIHOST_H_INCLUDED
@@ -11,11 +11,19 @@ multiline_comment|/*&n; *&t;SCSI Public stuff...&n; */
 multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
 DECL|macro|MPT_FC_CAN_QUEUE
 mdefine_line|#define MPT_FC_CAN_QUEUE&t;63
-singleline_comment|//#define MPT_SCSI_CAN_QUEUE&t;31
+macro_line|#if defined MPT_SCSI_USE_NEW_EH
 DECL|macro|MPT_SCSI_CAN_QUEUE
-mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;MPT_FC_CAN_QUEUE
+mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;127
+macro_line|#else
+DECL|macro|MPT_SCSI_CAN_QUEUE
+mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;63
+macro_line|#endif
+DECL|macro|MPT_SCSI_CMD_PER_DEV_HIGH
+mdefine_line|#define MPT_SCSI_CMD_PER_DEV_HIGH&t;31
+DECL|macro|MPT_SCSI_CMD_PER_DEV_LOW
+mdefine_line|#define MPT_SCSI_CMD_PER_DEV_LOW&t;7
 DECL|macro|MPT_SCSI_CMD_PER_LUN
-mdefine_line|#define MPT_SCSI_CMD_PER_LUN&t; 7
+mdefine_line|#define MPT_SCSI_CMD_PER_LUN&t;&t;7
 DECL|macro|MPT_SCSI_MAX_SECTORS
 mdefine_line|#define MPT_SCSI_MAX_SECTORS    8192
 multiline_comment|/*&n; * Set the MAX_SGE value based on user input.&n; */
@@ -130,14 +138,21 @@ DECL|macro|x_scsi_host_reset
 mdefine_line|#define x_scsi_host_reset&t;mptscsih_host_reset
 DECL|macro|x_scsi_bios_param
 mdefine_line|#define x_scsi_bios_param&t;mptscsih_bios_param
-DECL|macro|x_scsi_slave_configure
-mdefine_line|#define x_scsi_slave_configure&t;mptscsih_slave_configure
 DECL|macro|x_scsi_taskmgmt_bh
 mdefine_line|#define x_scsi_taskmgmt_bh&t;mptscsih_taskmgmt_bh
 DECL|macro|x_scsi_old_abort
 mdefine_line|#define x_scsi_old_abort&t;mptscsih_old_abort
 DECL|macro|x_scsi_old_reset
 mdefine_line|#define x_scsi_old_reset&t;mptscsih_old_reset
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
+DECL|macro|x_scsi_slave_configure
+mdefine_line|#define x_scsi_slave_configure&t;mptscsih_slave_configure
+macro_line|#else
+DECL|macro|x_scsi_select_queue_depths
+mdefine_line|#define x_scsi_select_queue_depths&t;mptscsih_select_queue_depths
+macro_line|#endif
+DECL|macro|x_scsi_proc_info
+mdefine_line|#define x_scsi_proc_info&t;mptscsih_proc_info
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;MPT SCSI Host / Initiator decls...&n; */
 r_extern
@@ -309,6 +324,16 @@ op_star
 suffix:semicolon
 macro_line|#endif
 r_extern
+r_void
+id|x_scsi_taskmgmt_bh
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
+r_extern
 r_int
 id|x_scsi_slave_configure
 c_func
@@ -317,13 +342,40 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
+macro_line|#else
 r_extern
 r_void
-id|x_scsi_taskmgmt_bh
+id|x_scsi_select_queue_depths
 c_func
 (paren
-r_void
+r_struct
+id|Scsi_Host
 op_star
+comma
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_int
+id|x_scsi_proc_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
@@ -334,12 +386,12 @@ DECL|macro|PROC_SCSI_DECL
 mdefine_line|#define PROC_SCSI_DECL  proc_name: &quot;mptscsih&quot;,
 macro_line|#endif
 macro_line|#ifdef MPT_SCSI_USE_NEW_EH
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
 DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= x_scsi_host_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.max_sectors&t;&t;&t;= MPT_SCSI_MAX_SECTORS,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;}
+mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.slave_configure&t;&t;= x_scsi_slave_configure,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= x_scsi_host_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.max_sectors&t;&t;&t;= MPT_SCSI_MAX_SECTORS,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;}
 macro_line|#else  /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1) */
 DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.next&t;&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.use_new_eh_code&t;&t;= 1&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.next&t;&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.use_new_eh_code&t;&t;= 1&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1) */
 macro_line|#else /* MPT_SCSI_USE_NEW_EH */
 DECL|macro|MPT_SCSIHOST

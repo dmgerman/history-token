@@ -5,6 +5,9 @@ multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+r_struct
+id|statfs
+suffix:semicolon
 DECL|macro|SECTOR_SIZE
 mdefine_line|#define SECTOR_SIZE&t;512&t;&t;/* sector size (bytes) */
 DECL|macro|SECTOR_BITS

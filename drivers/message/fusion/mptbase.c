@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.123 2002/10/17 20:15:56 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.125 2002/12/03 21:26:32 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -605,6 +605,16 @@ suffix:semicolon
 r_static
 r_int
 id|mpt_findImVolumes
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+)paren
+suffix:semicolon
+r_static
+r_void
+id|mpt_read_ioc_pg_1
 c_func
 (paren
 id|MPT_ADAPTER
@@ -2127,7 +2137,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -2142,6 +2152,11 @@ id|reply
 )paren
 )paren
 suffix:semicolon
+id|DBG_DUMP_REPLY_FRAME
+c_func
+(paren
+id|reply
+)paren
 id|pCfg
 op_assign
 op_star
@@ -2241,7 +2256,7 @@ id|pReply-&gt;IOCStatus
 op_amp
 id|MPI_IOCSTATUS_MASK
 suffix:semicolon
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -3157,7 +3172,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/**&n; *&t;mpt_add_sge - Place a simple SGE at address pAddr.&n; *&t;@pAddr: virtual address for SGE&n; *&t;@flagslength: SGE flags and data transfer length&n; *&t;@dma_addr: Physical address &n; *&n; *&t;This routine places a MPT request frame back on the MPT adapter&squot;s&n; *&t;FreeQ.&n; */
+multiline_comment|/**&n; *&t;mpt_add_sge - Place a simple SGE at address pAddr.&n; *&t;@pAddr: virtual address for SGE&n; *&t;@flagslength: SGE flags and data transfer length&n; *&t;@dma_addr: Physical address&n; *&n; *&t;This routine places a MPT request frame back on the MPT adapter&squot;s&n; *&t;FreeQ.&n; */
 r_void
 DECL|function|mpt_add_sge
 id|mpt_add_sge
@@ -3275,7 +3290,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/**&n; *&t;mpt_add_chain - Place a chain SGE at address pAddr.&n; *&t;@pAddr: virtual address for SGE&n; *&t;@next: nextChainOffset value (u32&squot;s)&n; *&t;@length: length of next SGL segment&n; *&t;@dma_addr: Physical address &n; *&n; *&t;This routine places a MPT request frame back on the MPT adapter&squot;s&n; *&t;FreeQ.&n; */
+multiline_comment|/**&n; *&t;mpt_add_chain - Place a chain SGE at address pAddr.&n; *&t;@pAddr: virtual address for SGE&n; *&t;@next: nextChainOffset value (u32&squot;s)&n; *&t;@length: length of next SGL segment&n; *&t;@dma_addr: Physical address&n; *&n; *&t;This routine places a MPT request frame back on the MPT adapter&squot;s&n; *&t;FreeQ.&n; */
 r_void
 DECL|function|mpt_add_chain
 id|mpt_add_chain
@@ -5267,6 +5282,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* tack onto tail of our MPT adapter list */
+id|Q_ADD_TAIL
+c_func
+(paren
+op_amp
+id|MptAdapters
+comma
+id|ioc
+comma
+id|MPT_ADAPTER
+)paren
+suffix:semicolon
+multiline_comment|/* Set lookup ptr. */
+id|mpt_adapters
+(braket
+id|ioc-&gt;id
+)braket
+op_assign
+id|ioc
+suffix:semicolon
 id|ioc-&gt;pci_irq
 op_assign
 op_minus
@@ -5331,6 +5366,19 @@ id|pdev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
+id|Q_DEL_ITEM
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
+id|mpt_adapters
+(braket
+id|ioc-&gt;id
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
 id|iounmap
 c_func
 (paren
@@ -5395,26 +5443,6 @@ id|pdev-&gt;irq
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* tack onto tail of our MPT adapter list */
-id|Q_ADD_TAIL
-c_func
-(paren
-op_amp
-id|MptAdapters
-comma
-id|ioc
-comma
-id|MPT_ADAPTER
-)paren
-suffix:semicolon
-multiline_comment|/* Set lookup ptr. */
-id|mpt_adapters
-(braket
-id|ioc-&gt;id
-)braket
-op_assign
-id|ioc
-suffix:semicolon
 multiline_comment|/* NEW!  20010220 -sralston&n;&t; * Check for &quot;bound ports&quot; (929, 929X, 1030, 1035) to reduce redundant resets.&n;&t; */
 r_if
 c_cond
@@ -5950,6 +5978,17 @@ id|ioc-&gt;alt_ioc-&gt;upload_fw
 )paren
 )paren
 (brace
+id|ddlprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Alt-ioc firmware upload required!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
 id|r
 op_assign
 id|mpt_do_upload
@@ -6223,7 +6262,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Get version and length of SDP 1 &n;&t;&t;&t; */
+multiline_comment|/* Get version and length of SDP 1&n;&t;&t;&t; */
 id|mpt_readScsiDevicePageHeaders
 c_func
 (paren
@@ -6232,7 +6271,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Find IM volumes &n;&t;&t;&t; */
+multiline_comment|/* Find IM volumes&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6241,6 +6280,13 @@ op_ge
 l_int|0x0102
 )paren
 id|mpt_findImVolumes
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
+multiline_comment|/* Check, and possibly reset, the coalescing value&n;&t;&t;&t; */
+id|mpt_read_ioc_pg_1
 c_func
 (paren
 id|ioc
@@ -7078,6 +7124,23 @@ id|sz_first
 op_assign
 id|this-&gt;alloc_total
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|this-&gt;alt_ioc
+op_ne
+l_int|NULL
+)paren
+(brace
+id|this-&gt;alt_ioc-&gt;alt_ioc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|this-&gt;alt_ioc
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|mpt_adapter_disable
 c_func
 (paren
@@ -7386,7 +7449,7 @@ l_string|&quot;}&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;MakeIocReady - Get IOC to a READY state, using KickStart if needed.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@force: Force hard KickStart of IOC&n; *&t;@sleepFlag: Specifies whether the process can sleep&n; *&n; *&t;Returns:&n; *&t;&t; 1 - DIAG reset and READY&n; *&t;&t; 0 - READY initially OR soft reset and READY &n; *&t;&t;-1 - Any failure on KickStart &n; *&t;&t;-2 - Msg Unit Reset Failed&n; *&t;&t;-3 - IO Unit Reset Failed&n; *&t;&t;-4 - IOC owned by a PEER&n; */
+multiline_comment|/*&n; *&t;MakeIocReady - Get IOC to a READY state, using KickStart if needed.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@force: Force hard KickStart of IOC&n; *&t;@sleepFlag: Specifies whether the process can sleep&n; *&n; *&t;Returns:&n; *&t;&t; 1 - DIAG reset and READY&n; *&t;&t; 0 - READY initially OR soft reset and READY&n; *&t;&t;-1 - Any failure on KickStart&n; *&t;&t;-2 - Msg Unit Reset Failed&n; *&t;&t;-3 - IO Unit Reset Failed&n; *&t;&t;-4 - IOC owned by a PEER&n; */
 r_static
 r_int
 DECL|function|MakeIocReady
@@ -8259,7 +8322,7 @@ c_func
 id|facts-&gt;RequestFrameSize
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FC f/w version changed between 1.1 and 1.2 &n;&t;&t; *&t;Old: u16{Major(4),Minor(4),SubMinor(8)}&n;&t;&t; *&t;New: u32{Major(8),Minor(8),Unit(8),Dev(8)}&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * FC f/w version changed between 1.1 and 1.2&n;&t;&t; *&t;Old: u16{Major(4),Minor(4),SubMinor(8)}&n;&t;&t; *&t;New: u32{Major(8),Minor(8),Unit(8),Dev(8)}&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9482,7 +9545,7 @@ id|sz
 comma
 id|ii
 suffix:semicolon
-multiline_comment|/* cached_fw &n;&t; */
+multiline_comment|/* cached_fw&n;&t; */
 id|sz
 op_assign
 id|ioc-&gt;num_fw_frags
@@ -11807,7 +11870,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;KickStart - Perform hard reset of MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@force: Force hard reset&n; *&t;@sleepFlag: Specifies whether the process can sleep&n; *&n; *&t;This routine places MPT adapter in diagnostic mode via the&n; *&t;WriteSequence register, and then performs a hard reset of adapter&n; *&t;via the Diagnostic register.&n; *&n; *&t;Inputs:   sleepflag - CAN_SLEEP (non-interrupt thread)&n; *&t;&t;&t;or NO_SLEEP (interrupt thread, use mdelay)&n; *&t;&t;  force - 1 if doorbell active, board fault state&n; *&t;&t;&t;&t;board operational, IOC_RECOVERY or&n; *&t;&t;&t;&t;IOC_BRINGUP and there is an alt_ioc.&n; *&t;&t;&t;  0 else&n; *&n; *&t;Returns:&n; *&t;&t; 1 - hard reset, READY&t;&n; *&t;&t; 0 - no reset due to History bit, READY&t;&n; *&t;&t;-1 - no reset due to History bit but not READY&t;&n; *&t;&t;     OR reset but failed to come READY&n; *&t;&t;-2 - no reset, could not enter DIAG mode &n; *&t;&t;-3 - reset but bad FW bit &n; */
+multiline_comment|/*&n; *&t;KickStart - Perform hard reset of MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@force: Force hard reset&n; *&t;@sleepFlag: Specifies whether the process can sleep&n; *&n; *&t;This routine places MPT adapter in diagnostic mode via the&n; *&t;WriteSequence register, and then performs a hard reset of adapter&n; *&t;via the Diagnostic register.&n; *&n; *&t;Inputs:   sleepflag - CAN_SLEEP (non-interrupt thread)&n; *&t;&t;&t;or NO_SLEEP (interrupt thread, use mdelay)&n; *&t;&t;  force - 1 if doorbell active, board fault state&n; *&t;&t;&t;&t;board operational, IOC_RECOVERY or&n; *&t;&t;&t;&t;IOC_BRINGUP and there is an alt_ioc.&n; *&t;&t;&t;  0 else&n; *&n; *&t;Returns:&n; *&t;&t; 1 - hard reset, READY&t;&n; *&t;&t; 0 - no reset due to History bit, READY&t;&n; *&t;&t;-1 - no reset due to History bit but not READY&t;&n; *&t;&t;     OR reset but failed to come READY&n; *&t;&t;-2 - no reset, could not enter DIAG mode&n; *&t;&t;-3 - reset but bad FW bit&n; */
 r_static
 r_int
 DECL|function|KickStart
@@ -12318,7 +12381,6 @@ id|diag1val
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Write the PreventIocBoot bit */
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -12333,16 +12395,6 @@ id|ioc-&gt;alt_ioc-&gt;cached_fw
 )paren
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|ioc-&gt;facts.Flags
-op_amp
-id|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
-)paren
-(brace
-macro_line|#endif
 id|diag0val
 op_or_assign
 id|MPI_DIAG_PREVENT_IOC_BOOT
@@ -12357,7 +12409,7 @@ id|diag0val
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Disable the ARM (Bug fix)&n;&t;&t; * &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Disable the ARM (Bug fix)&n;&t;&t; *&n;&t;&t; */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -12508,7 +12560,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME?  Examine results here? */
 )brace
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -12523,16 +12574,6 @@ id|ioc-&gt;alt_ioc-&gt;cached_fw
 )paren
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|ioc-&gt;facts.Flags
-op_amp
-id|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
-)paren
-(brace
-macro_line|#endif
 multiline_comment|/* If the DownloadBoot operation fails, the&n;&t;&t;&t; * IOC will be left unusable. This is a fatal error&n;&t;&t;&t; * case.  _diag_reset will return &lt; 0&n;&t;&t;&t; */
 r_for
 c_loop
@@ -13137,7 +13178,7 @@ l_int|0
 r_return
 id|r
 suffix:semicolon
-multiline_comment|/* FW ACK&squot;d request, wait for READY state &n;&t; */
+multiline_comment|/* FW ACK&squot;d request, wait for READY state&n;&t; */
 id|cntdn
 op_assign
 id|HZ
@@ -13869,6 +13910,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef MFCNT
+id|ioc-&gt;mfcnt
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -16401,7 +16448,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Allocate memory &n;&t; */
+multiline_comment|/* Allocate memory&n;&t; */
 r_if
 c_cond
 (paren
@@ -17129,12 +17176,42 @@ id|ioc-&gt;spi_data.sdp0length
 op_assign
 id|cfg.hdr-&gt;PageLength
 suffix:semicolon
+id|dcprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Headers: 0: version %d length %d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|ioc-&gt;spi_data.sdp0version
+comma
+id|ioc-&gt;spi_data.sdp0length
+)paren
+)paren
+suffix:semicolon
+id|dcprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Headers: 1: version %d length %d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|ioc-&gt;spi_data.sdp1version
+comma
+id|ioc-&gt;spi_data.sdp1length
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/**&n; *&t;mpt_findImVolumes - Identify IDs of hidden disks and RAID Volumes &n; *&t;@ioc: Pointer to a Adapter Strucutre&n; *&t;@portnum: IOC port number&n; *&n; *&t;Return:&n; *&t;0 on success&n; *&t;-EFAULT if read of config page header fails or data pointer not NULL&n; *&t;-ENOMEM if pci_alloc failed&n; */
+multiline_comment|/**&n; *&t;mpt_findImVolumes - Identify IDs of hidden disks and RAID Volumes&n; *&t;@ioc: Pointer to a Adapter Strucutre&n; *&t;@portnum: IOC port number&n; *&n; *&t;Return:&n; *&t;0 on success&n; *&t;-EFAULT if read of config page header fails or data pointer not NULL&n; *&t;-ENOMEM if pci_alloc failed&n; */
 r_static
 r_int
 DECL|function|mpt_findImVolumes
@@ -17152,27 +17229,14 @@ id|pIoc2
 op_assign
 l_int|NULL
 suffix:semicolon
-id|IOCPage3_t
-op_star
-id|pIoc3
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ConfigPageIoc2RaidVol_t
 op_star
 id|pIocRv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u8
-op_star
-id|mem
-suffix:semicolon
 id|dma_addr_t
 id|ioc2_dma
-suffix:semicolon
-id|dma_addr_t
-id|ioc3_dma
 suffix:semicolon
 id|CONFIGPARMS
 id|cfg
@@ -17190,11 +17254,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|iocpage2sz
-suffix:semicolon
-r_int
-id|iocpage3sz
-op_assign
-l_int|0
 suffix:semicolon
 id|u8
 id|nVols
@@ -17440,7 +17499,95 @@ multiline_comment|/* No physical disks. Done.&n;&t;&t; */
 )brace
 r_else
 (brace
-multiline_comment|/* There is at least one physical disk.&n;&t;&t; * Read and save IOC Page 3&n;&t;&t; */
+id|mpt_read_ioc_pg_3
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
+)brace
+id|done_and_free
+suffix:colon
+r_if
+c_cond
+(paren
+id|pIoc2
+)paren
+(brace
+id|pci_free_consistent
+c_func
+(paren
+id|ioc-&gt;pcidev
+comma
+id|iocpage2sz
+comma
+id|pIoc2
+comma
+id|ioc2_dma
+)paren
+suffix:semicolon
+id|pIoc2
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_return
+id|rc
+suffix:semicolon
+)brace
+r_int
+DECL|function|mpt_read_ioc_pg_3
+id|mpt_read_ioc_pg_3
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+)paren
+(brace
+id|IOCPage3_t
+op_star
+id|pIoc3
+op_assign
+l_int|NULL
+suffix:semicolon
+id|u8
+op_star
+id|mem
+suffix:semicolon
+id|CONFIGPARMS
+id|cfg
+suffix:semicolon
+id|ConfigPageHeader_t
+id|header
+suffix:semicolon
+id|dma_addr_t
+id|ioc3_dma
+suffix:semicolon
+r_int
+id|iocpage3sz
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Free the old page&n;&t; */
+r_if
+c_cond
+(paren
+id|ioc-&gt;spi_data.pIocPg3
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|ioc-&gt;spi_data.pIocPg3
+)paren
+suffix:semicolon
+id|ioc-&gt;spi_data.pIocPg3
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* There is at least one physical disk.&n;&t; * Read and save IOC Page 3&n;&t; */
 id|header.PageVersion
 op_assign
 l_int|0
@@ -17497,8 +17644,8 @@ id|cfg
 op_ne
 l_int|0
 )paren
-r_goto
-id|done_and_free
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -17507,10 +17654,10 @@ id|header.PageLength
 op_eq
 l_int|0
 )paren
-r_goto
-id|done_and_free
+r_return
+l_int|0
 suffix:semicolon
-multiline_comment|/* Read Header good, alloc memory&n;&t;&t; */
+multiline_comment|/* Read Header good, alloc memory&n;&t; */
 id|iocpage3sz
 op_assign
 id|header.PageLength
@@ -17536,10 +17683,10 @@ c_cond
 op_logical_neg
 id|pIoc3
 )paren
-r_goto
-id|done_and_free
+r_return
+l_int|0
 suffix:semicolon
-multiline_comment|/* Read the Page and save the data&n;&t;&t; * into malloc&squot;d memory.&n;&t;&t; */
+multiline_comment|/* Read the Page and save the data&n;&t; * into malloc&squot;d memory.&n;&t; */
 id|cfg.physAddr
 op_assign
 id|ioc3_dma
@@ -17603,32 +17750,6 @@ id|mem
 suffix:semicolon
 )brace
 )brace
-)brace
-id|done_and_free
-suffix:colon
-r_if
-c_cond
-(paren
-id|pIoc2
-)paren
-(brace
-id|pci_free_consistent
-c_func
-(paren
-id|ioc-&gt;pcidev
-comma
-id|iocpage2sz
-comma
-id|pIoc2
-comma
-id|ioc2_dma
-)paren
-suffix:semicolon
-id|pIoc2
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -17653,7 +17774,358 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_return
-id|rc
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|mpt_read_ioc_pg_1
+id|mpt_read_ioc_pg_1
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+)paren
+(brace
+id|IOCPage1_t
+op_star
+id|pIoc1
+op_assign
+l_int|NULL
+suffix:semicolon
+id|CONFIGPARMS
+id|cfg
+suffix:semicolon
+id|ConfigPageHeader_t
+id|header
+suffix:semicolon
+id|dma_addr_t
+id|ioc1_dma
+suffix:semicolon
+r_int
+id|iocpage1sz
+op_assign
+l_int|0
+suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
+multiline_comment|/* Check the Coalescing Timeout in IOC Page 1&n;&t; */
+id|header.PageVersion
+op_assign
+l_int|0
+suffix:semicolon
+id|header.PageLength
+op_assign
+l_int|0
+suffix:semicolon
+id|header.PageNumber
+op_assign
+l_int|1
+suffix:semicolon
+id|header.PageType
+op_assign
+id|MPI_CONFIG_PAGETYPE_IOC
+suffix:semicolon
+id|cfg.hdr
+op_assign
+op_amp
+id|header
+suffix:semicolon
+id|cfg.physAddr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|cfg.pageAddr
+op_assign
+l_int|0
+suffix:semicolon
+id|cfg.action
+op_assign
+id|MPI_CONFIG_ACTION_PAGE_HEADER
+suffix:semicolon
+id|cfg.dir
+op_assign
+l_int|0
+suffix:semicolon
+id|cfg.timeout
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpt_config
+c_func
+(paren
+id|ioc
+comma
+op_amp
+id|cfg
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|header.PageLength
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Read Header good, alloc memory&n;&t; */
+id|iocpage1sz
+op_assign
+id|header.PageLength
+op_star
+l_int|4
+suffix:semicolon
+id|pIoc1
+op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|ioc-&gt;pcidev
+comma
+id|iocpage1sz
+comma
+op_amp
+id|ioc1_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pIoc1
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Read the Page and check coalescing timeout&n;&t; */
+id|cfg.physAddr
+op_assign
+id|ioc1_dma
+suffix:semicolon
+id|cfg.action
+op_assign
+id|MPI_CONFIG_ACTION_PAGE_READ_CURRENT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpt_config
+c_func
+(paren
+id|ioc
+comma
+op_amp
+id|cfg
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|tmp
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|pIoc1-&gt;Flags
+)paren
+op_amp
+id|MPI_IOCPAGE1_REPLY_COALESCING
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+id|MPI_IOCPAGE1_REPLY_COALESCING
+)paren
+(brace
+id|tmp
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|pIoc1-&gt;CoalescingTimeout
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Coalescing Enabled Timeout = %d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|tmp
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+OG
+id|MPT_COALESCING_TIMEOUT
+)paren
+(brace
+id|pIoc1-&gt;CoalescingTimeout
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|MPT_COALESCING_TIMEOUT
+)paren
+suffix:semicolon
+multiline_comment|/* Write NVRAM and current&n;&t;&t;&t;&t; */
+id|cfg.dir
+op_assign
+l_int|1
+suffix:semicolon
+id|cfg.action
+op_assign
+id|MPI_CONFIG_ACTION_PAGE_WRITE_CURRENT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpt_config
+c_func
+(paren
+id|ioc
+comma
+op_amp
+id|cfg
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Reset Current Coalescing Timeout to = %d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|MPT_COALESCING_TIMEOUT
+)paren
+)paren
+suffix:semicolon
+id|cfg.action
+op_assign
+id|MPI_CONFIG_ACTION_PAGE_WRITE_NVRAM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpt_config
+c_func
+(paren
+id|ioc
+comma
+op_amp
+id|cfg
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Reset NVRAM Coalescing Timeout to = %d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|MPT_COALESCING_TIMEOUT
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Reset NVRAM Coalescing Timeout Failed&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_WARN_FMT
+l_string|&quot;Reset of Current Coalescing Timeout Failed!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+r_else
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_WARN_FMT
+l_string|&quot;Coalescing Disabled&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|pIoc1
+)paren
+(brace
+id|pci_free_consistent
+c_func
+(paren
+id|ioc-&gt;pcidev
+comma
+id|iocpage1sz
+comma
+id|pIoc1
+comma
+id|ioc1_dma
+)paren
+suffix:semicolon
+id|pIoc1
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -17947,7 +18419,7 @@ c_cond
 id|in_isr
 )paren
 (brace
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -17982,7 +18454,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -18132,7 +18604,7 @@ comma
 id|pCfg-&gt;physAddr
 )paren
 suffix:semicolon
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -18321,7 +18793,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -18356,7 +18828,7 @@ id|ioc-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* No more processing.&n;&t; * Hard reset clean-up will wake up&n;&t; * process and free all resources.&n;&t; */
-id|dprintk
+id|dcprintk
 c_func
 (paren
 (paren
@@ -18501,7 +18973,7 @@ id|CONFIGPARMS
 op_star
 id|pNext
 suffix:semicolon
-multiline_comment|/* Search the configQ for internal commands. &n;&t;&t; * Flush the Q, and wake up all suspended threads.&n;&t;&t; */
+multiline_comment|/* Search the configQ for internal commands.&n;&t;&t; * Flush the Q, and wake up all suspended threads.&n;&t;&t; */
 macro_line|#if 1
 id|spin_lock_irqsave
 c_func
@@ -19543,9 +20015,6 @@ l_string|&quot;  Fusion MPT isense driver&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-r_break
-suffix:semicolon
 )brace
 id|MPT_PROC_READ_RETURN
 c_func
@@ -22167,6 +22636,13 @@ c_func
 id|mpt_config
 )paren
 suffix:semicolon
+DECL|variable|mpt_read_ioc_pg_3
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mpt_read_ioc_pg_3
+)paren
+suffix:semicolon
 DECL|variable|mpt_alloc_fw_memory
 id|EXPORT_SYMBOL
 c_func
@@ -22402,6 +22878,13 @@ id|MPT_ADAPTER
 op_star
 id|this
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -22453,6 +22936,21 @@ id|this-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
+id|pdev
+op_assign
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+id|this-&gt;pcidev
+suffix:semicolon
+id|mptscsih_sync_irq
+c_func
+(paren
+id|pdev-&gt;irq
+)paren
+suffix:semicolon
 multiline_comment|/* Clear any lingering interrupt */
 id|CHIPREG_WRITE32
 c_func
@@ -22461,6 +22959,13 @@ op_amp
 id|this-&gt;chip-&gt;IntStatus
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|this-&gt;chip-&gt;IntStatus
 )paren
 suffix:semicolon
 id|Q_DEL_ITEM

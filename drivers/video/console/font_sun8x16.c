@@ -1,4 +1,4 @@
-macro_line|#include &quot;font.h&quot;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|FONTDATAMAX
 mdefine_line|#define FONTDATAMAX 4096
 DECL|variable|fontdata_sun8x16

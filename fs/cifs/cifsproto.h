@@ -3,6 +3,9 @@ macro_line|#ifndef _CIFSPROTO_H
 DECL|macro|_CIFSPROTO_H
 mdefine_line|#define _CIFSPROTO_H
 macro_line|#include &lt;linux/nls.h&gt;
+r_struct
+id|statfs
+suffix:semicolon
 multiline_comment|/*&n; *****************************************************************&n; * All Prototypes&n; *****************************************************************&n; */
 r_extern
 r_struct

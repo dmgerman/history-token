@@ -7863,8 +7863,6 @@ op_amp
 id|all_channels_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8085,8 +8083,6 @@ c_func
 (paren
 id|pch
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Callback from a channel when it can accept more to transmit.&n; * This should be called at BH/softirq level, not interrupt level.&n; */

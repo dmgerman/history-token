@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 DECL|macro|DECLARE_GLOBALS_HERE

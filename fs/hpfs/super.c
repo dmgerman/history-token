@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 multiline_comment|/* Mark the filesystem dirty, so that chkdsk checks it when os/2 booted */
 DECL|function|mark_dirty
 r_static
