@@ -26,6 +26,7 @@ op_star
 id|ptm_driver
 suffix:semicolon
 DECL|variable|pts_driver
+r_static
 r_struct
 id|tty_driver
 op_star
