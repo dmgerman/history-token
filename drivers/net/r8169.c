@@ -10454,12 +10454,6 @@ op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
-id|synchronize_irq
-c_func
-(paren
-id|dev-&gt;irq
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
