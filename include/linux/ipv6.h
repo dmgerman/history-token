@@ -245,6 +245,7 @@ macro_line|#include &lt;linux/in6.h&gt;          /* struct sockaddr_in6 */
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/if_inet6.h&gt;       /* struct ipv6_mc_socklist */
 macro_line|#include &lt;linux/tcp.h&gt;
+macro_line|#include &lt;linux/udp.h&gt;
 multiline_comment|/* &n;   This structure contains results of exthdrs parsing&n;   as offsets from skb-&gt;nh.&n; */
 DECL|struct|inet6_skb_parm
 r_struct
@@ -439,6 +440,30 @@ id|sk_buff
 op_star
 id|pktoptions
 suffix:semicolon
+r_struct
+(brace
+DECL|member|opt
+r_struct
+id|ipv6_txoptions
+op_star
+id|opt
+suffix:semicolon
+DECL|member|rt
+r_struct
+id|rt6_info
+op_star
+id|rt
+suffix:semicolon
+DECL|member|fl
+r_struct
+id|flowi
+op_star
+id|fl
+suffix:semicolon
+DECL|member|cork
+)brace
+id|cork
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|raw6_opt
@@ -514,6 +539,11 @@ DECL|member|inet
 r_struct
 id|inet_opt
 id|inet
+suffix:semicolon
+DECL|member|udp
+r_struct
+id|udp_opt
+id|udp
 suffix:semicolon
 DECL|member|inet6
 r_struct
