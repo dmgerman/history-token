@@ -7394,10 +7394,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* CFC disabled. &n;&t;&t; * Give ourselves some credits */
+multiline_comment|/* CFC disabled.&n;&t;&t; * Give ourselves some credits */
 id|d-&gt;tx_credits
 op_assign
-id|RFCOMM_MAX_CREDITS
+l_int|5
 suffix:semicolon
 )brace
 r_if
@@ -8116,7 +8116,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_clear_bit
+id|test_bit
 c_func
 (paren
 id|RFCOMM_SCHED_WAKEUP
@@ -8140,6 +8140,15 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Process stuff */
+id|clear_bit
+c_func
+(paren
+id|RFCOMM_SCHED_WAKEUP
+comma
+op_amp
+id|rfcomm_event
+)paren
+suffix:semicolon
 id|rfcomm_process_sessions
 c_func
 (paren

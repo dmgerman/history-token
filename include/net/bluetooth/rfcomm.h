@@ -546,11 +546,7 @@ id|rfcomm_thread
 r_return
 suffix:semicolon
 singleline_comment|//set_bit(event, &amp;rfcomm_event);
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_and_set_bit
+id|set_bit
 c_func
 (paren
 id|RFCOMM_SCHED_WAKEUP
@@ -558,7 +554,7 @@ comma
 op_amp
 id|rfcomm_event
 )paren
-)paren
+suffix:semicolon
 id|wake_up_process
 c_func
 (paren
