@@ -4795,6 +4795,13 @@ id|scmd-&gt;sc_magic
 op_assign
 id|SCSI_CMND_MAGIC
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|scmd-&gt;eh_timeout
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Sometimes the command can get back into the timer chain,&n;&t; * so use the pid as an identifier.&n;&t; */
 id|scmd-&gt;pid
 op_assign
