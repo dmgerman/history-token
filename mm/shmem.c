@@ -4649,10 +4649,6 @@ id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp

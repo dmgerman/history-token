@@ -32,8 +32,6 @@ mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if LINUX_VERSION_CODE &lt; VERSION(2,5,0)
-DECL|macro|minor
-macro_line|# define minor(x) MINOR(x)
 DECL|macro|need_resched
 macro_line|# define need_resched() (current-&gt;need_resched)
 macro_line|#endif

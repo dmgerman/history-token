@@ -1695,6 +1695,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
+r_static
 id|dev_t
 id|__init
 DECL|function|find_ide_boot

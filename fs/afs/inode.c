@@ -155,10 +155,6 @@ id|inode-&gt;i_gid
 op_assign
 l_int|0
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 id|vnode-&gt;status.size

@@ -1884,14 +1884,10 @@ op_assign
 id|dm_create_with_minor
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|to_kdev_t
+id|MINOR
 c_func
 (paren
 id|param-&gt;dev
-)paren
 )paren
 comma
 op_amp

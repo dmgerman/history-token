@@ -1312,10 +1312,6 @@ id|inode-&gt;i_gid
 op_assign
 id|raw_inode-&gt;gid
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 id|raw_inode-&gt;dsize

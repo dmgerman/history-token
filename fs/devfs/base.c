@@ -5594,10 +5594,6 @@ op_assign
 op_amp
 id|devfs_fops
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8005,13 +8001,23 @@ id|DPRINTK
 (paren
 id|DEBUG_I_MKNOD
 comma
-l_string|&quot;(%s): mode: 0%o  dev: %d&bslash;n&quot;
+l_string|&quot;(%s): mode: 0%o  dev: %u:%u&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
 id|mode
 comma
+id|MAJOR
+c_func
+(paren
 id|rdev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|rdev
+)paren
 )paren
 suffix:semicolon
 id|parent

@@ -583,10 +583,7 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
-id|kdev_t_to_nr
-c_func
-(paren
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|je16_to_cpu
@@ -604,7 +601,6 @@ id|rdev
 )paren
 op_amp
 l_int|0xff
-)paren
 )paren
 )paren
 suffix:semicolon

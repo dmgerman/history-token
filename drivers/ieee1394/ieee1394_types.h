@@ -12,10 +12,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* The great kdev_t changeover in 2.5.x */
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#ifndef minor
-DECL|macro|minor
-mdefine_line|#define minor(dev) MINOR(dev)
-macro_line|#endif
 multiline_comment|/* Transaction Label handling */
 DECL|struct|hpsb_tlabel_pool
 r_struct

@@ -252,8 +252,6 @@ multiline_comment|/* Output configuration info */
 suffix:semicolon
 DECL|macro|TUBMAXMINS
 mdefine_line|#define TUBMAXMINS      256
-DECL|macro|TUB_DEV
-mdefine_line|#define TUB_DEV MKDEV(IBM_FS3270_MAJ, 0)        /* Generic /dev/3270/tub */
 DECL|macro|_GEOM_ROWS
 mdefine_line|#define _GEOM_ROWS 24
 DECL|macro|_GEOM_COLS
@@ -695,34 +693,6 @@ DECL|macro|TUB_UE_BUSY
 mdefine_line|#define&t;TUB_UE_BUSY&t;0x0800
 DECL|macro|TUB_INPUT_HACK
 mdefine_line|#define&t;TUB_INPUT_HACK&t;0x1000&t;&t;/* Early init of command line */
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-DECL|macro|S390_CONSOLE_DEV
-mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTY_MAJOR, 64)
-DECL|macro|tub_major
-mdefine_line|#define tub_major(x) MAJOR(x)
-DECL|macro|tub_minor
-mdefine_line|#define tub_minor(x) MINOR(x)
-DECL|macro|tub_mkdev
-mdefine_line|#define tub_mkdev(x, y) MKDEV(x, y)
-macro_line|#elif (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-DECL|macro|S390_CONSOLE_DEV
-mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTYAUX_MAJOR, 1)
-DECL|macro|tub_major
-mdefine_line|#define tub_major(x) MAJOR(x)
-DECL|macro|tub_minor
-mdefine_line|#define tub_minor(x) MINOR(x)
-DECL|macro|tub_mkdev
-mdefine_line|#define tub_mkdev(x, y) MKDEV(x, y)
-macro_line|#else
-DECL|macro|S390_CONSOLE_DEV
-mdefine_line|#define S390_CONSOLE_DEV mk_kdev(TTYAUX_MAJOR, 1)
-DECL|macro|tub_major
-mdefine_line|#define tub_major(x) major(x)
-DECL|macro|tub_minor
-mdefine_line|#define tub_minor(x) minor(x)
-DECL|macro|tub_mkdev
-mdefine_line|#define tub_mkdev(x, y) mk_kdev(x, y)
-macro_line|#endif
 multiline_comment|/*&n; * Extra stuff for 3270 console support&n; */
 macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_extern

@@ -951,10 +951,6 @@ id|inode-&gt;i_gid
 op_assign
 id|server-&gt;m.gid
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
 id|NCP_BLOCK_SIZE
