@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#ifdef CONFIG_PERFMON
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#endif
-DECL|macro|offsetof
-mdefine_line|#define offsetof(type,field)    ((unsigned long) &amp;((type *) 0)-&gt;field)
 multiline_comment|/*&n; * Bits in the PSR that we allow ptrace() to change:&n; *&t;be, up, ac, mfl, mfh (the user mask; five bits total)&n; *&t;db (debug breakpoint fault; one bit)&n; *&t;id (instruction debug fault disable; one bit)&n; *&t;dd (data debug fault disable; one bit)&n; *&t;ri (restart instruction; two bits)&n; *&t;is (instruction set; one bit)&n; */
 DECL|macro|IPSR_WRITE_MASK
 mdefine_line|#define IPSR_WRITE_MASK &bslash;&n;&t;(IA64_PSR_UM | IA64_PSR_DB | IA64_PSR_IS | IA64_PSR_ID | IA64_PSR_DD | IA64_PSR_RI)

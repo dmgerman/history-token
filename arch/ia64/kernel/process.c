@@ -412,7 +412,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;f10  : %05lx%016lx f11  : %05lx%016lx&bslash;n&quot;
+l_string|&quot;f10 : %05lx%016lx f11 : %05lx%016lx&bslash;n&quot;
 comma
 id|regs-&gt;f10.u.bits
 (braket

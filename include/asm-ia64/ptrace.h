@@ -180,6 +180,7 @@ r_int
 id|r15
 suffix:semicolon
 multiline_comment|/* scratch */
+multiline_comment|/* The remaining registers are NOT saved for system calls.  */
 DECL|member|r14
 r_int
 r_int
@@ -301,7 +302,7 @@ r_int
 id|ar_ccv
 suffix:semicolon
 multiline_comment|/* compare/exchange value (scratch) */
-multiline_comment|/*&n;&t; * Floating point registers that the kernel considers&n;&t; * scratch:&n;&t; */
+multiline_comment|/*&n;&t; * Floating point registers that the kernel considers scratch:&n;&t; */
 DECL|member|f6
 r_struct
 id|ia64_fpreg

@@ -618,13 +618,12 @@ multiline_comment|/* r15 */
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|flags
 op_amp
 id|IA64_SC_FLAG_IN_SYSCALL
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* Restore most scratch-state only when not in syscall. */
@@ -641,33 +640,27 @@ id|sc-&gt;sc_ar_ccv
 suffix:semicolon
 id|err
 op_or_assign
-id|__get_user
+id|__copy_from_user
 c_func
 (paren
+op_amp
 id|scr-&gt;pt.ar_csd
 comma
 op_amp
 id|sc-&gt;sc_ar25
-)paren
-suffix:semicolon
-multiline_comment|/* ar.csd */
-id|err
-op_or_assign
-id|__get_user
-c_func
-(paren
-id|scr-&gt;pt.ar_ssd
 comma
-op_amp
-id|sc-&gt;sc_ar26
+l_int|2
+op_star
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* ar.ssd */
+multiline_comment|/* ar.csd &amp; ar.ssd */
 id|err
 op_or_assign
-id|__get_user
+id|__copy_from_user
 c_func
 (paren
+op_amp
 id|scr-&gt;pt.b6
 comma
 op_amp
@@ -675,24 +668,13 @@ id|sc-&gt;sc_br
 (braket
 l_int|6
 )braket
-)paren
-suffix:semicolon
-multiline_comment|/* b6 */
-id|err
-op_or_assign
-id|__get_user
-c_func
-(paren
-id|scr-&gt;pt.b7
 comma
-op_amp
-id|sc-&gt;sc_br
-(braket
-l_int|7
-)braket
+l_int|2
+op_star
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* b7 */
+multiline_comment|/* b6-b7 */
 id|err
 op_or_assign
 id|__copy_from_user
@@ -957,7 +939,7 @@ r_else
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If you change siginfo_t structure, please be sure&n;&t;&t; * this code is fixed accordingly.  It should never&n;&t;&t; * copy any pad contained in the structure to avoid&n;&t;&t; * security leaks, but must copy the generic 3 ints&n;&t;&t; * plus the relevant union member.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If you change siginfo_t structure, please be sure this code is fixed&n;&t;&t; * accordingly.  It should never copy any pad contained in the structure&n;&t;&t; * to avoid security leaks, but must copy the generic 3 ints plus the&n;&t;&t; * relevant union member.&n;&t;&t; */
 id|err
 op_assign
 id|__put_user
@@ -2063,22 +2045,12 @@ c_func
 op_amp
 id|sc-&gt;sc_ar25
 comma
+l_int|2
+op_star
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* ar.csd */
-id|err
-op_or_assign
-id|__clear_user
-c_func
-(paren
-op_amp
-id|sc-&gt;sc_ar26
-comma
-l_int|8
-)paren
-suffix:semicolon
-multiline_comment|/* ar.ssd */
+multiline_comment|/* ar.csd &amp; ar.ssd */
 id|err
 op_or_assign
 id|__clear_user
@@ -2090,25 +2062,12 @@ id|sc-&gt;sc_br
 l_int|6
 )braket
 comma
+l_int|2
+op_star
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* b6 */
-id|err
-op_or_assign
-id|__clear_user
-c_func
-(paren
-op_amp
-id|sc-&gt;sc_br
-(braket
-l_int|7
-)braket
-comma
-l_int|8
-)paren
-suffix:semicolon
-multiline_comment|/* b7 */
+multiline_comment|/* b6-b7 */
 id|err
 op_or_assign
 id|__clear_user
@@ -2161,7 +2120,7 @@ multiline_comment|/* r16-r31 */
 )brace
 r_else
 (brace
-multiline_comment|/* Copy scratch registers to sigcontext if the signal did not interrupt a syscall. */
+multiline_comment|/* Copy scratch regs to sigcontext if the signal didn&squot;t interrupt a syscall. */
 id|err
 op_or_assign
 id|__put_user
@@ -2175,33 +2134,27 @@ id|sc-&gt;sc_ar_ccv
 suffix:semicolon
 id|err
 op_or_assign
-id|__put_user
+id|__copy_to_user
 c_func
 (paren
+op_amp
 id|scr-&gt;pt.ar_csd
 comma
 op_amp
 id|sc-&gt;sc_ar25
-)paren
-suffix:semicolon
-multiline_comment|/* ar.csd */
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-id|scr-&gt;pt.ar_ssd
 comma
-op_amp
-id|sc-&gt;sc_ar26
+l_int|2
+op_star
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* ar.ssd */
+multiline_comment|/* ar.csd &amp; ar.ssd */
 id|err
 op_or_assign
-id|__put_user
+id|__copy_to_user
 c_func
 (paren
+op_amp
 id|scr-&gt;pt.b6
 comma
 op_amp
@@ -2209,24 +2162,13 @@ id|sc-&gt;sc_br
 (braket
 l_int|6
 )braket
-)paren
-suffix:semicolon
-multiline_comment|/* b6 */
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-id|scr-&gt;pt.b7
 comma
-op_amp
-id|sc-&gt;sc_br
-(braket
-l_int|7
-)braket
+l_int|2
+op_star
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* b7 */
+multiline_comment|/* b6-b7 */
 id|err
 op_or_assign
 id|__copy_to_user
