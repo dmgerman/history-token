@@ -349,27 +349,6 @@ id|capidrv_contr
 op_star
 id|contr_list
 suffix:semicolon
-multiline_comment|/* statistic */
-DECL|member|nrecvctlpkt
-r_int
-r_int
-id|nrecvctlpkt
-suffix:semicolon
-DECL|member|nrecvdatapkt
-r_int
-r_int
-id|nrecvdatapkt
-suffix:semicolon
-DECL|member|nsentctlpkt
-r_int
-r_int
-id|nsentctlpkt
-suffix:semicolon
-DECL|member|nsentdatapkt
-r_int
-r_int
-id|nsentdatapkt
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|capidrv_plci
@@ -2400,9 +2379,6 @@ id|global.ap
 comma
 id|skb
 )paren
-suffix:semicolon
-id|global.nsentctlpkt
-op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* -------- state machine -------------------------------------------- */
@@ -6602,9 +6578,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|global.nrecvdatapkt
-op_increment
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -6659,9 +6632,6 @@ c_func
 (paren
 id|skb
 )paren
-suffix:semicolon
-id|global.nrecvctlpkt
-op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------- */
@@ -9326,9 +9296,6 @@ suffix:semicolon
 id|nccip-&gt;datahandle
 op_increment
 suffix:semicolon
-id|global.nsentdatapkt
-op_increment
-suffix:semicolon
 r_return
 id|len
 suffix:semicolon
@@ -9400,9 +9367,6 @@ id|CAPI_NOERROR
 )paren
 (brace
 id|nccip-&gt;datahandle
-op_increment
-suffix:semicolon
-id|global.nsentdatapkt
 op_increment
 suffix:semicolon
 r_return
@@ -10981,13 +10945,13 @@ id|len
 comma
 l_string|&quot;%lu %lu %lu %lu&bslash;n&quot;
 comma
-id|global.nrecvctlpkt
+id|global.ap.nrecvctlpkt
 comma
-id|global.nrecvdatapkt
+id|global.ap.nrecvdatapkt
 comma
-id|global.nsentctlpkt
+id|global.ap.nsentctlpkt
 comma
-id|global.nsentdatapkt
+id|global.ap.nsentdatapkt
 )paren
 suffix:semicolon
 r_if
