@@ -8372,7 +8372,7 @@ c_func
 id|qc
 )paren
 suffix:semicolon
-multiline_comment|/* initiate bmdma */
+multiline_comment|/* set up bmdma */
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|bmdma_start
@@ -8417,6 +8417,44 @@ id|ata_wq
 comma
 op_amp
 id|ap-&gt;pio_task
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ATA_PROT_ATAPI
+suffix:colon
+r_case
+id|ATA_PROT_ATAPI_DMA
+suffix:colon
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|tf_load
+c_func
+(paren
+id|ap
+comma
+op_amp
+id|qc-&gt;tf
+)paren
+suffix:semicolon
+multiline_comment|/* load tf registers */
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|bmdma_setup
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
+multiline_comment|/* set up bmdma */
+id|queue_work
+c_func
+(paren
+id|ata_wq
+comma
+op_amp
+id|ap-&gt;packet_task
 )paren
 suffix:semicolon
 r_break
@@ -9671,7 +9709,15 @@ op_eq
 id|ATA_PROT_ATAPI_DMA
 )paren
 (brace
-multiline_comment|/* FIXME: start DMA here */
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|bmdma_start
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
+multiline_comment|/* initiate bmdma */
 )brace
 r_else
 (brace
