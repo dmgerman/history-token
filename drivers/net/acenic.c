@@ -889,20 +889,6 @@ suffix:semicolon
 id|probed
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* is PCI support present? */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|version_disp
 op_assign
 l_int|0
