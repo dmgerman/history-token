@@ -25,6 +25,8 @@ macro_line|#include &lt;asm/sn/sn2/shub_mmr_t.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/sndrv.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 multiline_comment|/*&n; * Shub WAR for Xbridge Little Endian problem:&n; *&t;Xbridge has to run in BIG ENDIAN even with Shub.&n; */
 multiline_comment|/*&n; * io_sh_swapper: Turn on Shub byte swapping.&n; *&t;All data destined to and from Shub to XIO are byte-swapped.&n; */
 r_void

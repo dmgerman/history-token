@@ -1,10 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_ROUTER_H
 DECL|macro|_ASM_IA64_SN_ROUTER_H
 mdefine_line|#define _ASM_IA64_SN_ROUTER_H
 multiline_comment|/*&n; * Router Register definitions&n; *&n; * Macro argument _L always stands for a link number (1 to 8, inclusive).&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
@@ -19,10 +18,6 @@ DECL|macro|MAX_ROUTER_PATH
 mdefine_line|#define MAX_ROUTER_PATH&t;80
 DECL|macro|ROUTER_REG_CAST
 mdefine_line|#define ROUTER_REG_CAST&t;&t;(volatile router_reg_t *)
-DECL|macro|PS_UINT_CAST
-mdefine_line|#define PS_UINT_CAST&t;&t;(__psunsigned_t)
-DECL|macro|UINT64_CAST
-mdefine_line|#define UINT64_CAST&t;&t;(uint64_t)
 DECL|typedef|port_no_t
 r_typedef
 r_int
@@ -33,17 +28,13 @@ multiline_comment|/* Type for router port number      */
 macro_line|#else 
 DECL|macro|ROUTERREG_CAST
 mdefine_line|#define ROUTERREG_CAST
-DECL|macro|PS_UINT_CAST
-mdefine_line|#define PS_UINT_CAST
-DECL|macro|UINT64_CAST
-mdefine_line|#define UINT64_CAST
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|MAX_ROUTER_PORTS
-mdefine_line|#define MAX_ROUTER_PORTS (8)&t; /* Max. number of ports on a router */
+mdefine_line|#define MAX_ROUTER_PORTS&t;8&t;/* Max. number of ports on a router */
 DECL|macro|ALL_PORTS
 mdefine_line|#define ALL_PORTS ((1 &lt;&lt; MAX_ROUTER_PORTS) - 1)&t;/* for 0 based references */
 DECL|macro|PORT_INVALID
-mdefine_line|#define PORT_INVALID (-1)&t; /* Invalid port number              */
+mdefine_line|#define PORT_INVALID&t;&t;-1&t;/* Invalid port number              */
 DECL|macro|IS_META
 mdefine_line|#define&t;IS_META(_rp)&t;((_rp)-&gt;flags &amp; PCFG_ROUTER_META)
 DECL|macro|IS_REPEATER
@@ -137,41 +128,41 @@ multiline_comment|/*&n; * RR_STATUS_REV_ID mask and shift definitions&n; */
 DECL|macro|RSRI_INPORT_SHFT
 mdefine_line|#define RSRI_INPORT_SHFT&t;52
 DECL|macro|RSRI_INPORT_MASK
-mdefine_line|#define RSRI_INPORT_MASK&t;(UINT64_CAST 0xf &lt;&lt; 52)
+mdefine_line|#define RSRI_INPORT_MASK&t;(0xfUL &lt;&lt; 52)
 DECL|macro|RSRI_LINKWORKING_BIT
 mdefine_line|#define RSRI_LINKWORKING_BIT(_L) (35 + 2 * (_L))
 DECL|macro|RSRI_LINKWORKING
-mdefine_line|#define RSRI_LINKWORKING(_L)&t;(UINT64_CAST 1 &lt;&lt; (35 + 2 * (_L)))
+mdefine_line|#define RSRI_LINKWORKING(_L)&t;(1UL &lt;&lt; (35 + 2 * (_L)))
 DECL|macro|RSRI_LINKRESETFAIL
-mdefine_line|#define RSRI_LINKRESETFAIL(_L)&t;(UINT64_CAST 1 &lt;&lt; (34 + 2 * (_L)))
+mdefine_line|#define RSRI_LINKRESETFAIL(_L)&t;(1UL &lt;&lt; (34 + 2 * (_L)))
 DECL|macro|RSRI_LSTAT_SHFT
 mdefine_line|#define RSRI_LSTAT_SHFT(_L)&t;(34 + 2 * (_L))
 DECL|macro|RSRI_LSTAT_MASK
-mdefine_line|#define RSRI_LSTAT_MASK(_L)&t;(UINT64_CAST 0x3 &lt;&lt; 34 + 2 * (_L))
+mdefine_line|#define RSRI_LSTAT_MASK(_L)&t;(0x3UL &lt;&lt; 34 + 2 * (_L))
 DECL|macro|RSRI_LOCALSBERROR
-mdefine_line|#define RSRI_LOCALSBERROR&t;(UINT64_CAST 1 &lt;&lt; 35)
+mdefine_line|#define RSRI_LOCALSBERROR&t;(1UL &lt;&lt; 35)
 DECL|macro|RSRI_LOCALSTUCK
-mdefine_line|#define RSRI_LOCALSTUCK&t;&t;(UINT64_CAST 1 &lt;&lt; 34)
+mdefine_line|#define RSRI_LOCALSTUCK&t;&t;(1UL &lt;&lt; 34)
 DECL|macro|RSRI_LOCALBADVEC
-mdefine_line|#define RSRI_LOCALBADVEC&t;(UINT64_CAST 1 &lt;&lt; 33)
+mdefine_line|#define RSRI_LOCALBADVEC&t;(1UL &lt;&lt; 33)
 DECL|macro|RSRI_LOCALTAILERR
-mdefine_line|#define RSRI_LOCALTAILERR&t;(UINT64_CAST 1 &lt;&lt; 32)
+mdefine_line|#define RSRI_LOCALTAILERR&t;(1UL &lt;&lt; 32)
 DECL|macro|RSRI_LOCAL_SHFT
 mdefine_line|#define RSRI_LOCAL_SHFT &t;32
 DECL|macro|RSRI_LOCAL_MASK
-mdefine_line|#define RSRI_LOCAL_MASK&t;&t;(UINT64_CAST 0xf &lt;&lt; 32)
+mdefine_line|#define RSRI_LOCAL_MASK&t;&t;(0xfUL &lt;&lt; 32)
 DECL|macro|RSRI_CHIPREV_SHFT
 mdefine_line|#define RSRI_CHIPREV_SHFT&t;28
 DECL|macro|RSRI_CHIPREV_MASK
-mdefine_line|#define RSRI_CHIPREV_MASK&t;(UINT64_CAST 0xf &lt;&lt; 28)
+mdefine_line|#define RSRI_CHIPREV_MASK&t;(0xfUL &lt;&lt; 28)
 DECL|macro|RSRI_CHIPID_SHFT
 mdefine_line|#define RSRI_CHIPID_SHFT&t;12
 DECL|macro|RSRI_CHIPID_MASK
-mdefine_line|#define RSRI_CHIPID_MASK&t;(UINT64_CAST 0xffff &lt;&lt; 12)
+mdefine_line|#define RSRI_CHIPID_MASK&t;(0xffffUL &lt;&lt; 12)
 DECL|macro|RSRI_MFGID_SHFT
 mdefine_line|#define RSRI_MFGID_SHFT&t;&t;1
 DECL|macro|RSRI_MFGID_MASK
-mdefine_line|#define RSRI_MFGID_MASK&t;&t;(UINT64_CAST 0x7ff &lt;&lt; 1)
+mdefine_line|#define RSRI_MFGID_MASK&t;&t;(0x7ffUL &lt;&lt; 1)
 DECL|macro|RSRI_LSTAT_WENTDOWN
 mdefine_line|#define RSRI_LSTAT_WENTDOWN&t;0
 DECL|macro|RSRI_LSTAT_RESETFAIL
@@ -182,267 +173,267 @@ DECL|macro|RSRI_LSTAT_NOTUSED
 mdefine_line|#define RSRI_LSTAT_NOTUSED&t;3
 multiline_comment|/*&n; * RR_PORT_RESET mask definitions&n; */
 DECL|macro|RPRESET_WARM
-mdefine_line|#define RPRESET_WARM&t;&t;(UINT64_CAST 1 &lt;&lt; 9)
+mdefine_line|#define RPRESET_WARM&t;&t;(1UL &lt;&lt; 9)
 DECL|macro|RPRESET_LINK
-mdefine_line|#define RPRESET_LINK(_L)&t;(UINT64_CAST 1 &lt;&lt; (_L))
+mdefine_line|#define RPRESET_LINK(_L)&t;(1UL &lt;&lt; (_L))
 DECL|macro|RPRESET_LOCAL
-mdefine_line|#define RPRESET_LOCAL&t;&t;(UINT64_CAST 1)
+mdefine_line|#define RPRESET_LOCAL&t;&t;1UL
 multiline_comment|/*&n; * RR_PROT_CONF mask and shift definitions&n; */
 DECL|macro|RPCONF_DIRCMPDIS_SHFT
 mdefine_line|#define RPCONF_DIRCMPDIS_SHFT&t;13
 DECL|macro|RPCONF_DIRCMPDIS_MASK
-mdefine_line|#define RPCONF_DIRCMPDIS_MASK&t;(UINT64_CAST 1 &lt;&lt; 13)
+mdefine_line|#define RPCONF_DIRCMPDIS_MASK&t;(1UL &lt;&lt; 13)
 DECL|macro|RPCONF_FORCELOCAL
-mdefine_line|#define RPCONF_FORCELOCAL&t;(UINT64_CAST 1 &lt;&lt; 12)
+mdefine_line|#define RPCONF_FORCELOCAL&t;(1UL &lt;&lt; 12)
 DECL|macro|RPCONF_FLOCAL_SHFT
 mdefine_line|#define RPCONF_FLOCAL_SHFT&t;12
 DECL|macro|RPCONF_METAID_SHFT
 mdefine_line|#define RPCONF_METAID_SHFT&t;8
 DECL|macro|RPCONF_METAID_MASK
-mdefine_line|#define RPCONF_METAID_MASK&t;(UINT64_CAST 0xf &lt;&lt; 8)
+mdefine_line|#define RPCONF_METAID_MASK&t;(0xfUL &lt;&lt; 8)
 DECL|macro|RPCONF_RESETOK
-mdefine_line|#define RPCONF_RESETOK(_L)&t;(UINT64_CAST 1 &lt;&lt; ((_L) - 1))
+mdefine_line|#define RPCONF_RESETOK(_L)&t;(1UL &lt;&lt; ((_L) - 1))
 multiline_comment|/*&n; * RR_GLOBAL_PORT_DEF mask and shift definitions&n; */
 DECL|macro|RGPD_MGLBLNHBR_ID_SHFT
 mdefine_line|#define RGPD_MGLBLNHBR_ID_SHFT&t;12&t;/* -global neighbor ID */
 DECL|macro|RGPD_MGLBLNHBR_ID_MASK
-mdefine_line|#define RGPD_MGLBLNHBR_ID_MASK&t;(UINT64_CAST 0xf &lt;&lt; 12)
+mdefine_line|#define RGPD_MGLBLNHBR_ID_MASK&t;(0xfUL &lt;&lt; 12)
 DECL|macro|RGPD_MGLBLNHBR_VLD_SHFT
 mdefine_line|#define RGPD_MGLBLNHBR_VLD_SHFT&t;11&t;/* -global neighbor Valid */
 DECL|macro|RGPD_MGLBLNHBR_VLD_MASK
-mdefine_line|#define RGPD_MGLBLNHBR_VLD_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 11)
+mdefine_line|#define RGPD_MGLBLNHBR_VLD_MASK&t;(0x1UL &lt;&lt; 11)
 DECL|macro|RGPD_MGLBLPORT_SHFT
 mdefine_line|#define RGPD_MGLBLPORT_SHFT&t;8&t;/* -global neighbor Port */
 DECL|macro|RGPD_MGLBLPORT_MASK
-mdefine_line|#define RGPD_MGLBLPORT_MASK&t;(UINT64_CAST 0x7 &lt;&lt; 8)
+mdefine_line|#define RGPD_MGLBLPORT_MASK&t;(0x7UL &lt;&lt; 8)
 DECL|macro|RGPD_PGLBLNHBR_ID_SHFT
 mdefine_line|#define RGPD_PGLBLNHBR_ID_SHFT&t;4&t;/* +global neighbor ID */
 DECL|macro|RGPD_PGLBLNHBR_ID_MASK
-mdefine_line|#define RGPD_PGLBLNHBR_ID_MASK&t;(UINT64_CAST 0xf &lt;&lt; 4)
+mdefine_line|#define RGPD_PGLBLNHBR_ID_MASK&t;(0xfUL &lt;&lt; 4)
 DECL|macro|RGPD_PGLBLNHBR_VLD_SHFT
 mdefine_line|#define RGPD_PGLBLNHBR_VLD_SHFT&t;3&t;/* +global neighbor Valid */
 DECL|macro|RGPD_PGLBLNHBR_VLD_MASK
-mdefine_line|#define RGPD_PGLBLNHBR_VLD_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 3)
+mdefine_line|#define RGPD_PGLBLNHBR_VLD_MASK&t;(0x1UL &lt;&lt; 3)
 DECL|macro|RGPD_PGLBLPORT_SHFT
 mdefine_line|#define RGPD_PGLBLPORT_SHFT&t;0&t;/* +global neighbor Port */
 DECL|macro|RGPD_PGLBLPORT_MASK
-mdefine_line|#define RGPD_PGLBLPORT_MASK&t;(UINT64_CAST 0x7 &lt;&lt; 0)
+mdefine_line|#define RGPD_PGLBLPORT_MASK&t;(0x7UL &lt;&lt; 0)
 DECL|macro|GLBL_PARMS_REGS
 mdefine_line|#define GLBL_PARMS_REGS&t;&t;2&t;/* Two Global Parms registers */
 multiline_comment|/*&n; * RR_GLOBAL_PARMS0 mask and shift definitions&n; */
 DECL|macro|RGPARM0_ARB_VALUE_SHFT
 mdefine_line|#define RGPARM0_ARB_VALUE_SHFT&t;54&t;/* Local Block Arbitration State */
 DECL|macro|RGPARM0_ARB_VALUE_MASK
-mdefine_line|#define RGPARM0_ARB_VALUE_MASK&t;(UINT64_CAST 0x7 &lt;&lt; 54)
+mdefine_line|#define RGPARM0_ARB_VALUE_MASK&t;(0x7UL &lt;&lt; 54)
 DECL|macro|RGPARM0_ROTATEARB_SHFT
 mdefine_line|#define RGPARM0_ROTATEARB_SHFT&t;53&t;/* Rotate Local Block Arbitration */
 DECL|macro|RGPARM0_ROTATEARB_MASK
-mdefine_line|#define RGPARM0_ROTATEARB_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 53)
+mdefine_line|#define RGPARM0_ROTATEARB_MASK&t;(1UL &lt;&lt; 53)
 DECL|macro|RGPARM0_FAIREN_SHFT
 mdefine_line|#define RGPARM0_FAIREN_SHFT&t;52&t;/* Fairness logic Enable */
 DECL|macro|RGPARM0_FAIREN_MASK
-mdefine_line|#define RGPARM0_FAIREN_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 52)
+mdefine_line|#define RGPARM0_FAIREN_MASK&t;(1UL &lt;&lt; 52)
 DECL|macro|RGPARM0_LOCGNTTO_SHFT
 mdefine_line|#define RGPARM0_LOCGNTTO_SHFT&t;40&t;/* Local grant timeout */
 DECL|macro|RGPARM0_LOCGNTTO_MASK
-mdefine_line|#define RGPARM0_LOCGNTTO_MASK&t;(UINT64_CAST 0xfff &lt;&lt; 40)
+mdefine_line|#define RGPARM0_LOCGNTTO_MASK&t;(0xfffUL &lt;&lt; 40)
 DECL|macro|RGPARM0_DATELINE_SHFT
 mdefine_line|#define RGPARM0_DATELINE_SHFT&t;38&t;/* Dateline crossing router */
 DECL|macro|RGPARM0_DATELINE_MASK
-mdefine_line|#define RGPARM0_DATELINE_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 38)
+mdefine_line|#define RGPARM0_DATELINE_MASK&t;(1UL &lt;&lt; 38)
 DECL|macro|RGPARM0_MAXRETRY_SHFT
 mdefine_line|#define RGPARM0_MAXRETRY_SHFT&t;28&t;/* Max retry count */
 DECL|macro|RGPARM0_MAXRETRY_MASK
-mdefine_line|#define RGPARM0_MAXRETRY_MASK&t;(UINT64_CAST 0x3ff &lt;&lt; 28)
+mdefine_line|#define RGPARM0_MAXRETRY_MASK&t;(0x3ffUL &lt;&lt; 28)
 DECL|macro|RGPARM0_URGWRAP_SHFT
 mdefine_line|#define RGPARM0_URGWRAP_SHFT&t;20&t;/* Urgent wrap */
 DECL|macro|RGPARM0_URGWRAP_MASK
-mdefine_line|#define RGPARM0_URGWRAP_MASK&t;(UINT64_CAST 0xff &lt;&lt; 20)
+mdefine_line|#define RGPARM0_URGWRAP_MASK&t;(0xffUL &lt;&lt; 20)
 DECL|macro|RGPARM0_DEADLKTO_SHFT
 mdefine_line|#define RGPARM0_DEADLKTO_SHFT&t;16&t;/* Deadlock timeout */
 DECL|macro|RGPARM0_DEADLKTO_MASK
-mdefine_line|#define RGPARM0_DEADLKTO_MASK&t;(UINT64_CAST 0xf &lt;&lt; 16)
+mdefine_line|#define RGPARM0_DEADLKTO_MASK&t;(0xfUL &lt;&lt; 16)
 DECL|macro|RGPARM0_URGVAL_SHFT
 mdefine_line|#define RGPARM0_URGVAL_SHFT&t;12&t;/* Urgent value */
 DECL|macro|RGPARM0_URGVAL_MASK
-mdefine_line|#define RGPARM0_URGVAL_MASK&t;(UINT64_CAST 0xf &lt;&lt; 12)
+mdefine_line|#define RGPARM0_URGVAL_MASK&t;(0xfUL &lt;&lt; 12)
 DECL|macro|RGPARM0_VCHSELEN_SHFT
 mdefine_line|#define RGPARM0_VCHSELEN_SHFT&t;11&t;/* VCH_SEL_EN */
 DECL|macro|RGPARM0_VCHSELEN_MASK
-mdefine_line|#define RGPARM0_VCHSELEN_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 11)
+mdefine_line|#define RGPARM0_VCHSELEN_MASK&t;(1UL &lt;&lt; 11)
 DECL|macro|RGPARM0_LOCURGTO_SHFT
 mdefine_line|#define RGPARM0_LOCURGTO_SHFT&t;9&t;/* Local urgent timeout */
 DECL|macro|RGPARM0_LOCURGTO_MASK
-mdefine_line|#define RGPARM0_LOCURGTO_MASK&t;(UINT64_CAST 0x3 &lt;&lt; 9)
+mdefine_line|#define RGPARM0_LOCURGTO_MASK&t;(0x3UL &lt;&lt; 9)
 DECL|macro|RGPARM0_TAILVAL_SHFT
 mdefine_line|#define RGPARM0_TAILVAL_SHFT&t;5&t;/* Tail value */
 DECL|macro|RGPARM0_TAILVAL_MASK
-mdefine_line|#define RGPARM0_TAILVAL_MASK&t;(UINT64_CAST 0xf &lt;&lt; 5)
+mdefine_line|#define RGPARM0_TAILVAL_MASK&t;(0xfUL &lt;&lt; 5)
 DECL|macro|RGPARM0_CLOCK_SHFT
 mdefine_line|#define RGPARM0_CLOCK_SHFT&t;1&t;/* Global clock select */
 DECL|macro|RGPARM0_CLOCK_MASK
-mdefine_line|#define RGPARM0_CLOCK_MASK&t;(UINT64_CAST 0xf &lt;&lt; 1)
+mdefine_line|#define RGPARM0_CLOCK_MASK&t;(0xfUL &lt;&lt; 1)
 DECL|macro|RGPARM0_BYPEN_SHFT
 mdefine_line|#define RGPARM0_BYPEN_SHFT&t;0
 DECL|macro|RGPARM0_BYPEN_MASK
-mdefine_line|#define RGPARM0_BYPEN_MASK&t;(UINT64_CAST 1)&t;/* Bypass enable */
+mdefine_line|#define RGPARM0_BYPEN_MASK&t;1UL&t;/* Bypass enable */
 multiline_comment|/*&n; * RR_GLOBAL_PARMS1 shift and mask definitions&n; */
 DECL|macro|RGPARM1_TTOWRAP_SHFT
 mdefine_line|#define RGPARM1_TTOWRAP_SHFT&t;12&t;/* Tail timeout wrap */
 DECL|macro|RGPARM1_TTOWRAP_MASK
-mdefine_line|#define RGPARM1_TTOWRAP_MASK&t;(UINT64_CAST 0xfffff &lt;&lt; 12)
+mdefine_line|#define RGPARM1_TTOWRAP_MASK&t;(0xfffffUL &lt;&lt; 12)
 DECL|macro|RGPARM1_AGERATE_SHFT
 mdefine_line|#define RGPARM1_AGERATE_SHFT&t;8&t;/* Age rate */
 DECL|macro|RGPARM1_AGERATE_MASK
-mdefine_line|#define RGPARM1_AGERATE_MASK&t;(UINT64_CAST 0xf &lt;&lt; 8)
+mdefine_line|#define RGPARM1_AGERATE_MASK&t;(0xfUL &lt;&lt; 8)
 DECL|macro|RGPARM1_JSWSTAT_SHFT
 mdefine_line|#define RGPARM1_JSWSTAT_SHFT&t;0&t;/* JTAG Sw Register bits */
 DECL|macro|RGPARM1_JSWSTAT_MASK
-mdefine_line|#define RGPARM1_JSWSTAT_MASK&t;(UINT64_CAST 0xff &lt;&lt; 0)
+mdefine_line|#define RGPARM1_JSWSTAT_MASK&t;(0xffUL &lt;&lt; 0)
 multiline_comment|/*&n; * RR_DIAG_PARMS mask and shift definitions&n; */
 DECL|macro|RDPARM_ABSHISTOGRAM
-mdefine_line|#define RDPARM_ABSHISTOGRAM&t;(UINT64_CAST 1 &lt;&lt; 17)&t;/* Absolute histgrm */
+mdefine_line|#define RDPARM_ABSHISTOGRAM&t;(1UL &lt;&lt; 17)&t;/* Absolute histgrm */
 DECL|macro|RDPARM_DEADLOCKRESET
-mdefine_line|#define RDPARM_DEADLOCKRESET&t;(UINT64_CAST 1 &lt;&lt; 16)&t;/* Reset on deadlck */
+mdefine_line|#define RDPARM_DEADLOCKRESET&t;(1UL &lt;&lt; 16)&t;/* Reset on deadlck */
 DECL|macro|RDPARM_DISABLE
-mdefine_line|#define RDPARM_DISABLE(_L)&t;(UINT64_CAST 1 &lt;&lt; ((_L) +  7))
+mdefine_line|#define RDPARM_DISABLE(_L)&t;(1UL &lt;&lt; ((_L) +  7))
 DECL|macro|RDPARM_SENDERROR
-mdefine_line|#define RDPARM_SENDERROR(_L)&t;(UINT64_CAST 1 &lt;&lt; ((_L) -  1))
+mdefine_line|#define RDPARM_SENDERROR(_L)&t;(1UL &lt;&lt; ((_L) -  1))
 multiline_comment|/*&n; * RR_DEBUG_ADDR mask and shift definitions&n; */
 DECL|macro|RDA_DATA_SHFT
 mdefine_line|#define RDA_DATA_SHFT&t;&t;10&t;/* Observed debug data */
 DECL|macro|RDA_DATA_MASK
-mdefine_line|#define RDA_DATA_MASK&t;&t;(UINT64_CAST 0xffff &lt;&lt; 10)
+mdefine_line|#define RDA_DATA_MASK&t;&t;(0xffffUL &lt;&lt; 10)
 DECL|macro|RDA_ADDR_SHFT
 mdefine_line|#define RDA_ADDR_SHFT&t;&t;0&t;/* debug address for data */
 DECL|macro|RDA_ADDR_MASK
-mdefine_line|#define RDA_ADDR_MASK&t;&t;(UINT64_CAST 0x3ff &lt;&lt; 0)
+mdefine_line|#define RDA_ADDR_MASK&t;&t;(0x3ffUL &lt;&lt; 0)
 multiline_comment|/*&n; * RR_LB_TO_L2 mask and shift definitions&n; */
 DECL|macro|RLBTOL2_DATA_VLD_SHFT
 mdefine_line|#define RLBTOL2_DATA_VLD_SHFT&t;32&t;/* data is valid for JTAG controller */
 DECL|macro|RLBTOL2_DATA_VLD_MASK
-mdefine_line|#define RLBTOL2_DATA_VLD_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 32)
+mdefine_line|#define RLBTOL2_DATA_VLD_MASK&t;(1UL &lt;&lt; 32)
 DECL|macro|RLBTOL2_DATA_SHFT
 mdefine_line|#define RLBTOL2_DATA_SHFT&t;0&t;/* data bits for JTAG controller */
 DECL|macro|RLBTOL2_DATA_MASK
-mdefine_line|#define RLBTOL2_DATA_MASK&t;(UINT64_CAST 0xffffffff)
+mdefine_line|#define RLBTOL2_DATA_MASK&t;0xffffffffUL
 multiline_comment|/*&n; * RR_L2_TO_LB mask and shift definitions&n; */
 DECL|macro|RL2TOLB_DATA_VLD_SHFT
 mdefine_line|#define RL2TOLB_DATA_VLD_SHFT&t;33&t;/* data is valid from JTAG controller */
 DECL|macro|RL2TOLB_DATA_VLD_MASK
-mdefine_line|#define RL2TOLB_DATA_VLD_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 33)
+mdefine_line|#define RL2TOLB_DATA_VLD_MASK&t;(1UL &lt;&lt; 33)
 DECL|macro|RL2TOLB_PARITY_SHFT
 mdefine_line|#define RL2TOLB_PARITY_SHFT&t;32&t;/* sw implemented parity for data */
 DECL|macro|RL2TOLB_PARITY_MASK
-mdefine_line|#define RL2TOLB_PARITY_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 32)
+mdefine_line|#define RL2TOLB_PARITY_MASK&t;(1UL &lt;&lt; 32)
 DECL|macro|RL2TOLB_DATA_SHFT
 mdefine_line|#define RL2TOLB_DATA_SHFT&t;0&t;/* data bits from JTAG controller */
 DECL|macro|RL2TOLB_DATA_MASK
-mdefine_line|#define RL2TOLB_DATA_MASK&t;(UINT64_CAST 0xffffffff)
+mdefine_line|#define RL2TOLB_DATA_MASK&t;0xffffffffUL
 multiline_comment|/*&n; * RR_JBUS_CONTROL mask and shift definitions&n; */
 DECL|macro|RJC_POS_BITS_SHFT
 mdefine_line|#define RJC_POS_BITS_SHFT&t;20&t;/* Router position bits */
 DECL|macro|RJC_POS_BITS_MASK
-mdefine_line|#define RJC_POS_BITS_MASK&t;(UINT64_CAST 0xf &lt;&lt; 20)
+mdefine_line|#define RJC_POS_BITS_MASK&t;(0xfUL &lt;&lt; 20)
 DECL|macro|RJC_RD_DATA_STROBE_SHFT
 mdefine_line|#define RJC_RD_DATA_STROBE_SHFT&t;16&t;/* count when read data is strobed in */
 DECL|macro|RJC_RD_DATA_STROBE_MASK
-mdefine_line|#define RJC_RD_DATA_STROBE_MASK&t;(UINT64_CAST 0xf &lt;&lt; 16)
+mdefine_line|#define RJC_RD_DATA_STROBE_MASK&t;(0xfUL &lt;&lt; 16)
 DECL|macro|RJC_WE_OE_HOLD_SHFT
 mdefine_line|#define RJC_WE_OE_HOLD_SHFT&t;8&t;/* time OE or WE is held */
 DECL|macro|RJC_WE_OE_HOLD_MASK
-mdefine_line|#define RJC_WE_OE_HOLD_MASK&t;(UINT64_CAST 0xff &lt;&lt; 8)
+mdefine_line|#define RJC_WE_OE_HOLD_MASK&t;(0xffUL &lt;&lt; 8)
 DECL|macro|RJC_ADDR_SET_HLD_SHFT
 mdefine_line|#define RJC_ADDR_SET_HLD_SHFT&t;0&t;/* time address driven around OE/WE */
 DECL|macro|RJC_ADDR_SET_HLD_MASK
-mdefine_line|#define RJC_ADDR_SET_HLD_MASK&t;(UINT64_CAST 0xff)
+mdefine_line|#define RJC_ADDR_SET_HLD_MASK&t;0xffUL
 multiline_comment|/*&n; * RR_SCRATCH_REGx mask and shift definitions&n; *  note: these fields represent a software convention, and are not&n; *        understood/interpreted by the hardware. &n; */
 DECL|macro|RSCR0_BOOTED_SHFT
 mdefine_line|#define&t;RSCR0_BOOTED_SHFT&t;63
 DECL|macro|RSCR0_BOOTED_MASK
-mdefine_line|#define&t;RSCR0_BOOTED_MASK&t;(UINT64_CAST 0x1 &lt;&lt; RSCR0_BOOTED_SHFT)
+mdefine_line|#define&t;RSCR0_BOOTED_MASK&t;(0x1UL &lt;&lt; RSCR0_BOOTED_SHFT)
 DECL|macro|RSCR0_LOCALID_SHFT
 mdefine_line|#define RSCR0_LOCALID_SHFT&t;56
 DECL|macro|RSCR0_LOCALID_MASK
-mdefine_line|#define RSCR0_LOCALID_MASK&t;(UINT64_CAST 0x7f &lt;&lt; RSCR0_LOCALID_SHFT)
+mdefine_line|#define RSCR0_LOCALID_MASK&t;(0x7fUL &lt;&lt; RSCR0_LOCALID_SHFT)
 DECL|macro|RSCR0_UNUSED_SHFT
 mdefine_line|#define&t;RSCR0_UNUSED_SHFT&t;48
 DECL|macro|RSCR0_UNUSED_MASK
-mdefine_line|#define&t;RSCR0_UNUSED_MASK&t;(UINT64_CAST 0xff &lt;&lt; RSCR0_UNUSED_SHFT)
+mdefine_line|#define&t;RSCR0_UNUSED_MASK&t;(0xffUL &lt;&lt; RSCR0_UNUSED_SHFT)
 DECL|macro|RSCR0_NIC_SHFT
 mdefine_line|#define RSCR0_NIC_SHFT&t;&t;0
 DECL|macro|RSCR0_NIC_MASK
-mdefine_line|#define RSCR0_NIC_MASK&t;&t;(UINT64_CAST 0xffffffffffff)
+mdefine_line|#define RSCR0_NIC_MASK&t;&t;0xffffffffffffUL
 DECL|macro|RSCR1_MODID_SHFT
 mdefine_line|#define RSCR1_MODID_SHFT&t;0
 DECL|macro|RSCR1_MODID_MASK
-mdefine_line|#define RSCR1_MODID_MASK&t;(UINT64_CAST 0xffff)
+mdefine_line|#define RSCR1_MODID_MASK&t;0xffffUL
 multiline_comment|/*&n; * RR_VECTOR_HW_BAR mask and shift definitions&n; */
 DECL|macro|BAR_TX_SHFT
 mdefine_line|#define BAR_TX_SHFT&t;&t;27&t;/* Barrier in trans(m)it when read */
 DECL|macro|BAR_TX_MASK
-mdefine_line|#define BAR_TX_MASK&t;&t;(UINT64_CAST 1 &lt;&lt; BAR_TX_SHFT)
+mdefine_line|#define BAR_TX_MASK&t;&t;(1UL &lt;&lt; BAR_TX_SHFT)
 DECL|macro|BAR_VLD_SHFT
 mdefine_line|#define BAR_VLD_SHFT&t;&t;26&t;/* Valid Configuration */
 DECL|macro|BAR_VLD_MASK
-mdefine_line|#define BAR_VLD_MASK&t;&t;(UINT64_CAST 1 &lt;&lt; BAR_VLD_SHFT)
+mdefine_line|#define BAR_VLD_MASK&t;&t;(1UL &lt;&lt; BAR_VLD_SHFT)
 DECL|macro|BAR_SEQ_SHFT
 mdefine_line|#define BAR_SEQ_SHFT&t;&t;24&t;/* Sequence number */
 DECL|macro|BAR_SEQ_MASK
-mdefine_line|#define BAR_SEQ_MASK&t;&t;(UINT64_CAST 3 &lt;&lt; BAR_SEQ_SHFT)
+mdefine_line|#define BAR_SEQ_MASK&t;&t;(3UL &lt;&lt; BAR_SEQ_SHFT)
 DECL|macro|BAR_LEAFSTATE_SHFT
 mdefine_line|#define BAR_LEAFSTATE_SHFT&t;18&t;/* Leaf State */
 DECL|macro|BAR_LEAFSTATE_MASK
-mdefine_line|#define BAR_LEAFSTATE_MASK&t;(UINT64_CAST 0x3f &lt;&lt; BAR_LEAFSTATE_SHFT)
+mdefine_line|#define BAR_LEAFSTATE_MASK&t;(0x3fUL &lt;&lt; BAR_LEAFSTATE_SHFT)
 DECL|macro|BAR_PARENT_SHFT
 mdefine_line|#define BAR_PARENT_SHFT&t;&t;14&t;/* Parent Port */
 DECL|macro|BAR_PARENT_MASK
-mdefine_line|#define BAR_PARENT_MASK&t;&t;(UINT64_CAST 0xf &lt;&lt; BAR_PARENT_SHFT)
+mdefine_line|#define BAR_PARENT_MASK&t;&t;(0xfUL &lt;&lt; BAR_PARENT_SHFT)
 DECL|macro|BAR_CHILDREN_SHFT
 mdefine_line|#define BAR_CHILDREN_SHFT&t;6&t;/* Child Select port bits */
 DECL|macro|BAR_CHILDREN_MASK
-mdefine_line|#define BAR_CHILDREN_MASK&t;(UINT64_CAST 0xff &lt;&lt; BAR_CHILDREN_SHFT)
+mdefine_line|#define BAR_CHILDREN_MASK&t;(0xffUL &lt;&lt; BAR_CHILDREN_SHFT)
 DECL|macro|BAR_LEAFCOUNT_SHFT
 mdefine_line|#define BAR_LEAFCOUNT_SHFT&t;0&t;/* Leaf Count to trigger parent */
 DECL|macro|BAR_LEAFCOUNT_MASK
-mdefine_line|#define BAR_LEAFCOUNT_MASK&t;(UINT64_CAST 0x3f)
+mdefine_line|#define BAR_LEAFCOUNT_MASK&t;0x3fUL
 multiline_comment|/*&n; * RR_PORT_PARMS(_L) mask and shift definitions&n; */
 DECL|macro|RPPARM_MIPRESETEN_SHFT
 mdefine_line|#define RPPARM_MIPRESETEN_SHFT&t;29&t;/* Message In Progress reset enable */
 DECL|macro|RPPARM_MIPRESETEN_MASK
-mdefine_line|#define RPPARM_MIPRESETEN_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 29)
+mdefine_line|#define RPPARM_MIPRESETEN_MASK&t;(0x1UL &lt;&lt; 29)
 DECL|macro|RPPARM_UBAREN_SHFT
 mdefine_line|#define RPPARM_UBAREN_SHFT&t;28&t;/* Enable user barrier requests */
 DECL|macro|RPPARM_UBAREN_MASK
-mdefine_line|#define RPPARM_UBAREN_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 28)
+mdefine_line|#define RPPARM_UBAREN_MASK&t;(0x1UL &lt;&lt; 28)
 DECL|macro|RPPARM_OUTPDTO_SHFT
 mdefine_line|#define RPPARM_OUTPDTO_SHFT&t;24&t;/* Output Port Deadlock TO value */
 DECL|macro|RPPARM_OUTPDTO_MASK
-mdefine_line|#define RPPARM_OUTPDTO_MASK&t;(UINT64_CAST 0xf &lt;&lt; 24)
+mdefine_line|#define RPPARM_OUTPDTO_MASK&t;(0xfUL &lt;&lt; 24)
 DECL|macro|RPPARM_PORTMATE_SHFT
 mdefine_line|#define RPPARM_PORTMATE_SHFT&t;21&t;/* Port Mate for the port */
 DECL|macro|RPPARM_PORTMATE_MASK
-mdefine_line|#define RPPARM_PORTMATE_MASK&t;(UINT64_CAST 0x7 &lt;&lt; 21)
+mdefine_line|#define RPPARM_PORTMATE_MASK&t;(0x7UL &lt;&lt; 21)
 DECL|macro|RPPARM_HISTEN_SHFT
 mdefine_line|#define RPPARM_HISTEN_SHFT&t;20&t;/* Histogram counter enable */
 DECL|macro|RPPARM_HISTEN_MASK
-mdefine_line|#define RPPARM_HISTEN_MASK&t;(UINT64_CAST 0x1 &lt;&lt; 20)
+mdefine_line|#define RPPARM_HISTEN_MASK&t;(0x1UL &lt;&lt; 20)
 DECL|macro|RPPARM_HISTSEL_SHFT
 mdefine_line|#define RPPARM_HISTSEL_SHFT&t;18
 DECL|macro|RPPARM_HISTSEL_MASK
-mdefine_line|#define RPPARM_HISTSEL_MASK&t;(UINT64_CAST 0x3 &lt;&lt; 18)
+mdefine_line|#define RPPARM_HISTSEL_MASK&t;(0x3UL &lt;&lt; 18)
 DECL|macro|RPPARM_DAMQHS_SHFT
 mdefine_line|#define RPPARM_DAMQHS_SHFT&t;16
 DECL|macro|RPPARM_DAMQHS_MASK
-mdefine_line|#define RPPARM_DAMQHS_MASK&t;(UINT64_CAST 0x3 &lt;&lt; 16)
+mdefine_line|#define RPPARM_DAMQHS_MASK&t;(0x3UL &lt;&lt; 16)
 DECL|macro|RPPARM_NULLTO_SHFT
 mdefine_line|#define RPPARM_NULLTO_SHFT&t;10
 DECL|macro|RPPARM_NULLTO_MASK
-mdefine_line|#define RPPARM_NULLTO_MASK&t;(UINT64_CAST 0x3f &lt;&lt; 10)
+mdefine_line|#define RPPARM_NULLTO_MASK&t;(0x3fUL &lt;&lt; 10)
 DECL|macro|RPPARM_MAXBURST_SHFT
 mdefine_line|#define RPPARM_MAXBURST_SHFT&t;0
 DECL|macro|RPPARM_MAXBURST_MASK
-mdefine_line|#define RPPARM_MAXBURST_MASK&t;(UINT64_CAST 0x3ff)
+mdefine_line|#define RPPARM_MAXBURST_MASK&t;0x3ffUL
 multiline_comment|/*&n; * NOTE: Normally the kernel tracks only UTILIZATION statistics.&n; * The other 2 should not be used, except during any experimentation&n; * with the router.&n; */
 DECL|macro|RPPARM_HISTSEL_AGE
 mdefine_line|#define RPPARM_HISTSEL_AGE&t;0&t;/* Histogram age characterization.  */
@@ -452,39 +443,39 @@ DECL|macro|RPPARM_HISTSEL_DAMQ
 mdefine_line|#define RPPARM_HISTSEL_DAMQ&t;2&t;/* Histogram DAMQ characterization. */
 multiline_comment|/*&n; * RR_STATUS_ERROR(_L) and RR_ERROR_CLEAR(_L) mask and shift definitions&n; */
 DECL|macro|RSERR_POWERNOK
-mdefine_line|#define RSERR_POWERNOK&t;&t;(UINT64_CAST 1 &lt;&lt; 38)
+mdefine_line|#define RSERR_POWERNOK&t;&t;(1UL &lt;&lt; 38)
 DECL|macro|RSERR_PORT_DEADLOCK
-mdefine_line|#define RSERR_PORT_DEADLOCK     (UINT64_CAST 1 &lt;&lt; 37)
+mdefine_line|#define RSERR_PORT_DEADLOCK     (1UL &lt;&lt; 37)
 DECL|macro|RSERR_WARMRESET
-mdefine_line|#define RSERR_WARMRESET         (UINT64_CAST 1 &lt;&lt; 36)
+mdefine_line|#define RSERR_WARMRESET         (1UL &lt;&lt; 36)
 DECL|macro|RSERR_LINKRESET
-mdefine_line|#define RSERR_LINKRESET         (UINT64_CAST 1 &lt;&lt; 35)
+mdefine_line|#define RSERR_LINKRESET         (1UL &lt;&lt; 35)
 DECL|macro|RSERR_RETRYTIMEOUT
-mdefine_line|#define RSERR_RETRYTIMEOUT      (UINT64_CAST 1 &lt;&lt; 34)
+mdefine_line|#define RSERR_RETRYTIMEOUT      (1UL &lt;&lt; 34)
 DECL|macro|RSERR_FIFOOVERFLOW
-mdefine_line|#define RSERR_FIFOOVERFLOW&t;(UINT64_CAST 1 &lt;&lt; 33)
+mdefine_line|#define RSERR_FIFOOVERFLOW&t;(1UL &lt;&lt; 33)
 DECL|macro|RSERR_ILLEGALPORT
-mdefine_line|#define RSERR_ILLEGALPORT&t;(UINT64_CAST 1 &lt;&lt; 32)
+mdefine_line|#define RSERR_ILLEGALPORT&t;(1UL &lt;&lt; 32)
 DECL|macro|RSERR_DEADLOCKTO_SHFT
 mdefine_line|#define RSERR_DEADLOCKTO_SHFT&t;28
 DECL|macro|RSERR_DEADLOCKTO_MASK
-mdefine_line|#define RSERR_DEADLOCKTO_MASK&t;(UINT64_CAST 0xf &lt;&lt; 28)
+mdefine_line|#define RSERR_DEADLOCKTO_MASK&t;(0xfUL &lt;&lt; 28)
 DECL|macro|RSERR_RECVTAILTO_SHFT
 mdefine_line|#define RSERR_RECVTAILTO_SHFT&t;24
 DECL|macro|RSERR_RECVTAILTO_MASK
-mdefine_line|#define RSERR_RECVTAILTO_MASK&t;(UINT64_CAST 0xf &lt;&lt; 24)
+mdefine_line|#define RSERR_RECVTAILTO_MASK&t;(0xfUL &lt;&lt; 24)
 DECL|macro|RSERR_RETRYCNT_SHFT
 mdefine_line|#define RSERR_RETRYCNT_SHFT&t;16
 DECL|macro|RSERR_RETRYCNT_MASK
-mdefine_line|#define RSERR_RETRYCNT_MASK&t;(UINT64_CAST 0xff &lt;&lt; 16)
+mdefine_line|#define RSERR_RETRYCNT_MASK&t;(0xffUL &lt;&lt; 16)
 DECL|macro|RSERR_CBERRCNT_SHFT
 mdefine_line|#define RSERR_CBERRCNT_SHFT&t;8
 DECL|macro|RSERR_CBERRCNT_MASK
-mdefine_line|#define RSERR_CBERRCNT_MASK&t;(UINT64_CAST 0xff &lt;&lt; 8)
+mdefine_line|#define RSERR_CBERRCNT_MASK&t;(0xffUL &lt;&lt; 8)
 DECL|macro|RSERR_SNERRCNT_SHFT
 mdefine_line|#define RSERR_SNERRCNT_SHFT&t;0
 DECL|macro|RSERR_SNERRCNT_MASK
-mdefine_line|#define RSERR_SNERRCNT_MASK&t;(UINT64_CAST 0xff &lt;&lt; 0)
+mdefine_line|#define RSERR_SNERRCNT_MASK&t;(0xffUL &lt;&lt; 0)
 DECL|macro|PORT_STATUS_UP
 mdefine_line|#define PORT_STATUS_UP&t;&t;(1 &lt;&lt; 0)&t;/* Router link up */
 DECL|macro|PORT_STATUS_FENCE
@@ -498,9 +489,9 @@ mdefine_line|#define PORT_STATUS_KERNFAIL&t;(1 &lt;&lt; 4)&t;/* Router link fail
 DECL|macro|PORT_STATUS_UNDEF
 mdefine_line|#define PORT_STATUS_UNDEF&t;(1 &lt;&lt; 5)&t;/* Unable to pinpoint&n;&t;&t;&t;&t;&t;&t; * why the router link&n;&t;&t;&t;&t;&t;&t; * went down&n;&t;&t;&t;&t;&t;&t; */&t;
 DECL|macro|PROBE_RESULT_BAD
-mdefine_line|#define PROBE_RESULT_BAD&t;(-1)&t;&t;/* Set if any of the router&n;&t;&t;&t;&t;&t;&t; * links failed after reset&n;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PROBE_RESULT_BAD&t;-1&t;&t;/* Set if any of the router&n;&t;&t;&t;&t;&t;&t; * links failed after reset&n;&t;&t;&t;&t;&t;&t; */
 DECL|macro|PROBE_RESULT_GOOD
-mdefine_line|#define PROBE_RESULT_GOOD&t;(0)&t;&t;/* Set if all the router links&n;&t;&t;&t;&t;&t;&t; * which came out of reset &n;&t;&t;&t;&t;&t;&t; * are up&n;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PROBE_RESULT_GOOD&t;0&t;&t;/* Set if all the router links&n;&t;&t;&t;&t;&t;&t; * which came out of reset &n;&t;&t;&t;&t;&t;&t; * are up&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Should be enough for 256 CPUs */
 DECL|macro|MAX_RTR_BREADTH
 mdefine_line|#define MAX_RTR_BREADTH&t;&t;64&t;&t;/* Max # of routers possible */
@@ -850,18 +841,6 @@ DECL|macro|RIP_PROMLOG
 mdefine_line|#define RIP_PROMLOG&t;&t;&t;2&t;/* Router info in promlog */
 DECL|macro|RIP_CONSOLE
 mdefine_line|#define RIP_CONSOLE&t;&t;&t;4&t;/* Router info on console */
-DECL|macro|ROUTER_INFO_PRINT
-mdefine_line|#define ROUTER_INFO_PRINT(_rip,_where)&t;(_rip-&gt;ri_print |= _where)&t;
-multiline_comment|/* Set the field used to check if a &n;&t;&t;&t;&t;&t; * router info can be printed&n;&t;&t;&t;&t;&t; */
-DECL|macro|IS_ROUTER_INFO_PRINTED
-mdefine_line|#define IS_ROUTER_INFO_PRINTED(_rip,_where)&t;&bslash;&n;&t;&t;&t;&t;&t;(_rip-&gt;ri_print &amp; _where)&t;
-multiline_comment|/* Was the router info printed to&n;&t;&t;&t;&t;&t; * the given location (_where) ?&n;&t;&t;&t;&t;&t; * Mainly used to prevent duplicate&n;&t;&t;&t;&t;&t; * router error states.&n;&t;&t;&t;&t;&t; */
-DECL|macro|ROUTER_INFO_LOCK
-mdefine_line|#define ROUTER_INFO_LOCK(_rip,_s)&t;_s = mutex_spinlock(&amp;(_rip-&gt;ri_lock))
-multiline_comment|/* Take the lock on router info&n;&t;&t;&t;&t;&t; * to gain exclusive access&n;&t;&t;&t;&t;&t; */
-DECL|macro|ROUTER_INFO_UNLOCK
-mdefine_line|#define ROUTER_INFO_UNLOCK(_rip,_s)&t;mutex_spinunlock(&amp;(_rip-&gt;ri_lock),_s)
-multiline_comment|/* Release the lock on router info */
 multiline_comment|/* &n; * Router info hanging in the nodepda &n; */
 DECL|struct|nodepda_router_info_s
 r_typedef
@@ -1040,19 +1019,19 @@ multiline_comment|/*&n; * RR_HISTOGRAM(_L) mask and shift definitions&n; * There
 DECL|macro|RHIST_BUCKET_SHFT
 mdefine_line|#define RHIST_BUCKET_SHFT(_x)&t;(32 * ((_x) &amp; 0x1))
 DECL|macro|RHIST_BUCKET_MASK
-mdefine_line|#define RHIST_BUCKET_MASK(_x)&t;(UINT64_CAST 0xffffffff &lt;&lt; RHIST_BUCKET_SHFT((_x) &amp; 0x1))
+mdefine_line|#define RHIST_BUCKET_MASK(_x)&t;(0xffffffffUL &lt;&lt; RHIST_BUCKET_SHFT((_x) &amp; 0x1))
 DECL|macro|RHIST_GET_BUCKET
 mdefine_line|#define RHIST_GET_BUCKET(_x, _reg)&t;&bslash;&n;&t;((RHIST_BUCKET_MASK(_x) &amp; ((_reg)[(_x) &gt;&gt; 1])) &gt;&gt; RHIST_BUCKET_SHFT(_x))
 multiline_comment|/*&n; * RR_RESET_MASK(_L) mask and shift definitions&n; */
 DECL|macro|RRM_RESETOK
-mdefine_line|#define RRM_RESETOK(_L)&t;&t;(UINT64_CAST 1 &lt;&lt; ((_L) - 1))
+mdefine_line|#define RRM_RESETOK(_L)&t;&t;(1UL &lt;&lt; ((_L) - 1))
 DECL|macro|RRM_RESETOK_ALL
 mdefine_line|#define RRM_RESETOK_ALL&t;&t;ALL_PORTS
 multiline_comment|/*&n; * RR_META_TABLE(_x) and RR_LOCAL_TABLE(_x) mask and shift definitions&n; */
 DECL|macro|RTABLE_SHFT
 mdefine_line|#define RTABLE_SHFT(_L)&t;&t;(4 * ((_L) - 1))
 DECL|macro|RTABLE_MASK
-mdefine_line|#define RTABLE_MASK(_L)&t;&t;(UINT64_CAST 0x7 &lt;&lt; RTABLE_SHFT(_L))
+mdefine_line|#define RTABLE_MASK(_L)&t;&t;(0x7UL &lt;&lt; RTABLE_SHFT(_L))
 DECL|macro|ROUTERINFO_STKSZ
 mdefine_line|#define&t;ROUTERINFO_STKSZ&t;4096
 macro_line|#ifndef __ASSEMBLY__
