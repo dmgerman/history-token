@@ -2000,15 +2000,7 @@ op_amp
 id|t-&gt;pending
 )paren
 suffix:semicolon
-id|wake_up_state
-c_func
-(paren
-id|t
-comma
-id|TASK_STOPPED
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * If there is a handler for SIGCONT, we must make&n;&t;&t;&t; * sure that no thread returns to user mode before&n;&t;&t;&t; * we post the signal, in case it was the only&n;&t;&t;&t; * thread eligible to run the signal handler--then&n;&t;&t;&t; * it must not do anything between resuming and&n;&t;&t;&t; * running the handler.  With the TIF_SIGPENDING&n;&t;&t;&t; * flag set, the thread will pause and acquire the&n;&t;&t;&t; * siglock that we hold now and until we&squot;ve queued&n;&t;&t;&t; * the pending signal. &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If there is a handler for SIGCONT, we must make&n;&t;&t;&t; * sure that no thread returns to user mode before&n;&t;&t;&t; * we post the signal, in case it was the only&n;&t;&t;&t; * thread eligible to run the signal handler--then&n;&t;&t;&t; * it must not do anything between resuming and&n;&t;&t;&t; * running the handler.  With the TIF_SIGPENDING&n;&t;&t;&t; * flag set, the thread will pause and acquire the&n;&t;&t;&t; * siglock that we hold now and until we&squot;ve queued&n;&t;&t;&t; * the pending signal. &n;&t;&t;&t; *&n;&t;&t;&t; * Wake up the stopped thread _after_ setting&n;&t;&t;&t; * TIF_SIGPENDING&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2028,6 +2020,14 @@ c_func
 id|t
 comma
 id|TIF_SIGPENDING
+)paren
+suffix:semicolon
+id|wake_up_state
+c_func
+(paren
+id|t
+comma
+id|TASK_STOPPED
 )paren
 suffix:semicolon
 id|t

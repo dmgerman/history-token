@@ -693,6 +693,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -1212,6 +1217,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -1288,7 +1298,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|macro|NULLIFY_FRAGMENTS
-mdefine_line|#define NULLIFY_FRAGMENTS &bslash;&n;&t;for (i = oldcount; i &lt; newcount; i++) { &bslash;&n;&t;&t;bh = sb_getblk(sb, result + i); &bslash;&n;&t;&t;memset (bh-&gt;b_data, 0, sb-&gt;s_blocksize); &bslash;&n;&t;&t;set_buffer_uptodate(bh); &bslash;&n;&t;&t;mark_buffer_dirty (bh); &bslash;&n;&t;&t;if (IS_SYNC(inode)) { &bslash;&n;&t;&t;&t;ll_rw_block (WRITE, 1, &amp;bh); &bslash;&n;&t;&t;&t;wait_on_buffer (bh); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;brelse (bh); &bslash;&n;&t;}
+mdefine_line|#define NULLIFY_FRAGMENTS &bslash;&n;&t;for (i = oldcount; i &lt; newcount; i++) { &bslash;&n;&t;&t;bh = sb_getblk(sb, result + i); &bslash;&n;&t;&t;memset (bh-&gt;b_data, 0, sb-&gt;s_blocksize); &bslash;&n;&t;&t;set_buffer_uptodate(bh); &bslash;&n;&t;&t;mark_buffer_dirty (bh); &bslash;&n;&t;&t;if (IS_SYNC(inode)) &bslash;&n;&t;&t;&t;sync_dirty_buffer(bh); &bslash;&n;&t;&t;brelse (bh); &bslash;&n;&t;}
 DECL|function|ufs_new_fragments
 r_int
 id|ufs_new_fragments
@@ -1993,23 +2003,12 @@ c_func
 id|inode
 )paren
 )paren
-(brace
-id|ll_rw_block
-(paren
-id|WRITE
-comma
-l_int|1
-comma
-op_amp
-id|bh
-)paren
-suffix:semicolon
-id|wait_on_buffer
+id|sync_dirty_buffer
+c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
-)brace
 id|brelse
 (paren
 id|bh
@@ -2617,6 +2616,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -3302,6 +3306,11 @@ op_amp
 id|MS_SYNCHRONOUS
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|UCPI_UBH
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE

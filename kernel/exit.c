@@ -922,9 +922,11 @@ id|current-&gt;rlim
 )paren
 )paren
 suffix:semicolon
-id|current-&gt;user
-op_assign
+id|switch_uid
+c_func
+(paren
 id|INIT_USER
+)paren
 suffix:semicolon
 id|write_unlock_irq
 c_func
