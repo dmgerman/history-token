@@ -187,10 +187,6 @@ r_int
 r_char
 id|tindex
 suffix:semicolon
-id|HBAptr
-op_assign
-l_int|NULL
-suffix:semicolon
 r_for
 c_loop
 (paren
