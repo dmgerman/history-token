@@ -156,17 +156,10 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Hmm, non-standard resource. */
-id|printk
+id|BUG
 c_func
 (paren
-l_string|&quot;PCI: trying to set non-standard region %s/%d&bslash;n&quot;
-comma
-id|dev-&gt;slot_name
-comma
-id|resno
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 id|pci_write_config_dword
@@ -568,6 +561,13 @@ id|dev-&gt;slot_name
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|resno
+OL
+id|PCI_BRIDGE_RESOURCES
+)paren
 (brace
 id|pci_update_resource
 c_func

@@ -178,6 +178,7 @@ suffix:semicolon
 DECL|variable|next_rtc_update
 r_static
 r_int
+r_int
 id|next_rtc_update
 suffix:semicolon
 multiline_comment|/*&n; * If we have an externally synchronized linux clock, then update&n; * CMOS clock accordingly every ~11 minutes.  set_rtc() has to be&n; * called as close as possible to 500 ms before the new second&n; * starts.&n; */
