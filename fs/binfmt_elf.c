@@ -2570,6 +2570,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifdef LEGACY_BINARIES
 r_if
 c_cond
 (paren
@@ -2577,12 +2578,11 @@ id|i
 op_eq
 id|elf_ex.e_phnum
 )paren
-id|def_flags
+id|current-&gt;personality
 op_or_assign
-id|VM_EXEC
-op_or
-id|VM_MAYEXEC
+id|READ_IMPLIES_EXEC
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Some simple consistency checks for the interpreter */
 r_if
 c_cond

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -909,6 +910,30 @@ id|start
 )paren
 r_return
 l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Does the application expect PROT_READ to imply PROT_EXEC:&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+id|prot
+op_amp
+id|PROT_READ
+)paren
+op_logical_and
+(paren
+id|current-&gt;personality
+op_amp
+id|READ_IMPLIES_EXEC
+)paren
+)paren
+)paren
+id|prot
+op_or_assign
+id|PROT_EXEC
 suffix:semicolon
 id|vm_flags
 op_assign

@@ -7478,6 +7478,12 @@ id|current
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Clear any possibly unsafe personality bits on exec: */
+id|current-&gt;personality
+op_and_assign
+op_complement
+id|PER_CLEAR_ON_SETID
+suffix:semicolon
 multiline_comment|/* Close files for which the new task SID is not authorized. */
 id|flush_unauthorized_files
 c_func
