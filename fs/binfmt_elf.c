@@ -270,7 +270,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Let&squot;s use some macros to make this stack manipulation a litle clearer */
-macro_line|#ifdef ARCH_STACK_GROWSUP
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 DECL|macro|STACK_ADD
 mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) + (items))
 DECL|macro|STACK_ROUND
@@ -653,7 +653,7 @@ id|items
 )paren
 suffix:semicolon
 multiline_comment|/* Point sp at the lowest address on the stack */
-macro_line|#ifdef ARCH_STACK_GROWSUP
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 id|sp
 op_assign
 (paren
