@@ -2825,8 +2825,6 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-singleline_comment|// FIXME:  only use urb-&gt;status inside completion
-singleline_comment|// callbacks; this way is racey...
 id|add_wait_queue
 c_func
 (paren
