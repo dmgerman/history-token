@@ -129,6 +129,11 @@ id|HAS_PCI_MWI
 op_assign
 l_int|0x1000
 comma
+DECL|enumerator|HAS_PHY_IRQ
+id|HAS_PHY_IRQ
+op_assign
+l_int|0x2000
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* chip types.  careful!  order is VERY IMPORTANT here, as these&n; * are used throughout the driver as indices into arrays */
@@ -1450,12 +1455,13 @@ r_int
 r_int
 id|base_addr
 suffix:semicolon
+DECL|member|csr12_shadow
+r_int
+id|csr12_shadow
+suffix:semicolon
 DECL|member|pad0
-DECL|member|pad1
 r_int
 id|pad0
-comma
-id|pad1
 suffix:semicolon
 multiline_comment|/* Used for 8-byte alignment */
 )brace
