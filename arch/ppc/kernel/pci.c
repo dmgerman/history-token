@@ -3883,6 +3883,25 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Fixup bus number according to what OF think it is. */
+macro_line|#ifdef CONFIG_PPC_PMAC
+multiline_comment|/* The G5 need a special case here. Basically, we don&squot;t remap all&n;&t; * busses on it so we don&squot;t create the pci-OF-map. However, we do&n;&t; * remap the AGP bus and so have to deal with it. A future better&n;&t; * fix has to be done by making the remapping per-host and always&n;&t; * filling the pci_to_OF map. --BenH&n;&t; */
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+op_logical_and
+id|busnr
+op_ge
+l_int|0xf0
+)paren
+id|busnr
+op_sub_assign
+l_int|0xf0
+suffix:semicolon
+r_else
+macro_line|#endif
 r_if
 c_cond
 (paren
