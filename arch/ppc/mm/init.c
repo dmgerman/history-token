@@ -1036,11 +1036,6 @@ l_int|0x211
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-multiline_comment|/* By default, we are no longer mapped */
-id|boot_text_mapped
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Must be done last, or ppc_md.progress will die. */
 id|map_boot_text
 c_func

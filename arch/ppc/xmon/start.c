@@ -75,6 +75,11 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+DECL|variable|use_serial
+r_static
+r_int
+id|use_serial
+suffix:semicolon
 DECL|variable|use_screen
 r_static
 r_int
@@ -429,10 +434,6 @@ r_char
 op_star
 id|base
 suffix:semicolon
-id|use_screen
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -454,6 +455,12 @@ macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_if
 c_cond
 (paren
+op_logical_neg
+id|use_screen
+op_logical_and
+op_logical_neg
+id|use_serial
+op_logical_and
 op_logical_neg
 id|machine_is_compatible
 c_func
