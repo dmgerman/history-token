@@ -84,7 +84,7 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_PARISC
 multiline_comment|/* %r23 is set by ld.so to a pointer to a function which might be &n;   registered using atexit.  This provides a mean for the dynamic&n;   linker to call DT_FINI functions for shared libraries that have&n;   been loaded before the code runs.&n;&n;   So that we can use the same startup file with static executables,&n;   we start programs with a value of 0 to indicate that there is no&n;   such function.  */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)       _r-&gt;gr[23] = 0
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)       _r-&gt;gr[23] = 0
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
