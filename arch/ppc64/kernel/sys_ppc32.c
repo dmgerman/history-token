@@ -14343,6 +14343,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|sys_timer_create
