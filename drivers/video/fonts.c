@@ -71,6 +71,13 @@ op_amp
 id|font_pearl_8x8
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_FONT_MINI_4x6
+DECL|macro|NO_FONTS
+macro_line|#undef NO_FONTS
+op_amp
+id|font_mini_4x6
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|num_fonts

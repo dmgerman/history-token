@@ -4998,10 +4998,6 @@ id|dsp_scb_descriptor_t
 op_star
 id|parent_scb
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|snd_assert
 (paren
 id|src-&gt;parent_scb_ptr

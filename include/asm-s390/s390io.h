@@ -2,11 +2,12 @@ multiline_comment|/*&n; *  arch/s390/kernel/s390io.h&n; *&n; *  S390 version&n; 
 macro_line|#ifndef __s390io_h
 DECL|macro|__s390io_h
 mdefine_line|#define __s390io_h
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * IRQ data structure used by I/O subroutines&n; *&n; * Note : If bit flags are added, the &quot;unused&quot; value must be&n; *        decremented accordingly !&n; */
-DECL|struct|_ioinfo
+DECL|struct|subchannel
 r_typedef
 r_struct
-id|_ioinfo
+id|subchannel
 (brace
 DECL|member|irq
 r_int
@@ -19,6 +20,11 @@ id|spinlock_t
 id|irq_lock
 suffix:semicolon
 multiline_comment|/* irq lock */
+DECL|member|st
+id|__u8
+id|st
+suffix:semicolon
+multiline_comment|/* subchannel type */
 DECL|member|private_data
 r_void
 op_star
@@ -27,21 +33,16 @@ suffix:semicolon
 multiline_comment|/* pointer to private data */
 DECL|member|prev
 r_struct
-id|_ioinfo
+id|subchannel
 op_star
 id|prev
 suffix:semicolon
 DECL|member|next
 r_struct
-id|_ioinfo
+id|subchannel
 op_star
 id|next
 suffix:semicolon
-DECL|member|st
-id|__u8
-id|st
-suffix:semicolon
-multiline_comment|/* subchannel type */
 r_union
 (brace
 DECL|member|info
@@ -374,6 +375,12 @@ id|ssd_info_t
 id|ssd_info
 suffix:semicolon
 multiline_comment|/* subchannel description */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* entry in device tree */
 DECL|typedef|ioinfo_t
 )brace
 id|__attribute__
@@ -387,6 +394,51 @@ l_int|8
 )paren
 )paren
 id|ioinfo_t
+suffix:semicolon
+multiline_comment|/*&n; * There are four different subchannel types, but we are currently&n; * only interested in I/O subchannels. This means there is only&n; * one subchannel_driver, other subchannels belonging to css_bus_type&n; * are simply ignored.&n; */
+DECL|struct|subchannel_driver
+r_struct
+id|subchannel_driver
+(brace
+r_enum
+(brace
+DECL|enumerator|SUBCHANNEL_TYPE_IO
+id|SUBCHANNEL_TYPE_IO
+op_assign
+l_int|0
+comma
+DECL|enumerator|SUBCHANNEL_TYPE_CHSC
+id|SUBCHANNEL_TYPE_CHSC
+op_assign
+l_int|1
+comma
+DECL|enumerator|SUBCHANNEL_TYPE_MESSAGE
+id|SUBCHANNEL_TYPE_MESSAGE
+op_assign
+l_int|2
+comma
+DECL|enumerator|SUBCHANNEL_TYPE_ADM
+id|SUBCHANNEL_TYPE_ADM
+op_assign
+l_int|3
+comma
+DECL|member|st
+)brace
+id|st
+suffix:semicolon
+multiline_comment|/* subchannel type */
+DECL|member|drv
+r_struct
+id|device_driver
+id|drv
+suffix:semicolon
+multiline_comment|/* entry in driver tree */
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|css_bus_type
 suffix:semicolon
 DECL|macro|IOINFO_FLAGS_BUSY
 mdefine_line|#define IOINFO_FLAGS_BUSY    0x80000000

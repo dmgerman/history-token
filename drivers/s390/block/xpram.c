@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Xpram.c -- the S/390 expanded memory RAM-disk&n; *           &n; * significant parts of this code are based on&n; * the sbull device driver presented in&n; * A. Rubini: Linux Device Drivers&n; *&n; * Author of XPRAM specific coding: Reinhard Buendgen&n; *                                  buendgen@de.ibm.com&n; * Rewrite for 2.5: Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; * External interfaces:&n; *   Interfaces to linux kernel&n; *        xpram_setup: read kernel parameters&n; *   Device specific file operations&n; *        xpram_iotcl&n; *        xpram_open&n; *        xpram_release&n; *&n; * &quot;ad-hoc&quot; partitioning:&n; *    the expanded memory can be partitioned among several devices &n; *    (with different minors). The partitioning set up can be&n; *    set by kernel or module parameters (int devs &amp; int sizes[])&n; *&n; * Potential future improvements:&n; *   generic hard disk support to replace ad-hoc partitioning&n; */
+multiline_comment|/*&n; * Xpram.c -- the S/390 expanded memory RAM-disk&n; *           &n; * significant parts of this code are based on&n; * the sbull device driver presented in&n; * A. Rubini: Linux Device Drivers&n; *&n; * Author of XPRAM specific coding: Reinhard Buendgen&n; *                                  buendgen@de.ibm.com&n; * Rewrite for 2.5: Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; * External interfaces:&n; *   Interfaces to linux kernel&n; *        xpram_setup: read kernel parameters&n; *   Device specific file operations&n; *        xpram_iotcl&n; *        xpram_open&n; *&n; * &quot;ad-hoc&quot; partitioning:&n; *    the expanded memory can be partitioned among several devices &n; *    (with different minors). The partitioning set up can be&n; *    set by kernel or module parameters (int devs &amp; int sizes[])&n; *&n; * Potential future improvements:&n; *   generic hard disk support to replace ad-hoc partitioning&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;  /* isdigit, isxdigit */
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|XPRAM_NAME
 mdefine_line|#define XPRAM_NAME&t;&quot;xpram&quot;
@@ -27,17 +28,30 @@ mdefine_line|#define PRINT_ERR(x...)&t;&t;printk(KERN_ERR XPRAM_NAME &quot; erro
 DECL|variable|xpram_sys_device
 r_static
 r_struct
-id|device
+id|sys_device
 id|xpram_sys_device
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;S/390 expanded memory RAM disk&quot;
 comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;S/390 expanded memory RAM disk&quot;
+comma
+dot
 id|bus_id
-suffix:colon
+op_assign
 l_string|&quot;xpram&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -80,6 +94,7 @@ DECL|variable|xpram_disks
 r_static
 r_struct
 id|gendisk
+op_star
 id|xpram_disks
 (braket
 id|XPRAM_MAX_DEVS
@@ -1024,12 +1039,24 @@ op_amp
 id|bio-&gt;bi_flags
 )paren
 suffix:semicolon
+id|bytes
+op_assign
+id|bio-&gt;bi_size
+suffix:semicolon
+id|bio-&gt;bi_size
+op_assign
+l_int|0
+suffix:semicolon
 id|bio
 op_member_access_from_pointer
 id|bi_end_io
 c_func
 (paren
 id|bio
+comma
+id|bytes
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1041,6 +1068,8 @@ id|bio_io_error
 c_func
 (paren
 id|bio
+comma
+id|bio-&gt;bi_size
 )paren
 suffix:semicolon
 r_return
@@ -1221,7 +1250,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)brace
+DECL|variable|xpram_devops
 r_static
 r_struct
 id|block_device_operations
@@ -1240,13 +1269,10 @@ id|open
 suffix:colon
 id|xpram_open
 comma
-id|release
-suffix:colon
-id|xpram_release
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Setup xpram_sizes array.&n; */
+DECL|function|xpram_setup_sizes
 r_static
 r_int
 id|__init
@@ -1523,6 +1549,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|xpram_setup_blkdev
 r_static
 r_int
 id|__init
@@ -1544,7 +1571,52 @@ r_int
 id|i
 comma
 id|rc
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|xpram_devs
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|gendisk
+op_star
+id|disk
+op_assign
+id|alloc_disk
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|xpram_disks
+(braket
+id|i
+)braket
+op_assign
+id|disk
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Register xpram major.&n;&t; */
 id|rc
 op_assign
@@ -1575,8 +1647,8 @@ comma
 id|XPRAM_MAJOR
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|xpram_devfs_handle
@@ -1667,8 +1739,9 @@ op_star
 id|disk
 op_assign
 id|xpram_disks
-op_plus
+(braket
 id|i
+)braket
 suffix:semicolon
 id|xpram_devices
 (braket
@@ -1752,8 +1825,26 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|out
+suffix:colon
+r_while
+c_loop
+(paren
+id|i
+op_decrement
+)paren
+id|put_disk
+c_func
+(paren
+id|xpram_disks
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Finally, the init/exit functions.&n; */
+DECL|function|xpram_exit
 r_static
 r_void
 id|__exit
@@ -1780,14 +1871,26 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|del_gendisk
 c_func
 (paren
 id|xpram_disks
-op_plus
+(braket
 id|i
+)braket
 )paren
 suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|xpram_disks
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
 id|unregister_blkdev
 c_func
 (paren
@@ -1802,7 +1905,7 @@ c_func
 id|xpram_devfs_handle
 )paren
 suffix:semicolon
-id|unregister_sys_device
+id|sys_device_unregister
 c_func
 (paren
 op_amp
@@ -1810,6 +1913,7 @@ id|xpram_sys_device
 )paren
 suffix:semicolon
 )brace
+DECL|function|xpram_init
 r_static
 r_int
 id|__init
@@ -1882,7 +1986,7 @@ id|rc
 suffix:semicolon
 id|rc
 op_assign
-id|register_sys_device
+id|sys_device_register
 c_func
 (paren
 op_amp
@@ -1909,7 +2013,7 @@ c_cond
 (paren
 id|rc
 )paren
-id|unregister_sys_device
+id|sys_device_unregister
 c_func
 (paren
 op_amp
@@ -1920,12 +2024,14 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|variable|xpram_init
 id|module_init
 c_func
 (paren
 id|xpram_init
 )paren
 suffix:semicolon
+DECL|variable|xpram_exit
 id|module_exit
 c_func
 (paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -259,7 +260,7 @@ id|tx_time
 suffix:semicolon
 DECL|member|send_stamp
 r_struct
-id|timeval
+id|timespec
 id|send_stamp
 suffix:semicolon
 DECL|typedef|ctc_profile
@@ -2525,7 +2526,7 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|timeval
+id|timespec
 id|done_stamp
 op_assign
 id|xtime
@@ -2542,9 +2543,13 @@ id|ch-&gt;prof.send_stamp.tv_sec
 op_star
 l_int|1000000
 op_plus
-id|done_stamp.tv_usec
+(paren
+id|done_stamp.tv_nsec
 op_minus
-id|ch-&gt;prof.send_stamp.tv_usec
+id|ch-&gt;prof.send_stamp.tv_nsec
+)paren
+op_div
+l_int|1000
 suffix:semicolon
 r_if
 c_cond

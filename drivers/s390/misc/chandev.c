@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/s390dyn.h&gt;
 macro_line|#include &lt;asm/queue.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
@@ -12835,6 +12836,9 @@ id|len
 comma
 id|fd
 suffix:semicolon
+id|mm_segment_t
+id|oldfs
+suffix:semicolon
 multiline_comment|/* if called from chandev_register_and_probe &amp; &n;&t;   the driver is compiled into the kernel the&n;&t;   parameters will need to be passed in from&n;&t;   the kernel boot parameter line as the root&n;&t;   fs is not mounted yet, we can&squot;t wait here.&n;&t;*/
 r_if
 c_cond
@@ -12859,6 +12863,13 @@ op_amp
 id|chandev_conf_read
 comma
 id|TRUE
+)paren
+suffix:semicolon
+id|oldfs
+op_assign
+id|get_fs
+c_func
+(paren
 )paren
 suffix:semicolon
 id|set_fs
@@ -13006,7 +13017,7 @@ suffix:semicolon
 id|set_fs
 c_func
 (paren
-id|USER_DS
+id|oldfs
 )paren
 suffix:semicolon
 )brace

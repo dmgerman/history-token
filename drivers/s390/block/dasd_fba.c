@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;&t;/* HDIO_GETGEO&t;&t;&t;    */
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -45,7 +46,6 @@ DECL|typedef|dasd_fba_private_t
 )brace
 id|dasd_fba_private_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_static
 DECL|variable|dasd_fba_known_devices
 id|devreg_t
@@ -119,7 +119,6 @@ id|dasd_oper_handler
 )brace
 )brace
 suffix:semicolon
-macro_line|#endif
 r_static
 r_inline
 r_void
@@ -1812,7 +1811,6 @@ op_amp
 id|dasd_fba_discipline
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_for
 c_loop
 (paren
@@ -1845,7 +1843,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1861,7 +1858,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_for
 c_loop
 (paren
@@ -1894,7 +1890,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dasd_discipline_del
 c_func
 (paren

@@ -4041,7 +4041,7 @@ c_func
 (paren
 id|HZ
 op_div
-l_int|10
+l_int|4
 )paren
 suffix:semicolon
 id|pcmcia_get_card_services_info

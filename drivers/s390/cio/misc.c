@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/s390io.c&n; *   S/390 common I/O routines&n; *   $Revision: 1.4 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  debug cleanup&n; */
+multiline_comment|/*&n; *  drivers/s390/s390io.c&n; *   S/390 common I/O routines&n; *   $Revision: 1.5 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/03/2002 Cornelia Huck  debug cleanup&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
@@ -552,13 +552,11 @@ comma
 l_string|&quot;source is channel subsystem&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 id|s390_process_css
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_default

@@ -194,7 +194,7 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD {{0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (__u32) &amp;init_stack,     &bslash;&n;              (__pa((__u32) &amp;swapper_pg_dir[0]) + _SEGMENT_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;                     0, 0                                         &bslash;&n;}
 multiline_comment|/* need to define ... */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        regs-&gt;psw.mask  = _USER_PSW_MASK;                       &bslash;&n;        regs-&gt;psw.addr  = new_psw | 0x80000000;                 &bslash;&n;        regs-&gt;gprs[15]  = new_stackp ;                          &bslash;&n;} while (0)
+mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        regs-&gt;psw.mask  = PSW_USER_BITS;                        &bslash;&n;        regs-&gt;psw.addr  = new_psw | PSW_ADDR_AMODE31;           &bslash;&n;        regs-&gt;gprs[15]  = new_stackp ;                          &bslash;&n;} while (0)
 multiline_comment|/* Forward declaration, a strange C thing */
 r_struct
 id|task_struct
@@ -291,22 +291,6 @@ DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;gprs[15])
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;barrier()
-multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
-multiline_comment|/* Only let our hackers near the condition codes */
-DECL|macro|PSW_MASK_DEBUGCHANGE
-mdefine_line|#define PSW_MASK_DEBUGCHANGE    0x00003000UL
-multiline_comment|/* Don&squot;t let em near the addressing mode either */
-DECL|macro|PSW_ADDR_DEBUGCHANGE
-mdefine_line|#define PSW_ADDR_DEBUGCHANGE    0x7FFFFFFFUL
-DECL|macro|PSW_ADDR_MASK
-mdefine_line|#define PSW_ADDR_MASK           0x7FFFFFFFUL
-multiline_comment|/* Program event recording mask */
-DECL|macro|PSW_PER_MASK
-mdefine_line|#define PSW_PER_MASK            0x40000000UL
-DECL|macro|USER_STD_MASK
-mdefine_line|#define USER_STD_MASK           0x00000080UL
-DECL|macro|PSW_PROBLEM_STATE
-mdefine_line|#define PSW_PROBLEM_STATE       0x00010000UL
 multiline_comment|/*&n; * Set PSW mask to specified value, while leaving the&n; * PSW addr pointing to the next instruction.&n; */
 DECL|function|__load_psw_mask
 r_static
@@ -376,7 +360,15 @@ id|wait_psw
 suffix:semicolon
 id|wait_psw.mask
 op_assign
-l_int|0x070e0000
+id|PSW_BASE_BITS
+op_or
+id|PSW_MASK_IO
+op_or
+id|PSW_MASK_EXT
+op_or
+id|PSW_MASK_MCHECK
+op_or
+id|PSW_MASK_WAIT
 suffix:semicolon
 id|asm
 r_volatile
@@ -469,7 +461,9 @@ id|psw_t
 suffix:semicolon
 id|dw_psw-&gt;mask
 op_assign
-l_int|0x000a0000
+id|PSW_BASE_BITS
+op_or
+id|PSW_MASK_WAIT
 suffix:semicolon
 id|dw_psw-&gt;addr
 op_assign

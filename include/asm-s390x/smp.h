@@ -4,7 +4,7 @@ DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; !defined(__ASSEMBLY__)
 macro_line|#include &lt;asm/lowcore.h&gt;
 multiline_comment|/*&n;  s390 specific smp.c headers&n; */
@@ -37,6 +37,12 @@ r_int
 r_int
 id|cpu_online_map
 suffix:semicolon
+r_extern
+r_volatile
+r_int
+r_int
+id|cpu_possible_map
+suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */
@@ -44,34 +50,60 @@ DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
-DECL|function|cpu_logical_map
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu) (cpu_possible_map &amp; (1&lt;&lt;(cpu)))
+DECL|function|num_online_cpus
 r_extern
-id|__inline__
+r_inline
 r_int
-id|cpu_logical_map
+r_int
+id|num_online_cpus
 c_func
 (paren
-r_int
-id|cpu
+r_void
 )paren
 (brace
 r_return
-id|cpu
+id|hweight64
+c_func
+(paren
+id|cpu_online_map
+)paren
 suffix:semicolon
 )brace
-DECL|function|cpu_number_map
+DECL|function|any_online_cpu
 r_extern
-id|__inline__
+r_inline
 r_int
-id|cpu_number_map
+id|any_online_cpu
 c_func
 (paren
 r_int
-id|cpu
+r_int
+id|mask
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+id|cpu_online_map
+)paren
 r_return
-id|cpu
+id|__ffs
+c_func
+(paren
+id|mask
+op_amp
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|hard_smp_processor_id
