@@ -1294,9 +1294,8 @@ id|__strncpy_from_user
 )paren
 suffix:semicolon
 multiline_comment|/* Networking helper routines. */
-multiline_comment|/* XXX This is NOVERS because C_LABEL_STR doesn&squot;t get the version number. -DaveM */
 DECL|variable|__csum_partial_copy_sparc_generic
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__csum_partial_copy_sparc_generic

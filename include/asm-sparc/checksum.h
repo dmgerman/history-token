@@ -5,7 +5,6 @@ mdefine_line|#define __SPARC_CHECKSUM_H
 multiline_comment|/*  checksum.h:  IP/UDP/TCP checksum routines on the Sparc.&n; *&n; *  Copyright(C) 1995 Linus Torvalds&n; *  Copyright(C) 1995 Miguel de Icaza&n; *  Copyright(C) 1996 David S. Miller&n; *  Copyright(C) 1996 Eddie C. Dost&n; *  Copyright(C) 1997 Jakub Jelinek&n; *&n; * derived from:&n; *&t;Alpha checksum c-code&n; *      ix86 inline assembly&n; *      RFC1071 Computing the Internet Checksum&n; */
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/cprefix.h&gt;
 multiline_comment|/* computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_extern
 r_int
@@ -107,13 +106,7 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;call &quot;
-id|C_LABEL_STR
-c_func
-(paren
-id|__csum_partial_copy_sparc_generic
-)paren
-l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;call __csum_partial_copy_sparc_generic&bslash;n&bslash;t&quot;
 l_string|&quot; mov %6, %%g7&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -303,13 +296,7 @@ l_string|&quot;.align 4&bslash;n&bslash;t&quot;
 l_string|&quot;.word 1f,2&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;call &quot;
-id|C_LABEL_STR
-c_func
-(paren
-id|__csum_partial_copy_sparc_generic
-)paren
-l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;call __csum_partial_copy_sparc_generic&bslash;n&bslash;t&quot;
 l_string|&quot; st %8, [%%sp + 64]&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -499,13 +486,7 @@ l_string|&quot;.align 4&bslash;n&bslash;t&quot;
 l_string|&quot;.word 1f,1&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;call &quot;
-id|C_LABEL_STR
-c_func
-(paren
-id|__csum_partial_copy_sparc_generic
-)paren
-l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;call __csum_partial_copy_sparc_generic&bslash;n&bslash;t&quot;
 l_string|&quot; st %8, [%%sp + 64]&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
