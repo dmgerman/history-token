@@ -783,6 +783,14 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;&t;and avoid races inside tcp sendmsg code that could cause corruption&n;&t;&t;of smb data */
+id|down
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -791,9 +799,13 @@ op_eq
 id|CifsExiting
 )paren
 (brace
-r_return
+id|rc
+op_assign
 op_minus
 id|ENOENT
+suffix:semicolon
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 r_else
@@ -815,9 +827,13 @@ l_string|&quot;tcp session dead - return to caller to retry&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 r_else
@@ -846,21 +862,17 @@ id|SMB_COM_NEGOTIATE
 )paren
 )paren
 (brace
-r_return
+id|rc
+op_assign
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 multiline_comment|/* else ok - we are setting up session */
 )brace
-multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;&t;and avoid races inside tcp sendmsg code that could cause corruption&n;&t;&t;of smb data */
-id|down
-c_func
-(paren
-op_amp
-id|ses-&gt;server-&gt;tcpSem
-)paren
-suffix:semicolon
 id|midQ
 op_assign
 id|AllocMidQEntry
@@ -1519,6 +1531,18 @@ id|midQ
 )paren
 suffix:semicolon
 multiline_comment|/* BB what if process is killed?&n;&t;&t;&t; - BB add background daemon to clean up Mid entries from&n;&t;&t;&t; killed processes &amp; test killing process with active mid */
+r_return
+id|rc
+suffix:semicolon
+id|out_unlock
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon

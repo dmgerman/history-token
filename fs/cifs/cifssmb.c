@@ -13,6 +13,46 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#ifdef CIFS_POSIX
+r_static
+r_struct
+(brace
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|variable|protocols
+)brace
+id|protocols
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|CIFS_PROT
+comma
+l_string|&quot;&bslash;2NT LM 0.12&quot;
+)brace
+comma
+(brace
+id|CIFS_PROT
+comma
+l_string|&quot;&bslash;2POSIX 2&quot;
+)brace
+comma
+(brace
+id|BAD_PROT
+comma
+l_string|&quot;&bslash;2&quot;
+)brace
+)brace
+suffix:semicolon
+macro_line|#else
 r_static
 r_struct
 (brace
@@ -45,6 +85,7 @@ l_string|&quot;&bslash;2&quot;
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Mark as invalid, all open files on tree connections since they&n;   were closed when session to server was lost */
 DECL|function|mark_open_files_invalid
 r_static
@@ -3426,7 +3467,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -3815,7 +3856,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -13372,7 +13413,11 @@ suffix:semicolon
 multiline_comment|/* now safe to change to le */
 id|parm_data-&gt;FileSize
 op_assign
+id|cpu_to_le64
+c_func
+(paren
 id|size
+)paren
 suffix:semicolon
 id|pSMB-&gt;Fid
 op_assign
