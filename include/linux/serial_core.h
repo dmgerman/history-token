@@ -41,6 +41,11 @@ DECL|macro|PORT_UART00
 mdefine_line|#define PORT_UART00&t;35
 DECL|macro|PORT_21285
 mdefine_line|#define PORT_21285&t;37
+multiline_comment|/* Sparc type numbers.  */
+DECL|macro|PORT_SUNZILOG
+mdefine_line|#define PORT_SUNZILOG&t;38
+DECL|macro|PORT_SUNSAB
+mdefine_line|#define PORT_SUNSAB&t;39
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
