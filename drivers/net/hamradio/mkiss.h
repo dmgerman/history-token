@@ -35,13 +35,6 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* easy for intr handling&t;*/
-DECL|member|mkiss
-r_struct
-id|ax_disp
-op_star
-id|mkiss
-suffix:semicolon
-multiline_comment|/* mkiss txport if mkiss channel*/
 multiline_comment|/* These are pointers to the malloc()ed frame buffers. */
 DECL|member|rbuff
 r_int
@@ -176,6 +169,4 @@ mdefine_line|#define CRC_MODE_SMACK  2
 suffix:semicolon
 DECL|macro|AX25_MAGIC
 mdefine_line|#define AX25_MAGIC&t;&t;0x5316
-DECL|macro|MKISS_DRIVER_MAGIC
-mdefine_line|#define MKISS_DRIVER_MAGIC&t;1215
 eof
