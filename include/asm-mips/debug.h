@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Debug macros for run-time debugging.  Turned on/off with CONFIG_RUNTIME_DEBUG option.&n; *&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * Debug macros for run-time debugging.&n; * Turned on/off with CONFIG_RUNTIME_DEBUG option.&n; *&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifndef _ASM_DEBUG_H
 DECL|macro|_ASM_DEBUG_H
 mdefine_line|#define _ASM_DEBUG_H

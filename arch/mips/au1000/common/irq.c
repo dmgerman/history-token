@@ -43,16 +43,6 @@ DECL|macro|EXT_INTC1_REQ1
 mdefine_line|#define EXT_INTC1_REQ1 5 /* IP 5 */
 DECL|macro|MIPS_TIMER_IP
 mdefine_line|#define MIPS_TIMER_IP  7 /* IP 7 */
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|asmlinkage
 r_void
@@ -176,15 +166,6 @@ c_func
 r_int
 r_int
 id|irq_nr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|init_generic_irq
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|variable|board_init_irq
@@ -2031,10 +2012,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -2097,11 +2078,6 @@ c_func
 l_int|0
 comma
 id|au1000_IRQ
-)paren
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize interrupt controllers to a safe state.&n;&t;*/
@@ -2352,25 +2328,6 @@ id|board_init_irq
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
-multiline_comment|/* If local serial I/O used for debug port, enter kgdb at once */
-id|puts
-c_func
-(paren
-l_string|&quot;Waiting for kgdb to connect...&quot;
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Interrupts are nested. Even if an interrupt handler is registered&n; * as &quot;fast&quot;, we might get another interrupt before we return from&n; * intcX_reqX_irqdispatch().&n; */
 DECL|function|intc0_req0_irqdispatch

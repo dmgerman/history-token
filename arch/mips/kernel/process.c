@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2004 Thiemo Seufer&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -261,6 +261,11 @@ id|THREAD_SIZE
 op_minus
 l_int|32
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -277,6 +282,11 @@ id|p
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* set up new TSS. */
 id|childregs
 op_assign
@@ -493,6 +503,38 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a kernel thread&n; */
+DECL|function|kernel_thread_helper
+id|ATTRIB_NORET
+r_void
+id|kernel_thread_helper
+c_func
+(paren
+r_void
+op_star
+id|arg
+comma
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_void
+op_star
+)paren
+)paren
+(brace
+id|do_exit
+c_func
+(paren
+id|fn
+c_func
+(paren
+id|arg
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|kernel_thread
 r_int
 id|kernel_thread
@@ -517,103 +559,103 @@ r_int
 id|flags
 )paren
 (brace
-r_int
-id|retval
+r_struct
+id|pt_regs
+id|regs
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|memset
 c_func
 (paren
-l_string|&quot;&t;move&t;$6, $sp&t;&t;&bslash;n&quot;
-l_string|&quot;&t;move&t;$4, %5&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li&t;$2, %1&t;&t;&bslash;n&quot;
-l_string|&quot;&t;syscall&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;beq&t;$6, $sp, 1f&t;&bslash;n&quot;
-macro_line|#ifdef CONFIG_MIPS32&t;/* On o32 the caller has to create the stackframe */
-l_string|&quot;&t;subu&t;$sp, 32&t;&t;&bslash;n&quot;
-macro_line|#endif
-l_string|&quot;&t;move&t;$4, %3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;jalr&t;%4&t;&t;&bslash;n&quot;
-l_string|&quot;&t;move&t;$4, $2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li&t;$2, %2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;syscall&t;&t;&t;&bslash;n&quot;
-macro_line|#ifdef CONFIG_MIPS32&t;/* On o32 the caller has to deallocate the stackframe */
-l_string|&quot;&t;addiu&t;$sp, 32&t;&t;&bslash;n&quot;
-macro_line|#endif
-l_string|&quot;1:&t;move&t;%0, $2&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|retval
-)paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|__NR_clone
-)paren
+op_amp
+id|regs
 comma
-l_string|&quot;i&quot;
-(paren
-id|__NR_exit
-)paren
+l_int|0
 comma
-l_string|&quot;r&quot;
+r_sizeof
 (paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+id|regs.regs
+(braket
+l_int|4
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
 id|arg
-)paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|regs.regs
+(braket
+l_int|5
+)braket
+op_assign
 (paren
-id|fn
+r_int
+r_int
 )paren
-comma
-l_string|&quot;r&quot;
+id|fn
+suffix:semicolon
+id|regs.cp0_epc
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|kernel_thread_helper
+suffix:semicolon
+id|regs.cp0_status
+op_assign
+id|read_c0_status
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+id|regs.cp0_status
+op_and_assign
+op_complement
+(paren
+id|ST0_KUP
+op_or
+id|ST0_IEC
+)paren
+suffix:semicolon
+id|regs.cp0_status
+op_or_assign
+id|ST0_IEP
+suffix:semicolon
+macro_line|#else
+id|regs.cp0_status
+op_or_assign
+id|ST0_EXL
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Ok, create the new process.. */
+r_return
+id|do_fork
+c_func
 (paren
 id|flags
 op_or
 id|CLONE_VM
 op_or
 id|CLONE_UNTRACED
+comma
+l_int|0
+comma
+op_amp
+id|regs
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
-multiline_comment|/*&n;&t;&t;  * The called subroutine might have destroyed any of the&n;&t;&t;  * at, result, argument or temporary registers ...&n;&t;&t;  */
-suffix:colon
-l_string|&quot;$2&quot;
-comma
-l_string|&quot;$3&quot;
-comma
-l_string|&quot;$4&quot;
-comma
-l_string|&quot;$5&quot;
-comma
-l_string|&quot;$6&quot;
-comma
-l_string|&quot;$7&quot;
-comma
-l_string|&quot;$8&quot;
-comma
-l_string|&quot;$9&quot;
-comma
-l_string|&quot;$10&quot;
-comma
-l_string|&quot;$11&quot;
-comma
-l_string|&quot;$12&quot;
-comma
-l_string|&quot;$13&quot;
-comma
-l_string|&quot;$14&quot;
-comma
-l_string|&quot;$15&quot;
-comma
-l_string|&quot;$24&quot;
-comma
-l_string|&quot;$25&quot;
-comma
-l_string|&quot;$31&quot;
-)paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|struct|mips_frame_info

@@ -194,7 +194,7 @@ id|size
 op_assign
 l_int|0x000ef000
 suffix:semicolon
-macro_line|#if (CONFIG_MIPS_MALTA)
+macro_line|#ifdef CONFIG_MIPS_MALTA
 multiline_comment|/*&n;&t; * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the&n;&t; * south bridge and PCI access always forwarded to the ISA Bus and&n;&t; * BIOSCS# is always generated.&n;&t; * This mean that this area can&squot;t be used as DMA memory for PCI&n;&t; * devices.&n;&t; */
 id|mdesc
 (braket

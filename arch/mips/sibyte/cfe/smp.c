@@ -5,14 +5,16 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;cfe_api.h&quot;
 macro_line|#include &quot;cfe_error.h&quot;
-multiline_comment|/*&n; * Use CFE to find out how many CPUs are available, setting up&n; * phys_cpu_present_map and the logical/physical mappings.&n; * XXXKW will the boot CPU ever not be physical 0?&n; */
-DECL|function|prom_build_cpu_map
+multiline_comment|/*&n; * Use CFE to find out how many CPUs are available, setting up&n; * phys_cpu_present_map and the logical/physical mappings.&n; * XXXKW will the boot CPU ever not be physical 0?&n; *&n; * Common setup before any secondaries are started&n; */
+DECL|function|prom_prepare_cpus
 r_void
 id|__init
-id|prom_build_cpu_map
+id|prom_prepare_cpus
 c_func
 (paren
-r_void
+r_int
+r_int
+id|max_cpus
 )paren
 (brace
 r_int
@@ -112,18 +114,6 @@ comma
 id|num
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Common setup before any secondaries are started&n; */
-DECL|function|prom_prepare_cpus
-r_void
-id|prom_prepare_cpus
-c_func
-(paren
-r_int
-r_int
-id|max_cpus
-)paren
-(brace
 )brace
 multiline_comment|/*&n; * Setup the PC, SP, and GP of a secondary processor and start it&n; * running!&n; */
 DECL|function|prom_boot_secondary

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.&n; * Copyright (C) 2004 Christoph Hellwig.&n; *&t;Released under GPL v2.&n; *&n; * Support functions for the HUB ASIC - mostly PIO mapping related.&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/hub.h&gt;
@@ -143,7 +144,7 @@ c_func
 (paren
 id|i
 comma
-id|HUB_DATA
+id|hub_data
 c_func
 (paren
 id|cnode
@@ -443,7 +444,7 @@ multiline_comment|/* initialize big window piomaps for this hub */
 id|bitmap_zero
 c_func
 (paren
-id|HUB_DATA
+id|hub_data
 c_func
 (paren
 id|cnode

@@ -5,8 +5,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-DECL|macro|jazz_kh
-mdefine_line|#define jazz_kh ((keyboard_hardware *) JAZZ_KEYBOARD_ADDRESS)
 DECL|macro|KBD_STAT_IBF
 mdefine_line|#define KBD_STAT_IBF&t;&t;0x02&t;/* Keyboard input buffer full */
 DECL|function|jazz_write_output

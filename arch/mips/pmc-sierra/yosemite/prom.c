@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 2003 PMC-Sierra Inc.&n; * Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 2003, 2004 PMC-Sierra Inc.&n; * Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; * Copyright (C) 2004 Ralf Baechle&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,6 +12,19 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/pmon.h&gt;
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|prom_grab_secondary
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|prom_grab_secondary
+mdefine_line|#define prom_grab_secondary() do { } while (0)
+macro_line|#endif
 macro_line|#include &quot;setup.h&quot;
 DECL|variable|debug_vectors
 r_struct
@@ -411,9 +425,6 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MIPS32 */
-macro_line|#ifdef CONFIG_MIPS64
-multiline_comment|/* Do nothing for the 64-bit for now. Just implement for the 32-bit */
-macro_line|#endif /* CONFIG_MIPS64 */
 id|mips_machgroup
 op_assign
 id|MACH_GROUP_TITAN
@@ -421,6 +432,11 @@ suffix:semicolon
 id|mips_machtype
 op_assign
 id|MACH_TITAN_YOSEMITE
+suffix:semicolon
+id|prom_grab_secondary
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory

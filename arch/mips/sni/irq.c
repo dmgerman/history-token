@@ -644,10 +644,11 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * On systems with i8259-style interrupt controllers we assume for&n; * driver compatibility reasons interrupts 0 - 15 to be the i8295&n; * interrupts even if the hardware uses a different interrupt numbering.&n; */
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
+c_func
 (paren
 r_void
 )paren
@@ -661,11 +662,6 @@ c_func
 l_int|0
 comma
 id|sni_rm200_pci_handle_int
-)paren
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
 )paren
 suffix:semicolon
 id|init_i8259_irqs

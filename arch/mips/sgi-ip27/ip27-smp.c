@@ -517,16 +517,6 @@ id|numnodes
 )paren
 suffix:semicolon
 )brace
-DECL|function|prom_build_cpu_map
-r_void
-id|__init
-id|prom_build_cpu_map
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|function|intr_clear_bits
 r_static
 r_void
@@ -721,12 +711,6 @@ c_func
 (paren
 id|cnode
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Master has already done per_cpu_init() */
-id|install_ipi
-c_func
-(paren
 )paren
 suffix:semicolon
 id|replicate_kernel_text

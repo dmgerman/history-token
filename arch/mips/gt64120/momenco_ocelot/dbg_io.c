@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_KGDB)
+macro_line|#ifdef CONFIG_KGDB
 macro_line|#include &lt;asm/serial.h&gt; /* For the serial port location and base baud */
 multiline_comment|/* --- CONFIG --- */
 DECL|typedef|uint8

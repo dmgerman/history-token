@@ -341,17 +341,23 @@ id|pin
 )braket
 suffix:semicolon
 )brace
-DECL|function|pcibios_fixup_irqs
-r_void
-id|__init
-id|pcibios_fixup_irqs
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
 c_func
 (paren
-r_void
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
-macro_line|#if CONFIG_KGDB
+macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/*&n; * The PCI scan may have moved the saa9730 I/O address, so reread&n; * the address here.&n; * This does mean that it&squot;s not possible to debug the PCI bus configuration&n; * code, but it is better than nothing...&n; */
 DECL|function|atlas_saa9730_base_fixup
 r_static

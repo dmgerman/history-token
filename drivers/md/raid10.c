@@ -4843,6 +4843,15 @@ id|d
 dot
 id|rdev-&gt;data_offset
 suffix:semicolon
+id|tbio-&gt;bi_bdev
+op_assign
+id|conf-&gt;mirrors
+(braket
+id|d
+)braket
+dot
+id|rdev-&gt;bdev
+suffix:semicolon
 id|generic_make_request
 c_func
 (paren

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/cacheops.h&gt;
 multiline_comment|/*&n; * This macro return a properly sign-extended address suitable as base address&n; * for indexed cache operations.  Two issues here:&n; *&n; *  - The MIPS32 and MIPS64 specs permit an implementation to directly derive&n; *    the index bits from the virtual address.  This breaks with tradition&n; *    set by the R4000.  To keep unpleassant surprises from happening we pick&n; *    an address in KSEG0 / CKSEG0.&n; *  - We need a properly sign extended address for 64-bit code.  To get away&n; *    without ifdefs we let the compiler do it by a type cast.&n; */
 DECL|macro|INDEX_BASE
-mdefine_line|#define INDEX_BASE&t;((int) KSEG0)
+mdefine_line|#define INDEX_BASE&t;CKSEG0
 DECL|macro|cache_op
 mdefine_line|#define cache_op(op,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.set&t;noreorder&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&quot;&t;.set&t;mips3&bslash;n&bslash;t&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&quot;&t;cache&t;%0, %1&t;&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&quot;&t;.set&t;reorder&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;i&quot; (op), &quot;m&quot; (*(unsigned char *)(addr)))
 DECL|function|flush_icache_line_indexed

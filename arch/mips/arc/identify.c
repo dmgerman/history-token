@@ -82,7 +82,7 @@ comma
 (brace
 l_string|&quot;SGI-IP32&quot;
 comma
-l_string|&quot;SGI IP32&quot;
+l_string|&quot;SGI O2&quot;
 comma
 id|MACH_GROUP_SGI
 comma

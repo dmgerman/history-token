@@ -12,8 +12,9 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/sim.h&gt;
@@ -48,12 +49,15 @@ c_func
 id|sys_sigsuspend
 )paren
 suffix:semicolon
-DECL|function|_sys_sigsuspend
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys_sigsuspend
 id|_sys_sigsuspend
 c_func
 (paren
+id|nabi_no_regargs
 r_struct
 id|pt_regs
 id|regs
@@ -192,9 +196,11 @@ c_func
 id|sys_rt_sigsuspend
 )paren
 suffix:semicolon
-DECL|function|_sys_rt_sigsuspend
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys_rt_sigsuspend
 id|_sys_rt_sigsuspend
 c_func
 (paren
@@ -950,6 +956,11 @@ op_amp
 id|sc-&gt;sc_used_math
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -980,10 +991,22 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#if PLAT_TRAMPOLINE_STUFF_LINE
+DECL|macro|__tramp
+mdefine_line|#define __tramp __attribute__((aligned(PLAT_TRAMPOLINE_STUFF_LINE)))
+macro_line|#else
+DECL|macro|__tramp
+mdefine_line|#define __tramp
+macro_line|#endif
 macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|struct|sigframe
 r_struct
@@ -997,18 +1020,20 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* argument save space for o32 */
-DECL|member|sf_code
+DECL|member|__tramp
 id|u32
 id|sf_code
 (braket
 l_int|2
 )braket
+id|__tramp
 suffix:semicolon
 multiline_comment|/* signal trampoline */
-DECL|member|sf_sc
+DECL|member|__tramp
 r_struct
 id|sigcontext
 id|sf_sc
+id|__tramp
 suffix:semicolon
 DECL|member|sf_mask
 id|sigset_t
@@ -1029,18 +1054,20 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* argument save space for o32 */
-DECL|member|rs_code
+DECL|member|__tramp
 id|u32
 id|rs_code
 (braket
 l_int|2
 )braket
+id|__tramp
 suffix:semicolon
 multiline_comment|/* signal trampoline */
-DECL|member|rs_info
+DECL|member|__tramp
 r_struct
 id|siginfo
 id|rs_info
+id|__tramp
 suffix:semicolon
 DECL|member|rs_uc
 r_struct
@@ -1725,6 +1752,11 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save FPU state to signal context.  Signal handler will &quot;inherit&quot;&n;&t; * current FPU state.&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1753,6 +1785,11 @@ id|save_fp_context
 c_func
 (paren
 id|sc
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out
@@ -1787,6 +1824,8 @@ id|frame_size
 r_int
 r_int
 id|sp
+comma
+id|almask
 suffix:semicolon
 multiline_comment|/* Default to using normal stack */
 id|sp
@@ -1826,6 +1865,25 @@ id|current-&gt;sas_ss_sp
 op_plus
 id|current-&gt;sas_ss_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+id|almask
+op_assign
+op_complement
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_else
+id|almask
+op_assign
+id|ALMASK
+suffix:semicolon
 r_return
 (paren
 r_void
@@ -1838,7 +1896,12 @@ op_minus
 id|frame_size
 )paren
 op_amp
-id|ALMASK
+op_complement
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1916,6 +1979,21 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the return code ...&n;&t; *&n;&t; *         li      v0, __NR_sigreturn&n;&t; *         syscall&n;&t; */
+r_if
+c_cond
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+id|__builtin_memset
+c_func
+(paren
+id|frame-&gt;sf_code
+comma
+l_char|&squot;0&squot;
+comma
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
@@ -2162,6 +2240,21 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the return code ...&n;&t; *&n;&t; *         li      v0, __NR_rt_sigreturn&n;&t; *         syscall&n;&t; */
+r_if
+c_cond
+(paren
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+id|__builtin_memset
+c_func
+(paren
+id|frame-&gt;rs_code
+comma
+l_char|&squot;0&squot;
+comma
+id|PLAT_TRAMPOLINE_STUFF_LINE
+)paren
+suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
@@ -2621,17 +2714,6 @@ id|oldset
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
 r_if
 c_cond
 (paren

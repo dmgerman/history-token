@@ -1931,7 +1931,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Primary instruction cache %ldkb, linesize %d bytes&bslash;n&quot;
+l_string|&quot;Primary instruction cache %ldkB, linesize %d bytes&bslash;n&quot;
 comma
 id|icache_size
 op_rshift
@@ -1943,7 +1943,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Primary data cache %ldkb, linesize %d bytes&bslash;n&quot;
+l_string|&quot;Primary data cache %ldkB, linesize %d bytes&bslash;n&quot;
 comma
 id|dcache_size
 op_rshift

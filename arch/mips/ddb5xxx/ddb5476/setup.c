@@ -29,16 +29,6 @@ mdefine_line|#define TIMER_BASE&t;&t;&t;DDB_T2CTRL
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ&t;&t;&t;(VRC5476_IRQ_BASE + VRC5476_IRQ_GPT)
 macro_line|#endif
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|back_to_prom
 r_static
 r_void
@@ -174,14 +164,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|ddb_irq_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|rtc_ds1386_init
@@ -432,24 +414,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ddb5476_irq_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|irq_setup
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|ddb5476_setup
 r_static
 r_void
@@ -463,10 +427,6 @@ r_void
 r_extern
 r_int
 id|panic_timeout
-suffix:semicolon
-id|irq_setup
-op_assign
-id|ddb5476_irq_setup
 suffix:semicolon
 id|set_io_port_base
 c_func

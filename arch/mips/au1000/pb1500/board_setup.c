@@ -56,6 +56,23 @@ op_logical_neg
 op_logical_neg
 op_logical_neg
 macro_line|#endif
+DECL|function|board_reset
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+id|au_writel
+c_func
+(paren
+l_int|0x00000000
+comma
+l_int|0xAE00001C
+)paren
+suffix:semicolon
+)brace
 DECL|function|board_setup
 r_void
 id|__init

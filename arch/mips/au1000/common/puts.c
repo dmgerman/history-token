@@ -239,7 +239,7 @@ DECL|function|fputs
 id|fputs
 c_func
 (paren
-r_int
+r_const
 r_char
 op_star
 id|cp

@@ -2377,6 +2377,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|DRCMRRXMMC
+op_assign
+l_int|0
+suffix:semicolon
+id|DRCMRTXMMC
+op_assign
+l_int|0
+suffix:semicolon
 id|free_irq
 c_func
 (paren

@@ -15,6 +15,34 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 macro_line|#include &lt;asm/mach-pb1x00/pb1550.h&gt;
+DECL|function|board_reset
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+id|au_writew
+c_func
+(paren
+id|au_readw
+c_func
+(paren
+l_int|0xAF00001C
+)paren
+op_amp
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|15
+)paren
+comma
+l_int|0xAF00001C
+)paren
+suffix:semicolon
+)brace
 DECL|function|board_setup
 r_void
 id|__init

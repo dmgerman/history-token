@@ -120,6 +120,8 @@ DECL|macro|MACH_MOMENCO_OCELOT_C
 mdefine_line|#define  MACH_MOMENCO_OCELOT_C&t;2
 DECL|macro|MACH_MOMENCO_JAGUAR_ATX
 mdefine_line|#define  MACH_MOMENCO_JAGUAR_ATX 3
+DECL|macro|MACH_MOMENCO_OCELOT_3
+mdefine_line|#define  MACH_MOMENCO_OCELOT_3&t;4
 multiline_comment|/*&n; * Valid machtype for group ITE&n; */
 DECL|macro|MACH_GROUP_ITE
 mdefine_line|#define MACH_GROUP_ITE&t;&t;13&t;/* ITE Semi Eval Boards&t;&t;*/
@@ -180,6 +182,8 @@ DECL|macro|MACH_MTX1
 mdefine_line|#define  MACH_MTX1&t;&t;7       /* 4G MTX-1 Au1500-based board */
 DECL|macro|MACH_PB1550
 mdefine_line|#define  MACH_PB1550&t;&t;8       /* Au1550-based eval board */
+DECL|macro|MACH_DB1550
+mdefine_line|#define  MACH_DB1550&t;&t;9       /* Au1550-based eval board */
 multiline_comment|/*&n; * Valid machtype for group NEC_VR41XX&n; *&n; * Various NEC-based devices.&n; *&n; * FIXME: MACH_GROUPs should be by _MANUFACTURER_ of * the device, not by&n; *        technical properties, so no new additions to this group.&n; */
 DECL|macro|MACH_GROUP_NEC_VR41XX
 mdefine_line|#define MACH_GROUP_NEC_VR41XX  19

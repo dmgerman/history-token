@@ -183,6 +183,22 @@ id|stopmachine_thread_ack
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Yield in first stage: migration threads need to&n;&t;&t; * help our sisters onto their CPUs. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|prepared
+op_logical_and
+op_logical_neg
+id|irqs_disabled
+)paren
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|cpu_relax
 c_func
 (paren

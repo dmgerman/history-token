@@ -290,7 +290,7 @@ c_func
 (paren
 id|pgd_current
 )paren
-id|daddiu
+id|addiu
 id|k0
 comma
 op_mod

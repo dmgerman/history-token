@@ -674,6 +674,7 @@ id|irqmask
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;spurious 8259A interrupt: IRQ%d.&bslash;n&quot;
 comma
 id|irq
@@ -996,7 +997,7 @@ id|no_action
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade&quot;
 comma

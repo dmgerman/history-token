@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle&n; *&n; * This doesn&squot;t really fly - but I don&squot;t have a GT64240 system for testing.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)&n; *&n; * This doesn&squot;t really fly - but I don&squot;t have a GT64240 system for testing.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/gt64240.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 multiline_comment|/*&n; * We assume these address ranges have been programmed into the GT-64240 by&n; * the firmware.  PMON in case of the Ocelot G does that.  Note the size of&n; * the I/O range is completly stupid; I/O mappings are limited to at most&n; * 256 bytes by the PCI spec and deprecated; and just to make things worse&n; * apparently many devices don&squot;t decode more than 64k of I/O space.&n; */
 DECL|macro|gt_io_size
 mdefine_line|#define gt_io_size&t;0x20000000UL

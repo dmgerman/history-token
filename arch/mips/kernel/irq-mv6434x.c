@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/mv64340.h&gt;
+macro_line|#include &lt;linux/mv643xx.h&gt;
 DECL|variable|irq_base
 r_static
 r_int

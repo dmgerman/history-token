@@ -790,6 +790,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -800,19 +805,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -913,17 +905,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -991,6 +972,10 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -1048,6 +1033,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -1068,6 +1056,9 @@ id|signr
 comma
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|oldset
 comma
@@ -2777,12 +2768,12 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* This is here because of irix5_siginfo definition. */
-DECL|macro|P_PID
-mdefine_line|#define P_PID    0
-DECL|macro|P_PGID
-mdefine_line|#define P_PGID   2
-DECL|macro|P_ALL
-mdefine_line|#define P_ALL    7
+DECL|macro|IRIX_P_PID
+mdefine_line|#define IRIX_P_PID    0
+DECL|macro|IRIX_P_PGID
+mdefine_line|#define IRIX_P_PGID   2
+DECL|macro|IRIX_P_ALL
+mdefine_line|#define IRIX_P_ALL    7
 r_extern
 r_int
 id|getrusage
@@ -2966,15 +2957,15 @@ c_cond
 (paren
 id|type
 op_ne
-id|P_PID
+id|IRIX_P_PID
 op_logical_and
 id|type
 op_ne
-id|P_PGID
+id|IRIX_P_PGID
 op_logical_and
 id|type
 op_ne
-id|P_ALL
+id|IRIX_P_ALL
 )paren
 (brace
 id|retval
@@ -3045,7 +3036,7 @@ c_cond
 (paren
 id|type
 op_eq
-id|P_PID
+id|IRIX_P_PID
 )paren
 op_logical_and
 id|p-&gt;pid
@@ -3060,7 +3051,7 @@ c_cond
 (paren
 id|type
 op_eq
-id|P_PGID
+id|IRIX_P_PGID
 )paren
 op_logical_and
 id|process_group
@@ -3281,17 +3272,17 @@ suffix:semicolon
 r_case
 id|TASK_ZOMBIE
 suffix:colon
-id|current-&gt;cutime
+id|current-&gt;signal-&gt;cutime
 op_add_assign
 id|p-&gt;utime
 op_plus
-id|p-&gt;cutime
+id|p-&gt;signal-&gt;cutime
 suffix:semicolon
-id|current-&gt;cstime
+id|current-&gt;signal-&gt;cstime
 op_add_assign
 id|p-&gt;stime
 op_plus
-id|p-&gt;cstime
+id|p-&gt;signal-&gt;cstime
 suffix:semicolon
 r_if
 c_cond

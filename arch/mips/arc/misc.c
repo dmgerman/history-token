@@ -280,6 +280,10 @@ id|FileID
 )paren
 (brace
 r_return
+(paren
+id|DISPLAY_STATUS
+op_star
+)paren
 id|ARC_CALL1
 c_func
 (paren

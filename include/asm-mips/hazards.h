@@ -7,13 +7,13 @@ macro_line|#ifdef __ASSEMBLY__
 dot
 id|macro
 id|_ssnop
-DECL|variable|$2
+DECL|variable|$0
 id|sll
 "$"
 l_int|0
 comma
 "$"
-l_int|2
+l_int|0
 comma
 l_int|1
 dot

@@ -13,7 +13,7 @@ DECL|macro|RTC_EXTENT
 mdefine_line|#define RTC_EXTENT&t;16
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ&t;&t;ATLASINT_RTC
-macro_line|#if CONFIG_CPU_LITTLE_ENDIAN
+macro_line|#ifdef CONFIG_CPU_LITTLE_ENDIAN
 DECL|macro|ATLAS_RTC_PORT
 mdefine_line|#define ATLAS_RTC_PORT(x) (RTC_PORT(x) + 0)
 macro_line|#else

@@ -3794,7 +3794,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a library function for use by filesystem drivers.&n; *&n; * For writes to S_ISREG files, we are called under i_sem and return with i_sem&n; * held, even though it is internally dropped.&n; *&n; * For writes to S_ISBLK files, i_sem is not held on entry; it is never taken.&n; */
+multiline_comment|/*&n; * This is a library function for use by filesystem drivers.&n; * The locking rules are governed by the dio_lock_type parameter.&n; *&n; * DIO_NO_LOCKING (no locking, for raw block device access)&n; * For writes, i_sem is not held on entry; it is never taken.&n; *&n; * DIO_LOCKING (simple locking for regular files)&n; * For writes we are called under i_sem and return with i_sem held, even though&n; * it is internally dropped.&n; * For reads, i_sem is not held on entry, but it is taken and dropped before&n; * returning.&n; *&n; * DIO_OWN_LOCKING (filesystem provides synchronisation and handling of&n; *&t;uninitialised data, allowing parallel direct readers and writers)&n; * For writes we are called without i_sem, return without it, never touch it.&n; * For reads, i_sem is held on entry and will be released before returning.&n; *&n; * Additional i_alloc_sem locking requirements described inline below.&n; */
 id|ssize_t
 DECL|function|__blockdev_direct_IO
 id|__blockdev_direct_IO
@@ -3887,6 +3887,19 @@ r_struct
 id|dio
 op_star
 id|dio
+suffix:semicolon
+r_int
+id|reader_with_isem
+op_assign
+(paren
+id|rw
+op_eq
+id|READ
+op_logical_and
+id|dio_lock_type
+op_eq
+id|DIO_OWN_LOCKING
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4068,7 +4081,7 @@ id|dio
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * For regular files using DIO_LOCKING,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; * For regular files using DIO_OWN_LOCKING,&n;&t; *&t;both readers and writers need to grab i_alloc_sem&n;&t; *&t;neither readers nor writers hold i_sem on entry (nor exit)&n;&t; */
+multiline_comment|/*&n;&t; * For block device access DIO_NO_LOCKING is used,&n;&t; *&t;neither readers nor writers do any locking at all&n;&t; * For regular files using DIO_LOCKING,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; * For regular files using DIO_OWN_LOCKING,&n;&t; *&t;readers need to grab i_alloc_sem only (i_sem is already held)&n;&t; *&t;writers need to grab i_alloc_sem only&n;&t; */
 id|dio-&gt;lock_type
 op_assign
 id|dio_lock_type
@@ -4098,6 +4111,14 @@ id|mapping
 op_assign
 id|iocb-&gt;ki_filp-&gt;f_mapping
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dio_lock_type
+op_ne
+id|DIO_OWN_LOCKING
+)paren
+(brace
 id|down
 c_func
 (paren
@@ -4105,6 +4126,11 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|reader_with_isem
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|retval
 op_assign
 id|filemap_write_and_wait
@@ -4119,13 +4145,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4150,6 +4169,7 @@ id|dio_lock_type
 op_eq
 id|DIO_OWN_LOCKING
 )paren
+(brace
 id|up
 c_func
 (paren
@@ -4157,6 +4177,11 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|reader_with_isem
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -4224,8 +4249,35 @@ comma
 id|dio
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|READ
+op_logical_and
+id|dio_lock_type
+op_eq
+id|DIO_LOCKING
+)paren
+id|reader_with_isem
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
+r_if
+c_cond
+(paren
+id|reader_with_isem
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

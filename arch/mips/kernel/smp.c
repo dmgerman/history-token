@@ -49,6 +49,13 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 multiline_comment|/* Map logical to physical */
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func
@@ -716,11 +723,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|smp_tune_scheduling
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_build_cpu_map
 c_func
 (paren
 )paren

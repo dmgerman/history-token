@@ -727,6 +727,7 @@ suffix:semicolon
 DECL|function|__build_store_reg
 r_static
 r_void
+id|__init
 id|__build_store_reg
 c_func
 (paren
@@ -1194,7 +1195,7 @@ id|Pref_LoadStreamed
 suffix:semicolon
 id|pref_dst_mode
 op_assign
-id|Pref_StoreRetained
+id|Pref_StoreStreamed
 suffix:semicolon
 r_break
 suffix:semicolon

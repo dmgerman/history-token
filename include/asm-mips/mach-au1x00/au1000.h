@@ -428,6 +428,7 @@ DECL|macro|ALLINTS
 mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
 macro_line|#endif
 multiline_comment|/* SDRAM Controller */
+macro_line|#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1100)
 DECL|macro|MEM_SDMODE0
 mdefine_line|#define MEM_SDMODE0                0xB4000000
 DECL|macro|MEM_SDMODE1
@@ -456,6 +457,7 @@ DECL|macro|MEM_SDSLEEP
 mdefine_line|#define MEM_SDSLEEP                0xB4000030
 DECL|macro|MEM_SDSMCKE
 mdefine_line|#define MEM_SDSMCKE                0xB4000034
+macro_line|#endif
 multiline_comment|/* Static Bus Controller */
 DECL|macro|MEM_STCFG0
 mdefine_line|#define MEM_STCFG0                 0xB4001000
@@ -481,7 +483,7 @@ DECL|macro|MEM_STTIME3
 mdefine_line|#define MEM_STTIME3                0xB4001034
 DECL|macro|MEM_STADDR3
 mdefine_line|#define MEM_STADDR3                0xB4001038
-macro_line|#ifdef CONFIG_SOC_AU1550
+macro_line|#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
 DECL|macro|MEM_STNDCTL
 mdefine_line|#define MEM_STNDCTL                0xB4001100
 DECL|macro|MEM_STSTAT
@@ -623,26 +625,20 @@ mdefine_line|#define INTC_INT_LOW_LEVEL             0x6
 DECL|macro|INTC_INT_HIGH_AND_LOW_LEVEL
 mdefine_line|#define INTC_INT_HIGH_AND_LOW_LEVEL    0x7
 multiline_comment|/* Interrupt Numbers */
+multiline_comment|/* Au1000 */
+macro_line|#ifdef CONFIG_SOC_AU1000
 DECL|macro|AU1000_UART0_INT
 mdefine_line|#define AU1000_UART0_INT          0
 DECL|macro|AU1000_UART1_INT
 mdefine_line|#define AU1000_UART1_INT          1 /* au1000 */
 DECL|macro|AU1000_UART2_INT
 mdefine_line|#define AU1000_UART2_INT          2 /* au1000 */
-DECL|macro|AU1000_PCI_INTA
-mdefine_line|#define AU1000_PCI_INTA           1 /* au1500 */
-DECL|macro|AU1000_PCI_INTB
-mdefine_line|#define AU1000_PCI_INTB           2 /* au1500 */
 DECL|macro|AU1000_UART3_INT
 mdefine_line|#define AU1000_UART3_INT          3
 DECL|macro|AU1000_SSI0_INT
 mdefine_line|#define AU1000_SSI0_INT           4 /* au1000 */
 DECL|macro|AU1000_SSI1_INT
 mdefine_line|#define AU1000_SSI1_INT           5 /* au1000 */
-DECL|macro|AU1000_PCI_INTC
-mdefine_line|#define AU1000_PCI_INTC           4 /* au1500 */
-DECL|macro|AU1000_PCI_INTD
-mdefine_line|#define AU1000_PCI_INTD           5 /* au1500 */
 DECL|macro|AU1000_DMA_INT_BASE
 mdefine_line|#define AU1000_DMA_INT_BASE       6
 DECL|macro|AU1000_TOY_INT
@@ -677,16 +673,10 @@ DECL|macro|AU1000_MAC0_DMA_INT
 mdefine_line|#define AU1000_MAC0_DMA_INT       28
 DECL|macro|AU1000_MAC1_DMA_INT
 mdefine_line|#define AU1000_MAC1_DMA_INT       29
-DECL|macro|AU1000_ETH0_IRQ
-mdefine_line|#define AU1000_ETH0_IRQ           AU1000_MAC0_DMA_INT
-DECL|macro|AU1000_ETH1_IRQ
-mdefine_line|#define AU1000_ETH1_IRQ           AU1000_MAC1_DMA_INT
 DECL|macro|AU1000_I2S_UO_INT
 mdefine_line|#define AU1000_I2S_UO_INT         30 /* au1000 */
 DECL|macro|AU1000_AC97C_INT
 mdefine_line|#define AU1000_AC97C_INT          31
-DECL|macro|AU1000_LAST_INTC0_INT
-mdefine_line|#define AU1000_LAST_INTC0_INT     AU1000_AC97C_INT
 DECL|macro|AU1000_GPIO_0
 mdefine_line|#define AU1000_GPIO_0             32
 DECL|macro|AU1000_GPIO_1
@@ -719,7 +709,6 @@ DECL|macro|AU1000_GPIO_14
 mdefine_line|#define AU1000_GPIO_14            46
 DECL|macro|AU1000_GPIO_15
 mdefine_line|#define AU1000_GPIO_15            47
-multiline_comment|/* Au1000 only */
 DECL|macro|AU1000_GPIO_16
 mdefine_line|#define AU1000_GPIO_16            48
 DECL|macro|AU1000_GPIO_17
@@ -752,7 +741,111 @@ DECL|macro|AU1000_GPIO_30
 mdefine_line|#define AU1000_GPIO_30            62
 DECL|macro|AU1000_GPIO_31
 mdefine_line|#define AU1000_GPIO_31            63
-multiline_comment|/* Au1500 only */
+DECL|macro|UART0_ADDR
+mdefine_line|#define UART0_ADDR                0xB1100000
+DECL|macro|UART1_ADDR
+mdefine_line|#define UART1_ADDR                0xB1200000
+DECL|macro|UART2_ADDR
+mdefine_line|#define UART2_ADDR                0xB1300000
+DECL|macro|UART3_ADDR
+mdefine_line|#define UART3_ADDR                0xB1400000
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x10100000 
+singleline_comment|// phys addr for ioremap
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB017fffc
+DECL|macro|AU1000_ETH0_BASE
+mdefine_line|#define AU1000_ETH0_BASE      0xB0500000
+DECL|macro|AU1000_ETH1_BASE
+mdefine_line|#define AU1000_ETH1_BASE      0xB0510000
+DECL|macro|AU1000_MAC0_ENABLE
+mdefine_line|#define AU1000_MAC0_ENABLE       0xB0520000
+DECL|macro|AU1000_MAC1_ENABLE
+mdefine_line|#define AU1000_MAC1_ENABLE       0xB0520004
+DECL|macro|NUM_ETH_INTERFACES
+mdefine_line|#define NUM_ETH_INTERFACES 2
+macro_line|#endif 
+singleline_comment|// CONFIG_SOC_AU1000
+multiline_comment|/* Au1500 */
+macro_line|#ifdef CONFIG_SOC_AU1500
+DECL|macro|AU1500_UART0_INT
+mdefine_line|#define AU1500_UART0_INT          0
+DECL|macro|AU1000_PCI_INTA
+mdefine_line|#define AU1000_PCI_INTA           1 /* au1500 */
+DECL|macro|AU1000_PCI_INTB
+mdefine_line|#define AU1000_PCI_INTB           2 /* au1500 */
+DECL|macro|AU1500_UART3_INT
+mdefine_line|#define AU1500_UART3_INT          3
+DECL|macro|AU1000_PCI_INTC
+mdefine_line|#define AU1000_PCI_INTC           4 /* au1500 */
+DECL|macro|AU1000_PCI_INTD
+mdefine_line|#define AU1000_PCI_INTD           5 /* au1500 */
+DECL|macro|AU1000_DMA_INT_BASE
+mdefine_line|#define AU1000_DMA_INT_BASE       6
+DECL|macro|AU1000_TOY_INT
+mdefine_line|#define AU1000_TOY_INT            14
+DECL|macro|AU1000_TOY_MATCH0_INT
+mdefine_line|#define AU1000_TOY_MATCH0_INT     15
+DECL|macro|AU1000_TOY_MATCH1_INT
+mdefine_line|#define AU1000_TOY_MATCH1_INT     16
+DECL|macro|AU1000_TOY_MATCH2_INT
+mdefine_line|#define AU1000_TOY_MATCH2_INT     17
+DECL|macro|AU1000_RTC_INT
+mdefine_line|#define AU1000_RTC_INT            18
+DECL|macro|AU1000_RTC_MATCH0_INT
+mdefine_line|#define AU1000_RTC_MATCH0_INT     19
+DECL|macro|AU1000_RTC_MATCH1_INT
+mdefine_line|#define AU1000_RTC_MATCH1_INT     20
+DECL|macro|AU1000_RTC_MATCH2_INT
+mdefine_line|#define AU1000_RTC_MATCH2_INT     21
+DECL|macro|AU1500_PCI_ERR_INT
+mdefine_line|#define AU1500_PCI_ERR_INT        22
+DECL|macro|AU1000_USB_DEV_REQ_INT
+mdefine_line|#define AU1000_USB_DEV_REQ_INT    24
+DECL|macro|AU1000_USB_DEV_SUS_INT
+mdefine_line|#define AU1000_USB_DEV_SUS_INT    25
+DECL|macro|AU1000_USB_HOST_INT
+mdefine_line|#define AU1000_USB_HOST_INT       26
+DECL|macro|AU1000_ACSYNC_INT
+mdefine_line|#define AU1000_ACSYNC_INT         27
+DECL|macro|AU1500_MAC0_DMA_INT
+mdefine_line|#define AU1500_MAC0_DMA_INT       28
+DECL|macro|AU1500_MAC1_DMA_INT
+mdefine_line|#define AU1500_MAC1_DMA_INT       29
+DECL|macro|AU1000_AC97C_INT
+mdefine_line|#define AU1000_AC97C_INT          31
+DECL|macro|AU1000_GPIO_0
+mdefine_line|#define AU1000_GPIO_0             32
+DECL|macro|AU1000_GPIO_1
+mdefine_line|#define AU1000_GPIO_1             33
+DECL|macro|AU1000_GPIO_2
+mdefine_line|#define AU1000_GPIO_2             34
+DECL|macro|AU1000_GPIO_3
+mdefine_line|#define AU1000_GPIO_3             35
+DECL|macro|AU1000_GPIO_4
+mdefine_line|#define AU1000_GPIO_4             36
+DECL|macro|AU1000_GPIO_5
+mdefine_line|#define AU1000_GPIO_5             37
+DECL|macro|AU1000_GPIO_6
+mdefine_line|#define AU1000_GPIO_6             38
+DECL|macro|AU1000_GPIO_7
+mdefine_line|#define AU1000_GPIO_7             39
+DECL|macro|AU1000_GPIO_8
+mdefine_line|#define AU1000_GPIO_8             40
+DECL|macro|AU1000_GPIO_9
+mdefine_line|#define AU1000_GPIO_9             41
+DECL|macro|AU1000_GPIO_10
+mdefine_line|#define AU1000_GPIO_10            42
+DECL|macro|AU1000_GPIO_11
+mdefine_line|#define AU1000_GPIO_11            43
+DECL|macro|AU1000_GPIO_12
+mdefine_line|#define AU1000_GPIO_12            44
+DECL|macro|AU1000_GPIO_13
+mdefine_line|#define AU1000_GPIO_13            45
+DECL|macro|AU1000_GPIO_14
+mdefine_line|#define AU1000_GPIO_14            46
+DECL|macro|AU1000_GPIO_15
+mdefine_line|#define AU1000_GPIO_15            47
 DECL|macro|AU1500_GPIO_200
 mdefine_line|#define AU1500_GPIO_200           48
 DECL|macro|AU1500_GPIO_201
@@ -785,19 +878,137 @@ DECL|macro|AU1500_GPIO_207
 mdefine_line|#define AU1500_GPIO_207           62
 DECL|macro|AU1500_GPIO_208_215
 mdefine_line|#define AU1500_GPIO_208_215       63
-DECL|macro|AU1000_MAX_INTR
-mdefine_line|#define AU1000_MAX_INTR           63
-DECL|macro|AU1100_SD
-mdefine_line|#define AU1100_SD&t;&t;2
+DECL|macro|UART0_ADDR
+mdefine_line|#define UART0_ADDR                0xB1100000
+DECL|macro|UART3_ADDR
+mdefine_line|#define UART3_ADDR                0xB1400000
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x10100000 
+singleline_comment|// phys addr for ioremap
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB017fffc
+DECL|macro|AU1500_ETH0_BASE
+mdefine_line|#define AU1500_ETH0_BASE&t;  0xB1500000
+DECL|macro|AU1500_ETH1_BASE
+mdefine_line|#define AU1500_ETH1_BASE&t;  0xB1510000
+DECL|macro|AU1500_MAC0_ENABLE
+mdefine_line|#define AU1500_MAC0_ENABLE       0xB1520000
+DECL|macro|AU1500_MAC1_ENABLE
+mdefine_line|#define AU1500_MAC1_ENABLE       0xB1520004
+DECL|macro|NUM_ETH_INTERFACES
+mdefine_line|#define NUM_ETH_INTERFACES 2
+macro_line|#endif 
+singleline_comment|// CONFIG_SOC_AU1500
+multiline_comment|/* Au1100 */
+macro_line|#ifdef CONFIG_SOC_AU1100
+DECL|macro|AU1100_UART0_INT
+mdefine_line|#define AU1100_UART0_INT          0
+DECL|macro|AU1100_UART1_INT
+mdefine_line|#define AU1100_UART1_INT          1
+DECL|macro|AU1100_SD_INT
+mdefine_line|#define AU1100_SD_INT             2
+DECL|macro|AU1100_UART3_INT
+mdefine_line|#define AU1100_UART3_INT          3
+DECL|macro|AU1000_SSI0_INT
+mdefine_line|#define AU1000_SSI0_INT           4
+DECL|macro|AU1000_SSI1_INT
+mdefine_line|#define AU1000_SSI1_INT           5
+DECL|macro|AU1000_DMA_INT_BASE
+mdefine_line|#define AU1000_DMA_INT_BASE       6
+DECL|macro|AU1000_TOY_INT
+mdefine_line|#define AU1000_TOY_INT            14
+DECL|macro|AU1000_TOY_MATCH0_INT
+mdefine_line|#define AU1000_TOY_MATCH0_INT     15
+DECL|macro|AU1000_TOY_MATCH1_INT
+mdefine_line|#define AU1000_TOY_MATCH1_INT     16
+DECL|macro|AU1000_TOY_MATCH2_INT
+mdefine_line|#define AU1000_TOY_MATCH2_INT     17
+DECL|macro|AU1000_RTC_INT
+mdefine_line|#define AU1000_RTC_INT            18
+DECL|macro|AU1000_RTC_MATCH0_INT
+mdefine_line|#define AU1000_RTC_MATCH0_INT     19
+DECL|macro|AU1000_RTC_MATCH1_INT
+mdefine_line|#define AU1000_RTC_MATCH1_INT     20
+DECL|macro|AU1000_RTC_MATCH2_INT
+mdefine_line|#define AU1000_RTC_MATCH2_INT     21
+DECL|macro|AU1000_IRDA_TX_INT
+mdefine_line|#define AU1000_IRDA_TX_INT        22
+DECL|macro|AU1000_IRDA_RX_INT
+mdefine_line|#define AU1000_IRDA_RX_INT        23
+DECL|macro|AU1000_USB_DEV_REQ_INT
+mdefine_line|#define AU1000_USB_DEV_REQ_INT    24
+DECL|macro|AU1000_USB_DEV_SUS_INT
+mdefine_line|#define AU1000_USB_DEV_SUS_INT    25
+DECL|macro|AU1000_USB_HOST_INT
+mdefine_line|#define AU1000_USB_HOST_INT       26
+DECL|macro|AU1000_ACSYNC_INT
+mdefine_line|#define AU1000_ACSYNC_INT         27
+DECL|macro|AU1100_MAC0_DMA_INT
+mdefine_line|#define AU1100_MAC0_DMA_INT       28
 DECL|macro|AU1100_GPIO_208_215
 mdefine_line|#define&t;AU1100_GPIO_208_215&t;29
-singleline_comment|// Seperate defines for AU1550 SOC
+DECL|macro|AU1100_LCD_INT
+mdefine_line|#define&t;AU1100_LCD_INT            30
+DECL|macro|AU1000_AC97C_INT
+mdefine_line|#define AU1000_AC97C_INT          31
+DECL|macro|AU1000_GPIO_0
+mdefine_line|#define AU1000_GPIO_0             32
+DECL|macro|AU1000_GPIO_1
+mdefine_line|#define AU1000_GPIO_1             33
+DECL|macro|AU1000_GPIO_2
+mdefine_line|#define AU1000_GPIO_2             34
+DECL|macro|AU1000_GPIO_3
+mdefine_line|#define AU1000_GPIO_3             35
+DECL|macro|AU1000_GPIO_4
+mdefine_line|#define AU1000_GPIO_4             36
+DECL|macro|AU1000_GPIO_5
+mdefine_line|#define AU1000_GPIO_5             37
+DECL|macro|AU1000_GPIO_6
+mdefine_line|#define AU1000_GPIO_6             38
+DECL|macro|AU1000_GPIO_7
+mdefine_line|#define AU1000_GPIO_7             39
+DECL|macro|AU1000_GPIO_8
+mdefine_line|#define AU1000_GPIO_8             40
+DECL|macro|AU1000_GPIO_9
+mdefine_line|#define AU1000_GPIO_9             41
+DECL|macro|AU1000_GPIO_10
+mdefine_line|#define AU1000_GPIO_10            42
+DECL|macro|AU1000_GPIO_11
+mdefine_line|#define AU1000_GPIO_11            43
+DECL|macro|AU1000_GPIO_12
+mdefine_line|#define AU1000_GPIO_12            44
+DECL|macro|AU1000_GPIO_13
+mdefine_line|#define AU1000_GPIO_13            45
+DECL|macro|AU1000_GPIO_14
+mdefine_line|#define AU1000_GPIO_14            46
+DECL|macro|AU1000_GPIO_15
+mdefine_line|#define AU1000_GPIO_15            47
+DECL|macro|UART0_ADDR
+mdefine_line|#define UART0_ADDR                0xB1100000
+DECL|macro|UART1_ADDR
+mdefine_line|#define UART1_ADDR                0xB1200000
+DECL|macro|UART3_ADDR
+mdefine_line|#define UART3_ADDR                0xB1400000
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x10100000 
+singleline_comment|// phys addr for ioremap
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB017fffc
+DECL|macro|AU1100_ETH0_BASE
+mdefine_line|#define AU1100_ETH0_BASE&t;  0xB0500000
+DECL|macro|AU1100_MAC0_ENABLE
+mdefine_line|#define AU1100_MAC0_ENABLE       0xB0520000
+DECL|macro|NUM_ETH_INTERFACES
+mdefine_line|#define NUM_ETH_INTERFACES 1
+macro_line|#endif 
+singleline_comment|// CONFIG_SOC_AU1100
+macro_line|#ifdef CONFIG_SOC_AU1550
 DECL|macro|AU1550_UART0_INT
-mdefine_line|#define AU1550_UART0_INT          AU1000_UART0_INT
+mdefine_line|#define AU1550_UART0_INT          0
 DECL|macro|AU1550_PCI_INTA
-mdefine_line|#define AU1550_PCI_INTA           AU1000_PCI_INTA
+mdefine_line|#define AU1550_PCI_INTA           1
 DECL|macro|AU1550_PCI_INTB
-mdefine_line|#define AU1550_PCI_INTB           AU1000_PCI_INTB
+mdefine_line|#define AU1550_PCI_INTB           2
 DECL|macro|AU1550_DDMA_INT
 mdefine_line|#define AU1550_DDMA_INT           3
 DECL|macro|AU1550_CRYPTO_INT
@@ -844,14 +1055,48 @@ DECL|macro|AU1550_USB_DEV_SUS_INT
 mdefine_line|#define AU1550_USB_DEV_SUS_INT    25
 DECL|macro|AU1550_USB_HOST_INT
 mdefine_line|#define AU1550_USB_HOST_INT       26
+DECL|macro|AU1000_USB_DEV_REQ_INT
+mdefine_line|#define AU1000_USB_DEV_REQ_INT    AU1550_USB_DEV_REQ_INT
+DECL|macro|AU1000_USB_DEV_SUS_INT
+mdefine_line|#define AU1000_USB_DEV_SUS_INT    AU1550_USB_DEV_SUS_INT
+DECL|macro|AU1000_USB_HOST_INT
+mdefine_line|#define AU1000_USB_HOST_INT       AU1550_USB_HOST_INT
 DECL|macro|AU1550_MAC0_DMA_INT
 mdefine_line|#define AU1550_MAC0_DMA_INT       27
 DECL|macro|AU1550_MAC1_DMA_INT
 mdefine_line|#define AU1550_MAC1_DMA_INT       28
-DECL|macro|AU1550_ETH0_IRQ
-mdefine_line|#define AU1550_ETH0_IRQ           AU1550_MAC0_DMA_INT
-DECL|macro|AU1550_ETH1_IRQ
-mdefine_line|#define AU1550_ETH1_IRQ           AU1550_MAC1_DMA_INT
+DECL|macro|AU1000_GPIO_0
+mdefine_line|#define AU1000_GPIO_0             32
+DECL|macro|AU1000_GPIO_1
+mdefine_line|#define AU1000_GPIO_1             33
+DECL|macro|AU1000_GPIO_2
+mdefine_line|#define AU1000_GPIO_2             34
+DECL|macro|AU1000_GPIO_3
+mdefine_line|#define AU1000_GPIO_3             35
+DECL|macro|AU1000_GPIO_4
+mdefine_line|#define AU1000_GPIO_4             36
+DECL|macro|AU1000_GPIO_5
+mdefine_line|#define AU1000_GPIO_5             37
+DECL|macro|AU1000_GPIO_6
+mdefine_line|#define AU1000_GPIO_6             38
+DECL|macro|AU1000_GPIO_7
+mdefine_line|#define AU1000_GPIO_7             39
+DECL|macro|AU1000_GPIO_8
+mdefine_line|#define AU1000_GPIO_8             40
+DECL|macro|AU1000_GPIO_9
+mdefine_line|#define AU1000_GPIO_9             41
+DECL|macro|AU1000_GPIO_10
+mdefine_line|#define AU1000_GPIO_10            42
+DECL|macro|AU1000_GPIO_11
+mdefine_line|#define AU1000_GPIO_11            43
+DECL|macro|AU1000_GPIO_12
+mdefine_line|#define AU1000_GPIO_12            44
+DECL|macro|AU1000_GPIO_13
+mdefine_line|#define AU1000_GPIO_13            45
+DECL|macro|AU1000_GPIO_14
+mdefine_line|#define AU1000_GPIO_14            46
+DECL|macro|AU1000_GPIO_15
+mdefine_line|#define AU1000_GPIO_15            47
 DECL|macro|AU1550_GPIO_200
 mdefine_line|#define AU1550_GPIO_200           48
 DECL|macro|AU1500_GPIO_201_205
@@ -886,7 +1131,183 @@ mdefine_line|#define AU1500_GPIO_207           62
 DECL|macro|AU1500_GPIO_208_218
 mdefine_line|#define AU1500_GPIO_208_218       63&t;
 singleline_comment|// Logical or of GPIO208:218
-singleline_comment|// REDEFINE SECONDARY GPIO BLOCK INTO IC1 CONTROLLER HERE
+DECL|macro|UART0_ADDR
+mdefine_line|#define UART0_ADDR                0xB1100000
+DECL|macro|UART1_ADDR
+mdefine_line|#define UART1_ADDR                0xB1200000
+DECL|macro|UART3_ADDR
+mdefine_line|#define UART3_ADDR                0xB1400000
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x14020000 
+singleline_comment|// phys addr for ioremap
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB4027ffc
+DECL|macro|AU1550_ETH0_BASE
+mdefine_line|#define AU1550_ETH0_BASE      0xB0500000
+DECL|macro|AU1550_ETH1_BASE
+mdefine_line|#define AU1550_ETH1_BASE      0xB0510000
+DECL|macro|AU1550_MAC0_ENABLE
+mdefine_line|#define AU1550_MAC0_ENABLE       0xB0520000
+DECL|macro|AU1550_MAC1_ENABLE
+mdefine_line|#define AU1550_MAC1_ENABLE       0xB0520004
+DECL|macro|NUM_ETH_INTERFACES
+mdefine_line|#define NUM_ETH_INTERFACES 2
+macro_line|#endif 
+singleline_comment|// CONFIG_SOC_AU1550
+macro_line|#ifdef CONFIG_SOC_AU1200
+DECL|macro|AU1200_UART0_INT
+mdefine_line|#define AU1200_UART0_INT          0
+DECL|macro|AU1200_SWT_INT
+mdefine_line|#define AU1200_SWT_INT            1
+DECL|macro|AU1200_SD_INT
+mdefine_line|#define AU1200_SD_INT             2
+DECL|macro|AU1200_DDMA_INT
+mdefine_line|#define AU1200_DDMA_INT           3
+DECL|macro|AU1200_MAE_BE_INT
+mdefine_line|#define AU1200_MAE_BE_INT         4
+DECL|macro|AU1200_GPIO_200
+mdefine_line|#define AU1200_GPIO_200           5
+DECL|macro|AU1200_GPIO_201
+mdefine_line|#define AU1200_GPIO_201           6
+DECL|macro|AU1200_GPIO_202
+mdefine_line|#define AU1200_GPIO_202           7
+DECL|macro|AU1200_UART1_INT
+mdefine_line|#define AU1200_UART1_INT          8
+DECL|macro|AU1200_MAE_FE_INT
+mdefine_line|#define AU1200_MAE_FE_INT         9
+DECL|macro|AU1200_PSC0_INT
+mdefine_line|#define AU1200_PSC0_INT           10
+DECL|macro|AU1200_PSC1_INT
+mdefine_line|#define AU1200_PSC1_INT           11
+DECL|macro|AU1200_AES_INT
+mdefine_line|#define AU1200_AES_INT            12
+DECL|macro|AU1200_CAMERA_INT
+mdefine_line|#define AU1200_CAMERA_INT         13
+DECL|macro|AU1200_TOY_INT
+mdefine_line|#define AU1200_TOY_INT&t;&t;&t;  14
+DECL|macro|AU1200_TOY_MATCH0_INT
+mdefine_line|#define AU1200_TOY_MATCH0_INT     15
+DECL|macro|AU1200_TOY_MATCH1_INT
+mdefine_line|#define AU1200_TOY_MATCH1_INT     16
+DECL|macro|AU1200_TOY_MATCH2_INT
+mdefine_line|#define AU1200_TOY_MATCH2_INT     17
+DECL|macro|AU1200_RTC_INT
+mdefine_line|#define AU1200_RTC_INT            18
+DECL|macro|AU1200_RTC_MATCH0_INT
+mdefine_line|#define AU1200_RTC_MATCH0_INT     19
+DECL|macro|AU1200_RTC_MATCH1_INT
+mdefine_line|#define AU1200_RTC_MATCH1_INT     20
+DECL|macro|AU1200_RTC_MATCH2_INT
+mdefine_line|#define AU1200_RTC_MATCH2_INT     21
+DECL|macro|AU1200_NAND_INT
+mdefine_line|#define AU1200_NAND_INT           23
+DECL|macro|AU1200_GPIO_204
+mdefine_line|#define AU1200_GPIO_204           24
+DECL|macro|AU1200_GPIO_205
+mdefine_line|#define AU1200_GPIO_205           25
+DECL|macro|AU1200_GPIO_206
+mdefine_line|#define AU1200_GPIO_206           26
+DECL|macro|AU1200_GPIO_207
+mdefine_line|#define AU1200_GPIO_207           27
+DECL|macro|AU1200_GPIO_208_215
+mdefine_line|#define AU1200_GPIO_208_215       28 
+singleline_comment|// Logical OR of 208:215
+DECL|macro|AU1200_USB_INT
+mdefine_line|#define AU1200_USB_INT            29
+DECL|macro|AU1200_LCD_INT
+mdefine_line|#define AU1200_LCD_INT            30
+DECL|macro|AU1200_MAE_BOTH_INT
+mdefine_line|#define AU1200_MAE_BOTH_INT       31
+DECL|macro|AU1000_GPIO_0
+mdefine_line|#define AU1000_GPIO_0             32
+DECL|macro|AU1000_GPIO_1
+mdefine_line|#define AU1000_GPIO_1             33
+DECL|macro|AU1000_GPIO_2
+mdefine_line|#define AU1000_GPIO_2             34
+DECL|macro|AU1000_GPIO_3
+mdefine_line|#define AU1000_GPIO_3             35
+DECL|macro|AU1000_GPIO_4
+mdefine_line|#define AU1000_GPIO_4             36
+DECL|macro|AU1000_GPIO_5
+mdefine_line|#define AU1000_GPIO_5             37
+DECL|macro|AU1000_GPIO_6
+mdefine_line|#define AU1000_GPIO_6             38
+DECL|macro|AU1000_GPIO_7
+mdefine_line|#define AU1000_GPIO_7             39
+DECL|macro|AU1000_GPIO_8
+mdefine_line|#define AU1000_GPIO_8             40
+DECL|macro|AU1000_GPIO_9
+mdefine_line|#define AU1000_GPIO_9             41
+DECL|macro|AU1000_GPIO_10
+mdefine_line|#define AU1000_GPIO_10            42
+DECL|macro|AU1000_GPIO_11
+mdefine_line|#define AU1000_GPIO_11            43
+DECL|macro|AU1000_GPIO_12
+mdefine_line|#define AU1000_GPIO_12            44
+DECL|macro|AU1000_GPIO_13
+mdefine_line|#define AU1000_GPIO_13            45
+DECL|macro|AU1000_GPIO_14
+mdefine_line|#define AU1000_GPIO_14            46
+DECL|macro|AU1000_GPIO_15
+mdefine_line|#define AU1000_GPIO_15            47
+DECL|macro|AU1000_GPIO_16
+mdefine_line|#define AU1000_GPIO_16            48
+DECL|macro|AU1000_GPIO_17
+mdefine_line|#define AU1000_GPIO_17            49
+DECL|macro|AU1000_GPIO_18
+mdefine_line|#define AU1000_GPIO_18            50
+DECL|macro|AU1000_GPIO_19
+mdefine_line|#define AU1000_GPIO_19            51
+DECL|macro|AU1000_GPIO_20
+mdefine_line|#define AU1000_GPIO_20            52
+DECL|macro|AU1000_GPIO_21
+mdefine_line|#define AU1000_GPIO_21            53
+DECL|macro|AU1000_GPIO_22
+mdefine_line|#define AU1000_GPIO_22            54
+DECL|macro|AU1000_GPIO_23
+mdefine_line|#define AU1000_GPIO_23            55
+DECL|macro|AU1000_GPIO_24
+mdefine_line|#define AU1000_GPIO_24            56
+DECL|macro|AU1000_GPIO_25
+mdefine_line|#define AU1000_GPIO_25            57
+DECL|macro|AU1000_GPIO_26
+mdefine_line|#define AU1000_GPIO_26            58
+DECL|macro|AU1000_GPIO_27
+mdefine_line|#define AU1000_GPIO_27            59
+DECL|macro|AU1000_GPIO_28
+mdefine_line|#define AU1000_GPIO_28            60
+DECL|macro|AU1000_GPIO_29
+mdefine_line|#define AU1000_GPIO_29            61
+DECL|macro|AU1000_GPIO_30
+mdefine_line|#define AU1000_GPIO_30            62
+DECL|macro|AU1000_GPIO_31
+mdefine_line|#define AU1000_GPIO_31            63
+DECL|macro|UART0_ADDR
+mdefine_line|#define UART0_ADDR                0xB1100000
+DECL|macro|UART1_ADDR
+mdefine_line|#define UART1_ADDR                0xB1200000
+DECL|macro|USB_OHCI_BASE
+mdefine_line|#define USB_OHCI_BASE             0x14020000 
+singleline_comment|// phys addr for ioremap
+DECL|macro|USB_HOST_CONFIG
+mdefine_line|#define USB_HOST_CONFIG           0xB4027ffc
+singleline_comment|// these are here for prototyping on au1550 (do not exist on au1200)
+DECL|macro|AU1200_ETH0_BASE
+mdefine_line|#define AU1200_ETH0_BASE      0xB0500000
+DECL|macro|AU1200_ETH1_BASE
+mdefine_line|#define AU1200_ETH1_BASE      0xB0510000
+DECL|macro|AU1200_MAC0_ENABLE
+mdefine_line|#define AU1200_MAC0_ENABLE       0xB0520000
+DECL|macro|AU1200_MAC1_ENABLE
+mdefine_line|#define AU1200_MAC1_ENABLE       0xB0520004
+DECL|macro|NUM_ETH_INTERFACES
+mdefine_line|#define NUM_ETH_INTERFACES 2
+macro_line|#endif 
+singleline_comment|// CONFIG_SOC_AU1200
+DECL|macro|AU1000_LAST_INTC0_INT
+mdefine_line|#define AU1000_LAST_INTC0_INT     31
+DECL|macro|AU1000_MAX_INTR
+mdefine_line|#define AU1000_MAX_INTR           63
 multiline_comment|/* Programmable Counters 0 and 1 */
 DECL|macro|SYS_BASE
 mdefine_line|#define SYS_BASE                   0xB1900000
@@ -1014,22 +1435,8 @@ mdefine_line|#define I2S_CONTROL_D         (1&lt;&lt;1)
 DECL|macro|I2S_CONTROL_CE
 mdefine_line|#define I2S_CONTROL_CE        (1&lt;&lt;0)
 multiline_comment|/* USB Host Controller */
-singleline_comment|// We pass USB_OHCI_BASE to ioremap, so it needs to be a physical address
-macro_line|#if defined( CONFIG_SOC_AU1550 )
-DECL|macro|USB_OHCI_BASE
-mdefine_line|#define USB_OHCI_BASE             0x14020000
 DECL|macro|USB_OHCI_LEN
 mdefine_line|#define USB_OHCI_LEN              0x00100000
-DECL|macro|USB_HOST_CONFIG
-mdefine_line|#define USB_HOST_CONFIG           0xB4027ffc
-macro_line|#else
-DECL|macro|USB_OHCI_BASE
-mdefine_line|#define USB_OHCI_BASE             0x10100000
-DECL|macro|USB_OHCI_LEN
-mdefine_line|#define USB_OHCI_LEN              0x00100000
-DECL|macro|USB_HOST_CONFIG
-mdefine_line|#define USB_HOST_CONFIG           0xB017fffc
-macro_line|#endif
 multiline_comment|/* USB Device Controller */
 DECL|macro|USBD_EP0RD
 mdefine_line|#define USBD_EP0RD                0xB0200000
@@ -1112,20 +1519,6 @@ mdefine_line|#define USBDEV_ENABLE (1&lt;&lt;1)
 DECL|macro|USBDEV_CE
 mdefine_line|#define USBDEV_CE     (1&lt;&lt;0)
 multiline_comment|/* Ethernet Controllers  */
-DECL|macro|AU1000_ETH0_BASE
-mdefine_line|#define AU1000_ETH0_BASE          0xB0500000
-DECL|macro|AU1000_ETH1_BASE
-mdefine_line|#define AU1000_ETH1_BASE          0xB0510000
-DECL|macro|AU1500_ETH0_BASE
-mdefine_line|#define AU1500_ETH0_BASE&t;  0xB1500000
-DECL|macro|AU1500_ETH1_BASE
-mdefine_line|#define AU1500_ETH1_BASE&t;  0xB1510000
-DECL|macro|AU1100_ETH0_BASE
-mdefine_line|#define AU1100_ETH0_BASE&t;  0xB0500000
-DECL|macro|AU1550_ETH0_BASE
-mdefine_line|#define AU1550_ETH0_BASE      0xB0500000
-DECL|macro|AU1550_ETH1_BASE
-mdefine_line|#define AU1550_ETH1_BASE      0xB0510000
 multiline_comment|/* 4 byte offsets from AU1000_ETH_BASE */
 DECL|macro|MAC_CONTROL
 mdefine_line|#define MAC_CONTROL                     0x0
@@ -1208,16 +1601,6 @@ mdefine_line|#define MAC_VLAN1_TAG                  0x20
 DECL|macro|MAC_VLAN2_TAG
 mdefine_line|#define MAC_VLAN2_TAG                  0x24
 multiline_comment|/* Ethernet Controller Enable */
-DECL|macro|AU1000_MAC0_ENABLE
-mdefine_line|#define AU1000_MAC0_ENABLE       0xB0520000
-DECL|macro|AU1000_MAC1_ENABLE
-mdefine_line|#define AU1000_MAC1_ENABLE       0xB0520004
-DECL|macro|AU1500_MAC0_ENABLE
-mdefine_line|#define AU1500_MAC0_ENABLE       0xB1520000
-DECL|macro|AU1500_MAC1_ENABLE
-mdefine_line|#define AU1500_MAC1_ENABLE       0xB1520004
-DECL|macro|AU1100_MAC0_ENABLE
-mdefine_line|#define AU1100_MAC0_ENABLE       0xB0520000
 DECL|macro|MAC_EN_CLOCK_ENABLE
 mdefine_line|#define MAC_EN_CLOCK_ENABLE         (1&lt;&lt;0)
 DECL|macro|MAC_EN_RESET0
@@ -1362,14 +1745,6 @@ mdefine_line|#define MAC_RX_BUFF3_STATUS              0x30
 DECL|macro|MAC_RX_BUFF3_ADDR
 mdefine_line|#define MAC_RX_BUFF3_ADDR                0x34
 multiline_comment|/* UARTS 0-3 */
-DECL|macro|UART0_ADDR
-mdefine_line|#define UART0_ADDR                0xB1100000
-DECL|macro|UART1_ADDR
-mdefine_line|#define UART1_ADDR                0xB1200000
-DECL|macro|UART2_ADDR
-mdefine_line|#define UART2_ADDR                0xB1300000
-DECL|macro|UART3_ADDR
-mdefine_line|#define UART3_ADDR                0xB1400000
 DECL|macro|UART_BASE
 mdefine_line|#define UART_BASE                 UART0_ADDR
 DECL|macro|UART_DEBUG_BASE
@@ -2090,17 +2465,17 @@ mdefine_line|#define Au1500_PCI_HDR            0xB4005100
 singleline_comment|// virtual, kseg0 addr
 multiline_comment|/* All of our structures, like pci resource, have 32 bit members.&n; * Drivers are expected to do an ioremap on the PCI MEM resource, but it&squot;s&n; * hard to store 0x4 0000 0000 in a 32 bit type.  We require a small patch&n; * to __ioremap to check for addresses between (u32)Au1500_PCI_MEM_START and&n; * (u32)Au1500_PCI_MEM_END and change those to the full 36 bit PCI MEM&n; * addresses.  For PCI IO, it&squot;s simpler because we get to do the ioremap&n; * ourselves and then adjust the device&squot;s resources.&n; */
 DECL|macro|Au1500_EXT_CFG
-mdefine_line|#define Au1500_EXT_CFG            0x600000000
+mdefine_line|#define Au1500_EXT_CFG            0x600000000ULL
 DECL|macro|Au1500_EXT_CFG_TYPE1
-mdefine_line|#define Au1500_EXT_CFG_TYPE1      0x680000000
+mdefine_line|#define Au1500_EXT_CFG_TYPE1      0x680000000ULL
 DECL|macro|Au1500_PCI_IO_START
-mdefine_line|#define Au1500_PCI_IO_START       0x500000000
+mdefine_line|#define Au1500_PCI_IO_START       0x500000000ULL
 DECL|macro|Au1500_PCI_IO_END
-mdefine_line|#define Au1500_PCI_IO_END         0x5000FFFFF
+mdefine_line|#define Au1500_PCI_IO_END         0x5000FFFFFULL
 DECL|macro|Au1500_PCI_MEM_START
-mdefine_line|#define Au1500_PCI_MEM_START      0x440000000
+mdefine_line|#define Au1500_PCI_MEM_START      0x440000000ULL
 DECL|macro|Au1500_PCI_MEM_END
-mdefine_line|#define Au1500_PCI_MEM_END        0x44FFFFFFF
+mdefine_line|#define Au1500_PCI_MEM_END        0x44FFFFFFFULL
 DECL|macro|PCI_IO_START
 mdefine_line|#define PCI_IO_START    (Au1500_PCI_IO_START + 0x1000)
 DECL|macro|PCI_IO_END
@@ -2114,7 +2489,7 @@ mdefine_line|#define PCI_FIRST_DEVFN (0&lt;&lt;3)
 DECL|macro|PCI_LAST_DEVFN
 mdefine_line|#define PCI_LAST_DEVFN  (19&lt;&lt;3)
 DECL|macro|IOPORT_RESOURCE_START
-mdefine_line|#define IOPORT_RESOURCE_START 0x00001000 /* skip the legacy ide probing */
+mdefine_line|#define IOPORT_RESOURCE_START 0x00001000 /* skip legacy probing */
 DECL|macro|IOPORT_RESOURCE_END
 mdefine_line|#define IOPORT_RESOURCE_END   0xffffffff
 DECL|macro|IOMEM_RESOURCE_START
@@ -2164,13 +2539,6 @@ DECL|macro|PCI_LAST_DEVFN
 mdefine_line|#define PCI_LAST_DEVFN  0
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
-DECL|macro|NUM_ETH_INTERFACES
-mdefine_line|#define NUM_ETH_INTERFACES 2
-macro_line|#elif defined(CONFIG_SOC_AU1100)
-DECL|macro|NUM_ETH_INTERFACES
-mdefine_line|#define NUM_ETH_INTERFACES 1
-macro_line|#endif
 multiline_comment|/* Processor information base on prid.&n; * Copied from PowerPC.&n; */
 DECL|struct|cpu_spec
 r_struct
@@ -2194,13 +2562,13 @@ id|cpu_name
 suffix:semicolon
 DECL|member|cpu_od
 r_int
-r_int
+r_char
 id|cpu_od
 suffix:semicolon
 multiline_comment|/* Set Config[OD] */
 DECL|member|cpu_bclk
 r_int
-r_int
+r_char
 id|cpu_bclk
 suffix:semicolon
 multiline_comment|/* Enable BCLK switching */

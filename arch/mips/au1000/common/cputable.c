@@ -192,6 +192,18 @@ l_int|1
 )brace
 comma
 (brace
+l_int|0xffffffff
+comma
+l_int|0x04030200
+comma
+l_string|&quot;Au1200 AA&quot;
+comma
+l_int|0
+comma
+l_int|1
+)brace
+comma
+(brace
 l_int|0x00000000
 comma
 l_int|0x00000000

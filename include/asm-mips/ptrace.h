@@ -93,6 +93,7 @@ mdefine_line|#define PTRACE_GET_THREAD_AREA&t;25
 DECL|macro|PTRACE_SET_THREAD_AREA
 mdefine_line|#define PTRACE_SET_THREAD_AREA&t;26
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * Does the process account for user or for system time?&n; */
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (((regs)-&gt;cp0_status &amp; KU_MASK) == KU_USER)

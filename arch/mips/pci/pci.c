@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 2003 Ralf Baechle (ralf@linux-mips.org)&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 2003, 04 Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 multiline_comment|/*&n; * Indicate whether we respect the PCI setup left by the firmware.&n; *&n; * Make this long-lived  so that we know when shutting down&n; * whether we probed only or not.&n; */
 DECL|variable|pci_probe_only
 r_int
@@ -842,7 +841,11 @@ r_return
 id|err
 suffix:semicolon
 r_return
-l_int|0
+id|pcibios_plat_dev_init
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 DECL|function|pcibios_fixup_device_resources

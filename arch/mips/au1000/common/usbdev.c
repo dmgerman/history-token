@@ -36,8 +36,6 @@ macro_line|#else
 DECL|macro|vdbg
 mdefine_line|#define vdbg(fmt, arg...) do {} while (0)
 macro_line|#endif
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;(((a)&gt;(b))?(a):(b))
 DECL|macro|ALLOC_FLAGS
 mdefine_line|#define ALLOC_FLAGS (in_interrupt () ? GFP_ATOMIC : GFP_KERNEL)
 DECL|macro|EP_FIFO_DEPTH
@@ -651,10 +649,6 @@ id|usbdev_pkt_t
 op_star
 id|pkt
 op_assign
-(paren
-id|usbdev_pkt_t
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
