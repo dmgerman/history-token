@@ -1677,6 +1677,9 @@ suffix:colon
 r_case
 id|IPPROTO_UDP
 suffix:colon
+r_case
+id|IPPROTO_SCTP
+suffix:colon
 id|port
 op_assign
 id|fl-&gt;fl_ip_sport
@@ -1738,6 +1741,9 @@ id|IPPROTO_TCP
 suffix:colon
 r_case
 id|IPPROTO_UDP
+suffix:colon
+r_case
+id|IPPROTO_SCTP
 suffix:colon
 id|port
 op_assign
