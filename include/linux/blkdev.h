@@ -1561,7 +1561,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|blk_phys_contig_segment
 c_func
@@ -1580,7 +1579,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|blk_hw_contig_segment
 c_func
