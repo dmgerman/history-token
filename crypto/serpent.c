@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Serpent Cipher Algorithm.&n; *&n; * Copyright (C) 2002 Dag Arne Osvik &lt;osvik@ii.uib.no&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 multiline_comment|/* Key is padded to the maximum of 256 bits before round key generation.&n; * Any key length &lt;= 256 bits (32 bytes) is allowed by the algorithm.&n; */

@@ -3,6 +3,7 @@ multiline_comment|/* Some changes from the Gladman version:&n;    s/RIJNDAEL(e_k
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|AES_MIN_KEY_SIZE

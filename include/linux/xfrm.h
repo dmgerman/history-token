@@ -7,25 +7,10 @@ multiline_comment|/* Structure to encapsulate addresses. I do not want to use&n;
 r_typedef
 r_union
 (brace
-r_struct
-(brace
-DECL|member|addr
-id|__u32
-id|addr
-suffix:semicolon
-DECL|member|mask
-id|__u32
-id|mask
-suffix:semicolon
-multiline_comment|/* Use unused bits to cache mask. */
 DECL|member|a4
-)brace
+id|__u32
 id|a4
 suffix:semicolon
-DECL|macro|xfrm4_addr
-mdefine_line|#define xfrm4_addr a4.addr
-DECL|macro|xfrm4_mask
-mdefine_line|#define xfrm4_mask a4.mask
 DECL|member|a6
 id|__u32
 id|a6

@@ -817,7 +817,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|xfrm_policy_check
+id|xfrm4_policy_check
 c_func
 (paren
 id|sk
