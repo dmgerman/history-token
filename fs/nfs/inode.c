@@ -2830,6 +2830,9 @@ id|fattr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t use READDIRPLUS on directories that we believe are too large */
+DECL|macro|NFS_LIMIT_READDIRPLUS
+mdefine_line|#define NFS_LIMIT_READDIRPLUS (8*PAGE_SIZE)
 multiline_comment|/*&n; * Look up the inode by super block and fattr-&gt;fileid.&n; */
 r_static
 r_struct
@@ -3025,6 +3028,29 @@ id|inode-&gt;i_fop
 op_assign
 op_amp
 id|nfs_dir_operations
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_server_capable
+c_func
+(paren
+id|inode
+comma
+id|NFS_CAP_READDIRPLUS
+)paren
+op_logical_and
+id|fattr-&gt;size
+op_le
+id|NFS_LIMIT_READDIRPLUS
+)paren
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_or_assign
+id|NFS_INO_ADVISE_RDPLUS
 suffix:semicolon
 )brace
 r_else
