@@ -125,15 +125,23 @@ id|cpu_context_save
 id|cpu_context
 suffix:semicolon
 multiline_comment|/* cpu context */
-DECL|member|restart_block
-r_struct
-id|restart_block
-id|restart_block
+DECL|member|used_cp
+id|__u8
+id|used_cp
+(braket
+l_int|16
+)braket
 suffix:semicolon
+multiline_comment|/* thread used copro */
 DECL|member|fpstate
 r_union
 id|fp_state
 id|fpstate
+suffix:semicolon
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -246,8 +254,10 @@ DECL|macro|TI_CPU_DOMAIN
 mdefine_line|#define TI_CPU_DOMAIN&t;24
 DECL|macro|TI_CPU_SAVE
 mdefine_line|#define TI_CPU_SAVE&t;28
+DECL|macro|TI_USED_MATH
+mdefine_line|#define TI_USED_MATH&t;76
 DECL|macro|TI_FPSTATE
-mdefine_line|#define TI_FPSTATE&t;76
+mdefine_line|#define TI_FPSTATE&t;(TI_USED_MATH+16)
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000
