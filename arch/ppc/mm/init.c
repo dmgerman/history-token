@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.init.c 1.36 09/22/01 14:03:09 paulus&n; */
-multiline_comment|/*&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
+multiline_comment|/*&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,19 +26,29 @@ macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &quot;mem_pieces.h&quot;
 macro_line|#include &quot;mmu_decl.h&quot;
+macro_line|#ifdef CONFIG_LOWMEM_SIZE_BOOL
+DECL|macro|MAX_LOW_MEM
+mdefine_line|#define MAX_LOW_MEM&t;CONFIG_LOWMEM_SIZE
+macro_line|#else
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;(0xF0000000UL - KERNELBASE)
+macro_line|#endif /* CONFIG_LOWMEM_SIZE_BOOL */
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_extern
+r_void
+id|create_virtual_bus_tce_table
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|mmu_gathers
 id|mmu_gather_t
 id|mmu_gathers
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-DECL|variable|end_of_DRAM
-r_void
-op_star
-id|end_of_DRAM
 suffix:semicolon
 DECL|variable|total_memory
 r_int
@@ -49,6 +59,18 @@ DECL|variable|total_lowmem
 r_int
 r_int
 id|total_lowmem
+suffix:semicolon
+DECL|variable|ppc_memstart
+r_int
+r_int
+id|ppc_memstart
+suffix:semicolon
+DECL|variable|ppc_memoffset
+r_int
+r_int
+id|ppc_memoffset
+op_assign
+id|PAGE_OFFSET
 suffix:semicolon
 DECL|variable|mem_init_done
 r_int
@@ -72,6 +94,13 @@ r_int
 r_int
 id|totalhigh_pages
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALL_PPC
+DECL|variable|agp_special_page
+r_int
+r_int
+id|agp_special_page
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_char
 id|_end
@@ -1258,14 +1287,6 @@ id|total_lowmem
 suffix:semicolon
 macro_line|#endif /* CONFIG_HIGHMEM */
 )brace
-id|end_of_DRAM
-op_assign
-id|__va
-c_func
-(paren
-id|total_lowmem
-)paren
-suffix:semicolon
 id|set_phys_avail
 c_func
 (paren
@@ -1380,12 +1401,12 @@ l_int|0x211
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-multiline_comment|/* Must be done last, or ppc_md.progress will die */
-r_if
-c_cond
-(paren
-id|have_of
-)paren
+multiline_comment|/* By default, we are no longer mapped */
+id|boot_text_mapped
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Must be done last, or ppc_md.progress will die. */
 id|map_boot_text
 c_func
 (paren
@@ -1542,18 +1563,37 @@ c_func
 id|start
 )paren
 suffix:semicolon
-id|boot_mapsize
+id|min_low_pfn
 op_assign
-id|init_bootmem
-c_func
-(paren
 id|start
 op_rshift
 id|PAGE_SHIFT
-comma
+suffix:semicolon
+id|max_low_pfn
+op_assign
+(paren
+id|PPC_MEMSTART
+op_plus
 id|total_lowmem
+)paren
 op_rshift
 id|PAGE_SHIFT
+suffix:semicolon
+id|boot_mapsize
+op_assign
+id|init_bootmem_node
+c_func
+(paren
+op_amp
+id|contig_page_data
+comma
+id|min_low_pfn
+comma
+id|PPC_MEMSTART
+op_rshift
+id|PAGE_SHIFT
+comma
+id|max_low_pfn
 )paren
 suffix:semicolon
 multiline_comment|/* remove the bootmem bitmap from the available memory */
@@ -1793,18 +1833,13 @@ id|mem_map
 op_plus
 id|highmem_mapnr
 suffix:semicolon
+macro_line|#endif /* CONFIG_HIGHMEM */
 id|max_mapnr
 op_assign
 id|total_memory
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#else
-id|max_mapnr
-op_assign
-id|max_low_pfn
-suffix:semicolon
-macro_line|#endif /* CONFIG_HIGHMEM */
 id|high_memory
 op_assign
 (paren
@@ -1814,9 +1849,9 @@ op_star
 id|__va
 c_func
 (paren
-id|max_low_pfn
-op_star
-id|PAGE_SIZE
+id|PPC_MEMSTART
+op_plus
+id|total_lowmem
 )paren
 suffix:semicolon
 id|num_physpages
@@ -1866,7 +1901,7 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#if defined(CONFIG_ALL_PPC)&t;
+macro_line|#if defined(CONFIG_ALL_PPC)
 multiline_comment|/* mark the RTAS pages as reserved */
 r_if
 c_cond
@@ -1915,6 +1950,21 @@ id|virt_to_page
 c_func
 (paren
 id|addr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_special_page
+)paren
+id|SetPageReserved
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|agp_special_page
 )paren
 )paren
 suffix:semicolon
@@ -1976,7 +2026,7 @@ OL
 r_int
 r_int
 )paren
-id|end_of_DRAM
+id|high_memory
 suffix:semicolon
 id|addr
 op_add_assign
@@ -2200,6 +2250,29 @@ comma
 id|sysmap_size
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ALL_PPC)
+r_if
+c_cond
+(paren
+id|agp_special_page
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;AGP special page: 0x%08lx&bslash;n&quot;
+comma
+id|agp_special_page
+)paren
+suffix:semicolon
+macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#ifdef CONFIG_PPC_ISERIES
+id|create_virtual_bus_tce_table
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 id|mem_init_done
 op_assign
 l_int|1
@@ -2231,7 +2304,7 @@ l_int|0
 dot
 id|address
 op_assign
-l_int|0
+id|PPC_MEMSTART
 suffix:semicolon
 id|phys_avail.regions
 (braket
@@ -2364,6 +2437,55 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Because of some uninorth weirdness, we need a page of&n;&t; * memory as high as possible (it must be outside of the&n;&t; * bus address seen as the AGP aperture). It will be used&n;&t; * by the r128 DRM driver&n;&t; * &n;&t; * FIXME: We need to make sure that page doesn&squot;t overlap any of the&bslash;&n;&t; * above. This could be done by improving mem_pieces_find to be able&n;&t; * to do a backward search from the end of the list.&n;&t; */
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+op_logical_and
+id|find_devices
+c_func
+(paren
+l_string|&quot;uni-north-agp&quot;
+)paren
+)paren
+(brace
+id|agp_special_page
+op_assign
+(paren
+id|total_memory
+op_minus
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|mem_pieces_remove
+c_func
+(paren
+op_amp
+id|phys_avail
+comma
+id|agp_special_page
+comma
+id|PAGE_SIZE
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|agp_special_page
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|__va
+c_func
+(paren
+id|agp_special_page
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_ALL_PPC */
 )brace
 multiline_comment|/* Mark some memory as reserved by removing it from phys_avail. */
@@ -2396,9 +2518,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|flush_page_to_ram
+multiline_comment|/*&n; * This is called when a page has been modified by the kernel.&n; * It just marks the page as not i-cache clean.  We do the i-cache&n; * flush later when the page is given to a user process, if necessary.&n; */
+DECL|function|flush_dcache_page
 r_void
-id|flush_page_to_ram
+id|flush_dcache_page
 c_func
 (paren
 r_struct
@@ -2407,9 +2530,164 @@ op_star
 id|page
 )paren
 (brace
+id|clear_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+)brace
+DECL|function|flush_icache_page
+r_void
+id|flush_icache_page
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|page-&gt;mapping
+op_logical_and
+op_logical_neg
+id|PageReserved
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+(brace
+id|__flush_dcache_icache
+c_func
+(paren
+id|kmap
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|clear_user_page
+r_void
+id|clear_user_page
+c_func
+(paren
+r_void
+op_star
+id|page
+comma
 r_int
 r_int
 id|vaddr
+)paren
+(brace
+id|clear_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+DECL|function|copy_user_page
+r_void
+id|copy_user_page
+c_func
+(paren
+r_void
+op_star
+id|vto
+comma
+r_void
+op_star
+id|vfrom
+comma
+r_int
+r_int
+id|vaddr
+)paren
+(brace
+id|copy_page
+c_func
+(paren
+id|vto
+comma
+id|vfrom
+)paren
+suffix:semicolon
+id|__flush_dcache_icache
+c_func
+(paren
+id|vto
+)paren
+suffix:semicolon
+)brace
+DECL|function|flush_icache_user_range
+r_void
+id|flush_icache_user_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|len
+)paren
+(brace
+r_int
+r_int
+id|maddr
+suffix:semicolon
+id|maddr
 op_assign
 (paren
 r_int
@@ -2420,11 +2698,22 @@ c_func
 (paren
 id|page
 )paren
+op_plus
+(paren
+id|addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 suffix:semicolon
-id|__flush_page_to_ram
+id|flush_icache_range
 c_func
 (paren
-id|vaddr
+id|maddr
+comma
+id|maddr
+op_plus
+id|len
 )paren
 suffix:semicolon
 id|kunmap
@@ -2433,46 +2722,5 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * set_pte stores a linux PTE into the linux page table.&n; * On machines which use an MMU hash table we avoid changing the&n; * _PAGE_HASHPTE bit.&n; */
-DECL|function|set_pte
-r_void
-id|set_pte
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-comma
-id|pte_t
-id|pte
-)paren
-(brace
-macro_line|#if _PAGE_HASHPTE != 0
-id|pte_update
-c_func
-(paren
-id|ptep
-comma
-op_complement
-id|_PAGE_HASHPTE
-comma
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-op_complement
-id|_PAGE_HASHPTE
-)paren
-suffix:semicolon
-macro_line|#else
-op_star
-id|ptep
-op_assign
-id|pte
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.delay.h 1.7 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_DELAY_H
 DECL|macro|_PPC_DELAY_H
@@ -10,9 +10,6 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-multiline_comment|/* maximum permitted argument to udelay */
-DECL|macro|__MAX_UDELAY
-mdefine_line|#define __MAX_UDELAY&t;1000000
 r_extern
 r_void
 id|__delay
@@ -23,17 +20,19 @@ r_int
 id|loops
 )paren
 suffix:semicolon
-multiline_comment|/* N.B. the `secs&squot; parameter here is a fixed-point number with&n;   the binary point to the left of the most-significant bit. */
-DECL|function|__const_udelay
+multiline_comment|/*&n; * Note that 19 * 226 == 4294 ==~ 2^32 / 10^6, so&n; * loops = (4294 * usecs * loops_per_jiffy * HZ) / 2^32.&n; *&n; * The mulhwu instruction gives us loops = (a * b) / 2^32.&n; * We choose a = usecs * 19 * HZ and b = loops_per_jiffy * 226&n; * because this lets us support a wide range of HZ and&n; * loops_per_jiffy values without either a or b overflowing 2^32.&n; * Thus we need usecs * HZ &lt;= (2^32 - 1) / 19 = 226050910 and&n; * loops_per_jiffy &lt;= (2^32 - 1) / 226 = 19004280&n; * (which corresponds to ~3800 bogomips at HZ = 100).&n; *  -- paulus&n; */
+DECL|macro|__MAX_UDELAY
+mdefine_line|#define __MAX_UDELAY&t;(226050910/HZ)&t;/* maximum udelay argument */
+DECL|function|__udelay
 r_extern
 id|__inline__
 r_void
-id|__const_udelay
+id|__udelay
 c_func
 (paren
 r_int
 r_int
-id|secs
+id|usecs
 )paren
 (brace
 r_int
@@ -52,12 +51,20 @@ id|loops
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|secs
+id|usecs
+op_star
+(paren
+l_int|19
+op_star
+id|HZ
+)paren
 )paren
 comma
 l_string|&quot;r&quot;
 (paren
 id|loops_per_jiffy
+op_star
+l_int|226
 )paren
 )paren
 suffix:semicolon
@@ -65,30 +72,6 @@ id|__delay
 c_func
 (paren
 id|loops
-op_star
-id|HZ
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * note that 4294 == 2^32 / 10^6, multiplying by 4294 converts from&n; * microseconds to a 32-bit fixed-point number of seconds.&n; */
-DECL|function|__udelay
-r_extern
-id|__inline__
-r_void
-id|__udelay
-c_func
-(paren
-r_int
-r_int
-id|usecs
-)paren
-(brace
-id|__const_udelay
-c_func
-(paren
-id|usecs
-op_star
-l_int|4294
 )paren
 suffix:semicolon
 )brace
@@ -102,7 +85,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* deliberately undefined */
 DECL|macro|udelay
-mdefine_line|#define udelay(n) (__builtin_constant_p(n)? &bslash;&n;&t;&t;   ((n) &gt; __MAX_UDELAY? __bad_udelay(): __const_udelay((n) * 4294u)) : &bslash;&n;&t;&t;   __udelay(n))
+mdefine_line|#define udelay(n) (__builtin_constant_p(n)? &bslash;&n;&t;&t;   ((n) &gt; __MAX_UDELAY? __bad_udelay(): __udelay((n))) : &bslash;&n;&t;&t;   __udelay(n))
 macro_line|#endif /* defined(_PPC_DELAY_H) */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.semaphore.c 1.12 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * PowerPC-specific semaphore code.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * April 2001 - Reworked by Paul Mackerras &lt;paulus@samba.org&gt;&n; * to eliminate the SMP races in the old version between the updates&n; * of `count&squot; and `waking&squot;.  Now we use negative `count&squot; values to&n; * indicate that some process(es) are waiting for the semaphore.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -34,6 +34,14 @@ l_string|&quot;1:&t;lwarx&t;%0,0,%3&bslash;n&quot;
 l_string|&quot;&t;srawi&t;%1,%0,31&bslash;n&quot;
 l_string|&quot;&t;andc&t;%1,%0,%1&bslash;n&quot;
 l_string|&quot;&t;add&t;%1,%1,%4&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
 l_string|&quot;&t;stwcx.&t;%1,0,%3&bslash;n&quot;
 l_string|&quot;&t;bne&t;1b&quot;
 suffix:colon

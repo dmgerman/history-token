@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.dma.h 1.8 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; * Written by Hennus Bergman, 1992.&n; * High DMA channel support &amp; info by Hannu Savolainen&n; * and John Boyd, Nov. 1992.&n; * Changes for ppc sound by Christoph Nadig&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
@@ -16,7 +16,7 @@ macro_line|#endif
 multiline_comment|/* The maximum address that we can perform a DMA transfer to on this platform */
 multiline_comment|/* Doesn&squot;t really apply... */
 DECL|macro|MAX_DMA_ADDRESS
-mdefine_line|#define MAX_DMA_ADDRESS      0xFFFFFFFF
+mdefine_line|#define MAX_DMA_ADDRESS&t;&t;0xFFFFFFFF
 multiline_comment|/* in arch/ppc/kernel/setup.c -- Cort */
 r_extern
 r_int
@@ -39,31 +39,19 @@ mdefine_line|#define dma_outb&t;outb
 macro_line|#endif
 DECL|macro|dma_inb
 mdefine_line|#define dma_inb&t;&t;inb
-multiline_comment|/*&n; * NOTES about DMA transfers:&n; *&n; *  controller 1: channels 0-3, byte operations, ports 00-1F&n; *  controller 2: channels 4-7, word operations, ports C0-DF&n; *&n; *  - ALL registers are 8 bits only, regardless of transfer size&n; *  - channel 4 is not used - cascades 1 into 2.&n; *  - channels 0-3 are byte - addresses/counts are for physical bytes&n; *  - channels 5-7 are word - addresses/counts are for physical words&n; *  - transfers must not cross physical 64K (0-3) or 128K (5-7) boundaries&n; *  - transfer count loaded to registers is 1 less than actual count&n; *  - controller 2 offsets are all even (2x offsets for controller 1)&n; *  - page registers for 5-7 don&squot;t use data bit 0, represent 128K pages&n; *  - page registers for 0-3 use bit 0, represent 64K pages&n; *&n; * On PReP, DMA transfers are limited to the lower 16MB of _physical_ memory.  &n; * On CHRP, the W83C553F (and VLSI Tollgate?) support full 32 bit addressing.&n; * Note that addresses loaded into registers must be _physical_ addresses,&n; * not logical addresses (which may differ if paging is active).&n; *&n; *  Address mapping for channels 0-3:&n; *&n; *   A23 ... A16 A15 ... A8  A7 ... A0    (Physical addresses)&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *   P7  ...  P0  A7 ... A0  A7 ... A0   &n; * |    Page    | Addr MSB | Addr LSB |   (DMA registers)&n; *&n; *  Address mapping for channels 5-7:&n; *&n; *   A23 ... A17 A16 A15 ... A9 A8 A7 ... A1 A0    (Physical addresses)&n; *    |  ...  |   &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  &bslash;&n; *    |  ...  |    &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  (not used)&n; *    |  ...  |     &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;&n; *   P7  ...  P1 (0) A7 A6  ... A0 A7 A6 ... A0   &n; * |      Page      |  Addr MSB   |  Addr LSB  |   (DMA registers)&n; *&n; * Again, channels 5-7 transfer _physical_ words (16 bits), so addresses&n; * and counts _must_ be word-aligned (the lowest address bit is _ignored_ at&n; * the hardware level, so odd-byte transfers aren&squot;t possible).&n; *&n; * Transfer count (_not # bytes_) is limited to 64K, represented as actual&n; * count - 1 : 64K =&gt; 0xFFFF, 1 =&gt; 0x0000.  Thus, count is always 1 or more,&n; * and up to 128K bytes may be transferred on channels 5-7 in one operation. &n; *&n; */
-multiline_comment|/* used in nasty hack for sound - see prep_setup_arch() -- Cort */
+multiline_comment|/*&n; * NOTES about DMA transfers:&n; *&n; *  controller 1: channels 0-3, byte operations, ports 00-1F&n; *  controller 2: channels 4-7, word operations, ports C0-DF&n; *&n; *  - ALL registers are 8 bits only, regardless of transfer size&n; *  - channel 4 is not used - cascades 1 into 2.&n; *  - channels 0-3 are byte - addresses/counts are for physical bytes&n; *  - channels 5-7 are word - addresses/counts are for physical words&n; *  - transfers must not cross physical 64K (0-3) or 128K (5-7) boundaries&n; *  - transfer count loaded to registers is 1 less than actual count&n; *  - controller 2 offsets are all even (2x offsets for controller 1)&n; *  - page registers for 5-7 don&squot;t use data bit 0, represent 128K pages&n; *  - page registers for 0-3 use bit 0, represent 64K pages&n; *&n; * On PReP, DMA transfers are limited to the lower 16MB of _physical_ memory.&n; * On CHRP, the W83C553F (and VLSI Tollgate?) support full 32 bit addressing.&n; * Note that addresses loaded into registers must be _physical_ addresses,&n; * not logical addresses (which may differ if paging is active).&n; *&n; *  Address mapping for channels 0-3:&n; *&n; *   A23 ... A16 A15 ... A8  A7 ... A0    (Physical addresses)&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *   P7  ...  P0  A7 ... A0  A7 ... A0&n; * |    Page    | Addr MSB | Addr LSB |   (DMA registers)&n; *&n; *  Address mapping for channels 5-7:&n; *&n; *   A23 ... A17 A16 A15 ... A9 A8 A7 ... A1 A0    (Physical addresses)&n; *    |  ...  |   &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  &bslash;&n; *    |  ...  |    &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  (not used)&n; *    |  ...  |     &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;&n; *   P7  ...  P1 (0) A7 A6  ... A0 A7 A6 ... A0&n; * |      Page      |  Addr MSB   |  Addr LSB  |   (DMA registers)&n; *&n; * Again, channels 5-7 transfer _physical_ words (16 bits), so addresses&n; * and counts _must_ be word-aligned (the lowest address bit is _ignored_ at&n; * the hardware level, so odd-byte transfers aren&squot;t possible).&n; *&n; * Transfer count (_not # bytes_) is limited to 64K, represented as actual&n; * count - 1 : 64K =&gt; 0xFFFF, 1 =&gt; 0x0000.  Thus, count is always 1 or more,&n; * and up to 128K bytes may be transferred on channels 5-7 in one operation.&n; *&n; */
+multiline_comment|/* see prep_setup_arch() for detailed informations */
+macro_line|#if defined(CONFIG_SOUND_CS4232) &amp;&amp; defined(CONFIG_ALL_PPC)
 r_extern
 r_int
 id|ppc_cs4232_dma
 comma
 id|ppc_cs4232_dma2
 suffix:semicolon
-macro_line|#if defined(CONFIG_CS4232)
-macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|macro|SND_DMA1
 mdefine_line|#define SND_DMA1 ppc_cs4232_dma
 DECL|macro|SND_DMA2
 mdefine_line|#define SND_DMA2 ppc_cs4232_dma2
-macro_line|#else /* !CONFIG_ALL_PPC */
-DECL|macro|SND_DMA1
-mdefine_line|#define SND_DMA1 -1
-DECL|macro|SND_DMA2
-mdefine_line|#define SND_DMA2 -1
-macro_line|#endif /* CONFIG_ALL_PPC */
-macro_line|#elif defined(CONFIG_MSS)
-DECL|macro|SND_DMA1
-mdefine_line|#define SND_DMA1 CONFIG_MSS_DMA
-DECL|macro|SND_DMA2
-mdefine_line|#define SND_DMA2 CONFIG_MSS_DMA2
 macro_line|#else
 DECL|macro|SND_DMA1
 mdefine_line|#define SND_DMA1 -1
@@ -81,7 +69,7 @@ mdefine_line|#define DMA1_CMD_REG&t;&t;0x08&t;/* command register (w) */
 DECL|macro|DMA1_STAT_REG
 mdefine_line|#define DMA1_STAT_REG&t;&t;0x08&t;/* status register (r) */
 DECL|macro|DMA1_REQ_REG
-mdefine_line|#define DMA1_REQ_REG            0x09    /* request register (w) */
+mdefine_line|#define DMA1_REQ_REG&t;&t;0x09&t;/* request register (w) */
 DECL|macro|DMA1_MASK_REG
 mdefine_line|#define DMA1_MASK_REG&t;&t;0x0A&t;/* single-channel mask (w) */
 DECL|macro|DMA1_MODE_REG
@@ -89,19 +77,19 @@ mdefine_line|#define DMA1_MODE_REG&t;&t;0x0B&t;/* mode register (w) */
 DECL|macro|DMA1_CLEAR_FF_REG
 mdefine_line|#define DMA1_CLEAR_FF_REG&t;0x0C&t;/* clear pointer flip-flop (w) */
 DECL|macro|DMA1_TEMP_REG
-mdefine_line|#define DMA1_TEMP_REG           0x0D    /* Temporary Register (r) */
+mdefine_line|#define DMA1_TEMP_REG&t;&t;0x0D&t;/* Temporary Register (r) */
 DECL|macro|DMA1_RESET_REG
 mdefine_line|#define DMA1_RESET_REG&t;&t;0x0D&t;/* Master Clear (w) */
 DECL|macro|DMA1_CLR_MASK_REG
-mdefine_line|#define DMA1_CLR_MASK_REG       0x0E    /* Clear Mask */
+mdefine_line|#define DMA1_CLR_MASK_REG&t;0x0E&t;/* Clear Mask */
 DECL|macro|DMA1_MASK_ALL_REG
-mdefine_line|#define DMA1_MASK_ALL_REG       0x0F    /* all-channels mask (w) */
+mdefine_line|#define DMA1_MASK_ALL_REG&t;0x0F&t;/* all-channels mask (w) */
 DECL|macro|DMA2_CMD_REG
 mdefine_line|#define DMA2_CMD_REG&t;&t;0xD0&t;/* command register (w) */
 DECL|macro|DMA2_STAT_REG
 mdefine_line|#define DMA2_STAT_REG&t;&t;0xD0&t;/* status register (r) */
 DECL|macro|DMA2_REQ_REG
-mdefine_line|#define DMA2_REQ_REG            0xD2    /* request register (w) */
+mdefine_line|#define DMA2_REQ_REG&t;&t;0xD2&t;/* request register (w) */
 DECL|macro|DMA2_MASK_REG
 mdefine_line|#define DMA2_MASK_REG&t;&t;0xD4&t;/* single-channel mask (w) */
 DECL|macro|DMA2_MODE_REG
@@ -109,81 +97,81 @@ mdefine_line|#define DMA2_MODE_REG&t;&t;0xD6&t;/* mode register (w) */
 DECL|macro|DMA2_CLEAR_FF_REG
 mdefine_line|#define DMA2_CLEAR_FF_REG&t;0xD8&t;/* clear pointer flip-flop (w) */
 DECL|macro|DMA2_TEMP_REG
-mdefine_line|#define DMA2_TEMP_REG           0xDA    /* Temporary Register (r) */
+mdefine_line|#define DMA2_TEMP_REG&t;&t;0xDA&t;/* Temporary Register (r) */
 DECL|macro|DMA2_RESET_REG
 mdefine_line|#define DMA2_RESET_REG&t;&t;0xDA&t;/* Master Clear (w) */
 DECL|macro|DMA2_CLR_MASK_REG
-mdefine_line|#define DMA2_CLR_MASK_REG       0xDC    /* Clear Mask */
+mdefine_line|#define DMA2_CLR_MASK_REG&t;0xDC&t;/* Clear Mask */
 DECL|macro|DMA2_MASK_ALL_REG
-mdefine_line|#define DMA2_MASK_ALL_REG       0xDE    /* all-channels mask (w) */
+mdefine_line|#define DMA2_MASK_ALL_REG&t;0xDE&t;/* all-channels mask (w) */
 DECL|macro|DMA_ADDR_0
-mdefine_line|#define DMA_ADDR_0              0x00    /* DMA address registers */
+mdefine_line|#define DMA_ADDR_0&t;&t;0x00&t;/* DMA address registers */
 DECL|macro|DMA_ADDR_1
-mdefine_line|#define DMA_ADDR_1              0x02
+mdefine_line|#define DMA_ADDR_1&t;&t;0x02
 DECL|macro|DMA_ADDR_2
-mdefine_line|#define DMA_ADDR_2              0x04
+mdefine_line|#define DMA_ADDR_2&t;&t;0x04
 DECL|macro|DMA_ADDR_3
-mdefine_line|#define DMA_ADDR_3              0x06
+mdefine_line|#define DMA_ADDR_3&t;&t;0x06
 DECL|macro|DMA_ADDR_4
-mdefine_line|#define DMA_ADDR_4              0xC0
+mdefine_line|#define DMA_ADDR_4&t;&t;0xC0
 DECL|macro|DMA_ADDR_5
-mdefine_line|#define DMA_ADDR_5              0xC4
+mdefine_line|#define DMA_ADDR_5&t;&t;0xC4
 DECL|macro|DMA_ADDR_6
-mdefine_line|#define DMA_ADDR_6              0xC8
+mdefine_line|#define DMA_ADDR_6&t;&t;0xC8
 DECL|macro|DMA_ADDR_7
-mdefine_line|#define DMA_ADDR_7              0xCC
+mdefine_line|#define DMA_ADDR_7&t;&t;0xCC
 DECL|macro|DMA_CNT_0
-mdefine_line|#define DMA_CNT_0               0x01    /* DMA count registers */
+mdefine_line|#define DMA_CNT_0&t;&t;0x01&t;/* DMA count registers */
 DECL|macro|DMA_CNT_1
-mdefine_line|#define DMA_CNT_1               0x03
+mdefine_line|#define DMA_CNT_1&t;&t;0x03
 DECL|macro|DMA_CNT_2
-mdefine_line|#define DMA_CNT_2               0x05
+mdefine_line|#define DMA_CNT_2&t;&t;0x05
 DECL|macro|DMA_CNT_3
-mdefine_line|#define DMA_CNT_3               0x07
+mdefine_line|#define DMA_CNT_3&t;&t;0x07
 DECL|macro|DMA_CNT_4
-mdefine_line|#define DMA_CNT_4               0xC2
+mdefine_line|#define DMA_CNT_4&t;&t;0xC2
 DECL|macro|DMA_CNT_5
-mdefine_line|#define DMA_CNT_5               0xC6
+mdefine_line|#define DMA_CNT_5&t;&t;0xC6
 DECL|macro|DMA_CNT_6
-mdefine_line|#define DMA_CNT_6               0xCA
+mdefine_line|#define DMA_CNT_6&t;&t;0xCA
 DECL|macro|DMA_CNT_7
-mdefine_line|#define DMA_CNT_7               0xCE
+mdefine_line|#define DMA_CNT_7&t;&t;0xCE
 DECL|macro|DMA_LO_PAGE_0
-mdefine_line|#define DMA_LO_PAGE_0              0x87    /* DMA page registers */
+mdefine_line|#define DMA_LO_PAGE_0&t;&t;0x87&t;/* DMA page registers */
 DECL|macro|DMA_LO_PAGE_1
-mdefine_line|#define DMA_LO_PAGE_1              0x83
+mdefine_line|#define DMA_LO_PAGE_1&t;&t;0x83
 DECL|macro|DMA_LO_PAGE_2
-mdefine_line|#define DMA_LO_PAGE_2              0x81
+mdefine_line|#define DMA_LO_PAGE_2&t;&t;0x81
 DECL|macro|DMA_LO_PAGE_3
-mdefine_line|#define DMA_LO_PAGE_3              0x82
+mdefine_line|#define DMA_LO_PAGE_3&t;&t;0x82
 DECL|macro|DMA_LO_PAGE_5
-mdefine_line|#define DMA_LO_PAGE_5              0x8B
+mdefine_line|#define DMA_LO_PAGE_5&t;&t;0x8B
 DECL|macro|DMA_LO_PAGE_6
-mdefine_line|#define DMA_LO_PAGE_6              0x89
+mdefine_line|#define DMA_LO_PAGE_6&t;&t;0x89
 DECL|macro|DMA_LO_PAGE_7
-mdefine_line|#define DMA_LO_PAGE_7              0x8A
+mdefine_line|#define DMA_LO_PAGE_7&t;&t;0x8A
 DECL|macro|DMA_HI_PAGE_0
-mdefine_line|#define DMA_HI_PAGE_0              0x487    /* DMA page registers */
+mdefine_line|#define DMA_HI_PAGE_0&t;&t;0x487&t;/* DMA page registers */
 DECL|macro|DMA_HI_PAGE_1
-mdefine_line|#define DMA_HI_PAGE_1              0x483
+mdefine_line|#define DMA_HI_PAGE_1&t;&t;0x483
 DECL|macro|DMA_HI_PAGE_2
-mdefine_line|#define DMA_HI_PAGE_2              0x481
+mdefine_line|#define DMA_HI_PAGE_2&t;&t;0x481
 DECL|macro|DMA_HI_PAGE_3
-mdefine_line|#define DMA_HI_PAGE_3              0x482
+mdefine_line|#define DMA_HI_PAGE_3&t;&t;0x482
 DECL|macro|DMA_HI_PAGE_5
-mdefine_line|#define DMA_HI_PAGE_5              0x48B
+mdefine_line|#define DMA_HI_PAGE_5&t;&t;0x48B
 DECL|macro|DMA_HI_PAGE_6
-mdefine_line|#define DMA_HI_PAGE_6              0x489
+mdefine_line|#define DMA_HI_PAGE_6&t;&t;0x489
 DECL|macro|DMA_HI_PAGE_7
-mdefine_line|#define DMA_HI_PAGE_7              0x48A
+mdefine_line|#define DMA_HI_PAGE_7&t;&t;0x48A
 DECL|macro|DMA1_EXT_REG
-mdefine_line|#define DMA1_EXT_REG               0x40B
+mdefine_line|#define DMA1_EXT_REG&t;&t;0x40B
 DECL|macro|DMA2_EXT_REG
-mdefine_line|#define DMA2_EXT_REG               0x4D6
+mdefine_line|#define DMA2_EXT_REG&t;&t;0x4D6
 DECL|macro|DMA_MODE_CASCADE
-mdefine_line|#define DMA_MODE_CASCADE 0xC0   /* pass thru DREQ-&gt;HRQ, DACK&lt;-HLDA only */
+mdefine_line|#define DMA_MODE_CASCADE&t;0xC0&t;/* pass thru DREQ-&gt;HRQ, DACK&lt;-HLDA only */
 DECL|macro|DMA_AUTOINIT
-mdefine_line|#define DMA_AUTOINIT   &t; 0x10
+mdefine_line|#define DMA_AUTOINIT&t;&t;0x10
 r_extern
 id|spinlock_t
 id|dma_spin_lock
@@ -311,7 +299,6 @@ suffix:semicolon
 multiline_comment|/* Enable group */
 )brace
 r_else
-(brace
 id|dma_outb
 c_func
 (paren
@@ -322,7 +309,6 @@ comma
 id|DMA2_MASK_REG
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|disable_dma
 r_static
@@ -778,7 +764,6 @@ id|IO_DMA1_BASE
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -899,7 +884,6 @@ id|IO_DMA2_BASE
 )paren
 suffix:semicolon
 )brace
-)brace
 id|set_dma_page
 c_func
 (paren
@@ -989,7 +973,6 @@ id|IO_DMA1_BASE
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -1107,7 +1090,6 @@ id|IO_DMA2_BASE
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/* Get DMA residue count. After a DMA transfer, this&n; * should return zero. Reading this while a DMA transfer is&n; * still in progress will return unpredictable results.&n; * If called before the channel has been used, it may return 1.&n; * Otherwise, it returns the number of _bytes_ left to transfer.&n; *&n; * Assumes DMA flip-flop is clear.&n; */
 DECL|function|get_dma_residue
 r_static
@@ -1211,6 +1193,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* These are in kernel/dma.c: */
+multiline_comment|/* reserve a DMA channel */
 r_extern
 r_int
 id|request_dma
@@ -1226,7 +1209,7 @@ op_star
 id|device_id
 )paren
 suffix:semicolon
-multiline_comment|/* reserve a DMA channel */
+multiline_comment|/* release it again */
 r_extern
 r_void
 id|free_dma
@@ -1237,15 +1220,14 @@ r_int
 id|dmanr
 )paren
 suffix:semicolon
-multiline_comment|/* release it again */
 macro_line|#ifdef CONFIG_PCI
 r_extern
 r_int
 id|isa_dma_bridge_buggy
 suffix:semicolon
-macro_line|#else                                                         
+macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
-mdefine_line|#define isa_dma_bridge_buggy   (0)
+mdefine_line|#define isa_dma_bridge_buggy&t;(0)
 macro_line|#endif
 macro_line|#endif /* _ASM_DMA_H */
 macro_line|#endif /* __KERNEL__ */

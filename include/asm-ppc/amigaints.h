@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.amigaints.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n;** amigaints.h -- Amiga Linux interrupt handling structs and prototypes&n;**&n;** Copyright 1992 by Greg Harp&n;**&n;** This file is subject to the terms and conditions of the GNU General Public&n;** License.  See the file COPYING in the main directory of this archive&n;** for more details.&n;**&n;** Created 10/2/92 by Greg Harp&n;*/
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASMm68k_AMIGAINTS_H_
@@ -142,20 +142,6 @@ DECL|macro|IF_DSKBLK
 mdefine_line|#define IF_DSKBLK   0x0002&t;/* diskblock DMA finished */
 DECL|macro|IF_TBE
 mdefine_line|#define IF_TBE&t;    0x0001&t;/* serial transmit buffer empty interrupt */
-DECL|struct|irq_server
-r_struct
-id|irq_server
-(brace
-DECL|member|count
-DECL|member|reentrance
-r_int
-r_int
-id|count
-comma
-id|reentrance
-suffix:semicolon
-)brace
-suffix:semicolon
 r_extern
 r_void
 id|amiga_do_irq
@@ -182,11 +168,6 @@ r_struct
 id|pt_regs
 op_star
 id|fp
-comma
-r_struct
-id|irq_server
-op_star
-id|server
 )paren
 suffix:semicolon
 multiline_comment|/* CIA interrupt control register bits */

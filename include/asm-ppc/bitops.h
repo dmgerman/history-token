@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.bitops.h 1.9 05/26/01 14:48:14 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * bitops.h: Bit string operations on the ppc&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_BITOPS_H
@@ -6,6 +6,7 @@ DECL|macro|_PPC_BITOPS_H
 mdefine_line|#define _PPC_BITOPS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * The test_and_*_bit operations are taken to imply a memory barrier&n; * on SMP systems.&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|SMP_WMB
@@ -75,7 +76,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;or&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;or&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -224,7 +234,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;andc&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;andc&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -369,7 +388,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;xor&t;%0,%0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%3 &bslash;n&bslash;&n;&t;xor&t;%0,%0,%2 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|3
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -519,7 +547,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -703,7 +740,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;andc&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;andc&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -888,7 +934,16 @@ id|__volatile__
 c_func
 (paren
 id|SMP_WMB
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;xor&t;%1,%0,%3 &bslash;n&bslash;&n;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%4 &bslash;n&bslash;&n;&t;xor&t;%1,%0,%3 &bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|4
+)paren
+l_string|&quot;&t;stwcx.&t;%1,0,%4 &bslash;n&bslash;&n;&t;bne&t;1b&quot;
 id|SMP_MB
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -1141,6 +1196,29 @@ id|x
 suffix:semicolon
 )brace
 macro_line|#ifdef __KERNEL__
+DECL|function|__ffs
+r_static
+r_inline
+r_int
+id|__ffs
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_return
+id|__ilog2
+c_func
+(paren
+id|x
+op_amp
+op_minus
+id|x
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
 r_static

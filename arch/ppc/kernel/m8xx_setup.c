@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.40 11/13/01 21:26:07 paulus&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;ppc8xx_pic.h&quot;
 r_static
@@ -92,6 +93,14 @@ c_func
 id|uint
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|rpxfb_alloc_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|m8xx_setup_arch
@@ -122,6 +131,13 @@ c_func
 id|cpm_page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_RPX
+id|rpxfb_alloc_pages
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef notdef
 id|ROOT_DEV
 op_assign
@@ -214,6 +230,14 @@ id|machine_restart
 c_func
 (paren
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* not reached */
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
 )paren
 suffix:semicolon
 )brace
@@ -778,8 +802,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;clock&bslash;t&bslash;t: %ldMHz&bslash;n&quot;
-l_string|&quot;bus clock&bslash;t: %ldMHz&bslash;n&quot;
+l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
+l_string|&quot;bus clock&bslash;t: %dMHz&bslash;n&quot;
 comma
 id|bp-&gt;bi_intfreq
 op_div
@@ -1131,6 +1155,15 @@ r_int
 id|r7
 )paren
 (brace
+id|parse_bootinfo
+c_func
+(paren
+id|find_bootinfo
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1321,6 +1354,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 eof

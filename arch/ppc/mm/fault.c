@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fault.c 1.15 09/24/01 16:35:10 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  arch/ppc/mm/fault.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Modified by Cort Dougan and Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -139,6 +140,26 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_pteptr
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
+id|pte_t
+op_star
+op_star
+id|ptep
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * For 600- and 800-family processors, the error_code parameter is DSISR&n; * for a data fault, SRR1 for an instruction fault. For 400-family processors&n; * the error_code parameter is ESR for a data fault, 0 for an instruction&n; * fault.&n; */
@@ -401,6 +422,144 @@ id|VM_WRITE
 r_goto
 id|bad_area
 suffix:semicolon
+macro_line|#if defined(CONFIG_4xx)
+multiline_comment|/* an exec  - 4xx allows for per-page execute permission */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|regs-&gt;trap
+op_eq
+l_int|0x400
+)paren
+(brace
+id|pte_t
+op_star
+id|ptep
+suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* It would be nice to actually enforce the VM execute&n;&t;&t;   permission on CPUs which can do so, but far too&n;&t;&t;   much stuff in userspace doesn&squot;t get the permissions&n;&t;&t;   right, so we let any page be executed for now. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+)paren
+r_goto
+id|bad_area
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Since 4xx supports per-page execute permission,&n;&t;&t; * we lazily flush dcache to icache. */
+r_if
+c_cond
+(paren
+id|get_pteptr
+c_func
+(paren
+id|mm
+comma
+id|address
+comma
+op_amp
+id|ptep
+)paren
+op_logical_and
+id|pte_present
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|pte_page
+c_func
+(paren
+op_star
+id|ptep
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+(brace
+id|__flush_dcache_icache
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|kmap
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+)brace
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+l_int|0
+comma
+id|_PAGE_HWEXEC
+)paren
+suffix:semicolon
+id|_tlbie
+c_func
+(paren
+id|address
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* a read */
 )brace
 r_else
@@ -581,11 +740,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

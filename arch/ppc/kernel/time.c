@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.c 1.26 10/05/01 08:29:42 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Common time routines among all ppc machines.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; * MPC8xx/MBX changes by Dan Malek (dmalek@jlc.net).&n; *&n; * First round of bugfixes by Gabriel Paubert (paubert@iram.es)&n; * to make clock more stable (2.4.0-test5). The only thing&n; * that this code assumes is that the timebases have been synchronized&n; * by firmware on SMP and are never stopped (never do sleep&n; * on SMP then, nap and doze are OK).&n; *&n; * TODO (not necessarily in this file):&n; * - improve precision and reproducibility of timebase frequency&n; * measurement at boot time.&n; * - get rid of xtime_lock for gettimeofday (generic kernel problem&n; * to be implemented on all architectures for SMP scalability and&n; * eventually implementing gettimeofday without entering the kernel).&n; * - put all time/clock related variables in a single structure&n; * to minimize number of cache lines touched by gettimeofday()&n; * - for astronomical applications: add a new function to get&n; * non ambiguous timestamps even around leap seconds. This needs&n; * a new timestamp format and a good name.&n; *&n; *&n; * The following comment is partially obsolete (at least the long wait&n; * is no more a valid reason):&n; * Since the MPC8xx has a programmable interrupt timer, I decided to&n; * use that rather than the decrementer.  Two reasons: 1.) the clock&n; * frequency is low, causing 2.) a long wait in the timer interrupt&n; *&t;&t;while ((d = get_dec()) == dval)&n; * loop.  The MPC8xx can be driven from a variety of input clocks,&n; * so a number of assumptions have been made here because the kernel&n; * parameter HZ is a constant.  We assume (correctly, today :-) that&n; * the MPC8xx on the MBX board is driven from a 32.768 kHz crystal.&n; * This is then divided by 4, providing a 8192 Hz clock into the PIT.&n; * Since it is not possible to get a nice 100 Hz clock out of this, without&n; * creating a software PLL, I have set HZ to 128.  -- Dan&n; *&n; * 1997-09-10  Updated NTP code according to technical memorandum Jan &squot;96&n; *             &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -75,6 +75,22 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_extern
+id|u64
+id|get_tb64
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|u64
+id|next_jiffy_update_tb
+(braket
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|variable|time_offset
 r_static
 r_int
@@ -161,6 +177,7 @@ r_return
 id|delta
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC_ISERIES&t;/* iSeries version is in iSeries_time.c */
 r_extern
 r_int
 r_int
@@ -411,6 +428,8 @@ multiline_comment|/*&n;&t;&t; * update the rtc when needed, this should be perfo
 r_if
 c_cond
 (paren
+id|ppc_md.set_rtc_time
+op_logical_and
 (paren
 id|time_status
 op_amp
@@ -563,6 +582,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
 DECL|function|do_gettimeofday
 r_void
@@ -605,6 +625,24 @@ id|usec
 op_assign
 id|xtime.tv_usec
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+id|delta
+op_assign
+id|tb_ticks_per_jiffy
+op_minus
+(paren
+id|next_jiffy_update_tb
+(braket
+l_int|0
+)braket
+op_minus
+id|get_tb64
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|delta
 op_assign
 id|tb_ticks_since
@@ -613,6 +651,7 @@ c_func
 id|tb_last_stamp
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* As long as timebases are not in sync, gettimeofday can only&n;&t; * have jiffy resolution on SMP.&n;&t; */
 r_if
@@ -1078,16 +1117,14 @@ id|tz
 suffix:semicolon
 )brace
 )brace
-DECL|macro|TICK_SIZE
-mdefine_line|#define TICK_SIZE tick
 DECL|macro|FEBRUARY
-mdefine_line|#define FEBRUARY&t;2
+mdefine_line|#define FEBRUARY&t;&t;2
 DECL|macro|STARTOFTIME
-mdefine_line|#define&t;STARTOFTIME&t;1970
+mdefine_line|#define&t;STARTOFTIME&t;&t;1970
 DECL|macro|SECDAY
-mdefine_line|#define SECDAY&t;&t;86400L
+mdefine_line|#define SECDAY&t;&t;&t;86400L
 DECL|macro|SECYR
-mdefine_line|#define SECYR&t;&t;(SECDAY * 365)
+mdefine_line|#define SECYR&t;&t;&t;(SECDAY * 365)
 DECL|macro|leapyear
 mdefine_line|#define&t;leapyear(year)&t;&t;((year) % 4 == 0)
 DECL|macro|days_in_year
@@ -1128,153 +1165,6 @@ comma
 l_int|31
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This only works for the Gregorian calendar - i.e. after 1752 (in the UK)&n; */
-DECL|function|GregorianDay
-r_void
-id|GregorianDay
-c_func
-(paren
-r_struct
-id|rtc_time
-op_star
-id|tm
-)paren
-(brace
-r_int
-id|leapsToDate
-suffix:semicolon
-r_int
-id|lastYear
-suffix:semicolon
-r_int
-id|day
-suffix:semicolon
-r_int
-id|MonthOffset
-(braket
-)braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|31
-comma
-l_int|59
-comma
-l_int|90
-comma
-l_int|120
-comma
-l_int|151
-comma
-l_int|181
-comma
-l_int|212
-comma
-l_int|243
-comma
-l_int|273
-comma
-l_int|304
-comma
-l_int|334
-)brace
-suffix:semicolon
-id|lastYear
-op_assign
-id|tm-&gt;tm_year
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * Number of leap corrections to apply up to end of last year&n;&t; */
-id|leapsToDate
-op_assign
-id|lastYear
-op_div
-l_int|4
-op_minus
-id|lastYear
-op_div
-l_int|100
-op_plus
-id|lastYear
-op_div
-l_int|400
-suffix:semicolon
-multiline_comment|/*&n;&t; * This year is a leap year if it is divisible by 4 except when it is&n;&t; * divisible by 100 unless it is divisible by 400&n;&t; *&n;&t; * e.g. 1904 was a leap year, 1900 was not, 1996 is, and 2000 will be&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|tm-&gt;tm_year
-op_mod
-l_int|4
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-(paren
-id|tm-&gt;tm_year
-op_mod
-l_int|100
-op_ne
-l_int|0
-)paren
-op_logical_or
-(paren
-id|tm-&gt;tm_year
-op_mod
-l_int|400
-op_eq
-l_int|0
-)paren
-)paren
-op_logical_and
-(paren
-id|tm-&gt;tm_mon
-OG
-l_int|2
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * We are past Feb. 29 in a leap year&n;&t;&t; */
-id|day
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|day
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|day
-op_add_assign
-id|lastYear
-op_star
-l_int|365
-op_plus
-id|leapsToDate
-op_plus
-id|MonthOffset
-(braket
-id|tm-&gt;tm_mon
-op_minus
-l_int|1
-)braket
-op_plus
-id|tm-&gt;tm_mday
-suffix:semicolon
-id|tm-&gt;tm_wday
-op_assign
-id|day
-op_mod
-l_int|7
-suffix:semicolon
-)brace
 DECL|function|to_tm
 r_void
 id|to_tm
@@ -1298,7 +1188,11 @@ r_int
 id|hms
 comma
 id|day
+comma
+id|gday
 suffix:semicolon
+id|gday
+op_assign
 id|day
 op_assign
 id|tim
@@ -1432,12 +1326,16 @@ id|day
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Determine the day of week&n;&t; */
-id|GregorianDay
-c_func
+multiline_comment|/*&n;&t; * Determine the day of week. Jan. 1, 1970 was a Thursday.&n;&t; */
+id|tm-&gt;tm_wday
+op_assign
 (paren
-id|tm
+id|gday
+op_plus
+l_int|4
 )paren
+op_mod
+l_int|7
 suffix:semicolon
 )brace
 multiline_comment|/* Auxiliary function to compute scaling factors */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.65 11/18/01 20:57:25 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -23,23 +23,15 @@ macro_line|#include &lt;asm/amigappc.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
-macro_line|#ifdef CONFIG_8xx
-macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &lt;asm/8xx_immap.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_8260
-macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_4xx
-macro_line|#include &lt;asm/ppc4xx.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/pmac_feature.h&gt;
+macro_line|#if defined CONFIG_KGDB
+macro_line|#include &lt;asm/kgdb.h&gt;
+macro_line|#endif
 r_extern
 r_void
 id|platform_init
@@ -81,15 +73,6 @@ id|phys
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|reloc_offset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|identify_cpu
 c_func
@@ -113,10 +96,30 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|reloc_got2
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 r_extern
 r_void
 id|xmon_map_scc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_KGDB
+r_extern
+r_void
+id|kgdb_map_scc
 c_func
 (paren
 r_void
@@ -160,13 +163,6 @@ DECL|variable|boot_mem_size
 r_int
 r_int
 id|boot_mem_size
-suffix:semicolon
-r_int
-id|parse_bootinfo
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|ISA_DMA_THRESHOLD
 r_int
@@ -299,7 +295,7 @@ DECL|variable|ucache_bsize
 r_int
 id|ucache_bsize
 suffix:semicolon
-macro_line|#ifdef CONFIG_VGA_CONSOLE
+macro_line|#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_FB_VGA16) || &bslash;&n;    defined(CONFIG_FB_VGA16_MODULE) || defined(CONFIG_FB_VESA)
 DECL|variable|screen_info
 r_struct
 id|screen_info
@@ -340,7 +336,7 @@ l_int|16
 multiline_comment|/* orig-video-points */
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_VGA_CONSOLE */
+macro_line|#endif /* CONFIG_VGA_CONSOLE || CONFIG_FB_VGA16 || CONFIG_FB_VESA */
 DECL|function|machine_restart
 r_void
 id|machine_restart
@@ -1126,6 +1122,12 @@ id|offset
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ALL_PPC)
+id|reloc_got2
+c_func
+(paren
+id|offset
+)paren
+suffix:semicolon
 multiline_comment|/* If we came here from BootX, clear the screen,&n;&t; * set up some pointers and return. */
 r_if
 c_cond
@@ -1142,7 +1144,6 @@ op_eq
 l_int|0
 )paren
 )paren
-(brace
 id|bootx_init
 c_func
 (paren
@@ -1151,11 +1152,8 @@ comma
 id|phys
 )paren
 suffix:semicolon
-r_return
-id|phys
-suffix:semicolon
-)brace
-multiline_comment|/* check if we&squot;re prep, return if we are */
+multiline_comment|/*&n;&t; * don&squot;t do anything on prep&n;&t; * for now, don&squot;t use bootinfo because it breaks yaboot 0.5&n;&t; * and assume that if we didn&squot;t find a magic number, we have OF&n;&t; */
+r_else
 r_if
 c_cond
 (paren
@@ -1168,13 +1166,9 @@ op_star
 (paren
 l_int|0
 )paren
-op_eq
+op_ne
 l_int|0xdeadc0de
 )paren
-r_return
-id|phys
-suffix:semicolon
-multiline_comment|/* &n;&t; * for now, don&squot;t use bootinfo because it breaks yaboot 0.5&n;&t; * and assume that if we didn&squot;t find a magic number, we have OF&n;&t; */
 id|phys
 op_assign
 id|prom_init
@@ -1188,6 +1182,13 @@ comma
 id|prom_entry
 )paren
 id|r5
+)paren
+suffix:semicolon
+id|reloc_got2
+c_func
+(paren
+op_minus
+id|offset
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1334,15 +1335,10 @@ id|r7
 )paren
 (brace
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-r_extern
-id|boot_infos_t
-op_star
-id|disp_bi
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|disp_bi
+id|boot_text_mapped
 )paren
 (brace
 id|btext_clearscreen
@@ -1353,11 +1349,19 @@ suffix:semicolon
 id|btext_welcome
 c_func
 (paren
-id|disp_bi
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif&t;
+id|parse_bootinfo
+c_func
+(paren
+id|find_bootinfo
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* if we didn&squot;t get any bootinfo telling us what we are... */
 r_if
 c_cond
@@ -1603,7 +1607,7 @@ id|r4
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -1689,6 +1693,29 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_ADB
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;adb_sync&quot;
+)paren
+)paren
+(brace
+r_extern
+r_int
+id|__adb_probe_sync
+suffix:semicolon
+id|__adb_probe_sync
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ADB */&t;
 r_switch
 c_cond
 (paren
@@ -1736,9 +1763,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
-DECL|function|parse_bootinfo
-r_int
-id|parse_bootinfo
+DECL|function|find_bootinfo
+r_struct
+id|bi_record
+op_star
+id|find_bootinfo
 c_func
 (paren
 r_void
@@ -1834,33 +1863,43 @@ op_ne
 id|BI_FIRST
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 )brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|rec-&gt;tag
-op_ne
-id|BI_LAST
-suffix:semicolon
+r_return
 id|rec
-op_assign
+suffix:semicolon
+)brace
+DECL|function|parse_bootinfo
+r_void
+id|parse_bootinfo
+c_func
 (paren
 r_struct
 id|bi_record
 op_star
-)paren
-(paren
-(paren
-id|ulong
-)paren
 id|rec
-op_plus
-id|rec-&gt;size
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|rec
+op_eq
+l_int|NULL
+op_logical_or
+id|rec-&gt;tag
+op_ne
+id|BI_FIRST
+)paren
+r_return
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|rec-&gt;tag
+op_ne
+id|BI_LAST
 )paren
 (brace
 id|ulong
@@ -1997,10 +2036,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
-r_return
-l_int|0
+id|rec
+op_assign
+(paren
+r_struct
+id|bi_record
+op_star
+)paren
+(paren
+(paren
+id|ulong
+)paren
+id|rec
+op_plus
+id|rec-&gt;size
+)paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Find out what kind of machine we&squot;re on and save any data we need&n; * from the early boot process (devtree is copied on pmac by prom_init()).&n; * This is called very early on the boot process, after a minimal&n; * MMU environment has been set up but before MMU_init is called.&n; */
 r_void
@@ -2040,11 +2092,6 @@ id|CONFIG_CMDLINE
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
-id|parse_bootinfo
-c_func
-(paren
-)paren
-suffix:semicolon
 id|platform_init
 c_func
 (paren
@@ -2151,7 +2198,7 @@ id|ppc_setup_l2cr
 )paren
 suffix:semicolon
 DECL|function|ppc_init
-r_void
+r_int
 id|__init
 id|ppc_init
 c_func
@@ -2191,9 +2238,14 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|init_crc32
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|ppc_init
-id|subsys_initcall
+id|arch_initcall
 c_func
 (paren
 id|ppc_init
@@ -2247,12 +2299,21 @@ op_div
 id|HZ
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALL_PPC
-id|feature_init
+multiline_comment|/* This could be called &quot;early setup arch&quot;, it must be done&n;&t; * now because xmon need it&n;&t; */
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
+id|pmac_feature_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* New cool way */
+macro_line|#endif /* CONFIG_ALL_PPC */
 macro_line|#ifdef CONFIG_XMON
 id|xmon_map_scc
 c_func
@@ -2303,11 +2364,37 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;nokgdb&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;kgdb default breakpoint deactivated on command line&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;kgdb default breakpoint activated&bslash;n&quot;
+)paren
+suffix:semicolon
 id|breakpoint
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 r_if
@@ -2450,103 +2537,6 @@ comma
 l_int|0x3eab
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_ALL_PPC)
-multiline_comment|/* We create the &quot;pci-OF-bus-map&quot; property now so it appear in the&n;&t; * /proc device tree&n;&t; */
-r_if
-c_cond
-(paren
-id|have_of
-)paren
-(brace
-r_struct
-id|property
-op_star
-id|of_prop
-suffix:semicolon
-id|of_prop
-op_assign
-(paren
-r_struct
-id|property
-op_star
-)paren
-id|alloc_bootmem
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|property
-)paren
-op_plus
-l_int|256
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|of_prop
-op_logical_and
-id|find_path_device
-c_func
-(paren
-l_string|&quot;/&quot;
-)paren
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|of_prop
-comma
-op_minus
-l_int|1
-comma
-r_sizeof
-(paren
-r_struct
-id|property
-)paren
-op_plus
-l_int|256
-)paren
-suffix:semicolon
-id|of_prop-&gt;name
-op_assign
-l_string|&quot;pci-OF-bus-map&quot;
-suffix:semicolon
-id|of_prop-&gt;length
-op_assign
-l_int|256
-suffix:semicolon
-id|of_prop-&gt;value
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-op_amp
-id|of_prop
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|prom_add_property
-c_func
-(paren
-id|find_path_device
-c_func
-(paren
-l_string|&quot;/&quot;
-)paren
-comma
-id|of_prop
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* CONFIG_PCI &amp;&amp; CONFIG_ALL_PPC */
 id|paging_init
 c_func
 (paren
@@ -2563,6 +2553,7 @@ op_assign
 id|_machine
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/* Convert the shorts/longs in hd_driveid from little to big endian;&n; * chars are endian independant, of course, but strings need to be flipped.&n; * (Despite what it says in drivers/block/ide.h, they come up as little&n; * endian...)&n; *&n; * Changes to linux/hdreg.h may require changes here. */
 DECL|function|ppc_generic_ide_fix_driveid
 r_void
@@ -3423,4 +3414,5 @@ id|id-&gt;integrity_word
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mmu.h 1.10 06/28/01 15:50:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * PowerPC memory management structures&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MMU_H_
@@ -524,26 +524,6 @@ DECL|typedef|P601_BAT
 )brace
 id|P601_BAT
 suffix:semicolon
-r_extern
-r_void
-id|_tlbie
-c_func
-(paren
-r_int
-r_int
-id|va
-)paren
-suffix:semicolon
-multiline_comment|/* invalidate a TLB entry */
-r_extern
-r_void
-id|_tlbia
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* invalidate all TLB entries */
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Block size masks */
 DECL|macro|BL_128K

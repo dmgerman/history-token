@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.keyboard.h 1.11 08/29/01 10:07:29 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/include/asm-ppc/keyboard.h&n; *&n; *  Created 3 Nov 1996 by Geert Uytterhoeven&n; *  Modified for Power Macintosh by Paul Mackerras&n; */
 multiline_comment|/*&n; * This file contains the ppc architecture specific keyboard definitions -&n; * like the intel pc for prep systems, different for power macs.&n; */
-macro_line|#ifndef __ASMPPC_KEYBOARD_H
-DECL|macro|__ASMPPC_KEYBOARD_H
-mdefine_line|#define __ASMPPC_KEYBOARD_H
+macro_line|#ifndef __ASM_KEYBOARD_H__
+DECL|macro|__ASM_KEYBOARD_H__
+mdefine_line|#define __ASM_KEYBOARD_H__
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -11,8 +11,14 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* IBM Spruce platform is different. */
+macro_line|#ifdef CONFIG_SPRUCE
+macro_line|#include &lt;platforms/spruce.h&gt;
+macro_line|#endif
+macro_line|#ifndef KEYBOARD_IRQ
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
+macro_line|#endif
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
 mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS&t;0
 DECL|macro|INIT_KBD
@@ -221,6 +227,7 @@ mdefine_line|#define kbd_request_region()
 DECL|macro|kbd_request_irq
 mdefine_line|#define kbd_request_irq(handler) request_irq(KEYBOARD_IRQ, handler, 0, &bslash;&n;                                             &quot;keyboard&quot;, NULL)
 multiline_comment|/* How to access the keyboard macros on this platform.  */
+macro_line|#ifndef kbd_read_input
 DECL|macro|kbd_read_input
 mdefine_line|#define kbd_read_input() inb(KBD_DATA_REG)
 DECL|macro|kbd_read_status
@@ -229,16 +236,19 @@ DECL|macro|kbd_write_output
 mdefine_line|#define kbd_write_output(val) outb(val, KBD_DATA_REG)
 DECL|macro|kbd_write_command
 mdefine_line|#define kbd_write_command(val) outb(val, KBD_CNTL_REG)
+macro_line|#endif
 multiline_comment|/* Some stoneage hardware needs delays after some operations.  */
 DECL|macro|kbd_pause
 mdefine_line|#define kbd_pause() do { } while(0)
 multiline_comment|/*&n; * Machine specific bits for the PS/2 driver&n; */
+macro_line|#ifndef AUX_IRQ&t;
 DECL|macro|AUX_IRQ
 mdefine_line|#define AUX_IRQ 12
+macro_line|#endif
 DECL|macro|aux_request_irq
 mdefine_line|#define aux_request_irq(hand, dev_id)&t;&t;&t;&t;&t;&bslash;&n;&t;request_irq(AUX_IRQ, hand, SA_SHIRQ, &quot;PS/2 Mouse&quot;, dev_id)
 DECL|macro|aux_free_irq
 mdefine_line|#define aux_free_irq(dev_id) free_irq(AUX_IRQ, dev_id)
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* __ASMPPC_KEYBOARD_H */
+macro_line|#endif /* __ASM_KEYBOARD_H__ */
 eof

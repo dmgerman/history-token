@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.spinlock.h 1.9 08/21/01 16:07:48 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|SPINLOCK_DEBUG
 macro_line|#undef SPINLOCK_DEBUG
 multiline_comment|/*&n; * Simple spin lock operations.&n; */
@@ -70,7 +71,20 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;1f&t;&t;&t;# spin_lock&bslash;n&bslash;&n;2:&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;2b&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;isync&quot;
+l_string|&quot;b&t;1f&t;&t;# spin_lock&bslash;n&bslash;&n;2:&quot;
+id|HMT_PRIO_LOW
+l_string|&quot;&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;2b&bslash;n&quot;
+id|HMT_PRIO_MED
+l_string|&quot;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;isync&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -227,7 +241,20 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;&t;2f&t;&t;# read_lock&bslash;n&bslash;&n;1:&t;lwzx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;blt+&t;&t;1b&bslash;n&bslash;&n;2:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;addic.&t;&t;%0,%0,1&bslash;n&bslash;&n;&t;ble-&t;&t;1b&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;2b&bslash;n&bslash;&n;&t;isync&quot;
+l_string|&quot;b&t;2f&t;&t;# read_lock&bslash;n&bslash;&n;1:&quot;
+id|HMT_PRIO_LOW
+l_string|&quot;&t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;blt+&t;1b&bslash;n&quot;
+id|HMT_PRIO_MED
+l_string|&quot;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;addic.&t;%0,%0,1&bslash;n&bslash;&n;&t;ble-&t;1b&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;isync&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -266,7 +293,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio&t;&t;&t;&t;# read_unlock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;addic&t;&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;1b&quot;
+l_string|&quot;eieio&t;&t;&t;# read_unlock&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -305,7 +341,20 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;&t;2f&t;&t;# write_lock&bslash;n&bslash;&n;1:&t;lwzx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;&t;1b&bslash;n&bslash;&n;2:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;stwcx.&t;&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;2b&bslash;n&bslash;&n;&t;isync&quot;
+l_string|&quot;b&t;2f&t;&t;# write_lock&bslash;n&bslash;&n;1:&quot;
+id|HMT_PRIO_LOW
+l_string|&quot;  &t;lwzx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;1b&bslash;n&quot;
+id|HMT_PRIO_MED
+l_string|&quot;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;2b&bslash;n&bslash;&n;&t;isync&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

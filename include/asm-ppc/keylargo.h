@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.keylargo.h 1.13 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * keylargo.h: definitions for using the &quot;KeyLargo&quot; I/O controller chip.&n; *&n; */
 multiline_comment|/* &quot;Pangea&quot; chipset has keylargo device-id 0x25 while core99&n; * has device-id 0x22. The rev. of the pangea one is 0, so we&n; * fake an artificial rev. in keylargo_rev by oring 0x100&n; */
 DECL|macro|KL_PANGEA_REV
@@ -29,15 +29,21 @@ DECL|macro|KEYLARGO_GPIO_0
 mdefine_line|#define KEYLARGO_GPIO_0&t;&t;&t;0x6A
 DECL|macro|KEYLARGO_GPIO_CNT
 mdefine_line|#define KEYLARGO_GPIO_CNT&t;&t;17
+DECL|macro|KEYLARGO_GPIO_EXTINT_DUAL_EDGE
+mdefine_line|#define KEYLARGO_GPIO_EXTINT_DUAL_EDGE&t;0x80
 DECL|macro|KEYLARGO_GPIO_OUTPUT_ENABLE
 mdefine_line|#define KEYLARGO_GPIO_OUTPUT_ENABLE&t;0x04
 DECL|macro|KEYLARGO_GPIO_OUTOUT_DATA
 mdefine_line|#define KEYLARGO_GPIO_OUTOUT_DATA&t;0x01
+DECL|macro|KEYLARGO_GPIO_INPUT_DATA
+mdefine_line|#define KEYLARGO_GPIO_INPUT_DATA&t;0x02
 multiline_comment|/* Specific GPIO regs */
 DECL|macro|KL_GPIO_MODEM_RESET
-mdefine_line|#define KL_GPIO_MODEM_RESET&t;&t;(KEYLARGO_GPIO_0+0x03) /* Pangea */
+mdefine_line|#define KL_GPIO_MODEM_RESET&t;&t;(KEYLARGO_GPIO_0+0x03)
 DECL|macro|KL_GPIO_MODEM_POWER
 mdefine_line|#define KL_GPIO_MODEM_POWER&t;&t;(KEYLARGO_GPIO_0+0x02) /* Pangea */
+DECL|macro|KL_GPIO_SOUND_POWER
+mdefine_line|#define KL_GPIO_SOUND_POWER&t;&t;(KEYLARGO_GPIO_0+0x05)
 multiline_comment|/* Hrm... this one is only to be used on Pismo. It seeem to also&n; * control the timebase enable on other machines. Still to be&n; * experimented... --BenH.&n; */
 DECL|macro|KL_GPIO_FW_CABLE_POWER
 mdefine_line|#define KL_GPIO_FW_CABLE_POWER&t;&t;(KEYLARGO_GPIO_0+0x09)
@@ -62,7 +68,9 @@ mdefine_line|#define KL_GPIO_RESET_CPU3&t;&t;(KEYLARGO_GPIO_EXTINT_0+0x10)
 DECL|macro|KL_GPIO_PMU_MESSAGE_IRQ
 mdefine_line|#define KL_GPIO_PMU_MESSAGE_IRQ&t;&t;(KEYLARGO_GPIO_EXTINT_0+0x09)
 DECL|macro|KL_GPIO_PMU_MESSAGE_BIT
-mdefine_line|#define KL_GPIO_PMU_MESSAGE_BIT&t;&t;0x02
+mdefine_line|#define KL_GPIO_PMU_MESSAGE_BIT&t;&t;KEYLARGO_GPIO_INPUT_DATA
+DECL|macro|KL_GPIO_MEDIABAY_IRQ
+mdefine_line|#define KL_GPIO_MEDIABAY_IRQ&t;&t;(KEYLARGO_GPIO_EXTINT_0+0x0e)
 DECL|macro|KL_GPIO_AIRPORT_0
 mdefine_line|#define KL_GPIO_AIRPORT_0&t;&t;(KEYLARGO_GPIO_EXTINT_0+0x0a)
 DECL|macro|KL_GPIO_AIRPORT_1
@@ -74,16 +82,32 @@ mdefine_line|#define KL_GPIO_AIRPORT_3&t;&t;(KEYLARGO_GPIO_0+0x0e)
 DECL|macro|KL_GPIO_AIRPORT_4
 mdefine_line|#define KL_GPIO_AIRPORT_4&t;&t;(KEYLARGO_GPIO_0+0x0f)
 multiline_comment|/*&n; * Bits in feature control register&n; */
-DECL|macro|KL_MBCR_MB0_DEV_ENABLE
-mdefine_line|#define KL_MBCR_MB0_DEV_ENABLE&t;&t;0x00001000
+DECL|macro|KL_MBCR_MB0_PCI_ENABLE
+mdefine_line|#define KL_MBCR_MB0_PCI_ENABLE&t;&t;0x00000800&t;/* exist ? */
+DECL|macro|KL_MBCR_MB0_IDE_ENABLE
+mdefine_line|#define KL_MBCR_MB0_IDE_ENABLE&t;&t;0x00001000
+DECL|macro|KL_MBCR_MB0_FLOPPY_ENABLE
+mdefine_line|#define KL_MBCR_MB0_FLOPPY_ENABLE&t;0x00002000&t;/* exist ? */
+DECL|macro|KL_MBCR_MB0_SOUND_ENABLE
+mdefine_line|#define KL_MBCR_MB0_SOUND_ENABLE&t;0x00004000&t;/* hrm... */
+DECL|macro|KL_MBCR_MB0_DEV_MASK
+mdefine_line|#define KL_MBCR_MB0_DEV_MASK&t;&t;0x00007800
 DECL|macro|KL_MBCR_MB0_DEV_POWER
 mdefine_line|#define KL_MBCR_MB0_DEV_POWER&t;&t;0x00000400
 DECL|macro|KL_MBCR_MB0_DEV_RESET
 mdefine_line|#define KL_MBCR_MB0_DEV_RESET&t;&t;0x00000200
 DECL|macro|KL_MBCR_MB0_ENABLE
 mdefine_line|#define KL_MBCR_MB0_ENABLE&t;&t;0x00000100
-DECL|macro|KL_MBCR_MB1_DEV_ENABLE
-mdefine_line|#define KL_MBCR_MB1_DEV_ENABLE&t;&t;0x10000000
+DECL|macro|KL_MBCR_MB1_PCI_ENABLE
+mdefine_line|#define KL_MBCR_MB1_PCI_ENABLE&t;&t;0x08000000&t;/* exist ? */
+DECL|macro|KL_MBCR_MB1_IDE_ENABLE
+mdefine_line|#define KL_MBCR_MB1_IDE_ENABLE&t;&t;0x10000000
+DECL|macro|KL_MBCR_MB1_FLOPPY_ENABLE
+mdefine_line|#define KL_MBCR_MB1_FLOPPY_ENABLE&t;0x20000000&t;/* exist ? */
+DECL|macro|KL_MBCR_MB1_SOUND_ENABLE
+mdefine_line|#define KL_MBCR_MB1_SOUND_ENABLE&t;0x40000000&t;/* hrm... */
+DECL|macro|KL_MBCR_MB1_DEV_MASK
+mdefine_line|#define KL_MBCR_MB1_DEV_MASK&t;&t;0x78000000
 DECL|macro|KL_MBCR_MB1_DEV_POWER
 mdefine_line|#define KL_MBCR_MB1_DEV_POWER&t;&t;0x04000000
 DECL|macro|KL_MBCR_MB1_DEV_RESET
@@ -91,9 +115,9 @@ mdefine_line|#define KL_MBCR_MB1_DEV_RESET&t;&t;0x02000000
 DECL|macro|KL_MBCR_MB1_ENABLE
 mdefine_line|#define KL_MBCR_MB1_ENABLE&t;&t;0x01000000
 DECL|macro|KL0_SCC_B_INTF_ENABLE
-mdefine_line|#define KL0_SCC_B_INTF_ENABLE&t;&t;0x00000001&t;/* ??? */
+mdefine_line|#define KL0_SCC_B_INTF_ENABLE&t;&t;0x00000001
 DECL|macro|KL0_SCC_A_INTF_ENABLE
-mdefine_line|#define KL0_SCC_A_INTF_ENABLE&t;&t;0x00000002&t;/* ??? */
+mdefine_line|#define KL0_SCC_A_INTF_ENABLE&t;&t;0x00000002
 DECL|macro|KL0_SCC_SLOWPCLK
 mdefine_line|#define KL0_SCC_SLOWPCLK&t;&t;0x00000004
 DECL|macro|KL0_SCC_RESET
@@ -104,6 +128,26 @@ DECL|macro|KL0_SCCB_ENABLE
 mdefine_line|#define KL0_SCCB_ENABLE&t;&t;&t;0x00000020
 DECL|macro|KL0_SCC_CELL_ENABLE
 mdefine_line|#define KL0_SCC_CELL_ENABLE&t;&t;0x00000040
+DECL|macro|KL0_IRDA_HIGH_BAND
+mdefine_line|#define KL0_IRDA_HIGH_BAND&t;&t;0x00000100
+DECL|macro|KL0_IRDA_SOURCE2_SEL
+mdefine_line|#define KL0_IRDA_SOURCE2_SEL&t;&t;0x00000200
+DECL|macro|KL0_IRDA_SOURCE1_SEL
+mdefine_line|#define KL0_IRDA_SOURCE1_SEL&t;&t;0x00000400
+DECL|macro|KL0_IRDA_RESET
+mdefine_line|#define KL0_IRDA_RESET&t;&t;&t;0x00000800
+DECL|macro|KL0_IRDA_DEFAULT1
+mdefine_line|#define KL0_IRDA_DEFAULT1&t;&t;0x00001000
+DECL|macro|KL0_IRDA_DEFAULT0
+mdefine_line|#define KL0_IRDA_DEFAULT0&t;&t;0x00002000
+DECL|macro|KL0_IRDA_FAST_CONNECT
+mdefine_line|#define KL0_IRDA_FAST_CONNECT&t;&t;0x00004000
+DECL|macro|KL0_IRDA_ENABLE
+mdefine_line|#define KL0_IRDA_ENABLE&t;&t;&t;0x00008000
+DECL|macro|KL0_IRDA_CLK32_ENABLE
+mdefine_line|#define KL0_IRDA_CLK32_ENABLE&t;&t;0x00010000
+DECL|macro|KL0_IRDA_CLK19_ENABLE
+mdefine_line|#define KL0_IRDA_CLK19_ENABLE&t;&t;0x00020000
 DECL|macro|KL0_USB0_PAD_SUSPEND0
 mdefine_line|#define KL0_USB0_PAD_SUSPEND0&t;&t;0x00040000
 DECL|macro|KL0_USB0_PAD_SUSPEND1
@@ -116,32 +160,8 @@ DECL|macro|KL0_USB1_PAD_SUSPEND1
 mdefine_line|#define KL0_USB1_PAD_SUSPEND1&t;&t;0x00800000
 DECL|macro|KL0_USB1_CELL_ENABLE
 mdefine_line|#define KL0_USB1_CELL_ENABLE&t;&t;0x01000000
-multiline_comment|/* KL id 0x22 only */
 DECL|macro|KL0_USB_REF_SUSPEND
 mdefine_line|#define KL0_USB_REF_SUSPEND&t;&t;0x10000000
-DECL|macro|KL0_IRDA_ENABLE
-mdefine_line|#define KL0_IRDA_ENABLE&t;&t;&t;0x00008000
-DECL|macro|KL0_IRDA_CLK32_ENABLE
-mdefine_line|#define KL0_IRDA_CLK32_ENABLE&t;&t;0x00010000
-DECL|macro|KL0_IRDA_CLK19_ENABLE
-mdefine_line|#define KL0_IRDA_CLK19_ENABLE&t;&t;0x00020000
-multiline_comment|/* KL id 0x25 (pangea) only */
-DECL|macro|KL0_USB1_PAD_SUSPEND_SEL
-mdefine_line|#define KL0_USB1_PAD_SUSPEND_SEL&t;0x00020000
-DECL|macro|KL0_USB1_REF_SUSPEND
-mdefine_line|#define KL0_USB1_REF_SUSPEND&t;&t;0x00010000
-DECL|macro|KL0_USB1_REF_SUSPEND_SEL
-mdefine_line|#define KL0_USB1_REF_SUSPEND_SEL&t;0x00008000
-DECL|macro|KL0_USB1_PMI
-mdefine_line|#define KL0_USB1_PMI&t;&t;&t;0x00004000
-DECL|macro|KL0_USB0_PAD_SUSPEND_SEL
-mdefine_line|#define KL0_USB0_PAD_SUSPEND_SEL&t;0x00002000
-DECL|macro|KL0_USB0_REF_SUSPEND
-mdefine_line|#define KL0_USB0_REF_SUSPEND&t;&t;0x00001000
-DECL|macro|KL0_USB0_REF_SUSPEND_SEL
-mdefine_line|#define KL0_USB0_REF_SUSPEND_SEL&t;0x00000800
-DECL|macro|KL0_USB0_PMI
-mdefine_line|#define KL0_USB0_PMI&t;&t;&t;0x00000400
 DECL|macro|KL0_SERIAL_ENABLE
 mdefine_line|#define KL0_SERIAL_ENABLE&t;&t;(KL0_SCC_B_INTF_ENABLE | &bslash;&n;&t;&t;&t;&t;&t;KL0_SCC_SLOWPCLK | &bslash;&n;&t;&t;&t;&t;&t;KL0_SCC_CELL_ENABLE | KL0_SCCA_ENABLE)
 DECL|macro|KL1_AUDIO_SEL_22MCLK
@@ -184,10 +204,12 @@ DECL|macro|KL2_SLEEP_STATE_BIT
 mdefine_line|#define KL2_SLEEP_STATE_BIT&t;&t;0x00000100
 DECL|macro|KL2_MPIC_ENABLE
 mdefine_line|#define KL2_MPIC_ENABLE&t;&t;&t;0x00020000
-DECL|macro|KL2_MODEM_POWER_N
-mdefine_line|#define KL2_MODEM_POWER_N&t;&t;0x02000000
-DECL|macro|KL2_AIRPORT_RESET_N
-mdefine_line|#define KL2_AIRPORT_RESET_N&t;&t;0x08000000&t;/* Or power ? */
+DECL|macro|KL2_ALT_DATA_OUT
+mdefine_line|#define KL2_ALT_DATA_OUT&t;&t;0x02000000
+DECL|macro|KL2_MEM_IS_BIG
+mdefine_line|#define KL2_MEM_IS_BIG&t;&t;&t;0x04000000
+DECL|macro|KL2_CARDSEL_16
+mdefine_line|#define KL2_CARDSEL_16&t;&t;&t;0x08000000
 DECL|macro|KL3_SHUTDOWN_PLL_TOTAL
 mdefine_line|#define KL3_SHUTDOWN_PLL_TOTAL&t;&t;0x00000001
 DECL|macro|KL3_SHUTDOWN_PLLKW6
@@ -221,18 +243,18 @@ mdefine_line|#define KL3_VIA_CLK16_ENABLE&t;&t;0x00008000
 DECL|macro|KL3_STOPPING33_ENABLED
 mdefine_line|#define KL3_STOPPING33_ENABLED&t;&t;0x00080000
 multiline_comment|/* Port 0,1 : bus 0, port 2,3 : bus 1 */
-DECL|macro|KL4_SET_PORT_ENABLE
-mdefine_line|#define KL4_SET_PORT_ENABLE(p)&t;&t;(0x00000008 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_SET_PORT_RESUME
-mdefine_line|#define KL4_SET_PORT_RESUME(p)&t;&t;(0x00000004 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_SET_PORT_CONNECT
-mdefine_line|#define KL4_SET_PORT_CONNECT(p)&t;&t;(0x00000002 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_SET_PORT_DISCONNECT
-mdefine_line|#define KL4_SET_PORT_DISCONNECT(p)&t;(0x00000001 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_GET_PORT_RESUME
-mdefine_line|#define KL4_GET_PORT_RESUME(p)&t;&t;(0x00000040 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_GET_PORT_CONNECT
-mdefine_line|#define KL4_GET_PORT_CONNECT(p)&t;&t;(0x00000020 &lt;&lt; ((p)&lt;&lt;3))
-DECL|macro|KL4_GET_PORT_DISCONNECT
-mdefine_line|#define KL4_GET_PORT_DISCONNECT(p)&t;(0x00000010 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_WAKEUP_ENABLE
+mdefine_line|#define KL4_PORT_WAKEUP_ENABLE(p)&t;(0x00000008 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_RESUME_WAKE_EN
+mdefine_line|#define KL4_PORT_RESUME_WAKE_EN(p)&t;(0x00000004 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_CONNECT_WAKE_EN
+mdefine_line|#define KL4_PORT_CONNECT_WAKE_EN(p)&t;(0x00000002 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_DISCONNECT_WAKE_EN
+mdefine_line|#define KL4_PORT_DISCONNECT_WAKE_EN(p)&t;(0x00000001 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_RESUME_STAT
+mdefine_line|#define KL4_PORT_RESUME_STAT(p)&t;&t;(0x00000040 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_CONNECT_STAT
+mdefine_line|#define KL4_PORT_CONNECT_STAT(p)&t;(0x00000020 &lt;&lt; ((p)&lt;&lt;3))
+DECL|macro|KL4_PORT_DISCONNECT_STAT
+mdefine_line|#define KL4_PORT_DISCONNECT_STAT(p)&t;(0x00000010 &lt;&lt; ((p)&lt;&lt;3))
 eof

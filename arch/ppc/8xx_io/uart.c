@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.19 10/26/01 09:59:32 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -27,36 +27,7 @@ macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|set_debug_traps
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|kgdb_output_string
-(paren
-r_const
-r_char
-op_star
-id|s
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
@@ -205,6 +176,14 @@ DECL|macro|NUM_IS_SCC
 mdefine_line|#define NUM_IS_SCC&t;((int)0x00010000)
 DECL|macro|PORT_NUM
 mdefine_line|#define PORT_NUM(P)&t;((P) &amp; 0x0000ffff)
+multiline_comment|/* The choice of serial port to use for KGDB.  If the system has&n; * two ports, you can use one for console and one for KGDB (which&n; * doesn&squot;t make sense to me, but people asked for it).&n; */
+macro_line|#ifdef CONFIG_KGDB_TTYS1
+DECL|macro|KGDB_SER_IDX
+mdefine_line|#define KGDB_SER_IDX 1&t;&t;/* SCC2/SMC2 */
+macro_line|#else
+DECL|macro|KGDB_SER_IDX
+mdefine_line|#define KGDB_SER_IDX 0&t;&t;/* SCC1/SMC1 */
+macro_line|#endif
 multiline_comment|/* Processors other than the 860 only get SMCs configured by default.&n; * Either they don&squot;t have SCCs or they are allocated somewhere else.&n; * Of course, there are now 860s without some SCCs, so we will need to&n; * address that someday.&n; * The Embedded Planet Multimedia I/O cards use TDM interfaces to the&n; * stereo codec parts, and we use SMC2 to help support that.&n; */
 DECL|variable|rs_table
 r_static
@@ -485,6 +464,19 @@ DECL|member|tx_cur
 id|cbd_t
 op_star
 id|tx_cur
+suffix:semicolon
+multiline_comment|/* Virtual addresses for the FIFOs because we can&squot;t __va() a&n;&t; * physical address anymore.&n;&t; */
+DECL|member|rx_va_base
+r_int
+r_char
+op_star
+id|rx_va_base
+suffix:semicolon
+DECL|member|tx_va_base
+r_int
+r_char
+op_star
+id|tx_va_base
 suffix:semicolon
 DECL|typedef|ser_info_t
 )brace
@@ -1051,21 +1043,53 @@ id|bdp-&gt;cbd_datlen
 suffix:semicolon
 id|cp
 op_assign
+id|info-&gt;rx_va_base
+op_plus
 (paren
-r_int
-r_char
-op_star
+(paren
+id|bdp
+op_minus
+id|info-&gt;rx_bd_base
 )paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
+op_star
+id|RX_BUF_SIZE
 )paren
 suffix:semicolon
 id|status
 op_assign
 id|bdp-&gt;cbd_sc
 suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
+r_if
+c_cond
+(paren
+id|info-&gt;state-&gt;smc_scc_num
+op_eq
+id|KGDB_SER_IDX
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_star
+id|cp
+op_eq
+l_int|0x03
+op_logical_or
+op_star
+id|cp
+op_eq
+l_char|&squot;$&squot;
+)paren
+id|breakpoint
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Check to see if there is room in the tty buffer for&n;&t;&t; * the characters in our BD buffer.  If not, we exit&n;&t;&t; * now, leaving the BD with the characters.  We&squot;ll pick&n;&t;&t; * them up again on the next receive interrupt (which could&n;&t;&t; * be a timeout).&n;&t;&t; */
 r_if
 c_cond
@@ -3406,6 +3430,11 @@ id|cbd_t
 op_star
 id|bdp
 suffix:semicolon
+r_int
+r_char
+op_star
+id|cp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3441,18 +3470,22 @@ op_amp
 id|BD_SC_READY
 )paren
 suffix:semicolon
+id|cp
+op_assign
+id|info-&gt;tx_va_base
+op_plus
+(paren
+(paren
+id|bdp
+op_minus
+id|info-&gt;tx_bd_base
+)paren
 op_star
-(paren
-(paren
-r_char
+id|TX_BUF_SIZE
+)paren
+suffix:semicolon
 op_star
-)paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
-)paren
-)paren
+id|cp
 op_assign
 id|ch
 suffix:semicolon
@@ -3534,6 +3567,11 @@ r_volatile
 id|cbd_t
 op_star
 id|bdp
+suffix:semicolon
+r_int
+r_char
+op_star
+id|cp
 suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/* Try to let stub handle output. Returns true if it did. */
@@ -3621,6 +3659,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cp
+op_assign
+id|info-&gt;tx_va_base
+op_plus
+(paren
+(paren
+id|bdp
+op_minus
+id|info-&gt;tx_bd_base
+)paren
+op_star
+id|TX_BUF_SIZE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3633,11 +3685,11 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|__va
-c_func
 (paren
-id|bdp-&gt;cbd_bufaddr
+r_void
+op_star
 )paren
+id|cp
 comma
 id|buf
 comma
@@ -3665,11 +3717,11 @@ r_else
 id|memcpy
 c_func
 (paren
-id|__va
-c_func
 (paren
-id|bdp-&gt;cbd_bufaddr
+r_void
+op_star
 )paren
+id|cp
 comma
 id|buf
 comma
@@ -3941,6 +3993,11 @@ id|cbd_t
 op_star
 id|bdp
 suffix:semicolon
+r_int
+r_char
+op_star
+id|cp
+suffix:semicolon
 id|ser_info_t
 op_star
 id|info
@@ -3978,18 +4035,22 @@ op_amp
 id|BD_SC_READY
 )paren
 suffix:semicolon
+id|cp
+op_assign
+id|info-&gt;tx_va_base
+op_plus
+(paren
+(paren
+id|bdp
+op_minus
+id|info-&gt;tx_bd_base
+)paren
 op_star
-(paren
-(paren
-r_char
+id|TX_BUF_SIZE
+)paren
+suffix:semicolon
 op_star
-)paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
-)paren
-)paren
+id|cp
 op_assign
 id|ch
 suffix:semicolon
@@ -6592,14 +6653,14 @@ c_cond
 (paren
 id|timeout
 op_logical_and
+id|time_after
+c_func
 (paren
-(paren
+id|jiffies
+comma
 id|orig_jiffies
 op_plus
 id|timeout
-)paren
-OL
-id|jiffies
 )paren
 )paren
 r_break
@@ -8198,6 +8259,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The serial console driver used during boot.  Note that these names&n; * clash with those found in &quot;serial.c&quot;, so we currently can&squot;t support&n; * the 16xxx uarts and these at the same time.  I will fix this to become&n; * an indirect function call from tty_io.c (or something).&n; */
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+multiline_comment|/* I need this just so I can store the virtual addresses and have&n; * common functions for the early console printing.&n; */
+DECL|variable|consinfo
+r_static
+id|ser_info_t
+id|consinfo
+suffix:semicolon
 multiline_comment|/*&n; * Print a string to the serial port trying not to disturb any possible&n; * real use of the port...&n; */
 DECL|function|my_console_write
 r_static
@@ -8309,6 +8376,11 @@ id|cpmp-&gt;cp_dpmem
 id|up-&gt;smc_tbase
 )braket
 suffix:semicolon
+id|info
+op_assign
+op_amp
+id|consinfo
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We need to gracefully shut down the transmitter, disable&n;&t; * interrupts, then send our bytes out.&n;&t; */
 multiline_comment|/*&n;&t; * Now, do each character.  This is not as bad as it looks&n;&t; * since this is a holding FIFO and not a transmitting FIFO.&n;&t; * We could add the complexity of filling the entire transmit&n;&t; * buffer, but we would just wait longer between accesses......&n;&t; */
@@ -8368,10 +8440,16 @@ suffix:semicolon
 r_else
 id|cp
 op_assign
-id|__va
-c_func
+id|info-&gt;tx_va_base
+op_plus
 (paren
-id|bdp-&gt;cbd_bufaddr
+(paren
+id|bdp
+op_minus
+id|info-&gt;tx_bd_base
+)paren
+op_star
+id|TX_BUF_SIZE
 )paren
 suffix:semicolon
 op_star
@@ -8423,10 +8501,16 @@ id|BD_SC_READY
 suffix:semicolon
 id|cp
 op_assign
-id|__va
-c_func
+id|info-&gt;tx_va_base
+op_plus
 (paren
-id|bdp-&gt;cbd_bufaddr
+(paren
+id|bdp
+op_minus
+id|info-&gt;tx_bd_base
+)paren
+op_star
+id|TX_BUF_SIZE
 )paren
 suffix:semicolon
 op_star
@@ -8665,11 +8749,14 @@ op_star
 id|ser-&gt;info
 )paren
 )paren
+(brace
 id|bdp
 op_assign
 id|info-&gt;rx_cur
 suffix:semicolon
+)brace
 r_else
+(brace
 id|bdp
 op_assign
 (paren
@@ -8682,6 +8769,12 @@ id|cpmp-&gt;cp_dpmem
 id|up-&gt;smc_rbase
 )braket
 suffix:semicolon
+id|info
+op_assign
+op_amp
+id|consinfo
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We need to gracefully shut down the receiver, disable&n;&t; * interrupts, then read the input.&n;&t; * XMON just wants a poll.  If no character, return -1, else&n;&t; * return the character.&n;&t; */
 r_if
 c_cond
@@ -8742,10 +8835,16 @@ suffix:semicolon
 r_else
 id|cp
 op_assign
-id|__va
-c_func
+id|info-&gt;rx_va_base
+op_plus
 (paren
-id|bdp-&gt;cbd_bufaddr
+(paren
+id|bdp
+op_minus
+id|info-&gt;rx_bd_base
+)paren
+op_star
+id|RX_BUF_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -8890,7 +8989,6 @@ r_static
 r_int
 id|kgdb_chars
 suffix:semicolon
-r_int
 r_char
 DECL|function|getDebugChar
 id|getDebugChar
@@ -8939,9 +9037,39 @@ id|kgdb_interruptible
 c_func
 (paren
 r_int
-id|state
+id|yes
 )paren
 (brace
+r_volatile
+id|smc_t
+op_star
+id|smcp
+suffix:semicolon
+id|smcp
+op_assign
+op_amp
+id|cpmp-&gt;cp_smc
+(braket
+id|KGDB_SER_IDX
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|yes
+op_eq
+l_int|1
+)paren
+id|smcp-&gt;smc_smcm
+op_or_assign
+id|SMCM_RX
+suffix:semicolon
+r_else
+id|smcp-&gt;smc_smcm
+op_and_assign
+op_complement
+id|SMCM_RX
+suffix:semicolon
 )brace
 DECL|function|kgdb_map_scc
 r_void
@@ -9016,7 +9144,7 @@ id|uint
 op_amp
 id|cpmp-&gt;cp_dpmem
 (braket
-l_int|0x1000
+l_int|0xa00
 )braket
 )paren
 suffix:semicolon
@@ -9228,10 +9356,17 @@ id|serial_driver.driver_name
 op_assign
 l_string|&quot;serial&quot;
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|serial_driver.name
+op_assign
+l_string|&quot;tts/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
+macro_line|#endif
 id|serial_driver.major
 op_assign
 id|TTY_MAJOR
@@ -9362,10 +9497,17 @@ id|callout_driver
 op_assign
 id|serial_driver
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|callout_driver.name
+op_assign
+l_string|&quot;cua/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|callout_driver.name
 op_assign
 l_string|&quot;cua&quot;
 suffix:semicolon
+macro_line|#endif
 id|callout_driver.major
 op_assign
 id|TTYAUX_MAJOR
@@ -9760,6 +9902,15 @@ op_star
 id|RX_BUF_SIZE
 )paren
 suffix:semicolon
+id|info-&gt;rx_va_base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|mem_addr
+suffix:semicolon
 multiline_comment|/* Set the physical address of the host memory&n;&t;&t;&t; * buffers in the buffer descriptors, and the&n;&t;&t;&t; * virtual address for us to work with.&n;&t;&t;&t; */
 id|bdp
 op_assign
@@ -9804,7 +9955,7 @@ op_increment
 (brace
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
@@ -9826,7 +9977,7 @@ suffix:semicolon
 )brace
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
@@ -9932,6 +10083,15 @@ op_star
 id|TX_BUF_SIZE
 )paren
 suffix:semicolon
+id|info-&gt;tx_va_base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|mem_addr
+suffix:semicolon
 multiline_comment|/* Set the physical address of the host memory&n;&t;&t;&t; * buffers in the buffer descriptors, and the&n;&t;&t;&t; * virtual address for us to work with.&n;&t;&t;&t; */
 id|bdp
 op_assign
@@ -9976,7 +10136,7 @@ op_increment
 (brace
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
@@ -9996,7 +10156,7 @@ suffix:semicolon
 )brace
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
@@ -10635,6 +10795,28 @@ id|ser-&gt;port
 suffix:semicolon
 )brace
 multiline_comment|/* When we get here, the CPM has been reset, so we need&n;&t; * to configure the port.&n;&t; * We need to allocate a transmit and receive buffer descriptor&n;&t; * from dual port ram, and a character buffer area from host mem.&n;&t; */
+multiline_comment|/* Allocate space for two FIFOs.  We can&squot;t allocate from host&n;&t; * memory yet because vm allocator isn&squot;t initialized&n;&t; * during this early console init.&n;&t; */
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpalloc
+c_func
+(paren
+l_int|8
+)paren
+suffix:semicolon
+id|mem_addr
+op_assign
+(paren
+id|uint
+)paren
+(paren
+op_amp
+id|cpmp-&gt;cp_dpmem
+(braket
+id|dp_addr
+)braket
+)paren
+suffix:semicolon
 multiline_comment|/* Allocate space for two buffer descriptors in the DP ram.&n;&t;*/
 id|dp_addr
 op_assign
@@ -10647,15 +10829,6 @@ id|cbd_t
 )paren
 op_star
 l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* Allocate space for two 2 byte FIFOs in the host memory.&n;&t;*/
-id|mem_addr
-op_assign
-id|m8xx_cpm_hostalloc
-c_func
-(paren
-l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Set the physical address of the host memory buffers in&n;&t; * the buffer descriptors.&n;&t; */
@@ -10673,7 +10846,7 @@ id|dp_addr
 suffix:semicolon
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
@@ -10687,13 +10860,33 @@ l_int|1
 op_member_access_from_pointer
 id|cbd_bufaddr
 op_assign
-id|__pa
+id|iopa
 c_func
 (paren
 id|mem_addr
 op_plus
 l_int|4
 )paren
+suffix:semicolon
+id|consinfo.rx_va_base
+op_assign
+id|mem_addr
+suffix:semicolon
+id|consinfo.rx_bd_base
+op_assign
+id|bdp
+suffix:semicolon
+id|consinfo.tx_va_base
+op_assign
+id|mem_addr
+op_plus
+l_int|4
+suffix:semicolon
+id|consinfo.tx_bd_base
+op_assign
+id|bdp
+op_plus
+l_int|1
 suffix:semicolon
 multiline_comment|/* For the receive, set empty and wrap.&n;&t; * For transmit, set wrap.&n;&t; */
 id|bdp-&gt;cbd_sc
@@ -10997,4 +11190,64 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_INPUT_KEYBDEV
+DECL|function|handle_scancode
+r_void
+id|handle_scancode
+c_func
+(paren
+r_int
+r_char
+id|scancode
+comma
+r_int
+id|down
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;handle_scancode(scancode=0x%x, down=%d)&bslash;n&quot;
+comma
+id|scancode
+comma
+id|down
+)paren
+suffix:semicolon
+)brace
+DECL|function|kbd_bh
+r_static
+r_void
+id|kbd_bh
+c_func
+(paren
+r_int
+r_int
+id|dummy
+)paren
+(brace
+)brace
+id|DECLARE_TASKLET_DISABLED
+c_func
+(paren
+id|keyboard_tasklet
+comma
+id|kbd_bh
+comma
+l_int|0
+)paren
+suffix:semicolon
+DECL|variable|kbd_ledfunc
+r_void
+(paren
+op_star
+id|kbd_ledfunc
+)paren
+(paren
+r_int
+r_int
+id|led
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

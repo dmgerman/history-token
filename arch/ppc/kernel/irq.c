@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.irq.c 1.32 08/24/01 20:07:37 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/irq.c&n; *&n; *  Derived from arch/i386/kernel/irq.c&n; *    Copyright (C) 1992 Linus Torvalds&n; *  Adapted from arch/i386 by Gary Thomas&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *  Updated and modified by Cort Dougan &lt;cort@fsmlabs.com&gt;&n; *    Copyright (C) 1996-2001 Cort Dougan&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  &n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * The MPC8xx has an interrupt mask in the SIU.  If a bit is set, the&n; * interrupt is _enabled_.  As expected, IRQ0 is bit 0 in the 32-bit&n; * mask register (of which only 16 are defined), hence the weird shifting&n; * and compliment of the cached_irq_mask.  I want to be able to stuff&n; * this right into the SIU SMASK register.&n; * Many of the prep/chrp functions are conditional compiled on CONFIG_8xx&n; * to reduce code space and undefined function references.&n; */
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -20,19 +20,15 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/hydra.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/gg2.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/amigaints.h&gt;
-macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#include &lt;asm/amigappc.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &quot;local_irq.h&quot;
+DECL|macro|NR_MASK_WORDS
+mdefine_line|#define NR_MASK_WORDS&t;((NR_IRQS + 31) / 32)
 r_extern
 id|atomic_t
 id|ipi_recv
@@ -521,11 +517,6 @@ macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
 multiline_comment|/* Name change so we can catch standard drivers that potentially mess up&n; * the internal interrupt controller on 8xx and 8260.  Just bear with me,&n; * I don&squot;t like this either and I am searching a better solution.  For&n; * now, this is what I need. -- Dan&n; */
 DECL|macro|request_irq
 mdefine_line|#define request_irq&t;request_8xxirq
-macro_line|#elif defined(CONFIG_APUS)
-DECL|macro|request_irq
-mdefine_line|#define request_irq&t;request_sysirq
-DECL|macro|free_irq
-mdefine_line|#define free_irq&t;sys_free_irq
 macro_line|#endif
 DECL|function|free_irq
 r_void
@@ -1134,17 +1125,6 @@ op_star
 id|v
 )paren
 (brace
-macro_line|#ifdef CONFIG_APUS
-r_return
-id|show_apus_interrupts
-c_func
-(paren
-id|p
-comma
-id|v
-)paren
-suffix:semicolon
-macro_line|#else
 r_int
 id|i
 comma
@@ -1374,7 +1354,6 @@ id|action
 op_assign
 id|action-&gt;next
 )paren
-(brace
 id|seq_printf
 c_func
 (paren
@@ -1385,7 +1364,6 @@ comma
 id|action-&gt;name
 )paren
 suffix:semicolon
-)brace
 id|seq_putc
 c_func
 (paren
@@ -1486,7 +1464,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_APUS */
 )brace
 r_static
 r_inline
@@ -1891,6 +1868,7 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC_ISERIES&t;/* iSeries version is in iSeries_pic.c */
 DECL|function|do_IRQ
 r_int
 id|do_IRQ
@@ -1912,6 +1890,10 @@ c_func
 suffix:semicolon
 r_int
 id|irq
+comma
+id|first
+op_assign
+l_int|1
 suffix:semicolon
 id|hardirq_enter
 c_func
@@ -1919,7 +1901,11 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-multiline_comment|/* every arch is required to have a get_irq -- Cort */
+multiline_comment|/*&n;&t; * Every platform is required to implement ppc_md.get_irq.&n;&t; * This function will either return an irq number or -1 to&n;&t; * indicate there are no more pending.  But the first time&n;&t; * through the loop this means there wasn&squot;t and IRQ pending.&n;&t; * The value -2 is for buggy hardware and means that this IRQ&n;&t; * has already been handled. -- Tom&n;&t; */
+r_while
+c_loop
+(paren
+(paren
 id|irq
 op_assign
 id|ppc_md
@@ -1929,11 +1915,7 @@ c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
+)paren
 op_ge
 l_int|0
 )paren
@@ -1946,8 +1928,11 @@ comma
 id|irq
 )paren
 suffix:semicolon
+id|first
+op_assign
+l_int|0
+suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -1955,32 +1940,13 @@ id|irq
 op_ne
 op_minus
 l_int|2
+op_logical_and
+id|first
 )paren
-(brace
-multiline_comment|/* -2 means ignore, already handled */
-r_if
-c_cond
-(paren
-id|ppc_spurious_interrupts
-OL
-l_int|10
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;Bogus interrupt %d from PC = %lx&bslash;n&quot;
-comma
-id|irq
-comma
-id|regs-&gt;nip
-)paren
-suffix:semicolon
 multiline_comment|/* That&squot;s not SMP safe ... but who cares ? */
 id|ppc_spurious_interrupts
 op_increment
 suffix:semicolon
-)brace
 id|hardirq_exit
 c_func
 (paren
@@ -2006,6 +1972,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|probe_irq_on
 r_int
 r_int
@@ -2095,10 +2062,6 @@ r_int
 id|global_irq_lock
 suffix:semicolon
 multiline_comment|/* pendantic :long for set_bit--RR*/
-DECL|variable|global_irq_count
-id|atomic_t
-id|global_irq_count
-suffix:semicolon
 DECL|variable|global_bh_count
 id|atomic_t
 id|global_bh_count
@@ -2143,14 +2106,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;irq:  %d [%d %d]&bslash;n&quot;
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|global_irq_count
-)paren
+l_string|&quot;irq:  [%d %d]&bslash;n&quot;
 comma
 id|local_irq_count
 c_func
@@ -2335,14 +2291,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|atomic_read
+id|irqs_running
 c_func
 (paren
-op_amp
-id|global_irq_count
 )paren
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -2353,16 +2306,15 @@ id|cpu
 )paren
 op_logical_or
 op_logical_neg
-id|atomic_read
+id|spin_is_locked
 c_func
 (paren
 op_amp
-id|global_bh_count
+id|global_bh_lock
 )paren
 )paren
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Duh, we have to loop. Release the lock to avoid deadlocks */
 id|clear_bit
 c_func
@@ -2405,7 +2357,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t worry about the lock race Linus found&n;&t;&t;&t; * on intel here. -- Cort&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * We have to allow irqs to arrive between __sti and __cli&n;&t;&t;&t; * Some cpus apparently won&squot;t cause the interrupt&n;&t;&t;&t; * for several instructions. We hope that isync will&n;&t;&t;&t; * catch this --Troy&n;&t;&t;&t; */
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;isync&quot;
+)paren
+suffix:semicolon
 id|__cli
 c_func
 (paren
@@ -2414,11 +2372,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
+id|irqs_running
 c_func
 (paren
-op_amp
-id|global_irq_count
 )paren
 )paren
 r_continue
@@ -2440,11 +2396,11 @@ c_func
 id|cpu
 )paren
 op_logical_and
-id|atomic_read
+id|spin_is_locked
 c_func
 (paren
 op_amp
-id|global_bh_count
+id|global_bh_lock
 )paren
 )paren
 r_continue
@@ -2510,11 +2466,9 @@ r_void
 r_if
 c_cond
 (paren
-id|atomic_read
+id|irqs_running
 c_func
 (paren
-op_amp
-id|global_irq_count
 )paren
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.align.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * align.c - handle alignment exceptions for the Power PC.&n; *&n; * Copyright (c) 1996 Paul Mackerras &lt;paulus@cs.anu.edu.au&gt;&n; * Copyright (c) 1998-1999 TiVo, Inc.&n; *   PowerPC 403GCX modifications.&n; * Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *   PowerPC 403GCX/405GP modifications.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,7 +24,7 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
+macro_line|#if defined(CONFIG_4xx)
 DECL|macro|OPCD
 mdefine_line|#define&t;OPCD(inst)&t;(((inst) &amp; 0xFC000000) &gt;&gt; 26)
 DECL|macro|RS
@@ -779,7 +779,7 @@ id|nb
 comma
 id|flags
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
+macro_line|#if defined(CONFIG_4xx)
 r_int
 id|opcode
 comma
@@ -826,8 +826,8 @@ suffix:semicolon
 )brace
 id|data
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
-multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; * The POWER4 has a DSISR register but doesn&squot;t set it on&n;&t; * an alignment fault.  -- paulus&n;&t; */
+macro_line|#if defined(CONFIG_4xx)
+multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; */
 id|instr
 op_assign
 op_star

@@ -9,11 +9,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;mmu_decl.h&quot;
-DECL|variable|ram_phys_base
-r_int
-r_int
-id|ram_phys_base
-suffix:semicolon
 DECL|variable|ioremap_base
 r_int
 r_int
@@ -644,7 +639,7 @@ id|KERNELBASE
 suffix:semicolon
 id|p
 op_assign
-id|ram_phys_base
+id|PPC_MEMSTART
 suffix:semicolon
 r_for
 c_loop
@@ -670,16 +665,16 @@ op_or
 id|_PAGE_ACCESSED
 op_or
 id|_PAGE_SHARED
+op_or
+id|_PAGE_HWEXEC
 suffix:semicolon
 macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON)
 multiline_comment|/* Allows stub to set breakpoints everywhere */
 id|f
 op_or_assign
-id|_PAGE_RW
-op_or
-id|_PAGE_DIRTY
+id|_PAGE_WRENABLE
 suffix:semicolon
-macro_line|#else
+macro_line|#else&t;/* !CONFIG_KGDB &amp;&amp; !CONFIG_XMON */
 r_if
 c_cond
 (paren
@@ -701,9 +696,7 @@ id|etext
 )paren
 id|f
 op_or_assign
-id|_PAGE_RW
-op_or
-id|_PAGE_DIRTY
+id|_PAGE_WRENABLE
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_else
@@ -713,7 +706,7 @@ op_or_assign
 id|_PAGE_USER
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_STD_MMU */
-macro_line|#endif /* CONFIG_KGDB */
+macro_line|#endif /* CONFIG_KGDB || CONFIG_XMON */
 id|map_page
 c_func
 (paren
