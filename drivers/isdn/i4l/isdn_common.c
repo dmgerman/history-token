@@ -1570,7 +1570,7 @@ id|cmd
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Begin of a CAPI like LL&lt;-&gt;HL interface, currently used only for &n; * supplementary service (CAPI 2.0 part III)&n; */
-macro_line|#include &quot;avmb1/capicmd.h&quot;  /* this should be moved in a common place */
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 r_int
 DECL|function|isdn_capi_rec_hl_msg
 id|isdn_capi_rec_hl_msg

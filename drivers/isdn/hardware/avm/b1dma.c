@@ -13,10 +13,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &quot;capilli.h&quot;
+macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-macro_line|#include &quot;capicmd.h&quot;
-macro_line|#include &quot;capiutil.h&quot;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#if BITS_PER_LONG != 32
 macro_line|#error FIXME: driver requires 32-bit platform
 macro_line|#endif

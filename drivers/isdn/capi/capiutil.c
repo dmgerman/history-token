@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &quot;capiutil.h&quot;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren

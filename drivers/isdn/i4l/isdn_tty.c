@@ -3228,7 +3228,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Begin of a CAPI like interface, currently used only for &n; * supplementary service (CAPI 2.0 part III)&n; */
-macro_line|#include &quot;avmb1/capicmd.h&quot;  /* this should be moved in a common place */
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 r_int
 DECL|function|isdn_tty_capi_facility
 id|isdn_tty_capi_facility
