@@ -3,16 +3,154 @@ macro_line|#ifndef __ASM_SYSTEM_H
 DECL|macro|__ASM_SYSTEM_H
 mdefine_line|#define __ASM_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/lowcore.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
-DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs1(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs1(&amp;next-&gt;thread.fp_regs);&t;&t;&t;     &bslash;&n;&t;resume(prev,next);&t;&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#ifdef __KERNEL__
 r_struct
 id|task_struct
 suffix:semicolon
+r_extern
+r_struct
+id|task_struct
+op_star
+id|resume
+c_func
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|function|save_fp_regs
+r_static
+r_inline
+r_void
+id|save_fp_regs
+c_func
+(paren
+id|s390_fp_regs
+op_star
+id|fpregs
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;   std   0,8(%0)&bslash;n&quot;
+l_string|&quot;   std   2,24(%0)&bslash;n&quot;
+l_string|&quot;   std   4,40(%0)&bslash;n&quot;
+l_string|&quot;   std   6,56(%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACHINE_HAS_IEEE
+)paren
+r_return
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;   stfpc 0(%0)&bslash;n&quot;
+l_string|&quot;   std   1,16(%0)&bslash;n&quot;
+l_string|&quot;   std   3,32(%0)&bslash;n&quot;
+l_string|&quot;   std   5,48(%0)&bslash;n&quot;
+l_string|&quot;   std   7,64(%0)&bslash;n&quot;
+l_string|&quot;   std   8,72(%0)&bslash;n&quot;
+l_string|&quot;   std   9,80(%0)&bslash;n&quot;
+l_string|&quot;   std   10,88(%0)&bslash;n&quot;
+l_string|&quot;   std   11,96(%0)&bslash;n&quot;
+l_string|&quot;   std   12,104(%0)&bslash;n&quot;
+l_string|&quot;   std   13,112(%0)&bslash;n&quot;
+l_string|&quot;   std   14,120(%0)&bslash;n&quot;
+l_string|&quot;   std   15,128(%0)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|restore_fp_regs
+r_static
+r_inline
+r_void
+id|restore_fp_regs
+c_func
+(paren
+id|s390_fp_regs
+op_star
+id|fpregs
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;   ld    0,8(%0)&bslash;n&quot;
+l_string|&quot;   ld    2,24(%0)&bslash;n&quot;
+l_string|&quot;   ld    4,40(%0)&bslash;n&quot;
+l_string|&quot;   ld    6,56(%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACHINE_HAS_IEEE
+)paren
+r_return
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;   lfpc  0(%0)&bslash;n&quot;
+l_string|&quot;   ld    1,16(%0)&bslash;n&quot;
+l_string|&quot;   ld    3,32(%0)&bslash;n&quot;
+l_string|&quot;   ld    5,48(%0)&bslash;n&quot;
+l_string|&quot;   ld    7,64(%0)&bslash;n&quot;
+l_string|&quot;   ld    8,72(%0)&bslash;n&quot;
+l_string|&quot;   ld    9,80(%0)&bslash;n&quot;
+l_string|&quot;   ld    10,88(%0)&bslash;n&quot;
+l_string|&quot;   ld    11,96(%0)&bslash;n&quot;
+l_string|&quot;   ld    12,104(%0)&bslash;n&quot;
+l_string|&quot;   ld    13,112(%0)&bslash;n&quot;
+l_string|&quot;   ld    14,120(%0)&bslash;n&quot;
+l_string|&quot;   ld    15,128(%0)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|switch_to
+mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs(&amp;next-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;resume(prev,next);&t;&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|xchg
@@ -622,62 +760,7 @@ DECL|macro|ctl_set_bit
 mdefine_line|#define ctl_set_bit(cr, bit) __ctl_set_bit(cr, bit)
 DECL|macro|ctl_clear_bit
 mdefine_line|#define ctl_clear_bit(cr, bit) __ctl_clear_bit(cr, bit)
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
-r_extern
-r_struct
-id|task_struct
-op_star
-id|resume
-c_func
-(paren
-r_void
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|save_fp_regs1
-c_func
-(paren
-id|s390_fp_regs
-op_star
-id|fpregs
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|save_fp_regs
-c_func
-(paren
-id|s390_fp_regs
-op_star
-id|fpregs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|restore_fp_regs1
-c_func
-(paren
-id|s390_fp_regs
-op_star
-id|fpregs
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|restore_fp_regs
-c_func
-(paren
-id|s390_fp_regs
-op_star
-id|fpregs
-)paren
-suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
 r_extern
 r_void
 (paren
@@ -710,6 +793,6 @@ id|_machine_power_off
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -1015,15 +1015,16 @@ id|current-&gt;thread.fp_regs.fpc
 op_assign
 l_int|0
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-l_string|&quot;sr  0,0&bslash;n&bslash;t&quot;
-l_string|&quot;sfpc 0,0&bslash;n&bslash;t&quot;
+l_string|&quot;sfpc %0,%0&quot;
 suffix:colon
 suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;d&quot;
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -665,12 +665,27 @@ r_int
 )paren
 id|frame
 suffix:semicolon
-multiline_comment|/* save fprs, if used in last task */
+multiline_comment|/*&n;&t; * save fprs to current-&gt;thread.fp_regs to merge them with&n;&t; * the emulated registers and then copy the result to the child.&n;&t; */
 id|save_fp_regs
 c_func
 (paren
 op_amp
+id|current-&gt;thread.fp_regs
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
 id|p-&gt;thread.fp_regs
+comma
+op_amp
+id|current-&gt;thread.fp_regs
+comma
+r_sizeof
+(paren
+id|s390_fp_regs
+)paren
 )paren
 suffix:semicolon
 id|p-&gt;thread.user_seg
@@ -1031,19 +1046,18 @@ c_cond
 (paren
 id|MACHINE_HAS_IEEE
 )paren
-(brace
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-l_string|&quot;sr  0,0&bslash;n&bslash;t&quot;
-l_string|&quot;sfpc 0,0&bslash;n&bslash;t&quot;
+l_string|&quot;sfpc %0,%0&quot;
 suffix:colon
 suffix:colon
-suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;d&quot;
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
-)brace
 )brace
 id|putname
 c_func
@@ -1072,10 +1086,26 @@ op_star
 id|fpregs
 )paren
 (brace
+multiline_comment|/*&n;&t; * save fprs to current-&gt;thread.fp_regs to merge them with&n;&t; * the emulated registers and then copy the result to the dump.&n;&t; */
 id|save_fp_regs
 c_func
 (paren
+op_amp
+id|current-&gt;thread.fp_regs
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
 id|fpregs
+comma
+op_amp
+id|current-&gt;thread.fp_regs
+comma
+r_sizeof
+(paren
+id|s390_fp_regs
+)paren
 )paren
 suffix:semicolon
 r_return
