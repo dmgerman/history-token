@@ -3445,6 +3445,11 @@ op_assign
 op_star
 id|var
 suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3501,6 +3506,8 @@ op_amp
 id|info-&gt;modelist
 )paren
 )paren
+id|err
+op_assign
 id|fb_add_videomode
 c_func
 (paren
@@ -3514,6 +3521,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|err
+op_logical_and
 id|info-&gt;flags
 op_amp
 id|FBINFO_MISC_USEREVENT
