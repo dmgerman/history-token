@@ -305,6 +305,9 @@ suffix:semicolon
 multiline_comment|/* 1 bit &lt;=&gt; 256 bytes of nocache &lt;=&gt; 64 PTEs */
 DECL|macro|SRMMU_NOCACHE_BITMAP_SHIFT
 mdefine_line|#define SRMMU_NOCACHE_BITMAP_SHIFT (PAGE_SHIFT - 4)
+multiline_comment|/* The context table is a nocache user with the biggest alignment needs. */
+DECL|macro|SRMMU_NOCACHE_ALIGN_MAX
+mdefine_line|#define SRMMU_NOCACHE_ALIGN_MAX (sizeof(ctxd_t)*SRMMU_MAX_CONTEXTS)
 DECL|variable|srmmu_nocache_pool
 r_void
 op_star
@@ -1564,6 +1567,23 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|align
+OG
+id|SRMMU_NOCACHE_ALIGN_MAX
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|offset
 op_assign
 id|bit_map_string_get
@@ -2025,7 +2045,7 @@ c_func
 (paren
 id|srmmu_nocache_size
 comma
-id|PAGE_SIZE
+id|SRMMU_NOCACHE_ALIGN_MAX
 comma
 l_int|0UL
 )paren
