@@ -3790,6 +3790,12 @@ op_star
 op_assign
 id|op-&gt;delete_inode
 suffix:semicolon
+id|DQUOT_INIT
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/* s_op-&gt;delete_inode internally recalls clear_inode() */
 r_delete
 (paren

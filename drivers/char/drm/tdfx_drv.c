@@ -16,9 +16,29 @@ DECL|macro|DRIVER_MINOR
 mdefine_line|#define DRIVER_MINOR&t;&t;0
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
+macro_line|#ifndef PCI_VENDOR_ID_3DFX
+DECL|macro|PCI_VENDOR_ID_3DFX
+mdefine_line|#define PCI_VENDOR_ID_3DFX 0x121A
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_3DFX_VOODOO5
 DECL|macro|PCI_DEVICE_ID_3DFX_VOODOO5
 mdefine_line|#define PCI_DEVICE_ID_3DFX_VOODOO5 0x0009
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_3DFX_VOODOO4
+DECL|macro|PCI_DEVICE_ID_3DFX_VOODOO4
+mdefine_line|#define PCI_DEVICE_ID_3DFX_VOODOO4 0x0007
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_3DFX_VOODOO3_3000 /* Voodoo3 3000 */
+DECL|macro|PCI_DEVICE_ID_3DFX_VOODOO3_3000
+mdefine_line|#define PCI_DEVICE_ID_3DFX_VOODOO3_3000 0x0005
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_3DFX_VOODOO3_2000 /* Voodoo3 3000 */
+DECL|macro|PCI_DEVICE_ID_3DFX_VOODOO3_2000
+mdefine_line|#define PCI_DEVICE_ID_3DFX_VOODOO3_2000 0x0004
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_3DFX_BANSHEE
+DECL|macro|PCI_DEVICE_ID_3DFX_BANSHEE
+mdefine_line|#define PCI_DEVICE_ID_3DFX_BANSHEE 0x0003
 macro_line|#endif
 r_static
 id|drm_pci_list_t
@@ -40,7 +60,19 @@ comma
 (brace
 id|PCI_VENDOR_ID_3DFX
 comma
-id|PCI_DEVICE_ID_3DFX_VOODOO3
+id|PCI_DEVICE_ID_3DFX_VOODOO3_2000
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_3DFX
+comma
+id|PCI_DEVICE_ID_3DFX_VOODOO3_3000
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_3DFX
+comma
+id|PCI_DEVICE_ID_3DFX_VOODOO4
 )brace
 comma
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tc.c,v 1.3 1999/10/09 00:01:32 ralf Exp $&n; * tc-init: We assume the TURBOchannel to be up and running so&n; * just probe for Modules and fill in the global data structure&n; * tc_bus.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) Harald Koerfgen, 1998&n; *&n; */
+multiline_comment|/*&n; * tc-init: We assume the TURBOchannel to be up and running so&n; * just probe for Modules and fill in the global data structure&n; * tc_bus.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) Harald Koerfgen, 1998&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/dec/tcmodule.h&gt;
 macro_line|#include &lt;asm/dec/interrupts.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|TC_DEBUG
 mdefine_line|#define TC_DEBUG
 DECL|variable|tc_bus
@@ -23,27 +24,17 @@ DECL|variable|max_tcslot
 r_static
 r_int
 id|max_tcslot
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|info
 r_static
 id|tcinfo
 op_star
 id|info
-op_assign
-(paren
-id|tcinfo
-op_star
-)paren
-l_int|0
 suffix:semicolon
 DECL|variable|system_base
 r_int
 r_int
 id|system_base
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_void
@@ -436,7 +427,7 @@ id|module
 (braket
 id|OLDCARD
 op_plus
-id|PATTERN0
+id|TC_PATTERN0
 )braket
 op_eq
 l_int|0x55
@@ -445,7 +436,7 @@ id|module
 (braket
 id|OLDCARD
 op_plus
-id|PATTERN1
+id|TC_PATTERN1
 )braket
 op_eq
 l_int|0x00
@@ -454,7 +445,7 @@ id|module
 (braket
 id|OLDCARD
 op_plus
-id|PATTERN2
+id|TC_PATTERN2
 )braket
 op_eq
 l_int|0xaa
@@ -463,7 +454,7 @@ id|module
 (braket
 id|OLDCARD
 op_plus
-id|PATTERN3
+id|TC_PATTERN3
 )braket
 op_eq
 l_int|0xff
@@ -477,28 +468,28 @@ c_cond
 (paren
 id|module
 (braket
-id|PATTERN0
+id|TC_PATTERN0
 )braket
 op_eq
 l_int|0x55
 op_logical_and
 id|module
 (braket
-id|PATTERN1
+id|TC_PATTERN1
 )braket
 op_eq
 l_int|0x00
 op_logical_and
 id|module
 (braket
-id|PATTERN2
+id|TC_PATTERN2
 )braket
 op_eq
 l_int|0xaa
 op_logical_and
 id|module
 (braket
-id|PATTERN3
+id|TC_PATTERN3
 )braket
 op_eq
 l_int|0xff
@@ -556,7 +547,7 @@ id|i
 op_assign
 id|module
 (braket
-id|FIRM_VER
+id|TC_FIRM_VER
 op_plus
 id|offset
 op_plus
@@ -577,7 +568,7 @@ id|i
 op_assign
 id|module
 (braket
-id|VENDOR
+id|TC_VENDOR
 op_plus
 id|offset
 op_plus
@@ -598,7 +589,7 @@ id|i
 op_assign
 id|module
 (braket
-id|MODULE
+id|TC_MODULE
 op_plus
 id|offset
 op_plus
@@ -957,14 +948,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;(%sparity)&bslash;n&quot;
+l_string|&quot;(with%s parity)&bslash;n&quot;
 comma
 id|info-&gt;parity
 ques
 c_cond
 l_string|&quot;&quot;
 suffix:colon
-l_string|&quot;no &quot;
+l_string|&quot;out&quot;
 )paren
 suffix:semicolon
 id|slot_size
@@ -1085,4 +1076,46 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|variable|search_tc_card
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|search_tc_card
+)paren
+suffix:semicolon
+DECL|variable|claim_tc_card
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|claim_tc_card
+)paren
+suffix:semicolon
+DECL|variable|release_tc_card
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|release_tc_card
+)paren
+suffix:semicolon
+DECL|variable|get_tc_base_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_tc_base_addr
+)paren
+suffix:semicolon
+DECL|variable|get_tc_irq_nr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_tc_irq_nr
+)paren
+suffix:semicolon
+DECL|variable|get_tc_speed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_tc_speed
+)paren
+suffix:semicolon
 eof

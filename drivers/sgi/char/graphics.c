@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: graphics.c,v 1.22 2000/02/18 00:24:43 ralf Exp $&n; *&n; * gfx.c: support for SGI&squot;s /dev/graphics, /dev/opengl&n; *&n; * Author: Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *         Ralf Baechle (ralf@gnu.org)&n; *         Ulf Carlsson (ulfc@bun.falkenberg.se)&n; *&n; * On IRIX, /dev/graphics is [10, 146]&n; *          /dev/opengl   is [10, 147]&n; *&n; * From a mail with Mark J. Kilgard, /dev/opengl and /dev/graphics are&n; * the same thing, the use of /dev/graphics seems deprecated though.&n; *&n; * The reason that the original SGI programmer had to use only one&n; * device for all the graphic cards on the system will remain a&n; * mistery for the rest of our lives.  Why some ioctls take a board&n; * number and some others not?  Mistery.  Why do they map the hardware&n; * registers into the user address space with an ioctl instead of&n; * mmap?  Mistery too.  Why they did not use the standard way of&n; * making ioctl constants and instead sticked a random constant?&n; * Mistery too.&n; *&n; * We implement those misterious things, and tried not to think about&n; * the reasons behind them.&n; */
+multiline_comment|/*&n; * gfx.c: support for SGI&squot;s /dev/graphics, /dev/opengl&n; *&n; * Author: Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *         Ralf Baechle (ralf@gnu.org)&n; *         Ulf Carlsson (ulfc@bun.falkenberg.se)&n; *&n; * On IRIX, /dev/graphics is [10, 146]&n; *          /dev/opengl   is [10, 147]&n; *&n; * From a mail with Mark J. Kilgard, /dev/opengl and /dev/graphics are&n; * the same thing, the use of /dev/graphics seems deprecated though.&n; *&n; * The reason that the original SGI programmer had to use only one&n; * device for all the graphic cards on the system will remain a&n; * mistery for the rest of our lives.  Why some ioctls take a board&n; * number and some others not?  Mistery.  Why do they map the hardware&n; * registers into the user address space with an ioctl instead of&n; * mmap?  Mistery too.  Why they did not use the standard way of&n; * making ioctl constants and instead sticked a random constant?&n; * Mistery too.&n; *&n; * We implement those misterious things, and tried not to think about&n; * the reasons behind them.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -752,8 +752,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * This is the core of the direct rendering engine.&n; */
-r_int
-r_int
+r_struct
+id|page
+op_star
 DECL|function|sgi_graphics_nopage
 id|sgi_graphics_nopage
 (paren
@@ -925,19 +926,6 @@ c_func
 id|pmd
 comma
 id|address
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;page: %08lx&bslash;n&quot;
-comma
-id|pte_page
-c_func
-(paren
-op_star
-id|pte
-)paren
 )paren
 suffix:semicolon
 r_return

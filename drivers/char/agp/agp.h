@@ -278,6 +278,10 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|cant_use_aperture
+r_int
+id|cant_use_aperture
+suffix:semicolon
 multiline_comment|/* Links to driver specific functions */
 DECL|member|fetch_size
 r_int

@@ -617,19 +617,55 @@ suffix:semicolon
 DECL|macro|mga_flush_write_combine
 mdefine_line|#define mga_flush_write_combine()&t;mb()
 DECL|macro|MGA_BASE
-mdefine_line|#define MGA_BASE( reg )&t;&t;((u32)(dev_priv-&gt;mmio-&gt;handle))
+mdefine_line|#define MGA_BASE( reg )&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|MGA_ADDR
 mdefine_line|#define MGA_ADDR( reg )&t;&t;(MGA_BASE(reg) + reg)
 DECL|macro|MGA_DEREF
 mdefine_line|#define MGA_DEREF( reg )&t;*(volatile u32 *)MGA_ADDR( reg )
+DECL|macro|MGA_DEREF8
+mdefine_line|#define MGA_DEREF8( reg )&t;*(volatile u8 *)MGA_ADDR( reg )
+macro_line|#ifdef __alpha__
+DECL|macro|MGA_READ
+mdefine_line|#define MGA_READ( reg )&t;&t;(_MGA_READ((u32 *)MGA_ADDR(reg)))
+DECL|macro|MGA_WRITE
+mdefine_line|#define MGA_WRITE( reg, val )&t;do { wmb(); MGA_DEREF( reg ) = val; } while (0)
+DECL|macro|MGA_WRITE8
+mdefine_line|#define MGA_WRITE8( reg, val )  do { wmb(); MGA_DEREF8( reg ) = val; } while (0)
+DECL|function|_MGA_READ
+r_static
+r_inline
+id|u32
+id|_MGA_READ
+c_func
+(paren
+id|u32
+op_star
+id|addr
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+macro_line|#else
 DECL|macro|MGA_READ
 mdefine_line|#define MGA_READ( reg )&t;&t;MGA_DEREF( reg )
 DECL|macro|MGA_WRITE
 mdefine_line|#define MGA_WRITE( reg, val )&t;do { MGA_DEREF( reg ) = val; } while (0)
-DECL|macro|MGA_DEREF8
-mdefine_line|#define MGA_DEREF8( reg )&t;*(volatile u8 *)MGA_ADDR( reg )
 DECL|macro|MGA_WRITE8
 mdefine_line|#define MGA_WRITE8( reg, val )  do { MGA_DEREF8( reg ) = val; } while (0)
+macro_line|#endif
 DECL|macro|DWGREG0
 mdefine_line|#define DWGREG0 &t;0x1c00
 DECL|macro|DWGREG0_END

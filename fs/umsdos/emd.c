@@ -1128,9 +1128,9 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|p-&gt;name
+id|p-&gt;spare
 comma
-id|entry-&gt;name
+id|entry-&gt;spare
 comma
 (paren
 r_char
@@ -1158,7 +1158,13 @@ c_func
 id|page2
 )paren
 comma
-id|entry-&gt;spare
+(paren
+(paren
+r_char
+op_star
+)paren
+id|entry
+)paren
 op_plus
 id|PAGE_CACHE_SIZE
 op_minus

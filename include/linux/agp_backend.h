@@ -168,6 +168,15 @@ DECL|member|current_memory
 r_int
 id|current_memory
 suffix:semicolon
+DECL|member|cant_use_aperture
+r_int
+id|cant_use_aperture
+suffix:semicolon
+DECL|member|page_mask
+r_int
+r_int
+id|page_mask
+suffix:semicolon
 DECL|typedef|agp_kern_info
 )brace
 id|agp_kern_info

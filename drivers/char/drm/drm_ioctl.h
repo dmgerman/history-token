@@ -474,7 +474,6 @@ comma
 id|dev-&gt;unique
 )paren
 suffix:semicolon
-macro_line|#ifdef __alpha__
 r_do
 (brace
 r_struct
@@ -631,10 +630,18 @@ c_cond
 (paren
 id|pci_dev
 )paren
+(brace
+id|dev-&gt;pdev
+op_assign
+id|pci_dev
+suffix:semicolon
+macro_line|#ifdef __alpha__
 id|dev-&gt;hose
 op_assign
 id|pci_dev-&gt;sysdata
 suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 r_while
 c_loop
@@ -644,7 +651,6 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.23 2001/03/09 09:30:00 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.26 2001/08/17 12:03:00 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * VIA IDE driver for Linux. Supports&n; *&n; *   vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233&n; *&n; * southbridges, which can be found in&n; *&n; *  VIA Apollo VP, VPX, VPX/97, VP2, VP2/97, VP3, MVP3, MVP4, P6, Pro,&n; *  Pro Plus, Pro 133, Pro 133A, ProMedia PM601, ProSavage PM133, PLE133,&n; *  Pro 266, KX133, KT133, ProSavage KM133, KT133A, KT266&n; *  PC-Chips VXPro, VXPro+, TXPro-III, TXPro-AGP, ViaGra, BXToo, BXTel&n; *  AMD 640, 640 AGP, 750 IronGate&n; *  ETEQ 6618, 6628, 6638&n; *  Micron Samurai&n; *&n; * chipsets. Supports&n; *&n; *   PIO 0-5, MWDMA 0-2, SWDMA 0-2 and UDMA 0-5&n; *&n; * (this includes UDMA33, 66 and 100) modes. UDMA66 and higher modes are&n; * autoenabled only in case the BIOS has detected a 80 wire cable. To ignore&n; * the BIOS data and assume the cable is present, use &squot;ide0=ata66&squot; or&n; * &squot;ide1=ata66&squot; on the kernel command line.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -48,8 +48,6 @@ DECL|macro|VIA_SET_FIFO
 mdefine_line|#define VIA_SET_FIFO&t;&t;0x040&t;/* Needs to have FIFO split set */
 DECL|macro|VIA_SET_THRESH
 mdefine_line|#define VIA_SET_THRESH&t;&t;0x080&t;/* Needs to have FIFO thresholds set */
-DECL|macro|VIA_BAD_PIO
-mdefine_line|#define VIA_BAD_PIO&t;&t;0x100&t;/* Always uses 26 PCICLK/xfer regardles of PIO mode */
 multiline_comment|/*&n; * VIA SouthBridge chips.&n; */
 DECL|struct|via_isa_bridge
 r_static
@@ -88,7 +86,6 @@ id|via_isa_bridges
 )braket
 op_assign
 (brace
-macro_line|#ifdef VIA_NEW_BRIDGES_TESTED
 (brace
 l_string|&quot;vt8233&quot;
 comma
@@ -110,10 +107,9 @@ l_int|0x00
 comma
 l_int|0x2f
 comma
-id|VIA_UDMA_66
+id|VIA_UDMA_100
 )brace
 comma
-macro_line|#endif
 (brace
 l_string|&quot;vt82c686b&quot;
 comma
@@ -124,8 +120,6 @@ comma
 l_int|0x4f
 comma
 id|VIA_UDMA_100
-op_or
-id|VIA_BAD_PIO
 )brace
 comma
 (brace
@@ -470,7 +464,7 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.23&quot;
+l_string|&quot;Driver Version:                     3.26&quot;
 )paren
 suffix:semicolon
 id|via_print
@@ -1286,7 +1280,9 @@ id|speed
 id|i
 )braket
 op_assign
-l_int|2000
+l_int|60
+op_star
+id|via_clock
 op_div
 id|udma
 (braket
@@ -1298,7 +1294,9 @@ id|cycle
 id|i
 )braket
 op_assign
-l_int|10
+l_int|333
+op_div
+id|via_clock
 op_star
 id|udma
 (braket
@@ -1987,7 +1985,9 @@ id|VIA_UDMA_100
 suffix:colon
 id|UT
 op_assign
-l_int|10
+id|T
+op_div
+l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon

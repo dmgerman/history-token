@@ -176,6 +176,10 @@ r_int
 r_int
 id|phys_pci_gart
 suffix:semicolon
+DECL|member|bus_pci_gart
+id|dma_addr_t
+id|bus_pci_gart
+suffix:semicolon
 DECL|member|idle_count
 id|atomic_t
 id|idle_count

@@ -1,9 +1,7 @@
 multiline_comment|/*&n; * Linux Rendering Resource Manager &n; *&n; *          Implements the SGI-compatible rendering resource manager.&n; *          This takes care of implementing the virtualized video hardware&n; *          access required for OpenGL direct rendering.&n; *&n; * Author:  Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * Fixes:&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rrm.h&gt;
-macro_line|#ifdef MODULE
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif
 r_int
 DECL|function|rrm_open_rn
 id|rrm_open_rn
@@ -248,4 +246,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|rrm_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rrm_command
+)paren
+suffix:semicolon
+DECL|variable|rrm_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rrm_close
+)paren
+suffix:semicolon
 eof

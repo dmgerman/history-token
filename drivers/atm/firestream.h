@@ -510,6 +510,10 @@ DECL|macro|RAS0_VPSEL
 mdefine_line|#define RAS0_VPSEL    (0x1 &lt;&lt; 16)
 DECL|macro|RAS0_VCSEL
 mdefine_line|#define RAS0_VCSEL    (0x1 &lt;&lt;  0)
+DECL|macro|RAS1
+mdefine_line|#define RAS1 0x1c0
+DECL|macro|RAS1_UTREG
+mdefine_line|#define RAS1_UTREG    (0x1 &lt;&lt; 5)
 DECL|macro|DMAMR
 mdefine_line|#define DMAMR 0x1cc
 DECL|macro|DMAMR_TX_MODE_FULL
@@ -518,6 +522,14 @@ DECL|macro|DMAMR_TX_MODE_PART
 mdefine_line|#define DMAMR_TX_MODE_PART (0x1 &lt;&lt; 0)
 DECL|macro|DMAMR_TX_MODE_NONE
 mdefine_line|#define DMAMR_TX_MODE_NONE (0x2 &lt;&lt; 0) /* And 3 */
+DECL|macro|RAS2
+mdefine_line|#define RAS2 0x280
+DECL|macro|RAS2_NNI
+mdefine_line|#define RAS2_NNI  (0x1 &lt;&lt; 0)
+DECL|macro|RAS2_USEL
+mdefine_line|#define RAS2_USEL (0x1 &lt;&lt; 1)
+DECL|macro|RAS2_UBS
+mdefine_line|#define RAS2_UBS  (0x1 &lt;&lt; 2)
 DECL|struct|fs_transmit_config
 r_struct
 id|fs_transmit_config
@@ -719,6 +731,8 @@ id|n
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MAX_PHY
+mdefine_line|#define MAX_PHY 0x20
 DECL|struct|fs_dev
 r_struct
 id|fs_dev
@@ -752,11 +766,18 @@ r_struct
 id|atm_dev
 op_star
 id|atm_dev
+(braket
+id|MAX_PHY
+)braket
 suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
+suffix:semicolon
+DECL|member|start_number
+r_int
+id|start_number
 suffix:semicolon
 DECL|member|hw_base
 r_int

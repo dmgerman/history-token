@@ -43,6 +43,18 @@ macro_line|#include &quot;compat-pre24.h&quot;
 macro_line|#endif
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
+multiline_comment|/* page_to_bus for earlier kernels, not optimal in all cases */
+macro_line|#ifndef page_to_bus
+DECL|macro|page_to_bus
+mdefine_line|#define page_to_bus(page)&t;((unsigned int)(virt_to_bus(page_address(page))))
+macro_line|#endif
+multiline_comment|/* We just use virt_to_bus for pci_map_single on older kernels */
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
+DECL|macro|pci_map_single
+mdefine_line|#define pci_map_single(hwdev, ptr, size, direction)&t;virt_to_bus(ptr)
+DECL|macro|pci_unmap_single
+mdefine_line|#define pci_unmap_single(hwdev, dma_addr, size, direction)
+macro_line|#endif
 multiline_comment|/* DRM template customization defaults&n; */
 macro_line|#ifndef __HAVE_AGP
 DECL|macro|__HAVE_AGP
@@ -1679,6 +1691,15 @@ DECL|member|agp_mtrr
 r_int
 id|agp_mtrr
 suffix:semicolon
+DECL|member|cant_use_aperture
+r_int
+id|cant_use_aperture
+suffix:semicolon
+DECL|member|page_mask
+r_int
+r_int
+id|page_mask
+suffix:semicolon
 DECL|typedef|drm_agp_head_t
 )brace
 id|drm_agp_head_t
@@ -1709,6 +1730,11 @@ id|page
 op_star
 op_star
 id|pagelist
+suffix:semicolon
+DECL|member|busaddr
+id|dma_addr_t
+op_star
+id|busaddr
 suffix:semicolon
 DECL|typedef|drm_sg_mem_t
 )brace
@@ -2056,6 +2082,12 @@ op_star
 id|agp
 suffix:semicolon
 macro_line|#endif
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 macro_line|#ifdef __alpha__
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020403
 DECL|member|hose
@@ -4840,7 +4872,6 @@ macro_line|#endif
 multiline_comment|/* ATI PCIGART support (ati_pcigart.h) */
 r_extern
 r_int
-r_int
 id|DRM
 c_func
 (paren
@@ -4850,6 +4881,15 @@ id|ati_pcigart_init
 id|drm_device_t
 op_star
 id|dev
+comma
+r_int
+r_int
+op_star
+id|addr
+comma
+id|dma_addr_t
+op_star
+id|bus_addr
 )paren
 suffix:semicolon
 r_extern
@@ -4860,9 +4900,16 @@ c_func
 id|ati_pcigart_cleanup
 )paren
 (paren
+id|drm_device_t
+op_star
+id|dev
+comma
 r_int
 r_int
-id|address
+id|addr
+comma
+id|dma_addr_t
+id|bus_addr
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

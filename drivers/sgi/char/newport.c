@@ -13,6 +13,13 @@ id|newport_regs
 op_star
 id|npregs
 suffix:semicolon
+DECL|variable|npregs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|npregs
+)paren
+suffix:semicolon
 multiline_comment|/* Kernel routines for supporting graphics context switching */
 DECL|function|newport_save
 r_void

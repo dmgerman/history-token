@@ -739,8 +739,8 @@ DECL|macro|Tx_BUF_EMP
 mdefine_line|#define&t;Tx_BUF_EMP&t;0x4&t;/* Tx Buffer empty */
 DECL|macro|DCD
 mdefine_line|#define&t;DCD&t;&t;0x8&t;/* DCD */
-DECL|macro|SYNC_HUNT
-mdefine_line|#define&t;SYNC_HUNT&t;0x10&t;/* Sync/hunt */
+DECL|macro|SYNC
+mdefine_line|#define&t;SYNC&t;&t;0x10&t;/* Sync/hunt */
 DECL|macro|CTS
 mdefine_line|#define&t;CTS&t;&t;0x20&t;/* CTS */
 DECL|macro|TxEOM

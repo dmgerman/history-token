@@ -26156,7 +26156,7 @@ mdefine_line|#define UNIQUE_ID1&t;0x1234
 DECL|macro|UNIQUE_ID2
 mdefine_line|#define UNIQUE_ID2&t;0x4321
 DECL|macro|UNIQUE_ID3
-mdefine_line|#define UNIQUE_ID3&t;0xFFFF
+mdefine_line|#define UNIQUE_ID3&t;0xABCD
 r_static
 r_void
 id|__init

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * usema.c: software semaphore driver (see IRIX&squot;s usema(7M))&n; * written 1997 Mike Shaver (shaver@neon.ingenia.ca)&n; *         1997 Miguel de Icaza (miguel@kernel.org)&n; *&n; * This file contains the implementation of /dev/usemaclone,&n; * the devices used by IRIX&squot;s us* semaphore routines.&n; *&n; * /dev/usemaclone is used to create a new semaphore device, and then&n; * the semaphore is manipulated via ioctls.&n; *&n; * At least for the zero-contention case, lock set and unset as well&n; * as semaphore P and V are done in userland, which makes things a&n; * little bit better.  I suspect that the ioctls are used to register&n; * the process as blocking, etc.&n; *&n; * Much inspiration and structure stolen from Miguel&squot;s shmiq work.&n; *&n; * For more information:&n; * usema(7m), usinit(3p), usnewsema(3p)&n; * /usr/include/sys/usioctl.h &n; *&n;*/
+multiline_comment|/*&n; * usema.c: software semaphore driver (see IRIX&squot;s usema(7M))&n; * written 1997 Mike Shaver (shaver@neon.ingenia.ca)&n; *         1997 Miguel de Icaza (miguel@kernel.org)&n; *&n; * This file contains the implementation of /dev/usemaclone,&n; * the devices used by IRIX&squot;s us* semaphore routines.&n; *&n; * /dev/usemaclone is used to create a new semaphore device, and then&n; * the semaphore is manipulated via ioctls.&n; *&n; * At least for the zero-contention case, lock set and unset as well&n; * as semaphore P and V are done in userland, which makes things a&n; * little bit better.  I suspect that the ioctls are used to register&n; * the process as blocking, etc.&n; *&n; * Much inspiration and structure stolen from Miguel&squot;s shmiq work.&n; *&n; * For more information:&n; * usema(7m), usinit(3p), usnewsema(3p)&n; * /usr/include/sys/usioctl.h &n; *&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;usema.h&quot;
@@ -574,4 +575,11 @@ id|dev_usemaclone
 )paren
 suffix:semicolon
 )brace
+DECL|variable|usema_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usema_init
+)paren
+suffix:semicolon
 eof

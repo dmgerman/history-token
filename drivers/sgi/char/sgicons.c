@@ -1,17 +1,10 @@
-multiline_comment|/* $Id: sgicons.c,v 1.10 1998/08/25 09:18:58 ralf Exp $&n; *&n; * sgicons.c: Setting up and registering console I/O on the SGI.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * This implement a virtual console interface.&n; */
+multiline_comment|/*&n; * sgicons.c: Setting up and registering console I/O on the SGI.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * This implement a virtual console interface.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;gconsole.h&quot;
-multiline_comment|/* To make psaux code cleaner */
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
 multiline_comment|/* This is the system graphics console (the first adapter found) */
 DECL|variable|gconsole
 r_struct
@@ -70,6 +63,20 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|variable|disable_gconsole
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_gconsole
+)paren
+suffix:semicolon
+DECL|variable|enable_gconsole
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_gconsole
+)paren
+suffix:semicolon
 r_void
 DECL|function|register_gconsole
 id|register_gconsole

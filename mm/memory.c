@@ -4751,6 +4751,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+id|SetPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Freeze the &quot;shared&quot;ness of the page, ie page_count + swap_count.&n;&t; * Must lock page before transferring our swap count to already&n;&t; * obtained page count.&n;&t; */
 id|lock_page

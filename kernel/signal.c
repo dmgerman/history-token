@@ -900,6 +900,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sig
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|current-&gt;notifier
 )paren
 (brace
@@ -937,12 +943,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|sig
-)paren
-(brace
 r_if
 c_cond
 (paren

@@ -57,11 +57,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * This is ridiculous, but we want the strings in&n; * the .init section so that they don&squot;t take up&n; * real memory.. Parse the same file multiple times&n; * to get all the info.&n; */
 DECL|macro|VENDOR
-mdefine_line|#define VENDOR( vendor, name )&t;&t;static const char __vendorstr_##vendor[] __initdata = name;
+mdefine_line|#define VENDOR( vendor, name )&t;&t;static char __vendorstr_##vendor[] __initdata = name;
 DECL|macro|ENDVENDOR
 mdefine_line|#define ENDVENDOR()
 DECL|macro|DEVICE
-mdefine_line|#define DEVICE( vendor, device, name ) &t;static const char __devicestr_##vendor##device[] __initdata = name;
+mdefine_line|#define DEVICE( vendor, device, name ) &t;static char __devicestr_##vendor##device[] __initdata = name;
 macro_line|#include &quot;devlist.h&quot;
 DECL|macro|VENDOR
 mdefine_line|#define VENDOR( vendor, name )&t;&t;static struct pci_device_info __devices_##vendor[] __initdata = {
@@ -72,7 +72,6 @@ mdefine_line|#define DEVICE( vendor, device, name )&t;{ 0x##device, 0, __devices
 macro_line|#include &quot;devlist.h&quot;
 DECL|variable|pci_vendor_list
 r_static
-r_const
 r_struct
 id|pci_vendor_info
 id|__initdata
