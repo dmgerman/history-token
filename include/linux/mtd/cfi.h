@@ -1,10 +1,11 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.21 2001/06/03 01:32:57 nico Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.22 2001/07/06 09:29:07 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/flashchip.h&gt;
 macro_line|#include &lt;linux/mtd/cfi_endian.h&gt;
 multiline_comment|/*&n; * You can optimize the code size and performance by defining only &n; * the geometry(ies) available on your hardware.&n; * CFIDEV_INTERLEAVE_n, where  represents the interleave (number of chips to fill the bus width)&n; * CFIDEV_BUSWIDTH_n, where n is the bus width in bytes (1, 2 or 4 bytes)&n; *&n; * By default, all (known) geometries are supported.&n; */

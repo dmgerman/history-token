@@ -7220,6 +7220,18 @@ id|old_dentry
 r_goto
 id|out_unlock
 suffix:semicolon
+multiline_comment|/* Don&squot;t eat your daddy, dear... */
+multiline_comment|/* This also avoids locking issues */
+r_if
+c_cond
+(paren
+id|old_dentry-&gt;d_parent
+op_eq
+id|new_dentry
+)paren
+r_goto
+id|out_unlock
+suffix:semicolon
 id|target
 op_assign
 id|new_dentry-&gt;d_inode

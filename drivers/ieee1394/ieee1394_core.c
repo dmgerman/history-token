@@ -17,7 +17,7 @@ macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;csr.h&quot;
-macro_line|#include &quot;guid.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 DECL|variable|hpsb_generation
 id|atomic_t
 id|hpsb_generation
@@ -3669,7 +3669,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_ieee1394_guid
+id|init_ieee1394_nodemgr
 c_func
 (paren
 )paren
@@ -3688,7 +3688,7 @@ c_func
 r_void
 )paren
 (brace
-id|cleanup_ieee1394_guid
+id|cleanup_ieee1394_nodemgr
 c_func
 (paren
 )paren

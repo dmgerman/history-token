@@ -1072,6 +1072,17 @@ r_int
 id|len
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ptrace_attach
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * On a two-level page table, this ends up being trivial. Thus the&n; * inlining and the symmetry break with pte_alloc() that does all&n; * of this out-of-line.&n; */
 DECL|function|pmd_alloc
 r_static

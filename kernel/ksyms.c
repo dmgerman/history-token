@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1955,6 +1956,21 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|remove_wait_queue
+)paren
+suffix:semicolon
+multiline_comment|/* completion handling */
+DECL|variable|wait_for_completion
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wait_for_completion
+)paren
+suffix:semicolon
+DECL|variable|complete
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|complete
 )paren
 suffix:semicolon
 multiline_comment|/* The notion of irq probe/assignment is foreign to S/390 */

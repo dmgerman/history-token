@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1411,11 +1412,11 @@ id|__u32
 id|update_frame_cntr
 suffix:semicolon
 multiline_comment|/* update frame counter */
-DECL|member|sem
+DECL|member|waiting
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|waiting
 suffix:semicolon
 DECL|member|onstream_write_error
 r_int
@@ -4573,12 +4574,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tape-&gt;sem
+id|tape-&gt;waiting
 )paren
-id|up
+id|complete
 c_func
 (paren
-id|tape-&gt;sem
+id|tape-&gt;waiting
 )paren
 suffix:semicolon
 )brace
@@ -4669,12 +4670,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tape-&gt;sem
+id|tape-&gt;waiting
 )paren
-id|up
+id|complete
 c_func
 (paren
-id|tape-&gt;sem
+id|tape-&gt;waiting
 )paren
 suffix:semicolon
 )brace
@@ -10271,7 +10272,7 @@ id|tape-&gt;last_mark_addr
 suffix:semicolon
 multiline_comment|/* shouldn&squot;t this be htonl ?? */
 )brace
-multiline_comment|/*&n; *&t;idetape_wait_for_request installs a semaphore in a pending request&n; *&t;and sleeps until it is serviced.&n; *&n; *&t;The caller should ensure that the request will not be serviced&n; *&t;before we install the semaphore (usually by disabling interrupts).&n; */
+multiline_comment|/*&n; *&t;idetape_wait_for_request installs a completion in a pending request&n; *&t;and sleeps until it is serviced.&n; *&n; *&t;The caller should ensure that the request will not be serviced&n; *&t;before we install the completion (usually by disabling interrupts).&n; */
 DECL|function|idetape_wait_for_request
 r_static
 r_void
@@ -10287,10 +10288,10 @@ op_star
 id|rq
 )paren
 (brace
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|wait
 )paren
 suffix:semicolon
 id|idetape_tape_t
@@ -10324,15 +10325,15 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* IDETAPE_DEBUG_BUGS */
-id|rq-&gt;sem
+id|rq-&gt;waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
-id|tape-&gt;sem
+id|tape-&gt;waiting
 op_assign
 op_amp
-id|sem
+id|wait
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -10341,18 +10342,18 @@ op_amp
 id|tape-&gt;spinlock
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|wait
 )paren
 suffix:semicolon
-id|rq-&gt;sem
+id|rq-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon
-id|tape-&gt;sem
+id|tape-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon

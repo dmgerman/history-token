@@ -6332,6 +6332,10 @@ id|lynx-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|lynx-&gt;host-&gt;pdev
+op_assign
+id|dev
+suffix:semicolon
 id|lynx-&gt;lock
 op_assign
 id|SPIN_LOCK_UNLOCKED

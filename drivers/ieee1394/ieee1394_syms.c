@@ -7,7 +7,7 @@ macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
-macro_line|#include &quot;guid.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 DECL|variable|hpsb_register_lowlevel
 id|EXPORT_SYMBOL
 c_func
@@ -379,11 +379,11 @@ c_func
 id|hpsb_guid_get_handle
 )paren
 suffix:semicolon
-DECL|variable|hpsb_guid_localhost
+DECL|variable|hpsb_get_host_by_ge
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_guid_localhost
+id|hpsb_get_host_by_ge
 )paren
 suffix:semicolon
 DECL|variable|hpsb_guid_fill_packet

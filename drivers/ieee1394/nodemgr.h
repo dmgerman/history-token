@@ -1,14 +1,15 @@
-macro_line|#ifndef _IEEE1394_GUID_H
-DECL|macro|_IEEE1394_GUID_H
-mdefine_line|#define _IEEE1394_GUID_H
+multiline_comment|/*&n; * Copyright (C) 2000&t;Andreas E. Bombe&n; *               2001&t;Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+macro_line|#ifndef _IEEE1394_NODEMGR_H
+DECL|macro|_IEEE1394_NODEMGR_H
+mdefine_line|#define _IEEE1394_NODEMGR_H
 multiline_comment|/*&n; * General information: Finding out which GUID belongs to which node is done by&n; * sending packets and therefore waiting for the answers.  Wherever it is&n; * mentioned that a node is inaccessible this could just as well mean that we&n; * just don&squot;t know yet (usually, bus reset handlers can&squot;t rely on GUIDs being&n; * associated with current nodes).&n; */
 r_struct
-id|guid_entry
+id|node_entry
 suffix:semicolon
 DECL|typedef|hpsb_guid_t
 r_typedef
 r_struct
-id|guid_entry
+id|node_entry
 op_star
 id|hpsb_guid_t
 suffix:semicolon
@@ -25,7 +26,7 @@ multiline_comment|/*&n; * If the handle refers to a local host, this function wi
 r_struct
 id|hpsb_host
 op_star
-id|hpsb_guid_localhost
+id|hpsb_get_host_by_ge
 c_func
 (paren
 id|hpsb_guid_t
@@ -47,18 +48,18 @@ id|pkt
 )paren
 suffix:semicolon
 r_void
-id|init_ieee1394_guid
+id|init_ieee1394_nodemgr
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
-id|cleanup_ieee1394_guid
+id|cleanup_ieee1394_nodemgr
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* _IEEE1394_GUID_H */
+macro_line|#endif /* _IEEE1394_NODEMGR_H */
 eof

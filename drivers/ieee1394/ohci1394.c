@@ -135,7 +135,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;ohci1394.c:v0.50 15/Jul/01 Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;v0.50 15/Jul/01 Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -1664,79 +1664,6 @@ comma
 id|OHCI1394_ConfigROMmap
 comma
 id|ohci-&gt;csr_config_rom_bus
-)paren
-suffix:semicolon
-multiline_comment|/* Set bus options */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_BusOptions
-comma
-id|cpu_to_be32
-c_func
-(paren
-id|ohci-&gt;csr_config_rom_cpu
-(braket
-l_int|2
-)braket
-)paren
-)paren
-suffix:semicolon
-macro_line|#if 0&t;
-multiline_comment|/* Write the GUID into the csr config rom */
-id|ohci-&gt;csr_config_rom_cpu
-(braket
-l_int|3
-)braket
-op_assign
-id|be32_to_cpu
-c_func
-(paren
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_GUIDHi
-)paren
-)paren
-suffix:semicolon
-id|ohci-&gt;csr_config_rom_cpu
-(braket
-l_int|4
-)braket
-op_assign
-id|be32_to_cpu
-c_func
-(paren
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_GUIDLo
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Write the config ROM header */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_ConfigROMhdr
-comma
-id|cpu_to_be32
-c_func
-(paren
-id|ohci-&gt;csr_config_rom_cpu
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 id|ohci-&gt;max_packet_size
@@ -8755,6 +8682,30 @@ op_amp
 id|cr
 )paren
 suffix:semicolon
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;GUID: %08x:%08x&bslash;n&quot;
+comma
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUIDHi
+)paren
+comma
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUIDLo
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* IEEE P1212 suggests the initial ROM header CRC should only&n;&t; * cover the header itself (and not the entire ROM). Since we use&n;&t; * this, then we can make our bus_info_len the same as the CRC&n;&t; * length.  */
 id|ohci-&gt;csr_config_rom_cpu
 (braket
@@ -10221,25 +10172,6 @@ id|ohci_init_config_rom
 c_func
 (paren
 id|ohci
-)paren
-suffix:semicolon
-id|DBGMSG
-c_func
-(paren
-id|ohci-&gt;id
-comma
-l_string|&quot;The 1st byte at offset 0x404 is: 0x%02x&quot;
-comma
-op_star
-(paren
-(paren
-r_char
-op_star
-)paren
-id|ohci-&gt;csr_config_rom_cpu
-op_plus
-l_int|4
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the highlevel this host is ready */
