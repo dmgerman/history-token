@@ -2650,7 +2650,7 @@ id|len
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
