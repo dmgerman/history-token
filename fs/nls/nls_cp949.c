@@ -18816,9 +18816,9 @@ l_int|0x33D8
 comma
 l_int|0x2121
 comma
-l_int|0x0000
+l_int|0x20AC
 comma
-l_int|0x0000
+l_int|0x00AE
 comma
 multiline_comment|/* 0xE0-0xE7 */
 )brace
@@ -19729,115 +19729,115 @@ comma
 multiline_comment|/* 0x98-0x9F */
 l_int|0xCA46
 comma
-l_int|0xFFA1
+l_int|0x3131
 comma
-l_int|0xFFA2
+l_int|0x3132
 comma
-l_int|0xFFA3
+l_int|0x3133
 comma
-l_int|0xFFA4
+l_int|0x3134
 comma
-l_int|0xFFA5
+l_int|0x3135
 comma
-l_int|0xFFA6
+l_int|0x3136
 comma
-l_int|0xFFA7
+l_int|0x3137
 comma
 multiline_comment|/* 0xA0-0xA7 */
-l_int|0xFFA8
+l_int|0x3138
 comma
-l_int|0xFFA9
+l_int|0x3139
 comma
-l_int|0xFFAA
+l_int|0x313A
 comma
-l_int|0xFFAB
+l_int|0x313B
 comma
-l_int|0xFFAC
+l_int|0x313C
 comma
-l_int|0xFFAD
+l_int|0x313D
 comma
-l_int|0xFFAE
+l_int|0x313E
 comma
-l_int|0xFFAF
+l_int|0x313F
 comma
 multiline_comment|/* 0xA8-0xAF */
-l_int|0xFFB0
+l_int|0x3140
 comma
-l_int|0xFFB1
+l_int|0x3141
 comma
-l_int|0xFFB2
+l_int|0x3142
 comma
-l_int|0xFFB3
+l_int|0x3143
 comma
-l_int|0xFFB4
+l_int|0x3144
 comma
-l_int|0xFFB5
+l_int|0x3145
 comma
-l_int|0xFFB6
+l_int|0x3146
 comma
-l_int|0xFFB7
+l_int|0x3147
 comma
 multiline_comment|/* 0xB0-0xB7 */
-l_int|0xFFB8
+l_int|0x3148
 comma
-l_int|0xFFB9
+l_int|0x3149
 comma
-l_int|0xFFBA
+l_int|0x314A
 comma
-l_int|0xFFBB
+l_int|0x314B
 comma
-l_int|0xFFBC
+l_int|0x314C
 comma
-l_int|0xFFBD
+l_int|0x314D
 comma
-l_int|0xFFBE
+l_int|0x314E
 comma
-l_int|0xFFC2
+l_int|0x314F
 comma
 multiline_comment|/* 0xB8-0xBF */
-l_int|0xFFC3
+l_int|0x3150
 comma
-l_int|0xFFC4
+l_int|0x3151
 comma
-l_int|0xFFC5
+l_int|0x3152
 comma
-l_int|0xFFC6
+l_int|0x3153
 comma
-l_int|0xFFC7
+l_int|0x3154
 comma
-l_int|0xFFCA
+l_int|0x3155
 comma
-l_int|0xFFCB
+l_int|0x3156
 comma
-l_int|0xFFCC
+l_int|0x3157
 comma
 multiline_comment|/* 0xC0-0xC7 */
-l_int|0xFFCD
+l_int|0x3158
 comma
-l_int|0xFFCE
+l_int|0x3159
 comma
-l_int|0xFFCF
+l_int|0x315A
 comma
-l_int|0xFFD2
+l_int|0x315B
 comma
-l_int|0xFFD3
+l_int|0x315C
 comma
-l_int|0xFFD4
+l_int|0x315D
 comma
-l_int|0xFFD5
+l_int|0x315E
 comma
-l_int|0xFFD6
+l_int|0x315F
 comma
 multiline_comment|/* 0xC8-0xCF */
-l_int|0xFFD7
+l_int|0x3160
 comma
-l_int|0xFFDA
+l_int|0x3161
 comma
-l_int|0xFFDB
+l_int|0x3162
 comma
-l_int|0xFFDC
+l_int|0x3163
 comma
-l_int|0xFFA0
+l_int|0x3164
 comma
 l_int|0x3165
 comma
@@ -41846,7 +41846,7 @@ l_int|0x8CAB
 comma
 l_int|0x95DC
 comma
-l_int|0xFA2C
+l_int|0x9928
 comma
 l_int|0x522E
 comma
@@ -45157,7 +45157,7 @@ l_int|0x9014
 comma
 l_int|0x9053
 comma
-l_int|0xFA26
+l_int|0x90FD
 comma
 l_int|0x934D
 comma
@@ -48634,7 +48634,7 @@ comma
 multiline_comment|/* 0xF0-0xF7 */
 l_int|0x9812
 comma
-l_int|0xFA2A
+l_int|0x98EF
 comma
 l_int|0x52C3
 comma
@@ -49674,7 +49674,7 @@ comma
 l_int|0x670D
 comma
 multiline_comment|/* 0xD0-0xD7 */
-l_int|0xFA1B
+l_int|0x798F
 comma
 l_int|0x8179
 comma
@@ -50852,7 +50852,7 @@ comma
 l_int|0x90AA
 comma
 multiline_comment|/* 0xF0-0xF7 */
-l_int|0xFA2B
+l_int|0x98FC
 comma
 l_int|0x99DF
 comma
@@ -51330,7 +51330,7 @@ l_int|0x72C0
 comma
 l_int|0x76F8
 comma
-l_int|0xFA1A
+l_int|0x7965
 comma
 l_int|0x7BB1
 comma
@@ -53597,7 +53597,7 @@ l_int|0x71FC
 comma
 l_int|0x7533
 comma
-l_int|0xFA19
+l_int|0x795E
 comma
 l_int|0x7D33
 comma
@@ -56257,7 +56257,7 @@ l_int|0x7E15
 comma
 l_int|0x860A
 comma
-l_int|0xFA0C
+l_int|0x5140
 comma
 l_int|0x58C5
 comma
@@ -56910,7 +56910,7 @@ l_int|0x79B9
 comma
 l_int|0x7D06
 comma
-l_int|0xFA1E
+l_int|0x7FBD
 comma
 l_int|0x828B
 comma
@@ -58528,7 +58528,7 @@ l_int|0xF9EC
 comma
 l_int|0x7037
 comma
-l_int|0xFA17
+l_int|0x76CA
 comma
 l_int|0x7FCA
 comma
@@ -58602,7 +58602,7 @@ l_int|0x65E5
 comma
 l_int|0x6EA2
 comma
-l_int|0xFA25
+l_int|0x9038
 comma
 multiline_comment|/* 0xE8-0xEF */
 l_int|0x93B0
@@ -60272,7 +60272,7 @@ comma
 multiline_comment|/* 0xE8-0xEF */
 l_int|0x7A7D
 comma
-l_int|0xFA1D
+l_int|0x7CBE
 comma
 l_int|0x7D8E
 comma
@@ -60299,7 +60299,7 @@ l_int|0x9320
 comma
 l_int|0x9706
 comma
-l_int|0xFA1C
+l_int|0x9756
 comma
 l_int|0x0000
 comma
@@ -60695,7 +60695,7 @@ l_int|0x85BA
 comma
 l_int|0x88FD
 comma
-l_int|0xFA22
+l_int|0x8AF8
 comma
 l_int|0x8E44
 comma
@@ -63025,7 +63025,7 @@ l_int|0x8F12
 comma
 l_int|0x5EF3
 comma
-l_int|0xFA12
+l_int|0x6674
 comma
 multiline_comment|/* 0xE0-0xE7 */
 l_int|0x6DF8
@@ -63498,7 +63498,7 @@ comma
 l_int|0x53E2
 comma
 multiline_comment|/* 0xB8-0xBF */
-l_int|0xFA10
+l_int|0x585A
 comma
 l_int|0x5BF5
 comma
@@ -65745,7 +65745,7 @@ l_int|0x8650
 comma
 l_int|0x8B14
 comma
-l_int|0xFA2D
+l_int|0x9DB4
 comma
 l_int|0x5BD2
 comma
@@ -68029,7 +68029,7 @@ l_int|0x8208
 comma
 l_int|0x50D6
 comma
-l_int|0xFA15
+l_int|0x51DE
 comma
 l_int|0x559C
 comma
