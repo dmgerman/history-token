@@ -19,6 +19,13 @@ macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) ((dev)-&gt;pretty_name)
+macro_line|#else
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) &quot;&quot;
+macro_line|#endif
 DECL|variable|bad_dma_address
 id|dma_addr_t
 id|bad_dma_address
@@ -1054,9 +1061,13 @@ comma
 id|dev
 ques
 c_cond
-id|dev-&gt;dev.name
+id|pci_pretty_name
+c_func
+(paren
+id|dev
+)paren
 suffix:colon
-l_string|&quot;?&quot;
+l_string|&quot;&quot;
 comma
 id|dev
 ques
