@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File Name:&n; *   skfddi.c&n; *&n; * Copyright Information:&n; *   Copyright SysKonnect 1998,1999.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; * Abstract:&n; *   A Linux device driver supporting the SysKonnect FDDI PCI controller&n; *   familie.&n; *&n; * Maintainers:&n; *   CG    Christoph Goos (cgoos@syskonnect.de)&n; *&n; * Contributors:&n; *   DM    David S. Miller&n; *&n; * Address all question to:&n; *   linux@syskonnect.de&n; *&n; * The technical manual for the adapters is available from SysKonnect&squot;s&n; * web pages: www.syskonnect.com&n; * Goto &quot;Support&quot; and search Knowledge Base for &quot;manual&quot;.&n; *&n; * Driver Architecture:&n; *   The driver architecture is based on the DEC FDDI driver by&n; *   Lawrence V. Stefani and several ethernet drivers.&n; *   I also used an existing Windows NT miniport driver.&n; *   All hardware dependent fuctions are handled by the SysKonnect&n; *   Hardware Module.&n; *   The only headerfiles that are directly related to this source&n; *   are skfddi.c, h/types.h, h/osdef1st.h, h/targetos.h.&n; *   The others belong to the SysKonnect FDDI Hardware Module and&n; *   should better not be changed.&n; * NOTE:&n; *   Compiling this driver produces some warnings, but I did not fix&n; *   this, because the Hardware Module source is used for different&n; *   drivers, and fixing it for Linux might bring problems on other&n; *   projects. To keep the source common for all those drivers (and&n; *   thus simplify fixes to it), please do not clean it up!&n; *&n; * Modification History:&n; *              Date            Name    Description&n; *              02-Mar-98       CG&t;Created.&n; *&n; *&t;&t;10-Mar-99&t;CG&t;Support for 2.2.x added.&n; *&t;&t;25-Mar-99&t;CG&t;Corrected IRQ routing for SMP (APIC)&n; *&t;&t;26-Oct-99&t;CG&t;Fixed compilation error on 2.2.13&n; *&t;&t;12-Nov-99&t;CG&t;Source code release&n; *&t;&t;22-Nov-99&t;CG&t;Included in kernel source.&n; *&t;&t;07-May-00&t;DM&t;64 bit fixes, new dma interface&n; *&n; * Compilation options (-Dxxx):&n; *              DRIVERDEBUG     print lots of messages to log file&n; *              DUMPPACKETS     print received/transmitted packets to logfile&n; * &n; * Tested cpu architectures:&n; *&t;- i386&n; *&t;- sparc64&n; */
+multiline_comment|/*&n; * File Name:&n; *   skfddi.c&n; *&n; * Copyright Information:&n; *   Copyright SysKonnect 1998,1999.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; * Abstract:&n; *   A Linux device driver supporting the SysKonnect FDDI PCI controller&n; *   familie.&n; *&n; * Maintainers:&n; *   CG    Christoph Goos (cgoos@syskonnect.de)&n; *&n; * Contributors:&n; *   DM    David S. Miller&n; *&n; * Address all question to:&n; *   linux@syskonnect.de&n; *&n; * The technical manual for the adapters is available from SysKonnect&squot;s&n; * web pages: www.syskonnect.com&n; * Goto &quot;Support&quot; and search Knowledge Base for &quot;manual&quot;.&n; *&n; * Driver Architecture:&n; *   The driver architecture is based on the DEC FDDI driver by&n; *   Lawrence V. Stefani and several ethernet drivers.&n; *   I also used an existing Windows NT miniport driver.&n; *   All hardware dependent fuctions are handled by the SysKonnect&n; *   Hardware Module.&n; *   The only headerfiles that are directly related to this source&n; *   are skfddi.c, h/types.h, h/osdef1st.h, h/targetos.h.&n; *   The others belong to the SysKonnect FDDI Hardware Module and&n; *   should better not be changed.&n; * NOTE:&n; *   Compiling this driver produces some warnings, but I did not fix&n; *   this, because the Hardware Module source is used for different&n; *   drivers, and fixing it for Linux might bring problems on other&n; *   projects. To keep the source common for all those drivers (and&n; *   thus simplify fixes to it), please do not clean it up!&n; *&n; * Modification History:&n; *              Date            Name    Description&n; *              02-Mar-98       CG&t;Created.&n; *&n; *&t;&t;10-Mar-99&t;CG&t;Support for 2.2.x added.&n; *&t;&t;25-Mar-99&t;CG&t;Corrected IRQ routing for SMP (APIC)&n; *&t;&t;26-Oct-99&t;CG&t;Fixed compilation error on 2.2.13&n; *&t;&t;12-Nov-99&t;CG&t;Source code release&n; *&t;&t;22-Nov-99&t;CG&t;Included in kernel source.&n; *&t;&t;07-May-00&t;DM&t;64 bit fixes, new dma interface&n; *&t;&t;31-Jul-03&t;DB&t;Audit copy_*_user in skfp_ioctl&n; *&t;&t;&t;&t;&t;  Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; *&n; * Compilation options (-Dxxx):&n; *              DRIVERDEBUG     print lots of messages to log file&n; *              DUMPPACKETS     print received/transmitted packets to logfile&n; * &n; * Tested cpu architectures:&n; *&t;- i386&n; *&t;- sparc64&n; */
 multiline_comment|/* Version information string - should be updated prior to */
 multiline_comment|/* each new release!!! */
 DECL|macro|VERSION
@@ -4598,6 +4598,9 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -4612,6 +4615,10 @@ r_struct
 id|s_skfp_ioctl
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -4630,6 +4637,8 @@ r_sizeof
 id|lp-&gt;MacStat
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|copy_to_user
 c_func
 (paren
@@ -4643,6 +4652,12 @@ id|dev
 comma
 id|ioc.len
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
