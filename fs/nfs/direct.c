@@ -1067,6 +1067,16 @@ id|tot_bytes
 op_add_assign
 id|result
 suffix:semicolon
+multiline_comment|/* in case of a short write: stop now, let the app recover */
+r_if
+c_cond
+(paren
+id|result
+OL
+id|wdata.args.count
+)paren
+r_break
+suffix:semicolon
 id|wdata.args.offset
 op_add_assign
 id|result
