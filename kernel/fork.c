@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -3950,6 +3951,21 @@ id|bad_fork_cleanup
 suffix:semicolon
 )brace
 macro_line|#endif
+id|p-&gt;tgid
+op_assign
+id|p-&gt;pid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_THREAD
+)paren
+id|p-&gt;tgid
+op_assign
+id|current-&gt;tgid
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4097,7 +4113,7 @@ c_cond
 (paren
 id|retval
 op_assign
-id|copy_namespace
+id|copy_keys
 c_func
 (paren
 id|clone_flags
@@ -4108,6 +4124,24 @@ id|p
 )paren
 r_goto
 id|bad_fork_cleanup_mm
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_assign
+id|copy_namespace
+c_func
+(paren
+id|clone_flags
+comma
+id|p
+)paren
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_keys
 suffix:semicolon
 id|retval
 op_assign
@@ -4211,10 +4245,6 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, make it visible to the rest of the system.&n;&t; * We dont wake it up yet.&n;&t; */
-id|p-&gt;tgid
-op_assign
-id|p-&gt;pid
-suffix:semicolon
 id|p-&gt;group_leader
 op_assign
 id|p
@@ -4357,10 +4387,6 @@ r_goto
 id|bad_fork_cleanup_namespace
 suffix:semicolon
 )brace
-id|p-&gt;tgid
-op_assign
-id|current-&gt;tgid
-suffix:semicolon
 id|p-&gt;group_leader
 op_assign
 id|current-&gt;group_leader
@@ -4520,6 +4546,14 @@ suffix:semicolon
 id|bad_fork_cleanup_namespace
 suffix:colon
 id|exit_namespace
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|bad_fork_cleanup_keys
+suffix:colon
+id|exit_keys
 c_func
 (paren
 id|p

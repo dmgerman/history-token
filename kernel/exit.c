@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
@@ -3163,6 +3164,12 @@ suffix:semicolon
 id|exit_thread
 c_func
 (paren
+)paren
+suffix:semicolon
+id|exit_keys
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 r_if

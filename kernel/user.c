@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/key.h&gt;
 multiline_comment|/*&n; * UID task count cache, to get fast user lookup in &quot;alloc_uid&quot;&n; * when changing user ID&squot;s (ie setuid() and friends).&n; */
 DECL|macro|UIDHASH_BITS
 mdefine_line|#define UIDHASH_BITS&t;&t;8
@@ -88,6 +89,20 @@ id|locked_shm
 op_assign
 l_int|0
 comma
+macro_line|#ifdef CONFIG_KEYS
+dot
+id|uid_keyring
+op_assign
+op_amp
+id|root_user_keyring
+comma
+dot
+id|session_keyring
+op_assign
+op_amp
+id|root_session_keyring
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These routines must be called with the uidhash spinlock held!&n; */
@@ -295,6 +310,18 @@ c_func
 id|up
 )paren
 suffix:semicolon
+id|key_put
+c_func
+(paren
+id|up-&gt;uid_keyring
+)paren
+suffix:semicolon
+id|key_put
+c_func
+(paren
+id|up-&gt;session_keyring
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -456,6 +483,30 @@ id|locked_shm
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|alloc_uid_keyring
+c_func
+(paren
+r_new
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|kmem_cache_free
+c_func
+(paren
+id|uid_cachep
+comma
+r_new
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Before adding this, check whether we raced&n;&t;&t; * on adding the same user already..&n;&t;&t; */
 id|spin_lock
 c_func
@@ -480,6 +531,22 @@ c_cond
 id|up
 )paren
 (brace
+id|key_put
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|uid_keyring
+)paren
+suffix:semicolon
+id|key_put
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|session_keyring
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -551,6 +618,12 @@ op_amp
 id|old_user-&gt;processes
 )paren
 suffix:semicolon
+id|switch_uid_keyring
+c_func
+(paren
+id|new_user
+)paren
+suffix:semicolon
 id|current-&gt;user
 op_assign
 id|new_user
@@ -559,6 +632,12 @@ id|free_uid
 c_func
 (paren
 id|old_user
+)paren
+suffix:semicolon
+id|suid_keys
+c_func
+(paren
+id|current
 )paren
 suffix:semicolon
 )brace
