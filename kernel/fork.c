@@ -4241,14 +4241,12 @@ id|p-&gt;ptrace
 op_amp
 id|PT_PTRACED
 )paren
-id|send_sig
+id|force_sig_specific
 c_func
 (paren
 id|SIGSTOP
 comma
 id|p
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|wake_up_forked_process
