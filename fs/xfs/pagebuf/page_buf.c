@@ -286,8 +286,9 @@ id|pb_params
 op_assign
 (brace
 multiline_comment|/*&t;MIN&t;DFLT&t;MAX&t;*/
+dot
 id|flush_interval
-suffix:colon
+op_assign
 (brace
 id|HZ
 op_div
@@ -300,8 +301,9 @@ op_star
 id|HZ
 )brace
 comma
+dot
 id|age_buffer
-suffix:colon
+op_assign
 (brace
 l_int|1
 op_star
@@ -316,8 +318,9 @@ op_star
 id|HZ
 )brace
 comma
+dot
 id|stats_clear
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -326,8 +329,9 @@ comma
 l_int|1
 )brace
 comma
+dot
 id|debug
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma

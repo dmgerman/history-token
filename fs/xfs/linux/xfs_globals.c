@@ -17,8 +17,9 @@ id|xfs_params
 op_assign
 (brace
 multiline_comment|/*&t;MIN&t;DFLT&t;MAX&t;*/
+dot
 id|restrict_chown
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -27,8 +28,9 @@ comma
 l_int|1
 )brace
 comma
+dot
 id|sgid_inherit
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -37,8 +39,9 @@ comma
 l_int|1
 )brace
 comma
+dot
 id|symlink_mode
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -47,8 +50,9 @@ comma
 l_int|1
 )brace
 comma
+dot
 id|panic_mask
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -57,8 +61,9 @@ comma
 l_int|127
 )brace
 comma
+dot
 id|error_level
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
@@ -67,8 +72,9 @@ comma
 l_int|11
 )brace
 comma
+dot
 id|sync_interval
-suffix:colon
+op_assign
 (brace
 id|HZ
 comma
@@ -81,8 +87,9 @@ op_star
 id|HZ
 )brace
 comma
+dot
 id|stats_clear
-suffix:colon
+op_assign
 (brace
 l_int|0
 comma
