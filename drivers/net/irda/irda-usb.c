@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.c&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.5.20, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci-hcd&t;(For Intel/Via USB controllers)&n; *&t;o uhci-hcd&t;(Alternate/JE driver for Intel/Via USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o ehci-hcd&t;(USB 2.0 controllers)&n; *&n; * This driver DOESN&squot;T SEEM TO WORK with the following drivers :&n; *&t;o ohci-hcd&t;(For other USB controllers)&n; * The first outgoing URB never calls its completion/failure callback.&n; *&n; * Note that all HCD drivers do USB_ZERO_PACKET and timeout properly,&n; * so we don&squot;t have to worry about that anymore.&n; * One common problem is the failure to set the address on the dongle,&n; * but this happens before the driver gets loaded...&n; *&n; * Jean II&n; */
+multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.5.20, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci-hcd&t;(For Intel/Via USB controllers)&n; *&t;o uhci-hcd&t;(Alternate/JE driver for Intel/Via USB controllers)&n; *&t;o ohci-hcd&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o ehci-hcd&t;(USB 2.0 controllers)&n; *&n; * Note that all HCD drivers do USB_ZERO_PACKET and timeout properly,&n; * so we don&squot;t have to worry about that anymore.&n; * One common problem is the failure to set the address on the dongle,&n; * but this happens before the driver gets loaded...&n; *&n; * Jean II&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -137,13 +137,9 @@ id|irda_usb_find_class_desc
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 )paren
 suffix:semicolon
 r_static
@@ -152,13 +148,9 @@ id|irda_usb_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 suffix:semicolon
 r_static
@@ -4196,7 +4188,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* IU_DUMP_CLASS_DESC */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_usb_find_class_desc(dev, ifnum)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; */
+multiline_comment|/*&n; * Function irda_usb_find_class_desc(intf)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; */
 DECL|function|irda_usb_find_class_desc
 r_static
 r_inline
@@ -4207,15 +4199,21 @@ id|irda_usb_find_class_desc
 c_func
 (paren
 r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+(brace
+r_struct
 id|usb_device
 op_star
 id|dev
-comma
-r_int
-r_int
-id|ifnum
+op_assign
+id|interface_to_usbdev
+(paren
+id|intf
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|irda_class_desc
 op_star
@@ -4288,7 +4286,7 @@ id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 comma
 id|desc
 comma
@@ -4395,19 +4393,14 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * This routine is called by the USB subsystem for each new device&n; * in the system. We need to check if the device is ours, and in&n; * this case start handling it.&n; * Note : it might be worth protecting this function by a global&n; * spinlock... Or not, because maybe USB already deal with that...&n; */
 DECL|function|irda_usb_probe
 r_static
-r_void
-op_star
+r_int
 id|irda_usb_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -4416,6 +4409,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|irda_usb_cb
 op_star
@@ -4514,13 +4518,7 @@ suffix:semicolon
 id|irda_usb_disconnect
 c_func
 (paren
-id|irda-&gt;usbdev
-comma
-(paren
-r_void
-op_star
-)paren
-id|irda
+id|irda-&gt;usbintf
 )paren
 suffix:semicolon
 )brace
@@ -4587,7 +4585,8 @@ id|NIRUSB
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENFILE
 suffix:semicolon
 )brace
 multiline_comment|/* Reset the instance */
@@ -4665,7 +4664,8 @@ id|j
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 )brace
@@ -4710,7 +4710,8 @@ id|i
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|self-&gt;speed_urb
@@ -4760,7 +4761,8 @@ id|self-&gt;tx_urb
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Is this really necessary? */
@@ -4789,7 +4791,8 @@ l_string|&quot;set_configuration failed&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Is this really necessary? */
@@ -4801,7 +4804,7 @@ c_func
 (paren
 id|dev
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -4813,7 +4816,7 @@ l_int|1
 comma
 l_string|&quot;usb-irda: set interface %d result %d&bslash;n&quot;
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 comma
 id|ret
 )paren
@@ -4875,7 +4878,8 @@ id|ret
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4884,12 +4888,7 @@ multiline_comment|/* Find our endpoints */
 id|interface
 op_assign
 op_amp
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|ifnum
-)braket
-dot
-id|altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -4918,7 +4917,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Find IrDA class descriptor */
@@ -4927,9 +4927,7 @@ op_assign
 id|irda_usb_find_class_desc
 c_func
 (paren
-id|dev
-comma
-id|ifnum
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -4940,7 +4938,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 id|self-&gt;irda_desc
 op_assign
@@ -4962,6 +4961,10 @@ id|self-&gt;usbdev
 op_assign
 id|dev
 suffix:semicolon
+id|self-&gt;usbintf
+op_assign
+id|intf
+suffix:semicolon
 id|ret
 op_assign
 id|irda_usb_open
@@ -4976,10 +4979,20 @@ c_cond
 id|ret
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+id|self
+)paren
 suffix:semicolon
 r_return
-id|self
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
@@ -4991,13 +5004,9 @@ id|irda_usb_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 r_int
@@ -5009,12 +5018,11 @@ id|irda_usb_cb
 op_star
 id|self
 op_assign
+id|dev_get_drvdata
 (paren
-r_struct
-id|irda_usb_cb
-op_star
+op_amp
+id|intf-&gt;dev
 )paren
-id|ptr
 suffix:semicolon
 r_int
 id|i
@@ -5028,6 +5036,23 @@ l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|self
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* Make sure that the Tx path is not executing. - Jean II */
 id|spin_lock_irqsave
@@ -5132,6 +5157,10 @@ id|self
 suffix:semicolon
 multiline_comment|/* No longer attached to USB bus */
 id|self-&gt;usbdev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|self-&gt;usbintf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5335,13 +5364,7 @@ suffix:semicolon
 id|irda_usb_disconnect
 c_func
 (paren
-id|irda-&gt;usbdev
-comma
-(paren
-r_void
-op_star
-)paren
-id|irda
+id|irda-&gt;usbintf
 )paren
 suffix:semicolon
 )brace

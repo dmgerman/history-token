@@ -12,6 +12,12 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;i82092aa.h&quot;
 macro_line|#include &quot;i82365.h&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* PCI core routines */
 DECL|variable|i82092aa_pci_ids
 r_static

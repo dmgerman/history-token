@@ -87,6 +87,14 @@ id|pts_driver
 suffix:semicolon
 multiline_comment|/* Unix98 pty slaves;  for /dev/ptmx */
 macro_line|#endif
+r_extern
+r_void
+id|disable_early_printk
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * redirect is the pseudo-tty that console output&n; * is redirected to if asked by TIOCCONS.&n; */
 DECL|variable|redirect
 r_struct
@@ -9293,6 +9301,13 @@ op_or
 id|IEXTEN
 suffix:semicolon
 multiline_comment|/*&n;&t; * set up the console device so that later boot sequences can &n;&t; * inform about problems etc..&n;&t; */
+macro_line|#ifdef CONFIG_EARLY_PRINTK
+id|disable_early_printk
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 id|con_init
 c_func

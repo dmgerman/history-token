@@ -153,6 +153,16 @@ id|pdev
 suffix:semicolon
 r_int
 id|__init
+id|amd_8151_setup
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_int
+id|__init
 id|hp_zx1_setup
 (paren
 r_struct
@@ -1057,6 +1067,32 @@ DECL|macro|AMD_TLBFLUSH
 mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
 DECL|macro|AMD_CACHEENTRY
 mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
+DECL|macro|AMD_8151_APSIZE
+mdefine_line|#define AMD_8151_APSIZE&t;0xb4
+DECL|macro|AMD_8151_GARTBLOCK
+mdefine_line|#define AMD_8151_GARTBLOCK&t;0xb8
+DECL|macro|AMD_X86_64_GARTAPERTURECTL
+mdefine_line|#define AMD_X86_64_GARTAPERTURECTL&t;0x90
+DECL|macro|AMD_X86_64_GARTAPERTUREBASE
+mdefine_line|#define AMD_X86_64_GARTAPERTUREBASE&t;0x94
+DECL|macro|AMD_X86_64_GARTTABLEBASE
+mdefine_line|#define AMD_X86_64_GARTTABLEBASE&t;0x98
+DECL|macro|AMD_X86_64_GARTCACHECTL
+mdefine_line|#define AMD_X86_64_GARTCACHECTL&t;&t;0x9c
+DECL|macro|AMD_X86_64_GARTEN
+mdefine_line|#define AMD_X86_64_GARTEN&t;1&lt;&lt;0
+DECL|macro|AMD_8151_VMAPERTURE
+mdefine_line|#define AMD_8151_VMAPERTURE&t;&t;0x10
+DECL|macro|AMD_8151_AGP_CTL
+mdefine_line|#define AMD_8151_AGP_CTL&t;&t;0xb0
+DECL|macro|AMD_8151_APERTURESIZE
+mdefine_line|#define AMD_8151_APERTURESIZE&t;0xb4
+DECL|macro|AMD_8151_GARTPTR
+mdefine_line|#define AMD_8151_GARTPTR&t;&t;0xb8
+DECL|macro|AMD_8151_GTLBEN
+mdefine_line|#define AMD_8151_GTLBEN&t;1&lt;&lt;7
+DECL|macro|AMD_8151_APEREN
+mdefine_line|#define AMD_8151_APEREN&t;1&lt;&lt;8
 multiline_comment|/* ALi registers */
 DECL|macro|ALI_APBASE
 mdefine_line|#define ALI_APBASE&t;&t;&t;0x10
