@@ -1749,6 +1749,17 @@ id|inode
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ext3_set_aops
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 multiline_comment|/* ioctl.c */
 r_extern
 r_int
@@ -2086,17 +2097,6 @@ r_extern
 r_struct
 id|file_operations
 id|ext3_file_operations
-suffix:semicolon
-multiline_comment|/* inode.c */
-r_extern
-r_struct
-id|address_space_operations
-id|ext3_aops
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|ext3_writeback_aops
 suffix:semicolon
 multiline_comment|/* namei.c */
 r_extern

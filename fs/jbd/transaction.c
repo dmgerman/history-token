@@ -3193,16 +3193,6 @@ id|transaction
 suffix:semicolon
 multiline_comment|/* And this case is illegal: we can&squot;t reuse another&n;&t;&t; * transaction&squot;s data buffer, ever. */
 multiline_comment|/* FIXME: writepage() should be journalled */
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|jh-&gt;b_jlist
-op_ne
-id|BJ_SyncData
-)paren
-suffix:semicolon
 r_goto
 id|done_locked
 suffix:semicolon
