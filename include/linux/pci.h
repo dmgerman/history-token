@@ -681,10 +681,6 @@ DECL|macro|PCI_DMA_FROMDEVICE
 mdefine_line|#define PCI_DMA_FROMDEVICE&t;2
 DECL|macro|PCI_DMA_NONE
 mdefine_line|#define PCI_DMA_NONE&t;&t;3
-DECL|macro|DMA_64BIT_MASK
-mdefine_line|#define DMA_64BIT_MASK&t;0xffffffffffffffffULL
-DECL|macro|DMA_32BIT_MASK
-mdefine_line|#define DMA_32BIT_MASK&t;0x00000000ffffffffULL
 DECL|macro|DEVICE_COUNT_COMPATIBLE
 mdefine_line|#define DEVICE_COUNT_COMPATIBLE&t;4
 DECL|macro|DEVICE_COUNT_RESOURCE
