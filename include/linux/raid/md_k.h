@@ -565,11 +565,6 @@ DECL|member|__minor
 r_int
 id|__minor
 suffix:semicolon
-DECL|member|sb
-id|mdp_super_t
-op_star
-id|sb
-suffix:semicolon
 DECL|member|disks
 r_struct
 id|list_head
