@@ -1,6 +1,7 @@
 macro_line|#ifndef _X86_64_TYPES_H
 DECL|macro|_X86_64_TYPES_H
 mdefine_line|#define _X86_64_TYPES_H
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
 r_int
@@ -58,8 +59,12 @@ r_int
 r_int
 id|__u64
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 64
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 r_int
@@ -110,8 +115,6 @@ r_int
 r_int
 id|u64
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 64
 DECL|typedef|dma64_addr_t
 r_typedef
 id|u64
@@ -131,6 +134,7 @@ suffix:semicolon
 DECL|macro|HAVE_SECTOR_T
 mdefine_line|#define HAVE_SECTOR_T
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -213,8 +213,8 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|baycom_int_freq
 r_static
-r_void
 r_inline
+r_void
 id|baycom_int_freq
 c_func
 (paren

@@ -7644,8 +7644,8 @@ suffix:semicolon
 multiline_comment|/*&n; * /proc fs routines....&n; */
 DECL|function|line_info
 r_static
-r_int
 r_inline
+r_int
 id|line_info
 c_func
 (paren

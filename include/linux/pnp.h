@@ -24,6 +24,9 @@ suffix:semicolon
 r_struct
 id|pnp_id
 suffix:semicolon
+r_struct
+id|pnp_cfg
+suffix:semicolon
 DECL|struct|pnp_card
 r_struct
 id|pnp_card
@@ -135,9 +138,11 @@ mdefine_line|#define global_to_pnp_card(n) list_entry(n, struct pnp_card, global
 DECL|macro|protocol_to_pnp_card
 mdefine_line|#define protocol_to_pnp_card(n) list_entry(n, struct pnp_card, protocol_list)
 DECL|macro|to_pnp_card
-mdefine_line|#define to_pnp_card(n) list_entry(n, struct pnp_card, dev)
+mdefine_line|#define to_pnp_card(n) container_of(n, struct pnp_card, dev)
 DECL|macro|pnp_for_each_card
-mdefine_line|#define pnp_for_each_card(card) &bslash;&n;&t;for(dev = global_to_pnp_card(pnp_cards.next); &bslash;&n;&t;dev != global_to_pnp_card(&amp;cards); &bslash;&n;&t;dev = global_to_pnp_card(card&gt;global_list.next))
+mdefine_line|#define pnp_for_each_card(card) &bslash;&n;&t;for((card) = global_to_pnp_card(pnp_cards.next); &bslash;&n;&t;(card) != global_to_pnp_card(&amp;pnp_cards); &bslash;&n;&t;(card) = global_to_pnp_card((card)-&gt;global_list.next))
+DECL|macro|pnp_card_for_each_dev
+mdefine_line|#define pnp_card_for_each_dev(card,dev) &bslash;&n;&t;for((dev) = card_to_pnp_dev((card)-&gt;devices.next); &bslash;&n;&t;(dev) != card_to_pnp_dev(&amp;(card)-&gt;devices); &bslash;&n;&t;(dev) = card_to_pnp_dev((dev)-&gt;card_list.next))
 DECL|function|pnpc_get_drvdata
 r_static
 r_inline
@@ -241,11 +246,6 @@ r_int
 id|active
 suffix:semicolon
 multiline_comment|/* status of the device */
-DECL|member|ro
-r_int
-id|ro
-suffix:semicolon
-multiline_comment|/* read only */
 DECL|member|global_list
 r_struct
 id|list_head
@@ -314,6 +314,11 @@ op_star
 id|res
 suffix:semicolon
 multiline_comment|/* possible resource information */
+DECL|member|lock_resources
+r_int
+id|lock_resources
+suffix:semicolon
+multiline_comment|/* resources are locked */
 DECL|member|resource
 r_struct
 id|resource
@@ -376,6 +381,37 @@ DECL|macro|to_pnp_dev
 mdefine_line|#define&t;to_pnp_dev(n) container_of(n, struct pnp_dev, dev)
 DECL|macro|pnp_for_each_dev
 mdefine_line|#define pnp_for_each_dev(dev) &bslash;&n;&t;for(dev = global_to_pnp_dev(pnp_global.next); &bslash;&n;&t;dev != global_to_pnp_dev(&amp;pnp_global); &bslash;&n;&t;dev = global_to_pnp_dev(dev-&gt;global_list.next))
+DECL|function|pnp_dev_has_driver
+r_static
+r_inline
+r_int
+id|pnp_dev_has_driver
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|pdev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pdev-&gt;driver
+op_logical_or
+(paren
+id|pdev-&gt;card
+op_logical_and
+id|pdev-&gt;card-&gt;driver
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|pnp_get_drvdata
 r_static
 r_inline
@@ -564,6 +600,8 @@ suffix:semicolon
 multiline_comment|/* logical devices */
 )brace
 suffix:semicolon
+DECL|macro|PNP_DRIVER_DO_NOT_ACTIVATE
+mdefine_line|#define PNP_DRIVER_DO_NOT_ACTIVATE&t;(1&lt;&lt;0)
 DECL|struct|pnp_driver
 r_struct
 id|pnp_driver
@@ -584,6 +622,11 @@ r_struct
 id|pnp_device_id
 op_star
 id|id_table
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
 suffix:semicolon
 DECL|member|probe
 r_int
@@ -626,6 +669,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_pnp_driver
 mdefine_line|#define&t;to_pnp_driver(drv) container_of(drv,struct pnp_driver, driver)
+DECL|macro|PNPC_DRIVER_DO_NOT_ACTIVATE
+mdefine_line|#define PNPC_DRIVER_DO_NOT_ACTIVATE&t;(1&lt;&lt;0)
 DECL|struct|pnpc_driver
 r_struct
 id|pnpc_driver
@@ -646,6 +691,11 @@ r_struct
 id|pnp_card_id
 op_star
 id|id_table
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
 suffix:semicolon
 DECL|member|probe
 r_int
@@ -1003,6 +1053,37 @@ suffix:semicolon
 multiline_comment|/* dependent resources */
 )brace
 suffix:semicolon
+DECL|struct|pnp_res_cfg
+r_struct
+id|pnp_res_cfg
+(brace
+DECL|member|resource
+r_struct
+id|resource
+id|resource
+(braket
+id|DEVICE_COUNT_RESOURCE
+)braket
+suffix:semicolon
+multiline_comment|/* I/O and memory regions + expansion ROMs */
+DECL|member|dma_resource
+r_struct
+id|resource
+id|dma_resource
+(braket
+id|DEVICE_COUNT_DMA
+)braket
+suffix:semicolon
+DECL|member|irq_resource
+r_struct
+id|resource
+id|irq_resource
+(braket
+id|DEVICE_COUNT_IRQ
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|PNP_DYNAMIC
 mdefine_line|#define PNP_DYNAMIC&t;&t;0&t;/* get or set current resource */
 DECL|macro|PNP_STATIC
@@ -1049,7 +1130,7 @@ l_int|4
 suffix:semicolon
 DECL|member|request
 r_struct
-id|pnp_dev
+id|pnp_res_cfg
 id|request
 suffix:semicolon
 )brace
@@ -1329,6 +1410,16 @@ id|data
 )paren
 suffix:semicolon
 r_int
+id|pnp_init_res_cfg
+c_func
+(paren
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
+)paren
+suffix:semicolon
+r_int
 id|pnp_activate_dev
 c_func
 (paren
@@ -1336,6 +1427,11 @@ r_struct
 id|pnp_dev
 op_star
 id|dev
+comma
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
 )paren
 suffix:semicolon
 r_int
@@ -1360,8 +1456,31 @@ comma
 r_int
 id|depnum
 comma
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
+comma
 r_int
 id|mode
+)paren
+suffix:semicolon
+r_void
+id|pnp_resource_change
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|resource
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
 multiline_comment|/* driver */
@@ -1691,6 +1810,24 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_init_res_cfg
+r_static
+r_inline
+r_int
+id|pnp_init_res_cfg
+c_func
+(paren
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 DECL|function|pnp_activate_dev
 r_static
 r_inline
@@ -1702,6 +1839,11 @@ r_struct
 id|pnp_dev
 op_star
 id|dev
+comma
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
 )paren
 (brace
 r_return
@@ -1741,6 +1883,11 @@ id|dev
 comma
 r_int
 id|depnum
+comma
+r_struct
+id|pnp_res_cfg
+op_star
+r_template
 comma
 r_int
 id|mode

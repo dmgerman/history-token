@@ -402,8 +402,8 @@ id|power_timer
 suffix:semicolon
 )brace
 DECL|function|sgi_volume_set
-r_void
 r_inline
+r_void
 id|sgi_volume_set
 c_func
 (paren
@@ -438,8 +438,8 @@ id|sgi_volume
 suffix:semicolon
 )brace
 DECL|function|sgi_volume_get
-r_void
 r_inline
+r_void
 id|sgi_volume_get
 c_func
 (paren

@@ -4162,8 +4162,8 @@ suffix:semicolon
 )brace
 DECL|function|set_mbox_xfer_addr
 r_static
-r_void
 r_inline
+r_void
 id|set_mbox_xfer_addr
 (paren
 id|mega_host_config

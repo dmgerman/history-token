@@ -28,8 +28,8 @@ r_void
 id|count_bits
 c_func
 (paren
-r_const
 r_register
+r_const
 r_char
 op_star
 id|bmPart

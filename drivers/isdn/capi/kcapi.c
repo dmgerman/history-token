@@ -958,8 +958,8 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------ */
 DECL|function|notify_doit
 r_static
-r_void
 r_inline
+r_void
 id|notify_doit
 c_func
 (paren

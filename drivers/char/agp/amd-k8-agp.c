@@ -8,11 +8,6 @@ r_extern
 r_int
 id|agp_memory_reserved
 suffix:semicolon
-r_extern
-id|__u32
-op_star
-id|agp_gatt_table
-suffix:semicolon
 DECL|function|pci_read64
 r_static
 id|u_int64_t
@@ -2334,6 +2329,10 @@ id|ret_val
 id|agp_bridge.type
 op_assign
 id|NOT_SUPPORTED
+suffix:semicolon
+id|agp_bridge.type
+op_assign
+id|AMD_8151
 suffix:semicolon
 r_return
 id|ret_val

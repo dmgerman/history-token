@@ -7,28 +7,17 @@ multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This progr
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
 multiline_comment|/* $Id: i2c.h,v 1.59 2002/07/19 20:53:45 phil Exp $ */
-macro_line|#ifndef I2C_H
-DECL|macro|I2C_H
-mdefine_line|#define I2C_H
+macro_line|#ifndef _LINUX_I2C_H
+DECL|macro|_LINUX_I2C_H
+mdefine_line|#define _LINUX_I2C_H
 DECL|macro|I2C_DATE
 mdefine_line|#define I2C_DATE &quot;20020719&quot;
 DECL|macro|I2C_VERSION
 mdefine_line|#define I2C_VERSION &quot;2.6.4&quot;
 macro_line|#include &lt;linux/i2c-id.h&gt;&t;/* id values of adapters et. al. &t;*/
 macro_line|#include &lt;linux/types.h&gt;
-r_struct
-id|i2c_msg
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* --- Includes and compatibility declarations ------------------------ */
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) | ((b) &lt;&lt; 8) | (c))
-macro_line|#endif
-macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for 2.2.xx &t;&t;&t;*/
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
 DECL|macro|I2C_ALGO_MAX
 mdefine_line|#define I2C_ALGO_MAX&t;4&t;&t;/* control memory consumption&t;*/
@@ -40,6 +29,9 @@ DECL|macro|I2C_CLIENT_MAX
 mdefine_line|#define I2C_CLIENT_MAX&t;32
 DECL|macro|I2C_DUMMY_MAX
 mdefine_line|#define I2C_DUMMY_MAX 4
+r_struct
+id|i2c_msg
+suffix:semicolon
 r_struct
 id|i2c_algorithm
 suffix:semicolon
@@ -653,11 +645,6 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,29)
-r_struct
-id|proc_dir_entry
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * i2c_adapter is the structure used to identify a physical i2c bus along&n; * with the access algorithms necessary to access it.&n; */
 DECL|struct|i2c_adapter
 r_struct
@@ -769,14 +756,6 @@ DECL|member|inode
 r_int
 id|inode
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,29)
-DECL|member|proc_entry
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_entry
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* def CONFIG_PROC_FS */
 )brace
 suffix:semicolon
@@ -1067,7 +1046,6 @@ id|u32
 id|func
 )paren
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * I2C Message - used for pure i2c transaction, also from /dev interface&n; */
 DECL|struct|i2c_msg
 r_struct
@@ -1289,7 +1267,6 @@ mdefine_line|#define I2C_MDELAY&t;0x0706&t;/* millisec delay between written byt
 multiline_comment|/* ----- I2C-DEV: char device interface stuff ------------------------- */
 DECL|macro|I2C_MAJOR
 mdefine_line|#define I2C_MAJOR&t;89&t;&t;/* Device major number&t;&t;*/
-macro_line|#ifdef __KERNEL__
 macro_line|#  ifndef NULL
 DECL|macro|NULL
 macro_line|#    define NULL ( (void *) 0 )
@@ -1319,6 +1296,5 @@ DECL|macro|i2c_is_isa_client
 mdefine_line|#define i2c_is_isa_client(clientptr) &bslash;&n;        ((clientptr)-&gt;adapter-&gt;algo-&gt;id == I2C_ALGO_ISA)
 DECL|macro|i2c_is_isa_adapter
 mdefine_line|#define i2c_is_isa_adapter(adapptr) &bslash;&n;        ((adapptr)-&gt;algo-&gt;id == I2C_ALGO_ISA)
-macro_line|#endif /* def __KERNEL__ */
-macro_line|#endif /* I2C_H */
+macro_line|#endif /* _LINUX_I2C_H */
 eof

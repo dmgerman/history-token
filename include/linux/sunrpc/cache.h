@@ -312,8 +312,8 @@ suffix:semicolon
 )brace
 DECL|function|cache_put
 r_static
-r_int
 r_inline
+r_int
 id|cache_put
 c_func
 (paren

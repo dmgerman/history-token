@@ -83,8 +83,12 @@ l_int|16
 )paren
 id|__vector128
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 64
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 r_int
@@ -138,8 +142,6 @@ r_typedef
 id|__vector128
 id|vector128
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 64
 DECL|typedef|dma_addr_t
 r_typedef
 id|u32
@@ -150,7 +152,7 @@ r_typedef
 id|u64
 id|dma64_addr_t
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _PPC64_TYPES_H */
 eof

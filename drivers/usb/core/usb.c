@@ -168,10 +168,13 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%s&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -196,9 +199,12 @@ id|driver-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;Can&squot;t get a module reference for %s&quot;
+op_star
+id|dev
+comma
+l_string|&quot;Can&squot;t get a module reference for %s&bslash;n&quot;
 comma
 id|driver-&gt;name
 )paren
@@ -222,9 +228,12 @@ c_cond
 id|id
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s - got id&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - got id&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -320,9 +329,12 @@ op_logical_neg
 id|driver
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+op_star
+id|dev
+comma
 l_string|&quot;%s does not have a valid driver to work with!&quot;
 comma
 id|__FUNCTION__
@@ -346,9 +358,12 @@ id|driver-&gt;owner
 (brace
 singleline_comment|// FIXME this happens even when we just rmmod
 singleline_comment|// drivers that aren&squot;t in active use...
-id|err
+id|dev_err
 c_func
 (paren
+op_star
+id|dev
+comma
 l_string|&quot;Dieing driver still bound to device.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2940,10 +2955,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;USB device not accepting new address=%d (error=%d)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB device not accepting new address=%d (error=%d)&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -3023,19 +3040,23 @@ id|err
 OL
 l_int|0
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;USB device not responding, giving up (error=%d)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB device not responding, giving up (error=%d)&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
 r_else
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;USB device descriptor short read (expected %i, got %i)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB device descriptor short read (expected %i, got %i)&bslash;n&quot;
 comma
 l_int|8
 comma
@@ -3112,19 +3133,23 @@ id|err
 OL
 l_int|0
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to get device descriptor (error=%d)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;unable to get device descriptor (error=%d)&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
 r_else
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;USB device descriptor short read (expected %Zi, got %i)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB device descriptor short read (expected %Zi, got %i)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -3167,10 +3192,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to get device %d configuration (error=%d)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;unable to get device %d configuration (error=%d)&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -3216,10 +3243,12 @@ c_cond
 id|err
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;failed to set device %d default configuration (error=%d)&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;failed to set device %d default configuration (error=%d)&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -3419,9 +3448,11 @@ id|desc-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
 )brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s - registering %s&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;%s - registering interface %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

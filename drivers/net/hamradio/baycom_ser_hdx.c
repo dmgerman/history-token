@@ -206,8 +206,8 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|baycom_int_freq
 r_static
-r_void
 r_inline
+r_void
 id|baycom_int_freq
 c_func
 (paren
@@ -267,8 +267,8 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*&n; * ===================== SER12 specific routines =========================&n; */
 DECL|function|ser12_set_divisor
 r_static
-r_void
 r_inline
+r_void
 id|ser12_set_divisor
 c_func
 (paren

@@ -230,8 +230,8 @@ DECL|macro|tx_done
 mdefine_line|#define tx_done(dev) 1
 multiline_comment|/* For reading/writing registers ISA-style */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|readreg_io
 id|readreg_io
 c_func
@@ -274,8 +274,8 @@ id|DATA_PORT
 suffix:semicolon
 )brace
 r_static
-r_void
 r_inline
+r_void
 DECL|function|writereg_io
 id|writereg_io
 c_func
@@ -323,8 +323,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* These are for reading/writing registers in shared memory */
 r_static
-r_int
 r_inline
+r_int
 DECL|function|readreg
 id|readreg
 c_func
@@ -353,8 +353,8 @@ id|portno
 suffix:semicolon
 )brace
 r_static
-r_void
 r_inline
+r_void
 DECL|function|writereg
 id|writereg
 c_func

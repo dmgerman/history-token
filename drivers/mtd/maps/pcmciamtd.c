@@ -300,8 +300,8 @@ l_string|&quot;Set Memory type (0=Flash, 1=RAM, 2=ROM, default=0)&quot;
 suffix:semicolon
 DECL|function|cs_error
 r_static
-r_void
 r_inline
+r_void
 id|cs_error
 c_func
 (paren

@@ -79,8 +79,19 @@ l_int|16
 )paren
 id|__vector128
 suffix:semicolon
+multiline_comment|/*&n; * XXX allowed outside of __KERNEL__ for now, until glibc gets&n; * a proper set of asm headers of its own.  -- paulus&n; */
+DECL|typedef|umode_t
+r_typedef
+r_int
+r_int
+id|umode_t
+suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 32
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 r_int
@@ -136,8 +147,6 @@ r_typedef
 id|__vector128
 id|vector128
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 32
 multiline_comment|/* DMA addresses are 32-bits wide */
 DECL|typedef|dma_addr_t
 r_typedef
@@ -158,14 +167,7 @@ suffix:semicolon
 DECL|macro|HAVE_SECTOR_T
 mdefine_line|#define HAVE_SECTOR_T
 macro_line|#endif
-macro_line|#endif /* __KERNEL__ */
-multiline_comment|/*&n; * XXX allowed outside of __KERNEL__ for now, until glibc gets&n; * a proper set of asm headers of its own.  -- paulus&n; */
-DECL|typedef|umode_t
-r_typedef
-r_int
-r_int
-id|umode_t
-suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

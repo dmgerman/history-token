@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Gerhard Tonn (ton@de.ibm.com)&n; *&n; * Heavily inspired by the 32-bit Sparc compat code which is  &n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Written by Ulf Carlsson (ulfc@engr.sgi.com) &n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -203,20 +204,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-r_int
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-r_int
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|EXT2_IOC32_GETFLAGS
 mdefine_line|#define EXT2_IOC32_GETFLAGS               _IOR(&squot;f&squot;, 1, int)
 DECL|macro|EXT2_IOC32_SETFLAGS
@@ -1976,7 +1963,7 @@ id|lo_number
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_device
-id|__kernel_dev_t32
+id|compat_dev_t
 id|lo_device
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
@@ -1987,7 +1974,7 @@ id|lo_inode
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_rdevice
-id|__kernel_dev_t32
+id|compat_dev_t
 id|lo_rdevice
 suffix:semicolon
 multiline_comment|/* ioctl r/o */

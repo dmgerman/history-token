@@ -7,6 +7,10 @@ DECL|macro|__IA64_UL
 macro_line|# define __IA64_UL(x)&t;&t;(x)
 DECL|macro|__IA64_UL_CONST
 macro_line|# define __IA64_UL_CONST(x)&t;x
+macro_line|# ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+macro_line|#  define BITS_PER_LONG 64
+macro_line|# endif
 macro_line|#else
 DECL|macro|__IA64_UL
 macro_line|# define __IA64_UL(x)&t;&t;((unsigned long)(x))

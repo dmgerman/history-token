@@ -487,8 +487,8 @@ suffix:semicolon
 )brace
 DECL|function|svc_take_page
 r_static
-r_int
 r_inline
+r_int
 id|svc_take_page
 c_func
 (paren
@@ -527,8 +527,8 @@ suffix:semicolon
 )brace
 DECL|function|svc_pushback_allpages
 r_static
-r_void
 r_inline
+r_void
 id|svc_pushback_allpages
 c_func
 (paren
@@ -579,8 +579,8 @@ suffix:semicolon
 )brace
 DECL|function|svc_pushback_unused_pages
 r_static
-r_void
 r_inline
+r_void
 id|svc_pushback_unused_pages
 c_func
 (paren
@@ -644,8 +644,8 @@ suffix:semicolon
 )brace
 DECL|function|svc_free_allpages
 r_static
-r_void
 r_inline
+r_void
 id|svc_free_allpages
 c_func
 (paren

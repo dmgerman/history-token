@@ -422,8 +422,8 @@ suffix:semicolon
 )brace
 DECL|function|uhci_fill_td
 r_static
-r_void
 r_inline
+r_void
 id|uhci_fill_td
 c_func
 (paren

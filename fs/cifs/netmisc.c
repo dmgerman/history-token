@@ -824,8 +824,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n;convert a NT status code to a dos class/code&n; *****************************************************************************/
 multiline_comment|/* NT status -&gt; dos error map */
-r_const
 r_static
+r_const
 r_struct
 (brace
 DECL|member|dos_class

@@ -553,7 +553,7 @@ DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
 DECL|macro|PCI_ANY_ID
 mdefine_line|#define PCI_ANY_ID (~0)
-multiline_comment|/*&n; * The pci_dev structure is used to describe both PCI and ISAPnP devices.&n; */
+multiline_comment|/*&n; * The pci_dev structure is used to describe PCI devices.&n; */
 DECL|struct|pci_dev
 r_struct
 id|pci_dev
@@ -724,22 +724,6 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* slot name */
-DECL|member|active
-r_int
-id|active
-suffix:semicolon
-multiline_comment|/* ISAPnP: device is active */
-DECL|member|ro
-r_int
-id|ro
-suffix:semicolon
-multiline_comment|/* ISAPnP: read only */
-DECL|member|regs
-r_int
-r_int
-id|regs
-suffix:semicolon
-multiline_comment|/* ISAPnP: supported registers */
 multiline_comment|/* These fields are used by common fixups */
 DECL|member|transparent
 r_int
@@ -749,46 +733,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Transparent PCI bridge */
-DECL|member|prepare
-r_int
-(paren
-op_star
-id|prepare
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* ISAPnP hooks */
-DECL|member|activate
-r_int
-(paren
-op_star
-id|activate
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-DECL|member|deactivate
-r_int
-(paren
-op_star
-id|deactivate
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|pci_dev_g
@@ -906,45 +850,6 @@ id|name
 (braket
 l_int|48
 )braket
-suffix:semicolon
-DECL|member|vendor
-r_int
-r_int
-id|vendor
-suffix:semicolon
-DECL|member|device
-r_int
-r_int
-id|device
-suffix:semicolon
-DECL|member|serial
-r_int
-r_int
-id|serial
-suffix:semicolon
-multiline_comment|/* serial number */
-DECL|member|pnpver
-r_int
-r_char
-id|pnpver
-suffix:semicolon
-multiline_comment|/* Plug &amp; Play version */
-DECL|member|productver
-r_int
-r_char
-id|productver
-suffix:semicolon
-multiline_comment|/* product version */
-DECL|member|checksum
-r_int
-r_char
-id|checksum
-suffix:semicolon
-multiline_comment|/* if zero - checksum passed */
-DECL|member|pad1
-r_int
-r_char
-id|pad1
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -1898,8 +1803,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_read_config_word
 r_static
-r_int
 r_inline
+r_int
 id|pci_read_config_word
 c_func
 (paren
@@ -1931,8 +1836,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_read_config_dword
 r_static
-r_int
 r_inline
+r_int
 id|pci_read_config_dword
 c_func
 (paren
@@ -1964,8 +1869,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_byte
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_byte
 c_func
 (paren
@@ -1996,8 +1901,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_word
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_word
 c_func
 (paren
@@ -2028,8 +1933,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_dword
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_dword
 c_func
 (paren

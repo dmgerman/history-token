@@ -1259,6 +1259,12 @@ id|size
 comma
 id|offset
 suffix:semicolon
+r_char
+id|namebuf
+(braket
+l_int|128
+)braket
+suffix:semicolon
 id|wchan
 op_assign
 id|get_wchan
@@ -1282,6 +1288,8 @@ id|offset
 comma
 op_amp
 id|modname
+comma
+id|namebuf
 )paren
 suffix:semicolon
 r_if

@@ -8,8 +8,8 @@ macro_line|#include &quot;uhci-hcd.h&quot;
 multiline_comment|/* Handle REALLY large printk&squot;s so we don&squot;t overflow buffers */
 DECL|function|lprintk
 r_static
-r_void
 r_inline
+r_void
 id|lprintk
 c_func
 (paren
@@ -73,8 +73,8 @@ suffix:semicolon
 )brace
 DECL|function|uhci_is_skeleton_qh
 r_static
-r_int
 r_inline
+r_int
 id|uhci_is_skeleton_qh
 c_func
 (paren

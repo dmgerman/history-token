@@ -670,7 +670,7 @@ suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
-id|agp_bridge.dev
+id|pdev
 comma
 id|VIA_AGPSEL
 comma

@@ -496,8 +496,8 @@ suffix:semicolon
 )brace
 DECL|function|socal_solicited
 r_static
-r_void
 r_inline
+r_void
 id|socal_solicited
 c_func
 (paren
@@ -1172,8 +1172,8 @@ suffix:semicolon
 )brace
 DECL|function|socal_request
 r_static
-r_void
 r_inline
+r_void
 id|socal_request
 (paren
 r_struct
@@ -1351,8 +1351,8 @@ suffix:semicolon
 )brace
 DECL|function|socal_unsolicited
 r_static
-r_void
 r_inline
+r_void
 id|socal_unsolicited
 (paren
 r_struct

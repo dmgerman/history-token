@@ -397,6 +397,58 @@ id|valid
 op_assign
 l_int|0
 suffix:semicolon
+r_char
+op_star
+id|prev
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#include &lt;asm/types.h&gt;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#if BITS_PER_LONG == 64&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define PTR .quad&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define ALGN .align 8&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#else&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define PTR .long&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define ALGN .align 4&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#endif&bslash;n&quot;
+)paren
+suffix:semicolon
 id|printf
 c_func
 (paren
@@ -412,7 +464,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -473,7 +525,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.long&bslash;t%#llx&bslash;n&quot;
+l_string|&quot;&bslash;tPTR&bslash;t%#llx&bslash;n&quot;
 comma
 id|table
 (braket
@@ -511,7 +563,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -523,7 +575,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.long&bslash;t%d&bslash;n&quot;
+l_string|&quot;&bslash;tPTR&bslash;t%d&bslash;n&quot;
 comma
 id|valid
 )paren
@@ -543,7 +595,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -551,6 +603,10 @@ c_func
 (paren
 l_string|&quot;kallsyms_names:&bslash;n&quot;
 )paren
+suffix:semicolon
+id|prev
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 r_for
 c_loop
@@ -571,6 +627,9 @@ id|i
 op_increment
 )paren
 (brace
+r_int
+id|k
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -601,10 +660,48 @@ id|last_addr
 )paren
 r_continue
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+suffix:semicolon
+id|table
+(braket
+id|i
+)braket
+dot
+id|sym
+(braket
+id|k
+)braket
+op_logical_and
+id|table
+(braket
+id|i
+)braket
+dot
+id|sym
+(braket
+id|k
+)braket
+op_eq
+id|prev
+(braket
+id|k
+)braket
+suffix:semicolon
+op_increment
+id|k
+)paren
+suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.string&bslash;t&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&bslash;t.asciz&bslash;t&bslash;&quot;&bslash;&bslash;x%02x%s&bslash;&quot;&bslash;n&quot;
+comma
+id|k
 comma
 id|table
 (braket
@@ -612,6 +709,8 @@ id|i
 )braket
 dot
 id|sym
+op_plus
+id|k
 )paren
 suffix:semicolon
 id|last_addr
@@ -622,6 +721,15 @@ id|i
 )braket
 dot
 id|addr
+suffix:semicolon
+id|prev
+op_assign
+id|table
+(braket
+id|i
+)braket
+dot
+id|sym
 suffix:semicolon
 )brace
 id|printf

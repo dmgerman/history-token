@@ -1202,8 +1202,8 @@ mdefine_line|#define tenms_to_flags(bc,tenms) ((tenms * bc-&gt;bitrate) / 800)
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|baycom_int_freq
 r_static
-r_void
 r_inline
+r_void
 id|baycom_int_freq
 c_func
 (paren
@@ -1629,8 +1629,8 @@ id|regs
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|function|do_kiss_params
 r_static
-r_void
 r_inline
+r_void
 id|do_kiss_params
 c_func
 (paren
