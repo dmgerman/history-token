@@ -1674,6 +1674,10 @@ id|current-&gt;thread.vrsave
 op_assign
 l_int|0
 suffix:semicolon
+id|current-&gt;thread.used_vr
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 DECL|function|set_fpexc_mode
