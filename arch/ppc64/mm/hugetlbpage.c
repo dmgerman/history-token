@@ -3655,9 +3655,6 @@ id|va
 comma
 id|vpn
 suffix:semicolon
-r_int
-id|is_write
-suffix:semicolon
 id|pte_t
 id|old_pte
 comma
@@ -3738,30 +3735,20 @@ id|out
 suffix:semicolon
 multiline_comment|/* &t;BUG_ON(pte_bad(*ptep)); */
 multiline_comment|/* &n;&t; * Check the user&squot;s access rights to the page.  If access should be&n;&t; * prevented then send the problem up to do_page_fault.&n;&t; */
-id|is_write
-op_assign
-id|access
-op_amp
-id|_PAGE_RW
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|is_write
-op_logical_and
-op_logical_neg
-(paren
+id|access
+op_amp
+op_complement
 id|pte_val
 c_func
 (paren
 op_star
 id|ptep
-)paren
-op_amp
-id|_PAGE_RW
 )paren
 )paren
 )paren
@@ -3793,6 +3780,26 @@ id|new_pte
 op_amp
 id|_PAGE_RW
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* _PAGE_EXEC -&gt; HW_NO_EXEC since it&squot;s inverted */
+id|hpteflags
+op_or_assign
+(paren
+(paren
+id|pte_val
+c_func
+(paren
+id|new_pte
+)paren
+op_amp
+id|_PAGE_EXEC
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|HW_NO_EXEC
 )paren
 suffix:semicolon
 multiline_comment|/* Check if pte already has an hpte (case 2) */
