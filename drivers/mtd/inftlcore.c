@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.14 2003/06/26 08:28:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.16 2004/07/12 12:34:58 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -68,12 +68,46 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mtd-&gt;ecctype
+id|mtd-&gt;type
 op_ne
-id|MTD_ECC_RS_DiskOnChip
+id|MTD_NANDFLASH
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* OK, this is moderately ugly.  But probably safe.  Alternatives? */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|mtd-&gt;name
+comma
+l_string|&quot;DiskOnChip&quot;
+comma
+l_int|10
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mtd-&gt;block_isbad
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;INFTL no longer supports the old DiskOnChip drivers loaded via docprobe.&bslash;n&quot;
+l_string|&quot;Please use the new diskonchip driver under the NAND subsystem.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|DEBUG
 c_func
 (paren
@@ -145,6 +179,26 @@ suffix:semicolon
 id|inftl-&gt;mbd.tr
 op_assign
 id|tr
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|inftl-&gt;oobinfo
+comma
+op_amp
+id|mtd-&gt;oobinfo
+comma
+r_sizeof
+(paren
+r_struct
+id|nand_oobinfo
+)paren
+)paren
+suffix:semicolon
+id|inftl-&gt;oobinfo.useecc
+op_assign
+id|MTD_NANDECC_PLACEONLY
 suffix:semicolon
 r_if
 c_cond
@@ -963,7 +1017,7 @@ r_continue
 suffix:semicolon
 id|ret
 op_assign
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|inftl-&gt;mbd.mtd
@@ -989,15 +1043,6 @@ op_amp
 id|retlen
 comma
 id|movebuf
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|oob
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1010,7 +1055,7 @@ l_int|0
 (brace
 id|ret
 op_assign
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|inftl-&gt;mbd.mtd
@@ -1036,15 +1081,6 @@ op_amp
 id|retlen
 comma
 id|movebuf
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|oob
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1065,6 +1101,27 @@ l_string|&quot;away on retry?&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+op_amp
+id|oob
+comma
+l_int|0xff
+comma
+r_sizeof
+(paren
+r_struct
+id|inftl_oob
+)paren
+)paren
+suffix:semicolon
+id|oob.b.Status
+op_assign
+id|oob.b.Status1
+op_assign
+id|SECTOR_USED
+suffix:semicolon
 id|MTD_WRITEECC
 c_func
 (paren
@@ -1096,7 +1153,8 @@ op_star
 op_amp
 id|oob
 comma
-l_int|NULL
+op_amp
+id|inftl-&gt;oobinfo
 )paren
 suffix:semicolon
 )brace
@@ -1177,7 +1235,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; * FixMe: Update Bad Unit Table on disk.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; */
 id|inftl-&gt;PUtable
 (braket
 id|thisEUN
@@ -2533,7 +2591,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; * FixMe: Update Bad Unit Table on medium.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; */
 id|inftl-&gt;PUtable
 (braket
 id|thisEUN
@@ -2948,11 +3006,9 @@ suffix:semicolon
 r_int
 id|retlen
 suffix:semicolon
-id|u8
-id|eccbuf
-(braket
-l_int|6
-)braket
+r_struct
+id|inftl_oob
+id|oob
 suffix:semicolon
 r_char
 op_star
@@ -3047,6 +3103,27 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+op_amp
+id|oob
+comma
+l_int|0xff
+comma
+r_sizeof
+(paren
+r_struct
+id|inftl_oob
+)paren
+)paren
+suffix:semicolon
+id|oob.b.Status
+op_assign
+id|oob.b.Status1
+op_assign
+id|SECTOR_USED
+suffix:semicolon
 id|MTD_WRITEECC
 c_func
 (paren
@@ -3075,12 +3152,14 @@ comma
 r_char
 op_star
 )paren
-id|eccbuf
+op_amp
+id|oob
 comma
-l_int|NULL
+op_amp
+id|inftl-&gt;oobinfo
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * No need to write SECTOR_USED flags since they are written&n;&t;&t; * in mtd_writeecc&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * need to write SECTOR_USED flags since they are not written&n;&t;&t; * in mtd_writeecc&n;&t;&t; */
 )brace
 r_else
 (brace
@@ -3369,16 +3448,10 @@ id|inftl-&gt;EraseSize
 op_plus
 id|blockofs
 suffix:semicolon
-id|u_char
-id|eccbuf
-(braket
-l_int|6
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|inftl-&gt;mbd.mtd
@@ -3391,10 +3464,6 @@ op_amp
 id|retlen
 comma
 id|buffer
-comma
-id|eccbuf
-comma
-l_int|NULL
 )paren
 )paren
 r_return
@@ -3522,7 +3591,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;INFTL: inftlcore.c $Revision: 1.14 $, &quot;
+l_string|&quot;INFTL: inftlcore.c $Revision: 1.16 $, &quot;
 l_string|&quot;inftlmount.c %s&bslash;n&quot;
 comma
 id|inftlmountrev

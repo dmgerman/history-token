@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.34 2003/05/21 10:54:10 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.36 2004/06/28 13:52:55 dbrown Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -14,7 +14,7 @@ id|nftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.34 $&quot;
+l_string|&quot;$Revision: 1.36 $&quot;
 suffix:semicolon
 multiline_comment|/* find_boot_record: Find the NFTL Media Header and its Spare copy which contains the&n; *&t;various device information of the NFTL partition and Bad Unit Table. Update&n; *&t;the ReplUnitTable[] table accroding to the Bad Unit Table. ReplUnitTable[]&n; *&t;is used for management of Erase Unit in other routines in nftl.c and nftlmount.c&n; */
 DECL|function|find_boot_record
@@ -67,6 +67,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Assume logical EraseSize == physical erasesize for starting the scan. &n;&t;   We&squot;ll sort it out later if we find a MediaHeader which says otherwise */
+multiline_comment|/* Actually, we won&squot;t.  The new DiskOnChip driver has already scanned&n;&t;   the MediaHeader and adjusted the virtual erasesize it presents in&n;&t;   the mtd device accordingly.  We could even get rid of&n;&t;   nftl-&gt;EraseSize if there were any point in doing so. */
 id|nftl-&gt;EraseSize
 op_assign
 id|nftl-&gt;mbd.mtd-&gt;erasesize
@@ -105,10 +106,6 @@ r_int
 id|ret
 suffix:semicolon
 multiline_comment|/* Check for ANAND header first. Then can whinge if it&squot;s found but later&n;&t;&t;   checks fail */
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|MTD_READ
@@ -127,7 +124,14 @@ id|retlen
 comma
 id|buf
 )paren
-)paren
+suffix:semicolon
+multiline_comment|/* We ignore ret in case the ECC of the MediaHeader is invalid&n;&t;&t;   (which is apparently acceptable) */
+r_if
+c_cond
+(paren
+id|retlen
+op_ne
+id|SECTORSIZE
 )paren
 (brace
 r_static
@@ -340,7 +344,7 @@ op_star
 op_amp
 id|oob
 comma
-id|NAND_ECC_DISKONCHIP
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -534,6 +538,38 @@ id|NFTLMediaHeader
 )paren
 suffix:semicolon
 multiline_comment|/* Do some sanity checks on it */
+macro_line|#if 0
+id|The
+r_new
+id|DiskOnChip
+id|driver
+id|scans
+id|the
+id|MediaHeader
+id|itself
+comma
+op_logical_and
+id|presents
+id|a
+r_virtual
+id|erasesize
+id|based
+id|on
+id|UnitSizeFactor
+dot
+id|So
+id|the
+id|erasesize
+id|we
+id|read
+id|from
+id|the
+id|mtd
+id|device
+id|is
+id|already
+id|correct
+dot
 r_if
 c_cond
 (paren
@@ -608,6 +644,7 @@ op_div
 id|nftl-&gt;EraseSize
 suffix:semicolon
 )brace
+macro_line|#endif
 id|nftl-&gt;nb_boot_blocks
 op_assign
 id|le16_to_cpu
@@ -874,6 +911,22 @@ id|i
 op_increment
 )paren
 (brace
+macro_line|#if 0
+id|The
+r_new
+id|DiskOnChip
+id|driver
+id|already
+id|scanned
+id|the
+id|bad
+id|block
+id|table
+dot
+id|Just
+id|query
+id|it
+dot
 r_if
 c_cond
 (paren
@@ -924,7 +977,7 @@ op_star
 op_amp
 id|oob
 comma
-id|NAND_ECC_DISKONCHIP
+l_int|NULL
 )paren
 )paren
 OL
@@ -974,6 +1027,29 @@ l_int|1
 )braket
 op_ne
 l_int|0xff
+)paren
+id|nftl-&gt;ReplUnitTable
+(braket
+id|i
+)braket
+op_assign
+id|BLOCK_RESERVED
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|nftl-&gt;mbd.mtd
+op_member_access_from_pointer
+id|block_isbad
+c_func
+(paren
+id|nftl-&gt;mbd.mtd
+comma
+id|i
+op_star
+id|nftl-&gt;EraseSize
+)paren
 )paren
 id|nftl-&gt;ReplUnitTable
 (braket
@@ -1094,6 +1170,8 @@ id|u8
 id|buf
 (braket
 id|SECTORSIZE
+op_plus
+id|nftl-&gt;mbd.mtd-&gt;oobsize
 )braket
 suffix:semicolon
 r_for
@@ -1112,11 +1190,10 @@ op_add_assign
 id|SECTORSIZE
 )paren
 (brace
-multiline_comment|/* we want to read the sector without ECC check here since a free&n;&t;&t;   sector does not have ECC syndrome on it yet */
 r_if
 c_cond
 (paren
-id|MTD_READ
+id|MTD_READECC
 c_func
 (paren
 id|nftl-&gt;mbd.mtd
@@ -1129,6 +1206,15 @@ op_amp
 id|retlen
 comma
 id|buf
+comma
+op_amp
+id|buf
+(braket
+id|SECTORSIZE
+)braket
+comma
+op_amp
+id|nftl-&gt;oobinfo
 )paren
 OL
 l_int|0
@@ -1165,34 +1251,12 @@ id|check_oob
 r_if
 c_cond
 (paren
-id|MTD_READOOB
-c_func
-(paren
-id|nftl-&gt;mbd.mtd
-comma
-id|address
-comma
-id|nftl-&gt;mbd.mtd-&gt;oobsize
-comma
-op_amp
-id|retlen
-comma
-id|buf
-)paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|memcmpb
 c_func
 (paren
 id|buf
+op_plus
+id|SECTORSIZE
 comma
 l_int|0xff
 comma
@@ -1215,7 +1279,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* NFTL_format: format a Erase Unit by erasing ALL Erase Zones in the Erase Unit and&n; *              Update NFTL metadata. Each erase operation is checked with check_free_sectors&n; *&n; * Return: 0 when succeed, -1 on error.&n; *&n; *  ToDo: 1. Is it neceressary to check_free_sector after erasing ?? &n; *        2. UnitSizeFactor != 0xFF&n; */
+multiline_comment|/* NFTL_format: format a Erase Unit by erasing ALL Erase Zones in the Erase Unit and&n; *              Update NFTL metadata. Each erase operation is checked with check_free_sectors&n; *&n; * Return: 0 when succeed, -1 on error.&n; *&n; *  ToDo: 1. Is it neceressary to check_free_sector after erasing ?? &n; */
 DECL|function|NFTL_formatblock
 r_int
 id|NFTL_formatblock
@@ -1373,7 +1437,6 @@ op_eq
 id|MTD_ERASE_FAILED
 )paren
 (brace
-multiline_comment|/* could not format, FixMe: We should update the BadUnitTable &n;&t;&t;   both in memory and on disk */
 id|printk
 c_func
 (paren
@@ -1382,13 +1445,10 @@ comma
 id|block
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 )brace
-r_else
-(brace
 multiline_comment|/* increase and write Wear-Leveling info */
 id|nb_erases
 op_assign
@@ -1431,9 +1491,8 @@ l_int|1
 op_ne
 l_int|0
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 id|uci.WearInfo
 op_assign
@@ -1474,14 +1533,29 @@ id|uci
 OL
 l_int|0
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
+id|fail
+suffix:colon
+multiline_comment|/* could not format, update the bad block table (caller is responsible&n;&t;   for setting the ReplUnitTable to BLOCK_RESERVED on failure) */
+id|nftl-&gt;mbd.mtd
+op_member_access_from_pointer
+id|block_markbad
+c_func
+(paren
+id|nftl-&gt;mbd.mtd
+comma
+id|instr-&gt;addr
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* check_sectors_in_chain: Check that each sector of a Virtual Unit Chain is correct.&n; *&t;Mark as &squot;IGNORE&squot; each incorrect sector. This check is only done if the chain&n; *&t;was being folded when NFTL was interrupted.&n; *&n; *&t;The check_free_sectors in this function is neceressary. There is a possible&n; *&t;situation that after writing the Data area, the Block Control Information is&n; *&t;not updated according (due to power failure or something) which leaves the block&n; *&t;in an umconsistent state. So we have to check if a block is really FREE in this&n; *&t;case. */
 DECL|function|check_sectors_in_chain
@@ -1911,7 +1985,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* cannot format !!!! Mark it as Bad Unit,&n;&t;&t;&t;   FixMe: update the BadUnitTable on disk */
+multiline_comment|/* cannot format !!!! Mark it as Bad Unit */
 id|nftl-&gt;ReplUnitTable
 (braket
 id|block

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.11 2003/06/23 07:39:21 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.13 2004/06/28 16:06:36 dbrown Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -20,7 +20,7 @@ id|inftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.11 $&quot;
+l_string|&quot;$Revision: 1.13 $&quot;
 suffix:semicolon
 multiline_comment|/*&n; * find_boot_record: Find the INFTL Media Header and its Spare copy which&n; *&t;contains the various device information of the INFTL partition and&n; *&t;Bad Unit Table. Update the PUtable[] table according to the Bad&n; *&t;Unit Table. PUtable[] is used for management of Erase Unit in&n; *&t;other routines in inftlcore.c and inftlmount.c.&n; */
 DECL|function|find_boot_record
@@ -45,10 +45,6 @@ r_int
 id|i
 comma
 id|block
-comma
-id|boot_record_count
-op_assign
-l_int|0
 suffix:semicolon
 id|u8
 id|buf
@@ -100,10 +96,6 @@ id|inftl-&gt;MediaUnit
 op_assign
 id|BLOCK_NIL
 suffix:semicolon
-id|inftl-&gt;SpareMediaUnit
-op_assign
-id|BLOCK_NIL
-suffix:semicolon
 multiline_comment|/* Search for a valid boot record */
 r_for
 c_loop
@@ -124,10 +116,6 @@ r_int
 id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Check for BNAND header first. Then whinge if it&squot;s found&n;&t;&t; * but later checks fail.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|MTD_READ
@@ -146,7 +134,14 @@ id|retlen
 comma
 id|buf
 )paren
-)paren
+suffix:semicolon
+multiline_comment|/* We ignore ret in case the ECC of the MediaHeader is invalid&n;&t;&t;   (which is apparently acceptable) */
+r_if
+c_cond
+(paren
+id|retlen
+op_ne
+id|SECTORSIZE
 )paren
 (brace
 r_static
@@ -276,13 +271,63 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * This is the first we&squot;ve seen.&n;&t;&t; * Copy the media header structure into place.&n;&t;&t; */
+id|memcpy
+c_func
+(paren
+id|mh
+comma
+id|buf
+comma
+r_sizeof
+(paren
+r_struct
+id|INFTLMediaHeader
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read the spare media header at offset 4096 */
+id|MTD_READ
+c_func
+(paren
+id|inftl-&gt;mbd.mtd
+comma
+id|block
+op_star
+id|inftl-&gt;EraseSize
+op_plus
+l_int|4096
+comma
+id|SECTORSIZE
+comma
+op_amp
+id|retlen
+comma
+id|buf
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|boot_record_count
+id|retlen
+op_ne
+id|SECTORSIZE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We&squot;ve already processed one. So we just check if&n;&t;&t;&t; * this one is the same as the first one we found.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;INFTL: Unable to read spare &quot;
+l_string|&quot;Media Header&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Check if this one is the same as the first one we found. */
 r_if
 c_cond
 (paren
@@ -305,16 +350,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;INFTL: Media Headers at &quot;
-l_string|&quot;0x%x and 0x%x disagree.&bslash;n&quot;
-comma
-id|inftl-&gt;MediaUnit
-op_star
-id|inftl-&gt;EraseSize
-comma
-id|block
-op_star
-id|inftl-&gt;EraseSize
+l_string|&quot;INFTL: Primary and spare Media &quot;
+l_string|&quot;Headers disagree.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -322,46 +359,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|boot_record_count
-op_eq
-l_int|1
-)paren
-id|inftl-&gt;SpareMediaUnit
-op_assign
-id|block
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Mark this boot record (INFTL MediaHeader) block as&n;&t;&t;&t; * reserved.&n;&t;&t;&t; */
-id|inftl-&gt;PUtable
-(braket
-id|block
-)braket
-op_assign
-id|BLOCK_RESERVED
-suffix:semicolon
-id|boot_record_count
-op_increment
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * This is the first we&squot;ve seen.&n;&t;&t; * Copy the media header structure into place.&n;&t;&t; */
-id|memcpy
-c_func
-(paren
-id|mh
-comma
-id|buf
-comma
-r_sizeof
-(paren
-r_struct
-id|INFTLMediaHeader
-)paren
-)paren
-suffix:semicolon
 id|mh-&gt;NoOfBootImageBlocks
 op_assign
 id|le32_to_cpu
@@ -555,17 +552,17 @@ id|inftl-&gt;EraseSize
 op_assign
 id|inftl-&gt;mbd.mtd-&gt;erasesize
 op_lshift
-(paren
-l_int|0xff
-op_minus
 id|mh-&gt;BlockMultiplierBits
-)paren
 suffix:semicolon
 id|inftl-&gt;nb_blocks
 op_assign
 id|inftl-&gt;mbd.mtd-&gt;size
 op_div
 id|inftl-&gt;EraseSize
+suffix:semicolon
+id|block
+op_rshift_assign
+id|mh-&gt;BlockMultiplierBits
 suffix:semicolon
 )brace
 multiline_comment|/* Scan the partitions */
@@ -1014,7 +1011,6 @@ id|block
 op_assign
 id|BLOCK_RESERVED
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/* Read Bad Erase Unit Table and modify PUtable[] accordingly */
 r_for
 c_loop
@@ -1031,108 +1027,42 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
+r_int
+id|physblock
+suffix:semicolon
+multiline_comment|/* If any of the physical eraseblocks are bad, don&squot;t&n;&t;&t;&t;   use the unit. */
+r_for
+c_loop
 (paren
-(paren
-id|i
-op_amp
-(paren
-id|SECTORSIZE
-op_minus
-l_int|1
-)paren
-)paren
-op_eq
+id|physblock
+op_assign
 l_int|0
+suffix:semicolon
+id|physblock
+OL
+id|inftl-&gt;EraseSize
+suffix:semicolon
+id|physblock
+op_add_assign
+id|inftl-&gt;mbd.mtd-&gt;erasesize
 )paren
 (brace
-multiline_comment|/* read one sector for every SECTORSIZE of blocks */
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|MTD_READECC
+id|inftl-&gt;mbd.mtd
+op_member_access_from_pointer
+id|block_isbad
 c_func
 (paren
 id|inftl-&gt;mbd.mtd
 comma
-id|block
+id|i
 op_star
 id|inftl-&gt;EraseSize
 op_plus
-id|i
-op_plus
-id|SECTORSIZE
-comma
-id|SECTORSIZE
-comma
-op_amp
-id|retlen
-comma
-id|buf
-comma
-(paren
-r_char
-op_star
+id|physblock
 )paren
-op_amp
-id|oob
-comma
-l_int|NULL
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;INFTL: read of &quot;
-l_string|&quot;bad sector table failed &quot;
-l_string|&quot;(err %d)&bslash;n&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|inftl-&gt;VUtable
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|inftl-&gt;PUtable
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Mark the Bad Erase Unit as RESERVED in PUtable */
-r_if
-c_cond
-(paren
-id|buf
-(braket
-id|i
-op_amp
-(paren
-id|SECTORSIZE
-op_minus
-l_int|1
-)paren
-)braket
-op_ne
-l_int|0xff
 )paren
 id|inftl-&gt;PUtable
 (braket
@@ -1142,21 +1072,17 @@ op_assign
 id|BLOCK_RESERVED
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|inftl-&gt;MediaUnit
 op_assign
 id|block
 suffix:semicolon
-id|boot_record_count
-op_increment
+r_return
+l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Not found. */
 r_return
-id|boot_record_count
-ques
-c_cond
-l_int|0
-suffix:colon
 op_minus
 l_int|1
 suffix:semicolon
@@ -1253,6 +1179,8 @@ id|u8
 id|buf
 (braket
 id|SECTORSIZE
+op_plus
+id|inftl-&gt;mbd.mtd-&gt;oobsize
 )braket
 suffix:semicolon
 id|DEBUG
@@ -1291,11 +1219,10 @@ op_add_assign
 id|SECTORSIZE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We want to read the sector without ECC check here since a&n;&t;&t; * free sector does not have ECC syndrome on it yet.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|MTD_READ
+id|MTD_READECC
 c_func
 (paren
 id|inftl-&gt;mbd.mtd
@@ -1308,6 +1235,15 @@ op_amp
 id|retlen
 comma
 id|buf
+comma
+op_amp
+id|buf
+(braket
+id|SECTORSIZE
+)braket
+comma
+op_amp
+id|inftl-&gt;oobinfo
 )paren
 OL
 l_int|0
@@ -1344,34 +1280,12 @@ id|check_oob
 r_if
 c_cond
 (paren
-id|MTD_READOOB
-c_func
-(paren
-id|inftl-&gt;mbd.mtd
-comma
-id|address
-comma
-id|inftl-&gt;mbd.mtd-&gt;oobsize
-comma
-op_amp
-id|retlen
-comma
-id|buf
-)paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|memcmpb
 c_func
 (paren
 id|buf
+op_plus
+id|SECTORSIZE
 comma
 l_int|0xff
 comma
@@ -1394,7 +1308,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * INFTL_format: format a Erase Unit by erasing ALL Erase Zones in the Erase&n; *&t;&t; Unit and Update INFTL metadata. Each erase operation is&n; *&t;&t; checked with check_free_sectors.&n; *&n; * Return: 0 when succeed, -1 on error.&n; *&n; * ToDo: 1. Is it neceressary to check_free_sector after erasing ?? &n; *       2. UnitSizeFactor != 0xFF&n; */
+multiline_comment|/*&n; * INFTL_format: format a Erase Unit by erasing ALL Erase Zones in the Erase&n; *&t;&t; Unit and Update INFTL metadata. Each erase operation is&n; *&t;&t; checked with check_free_sectors.&n; *&n; * Return: 0 when succeed, -1 on error.&n; *&n; * ToDo: 1. Is it neceressary to check_free_sector after erasing ?? &n; */
 DECL|function|INFTL_formatblock
 r_int
 id|INFTL_formatblock
@@ -1423,6 +1337,9 @@ id|instr
 op_assign
 op_amp
 id|inftl-&gt;instr
+suffix:semicolon
+r_int
+id|physblock
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1454,6 +1371,7 @@ id|erase_info
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Shouldn&squot;t we be setting the &squot;discarded&squot; flag to zero&n;&t;   _first_? */
 multiline_comment|/* Use async erase interface, test return code */
 id|instr-&gt;addr
 op_assign
@@ -1463,8 +1381,29 @@ id|inftl-&gt;EraseSize
 suffix:semicolon
 id|instr-&gt;len
 op_assign
+id|inftl-&gt;mbd.mtd-&gt;erasesize
+suffix:semicolon
+multiline_comment|/* Erase one physical eraseblock at a time, even though the NAND api&n;&t;   allows us to group them.  This way we if we have a failure, we can&n;&t;   mark only the failed block in the bbt. */
+r_for
+c_loop
+(paren
+id|physblock
+op_assign
+l_int|0
+suffix:semicolon
+id|physblock
+OL
 id|inftl-&gt;EraseSize
 suffix:semicolon
+id|physblock
+op_add_assign
+id|instr-&gt;len
+comma
+id|instr-&gt;addr
+op_add_assign
+id|instr-&gt;len
+)paren
+(brace
 id|MTD_ERASE
 c_func
 (paren
@@ -1481,7 +1420,6 @@ op_eq
 id|MTD_ERASE_FAILED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Could not format, FixMe: We should update the BadUnitTable &n;&t;&t; * both in memory and on disk.&n;&t;&t; */
 id|printk
 c_func
 (paren
@@ -1491,12 +1429,11 @@ comma
 id|block
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check the &quot;freeness&quot; of Erase Unit before updating metadata.&n;&t; * FixMe: is this check really necessary? Since we have check the&n;&t; *        return code after the erase operation.&n;&t; */
+multiline_comment|/*&n;&t; &t;* Check the &quot;freeness&quot; of Erase Unit before updating metadata.&n;&t; &t;* FixMe: is this check really necessary? Since we have check the&n;&t; &t;*        return code after the erase operation.&n;&t; &t;*/
 r_if
 c_cond
 (paren
@@ -1507,17 +1444,17 @@ id|inftl
 comma
 id|instr-&gt;addr
 comma
-id|inftl-&gt;EraseSize
+id|instr-&gt;len
 comma
 l_int|1
 )paren
 op_ne
 l_int|0
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
+)brace
 id|uci.EraseMark
 op_assign
 id|cpu_to_le16
@@ -1562,6 +1499,16 @@ l_int|3
 op_assign
 l_int|0
 suffix:semicolon
+id|instr-&gt;addr
+op_assign
+id|block
+op_star
+id|inftl-&gt;EraseSize
+op_plus
+id|SECTORSIZE
+op_star
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1570,13 +1517,7 @@ c_func
 (paren
 id|inftl-&gt;mbd.mtd
 comma
-id|block
-op_star
-id|inftl-&gt;EraseSize
-op_plus
-id|SECTORSIZE
-op_star
-l_int|2
+id|instr-&gt;addr
 op_plus
 l_int|8
 comma
@@ -1595,12 +1536,28 @@ id|uci
 OL
 l_int|0
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|fail
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|fail
+suffix:colon
+multiline_comment|/* could not format, update the bad block table (caller is responsible&n;&t;   for setting the PUtable to BLOCK_RESERVED on failure) */
+id|inftl-&gt;mbd.mtd
+op_member_access_from_pointer
+id|block_markbad
+c_func
+(paren
+id|inftl-&gt;mbd.mtd
+comma
+id|instr-&gt;addr
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * format_chain: Format an invalid Virtual Unit chain. It frees all the Erase&n; *&t;Units in a Virtual Unit Chain, i.e. all the units are disconnected.&n; *&n; *&t;Since the chain is invalid then we will have to erase it from its&n; *&t;head (normally for INFTL we go from the oldest). But if it has a&n; *&t;loop then there is no oldest...&n; */
@@ -1674,7 +1631,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Cannot format !!!! Mark it as Bad Unit,&n;&t;&t;&t; * FixMe: update the BadUnitTable on disk.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Cannot format !!!! Mark it as Bad Unit,&n;&t;&t;&t; */
 id|inftl-&gt;PUtable
 (braket
 id|block

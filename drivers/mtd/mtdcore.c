@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdcore.c,v 1.39 2003/05/21 15:15:03 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdcore.c,v 1.42 2004/07/13 10:21:13 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1245,7 +1245,6 @@ macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Support for /proc/mtd */
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 DECL|variable|proc_mtd
 r_static
 r_struct
@@ -1253,7 +1252,6 @@ id|proc_dir_entry
 op_star
 id|proc_mtd
 suffix:semicolon
-macro_line|#endif
 DECL|function|mtd_proc_info
 r_static
 r_inline
@@ -1324,7 +1322,6 @@ id|off
 comma
 r_int
 id|count
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 comma
 r_int
 op_star
@@ -1333,11 +1330,6 @@ comma
 r_void
 op_star
 id|data_unused
-macro_line|#else
-comma
-r_int
-id|unused
-macro_line|#endif
 )paren
 (brace
 r_int
@@ -1434,13 +1426,11 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 op_star
 id|eof
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|done
 suffix:colon
 id|up
@@ -1496,46 +1486,6 @@ id|off
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
-DECL|variable|mtd_proc_entry
-r_struct
-id|proc_dir_entry
-id|mtd_proc_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino: the inode -- dynamic */
-l_int|3
-comma
-l_string|&quot;mtd&quot;
-comma
-multiline_comment|/* len of name and name */
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-multiline_comment|/* mode */
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* nlinks, owner, group */
-l_int|0
-comma
-l_int|NULL
-comma
-multiline_comment|/* size - unused; operations -- use default */
-op_amp
-id|mtd_read_proc
-comma
-multiline_comment|/* function used to read data */
-multiline_comment|/* nothing more */
-)brace
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Init code */
@@ -1549,7 +1499,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 r_if
 c_cond
 (paren
@@ -1570,25 +1519,6 @@ l_int|NULL
 id|proc_mtd-&gt;read_proc
 op_assign
 id|mtd_read_proc
-suffix:semicolon
-macro_line|#else
-id|proc_register_dynamic
-c_func
-(paren
-op_amp
-id|proc_root
-comma
-op_amp
-id|mtd_proc_entry
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212
-id|init_mtd_devices
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
@@ -1639,7 +1569,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 r_if
 c_cond
 (paren
@@ -1653,17 +1582,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_unregister
-c_func
-(paren
-op_amp
-id|proc_root
-comma
-id|mtd_proc_entry.low_ino
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 )brace
 DECL|variable|init_mtd

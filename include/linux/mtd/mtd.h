@@ -1,244 +1,22 @@
-multiline_comment|/* $Id: mtd.h,v 1.45 2003/05/20 21:56:40 dwmw2 Exp $ */
+multiline_comment|/* &n; * $Id: mtd.h,v 1.54 2004/07/15 01:13:12 dwmw2 Exp $&n; *&n; * Copyright (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt; et al.&n; *&n; * Released under GPL&n; */
 macro_line|#ifndef __MTD_MTD_H__
 DECL|macro|__MTD_MTD_H__
 mdefine_line|#define __MTD_MTD_H__
-macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __KERNEL__
+macro_line|#error This is a kernel header. Perhaps include mtd-user.h instead?
+macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-macro_line|#endif /* __KERNEL__ */
-DECL|struct|erase_info_user
-r_struct
-id|erase_info_user
-(brace
-DECL|member|start
-id|u_int32_t
-id|start
-suffix:semicolon
-DECL|member|length
-id|u_int32_t
-id|length
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|mtd_oob_buf
-r_struct
-id|mtd_oob_buf
-(brace
-DECL|member|start
-id|u_int32_t
-id|start
-suffix:semicolon
-DECL|member|length
-id|u_int32_t
-id|length
-suffix:semicolon
-DECL|member|ptr
-r_int
-r_char
-id|__user
-op_star
-id|ptr
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &lt;mtd/mtd-abi.h&gt;
 DECL|macro|MTD_CHAR_MAJOR
 mdefine_line|#define MTD_CHAR_MAJOR 90
 DECL|macro|MTD_BLOCK_MAJOR
 mdefine_line|#define MTD_BLOCK_MAJOR 31
 DECL|macro|MAX_MTD_DEVICES
 mdefine_line|#define MAX_MTD_DEVICES 16
-DECL|macro|MTD_ABSENT
-mdefine_line|#define MTD_ABSENT&t;&t;0
-DECL|macro|MTD_RAM
-mdefine_line|#define MTD_RAM&t;&t;&t;1
-DECL|macro|MTD_ROM
-mdefine_line|#define MTD_ROM&t;&t;&t;2
-DECL|macro|MTD_NORFLASH
-mdefine_line|#define MTD_NORFLASH&t;&t;3
-DECL|macro|MTD_NANDFLASH
-mdefine_line|#define MTD_NANDFLASH&t;&t;4
-DECL|macro|MTD_PEROM
-mdefine_line|#define MTD_PEROM&t;&t;5
-DECL|macro|MTD_OTHER
-mdefine_line|#define MTD_OTHER&t;&t;14
-DECL|macro|MTD_UNKNOWN
-mdefine_line|#define MTD_UNKNOWN&t;&t;15
-DECL|macro|MTD_CLEAR_BITS
-mdefine_line|#define MTD_CLEAR_BITS&t;&t;1       
-singleline_comment|// Bits can be cleared (flash)
-DECL|macro|MTD_SET_BITS
-mdefine_line|#define MTD_SET_BITS&t;&t;2       
-singleline_comment|// Bits can be set
-DECL|macro|MTD_ERASEABLE
-mdefine_line|#define MTD_ERASEABLE&t;&t;4       
-singleline_comment|// Has an erase function
-DECL|macro|MTD_WRITEB_WRITEABLE
-mdefine_line|#define MTD_WRITEB_WRITEABLE&t;8       
-singleline_comment|// Direct IO is possible
-DECL|macro|MTD_VOLATILE
-mdefine_line|#define MTD_VOLATILE&t;&t;16      
-singleline_comment|// Set for RAMs
-DECL|macro|MTD_XIP
-mdefine_line|#define MTD_XIP&t;&t;&t;32&t;
-singleline_comment|// eXecute-In-Place possible
-DECL|macro|MTD_OOB
-mdefine_line|#define MTD_OOB&t;&t;&t;64&t;
-singleline_comment|// Out-of-band data (NAND flash)
-DECL|macro|MTD_ECC
-mdefine_line|#define MTD_ECC&t;&t;&t;128&t;
-singleline_comment|// Device capable of automatic ECC
-singleline_comment|// Some common devices / combinations of capabilities
-DECL|macro|MTD_CAP_ROM
-mdefine_line|#define MTD_CAP_ROM&t;&t;0
-DECL|macro|MTD_CAP_RAM
-mdefine_line|#define MTD_CAP_RAM&t;&t;(MTD_CLEAR_BITS|MTD_SET_BITS|MTD_WRITEB_WRITEABLE)
-DECL|macro|MTD_CAP_NORFLASH
-mdefine_line|#define MTD_CAP_NORFLASH        (MTD_CLEAR_BITS|MTD_ERASEABLE)
-DECL|macro|MTD_CAP_NANDFLASH
-mdefine_line|#define MTD_CAP_NANDFLASH       (MTD_CLEAR_BITS|MTD_ERASEABLE|MTD_OOB)
-DECL|macro|MTD_WRITEABLE
-mdefine_line|#define MTD_WRITEABLE&t;&t;(MTD_CLEAR_BITS|MTD_SET_BITS)
-singleline_comment|// Types of automatic ECC/Checksum available
-DECL|macro|MTD_ECC_NONE
-mdefine_line|#define MTD_ECC_NONE&t;&t;0 &t;
-singleline_comment|// No automatic ECC available
-DECL|macro|MTD_ECC_RS_DiskOnChip
-mdefine_line|#define MTD_ECC_RS_DiskOnChip&t;1&t;
-singleline_comment|// Automatic ECC on DiskOnChip
-DECL|macro|MTD_ECC_SW
-mdefine_line|#define MTD_ECC_SW&t;&t;2&t;
-singleline_comment|// SW ECC for Toshiba &amp; Samsung devices
-DECL|struct|mtd_info_user
-r_struct
-id|mtd_info_user
-(brace
-DECL|member|type
-id|u_char
-id|type
-suffix:semicolon
-DECL|member|flags
-id|u_int32_t
-id|flags
-suffix:semicolon
-DECL|member|size
-id|u_int32_t
-id|size
-suffix:semicolon
-singleline_comment|// Total size of the MTD
-DECL|member|erasesize
-id|u_int32_t
-id|erasesize
-suffix:semicolon
-DECL|member|oobblock
-id|u_int32_t
-id|oobblock
-suffix:semicolon
-singleline_comment|// Size of OOB blocks (e.g. 512)
-DECL|member|oobsize
-id|u_int32_t
-id|oobsize
-suffix:semicolon
-singleline_comment|// Amount of OOB data per block (e.g. 16)
-DECL|member|ecctype
-id|u_int32_t
-id|ecctype
-suffix:semicolon
-DECL|member|eccsize
-id|u_int32_t
-id|eccsize
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|region_info_user
-r_struct
-id|region_info_user
-(brace
-DECL|member|offset
-id|u_int32_t
-id|offset
-suffix:semicolon
-multiline_comment|/* At which this region starts, &n;&t;&t;&t;&t;&t; * from the beginning of the MTD */
-DECL|member|erasesize
-id|u_int32_t
-id|erasesize
-suffix:semicolon
-multiline_comment|/* For this region */
-DECL|member|numblocks
-id|u_int32_t
-id|numblocks
-suffix:semicolon
-multiline_comment|/* Number of blocks in this region */
-DECL|member|regionindex
-id|u_int32_t
-id|regionindex
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|MEMGETINFO
-mdefine_line|#define MEMGETINFO              _IOR(&squot;M&squot;, 1, struct mtd_info_user)
-DECL|macro|MEMERASE
-mdefine_line|#define MEMERASE                _IOW(&squot;M&squot;, 2, struct erase_info_user)
-DECL|macro|MEMWRITEOOB
-mdefine_line|#define MEMWRITEOOB             _IOWR(&squot;M&squot;, 3, struct mtd_oob_buf)
-DECL|macro|MEMREADOOB
-mdefine_line|#define MEMREADOOB              _IOWR(&squot;M&squot;, 4, struct mtd_oob_buf)
-DECL|macro|MEMLOCK
-mdefine_line|#define MEMLOCK                 _IOW(&squot;M&squot;, 5, struct erase_info_user)
-DECL|macro|MEMUNLOCK
-mdefine_line|#define MEMUNLOCK               _IOW(&squot;M&squot;, 6, struct erase_info_user)
-DECL|macro|MEMGETREGIONCOUNT
-mdefine_line|#define MEMGETREGIONCOUNT&t;_IOR(&squot;M&squot;, 7, int)
-DECL|macro|MEMGETREGIONINFO
-mdefine_line|#define MEMGETREGIONINFO&t;_IOWR(&squot;M&squot;, 8, struct region_info_user)
-DECL|macro|MEMSETOOBSEL
-mdefine_line|#define MEMSETOOBSEL&t;&t;_IOW(&squot;M&squot;, 9, struct nand_oobinfo)
-DECL|struct|nand_oobinfo
-r_struct
-id|nand_oobinfo
-(brace
-DECL|member|useecc
-r_int
-id|useecc
-suffix:semicolon
-DECL|member|eccpos
-r_int
-id|eccpos
-(braket
-l_int|6
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#ifndef __KERNEL__
-DECL|typedef|mtd_info_t
-r_typedef
-r_struct
-id|mtd_info_user
-id|mtd_info_t
-suffix:semicolon
-DECL|typedef|erase_info_t
-r_typedef
-r_struct
-id|erase_info_user
-id|erase_info_t
-suffix:semicolon
-DECL|typedef|region_info_t
-r_typedef
-r_struct
-id|region_info_user
-id|region_info_t
-suffix:semicolon
-DECL|typedef|nand_oobinfo_t
-r_typedef
-r_struct
-id|nand_oobinfo
-id|nand_oobinfo_t
-suffix:semicolon
-multiline_comment|/* User-space ioctl definitions */
-macro_line|#else /* __KERNEL__ */
 DECL|macro|MTD_ERASE_PENDING
 mdefine_line|#define MTD_ERASE_PENDING      &t;0x01
 DECL|macro|MTD_ERASING
@@ -249,6 +27,7 @@ DECL|macro|MTD_ERASE_DONE
 mdefine_line|#define MTD_ERASE_DONE          0x08
 DECL|macro|MTD_ERASE_FAILED
 mdefine_line|#define MTD_ERASE_FAILED        0x10
+multiline_comment|/* If the erase fails, fail_addr might indicate exactly which block failed.  If&n;   fail_addr = 0xffffffff, the failure was not at the device level or was not&n;   specific to any particular block. */
 DECL|struct|erase_info
 r_struct
 id|erase_info
@@ -266,6 +45,10 @@ suffix:semicolon
 DECL|member|len
 id|u_int32_t
 id|len
+suffix:semicolon
+DECL|member|fail_addr
+id|u_int32_t
+id|fail_addr
 suffix:semicolon
 DECL|member|time
 id|u_long
@@ -365,6 +148,11 @@ id|u_int32_t
 id|oobsize
 suffix:semicolon
 singleline_comment|// Amount of OOB data per block (e.g. 16)
+DECL|member|oobavail
+id|u_int32_t
+id|oobavail
+suffix:semicolon
+singleline_comment|// Number of bytes in OOB area available for fs 
 DECL|member|ecctype
 id|u_int32_t
 id|ecctype
@@ -959,6 +747,39 @@ op_star
 id|mtd
 )paren
 suffix:semicolon
+multiline_comment|/* Bad block management functions */
+DECL|member|block_isbad
+r_int
+(paren
+op_star
+id|block_isbad
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|ofs
+)paren
+suffix:semicolon
+DECL|member|block_markbad
+r_int
+(paren
+op_star
+id|block_markbad
+)paren
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|ofs
+)paren
+suffix:semicolon
 DECL|member|priv
 r_void
 op_star
@@ -1175,6 +996,5 @@ macro_line|#else /* CONFIG_MTD_DEBUG */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { } while(0)
 macro_line|#endif /* CONFIG_MTD_DEBUG */
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __MTD_MTD_H__ */
 eof

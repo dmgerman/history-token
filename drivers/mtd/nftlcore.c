@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for NAND Flash Translation Layer      */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.             */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;      */
-multiline_comment|/* $Id: nftlcore.c,v 1.94 2003/06/23 12:00:08 dwmw2 Exp $ */
+multiline_comment|/* $Id: nftlcore.c,v 1.96 2004/06/28 13:52:55 dbrown Exp $ */
 multiline_comment|/*&n;  The contents of this file are distributed under the GNU General&n;  Public License version 2. The author places no additional&n;  restrictions of any kind on it.&n; */
 DECL|macro|PRERELEASE
 mdefine_line|#define PRERELEASE
@@ -55,12 +55,46 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mtd-&gt;ecctype
+id|mtd-&gt;type
 op_ne
-id|MTD_ECC_RS_DiskOnChip
+id|MTD_NANDFLASH
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* OK, this is moderately ugly.  But probably safe.  Alternatives? */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|mtd-&gt;name
+comma
+l_string|&quot;DiskOnChip&quot;
+comma
+l_int|10
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mtd-&gt;block_isbad
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NFTL no longer supports the old DiskOnChip drivers loaded via docprobe.&bslash;n&quot;
+l_string|&quot;Please use the new diskonchip driver under the NAND subsystem.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|DEBUG
 c_func
 (paren
@@ -132,6 +166,26 @@ suffix:semicolon
 id|nftl-&gt;mbd.tr
 op_assign
 id|tr
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|nftl-&gt;oobinfo
+comma
+op_amp
+id|mtd-&gt;oobinfo
+comma
+r_sizeof
+(paren
+r_struct
+id|nand_oobinfo
+)paren
+)paren
+suffix:semicolon
+id|nftl-&gt;oobinfo.useecc
+op_assign
+id|MTD_NANDECC_PLACEONLY
 suffix:semicolon
 r_if
 c_cond
@@ -1276,7 +1330,7 @@ r_continue
 suffix:semicolon
 id|ret
 op_assign
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|nftl-&gt;mbd.mtd
@@ -1302,15 +1356,6 @@ op_amp
 id|retlen
 comma
 id|movebuf
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|oob
-comma
-id|NAND_ECC_DISKONCHIP
 )paren
 suffix:semicolon
 r_if
@@ -1323,7 +1368,7 @@ l_int|0
 (brace
 id|ret
 op_assign
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|nftl-&gt;mbd.mtd
@@ -1349,15 +1394,6 @@ op_amp
 id|retlen
 comma
 id|movebuf
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|oob
-comma
-id|NAND_ECC_DISKONCHIP
 )paren
 suffix:semicolon
 r_if
@@ -1375,6 +1411,27 @@ l_string|&quot;Error went away on retry.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+op_amp
+id|oob
+comma
+l_int|0xff
+comma
+r_sizeof
+(paren
+r_struct
+id|nftl_oob
+)paren
+)paren
+suffix:semicolon
+id|oob.b.Status
+op_assign
+id|oob.b.Status1
+op_assign
+id|SECTOR_USED
+suffix:semicolon
 id|MTD_WRITEECC
 c_func
 (paren
@@ -1406,7 +1463,8 @@ op_star
 op_amp
 id|oob
 comma
-id|NAND_ECC_DISKONCHIP
+op_amp
+id|nftl-&gt;oobinfo
 )paren
 suffix:semicolon
 )brace
@@ -1508,7 +1566,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* could not erase : mark block as reserved&n;&t;&t;&t; * FixMe: Update Bad Unit Table on disk&n;&t;&t;&t; */
+multiline_comment|/* could not erase : mark block as reserved&n;&t;&t;&t; */
 id|nftl-&gt;ReplUnitTable
 (braket
 id|thisEUN
@@ -2286,11 +2344,9 @@ suffix:semicolon
 r_int
 id|retlen
 suffix:semicolon
-id|u8
-id|eccbuf
-(braket
-l_int|6
-)braket
+r_struct
+id|nftl_oob
+id|oob
 suffix:semicolon
 id|writeEUN
 op_assign
@@ -2322,6 +2378,27 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+op_amp
+id|oob
+comma
+l_int|0xff
+comma
+r_sizeof
+(paren
+r_struct
+id|nftl_oob
+)paren
+)paren
+suffix:semicolon
+id|oob.b.Status
+op_assign
+id|oob.b.Status1
+op_assign
+id|SECTOR_USED
+suffix:semicolon
 id|MTD_WRITEECC
 c_func
 (paren
@@ -2350,12 +2427,14 @@ comma
 r_char
 op_star
 )paren
-id|eccbuf
+op_amp
+id|oob
 comma
-id|NAND_ECC_DISKONCHIP
+op_amp
+id|nftl-&gt;oobinfo
 )paren
 suffix:semicolon
-multiline_comment|/* no need to write SECTOR_USED flags since they are written in mtd_writeecc */
+multiline_comment|/* need to write SECTOR_USED flags since they are not written in mtd_writeecc */
 r_return
 l_int|0
 suffix:semicolon
@@ -2630,16 +2709,10 @@ suffix:semicolon
 r_int
 id|retlen
 suffix:semicolon
-id|u_char
-id|eccbuf
-(braket
-l_int|6
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|MTD_READECC
+id|MTD_READ
 c_func
 (paren
 id|nftl-&gt;mbd.mtd
@@ -2652,10 +2725,6 @@ op_amp
 id|retlen
 comma
 id|buffer
-comma
-id|eccbuf
-comma
-id|NAND_ECC_DISKONCHIP
 )paren
 )paren
 r_return
@@ -2786,7 +2855,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.94 $, nftlmount.c %s&bslash;n&quot;
+l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.96 $, nftlmount.c %s&bslash;n&quot;
 comma
 id|nftlmountrev
 )paren
