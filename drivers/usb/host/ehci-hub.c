@@ -54,6 +54,32 @@ id|PORT_PE
 )paren
 )paren
 (brace
+multiline_comment|/* with integrated TT, there&squot;s nobody to hand it to! */
+r_if
+c_cond
+(paren
+id|ehci_is_ARC
+c_func
+(paren
+id|ehci
+)paren
+)paren
+(brace
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;Failed to enable port %d on root hub TT&bslash;n&quot;
+comma
+id|index
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|port_status
+suffix:semicolon
+)brace
 id|ehci_dbg
 (paren
 id|ehci
@@ -965,11 +991,16 @@ l_int|1
 op_lshift
 id|USB_PORT_FEAT_CONNECTION
 suffix:semicolon
+singleline_comment|// status may be from integrated TT
 id|status
 op_or_assign
-l_int|1
-op_lshift
-id|USB_PORT_FEAT_HIGHSPEED
+id|ehci_port_speed
+c_func
+(paren
+id|ehci
+comma
+id|temp
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1197,7 +1228,7 @@ suffix:semicolon
 r_case
 id|USB_PORT_FEAT_RESET
 suffix:colon
-multiline_comment|/* line status bits may report this as low speed */
+multiline_comment|/* line status bits may report this as low speed,&n;&t;&t;&t; * which can be fine if this root hub has a&n;&t;&t;&t; * transaction translator built in.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1212,6 +1243,13 @@ id|PORT_CONNECT
 )paren
 op_eq
 id|PORT_CONNECT
+op_logical_and
+op_logical_neg
+id|ehci_is_ARC
+c_func
+(paren
+id|ehci
+)paren
 op_logical_and
 id|PORT_USB11
 (paren

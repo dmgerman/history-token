@@ -599,6 +599,19 @@ id|token
 op_eq
 l_int|0
 )paren
+op_logical_and
+(paren
+op_logical_neg
+id|ehci_is_ARC
+c_func
+(paren
+id|ehci
+)paren
+op_logical_or
+id|urb-&gt;dev-&gt;tt-&gt;hub
+op_ne
+id|ehci-&gt;hcd.self.root_hub
+)paren
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -2138,7 +2151,7 @@ singleline_comment|// Would be best to create all qh&squot;s from config descrip
 singleline_comment|// when each interface/altsetting is established.  Unlink
 singleline_comment|// any previous qh and cancel its urbs first; endpoints are
 singleline_comment|// implicitly reset then (data toggle too).
-singleline_comment|// That&squot;d mean updating how usbcore talks to HCDs. (2.5?)
+singleline_comment|// That&squot;d mean updating how usbcore talks to HCDs. (2.7?)
 multiline_comment|/*&n; * Each QH holds a qtd list; a QH is used for everything except iso.&n; *&n; * For interrupt urbs, the scheduler must set the microframe scheduling&n; * mask(s) each time the QH gets scheduled.  For highspeed, that&squot;s&n; * just one microframe in the s-mask.  For split interrupt transactions&n; * there are additional complications: c-mask, maybe FSTNs.&n; */
 r_static
 r_struct
@@ -2488,6 +2501,21 @@ id|urb-&gt;dev-&gt;ttport
 op_lshift
 l_int|23
 suffix:semicolon
+multiline_comment|/* set the address of the TT; for ARC&squot;s integrated&n;&t;&t; * root hub tt, leave it zeroed.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ehci_is_ARC
+c_func
+(paren
+id|ehci
+)paren
+op_logical_or
+id|urb-&gt;dev-&gt;tt-&gt;hub
+op_ne
+id|ehci-&gt;hcd.self.root_hub
+)paren
 id|info2
 op_or_assign
 id|urb-&gt;dev-&gt;tt-&gt;hub-&gt;devnum
