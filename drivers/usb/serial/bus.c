@@ -415,6 +415,10 @@ id|device-&gt;driver.remove
 op_assign
 id|usb_serial_device_remove
 suffix:semicolon
+id|device-&gt;driver.owner
+op_assign
+id|device-&gt;owner
+suffix:semicolon
 id|retval
 op_assign
 id|driver_register

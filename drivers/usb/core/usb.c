@@ -124,6 +124,11 @@ id|usb_generic_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;usb&quot;
@@ -411,6 +416,10 @@ suffix:semicolon
 id|new_driver-&gt;driver.remove
 op_assign
 id|usb_unbind_interface
+suffix:semicolon
+id|new_driver-&gt;driver.owner
+op_assign
+id|new_driver-&gt;owner
 suffix:semicolon
 id|retval
 op_assign
