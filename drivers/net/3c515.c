@@ -102,6 +102,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/* &quot;Knobs&quot; for adjusting internal parameters. */
 multiline_comment|/* Put out somewhat more debugging messages. (0 - no msg, 1 minimal msgs). */
 DECL|macro|DRIVER_DEBUG
