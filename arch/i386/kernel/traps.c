@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/kprobes.h&gt;
 macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
@@ -33,6 +34,7 @@ macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;mach_traps.h&quot;
@@ -294,6 +296,72 @@ id|kstack_depth_to_print
 op_assign
 l_int|24
 suffix:semicolon
+DECL|variable|i386die_chain
+r_struct
+id|notifier_block
+op_star
+id|i386die_chain
+suffix:semicolon
+DECL|variable|die_notifier_lock
+r_static
+id|spinlock_t
+id|die_notifier_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|register_die_notifier
+r_int
+id|register_die_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|i386die_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 DECL|function|valid_stack_ptr
 r_static
 r_int
@@ -1490,6 +1558,26 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+id|notify_die
+c_func
+(paren
+id|DIE_OOPS
+comma
+(paren
+r_char
+op_star
+)paren
+id|str
+comma
+id|regs
+comma
+id|err
+comma
+l_int|255
+comma
+id|SIGSEGV
+)paren
+suffix:semicolon
 id|show_registers
 c_func
 (paren
@@ -1829,13 +1917,13 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|DO_ERROR
-mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, NULL); &bslash;&n;}
+mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_ERROR_INFO
-mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_BAD) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR
-mdefine_line|#define DO_VM86_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, NULL); &bslash;&n;}
+mdefine_line|#define DO_VM86_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR_INFO
-mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
 id|DO_VM86_ERROR_INFO
 c_func
 (paren
@@ -1851,6 +1939,7 @@ id|FPE_INTDIV
 comma
 id|regs-&gt;eip
 )paren
+macro_line|#ifndef CONFIG_KPROBES
 id|DO_VM86_ERROR
 c_func
 (paren
@@ -1862,6 +1951,7 @@ l_string|&quot;int3&quot;
 comma
 id|int3
 )paren
+macro_line|#endif
 id|DO_VM86_ERROR
 c_func
 (paren
@@ -2051,6 +2141,31 @@ c_func
 id|regs
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_GPF
+comma
+l_string|&quot;general protection fault&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|13
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 id|die
 c_func
 (paren
@@ -2061,6 +2176,7 @@ comma
 id|error_code
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|mem_parity_error
 r_static
@@ -2362,6 +2478,29 @@ l_int|0xc0
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_NMI_IPI
+comma
+l_string|&quot;nmi_ipi&quot;
+comma
+id|regs
+comma
+id|reason
+comma
+l_int|0
+comma
+id|SIGINT
+)paren
+op_eq
+id|NOTIFY_BAD
+)paren
+r_return
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n;&t;&t; * Ok, so this is none of the documented NMI sources,&n;&t;&t; * so it must be the NMI watchdog.&n;&t;&t; */
 r_if
@@ -2391,6 +2530,29 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_NMI
+comma
+l_string|&quot;nmi&quot;
+comma
+id|regs
+comma
+id|reason
+comma
+l_int|0
+comma
+id|SIGINT
+)paren
+op_eq
+id|NOTIFY_BAD
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2542,6 +2704,76 @@ op_assign
 id|dummy_nmi_callback
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_KPROBES
+DECL|function|do_int3
+id|asmlinkage
+r_int
+id|do_int3
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|error_code
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_INT3
+comma
+l_string|&quot;int3&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|3
+comma
+id|SIGTRAP
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* This is an interrupt gate, because kprobes wants interrupts&n;&t;disabled.  Normal trap handlers don&squot;t. */
+id|restore_interrupts
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|do_trap
+c_func
+(paren
+l_int|3
+comma
+id|SIGTRAP
+comma
+l_string|&quot;int3&quot;
+comma
+l_int|1
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Our handling of the processor debug registers is non-trivial.&n; * We do not clear them on entry and exit from the kernel. Therefore&n; * it is possible to get a watchpoint trap here from inside the kernel.&n; * However, the code in ./ptrace.c has ensured that the user can&n; * only set watchpoints on userspace addresses. Therefore the in-kernel&n; * watchpoint trap can only occur in code which is reading/writing&n; * from user space. Such code must not hold kernel locks (since it&n; * can equally take a page fault), therefore it is safe to call&n; * force_sig_info even though that claims and releases locks.&n; * &n; * Code in ./signal.c ensures that the debug control register&n; * is restored before we deliver any signal, and therefore that&n; * user code runs with the correct debug control register even though&n; * we clear it here.&n; *&n; * Being careful here means that we don&squot;t have to be as careful in a&n; * lot of more complicated places (task switching can be a bit lazy&n; * about restoring all the debug state, and ptrace doesn&squot;t have to&n; * find every occurrence of the TF bit that could be saved away even&n; * by user code)&n; */
 DECL|function|do_debug
 id|asmlinkage
@@ -2583,6 +2815,29 @@ l_string|&quot;=r&quot;
 id|condition
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_DEBUG
+comma
+l_string|&quot;debug&quot;
+comma
+id|regs
+comma
+id|condition
+comma
+id|error_code
+comma
+id|SIGTRAP
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* It&squot;s safe to allow irq&squot;s after DR6 has been saved */
 r_if
@@ -3480,6 +3735,40 @@ id|__KERNEL_CS
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This routine sets up an interrupt gate at directory privilege level 3.&n; */
+DECL|function|set_system_intr_gate
+r_static
+r_inline
+r_void
+id|set_system_intr_gate
+c_func
+(paren
+r_int
+r_int
+id|n
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+id|_set_gate
+c_func
+(paren
+id|idt_table
+op_plus
+id|n
+comma
+l_int|14
+comma
+l_int|3
+comma
+id|addr
+comma
+id|__KERNEL_CS
+)paren
+suffix:semicolon
+)brace
 DECL|function|set_trap_gate
 r_static
 r_void
@@ -3694,7 +3983,7 @@ op_amp
 id|nmi
 )paren
 suffix:semicolon
-id|set_system_gate
+id|set_system_intr_gate
 c_func
 (paren
 l_int|3

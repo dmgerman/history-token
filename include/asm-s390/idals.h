@@ -46,6 +46,8 @@ id|vaddr
 )paren
 op_plus
 id|length
+op_minus
+l_int|1
 )paren
 op_rshift
 l_int|31

@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-timer.h&gt;
+macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|timer_startval
 r_static
@@ -24,17 +25,10 @@ r_int
 r_int
 id|timer_ticks_usec
 suffix:semicolon
-macro_line|#ifdef CONFIG_S3C2410_RTC
-r_extern
-r_void
-id|s3c2410_rtc_check
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* with an 12MHz clock, we get 12 ticks per-usec&n; */
 multiline_comment|/***&n; * Returns microsecond  since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; * IRQs are disabled before entering here from do_gettimeofday()&n; */
+DECL|macro|SRCPND_TIMER4
+mdefine_line|#define SRCPND_TIMER4 (1&lt;&lt;(IRQ_TIMER4 - IRQ_EINT0))
 DECL|function|s3c2410_gettimeoffset
 r_static
 r_int
@@ -52,6 +46,10 @@ r_int
 r_int
 id|usec
 suffix:semicolon
+r_int
+r_int
+id|irqpend
+suffix:semicolon
 multiline_comment|/* work out how many ticks have gone since last timer interrupt */
 id|tdone
 op_assign
@@ -67,6 +65,45 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* check to see if there is an interrupt pending */
+id|irqpend
+op_assign
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_SRCPND
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irqpend
+op_amp
+id|SRCPND_TIMER4
+)paren
+(brace
+multiline_comment|/* re-read the timer, and try and fix up for the missed&n;&t;&t; * interrupt */
+id|tdone
+op_assign
+id|timer_startval
+op_minus
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_TCNTO
+c_func
+(paren
+l_int|4
+)paren
+)paren
+suffix:semicolon
+id|tdone
+op_add_assign
+l_int|1
+op_lshift
+l_int|16
+suffix:semicolon
+)brace
 multiline_comment|/* currently, tcnt is in 12MHz units, but this may change&n;&t; * for non-bast machines...&n;&t; */
 id|usec
 op_assign

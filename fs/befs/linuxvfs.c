@@ -3721,7 +3721,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Cannot load nls %s&quot;
-l_string|&quot;loding default nls&quot;
+l_string|&quot; loading default nls&quot;
 comma
 id|befs_sb-&gt;mount_opts.iocharset
 )paren
@@ -3734,6 +3734,25 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* load default nls if none is specified  in mount options */
+)brace
+r_else
+(brace
+id|befs_debug
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Loading default nls&quot;
+)paren
+suffix:semicolon
+id|befs_sb-&gt;nls
+op_assign
+id|load_nls_default
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
