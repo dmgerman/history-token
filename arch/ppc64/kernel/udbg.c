@@ -280,25 +280,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|naca-&gt;platform
-op_eq
-id|PLATFORM_ISERIES_LPAR
-)paren
-(brace
-multiline_comment|/* ToDo: switch this via ppc_md */
-id|printk
-c_func
-(paren
-l_string|&quot;%c&quot;
-comma
-id|c
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|udbg_getc_poll
 r_int
