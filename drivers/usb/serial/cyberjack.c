@@ -372,6 +372,9 @@ id|cyberjack_private
 op_star
 id|priv
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|dbg
 c_func
 (paren
