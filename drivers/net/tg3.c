@@ -15136,6 +15136,7 @@ r_sizeof
 id|u32
 )paren
 )paren
+(brace
 id|tg3_write_mem
 c_func
 (paren
@@ -15146,6 +15147,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|40
+)paren
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

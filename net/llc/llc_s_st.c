@@ -5,11 +5,11 @@ macro_line|#include &lt;net/llc_s_ev.h&gt;
 macro_line|#include &lt;net/llc_s_ac.h&gt;
 macro_line|#include &lt;net/llc_s_st.h&gt;
 multiline_comment|/* dummy last-transition indicator; common to all state transition groups&n; * last entry for this state&n; * all members are zeros, .bss zeroes it&n; */
-DECL|variable|llc_sap_state_trans_n
+DECL|variable|llc_sap_state_trans_end
 r_static
 r_struct
 id|llc_sap_state_trans
-id|llc_sap_state_trans_n
+id|llc_sap_state_trans_end
 suffix:semicolon
 multiline_comment|/* state LLC_SAP_STATE_INACTIVE transition for&n; * LLC_SAP_EV_ACTIVATION_REQ event&n; */
 DECL|variable|llc_sap_inactive_state_actions_1
@@ -81,7 +81,7 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_sap_state_trans_n
+id|llc_sap_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -585,7 +585,7 @@ l_int|9
 )braket
 op_assign
 op_amp
-id|llc_sap_state_trans_n
+id|llc_sap_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -595,9 +595,16 @@ r_struct
 id|llc_sap_state
 id|llc_sap_state_table
 (braket
+id|LLC_NR_SAP_STATES
 )braket
 op_assign
 (brace
+(braket
+id|LLC_SAP_STATE_INACTIVE
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|curr_state
@@ -611,6 +618,12 @@ id|llc_sap_inactive_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_SAP_STATE_ACTIVE
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|curr_state

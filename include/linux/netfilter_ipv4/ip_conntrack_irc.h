@@ -2,9 +2,32 @@ multiline_comment|/* IRC extension for IP connection tracking.&n; * (C) 2000 by 
 macro_line|#ifndef _IP_CONNTRACK_IRC_H
 DECL|macro|_IP_CONNTRACK_IRC_H
 mdefine_line|#define _IP_CONNTRACK_IRC_H
-macro_line|#ifndef __KERNEL__
-macro_line|#error Only in kernel.
-macro_line|#endif
+multiline_comment|/* We record seq number and length of irc ip/port text here: all in&n;   host order. */
+multiline_comment|/* This structure is per expected connection */
+DECL|struct|ip_ct_irc_expect
+r_struct
+id|ip_ct_irc_expect
+(brace
+multiline_comment|/* length of IP address */
+DECL|member|len
+id|u_int32_t
+id|len
+suffix:semicolon
+multiline_comment|/* Port that was to be used */
+DECL|member|port
+id|u_int16_t
+id|port
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* This structure exists only once per master */
+DECL|struct|ip_ct_irc_master
+r_struct
+id|ip_ct_irc_master
+(brace
+)brace
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 DECL|macro|IRC_PORT
 mdefine_line|#define IRC_PORT&t;6667
@@ -31,30 +54,6 @@ c_func
 id|ip_irc_lock
 )paren
 suffix:semicolon
-multiline_comment|/* We record seq number and length of irc ip/port text here: all in&n;   host order. */
-multiline_comment|/* This structure is per expected connection */
-DECL|struct|ip_ct_irc_expect
-r_struct
-id|ip_ct_irc_expect
-(brace
-multiline_comment|/* length of IP address */
-DECL|member|len
-id|u_int32_t
-id|len
-suffix:semicolon
-multiline_comment|/* Port that was to be used */
-DECL|member|port
-id|u_int16_t
-id|port
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* This structure exists only once per master */
-DECL|struct|ip_ct_irc_master
-r_struct
-id|ip_ct_irc_master
-(brace
-)brace
-suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_IRC_H */
 eof

@@ -2,9 +2,7 @@ macro_line|#ifndef _IP_CONNTRACK_FTP_H
 DECL|macro|_IP_CONNTRACK_FTP_H
 mdefine_line|#define _IP_CONNTRACK_FTP_H
 multiline_comment|/* FTP tracking. */
-macro_line|#ifndef __KERNEL__
-macro_line|#error Only in kernel.
-macro_line|#endif
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 multiline_comment|/* Protects ftp part of conntracks */
 DECL|variable|ip_ftp_lock
@@ -16,6 +14,7 @@ id|ip_ftp_lock
 suffix:semicolon
 DECL|macro|FTP_PORT
 mdefine_line|#define FTP_PORT&t;21
+macro_line|#endif /* __KERNEL__ */
 DECL|enum|ip_ct_ftp_type
 r_enum
 id|ip_ct_ftp_type

@@ -21,9 +21,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_static
@@ -37,9 +37,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_static
@@ -58,9 +58,9 @@ op_star
 id|trans
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_static
@@ -76,9 +76,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;llc_sap_assign_sock - adds a connection to a SAP&n; *&t;@sap: pointer to SAP.&n; *&t;@conn: pointer to connection.&n; *&n; *&t;This function adds a connection to connection_list of a SAP.&n; */
@@ -196,61 +196,7 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_alloc_ev - allocates sap event&n; *&t;@sap: pointer to SAP&n; *&t;@ev: allocated event (output argument)&n; *&n; *&t;Returns the allocated sap event or %NULL when out of memory.&n; */
-DECL|function|llc_sap_alloc_ev
-r_struct
-id|llc_sap_state_ev
-op_star
-id|llc_sap_alloc_ev
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-)paren
-(brace
-r_struct
-id|llc_sap_state_ev
-op_star
-id|ev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|ev
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ev
-)paren
-id|memset
-c_func
-(paren
-id|ev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|ev
-)paren
-)paren
-suffix:semicolon
-r_return
-id|ev
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_sap_send_ev - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@ev: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
+multiline_comment|/**&n; *&t;llc_sap_send_ev - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
 DECL|function|llc_sap_send_ev
 r_void
 id|llc_sap_send_ev
@@ -262,17 +208,28 @@ op_star
 id|sap
 comma
 r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_struct
 id|llc_sap_state_ev
 op_star
 id|ev
+op_assign
+id|llc_sap_ev
+c_func
+(paren
+id|skb
 )paren
-(brace
+suffix:semicolon
 id|llc_sap_next_state
 c_func
 (paren
 id|sap
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -286,7 +243,7 @@ id|LLC_IND
 id|skb_get
 c_func
 (paren
-id|ev-&gt;data.pdu.skb
+id|skb
 )paren
 suffix:semicolon
 id|sap
@@ -303,11 +260,11 @@ c_func
 (paren
 id|sap
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_rtn_pdu - Informs upper layer on rx of an UI, XID or TEST pdu.&n; *&t;@sap: pointer to SAP&n; *&t;@skb: received pdu&n; *&t;@ev: pointer to occurred event&n; */
+multiline_comment|/**&n; *&t;llc_sap_rtn_pdu - Informs upper layer on rx of an UI, XID or TEST pdu.&n; *&t;@sap: pointer to SAP&n; *&t;@skb: received pdu&n; */
 DECL|function|llc_sap_rtn_pdu
 r_void
 id|llc_sap_rtn_pdu
@@ -322,17 +279,23 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|llc_sap_state_ev
-op_star
-id|ev
 )paren
 (brace
 r_struct
 id|llc_pdu_un
 op_star
 id|pdu
+suffix:semicolon
+r_struct
+id|llc_sap_state_ev
+op_star
+id|ev
+op_assign
+id|llc_sap_ev
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_struct
 id|llc_prim_if_block
@@ -552,7 +515,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_free_ev - frees an sap event&n; *&t;@sap: pointer to SAP&n; *&t;@ev: released event&n; */
+multiline_comment|/**&n; *&t;llc_sap_free_ev - frees an sap event&n; *&t;@sap: pointer to SAP&n; *&t;@skb: released event&n; */
 DECL|function|llc_sap_free_ev
 r_static
 r_void
@@ -565,11 +528,22 @@ op_star
 id|sap
 comma
 r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_struct
 id|llc_sap_state_ev
 op_star
 id|ev
+op_assign
+id|llc_sap_ev
+c_func
+(paren
+id|skb
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -580,17 +554,11 @@ id|LLC_SAP_EV_TYPE_PDU
 id|kfree_skb
 c_func
 (paren
-id|ev-&gt;data.pdu.skb
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ev
+id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_next_state - finds transition, execs actions &amp; change SAP state&n; *&t;@sap: pointer to SAP&n; *&t;@ev: happened event&n; *&n; *&t;This function finds transition that matches with happened event, then&n; *&t;executes related actions and finally changes state of SAP. It returns&n; *&t;0 on success and 1 for failure.&n; */
+multiline_comment|/**&n; *&t;llc_sap_next_state - finds transition, execs actions &amp; change SAP state&n; *&t;@sap: pointer to SAP&n; *&t;@skb: happened event&n; *&n; *&t;This function finds transition that matches with happened event, then&n; *&t;executes related actions and finally changes state of SAP. It returns&n; *&t;0 on success and 1 for failure.&n; */
 DECL|function|llc_sap_next_state
 r_static
 r_int
@@ -603,9 +571,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_int
@@ -623,7 +591,7 @@ c_cond
 (paren
 id|sap-&gt;state
 op_le
-id|LLC_NBR_SAP_STATES
+id|LLC_NR_SAP_STATES
 )paren
 (brace
 id|trans
@@ -633,7 +601,7 @@ c_func
 (paren
 id|sap
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -652,7 +620,7 @@ id|sap
 comma
 id|trans
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -672,7 +640,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_find_sap_trans - finds transition for event&n; *&t;@sap: pointer to SAP&n; *&t;@ev: happened event&n; *&n; *&t;This function finds transition that matches with happened event.&n; *&t;Returns the pointer to found transition on success or %NULL for&n; *&t;failure.&n; */
+multiline_comment|/**&n; *&t;llc_find_sap_trans - finds transition for event&n; *&t;@sap: pointer to SAP&n; *&t;@skb: happened event&n; *&n; *&t;This function finds transition that matches with happened event.&n; *&t;Returns the pointer to found transition on success or %NULL for&n; *&t;failure.&n; */
 DECL|function|llc_find_sap_trans
 r_static
 r_struct
@@ -687,9 +655,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_int
@@ -755,7 +723,7 @@ c_func
 (paren
 id|sap
 comma
-id|ev
+id|skb
 )paren
 )paren
 (brace
@@ -774,7 +742,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_exec_sap_trans_actions - execute actions related to event&n; *&t;@sap: pointer to SAP&n; *&t;@trans: pointer to transition that it&squot;s actions must be performed&n; *&t;@ev: happened event.&n; *&n; *&t;This function executes actions that is related to happened event.&n; *&t;Returns 0 for success and 1 for failure of at least one action.&n; */
+multiline_comment|/**&n; *&t;llc_exec_sap_trans_actions - execute actions related to event&n; *&t;@sap: pointer to SAP&n; *&t;@trans: pointer to transition that it&squot;s actions must be performed&n; *&t;@skb: happened event.&n; *&n; *&t;This function executes actions that is related to happened event.&n; *&t;Returns 0 for success and 1 for failure of at least one action.&n; */
 DECL|function|llc_exec_sap_trans_actions
 r_static
 r_int
@@ -792,9 +760,9 @@ op_star
 id|trans
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_int
@@ -805,13 +773,12 @@ suffix:semicolon
 id|llc_sap_action_t
 op_star
 id|next_action
+op_assign
+id|trans-&gt;ev_actions
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|next_action
-op_assign
-id|trans-&gt;ev_actions
 suffix:semicolon
 id|next_action
 op_logical_and
@@ -831,7 +798,7 @@ id|next_action
 (paren
 id|sap
 comma
-id|ev
+id|skb
 )paren
 )paren
 id|rc

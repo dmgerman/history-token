@@ -3134,7 +3134,7 @@ id|ret
 op_assign
 l_int|1
 suffix:semicolon
-id|READ_LOCK
+id|MUST_BE_READ_LOCKED
 c_func
 (paren
 op_amp
@@ -3169,13 +3169,6 @@ c_func
 id|exp
 comma
 id|pskb
-)paren
-suffix:semicolon
-id|READ_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_conntrack_lock
 )paren
 suffix:semicolon
 r_return
@@ -4420,6 +4413,12 @@ suffix:semicolon
 id|ip_conntrack_destroyed
 op_assign
 l_int|NULL
+suffix:semicolon
+id|vfree
+c_func
+(paren
+id|bysource
+)paren
 suffix:semicolon
 )brace
 eof

@@ -2,9 +2,6 @@ macro_line|#ifndef _IP_CONNTRACK_TCP_H
 DECL|macro|_IP_CONNTRACK_TCP_H
 mdefine_line|#define _IP_CONNTRACK_TCP_H
 multiline_comment|/* TCP tracking. */
-macro_line|#ifndef __KERNEL__
-macro_line|#error Only in kernel.
-macro_line|#endif
 DECL|enum|tcp_conntrack
 r_enum
 id|tcp_conntrack

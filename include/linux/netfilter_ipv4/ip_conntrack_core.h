@@ -220,7 +220,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|list_head
-id|expect_list
+id|ip_conntrack_expect_list
 suffix:semicolon
 DECL|variable|ip_conntrack_lock
 id|DECLARE_RWLOCK_EXTERN

@@ -326,19 +326,6 @@ id|sk
 suffix:semicolon
 multiline_comment|/* Access to a connection */
 r_extern
-r_struct
-id|llc_conn_state_ev
-op_star
-id|llc_conn_alloc_ev
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|llc_conn_send_ev
 c_func
@@ -349,9 +336,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -384,11 +371,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|llc_conn_state_ev
-op_star
-id|ev
 )paren
 suffix:semicolon
 r_extern
@@ -397,9 +379,9 @@ id|llc_conn_free_ev
 c_func
 (paren
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
