@@ -8203,12 +8203,25 @@ c_cond
 (paren
 id|qc-&gt;waiting
 )paren
+(brace
+r_struct
+id|completion
+op_star
+id|waiting
+op_assign
+id|qc-&gt;waiting
+suffix:semicolon
+id|qc-&gt;waiting
+op_assign
+l_int|NULL
+suffix:semicolon
 id|complete
 c_func
 (paren
-id|qc-&gt;waiting
+id|waiting
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8225,6 +8238,12 @@ id|tag
 comma
 op_amp
 id|ap-&gt;qactive
+)paren
+suffix:semicolon
+id|VPRINTK
+c_func
+(paren
+l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8889,7 +8908,9 @@ suffix:semicolon
 id|VPRINTK
 c_func
 (paren
-l_string|&quot;BUS_DMA (host_stat 0x%X)&bslash;n&quot;
+l_string|&quot;ata%u: host_stat 0x%X&bslash;n&quot;
+comma
+id|ap-&gt;id
 comma
 id|host_stat
 )paren
@@ -8964,7 +8985,11 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;BUS_NODATA (dev_stat 0x%X)&bslash;n&quot;
+l_string|&quot;ata%u: protocol %d (dev_stat 0x%X)&bslash;n&quot;
+comma
+id|ap-&gt;id
+comma
+id|qc-&gt;tf.protocol
 comma
 id|status
 )paren
