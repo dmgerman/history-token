@@ -4,6 +4,7 @@ DECL|macro|_ASM_UACCESS_H
 mdefine_line|#define _ASM_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
@@ -49,6 +50,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -157,7 +159,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|__kernel_size_t
+r_int
+r_int
 id|__copy_from_user
 c_func
 (paren
@@ -167,19 +170,23 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
-id|__kernel_size_t
+r_int
+r_int
 id|size
 )paren
 suffix:semicolon
 r_extern
-id|__kernel_size_t
+r_int
+r_int
 id|__copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -188,51 +195,60 @@ r_void
 op_star
 id|from
 comma
-id|__kernel_size_t
+r_int
+r_int
 id|size
 )paren
 suffix:semicolon
 r_extern
-id|__kernel_size_t
+r_int
+r_int
 id|__copy_in_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
-id|__kernel_size_t
+r_int
+r_int
 id|size
 )paren
 suffix:semicolon
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to,from,n)&t;&t;&bslash;&n;&t;__copy_from_user((void *)(to),&t;&bslash;&n;&t;&t;    (void *)(from), (__kernel_size_t)(n))
+mdefine_line|#define copy_from_user __copy_from_user
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to,from,n) &bslash;&n;&t;__copy_to_user((void *)(to), &bslash;&n;&t;(void *) (from), (__kernel_size_t)(n))
+mdefine_line|#define copy_to_user __copy_to_user
 DECL|macro|copy_in_user
-mdefine_line|#define copy_in_user(to,from,n) &bslash;&n;&t;__copy_in_user((void *)(to), &bslash;&n;&t;(void *) (from), (__kernel_size_t)(n))
+mdefine_line|#define copy_in_user __copy_in_user
 DECL|function|__clear_user
 r_static
-id|__inline__
-id|__kernel_size_t
+r_inline
+r_int
+r_int
 id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
-id|__kernel_size_t
+r_int
+r_int
 id|size
 )paren
 (brace
 r_extern
-id|__kernel_size_t
+r_int
+r_int
 id|__bzero_noasi
 c_func
 (paren
@@ -240,7 +256,8 @@ r_void
 op_star
 id|addr
 comma
-id|__kernel_size_t
+r_int
+r_int
 id|size
 )paren
 suffix:semicolon
@@ -248,6 +265,10 @@ r_return
 id|__bzero_noasi
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|addr
 comma
 id|size
@@ -255,18 +276,20 @@ id|size
 suffix:semicolon
 )brace
 DECL|macro|clear_user
-mdefine_line|#define clear_user(addr,n) &bslash;&n;&t;__clear_user((void *)(addr), (__kernel_size_t)(n))
+mdefine_line|#define clear_user __clear_user
 r_extern
 r_int
 id|__strncpy_from_user
 c_func
 (paren
-r_int
-r_int
+r_char
+op_star
 id|dest
 comma
-r_int
-r_int
+r_const
+r_char
+id|__user
+op_star
 id|src
 comma
 r_int
@@ -274,7 +297,7 @@ id|count
 )paren
 suffix:semicolon
 DECL|macro|strncpy_from_user
-mdefine_line|#define strncpy_from_user(dest,src,count) &bslash;&n;&t;__strncpy_from_user((unsigned long)(dest), (unsigned long)(src), (int)(count))
+mdefine_line|#define strncpy_from_user __strncpy_from_user
 r_extern
 r_int
 id|__strlen_user
@@ -282,6 +305,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -292,6 +316,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
