@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * scan.c - support for transforming the ACPI namespace into individual objects&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;&t;/* for acpi_ex_eisa_id_to_string() */
 DECL|macro|_COMPONENT
@@ -28,6 +29,20 @@ r_struct
 id|acpi_device
 op_star
 id|acpi_fixed_sleep_button
+suffix:semicolon
+DECL|variable|acpi_fixed_pwr_button
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_fixed_pwr_button
+)paren
+suffix:semicolon
+DECL|variable|acpi_fixed_sleep_button
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_fixed_sleep_button
+)paren
 suffix:semicolon
 DECL|macro|ACPI_BUS_CLASS
 mdefine_line|#define ACPI_BUS_CLASS&t;&t;&t;&quot;system_bus&quot;
