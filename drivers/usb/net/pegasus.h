@@ -205,6 +205,11 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
+DECL|member|mii
+r_struct
+id|mii_if_info
+id|mii
+suffix:semicolon
 DECL|member|flags
 r_int
 id|flags
@@ -276,6 +281,10 @@ suffix:semicolon
 DECL|member|rx_pool_lock
 id|spinlock_t
 id|rx_pool_lock
+suffix:semicolon
+DECL|member|chip
+r_int
+id|chip
 suffix:semicolon
 DECL|member|intr_buff
 r_int
@@ -373,6 +382,8 @@ DECL|macro|VENDOR_LINKSYS
 mdefine_line|#define&t;VENDOR_LINKSYS&t;&t;0x066b
 DECL|macro|VENDOR_MELCO
 mdefine_line|#define&t;VENDOR_MELCO&t;&t;0x0411
+DECL|macro|VENDOR_NETGEAR
+mdefine_line|#define&t;VENDOR_NETGEAR&t;&t;0x0846
 DECL|macro|VENDOR_SMARTBRIDGES
 mdefine_line|#define&t;VENDOR_SMARTBRIDGES&t;0x08d1
 DECL|macro|VENDOR_SMC
@@ -381,8 +392,6 @@ DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
 DECL|macro|VENDOR_SIEMENS
 mdefine_line|#define&t;VENDOR_SIEMENS&t;&t;0x067c
-DECL|macro|VENDOR_JTEC
-mdefine_line|#define&t;VENDOR_JTEC&t;&t;0x11ad
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -563,7 +572,20 @@ id|PEGASUS_II
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;ADMtek AN986 &bslash;&quot;Pegasus&bslash;&quot; USB Ethernet (eval. board)&quot;
+l_string|&quot;ADMtek ADM8513 &bslash;&quot;Pegasus II&bslash;&quot; USB Ethernet&quot;
+comma
+id|VENDOR_ADMTEK
+comma
+l_int|0x8513
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;ADMtek AN986 &bslash;&quot;Pegasus&bslash;&quot; USB Ethernet (evaluation board)&quot;
 comma
 id|VENDOR_ADMTEK
 comma
@@ -700,7 +722,7 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;Corega FEter&quot;
+l_string|&quot;Corega FEter USB-TXS&quot;
 comma
 id|VENDOR_COREGA
 comma
@@ -1027,6 +1049,19 @@ id|PEGASUS_II
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;NETGEAR FA101&quot;
+comma
+id|VENDOR_NETGEAR
+comma
+l_int|0x1020
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;smartNIC 2 PnP Adapter&quot;
 comma
 id|VENDOR_SMARTBRIDGES
@@ -1093,19 +1128,6 @@ comma
 id|VENDOR_SIEMENS
 comma
 l_int|0x1001
-comma
-id|DEFAULT_GPIO_RESET
-op_or
-id|PEGASUS_II
-)paren
-id|PEGASUS_DEV
-c_func
-(paren
-l_string|&quot;FA8101 USB To ETHERNET&quot;
-comma
-id|VENDOR_JTEC
-comma
-l_int|0x8101
 comma
 id|DEFAULT_GPIO_RESET
 op_or
