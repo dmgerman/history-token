@@ -32,22 +32,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif
-multiline_comment|/* Memory barriers. */
-macro_line|#ifdef __mc68000__
-DECL|macro|DEFW
-mdefine_line|#define DEFW()
-DECL|macro|DEFR
-mdefine_line|#define DEFR()
-DECL|macro|DEFRW
-mdefine_line|#define DEFRW()&t;
-macro_line|#else
-DECL|macro|DEFW
-mdefine_line|#define DEFW()&t;&t;wmb()
-DECL|macro|DEFR
-mdefine_line|#define DEFR()&t;&t;rmb()
-DECL|macro|DEFRW
-mdefine_line|#define DEFRW()&t;&t;mb()
-macro_line|#endif
 multiline_comment|/*&n; * Driver data &n; */
 DECL|variable|__initdata
 r_static
@@ -470,7 +454,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -552,7 +536,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -596,7 +580,7 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -642,7 +626,7 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -694,7 +678,7 @@ id|a
 (brace
 suffix:semicolon
 )brace
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -1710,7 +1694,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -1802,7 +1786,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -1821,7 +1805,7 @@ op_amp
 id|PM2F_BEING_RESET
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -1843,7 +1827,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -2534,7 +2518,7 @@ comma
 id|regno
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2549,7 +2533,7 @@ comma
 id|r
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2564,7 +2548,7 @@ comma
 id|g
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2648,7 +2632,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2673,7 +2657,7 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2690,7 +2674,7 @@ op_or
 id|p
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -2703,7 +2687,7 @@ comma
 id|PM2I_RD_PIXEL_CLOCK_STATUS
 )paren
 suffix:semicolon
-id|DEFR
+id|rmb
 c_func
 (paren
 )paren
@@ -3895,7 +3879,7 @@ comma
 id|depth
 )paren
 suffix:semicolon
-id|DEFRW
+id|mb
 c_func
 (paren
 )paren
@@ -4213,7 +4197,7 @@ comma
 id|stride
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -4254,7 +4238,7 @@ comma
 id|PM2F_SCREEN_SCISSOR_ENABLE
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
@@ -4269,7 +4253,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-id|DEFW
+id|wmb
 c_func
 (paren
 )paren
