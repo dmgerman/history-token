@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;i8259.h&quot;
-macro_line|#include &quot;xics.h&quot;
+macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 r_void
