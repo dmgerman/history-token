@@ -2016,14 +2016,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-r_return
-suffix:semicolon
 id|down
 (paren
 op_amp

@@ -23,27 +23,6 @@ DECL|macro|ERR_STAT
 mdefine_line|#define ERR_STAT&t;&t;0x01
 DECL|macro|DRQ_STAT
 mdefine_line|#define DRQ_STAT&t;&t;0x08
-DECL|struct|freecom_udata
-r_struct
-id|freecom_udata
-(brace
-DECL|member|buffer
-id|u8
-id|buffer
-(braket
-l_int|64
-)braket
-suffix:semicolon
-multiline_comment|/* Common command block. */
-)brace
-suffix:semicolon
-DECL|typedef|freecom_udata_t
-r_typedef
-r_struct
-id|freecom_udata
-op_star
-id|freecom_udata_t
-suffix:semicolon
 multiline_comment|/* All of the outgoing packets are 64 bytes long. */
 DECL|struct|freecom_cb_wrap
 r_struct
@@ -231,14 +210,6 @@ r_int
 id|count
 )paren
 (brace
-id|freecom_udata_t
-id|extra
-op_assign
-(paren
-id|freecom_udata_t
-)paren
-id|us-&gt;extra
-suffix:semicolon
 r_struct
 id|freecom_xfer_wrap
 op_star
@@ -249,7 +220,7 @@ r_struct
 id|freecom_xfer_wrap
 op_star
 )paren
-id|extra-&gt;buffer
+id|us-&gt;iobuf
 suffix:semicolon
 r_int
 id|result
@@ -397,14 +368,6 @@ r_int
 id|count
 )paren
 (brace
-id|freecom_udata_t
-id|extra
-op_assign
-(paren
-id|freecom_udata_t
-)paren
-id|us-&gt;extra
-suffix:semicolon
 r_struct
 id|freecom_xfer_wrap
 op_star
@@ -415,7 +378,7 @@ r_struct
 id|freecom_xfer_wrap
 op_star
 )paren
-id|extra-&gt;buffer
+id|us-&gt;iobuf
 suffix:semicolon
 r_int
 id|result
@@ -580,16 +543,6 @@ suffix:semicolon
 r_int
 id|length
 suffix:semicolon
-id|freecom_udata_t
-id|extra
-suffix:semicolon
-id|extra
-op_assign
-(paren
-id|freecom_udata_t
-)paren
-id|us-&gt;extra
-suffix:semicolon
 id|fcb
 op_assign
 (paren
@@ -597,7 +550,7 @@ r_struct
 id|freecom_cb_wrap
 op_star
 )paren
-id|extra-&gt;buffer
+id|us-&gt;iobuf
 suffix:semicolon
 id|fst
 op_assign
@@ -606,7 +559,7 @@ r_struct
 id|freecom_status
 op_star
 )paren
-id|extra-&gt;buffer
+id|us-&gt;iobuf
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -1332,52 +1285,12 @@ r_int
 id|result
 suffix:semicolon
 r_char
+op_star
 id|buffer
-(braket
-l_int|33
-)braket
-suffix:semicolon
-multiline_comment|/* Allocate a buffer for us.  The upper usb transport code will&n;&t; * free this for us when cleaning up. */
-r_if
-c_cond
-(paren
-id|us-&gt;extra
-op_eq
-l_int|NULL
-)paren
-(brace
-id|us-&gt;extra
 op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-r_struct
-id|freecom_udata
-)paren
-comma
-id|GFP_KERNEL
-)paren
+id|us-&gt;iobuf
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;extra
-op_eq
-l_int|NULL
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Out of memory&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ERROR
-suffix:semicolon
-)brace
-)brace
+multiline_comment|/* The DMA-mapped I/O buffer is 64 bytes long, just right for&n;&t; * all our packets.  No need to allocate any extra buffer space.&n;&t; */
 id|result
 op_assign
 id|usb_stor_control_msg

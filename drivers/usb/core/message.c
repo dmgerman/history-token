@@ -3019,6 +3019,10 @@ r_else
 r_if
 c_cond
 (paren
+id|err
+OL
+l_int|4
+op_logical_or
 id|tbuf
 (braket
 l_int|0
