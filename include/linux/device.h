@@ -1003,6 +1003,11 @@ id|device_class
 op_star
 id|devclass
 suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 DECL|member|node
 r_struct
 id|list_head
