@@ -278,6 +278,7 @@ OG
 id|JFS_NAME_MAX
 )paren
 r_return
+op_minus
 id|ENAMETOOLONG
 suffix:semicolon
 id|uniName-&gt;name
@@ -307,6 +308,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
 id|uniName-&gt;namlen
@@ -338,7 +340,6 @@ id|uniName-&gt;name
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|uniName-&gt;namlen
 suffix:semicolon
 )brace

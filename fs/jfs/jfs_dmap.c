@@ -1167,7 +1167,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * NAME:    &t;dbMount()&n; *&n; * FUNCTION:&t;initializate the block allocation map.&n; *&n; *&t;&t;memory is allocated for the in-core bmap descriptor and&n; *&t;&t;the in-core descriptor is initialized from disk.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOMEM&t;- insufficient memory&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:    &t;dbMount()&n; *&n; * FUNCTION:&t;initializate the block allocation map.&n; *&n; *&t;&t;memory is allocated for the in-core bmap descriptor and&n; *&t;&t;the in-core descriptor is initialized from disk.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOMEM&t;- insufficient memory&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbMount
 r_int
 id|dbMount
@@ -1221,9 +1221,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|ENOMEM
-)paren
 suffix:semicolon
 multiline_comment|/* read the on-disk bmap descriptor. */
 id|mp
@@ -1263,9 +1262,8 @@ id|bmp
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* copy the on-disk bmap descriptor to its in-memory version. */
@@ -1473,7 +1471,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:    &t;dbUnmount()&n; *&n; * FUNCTION:&t;terminate the block allocation map in preparation for&n; *&t;&t;file system unmount.&n; *&n; * &t;&t;the in-core bmap descriptor is written to disk and&n; *&t;&t;the memory for this descriptor is freed.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:    &t;dbUnmount()&n; *&n; * FUNCTION:&t;terminate the block allocation map in preparation for&n; *&t;&t;file system unmount.&n; *&n; * &t;&t;the in-core bmap descriptor is written to disk and&n; *&t;&t;the memory for this descriptor is freed.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbUnmount
 r_int
 id|dbUnmount
@@ -1670,9 +1668,8 @@ l_string|&quot;dbSync: read_metapage failed!&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* copy the in-memory version of the bmap to the on-disk version */
@@ -1859,7 +1856,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:    &t;dbFree()&n; *&n; * FUNCTION:&t;free the specified block range from the working block&n; *&t;&t;allocation map.&n; *&n; *&t;&t;the blocks will be free from the working map one dmap&n; *&t;&t;at a time.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      blkno&t;-  starting block number to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:    &t;dbFree()&n; *&n; * FUNCTION:&t;free the specified block range from the working block&n; *&t;&t;allocation map.&n; *&n; *&t;&t;the blocks will be free from the working map one dmap&n; *&t;&t;at a time.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      blkno&t;-  starting block number to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbFree
 r_int
 id|dbFree
@@ -2018,9 +2015,8 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 id|dp
@@ -2136,7 +2132,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbUpdatePMap()&n; *&n; * FUNCTION:    update the allocation state (free or allocate) of the&n; *&t;&t;specified block range in the persistent block allocation map.&n; *&t;&t;&n; *&t;&t;the blocks will be updated in the persistent map one&n; *&t;&t;dmap at a time.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *      free&t;- TRUE if block range is to be freed from the persistent&n; *&t;&t;  map; FALSE if it is to   be allocated.&n; *      blkno&t;-  starting block number of the range.&n; *      nblocks&t;-  number of contiguous blocks in the range.&n; *      tblk&t;-  transaction block;&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:&t;dbUpdatePMap()&n; *&n; * FUNCTION:    update the allocation state (free or allocate) of the&n; *&t;&t;specified block range in the persistent block allocation map.&n; *&t;&t;&n; *&t;&t;the blocks will be updated in the persistent map one&n; *&t;&t;dmap at a time.&n; *&n; * PARAMETERS:&n; *      ipbmap&t;-  pointer to in-core inode for the block map.&n; *      free&t;- TRUE if block range is to be freed from the persistent&n; *&t;&t;  map; FALSE if it is to   be allocated.&n; *      blkno&t;-  starting block number of the range.&n; *      nblocks&t;-  number of contiguous blocks in the range.&n; *      tblk&t;-  transaction block;&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; */
 r_int
 DECL|function|dbUpdatePMap
 id|dbUpdatePMap
@@ -2346,9 +2342,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 id|dp
@@ -2949,7 +2944,7 @@ id|bmp-&gt;db_agpref
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAlloc()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous free&n; *&t;&t;blocks from the working allocation block map.&n; *&n; *&t;&t;the block allocation policy uses hints and a multi-step&n; *&t;&t;approach.&n; *&n; *&t;  &t;for allocation requests smaller than the number of blocks&n; *&t;&t;per dmap, we first try to allocate the new blocks&n; *&t;&t;immediately following the hint.  if these blocks are not&n; *&t;&t;available, we try to allocate blocks near the hint.  if&n; *&t;&t;no blocks near the hint are available, we next try to &n; *&t;&t;allocate within the same dmap as contains the hint.&n; *&n; *&t;&t;if no blocks are available in the dmap or the allocation&n; *&t;&t;request is larger than the dmap size, we try to allocate&n; *&t;&t;within the same allocation group as contains the hint. if&n; *&t;&t;this does not succeed, we finally try to allocate anywhere&n; *&t;&t;within the aggregate.&n; *&n; *&t;&t;we also try to allocate anywhere within the aggregate for&n; *&t;&t;for allocation requests larger than the allocation group&n; *&t;&t;size or requests that specify no hint value.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      hint&t;- allocation hint.&n; *      nblocks&t;- number of contiguous blocks in the range.&n; *      results&t;- on successful return, set to the starting block number&n; *&t;&t;  of the newly allocated contiguous range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:&t;dbAlloc()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous free&n; *&t;&t;blocks from the working allocation block map.&n; *&n; *&t;&t;the block allocation policy uses hints and a multi-step&n; *&t;&t;approach.&n; *&n; *&t;  &t;for allocation requests smaller than the number of blocks&n; *&t;&t;per dmap, we first try to allocate the new blocks&n; *&t;&t;immediately following the hint.  if these blocks are not&n; *&t;&t;available, we try to allocate blocks near the hint.  if&n; *&t;&t;no blocks near the hint are available, we next try to &n; *&t;&t;allocate within the same dmap as contains the hint.&n; *&n; *&t;&t;if no blocks are available in the dmap or the allocation&n; *&t;&t;request is larger than the dmap size, we try to allocate&n; *&t;&t;within the same allocation group as contains the hint. if&n; *&t;&t;this does not succeed, we finally try to allocate anywhere&n; *&t;&t;within the aggregate.&n; *&n; *&t;&t;we also try to allocate anywhere within the aggregate for&n; *&t;&t;for allocation requests larger than the allocation group&n; *&t;&t;size or requests that specify no hint value.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      hint&t;- allocation hint.&n; *      nblocks&t;- number of contiguous blocks in the range.&n; *      results&t;- on successful return, set to the starting block number&n; *&t;&t;  of the newly allocated contiguous range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbAlloc
 r_int
 id|dbAlloc
@@ -3040,6 +3035,7 @@ id|nblocks
 )paren
 )paren
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
@@ -3215,6 +3211,7 @@ suffix:semicolon
 multiline_comment|/* get the buffer for the dmap containing the hint.&n;&t;&t; */
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 id|lblkno
@@ -3283,6 +3280,7 @@ id|nblocks
 )paren
 )paren
 op_ne
+op_minus
 id|ENOSPC
 )paren
 (brace
@@ -3415,6 +3413,7 @@ id|results
 )paren
 )paren
 op_ne
+op_minus
 id|ENOSPC
 )paren
 (brace
@@ -3481,6 +3480,7 @@ id|results
 )paren
 )paren
 op_ne
+op_minus
 id|ENOSPC
 )paren
 (brace
@@ -3563,6 +3563,7 @@ id|results
 )paren
 )paren
 op_ne
+op_minus
 id|ENOSPC
 )paren
 (brace
@@ -3635,6 +3636,7 @@ id|results
 )paren
 )paren
 op_eq
+op_minus
 id|ENOSPC
 )paren
 id|rc
@@ -3700,7 +3702,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocExact()&n; *&n; * FUNCTION:    try to allocate the requested extent;&n; *&n; * PARAMETERS:&n; *      ip&t;- pointer to in-core inode;&n; *      blkno&t;- extent address;&n; *      nblocks&t;- extent length;&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocExact()&n; *&n; * FUNCTION:    try to allocate the requested extent;&n; *&n; * PARAMETERS:&n; *      ip&t;- pointer to in-core inode;&n; *      blkno&t;- extent address;&n; *      nblocks&t;- extent length;&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbAllocExact
 r_int
 id|dbAllocExact
@@ -3790,6 +3792,7 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -3816,6 +3819,7 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
@@ -3859,9 +3863,8 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 id|dp
@@ -3933,7 +3936,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbReAlloc()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.  if these&n; *&t;&t;blocks are not available, this routine will attempt to&n; *&t;&t;allocate a new set of contiguous blocks large enough&n; *&t;&t;to cover the existing allocation plus the additional&n; *&t;&t;number of blocks required.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *      results&t;-      on successful return, set to the starting block number&n; *&t;&t;       of the existing allocation if the existing allocation&n; *&t;&t;       was extended in place or to a newly allocated contiguous&n; *&t;&t;       range if the existing allocation could not be extended&n; *&t;&t;       in place.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:&t;dbReAlloc()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.  if these&n; *&t;&t;blocks are not available, this routine will attempt to&n; *&t;&t;allocate a new set of contiguous blocks large enough&n; *&t;&t;to cover the existing allocation plus the additional&n; *&t;&t;number of blocks required.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *      results&t;-      on successful return, set to the starting block number&n; *&t;&t;       of the existing allocation if the existing allocation&n; *&t;&t;       was extended in place or to a newly allocated contiguous&n; *&t;&t;       range if the existing allocation could not be extended&n; *&t;&t;       in place.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 r_int
 DECL|function|dbReAlloc
 id|dbReAlloc
@@ -4002,6 +4005,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -4032,7 +4036,7 @@ id|results
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbExtend()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:&t;dbExtend()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbExtend
 r_int
 id|dbExtend
@@ -4128,9 +4132,8 @@ id|sbi-&gt;nbperpage
 )paren
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* get the last block of the current allocation */
 id|lastblkno
@@ -4202,9 +4205,8 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* get the buffer for the dmap containing the first block&n;&t; * of the extension.&n;&t; */
@@ -4247,9 +4249,8 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 id|DBALLOCCK
@@ -4338,10 +4339,12 @@ m_assert
 (paren
 id|rc
 op_eq
+op_minus
 id|ENOSPC
 op_logical_or
 id|rc
 op_eq
+op_minus
 id|EIO
 )paren
 suffix:semicolon
@@ -4352,7 +4355,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocNext()&n; *&n; * FUNCTION:    attempt to allocate the blocks of the specified block&n; *&t;&t;range within a dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap.&n; *      blkno&t;-  starting block number of the range.&n; *      nblocks&t;-  number of contiguous free blocks of the range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocNext()&n; *&n; * FUNCTION:    attempt to allocate the blocks of the specified block&n; *&t;&t;range within a dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap.&n; *      blkno&t;-  starting block number of the range.&n; *      nblocks&t;-  number of contiguous free blocks of the range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) held on entry/exit;&n; */
 DECL|function|dbAllocNext
 r_static
 r_int
@@ -4440,9 +4443,8 @@ OG
 id|BPERDMAP
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* check if the starting leaf indicates that anything&n;&t; * is free.&n;&t; */
 r_if
@@ -4456,9 +4458,8 @@ op_eq
 id|NOFREE
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* check the dmaps words corresponding to block range to see&n;&t; * if the block range is free.  not all bits of the first and&n;&t; * last words may be contained within the block range.  if this&n;&t; * is the case, we&squot;ll work against those words (i.e. partial first&n;&t; * and/or last) on an individual basis (a single pass) and examine&n;&t; * the actual bits to determine if they are free.  a single pass&n;&t; * will be used for all dmap words fully contained within the&n;&t; * specified range.  within this pass, the leaves of the dmap&n;&t; * tree will be examined to determine if the blocks are free. a&n;&t; * single leaf may describe the free space of multiple dmap&n;&t; * words, so we may visit only a subset of the actual leaves&n;&t; * corresponding to the dmap words of the block range.&n;&t; */
 r_for
@@ -4548,9 +4549,8 @@ op_ne
 id|mask
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 id|word
 op_add_assign
@@ -4593,9 +4593,8 @@ OL
 id|BUDMIN
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* determine the l2 number of bits provided&n;&t;&t;&t;&t; * by this leaf.&n;&t;&t;&t;&t; */
 id|l2size
@@ -4657,7 +4656,7 @@ id|nblocks
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocNear()&n; *&n; * FUNCTION:    attempt to allocate a number of contiguous free blocks near&n; *&t;&t;a specified block (hint) within a dmap.&n; *&n; *&t;&t;starting with the dmap leaf that covers the hint, we&squot;ll&n; *&t;&t;check the next four contiguous leaves for sufficient free&n; *&t;&t;space.  if sufficient free space is found, we&squot;ll allocate&n; *&t;&t;the desired free space.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap.&n; *      blkno&t;-  block number to allocate near.&n; *      nblocks&t;-  actual number of contiguous free blocks desired.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocNear()&n; *&n; * FUNCTION:    attempt to allocate a number of contiguous free blocks near&n; *&t;&t;a specified block (hint) within a dmap.&n; *&n; *&t;&t;starting with the dmap leaf that covers the hint, we&squot;ll&n; *&t;&t;check the next four contiguous leaves for sufficient free&n; *&t;&t;space.  if sufficient free space is found, we&squot;ll allocate&n; *&t;&t;the desired free space.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap.&n; *      blkno&t;-  block number to allocate near.&n; *      nblocks&t;-  actual number of contiguous free blocks desired.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) held on entry/exit;&n; */
 r_static
 r_int
 DECL|function|dbAllocNear
@@ -4837,12 +4836,11 @@ id|rc
 suffix:semicolon
 )brace
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocAG()&n; *&n; * FUNCTION:    attempt to allocate the specified number of contiguous&n; *&t;&t;free blocks within the specified allocation group.&n; *&n; *&t;&t;unless the allocation group size is equal to the number&n; *&t;&t;of blocks per dmap, the dmap control pages will be used to&n; *&t;&t;find the required free space, if available.  we start the&n; *&t;&t;search at the highest dmap control page level which&n; *&t;&t;distinctly describes the allocation group&squot;s free space&n; *&t;&t;(i.e. the highest level at which the allocation group&squot;s&n; *&t;&t;free space is not mixed in with that of any other group).&n; *&t;&t;in addition, we start the search within this level at a&n; *&t;&t;height of the dmapctl dmtree at which the nodes distinctly&n; *&t;&t;describe the allocation group&squot;s free space.  at this height,&n; *&t;&t;the allocation group&squot;s free space may be represented by 1&n; *&t;&t;or two sub-trees, depending on the allocation group size.&n; *&t;&t;we search the top nodes of these subtrees left to right for&n; *&t;&t;sufficient free space.  if sufficient free space is found,&n; *&t;&t;the subtree is searched to find the leftmost leaf that &n; *&t;&t;has free space.  once we have made it to the leaf, we&n; *&t;&t;move the search to the next lower level dmap control page&n; *&t;&t;corresponding to this leaf.  we continue down the dmap control&n; *&t;&t;pages until we find the dmap that contains or starts the&n; *&t;&t;sufficient free space and we allocate at this dmap.&n; *&n; *&t;&t;if the allocation group size is equal to the dmap size,&n; *&t;&t;we&squot;ll start at the dmap corresponding to the allocation&n; *&t;&t;group and attempt the allocation at this level.&n; *&n; *&t;&t;the dmap control page search is also not performed if the&n; *&t;&t;allocation group is completely free and we go to the first&n; *&t;&t;dmap of the allocation group to do the allocation.  this is&n; *&t;&t;done because the allocation group may be part (not the first&n; *&t;&t;part) of a larger binary buddy system, causing the dmap&n; *&t;&t;control pages to indicate no free space (NOFREE) within&n; *&t;&t;the allocation group.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *&t;agno&t;- allocation group number.&n; *      nblocks&t;-  actual number of contiguous free blocks desired.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * note: IWRITE_LOCK(ipmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocAG()&n; *&n; * FUNCTION:    attempt to allocate the specified number of contiguous&n; *&t;&t;free blocks within the specified allocation group.&n; *&n; *&t;&t;unless the allocation group size is equal to the number&n; *&t;&t;of blocks per dmap, the dmap control pages will be used to&n; *&t;&t;find the required free space, if available.  we start the&n; *&t;&t;search at the highest dmap control page level which&n; *&t;&t;distinctly describes the allocation group&squot;s free space&n; *&t;&t;(i.e. the highest level at which the allocation group&squot;s&n; *&t;&t;free space is not mixed in with that of any other group).&n; *&t;&t;in addition, we start the search within this level at a&n; *&t;&t;height of the dmapctl dmtree at which the nodes distinctly&n; *&t;&t;describe the allocation group&squot;s free space.  at this height,&n; *&t;&t;the allocation group&squot;s free space may be represented by 1&n; *&t;&t;or two sub-trees, depending on the allocation group size.&n; *&t;&t;we search the top nodes of these subtrees left to right for&n; *&t;&t;sufficient free space.  if sufficient free space is found,&n; *&t;&t;the subtree is searched to find the leftmost leaf that &n; *&t;&t;has free space.  once we have made it to the leaf, we&n; *&t;&t;move the search to the next lower level dmap control page&n; *&t;&t;corresponding to this leaf.  we continue down the dmap control&n; *&t;&t;pages until we find the dmap that contains or starts the&n; *&t;&t;sufficient free space and we allocate at this dmap.&n; *&n; *&t;&t;if the allocation group size is equal to the dmap size,&n; *&t;&t;we&squot;ll start at the dmap corresponding to the allocation&n; *&t;&t;group and attempt the allocation at this level.&n; *&n; *&t;&t;the dmap control page search is also not performed if the&n; *&t;&t;allocation group is completely free and we go to the first&n; *&t;&t;dmap of the allocation group to do the allocation.  this is&n; *&t;&t;done because the allocation group may be part (not the first&n; *&t;&t;part) of a larger binary buddy system, causing the dmap&n; *&t;&t;control pages to indicate no free space (NOFREE) within&n; *&t;&t;the allocation group.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *&t;agno&t;- allocation group number.&n; *      nblocks&t;-  actual number of contiguous free blocks desired.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * note: IWRITE_LOCK(ipmap) held on entry/exit;&n; */
 r_static
 r_int
 DECL|function|dbAllocAG
@@ -4951,13 +4949,14 @@ comma
 id|results
 )paren
 suffix:semicolon
-multiline_comment|/* assert(!(rc == ENOSPC &amp;&amp; bmp-&gt;db_agfree[agno] == bmp-&gt;db_agsize)); */
+multiline_comment|/* assert(!(rc == -ENOSPC &amp;&amp; bmp-&gt;db_agfree[agno] == bmp-&gt;db_agsize)); */
 r_if
 c_cond
 (paren
 (paren
 id|rc
 op_eq
+op_minus
 id|ENOSPC
 )paren
 op_logical_and
@@ -5034,9 +5033,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 id|dcp
 op_assign
@@ -5293,6 +5291,7 @@ m_assert
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 suffix:semicolon
@@ -5324,6 +5323,7 @@ m_assert
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 suffix:semicolon
@@ -5333,7 +5333,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* no space in the allocation group.  release the buffer and&n;&t; * return ENOSPC.&n;&t; */
+multiline_comment|/* no space in the allocation group.  release the buffer and&n;&t; * return -ENOSPC.&n;&t; */
 id|release_metapage
 c_func
 (paren
@@ -5341,12 +5341,11 @@ id|mp
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocAny()&n; *&n; * FUNCTION:    attempt to allocate the specified number of contiguous&n; *&t;&t;free blocks anywhere in the file system.&n; *&n; *&t;&t;dbAllocAny() attempts to find the sufficient free space by&n; *&t;&t;searching down the dmap control pages, starting with the&n; *&t;&t;highest level (i.e. L0, L1, L2) control page.  if free space&n; *&t;&t;large enough to satisfy the desired free space is found, the&n; *&t;&t;desired free space is allocated.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      nblocks&t; -  actual number of contiguous free blocks desired.&n; *      l2nb&t; -  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocAny()&n; *&n; * FUNCTION:    attempt to allocate the specified number of contiguous&n; *&t;&t;free blocks anywhere in the file system.&n; *&n; *&t;&t;dbAllocAny() attempts to find the sufficient free space by&n; *&t;&t;searching down the dmap control pages, starting with the&n; *&t;&t;highest level (i.e. L0, L1, L2) control page.  if free space&n; *&t;&t;large enough to satisfy the desired free space is found, the&n; *&t;&t;desired free space is allocated.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      nblocks&t; -  actual number of contiguous free blocks desired.&n; *      l2nb&t; -  log2 number of contiguous free blocks desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 DECL|function|dbAllocAny
 r_static
 r_int
@@ -5424,6 +5423,7 @@ m_assert
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 suffix:semicolon
@@ -5433,7 +5433,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbFindCtl()&n; *&n; * FUNCTION:    starting at a specified dmap control page level and block&n; *&t;&t;number, search down the dmap control levels for a range of&n; *&t;        contiguous free blocks large enough to satisfy an allocation&n; *&t;&t;request for the specified number of free blocks.&n; *&n; *&t;&t;if sufficient contiguous free blocks are found, this routine&n; *&t;&t;returns the starting block number within a dmap page that&n; *&t;&t;contains or starts a range of contiqious free blocks that&n; *&t;&t;is sufficient in size.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      level&t;-  starting dmap control page level.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      *blkno&t;-  on entry, starting block number for conducting the search.&n; *&t;&t;   on successful return, the first block within a dmap page&n; *&t;&t;   that contains or starts a range of contiguous free blocks.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbFindCtl()&n; *&n; * FUNCTION:    starting at a specified dmap control page level and block&n; *&t;&t;number, search down the dmap control levels for a range of&n; *&t;        contiguous free blocks large enough to satisfy an allocation&n; *&t;&t;request for the specified number of free blocks.&n; *&n; *&t;&t;if sufficient contiguous free blocks are found, this routine&n; *&t;&t;returns the starting block number within a dmap page that&n; *&t;&t;contains or starts a range of contiqious free blocks that&n; *&t;&t;is sufficient in size.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      level&t;-  starting dmap control page level.&n; *      l2nb&t;-  log2 number of contiguous free blocks desired.&n; *      *blkno&t;-  on entry, starting block number for conducting the search.&n; *&t;&t;   on successful return, the first block within a dmap page&n; *&t;&t;   that contains or starts a range of contiguous free blocks.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 DECL|function|dbFindCtl
 r_static
 r_int
@@ -5537,9 +5537,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 id|dcp
 op_assign
@@ -5594,9 +5593,8 @@ id|level
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* adjust the block number to reflect the location within&n;&t;&t; * the dmap control page (i.e. the leaf) at which free &n;&t;&t; * space was found.&n;&t;&t; */
@@ -5635,7 +5633,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocCtl()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous&n; *&t;&t;blocks starting within a specific dmap.  &n; *&t;&t;&n; *&t;&t;this routine is called by higher level routines that search&n; *&t;&t;the dmap control pages above the actual dmaps for contiguous&n; *&t;&t;free space.  the result of successful searches by these&n; * &t;&t;routines are the starting block numbers within dmaps, with&n; *&t;&t;the dmaps themselves containing the desired contiguous free&n; *&t;&t;space or starting a contiguous free space of desired size&n; *&t;&t;that is made up of the blocks of one or more dmaps. these&n; *&t;&t;calls should not fail due to insufficent resources.&n; *&n; *&t;&t;this routine is called in some cases where it is not known&n; *&t;&t;whether it will fail due to insufficient resources.  more&n; *&t;&t;specifically, this occurs when allocating from an allocation&n; *&t;&t;group whose size is equal to the number of blocks per dmap.&n; *&t;&t;in this case, the dmap control pages are not examined prior&n; *&t;&t;to calling this routine (to save pathlength) and the call&n; *&t;&t;might fail.&n; *&n; *&t;&t;for a request size that fits within a dmap, this routine relies&n; *&t;&t;upon the dmap&squot;s dmtree to find the requested contiguous free&n; *&t;&t;space.  for request sizes that are larger than a dmap, the&n; *&t;&t;requested free space will start at the first block of the&n; *&t;&t;first dmap (i.e. blkno).&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      nblocks&t; -  actual number of contiguous free blocks to allocate.&n; *      l2nb&t; -  log2 number of contiguous free blocks to allocate.&n; *      blkno&t; -  starting block number of the dmap to start the allocation&n; *&t;&t;    from.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocCtl()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous&n; *&t;&t;blocks starting within a specific dmap.  &n; *&t;&t;&n; *&t;&t;this routine is called by higher level routines that search&n; *&t;&t;the dmap control pages above the actual dmaps for contiguous&n; *&t;&t;free space.  the result of successful searches by these&n; * &t;&t;routines are the starting block numbers within dmaps, with&n; *&t;&t;the dmaps themselves containing the desired contiguous free&n; *&t;&t;space or starting a contiguous free space of desired size&n; *&t;&t;that is made up of the blocks of one or more dmaps. these&n; *&t;&t;calls should not fail due to insufficent resources.&n; *&n; *&t;&t;this routine is called in some cases where it is not known&n; *&t;&t;whether it will fail due to insufficient resources.  more&n; *&t;&t;specifically, this occurs when allocating from an allocation&n; *&t;&t;group whose size is equal to the number of blocks per dmap.&n; *&t;&t;in this case, the dmap control pages are not examined prior&n; *&t;&t;to calling this routine (to save pathlength) and the call&n; *&t;&t;might fail.&n; *&n; *&t;&t;for a request size that fits within a dmap, this routine relies&n; *&t;&t;upon the dmap&squot;s dmtree to find the requested contiguous free&n; *&t;&t;space.  for request sizes that are larger than a dmap, the&n; *&t;&t;requested free space will start at the first block of the&n; *&t;&t;first dmap (i.e. blkno).&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      nblocks&t; -  actual number of contiguous free blocks to allocate.&n; *      l2nb&t; -  log2 number of contiguous free blocks to allocate.&n; *      blkno&t; -  starting block number of the dmap to start the allocation&n; *&t;&t;    from.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 r_static
 r_int
 DECL|function|dbAllocCtl
@@ -5725,9 +5723,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 id|dp
 op_assign
@@ -5859,6 +5856,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -6090,7 +6088,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocDmapLev()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous blocks&n; *&t;&t;from a specified dmap.&n; *&t;&t;&n; *&t;&t;this routine checks if the contiguous blocks are available.&n; *&t;&t;if so, nblocks of blocks are allocated; otherwise, ENOSPC is&n; *&t;&t;returned.&n; *&n; * PARAMETERS:&n; *      mp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to attempt to allocate blocks from. &n; *      l2nb&t;-  log2 number of contiguous block desired.&n; *      nblocks&t;-  actual number of contiguous block desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient disk resources&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap), e.g., from dbAlloc(), or &n; *&t;IWRITE_LOCK(ipbmap), e.g., dbAllocCtl(), held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocDmapLev()&n; *&n; * FUNCTION:    attempt to allocate a specified number of contiguous blocks&n; *&t;&t;from a specified dmap.&n; *&t;&t;&n; *&t;&t;this routine checks if the contiguous blocks are available.&n; *&t;&t;if so, nblocks of blocks are allocated; otherwise, ENOSPC is&n; *&t;&t;returned.&n; *&n; * PARAMETERS:&n; *      mp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to attempt to allocate blocks from. &n; *      l2nb&t;-  log2 number of contiguous block desired.&n; *      nblocks&t;-  actual number of contiguous block desired.&n; *      results&t;-  on successful return, set to the starting block number&n; *&t;&t;   of the newly allocated range.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap), e.g., from dbAlloc(), or &n; *&t;IWRITE_LOCK(ipbmap), e.g., dbAllocCtl(), held on entry/exit;&n; */
 r_static
 r_int
 DECL|function|dbAllocDmapLev
@@ -6155,9 +6153,8 @@ id|leafidx
 )paren
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* determine the block number within the file system corresponding&n;&t; * to the leaf at which free space was found.&n;&t; */
 id|blkno
@@ -6237,7 +6234,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAllocDmap()&n; *&n; * FUNCTION:    adjust the disk allocation map to reflect the allocation&n; *&t;&t;of a specified block range within a dmap.&n; *&n; *&t;&t;this routine allocates the specified blocks from the dmap&n; *&t;&t;through a call to dbAllocBits(). if the allocation of the&n; *&t;&t;block range causes the maximum string of free blocks within&n; *&t;&t;the dmap to change (i.e. the value of the root of the dmap&squot;s&n; *&t;&t;dmtree), this routine will cause this change to be reflected&n; *&t;&t;up through the appropriate levels of the dmap control pages&n; *&t;&t;by a call to dbAdjCtl() for the L0 dmap control page that&n; *&t;&t;covers this dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to allocate the block range from.&n; *      blkno&t;-  starting block number of the block to be allocated.&n; *      nblocks&t;-  number of blocks to be allocated.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAllocDmap()&n; *&n; * FUNCTION:    adjust the disk allocation map to reflect the allocation&n; *&t;&t;of a specified block range within a dmap.&n; *&n; *&t;&t;this routine allocates the specified blocks from the dmap&n; *&t;&t;through a call to dbAllocBits(). if the allocation of the&n; *&t;&t;block range causes the maximum string of free blocks within&n; *&t;&t;the dmap to change (i.e. the value of the root of the dmap&squot;s&n; *&t;&t;dmtree), this routine will cause this change to be reflected&n; *&t;&t;up through the appropriate levels of the dmap control pages&n; *&t;&t;by a call to dbAdjCtl() for the L0 dmap control page that&n; *&t;&t;covers this dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to allocate the block range from.&n; *      blkno&t;-  starting block number of the block to be allocated.&n; *      nblocks&t;-  number of blocks to be allocated.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 DECL|function|dbAllocDmap
 r_static
 r_int
@@ -6347,7 +6344,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbFreeDmap()&n; *&n; * FUNCTION:    adjust the disk allocation map to reflect the allocation&n; *&t;&t;of a specified block range within a dmap.&n; *&n; *&t;&t;this routine frees the specified blocks from the dmap through&n; *&t;&t;a call to dbFreeBits(). if the deallocation of the block range&n; *&t;&t;causes the maximum string of free blocks within the dmap to&n; *&t;&t;change (i.e. the value of the root of the dmap&squot;s dmtree), this&n; *&t;&t;routine will cause this change to be reflected up through the&n; *&t;        appropriate levels of the dmap control pages by a call to&n; *&t;&t;dbAdjCtl() for the L0 dmap control page that covers this dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to free the block range from.&n; *      blkno&t;-  starting block number of the block to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbFreeDmap()&n; *&n; * FUNCTION:    adjust the disk allocation map to reflect the allocation&n; *&t;&t;of a specified block range within a dmap.&n; *&n; *&t;&t;this routine frees the specified blocks from the dmap through&n; *&t;&t;a call to dbFreeBits(). if the deallocation of the block range&n; *&t;&t;causes the maximum string of free blocks within the dmap to&n; *&t;&t;change (i.e. the value of the root of the dmap&squot;s dmtree), this&n; *&t;&t;routine will cause this change to be reflected up through the&n; *&t;        appropriate levels of the dmap control pages by a call to&n; *&t;&t;dbAdjCtl() for the L0 dmap control page that covers this dmap.&n; *&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      dp&t;-  pointer to dmap to free the block range from.&n; *      blkno&t;-  starting block number of the block to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 DECL|function|dbFreeDmap
 r_static
 r_int
@@ -7274,7 +7271,7 @@ id|bmp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;dbAdjCtl()&n; *&n; * FUNCTION:&t;adjust a dmap control page at a specified level to reflect&n; *&t;&t;the change in a lower level dmap or dmap control page&squot;s&n; *&t;&t;maximum string of free blocks (i.e. a change in the root&n; *&t;&t;of the lower level object&squot;s dmtree) due to the allocation&n; *&t;&t;or deallocation of a range of blocks with a single dmap.&n; *&n; *&t;&t;on entry, this routine is provided with the new value of&n; *&t;&t;the lower level dmap or dmap control page root and the&n; *&t;&t;starting block number of the block range whose allocation&n; *&t;&t;or deallocation resulted in the root change.  this range&n; *&t;&t;is respresented by a single leaf of the current dmapctl&n; *&t;&t;and the leaf will be updated with this value, possibly&n; *&t;&t;causing a binary buddy system within the leaves to be &n; *&t;&t;split or joined.  the update may also cause the dmapctl&squot;s&n; *&t;&t;dmtree to be updated.&n; *&n; *&t;&t;if the adjustment of the dmap control page, itself, causes its&n; *&t;&t;root to change, this change will be bubbled up to the next dmap&n; *&t;&t;control level by a recursive call to this routine, specifying&n; *&t;&t;the new root value and the next dmap control page level to&n; *&t;&t;be adjusted.&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      blkno&t;-  the first block of a block range within a dmap.  it is&n; *&t;&t;   the allocation or deallocation of this block range that&n; *&t;&t;   requires the dmap control page to be adjusted.&n; *      newval&t;-  the new value of the lower level dmap or dmap control&n; *&t;&t;   page root.&n; *      alloc&t;-  TRUE if adjustment is due to an allocation.&n; *      level&t;-  current level of dmap control page (i.e. L0, L1, L2) to&n; *&t;&t;   be adjusted.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
+multiline_comment|/*&n; * NAME:&t;dbAdjCtl()&n; *&n; * FUNCTION:&t;adjust a dmap control page at a specified level to reflect&n; *&t;&t;the change in a lower level dmap or dmap control page&squot;s&n; *&t;&t;maximum string of free blocks (i.e. a change in the root&n; *&t;&t;of the lower level object&squot;s dmtree) due to the allocation&n; *&t;&t;or deallocation of a range of blocks with a single dmap.&n; *&n; *&t;&t;on entry, this routine is provided with the new value of&n; *&t;&t;the lower level dmap or dmap control page root and the&n; *&t;&t;starting block number of the block range whose allocation&n; *&t;&t;or deallocation resulted in the root change.  this range&n; *&t;&t;is respresented by a single leaf of the current dmapctl&n; *&t;&t;and the leaf will be updated with this value, possibly&n; *&t;&t;causing a binary buddy system within the leaves to be &n; *&t;&t;split or joined.  the update may also cause the dmapctl&squot;s&n; *&t;&t;dmtree to be updated.&n; *&n; *&t;&t;if the adjustment of the dmap control page, itself, causes its&n; *&t;&t;root to change, this change will be bubbled up to the next dmap&n; *&t;&t;control level by a recursive call to this routine, specifying&n; *&t;&t;the new root value and the next dmap control page level to&n; *&t;&t;be adjusted.&n; * PARAMETERS:&n; *      bmp&t;-  pointer to bmap descriptor&n; *      blkno&t;-  the first block of a block range within a dmap.  it is&n; *&t;&t;   the allocation or deallocation of this block range that&n; *&t;&t;   requires the dmap control page to be adjusted.&n; *      newval&t;-  the new value of the lower level dmap or dmap control&n; *&t;&t;   page root.&n; *      alloc&t;-  TRUE if adjustment is due to an allocation.&n; *      level&t;-  current level of dmap control page (i.e. L0, L1, L2) to&n; *&t;&t;   be adjusted.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; *&n; * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;&n; */
 r_static
 r_int
 DECL|function|dbAdjCtl
@@ -7360,9 +7357,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 id|dcp
 op_assign
@@ -8263,7 +8259,7 @@ id|pp
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * NAME:&t;dbFindLeaf()&n; *&n; * FUNCTION:    search a dmtree_t for sufficient free blocks, returning&n; *&t;&t;the index of a leaf describing the free blocks if &n; *&t;&t;sufficient free blocks are found.&n; *&n; *&t;&t;the search starts at the top of the dmtree_t tree and&n; *&t;&t;proceeds down the tree to the leftmost leaf with sufficient&n; *&t;&t;free space.&n; *&n; * PARAMETERS:&n; *      tp&t;- pointer to the tree to be searched.&n; *      l2nb&t;- log2 number of free blocks to search for.&n; *&t;leafidx&t;- return pointer to be set to the index of the leaf&n; *&t;&t;  describing at least l2nb free blocks if sufficient&n; *&t;&t;  free blocks are found.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      ENOSPC&t;- insufficient free blocks. &n; */
+multiline_comment|/*&n; * NAME:&t;dbFindLeaf()&n; *&n; * FUNCTION:    search a dmtree_t for sufficient free blocks, returning&n; *&t;&t;the index of a leaf describing the free blocks if &n; *&t;&t;sufficient free blocks are found.&n; *&n; *&t;&t;the search starts at the top of the dmtree_t tree and&n; *&t;&t;proceeds down the tree to the leftmost leaf with sufficient&n; *&t;&t;free space.&n; *&n; * PARAMETERS:&n; *      tp&t;- pointer to the tree to be searched.&n; *      l2nb&t;- log2 number of free blocks to search for.&n; *&t;leafidx&t;- return pointer to be set to the index of the leaf&n; *&t;&t;  describing at least l2nb free blocks if sufficient&n; *&t;&t;  free blocks are found.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient free blocks. &n; */
 DECL|function|dbFindLeaf
 r_static
 r_int
@@ -8307,9 +8303,8 @@ id|ROOT
 )braket
 )paren
 r_return
-(paren
+op_minus
 id|ENOSPC
-)paren
 suffix:semicolon
 multiline_comment|/* sufficient free space available. now search down the tree&n;&t; * starting at the next level for the leftmost leaf that&n;&t; * describes sufficient free space.&n;&t; */
 r_for
@@ -8862,7 +8857,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:    &t;dbAllocBottomUp()&n; *&n; * FUNCTION:&t;alloc the specified block range from the working block&n; *&t;&t;allocation map.&n; *&n; *&t;&t;the blocks will be alloc from the working map one dmap&n; *&t;&t;at a time.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      blkno&t;-  starting block number to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      EIO&t;- i/o error&n; */
+multiline_comment|/*&n; * NAME:    &t;dbAllocBottomUp()&n; *&n; * FUNCTION:&t;alloc the specified block range from the working block&n; *&t;&t;allocation map.&n; *&n; *&t;&t;the blocks will be alloc from the working map one dmap&n; *&t;&t;at a time.&n; *&n; * PARAMETERS:&n; *      ip&t;-  pointer to in-core inode;&n; *      blkno&t;-  starting block number to be freed.&n; *      nblocks&t;-  number of blocks to be freed.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbAllocBottomUp
 r_int
 id|dbAllocBottomUp
@@ -9022,9 +9017,8 @@ id|ipbmap
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|EIO
-)paren
 suffix:semicolon
 )brace
 id|dp
@@ -10513,6 +10507,7 @@ suffix:semicolon
 id|errout
 suffix:colon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace

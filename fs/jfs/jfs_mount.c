@@ -31,7 +31,7 @@ op_star
 id|sb
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NAME:&t;jfs_mount(sb)&n; *&n; * FUNCTION:&t;vfs_mount()&n; *&n; * PARAMETER:&t;sb&t;- super block&n; *&n; * RETURN:&t;EBUSY&t;- device already mounted or open for write&n; *&t;&t;EBUSY&t;- cvrdvp already mounted;&n; *&t;&t;EBUSY&t;- mount table full&n; *&t;&t;ENOTDIR&t;- cvrdvp not directory on a device mount&n; *&t;&t;ENXIO&t;- device open failure&n; */
+multiline_comment|/*&n; * NAME:&t;jfs_mount(sb)&n; *&n; * FUNCTION:&t;vfs_mount()&n; *&n; * PARAMETER:&t;sb&t;- super block&n; *&n; * RETURN:&t;-EBUSY&t;- device already mounted or open for write&n; *&t;&t;-EBUSY&t;- cvrdvp already mounted;&n; *&t;&t;-EBUSY&t;- mount table full&n; *&t;&t;-ENOTDIR- cvrdvp not directory on a device mount&n; *&t;&t;-ENXIO&t;- device open failure&n; */
 DECL|function|jfs_mount
 r_int
 id|jfs_mount
@@ -135,6 +135,7 @@ l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -203,6 +204,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -289,6 +291,7 @@ l_string|&quot;jfs_mount: Faild to read AGGREGATE_I&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -372,6 +375,7 @@ suffix:semicolon
 multiline_comment|/* open fileset secondary inode allocation map */
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -869,9 +873,9 @@ id|JFS_VERSION
 )paren
 )paren
 (brace
-singleline_comment|//rc = EFORMAT;
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -903,6 +907,7 @@ l_string|&quot;Currently only 4K block size supported!&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -1140,6 +1145,7 @@ l_string|&quot;jfs_mount: Mount Failure: File System Dirty.&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
