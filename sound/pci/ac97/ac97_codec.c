@@ -6291,7 +6291,7 @@ c_cond
 (paren
 id|ac97-&gt;ext_id
 op_amp
-l_int|0x40
+id|AC97_EI_CDAC
 )paren
 op_eq
 l_int|0
@@ -6313,7 +6313,7 @@ c_cond
 (paren
 id|ac97-&gt;ext_id
 op_amp
-l_int|0x100
+id|AC97_EI_LDAC
 )paren
 op_eq
 l_int|0
@@ -6340,7 +6340,7 @@ c_cond
 (paren
 id|ac97-&gt;ext_id
 op_amp
-l_int|0x80
+id|AC97_EI_SDAC
 )paren
 op_eq
 l_int|0
