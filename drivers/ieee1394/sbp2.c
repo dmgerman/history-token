@@ -45,7 +45,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1010 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1018 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -3215,6 +3215,19 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+multiline_comment|/* Schedule a timeout here. The reason is that we may be so close&n;&t; * to a bus reset, that the device is not available for logins.&n;&t; * This can happen when the bus reset is caused by the host&n;&t; * connected to the sbp2 device being removed. That host would&n;&t; * have a certain amount of time to relogin before the sbp2 device&n;&t; * allows someone else to login instead. One second makes sense. */
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Login to the sbp-2 device&n;&t; */
 r_if
 c_cond
@@ -3610,7 +3623,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -3676,7 +3688,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -8525,7 +8536,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma

@@ -1880,7 +1880,6 @@ op_star
 id|data
 comma
 r_int
-r_int
 id|length
 )paren
 (brace
@@ -2001,7 +2000,6 @@ r_void
 op_star
 id|data
 comma
-r_int
 r_int
 id|length
 )paren

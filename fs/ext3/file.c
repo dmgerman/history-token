@@ -132,9 +132,10 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-r_int
+id|ssize_t
 id|ret
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|ret

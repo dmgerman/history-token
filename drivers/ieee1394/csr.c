@@ -2,6 +2,7 @@ multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * CSR implementation, iso/
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
@@ -774,7 +775,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -932,7 +932,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -1418,7 +1417,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -2721,7 +2719,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
