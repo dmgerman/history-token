@@ -2545,7 +2545,7 @@ id|dev
 op_assign
 id|req-&gt;rq_disk-&gt;private_data
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *&t;Queue depths probably belong with some kind of &n;&t;&t; *&t;generic IOP commit control. Certainly its not right &n;&t;&t; *&t;its global!  &n;&t;&t; */
+multiline_comment|/* &n;&t;&t; *&t;Queue depths probably belong with some kind of &n;&t;&t; *&t;generic IOP commit control. Certainly it&squot;s not right &n;&t;&t; *&t;its global!  &n;&t;&t; */
 r_if
 c_cond
 (paren

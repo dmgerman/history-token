@@ -167,7 +167,7 @@ DECL|macro|NEC_VERSA_SUBID1
 mdefine_line|#define NEC_VERSA_SUBID1&t;0x80581033
 DECL|macro|NEC_VERSA_SUBID2
 mdefine_line|#define NEC_VERSA_SUBID2&t;0x803c1033
-multiline_comment|/* changed so that I could actually find all the&n;&t;references and fix them up.  its a little more readable now. */
+multiline_comment|/* changed so that I could actually find all the&n;&t;references and fix them up.  it&squot;s a little more readable now. */
 DECL|macro|ESS_FMT_STEREO
 mdefine_line|#define ESS_FMT_STEREO&t;0x01
 DECL|macro|ESS_FMT_16BIT

@@ -8141,7 +8141,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//If we get here&squot;s its an IPX-data packet, so it&squot;ll get passed up the stack.
+singleline_comment|//If we get here it&squot;s an IPX-data packet, so it&squot;ll get passed up the stack.
 singleline_comment|//switch the network numbers
 id|switch_net_numbers
 c_func

@@ -1321,7 +1321,7 @@ r_return
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* OK so what ever happend its not an error, now I reckon we are left between&n;&t;   a choice of command end or some data which is ready to be collected */
+multiline_comment|/* OK so what ever happened it&squot;s not an error, now I reckon we are left between&n;&t;   a choice of command end or some data which is ready to be collected */
 multiline_comment|/* I think we have to transfer data while the interrupt line is on and its&n;&t;   not any other type of interrupt */
 r_if
 c_cond

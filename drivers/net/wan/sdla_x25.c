@@ -14299,7 +14299,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*If we get here its an IPX-data packet, so it&squot;ll get passed up the stack.&n;&t;&t; */
+multiline_comment|/*If we get here it&squot;s an IPX-data packet, so it&squot;ll get passed up the stack.&n;&t;&t; */
 multiline_comment|/* switch the network numbers */
 id|switch_net_numbers
 c_func

@@ -3892,7 +3892,7 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-multiline_comment|/*&n;&t; * Root is allowed to open raw volume zero even if its not configured&n;&t; * so array config can still work.  I don&squot;t think I really like this,&n;&t; * but I&squot;m already using way to many device nodes to claim another one&n;&t; * for &quot;raw controller&quot;.&n;&t; */
+multiline_comment|/*&n;&t; * Root is allowed to open raw volume zero even if it&squot;s not configured&n;&t; * so array config can still work.  I don&squot;t think I really like this,&n;&t; * but I&squot;m already using way to many device nodes to claim another one&n;&t; * for &quot;raw controller&quot;.&n;&t; */
 r_if
 c_cond
 (paren

@@ -875,7 +875,7 @@ id|th-&gt;doff
 op_star
 l_int|4
 suffix:semicolon
-multiline_comment|/*  Bail if the TCP packet isn&squot;t `compressible&squot; (i.e., ACK isn&squot;t set or&n;&t; *  some other control bit is set). Also uncompressible if&n;&t; *  its a runt.&n;&t; */
+multiline_comment|/*  Bail if the TCP packet isn&squot;t `compressible&squot; (i.e., ACK isn&squot;t set or&n;&t; *  some other control bit is set). Also uncompressible if&n;&t; *  it&squot;s a runt.&n;&t; */
 r_if
 c_cond
 (paren

@@ -22,7 +22,7 @@ mdefine_line|#define clear_page(page)&t;mmx_clear_page((void *)(page))
 DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from)&t;mmx_copy_page(to,from)
 macro_line|#else
-multiline_comment|/*&n; *&t;On older X86 processors its not a win to use MMX here it seems.&n; *&t;Maybe the K6-III ?&n; */
+multiline_comment|/*&n; *&t;On older X86 processors it&squot;s not a win to use MMX here it seems.&n; *&t;Maybe the K6-III ?&n; */
 DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t;memset((void *)(page), 0, PAGE_SIZE)
 DECL|macro|copy_page

@@ -83,7 +83,7 @@ op_star
 id|skb
 )paren
 (brace
-multiline_comment|/* Drop the CRC - its not a good idea to try and negotiate it ;) */
+multiline_comment|/* Drop the CRC - it&squot;s not a good idea to try and negotiate it ;) */
 id|skb_trim
 c_func
 (paren
