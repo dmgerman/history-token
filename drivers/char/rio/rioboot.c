@@ -1607,14 +1607,17 @@ id|BaseSysPort
 op_assign
 id|NO_PORT
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|HostP-&gt;UnixRups
 (braket
 id|RupN
 )braket
 dot
 id|RupLock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 r_for
@@ -1671,6 +1674,10 @@ id|BaseSysPort
 op_assign
 id|NO_PORT
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|HostP-&gt;UnixRups
 (braket
 id|RupN
@@ -1679,8 +1686,7 @@ id|MAX_RUP
 )braket
 dot
 id|RupLock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;** point the PortP-&gt;Phbs at the real Phbs&n;&t;&t;*/
