@@ -1946,14 +1946,16 @@ r_if
 c_cond
 (paren
 id|file
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
 (paren
 op_logical_neg
 id|file-&gt;f_op
 op_logical_or
 op_logical_neg
 id|file-&gt;f_op-&gt;mmap
-)paren
 )paren
 r_return
 op_minus
@@ -1978,6 +1980,7 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
