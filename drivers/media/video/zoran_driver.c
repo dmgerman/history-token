@@ -1162,7 +1162,7 @@ l_int|0
 dot
 id|fbuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fh-&gt;v4l_buffers.buffer
 (braket
@@ -1211,7 +1211,7 @@ id|i
 dot
 id|fbuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fh-&gt;v4l_buffers.buffer
 (braket

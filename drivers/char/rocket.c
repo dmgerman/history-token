@@ -4635,7 +4635,7 @@ id|info-&gt;xmit_buf
 suffix:semicolon
 id|info-&gt;xmit_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -5573,7 +5573,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -5670,7 +5670,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -6946,7 +6946,7 @@ id|ROCKET_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cp
 op_assign

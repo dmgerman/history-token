@@ -2466,7 +2466,7 @@ c_func
 (paren
 id|q
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* reset state machine */

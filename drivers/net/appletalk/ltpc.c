@@ -1347,7 +1347,7 @@ id|xmitQel
 op_star
 id|q
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|oops
@@ -4823,7 +4823,7 @@ r_goto
 id|out4
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|out4
 suffix:colon

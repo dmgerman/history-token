@@ -4134,7 +4134,7 @@ c_func
 (paren
 id|do_pf_read_start
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -4355,7 +4355,7 @@ c_func
 (paren
 id|do_pf_write_start
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

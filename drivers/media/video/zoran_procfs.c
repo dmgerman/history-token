@@ -1096,7 +1096,7 @@ id|name
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren
@@ -1205,7 +1205,7 @@ c_func
 (paren
 id|name
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
