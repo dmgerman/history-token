@@ -1334,7 +1334,6 @@ id|req
 suffix:semicolon
 id|req
 op_assign
-op_amp
 id|SCpnt-&gt;request
 suffix:semicolon
 id|req-&gt;rq_status
@@ -1725,7 +1724,7 @@ c_func
 id|wait
 )paren
 suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.CPQFC_WAITING
+id|ScsiPassThruCmnd-&gt;request-&gt;CPQFC_WAITING
 op_assign
 op_amp
 id|wait
@@ -1765,7 +1764,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.CPQFC_WAITING
+id|ScsiPassThruCmnd-&gt;request-&gt;CPQFC_WAITING
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4803,7 +4802,7 @@ id|SCpnt-&gt;SCp.buffers_residual
 op_assign
 id|FCP_TARGET_RESET
 suffix:semicolon
-id|SCpnt-&gt;request.CPQFC_WAITING
+id|SCpnt-&gt;request-&gt;CPQFC_WAITING
 op_assign
 op_amp
 id|wait
@@ -4833,7 +4832,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|SCpnt-&gt;request.CPQFC_WAITING
+id|SCpnt-&gt;request-&gt;CPQFC_WAITING
 op_assign
 l_int|NULL
 suffix:semicolon
