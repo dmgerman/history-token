@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; * vlanproc.c&t;VLAN Module. /proc filesystem interface.&n; *&n; *&t;&t;This module is completely hardware-independent and provides&n; *&t;&t;access to the router using Linux /proc filesystem.&n; *&n; * Author:&t;Ben Greear, &lt;greearb@candelatech.com&gt; coppied from wanproc.c&n; *               by: Gene Kozin&t;&lt;genek@compuserve.com&gt;&n; *&n; * Copyright:&t;(c) 1998 Ben Greear&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * ============================================================================&n; * Jan 20, 1998        Ben Greear     Initial Version&n; *****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/kernel.h&gt;
