@@ -828,11 +828,29 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// We are allocating blocks for unformatted node.
+multiline_comment|/* only preallocate if this is a small write */
+r_if
+c_cond
+(paren
+id|blocks_to_allocate
+OL
+id|REISERFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_alloc_options.preallocsize
+)paren
+id|hint.preallocate
+op_assign
+l_int|1
+suffix:semicolon
+r_else
 id|hint.preallocate
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// We do not do any preallocation for now.
 multiline_comment|/* Call block allocator to allocate blocks */
 id|res
 op_assign

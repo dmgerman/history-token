@@ -6347,7 +6347,7 @@ id|s_alloc_options.preallocmin
 op_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Preallocate by 8 blocks (9-1) at once */
+multiline_comment|/* Preallocate by 16 blocks (17-1) at once */
 id|REISERFS_SB
 c_func
 (paren
@@ -6356,7 +6356,7 @@ id|s
 op_member_access_from_pointer
 id|s_alloc_options.preallocsize
 op_assign
-l_int|9
+l_int|17
 suffix:semicolon
 id|jdev_name
 op_assign
