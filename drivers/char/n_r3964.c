@@ -5443,4 +5443,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_R3964
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_R3964
+)paren
+suffix:semicolon
 eof

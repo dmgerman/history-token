@@ -3092,4 +3092,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_SYNC_PPP
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_SYNC_PPP
+)paren
+suffix:semicolon
 eof

@@ -3297,4 +3297,11 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+DECL|variable|N_HDLC
+id|MODULE_ALIAS_LDISC
+c_func
+(paren
+id|N_HDLC
+)paren
+suffix:semicolon
 eof
