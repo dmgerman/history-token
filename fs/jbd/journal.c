@@ -1431,7 +1431,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called under j_state_lock.&n; */
 DECL|function|__log_start_commit
-r_static
 id|tid_t
 id|__log_start_commit
 c_func
