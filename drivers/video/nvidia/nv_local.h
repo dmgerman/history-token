@@ -34,7 +34,7 @@ DECL|macro|_NV_FENCE
 mdefine_line|#define _NV_FENCE() mb();
 macro_line|#endif
 DECL|macro|WRITE_PUT
-mdefine_line|#define WRITE_PUT(par, data) {                   &bslash;&n;  volatile u8 scratch;                           &bslash;&n;  _NV_FENCE()                                    &bslash;&n;  scratch = NV_RD08((par)-&gt;FbStart, 0);          &bslash;&n;  NV_WR32(&amp;(par)-&gt;FIFO[0x0010], 0, (data) &lt;&lt; 2); &bslash;&n;  mb();                                          &bslash;&n;}
+mdefine_line|#define WRITE_PUT(par, data) {                   &bslash;&n;  _NV_FENCE()                                    &bslash;&n;  NV_RD08((par)-&gt;FbStart, 0);                    &bslash;&n;  NV_WR32(&amp;(par)-&gt;FIFO[0x0010], 0, (data) &lt;&lt; 2); &bslash;&n;  mb();                                          &bslash;&n;}
 DECL|macro|READ_GET
 mdefine_line|#define READ_GET(par) (NV_RD32(&amp;(par)-&gt;FIFO[0x0011], 0) &gt;&gt; 2)
 DECL|macro|reverse_order
