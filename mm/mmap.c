@@ -1931,17 +1931,7 @@ id|len
 r_return
 id|addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|TASK_SIZE
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
+multiline_comment|/* Careful about overflows.. */
 id|len
 op_assign
 id|PAGE_ALIGN
@@ -1949,6 +1939,20 @@ c_func
 (paren
 id|len
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|len
+op_logical_or
+id|len
+OG
+id|TASK_SIZE
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* offset overflow? */
 r_if
