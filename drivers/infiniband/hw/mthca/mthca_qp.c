@@ -2748,7 +2748,7 @@ op_assign
 id|cpu_to_be32
 c_func
 (paren
-id|MTHCA_KAR_PAGE
+id|dev-&gt;driver_uar.index
 )paren
 suffix:semicolon
 id|qp_context-&gt;local_qpn

@@ -1237,6 +1237,15 @@ suffix:semicolon
 r_case
 id|MTHCA_RES_UAR
 suffix:colon
+id|dev-&gt;limits.num_uars
+op_assign
+id|profile
+(braket
+id|i
+)braket
+dot
+id|num
+suffix:semicolon
 id|init_hca-&gt;uar_scratch_base
 op_assign
 id|profile

@@ -1857,7 +1857,7 @@ l_int|1
 op_lshift
 l_int|24
 op_or
-id|MTHCA_KAR_PAGE
+id|dev-&gt;driver_uar.index
 )paren
 suffix:semicolon
 id|eq_context-&gt;pd
