@@ -518,6 +518,10 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk-&gt;sk_prot
+op_assign
+id|answer_prot
+suffix:semicolon
 id|sk_set_owner
 c_func
 (paren
@@ -529,10 +533,6 @@ suffix:semicolon
 id|rc
 op_assign
 l_int|0
-suffix:semicolon
-id|sk-&gt;sk_prot
-op_assign
-id|answer_prot
 suffix:semicolon
 id|sk-&gt;sk_no_check
 op_assign
