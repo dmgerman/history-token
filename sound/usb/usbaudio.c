@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *  NOTES:&n; *&n; *   - async unlink should be used for avoiding the sleep inside lock.&n; *     however, it causes oops by unknown reason on usb-uhci, and&n; *     disabled as default.  the feature is enabled by async_unlink=1&n; *     option (especially when preempt is used).&n; *   - the linked URBs would be preferred but not used so far because of&n; *     the instability of unlinking.&n; *   - type II is not supported properly.  there is no device which supports&n; *     this type *correctly*.  SB extigy looks as if it supports, but it&squot;s&n; *     indeed an AC3 stream packed in SPDIF frames (i.e. no real AC3 stream).&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -138,6 +138,13 @@ op_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* max. number of packets per urb */
+DECL|variable|async_unlink
+r_static
+r_int
+id|async_unlink
+op_assign
+l_int|0
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -315,15 +322,30 @@ id|SNDRV_ENABLED
 l_string|&quot;,allows:{{2,10}}&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * for using ASYNC unlink mode, define the following.&n; * this will make the driver quicker response for request to STOP-trigger,&n; * but it may cause oops by some unknown reason (bug of usb driver?),&n; * so turning off might be sure.&n; */
-multiline_comment|/* #define SND_USE_ASYNC_UNLINK */
-macro_line|#ifdef SND_USB_ASYNC_UNLINK
-DECL|macro|UNLINK_FLAGS
-mdefine_line|#define UNLINK_FLAGS&t;URB_ASYNC_UNLINK
-macro_line|#else
-DECL|macro|UNLINK_FLAGS
-mdefine_line|#define UNLINK_FLAGS&t;0
-macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|async_unlink
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|async_unlink
+comma
+l_string|&quot;Use async unlink mode.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|async_unlink
+comma
+id|SNDRV_BOOLEAN_TRUE_DESC
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * debug the h/w constraints&n; */
 multiline_comment|/* #define HW_CONST_DEBUG */
 multiline_comment|/*&n; *&n; */
@@ -2730,6 +2752,9 @@ id|subs
 comma
 r_int
 id|force
+comma
+r_int
+id|can_sleep
 )paren
 (brace
 r_int
@@ -2738,6 +2763,8 @@ id|i
 suffix:semicolon
 r_int
 id|alive
+comma
+id|async
 suffix:semicolon
 id|subs-&gt;running
 op_assign
@@ -2755,10 +2782,19 @@ multiline_comment|/* to be sure... */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifndef SND_USB_ASYNC_UNLINK
+id|async
+op_assign
+op_logical_neg
+id|can_sleep
+op_logical_and
+id|async_unlink
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|async
+op_logical_and
 id|in_interrupt
 c_func
 (paren
@@ -2767,7 +2803,6 @@ c_func
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|alive
 op_assign
 l_int|0
@@ -2816,17 +2851,41 @@ op_amp
 id|subs-&gt;unlink_mask
 )paren
 )paren
-id|usb_unlink_urb
-c_func
-(paren
+(brace
+r_struct
+id|urb
+op_star
+id|u
+op_assign
 id|subs-&gt;dataurb
 (braket
 id|i
 )braket
 dot
 id|urb
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|async
+)paren
+id|u-&gt;transfer_flags
+op_or_assign
+id|URB_ASYNC_UNLINK
+suffix:semicolon
+r_else
+id|u-&gt;transfer_flags
+op_and_assign
+op_complement
+id|URB_ASYNC_UNLINK
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|u
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -2883,29 +2942,52 @@ op_amp
 id|subs-&gt;unlink_mask
 )paren
 )paren
-id|usb_unlink_urb
-c_func
-(paren
+(brace
+r_struct
+id|urb
+op_star
+id|u
+op_assign
 id|subs-&gt;syncurb
 (braket
 id|i
 )braket
 dot
 id|urb
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|async
+)paren
+id|u-&gt;transfer_flags
+op_or_assign
+id|URB_ASYNC_UNLINK
+suffix:semicolon
+r_else
+id|u-&gt;transfer_flags
+op_and_assign
+op_complement
+id|URB_ASYNC_UNLINK
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|u
 )paren
 suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef SND_USB_ASYNC_UNLINK
+)brace
 r_return
+id|async
+ques
+c_cond
 id|alive
-suffix:semicolon
-macro_line|#else
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * set up and start data/sync urbs&n; */
 DECL|function|start_urbs
@@ -3222,6 +3304,8 @@ c_func
 id|subs
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -3464,6 +3548,8 @@ c_func
 id|subs
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -3555,18 +3641,20 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* stop urbs (to be sure) */
-r_if
-c_cond
-(paren
 id|deactivate_urbs
 c_func
 (paren
 id|subs
 comma
 id|force
+comma
+l_int|1
 )paren
-OG
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|async_unlink
 )paren
 id|wait_clear_urbs
 c_func
@@ -4179,8 +4267,6 @@ suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
 id|URB_ISO_ASAP
-op_or
-id|UNLINK_FLAGS
 suffix:semicolon
 id|u-&gt;urb-&gt;number_of_packets
 op_assign
@@ -4300,8 +4386,6 @@ suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
 id|URB_ISO_ASAP
-op_or
-id|UNLINK_FLAGS
 suffix:semicolon
 id|u-&gt;urb-&gt;number_of_packets
 op_assign
