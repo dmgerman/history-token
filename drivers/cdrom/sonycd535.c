@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
@@ -21,7 +22,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU535_CDROM_MAJOR
-macro_line|# include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|sony535_cd_base_io
 mdefine_line|#define sony535_cd_base_io sonycd535 /* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;sonycd535.h&quot;
@@ -6075,12 +6076,6 @@ c_func
 (paren
 l_string|&quot;Unable to get major %d for %s&bslash;n&quot;
 comma
-id|devfs_unregister
-c_func
-(paren
-id|sony_devfs_handle
-)paren
-suffix:semicolon
 id|MAJOR_NR
 comma
 id|CDU535_MESSAGE_NAME
@@ -6543,7 +6538,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|EIO
@@ -6579,6 +6573,7 @@ multiline_comment|/*&n; * accept &quot;kernel command line&quot; parameters&n; *
 r_static
 r_int
 id|__init
+DECL|function|sonycd535_setup
 id|sonycd535_setup
 c_func
 (paren
@@ -6695,6 +6690,7 @@ suffix:semicolon
 macro_line|#endif /* MODULE */
 r_void
 id|__exit
+DECL|function|sony535_exit
 id|sony535_exit
 c_func
 (paren
@@ -6806,6 +6802,7 @@ l_string|&quot; module released&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
+DECL|variable|sony535_init
 id|module_init
 c_func
 (paren
@@ -6813,6 +6810,7 @@ id|sony535_init
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|sony535_exit
 id|module_exit
 c_func
 (paren
