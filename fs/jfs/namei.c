@@ -2789,21 +2789,6 @@ id|dentry-&gt;d_name.name
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* The checks for links between filesystems and permissions are&n;   handled by the VFS layer                                     */
-multiline_comment|/* JFS does NOT support link() on directories */
-r_if
-c_cond
-(paren
-id|S_ISDIR
-c_func
-(paren
-id|ip-&gt;i_mode
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
 id|IWRITE_LOCK_LIST
 c_func
 (paren
