@@ -85,9 +85,9 @@ mdefine_line|#define I8042_CMD_MUX_SEND&t;0x1090
 multiline_comment|/*&n; * Return codes.&n; */
 DECL|macro|I8042_RET_CTL_TEST
 mdefine_line|#define I8042_RET_CTL_TEST&t;0x55
-multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers. 32 should be more than enough.&n; */
+multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers.&n; */
 DECL|macro|I8042_BUFFER_SIZE
-mdefine_line|#define I8042_BUFFER_SIZE&t;32
+mdefine_line|#define I8042_BUFFER_SIZE&t;16
 multiline_comment|/*&n; * Number of AUX ports on controllers supporting active multiplexing&n; * specification&n; */
 DECL|macro|I8042_NUM_MUX_PORTS
 mdefine_line|#define I8042_NUM_MUX_PORTS&t;4

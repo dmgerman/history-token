@@ -630,6 +630,8 @@ suffix:semicolon
 r_int
 r_char
 id|data
+comma
+id|str
 suffix:semicolon
 r_int
 id|i
@@ -649,9 +651,13 @@ r_while
 c_loop
 (paren
 (paren
+(paren
+id|str
+op_assign
 id|i8042_read_status
 c_func
 (paren
+)paren
 )paren
 op_amp
 id|I8042_STR_OBF
@@ -659,7 +665,6 @@ id|I8042_STR_OBF
 op_logical_and
 (paren
 id|i
-op_increment
 OL
 id|I8042_BUFFER_SIZE
 )paren
@@ -678,6 +683,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -685,10 +693,7 @@ l_string|&quot;%02x &lt;- i8042 (flush, %s)&quot;
 comma
 id|data
 comma
-id|i8042_read_status
-c_func
-(paren
-)paren
+id|str
 op_amp
 id|I8042_STR_AUXDATA
 ques
@@ -2528,11 +2533,29 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n; * Test the i8042. We need to know if it thinks it&squot;s working correctly&n; * before doing anything else.&n; */
+r_if
+c_cond
+(paren
 id|i8042_flush
 c_func
 (paren
 )paren
+op_eq
+id|I8042_BUFFER_SIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i8042.c: No controller found.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
