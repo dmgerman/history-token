@@ -7179,6 +7179,7 @@ id|io
 comma
 r_int
 comma
+op_amp
 id|num_params
 comma
 l_int|0
@@ -7191,6 +7192,7 @@ id|irq
 comma
 r_int
 comma
+op_amp
 id|num_params
 comma
 l_int|0
@@ -7203,6 +7205,7 @@ id|mem
 comma
 r_int
 comma
+op_amp
 id|num_params
 comma
 l_int|0
