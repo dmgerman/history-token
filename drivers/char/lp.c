@@ -4153,15 +4153,11 @@ c_func
 id|lp_cleanup_module
 )paren
 suffix:semicolon
-id|MODULE_ALIAS
-c_func
-(paren
-l_string|&quot;char-major-&quot;
-id|__stringify
+DECL|variable|LP_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
 c_func
 (paren
 id|LP_MAJOR
-)paren
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
