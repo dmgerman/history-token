@@ -955,7 +955,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
@@ -1005,10 +1005,18 @@ id|sb
 suffix:semicolon
 id|buf-&gt;f_ffree
 op_assign
+(paren
+r_int
+)paren
+(paren
 id|buf-&gt;f_bfree
 op_star
 id|buf-&gt;f_files
+)paren
 op_div
+(paren
+r_int
+)paren
 id|buf-&gt;f_blocks
 suffix:semicolon
 r_return

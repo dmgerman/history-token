@@ -35,10 +35,6 @@ r_char
 op_star
 id|phys
 suffix:semicolon
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
 DECL|member|idbus
 r_int
 r_int

@@ -49,6 +49,14 @@ comma
 l_string|&quot;2-6i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|gc_psx_delay
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|macro|GC_SNES
 mdefine_line|#define GC_SNES&t;&t;1
 DECL|macro|GC_NES
@@ -730,7 +738,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * PSX support&n; *&n; * See documentation at:&n; *&t;http://www.dim.com/~mackys/psxmemcard/ps-eng2.txt&n; *&t;http://www.gamesx.com/controldata/psxcont/psxcont.htm&n; *&t;ftp://milano.usal.es/pablo/&n; *&t;&n; */
 DECL|macro|GC_PSX_DELAY
-mdefine_line|#define GC_PSX_DELAY&t;60&t;&t;/* 60 usec */
+mdefine_line|#define GC_PSX_DELAY&t;25&t;&t;/* 25 usec */
 DECL|macro|GC_PSX_LENGTH
 mdefine_line|#define GC_PSX_LENGTH&t;8&t;&t;/* talk to the controller in bytes */
 DECL|macro|GC_PSX_MOUSE
@@ -755,6 +763,13 @@ DECL|macro|GC_PSX_ID
 mdefine_line|#define GC_PSX_ID(x)&t;((x) &gt;&gt; 4)&t;/* High nibble is device type */
 DECL|macro|GC_PSX_LEN
 mdefine_line|#define GC_PSX_LEN(x)&t;((x) &amp; 0xf)&t;/* Low nibble is length in words */
+DECL|variable|gc_psx_delay
+r_static
+r_int
+id|gc_psx_delay
+op_assign
+id|GC_PSX_DELAY
+suffix:semicolon
 DECL|variable|gc_psx_abs
 r_static
 r_int
@@ -879,7 +894,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-id|GC_PSX_DELAY
+id|gc_psx_delay
 )paren
 suffix:semicolon
 id|data
@@ -925,7 +940,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-id|GC_PSX_DELAY
+id|gc_psx_delay
 )paren
 suffix:semicolon
 )brace
@@ -976,7 +991,7 @@ multiline_comment|/* Select pad */
 id|udelay
 c_func
 (paren
-id|GC_PSX_DELAY
+id|gc_psx_delay
 op_star
 l_int|2
 )paren
@@ -995,7 +1010,7 @@ multiline_comment|/* Deselect, begin command */
 id|udelay
 c_func
 (paren
-id|GC_PSX_DELAY
+id|gc_psx_delay
 op_star
 l_int|2
 )paren
@@ -3700,6 +3715,32 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|gc_psx_setup
+r_static
+r_int
+id|__init
+id|gc_psx_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|gc_psx_delay
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|__setup
 c_func
 (paren
@@ -3722,6 +3763,14 @@ c_func
 l_string|&quot;gc_3=&quot;
 comma
 id|gc_setup_3
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;gc_psx_delay=&quot;
+comma
+id|gc_psx_setup
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -6,22 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
-DECL|variable|swapper_inode
-r_static
-r_struct
-id|inode
-id|swapper_inode
-op_assign
-(brace
-dot
-id|i_mapping
-op_assign
-op_amp
-id|swapper_space
-comma
-)brace
-suffix:semicolon
 DECL|variable|swap_backing_dev_info
 r_static
 r_struct
@@ -103,12 +87,6 @@ c_func
 (paren
 id|swapper_space.locked_pages
 )paren
-comma
-dot
-id|host
-op_assign
-op_amp
-id|swapper_inode
 comma
 dot
 id|a_ops

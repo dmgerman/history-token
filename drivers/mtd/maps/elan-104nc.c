@@ -1,4 +1,4 @@
-multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.17 2003/05/21 15:15:07 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as seperate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
+multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.18 2003/06/23 07:37:02 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as seperate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -910,14 +910,6 @@ op_star
 id|iomapadr
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|PAGE_IO
-comma
-id|PAGE_IO_SIZE
-)paren
-suffix:semicolon
 )brace
 DECL|function|init_elan_104nc
 r_int
@@ -928,8 +920,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Urg! We use I/O port 0x22 without request_region()ing it */
-multiline_comment|/*&n;&t;if (check_region(PAGE_IO,PAGE_IO_SIZE) != 0) {&n;&t;&t;printk( KERN_ERR&quot;%s: IO ports 0x%x-0x%x in use&bslash;n&quot;,&n;&t;&t;&t;elan_104nc_map.name,&n;&t;&t;&t;PAGE_IO, PAGE_IO+PAGE_IO_SIZE-1 );&n;&t;&t;return -EAGAIN;&n;&t;}&n;&t;*/
+multiline_comment|/* Urg! We use I/O port 0x22 without request_region()ing it,&n;&t;   because it&squot;s already allocated to the PIC. */
 id|iomapadr
 op_assign
 (paren
@@ -965,7 +956,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;request_region( PAGE_IO, PAGE_IO_SIZE, &quot;ELAN-104NC flash&quot; );&n;&t;*/
 id|printk
 c_func
 (paren

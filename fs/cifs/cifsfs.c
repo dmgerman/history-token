@@ -150,6 +150,13 @@ r_void
 )paren
 suffix:semicolon
 r_static
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|cifs_oplock_exited
+)paren
+suffix:semicolon
+r_static
 r_int
 DECL|function|cifs_read_super
 id|cifs_read_super
@@ -532,7 +539,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
@@ -1706,18 +1713,14 @@ suffix:semicolon
 id|allow_signal
 c_func
 (paren
-id|SIGKILL
+id|SIGTERM
 )paren
 suffix:semicolon
 id|oplockThread
 op_assign
 id|current
 suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
+r_do
 (brace
 id|set_current_state
 c_func
@@ -1734,17 +1737,6 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* BB add missing code */
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;oplock thread woken up - flush inode&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 id|write_lock
 c_func
 (paren
@@ -1865,17 +1857,6 @@ suffix:semicolon
 r_else
 r_break
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;next time through list&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 )brace
 id|write_unlock
 c_func
@@ -1884,18 +1865,28 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
-id|cFYI
+)brace
+r_while
+c_loop
+(paren
+op_logical_neg
+id|signal_pending
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;next time through while loop&quot;
+id|current
 )paren
+)paren
+(brace
+suffix:semicolon
+)brace
+id|complete_and_exit
+(paren
+op_amp
+id|cifs_oplock_exited
+comma
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* BB remove */
-)brace
 )brace
 r_static
 r_int
@@ -2170,11 +2161,18 @@ id|oplockThread
 id|send_sig
 c_func
 (paren
-id|SIGKILL
+id|SIGTERM
 comma
 id|oplockThread
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|cifs_oplock_exited
 )paren
 suffix:semicolon
 )brace

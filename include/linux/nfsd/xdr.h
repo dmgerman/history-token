@@ -354,7 +354,7 @@ id|nfsd_statfsres
 (brace
 DECL|member|stats
 r_struct
-id|statfs
+id|kstatfs
 id|stats
 suffix:semicolon
 )brace

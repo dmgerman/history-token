@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.22 2003/05/28 13:47:19 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
+multiline_comment|/*&n; * MTD map driver for AMD compatible flash chips (non-CFI)&n; *&n; * Author: Jonas Holmberg &lt;jonas.holmberg@axis.com&gt;&n; *&n; * $Id: amd_flash.c,v 1.23 2003/06/12 09:24:13 dwmw2 Exp $&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under GPL.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/flashchip.h&gt;

@@ -158,9 +158,17 @@ id|acpi_ex_exit_interpreter
 (paren
 )paren
 suffix:semicolon
-id|acpi_os_stall
+id|acpi_os_sleep
+(paren
+l_int|0
+comma
 (paren
 id|how_long
+op_div
+l_int|1000
+)paren
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* And now we must get the interpreter again */
@@ -173,17 +181,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|acpi_os_sleep
-(paren
-l_int|0
-comma
+id|acpi_os_stall
 (paren
 id|how_long
-op_div
-l_int|1000
-)paren
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -370,6 +370,10 @@ id|acpi_gbl_integer_bit_width
 op_assign
 l_int|32
 suffix:semicolon
+id|acpi_gbl_integer_nybble_width
+op_assign
+l_int|8
+suffix:semicolon
 id|acpi_gbl_integer_byte_width
 op_assign
 l_int|4
@@ -380,6 +384,10 @@ r_else
 id|acpi_gbl_integer_bit_width
 op_assign
 l_int|64
+suffix:semicolon
+id|acpi_gbl_integer_nybble_width
+op_assign
+l_int|16
 suffix:semicolon
 id|acpi_gbl_integer_byte_width
 op_assign

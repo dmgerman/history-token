@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    drivers/mtd/afs.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: afs.c,v 1.11 2003/05/16 17:08:24 dwmw2 Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    drivers/mtd/afs.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: afs.c,v 1.12 2003/06/13 15:31:06 rmk Exp $&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -215,6 +215,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Does it contain the magic number?&n;&t; */
 r_if
 c_cond
@@ -225,7 +229,7 @@ l_int|0xa0ffff9f
 )paren
 id|ret
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t touch the SIB.&n;&t; */
 r_if
@@ -237,7 +241,7 @@ l_int|2
 )paren
 id|ret
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 op_star
 id|iis_start
@@ -264,7 +268,7 @@ id|ptr
 )paren
 id|ret
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check the start of this image.  The image&n;&t; * data can not be located after this block.&n;&t; */
 r_if
@@ -277,7 +281,7 @@ id|off
 )paren
 id|ret
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_return
 id|ret
@@ -506,7 +510,7 @@ c_cond
 (paren
 id|ret
 op_eq
-l_int|1
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -669,7 +673,7 @@ c_cond
 (paren
 id|ret
 op_eq
-l_int|1
+l_int|0
 )paren
 r_continue
 suffix:semicolon

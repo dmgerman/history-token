@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002 Takayoshi Kochi (t-kouchi@cq.jp.nec.com)&n; * Copyright (c) 2002 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *                  &lt;h-aono@ap.jp.nec.com&gt;,&n; *&t;&t;    &lt;t-kouchi@cq.jp.nec.com&gt;&n; *&n; */
+multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (c) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *&t;&t;    &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -41,7 +41,7 @@ suffix:semicolon
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION&t;&quot;0.4&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR&t;&quot;Greg Kroah-Hartman &lt;gregkh@us.ibm.com&gt;, Takayoshi Kochi &lt;t-kouchi@cq.jp.nec.com&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR&t;&quot;Greg Kroah-Hartman &lt;gregkh@us.ibm.com&gt;, Takayoshi Kochi &lt;t-kochi@bq.jp.nec.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;ACPI Hot Plug PCI Controller Driver&quot;
 DECL|variable|DRIVER_AUTHOR
@@ -1105,13 +1105,9 @@ id|slot-&gt;hotplug_slot-&gt;name
 comma
 id|SLOT_NAME_SIZE
 comma
-l_string|&quot;ACPI%d-%02x:%02x&quot;
+l_string|&quot;%u&quot;
 comma
 id|slot-&gt;acpi_slot-&gt;sun
-comma
-id|slot-&gt;acpi_slot-&gt;bridge-&gt;bus
-comma
-id|slot-&gt;acpi_slot-&gt;device
 )paren
 suffix:semicolon
 )brace

@@ -320,10 +320,24 @@ l_string|&quot;ex_digits_needed&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * acpi_integer is unsigned, so we don&squot;t worry about a &squot;-&squot;&n;&t; */
+r_if
+c_cond
+(paren
+(paren
 id|current_value
 op_assign
 id|value
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|return_VALUE
+(paren
+l_int|1
+)paren
 suffix:semicolon
+)brace
 id|num_digits
 op_assign
 l_int|0

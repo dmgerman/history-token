@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Handle mapping of the flash memory access routines &n; * on TQM8xxL based devices.&n; *&n; * $Id: tqm8xxl.c,v 1.8 2003/05/21 12:45:20 dwmw2 Exp $&n; *&n; * based on rpxlite.c&n; *&n; * Copyright(C) 2001 Kirk Lee &lt;kirk@hpc.ee.ntu.edu.tw&gt;&n; *&n; * This code is GPLed&n; * &n; */
+multiline_comment|/*&n; * Handle mapping of the flash memory access routines &n; * on TQM8xxL based devices.&n; *&n; * $Id: tqm8xxl.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; *&n; * based on rpxlite.c&n; *&n; * Copyright(C) 2001 Kirk Lee &lt;kirk@hpc.ee.ntu.edu.tw&gt;&n; *&n; * This code is GPLed&n; * &n; */
 multiline_comment|/*&n; * According to TQM8xxL hardware manual, TQM8xxL series have&n; * following flash memory organisations:&n; *&t;| capacity |&t;| chip type |&t;| bank0 |&t;| bank1 |&n; *&t;    2MiB&t;   512Kx16&t;  2MiB&t;&t;   0&n; *&t;    4MiB&t;   1Mx16&t;  4MiB&t;&t;   0&n; *&t;    8MiB&t;   1Mx16&t;  4MiB&t;&t;   4MiB&n; * Thus, we choose CONFIG_MTD_CFI_I2 &amp; CONFIG_MTD_CFI_B4 at &n; * kernel configuration.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -238,8 +238,6 @@ singleline_comment|//size = MTDPART_SIZ_FULL,
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x)  (sizeof(x)/sizeof(x[0]))
 DECL|function|init_tqm_mtd
 r_int
 id|__init
@@ -699,7 +697,7 @@ l_int|0
 dot
 id|nums
 op_assign
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|tqm8xxl_partitions
@@ -730,7 +728,7 @@ l_int|1
 dot
 id|nums
 op_assign
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|tqm8xxl_fs_partitions

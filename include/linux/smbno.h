@@ -607,9 +607,9 @@ mdefine_line|#define SMB_UID_NO_CHANGE&t;&t;0xFFFFFFFF
 DECL|macro|SMB_GID_NO_CHANGE
 mdefine_line|#define SMB_GID_NO_CHANGE&t;&t;0xFFFFFFFF
 DECL|macro|SMB_TIME_NO_CHANGE
-mdefine_line|#define SMB_TIME_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFF
+mdefine_line|#define SMB_TIME_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFFULL
 DECL|macro|SMB_SIZE_NO_CHANGE
-mdefine_line|#define SMB_SIZE_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFF
+mdefine_line|#define SMB_SIZE_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFFULL
 multiline_comment|/* UNIX filetype mappings. */
 DECL|macro|UNIX_TYPE_FILE
 mdefine_line|#define UNIX_TYPE_FILE&t;&t;0

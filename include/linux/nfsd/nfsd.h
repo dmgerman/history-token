@@ -628,7 +628,7 @@ id|svc_fh
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon

@@ -2697,7 +2697,7 @@ op_star
 id|bdp
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|statp
 comma
@@ -2818,14 +2818,13 @@ id|mp-&gt;m_inoadd
 macro_line|#endif
 id|statp-&gt;f_files
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+id|sector_t
+comma
 id|statp-&gt;f_files
 comma
-(paren
-r_int
-)paren
 id|mp-&gt;m_maxicount
 )paren
 suffix:semicolon

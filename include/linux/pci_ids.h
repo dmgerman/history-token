@@ -977,6 +977,8 @@ DECL|macro|PCI_DEVICE_ID_SI_620
 mdefine_line|#define PCI_DEVICE_ID_SI_620&t;&t;0x0620
 DECL|macro|PCI_DEVICE_ID_SI_630
 mdefine_line|#define PCI_DEVICE_ID_SI_630&t;&t;0x0630
+DECL|macro|PCI_DEVICE_ID_SI_633
+mdefine_line|#define PCI_DEVICE_ID_SI_633&t;&t;0x0633
 DECL|macro|PCI_DEVICE_ID_SI_635
 mdefine_line|#define PCI_DEVICE_ID_SI_635&t;&t;0x0635
 DECL|macro|PCI_DEVICE_ID_SI_640
@@ -997,6 +999,8 @@ DECL|macro|PCI_DEVICE_ID_SI_655
 mdefine_line|#define PCI_DEVICE_ID_SI_655&t;&t;0x0655
 DECL|macro|PCI_DEVICE_ID_SI_730
 mdefine_line|#define PCI_DEVICE_ID_SI_730&t;&t;0x0730
+DECL|macro|PCI_DEVICE_ID_SI_733
+mdefine_line|#define PCI_DEVICE_ID_SI_733&t;&t;0x0733
 DECL|macro|PCI_DEVICE_ID_SI_630_VGA
 mdefine_line|#define PCI_DEVICE_ID_SI_630_VGA&t;0x6300
 DECL|macro|PCI_DEVICE_ID_SI_730_VGA
@@ -1037,8 +1041,14 @@ DECL|macro|PCI_DEVICE_ID_SI_5518
 mdefine_line|#define PCI_DEVICE_ID_SI_5518&t;&t;0x5518
 DECL|macro|PCI_DEVICE_ID_SI_5571
 mdefine_line|#define PCI_DEVICE_ID_SI_5571&t;&t;0x5571
+DECL|macro|PCI_DEVICE_ID_SI_5581
+mdefine_line|#define PCI_DEVICE_ID_SI_5581&t;&t;0x5581
+DECL|macro|PCI_DEVICE_ID_SI_5582
+mdefine_line|#define PCI_DEVICE_ID_SI_5582&t;&t;0x5582
 DECL|macro|PCI_DEVICE_ID_SI_5591
 mdefine_line|#define PCI_DEVICE_ID_SI_5591&t;&t;0x5591
+DECL|macro|PCI_DEVICE_ID_SI_5596
+mdefine_line|#define PCI_DEVICE_ID_SI_5596&t;&t;0x5596
 DECL|macro|PCI_DEVICE_ID_SI_5597
 mdefine_line|#define PCI_DEVICE_ID_SI_5597&t;&t;0x5597
 DECL|macro|PCI_DEVICE_ID_SI_5598
@@ -1081,6 +1091,10 @@ DECL|macro|PCI_DEVICE_ID_HP_DIVA_TOSCA2
 mdefine_line|#define PCI_DEVICE_ID_HP_DIVA_TOSCA2&t;0x104A
 DECL|macro|PCI_DEVICE_ID_HP_DIVA_MAESTRO
 mdefine_line|#define PCI_DEVICE_ID_HP_DIVA_MAESTRO&t;0x104B
+DECL|macro|PCI_DEVICE_ID_HP_REO_SBA
+mdefine_line|#define PCI_DEVICE_ID_HP_REO_SBA&t;0x10f0
+DECL|macro|PCI_DEVICE_ID_HP_REO_IOC
+mdefine_line|#define PCI_DEVICE_ID_HP_REO_IOC&t;0x10f1
 DECL|macro|PCI_DEVICE_ID_HP_VISUALIZE_FXE
 mdefine_line|#define PCI_DEVICE_ID_HP_VISUALIZE_FXE&t;0x108b
 DECL|macro|PCI_DEVICE_ID_HP_DIVA_HALFDOME

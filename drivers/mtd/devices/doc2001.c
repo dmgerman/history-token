@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.40 2003/05/20 21:03:07 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.41 2003/06/11 09:45:19 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -1623,11 +1623,15 @@ id|mtd-&gt;flags
 op_assign
 id|MTD_CAP_NANDFLASH
 suffix:semicolon
+id|mtd-&gt;ecctype
+op_assign
+id|MTD_ECC_RS_DiskOnChip
+suffix:semicolon
 id|mtd-&gt;size
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: erase size is not always 8kB */
+multiline_comment|/* FIXME: erase size is not always 8KiB */
 id|mtd-&gt;erasesize
 op_assign
 l_int|0x2000

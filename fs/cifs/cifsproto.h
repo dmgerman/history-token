@@ -194,6 +194,7 @@ id|smb
 suffix:semicolon
 r_extern
 r_int
+r_int
 id|smbCalcSize
 c_func
 (paren
@@ -876,7 +877,7 @@ op_star
 id|tcon
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|FSData
 comma

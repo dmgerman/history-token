@@ -648,7 +648,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Prototype: int powertecscsi_proc_info(char *buffer, char **start, off_t offset,&n; *&t;&t;&t;&t;&t;int length, int host_no, int inout)&n; * Purpose  : Return information about the driver to a user process accessing&n; *&t;      the /proc filesystem.&n; * Params   : buffer  - a buffer to write information to&n; *&t;      start   - a pointer into this buffer set by this routine to the start&n; *&t;&t;        of the required information.&n; *&t;      offset  - offset into information that we have read upto.&n; *&t;      length  - length of buffer&n; *&t;      host_no - host number to return information for&n; *&t;      inout   - 0 for reading, 1 for writing.&n; * Returns  : length of data written to buffer.&n; */
+multiline_comment|/* Prototype: int powertecscsi_proc_info(char *buffer, char **start, off_t offset,&n; *&t;&t;&t;&t;&t;int length, int host_no, int inout)&n; * Purpose  : Return information about the driver to a user process accessing&n; *&t;      the /proc filesystem.&n; * Params   : buffer  - a buffer to write information to&n; *&t;      start   - a pointer into this buffer set by this routine to the start&n; *&t;&t;        of the required information.&n; *&t;      offset  - offset into information that we have read upto.&n; *&t;      length  - length of buffer&n; *&t;      inout   - 0 for reading, 1 for writing.&n; * Returns  : length of data written to buffer.&n; */
 DECL|function|powertecscsi_proc_info
 r_int
 id|powertecscsi_proc_info
@@ -675,9 +675,6 @@ r_int
 id|length
 comma
 r_int
-id|host_no
-comma
-r_int
 id|inout
 )paren
 (brace
@@ -695,7 +692,8 @@ suffix:semicolon
 r_int
 id|pos
 suffix:semicolon
-id|If
+r_if
+c_cond
 (paren
 id|inout
 op_eq

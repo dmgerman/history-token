@@ -3189,7 +3189,6 @@ multiline_comment|/* EHCI spec says PCI is required. */
 multiline_comment|/* PCI driver selection metadata; PCI hotplugging uses this */
 DECL|variable|pci_ids
 r_static
-r_const
 r_struct
 id|pci_device_id
 id|__devinitdata

@@ -13,7 +13,7 @@ r_struct
 id|vnode
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 suffix:semicolon
 r_struct
 id|seq_file
@@ -274,7 +274,7 @@ id|bhv_desc_t
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 comma
 r_struct
@@ -630,7 +630,7 @@ id|bhv_desc_t
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 comma
 r_struct

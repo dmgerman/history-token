@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: edb7312.c,v 1.8 2003/05/21 12:45:18 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on Cogent EDB7312 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: edb7312.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on Cogent EDB7312 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -127,8 +127,6 @@ l_int|0x240000
 comma
 )brace
 suffix:semicolon
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x) (sizeof (x) / sizeof (x[0]))
 DECL|variable|probes
 r_static
 r_const
@@ -333,7 +331,7 @@ id|static_partitions
 suffix:semicolon
 id|mtd_parts_nb
 op_assign
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|static_partitions

@@ -459,6 +459,10 @@ mdefine_line|#define __NR_time               231 /* Linux Specific              
 multiline_comment|/* #define __NR_oldstat         232    Linux Specific                              */
 DECL|macro|__NR_stime
 mdefine_line|#define __NR_stime              233 /* Linux Specific                              */
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64           234 /* Linux Specific                              */
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64          235 /* Linux Specific                              */
 DECL|macro|__NR__llseek
 mdefine_line|#define __NR__llseek            236 /* Linux Specific                              */
 DECL|macro|__NR_mlock
@@ -499,6 +503,7 @@ DECL|macro|__NR_nfsservctl
 mdefine_line|#define __NR_nfsservctl         254
 DECL|macro|__NR_aplib
 mdefine_line|#define __NR_aplib              255
+multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 255, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 256 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-255 range.&n; */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x10&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;bcc 1f&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;mov %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &lt; -255 || __res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 DECL|macro|_syscall1

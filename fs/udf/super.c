@@ -276,7 +276,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon
@@ -9093,7 +9093,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren

@@ -771,7 +771,7 @@ r_if
 c_cond
 (paren
 id|parser-&gt;global.logical_maximum
-op_le
+OL
 id|parser-&gt;global.logical_minimum
 )paren
 (brace
@@ -2647,12 +2647,6 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|device-&gt;rdesc
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|device-&gt;collection
 )paren
 suffix:semicolon
@@ -2713,12 +2707,6 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|device-&gt;rdesc
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|device-&gt;collection
 )paren
 suffix:semicolon
@@ -2761,12 +2749,6 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|device-&gt;rdesc
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|device-&gt;collection
 )paren
 suffix:semicolon
@@ -2796,12 +2778,6 @@ id|dbg
 c_func
 (paren
 l_string|&quot;unbalanced delimiter at end of report description&quot;
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|device-&gt;rdesc
 )paren
 suffix:semicolon
 id|kfree
@@ -2850,12 +2826,6 @@ id|end
 op_minus
 id|start
 )paren
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|device-&gt;rdesc
 )paren
 suffix:semicolon
 id|kfree

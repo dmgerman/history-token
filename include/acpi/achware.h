@@ -115,7 +115,8 @@ suffix:semicolon
 id|acpi_status
 id|acpi_hw_clear_acpi_status
 (paren
-r_void
+id|u32
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* GPE support */

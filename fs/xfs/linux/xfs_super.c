@@ -1653,7 +1653,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|statp
 )paren
@@ -2614,7 +2614,7 @@ id|sb
 )paren
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|statvfs
 suffix:semicolon
 r_int

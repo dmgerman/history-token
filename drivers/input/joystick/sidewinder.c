@@ -2120,6 +2120,7 @@ id|dev
 comma
 id|BTN_TR
 comma
+op_logical_neg
 id|GB
 c_func
 (paren
@@ -2136,6 +2137,7 @@ id|dev
 comma
 id|BTN_START
 comma
+op_logical_neg
 id|GB
 c_func
 (paren
@@ -2152,6 +2154,7 @@ id|dev
 comma
 id|BTN_MODE
 comma
+op_logical_neg
 id|GB
 c_func
 (paren
@@ -2168,6 +2171,7 @@ id|dev
 comma
 id|BTN_SELECT
 comma
+op_logical_neg
 id|GB
 c_func
 (paren
@@ -3420,17 +3424,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Read normal packet */
-id|m
-op_or_assign
-id|sw_guess_mode
-c_func
-(paren
-id|buf
-comma
-id|i
-)paren
-suffix:semicolon
-multiline_comment|/* Data packet (1-bit) can carry mode info [FSP] */
 id|udelay
 c_func
 (paren
@@ -3833,6 +3826,13 @@ op_assign
 id|SW_ID_PP
 suffix:semicolon
 r_break
+suffix:semicolon
+r_case
+l_int|66
+suffix:colon
+id|sw-&gt;bits
+op_assign
+l_int|3
 suffix:semicolon
 r_case
 l_int|198
