@@ -9985,9 +9985,6 @@ op_eq
 id|PIPE_INTERRUPT
 op_logical_and
 id|urb-&gt;interval
-op_logical_and
-op_logical_neg
-id|killed
 )paren
 suffix:semicolon
 id|nurb
@@ -10088,6 +10085,8 @@ c_cond
 (paren
 op_logical_neg
 id|resubmit_interrupt
+op_logical_or
+id|killed
 )paren
 multiline_comment|/* We don&squot;t need urb_priv anymore */
 id|uhci_destroy_urb_priv
@@ -10162,6 +10161,7 @@ c_cond
 (paren
 id|urb-&gt;complete
 )paren
+(brace
 id|urb
 op_member_access_from_pointer
 id|complete
@@ -10170,10 +10170,35 @@ c_func
 id|urb
 )paren
 suffix:semicolon
+multiline_comment|/* Recheck the status. The completion handler may have */
+multiline_comment|/*  unlinked the resubmitting interrupt URB */
+id|killed
+op_assign
+(paren
+id|urb-&gt;status
+op_eq
+op_minus
+id|ENOENT
+op_logical_or
+id|urb-&gt;status
+op_eq
+op_minus
+id|ECONNABORTED
+op_logical_or
+id|urb-&gt;status
+op_eq
+op_minus
+id|ECONNRESET
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|resubmit_interrupt
+op_logical_and
+op_logical_neg
+id|killed
 )paren
 (brace
 id|urb-&gt;dev
