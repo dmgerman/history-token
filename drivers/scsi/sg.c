@@ -3671,16 +3671,6 @@ id|SRpnt-&gt;sr_request-&gt;rq_disk
 op_assign
 id|sdp-&gt;disk
 suffix:semicolon
-id|SRpnt-&gt;sr_request-&gt;rq_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|sdp-&gt;disk-&gt;major
-comma
-id|sdp-&gt;disk-&gt;first_minor
-)paren
-suffix:semicolon
 id|SRpnt-&gt;sr_sense_buffer
 (braket
 l_int|0
@@ -6888,16 +6878,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* &quot;sg&quot; _disowns_ request blk */
-id|SRpnt-&gt;sr_request-&gt;rq_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|srp-&gt;my_cmdp
 op_assign
 l_int|NULL

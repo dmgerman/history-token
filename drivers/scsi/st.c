@@ -1667,16 +1667,6 @@ id|SRpnt-&gt;sr_request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-id|SRpnt-&gt;sr_request-&gt;rq_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|STp-&gt;disk-&gt;major
-comma
-id|STp-&gt;disk-&gt;first_minor
-)paren
-suffix:semicolon
 id|SRpnt-&gt;sr_request-&gt;rq_disk
 op_assign
 id|STp-&gt;disk
@@ -19608,15 +19598,6 @@ suffix:semicolon
 id|tpnt-&gt;disk
 op_assign
 id|disk
-suffix:semicolon
-id|disk-&gt;major
-op_assign
-id|SCSI_TAPE_MAJOR
-suffix:semicolon
-multiline_comment|/* yeah, yeah */
-id|disk-&gt;first_minor
-op_assign
-id|i
 suffix:semicolon
 id|sprintf
 c_func

@@ -6043,14 +6043,6 @@ id|req-&gt;biotail
 op_assign
 id|bio
 suffix:semicolon
-id|req-&gt;rq_dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bio-&gt;bi_bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|req-&gt;rq_disk
 op_assign
 id|bio-&gt;bi_bdev-&gt;bd_disk

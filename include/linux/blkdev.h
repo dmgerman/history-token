@@ -135,10 +135,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* see REQ_ bits below */
-DECL|member|rq_dev
-id|kdev_t
-id|rq_dev
-suffix:semicolon
 DECL|member|sector
 id|sector_t
 id|sector

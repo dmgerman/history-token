@@ -78,14 +78,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|rq-&gt;rq_dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|rq-&gt;rq_disk
 op_assign
 id|bdev-&gt;bd_disk
