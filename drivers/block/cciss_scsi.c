@@ -4552,7 +4552,8 @@ id|KERN_ERR
 l_string|&quot;cciss: Report physical LUNs failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* adjust our table of devices */
@@ -4774,6 +4775,8 @@ comma
 id|ncurrent
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren

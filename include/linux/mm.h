@@ -168,12 +168,16 @@ DECL|macro|VM_ACCOUNT
 mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
 DECL|macro|VM_HUGETLB
 mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
+macro_line|#ifndef VM_STACK_DEFAULT_FLAGS&t;&t;/* arch can override this */
+DECL|macro|VM_STACK_DEFAULT_FLAGS
+mdefine_line|#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+macro_line|#endif
 macro_line|#ifdef CONFIG_STACK_GROWSUP
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSUP | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSUP | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
 macro_line|#else
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSDOWN | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSDOWN | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
 macro_line|#endif
 DECL|macro|VM_READHINTMASK
 mdefine_line|#define VM_READHINTMASK&t;&t;&t;(VM_SEQ_READ | VM_RAND_READ)
@@ -1209,6 +1213,28 @@ comma
 r_int
 r_int
 id|nonblock
+)paren
+suffix:semicolon
+r_void
+id|put_dirty_page
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|address
+comma
+id|pgprot_t
+id|prot
 )paren
 suffix:semicolon
 r_int

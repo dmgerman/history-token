@@ -702,6 +702,12 @@ l_int|NULL
 (brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM

@@ -3,6 +3,7 @@ multiline_comment|/* Revision history:&n; *&n; *   2001-04-18  Robert Siemer &lt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;

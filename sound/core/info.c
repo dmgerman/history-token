@@ -4407,7 +4407,7 @@ l_string|&quot;controlC&quot;
 comma
 l_int|8
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
 multiline_comment|/* created in sound.c */

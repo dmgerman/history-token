@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|variable|htlbpagemem
 r_static
 r_int
@@ -1911,15 +1910,6 @@ r_struct
 id|page
 op_star
 id|page
-suffix:semicolon
-r_extern
-r_int
-id|htlbzone_pages
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|htlbpage_freelist
 suffix:semicolon
 r_if
 c_cond
