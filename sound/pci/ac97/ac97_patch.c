@@ -2308,6 +2308,8 @@ multiline_comment|/* Gateway M675 notebook */
 r_if
 c_cond
 (paren
+id|ac97-&gt;pci
+op_logical_and
 id|ac97-&gt;pci-&gt;subsystem_vendor
 op_eq
 l_int|0x107b
