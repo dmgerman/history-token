@@ -439,6 +439,11 @@ r_int
 r_int
 id|scratch_page
 suffix:semicolon
+DECL|member|scratch_page_real
+r_int
+r_int
+id|scratch_page_real
+suffix:semicolon
 DECL|member|gart_bus_addr
 r_int
 r_int
@@ -493,10 +498,6 @@ suffix:semicolon
 DECL|member|num_aperture_sizes
 r_int
 id|num_aperture_sizes
-suffix:semicolon
-DECL|member|num_of_masks
-r_int
-id|num_of_masks
 suffix:semicolon
 DECL|member|capndx
 r_int
