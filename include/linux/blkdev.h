@@ -2148,7 +2148,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|__generic_unplug_device
 c_func

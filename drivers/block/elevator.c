@@ -718,6 +718,8 @@ c_func
 id|q
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * just mark as started even if we don&squot;t start it, a request&n;&t;&t; * that has been delayed should not be passed by new incoming&n;&t;&t; * requests&n;&t;&t; */

@@ -841,6 +841,8 @@ id|left
 op_assign
 id|node-&gt;rb_left
 )paren
+op_ne
+l_int|NULL
 )paren
 id|node
 op_assign
