@@ -98,8 +98,6 @@ DECL|macro|SS_SPKR_ENA
 mdefine_line|#define SS_SPKR_ENA&t;0x0100
 DECL|macro|SS_OUTPUT_ENA
 mdefine_line|#define SS_OUTPUT_ENA&t;0x0200
-DECL|macro|SS_DEBOUNCED
-mdefine_line|#define SS_DEBOUNCED&t;0x0400&t;/* Tell driver that the debounce delay has ended */
 multiline_comment|/* Flags for I/O port and memory windows */
 DECL|macro|MAP_ACTIVE
 mdefine_line|#define MAP_ACTIVE&t;0x01

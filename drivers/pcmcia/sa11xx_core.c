@@ -2014,12 +2014,6 @@ comma
 l_string|&quot;SS_OUTPUT_ENA&quot;
 )brace
 comma
-(brace
-id|SS_DEBOUNCED
-comma
-l_string|&quot;SS_DEBOUNCED&quot;
-)brace
-comma
 )brace
 suffix:semicolon
 r_static

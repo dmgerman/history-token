@@ -2592,7 +2592,7 @@ suffix:semicolon
 )brace
 id|skt-&gt;socket.flags
 op_assign
-id|SS_DEBOUNCED
+l_int|0
 suffix:semicolon
 id|skt-&gt;ops
 op_member_access_from_pointer
@@ -2711,11 +2711,6 @@ id|CS_EVENT_CARD_INSERTION
 comma
 id|CS_EVENT_PRI_LOW
 )paren
-suffix:semicolon
-id|skt-&gt;socket.flags
-op_and_assign
-op_complement
-id|SS_DEBOUNCED
 suffix:semicolon
 )brace
 r_else
@@ -2897,11 +2892,6 @@ id|CS_EVENT_PRI_LOW
 )paren
 suffix:semicolon
 )brace
-id|skt-&gt;socket.flags
-op_and_assign
-op_complement
-id|SS_DEBOUNCED
-suffix:semicolon
 )brace
 r_else
 (brace
