@@ -7991,7 +7991,7 @@ op_or_assign
 id|put_user
 c_func
 (paren
-id|stat-&gt;atime
+id|stat-&gt;atime.tv_sec
 comma
 op_amp
 id|statbuf-&gt;st_atime
@@ -8013,7 +8013,7 @@ op_or_assign
 id|put_user
 c_func
 (paren
-id|stat-&gt;mtime
+id|stat-&gt;mtime.tv_sec
 comma
 op_amp
 id|statbuf-&gt;st_mtime
@@ -8035,7 +8035,7 @@ op_or_assign
 id|put_user
 c_func
 (paren
-id|stat-&gt;ctime
+id|stat-&gt;ctime.tv_sec
 comma
 op_amp
 id|statbuf-&gt;st_ctime
