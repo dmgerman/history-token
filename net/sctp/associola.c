@@ -682,13 +682,16 @@ id|asoc
 )paren
 (brace
 r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|asoc-&gt;base.sk
+suffix:semicolon
+r_struct
 id|sctp_transport
 op_star
 id|transport
-suffix:semicolon
-id|sctp_endpoint_t
-op_star
-id|ep
 suffix:semicolon
 r_struct
 id|list_head
@@ -701,16 +704,37 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ep
-op_assign
-id|asoc-&gt;ep
-suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
 id|asoc-&gt;asocs
 )paren
+suffix:semicolon
+multiline_comment|/* Decrement the backlog value for a TCP-style listening socket. */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+op_logical_and
+(paren
+id|SCTP_SS_LISTENING
+op_eq
+id|sk-&gt;state
+)paren
+)paren
+id|sk-&gt;ack_backlog
+op_decrement
 suffix:semicolon
 multiline_comment|/* Mark as dead, so other users can know this structure is&n;&t; * going away.&n;&t; */
 id|asoc-&gt;base.dead
@@ -1672,7 +1696,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
+multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; */
 DECL|function|sctp_cmp_addr_exact
 r_int
 id|sctp_cmp_addr_exact
@@ -1707,8 +1731,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|af
+)paren
 )paren
 r_return
 l_int|0
@@ -1743,7 +1771,7 @@ id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
-multiline_comment|/* Send ECNE if needed. &n;&t; * Not being able to allocate a chunk here is not deadly. &n;&t; */
+multiline_comment|/* Send ECNE if needed.&n;&t; * Not being able to allocate a chunk here is not deadly.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2270,6 +2298,13 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
+r_struct
+id|sock
+op_star
+id|oldsk
+op_assign
+id|assoc-&gt;base.sk
+suffix:semicolon
 multiline_comment|/* Delete the association from the old endpoint&squot;s list of&n;&t; * associations.&n;&t; */
 id|list_del
 c_func
@@ -2277,6 +2312,23 @@ c_func
 op_amp
 id|assoc-&gt;asocs
 )paren
+suffix:semicolon
+multiline_comment|/* Decrement the backlog value for a TCP-style socket. */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|oldsk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+id|oldsk-&gt;ack_backlog
+op_decrement
 suffix:semicolon
 multiline_comment|/* Release references to the old endpoint and the sock.  */
 id|sctp_endpoint_put
@@ -3047,12 +3099,13 @@ r_int
 id|sctp_assoc_set_bind_addr_from_ep
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_scope_t
@@ -3114,7 +3167,7 @@ id|asoc-&gt;ep-&gt;base.bind_addr
 comma
 id|scope
 comma
-id|priority
+id|gfp
 comma
 id|flags
 )paren
@@ -3135,7 +3188,7 @@ op_star
 id|cookie
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_int
@@ -3154,7 +3207,7 @@ id|cookie-&gt;raw_addr_list_len
 suffix:semicolon
 id|__u8
 op_star
-id|raw_addr_list
+id|raw
 op_assign
 (paren
 id|__u8
@@ -3176,13 +3229,13 @@ c_func
 op_amp
 id|asoc-&gt;base.bind_addr
 comma
-id|raw_addr_list
+id|raw
 comma
 id|var_size3
 comma
 id|asoc-&gt;ep-&gt;base.bind_addr.port
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 )brace
