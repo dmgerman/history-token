@@ -748,6 +748,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-4&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_GIRBIL_DONGLE */
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Girbil module&n; *&n; */
 DECL|variable|girbil_init
 id|module_init

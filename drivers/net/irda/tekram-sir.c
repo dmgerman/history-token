@@ -630,6 +630,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-0&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_TEKRAM_DONGLE */
 DECL|variable|tekram_sir_init
 id|module_init
 c_func

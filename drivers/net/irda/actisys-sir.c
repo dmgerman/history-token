@@ -561,6 +561,20 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-2&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_ACTISYS_DONGLE */
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-3&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_ACTISYS_PLUS_DONGLE */
 DECL|variable|actisys_sir_init
 id|module_init
 c_func

@@ -697,6 +697,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-9&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_MCP2120_DONGLE */
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize MCP2120 module&n; *&n; */
 DECL|variable|mcp2120_init
 id|module_init

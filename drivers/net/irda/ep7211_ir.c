@@ -309,6 +309,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;irda-dongle-8&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* IRDA_EP7211_IR */
 DECL|variable|ep7211_ir_init
 id|module_init
 c_func
