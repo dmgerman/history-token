@@ -4483,6 +4483,60 @@ id|workp
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure we are called with PSTATE_IE disabled.  */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rdpr&t;%%pstate, %0&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+id|PSTATE_IE
+)paren
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;BUG: init_irqwork_curcpu() called with &quot;
+l_string|&quot;PSTATE_IE enabled, bailing.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;mov&t;%%i7, %0&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+id|prom_printf
+c_func
+(paren
+l_string|&quot;BUG: Called from %lx&bslash;n&quot;
+comma
+id|tmp
+)paren
+suffix:semicolon
+id|prom_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set interrupt globals.  */
 id|workp
 op_assign
@@ -4512,8 +4566,6 @@ suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|PSTATE_IG
-op_or
-id|PSTATE_IE
 )paren
 comma
 l_string|&quot;r&quot;
