@@ -1,4 +1,5 @@
 multiline_comment|/* smp.c: Sparc64 SMP support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -16,6 +17,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -354,6 +356,49 @@ r_int
 id|save_p
 )paren
 suffix:semicolon
+DECL|function|cpu_setup_percpu_base
+r_static
+r_inline
+r_void
+id|cpu_setup_percpu_base
+c_func
+(paren
+r_int
+r_int
+id|cpu_id
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;mov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|__per_cpu_offset
+c_func
+(paren
+id|cpu_id
+)paren
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|TSB_REG
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_IMMU
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|smp_callin
 r_void
 id|__init
@@ -382,21 +427,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|cpu_setup_percpu_base
 c_func
 (paren
-l_string|&quot;mov %0, %%g5&bslash;n&bslash;t&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|__per_cpu_offset
-(braket
 id|cpuid
-)braket
-)paren
 )paren
 suffix:semicolon
 id|smp_setup_percpu_timer
@@ -4545,26 +4579,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;mov %0, %%g5&bslash;n&bslash;t&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|__per_cpu_offset
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-)paren
-)paren
-suffix:semicolon
 id|cpu_set
 c_func
 (paren
@@ -4803,5 +4817,183 @@ c_func
 r_void
 )paren
 (brace
+)brace
+DECL|variable|__per_cpu_base
+r_int
+r_int
+id|__per_cpu_base
+suffix:semicolon
+DECL|variable|__per_cpu_shift
+r_int
+r_int
+id|__per_cpu_shift
+suffix:semicolon
+DECL|variable|__per_cpu_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_base
+)paren
+suffix:semicolon
+DECL|variable|__per_cpu_shift
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_shift
+)paren
+suffix:semicolon
+DECL|function|setup_per_cpu_areas
+r_void
+id|__init
+id|setup_per_cpu_areas
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|goal
+comma
+id|size
+comma
+id|i
+suffix:semicolon
+r_char
+op_star
+id|ptr
+suffix:semicolon
+multiline_comment|/* Created by linker magic */
+r_extern
+r_char
+id|__per_cpu_start
+(braket
+)braket
+comma
+id|__per_cpu_end
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* Copy section for each CPU (we discard the original) */
+id|goal
+op_assign
+id|ALIGN
+c_func
+(paren
+id|__per_cpu_end
+op_minus
+id|__per_cpu_start
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MODULES
+r_if
+c_cond
+(paren
+id|goal
+OL
+id|PERCPU_ENOUGH_ROOM
+)paren
+id|goal
+op_assign
+id|PERCPU_ENOUGH_ROOM
+suffix:semicolon
+macro_line|#endif
+id|__per_cpu_shift
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|size
+op_assign
+l_int|1UL
+suffix:semicolon
+id|size
+OL
+id|goal
+suffix:semicolon
+id|size
+op_lshift_assign
+l_int|1UL
+)paren
+id|__per_cpu_shift
+op_increment
+suffix:semicolon
+id|ptr
+op_assign
+id|alloc_bootmem_pages
+c_func
+(paren
+id|size
+op_star
+id|NR_CPUS
+)paren
+suffix:semicolon
+id|__per_cpu_base
+op_assign
+id|ptr
+op_minus
+id|__per_cpu_start
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+comma
+id|ptr
+op_add_assign
+id|size
+)paren
+id|memcpy
+c_func
+(paren
+id|ptr
+comma
+id|__per_cpu_start
+comma
+id|__per_cpu_end
+op_minus
+id|__per_cpu_start
+)paren
+suffix:semicolon
+multiline_comment|/* Finally, load in the boot cpu&squot;s base value.&n;&t; * We abuse the IMMU TSB register for trap handler&n;&t; * entry and exit loading of %g5.  That is why it&n;&t; * has to be page aligned.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+(paren
+id|__per_cpu_shift
+OL
+id|PAGE_SHIFT
+)paren
+op_logical_or
+(paren
+id|__per_cpu_base
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+)paren
+suffix:semicolon
+id|cpu_setup_percpu_base
+c_func
+(paren
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 )brace
 eof
