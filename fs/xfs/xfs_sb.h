@@ -47,6 +47,8 @@ DECL|macro|XFS_SB_VERSION_EXTFLGBIT
 mdefine_line|#define&t;XFS_SB_VERSION_EXTFLGBIT&t;0x1000
 DECL|macro|XFS_SB_VERSION_DIRV2BIT
 mdefine_line|#define&t;XFS_SB_VERSION_DIRV2BIT&t;&t;0x2000
+DECL|macro|XFS_SB_VERSION_MOREBITSBIT
+mdefine_line|#define&t;XFS_SB_VERSION_MOREBITSBIT&t;0x8000
 DECL|macro|XFS_SB_VERSION_OKSASHFBITS
 mdefine_line|#define&t;XFS_SB_VERSION_OKSASHFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_EXTFLGBIT | &bslash;&n;&t; XFS_SB_VERSION_DIRV2BIT)
 DECL|macro|XFS_SB_VERSION_OKREALFBITS
@@ -56,7 +58,23 @@ mdefine_line|#define&t;XFS_SB_VERSION_OKSASHBITS&t;&bslash;&n;&t;(XFS_SB_VERSION
 DECL|macro|XFS_SB_VERSION_OKREALBITS
 mdefine_line|#define&t;XFS_SB_VERSION_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_OKREALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_MKFS
-mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na) || (sflag)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
+mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag,morebits)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na) || (sflag) || &bslash;&n;&t;  (morebits)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0) | &bslash;&n;&t;&t; ((morebits) ? XFS_SB_VERSION_MOREBITSBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
+multiline_comment|/*&n; * There are two words to hold XFS &quot;feature&quot; bits: the original&n; * word, sb_versionnum, and sb_features2.  Whenever a bit is set in&n; * sb_features2, the feature bit XFS_SB_VERSION_MOREBITSBIT must be set.&n; *&n; * These defines represent bits in sb_features2.&n; */
+DECL|macro|XFS_SB_VERSION2_REALFBITS
+mdefine_line|#define XFS_SB_VERSION2_REALFBITS&t;0x00ffffff&t;/* Mask: features */
+DECL|macro|XFS_SB_VERSION2_RESERVED1BIT
+mdefine_line|#define XFS_SB_VERSION2_RESERVED1BIT&t;0x00000001
+DECL|macro|XFS_SB_VERSION2_SASHFBITS
+mdefine_line|#define XFS_SB_VERSION2_SASHFBITS&t;0xff000000&t;/* Mask: features that&n;&t;&t;&t;&t;&t;&t;&t;   require changing&n;&t;&t;&t;&t;&t;&t;&t;   PROM and SASH */
+DECL|macro|XFS_SB_VERSION2_OKREALFBITS
+mdefine_line|#define&t;XFS_SB_VERSION2_OKREALFBITS&t;&bslash;&n;&t;(0)
+DECL|macro|XFS_SB_VERSION2_OKSASHFBITS
+mdefine_line|#define&t;XFS_SB_VERSION2_OKSASHFBITS&t;&bslash;&n;&t;(0)
+DECL|macro|XFS_SB_VERSION2_OKREALBITS
+mdefine_line|#define XFS_SB_VERSION2_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION2_OKREALFBITS |&t;&bslash;&n;&t; XFS_SB_VERSION2_OKSASHFBITS )
+multiline_comment|/*&n; * mkfs macro to set up sb_features2 word&n; */
+DECL|macro|XFS_SB_VERSION2_MKFS
+mdefine_line|#define&t;XFS_SB_VERSION2_MKFS(xyz)&t;&bslash;&n;&t;((xyz) ? 0 : 0)
 DECL|struct|xfs_sb
 r_typedef
 r_struct
@@ -288,6 +306,11 @@ id|__uint32_t
 id|sb_logsunit
 suffix:semicolon
 multiline_comment|/* stripe unit size for the log */
+DECL|member|sb_features2
+id|__uint32_t
+id|sb_features2
+suffix:semicolon
+multiline_comment|/* additonal feature bits */
 DECL|typedef|xfs_sb_t
 )brace
 id|xfs_sb_t
@@ -428,6 +451,9 @@ id|XFS_SBS_LOGSECTSIZE
 comma
 id|XFS_SBS_LOGSUNIT
 comma
+DECL|enumerator|XFS_SBS_FEATURES2
+id|XFS_SBS_FEATURES2
+comma
 DECL|enumerator|XFS_SBS_FIELDCOUNT
 id|XFS_SBS_FIELDCOUNT
 DECL|typedef|xfs_sb_field_t
@@ -505,7 +531,7 @@ DECL|macro|XFS_SB_GOOD_VERSION
 mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;xfs_sb_good_version(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_GOOD_VERSION_INT
-mdefine_line|#define&t;XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  !((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS)
+mdefine_line|#define&t;XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t;   ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;    !(((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS) &amp;&amp; &bslash;&n;&t;      ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_MOREBITSBIT) &amp;&amp; &bslash;&n;&t;      ((sbp)-&gt;sb_features2 &amp; ~XFS_SB_VERSION2_OKREALBITS))
 macro_line|#ifdef __KERNEL__
 DECL|macro|XFS_SB_GOOD_VERSION
 mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;&bslash;&n;&t;(XFS_SB_GOOD_VERSION_INT(sbp) &amp;&amp; &bslash;&n;&t;  (sbp)-&gt;sb_shared_vn &lt;= XFS_SB_MAX_SHARED_VN) ))
@@ -851,6 +877,23 @@ macro_line|#else
 DECL|macro|XFS_SB_VERSION_HASSECTOR
 mdefine_line|#define XFS_SB_VERSION_HASSECTOR(sbp)   &bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_SECTORBIT))
 macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASMOREBITSBIT)
+r_int
+id|xfs_sb_version_hasmorebits
+c_func
+(paren
+id|xfs_sb_t
+op_star
+id|sbp
+)paren
+suffix:semicolon
+DECL|macro|XFS_SB_VERSION_HASMOREBITS
+mdefine_line|#define XFS_SB_VERSION_HASMOREBITS(sbp)&t;xfs_sb_version_hasmorebits(sbp)
+macro_line|#else
+DECL|macro|XFS_SB_VERSION_HASMOREBITS
+mdefine_line|#define XFS_SB_VERSION_HASMOREBITS(sbp)&t;&bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_MOREBITSBIT))
+macro_line|#endif
+multiline_comment|/*&n; * sb_features2 bit version macros.&n; *&n; * For example, for a bit defined as XFS_SB_VERSION2_YBIT, has a macro:&n; *&n; * SB_VERSION_HASYBIT(xfs_sb_t *sbp)&n; *&t;((XFS_SB_VERSION_HASMOREBITS(sbp) &amp;&amp;&n; *&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION2_YBIT)&n; */
 multiline_comment|/*&n; * end of superblock version macros&n; */
 DECL|macro|XFS_SB_DADDR
 mdefine_line|#define XFS_SB_DADDR&t;((xfs_daddr_t)0)&t;/* daddr in filesystem/ag */
