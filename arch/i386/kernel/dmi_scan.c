@@ -1354,10 +1354,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The Intel 440GX hall of shame. &n; *&n; * On many (all we have checked) of these boxes the $PIRQ table is wrong.&n; * The MP1.4 table is right however and so SMP kernels tend to work. &n; */
-r_extern
-r_int
-id|skip_ioapic_setup
-suffix:semicolon
 DECL|function|broken_pirq
 r_static
 id|__init
@@ -1407,10 +1403,16 @@ l_string|&quot; *** Building an SMP kernel may evade the bug some of the time.&b
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_IO_APIC
+(brace
+r_extern
+r_int
+id|skip_ioapic_setup
+suffix:semicolon
 id|skip_ioapic_setup
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0
@@ -1661,10 +1663,6 @@ id|acpi_disabled
 comma
 id|acpi_force
 suffix:semicolon
-r_extern
-r_int
-id|skip_ioapic_setup
-suffix:semicolon
 DECL|function|acpi_disable
 r_static
 id|__init
@@ -1842,8 +1840,6 @@ op_assign
 initialization_block
 suffix:semicolon
 multiline_comment|/*&n; *&t;Walk the blacklist table running matching functions until someone &n; *&t;returns 1 or we hit the end.&n; */
-DECL|macro|ACPI_BLACKLIST_CUTOFF_YEAR
-mdefine_line|#define&t;ACPI_BLACKLIST_CUTOFF_YEAR&t;2001
 DECL|function|dmi_check_blacklist
 r_static
 id|__init
@@ -1862,6 +1858,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ACPI_BOOT
+DECL|macro|ACPI_BLACKLIST_CUTOFF_YEAR
+mdefine_line|#define&t;ACPI_BLACKLIST_CUTOFF_YEAR&t;2001
 r_if
 c_cond
 (paren
@@ -1981,6 +1980,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 id|d
 op_assign
 op_amp
