@@ -814,7 +814,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;clkout1&quot;
+l_string|&quot;clkout0&quot;
 comma
 dot
 id|id
