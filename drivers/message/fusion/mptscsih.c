@@ -769,7 +769,6 @@ r_void
 suffix:semicolon
 r_static
 r_int
-id|__devinit
 id|mptscsih_probe
 (paren
 r_struct
@@ -784,7 +783,6 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|__devexit
 id|mptscsih_remove
 c_func
 (paren
@@ -5018,7 +5016,6 @@ multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 multiline_comment|/*&n; *&t;mptscsih_probe - Installs scsi devices per bus.&n; *&t;@pdev: Pointer to pci_dev structure&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; *&n; */
 r_static
 r_int
-id|__devinit
 DECL|function|mptscsih_probe
 id|mptscsih_probe
 c_func
@@ -6078,7 +6075,6 @@ multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 multiline_comment|/*&n; *&t;mptscsih_remove - Removed scsi devices&n; *&t;@pdev: Pointer to pci_dev structure&n; *&n; *&n; */
 r_static
 r_void
-id|__devexit
 DECL|function|mptscsih_remove
 id|mptscsih_remove
 c_func
@@ -6863,11 +6859,7 @@ comma
 dot
 id|remove
 op_assign
-id|__devexit_p
-c_func
-(paren
 id|mptscsih_remove
-)paren
 comma
 dot
 id|shutdown
