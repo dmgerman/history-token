@@ -6084,7 +6084,7 @@ comma
 id|u.insn.op
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * IMPORTANT:&n;&t; * Notice that the switch statement DOES not cover all possible instructions&n;&t; * that DO generate unaligned references. This is made on purpose because for some&n;&t; * instructions it DOES NOT make sense to try and emulate the access. Sometimes it&n;&t; * is WRONG to try and emulate. Here is a list of instruction we don&squot;t emulate i.e.,&n;&t; * the program will get a signal and die:&n;&t; *&n;&t; *&t;load/store:&n;&t; *&t;&t;- ldX.spill&n;&t; *&t;&t;- stX.spill&n;&t; *&t;Reason: RNATs are based on addresses&n;&t; *&n;&t; *&t;synchronization:&n;&t; *&t;&t;- cmpxchg&n;&t; *&t;&t;- fetchadd&n;&t; *&t;&t;- xchg&n;&t; *&t;Reason: ATOMIC operations cannot be emulated properly using multiple&n;&t; *&t;        instructions.&n;&t; *&n;&t; *&t;speculative loads:&n;&t; *&t;&t;- ldX.sZ&n;&t; *&t;Reason: side effects, code must be ready to deal with failure so simpler&n;&t; *&t;&t;to let the load fail.&n;&t; * ---------------------------------------------------------------------------------&n;&t; * XXX fixme&n;&t; *&n;&t; * I would like to get rid of this switch case and do something&n;&t; * more elegant.&n;&t; */
+multiline_comment|/*&n;&t; * IMPORTANT:&n;&t; * Notice that the switch statement DOES not cover all possible instructions&n;&t; * that DO generate unaligned references. This is made on purpose because for some&n;&t; * instructions it DOES NOT make sense to try and emulate the access. Sometimes it&n;&t; * is WRONG to try and emulate. Here is a list of instruction we don&squot;t emulate i.e.,&n;&t; * the program will get a signal and die:&n;&t; *&n;&t; *&t;load/store:&n;&t; *&t;&t;- ldX.spill&n;&t; *&t;&t;- stX.spill&n;&t; *&t;Reason: RNATs are based on addresses&n;&t; *&t;&t;- ld16&n;&t; *&t;&t;- st16&n;&t; *&t;Reason: ld16 and st16 are supposed to occur in a single&n;&t; *&t;&t;memory op&n;&t; *&n;&t; *&t;synchronization:&n;&t; *&t;&t;- cmpxchg&n;&t; *&t;&t;- fetchadd&n;&t; *&t;&t;- xchg&n;&t; *&t;Reason: ATOMIC operations cannot be emulated properly using multiple&n;&t; *&t;        instructions.&n;&t; *&n;&t; *&t;speculative loads:&n;&t; *&t;&t;- ldX.sZ&n;&t; *&t;Reason: side effects, code must be ready to deal with failure so simpler&n;&t; *&t;&t;to let the load fail.&n;&t; * ---------------------------------------------------------------------------------&n;&t; * XXX fixme&n;&t; *&n;&t; * I would like to get rid of this switch case and do something&n;&t; * more elegant.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -6097,6 +6097,16 @@ suffix:colon
 r_case
 id|LDSA_OP
 suffix:colon
+r_if
+c_cond
+(paren
+id|u.insn.x
+)paren
+multiline_comment|/* oops, really a semaphore op (cmpxchg, etc) */
+r_goto
+id|failure
+suffix:semicolon
+multiline_comment|/* no break */
 r_case
 id|LDS_IMM_OP
 suffix:colon
@@ -6147,6 +6157,16 @@ suffix:colon
 r_case
 id|LDCCLRACQ_OP
 suffix:colon
+r_if
+c_cond
+(paren
+id|u.insn.x
+)paren
+multiline_comment|/* oops, really a semaphore op (cmpxchg, etc) */
+r_goto
+id|failure
+suffix:semicolon
+multiline_comment|/* no break */
 r_case
 id|LD_IMM_OP
 suffix:colon
@@ -6188,6 +6208,16 @@ suffix:colon
 r_case
 id|STREL_OP
 suffix:colon
+r_if
+c_cond
+(paren
+id|u.insn.x
+)paren
+multiline_comment|/* oops, really a semaphore op (cmpxchg, etc) */
+r_goto
+id|failure
+suffix:semicolon
+multiline_comment|/* no break */
 r_case
 id|ST_IMM_OP
 suffix:colon
