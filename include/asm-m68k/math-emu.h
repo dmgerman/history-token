@@ -216,7 +216,7 @@ l_int|2
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if FPU_EMU_DEBUG
+macro_line|#ifdef FPU_EMU_DEBUG
 r_extern
 r_int
 r_int
