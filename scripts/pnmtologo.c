@@ -547,10 +547,12 @@ op_star
 id|fp
 suffix:semicolon
 r_int
+r_int
 id|i
 comma
 id|j
-comma
+suffix:semicolon
+r_int
 id|magic
 suffix:semicolon
 r_int
@@ -1479,6 +1481,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|j
@@ -1653,6 +1656,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
@@ -1897,6 +1901,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
@@ -2179,6 +2184,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
