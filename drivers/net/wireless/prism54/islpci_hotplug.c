@@ -748,26 +748,8 @@ id|do_pci_disable_device
 suffix:semicolon
 )brace
 multiline_comment|/* 0x40 is the programmable timer to configure the response timeout (TRDY_TIMEOUT)&n;&t; * 0x41 is the programmable timer to configure the retry timeout (RETRY_TIMEOUT)&n;&t; * &t;The RETRY_TIMEOUT is used to set the number of retries that the core, as a&n;&t; * &t;Master, will perform before abandoning a cycle. The default value for&n;&t; * &t;RETRY_TIMEOUT is 0x80, which far exceeds the PCI 2.1 requirement for new&n;&t; * &t;devices. A write of zero to the RETRY_TIMEOUT register disables this&n;&t; * &t;function to allow use with any non-compliant legacy devices that may&n;&t; * &t;execute more retries.&n;&t; *&n;&t; * &t;Writing zero to both these two registers will disable both timeouts and&n;&t; * &t;*can* solve problems caused by devices that are slow to respond.&n;&t; */
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-l_int|0x40
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-l_int|0x41
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/*&t;I am taking these out, we should not be poking around in the&n;&t; *&t;programmable timers - MSW&n;&t;*/
+multiline_comment|/*&t;Do not zero the programmable timers&n;&t;pci_write_config_byte(pdev, 0x40, 0);&n;&t;pci_write_config_byte(pdev, 0x41, 0);&n;*/
 multiline_comment|/* request the pci device I/O regions */
 id|rvalue
 op_assign
