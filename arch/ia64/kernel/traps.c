@@ -2355,7 +2355,6 @@ r_case
 l_int|36
 suffix:colon
 multiline_comment|/* Single Step Trap */
-macro_line|#ifdef CONFIG_FSYS
 r_if
 c_cond
 (paren
@@ -2370,11 +2369,7 @@ id|regs
 (brace
 r_extern
 r_char
-id|syscall_via_break
-(braket
-)braket
-comma
-id|__start_gate_section
+id|__kernel_syscall_via_break
 (braket
 )braket
 suffix:semicolon
@@ -2407,13 +2402,11 @@ suffix:semicolon
 multiline_comment|/* re-do the system call via break 0x100000: */
 id|regs-&gt;cr_iip
 op_assign
-id|GATE_ADDR
-op_plus
 (paren
-id|syscall_via_break
-op_minus
-id|__start_gate_section
+r_int
+r_int
 )paren
+id|__kernel_syscall_via_break
 suffix:semicolon
 id|ia64_psr
 c_func
@@ -2438,7 +2431,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 r_switch
 c_cond
 (paren

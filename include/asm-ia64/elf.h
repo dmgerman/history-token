@@ -25,6 +25,8 @@ mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x800000000)
+DECL|macro|PT_IA_64_UNWIND
+mdefine_line|#define PT_IA_64_UNWIND&t;&t;0x70000001
 multiline_comment|/* IA-64 relocations: */
 DECL|macro|R_IA64_NONE
 mdefine_line|#define R_IA64_NONE&t;&t;0x00&t;/* none */
@@ -266,9 +268,11 @@ mdefine_line|#define ELF_HWCAP &t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;0
-multiline_comment|/*&n; * This should go into linux/elf.h...&n; */
+multiline_comment|/*&n; * Architecture-neutral AT_ values are in the range 0-17.  Leave some room for more of&n; * them, start the architecture-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO&t;32
+DECL|macro|AT_SYSINFO_EHDR
+mdefine_line|#define AT_SYSINFO_EHDR&t;33
 macro_line|#ifdef __KERNEL__
 r_struct
 id|elf64_hdr
@@ -288,6 +292,9 @@ id|ibcs2_interpreter
 suffix:semicolon
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;ia64_set_personality(&amp;(ex), ibcs2)
+r_struct
+id|task_struct
+suffix:semicolon
 r_extern
 r_int
 id|dump_task_regs
@@ -317,10 +324,17 @@ DECL|macro|ELF_CORE_COPY_TASK_REGS
 mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_gregs) dump_task_regs(tsk, elf_gregs)
 DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
-macro_line|#ifdef CONFIG_FSYS
+DECL|macro|GATE_EHDR
+mdefine_line|#define GATE_EHDR&t;((const struct elfhdr *) GATE_ADDR)
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern char syscall_via_epc[], __start_gate_section[];&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, GATE_ADDR + (syscall_via_epc - __start_gate_section));&t;&bslash;&n;} while (0)
-macro_line|#endif
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern char __kernel_syscall_via_epc[];&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, __kernel_syscall_via_epc);&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, (unsigned long) GATE_EHDR);&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out extra segments&n; * containing the gate DSO contents.  Dumping its contents makes post-mortem fully&n; * interpretable later without matching up the same kernel and hardware config to see what&n; * IP values meant.  Dumping its extra ELF program headers includes all the other&n; * information a debugger needs to easily find how the gate DSO was being used.&n; */
+DECL|macro|ELF_CORE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(GATE_EHDR-&gt;e_phnum)
+DECL|macro|ELF_CORE_WRITE_EXTRA_PHDRS
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_PHDRS&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct elf_phdr *const gate_phdrs =&t;&t;&t;&t;&bslash;&n;&t;&t;(const struct elf_phdr *) (GATE_ADDR + GATE_EHDR-&gt;e_phoff);&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;Elf64_Off ofs = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i = 0; i &lt; GATE_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;&t;&bslash;&n;&t;&t;struct elf_phdr phdr = gate_phdrs[i];&t;&t;&t;&t;&bslash;&n;&t;&t;if (phdr.p_type == PT_LOAD) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;ofs = phdr.p_offset = offset;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;phdr.p_filesz = PAGE_SIZE; /* just cover RO-data */&t;&bslash;&n;&t;&t;&t;offset += phdr.p_filesz;&t;&t;&t;&t;&bslash;&n;&t;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;phdr.p_offset += ofs;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;phdr.p_paddr = 0; /* match other core phdrs */&t;&t;&t;&bslash;&n;&t;&t;DUMP_WRITE(&amp;phdr, sizeof(phdr));&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|ELF_CORE_WRITE_EXTRA_DATA
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_DATA&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const struct elf_phdr *const gate_phdrs =&t;&t;&t;&bslash;&n;&t;&t;(const struct elf_phdr *) (GATE_ADDR&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;   + GATE_EHDR-&gt;e_phoff);&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i = 0; i &lt; GATE_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;&bslash;&n;&t;&t;if (gate_phdrs[i].p_type == PT_LOAD)&t;&t;&t;&bslash;&n;&t;&t;&t;DUMP_WRITE((void *) gate_phdrs[i].p_vaddr,&t;&bslash;&n;&t;&t;&t;&t;   gate_phdrs[i].p_filesz);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_ELF_H */
 eof

@@ -1,27 +1,29 @@
-multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/efi.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
-macro_line|#include &lt;asm/tlb.h&gt;
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -954,12 +956,12 @@ id|pgtable_cache_size
 suffix:semicolon
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 )brace
-multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page with PAGE_GATE protection&n; * (execute-only, typically).&n; */
+multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page in the kernel&squot;s page table.&n; */
 r_struct
 id|page
 op_star
-DECL|function|put_gate_page
-id|put_gate_page
+DECL|function|put_kernel_page
+id|put_kernel_page
 (paren
 r_struct
 id|page
@@ -969,6 +971,9 @@ comma
 r_int
 r_int
 id|address
+comma
+id|pgprot_t
+id|pgprot
 )paren
 (brace
 id|pgd_t
@@ -997,7 +1002,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;put_gate_page: gate page at 0x%p not in reserved memory&bslash;n&quot;
+l_string|&quot;put_kernel_page: page at 0x%p not in reserved memory&bslash;n&quot;
 comma
 id|page_address
 c_func
@@ -1099,7 +1104,7 @@ c_func
 (paren
 id|page
 comma
-id|PAGE_GATE
+id|pgprot
 )paren
 )paren
 suffix:semicolon
@@ -1122,6 +1127,72 @@ suffix:semicolon
 multiline_comment|/* no need for flush_tlb */
 r_return
 id|page
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|setup_gate
+id|setup_gate
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_char
+id|__start_gate_section
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* install the read-only and privilege-promote pages in the global page table: */
+id|put_kernel_page
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|__start_gate_section
+)paren
+)paren
+comma
+id|GATE_ADDR
+comma
+id|PAGE_READONLY
+)paren
+suffix:semicolon
+id|put_kernel_page
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|__start_gate_section
+op_plus
+id|PAGE_SIZE
+)paren
+)paren
+comma
+id|GATE_ADDR
+op_plus
+id|PAGE_SIZE
+comma
+id|PAGE_GATE
+)paren
+suffix:semicolon
+id|ia64_patch_gate
+c_func
+(paren
+(paren
+id|Elf64_Ehdr
+op_star
+)paren
+id|__start_gate_section
+)paren
 suffix:semicolon
 )brace
 r_void
@@ -2466,7 +2537,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FSYS
 multiline_comment|/*&n; * Boot command-line option &quot;nolwsys&quot; can be used to disable the use of any light-weight&n; * system call handler.  When this option is in effect, all fsyscalls will end up bubbling&n; * down into the kernel and calling the normal (heavy-weight) syscall handler.  This is&n; * useful for performance testing, but conceivably could also come in handy for debugging&n; * purposes.&n; */
 DECL|variable|nolwsys
 r_static
@@ -2500,7 +2570,6 @@ comma
 id|nolwsys_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_FSYS */
 r_void
 DECL|function|mem_init
 id|mem_init
@@ -2508,12 +2577,6 @@ id|mem_init
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|__start_gate_section
-(braket
-)braket
-suffix:semicolon
 r_int
 id|reserved_pages
 comma
@@ -2530,6 +2593,9 @@ suffix:semicolon
 id|pg_data_t
 op_star
 id|pgdat
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * This needs to be called _after_ the command line has been parsed but _before_&n;&t; * any drivers that may need the PCI DMA interface are initialized or bootmem has&n;&t; * been freed.&n;&t; */
@@ -2746,12 +2812,7 @@ l_int|1
 op_assign
 id|num_pgt_pages
 suffix:semicolon
-macro_line|#ifdef CONFIG_FSYS
-(brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * For fsyscall entrpoints with no light-weight handler, use the ordinary&n;&t;&t; * (heavy-weight) handler, but mark it by setting bit 0, so the fsyscall entry&n;&t;&t; * code can tell them apart.&n;&t;&t; */
+multiline_comment|/*&n;&t; * For fsyscall entrpoints with no light-weight handler, use the ordinary&n;&t; * (heavy-weight) handler, but mark it by setting bit 0, so the fsyscall entry&n;&t; * code can tell them apart.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2807,25 +2868,12 @@ op_or
 l_int|1
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif
-multiline_comment|/* install the gate page in the global page table: */
-id|put_gate_page
+id|setup_gate
 c_func
 (paren
-id|virt_to_page
-c_func
-(paren
-id|ia64_imva
-c_func
-(paren
-id|__start_gate_section
-)paren
-)paren
-comma
-id|GATE_ADDR
 )paren
 suffix:semicolon
+multiline_comment|/* setup gate pages before we free up boot memory... */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 id|ia32_gdt_init
 c_func

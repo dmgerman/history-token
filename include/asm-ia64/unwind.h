@@ -322,13 +322,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|unw_create_gate_table
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 op_star
 id|unw_add_unwind_table
 (paren
