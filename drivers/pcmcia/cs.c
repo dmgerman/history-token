@@ -835,7 +835,7 @@ op_member_access_from_pointer
 id|register_callback
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|handler
 comma
@@ -879,7 +879,7 @@ op_member_access_from_pointer
 id|get_status
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|val
 )paren
@@ -906,7 +906,7 @@ op_member_access_from_pointer
 id|set_socket
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|state
 )paren
@@ -934,7 +934,7 @@ op_member_access_from_pointer
 id|set_io_map
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|io
 )paren
@@ -962,7 +962,7 @@ op_member_access_from_pointer
 id|set_mem_map
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|mem
 )paren
@@ -989,7 +989,7 @@ op_member_access_from_pointer
 id|suspend
 c_func
 (paren
-id|s-&gt;sock
+id|s
 )paren
 suffix:semicolon
 )brace
@@ -1014,7 +1014,7 @@ op_member_access_from_pointer
 id|init
 c_func
 (paren
-id|s-&gt;sock
+id|s
 )paren
 suffix:semicolon
 )brace
@@ -1401,7 +1401,7 @@ op_member_access_from_pointer
 id|inquire_socket
 c_func
 (paren
-id|socket-&gt;sock
+id|socket
 comma
 op_amp
 id|socket-&gt;cap
@@ -1514,7 +1514,7 @@ op_member_access_from_pointer
 id|proc_setup
 c_func
 (paren
-id|socket-&gt;sock
+id|socket
 comma
 id|socket-&gt;proc
 )paren

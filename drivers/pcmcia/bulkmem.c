@@ -966,7 +966,7 @@ op_member_access_from_pointer
 id|set_mem_map
 c_func
 (paren
-id|win-&gt;sock-&gt;sock
+id|win-&gt;sock
 comma
 op_amp
 id|win-&gt;ctl
@@ -1036,7 +1036,7 @@ op_member_access_from_pointer
 id|set_socket
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 op_amp
 id|s-&gt;socket
@@ -1112,7 +1112,7 @@ op_member_access_from_pointer
 id|set_socket
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 op_amp
 id|s-&gt;socket
