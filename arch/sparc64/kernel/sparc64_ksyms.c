@@ -1849,6 +1849,27 @@ c_func
 id|sun_do_break
 )paren
 suffix:semicolon
+DECL|variable|serial_console
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serial_console
+)paren
+suffix:semicolon
+DECL|variable|stop_a_enabled
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|stop_a_enabled
+)paren
+suffix:semicolon
+DECL|variable|kbd_pt_regs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kbd_pt_regs
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 DECL|variable|do_BUG
 id|EXPORT_SYMBOL

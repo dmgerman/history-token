@@ -2877,7 +2877,6 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -2889,7 +2888,6 @@ id|kbd_pt_regs
 op_assign
 id|regs
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Sliiiick... */
 macro_line|#ifndef CONFIG_SMP
 id|bp

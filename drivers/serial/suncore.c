@@ -9,35 +9,11 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &quot;suncore.h&quot;
-DECL|variable|serial_console
-r_int
-id|serial_console
-suffix:semicolon
-DECL|variable|stop_a_enabled
-r_int
-id|stop_a_enabled
-op_assign
-l_int|1
-suffix:semicolon
 DECL|variable|sunserial_current_minor
 r_int
 id|sunserial_current_minor
 op_assign
 l_int|64
-suffix:semicolon
-DECL|variable|serial_console
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|serial_console
-)paren
-suffix:semicolon
-DECL|variable|stop_a_enabled
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|stop_a_enabled
-)paren
 suffix:semicolon
 DECL|variable|sunserial_current_minor
 id|EXPORT_SYMBOL
