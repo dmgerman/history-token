@@ -1,11 +1,12 @@
-macro_line|#include &quot;sa11xx_core.h&quot;
+macro_line|#include &quot;soc_common.h&quot;
+macro_line|#include &quot;sa11xx_base.h&quot;
 r_extern
 r_int
 id|sa1111_pcmcia_hw_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 )paren
 suffix:semicolon
@@ -15,7 +16,7 @@ id|sa1111_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 )paren
 suffix:semicolon
@@ -25,7 +26,7 @@ id|sa1111_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 comma
 r_struct
@@ -39,7 +40,7 @@ id|sa1111_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 comma
 r_const
@@ -53,7 +54,7 @@ id|sa1111_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 )paren
 suffix:semicolon
@@ -63,7 +64,7 @@ id|sa1111_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 )paren
 suffix:semicolon
@@ -80,6 +81,16 @@ suffix:semicolon
 r_extern
 r_int
 id|pcmcia_jornada720_init
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pcmcia_lubbock_init
 c_func
 (paren
 r_struct

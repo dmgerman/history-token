@@ -61,7 +61,7 @@ id|sa1111_pcmcia_hw_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -83,7 +83,7 @@ suffix:colon
 id|IRQ_S0_READY_NINT
 suffix:semicolon
 r_return
-id|sa11xx_request_irqs
+id|soc_pcmcia_request_irqs
 c_func
 (paren
 id|skt
@@ -104,12 +104,12 @@ id|sa1111_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_free_irqs
+id|soc_pcmcia_free_irqs
 c_func
 (paren
 id|skt
@@ -130,7 +130,7 @@ id|sa1111_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -341,7 +341,7 @@ id|sa1111_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -526,12 +526,12 @@ id|sa1111_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_enable_irqs
+id|soc_pcmcia_enable_irqs
 c_func
 (paren
 id|skt
@@ -552,12 +552,12 @@ id|sa1111_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_disable_irqs
+id|soc_pcmcia_disable_irqs
 c_func
 (paren
 id|skt
@@ -675,6 +675,15 @@ id|dev-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_LUBBOCK
+id|pcmcia_lubbock_init
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ASSABET_NEPONSET
 id|pcmcia_neponset_init
 c_func
@@ -727,7 +736,7 @@ op_star
 id|dev
 )paren
 (brace
-id|sa11xx_drv_pcmcia_remove
+id|soc_common_drv_pcmcia_remove
 c_func
 (paren
 op_amp

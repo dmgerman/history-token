@@ -26,7 +26,7 @@ id|system3_pcmcia_hw_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -51,7 +51,7 @@ id|system3_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -64,7 +64,7 @@ id|system3_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma

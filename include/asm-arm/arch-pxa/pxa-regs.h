@@ -2140,6 +2140,18 @@ DECL|macro|MDMRS
 mdefine_line|#define MDMRS&t;&t;__REG(0x48000040)  /* MRS value to be written to SDRAM */
 DECL|macro|BOOT_DEF
 mdefine_line|#define BOOT_DEF&t;__REG(0x48000044)  /* Read-Only Boot-Time Register. Contains BOOT_SEL and PKG_SEL */
+multiline_comment|/*&n; * More handy macros for PCMCIA&n; *&n; * Arg is socket number&n; */
+DECL|macro|MCMEM
+mdefine_line|#define MCMEM(s)&t;__REG2(0x48000028, (s)&lt;&lt;2 )  /* Card interface Common Memory Space Socket s Timing */
+DECL|macro|MCATT
+mdefine_line|#define MCATT(s)&t;__REG2(0x48000030, (s)&lt;&lt;2 )  /* Card interface Attribute Space Socket s Timing Configuration */
+DECL|macro|MCIO
+mdefine_line|#define MCIO(s)&t;&t;__REG2(0x48000038, (s)&lt;&lt;2 )  /* Card interface I/O Space Socket s Timing Configuration */
+multiline_comment|/* MECR register defines */
+DECL|macro|MECR_NOS
+mdefine_line|#define MECR_NOS&t;(1 &lt;&lt; 0)&t;/* Number Of Sockets: 0 -&gt; 1 sock, 1 -&gt; 2 sock */
+DECL|macro|MECR_CIT
+mdefine_line|#define MECR_CIT&t;(1 &lt;&lt; 1)&t;/* Card Is There: 0 -&gt; no card, 1 -&gt; card inserted */
 DECL|macro|MDREFR_K2FREE
 mdefine_line|#define MDREFR_K2FREE&t;(1 &lt;&lt; 25)&t;/* SDRAM Free-Running Control */
 DECL|macro|MDREFR_K1FREE

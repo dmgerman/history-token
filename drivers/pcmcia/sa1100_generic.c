@@ -7,7 +7,7 @@ macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
-macro_line|#include &quot;sa1100.h&quot;
+macro_line|#include &quot;sa1100_generic.h&quot;
 DECL|variable|sa11x0_pcmcia_hw_init
 r_static
 r_int
@@ -237,7 +237,7 @@ comma
 dot
 id|remove
 op_assign
-id|sa11xx_drv_pcmcia_remove
+id|soc_common_drv_pcmcia_remove
 comma
 dot
 id|name
