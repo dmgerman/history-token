@@ -928,6 +928,7 @@ id|part
 suffix:semicolon
 id|done
 suffix:colon
+macro_line|#ifdef CONFIG_SYSFS
 id|sys_umount
 c_func
 (paren
@@ -944,6 +945,7 @@ c_func
 l_string|&quot;/sys&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|res
 suffix:semicolon
