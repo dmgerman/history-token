@@ -129,7 +129,12 @@ op_star
 id|s
 )paren
 (brace
-id|MOD_INC_USE_COUNT
+multiline_comment|/* It&squot;s safe to call __module_get() here because sessions are added&n;&t;   by the socket layer which has to hold the refference to this module.&n;&t; */
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|list_add
 c_func
@@ -161,7 +166,11 @@ op_amp
 id|s-&gt;list
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|bnep_send
@@ -2953,6 +2962,11 @@ l_int|50
 )braket
 op_assign
 l_string|&quot;&quot;
+suffix:semicolon
+id|l2cap_load
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BT_BNEP_PROTO_FILTER
 id|strcat
