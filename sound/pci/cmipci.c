@@ -14990,7 +14990,7 @@ c_func
 id|alsa_card_cmipci_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-cmipci=enable,index,id,&n;&t;&t;&t; mpu_port,fm_port,soft_ac3,joystick */
+multiline_comment|/* format is: snd-cmipci=enable,index,id,&n;&t;&t;&t; mpu_port,fm_port,soft_ac3,joystick_port */
 DECL|function|alsa_card_cmipci_setup
 r_static
 r_int
@@ -15124,7 +15124,7 @@ op_amp
 id|str
 comma
 op_amp
-id|joystick
+id|joystick_port
 (braket
 id|nr_dev
 )braket
