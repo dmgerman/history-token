@@ -4006,7 +4006,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren
@@ -7525,7 +7525,7 @@ c_func
 id|gtif-&gt;dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|gtif-&gt;dev
 )paren

@@ -7951,7 +7951,7 @@ l_int|64
 )paren
 suffix:semicolon
 )brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

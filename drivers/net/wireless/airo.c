@@ -6993,7 +6993,7 @@ c_func
 id|ai-&gt;wifidev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|ai-&gt;wifidev
@@ -7058,7 +7058,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
