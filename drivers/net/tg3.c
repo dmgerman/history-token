@@ -12506,12 +12506,26 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* In INTx mode, it is possible for the interrupt to arrive at&n;&t; * the CPU before the status block posted prior to the interrupt.&n;&t; * Reading the PCI State register will confirm whether the&n;&t; * interrupt is ours and will flush the status block.&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|sblk-&gt;status
 op_amp
 id|SD_STATUS_UPDATED
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|tr32
+c_func
+(paren
+id|TG3PCI_PCISTATE
+)paren
+op_amp
+id|PCISTATE_INT_NOT_ACTIVE
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * writing any value to intr-mbox-0 clears PCI INTA# and&n;&t;&t; * chip-internal interrupt pending events.&n;&t;&t; * writing non-zero to intr-mbox-0 additional tells the&n;&t;&t; * NIC to stop sending us irqs, engaging &quot;in-intr-handler&quot;&n;&t;&t; * event coalescing.&n;&t;&t; */
