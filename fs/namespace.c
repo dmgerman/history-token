@@ -1544,8 +1544,6 @@ id|mnt-&gt;mnt_sb
 suffix:semicolon
 r_int
 id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|retval
 op_assign
