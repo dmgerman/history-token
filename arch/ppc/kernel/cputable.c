@@ -283,7 +283,7 @@ mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;&t;0
 DECL|macro|PPC_FEATURE_ALTIVEC_COMP
 mdefine_line|#define PPC_FEATURE_ALTIVEC_COMP       &t;0
 macro_line|#endif
-multiline_comment|/* We need to mark all pages as being coherent if we&squot;re SMP or we&n; * have a 754x and an MPC107 host bridge.&n; */
+multiline_comment|/* We need to mark all pages as being coherent if we&squot;re SMP or we&n; * have a 74[45]x and an MPC107 host bridge.&n; */
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_MPC10X_BRIDGE)
 DECL|macro|CPU_FTR_COMMON
 mdefine_line|#define CPU_FTR_COMMON                  CPU_FTR_NEED_COHERENT
