@@ -469,13 +469,18 @@ r_extern
 id|spinlock_t
 id|pci_bus_lock
 suffix:semicolon
-r_extern
-r_int
-id|pcie_mch_quirk
-suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
 r_extern
 r_int
 id|pci_msi_quirk
+suffix:semicolon
+macro_line|#else
+DECL|macro|pci_msi_quirk
+mdefine_line|#define pci_msi_quirk 0
+macro_line|#endif
+r_extern
+r_int
+id|pcie_mch_quirk
 suffix:semicolon
 r_extern
 r_struct

@@ -3234,9 +3234,13 @@ id|newtp-&gt;ecn_flags
 op_amp
 id|TCP_ECN_OK
 )paren
-id|newsk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|newsk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|tcp_ca_init
 c_func

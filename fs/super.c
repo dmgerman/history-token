@@ -2944,12 +2944,10 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|set_blocksize
+id|sync_blockdev
 c_func
 (paren
 id|bdev
-comma
-id|sb-&gt;s_old_blocksize
 )paren
 suffix:semicolon
 id|close_bdev_excl

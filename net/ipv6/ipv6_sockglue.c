@@ -2955,7 +2955,6 @@ suffix:semicolon
 )brace
 DECL|function|ipv6_packet_cleanup
 r_void
-id|__exit
 id|ipv6_packet_cleanup
 c_func
 (paren

@@ -28,8 +28,9 @@ r_int
 id|value
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 r_int

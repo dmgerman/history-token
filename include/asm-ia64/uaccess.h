@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/page-flags.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * For historical reasons, the following macros are grossly misnamed:&n; */
 DECL|macro|KERNEL_DS
 mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { ~0UL })&t;&t;/* cf. access_ok() */

@@ -844,6 +844,11 @@ r_int
 id|space
 )paren
 suffix:semicolon
+multiline_comment|/* Override for {pgd,pmd}_addr_end() to deal with the virtual address&n; * space hole.  We simply sign extend bit 43.&n; */
+DECL|macro|pgd_addr_end
+mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n;&t;__boundary = ((long) (__boundary &lt;&lt; 20)) &gt;&gt; 20;&t;&t;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+DECL|macro|pmd_addr_end
+mdefine_line|#define pmd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PMD_SIZE) &amp; PMD_MASK;&t;&bslash;&n;&t;__boundary = ((long) (__boundary &lt;&lt; 20)) &gt;&gt; 20;&t;&t;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
