@@ -486,6 +486,31 @@ c_func
 id|cred
 )paren
 suffix:semicolon
+multiline_comment|/* Clean up the V4 state */
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;wo_owner
+)paren
+suffix:semicolon
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;ro_owner
+)paren
+suffix:semicolon
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;rw_owner
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|nfs_put_super
@@ -6734,11 +6759,15 @@ id|FS_ODD_RENAME
 comma
 )brace
 suffix:semicolon
+DECL|macro|nfs4_zero_state
+mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;(nfsi)-&gt;wo_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;ro_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;rw_owner = NULL; &bslash;&n;&t;} while(0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() register_filesystem(&amp;nfs4_fs_type)
 DECL|macro|unregister_nfs4fs
 mdefine_line|#define unregister_nfs4fs() unregister_filesystem(&amp;nfs4_fs_type)
 macro_line|#else
+DECL|macro|nfs4_zero_state
+mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { } while (0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() (0)
 DECL|macro|unregister_nfs4fs
@@ -6848,6 +6877,12 @@ suffix:semicolon
 id|nfsi-&gt;mm_cred
 op_assign
 l_int|NULL
+suffix:semicolon
+id|nfs4_zero_state
+c_func
+(paren
+id|nfsi
+)paren
 suffix:semicolon
 r_return
 op_amp
