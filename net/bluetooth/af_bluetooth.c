@@ -26,14 +26,12 @@ macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG( A... )
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|proc_bt
 r_struct
 id|proc_dir_entry
 op_star
 id|proc_bt
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
 mdefine_line|#define BT_MAX_PROTO&t;5
