@@ -4,15 +4,13 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -771,25 +769,26 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* sa1100_pcmcia_task_handler()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Processes serviceable socket events using the &quot;eventd&quot; thread context.&n; *&n; * Event processing (specifically, the invocation of the Card Services event&n; * callback) occurs in this thread rather than in the actual interrupt&n; * handler due to the use of scheduling operations in the PCMCIA core.&n; */
-DECL|function|sa1100_pcmcia_task_handler
+DECL|variable|status_lock
+r_static
+id|spinlock_t
+id|status_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* sa1100_check_status()&n; * ^^^^^^^^^^^^^^^^^^^^^&n; */
+DECL|function|sa1100_check_status
 r_static
 r_void
-id|sa1100_pcmcia_task_handler
+id|sa1100_check_status
 c_func
 (paren
-r_void
-op_star
-id|data
-)paren
-(brace
 r_struct
 id|sa1100_pcmcia_socket
 op_star
 id|skt
-op_assign
-id|data
-suffix:semicolon
+)paren
+(brace
 r_int
 r_int
 id|events
@@ -810,12 +809,25 @@ r_int
 r_int
 id|status
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|status
 op_assign
 id|sa1100_pcmcia_skt_state
 c_func
 (paren
 id|skt
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|status_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|events
@@ -831,6 +843,15 @@ suffix:semicolon
 id|skt-&gt;status
 op_assign
 id|status
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|status_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|DEBUG
 c_func
@@ -961,11 +982,10 @@ op_plus
 id|SA1100_PCMCIA_POLL_PERIOD
 )paren
 suffix:semicolon
-id|schedule_work
+id|sa1100_check_status
 c_func
 (paren
-op_amp
-id|skt-&gt;work
+id|skt
 )paren
 suffix:semicolon
 )brace
@@ -1008,11 +1028,10 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|schedule_work
+id|sa1100_check_status
 c_func
 (paren
-op_amp
-id|skt-&gt;work
+id|skt
 )paren
 suffix:semicolon
 r_return
@@ -3007,17 +3026,6 @@ suffix:semicolon
 id|skt-&gt;socket.dev.dev
 op_assign
 id|dev
-suffix:semicolon
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|skt-&gt;work
-comma
-id|sa1100_pcmcia_task_handler
-comma
-id|skt
-)paren
 suffix:semicolon
 id|init_timer
 c_func
