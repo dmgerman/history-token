@@ -6,6 +6,7 @@ multiline_comment|/*&n; * This is our internal structure for each serial port&sq
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x020300)
@@ -267,6 +268,11 @@ DECL|member|work
 r_struct
 id|work_struct
 id|work
+suffix:semicolon
+DECL|member|tlet
+r_struct
+id|tasklet_struct
+id|tlet
 suffix:semicolon
 macro_line|#ifdef DECLARE_WAITQUEUE
 DECL|member|open_wait
