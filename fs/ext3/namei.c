@@ -2660,6 +2660,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|de-&gt;inode
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
