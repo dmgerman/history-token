@@ -78,8 +78,11 @@ id|socket
 op_star
 id|sock
 op_assign
-op_amp
-id|inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_struct
 id|sock

@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: socksys.c,v 1.20 2002/01/08 16:00:21 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
+multiline_comment|/*&n; *  Dave, _please_ give me specifications on this fscking mess so that I&n; * could at least get it into the state when it wouldn&squot;t screw the rest of&n; * the kernel over.  socksys.c and timod.c _stink_ and we are not talking&n; * H2S here, it&squot;s isopropilmercaptan in concentrations way over LD50. -- AV&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -322,7 +323,7 @@ l_int|0
 r_return
 id|fd
 suffix:semicolon
-multiline_comment|/*&n;&t; * N.B. The following operations are not legal!&n;&t; * Try instead:&n;&t; * d_delete(filp-&gt;f_dentry), then d_instantiate with sock inode&n;&t; */
+multiline_comment|/*&n;&t; * N.B. The following operations are not legal!&n;&t; *&n;&t; * No shit.  WTF is it supposed to do, anyway?&n;&t; *&n;&t; * Try instead:&n;&t; * d_delete(filp-&gt;f_dentry), then d_instantiate with sock inode&n;&t; */
 id|dentry
 op_assign
 id|filp-&gt;f_dentry
@@ -349,7 +350,13 @@ id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_flock
 op_assign
 id|inode-&gt;i_flock
 suffix:semicolon
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;u.socket_i.file
+id|SOCKET_I
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode
+)paren
+op_member_access_from_pointer
+id|file
 op_assign
 id|filp
 suffix:semicolon

@@ -6039,7 +6039,13 @@ op_ne
 l_int|NULL
 ques
 c_cond
-id|s-&gt;socket-&gt;inode-&gt;i_ino
+id|SOCK_INODE
+c_func
+(paren
+id|s-&gt;socket
+)paren
+op_member_access_from_pointer
+id|i_ino
 suffix:colon
 l_int|0L
 )paren

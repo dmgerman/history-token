@@ -1601,27 +1601,6 @@ suffix:semicolon
 multiline_comment|/* XXX This really belongs in some header file... -DaveM */
 DECL|macro|MAX_SOCK_ADDR
 mdefine_line|#define MAX_SOCK_ADDR&t;128&t;&t;/* 108 for Unix domain - &n;&t;&t;&t;&t;&t;   16 for IP, 16 for IPX,&n;&t;&t;&t;&t;&t;   24 for IPv6,&n;&t;&t;&t;&t;&t;   about 80 for AX.25 */
-multiline_comment|/* XXX These as well... */
-DECL|function|socki_lookup
-r_extern
-id|__inline__
-r_struct
-id|socket
-op_star
-id|socki_lookup
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-op_amp
-id|inode-&gt;u.socket_i
-suffix:semicolon
-)brace
 DECL|function|sockfd_lookup
 r_extern
 id|__inline__
@@ -1683,13 +1662,6 @@ c_cond
 (paren
 op_logical_neg
 id|inode-&gt;i_sock
-op_logical_or
-op_logical_neg
-id|socki_lookup
-c_func
-(paren
-id|inode
-)paren
 )paren
 (brace
 op_star
@@ -1709,7 +1681,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_return
-id|socki_lookup
+id|SOCKET_I
 c_func
 (paren
 id|inode
