@@ -8304,6 +8304,11 @@ suffix:semicolon
 multiline_comment|/* Prevent CPU from reordering lock-free -&gt;nopage() */
 id|retry
 suffix:colon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|new_page
 op_assign
 id|vma-&gt;vm_ops

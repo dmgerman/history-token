@@ -619,6 +619,11 @@ op_minus
 id|E2BIG
 suffix:semicolon
 )brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 r_return

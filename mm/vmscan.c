@@ -1003,6 +1003,11 @@ suffix:semicolon
 r_int
 id|referenced
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|lru_to_page
@@ -2311,6 +2316,11 @@ id|l_hold
 )paren
 )paren
 (brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|lru_to_page

@@ -1016,6 +1016,11 @@ suffix:semicolon
 id|i
 op_increment
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1224,6 +1229,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1319,6 +1329,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 r_break
