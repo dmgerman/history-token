@@ -291,6 +291,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -323,6 +324,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -350,6 +352,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -377,6 +380,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -404,6 +408,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -436,6 +441,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -463,6 +469,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -490,6 +497,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -517,6 +525,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -581,6 +590,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -608,6 +618,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -635,6 +646,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -662,6 +674,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -689,6 +702,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -716,6 +730,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -1637,6 +1652,13 @@ c_func
 (paren
 id|sclp_tty_chars
 comma
+(paren
+r_const
+r_int
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|length

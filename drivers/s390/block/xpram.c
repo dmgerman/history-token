@@ -436,8 +436,7 @@ r_int
 id|cc
 suffix:semicolon
 id|__asm__
-id|__volatile
-c_func
+id|__volatile__
 (paren
 l_string|&quot;   lhi   %0,2&bslash;n&quot;
 multiline_comment|/* return unused cc 2 if pgin traps */
@@ -554,8 +553,7 @@ r_int
 id|cc
 suffix:semicolon
 id|__asm__
-id|__volatile
-c_func
+id|__volatile__
 (paren
 l_string|&quot;   lhi   %0,2&bslash;n&quot;
 multiline_comment|/* return unused cc 2 if pgout traps */
@@ -1122,6 +1120,7 @@ id|arg
 (brace
 r_struct
 id|hd_geometry
+id|__user
 op_star
 id|geo
 suffix:semicolon
@@ -1146,6 +1145,7 @@ op_assign
 (paren
 r_struct
 id|hd_geometry
+id|__user
 op_star
 )paren
 id|arg
@@ -1504,6 +1504,7 @@ DECL|variable|xpram_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|xpram_queue
 suffix:semicolon
 DECL|function|xpram_setup_blkdev
@@ -1599,10 +1600,33 @@ l_string|&quot;slram&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Assign the other needed values: make request function, sizes and&n;&t; * hardsect size. All the minor devices feature the same value.&n;&t; */
+id|xpram_queue
+op_assign
+id|blk_alloc_queue
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xpram_queue
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_unreg
+suffix:semicolon
+)brace
 id|blk_queue_make_request
 c_func
 (paren
-op_amp
 id|xpram_queue
 comma
 id|xpram_make_request
@@ -1611,7 +1635,6 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|xpram_queue
 comma
 l_int|4096
@@ -1702,7 +1725,6 @@ id|i
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|xpram_queue
 suffix:semicolon
 id|sprintf
@@ -1747,6 +1769,22 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|out_unreg
+suffix:colon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;slram&quot;
+)paren
+suffix:semicolon
+id|unregister_blkdev
+c_func
+(paren
+id|XPRAM_MAJOR
+comma
+id|XPRAM_NAME
+)paren
 suffix:semicolon
 id|out
 suffix:colon
@@ -1829,6 +1867,12 @@ id|devfs_remove
 c_func
 (paren
 l_string|&quot;slram&quot;
+)paren
+suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+id|xpram_queue
 )paren
 suffix:semicolon
 id|sysdev_unregister

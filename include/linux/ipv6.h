@@ -437,6 +437,8 @@ id|dst1
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IP6CB
+mdefine_line|#define IP6CB(skb)&t;((struct inet6_skb_parm*)((skb)-&gt;cb))
 DECL|struct|ipv6_pinfo
 r_struct
 id|ipv6_pinfo

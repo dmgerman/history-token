@@ -264,6 +264,20 @@ op_star
 id|irq
 )paren
 suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|platform_rename_gsi
+)paren
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|gsi
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_extern
 r_int

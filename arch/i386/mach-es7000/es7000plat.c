@@ -49,15 +49,6 @@ id|mip_addr
 comma
 id|host_addr
 suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|platform_rename_gsi
-)paren
-(paren
-)paren
-suffix:semicolon
 r_static
 r_int
 id|__init

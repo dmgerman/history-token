@@ -1750,6 +1750,13 @@ c_func
 (paren
 id|tty-&gt;driver_data
 comma
+(paren
+r_const
+r_int
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|length

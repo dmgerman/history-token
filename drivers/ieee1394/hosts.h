@@ -184,7 +184,7 @@ id|update_config_rom
 suffix:semicolon
 DECL|member|delayed_reset
 r_struct
-id|timer_list
+id|work_struct
 id|delayed_reset
 suffix:semicolon
 DECL|member|config_roms

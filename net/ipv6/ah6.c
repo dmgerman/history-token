@@ -1948,7 +1948,7 @@ c_cond
 id|type
 op_ne
 id|ICMPV6_DEST_UNREACH
-op_logical_or
+op_logical_and
 id|type
 op_ne
 id|ICMPV6_PKT_TOOBIG

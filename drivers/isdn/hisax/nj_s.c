@@ -465,13 +465,25 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* now edge triggered for TJ320 GE 13/07/00 */
+multiline_comment|/* see comment in IRQ function */
+r_if
+c_cond
+(paren
+id|cs-&gt;subtyp
+)paren
+multiline_comment|/* TJ320 */
+id|cs-&gt;hw.njet.ctrl_reg
+op_assign
+l_int|0x40
+suffix:semicolon
+multiline_comment|/* Reset Off and status read clear */
+r_else
 id|cs-&gt;hw.njet.ctrl_reg
 op_assign
 l_int|0x00
 suffix:semicolon
 multiline_comment|/* Reset Off and status read clear */
-multiline_comment|/* now edge triggered for TJ320 GE 13/07/00 */
-multiline_comment|/* see comment in IRQ function */
 id|byteout
 c_func
 (paren
@@ -692,6 +704,8 @@ id|card
 (brace
 r_int
 id|bytecnt
+comma
+id|cfg
 suffix:semicolon
 r_struct
 id|IsdnCardState
@@ -843,6 +857,36 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* the TJ300 and TJ320 must be detected, the IRQ handling is different&n;&t;&t;&t; * unfortunatly the chips use the same device ID, but the TJ320 has&n;&t;&t;&t; * the bit20 in status PCI cfg register set&n;&t;&t;&t; */
+id|pci_read_config_dword
+c_func
+(paren
+id|dev_netjet
+comma
+l_int|0x04
+comma
+op_amp
+id|cfg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cfg
+op_amp
+l_int|0x00100000
+)paren
+id|cs-&gt;subtyp
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* TJ320 */
+r_else
+id|cs-&gt;subtyp
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TJ300 */
 multiline_comment|/* 2001/10/04 Christoph Ersfeld, Formula-n Europe AG www.formula-n.com */
 r_if
 c_cond
@@ -1066,7 +1110,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NETjet-S: PCI card configured at %#lx IRQ %d&bslash;n&quot;
+l_string|&quot;NETjet-S: %s card configured at %#lx IRQ %d&bslash;n&quot;
+comma
+id|cs-&gt;subtyp
+ques
+c_cond
+l_string|&quot;TJ320&quot;
+suffix:colon
+l_string|&quot;TJ300&quot;
 comma
 id|cs-&gt;hw.njet.base
 comma

@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/types.h&gt;&t;     
 singleline_comment|// for variable types
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_core_dbf
 macro_line|#include &quot;tape.h&quot;
 macro_line|#include &quot;tape_std.h&quot;
 DECL|macro|PRINTK_HEADER
@@ -66,12 +68,19 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Pointer to debug area.&n; */
-DECL|variable|tape_dbf_area
+DECL|variable|TAPE_DBF_AREA
 id|debug_info_t
 op_star
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|TAPE_DBF_AREA
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|TAPE_DBF_AREA
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Printable strings for tape enumerations.&n; */
 DECL|variable|tape_state_verbose
@@ -5068,7 +5077,7 @@ id|tape_init
 r_void
 )paren
 (brace
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 op_assign
 id|debug_register
 (paren
@@ -5089,7 +5098,7 @@ suffix:semicolon
 id|debug_register_view
 c_func
 (paren
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 comma
 op_amp
 id|debug_sprintf_view
@@ -5099,7 +5108,7 @@ macro_line|#ifdef DBF_LIKE_HELL
 id|debug_set_level
 c_func
 (paren
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 comma
 l_int|6
 )paren
@@ -5110,7 +5119,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;tape init: ($Revision: 1.49 $)&bslash;n&quot;
+l_string|&quot;tape init: ($Revision: 1.50 $)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape_proc_init
@@ -5166,7 +5175,7 @@ c_func
 suffix:semicolon
 id|debug_unregister
 (paren
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 )paren
 suffix:semicolon
 )brace
@@ -5181,7 +5190,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached &quot;
-l_string|&quot;tape device driver ($Revision: 1.49 $)&quot;
+l_string|&quot;tape device driver ($Revision: 1.50 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -5202,13 +5211,6 @@ id|module_exit
 c_func
 (paren
 id|tape_exit
-)paren
-suffix:semicolon
-DECL|variable|tape_dbf_area
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tape_dbf_area
 )paren
 suffix:semicolon
 DECL|variable|tape_generic_remove

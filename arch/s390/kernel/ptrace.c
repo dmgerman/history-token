@@ -494,6 +494,7 @@ id|tmp
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|data
@@ -935,6 +936,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1036,6 +1038,7 @@ id|parea
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -1103,6 +1106,7 @@ id|tmp
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|data
@@ -1618,6 +1622,7 @@ id|tmp
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|data
@@ -2195,6 +2200,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -2295,6 +2301,7 @@ id|parea
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -2362,6 +2369,7 @@ id|tmp
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|data

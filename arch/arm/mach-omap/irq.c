@@ -134,7 +134,7 @@ l_int|0x1
 comma
 id|OMAP_IH2_BASE
 op_plus
-id|IRQ_CONTROL_REG
+id|IRQ_CONTROL_REG_OFFSET
 )paren
 suffix:semicolon
 id|omap_writel
@@ -144,7 +144,7 @@ l_int|0x1
 comma
 id|OMAP_IH1_BASE
 op_plus
-id|IRQ_CONTROL_REG
+id|IRQ_CONTROL_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -183,7 +183,7 @@ id|bank
 dot
 id|base_reg
 op_plus
-id|IRQ_MIR
+id|IRQ_MIR_REG_OFFSET
 )paren
 suffix:semicolon
 id|l
@@ -208,7 +208,7 @@ id|bank
 dot
 id|base_reg
 op_plus
-id|IRQ_MIR
+id|IRQ_MIR_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -247,7 +247,7 @@ id|bank
 dot
 id|base_reg
 op_plus
-id|IRQ_MIR
+id|IRQ_MIR_REG_OFFSET
 )paren
 suffix:semicolon
 id|l
@@ -275,7 +275,7 @@ id|bank
 dot
 id|base_reg
 op_plus
-id|IRQ_MIR
+id|IRQ_MIR_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -381,7 +381,7 @@ l_int|1
 suffix:semicolon
 id|offset
 op_assign
-id|IRQ_ILR0
+id|IRQ_ILR0_REG_OFFSET
 op_plus
 id|IRQ_BIT
 c_func
@@ -706,7 +706,7 @@ l_int|0x0
 comma
 id|i
 comma
-id|IRQ_MIR
+id|IRQ_MIR_REG_OFFSET
 )paren
 suffix:semicolon
 id|irq_bank_writel
@@ -716,7 +716,7 @@ l_int|0x0
 comma
 id|i
 comma
-id|IRQ_ITR
+id|IRQ_ITR_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
@@ -728,7 +728,7 @@ l_int|0x03
 comma
 l_int|0
 comma
-id|IRQ_CONTROL_REG
+id|IRQ_CONTROL_REG_OFFSET
 )paren
 suffix:semicolon
 id|irq_bank_writel
@@ -738,7 +738,7 @@ l_int|0x03
 comma
 l_int|1
 comma
-id|IRQ_CONTROL_REG
+id|IRQ_CONTROL_REG_OFFSET
 )paren
 suffix:semicolon
 multiline_comment|/* Install the interrupt handlers for each bank */

@@ -120,8 +120,8 @@ id|device
 suffix:semicolon
 r_struct
 id|cmbdata
-op_star
 id|__user
+op_star
 id|udata
 suffix:semicolon
 r_struct
@@ -152,6 +152,7 @@ id|udata
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
