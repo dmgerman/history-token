@@ -4409,6 +4409,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 DECL|function|ubd_revalidate
 r_static
