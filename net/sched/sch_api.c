@@ -4962,10 +4962,6 @@ id|psched_tod_diff
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|psched_time_base
-id|psched_time_t
-id|psched_time_base
-suffix:semicolon
 macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
 DECL|variable|psched_clock_per_hz
 id|psched_tdiff_t
@@ -4989,8 +4985,11 @@ c_func
 id|psched_clock_scale
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef PSCHED_WATCHER
+DECL|variable|psched_time_base
+id|psched_time_t
+id|psched_time_base
+suffix:semicolon
 DECL|variable|psched_time_mark
 id|PSCHED_WATCHER
 id|psched_time_mark
@@ -5045,7 +5044,6 @@ r_int
 id|dummy
 )paren
 (brace
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
 id|psched_time_t
 id|dummy_stamp
 suffix:semicolon
@@ -5064,43 +5062,6 @@ l_int|1
 op_star
 id|HZ
 suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|now
-op_assign
-id|jiffies
-suffix:semicolon
-id|psched_time_base
-op_add_assign
-(paren
-(paren
-id|u64
-)paren
-(paren
-id|now
-op_minus
-id|psched_time_mark
-)paren
-)paren
-op_lshift
-id|PSCHED_JSCALE
-suffix:semicolon
-id|psched_time_mark
-op_assign
-id|now
-suffix:semicolon
-id|psched_timer.expires
-op_assign
-id|now
-op_plus
-l_int|60
-op_star
-l_int|60
-op_star
-id|HZ
-suffix:semicolon
-macro_line|#endif
 id|add_timer
 c_func
 (paren
@@ -5110,7 +5071,6 @@ id|psched_timer
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
 DECL|function|psched_calibrate_clock
 r_int
 id|__init
@@ -5331,14 +5291,6 @@ id|psched_us_per_tick
 op_assign
 l_int|1000000
 suffix:semicolon
-macro_line|#ifdef PSCHED_WATCHER
-id|psched_tick
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|link_p
 op_assign

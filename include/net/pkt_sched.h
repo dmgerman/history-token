@@ -843,10 +843,6 @@ r_typedef
 r_int
 id|psched_tdiff_t
 suffix:semicolon
-r_extern
-id|psched_time_t
-id|psched_time_base
-suffix:semicolon
 macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES
 macro_line|#if HZ &lt; 96
 DECL|macro|PSCHED_JSCALE
@@ -889,6 +885,10 @@ mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u64 __cur; &bslash;&n;
 macro_line|#elif defined (__alpha__)
 DECL|macro|PSCHED_WATCHER
 mdefine_line|#define PSCHED_WATCHER u32
+r_extern
+id|psched_time_t
+id|psched_time_base
+suffix:semicolon
 r_extern
 id|PSCHED_WATCHER
 id|psched_time_mark
