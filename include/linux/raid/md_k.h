@@ -583,6 +583,10 @@ DECL|member|ro
 r_int
 id|ro
 suffix:semicolon
+DECL|member|persistent
+r_int
+id|persistent
+suffix:semicolon
 DECL|member|sync_thread
 r_struct
 id|mdk_thread_s
