@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
+multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002-2003&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -121,6 +121,11 @@ op_assign
 id|generic_remove
 comma
 )brace
+suffix:semicolon
+DECL|variable|usb_generic_driver_data
+r_static
+r_int
+id|usb_generic_driver_data
 suffix:semicolon
 multiline_comment|/* needs to be called with BKL held */
 DECL|function|usb_device_probe
@@ -1302,13 +1307,23 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* Must check driver_data here, as on remove driver is always NULL */
 r_if
 c_cond
+(paren
 (paren
 id|dev-&gt;driver
 op_eq
 op_amp
 id|usb_generic_driver
+)paren
+op_logical_or
+(paren
+id|dev-&gt;driver_data
+op_eq
+op_amp
+id|usb_generic_driver_data
+)paren
 )paren
 r_return
 l_int|0
@@ -2808,6 +2823,11 @@ suffix:semicolon
 id|dev-&gt;dev.release
 op_assign
 id|usb_release_dev
+suffix:semicolon
+id|dev-&gt;dev.driver_data
+op_assign
+op_amp
+id|usb_generic_driver_data
 suffix:semicolon
 id|usb_get_dev
 c_func
