@@ -298,14 +298,6 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifndef SPLIT_BYTE
-DECL|macro|SPLIT_BYTE
-mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
-macro_line|#endif
-macro_line|#ifndef MAKE_WORD
-DECL|macro|MAKE_WORD
-mdefine_line|#define MAKE_WORD(W,HB,LB)&t;((W)=((HB&lt;&lt;8)+LB))
-macro_line|#endif
 DECL|macro|BUSCLOCK
 mdefine_line|#define BUSCLOCK(D)&t;&bslash;&n;&t;((struct chipset_bus_clock_list_entry *) pci_get_drvdata((D)))
 r_static
