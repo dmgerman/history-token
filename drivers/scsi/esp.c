@@ -4341,6 +4341,7 @@ multiline_comment|/* Detecting ESP chips on the machine.  This is the simple and
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/sun4paddr.h&gt;
 DECL|function|esp_detect
+r_static
 r_int
 id|__init
 id|esp_detect
@@ -4474,6 +4475,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_SUN4 */
 DECL|function|esp_detect
+r_static
 r_int
 id|__init
 id|esp_detect
@@ -5554,6 +5556,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ESP proc filesystem code. */
 DECL|function|esp_proc_info
+r_static
 r_int
 id|esp_proc_info
 c_func
@@ -7261,6 +7264,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Queue a SCSI command delivered from the mid-level Linux SCSI code. */
 DECL|function|esp_queue
+r_static
 r_int
 id|esp_queue
 c_func
@@ -7429,6 +7433,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Only queuing supported in this ESP driver. */
 DECL|function|esp_command
+r_static
 r_int
 id|esp_command
 c_func
@@ -7829,6 +7834,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Abort a command. */
 DECL|function|esp_abort
+r_static
 r_int
 id|esp_abort
 c_func
@@ -8303,6 +8309,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Reset ESP chip, reset hanging bus, then kill active and&n; * disconnected commands for targets without soft reset.&n; */
 DECL|function|esp_reset
+r_static
 r_int
 id|esp_reset
 c_func
@@ -18005,6 +18012,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|esp_slave_detach
+r_static
 r_void
 id|esp_slave_detach
 c_func
@@ -18051,12 +18059,94 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SCSI_SPARC_ESP
-suffix:semicolon
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Sun ESP 100/100a/200&quot;
+comma
+dot
+id|detect
+op_assign
+id|esp_detect
+comma
+dot
+id|slave_detach
+op_assign
+id|esp_slave_detach
+comma
+dot
+id|info
+op_assign
+id|esp_info
+comma
+dot
+id|command
+op_assign
+id|esp_command
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+comma
+multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
+macro_line|#ifdef CONFIG_SPARC64
+dot
+id|highmem_io
+op_assign
+l_int|1
+comma
+macro_line|#endif
+)brace
 macro_line|#include &quot;scsi_module.c&quot;
 eof
