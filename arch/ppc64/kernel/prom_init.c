@@ -3037,6 +3037,12 @@ c_func
 id|alloc_top
 )paren
 op_assign
+id|RELOC
+c_func
+(paren
+id|rmo_top
+)paren
+op_assign
 id|min
 c_func
 (paren
