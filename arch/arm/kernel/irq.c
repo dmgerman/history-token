@@ -192,6 +192,54 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|function|synchronize_irq
+r_void
+id|synchronize_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+r_struct
+id|irqdesc
+op_star
+id|desc
+op_assign
+id|irq_desc
+op_plus
+id|irq
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|desc-&gt;running
+)paren
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
+DECL|macro|smp_set_running
+mdefine_line|#define smp_set_running(desc)&t;do { desc-&gt;running = 1; } while (0)
+DECL|macro|smp_clear_running
+mdefine_line|#define smp_clear_running(desc)&t;do { desc-&gt;running = 0; } while (0)
+macro_line|#else
+DECL|macro|smp_set_running
+mdefine_line|#define smp_set_running(desc)&t;do { } while (0)
+DECL|macro|smp_clear_running
+mdefine_line|#define smp_clear_running(desc)&t;do { } while (0)
+macro_line|#endif
 multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Enables and disables&n; *&t;are nested.  We do this lazily.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|disable_irq_nosync
 r_void
@@ -1244,6 +1292,12 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
+id|smp_set_running
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
 id|action
 op_assign
 id|desc-&gt;action
@@ -1287,6 +1341,12 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+id|smp_clear_running
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Most edge-triggered IRQ implementations seem to take a broken&n; * approach to this.  Hence the complexity.&n; */
 r_void
@@ -1546,6 +1606,12 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
+id|smp_set_running
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Return with this interrupt masked if no action&n;&t;&t; */
 id|action
 op_assign
@@ -1619,6 +1685,12 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+id|smp_clear_running
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|do_pending_irqs
