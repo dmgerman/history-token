@@ -2023,9 +2023,7 @@ macro_line|#endif
 multiline_comment|/* set the result so the higher layers expect this data */
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* If things are really okay, then let&squot;s show that */
 r_if
@@ -2044,18 +2042,14 @@ l_int|0x0
 )paren
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 r_else
 multiline_comment|/* if (need_auto_sense) */
 id|srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 multiline_comment|/* Regardless of auto-sense, if we _know_ we have an error&n;&t; * condition, show that in the result code&n;&t; */
 r_if
@@ -2067,9 +2061,7 @@ id|USB_STOR_TRANSPORT_FAILED
 )paren
 id|srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* If we think we&squot;re good, then make sure the sense data shows it.&n;&t; * This is necessary because the auto-sense for some devices always&n;&t; * sets byte 0 == 0x70, even if there is no error&n;&t; */
 r_if

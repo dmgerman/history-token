@@ -1263,9 +1263,7 @@ id|usb_stor_sense_invalidCDB
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|CHECK_CONDITION
-op_lshift
-l_int|1
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 )brace
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
@@ -1332,9 +1330,7 @@ l_int|36
 suffix:semicolon
 id|us-&gt;srb-&gt;result
 op_assign
-id|GOOD
-op_lshift
-l_int|1
+id|SAM_STAT_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/* we&squot;ve got a command, let&squot;s do it! */
