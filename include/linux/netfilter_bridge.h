@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_BRIDGE_NETFILTER)
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Bridge Hooks */
 multiline_comment|/* After promisc drops, checksum checks. */
@@ -86,6 +89,8 @@ DECL|macro|BRNF_DONT_TAKE_PARENT
 mdefine_line|#define BRNF_DONT_TAKE_PARENT&t;&t;0x04
 DECL|macro|BRNF_BRIDGED
 mdefine_line|#define BRNF_BRIDGED&t;&t;&t;0x08
+DECL|macro|BRNF_NF_BRIDGE_PREROUTING
+mdefine_line|#define BRNF_NF_BRIDGE_PREROUTING&t;0x10
 r_static
 r_inline
 DECL|function|nf_bridge_alloc
@@ -175,10 +180,139 @@ id|physoutdev
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+(paren
+op_star
+id|nf_bridge
+)paren
+op_member_access_from_pointer
+id|netoutdev
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 op_star
 id|nf_bridge
+suffix:semicolon
+)brace
+multiline_comment|/* Only used in br_forward.c */
+r_static
+r_inline
+DECL|function|nf_bridge_maybe_copy_header
+r_void
+id|nf_bridge_maybe_copy_header
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|skb-&gt;nf_bridge
+)paren
+(brace
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+r_if
+c_cond
+(paren
+id|skb-&gt;protocol
+op_eq
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_8021Q
+)paren
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|skb-&gt;data
+op_minus
+l_int|18
+comma
+id|skb-&gt;nf_bridge-&gt;hh
+comma
+l_int|18
+)paren
+suffix:semicolon
+id|skb_push
+c_func
+(paren
+id|skb
+comma
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
+id|memcpy
+c_func
+(paren
+id|skb-&gt;data
+op_minus
+l_int|16
+comma
+id|skb-&gt;nf_bridge-&gt;hh
+comma
+l_int|16
+)paren
+suffix:semicolon
+)brace
+)brace
+r_static
+r_inline
+DECL|function|nf_bridge_save_header
+r_void
+id|nf_bridge_save_header
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_int
+id|header_size
+op_assign
+l_int|16
+suffix:semicolon
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+r_if
+c_cond
+(paren
+id|skb-&gt;protocol
+op_eq
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_8021Q
+)paren
+)paren
+id|header_size
+op_assign
+l_int|18
+suffix:semicolon
+macro_line|#endif
+id|memcpy
+c_func
+(paren
+id|skb-&gt;nf_bridge-&gt;hh
+comma
+id|skb-&gt;data
+op_minus
+id|header_size
+comma
+id|header_size
+)paren
 suffix:semicolon
 )brace
 DECL|struct|bridge_skb_cb
