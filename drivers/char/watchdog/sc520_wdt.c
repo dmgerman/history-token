@@ -78,6 +78,39 @@ r_static
 r_int
 id|wdt_expect_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 DECL|variable|wdt_spinlock
 r_static
 id|spinlock_t
@@ -310,7 +343,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 multiline_comment|/* Stop the timer */
 id|del_timer
 c_func
@@ -332,7 +371,7 @@ id|OUR_NAME
 l_string|&quot;: Watchdog timer is now disabled...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 multiline_comment|/*&n; * /dev/watchdog handling&n; */
 DECL|function|fop_write
@@ -509,10 +548,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon
@@ -652,10 +694,19 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
-l_int|0
+dot
+id|options
+op_assign
+id|WDIOF_MAGICCLOSE
 comma
+dot
+id|firmware_version
+op_assign
 l_int|1
 comma
+dot
+id|identity
+op_assign
 l_string|&quot;SC520&quot;
 )brace
 suffix:semicolon
