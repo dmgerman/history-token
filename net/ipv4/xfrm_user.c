@@ -5084,7 +5084,12 @@ op_amp
 id|netlink_mgr
 )paren
 suffix:semicolon
-multiline_comment|/* XXX need netlink_kernel_destroy XXX */
+id|sock_release
+c_func
+(paren
+id|xfrm_nl-&gt;socket
+)paren
+suffix:semicolon
 )brace
 DECL|variable|xfrm_user_init
 id|module_init
