@@ -1377,7 +1377,9 @@ id|size
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- transfer was short&bslash;n&quot;
+l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+comma
+id|result
 )paren
 suffix:semicolon
 r_return
@@ -1490,9 +1492,12 @@ id|EPIPE
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;clearing endpoint halt for pipe 0x%x&bslash;n&quot;
+l_string|&quot;clearing endpoint halt for pipe 0x%x,&quot;
+l_string|&quot; stalled at %d bytes&bslash;n&quot;
 comma
 id|pipe
+comma
+id|partial
 )paren
 suffix:semicolon
 r_if

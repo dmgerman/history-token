@@ -31,11 +31,6 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
-id|act_len
-suffix:semicolon
-multiline_comment|/* ignored */
 r_if
 c_cond
 (paren
@@ -55,19 +50,18 @@ id|len
 )paren
 suffix:semicolon
 r_return
-id|usb_storage_raw_bulk
+id|usb_stor_bulk_transfer_buf
 c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|us-&gt;recv_bulk_pipe
 comma
 id|data
 comma
 id|len
 comma
-op_amp
-id|act_len
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -93,11 +87,6 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
-id|act_len
-suffix:semicolon
-multiline_comment|/* ignored */
 r_if
 c_cond
 (paren
@@ -117,19 +106,18 @@ id|len
 )paren
 suffix:semicolon
 r_return
-id|usb_storage_raw_bulk
+id|usb_stor_bulk_transfer_buf
 c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|us-&gt;send_bulk_pipe
 comma
 id|data
 comma
 id|len
 comma
-op_amp
-id|act_len
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -164,7 +152,7 @@ suffix:semicolon
 singleline_comment|// send the setup
 id|rc
 op_assign
-id|usb_storage_send_control
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us
@@ -190,10 +178,10 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 r_if
 c_cond
@@ -459,7 +447,7 @@ suffix:semicolon
 singleline_comment|// send the setup + command
 id|result
 op_assign
-id|usb_storage_send_control
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us
@@ -484,7 +472,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -833,7 +821,7 @@ suffix:semicolon
 singleline_comment|// send the setup + command
 id|result
 op_assign
-id|usb_storage_send_control
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us
@@ -852,6 +840,16 @@ id|command
 comma
 l_int|7
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_ne
+id|USB_STOR_XFER_GOOD
+)paren
+r_goto
+id|leave
 suffix:semicolon
 singleline_comment|// send the data
 id|result
@@ -1052,7 +1050,7 @@ suffix:semicolon
 singleline_comment|// send the setup
 id|rc
 op_assign
-id|usb_storage_send_control
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us
@@ -1077,7 +1075,7 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|US_DEBUGP
