@@ -1,11 +1,12 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/* ips.c -- driver for the IBM ServeRAID controller                          */
+multiline_comment|/* ips.c -- driver for the Adaptec / IBM ServeRAID controller                */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Written By: Keith Mitchell, IBM Corporation                               */
 multiline_comment|/*             Jack Hammer, Adaptec, Inc.                                    */
 multiline_comment|/*             David Jeffery, Adaptec, Inc.                                  */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Copyright (C) 2000 IBM Corporation                                        */
+multiline_comment|/* Copyright (C) 2002 Adaptec, Inc.                                          */
 multiline_comment|/*                                                                           */
 multiline_comment|/* This program is free software; you can redistribute it and/or modify      */
 multiline_comment|/* it under the terms of the GNU General Public License as published by      */
@@ -42,7 +43,7 @@ multiline_comment|/* along with this program; if not, write to the Free Software
 multiline_comment|/* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Bugs/Comments/Suggestions about this driver should be mailed to:          */
-multiline_comment|/*      ipslinux@us.ibm.com          &t;                                      */
+multiline_comment|/*      ipslinux@adaptec.com        &t;                                     */
 multiline_comment|/*                                                                           */
 multiline_comment|/* For system support issues, contact your local IBM Customer support.       */
 multiline_comment|/* Directions to find IBM Customer Support for each country can be found at: */
@@ -65,9 +66,8 @@ multiline_comment|/*          - Fix error recovery code                         
 multiline_comment|/* 0.99.05  - Fix an oops when we get certain passthru commands              */
 multiline_comment|/* 1.00.00  - Initial Public Release                                         */
 multiline_comment|/*            Functionally equivalent to 0.99.05                             */
-multiline_comment|/* 3.60.00  - Bump max commands to 128 for use with ServeRAID firmware 3.60  */
-multiline_comment|/*          - Change version to 3.60 to coincide with ServeRAID release      */
-multiline_comment|/*            numbering.                                                     */
+multiline_comment|/* 3.60.00  - Bump max commands to 128 for use with firmware 3.60            */
+multiline_comment|/*          - Change version to 3.60 to coincide with release numbering.     */
 multiline_comment|/* 3.60.01  - Remove bogus error check in passthru routine                   */
 multiline_comment|/* 3.60.02  - Make DCDB direction based on lookup table                      */
 multiline_comment|/*          - Only allow one DCDB command to a SCSI ID at a time             */
@@ -75,7 +75,7 @@ multiline_comment|/* 4.00.00  - Add support for ServeRAID 4                     
 multiline_comment|/* 4.00.01  - Add support for First Failure Data Capture                     */
 multiline_comment|/* 4.00.02  - Fix problem with PT DCDB with no buffer                        */
 multiline_comment|/* 4.00.03  - Add alternative passthru interface                             */
-multiline_comment|/*          - Add ability to flash ServeRAID BIOS                            */
+multiline_comment|/*          - Add ability to flash BIOS                                      */
 multiline_comment|/* 4.00.04  - Rename structures/constants to be prefixed with IPS_           */
 multiline_comment|/* 4.00.05  - Remove wish_block from init routine                            */
 multiline_comment|/*          - Use linux/spinlock.h instead of asm/spinlock.h for kernels     */
@@ -256,7 +256,10 @@ id|ptr
 op_star
 id|dmahandle
 op_assign
-id|VIRT_TO_BUS
+(paren
+r_uint32
+)paren
+id|virt_to_bus
 c_func
 (paren
 id|ptr
@@ -274,12 +277,12 @@ mdefine_line|#define pci_map_sg(a,b,n,z)       (n)
 DECL|macro|pci_unmap_sg
 mdefine_line|#define pci_unmap_sg(a,b,c,d)     
 DECL|macro|pci_map_single
-mdefine_line|#define pci_map_single(a,b,c,d)   (VIRT_TO_BUS(b))
+mdefine_line|#define pci_map_single(a,b,c,d)   ((uint32_t)virt_to_bus(b))
 DECL|macro|pci_unmap_single
 mdefine_line|#define pci_unmap_single(a,b,c,d) 
 macro_line|#ifndef sg_dma_address
 DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(x)         (VIRT_TO_BUS((x)-&gt;address))
+mdefine_line|#define sg_dma_address(x)         ((uint32_t)virt_to_bus((x)-&gt;address))
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(x)             ((x)-&gt;length)
 macro_line|#endif

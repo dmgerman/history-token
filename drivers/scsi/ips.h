@@ -1,9 +1,12 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/* ips.h -- driver for the IBM ServeRAID controller                          */
+multiline_comment|/* ips.h -- driver for the Adaptec / IBM ServeRAID controller                */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Written By: Keith Mitchell, IBM Corporation                               */
+multiline_comment|/*             Jack Hammer, Adaptec, Inc.                                    */
+multiline_comment|/*             David Jeffery, Adaptec, Inc.                                  */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Copyright (C) 1999 IBM Corporation                                        */
+multiline_comment|/* Copyright (C) 2003 Adaptec, Inc.                                          */
 multiline_comment|/*                                                                           */
 multiline_comment|/* This program is free software; you can redistribute it and/or modify      */
 multiline_comment|/* it under the terms of the GNU General Public License as published by      */
@@ -40,7 +43,7 @@ multiline_comment|/* along with this program; if not, write to the Free Software
 multiline_comment|/* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Bugs/Comments/Suggestions should be mailed to:                            */
-multiline_comment|/*      ipslinux@us.ibm.com                                                  */
+multiline_comment|/*      ipslinux@adaptec.com                                                 */
 multiline_comment|/*                                                                           */
 multiline_comment|/*****************************************************************************/
 macro_line|#ifndef _IPS_H_
@@ -168,21 +171,9 @@ DECL|macro|IPS_USE_I2O_STATUS
 mdefine_line|#define IPS_USE_I2O_STATUS(ha)      (IPS_IS_MORPHEUS(ha))
 DECL|macro|IPS_USE_MEMIO
 mdefine_line|#define IPS_USE_MEMIO(ha)           ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         ((IPS_IS_TROMBONE(ha) || IPS_IS_CLARINET(ha)) &amp;&amp; &bslash;&n;                                          (ips_force_memio))) ? 1 : 0)
-macro_line|#ifndef VIRT_TO_BUS
-DECL|macro|VIRT_TO_BUS
-mdefine_line|#define VIRT_TO_BUS(x)           (uint32_t) virt_to_bus((void *) x)
-macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
 mdefine_line|#define MDELAY mdelay
-macro_line|#endif
-macro_line|#ifndef verify_area_20
-DECL|macro|verify_area_20
-mdefine_line|#define verify_area_20(t,a,sz)   (0) /* success */
-macro_line|#endif
-macro_line|#ifndef DECLARE_MUTEX_LOCKED
-DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(sem) struct semaphore sem = MUTEX_LOCKED;
 macro_line|#endif
 multiline_comment|/*&n;    * Lock macros&n;    */
 DECL|macro|IPS_SCB_LOCK
