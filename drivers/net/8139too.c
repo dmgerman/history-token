@@ -1177,26 +1177,52 @@ DECL|enum|tx_config_bits
 r_enum
 id|tx_config_bits
 (brace
-DECL|enumerator|TxIFG1
-id|TxIFG1
+multiline_comment|/* Interframe Gap Time. Only TxIFG96 doesn&squot;t violate IEEE 802.3 */
+DECL|enumerator|TxIFGShift
+id|TxIFGShift
 op_assign
-(paren
-l_int|1
-op_lshift
-l_int|25
-)paren
-comma
-multiline_comment|/* Interframe Gap Time */
-DECL|enumerator|TxIFG0
-id|TxIFG0
-op_assign
-(paren
-l_int|1
-op_lshift
 l_int|24
+comma
+DECL|enumerator|TxIFG84
+id|TxIFG84
+op_assign
+(paren
+l_int|0
+op_lshift
+id|TxIFGShift
 )paren
 comma
-multiline_comment|/* Enabling these bits violates IEEE 802.3 */
+multiline_comment|/* 8.4us / 840ns (10 / 100Mbps) */
+DECL|enumerator|TxIFG88
+id|TxIFG88
+op_assign
+(paren
+l_int|1
+op_lshift
+id|TxIFGShift
+)paren
+comma
+multiline_comment|/* 8.8us / 880ns (10 / 100Mbps) */
+DECL|enumerator|TxIFG92
+id|TxIFG92
+op_assign
+(paren
+l_int|2
+op_lshift
+id|TxIFGShift
+)paren
+comma
+multiline_comment|/* 9.2us / 920ns (10 / 100Mbps) */
+DECL|enumerator|TxIFG96
+id|TxIFG96
+op_assign
+(paren
+l_int|3
+op_lshift
+id|TxIFGShift
+)paren
+comma
+multiline_comment|/* 9.6us / 960ns (10 / 100Mbps) */
 DECL|enumerator|TxLoopBack
 id|TxLoopBack
 op_assign
@@ -2715,6 +2741,8 @@ r_int
 r_int
 id|rtl8139_tx_config
 op_assign
+id|TxIFG96
+op_or
 (paren
 id|TX_DMA_BURST
 op_lshift
@@ -5822,7 +5850,6 @@ comma
 id|tp-&gt;rx_config
 )paren
 suffix:semicolon
-multiline_comment|/* Check this value: the documentation for IFG contradicts ifself. */
 id|RTL_W32
 (paren
 id|TxConfig
