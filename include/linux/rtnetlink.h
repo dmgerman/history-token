@@ -1103,6 +1103,11 @@ id|IFLA_MAP
 comma
 DECL|macro|IFLA_MAP
 mdefine_line|#define IFLA_MAP IFLA_MAP
+DECL|enumerator|IFLA_WEIGHT
+id|IFLA_WEIGHT
+comma
+DECL|macro|IFLA_WEIGHT
+mdefine_line|#define IFLA_WEIGHT IFLA_WEIGHT
 DECL|enumerator|__IFLA_MAX
 id|__IFLA_MAX
 )brace

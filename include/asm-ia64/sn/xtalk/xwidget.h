@@ -399,7 +399,7 @@ multiline_comment|/*&n; * Returns 1 if a driver that handles devices described b
 DECL|macro|XWIDGET_HARDWARE_ID_MATCH
 mdefine_line|#define XWIDGET_HARDWARE_ID_MATCH(hwid1, hwid2) &bslash;&n;&t;(((hwid1)-&gt;part_num == (hwid2)-&gt;part_num) &amp;&amp; &bslash;&n;&t;(((hwid1)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid2)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid1)-&gt;mfg_num == (hwid2)-&gt;mfg_num)))
 multiline_comment|/* Generic crosstalk widget initialization interface */
-macro_line|#if __KERNEL__
+macro_line|#ifdef __KERNEL__
 r_extern
 r_int
 id|xwidget_driver_register

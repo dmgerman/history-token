@@ -4447,11 +4447,7 @@ l_int|1
 dot
 id|time
 op_assign
-id|CT_LE_W
-c_func
-(paren
 id|time
-)paren
 suffix:semicolon
 id|de
 (braket
@@ -4467,11 +4463,7 @@ l_int|1
 dot
 id|date
 op_assign
-id|CT_LE_W
-c_func
-(paren
 id|date
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4494,11 +4486,7 @@ l_int|1
 dot
 id|ctime
 op_assign
-id|CT_LE_W
-c_func
-(paren
 id|time
-)paren
 suffix:semicolon
 id|de
 (braket
@@ -4528,11 +4516,7 @@ l_int|1
 dot
 id|cdate
 op_assign
-id|CT_LE_W
-c_func
-(paren
 id|date
-)paren
 suffix:semicolon
 )brace
 id|de

@@ -294,7 +294,7 @@ id|u_int32_t
 id|vgid_t
 suffix:semicolon
 macro_line|#endif /*_VUID_T_ */
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 DECL|struct|CodaFid
 r_struct
 id|CodaFid
@@ -430,7 +430,7 @@ suffix:semicolon
 multiline_comment|/* same for groups */
 )brace
 suffix:semicolon
-macro_line|#else /* not defined(CODA_FS_OLD_API) */
+macro_line|#else /* not defined(CONFIG_CODA_FS_OLD_API) */
 DECL|struct|CodaFid
 r_struct
 id|CodaFid
@@ -679,7 +679,7 @@ macro_line|#if 0
 mdefine_line|#define CODA_KERNEL_VERSION 0 /* don&squot;t care about kernel version number */
 mdefine_line|#define CODA_KERNEL_VERSION 1 /* The old venus 4.6 compatible interface */
 macro_line|#endif
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 DECL|macro|CODA_KERNEL_VERSION
 mdefine_line|#define CODA_KERNEL_VERSION 2 /* venus_lookup got an extra parameter */
 macro_line|#else
@@ -700,7 +700,7 @@ id|u_int32_t
 id|unique
 suffix:semicolon
 multiline_comment|/* Keep multiple outstanding msgs distinct */
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 DECL|member|pid
 id|u_int16_t
 id|pid
@@ -1534,7 +1534,7 @@ r_struct
 id|coda_out_hdr
 id|oh
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 DECL|member|cred
 r_struct
 id|coda_cred

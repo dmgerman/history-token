@@ -1295,11 +1295,6 @@ id|midi_hdr
 op_star
 id|midihdr
 suffix:semicolon
-id|ssize_t
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1442,11 +1437,6 @@ id|midihdr
 )paren
 suffix:semicolon
 r_return
-id|ret
-ques
-c_cond
-id|ret
-suffix:colon
 op_minus
 id|EFAULT
 suffix:semicolon

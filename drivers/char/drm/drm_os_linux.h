@@ -48,10 +48,88 @@ multiline_comment|/** IRQ handler arguments and return type and values */
 DECL|macro|DRM_IRQ_ARGS
 mdefine_line|#define DRM_IRQ_ARGS&t;&t;int irq, void *arg, struct pt_regs *regs
 multiline_comment|/** AGP types */
+macro_line|#if __OS_HAS_AGP
 DECL|macro|DRM_AGP_MEM
 mdefine_line|#define DRM_AGP_MEM&t;&t;struct agp_memory
 DECL|macro|DRM_AGP_KERN
 mdefine_line|#define DRM_AGP_KERN&t;&t;struct agp_kern_info
+macro_line|#else
+multiline_comment|/* define some dummy types for non AGP supporting kernels */
+DECL|struct|no_agp_kern
+r_struct
+id|no_agp_kern
+(brace
+DECL|member|aper_base
+r_int
+r_int
+id|aper_base
+suffix:semicolon
+DECL|member|aper_size
+r_int
+r_int
+id|aper_size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|DRM_AGP_MEM
+mdefine_line|#define DRM_AGP_MEM             int
+DECL|macro|DRM_AGP_KERN
+mdefine_line|#define DRM_AGP_KERN            struct no_agp_kern
+macro_line|#endif
+macro_line|#if !(__OS_HAS_MTRR)
+DECL|function|mtrr_add
+r_static
+id|__inline__
+r_int
+id|mtrr_add
+(paren
+r_int
+r_int
+id|base
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|type
+comma
+r_char
+id|increment
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|mtrr_del
+r_static
+id|__inline__
+r_int
+id|mtrr_del
+(paren
+r_int
+id|reg
+comma
+r_int
+r_int
+id|base
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|macro|MTRR_TYPE_WRCOMB
+mdefine_line|#define MTRR_TYPE_WRCOMB     1
+macro_line|#endif
 multiline_comment|/** Task queue handler arguments */
 DECL|macro|DRM_TASKQUEUE_ARGS
 mdefine_line|#define DRM_TASKQUEUE_ARGS&t;void *arg

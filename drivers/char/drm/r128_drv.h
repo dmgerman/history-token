@@ -235,11 +235,6 @@ id|drm_local_map_t
 op_star
 id|ring_rptr
 suffix:semicolon
-DECL|member|buffers
-id|drm_local_map_t
-op_star
-id|buffers
-suffix:semicolon
 DECL|member|agp_textures
 id|drm_local_map_t
 op_star

@@ -8,6 +8,7 @@ macro_line|#ifdef CONFIG_DISCONTIGMEM
 r_extern
 r_struct
 id|pglist_data
+op_star
 id|node_data
 (braket
 )braket
@@ -102,7 +103,7 @@ DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid((pfn) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
 DECL|macro|NODE_DATA
-mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;node_data[nid])
+mdefine_line|#define NODE_DATA(nid)&t;&t;(node_data[nid])
 DECL|macro|node_localnr
 mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_start_pfn)
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */

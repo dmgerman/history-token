@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 r_extern
-r_void
-id|timer_init
+r_int
+id|perfmon_init
 c_func
 (paren
 r_struct
@@ -13,6 +13,14 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|perfmon_exit
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|function|oprofile_arch_init
@@ -28,6 +36,15 @@ op_star
 id|ops
 )paren
 (brace
+macro_line|#ifdef CONFIG_PERFMON
+r_return
+id|perfmon_init
+c_func
+(paren
+id|ops
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|ENODEV
@@ -41,5 +58,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PERFMON
+id|perfmon_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

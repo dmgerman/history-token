@@ -1295,10 +1295,6 @@ suffix:semicolon
 multiline_comment|/* number of characters left in xmit buffer before we ask for more */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* tty callbacks */
 r_static
 r_int
@@ -3973,12 +3969,14 @@ suffix:semicolon
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;max_frame_size
@@ -4598,9 +4596,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -20969,9 +20970,11 @@ id|StartIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|SCABUFSIZE
@@ -21032,7 +21035,7 @@ id|copy_count
 r_int
 id|partial_count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|copy_count
@@ -21243,9 +21246,11 @@ id|info
 comma
 id|buf
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|SCABUFSIZE
@@ -21267,9 +21272,12 @@ suffix:semicolon
 (brace
 id|copy_count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|SCABUFSIZE

@@ -90,15 +90,15 @@ comma
 l_string|&quot;read_inode_bitmap&quot;
 comma
 l_string|&quot;Cannot read inode bitmap - &quot;
-l_string|&quot;block_group = %lu, inode_bitmap = %lu&quot;
+l_string|&quot;block_group = %lu, inode_bitmap = %u&quot;
 comma
 id|block_group
 comma
+id|le32_to_cpu
+c_func
 (paren
-r_int
-r_int
-)paren
 id|desc-&gt;bg_inode_bitmap
+)paren
 )paren
 suffix:semicolon
 id|error_out

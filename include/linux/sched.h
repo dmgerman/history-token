@@ -640,7 +640,7 @@ r_int
 r_int
 id|saved_auxv
 (braket
-l_int|40
+l_int|42
 )braket
 suffix:semicolon
 multiline_comment|/* for /proc/PID/auxv */
@@ -1367,7 +1367,7 @@ multiline_comment|/* threadgroup leader */
 multiline_comment|/* PID/PID hash table linkage. */
 DECL|member|pids
 r_struct
-id|pid_link
+id|pid
 id|pids
 (braket
 id|PIDTYPE_MAX
@@ -2035,13 +2035,18 @@ r_struct
 id|mm_struct
 id|init_mm
 suffix:semicolon
+DECL|macro|find_task_by_pid
+mdefine_line|#define find_task_by_pid(nr)&t;find_task_by_pid_type(PIDTYPE_PID, nr)
 r_extern
 r_struct
 id|task_struct
 op_star
-id|find_task_by_pid
+id|find_task_by_pid_type
 c_func
 (paren
+r_int
+id|type
+comma
 r_int
 id|pid
 )paren
@@ -3269,23 +3274,18 @@ op_star
 id|p
 )paren
 (brace
-r_struct
-id|pid
-op_star
-id|pid
-op_assign
+r_return
+id|list_empty
+c_func
+(paren
+op_amp
 id|p-&gt;pids
 (braket
 id|PIDTYPE_TGID
 )braket
 dot
-id|pidptr
-suffix:semicolon
-r_return
-id|pid-&gt;task_list.next-&gt;next
-op_eq
-op_amp
-id|pid-&gt;task_list
+id|pid_list
+)paren
 suffix:semicolon
 )brace
 DECL|macro|delay_group_leader

@@ -716,7 +716,7 @@ mdefine_line|#define STAB0_PHYS_ADDR&t;(STAB0_PAGE&lt;&lt;PAGE_SHIFT)
 DECL|macro|STAB0_VIRT_ADDR
 mdefine_line|#define STAB0_VIRT_ADDR&t;(KERNELBASE+STAB0_PHYS_ADDR)
 DECL|macro|SLB_NUM_BOLTED
-mdefine_line|#define SLB_NUM_BOLTED&t;&t;2
+mdefine_line|#define SLB_NUM_BOLTED&t;&t;3
 DECL|macro|SLB_CACHE_ENTRIES
 mdefine_line|#define SLB_CACHE_ENTRIES&t;8
 multiline_comment|/* Bits in the SLB ESID word */

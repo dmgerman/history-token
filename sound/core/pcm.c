@@ -5565,6 +5565,15 @@ c_func
 id|snd_pcm_mmap_data
 )paren
 suffix:semicolon
+macro_line|#if SNDRV_PCM_INFO_MMAP_IOMEM
+DECL|variable|snd_pcm_lib_mmap_iomem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_lib_mmap_iomem
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* pcm_misc.c */
 DECL|variable|snd_pcm_format_signed
 id|EXPORT_SYMBOL

@@ -106,6 +106,21 @@ DECL|macro|ia64_pfn_valid
 macro_line|# define ia64_pfn_valid(pfn) 1
 macro_line|#endif
 macro_line|#ifndef CONFIG_DISCONTIGMEM
+macro_line|# ifdef CONFIG_VIRTUAL_MEM_MAP
+r_extern
+r_struct
+id|page
+op_star
+id|vmem_map
+suffix:semicolon
+DECL|macro|pfn_valid
+macro_line|#  define pfn_valid(pfn)       (((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
+DECL|macro|page_to_pfn
+macro_line|#  define page_to_pfn(page)    ((unsigned long) (page - vmem_map))
+DECL|macro|pfn_to_page
+macro_line|#  define pfn_to_page(pfn)     (vmem_map + (pfn))
+macro_line|# endif
+macro_line|#else /* !CONFIG_VIRTUAL_MEM_MAP */
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
 DECL|macro|page_to_pfn

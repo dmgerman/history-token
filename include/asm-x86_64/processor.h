@@ -113,6 +113,14 @@ id|x86_virt_bits
 comma
 id|x86_phys_bits
 suffix:semicolon
+DECL|member|x86_num_cores
+id|__u8
+id|x86_num_cores
+suffix:semicolon
+DECL|member|x86_apicid
+id|__u8
+id|x86_apicid
+suffix:semicolon
 DECL|member|x86_power
 id|__u32
 id|x86_power
@@ -171,7 +179,7 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 macro_line|#else
 DECL|macro|cpu_data
-mdefine_line|#define cpu_data &amp;boot_cpu_data
+mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif

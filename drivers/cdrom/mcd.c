@@ -4231,19 +4231,13 @@ id|MST_READY
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* no disk? wait a sec... */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
-)brace
 )brace
 r_while
 c_loop

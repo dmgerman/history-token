@@ -68,10 +68,6 @@ DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
 DECL|macro|IRQ_T
 mdefine_line|#define IRQ_T(info) ((info-&gt;flags &amp; ASYNC_SHARE_IRQ) ? SA_SHIRQ : SA_INTERRUPT)
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; *    Define the Moxa PCI vendor and device IDs.&n; */
 macro_line|#ifndef&t;PCI_VENDOR_ID_MOXA
 DECL|macro|PCI_VENDOR_ID_MOXA
@@ -3549,12 +3545,14 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -3618,12 +3616,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -3710,12 +3710,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE

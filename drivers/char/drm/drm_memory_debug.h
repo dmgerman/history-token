@@ -1980,7 +1980,7 @@ id|alloc_count
 suffix:semicolon
 )brace
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 DECL|function|alloc_agp
 id|DRM_AGP_MEM
 op_star

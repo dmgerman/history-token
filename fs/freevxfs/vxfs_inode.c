@@ -1044,10 +1044,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * vxfs_put_inode - remove inode from main memory&n; * @ip:&t;&t;inode to discard.&n; *&n; * Description:&n; *  vxfs_put_inode() is called on each iput.  If we are the last&n; *  link in memory, free the fspriv inode area.&n; */
+multiline_comment|/**&n; * vxfs_clear_inode - remove inode from main memory&n; * @ip:&t;&t;inode to discard.&n; *&n; * Description:&n; *  vxfs_clear_inode() is called on the final iput and frees the private&n; *  inode area.&n; */
 r_void
-DECL|function|vxfs_put_inode
-id|vxfs_put_inode
+DECL|function|vxfs_clear_inode
+id|vxfs_clear_inode
 c_func
 (paren
 r_struct
@@ -1056,18 +1056,6 @@ op_star
 id|ip
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|ip-&gt;i_count
-)paren
-op_eq
-l_int|1
-)paren
 id|kmem_cache_free
 c_func
 (paren

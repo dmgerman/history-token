@@ -8476,7 +8476,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_OF */
-macro_line|#ifdef CONFIG_FB_RIVA_I2C
+macro_line|#if defined(CONFIG_FB_RIVA_I2C) &amp;&amp; !defined(CONFIG_PPC_OF)
 DECL|function|riva_get_EDID_i2c
 r_static
 r_int

@@ -1977,7 +1977,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The manual (p. 2) says this address is in &quot;VM space&quot;.  This&n;&t; * means it&squot;s an offset from the start of AGP space.&n;&t; */
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -2587,10 +2587,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;mmio
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;mmio
+id|dev
 comma
 id|init-&gt;mmio_offset
 )paren
@@ -2630,10 +2632,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;cce_ring
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;cce_ring
+id|dev
 comma
 id|init-&gt;ring_offset
 )paren
@@ -2673,10 +2677,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;ring_rptr
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;ring_rptr
+id|dev
 comma
 id|init-&gt;ring_rptr_offset
 )paren
@@ -2716,10 +2722,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev-&gt;agp_buffer_map
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev
 comma
 id|init-&gt;buffers_offset
 )paren
@@ -2728,7 +2736,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 )paren
 (brace
 id|DRM_ERROR
@@ -2766,10 +2774,12 @@ op_logical_neg
 id|dev_priv-&gt;is_pci
 )paren
 (brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;agp_textures
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;agp_textures
+id|dev
 comma
 id|init-&gt;agp_textures_offset
 )paren
@@ -2826,7 +2836,7 @@ op_plus
 id|init-&gt;sarea_priv_offset
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -2834,7 +2844,7 @@ op_logical_neg
 id|dev_priv-&gt;is_pci
 )paren
 (brace
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
 id|dev_priv-&gt;cce_ring
@@ -2842,7 +2852,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
@@ -2850,10 +2860,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren
@@ -2868,7 +2878,7 @@ op_logical_neg
 id|dev_priv-&gt;ring_rptr-&gt;handle
 op_logical_or
 op_logical_neg
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 (brace
 id|DRM_ERROR
@@ -2919,16 +2929,16 @@ op_star
 )paren
 id|dev_priv-&gt;ring_rptr-&gt;offset
 suffix:semicolon
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 suffix:semicolon
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -3028,7 +3038,7 @@ comma
 id|dev_priv-&gt;sarea_priv-&gt;last_dispatch
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -3092,7 +3102,7 @@ comma
 id|dev_priv-&gt;bus_pci_gart
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 )brace
 macro_line|#endif
 id|r128_cce_init_ring_buffer
@@ -3166,7 +3176,7 @@ id|dev_priv
 op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -3181,7 +3191,7 @@ id|dev_priv-&gt;cce_ring
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
 id|dev_priv-&gt;cce_ring
@@ -3196,7 +3206,7 @@ id|dev_priv-&gt;ring_rptr
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
 id|dev_priv-&gt;ring_rptr
@@ -3207,14 +3217,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 op_ne
 l_int|NULL
 )paren
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren

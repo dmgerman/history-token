@@ -2,9 +2,6 @@ multiline_comment|/**&n; * &bslash;file drm_context.h &n; * IOCTLs for generic c
 multiline_comment|/*&n; * Created: Fri Nov 24 18:31:37 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 multiline_comment|/*&n; * ChangeLog:&n; *  2001-11-16&t;Torsten Duwe &lt;duwe@caldera.de&gt;&n; *&t;&t;added context constructor/destructor hooks,&n; *&t;&t;needed by SiS driver&squot;s memory management.&n; */
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#if !__HAVE_CTX_BITMAP
-macro_line|#error &quot;__HAVE_CTX_BITMAP must be defined&quot;
-macro_line|#endif
 multiline_comment|/******************************************************************/
 multiline_comment|/** &bslash;name Context bitmap support */
 multiline_comment|/*@{*/
@@ -1372,7 +1369,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DRIVER_CTX_CTOR
 r_if
 c_cond
 (paren
@@ -1380,14 +1376,23 @@ id|ctx.handle
 op_ne
 id|DRM_KERNEL_CONTEXT
 )paren
-id|DRIVER_CTX_CTOR
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.context_ctor
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|context_ctor
 c_func
 (paren
+id|dev
+comma
 id|ctx.handle
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: also pass dev ? */
-macro_line|#endif
+)brace
 id|ctx_entry
 op_assign
 id|DRM
@@ -1900,15 +1905,21 @@ op_ne
 id|DRM_KERNEL_CONTEXT
 )paren
 (brace
-macro_line|#ifdef DRIVER_CTX_DTOR
-id|DRIVER_CTX_DTOR
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.context_dtor
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|context_dtor
 c_func
 (paren
+id|dev
+comma
 id|ctx.handle
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: also pass dev ? */
-macro_line|#endif
 id|DRM
 c_func
 (paren

@@ -359,6 +359,12 @@ DECL|macro|SAA7133_BOARD_UPMOST_PURPLE_TV
 mdefine_line|#define SAA7133_BOARD_UPMOST_PURPLE_TV 36
 DECL|macro|SAA7134_BOARD_ITEMS_MTV005
 mdefine_line|#define SAA7134_BOARD_ITEMS_MTV005     37
+DECL|macro|SAA7134_BOARD_CINERGY200
+mdefine_line|#define SAA7134_BOARD_CINERGY200       38
+DECL|macro|SAA7134_BOARD_FLYTVPLATINUM
+mdefine_line|#define SAA7134_BOARD_FLYTVPLATINUM    39
+DECL|macro|SAA7134_BOARD_VIDEOMATE_TV_PVR
+mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV_PVR 40
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -433,11 +439,6 @@ id|saa7134_input
 id|mute
 suffix:semicolon
 multiline_comment|/* peripheral I/O */
-DECL|member|i2s_rate
-r_int
-r_int
-id|i2s_rate
-suffix:semicolon
 DECL|member|has_ts
 r_int
 r_int
@@ -454,12 +455,10 @@ r_int
 r_int
 id|tuner_type
 suffix:semicolon
-DECL|member|need_tda9887
+DECL|member|tda9887_conf
 r_int
 r_int
-id|need_tda9887
-suffix:colon
-l_int|1
+id|tda9887_conf
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1051,6 +1050,11 @@ r_int
 r_int
 id|tuner_type
 suffix:semicolon
+DECL|member|tda9887_conf
+r_int
+r_int
+id|tda9887_conf
+suffix:semicolon
 DECL|member|gpio_value
 r_int
 r_int
@@ -1187,6 +1191,10 @@ suffix:semicolon
 DECL|member|ctl_y_even
 r_int
 id|ctl_y_even
+suffix:semicolon
+DECL|member|ctl_automute
+r_int
+id|ctl_automute
 suffix:semicolon
 multiline_comment|/* crop */
 DECL|member|crop_bounds

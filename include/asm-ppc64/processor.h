@@ -11,9 +11,6 @@ macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
-DECL|macro|current_text_addr
-mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 multiline_comment|/* Machine State Register (MSR) Fields */
 DECL|macro|MSR_SF_LG
 mdefine_line|#define MSR_SF_LG&t;63              /* Enable 64 bit mode */
@@ -726,12 +723,22 @@ DECL|macro|XGLUE
 mdefine_line|#define XGLUE(a,b) a##b
 DECL|macro|GLUE
 mdefine_line|#define GLUE(a,b) XGLUE(a,b)
+multiline_comment|/* iSeries CTRL register (for runlatch) */
+DECL|macro|CTRLT
+mdefine_line|#define CTRLT&t;&t;0x098
+DECL|macro|CTRLF
+mdefine_line|#define CTRLF&t;&t;0x088
+DECL|macro|RUNLATCH
+mdefine_line|#define RUNLATCH&t;0x0001
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|_GLOBAL
 mdefine_line|#define _GLOBAL(name) &bslash;&n;&t;.section &quot;.text&quot;; &bslash;&n;&t;.align 2 ; &bslash;&n;&t;.globl name; &bslash;&n;&t;.globl GLUE(.,name); &bslash;&n;&t;.section &quot;.opd&quot;,&quot;aw&quot;; &bslash;&n;name: &bslash;&n;&t;.quad GLUE(.,name); &bslash;&n;&t;.quad .TOC.@tocbase; &bslash;&n;&t;.quad 0; &bslash;&n;&t;.previous; &bslash;&n;&t;.type GLUE(.,name),@function; &bslash;&n;GLUE(.,name):
 DECL|macro|_STATIC
 mdefine_line|#define _STATIC(name) &bslash;&n;&t;.section &quot;.text&quot;; &bslash;&n;&t;.align 2 ; &bslash;&n;&t;.section &quot;.opd&quot;,&quot;aw&quot;; &bslash;&n;name: &bslash;&n;&t;.quad GLUE(.,name); &bslash;&n;&t;.quad .TOC.@tocbase; &bslash;&n;&t;.quad 0; &bslash;&n;&t;.previous; &bslash;&n;&t;.type GLUE(.,name),@function; &bslash;&n;GLUE(.,name):
-macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#else /* __ASSEMBLY__ */
+multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
+DECL|macro|current_text_addr
+mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 multiline_comment|/* Macros for setting and retrieving special purpose registers */
 DECL|macro|mfmsr
 mdefine_line|#define mfmsr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
@@ -749,19 +756,8 @@ DECL|macro|mttbl
 mdefine_line|#define mttbl(v)&t;asm volatile(&quot;mttbl %0&quot;:: &quot;r&quot;(v))
 DECL|macro|mttbu
 mdefine_line|#define mttbu(v)&t;asm volatile(&quot;mttbu %0&quot;:: &quot;r&quot;(v))
-multiline_comment|/* iSeries CTRL register (for runlatch) */
-DECL|macro|CTRLT
-mdefine_line|#define CTRLT&t;&t;0x098
-DECL|macro|CTRLF
-mdefine_line|#define CTRLF&t;&t;0x088
-DECL|macro|RUNLATCH
-mdefine_line|#define RUNLATCH&t;0x0001
-multiline_comment|/* Size of an exception stack frame contained in the paca. */
-DECL|macro|EXC_FRAME_SIZE
-mdefine_line|#define EXC_FRAME_SIZE 64
 DECL|macro|mfasr
 mdefine_line|#define mfasr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfasr %0&quot; : &quot;=r&quot; (rval)); rval;})
-macro_line|#ifndef __ASSEMBLY__
 DECL|function|set_tb
 r_static
 r_inline
@@ -799,6 +795,7 @@ suffix:semicolon
 )brace
 DECL|macro|__get_SP
 mdefine_line|#define __get_SP()&t;({unsigned long sp; &bslash;&n;&t;&t;&t;asm volatile(&quot;mr %0,1&quot;: &quot;=r&quot; (sp)); sp;})
+macro_line|#ifdef __KERNEL__
 r_extern
 r_int
 id|have_of
@@ -888,7 +885,6 @@ id|task_struct
 op_star
 id|last_task_used_altivec
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* 64-bit user address space is 41-bits (2TBs user VM) */
 DECL|macro|TASK_SIZE_USER64
 mdefine_line|#define TASK_SIZE_USER64 (0x0000020000000000UL)
@@ -897,7 +893,6 @@ DECL|macro|TASK_SIZE_USER32
 mdefine_line|#define TASK_SIZE_USER32 (0x0000000100000000UL - (1*PAGE_SIZE))
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE (test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;TASK_SIZE_USER32 : TASK_SIZE_USER64)
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE_USER32
 mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (PAGE_ALIGN(STACK_TOP_USER32 / 4))
@@ -927,6 +922,11 @@ r_int
 id|ksp
 suffix:semicolon
 multiline_comment|/* Kernel stack pointer */
+DECL|member|ksp_vsid
+r_int
+r_int
+id|ksp_vsid
+suffix:semicolon
 DECL|member|regs
 r_struct
 id|pt_regs
@@ -1215,9 +1215,10 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
-macro_line|#endif /* ASSEMBLY */
 DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
 mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
+macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Number of entries in the SLB. If this ever changes we should handle&n; * it with a use a cpu feature fixup.&n; */
 DECL|macro|SLB_NUM_ENTRIES
 mdefine_line|#define SLB_NUM_ENTRIES 64

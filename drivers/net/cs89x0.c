@@ -1,11 +1,16 @@
 multiline_comment|/* cs89x0.c: A Crystal Semiconductor (Now Cirrus Logic) CS89[02]0&n; *  driver for linux.&n; */
-multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;        The author may be reached at nelson@crynwr.com, Crynwr&n;        Software, 521 Pleasant Valley Rd., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;&n;  Russ Nelson       : Jul 13 1998.  Added RxOnly DMA support.&n;&n;  Melody Lee        : Aug 10 1999.  Changes for Linux 2.2.5 compatibility. &n;                    : email: ethernet@crystal.cirrus.com&n;&n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  Andrew Morton     : andrewm@uow.edu.au&n;                    : Kernel 2.3.48&n;                    : Handle kmalloc() failures&n;                    : Other resource allocation fixes&n;                    : Add SMP locks&n;                    : Integrate Russ Nelson&squot;s ALLOW_DMA functionality back in.&n;                    : If ALLOW_DMA is true, make DMA runtime selectable&n;                    : Folded in changes from Cirrus (Melody Lee&n;                    : &lt;klee@crystal.cirrus.com&gt;)&n;                    : Don&squot;t call netif_wake_queue() in net_send_packet()&n;                    : Fixed an out-of-mem bug in dma_rx()&n;                    : Updated Documentation/networking/cs89x0.txt&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.3.99-pre1&n;                    : Use skb_reserve to longword align IP header (two places)&n;                    : Remove a delay loop from dma_rx()&n;                    : Replace &squot;100&squot; with HZ&n;                    : Clean up a couple of skb API abuses&n;                    : Added &squot;cs89x0_dma=N&squot; kernel boot option&n;                    : Correctly initialise lp-&gt;lock in non-module compile&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.3.99-pre4-1&n;                    : MOD_INC/DEC race fix (see&n;                    : http://www.uwsg.indiana.edu/hypermail/linux/kernel/0003.3/1532.html)&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.4.0-test7-pre2&n;                    : Enhanced EEPROM support to cover more devices,&n;                    :   abstracted IRQ mapping to support CONFIG_ARCH_CLPS7500 arch&n;                    :   (Jason Gunthorpe &lt;jgg@ualberta.ca&gt;)&n;&n;  Andrew Morton     : Kernel 2.4.0-test11-pre4&n;                    : Use dev-&gt;name in request_*() (Andrey Panin)&n;                    : Fix an error-path memleak in init_module()&n;                    : Preserve return value from request_irq()&n;                    : Fix type of `media&squot; module parm (Keith Owens)&n;                    : Use SET_MODULE_OWNER()&n;                    : Tidied up strange request_irq() abuse in net_open().&n;&n;  Andrew Morton     : Kernel 2.4.3-pre1&n;                    : Request correct number of pages for DMA (Hugh Dickens)&n;                    : Select PP_ChipID _after_ unregister_netdev in cleanup_module()&n;                    :  because unregister_netdev() calls get_stats.&n;                    : Make `version[]&squot; __initdata&n;                    : Uninlined the read/write reg/word functions.&n;&n;  Oskar Schirmer    : oskar@scara.com&n;                    : HiCO.SH4 (superh) support added (irq#1, cs89x0_media=)&n;&n;*/
+multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;        The author may be reached at nelson@crynwr.com, Crynwr&n;        Software, 521 Pleasant Valley Rd., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;&n;  Russ Nelson       : Jul 13 1998.  Added RxOnly DMA support.&n;&n;  Melody Lee        : Aug 10 1999.  Changes for Linux 2.2.5 compatibility. &n;                    : email: ethernet@crystal.cirrus.com&n;&n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  Andrew Morton     : andrewm@uow.edu.au&n;                    : Kernel 2.3.48&n;                    : Handle kmalloc() failures&n;                    : Other resource allocation fixes&n;                    : Add SMP locks&n;                    : Integrate Russ Nelson&squot;s ALLOW_DMA functionality back in.&n;                    : If ALLOW_DMA is true, make DMA runtime selectable&n;                    : Folded in changes from Cirrus (Melody Lee&n;                    : &lt;klee@crystal.cirrus.com&gt;)&n;                    : Don&squot;t call netif_wake_queue() in net_send_packet()&n;                    : Fixed an out-of-mem bug in dma_rx()&n;                    : Updated Documentation/networking/cs89x0.txt&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.3.99-pre1&n;                    : Use skb_reserve to longword align IP header (two places)&n;                    : Remove a delay loop from dma_rx()&n;                    : Replace &squot;100&squot; with HZ&n;                    : Clean up a couple of skb API abuses&n;                    : Added &squot;cs89x0_dma=N&squot; kernel boot option&n;                    : Correctly initialise lp-&gt;lock in non-module compile&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.3.99-pre4-1&n;                    : MOD_INC/DEC race fix (see&n;                    : http://www.uwsg.indiana.edu/hypermail/linux/kernel/0003.3/1532.html)&n;&n;  Andrew Morton     : andrewm@uow.edu.au / Kernel 2.4.0-test7-pre2&n;                    : Enhanced EEPROM support to cover more devices,&n;                    :   abstracted IRQ mapping to support CONFIG_ARCH_CLPS7500 arch&n;                    :   (Jason Gunthorpe &lt;jgg@ualberta.ca&gt;)&n;&n;  Andrew Morton     : Kernel 2.4.0-test11-pre4&n;                    : Use dev-&gt;name in request_*() (Andrey Panin)&n;                    : Fix an error-path memleak in init_module()&n;                    : Preserve return value from request_irq()&n;                    : Fix type of `media&squot; module parm (Keith Owens)&n;                    : Use SET_MODULE_OWNER()&n;                    : Tidied up strange request_irq() abuse in net_open().&n;&n;  Andrew Morton     : Kernel 2.4.3-pre1&n;                    : Request correct number of pages for DMA (Hugh Dickens)&n;                    : Select PP_ChipID _after_ unregister_netdev in cleanup_module()&n;                    :  because unregister_netdev() calls get_stats.&n;                    : Make `version[]&squot; __initdata&n;                    : Uninlined the read/write reg/word functions.&n;&n;  Oskar Schirmer    : oskar@scara.com&n;                    : HiCO.SH4 (superh) support added (irq#1, cs89x0_media=)&n;&n;  Deepak Saxena     : dsaxena@plexity.net&n;                    : Intel IXDP2x01 (XScale ixp2x00 NPU) platform support&n;&n;*/
 multiline_comment|/* Always include &squot;config.h&squot; first in case the user wants to turn on&n;   or override something. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * Set this to zero to disable DMA code&n; *&n; * Note that even if DMA is turned off we still support the &squot;dma&squot; and  &squot;use_dma&squot;&n; * module options so we don&squot;t break any startup scripts.&n; */
+macro_line|#ifndef CONFIG_ARCH_IXDP2X01
+DECL|macro|ALLOW_DMA
+mdefine_line|#define ALLOW_DMA&t;0
+macro_line|#else
 DECL|macro|ALLOW_DMA
 mdefine_line|#define ALLOW_DMA&t;1
+macro_line|#endif
 multiline_comment|/*&n; * Set this to zero to remove all the debug statements via&n; * dead code elimination&n; */
 DECL|macro|DEBUGGING
 mdefine_line|#define DEBUGGING&t;1
@@ -129,6 +134,41 @@ id|cs8900_irq_map
 op_assign
 (brace
 l_int|1
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+suffix:semicolon
+macro_line|#elif defined(CONFIG_ARCH_IXDP2X01)
+macro_line|#include &lt;asm/irq.h&gt;
+DECL|variable|__initdata
+r_static
+r_int
+r_int
+id|netcard_portlist
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+id|IXDP2X01_CS8900_VIRT_BASE
+comma
+l_int|0
+)brace
+suffix:semicolon
+DECL|variable|cs8900_irq_map
+r_static
+r_int
+r_int
+id|cs8900_irq_map
+(braket
+)braket
+op_assign
+(brace
+id|IRQ_IXDP2X01_CS8900
 comma
 l_int|0
 comma
@@ -1612,21 +1652,6 @@ r_goto
 id|out2
 suffix:semicolon
 )brace
-id|ioaddr
-op_and_assign
-op_complement
-l_int|3
-suffix:semicolon
-id|outw
-c_func
-(paren
-id|PP_ChipID
-comma
-id|ioaddr
-op_plus
-id|ADD_PORT
-)paren
-suffix:semicolon
 )brace
 id|printk
 c_func
@@ -1640,6 +1665,21 @@ id|ioaddr
 op_plus
 id|ADD_PORT
 )paren
+)paren
+suffix:semicolon
+id|ioaddr
+op_and_assign
+op_complement
+l_int|3
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|PP_ChipID
+comma
+id|ioaddr
+op_plus
+id|ADD_PORT
 )paren
 suffix:semicolon
 r_if
@@ -2726,6 +2766,15 @@ op_eq
 id|CS8900
 )paren
 (brace
+macro_line|#ifdef CONFIG_ARCH_IXDP2X01
+id|i
+op_assign
+id|cs8900_irq_map
+(braket
+l_int|0
+)braket
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* Translate the IRQ using the IRQ mapping table. */
 r_if
 c_cond
@@ -2832,6 +2881,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -3790,6 +3840,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifndef CONFIG_ARCH_IXDP2X01
 r_struct
 id|net_local
 op_star
@@ -3806,6 +3857,7 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+macro_line|#endif
 r_int
 id|reset_start_time
 suffix:semicolon
@@ -3842,6 +3894,7 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_IXDP2X01
 r_if
 c_cond
 (paren
@@ -3928,6 +3981,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* IXDP2x01 */
 multiline_comment|/* Wait until the chip is reset */
 id|reset_start_time
 op_assign
@@ -5111,6 +5165,7 @@ suffix:semicolon
 r_else
 macro_line|#endif
 (brace
+macro_line|#ifndef CONFIG_ARCH_IXDP2X01
 r_if
 c_cond
 (paren
@@ -5149,6 +5204,7 @@ r_goto
 id|bad_out
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* FIXME: Cirrus&squot; release had this: */
 id|writereg
 c_func
@@ -7246,6 +7302,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#if ALLOW_DMA
 r_struct
 id|net_local
 op_star
@@ -7257,6 +7314,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|netif_stop_queue
 c_func
 (paren

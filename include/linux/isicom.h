@@ -158,8 +158,6 @@ DECL|macro|ClearInterrupt
 mdefine_line|#define ClearInterrupt(base) (inw((base)+0x0a))&t;
 DECL|macro|BOARD
 mdefine_line|#define&t;BOARD(line)  (((line) &gt;&gt; 4) &amp; 0x3)
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) ( (a) &lt; (b) ? (a) : (b) )
 multiline_comment|/*&t;isi kill queue bitmap&t;*/
 DECL|macro|ISICOM_KILLTX
 mdefine_line|#define&t;&t;ISICOM_KILLTX&t;&t;0x01

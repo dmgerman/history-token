@@ -95,6 +95,10 @@ DECL|macro|TUNER_PHILIPS_4IN1
 mdefine_line|#define TUNER_PHILIPS_4IN1       44&t;/* ATI TV Wonder Pro - Conexant */
 DECL|macro|TUNER_MICROTUNE_4049FM5
 mdefine_line|#define TUNER_MICROTUNE_4049FM5  45
+DECL|macro|TUNER_LG_NTSC_TAPE
+mdefine_line|#define TUNER_LG_NTSC_TAPE       47
+DECL|macro|TUNER_TNF_8831BGFF
+mdefine_line|#define TUNER_TNF_8831BGFF       48
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -127,6 +131,8 @@ DECL|macro|Microtune
 mdefine_line|#define Microtune 8
 DECL|macro|HITACHI
 mdefine_line|#define HITACHI 9
+DECL|macro|Panasonic
+mdefine_line|#define Panasonic 10
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ
@@ -135,5 +141,29 @@ macro_line|#if 0 /* obsolete */
 macro_line|# define TUNER_SET_RADIOFREQ         _IOW(&squot;t&squot;,3,int)    /* set radio freq */
 macro_line|# define TUNER_SET_MODE              _IOW(&squot;t&squot;,4,int)    /* set tuner mode */
 macro_line|#endif
+DECL|macro|TDA9887_SET_CONFIG
+mdefine_line|#define  TDA9887_SET_CONFIG          _IOW(&squot;t&squot;,5,int)
+multiline_comment|/* tv card specific */
+DECL|macro|TDA9887_PRESENT
+macro_line|# define TDA9887_PRESENT             (1&lt;&lt;0)
+DECL|macro|TDA9887_PORT1
+macro_line|# define TDA9887_PORT1               (1&lt;&lt;1)
+DECL|macro|TDA9887_PORT2
+macro_line|# define TDA9887_PORT2               (1&lt;&lt;2)
+DECL|macro|TDA9887_QSS
+macro_line|# define TDA9887_QSS                 (1&lt;&lt;3)
+DECL|macro|TDA9887_INTERCARRIER
+macro_line|# define TDA9887_INTERCARRIER        (1&lt;&lt;4)
+multiline_comment|/* config options */
+DECL|macro|TDA9887_DEEMPHASIS_MASK
+macro_line|# define TDA9887_DEEMPHASIS_MASK     (3&lt;&lt;16)
+DECL|macro|TDA9887_DEEMPHASIS_NONE
+macro_line|# define TDA9887_DEEMPHASIS_NONE     (1&lt;&lt;16)
+DECL|macro|TDA9887_DEEMPHASIS_50
+macro_line|# define TDA9887_DEEMPHASIS_50       (2&lt;&lt;16)
+DECL|macro|TDA9887_DEEMPHASIS_75
+macro_line|# define TDA9887_DEEMPHASIS_75       (3&lt;&lt;16)
+DECL|macro|TDA9887_AUTOMUTE
+macro_line|# define TDA9887_AUTOMUTE            (1&lt;&lt;18)
 macro_line|#endif
 eof

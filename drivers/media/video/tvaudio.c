@@ -6775,6 +6775,7 @@ suffix:semicolon
 DECL|function|audiochip_init_module
 r_static
 r_int
+id|__init
 id|audiochip_init_module
 c_func
 (paren
@@ -6839,6 +6840,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|i2c_add_driver
 c_func
 (paren
@@ -6846,13 +6848,11 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|audiochip_cleanup_module
 r_static
 r_void
+id|__exit
 id|audiochip_cleanup_module
 c_func
 (paren

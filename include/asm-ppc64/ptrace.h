@@ -140,7 +140,26 @@ suffix:semicolon
 multiline_comment|/* Result of a system call */
 )brace
 suffix:semicolon
+DECL|macro|instruction_pointer
+mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|STACK_FRAME_OVERHEAD
 mdefine_line|#define STACK_FRAME_OVERHEAD&t;112&t;/* size of minimum stack frame */
 multiline_comment|/* Size of dummy stack frame allocated when calling signal handler. */
@@ -148,10 +167,6 @@ DECL|macro|__SIGNAL_FRAMESIZE
 mdefine_line|#define __SIGNAL_FRAMESIZE&t;128
 DECL|macro|__SIGNAL_FRAMESIZE32
 mdefine_line|#define __SIGNAL_FRAMESIZE32&t;64
-DECL|macro|instruction_pointer
-mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
-DECL|macro|profile_pc
-mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((((regs)-&gt;msr) &gt;&gt; MSR_PR_LG) &amp; 0x1)
 DECL|macro|force_successful_syscall_return

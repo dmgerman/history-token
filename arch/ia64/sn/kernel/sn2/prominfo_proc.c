@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999,2001-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * Module to export the system&squot;s Firmware Interface Tables, including&n; * PROM revision numbers, in /proc&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999,2001-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * Module to export the system&squot;s Firmware Interface Tables, including&n; * PROM revision numbers and banners, in /proc&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -50,9 +50,19 @@ macro_line|#else
 DECL|macro|TRACE
 macro_line|#  define TRACE()
 macro_line|#endif
+multiline_comment|/* Architected IA64 firmware space */
+DECL|macro|FW_BASE
+mdefine_line|#define FW_BASE&t;&t;&t;0x00000000FF000000
+DECL|macro|FW_TOP
+mdefine_line|#define FW_TOP&t;&t;&t;0x0000000100000000
 multiline_comment|/* Sub-regions determined by bits in Node Offset */
 DECL|macro|LB_PROM_SPACE
 mdefine_line|#define&t;LB_PROM_SPACE&t;&t;0x0000000700000000ul /* Local LB PROM */
+multiline_comment|/* Offset of PROM banner pointers in SAL A and SAL B */
+DECL|macro|SAL_A_BANNER_OFFSET
+mdefine_line|#define SAL_A_BANNER_OFFSET&t;(1 * 16)
+DECL|macro|SAL_B_BANNER_OFFSET
+mdefine_line|#define SAL_B_BANNER_OFFSET&t;(3 * 16)
 DECL|macro|FIT_SIGNATURE
 mdefine_line|#define FIT_SIGNATURE&t;&t;0x2020205f5449465ful
 multiline_comment|/* Standard Intel FIT entry types */
@@ -290,6 +300,81 @@ l_string|&quot;Reserved&quot;
 suffix:semicolon
 r_return
 l_string|&quot;Unknown type&quot;
+suffix:semicolon
+)brace
+r_static
+r_int
+r_int
+DECL|function|convert_fw_addr
+id|convert_fw_addr
+c_func
+(paren
+id|nasid_t
+id|nasid
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+multiline_comment|/* snag just the node-relative offset */
+id|addr
+op_and_assign
+op_complement
+l_int|0ul
+op_rshift
+(paren
+l_int|63
+op_minus
+l_int|35
+)paren
+suffix:semicolon
+multiline_comment|/* the pointer to SAL A is relative to IA-64 compatibility&n;&t; * space.  However, the PROM is mapped at a different offset&n;&t; * in MMR space (both local and global)&n;&t; */
+id|addr
+op_add_assign
+l_int|0x700000000
+suffix:semicolon
+r_return
+id|GLOBAL_MMR_ADDR
+c_func
+(paren
+id|nasid
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|valid_fw_addr
+id|valid_fw_addr
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|addr
+op_and_assign
+op_complement
+(paren
+l_int|1ul
+op_lshift
+l_int|63
+)paren
+suffix:semicolon
+multiline_comment|/* Clear cached/uncached bit */
+r_return
+(paren
+id|addr
+op_ge
+id|FW_BASE
+op_logical_and
+id|addr
+OL
+id|FW_TOP
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* These two routines read the FIT table directly from the FLASH PROM&n; * on a specific node.  The PROM can only be accessed using aligned 64&n; * bit reads, so we do that and then shift and mask the result to get&n; * at each field.&n; */
@@ -575,6 +660,18 @@ r_int
 r_int
 id|qw
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+id|nasid_t
+id|nasid
+op_assign
+id|NASID_GET
+c_func
+(paren
+id|fit
+)paren
+suffix:semicolon
 id|TRACE
 c_func
 (paren
@@ -643,7 +740,21 @@ id|qw
 op_eq
 id|FIT_ENTRY_SAL_A
 )paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fentry
+op_ge
+id|nentries
+)paren
 r_return
+l_int|0
+suffix:semicolon
+id|len
+op_assign
 id|sprintf
 c_func
 (paren
@@ -664,9 +775,140 @@ id|qw
 )paren
 )paren
 suffix:semicolon
-)brace
+id|page
+op_add_assign
+id|len
+suffix:semicolon
+id|qw
+op_assign
+id|readq
+c_func
+(paren
+id|fit
+op_plus
+l_int|2
+op_star
+id|fentry
+)paren
+suffix:semicolon
+multiline_comment|/* Address of SAL A */
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;SAL A at %p&bslash;n&quot;
+comma
+(paren
+r_void
+op_star
+)paren
+id|qw
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|valid_fw_addr
+c_func
+(paren
+id|qw
+)paren
+)paren
 r_return
-l_int|0
+id|len
+suffix:semicolon
+id|qw
+op_add_assign
+id|SAL_A_BANNER_OFFSET
+suffix:semicolon
+id|qw
+op_assign
+id|convert_fw_addr
+c_func
+(paren
+id|nasid
+comma
+id|qw
+)paren
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Banner ptr at %p&bslash;n&quot;
+comma
+(paren
+r_void
+op_star
+)paren
+id|qw
+)paren
+suffix:semicolon
+id|qw
+op_assign
+id|readq
+c_func
+(paren
+id|qw
+)paren
+suffix:semicolon
+multiline_comment|/* Address of banner */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|valid_fw_addr
+c_func
+(paren
+id|qw
+)paren
+)paren
+r_return
+id|len
+suffix:semicolon
+id|qw
+op_assign
+id|convert_fw_addr
+c_func
+(paren
+id|nasid
+comma
+id|qw
+)paren
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Banner at %p&bslash;n&quot;
+comma
+(paren
+r_void
+op_star
+)paren
+id|qw
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|snprintf
+c_func
+(paren
+id|page
+comma
+id|PAGE_SIZE
+op_minus
+id|len
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+id|qw
+)paren
+suffix:semicolon
+r_return
+id|len
 suffix:semicolon
 )brace
 multiline_comment|/* same as in proc_misc.c */
@@ -1022,22 +1264,16 @@ comma
 id|fit_paddr
 )paren
 suffix:semicolon
-multiline_comment|/* snag just the node-relative offset */
-id|fit_paddr
-op_and_assign
-op_complement
-l_int|0ul
-op_rshift
+id|BUG_ON
+c_func
 (paren
-l_int|63
-op_minus
-l_int|35
-)paren
-suffix:semicolon
-multiline_comment|/* the pointer to the FIT is relative to IA-64 compatibility&n;&t; * space.  However, the PROM is mapped at a different offset&n;&t; * in MMR space (both local and global)&n;&t; */
+op_logical_neg
+id|valid_fw_addr
+c_func
+(paren
 id|fit_paddr
-op_add_assign
-l_int|0x700000000
+)paren
+)paren
 suffix:semicolon
 id|fit_vaddr
 op_assign
@@ -1045,7 +1281,7 @@ op_assign
 r_void
 op_star
 )paren
-id|GLOBAL_MMR_ADDR
+id|convert_fw_addr
 c_func
 (paren
 id|nasid

@@ -108,7 +108,7 @@ c_func
 id|current
 )paren
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 id|memset
 c_func
 (paren
@@ -653,7 +653,7 @@ id|outsize
 comma
 id|error
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 r_struct
 id|coda_cred
 id|cred
@@ -682,7 +682,7 @@ c_func
 id|CODA_STORE
 )paren
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 id|memcpy
 c_func
 (paren
@@ -875,7 +875,7 @@ id|outsize
 comma
 id|error
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 r_struct
 id|coda_cred
 id|cred
@@ -904,7 +904,7 @@ c_func
 id|CODA_CLOSE
 )paren
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 id|memcpy
 c_func
 (paren

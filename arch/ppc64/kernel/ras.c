@@ -538,7 +538,10 @@ op_amp
 id|ras_log_buf
 )paren
 comma
-id|RTAS_ERROR_LOG_MAX
+id|rtas_get_error_log_max
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|udbg_printf
@@ -683,7 +686,10 @@ op_amp
 id|ras_log_buf
 )paren
 comma
-id|RTAS_ERROR_LOG_MAX
+id|rtas_get_error_log_max
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|rtas_elog

@@ -2526,7 +2526,7 @@ r_int
 r_int
 id|eip
 op_assign
-id|instruction_pointer
+id|profile_pc
 c_func
 (paren
 id|regs

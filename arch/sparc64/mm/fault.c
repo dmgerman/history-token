@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/lsu.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 DECL|macro|ELEMENTS
 mdefine_line|#define ELEMENTS(arr) (sizeof (arr)/sizeof (arr[0]))
 r_extern
@@ -566,6 +567,29 @@ r_int
 id|tsk-&gt;active_mm-&gt;pgd
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_GPF
+comma
+l_string|&quot;general protection fault&quot;
+comma
+id|regs
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
 suffix:semicolon
 id|die_if_kernel
 c_func
@@ -1374,16 +1398,39 @@ r_int
 r_int
 id|address
 suffix:semicolon
-id|si_code
-op_assign
-id|SEGV_MAPERR
-suffix:semicolon
 id|fault_code
 op_assign
 id|get_thread_fault_code
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_PAGE_FAULT
+comma
+l_string|&quot;page_fault&quot;
+comma
+id|regs
+comma
+id|fault_code
+comma
+l_int|0
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
+suffix:semicolon
+id|si_code
+op_assign
+id|SEGV_MAPERR
 suffix:semicolon
 id|address
 op_assign

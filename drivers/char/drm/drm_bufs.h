@@ -2,26 +2,6 @@ multiline_comment|/**&n; * &bslash;file drm_bufs.h &n; * Generic buffer template
 multiline_comment|/*&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#ifndef __HAVE_PCI_DMA
-DECL|macro|__HAVE_PCI_DMA
-mdefine_line|#define __HAVE_PCI_DMA&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_SG
-DECL|macro|__HAVE_SG
-mdefine_line|#define __HAVE_SG&t;&t;0
-macro_line|#endif
-macro_line|#ifndef DRIVER_BUF_PRIV_T
-DECL|macro|DRIVER_BUF_PRIV_T
-mdefine_line|#define DRIVER_BUF_PRIV_T&t;&t;u32
-macro_line|#endif
-macro_line|#ifndef DRIVER_AGP_BUFFERS_MAP
-macro_line|#if __HAVE_AGP &amp;&amp; __HAVE_DMA
-macro_line|#error &quot;You must define DRIVER_AGP_BUFFERS_MAP()&quot;
-macro_line|#else
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;NULL
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/**&n; * Compute size order.  Returns the exponent of the smaller power of two which&n; * is greater or equal to given number.&n; * &n; * &bslash;param size size.&n; * &bslash;return order.&n; *&n; * &bslash;todo Can be made faster.&n; */
 DECL|function|order
 r_int
@@ -388,7 +368,16 @@ op_add_assign
 id|dev-&gt;hose-&gt;mem_space-&gt;start
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -418,7 +407,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -565,10 +554,19 @@ multiline_comment|/* Pointer to lock */
 )brace
 r_break
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 r_case
 id|_DRM_AGP
 suffix:colon
+r_if
+c_cond
+(paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 macro_line|#ifdef __alpha__
 id|map-&gt;offset
 op_add_assign
@@ -584,9 +582,9 @@ op_assign
 id|dev-&gt;agp-&gt;agp_mtrr
 suffix:semicolon
 multiline_comment|/* for getmap */
+)brace
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|_DRM_SCATTER_GATHER
 suffix:colon
@@ -1045,7 +1043,16 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1078,7 +1085,7 @@ id|retcode
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|DRM
 c_func
 (paren
@@ -1310,25 +1317,13 @@ comma
 id|DRM_MEM_BUFS
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_destroy
-)paren
-(paren
-op_amp
-id|entry-&gt;freelist
-)paren
-suffix:semicolon
-macro_line|#endif
 id|entry-&gt;buf_count
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 multiline_comment|/**&n; * Add AGP buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * After some sanity checks creates a drm_buf structure for each buffer and&n; * reallocates the buffer list of the same size order to accommodate the new&n; * buffers.&n; */
 DECL|function|addbufs_agp
 r_int
@@ -1877,10 +1872,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -1890,10 +1882,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|buf-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -2106,54 +2095,6 @@ comma
 id|entry-&gt;buf_count
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_create
-)paren
-(paren
-op_amp
-id|entry-&gt;freelist
-comma
-id|entry-&gt;buf_count
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|entry-&gt;buf_count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|DRM
-c_func
-(paren
-id|freelist_put
-)paren
-(paren
-id|dev
-comma
-op_amp
-id|entry-&gt;freelist
-comma
-op_amp
-id|entry-&gt;buflist
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -2205,8 +2146,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __REALLY_HAVE_AGP */
-macro_line|#if __HAVE_PCI_DMA
+macro_line|#endif /* __OS_HAS_AGP */
 DECL|function|addbufs_pci
 r_int
 id|DRM
@@ -2319,6 +2259,22 @@ id|__user
 op_star
 )paren
 id|arg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_PCI_DMA
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -3089,10 +3045,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -3102,10 +3055,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -3393,54 +3343,6 @@ op_lshift
 id|page_order
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_create
-)paren
-(paren
-op_amp
-id|entry-&gt;freelist
-comma
-id|entry-&gt;buf_count
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|entry-&gt;buf_count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|DRM
-c_func
-(paren
-id|freelist_put
-)paren
-(paren
-id|dev
-comma
-op_amp
-id|entry-&gt;freelist
-comma
-op_amp
-id|entry-&gt;buflist
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -3488,8 +3390,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __HAVE_PCI_DMA */
-macro_line|#if __HAVE_SG
 DECL|function|addbufs_sg
 r_int
 id|DRM
@@ -3594,6 +3494,22 @@ id|drm_buf_t
 op_star
 op_star
 id|temp_buflist
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_SG
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -4037,10 +3953,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -4050,10 +3963,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -4266,54 +4176,6 @@ comma
 id|entry-&gt;buf_count
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_FREELIST
-id|DRM
-c_func
-(paren
-id|freelist_create
-)paren
-(paren
-op_amp
-id|entry-&gt;freelist
-comma
-id|entry-&gt;buf_count
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|entry-&gt;buf_count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|DRM
-c_func
-(paren
-id|freelist_put
-)paren
-(paren
-id|dev
-comma
-op_amp
-id|entry-&gt;freelist
-comma
-op_amp
-id|entry-&gt;buflist
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -4365,7 +4227,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __HAVE_SG */
 multiline_comment|/**&n; * Add buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * According with the memory type specified in drm_buf_desc::flags and the&n; * build options, it dispatches the call either to addbufs_agp(),&n; * addbufs_sg() or addbufs_pci() for AGP, scatter-gather or consistent&n; * PCI memory respectively.&n; */
 DECL|function|addbufs
 r_int
@@ -4423,7 +4284,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -4449,7 +4310,6 @@ id|arg
 suffix:semicolon
 r_else
 macro_line|#endif
-macro_line|#if __HAVE_SG
 r_if
 c_cond
 (paren
@@ -4474,8 +4334,6 @@ id|arg
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif
-macro_line|#if __HAVE_PCI_DMA
 r_return
 id|DRM
 c_func
@@ -4492,12 +4350,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**&n; * Get information about the buffer mappings.&n; *&n; * This was originally mean for debugging purposes, or by a sophisticated&n; * client library to determine how best to use the available buffers (e.g.,&n; * large buffers can be used for image transfer).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_info structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Increments drm_device::buf_use while holding the drm_device::count_lock&n; * lock, preventing of allocating more buffers after this call. Information&n; * about each requested buffer is then copied into user space.&n; */
 DECL|function|infobufs
@@ -5443,7 +5295,11 @@ r_if
 c_cond
 (paren
 (paren
-id|__HAVE_AGP
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
 op_logical_and
 (paren
 id|dma-&gt;flags
@@ -5453,7 +5309,13 @@ id|_DRM_DMA_USE_AGP
 )paren
 op_logical_or
 (paren
-id|__HAVE_SG
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_SG
+)paren
 op_logical_and
 (paren
 id|dma-&gt;flags
@@ -5467,11 +5329,7 @@ id|drm_map_t
 op_star
 id|map
 op_assign
-id|DRIVER_AGP_BUFFERS_MAP
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;agp_buffer_map
 suffix:semicolon
 r_if
 c_cond

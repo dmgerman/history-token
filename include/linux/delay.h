@@ -33,6 +33,16 @@ r_int
 id|msecs
 )paren
 suffix:semicolon
+r_int
+r_int
+id|msleep_interruptible
+c_func
+(paren
+r_int
+r_int
+id|msecs
+)paren
+suffix:semicolon
 DECL|function|ssleep
 r_static
 r_inline

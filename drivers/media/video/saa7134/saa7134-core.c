@@ -4371,6 +4371,15 @@ id|dev-&gt;board
 dot
 id|tuner_type
 suffix:semicolon
+id|dev-&gt;tda9887_conf
+op_assign
+id|saa7134_boards
+(braket
+id|dev-&gt;board
+)braket
+dot
+id|tda9887_conf
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4626,12 +4635,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|saa7134_boards
-(braket
-id|dev-&gt;board
-)braket
-dot
-id|need_tda9887
+id|dev-&gt;tda9887_conf
 )paren
 id|request_module
 c_func
@@ -4789,7 +4793,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: registered device video%d [ts]&bslash;n&quot;
+l_string|&quot;%s: registered device video%d [mpeg]&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

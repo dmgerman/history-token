@@ -45,10 +45,6 @@ DECL|macro|CYCLOM_16Y_HACK
 macro_line|#undef  CYCLOM_16Y_HACK
 DECL|macro|CYCLOM_ENABLE_MONITORING
 mdefine_line|#define  CYCLOM_ENABLE_MONITORING
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
 DECL|macro|STD_COM_FLAGS
@@ -5062,12 +5058,14 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5132,12 +5130,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5225,12 +5225,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE

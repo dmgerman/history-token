@@ -1631,7 +1631,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Coda Kernel/Venus communications, &quot;
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 l_string|&quot;v5.3.20&quot;
 macro_line|#else
 l_string|&quot;v6.0.0&quot;

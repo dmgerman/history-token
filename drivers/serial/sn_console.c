@@ -2426,13 +2426,6 @@ r_void
 r_int
 id|retval
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;sn_console: Console driver init&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2446,6 +2439,13 @@ l_string|&quot;sn2&quot;
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sn_console: Console driver init&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond

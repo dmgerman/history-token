@@ -11,10 +11,6 @@ macro_line|#include &lt;linux/consolemap.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/tiocl.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* Don&squot;t take this from &lt;ctype.h&gt;: 011-015 on the screen aren&squot;t spaces */
 DECL|macro|isspace
 mdefine_line|#define isspace(c)&t;((c) == &squot; &squot;)
@@ -1369,7 +1365,7 @@ id|pasted
 suffix:semicolon
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count

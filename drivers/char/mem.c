@@ -151,6 +151,8 @@ id|page_is_ram
 c_func
 (paren
 id|addr
+op_rshift
+id|PAGE_SHIFT
 )paren
 suffix:semicolon
 macro_line|#else

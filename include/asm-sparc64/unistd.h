@@ -524,15 +524,17 @@ mdefine_line|#define __NR_io_getevents&t;272
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open&t;&t;273
 DECL|macro|__NR_mq_unlink
-mdefine_line|#define __NR_mq_unlink&t;&t;(__NR_mq_open+1)
+mdefine_line|#define __NR_mq_unlink&t;&t;274
 DECL|macro|__NR_mq_timedsend
-mdefine_line|#define __NR_mq_timedsend&t;(__NR_mq_open+2)
+mdefine_line|#define __NR_mq_timedsend&t;275
 DECL|macro|__NR_mq_timedreceive
-mdefine_line|#define __NR_mq_timedreceive&t;(__NR_mq_open+3)
+mdefine_line|#define __NR_mq_timedreceive&t;276
 DECL|macro|__NR_mq_notify
-mdefine_line|#define __NR_mq_notify&t;&t;(__NR_mq_open+4)
+mdefine_line|#define __NR_mq_notify&t;&t;277
 DECL|macro|__NR_mq_getsetattr
-mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
+mdefine_line|#define __NR_mq_getsetattr&t;278
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;279
 multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 282, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 283 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-282 range.&n; */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x6d&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;movcc %%xcc, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}

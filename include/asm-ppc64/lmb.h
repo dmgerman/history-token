@@ -124,7 +124,6 @@ r_extern
 r_struct
 id|lmb
 id|lmb
-id|__initdata
 suffix:semicolon
 r_extern
 r_void

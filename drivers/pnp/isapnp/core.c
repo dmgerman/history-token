@@ -3114,9 +3114,17 @@ c_cond
 op_logical_neg
 id|option
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 id|pnp_add_card_device
 c_func
 (paren

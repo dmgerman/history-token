@@ -929,8 +929,9 @@ op_assign
 id|sbi-&gt;cache_array
 suffix:semicolon
 )brace
-DECL|function|fat_cache_lookup
+r_static
 r_void
+DECL|function|fat_cache_lookup
 id|fat_cache_lookup
 c_func
 (paren

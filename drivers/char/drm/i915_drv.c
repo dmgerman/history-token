@@ -20,4 +20,5 @@ macro_line|#include &quot;drm_memory.h&quot;&t;&t;/*  */
 macro_line|#include &quot;drm_proc.h&quot;
 macro_line|#include &quot;drm_vm.h&quot;
 macro_line|#include &quot;drm_stub.h&quot;
+macro_line|#include &quot;drm_scatter.h&quot;
 eof

@@ -283,8 +283,6 @@ r_sizeof
 id|pcxx_bios
 )paren
 suffix:semicolon
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|macro|pcxxassert
 mdefine_line|#define pcxxassert(x, msg)  if(!(x)) pcxx_error(__LINE__, msg)
 DECL|macro|FEPTIMEOUT
@@ -862,8 +860,6 @@ id|flags
 suffix:semicolon
 r_int
 id|e1
-comma
-id|e2
 suffix:semicolon
 id|printk
 c_func
@@ -937,21 +933,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pcxe_init() is our init_module():&n; */
-DECL|variable|pcxe_init
-id|module_init
-c_func
-(paren
-id|pcxe_init
-)paren
-suffix:semicolon
-DECL|variable|pcxe_cleanup
-id|module_cleanup
-c_func
-(paren
-id|pcxe_cleanup
-)paren
-suffix:semicolon
 DECL|function|chan
 r_static
 r_inline
@@ -2825,7 +2806,7 @@ l_int|1
 suffix:semicolon
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|stlen
@@ -2971,7 +2952,7 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|remain
@@ -2995,7 +2976,7 @@ l_int|0
 (brace
 id|stlen
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -4484,16 +4465,6 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
-id|module_init
-c_func
-(paren
-id|pcxe_init
-)paren
-id|module_exit
-c_func
-(paren
-id|pcxe_exit
-)paren
 DECL|variable|pcxe_ops
 r_static
 r_struct
@@ -7544,6 +7515,16 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|module_init
+c_func
+(paren
+id|pcxe_init
+)paren
+id|module_exit
+c_func
+(paren
+id|pcxe_cleanup
+)paren
 DECL|function|pcxxpoll
 r_static
 r_void
@@ -9633,6 +9614,9 @@ id|mflag
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|mstat
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9954,6 +9938,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pcxe_ioctl
