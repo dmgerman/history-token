@@ -61,7 +61,7 @@ multiline_comment|/* All the better to debug you with... */
 mdefine_line|#define static
 mdefine_line|#define inline
 macro_line|#endif
-multiline_comment|/* Locking is simple: we assume at worst case there will be one packet&n;   in user context and one from bottom halves (or soft irq if Alexey&squot;s&n;   softnet patch was applied).&n;&n;   We keep a set of rules for each CPU, so we can avoid write-locking&n;   them; doing a readlock_bh() stops packets coming through if we&squot;re&n;   in user context.&n;&n;   To be cache friendly on SMP, we arrange them like so:&n;   [ n-entries ]&n;   ... cache-align padding ...&n;   [ n-entries ]&n;&n;   Hence the start of any table is given by get_table() below.  */
+multiline_comment|/*&n;   We keep a set of rules for each CPU, so we can avoid write-locking&n;   them in the softirq when updating the counters and therefore&n;   only need to read-lock in the softirq; doing a write_lock_bh() in user&n;   context stops packets coming through and allows user context to read&n;   the counters or update the rules.&n;&n;   To be cache friendly on SMP, we arrange them like so:&n;   [ n-entries ]&n;   ... cache-align padding ...&n;   [ n-entries ]&n;&n;   Hence the start of any table is given by get_table() below.  */
 multiline_comment|/* The table itself */
 DECL|struct|ipt_table_info
 r_struct
