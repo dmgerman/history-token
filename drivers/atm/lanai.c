@@ -1545,8 +1545,16 @@ id|lanai-&gt;number
 comma
 id|offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|pattern
 comma
+(paren
+r_int
+r_int
+)paren
 id|readback
 )paren
 suffix:semicolon
@@ -1991,11 +1999,16 @@ l_int|0
 comma
 l_string|&quot;cardvcc_write: bad val 0x%X (vci=%d, addr=0x%02X)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|val
 comma
 id|lvcc-&gt;vci
 comma
 (paren
+r_int
 r_int
 )paren
 id|offset
@@ -2010,9 +2023,14 @@ id|lvcc-&gt;vci
 comma
 (paren
 r_int
+r_int
 )paren
 id|offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|val
 )paren
 suffix:semicolon
@@ -3429,8 +3447,16 @@ c_func
 (paren
 l_string|&quot;EEPROM 0x%04X %02X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|address
 comma
+(paren
+r_int
+r_int
+)paren
 id|data
 )paren
 suffix:semicolon
@@ -3680,8 +3706,16 @@ l_string|&quot;(wanted 0x%02X, got 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_CHECKSUM
@@ -3718,8 +3752,16 @@ l_string|&quot;bad (wanted 0x%02X, got 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_CHECKSUM_REV
@@ -3778,6 +3820,10 @@ l_string|&quot;(0x%02X, inverse 0x%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_MAC
@@ -3785,6 +3831,10 @@ op_plus
 id|i
 )braket
 comma
+(paren
+r_int
+r_int
+)paren
 id|e
 (braket
 id|EEPROM_MAC_REV
@@ -3889,8 +3939,16 @@ l_string|&quot;don&squot;t match (0x%08X, inverse 0x%08X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|v
 )paren
 suffix:semicolon
@@ -3904,6 +3962,10 @@ c_func
 (paren
 l_string|&quot;eeprom: Serial number = %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 )paren
 suffix:semicolon
@@ -3985,8 +4047,16 @@ l_string|&quot;magic not what expected (got 0x%08X, not 0x%08X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;magicno
 comma
+(paren
+r_int
+r_int
+)paren
 id|EEPROM_MAGIC_VALUE
 )paren
 suffix:semicolon
@@ -6401,7 +6471,7 @@ op_amp
 l_int|15
 )paren
 comma
-l_string|&quot;vcc_rx_aal5: n out of range (%d/%d)&bslash;n&quot;
+l_string|&quot;vcc_rx_aal5: n out of range (%d/%Zu)&bslash;n&quot;
 comma
 id|n
 comma
@@ -6971,7 +7041,7 @@ c_func
 id|KERN_WARNING
 id|DEV_LABEL
 l_string|&quot;(itf %d): wanted %d bytes &quot;
-l_string|&quot;for %s buffer, got only %d&bslash;n&quot;
+l_string|&quot;for %s buffer, got only %Zu&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
@@ -6989,7 +7059,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;Allocated %d byte %s buffer&bslash;n&quot;
+l_string|&quot;Allocated %Zu byte %s buffer&bslash;n&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -7390,7 +7460,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;allocated service buffer at 0x%08lX, size %d(%d)&bslash;n&quot;
+l_string|&quot;allocated service buffer at 0x%08lX, size %Zu(%d)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7557,6 +7627,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7610,6 +7684,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7668,6 +7746,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -7701,6 +7783,10 @@ l_string|&quot;vcc %d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|s
 comma
 id|vci
@@ -8498,10 +8584,20 @@ l_string|&quot;shutdown, reason=0x%08X, address=0x%08X&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 id|INT_DMASHUT
+)paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|reg_read
 c_func
 (paren
@@ -8617,9 +8713,15 @@ l_string|&quot;segmentation shutdown, reason=0x%08X&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 id|INT_SEGSHUT
+)paren
 )paren
 suffix:semicolon
 id|lanai_reset
@@ -8653,12 +8755,18 @@ l_string|&quot;unexpected interrupt 0x%08X, resetting&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 (paren
 id|INT_PING
 op_or
 id|INT_WAKE
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -8685,10 +8793,16 @@ c_func
 (paren
 l_string|&quot;unacked ints: 0x%08X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
+(paren
 id|reason
 op_amp
 op_complement
 id|ack
+)paren
 )paren
 suffix:semicolon
 id|ack
@@ -8793,8 +8907,12 @@ id|DEV_LABEL
 l_string|&quot;(itf %d): Got interrupt &quot;
 l_string|&quot;0x%08X while in POWERDOWN, powering up&bslash;n&quot;
 comma
-id|lanai-&gt;conf1
+id|lanai-&gt;number
 comma
+(paren
+r_int
+r_int
+)paren
 id|intr_pending
 c_func
 (paren
@@ -8876,12 +8994,18 @@ l_string|&quot;%s says board_id=%d, board_rev=%d&bslash;n&quot;
 comma
 id|name
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_ID
 c_func
 (paren
 id|val
 )paren
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_REV
 c_func
 (paren
@@ -8911,6 +9035,9 @@ l_string|&quot;Lanai 25.6&bslash;n&quot;
 comma
 id|name
 comma
+(paren
+r_int
+)paren
 id|RESET_GET_BOARD_ID
 c_func
 (paren
@@ -10466,14 +10593,18 @@ c_func
 (paren
 id|KERN_NOTICE
 id|DEV_LABEL
-l_string|&quot;(itf %d): rev.%d, base=0x%lx, irq=%d &quot;
+l_string|&quot;(itf %d): rev.%d, base=0x%lx, irq=%u &quot;
 l_string|&quot;(%02X-%02X-%02X-%02X-%02X-%02X)&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|lanai-&gt;pci_revision
 comma
 (paren
+r_int
 r_int
 )paren
 id|lanai-&gt;base
@@ -10516,7 +10647,7 @@ c_func
 (paren
 id|KERN_NOTICE
 id|DEV_LABEL
-l_string|&quot;(itf %d): LANAI%s, serialno=%d(0x%X), &quot;
+l_string|&quot;(itf %d): LANAI%s, serialno=%u(0x%X), &quot;
 l_string|&quot;board_rev=%d&bslash;n&quot;
 comma
 id|lanai-&gt;number
@@ -10530,8 +10661,16 @@ l_string|&quot;2&quot;
 suffix:colon
 l_string|&quot;HB&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
 id|lanai-&gt;board_rev
@@ -11095,10 +11234,13 @@ id|DPRINTK
 c_func
 (paren
 id|DEV_LABEL
-l_string|&quot;(itf %d): open %d.%d flags=0x%X&bslash;n&quot;
+l_string|&quot;(itf %d): open %d.%d flags=0x%lX&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|vpi
 comma
 id|vci
@@ -11119,6 +11261,9 @@ l_string|&quot;(itf %d): open %d.%d&bslash;n&quot;
 comma
 id|lanai-&gt;number
 comma
+(paren
+r_int
+)paren
 id|vpi
 comma
 id|vci
@@ -11530,6 +11675,7 @@ l_int|2200003
 suffix:colon
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -11569,7 +11715,8 @@ comma
 id|i
 comma
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|readl
 c_func
@@ -11652,6 +11799,10 @@ c_func
 (paren
 l_string|&quot;vendor = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11674,6 +11825,10 @@ c_func
 (paren
 l_string|&quot;device = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11696,6 +11851,10 @@ c_func
 (paren
 l_string|&quot;command = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11718,6 +11877,10 @@ c_func
 (paren
 l_string|&quot;status = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|w
 )paren
 suffix:semicolon
@@ -11740,6 +11903,10 @@ c_func
 (paren
 l_string|&quot;class/revision = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|dw
 )paren
 suffix:semicolon
@@ -11762,6 +11929,10 @@ c_func
 (paren
 l_string|&quot;cache line size = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11784,8 +11955,15 @@ c_func
 (paren
 l_string|&quot;latency = %d (0x%X)&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|b
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11808,6 +11986,10 @@ c_func
 (paren
 l_string|&quot;header type = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11830,6 +12012,10 @@ c_func
 (paren
 l_string|&quot;bist = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11853,6 +12039,10 @@ c_func
 (paren
 l_string|&quot;pci_int_line = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11875,6 +12065,10 @@ c_func
 (paren
 l_string|&quot;pci_int_pin = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11897,6 +12091,10 @@ c_func
 (paren
 l_string|&quot;min_gnt = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -11919,6 +12117,10 @@ c_func
 (paren
 l_string|&quot;max_lat = 0x%X&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|b
 )paren
 suffix:semicolon
@@ -12203,6 +12405,9 @@ c_func
 (paren
 l_string|&quot;lanai_send: bad aal=%d on vci=%d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|atmvcc-&gt;qos.aal
 comma
 id|atmvcc-&gt;vci
@@ -12313,7 +12518,7 @@ id|page
 comma
 id|DEV_LABEL
 l_string|&quot;(itf %d): chip=LANAI%s, &quot;
-l_string|&quot;serial=%d, magic=0x%08X, num_vci=%d&bslash;n&quot;
+l_string|&quot;serial=%u, magic=0x%08X, num_vci=%d&bslash;n&quot;
 comma
 id|atmdev-&gt;number
 comma
@@ -12326,8 +12531,16 @@ l_string|&quot;2&quot;
 suffix:colon
 l_string|&quot;HB&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;serialno
 comma
+(paren
+r_int
+r_int
+)paren
 id|lanai-&gt;magicno
 comma
 id|lanai-&gt;num_vci
@@ -12351,6 +12564,9 @@ l_string|&quot;revision: board=%d, pci_if=%d&bslash;n&quot;
 comma
 id|lanai-&gt;board_rev
 comma
+(paren
+r_int
+)paren
 id|lanai-&gt;pci_revision
 )paren
 suffix:semicolon
@@ -12490,8 +12706,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;global buffer sizes: service=%d, &quot;
-l_string|&quot;aal0_rx=%d&bslash;n&quot;
+l_string|&quot;global buffer sizes: service=%Zu, &quot;
+l_string|&quot;aal0_rx=%Zu&bslash;n&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -12534,8 +12750,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;cells in error: overflow=%d, &quot;
-l_string|&quot;closed_vci=%d, bad_HEC=%d, rx_fifo=%d&bslash;n&quot;
+l_string|&quot;cells in error: overflow=%u, &quot;
+l_string|&quot;closed_vci=%u, bad_HEC=%u, rx_fifo=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.ovfl_trash
 comma
@@ -12561,8 +12777,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;PCI errors: parity_detect=%d, &quot;
-l_string|&quot;master_abort=%d, master_target_abort=%d,&bslash;n&quot;
+l_string|&quot;PCI errors: parity_detect=%u, &quot;
+l_string|&quot;master_abort=%u, master_target_abort=%u,&bslash;n&quot;
 comma
 id|lanai-&gt;stats.pcierr_parity_detect
 comma
@@ -12585,8 +12801,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;            slave_target_abort=%d, &quot;
-l_string|&quot;master_parity=%d&bslash;n&quot;
+l_string|&quot;            slave_target_abort=%u, &quot;
+l_string|&quot;master_parity=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.pcierr_s_target_abort
 comma
@@ -12607,8 +12823,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;service list errors: no_vcc_rx=%d, &quot;
-l_string|&quot;no_vcc_tx=%d,&bslash;n&quot;
+l_string|&quot;service list errors: no_vcc_rx=%u, &quot;
+l_string|&quot;no_vcc_tx=%u,&bslash;n&quot;
 comma
 id|lanai-&gt;stats.service_novcc_rx
 comma
@@ -12629,8 +12845,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;                     no_tx=%d, &quot;
-l_string|&quot;no_rx=%d, bad_rx_aal=%d&bslash;n&quot;
+l_string|&quot;                     no_tx=%u, &quot;
+l_string|&quot;no_rx=%u, bad_rx_aal=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.service_norx
 comma
@@ -12653,7 +12869,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;resets: dma=%d, card=%d&bslash;n&quot;
+l_string|&quot;resets: dma=%u, card=%u&bslash;n&quot;
 comma
 id|lanai-&gt;stats.dma_reenable
 comma
@@ -12722,7 +12938,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;VCI %4d: nref=%d, rx_nomem=%d&quot;
+l_string|&quot;VCI %4d: nref=%d, rx_nomem=%u&quot;
 comma
 (paren
 id|vci_t
@@ -12783,9 +12999,9 @@ id|page
 id|left
 )braket
 comma
-l_string|&quot;, rx_buf_size=%d, &quot;
-l_string|&quot;rx_bad_len=%d,&bslash;n          rx_service_trash=%d, &quot;
-l_string|&quot;rx_service_stream=%d, rx_bad_crc=%d&quot;
+l_string|&quot;, rx_buf_size=%Zu, &quot;
+l_string|&quot;rx_bad_len=%u,&bslash;n          rx_service_trash=%u, &quot;
+l_string|&quot;rx_service_stream=%u, rx_bad_crc=%u&quot;
 comma
 id|lanai_buf_size
 c_func
@@ -12823,7 +13039,7 @@ id|left
 )braket
 comma
 l_string|&quot;,&bslash;n          tx_AAL=%d, &quot;
-l_string|&quot;tx_buf_size=%d, tx_qos=%cBR, tx_backlogged=%c&quot;
+l_string|&quot;tx_buf_size=%Zu, tx_qos=%cBR, tx_backlogged=%c&quot;
 comma
 id|lvcc-&gt;tx.atmvcc-&gt;qos.aal
 op_eq
