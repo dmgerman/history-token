@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_flushpage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */

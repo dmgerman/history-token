@@ -2813,8 +2813,6 @@ comma
 id|id_table
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|cadet_cleanup_module
 r_static
 r_void

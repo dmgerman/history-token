@@ -2031,7 +2031,7 @@ id|active_time
 suffix:semicolon
 id|clock_time
 op_assign
-l_int|1000
+l_int|1000000
 op_div
 id|system_bus_speed
 suffix:semicolon

@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
 macro_line|#include &lt;linux/module.h&gt;&t;/* support for loadable modules */
-macro_line|#include &lt;linux/sched.h&gt;&t;/* for jiffies, HZ, etc. */
+macro_line|#include &lt;linux/jiffies.h&gt;&t;/* for jiffies, HZ, etc. */
 macro_line|#include &lt;linux/sdladrv.h&gt;&t;/* API definitions */
 macro_line|#include &lt;linux/sdlasfm.h&gt;&t;/* SDLA firmware module definitions */
 macro_line|#include &lt;linux/sdlapci.h&gt;&t;/* SDLA PCI hardware definitions */

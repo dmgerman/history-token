@@ -1437,11 +1437,11 @@ id|error
 op_assign
 l_int|1
 suffix:semicolon
-id|byte
+id|u8
 id|stat
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
-id|byte
+macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(__CRIS__)
+id|u8
 id|unit
 op_assign
 (paren
@@ -1477,7 +1477,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
+macro_line|#endif
 multiline_comment|/*&n;&t; * Don&squot;t use ide_wait_cmd here - it will&n;&t; * attempt to set_geometry and recalibrate,&n;&t; * but for some reason these don&squot;t work at&n;&t; * this point (lost interrupt).&n;&t; */
 multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command&n;         */
 id|disable_irq
@@ -1773,7 +1773,7 @@ op_and_assign
 op_complement
 l_int|0x0F00
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(__CRIS__)
 r_if
 c_cond
 (paren

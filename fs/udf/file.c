@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt; /* memset */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 DECL|function|udf_adinicb_readpage

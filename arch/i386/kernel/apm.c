@@ -4726,6 +4726,10 @@ comma
 l_string|&quot;kapmd&quot;
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_IOTHREAD
+suffix:semicolon
 id|sigfillset
 c_func
 (paren
@@ -6648,7 +6652,5 @@ id|idle_period
 comma
 l_string|&quot;Period (in sec/100) over which to caculate the idle percentage&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

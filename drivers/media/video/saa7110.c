@@ -2078,8 +2078,6 @@ comma
 id|saa7110_command
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|saa7110_init
 r_static
 r_int

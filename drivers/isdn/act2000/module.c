@@ -3780,9 +3780,6 @@ id|KERN_INFO
 l_string|&quot;act2000: No cards defined yet&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* No symbols to export, hide all symbols */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -20,6 +20,9 @@ mdefine_line|#define ADFS_NDA_PUBLIC_READ&t;(1 &lt;&lt; 5)
 DECL|macro|ADFS_NDA_PUBLIC_WRITE
 mdefine_line|#define ADFS_NDA_PUBLIC_WRITE&t;(1 &lt;&lt; 6)
 macro_line|#include &quot;dir_f.h&quot;
+r_struct
+id|buffer_head
+suffix:semicolon
 multiline_comment|/*&n; * Directory handling&n; */
 DECL|struct|adfs_dir
 r_struct

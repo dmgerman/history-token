@@ -85,13 +85,8 @@ DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS
 macro_line|#endif
 macro_line|#ifndef DRIVER_FOPS
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
 DECL|macro|DRIVER_FOPS
 mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;owner:   THIS_MODULE,&t;&t;&t;&bslash;&n;&t;open:&t; DRM(open),&t;&t;&t;&bslash;&n;&t;flush:&t; DRM(flush),&t;&t;&t;&bslash;&n;&t;release: DRM(release),&t;&t;&t;&bslash;&n;&t;ioctl:&t; DRM(ioctl),&t;&t;&t;&bslash;&n;&t;mmap:&t; DRM(mmap),&t;&t;&t;&bslash;&n;&t;read:&t; DRM(read),&t;&t;&t;&bslash;&n;&t;fasync:&t; DRM(fasync),&t;&t;&t;&bslash;&n;&t;poll:&t; DRM(poll),&t;&t;&t;&bslash;&n;}
-macro_line|#else
-DECL|macro|DRIVER_FOPS
-mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;open:&t; DRM(open),&t;&t;&t;&bslash;&n;&t;flush:&t; DRM(flush),&t;&t;&t;&bslash;&n;&t;release: DRM(release),&t;&t;&t;&bslash;&n;&t;ioctl:&t; DRM(ioctl),&t;&t;&t;&bslash;&n;&t;mmap:&t; DRM(mmap),&t;&t;&t;&bslash;&n;&t;read:&t; DRM(read),&t;&t;&t;&bslash;&n;&t;fasync:&t; DRM(fasync),&t;&t;&t;&bslash;&n;&t;poll:&t; DRM(poll),&t;&t;&t;&bslash;&n;}
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * The default number of instances (minor numbers) to initialize.&n; */
 macro_line|#ifndef DRIVER_NUM_CARDS
@@ -784,7 +779,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* The DRM_IOCTL_DMA ioctl should be defined by the driver.&n;&t; */
-macro_line|#if __HAVE_DMA_IRQ
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -805,7 +799,6 @@ comma
 l_int|1
 )brace
 comma
-macro_line|#endif
 macro_line|#endif
 macro_line|#if __REALLY_HAVE_AGP
 (braket
@@ -3421,11 +3414,6 @@ op_logical_neg
 id|retcode
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020333
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Needed before Linux 2.3.51 */
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -3900,11 +3888,6 @@ id|DRM_MEM_FILES
 )paren
 suffix:semicolon
 multiline_comment|/* ========================================================&n;&t; * End inline drm_release&n;&t; */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020333
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Needed before Linux 2.3.51 */
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren

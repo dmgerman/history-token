@@ -1589,9 +1589,9 @@ id|permission
 suffix:colon
 id|smb_file_permission
 comma
-id|revalidate
+id|getattr
 suffix:colon
-id|smb_revalidate_inode
+id|smb_getattr
 comma
 id|setattr
 suffix:colon

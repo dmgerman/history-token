@@ -174,6 +174,10 @@ DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;var
 DECL|macro|this_cpu
 mdefine_line|#define this_cpu(var)&t;&t;&t;&t;var
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* !SMP */
+DECL|macro|get_cpu
+mdefine_line|#define get_cpu()&t;({ preempt_disable(); smp_processor_id(); })
+DECL|macro|put_cpu
+mdefine_line|#define put_cpu()&t;preempt_enable()
+macro_line|#endif /* __LINUX_SMP_H */
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * dir.c&n; *&n; * Copyright (c) 1999 Al Smith&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 r_static

@@ -17241,8 +17241,6 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|printk
 c_func
 (paren

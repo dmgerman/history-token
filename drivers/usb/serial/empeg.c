@@ -1,18 +1,15 @@
 multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000, 2001&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (07/16/2001) gb&n; *&t;remove unused code in empeg_close() (thanks to Oliver Neukum for pointing this&n; *&t;out) and rewrote empeg_set_termios().&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *      Identify version on module load.&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

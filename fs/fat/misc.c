@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/fat/misc.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  22/11/2000 - Fixed fat_date_unix2dos for dates earlier than 01/01/1980&n; *&t;&t; and date_dos2unix for date==0 by Igor Zhbanov(bsg@uniyar.ac.ru)&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#if 0
 macro_line|#  define PRINTK(x)&t;printk x
 macro_line|#else

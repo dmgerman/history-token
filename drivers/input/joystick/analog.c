@@ -426,14 +426,12 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Time macros.&n; */
 macro_line|#ifdef __i386__
-DECL|macro|TSC_PRESENT
-mdefine_line|#define TSC_PRESENT&t;(test_bit(X86_FEATURE_TSC, &amp;boot_cpu_data.x86_capability))
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else x = get_time_pit(); } while (0)
+mdefine_line|#define GET_TIME(x)&t;do { if (cpu_has_tsc) rdtscl(x); else x = get_time_pit(); } while (0)
 DECL|macro|DELTA
-mdefine_line|#define DELTA(x,y)&t;(TSC_PRESENT?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193180L/HZ:0)))
+mdefine_line|#define DELTA(x,y)&t;(cpu_has_tsc?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193180L/HZ:0)))
 DECL|macro|TIME_NAME
-mdefine_line|#define TIME_NAME&t;(TSC_PRESENT?&quot;TSC&quot;:&quot;PIT&quot;)
+mdefine_line|#define TIME_NAME&t;(cpu_has_tsc?&quot;TSC&quot;:&quot;PIT&quot;)
 DECL|function|get_time_pit
 r_static
 r_int

@@ -983,8 +983,6 @@ suffix:semicolon
 singleline_comment|// ADC right channel input sensitivity
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren

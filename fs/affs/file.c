@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#if PAGE_SIZE &lt; 4096
 macro_line|#error PAGE_SIZE must be at least 4096
 macro_line|#endif

@@ -158,8 +158,6 @@ comma
 l_string|&quot;Maximum number of scatter/gather segments to use (32)&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#ifndef MODULE
 DECL|struct|st_dev_parm
 r_static

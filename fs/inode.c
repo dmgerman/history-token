@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+multiline_comment|/*&n; * This is needed for the following functions:&n; *  - inode_has_buffers&n; *  - invalidate_inode_buffers&n; *  - fsync_bdev&n; *  - invalidate_bdev&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * New inode.c implementation.&n; *&n; * This implementation has the basic premise of trying&n; * to be extremely low-overhead and SMP-safe, yet be&n; * simple enough to be &quot;obviously correct&quot;.&n; *&n; * Famous last words.&n; */
 multiline_comment|/* inode dynamic allocation 1999, Andrea Arcangeli &lt;andrea@suse.de&gt; */
 multiline_comment|/* #define INODE_PARANOIA 1 */

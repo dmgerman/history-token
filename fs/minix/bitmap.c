@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Modified for 680x0 by Hamish Macdonald&n; * Fixed for 
 multiline_comment|/* bitmap.c contains the code that handles the inode and block bitmaps */
 macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|variable|nibblemap
 r_static

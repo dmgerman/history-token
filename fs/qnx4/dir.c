@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|qnx4_readdir
 r_static
 r_int

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/in.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#ifdef CONFIG_NFSD_V3

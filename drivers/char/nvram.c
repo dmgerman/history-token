@@ -2955,7 +2955,5 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; *  c-indent-level: 4&n; *  tab-width: 4&n; * End:&n; */
 eof

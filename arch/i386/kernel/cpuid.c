@@ -626,8 +626,6 @@ c_func
 (paren
 id|cpuid_exit
 )paren
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

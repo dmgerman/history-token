@@ -365,6 +365,21 @@ id|dma_chan
 op_plus
 id|channel
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma-&gt;active
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dma%d: altering DMA SG while &quot;
+l_string|&quot;DMA active&bslash;n&quot;
+comma
+id|channel
+)paren
+suffix:semicolon
 id|dma-&gt;sg
 op_assign
 id|sg
@@ -680,6 +695,25 @@ id|BUG
 c_func
 (paren
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Is the specified DMA channel active?&n; */
+DECL|function|dma_channel_active
+r_int
+id|dma_channel_active
+c_func
+(paren
+id|dmach_t
+id|channel
+)paren
+(brace
+r_return
+id|dma_chan
+(braket
+id|channel
+)braket
+dot
+id|active
 suffix:semicolon
 )brace
 DECL|function|set_dma_page

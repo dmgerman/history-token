@@ -525,6 +525,7 @@ suffix:semicolon
 multiline_comment|/* drive */
 DECL|member|access
 r_int
+r_int
 id|access
 suffix:semicolon
 multiline_comment|/* count of active opens ... */

@@ -27,8 +27,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*      Driver configuration and global parameters&n; *      ==========================================&n; */
 multiline_comment|/*      Number of ports (per card) supported&n; */
 DECL|macro|FST_MAX_PORTS

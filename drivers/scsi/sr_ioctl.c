@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;scsi.h&quot;

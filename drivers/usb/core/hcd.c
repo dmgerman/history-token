@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2002&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -4368,22 +4370,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;next
-)paren
-(brace
-id|warn
-(paren
-l_string|&quot;use explicit queuing not urb-&gt;next&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG
 multiline_comment|/* stuff that drivers shouldn&squot;t do, but which shouldn&squot;t&n;&t; * cause problems in HCDs if they get it wrong.&n;&t; */
 (brace
@@ -5536,7 +5522,7 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; *&n; * NOTE that no urb-&gt;next processing is done, even for isochronous URBs.&n; * ISO streaming functionality can be achieved by having completion handlers&n; * re-queue URBs.  Such explicit queuing doesn&squot;t discard error reports.&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause deadlocks if it resubmits this URB,&n; * and won&squot;t confuse things by modifying and resubmitting this one.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb

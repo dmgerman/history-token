@@ -314,17 +314,6 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 DECL|struct|node_info
 r_struct
@@ -851,6 +840,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This doesn&squot;t seem to be used by the Linux memory&n;&t; * manager any more.  If we can get rid of it, we&n;&t; * also get rid of some of the stuff above as well.&n;&t; */
 id|max_low_pfn
+op_assign
+id|memend_pfn
+op_minus
+id|O_PFN_DOWN
+c_func
+(paren
+id|PHYS_OFFSET
+)paren
+suffix:semicolon
+id|max_pfn
 op_assign
 id|memend_pfn
 op_minus

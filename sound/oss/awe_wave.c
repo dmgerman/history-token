@@ -605,8 +605,6 @@ comma
 l_string|&quot;use ISAPnP detection&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* DRAM start offset */
 DECL|variable|awe_mem_start
 r_static

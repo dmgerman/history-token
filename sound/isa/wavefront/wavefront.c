@@ -17,8 +17,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t cs4231_t
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

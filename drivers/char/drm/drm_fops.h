@@ -809,41 +809,6 @@ op_sub_assign
 id|count
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020315 &amp;&amp; !defined(KILLFASYNCHASTHREEPARAMETERS)
-multiline_comment|/* The extra parameter to kill_fasync was added in 2.3.21, and is&n;           _not_ present in _stock_ 2.2.14 and 2.2.15.  However, some&n;           distributions patch 2.2.x kernels to add this parameter.  The&n;           Makefile.linux attempts to detect this addition and defines&n;           KILLFASYNCHASTHREEPARAMETERS if three parameters are found. */
-r_if
-c_cond
-(paren
-id|dev-&gt;buf_async
-)paren
-id|kill_fasync
-c_func
-(paren
-id|dev-&gt;buf_async
-comma
-id|SIGIO
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* Parameter added in 2.3.21. */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-r_if
-c_cond
-(paren
-id|dev-&gt;buf_async
-)paren
-id|kill_fasync
-c_func
-(paren
-id|dev-&gt;buf_async
-comma
-id|SIGIO
-comma
-id|POLL_IN
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* Type of first parameter changed in&n;                                   Linux 2.4.0-test2... */
 r_if
 c_cond
 (paren
@@ -860,8 +825,6 @@ comma
 id|POLL_IN
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|DRM_DEBUG
 c_func
 (paren

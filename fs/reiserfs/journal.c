@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt; 
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* the number of mounted filesystems.  This is used to decide when to&n;** start and kill the commit thread&n;*/
 DECL|variable|reiserfs_mounted_fs_count
 r_static
@@ -9525,6 +9527,10 @@ comma
 l_string|&quot;kreiserfsd&quot;
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_KERNTHREAD
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -9578,6 +9584,19 @@ c_func
 (paren
 op_amp
 id|reiserfs_commit_thread_done
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 id|interruptible_sleep_on_timeout

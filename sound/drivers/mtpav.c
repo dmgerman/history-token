@@ -11,8 +11,6 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/*&n; *      globals&n; */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

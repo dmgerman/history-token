@@ -359,12 +359,6 @@ op_decrement
 id|nr
 )paren
 suffix:semicolon
-multiline_comment|/* keep the page table cache within bounds */
-id|check_pgt_cache
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|pte_alloc_map
 id|pte_t
@@ -1400,18 +1394,12 @@ c_func
 id|pte
 )paren
 suffix:semicolon
-id|pte_clear
+id|pte
+op_assign
+id|ptep_get_and_clear
 c_func
 (paren
 id|ptep
-)paren
-suffix:semicolon
-id|pfn
-op_assign
-id|pte_pfn
-c_func
-(paren
-id|pte
 )paren
 suffix:semicolon
 id|tlb_remove_tlb_entry

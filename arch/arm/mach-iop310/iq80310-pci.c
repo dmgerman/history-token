@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * The following macro is used to lookup irqs in a standard table&n; * format for those systems that do not already have PCI&n; * interrupts properly routed.  We assume 1 &lt;= pin &lt;= 4&n; */
 DECL|macro|PCI_IRQ_TABLE_LOOKUP
 mdefine_line|#define PCI_IRQ_TABLE_LOOKUP(minid,maxid)&t;&t;&t; &bslash;&n;({ int _ctl_ = -1;&t;&t;&t;&t;&t;&t; &bslash;&n;   if (idsel &gt;= minid &amp;&amp; idsel &lt;= maxid &amp;&amp; pin &gt;= 1 &amp;&amp; pin &lt;= 4) &bslash;&n;      _ctl_ = pci_irq_table[idsel - minid][pin-1];&t;&t; &bslash;&n;   _ctl_; })
@@ -397,6 +398,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|iq80310_pci
@@ -424,5 +426,41 @@ suffix:colon
 id|iq80310_preinit
 comma
 )brace
+suffix:semicolon
+DECL|function|iq80310_pci_init
+r_static
+r_int
+id|__init
+id|iq80310_pci_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_iq80310
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|iq80310_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|iq80310_pci_init
+id|subsys_initcall
+c_func
+(paren
+id|iq80310_pci_init
+)paren
 suffix:semicolon
 eof

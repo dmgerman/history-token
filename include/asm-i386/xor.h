@@ -1580,8 +1580,6 @@ comma
 suffix:semicolon
 multiline_comment|/* Also try the generic routines.  */
 macro_line|#include &lt;asm-generic/xor.h&gt;
-DECL|macro|cpu_has_mmx
-mdefine_line|#define cpu_has_mmx&t;(test_bit(X86_FEATURE_MMX,  boot_cpu_data.x86_capability))
 DECL|macro|XOR_TRY_TEMPLATES
 macro_line|#undef XOR_TRY_TEMPLATES
 DECL|macro|XOR_TRY_TEMPLATES

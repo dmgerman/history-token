@@ -1131,8 +1131,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|gemtek_cleanup
 r_static
 r_void

@@ -5,6 +5,7 @@ multiline_comment|/* [Feb-Apr 2000, AV] Rewrite to the new namespace architectur
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
@@ -7790,12 +7791,6 @@ c_cond
 op_logical_neg
 id|error
 )paren
-(brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|d_move
 c_func
 (paren
@@ -7804,12 +7799,6 @@ comma
 id|new_dentry
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
@@ -7925,12 +7914,6 @@ op_amp
 id|FS_ODD_RENAME
 )paren
 )paren
-(brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|d_move
 c_func
 (paren
@@ -7939,12 +7922,6 @@ comma
 id|new_dentry
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

@@ -667,6 +667,7 @@ id|p-&gt;RIONumHosts
 )paren
 (brace
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -848,6 +849,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -873,6 +875,7 @@ l_string|&quot;SPECIAL_RUP_CMD GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -956,6 +959,7 @@ suffix:semicolon
 r_else
 macro_line|#endif
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 r_case
@@ -973,6 +977,7 @@ op_assign
 id|IOCTL_COMMAND_UNKNOWN
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_case
@@ -1044,6 +1049,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -1444,6 +1450,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -1491,6 +1498,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -1532,6 +1540,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -1576,6 +1585,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -1612,6 +1622,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -1660,6 +1671,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -1703,6 +1715,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -1886,6 +1899,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -1917,6 +1931,7 @@ op_assign
 id|PORT_NOT_MAPPED_INTO_SYSTEM
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -1945,6 +1960,7 @@ id|port
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -1995,6 +2011,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -2055,6 +2072,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -2096,6 +2114,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2138,6 +2157,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -2179,6 +2199,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2221,6 +2242,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -2262,6 +2284,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2310,6 +2333,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2346,6 +2370,7 @@ op_eq
 id|COPYFAIL
 )paren
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 r_return
@@ -2373,6 +2398,7 @@ l_int|0
 suffix:semicolon
 macro_line|#else
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 macro_line|#endif
@@ -2410,6 +2436,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2444,6 +2471,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2477,6 +2505,7 @@ op_assign
 id|PORT_NOT_MAPPED_INTO_SYSTEM
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2521,13 +2550,14 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;** 02.03.1999 ARG - ESIL 0820 fix&n;&t;&t;&t;** We are no longer using &quot;Boot Mode&quot;, so these ioctls&n;&t;&t;&t;** are not required :&n;&t;&t;&t;**&n;&t; &t;&t;case RIO_GET_BOOT_MODE :&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;Get boot mode - %x&bslash;n&quot;, p-&gt;RIOBootMode));&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;** Return boot state of system - BOOT_ALL, BOOT_OWN or BOOT_NONE&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;if (copyout((caddr_t)&amp;p-&gt;RIOBootMode, (int)arg, &n;&t;&t;&t;&t;&t;&t;sizeof(p-&gt;RIOBootMode)) == COPYFAIL) {&n;&t;&t; &t;&t;&t;p-&gt;RIOError.Error = COPYOUT_FAILED;&n;&t;&t; &t;&t;&t;return EFAULT;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;return(0);&n;&t;&t;&t;&n; &t;&t;&t;case RIO_SET_BOOT_MODE :&n;&t;&t;&t;&t;p-&gt;RIOBootMode = (uint) arg;&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;Set boot mode to 0x%x&bslash;n&quot;, p-&gt;RIOBootMode));&n;&t;&t;&t;&t;return(0);&n;&t;&t;&t;**&n;&t;&t;&t;** End ESIL 0820 fix&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;** 02.03.1999 ARG - ESIL 0820 fix&n;&t;&t;&t;** We are no longer using &quot;Boot Mode&quot;, so these ioctls&n;&t;&t;&t;** are not required :&n;&t;&t;&t;**&n;&t; &t;&t;case RIO_GET_BOOT_MODE :&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;Get boot mode - %x&bslash;n&quot;, p-&gt;RIOBootMode));&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;** Return boot state of system - BOOT_ALL, BOOT_OWN or BOOT_NONE&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;if (copyout((caddr_t)&amp;p-&gt;RIOBootMode, (int)arg, &n;&t;&t;&t;&t;&t;&t;sizeof(p-&gt;RIOBootMode)) == COPYFAIL) {&n;&t;&t; &t;&t;&t;p-&gt;RIOError.Error = COPYOUT_FAILED;&n;&t;&t; &t;&t;&t;return -EFAULT;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;return(0);&n;&t;&t;&t;&n; &t;&t;&t;case RIO_SET_BOOT_MODE :&n;&t;&t;&t;&t;p-&gt;RIOBootMode = (uint) arg;&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;Set boot mode to 0x%x&bslash;n&quot;, p-&gt;RIOBootMode));&n;&t;&t;&t;&t;return(0);&n;&t;&t;&t;**&n;&t;&t;&t;** End ESIL 0820 fix&n;&t;&t;&t;*/
 r_case
 id|RIO_BLOCK_OPENS
 suffix:colon
@@ -2632,6 +2662,7 @@ l_string|&quot;EFAULT&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -2659,6 +2690,7 @@ l_string|&quot;ENXIO&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -2686,6 +2718,7 @@ l_string|&quot;EINVAL&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2710,6 +2743,7 @@ l_string|&quot;No p-&gt;RIOPortp array!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -3027,6 +3061,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3043,6 +3078,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3212,6 +3248,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3260,6 +3297,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3276,6 +3314,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3337,6 +3376,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3385,6 +3425,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3401,6 +3442,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3472,6 +3514,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3513,6 +3556,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3541,6 +3585,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3647,6 +3692,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3666,6 +3712,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3745,6 +3792,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3761,6 +3809,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3829,6 +3878,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3865,6 +3915,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -3960,6 +4011,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -3976,6 +4028,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -4099,6 +4152,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4158,6 +4212,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4186,6 +4241,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -4221,6 +4277,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4282,6 +4339,7 @@ l_string|&quot;RIO_START_POLLER&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_case
@@ -4306,6 +4364,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -4360,6 +4419,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4391,6 +4451,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -4475,6 +4536,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4507,6 +4569,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -4531,6 +4594,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -4639,6 +4703,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4700,13 +4765,14 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
 r_return
 id|retval
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;** !! commented out previous &squot;RIO_VERSID&squot; functionality !!&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;**&n;&t;&t;&t;case RIO_VERSID:&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;** Enquire about the release and version.&n;&t;&t;&t;&t;** We return MAX_VERSION_LEN bytes, being a textual null&n;&t;&t;&t;&t;** terminated string.&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;RIO_VERSID&bslash;n&quot;));&n;&t;&t;&t;&t;if (copyout((caddr_t)RIOVersid(), &n;&t;&t;&t;&t;&t;&t;(int)arg, MAX_VERSION_LEN ) == COPYFAIL ) {&n;&t;&t;&t;&t;&t; rio_dprint(RIO_DEBUG_CTRL, (&quot;RIO_VERSID: Bad copy to user space&bslash;n&quot;,Host));&n;&t;&t;&t;&t;&t; p-&gt;RIOError.Error = COPYOUT_FAILED;&n;&t;&t;&t;&t;&t; return EFAULT;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;return retval;&n;&t;&t;&t;**&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;** !! commented out previous &squot;RIO_VERSID&squot; functionality !!&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;**&n;&t;&t;&t;case RIO_VERSID:&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;** Enquire about the release and version.&n;&t;&t;&t;&t;** We return MAX_VERSION_LEN bytes, being a textual null&n;&t;&t;&t;&t;** terminated string.&n;&t;&t;&t;&t;**&n;&t;&t;&t;&t;rio_dprint(RIO_DEBUG_CTRL, (&quot;RIO_VERSID&bslash;n&quot;));&n;&t;&t;&t;&t;if (copyout((caddr_t)RIOVersid(), &n;&t;&t;&t;&t;&t;&t;(int)arg, MAX_VERSION_LEN ) == COPYFAIL ) {&n;&t;&t;&t;&t;&t; rio_dprint(RIO_DEBUG_CTRL, (&quot;RIO_VERSID: Bad copy to user space&bslash;n&quot;,Host));&n;&t;&t;&t;&t;&t; p-&gt;RIOError.Error = COPYOUT_FAILED;&n;&t;&t;&t;&t;&t; return -EFAULT;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;return retval;&n;&t;&t;&t;**&n;&t;&t;&t;** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&n;&t;&t;&t;*/
 r_case
 id|RIO_NUM_HOSTS
 suffix:colon
@@ -4756,6 +4822,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -4797,6 +4864,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -5088,6 +5156,7 @@ op_assign
 id|NOT_SUPER_USER
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -5129,6 +5198,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5164,6 +5234,7 @@ op_assign
 id|NO_SUCH_PRODUCT
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -5240,6 +5311,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5293,6 +5365,7 @@ l_string|&quot;RIO_PARMS: Copy out to user space failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5348,6 +5421,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5373,6 +5447,7 @@ id|HostReq.HostNum
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -5427,6 +5502,7 @@ l_string|&quot;RIO_HOST_REQ: Bad copy to user space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5481,6 +5557,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5506,6 +5583,7 @@ id|HostDpRam.HostNum
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -5618,6 +5696,7 @@ l_string|&quot;RIO_HOST_DPRAM: Bad copy to user space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5666,6 +5745,7 @@ l_string|&quot;RIO_HOST_DPRAM: Bad copy to user space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5710,6 +5790,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5795,6 +5876,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5821,6 +5903,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -5874,6 +5957,7 @@ l_string|&quot;RIO_HOST_PORT: Bad copy to user space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5929,6 +6013,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -5955,6 +6040,7 @@ op_assign
 id|HOST_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -5983,6 +6069,7 @@ op_assign
 id|RUP_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6020,6 +6107,7 @@ op_assign
 id|HOST_NOT_RUNNING
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -6077,6 +6165,7 @@ l_string|&quot;RIO_HOST_RUP: Bad copy to user space&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -6132,6 +6221,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -6158,6 +6248,7 @@ op_assign
 id|HOST_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -6184,6 +6275,7 @@ op_assign
 id|LINK_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6221,6 +6313,7 @@ op_assign
 id|HOST_NOT_RUNNING
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -6277,6 +6370,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -6331,6 +6425,7 @@ op_assign
 id|SIGNALS_ALREADY_SET
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -6367,6 +6462,7 @@ op_assign
 id|NOT_RECEIVING_PROCESS
 suffix:semicolon
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -6598,6 +6694,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6698,6 +6795,7 @@ l_string|&quot;RIO_STREAM_INFO&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_case
@@ -6748,6 +6846,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -6764,6 +6863,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -6811,6 +6911,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
@@ -6970,6 +7071,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7011,6 +7113,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7042,6 +7145,7 @@ op_assign
 id|RUP_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7058,6 +7162,7 @@ op_assign
 id|HOST_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7124,6 +7229,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -7175,6 +7281,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7202,6 +7309,7 @@ op_ge
 id|p-&gt;RIONumHosts
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|rio_dprintk
@@ -7256,6 +7364,7 @@ op_ge
 id|p-&gt;RIONumHosts
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|rio_dprintk
@@ -7331,6 +7440,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7372,6 +7482,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7412,6 +7523,7 @@ op_assign
 id|PORT_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7430,6 +7542,7 @@ op_assign
 id|RUP_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7446,6 +7559,7 @@ op_assign
 id|HOST_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7514,6 +7628,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -7569,6 +7684,7 @@ op_assign
 id|COPYOUT_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -7734,6 +7850,7 @@ l_string|&quot;MAKE Device is called&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -7852,6 +7969,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_sync_page()/block_flushpage() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * We may have stale swap cache pages in memory: notice&n; * them here and get rid of the unnecessary final write.&n; */
 DECL|function|swap_writepage

@@ -967,7 +967,6 @@ op_assign
 id|pt-&gt;next
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 r_if
 c_cond
 (paren
@@ -978,18 +977,6 @@ id|map
 id|found_maps
 op_increment
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|pt-&gt;vma-&gt;vm_pte
-op_eq
-id|map
-)paren
-id|found_maps
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond

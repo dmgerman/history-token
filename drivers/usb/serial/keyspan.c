@@ -1,18 +1,16 @@
 multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000-2001&t;Hugh Blemings &lt;hugh@blemings.org&gt;&n;  (C) Copyright (C) 2002&t;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://misc.nu/hugh/keyspan.html for more information.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to IBM (and previously Linuxcare :) for supporting &n;  staff in their work on open source projects.&n;&n;  Change History&n;&n;    Wed Apr 25 12:00:00 PST 2002 (Keyspan)&n;      Started with Hugh Blemings&squot; code dated Jan 17, 2002.  All adapters&n;      now supported (including QI and QW).  Modified port open, port&n;      close, and send setup() logic to fix various data and endpoint&n;      synchronization bugs and device LED status bugs.  Changed keyspan_&n;      write_room() to accurately return transmit buffer availability.&n;      Changed forwardingLength from 1 to 16 for all adapters.&n;&n;    Fri Oct 12 16:45:00 EST 2001&n;      Preliminary USA-19QI and USA-28 support (both test OK for me, YMMV)&n;&n;    Mon Oct  8 14:29:00 EST 2001 hugh&n;      Fixed bug that prevented mulitport devices operating correctly&n;      if they weren&squot;t the first unit attached.&n;&n;    Sat Oct  6 12:31:21 EST 2001 hugh&n;      Added support for USA-28XA and -28XB, misc cleanups, break support&n;      for usa26 based models thanks to David Gibson.&n;&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;    (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;    (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

@@ -3,6 +3,7 @@ macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/udf_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 r_uint32

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Copyright (C) 1996  Gertjan van Wingerde    (gertjan@cs.vu.nl)&n; *&t;Minix V2 fs support.&n; *&n; *  Modified for 680x0 by Andreas Schwab&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;minix.h&quot;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
@@ -1680,6 +1681,27 @@ suffix:colon
 id|minix_bmap
 )brace
 suffix:semicolon
+DECL|variable|minix_symlink_inode_operations
+r_static
+r_struct
+id|inode_operations
+id|minix_symlink_inode_operations
+op_assign
+(brace
+id|readlink
+suffix:colon
+id|page_readlink
+comma
+id|follow_link
+suffix:colon
+id|page_follow_link
+comma
+id|getattr
+suffix:colon
+id|minix_getattr
+comma
+)brace
+suffix:semicolon
 DECL|function|minix_set_inode
 r_void
 id|minix_set_inode
@@ -1761,7 +1783,7 @@ id|inode-&gt;i_mode
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|page_symlink_inode_operations
+id|minix_symlink_inode_operations
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
@@ -2614,6 +2636,83 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|function|minix_getattr
+r_int
+id|minix_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|kstat
+op_star
+id|stat
+)paren
+(brace
+id|generic_fillattr
+c_func
+(paren
+id|dentry-&gt;d_inode
+comma
+id|stat
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|INODE_VERSION
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+op_eq
+id|MINIX_V1
+)paren
+id|stat-&gt;blocks
+op_assign
+(paren
+id|BLOCK_SIZE
+op_div
+l_int|512
+)paren
+op_star
+id|V1_minix_blocks
+c_func
+(paren
+id|stat-&gt;size
+)paren
+suffix:semicolon
+r_else
+id|stat-&gt;blocks
+op_assign
+(paren
+id|BLOCK_SIZE
+op_div
+l_int|512
+)paren
+op_star
+id|V2_minix_blocks
+c_func
+(paren
+id|stat-&gt;size
+)paren
+suffix:semicolon
+id|stat-&gt;blksize
+op_assign
+id|BLOCK_SIZE
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The function that is called for file truncation.&n; */
 DECL|function|minix_truncate
 r_void
@@ -2803,8 +2902,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

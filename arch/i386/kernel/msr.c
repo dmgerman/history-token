@@ -977,12 +977,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_MSR
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_MSR
 )paren
 )paren
 r_return
@@ -1096,8 +1096,6 @@ c_func
 (paren
 id|msr_exit
 )paren
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

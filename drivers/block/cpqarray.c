@@ -1416,8 +1416,6 @@ comma
 l_string|&quot;1-8i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* This is a bit of a hack... */
 DECL|function|init_module
 r_int

@@ -179,6 +179,9 @@ mdefine_line|#define device_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|late_initcall
 mdefine_line|#define late_initcall(fn)&t;&t;module_init(fn)
 macro_line|#endif
+multiline_comment|/* Data marked not to be saved by software_suspend() */
+DECL|macro|__nosavedata
+mdefine_line|#define __nosavedata __attribute__ ((__section__ (&quot;.data.nosave&quot;)))
 macro_line|#ifdef CONFIG_HOTPLUG
 DECL|macro|__devinit
 mdefine_line|#define __devinit

@@ -7326,8 +7326,6 @@ id|module_exit
 id|usbnet_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;David Brownell &lt;dbrownell@users.sourceforge.net&gt;&quot;

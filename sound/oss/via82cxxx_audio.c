@@ -11956,8 +11956,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#ifdef VIA_PROC_FS
 multiline_comment|/****************************************************************&n; *&n; * /proc/driver/via/info&n; *&n; *&n; */
 DECL|function|via_info_read_proc

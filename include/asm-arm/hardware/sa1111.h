@@ -210,6 +210,16 @@ DECL|macro|USB_RESET_PWRSENSELOW
 mdefine_line|#define USB_RESET_PWRSENSELOW&t;(1 &lt;&lt; 6)
 DECL|macro|USB_RESET_PWRCTRLLOW
 mdefine_line|#define USB_RESET_PWRCTRLLOW&t;(1 &lt;&lt; 7)
+DECL|macro|USB_STATUS_IRQHCIRMTWKUP
+mdefine_line|#define USB_STATUS_IRQHCIRMTWKUP  (1 &lt;&lt;  7)
+DECL|macro|USB_STATUS_IRQHCIBUFFACC
+mdefine_line|#define USB_STATUS_IRQHCIBUFFACC  (1 &lt;&lt;  8)
+DECL|macro|USB_STATUS_NIRQHCIM
+mdefine_line|#define USB_STATUS_NIRQHCIM       (1 &lt;&lt;  9)
+DECL|macro|USB_STATUS_NHCIMFCLR
+mdefine_line|#define USB_STATUS_NHCIMFCLR      (1 &lt;&lt; 10)
+DECL|macro|USB_STATUS_USBPWRSENSE
+mdefine_line|#define USB_STATUS_USBPWRSENSE    (1 &lt;&lt; 11)
 multiline_comment|/*&n; * Serial Audio Controller&n; *&n; * Registers&n; *    SACR0             Serial Audio Common Control Register&n; *    SACR1             Serial Audio Alternate Mode (I2C/MSB) Control Register&n; *    SACR2             Serial Audio AC-link Control Register&n; *    SASR0             Serial Audio I2S/MSB Interface &amp; FIFO Status Register&n; *    SASR1             Serial Audio AC-link Interface &amp; FIFO Status Register&n; *    SASCR             Serial Audio Status Clear Register&n; *    L3_CAR            L3 Control Bus Address Register&n; *    L3_CDR            L3 Control Bus Data Register&n; *    ACCAR             AC-link Command Address Register&n; *    ACCDR             AC-link Command Data Register&n; *    ACSAR             AC-link Status Address Register&n; *    ACSDR             AC-link Status Data Register&n; *    SADTCS            Serial Audio DMA Transmit Control/Status Register&n; *    SADTSA            Serial Audio DMA Transmit Buffer Start Address A&n; *    SADTCA            Serial Audio DMA Transmit Buffer Count Register A&n; *    SADTSB            Serial Audio DMA Transmit Buffer Start Address B&n; *    SADTCB            Serial Audio DMA Transmit Buffer Count Register B&n; *    SADRCS            Serial Audio DMA Receive Control/Status Register&n; *    SADRSA            Serial Audio DMA Receive Buffer Start Address A&n; *    SADRCA            Serial Audio DMA Receive Buffer Count Register A&n; *    SADRSB            Serial Audio DMA Receive Buffer Start Address B&n; *    SADRCB            Serial Audio DMA Receive Buffer Count Register B&n; *    SAITR             Serial Audio Interrupt Test Register&n; *    SADR              Serial Audio Data Register (16 x 32-bit)&n; */
 DECL|macro|_SACR0
 mdefine_line|#define _SACR0          _SA1111( 0x0600 )

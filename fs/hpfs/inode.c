@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/hpfs/inode.c&n; *&n; *  Mikulas Patocka (mik
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|variable|hpfs_file_ops
 r_static

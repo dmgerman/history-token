@@ -84,11 +84,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|variable|via_isa_bridges
+DECL|variable|__initdata
 )brace
 id|via_isa_bridges
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 macro_line|#ifdef FUTURE_BRIDGES
@@ -359,12 +360,6 @@ r_int
 r_int
 id|via_80w
 suffix:semicolon
-DECL|variable|via_clock
-r_static
-r_int
-r_int
-id|via_clock
-suffix:semicolon
 DECL|variable|via_dma
 r_static
 r_char
@@ -630,11 +625,11 @@ c_func
 (paren
 l_string|&quot;PCI clock:                          %d.%dMHz&quot;
 comma
-id|via_clock
+id|system_bus_speed
 op_div
 l_int|1000
 comma
-id|via_clock
+id|system_bus_speed
 op_div
 l_int|100
 op_mod
@@ -1317,7 +1312,7 @@ id|i
 op_assign
 l_int|2
 op_star
-id|via_clock
+id|system_bus_speed
 op_div
 (paren
 id|active
@@ -1350,7 +1345,7 @@ id|i
 )braket
 )paren
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_if
 c_cond
@@ -1387,7 +1382,7 @@ id|i
 op_assign
 l_int|2
 op_star
-id|via_clock
+id|system_bus_speed
 op_div
 id|udma
 (braket
@@ -1406,7 +1401,7 @@ id|udma
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1420,7 +1415,7 @@ id|i
 op_assign
 l_int|4
 op_star
-id|via_clock
+id|system_bus_speed
 op_div
 (paren
 id|udma
@@ -1453,7 +1448,7 @@ id|i
 )braket
 )paren
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1467,7 +1462,7 @@ id|i
 op_assign
 l_int|6
 op_star
-id|via_clock
+id|system_bus_speed
 op_div
 id|udma
 (braket
@@ -1486,7 +1481,7 @@ id|udma
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1500,7 +1495,7 @@ id|i
 op_assign
 l_int|8
 op_star
-id|via_clock
+id|system_bus_speed
 op_div
 id|udma
 (braket
@@ -1519,7 +1514,7 @@ id|udma
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1567,7 +1562,7 @@ id|setup
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|via_print_drive
@@ -1584,7 +1579,7 @@ id|active8b
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|via_print_drive
@@ -1601,7 +1596,7 @@ id|recover8b
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|via_print_drive
@@ -1618,7 +1613,7 @@ id|active
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|via_print_drive
@@ -1635,7 +1630,7 @@ id|recover
 id|i
 )braket
 op_div
-id|via_clock
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|via_print_drive
@@ -2030,7 +2025,8 @@ r_int
 id|via_set_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2039,7 +2035,8 @@ r_char
 id|speed
 )paren
 (brace
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|peer
 op_assign
@@ -2105,7 +2102,7 @@ id|T
 op_assign
 l_int|1000000000
 op_div
-id|via_clock
+id|system_bus_speed
 suffix:semicolon
 r_switch
 c_cond
@@ -2252,7 +2249,8 @@ r_void
 id|via82cxxx_tune_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3020,76 +3018,6 @@ comma
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Determine system bus clock.&n; */
-id|via_clock
-op_assign
-id|system_bus_speed
-op_star
-l_int|1000
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|via_clock
-)paren
-(brace
-r_case
-l_int|33000
-suffix:colon
-id|via_clock
-op_assign
-l_int|33333
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|37000
-suffix:colon
-id|via_clock
-op_assign
-l_int|37500
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|41000
-suffix:colon
-id|via_clock
-op_assign
-l_int|41666
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|via_clock
-template_param
-l_int|50000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;VP_IDE: User given PCI clock speed impossible (%d), using 33 MHz instead.&bslash;n&quot;
-comma
-id|via_clock
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;VP_IDE: Use ide0=ata66 if you want to assume 80-wire cable.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|via_clock
-op_assign
-l_int|33333
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Print the boot message.&n; */
 id|pci_read_config_byte
 c_func
@@ -3106,7 +3034,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;VP_IDE: VIA %s (rev %02x) IDE %s controller on pci%s&bslash;n&quot;
+l_string|&quot;VP_IDE: VIA %s (rev %02x) ATA %s controller on PCI %s&bslash;n&quot;
 comma
 id|via_config-&gt;name
 comma
@@ -3122,44 +3050,6 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Setup /proc/ide/via entry.&n; */
-macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|via_proc
-)paren
-(brace
-id|via_base
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|dev
-comma
-l_int|4
-)paren
-suffix:semicolon
-id|bmide_dev
-op_assign
-id|dev
-suffix:semicolon
-id|isa_dev
-op_assign
-id|isa
-suffix:semicolon
-id|via_display_info
-op_assign
-op_amp
-id|via_get_info
-suffix:semicolon
-id|via_proc
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

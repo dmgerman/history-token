@@ -571,11 +571,6 @@ r_int
 id|address
 )paren
 (brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

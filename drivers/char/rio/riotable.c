@@ -125,6 +125,7 @@ op_assign
 id|HOST_HAS_ALREADY_BEEN_BOOTED
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -271,6 +272,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -345,6 +347,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -486,6 +489,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -517,6 +521,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -586,6 +591,7 @@ op_assign
 id|SubEnt
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -652,6 +658,7 @@ op_assign
 id|SubEnt
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -705,6 +712,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -755,6 +763,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -861,6 +870,7 @@ op_assign
 id|SubEnt
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -920,6 +930,7 @@ op_assign
 id|SubEnt
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -960,6 +971,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -989,6 +1001,7 @@ op_assign
 id|Entry
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -2141,6 +2154,7 @@ id|lock_flags
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -2537,6 +2551,7 @@ op_assign
 id|COULDNT_FIND_ENTRY
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -2624,6 +2639,7 @@ op_assign
 id|ID_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2647,6 +2663,7 @@ op_assign
 id|RTA_UNIQUE_NUMBER_ZERO
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2685,6 +2702,7 @@ op_assign
 id|TTY_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2721,6 +2739,7 @@ op_assign
 id|TTY_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2765,6 +2784,7 @@ op_assign
 id|BAD_CHARACTER_IN_NAME
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2822,6 +2842,7 @@ op_assign
 id|HOST_NOT_RUNNING
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -2879,6 +2900,7 @@ op_assign
 id|COULDNT_FIND_ENTRY
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -3016,6 +3038,7 @@ op_assign
 id|COULDNT_FIND_ENTRY
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -3113,6 +3136,7 @@ op_assign
 id|ID_ALREADY_IN_USE
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -3303,6 +3327,7 @@ id|MapP-&gt;HostUniqueNum
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -4175,6 +4200,7 @@ op_assign
 id|ID_NUMBER_OUT_OF_RANGE
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -4218,6 +4244,7 @@ op_assign
 id|BAD_CHARACTER_IN_NAME
 suffix:semicolon
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -4275,6 +4302,7 @@ op_assign
 id|HOST_NOT_RUNNING
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -4333,6 +4361,7 @@ op_assign
 id|RTA_NUMBER_WRONG
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -4365,6 +4394,7 @@ id|MapP-&gt;HostUniqueNum
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace

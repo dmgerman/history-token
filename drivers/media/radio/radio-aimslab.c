@@ -1529,8 +1529,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|cleanup_rtrack_module
 r_static
 r_void

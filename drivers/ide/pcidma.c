@@ -1057,7 +1057,6 @@ suffix:semicolon
 multiline_comment|/****************************************************************************&n; * PCI specific UDMA channel method implementations.&n; */
 multiline_comment|/*&n; * This is the generic part of the DMA setup used by the host chipset drivers&n; * in the corresponding DMA setup method.&n; *&n; * FIXME: there are some places where this gets used driectly for &quot;error&n; * recovery&quot; in the ATAPI drivers. This was just plain wrong before, in esp.&n; * not portable, and just got uncovered now.&n; */
 DECL|function|udma_pci_enable
-r_static
 r_void
 id|udma_pci_enable
 c_func
@@ -1608,7 +1607,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; */
 DECL|function|udma_pci_start
-r_static
 r_int
 id|udma_pci_start
 c_func
@@ -1658,7 +1656,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|udma_pci_stop
-r_static
 r_int
 id|udma_pci_stop
 c_func
@@ -1757,7 +1754,6 @@ suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
 DECL|function|udma_pci_read
-r_static
 r_int
 id|udma_pci_read
 c_func
@@ -1786,7 +1782,6 @@ id|rq
 suffix:semicolon
 )brace
 DECL|function|udma_pci_write
-r_static
 r_int
 id|udma_pci_write
 c_func
@@ -1816,7 +1811,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
 DECL|function|udma_pci_irq_status
-r_static
 r_int
 id|udma_pci_irq_status
 c_func
@@ -1860,7 +1854,6 @@ suffix:semicolon
 multiline_comment|/* return 1 if INTR asserted */
 )brace
 DECL|function|udma_pci_timeout
-r_static
 r_void
 id|udma_pci_timeout
 c_func
@@ -1882,7 +1875,6 @@ id|drive-&gt;name
 suffix:semicolon
 )brace
 DECL|function|udma_pci_irq_lost
-r_static
 r_void
 id|udma_pci_irq_lost
 c_func
@@ -2344,6 +2336,62 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_dma_intr
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_enable
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_start
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_start
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_stop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_stop
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_read
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_write
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_irq_status
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_irq_status
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_timeout
+)paren
+suffix:semicolon
+DECL|variable|udma_pci_irq_lost
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udma_pci_irq_lost
 )paren
 suffix:semicolon
 eof

@@ -1,19 +1,16 @@
 multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

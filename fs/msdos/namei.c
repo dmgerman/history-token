@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/msdos/namei.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *  Rewritten for constant inumbers 1999 by Al Viro&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|MSDOS_DEBUG

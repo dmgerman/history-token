@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 multiline_comment|/*&n; * Minimum and maximum number of pdflush instances&n; */
 DECL|macro|MIN_PDFLUSH_THREADS
 mdefine_line|#define MIN_PDFLUSH_THREADS&t;2
@@ -94,7 +95,6 @@ id|when_i_went_to_sleep
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * preemption is disabled in pdflush.  There was a bug in preempt&n; * which was causing pdflush to get flipped into state TASK_RUNNING&n; * when it performed a spin_unlock.  That bug is probably fixed,&n; * but play it safe.  The preempt-off paths are very short.&n; */
 DECL|function|__pdflush
 r_static
 r_int
@@ -157,6 +157,8 @@ suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_FLUSHER
+op_or
+id|PF_KERNTHREAD
 suffix:semicolon
 id|my_work-&gt;fn
 op_assign
@@ -165,11 +167,6 @@ suffix:semicolon
 id|my_work-&gt;who
 op_assign
 id|current
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -221,27 +218,44 @@ op_amp
 id|pdflush_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_bdflush
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+macro_line|#endif
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-id|preempt_enable
-c_func
+r_if
+c_cond
 (paren
+id|my_work-&gt;fn
 )paren
-suffix:semicolon
 (paren
 op_star
 id|my_work-&gt;fn
 )paren
 (paren
 id|my_work-&gt;arg0
-)paren
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Thread creation: For how long have there been zero&n;&t;&t; * available threads?&n;&t;&t; */
@@ -347,6 +361,10 @@ r_break
 suffix:semicolon
 multiline_comment|/* exeunt */
 )brace
+id|my_work-&gt;fn
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 id|nr_pdflush_threads
 op_decrement
@@ -357,11 +375,6 @@ c_func
 (paren
 op_amp
 id|pdflush_lock
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

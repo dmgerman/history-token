@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;rock.h&quot;
 multiline_comment|/* These functions are designed to read the system areas of a directory record&n; * and extract relevant information.  There are different functions provided&n; * depending upon what information we need at the time.  One function fills&n; * out an inode structure, a second one extracts a filename, a third one&n; * returns a symbolic link name, and a fourth one returns the extent number&n; * for the file. */
 DECL|macro|SIG

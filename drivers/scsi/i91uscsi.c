@@ -14,7 +14,7 @@ macro_line|#endif
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

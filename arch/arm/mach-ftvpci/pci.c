@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * Owing to a PCB cockup, issue A backplanes are wired thus:&n; *&n; * Slot 1    2    3    4    5   Bridge   S1    S2    S3    S4&n; * IRQ  D    C    B    A    A            C     B     A     D&n; *      A    D    C    B    B            D     C     B     A&n; *      B    A    D    C    C            A     D     C     B&n; *      C    B    A    D    D            B     A     D     C&n; *&n; * ID A31  A30  A29  A28  A27   A26      DEV4  DEV5  DEV6  DEV7&n; *&n; * Actually, this isn&squot;t too bad, because with the processor card&n; * in slot 5 on the primary bus, the IRQs rotate on both sides&n; * as you&squot;d expect.&n; */
 DECL|variable|__initdata
 r_static
@@ -92,6 +93,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ftv host-specific stuff */
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|ftv_pci
@@ -111,5 +113,41 @@ suffix:colon
 id|ftv_map_irq
 comma
 )brace
+suffix:semicolon
+DECL|function|ftv_pci_init
+r_static
+r_int
+id|__init
+id|ftv_pci_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_ftvpci
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|ftv_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ftv_pci_init
+id|subsys_initcall
+c_func
+(paren
+id|ftv_pci_init
+)paren
 suffix:semicolon
 eof

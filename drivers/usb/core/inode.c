@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;

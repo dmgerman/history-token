@@ -79,10 +79,11 @@ DECL|macro|NODE_MAX_MEM_SHIFT
 mdefine_line|#define NODE_MAX_MEM_SHIFT&t;24
 DECL|macro|NODE_MAX_MEM_SIZE
 mdefine_line|#define NODE_MAX_MEM_SIZE&t;(1&lt;&lt;NODE_MAX_MEM_SHIFT)
-macro_line|#else
-DECL|macro|PFN_TO_NID
-mdefine_line|#define PFN_TO_NID(pfn)&t;&t;(0)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif&t;/* CONFIG_ARCH_EDB7211 */
+macro_line|#ifndef PFN_TO_NID
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(pfn)&t;&t;(0)
+macro_line|#endif
 macro_line|#endif
 eof

@@ -411,8 +411,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|struct|mxser_hwconf
 r_struct
 id|mxser_hwconf

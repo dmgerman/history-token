@@ -23,7 +23,7 @@ mdefine_line|#define&t;LOGMAGIC&t;0x87654321
 DECL|macro|LOGVERSION
 mdefine_line|#define&t;LOGVERSION&t;1
 DECL|macro|MAX_ACTIVE
-mdefine_line|#define MAX_ACTIVE&t;512&t;/* Max active file systems sharing log */
+mdefine_line|#define MAX_ACTIVE&t;128&t;/* Max active file systems sharing log */
 r_typedef
 r_struct
 (brace
@@ -72,13 +72,33 @@ id|s32
 id|end
 suffix:semicolon
 multiline_comment|/* 4: addr of last log record set by logredo */
-DECL|member|device
-id|u32
-id|device
+DECL|member|uuid
+r_char
+id|uuid
+(braket
+l_int|16
+)braket
 suffix:semicolon
-multiline_comment|/* 4: save device in case location changes */
+multiline_comment|/* 16: 128-bit journal uuid */
+DECL|member|label
+r_char
+id|label
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: journal label */
+r_struct
+(brace
+DECL|member|uuid
+r_char
+id|uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
 DECL|member|active
-id|u32
+)brace
 id|active
 (braket
 id|MAX_ACTIVE
@@ -89,6 +109,8 @@ DECL|typedef|logsuper_t
 )brace
 id|logsuper_t
 suffix:semicolon
+DECL|macro|NULL_UUID
+mdefine_line|#define NULL_UUID &quot;&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&quot;
 multiline_comment|/* log flag: commit option (see jfs_filsys.h) */
 multiline_comment|/* log state */
 DECL|macro|LOGMOUNT
@@ -693,6 +715,14 @@ r_int
 id|count
 suffix:semicolon
 multiline_comment|/* 4: count */
+DECL|member|uuid
+r_char
+id|uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: 128-bit uuid of log device */
 DECL|typedef|log_t
 )brace
 id|log_t

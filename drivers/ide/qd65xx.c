@@ -124,8 +124,10 @@ DECL|function|qd_select
 r_static
 r_void
 id|qd_select
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -224,7 +226,7 @@ c_cond
 (paren
 id|system_bus_speed
 op_le
-l_int|33
+l_int|33333
 )paren
 (brace
 id|active_cycle
@@ -238,7 +240,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -258,7 +260,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -281,7 +283,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -301,7 +303,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -348,7 +350,7 @@ id|active_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -369,7 +371,7 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_div
-l_int|1000
+l_int|1000000
 op_plus
 l_int|1
 comma
@@ -393,8 +395,10 @@ DECL|function|qd_find_disk_type
 r_static
 r_int
 id|qd_find_disk_type
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -515,8 +519,10 @@ DECL|function|qd_timing_ok
 r_static
 r_int
 id|qd_timing_ok
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 id|drives
 (braket
 )braket
@@ -582,8 +588,10 @@ DECL|function|qd_set_timing
 r_static
 r_void
 id|qd_set_timing
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -651,8 +659,10 @@ DECL|function|qd6500_tune_drive
 r_static
 r_void
 id|qd6500_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -746,8 +756,10 @@ DECL|function|qd6580_tune_drive
 r_static
 r_void
 id|qd6580_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * temp.c&t;Thermal management for cpu&squot;s with Thermal Assist Units&n; *&n; * Written by Troy Benjegerdes &lt;hozer@drgw.net&gt;&n; *&n; * TODO:&n; * dynamic power management to limit peak CPU temp (using ICTC)&n; * calibration???&n; * &n; * Silly, crazy ideas: use cpu load (from scheduler) and ICTC to extend battery&n; * life in portables, and add a &squot;performance/watt&squot; metric somewhere in /proc&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -18,8 +18,6 @@ DECL|macro|CARD_NAME
 mdefine_line|#define CARD_NAME &quot;NeoMagic 256AV/ZX&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;NM256&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -171,7 +171,7 @@ id|permission
 suffix:colon
 id|EIO_ERROR
 comma
-id|revalidate
+id|getattr
 suffix:colon
 id|EIO_ERROR
 comma

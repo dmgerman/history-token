@@ -2683,6 +2683,4 @@ l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* hw=io,irq,ram,ports:io,irq,... */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

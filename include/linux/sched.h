@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1117,6 +1118,14 @@ DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
 DECL|macro|PF_RADIX_TREE
 mdefine_line|#define PF_RADIX_TREE&t;0x00008000&t;/* debug: performing radix tree alloc */
+DECL|macro|PF_FREEZE
+mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
+DECL|macro|PF_IOTHREAD
+mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
+DECL|macro|PF_KERNTHREAD
+mdefine_line|#define PF_KERNTHREAD&t;0x00040000&t;/* this thread is a kernel thread that cannot be sent signals to */
+DECL|macro|PF_FROZEN
+mdefine_line|#define PF_FROZEN&t;0x00080000&t;/* frozen for system suspend */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1444,17 +1453,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
-multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock)&n; */
-r_extern
-id|u64
-id|jiffies_64
-suffix:semicolon
-r_extern
-r_int
-r_int
-r_volatile
-id|jiffies
-suffix:semicolon
 r_extern
 r_int
 r_int

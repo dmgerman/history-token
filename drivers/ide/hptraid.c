@@ -959,7 +959,8 @@ suffix:semicolon
 id|kdev_t
 id|dev
 suffix:semicolon
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|ideinfo
 suffix:semicolon

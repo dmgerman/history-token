@@ -690,7 +690,7 @@ suffix:semicolon
 )brace
 id|pte_dir
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_dir
@@ -1009,30 +1009,6 @@ id|end_mem
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * initialize the bad page table and bad page to point&n;&t; * to a couple of allocated pages&n;&t; */
-id|empty_bad_page_table
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|alloc_bootmem_pages
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-id|empty_bad_page
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|alloc_bootmem_pages
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-suffix:semicolon
 id|empty_zero_page
 op_assign
 (paren
@@ -1059,10 +1035,11 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up SFC/DFC registers (user data space)&n;&t; */
+multiline_comment|/*&n;&t; * Set up SFC/DFC registers&n;&t; */
 id|set_fs
+c_func
 (paren
-id|USER_DS
+id|KERNEL_DS
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG

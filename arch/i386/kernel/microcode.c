@@ -37,8 +37,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|macro|MICRO_DEBUG
 mdefine_line|#define MICRO_DEBUG 0
 macro_line|#if MICRO_DEBUG
@@ -648,12 +646,12 @@ id|c-&gt;x86
 OL
 l_int|6
 op_logical_or
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_IA64
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_IA64
 )paren
 )paren
 (brace

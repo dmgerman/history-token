@@ -3537,23 +3537,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * NOTE doing this for now, anticipating periodic URB models&n;&t; * get updated to be &quot;explicit resubmit&quot;.&n;&t; */
-r_if
-c_cond
-(paren
-id|urb-&gt;next
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;use explicit resubmit for ISO&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 multiline_comment|/* allocate ITDs w/o locking anything */
 id|status
 op_assign

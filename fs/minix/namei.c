@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/minix/namei.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_symlink() */
 macro_line|#include &quot;minix.h&quot;
 DECL|function|inc_count
 r_static
@@ -1428,6 +1429,10 @@ comma
 id|rename
 suffix:colon
 id|minix_rename
+comma
+id|getattr
+suffix:colon
+id|minix_getattr
 comma
 )brace
 suffix:semicolon

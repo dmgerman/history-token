@@ -1597,8 +1597,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/affs_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 r_extern
 r_struct
 id|timezone

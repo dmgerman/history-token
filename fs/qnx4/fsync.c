@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

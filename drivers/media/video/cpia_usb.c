@@ -606,6 +606,38 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* resubmit */
+id|urb-&gt;dev
+op_assign
+id|ucpia-&gt;dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: usb_submit_urb ret %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 )brace
 DECL|function|cpia_usb_open
 r_static
@@ -832,7 +864,7 @@ id|ucpia-&gt;buffers
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* We double buffer the Iso lists */
+multiline_comment|/* We double buffer the Iso lists, and also know the polling&n;&t; * interval is every frame (1 == (1 &lt;&lt; (bInterval -1))).&n;&t; */
 id|urb
 op_assign
 id|usb_alloc_urb
@@ -913,6 +945,10 @@ suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
 id|FRAMES_PER_DESC
+suffix:semicolon
+id|urb-&gt;interval
+op_assign
+l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_buffer_length
 op_assign
@@ -1037,6 +1073,10 @@ id|urb-&gt;number_of_packets
 op_assign
 id|FRAMES_PER_DESC
 suffix:semicolon
+id|urb-&gt;interval
+op_assign
+l_int|1
+suffix:semicolon
 id|urb-&gt;transfer_buffer_length
 op_assign
 id|FRAME_SIZE_PER_DESC
@@ -1079,34 +1119,7 @@ op_assign
 id|FRAME_SIZE_PER_DESC
 suffix:semicolon
 )brace
-id|ucpia-&gt;sbuf
-(braket
-l_int|1
-)braket
-dot
-id|urb-&gt;next
-op_assign
-id|ucpia-&gt;sbuf
-(braket
-l_int|0
-)braket
-dot
-id|urb
-suffix:semicolon
-id|ucpia-&gt;sbuf
-(braket
-l_int|0
-)braket
-dot
-id|urb-&gt;next
-op_assign
-id|ucpia-&gt;sbuf
-(braket
-l_int|1
-)braket
-dot
-id|urb
-suffix:semicolon
+multiline_comment|/* queue the ISO urbs, and resubmit in the completion handler */
 id|err
 op_assign
 id|usb_submit_urb

@@ -7192,9 +7192,6 @@ id|rev
 l_int|10
 )braket
 suffix:semicolon
-multiline_comment|/* No symbols to export, hide all symbols */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_if
 c_cond
 (paren

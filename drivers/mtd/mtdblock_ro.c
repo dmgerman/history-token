@@ -368,9 +368,22 @@ c_loop
 l_int|1
 )paren
 (brace
-multiline_comment|/* Grab the Request and unlink it from the request list, INIT_REQUEST&n;       &t; will execute a return if we are done. */
-id|INIT_REQUEST
+multiline_comment|/* Grab the Request and unlink it from the request list, we&n;&t; will execute a return if we are done. */
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+)paren
+(brace
+id|CLEAR_INTR
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|current_request
 op_assign
 id|CURRENT

@@ -4171,6 +4171,4 @@ c_func
 id|exit_bluecard_cs
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

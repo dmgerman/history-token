@@ -7,6 +7,16 @@ r_typedef
 r_struct
 id|drm_gamma_private
 (brace
+DECL|member|sarea_priv
+id|drm_gamma_sarea_t
+op_star
+id|sarea_priv
+suffix:semicolon
+DECL|member|sarea
+id|drm_map_t
+op_star
+id|sarea
+suffix:semicolon
 DECL|member|buffers
 id|drm_map_t
 op_star
@@ -38,6 +48,55 @@ id|drm_gamma_private_t
 suffix:semicolon
 DECL|macro|LOCK_TEST_WITH_RETURN
 mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != current-&gt;pid ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* gamma_dma.c */
+r_extern
+r_int
+id|gamma_dma_init
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|gamma_dma_copy
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|gamma_dma_ready
@@ -122,6 +181,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|GLINT_DRI_BUF_COUNT
+mdefine_line|#define GLINT_DRI_BUF_COUNT 256
 DECL|macro|GAMMA_OFF
 mdefine_line|#define GAMMA_OFF(reg)&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;((reg &lt; 0x1000)&t;&t;&t;&t;&t;&t;   &bslash;&n;&t; ? reg&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t; : ((reg &lt; 0x10000)&t;&t;&t;&t;&t;   &bslash;&n;&t;    ? (reg - 0x1000)&t;&t;&t;&t;&t;   &bslash;&n;&t;    : ((reg &lt; 0x11000)&t;&t;&t;&t;&t;   &bslash;&n;&t;       ? (reg - 0x10000)&t;&t;&t;&t;   &bslash;&n;&t;       : (reg - 0x11000))))
 DECL|macro|GAMMA_BASE
@@ -148,12 +209,16 @@ DECL|macro|GAMMA_GCOMMANDINTFLAGS
 mdefine_line|#define GAMMA_GCOMMANDINTFLAGS 0x0c50
 DECL|macro|GAMMA_GCOMMANDMODE
 mdefine_line|#define GAMMA_GCOMMANDMODE     0x0c40
+DECL|macro|GAMMA_QUEUED_DMA_MODE
+mdefine_line|#define&t;&t;GAMMA_QUEUED_DMA_MODE&t;&t;1&lt;&lt;1
 DECL|macro|GAMMA_GCOMMANDSTATUS
 mdefine_line|#define GAMMA_GCOMMANDSTATUS   0x0c60
 DECL|macro|GAMMA_GDELAYTIMER
 mdefine_line|#define GAMMA_GDELAYTIMER      0x0c38
 DECL|macro|GAMMA_GDMACONTROL
 mdefine_line|#define GAMMA_GDMACONTROL      0x0060
+DECL|macro|GAMMA_USE_AGP
+mdefine_line|#define &t;GAMMA_USE_AGP&t;&t;&t;1&lt;&lt;1
 DECL|macro|GAMMA_GINTENABLE
 mdefine_line|#define GAMMA_GINTENABLE       0x0808
 DECL|macro|GAMMA_GINTFLAGS
@@ -168,5 +233,17 @@ DECL|macro|GAMMA_SYNC
 mdefine_line|#define GAMMA_SYNC&t;       0x8c40
 DECL|macro|GAMMA_SYNC_TAG
 mdefine_line|#define GAMMA_SYNC_TAG&t;       0x0188
+DECL|macro|GAMMA_PAGETABLEADDR
+mdefine_line|#define GAMMA_PAGETABLEADDR    0x0C00
+DECL|macro|GAMMA_PAGETABLELENGTH
+mdefine_line|#define GAMMA_PAGETABLELENGTH  0x0C08
+DECL|macro|GAMMA_PASSTHROUGH
+mdefine_line|#define GAMMA_PASSTHROUGH&t;0x1FE
+DECL|macro|GAMMA_DMAADDRTAG
+mdefine_line|#define GAMMA_DMAADDRTAG&t;0x530
+DECL|macro|GAMMA_DMACOUNTTAG
+mdefine_line|#define GAMMA_DMACOUNTTAG&t;0x531
+DECL|macro|GAMMA_COMMANDINTTAG
+mdefine_line|#define GAMMA_COMMANDINTTAG&t;0x532
 macro_line|#endif
 eof

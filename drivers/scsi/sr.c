@@ -2859,9 +2859,6 @@ c_func
 (paren
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3004,14 +3001,6 @@ r_int
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|cleanup_sizes
-suffix:colon
-id|kfree
-c_func
-(paren
-id|sr_sizes
-)paren
 suffix:semicolon
 id|cleanup_cds
 suffix:colon

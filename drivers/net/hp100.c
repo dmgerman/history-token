@@ -45,8 +45,6 @@ r_struct
 id|net_device_stats
 id|hp100_stats_t
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#include &quot;hp100.h&quot;
 multiline_comment|/*&n; *  defines&n; */
 DECL|macro|HP100_BUS_ISA

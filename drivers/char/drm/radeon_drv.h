@@ -148,15 +148,10 @@ id|drm_radeon_freelist_t
 op_star
 id|tail
 suffix:semicolon
-multiline_comment|/* FIXME: ROTATE_BUFS is a hask to cycle through bufs until freelist&n;   code is used.  Note this hides a problem with the scratch register&n;   (used to keep track of last buffer completed) being written to before&n;   the last buffer has actually completed rendering. */
-DECL|macro|ROTATE_BUFS
-mdefine_line|#define ROTATE_BUFS 1
-macro_line|#if ROTATE_BUFS
 DECL|member|last_buf
 r_int
 id|last_buf
 suffix:semicolon
-macro_line|#endif
 DECL|member|scratch
 r_volatile
 id|u32
@@ -301,23 +296,6 @@ id|drm_radeon_buf_priv
 DECL|member|age
 id|u32
 id|age
-suffix:semicolon
-DECL|member|prim
-r_int
-id|prim
-suffix:semicolon
-DECL|member|discard
-r_int
-id|discard
-suffix:semicolon
-DECL|member|dispatched
-r_int
-id|dispatched
-suffix:semicolon
-DECL|member|list_entry
-id|drm_radeon_freelist_t
-op_star
-id|list_entry
 suffix:semicolon
 DECL|typedef|drm_radeon_buf_priv_t
 )brace
@@ -792,6 +770,102 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|radeon_cp_vertex2
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_cp_cmdbuf
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_cp_getparam
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_cp_flip
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 multiline_comment|/* Register definitions, register access macros and drmAddMap constants&n; * for Radeon kernel driver.&n; */
 DECL|macro|RADEON_AGP_COMMAND
 mdefine_line|#define RADEON_AGP_COMMAND&t;&t;0x0f60
@@ -831,10 +905,6 @@ DECL|macro|RADEON_CRTC_OFFSET_FLIP_CNTL
 macro_line|#&t;define RADEON_CRTC_OFFSET_FLIP_CNTL&t;(1 &lt;&lt; 16)
 DECL|macro|RADEON_RB3D_COLORPITCH
 mdefine_line|#define RADEON_RB3D_COLORPITCH&t;&t;0x1c48
-DECL|macro|RADEON_RB3D_DEPTHCLEARVALUE
-mdefine_line|#define RADEON_RB3D_DEPTHCLEARVALUE&t;0x1c30
-DECL|macro|RADEON_RB3D_DEPTHXY_OFFSET
-mdefine_line|#define RADEON_RB3D_DEPTHXY_OFFSET&t;0x1c60
 DECL|macro|RADEON_DP_GUI_MASTER_CNTL
 mdefine_line|#define RADEON_DP_GUI_MASTER_CNTL&t;0x146c
 DECL|macro|RADEON_GMC_SRC_PITCH_OFFSET_CNTL
@@ -989,12 +1059,6 @@ DECL|macro|RADEON_STENCIL_ENABLE
 macro_line|#&t;define RADEON_STENCIL_ENABLE&t;&t;(1 &lt;&lt; 7)
 DECL|macro|RADEON_Z_ENABLE
 macro_line|#&t;define RADEON_Z_ENABLE&t;&t;&t;(1 &lt;&lt; 8)
-DECL|macro|RADEON_DEPTH_XZ_OFFEST_ENABLE
-macro_line|#&t;define RADEON_DEPTH_XZ_OFFEST_ENABLE&t;(1 &lt;&lt; 9)
-DECL|macro|RADEON_ZBLOCK8
-macro_line|#&t;define RADEON_ZBLOCK8&t;&t;&t;(0 &lt;&lt; 15)
-DECL|macro|RADEON_ZBLOCK16
-macro_line|#&t;define RADEON_ZBLOCK16&t;&t;&t;(1 &lt;&lt; 15)
 DECL|macro|RADEON_RB3D_DEPTHOFFSET
 mdefine_line|#define RADEON_RB3D_DEPTHOFFSET&t;&t;0x1c24
 DECL|macro|RADEON_RB3D_PLANEMASK
@@ -1021,12 +1085,12 @@ DECL|macro|RADEON_Z_TEST_ALWAYS
 macro_line|#&t;define RADEON_Z_TEST_ALWAYS&t;&t;(7 &lt;&lt; 4)
 DECL|macro|RADEON_STENCIL_TEST_ALWAYS
 macro_line|#&t;define RADEON_STENCIL_TEST_ALWAYS&t;(7 &lt;&lt; 12)
-DECL|macro|RADEON_STENCIL_S_FAIL_KEEP
-macro_line|#&t;define RADEON_STENCIL_S_FAIL_KEEP&t;(0 &lt;&lt; 16)
-DECL|macro|RADEON_STENCIL_ZPASS_KEEP
-macro_line|#&t;define RADEON_STENCIL_ZPASS_KEEP&t;(0 &lt;&lt; 20)
-DECL|macro|RADEON_STENCIL_ZFAIL_KEEP
-macro_line|#&t;define RADEON_STENCIL_ZFAIL_KEEP&t;(0 &lt;&lt; 20)
+DECL|macro|RADEON_STENCIL_S_FAIL_REPLACE
+macro_line|#&t;define RADEON_STENCIL_S_FAIL_REPLACE&t;(2 &lt;&lt; 16)
+DECL|macro|RADEON_STENCIL_ZPASS_REPLACE
+macro_line|#&t;define RADEON_STENCIL_ZPASS_REPLACE&t;(2 &lt;&lt; 20)
+DECL|macro|RADEON_STENCIL_ZFAIL_REPLACE
+macro_line|#&t;define RADEON_STENCIL_ZFAIL_REPLACE&t;(2 &lt;&lt; 24)
 DECL|macro|RADEON_Z_WRITE_ENABLE
 macro_line|#&t;define RADEON_Z_WRITE_ENABLE&t;&t;(1 &lt;&lt; 30)
 DECL|macro|RADEON_RBBM_SOFT_RESET
@@ -1121,6 +1185,26 @@ DECL|macro|RADEON_SE_LINE_WIDTH
 mdefine_line|#define RADEON_SE_LINE_WIDTH&t;&t;0x1db8
 DECL|macro|RADEON_SE_VPORT_XSCALE
 mdefine_line|#define RADEON_SE_VPORT_XSCALE&t;&t;0x1d98
+DECL|macro|RADEON_SE_ZBIAS_FACTOR
+mdefine_line|#define RADEON_SE_ZBIAS_FACTOR&t;&t;0x1db0
+DECL|macro|RADEON_SE_TCL_MATERIAL_EMMISSIVE_RED
+mdefine_line|#define RADEON_SE_TCL_MATERIAL_EMMISSIVE_RED 0x2210
+DECL|macro|RADEON_SE_TCL_OUTPUT_VTX_FMT
+mdefine_line|#define RADEON_SE_TCL_OUTPUT_VTX_FMT         0x2254
+DECL|macro|RADEON_SE_TCL_VECTOR_INDX_REG
+mdefine_line|#define RADEON_SE_TCL_VECTOR_INDX_REG        0x2200
+DECL|macro|RADEON_VEC_INDX_OCTWORD_STRIDE_SHIFT
+macro_line|#       define RADEON_VEC_INDX_OCTWORD_STRIDE_SHIFT  16
+DECL|macro|RADEON_VEC_INDX_DWORD_COUNT_SHIFT
+macro_line|#       define RADEON_VEC_INDX_DWORD_COUNT_SHIFT     28
+DECL|macro|RADEON_SE_TCL_VECTOR_DATA_REG
+mdefine_line|#define RADEON_SE_TCL_VECTOR_DATA_REG       0x2204
+DECL|macro|RADEON_SE_TCL_SCALAR_INDX_REG
+mdefine_line|#define RADEON_SE_TCL_SCALAR_INDX_REG       0x2208
+DECL|macro|RADEON_SCAL_INDX_DWORD_STRIDE_SHIFT
+macro_line|#       define RADEON_SCAL_INDX_DWORD_STRIDE_SHIFT  16
+DECL|macro|RADEON_SE_TCL_SCALAR_DATA_REG
+mdefine_line|#define RADEON_SE_TCL_SCALAR_DATA_REG       0x220C
 DECL|macro|RADEON_SURFACE_ACCESS_FLAGS
 mdefine_line|#define RADEON_SURFACE_ACCESS_FLAGS&t;0x0bf8
 DECL|macro|RADEON_SURFACE_ACCESS_CLR
@@ -1299,10 +1383,14 @@ DECL|macro|RADEON_3D_RNDR_GEN_INDX_PRIM
 macro_line|#&t;define RADEON_3D_RNDR_GEN_INDX_PRIM&t;0x00002300
 DECL|macro|RADEON_WAIT_FOR_IDLE
 macro_line|#&t;define RADEON_WAIT_FOR_IDLE&t;&t;0x00002600
+DECL|macro|RADEON_3D_DRAW_VBUF
+macro_line|#&t;define RADEON_3D_DRAW_VBUF&t;&t;0x00002800
 DECL|macro|RADEON_3D_DRAW_IMMD
 macro_line|#&t;define RADEON_3D_DRAW_IMMD&t;&t;0x00002900
-DECL|macro|RADEON_3D_CLEAR_ZMASK
-macro_line|#&t;define RADEON_3D_CLEAR_ZMASK&t;&t;0x00003200
+DECL|macro|RADEON_3D_DRAW_INDX
+macro_line|#&t;define RADEON_3D_DRAW_INDX&t;&t;0x00002A00
+DECL|macro|RADEON_3D_LOAD_VBPNTR
+macro_line|#&t;define RADEON_3D_LOAD_VBPNTR&t;&t;0x00002F00
 DECL|macro|RADEON_CNTL_HOSTDATA_BLT
 macro_line|#&t;define RADEON_CNTL_HOSTDATA_BLT&t;&t;0x00009400
 DECL|macro|RADEON_CNTL_PAINT_MULTI
@@ -1321,6 +1409,8 @@ DECL|macro|RADEON_CP_PACKET1_REG1_MASK
 mdefine_line|#define RADEON_CP_PACKET1_REG1_MASK&t;0x003ff800
 DECL|macro|RADEON_VTX_Z_PRESENT
 mdefine_line|#define RADEON_VTX_Z_PRESENT&t;&t;&t;(1 &lt;&lt; 31)
+DECL|macro|RADEON_VTX_PKCOLOR_PRESENT
+mdefine_line|#define RADEON_VTX_PKCOLOR_PRESENT&t;&t;(1 &lt;&lt; 3)
 DECL|macro|RADEON_PRIM_TYPE_NONE
 mdefine_line|#define RADEON_PRIM_TYPE_NONE&t;&t;&t;(0 &lt;&lt; 0)
 DECL|macro|RADEON_PRIM_TYPE_POINT
@@ -1343,6 +1433,8 @@ DECL|macro|RADEON_PRIM_TYPE_3VRT_POINT_LIST
 mdefine_line|#define RADEON_PRIM_TYPE_3VRT_POINT_LIST&t;(9 &lt;&lt; 0)
 DECL|macro|RADEON_PRIM_TYPE_3VRT_LINE_LIST
 mdefine_line|#define RADEON_PRIM_TYPE_3VRT_LINE_LIST&t;&t;(10 &lt;&lt; 0)
+DECL|macro|RADEON_PRIM_TYPE_MASK
+mdefine_line|#define RADEON_PRIM_TYPE_MASK                   0xf
 DECL|macro|RADEON_PRIM_WALK_IND
 mdefine_line|#define RADEON_PRIM_WALK_IND&t;&t;&t;(1 &lt;&lt; 4)
 DECL|macro|RADEON_PRIM_WALK_LIST
@@ -1553,13 +1645,15 @@ mdefine_line|#define radeon_flush_write_combine()&t;mb()
 DECL|macro|RADEON_VERBOSE
 mdefine_line|#define RADEON_VERBOSE&t;0
 DECL|macro|RING_LOCALS
-mdefine_line|#define RING_LOCALS&t;int write; unsigned int mask; volatile u32 *ring;
+mdefine_line|#define RING_LOCALS&t;int write, _nr; unsigned int mask; volatile u32 *ring;
 DECL|macro|BEGIN_RING
-mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   n, __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;&t;&t;radeon_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   n, __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;&t;&t;radeon_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_nr = n; dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADVANCE_RING
-mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;radeon_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, write );&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;radeon_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;if (((dev_priv-&gt;ring.tail + _nr) &amp; mask) != write) {&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ADVANCE_RING(): mismatch: nr: %x write: %x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;((dev_priv-&gt;ring.tail + _nr) &amp; mask),&t;&t;&bslash;&n;&t;&t;&t;write);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, write );&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING
 mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|OUT_RING_REG
+mdefine_line|#define OUT_RING_REG( reg, val ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( reg, 0 ) );&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( val );&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RADEON_PERFORMANCE_BOXES
 mdefine_line|#define RADEON_PERFORMANCE_BOXES&t;0
 macro_line|#endif /* __RADEON_DRV_H__ */

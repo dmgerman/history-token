@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* this is a safety check to make sure&n;** blocks are reused properly.  used for debugging only.&n;**&n;** this checks, that block can be reused, and it has correct state&n;**   (free or busy) &n;*/
 DECL|function|is_reusable

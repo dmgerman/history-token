@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ufs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|UFS_DIR_DEBUG

@@ -658,8 +658,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func

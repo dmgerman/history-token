@@ -3162,7 +3162,7 @@ id|IPI_CPU_STOP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;retry&gt;&t;If true, keep retrying until ready.&n; *  &lt;wait&gt;&t;If true, wait until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt;&n; * or are or have executed.&n; */
+multiline_comment|/*&n; * Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;retry&gt;&t;If true, keep retrying until ready.&n; *  &lt;wait&gt;&t;If true, wait until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt;&n; * or are or have executed.&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 r_int
 DECL|function|smp_call_function_on_cpu
 id|smp_call_function_on_cpu

@@ -531,7 +531,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The caller of this wants the passed function to run on every cpu.  If wait&n; * is set, wait until all cpus have finished the function before returning.&n; * The lock is here to protect the call structure.&n; */
+multiline_comment|/*&n; * The caller of this wants the passed function to run on every cpu.  If wait&n; * is set, wait until all cpus have finished the function before returning.&n; * The lock is here to protect the call structure.&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 DECL|function|smp_call_function
 r_int
 id|smp_call_function
@@ -580,7 +580,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -660,7 +660,7 @@ id|cpus
 (brace
 )brace
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp

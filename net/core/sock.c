@@ -1886,7 +1886,7 @@ id|sysctl_wmem_default
 op_assign
 l_int|32767
 suffix:semicolon
-id|sysctl_wmem_default
+id|sysctl_rmem_default
 op_assign
 l_int|32767
 suffix:semicolon

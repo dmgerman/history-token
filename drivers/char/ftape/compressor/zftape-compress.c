@@ -4822,8 +4822,6 @@ id|__this_module.can_unload
 op_assign
 id|can_unload
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#endif
 id|result
 op_assign

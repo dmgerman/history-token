@@ -113,10 +113,10 @@ id|time
 op_star
 id|bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 op_minus
 l_int|1
 suffix:semicolon
@@ -277,8 +277,10 @@ DECL|function|cy82c693_dma_enable
 r_static
 r_void
 id|cy82c693_dma_enable
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -604,8 +606,10 @@ DECL|function|cy82c693_tune_drive
 r_static
 r_void
 id|cy82c693_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

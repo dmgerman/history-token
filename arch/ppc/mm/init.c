@@ -414,17 +414,6 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Free up now-unused memory */
 DECL|function|free_sec

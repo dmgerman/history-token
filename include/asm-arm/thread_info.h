@@ -27,7 +27,8 @@ r_struct
 id|thread_info
 (brace
 DECL|member|flags
-id|__u32
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */

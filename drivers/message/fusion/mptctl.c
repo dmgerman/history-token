@@ -27,8 +27,6 @@ DECL|macro|my_VERSION
 mdefine_line|#define my_VERSION&t;MPT_LINUX_VERSION_COMMON
 DECL|macro|MYNAM
 mdefine_line|#define MYNAM&t;&t;&quot;mptctl&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|MODULEAUTHOR
 id|MODULE_AUTHOR
 c_func

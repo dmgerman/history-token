@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* Joliet? */
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * ok, we cannot use strncmp, as the name is not in our data space.&n; * Thus we&squot;ll have to use isofs_match. No big problem. Match also makes&n; * some sanity tests.&n; */
 r_static

@@ -175,8 +175,6 @@ id|SCIOC_SRECSIZE
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -398,8 +396,6 @@ id|switchtype
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -547,8 +543,6 @@ id|switchtype
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -688,8 +682,6 @@ id|SCIOC_SPIDSIZE
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -826,8 +818,6 @@ id|SCIOC_SPIDSIZE
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -979,8 +969,6 @@ id|SCIOC_DNSIZE
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -1117,8 +1105,6 @@ id|SCIOC_DNSIZE
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func
@@ -1281,9 +1267,6 @@ suffix:colon
 id|boardInfo
 id|bi
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1347,8 +1330,6 @@ id|speed
 suffix:semicolon
 r_int
 id|status
-comma
-id|err
 suffix:semicolon
 id|pr_debug
 c_func

@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 DECL|variable|export_op_default
 r_struct
 id|export_operations
@@ -1748,13 +1749,6 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-r_struct
-id|inode
-op_star
-id|parent
-op_assign
-id|dentry-&gt;d_parent-&gt;d_inode
-suffix:semicolon
 r_int
 id|len
 op_assign
@@ -1815,6 +1809,22 @@ id|inode-&gt;i_mode
 )paren
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|parent
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
+suffix:semicolon
+id|parent
+op_assign
+id|dentry-&gt;d_parent-&gt;d_inode
+suffix:semicolon
 id|fh
 (braket
 l_int|2
@@ -1828,6 +1838,13 @@ l_int|3
 )braket
 op_assign
 id|parent-&gt;i_generation
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
 suffix:semicolon
 id|len
 op_assign

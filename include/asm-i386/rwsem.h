@@ -190,7 +190,7 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;# ending down_read&bslash;n&bslash;t&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|sem-&gt;count
 )paren
@@ -198,6 +198,11 @@ suffix:colon
 l_string|&quot;a&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -233,9 +238,9 @@ c_func
 (paren
 l_string|&quot;# beginning down_write&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xadd      %0,(%%eax)&bslash;n&bslash;t&quot;
+l_string|&quot;  xadd      %%edx,(%%eax)&bslash;n&bslash;t&quot;
 multiline_comment|/* subtract 0x0000ffff, returns the old value */
-l_string|&quot;  testl     %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;  testl     %%edx,%%edx&bslash;n&bslash;t&quot;
 multiline_comment|/* was the count 0 before? */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if we weren&squot;t granted the lock */
@@ -253,19 +258,29 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;# ending down_write&quot;
 suffix:colon
-l_string|&quot;+d&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|sem-&gt;count
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
 )paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -321,8 +336,12 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;# ending __up_read&bslash;n&quot;
 suffix:colon
-multiline_comment|/*&quot;+m&quot;(sem-&gt;count),*/
-l_string|&quot;+d&quot;
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;=d&quot;
 (paren
 id|tmp
 )paren
@@ -330,6 +349,16 @@ suffix:colon
 l_string|&quot;a&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -381,7 +410,7 @@ l_string|&quot;  jmp       1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;# ending __up_write&bslash;n&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|sem-&gt;count
 )paren
@@ -395,6 +424,11 @@ l_string|&quot;i&quot;
 (paren
 op_minus
 id|RWSEM_ACTIVE_WRITE_BIAS
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;

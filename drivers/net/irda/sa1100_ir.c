@@ -3823,6 +3823,4 @@ comma
 l_string|&quot;Maximum baud rate (4000000, 115200, 57600, 38400, 19200, 9600)&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

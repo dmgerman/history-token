@@ -2115,8 +2115,6 @@ comma
 id|bt819_command
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|bt819_setup
 r_static
 r_int

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 DECL|macro|NFS_PARANOIA
 mdefine_line|#define NFS_PARANOIA 1
 multiline_comment|/* #define NFS_DEBUG_VERBOSE 1 */
@@ -252,13 +253,13 @@ id|permission
 suffix:colon
 id|nfs_permission
 comma
-id|revalidate
+id|getattr
 suffix:colon
-id|nfs_revalidate
+id|nfs_getattr
 comma
 id|setattr
 suffix:colon
-id|nfs_notify_change
+id|nfs_setattr
 comma
 )brace
 suffix:semicolon
@@ -1465,10 +1466,16 @@ c_func
 suffix:semicolon
 id|res
 op_assign
-id|nfs_revalidate
+id|nfs_revalidate_inode
 c_func
 (paren
-id|dentry
+id|NFS_SERVER
+c_func
+(paren
+id|inode
+)paren
+comma
+id|inode
 )paren
 suffix:semicolon
 r_if

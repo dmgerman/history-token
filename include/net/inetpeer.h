@@ -4,7 +4,7 @@ DECL|macro|_NET_INETPEER_H
 mdefine_line|#define _NET_INETPEER_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|inet_peer

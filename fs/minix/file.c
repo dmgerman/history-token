@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/minix/file.c&n; *&n; *  Copyright (C) 1991, 1992 Linus Torvalds&n; *&n; *  minix regular file handling primitives&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_inode_buffers() */
 macro_line|#include &quot;minix.h&quot;
 multiline_comment|/*&n; * We have mostly NULLs here: the current defaults are OK for&n; * the minix filesystem.&n; */
 r_int
@@ -53,6 +54,10 @@ op_assign
 id|truncate
 suffix:colon
 id|minix_truncate
+comma
+id|getattr
+suffix:colon
+id|minix_getattr
 comma
 )brace
 suffix:semicolon

@@ -1033,8 +1033,6 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/**&n; * e1000_init_module - Driver Registration Routine&n; *&n; * e1000_init_module is the first routine called when the driver is&n; * loaded. All it does is register with the PCI subsystem.&n; **/
 r_static
 r_int

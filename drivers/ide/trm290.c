@@ -21,8 +21,10 @@ DECL|function|trm290_prepare_drive
 r_static
 r_void
 id|trm290_prepare_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -169,8 +171,10 @@ DECL|function|trm290_selectproc
 r_static
 r_void
 id|trm290_selectproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren

@@ -1253,8 +1253,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|maestro_radio_exit
 r_void
 id|__exit

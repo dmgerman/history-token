@@ -2020,9 +2020,22 @@ id|CURRENT-&gt;buffer
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* standard macro that ensures that requests are really on the&n;&t;   list + sanity checks.                     */
-id|INIT_REQUEST
+multiline_comment|/* standard procedure to ensure that requests are really on the&n;&t;   list + sanity checks.                     */
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+)paren
+(brace
+id|CLEAR_INTR
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

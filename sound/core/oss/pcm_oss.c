@@ -218,8 +218,6 @@ op_star
 id|pcm_oss_file
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|snd_enter_user
 r_static
 r_inline

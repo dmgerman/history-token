@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * open a file on nfsd fs&n; */
 r_struct

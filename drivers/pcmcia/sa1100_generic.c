@@ -70,9 +70,10 @@ id|tq_struct
 id|sa1100_pcmcia_task
 suffix:semicolon
 multiline_comment|/*&n; * sa1100_pcmcia_default_mecr_timing&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; * Calculate MECR clock wait states for given CPU clock&n; * speed and command wait state. This function can be over-&n; * written by a board specific version.&n; *&n; * The default is to simply calculate the BS values as specified in&n; * the INTEL SA1100 development manual&n; * &quot;Expansion Memory (PCMCIA) Configuration Register (MECR)&quot;&n; * that&squot;s section 10.2.5 in _my_ version of the manuial ;)&n; */
-DECL|function|sa1100_pcmcia_default_mecr_timing
 r_static
 r_int
+r_int
+DECL|function|sa1100_pcmcia_default_mecr_timing
 id|sa1100_pcmcia_default_mecr_timing
 c_func
 (paren
@@ -132,6 +133,7 @@ r_if
 c_cond
 (paren
 id|sock
+template_param
 id|SA1100_PCMCIA_MAX_SOCK
 )paren
 r_return

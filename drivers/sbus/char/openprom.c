@@ -2897,8 +2897,6 @@ op_amp
 id|openprom_fops
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|openprom_init
 r_static
 r_int

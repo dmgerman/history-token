@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_inode.c,v 1.42 2002/01/02 23:51:36 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - inode routines.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

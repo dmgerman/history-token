@@ -521,22 +521,6 @@ macro_line|#else /* !CONFIG_NETFILTER */
 DECL|macro|NF_HOOK
 mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn) (okfn)(skb)
 macro_line|#endif /*CONFIG_NETFILTER*/
-multiline_comment|/* From arch/i386/kernel/smp.c:&n; *&n; *&t;Why isn&squot;t this somewhere standard ??&n; *&n; * Maybe because this procedure is horribly buggy, and does&n; * not deserve to live.  Think about signedness issues for five&n; * seconds to see why.&t;&t;- Linus&n; */
-multiline_comment|/* Two signed, return a signed. */
-DECL|macro|SMAX
-mdefine_line|#define SMAX(a,b) ((ssize_t)(a)&gt;(ssize_t)(b) ? (ssize_t)(a) : (ssize_t)(b))
-DECL|macro|SMIN
-mdefine_line|#define SMIN(a,b) ((ssize_t)(a)&lt;(ssize_t)(b) ? (ssize_t)(a) : (ssize_t)(b))
-multiline_comment|/* Two unsigned, return an unsigned. */
-DECL|macro|UMAX
-mdefine_line|#define UMAX(a,b) ((size_t)(a)&gt;(size_t)(b) ? (size_t)(a) : (size_t)(b))
-DECL|macro|UMIN
-mdefine_line|#define UMIN(a,b) ((size_t)(a)&lt;(size_t)(b) ? (size_t)(a) : (size_t)(b))
-multiline_comment|/* Two unsigned, return a signed. */
-DECL|macro|SUMAX
-mdefine_line|#define SUMAX(a,b) ((size_t)(a)&gt;(size_t)(b) ? (ssize_t)(a) : (ssize_t)(b))
-DECL|macro|SUMIN
-mdefine_line|#define SUMIN(a,b) ((size_t)(a)&lt;(size_t)(b) ? (ssize_t)(a) : (ssize_t)(b))
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*__LINUX_NETFILTER_H*/
 eof

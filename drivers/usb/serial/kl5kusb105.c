@@ -3,16 +3,14 @@ multiline_comment|/* TODO:&n; *&t;check modem line signals&n; *&t;implement hand
 multiline_comment|/* History:&n; *   0.3a - implemented pools of write URBs&n; *   0.3  - alpha version for public testing&n; *   0.2  - TIOCMGET works, so autopilot(1) can be used!&n; *   0.1  - can be used to to pilot-xfer -p /dev/ttyUSB0 -l&n; *&n; *   The driver skeleton is mainly based on mct_u232.c and various other &n; *   pieces of code shamelessly copied from the drivers/usb/serial/ directory.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

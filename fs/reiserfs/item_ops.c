@@ -1927,33 +1927,6 @@ suffix:semicolon
 )brace
 DECL|macro|DIRENTRY_VI_FIRST_DIRENTRY_ITEM
 mdefine_line|#define DIRENTRY_VI_FIRST_DIRENTRY_ITEM 1
-DECL|struct|direntry_uarea
-r_struct
-id|direntry_uarea
-(brace
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-DECL|member|entry_count
-id|__u16
-id|entry_count
-suffix:semicolon
-DECL|member|entry_sizes
-id|__u16
-id|entry_sizes
-(braket
-l_int|1
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * function returns old entry number in directory item in real node&n; * using new entry number in virtual item in virtual node */
 DECL|function|old_entry_num
 r_static

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|function|qnx4_new_block
 r_int

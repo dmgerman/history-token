@@ -3260,6 +3260,4 @@ c_func
 id|exit_dtl1_cs
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

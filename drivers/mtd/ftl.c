@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 multiline_comment|/*#define PSYCHO_DEBUG */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -5112,8 +5112,21 @@ suffix:semicolon
 r_do
 (brace
 singleline_comment|//&t;    sti();
-id|INIT_REQUEST
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+)paren
+(brace
+id|CLEAR_INTR
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|minor
 op_assign
 id|minor

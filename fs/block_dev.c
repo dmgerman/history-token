@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAX_BUF_PER_PAGE
 mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
@@ -159,15 +160,6 @@ id|size
 r_int
 id|oldsize
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 multiline_comment|/* Size must be a power of two, and between 512 and PAGE_SIZE */
 r_if
 c_cond
@@ -200,10 +192,10 @@ c_cond
 (paren
 id|size
 OL
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 r_return
@@ -1428,6 +1420,10 @@ op_assign
 id|dev
 suffix:semicolon
 id|new_bdev-&gt;bd_op
+op_assign
+l_int|NULL
+suffix:semicolon
+id|new_bdev-&gt;bd_queue
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2902,6 +2898,19 @@ op_logical_neg
 id|bdev-&gt;bd_openers
 )paren
 (brace
+r_struct
+id|blk_dev_struct
+op_star
+id|p
+op_assign
+id|blk_dev
+op_plus
+id|major
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|bsize
 op_assign
@@ -2945,6 +2954,27 @@ c_func
 id|bsize
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;queue
+)paren
+id|bdev-&gt;bd_queue
+op_assign
+id|p
+op_member_access_from_pointer
+id|queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_else
+id|bdev-&gt;bd_queue
+op_assign
+op_amp
+id|p-&gt;request_queue
+suffix:semicolon
 )brace
 id|bdev-&gt;bd_openers
 op_increment
@@ -2974,6 +3004,10 @@ id|bdev-&gt;bd_openers
 )paren
 (brace
 id|bdev-&gt;bd_op
+op_assign
+l_int|NULL
+suffix:semicolon
+id|bdev-&gt;bd_queue
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3267,6 +3301,10 @@ id|bdev-&gt;bd_openers
 )paren
 (brace
 id|bdev-&gt;bd_op
+op_assign
+l_int|NULL
+suffix:semicolon
+id|bdev-&gt;bd_queue
 op_assign
 l_int|NULL
 suffix:semicolon

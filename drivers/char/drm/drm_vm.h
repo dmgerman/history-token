@@ -146,30 +146,7 @@ id|vm_close
 comma
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
 DECL|function|vm_nopage
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-macro_line|#else
-multiline_comment|/* Return type changed in 2.3.23 */
 r_struct
 id|page
 op_star
@@ -189,9 +166,8 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
-macro_line|#endif
 (brace
 macro_line|#if __REALLY_HAVE_AGP
 id|drm_file_t
@@ -423,19 +399,9 @@ comma
 id|offset
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|page
 suffix:semicolon
-macro_line|#endif
 )brace
 id|vm_nopage_error
 suffix:colon
@@ -445,30 +411,7 @@ id|NOPAGE_SIGBUS
 suffix:semicolon
 multiline_comment|/* Disallow mremap */
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
 DECL|function|vm_shm_nopage
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_shm_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-macro_line|#else
-multiline_comment|/* Return type changed in 2.3.23 */
 r_struct
 id|page
 op_star
@@ -488,11 +431,9 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
-macro_line|#endif
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|drm_map_t
 op_star
 id|map
@@ -503,18 +444,6 @@ op_star
 )paren
 id|vma-&gt;vm_private_data
 suffix:semicolon
-macro_line|#else
-id|drm_map_t
-op_star
-id|map
-op_assign
-(paren
-id|drm_map_t
-op_star
-)paren
-id|vma-&gt;vm_pte
-suffix:semicolon
-macro_line|#endif
 r_int
 r_int
 id|offset
@@ -600,19 +529,9 @@ comma
 id|address
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|page
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Special close routine which deletes map information if we are the last&n; * person to close a mapping and its not in the global maplist.&n; */
 DECL|function|vm_shm_close
@@ -681,11 +600,6 @@ op_minus
 id|vma-&gt;vm_start
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020333
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Needed before Linux 2.3.51 */
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -693,17 +607,10 @@ op_amp
 id|dev-&gt;vma_count
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|map
 op_assign
 id|vma-&gt;vm_private_data
 suffix:semicolon
-macro_line|#else
-id|map
-op_assign
-id|vma-&gt;vm_pte
-suffix:semicolon
-macro_line|#endif
 id|down
 c_func
 (paren
@@ -733,7 +640,6 @@ id|next
 op_assign
 id|pt-&gt;next
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 r_if
 c_cond
 (paren
@@ -744,18 +650,6 @@ id|map
 id|found_maps
 op_increment
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|pt-&gt;vma-&gt;vm_pte
-op_eq
-id|map
-)paren
-id|found_maps
-op_increment
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -972,30 +866,7 @@ id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
 DECL|function|vm_dma_nopage
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_dma_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-macro_line|#else
-multiline_comment|/* Return type changed in 2.3.23 */
 r_struct
 id|page
 op_star
@@ -1015,9 +886,8 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
-macro_line|#endif
 (brace
 id|drm_file_t
 op_star
@@ -1132,44 +1002,11 @@ comma
 id|page_nr
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|page
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
 DECL|function|vm_sg_nopage
-r_int
-r_int
-id|DRM
-c_func
-(paren
-id|vm_sg_nopage
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|unused
-)paren
-macro_line|#else
-multiline_comment|/* Return type changed in 2.3.23 */
 r_struct
 id|page
 op_star
@@ -1189,11 +1026,9 @@ r_int
 id|address
 comma
 r_int
-id|unused
+id|write_access
 )paren
-macro_line|#endif
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|drm_map_t
 op_star
 id|map
@@ -1204,18 +1039,6 @@ op_star
 )paren
 id|vma-&gt;vm_private_data
 suffix:semicolon
-macro_line|#else
-id|drm_map_t
-op_star
-id|map
-op_assign
-(paren
-id|drm_map_t
-op_star
-)paren
-id|vma-&gt;vm_pte
-suffix:semicolon
-macro_line|#endif
 id|drm_file_t
 op_star
 id|priv
@@ -1321,19 +1144,9 @@ c_func
 id|page
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020317
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|page
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|vm_open
 r_void
@@ -1384,12 +1197,6 @@ op_amp
 id|dev-&gt;vma_count
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020333
-multiline_comment|/* The map can exist after the fd is closed. */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Needed before Linux 2.3.51 */
-macro_line|#endif
 id|vma_entry
 op_assign
 id|DRM
@@ -1490,11 +1297,6 @@ op_minus
 id|vma-&gt;vm_start
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020333
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* Needed before Linux 2.3.51 */
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -1696,16 +1498,20 @@ c_func
 id|vm_dma_ops
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_LOCKED
+op_or
+id|VM_SHM
+suffix:semicolon
+multiline_comment|/* Don&squot;t swap */
+macro_line|#else
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
 multiline_comment|/* Don&squot;t swap */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020203 /* KERNEL_VERSION(2,2,3) */
-multiline_comment|/* In Linux 2.2.3 and above, this is&n;&t;&t;&t;&t;   handled in do_mmap() in mm/mmap.c. */
-op_increment
-id|filp-&gt;f_count
-suffix:semicolon
 macro_line|#endif
 id|vma-&gt;vm_file
 op_assign
@@ -2116,8 +1922,11 @@ c_cond
 id|io_remap_page_range
 c_func
 (paren
+id|DRM_RPR_ARG
+c_func
+(paren
 id|vma
-comma
+)paren
 id|vma-&gt;vm_start
 comma
 id|VM_OFFSET
@@ -2144,8 +1953,11 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|DRM_RPR_ARG
+c_func
+(paren
 id|vma
-comma
+)paren
 id|vma-&gt;vm_start
 comma
 id|VM_OFFSET
@@ -2212,7 +2024,6 @@ c_func
 id|vm_shm_ops
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|vma-&gt;vm_private_data
 op_assign
 (paren
@@ -2221,21 +2032,18 @@ op_star
 )paren
 id|map
 suffix:semicolon
-macro_line|#else
-id|vma-&gt;vm_pte
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|map
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Don&squot;t let this area swap.  Change when&n;&t;&t;&t;&t;   DRM_KERNEL advisory is supported. */
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_LOCKED
+suffix:semicolon
+macro_line|#else
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -2250,7 +2058,6 @@ c_func
 id|vm_sg_ops
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|vma-&gt;vm_private_data
 op_assign
 (paren
@@ -2259,20 +2066,17 @@ op_star
 )paren
 id|map
 suffix:semicolon
-macro_line|#else
-id|vma-&gt;vm_pte
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|map
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_LOCKED
 suffix:semicolon
-macro_line|#endif
+macro_line|#else
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -2283,16 +2087,20 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* This should never happen. */
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_LOCKED
+op_or
+id|VM_SHM
+suffix:semicolon
+multiline_comment|/* Don&squot;t swap */
+macro_line|#else
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
 multiline_comment|/* Don&squot;t swap */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020203 /* KERNEL_VERSION(2,2,3) */
-multiline_comment|/* In Linux 2.2.3 and above, this is&n;&t;&t;&t;&t;   handled in do_mmap() in mm/mmap.c. */
-op_increment
-id|filp-&gt;f_count
-suffix:semicolon
 macro_line|#endif
 id|vma-&gt;vm_file
 op_assign

@@ -808,7 +808,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * this function sends a &squot;generic call function&squot; IPI to all other CPUs&n; * in the system.&n; */
-multiline_comment|/*&n; *  [SUMMARY]&t;Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;nonatomic&gt;&t;currently unused.&n; *  &lt;wait&gt;&t;If true, wait (atomically) until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt; or are or have&n; * executed.&n; *&n; * You must not call this function with disabled interrupts or from a hardware interrupt&n; * handler, you may call it from a bottom half handler.&n; */
+multiline_comment|/*&n; *  [SUMMARY]&t;Run a function on all other CPUs.&n; *  &lt;func&gt;&t;The function to run. This must be fast and non-blocking.&n; *  &lt;info&gt;&t;An arbitrary pointer to pass to the function.&n; *  &lt;nonatomic&gt;&t;currently unused.&n; *  &lt;wait&gt;&t;If true, wait (atomically) until function has completed on other CPUs.&n; *  [RETURNS]   0 on success, else a negative status code.&n; *&n; * Does not return until remote CPUs are nearly ready to execute &lt;func&gt; or are or have&n; * executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 r_int
 DECL|function|smp_call_function
 id|smp_call_function
@@ -890,7 +890,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -958,7 +958,7 @@ id|call_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp

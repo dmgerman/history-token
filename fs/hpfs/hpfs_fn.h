@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/hpfs_fn.h&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  function headers&n; */
 singleline_comment|//#define DBG
 singleline_comment|//#define DEBUG_LOCKS
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/hpfs_fs.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_i.h&gt;

@@ -25284,7 +25284,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;tty%02d unloaded&bslash;n&quot;
+l_string|&quot;ttyS%02d unloaded&bslash;n&quot;
 comma
 id|state-&gt;line
 )paren

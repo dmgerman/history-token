@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/buffer.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  general buffer i/o&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|function|hpfs_lock_creation

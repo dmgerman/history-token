@@ -317,8 +317,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_PARM
 (paren
 id|wd0_timeout

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#endif
@@ -2736,6 +2737,34 @@ id|vn_vi
 suffix:semicolon
 multiline_comment|/* array of items (including a new one, excluding item to be deleted) */
 )brace
+suffix:semicolon
+multiline_comment|/* used by directory items when creating virtual nodes */
+DECL|struct|direntry_uarea
+r_struct
+id|direntry_uarea
+(brace
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+DECL|member|entry_count
+id|__u16
+id|entry_count
+suffix:semicolon
+DECL|member|entry_sizes
+id|__u16
+id|entry_sizes
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                  TREE BALANCE                                           */

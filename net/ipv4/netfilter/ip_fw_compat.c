@@ -16,8 +16,6 @@ macro_line|#include &lt;linux/netfilter_ipv4/compat_firewall.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_core.h&gt;
 multiline_comment|/* Theoretically, we could one day use 2.4 helpers, but for now it&n;   just confuses depmod --RR */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|fwops
 r_static
 r_struct

@@ -1740,10 +1740,10 @@ id|ecard_def_fiq_pending
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Enable and disable interrupts from expansion cards.&n; * (interrupts are disabled for these functions).&n; *&n; * They are not meant to be called directly, but via enable/disable_irq.&n; */
-DECL|function|ecard_irq_mask
+DECL|function|ecard_irq_unmask
 r_static
 r_void
-id|ecard_irq_mask
+id|ecard_irq_unmask
 c_func
 (paren
 r_int
@@ -1810,10 +1810,10 @@ id|irqnr
 suffix:semicolon
 )brace
 )brace
-DECL|function|ecard_irq_unmask
+DECL|function|ecard_irq_mask
 r_static
 r_void
-id|ecard_irq_unmask
+id|ecard_irq_mask
 c_func
 (paren
 r_int
@@ -3509,38 +3509,21 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * hook the interrupt handlers&n;&t; */
+r_if
+c_cond
+(paren
+id|slot
+OL
+l_int|8
+)paren
+(brace
 id|ec-&gt;irq
 op_assign
 l_int|32
 op_plus
 id|slot
 suffix:semicolon
-macro_line|#ifdef IO_EC_MEMC8_BASE
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|8
-)paren
-id|ec-&gt;irq
-op_assign
-l_int|11
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * hook the interrupt handlers&n;&t; */
-r_if
-c_cond
-(paren
-id|ec-&gt;irq
-op_ne
-l_int|0
-op_logical_and
-id|ec-&gt;irq
-op_ge
-l_int|32
-)paren
-(brace
 id|set_irq_chip
 c_func
 (paren
@@ -3567,6 +3550,19 @@ id|IRQF_VALID
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef IO_EC_MEMC8_BASE
+r_if
+c_cond
+(paren
+id|slot
+op_eq
+l_int|8
+)paren
+id|ec-&gt;irq
+op_assign
+l_int|11
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_RPC
 multiline_comment|/* On RiscPC, only first two slots have DMA capability */
 r_if

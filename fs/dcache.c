@@ -27,9 +27,6 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Right now the dcache depends on the kernel lock */
-DECL|macro|check_lock
-mdefine_line|#define check_lock()&t;if (!kernel_locked()) BUG()
 DECL|variable|dentry_cache
 r_static
 id|kmem_cache_t
@@ -2514,12 +2511,6 @@ id|inode-&gt;i_mode
 )paren
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* for d_move */
 id|spin_lock
 c_func
 (paren
@@ -2617,11 +2608,6 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_else
 id|d_add
@@ -3240,11 +3226,6 @@ comma
 op_star
 id|new_name
 suffix:semicolon
-id|check_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -3312,11 +3293,6 @@ op_star
 id|target
 )paren
 (brace
-id|check_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

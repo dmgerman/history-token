@@ -1067,8 +1067,6 @@ id|wdt977_miscdev
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|nwwatchdog_init
 id|module_init
 c_func

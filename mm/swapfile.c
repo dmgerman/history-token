@@ -7,9 +7,10 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for block_flushpage() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|swaplock
 id|spinlock_t

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* Does the buffer contain a disk block which is in the tree. */
 DECL|function|B_IS_IN_TREE
 r_inline

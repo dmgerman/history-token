@@ -118,6 +118,7 @@ l_string|&quot;FOAD RTA: GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -203,6 +204,7 @@ l_string|&quot;FOAD RTA: Failed to queue foad command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -264,6 +266,7 @@ l_string|&quot;ZOMBIE RTA: GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -349,6 +352,7 @@ l_string|&quot;ZOMBIE RTA: Failed to queue zombie command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -535,6 +539,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -597,6 +602,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -733,6 +739,7 @@ l_string|&quot;IDENTIFY RTA: GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -803,6 +810,7 @@ l_string|&quot;IDENTIFY RTA: Failed to queue command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -815,6 +823,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
+op_minus
 id|ENOENT
 suffix:semicolon
 )brace
@@ -897,6 +906,7 @@ op_assign
 id|COPYIN_FAILED
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -908,6 +918,7 @@ OG
 l_int|3
 )paren
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 id|CmdBlkP
@@ -932,6 +943,7 @@ l_string|&quot;UFOAD: GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -1052,6 +1064,7 @@ l_string|&quot;UFOAD: Failed queue command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -1117,6 +1130,7 @@ l_string|&quot;UFOAD: Failed queue command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -1133,6 +1147,7 @@ id|CmdBlkP
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -1199,6 +1214,7 @@ l_string|&quot;SUSPEND BOOT ON RTA: GetCmdBlk failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace
@@ -1284,6 +1300,7 @@ l_string|&quot;SUSPEND BOOT ON RTA: Failed to queue iwait command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace

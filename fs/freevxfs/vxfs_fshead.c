@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_fshead.c,v 1.20 2002/01/02 22:02:12 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - fileset header routines.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;vxfs.h&quot;

@@ -363,6 +363,11 @@ id|kdev_t
 id|logdev
 suffix:semicolon
 multiline_comment|/* 2: external log device&t;*/
+DECL|member|aggregate
+id|uint
+id|aggregate
+suffix:semicolon
+multiline_comment|/* volume identifier in log record */
 DECL|member|logpxd
 id|pxd_t
 id|logpxd
@@ -373,6 +378,22 @@ id|pxd_t
 id|ait2
 suffix:semicolon
 multiline_comment|/* 8: pxd describing AIT copy&t;*/
+DECL|member|uuid
+r_char
+id|uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: 128-bit uuid for volume&t;*/
+DECL|member|loguuid
+r_char
+id|loguuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: 128-bit uuid for log&t;*/
 multiline_comment|/* Formerly in ipimap */
 DECL|member|gengen
 id|uint

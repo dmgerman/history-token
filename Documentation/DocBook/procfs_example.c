@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MODULE_VERSION
 mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
@@ -738,7 +738,5 @@ c_func
 (paren
 l_string|&quot;procfs examples&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

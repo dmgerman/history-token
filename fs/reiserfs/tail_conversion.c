@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright 1999 Hans Reiser, see reiserfs/README for li
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 multiline_comment|/* access to tail : when one is going to read tail it must make sure, that is not running.&n; direct2indirect and indirect2direct can not run concurrently */
 multiline_comment|/* Converts direct items to an unformatted node. Panics if file has no&n;   tail. -ENOSPC if no disk space for conversion */

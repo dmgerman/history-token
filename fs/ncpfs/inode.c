@@ -3417,8 +3417,6 @@ id|ncp_current_malloced
 suffix:semicolon
 macro_line|#endif
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

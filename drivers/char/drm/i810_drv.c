@@ -10,15 +10,16 @@ mdefine_line|#define DRIVER_NAME&t;&t;&quot;i810&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel i810&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE&t;&t;&quot;20010616&quot;
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20020211&quot;
+multiline_comment|/* Interface history&n; *&n; * 1.1   - XFree86 4.1&n; * 1.2   - XvMC interfaces&n; *       - XFree86 4.2&n; * 1.2.1 - Disable copying code (leave stub ioctls for backwards compatibility)&n; *       - Remove requirement for interrupt (leave stubs again)&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;1
+mdefine_line|#define DRIVER_MINOR&t;&t;2
 DECL|macro|DRIVER_PATCHLEVEL
-mdefine_line|#define DRIVER_PATCHLEVEL&t;0
+mdefine_line|#define DRIVER_PATCHLEVEL&t;1
 DECL|macro|DRIVER_IOCTLS
-mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_INIT)]   = { i810_dma_init,    1, 1 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_VERTEX)] = { i810_dma_vertex,  1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_CLEAR)]  = { i810_clear_bufs,  1, 0 }, &bslash;&n;      &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_FLUSH)]  = { i810_flush_ioctl, 1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_GETAGE)] = { i810_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_GETBUF)] = { i810_getbuf,      1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_SWAP)]   = { i810_swap_bufs,   1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_COPY)]   = { i810_copybuf,     1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_DOCOPY)] = { i810_docopy,      1, 0 },
+mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_INIT)]   = { i810_dma_init,    1, 1 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_VERTEX)] = { i810_dma_vertex,  1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_CLEAR)]  = { i810_clear_bufs,  1, 0 }, &bslash;&n;      &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_FLUSH)]  = { i810_flush_ioctl, 1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_GETAGE)] = { i810_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_GETBUF)] = { i810_getbuf,      1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_SWAP)]   = { i810_swap_bufs,   1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_COPY)]   = { i810_copybuf,     1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I810_DOCOPY)] = { i810_docopy,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_OV0INFO)] = { i810_ov0_info,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_FSTATUS)] = { i810_fstatus,    1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_OV0FLIP)] = { i810_ov0_flip,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_MC)]      = { i810_dma_mc,     1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I810_RSTATUS)] = { i810_rstatus,    1, 0 }
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS         4
 DECL|macro|__HAVE_COUNTER6

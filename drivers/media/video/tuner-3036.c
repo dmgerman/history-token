@@ -834,8 +834,6 @@ op_amp
 id|i2c_driver_tuner
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_int
 id|__init
 DECL|function|tuner3036_init

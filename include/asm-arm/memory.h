@@ -84,7 +84,7 @@ mdefine_line|#define page_to_pfn(page)&t;(((page) - mem_map) + PHYS_PFN_OFFSET)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;((mem_map + (pfn)) - PHYS_PFN_OFFSET)
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &gt;= PHYS_PFN_OFFSET &amp;&amp; (pfn) &lt; max_mapnr)
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &gt;= PHYS_PFN_OFFSET &amp;&amp; (pfn) &lt; (PHYS_PFN_OFFSET + max_mapnr))
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;(pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT))
 DECL|macro|virt_addr_valid

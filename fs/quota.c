@@ -5,16 +5,10 @@ macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#ifdef CONFIG_QIFACE_COMPAT
 macro_line|#include &lt;linux/quotacompat.h&gt;
 macro_line|#endif
-DECL|variable|nr_dquots
-DECL|variable|nr_free_dquots
-r_int
-id|nr_dquots
-comma
-id|nr_free_dquots
-suffix:semicolon
 multiline_comment|/* Check validity of quotactl */
 DECL|function|check_quotactl_valid
 r_static
@@ -1943,11 +1937,11 @@ c_func
 id|dst
 comma
 op_amp
-id|dqstats
+id|dqstats_array
 comma
 r_sizeof
 (paren
-id|dqstats
+id|dqstats_array
 )paren
 )paren
 suffix:semicolon
@@ -2382,11 +2376,11 @@ c_func
 id|dst
 comma
 op_amp
-id|dqstats
+id|dqstats_array
 comma
 r_sizeof
 (paren
-id|dqstats
+id|dqstats_array
 )paren
 )paren
 suffix:semicolon

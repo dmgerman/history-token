@@ -2,6 +2,7 @@ multiline_comment|/*&n; * symlink.c&n; *&n; * Copyright (c) 1999 Al Smith&n; *&n
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|function|efs_symlink_readpage
 r_static

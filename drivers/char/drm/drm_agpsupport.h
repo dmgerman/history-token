@@ -4,14 +4,10 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if __REALLY_HAVE_AGP
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-macro_line|#include &quot;agpsupport-pre24.h&quot;
-macro_line|#else
 DECL|macro|DRM_AGP_GET
 mdefine_line|#define DRM_AGP_GET (drm_agp_t *)inter_module_get(&quot;drm_agp&quot;)
 DECL|macro|DRM_AGP_PUT
 mdefine_line|#define DRM_AGP_PUT inter_module_put(&quot;drm_agp&quot;)
-macro_line|#endif
 DECL|variable|drm_agp
 r_static
 r_const
@@ -1460,7 +1456,6 @@ l_string|&quot;Intel i810&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
 r_case
 id|INTEL_I815
 suffix:colon
@@ -1470,6 +1465,7 @@ l_string|&quot;Intel i815&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x020415
 r_case
 id|INTEL_I820
 suffix:colon
@@ -1479,6 +1475,7 @@ l_string|&quot;Intel i820&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|INTEL_I840
 suffix:colon
@@ -1488,6 +1485,7 @@ l_string|&quot;Intel i840&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x020415
 r_case
 id|INTEL_I845
 suffix:colon
@@ -1497,6 +1495,7 @@ l_string|&quot;Intel i845&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|INTEL_I850
 suffix:colon
@@ -1506,7 +1505,6 @@ l_string|&quot;Intel i850&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|VIA_GENERIC
 suffix:colon
@@ -1534,7 +1532,6 @@ l_string|&quot;VIA MVP3&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
 r_case
 id|VIA_MVP4
 suffix:colon
@@ -1562,7 +1559,6 @@ l_string|&quot;VIA Apollo KT133&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|VIA_APOLLO_PRO
 suffix:colon

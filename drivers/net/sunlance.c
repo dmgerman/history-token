@@ -457,7 +457,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|init_block_dvma
-id|__u32
+id|dma_addr_t
 id|init_block_dvma
 suffix:semicolon
 DECL|member|dev
@@ -659,7 +659,7 @@ id|ib
 op_assign
 id|lp-&gt;init_block
 suffix:semicolon
-id|__u32
+id|dma_addr_t
 id|aib
 op_assign
 id|lp-&gt;init_block_dvma

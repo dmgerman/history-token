@@ -126,35 +126,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|nonpci_ide_default_irq
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|nonpci_ide_init_hwif_ports
-c_func
-(paren
-id|hw_regs_t
-op_star
-id|hw
-comma
-id|ide_ioreg_t
-id|data_port
-comma
-id|ide_ioreg_t
-id|ctrl_port
-comma
-r_int
-op_star
-id|irq
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ppc4xx_wdt_heartbeat
 c_func
@@ -1118,19 +1089,10 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;**   m8xx_setup.c, prep_setup.c use&n;**     defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)&n;*/
 macro_line|#ifdef CONFIG_IDE
-macro_line|# if defined(CONFIG_PCI)
+macro_line|# ifdef CONFIG_PCI
 id|ppc_ide_md.ide_init_hwif
 op_assign
 id|ppc4xx_ide_init_hwif_ports
-suffix:semicolon
-macro_line|# elif defined (CONFIG_DMA_NONPCI)&t;/* ON board IDE */
-id|ppc_ide_md.default_irq
-op_assign
-id|nonpci_ide_default_irq
-suffix:semicolon
-id|ppc_ide_md.ide_init_hwif
-op_assign
-id|nonpci_ide_init_hwif_ports
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for brw_page() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * Reads or writes a swap page.&n; * wait=1: start I/O and wait for completion. wait=0: start asynchronous I/O.&n; *&n; * Important prevention of race condition: the caller *must* atomically &n; * create a unique swap cache entry for this swap page before calling&n; * rw_swap_page, and must lock that page.  By ensuring that there is a&n; * single page of memory reserved for the swap entry, the normal VM page&n; * lock on that page also doubles as a lock on swap entries.  Having only&n; * one lock to deal with per swap entry (rather than locking swap and memory&n; * independently) also makes it easier to make certain swapping operations&n; * atomic, which is particularly important when we are trying to ensure &n; * that shared pages stay shared while being swapped.&n; */
 DECL|function|rw_swap_page_base

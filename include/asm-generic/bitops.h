@@ -182,6 +182,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * fls: find last bit set.&n; */
+DECL|macro|fls
+mdefine_line|#define fls(x) generic_fls(x)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|macro|ffs

@@ -956,8 +956,6 @@ comma
 id|bt856_command
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|bt856_init
 r_static
 r_int

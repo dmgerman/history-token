@@ -117,6 +117,7 @@ DECL|macro|I810_TEXREG_MCS
 mdefine_line|#define I810_TEXREG_MCS  7&t;/* GFX_OP_MAP_COORD_SETS ??? */
 DECL|macro|I810_TEX_SETUP_SIZE
 mdefine_line|#define I810_TEX_SETUP_SIZE 8
+multiline_comment|/* Flags for clear ioctl&n; */
 DECL|macro|I810_FRONT
 mdefine_line|#define I810_FRONT   0x1
 DECL|macro|I810_BACK
@@ -197,6 +198,16 @@ DECL|member|depth_offset
 r_int
 r_int
 id|depth_offset
+suffix:semicolon
+DECL|member|overlay_offset
+r_int
+r_int
+id|overlay_offset
+suffix:semicolon
+DECL|member|overlay_physical
+r_int
+r_int
+id|overlay_physical
 suffix:semicolon
 DECL|member|w
 r_int
@@ -416,6 +427,24 @@ DECL|typedef|drm_i810_copy_t
 )brace
 id|drm_i810_copy_t
 suffix:semicolon
+DECL|macro|PR_TRIANGLES
+mdefine_line|#define PR_TRIANGLES         (0x0&lt;&lt;18)
+DECL|macro|PR_TRISTRIP_0
+mdefine_line|#define PR_TRISTRIP_0        (0x1&lt;&lt;18)
+DECL|macro|PR_TRISTRIP_1
+mdefine_line|#define PR_TRISTRIP_1        (0x2&lt;&lt;18)
+DECL|macro|PR_TRIFAN
+mdefine_line|#define PR_TRIFAN            (0x3&lt;&lt;18)
+DECL|macro|PR_POLYGON
+mdefine_line|#define PR_POLYGON           (0x4&lt;&lt;18)
+DECL|macro|PR_LINES
+mdefine_line|#define PR_LINES             (0x5&lt;&lt;18)
+DECL|macro|PR_LINESTRIP
+mdefine_line|#define PR_LINESTRIP         (0x6&lt;&lt;18)
+DECL|macro|PR_RECTS
+mdefine_line|#define PR_RECTS             (0x7&lt;&lt;18)
+DECL|macro|PR_MASK
+mdefine_line|#define PR_MASK              (0x7&lt;&lt;18)
 DECL|struct|drm_i810_dma
 r_typedef
 r_struct
@@ -441,6 +470,62 @@ suffix:semicolon
 DECL|typedef|drm_i810_dma_t
 )brace
 id|drm_i810_dma_t
+suffix:semicolon
+DECL|struct|_drm_i810_overlay_t
+r_typedef
+r_struct
+id|_drm_i810_overlay_t
+(brace
+DECL|member|offset
+r_int
+r_int
+id|offset
+suffix:semicolon
+multiline_comment|/* Address of the Overlay Regs */
+DECL|member|physical
+r_int
+r_int
+id|physical
+suffix:semicolon
+DECL|typedef|drm_i810_overlay_t
+)brace
+id|drm_i810_overlay_t
+suffix:semicolon
+DECL|struct|_drm_i810_mc
+r_typedef
+r_struct
+id|_drm_i810_mc
+(brace
+DECL|member|idx
+r_int
+id|idx
+suffix:semicolon
+multiline_comment|/* buffer index */
+DECL|member|used
+r_int
+id|used
+suffix:semicolon
+multiline_comment|/* nr bytes in use */
+DECL|member|num_blocks
+r_int
+id|num_blocks
+suffix:semicolon
+multiline_comment|/* number of GFXBlocks */
+DECL|member|length
+r_int
+op_star
+id|length
+suffix:semicolon
+multiline_comment|/* List of lengths for GFXBlocks (FUTURE)*/
+DECL|member|last_render
+r_int
+r_int
+id|last_render
+suffix:semicolon
+multiline_comment|/* Last Render Request */
+DECL|typedef|drm_i810_mc_t
+)brace
+id|drm_i810_mc_t
 suffix:semicolon
 macro_line|#endif /* _I810_DRM_H_ */
 eof

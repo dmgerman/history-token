@@ -387,17 +387,6 @@ comma
 id|pgtable_cache_size
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * The kernel is already mapped with a kernel segment at kseg_c so &n; * we don&squot;t need to map it with a page table. However head.S also&n; * temporarily mapped it at kseg_4 so we should set up the ksegs again,&n; * clear the TLB and do some other paging setup stuff.&n; */
 r_void

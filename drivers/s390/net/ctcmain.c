@@ -38,20 +38,7 @@ mdefine_line|#define REQUEST_IRQ request_irq
 DECL|macro|FREE_IRQ
 mdefine_line|#define FREE_IRQ free_irq
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020213
-macro_line|#  include &lt;asm/idals.h&gt;
-macro_line|#else
-DECL|macro|set_normalized_cda
-macro_line|#  define set_normalized_cda(ccw, addr) ((ccw)-&gt;cda = (addr),0)
-DECL|macro|clear_normalized_cda
-macro_line|#  define clear_normalized_cda(ccw)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-DECL|macro|s390_dev_info_t
-macro_line|#  define s390_dev_info_t dev_info_t
-DECL|macro|dev_kfree_skb_irq
-macro_line|#  define dev_kfree_skb_irq(a) dev_kfree_skb(a)
-macro_line|#endif
+macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ctctty.h&quot;
 macro_line|#include &quot;fsm.h&quot;
@@ -438,13 +425,11 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x02032D
 DECL|member|tbusy
 r_int
 r_int
 id|tbusy
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n;&t; * The finite state machine of this interface.&n;&t; */
 DECL|member|fsm
 id|fsm_instance
@@ -515,69 +500,6 @@ suffix:semicolon
 DECL|macro|LL_HEADER_LENGTH
 mdefine_line|#define LL_HEADER_LENGTH (sizeof(ll_header))
 multiline_comment|/**&n; * Compatibility macros for busy handling&n; * of network devices.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x02032D
-DECL|function|ctc_clear_busy
-r_static
-id|__inline__
-r_void
-id|ctc_clear_busy
-c_func
-(paren
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|clear_bit
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|dev-&gt;tbusy
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-)brace
-DECL|function|ctc_test_and_set_busy
-r_static
-id|__inline__
-r_int
-id|ctc_test_and_set_busy
-c_func
-(paren
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|dev-&gt;tbusy
-)paren
-suffix:semicolon
-)brace
-DECL|macro|SET_DEVICE_START
-mdefine_line|#define SET_DEVICE_START(device, value) dev-&gt;start = value
-macro_line|#else
 DECL|function|ctc_clear_busy
 r_static
 id|__inline__
@@ -655,7 +577,6 @@ suffix:semicolon
 )brace
 DECL|macro|SET_DEVICE_START
 mdefine_line|#define SET_DEVICE_START(device, value)
-macro_line|#endif
 multiline_comment|/**&n; * Print Banner.&n; */
 DECL|function|print_banner
 r_static
@@ -4424,7 +4345,6 @@ suffix:colon
 l_string|&quot;TX&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -4432,12 +4352,6 @@ op_amp
 id|ch-&gt;tq.list
 )paren
 suffix:semicolon
-macro_line|#else
-id|ch-&gt;tq.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 id|ch-&gt;tq.sync
 op_assign
 l_int|0
@@ -10551,9 +10465,10 @@ op_star
 id|find_netdev_by_ino
 c_func
 (paren
-r_int
-r_int
-id|ino
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
 )paren
 (brace
 id|channel
@@ -10602,15 +10517,15 @@ r_if
 c_cond
 (paren
 (paren
-id|privptr-&gt;proc_ctrl_entry-&gt;low_ino
+id|privptr-&gt;proc_ctrl_entry
 op_eq
-id|ino
+id|pde
 )paren
 op_logical_or
 (paren
-id|privptr-&gt;proc_stat_entry-&gt;low_ino
+id|privptr-&gt;proc_stat_entry
 op_eq
-id|ino
+id|pde
 )paren
 )paren
 r_return
@@ -10626,37 +10541,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-multiline_comment|/**&n; * Lock the module, if someone changes into&n; * our proc directory.&n; */
-DECL|function|ctc_fill_inode
-r_static
-r_void
-id|ctc_fill_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fill
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|macro|CTRL_BUFSIZE
 mdefine_line|#define CTRL_BUFSIZE 40
 DECL|function|ctc_ctrl_open
@@ -10756,20 +10640,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 id|net_device
 op_star
@@ -10802,7 +10682,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -11028,20 +10908,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 r_char
 op_star
@@ -11085,7 +10961,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -11305,20 +11181,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 id|net_device
 op_star
@@ -11338,7 +11210,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -11435,20 +11307,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 r_char
 op_star
@@ -11492,7 +11360,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -11810,208 +11678,6 @@ id|ctc_ctrl_close
 comma
 )brace
 suffix:semicolon
-DECL|variable|ctc_stat_iops
-r_static
-r_struct
-id|inode_operations
-id|ctc_stat_iops
-op_assign
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-id|default_file_ops
-suffix:colon
-op_amp
-id|ctc_stat_fops
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|variable|ctc_ctrl_iops
-r_static
-r_struct
-id|inode_operations
-id|ctc_ctrl_iops
-op_assign
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-id|default_file_ops
-suffix:colon
-op_amp
-id|ctc_ctrl_fops
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|variable|stat_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|stat_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino */
-l_int|10
-comma
-multiline_comment|/* namelen */
-l_string|&quot;statistics&quot;
-comma
-multiline_comment|/* name    */
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-comma
-multiline_comment|/* mode    */
-l_int|1
-comma
-multiline_comment|/* nlink   */
-l_int|0
-comma
-multiline_comment|/* uid     */
-l_int|0
-comma
-multiline_comment|/* gid     */
-l_int|0
-comma
-multiline_comment|/* size    */
-op_amp
-id|ctc_stat_iops
-multiline_comment|/* ops     */
-)brace
-suffix:semicolon
-DECL|variable|ctrl_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|ctrl_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino */
-l_int|10
-comma
-multiline_comment|/* namelen */
-l_string|&quot;buffersize&quot;
-comma
-multiline_comment|/* name    */
-id|S_IFREG
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-comma
-multiline_comment|/* mode    */
-l_int|1
-comma
-multiline_comment|/* nlink   */
-l_int|0
-comma
-multiline_comment|/* uid     */
-l_int|0
-comma
-multiline_comment|/* gid     */
-l_int|0
-comma
-multiline_comment|/* size    */
-op_amp
-id|ctc_ctrl_iops
-multiline_comment|/* ops     */
-)brace
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-DECL|variable|ctc_dir
-r_static
-r_struct
-id|proc_dir_entry
-id|ctc_dir
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino  */
-l_int|3
-comma
-multiline_comment|/* namelen  */
-l_string|&quot;ctc&quot;
-comma
-multiline_comment|/* name     */
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-multiline_comment|/* mode     */
-l_int|2
-comma
-multiline_comment|/* nlink    */
-l_int|0
-comma
-multiline_comment|/* uid      */
-l_int|0
-comma
-multiline_comment|/* gid      */
-l_int|0
-comma
-multiline_comment|/* size     */
-l_int|0
-comma
-multiline_comment|/* ops      */
-l_int|0
-comma
-multiline_comment|/* get_info */
-id|ctc_fill_inode
-multiline_comment|/* fill_ino (for locking) */
-)brace
-suffix:semicolon
-DECL|variable|ctc_template
-r_static
-r_struct
-id|proc_dir_entry
-id|ctc_template
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino  */
-l_int|0
-comma
-multiline_comment|/* namelen  */
-l_string|&quot;&quot;
-comma
-multiline_comment|/* name     */
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-multiline_comment|/* mode     */
-l_int|2
-comma
-multiline_comment|/* nlink    */
-l_int|0
-comma
-multiline_comment|/* uid      */
-l_int|0
-comma
-multiline_comment|/* gid      */
-l_int|0
-comma
-multiline_comment|/* size     */
-l_int|0
-comma
-multiline_comment|/* ops      */
-l_int|0
-comma
-multiline_comment|/* get_info */
-id|ctc_fill_inode
-multiline_comment|/* fill_ino (for locking) */
-)brace
-suffix:semicolon
-macro_line|#else
 DECL|variable|ctc_dir
 r_static
 r_struct
@@ -12021,16 +11687,6 @@ id|ctc_dir
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|ctc_template
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|ctc_template
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * Create the driver&squot;s main directory /proc/net/ctc&n; */
 DECL|function|ctc_proc_create_main
 r_static
@@ -12042,7 +11698,6 @@ r_void
 )paren
 (brace
 multiline_comment|/**&n;&t; * If not registered, register main proc dir-entry now&n;&t; */
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 r_if
 c_cond
 (paren
@@ -12059,22 +11714,6 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|ctc_dir.low_ino
-op_eq
-l_int|0
-)paren
-id|proc_net_register
-c_func
-(paren
-op_amp
-id|ctc_dir
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef MODULE
 multiline_comment|/**&n; * Destroy /proc/net/ctc&n; */
@@ -12087,7 +11726,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|remove_proc_entry
 c_func
 (paren
@@ -12096,14 +11734,6 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_net_unregister
-c_func
-(paren
-id|ctc_dir.low_ino
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif MODULE
 multiline_comment|/**&n; * Create a device specific subdirectory in /proc/net/ctc/ with the&n; * same name like the device. In that directory, create 2 entries&n; * &quot;statistics&quot; and &quot;buffersize&quot;.&n; *&n; * @param dev The device for which the subdirectory should be created.&n; *&n; */
@@ -12124,7 +11754,6 @@ id|privptr
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|privptr-&gt;proc_dentry
 op_assign
 id|proc_mkdir
@@ -12156,11 +11785,6 @@ op_assign
 op_amp
 id|ctc_stat_fops
 suffix:semicolon
-id|privptr-&gt;proc_stat_entry-&gt;proc_iops
-op_assign
-op_amp
-id|ctc_stat_iops
-suffix:semicolon
 id|privptr-&gt;proc_ctrl_entry
 op_assign
 id|create_proc_entry
@@ -12182,50 +11806,6 @@ op_assign
 op_amp
 id|ctc_ctrl_fops
 suffix:semicolon
-id|privptr-&gt;proc_ctrl_entry-&gt;proc_iops
-op_assign
-op_amp
-id|ctc_ctrl_iops
-suffix:semicolon
-macro_line|#else
-id|privptr-&gt;proc_dentry-&gt;name
-op_assign
-id|dev-&gt;name
-suffix:semicolon
-id|privptr-&gt;proc_dentry-&gt;namelen
-op_assign
-id|strlen
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-op_amp
-id|ctc_dir
-comma
-id|privptr-&gt;proc_dentry
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_stat_entry
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_ctrl_entry
-)paren
-suffix:semicolon
-macro_line|#endif
 id|privptr-&gt;proc_registered
 op_assign
 l_int|1
@@ -12251,7 +11831,6 @@ id|privptr-&gt;proc_registered
 )paren
 r_return
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|remove_proc_entry
 c_func
 (paren
@@ -12276,33 +11855,6 @@ comma
 id|ctc_dir
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_unregister
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_stat_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|proc_unregister
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_ctrl_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|proc_unregister
-c_func
-(paren
-op_amp
-id|ctc_dir
-comma
-id|privptr-&gt;proc_dentry-&gt;low_ino
-)paren
-suffix:semicolon
-macro_line|#endif
 id|privptr-&gt;proc_registered
 op_assign
 l_int|0
@@ -12752,26 +12304,6 @@ id|setup
 DECL|macro|ctc_setup_return
 macro_line|#  define ctc_setup_return return
 macro_line|#else MODULE
-macro_line|#  if LINUX_VERSION_CODE &lt; 0x020300
-id|__initfunc
-c_func
-(paren
-r_void
-id|ctc_setup
-c_func
-(paren
-r_char
-op_star
-id|setup
-comma
-r_int
-op_star
-id|ints
-)paren
-)paren
-macro_line|#    define ctc_setup_return return
-macro_line|#    define ints local_ints
-macro_line|#  else
 r_static
 r_int
 id|__init
@@ -12783,7 +12315,6 @@ op_star
 id|setup
 )paren
 macro_line|#    define ctc_setup_return return(1)
-macro_line|#  endif
 macro_line|#endif MODULE
 (brace
 r_int
@@ -13138,7 +12669,6 @@ macro_line|#endif
 id|ctc_setup_return
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 id|__setup
 c_func
 (paren
@@ -13147,7 +12677,6 @@ comma
 id|ctc_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* !CTC_CHANDEV */
 "&f;"
 r_static
@@ -13422,11 +12951,6 @@ r_sizeof
 (paren
 id|net_device
 )paren
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-op_plus
-l_int|11
-multiline_comment|/* name + zero */
-macro_line|#endif
 comma
 id|GFP_KERNEL
 )paren
@@ -13459,21 +12983,6 @@ op_assign
 r_sizeof
 (paren
 id|ctc_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_template
-)paren
-op_plus
-r_sizeof
-(paren
-id|stat_entry
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctrl_entry
 )paren
 suffix:semicolon
 id|dev-&gt;priv
@@ -13526,129 +13035,6 @@ id|ctc_priv
 op_star
 )paren
 id|dev-&gt;priv
-suffix:semicolon
-id|privptr-&gt;proc_dentry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_priv
-)paren
-)paren
-suffix:semicolon
-id|privptr-&gt;proc_stat_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_template
-)paren
-)paren
-suffix:semicolon
-id|privptr-&gt;proc_ctrl_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|ctc_template
-)paren
-op_plus
-r_sizeof
-(paren
-id|stat_entry
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-op_amp
-id|ctc_template
-comma
-r_sizeof
-(paren
-id|ctc_template
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_stat_entry
-comma
-op_amp
-id|stat_entry
-comma
-r_sizeof
-(paren
-id|stat_entry
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_ctrl_entry
-comma
-op_amp
-id|ctrl_entry
-comma
-r_sizeof
-(paren
-id|ctrl_entry
-)paren
-)paren
 suffix:semicolon
 id|privptr-&gt;fsm
 op_assign
@@ -15386,22 +14772,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-id|dev-&gt;name
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|dev
-op_plus
-r_sizeof
-(paren
-id|net_device
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -15834,7 +15204,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-macro_line|#if (LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,3,0))
 DECL|variable|ctc_init
 id|__initcall
 c_func
@@ -15842,7 +15211,6 @@ c_func
 id|ctc_init
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_VERSION_CODE */
 macro_line|#endif /* MODULE */
 multiline_comment|/* --- This is the END my friend --- */
 eof

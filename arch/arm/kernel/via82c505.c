@@ -352,6 +352,10 @@ id|KERN_DEBUG
 l_string|&quot;PCI: VIA 82c505&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -361,7 +365,22 @@ l_int|2
 comma
 l_string|&quot;via config&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;VIA 82c505: Unable to request region 0xA8&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -371,7 +390,26 @@ l_int|8
 comma
 l_string|&quot;pci config&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;VIA 82c505: Unable to request region 0xCF8&bslash;n&quot;
+)paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+l_int|0xA8
+comma
+l_int|2
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Enable compatible Mode */
 id|outb
 c_func

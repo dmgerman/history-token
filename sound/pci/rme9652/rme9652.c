@@ -72,8 +72,6 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* Enable precise pointer */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

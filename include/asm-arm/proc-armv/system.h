@@ -47,7 +47,7 @@ r_int
 id|cr_alignment
 suffix:semicolon
 multiline_comment|/* defined in entry-armv.S */
-macro_line|#ifdef __ARM_ARCH_4__
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 4
 DECL|macro|vectors_base
 mdefine_line|#define vectors_base()&t;((cr_alignment &amp; CR_V) ? 0xffff0000 : 0)
 macro_line|#else
@@ -276,6 +276,10 @@ id|ptr
 comma
 id|size
 )paren
+comma
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_return

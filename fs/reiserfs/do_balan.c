@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 DECL|variable|cur_tb
 r_struct

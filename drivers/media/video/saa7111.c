@@ -1605,8 +1605,6 @@ comma
 id|saa7111_command
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|saa7111_init
 r_static
 r_int

@@ -54,8 +54,6 @@ c_func
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|macro|AIRPORT_IO_LEN
 mdefine_line|#define AIRPORT_IO_LEN&t;(0x1000)&t;/* one page */
 DECL|struct|airport

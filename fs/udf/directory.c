@@ -2,6 +2,7 @@ multiline_comment|/*&n; * directory.c&n; *&n; * PURPOSE&n; *&t;Directory related
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|udf_filead_read
 r_uint8
 op_star

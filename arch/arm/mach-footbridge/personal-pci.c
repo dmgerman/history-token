@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|variable|__initdata
 r_static
 r_int
@@ -125,6 +126,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|personal_server_pci
@@ -156,5 +158,42 @@ suffix:colon
 id|dc21285_postinit
 comma
 )brace
+suffix:semicolon
+DECL|function|personal_pci_init
+r_static
+r_int
+id|__init
+id|personal_pci_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_personal_server
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|personal_server_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|personal_pci_init
+id|subsys_initcall
+c_func
+(paren
+op_amp
+id|personal_pci_init
+)paren
 suffix:semicolon
 eof

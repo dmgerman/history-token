@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO

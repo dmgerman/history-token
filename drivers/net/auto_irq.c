@@ -12,7 +12,7 @@ l_string|&quot;auto_irq.c:v1.11 Donald Becker (becker@scyld.com)&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

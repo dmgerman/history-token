@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * We now use the slot ID instead of the device identifiers to select&n; * which interrupt is routed where.&n; */
 DECL|function|netwinder_map_irq
 r_static
@@ -84,6 +85,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|netwinder_pci
@@ -119,5 +121,41 @@ suffix:colon
 id|dc21285_postinit
 comma
 )brace
+suffix:semicolon
+DECL|function|netwinder_pci_init
+r_static
+r_int
+id|__init
+id|netwinder_pci_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_netwinder
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|netwinder_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|netwinder_pci_init
+id|subsys_initcall
+c_func
+(paren
+id|netwinder_pci_init
+)paren
 suffix:semicolon
 eof

@@ -37,8 +37,10 @@ DECL|function|ns87415_prepare_drive
 r_static
 r_void
 id|ns87415_prepare_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -285,8 +287,10 @@ DECL|function|ns87415_selectproc
 r_static
 r_void
 id|ns87415_selectproc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren

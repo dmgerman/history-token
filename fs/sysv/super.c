@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/sysv/inode.c&n; *&n; *  minix/inode.c&n; *  
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;sysv.h&quot;
 multiline_comment|/*&n; * The following functions try to recognize specific filesystems.&n; *&n; * We recognize:&n; * - Xenix FS by its magic number.&n; * - SystemV FS by its magic number.&n; * - Coherent FS by its funny fname/fpack field.&n; * - SCO AFS by s_nfree == 0xffff&n; * - V7 FS has no distinguishing features.&n; *&n; * We discriminate among SystemV4 and SystemV2 FS by the assumption that&n; * the time stamp is not &lt; 01-01-1980.&n; */
 r_enum
@@ -2781,8 +2782,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

@@ -2914,9 +2914,6 @@ op_star
 id|skb
 suffix:semicolon
 r_int
-id|retval
-suffix:semicolon
-r_int
 id|copied
 suffix:semicolon
 r_if
@@ -3129,9 +3126,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-suffix:semicolon
-r_int
-id|retval
 suffix:semicolon
 id|u16
 id|mlen

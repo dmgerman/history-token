@@ -97,8 +97,12 @@ DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range(__vma, start, end) &bslash;&n;do { if(CTX_VALID((__vma)-&gt;vm_mm-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__vma)-&gt;vm_mm-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
+DECL|macro|flush_tlb_vpte_range
+mdefine_line|#define flush_tlb_vpte_range(__mm, start, end) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__mm)-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;do { struct mm_struct *__mm = (vma)-&gt;vm_mm; &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (page)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
+DECL|macro|flush_tlb_vpte_page
+mdefine_line|#define flush_tlb_vpte_page(mm, addr) &bslash;&n;do { struct mm_struct *__mm = (mm); &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (addr)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
 macro_line|#else /* CONFIG_SMP */
 r_extern
 r_void
@@ -125,9 +129,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|vm_area_struct
+id|mm_struct
 op_star
-id|vma
+id|mm
 comma
 r_int
 r_int
@@ -174,11 +178,15 @@ mdefine_line|#define flush_tlb_all()&t;&t;smp_flush_tlb_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;smp_flush_tlb_mm(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range(vma, start, end)
+mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range((vma)-&gt;vm_mm, start, end)
+DECL|macro|flush_tlb_vpte_range
+mdefine_line|#define flush_tlb_vpte_range(mm, start, end) &bslash;&n;&t;smp_flush_tlb_range(mm, start, end)
 DECL|macro|flush_tlb_kernel_range
 mdefine_line|#define flush_tlb_kernel_range(start, end) &bslash;&n;&t;smp_flush_tlb_kernel_range(start, end)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
+DECL|macro|flush_tlb_vpte_page
+mdefine_line|#define flush_tlb_vpte_page(mm, page) &bslash;&n;&t;smp_flush_tlb_page((mm), page)
 macro_line|#endif /* ! CONFIG_SMP */
 DECL|function|flush_tlb_pgtables
 r_static
@@ -258,20 +266,10 @@ suffix:colon
 id|VPTE_BASE_CHEETAH
 )paren
 suffix:semicolon
-(brace
-r_struct
-id|vm_area_struct
-id|vma
-suffix:semicolon
-id|vma.vm_mm
-op_assign
-id|mm
-suffix:semicolon
-id|flush_tlb_range
+id|flush_tlb_vpte_range
 c_func
 (paren
-op_amp
-id|vma
+id|mm
 comma
 id|vpte_base
 op_plus
@@ -298,7 +296,6 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* _SPARC64_TLBFLUSH_H */
 eof

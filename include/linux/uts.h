@@ -6,10 +6,6 @@ macro_line|#ifndef UTS_SYSNAME
 DECL|macro|UTS_SYSNAME
 mdefine_line|#define UTS_SYSNAME &quot;Linux&quot;
 macro_line|#endif
-macro_line|#ifndef UTS_MACHINE
-DECL|macro|UTS_MACHINE
-mdefine_line|#define UTS_MACHINE &quot;unknown&quot;
-macro_line|#endif
 macro_line|#ifndef UTS_NODENAME
 DECL|macro|UTS_NODENAME
 mdefine_line|#define UTS_NODENAME &quot;(none)&quot;&t;/* set by sethostname() */

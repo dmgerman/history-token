@@ -6722,8 +6722,6 @@ c_func
 id|rose_proto_init
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

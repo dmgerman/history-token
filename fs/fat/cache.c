@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/fat/cache.c&n; *&n; *  Written 1992,1993 by 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#if 0
 macro_line|#  define PRINTK(x) printk x
 macro_line|#else

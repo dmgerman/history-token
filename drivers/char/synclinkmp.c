@@ -17007,8 +17007,6 @@ id|SLMP_INFO
 op_star
 id|info
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_if
 c_cond
 (paren

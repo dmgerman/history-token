@@ -183,6 +183,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -209,6 +210,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EBUSY
 suffix:semicolon
 )brace
@@ -285,6 +287,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -703,6 +706,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFBIG
 suffix:semicolon
 )brace
@@ -771,6 +775,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -817,6 +822,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace
@@ -877,6 +883,7 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 )brace

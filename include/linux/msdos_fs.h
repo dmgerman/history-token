@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_MSDOS_FS_H
 DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|SECTOR_SIZE
 mdefine_line|#define SECTOR_SIZE&t;512&t;&t;/* sector size (bytes) */

@@ -5324,9 +5324,6 @@ id|capi_ctr
 op_star
 id|card
 suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
 r_switch
 c_cond
 (paren
