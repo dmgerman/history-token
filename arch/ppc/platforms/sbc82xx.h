@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/ppcboot.h&gt;
 DECL|macro|CPM_MAP_ADDR
 mdefine_line|#define CPM_MAP_ADDR&t;&t;&t;0xf0000000
 DECL|macro|SBC82xx_TODC_NVRAM_ADDR
-mdefine_line|#define SBC82xx_TODC_NVRAM_ADDR&t;&t;0x80000000
+mdefine_line|#define SBC82xx_TODC_NVRAM_ADDR&t;&t;0xd0000000
 DECL|macro|SBC82xx_MACADDR_NVRAM_FCC1
 mdefine_line|#define SBC82xx_MACADDR_NVRAM_FCC1&t;0x220000c9&t;/* JP6B */
 DECL|macro|SBC82xx_MACADDR_NVRAM_SCC1

@@ -130,13 +130,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_GEN_RTC
 id|TODC_ALLOC
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Timer init happens before mem_init but after paging init, so we cannot&n; * directly use ioremap() at that time.&n; * late_time_init() is call after paging init.&n; */
-macro_line|#ifdef CONFIG_GEN_RTC
 DECL|function|sbc82xx_time_init
 r_static
 r_void
@@ -154,6 +154,21 @@ op_assign
 op_amp
 id|cpm2_immr-&gt;im_memctl
 suffix:semicolon
+multiline_comment|/* Set up CS11 for RTC chip */
+id|mc-&gt;memc_br11
+op_assign
+l_int|0
+suffix:semicolon
+id|mc-&gt;memc_or11
+op_assign
+l_int|0xffff0836
+suffix:semicolon
+id|mc-&gt;memc_br11
+op_assign
+id|SBC82xx_TODC_NVRAM_ADDR
+op_or
+l_int|0x0801
+suffix:semicolon
 id|TODC_INIT
 c_func
 (paren
@@ -167,19 +182,6 @@ id|SBC82xx_TODC_NVRAM_ADDR
 comma
 l_int|0
 )paren
-suffix:semicolon
-multiline_comment|/* Set up CS11 for RTC chip */
-id|mc-&gt;memc_br11
-op_assign
-l_int|0
-suffix:semicolon
-id|mc-&gt;memc_or11
-op_assign
-l_int|0xffff0836
-suffix:semicolon
-id|mc-&gt;memc_br11
-op_assign
-l_int|0x80000801
 suffix:semicolon
 id|todc_info-&gt;nvram_data
 op_assign
