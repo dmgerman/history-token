@@ -2514,6 +2514,9 @@ suffix:semicolon
 r_int
 id|name_len
 suffix:semicolon
+id|__u16
+id|count
+suffix:semicolon
 id|openRetry
 suffix:colon
 id|rc
@@ -2565,7 +2568,7 @@ op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
-id|pSMB-&gt;ByteCount
+id|count
 op_assign
 l_int|1
 suffix:semicolon
@@ -2613,7 +2616,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* BB improve the check for buffer overruns BB */
-id|pSMB-&gt;ByteCount
+id|count
 op_assign
 l_int|0
 suffix:semicolon
@@ -2700,7 +2703,11 @@ l_int|0
 suffix:semicolon
 id|pSMB-&gt;FileAttributes
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|ATTR_NORMAL
+)paren
 suffix:semicolon
 multiline_comment|/* XP does not handle ATTR_POSIX_SEMANTICS */
 multiline_comment|/* but it helps speed up case sensitive checks for other&n;&t;servers such as Samba */
@@ -2713,18 +2720,14 @@ id|CAP_UNIX
 )paren
 id|pSMB-&gt;FileAttributes
 op_or_assign
-id|ATTR_POSIX_SEMANTICS
-suffix:semicolon
-multiline_comment|/* if ((omode &amp; S_IWUGO) == 0)&n;&t;&t;pSMB-&gt;FileAttributes |= ATTR_READONLY;*/
-multiline_comment|/*  Above line causes problems due to vfs splitting create into two&n;&t;&t;pieces - need to set mode after file created not while it is&n;&t;&t;being created */
-id|pSMB-&gt;FileAttributes
-op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|pSMB-&gt;FileAttributes
+id|ATTR_POSIX_SEMANTICS
 )paren
 suffix:semicolon
+multiline_comment|/* if ((omode &amp; S_IWUGO) == 0)&n;&t;&t;pSMB-&gt;FileAttributes |= cpu_to_le32(ATTR_READONLY);*/
+multiline_comment|/*  Above line causes problems due to vfs splitting create into two&n;&t;&t;pieces - need to set mode after file created not while it is&n;&t;&t;being created */
 id|pSMB-&gt;ShareAccess
 op_assign
 id|cpu_to_le32
@@ -2760,28 +2763,24 @@ suffix:semicolon
 multiline_comment|/* BB ??*/
 id|pSMB-&gt;SecurityFlags
 op_assign
-id|cpu_to_le32
-c_func
-(paren
 id|SECURITY_CONTEXT_TRACKING
 op_or
 id|SECURITY_EFFECTIVE_ONLY
-)paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|count
 op_add_assign
 id|name_len
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|count
 )paren
 suffix:semicolon
 multiline_comment|/* long_op set to 1 to allow for oplock break timeouts */
