@@ -602,6 +602,19 @@ DECL|macro|isa_memcpy_fromio
 mdefine_line|#define isa_memcpy_fromio(a,b,c) memcpy_fromio((a), EISA_BASE | (b), (c))
 DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c) memcpy_toio(EISA_BASE | (a), (b), (c))
+multiline_comment|/* &n; * These functions support PA-RISC drivers which don&squot;t yet call ioremap().&n; * They will disappear once the last of these drivers is gone.&n; */
+DECL|macro|gsc_readb
+mdefine_line|#define gsc_readb(x) __raw_readb((unsigned long)x)
+DECL|macro|gsc_readw
+mdefine_line|#define gsc_readw(x) __raw_readw((unsigned long)x)
+DECL|macro|gsc_readl
+mdefine_line|#define gsc_readl(x) __raw_readl((unsigned long)x)
+DECL|macro|gsc_writeb
+mdefine_line|#define gsc_writeb(x, y) __raw_writeb(x, (unsigned long)y)
+DECL|macro|gsc_writew
+mdefine_line|#define gsc_writew(x, y) __raw_writew(x, (unsigned long)y)
+DECL|macro|gsc_writel
+mdefine_line|#define gsc_writel(x, y) __raw_writel(x, (unsigned long)y)
 multiline_comment|/*&n; * XXX - We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and &n; * just copy it. The net code will then do the checksum later. Presently &n; * only used by some shared memory 8390 Ethernet cards anyway.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  memcpy_fromio((skb)-&gt;data,(src),(len))

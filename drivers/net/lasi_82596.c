@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|variable|__devinitdata
 r_static
