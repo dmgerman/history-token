@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: rpckbd.c,v 1.7 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Russell King&n; *&n; * Fixes by Russell King.&n; */
+multiline_comment|/*&n; * $Id: rpckbd.c,v 1.7 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Russell King (thanks)&n; *&n; * Fixes by Russell King.&n; */
 multiline_comment|/*&n; * Acorn RiscPC PS/2 keyboard controller driver for Linux/ARM&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/module.h&gt;
@@ -234,7 +234,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rpckbd.c: Could not allocate keyboard receive IRQ&bslash;n&quot;
+l_string|&quot;rpckbd.c: Could not allocate keyboard receive IRQ!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -266,7 +266,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rpckbd.c: Could not allocate keyboard transmit IRQ&bslash;n&quot;
+l_string|&quot;rpckbd.c: Could not allocate keyboard transmit IRQ!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_irq
