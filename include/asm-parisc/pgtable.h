@@ -638,8 +638,6 @@ id|pte
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Permanent address of a page. Obviously must never be&n; * called on a highmem page.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page) ({ if (!(page)-&gt;virtual) BUG(); (page)-&gt;virtual; })
 DECL|macro|__page_address
 mdefine_line|#define __page_address(page) ({ if (PageHighMem(page)) BUG(); PAGE_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT); })
 DECL|macro|pages_to_mb

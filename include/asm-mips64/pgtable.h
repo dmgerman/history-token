@@ -791,9 +791,6 @@ id|invalid_pmd_table
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Permanent address of a page.  On MIPS64 we never have highmem, so this&n; * is simple.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))

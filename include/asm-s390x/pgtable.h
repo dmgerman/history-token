@@ -261,9 +261,6 @@ op_assign
 id|pteval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Permanent address of a page.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page) ((page)-&gt;virtual)
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * pgd/pmd/pte query functions&n; */

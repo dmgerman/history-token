@@ -39,6 +39,9 @@ mdefine_line|#define BUG()&t;&t;__builtin_trap()
 macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;BUG()
+multiline_comment|/* Sparc64 is slow at multiplication, we prefer to use some extra space. */
+DECL|macro|WANT_PAGE_VIRTUAL
+mdefine_line|#define WANT_PAGE_VIRTUAL 1
 r_extern
 r_void
 id|_clear_page

@@ -757,9 +757,6 @@ id|pgdp
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Permanent address of a page.  On MIPS we never have highmem, so this&n; * is simple.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 macro_line|#ifdef CONFIG_CPU_VR41XX
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)             (mem_map+(unsigned long)((pte_val(x) &gt;&gt; (PAGE_SHIFT + 2))))

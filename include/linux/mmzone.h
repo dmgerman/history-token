@@ -6,6 +6,7 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
@@ -75,6 +76,22 @@ id|free_area
 (braket
 id|MAX_ORDER
 )braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * wait_table&t;&t;-- the array holding the hash table&n;&t; * wait_table_size&t;-- the size of the hash table array&n;&t; * wait_table_shift&t;-- wait_table_size&n;&t; * &t;&t;&t;&t;== BITS_PER_LONG (1 &lt;&lt; wait_table_bits)&n;&t; *&n;&t; * The purpose of all these is to keep track of the people&n;&t; * waiting for a page to become available and make them&n;&t; * runnable again when possible. The trouble is that this&n;&t; * consumes a lot of space, especially when so few things&n;&t; * wait on pages at a given time. So instead of using&n;&t; * per-page waitqueues, we use a waitqueue hash table.&n;&t; *&n;&t; * The bucket discipline is to sleep on the same queue when&n;&t; * colliding and wake all in that wait queue when removing.&n;&t; * When something wakes, it must check to be sure its page is&n;&t; * truly available, a la thundering herd. The cost of a&n;&t; * collision is great, but given the expected load of the&n;&t; * table, they should be so rare as to be outweighed by the&n;&t; * benefits from the saved space.&n;&t; *&n;&t; * __wait_on_page() and unlock_page() in mm/filemap.c, are the&n;&t; * primary users of these fields, and in mm/page_alloc.c&n;&t; * free_area_init_core() performs the initialization of them.&n;&t; */
+DECL|member|wait_table
+id|wait_queue_head_t
+op_star
+id|wait_table
+suffix:semicolon
+DECL|member|wait_table_size
+r_int
+r_int
+id|wait_table_size
+suffix:semicolon
+DECL|member|wait_table_shift
+r_int
+r_int
+id|wait_table_shift
 suffix:semicolon
 multiline_comment|/*&n;&t; * Discontig memory support fields.&n;&t; */
 DECL|member|zone_pgdat
@@ -293,8 +310,13 @@ DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
 DECL|macro|NODE_MEM_MAP
 mdefine_line|#define NODE_MEM_MAP(nid)&t;mem_map
+DECL|macro|MAX_NR_NODES
+mdefine_line|#define MAX_NR_NODES&t;&t;1
 macro_line|#else /* !CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
+multiline_comment|/* page-&gt;zone is currently 8 bits ... */
+DECL|macro|MAX_NR_NODES
+mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|MAP_ALIGN
 mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(mem_map_t)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(mem_map_t) - ((x) % sizeof(mem_map_t))))
