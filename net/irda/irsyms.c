@@ -753,13 +753,6 @@ c_func
 id|irda_start_timer
 )paren
 suffix:semicolon
-DECL|variable|infrared_mode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|infrared_mode
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IRTTY
 DECL|variable|irtty_set_dtr_rts
 id|EXPORT_SYMBOL

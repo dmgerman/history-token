@@ -48,25 +48,6 @@ id|tasks
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|infrared_mode
-r_const
-r_char
-op_star
-id|infrared_mode
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;IRDA_IRLAP&quot;
-comma
-l_string|&quot;IRDA_RAW&quot;
-comma
-l_string|&quot;SHARP_ASK&quot;
-comma
-l_string|&quot;TV_REMOTE&quot;
-comma
-)brace
-suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|task_state
 r_static

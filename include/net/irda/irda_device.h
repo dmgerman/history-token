@@ -844,14 +844,6 @@ id|IRDA_TASK_STATE
 id|state
 )paren
 suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|infrared_mode
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Function irda_get_mtt (skb)&n; *&n; *    Utility function for getting the minimum turnaround time out of &n; *    the skb, where it has been hidden in the cb field.&n; */
 DECL|macro|irda_get_mtt
 mdefine_line|#define irda_get_mtt(skb) (                                                 &bslash;&n;        IRDA_MIN(10000,                                                     &bslash;&n;                  (((struct irda_skb_cb *) skb-&gt;cb)-&gt;magic == LAP_MAGIC) ?  &bslash;&n;                          ((struct irda_skb_cb *)(skb-&gt;cb))-&gt;mtt : 10000    &bslash;&n;                 )&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;)
