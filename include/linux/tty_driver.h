@@ -1039,7 +1039,5 @@ mdefine_line|#define PTY_TYPE_SLAVE&t;&t;&t;0x0002
 multiline_comment|/* serial subtype definitions */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
 macro_line|#endif /* #ifdef _LINUX_TTY_DRIVER_H */
 eof
