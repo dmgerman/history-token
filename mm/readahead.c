@@ -345,11 +345,9 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Do this now, rather than at the next wait_on_page_locked().&n;&t; */
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 r_if

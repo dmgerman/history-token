@@ -3036,11 +3036,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 )brace

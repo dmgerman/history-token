@@ -292,7 +292,8 @@ id|dma_addr_t
 id|errinfo_pool_dhandle
 suffix:semicolon
 DECL|member|cmd_pool_bits
-id|__u32
+r_int
+r_int
 op_star
 id|cmd_pool_bits
 suffix:semicolon

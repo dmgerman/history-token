@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -427,6 +428,22 @@ id|max_depth
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|blk_plug
+r_struct
+id|blk_plug
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|task
+r_struct
+id|tasklet_struct
+id|task
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
 DECL|macro|QUEUE_NR_REQUESTS
 mdefine_line|#define QUEUE_NR_REQUESTS&t;8192
@@ -510,11 +527,10 @@ DECL|member|bounce_gfp
 r_int
 id|bounce_gfp
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is used to remove the plug when tq_disk runs.&n;&t; */
-DECL|member|plug_tq
+DECL|member|plug
 r_struct
-id|tq_struct
-id|plug_tq
+id|blk_plug
+id|plug
 suffix:semicolon
 multiline_comment|/*&n;&t; * various queue flags, see QUEUE_* below&n;&t; */
 DECL|member|queue_flags
@@ -587,6 +603,8 @@ DECL|macro|QUEUE_FLAG_CLUSTER
 mdefine_line|#define QUEUE_FLAG_CLUSTER&t;1&t;/* cluster several segments into 1 */
 DECL|macro|QUEUE_FLAG_QUEUED
 mdefine_line|#define QUEUE_FLAG_QUEUED&t;2&t;/* uses generic tag queueing */
+DECL|macro|QUEUE_FLAG_STOPPED
+mdefine_line|#define QUEUE_FLAG_STOPPED&t;3&t;/* queue is stopped */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_mark_plugged
@@ -924,6 +942,26 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_start_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_stop_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * get ready for proper ref counting&n; */

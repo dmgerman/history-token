@@ -16745,11 +16745,14 @@ op_amp
 id|bio
 )paren
 suffix:semicolon
-id|run_task_queue
+id|generic_unplug_device
 c_func
 (paren
-op_amp
-id|tq_disk
+id|bdev_get_queue
+c_func
+(paren
+id|bdev
+)paren
 )paren
 suffix:semicolon
 id|process_fd_request

@@ -376,11 +376,9 @@ id|wait
 suffix:semicolon
 r_do
 (brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|set_task_state
@@ -1634,11 +1632,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|__set_current_state
@@ -3229,11 +3225,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re _really_ low on memory. Now we just&n;&t; * wait for old buffer heads to become free due to&n;&t; * finishing IO.  Since this is an async request and&n;&t; * the reserve list is empty, we&squot;re sure there are &n;&t; * async buffer heads in use.&n;&t; */
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|free_more_memory
@@ -9206,11 +9200,9 @@ op_star
 id|page
 )paren
 (brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 r_return
