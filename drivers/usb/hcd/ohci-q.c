@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-q.c,v 1.6 2002/01/19 00:23:15 dbrownell Exp $&n; */
-macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|function|urb_free_priv
 r_static
 r_void

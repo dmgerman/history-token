@@ -343,12 +343,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -397,12 +391,6 @@ suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
 suffix:semicolon
 r_return
 op_minus
@@ -477,12 +465,6 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -556,12 +538,6 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
@@ -625,12 +601,6 @@ id|od
 )paren
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 DECL|macro|OMNINET_DATAOFFSET
 mdefine_line|#define OMNINET_DATAOFFSET&t;0x04

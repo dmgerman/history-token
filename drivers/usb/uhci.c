@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;uhci.h&quot;
 macro_line|#include &lt;linux/pm.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
@@ -192,6 +193,8 @@ suffix:semicolon
 multiline_comment|/* If a transfer is still active after this much time, turn off FSBR */
 DECL|macro|IDLE_TIMEOUT
 mdefine_line|#define IDLE_TIMEOUT&t;(HZ / 20)&t;/* 50 ms */
+DECL|macro|FSBR_DELAY
+mdefine_line|#define FSBR_DELAY&t;(HZ / 20)&t;/* 50 ms */
 DECL|macro|MAX_URB_LOOP
 mdefine_line|#define MAX_URB_LOOP&t;2048&t;&t;/* Maximum number of linked URB&squot;s */
 multiline_comment|/*&n; * Only the USB core should call uhci_alloc_dev and uhci_free_dev&n; */
@@ -3152,9 +3155,11 @@ op_logical_neg
 op_decrement
 id|uhci-&gt;fsbr
 )paren
-id|uhci-&gt;skel_term_qh-&gt;link
+id|uhci-&gt;fsbrtimeout
 op_assign
-id|UHCI_PTR_TERM
+id|jiffies
+op_plus
+id|FSBR_DELAY
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -8647,6 +8652,33 @@ c_func
 (paren
 id|u
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Really disable FSBR */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|uhci-&gt;fsbr
+op_logical_and
+id|uhci-&gt;fsbrtimeout
+op_logical_and
+id|time_after_eq
+c_func
+(paren
+id|jiffies
+comma
+id|uhci-&gt;fsbrtimeout
+)paren
+)paren
+(brace
+id|uhci-&gt;fsbrtimeout
+op_assign
+l_int|0
+suffix:semicolon
+id|uhci-&gt;skel_term_qh-&gt;link
+op_assign
+id|UHCI_PTR_TERM
 suffix:semicolon
 )brace
 multiline_comment|/* enter global suspend if nothing connected */
