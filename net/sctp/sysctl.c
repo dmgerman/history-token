@@ -2,7 +2,8 @@ multiline_comment|/* SCTP kernel reference Implementation &n; * Copyright (c) 20
 macro_line|#include &lt;net/sctp/structs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 r_extern
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 id|sctp_proto
 suffix:semicolon
 DECL|variable|sctp_table
