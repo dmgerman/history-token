@@ -4404,6 +4404,7 @@ id|area-&gt;vm_start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This mmap-allocator allocates new areas top-down from below the&n; * stack&squot;s low limit (the base):&n; */
+macro_line|#ifndef HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
 r_int
 r_int
 DECL|function|arch_get_unmapped_area_topdown
@@ -4697,6 +4698,7 @@ r_return
 id|addr
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|arch_unmap_area_topdown
 r_void
 id|arch_unmap_area_topdown
