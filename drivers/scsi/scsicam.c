@@ -316,10 +316,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sector_div
+c_func
 (paren
 id|capacity
-op_div
-(paren
+comma
 id|ip
 (braket
 l_int|0
@@ -329,7 +330,6 @@ id|ip
 (braket
 l_int|1
 )braket
-)paren
 )paren
 OG
 l_int|65534
@@ -355,9 +355,11 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|capacity
-op_div
+id|sector_div
+c_func
 (paren
+id|capacity
+comma
 id|ip
 (braket
 l_int|0
