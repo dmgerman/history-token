@@ -4433,13 +4433,20 @@ id|tloc
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* SMP: This is fairly trivial. We grab CURRENT_TIME and &n;&t;   stuff it to user space. No side effects */
-id|i
-op_assign
-id|get_seconds
+r_struct
+id|timeval
+id|tv
+suffix:semicolon
+id|do_gettimeofday
 c_func
 (paren
+op_amp
+id|tv
 )paren
+suffix:semicolon
+id|i
+op_assign
+id|tv.tv_sec
 suffix:semicolon
 r_if
 c_cond
