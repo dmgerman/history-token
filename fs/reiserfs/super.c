@@ -3544,6 +3544,38 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|rs-&gt;s_v1.s_root_block
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please run&bslash;n&quot;
+l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fais&bslash;n&quot;
+l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
+comma
+id|kdevname
+(paren
+id|s-&gt;s_dev
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|SB_BUFFER_WITH_SB
 (paren
 id|s
