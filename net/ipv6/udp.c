@@ -4925,7 +4925,7 @@ op_logical_neg
 id|err
 )paren
 (brace
-id|UDP_INC_STATS_USER
+id|UDP6_INC_STATS_USER
 c_func
 (paren
 id|UdpOutDatagrams

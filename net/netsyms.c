@@ -2330,6 +2330,13 @@ id|sysctl_max_syn_backlog
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|ip_generic_getfrag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_generic_getfrag
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|tcp_read_sock
 id|EXPORT_SYMBOL
