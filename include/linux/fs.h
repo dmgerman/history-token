@@ -3789,7 +3789,6 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;&t;NOTE NOTE NOTE&n; *&n; *&t;-&gt;read_super() is going to die.  New method (-&gt;get_sb) should replace&n; * it.  The only reason why -&gt;read_super() is left for _SHORT_ transition&n; * period is to avoid a single patch touching every fs.  They will be&n; * converted one-by-one and ONCE THAT IS DONE OR TWO WEEKS HAD PASSED&n; * (whatever sooner) -&gt;read_super() WILL DISAPPEAR.  &n; */
 DECL|struct|file_system_type
 r_struct
 id|file_system_type
@@ -3824,25 +3823,6 @@ op_star
 comma
 r_void
 op_star
-)paren
-suffix:semicolon
-DECL|member|read_super
-r_struct
-id|super_block
-op_star
-(paren
-op_star
-id|read_super
-)paren
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_void
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|member|owner
@@ -3973,10 +3953,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-DECL|macro|DECLARE_FSTYPE
-mdefine_line|#define DECLARE_FSTYPE(var,type,read,flags) &bslash;&n;struct file_system_type var = { &bslash;&n;&t;name:&t;&t;type, &bslash;&n;&t;read_super:&t;read, &bslash;&n;&t;fs_flags:&t;flags, &bslash;&n;&t;owner:&t;&t;THIS_MODULE, &bslash;&n;}
-DECL|macro|DECLARE_FSTYPE_DEV
-mdefine_line|#define DECLARE_FSTYPE_DEV(var,type,read) &bslash;&n;&t;DECLARE_FSTYPE(var,type,read,FS_REQUIRES_DEV)
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
 DECL|macro|fops_get
 mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; (fops)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((fops)-&gt;owner) ? (fops) : NULL ) &bslash;&n;&t;&t;: (fops))

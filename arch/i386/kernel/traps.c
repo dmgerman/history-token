@@ -578,7 +578,7 @@ op_xor
 r_int
 r_int
 )paren
-id|tsk
+id|tsk-&gt;thread_info
 )paren
 op_amp
 (paren
@@ -861,18 +861,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Process %s (pid: %d, stackpage=%08lx)&quot;
+l_string|&quot;Process %s (pid: %d, threadinfo=%p task=%p)&quot;
 comma
 id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
-l_int|4096
-op_plus
+id|current_thread_info
+c_func
 (paren
-r_int
-r_int
 )paren
+comma
 id|current
 )paren
 suffix:semicolon
@@ -2719,9 +2718,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;flags
-op_or_assign
-id|PF_USEDFPU
+id|set_thread_flag
+c_func
+(paren
+id|TIF_USEDFPU
+)paren
 suffix:semicolon
 multiline_comment|/* So we fnsave on switch_to() */
 )brace

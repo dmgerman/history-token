@@ -1338,21 +1338,9 @@ id|p
 )paren
 suffix:semicolon
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)))[1019])
+mdefine_line|#define KSTK_EIP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1019])
 DECL|macro|KSTK_ESP
-mdefine_line|#define KSTK_ESP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)))[1022])
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() ((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p) free_pages((unsigned long) (p), 1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
+mdefine_line|#define KSTK_ESP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1022])
 DECL|struct|microcode
 r_struct
 id|microcode

@@ -299,6 +299,8 @@ id|ret
 op_assign
 id|file-&gt;f_pos
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ret

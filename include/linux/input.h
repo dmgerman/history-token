@@ -1,8 +1,8 @@
 macro_line|#ifndef _INPUT_H
 DECL|macro|_INPUT_H
 mdefine_line|#define _INPUT_H
-multiline_comment|/*&n; * $Id: input.h,v 1.34 2001/05/28 09:06:44 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: input.h,v 1.57 2002/01/02 11:59:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#else
@@ -53,12 +53,18 @@ DECL|macro|EVIOCGKEYCODE
 mdefine_line|#define EVIOCGKEYCODE&t;&t;_IOR(&squot;E&squot;, 0x04, int[2])&t;&t;&t;/* get keycode */
 DECL|macro|EVIOCSKEYCODE
 mdefine_line|#define EVIOCSKEYCODE&t;&t;_IOW(&squot;E&squot;, 0x04, int[2])&t;&t;&t;/* set keycode */
-DECL|macro|EVIOCGKEY
-mdefine_line|#define EVIOCGKEY&t;&t;_IOR(&squot;E&squot;, 0x05, int[2])&t;&t;&t;/* get key value */
 DECL|macro|EVIOCGNAME
 mdefine_line|#define EVIOCGNAME(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x06, len)&t;&t;/* get device name */
-DECL|macro|EVIOCGBUS
-mdefine_line|#define EVIOCGBUS&t;&t;_IOR(&squot;E&squot;, 0x07, short[4])&t;&t;/* get bus address */
+DECL|macro|EVIOCGPHYS
+mdefine_line|#define EVIOCGPHYS(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x07, len)&t;&t;/* get physical location */
+DECL|macro|EVIOCGUNIQ
+mdefine_line|#define EVIOCGUNIQ(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x08, len)&t;&t;/* get unique identifier */
+DECL|macro|EVIOCGKEY
+mdefine_line|#define EVIOCGKEY(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x18, len)&t;&t;/* get global keystate */
+DECL|macro|EVIOCGLED
+mdefine_line|#define EVIOCGLED(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x19, len)&t;&t;/* get all LEDs */
+DECL|macro|EVIOCGSND
+mdefine_line|#define EVIOCGSND(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x1a, len)&t;&t;/* get all sounds status */
 DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
@@ -67,10 +73,6 @@ DECL|macro|EVIOCSFF
 mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
 mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* Erase a force effect */
-DECL|macro|EVIOCSGAIN
-mdefine_line|#define EVIOCSGAIN&t;&t;_IOW(&squot;E&squot;, 0x82, unsigned short)&t;&t;/* Set overall gain */
-DECL|macro|EVIOCSAUTOCENTER
-mdefine_line|#define EVIOCSAUTOCENTER&t;_IOW(&squot;E&squot;, 0x83, unsigned short)&t;&t;/* Enable or disable auto-centering */
 DECL|macro|EVIOCGEFFECTS
 mdefine_line|#define EVIOCGEFFECTS&t;&t;_IOR(&squot;E&squot;, 0x84, int)&t;&t;&t;/* Report number of effects playable at the same time */
 multiline_comment|/*&n; * Event types&n; */
@@ -92,6 +94,10 @@ DECL|macro|EV_REP
 mdefine_line|#define EV_REP&t;&t;&t;0x14
 DECL|macro|EV_FF
 mdefine_line|#define EV_FF&t;&t;&t;0x15
+DECL|macro|EV_PWR
+mdefine_line|#define EV_PWR&t;&t;&t;0x16
+DECL|macro|EV_FF_STATUS
+mdefine_line|#define EV_FF_STATUS&t;&t;0x17
 DECL|macro|EV_MAX
 mdefine_line|#define EV_MAX&t;&t;&t;0x1f
 multiline_comment|/*&n; * Keys and buttons&n; */
@@ -505,8 +511,38 @@ DECL|macro|KEY_SUSPEND
 mdefine_line|#define KEY_SUSPEND&t;&t;205
 DECL|macro|KEY_CLOSE
 mdefine_line|#define KEY_CLOSE&t;&t;206
+DECL|macro|KEY_PLAY
+mdefine_line|#define KEY_PLAY&t;&t;207
+DECL|macro|KEY_FASTFORWARD
+mdefine_line|#define KEY_FASTFORWARD&t;&t;208
+DECL|macro|KEY_BASSBOOST
+mdefine_line|#define KEY_BASSBOOST&t;&t;209
+DECL|macro|KEY_PRINT
+mdefine_line|#define KEY_PRINT&t;&t;210
+DECL|macro|KEY_HP
+mdefine_line|#define KEY_HP&t;&t;&t;211
+DECL|macro|KEY_CAMERA
+mdefine_line|#define KEY_CAMERA&t;&t;212
+DECL|macro|KEY_SOUND
+mdefine_line|#define KEY_SOUND&t;&t;213
+DECL|macro|KEY_QUESTION
+mdefine_line|#define KEY_QUESTION&t;&t;214
+DECL|macro|KEY_EMAIL
+mdefine_line|#define KEY_EMAIL&t;&t;215
+DECL|macro|KEY_CHAT
+mdefine_line|#define KEY_CHAT&t;&t;216
+DECL|macro|KEY_SEARCH
+mdefine_line|#define KEY_SEARCH&t;&t;217
+DECL|macro|KEY_CONNECT
+mdefine_line|#define KEY_CONNECT&t;&t;218
+DECL|macro|KEY_FINANCE
+mdefine_line|#define KEY_FINANCE&t;&t;219
+DECL|macro|KEY_SPORT
+mdefine_line|#define KEY_SPORT&t;&t;220
+DECL|macro|KEY_SHOP
+mdefine_line|#define KEY_SHOP&t;&t;221
 DECL|macro|KEY_UNKNOWN
-mdefine_line|#define KEY_UNKNOWN&t;&t;220
+mdefine_line|#define KEY_UNKNOWN&t;&t;240
 DECL|macro|BTN_MISC
 mdefine_line|#define BTN_MISC&t;&t;0x100
 DECL|macro|BTN_0
@@ -695,13 +731,17 @@ DECL|macro|ABS_TILT_X
 mdefine_line|#define ABS_TILT_X&t;&t;0x1a
 DECL|macro|ABS_TILT_Y
 mdefine_line|#define ABS_TILT_Y&t;&t;0x1b
+DECL|macro|ABS_VOLUME
+mdefine_line|#define ABS_VOLUME&t;&t;0x20
 DECL|macro|ABS_MISC
-mdefine_line|#define ABS_MISC&t;&t;0x1c
+mdefine_line|#define ABS_MISC&t;&t;0x28
 DECL|macro|ABS_MAX
-mdefine_line|#define ABS_MAX&t;&t;&t;0x1f
+mdefine_line|#define ABS_MAX&t;&t;&t;0x3f
 multiline_comment|/*&n; * Misc events&n; */
 DECL|macro|MSC_SERIAL
 mdefine_line|#define MSC_SERIAL&t;&t;0x00
+DECL|macro|MSC_PULSELED
+mdefine_line|#define MSC_PULSELED&t;&t;0x01
 DECL|macro|MSC_MAX
 mdefine_line|#define MSC_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * LEDs&n; */
@@ -754,6 +794,8 @@ DECL|macro|BUS_ISAPNP
 mdefine_line|#define BUS_ISAPNP&t;&t;0x02
 DECL|macro|BUS_USB
 mdefine_line|#define BUS_USB&t;&t;&t;0x03
+DECL|macro|BUS_HIL
+mdefine_line|#define BUS_HIL&t;&t;&t;0x04
 DECL|macro|BUS_ISA
 mdefine_line|#define BUS_ISA&t;&t;&t;0x10
 DECL|macro|BUS_I8042
@@ -772,7 +814,14 @@ DECL|macro|BUS_ADB
 mdefine_line|#define BUS_ADB&t;&t;&t;0x17
 DECL|macro|BUS_I2C
 mdefine_line|#define BUS_I2C&t;&t;&t;0x18
-multiline_comment|/*&n; * Structures used in ioctls to upload effects to a device&n; * The first structures are not passed directly by using ioctls.&n; * They are sub-structures of the actually sent structure (called ff_effect)&n; */
+multiline_comment|/*&n; * Values describing the status of an effect&n; */
+DECL|macro|FF_STATUS_STOPPED
+mdefine_line|#define FF_STATUS_STOPPED&t;0x00
+DECL|macro|FF_STATUS_PLAYING
+mdefine_line|#define FF_STATUS_PLAYING&t;0x01
+DECL|macro|FF_STATUS_MAX
+mdefine_line|#define FF_STATUS_MAX&t;&t;0x01
+multiline_comment|/*&n; * Structures used in ioctls to upload effects to a device&n; * The first structures are not passed directly by using ioctls.&n; * They are sub-structures of the actually sent structure (called ff_effect)&n; *&n; * Ranges:&n; *  0 &lt;= __u16 &lt;= 65535&n; *  -32767 &lt;= __s16 &lt;= +32767     ! Not -32768 for lower bound !&n; */
 DECL|struct|ff_replay
 r_struct
 id|ff_replay
@@ -781,7 +830,7 @@ DECL|member|length
 id|__u16
 id|length
 suffix:semicolon
-multiline_comment|/* Duration of an effect */
+multiline_comment|/* Duration of an effect in ms. All other times are also expressed in ms */
 DECL|member|delay
 id|__u16
 id|delay
@@ -802,7 +851,7 @@ DECL|member|interval
 id|__u16
 id|interval
 suffix:semicolon
-multiline_comment|/* Time to wait before an effect can be re-triggered */
+multiline_comment|/* Time to wait before an effect can be re-triggered (ms) */
 )brace
 suffix:semicolon
 DECL|struct|ff_shape
@@ -813,9 +862,9 @@ DECL|member|attack_length
 id|__u16
 id|attack_length
 suffix:semicolon
-multiline_comment|/* Duration of attack */
+multiline_comment|/* Duration of attack (ms) */
 DECL|member|attack_level
-id|__s16
+id|__u16
 id|attack_level
 suffix:semicolon
 multiline_comment|/* Level at beginning of attack */
@@ -823,9 +872,9 @@ DECL|member|fade_length
 id|__u16
 id|fade_length
 suffix:semicolon
-multiline_comment|/* Duration of fade */
+multiline_comment|/* Duration of fade (ms) */
 DECL|member|fade_level
-id|__s16
+id|__u16
 id|fade_level
 suffix:semicolon
 multiline_comment|/* Level at end of fade */
@@ -840,12 +889,7 @@ DECL|member|level
 id|__s16
 id|level
 suffix:semicolon
-multiline_comment|/* Strength of effect */
-DECL|member|direction
-id|__u16
-id|direction
-suffix:semicolon
-multiline_comment|/* Direction of effect (see periodic effects) */
+multiline_comment|/* Strength of effect. Negative values are OK */
 DECL|member|shape
 r_struct
 id|ff_shape
@@ -858,22 +902,18 @@ DECL|struct|ff_interactive_effect
 r_struct
 id|ff_interactive_effect
 (brace
-multiline_comment|/* Axis along which effect must be created. If null, the field named direction&n; * is used&n; * It is a bit array (ie to enable axes X and Y, use BIT(ABS_X) | BIT(ABS_Y)&n; */
+multiline_comment|/* Axis along which effect must be created. If null, the field named direction&n; * is used&n; * It is a bit array (ie to enable axes X and Y, use BIT(ABS_X) | BIT(ABS_Y)&n; * It overrides the value of ff_effect::direction, which is used only if&n; * axis == 0&n; */
 DECL|member|axis
 id|__u16
 id|axis
 suffix:semicolon
-DECL|member|direction
-id|__u16
-id|direction
-suffix:semicolon
 DECL|member|right_saturation
-id|__s16
+id|__u16
 id|right_saturation
 suffix:semicolon
 multiline_comment|/* Max level when joystick is on the right */
 DECL|member|left_saturation
-id|__s16
+id|__u16
 id|left_saturation
 suffix:semicolon
 multiline_comment|/* Max level when joystick in on the left */
@@ -913,6 +953,7 @@ DECL|member|period
 id|__u16
 id|period
 suffix:semicolon
+multiline_comment|/* in ms */
 DECL|member|magnitude
 id|__s16
 id|magnitude
@@ -928,11 +969,6 @@ id|__u16
 id|phase
 suffix:semicolon
 multiline_comment|/* &squot;Horizontal&squot; shift */
-DECL|member|direction
-id|__u16
-id|direction
-suffix:semicolon
-multiline_comment|/* Direction. 0 deg -&gt; 0x0000&n;&t;&t;&t;&t;&t;     90 deg -&gt; 0x4000 */
 DECL|member|shape
 r_struct
 id|ff_shape
@@ -949,11 +985,16 @@ DECL|member|type
 id|__u16
 id|type
 suffix:semicolon
-multiline_comment|/* Following field denotes the unique id assigned to an effect.&n; * It is set by the driver.&n; */
+multiline_comment|/* Following field denotes the unique id assigned to an effect.&n; * If user sets if to -1, a new effect is created, and its id is returned in the same field&n; * Else, the user sets it to the effect id it wants to update.&n; */
 DECL|member|id
 id|__s16
 id|id
 suffix:semicolon
+DECL|member|direction
+id|__u16
+id|direction
+suffix:semicolon
+multiline_comment|/* Direction. 0 deg -&gt; 0x0000 (down)&n;&t;&t;&t;&t;&t;     90 deg -&gt; 0x4000 (left)&n;&t;&t;&t;&t;&t;    180 deg -&gt; 0x8000 (up)&n;&t;&t;&t;&t;&t;    270 deg -&gt; 0xC000 (right)&n;&t;&t;&t;&t;*/
 DECL|member|trigger
 r_struct
 id|ff_trigger
@@ -987,7 +1028,7 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Buttons that can trigger effects.  Use for example FF_BTN(BTN_TRIGGER) to&n; * access the bitmap.&n; */
+multiline_comment|/*&n; * Buttons that can trigger effects. Use for example FF_BTN(BTN_TRIGGER) to&n; * access the bitmap.&n; */
 DECL|macro|FF_BTN
 mdefine_line|#define FF_BTN(x)&t;((x) - BTN_MISC + FF_BTN_OFFSET)
 DECL|macro|FF_BTN_OFFSET
@@ -1047,14 +1088,24 @@ r_void
 op_star
 r_private
 suffix:semicolon
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|phys
+r_char
+op_star
+id|phys
+suffix:semicolon
+DECL|member|uniq
+r_char
+op_star
+id|uniq
+suffix:semicolon
+DECL|member|number
+r_int
+id|number
 suffix:semicolon
 DECL|member|idbus
 r_int
@@ -1201,6 +1252,16 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
+DECL|member|pm_dev
+r_struct
+id|pm_dev
+op_star
+id|pm_dev
+suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
 DECL|member|abs
 r_int
 id|abs
@@ -1291,6 +1352,10 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+DECL|member|only_one_writer
+r_int
+id|only_one_writer
+suffix:semicolon
 DECL|member|open
 r_int
 (paren
@@ -1315,6 +1380,42 @@ r_struct
 id|input_dev
 op_star
 id|dev
+)paren
+suffix:semicolon
+DECL|member|accept
+r_int
+(paren
+op_star
+id|accept
+)paren
+(paren
+r_struct
+id|input_dev
+op_star
+id|dev
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+DECL|member|flush
+r_int
+(paren
+op_star
+id|flush
+)paren
+(paren
+r_struct
+id|input_dev
+op_star
+id|dev
+comma
+r_struct
+id|file
+op_star
+id|file
 )paren
 suffix:semicolon
 DECL|member|event
@@ -1389,6 +1490,167 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Structure for hotplug &amp; device&lt;-&gt;driver matching.&n; */
+DECL|macro|INPUT_DEVICE_ID_MATCH_BUS
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_BUS&t;1
+DECL|macro|INPUT_DEVICE_ID_MATCH_VENDOR
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_VENDOR&t;2
+DECL|macro|INPUT_DEVICE_ID_MATCH_PRODUCT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_PRODUCT&t;4
+DECL|macro|INPUT_DEVICE_ID_MATCH_VERSION
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_VERSION&t;8
+DECL|macro|INPUT_DEVICE_ID_MATCH_EVBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_EVBIT&t;0x010
+DECL|macro|INPUT_DEVICE_ID_MATCH_KEYBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_KEYBIT&t;0x020
+DECL|macro|INPUT_DEVICE_ID_MATCH_RELBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_RELBIT&t;0x040
+DECL|macro|INPUT_DEVICE_ID_MATCH_ABSBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_ABSBIT&t;0x080
+DECL|macro|INPUT_DEVICE_ID_MATCH_MSCIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_MSCIT&t;0x100
+DECL|macro|INPUT_DEVICE_ID_MATCH_LEDBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_LEDBIT&t;0x200
+DECL|macro|INPUT_DEVICE_ID_MATCH_SNDBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_SNDBIT&t;0x400
+DECL|macro|INPUT_DEVICE_ID_MATCH_FFBIT
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_FFBIT&t;0x800
+DECL|macro|INPUT_DEVICE_ID_MATCH_DEVICE
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_DEVICE&bslash;&n;&t;(INPUT_DEVICE_ID_MATCH_BUS | INPUT_DEVICE_ID_MATCH_VENDOR | INPUT_DEVICE_ID_MATCH_PRODUCT)
+DECL|macro|INPUT_DEVICE_ID_MATCH_DEVICE_AND_VERSION
+mdefine_line|#define INPUT_DEVICE_ID_MATCH_DEVICE_AND_VERSION&bslash;&n;&t;(INPUT_DEVICE_ID_MATCH_DEVICE | INPUT_DEVICE_ID_MATCH_VERSION)
+DECL|struct|input_device_id
+r_struct
+id|input_device_id
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|idbus
+r_int
+r_int
+id|idbus
+suffix:semicolon
+DECL|member|idvendor
+r_int
+r_int
+id|idvendor
+suffix:semicolon
+DECL|member|idproduct
+r_int
+r_int
+id|idproduct
+suffix:semicolon
+DECL|member|idversion
+r_int
+r_int
+id|idversion
+suffix:semicolon
+DECL|member|evbit
+r_int
+r_int
+id|evbit
+(braket
+id|NBITS
+c_func
+(paren
+id|EV_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|keybit
+r_int
+r_int
+id|keybit
+(braket
+id|NBITS
+c_func
+(paren
+id|KEY_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|relbit
+r_int
+r_int
+id|relbit
+(braket
+id|NBITS
+c_func
+(paren
+id|REL_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|absbit
+r_int
+r_int
+id|absbit
+(braket
+id|NBITS
+c_func
+(paren
+id|ABS_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|mscbit
+r_int
+r_int
+id|mscbit
+(braket
+id|NBITS
+c_func
+(paren
+id|MSC_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|ledbit
+r_int
+r_int
+id|ledbit
+(braket
+id|NBITS
+c_func
+(paren
+id|LED_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|sndbit
+r_int
+r_int
+id|sndbit
+(braket
+id|NBITS
+c_func
+(paren
+id|SND_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|ffbit
+r_int
+r_int
+id|ffbit
+(braket
+id|NBITS
+c_func
+(paren
+id|FF_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|driver_info
+r_int
+r_int
+id|driver_info
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|input_handler
 r_struct
 id|input_handler
@@ -1440,6 +1702,11 @@ r_struct
 id|input_dev
 op_star
 id|dev
+comma
+r_struct
+id|input_device_id
+op_star
+id|id
 )paren
 suffix:semicolon
 DECL|member|disconnect
@@ -1464,6 +1731,17 @@ suffix:semicolon
 DECL|member|minor
 r_int
 id|minor
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|id_table
+r_struct
+id|input_device_id
+op_star
+id|id_table
 suffix:semicolon
 DECL|member|handle
 r_struct
@@ -1491,6 +1769,11 @@ suffix:semicolon
 DECL|member|open
 r_int
 id|open
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -1572,6 +1855,36 @@ id|input_handle
 op_star
 )paren
 suffix:semicolon
+r_int
+id|input_accept_process
+c_func
+(paren
+r_struct
+id|input_handle
+op_star
+id|handle
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_int
+id|input_flush_device
+c_func
+(paren
+r_struct
+id|input_handle
+op_star
+id|handle
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
 id|devfs_handle_t
 id|input_register_minor
 c_func
@@ -1622,6 +1935,10 @@ DECL|macro|input_report_rel
 mdefine_line|#define input_report_rel(a,b,c) input_event(a, EV_REL, b, c)
 DECL|macro|input_report_abs
 mdefine_line|#define input_report_abs(a,b,c) input_event(a, EV_ABS, b, c)
+DECL|macro|input_report_ff
+mdefine_line|#define input_report_ff(a,b,c)&t;input_event(a, EV_FF, b, c)
+DECL|macro|input_report_ff_status
+mdefine_line|#define input_report_ff_status(a,b,c)&t;input_event(a, EV_FF_STATUS, b, c)
 macro_line|#endif
 macro_line|#endif
 eof

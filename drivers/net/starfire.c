@@ -1,11 +1,11 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;&t;LK1.3.5 (jgarzik)&n;&t;- ethtool NWAY_RST, GLINK, [GS]MSGLVL support&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;starfire&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.4&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.5&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;August 14, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;November 17, 2001&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8016,6 +8016,219 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* restart autonegotiation */
+r_case
+id|ETHTOOL_NWAY_RST
+suffix:colon
+(brace
+r_int
+id|tmp
+suffix:semicolon
+r_int
+id|r
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* if autoneg is off, it&squot;s an error */
+id|tmp
+op_assign
+id|mdio_read
+c_func
+(paren
+id|dev
+comma
+id|np-&gt;phys
+(braket
+l_int|0
+)braket
+comma
+id|MII_BMCR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+id|BMCR_ANENABLE
+)paren
+(brace
+id|tmp
+op_or_assign
+(paren
+id|BMCR_ANRESTART
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|dev
+comma
+id|np-&gt;phys
+(braket
+l_int|0
+)braket
+comma
+id|MII_BMCR
+comma
+id|tmp
+)paren
+suffix:semicolon
+id|r
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|r
+suffix:semicolon
+)brace
+multiline_comment|/* get link status */
+r_case
+id|ETHTOOL_GLINK
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GLINK
+)brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mdio_read
+c_func
+(paren
+id|dev
+comma
+id|np-&gt;phys
+(braket
+l_int|0
+)braket
+comma
+id|MII_BMSR
+)paren
+op_amp
+id|BMSR_LSTATUS
+)paren
+id|edata.data
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|edata.data
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
@@ -8091,10 +8304,6 @@ r_case
 id|SIOCGMIIPHY
 suffix:colon
 multiline_comment|/* Get address of MII PHY in use. */
-r_case
-id|SIOCDEVPRIVATE
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;phy_id
 op_assign
 id|np-&gt;phys
@@ -8109,12 +8318,6 @@ r_case
 id|SIOCGMIIREG
 suffix:colon
 multiline_comment|/* Read MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;val_out
 op_assign
 id|mdio_read
@@ -8138,12 +8341,6 @@ r_case
 id|SIOCSMIIREG
 suffix:colon
 multiline_comment|/* Write MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren

@@ -1632,7 +1632,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Get the NFS port numbers and file handle, and return the prepared &squot;data&squot;&n; *  argument for -&gt;read_super() if everything went OK. Return NULL otherwise.&n; */
+multiline_comment|/*&n; *  Get the NFS port numbers and file handle, and return the prepared &squot;data&squot;&n; *  argument for mount() if everything went OK. Return NULL otherwise.&n; */
 DECL|function|nfs_root_data
 r_void
 op_star

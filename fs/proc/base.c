@@ -4934,7 +4934,7 @@ comma
 id|PROC_PID_INO
 )paren
 suffix:semicolon
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|task
@@ -5045,7 +5045,7 @@ c_func
 id|inode
 )paren
 )paren
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|proc_task

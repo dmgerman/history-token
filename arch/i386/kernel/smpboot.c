@@ -2668,7 +2668,7 @@ op_plus
 r_char
 op_star
 )paren
-id|idle
+id|idle-&gt;thread_info
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This grunge runs the startup process for&n;&t; * the targeted processor.&n;&t; */
@@ -3478,7 +3478,12 @@ id|global_irq_holder
 op_assign
 id|NO_PROC_ID
 suffix:semicolon
-id|current-&gt;cpu
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|cpu
 op_assign
 l_int|0
 suffix:semicolon

@@ -11624,10 +11624,11 @@ suffix:semicolon
 DECL|macro|CD
 macro_line|#undef CD
 multiline_comment|/*&n;&t; * Force FPU initialization:&n;&t; */
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_USEDFPU
+)paren
 suffix:semicolon
 id|current-&gt;used_math
 op_assign

@@ -3166,11 +3166,9 @@ id|fat_notify_change
 comma
 )brace
 suffix:semicolon
-DECL|function|msdos_read_super
-r_struct
-id|super_block
-op_star
-id|msdos_read_super
+DECL|function|msdos_fill_super
+r_int
+id|msdos_fill_super
 c_func
 (paren
 r_struct
@@ -3226,7 +3224,11 @@ id|res
 )paren
 )paren
 r_return
-l_int|NULL
+id|PTR_ERR
+c_func
+(paren
+id|res
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3253,7 +3255,8 @@ id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|sb-&gt;s_root-&gt;d_op
@@ -3262,7 +3265,7 @@ op_amp
 id|msdos_dentry_operations
 suffix:semicolon
 r_return
-id|res
+l_int|0
 suffix:semicolon
 )brace
 eof

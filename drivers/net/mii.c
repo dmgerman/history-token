@@ -750,6 +750,22 @@ r_return
 id|r
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+(paren
+l_string|&quot;Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+(paren
+l_string|&quot;MII hardware support library&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|mii_link_ok
 id|EXPORT_SYMBOL
 c_func

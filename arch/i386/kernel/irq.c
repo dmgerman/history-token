@@ -779,7 +779,7 @@ op_add_assign
 r_sizeof
 (paren
 r_struct
-id|task_struct
+id|thread_info
 )paren
 suffix:semicolon
 id|show_stack

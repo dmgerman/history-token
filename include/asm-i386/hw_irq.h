@@ -215,7 +215,7 @@ mdefine_line|#define IRQ_NAME2(nr) nr##_interrupt(void)
 DECL|macro|IRQ_NAME
 mdefine_line|#define IRQ_NAME(nr) IRQ_NAME2(IRQ##nr)
 DECL|macro|GET_CURRENT
-mdefine_line|#define GET_CURRENT &bslash;&n;&t;&quot;movl %esp, %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;andl $-8192, %ebx&bslash;n&bslash;t&quot;
+mdefine_line|#define GET_CURRENT &bslash;&n;&t;&quot;movl %esp, %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;andl $-8192, %ebx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movl (%ebx),%ebx&bslash;n&bslash;t&quot;
 multiline_comment|/*&n; *&t;SMP has a few special interrupts for IPI messages&n; */
 multiline_comment|/* there is a second layer of macro just to get the symbolic&n;&t;   name for the vector evaluated. This change is for RTLinux */
 DECL|macro|BUILD_SMP_INTERRUPT

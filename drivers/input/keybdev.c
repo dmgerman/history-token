@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: keybdev.c,v 1.3 2000/05/28 17:31:36 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Input driver to keyboard driver binding.&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: keybdev.c,v 1.16 2002/01/09 04:21:41 lethal Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Input core to console keyboard binding.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -8,7 +8,33 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || &bslash;&n;    defined(__mips__) || defined(CONFIG_SPARC64) || defined(CONFIG_SUPERH) || &bslash;&n;    defined(CONFIG_PPC) || defined(__mc68000__) || defined(__hppa__) || &bslash;&n;    defined(__arm__)
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Input core to console keyboard binding&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|keybdev_name
+r_char
+id|keybdev_name
+(braket
+)braket
+op_assign
+l_string|&quot;keyboard&quot;
+suffix:semicolon
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || &bslash;&n;    defined(__mips__) || defined(CONFIG_SPARC64) || defined(CONFIG_SUPERH) || &bslash;&n;    defined(CONFIG_PPC) || defined(__mc68000__) || defined(__hppa__) || &bslash;&n;    defined(__arm__) || defined(__x86_64__)
 DECL|variable|x86_sysrq_alt
 r_static
 r_int
@@ -33,14 +59,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|jp_kbd_109
-r_static
-r_int
-id|jp_kbd_109
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Yes, .jp is the default. See 51142. */
 DECL|variable|x86_keycodes
 r_static
 r_int
@@ -413,15 +431,15 @@ l_int|374
 comma
 l_int|379
 comma
-l_int|259
+l_int|115
 comma
-l_int|260
+l_int|112
 comma
-l_int|261
+l_int|125
 comma
-l_int|262
+l_int|121
 comma
-l_int|263
+l_int|123
 comma
 l_int|264
 comma
@@ -1313,6 +1331,55 @@ l_int|0x04
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Tell the user who may be running in X and not see the console that we have &n;   panic&squot;ed. This is to distingush panics from &quot;real&quot; lockups. &n;   Could in theory send the panic message as morse, but that is left as an&n;   exercise for the reader.  */
+DECL|function|panic_blink
+r_void
+id|panic_blink
+c_func
+(paren
+r_void
+)paren
+(brace
+r_static
+r_int
+r_int
+id|last_jiffie
+suffix:semicolon
+r_static
+r_char
+id|led
+suffix:semicolon
+multiline_comment|/* Roughly 1/2s frequency. KDB uses about 1s. Make sure it is different. */
+r_if
+c_cond
+(paren
+id|jiffies
+op_minus
+id|last_jiffie
+OG
+id|HZ
+op_div
+l_int|2
+)paren
+(brace
+id|led
+op_xor_assign
+l_int|0x01
+op_or
+l_int|0x04
+suffix:semicolon
+id|keybdev_ledfunc
+c_func
+(paren
+id|led
+)paren
+suffix:semicolon
+id|last_jiffie
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+)brace
 DECL|function|keybdev_event
 r_void
 id|keybdev_event
@@ -1344,24 +1411,12 @@ id|EV_KEY
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|emulate_raw
 c_func
 (paren
 id|code
 comma
 id|down
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;keyboard.c: can&squot;t emulate rawmode for keycode %d&bslash;n&quot;
-comma
-id|code
 )paren
 suffix:semicolon
 id|tasklet_schedule
@@ -1389,6 +1444,11 @@ r_struct
 id|input_dev
 op_star
 id|dev
+comma
+r_struct
+id|input_device_id
+op_star
+id|id
 )paren
 (brace
 r_struct
@@ -1399,27 +1459,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|EV_KEY
-comma
-id|dev-&gt;evbit
-)paren
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|KEY_RESERVED
+id|KEY_ESC
 suffix:semicolon
 id|i
 OL
@@ -1492,6 +1537,10 @@ id|handle-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|handle-&gt;name
+op_assign
+id|keybdev_name
+suffix:semicolon
 id|handle-&gt;handler
 op_assign
 id|handler
@@ -1502,7 +1551,6 @@ c_func
 id|handle
 )paren
 suffix:semicolon
-singleline_comment|//&t;printk(KERN_INFO &quot;keybdev.c: Adding keyboard: input%d&bslash;n&quot;, dev-&gt;number);
 r_return
 id|handle
 suffix:semicolon
@@ -1519,7 +1567,6 @@ op_star
 id|handle
 )paren
 (brace
-singleline_comment|//&t;printk(KERN_INFO &quot;keybdev.c: Removing keyboard: input%d&bslash;n&quot;, handle-&gt;dev-&gt;number);
 id|input_close_device
 c_func
 (paren
@@ -1533,6 +1580,46 @@ id|handle
 )paren
 suffix:semicolon
 )brace
+DECL|variable|keybdev_ids
+r_static
+r_struct
+id|input_device_id
+id|keybdev_ids
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|flags
+suffix:colon
+id|INPUT_DEVICE_ID_MATCH_EVBIT
+comma
+id|evbit
+suffix:colon
+(brace
+id|BIT
+c_func
+(paren
+id|EV_KEY
+)paren
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+comma
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|input
+comma
+id|keybdev_ids
+)paren
+suffix:semicolon
 DECL|variable|keybdev_handler
 r_static
 r_struct
@@ -1551,6 +1638,14 @@ comma
 id|disconnect
 suffix:colon
 id|keybdev_disconnect
+comma
+id|name
+suffix:colon
+l_string|&quot;keybdev&quot;
+comma
+id|id_table
+suffix:colon
+id|keybdev_ids
 comma
 )brace
 suffix:semicolon
@@ -1575,50 +1670,6 @@ id|kbd_ledfunc
 op_assign
 id|keybdev_ledfunc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|jp_kbd_109
-)paren
-(brace
-id|x86_keycodes
-(braket
-l_int|0xb5
-)braket
-op_assign
-l_int|0x73
-suffix:semicolon
-multiline_comment|/* backslash, underscore */
-id|x86_keycodes
-(braket
-l_int|0xb6
-)braket
-op_assign
-l_int|0x70
-suffix:semicolon
-id|x86_keycodes
-(braket
-l_int|0xb7
-)braket
-op_assign
-l_int|0x7d
-suffix:semicolon
-multiline_comment|/* Yen, pipe */
-id|x86_keycodes
-(braket
-l_int|0xb8
-)braket
-op_assign
-l_int|0x79
-suffix:semicolon
-id|x86_keycodes
-(braket
-l_int|0xb9
-)braket
-op_assign
-l_int|0x7b
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1657,32 +1708,6 @@ id|module_exit
 c_func
 (paren
 id|keybdev_exit
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Input driver to keyboard driver binding&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|jp_kbd_109
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

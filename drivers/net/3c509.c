@@ -1,5 +1,11 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;*/
+multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18 17Nov2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;&t;- ethtool support&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;3c509&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.18a&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;17Nov2001&quot;
 multiline_comment|/* A few values that may be tweaked. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -29,6 +35,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for udelay() */
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -40,7 +48,12 @@ id|versionA
 )braket
 id|__initdata
 op_assign
-l_string|&quot;3c509.c:1.18 12Mar2001 becker@scyld.com&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot;becker@scyld.com&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -523,6 +536,24 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MCA
@@ -2425,6 +2456,10 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
 suffix:semicolon
 multiline_comment|/* Fill in the generic fields of the device structure. */
 id|ether_setup
@@ -4978,6 +5013,255 @@ id|dev
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|el3_debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|el3_debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

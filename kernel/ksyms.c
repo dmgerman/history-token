@@ -3005,11 +3005,18 @@ id|__tasklet_hi_schedule
 )paren
 suffix:semicolon
 multiline_comment|/* init task, for moving kthread roots - ought to export a function ?? */
-DECL|variable|init_task_union
+DECL|variable|init_task
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|init_task_union
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_thread_union
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_thread_union
 )paren
 suffix:semicolon
 DECL|variable|tasklist_lock

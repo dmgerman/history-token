@@ -26,7 +26,7 @@ macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;128
 DECL|macro|TX_QUEUE_LEN
-mdefine_line|#define TX_QUEUE_LEN&t;96&t;/* Limit ring entries actually used.  */
+mdefine_line|#define TX_QUEUE_LEN&t;120&t;/* Limit ring entries actually used.  */
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE &t;128
 DECL|macro|TX_TOTAL_SIZE
@@ -615,35 +615,35 @@ DECL|enum|ReceiveMode_bits
 r_enum
 id|ReceiveMode_bits
 (brace
-DECL|enumerator|ReceiveIPMulticast
-id|ReceiveIPMulticast
+DECL|enumerator|ReceiveUnicast
+id|ReceiveUnicast
 op_assign
-l_int|0x0020
-comma
-DECL|enumerator|ReceiveMulticastHash
-id|ReceiveMulticastHash
-op_assign
-l_int|0x0010
-comma
-DECL|enumerator|ReceiveAllFrames
-id|ReceiveAllFrames
-op_assign
-l_int|0x0008
-comma
-DECL|enumerator|ReceiveBroadcast
-id|ReceiveBroadcast
-op_assign
-l_int|0x0004
+l_int|0x0001
 comma
 DECL|enumerator|ReceiveMulticast
 id|ReceiveMulticast
 op_assign
 l_int|0x0002
 comma
-DECL|enumerator|ReceiveUnicast
-id|ReceiveUnicast
+DECL|enumerator|ReceiveBroadcast
+id|ReceiveBroadcast
 op_assign
-l_int|0x0001
+l_int|0x0004
+comma
+DECL|enumerator|ReceiveAllFrames
+id|ReceiveAllFrames
+op_assign
+l_int|0x0008
+comma
+DECL|enumerator|ReceiveMulticastHash
+id|ReceiveMulticastHash
+op_assign
+l_int|0x0010
+comma
+DECL|enumerator|ReceiveIPMulticast
+id|ReceiveIPMulticast
+op_assign
+l_int|0x0020
 comma
 DECL|enumerator|ReceiveVLANMatch
 id|ReceiveVLANMatch
@@ -2837,16 +2837,16 @@ r_int
 id|chip_id
 suffix:semicolon
 multiline_comment|/* PCI table chip id */
-DECL|member|int_count
+DECL|member|rx_coalesce
 r_int
 r_int
-id|int_count
+id|rx_coalesce
 suffix:semicolon
 multiline_comment|/* Maximum frames each RxDMAComplete intr */
-DECL|member|int_timeout
+DECL|member|rx_timeout
 r_int
 r_int
-id|int_timeout
+id|rx_timeout
 suffix:semicolon
 multiline_comment|/* Wait time between RxDMAComplete intr */
 DECL|member|tx_full
@@ -3037,8 +3037,18 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (4*HZ)
 DECL|macro|PACKET_SIZE
 mdefine_line|#define PACKET_SIZE&t;&t;1536
+DECL|macro|MAX_JUMBO
+mdefine_line|#define MAX_JUMBO&t;&t;8000
 DECL|macro|RIO_IO_SIZE
 mdefine_line|#define RIO_IO_SIZE             340
+DECL|macro|DEFAULT_RXC
+mdefine_line|#define DEFAULT_RXC&t;&t;5
+DECL|macro|DEFAULT_RXT
+mdefine_line|#define DEFAULT_RXT&t;&t;750
+DECL|macro|DEFAULT_TXC
+mdefine_line|#define DEFAULT_TXC&t;&t;1
+DECL|macro|MAX_TXC
+mdefine_line|#define MAX_TXC&t;&t;&t;8
 macro_line|#ifdef RIO_DEBUG
 DECL|macro|DEBUG_TFD_DUMP
 mdefine_line|#define DEBUG_TFD_DUMP(x) debug_tfd_dump(x)

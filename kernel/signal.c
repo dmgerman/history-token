@@ -12,7 +12,7 @@ DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 macro_line|#if DEBUG_SIG
 DECL|macro|SIG_SLAB_DEBUG
-mdefine_line|#define SIG_SLAB_DEBUG&t;(SLAB_DEBUG_FREE | SLAB_RED_ZONE /* | SLAB_POISON */)
+mdefine_line|#define SIG_SLAB_DEBUG&t;(SLAB_RED_ZONE /* | SLAB_POISON */)
 macro_line|#else
 DECL|macro|SIG_SLAB_DEBUG
 mdefine_line|#define SIG_SLAB_DEBUG&t;0
@@ -379,9 +379,13 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;work.sigpending
-op_assign
-l_int|0
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|t
+comma
+id|TIF_SIGPENDING
+)paren
 suffix:semicolon
 id|flush_sigqueue
 c_func
@@ -445,9 +449,13 @@ id|sig
 )paren
 suffix:semicolon
 )brace
-id|tsk-&gt;work.sigpending
-op_assign
-l_int|0
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|tsk
+comma
+id|TIF_SIGPENDING
+)paren
 suffix:semicolon
 id|flush_sigqueue
 c_func
@@ -1034,9 +1042,11 @@ id|current-&gt;notifier_data
 )paren
 )paren
 (brace
-id|current-&gt;work.sigpending
-op_assign
-l_int|0
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1802,9 +1812,13 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;work.sigpending
-op_assign
-l_int|1
+id|set_tsk_thread_flag
+c_func
+(paren
+id|t
+comma
+id|TIF_SIGPENDING
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * If the task is running on a different CPU &n;&t; * force a reschedule on the other CPU to make&n;&t; * it notice the new signal quickly.&n;&t; *&n;&t; * The code below is a tad loose and might occasionally&n;&t; * kick the wrong CPU if we catch the process in the&n;&t; * process of changing - but no harm is done by that&n;&t; * other than doing an extra (lightweight) IPI interrupt.&n;&t; */
@@ -1818,7 +1832,7 @@ id|TASK_RUNNING
 )paren
 op_logical_and
 (paren
-id|t-&gt;cpu
+id|t-&gt;thread_info-&gt;cpu
 op_ne
 id|smp_processor_id
 c_func

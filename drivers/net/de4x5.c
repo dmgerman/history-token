@@ -15947,9 +15947,13 @@ id|index
 dot
 id|buf
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|tmp
 op_plus
 id|i
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -27008,7 +27012,7 @@ op_and_assign
 op_complement
 id|OMR_PR
 suffix:semicolon
-id|outb
+id|outl
 c_func
 (paren
 id|omr

@@ -1,4 +1,8 @@
-multiline_comment|/*&n; * Linux Ethernet device driver for the 3Com Etherlink Plus (3C505)&n; *      By Craig Southeren, Juha Laiho and Philip Blundell&n; *&n; * 3c505.c      This module implements an interface to the 3Com&n; *              Etherlink Plus (3c505) Ethernet card. Linux device&n; *              driver interface reverse engineered from the Linux 3C509&n; *              device drivers. Some 3C505 information gleaned from&n; *              the Crynwr packet driver. Still this driver would not&n; *              be here without 3C505 technical reference provided by&n; *              3Com.&n; *&n; * $Id: 3c505.c,v 1.10 1996/04/16 13:06:27 phil Exp $&n; *&n; * Authors:     Linux 3c505 device driver by&n; *                      Craig Southeren, &lt;craigs@ineluki.apana.org.au&gt;&n; *              Final debugging by&n; *                      Andrew Tridgell, &lt;tridge@nimbus.anu.edu.au&gt;&n; *              Auto irq/address, tuning, cleanup and v1.1.4+ kernel mods by&n; *                      Juha Laiho, &lt;jlaiho@ichaos.nullnet.fi&gt;&n; *              Linux 3C509 driver by&n; *                      Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;&t;(Now at &lt;becker@scyld.com&gt;)&n; *              Crynwr packet driver by&n; *                      Krishnan Gopalan and Gregg Stefancik,&n; *                      Clemson University Engineering Computer Operations.&n; *                      Portions of the code have been adapted from the 3c505&n; *                         driver for NCSA Telnet by Bruce Orchard and later&n; *                         modified by Warren Van Houten and krus@diku.dk.&n; *              3C505 technical information provided by&n; *                      Terry Murphy, of 3Com Network Adapter Division&n; *              Linux 1.3.0 changes by&n; *                      Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *              More debugging, DMA support, currently maintained by&n; *                      Philip Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *              Multicard/soft configurable dma channel/rev 2 hardware support&n; *                      by Christopher Collins &lt;ccollins@pcug.org.au&gt;&n; */
+multiline_comment|/*&n; * Linux Ethernet device driver for the 3Com Etherlink Plus (3C505)&n; *      By Craig Southeren, Juha Laiho and Philip Blundell&n; *&n; * 3c505.c      This module implements an interface to the 3Com&n; *              Etherlink Plus (3c505) Ethernet card. Linux device&n; *              driver interface reverse engineered from the Linux 3C509&n; *              device drivers. Some 3C505 information gleaned from&n; *              the Crynwr packet driver. Still this driver would not&n; *              be here without 3C505 technical reference provided by&n; *              3Com.&n; *&n; * $Id: 3c505.c,v 1.10 1996/04/16 13:06:27 phil Exp $&n; *&n; * Authors:     Linux 3c505 device driver by&n; *                      Craig Southeren, &lt;craigs@ineluki.apana.org.au&gt;&n; *              Final debugging by&n; *                      Andrew Tridgell, &lt;tridge@nimbus.anu.edu.au&gt;&n; *              Auto irq/address, tuning, cleanup and v1.1.4+ kernel mods by&n; *                      Juha Laiho, &lt;jlaiho@ichaos.nullnet.fi&gt;&n; *              Linux 3C509 driver by&n; *                      Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;&t;(Now at &lt;becker@scyld.com&gt;)&n; *              Crynwr packet driver by&n; *                      Krishnan Gopalan and Gregg Stefancik,&n; *                      Clemson University Engineering Computer Operations.&n; *                      Portions of the code have been adapted from the 3c505&n; *                         driver for NCSA Telnet by Bruce Orchard and later&n; *                         modified by Warren Van Houten and krus@diku.dk.&n; *              3C505 technical information provided by&n; *                      Terry Murphy, of 3Com Network Adapter Division&n; *              Linux 1.3.0 changes by&n; *                      Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *              More debugging, DMA support, currently maintained by&n; *                      Philip Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *              Multicard/soft configurable dma channel/rev 2 hardware support&n; *                      by Christopher Collins &lt;ccollins@pcug.org.au&gt;&n; *&t;&t;Ethtool support (jgarzik), 11/17/2001&n; */
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;3c505&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.10a&quot;
 multiline_comment|/* Theory of operation:&n; *&n; * The 3c505 is quite an intelligent board.  All communication with it is done&n; * by means of Primary Command Blocks (PCBs); these are transferred using PIO&n; * through the command register.  The card has 256k of on-board RAM, which is&n; * used to buffer received packets.  It might seem at first that more buffers&n; * are better, but in fact this isn&squot;t true.  From my tests, it seems that&n; * more than about 10 buffers are unnecessary, and there is a noticeable&n; * performance hit in having more active on the card.  So the majority of the&n; * card&squot;s memory isn&squot;t, in fact, used.  Sadly, the card only has one transmit&n; * buffer and, short of loading our own firmware into it (which is what some&n; * drivers resort to) there&squot;s nothing we can do about this.&n; *&n; * We keep up to 4 &quot;receive packet&quot; commands active on the board at a time.&n; * When a packet comes in, so long as there is a receive command active, the&n; * board will send us a &quot;packet received&quot; PCB and then add the data for that&n; * packet to the DMA queue.  If a DMA transfer is not already in progress, we&n; * set one up to start uploading the data.  We have to maintain a list of&n; * backlogged receive packets, because the card may decide to tell us about&n; * a newly-arrived packet at any time, and we may not be able to start a DMA&n; * transfer immediately (ie one may already be going on).  We can&squot;t NAK the&n; * PCB, because then it would throw the packet away.&n; *&n; * Trying to send a PCB to the card at the wrong moment seems to have bad&n; * effects.  If we send it a transmit PCB while a receive DMA is happening,&n; * it will just NAK the PCB and so we will have wasted our time.  Worse, it&n; * sometimes seems to interrupt the transfer.  The majority of the low-level&n; * code is protected by one huge semaphore -- &quot;busy&quot; -- which is set whenever&n; * it probably isn&squot;t safe to do anything to the card.  The receive routine&n; * must gain a lock on &quot;busy&quot; before it can start a DMA transfer, and the&n; * transmit routine must gain a lock before it sends the first PCB to the card.&n; * The send_pcb() routine also has an internal semaphore to protect it against&n; * being re-entered (which would be disastrous) -- this is needed because&n; * several things can happen asynchronously (re-priming the receiver and&n; * asking the card for statistics, for example).  send_pcb() will also refuse&n; * to talk to the card at all if a DMA upload is happening.  The higher-level&n; * networking code will reschedule a later retry if some part of the driver&n; * is blocked.  In practice, this doesn&squot;t seem to happen very often.&n; */
 multiline_comment|/* This driver may now work with revision 2.x hardware, since all the read&n; * operations on the HCR have been removed (we now keep our own softcopy).&n; * But I don&squot;t have an old card to test it on.&n; *&n; * This has had the bad effect that the autoprobe routine is now a bit&n; * less friendly to other devices.  However, it was never very good.&n; * before, so I doubt it will hurt anybody.&n; */
 multiline_comment|/* The driver is a mess.  I took Craig&squot;s and Juha&squot;s code, and hacked it firstly&n; * to make it more reliable, and secondly to add DMA mode.  Many things could&n; * probably be done better; the concurrency protection is particularly awful.&n; */
@@ -13,6 +17,8 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -110,7 +116,6 @@ multiline_comment|/*********************************************************&n; 
 macro_line|#ifdef ELP_DEBUG
 DECL|variable|elp_debug
 r_static
-r_const
 r_int
 id|elp_debug
 op_assign
@@ -119,11 +124,12 @@ suffix:semicolon
 macro_line|#else
 DECL|variable|elp_debug
 r_static
-r_const
 r_int
 id|elp_debug
 suffix:semicolon
 macro_line|#endif
+DECL|macro|debug
+mdefine_line|#define debug elp_debug
 multiline_comment|/*&n; *  0 = no messages (well, some)&n; *  1 = messages when high level commands performed&n; *  2 = messages when low level commands performed&n; *  3 = messages when interrupts received&n; */
 multiline_comment|/*****************************************************************&n; *&n; * useful macros&n; *&n; *****************************************************************/
 macro_line|#ifndef&t;TRUE
@@ -4743,6 +4749,265 @@ id|__LINE__
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;ISA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
+suffix:semicolon
+)brace
 multiline_comment|/******************************************************&n; *&n; * initialise Etherlink Plus board&n; *&n; ******************************************************/
 DECL|function|elp_init
 r_static
@@ -4798,6 +5063,11 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|elp_set_mc_list
+suffix:semicolon
+multiline_comment|/* local */
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
 suffix:semicolon
 multiline_comment|/* local */
 multiline_comment|/* Setup the generic properties */

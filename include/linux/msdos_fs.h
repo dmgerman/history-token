@@ -1765,10 +1765,8 @@ id|new_dentry
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|super_block
-op_star
-id|msdos_read_super
+r_int
+id|msdos_fill_super
 c_func
 (paren
 r_struct
@@ -1899,10 +1897,8 @@ id|new_dentry
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|super_block
-op_star
-id|vfat_read_super
+r_int
+id|vfat_fill_super
 c_func
 (paren
 r_struct

@@ -2407,12 +2407,10 @@ id|vol_desc_start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the superblock and read the root inode.&n; *&n; * Note: a check_disk_change() has been done immediately prior&n; * to this call, so we don&squot;t need to check again.&n; */
-DECL|function|isofs_read_super
+DECL|function|isofs_fill_super
 r_static
-r_struct
-id|super_block
-op_star
-id|isofs_read_super
+r_int
+id|isofs_fill_super
 c_func
 (paren
 r_struct
@@ -3645,7 +3643,7 @@ id|table
 )braket
 suffix:semicolon
 r_return
-id|s
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Display error messages and free resources.&n;&t; */
 id|out_bad_root
@@ -3654,7 +3652,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isofs_read_super: root inode not initialized&bslash;n&quot;
+l_string|&quot;isofs_fill_super: root inode not initialized&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3666,7 +3664,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isofs_read_super: get root inode failed&bslash;n&quot;
+l_string|&quot;isofs_fill_super: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|out_iput
@@ -3699,7 +3697,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isofs_read_super: &quot;
+l_string|&quot;isofs_fill_super: &quot;
 l_string|&quot;bread failed, dev=%s, iso_blknum=%d, block=%d&bslash;n&quot;
 comma
 id|s-&gt;s_id
@@ -3782,7 +3780,8 @@ suffix:semicolon
 id|out_unlock
 suffix:colon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|isofs_statfs
@@ -5998,16 +5997,71 @@ suffix:semicolon
 )brace
 )def_block
 macro_line|#endif
+DECL|function|isofs_get_sb
 r_static
-id|DECLARE_FSTYPE_DEV
+r_struct
+id|super_block
+op_star
+id|isofs_get_sb
 c_func
 (paren
-id|iso9660_fs_type
+r_struct
+id|file_system_type
+op_star
+id|fs_type
 comma
+r_int
+id|flags
+comma
+r_char
+op_star
+id|dev_name
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|get_sb_bdev
+c_func
+(paren
+id|fs_type
+comma
+id|flags
+comma
+id|dev_name
+comma
+id|data
+comma
+id|isofs_fill_super
+)paren
+suffix:semicolon
+)brace
+DECL|variable|iso9660_fs_type
+r_static
+r_struct
+id|file_system_type
+id|iso9660_fs_type
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
 l_string|&quot;iso9660&quot;
 comma
-id|isofs_read_super
-)paren
+id|get_sb
+suffix:colon
+id|isofs_get_sb
+comma
+id|fs_flags
+suffix:colon
+id|FS_REQUIRES_DEV
+comma
+)brace
 suffix:semicolon
 DECL|function|init_iso9660_fs
 r_static
