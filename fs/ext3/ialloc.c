@@ -3277,7 +3277,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ext3_count_free_inodes: stored = %lu, computed = %lu, %lu&bslash;n&quot;
+l_string|&quot;ext3_count_free_inodes: stored = %u, computed = %lu, %lu&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func

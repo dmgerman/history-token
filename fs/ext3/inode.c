@@ -735,6 +735,11 @@ op_star
 id|err
 )paren
 (brace
+r_int
+r_int
+id|result
+suffix:semicolon
+macro_line|#ifdef EXT3_PREALLOCATE
 macro_line|#ifdef EXT3FS_DEBUG
 r_static
 r_int
@@ -748,11 +753,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-r_int
-r_int
-id|result
-suffix:semicolon
-macro_line|#ifdef EXT3_PREALLOCATE
 r_struct
 id|ext3_inode_info
 op_star
