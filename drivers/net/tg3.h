@@ -4318,6 +4318,8 @@ DECL|macro|TG3_FLG2_HW_TSO
 mdefine_line|#define TG3_FLG2_HW_TSO&t;&t;&t;0x00010000
 DECL|macro|TG3_FLG2_SERDES_PREEMPHASIS
 mdefine_line|#define TG3_FLG2_SERDES_PREEMPHASIS&t;0x00020000
+DECL|macro|TG3_FLG2_5705_PLUS
+mdefine_line|#define TG3_FLG2_5705_PLUS&t;&t;0x00040000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
