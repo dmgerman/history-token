@@ -52,6 +52,163 @@ id|filp
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef NTFS_RW
+multiline_comment|/**&n; * ntfs_file_fsync - sync a file to disk&n; * @filp:&t;file to be synced&n; * @dentry:&t;dentry describing the file to sync&n; * @datasync:&t;if non-zero only flush user data and not metadata&n; *&n; * Data integrity sync of a file to disk.  Used for fsync, fdatasync, and msync&n; * system calls.  This function is inspired by fs/buffer.c::file_fsync().&n; *&n; * If @datasync is false, write the mft record and all associated extent mft&n; * records as well as the $DATA attribute and then sync the block device.&n; *&n; * If @datasync is true and the attribute is non-resident, we skip the writing&n; * of the mft record and all associated extent mft records (this might still&n; * happen due to the write_inode_now() call).&n; *&n; * Also, if @datasync is true, we do not wait on the inode to be written out&n; * but we always wait on the page cache pages to be written out.&n; *&n; * Note: In the past @filp could be NULL so we ignore it as we don&squot;t need it&n; * anyway.&n; *&n; * Locking: Caller must hold i_sem on the inode.&n; *&n; * TODO: We should probably also write all attribute/index inodes associated&n; * with this inode but since we have no simple way of getting to them we ignore&n; * this problem for now.&n; */
+DECL|function|ntfs_file_fsync
+r_static
+r_int
+id|ntfs_file_fsync
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_int
+id|datasync
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|vi
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
+r_int
+id|err
+comma
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering for inode 0x%lx.&quot;
+comma
+id|vi-&gt;i_ino
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|vi-&gt;i_mode
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|datasync
+op_logical_or
+op_logical_neg
+id|NInoNonResident
+c_func
+(paren
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
+)paren
+)paren
+id|ret
+op_assign
+id|ntfs_write_inode
+c_func
+(paren
+id|vi
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|write_inode_now
+c_func
+(paren
+id|vi
+comma
+op_logical_neg
+id|datasync
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|sync_blockdev
+c_func
+(paren
+id|vi-&gt;i_sb-&gt;s_bdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+op_logical_and
+op_logical_neg
+id|ret
+)paren
+)paren
+id|ret
+op_assign
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+op_logical_neg
+id|ret
+)paren
+)paren
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
+suffix:semicolon
+r_else
+id|ntfs_warning
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to f%ssync inode 0x%lx.  Error &quot;
+l_string|&quot;%u.&quot;
+comma
+id|datasync
+ques
+c_cond
+l_string|&quot;data&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|vi-&gt;i_ino
+comma
+op_minus
+id|ret
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+macro_line|#endif /* NTFS_RW */
 DECL|variable|ntfs_file_ops
 r_struct
 id|file_operations
@@ -70,14 +227,50 @@ op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+dot
+id|aio_read
+op_assign
+id|generic_file_aio_read
+comma
+multiline_comment|/* Async read from file. */
+dot
+id|readv
+op_assign
+id|generic_file_readv
+comma
+multiline_comment|/* Read from file. */
 macro_line|#ifdef NTFS_RW
 dot
 id|write
 op_assign
 id|generic_file_write
 comma
-multiline_comment|/* Write to a file. */
-macro_line|#endif
+multiline_comment|/* Write to file. */
+dot
+id|aio_write
+op_assign
+id|generic_file_aio_write
+comma
+multiline_comment|/* Async write to file. */
+dot
+id|writev
+op_assign
+id|generic_file_writev
+comma
+multiline_comment|/* Write to file. */
+multiline_comment|/*.release&t;= ,*/
+multiline_comment|/* Last file is closed.  See&n;&t;&t;&t;&t;&t;&t;     fs/ext2/file.c::&n;&t;&t;&t;&t;&t;&t;     ext2_release_file() for&n;&t;&t;&t;&t;&t;&t;     how to use this to discard&n;&t;&t;&t;&t;&t;&t;     preallocated space for&n;&t;&t;&t;&t;&t;&t;     write opened files. */
+dot
+id|fsync
+op_assign
+id|ntfs_file_fsync
+comma
+multiline_comment|/* Sync a file to disk. */
+multiline_comment|/*.aio_fsync&t;= ,*/
+multiline_comment|/* Sync all outstanding async&n;&t;&t;&t;&t;&t;&t;     i/o operations on a&n;&t;&t;&t;&t;&t;&t;     kiocb. */
+macro_line|#endif /* NTFS_RW */
+multiline_comment|/*.ioctl&t;= ,*/
+multiline_comment|/* Perform function on the&n;&t;&t;&t;&t;&t;&t;     mounted filesystem. */
 dot
 id|mmap
 op_assign
@@ -85,17 +278,19 @@ id|generic_file_mmap
 comma
 multiline_comment|/* Mmap file. */
 dot
-id|sendfile
-op_assign
-id|generic_file_sendfile
-comma
-multiline_comment|/* Zero-copy data send with the&n;&t;&t;&t;&t;&t;&t;   data source being on the&n;&t;&t;&t;&t;&t;&t;   ntfs partition. We don&squot;t&n;&t;&t;&t;&t;&t;&t;   need to care about the data&n;&t;&t;&t;&t;&t;&t;   destination. */
-dot
 id|open
 op_assign
 id|ntfs_file_open
 comma
 multiline_comment|/* Open file. */
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+multiline_comment|/* Zero-copy data send with&n;&t;&t;&t;&t;&t;&t;     the data source being on&n;&t;&t;&t;&t;&t;&t;     the ntfs partition.  We&n;&t;&t;&t;&t;&t;&t;     do not need to care about&n;&t;&t;&t;&t;&t;&t;     the data destination. */
+multiline_comment|/*.sendpage&t;= ,*/
+multiline_comment|/* Zero-copy data send with&n;&t;&t;&t;&t;&t;&t;     the data destination being&n;&t;&t;&t;&t;&t;&t;     on the ntfs partition.  We&n;&t;&t;&t;&t;&t;&t;     do not need to care about&n;&t;&t;&t;&t;&t;&t;     the data source. */
 )brace
 suffix:semicolon
 DECL|variable|ntfs_file_inode_ops
@@ -115,7 +310,7 @@ id|setattr
 op_assign
 id|ntfs_setattr
 comma
-macro_line|#endif
+macro_line|#endif /* NTFS_RW */
 )brace
 suffix:semicolon
 DECL|variable|ntfs_empty_file_ops

@@ -1863,7 +1863,7 @@ id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Transfer information from the standard information into vfs_ino. */
+multiline_comment|/* Transfer information from the standard information into vi. */
 multiline_comment|/*&n;&t; * Note: The i_?times do not quite map perfectly onto the NTFS times,&n;&t; * but they are close enough, and in the end it doesn&squot;t really matter&n;&t; * that much...&n;&t; */
 multiline_comment|/*&n;&t; * mtime is the last change of the data within the file. Not changed&n;&t; * when only metadata is changed, e.g. a rename doesn&squot;t affect mtime.&n;&t; */
 id|vi-&gt;i_mtime
@@ -7951,9 +7951,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_write_inode - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; */
+multiline_comment|/**&n; * ntfs_write_inode - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|ntfs_write_inode
-r_void
+r_int
 id|ntfs_write_inode
 c_func
 (paren
@@ -7966,6 +7966,9 @@ r_int
 id|sync
 )paren
 (brace
+id|s64
+id|nt
+suffix:semicolon
 id|ntfs_inode
 op_star
 id|ni
@@ -7976,20 +7979,27 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|attr_search_context
 op_star
 id|ctx
 suffix:semicolon
-macro_line|#endif
 id|MFT_RECORD
 op_star
 id|m
+suffix:semicolon
+id|STANDARD_INFORMATION
+op_star
+id|si
 suffix:semicolon
 r_int
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+id|BOOL
+id|modified
+op_assign
+id|FALSE
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -8010,7 +8020,7 @@ comma
 id|vi-&gt;i_ino
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Dirty attribute inodes are written via their real inodes so just&n;&t; * clean them here.  TODO:  Take care of access time updates.&n;&t; */
+multiline_comment|/*&n;&t; * Dirty attribute inodes are written via their real inodes so just&n;&t; * clean them here.  Access time updates are taken care off when the&n;&t; * real inode is written.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8027,7 +8037,14 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
+suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Map, pin, and lock the mft record belonging to the inode. */
@@ -8065,8 +8082,7 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* Obtain the standard information attribute. */
+multiline_comment|/* Update the access times in the standard information attribute. */
 id|ctx
 op_assign
 id|get_attr_search_ctx
@@ -8141,28 +8157,171 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
-singleline_comment|// TODO:  Update the access times in the standard information attribute
-singleline_comment|// which is now in ctx-&gt;attr.
-singleline_comment|// - Probably want to have use sops-&gt;dirty_inode() to set a flag that
-singleline_comment|//   we need to update the times here rather than having to blindly do
-singleline_comment|//   it every time.  Or even don&squot;t do it here at all and do it in
-singleline_comment|//   sops-&gt;dirty_inode() instead.  Problem with this would be that
-singleline_comment|//   sops-&gt;dirty_inode() must be atomic under certain circumstances
-singleline_comment|//   and mapping mft records and such like is not atomic.
-singleline_comment|// - For atime updates also need to check whether they are enabled in
-singleline_comment|//   the superblock flags.
-id|ntfs_warning
+id|si
+op_assign
+(paren
+id|STANDARD_INFORMATION
+op_star
+)paren
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|ctx-&gt;attr
+op_plus
+id|le16_to_cpu
 c_func
 (paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Access time updates not implement yet.&quot;
+id|ctx-&gt;attr-&gt;data.resident.value_offset
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We just modified the mft record containing the standard information&n;&t; * attribute.  So need to mark the mft record dirty, too, but we do it&n;&t; * manually so that mark_inode_dirty() is not called again.&n;&t; * TODO:  Only do this if there was a change in any of the times!&n;&t; */
+multiline_comment|/* Update the access times if they have changed. */
+id|nt
+op_assign
+id|utc2ntfs
+c_func
+(paren
+id|vi-&gt;i_mtime
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|si-&gt;last_data_change_time
+op_ne
+id|nt
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Updating mtime for inode 0x%lx: old = 0x%llx, &quot;
+l_string|&quot;new = 0x%llx&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|si-&gt;last_data_change_time
+)paren
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|nt
+)paren
+)paren
+suffix:semicolon
+id|si-&gt;last_data_change_time
+op_assign
+id|nt
+suffix:semicolon
+id|modified
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+id|nt
+op_assign
+id|utc2ntfs
+c_func
+(paren
+id|vi-&gt;i_ctime
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|si-&gt;last_mft_change_time
+op_ne
+id|nt
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Updating ctime for inode 0x%lx: old = 0x%llx, &quot;
+l_string|&quot;new = 0x%llx&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|si-&gt;last_mft_change_time
+)paren
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|nt
+)paren
+)paren
+suffix:semicolon
+id|si-&gt;last_mft_change_time
+op_assign
+id|nt
+suffix:semicolon
+id|modified
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+id|nt
+op_assign
+id|utc2ntfs
+c_func
+(paren
+id|vi-&gt;i_atime
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|si-&gt;last_access_time
+op_ne
+id|nt
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Updating atime for inode 0x%lx: old = 0x%llx, &quot;
+l_string|&quot;new = 0x%llx&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|si-&gt;last_access_time
+)paren
+comma
+id|sle64_to_cpu
+c_func
+(paren
+id|nt
+)paren
+)paren
+suffix:semicolon
+id|si-&gt;last_access_time
+op_assign
+id|nt
+suffix:semicolon
+id|modified
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If we just modified the standard information attribute we need to&n;&t; * mark the mft record it is in dirty.  We do this manually so that&n;&t; * mark_inode_dirty() is not called which would redirty the inode and&n;&t; * hence result in an infinite loop of trying to write the inode.&n;&t; * There is no need to mark the base inode nor the base mft record&n;&t; * dirty, since we are going to write this mft record below in any case&n;&t; * and the base mft record may actually not have been modified so it&n;&t; * might not need to be written out.&n;&t; */
+r_if
+c_cond
+(paren
+id|modified
+op_logical_and
 op_logical_neg
 id|NInoTestSetDirty
 c_func
@@ -8182,8 +8341,7 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Write this base mft record. */
+multiline_comment|/* Now the access times are updated, write the base mft record. */
 r_if
 c_cond
 (paren
@@ -8401,8 +8559,8 @@ l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
-macro_line|#if 0
 id|unm_err_out
 suffix:colon
 id|unmap_mft_record
@@ -8411,7 +8569,6 @@ c_func
 id|ni
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err_out
 suffix:colon
 r_if
@@ -8462,6 +8619,31 @@ id|vi
 suffix:semicolon
 )brace
 r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ntfs_write_inode_vfs - write out a dirty inode&n; * @vi:&t;&t;inode to write out&n; * @sync:&t;if true, write out synchronously&n; *&n; * Write out a dirty inode to disk including any extent inodes if present.&n; *&n; * If @sync is true, commit the inode to disk and wait for io completion.  This&n; * is done using write_mft_record().&n; *&n; * If @sync is false, just schedule the write to happen but do not wait for i/o&n; * completion.  In 2.6 kernels, scheduling usually happens just by virtue of&n; * marking the page (and in this case mft record) dirty but we do not implement&n; * this yet as write_mft_record() largely ignores the @sync parameter and&n; * always performs synchronous writes.&n; *&n; * This functions does not have a return value which is the required behaviour&n; * for the VFS super_operations -&gt;dirty_inode function.&n; */
+DECL|function|ntfs_write_inode_vfs
+r_void
+id|ntfs_write_inode_vfs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+comma
+r_int
+id|sync
+)paren
+(brace
+id|ntfs_write_inode
+c_func
+(paren
+id|vi
+comma
+id|sync
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* NTFS_RW */
