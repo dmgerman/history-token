@@ -84,7 +84,7 @@ id|owner
 suffix:semicolon
 DECL|member|get
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star
@@ -762,7 +762,7 @@ op_star
 id|module
 comma
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star
@@ -1039,7 +1039,7 @@ suffix:semicolon
 DECL|function|exact_match
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|exact_match
 c_func
@@ -1056,8 +1056,16 @@ op_star
 id|data
 )paren
 (brace
-r_return
+r_struct
+id|gendisk
+op_star
+id|p
+op_assign
 id|data
+suffix:semicolon
+r_return
+op_amp
+id|p-&gt;kobj
 suffix:semicolon
 )brace
 DECL|function|exact_lock
@@ -1197,6 +1205,8 @@ id|disk-&gt;minors
 )paren
 suffix:semicolon
 )brace
+DECL|macro|to_disk
+mdefine_line|#define to_disk(obj) container_of(obj,struct gendisk,kobj)
 multiline_comment|/**&n; * get_gendisk - get partitioning information for a given device&n; * @dev: device to get partitioning information for&n; *&n; * This function gets the structure containing partitioning&n; * information for the given device @dev.&n; */
 r_struct
 id|gendisk
@@ -1223,9 +1233,9 @@ id|dev
 )paren
 suffix:semicolon
 r_struct
-id|gendisk
+id|kobject
 op_star
-id|disk
+id|kobj
 suffix:semicolon
 r_struct
 id|blk_probe
@@ -1265,7 +1275,7 @@ id|p-&gt;next
 )paren
 (brace
 r_struct
-id|gendisk
+id|kobject
 op_star
 (paren
 op_star
@@ -1389,7 +1399,7 @@ op_amp
 id|block_subsys.rwsem
 )paren
 suffix:semicolon
-id|disk
+id|kobj
 op_assign
 id|probe
 c_func
@@ -1411,10 +1421,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk
+id|kobj
 )paren
 r_return
-id|disk
+id|to_disk
+c_func
+(paren
+id|kobj
+)paren
 suffix:semicolon
 r_goto
 id|retry
@@ -1816,7 +1830,7 @@ suffix:semicolon
 DECL|function|base_probe
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|base_probe
 c_func
@@ -1952,8 +1966,6 @@ id|device_init
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * kobject &amp; sysfs bindings for block devices&n; */
-DECL|macro|to_disk
-mdefine_line|#define to_disk(obj) container_of(obj,struct gendisk,kobj)
 DECL|struct|disk_attribute
 r_struct
 id|disk_attribute
@@ -3278,7 +3290,7 @@ suffix:semicolon
 )brace
 DECL|function|get_disk
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|get_disk
 c_func
@@ -3355,11 +3367,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_return
-id|to_disk
-c_func
-(paren
 id|kobj
-)paren
 suffix:semicolon
 )brace
 DECL|function|put_disk
