@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/driverfs_fs.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
 mdefine_line|#define DEVICE_NAME_SIZE&t;80
@@ -1152,11 +1151,6 @@ op_star
 id|bus
 suffix:semicolon
 multiline_comment|/* type of bus device is on */
-DECL|member|dir
-r_struct
-id|driver_dir_entry
-id|dir
-suffix:semicolon
 DECL|member|driver
 r_struct
 id|device_driver
