@@ -284,7 +284,7 @@ c_func
 (paren
 l_string|&quot;# beginning __up_read&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xaddl      %%edx,(%%rdi)&bslash;n&bslash;t&quot;
+l_string|&quot;  xaddl      %[tmp],(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* subtracts 1, returns the old value */
 l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
@@ -295,7 +295,7 @@ c_func
 l_string|&quot;&quot;
 )paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
-l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
+l_string|&quot;  decw      %w[tmp]&bslash;n&bslash;t&quot;
 multiline_comment|/* do nothing if still outstanding active readers */
 l_string|&quot;  jnz       1b&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_wake_thunk&bslash;n&bslash;t&quot;
@@ -308,7 +308,7 @@ l_string|&quot;+m&quot;
 id|sem-&gt;count
 )paren
 comma
-l_string|&quot;+d&quot;
+l_string|&quot;+r&quot;
 (paren
 id|tmp
 )paren
@@ -338,14 +338,17 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+id|tmp
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
 l_string|&quot;# beginning __up_write&bslash;n&bslash;t&quot;
-l_string|&quot;  movl      %2,%%edx&bslash;n&bslash;t&quot;
+l_string|&quot;  movl      %2,%[tmp]&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xaddl     %%edx,(%%rdi)&bslash;n&bslash;t&quot;
+l_string|&quot;  xaddl     %[tmp],(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* tries to transition 0xffff0001 -&gt; 0x00000000 */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
@@ -356,7 +359,7 @@ c_func
 l_string|&quot;&quot;
 )paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
-l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
+l_string|&quot;  decw      %w[tmp]&bslash;n&bslash;t&quot;
 multiline_comment|/* did the active count reduce to 0? */
 l_string|&quot;  jnz       1b&bslash;n&bslash;t&quot;
 multiline_comment|/* jump back if not */
@@ -368,6 +371,14 @@ suffix:colon
 l_string|&quot;+m&quot;
 (paren
 id|sem-&gt;count
+)paren
+comma
+(braket
+id|tmp
+)braket
+l_string|&quot;r&quot;
+(paren
+id|tmp
 )paren
 suffix:colon
 l_string|&quot;D&quot;
@@ -384,8 +395,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;rdx&quot;
 )paren
 suffix:semicolon
 )brace

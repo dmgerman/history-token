@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
@@ -97,6 +96,11 @@ r_int
 id|pci_mem_start
 op_assign
 l_int|0x10000000
+suffix:semicolon
+DECL|variable|saved_video_mode
+r_int
+r_int
+id|saved_video_mode
 suffix:semicolon
 multiline_comment|/*&n; * Setup options&n; */
 DECL|struct|drive_info_struct
@@ -2240,6 +2244,14 @@ id|start_pfn
 comma
 id|end_pfn
 suffix:semicolon
+r_extern
+r_void
+id|exception_table_check
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|setup_arch
 r_void
 id|__init
@@ -2276,6 +2288,10 @@ suffix:semicolon
 id|aux_device_present
 op_assign
 id|AUX_DEVICE_INFO
+suffix:semicolon
+id|saved_video_mode
+op_assign
+id|SAVED_VIDEO_MODE
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 id|rd_image_start
@@ -3127,6 +3143,11 @@ id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+id|exception_table_check
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_X86_TSC
 DECL|variable|__initdata
@@ -4548,13 +4569,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_TSC
+id|c
 comma
-op_amp
-id|c-&gt;x86_capability
+id|X86_FEATURE_TSC
 )paren
 )paren
 (brace

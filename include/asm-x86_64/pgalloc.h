@@ -364,5 +364,9 @@ id|pte
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pte_free_tlb
+mdefine_line|#define pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
+DECL|macro|pmd_free_tlb
+mdefine_line|#define pmd_free_tlb(tlb,x)   do { } while (0)
 macro_line|#endif /* _X86_64_PGALLOC_H */
 eof

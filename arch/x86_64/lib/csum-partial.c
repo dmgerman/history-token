@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * arch/x86_64/lib/checksum.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed..&n; */
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
+multiline_comment|/*&n; * arch/x86_64/lib/csum-partial.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed.&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/* Better way for this sought */
 DECL|function|from64to16
 r_static
 r_inline
@@ -78,11 +79,10 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Do a 64-bit checksum on an arbitrary memory area..&n; *&n; * This isn&squot;t a great routine, but it&squot;s not _horrible_ either. The&n; * inner loop could be unrolled a bit further, and there are better&n; * ways to do the carry, but this is reasonable.&n; */
+multiline_comment|/*&n; * Do a 64-bit checksum on an arbitrary memory area.&n; * Returns a 32bit checksum.&n; *&n; * This isn&squot;t a great routine, but it&squot;s not _horrible_ either. &n; * We rely on the compiler to unroll.&n; */
 DECL|function|do_csum
 r_static
 r_inline
-r_int
 r_int
 id|do_csum
 c_func
@@ -131,7 +131,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|odd
+)paren
 )paren
 (brace
 id|result
@@ -253,23 +257,39 @@ id|count
 (brace
 r_int
 r_int
-id|carry
+id|zero
 op_assign
 l_int|0
 suffix:semicolon
 r_do
 (brace
-r_int
-r_int
-id|w
-op_assign
-op_star
+id|asm
+c_func
 (paren
-r_int
-r_int
-op_star
+l_string|&quot;  addq %1,%0&bslash;n&quot;
+l_string|&quot;  adcq %2,%0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|result
 )paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
 id|buff
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|zero
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|result
+)paren
+)paren
 suffix:semicolon
 id|count
 op_decrement
@@ -278,32 +298,12 @@ id|buff
 op_add_assign
 l_int|8
 suffix:semicolon
-id|result
-op_add_assign
-id|carry
-suffix:semicolon
-id|result
-op_add_assign
-id|w
-suffix:semicolon
-id|carry
-op_assign
-(paren
-id|w
-OG
-id|result
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
 id|count
 )paren
-suffix:semicolon
-id|result
-op_add_assign
-id|carry
 suffix:semicolon
 id|result
 op_assign
@@ -391,10 +391,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|odd
 )paren
-id|result
-op_assign
+)paren
+r_return
 (paren
 (paren
 id|result
@@ -421,7 +424,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
+multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 64-bit boundary&n; */
 DECL|function|csum_partial
 r_int
 r_int
@@ -443,7 +446,6 @@ id|sum
 )paren
 (brace
 r_int
-r_int
 id|result
 op_assign
 id|do_csum
@@ -455,29 +457,33 @@ id|len
 )paren
 suffix:semicolon
 multiline_comment|/* add in old sum, and carry.. */
-id|result
-op_add_assign
-id|sum
-suffix:semicolon
-multiline_comment|/* 32+c bits -&gt; 32 bits */
-id|result
-op_assign
+id|asm
+c_func
+(paren
+l_string|&quot;addl %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;adcl $0,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|result
-op_amp
-l_int|0xffffffff
 )paren
-op_plus
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;0&quot;
 (paren
 id|result
-op_rshift
-l_int|32
+)paren
 )paren
 suffix:semicolon
 r_return
 id|result
 suffix:semicolon
 )brace
+singleline_comment|//EXPORT_SYMBOL(csum_partial);
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 DECL|function|ip_compute_csum
 r_int
@@ -496,17 +502,22 @@ id|len
 (brace
 r_return
 op_complement
-id|from64to16
-c_func
-(paren
-id|do_csum
+id|csum_partial
 c_func
 (paren
 id|buff
 comma
 id|len
-)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ip_compute_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_compute_csum
+)paren
+suffix:semicolon
 eof

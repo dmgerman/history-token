@@ -262,15 +262,10 @@ suffix:semicolon
 )brace
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
-multiline_comment|/* Find an entry in the second-level page table.. */
-DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;__pmd_offset(address))
 DECL|macro|ptep_get_and_clear
 mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(a, b)&t;&t;((a).pte == (b).pte)
-DECL|macro|__mk_pte
-mdefine_line|#define __mk_pte(page_nr,pgprot) __pte(((page_nr) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot))
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
@@ -437,7 +432,7 @@ suffix:semicolon
 id|val
 op_and_assign
 op_complement
-id|PAGE_MASK
+id|PTE_MASK
 suffix:semicolon
 id|val
 op_and_assign
@@ -467,18 +462,52 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
-DECL|macro|pmd_none
-mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
-DECL|macro|pmd_present
-mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
-DECL|macro|pmd_clear
-mdefine_line|#define pmd_clear(xp)&t;do { set_pmd(xp, __pmd(0)); } while (0)
-DECL|macro|pmd_bad
-mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))&t;/* FIXME: is this&n;&t;&t;&t;&t;&t;&t;   right? */
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+((unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT))))
+mdefine_line|#define pte_page(x)&t;pfn_to_page(pte_pfn(x))
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)  ((pte_val(x) &gt;&gt; PAGE_SHIFT) &amp; __PHYSICAL_MASK)
+DECL|function|pfn_pte
+r_static
+r_inline
+id|pte_t
+id|pfn_pte
+c_func
+(paren
+r_int
+r_int
+id|page_nr
+comma
+id|pgprot_t
+id|pgprot
+)paren
+(brace
+id|pte_t
+id|pte
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_assign
+(paren
+id|page_nr
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_or
+id|pgprot_val
+c_func
+(paren
+id|pgprot
+)paren
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
 r_extern
@@ -1021,7 +1050,7 @@ DECL|macro|page_pte
 mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
 multiline_comment|/*&n; * Level 4 access.&n; * Never use these in the common code.&n; */
 DECL|macro|pml4_page
-mdefine_line|#define pml4_page(pml4) ((unsigned long) __va(pml4_val(pml4) &amp; PAGE_MASK))
+mdefine_line|#define pml4_page(pml4) ((unsigned long) __va(pml4_val(pml4) &amp; PTE_MASK))
 DECL|macro|pml4_index
 mdefine_line|#define pml4_index(address) ((address &gt;&gt; PML4_SHIFT) &amp; (PTRS_PER_PML4-1))
 DECL|macro|pml4_offset_k
@@ -1079,7 +1108,7 @@ c_func
 id|pml4
 )paren
 op_amp
-id|PAGE_MASK
+id|PTE_MASK
 )paren
 comma
 id|address
@@ -1092,15 +1121,28 @@ DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* PMD  - Level 2 access */
 DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PTE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)        (mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define pmd_page(pmd)        (mem_map + ((pmd_val(pmd) &amp; PTE_MASK)&gt;&gt;PAGE_SHIFT))
 DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+mdefine_line|#define __pmd_offset(address) (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+DECL|macro|pmd_offset
+mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;__pmd_offset(address))
+DECL|macro|pmd_none
+mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
+DECL|macro|pmd_present
+mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
+DECL|macro|pmd_clear
+mdefine_line|#define pmd_clear(xp)&t;do { set_pmd(xp, __pmd(0)); } while (0)
+DECL|macro|pmd_bad
+mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PTE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
+DECL|macro|pfn_pmd
+mdefine_line|#define pfn_pmd(nr,prot) (__pmd(((nr) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot)))
 multiline_comment|/* PTE - Level 1 access. */
+multiline_comment|/* page, protection -&gt; pte */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({                                                                     &bslash;&n;       pte_t __pte;                                                    &bslash;&n;                                                                       &bslash;&n;       set_pte(&amp;__pte, __pte(((page)-mem_map) *                        &bslash;&n;               (unsigned long long)PAGE_SIZE + pgprot_val(pgprot)));   &bslash;&n;       __pte;                                                          &bslash;&n;})
-multiline_comment|/* This takes a physical page address that is used by the remapping functions */
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+multiline_comment|/* physical address -&gt; PTE */
 DECL|function|mk_pte_phys
 r_static
 r_inline
@@ -1117,31 +1159,27 @@ id|pgprot
 )paren
 (brace
 id|pte_t
-id|__pte
+id|pte
 suffix:semicolon
-id|set_pte
+id|pte_val
 c_func
 (paren
-op_amp
-id|__pte
-comma
-id|__pte
-c_func
-(paren
+id|pte
+)paren
+op_assign
 id|physpage
-op_plus
+op_or
 id|pgprot_val
 c_func
 (paren
 id|pgprot
 )paren
-)paren
-)paren
 suffix:semicolon
 r_return
-id|__pte
+id|pte
 suffix:semicolon
 )brace
+multiline_comment|/* Change flags of a PTE */
 DECL|function|pte_modify
 r_extern
 r_inline
@@ -1156,31 +1194,24 @@ id|pgprot_t
 id|newprot
 )paren
 (brace
-id|set_pte
-c_func
-(paren
-op_amp
-id|pte
-comma
-id|__pte
-c_func
-(paren
-(paren
 id|pte_val
 c_func
 (paren
 id|pte
 )paren
-op_amp
+op_and_assign
 id|_PAGE_CHG_MASK
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
 )paren
-op_or
+op_or_assign
 id|pgprot_val
 c_func
 (paren
 id|newprot
-)paren
-)paren
 )paren
 suffix:semicolon
 r_return

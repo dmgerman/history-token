@@ -58,6 +58,8 @@ mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
 multiline_comment|/* how to get the thread information struct from C */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|function|current_thread_info
 r_static
 r_inline
@@ -134,8 +136,6 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|macro|alloc_thread_info
 mdefine_line|#define alloc_thread_info() ((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
 DECL|macro|free_thread_info
@@ -146,6 +146,7 @@ DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
+multiline_comment|/* only works on the process stack. otherwise get it via the PDA. */
 DECL|macro|GET_THREAD_INFO
 mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq $-8192, reg; &bslash;&n;&t;andq %rsp, reg
 macro_line|#endif
