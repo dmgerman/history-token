@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;xfs_quota_priv.h&gt;
 macro_line|#include &lt;xfs_log_recover.h&gt;
+macro_line|#include &quot;quota/xfs_qm.h&quot;
 macro_line|#include &quot;pagebuf/page_buf_internal.h&quot;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/kdb.h&gt;
@@ -6141,25 +6141,25 @@ multiline_comment|/*    0x80000 */
 l_string|&quot;VROOT&quot;
 comma
 multiline_comment|/*   0x100000 */
-l_string|&quot;VNOSWAP&quot;
+l_string|&quot;INVALID0x200000&quot;
 comma
 multiline_comment|/*   0x200000 */
-l_string|&quot;VISSWAP&quot;
+l_string|&quot;INVALID00x400000&quot;
 comma
 multiline_comment|/*   0x400000 */
-l_string|&quot;VREPLICABLE&quot;
+l_string|&quot;INVALID0x800000&quot;
 comma
 multiline_comment|/*   0x800000 */
-l_string|&quot;VNOTREPLICABLE&quot;
+l_string|&quot;INVALID0x1000000&quot;
 comma
 multiline_comment|/*  0x1000000 */
-l_string|&quot;VDOCMP&quot;
+l_string|&quot;INVALID0x2000000&quot;
 comma
 multiline_comment|/*  0x2000000 */
 l_string|&quot;VSHARE&quot;
 comma
 multiline_comment|/*  0x4000000 */
-l_string|&quot;VFRLOCKS&quot;
+l_string|&quot;INVALID0x8000000&quot;
 comma
 multiline_comment|/*  0x8000000 */
 l_string|&quot;VENF_LOCKING&quot;
@@ -6357,7 +6357,7 @@ l_int|0
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;out of range 0x%x&bslash;n&quot;
+l_string|&quot;out of range 0x%x&quot;
 comma
 id|vp-&gt;v_type
 )paren
@@ -6366,12 +6366,21 @@ r_else
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|vnode_type
 (braket
 id|vp-&gt;v_type
 )braket
+)paren
+suffix:semicolon
+id|kdb_printf
+c_func
+(paren
+l_string|&quot; v_bh %p&bslash;n&quot;
+comma
+op_amp
+id|vp-&gt;v_bh
 )paren
 suffix:semicolon
 r_if
@@ -6484,6 +6493,16 @@ id|vp-&gt;v_trace
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_XFS_VNODE_TRACING */
+id|kdb_printf
+c_func
+(paren
+l_string|&quot;   v_vfsp 0x%p v_number %Lx&bslash;n&quot;
+comma
+id|vp-&gt;v_vfsp
+comma
+id|vp-&gt;v_number
+)paren
+suffix:semicolon
 )brace
 DECL|function|kdbm_vnode
 r_static
@@ -24326,40 +24345,18 @@ op_star
 id|io
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IO_IS_XFS
-c_func
-(paren
-id|io
-)paren
-)paren
-(brace
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;io_obj 0x%p (xinode) io_mount 0x%p&bslash;n&quot;
+l_string|&quot;io_obj 0x%p io_flags 0x%x io_mount 0x%p&bslash;n&quot;
 comma
 id|io-&gt;io_obj
+comma
+id|io-&gt;io_flags
 comma
 id|io-&gt;io_mount
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|kdb_printf
-c_func
-(paren
-l_string|&quot;io_obj 0x%p (dcxvn) io_mount 0x%p&bslash;n&quot;
-comma
-id|io-&gt;io_obj
-comma
-id|io-&gt;io_mount
-)paren
-suffix:semicolon
-)brace
 id|kdb_printf
 c_func
 (paren

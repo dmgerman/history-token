@@ -49,7 +49,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#ifdef CONFIG_SYNCLINK_SYNCPPP_MODULE
 DECL|macro|CONFIG_SYNCLINK_SYNCPPP
 mdefine_line|#define CONFIG_SYNCLINK_SYNCPPP 1
@@ -527,12 +526,6 @@ suffix:semicolon
 DECL|member|stop
 r_int
 id|stop
-suffix:semicolon
-DECL|member|bus
-r_struct
-id|bus_operations
-op_star
-id|bus
 suffix:semicolon
 multiline_comment|/* SPPP/Cisco HDLC device parts */
 DECL|member|netcount
@@ -3168,10 +3161,6 @@ op_or_assign
 id|DEV_PRESENT
 op_or
 id|DEV_CONFIG_PENDING
-suffix:semicolon
-id|info-&gt;bus
-op_assign
-id|args-&gt;bus
 suffix:semicolon
 id|mgslpc_config
 c_func

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * debug.c - USB debug helper routines.&n; *&n; * I just want these out of the way where they aren&squot;t in your&n; * face, but so that you can still use them..&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

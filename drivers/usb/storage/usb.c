@@ -1199,7 +1199,7 @@ id|us-&gt;max_lun
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Bad LUN (%d/%d)&bslash;n&quot;
+l_string|&quot;Bad LUN (%d:%d)&bslash;n&quot;
 comma
 id|us-&gt;srb-&gt;device-&gt;id
 comma
@@ -1661,9 +1661,6 @@ op_star
 id|ss
 )paren
 (brace
-r_int
-id|result
-suffix:semicolon
 multiline_comment|/* free the scatter-gather request block */
 r_if
 c_cond
@@ -1693,22 +1690,6 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;-- releasing main URB&bslash;n&quot;
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_unlink_urb
-c_func
-(paren
-id|ss-&gt;current_urb
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- usb_unlink_urb() returned %d&bslash;n&quot;
-comma
-id|result
 )paren
 suffix:semicolon
 id|usb_free_urb

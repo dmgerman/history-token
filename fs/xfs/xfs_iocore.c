@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-r_static
+id|STATIC
 id|xfs_fsize_t
 DECL|function|xfs_size_fn
 id|xfs_size_fn
@@ -17,6 +17,44 @@ id|ip-&gt;i_d.di_size
 )paren
 suffix:semicolon
 )brace
+id|STATIC
+r_int
+DECL|function|xfs_ioinit
+id|xfs_ioinit
+c_func
+(paren
+r_struct
+id|vfs
+op_star
+id|vfsp
+comma
+r_struct
+id|xfs_mount_args
+op_star
+id|mntargs
+comma
+r_int
+id|flags
+)paren
+(brace
+r_return
+id|xfs_mountfs
+c_func
+(paren
+id|vfsp
+comma
+id|XFS_VFSTOM
+c_func
+(paren
+id|vfsp
+)paren
+comma
+id|vfsp-&gt;vfs_super-&gt;s_bdev-&gt;bd_dev
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 DECL|variable|xfs_iocore_xfs
 id|xfs_ioops_t
 id|xfs_iocore_xfs
@@ -28,7 +66,7 @@ op_assign
 (paren
 id|xfs_ioinit_t
 )paren
-id|fs_noerr
+id|xfs_ioinit
 comma
 dot
 id|xfs_bmapi_func
@@ -155,7 +193,7 @@ id|ip-&gt;i_iocore
 suffix:semicolon
 id|io-&gt;io_flags
 op_assign
-id|XFS_IOCORE_ISXFS
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -164,12 +202,10 @@ id|ip-&gt;i_d.di_flags
 op_amp
 id|XFS_DIFLAG_REALTIME
 )paren
-(brace
 id|io-&gt;io_flags
 op_or_assign
 id|XFS_IOCORE_RT
 suffix:semicolon
-)brace
 id|io-&gt;io_dmevmask
 op_assign
 id|ip-&gt;i_d.di_dmevmask

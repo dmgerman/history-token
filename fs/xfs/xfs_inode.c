@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;&t;/* for get_unaligned, put_unaligned */
 DECL|variable|xfs_ifork_zone
@@ -4473,48 +4473,6 @@ id|ip-&gt;i_d.di_anextents
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if DEBUG
-(brace
-id|uint
-id|badflags
-op_assign
-id|VNOSWAP
-op_or
-id|VISSWAP
-op_or
-id|VREPLICABLE
-op_or
-multiline_comment|/*  VNONREPLICABLE | XXX uncomment this */
-id|VDOCMP
-op_or
-id|VFRLOCKS
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * For shared mounts, VNOSWAP is set in xfs_iget&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|tp-&gt;t_mountp-&gt;m_cxfstype
-op_ne
-id|XFS_CXFS_NOT
-)paren
-id|badflags
-op_and_assign
-op_complement
-id|VNOSWAP
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-op_logical_neg
-(paren
-id|vp-&gt;v_flag
-op_amp
-id|badflags
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG */
 multiline_comment|/*&n;&t; * Log the new values stuffed into the inode.&n;&t; */
 id|xfs_trans_log_inode
 c_func
@@ -12964,8 +12922,10 @@ op_amp
 id|XFS_ICHGTIME_MOD
 )paren
 (brace
-id|inode-&gt;i_mtime.tv_nsec
+id|inode-&gt;i_mtime
 op_assign
+id|tv
+suffix:semicolon
 id|ip-&gt;i_d.di_mtime.t_sec
 op_assign
 (paren
@@ -12973,8 +12933,6 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
-id|inode-&gt;i_mtime.tv_nsec
-op_assign
 id|ip-&gt;i_d.di_mtime.t_nsec
 op_assign
 (paren
@@ -12991,8 +12949,10 @@ op_amp
 id|XFS_ICHGTIME_ACC
 )paren
 (brace
-id|inode-&gt;i_atime.tv_sec
+id|inode-&gt;i_atime
 op_assign
+id|tv
+suffix:semicolon
 id|ip-&gt;i_d.di_atime.t_sec
 op_assign
 (paren
@@ -13000,8 +12960,6 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
-id|inode-&gt;i_atime.tv_nsec
-op_assign
 id|ip-&gt;i_d.di_atime.t_nsec
 op_assign
 (paren
@@ -13018,8 +12976,10 @@ op_amp
 id|XFS_ICHGTIME_CHG
 )paren
 (brace
-id|inode-&gt;i_ctime.tv_sec
+id|inode-&gt;i_ctime
 op_assign
+id|tv
+suffix:semicolon
 id|ip-&gt;i_d.di_ctime.t_sec
 op_assign
 (paren
@@ -13027,8 +12987,6 @@ id|__int32_t
 )paren
 id|tv.tv_sec
 suffix:semicolon
-id|inode-&gt;i_ctime.tv_nsec
-op_assign
 id|ip-&gt;i_d.di_ctime.t_nsec
 op_assign
 (paren

@@ -1,6 +1,15 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;xfs_quota_priv.h&gt;
+macro_line|#include &quot;xfs_qm.h&quot;
+id|STATIC
+r_void
+id|xfs_trans_alloc_dqinfo
+c_func
+(paren
+id|xfs_trans_t
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Add the locked dquot to the transaction.&n; * The dquot must be locked, and it cannot be associated with any&n; * transaction.&n; */
 r_void
 DECL|function|xfs_trans_dqjoin
@@ -158,6 +167,7 @@ id|XFS_LID_DIRTY
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Carry forward whatever is left of the quota blk reservation to&n; * the spanky new transaction&n; */
+id|STATIC
 r_void
 DECL|function|xfs_trans_dup_dqinfo
 id|xfs_trans_dup_dqinfo
@@ -190,6 +200,14 @@ id|oqa
 comma
 op_star
 id|nqa
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|otp-&gt;t_dqinfo
+)paren
+r_return
 suffix:semicolon
 id|xfs_trans_alloc_dqinfo
 c_func
@@ -356,11 +374,39 @@ r_int
 id|delta
 )paren
 (brace
+id|xfs_mount_t
+op_star
+id|mp
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
 id|tp
 )paren
+suffix:semicolon
+id|mp
+op_assign
+id|tp-&gt;t_mountp
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|XFS_IS_QUOTA_ON
+c_func
+(paren
+id|mp
+)paren
+op_logical_or
+id|ip-&gt;i_ino
+op_eq
+id|mp-&gt;m_sb.sb_uquotino
+op_logical_or
+id|ip-&gt;i_ino
+op_eq
+id|mp-&gt;m_sb.sb_gquotino
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -381,7 +427,7 @@ c_cond
 id|XFS_IS_UQUOTA_ON
 c_func
 (paren
-id|tp-&gt;t_mountp
+id|mp
 )paren
 op_logical_and
 id|ip-&gt;i_udquot
@@ -409,7 +455,7 @@ c_cond
 id|XFS_IS_GQUOTA_ON
 c_func
 (paren
-id|tp-&gt;t_mountp
+id|mp
 )paren
 op_logical_and
 id|ip-&gt;i_gdquot
@@ -903,7 +949,7 @@ id|qt_dquot
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Called by xfs_trans_commit() and similar in spirit to&n; * xfs_trans_apply_sb_deltas().&n; * Go thru all the dquots belonging to this transaction and modify the&n; * INCORE dquot to reflect the actual usages.&n; * Unreserve just the reservations done by this transaction&n; * dquot is still left locked at exit.&n; */
+multiline_comment|/*&n; * Called by xfs_trans_commit() and similar in spirit to&n; * xfs_trans_apply_sb_deltas().&n; * Go thru all the dquots belonging to this transaction and modify the&n; * INCORE dquot to reflect the actual usages.&n; * Unreserve just the reservations done by this transaction.&n; * dquot is still left locked at exit.&n; */
 r_void
 DECL|function|xfs_trans_apply_dquot_deltas
 id|xfs_trans_apply_dquot_deltas
@@ -939,6 +985,18 @@ id|totalbdelta
 suffix:semicolon
 r_int
 id|totalrtbdelta
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;t_flags
+op_amp
+id|XFS_TRANS_DQ_DIRTY
+)paren
+)paren
+r_return
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1415,9 +1473,11 @@ id|qtrx-&gt;qt_rtblk_res
 op_ne
 l_int|0
 )paren
-id|printk
+id|cmn_err
 c_func
 (paren
+id|CE_DEBUG
+comma
 l_string|&quot;RT res %d for 0x%p&bslash;n&quot;
 comma
 (paren
@@ -1480,6 +1540,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Release the reservations, and adjust the dquots accordingly.&n; * This is called only when the transaction is being aborted. If by&n; * any chance we have done dquot modifications incore (ie. deltas) already,&n; * we simply throw those away, since that&squot;s the expected behavior&n; * when a transaction is curtailed without a commit.&n; */
+id|STATIC
 r_void
 DECL|function|xfs_trans_unreserve_and_mod_dquots
 id|xfs_trans_unreserve_and_mod_dquots
@@ -1509,11 +1570,20 @@ suffix:semicolon
 id|boolean_t
 id|locked
 suffix:semicolon
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
+op_logical_neg
 id|tp-&gt;t_dqinfo
+op_logical_or
+op_logical_neg
+(paren
+id|tp-&gt;t_flags
+op_amp
+id|XFS_TRANS_DQ_DIRTY
 )paren
+)paren
+r_return
 suffix:semicolon
 id|qa
 op_assign
@@ -1873,10 +1943,13 @@ id|dqp-&gt;q_mount
 )paren
 (brace
 macro_line|#ifdef QUOTADEBUG
-id|printk
+id|cmn_err
 c_func
 (paren
-l_string|&quot;BLK Res: nblks=%ld + resbcount=%Ld &gt; hardlimit=%Ld?&bslash;n&quot;
+id|CE_DEBUG
+comma
+l_string|&quot;BLK Res: nblks=%ld + resbcount=%Ld&quot;
+l_string|&quot; &gt; hardlimit=%Ld?&quot;
 comma
 id|nblks
 comma
@@ -2298,6 +2371,10 @@ id|xfs_trans_t
 op_star
 id|tp
 comma
+id|xfs_mount_t
+op_star
+id|mp
+comma
 id|xfs_dquot_t
 op_star
 id|udqp
@@ -2318,6 +2395,21 @@ id|flags
 (brace
 r_int
 id|resvd
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|XFS_IS_QUOTA_ON
+c_func
+(paren
+id|mp
+)paren
+)paren
+r_return
+(paren
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2442,6 +2534,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Lock the dquot and change the reservation if we can.&n; * This doesn&squot;t change the actual usage, just the reservation.&n; * The inode sent in is locked.&n; *&n; * Returns 0 on success, EDQUOT or other errors otherwise&n; */
+id|STATIC
 r_int
 DECL|function|xfs_trans_reserve_quota_nblks
 id|xfs_trans_reserve_quota_nblks
@@ -2450,6 +2543,10 @@ c_func
 id|xfs_trans_t
 op_star
 id|tp
+comma
+id|xfs_mount_t
+op_star
+id|mp
 comma
 id|xfs_inode_t
 op_star
@@ -2467,6 +2564,37 @@ id|type
 (brace
 r_int
 id|error
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|XFS_IS_QUOTA_ON
+c_func
+(paren
+id|mp
+)paren
+)paren
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ip-&gt;i_ino
+op_ne
+id|mp-&gt;m_sb.sb_uquotino
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ip-&gt;i_ino
+op_ne
+id|mp-&gt;m_sb.sb_gquotino
+)paren
 suffix:semicolon
 macro_line|#ifdef QUOTADEBUG
 r_if
@@ -2551,6 +2679,8 @@ id|xfs_trans_reserve_quota_bydquots
 c_func
 (paren
 id|tp
+comma
+id|mp
 comma
 id|ip-&gt;i_udquot
 comma
@@ -2692,6 +2822,7 @@ op_or_assign
 id|XFS_LID_DIRTY
 suffix:semicolon
 )brace
+id|STATIC
 r_void
 DECL|function|xfs_trans_alloc_dqinfo
 id|xfs_trans_alloc_dqinfo
@@ -2717,6 +2848,7 @@ id|KM_SLEEP
 )paren
 suffix:semicolon
 )brace
+id|STATIC
 r_void
 DECL|function|xfs_trans_free_dqinfo
 id|xfs_trans_free_dqinfo
@@ -2727,6 +2859,14 @@ op_star
 id|tp
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tp-&gt;t_dqinfo
+)paren
+r_return
+suffix:semicolon
 id|kmem_zone_free
 c_func
 (paren
@@ -2748,4 +2888,46 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|xfs_trans_dquot_ops
+id|xfs_dqtrxops_t
+id|xfs_trans_dquot_ops
+op_assign
+(brace
+dot
+id|qo_dup_dqinfo
+op_assign
+id|xfs_trans_dup_dqinfo
+comma
+dot
+id|qo_free_dqinfo
+op_assign
+id|xfs_trans_free_dqinfo
+comma
+dot
+id|qo_mod_dquot_byino
+op_assign
+id|xfs_trans_mod_dquot_byino
+comma
+dot
+id|qo_apply_dquot_deltas
+op_assign
+id|xfs_trans_apply_dquot_deltas
+comma
+dot
+id|qo_reserve_quota_nblks
+op_assign
+id|xfs_trans_reserve_quota_nblks
+comma
+dot
+id|qo_reserve_quota_bydquots
+op_assign
+id|xfs_trans_reserve_quota_bydquots
+comma
+dot
+id|qo_unreserve_and_mod_dquots
+op_assign
+id|xfs_trans_unreserve_and_mod_dquots
+comma
+)brace
+suffix:semicolon
 eof

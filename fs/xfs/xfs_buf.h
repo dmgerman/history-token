@@ -169,6 +169,10 @@ id|xfs_buftarg_t
 suffix:semicolon
 DECL|macro|xfs_buftarg
 mdefine_line|#define xfs_buftarg pb_target
+DECL|macro|XFS_BUF_DATAIO
+mdefine_line|#define XFS_BUF_DATAIO(x)&t;((x)-&gt;pb_flags |= PBF_FS_DATAIOD)
+DECL|macro|XFS_BUF_UNDATAIO
+mdefine_line|#define XFS_BUF_UNDATAIO(x)&t;((x)-&gt;pb_flags &amp;= ~PBF_FS_DATAIOD)
 DECL|macro|XFS_BUF_IODONE_FUNC
 mdefine_line|#define XFS_BUF_IODONE_FUNC(buf)&t;(buf)-&gt;pb_iodone
 DECL|macro|XFS_BUF_SET_IODONE_FUNC
@@ -412,7 +416,7 @@ DECL|macro|xfs_buftrace
 macro_line|# define xfs_buftrace(id, bp)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|xfs_biodone
-mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, 0, 0)
+mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, (pb-&gt;pb_flags &amp; PBF_FS_DATAIOD), 0)
 DECL|macro|xfs_incore
 mdefine_line|#define xfs_incore(buftarg,blkno,len,lockit) &bslash;&n;&t;    pagebuf_find(buftarg, blkno ,len, lockit)
 DECL|macro|xfs_biomove

@@ -1,0 +1,97 @@
+multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef __XFS_QM_STATS_H__
+DECL|macro|__XFS_QM_STATS_H__
+mdefine_line|#define __XFS_QM_STATS_H__
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; !defined(XFS_STATS_OFF)
+multiline_comment|/*&n; * XQM global statistics&n; */
+DECL|struct|xqmstats
+r_struct
+id|xqmstats
+(brace
+DECL|member|xs_qm_dqreclaims
+id|__uint32_t
+id|xs_qm_dqreclaims
+suffix:semicolon
+DECL|member|xs_qm_dqreclaim_misses
+id|__uint32_t
+id|xs_qm_dqreclaim_misses
+suffix:semicolon
+DECL|member|xs_qm_dquot_dups
+id|__uint32_t
+id|xs_qm_dquot_dups
+suffix:semicolon
+DECL|member|xs_qm_dqcachemisses
+id|__uint32_t
+id|xs_qm_dqcachemisses
+suffix:semicolon
+DECL|member|xs_qm_dqcachehits
+id|__uint32_t
+id|xs_qm_dqcachehits
+suffix:semicolon
+DECL|member|xs_qm_dqwants
+id|__uint32_t
+id|xs_qm_dqwants
+suffix:semicolon
+DECL|member|xs_qm_dqshake_reclaims
+id|__uint32_t
+id|xs_qm_dqshake_reclaims
+suffix:semicolon
+DECL|member|xs_qm_dqinact_reclaims
+id|__uint32_t
+id|xs_qm_dqinact_reclaims
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|xqmstats
+id|xqmstats
+suffix:semicolon
+DECL|macro|XQM_STATS_INC
+macro_line|# define XQM_STATS_INC(count)&t;( (count)++ )
+r_extern
+r_void
+id|xfs_qm_init_procfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_qm_cleanup_procfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|XQM_STATS_INC
+macro_line|# define XQM_STATS_INC(count)&t;do { } while (0)
+DECL|function|xfs_qm_init_procfs
+r_static
+id|__inline
+r_void
+id|xfs_qm_init_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+suffix:semicolon
+DECL|function|xfs_qm_cleanup_procfs
+r_static
+id|__inline
+r_void
+id|xfs_qm_cleanup_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif&t;/* __XFS_QM_STATS_H__ */
+eof
