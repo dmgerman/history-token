@@ -393,9 +393,7 @@ comma
 op_amp
 id|count
 comma
-id|HZ
-op_star
-l_int|10
+l_int|10000
 )paren
 suffix:semicolon
 multiline_comment|/* if the read was successful, copy the data to userspace */
@@ -1060,7 +1058,7 @@ op_logical_neg
 (paren
 id|endpoint-&gt;bEndpointAddress
 op_amp
-id|USB_DIR_IN
+id|USB_DIR_OUT
 )paren
 op_logical_and
 (paren

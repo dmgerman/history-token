@@ -458,6 +458,12 @@ id|quiescing
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|activating
+r_int
+id|activating
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|has_indicators
 r_int
 id|has_indicators

@@ -165,6 +165,18 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Some disks return the total number of blocks in response&n;&t;&t; * to READ CAPACITY rather than the highest block number.&n;&t;&t; * If this device makes that mistake, tell the sd driver. */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_FIX_CAPACITY
+)paren
+id|sdev-&gt;fix_capacity
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -174,6 +186,18 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Some devices choke when they receive a PREVENT-ALLOW MEDIUM&n;&t; * REMOVAL command, so suppress those commands. */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_NOT_LOCKABLE
+)paren
+id|sdev-&gt;lockable
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* this is to satisfy the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0
@@ -910,28 +934,92 @@ id|hostptr-&gt;host_no
 )paren
 suffix:semicolon
 multiline_comment|/* print product, vendor, and serial number strings */
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;manufacturer
+)paren
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;       Vendor: %s&bslash;n&quot;
 comma
-id|us-&gt;vendor
+id|us-&gt;pusb_dev-&gt;manufacturer
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|us-&gt;unusual_dev-&gt;vendorName
+)paren
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;       Vendor: %s&bslash;n&quot;
+comma
+id|us-&gt;unusual_dev-&gt;vendorName
+)paren
+suffix:semicolon
+r_else
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;       Vendor: Unknown&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;product
+)paren
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;      Product: %s&bslash;n&quot;
 comma
-id|us-&gt;product
+id|us-&gt;pusb_dev-&gt;product
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|us-&gt;unusual_dev-&gt;productName
+)paren
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;      Product: %s&bslash;n&quot;
+comma
+id|us-&gt;unusual_dev-&gt;productName
+)paren
+suffix:semicolon
+r_else
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;      Product: Unknown&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;serial
+)paren
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;Serial Number: %s&bslash;n&quot;
 comma
-id|us-&gt;serial
+id|us-&gt;pusb_dev-&gt;serial
+)paren
+suffix:semicolon
+r_else
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;Serial Number: None&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* show the protocol and transport */

@@ -366,7 +366,9 @@ c_func
 (paren
 id|tm-&gt;tm_mon
 comma
-id|yrs
+id|tm-&gt;tm_year
+op_plus
+l_int|1900
 )paren
 op_logical_or
 id|tm-&gt;tm_hour

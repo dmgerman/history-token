@@ -2766,6 +2766,16 @@ comma
 id|UART_FCR_ENABLE_FIFO
 )paren
 suffix:semicolon
+id|serial_outp
+c_func
+(paren
+id|up
+comma
+id|UART_LCR
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|DEBUG_AUTOCONF
 c_func
 (paren

@@ -76,6 +76,13 @@ macro_line|#else
 DECL|macro|gadget_is_pxa27x
 mdefine_line|#define&t;gadget_is_pxa27x(g)&t;0
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_S3C2410
+DECL|macro|gadget_is_s3c2410
+mdefine_line|#define gadget_is_s3c2410(g)    !strcmp(&quot;s3c2410_udc&quot;, (g)-&gt;name)
+macro_line|#else
+DECL|macro|gadget_is_s3c2410
+mdefine_line|#define gadget_is_s3c2410(g)    0
+macro_line|#endif
 singleline_comment|// CONFIG_USB_GADGET_AT91RM9200
 singleline_comment|// CONFIG_USB_GADGET_SX2
 singleline_comment|// CONFIG_USB_GADGET_AU1X00

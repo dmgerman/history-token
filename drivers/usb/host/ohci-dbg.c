@@ -570,7 +570,7 @@ comma
 (paren
 id|temp
 op_amp
-l_int|0x10
+l_int|0x0100
 )paren
 ques
 c_cond
@@ -1657,15 +1657,13 @@ op_increment
 id|u16
 id|psw
 op_assign
-id|hc16_to_cpup
+id|ohci_hwPSW
 (paren
 id|ohci
 comma
-op_amp
-id|td-&gt;hwPSW
-(braket
+id|td
+comma
 id|i
-)braket
 )paren
 suffix:semicolon
 r_int

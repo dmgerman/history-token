@@ -1,5 +1,4 @@
 multiline_comment|/*    Signal support for 32-bit kernel builds&n; *&n; *    Copyright (C) 2001 Matthew Wilcox &lt;willy at parisc-linux.org&gt;&n; *    Code was mostly borrowed from kernel/signal.c.&n; *    See kernel/signal.c for additional Copyrights.&n; *&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -117,6 +116,7 @@ id|put_sigset32
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|up
 comma
@@ -176,6 +176,7 @@ id|get_sigset32
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|up
 comma
@@ -252,10 +253,12 @@ r_int
 id|how
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|set
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|oset
 comma
@@ -304,6 +307,11 @@ comma
 id|set
 ques
 c_cond
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|new_set
 suffix:colon
@@ -312,6 +320,11 @@ comma
 id|oset
 ques
 c_cond
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|old_set
 suffix:colon
@@ -353,6 +366,7 @@ id|sys32_rt_sigpending
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|uset
 comma
@@ -374,6 +388,11 @@ id|ret
 comma
 id|sys_rt_sigpending
 comma
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|set
 comma
@@ -416,11 +435,13 @@ comma
 r_const
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|oact
 comma
@@ -585,10 +606,12 @@ id|do_sigaltstack32
 (paren
 r_const
 id|compat_stack_t
+id|__user
 op_star
 id|uss32
 comma
 id|compat_stack_t
+id|__user
 op_star
 id|uoss32
 comma
@@ -650,6 +673,7 @@ id|ss.ss_sp
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -689,8 +713,19 @@ id|ret
 comma
 id|do_sigaltstack
 comma
+(paren
+r_const
+id|stack_t
+id|__user
+op_star
+)paren
 id|ssp
 comma
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 id|ossp
 comma
 id|sp
@@ -757,11 +792,13 @@ c_func
 (paren
 r_struct
 id|compat_sigcontext
+id|__user
 op_star
 id|sc
 comma
 r_struct
 id|compat_regfile
+id|__user
 op_star
 id|rf
 comma
@@ -1328,11 +1365,13 @@ c_func
 (paren
 r_struct
 id|compat_sigcontext
+id|__user
 op_star
 id|sc
 comma
 r_struct
 id|compat_regfile
+id|__user
 op_star
 id|rf
 comma

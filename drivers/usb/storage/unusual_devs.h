@@ -50,7 +50,7 @@ comma
 l_int|0
 )paren
 comma
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -70,7 +70,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_8200e
+id|init_usbat
 comma
 l_int|0
 )paren
@@ -94,7 +94,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_8200e
+id|init_usbat
 comma
 l_int|0
 )paren
@@ -276,6 +276,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Reported by Andreas Bockhold &lt;andreas@bockionline.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04b0
+comma
+l_int|0x0405
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;NIKON&quot;
+comma
+l_string|&quot;NIKON DSC D70&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 multiline_comment|/* Reported by Simon Levitt &lt;simon@whattf.com&gt;&n; * This entry needs Sub and Proto fields */
 id|UNUSUAL_DEV
 c_func
@@ -428,7 +453,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt;&n; * Note that these cameras report &quot;Medium not present&quot; after&n; * ALLOW_MEDIUM_REMOVAL, so they also need to be marked&n; * NOT_LOCKABLE in the SCSI blacklist (and the vendor is MATSHITA). */
+multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -451,6 +476,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_NOT_LOCKABLE
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
@@ -772,6 +799,32 @@ comma
 id|US_FL_BULK32
 )paren
 comma
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04e6
+comma
+l_int|0x1010
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;SCM&quot;
+comma
+l_string|&quot;SCM USBAT-02&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SCM_ATAPI
+comma
+id|init_usbat
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
 multiline_comment|/* Reported by Bob Sass &lt;rls@vectordb.com&gt; -- only rev 1.33 tested */
 id|UNUSUAL_DEV
 c_func
@@ -947,7 +1000,6 @@ comma
 id|US_FL_IGNORE_RESIDUE
 )paren
 comma
-multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -970,6 +1022,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_NOT_LOCKABLE
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -1592,6 +1646,55 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* The following two entries are for a Genesys USB to IDE&n; * converter chip, but it changes its ProductId depending&n; * on whether or not a disk or an optical device is enclosed&n; * They were originally reported by Alexander Oltu&n; * &lt;alexander@all-2.com&gt; and Peter Marks &lt;peter.marks@turner.com&gt;&n; * respectively.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0701
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Genesys Logic&quot;
+comma
+l_string|&quot;USB to IDE Optical&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
+)paren
+comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0702
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Genesys Logic&quot;
+comma
+l_string|&quot;USB to IDE Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
+)paren
+comma
 multiline_comment|/* Reported by Hanno Boeck &lt;hanno@gmx.de&gt;&n; * Taken from the Lycoris Kernel */
 id|UNUSUAL_DEV
 c_func
@@ -1692,21 +1795,21 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
-multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
+multiline_comment|/* Reported by Richard -=[]=- &lt;micro_flyer@hotmail.com&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
 l_int|0x067b
 comma
-l_int|0x3507
+l_int|0x2507
 comma
-l_int|0x0001
+l_int|0x0100
 comma
-l_int|0x0001
+l_int|0x0100
 comma
 l_string|&quot;Prolific Technology Inc.&quot;
 comma
-l_string|&quot;ATAPI-6 Bridge Controller&quot;
+l_string|&quot;Mass Storage Device&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1715,6 +1818,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_GO_SLOW
 )paren
 comma
 multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
@@ -1740,6 +1845,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_GO_SLOW
 )paren
 comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
@@ -1864,7 +1971,6 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1887,6 +1993,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_IGNORE_SER
+)paren
+comma
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0781
+comma
+l_int|0x0005
+comma
+l_int|0x0005
+comma
+l_int|0x0005
+comma
+l_string|&quot;Sandisk&quot;
+comma
+l_string|&quot;ImageMate SDDR-05b&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SCM_ATAPI
+comma
+id|init_usbat
+comma
+id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
@@ -2698,6 +2829,31 @@ comma
 id|US_FL_IGNORE_RESIDUE
 )paren
 comma
+multiline_comment|/* Reported by Ian McConnell &lt;ian at emit.demon.co.uk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0dda
+comma
+l_int|0x0301
+comma
+l_int|0x0012
+comma
+l_int|0x0012
+comma
+l_string|&quot;PNP_MP3&quot;
+comma
+l_string|&quot;PNP_MP3 PLAYER&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2821,6 +2977,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Reported by Radovan Garabik &lt;garabik@kassiopeia.juls.savba.sk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x2735
+comma
+l_int|0x100b
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;MPIO&quot;
+comma
+l_string|&quot;HS200&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55

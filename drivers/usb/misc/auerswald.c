@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG   &t;&t;/* include debug macros until it&squot;s done&t;*/
 macro_line|#include &lt;linux/usb.h&gt;
@@ -1871,13 +1872,6 @@ op_star
 id|actual_length
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 id|auerchain_chs_t
 id|chs
 suffix:semicolon
@@ -1899,20 +1893,6 @@ id|chs.done
 op_assign
 l_int|0
 suffix:semicolon
-id|set_current_state
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|add_wait_queue
-(paren
-op_amp
-id|chs.wqh
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 id|urb-&gt;context
 op_assign
 op_amp
@@ -1932,66 +1912,20 @@ c_cond
 (paren
 id|status
 )paren
-(brace
 multiline_comment|/* something went wrong */
-id|set_current_state
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-(paren
-op_amp
-id|chs.wqh
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|timeout
-op_logical_and
-op_logical_neg
-id|chs.done
-)paren
-(brace
 id|timeout
 op_assign
-id|schedule_timeout
-(paren
-id|timeout
-)paren
-suffix:semicolon
-id|set_current_state
+id|wait_event_timeout
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|rmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|set_current_state
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-(paren
-op_amp
 id|chs.wqh
 comma
-op_amp
-id|wait
+id|chs.done
+comma
+id|timeout
 )paren
 suffix:semicolon
 r_if
@@ -7423,9 +7357,7 @@ multiline_comment|/* pointer to the receive buffer */
 l_int|2
 comma
 multiline_comment|/* length of the buffer */
-id|HZ
-op_star
-l_int|2
+l_int|2000
 )paren
 suffix:semicolon
 multiline_comment|/* time to wait for the message to complete before timing out */

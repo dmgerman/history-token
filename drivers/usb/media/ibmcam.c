@@ -4248,7 +4248,7 @@ r_sizeof
 id|cp
 )paren
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -4340,7 +4340,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace

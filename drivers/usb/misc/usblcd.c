@@ -564,9 +564,7 @@ comma
 op_amp
 id|partial
 comma
-l_int|10
-op_star
-id|HZ
+l_int|10000
 )paren
 suffix:semicolon
 id|dbg
@@ -845,14 +843,7 @@ comma
 op_amp
 id|partial
 comma
-(paren
-r_int
-)paren
-(paren
-id|HZ
-op_star
-l_int|8
-)paren
+l_int|8000
 )paren
 suffix:semicolon
 id|dbg

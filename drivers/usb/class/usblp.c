@@ -77,7 +77,7 @@ mdefine_line|#define USBLP_MINORS&t;&t;16
 DECL|macro|USBLP_MINOR_BASE
 mdefine_line|#define USBLP_MINOR_BASE&t;0
 DECL|macro|USBLP_WRITE_TIMEOUT
-mdefine_line|#define USBLP_WRITE_TIMEOUT&t;(5*HZ)&t;&t;&t;/* 5 seconds */
+mdefine_line|#define USBLP_WRITE_TIMEOUT&t;(5000)&t;&t;&t;/* 5 seconds */
 DECL|macro|USBLP_FIRST_PROTOCOL
 mdefine_line|#define USBLP_FIRST_PROTOCOL&t;1
 DECL|macro|USBLP_LAST_PROTOCOL

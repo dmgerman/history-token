@@ -1402,7 +1402,7 @@ id|buf
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -1510,7 +1510,7 @@ id|buf
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace

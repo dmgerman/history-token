@@ -3085,7 +3085,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|HANDLE_IOCTL
-mdefine_line|#define HANDLE_IOCTL(cmd, handler) { cmd, (ioctl_trans_handler_t)handler, 0 },
+mdefine_line|#define HANDLE_IOCTL(cmd, handler) { cmd, (ioctl_trans_handler_t)handler, NULL },
 DECL|macro|COMPATIBLE_IOCTL
 mdefine_line|#define COMPATIBLE_IOCTL(cmd) HANDLE_IOCTL(cmd, sys_ioctl) 
 DECL|macro|IOCTL_TABLE_START

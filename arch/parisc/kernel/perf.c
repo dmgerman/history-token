@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  Parisc performance counters&n; *  Copyright (C) 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *  This code is derived, with permission, from HP/UX sources.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; *  Edited comment from original sources:&n; *&n; *  This driver programs the PCX-U/PCX-W performance counters&n; *  on the PA-RISC 2.0 chips.  The driver keeps all images now&n; *  internally to the kernel to hopefully eliminate the possiblity&n; *  of a bad image halting the CPU.  Also, there are different&n; *  images for the PCX-W and later chips vs the PCX-U chips.&n; *&n; *  Only 1 process is allowed to access the driver at any time,&n; *  so the only protection that is needed is at open and close.&n; *  A variable &quot;perf_enabled&quot; is used to hold the state of the&n; *  driver.  The spinlock &quot;perf_lock&quot; is used to protect the&n; *  modification of the state during open/close operations so&n; *  multiple processes don&squot;t get into the driver simultaneously.&n; *&n; *  This driver accesses the processor directly vs going through&n; *  the PDC INTRIGUE calls.  This is done to eliminate bugs introduced&n; *  in various PDC revisions.  The code is much more maintainable&n; *  and reliable this way vs having to debug on every version of PDC&n; *  on every box. &n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -757,30 +756,30 @@ id|perf_bitmasks
 )braket
 op_assign
 (brace
-l_int|0x0000000000000000
+l_int|0x0000000000000000ul
 comma
 multiline_comment|/* first dbl word must be zero */
-l_int|0xfdffe00000000000
+l_int|0xfdffe00000000000ul
 comma
 multiline_comment|/* RDR0 bitmask */
-l_int|0x003f000000000000
+l_int|0x003f000000000000ul
 comma
 multiline_comment|/* RDR1 bitmask */
-l_int|0x00ffffffffffffff
+l_int|0x00fffffffffffffful
 comma
 multiline_comment|/* RDR20-RDR21 bitmask (152 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffc00000000
+l_int|0xfffffffc00000000ul
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
 multiline_comment|/* RDR22-RDR23 bitmask (233 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffffffffffc
+l_int|0xfffffffffffffffcul
 comma
-l_int|0xff00000000000000
+l_int|0xff00000000000000ul
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Write control bitmasks for Pa-8700 processor given&n; * somethings have changed slightly.&n; */
@@ -792,30 +791,30 @@ id|perf_bitmasks_piranha
 )braket
 op_assign
 (brace
-l_int|0x0000000000000000
+l_int|0x0000000000000000ul
 comma
 multiline_comment|/* first dbl word must be zero */
-l_int|0xfdffe00000000000
+l_int|0xfdffe00000000000ul
 comma
 multiline_comment|/* RDR0 bitmask */
-l_int|0x003f000000000000
+l_int|0x003f000000000000ul
 comma
 multiline_comment|/* RDR1 bitmask */
-l_int|0x00ffffffffffffff
+l_int|0x00fffffffffffffful
 comma
 multiline_comment|/* RDR20-RDR21 bitmask (158 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffc00000000
+l_int|0xfffffffc00000000ul
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
 multiline_comment|/* RDR22-RDR23 bitmask (210 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffc000000000000
+l_int|0xfffc000000000000ul
 )brace
 suffix:semicolon
 DECL|variable|bitmask_array
@@ -879,6 +878,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -902,6 +902,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1292,6 +1293,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1321,6 +1323,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2188,6 +2191,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2706,7 +2710,7 @@ id|userbuf
 l_int|21
 )braket
 op_and_assign
-l_int|0xfffffffffffffc00
+l_int|0xfffffffffffffc00ul
 suffix:semicolon
 multiline_comment|/* 0 to last 10 bits */
 id|userbuf
@@ -3431,7 +3435,7 @@ op_plus
 id|RUNWAY_STATUS
 )paren
 op_amp
-l_int|0xffecffffffffffff
+l_int|0xffecfffffffffffful
 suffix:semicolon
 id|__raw_writeq
 c_func
@@ -3443,7 +3447,7 @@ op_star
 id|memaddr
 op_increment
 op_amp
-l_int|0x0013000000000000
+l_int|0x0013000000000000ul
 )paren
 comma
 id|proc_hpa

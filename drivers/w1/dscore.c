@@ -392,7 +392,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -475,7 +475,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -558,7 +558,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -1216,7 +1216,7 @@ comma
 op_amp
 id|count
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -1375,7 +1375,7 @@ comma
 op_amp
 id|count
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if

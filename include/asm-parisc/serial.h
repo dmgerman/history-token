@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * include/asm-parisc/serial.h&n; */
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This assumes you have a 7.272727 MHz clock for your UART.&n; * The documentation implies a 40Mhz clock, and elsewhere a 7Mhz clock&n; * Clarified: 7.2727MHz on LASI. Not yet clarified for DINO&n; */
 DECL|macro|LASI_BASE_BAUD
 mdefine_line|#define LASI_BASE_BAUD ( 7272727 / 16 )

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
@@ -3090,7 +3091,7 @@ id|edge_port-&gt;commandPending
 op_assign
 id|FALSE
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -3139,9 +3140,6 @@ id|edge_serial
 suffix:semicolon
 r_int
 id|response
-suffix:semicolon
-r_int
-id|timeout
 suffix:semicolon
 id|dbg
 c_func
@@ -3442,31 +3440,20 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* now wait for the port to be completely opened */
-id|timeout
-op_assign
-id|OPEN_TIMEOUT
-suffix:semicolon
-r_while
-c_loop
+id|wait_event_timeout
+c_func
 (paren
-id|timeout
-op_logical_and
-id|edge_port-&gt;openPending
-op_eq
-id|TRUE
-)paren
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-(paren
-op_amp
 id|edge_port-&gt;wait_open
 comma
-id|timeout
+(paren
+id|edge_port-&gt;openPending
+op_ne
+id|TRUE
+)paren
+comma
+id|OPEN_TIMEOUT
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3624,6 +3611,12 @@ op_star
 id|edge_port
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 id|__u16
 id|lastCredits
 suffix:semicolon
@@ -3635,7 +3628,7 @@ op_star
 id|HZ
 suffix:semicolon
 r_int
-id|wait
+id|loop
 op_assign
 l_int|10
 suffix:semicolon
@@ -3689,12 +3682,32 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// Block the thread for a while
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
+c_func
 (paren
 op_amp
 id|edge_port-&gt;wait_chase
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|timeout
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|edge_port-&gt;wait_chase
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_if
@@ -3706,13 +3719,13 @@ id|edge_port-&gt;txCredits
 )paren
 (brace
 singleline_comment|// No activity.. count down.
-id|wait
+id|loop
 op_decrement
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|wait
+id|loop
 op_eq
 l_int|0
 )paren
@@ -3748,7 +3761,7 @@ comma
 id|edge_port-&gt;txCredits
 )paren
 suffix:semicolon
-id|wait
+id|loop
 op_assign
 l_int|10
 suffix:semicolon
@@ -3767,6 +3780,12 @@ op_star
 id|edge_port
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|TxFifo
 op_star
@@ -3786,7 +3805,7 @@ op_div
 l_int|10
 suffix:semicolon
 r_int
-id|wait
+id|loop
 op_assign
 l_int|30
 suffix:semicolon
@@ -3822,12 +3841,31 @@ r_return
 suffix:semicolon
 )brace
 singleline_comment|// Block the thread for a while
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 (paren
 op_amp
 id|edge_port-&gt;wait_chase
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|timeout
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|edge_port-&gt;wait_chase
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|dbg
@@ -3847,13 +3885,13 @@ id|fifo-&gt;count
 )paren
 (brace
 singleline_comment|// No activity.. count down.
-id|wait
+id|loop
 op_decrement
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|wait
+id|loop
 op_eq
 l_int|0
 )paren
@@ -3873,7 +3911,7 @@ suffix:semicolon
 r_else
 (brace
 singleline_comment|// Reset timout value back to seconds
-id|wait
+id|loop
 op_assign
 l_int|30
 suffix:semicolon
@@ -6341,6 +6379,12 @@ r_int
 id|arg
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|edgeport_port
 op_star
@@ -6510,11 +6554,31 @@ c_loop
 l_int|1
 )paren
 (brace
-id|interruptible_sleep_on
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|edge_port-&gt;delta_msr_wait
+comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|edge_port-&gt;delta_msr_wait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* see if a signal did it */
@@ -7437,7 +7501,7 @@ id|edge_port-&gt;chaseResponsePending
 op_assign
 id|FALSE
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 (paren
 op_amp
 id|edge_port-&gt;wait_chase
@@ -7528,7 +7592,7 @@ id|edge_port-&gt;open
 op_assign
 id|TRUE
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -8957,27 +9021,18 @@ op_assign
 id|COMMAND_TIMEOUT
 suffix:semicolon
 macro_line|#if 0
-r_while
-c_loop
-(paren
-id|timeout
-op_logical_and
-id|edge_port-&gt;commandPending
-op_eq
-id|TRUE
-)paren
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
+id|wait_event
 (paren
 op_amp
 id|edge_port-&gt;wait_command
 comma
-id|timeout
+(paren
+id|edge_port-&gt;commandPending
+op_eq
+id|FALSE
+)paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -956,6 +956,8 @@ DECL|macro|COMMAND_PORT
 mdefine_line|#define COMMAND_PORT&t;&t;4
 DECL|macro|COMMAND_TIMEOUT
 mdefine_line|#define COMMAND_TIMEOUT&t;&t;(2*HZ)&t;/* 2 second timeout for a command */
+DECL|macro|COMMAND_TIMEOUT_MS
+mdefine_line|#define&t;COMMAND_TIMEOUT_MS&t;2000
 DECL|macro|CLOSING_DELAY
 mdefine_line|#define CLOSING_DELAY&t;&t;(30 * HZ)
 multiline_comment|/*****************************************************************************&n; * Connect Tech&squot;s White Heat prerenumeration driver functions&n; *****************************************************************************/
@@ -1439,7 +1441,7 @@ comma
 op_amp
 id|alen
 comma
-id|COMMAND_TIMEOUT
+id|COMMAND_TIMEOUT_MS
 )paren
 suffix:semicolon
 r_if
@@ -1527,7 +1529,7 @@ comma
 op_amp
 id|alen
 comma
-id|COMMAND_TIMEOUT
+id|COMMAND_TIMEOUT_MS
 )paren
 suffix:semicolon
 r_if

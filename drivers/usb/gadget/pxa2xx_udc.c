@@ -3352,6 +3352,11 @@ id|dev-&gt;ep0state
 op_assign
 id|EP0_END_XFER
 suffix:semicolon
+id|local_irq_restore
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -46,9 +46,9 @@ DECL|macro|SPEEDTOUCH_PRODUCTID
 mdefine_line|#define SPEEDTOUCH_PRODUCTID&t;&t;0x4061
 multiline_comment|/* Timeout in jiffies */
 DECL|macro|CTRL_TIMEOUT
-mdefine_line|#define CTRL_TIMEOUT (2*HZ)
+mdefine_line|#define CTRL_TIMEOUT 2000
 DECL|macro|DATA_TIMEOUT
-mdefine_line|#define DATA_TIMEOUT (2*HZ)
+mdefine_line|#define DATA_TIMEOUT 2000
 DECL|macro|OFFSET_7
 mdefine_line|#define OFFSET_7  0&t;&t;/* size 1 */
 DECL|macro|OFFSET_b
@@ -2218,9 +2218,7 @@ comma
 op_amp
 id|actual_length
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
@@ -3640,9 +3638,7 @@ id|buf7
 comma
 id|SIZE_7
 comma
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 r_if

@@ -636,6 +636,10 @@ DECL|enumerator|__REQ_BAR_POSTFLUSH
 id|__REQ_BAR_POSTFLUSH
 comma
 multiline_comment|/* barrier post-flush */
+DECL|enumerator|__REQ_BAR_FLUSH
+id|__REQ_BAR_FLUSH
+comma
+multiline_comment|/* rq is the flush request */
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -690,6 +694,8 @@ DECL|macro|REQ_BAR_PREFLUSH
 mdefine_line|#define REQ_BAR_PREFLUSH&t;(1 &lt;&lt; __REQ_BAR_PREFLUSH)
 DECL|macro|REQ_BAR_POSTFLUSH
 mdefine_line|#define REQ_BAR_POSTFLUSH&t;(1 &lt;&lt; __REQ_BAR_POSTFLUSH)
+DECL|macro|REQ_BAR_FLUSH
+mdefine_line|#define REQ_BAR_FLUSH&t;(1 &lt;&lt; __REQ_BAR_FLUSH)
 multiline_comment|/*&n; * State information carried for REQ_PM_SUSPEND and REQ_PM_RESUME&n; * requests. Some step values could eventually be made generic.&n; */
 DECL|struct|request_pm_state
 r_struct

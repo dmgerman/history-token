@@ -3318,6 +3318,21 @@ id|USBDEVFS_RESET
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|USBDEVFS_SUBMITURB32
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|USBDEVFS_REAPURB32
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|USBDEVFS_REAPURBNDELAY32
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|USBDEVFS_CLEAR_HALT
 )paren
 multiline_comment|/* MTD */

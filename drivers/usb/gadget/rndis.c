@@ -3207,7 +3207,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME use these NDIS_PACKET_TYPE_* bitflags to&n;&t;&t; * filter packets in hard_start_xmit()&n;&t;&t; * NDIS_PACKET_TYPE_x == CDC_PACKET_TYPE_x for x in:&n;&t;&t; *&t;PROMISCUOUS, DIRECTED,&n;&t;&t; *&t;MULTICAST, ALL_MULTICAST, BROADCAST&n;&t;&t; */
+multiline_comment|/* FIXME use these NDIS_PACKET_TYPE_* bitflags to&n;&t;&t; * filter packets in hard_start_xmit()&n;&t;&t; * NDIS_PACKET_TYPE_x == USB_CDC_PACKET_TYPE_x for x in:&n;&t;&t; *&t;PROMISCUOUS, DIRECTED,&n;&t;&t; *&t;MULTICAST, ALL_MULTICAST, BROADCAST&n;&t;&t; */
 id|params-&gt;filter
 op_assign
 id|cpu_to_le32p

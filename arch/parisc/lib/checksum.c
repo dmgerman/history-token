@@ -539,10 +539,12 @@ DECL|function|csum_partial_copy_from_user
 r_int
 r_int
 id|csum_partial_copy_from_user
+c_func
 (paren
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|src
 comma

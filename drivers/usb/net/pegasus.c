@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 1999-2003 Petko Manolov (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *&t;ChangeLog:&n; *&t;&t;....&t;Most of the time spent on reading sources &amp; docs.&n; *&t;&t;v0.2.x&t;First official release for the Linux kernel.&n; *&t;&t;v0.3.0&t;Beutified and structured, some bugs fixed.&n; *&t;&t;v0.3.x&t;URBifying bulk requests and bugfixing. First relatively&n; *&t;&t;&t;stable release. Still can touch device&squot;s registers only&n; *&t;&t;&t;from top-halves.&n; *&t;&t;v0.4.0&t;Control messages remained unurbified are now URBs.&n; *&t;&t;&t;Now we can touch the HW at any time.&n; *&t;&t;v0.4.9&t;Control urbs again use process context to wait. Argh...&n; *&t;&t;&t;Some long standing bugs (enable_net_traffic) fixed.&n; *&t;&t;&t;Also nasty trick about resubmiting control urb from&n; *&t;&t;&t;interrupt context used. Please let me know how it&n; *&t;&t;&t;behaves. Pegasus II support added since this version.&n; *&t;&t;&t;TODO: suppressing HCD warnings spewage on disconnect.&n; *&t;&t;v0.4.13&t;Ethernet address is now set at probe(), not at open()&n; *&t;&t;&t;time as this seems to break dhcpd. &n; *&t;&t;v0.5.0&t;branch to 2.5.x kernels&n; *&t;&t;v0.5.1&t;ethtool support added&n; *&t;&t;v0.5.5&t;rx socket buffers are in a pool and the their allocation&n; * &t;&t;&t;is out of the interrupt routine.&n; */
+multiline_comment|/*&n; *  Copyright (c) 1999-2005 Petko Manolov (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *&t;ChangeLog:&n; *&t;&t;....&t;Most of the time spent on reading sources &amp; docs.&n; *&t;&t;v0.2.x&t;First official release for the Linux kernel.&n; *&t;&t;v0.3.0&t;Beutified and structured, some bugs fixed.&n; *&t;&t;v0.3.x&t;URBifying bulk requests and bugfixing. First relatively&n; *&t;&t;&t;stable release. Still can touch device&squot;s registers only&n; *&t;&t;&t;from top-halves.&n; *&t;&t;v0.4.0&t;Control messages remained unurbified are now URBs.&n; *&t;&t;&t;Now we can touch the HW at any time.&n; *&t;&t;v0.4.9&t;Control urbs again use process context to wait. Argh...&n; *&t;&t;&t;Some long standing bugs (enable_net_traffic) fixed.&n; *&t;&t;&t;Also nasty trick about resubmiting control urb from&n; *&t;&t;&t;interrupt context used. Please let me know how it&n; *&t;&t;&t;behaves. Pegasus II support added since this version.&n; *&t;&t;&t;TODO: suppressing HCD warnings spewage on disconnect.&n; *&t;&t;v0.4.13&t;Ethernet address is now set at probe(), not at open()&n; *&t;&t;&t;time as this seems to break dhcpd. &n; *&t;&t;v0.5.0&t;branch to 2.5.x kernels&n; *&t;&t;v0.5.1&t;ethtool support added&n; *&t;&t;v0.5.5&t;rx socket buffers are in a pool and the their allocation&n; * &t;&t;&t;is out of the interrupt routine.&n; */
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
 macro_line|#include &lt;linux/sched.h&gt;
@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.5.12 (2005/01/13)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.6.12 (2005/01/13)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1324,7 +1324,7 @@ id|regdi
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 id|warn
@@ -1336,7 +1336,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|mdio_read
@@ -1371,7 +1371,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+id|__le16
 id|res
 suffix:semicolon
 id|read_mii_word
@@ -1383,18 +1383,15 @@ id|phy_id
 comma
 id|loc
 comma
-(paren
-id|u16
-op_star
-)paren
 op_amp
 id|res
 )paren
 suffix:semicolon
 r_return
+(paren
+r_int
+)paren
 id|res
-op_amp
-l_int|0xffff
 suffix:semicolon
 )brace
 DECL|function|write_mii_word
@@ -4172,9 +4169,12 @@ c_func
 id|net
 )paren
 suffix:semicolon
-r_int
+id|__le16
 id|tmp
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|read_mii_word
 c_func
 (paren
@@ -4187,6 +4187,8 @@ comma
 op_amp
 id|tmp
 )paren
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -4941,10 +4943,10 @@ id|reg78
 )paren
 suffix:semicolon
 )brace
+DECL|function|pegasus_reset_wol
 r_static
 r_inline
 r_void
-DECL|function|pegasus_reset_wol
 id|pegasus_reset_wol
 c_func
 (paren
@@ -5002,6 +5004,19 @@ id|ecmd
 (brace
 id|pegasus_t
 op_star
+id|pegasus
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|pegasus
 op_assign
 id|netdev_priv
@@ -5758,6 +5773,62 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pegasus_workqueue
+r_struct
+id|workqueue_struct
+op_star
+id|pegasus_workqueue
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|macro|CARRIER_CHECK_DELAY
+mdefine_line|#define CARRIER_CHECK_DELAY (2 * HZ)
+DECL|function|check_carrier
+r_void
+id|check_carrier
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+(brace
+id|pegasus_t
+op_star
+id|pegasus
+op_assign
+id|data
+suffix:semicolon
+id|set_carrier
+c_func
+(paren
+id|pegasus-&gt;net
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pegasus-&gt;flags
+op_amp
+id|PEGASUS_UNPLUG
+)paren
+)paren
+(brace
+id|queue_delayed_work
+c_func
+(paren
+id|pegasus_workqueue
+comma
+op_amp
+id|pegasus-&gt;carrier_check
+comma
+id|CARRIER_CHECK_DELAY
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|pegasus_probe
 r_static
 r_int
@@ -5902,6 +5973,17 @@ comma
 r_int
 r_int
 )paren
+id|pegasus
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|pegasus-&gt;carrier_check
+comma
+id|check_carrier
+comma
 id|pegasus
 )paren
 suffix:semicolon
@@ -6096,6 +6178,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|pegasus-&gt;mii.phy_id
+op_assign
+id|pegasus-&gt;phy
+suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
@@ -6134,6 +6220,17 @@ id|res
 )paren
 r_goto
 id|out3
+suffix:semicolon
+id|queue_delayed_work
+c_func
+(paren
+id|pegasus_workqueue
+comma
+op_amp
+id|pegasus-&gt;carrier_check
+comma
+id|CARRIER_CHECK_DELAY
+)paren
 suffix:semicolon
 id|pr_info
 c_func
@@ -6238,7 +6335,7 @@ id|pegasus
 id|warn
 c_func
 (paren
-l_string|&quot;unregistering non-existant device&quot;
+l_string|&quot;unregistering non-existent device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6247,6 +6344,13 @@ suffix:semicolon
 id|pegasus-&gt;flags
 op_or_assign
 id|PEGASUS_UNPLUG
+suffix:semicolon
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|pegasus-&gt;carrier_check
+)paren
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -6304,7 +6408,7 @@ id|usb_interface
 op_star
 id|intf
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -6420,6 +6524,24 @@ comma
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
+id|pegasus_workqueue
+op_assign
+id|create_singlethread_workqueue
+c_func
+(paren
+l_string|&quot;pegasus&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pegasus_workqueue
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_return
 id|usb_register
 c_func
@@ -6439,6 +6561,12 @@ c_func
 r_void
 )paren
 (brace
+id|destroy_workqueue
+c_func
+(paren
+id|pegasus_workqueue
+)paren
+suffix:semicolon
 id|usb_deregister
 c_func
 (paren

@@ -1,26 +1,13 @@
-multiline_comment|/* &n; * Code to handle x86 style IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998 Ralf Baechle&n; * Copyright (C) 1999 SuSE GmbH (Philipp Rumpf, prumpf@tux.org)&n; * Copyright (C) 1999-2000 Grant Grundler&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n; * Code to handle x86 style IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998 Ralf Baechle&n; * Copyright (C) 1999 SuSE GmbH (Philipp Rumpf, prumpf@tux.org)&n; * Copyright (C) 1999-2000 Grant Grundler&n; * Copyright (c) 2005 Matthew Wilcox&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/cache.h&gt;
-macro_line|#include &lt;asm/pdc.h&gt;
-DECL|macro|DEBUG_IRQ
-macro_line|#undef DEBUG_IRQ
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|PARISC_IRQ_CR16_COUNTS
 macro_line|#undef PARISC_IRQ_CR16_COUNTS
 r_extern
@@ -53,13 +40,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_IRQ
-DECL|macro|DBG_IRQ
-mdefine_line|#define DBG_IRQ(irq, x)&t;if ((irq) != TIMER_IRQ) printk x
-macro_line|#else /* DEBUG_IRQ */
-DECL|macro|DBG_IRQ
-mdefine_line|#define DBG_IRQ(irq, x)&t;do { } while (0)
-macro_line|#endif /* DEBUG_IRQ */
 DECL|macro|EIEM_MASK
 mdefine_line|#define EIEM_MASK(irq)       (1UL&lt;&lt;(CPU_IRQ_MAX - irq))
 multiline_comment|/* Bits in EIEM correlate with cpu_irq_action[].&n;** Numbered *Big Endian*! (ie bit 0 is MSB)&n;*/
@@ -759,12 +739,15 @@ suffix:colon
 id|irq
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The bits_wide parameter accommodates the limitations of the HW/SW which&n; * use these bits:&n; * Legacy PA I/O (GSC/NIO): 5 bits (architected EIM register)&n; * V-class (EPIC):          6 bits&n; * N/L/A-class (iosapic):   8 bits&n; * PCI 2.2 MSI:            16 bits&n; * Some PCI devices:       32 bits (Symbios SCSI/ATM/HyperFabric)&n; *&n; * On the service provider side:&n; * o PA 1.1 (and PA2.0 narrow mode)     5-bits (width of EIR register)&n; * o PA 2.0 wide mode                   6-bits (per processor)&n; * o IA64                               8-bits (0-256 total)&n; *&n; * So a Legacy PA I/O device on a PA 2.0 box can&squot;t use all the bits supported&n; * by the processor...and the N/L-class I/O subsystem supports more bits than&n; * PA2.0 has. The first case is the problem.&n; */
 DECL|function|txn_alloc_irq
 r_int
 id|txn_alloc_irq
 c_func
 (paren
-r_void
+r_int
+r_int
+id|bits_wide
 )paren
 (brace
 r_int
@@ -805,6 +788,23 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|irq
+op_minus
+id|CPU_IRQ_BASE
+)paren
+op_ge
+(paren
+l_int|1
+op_lshift
+id|bits_wide
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_return
 id|irq
 suffix:semicolon
@@ -821,6 +821,7 @@ r_int
 id|txn_alloc_addr
 c_func
 (paren
+r_int
 r_int
 id|virt_irq
 )paren
@@ -887,7 +888,6 @@ dot
 id|txn_addr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** The alloc process needs to accept a parameter to accommodate limitations&n;** of the HW/SW which use these bits:&n;** Legacy PA I/O (GSC/NIO): 5 bits (architected EIM register)&n;** V-class (EPIC):          6 bits&n;** N/L-class/A500:          8 bits (iosapic)&n;** PCI 2.2 MSI:             16 bits (I think)&n;** Existing PCI devices:    32-bits (all Symbios SCSI/ATM/HyperFabric)&n;**&n;** On the service provider side:&n;** o PA 1.1 (and PA2.0 narrow mode)     5-bits (width of EIR register)&n;** o PA 2.0 wide mode                   6-bits (per processor)&n;** o IA64                               8-bits (0-256 total)&n;**&n;** So a Legacy PA I/O device on a PA 2.0 box can&squot;t use all&n;** the bits supported by the processor...and the N/L-class&n;** I/O subsystem supports more bits than PA2.0 has. The first&n;** case is the problem.&n;*/
 DECL|function|txn_alloc_data
 r_int
 r_int
@@ -895,41 +895,10 @@ id|txn_alloc_data
 c_func
 (paren
 r_int
+r_int
 id|virt_irq
-comma
-r_int
-r_int
-id|bits_wide
 )paren
 (brace
-multiline_comment|/* XXX FIXME : bits_wide indicates how wide the transaction&n;&t;** data is allowed to be...we may need a different virt_irq&n;&t;** if this one won&squot;t work. Another reason to index virtual&n;&t;** irq&squot;s into a table which can manage CPU/IRQ bit separately.&n;&t;*/
-r_if
-c_cond
-(paren
-(paren
-id|virt_irq
-op_minus
-id|CPU_IRQ_BASE
-)paren
-OG
-(paren
-l_int|1
-op_lshift
-(paren
-id|bits_wide
-op_minus
-l_int|1
-)paren
-)paren
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;Sorry -- didn&squot;t allocate valid IRQ for this device&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|virt_irq
 op_minus
@@ -952,22 +921,23 @@ r_int
 r_int
 id|eirr_val
 suffix:semicolon
-r_int
-r_int
-id|i
-op_assign
-l_int|3
+id|irq_enter
+c_func
+(paren
+)paren
 suffix:semicolon
-multiline_comment|/* limit time in interrupt context */
-multiline_comment|/*&n;&t; * PSW_I or EIEM bits cannot be enabled until after the&n;&t; * interrupts are processed.&n;&t; * timer_interrupt() assumes it won&squot;t get interrupted when it&n;&t; * holds the xtime_lock...an unmasked interrupt source could&n;&t; * interrupt and deadlock by trying to grab xtime_lock too.&n;&t; * Keeping PSW_I and EIEM disabled avoids this.&n;&t; */
+multiline_comment|/*&n;&t; * Only allow interrupt processing to be interrupted by the&n;&t; * timer tick&n;&t; */
 id|set_eiem
 c_func
 (paren
-l_int|0UL
+id|EIEM_MASK
+c_func
+(paren
+id|TIMER_IRQ
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* disable all extr interrupt for now */
-multiline_comment|/* 1) only process IRQs that are enabled/unmasked (cpu_eiem)&n;&t; * 2) We loop here on EIRR contents in order to avoid&n;&t; *    nested interrupts or having to take another interrupt&n;&t; *    when we could have just handled it right away.&n;&t; * 3) Limit the number of times we loop to make sure other&n;&t; *    processing can occur.&n;&t; */
+multiline_comment|/* 1) only process IRQs that are enabled/unmasked (cpu_eiem)&n;&t; * 2) We loop here on EIRR contents in order to avoid&n;&t; *    nested interrupts or having to take another interrupt&n;&t; *    when we could have just handled it right away.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1008,12 +978,25 @@ c_cond
 (paren
 op_logical_neg
 id|eirr_val
-op_logical_or
-op_logical_neg
-id|i
-op_decrement
 )paren
 r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eirr_val
+op_amp
+id|EIEM_MASK
+c_func
+(paren
+id|TIMER_IRQ
+)paren
+)paren
+id|set_eiem
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|mtctl
 c_func
@@ -1024,30 +1007,6 @@ l_int|23
 )paren
 suffix:semicolon
 multiline_comment|/* reset bits we are going to process */
-macro_line|#ifdef DEBUG_IRQ
-r_if
-c_cond
-(paren
-id|eirr_val
-op_ne
-(paren
-l_int|1UL
-op_lshift
-id|MAX_CPU_IRQ
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;do_cpu_irq_mask  0x%x &amp; 0x%x&bslash;n&quot;
-comma
-id|eirr_val
-comma
-id|cpu_eiem
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Work our way from MSb to LSb...same order we alloc EIRs */
 r_for
 c_loop
@@ -1076,8 +1035,6 @@ op_logical_neg
 id|bit
 op_amp
 id|eirr_val
-op_amp
-id|cpu_eiem
 )paren
 )paren
 r_continue
@@ -1102,6 +1059,11 @@ id|set_eiem
 c_func
 (paren
 id|cpu_eiem
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

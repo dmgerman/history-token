@@ -471,11 +471,13 @@ id|regs
 )paren
 (brace
 r_int
+id|__user
 op_star
 id|user_tid
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;gr
@@ -842,7 +844,9 @@ id|getname
 c_func
 (paren
 (paren
+r_const
 r_char
+id|__user
 op_star
 )paren
 id|regs-&gt;gr
@@ -880,6 +884,7 @@ id|filename
 comma
 (paren
 r_char
+id|__user
 op_star
 op_star
 )paren
@@ -890,6 +895,7 @@ l_int|25
 comma
 (paren
 r_char
+id|__user
 op_star
 op_star
 )paren
