@@ -1250,7 +1250,7 @@ c_func
 suffix:semicolon
 id|dev-&gt;addr_len
 op_assign
-l_int|1
+id|ARCNET_ALEN
 suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
