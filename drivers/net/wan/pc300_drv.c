@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
