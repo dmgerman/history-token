@@ -3270,11 +3270,15 @@ id|urb
 )paren
 )paren
 suffix:semicolon
-id|atomic_inc
+id|urb-&gt;count
+op_assign
+(paren
+id|atomic_t
+)paren
+id|ATOMIC_INIT
 c_func
 (paren
-op_amp
-id|urb-&gt;count
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -7273,7 +7277,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|warn
+id|dbg
 c_func
 (paren
 l_string|&quot;ignoring set_interface for dev %d, iface %d, alt %d&quot;
