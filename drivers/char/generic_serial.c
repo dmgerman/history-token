@@ -219,7 +219,7 @@ l_int|0
 suffix:semicolon
 id|port
 op_assign
-id|tty-&gt;driver
+id|tty-&gt;driver_data
 suffix:semicolon
 r_if
 c_cond
