@@ -500,6 +500,7 @@ comma
 id|NR_NODE_MEMBLKS
 )paren
 suffix:semicolon
+singleline_comment|// IA64 specific
 )brace
 r_else
 (brace
