@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Oct 15, 2000 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; * Nicer crc32 functions/docs submitted by linux@horizon.com.  Thanks!&n; *&n; * Oct 12, 2000 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; * Same crc32 function was used in 5 other places in the kernel.&n; * I made one version, and deleted the others.&n; * There are various incantations of crc32().  Some use a seed of 0 or ~0.&n; * Some xor at the end with ~0.  The generic crc32() function takes&n; * seed as an argument, and doesn&squot;t xor at the end.  Then individual&n; * users can do whatever they need.&n; *   drivers/net/smc9194.c uses seed ~0, doesn&squot;t xor with ~0.&n; *   fs/jffs2 uses seed 0, doesn&squot;t xor with ~0.&n; *   fs/partitions/efi.c uses seed ~0, xor&squot;s with ~0.&n; * &n; */
+multiline_comment|/*&n; * Oct 15, 2000 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; * Nicer crc32 functions/docs submitted by linux@horizon.com.  Thanks!&n; * Code was from the public domain, copyright abandoned.  Code was&n; * subsequently included in the kernel, thus was re-licensed under the&n; * GNU GPL v2.&n; *&n; * Oct 12, 2000 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; * Same crc32 function was used in 5 other places in the kernel.&n; * I made one version, and deleted the others.&n; * There are various incantations of crc32().  Some use a seed of 0 or ~0.&n; * Some xor at the end with ~0.  The generic crc32() function takes&n; * seed as an argument, and doesn&squot;t xor at the end.  Then individual&n; * users can do whatever they need.&n; *   drivers/net/smc9194.c uses seed ~0, doesn&squot;t xor with ~0.&n; *   fs/jffs2 uses seed 0, doesn&squot;t xor with ~0.&n; *   fs/partitions/efi.c uses seed ~0, xor&squot;s with ~0.&n; *&n; * This source code is licensed under the GNU General Public License,&n; * Version 2.  See the file COPYING for more details.&n; */
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -26,7 +26,6 @@ macro_line|#else
 DECL|macro|attribute
 mdefine_line|#define attribute(x)
 macro_line|#endif
-multiline_comment|/*&n; * This code is in the public domain; copyright abandoned.&n; * Liability for non-performance of this code is limited to the amount&n; * you paid for it.  Since it is distributed for free, your refund will&n; * be very very small.  If it breaks, you get to keep both pieces.&n; */
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -42,7 +41,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL and additional rights&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#if CRC_LE_BITS == 1
