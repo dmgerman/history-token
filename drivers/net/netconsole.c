@@ -227,7 +227,7 @@ id|write_msg
 suffix:semicolon
 DECL|function|option_setup
 r_static
-r_void
+r_int
 id|option_setup
 c_func
 (paren
@@ -247,6 +247,9 @@ id|np
 comma
 id|opt
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|__setup
