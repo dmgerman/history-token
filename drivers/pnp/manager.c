@@ -1038,6 +1038,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_IRQ
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1094,6 +1096,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_DMA
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1148,6 +1152,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_IO
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1202,6 +1208,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_MEM
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1283,6 +1291,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_IRQ
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1347,6 +1357,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_DMA
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1409,6 +1421,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_IO
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -1471,6 +1485,8 @@ id|idx
 dot
 id|flags
 op_assign
+id|IORESOURCE_MEM
+op_or
 id|IORESOURCE_AUTO
 op_or
 id|IORESOURCE_UNSET
@@ -2615,7 +2631,11 @@ suffix:semicolon
 id|resource-&gt;flags
 op_and_assign
 op_complement
+(paren
 id|IORESOURCE_AUTO
+op_or
+id|IORESOURCE_UNSET
+)paren
 suffix:semicolon
 id|resource-&gt;start
 op_assign
