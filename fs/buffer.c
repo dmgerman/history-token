@@ -771,7 +771,7 @@ id|bdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sync everything.&n; */
+multiline_comment|/*&n; * sync everything.  Start out by waking pdflush, because that writes back&n; * all queues in parallel.&n; */
 DECL|function|sys_sync
 id|asmlinkage
 r_int
@@ -781,6 +781,12 @@ c_func
 r_void
 )paren
 (brace
+id|wakeup_bdflush
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|sync_inodes
 c_func
 (paren
