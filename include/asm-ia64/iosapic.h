@@ -56,6 +56,8 @@ DECL|macro|IOSAPIC_MSAK
 mdefine_line|#define&t;IOSAPIC_MSAK&t;&t;&t;1
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_IOSAPIC
+DECL|macro|NR_IOSAPICS
+mdefine_line|#define NR_IOSAPICS&t;&t;&t;256
 r_extern
 r_void
 id|__init
