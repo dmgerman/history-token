@@ -461,6 +461,9 @@ comma
 DECL|enumerator|TCA_RSVP_POLICE
 id|TCA_RSVP_POLICE
 comma
+DECL|enumerator|TCA_RSVP_ACT
+id|TCA_RSVP_ACT
+comma
 DECL|enumerator|__TCA_RSVP_MAX
 id|__TCA_RSVP_MAX
 )brace
