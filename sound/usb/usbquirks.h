@@ -2,7 +2,6 @@ multiline_comment|/*&n; * ALSA USB Audio Driver&n; *&n; * Copyright (c) 2002 by 
 multiline_comment|/*&n; * The contents of this file are part of the driver&squot;s id_table.&n; *&n; * In a perfect world, this file would be empty.&n; */
 DECL|macro|USB_DEVICE_VENDOR_SPEC
 mdefine_line|#define USB_DEVICE_VENDOR_SPEC(vend, prod) &bslash;&n;&t;.match_flags = USB_DEVICE_ID_MATCH_VENDOR | &bslash;&n;&t;&t;       USB_DEVICE_ID_MATCH_PRODUCT | &bslash;&n;&t;&t;       USB_DEVICE_ID_MATCH_INT_CLASS, &bslash;&n;&t;.idVendor = vend, &bslash;&n;&t;.idProduct = prod, &bslash;&n;&t;.bInterfaceClass = USB_CLASS_VENDOR_SPEC
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
 multiline_comment|/* Yamaha devices */
 (brace
 id|USB_DEVICE
@@ -181,7 +180,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE
+id|USB_DEVICE_VENDOR_SPEC
 c_func
 (paren
 l_int|0x0499
@@ -445,7 +444,7 @@ id|QUIRK_MIDI_YAMAHA
 )brace
 comma
 (brace
-id|USB_DEVICE
+id|USB_DEVICE_VENDOR_SPEC
 c_func
 (paren
 l_int|0x0499
@@ -656,38 +655,12 @@ comma
 dot
 id|ifnum
 op_assign
-l_int|2
+l_int|0
 comma
 dot
 id|type
 op_assign
-id|QUIRK_MIDI_FIXED_ENDPOINT
-comma
-dot
-id|data
-op_assign
-op_amp
-(paren
-r_const
-id|snd_usb_midi_endpoint_info_t
-)paren
-(brace
-dot
-id|epnum
-op_assign
-op_minus
-l_int|1
-comma
-dot
-id|out_cables
-op_assign
-l_int|0x0007
-comma
-dot
-id|in_cables
-op_assign
-l_int|0x0007
-)brace
+id|QUIRK_ROLAND_UA100
 )brace
 )brace
 comma
@@ -2078,7 +2051,7 @@ l_int|9
 )brace
 comma
 (brace
-id|USB_DEVICE
+id|USB_DEVICE_VENDOR_SPEC
 c_func
 (paren
 l_int|0x0763
@@ -2131,7 +2104,7 @@ l_int|1
 )brace
 comma
 (brace
-id|USB_DEVICE
+id|USB_DEVICE_VENDOR_SPEC
 c_func
 (paren
 l_int|0x0763
@@ -2183,7 +2156,6 @@ l_int|1
 )brace
 )brace
 comma
-macro_line|#endif /* CONFIG_SND_SEQUENCER(_MODULE) */
 DECL|macro|USB_DEVICE_VENDOR_SPEC
 macro_line|#undef USB_DEVICE_VENDOR_SPEC
 eof

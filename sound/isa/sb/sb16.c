@@ -2848,6 +2848,10 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+id|chip-&gt;rmidi_callback
+op_assign
+id|snd_mpu401_uart_interrupt
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -202,6 +202,8 @@ DECL|macro|QUIRK_MIDI_YAMAHA
 mdefine_line|#define QUIRK_MIDI_YAMAHA&t;&t;1
 DECL|macro|QUIRK_MIDI_MIDIMAN
 mdefine_line|#define QUIRK_MIDI_MIDIMAN&t;&t;2
+DECL|macro|QUIRK_ROLAND_UA100
+mdefine_line|#define QUIRK_ROLAND_UA100&t;&t;3
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -270,6 +272,7 @@ multiline_comment|/* bitmask */
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data is the number of ports */
+multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
