@@ -1341,7 +1341,7 @@ id|atomic_t
 id|in_pkts
 suffix:semicolon
 multiline_comment|/* incoming packet counter */
-multiline_comment|/* packet transmitter for different forwarding methods.  If it&n;&t;   mangles the packet, it must return NF_DROP or NF_STOLEN, otherwise&n;&t;   this must be changed to a sk_buff **.&n;&t; */
+multiline_comment|/* packet transmitter for different forwarding methods.  If it&n;&t;   mangles the packet, it must return NF_DROP or better NF_STOLEN,&n;&t;   otherwise this must be changed to a sk_buff **.&n;&t; */
 DECL|member|packet_xmit
 r_int
 (paren
