@@ -491,31 +491,6 @@ op_star
 id|parse
 )paren
 suffix:semicolon
-multiline_comment|/* In bulkmem.c */
-r_int
-id|pcmcia_get_first_region
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-id|region_info_t
-op_star
-id|rgn
-)paren
-suffix:semicolon
-r_int
-id|pcmcia_get_next_region
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-id|region_info_t
-op_star
-id|rgn
-)paren
-suffix:semicolon
 multiline_comment|/* In rsrc_mgr */
 r_void
 id|pcmcia_validate_mem
