@@ -218,15 +218,6 @@ DECL|macro|BNEPGETCONNLIST
 mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
 DECL|macro|BNEPGETCONNINFO
 mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
-singleline_comment|// Ioctl interface
-DECL|macro|BNEPCONADD
-mdefine_line|#define BNEPCONADD      1
-DECL|macro|BNEPCONDEL
-mdefine_line|#define BNEPCONDEL      2
-DECL|macro|BNEPGETCONLIST
-mdefine_line|#define BNEPGETCONLIST  3
-DECL|macro|BNEPGETCONINFO
-mdefine_line|#define BNEPGETCONINFO  4
 DECL|struct|bnep_connadd_req
 r_struct
 id|bnep_connadd_req

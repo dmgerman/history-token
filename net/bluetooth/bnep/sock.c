@@ -141,9 +141,6 @@ id|cmd
 )paren
 (brace
 r_case
-id|BNEPCONADD
-suffix:colon
-r_case
 id|BNEPCONNADD
 suffix:colon
 r_if
@@ -272,9 +269,6 @@ r_return
 id|err
 suffix:semicolon
 r_case
-id|BNEPCONDEL
-suffix:colon
-r_case
 id|BNEPCONNDEL
 suffix:colon
 r_if
@@ -324,9 +318,6 @@ op_amp
 id|cd
 )paren
 suffix:semicolon
-r_case
-id|BNEPGETCONLIST
-suffix:colon
 r_case
 id|BNEPGETCONNLIST
 suffix:colon
@@ -406,9 +397,6 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-r_case
-id|BNEPGETCONINFO
-suffix:colon
 r_case
 id|BNEPGETCONNINFO
 suffix:colon
