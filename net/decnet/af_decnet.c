@@ -2805,6 +2805,7 @@ macro_line|#if 1
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|capable
 c_func
@@ -2813,6 +2814,7 @@ id|CAP_NET_BIND_SERVICE
 )paren
 op_logical_and
 id|saddr-&gt;sdn_objnum
+)paren
 op_logical_or
 (paren
 id|saddr-&gt;sdn_flags

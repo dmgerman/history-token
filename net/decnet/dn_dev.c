@@ -6768,7 +6768,6 @@ l_string|&quot;DECnet: Area must be between 0 and 63&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -6797,7 +6796,6 @@ l_string|&quot;DECnet: Node must be between 0 and 1023&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
 suffix:semicolon
 )brace
 id|decnet_address
