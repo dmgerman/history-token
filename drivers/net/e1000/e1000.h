@@ -35,9 +35,7 @@ macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#ifdef NETIF_F_HW_VLAN_TX
 macro_line|#include &lt;linux/if_vlan.h&gt;
-macro_line|#endif
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0&t;&t;0
 DECL|macro|BAR_1
@@ -199,14 +197,12 @@ id|list_head
 id|proc_list_head
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef NETIF_F_HW_VLAN_TX
 DECL|member|vlgrp
 r_struct
 id|vlan_group
 op_star
 id|vlgrp
 suffix:semicolon
-macro_line|#endif
 DECL|member|id_string
 r_char
 op_star
@@ -244,7 +240,6 @@ DECL|member|irq_sem
 id|atomic_t
 id|irq_sem
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_PHYS_ID
 DECL|member|blink_timer
 r_struct
 id|timer_list
@@ -255,7 +250,6 @@ r_int
 r_int
 id|led_status
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* TX */
 DECL|member|tx_ring
 r_struct

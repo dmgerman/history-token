@@ -1532,7 +1532,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;ETHTOOL_PHYS_ID
 multiline_comment|/* toggle LED 4 times per second = 2 &quot;blinks&quot; per second */
 DECL|macro|E1000_ID_INTERVAL
 mdefine_line|#define E1000_ID_INTERVAL&t;(HZ/4)
@@ -1725,7 +1724,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* ETHTOOL_PHYS_ID */
 r_int
 DECL|function|e1000_ethtool_ioctl
 id|e1000_ethtool_ioctl
@@ -2083,7 +2081,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;ETHTOOL_PHYS_ID
 r_case
 id|ETHTOOL_PHYS_ID
 suffix:colon
@@ -2126,7 +2123,6 @@ id|id
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* ETHTOOL_PHYS_ID */
 r_case
 id|ETHTOOL_GLINK
 suffix:colon
