@@ -8363,6 +8363,18 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|profile_hit
+c_func
+(paren
+id|SCHED_PROFILING
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
 id|need_resched
 suffix:colon
 id|preempt_disable
@@ -10468,18 +10480,6 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-id|profile_hit
-c_func
-(paren
-id|SCHED_PROFILING
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are&n;&t; * 1..MAX_USER_RT_PRIO-1, valid priority for SCHED_NORMAL is 0.&n;&t; */
 id|retval
 op_assign
