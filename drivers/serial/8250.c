@@ -3571,6 +3571,7 @@ id|up-&gt;ier
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We only do this from uart_stop - if we run out of&n;&t; * characters to send, we don&squot;t want to prevent the&n;&t; * FIFO from emptying.&n;&t; */
 r_if
 c_cond
 (paren
