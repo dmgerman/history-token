@@ -116,6 +116,8 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_hotplug_attr
+mdefine_line|#define to_hotplug_attr(n) container_of(n, struct hotplug_slot_attribute, attr);
 multiline_comment|/**&n; * struct hotplug_slot_ops -the callbacks that the hotplug pci core can use&n; * @owner: The module owner of this structure&n; * @enable_slot: Called when the user wants to enable a specific pci slot&n; * @disable_slot: Called when the user wants to disable a specific pci slot&n; * @set_attention_status: Called to set the specific slot&squot;s attention LED to&n; * the specified value&n; * @hardware_test: Called to run a specified hardware test on the specified&n; * slot.&n; * @get_power_status: Called to get the current power status of a slot.&n; * &t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; * &t;will be used when this value is requested by a user.&n; * @get_attention_status: Called to get the current attention status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_latch_status: Called to get the current latch status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_adapter_status: Called to get see if an adapter is present in the slot or not.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_max_bus_speed: Called to get the max bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_cur_bus_speed: Called to get the current bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; *&n; * The table of function pointers that is passed to the hotplug pci core by a&n; * hotplug pci driver.  These functions are called by the hotplug pci core when&n; * the user wants to do something to a specific slot (query it for information,&n; * set an LED, enable / disable power, etc.)&n; */
 DECL|struct|hotplug_slot_ops
 r_struct
@@ -346,6 +348,19 @@ id|hotplug_slot_info
 op_star
 id|info
 suffix:semicolon
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
+)paren
+suffix:semicolon
 DECL|member|private
 r_void
 op_star
@@ -364,6 +379,8 @@ id|kobj
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_hotplug_slot
+mdefine_line|#define to_hotplug_slot(n) container_of(n, struct hotplug_slot, kobj)
 r_extern
 r_int
 id|pci_hp_register
