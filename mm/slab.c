@@ -9123,16 +9123,73 @@ id|n
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Output format version, so at least we can change it&n;&t;&t; * without _too_ many complaints.&n;&t;&t; */
+macro_line|#if STATS
 id|seq_puts
 c_func
 (paren
 id|m
 comma
-l_string|&quot;slabinfo - version: 1.2&quot;
-macro_line|#if STATS
-l_string|&quot; (statistics)&quot;
+l_string|&quot;slabinfo - version: 2.0 (statistics)&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot;slabinfo - version: 2.0&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
-l_string|&quot;&bslash;n&quot;
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot;# name            &lt;active_objs&gt; &lt;num_objs&gt; &lt;objsize&gt; &lt;objperslab&gt; &lt;pagesperslab&gt;&quot;
+)paren
+suffix:semicolon
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit &lt;sharedfactor&gt;&quot;
+)paren
+suffix:semicolon
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot; : slabdata &lt;active_slabs&gt; &lt;num_slabs&gt; &lt;sharedavail&gt;&quot;
+)paren
+suffix:semicolon
+macro_line|#if STATS
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot; : globalstat &lt;listallocs&gt; &lt;maxobjs&gt; &lt;grown&gt; &lt;reaped&gt; &lt;error&gt; &lt;maxfreeable&gt; &lt;freelimit&gt;&quot;
+)paren
+suffix:semicolon
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot; : cpustat &lt;allochit &lt;allocmiss &lt;freehit &lt;freemiss&gt;&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|seq_putc
+c_func
+(paren
+id|m
+comma
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
@@ -9562,7 +9619,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%-17s %6lu %6lu %6u %4lu %4lu %4u&quot;
+l_string|&quot;%-17s %6lu %6lu %6u %4u %4d&quot;
 comma
 id|name
 comma
@@ -9572,9 +9629,7 @@ id|num_objs
 comma
 id|cachep-&gt;objsize
 comma
-id|active_slabs
-comma
-id|num_slabs
+id|cachep-&gt;num
 comma
 (paren
 l_int|1
@@ -9588,16 +9643,34 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : %4u %4u&quot;
+l_string|&quot; : tunables %4u %4u %4u&quot;
 comma
 id|cachep-&gt;limit
 comma
 id|cachep-&gt;batchcount
+comma
+id|cachep-&gt;lists.shared-&gt;limit
+op_div
+id|cachep-&gt;batchcount
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot; : slabdata %6lu %6lu %6u&quot;
+comma
+id|active_slabs
+comma
+id|num_slabs
+comma
+id|cachep-&gt;lists.shared-&gt;avail
 )paren
 suffix:semicolon
 macro_line|#if STATS
 (brace
-singleline_comment|// list3 stats
+multiline_comment|/* list3 stats */
 r_int
 r_int
 id|high
@@ -9645,11 +9718,11 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : %6lu %7lu %5lu %4lu %4lu %4lu %4lu&quot;
-comma
-id|high
+l_string|&quot; : globalstat %7lu %6lu %5lu %4lu %4lu %4lu %4lu&quot;
 comma
 id|allocs
+comma
+id|high
 comma
 id|grown
 comma
@@ -9663,8 +9736,8 @@ id|free_limit
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* cpu stats */
 (brace
-singleline_comment|// cpucache stats
 r_int
 r_int
 id|allochit
@@ -9714,7 +9787,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : %6lu %6lu %6lu %6lu&quot;
+l_string|&quot; : cpustat %6lu %6lu %6lu %6lu&quot;
 comma
 id|allochit
 comma
@@ -9727,19 +9800,19 @@ id|freemiss
 suffix:semicolon
 )brace
 macro_line|#endif
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|cachep-&gt;spinlock
-)paren
-suffix:semicolon
 id|seq_putc
 c_func
 (paren
 id|m
 comma
 l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
 r_return
