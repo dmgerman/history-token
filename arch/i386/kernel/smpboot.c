@@ -4096,6 +4096,7 @@ id|__init
 id|smp_intr_init
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
