@@ -262,6 +262,10 @@ op_star
 id|pci_dev
 suffix:semicolon
 multiline_comment|/* PCI stuff */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ZATM_DEV
