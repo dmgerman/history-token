@@ -750,7 +750,11 @@ id|pte
 )paren
 op_and_assign
 op_complement
+(paren
 id|_PAGE_RO
+op_or
+id|_PAGE_ISCLEAN
+)paren
 suffix:semicolon
 r_return
 id|pte

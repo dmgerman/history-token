@@ -3388,7 +3388,7 @@ mdefine_line|#define READ32(x)         (x) = ntohl(*p++)
 DECL|macro|READ64
 mdefine_line|#define READ64(x)         do {&t;&t;&t;&bslash;&n;&t;(x) = (u64)ntohl(*p++) &lt;&lt; 32;&t;&t;&bslash;&n;&t;(x) |= ntohl(*p++);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|READTIME
-mdefine_line|#define READTIME(x)       do {&t;&t;&t;&bslash;&n;&t;p++;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (u64)ntohl(*p++) &lt;&lt; 32;&t;&t;&bslash;&n;&t;(x) |= ntohl(*p++);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define READTIME(x)       do {&t;&t;&t;&bslash;&n;&t;p++;&t;&t;&t;&t;&t;&bslash;&n;&t;(x.tv_sec) = ntohl(*p++);&t;&t;&bslash;&n;&t;(x.tv_nsec) = ntohl(*p++);&t;&t;&bslash;&n;} while (0)
 DECL|macro|COPYMEM
 mdefine_line|#define COPYMEM(x,nbytes) do {&t;&t;&t;&bslash;&n;&t;memcpy((x), p, nbytes);&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&bslash;&n;} while (0)
 DECL|macro|READ_BUF
@@ -5131,12 +5131,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: atime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: atime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;atime
+id|nfp-&gt;atime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -5167,12 +5167,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: ctime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: ctime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;ctime
+id|nfp-&gt;ctime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -5203,12 +5203,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: mtime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: mtime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;mtime
+id|nfp-&gt;mtime.tv_sec
 )paren
 suffix:semicolon
 )brace

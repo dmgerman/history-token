@@ -1656,7 +1656,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;Executing function [%p(%p)].&bslash;n&quot;
 comma
@@ -1743,7 +1743,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;Creating new thread to run function [%p(%p)].&bslash;n&quot;
 comma
@@ -1833,7 +1833,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;Scheduling function [%p(%p)] for deferred execution.&bslash;n&quot;
 comma
@@ -2105,7 +2105,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_MUTEX
 comma
 l_string|&quot;Creating semaphore[%p|%d].&bslash;n&quot;
 comma
@@ -2163,7 +2163,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_MUTEX
 comma
 l_string|&quot;Deleting semaphore[%p].&bslash;n&quot;
 comma
@@ -2262,7 +2262,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_MUTEX
 comma
 l_string|&quot;Waiting for semaphore[%p|%d|%d]&bslash;n&quot;
 comma
@@ -2317,24 +2317,11 @@ multiline_comment|/*&n;&t;&t; * Wait Indefinitely:&n;&t;&t; * ------------------
 r_case
 id|ACPI_WAIT_FOREVER
 suffix:colon
-id|ret
-op_assign
-id|down_interruptible
+id|down
 c_func
 (paren
 id|sem
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-id|status
-op_assign
-id|AE_ERROR
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2436,15 +2423,21 @@ id|status
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
-l_string|&quot;Failed to acquire semaphore[%p|%d|%d]&bslash;n&quot;
+l_string|&quot;Failed to acquire semaphore[%p|%d|%d], %s&bslash;n&quot;
 comma
 id|handle
 comma
 id|units
 comma
 id|timeout
+comma
+id|acpi_format_exception
+c_func
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2454,7 +2447,7 @@ r_else
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_MUTEX
 comma
 l_string|&quot;Acquired semaphore[%p|%d|%d]&bslash;n&quot;
 comma
@@ -2535,7 +2528,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_MUTEX
 comma
 l_string|&quot;Signaling semaphore[%p|%d]&bslash;n&quot;
 comma

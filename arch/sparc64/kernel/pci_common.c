@@ -1623,7 +1623,7 @@ l_int|0
 )braket
 )paren
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 r_continue
@@ -1690,7 +1690,7 @@ id|res-&gt;start
 comma
 id|res-&gt;end
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -2043,7 +2043,7 @@ l_string|&quot;PCI: Failed to allocate resource %d for %s&bslash;n&quot;
 comma
 id|i
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 id|prom_halt
@@ -4175,7 +4175,7 @@ suffix:colon
 l_char|&squot;B&squot;
 )paren
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|status
 )paren
@@ -4338,7 +4338,7 @@ suffix:colon
 l_char|&squot;B&squot;
 )paren
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|status
 )paren
@@ -4503,7 +4503,7 @@ suffix:colon
 l_char|&squot;B&squot;
 )paren
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|status
 )paren

@@ -735,7 +735,7 @@ suffix:semicolon
 )brace
 DECL|function|pfkey_broadcast_one
 r_static
-r_void
+r_int
 id|pfkey_broadcast_one
 c_func
 (paren
@@ -759,6 +759,12 @@ op_star
 id|sk
 )paren
 (brace
+r_int
+id|err
+op_assign
+op_minus
+id|ENOBUFS
+suffix:semicolon
 id|sock_hold
 c_func
 (paren
@@ -883,6 +889,10 @@ id|skb2
 op_assign
 l_int|NULL
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 id|sock_put
@@ -890,6 +900,9 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Send SKB to all pfkey sockets matching selected criteria.  */
@@ -903,7 +916,7 @@ DECL|macro|BROADCAST_PROMISC_ONLY
 mdefine_line|#define BROADCAST_PROMISC_ONLY&t;4
 DECL|function|pfkey_broadcast
 r_static
-r_void
+r_int
 id|pfkey_broadcast
 c_func
 (paren
@@ -936,6 +949,12 @@ id|skb2
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|err
+op_assign
+op_minus
+id|ESRCH
+suffix:semicolon
 multiline_comment|/* XXX Do we need something like netlink_overrun?  I think&n;&t; * XXX PF_KEY socket apps will not mind current behavior.&n;&t; */
 r_if
 c_cond
@@ -944,6 +963,8 @@ op_logical_neg
 id|skb
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|pfkey_lock_table
 c_func
@@ -974,6 +995,9 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_int
+id|err2
 suffix:semicolon
 multiline_comment|/* Yes, it means that if you are meant to receive this&n;&t;&t; * pfkey message you receive it twice as promiscuous&n;&t;&t; * socket.&n;&t;&t; */
 r_if
@@ -1045,6 +1069,8 @@ id|BROADCAST_ONE
 r_continue
 suffix:semicolon
 )brace
+id|err2
+op_assign
 id|pfkey_broadcast_one
 c_func
 (paren
@@ -1057,6 +1083,22 @@ id|allocation
 comma
 id|sk
 )paren
+suffix:semicolon
+multiline_comment|/* Error is cleare after succecful sending to at least one&n;&t;&t; * registered KM */
+r_if
+c_cond
+(paren
+(paren
+id|broadcast_flags
+op_amp
+id|BROADCAST_REGISTERED
+)paren
+op_logical_and
+id|err
+)paren
+id|err
+op_assign
+id|err2
 suffix:semicolon
 )brace
 id|pfkey_unlock_table
@@ -1071,6 +1113,8 @@ id|one_sk
 op_ne
 l_int|NULL
 )paren
+id|err
+op_assign
 id|pfkey_broadcast_one
 c_func
 (paren
@@ -1100,6 +1144,9 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|pfkey_hdr_dup
@@ -5609,6 +5656,13 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|x-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5616,10 +5670,24 @@ id|x-&gt;km.state
 op_eq
 id|XFRM_STATE_ACQ
 )paren
-id|xfrm_state_delete
+(brace
+id|x-&gt;km.state
+op_assign
+id|XFRM_STATE_ERROR
+suffix:semicolon
+id|wake_up
 c_func
 (paren
-id|x
+op_amp
+id|km_waitq
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|x-&gt;lock
 )paren
 suffix:semicolon
 id|xfrm_state_put
@@ -9465,18 +9533,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ext_hdrs
-(braket
-id|SADB_X_EXT_POLICY
-op_minus
-l_int|1
-)braket
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
+(paren
 id|pol
 op_assign
 id|ext_hdrs
@@ -9485,16 +9542,9 @@ id|SADB_X_EXT_POLICY
 op_minus
 l_int|1
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pol-&gt;sadb_x_policy_dir
-op_logical_or
-id|pol-&gt;sadb_x_policy_dir
-op_ge
-id|IPSEC_DIR_MAX
+)paren
+op_eq
+l_int|NULL
 )paren
 r_return
 op_minus
@@ -9505,9 +9555,7 @@ op_assign
 id|xfrm_policy_byid
 c_func
 (paren
-id|pol-&gt;sadb_x_policy_dir
-op_minus
-l_int|1
+l_int|0
 comma
 id|pol-&gt;sadb_x_policy_id
 comma
@@ -11785,6 +11833,7 @@ comma
 id|t
 )paren
 suffix:semicolon
+r_return
 id|pfkey_broadcast
 c_func
 (paren
@@ -11796,9 +11845,6 @@ id|BROADCAST_REGISTERED
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|pfkey_compile_policy

@@ -621,15 +621,15 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|snd_power_lock
-mdefine_line|#define snd_power_lock(card) do { ; } while (0)
+mdefine_line|#define snd_power_lock(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_unlock
-mdefine_line|#define snd_power_unlock(card) do { ; } while (0)
+mdefine_line|#define snd_power_unlock(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_wait
-mdefine_line|#define snd_power_wait(card) do { ; } while (0)
+mdefine_line|#define snd_power_wait(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_get_state
-mdefine_line|#define snd_power_get_state(card) SNDRV_CTL_POWER_D0
+mdefine_line|#define snd_power_get_state(card)&t;SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
-mdefine_line|#define snd_power_change_state(card, state) do { ; } while (0)
+mdefine_line|#define snd_power_change_state(card, state)&t;do { (void)(card); } while (0)
 macro_line|#endif
 multiline_comment|/* device.c */
 DECL|struct|_snd_minor

@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/apc.h&gt;
-multiline_comment|/* Debugging&n; * &n; * #define APC_DEBUG_LED&n; * #define APC_NO_IDLE&n; */
+multiline_comment|/* Debugging&n; * &n; * #define APC_DEBUG_LED&n; */
 DECL|macro|APC_MINOR
 mdefine_line|#define APC_MINOR&t;MISC_DYNAMIC_MINOR
 DECL|macro|APC_OBPNAME
@@ -30,10 +30,70 @@ r_static
 r_int
 id|apc_regsize
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_int
+id|apc_no_idle
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|macro|apc_readb
 mdefine_line|#define apc_readb(offs)&t;&t;&t;(sbus_readb(regs+offs))
 DECL|macro|apc_writeb
 mdefine_line|#define apc_writeb(val, offs) &t;(sbus_writeb(val, regs+offs))
+multiline_comment|/* Specify &quot;apc=noidle&quot; on the kernel command line to &n; * disable APC CPU standby support.  Certain prototype&n; * systems (SPARCstation-Fox) do not play well with APC&n; * CPU idle, so disable this if your system has APC and &n; * crashes randomly.&n; */
+DECL|function|apc_setup
+r_static
+r_int
+id|__init
+id|apc_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;noidle&quot;
+comma
+id|strlen
+c_func
+(paren
+l_string|&quot;noidle&quot;
+)paren
+)paren
+)paren
+(brace
+id|apc_no_idle
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;apc=&quot;
+comma
+id|apc_setup
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * CPU idle callback function&n; * See .../arch/sparc/kernel/process.c&n; */
 DECL|function|apc_swift_idle
 r_void
@@ -597,20 +657,33 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifndef APC_NO_IDLE&t;
 multiline_comment|/* Assign power management IDLE handler */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|apc_no_idle
+)paren
+(brace
 id|pm_idle
 op_assign
 id|apc_swift_idle
 suffix:semicolon
-macro_line|#endif
+)brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: power management initialized&bslash;n&quot;
+l_string|&quot;%s: power management initialized%s&bslash;n&quot;
 comma
 id|APC_DEVNAME
+comma
+id|apc_no_idle
+ques
+c_cond
+l_string|&quot; (CPU idle disabled)&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_return

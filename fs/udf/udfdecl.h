@@ -28,8 +28,6 @@ DECL|macro|UDF_NAME_LEN
 mdefine_line|#define UDF_NAME_LEN&t;&t;255
 DECL|macro|UDF_PATH_LEN
 mdefine_line|#define UDF_PATH_LEN&t;&t;1023
-DECL|macro|CURRENT_UTIME
-mdefine_line|#define CURRENT_UTIME&t;(xtime.tv_nsec / 1000)
 DECL|macro|udf_file_entry_alloc_offset
 mdefine_line|#define udf_file_entry_alloc_offset(inode)&bslash;&n;&t;(UDF_I_USE(inode) ?&bslash;&n;&t;&t;sizeof(struct unallocSpaceEntry) :&bslash;&n;&t;&t;((UDF_I_EFE(inode) ?&bslash;&n;&t;&t;&t;sizeof(struct extendedFileEntry) :&bslash;&n;&t;&t;&t;sizeof(struct fileEntry)) + UDF_I_LENEATTR(inode)))
 DECL|macro|udf_ext0_offset
@@ -1340,9 +1338,8 @@ c_func
 id|timestamp
 op_star
 comma
-id|time_t
-comma
-r_int
+r_struct
+id|timespec
 )paren
 suffix:semicolon
 macro_line|#endif /* __UDF_DECL_H */

@@ -401,6 +401,11 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
 DECL|member|priority
 id|u32
 id|priority

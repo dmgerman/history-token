@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;esp.h&quot;
@@ -7832,7 +7833,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Abort a command. */
+multiline_comment|/* Abort a command.  The host_lock is acquired by caller. */
 DECL|function|esp_abort
 r_static
 r_int
@@ -7857,19 +7858,7 @@ op_star
 id|SCptr-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|don
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|ESPLOG
 c_func
@@ -7917,14 +7906,6 @@ c_func
 id|esp
 comma
 id|ESP_CMD_SATN
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -8066,14 +8047,6 @@ c_func
 id|esp-&gt;dregs
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -8098,14 +8071,6 @@ c_func
 id|esp-&gt;dregs
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
@@ -8120,14 +8085,6 @@ id|ESP_INTSON
 c_func
 (paren
 id|esp-&gt;dregs
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -8307,7 +8264,7 @@ r_return
 id|do_intr_end
 suffix:semicolon
 )brace
-multiline_comment|/* Reset ESP chip, reset hanging bus, then kill active and&n; * disconnected commands for targets without soft reset.&n; */
+multiline_comment|/* Reset ESP chip, reset hanging bus, then kill active and&n; * disconnected commands for targets without soft reset.&n; *&n; * The host_lock is acquired by caller.&n; */
 DECL|function|esp_reset
 r_static
 r_int
@@ -8331,18 +8288,6 @@ op_star
 )paren
 id|SCptr-&gt;host-&gt;hostdata
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 (paren
 r_void
 )paren
@@ -8352,12 +8297,10 @@ c_func
 id|esp
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 id|esp-&gt;ehost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|wait_event
@@ -8370,6 +8313,12 @@ id|esp-&gt;resetting_bus
 op_eq
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|esp-&gt;ehost-&gt;host_lock
 )paren
 suffix:semicolon
 r_return

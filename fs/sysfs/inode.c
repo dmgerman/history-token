@@ -890,7 +890,8 @@ op_logical_neg
 id|ops-&gt;store
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 id|page
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 96 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -692,9 +692,6 @@ id|acpi_parse_object
 op_star
 id|first_arg
 suffix:semicolon
-id|u32
-id|i
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_exec_end_op&quot;
@@ -932,41 +929,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Always delete the argument objects and clear the operand stack */
-r_for
-c_loop
+id|acpi_ds_clear_operands
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|walk_state-&gt;num_operands
-suffix:semicolon
-id|i
-op_increment
+id|walk_state
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Remove a reference to all operands, including both&n;&t;&t;&t; * &quot;Arguments&quot; and &quot;Targets&quot;.&n;&t;&t;&t; */
-id|acpi_ut_remove_reference
-(paren
-id|walk_state-&gt;operands
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|walk_state-&gt;operands
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-id|walk_state-&gt;num_operands
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If a result object was returned from above, push it on the&n;&t;&t; * current result stack&n;&t;&t; */
 r_if
@@ -1101,6 +1067,12 @@ id|status
 )paren
 )paren
 (brace
+multiline_comment|/* On error, clear all resolved operands */
+id|acpi_ds_clear_operands
+(paren
+id|walk_state
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

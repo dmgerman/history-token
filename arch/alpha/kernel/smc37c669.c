@@ -1781,11 +1781,9 @@ id|port2
 suffix:semicolon
 DECL|member|irq
 r_int
-r_int
 id|irq
 suffix:semicolon
 DECL|member|drq
-r_int
 r_int
 id|drq
 suffix:semicolon
@@ -2129,7 +2127,6 @@ id|SMC37c669_xlate_irq
 c_func
 (paren
 r_int
-r_int
 id|irq
 )paren
 suffix:semicolon
@@ -2138,7 +2135,6 @@ r_int
 id|SMC37c669_xlate_drq
 c_func
 (paren
-r_int
 r_int
 id|drq
 )paren
@@ -4280,7 +4276,6 @@ id|__init
 id|SMC37c669_xlate_irq
 (paren
 r_int
-r_int
 id|irq
 )paren
 (brace
@@ -4442,7 +4437,6 @@ r_int
 id|__init
 id|SMC37c669_xlate_drq
 (paren
-r_int
 r_int
 id|drq
 )paren

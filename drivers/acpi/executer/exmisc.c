@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 110 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -234,14 +234,11 @@ op_star
 id|walk_state
 )paren
 (brace
-id|acpi_status
-id|status
-suffix:semicolon
 id|acpi_operand_object
 op_star
 id|return_desc
 suffix:semicolon
-id|NATIVE_CHAR
+id|u8
 op_star
 id|new_buf
 suffix:semicolon
@@ -295,28 +292,7 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create a new buffer object for the result */
-id|return_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|ACPI_TYPE_BUFFER
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|return_desc
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate a new buffer for the result */
+multiline_comment|/* Compute the length of each part */
 id|length1
 op_assign
 id|ACPI_PTR_DIFF
@@ -338,9 +314,10 @@ op_plus
 l_int|2
 suffix:semicolon
 multiline_comment|/* Size of END_TAG */
-id|new_buf
+multiline_comment|/* Create a new buffer object for the result */
+id|return_desc
 op_assign
-id|ACPI_MEM_ALLOCATE
+id|acpi_ut_create_buffer_object
 (paren
 id|length1
 op_plus
@@ -351,25 +328,20 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_buf
+id|return_desc
 )paren
 (brace
-id|ACPI_REPORT_ERROR
+id|return_ACPI_STATUS
 (paren
-(paren
-l_string|&quot;Ex_concat_template: Buffer allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
 id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|cleanup
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Copy the templates to the new descriptor */
+id|new_buf
+op_assign
+id|return_desc-&gt;buffer.pointer
+suffix:semicolon
 id|ACPI_MEMCPY
 (paren
 id|new_buf
@@ -390,30 +362,6 @@ comma
 id|length2
 )paren
 suffix:semicolon
-multiline_comment|/* Complete the buffer object initialization */
-id|return_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|return_desc-&gt;buffer.pointer
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|new_buf
-suffix:semicolon
-id|return_desc-&gt;buffer.length
-op_assign
-(paren
-id|u32
-)paren
-(paren
-id|length1
-op_plus
-id|length2
-)paren
-suffix:semicolon
 multiline_comment|/* Compute the new checksum */
 id|new_buf
 (braket
@@ -422,9 +370,6 @@ op_minus
 l_int|1
 )braket
 op_assign
-(paren
-id|NATIVE_CHAR
-)paren
 id|acpi_ut_generate_checksum
 (paren
 id|return_desc-&gt;buffer.pointer
@@ -445,18 +390,6 @@ suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
-)paren
-suffix:semicolon
-id|cleanup
-suffix:colon
-id|acpi_ut_remove_reference
-(paren
-id|return_desc
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
 )paren
 suffix:semicolon
 )brace
@@ -518,11 +451,14 @@ r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
 multiline_comment|/* Result of two Integers is a Buffer */
+multiline_comment|/* Need enough buffer space for two integers */
 id|return_desc
 op_assign
-id|acpi_ut_create_internal_object
+id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_TYPE_BUFFER
+id|acpi_gbl_integer_byte_width
+op_star
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -538,42 +474,14 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Need enough buffer space for two integers */
-id|return_desc-&gt;buffer.length
+id|new_buf
 op_assign
-id|acpi_gbl_integer_byte_width
+(paren
+id|NATIVE_CHAR
 op_star
-l_int|2
-suffix:semicolon
-id|new_buf
-op_assign
-id|ACPI_MEM_CALLOCATE
-(paren
-id|return_desc-&gt;buffer.length
 )paren
+id|return_desc-&gt;buffer.pointer
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|new_buf
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_do_concatenate: Buffer allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
 multiline_comment|/* Convert the first integer */
 id|this_integer
 op_assign
@@ -646,19 +554,6 @@ op_rshift_assign
 l_int|8
 suffix:semicolon
 )brace
-multiline_comment|/* Complete the buffer object initialization */
-id|return_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|return_desc-&gt;buffer.pointer
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|new_buf
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -761,9 +656,17 @@ suffix:colon
 multiline_comment|/* Result of two Buffers is a Buffer */
 id|return_desc
 op_assign
-id|acpi_ut_create_internal_object
+id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_TYPE_BUFFER
+(paren
+id|ACPI_SIZE
+)paren
+id|obj_desc1-&gt;buffer.length
+op_plus
+(paren
+id|ACPI_SIZE
+)paren
+id|obj_desc2-&gt;buffer.length
 )paren
 suffix:semicolon
 r_if
@@ -781,41 +684,12 @@ suffix:semicolon
 )brace
 id|new_buf
 op_assign
-id|ACPI_MEM_ALLOCATE
 (paren
-(paren
-id|ACPI_SIZE
+id|NATIVE_CHAR
+op_star
 )paren
-id|obj_desc1-&gt;buffer.length
-op_plus
-(paren
-id|ACPI_SIZE
-)paren
-id|obj_desc2-&gt;buffer.length
-)paren
+id|return_desc-&gt;buffer.pointer
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|new_buf
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_do_concatenate: Buffer allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
 multiline_comment|/* Concatenate the buffers */
 id|ACPI_MEMCPY
 (paren
@@ -836,25 +710,6 @@ id|obj_desc2-&gt;buffer.pointer
 comma
 id|obj_desc2-&gt;buffer.length
 )paren
-suffix:semicolon
-multiline_comment|/* Complete the buffer object initialization */
-id|return_desc-&gt;common.flags
-op_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|return_desc-&gt;buffer.pointer
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|new_buf
-suffix:semicolon
-id|return_desc-&gt;buffer.length
-op_assign
-id|obj_desc1-&gt;buffer.length
-op_plus
-id|obj_desc2-&gt;buffer.length
 suffix:semicolon
 r_break
 suffix:semicolon

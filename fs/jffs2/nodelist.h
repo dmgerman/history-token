@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.74 2002/06/26 01:20:43 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.87 2002/11/12 13:36:18 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -45,7 +45,6 @@ id|jffs2_raw_node_ref
 op_star
 id|next_phys
 suffix:semicolon
-singleline_comment|//&t;uint32_t ino;
 DECL|member|flash_offset
 r_uint32
 id|flash_offset
@@ -54,8 +53,23 @@ DECL|member|totlen
 r_uint32
 id|totlen
 suffix:semicolon
-singleline_comment|//&t;uint16_t nodetype;
 multiline_comment|/* flash_offset &amp; 3 always has to be zero, because nodes are&n;&t;   always aligned at 4 bytes. So we have a couple of extra bits&n;&t;   to play with. So we set the least significant bit to 1 to&n;&t;   signify that the node is obsoleted by later nodes.&n;&t;*/
+DECL|macro|REF_UNCHECKED
+mdefine_line|#define REF_UNCHECKED&t;0&t;/* We haven&squot;t yet checked the CRC or built its inode */
+DECL|macro|REF_OBSOLETE
+mdefine_line|#define REF_OBSOLETE&t;1&t;/* Obsolete, can be completely ignored */
+DECL|macro|REF_PRISTINE
+mdefine_line|#define REF_PRISTINE&t;2&t;/* Completely clean. GC without looking */
+DECL|macro|REF_NORMAL
+mdefine_line|#define REF_NORMAL&t;3&t;/* Possibly overlapped. Read the page and write again on GC */
+DECL|macro|ref_flags
+mdefine_line|#define ref_flags(ref)&t;&t;((ref)-&gt;flash_offset &amp; 3)
+DECL|macro|ref_offset
+mdefine_line|#define ref_offset(ref)&t;&t;((ref)-&gt;flash_offset &amp; ~3)
+DECL|macro|ref_obsolete
+mdefine_line|#define ref_obsolete(ref)&t;(((ref)-&gt;flash_offset &amp; 3) == REF_OBSOLETE)
+DECL|macro|mark_ref_normal
+mdefine_line|#define mark_ref_normal(ref)    do { (ref)-&gt;flash_offset = ref_offset(ref) | REF_NORMAL; } while(0)
 )brace
 suffix:semicolon
 multiline_comment|/* &n;   Used for keeping track of deletion nodes &amp;c, which can only be marked&n;   as obsolete when the node which they mark as deleted has actually been &n;   removed from the flash.&n;*/
@@ -82,13 +96,13 @@ DECL|struct|jffs2_inode_cache
 r_struct
 id|jffs2_inode_cache
 (brace
-DECL|member|scan
+DECL|member|scan_dents
 r_struct
-id|jffs2_scan_info
+id|jffs2_full_dirent
 op_star
-id|scan
+id|scan_dents
 suffix:semicolon
-multiline_comment|/* Used during scan to hold&n;&t;&t;temporary lists of nodes, and later must be set to&n;&t;&t;NULL to mark the end of the raw_node_ref-&gt;next_in_ino&n;&t;&t;chain. */
+multiline_comment|/* Used during scan to hold&n;&t;&t;temporary lists of dirents, and later must be set to&n;&t;&t;NULL to mark the end of the raw_node_ref-&gt;next_in_ino&n;&t;&t;chain. */
 DECL|member|next
 r_struct
 id|jffs2_inode_cache
@@ -109,6 +123,20 @@ DECL|member|nlink
 r_int
 id|nlink
 suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
+DECL|macro|INO_STATE_UNCHECKED
+mdefine_line|#define INO_STATE_UNCHECKED 0
+DECL|macro|INO_STATE_CHECKING
+mdefine_line|#define INO_STATE_CHECKING 1
+DECL|macro|INO_STATE_CHECKEDABSENT
+mdefine_line|#define INO_STATE_CHECKEDABSENT 2
+DECL|macro|INO_STATE_READINGINODE
+mdefine_line|#define INO_STATE_READINGINODE 3
+DECL|macro|INO_STATE_PRESENT
+mdefine_line|#define INO_STATE_PRESENT 5
 )brace
 suffix:semicolon
 DECL|macro|INOCACHE_HASHSIZE
@@ -240,11 +268,10 @@ DECL|struct|jffs2_node_frag
 r_struct
 id|jffs2_node_frag
 (brace
-DECL|member|next
+DECL|member|rb
 r_struct
-id|jffs2_node_frag
-op_star
-id|next
+id|rb_node
+id|rb
 suffix:semicolon
 DECL|member|node
 r_struct
@@ -282,6 +309,10 @@ r_uint32
 id|offset
 suffix:semicolon
 multiline_comment|/* of this block in the MTD */
+DECL|member|unchecked_size
+r_uint32
+id|unchecked_size
+suffix:semicolon
 DECL|member|used_size
 r_uint32
 id|used_size
@@ -289,6 +320,10 @@ suffix:semicolon
 DECL|member|dirty_size
 r_uint32
 id|dirty_size
+suffix:semicolon
+DECL|member|wasted_size
+r_uint32
+id|wasted_size
 suffix:semicolon
 DECL|member|free_size
 r_uint32
@@ -319,9 +354,9 @@ singleline_comment|// MAYBE&t;struct jffs2_raw_node_ref_list *deletia;
 )brace
 suffix:semicolon
 DECL|macro|ACCT_SANITY_CHECK
-mdefine_line|#define ACCT_SANITY_CHECK(c, jeb) do { &bslash;&n;&t;if (jeb-&gt;used_size + jeb-&gt;dirty_size + jeb-&gt;free_size != c-&gt;sector_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting for block at 0x%08x is screwed&bslash;n&quot;, jeb-&gt;offset); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;jeb-&gt;free_size, jeb-&gt;dirty_size, jeb-&gt;used_size, c-&gt;sector_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;&t;if (c-&gt;used_size + c-&gt;dirty_size + c-&gt;free_size + c-&gt;erasing_size + c-&gt;bad_size != c-&gt;flash_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting superblock info is screwed&bslash;n&quot;); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + erasing %08x + bad %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;c-&gt;free_size, c-&gt;dirty_size, c-&gt;used_size, c-&gt;erasing_size, c-&gt;bad_size, c-&gt;flash_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;} while(0)
+mdefine_line|#define ACCT_SANITY_CHECK(c, jeb) do { &bslash;&n;&t;if (jeb-&gt;used_size + jeb-&gt;dirty_size + jeb-&gt;free_size + jeb-&gt;wasted_size + jeb-&gt;unchecked_size != c-&gt;sector_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting for block at 0x%08x is screwed&bslash;n&quot;, jeb-&gt;offset); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;jeb-&gt;free_size, jeb-&gt;dirty_size, jeb-&gt;used_size, jeb-&gt;wasted_size, jeb-&gt;unchecked_size, c-&gt;sector_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;&t;if (c-&gt;used_size + c-&gt;dirty_size + c-&gt;free_size + c-&gt;erasing_size + c-&gt;bad_size + c-&gt;wasted_size + c-&gt;unchecked_size != c-&gt;flash_size) { &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;Eeep. Space accounting superblock info is screwed&bslash;n&quot;); &bslash;&n;&t;&t;printk(KERN_NOTICE &quot;free 0x%08x + dirty 0x%08x + used %08x + erasing %08x + bad %08x + wasted %08x + unchecked %08x != total %08x&bslash;n&quot;, &bslash;&n;&t;&t;c-&gt;free_size, c-&gt;dirty_size, c-&gt;used_size, c-&gt;erasing_size, c-&gt;bad_size, c-&gt;wasted_size, c-&gt;unchecked_size, c-&gt;flash_size); &bslash;&n;&t;&t;BUG(); &bslash;&n;&t;} &bslash;&n;} while(0)
 DECL|macro|ACCT_PARANOIA_CHECK
-mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (!(ref2-&gt;flash_offset &amp; 1)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
+mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;uint32_t my_unchecked_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (ref_flags(ref2) == REF_UNCHECKED) &bslash;&n;&t;&t;&t;&t;my_unchecked_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;else if (!ref_obsolete(ref2)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_unchecked_size != jeb-&gt;unchecked_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated unchecked size %08x != stored unchecked size %08x&bslash;n&quot;, my_unchecked_size, jeb-&gt;unchecked_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
 DECL|macro|ALLOC_NORMAL
 mdefine_line|#define ALLOC_NORMAL&t;0&t;/* Normal allocation */
 DECL|macro|ALLOC_DELETION
@@ -333,7 +368,7 @@ mdefine_line|#define JFFS2_RESERVED_BLOCKS_BASE 3&t;&t;&t;&t;&t;&t;/* Number of 
 DECL|macro|JFFS2_RESERVED_BLOCKS_WRITE
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_WRITE (JFFS2_RESERVED_BLOCKS_BASE + 2)&t;&t;/* ... allow a normal filesystem write */
 DECL|macro|JFFS2_RESERVED_BLOCKS_DELETION
-mdefine_line|#define JFFS2_RESERVED_BLOCKS_DELETION (JFFS2_RESERVED_BLOCKS_BASE + 1)&t;&t;/* ... allow a normal filesystem deletion */
+mdefine_line|#define JFFS2_RESERVED_BLOCKS_DELETION (JFFS2_RESERVED_BLOCKS_BASE)&t;&t;/* ... allow a normal filesystem deletion */
 DECL|macro|JFFS2_RESERVED_BLOCKS_GCTRIGGER
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCTRIGGER (JFFS2_RESERVED_BLOCKS_BASE + 3)&t;/* ... wake up the GC thread */
 DECL|macro|JFFS2_RESERVED_BLOCKS_GCBAD
@@ -343,6 +378,9 @@ mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCMERGE (JFFS2_RESERVED_BLOCKS_BASE)&
 multiline_comment|/* How much dirty space before it goes on the very_dirty_list */
 DECL|macro|VERYDIRTY
 mdefine_line|#define VERYDIRTY(c, size) ((size) &gt;= ((c)-&gt;sector_size / 2))
+multiline_comment|/* check if dirty space is more than 255 Byte */
+DECL|macro|ISDIRTY
+mdefine_line|#define ISDIRTY(size) ((size) &gt;  sizeof (struct jffs2_raw_inode) + JFFS2_MIN_DATA_LEN) 
 DECL|macro|PAD
 mdefine_line|#define PAD(x) (((x)+3)&amp;~3)
 DECL|function|jffs2_raw_ref_to_inum
@@ -382,6 +420,75 @@ op_member_access_from_pointer
 id|ino
 suffix:semicolon
 )brace
+DECL|function|frag_first
+r_static
+r_inline
+r_struct
+id|jffs2_node_frag
+op_star
+id|frag_first
+c_func
+(paren
+r_struct
+id|rb_root
+op_star
+id|root
+)paren
+(brace
+r_struct
+id|rb_node
+op_star
+id|node
+op_assign
+id|root-&gt;rb_node
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|node-&gt;rb_left
+)paren
+(brace
+id|node
+op_assign
+id|node-&gt;rb_left
+suffix:semicolon
+)brace
+r_return
+id|rb_entry
+c_func
+(paren
+id|node
+comma
+r_struct
+id|jffs2_node_frag
+comma
+id|rb
+)paren
+suffix:semicolon
+)brace
+DECL|macro|rb_parent
+mdefine_line|#define rb_parent(rb) ((rb)-&gt;rb_parent)
+DECL|macro|frag_next
+mdefine_line|#define frag_next(frag) rb_entry(rb_next(&amp;(frag)-&gt;rb), struct jffs2_node_frag, rb)
+DECL|macro|frag_prev
+mdefine_line|#define frag_prev(frag) rb_entry(rb_prev(&amp;(frag)-&gt;rb), struct jffs2_node_frag, rb)
+DECL|macro|frag_parent
+mdefine_line|#define frag_parent(frag) rb_entry(rb_parent(&amp;(frag)-&gt;rb), struct jffs2_node_frag, rb)
+DECL|macro|frag_left
+mdefine_line|#define frag_left(frag) rb_entry((frag)-&gt;rb.rb_left, struct jffs2_node_frag, rb)
+DECL|macro|frag_right
+mdefine_line|#define frag_right(frag) rb_entry((frag)-&gt;rb.rb_right, struct jffs2_node_frag, rb)
+DECL|macro|frag_erase
+mdefine_line|#define frag_erase(frag, list) rb_erase(&amp;frag-&gt;rb, list);
 multiline_comment|/* nodelist.c */
 id|D1
 c_func
@@ -540,6 +647,93 @@ op_star
 id|c
 )paren
 suffix:semicolon
+r_struct
+id|jffs2_node_frag
+op_star
+id|jffs2_lookup_node_frag
+c_func
+(paren
+r_struct
+id|rb_root
+op_star
+id|fragtree
+comma
+r_uint32
+id|offset
+)paren
+suffix:semicolon
+r_void
+id|jffs2_kill_fragtree
+c_func
+(paren
+r_struct
+id|rb_root
+op_star
+id|root
+comma
+r_struct
+id|jffs2_sb_info
+op_star
+id|c_delete
+)paren
+suffix:semicolon
+r_void
+id|jffs2_fragtree_insert
+c_func
+(paren
+r_struct
+id|jffs2_node_frag
+op_star
+id|newfrag
+comma
+r_struct
+id|jffs2_node_frag
+op_star
+id|base
+)paren
+suffix:semicolon
+r_struct
+id|rb_node
+op_star
+id|rb_next
+c_func
+(paren
+r_struct
+id|rb_node
+op_star
+)paren
+suffix:semicolon
+r_struct
+id|rb_node
+op_star
+id|rb_prev
+c_func
+(paren
+r_struct
+id|rb_node
+op_star
+)paren
+suffix:semicolon
+r_void
+id|rb_replace_node
+c_func
+(paren
+r_struct
+id|rb_node
+op_star
+id|victim
+comma
+r_struct
+id|rb_node
+op_star
+r_new
+comma
+r_struct
+id|rb_root
+op_star
+id|root
+)paren
+suffix:semicolon
 multiline_comment|/* nodemgmt.c */
 r_int
 id|jffs2_reserve_space
@@ -599,12 +793,6 @@ r_struct
 id|jffs2_raw_node_ref
 op_star
 r_new
-comma
-r_uint32
-id|len
-comma
-r_int
-id|dirty
 )paren
 suffix:semicolon
 r_void
@@ -876,8 +1064,7 @@ op_star
 id|c
 comma
 r_struct
-id|jffs2_node_frag
-op_star
+id|rb_root
 op_star
 id|list
 comma
@@ -895,8 +1082,7 @@ op_star
 id|c
 comma
 r_struct
-id|jffs2_node_frag
-op_star
+id|rb_root
 op_star
 id|list
 comma
@@ -1304,16 +1490,6 @@ id|jeb
 suffix:semicolon
 r_void
 id|jffs2_erase_pending_blocks
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
-)paren
-suffix:semicolon
-r_void
-id|jffs2_mark_erased_blocks
 c_func
 (paren
 r_struct

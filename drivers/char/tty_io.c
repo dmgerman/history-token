@@ -290,7 +290,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hwc_console_init
+id|sclp_console_init
 c_func
 (paren
 r_void
@@ -298,7 +298,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hwc_tty_init
+id|sclp_tty_init
 c_func
 (paren
 r_void
@@ -307,14 +307,6 @@ suffix:semicolon
 r_extern
 r_void
 id|con3215_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tty3215_init
 c_func
 (paren
 r_void
@@ -9340,8 +9332,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_HWC
-id|hwc_console_init
+macro_line|#ifdef CONFIG_SCLP_CONSOLE
+id|sclp_console_init
 c_func
 (paren
 )paren
@@ -9756,8 +9748,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_HWC
-id|hwc_tty_init
+macro_line|#ifdef CONFIG_SCLP
+id|sclp_tty_init
 c_func
 (paren
 )paren

@@ -1753,7 +1753,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* drivrs/base/firmware.c */
+multiline_comment|/* drivers/base/firmware.c */
 r_extern
 r_int
 id|firmware_register
@@ -1766,7 +1766,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|firmware_uregister
+id|firmware_unregister
 c_func
 (paren
 r_struct
