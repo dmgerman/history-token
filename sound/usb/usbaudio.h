@@ -275,7 +275,7 @@ multiline_comment|/* bitmask */
 )brace
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
-multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data is the number of ports */
+multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
 multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word

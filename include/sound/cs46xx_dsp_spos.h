@@ -332,10 +332,6 @@ id|dsp_scb_descriptor_t
 op_star
 id|mixer_scb
 suffix:semicolon
-DECL|member|pcm_channel_id
-r_int
-id|pcm_channel_id
-suffix:semicolon
 DECL|member|private_data
 r_void
 op_star

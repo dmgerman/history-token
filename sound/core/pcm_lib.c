@@ -502,7 +502,7 @@ id|snd_runtime_check
 c_func
 (paren
 id|pos
-op_le
+OL
 id|runtime-&gt;buffer_size
 comma
 r_return
@@ -832,7 +832,7 @@ id|snd_runtime_check
 c_func
 (paren
 id|pos
-op_le
+OL
 id|runtime-&gt;buffer_size
 comma
 r_return

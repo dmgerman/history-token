@@ -1046,6 +1046,12 @@ comma
 id|ops
 )paren
 suffix:semicolon
+id|unlock_driver
+c_func
+(paren
+id|ops
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

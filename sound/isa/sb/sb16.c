@@ -3812,7 +3812,7 @@ id|__attribute__
 id|__unused__
 )paren
 )paren
-id|csp
+id|xcsp
 op_assign
 id|INT_MAX
 suffix:semicolon
@@ -4012,10 +4012,7 @@ op_amp
 id|str
 comma
 op_amp
-id|csp
-(braket
-id|nr_dev
-)braket
+id|xcsp
 )paren
 op_eq
 l_int|2
@@ -4087,7 +4084,7 @@ id|csp
 id|nr_dev
 )braket
 op_assign
-id|csp
+id|xcsp
 suffix:semicolon
 macro_line|#endif
 id|nr_dev

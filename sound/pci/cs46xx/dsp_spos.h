@@ -376,7 +376,7 @@ op_amp
 l_int|0x80
 )paren
 op_rshift
-l_int|6
+l_int|7
 )paren
 suffix:semicolon
 r_return

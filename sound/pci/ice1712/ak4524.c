@@ -964,11 +964,15 @@ mdefine_line|#define AK_GET_CHIP(val)&t;&t;(((val) &gt;&gt; 8) &amp; 0xff)
 DECL|macro|AK_GET_ADDR
 mdefine_line|#define AK_GET_ADDR(val)&t;&t;((val) &amp; 0xff)
 DECL|macro|AK_GET_SHIFT
-mdefine_line|#define AK_GET_SHIFT(val)&t;&t;(((val) &gt;&gt; 16) &amp; 0xff)
+mdefine_line|#define AK_GET_SHIFT(val)&t;&t;(((val) &gt;&gt; 16) &amp; 0x7f)
+DECL|macro|AK_GET_INVERT
+mdefine_line|#define AK_GET_INVERT(val)&t;&t;(((val) &gt;&gt; 23) &amp; 1)
 DECL|macro|AK_GET_MASK
 mdefine_line|#define AK_GET_MASK(val)&t;&t;(((val) &gt;&gt; 24) &amp; 0xff)
 DECL|macro|AK_COMPOSE
 mdefine_line|#define AK_COMPOSE(chip,addr,shift,mask) (((chip) &lt;&lt; 8) | (addr) | ((shift) &lt;&lt; 16) | ((mask) &lt;&lt; 24))
+DECL|macro|AK_INVERT
+mdefine_line|#define AK_INVERT &t;&t;&t;(1&lt;&lt;23)
 DECL|function|snd_ice1712_ak4524_volume_info
 r_static
 r_int
@@ -1058,6 +1062,15 @@ id|kcontrol-&gt;private_value
 )paren
 suffix:semicolon
 r_int
+id|invert
+op_assign
+id|AK_GET_INVERT
+c_func
+(paren
+id|kcontrol-&gt;private_value
+)paren
+suffix:semicolon
+r_int
 r_int
 id|mask
 op_assign
@@ -1067,13 +1080,10 @@ c_func
 id|kcontrol-&gt;private_value
 )paren
 suffix:semicolon
-id|ucontrol-&gt;value.integer.value
-(braket
-l_int|0
-)braket
+r_int
+r_char
+id|val
 op_assign
-id|mask
-op_minus
 id|ice-&gt;ak4524.images
 (braket
 id|chip
@@ -1081,6 +1091,20 @@ id|chip
 (braket
 id|addr
 )braket
+suffix:semicolon
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+op_assign
+id|invert
+ques
+c_cond
+id|mask
+op_minus
+id|val
+suffix:colon
+id|val
 suffix:semicolon
 r_return
 l_int|0
@@ -1130,6 +1154,15 @@ id|kcontrol-&gt;private_value
 )paren
 suffix:semicolon
 r_int
+id|invert
+op_assign
+id|AK_GET_INVERT
+c_func
+(paren
+id|kcontrol-&gt;private_value
+)paren
+suffix:semicolon
+r_int
 r_int
 id|mask
 op_assign
@@ -1143,9 +1176,6 @@ r_int
 r_char
 id|nval
 op_assign
-id|mask
-op_minus
-(paren
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
@@ -1156,9 +1186,21 @@ id|mask
 op_plus
 l_int|1
 )paren
-)paren
 suffix:semicolon
 r_int
+id|change
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|invert
+)paren
+id|nval
+op_assign
+id|mask
+op_minus
+id|nval
+suffix:semicolon
 id|change
 op_assign
 id|ice-&gt;ak4524.images
@@ -1844,6 +1886,8 @@ l_int|0
 comma
 l_int|255
 )paren
+op_or
+id|AK_INVERT
 suffix:semicolon
 r_break
 suffix:semicolon
