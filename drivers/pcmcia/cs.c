@@ -6609,6 +6609,17 @@ id|irq
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|pcmcia_device
+op_star
+id|p_dev
+op_assign
+id|handle_to_pdev
+c_func
+(paren
+id|handle
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6917,7 +6928,7 @@ id|SA_SHIRQ
 suffix:colon
 l_int|0
 comma
-id|handle-&gt;dev_info
+id|p_dev-&gt;dev.bus_id
 comma
 id|req-&gt;Instance
 )paren
