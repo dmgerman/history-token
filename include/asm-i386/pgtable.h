@@ -169,6 +169,12 @@ DECL|macro|_PAGE_BIT_PSE
 mdefine_line|#define _PAGE_BIT_PSE&t;&t;7&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
 DECL|macro|_PAGE_BIT_GLOBAL
 mdefine_line|#define _PAGE_BIT_GLOBAL&t;8&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_BIT_UNUSED1
+mdefine_line|#define _PAGE_BIT_UNUSED1&t;9&t;/* available for programmer */
+DECL|macro|_PAGE_BIT_UNUSED2
+mdefine_line|#define _PAGE_BIT_UNUSED2&t;10
+DECL|macro|_PAGE_BIT_UNUSED3
+mdefine_line|#define _PAGE_BIT_UNUSED3&t;11
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_RW
@@ -187,6 +193,12 @@ DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_UNUSED1
+mdefine_line|#define _PAGE_UNUSED1&t;0x200&t;/* available for programmer */
+DECL|macro|_PAGE_UNUSED2
+mdefine_line|#define _PAGE_UNUSED2&t;0x400
+DECL|macro|_PAGE_UNUSED3
+mdefine_line|#define _PAGE_UNUSED3&t;0x800
 DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;0x040&t;/* set:pagecache unset:swap */
 DECL|macro|_PAGE_PROTNONE
