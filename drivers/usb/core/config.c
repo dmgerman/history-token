@@ -1686,6 +1686,10 @@ c_func
 id|dev-&gt;rawdescriptors
 )paren
 suffix:semicolon
+id|dev-&gt;rawdescriptors
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_for
 c_loop
@@ -1756,6 +1760,10 @@ c_func
 (paren
 id|dev-&gt;config
 )paren
+suffix:semicolon
+id|dev-&gt;config
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 singleline_comment|// hub-only!! ... and only in reset path, or usb_new_device()
