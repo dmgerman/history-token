@@ -2176,10 +2176,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|PDEBUG
 (paren
 l_string|&quot;udsl_usb_send_data_completion (vcc = %p, skb = %p, status %d)&bslash;n&quot;
@@ -2202,12 +2198,10 @@ id|ctx-&gt;skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|instance-&gt;sndqlock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -2220,12 +2214,10 @@ id|instance-&gt;sndqueue
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|instance-&gt;sndqlock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2257,12 +2249,10 @@ id|ctx-&gt;skb-&gt;cb
 op_member_access_from_pointer
 id|vcc
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|instance-&gt;sndqlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|usb_fill_bulk_urb
