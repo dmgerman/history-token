@@ -1535,7 +1535,7 @@ suffix:semicolon
 )brace
 DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -1658,6 +1658,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
@@ -3782,7 +3785,7 @@ r_int
 id|sparc64_init_timers
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|cfunc

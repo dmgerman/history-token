@@ -233,7 +233,7 @@ suffix:semicolon
 )brace
 DECL|function|UartInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|UartInterrupt
 c_func
 (paren
@@ -265,10 +265,13 @@ r_int
 id|dev_id
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|DspInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|DspInterrupt
 c_func
 (paren
@@ -536,6 +539,9 @@ id|TRACE_TP3780I
 comma
 l_string|&quot;tp3780i::DspInterrupt exit&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|tp3780I_InitializeBoardData

@@ -75,7 +75,7 @@ r_int
 id|ct82c710_status
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ct82c710_interrupt
 c_func
 (paren
@@ -459,7 +459,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Interrupt handler for the 82C710 mouse port. A character&n; * is waiting in the 82C710.&n; */
 DECL|function|ct82c710_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ct82c710_interrupt
 c_func
 (paren
@@ -476,6 +476,7 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|serio_interrupt
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-iop3xx/mm.c&n; *&n; * Low level memory intialization for IOP321 based systems&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-iop3xx/mm.c&n; *&n; * Low level memory initialization for IOP321 based systems&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -20,9 +20,9 @@ op_assign
 multiline_comment|/* virtual     physical      length      type */
 multiline_comment|/* mem mapped registers */
 (brace
-l_int|0xfff00000
+id|IOP321_VIRT_MEM_BASE
 comma
-l_int|0xffffe000
+id|IOP321_PHY_MEM_BASE
 comma
 l_int|0x00002000
 comma
@@ -80,7 +80,7 @@ multiline_comment|/* on-board devices */
 (brace
 l_int|0xfe800000
 comma
-l_int|0xfe800000
+id|IQ80321_UART1
 comma
 l_int|0x00100000
 comma

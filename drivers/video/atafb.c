@@ -6898,7 +6898,7 @@ suffix:semicolon
 )brace
 DECL|function|falcon_vbl_switcher
 r_static
-r_void
+id|irqreturn_t
 id|falcon_vbl_switcher
 c_func
 (paren
@@ -7090,6 +7090,9 @@ op_assign
 id|current_par.hw.falcon.line_offset
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|falcon_pan_display
 r_static

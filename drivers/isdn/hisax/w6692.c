@@ -1449,7 +1449,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|w6692_interrupt
 id|w6692_interrupt
 c_func
@@ -2146,6 +2146,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

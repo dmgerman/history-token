@@ -3521,7 +3521,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 id|qpti_intr
 c_func
 (paren
@@ -7126,7 +7126,7 @@ suffix:semicolon
 )brace
 DECL|function|qpti_intr
 r_static
-r_void
+id|irqreturn_t
 id|qpti_intr
 c_func
 (paren
@@ -7243,6 +7243,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|qlogicpti_abort

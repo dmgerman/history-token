@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|ERROR_STATISTIC
 mdefine_line|#define ERROR_STATISTIC
 DECL|macro|REQUEST
@@ -3379,7 +3380,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|irq_func
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq_func

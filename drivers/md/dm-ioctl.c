@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DM_DRIVER_EMAIL
 mdefine_line|#define DM_DRIVER_EMAIL &quot;dm@uk.sistina.com&quot;
@@ -633,61 +634,16 @@ c_func
 id|hc-&gt;md
 )paren
 suffix:semicolon
-r_char
-op_star
-id|name
-op_assign
-id|kmalloc
+id|devfs_mk_bdev
 c_func
 (paren
-id|DM_NAME_LEN
-op_plus
-id|strlen
+id|MKDEV
 c_func
 (paren
-id|DM_DIR
-)paren
-op_plus
-l_int|1
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|name
-)paren
-(brace
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|sprintf
-c_func
-(paren
-id|name
-comma
-id|DM_DIR
-l_string|&quot;/%s&quot;
-comma
-id|hc-&gt;name
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|name
-comma
-l_int|0
-comma
 id|disk-&gt;major
 comma
 id|disk-&gt;first_minor
+)paren
 comma
 id|S_IFBLK
 op_or
@@ -697,16 +653,10 @@ id|S_IWUSR
 op_or
 id|S_IRGRP
 comma
-op_amp
-id|dm_blk_dops
+id|DM_DIR
+l_string|&quot;/%s&quot;
 comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|name
+id|hc-&gt;name
 )paren
 suffix:semicolon
 r_return

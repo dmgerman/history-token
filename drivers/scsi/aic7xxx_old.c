@@ -23765,7 +23765,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   do_aic7xxx_isr&n; *&n; * Description:&n; *   This is a gross hack to solve a problem in linux kernels 2.1.85 and&n; *   above.  Please, children, do not try this at home, and if you ever see&n; *   anything like it, please inform the Gross Hack Police immediately&n; *-F*************************************************************************/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|do_aic7xxx_isr
 id|do_aic7xxx_isr
 c_func
@@ -23809,6 +23809,7 @@ id|p
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -23876,6 +23877,9 @@ id|p-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_init_transinfo&n; *&n; * Description:&n; *   Set up the initial aic_dev values from the BIOS settings and from&n; *   INQUIRY results&n; *-F*************************************************************************/

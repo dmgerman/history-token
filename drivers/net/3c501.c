@@ -1188,7 +1188,7 @@ suffix:semicolon
 multiline_comment|/**&n; * el_interrupt:&n; * @irq: Interrupt number&n; * @dev_id: The 3c501 that burped&n; * @regs: Register data (surplus to our requirements)&n; *&n; * Handle the ether interface interrupts. The 3c501 needs a lot more &n; * hand holding than most cards. In particular we get a transmit interrupt&n; * with a collision error because the board firmware isnt capable of rewinding&n; * its own transmit buffer pointers. It can however count to 16 for us.&n; *&n; * On the receive side the card is also very dumb. It has no buffering to&n; * speak of. We simply pull the packet out of its PIO buffer (which is slow)&n; * and queue it for the kernel. Then we reset the card for the next packet.&n; *&n; * We sometimes get suprise interrupts late both because the SMP IRQ delivery&n; * is message passing and because the card sometimes seems to deliver late. I&n; * think if it is part way through a receive and the mode is changed it carries&n; * on receiving and sends us an interrupt. We have to band aid all these cases&n; * to get a sensible 150kbytes/second performance. Even then you want a small&n; * TCP window.&n; */
 DECL|function|el_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|el_interrupt
 c_func
 (paren
@@ -1368,7 +1368,8 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1572,7 +1573,8 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -1796,7 +1798,10 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * el_receive:&n; * @dev: Device to pull the packets from&n; *&n; * We have a good packet. Well, not really &quot;good&quot;, just mostly not broken.&n; * We must check everything to see if it is good. In particular we occasionally&n; * get wild packet sizes from the card. If the packet seems sane we PIO it&n; * off the card and queue it for the protocol layers.&n; */

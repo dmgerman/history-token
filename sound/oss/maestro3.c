@@ -4670,7 +4670,7 @@ suffix:semicolon
 )brace
 DECL|function|m3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|m3_interrupt
 c_func
 (paren
@@ -4732,6 +4732,7 @@ l_int|0xff
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* presumably acking the ints? */
@@ -4752,6 +4753,7 @@ id|c-&gt;in_suspend
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * ack an assp int if its running&n;     * and has an int pending&n;     */
@@ -4857,6 +4859,9 @@ l_int|0x1A
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|variable|invalid_magic

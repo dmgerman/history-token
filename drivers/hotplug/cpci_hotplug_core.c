@@ -1850,7 +1850,7 @@ id|found
 suffix:semicolon
 )brace
 multiline_comment|/* This is the interrupt mode interrupt handler */
-r_void
+id|irqreturn_t
 DECL|function|cpci_hp_intr
 id|cpci_hp_intr
 c_func
@@ -1901,6 +1901,7 @@ l_string|&quot;exited cpci_hp_intr, not our interrupt&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Disable ENUM interrupt */
@@ -1930,6 +1931,9 @@ c_func
 (paren
 l_string|&quot;exited cpci_hp_intr&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * According to PICMG 2.12 R2.0, section 6.3.2, upon&n; * initialization, the system driver shall clear the&n; * INS bits of the cold-inserted devices.&n; */

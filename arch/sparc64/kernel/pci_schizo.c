@@ -2560,7 +2560,7 @@ DECL|macro|SCHIZO_UEAFSR_ECCSYND
 mdefine_line|#define SCHIZO_UEAFSR_ECCSYND&t;0x00000000000001ffUL
 DECL|function|schizo_ue_intr
 r_static
-r_void
+id|irqreturn_t
 id|schizo_ue_intr
 c_func
 (paren
@@ -2677,6 +2677,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|schizo_write
 c_func
@@ -2909,6 +2910,9 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|SCHIZO_CE_AFSR
 mdefine_line|#define SCHIZO_CE_AFSR&t;0x10040UL
@@ -2944,7 +2948,7 @@ DECL|macro|SCHIZO_CEAFSR_ECCSYND
 mdefine_line|#define SCHIZO_CEAFSR_ECCSYND&t;0x00000000000001ffUL
 DECL|function|schizo_ce_intr
 r_static
-r_void
+id|irqreturn_t
 id|schizo_ce_intr
 c_func
 (paren
@@ -3061,6 +3065,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|schizo_write
 c_func
@@ -3285,6 +3290,9 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|SCHIZO_PCI_AFSR
 mdefine_line|#define SCHIZO_PCI_AFSR&t;0x2010UL
@@ -3326,7 +3334,7 @@ DECL|macro|SCHIZO_PCIAFSR_IO
 mdefine_line|#define SCHIZO_PCIAFSR_IO&t;0x0000000010000000UL
 DECL|function|schizo_pcierr_intr
 r_static
-r_void
+id|irqreturn_t
 id|schizo_pcierr_intr
 c_func
 (paren
@@ -3479,6 +3487,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|schizo_write
 c_func
@@ -3867,6 +3876,9 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|SCHIZO_SAFARI_ERRLOG
 mdefine_line|#define SCHIZO_SAFARI_ERRLOG&t;0x10018UL
@@ -3911,7 +3923,7 @@ mdefine_line|#define SAFARI_ERROR_ILL&t;0x0000000000000001UL
 multiline_comment|/* We only expect UNMAP errors here.  The rest of the Safari errors&n; * are marked fatal and thus cause a system reset.&n; */
 DECL|function|schizo_safarierr_intr
 r_static
-r_void
+id|irqreturn_t
 id|schizo_safarierr_intr
 c_func
 (paren
@@ -3991,6 +4003,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|printk
@@ -4014,6 +4027,9 @@ c_func
 (paren
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Nearly identical to PSYCHO equivalents... */

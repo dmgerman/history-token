@@ -3303,7 +3303,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Linux entry point of the interrupt handler.&n; */
 DECL|function|sym53c8xx_intr
 r_static
-r_void
+id|irqreturn_t
 id|sym53c8xx_intr
 c_func
 (paren
@@ -3398,6 +3398,9 @@ id|printf_debug
 (paren
 l_string|&quot;]&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Linux entry point of the timer handler&n; */

@@ -2016,7 +2016,7 @@ suffix:semicolon
 )brace
 DECL|function|pnp_test_handler
 r_static
-r_void
+id|irqreturn_t
 id|pnp_test_handler
 c_func
 (paren
@@ -2033,6 +2033,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|pnp_check_irq
 r_int

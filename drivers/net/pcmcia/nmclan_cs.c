@@ -1069,6 +1069,12 @@ id|lp-&gt;tx_free_frames
 op_assign
 id|AM2150_MAX_TX_FRAMES
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
 op_amp
@@ -2883,8 +2889,6 @@ suffix:semicolon
 id|link-&gt;open
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|MACEBANK
 c_func
 (paren
@@ -2991,8 +2995,6 @@ id|HZ
 op_div
 l_int|20
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -2562,7 +2562,7 @@ suffix:semicolon
 multiline_comment|/* hold spinlock for the following! */
 DECL|function|it8172_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|it8172_interrupt
 c_func
 (paren
@@ -2657,8 +2657,18 @@ id|ISC_PCI
 )paren
 )paren
 )paren
-r_return
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+)paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* clear audio interrupts first */
 id|outb
 c_func
@@ -3044,6 +3054,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

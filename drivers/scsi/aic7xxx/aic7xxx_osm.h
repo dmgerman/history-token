@@ -3768,7 +3768,7 @@ r_uint32
 id|status
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|ahc_linux_isr
 c_func
 (paren

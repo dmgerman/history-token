@@ -3199,7 +3199,7 @@ id|RME32_IO_CONTROL_REGISTER
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_rme32_interrupt
 id|snd_rme32_interrupt
 c_func
@@ -3249,6 +3249,7 @@ id|RME32_RCR_IRQ
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_else
@@ -3290,6 +3291,9 @@ id|RME32_IO_CONFIRM_ACTION_IRQ
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|period_bytes
 r_static

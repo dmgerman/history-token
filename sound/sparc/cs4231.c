@@ -5814,7 +5814,7 @@ suffix:semicolon
 macro_line|#ifdef SBUS_SUPPORT
 DECL|function|snd_cs4231_sbus_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_cs4231_sbus_interrupt
 c_func
 (paren
@@ -5881,6 +5881,7 @@ id|APC_XINT_CEMP
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* ACK the APC interrupt. */
 id|sbus_writel
@@ -5898,6 +5899,9 @@ c_func
 (paren
 id|chip
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif

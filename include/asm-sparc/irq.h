@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;     /* For NR_CPUS */
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;     /* For SUN4M_NCPUS */
 macro_line|#include &lt;asm/btfixup.h&gt;
 DECL|macro|__irq_ino
@@ -122,7 +123,7 @@ op_star
 id|sparc_init_timers
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|lvl10_irq
@@ -144,7 +145,7 @@ r_void
 id|claim_ticker14
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq_handler
@@ -216,7 +217,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

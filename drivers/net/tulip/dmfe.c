@@ -861,7 +861,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|dmfe_interrupt
 c_func
 (paren
@@ -2604,13 +2604,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* free this SKB */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 multiline_comment|/* Restore CR7 to enable interrupt */
 id|spin_unlock_irqrestore
 c_func
@@ -2629,6 +2622,13 @@ comma
 id|dev-&gt;base_addr
 op_plus
 id|DCR7
+)paren
+suffix:semicolon
+multiline_comment|/* free this SKB */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -2770,7 +2770,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;DM9102 insterrupt handler&n; *&t;receive the packet to upper layer, free the transmitted packet&n; */
 DECL|function|dmfe_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|dmfe_interrupt
 c_func
 (paren
@@ -2844,6 +2844,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -2897,6 +2898,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Disable all interrupt in CR7 to solve the interrupt edge problem */
@@ -2948,6 +2950,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Received the coming packet */
@@ -3045,6 +3048,9 @@ id|db-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Free TX resource after TX complete&n; */

@@ -8269,6 +8269,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if

@@ -1690,8 +1690,6 @@ op_amp
 id|p-&gt;q
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1817,8 +1815,6 @@ c_func
 (paren
 id|p-&gt;mask
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|dsmark_dump_class
@@ -2284,6 +2280,12 @@ dot
 id|dump
 op_assign
 id|dsmark_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

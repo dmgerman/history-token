@@ -429,7 +429,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|atp_interrupt
 c_func
 (paren
@@ -2366,6 +2366,7 @@ r_int
 id|length
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|length
@@ -2517,9 +2518,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
-DECL|function|atp_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|atp_interrupt
 id|atp_interrupt
 c_func
 (paren
@@ -2565,6 +2566,11 @@ id|boguscount
 op_assign
 id|max_interrupt_work
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2583,6 +2589,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -2700,6 +2707,10 @@ l_int|3
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|write_reg
 c_func
 (paren
@@ -2854,6 +2865,10 @@ l_int|3
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3189,6 +3204,11 @@ l_string|&quot;exiting interrupt.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef TIMED_CHECKER

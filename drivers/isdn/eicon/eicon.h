@@ -2,6 +2,7 @@ multiline_comment|/* $Id: eicon.h,v 1.1.4.1.2.3 2002/10/01 11:29:13 armin Exp $&
 macro_line|#ifndef eicon_h
 DECL|macro|eicon_h
 mdefine_line|#define eicon_h
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|EICON_IOCTL_SETMMIO
 mdefine_line|#define EICON_IOCTL_SETMMIO   0
 DECL|macro|EICON_IOCTL_GETMMIO
@@ -1291,7 +1292,7 @@ id|card
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|eicon_irq
 c_func
 (paren

@@ -476,7 +476,7 @@ l_int|110
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i8042_interrupt
 c_func
 (paren
@@ -1507,7 +1507,7 @@ suffix:semicolon
 multiline_comment|/*&n; * i8042_interrupt() is the most important function in this driver -&n; * it handles the interrupts from the i8042, and sends incoming bytes&n; * to the upper layers.&n; */
 DECL|function|i8042_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|i8042_interrupt
 c_func
 (paren
@@ -2018,6 +2018,10 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME - was it really ours? */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * i8042_controller init initializes the i8042 controller, and,&n; * most importantly, sets it into non-xlated mode if that&squot;s&n; * desired.&n; */
 DECL|function|i8042_controller_init

@@ -19019,8 +19019,6 @@ multiline_comment|/* Mark the device as used */
 id|link-&gt;open
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 macro_line|#ifdef WAVELAN_ROAMING
 r_if
 c_cond
@@ -19141,8 +19139,6 @@ suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
 id|link-&gt;open
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 multiline_comment|/* If the card is still present */
 r_if
@@ -19570,6 +19566,12 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* wavelan NET3 callbacks */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp

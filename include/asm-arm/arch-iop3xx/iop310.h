@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop310.h&n; *&n; * Intel IOP310 Compainion Chip definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop310.h&n; *&n; * Intel IOP310 Companion Chip definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _IOP310_HW_H_
 DECL|macro|_IOP310_HW_H_
 mdefine_line|#define _IOP310_HW_H_

@@ -15,9 +15,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;

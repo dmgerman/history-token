@@ -849,10 +849,6 @@ id|tty3270_driver
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 r_extern
-id|devfs_handle_t
-id|fs3270_devfs_dir
-suffix:semicolon
-r_extern
 r_void
 id|fs3270_devfs_register
 c_func

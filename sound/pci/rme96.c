@@ -4408,7 +4408,7 @@ id|RME96_IO_CONTROL_REGISTER
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_rme96_interrupt
 id|snd_rme96_interrupt
 c_func
@@ -4467,6 +4467,7 @@ id|RME96_RCR_IRQ_2
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -4521,6 +4522,9 @@ id|RME96_IO_CONFIRM_REC_IRQ
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|period_bytes
 r_static

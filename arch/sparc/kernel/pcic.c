@@ -3218,7 +3218,7 @@ suffix:semicolon
 )brace
 DECL|function|pcic_timer_handler
 r_static
-r_void
+id|irqreturn_t
 id|pcic_timer_handler
 (paren
 r_int
@@ -3259,6 +3259,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|macro|USECS_PER_JIFFY

@@ -105,7 +105,7 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ei_interrupt
 c_func
 (paren

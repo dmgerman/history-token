@@ -3,16 +3,14 @@ macro_line|#ifndef _IOP321_HW_H_
 DECL|macro|_IOP321_HW_H_
 mdefine_line|#define _IOP321_HW_H_
 multiline_comment|/*&n; * IOP321 I/O and Mem space regions for PCI autoconfiguration&n; */
-DECL|macro|IOP321_PCI_LOWER_IO
-mdefine_line|#define&t;IOP321_PCI_LOWER_IO&t;&t;0x90000000
-DECL|macro|IOP321_PCI_UPPER_IO
-mdefine_line|#define&t;IOP321_PCI_UPPER_IO&t;&t;0x9000ffff
-DECL|macro|IOP321_PCI_LOWER_MEM
-mdefine_line|#define IOP321_PCI_LOWER_MEM&t;&t;0x80000000
-DECL|macro|IOP321_PCI_UPPER_MEM
-mdefine_line|#define IOP321_PCI_UPPER_MEM&t;&t;0x83ffffff
-DECL|macro|IOP321_PCI_WINDOW_SIZE
-mdefine_line|#define IOP321_PCI_WINDOW_SIZE&t;&t;64 * 0x100000
+DECL|macro|IOP321_PCI_IO_BASE
+mdefine_line|#define&t;IOP321_PCI_IO_BASE&t;&t;0x90000000
+DECL|macro|IOP321_PCI_IO_SIZE
+mdefine_line|#define&t;IOP321_PCI_IO_SIZE&t;&t;0x00010000
+DECL|macro|IOP321_PCI_MEM_BASE
+mdefine_line|#define IOP321_PCI_MEM_BASE&t;&t;0x40000000
+DECL|macro|IOP321_PCI_MEM_SIZE
+mdefine_line|#define IOP321_PCI_MEM_SIZE&t;&t;0x40000000
 multiline_comment|/*&n; * IOP321 chipset registers&n; */
 DECL|macro|IOP321_VIRT_MEM_BASE
 mdefine_line|#define IOP321_VIRT_MEM_BASE 0xfff00000  /* chip virtual mem address*/

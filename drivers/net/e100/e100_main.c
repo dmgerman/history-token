@@ -681,7 +681,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|e100intr
 c_func
 (paren
@@ -7315,7 +7315,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * e100intr - interrupt handler&n; * @irq: the IRQ number&n; * @dev_inst: the net_device struct&n; * @regs: registers (unused)&n; *&n; * This routine is the ISR for the e100 board. It services&n; * the RX &amp; TX queues &amp; starts the RU if it has stopped due&n; * to no resources.&n; */
-r_void
+id|irqreturn_t
 DECL|function|e100intr
 id|e100intr
 c_func
@@ -7382,6 +7382,7 @@ l_int|0xffff
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* disable and ack intr */
@@ -7410,6 +7411,7 @@ id|bdp
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* SWI intr (triggered by watchdog) is signal to allocate new skb buffers */
@@ -7473,6 +7475,9 @@ c_func
 (paren
 id|bdp
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_tx_skb_free - free TX skbs resources&n; * @bdp: atapter&squot;s private data struct&n; * @tcb: associated tcb of the freed skb&n; *&n; * This routine frees resources of TX skbs.&n; */

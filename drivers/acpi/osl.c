@@ -683,7 +683,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|acpi_irq
 id|acpi_irq
 c_func
@@ -708,6 +708,10 @@ id|acpi_irq_handler
 (paren
 id|acpi_irq_context
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME!! We really should check that the irq was really ours! */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|acpi_status

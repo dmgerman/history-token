@@ -1173,7 +1173,7 @@ suffix:semicolon
 )brace
 DECL|function|sunsab_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunsab_interrupt
 c_func
 (paren
@@ -1489,6 +1489,9 @@ id|up-&gt;port.lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* port-&gt;lock is not held.  */

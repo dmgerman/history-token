@@ -92,7 +92,7 @@ id|val
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|hfcs_interrupt
 id|hfcs_interrupt
 c_func
@@ -137,6 +137,7 @@ l_string|&quot;HFCS: Spurious interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -223,6 +224,9 @@ id|stat
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

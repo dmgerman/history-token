@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * net/sched/sch_api.c&t;Packet scheduler API.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Fixes:&n; *&n; * Rani Assaf &lt;rani@magic.metawire.com&gt; :980802: JIFFIES and CPU clock sources are repaired.&n; * Eduardo J. Blanco &lt;ejbs@netlabs.com.uy&gt; :990222: kmod support&n; * Jamal Hadi Salim &lt;hadi@nortelnetworks.com&gt;: 990601: ingress support&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1535,6 +1536,24 @@ id|sch-&gt;handle
 op_assign
 id|handle
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|ops-&gt;owner
+)paren
+)paren
+r_goto
+id|err_out
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1615,6 +1634,12 @@ r_return
 id|sch
 suffix:semicolon
 )brace
+id|module_put
+c_func
+(paren
+id|ops-&gt;owner
+)paren
+suffix:semicolon
 id|err_out
 suffix:colon
 op_star

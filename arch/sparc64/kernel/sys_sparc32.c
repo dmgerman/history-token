@@ -11754,8 +11754,6 @@ DECL|macro|ca32_getfd
 mdefine_line|#define ca32_getfd&t;u.u32_getfd
 DECL|macro|ca32_getfs
 mdefine_line|#define ca32_getfs&t;u.u32_getfs
-DECL|macro|ca32_authd
-mdefine_line|#define ca32_authd&t;u.u32_authd
 )brace
 suffix:semicolon
 DECL|union|nfsctl_res32

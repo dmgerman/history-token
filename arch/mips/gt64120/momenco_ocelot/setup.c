@@ -24,7 +24,7 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/gt64120/gt64120.h&gt;
 macro_line|#include &quot;ocelot_pld.h&quot;
 r_extern

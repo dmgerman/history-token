@@ -5368,10 +5368,6 @@ id|ENOMEM
 )paren
 suffix:semicolon
 )brace
-id|result-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon

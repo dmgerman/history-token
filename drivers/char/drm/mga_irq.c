@@ -5,7 +5,7 @@ macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
 DECL|function|mga_dma_service
-r_void
+id|irqreturn_t
 id|mga_dma_service
 c_func
 (paren
@@ -83,7 +83,13 @@ id|vbl_send_signals
 id|dev
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|mga_vblank_wait
 r_int

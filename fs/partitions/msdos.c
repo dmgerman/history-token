@@ -734,9 +734,8 @@ l_string|&quot; &gt;&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_BSD_DISKLABEL
+macro_line|#if defined(CONFIG_BSD_DISKLABEL) || defined(CONFIG_NEC98_PARTITION)
 multiline_comment|/* &n; * Create devices for BSD partitions listed in a disklabel, under a&n; * dos-like partition. See parse_extended() for more information.&n; */
-r_static
 r_void
 DECL|function|parse_bsd
 id|parse_bsd

@@ -369,22 +369,6 @@ id|nodeid_t
 id|nodeid
 )paren
 suffix:semicolon
-multiline_comment|/* Same as above except that it will not block waiting for the nodemgr&n; * serialize semaphore.  */
-r_struct
-id|node_entry
-op_star
-id|hpsb_check_nodeid
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-comma
-id|nodeid_t
-id|nodeid
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * If the entry refers to a local host, this function will return the pointer&n; * to the hpsb_host structure.  It will return NULL otherwise.  Once you have&n; * established it is a local host, you can use that knowledge from then on (the&n; * GUID won&squot;t wander to an external node).  */
 r_struct
 id|hpsb_host

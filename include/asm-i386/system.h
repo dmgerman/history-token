@@ -4,6 +4,7 @@ mdefine_line|#define __ASM_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
+macro_line|#include &lt;asm/cpufeature.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt; /* for LOCK_PREFIX */
 macro_line|#ifdef __KERNEL__
 r_struct
@@ -651,24 +652,57 @@ mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxch
 macro_line|#else
 multiline_comment|/* Compiling for a 386 proper.&t;Is it worth implementing via cli/sti?  */
 macro_line|#endif
+DECL|struct|alt_instr
+r_struct
+id|alt_instr
+(brace
+DECL|member|instr
+id|u8
+op_star
+id|instr
+suffix:semicolon
+multiline_comment|/* original instruction */
+DECL|member|cpuid
+id|u8
+id|cpuid
+suffix:semicolon
+multiline_comment|/* cpuid bit set for replacement */
+DECL|member|instrlen
+id|u8
+id|instrlen
+suffix:semicolon
+multiline_comment|/* length of original instruction */
+DECL|member|replacementlen
+id|u8
+id|replacementlen
+suffix:semicolon
+multiline_comment|/* length of new instruction, &lt;= instrlen */
+DECL|member|replacement
+id|u8
+id|replacement
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* new instruction */
+)brace
+suffix:semicolon
+multiline_comment|/* &n; * Alternative instructions for different CPU types or capabilities.&n; * &n; * This allows to use optimized instructions even on generic binary&n; * kernels.&n; * &n; * length of oldinstr must be longer or equal the length of newinstr&n; * It can be padded with nops as needed.&n; * &n; * For non barrier like inlines please define new variants&n; * without volatile and memory clobber.&n; */
+DECL|macro|alternative
+mdefine_line|#define alternative(oldinstr, newinstr, feature) &t;&bslash;&n;&t;asm volatile (&quot;661:&bslash;n&bslash;t&quot; oldinstr &quot;&bslash;n662:&bslash;n&quot; &t;&t;     &bslash;&n;&t;&t;      &quot;.section .altinstructions,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;     &t;     &bslash;&n;&t;&t;      &quot;  .align 4&bslash;n&quot;&t;&t;&t;&t;       &bslash;&n;&t;&t;      &quot;  .long 661b&bslash;n&quot;            /* label */          &bslash;&n;&t;&t;      &quot;  .byte %c0&bslash;n&quot;             /* feature bit */    &bslash;&n;&t;&t;      &quot;  .byte 662b-661b&bslash;n&quot;       /* sourcelen */      &bslash;&n;&t;&t;      &quot;  .byte 664f-663f&bslash;n&quot;       /* replacementlen */ &bslash;&n;&t;&t;      &quot;663:&bslash;n&bslash;t&quot; newinstr &quot;&bslash;n664:&bslash;n&quot;   /* replacement */    &bslash;&n;&t;&t;      &quot;.previous&quot; :: &quot;i&quot; (feature) : &quot;memory&quot;)  
 multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * For now, &quot;wmb()&quot; doesn&squot;t actually do anything, as all&n; * Intel CPU&squot;s follow what Intel calls a *Processor Order*,&n; * in which all writes are seen in the program order even&n; * outside the CPU.&n; *&n; * I expect future Intel CPU&squot;s to have a weaker ordering,&n; * but I&squot;d also expect them to finally get their act together&n; * and add some real memory barriers if so.&n; *&n; * Some non intel clones support out of order store. wmb() ceases to be a&n; * nop for these.&n; */
-macro_line|#ifdef CONFIG_X86_SSE2
+multiline_comment|/* &n; * Actually only lfence would be needed for mb() because all stores done &n; * by the kernel should be already ordered. But keep a full barrier for now. &n; */
 DECL|macro|mb
-mdefine_line|#define mb()&t;asm volatile(&quot;mfence&quot; ::: &quot;memory&quot;)
+mdefine_line|#define mb() alternative(&quot;lock; addl $0,0(%%esp)&quot;, &quot;mfence&quot;, X86_FEATURE_XMM2)
 DECL|macro|rmb
-mdefine_line|#define rmb()&t;asm volatile(&quot;lfence&quot; ::: &quot;memory&quot;)
-macro_line|#else
-DECL|macro|mb
-mdefine_line|#define mb() &t;__asm__ __volatile__ (&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
-DECL|macro|rmb
-mdefine_line|#define rmb()&t;mb()
-macro_line|#endif
+mdefine_line|#define rmb() alternative(&quot;lock; addl $0,0(%%esp)&quot;, &quot;lfence&quot;, X86_FEATURE_XMM2)
 multiline_comment|/**&n; * read_barrier_depends - Flush all pending reads that subsequents reads&n; * depend on.&n; *&n; * No data-dependent reads from memory-like regions are ever reordered&n; * over this barrier.  All reads preceding this primitive are guaranteed&n; * to access memory (but not necessarily other CPUs&squot; caches) before any&n; * reads following this primitive that depend on the data return by&n; * any of the preceding reads.  This primitive is much lighter weight than&n; * rmb() on most CPUs, and is never heavier weight than is&n; * rmb().&n; *&n; * These ordering constraints are respected by both the local CPU&n; * and the compiler.&n; *&n; * Ordering is not guaranteed by anything other than these primitives,&n; * not even by data dependencies.  See the documentation for&n; * memory_barrier() for examples and URLs to more information.&n; *&n; * For example, the following code would force ordering (the initial&n; * value of &quot;a&quot; is zero, &quot;b&quot; is one, and &quot;p&quot; is &quot;&amp;a&quot;):&n; *&n; * &lt;programlisting&gt;&n; *&t;CPU 0&t;&t;&t;&t;CPU 1&n; *&n; *&t;b = 2;&n; *&t;memory_barrier();&n; *&t;p = &amp;b;&t;&t;&t;&t;q = p;&n; *&t;&t;&t;&t;&t;read_barrier_depends();&n; *&t;&t;&t;&t;&t;d = *q;&n; * &lt;/programlisting&gt;&n; *&n; * because the read of &quot;*q&quot; depends on the read of &quot;p&quot; and these&n; * two reads are separated by a read_barrier_depends().  However,&n; * the following code, with the same initial values for &quot;a&quot; and &quot;b&quot;:&n; *&n; * &lt;programlisting&gt;&n; *&t;CPU 0&t;&t;&t;&t;CPU 1&n; *&n; *&t;a = 2;&n; *&t;memory_barrier();&n; *&t;b = 3;&t;&t;&t;&t;y = b;&n; *&t;&t;&t;&t;&t;read_barrier_depends();&n; *&t;&t;&t;&t;&t;x = a;&n; * &lt;/programlisting&gt;&n; *&n; * does not enforce ordering, since there is no data dependency between&n; * the read of &quot;a&quot; and the read of &quot;b&quot;.  Therefore, on some CPUs, such&n; * as Alpha, &quot;y&quot; could be set to 3 and &quot;x&quot; to 0.  Use rmb()&n; * in cases like thiswhere there are no data dependencies.&n; **/
 DECL|macro|read_barrier_depends
 mdefine_line|#define read_barrier_depends()&t;do { } while(0)
 macro_line|#ifdef CONFIG_X86_OOSTORE
+multiline_comment|/* Actually there are no OOO store capable CPUs for now that do SSE, &n;   but make it already an possibility. */
 DECL|macro|wmb
-mdefine_line|#define wmb() &t;__asm__ __volatile__ (&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
+mdefine_line|#define wmb() alternative(&quot;lock; addl $0,0(%%esp)&quot;, &quot;sfence&quot;, X86_FEATURE_XMM)
 macro_line|#else
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;__asm__ __volatile__ (&quot;&quot;: : :&quot;memory&quot;)

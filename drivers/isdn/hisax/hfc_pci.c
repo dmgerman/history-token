@@ -5151,7 +5151,7 @@ multiline_comment|/*********************/
 multiline_comment|/* Interrupt handler */
 multiline_comment|/*********************/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|hfcpci_interrupt
 id|hfcpci_interrupt
 c_func
@@ -5209,6 +5209,7 @@ l_string|&quot;HFC-PCI: Spurious interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -5222,6 +5223,7 @@ l_int|0x08
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* not initialised */
 r_if
@@ -5274,6 +5276,7 @@ suffix:semicolon
 )brace
 r_else
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -5724,6 +5727,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/********************************************************************/
 multiline_comment|/* timer callback for D-chan busy resolution. Currently no function */

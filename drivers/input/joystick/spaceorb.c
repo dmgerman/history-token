@@ -731,7 +731,7 @@ suffix:semicolon
 )brace
 DECL|function|spaceorb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|spaceorb_interrupt
 c_func
 (paren
@@ -806,6 +806,9 @@ op_assign
 id|data
 op_amp
 l_int|0x7f
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * spaceorb_disconnect() is the opposite of spaceorb_connect()&n; */

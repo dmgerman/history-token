@@ -3,6 +3,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -987,6 +988,22 @@ id|parent
 suffix:semicolon
 id|err
 op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|tp_ops-&gt;owner
+)paren
+op_logical_or
+(paren
+id|err
+op_assign
 id|tp_ops
 op_member_access_from_pointer
 id|init
@@ -994,11 +1011,9 @@ c_func
 (paren
 id|tp
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|kfree
@@ -1148,6 +1163,12 @@ id|destroy
 c_func
 (paren
 id|tp
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|tp-&gt;ops-&gt;owner
 )paren
 suffix:semicolon
 id|kfree

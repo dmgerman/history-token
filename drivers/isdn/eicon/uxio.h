@@ -142,6 +142,7 @@ op_star
 id|card
 comma
 r_int
+r_int
 id|ipl
 )paren
 suffix:semicolon

@@ -3262,7 +3262,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_sonicvibes_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_sonicvibes_interrupt
 c_func
 (paren
@@ -3328,6 +3328,7 @@ id|SV_MIDI_IRQ
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -3362,6 +3363,7 @@ l_string|&quot;IRQ failure - interrupts disabled!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -3645,6 +3647,9 @@ id|sonic-&gt;master_volume-&gt;id
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM part&n; */
 DECL|function|snd_sonicvibes_playback_trigger

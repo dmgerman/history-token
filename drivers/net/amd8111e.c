@@ -3118,9 +3118,9 @@ id|new_stats
 suffix:semicolon
 )brace
 multiline_comment|/*&n;This is device interrupt function. It handles transmit, receive and link change interrupts.&n;*/
-DECL|function|amd8111e_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|amd8111e_interrupt
 id|amd8111e_interrupt
 c_func
 (paren
@@ -3166,6 +3166,11 @@ r_int
 r_int
 id|intr0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3175,6 +3180,7 @@ l_int|NULL
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock
@@ -3218,6 +3224,10 @@ id|INTR
 )paren
 r_goto
 id|err_no_interrupt
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Current driver processes 3 interrupts : RINT,TINT,LCINT */
 id|writel
@@ -3310,6 +3320,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;This function closes the network interface and copies the new set of statistics into the previous statistics structure so that most recent statistics will be available after the interface is down.&n;*/

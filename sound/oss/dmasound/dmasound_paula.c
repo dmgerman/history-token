@@ -166,7 +166,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|AmiInterrupt
 c_func
 (paren
@@ -1693,7 +1693,7 @@ suffix:semicolon
 )brace
 DECL|function|AmiInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|AmiInterrupt
 c_func
 (paren
@@ -1734,6 +1734,7 @@ id|write_sq.sync_queue
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1821,6 +1822,9 @@ c_func
 (paren
 id|write_sq.sync_queue
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*** Mid level stuff *********************************************************/

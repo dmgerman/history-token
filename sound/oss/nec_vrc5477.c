@@ -2988,7 +2988,7 @@ suffix:semicolon
 )brace
 DECL|function|vrc5477_ac97_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|vrc5477_ac97_interrupt
 c_func
 (paren
@@ -3187,6 +3187,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

@@ -888,7 +888,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The typical workload of the driver:&n; * Handle the network interface interrupts.&n; */
 DECL|function|de600_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|de600_interrupt
 c_func
 (paren
@@ -959,6 +959,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock
@@ -1102,6 +1103,7 @@ id|de600_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|de600_tx_intr

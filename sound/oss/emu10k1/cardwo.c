@@ -2010,8 +2010,6 @@ id|woinst-&gt;format.bytespervoicesample
 )paren
 )paren
 r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|src
 op_add_assign

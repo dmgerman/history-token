@@ -1181,7 +1181,7 @@ suffix:semicolon
 multiline_comment|/* NOTES ON SERVICING INTERUPTS&n; * ---------------------------&n; * After receiving a interrupt, it is important to indicate to the UART that&n; * this has been done. &n; * For a Rx interrupt, this is done by reading the received byte.&n; * For a Tx interrupt this is done by either:&n; * a) Writing a byte&n; * b) Reading the IIR&n; * It is particularly important to read the IIR if a Tx interrupt is received&n; * when there is no data in tx_buff[], as in this case there no other&n; * indication that the interrupt has been serviced, and it remains outstanding&n; * indefinitely. This has the curious side effect that and no further interrupts&n; * will be generated from this device AT ALL!!.&n; * It is also desirable to clear outstanding interrupts when the device is&n; * opened/closed.&n; *&n; *&n; * Note that some devices need OUT2 to be set before they will generate&n; * interrupts at all. (Possibly tied to an internal pull-up on CTS?)&n; */
 DECL|function|snd_uart16550_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_uart16550_interrupt
 c_func
 (paren
@@ -1233,6 +1233,7 @@ id|uart-&gt;open_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|inb
@@ -1256,6 +1257,9 @@ c_func
 op_amp
 id|uart-&gt;open_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* When the polling mode, this function calls snd_uart16550_io_loop. */

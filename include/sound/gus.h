@@ -2314,7 +2314,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#if 0
 r_extern
-r_void
+id|irqreturn_t
 id|snd_gf1_lfo_effect_interrupt
 c_func
 (paren
@@ -3081,7 +3081,7 @@ id|gus
 )paren
 suffix:semicolon
 multiline_comment|/* gus_irq.c */
-r_void
+id|irqreturn_t
 id|snd_gus_interrupt
 c_func
 (paren

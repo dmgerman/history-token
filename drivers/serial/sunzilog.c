@@ -2056,7 +2056,7 @@ suffix:semicolon
 )brace
 DECL|function|sunzilog_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunzilog_interrupt
 c_func
 (paren
@@ -2328,6 +2328,9 @@ op_assign
 id|up-&gt;next
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* A convenient way to quickly get R0 status.  The caller must _not_ hold the&n; * port lock, it is acquired here.&n; */
 DECL|function|sunzilog_read_channel_status

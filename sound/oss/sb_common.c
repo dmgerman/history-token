@@ -564,7 +564,7 @@ suffix:semicolon
 )brace
 DECL|function|sbintr
 r_static
-r_void
+id|irqreturn_t
 id|sbintr
 c_func
 (paren
@@ -627,6 +627,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sb_dsp_reset
 r_int

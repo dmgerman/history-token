@@ -279,6 +279,10 @@ c_func
 id|sgbuf-&gt;page_table
 comma
 id|sgbuf-&gt;pages
+comma
+id|VM_MAP
+comma
+id|PAGE_KERNEL
 )paren
 suffix:semicolon
 r_if

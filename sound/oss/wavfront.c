@@ -7825,9 +7825,11 @@ macro_line|#endif /* OSS_SUPPORT_STATIC_INSTALL */
 multiline_comment|/***********************************************************************/
 multiline_comment|/* WaveFront: Linux modular sound kernel installation interface        */
 multiline_comment|/***********************************************************************/
-r_void
+r_static
+id|irqreturn_t
 DECL|function|wavefrontintr
 id|wavefrontintr
+c_func
 (paren
 r_int
 id|irq
@@ -7870,6 +7872,7 @@ l_int|0
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|hw-&gt;irq_ok
@@ -7884,6 +7887,9 @@ id|wake_up_interruptible
 op_amp
 id|hw-&gt;interrupt_sleeper
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* STATUS REGISTER &n;&n;0 Host Rx Interrupt Enable (1=Enabled)&n;1 Host Rx Register Full (1=Full)&n;2 Host Rx Interrupt Pending (1=Interrupt)&n;3 Unused&n;4 Host Tx Interrupt (1=Enabled)&n;5 Host Tx Register empty (1=Empty)&n;6 Host Tx Interrupt Pending (1=Interrupt)&n;7 Unused&n;*/

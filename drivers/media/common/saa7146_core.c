@@ -744,7 +744,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/* interrupt handler */
 DECL|function|interrupt_hw
 r_static
-r_void
+id|irqreturn_t
 id|interrupt_hw
 c_func
 (paren
@@ -800,6 +800,7 @@ id|isr
 (brace
 multiline_comment|/* nope, some other device */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|saa7146_write
@@ -1164,6 +1165,9 @@ id|isr
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*********************************************************************************/
 multiline_comment|/* configuration-functions                                                       */

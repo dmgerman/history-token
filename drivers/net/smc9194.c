@@ -215,7 +215,7 @@ suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------&n; .&n; . Interrupt level calls..&n; .&n; ----------------------------------------------------------------*/
 multiline_comment|/*&n; . Handles the actual interrupt&n;*/
 r_static
-r_void
+id|irqreturn_t
 id|smc_interrupt
 c_func
 (paren
@@ -2974,7 +2974,7 @@ suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------&n; .&n; . This is the main routine of the driver, to handle the device when&n; . it needs some attention.&n; .&n; . So:&n; .   first, save state of the chipset&n; .   branch off into routines to handle each case, and acknowledge&n; .&t;    each to the interrupt register&n; .   and finally restore state.&n; .&n; ---------------------------------------------------------------------*/
 DECL|function|smc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|smc_interrupt
 c_func
 (paren
@@ -3033,6 +3033,11 @@ id|saved_bank
 suffix:semicolon
 id|word
 id|saved_pointer
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|PRINTK3
 c_func
@@ -3129,6 +3134,10 @@ op_logical_neg
 id|status
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|PRINTK3
 c_func
@@ -3483,6 +3492,11 @@ l_string|&quot;: Interrupt done&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------&n; .&n; . smc_rcv -  receive a packet from the card&n; .&n; . There is ( at least ) a packet waiting to be read from&n; . chip-memory.&n; .&n; . o Read the status&n; . o If an error, record it&n; . o otherwise, read in the packet&n; --------------------------------------------------------------&n;*/

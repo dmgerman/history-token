@@ -606,7 +606,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|arlan_interrupt
 c_func
 (paren
@@ -9132,7 +9132,7 @@ suffix:semicolon
 )brace
 DECL|function|arlan_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|arlan_interrupt
 c_func
 (paren
@@ -9229,6 +9229,7 @@ l_string|&quot;arlan_interrupt&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|arlan_close

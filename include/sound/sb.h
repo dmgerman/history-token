@@ -4,6 +4,7 @@ mdefine_line|#define __SOUND_SB_H
 multiline_comment|/*&n; *  Header file for SoundBlaster cards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|enum|sb_hw_type
 r_enum
@@ -256,7 +257,7 @@ op_star
 id|midi_substream_output
 suffix:semicolon
 DECL|member|rmidi_callback
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|rmidi_callback
@@ -653,7 +654,7 @@ comma
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq_handler
@@ -855,7 +856,7 @@ id|chip
 )paren
 suffix:semicolon
 multiline_comment|/* sb16.c */
-r_void
+id|irqreturn_t
 id|snd_sb16dsp_interrupt
 c_func
 (paren

@@ -914,7 +914,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|e1000_intr
 c_func
 (paren
@@ -8448,7 +8448,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_intr - Interrupt Handler&n; * @irq: interrupt number&n; * @data: pointer to a network interface device structure&n; * @pt_regs: CPU registers structure&n; **/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|e1000_intr
 id|e1000_intr
 c_func
@@ -8505,6 +8505,7 @@ id|icr
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Not our interrupt */
@@ -8609,6 +8610,9 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_E1000_NAPI
 multiline_comment|/**&n; * e1000_clean - NAPI Rx polling callback&n; * @adapter: board private structure&n; **/

@@ -2683,7 +2683,7 @@ DECL|macro|PSYCHO_UE_AFAR
 mdefine_line|#define PSYCHO_UE_AFAR&t;0x0038UL
 DECL|function|psycho_ue_intr
 r_static
-r_void
+id|irqreturn_t
 id|psycho_ue_intr
 c_func
 (paren
@@ -2777,6 +2777,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|psycho_write
 c_func
@@ -2984,6 +2985,9 @@ comma
 id|UE_ERR
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* Correctable Errors. */
 DECL|macro|PSYCHO_CE_AFSR
@@ -3018,7 +3022,7 @@ DECL|macro|PSYCHO_CE_AFAR
 mdefine_line|#define PSYCHO_CE_AFAR&t;0x0040UL
 DECL|function|psycho_ce_intr
 r_static
-r_void
+id|irqreturn_t
 id|psycho_ce_intr
 c_func
 (paren
@@ -3112,6 +3116,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|psycho_write
 c_func
@@ -3316,6 +3321,9 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* PCI Errors.  They are signalled by the PCI bus module since they&n; * are assosciated with a specific bus segment.&n; */
 DECL|macro|PSYCHO_PCI_AFSR_A
@@ -3356,7 +3364,7 @@ DECL|macro|PSYCHO_PCI_AFAR_B
 mdefine_line|#define PSYCHO_PCI_AFAR_B&t;0x4018UL
 DECL|function|psycho_pcierr_intr
 r_static
-r_void
+id|irqreturn_t
 id|psycho_pcierr_intr
 c_func
 (paren
@@ -3496,6 +3504,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|psycho_write
 c_func
@@ -3824,6 +3833,9 @@ id|pbm
 comma
 id|pbm-&gt;pci_bus
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* XXX What about PowerFail/PowerManagement??? -DaveM */

@@ -3302,7 +3302,7 @@ suffix:semicolon
 )brace
 DECL|function|lance_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -3602,6 +3602,9 @@ id|lp-&gt;lregs
 op_plus
 id|RDP
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Build a fake network packet and send it to ourselves. */

@@ -260,7 +260,7 @@ suffix:semicolon
 )brace
 DECL|function|mauiintr
 r_static
-r_void
+id|irqreturn_t
 id|mauiintr
 c_func
 (paren
@@ -280,6 +280,9 @@ id|dummy
 id|irq_ok
 op_assign
 l_int|1
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|download_code

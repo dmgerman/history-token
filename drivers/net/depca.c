@@ -446,7 +446,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|depca_interrupt
 c_func
 (paren
@@ -2946,7 +2946,7 @@ suffix:semicolon
 multiline_comment|/*&n;** The DEPCA interrupt handler. &n;*/
 DECL|function|depca_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|depca_interrupt
 c_func
 (paren
@@ -3000,6 +3000,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -3153,6 +3154,9 @@ c_func
 op_amp
 id|lp-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Called with lp-&gt;lock held */

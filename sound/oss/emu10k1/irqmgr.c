@@ -6,7 +6,7 @@ macro_line|#include &quot;cardmo.h&quot;
 macro_line|#include &quot;irqmgr.h&quot;
 multiline_comment|/* Interrupt handler */
 DECL|function|emu10k1_interrupt
-r_void
+id|irqreturn_t
 id|emu10k1_interrupt
 c_func
 (paren
@@ -39,6 +39,11 @@ id|u32
 id|irqstatus
 comma
 id|irqstatus_tmp
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|DPD
 c_func
@@ -272,6 +277,17 @@ op_plus
 id|IPR
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 eof

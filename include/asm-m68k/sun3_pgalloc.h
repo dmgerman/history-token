@@ -14,8 +14,8 @@ id|bad_pmd_string
 (braket
 )braket
 suffix:semicolon
-DECL|macro|pmd_alloc_one
-mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
+DECL|macro|lpmd_alloc_one
+mdefine_line|#define lpmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|function|pte_free_kernel
 r_static
 r_inline
@@ -112,6 +112,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if
@@ -175,6 +177,8 @@ id|alloc_pages
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 comma
 l_int|0
 )paren

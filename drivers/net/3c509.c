@@ -519,7 +519,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|el3_interrupt
 c_func
 (paren
@@ -3884,7 +3884,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The EL3 interrupt handler. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|el3_interrupt
 id|el3_interrupt
 c_func
@@ -3945,6 +3945,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -4407,6 +4408,7 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

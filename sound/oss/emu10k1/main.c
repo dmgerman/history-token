@@ -134,7 +134,7 @@ id|emu10k1_midi_operations
 suffix:semicolon
 macro_line|#endif
 r_extern
-r_void
+id|irqreturn_t
 id|emu10k1_interrupt
 c_func
 (paren

@@ -4095,7 +4095,7 @@ l_string|&quot;SCERR&quot;
 suffix:semicolon
 DECL|function|btaudio_irq
 r_static
-r_void
+id|irqreturn_t
 id|btaudio_irq
 c_func
 (paren
@@ -4128,6 +4128,11 @@ op_star
 id|bta
 op_assign
 id|dev_id
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -4164,6 +4169,15 @@ op_logical_neg
 id|astat
 )paren
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|btwrite
 c_func
@@ -4381,6 +4395,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------------------------------------------------- */

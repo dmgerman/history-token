@@ -2192,7 +2192,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* Interrupt handler */
 DECL|function|ad1816_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ad1816_interrupt
 (paren
 r_int
@@ -2237,6 +2237,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|dev
@@ -2271,6 +2272,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|devc
@@ -2397,6 +2399,9 @@ c_func
 op_amp
 id|devc-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------- */
