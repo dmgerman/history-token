@@ -38,6 +38,7 @@ r_int
 id|cpu_online_map
 suffix:semicolon
 r_extern
+r_volatile
 r_int
 r_int
 id|cpu_possible_map
