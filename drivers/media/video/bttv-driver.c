@@ -1254,6 +1254,7 @@ l_string|&quot;PAL-N&quot;
 comma
 dot
 id|Fsc
+op_assign
 l_int|35468950
 comma
 dot
