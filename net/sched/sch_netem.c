@@ -1057,7 +1057,7 @@ id|sch-&gt;q.qlen
 op_increment
 suffix:semicolon
 )brace
-id|qdisc_restart
+id|qdisc_run
 c_func
 (paren
 id|dev
