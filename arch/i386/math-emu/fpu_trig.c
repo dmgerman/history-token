@@ -4436,7 +4436,7 @@ id|st0_tag
 op_eq
 id|TAG_Empty
 )paren
-op_or
+op_logical_or
 (paren
 id|st1_tag
 op_eq

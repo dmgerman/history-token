@@ -1395,8 +1395,6 @@ suffix:semicolon
 r_return
 id|TRUE
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ASF_PCB_NAK
 suffix:colon
@@ -1413,8 +1411,6 @@ suffix:semicolon
 macro_line|#endif
 r_goto
 m_abort
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
@@ -1439,6 +1435,9 @@ c_func
 id|dev-&gt;base_addr
 )paren
 )paren
+suffix:semicolon
+r_goto
+m_abort
 suffix:semicolon
 id|sti_abort
 suffix:colon

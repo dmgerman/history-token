@@ -459,9 +459,9 @@ id|exception_trace
 suffix:semicolon
 r_extern
 r_int
-id|no_iommu
+id|force_iommu
 comma
-id|force_mmu
+id|no_iommu
 suffix:semicolon
 r_extern
 r_int

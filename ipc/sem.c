@@ -1562,6 +1562,7 @@ id|copy_semid_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -2860,6 +2861,7 @@ op_star
 id|out
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -4071,6 +4073,7 @@ id|semid
 comma
 r_struct
 id|sembuf
+id|__user
 op_star
 id|tsops
 comma
@@ -4103,6 +4106,7 @@ id|semid
 comma
 r_struct
 id|sembuf
+id|__user
 op_star
 id|tsops
 comma
@@ -4112,6 +4116,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 id|timeout
 )paren

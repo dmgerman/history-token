@@ -1091,13 +1091,10 @@ id|address_space_operations
 id|blkmtd_aops
 op_assign
 (brace
+dot
 id|writepage
-suffix:colon
+op_assign
 id|blkmtd_writepage
-comma
-id|readpage
-suffix:colon
-l_int|NULL
 comma
 )brace
 suffix:semicolon

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|cpuinfo_PPC

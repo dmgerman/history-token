@@ -24,7 +24,7 @@ multiline_comment|/*&n;  Define the pci dma mask supported by DAC960 V1 and V2 F
 DECL|macro|DAC690_V1_PciDmaMask
 mdefine_line|#define DAC690_V1_PciDmaMask&t;0xffffffff
 DECL|macro|DAC690_V2_PciDmaMask
-mdefine_line|#define DAC690_V2_PciDmaMask&t;0xffffffffffffffff
+mdefine_line|#define DAC690_V2_PciDmaMask&t;0xffffffffffffffffULL
 multiline_comment|/*&n;  Define a Boolean data type.&n;*/
 DECL|enumerator|false
 DECL|enumerator|true

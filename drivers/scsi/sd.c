@@ -2474,15 +2474,19 @@ op_ne
 l_int|0
 op_logical_and
 multiline_comment|/* An error occurred */
+(paren
 id|SCpnt-&gt;sense_buffer
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x7f
+)paren
 op_eq
-l_int|0xF0
+l_int|0x70
 )paren
 (brace
-multiline_comment|/* Sense data is valid */
+multiline_comment|/* Sense current */
 r_switch
 c_cond
 (paren
@@ -2495,6 +2499,21 @@ l_int|2
 r_case
 id|MEDIUM_ERROR
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|SCpnt-&gt;sense_buffer
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x80
+)paren
+)paren
+r_break
+suffix:semicolon
 id|error_sector
 op_assign
 (paren
@@ -2668,7 +2687,7 @@ comma
 id|SCpnt
 )paren
 suffix:semicolon
-id|result
+id|SCpnt-&gt;result
 op_assign
 l_int|0
 suffix:semicolon

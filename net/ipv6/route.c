@@ -8817,11 +8817,13 @@ op_amp
 id|rt6_stats_seq_fops
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFRM
 id|xfrm6_init
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef MODULE
 DECL|function|ip6_route_cleanup

@@ -278,7 +278,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* void tlb_remove_page(struct mmu_gather *tlb, pte_t *ptep, unsigned long addr)&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
+multiline_comment|/* tlb_remove_page&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
 DECL|function|tlb_remove_page
 r_static
 r_inline

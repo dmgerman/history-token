@@ -16496,6 +16496,9 @@ id|falc_t
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -16509,6 +16512,10 @@ r_sizeof
 id|pc300stats_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return

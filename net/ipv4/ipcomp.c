@@ -1391,6 +1391,10 @@ id|t-&gt;props.saddr.a4
 op_assign
 id|x-&gt;props.saddr.a4
 suffix:semicolon
+id|t-&gt;props.flags
+op_assign
+id|x-&gt;props.flags
+suffix:semicolon
 id|t-&gt;type
 op_assign
 id|xfrm_get_type

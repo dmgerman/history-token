@@ -2,7 +2,6 @@ multiline_comment|/*&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot
 macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|BTTV_VERSION_CODE
 mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,11)
 macro_line|#include &lt;linux/types.h&gt;
