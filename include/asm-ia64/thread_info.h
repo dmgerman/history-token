@@ -11,8 +11,12 @@ DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;0x08
 DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;0x0c
-DECL|macro|TI_ADDR_LIMI
-mdefine_line|#define TI_ADDR_LIMI&t;0x10
+DECL|macro|TI_ADDR_LIMIT
+mdefine_line|#define TI_ADDR_LIMIT&t;0x10
+DECL|macro|TI_PRE_COUNT
+mdefine_line|#define TI_PRE_COUNT&t;0x18
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;0x4000000
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * On IA-64, we want to keep the task structure and kernel stack together, so they can be&n; * mapped by a single TLB entry and so they can be addressed by the &quot;current&quot; pointer&n; * without having to do pointer masking.&n; */
 DECL|struct|thread_info
@@ -41,6 +45,11 @@ id|mm_segment_t
 id|addr_limit
 suffix:semicolon
 multiline_comment|/* user-level address space limit */
+DECL|member|preempt_count
+id|__s32
+id|preempt_count
+suffix:semicolon
+multiline_comment|/* 0=premptable, &lt;0=BUG; will also serve as bh-counter */
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_SIZE
@@ -48,7 +57,7 @@ mdefine_line|#define INIT_THREAD_SIZE&t;&t;/* tell sched.h not to declare the th
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;&t;KERNEL_STACK_SIZE
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(ti)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;&t;addr_limit:&t;KERNEL_DS,&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(ti)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;&t;addr_limit:&t;KERNEL_DS,&t;&t;&bslash;&n;&t;preempt_count:&t;0,&t;&t;&t;&bslash;&n;}
 multiline_comment|/* how to get the thread information struct from C */
 DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info() ((struct thread_info *) ((char *) current + IA64_TASK_SIZE))

@@ -414,6 +414,12 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;1228
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;1229
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;&t;1230
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;&t;1231
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

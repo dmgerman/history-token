@@ -3,7 +3,7 @@ DECL|macro|_ASM_IA64_PROCESSOR_H
 mdefine_line|#define _ASM_IA64_PROCESSOR_H
 multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -259,10 +259,6 @@ mdefine_line|#define IA64_THREAD_FPEMU_MASK&t;(IA64_THREAD_FPEMU_NOPRINT | IA64_
 multiline_comment|/*&n; * This shift should be large enough to be able to represent&n; * 1000000/itc_freq with good accuracy while being small enough to fit&n; * 1000000&lt;&lt;IA64_USEC_PER_CYC_SHIFT in 64 bits.&n; */
 DECL|macro|IA64_USEC_PER_CYC_SHIFT
 mdefine_line|#define IA64_USEC_PER_CYC_SHIFT&t;41
-DECL|macro|__HAVE_ARCH_PER_CPU
-mdefine_line|#define __HAVE_ARCH_PER_CPU
-DECL|macro|THIS_CPU
-mdefine_line|#define THIS_CPU(var)&t;(var)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -272,18 +268,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-r_extern
-r_int
-r_int
-id|__per_cpu_offset
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|macro|per_cpu
-mdefine_line|#define per_cpu(var, cpu)&t;(*(__typeof__(&amp;(var))) ((void *) &amp;(var) + __per_cpu_offset[cpu]))
-DECL|macro|this_cpu
-mdefine_line|#define this_cpu(var)&t;&t;(var)
 multiline_comment|/* like above but expressed as bitfields for more efficient access: */
 DECL|struct|ia64_psr
 r_struct

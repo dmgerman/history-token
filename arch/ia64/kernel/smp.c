@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 multiline_comment|/*&n; * The Big Kernel Lock.  It&squot;s not supposed to be used for performance critical stuff&n; * anymore.  But we still need to align it because certain workloads are still affected by&n; * it.  For example, llseek() and various other filesystem related routines still use the&n; * BKL.&n; */
@@ -680,8 +681,9 @@ c_func
 id|printk
 c_func
 (paren
+l_string|&quot;%s: trying to call self&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; trying to call self&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
