@@ -213,6 +213,11 @@ r_struct
 id|list_head
 id|list_head
 suffix:semicolon
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* a unique index for each feed (can be used as hardware pid filter index) */
 )brace
 suffix:semicolon
 DECL|struct|dvb_demux

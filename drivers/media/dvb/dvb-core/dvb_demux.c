@@ -5308,6 +5308,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|dvbdemux-&gt;feed
 (braket
 id|i
@@ -5317,6 +5318,16 @@ id|state
 op_assign
 id|DMX_STATE_FREE
 suffix:semicolon
+id|dvbdemux-&gt;feed
+(braket
+id|i
+)braket
+dot
+id|index
+op_assign
+id|i
+suffix:semicolon
+)brace
 id|dvbdemux-&gt;frontend_list.next
 op_assign
 id|dvbdemux-&gt;frontend_list.prev

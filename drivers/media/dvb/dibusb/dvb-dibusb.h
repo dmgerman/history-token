@@ -362,8 +362,6 @@ DECL|macro|DIBUSB_STATE_I2C
 mdefine_line|#define DIBUSB_STATE_I2C        0x010
 DECL|macro|DIBUSB_STATE_REMOTE
 mdefine_line|#define DIBUSB_STATE_REMOTE&t;&t;0x020
-DECL|macro|DIBUSB_STATE_PIDLIST
-mdefine_line|#define DIBUSB_STATE_PIDLIST    0x040
 DECL|member|init_state
 r_int
 id|init_state
@@ -415,17 +413,6 @@ DECL|member|i2c_sem
 r_struct
 id|semaphore
 id|i2c_sem
-suffix:semicolon
-multiline_comment|/* pid filtering */
-DECL|member|pid_list_lock
-id|spinlock_t
-id|pid_list_lock
-suffix:semicolon
-DECL|member|pid_list
-r_struct
-id|dibusb_pid
-op_star
-id|pid_list
 suffix:semicolon
 multiline_comment|/* dvb */
 DECL|member|adapter
@@ -701,45 +688,6 @@ c_func
 r_struct
 id|usb_dibusb
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/* dvb-dibusb-pid.c */
-r_int
-id|dibusb_pid_list_init
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-)paren
-suffix:semicolon
-r_void
-id|dibusb_pid_list_exit
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-)paren
-suffix:semicolon
-r_int
-id|dibusb_ctrl_pid
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-comma
-r_struct
-id|dvb_demux_feed
-op_star
-id|dvbdmxfeed
-comma
-r_int
-id|onoff
 )paren
 suffix:semicolon
 multiline_comment|/* i2c and transfer stuff */
