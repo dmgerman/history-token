@@ -116,7 +116,7 @@ mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask.val
 DECL|macro|xfs_error_level
 mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level.val
 DECL|macro|xfs_syncd_interval
-mdefine_line|#define xfs_syncd_interval&t;xfs_params.sync_interval.val
+mdefine_line|#define xfs_syncd_interval&t;(xfs_params.sync_interval.val * HZ / USER_HZ)
 DECL|macro|xfs_stats_clear
 mdefine_line|#define xfs_stats_clear&t;&t;xfs_params.stats_clear.val
 DECL|macro|xfs_inherit_sync
@@ -126,9 +126,9 @@ mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
 DECL|macro|xfs_flush_interval
-mdefine_line|#define xfs_flush_interval&t;xfs_params.flush_interval.val
+mdefine_line|#define xfs_flush_interval&t;(xfs_params.flush_interval.val * HZ / USER_HZ)
 DECL|macro|xfs_age_buffer
-mdefine_line|#define xfs_age_buffer&t;&t;xfs_params.age_buffer.val
+mdefine_line|#define xfs_age_buffer&t;&t;(xfs_params.age_buffer.val * HZ / USER_HZ)
 DECL|macro|current_cpu
 mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
 DECL|macro|current_pid
@@ -244,22 +244,10 @@ DECL|macro|howmany
 mdefine_line|#define howmany(x, y)&t;(((x)+((y)-1))/(y))
 DECL|macro|roundup
 mdefine_line|#define roundup(x, y)&t;((((x)+((y)-1))/(y))*(y))
-DECL|function|xfs_stack_trace
-r_static
-r_inline
-r_void
-id|xfs_stack_trace
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dump_stack
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|xfs_stack_trace
+mdefine_line|#define xfs_stack_trace()&t;dump_stack()
+DECL|macro|xfs_itruncate_data
+mdefine_line|#define xfs_itruncate_data(ip, off)&t;&bslash;&n;&t;(-vmtruncate(LINVFS_GET_IP(XFS_ITOV(ip)), (off)))
 multiline_comment|/* Move the kernel do_div definition off to one side */
 macro_line|#if defined __i386__
 multiline_comment|/* For ia32 we need to pull some tricks to get past various versions&n; * of the compiler which do not like us using do_div in the middle&n; * of large functions.&n; */
