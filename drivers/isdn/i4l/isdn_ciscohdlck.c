@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Linux ISDN subsystem, CISCO HDLC network interfaces&n;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ciscohdlck.h&quot;
+macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 multiline_comment|/* &n; * CISCO HDLC keepalive specific stuff&n; */
 r_static
@@ -1832,6 +1833,11 @@ op_assign
 id|IFF_NOARP
 op_or
 id|IFF_POINTOPOINT
+comma
+dot
+id|type
+op_assign
+id|ARPHRD_CISCO
 comma
 dot
 id|receive
