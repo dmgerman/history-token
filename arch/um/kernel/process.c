@@ -1431,7 +1431,7 @@ id|ret
 op_assign
 l_int|1
 suffix:semicolon
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Checking for the skas3 patch in the host...&quot;
@@ -1477,7 +1477,7 @@ op_eq
 id|EIO
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;not found&bslash;n&quot;
@@ -1485,7 +1485,7 @@ l_string|&quot;not found&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;No (unexpected errno - %d)&bslash;n&quot;
@@ -1499,7 +1499,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;found&bslash;n&quot;
@@ -1521,7 +1521,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Checking for /proc/mm...&quot;
@@ -1539,7 +1539,7 @@ id|W_OK
 )paren
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;not found&bslash;n&quot;
@@ -1551,7 +1551,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;found&bslash;n&quot;

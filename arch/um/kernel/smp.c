@@ -12,6 +12,7 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/threads.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
+macro_line|#include &quot;linux/err.h&quot;
 macro_line|#include &quot;asm/smp.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/spinlock.h&quot;
@@ -512,6 +513,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -787,7 +790,6 @@ suffix:semicolon
 )brace
 DECL|function|smp_prepare_boot_cpu
 r_void
-id|__devinit
 id|smp_prepare_boot_cpu
 c_func
 (paren
