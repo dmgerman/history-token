@@ -1,18 +1,18 @@
 multiline_comment|/* &n; * Hardware driver for the MixCom synchronous serial board &n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * based on skeleton driver code and a preliminary hscx driver by &n; * Tivadar Szemethy &lt;tiv@itc.hu&gt;&n; *&n; * Copyright (C) 1998-1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * Contributors:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; (0.65)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.60 (99/06/11):&n; *&t;&t;- ported to the kernel, now works as builtin code&n; *&n; * Version 0.61 (99/06/11):&n; *&t;&t;- recognize the one-channel MixCOM card (id byte = 0x13)&n; *&t;&t;- printk fixes&n; * &n; * Version 0.62 (99/07/15):&n; *&t;&t;- fixes according to the new hw docs &n; *&t;&t;- report line status when open&n; *&n; * Version 0.63 (99/09/21):&n; *&t;&t;- line status report fixes&n; *&n; * Version 0.64 (99/12/01):&n; *&t;&t;- some more cosmetical fixes&n; *&n; * Version 0.65 (00/08/15)&n; *&t;&t;- resource release on failure at MIXCOM_init&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.65&quot;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;comx.h&quot;
 macro_line|#include &quot;mixcom.h&quot;
 macro_line|#include &quot;hscx.h&quot;

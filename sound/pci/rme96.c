@@ -1,8 +1,8 @@
 multiline_comment|/*&n; *   ALSA driver for RME Digi96, Digi96/8 and Digi96/8 PRO/PAD/PST audio&n; *   interfaces &n; *&n; *&t;Copyright (c) 2000, 2001 Anders Torger &lt;torger@ludd.luth.se&gt;&n; *    &n; *      Thanks to Henk Hesselink &lt;henk@anda.nl&gt; for the analog volume control&n; *      code.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* note, two last pcis should be equal, it is not a bug */
 id|MODULE_AUTHOR
 c_func

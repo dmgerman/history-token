@@ -727,7 +727,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Ok, set the CPU frequency.  Since we&squot;ve done the validation&n; * above, we can match for an exact frequency.  If we don&squot;t find&n; * an exact match, we will to set the lowest frequency to be safe.&n; */
 DECL|function|sa1110_setspeed
 r_static
-r_void
+r_int
 id|sa1110_setspeed
 c_func
 (paren
@@ -1076,6 +1076,9 @@ comma
 id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|sa1110_policy
 r_static
@@ -1126,6 +1129,9 @@ id|sa1110_policy
 comma
 dot
 id|cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 l_int|59000
 comma

@@ -377,6 +377,7 @@ c_cond
 (paren
 id|is_directory
 )paren
+(brace
 id|desc-&gt;bg_used_dirs_count
 op_assign
 id|cpu_to_le16
@@ -391,6 +392,16 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|EXT2_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_dir_count
+op_decrement
+suffix:semicolon
+)brace
 )brace
 id|mark_buffer_dirty
 c_func

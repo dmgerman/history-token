@@ -211,9 +211,7 @@ id|disposition
 comma
 id|desiredAccess
 comma
-op_minus
-l_int|1
-multiline_comment|/* i.e. dummy value, ignored for time being */
+id|CREATE_NOT_DIR
 comma
 op_amp
 id|netfid
@@ -331,6 +329,12 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pCifsInode-&gt;openFileList.next
+)paren
+(brace
 id|list_add
 c_func
 (paren
@@ -341,6 +345,7 @@ op_amp
 id|pCifsInode-&gt;openFileList
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -488,6 +493,12 @@ c_cond
 id|pSMBFile
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pSMBFile-&gt;flist.next
+)paren
+(brace
 id|list_del
 c_func
 (paren
@@ -495,6 +506,7 @@ op_amp
 id|pSMBFile-&gt;flist
 )paren
 suffix:semicolon
+)brace
 id|list_del
 c_func
 (paren
@@ -2848,6 +2860,11 @@ op_assign
 op_amp
 id|cifs_file_ops
 suffix:semicolon
+id|tmp_inode-&gt;i_data.a_ops
+op_assign
+op_amp
+id|cifs_addr_ops
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3244,6 +3261,11 @@ id|tmp_inode-&gt;i_fop
 op_assign
 op_amp
 id|cifs_file_ops
+suffix:semicolon
+id|tmp_inode-&gt;i_data.a_ops
+op_assign
+op_amp
+id|cifs_addr_ops
 suffix:semicolon
 )brace
 r_else

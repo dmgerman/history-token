@@ -14,14 +14,17 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 r_static
 r_int
@@ -17375,20 +17378,24 @@ id|pci_driver
 id|maestro_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;maestro&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|maestro_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|maestro_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|maestro_remove
 comma
 )brace

@@ -127,7 +127,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Validate the policy.  We aren&squot;t able to do any fancy in-kernel&n; * scaling, so we force min=max, and set the policy to &quot;performance&quot;.&n; * If we can&squot;t generate the precise frequency requested, round it up.&n; */
 DECL|function|sa11x0_verify_speed
-r_void
+r_int
 id|sa11x0_verify_speed
 c_func
 (paren
@@ -168,6 +168,9 @@ suffix:semicolon
 id|policy-&gt;policy
 op_assign
 id|CPUFREQ_POLICY_POWERSAVE
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sa11x0_getspeed

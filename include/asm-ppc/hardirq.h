@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* The __last_jiffy_stamp field is needed to ensure that no decrementer &n; * interrupt is lost on SMP machines. Since on most CPUs it is in the same &n; * cache line as local_irq_count, it is cheap to access and is also used on UP &n; * for uniformity.&n; */
 r_typedef
 r_struct

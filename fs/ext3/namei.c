@@ -5003,7 +5003,11 @@ id|to
 op_member_access_from_pointer
 id|rec_len
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|rec_len
+)paren
 suffix:semicolon
 id|de-&gt;inode
 op_assign
@@ -5148,7 +5152,11 @@ id|rec_len
 suffix:semicolon
 id|to-&gt;rec_len
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|rec_len
+)paren
 suffix:semicolon
 id|prev
 op_assign
@@ -8359,7 +8367,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace

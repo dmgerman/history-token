@@ -11,5 +11,9 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;((VMALLOC_VMADDR(high_memory) + VMALLOC_ARCH_OFFSET) &amp; ~(VMALLOC_ARCH_OFFSET - 1))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(PAGE_OFFSET + 0x10000000)
+DECL|macro|MODULE_START
+mdefine_line|#define MODULE_START&t;(PAGE_OFFSET - 16*1048576)
+DECL|macro|MODULE_END
+mdefine_line|#define MODULE_END&t;(PAGE_OFFSET)
 macro_line|#endif
 eof

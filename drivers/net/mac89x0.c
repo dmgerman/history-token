@@ -21,7 +21,6 @@ DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x) printk x
 multiline_comment|/*&n;  Sources:&n;&n;&t;Crynwr packet driver epktisa.&n;&n;&t;Crystal Semiconductor data sheets.&n;&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -30,16 +29,16 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nubus.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/hwtest.h&gt;
-macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hwtest.h&gt;
+macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &quot;cs89x0.h&quot;
 DECL|variable|net_debug
 r_static

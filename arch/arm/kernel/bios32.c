@@ -839,7 +839,7 @@ l_string|&quot;MEM&quot;
 comma
 id|res-&gt;start
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_if
@@ -994,7 +994,7 @@ l_string|&quot;PCI: Assigning IRQ %02d to %s&bslash;n&quot;
 comma
 id|irq
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 id|pci_write_config_byte
@@ -2291,8 +2291,6 @@ id|dev-&gt;sysdata
 suffix:semicolon
 r_int
 r_int
-id|prot
-comma
 id|phys
 suffix:semicolon
 r_if

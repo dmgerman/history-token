@@ -13,15 +13,17 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 singleline_comment|//#include &quot;cs_dm.h&quot;
 macro_line|#include &quot;cs4281_hwdefs.h&quot;
 macro_line|#include &quot;cs4281pm.h&quot;
@@ -11636,20 +11638,24 @@ id|file_operations
 id|cs4281_mixer_fops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cs4281_ioctl_mixdev
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cs4281_open_mixdev
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cs4281_release_mixdev
 comma
 )brace
@@ -17415,36 +17421,44 @@ id|file_operations
 id|cs4281_audio_fops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|cs4281_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|cs4281_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|cs4281_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cs4281_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|cs4281_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cs4281_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cs4281_release
 comma
 )brace
@@ -19363,28 +19377,34 @@ id|file_operations
 id|cs4281_midi_fops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|cs4281_midi_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|cs4281_midi_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|cs4281_midi_poll
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cs4281_midi_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cs4281_midi_release
 comma
 )brace
@@ -21100,23 +21120,33 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_CIRRUS
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_CRYSTAL_CS4281
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
 comma
-l_int|0
-comma
-l_int|0
 )brace
 comma
 (brace
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -21133,28 +21163,34 @@ id|pci_driver
 id|cs4281_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;cs4281&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|cs4281_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|cs4281_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|cs4281_remove
 comma
+dot
 id|suspend
-suffix:colon
+op_assign
 id|CS4281_SUSPEND_TBL
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 id|CS4281_RESUME_TBL
 comma
 )brace

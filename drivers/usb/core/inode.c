@@ -725,7 +725,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -854,7 +854,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -1256,11 +1256,10 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 )brace

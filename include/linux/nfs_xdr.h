@@ -18,12 +18,14 @@ id|pre_size
 suffix:semicolon
 multiline_comment|/* pre_op_attr.size&t;  */
 DECL|member|pre_mtime
-id|__u64
+r_struct
+id|timespec
 id|pre_mtime
 suffix:semicolon
 multiline_comment|/* pre_op_attr.mtime&t;  */
 DECL|member|pre_ctime
-id|__u64
+r_struct
+id|timespec
 id|pre_ctime
 suffix:semicolon
 multiline_comment|/* pre_op_attr.ctime&t;  */
@@ -117,15 +119,18 @@ id|__u64
 id|fileid
 suffix:semicolon
 DECL|member|atime
-id|__u64
+r_struct
+id|timespec
 id|atime
 suffix:semicolon
 DECL|member|mtime
-id|__u64
+r_struct
+id|timespec
 id|mtime
 suffix:semicolon
 DECL|member|ctime
-id|__u64
+r_struct
+id|timespec
 id|ctime
 suffix:semicolon
 DECL|member|change_attr
@@ -768,7 +773,8 @@ r_int
 id|guard
 suffix:semicolon
 DECL|member|guardtime
-id|__u64
+r_struct
+id|timespec
 id|guardtime
 suffix:semicolon
 )brace
@@ -1461,6 +1467,13 @@ DECL|struct|nfs4_open
 r_struct
 id|nfs4_open
 (brace
+DECL|member|op_client_state
+r_struct
+id|nfs4_client
+op_star
+id|op_client_state
+suffix:semicolon
+multiline_comment|/* request */
 DECL|member|op_share_access
 id|u32
 id|op_share_access
@@ -1790,6 +1803,13 @@ id|u32
 id|sc_cb_ident
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|sc_state
+r_struct
+id|nfs4_client
+op_star
+id|sc_state
+suffix:semicolon
+multiline_comment|/* response */
 )brace
 suffix:semicolon
 DECL|struct|nfs4_write
@@ -1934,6 +1954,12 @@ r_struct
 id|nfs4_rename
 id|rename
 suffix:semicolon
+DECL|member|renew
+r_struct
+id|nfs4_client
+op_star
+id|renew
+suffix:semicolon
 DECL|member|setattr
 r_struct
 id|nfs4_setattr
@@ -1943,6 +1969,12 @@ DECL|member|setclientid
 r_struct
 id|nfs4_setclientid
 id|setclientid
+suffix:semicolon
+DECL|member|setclientid_confirm
+r_struct
+id|nfs4_client
+op_star
+id|setclientid_confirm
 suffix:semicolon
 DECL|member|write
 r_struct

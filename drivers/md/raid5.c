@@ -6619,7 +6619,12 @@ c_func
 id|R5_LOCKED
 comma
 op_amp
-id|dev-&gt;flags
+id|sh-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|flags
 )paren
 suffix:semicolon
 id|set_bit

@@ -5,6 +5,7 @@ mdefine_line|#define _SCSI_H
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_SCSI_LOGGING */
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * Some of the public constants are being moved to this file.&n; * We include it here so that what came from where is transparent.&n; */
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -1166,6 +1167,35 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
+multiline_comment|/*&n; * Prototypes for functions in scsi_scan.c&n; */
+r_extern
+r_struct
+id|scsi_device
+op_star
+id|scsi_alloc_sdev
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_free_sdev
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in constants.c&n; * Some of these used to live in constants.h&n; */
 r_extern
 r_void

@@ -9954,6 +9954,7 @@ comma
 l_int|NULL
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -9972,6 +9973,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dv1394_devfs_del
 r_void
 id|dv1394_devfs_del
 c_func
@@ -9992,6 +9994,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_DEVFS_FS */
 multiline_comment|/*** IEEE1394 HPSB CALLBACKS ***********************************************/
+DECL|function|dv1394_init
 r_static
 r_int
 id|dv1394_init
@@ -10331,6 +10334,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|dv1394_un_init
 r_static
 r_void
 id|dv1394_un_init
@@ -10428,6 +10432,7 @@ id|video
 )paren
 suffix:semicolon
 )brace
+DECL|function|dv1394_remove_host
 r_static
 r_void
 id|dv1394_remove_host
@@ -10704,6 +10709,7 @@ id|buf
 suffix:semicolon
 macro_line|#endif&t;
 )brace
+DECL|function|dv1394_add_host
 r_static
 r_void
 id|dv1394_add_host
@@ -10927,6 +10933,7 @@ id|MODE_TRANSMIT
 suffix:semicolon
 )brace
 multiline_comment|/* Bus reset handler. In the event of a bus reset, we may need to&n;   re-start the DMA contexts - otherwise the user program would&n;   end up waiting forever.&n;*/
+DECL|function|dv1394_host_reset
 r_static
 r_void
 id|dv1394_host_reset
@@ -11384,6 +11391,7 @@ id|video-&gt;waitq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hl_ops
 r_static
 r_struct
 id|hpsb_highlevel_ops
@@ -11432,6 +11440,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|function|dv1394_exit_module
 r_static
 r_void
 id|__exit
@@ -11469,6 +11478,7 @@ l_string|&quot;dv&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|dv1394_init_module
 r_static
 r_int
 id|__init
@@ -11637,12 +11647,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|dv1394_init_module
 id|module_init
 c_func
 (paren
 id|dv1394_init_module
 )paren
 suffix:semicolon
+DECL|variable|dv1394_exit_module
 id|module_exit
 c_func
 (paren

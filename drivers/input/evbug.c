@@ -215,8 +215,9 @@ id|evbug_ids
 op_assign
 (brace
 (brace
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma

@@ -1,29 +1,14 @@
 multiline_comment|/*&n; *  scsi_lib.c Copyright (C) 1999 Eric Youngdale&n; *&n; *  SCSI queueing library.&n; *      Initial versions: Eric Youngdale (eric@andante.org).&n; *                        Based upon conversations with large numbers&n; *                        of people at Linux Expo.&n; */
-multiline_comment|/*&n; * The fundamental purpose of this file is to contain a library of utility&n; * routines that can be used by low-level drivers.   Ultimately the idea&n; * is that there should be a sufficiently rich number of functions that it&n; * would be possible for a driver author to fashion a queueing function for&n; * a low-level driver if they wished.   Note however that this file also&n; * contains the &quot;default&quot; versions of these functions, as we don&squot;t want to&n; * go through and retrofit queueing functions into all 30 some-odd drivers.&n; */
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-multiline_comment|/*&n; * This entire source file deals with the new queueing code.&n; */
 multiline_comment|/*&n; * Function:    scsi_insert_special_cmd()&n; *&n; * Purpose:     Insert pre-formed command into request queue.&n; *&n; * Arguments:   SCpnt   - command that is ready to be queued.&n; *              at_head - boolean.  True if we should insert at head&n; *                        of queue, false if we should insert at tail.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is called from character device and from&n; *              ioctl types of functions where the caller knows exactly&n; *              what SCSI command needs to be issued.   The idea is that&n; *              we merely inject the command into the queue (at the head&n; *              for now), and then call the queue request function to actually&n; *              process it.&n; */
 DECL|function|scsi_insert_special_cmd
 r_int
@@ -403,9 +388,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Just hit the requeue function for the queue.&n;&t; */
-id|q
-op_member_access_from_pointer
-id|request_fn
+id|__blk_run_queue
 c_func
 (paren
 id|q
@@ -440,10 +423,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -491,17 +470,11 @@ id|SDpnt-&gt;device_blocked
 r_break
 suffix:semicolon
 )brace
-id|q
-op_assign
-op_amp
-id|SDpnt-&gt;request_queue
-suffix:semicolon
-id|q
-op_member_access_from_pointer
-id|request_fn
+id|__blk_run_queue
 c_func
 (paren
-id|q
+op_amp
+id|SDpnt-&gt;request_queue
 )paren
 suffix:semicolon
 )brace
@@ -531,10 +504,6 @@ op_assign
 id|SDpnt-&gt;next
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -574,17 +543,11 @@ id|SDpnt-&gt;starved
 r_continue
 suffix:semicolon
 )brace
-id|q
-op_assign
-op_amp
-id|SDpnt-&gt;request_queue
-suffix:semicolon
-id|q
-op_member_access_from_pointer
-id|request_fn
+id|__blk_run_queue
 c_func
 (paren
-id|q
+op_amp
+id|SDpnt-&gt;request_queue
 )paren
 suffix:semicolon
 id|all_clear
@@ -2419,13 +2382,22 @@ op_logical_neg
 id|req
 )paren
 (brace
-multiline_comment|/* can happen if the prep fails &n;&t;&t;&t; * FIXME: elv_next_request() should be plugging the&n;&t;&t;&t; * queue */
+multiline_comment|/* If the device is busy, a returning I/O&n;&t;&t;&t; * will restart the queue.  Otherwise, we have&n;&t;&t;&t; * to plug the queue */
+r_if
+c_cond
+(paren
+id|SDpnt-&gt;device_busy
+op_eq
+l_int|0
+)paren
+(brace
 id|blk_plug_device
 c_func
 (paren
 id|q
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace

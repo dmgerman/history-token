@@ -491,7 +491,7 @@ id|jiffy_timer
 suffix:semicolon
 multiline_comment|/* 0xc80 */
 DECL|member|ext_call_fast
-id|atomic_t
+id|__u32
 id|ext_call_fast
 suffix:semicolon
 multiline_comment|/* 0xc88 */

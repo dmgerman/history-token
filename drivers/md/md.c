@@ -6490,11 +6490,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * prevent the writeback of an unrunnable array&n;&t;&t; */
-id|mddev-&gt;sb_dirty
-op_assign
-l_int|0
-suffix:semicolon
 id|do_md_stop
 (paren
 id|mddev
@@ -9374,17 +9369,12 @@ id|do_md_run
 id|mddev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * we have to clean up the mess if&n;&t;&t;&t; * the array cannot be run for some&n;&t;&t;&t; * reason ...&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * we have to clean up the mess if&n;&t;&t;&t; * the array cannot be run for some&n;&t;&t;&t; * reason ...&n;&t;&t;&t; * -&gt;pers will not be set, to superblock will&n;&t;&t;&t; * not be updated.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|err
 )paren
-(brace
-id|mddev-&gt;sb_dirty
-op_assign
-l_int|0
-suffix:semicolon
 id|do_md_stop
 (paren
 id|mddev
@@ -9392,7 +9382,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|done_unlock
 suffix:semicolon

@@ -27,7 +27,7 @@ id|stat
 (brace
 id|stat-&gt;dev
 op_assign
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 suffix:semicolon
 id|stat-&gt;ino
 op_assign
@@ -396,7 +396,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &amp;&amp; !defined(__x86_64__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &amp;&amp; !defined(__x86_64__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850) &amp;&amp; !defined(__powerpc64__)
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|cp_old_stat
 r_static

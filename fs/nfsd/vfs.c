@@ -859,7 +859,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we are changing the size of the file, then&n;&t;&t; * we need to break all leases.&n;&t;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -1588,7 +1588,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Check to see if there are any leases on this file.&n;&t; * This may block while leases are broken.&n;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -2392,7 +2392,7 @@ op_assign
 id|nfsd_get_raparms
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 comma
 id|inode-&gt;i_ino
 )paren
@@ -2881,7 +2881,7 @@ id|inode-&gt;i_ino
 op_logical_and
 id|last_dev
 op_eq
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 )paren
 )paren
 (brace
@@ -2964,7 +2964,7 @@ id|inode-&gt;i_ino
 suffix:semicolon
 id|last_dev
 op_assign
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 suffix:semicolon
 )brace
 id|dprintk

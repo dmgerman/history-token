@@ -393,6 +393,12 @@ id|i
 op_assign
 id|ids-&gt;size
 suffix:semicolon
+multiline_comment|/*&n;&t; * before setting the ids-&gt;entries to the new array, there must be a&n;&t; * wmb() to make sure that the memcpyed contents of the new array are&n;&t; * visible before the new array becomes visible.&n;&t; */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ids-&gt;entries
 op_assign
 r_new

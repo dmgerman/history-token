@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;net/slhc_vj.h&gt;
 macro_line|#ifdef CONFIG_INET
 multiline_comment|/* Entire module is for IP only */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;

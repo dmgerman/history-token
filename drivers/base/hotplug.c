@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * drivers/base/hotplug.c - hotplug call code&n; * &n; * Copyright (c) 2000-2001 David Brownell&n; * Copyright (c) 2002 Greg Kroah-Hartman&n; * Copyright (c) 2002 IBM Corp.&n; *&n; * Based off of drivers/usb/core/usb.c:call_agent(), which was &n; * written by David Brownell.&n; *&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;

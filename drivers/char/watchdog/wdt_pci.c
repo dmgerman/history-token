@@ -1,27 +1,26 @@
 multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 2.1.x&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Release 0.09.&n; *&n; *&t;Fixes&n; *&t;&t;Dave Gregorich&t;:&t;Modularisation and minor bugs&n; *&t;&t;Alan Cox&t;:&t;Added the watchdog ioctl() stuff&n; *&t;&t;Alan Cox&t;:&t;Fixed the reboot problem (as noted by&n; *&t;&t;&t;&t;&t;Matt Crocker).&n; *&t;&t;Alan Cox&t;:&t;Added wdt= boot option&n; *&t;&t;Alan Cox&t;:&t;Cleaned up copy/user stuff&n; *&t;&t;Tim Hockin&t;:&t;Added insmod parameters, comment cleanup&n; *&t;&t;&t;&t;&t;Parameterized timeout&n; *&t;&t;JP Nollmann&t;:&t;Added support for PCI wdt501p&n; *&t;&t;Alan Cox&t;:&t;Split ISA and PCI cards into two drivers&n; *&t;&t;Jeff Garzik&t;:&t;PCI cleanups&n; *&t;&t;Tigran Aivazian&t;:&t;Restructured wdtpci_init_one() to handle failures&n; *&t;&t;Matt Domsch&t;:&t;added nowayout and timeout module options&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
-DECL|macro|WDT_IS_PCI
-mdefine_line|#define WDT_IS_PCI
-macro_line|#include &quot;wd501p.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|macro|WDT_IS_PCI
+mdefine_line|#define WDT_IS_PCI
+macro_line|#include &quot;wd501p.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;wdt_pci: &quot;
 multiline_comment|/*&n; * Until Access I/O gets their application for a PCI vendor ID approved,&n; * I don&squot;t think that it&squot;s appropriate to move these constants into the&n; * regular pci_ids.h file. -- JPN 2000/01/18&n; */
@@ -849,6 +848,9 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
+dot
+id|options
+op_assign
 id|WDIOF_OVERHEAT
 op_or
 id|WDIOF_POWERUNDER
@@ -861,9 +863,16 @@ id|WDIOF_EXTERN2
 op_or
 id|WDIOF_FANFAULT
 comma
+dot
+id|firmware_version
+op_assign
 l_int|1
 comma
+dot
+id|identity
+op_assign
 l_string|&quot;WDT500/501PCI&quot;
+comma
 )brace
 suffix:semicolon
 id|ident.options
@@ -1327,12 +1336,22 @@ id|miscdevice
 id|wdtpci_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|wdtpci_fops
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_WDT_501
@@ -1343,12 +1362,22 @@ id|miscdevice
 id|temp_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|TEMP_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;temperature&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|wdtpci_fops
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -1360,11 +1389,11 @@ id|notifier_block
 id|wdtpci_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|wdtpci_notify_sys
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|wdtpci_init_one
@@ -1716,12 +1745,24 @@ id|__initdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_ACCESSIO
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_WDG_CSM
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
 comma
 )brace

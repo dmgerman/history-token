@@ -33,8 +33,8 @@ DECL|macro|MACHINE_HAS_MVPG
 mdefine_line|#define MACHINE_HAS_MVPG&t;(machine_flags &amp; 16)
 DECL|macro|MACHINE_HAS_DIAG44
 mdefine_line|#define MACHINE_HAS_DIAG44&t;(machine_flags &amp; 32)
-DECL|macro|MACHINE_HAS_HWC
-mdefine_line|#define MACHINE_HAS_HWC&t;&t;(!MACHINE_IS_P390)
+DECL|macro|MACHINE_HAS_SCLP
+mdefine_line|#define MACHINE_HAS_SCLP&t;(!MACHINE_IS_P390)
 multiline_comment|/*&n; * Console mode. Override with conmode=&n; */
 r_extern
 r_int
@@ -48,14 +48,14 @@ id|console_device
 suffix:semicolon
 DECL|macro|CONSOLE_IS_UNDEFINED
 mdefine_line|#define CONSOLE_IS_UNDEFINED&t;(console_mode == 0)
-DECL|macro|CONSOLE_IS_HWC
-mdefine_line|#define CONSOLE_IS_HWC&t;&t;(console_mode == 1)
+DECL|macro|CONSOLE_IS_SCLP
+mdefine_line|#define CONSOLE_IS_SCLP&t;&t;(console_mode == 1)
 DECL|macro|CONSOLE_IS_3215
 mdefine_line|#define CONSOLE_IS_3215&t;&t;(console_mode == 2)
 DECL|macro|CONSOLE_IS_3270
 mdefine_line|#define CONSOLE_IS_3270&t;&t;(console_mode == 3)
-DECL|macro|SET_CONSOLE_HWC
-mdefine_line|#define SET_CONSOLE_HWC&t;&t;do { console_mode = 1; } while (0)
+DECL|macro|SET_CONSOLE_SCLP
+mdefine_line|#define SET_CONSOLE_SCLP&t;do { console_mode = 1; } while (0)
 DECL|macro|SET_CONSOLE_3215
 mdefine_line|#define SET_CONSOLE_3215&t;do { console_mode = 2; } while (0)
 DECL|macro|SET_CONSOLE_3270

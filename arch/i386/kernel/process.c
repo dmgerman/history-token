@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -711,6 +712,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -952,7 +955,9 @@ id|childregs-&gt;esp
 op_assign
 id|esp
 suffix:semicolon
-id|p-&gt;user_tid
+id|p-&gt;set_child_tid
+op_assign
+id|p-&gt;clear_child_tid
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1733,6 +1738,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1778,7 +1785,10 @@ id|newsp
 suffix:semicolon
 r_int
 op_star
-id|user_tid
+id|parent_tidptr
+comma
+op_star
+id|child_tidptr
 suffix:semicolon
 id|clone_flags
 op_assign
@@ -1788,13 +1798,21 @@ id|newsp
 op_assign
 id|regs.ecx
 suffix:semicolon
-id|user_tid
+id|parent_tidptr
 op_assign
 (paren
 r_int
 op_star
 )paren
 id|regs.edx
+suffix:semicolon
+id|child_tidptr
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|regs.edi
 suffix:semicolon
 r_if
 c_cond
@@ -1823,7 +1841,9 @@ id|regs
 comma
 l_int|0
 comma
-id|user_tid
+id|parent_tidptr
+comma
+id|child_tidptr
 )paren
 suffix:semicolon
 r_return
@@ -1877,6 +1897,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

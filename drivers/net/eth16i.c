@@ -9,7 +9,6 @@ l_string|&quot;eth16i.c: v0.35 01-Jul-1999 Mika Kuoppala (miku@iki.fi)&bslash;n&
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;&t;&t;  
 macro_line|#include &lt;linux/fcntl.h&gt;&t;&t;  
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;  

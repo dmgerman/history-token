@@ -380,7 +380,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s HowManyMounts: %d ServerOS: %s  ServerNOS: %s  Capabilities: 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s HowManyMounts: %d ServerOS: %s  ServerNOS: %s&bslash;n&bslash;tCapabilities: 0x%x&quot;
 comma
 id|i
 comma
@@ -514,7 +514,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) %s UseCount: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x and PathComponentLengthMax: %d&quot;
+l_string|&quot;&bslash;n%d) %s UseCount: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentLengthMax: %d&quot;
 comma
 id|i
 comma

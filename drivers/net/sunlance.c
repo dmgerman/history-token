@@ -22,7 +22,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -33,25 +32,24 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/socket.h&gt; /* Used for the temporal inet entries and routing */
+macro_line|#include &lt;linux/route.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* Used by the checksum routines */
-multiline_comment|/* Used for the temporal inet entries and routing */
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;&t;&t;/* For tpe-link-test? setting */
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 multiline_comment|/* Define: 2^4 Tx buffers and 2^4 Rx buffers */
 macro_line|#ifndef LANCE_LOG_TX_BUFFERS
 DECL|macro|LANCE_LOG_TX_BUFFERS

@@ -1223,7 +1223,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;PCI: dev %s type 64-bit&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -1823,6 +1823,9 @@ r_return
 id|hose
 ques
 c_cond
+(paren
+r_int
+)paren
 id|hose-&gt;index
 suffix:colon
 op_minus

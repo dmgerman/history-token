@@ -304,12 +304,14 @@ id|file_operations
 id|proc_bus_zorro_operations
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|proc_bus_zorro_lseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_bus_zorro_read
 comma
 )brace

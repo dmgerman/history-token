@@ -2604,6 +2604,11 @@ op_logical_neg
 id|disk
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bdput
 c_func
 (paren
@@ -3518,11 +3523,6 @@ dot
 id|writepages
 op_assign
 id|generic_writepages
-comma
-dot
-id|vm_writeback
-op_assign
-id|generic_vm_writeback
 comma
 dot
 id|direct_IO

@@ -1,24 +1,23 @@
 multiline_comment|/*&n; * Amiga Linux/68k A2065 Ethernet Driver&n; *&n; * (C) Copyright 1995 by Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; *&n; * Fixes and tips by:&n; *&t;- Janos Farkas (CHEXUM@sparta.banki.hu)&n; *&t;- Jes Degn Soerensen (jds@kom.auc.dk)&n; *&t;- Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This program is based on&n; *&n; *&t;ariadne.?:&t;Amiga Linux/68k Ariadne Ethernet Driver&n; *&t;&t;&t;(C) Copyright 1995 by Geert Uytterhoeven,&n; *                                            Peter De Schrijver&n; *&n; *&t;lance.c:&t;An AMD LANCE ethernet driver for linux.&n; *&t;&t;&t;Written 1993-94 by Donald Becker.&n; *&n; *&t;Am79C960:&t;PCnet(tm)-ISA Single-Chip Ethernet Controller&n; *&t;&t;&t;Advanced Micro Devices&n; *&t;&t;&t;Publication #16907, Rev. B, Amendment/0, May 1994&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of the Linux&n; * distribution for more details.&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * The A2065 is a Zorro-II board made by Commodore/Ameristar. It contains:&n; *&n; *&t;- an Am7990 Local Area Network Controller for Ethernet (LANCE) with&n; *&t;  both 10BASE-2 (thin coax) and AUI (DB-15) connectors&n; */
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#include &lt;linux/zorro.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;a2065.h&quot;
 multiline_comment|/*&n;&t; *&t;&t;Transmit/Receive Ring Definitions&n;&t; */
 DECL|macro|LANCE_LOG_TX_BUFFERS

@@ -2898,7 +2898,10 @@ macro_line|#endif
 multiline_comment|/* success */
 id|entry-&gt;ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign

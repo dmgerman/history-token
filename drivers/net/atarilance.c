@@ -10,12 +10,14 @@ op_assign
 l_string|&quot;atarilance.c: v1.3 04/04/96 &quot;
 l_string|&quot;Roman.Hodek@informatik.uni-erlangen.de&bslash;n&quot;
 suffix:semicolon
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -25,9 +27,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 multiline_comment|/* Debug level:&n; *  0 = silent, print only serious errors&n; *  1 = normal, print error messages&n; *  2 = debug, print debug infos&n; *  3 = debug, print even more debug infos (packet data)&n; */
 DECL|macro|LANCE_DEBUG
 mdefine_line|#define&t;LANCE_DEBUG&t;1

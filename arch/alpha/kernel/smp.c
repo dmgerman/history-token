@@ -1689,6 +1689,7 @@ op_star
 id|cpu
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if

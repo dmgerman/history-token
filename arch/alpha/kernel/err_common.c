@@ -2255,9 +2255,7 @@ id|h
 op_assign
 id|h-&gt;next
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2520,7 +2518,6 @@ suffix:semicolon
 id|err
 op_increment
 )paren
-(brace
 id|header
 op_assign
 id|el_process_subpacket
@@ -2529,7 +2526,6 @@ c_func
 id|header
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* let the console know it&squot;s ok to clear the error(s) at restart */
 id|pcpu-&gt;console_data_log_pa
 op_assign
@@ -2563,6 +2559,7 @@ id|percpu_struct
 op_star
 id|pcpu
 suffix:semicolon
+r_int
 r_int
 id|cpu
 suffix:semicolon

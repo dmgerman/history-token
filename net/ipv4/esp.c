@@ -2267,7 +2267,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|error
+id|error_nolock
 suffix:semicolon
 r_return
 id|NET_XMIT_BYPASS
@@ -2281,6 +2281,8 @@ op_amp
 id|x-&gt;lock
 )paren
 suffix:semicolon
+id|error_nolock
+suffix:colon
 id|kfree_skb
 c_func
 (paren

@@ -1287,6 +1287,18 @@ id|node
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|root-&gt;rnode
+op_eq
+l_int|NULL
+)paren
+id|root-&gt;height
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Empty tree, we can reset the height */
 r_return
 l_int|0
 suffix:semicolon

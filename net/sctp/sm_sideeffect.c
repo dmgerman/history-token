@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -98,7 +98,7 @@ id|chunk
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -130,6 +130,21 @@ id|sctp_cmd_seq_t
 op_star
 comma
 id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+comma
+id|sctp_association_t
+op_star
+comma
+id|sctp_transport_t
 op_star
 )paren
 suffix:semicolon
@@ -209,6 +224,20 @@ op_star
 comma
 id|sctp_chunk_t
 op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sctp_cmd_new_state
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+comma
+id|sctp_association_t
+op_star
+comma
+id|sctp_state_t
 )paren
 suffix:semicolon
 multiline_comment|/* These three macros allow us to pull the debugging code out of the&n; * main flow of sctp_do_sm() to keep attention focused on the real&n; * functionality there.&n; */
@@ -493,6 +522,11 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:colon
 multiline_comment|/* We ran out of memory, so we need to discard this&n;&t;&t; * packet.&n;&t;&t; */
 multiline_comment|/* BUG--we should now recover some memory, probably by&n;&t;&t; * reneging...&n;&t;&t; */
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -811,13 +845,15 @@ r_case
 id|SCTP_CMD_NEW_STATE
 suffix:colon
 multiline_comment|/* Enter a new state.  */
-id|asoc-&gt;state
-op_assign
+id|sctp_cmd_new_state
+c_func
+(paren
+id|commands
+comma
+id|asoc
+comma
 id|command-&gt;obj.state
-suffix:semicolon
-id|asoc-&gt;state_timestamp
-op_assign
-id|jiffies
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -922,7 +958,9 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_PEER_INIT
 suffix:colon
-multiline_comment|/* Process a unified INIT from the peer.  */
+multiline_comment|/* Process a unified INIT from the peer.&n;&t;&t;&t; * Note: Only used during INIT-ACK processing.  If&n;&t;&t;&t; * there is an error just return to the outter&n;&t;&t;&t; * layer which will bail.&n;&t;&t;&t; */
+id|error
+op_assign
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -1672,6 +1710,25 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SCTP_CMD_HB_TIMERS_UPDATE
+suffix:colon
+id|t
+op_assign
+id|command-&gt;obj.transport
+suffix:semicolon
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|commands
+comma
+id|asoc
+comma
+id|t
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|SCTP_CMD_REPORT_ERROR
 suffix:colon
 id|error
@@ -1727,6 +1784,19 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_CMD_RTO_PENDING
+suffix:colon
+id|t
+op_assign
+id|command-&gt;obj.transport
+suffix:semicolon
+id|t-&gt;rto_pending
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -1743,6 +1813,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 )brace
 r_return
@@ -1857,7 +1935,7 @@ op_assign
 id|lowest_tsn
 suffix:semicolon
 )brace
-multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.  &n;&t; */
+multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.&n;&t; */
 id|repl
 op_assign
 id|sctp_make_cwr
@@ -2813,7 +2891,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_logical_and
 (paren
 id|transport-&gt;error_count
@@ -3097,10 +3175,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.&n; */
+multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.  In reality, this is only used for INIT-ACK processing&n; * since all other cases use &quot;temporary&quot; associations and can do all&n; * their work in statefuns directly. &n; */
 DECL|function|sctp_cmd_process_init
 r_static
-r_void
+r_int
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -3124,7 +3202,14 @@ r_int
 id|priority
 )paren
 (brace
-multiline_comment|/* The command sequence holds commands assuming that the&n;&t; * processing will happen successfully.  If this is not the&n;&t; * case, rewind the sequence and add appropriate  error handling&n;&t; * to the sequence.&n;&t; */
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* We only process the init as a sideeffect in a single&n;&t; * case.   This is when we process the INIT-ACK.   If we&n;&t; * fail during INIT processing (due to malloc problems),&n;&t; * just return the error and stop processing the stack.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -3142,6 +3227,19 @@ id|peer_init
 comma
 id|priority
 )paren
+)paren
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_else
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/* Helper function to break out starting up of heartbeat timers.  */
@@ -3217,6 +3315,51 @@ id|t
 suffix:semicolon
 )brace
 )brace
+)brace
+multiline_comment|/* Helper function to update the heartbeat timer. */
+DECL|function|sctp_cmd_hb_timers_update
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+id|cmds
+comma
+id|sctp_association_t
+op_star
+id|asoc
+comma
+id|sctp_transport_t
+op_star
+id|t
+)paren
+(brace
+multiline_comment|/* Update the heartbeat timer.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod_timer
+c_func
+(paren
+op_amp
+id|t-&gt;hb_timer
+comma
+id|t-&gt;hb_interval
+op_plus
+id|t-&gt;rto
+op_plus
+id|jiffies
+)paren
+)paren
+id|sctp_transport_hold
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Helper function to break out SCTP_CMD_SET_BIND_ADDR handling.  */
 DECL|function|sctp_cmd_set_bind_addrs
@@ -3322,7 +3465,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 id|sctp_assoc_control_transport
 c_func
@@ -3392,30 +3535,6 @@ c_func
 (paren
 id|asoc
 comma
-id|t
-)paren
-suffix:semicolon
-multiline_comment|/* Update the heartbeat timer.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_timer
-c_func
-(paren
-op_amp
-id|t-&gt;hb_timer
-comma
-id|t-&gt;hb_interval
-op_plus
-id|t-&gt;rto
-op_plus
-id|jiffies
-)paren
-)paren
-id|sctp_transport_hold
-c_func
-(paren
 id|t
 )paren
 suffix:semicolon
@@ -3547,6 +3666,60 @@ suffix:semicolon
 id|chunk-&gt;transport
 op_assign
 id|t
+suffix:semicolon
+)brace
+multiline_comment|/* Helper function to change the state of an association. */
+DECL|function|sctp_cmd_new_state
+r_static
+r_void
+id|sctp_cmd_new_state
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+id|cmds
+comma
+id|sctp_association_t
+op_star
+id|asoc
+comma
+id|sctp_state_t
+id|state
+)paren
+(brace
+id|asoc-&gt;state
+op_assign
+id|state
+suffix:semicolon
+id|asoc-&gt;state_timestamp
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* Wake up any process waiting for the association to&n;&t; * get established.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_STATE_ESTABLISHED
+op_eq
+id|asoc-&gt;state
+)paren
+op_logical_and
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
+)paren
+)paren
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
 suffix:semicolon
 )brace
 eof

@@ -1397,11 +1397,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|arxescsi_release
+DECL|function|arxescsi_remove
 r_static
 r_void
 id|__devexit
-id|arxescsi_release
+id|arxescsi_remove
 c_func
 (paren
 r_struct

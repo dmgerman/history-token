@@ -374,12 +374,12 @@ id|count
 )paren
 (brace
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 suffix:semicolon
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 suffix:semicolon
@@ -398,7 +398,7 @@ id|isa_br
 )paren
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|child
 suffix:semicolon
