@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
+macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 DECL|macro|DEBUG_KLGRAPH
 macro_line|#undef DEBUG_KLGRAPH
 macro_line|#ifdef DEBUG_KLGRAPH
