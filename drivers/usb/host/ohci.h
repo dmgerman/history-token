@@ -1076,12 +1076,8 @@ id|regs
 (brace
 r_return
 id|readl
+c_func
 (paren
-(paren
-id|__force
-id|u32
-op_star
-)paren
 id|regs
 )paren
 suffix:semicolon
@@ -1114,11 +1110,6 @@ id|writel
 (paren
 id|val
 comma
-(paren
-id|__force
-id|u32
-op_star
-)paren
 id|regs
 )paren
 suffix:semicolon

@@ -119,18 +119,15 @@ id|iw_handler_def
 (brace
 multiline_comment|/* Number of handlers defined (more precisely, index of the&n;&t; * last defined handler + 1) */
 DECL|member|num_standard
-r_const
 id|__u16
 id|num_standard
 suffix:semicolon
 DECL|member|num_private
-r_const
 id|__u16
 id|num_private
 suffix:semicolon
 multiline_comment|/* Number of private arg description */
 DECL|member|num_private_args
-r_const
 id|__u16
 id|num_private_args
 suffix:semicolon
@@ -158,7 +155,6 @@ id|private_args
 suffix:semicolon
 multiline_comment|/* This field will be *removed* in the next version of WE */
 DECL|member|spy_offset
-r_const
 r_int
 id|spy_offset
 suffix:semicolon
