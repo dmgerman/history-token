@@ -131,6 +131,11 @@ r_int
 id|sk_tcplen
 suffix:semicolon
 multiline_comment|/* current read length */
+DECL|member|sk_lastrecv
+id|time_t
+id|sk_lastrecv
+suffix:semicolon
+multiline_comment|/* time of last received request */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes.&n; */

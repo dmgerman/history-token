@@ -60,12 +60,18 @@ r_int
 id|sv_xdrsize
 suffix:semicolon
 multiline_comment|/* XDR buffer size */
-DECL|member|sv_allsocks
+DECL|member|sv_permsocks
 r_struct
 id|list_head
-id|sv_allsocks
+id|sv_permsocks
 suffix:semicolon
-multiline_comment|/* all sockets */
+multiline_comment|/* all permanent sockets */
+DECL|member|sv_tempsocks
+r_struct
+id|list_head
+id|sv_tempsocks
+suffix:semicolon
+multiline_comment|/* all temporary sockets */
 DECL|member|sv_name
 r_char
 op_star

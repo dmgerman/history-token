@@ -675,7 +675,11 @@ id|serv
 comma
 id|rqstp
 comma
-id|MAX_SCHEDULE_TIMEOUT
+l_int|5
+op_star
+l_int|60
+op_star
+id|HZ
 )paren
 )paren
 op_eq
