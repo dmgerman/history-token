@@ -150,6 +150,16 @@ op_star
 id|mod-&gt;archdata_start
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|archdata-&gt;unw_start
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the unwind pointers are sane.&n;&t; */
 r_if
 c_cond
