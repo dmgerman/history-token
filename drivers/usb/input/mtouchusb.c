@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; * mtouchusb.c  --  Driver for Microtouch (Now 3M) USB Touchscreens&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon original work by Radoslaw Garbacz (usb-support@ite.pl)&n; *  (http://freshmeat.net/projects/3mtouchscreendriver)&n; *&n; * History&n; *&n; *  0.3 &amp; 0.4  2002 (TEJ) tejohnson@yahoo.com&n; *    Updated to 2.4.18, then 2.4.19&n; *    Old version still relied on stealing a minor&n; *&n; *  0.5  02/26/2004 (TEJ) tejohnson@yahoo.com&n; *    Complete rewrite using Linux Input in 2.6.3&n; *    Unfortunately no calibration support at this time&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * mtouchusb.c  --  Driver for Microtouch (Now 3M) USB Touchscreens&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon original work by Radoslaw Garbacz (usb-support@ite.pl)&n; *  (http://freshmeat.net/projects/3mtouchscreendriver)&n; *&n; * History&n; *&n; *  0.3 &amp; 0.4  2002 (TEJ) tejohnson@yahoo.com&n; *    Updated to 2.4.18, then 2.4.19&n; *    Old version still relied on stealing a minor&n; *&n; *  0.5  02/26/2004 (TEJ) tejohnson@yahoo.com&n; *    Complete rewrite using Linux Input in 2.6.3&n; *    Unfortunately no calibration support at this time&n; *&n; *  1.4 04/25/2004 (TEJ) tejohnson@yahoo.com&n; *    Changed reset from standard USB dev reset to vendor reset&n; *    Changed data sent to host from compensated to raw coordinates&n; *    Eliminated vendor/product module params&n; *    Performed multiple successfull tests with an EXII-5010UC&n; *&n; *****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -14,9 +14,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|MTOUCHUSB_MIN_XC
-mdefine_line|#define MTOUCHUSB_MIN_XC                0xc8
+mdefine_line|#define MTOUCHUSB_MIN_XC                0x0
 DECL|macro|MTOUCHUSB_MAX_XC
-mdefine_line|#define MTOUCHUSB_MAX_XC                0xff78
+mdefine_line|#define MTOUCHUSB_MAX_XC                0x4000
 DECL|macro|MTOUCHUSB_XC_FUZZ
 mdefine_line|#define MTOUCHUSB_XC_FUZZ               0x0
 DECL|macro|MTOUCHUSB_XC_FLAT
@@ -24,29 +24,33 @@ mdefine_line|#define MTOUCHUSB_XC_FLAT               0x0
 DECL|macro|MTOUCHUSB_MIN_YC
 mdefine_line|#define MTOUCHUSB_MIN_YC                0x0
 DECL|macro|MTOUCHUSB_MAX_YC
-mdefine_line|#define MTOUCHUSB_MAX_YC                0xff78
+mdefine_line|#define MTOUCHUSB_MAX_YC                0x4000
 DECL|macro|MTOUCHUSB_YC_FUZZ
 mdefine_line|#define MTOUCHUSB_YC_FUZZ               0x0
 DECL|macro|MTOUCHUSB_YC_FLAT
 mdefine_line|#define MTOUCHUSB_YC_FLAT               0x0
-DECL|macro|MTOUCHUSB_ASYC_REPORT
-mdefine_line|#define MTOUCHUSB_ASYC_REPORT           1
-DECL|macro|MTOUCHUSB_REPORT_SIZE_DATA
-mdefine_line|#define MTOUCHUSB_REPORT_SIZE_DATA      11
+DECL|macro|MTOUCHUSB_ASYNC_REPORT
+mdefine_line|#define MTOUCHUSB_ASYNC_REPORT          1
+DECL|macro|MTOUCHUSB_RESET
+mdefine_line|#define MTOUCHUSB_RESET                 7
+DECL|macro|MTOUCHUSB_REPORT_DATA_SIZE
+mdefine_line|#define MTOUCHUSB_REPORT_DATA_SIZE      11
 DECL|macro|MTOUCHUSB_REQ_CTRLLR_ID
 mdefine_line|#define MTOUCHUSB_REQ_CTRLLR_ID         10
 DECL|macro|MTOUCHUSB_GET_XC
-mdefine_line|#define MTOUCHUSB_GET_XC(data)          (data[4]&lt;&lt;8 | data[3])
+mdefine_line|#define MTOUCHUSB_GET_XC(data)          (data[8]&lt;&lt;8 | data[7])
 DECL|macro|MTOUCHUSB_GET_YC
-mdefine_line|#define MTOUCHUSB_GET_YC(data)          (data[6]&lt;&lt;8 | data[5])
+mdefine_line|#define MTOUCHUSB_GET_YC(data)          (data[10]&lt;&lt;8 | data[9])
 DECL|macro|MTOUCHUSB_GET_TOUCHED
 mdefine_line|#define MTOUCHUSB_GET_TOUCHED(data)     ((data[2] &amp; 0x40) ? 1:0)
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.4&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Todd E. Johnson, tejohnson@yahoo.com&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;Microtouch USB HID Touchscreen Driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;3M USB Touchscreen Driver&quot;
+DECL|macro|DRIVER_LICENSE
+mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
 DECL|struct|mtouch_usb
 r_struct
 id|mtouch_usb
@@ -98,20 +102,6 @@ l_int|64
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|vendor
-DECL|variable|product
-r_static
-id|__s32
-id|vendor
-op_assign
-op_minus
-l_int|1
-comma
-id|product
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|variable|mtouchusb_devices
 r_static
 r_struct
@@ -131,10 +121,8 @@ l_int|0x0001
 )paren
 )brace
 comma
-multiline_comment|/* 3M (Formerly MicroTouch) 14-206 */
 (brace
 )brace
-multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
 DECL|function|mtouchusb_irq
@@ -435,7 +423,7 @@ c_func
 (paren
 id|udev
 comma
-id|MTOUCHUSB_REPORT_SIZE_DATA
+id|MTOUCHUSB_REPORT_DATA_SIZE
 comma
 id|SLAB_ATOMIC
 comma
@@ -492,7 +480,7 @@ c_func
 (paren
 id|udev
 comma
-id|MTOUCHUSB_REPORT_SIZE_DATA
+id|MTOUCHUSB_REPORT_DATA_SIZE
 comma
 id|mtouch-&gt;data
 comma
@@ -556,14 +544,6 @@ suffix:semicolon
 r_int
 id|nRet
 suffix:semicolon
-r_int
-id|ix
-suffix:semicolon
-r_char
-id|valid_device
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -572,150 +552,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vendor
-op_ne
-op_minus
-l_int|1
-op_logical_and
-id|product
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|info
-c_func
-(paren
-l_string|&quot;%s - User specified USB Touch -- Vend:Prod - %x:%x&quot;
-comma
-id|__FUNCTION__
-comma
-id|vendor
-comma
-id|product
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|ix
-op_assign
-l_int|0
-suffix:semicolon
-id|ix
-OL
-r_sizeof
-(paren
-id|mtouchusb_devices
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|usb_device_id
-)paren
-suffix:semicolon
-id|ix
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|udev-&gt;descriptor.idVendor
-op_eq
-id|mtouchusb_devices
-(braket
-id|ix
-)braket
-dot
-id|idVendor
-)paren
-op_logical_and
-(paren
-id|udev-&gt;descriptor.idProduct
-op_eq
-id|mtouchusb_devices
-(braket
-id|ix
-)braket
-dot
-id|idProduct
-)paren
-)paren
-(brace
-id|valid_device
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|udev-&gt;descriptor.idVendor
-op_eq
-id|vendor
-op_logical_and
-id|udev-&gt;descriptor.idProduct
-op_eq
-id|product
-)paren
-(brace
-multiline_comment|/* User specified */
-id|valid_device
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|valid_device
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s - No valid device!&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|udev-&gt;descriptor.bNumConfigurations
-op_ne
-l_int|1
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s -  Only one device configuration is supported.&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
@@ -746,27 +582,6 @@ l_int|0
 dot
 id|desc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|interface-&gt;desc.bNumEndpoints
-op_ne
-l_int|1
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s - Only one endpoint is supported.&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1003,14 +818,14 @@ id|mtouch-&gt;input.absmin
 id|ABS_Y
 )braket
 op_assign
-id|MTOUCHUSB_MAX_YC
+id|MTOUCHUSB_MIN_YC
 suffix:semicolon
 id|mtouch-&gt;input.absmax
 (braket
 id|ABS_Y
 )braket
 op_assign
-id|MTOUCHUSB_MIN_YC
+id|MTOUCHUSB_MAX_YC
 suffix:semicolon
 id|mtouch-&gt;input.absfuzz
 (braket
@@ -1152,20 +967,20 @@ c_func
 (paren
 id|udev
 comma
-l_int|0x80
+l_int|0
 )paren
 comma
-id|USB_REQ_GET_CONFIGURATION
+id|MTOUCHUSB_RESET
 comma
-id|USB_DIR_IN
+id|USB_DIR_OUT
 op_or
-id|USB_TYPE_STANDARD
+id|USB_TYPE_VENDOR
 op_or
 id|USB_RECIP_DEVICE
 comma
-l_int|0
+l_int|1
 comma
-l_int|0x81
+l_int|0
 comma
 l_int|NULL
 comma
@@ -1179,7 +994,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - usb_control_msg - USB_REQ_GET_CONFIGURATION - bytes|err: %d&quot;
+l_string|&quot;%s - usb_control_msg - MTOUCHUSB_RESET - bytes|err: %d&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1263,7 +1078,7 @@ l_int|0x81
 comma
 id|mtouch-&gt;data
 comma
-id|MTOUCHUSB_REPORT_SIZE_DATA
+id|MTOUCHUSB_REPORT_DATA_SIZE
 comma
 id|mtouchusb_irq
 comma
@@ -1299,10 +1114,10 @@ c_func
 (paren
 id|udev
 comma
-l_int|0x80
+l_int|0
 )paren
 comma
-id|MTOUCHUSB_ASYC_REPORT
+id|MTOUCHUSB_ASYNC_REPORT
 comma
 id|USB_DIR_OUT
 op_or
@@ -1310,9 +1125,9 @@ id|USB_TYPE_VENDOR
 op_or
 id|USB_RECIP_DEVICE
 comma
-id|MTOUCHUSB_ASYC_REPORT
+l_int|1
 comma
-id|MTOUCHUSB_ASYC_REPORT
+l_int|1
 comma
 l_int|NULL
 comma
@@ -1326,7 +1141,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - usb_control_msg - MTOUCHUSB_ASYC_REPORT - bytes|err: %d&quot;
+l_string|&quot;%s - usb_control_msg - MTOUCHUSB_ASYNC_REPORT - bytes|err: %d&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1573,38 +1388,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|vendor
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|vendor
-comma
-l_string|&quot;User specified USB idVendor&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|product
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|product
-comma
-l_string|&quot;User specified USB idProduct&quot;
 )paren
 suffix:semicolon
 eof
