@@ -5196,6 +5196,10 @@ suffix:semicolon
 )brace
 id|args.objectid
 op_assign
+id|REISERFS_ROOT_OBJECTID
+suffix:semicolon
+id|args.dirid
+op_assign
 id|REISERFS_ROOT_PARENT_OBJECTID
 suffix:semicolon
 id|root_inode

@@ -2910,6 +2910,10 @@ suffix:semicolon
 id|time_t
 id|new_atime
 suffix:semicolon
+id|inode-&gt;i_ino
+op_assign
+id|ino
+suffix:semicolon
 multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
 id|inode-&gt;i_flags
 op_or_assign

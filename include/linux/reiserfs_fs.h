@@ -3338,6 +3338,10 @@ DECL|member|objectid
 id|__u32
 id|objectid
 suffix:semicolon
+DECL|member|dirid
+id|__u32
+id|dirid
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/***************************************************************************/

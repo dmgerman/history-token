@@ -416,6 +416,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|inode-&gt;i_ino
+op_assign
+id|ino
+suffix:semicolon
 id|list_add
 c_func
 (paren

@@ -4821,6 +4821,10 @@ op_star
 )paren
 id|p
 suffix:semicolon
+id|inode-&gt;i_ino
+op_assign
+id|args-&gt;objectid
+suffix:semicolon
 id|INODE_PKEY
 c_func
 (paren
@@ -4832,7 +4836,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|args-&gt;objectid
+id|args-&gt;dirid
 )paren
 suffix:semicolon
 r_return
@@ -4873,7 +4877,7 @@ id|retval
 suffix:semicolon
 id|dirino
 op_assign
-id|args-&gt;objectid
+id|args-&gt;dirid
 suffix:semicolon
 multiline_comment|/* set version 1, version 2 could be used too, because stat data&n;       key is the same in both versions */
 id|key.version
@@ -5051,6 +5055,13 @@ id|opaque
 suffix:semicolon
 multiline_comment|/* args is already in CPU order */
 r_return
+(paren
+id|inode-&gt;i_ino
+op_eq
+id|args-&gt;objectid
+)paren
+op_logical_and
+(paren
 id|le32_to_cpu
 c_func
 (paren
@@ -5063,9 +5074,8 @@ op_member_access_from_pointer
 id|k_dir_id
 )paren
 op_eq
-id|args
-op_member_access_from_pointer
-id|objectid
+id|args-&gt;dirid
+)paren
 suffix:semicolon
 )brace
 DECL|function|reiserfs_iget
@@ -5096,6 +5106,10 @@ id|reiserfs_iget_args
 id|args
 suffix:semicolon
 id|args.objectid
+op_assign
+id|key-&gt;on_disk_key.k_objectid
+suffix:semicolon
+id|args.dirid
 op_assign
 id|key-&gt;on_disk_key.k_dir_id
 suffix:semicolon
