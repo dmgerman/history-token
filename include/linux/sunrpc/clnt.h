@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/stats.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
+macro_line|#include &lt;linux/sunrpc/timer.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 multiline_comment|/*&n; * This defines an RPC port mapping&n; */
 DECL|struct|rpc_portmap
@@ -149,6 +150,12 @@ r_int
 id|cl_hardmax
 suffix:semicolon
 multiline_comment|/* max hard timeout */
+DECL|member|cl_rtt
+r_struct
+id|rpc_rtt
+id|cl_rtt
+suffix:semicolon
+multiline_comment|/* RTO estimator data */
 DECL|member|cl_pmap
 r_struct
 id|rpc_portmap
@@ -283,6 +290,12 @@ r_int
 id|p_count
 suffix:semicolon
 multiline_comment|/* call count */
+DECL|member|p_timer
+r_int
+r_int
+id|p_timer
+suffix:semicolon
+multiline_comment|/* Which RTT timer to use */
 )brace
 suffix:semicolon
 DECL|macro|rpcproc_bufsiz
@@ -295,6 +308,8 @@ DECL|macro|rpcproc_name
 mdefine_line|#define rpcproc_name(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_procname)
 DECL|macro|rpcproc_count
 mdefine_line|#define rpcproc_count(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_count)
+DECL|macro|rpcproc_timer
+mdefine_line|#define rpcproc_timer(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_timer)
 DECL|macro|RPC_CONGESTED
 mdefine_line|#define RPC_CONGESTED(clnt)&t;(RPCXPRT_CONGESTED((clnt)-&gt;cl_xprt))
 DECL|macro|RPC_PEERADDR
