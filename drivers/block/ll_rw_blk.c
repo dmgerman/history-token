@@ -5408,10 +5408,6 @@ id|q-&gt;queue_lock
 suffix:semicolon
 id|again
 suffix:colon
-id|req
-op_assign
-l_int|NULL
-suffix:semicolon
 id|insert_here
 op_assign
 l_int|NULL
@@ -5452,7 +5448,7 @@ c_func
 id|q
 comma
 op_amp
-id|req
+id|insert_here
 comma
 id|bio
 )paren
@@ -5466,6 +5462,14 @@ id|el_ret
 r_case
 id|ELEVATOR_BACK_MERGE
 suffix:colon
+id|req
+op_assign
+id|list_entry_rq
+c_func
+(paren
+id|insert_here
+)paren
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -5548,6 +5552,14 @@ suffix:semicolon
 r_case
 id|ELEVATOR_FRONT_MERGE
 suffix:colon
+id|req
+op_assign
+id|list_entry_rq
+c_func
+(paren
+id|insert_here
+)paren
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -5653,17 +5665,6 @@ multiline_comment|/*&n;&t;&t; * elevator says don&squot;t/can&squot;t merge. get
 r_case
 id|ELEVATOR_NO_MERGE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * use elevator hints as to where to insert the&n;&t;&t;&t; * request. if no hints, just add it to the back&n;&t;&t;&t; * of the queue&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|req
-)paren
-id|insert_here
-op_assign
-op_amp
-id|req-&gt;queuelist
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
