@@ -47,6 +47,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2012,6 +2013,13 @@ c_func
 id|iov_shorten
 )paren
 suffix:semicolon
+DECL|variable|default_backing_dev_info
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|default_backing_dev_info
+)paren
+suffix:semicolon
 multiline_comment|/* tty routines */
 DECL|variable|tty_wait_until_sent
 id|EXPORT_SYMBOL
@@ -2564,8 +2572,6 @@ c_func
 id|set_cpus_allowed
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL
 c_func

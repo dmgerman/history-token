@@ -5109,7 +5109,7 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we need to split any vma, do it now to save pain later.&n;&t; */
+multiline_comment|/*&n;&t; * If we need to split any vma, do it now to save pain later.&n;&t; *&n;&t; * Note: mremap&squot;s move_vma VM_ACCOUNT handling assumes a partially&n;&t; * unmapped vm_area_struct will remain in use: so lower split_vma&n;&t; * places tmp vma above, and higher split_vma places tmp vma below.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5140,10 +5140,6 @@ suffix:semicolon
 id|prev
 op_assign
 id|mpnt
-suffix:semicolon
-id|mpnt
-op_assign
-id|mpnt-&gt;vm_next
 suffix:semicolon
 )brace
 multiline_comment|/* Does it split the last one? */
@@ -5179,7 +5175,7 @@ id|last
 comma
 id|end
 comma
-l_int|0
+l_int|1
 )paren
 )paren
 r_return
@@ -5187,6 +5183,15 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|mpnt
+op_assign
+id|prev
+ques
+c_cond
+id|prev-&gt;vm_next
+suffix:colon
+id|mm-&gt;mmap
+suffix:semicolon
 multiline_comment|/*&n;&t; * Remove the vma&squot;s, and unmap the actual pages&n;&t; */
 id|spin_lock
 c_func

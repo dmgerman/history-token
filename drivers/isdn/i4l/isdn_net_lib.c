@@ -12,6 +12,7 @@ macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &quot;isdn_ciscohdlck.h&quot;
+macro_line|#include &quot;isdn_concap.h&quot;
 DECL|macro|ISDN_NET_TX_TIMEOUT
 mdefine_line|#define ISDN_NET_TX_TIMEOUT (20*HZ) 
 multiline_comment|/* All of this configuration code is globally serialized */

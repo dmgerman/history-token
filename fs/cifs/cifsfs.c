@@ -78,6 +78,13 @@ id|sign_CIFS_PDUs
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|CIFSMaximumBufferSize
+r_int
+r_int
+id|CIFSMaximumBufferSize
+op_assign
+id|CIFS_MAX_MSGSIZE
+suffix:semicolon
 r_extern
 r_int
 id|cifs_mount
@@ -258,16 +265,33 @@ op_assign
 op_amp
 id|cifs_super_ops
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf
+OG
+id|MAX_CIFS_HDR_SIZE
+op_plus
+l_int|512
+)paren
+(brace
 id|sb-&gt;s_blocksize
 op_assign
-id|CIFS_MAX_MSGSIZE
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf
+op_minus
+id|MAX_CIFS_HDR_SIZE
 suffix:semicolon
-multiline_comment|/* BB check SMBSessSetup negotiated size */
+)brace
+r_else
+id|sb-&gt;s_blocksize
+op_assign
+id|CIFSMaximumBufferSize
+suffix:semicolon
 id|sb-&gt;s_blocksize_bits
 op_assign
-l_int|10
+l_int|14
 suffix:semicolon
-multiline_comment|/* 2**10 = CIFS_MAX_MSGSIZE */
+multiline_comment|/* default 2**14 = CIFS_MAX_MSGSIZE */
 id|inode
 op_assign
 id|iget
@@ -551,6 +575,26 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* always return success? what if volume is no longer available? */
+)brace
+DECL|function|cifs_permission
+r_static
+r_int
+id|cifs_permission
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|mask
+)paren
+(brace
+multiline_comment|/* the server does permission checks, we do not need to do it here */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|cifs_inode_cachep
 r_static
@@ -1012,6 +1056,11 @@ id|rename
 op_assign
 id|cifs_rename
 comma
+dot
+id|permission
+op_assign
+id|cifs_permission
+comma
 multiline_comment|/*&t;revalidate:cifs_revalidate,   */
 dot
 id|setattr
@@ -1048,6 +1097,11 @@ id|rename
 op_assign
 id|cifs_rename
 comma
+dot
+id|permission
+op_assign
+id|cifs_permission
+comma
 macro_line|#ifdef CIFS_XATTR
 dot
 id|setxattr
@@ -1069,11 +1123,6 @@ id|removexattr
 op_assign
 id|cifs_removexattr
 comma
-dot
-id|permission
-op_assign
-id|cifs_permission
-comma
 macro_line|#endif 
 )brace
 suffix:semicolon
@@ -1092,6 +1141,11 @@ dot
 id|follow_link
 op_assign
 id|cifs_follow_link
+comma
+dot
+id|permission
+op_assign
+id|cifs_permission
 comma
 multiline_comment|/* BB add the following two eventually */
 multiline_comment|/* revalidate: cifs_revalidate,&n;&t;   setattr:    cifs_notify_change, */
@@ -1188,6 +1242,11 @@ dot
 id|release
 op_assign
 id|cifs_closedir
+comma
+dot
+id|read
+op_assign
+id|generic_read_dir
 comma
 )brace
 suffix:semicolon

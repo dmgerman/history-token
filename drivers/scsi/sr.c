@@ -3415,9 +3415,6 @@ c_func
 id|SCSI_CDROM_MAJOR
 comma
 l_string|&quot;sr&quot;
-comma
-op_amp
-id|sr_bdops
 )paren
 suffix:semicolon
 r_if
