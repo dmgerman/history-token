@@ -540,6 +540,12 @@ op_assign
 op_star
 id|beg
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|RFALSE
 c_func
 (paren
@@ -1285,6 +1291,12 @@ id|s-&gt;s_blocksize
 op_lshift
 l_int|3
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|PROC_INFO_INC
 c_func
 (paren
@@ -1627,6 +1639,12 @@ id|nr
 comma
 id|offset
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|PROC_INFO_INC
 c_func
 (paren
@@ -1846,6 +1864,12 @@ id|s
 op_assign
 id|th-&gt;t_super
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|RFALSE
 c_func
 (paren
@@ -1941,6 +1965,12 @@ comma
 l_string|&quot;vs-4070: can not free such block&quot;
 )paren
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|_reiserfs_free_block
 c_func
 (paren
@@ -1988,6 +2018,12 @@ id|inode
 op_assign
 op_amp
 id|ei-&gt;vfs_inode
+suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
@@ -2090,6 +2126,12 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2127,6 +2169,12 @@ id|th-&gt;t_super
 )paren
 op_member_access_from_pointer
 id|j_prealloc_list
+suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
 suffix:semicolon
 r_while
 c_loop

@@ -83,6 +83,12 @@ id|unp_t
 id|unfm_ptr
 suffix:semicolon
 multiline_comment|/* Handle on an unformatted node&n;&t;&t;&t;&t;       that will be inserted in the&n;&t;&t;&t;&t;       tree. */
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
+suffix:semicolon
 id|REISERFS_SB
 c_func
 (paren
@@ -744,6 +750,12 @@ multiline_comment|/* position of first byte of the tail */
 r_struct
 id|cpu_key
 id|key
+suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
 suffix:semicolon
 id|REISERFS_SB
 c_func
