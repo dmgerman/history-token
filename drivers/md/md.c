@@ -756,6 +756,17 @@ op_amp
 id|mddev-&gt;reconfig_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mddev-&gt;thread
+)paren
+id|md_wakeup_thread
+c_func
+(paren
+id|mddev-&gt;thread
+)paren
+suffix:semicolon
 )brace
 DECL|function|find_rdev_nr
 id|mdk_rdev_t
@@ -6813,10 +6824,15 @@ op_amp
 id|mddev-&gt;recovery
 )paren
 suffix:semicolon
-id|md_wakeup_thread
+r_if
+c_cond
+(paren
+id|mddev-&gt;sb_dirty
+)paren
+id|md_update_sb
 c_func
 (paren
-id|mddev-&gt;thread
+id|mddev
 )paren
 suffix:semicolon
 id|set_capacity
@@ -7174,7 +7190,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mddev-&gt;raid_disks
+op_logical_neg
+id|mddev-&gt;in_sync
 )paren
 (brace
 multiline_comment|/* mark array as shutdown cleanly */
@@ -9666,7 +9683,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * set_array_info is used two different ways&n; * The original usage is when creating a new array.&n; * In this usage, raid_disks is &gt; = and it together with&n; *  level, size, not_persistent,layout,chunksize determine the&n; *  shape of the array.&n; *  This will always create an array with a type-0.90.0 superblock.&n; * The newer usage is when assembling an array.&n; *  In this case raid_disks will be 0, and the major_version field is&n; *  use to determine which style super-blocks are to be found on the devices.&n; *  The minor and patch _version numbers are also kept incase the&n; *  super_block handler wishes to interpret them.&n; */
+multiline_comment|/*&n; * set_array_info is used two different ways&n; * The original usage is when creating a new array.&n; * In this usage, raid_disks is &gt; 0 and it together with&n; *  level, size, not_persistent,layout,chunksize determine the&n; *  shape of the array.&n; *  This will always create an array with a type-0.90.0 superblock.&n; * The newer usage is when assembling an array.&n; *  In this case raid_disks will be 0, and the major_version field is&n; *  use to determine which style super-blocks are to be found on the devices.&n; *  The minor and patch _version numbers are also kept incase the&n; *  super_block handler wishes to interpret them.&n; */
 DECL|function|set_array_info
 r_static
 r_int
@@ -9822,6 +9839,10 @@ suffix:semicolon
 id|mddev-&gt;max_disks
 op_assign
 id|MD_SB_DISKS
+suffix:semicolon
+id|mddev-&gt;sb_dirty
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Generate a 128 bit UUID&n;&t; */
 id|get_random_bytes
@@ -13217,6 +13238,35 @@ op_star
 id|mddev
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mddev-&gt;safemode
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mddev-&gt;safemode
+op_eq
+l_int|2
+op_logical_and
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|mddev-&gt;writes_pending
+)paren
+op_logical_or
+id|mddev-&gt;in_sync
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* avoid the lock */
 id|mddev_lock_uninterruptible
 c_func
 (paren
@@ -13317,11 +13367,6 @@ id|current
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|mddev-&gt;safemode
-)paren
 id|md_enter_safemode
 c_func
 (paren
@@ -14121,11 +14166,6 @@ op_assign
 id|MaxSector
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|mddev-&gt;safemode
-)paren
 id|md_enter_safemode
 c_func
 (paren
