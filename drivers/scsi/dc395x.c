@@ -496,11 +496,13 @@ op_star
 id|scsi_host
 suffix:semicolon
 DECL|member|io_port_base
-id|u16
+r_int
+r_int
 id|io_port_base
 suffix:semicolon
 DECL|member|io_port_len
-id|u16
+r_int
+r_int
 id|io_port_len
 suffix:semicolon
 DECL|member|dcb_list
@@ -552,7 +554,8 @@ id|u8
 id|sel_timeout
 suffix:semicolon
 DECL|member|irq_level
-id|u8
+r_int
+r_int
 id|irq_level
 suffix:semicolon
 DECL|member|tag_max_num
@@ -16383,7 +16386,8 @@ id|__init
 id|trms1040_wait_30us
 c_func
 (paren
-id|u16
+r_int
+r_int
 id|io_port
 )paren
 (brace
@@ -16425,7 +16429,8 @@ id|__init
 id|trms1040_write_cmd
 c_func
 (paren
-id|u16
+r_int
+r_int
 id|io_port
 comma
 id|u8
@@ -16612,7 +16617,8 @@ id|__init
 id|trms1040_set_data
 c_func
 (paren
-id|u16
+r_int
+r_int
 id|io_port
 comma
 id|u8
@@ -16845,7 +16851,8 @@ id|NvRamType
 op_star
 id|eeprom
 comma
-id|u16
+r_int
+r_int
 id|io_port
 )paren
 (brace
@@ -16997,7 +17004,8 @@ id|__init
 id|trms1040_get_data
 c_func
 (paren
-id|u16
+r_int
+r_int
 id|io_port
 comma
 id|u8
@@ -17133,7 +17141,8 @@ id|NvRamType
 op_star
 id|eeprom
 comma
-id|u16
+r_int
+r_int
 id|io_port
 )paren
 (brace
@@ -17236,7 +17245,8 @@ id|NvRamType
 op_star
 id|eeprom
 comma
-id|u16
+r_int
+r_int
 id|io_port
 )paren
 (brace
@@ -18651,13 +18661,15 @@ id|AdapterCtlBlk
 op_star
 id|acb
 comma
-id|u32
+r_int
+r_int
 id|io_port
 comma
 id|u32
 id|io_port_len
 comma
-id|u8
+r_int
+r_int
 id|irq
 )paren
 (brace
@@ -18681,7 +18693,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Failed to reserve IO region 0x%x&bslash;n&quot;
+l_string|&quot;Failed to reserve IO region 0x%lx&bslash;n&quot;
 comma
 id|io_port
 )paren
@@ -18742,9 +18754,6 @@ c_func
 op_amp
 id|acb-&gt;eeprom
 comma
-(paren
-id|u16
-)paren
 id|io_port
 )paren
 suffix:semicolon
@@ -19188,7 +19197,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;io_port_base 0x%04x, &quot;
+l_string|&quot;io_port_base 0x%04lx, &quot;
 comma
 id|acb-&gt;io_port_base
 )paren
@@ -19196,7 +19205,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;irq_level 0x%02x, &quot;
+l_string|&quot;irq_level 0x%04x, &quot;
 comma
 id|acb-&gt;irq_level
 )paren
@@ -19986,7 +19995,8 @@ r_int
 r_int
 id|io_port_len
 suffix:semicolon
-id|u8
+r_int
+r_int
 id|irq
 suffix:semicolon
 id|dprintkdbg
@@ -20062,7 +20072,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;IO_PORT=%04x, IRQ=%x&bslash;n&quot;
+l_string|&quot;IO_PORT=0x%04lx, IRQ=0x%x&bslash;n&quot;
 comma
 id|io_port_base
 comma
