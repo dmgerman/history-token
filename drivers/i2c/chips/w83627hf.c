@@ -5017,6 +5017,7 @@ id|w83637hf
 op_eq
 id|data-&gt;type
 )paren
+(brace
 id|data-&gt;vrm_ovt
 op_assign
 id|w83627hf_read_value
@@ -5027,11 +5028,28 @@ comma
 id|W83627THF_REG_VRM_OVT_CFG
 )paren
 suffix:semicolon
+id|data-&gt;vrm
+op_assign
+(paren
+id|data-&gt;vrm_ovt
+op_amp
+l_int|0x01
+)paren
+ques
+c_cond
+l_int|90
+suffix:colon
+l_int|82
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* Convert VID to voltage based on default VRM */
 id|data-&gt;vrm
 op_assign
 id|DEFAULT_VRM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
