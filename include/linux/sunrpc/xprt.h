@@ -17,7 +17,7 @@ mdefine_line|#define RPC_CWNDSCALE&t;&t;(256)
 DECL|macro|RPC_MAXCWND
 mdefine_line|#define RPC_MAXCWND&t;&t;(RPC_MAXCONG * RPC_CWNDSCALE)
 DECL|macro|RPC_INITCWND
-mdefine_line|#define RPC_INITCWND&t;&t;(RPC_MAXCWND &gt;&gt; 1)
+mdefine_line|#define RPC_INITCWND&t;&t;RPC_CWNDSCALE
 DECL|macro|RPCXPRT_CONGESTED
 mdefine_line|#define RPCXPRT_CONGESTED(xprt) ((xprt)-&gt;cong &gt;= (xprt)-&gt;cwnd)
 multiline_comment|/* Default timeout values */

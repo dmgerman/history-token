@@ -2249,6 +2249,10 @@ id|clnt
 comma
 id|task-&gt;tk_msg.rpc_proc
 )paren
+op_logical_and
+id|task-&gt;tk_status
+op_ge
+l_int|0
 )paren
 (brace
 id|task-&gt;tk_action

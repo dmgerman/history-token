@@ -8,8 +8,6 @@ macro_line|#include &lt;asm/svinto.h&gt;
 multiline_comment|/* ETRAX 100 can support 4 IDE busses on the same pins (serialized) */
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;4
-DECL|macro|ide__sti
-mdefine_line|#define ide__sti()&t;__sti()
 DECL|function|ide_default_irq
 r_static
 id|__inline__

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -751,7 +752,7 @@ id|REQ_SPECIAL
 )paren
 )paren
 (brace
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -1794,6 +1795,7 @@ id|pc-&gt;actually_transferred
 suffix:semicolon
 macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
 id|clear_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -1801,12 +1803,11 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_if
 c_cond
 (paren
@@ -2396,9 +2397,6 @@ op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
-suffix:semicolon
-id|ide_startstop_t
-id|startstop
 suffix:semicolon
 id|atapi_ireason_reg_t
 id|ireason
@@ -5158,7 +5156,7 @@ op_assign
 id|floppy-&gt;progress_indication
 suffix:semicolon
 )brace
-multiline_comment|/* Else assume format_unit has finished, and we&squot;re&n;&t;&t;** at 0x10000 */
+multiline_comment|/* Else assume format_unit has finished, and we&squot;re&n;&t;&t; * at 0x10000&n;&t;&t; */
 )brace
 r_else
 (brace
@@ -5169,15 +5167,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ata_status
@@ -5194,7 +5187,7 @@ id|status.all
 op_assign
 id|drive-&gt;status
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7070,53 +7063,65 @@ id|ata_operations
 id|idefloppy_driver
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|attach
-suffix:colon
+op_assign
 id|idefloppy_attach
 comma
+dot
 id|cleanup
-suffix:colon
+op_assign
 id|idefloppy_cleanup
 comma
+dot
 id|standby
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|do_request
-suffix:colon
+op_assign
 id|idefloppy_do_request
 comma
+dot
 id|end_request
-suffix:colon
+op_assign
 id|idefloppy_end_request
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|idefloppy_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|idefloppy_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|idefloppy_release
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 id|idefloppy_check_media_change
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* use default method */
+dot
 id|capacity
-suffix:colon
+op_assign
 id|idefloppy_capacity
 comma
 )brace

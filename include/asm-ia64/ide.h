@@ -15,8 +15,6 @@ DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;6
 macro_line|# endif
 macro_line|#endif
-DECL|macro|ide__sti
-mdefine_line|#define ide__sti()&t;__sti()
 r_static
 id|__inline__
 r_int
