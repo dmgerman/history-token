@@ -2016,26 +2016,6 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Work around SIS648/746 instability by delaying a bit.&n;&t;&t; * This isn&squot;t a particularly nice solution, but in absense of&n;&t;&t; * info from SiS, it&squot;s the best we can do.&n;&t;&t; */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_plus
-l_int|99
-)paren
-op_div
-l_int|100
-)paren
-suffix:semicolon
-multiline_comment|/* &gt;= 1/100th of a second */
 )brace
 )brace
 DECL|variable|agp_device_command
