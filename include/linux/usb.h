@@ -2107,11 +2107,11 @@ r_int
 id|alternate
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * timeouts, in seconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; * USB identifies 5 second timeouts, maybe more in a few cases, and a few&n; * slow devices (like some MGE Ellipse UPSes) actually push that limit.&n; */
+multiline_comment|/*&n; * timeouts, in milliseconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; * USB identifies 5 second timeouts, maybe more in a few cases, and a few&n; * slow devices (like some MGE Ellipse UPSes) actually push that limit.&n; */
 DECL|macro|USB_CTRL_GET_TIMEOUT
-mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;5
+mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;5000
 DECL|macro|USB_CTRL_SET_TIMEOUT
-mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;5
+mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;5000
 multiline_comment|/**&n; * struct usb_sg_request - support for scatter/gather I/O&n; * @status: zero indicates success, else negative errno&n; * @bytes: counts bytes transferred.&n; *&n; * These requests are initialized using usb_sg_init(), and then are used&n; * as request handles passed to usb_sg_wait() or usb_sg_cancel().  Most&n; * members of the request object aren&squot;t for driver access.&n; *&n; * The status and bytecount values are valid only after usb_sg_wait()&n; * returns.  If the status is zero, then the bytecount matches the total&n; * from the request.&n; *&n; * After an error completion, drivers may need to clear a halt condition&n; * on the endpoint.&n; */
 DECL|struct|usb_sg_request
 r_struct
