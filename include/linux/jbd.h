@@ -1321,7 +1321,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|journal_flushpage
+id|journal_invalidatepage
 c_func
 (paren
 id|journal_t

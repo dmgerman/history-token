@@ -267,11 +267,11 @@ c_func
 id|journal_blocks_per_page
 )paren
 suffix:semicolon
-DECL|variable|journal_flushpage
+DECL|variable|journal_invalidatepage
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|journal_flushpage
+id|journal_invalidatepage
 )paren
 suffix:semicolon
 DECL|variable|journal_try_to_free_buffers

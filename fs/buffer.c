@@ -4335,10 +4335,10 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * block_flushpage - invalidate part of all of a buffer-backed page&n; *&n; * @page: the page which is affected&n; * @offset: the index of the truncation point&n; *&n; * block_flushpage() should be called block_invalidatepage().  It is&n; * called when all or part of the page has become invalidatedby a truncate&n; * operation.&n; *&n; * block_flushpage() does not have to release all buffers, but it must&n; * ensure that no dirty buffer is left outside @offset and that no I/O&n; * is underway against any of the blocks which are outside the truncation&n; * point.  Because the caller is about to free (and possibly reuse) those&n; * blocks on-disk.&n; */
-DECL|function|block_flushpage
+multiline_comment|/**&n; * block_invalidatepage - invalidate part of all of a buffer-backed page&n; *&n; * @page: the page which is affected&n; * @offset: the index of the truncation point&n; *&n; * block_invalidatepage() is called when all or part of the page has become&n; * invalidatedby a truncate operation.&n; *&n; * block_invalidatepage() does not have to release all buffers, but it must&n; * ensure that no dirty buffer is left outside @offset and that no I/O&n; * is underway against any of the blocks which are outside the truncation&n; * point.  Because the caller is about to free (and possibly reuse) those&n; * blocks on-disk.&n; */
+DECL|function|block_invalidatepage
 r_int
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 r_struct
@@ -4482,11 +4482,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|block_flushpage
+DECL|variable|block_invalidatepage
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|block_flushpage
+id|block_invalidatepage
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We attach and possibly dirty the buffers atomically wrt&n; * __set_page_dirty_buffers() via private_lock.  try_to_free_buffers&n; * is already excluded via the page lock.&n; */
@@ -8476,7 +8476,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; *&n; * Swap pages are also marked PageWriteback when they are being written&n; * so that memory allocators will throttle on them.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to throttle processes which reuse their swapcache pages while&n; * they are under writeout, and to ensure that there is no I/O going on&n; * when the page has been successfully locked.  Functions such as&n; * free_swap_and_cache() need to guarantee that there is no I/O in progress&n; * because they will be freeing up swap blocks, which may then be reused.&n; *&n; * Swap pages are also marked PageWriteback when they are being written&n; * so that memory allocators will throttle on them.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page

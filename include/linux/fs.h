@@ -602,11 +602,11 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|member|flushpage
+DECL|member|invalidatepage
 r_int
 (paren
 op_star
-id|flushpage
+id|invalidatepage
 )paren
 (paren
 r_struct

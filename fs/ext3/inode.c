@@ -4739,10 +4739,10 @@ id|ext3_get_block
 )paren
 suffix:semicolon
 )brace
-DECL|function|ext3_flushpage
+DECL|function|ext3_invalidatepage
 r_static
 r_int
-id|ext3_flushpage
+id|ext3_invalidatepage
 c_func
 (paren
 r_struct
@@ -4766,7 +4766,7 @@ id|page-&gt;mapping-&gt;host
 )paren
 suffix:semicolon
 r_return
-id|journal_flushpage
+id|journal_invalidatepage
 c_func
 (paren
 id|journal
@@ -4854,9 +4854,9 @@ suffix:colon
 id|ext3_bmap
 comma
 multiline_comment|/* BKL held */
-id|flushpage
+id|invalidatepage
 suffix:colon
-id|ext3_flushpage
+id|ext3_invalidatepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
 id|releasepage
@@ -4968,9 +4968,9 @@ suffix:colon
 id|ext3_bmap
 comma
 multiline_comment|/* BKL held */
-id|flushpage
+id|invalidatepage
 suffix:colon
-id|ext3_flushpage
+id|ext3_invalidatepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
 id|releasepage

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
-multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_flushpage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
+multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_invalidatepage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
@@ -383,10 +383,10 @@ id|pagemap_lru_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_flushpage
+DECL|function|do_invalidatepage
 r_static
 r_int
-id|do_flushpage
+id|do_invalidatepage
 c_func
 (paren
 r_struct
@@ -402,7 +402,7 @@ id|offset
 r_int
 (paren
 op_star
-id|flushpage
+id|invalidatepage
 )paren
 (paren
 r_struct
@@ -413,19 +413,19 @@ r_int
 r_int
 )paren
 suffix:semicolon
-id|flushpage
+id|invalidatepage
 op_assign
-id|page-&gt;mapping-&gt;a_ops-&gt;flushpage
+id|page-&gt;mapping-&gt;a_ops-&gt;invalidatepage
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|flushpage
+id|invalidatepage
 )paren
 r_return
 (paren
 op_star
-id|flushpage
+id|invalidatepage
 )paren
 (paren
 id|page
@@ -434,7 +434,7 @@ id|offset
 )paren
 suffix:semicolon
 r_return
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 id|page
@@ -480,7 +480,7 @@ c_func
 id|page
 )paren
 )paren
-id|do_flushpage
+id|do_invalidatepage
 c_func
 (paren
 id|page
@@ -489,7 +489,7 @@ id|partial
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * AKPM: the PagePrivate test here seems a bit bogus.  It bypasses the&n; * mapping&squot;s -&gt;flushpage, which may still want to be called.&n; */
+multiline_comment|/*&n; * AKPM: the PagePrivate test here seems a bit bogus.  It bypasses the&n; * mapping&squot;s -&gt;invalidatepage, which may still want to be called.&n; */
 DECL|function|truncate_complete_page
 r_static
 r_void
@@ -513,7 +513,7 @@ c_func
 id|page
 )paren
 op_logical_or
-id|do_flushpage
+id|do_invalidatepage
 c_func
 (paren
 id|page
@@ -1242,7 +1242,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|block_flushpage
+id|do_invalidatepage
 c_func
 (paren
 id|page

@@ -696,7 +696,7 @@ id|gfp_mask
 )paren
 suffix:semicolon
 r_int
-id|block_flushpage
+id|block_invalidatepage
 c_func
 (paren
 r_struct
