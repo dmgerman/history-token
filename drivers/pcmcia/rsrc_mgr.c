@@ -229,8 +229,6 @@ suffix:semicolon
 id|res-&gt;flags
 op_assign
 id|flags
-op_or
-id|IORESOURCE_BUSY
 suffix:semicolon
 )brace
 r_return
@@ -2930,7 +2928,7 @@ id|num
 comma
 id|IORESOURCE_IO
 comma
-id|name
+id|s-&gt;dev.class_id
 )paren
 suffix:semicolon
 r_struct
@@ -3112,7 +3110,7 @@ id|num
 comma
 id|IORESOURCE_MEM
 comma
-id|name
+id|s-&gt;dev.class_id
 )paren
 suffix:semicolon
 r_struct
