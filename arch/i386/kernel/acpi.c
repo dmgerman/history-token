@@ -405,6 +405,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_ACPI_HT_ONLY
 r_static
 r_int
 id|__init
@@ -467,12 +468,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /*CONFIG_ACPI_HT_ONLY*/
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
 suffix:semicolon
+macro_line|#ifndef CONFIG_ACPI_HT_ONLY
 r_static
 r_int
 id|__init
@@ -635,6 +638,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/ 
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 r_static
 r_int
