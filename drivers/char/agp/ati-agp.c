@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;asm/agp.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|ati_generic_sizes
 r_static
@@ -192,8 +193,6 @@ id|page_map-&gt;real
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * fredi - WARNING: added looking at the changes during&n;&t; * 2.4.20. I dont know if it&squot;s needed though.&n;&t; */
-macro_line|#ifdef CONFIG_X86
 id|err
 op_assign
 id|map_page_into_agp
@@ -206,7 +205,6 @@ id|page_map-&gt;real
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* CACHE_FLUSH(); */
 id|global_cache_flush
 c_func
@@ -316,8 +314,6 @@ op_star
 id|page_map
 )paren
 (brace
-multiline_comment|/*&n;&t; * fredi - WARNING: added looking at the changes during&n;&t; * 2.4.20. I dont know if it&squot;s needed though.&n;&t; */
-macro_line|#ifdef CONFIG_X86
 id|unmap_page_from_agp
 c_func
 (paren
@@ -328,7 +324,6 @@ id|page_map-&gt;real
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|iounmap
 c_func
 (paren
@@ -1119,7 +1114,7 @@ mdefine_line|#define GET_PAGE_DIR_IDX(addr) (GET_PAGE_DIR_OFF(addr) - &bslash;&n
 DECL|macro|GET_GATT_OFF
 mdefine_line|#define GET_GATT_OFF(addr) ((addr &amp; 0x003ff000) &gt;&gt; 12)
 DECL|macro|GET_GATT
-macro_line|#undef  GET_GATT(addr)
+macro_line|#undef  GET_GATT
 DECL|macro|GET_GATT
 mdefine_line|#define GET_GATT(addr) (ati_generic_private.gatt_pages[&bslash;&n;&t;GET_PAGE_DIR_IDX(addr)]-&gt;remapped)
 DECL|function|ati_insert_memory
@@ -2089,8 +2084,6 @@ op_star
 id|bridge
 suffix:semicolon
 id|u8
-id|hidden_1621_id
-comma
 id|cap_ptr
 suffix:semicolon
 r_int
