@@ -876,11 +876,6 @@ r_int
 id|nr_to_read
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -891,13 +886,7 @@ c_func
 id|mapping-&gt;backing_dev_info
 )paren
 )paren
-(brace
-id|current-&gt;flags
-op_or_assign
-id|PF_READAHEAD
-suffix:semicolon
-id|ret
-op_assign
+r_return
 id|__do_page_cache_readahead
 c_func
 (paren
@@ -910,14 +899,8 @@ comma
 id|nr_to_read
 )paren
 suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_READAHEAD
-suffix:semicolon
-)brace
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check how effective readahead is being.  If the amount of started IO is&n; * less than expected then the file is partly or fully in pagecache and&n; * readahead isn&squot;t helping.  Shrink the window.&n; *&n; * But don&squot;t shrink it too much - the application may read the same page&n; * occasionally.&n; */

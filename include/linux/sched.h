@@ -1412,8 +1412,6 @@ DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean memory */
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
-DECL|macro|PF_READAHEAD
-mdefine_line|#define PF_READAHEAD&t;0x00400000&t;/* I am doing read-ahead */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
