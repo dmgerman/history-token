@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_DMA_MAPPING_H
 DECL|macro|_ASM_IA64_DMA_MAPPING_H
 mdefine_line|#define _ASM_IA64_DMA_MAPPING_H
-multiline_comment|/*&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2003-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|dma_alloc_coherent
 mdefine_line|#define dma_alloc_coherent&t;platform_dma_alloc_coherent
 DECL|macro|dma_alloc_noncoherent
@@ -26,6 +26,8 @@ DECL|macro|dma_sync_single_for_device
 mdefine_line|#define dma_sync_single_for_device platform_dma_sync_single_for_device
 DECL|macro|dma_sync_sg_for_device
 mdefine_line|#define dma_sync_sg_for_device&t;platform_dma_sync_sg_for_device
+DECL|macro|dma_mapping_error
+mdefine_line|#define dma_mapping_error&t;platform_dma_mapping_error
 DECL|macro|dma_map_page
 mdefine_line|#define dma_map_page(dev, pg, off, size, dir)&t;&t;&t;&t;&bslash;&n;&t;dma_map_single(dev, page_address(pg) + (off), (size), (dir))
 DECL|macro|dma_unmap_page

@@ -33,13 +33,17 @@ r_extern
 id|ia64_mv_dma_supported
 id|sba_dma_supported
 suffix:semicolon
+r_extern
+id|ia64_mv_dma_mapping_error
+id|sba_dma_mapping_error
+suffix:semicolon
 multiline_comment|/*&n; * This stuff has dual use!&n; *&n; * For a generic kernel, the macros are used to initialize the&n; * platform&squot;s machvec structure.  When compiling a non-generic kernel,&n; * the macros are used directly.&n; */
 DECL|macro|platform_name
 mdefine_line|#define platform_name&t;&t;&t;&quot;hpzx1&quot;
 DECL|macro|platform_setup
 mdefine_line|#define platform_setup&t;&t;&t;dig_setup
 DECL|macro|platform_dma_init
-mdefine_line|#define platform_dma_init&t;&t;((ia64_mv_dma_init *) machvec_noop)
+mdefine_line|#define platform_dma_init&t;&t;machvec_noop
 DECL|macro|platform_dma_alloc_coherent
 mdefine_line|#define platform_dma_alloc_coherent&t;sba_alloc_coherent
 DECL|macro|platform_dma_free_coherent
@@ -62,5 +66,7 @@ DECL|macro|platform_dma_sync_sg_for_device
 mdefine_line|#define platform_dma_sync_sg_for_device&t;&t;machvec_dma_sync_sg
 DECL|macro|platform_dma_supported
 mdefine_line|#define platform_dma_supported&t;&t;&t;sba_dma_supported
+DECL|macro|platform_dma_mapping_error
+mdefine_line|#define platform_dma_mapping_error&t;&t;sba_dma_mapping_error
 macro_line|#endif /* _ASM_IA64_MACHVEC_HPZX1_h */
 eof
