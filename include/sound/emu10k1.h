@@ -1385,9 +1385,9 @@ suffix:semicolon
 DECL|macro|snd_emu10k1_compose_send_routing
 mdefine_line|#define snd_emu10k1_compose_send_routing(route) &bslash;&n;((route[0] | (route[1] &lt;&lt; 4) | (route[2] &lt;&lt; 8) | (route[3] &lt;&lt; 12)) &lt;&lt; 16)
 DECL|macro|snd_emu10k1_compose_audigy_fxrt1
-mdefine_line|#define snd_emu10k1_compose_audigy_fxrt1(route) &bslash;&n;(((unsigned int)route[0] | ((unsigned int)route[1] &lt;&lt; 8) | ((unsigned int)route[2] &lt;&lt; 16) | ((unsigned int)route[3] &lt;&lt; 12)) &lt;&lt; 24)
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt1(route) &bslash;&n;((unsigned int)route[0] | ((unsigned int)route[1] &lt;&lt; 8) | ((unsigned int)route[2] &lt;&lt; 16) | ((unsigned int)route[3] &lt;&lt; 24))
 DECL|macro|snd_emu10k1_compose_audigy_fxrt2
-mdefine_line|#define snd_emu10k1_compose_audigy_fxrt2(route) &bslash;&n;(((unsigned int)route[4] | ((unsigned int)route[5] &lt;&lt; 8) | ((unsigned int)route[6] &lt;&lt; 16) | ((unsigned int)route[7] &lt;&lt; 12)) &lt;&lt; 24)
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt2(route) &bslash;&n;((unsigned int)route[4] | ((unsigned int)route[5] &lt;&lt; 8) | ((unsigned int)route[6] &lt;&lt; 16) | ((unsigned int)route[7] &lt;&lt; 24))
 DECL|struct|snd_emu10k1_memblk
 r_typedef
 r_struct
