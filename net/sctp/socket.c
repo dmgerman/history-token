@@ -2211,7 +2211,7 @@ comma
 id|sinfo_flags
 )paren
 suffix:semicolon
-multiline_comment|/* If MSG_EOF|MSG_ABORT is set, no data can be sent.  Disallow&n;&t; * sending 0-length messages when MSG_EOF|MSG_ABORT is not set.&n;&t; */
+multiline_comment|/* If MSG_EOF is set, no data can be sent. Disallow sending zero&n;&t; * length messages when MSG_EOF|MSG_ABORT is not set.&n;&t; * If MSG_ABORT is set, the message length could be non zero with&n;&t; * the msg_iov set to the user abort reason.&n; &t; */
 r_if
 c_cond
 (paren
@@ -2219,11 +2219,7 @@ c_cond
 (paren
 id|sinfo_flags
 op_amp
-(paren
 id|MSG_EOF
-op_or
-id|MSG_ABORT
-)paren
 )paren
 op_logical_and
 (paren
@@ -2541,7 +2537,7 @@ c_func
 (paren
 id|asoc
 comma
-l_int|NULL
+id|msg
 )paren
 suffix:semicolon
 id|err
