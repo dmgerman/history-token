@@ -4791,10 +4791,6 @@ r_int
 comma
 r_char
 op_star
-comma
-r_struct
-id|file_operations
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -4807,10 +4803,6 @@ comma
 r_int
 comma
 r_char
-op_star
-comma
-r_struct
-id|file_operations
 op_star
 )paren
 suffix:semicolon
