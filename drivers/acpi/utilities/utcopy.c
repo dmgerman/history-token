@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 105 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -883,7 +883,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_FUTURE_IMPLEMENTATION
 multiline_comment|/* Code to convert packages that are parameters to control methods */
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_epackage_to_ipackage&n; *&n; * PARAMETERS:  *Internal_object   - Pointer to the object we are returning&n; *              *Buffer         - Where the object is returned&n; *              *Space_used     - Where the length of the object is returned&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              Acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_epackage_to_ipackage&n; *&n; * PARAMETERS:  *Internal_object   - Pointer to the object we are returning&n; *              *Buffer            - Where the object is returned&n; *              *Space_used        - Where the length of the object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              Acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ut_copy_epackage_to_ipackage
@@ -1267,9 +1267,16 @@ id|object_type
 )paren
 (brace
 r_case
-l_int|0
+id|ACPI_COPY_TYPE_SIMPLE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * This is a simple object, just copy it&n;&t;&t; */
+multiline_comment|/* A null source object indicates a (legal) null package element */
+r_if
+c_cond
+(paren
+id|source_object
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * This is a simple object, just copy it&n;&t;&t;&t; */
 id|target_object
 op_assign
 id|acpi_ut_create_internal_object
@@ -1322,10 +1329,20 @@ id|this_target_ptr
 op_assign
 id|target_object
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Pass through a null element */
+op_star
+id|this_target_ptr
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|ACPI_COPY_TYPE_PACKAGE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * This object is a package - go down another nesting level&n;&t;&t; * Create and build the package object&n;&t;&t; */
 id|target_object
@@ -1356,6 +1373,45 @@ id|target_object-&gt;common.flags
 op_assign
 id|source_object-&gt;common.flags
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Create the object array&n;&t;&t; */
+id|target_object-&gt;package.elements
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+(paren
+(paren
+id|ACPI_SIZE
+)paren
+id|source_object-&gt;package.count
+op_plus
+l_int|1
+)paren
+op_star
+r_sizeof
+(paren
+r_void
+op_star
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|target_object-&gt;package.elements
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|target_object
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Pass the new package object back to the package walk routine&n;&t;&t; */
 id|state-&gt;pkg.this_target_obj
 op_assign
