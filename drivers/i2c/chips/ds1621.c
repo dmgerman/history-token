@@ -128,6 +128,11 @@ DECL|struct|ds1621_data
 r_struct
 id|ds1621_data
 (brace
+DECL|member|client
+r_struct
+id|i2c_client
+id|client
+suffix:semicolon
 DECL|member|update_lock
 r_struct
 id|semaphore
@@ -679,17 +684,11 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|new_client
+id|data
 op_assign
 id|kmalloc
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|i2c_client
-)paren
-op_plus
 r_sizeof
 (paren
 r_struct
@@ -713,16 +712,10 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|new_client
+id|data
 comma
 l_int|0
 comma
-r_sizeof
-(paren
-r_struct
-id|i2c_client
-)paren
-op_plus
 r_sizeof
 (paren
 r_struct
@@ -730,18 +723,10 @@ id|ds1621_data
 )paren
 )paren
 suffix:semicolon
-id|data
-op_assign
-(paren
-r_struct
-id|ds1621_data
-op_star
-)paren
-(paren
 id|new_client
-op_plus
-l_int|1
-)paren
+op_assign
+op_amp
+id|data-&gt;client
 suffix:semicolon
 id|i2c_set_clientdata
 c_func
@@ -975,7 +960,7 @@ suffix:colon
 id|kfree
 c_func
 (paren
-id|new_client
+id|data
 )paren
 suffix:semicolon
 m_exit
@@ -1019,7 +1004,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;ds1621.o: Client deregistration failed, client not detached.&bslash;n&quot;
+l_string|&quot;Client deregistration failed, &quot;
+l_string|&quot;client not detached.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1029,7 +1015,11 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|i2c_get_clientdata
+c_func
+(paren
 id|client
+)paren
 )paren
 suffix:semicolon
 r_return
