@@ -150,7 +150,6 @@ id|proc_dentry
 suffix:semicolon
 )brace
 DECL|function|release_task
-r_static
 r_void
 id|release_task
 c_func

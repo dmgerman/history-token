@@ -2536,6 +2536,10 @@ id|sig-&gt;group_exit_code
 op_assign
 l_int|0
 suffix:semicolon
+id|sig-&gt;group_exit_task
+op_assign
+l_int|NULL
+suffix:semicolon
 id|memcpy
 c_func
 (paren

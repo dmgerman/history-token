@@ -742,6 +742,33 @@ id|leader
 op_assign
 id|tsk-&gt;group_leader
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If there is any task waiting for the group exit&n;&t;&t; * then notify it:&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|sig-&gt;group_exit_task
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sig-&gt;count
+)paren
+op_le
+l_int|2
+)paren
+(brace
+id|wake_up_process
+c_func
+(paren
+id|sig-&gt;group_exit_task
+)paren
+suffix:semicolon
+id|sig-&gt;group_exit_task
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If we are the last non-leader member of the thread&n;&t;&t; * group, and the leader is zombie, then notify the&n;&t;&t; * group leader&squot;s parent process.&n;&t;&t; *&n;&t;&t; * (subtle: here we also rely on the fact that if we are the&n;&t;&t; *  thread group leader then we are not zombied yet.)&n;&t;&t; */
 r_if
 c_cond
