@@ -312,6 +312,11 @@ r_struct
 id|e1000_desc_ring
 id|tx_ring
 suffix:semicolon
+DECL|member|previous_buffer_info
+r_struct
+id|e1000_buffer
+id|previous_buffer_info
+suffix:semicolon
 DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
