@@ -2918,7 +2918,7 @@ op_amp
 id|repl_tuple
 )paren
 suffix:semicolon
-multiline_comment|/* If the expectation is dying, then this is a looser. */
+multiline_comment|/* If the expectation is dying, then this is a loser. */
 r_if
 c_cond
 (paren

@@ -412,7 +412,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, new_pc, new_sp) do {&t;&t;&t;&t;&bslash;&n;&t;/* New thread looses kernel privileges. */&t;&t;&t;&bslash;&n;&t;regs-&gt;cp0_status = (regs-&gt;cp0_status &amp; ~(ST0_CU0|ST0_KSU)) | KU_USER;&bslash;&n;&t;regs-&gt;cp0_epc = new_pc;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[29] = new_sp;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.current_ds = USER_DS;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define start_thread(regs, new_pc, new_sp) do {&t;&t;&t;&t;&bslash;&n;&t;/* New thread loses kernel privileges. */&t;&t;&t;&bslash;&n;&t;regs-&gt;cp0_status = (regs-&gt;cp0_status &amp; ~(ST0_CU0|ST0_KSU)) | KU_USER;&bslash;&n;&t;regs-&gt;cp0_epc = new_pc;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[29] = new_sp;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.current_ds = USER_DS;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_int
 r_int
 id|get_wchan

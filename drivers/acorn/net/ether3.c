@@ -1094,7 +1094,7 @@ id|priv-&gt;regs.config1
 op_or_assign
 id|CFG1_RECVSPECBROAD
 suffix:semicolon
-multiline_comment|/*&n;&t; * There is a problem with the NQ8005 in that it occasionally loses the&n;&t; * last two bytes.  To get round this problem, we receive the CRC as&n;&t; * well.  That way, if we do loose the last two, then it doesn&squot;t matter.&n;&t; */
+multiline_comment|/*&n;&t; * There is a problem with the NQ8005 in that it occasionally loses the&n;&t; * last two bytes.  To get round this problem, we receive the CRC as&n;&t; * well.  That way, if we do lose the last two, then it doesn&squot;t matter.&n;&t; */
 id|ether3_outw
 c_func
 (paren

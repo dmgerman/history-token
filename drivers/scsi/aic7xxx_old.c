@@ -15806,7 +15806,7 @@ l_string|&quot;not have a waiting message.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         * We&squot;ve set everything up to send our message, now to actually do&n;         * so we need to enable reqinit interrupts and let the interrupt&n;         * handler do the rest.  We don&squot;t want to unpause the sequencer yet&n;         * though so we&squot;ll return early.  We also have to make sure that&n;         * we clear the SEQINT *BEFORE* we set the REQINIT handler active&n;         * or else it&squot;s possible on VLB cards to loose the first REQINIT&n;         * interrupt.  Edge triggered EISA cards could also loose this&n;         * interrupt, although PCI and level triggered cards should not&n;         * have this problem since they continually interrupt the kernel&n;         * until we take care of the situation.&n;         */
+multiline_comment|/*&n;         * We&squot;ve set everything up to send our message, now to actually do&n;         * so we need to enable reqinit interrupts and let the interrupt&n;         * handler do the rest.  We don&squot;t want to unpause the sequencer yet&n;         * though so we&squot;ll return early.  We also have to make sure that&n;         * we clear the SEQINT *BEFORE* we set the REQINIT handler active&n;         * or else it&squot;s possible on VLB cards to lose the first REQINIT&n;         * interrupt.  Edge triggered EISA cards could also lose this&n;         * interrupt, although PCI and level triggered cards should not&n;         * have this problem since they continually interrupt the kernel&n;         * until we take care of the situation.&n;         */
 id|scb-&gt;flags
 op_or_assign
 id|SCB_MSGOUT_SENT

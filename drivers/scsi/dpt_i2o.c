@@ -5319,7 +5319,7 @@ op_amp
 id|adpt_post_wait_lock
 )paren
 suffix:semicolon
-singleline_comment|// If this happens we loose commands that probably really completed
+singleline_comment|// If this happens we lose commands that probably really completed
 id|printk
 c_func
 (paren

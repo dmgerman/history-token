@@ -1017,7 +1017,7 @@ comma
 id|st0x_dr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;At all times, we will use IRQ 5.  Should also check for IRQ3&n;&t; *&t;if we loose our first interrupt.&n;&t; */
+multiline_comment|/*&n;&t; *&t;At all times, we will use IRQ 5.  Should also check for IRQ3&n;&t; *&t;if we lose our first interrupt.&n;&t; */
 id|instance
 op_assign
 id|scsi_register

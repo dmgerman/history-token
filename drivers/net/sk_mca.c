@@ -1852,7 +1852,7 @@ id|LANCE_CSR0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* did we loose blocks due to a FIFO overrun ? */
+multiline_comment|/* did we lose blocks due to a FIFO overrun ? */
 DECL|function|irqmiss_handler
 r_static
 id|u16

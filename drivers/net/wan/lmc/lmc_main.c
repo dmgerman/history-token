@@ -7281,7 +7281,7 @@ id|status
 op_assign
 l_int|0x80000000
 suffix:semicolon
-multiline_comment|/* used to be PKT_BUF_SZ now uses skb since we loose some to head room */
+multiline_comment|/* used to be PKT_BUF_SZ now uses skb since we lose some to head room */
 id|sc-&gt;lmc_rxring
 (braket
 id|i

@@ -1287,7 +1287,7 @@ id|q-&gt;max_sectors
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * we might loose a segment or two here, but rather that than&n;&t; * make this too complex.&n;&t; */
+multiline_comment|/*&n;&t; * we might lose a segment or two here, but rather that than&n;&t; * make this too complex.&n;&t; */
 id|retry_segments
 suffix:colon
 r_if

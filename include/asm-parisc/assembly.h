@@ -2707,7 +2707,7 @@ id|regs
 )paren
 )paren
 macro_line|#ifdef __LP64__
-multiline_comment|/* cr11 (sar) is a funny one.  5 bits on PA1.1 and 6 bit on PA2.0&n;&t; * For PA2.0 mtsar or mtctl always write 6 bits, but mfctl only&n;&t; * reads 5 bits.  Use mfctl,w to read all six bits.  Otherwise&n;&t; * we loose the 6th bit on a save/restore over interrupt.&n;&t; */
+multiline_comment|/* cr11 (sar) is a funny one.  5 bits on PA1.1 and 6 bit on PA2.0&n;&t; * For PA2.0 mtsar or mtctl always write 6 bits, but mfctl only&n;&t; * reads 5 bits.  Use mfctl,w to read all six bits.  Otherwise&n;&t; * we lose the 6th bit on a save/restore over interrupt.&n;&t; */
 DECL|variable|cr11
 id|mfctl
 comma
