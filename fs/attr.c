@@ -255,7 +255,11 @@ c_cond
 (paren
 id|attr-&gt;ia_size
 op_ne
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 )paren
 (brace
 id|error

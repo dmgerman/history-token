@@ -3053,7 +3053,11 @@ id|shp-&gt;shm_file
 suffix:semicolon
 id|size
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 id|shp-&gt;shm_nattch
 op_increment

@@ -348,7 +348,13 @@ suffix:semicolon
 multiline_comment|/* Compute loopsize in bytes */
 id|size
 op_assign
-id|lo-&gt;lo_backing_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|lo-&gt;lo_backing_file-&gt;f_dentry
+op_member_access_from_pointer
+id|d_inode-&gt;i_mapping-&gt;host
+)paren
 suffix:semicolon
 id|offset
 op_assign

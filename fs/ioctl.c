@@ -168,7 +168,11 @@ r_return
 id|put_user
 c_func
 (paren
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 op_minus
 id|filp-&gt;f_pos
 comma

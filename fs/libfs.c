@@ -1615,6 +1615,7 @@ id|PAGE_CACHE_SHIFT
 op_plus
 id|to
 suffix:semicolon
+multiline_comment|/*&n;&t; * No need to use i_size_read() here, the i_size&n;&t; * cannot change under us because we hold the i_sem.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1622,9 +1623,13 @@ id|pos
 OG
 id|inode-&gt;i_size
 )paren
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|pos
+)paren
 suffix:semicolon
 id|set_page_dirty
 c_func

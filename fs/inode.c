@@ -562,6 +562,12 @@ op_amp
 id|inode-&gt;i_lock
 )paren
 suffix:semicolon
+id|i_size_ordered_init
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 )brace
 DECL|function|init_once
 r_static

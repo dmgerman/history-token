@@ -182,7 +182,11 @@ l_int|2
 suffix:colon
 id|offset
 op_add_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -301,7 +305,11 @@ l_int|2
 suffix:colon
 id|offset
 op_add_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

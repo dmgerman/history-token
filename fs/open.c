@@ -4384,7 +4384,11 @@ op_amp
 id|O_LARGEFILE
 )paren
 op_logical_and
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 OG
 id|MAX_NON_LFS
 )paren

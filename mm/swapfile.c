@@ -3490,7 +3490,11 @@ l_int|0
 suffix:semicolon
 id|last_block
 op_assign
-id|inode-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|inode
+)paren
 op_rshift
 id|blkbits
 suffix:semicolon
@@ -5352,7 +5356,11 @@ suffix:semicolon
 )brace
 id|swapfilesize
 op_assign
-id|mapping-&gt;host-&gt;i_size
+id|i_size_read
+c_func
+(paren
+id|mapping-&gt;host
+)paren
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
