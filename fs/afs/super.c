@@ -1034,12 +1034,6 @@ l_int|0
 suffix:semicolon
 id|error
 suffix:colon
-id|dput
-c_func
-(paren
-id|root
-)paren
-suffix:semicolon
 id|iput
 c_func
 (paren
