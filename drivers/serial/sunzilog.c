@@ -22,6 +22,10 @@ macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#ifdef CONFIG_SPARC64
+macro_line|#include &lt;asm/fhc.h&gt;
+macro_line|#endif
+macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;suncore.h&quot;
 macro_line|#include &quot;sunzilog.h&quot;
@@ -107,6 +111,11 @@ DECL|macro|SUNZILOG_FLAG_TX_STOPPED
 mdefine_line|#define SUNZILOG_FLAG_TX_STOPPED&t;0x00000080
 DECL|macro|SUNZILOG_FLAG_TX_ACTIVE
 mdefine_line|#define SUNZILOG_FLAG_TX_ACTIVE&t;&t;0x00000100
+DECL|member|cflag
+r_int
+r_int
+id|cflag
+suffix:semicolon
 multiline_comment|/* L1-A keyboard break state.  */
 DECL|member|kbd_id
 r_int
@@ -740,14 +749,14 @@ id|sunzilog_maybe_update_regs
 c_func
 (paren
 r_struct
-id|zilog_channel
-op_star
-id|channel
-comma
-r_struct
 id|uart_sunzilog_port
 op_star
 id|up
+comma
+r_struct
+id|zilog_channel
+op_star
+id|channel
 )paren
 (brace
 r_if
@@ -805,19 +814,19 @@ r_int
 r_int
 id|cur_cflag
 op_assign
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 suffix:semicolon
 r_int
 id|brg
 comma
 id|new_baud
 suffix:semicolon
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 op_and_assign
 op_complement
 id|CBAUD
 suffix:semicolon
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 op_or_assign
 id|suncore_mouse_baud_cflag_next
 c_func
@@ -869,14 +878,14 @@ suffix:semicolon
 id|sunzilog_maybe_update_regs
 c_func
 (paren
+id|up
+comma
 id|ZILOG_CHANNEL_FROM_PORT
 c_func
 (paren
 op_amp
 id|up-&gt;port
 )paren
-comma
-id|up
 )paren
 suffix:semicolon
 )brace
@@ -944,7 +953,7 @@ c_cond
 (paren
 id|ch
 op_eq
-id|SUNKBD_l1
+id|SUNKBD_L1
 )paren
 (brace
 id|up-&gt;l1_down
@@ -959,7 +968,7 @@ c_cond
 id|ch
 op_eq
 (paren
-id|SUNKBD_l1
+id|SUNKBD_L1
 op_or
 id|SUNKBD_UP
 )paren
@@ -1088,7 +1097,7 @@ op_star
 id|up
 comma
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 comma
@@ -1410,9 +1419,7 @@ op_or
 id|CRC_ERR
 )paren
 suffix:semicolon
-id|up-&gt;port.icount
-dot
-r_break
+id|up-&gt;port.icount.brk
 op_increment
 suffix:semicolon
 r_if
@@ -1524,7 +1531,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_eq
 l_int|0xff
 op_logical_or
@@ -1624,7 +1631,7 @@ op_star
 id|up
 comma
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 )paren
@@ -1786,7 +1793,7 @@ op_star
 id|up
 comma
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 )paren
@@ -1798,9 +1805,6 @@ id|xmit
 op_assign
 op_amp
 id|up-&gt;port.info-&gt;xmit
-suffix:semicolon
-r_int
-id|count
 suffix:semicolon
 r_if
 c_cond
@@ -1894,7 +1898,7 @@ id|up-&gt;port.x_char
 id|sbus_writeb
 c_func
 (paren
-id|sunzilog-&gt;port.x_char
+id|up-&gt;port.x_char
 comma
 op_amp
 id|channel-&gt;data
@@ -2067,10 +2071,6 @@ id|up
 op_assign
 id|dev_id
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2078,7 +2078,7 @@ id|up
 )paren
 (brace
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -2092,8 +2092,6 @@ suffix:semicolon
 r_int
 r_char
 id|r3
-comma
-id|status
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2213,7 +2211,7 @@ id|ZILOG_CHANNEL_FROM_PORT
 c_func
 (paren
 op_amp
-id|up.port
+id|up-&gt;port
 )paren
 suffix:semicolon
 id|spin_lock
@@ -2365,7 +2363,7 @@ id|port
 suffix:semicolon
 id|status
 op_assign
-id|sbus_read
+id|sbus_readb
 c_func
 (paren
 op_amp
@@ -2429,7 +2427,7 @@ id|Tx_BUF_EMP
 )paren
 id|ret
 op_assign
-id|TIOCSER_TEMPT
+id|TIOCSER_TEMT
 suffix:semicolon
 r_else
 id|ret
@@ -2541,7 +2539,7 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -2689,7 +2687,7 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -2824,7 +2822,7 @@ suffix:semicolon
 id|sbus_writeb
 c_func
 (paren
-id|xmit-&gt;but
+id|xmit-&gt;buf
 (braket
 id|xmit-&gt;tail
 )braket
@@ -2908,7 +2906,7 @@ id|port
 )paren
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 suffix:semicolon
@@ -2947,7 +2945,7 @@ c_func
 (paren
 id|up
 comma
-id|up-&gt;curregs
+id|channel
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2986,7 +2984,7 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -3100,7 +3098,7 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -3232,7 +3230,7 @@ id|port
 )paren
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 suffix:semicolon
@@ -3303,7 +3301,7 @@ c_func
 (paren
 id|up
 comma
-id|up-&gt;curregs
+id|channel
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3314,6 +3312,9 @@ id|port-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sunzilog_shutdown
@@ -3340,7 +3341,7 @@ id|port
 )paren
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 suffix:semicolon
@@ -3418,7 +3419,7 @@ c_func
 (paren
 id|up
 comma
-id|up-&gt;curregs
+id|channel
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3726,7 +3727,7 @@ op_and_assign
 op_complement
 id|PAR_EVEN
 suffix:semicolon
-id|up-&gt;read_status_mask
+id|up-&gt;port.read_status_mask
 op_assign
 id|Rx_OVR
 suffix:semicolon
@@ -3737,7 +3738,7 @@ id|iflag
 op_amp
 id|INPCK
 )paren
-id|up-&gt;read_status_mask
+id|up-&gt;port.read_status_mask
 op_or_assign
 id|CRC_ERR
 op_or
@@ -3754,11 +3755,11 @@ op_or
 id|PARMRK
 )paren
 )paren
-id|up-&gt;read_status_mask
+id|up-&gt;port.read_status_mask
 op_or_assign
 id|BRK_ABRT
 suffix:semicolon
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_assign
 l_int|0
 suffix:semicolon
@@ -3769,7 +3770,7 @@ id|iflag
 op_amp
 id|IGNPAR
 )paren
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_or_assign
 id|CRC_ERR
 op_or
@@ -3783,7 +3784,7 @@ op_amp
 id|IGNBRK
 )paren
 (brace
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_or_assign
 id|BRK_ABRT
 suffix:semicolon
@@ -3794,7 +3795,7 @@ id|iflag
 op_amp
 id|IGNPAR
 )paren
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_or_assign
 id|Rx_OVR
 suffix:semicolon
@@ -3810,7 +3811,7 @@ id|CREAD
 op_eq
 l_int|0
 )paren
-id|up-&gt;ignore_status_mask
+id|up-&gt;port.ignore_status_mask
 op_assign
 l_int|0xff
 suffix:semicolon
@@ -3873,7 +3874,7 @@ suffix:semicolon
 id|baud
 op_assign
 (paren
-id|ZILOG_CLOCK
+id|ZS_CLOCK
 op_div
 (paren
 id|quot
@@ -3928,16 +3929,20 @@ op_and_assign
 op_complement
 id|SUNZILOG_FLAG_MODEM_STATUS
 suffix:semicolon
+id|up-&gt;cflag
+op_assign
+id|cflag
+suffix:semicolon
 id|sunzilog_maybe_update_regs
 c_func
 (paren
+id|up
+comma
 id|ZILOG_CHANNEL_FROM_PORT
 c_func
 (paren
 id|port
 )paren
-comma
-id|up
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4142,6 +4147,12 @@ op_star
 op_star
 id|sunzilog_chip_regs
 suffix:semicolon
+DECL|variable|sunzilog_nodes
+r_static
+r_int
+op_star
+id|sunzilog_nodes
+suffix:semicolon
 DECL|variable|sunzilog_irq_chain
 r_static
 r_struct
@@ -4199,12 +4210,12 @@ l_int|64
 comma
 )brace
 suffix:semicolon
-DECL|function|sunzilog_alloc_one_table
+DECL|function|alloc_one_table
 r_static
 r_void
 op_star
 id|__init
-id|sunzilog_alloc_one_table
+id|alloc_one_table
 c_func
 (paren
 r_int
@@ -4264,7 +4275,7 @@ r_struct
 id|uart_sunzilog_port
 op_star
 )paren
-id|zs_alloc_one_table
+id|alloc_one_table
 c_func
 (paren
 id|NUM_CHANNELS
@@ -4284,7 +4295,7 @@ id|zilog_layout
 op_star
 op_star
 )paren
-id|zs_alloc_one_table
+id|alloc_one_table
 c_func
 (paren
 id|NUM_SUNZILOG
@@ -4303,7 +4314,7 @@ op_assign
 r_int
 op_star
 )paren
-id|zs_alloc_one_table
+id|alloc_one_table
 c_func
 (paren
 id|NUM_SUNZILOG
@@ -4361,6 +4372,8 @@ id|chip
 r_int
 r_int
 id|mapped_addr
+op_assign
+l_int|0xdeadbeefUL
 suffix:semicolon
 r_int
 r_int
@@ -5636,7 +5649,7 @@ id|sunzilog_put_char
 c_func
 (paren
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 comma
@@ -5725,7 +5738,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|sunzilog_serio_write
 r_static
-r_void
+r_int
 id|sunzilog_serio_write
 c_func
 (paren
@@ -5762,12 +5775,17 @@ suffix:semicolon
 id|sunzilog_put_char
 c_func
 (paren
-id|channel
+id|ZILOG_CHANNEL_FROM_PORT
+c_func
+(paren
+op_amp
+id|up-&gt;port
+)paren
 comma
 id|ch
 )paren
 suffix:semicolon
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5775,6 +5793,9 @@ id|sunzilog_serio_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sunzilog_serio_open
@@ -5800,7 +5821,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sunsu_serio_lock
+id|sunzilog_serio_lock
 comma
 id|flags
 )paren
@@ -5841,7 +5862,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sunsu_serio_lock
+id|sunzilog_serio_lock
 comma
 id|flags
 )paren
@@ -5870,7 +5891,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sunsu_serio_lock
+id|sunzilog_serio_lock
 comma
 id|flags
 )paren
@@ -5885,7 +5906,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sunsu_serio_lock
+id|sunzilog_serio_lock
 comma
 id|flags
 )paren
@@ -5901,7 +5922,7 @@ c_func
 r_struct
 id|console
 op_star
-id|cons
+id|con
 comma
 r_const
 r_char
@@ -5925,7 +5946,7 @@ id|con-&gt;index
 )braket
 suffix:semicolon
 r_struct
-id|sunzilog_channel
+id|zilog_channel
 op_star
 id|channel
 op_assign
@@ -6021,7 +6042,7 @@ c_func
 r_struct
 id|console
 op_star
-id|cons
+id|con
 )paren
 (brace
 r_return
@@ -6046,7 +6067,7 @@ c_func
 r_struct
 id|console
 op_star
-id|cons
+id|con
 comma
 r_char
 op_star
@@ -6094,7 +6115,7 @@ multiline_comment|/* Firmware console speed is limited to 150--&gt;38400 baud so
 r_switch
 c_cond
 (paren
-id|cflag
+id|con-&gt;cflag
 op_amp
 id|CBAUD
 )paren
@@ -6244,7 +6265,8 @@ suffix:semicolon
 id|sunzilog_set_mctrl
 c_func
 (paren
-id|up
+op_amp
+id|up-&gt;port
 comma
 id|TIOCM_DTR
 op_or
@@ -6254,8 +6276,12 @@ suffix:semicolon
 id|sunzilog_startup
 c_func
 (paren
-id|up
+op_amp
+id|up-&gt;port
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sunzilog_console
@@ -6462,6 +6488,10 @@ l_int|0
 dot
 id|port.membase
 op_assign
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|rp-&gt;channelA
 suffix:semicolon
@@ -6478,6 +6508,10 @@ l_int|1
 dot
 id|port.membase
 op_assign
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|rp-&gt;channelB
 suffix:semicolon
@@ -6526,7 +6560,7 @@ l_int|0
 dot
 id|port.uartclk
 op_assign
-id|ZILOG_CLOCK
+id|ZS_CLOCK
 suffix:semicolon
 id|up
 (braket
@@ -6654,7 +6688,7 @@ l_int|1
 dot
 id|port.uartclk
 op_assign
-id|ZILOG_CLOCK
+id|ZS_CLOCK
 suffix:semicolon
 id|up
 (braket
@@ -6773,7 +6807,7 @@ id|up-&gt;flags
 op_or_assign
 id|SUNZILOG_FLAG_CONS_KEYB
 suffix:semicolon
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 op_assign
 id|B1200
 op_or
@@ -6794,7 +6828,7 @@ id|up-&gt;flags
 op_or_assign
 id|SUNZILOG_FLAG_CONS_MOUSE
 suffix:semicolon
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 op_assign
 id|B4800
 op_or
@@ -6850,7 +6884,7 @@ c_func
 (paren
 id|up
 comma
-id|up-&gt;port.cflag
+id|up-&gt;cflag
 comma
 l_int|0
 comma
@@ -6908,7 +6942,7 @@ op_assign
 l_string|&quot;zsms&quot;
 suffix:semicolon
 )brace
-id|up-&gt;phys
+id|up-&gt;serio.phys
 op_assign
 (paren
 id|channel
@@ -6951,7 +6985,8 @@ suffix:semicolon
 id|sunzilog_set_mctrl
 c_func
 (paren
-id|up
+op_amp
+id|up-&gt;port
 comma
 id|TIOCM_DTR
 op_or
@@ -6984,20 +7019,20 @@ r_void
 )paren
 (brace
 r_int
-id|channel
+id|i
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|channel
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|channel
+id|i
 OL
 id|NUM_CHANNELS
 suffix:semicolon
-id|channel
+id|i
 op_increment
 )paren
 (brace
@@ -7009,7 +7044,7 @@ op_assign
 op_amp
 id|sunzilog_port_table
 (braket
-id|channel
+id|i
 )braket
 suffix:semicolon
 r_struct
@@ -7082,11 +7117,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|channel
+id|i
 op_eq
 id|KEYBOARD_LINE
 op_logical_or
-id|channel
+id|i
 op_eq
 id|MOUSE_LINE
 )paren
@@ -7096,7 +7131,7 @@ c_func
 (paren
 id|up
 comma
-id|channel
+id|i
 )paren
 suffix:semicolon
 )brace
@@ -7213,9 +7248,9 @@ suffix:semicolon
 id|sunzilog_maybe_update_regs
 c_func
 (paren
-id|channel
+id|up
 comma
-id|up-&gt;curregs
+id|channel
 )paren
 suffix:semicolon
 )brace
@@ -7342,6 +7377,17 @@ id|i
 op_increment
 )paren
 (brace
+r_struct
+id|uart_sunzilog_port
+op_star
+id|up
+op_assign
+op_amp
+id|sunzilog_port_table
+(braket
+id|i
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7366,12 +7412,7 @@ op_amp
 id|sunzilog_reg
 comma
 op_amp
-id|sunzilog_port_table
-(braket
-id|i
-)braket
-dot
-id|port
+id|up-&gt;port
 )paren
 suffix:semicolon
 )brace
@@ -7690,6 +7731,17 @@ id|i
 op_increment
 )paren
 (brace
+r_struct
+id|uart_sunzilog_port
+op_star
+id|up
+op_assign
+op_amp
+id|sunzilog_port_table
+(braket
+id|i
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7714,12 +7766,7 @@ op_amp
 id|sunzilog_reg
 comma
 op_amp
-id|sunzilog_port_table
-(braket
-id|i
-)braket
-dot
-id|port
+id|up-&gt;port
 )paren
 suffix:semicolon
 )brace

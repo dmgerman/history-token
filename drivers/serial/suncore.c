@@ -2,6 +2,8 @@ multiline_comment|/* suncore.c&n; *&n; * Common SUN serial routines.  Based enti
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1009,7 +1011,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|c
+id|ch
 op_eq
 l_int|0x87
 )paren
