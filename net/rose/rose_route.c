@@ -2790,6 +2790,18 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rose_route.ndigis
+OG
+l_int|8
+)paren
+multiline_comment|/* No more than 8 digipeats */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|err
 op_assign
 id|rose_add_node
