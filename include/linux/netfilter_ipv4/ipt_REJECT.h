@@ -28,6 +28,9 @@ id|IPT_ICMP_HOST_PROHIBITED
 comma
 DECL|enumerator|IPT_TCP_RESET
 id|IPT_TCP_RESET
+comma
+DECL|enumerator|IPT_ICMP_ADMIN_PROHIBITED
+id|IPT_ICMP_ADMIN_PROHIBITED
 )brace
 suffix:semicolon
 DECL|struct|ipt_reject_info

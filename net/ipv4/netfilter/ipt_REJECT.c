@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This is a module which is used for rejecting packets.&n; * Added support for customized reject packets (Jozsef Kadlecsik).&n; */
+multiline_comment|/*&n; * This is a module which is used for rejecting packets.&n; * Added support for customized reject packets (Jozsef Kadlecsik).&n; * Added support for ICMP type-3-code-13 (Maciej Soltysiak). [RFC 1812]&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -1730,6 +1730,20 @@ op_star
 id|pskb
 comma
 id|ICMP_HOST_ANO
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IPT_ICMP_ADMIN_PROHIBITED
+suffix:colon
+id|send_unreach
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|ICMP_PKT_FILTERED
 )paren
 suffix:semicolon
 r_break
