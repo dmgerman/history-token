@@ -1237,7 +1237,7 @@ id|garmin_packet
 op_star
 id|result
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1312,7 +1312,7 @@ id|garmin_packet
 op_star
 id|result
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dbg
 c_func
@@ -2754,7 +2754,7 @@ id|garmin_packet
 op_star
 id|pkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -5403,7 +5403,7 @@ id|garmin_data
 op_star
 id|garmin_data_p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dbg
 c_func
