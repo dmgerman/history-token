@@ -693,6 +693,13 @@ c_func
 id|machvec_noop
 )paren
 suffix:semicolon
+DECL|variable|zero_page_memmap_ptr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zero_page_memmap_ptr
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PERFMON
 macro_line|#include &lt;asm/perfmon.h&gt;
 DECL|variable|pfm_install_alternate_syswide_subsystem

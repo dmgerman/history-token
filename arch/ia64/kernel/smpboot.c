@@ -1996,13 +1996,13 @@ c_func
 (paren
 id|SAL_VECTOR_OS_BOOT_RENDEZ
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;fp
 )paren
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;gp

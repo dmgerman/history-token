@@ -234,7 +234,7 @@ mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_
 DECL|macro|RGN_KERNEL
 mdefine_line|#define RGN_KERNEL&t;7
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PERCPU_PAGE_SIZE)
+mdefine_line|#define VMALLOC_START&t;&t;0xa000000200000000
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
@@ -805,8 +805,14 @@ r_int
 )paren
 )braket
 suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|zero_page_memmap_ptr
+suffix:semicolon
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+mdefine_line|#define ZERO_PAGE(vaddr) (zero_page_memmap_ptr)
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
@@ -862,8 +868,6 @@ DECL|macro|KERNEL_TR_PAGE_SHIFT
 mdefine_line|#define KERNEL_TR_PAGE_SHIFT&t;_PAGE_SIZE_64M
 DECL|macro|KERNEL_TR_PAGE_SIZE
 mdefine_line|#define KERNEL_TR_PAGE_SIZE&t;(1 &lt;&lt; KERNEL_TR_PAGE_SHIFT)
-DECL|macro|KERNEL_TR_PAGE_NUM
-mdefine_line|#define KERNEL_TR_PAGE_NUM&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_TR_PAGE_SIZE)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)

@@ -2856,6 +2856,46 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Take a mapped kernel address and return the equivalent address&n; * in the region 7 identity mapped virtual area.&n; */
+r_static
+r_inline
+r_void
+op_star
+DECL|function|ia64_imva
+id|ia64_imva
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_void
+op_star
+id|result
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;tpa %0=%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|__va
+c_func
+(paren
+id|result
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW

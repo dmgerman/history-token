@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
+mdefine_line|#define KERNEL_START&t;&t;(0xa000000100000000)
 multiline_comment|/* 0xa000000000000000 - 0xa000000000000000+PERCPU_MAX_SIZE remain unmapped */
 DECL|macro|PERCPU_ADDR
 mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)

@@ -2299,13 +2299,13 @@ l_string|&quot;ia64_mca_init: registered mca rendezvous spinloop and wakeup mech
 suffix:semicolon
 id|ia64_mc_info.imi_mca_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|mca_hldlr_ptr-&gt;fp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0; should be&n;&t; *&t;__pa(ia64_os_mca_dispatch_end) - __pa(ia64_os_mca_dispatch);&n;&t; */
+multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0; should be&n;&t; *&t;ia64_tpa(ia64_os_mca_dispatch_end) - ia64_tpa(ia64_os_mca_dispatch);&n;&t; */
 id|ia64_mc_info.imi_mca_handler_size
 op_assign
 l_int|0
@@ -2324,7 +2324,11 @@ id|SAL_VECTOR_OS_MCA
 comma
 id|ia64_mc_info.imi_mca_handler
 comma
+id|ia64_tpa
+c_func
+(paren
 id|mca_hldlr_ptr-&gt;gp
+)paren
 comma
 id|ia64_mc_info.imi_mca_handler_size
 comma
@@ -2357,13 +2361,17 @@ l_string|&quot;ia64_mca_init: registered os mca handler with SAL at 0x%lx, gp = 
 comma
 id|ia64_mc_info.imi_mca_handler
 comma
+id|ia64_tpa
+c_func
+(paren
 id|mca_hldlr_ptr-&gt;gp
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0, should be&n;&t; * IA64_INIT_HANDLER_SIZE&n;&t; */
 id|ia64_mc_info.imi_monarch_init_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|mon_init_ptr-&gt;fp
@@ -2375,7 +2383,7 @@ l_int|0
 suffix:semicolon
 id|ia64_mc_info.imi_slave_init_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|slave_init_ptr-&gt;fp
@@ -2407,7 +2415,7 @@ id|SAL_VECTOR_OS_INIT
 comma
 id|ia64_mc_info.imi_monarch_init_handler
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ia64_get_gp
@@ -2420,7 +2428,7 @@ id|ia64_mc_info.imi_monarch_init_handler_size
 comma
 id|ia64_mc_info.imi_slave_init_handler
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ia64_get_gp
