@@ -146,11 +146,11 @@ id|irq
 )paren
 (brace
 )brace
-DECL|function|move_irq
+DECL|function|sn_move_irq
 r_static
 r_inline
 r_void
-id|move_irq
+id|sn_move_irq
 c_func
 (paren
 r_int
@@ -392,7 +392,7 @@ op_star
 id|pda-&gt;sn_in_service_ivecs
 )paren
 suffix:semicolon
-id|move_irq
+id|sn_move_irq
 c_func
 (paren
 id|irq

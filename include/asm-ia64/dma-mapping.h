@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_IA64_DMA_MAPPING_H
 DECL|macro|_ASM_IA64_DMA_MAPPING_H
 mdefine_line|#define _ASM_IA64_DMA_MAPPING_H
 multiline_comment|/*&n; * Copyright (C) 2003-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;asm/machvec.h&gt;
 DECL|macro|dma_alloc_coherent
 mdefine_line|#define dma_alloc_coherent&t;platform_dma_alloc_coherent
 DECL|macro|dma_alloc_noncoherent
