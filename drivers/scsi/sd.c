@@ -5574,12 +5574,6 @@ r_struct
 id|scsi_disk
 op_star
 id|sdkp
-op_assign
-id|dev_get_drvdata
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_struct
 id|scsi_request
@@ -5591,6 +5585,23 @@ id|retries
 comma
 id|res
 suffix:semicolon
+id|sdkp
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdkp
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* this can happen */
 r_if
 c_cond
 (paren
