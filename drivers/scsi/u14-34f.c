@@ -6581,7 +6581,8 @@ r_int
 id|u14_34f_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 id|disk
 comma
@@ -6589,6 +6590,9 @@ r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -6602,9 +6606,10 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|dkinfo
 (braket
@@ -6666,9 +6671,9 @@ op_logical_and
 id|scsicam_bios_param
 c_func
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|dkinfo
 )paren
