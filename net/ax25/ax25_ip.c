@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Split from af_ax25.c.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -303,13 +303,18 @@ comma
 op_star
 id|dst
 suffix:semicolon
+id|ax25_dev
+op_star
+id|ax25_dev
+suffix:semicolon
 id|ax25_route
+id|_route
+comma
 op_star
 id|route
-suffix:semicolon
-id|ax25_dev
-op_star
-id|ax25_dev
+op_assign
+op_amp
+id|_route
 suffix:semicolon
 id|dst
 op_assign
@@ -356,6 +361,8 @@ op_assign
 id|ax25_rt_find_route
 c_func
 (paren
+id|route
+comma
 id|dst
 comma
 l_int|NULL
@@ -391,9 +398,11 @@ id|dev
 op_eq
 l_int|NULL
 )paren
-r_return
-l_int|1
+(brace
+r_goto
+id|put
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -455,8 +464,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|put
 suffix:semicolon
 )brace
 r_if
@@ -526,8 +535,8 @@ comma
 id|dev
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|put
 suffix:semicolon
 )brace
 )brace
@@ -620,8 +629,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|put
 suffix:semicolon
 )brace
 id|skb
@@ -637,6 +646,14 @@ id|ax25_queue_xmit
 c_func
 (paren
 id|skb
+)paren
+suffix:semicolon
+id|put
+suffix:colon
+id|ax25_put_route
+c_func
+(paren
+id|route
 )paren
 suffix:semicolon
 r_return

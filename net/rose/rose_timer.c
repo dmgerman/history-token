@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;ROSE release 003&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;ROSE 001&t;Jonathan(G4KLX)&t;Cloned from nr_timer.c&n; *&t;ROSE 003&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;&t;&t;Implemented idle timer.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) 2002 Ralf Baechle DO1GRB (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -480,6 +480,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|bh_lock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -489,7 +495,7 @@ id|rose-&gt;state
 r_case
 id|ROSE_STATE_0
 suffix:colon
-multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
+multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
 r_if
 c_cond
 (paren
@@ -518,7 +524,7 @@ suffix:semicolon
 r_case
 id|ROSE_STATE_3
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Check for the state of the receive buffer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check for the state of the receive buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -583,6 +589,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 )brace
 DECL|function|rose_timer_expiry
 r_static
@@ -612,6 +624,12 @@ op_star
 id|rose
 op_assign
 id|rose_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|bh_lock_sock
 c_func
 (paren
 id|sk
@@ -701,6 +719,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 )brace
 DECL|function|rose_idletimer_expiry
 r_static
@@ -724,6 +748,12 @@ id|sock
 op_star
 )paren
 id|param
+suffix:semicolon
+id|bh_lock_sock
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|rose_clear_queues
 c_func
@@ -784,6 +814,12 @@ suffix:semicolon
 id|sk-&gt;dead
 op_assign
 l_int|1
+suffix:semicolon
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 )brace
 eof
