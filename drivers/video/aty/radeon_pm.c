@@ -3741,8 +3741,6 @@ id|radeonfb_blank
 c_func
 (paren
 id|VESA_POWERDOWN
-op_plus
-l_int|1
 comma
 id|info
 )paren
