@@ -204,7 +204,14 @@ id|file
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|timer_alive
+)paren
 )paren
 (brace
 r_return
@@ -243,9 +250,6 @@ op_assign
 id|DEFAULT_TIMEOUT
 suffix:semicolon
 )brace
-id|timer_alive
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -466,11 +470,6 @@ op_logical_neg
 id|nowayout
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* unlock the SuperIO chip */
 id|outb
 c_func
@@ -611,13 +610,13 @@ comma
 l_int|0x370
 )paren
 suffix:semicolon
-id|timer_alive
-op_assign
-l_int|0
-suffix:semicolon
-id|unlock_kernel
+id|clear_bit
 c_func
 (paren
+l_int|0
+comma
+op_amp
+id|timer_alive
 )paren
 suffix:semicolon
 id|printk
