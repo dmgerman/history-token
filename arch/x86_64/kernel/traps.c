@@ -244,6 +244,32 @@ id|notifier_block
 op_star
 id|die_chain
 suffix:semicolon
+DECL|function|conditional_sti
+r_static
+r_inline
+r_void
+id|conditional_sti
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;eflags
+op_amp
+id|X86_EFLAGS_IF
+)paren
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|variable|kstack_depth_to_print
 r_static
 r_int
@@ -490,12 +516,11 @@ comma
 op_star
 id|estack_end
 suffix:semicolon
-multiline_comment|/* FIXME: should read the cpuid from the APIC; to still work with bogus %gs */
 r_const
 r_int
 id|cpu
 op_assign
-id|smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -915,7 +940,7 @@ r_const
 r_int
 id|cpu
 op_assign
-id|smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -1160,25 +1185,15 @@ r_int
 r_int
 id|rsp
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* For SMP should get the APIC id here, just to protect against corrupted GS */
 r_const
 r_int
 id|cpu
 op_assign
-id|smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-r_const
-r_int
-id|cpu
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;
 r_struct
 id|task_struct
 op_star
@@ -1554,7 +1569,7 @@ l_int|0xffff
 suffix:semicolon
 id|cpu
 op_assign
-id|smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -1749,6 +1764,12 @@ op_star
 id|info
 )paren
 (brace
+id|conditional_sti
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_CHECKING
 (brace
 r_int
@@ -1762,7 +1783,7 @@ id|pda
 op_assign
 id|cpu_pda
 op_plus
-id|stack_smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -2183,6 +2204,12 @@ r_int
 id|error_code
 )paren
 (brace
+id|conditional_sti
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_CHECKING
 (brace
 r_int
@@ -2196,7 +2223,7 @@ id|pda
 op_assign
 id|cpu_pda
 op_plus
-id|hard_smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -2685,7 +2712,7 @@ id|pda
 op_assign
 id|cpu_pda
 op_plus
-id|stack_smp_processor_id
+id|safe_smp_processor_id
 c_func
 (paren
 )paren
@@ -2740,6 +2767,12 @@ l_string|&quot;=r&quot;
 (paren
 id|condition
 )paren
+)paren
+suffix:semicolon
+id|conditional_sti
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3130,6 +3163,12 @@ r_int
 id|error_code
 )paren
 (brace
+id|conditional_sti
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 id|math_error
 c_func
 (paren
@@ -3335,6 +3374,12 @@ r_int
 id|error_code
 )paren
 (brace
+id|conditional_sti
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 id|simd_math_error
 c_func
 (paren

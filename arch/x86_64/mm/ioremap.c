@@ -578,11 +578,6 @@ comma
 op_star
 id|t_end
 suffix:semicolon
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
 id|t_addr
 op_assign
 id|__va
@@ -600,6 +595,12 @@ id|size
 op_minus
 l_int|1
 )paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM&t; 
+r_struct
+id|page
+op_star
+id|page
 suffix:semicolon
 r_for
 c_loop
@@ -638,6 +639,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * Mappings have to be page-aligned&n;&t; */
 id|offset

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -39,6 +40,8 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+DECL|macro|Dprintk
+mdefine_line|#define Dprintk(x...) printk(x)
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -947,6 +950,12 @@ id|cmdline_p
 r_int
 id|i
 suffix:semicolon
+id|Dprintk
+c_func
+(paren
+l_string|&quot;setup_arch&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ROOT_DEV
 op_assign
 id|ORIG_ROOT_DEV
@@ -1097,32 +1106,9 @@ c_func
 id|cmdline_p
 )paren
 suffix:semicolon
-DECL|macro|PFN_UP
-mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_DOWN
-mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_PHYS
-mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
-DECL|macro|MAXMEM
-mdefine_line|#define MAXMEM&t;&t;(120UL * 1024 * 1024 * 1024 * 1024)  /* 120TB */ 
-DECL|macro|MAXMEM_PFN
-mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
-DECL|macro|MAX_NONPAE_PFN
-mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
 multiline_comment|/*&n;&t; * partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
-id|start_pfn
+id|end_pfn
 op_assign
-id|PFN_UP
-c_func
-(paren
-id|__pa_symbol
-c_func
-(paren
-op_amp
-id|_end
-)paren
-)paren
-suffix:semicolon
 id|e820_end_of_ram
 c_func
 (paren
@@ -1133,28 +1119,71 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+id|numa_initmem_init
+c_func
+(paren
+l_int|0
+comma
+id|end_pfn
+)paren
+suffix:semicolon
+macro_line|#else
 id|contig_initmem_init
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Reserve direct mapping */
+id|reserve_bootmem_generic
+c_func
+(paren
+id|table_start
+op_lshift
+id|PAGE_SHIFT
+comma
+(paren
+id|table_end
+op_minus
+id|table_start
+)paren
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
 multiline_comment|/* reserve kernel */
-id|reserve_bootmem
+r_int
+r_int
+id|kernel_end
+suffix:semicolon
+id|kernel_end
+op_assign
+id|round_up
+c_func
+(paren
+id|__pa_symbol
+c_func
+(paren
+op_amp
+id|_end
+)paren
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|reserve_bootmem_generic
 c_func
 (paren
 id|HIGH_MEMORY
 comma
-id|PFN_PHYS
-c_func
-(paren
-id|start_pfn
-)paren
+id|kernel_end
 op_minus
 id|HIGH_MEMORY
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * reserve physical page 0 - it&squot;s a special BIOS page on many boxes,&n;&t; * enabling clean reboots, SMP operation, laptop functions.&n;&t; */
-id|reserve_bootmem
+id|reserve_bootmem_generic
 c_func
 (paren
 l_int|0
@@ -1164,10 +1193,19 @@ id|PAGE_SIZE
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * But first pinch a few for the stack/trampoline stuff&n;&t; * FIXME: Don&squot;t need the extra page at 4K, but need to fix&n;&t; * trampoline before removing it. (see the GDT stuff)&n;&t; */
-id|reserve_bootmem
+id|reserve_bootmem_generic
 c_func
 (paren
 id|PAGE_SIZE
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* Reserve SMP trampoline */
+id|reserve_bootmem_generic
+c_func
+(paren
+id|SMP_TRAMPOLINE_BASE
 comma
 id|PAGE_SIZE
 )paren
@@ -1212,7 +1250,7 @@ id|PAGE_SHIFT
 )paren
 )paren
 (brace
-id|reserve_bootmem
+id|reserve_bootmem_generic
 c_func
 (paren
 id|INITRD_START
@@ -1275,15 +1313,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * NOTE: before this point _nobody_ is allowed to allocate&n;&t; * any memory using the bootmem allocator.&n;&t; */
-macro_line|#ifdef CONFIG_SMP
-id|smp_alloc_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* AP processor realmode stacks in low memory*/
-macro_line|#endif
 id|paging_init
 c_func
 (paren
@@ -1300,8 +1329,6 @@ id|acpi_disabled
 id|acpi_boot_init
 c_func
 (paren
-op_star
-id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif

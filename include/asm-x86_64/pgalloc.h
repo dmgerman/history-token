@@ -43,13 +43,10 @@ c_func
 id|_PAGE_TABLE
 op_or
 (paren
-(paren
-id|u64
-)paren
+id|page_to_pfn
+c_func
 (paren
 id|pte
-op_minus
-id|mem_map
 )paren
 op_lshift
 id|PAGE_SHIFT
@@ -367,6 +364,6 @@ suffix:semicolon
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
 DECL|macro|__pmd_free_tlb
-mdefine_line|#define __pmd_free_tlb(tlb,x)   do { } while (0)
+mdefine_line|#define __pmd_free_tlb(tlb,x)   pmd_free(x)
 macro_line|#endif /* _X86_64_PGALLOC_H */
 eof
