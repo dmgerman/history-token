@@ -9,65 +9,23 @@ DECL|macro|SHA1_DIGEST_SIZE
 mdefine_line|#define SHA1_DIGEST_SIZE&t;20
 DECL|macro|SHA1_HMAC_BLOCK_SIZE
 mdefine_line|#define SHA1_HMAC_BLOCK_SIZE&t;64
-DECL|function|rol
-r_static
-r_inline
-id|u32
-id|rol
-c_func
-(paren
-id|u32
-id|value
-comma
-id|u32
-id|bits
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|value
-)paren
-op_lshift
-(paren
-id|bits
-)paren
-)paren
-op_or
-(paren
-(paren
-id|value
-)paren
-op_rshift
-(paren
-l_int|32
-op_minus
-(paren
-id|bits
-)paren
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* blk0() and blk() perform the initial expand. */
 multiline_comment|/* I got the idea of expanding during the round function from SSLeay */
 DECL|macro|blk0
 macro_line|# define blk0(i) block32[i]
 DECL|macro|blk
-mdefine_line|#define blk(i) (block32[i&amp;15] = rol(block32[(i+13)&amp;15]^block32[(i+8)&amp;15] &bslash;&n;    ^block32[(i+2)&amp;15]^block32[i&amp;15],1))
+mdefine_line|#define blk(i) (block32[i&amp;15] = rol32(block32[(i+13)&amp;15]^block32[(i+8)&amp;15] &bslash;&n;    ^block32[(i+2)&amp;15]^block32[i&amp;15],1))
 multiline_comment|/* (R0+R1), R2, R3, R4 are the different operations used in SHA1 */
 DECL|macro|R0
-mdefine_line|#define R0(v,w,x,y,z,i) z+=((w&amp;(x^y))^y)+blk0(i)+0x5A827999+rol(v,5); &bslash;&n;                        w=rol(w,30);
+mdefine_line|#define R0(v,w,x,y,z,i) z+=((w&amp;(x^y))^y)+blk0(i)+0x5A827999+rol32(v,5); &bslash;&n;                        w=rol32(w,30);
 DECL|macro|R1
-mdefine_line|#define R1(v,w,x,y,z,i) z+=((w&amp;(x^y))^y)+blk(i)+0x5A827999+rol(v,5); &bslash;&n;                        w=rol(w,30);
+mdefine_line|#define R1(v,w,x,y,z,i) z+=((w&amp;(x^y))^y)+blk(i)+0x5A827999+rol32(v,5); &bslash;&n;                        w=rol32(w,30);
 DECL|macro|R2
-mdefine_line|#define R2(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0x6ED9EBA1+rol(v,5);w=rol(w,30);
+mdefine_line|#define R2(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0x6ED9EBA1+rol32(v,5);w=rol32(w,30);
 DECL|macro|R3
-mdefine_line|#define R3(v,w,x,y,z,i) z+=(((w|x)&amp;y)|(w&amp;x))+blk(i)+0x8F1BBCDC+rol(v,5); &bslash;&n;                        w=rol(w,30);
+mdefine_line|#define R3(v,w,x,y,z,i) z+=(((w|x)&amp;y)|(w&amp;x))+blk(i)+0x8F1BBCDC+rol32(v,5); &bslash;&n;                        w=rol32(w,30);
 DECL|macro|R4
-mdefine_line|#define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
+mdefine_line|#define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol32(v,5);w=rol32(w,30);
 DECL|struct|sha1_ctx
 r_struct
 id|sha1_ctx
