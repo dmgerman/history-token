@@ -150,8 +150,33 @@ suffix:semicolon
 multiline_comment|/* Synchronous PPP */
 )brace
 suffix:semicolon
-DECL|macro|sppp_of
-mdefine_line|#define sppp_of(dev)&t;&bslash;&n;&t;    (&amp;((struct ppp_device *)(*(unsigned long *)((dev)-&gt;priv)))-&gt;sppp)
+DECL|function|sppp_of
+r_static
+r_inline
+r_struct
+id|sppp
+op_star
+id|sppp_of
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|ppp_device
+op_star
+id|ppp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_return
+op_amp
+id|ppp-&gt;sppp
+suffix:semicolon
+)brace
 DECL|macro|PP_KEEPALIVE
 mdefine_line|#define PP_KEEPALIVE    0x01    /* use keepalive protocol */
 DECL|macro|PP_CISCO

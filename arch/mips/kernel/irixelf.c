@@ -5149,7 +5149,11 @@ id|psinfo.pr_pgrp
 op_assign
 id|prstatus.pr_pgrp
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|psinfo.pr_sid
 op_assign

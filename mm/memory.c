@@ -7480,6 +7480,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
 r_return
 id|ret
 op_eq

@@ -909,7 +909,7 @@ l_string|&quot;Y-E Data&quot;
 comma
 l_string|&quot;Flashbuster-U&quot;
 comma
-id|US_SC_UFI
+id|US_SC_DEVICE
 comma
 id|US_PR_CB
 comma

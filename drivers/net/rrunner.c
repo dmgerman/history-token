@@ -7,7 +7,6 @@ DECL|macro|PKT_COPY_THRESHOLD
 mdefine_line|#define PKT_COPY_THRESHOLD 512
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -226,14 +225,6 @@ c_func
 (paren
 op_amp
 id|rrpriv-&gt;lock
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|rrpriv-&gt;name
-comma
-l_string|&quot;RoadRunner serial HIPPI&quot;
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -624,7 +615,7 @@ suffix:semicolon
 )brace
 id|out2
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -659,24 +650,19 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-r_struct
-id|rr_private
-op_star
-id|rr
-op_assign
-(paren
-r_struct
-id|rr_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|dev
 )paren
 (brace
+r_struct
+id|rr_private
+op_star
+id|rr
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3198,6 +3184,10 @@ op_logical_and
 op_logical_neg
 id|rrpriv-&gt;fw_running
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|netif_start_queue
 c_func
@@ -5419,7 +5409,7 @@ id|rr_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|rrpriv-&gt;name
+id|dev-&gt;name
 comma
 id|dev
 )paren
@@ -5506,8 +5496,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|ecode
@@ -6552,8 +6540,6 @@ id|rrpriv-&gt;lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -8154,7 +8140,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|rr_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

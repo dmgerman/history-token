@@ -12,7 +12,6 @@ l_string|&quot;tms380tr.c: v1.10 30/12/2002 by Christoph Goos, Adam Fritzler&bsl
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

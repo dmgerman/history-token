@@ -2408,6 +2408,7 @@ id|dev.parent
 op_ne
 l_int|NULL
 )paren
+(brace
 id|device_unregister
 c_func
 (paren
@@ -2420,6 +2421,14 @@ op_member_access_from_pointer
 id|dev
 )paren
 suffix:semicolon
+id|serial-&gt;port
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* If this is a &quot;fake&quot; port, we have to clean it up here, as it will&n;&t; * not get cleaned up in port_release() as it was never registered with&n;&t; * the driver core */
 r_if
 c_cond

@@ -10,7 +10,6 @@ op_assign
 l_string|&quot;smc9194.c:v0.14 12/15/00 by Erik Stahlman (erik@vt.edu)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

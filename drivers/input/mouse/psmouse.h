@@ -23,10 +23,19 @@ DECL|macro|PSMOUSE_CMD_RESET_BAT
 mdefine_line|#define PSMOUSE_CMD_RESET_BAT&t;0x02ff
 DECL|macro|PSMOUSE_RET_BAT
 mdefine_line|#define PSMOUSE_RET_BAT&t;&t;0xaa
+DECL|macro|PSMOUSE_RET_ID
+mdefine_line|#define PSMOUSE_RET_ID&t;&t;0x00
 DECL|macro|PSMOUSE_RET_ACK
 mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
+multiline_comment|/* psmouse states */
+DECL|macro|PSMOUSE_NEW_DEVICE
+mdefine_line|#define PSMOUSE_NEW_DEVICE&t;0
+DECL|macro|PSMOUSE_ACTIVATED
+mdefine_line|#define PSMOUSE_ACTIVATED&t;1
+DECL|macro|PSMOUSE_IGNORE
+mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
 DECL|struct|psmouse
 r_struct
 id|psmouse
@@ -98,6 +107,11 @@ r_int
 r_int
 id|last
 suffix:semicolon
+DECL|member|state
+r_int
+r_char
+id|state
+suffix:semicolon
 DECL|member|acking
 r_char
 id|acking
@@ -128,19 +142,19 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PSMOUSE_PS2
-mdefine_line|#define PSMOUSE_PS2&t;1
+mdefine_line|#define PSMOUSE_PS2&t;&t;1
 DECL|macro|PSMOUSE_PS2PP
-mdefine_line|#define PSMOUSE_PS2PP&t;2
+mdefine_line|#define PSMOUSE_PS2PP&t;&t;2
 DECL|macro|PSMOUSE_PS2TPP
-mdefine_line|#define PSMOUSE_PS2TPP&t;3
+mdefine_line|#define PSMOUSE_PS2TPP&t;&t;3
 DECL|macro|PSMOUSE_GENPS
-mdefine_line|#define PSMOUSE_GENPS&t;4
+mdefine_line|#define PSMOUSE_GENPS&t;&t;4
 DECL|macro|PSMOUSE_IMPS
-mdefine_line|#define PSMOUSE_IMPS&t;5
+mdefine_line|#define PSMOUSE_IMPS&t;&t;5
 DECL|macro|PSMOUSE_IMEX
-mdefine_line|#define PSMOUSE_IMEX&t;6
+mdefine_line|#define PSMOUSE_IMEX&t;&t;6
 DECL|macro|PSMOUSE_SYNAPTICS
-mdefine_line|#define PSMOUSE_SYNAPTICS 7
+mdefine_line|#define PSMOUSE_SYNAPTICS &t;7
 r_int
 id|psmouse_command
 c_func
@@ -162,6 +176,11 @@ suffix:semicolon
 r_extern
 r_int
 id|psmouse_smartscroll
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|psmouse_resetafter
 suffix:semicolon
 macro_line|#endif /* _PSMOUSE_H */
 eof

@@ -300,6 +300,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|entry-&gt;neigh-&gt;dev-&gt;xmit_lock
+)paren
+suffix:semicolon
+multiline_comment|/* block clip_start_xmit() */
 id|entry-&gt;neigh-&gt;used
 op_assign
 id|jiffies
@@ -363,7 +371,8 @@ c_cond
 (paren
 id|entry-&gt;vccs
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|entry-&gt;expires
 op_assign
@@ -403,7 +412,8 @@ comma
 id|error
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|printk
@@ -416,6 +426,15 @@ comma
 id|entry
 comma
 id|clip_vcc
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|entry-&gt;neigh-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 )brace

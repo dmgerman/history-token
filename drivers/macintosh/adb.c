@@ -952,11 +952,7 @@ l_int|NULL
 comma
 id|SIGCHLD
 op_or
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-op_or
-id|CLONE_SIGHAND
+id|CLONE_KERNEL
 )paren
 suffix:semicolon
 )brace

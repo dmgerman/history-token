@@ -3416,7 +3416,11 @@ id|flags
 (brace
 id|error
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3433,7 +3437,11 @@ c_func
 (paren
 l_string|&quot;returning %d&bslash;n&quot;
 comma
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1880,20 +1880,6 @@ id|unlock_page
 )paren
 suffix:semicolon
 multiline_comment|/* device registration */
-DECL|variable|register_chrdev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_chrdev
-)paren
-suffix:semicolon
-DECL|variable|unregister_chrdev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_chrdev
-)paren
-suffix:semicolon
 DECL|variable|register_blkdev
 id|EXPORT_SYMBOL
 c_func

@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/checksum.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren

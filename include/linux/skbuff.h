@@ -726,6 +726,7 @@ r_int
 id|skb_queue_empty
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff_head
 op_star
@@ -859,6 +860,7 @@ r_int
 id|skb_cloned
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -892,6 +894,7 @@ r_int
 id|skb_shared
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -1153,6 +1156,7 @@ id|__u32
 id|skb_queue_len
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff_head
 op_star

@@ -319,21 +319,21 @@ mdefine_line|#define xfs_errortag_clearall(mp)&t;&t;(ENOSYS)
 macro_line|#endif /* (DEBUG || INDUCE_IO_ERROR) */
 multiline_comment|/*&n; * XFS panic tags -- allow a call to xfs_cmn_err() be turned into&n; *&t;&t;&t;a panic by setting xfs_panic_mask in a&n; *&t;&t;&t;sysctl.  update xfs_max[XFS_PARAM] if&n; *&t;&t;&t;more are added.&n; */
 DECL|macro|XFS_NO_PTAG
-mdefine_line|#define&t;&t;XFS_NO_PTAG&t;&t;&t;0LL
+mdefine_line|#define&t;&t;XFS_NO_PTAG&t;&t;&t;0
 DECL|macro|XFS_PTAG_IFLUSH
-mdefine_line|#define&t;&t;XFS_PTAG_IFLUSH&t;&t;&t;0x0000000000000001LL
+mdefine_line|#define&t;&t;XFS_PTAG_IFLUSH&t;&t;&t;0x00000001
 DECL|macro|XFS_PTAG_LOGRES
-mdefine_line|#define&t;&t;XFS_PTAG_LOGRES&t;&t;&t;0x0000000000000002LL
+mdefine_line|#define&t;&t;XFS_PTAG_LOGRES&t;&t;&t;0x00000002
 DECL|macro|XFS_PTAG_AILDELETE
-mdefine_line|#define&t;&t;XFS_PTAG_AILDELETE&t;&t;0x0000000000000004LL
+mdefine_line|#define&t;&t;XFS_PTAG_AILDELETE&t;&t;0x00000004
 DECL|macro|XFS_PTAG_ERROR_REPORT
-mdefine_line|#define&t;&t;XFS_PTAG_ERROR_REPORT&t;&t;0x0000000000000008LL
+mdefine_line|#define&t;&t;XFS_PTAG_ERROR_REPORT&t;&t;0x00000008
 DECL|macro|XFS_PTAG_SHUTDOWN_CORRUPT
-mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_CORRUPT&t;0x0000000000000010LL
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_CORRUPT&t;0x00000010
 DECL|macro|XFS_PTAG_SHUTDOWN_IOERROR
-mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_IOERROR&t;0x0000000000000020LL
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_IOERROR&t;0x00000020
 DECL|macro|XFS_PTAG_SHUTDOWN_LOGERROR
-mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_LOGERROR&t;0x0000000000000040LL
+mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_LOGERROR&t;0x00000040
 r_struct
 id|xfs_mount
 suffix:semicolon
@@ -342,7 +342,7 @@ r_void
 id|xfs_cmn_err
 c_func
 (paren
-r_uint64
+r_int
 id|panic_tag
 comma
 r_int

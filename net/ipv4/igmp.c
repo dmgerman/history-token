@@ -857,9 +857,17 @@ op_amp
 id|fl
 )paren
 )paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

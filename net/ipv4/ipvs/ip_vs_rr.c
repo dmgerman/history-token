@@ -84,7 +84,6 @@ op_star
 id|iph
 )paren
 (brace
-r_register
 r_struct
 id|list_head
 op_star
@@ -184,10 +183,6 @@ l_int|0
 multiline_comment|/* HIT */
 r_goto
 id|out
-suffix:semicolon
-id|q
-op_assign
-id|q-&gt;next
 suffix:semicolon
 )brace
 r_while
