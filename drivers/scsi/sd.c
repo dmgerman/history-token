@@ -93,6 +93,12 @@ suffix:semicolon
 multiline_comment|/* state of disk RCD bit */
 )brace
 suffix:semicolon
+DECL|variable|sd_nr_dev
+r_static
+r_int
+id|sd_nr_dev
+suffix:semicolon
+multiline_comment|/* XXX(hch) bad hack, we want a bitmap instead */
 r_static
 id|LIST_HEAD
 c_func
@@ -262,11 +268,6 @@ dot
 id|scsi_type
 op_assign
 id|TYPE_DISK
-comma
-dot
-id|blk
-op_assign
-l_int|1
 comma
 dot
 id|detect
@@ -4617,9 +4618,6 @@ id|TYPE_MOD
 r_return
 l_int|0
 suffix:semicolon
-id|sd_template.dev_noticed
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4691,6 +4689,18 @@ id|sdp-&gt;lun
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_slave_attach
+c_func
+(paren
+id|sdp
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|sdkp
 op_assign
 id|kmalloc
@@ -4712,7 +4722,7 @@ op_logical_neg
 id|sdkp
 )paren
 r_goto
-id|out
+id|out_detach
 suffix:semicolon
 id|gd
 op_assign
@@ -4734,7 +4744,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * XXX  This doesn&squot;t make us better than the previous code in the&n;&t; * XXX  end (not worse either, though..).&n;&t; * XXX  To properly support hotplugging we should have a bitmap and&n;&t; * XXX  use find_first_zero_bit on it.  This will happen at the&n;&t; * XXX  same time template-&gt;nr_* goes away.&t;&t;--hch&n;&t; */
 id|dsk_nr
 op_assign
-id|sd_template.nr_dev
+id|sd_nr_dev
 op_increment
 suffix:semicolon
 id|sdkp-&gt;device
@@ -4917,11 +4927,16 @@ c_func
 id|sdkp
 )paren
 suffix:semicolon
+id|out_detach
+suffix:colon
+id|scsi_slave_detach
+c_func
+(paren
+id|sdp
+)paren
+suffix:semicolon
 id|out
 suffix:colon
-id|sdp-&gt;attached
-op_decrement
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -5074,13 +5089,13 @@ c_func
 id|sdkp-&gt;disk
 )paren
 suffix:semicolon
-id|sdp-&gt;attached
-op_decrement
+id|scsi_slave_detach
+c_func
+(paren
+id|sdp
+)paren
 suffix:semicolon
-id|sd_template.dev_noticed
-op_decrement
-suffix:semicolon
-id|sd_template.nr_dev
+id|sd_nr_dev
 op_decrement
 suffix:semicolon
 id|put_disk
