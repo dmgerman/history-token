@@ -9611,7 +9611,7 @@ id|dquot-&gt;dq_sb
 op_member_access_from_pointer
 id|s_qf_names
 (braket
-l_int|0
+id|USRQUOTA
 )braket
 op_logical_or
 id|EXT3_SB
@@ -9622,9 +9622,16 @@ id|dquot-&gt;dq_sb
 op_member_access_from_pointer
 id|s_qf_names
 (braket
-l_int|1
+id|GRPQUOTA
 )braket
 )paren
+(brace
+id|dquot_mark_dquot_dirty
+c_func
+(paren
+id|dquot
+)paren
+suffix:semicolon
 r_return
 id|ext3_write_dquot
 c_func
@@ -9632,7 +9639,9 @@ c_func
 id|dquot
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 r_return
 id|dquot_mark_dquot_dirty
 c_func
@@ -9640,6 +9649,7 @@ c_func
 id|dquot
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|ext3_write_info
 r_static

@@ -457,6 +457,7 @@ comma
 id|s_list
 )paren
 suffix:semicolon
+multiline_comment|/* This test just improves performance so it needn&squot;t be reliable... */
 r_for
 c_loop
 (paren
@@ -497,7 +498,7 @@ comma
 id|cnt
 )paren
 op_logical_and
-id|info_any_dquot_dirty
+id|info_any_dirty
 c_func
 (paren
 op_amp

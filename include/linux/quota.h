@@ -235,6 +235,12 @@ id|quota_format_type
 op_star
 id|dqi_format
 suffix:semicolon
+DECL|member|dqi_dirty_list
+r_struct
+id|list_head
+id|dqi_dirty_list
+suffix:semicolon
+multiline_comment|/* List of dirty dquots */
 DECL|member|dqi_flags
 r_int
 r_int
@@ -275,12 +281,8 @@ DECL|macro|DQF_MASK
 mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
 DECL|macro|DQF_INFO_DIRTY_B
 mdefine_line|#define DQF_INFO_DIRTY_B 16
-DECL|macro|DQF_ANY_DQUOT_DIRTY_B
-mdefine_line|#define DQF_ANY_DQUOT_DIRTY_B 17
 DECL|macro|DQF_INFO_DIRTY
 mdefine_line|#define DQF_INFO_DIRTY (1 &lt;&lt; DQF_INFO_DIRTY_B)&t;/* Is info dirty? */
-DECL|macro|DQF_ANY_DQUOT_DIRTY
-mdefine_line|#define DQF_ANY_DQUOT_DIRTY (1 &lt;&lt; DQF_ANY_DQUOT_DIRTY_B) /* Is any dquot dirty? */
 r_extern
 r_void
 id|mark_info_dirty
@@ -298,7 +300,7 @@ suffix:semicolon
 DECL|macro|info_dirty
 mdefine_line|#define info_dirty(info) test_bit(DQF_INFO_DIRTY_B, &amp;(info)-&gt;dqi_flags)
 DECL|macro|info_any_dquot_dirty
-mdefine_line|#define info_any_dquot_dirty(info) test_bit(DQF_ANY_DQUOT_DIRTY_B, &amp;(info)-&gt;dqi_flags)
+mdefine_line|#define info_any_dquot_dirty(info) (!list_empty(&amp;(info)-&gt;dqi_dirty_list))
 DECL|macro|info_any_dirty
 mdefine_line|#define info_any_dirty(info) (info_dirty(info) || info_any_dquot_dirty(info))
 DECL|macro|sb_dqopt
@@ -384,6 +386,12 @@ id|list_head
 id|dq_free
 suffix:semicolon
 multiline_comment|/* Free list element */
+DECL|member|dq_dirty
+r_struct
+id|list_head
+id|dq_dirty
+suffix:semicolon
+multiline_comment|/* List of dirty dquots */
 DECL|member|dq_lock
 r_struct
 id|semaphore
