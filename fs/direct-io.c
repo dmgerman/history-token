@@ -1281,6 +1281,13 @@ c_cond
 id|dio-&gt;rw
 op_eq
 id|READ
+op_logical_and
+op_logical_neg
+id|PageCompound
+c_func
+(paren
+id|page
+)paren
 )paren
 id|set_page_dirty_lock
 c_func
