@@ -577,8 +577,6 @@ comma
 id|oldbrk
 op_minus
 id|newbrk
-comma
-l_int|1
 )paren
 )paren
 r_goto
@@ -2144,8 +2142,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 )paren
 r_return
@@ -3945,9 +3941,6 @@ comma
 r_int
 r_int
 id|end
-comma
-r_int
-id|acct
 )paren
 (brace
 id|mmu_gather_t
@@ -4011,13 +4004,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acct
-op_logical_and
-(paren
 id|mpnt-&gt;vm_flags
 op_amp
 id|VM_ACCOUNT
-)paren
 )paren
 (brace
 id|len
@@ -4364,9 +4353,6 @@ id|start
 comma
 r_int
 id|len
-comma
-r_int
-id|acct
 )paren
 (brace
 r_int
@@ -4576,8 +4562,6 @@ comma
 id|start
 comma
 id|end
-comma
-id|acct
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -4641,8 +4625,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|up_write
@@ -4799,8 +4781,6 @@ comma
 id|addr
 comma
 id|len
-comma
-l_int|1
 )paren
 )paren
 r_return
