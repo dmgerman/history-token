@@ -1342,6 +1342,7 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
+multiline_comment|/* mono, left, right x 8 sends (4 on emu10k1) */
 DECL|member|send_routing
 r_int
 r_char
