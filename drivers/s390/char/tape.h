@@ -12,6 +12,9 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
+r_struct
+id|gendisk
+suffix:semicolon
 multiline_comment|/*&n; * macros s390 debug feature (dbf)&n; */
 DECL|macro|DBF_EVENT
 mdefine_line|#define DBF_EVENT(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(tape_dbf_area, d_level, d_str); &bslash;&n;} while (0)
@@ -551,6 +554,12 @@ multiline_comment|/* Current position on the tape. */
 DECL|member|block_position
 r_int
 id|block_position
+suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
 suffix:semicolon
 )brace
 suffix:semicolon
