@@ -702,4 +702,11 @@ c_func
 id|is_sony_vaio_laptop
 )paren
 suffix:semicolon
+DECL|variable|__PAGE_KERNEL
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__PAGE_KERNEL
+)paren
+suffix:semicolon
 eof
