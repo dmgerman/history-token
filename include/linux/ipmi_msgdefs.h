@@ -41,7 +41,7 @@ mdefine_line|#define IPMI_ADD_SEL_ENTRY_CMD&t;&t;0x44
 multiline_comment|/* The default slave address */
 DECL|macro|IPMI_BMC_SLAVE_ADDR
 mdefine_line|#define IPMI_BMC_SLAVE_ADDR&t;0x20
-multiline_comment|/* The BT interface on high-end HP systems supports up to 255 bytes in&n; * one transfer.  Its &quot;virtual&quot; BMC supports some commands that are longer&n; * than 128 bytes.  Use the full 256, plus NetFn/LUN, Cmd, cCode, plus&n; * some overhead.  It would be nice to base this on the &quot;BT Capabilities&quot;&n; * but that&squot;s too hard to propogate to the rest of the driver. */
+multiline_comment|/* The BT interface on high-end HP systems supports up to 255 bytes in&n; * one transfer.  Its &quot;virtual&quot; BMC supports some commands that are longer&n; * than 128 bytes.  Use the full 256, plus NetFn/LUN, Cmd, cCode, plus&n; * some overhead.  It would be nice to base this on the &quot;BT Capabilities&quot;&n; * but that&squot;s too hard to propagate to the rest of the driver. */
 DECL|macro|IPMI_MAX_MSG_LENGTH
 mdefine_line|#define IPMI_MAX_MSG_LENGTH&t;272&t;/* multiple of 16 */
 DECL|macro|IPMI_CC_NO_ERROR
