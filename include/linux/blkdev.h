@@ -1958,6 +1958,26 @@ id|p.v
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|work_struct
+suffix:semicolon
+r_int
+id|kblockd_schedule_work
+c_func
+(paren
+r_struct
+id|work_struct
+op_star
+id|work
+)paren
+suffix:semicolon
+r_void
+id|kblockd_flush
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_LBD
 macro_line|# include &lt;asm/div64.h&gt;
 DECL|macro|sector_div
