@@ -99,9 +99,11 @@ c_func
 (paren
 id|S_IFDIR
 op_or
+id|S_IRWXU
+op_or
 id|S_IRUGO
 op_or
-id|S_IWUSR
+id|S_IXUGO
 )paren
 suffix:semicolon
 r_if
