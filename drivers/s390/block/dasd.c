@@ -672,8 +672,6 @@ id|device-&gt;cdev
 )paren
 )paren
 suffix:semicolon
-id|device-&gt;devfs_entry
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -728,16 +726,16 @@ id|device
 )paren
 (brace
 multiline_comment|/* Remove device entry and devfs directory. */
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|device-&gt;devfs_entry
+l_string|&quot;dasd/%04x/device&quot;
+comma
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
 )paren
-suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|device-&gt;gdp-&gt;de
 )paren
 suffix:semicolon
 multiline_comment|/* Forget the discipline information. */

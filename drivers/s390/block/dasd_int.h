@@ -561,10 +561,6 @@ id|gendisk
 op_star
 id|gdp
 suffix:semicolon
-DECL|member|devfs_entry
-id|devfs_handle_t
-id|devfs_entry
-suffix:semicolon
 DECL|member|request_queue
 id|request_queue_t
 op_star
