@@ -3247,6 +3247,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 = cannot do LBA48 */
+DECL|member|no_lba48_dma
+r_int
+id|no_lba48_dma
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 = cannot do LBA48 DMA */
 DECL|member|no_dsc
 r_int
 id|no_dsc

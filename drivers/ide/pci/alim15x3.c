@@ -3157,8 +3157,8 @@ op_assign
 op_amp
 id|ali15x3_tune_chipset
 suffix:semicolon
-multiline_comment|/* Don&squot;t use LBA48 on ALi devices before rev 0xC5 */
-id|hwif-&gt;no_lba48
+multiline_comment|/* don&squot;t use LBA48 DMA on ALi devices before rev 0xC5 */
+id|hwif-&gt;no_lba48_dma
 op_assign
 (paren
 id|m5229_revision
