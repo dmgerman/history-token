@@ -587,10 +587,18 @@ id|index
 )paren
 suffix:semicolon
 multiline_comment|/* Add default hw interfaces */
+id|initializing
+op_assign
+l_int|1
+suffix:semicolon
 id|ide_init_default_hwifs
 c_func
 (paren
 )paren
+suffix:semicolon
+id|initializing
+op_assign
+l_int|0
 suffix:semicolon
 id|idebus_parameter
 op_assign
