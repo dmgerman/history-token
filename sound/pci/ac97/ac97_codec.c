@@ -12839,9 +12839,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|bus-&gt;init
+id|ac97-&gt;bus-&gt;init
 )paren
-id|bus
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|init
 c_func
@@ -12891,7 +12891,7 @@ id|codec
 r_continue
 suffix:semicolon
 multiline_comment|/* select single codec */
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
@@ -12911,7 +12911,7 @@ id|codec
 )braket
 )paren
 suffix:semicolon
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
@@ -12928,7 +12928,7 @@ id|codec
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
@@ -13026,7 +13026,7 @@ id|codec
 r_continue
 suffix:semicolon
 multiline_comment|/* select single codec */
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
@@ -13047,7 +13047,7 @@ id|codec
 )paren
 suffix:semicolon
 multiline_comment|/* update PCM bits */
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
@@ -13064,7 +13064,7 @@ id|codec
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|ac97
+id|ac97-&gt;bus
 op_member_access_from_pointer
 id|write
 c_func
