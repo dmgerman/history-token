@@ -576,6 +576,8 @@ DECL|macro|__ARCH_WANT_SYS_ALARM
 mdefine_line|#define __ARCH_WANT_SYS_ALARM
 DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
 mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
 DECL|macro|__ARCH_WANT_SYS_TIME
 mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME

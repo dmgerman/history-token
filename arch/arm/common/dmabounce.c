@@ -228,6 +228,9 @@ r_return
 id|d
 suffix:semicolon
 )brace
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* allocate a &squot;safe&squot; buffer and keep track of it */
 r_static
