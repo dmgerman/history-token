@@ -4807,11 +4807,11 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-id|sdev-&gt;de
-op_assign
-id|devfs_mk_dir
+id|sprintf
 c_func
 (paren
+id|sdev-&gt;devfs_name
+comma
 l_string|&quot;scsi/host%d/bus%d/target%d/lun%d&quot;
 comma
 id|sdev-&gt;host-&gt;host_no
@@ -4821,6 +4821,14 @@ comma
 id|sdev-&gt;id
 comma
 id|sdev-&gt;lun
+)paren
+suffix:semicolon
+id|sdev-&gt;de
+op_assign
+id|devfs_mk_dir
+c_func
+(paren
+id|sdev-&gt;devfs_name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End driverfs/devfs code.&n;&t; */
@@ -6465,10 +6473,10 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|sdev-&gt;de
+id|sdev-&gt;devfs_name
 )paren
 suffix:semicolon
 id|scsi_device_unregister

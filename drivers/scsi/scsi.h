@@ -1502,11 +1502,19 @@ op_star
 id|hostdata
 suffix:semicolon
 multiline_comment|/* available to low-level driver */
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* devfs junk */
 DECL|member|de
 id|devfs_handle_t
 id|de
 suffix:semicolon
-multiline_comment|/* directory for the device      */
+multiline_comment|/* will go away soon */
 DECL|member|type
 r_char
 id|type
