@@ -1319,6 +1319,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|dec_page_state
+c_func
+(paren
+id|nr_slab
+)paren
+suffix:semicolon
 id|page
 op_increment
 suffix:semicolon
@@ -3903,6 +3909,12 @@ id|SetPageSlab
 c_func
 (paren
 id|page
+)paren
+suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|nr_slab
 )paren
 suffix:semicolon
 id|page
