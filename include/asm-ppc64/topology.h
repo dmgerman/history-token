@@ -160,7 +160,7 @@ id|node
 )paren
 id|mask
 op_or_assign
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu
 suffix:semicolon
