@@ -7283,7 +7283,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|u-&gt;flags
@@ -7363,7 +7363,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|u-&gt;flags
@@ -7450,7 +7450,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|u-&gt;flags
@@ -7531,7 +7531,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|u-&gt;flags

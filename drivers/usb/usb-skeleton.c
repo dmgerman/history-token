@@ -97,7 +97,7 @@ mdefine_line|#define USB_SKEL_MINOR_BASE&t;0
 macro_line|#else
 multiline_comment|/* Get a minor range for your devices from the usb maintainer */
 DECL|macro|USB_SKEL_MINOR_BASE
-mdefine_line|#define USB_SKEL_MINOR_BASE&t;200
+mdefine_line|#define USB_SKEL_MINOR_BASE&t;192
 macro_line|#endif
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|usb_skel
