@@ -21,10 +21,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
-DECL|macro|STACK_TOP
-macro_line|#undef STACK_TOP
-DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP TASK31_SIZE
 DECL|function|setup_arg_pages32
 r_int
 id|setup_arg_pages32

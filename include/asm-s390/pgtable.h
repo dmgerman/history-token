@@ -1588,10 +1588,6 @@ mdefine_line|#define kern_addr_valid(addr)   (1)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
-macro_line|#ifdef __s390x__
-DECL|macro|HAVE_ARCH_UNMAPPED_AREA
-macro_line|# define HAVE_ARCH_UNMAPPED_AREA
-macro_line|#endif /* __s390x__ */
 DECL|macro|__HAVE_ARCH_PTEP_ESTABLISH
 mdefine_line|#define __HAVE_ARCH_PTEP_ESTABLISH
 DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG

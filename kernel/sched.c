@@ -10957,10 +10957,10 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * In a system that switches off the HZ timer idle_cpu_mask&n; * indicates which cpus entered this state. This is used&n; * in the rcu update to wait only for active cpus. For system&n; * which do not switch off the HZ timer idle_cpu_mask should&n; * always be CPU_MASK_NONE.&n; */
-DECL|variable|idle_cpu_mask
+multiline_comment|/*&n; * In a system that switches off the HZ timer nohz_cpu_mask&n; * indicates which cpus entered this state. This is used&n; * in the rcu update to wait only for active cpus. For system&n; * which do not switch off the HZ timer nohz_cpu_mask should&n; * always be CPU_MASK_NONE.&n; */
+DECL|variable|nohz_cpu_mask
 id|cpumask_t
-id|idle_cpu_mask
+id|nohz_cpu_mask
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon

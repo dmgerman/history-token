@@ -1567,7 +1567,7 @@ c_func
 (paren
 )paren
 comma
-id|idle_cpu_mask
+id|nohz_cpu_mask
 )paren
 )paren
 r_return
@@ -1767,7 +1767,7 @@ c_func
 (paren
 )paren
 comma
-id|idle_cpu_mask
+id|nohz_cpu_mask
 )paren
 suffix:semicolon
 )brace
@@ -1823,7 +1823,7 @@ c_func
 (paren
 )paren
 comma
-id|idle_cpu_mask
+id|nohz_cpu_mask
 )paren
 suffix:semicolon
 id|timer
