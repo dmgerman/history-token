@@ -26,6 +26,9 @@ suffix:semicolon
 r_struct
 id|nameidata
 suffix:semicolon
+r_struct
+id|vfsmount
+suffix:semicolon
 multiline_comment|/*&n; * It&squot;s silly to have NR_OPEN bigger than NR_FILE, but you can change&n; * the file limit at runtime and only root can increase the per-process&n; * nr_file rlimit, so it&squot;s safe to set up a ridiculously high absolute&n; * upper limit on files-per-process.&n; *&n; * Some programs (notably those using select()) may have to be &n; * recompiled to take full advantage of the new limits..  &n; */
 multiline_comment|/* Fixed constants first: */
 DECL|macro|NR_OPEN
@@ -452,9 +455,8 @@ DECL|macro|ATTR_FLAG_IMMUTABLE
 mdefine_line|#define ATTR_FLAG_IMMUTABLE&t;8 &t;/* Immutable file */
 DECL|macro|ATTR_FLAG_NODIRATIME
 mdefine_line|#define ATTR_FLAG_NODIRATIME&t;16 &t;/* Don&squot;t update atime for directory */
-multiline_comment|/*&n; * Includes for diskquotas and mount structures.&n; */
+multiline_comment|/*&n; * Includes for diskquotas.&n; */
 macro_line|#include &lt;linux/quota.h&gt;
-macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/*&n; * oh the beauties of C type declarations.&n; */
 r_struct
 id|page
@@ -6948,80 +6950,6 @@ r_int
 id|real_root_dev
 suffix:semicolon
 macro_line|#endif
-r_extern
-id|ssize_t
-id|char_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|block_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|char_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|block_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|inode_change_ok
