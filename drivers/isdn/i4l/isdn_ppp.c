@@ -809,11 +809,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* device bounded to ippp device ? */
-id|isdn_net_dev
+r_struct
+id|list_head
 op_star
-id|net_dev
-op_assign
-id|dev-&gt;netdev
+id|l
 suffix:semicolon
 r_char
 id|exclusive
@@ -832,18 +831,36 @@ comma
 id|ISDN_MAX_CHANNELS
 )paren
 suffix:semicolon
-r_while
-c_loop
+multiline_comment|/* step through net devices to find exclusive minors */
+id|list_for_each
+c_func
 (paren
-id|net_dev
+id|l
+comma
+op_amp
+id|isdn_net_devs
 )paren
 (brace
-multiline_comment|/* step through net devices to find exclusive minors */
+id|isdn_net_dev
+op_star
+id|p
+op_assign
+id|list_entry
+c_func
+(paren
+id|l
+comma
+id|isdn_net_dev
+comma
+id|global_list
+)paren
+suffix:semicolon
 id|isdn_net_local
 op_star
 id|lp
 op_assign
-id|net_dev-&gt;local
+op_amp
+id|p-&gt;local
 suffix:semicolon
 r_if
 c_cond
@@ -858,10 +875,6 @@ id|lp-&gt;pppbind
 )braket
 op_assign
 l_int|1
-suffix:semicolon
-id|net_dev
-op_assign
-id|net_dev-&gt;next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * search a free device / slot&n;&t;&t; */
@@ -3757,11 +3770,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;isdn_device
-OL
-l_int|0
-op_logical_or
-id|lp-&gt;isdn_channel
+id|lp-&gt;isdn_slot
 OL
 l_int|0
 )paren
@@ -3780,7 +3789,11 @@ c_cond
 (paren
 id|dev-&gt;drv
 (braket
-id|lp-&gt;isdn_device
+id|isdn_slot_driver
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 )braket
 op_member_access_from_pointer
 id|flags
@@ -3811,12 +3824,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * we need to reserve enought space in front of&n;&t;&t;&t; * sk_buff. old call to dev_alloc_skb only reserved&n;&t;&t;&t; * 16 bytes, now we are looking what the driver want&n;&t;&t;&t; */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 suffix:semicolon
 id|skb
 op_assign
@@ -4548,7 +4560,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;master
+id|net_dev-&gt;local.master
 )paren
 id|BUG
 c_func
@@ -5069,7 +5081,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 OL
 l_int|0
 )paren
@@ -5081,7 +5093,7 @@ id|KERN_ERR
 id|__FUNCTION__
 l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5096,7 +5108,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5215,7 +5227,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 OL
 l_int|0
 )paren
@@ -5227,7 +5239,7 @@ id|KERN_ERR
 id|__FUNCTION__
 l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )paren
 suffix:semicolon
 r_goto
@@ -5241,7 +5253,7 @@ c_func
 (paren
 id|ippp_table
 (braket
-id|net_dev-&gt;local-&gt;ppp_slot
+id|net_dev-&gt;local.ppp_slot
 )braket
 op_member_access_from_pointer
 id|slcomp
@@ -5376,7 +5388,7 @@ r_return
 suffix:semicolon
 id|drop_packet
 suffix:colon
-id|net_dev-&gt;local-&gt;stats.rx_dropped
+id|net_dev-&gt;local.stats.rx_dropped
 op_increment
 suffix:semicolon
 id|kfree_skb
@@ -5838,14 +5850,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * we need to reserve enought space in front of&n;&t;&t; * sk_buff. old call to dev_alloc_skb only reserved&n;&t;&t; * 16 bytes, now we are looking what the driver want.&n;&t;&t; */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 op_plus
 id|IPPP_MAX_HEADER
+suffix:semicolon
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Note: hl might still be insufficient because the method&n;&t;&t; * above does not account for a possibible MPPP slave channel&n;&t;&t; * which had larger HL header space requirements than the&n;&t;&t; * master.&n;&t;&t; */
 id|new_skb
@@ -9250,6 +9262,7 @@ l_int|1
 suffix:semicolon
 id|lp
 op_assign
+op_amp
 id|ndev-&gt;local
 suffix:semicolon
 r_if
@@ -9374,6 +9387,7 @@ l_int|1
 suffix:semicolon
 id|lp
 op_assign
+op_amp
 id|ndev-&gt;local
 suffix:semicolon
 r_if
@@ -9566,12 +9580,11 @@ suffix:semicolon
 multiline_comment|/* Alloc large enough skb */
 id|hl
 op_assign
-id|dev-&gt;drv
-(braket
-id|lp-&gt;isdn_device
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+id|isdn_slot_hdrlen
+c_func
+(paren
+id|lp-&gt;isdn_slot
+)paren
 suffix:semicolon
 id|skb
 op_assign
