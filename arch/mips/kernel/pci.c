@@ -467,6 +467,10 @@ comma
 r_int
 r_int
 id|size
+comma
+r_int
+r_int
+id|align
 )paren
 (brace
 multiline_comment|/* this should not be called */

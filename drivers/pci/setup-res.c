@@ -165,6 +165,10 @@ id|resno
 )paren
 (brace
 r_int
+r_int
+id|align
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|type_mask
@@ -220,7 +224,7 @@ id|type_mask
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* We cannot allocate a non-prefetching resource from a pre-fetching area */
+multiline_comment|/* We cannot allocate a non-prefetching resource&n;&t;&t;   from a pre-fetching area */
 r_if
 c_cond
 (paren
@@ -238,6 +242,20 @@ id|IORESOURCE_PREFETCH
 )paren
 )paren
 r_continue
+suffix:semicolon
+multiline_comment|/* The bridge resources are special, as their&n;&t;&t;   size != alignment. Sizing routines return&n;&t;&t;   required alignment in the &quot;start&quot; field. */
+id|align
+op_assign
+(paren
+id|resno
+OL
+id|PCI_BRIDGE_RESOURCES
+)paren
+ques
+c_cond
+id|size
+suffix:colon
+id|res-&gt;start
 suffix:semicolon
 multiline_comment|/* Ok, try it out.. */
 r_if
@@ -257,7 +275,7 @@ comma
 op_minus
 l_int|1
 comma
-id|size
+id|align
 comma
 id|pcibios_align_resource
 comma

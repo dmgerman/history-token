@@ -430,6 +430,10 @@ comma
 r_int
 r_int
 id|size
+comma
+r_int
+r_int
+id|align
 )paren
 (brace
 r_struct
@@ -534,7 +538,7 @@ c_func
 (paren
 l_int|0x1000
 comma
-id|size
+id|align
 )paren
 suffix:semicolon
 id|start
