@@ -127,10 +127,10 @@ DECL|macro|__NR_msync
 mdefine_line|#define __NR_msync               65 /* Common in newer 1.3.x revs...               */
 DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork               66 /* Common                                      */
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread               67 /* Linux Specific                              */
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite              68 /* Linux Specific                              */
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64             67 /* Linux Specific                              */
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64            68 /* Linux Specific                              */
 multiline_comment|/* #define __NR_geteuid32        69    Linux sparc32, sbrk under SunOS             */
 multiline_comment|/* #define __NR_getegid32        70    Linux sparc32, sstk under SunOS             */
 DECL|macro|__NR_mmap

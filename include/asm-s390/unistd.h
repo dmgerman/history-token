@@ -317,10 +317,10 @@ DECL|macro|__NR_rt_sigqueueinfo
 mdefine_line|#define __NR_rt_sigqueueinfo    178
 DECL|macro|__NR_rt_sigsuspend
 mdefine_line|#define __NR_rt_sigsuspend      179
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread              180
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite             181
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64            180
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64           181
 DECL|macro|__NR_chown
 mdefine_line|#define __NR_chown              182
 DECL|macro|__NR_getcwd
