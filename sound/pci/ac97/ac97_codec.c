@@ -218,6 +218,16 @@ l_int|NULL
 )brace
 comma
 (brace
+l_int|0x49544500
+comma
+l_int|0xffffff00
+comma
+l_string|&quot;ITE Tech.Inc&quot;
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x4e534300
 comma
 l_int|0xffffff00
@@ -659,6 +669,16 @@ l_int|NULL
 comma
 singleline_comment|// alias VIA VT1611A?
 (brace
+l_int|0x49544520
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;IT2226E&quot;
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x4e534300
 comma
 l_int|0xffffffff
@@ -996,6 +1016,23 @@ r_int
 id|reg
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ac97-&gt;limited_regs
+op_logical_and
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|reg
+comma
+id|ac97-&gt;reg_accessed
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* filter some registers for buggy codecs */
 r_switch
 c_cond
@@ -1325,22 +1362,6 @@ r_int
 id|value
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ac97-&gt;limited_regs
-op_logical_and
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|reg
-comma
-id|ac97-&gt;reg_accessed
-)paren
-)paren
-r_return
-suffix:semicolon
 macro_line|#if 0
 r_if
 c_cond
@@ -2015,7 +2036,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|macro|AC97_ENUM_DOUBLE
-mdefine_line|#define AC97_ENUM_DOUBLE(xname, reg, shift, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_ac97_info_enum_double, &bslash;&n;  get: snd_ac97_get_enum_double, put: snd_ac97_put_enum_double, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (invert &lt;&lt; 24) }
+mdefine_line|#define AC97_ENUM_DOUBLE(xname, reg, shift, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_enum_double, &bslash;&n;  .get = snd_ac97_get_enum_double, .put = snd_ac97_put_enum_double, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (invert &lt;&lt; 24) }
 DECL|function|snd_ac97_info_enum_double
 r_static
 r_int
@@ -2381,7 +2402,7 @@ id|shift
 suffix:semicolon
 )brace
 DECL|macro|AC97_SINGLE
-mdefine_line|#define AC97_SINGLE(xname, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_ac97_info_single, &bslash;&n;  get: snd_ac97_get_single, put: snd_ac97_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define AC97_SINGLE(xname, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_single, &bslash;&n;  .get = snd_ac97_get_single, .put = snd_ac97_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_ac97_info_single
 r_static
 r_int
@@ -2647,7 +2668,7 @@ id|shift
 suffix:semicolon
 )brace
 DECL|macro|AC97_DOUBLE
-mdefine_line|#define AC97_DOUBLE(xname, reg, shift_left, shift_right, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: (xname), info: snd_ac97_info_double, &bslash;&n;  get: snd_ac97_get_double, put: snd_ac97_put_double, &bslash;&n;  private_value: reg | (shift_left &lt;&lt; 8) | (shift_right &lt;&lt; 12) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define AC97_DOUBLE(xname, reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = (xname), .info = snd_ac97_info_double, &bslash;&n;  .get = snd_ac97_get_double, .put = snd_ac97_put_double, &bslash;&n;  .private_value = reg | (shift_left &lt;&lt; 8) | (shift_right &lt;&lt; 12) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_ac97_info_double
 r_static
 r_int
@@ -4664,16 +4685,19 @@ l_int|5
 op_assign
 (brace
 (brace
+dot
 id|access
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_ACCESS_READ
 comma
+dot
 id|iface
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
+dot
 id|name
-suffix:colon
+op_assign
 id|SNDRV_CTL_NAME_IEC958
 c_func
 (paren
@@ -4684,27 +4708,32 @@ comma
 id|CON_MASK
 )paren
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|snd_ac97_spdif_mask_info
 comma
+dot
 id|get
-suffix:colon
+op_assign
 id|snd_ac97_spdif_cmask_get
 comma
 )brace
 comma
 (brace
+dot
 id|access
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_ACCESS_READ
 comma
+dot
 id|iface
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
+dot
 id|name
-suffix:colon
+op_assign
 id|SNDRV_CTL_NAME_IEC958
 c_func
 (paren
@@ -4715,23 +4744,27 @@ comma
 id|PRO_MASK
 )paren
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|snd_ac97_spdif_mask_info
 comma
+dot
 id|get
-suffix:colon
+op_assign
 id|snd_ac97_spdif_pmask_get
 comma
 )brace
 comma
 (brace
+dot
 id|iface
-suffix:colon
+op_assign
 id|SNDRV_CTL_ELEM_IFACE_MIXER
 comma
+dot
 id|name
-suffix:colon
+op_assign
 id|SNDRV_CTL_NAME_IEC958
 c_func
 (paren
@@ -4742,16 +4775,19 @@ comma
 id|DEFAULT
 )paren
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|snd_ac97_spdif_mask_info
 comma
+dot
 id|get
-suffix:colon
+op_assign
 id|snd_ac97_spdif_default_get
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|snd_ac97_spdif_default_put
 comma
 )brace
@@ -4893,7 +4929,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|AD18XX_PCM_BITS
-mdefine_line|#define AD18XX_PCM_BITS(xname, codec, shift, mask) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_ac97_ad18xx_pcm_info_bits, &bslash;&n;  get: snd_ac97_ad18xx_pcm_get_bits, put: snd_ac97_ad18xx_pcm_put_bits, &bslash;&n;  private_value: codec | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) }
+mdefine_line|#define AD18XX_PCM_BITS(xname, codec, shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_ad18xx_pcm_info_bits, &bslash;&n;  .get = snd_ac97_ad18xx_pcm_get_bits, .put = snd_ac97_ad18xx_pcm_put_bits, &bslash;&n;  .private_value = codec | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) }
 DECL|function|snd_ac97_ad18xx_pcm_info_bits
 r_static
 r_int
@@ -5115,7 +5151,7 @@ id|shift
 suffix:semicolon
 )brace
 DECL|macro|AD18XX_PCM_VOLUME
-mdefine_line|#define AD18XX_PCM_VOLUME(xname, codec) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_ac97_ad18xx_pcm_info_volume, &bslash;&n;  get: snd_ac97_ad18xx_pcm_get_volume, put: snd_ac97_ad18xx_pcm_put_volume, &bslash;&n;  private_value: codec }
+mdefine_line|#define AD18XX_PCM_VOLUME(xname, codec) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_ad18xx_pcm_info_volume, &bslash;&n;  .get = snd_ac97_ad18xx_pcm_get_volume, .put = snd_ac97_ad18xx_pcm_put_volume, &bslash;&n;  .private_value = codec }
 DECL|function|snd_ac97_ad18xx_pcm_info_volume
 r_static
 r_int
@@ -5553,15 +5589,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ac97-&gt;limited_regs
-op_logical_and
 op_logical_neg
-id|test_bit
+id|snd_ac97_valid_reg
 c_func
 (paren
-id|reg
+id|ac97
 comma
-id|ac97-&gt;reg_accessed
+id|reg
 )paren
 )paren
 r_return
@@ -9696,8 +9730,9 @@ id|snd_device_ops_t
 id|ops
 op_assign
 (brace
+dot
 id|dev_free
-suffix:colon
+op_assign
 id|snd_ac97_dev_free
 comma
 )brace
@@ -11835,25 +11870,6 @@ op_add_assign
 l_int|2
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ac97-&gt;limited_regs
-op_logical_and
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|reg
-comma
-id|ac97-&gt;reg_accessed
-)paren
-)paren
-id|val
-op_assign
-l_int|0xffff
-suffix:semicolon
-r_else
 id|val
 op_assign
 id|snd_ac97_read

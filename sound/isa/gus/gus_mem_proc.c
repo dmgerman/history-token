@@ -299,12 +299,14 @@ id|snd_info_entry_ops
 id|snd_gf1_mem_proc_ops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|snd_gf1_mem_proc_dump
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|snd_gf1_mem_proc_llseek
 comma
 )brace

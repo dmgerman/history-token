@@ -7889,6 +7889,7 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 multiline_comment|/* Only available on the Hercules Game Theater XP soundcard */
 DECL|variable|__devinitdata
 r_static
@@ -7924,6 +7925,7 @@ comma
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|snd_cs46xx_mixer
 r_int
 id|__devinit
@@ -12364,6 +12366,7 @@ op_star
 id|chip
 )paren
 (brace
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 r_int
 id|idx
 comma
@@ -12375,6 +12378,7 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* set EGPIO to default */
 id|hercules_init
 c_func
@@ -12387,6 +12391,7 @@ id|snd_printdd
 l_string|&quot;initializing Hercules mixer&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 r_for
 c_loop
 (paren
@@ -12461,6 +12466,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 macro_line|#if 0
 multiline_comment|/*&n; *&t;Untested&n; */

@@ -3985,6 +3985,30 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* cold reset only when link is down */
+id|pci_read_config_byte
+c_func
+(paren
+id|chip-&gt;pci
+comma
+l_int|0x40
+comma
+op_amp
+id|pval
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pval
+op_amp
+l_int|0x01
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 multiline_comment|/* deassert ACLink reset, force SYNC */
 id|pci_write_config_byte
 c_func
@@ -4036,6 +4060,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* wait until codec ready */
 id|max_count
 op_assign

@@ -2729,6 +2729,17 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|member|mixer_init
+r_void
+(paren
+op_star
+id|mixer_init
+)paren
+(paren
+id|cs46xx_t
+op_star
+)paren
+suffix:semicolon
 DECL|member|acpi_dev
 r_struct
 id|pci_dev
@@ -2771,17 +2782,6 @@ id|current_gpio
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
-DECL|member|mixer_init
-r_void
-(paren
-op_star
-id|mixer_init
-)paren
-(paren
-id|cs46xx_t
-op_star
-)paren
-suffix:semicolon
 DECL|member|dsp_spos_instance
 id|dsp_spos_instance_t
 op_star

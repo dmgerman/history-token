@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13&t;Tomas Kasparek&t;Initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  Proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;Proc interface update, code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.2 2002/04/18 07:47:59 perex Exp $ */
+multiline_comment|/* $Id: uda1341.c,v 1.3 2002/08/13 16:13:36 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2717,7 +2717,7 @@ multiline_comment|/* }}} */
 multiline_comment|/* {{{ Mixer controls setting */
 multiline_comment|/* {{{ UDA1341 single functions */
 DECL|macro|UDA1341_SINGLE
-mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_uda1341_info_single, &bslash;&n;  get: snd_uda1341_get_single, put: snd_uda1341_put_single, &bslash;&n;  private_value: where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, put: snd_uda1341_put_single, &bslash;&n;  private_value: where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 DECL|function|snd_uda1341_info_single
 r_static
 r_int
@@ -3044,7 +3044,7 @@ suffix:semicolon
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 enum functions */
 DECL|macro|UDA1341_ENUM
-mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_uda1341_info_enum, &bslash;&n;  get: snd_uda1341_get_enum, put: snd_uda1341_put_enum, &bslash;&n;  private_value: where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, info: snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, put: snd_uda1341_put_enum, &bslash;&n;  private_value: where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 DECL|function|snd_uda1341_info_enum
 r_static
 r_int
@@ -3349,7 +3349,7 @@ suffix:semicolon
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 2regs functions */
 DECL|macro|UDA1341_2REGS
-mdefine_line|#define UDA1341_2REGS(xname, where, reg_1, reg_2, shift_1, shift_2, mask_1, mask_2, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: (xname), info: snd_uda1341_info_2regs, &bslash;&n;  get: snd_uda1341_get_2regs, put: snd_uda1341_put_2regs, &bslash;&n;  private_value: where | (reg_1 &lt;&lt; 5) | (reg_2 &lt;&lt; 9) | (shift_1 &lt;&lt; 13) | (shift_2 &lt;&lt; 16) | &bslash;&n;                         (mask_1 &lt;&lt; 19) | (mask_2 &lt;&lt; 25) | (invert &lt;&lt; 31) &bslash;&n;}
+mdefine_line|#define UDA1341_2REGS(xname, where, reg_1, reg_2, shift_1, shift_2, mask_1, mask_2, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: (xname), info: snd_uda1341_info_2regs, &bslash;&n;  .get = snd_uda1341_get_2regs, put: snd_uda1341_put_2regs, &bslash;&n;  private_value: where | (reg_1 &lt;&lt; 5) | (reg_2 &lt;&lt; 9) | (shift_1 &lt;&lt; 13) | (shift_2 &lt;&lt; 16) | &bslash;&n;                         (mask_1 &lt;&lt; 19) | (mask_2 &lt;&lt; 25) | (invert &lt;&lt; 31) &bslash;&n;}
 DECL|function|snd_uda1341_info_2regs
 r_static
 r_int
@@ -4947,16 +4947,19 @@ id|l3_ops
 id|uda1341_ops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|uda1341_open
 comma
+dot
 id|command
-suffix:colon
+op_assign
 id|uda1341_command
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|uda1341_close
 comma
 )brace
@@ -4968,25 +4971,30 @@ id|l3_driver
 id|uda1341_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|UDA1341_ALSA_NAME
 comma
+dot
 id|attach_client
-suffix:colon
+op_assign
 id|uda1341_attach
 comma
+dot
 id|detach_client
-suffix:colon
+op_assign
 id|uda1341_detach
 comma
+dot
 id|ops
-suffix:colon
+op_assign
 op_amp
 id|uda1341_ops
 comma
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 )brace

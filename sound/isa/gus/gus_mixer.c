@@ -9,7 +9,7 @@ DECL|macro|chip_t
 mdefine_line|#define chip_t snd_gus_card_t
 multiline_comment|/*&n; *&n; */
 DECL|macro|GF1_SINGLE
-mdefine_line|#define GF1_SINGLE(xname, xindex, shift, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_gf1_info_single, &bslash;&n;  get: snd_gf1_get_single, put: snd_gf1_put_single, &bslash;&n;  private_value: shift | (invert &lt;&lt; 8) }
+mdefine_line|#define GF1_SINGLE(xname, xindex, shift, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_gf1_info_single, &bslash;&n;  .get = snd_gf1_get_single, put: snd_gf1_put_single, &bslash;&n;  private_value: shift | (invert &lt;&lt; 8) }
 DECL|function|snd_gf1_info_single
 r_static
 r_int
@@ -275,7 +275,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|ICS_DOUBLE
-mdefine_line|#define ICS_DOUBLE(xname, xindex, addr) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_ics_info_double, &bslash;&n;  get: snd_ics_get_double, put: snd_ics_put_double, &bslash;&n;  private_value: addr }
+mdefine_line|#define ICS_DOUBLE(xname, xindex, addr) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  .info = snd_ics_info_double, &bslash;&n;  .get = snd_ics_get_double, put: snd_ics_put_double, &bslash;&n;  private_value: addr }
 DECL|function|snd_ics_info_double
 r_static
 r_int

@@ -864,7 +864,7 @@ id|chip
 suffix:semicolon
 multiline_comment|/*&n; *  mixer library&n; */
 DECL|macro|CS4231_SINGLE
-mdefine_line|#define CS4231_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_cs4231_info_single, &bslash;&n;  get: snd_cs4231_get_single, put: snd_cs4231_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define CS4231_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4231_info_single, &bslash;&n;  .get = snd_cs4231_get_single, .put = snd_cs4231_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 r_int
 id|snd_cs4231_info_single
 c_func
@@ -905,7 +905,7 @@ id|ucontrol
 )paren
 suffix:semicolon
 DECL|macro|CS4231_DOUBLE
-mdefine_line|#define CS4231_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_cs4231_info_double, &bslash;&n;  get: snd_cs4231_get_double, put: snd_cs4231_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define CS4231_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_cs4231_info_double, &bslash;&n;  .get = snd_cs4231_get_double, .put = snd_cs4231_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 r_int
 id|snd_cs4231_info_double
 c_func

@@ -716,8 +716,9 @@ l_int|0x7532
 )paren
 comma
 multiline_comment|/* Tropez */
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func
@@ -789,8 +790,9 @@ l_int|0x7632
 )paren
 comma
 multiline_comment|/* Tropez+ */
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func

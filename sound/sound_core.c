@@ -1231,12 +1231,14 @@ id|soundcore_fops
 op_assign
 (brace
 multiline_comment|/* We must have an owner or the module locking fails */
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|soundcore_open
 comma
 )brace

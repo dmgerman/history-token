@@ -467,6 +467,10 @@ c_cond
 id|dev
 op_ne
 id|SNDRV_MINOR_SEQUENCER
+op_logical_and
+id|dev
+op_ne
+id|SNDRV_MINOR_TIMER
 )paren
 (brace
 r_if
@@ -620,13 +624,15 @@ id|snd_fops
 op_assign
 (brace
 macro_line|#ifndef LINUX_2_2
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
+dot
 id|open
-suffix:colon
+op_assign
 id|snd_open
 )brace
 suffix:semicolon
