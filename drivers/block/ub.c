@@ -3354,25 +3354,7 @@ id|Bad_End
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * We ignore the result for the halt clear.&n;&t;&t; */
-multiline_comment|/* reset the toggles and endpoint flags */
-id|usb_endpoint_running
-c_func
-(paren
-id|sc-&gt;dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|sc-&gt;last_pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|sc-&gt;last_pipe
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* reset the endpoint toggle */
 id|usb_settoggle
 c_func
 (paren
@@ -3438,25 +3420,7 @@ id|Bad_End
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * We ignore the result for the halt clear.&n;&t;&t; */
-multiline_comment|/* reset the toggles and endpoint flags */
-id|usb_endpoint_running
-c_func
-(paren
-id|sc-&gt;dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|sc-&gt;last_pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|sc-&gt;last_pipe
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* reset the endpoint toggle */
 id|usb_settoggle
 c_func
 (paren
@@ -6515,21 +6479,7 @@ op_amp
 op_complement
 )paren
 suffix:semicolon
-multiline_comment|/* reset the toggles and endpoint flags */
-id|usb_endpoint_running
-c_func
-(paren
-id|sc-&gt;dev
-comma
-id|endp
-comma
-id|usb_pipeout
-c_func
-(paren
-id|sc-&gt;last_pipe
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* reset the endpoint toggle */
 id|usb_settoggle
 c_func
 (paren
