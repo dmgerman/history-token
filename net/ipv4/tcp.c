@@ -182,7 +182,7 @@ id|tcp_memory_pressure
 id|NET_INC_STATS
 c_func
 (paren
-id|TCPMemoryPressures
+id|LINUX_MIB_TCPMEMORYPRESSURES
 )paren
 suffix:semicolon
 id|tcp_memory_pressure
@@ -3815,7 +3815,7 @@ suffix:semicolon
 id|NET_ADD_STATS_USER
 c_func
 (paren
-id|TCPPrequeued
+id|LINUX_MIB_TCPPREQUEUED
 comma
 id|skb_queue_len
 c_func
@@ -4851,7 +4851,7 @@ l_int|0
 id|NET_ADD_STATS_USER
 c_func
 (paren
-id|TCPDirectCopyFromBacklog
+id|LINUX_MIB_TCPDIRECTCOPYFROMBACKLOG
 comma
 id|chunk
 )paren
@@ -4905,7 +4905,7 @@ l_int|0
 id|NET_ADD_STATS_USER
 c_func
 (paren
-id|TCPDirectCopyFromPrequeue
+id|LINUX_MIB_TCPDIRECTCOPYFROMPREQUEUE
 comma
 id|chunk
 )paren
@@ -5280,7 +5280,7 @@ l_int|0
 id|NET_ADD_STATS_USER
 c_func
 (paren
-id|TCPDirectCopyFromPrequeue
+id|LINUX_MIB_TCPDIRECTCOPYFROMPREQUEUE
 comma
 id|chunk
 )paren
@@ -5824,7 +5824,7 @@ multiline_comment|/* Unread data was tossed, zap the connection. */
 id|NET_INC_STATS_USER
 c_func
 (paren
-id|TCPAbortOnClose
+id|LINUX_MIB_TCPABORTONCLOSE
 )paren
 suffix:semicolon
 id|tcp_set_state
@@ -5874,7 +5874,7 @@ suffix:semicolon
 id|NET_INC_STATS_USER
 c_func
 (paren
-id|TCPAbortOnData
+id|LINUX_MIB_TCPABORTONDATA
 )paren
 suffix:semicolon
 )brace
@@ -5997,7 +5997,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnLinger
+id|LINUX_MIB_TCPABORTONLINGER
 )paren
 suffix:semicolon
 )brace
@@ -6138,7 +6138,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnMemory
+id|LINUX_MIB_TCPABORTONMEMORY
 )paren
 suffix:semicolon
 )brace

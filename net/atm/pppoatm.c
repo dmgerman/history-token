@@ -1332,10 +1332,7 @@ id|atmvcc-&gt;pop
 op_assign
 id|pppoatm_pop
 suffix:semicolon
-(paren
-r_void
-)paren
-id|try_module_get
+id|__module_get
 c_func
 (paren
 id|THIS_MODULE

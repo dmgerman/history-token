@@ -140,7 +140,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|SyncookiesSent
+id|LINUX_MIB_SYNCOOKIESSENT
 )paren
 suffix:semicolon
 r_return
@@ -467,7 +467,7 @@ l_int|0
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|SyncookiesFailed
+id|LINUX_MIB_SYNCOOKIESFAILED
 )paren
 suffix:semicolon
 r_goto
@@ -477,7 +477,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|SyncookiesRecv
+id|LINUX_MIB_SYNCOOKIESRECV
 )paren
 suffix:semicolon
 id|req

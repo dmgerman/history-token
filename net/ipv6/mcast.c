@@ -6345,7 +6345,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|payload_len
@@ -6435,13 +6435,13 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutMcastPkts
+id|IPSTATS_MIB_OUTMCASTPKTS
 )paren
 suffix:semicolon
 )brace
@@ -6449,7 +6449,7 @@ r_else
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_if
@@ -7976,7 +7976,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|snd_addr
@@ -8069,7 +8069,7 @@ l_int|NULL
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
@@ -8347,7 +8347,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutGroupMembReductions
+id|ICMP6_MIB_OUTGROUPMEMBREDUCTIONS
 )paren
 suffix:semicolon
 r_else
@@ -8356,7 +8356,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutGroupMembResponses
+id|ICMP6_MIB_OUTGROUPMEMBRESPONSES
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
@@ -8364,13 +8364,13 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutMcastPkts
+id|IPSTATS_MIB_OUTMCASTPKTS
 )paren
 suffix:semicolon
 )brace
@@ -8378,7 +8378,7 @@ r_else
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_if
@@ -8405,7 +8405,7 @@ suffix:colon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 id|kfree_skb

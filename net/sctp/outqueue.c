@@ -1118,14 +1118,14 @@ id|SCTP_DATA_UNORDERED
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutUnorderChunks
+id|SCTP_MIB_OUTUNORDERCHUNKS
 )paren
 suffix:semicolon
 r_else
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutOrderChunks
+id|SCTP_MIB_OUTORDERCHUNKS
 )paren
 suffix:semicolon
 id|q-&gt;empty
@@ -1156,7 +1156,7 @@ suffix:semicolon
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutCtrlChunks
+id|SCTP_MIB_OUTCTRLCHUNKS
 )paren
 suffix:semicolon
 )brace
@@ -5243,7 +5243,7 @@ suffix:semicolon
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutCtrlChunks
+id|SCTP_MIB_OUTCTRLCHUNKS
 )paren
 suffix:semicolon
 )brace

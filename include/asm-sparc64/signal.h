@@ -5,6 +5,7 @@ mdefine_line|#define _ASMSPARC64_SIGNAL_H
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
@@ -345,6 +346,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_COMPAT
 DECL|struct|__new_sigaction32
 r_struct
 id|__new_sigaction32
@@ -369,6 +371,7 @@ id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|struct|k_sigaction
 r_struct
 id|k_sigaction
@@ -418,6 +421,7 @@ multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_COMPAT
 DECL|struct|__old_sigaction32
 r_struct
 id|__old_sigaction32
@@ -443,6 +447,7 @@ multiline_comment|/* not used by Linux/SPARC yet */
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 DECL|struct|sigaltstack
 r_typedef
 r_struct
@@ -467,6 +472,7 @@ DECL|typedef|stack_t
 id|stack_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_COMPAT
 DECL|struct|sigaltstack32
 r_typedef
 r_struct
@@ -488,6 +494,7 @@ DECL|typedef|stack_t32
 )brace
 id|stack_t32
 suffix:semicolon
+macro_line|#endif
 DECL|struct|signal_deliver_cookie
 r_struct
 id|signal_deliver_cookie
