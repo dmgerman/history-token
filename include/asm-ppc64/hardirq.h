@@ -87,7 +87,7 @@ DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT
 DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
@@ -116,7 +116,5 @@ macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|show_stack
 mdefine_line|#define show_stack(SP)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (SP)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(SP);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(_get_SP());&t;&bslash;&n;} while (0)
-DECL|macro|dump_stack
-mdefine_line|#define dump_stack()&t;show_stack()
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

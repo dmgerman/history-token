@@ -2699,6 +2699,14 @@ r_return
 id|mem
 suffix:semicolon
 )brace
+DECL|variable|hypertas_funcs
+r_static
+r_char
+id|hypertas_funcs
+(braket
+l_int|1024
+)braket
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -2808,12 +2816,6 @@ op_minus
 l_int|1
 )paren
 (brace
-r_char
-id|hypertas_funcs
-(braket
-l_int|1024
-)braket
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
