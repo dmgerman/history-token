@@ -9311,6 +9311,7 @@ id|pbus-&gt;no_vra
 op_assign
 l_int|1
 suffix:semicolon
+r_else
 id|pbus-&gt;dra
 op_assign
 l_int|1
