@@ -1575,7 +1575,6 @@ id|sch-&gt;handle
 op_assign
 id|handle
 suffix:semicolon
-multiline_comment|/* enqueue is accessed locklessly - make sure it&squot;s visible&n;&t; * before we set a netdevice&squot;s qdisc pointer to sch */
 r_if
 c_cond
 (paren
@@ -1610,7 +1609,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|list_add_tail_rcu
+id|list_add_tail
 c_func
 (paren
 op_amp
