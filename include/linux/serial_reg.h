@@ -165,6 +165,25 @@ DECL|macro|UART_MSR_DCTS
 mdefine_line|#define UART_MSR_DCTS&t;0x01&t;/* Delta CTS */
 DECL|macro|UART_MSR_ANY_DELTA
 mdefine_line|#define UART_MSR_ANY_DELTA 0x0F&t;/* Any of the delta bits! */
+multiline_comment|/*&n; * The Intel PXA2xx chip defines those bits&n; */
+DECL|macro|UART_IER_DMAE
+mdefine_line|#define UART_IER_DMAE&t;0x80&t;/* DMA Requests Enable */
+DECL|macro|UART_IER_UUE
+mdefine_line|#define UART_IER_UUE&t;0x40&t;/* UART Unit Enable */
+DECL|macro|UART_IER_NRZE
+mdefine_line|#define UART_IER_NRZE&t;0x20&t;/* NRZ coding Enable */
+DECL|macro|UART_IER_RTOIE
+mdefine_line|#define UART_IER_RTOIE&t;0x10&t;/* Receiver Time Out Interrupt Enable */
+DECL|macro|UART_IIR_TOD
+mdefine_line|#define UART_IIR_TOD&t;0x08&t;/* Character Timeout Indication Detected */
+DECL|macro|UART_FCR_PXAR1
+mdefine_line|#define UART_FCR_PXAR1&t;0x00&t;/* receive FIFO treshold = 1 */
+DECL|macro|UART_FCR_PXAR8
+mdefine_line|#define UART_FCR_PXAR8&t;0x40&t;/* receive FIFO treshold = 8 */
+DECL|macro|UART_FCR_PXAR16
+mdefine_line|#define UART_FCR_PXAR16&t;0x80&t;/* receive FIFO treshold = 16 */
+DECL|macro|UART_FCR_PXAR32
+mdefine_line|#define UART_FCR_PXAR32&t;0xc0&t;/* receive FIFO treshold = 32 */
 multiline_comment|/*&n; * These are the definitions for the Extended Features Register&n; * (StarTech 16C660 only, when DLAB=1)&n; */
 DECL|macro|UART_EFR_CTS
 mdefine_line|#define UART_EFR_CTS&t;0x80&t;/* CTS flow control */
