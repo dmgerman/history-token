@@ -4462,6 +4462,10 @@ id|sbi
 suffix:semicolon
 r_int
 r_int
+id|block
+suffix:semicolon
+r_int
+r_int
 id|sb_block
 op_assign
 id|get_sb_block
@@ -4473,11 +4477,7 @@ id|data
 suffix:semicolon
 r_int
 r_int
-id|block
-comma
 id|logic_sb_block
-op_assign
-l_int|1
 suffix:semicolon
 r_int
 r_int
@@ -4625,6 +4625,13 @@ id|EXT3_MIN_BLOCK_SIZE
 )paren
 op_mod
 id|blocksize
+suffix:semicolon
+)brace
+r_else
+(brace
+id|logic_sb_block
+op_assign
+id|sb_block
 suffix:semicolon
 )brace
 r_if
