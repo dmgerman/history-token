@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgalloc.h&n; *&n; *  Copyright (C) 2001-2002 Russell King&n; *&n; * Page table allocation/freeing primitives for 32-bit ARM processors.&n; */
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;pgtable.h&quot;
 multiline_comment|/*&n; * Allocate one PTE table.&n; *&n; * This actually allocates two hardware PTE tables, but we wrap this up&n; * into one table thus:&n; *&n; *  +------------+&n; *  |  h/w pt 0  |&n; *  +------------+&n; *  |  h/w pt 1  |&n; *  +------------+&n; *  | Linux pt 0 |&n; *  +------------+&n; *  | Linux pt 1 |&n; *  +------------+&n; */
 r_static
@@ -298,7 +299,7 @@ id|pte_t
 )paren
 )paren
 suffix:semicolon
-id|cpu_flush_pmd
+id|flush_pmd_entry
 c_func
 (paren
 id|pmdp
@@ -381,7 +382,7 @@ id|pte_t
 )paren
 )paren
 suffix:semicolon
-id|cpu_flush_pmd
+id|flush_pmd_entry
 c_func
 (paren
 id|pmdp
