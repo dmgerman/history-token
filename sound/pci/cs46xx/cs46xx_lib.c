@@ -14122,11 +14122,13 @@ id|change
 )paren
 (brace
 multiline_comment|/* Manage the EAPD bit on the Crystal 4297 &n;&t;   and the Analog AD1885 */
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 r_int
 id|old
 op_assign
 id|chip-&gt;amplifier
 suffix:semicolon
+macro_line|#endif
 r_int
 id|oval
 comma
