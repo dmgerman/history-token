@@ -564,7 +564,7 @@ mdefine_line|#define SCTP_DEFAULT_COOKIE_LIFE_USEC&t;0  /* microseconds */
 DECL|macro|SCTP_DEFAULT_MINWINDOW
 mdefine_line|#define SCTP_DEFAULT_MINWINDOW&t;1500&t;/* default minimum rwnd size */
 DECL|macro|SCTP_DEFAULT_MAXWINDOW
-mdefine_line|#define SCTP_DEFAULT_MAXWINDOW&t;32768&t;/* default rwnd size */
+mdefine_line|#define SCTP_DEFAULT_MAXWINDOW&t;65535&t;/* default rwnd size */
 DECL|macro|SCTP_DEFAULT_MAXSEGMENT
 mdefine_line|#define SCTP_DEFAULT_MAXSEGMENT 1500&t;/* MTU size, this is the limit&n;                                         * to which we will raise the P-MTU.&n;&t;&t;&t;&t;&t; */
 DECL|macro|SCTP_DEFAULT_MINSEGMENT
