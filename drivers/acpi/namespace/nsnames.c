@@ -105,7 +105,7 @@ op_sub_assign
 id|ACPI_NAME_SIZE
 suffix:semicolon
 multiline_comment|/* Put the name into the buffer */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 (paren
 id|name_buffer

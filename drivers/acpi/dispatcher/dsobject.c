@@ -338,7 +338,10 @@ suffix:semicolon
 )brace
 id|byte_list_length
 op_assign
-id|byte_list-&gt;common.value.integer32
+(paren
+id|u32
+)paren
+id|byte_list-&gt;common.value.integer
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The buffer length (number of bytes) will be the larger of:&n;&t; * 1) The specified buffer length and&n;&t; * 2) The length of the initializer byte list&n;&t; */

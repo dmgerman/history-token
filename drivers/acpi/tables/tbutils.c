@@ -169,7 +169,7 @@ id|AE_BAD_ADDRESS
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that the signature is 4 ASCII characters */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|signature

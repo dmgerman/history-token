@@ -74,7 +74,7 @@ DECL|macro|ACPI_CAST_INDIRECT_PTR
 mdefine_line|#define ACPI_CAST_INDIRECT_PTR(t, p)    ((t **)(void *)(p))
 macro_line|#if ACPI_MACHINE_WIDTH == 16
 DECL|macro|ACPI_STORE_POINTER
-mdefine_line|#define ACPI_STORE_POINTER(d,s)         ACPI_MOVE_UNALIGNED32_TO_32(d,s)
+mdefine_line|#define ACPI_STORE_POINTER(d,s)         ACPI_MOVE_32_TO_32(d,s)
 DECL|macro|ACPI_PHYSADDR_TO_PTR
 mdefine_line|#define ACPI_PHYSADDR_TO_PTR(i)         (void *)(i)
 DECL|macro|ACPI_PTR_TO_PHYSADDR
@@ -86,26 +86,125 @@ DECL|macro|ACPI_PTR_TO_PHYSADDR
 mdefine_line|#define ACPI_PTR_TO_PHYSADDR(i)         ACPI_TO_INTEGER(i)
 macro_line|#endif
 multiline_comment|/*&n; * Macros for moving data around to/from buffers that are possibly unaligned.&n; * If the hardware supports the transfer of unaligned data, just do the store.&n; * Otherwise, we have to move one byte at a time.&n; */
-macro_line|#ifdef _HW_ALIGNMENT_SUPPORT
-multiline_comment|/* The hardware supports unaligned transfers, just do the move */
-DECL|macro|ACPI_MOVE_UNALIGNED16_TO_16
-mdefine_line|#define ACPI_MOVE_UNALIGNED16_TO_16(d,s)    *(u16 *)(void *)(d) = *(u16 *)(void *)(s)
-DECL|macro|ACPI_MOVE_UNALIGNED32_TO_32
-mdefine_line|#define ACPI_MOVE_UNALIGNED32_TO_32(d,s)    *(u32 *)(void *)(d) = *(u32 *)(void *)(s)
-DECL|macro|ACPI_MOVE_UNALIGNED16_TO_32
-mdefine_line|#define ACPI_MOVE_UNALIGNED16_TO_32(d,s)    *(u32 *)(void *)(d) = *(u16 *)(void *)(s)
-DECL|macro|ACPI_MOVE_UNALIGNED64_TO_64
-mdefine_line|#define ACPI_MOVE_UNALIGNED64_TO_64(d,s)    *(u64 *)(void *)(d) = *(u64 *)(void *)(s)
+macro_line|#ifdef ACPI_BIG_ENDIAN
+multiline_comment|/*&n; * Macros for big-endian machines&n; */
+multiline_comment|/* This macro sets a buffer index, starting from the end of the buffer */
+DECL|macro|ACPI_BUFFER_INDEX
+mdefine_line|#define ACPI_BUFFER_INDEX(buf_len,buf_offset,byte_gran) ((buf_len) - (((buf_offset)+1) * (byte_gran)))
+multiline_comment|/* These macros reverse the bytes during the move, converting little-endian to big endian */
+multiline_comment|/* Big Endian      &lt;==        Little Endian */
+multiline_comment|/*  Hi...Lo                     Lo...Hi     */
+multiline_comment|/* 16-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_16_TO_16
+mdefine_line|#define ACPI_MOVE_16_TO_16(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;  ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[0];}
+DECL|macro|ACPI_MOVE_16_TO_32
+mdefine_line|#define ACPI_MOVE_16_TO_32(d,s)         {(*(u32 *)(void *)(d))=0;&bslash;&n;&t;&t;&t;&t;&t;  ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;  ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0];}
+DECL|macro|ACPI_MOVE_16_TO_64
+mdefine_line|#define ACPI_MOVE_16_TO_64(d,s)         {(*(u64 *)(void *)(d))=0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
+multiline_comment|/* 32-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_32_TO_16
+mdefine_line|#define ACPI_MOVE_32_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_32_TO_32
+mdefine_line|#define ACPI_MOVE_32_TO_32(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[3];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;  ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;  ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;  ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[0];}
+DECL|macro|ACPI_MOVE_32_TO_64
+mdefine_line|#define ACPI_MOVE_32_TO_64(d,s)         {(*(u64 *)(void *)(d))=0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[3];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;   ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
+multiline_comment|/* 64-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_64_TO_16
+mdefine_line|#define ACPI_MOVE_64_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_64_TO_32
+mdefine_line|#define ACPI_MOVE_64_TO_32(d,s)         ACPI_MOVE_32_TO_32(d,s)    /* Truncate to 32 */
+DECL|macro|ACPI_MOVE_64_TO_64
+mdefine_line|#define ACPI_MOVE_64_TO_64(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[7];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[6];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[5];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[4];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[3];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[0];}
 macro_line|#else
-multiline_comment|/*&n; * The hardware does not support unaligned transfers.  We must move the&n; * data one byte at a time.  These macros work whether the source or&n; * the destination (or both) is/are unaligned.&n; */
-DECL|macro|ACPI_MOVE_UNALIGNED16_TO_16
-mdefine_line|#define ACPI_MOVE_UNALIGNED16_TO_16(d,s)    {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;  ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];}
-DECL|macro|ACPI_MOVE_UNALIGNED32_TO_32
-mdefine_line|#define ACPI_MOVE_UNALIGNED32_TO_32(d,s)    {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;&t;&t;   ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;   ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;   ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];}
-DECL|macro|ACPI_MOVE_UNALIGNED16_TO_32
-mdefine_line|#define ACPI_MOVE_UNALIGNED16_TO_32(d,s)    {(*(u32*)(void *)(d)) = 0; ACPI_MOVE_UNALIGNED16_TO_16(d,s);}
-DECL|macro|ACPI_MOVE_UNALIGNED64_TO_64
-mdefine_line|#define ACPI_MOVE_UNALIGNED64_TO_64(d,s)    {((u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[4];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[5];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[6];&bslash;&n;&t;&t;&t;&t;&t; ((u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[7];}
+multiline_comment|/*&n; * Macros for little-endian machines&n; */
+multiline_comment|/* This macro sets a buffer index, starting from the beginning of the buffer */
+DECL|macro|ACPI_BUFFER_INDEX
+mdefine_line|#define ACPI_BUFFER_INDEX(buf_len,buf_offset,byte_gran) (buf_offset)
+macro_line|#ifdef ACPI_MISALIGNED_TRANSFERS
+multiline_comment|/* The hardware supports unaligned transfers, just do the little-endian move */
+macro_line|#if ACPI_MACHINE_WIDTH == 16
+multiline_comment|/* No 64-bit integers */
+multiline_comment|/* 16-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_16_TO_16
+mdefine_line|#define ACPI_MOVE_16_TO_16(d,s)         *(u16 *)(void *)(d) = *(u16 *)(void *)(s)
+DECL|macro|ACPI_MOVE_16_TO_32
+mdefine_line|#define ACPI_MOVE_16_TO_32(d,s)         *(u32 *)(void *)(d) = *(u16 *)(void *)(s)
+DECL|macro|ACPI_MOVE_16_TO_64
+mdefine_line|#define ACPI_MOVE_16_TO_64(d,s)         ACPI_MOVE_16_TO_32(d,s)
+multiline_comment|/* 32-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_32_TO_16
+mdefine_line|#define ACPI_MOVE_32_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_32_TO_32
+mdefine_line|#define ACPI_MOVE_32_TO_32(d,s)         *(u32 *)(void *)(d) = *(u32 *)(void *)(s)
+DECL|macro|ACPI_MOVE_32_TO_64
+mdefine_line|#define ACPI_MOVE_32_TO_64(d,s)         ACPI_MOVE_32_TO_32(d,s)
+multiline_comment|/* 64-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_64_TO_16
+mdefine_line|#define ACPI_MOVE_64_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_64_TO_32
+mdefine_line|#define ACPI_MOVE_64_TO_32(d,s)         ACPI_MOVE_32_TO_32(d,s)    /* Truncate to 32 */
+DECL|macro|ACPI_MOVE_64_TO_64
+mdefine_line|#define ACPI_MOVE_64_TO_64(d,s)         ACPI_MOVE_32_TO_32(d,s)
+macro_line|#else
+multiline_comment|/* 16-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_16_TO_16
+mdefine_line|#define ACPI_MOVE_16_TO_16(d,s)         *(u16 *)(void *)(d) = *(u16 *)(void *)(s)
+DECL|macro|ACPI_MOVE_16_TO_32
+mdefine_line|#define ACPI_MOVE_16_TO_32(d,s)         *(u32 *)(void *)(d) = *(u16 *)(void *)(s)
+DECL|macro|ACPI_MOVE_16_TO_64
+mdefine_line|#define ACPI_MOVE_16_TO_64(d,s)         *(u64 *)(void *)(d) = *(u16 *)(void *)(s)
+multiline_comment|/* 32-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_32_TO_16
+mdefine_line|#define ACPI_MOVE_32_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_32_TO_32
+mdefine_line|#define ACPI_MOVE_32_TO_32(d,s)         *(u32 *)(void *)(d) = *(u32 *)(void *)(s)
+DECL|macro|ACPI_MOVE_32_TO_64
+mdefine_line|#define ACPI_MOVE_32_TO_64(d,s)         *(u64 *)(void *)(d) = *(u32 *)(void *)(s)
+multiline_comment|/* 64-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_64_TO_16
+mdefine_line|#define ACPI_MOVE_64_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_64_TO_32
+mdefine_line|#define ACPI_MOVE_64_TO_32(d,s)         ACPI_MOVE_32_TO_32(d,s)    /* Truncate to 32 */
+DECL|macro|ACPI_MOVE_64_TO_64
+mdefine_line|#define ACPI_MOVE_64_TO_64(d,s)         *(u64 *)(void *)(d) = *(u64 *)(void *)(s)
+macro_line|#endif
+macro_line|#else
+multiline_comment|/*&n; * The hardware does not support unaligned transfers.  We must move the&n; * data one byte at a time.  These macros work whether the source or&n; * the destination (or both) is/are unaligned.  (Little-endian move)&n; */
+multiline_comment|/* 16-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_16_TO_16
+mdefine_line|#define ACPI_MOVE_16_TO_16(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];}
+DECL|macro|ACPI_MOVE_16_TO_32
+mdefine_line|#define ACPI_MOVE_16_TO_32(d,s)         {(*(u32 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d,s);}
+DECL|macro|ACPI_MOVE_16_TO_64
+mdefine_line|#define ACPI_MOVE_16_TO_64(d,s)         {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_16_TO_16(d,s);}
+multiline_comment|/* 32-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_32_TO_16
+mdefine_line|#define ACPI_MOVE_32_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_32_TO_32
+mdefine_line|#define ACPI_MOVE_32_TO_32(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];}
+DECL|macro|ACPI_MOVE_32_TO_64
+mdefine_line|#define ACPI_MOVE_32_TO_64(d,s)         {(*(u64 *)(void *)(d)) = 0; ACPI_MOVE_32_TO_32(d,s);}
+multiline_comment|/* 64-bit source, 16/32/64 destination */
+DECL|macro|ACPI_MOVE_64_TO_16
+mdefine_line|#define ACPI_MOVE_64_TO_16(d,s)         ACPI_MOVE_16_TO_16(d,s)    /* Truncate to 16 */
+DECL|macro|ACPI_MOVE_64_TO_32
+mdefine_line|#define ACPI_MOVE_64_TO_32(d,s)         ACPI_MOVE_32_TO_32(d,s)    /* Truncate to 32 */
+DECL|macro|ACPI_MOVE_64_TO_64
+mdefine_line|#define ACPI_MOVE_64_TO_64(d,s)         {((  u8 *)(void *)(d))[0] = ((u8 *)(void *)(s))[0];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[1] = ((u8 *)(void *)(s))[1];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[2] = ((u8 *)(void *)(s))[2];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[3] = ((u8 *)(void *)(s))[3];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[4] = ((u8 *)(void *)(s))[4];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[5] = ((u8 *)(void *)(s))[5];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[6] = ((u8 *)(void *)(s))[6];&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((  u8 *)(void *)(d))[7] = ((u8 *)(void *)(s))[7];}
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/* Macros based on machine integer width */
+macro_line|#if ACPI_MACHINE_WIDTH == 16
+DECL|macro|ACPI_MOVE_SIZE_TO_16
+mdefine_line|#define ACPI_MOVE_SIZE_TO_16(d,s)       ACPI_MOVE_16_TO_16(d,s)
+macro_line|#elif ACPI_MACHINE_WIDTH == 32
+DECL|macro|ACPI_MOVE_SIZE_TO_16
+mdefine_line|#define ACPI_MOVE_SIZE_TO_16(d,s)       ACPI_MOVE_32_TO_16(d,s)
+macro_line|#elif ACPI_MACHINE_WIDTH == 64
+DECL|macro|ACPI_MOVE_SIZE_TO_16
+mdefine_line|#define ACPI_MOVE_SIZE_TO_16(d,s)       ACPI_MOVE_64_TO_16(d,s)
+macro_line|#else
+macro_line|#error unknown ACPI_MACHINE_WIDTH
 macro_line|#endif
 multiline_comment|/*&n; * Fast power-of-two math macros for non-optimized compilers&n; */
 DECL|macro|_ACPI_DIV
@@ -173,14 +272,6 @@ DECL|macro|ACPI_IS_OCTAL_DIGIT
 mdefine_line|#define ACPI_IS_OCTAL_DIGIT(d)               (((char)(d) &gt;= &squot;0&squot;) &amp;&amp; ((char)(d) &lt;= &squot;7&squot;))
 multiline_comment|/* Macros for GAS addressing */
 macro_line|#if ACPI_MACHINE_WIDTH != 16
-DECL|macro|ACPI_PCI_DEVICE_MASK
-mdefine_line|#define ACPI_PCI_DEVICE_MASK            (u64) 0x0000FFFF00000000
-DECL|macro|ACPI_PCI_FUNCTION_MASK
-mdefine_line|#define ACPI_PCI_FUNCTION_MASK          (u64) 0x00000000FFFF0000
-DECL|macro|ACPI_PCI_REGISTER_MASK
-mdefine_line|#define ACPI_PCI_REGISTER_MASK          (u64) 0x000000000000FFFF
-multiline_comment|/*&n; * Obsolete&n; */
-multiline_comment|/*&n;#define ACPI_PCI_FUNCTION(a)            (u16) ((((u64)((u64)(a) &amp; ACPI_PCI_FUNCTION_MASK)) &gt;&gt; 16))&n;#define ACPI_PCI_DEVICE(a)              (u16) ((((u64)((u64)(a) &amp; ACPI_PCI_DEVICE_MASK)) &gt;&gt; 32))&n;#define ACPI_PCI_REGISTER(a)            (u16) (((u64)((u64)(a) &amp; ACPI_PCI_REGISTER_MASK)))&n;*/
 DECL|macro|ACPI_PCI_DEVICE
 mdefine_line|#define ACPI_PCI_DEVICE(a)              (u16) ((ACPI_HIDWORD ((a))) &amp; 0x0000FFFF)
 DECL|macro|ACPI_PCI_FUNCTION
@@ -271,19 +362,19 @@ DECL|macro|INCREMENT_ARG_LIST
 mdefine_line|#define INCREMENT_ARG_LIST(list)        (list &gt;&gt;= ((u32) ARG_TYPE_WIDTH))
 multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
 DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;  ACPI_STORE_ADDRESS (a.address,(acpi_physical_address) c);} while (0)
+mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   do {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.register_bit_width = (u8) ACPI_MUL_8 (b);&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;a.reserved = 0;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;ACPI_STORE_ADDRESS (a.address,(acpi_physical_address) c);} while (0)
 multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
 DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
 mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ACPI_ADR_SPACE_SYSTEM_IO)
 multiline_comment|/*&n; * Reporting macros that are never compiled out&n; */
 DECL|macro|ACPI_PARAM_LIST
-mdefine_line|#define ACPI_PARAM_LIST(pl)                  pl
+mdefine_line|#define ACPI_PARAM_LIST(pl)                 pl
 multiline_comment|/*&n; * Error reporting.  These versions add callers module and line#.  Since&n; * _THIS_MODULE gets compiled out when ACPI_DEBUG_OUTPUT isn&squot;t defined, only&n; * use it in debug mode.&n; */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_REPORT_INFO
-mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;   acpi_os_printf ACPI_PARAM_LIST(fp);}
+mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_ERROR
-mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t; acpi_os_printf ACPI_PARAM_LIST(fp);}
+mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_WARNING
 mdefine_line|#define ACPI_REPORT_WARNING(fp)             {acpi_ut_report_warning(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_NSERROR
@@ -315,17 +406,17 @@ DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
-mdefine_line|#define ACPI_FUNCTION_NAME(a)           struct acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
+mdefine_line|#define ACPI_FUNCTION_NAME(a)               struct acpi_debug_print_info _dbg; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
 DECL|macro|ACPI_FUNCTION_TRACE
-mdefine_line|#define ACPI_FUNCTION_TRACE(a)          ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_dbg)
+mdefine_line|#define ACPI_FUNCTION_TRACE(a)              ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_dbg)
 DECL|macro|ACPI_FUNCTION_TRACE_PTR
-mdefine_line|#define ACPI_FUNCTION_TRACE_PTR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_ptr(__LINE__,&amp;_dbg,(void *)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_PTR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_ptr(__LINE__,&amp;_dbg,(void *)b)
 DECL|macro|ACPI_FUNCTION_TRACE_U32
-mdefine_line|#define ACPI_FUNCTION_TRACE_U32(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_u32(__LINE__,&amp;_dbg,(u32)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_U32(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_u32(__LINE__,&amp;_dbg,(u32)b)
 DECL|macro|ACPI_FUNCTION_TRACE_STR
-mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
 DECL|macro|ACPI_FUNCTION_ENTRY
-mdefine_line|#define ACPI_FUNCTION_ENTRY()           acpi_ut_track_stack_ptr()
+mdefine_line|#define ACPI_FUNCTION_ENTRY()               acpi_ut_track_stack_ptr()
 multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_proc_name&quot; is defined.&n; */
 macro_line|#ifdef ACPI_USE_DO_WHILE_0
 DECL|macro|ACPI_DO_WHILE0

@@ -916,7 +916,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1018,7 +1018,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32
@@ -1090,7 +1090,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1266,7 +1266,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32

@@ -1480,7 +1480,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-macro_line|#if _UNDER_DEVELOPMENT
+macro_line|#ifdef _UNDER_DEVELOPMENT
 r_if
 c_cond
 (paren

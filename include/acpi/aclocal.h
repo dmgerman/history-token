@@ -223,7 +223,7 @@ id|acpi_namespace_node
 op_star
 id|child
 suffix:semicolon
-multiline_comment|/* first child */
+multiline_comment|/* First child */
 DECL|member|peer
 r_struct
 id|acpi_namespace_node
@@ -866,24 +866,24 @@ id|acpi_parse_object
 op_star
 id|op
 suffix:semicolon
-multiline_comment|/* current op being parsed */
+multiline_comment|/* Current op being parsed */
 DECL|member|arg_end
 id|u8
 op_star
 id|arg_end
 suffix:semicolon
-multiline_comment|/* current argument end */
+multiline_comment|/* Current argument end */
 DECL|member|pkg_end
 id|u8
 op_star
 id|pkg_end
 suffix:semicolon
-multiline_comment|/* current package end */
+multiline_comment|/* Current package end */
 DECL|member|arg_list
 id|u32
 id|arg_list
 suffix:semicolon
-multiline_comment|/* next argument to parse */
+multiline_comment|/* Next argument to parse */
 DECL|member|arg_count
 id|u32
 id|arg_count
@@ -1123,28 +1123,13 @@ DECL|member|integer
 id|acpi_integer
 id|integer
 suffix:semicolon
-multiline_comment|/* integer constant (Up to 64 bits) */
+multiline_comment|/* Integer constant (Up to 64 bits) */
 DECL|member|integer64
 r_struct
 id|uint64_struct
 id|integer64
 suffix:semicolon
 multiline_comment|/* Structure overlay for 2 32-bit Dwords */
-DECL|member|integer32
-id|u32
-id|integer32
-suffix:semicolon
-multiline_comment|/* integer constant, 32 bits only */
-DECL|member|integer16
-id|u16
-id|integer16
-suffix:semicolon
-multiline_comment|/* integer constant, 16 bits only */
-DECL|member|integer8
-id|u8
-id|integer8
-suffix:semicolon
-multiline_comment|/* integer constant, 8 bits only */
 DECL|member|size
 id|u32
 id|size
@@ -1178,7 +1163,7 @@ multiline_comment|/* arguments and contained ops */
 )brace
 suffix:semicolon
 DECL|macro|ACPI_PARSE_COMMON
-mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                                  data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                                  flags;          /* Type of Op */&bslash;&n;&t;u16                                 aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                                 aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_object             *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_object             *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                                  disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                                  disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;char                                aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;   /* NON-DEBUG members below: */&bslash;&n;&t;struct acpi_namespace_node          *node;          /* for use by interpreter */&bslash;&n;&t;union acpi_parse_value              value;          /* Value or args associated with the opcode */&bslash;&n;
+mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                                  data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                                  flags;          /* Type of Op */&bslash;&n;&t;u16                                 aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                                 aml_offset;     /* Offset of declaration in AML */&bslash;&n;&t;union acpi_parse_object             *parent;        /* Parent op */&bslash;&n;&t;union acpi_parse_object             *next;          /* Next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                                  disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                                  disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;char                                aml_op_name[16]) /* Op name (debug only) */&bslash;&n;&t;&t;&t;   /* NON-DEBUG members below: */&bslash;&n;&t;struct acpi_namespace_node          *node;          /* For use by interpreter */&bslash;&n;&t;union acpi_parse_value              value;          /* Value or args associated with the opcode */&bslash;&n;
 DECL|macro|ACPI_DASM_BUFFER
 mdefine_line|#define ACPI_DASM_BUFFER        0x00
 DECL|macro|ACPI_DASM_RESOURCE
@@ -1380,13 +1365,13 @@ id|u8
 op_star
 id|aml_start
 suffix:semicolon
-multiline_comment|/* first AML byte */
+multiline_comment|/* First AML byte */
 DECL|member|aml
 id|u8
 op_star
 id|aml
 suffix:semicolon
-multiline_comment|/* next AML byte */
+multiline_comment|/* Next AML byte */
 DECL|member|aml_end
 id|u8
 op_star
@@ -1398,20 +1383,20 @@ id|u8
 op_star
 id|pkg_start
 suffix:semicolon
-multiline_comment|/* current package begin */
+multiline_comment|/* Current package begin */
 DECL|member|pkg_end
 id|u8
 op_star
 id|pkg_end
 suffix:semicolon
-multiline_comment|/* current package end */
+multiline_comment|/* Current package end */
 DECL|member|start_op
 r_union
 id|acpi_parse_object
 op_star
 id|start_op
 suffix:semicolon
-multiline_comment|/* root of parse tree */
+multiline_comment|/* Root of parse tree */
 DECL|member|start_node
 r_struct
 id|acpi_namespace_node
@@ -1424,7 +1409,7 @@ id|acpi_generic_state
 op_star
 id|scope
 suffix:semicolon
-multiline_comment|/* current scope */
+multiline_comment|/* Current scope */
 DECL|member|start_scope
 r_union
 id|acpi_parse_object
