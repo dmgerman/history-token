@@ -2732,7 +2732,8 @@ id|uinfo-&gt;value.integer.max
 op_ne
 l_int|1
 comma
-r_return
+r_goto
+id|__unalloc
 )paren
 suffix:semicolon
 op_star
@@ -3457,7 +3458,8 @@ id|uinfo-&gt;value.integer.max
 op_ne
 l_int|1
 comma
-r_return
+r_goto
+id|__unalloc
 )paren
 suffix:semicolon
 id|uctl-&gt;value.integer.value
