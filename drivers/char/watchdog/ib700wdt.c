@@ -154,10 +154,7 @@ multiline_comment|/* Write a watchdog value */
 id|outb_p
 c_func
 (paren
-id|wd_times
-(braket
 id|wd_margin
-)braket
 comma
 id|WDT_START
 )paren
