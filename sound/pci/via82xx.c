@@ -10248,6 +10248,24 @@ comma
 dot
 id|device
 op_assign
+l_int|0x7023
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* MSI K8T Neo2-FI */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1462
+comma
+dot
+id|device
+op_assign
 l_int|0x7120
 comma
 dot
