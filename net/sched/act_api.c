@@ -252,6 +252,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* lookup by name */
 DECL|function|tc_lookup_action_n
+r_static
 r_struct
 id|tc_action_ops
 op_star
@@ -351,6 +352,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* lookup by rtattr */
 DECL|function|tc_lookup_action
+r_static
 r_struct
 id|tc_action_ops
 op_star
@@ -457,8 +459,9 @@ r_return
 id|a
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/* lookup by id */
-DECL|function|tc_lookup_action_id
+r_static
 r_struct
 id|tc_action_ops
 op_star
@@ -549,6 +552,7 @@ r_return
 id|a
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|tcf_action_exec
 r_int
 id|tcf_action_exec
@@ -2377,6 +2381,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|tcf_action_get_1
+r_static
 r_int
 id|tcf_action_get_1
 c_func
@@ -2716,6 +2721,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|cleanup_a
+r_static
 r_void
 id|cleanup_a
 (paren
@@ -2781,6 +2787,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|get_ao
+r_static
 r_struct
 id|tc_action_ops
 op_star
@@ -2955,6 +2962,7 @@ id|a_o
 suffix:semicolon
 )brace
 DECL|function|create_a
+r_static
 r_struct
 id|tc_action
 op_star
@@ -3028,6 +3036,7 @@ id|act
 suffix:semicolon
 )brace
 DECL|function|tca_action_flush
+r_static
 r_int
 id|tca_action_flush
 c_func
@@ -3399,6 +3408,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|tca_action_gd
+r_static
 r_int
 id|tca_action_gd
 c_func
@@ -3832,6 +3842,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|tcf_add_notify
+r_static
 r_int
 id|tcf_add_notify
 c_func
@@ -4068,6 +4079,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tcf_action_add
+r_static
 r_int
 id|tcf_action_add
 c_func
@@ -4449,6 +4461,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_char
 op_star
 DECL|function|find_dump_kind
