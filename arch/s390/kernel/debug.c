@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -4661,12 +4660,15 @@ suffix:semicolon
 id|caller
 op_assign
 (paren
+(paren
 r_int
 r_int
 )paren
 id|entry-&gt;caller
+)paren
+op_amp
+id|PSW_ADDR_INSN
 suffix:semicolon
-macro_line|#if defined(CONFIG_ARCH_S390X)
 id|rc
 op_add_assign
 id|sprintf
@@ -4674,7 +4676,7 @@ c_func
 (paren
 id|out_buf
 comma
-l_string|&quot;%02i %011lu:%06lu %1u %1s %02i %016lx  &quot;
+l_string|&quot;%02i %011lu:%06lu %1u %1s %02i %p  &quot;
 comma
 id|area
 comma
@@ -4688,39 +4690,13 @@ id|except_str
 comma
 id|entry-&gt;id.fields.cpuid
 comma
-id|caller
-)paren
-suffix:semicolon
-macro_line|#else
-id|caller
-op_and_assign
-l_int|0x7fffffff
-suffix:semicolon
-id|rc
-op_add_assign
-id|sprintf
-c_func
 (paren
-id|out_buf
-comma
-l_string|&quot;%02i %011lu:%06lu %1u %1s %02i %08lx  &quot;
-comma
-id|area
-comma
-id|time_val.tv_sec
-comma
-id|time_val.tv_usec
-comma
-id|level
-comma
-id|except_str
-comma
-id|entry-&gt;id.fields.cpuid
-comma
+r_void
+op_star
+)paren
 id|caller
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|rc
 suffix:semicolon
