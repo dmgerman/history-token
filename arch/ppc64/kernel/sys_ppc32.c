@@ -2028,7 +2028,6 @@ r_int
 r_int
 id|d_namlen
 suffix:semicolon
-multiline_comment|/* unsigned char&t;d_type; */
 DECL|member|d_name
 r_char
 id|d_name
@@ -2271,29 +2270,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_struct
-id|linux_dirent32
-(brace
-id|u32
-id|d_ino
-suffix:semicolon
-id|u32
-id|d_off
-suffix:semicolon
-r_int
-r_int
-id|d_reclen
-suffix:semicolon
-r_char
-id|d_name
-(braket
-l_int|1
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#else
 DECL|struct|linux_dirent32
 r_struct
 id|linux_dirent32
@@ -2311,17 +2287,15 @@ r_int
 r_int
 id|d_reclen
 suffix:semicolon
-multiline_comment|/* unsigned char&t;d_type; */
 DECL|member|d_name
 r_char
 id|d_name
 (braket
-l_int|256
+l_int|1
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|struct|getdents_callback32
 r_struct
 id|getdents_callback32
@@ -2472,7 +2446,6 @@ op_amp
 id|dirent-&gt;d_reclen
 )paren
 suffix:semicolon
-multiline_comment|/* put_user(d_type, &amp;dirent-&gt;d_type); */
 id|copy_to_user
 c_func
 (paren
