@@ -1889,6 +1889,11 @@ id|jfs_ip-&gt;atlhead
 op_assign
 l_int|0
 suffix:semicolon
+id|jfs_ip-&gt;active_ag
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|inode_init_once
 c_func
 (paren
