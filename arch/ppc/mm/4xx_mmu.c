@@ -28,12 +28,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-multiline_comment|/* Used by the 4xx TLB replacement exception handler.&n; * Just needed it declared someplace (and initialized to zero).&n; */
-DECL|variable|tlb_4xx_index
-r_int
-r_int
-id|tlb_4xx_index
-suffix:semicolon
 multiline_comment|/*&n; * MMU_init_hw does the chip-specific initialization of the MMU hardware.&n; */
 DECL|function|MMU_init_hw
 r_void

@@ -50,7 +50,7 @@ DECL|macro|REST_16FPRS
 mdefine_line|#define REST_16FPRS(n, base)&t;REST_8FPRS(n, base); REST_8FPRS(n+8, base)
 DECL|macro|REST_32FPRS
 mdefine_line|#define REST_32FPRS(n, base)&t;REST_16FPRS(n, base); REST_16FPRS(n+16, base)
-multiline_comment|/*&n; * Once a version of gas that understands the AltiVec instructions&n; * is freely available, we can do this the normal way...  - paulus&n; */
+multiline_comment|/*&n; * Once a version of gas that understands the AltiVec instructions&n; */
 DECL|macro|LVX
 mdefine_line|#define LVX(r,a,b)&t;.long&t;(31&lt;&lt;26)+((r)&lt;&lt;21)+((a)&lt;&lt;16)+((b)&lt;&lt;11)+(103&lt;&lt;1)
 DECL|macro|STVX
@@ -143,8 +143,13 @@ mdefine_line|#define CLR_TOP32(r)&t;rlwinm&t;(r),(r),0,0,31&t;/* clear top 32 bi
 macro_line|#else
 DECL|macro|FIX_SRR1
 mdefine_line|#define FIX_SRR1(ra, rb)
+macro_line|#ifndef CONFIG_40x
 DECL|macro|RFI
 mdefine_line|#define&t;RFI&t;&t;rfi
+macro_line|#else
+DECL|macro|RFI
+mdefine_line|#define RFI&t;&t;rfi; b .&t;/* Prevent prefetch past rfi */
+macro_line|#endif
 DECL|macro|MTMSRD
 mdefine_line|#define MTMSRD(r)&t;mtmsr&t;r
 DECL|macro|CLR_TOP32
