@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   fs/cifs/cifssmb.c&n; *&n; *   Copyright (c) Internat
 multiline_comment|/* SMB/CIFS PDU handling routines here - except for leftovers in connect.c */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;

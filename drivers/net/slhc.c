@@ -116,8 +116,6 @@ id|slcompress
 op_star
 id|comp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|comp
 op_assign
 (paren
@@ -415,8 +413,6 @@ id|comp
 suffix:semicolon
 id|out_fail
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -473,8 +469,6 @@ c_func
 (paren
 id|comp
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* Put a short in host order into a char array in network order */

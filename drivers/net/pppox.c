@@ -46,12 +46,10 @@ id|proto_num
 template_param
 id|PX_MAX_PROTO
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -63,8 +61,6 @@ id|proto_num
 r_return
 op_minus
 id|EALREADY
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|proto
 (braket
@@ -97,7 +93,6 @@ id|proto_num
 op_le
 id|PX_MAX_PROTO
 )paren
-(brace
 id|proto
 (braket
 id|proto_num
@@ -105,9 +100,6 @@ id|proto_num
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 )brace
 DECL|function|pppox_unbind_sock
 r_void

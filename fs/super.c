@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_super() */
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
@@ -222,13 +223,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sema_init
+id|init_rwsem
 c_func
 (paren
 op_amp
 id|s-&gt;s_dquot.dqoff_sem
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|s-&gt;s_maxbytes

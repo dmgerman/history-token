@@ -7,6 +7,9 @@ DECL|macro|MAX_CODADEVS
 mdefine_line|#define MAX_CODADEVS  5&t;   /* how many do we allow */
 DECL|macro|CODA_SUPER_MAGIC
 mdefine_line|#define CODA_SUPER_MAGIC&t;0x73757245
+r_struct
+id|statfs
+suffix:semicolon
 DECL|struct|coda_sb_info
 r_struct
 id|coda_sb_info

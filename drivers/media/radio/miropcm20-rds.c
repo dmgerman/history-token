@@ -407,22 +407,6 @@ c_func
 l_string|&quot;miropcm20-rds: userinterface driver loaded.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;v4l-name: %s&bslash;n&quot;
-comma
-id|devfs_get_name
-c_func
-(paren
-id|pcm20_radio.devfs_handle
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
