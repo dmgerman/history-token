@@ -6869,6 +6869,10 @@ id|KERN_INFO
 l_string|&quot;...trying to set up timer as ExtINT IRQ...&quot;
 )paren
 suffix:semicolon
+id|timer_ack
+op_assign
+l_int|0
+suffix:semicolon
 id|init_8259A
 c_func
 (paren

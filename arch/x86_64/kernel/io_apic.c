@@ -62,6 +62,7 @@ multiline_comment|/*&n; * The common case is 1:1 IRQ&lt;-&gt;pin mappings. Somet
 DECL|function|add_pin_to_irq
 r_static
 r_void
+id|__init
 id|add_pin_to_irq
 c_func
 (paren

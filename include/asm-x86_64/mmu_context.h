@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/pda.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * possibly do the LDT unload here?&n; */
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)
@@ -185,23 +188,20 @@ id|next-&gt;context.cpuvalid
 )paren
 suffix:semicolon
 multiline_comment|/* Re-load page tables */
-id|asm
-r_volatile
+op_star
+id|read_pda
+c_func
 (paren
-l_string|&quot;movq %0,level4_pgt&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+id|level4_pgt
+)paren
+op_assign
 id|__pa
 c_func
 (paren
 id|next-&gt;pgd
 )paren
 op_or
-l_int|7
-)paren
-)paren
+id|_PAGE_TABLE
 suffix:semicolon
 id|__flush_tlb
 c_func
@@ -234,7 +234,7 @@ op_ne
 id|next
 )paren
 (brace
-id|BUG
+id|out_of_line_bug
 c_func
 (paren
 )paren

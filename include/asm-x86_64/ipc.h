@@ -1,7 +1,7 @@
 macro_line|#ifndef __i386_IPC_H__
 DECL|macro|__i386_IPC_H__
 mdefine_line|#define __i386_IPC_H__
-multiline_comment|/* &n; * These are used to wrap system calls on x86.&n; *&n; * See arch/i386/kernel/sys_i386.c for ugly details..&n; */
+multiline_comment|/* &n; * These are used to wrap system calls on x86.&n; *&n; * See arch/i386/kernel/sys_i386.c for ugly details..&n; *&n; * (on x86-64 only used for 32bit emulation) &n; */
 DECL|struct|ipc_kludge
 r_struct
 id|ipc_kludge
