@@ -1632,6 +1632,11 @@ id|ipx_seq_interface_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|ipx_seq_interface_open
@@ -1661,6 +1666,11 @@ id|ipx_seq_route_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|ipx_seq_route_open
@@ -1689,6 +1699,11 @@ id|file_operations
 id|ipx_seq_socket_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

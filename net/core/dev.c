@@ -6100,6 +6100,11 @@ id|dev_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|dev_seq_open
@@ -6185,6 +6190,11 @@ id|file_operations
 id|softnet_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

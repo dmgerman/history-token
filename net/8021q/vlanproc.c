@@ -124,6 +124,11 @@ id|vlan_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|vlan_proc_read
@@ -144,6 +149,11 @@ id|file_operations
 id|vlandev_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|read
 op_assign

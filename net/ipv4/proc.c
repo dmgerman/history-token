@@ -216,6 +216,11 @@ id|sockstat_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|sockstat_seq_open
@@ -730,6 +735,11 @@ id|snmp_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|snmp_seq_open
@@ -901,6 +911,11 @@ id|file_operations
 id|netstat_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
