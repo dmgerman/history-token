@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -5842,6 +5841,14 @@ comma
 l_string|&quot;sjcd&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|sjcd_disk-&gt;devfs_name
+comma
+l_string|&quot;sjcd&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6243,31 +6250,6 @@ comma
 id|sjcd_base
 )paren
 suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;sjcd&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|MAJOR_NR
-comma
-l_int|0
-comma
-id|S_IFBLK
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|sjcd_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|sjcd_disk-&gt;queue
 op_assign
 op_amp
@@ -6353,12 +6335,6 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;sjcd&quot;
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren
