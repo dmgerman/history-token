@@ -3480,7 +3480,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; *&t;No need to check MOD_IN_USE, as sys_delete_module() checks.&n;&t; */
 id|unregister_netdev
 c_func
 (paren

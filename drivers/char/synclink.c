@@ -11292,21 +11292,6 @@ c_func
 id|info
 )paren
 suffix:semicolon
-r_case
-id|MGSL_IOCCLRMODCOUNT
-suffix:colon
-r_while
-c_loop
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Wait for modem input (DCD,RI,DSR,CTS) change&n;&t;&t; * as specified by mask in arg (TIOCM_RNG/DSR/CD/CTS)&n;&t;&t; */
 r_case
 id|TIOCMIWAIT
@@ -12143,15 +12128,8 @@ comma
 id|info-&gt;count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* end of mgsl_close() */
 multiline_comment|/* mgsl_wait_until_sent()&n; *&n; *&t;Wait until the transmitter is empty.&n; *&n; * Arguments:&n; *&n; *&t;tty&t;&t;pointer to tty info structure&n; *&t;timeout&t;&t;time to wait for send completion&n; *&n; * Return Value:&t;None&n; */
@@ -13569,15 +13547,8 @@ c_cond
 id|retval
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
