@@ -4860,11 +4860,6 @@ id|floppy_revalidate
 comma
 )brace
 suffix:semicolon
-DECL|variable|floppy_devfs_handle
-r_static
-id|devfs_handle_t
-id|floppy_devfs_handle
-suffix:semicolon
 DECL|function|swim3_init
 r_int
 id|swim3_init
@@ -4887,8 +4882,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|floppy_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -5173,9 +5166,6 @@ id|floppy_name
 (braket
 l_int|16
 )braket
-suffix:semicolon
-id|devfs_handle_t
-id|floppy_handle
 suffix:semicolon
 r_if
 c_cond
@@ -5521,8 +5511,6 @@ comma
 id|floppy_count
 )paren
 suffix:semicolon
-id|floppy_handle
-op_assign
 id|devfs_register
 c_func
 (paren
