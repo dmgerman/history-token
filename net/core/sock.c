@@ -4145,6 +4145,7 @@ suffix:semicolon
 )brace
 DECL|function|lock_sock
 r_void
+id|fastcall
 id|lock_sock
 c_func
 (paren
@@ -4206,6 +4207,7 @@ id|lock_sock
 suffix:semicolon
 DECL|function|release_sock
 r_void
+id|fastcall
 id|release_sock
 c_func
 (paren
