@@ -529,7 +529,7 @@ id|tsk-&gt;thread.cp0_badvaddr
 op_assign
 id|address
 suffix:semicolon
-id|info.si_code
+id|info.si_signo
 op_assign
 id|SIGBUS
 suffix:semicolon
