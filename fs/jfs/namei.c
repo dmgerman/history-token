@@ -2587,7 +2587,7 @@ id|ip
 comma
 id|pxdlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -2709,7 +2709,7 @@ id|ip
 comma
 id|pxdlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren

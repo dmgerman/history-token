@@ -873,6 +873,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* In socket_sysfs.c */
+r_extern
+r_struct
+id|class_interface
+id|pccard_sysfs_interface
+suffix:semicolon
+multiline_comment|/* In cs.c */
 r_extern
 r_struct
 id|rw_semaphore

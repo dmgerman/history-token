@@ -930,7 +930,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|cond_bool_datum
@@ -1136,7 +1136,7 @@ id|key
 comma
 id|booldatum
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

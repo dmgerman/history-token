@@ -1298,7 +1298,7 @@ id|lblock
 suffix:semicolon
 id|mp-&gt;page
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mp-&gt;logical_size
 op_assign
@@ -1980,7 +1980,7 @@ id|mp-&gt;page
 suffix:semicolon
 id|mp-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2106,7 +2106,7 @@ id|log
 suffix:semicolon
 id|mp-&gt;log
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mp-&gt;lsn
 op_assign

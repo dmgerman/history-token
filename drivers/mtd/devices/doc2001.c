@@ -1807,7 +1807,7 @@ id|buf
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2471,7 +2471,7 @@ id|buf
 comma
 id|eccbuf
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

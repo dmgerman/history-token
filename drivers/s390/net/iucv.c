@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.34 2004/06/24 10:53:48 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.34 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.38 2004/07/09 15:59:53 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.38 $&n; *&n; */
 "&f;"
 multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/module.h&gt;
@@ -828,7 +828,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.34 $&quot;
+l_string|&quot;$Revision: 1.38 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -945,8 +945,6 @@ r_if
 c_cond
 (paren
 id|ret
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
@@ -1446,6 +1444,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -1462,8 +1461,6 @@ r_sizeof
 id|h-&gt;id
 )paren
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|iucv_debug
@@ -1833,18 +1830,6 @@ id|iparml_db
 op_star
 id|parm
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-op_ne
-id|iucv_cpuid
-)paren
-r_return
-suffix:semicolon
 id|parm
 op_assign
 (paren
@@ -1921,18 +1906,6 @@ id|iparml_control
 op_star
 id|parm
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-op_ne
-id|iucv_cpuid
-)paren
-r_return
-suffix:semicolon
 id|parm
 op_assign
 (paren
@@ -1983,6 +1956,11 @@ comma
 l_string|&quot;entering&quot;
 )paren
 suffix:semicolon
+id|b2f0_result
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -2017,7 +1995,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|smp_call_function
+id|smp_call_function_on
 c_func
 (paren
 id|iucv_declare_buffer_cpuid
@@ -2028,8 +2006,28 @@ comma
 l_int|0
 comma
 l_int|1
+comma
+id|iucv_cpuid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|b2f0_result
+)paren
+(brace
+id|smp_put_cpu
+c_func
+(paren
+id|iucv_cpuid
+)paren
+suffix:semicolon
+id|iucv_cpuid
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|iucv_debug
 c_func
 (paren
@@ -2094,7 +2092,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|smp_call_function
+id|smp_call_function_on
 c_func
 (paren
 id|iucv_retrieve_buffer_cpuid
@@ -2104,6 +2102,8 @@ comma
 l_int|0
 comma
 l_int|1
+comma
+id|iucv_cpuid
 )paren
 suffix:semicolon
 multiline_comment|/* Release the cpu reserved by iucv_declare_buffer. */
@@ -2690,6 +2690,16 @@ id|rc
 )paren
 (brace
 r_case
+op_minus
+id|ENODEV
+suffix:colon
+id|err
+op_assign
+l_string|&quot;No CPU can be reserved&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x03
 suffix:colon
 id|err
@@ -2756,9 +2766,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|register_flag
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* request the 0x4000 external interrupt */
@@ -3273,9 +3282,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 (brace
 r_if
@@ -3732,9 +3740,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 id|add_pathid_result
 op_assign
@@ -3951,11 +3958,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
-)paren
 op_logical_and
 id|audit
 )paren
@@ -4385,9 +4389,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 op_logical_or
 id|b2f0_result
 op_eq
@@ -4704,9 +4707,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 op_logical_or
 id|b2f0_result
 op_eq
@@ -4950,9 +4952,8 @@ id|residual_buffer
 r_if
 c_cond
 (paren
+op_logical_neg
 id|moved
-op_eq
-l_int|0
 )paren
 op_star
 id|residual_buffer
@@ -5236,9 +5237,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_or
 (paren
@@ -5407,9 +5407,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_or
 (paren
@@ -5794,9 +5793,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -5954,9 +5952,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6096,9 +6093,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6280,9 +6276,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6469,9 +6464,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6646,9 +6640,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6824,9 +6817,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|b2f0_result
-op_eq
-l_int|0
 )paren
 op_logical_and
 (paren
@@ -6868,18 +6860,6 @@ id|result
 id|iparml_set_mask
 op_star
 id|parm
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-op_ne
-id|iucv_cpuid
-)paren
-r_return
 suffix:semicolon
 id|iucv_debug
 c_func
@@ -6994,22 +6974,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpu
-op_eq
-id|iucv_cpuid
-)paren
-id|iucv_setmask_cpuid
-c_func
-(paren
-op_amp
-id|u
-)paren
-suffix:semicolon
-r_else
-id|smp_call_function
+id|smp_call_function_on
 c_func
 (paren
 id|iucv_setmask_cpuid
@@ -7020,6 +6985,8 @@ comma
 l_int|0
 comma
 l_int|1
+comma
+id|iucv_cpuid
 )paren
 suffix:semicolon
 id|put_cpu
@@ -7551,6 +7518,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|memcmp
 (paren
 id|temp_buff1
@@ -7559,8 +7527,6 @@ id|temp_buff2
 comma
 l_int|24
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|iucv_debug

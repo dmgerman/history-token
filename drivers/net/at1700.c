@@ -96,7 +96,7 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;MCA&n; */
-macro_line|#ifdef CONFIG_MCA&t;
+macro_line|#ifdef CONFIG_MCA_LEGACY
 DECL|variable|__initdata
 r_static
 r_int
@@ -466,7 +466,7 @@ id|dev
 )paren
 suffix:semicolon
 "&f;"
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 DECL|struct|at1720_mca_adapters_struct
 r_struct
 id|at1720_mca_adapters_struct
@@ -545,7 +545,7 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#ifdef CONFIG_MCA&t;
+macro_line|#ifdef CONFIG_MCA_LEGACY
 r_struct
 id|net_local
 op_star
@@ -1000,7 +1000,7 @@ id|EEPROM_Ctrl
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 multiline_comment|/* rEnE (rene@bss.lu): got this from 3c509 driver source , adapted for AT1720 */
 multiline_comment|/* Based on Erik Nygren&squot;s (nygren@mit.edu) 3c529 patch, heavily&n;&t;modified by Chris Beauregard (cpbeaure@csclub.uwaterloo.ca)&n;&t;to support standard MCA probing. */
 multiline_comment|/* redone for multi-card detection by ZP Gu (zpg@castle.net) */
@@ -1342,7 +1342,7 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 id|found
 suffix:colon
 macro_line|#endif
@@ -1995,7 +1995,7 @@ l_int|0
 suffix:semicolon
 id|err_mca
 suffix:colon
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 r_if
 c_cond
 (paren
