@@ -2691,6 +2691,10 @@ id|hwif-&gt;OUTB
 op_assign
 id|old_hwif.OUTB
 suffix:semicolon
+id|hwif-&gt;OUTBSYNC
+op_assign
+id|old_hwif.OUTBSYNC
+suffix:semicolon
 id|hwif-&gt;OUTW
 op_assign
 id|old_hwif.OUTW
