@@ -1779,11 +1779,11 @@ suffix:semicolon
 multiline_comment|/* look for ATAPI device */
 )brace
 )brace
-multiline_comment|/*&n; * probe_for_drive() tests for existence of a given drive using do_probe().&n; *&n; * Returns:&t;0  no device was found&n; *&t;&t;1  device was found (note: drive-&gt;present might still be 0)&n; */
+multiline_comment|/*&n; * Tests for existence of a given drive using do_probe().&n; */
 DECL|function|probe_for_drive
 r_static
 r_inline
-id|byte
+r_void
 id|probe_for_drive
 (paren
 id|ide_drive_t
@@ -1798,7 +1798,6 @@ id|drive-&gt;noprobe
 )paren
 multiline_comment|/* skip probing? */
 r_return
-id|drive-&gt;present
 suffix:semicolon
 r_if
 c_cond
@@ -1815,9 +1814,6 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* if !(success||timed-out) */
-(paren
-r_void
-)paren
 id|do_probe
 c_func
 (paren
@@ -1854,7 +1850,6 @@ op_logical_neg
 id|drive-&gt;present
 )paren
 r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/* drive not found */
 r_if
@@ -1915,10 +1910,6 @@ suffix:semicolon
 multiline_comment|/* nuke it */
 )brace
 )brace
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive was found */
 )brace
 multiline_comment|/*&n; * Calculate the region that this interface occupies,&n; * handling interfaces where the registers may not be&n; * ordered sanely.  We deal with the CONTROL register&n; * separately.&n; */
 DECL|function|hwif_check_regions
@@ -2564,9 +2555,6 @@ id|hwif-&gt;drives
 id|unit
 )braket
 suffix:semicolon
-(paren
-r_void
-)paren
 id|probe_for_drive
 (paren
 id|drive
@@ -4453,53 +4441,6 @@ r_return
 id|hwif-&gt;present
 suffix:semicolon
 )brace
-DECL|function|export_ide_init_queue
-r_void
-id|export_ide_init_queue
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-id|ide_init_queue
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
-DECL|function|export_probe_for_drive
-id|byte
-id|export_probe_for_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|probe_for_drive
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
-DECL|variable|export_ide_init_queue
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|export_ide_init_queue
-)paren
-suffix:semicolon
-DECL|variable|export_probe_for_drive
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|export_probe_for_drive
-)paren
-suffix:semicolon
 r_int
 id|ideprobe_init
 (paren

@@ -3656,16 +3656,6 @@ macro_line|#else /* CONFIG_BLK_DEV_OFFBOARD */
 DECL|macro|OFF_BOARD
 macro_line|#  define OFF_BOARD&t;&t;NEVER_BOARD
 macro_line|#endif /* CONFIG_BLK_DEV_OFFBOARD */
-r_int
-r_int
-id|ide_find_free_region
-(paren
-r_int
-r_int
-id|size
-)paren
-id|__init
-suffix:semicolon
 r_void
 id|ide_scan_pcibus
 (paren
@@ -3762,6 +3752,8 @@ id|num_ports
 )paren
 id|__init
 suffix:semicolon
+multiline_comment|/* FIXME spilt this up into a get and set function */
+r_extern
 r_int
 r_int
 id|ide_get_or_set_dma_base
@@ -3781,30 +3773,6 @@ id|name
 id|__init
 suffix:semicolon
 macro_line|#endif
-r_void
-id|hwif_unregister
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-suffix:semicolon
-r_void
-id|export_ide_init_queue
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-id|byte
-id|export_probe_for_drive
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 r_extern
 id|spinlock_t
 id|ide_lock

@@ -8370,10 +8370,12 @@ l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Note that we only release the standard ports,&n; * and do not even try to handle any extra ports&n; * allocated for weird IDE interface chipsets.&n; */
+multiline_comment|/*&n; * Note that we only release the standard ports, and do not even try to handle&n; * any extra ports allocated for weird IDE interface chipsets.&n; */
 DECL|function|hwif_unregister
+r_static
 r_void
 id|hwif_unregister
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -8918,7 +8920,6 @@ comma
 id|hwgroup
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note that we only release the standard ports,&n;&t; * and do not even try to handle any extra ports&n;&t; * allocated for weird IDE interface chipsets.&n;&t; */
 id|hwif_unregister
 c_func
 (paren
@@ -16871,13 +16872,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_setup_ports
-)paren
-suffix:semicolon
-DECL|variable|hwif_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwif_unregister
 )paren
 suffix:semicolon
 DECL|variable|get_info_ptr
