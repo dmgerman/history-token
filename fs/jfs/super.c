@@ -767,6 +767,11 @@ comma
 id|rc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbi-&gt;nls_tab
+)paren
 id|unload_nls
 c_func
 (paren
@@ -1923,19 +1928,6 @@ id|sb-&gt;s_root
 )paren
 r_goto
 id|out_no_root
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sbi-&gt;nls_tab
-)paren
-id|sbi-&gt;nls_tab
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* logical blocks are represented by 40 bits in pxd_t, etc. */
 id|sb-&gt;s_maxbytes
