@@ -3033,7 +3033,6 @@ id|curr_count
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Default initialization for 8254 timers. If we use other timers like HPET,&n; * we override this later&n; */
-DECL|variable|wait_timer_tick
 r_void
 (paren
 op_star
@@ -3042,6 +3041,7 @@ id|wait_timer_tick
 (paren
 r_void
 )paren
+id|__initdata
 op_assign
 id|wait_8254_wraparound
 suffix:semicolon
