@@ -305,6 +305,10 @@ DECL|member|local_lid
 id|u16
 id|local_lid
 suffix:semicolon
+DECL|member|local_rate
+id|u8
+id|local_rate
+suffix:semicolon
 DECL|member|admin_mtu
 r_int
 r_int
