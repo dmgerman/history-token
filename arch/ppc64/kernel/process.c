@@ -25,8 +25,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &quot;ppc_defs.h&quot;
 r_int
 id|dump_fpu
 c_func
@@ -1191,7 +1189,7 @@ r_void
 (brace
 r_extern
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|naca
 suffix:semicolon
@@ -1261,7 +1259,7 @@ l_string|&quot; no hardware stack &quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Store the stack value in the PACA for the processor */
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -1278,7 +1276,7 @@ id|PAGE_SIZE
 op_minus
 id|STACK_FRAME_OVERHEAD
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -1318,7 +1316,7 @@ op_increment
 multiline_comment|/* set page at the top of stack to be protected - prevent overflow */
 id|end_of_stack
 op_assign
-id|xPaca
+id|paca
 (braket
 id|i
 )braket

@@ -10,7 +10,7 @@ r_int
 r_int
 id|mm_context_t
 suffix:semicolon
-multiline_comment|/*&n; * Define the size of the cache used for segment table entries.  The first&n; * entry is used as a cache pointer, therefore the actual number of entries&n; * stored is one less than defined here.  Do not change this value without&n; * considering the impact it will have on the layout of the paca in Paca.h.&n; */
+multiline_comment|/*&n; * Define the size of the cache used for segment table entries.  The first&n; * entry is used as a cache pointer, therefore the actual number of entries&n; * stored is one less than defined here.  Do not change this value without&n; * considering the impact it will have on the layout of the paca in paca.h.&n; */
 DECL|macro|STAB_CACHE_SIZE
 mdefine_line|#define STAB_CACHE_SIZE 16
 multiline_comment|/*&n; * Hardware Segment Lookaside Buffer Entry&n; * This structure has been padded out to two 64b doublewords (actual SLBE&squot;s are&n; * 94 bits).  This padding facilites use by the segment management&n; * instructions.&n; */
@@ -286,7 +286,7 @@ DECL|typedef|SLBE
 )brace
 id|SLBE
 suffix:semicolon
-multiline_comment|/*&n; * This structure is used in Paca.h where the layout depends on the &n; * size being 24B.&n; */
+multiline_comment|/*&n; * This structure is used in paca.h where the layout depends on the &n; * size being 24B.&n; */
 r_typedef
 r_struct
 (brace

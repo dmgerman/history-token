@@ -13,8 +13,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
@@ -765,12 +765,6 @@ r_extern
 r_int
 r_int
 id|_ASR
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 id|pte_t
 op_star
@@ -5914,7 +5908,7 @@ r_int
 id|val
 suffix:semicolon
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|ptrPaca
 op_assign
@@ -6129,12 +6123,7 @@ l_string|&quot;Paca: &bslash;n&quot;
 suffix:semicolon
 id|ptrPaca
 op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|get_sprg3
+id|get_paca
 c_func
 (paren
 )paren

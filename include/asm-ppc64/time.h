@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef __PPC64_TIME_H
 DECL|macro|__PPC64_TIME_H
 mdefine_line|#define __PPC64_TIME_H
@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 multiline_comment|/* time.c */
 r_extern
@@ -190,33 +190,25 @@ id|val
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
+op_assign
+id|get_paca
+c_func
+(paren
+)paren
 suffix:semicolon
 r_int
 id|cur_dec
 suffix:semicolon
-id|paca
-op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
-c_func
-(paren
-id|SPRG3
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|paca-&gt;xLpPaca.xSharedProc
+id|lpaca-&gt;xLpPaca.xSharedProc
 )paren
 (brace
-id|paca-&gt;xLpPaca.xVirtualDecr
+id|lpaca-&gt;xLpPaca.xVirtualDecr
 op_assign
 id|val
 suffix:semicolon
@@ -241,6 +233,7 @@ c_func
 suffix:semicolon
 )brace
 r_else
+(brace
 id|mtspr
 c_func
 (paren
@@ -249,6 +242,7 @@ comma
 id|val
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|tb_ticks_since
 r_extern

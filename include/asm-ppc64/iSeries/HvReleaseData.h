@@ -48,7 +48,7 @@ suffix:semicolon
 singleline_comment|// Offset in NACA of ItVpdAreas&t;x06-x07
 DECL|member|xSlicNacaAddr
 r_struct
-id|Naca
+id|naca
 op_star
 id|xSlicNacaAddr
 suffix:semicolon

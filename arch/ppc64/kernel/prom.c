@@ -37,7 +37,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -264,12 +264,6 @@ r_extern
 r_int
 r_int
 id|embedded_sysmap_end
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_extern
 r_struct
@@ -1212,7 +1206,7 @@ id|prom
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -5082,7 +5076,7 @@ id|__secondary_hold
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -5093,7 +5087,7 @@ id|naca
 )paren
 suffix:semicolon
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|_xPaca
 op_assign
@@ -5101,7 +5095,7 @@ id|PTRRELOC
 c_func
 (paren
 op_amp
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -6191,7 +6185,7 @@ id|u32
 id|getprop_rval
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -6202,7 +6196,7 @@ id|naca
 )paren
 suffix:semicolon
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|_xPaca
 op_assign
@@ -6210,7 +6204,7 @@ id|PTRRELOC
 c_func
 (paren
 op_amp
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket

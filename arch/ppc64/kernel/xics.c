@@ -8,17 +8,11 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;xics.h&quot;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
-suffix:semicolon
 r_void
 id|xics_enable_irq
 c_func

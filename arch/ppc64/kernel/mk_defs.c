@@ -15,8 +15,8 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
@@ -173,7 +173,21 @@ id|mm
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Naca */
+multiline_comment|/* naca */
+id|DEFINE
+c_func
+(paren
+id|PACA
+comma
+m_offsetof
+(paren
+r_struct
+id|naca_struct
+comma
+id|paca
+)paren
+)paren
+suffix:semicolon
 id|DEFINE
 c_func
 (paren
@@ -182,7 +196,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|dCacheL1LineSize
 )paren
@@ -196,7 +210,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|dCacheL1LogLineSize
 )paren
@@ -210,7 +224,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|dCacheL1LinesPerPage
 )paren
@@ -224,7 +238,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|iCacheL1LineSize
 )paren
@@ -238,7 +252,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|iCacheL1LogLineSize
 )paren
@@ -252,7 +266,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|iCacheL1LinesPerPage
 )paren
@@ -266,27 +280,13 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|slb_size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Paca */
-id|DEFINE
-c_func
-(paren
-id|PACA
-comma
-m_offsetof
-(paren
-r_struct
-id|Naca
-comma
-id|paca
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* paca */
 id|DEFINE
 c_func
 (paren
@@ -295,7 +295,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 )paren
 )paren
 suffix:semicolon
@@ -307,7 +307,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xPacaIndex
 )paren
@@ -321,7 +321,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xProcStart
 )paren
@@ -335,7 +335,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xKsave
 )paren
@@ -349,7 +349,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xCurrent
 )paren
@@ -363,7 +363,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xSavedMsr
 )paren
@@ -377,7 +377,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xStab_data.real
 )paren
@@ -391,7 +391,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xStab_data.virt
 )paren
@@ -405,7 +405,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xStab_data.next_round_robin
 )paren
@@ -419,7 +419,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xR1
 )paren
@@ -433,7 +433,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|lpQueuePtr
 )paren
@@ -447,7 +447,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xTOC
 )paren
@@ -461,7 +461,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|exception_sp
 )paren
@@ -475,7 +475,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xHrdIntStack
 )paren
@@ -489,7 +489,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xProcEnabled
 )paren
@@ -503,7 +503,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xHrdIntCount
 )paren
@@ -517,7 +517,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|default_decr
 )paren
@@ -531,7 +531,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|prof_enabled
 )paren
@@ -545,7 +545,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|prof_len
 )paren
@@ -559,7 +559,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|prof_shift
 )paren
@@ -573,7 +573,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|prof_buffer
 )paren
@@ -587,7 +587,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|prof_stext
 )paren
@@ -601,7 +601,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xLpPaca
 )paren
@@ -615,7 +615,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xLpPaca
 )paren
@@ -629,7 +629,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|xRegSav
 )paren
@@ -643,7 +643,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|exception_stack
 )paren
@@ -657,7 +657,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 comma
 id|guard
 )paren

@@ -25,7 +25,7 @@ DECL|macro|BUG_ILLEGAL_INSTR
 mdefine_line|#define BUG_ILLEGAL_INSTR &quot;0x00b00b00&quot; /* For BUG macro */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 DECL|macro|STRICT_MM_TYPECHECKS
 mdefine_line|#define STRICT_MM_TYPECHECKS
 DECL|macro|REGION_SIZE

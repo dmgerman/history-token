@@ -3,8 +3,6 @@ DECL|macro|_PPC64_PGALLOC_H
 mdefine_line|#define _PPC64_PGALLOC_H
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 r_static
 r_inline

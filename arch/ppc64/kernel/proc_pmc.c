@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * proc_pmc.c&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 multiline_comment|/* Change Activity:&n; * 2001       : mikec    : Created&n; * 2001/06/05 : engebret : Software event count support.&n; * End Change Activity &n; */
 macro_line|#include &lt;asm/proc_fs.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 DECL|variable|proc_pmc_control_mode
 r_static
 r_int
@@ -67,12 +67,6 @@ DECL|variable|proc_ppc64_lock
 r_static
 id|spinlock_t
 id|proc_ppc64_lock
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_int
 id|proc_ppc64_pmc_find_file
@@ -2041,7 +2035,7 @@ l_string|&quot;    CPU%02d  %10u&bslash;n&quot;
 comma
 id|i
 comma
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3323,17 +3317,9 @@ op_assign
 id|PMC_CONTROL_CPI
 suffix:semicolon
 multiline_comment|/* Indicate to hypervisor that we are using the PMCs */
-(paren
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
-)paren
 )paren
 op_member_access_from_pointer
 id|xLpPacaPtr-&gt;xPMCRegsInUse
@@ -3472,17 +3458,9 @@ op_assign
 id|PMC_CONTROL_TLB
 suffix:semicolon
 multiline_comment|/* Indicate to hypervisor that we are using the PMCs */
-(paren
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
-)paren
 )paren
 op_member_access_from_pointer
 id|xLpPacaPtr-&gt;xPMCRegsInUse
@@ -3777,17 +3755,9 @@ op_complement
 l_int|0x80000000
 )paren
 multiline_comment|/* Inform hypervisor we are using PMCs */
-(paren
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
-)paren
 )paren
 op_member_access_from_pointer
 id|xLpPacaPtr-&gt;xPMCRegsInUse
@@ -3795,17 +3765,9 @@ op_assign
 l_int|1
 suffix:semicolon
 r_else
-(paren
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
-)paren
 )paren
 op_member_access_from_pointer
 id|xLpPacaPtr-&gt;xPMCRegsInUse

@@ -8,13 +8,13 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpNaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpRegSave.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/HvReleaseData.h&gt;
 macro_line|#include &lt;asm/iSeries/LparMap.h&gt;
 macro_line|#include &lt;asm/iSeries/ItVpdAreas.h&gt;
@@ -62,14 +62,14 @@ comma
 m_offsetof
 (paren
 r_struct
-id|Naca
+id|naca_struct
 comma
 id|xItVpdAreas
 )paren
 comma
 (paren
 r_struct
-id|Naca
+id|naca_struct
 op_star
 )paren
 (paren
@@ -631,7 +631,7 @@ multiline_comment|/* # VPD array entries */
 l_int|10
 comma
 multiline_comment|/* # DMA array entries */
-id|maxProcessors
+id|MAX_PROCESSORS
 op_star
 l_int|2
 comma
@@ -713,7 +713,7 @@ multiline_comment|/*  0 -  3 */
 r_sizeof
 (paren
 r_struct
-id|Paca
+id|paca_struct
 )paren
 comma
 multiline_comment|/*       4 length of Paca  */
@@ -805,7 +805,7 @@ l_int|0
 comma
 multiline_comment|/*&t; 0 -  3 */
 op_amp
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket

@@ -33,10 +33,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 DECL|macro|PGTOKB
 mdefine_line|#define&t;PGTOKB(pages)&t;(((pages) * PAGE_SIZE) &gt;&gt; 10)
@@ -129,12 +127,6 @@ id|current_set
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_void
 id|mm_init_ppc64
@@ -1855,9 +1847,9 @@ r_void
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
 suffix:semicolon
 r_int
 r_int
@@ -1935,10 +1927,10 @@ id|index
 op_increment
 )paren
 (brace
-id|paca
+id|lpaca
 op_assign
 op_amp
-id|xPaca
+id|paca
 (braket
 id|index
 )braket
@@ -1950,7 +1942,7 @@ op_assign
 r_int
 r_int
 )paren
-id|paca
+id|lpaca
 )paren
 op_plus
 l_int|0x1000

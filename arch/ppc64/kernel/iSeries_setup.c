@@ -16,8 +16,8 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;iSeries_setup.h&quot;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
@@ -218,12 +218,6 @@ r_char
 id|_end
 (braket
 )braket
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_extern
 r_int
@@ -3271,13 +3265,13 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|maxPacas
+id|MAX_PACAS
 suffix:semicolon
 op_increment
 id|i
 )paren
 (brace
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3286,7 +3280,7 @@ id|prof_shift
 op_assign
 id|dprof_shift
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3297,7 +3291,7 @@ id|dprof_len
 op_minus
 l_int|1
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3306,7 +3300,7 @@ id|prof_buffer
 op_assign
 id|dprof_buffer
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3325,7 +3319,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket

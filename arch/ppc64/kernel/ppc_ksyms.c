@@ -39,6 +39,9 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
+macro_line|#include &lt;asm/iSeries/mf.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#endif
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
@@ -618,6 +621,41 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|HvCall7
+)paren
+suffix:semicolon
+DECL|variable|HvLpEvent_unregisterHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_unregisterHandler
+)paren
+suffix:semicolon
+DECL|variable|HvLpEvent_registerHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_registerHandler
+)paren
+suffix:semicolon
+DECL|variable|mf_allocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_allocateLpEvents
+)paren
+suffix:semicolon
+DECL|variable|mf_deallocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_deallocateLpEvents
+)paren
+suffix:semicolon
+DECL|variable|HvLpConfig_getLpIndex_outline
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpConfig_getLpIndex_outline
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
 r_void
 id|enable_irq
@@ -1973,9 +1974,9 @@ l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
 suffix:semicolon
 r_struct
 id|ItLpQueue
@@ -1990,7 +1991,7 @@ id|cpu
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
-id|paca
+id|lpaca
 op_assign
 id|get_paca
 c_func
@@ -2001,10 +2002,10 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|paca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
 )paren
 (brace
-id|paca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -2018,7 +2019,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 id|lpq
 op_assign
-id|paca-&gt;lpQueuePtr
+id|lpaca-&gt;lpQueuePtr
 suffix:semicolon
 r_if
 c_cond
@@ -2099,10 +2100,10 @@ macro_line|#ifdef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
-id|paca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
 )paren
 (brace
-id|paca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
 op_assign
 l_int|0
 suffix:semicolon
@@ -3415,7 +3416,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|maxPacas
+id|MAX_PACAS
 suffix:semicolon
 op_increment
 id|i
@@ -3424,7 +3425,7 @@ id|i
 r_if
 c_cond
 (paren
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3437,7 +3438,7 @@ op_amp
 l_int|1
 )paren
 )paren
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -3447,7 +3448,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_else
-id|xPaca
+id|paca
 (braket
 id|i
 )braket

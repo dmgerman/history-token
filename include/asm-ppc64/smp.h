@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 r_extern
 r_int
 r_int
@@ -103,7 +103,7 @@ mdefine_line|#define smp_processor_id() (get_paca()-&gt;xPacaIndex)
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;xHwProcNum)
 DECL|macro|get_hard_smp_processor_id
-mdefine_line|#define get_hard_smp_processor_id(CPU) (xPaca[(CPU)].xHwProcNum)
+mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].xHwProcNum)
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0

@@ -141,7 +141,7 @@ r_void
 r_struct
 id|Paca
 op_star
-id|paca
+id|lpaca
 suffix:semicolon
 r_int
 id|oldval
@@ -177,7 +177,7 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
-id|paca
+id|lpaca
 op_assign
 id|get_paca
 c_func
@@ -193,7 +193,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|paca-&gt;xLpPaca.xSharedProc
+id|lpaca-&gt;xLpPaca.xSharedProc
 )paren
 (brace
 r_if
@@ -202,7 +202,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|paca-&gt;lpQueuePtr
+id|lpaca-&gt;lpQueuePtr
 )paren
 )paren
 id|process_iSeries_events
@@ -269,7 +269,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|paca-&gt;lpQueuePtr
+id|lpaca-&gt;lpQueuePtr
 )paren
 )paren
 id|process_iSeries_events

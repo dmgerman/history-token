@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#ifdef CONFIG_PPC_EEH
@@ -112,12 +112,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 DECL|variable|pci_assign_all_busses
 r_int
@@ -2290,9 +2284,9 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;PCI: &quot;
+l_string|&quot;PCI: %s for device %s &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; for device %s &bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren

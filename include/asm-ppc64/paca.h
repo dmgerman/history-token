@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC64_PACA_H
 DECL|macro|_PPC64_PACA_H
 mdefine_line|#define _PPC64_PACA_H
-multiline_comment|/*============================================================================&n; *                                                         Header File Id&n; * Name______________:&t;Paca.H&n; *&n; * Description_______:&n; *&n; * This control block defines the PACA which defines the processor &n; * specific data for each logical processor on the system.  &n; * There are some pointers defined that are utilized by PLIC.&n; *&n; * C 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*============================================================================&n; *                                                         Header File Id&n; * Name______________:&t;paca.h&n; *&n; * Description_______:&n; *&n; * This control block defines the PACA which defines the processor &n; * specific data for each logical processor on the system.  &n; * There are some pointers defined that are utilized by PLIC.&n; *&n; * C 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include&t;&lt;asm/types.h&gt;
 DECL|macro|N_EXC_STACK
 mdefine_line|#define N_EXC_STACK    2
@@ -12,24 +12,24 @@ macro_line|#include&t;&lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include&t;&lt;asm/rtas.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
 macro_line|#include&t;&lt;asm/processor.h&gt;
-multiline_comment|/* A Paca entry is required for each logical processor.  On systems&n; * that support hardware multi-threading, this is equal to twice the&n; * number of physical processors.  On LPAR systems, we are required&n; * to have space for the maximum number of logical processors we&n; * could ever possibly have.  Currently, we are limited to allocating&n; * 24 processors to a partition which gives 48 logical processors on&n; * an HMT box.  Therefore, we reserve this many Paca entries.&n; */
-DECL|macro|maxProcessors
-mdefine_line|#define maxProcessors 24
-DECL|macro|maxPacas
-mdefine_line|#define maxPacas maxProcessors * 2
+multiline_comment|/* A paca entry is required for each logical processor.  On systems&n; * that support hardware multi-threading, this is equal to twice the&n; * number of physical processors.  On LPAR systems, we are required&n; * to have space for the maximum number of logical processors we&n; * could ever possibly have.  Currently, we are limited to allocating&n; * 24 processors to a partition which gives 48 logical processors on&n; * an HMT box.  Therefore, we reserve this many paca entries.&n; */
+DECL|macro|MAX_PROCESSORS
+mdefine_line|#define MAX_PROCESSORS 24
+DECL|macro|MAX_PACAS
+mdefine_line|#define MAX_PACAS MAX_PROCESSORS * 2
 r_extern
 r_struct
-id|Paca
-id|xPaca
+id|paca_struct
+id|paca
 (braket
 )braket
 suffix:semicolon
 DECL|macro|get_paca
-mdefine_line|#define get_paca() ((struct Paca *)mfspr(SPRG3))
-multiline_comment|/*============================================================================&n; * Name_______:&t;Paca&n; *&n; * Description:&n; *&n; *&t;Defines the layout of the Paca.  &n; *&n; *&t;This structure is not directly accessed by PLIC or the SP except&n; *&t;for the first two pointers that point to the ItLpPaca area and the&n; *&t;ItLpRegSave area for this processor.  Both the ItLpPaca and&n; *&t;ItLpRegSave objects are currently contained within the&n; *&t;PACA but they do not need to be.&n; *&n; *============================================================================&n; */
-DECL|struct|Paca
+mdefine_line|#define get_paca() ((struct paca_struct *)mfspr(SPRG3))
+multiline_comment|/*============================================================================&n; * Name_______:&t;paca&n; *&n; * Description:&n; *&n; *&t;Defines the layout of the paca.  &n; *&n; *&t;This structure is not directly accessed by PLIC or the SP except&n; *&t;for the first two pointers that point to the ItLpPaca area and the&n; *&t;ItLpRegSave area for this processor.  Both the ItLpPaca and&n; *&t;ItLpRegSave objects are currently contained within the&n; *&t;PACA but they do not need to be.&n; *&n; *============================================================================&n; */
+DECL|struct|paca_struct
 r_struct
-id|Paca
+id|paca_struct
 (brace
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_1 0x0000 - 0x007F&n; *=====================================================================================&n; */
 DECL|member|xLpPacaPtr

@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -293,7 +293,7 @@ c_func
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign

@@ -4,15 +4,9 @@ DECL|macro|WANT_PPCDBG_TAB
 mdefine_line|#define WANT_PPCDBG_TAB /* Only defined here */
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
-suffix:semicolon
 r_extern
 r_int
 id|_machine
