@@ -2519,7 +2519,7 @@ c_cond
 (paren
 id|image-&gt;depth
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 id|u_int32_t

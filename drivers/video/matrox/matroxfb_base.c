@@ -9546,6 +9546,30 @@ suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
+id|fbcon.flags
+)paren
+op_or_assign
+id|FBINFO_PARTIAL_PAN_OK
+op_or
+multiline_comment|/* Prefer panning for scroll under MC viewer/edit */
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+multiline_comment|/* We have hw-assisted bmove */
+id|FBINFO_HWACCEL_FILLRECT
+op_or
+multiline_comment|/* And fillrect */
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+multiline_comment|/* And imageblit */
+id|FBINFO_HWACCEL_XPAN
+op_or
+multiline_comment|/* And we support both horizontal */
+id|FBINFO_HWACCEL_YPAN
+suffix:semicolon
+multiline_comment|/* And vertical panning */
+id|ACCESS_FBINFO
+c_func
+(paren
 id|video.len_usable
 )paren
 op_and_assign
