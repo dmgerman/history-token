@@ -118,8 +118,8 @@ id|semaphore
 id|client_sema
 suffix:semicolon
 r_void
-DECL|function|nfsd4_lock_state
-id|nfsd4_lock_state
+DECL|function|nfs4_lock_state
+id|nfs4_lock_state
 c_func
 (paren
 r_void
@@ -134,8 +134,8 @@ id|client_sema
 suffix:semicolon
 )brace
 r_void
-DECL|function|nfsd4_unlock_state
-id|nfsd4_unlock_state
+DECL|function|nfs4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 r_void
@@ -1284,11 +1284,9 @@ id|conf
 op_assign
 l_int|NULL
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -1876,11 +1874,9 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -1977,11 +1973,9 @@ c_func
 id|clid-&gt;cl_id
 )paren
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -2424,11 +2418,9 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* XXX if status == nfs_ok, probe callback path */
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -2473,16 +2465,16 @@ mdefine_line|#define FILE_HASH_SIZE                  (1 &lt;&lt; FILE_HASH_BITS)
 DECL|macro|FILE_HASH_MASK
 mdefine_line|#define FILE_HASH_MASK                  (FILE_HASH_SIZE - 1)
 multiline_comment|/* hash table for (open)nfs4_stateid */
-DECL|macro|OPENSTATEID_HASH_BITS
-mdefine_line|#define OPENSTATEID_HASH_BITS              10
-DECL|macro|OPENSTATEID_HASH_SIZE
-mdefine_line|#define OPENSTATEID_HASH_SIZE              (1 &lt;&lt; OPENSTATEID_HASH_BITS)
-DECL|macro|OPENSTATEID_HASH_MASK
-mdefine_line|#define OPENSTATEID_HASH_MASK              (OPENSTATEID_HASH_SIZE - 1)
+DECL|macro|STATEID_HASH_BITS
+mdefine_line|#define STATEID_HASH_BITS              10
+DECL|macro|STATEID_HASH_SIZE
+mdefine_line|#define STATEID_HASH_SIZE              (1 &lt;&lt; STATEID_HASH_BITS)
+DECL|macro|STATEID_HASH_MASK
+mdefine_line|#define STATEID_HASH_MASK              (STATEID_HASH_SIZE - 1)
 DECL|macro|file_hashval
 mdefine_line|#define file_hashval(x) &bslash;&n;        hash_ptr(x, FILE_HASH_BITS)
-DECL|macro|openstateid_hashval
-mdefine_line|#define openstateid_hashval(owner_id, file_id)  &bslash;&n;        (((owner_id) + (file_id)) &amp; OPENSTATEID_HASH_MASK)
+DECL|macro|stateid_hashval
+mdefine_line|#define stateid_hashval(owner_id, file_id)  &bslash;&n;        (((owner_id) + (file_id)) &amp; STATEID_HASH_MASK)
 DECL|variable|file_hashtbl
 r_static
 r_struct
@@ -2492,13 +2484,13 @@ id|file_hashtbl
 id|FILE_HASH_SIZE
 )braket
 suffix:semicolon
-DECL|variable|openstateid_hashtbl
+DECL|variable|stateid_hashtbl
 r_static
 r_struct
 id|list_head
-id|openstateid_hashtbl
+id|stateid_hashtbl
 (braket
-id|OPENSTATEID_HASH_SIZE
+id|STATEID_HASH_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* OPEN Share state helper functions */
@@ -2921,7 +2913,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|sop-&gt;so_peropenstate
+id|sop-&gt;so_perfilestate
 )paren
 suffix:semicolon
 id|list_add
@@ -3053,7 +3045,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|sop-&gt;so_peropenstate
+id|sop-&gt;so_perfilestate
 )paren
 )paren
 (brace
@@ -3062,12 +3054,12 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|sop-&gt;so_peropenstate.next
+id|sop-&gt;so_perfilestate.next
 comma
 r_struct
 id|nfs4_stateid
 comma
-id|st_peropenstate
+id|st_perfilestate
 )paren
 suffix:semicolon
 id|release_stateid
@@ -3116,7 +3108,7 @@ r_int
 r_int
 id|hashval
 op_assign
-id|openstateid_hashval
+id|stateid_hashval
 c_func
 (paren
 id|sop-&gt;so_id
@@ -3135,7 +3127,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|stp-&gt;st_peropenstate
+id|stp-&gt;st_perfilestate
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -3152,7 +3144,7 @@ op_amp
 id|stp-&gt;st_hash
 comma
 op_amp
-id|openstateid_hashtbl
+id|stateid_hashtbl
 (braket
 id|hashval
 )braket
@@ -3162,10 +3154,10 @@ id|list_add
 c_func
 (paren
 op_amp
-id|stp-&gt;st_peropenstate
+id|stp-&gt;st_perfilestate
 comma
 op_amp
-id|sop-&gt;so_peropenstate
+id|sop-&gt;so_perfilestate
 )paren
 suffix:semicolon
 id|list_add_perfile
@@ -3247,7 +3239,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|stp-&gt;st_peropenstate
+id|stp-&gt;st_perfilestate
 )paren
 suffix:semicolon
 r_if
@@ -3378,7 +3370,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|sop-&gt;so_peropenstate
+id|sop-&gt;so_perfilestate
 )paren
 )paren
 (brace
@@ -3460,8 +3452,8 @@ suffix:semicolon
 multiline_comment|/* search ownerstr_hashtbl[] for owner */
 r_static
 r_int
-DECL|function|find_stateowner_str
-id|find_stateowner_str
+DECL|function|find_openstateowner_str
+id|find_openstateowner_str
 c_func
 (paren
 r_int
@@ -4064,14 +4056,11 @@ id|open-&gt;op_clientid
 r_goto
 id|out
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/* XXX need finer grained locking */
 id|strhashval
 op_assign
 id|ownerstr_hashval
@@ -4085,7 +4074,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|find_stateowner_str
+id|find_openstateowner_str
 c_func
 (paren
 id|strhashval
@@ -4254,14 +4243,11 @@ id|sop-&gt;so_client
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/*XXX need finer grained locking */
 r_return
 id|status
 suffix:semicolon
@@ -4350,14 +4336,11 @@ id|ino
 op_assign
 id|current_fh-&gt;fh_dentry-&gt;d_inode
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/*XXX need finer grained locking */
 id|fi_hashval
 op_assign
 id|file_hashval
@@ -4752,14 +4735,11 @@ id|open-&gt;op_rflags
 op_or_assign
 id|NFS4_OPEN_RESULT_CONFIRM
 suffix:semicolon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/*XXX need finer grained locking */
 r_return
 id|status
 suffix:semicolon
@@ -4831,11 +4811,9 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 id|printk
@@ -4993,11 +4971,9 @@ id|nfserr_expired
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -5042,11 +5018,9 @@ id|return_val
 op_assign
 id|NFSD_LEASE_TIME
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 id|dprintk
@@ -5145,11 +5119,9 @@ id|return_val
 op_assign
 id|NFSD_LAUNDROMAT_MINTIMEOUT
 suffix:semicolon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -5196,7 +5168,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* search openstateid_hashtbl[] for stateid */
+multiline_comment|/* search stateid_hashtbl[] for stateid */
 r_struct
 id|nfs4_stateid
 op_star
@@ -5238,7 +5210,7 @@ r_int
 r_int
 id|hashval
 op_assign
-id|openstateid_hashval
+id|stateid_hashval
 c_func
 (paren
 id|st_id
@@ -5254,7 +5226,7 @@ comma
 id|next
 comma
 op_amp
-id|openstateid_hashtbl
+id|stateid_hashtbl
 (braket
 id|hashval
 )braket
@@ -5302,8 +5274,8 @@ multiline_comment|/* search ownerid_hashtbl[] for stateid owner (stateid-&gt;si_
 r_struct
 id|nfs4_stateowner
 op_star
-DECL|function|find_stateowner_id
-id|find_stateowner_id
+DECL|function|find_openstateowner_id
+id|find_openstateowner_id
 c_func
 (paren
 id|u32
@@ -5954,7 +5926,7 @@ op_logical_neg
 (paren
 id|sop
 op_assign
-id|find_stateowner_id
+id|find_openstateowner_id
 c_func
 (paren
 id|stateid-&gt;si_stateownerid
@@ -6070,14 +6042,11 @@ id|oc-&gt;oc_stateowner
 op_assign
 l_int|NULL
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/* XXX need finer grained locking */
 r_if
 c_cond
 (paren
@@ -6162,11 +6131,9 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -6215,14 +6182,11 @@ comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
 )paren
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/* XXX need finer grained locking */
 r_if
 c_cond
 (paren
@@ -6350,11 +6314,9 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -6403,14 +6365,11 @@ comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
 )paren
 suffix:semicolon
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
-multiline_comment|/* XXX need finer grained locking */
 r_if
 c_cond
 (paren
@@ -6478,11 +6437,9 @@ id|close
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 r_return
@@ -6634,7 +6591,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|OPENSTATEID_HASH_SIZE
+id|STATEID_HASH_SIZE
 suffix:semicolon
 id|i
 op_increment
@@ -6644,7 +6601,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|openstateid_hashtbl
+id|stateid_hashtbl
 (braket
 id|i
 )braket
@@ -6923,11 +6880,9 @@ c_func
 r_void
 )paren
 (brace
-id|down
+id|nfs4_lock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 id|__nfs4_state_shutdown
@@ -6935,11 +6890,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|up
+id|nfs4_unlock_state
 c_func
 (paren
-op_amp
-id|client_sema
 )paren
 suffix:semicolon
 )brace

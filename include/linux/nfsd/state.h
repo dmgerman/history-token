@@ -191,7 +191,7 @@ id|NFSD4_REPLAY_ISIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or (eventually) a lock_owner&n;*&n;*    o so_peropenstate list is used to ensure no dangling nfs4_stateid&n;*              reverences when we release a stateowner.&n;*/
+multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or (eventually) a lock_owner&n;*&n;*    o so_perfilestate list is used to ensure no dangling nfs4_stateid&n;*              reverences when we release a stateowner.&n;*/
 DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
@@ -214,10 +214,10 @@ id|list_head
 id|so_perclient
 suffix:semicolon
 multiline_comment|/* nfs4_client-&gt;cl_perclient */
-DECL|member|so_peropenstate
+DECL|member|so_perfilestate
 r_struct
 id|list_head
-id|so_peropenstate
+id|so_perfilestate
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
 DECL|member|so_id
@@ -279,7 +279,7 @@ DECL|member|fi_id
 id|u32
 id|fi_id
 suffix:semicolon
-multiline_comment|/* used with stateowner-&gt;so_id &n;&t;&t;&t;&t;&t;     * for openstateid_hashtbl hash */
+multiline_comment|/* used with stateowner-&gt;so_id &n;&t;&t;&t;&t;&t;     * for stateid_hashtbl hash */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*/
@@ -292,19 +292,16 @@ r_struct
 id|list_head
 id|st_hash
 suffix:semicolon
-multiline_comment|/* openstateid_hashtbl[]*/
 DECL|member|st_perfile
 r_struct
 id|list_head
 id|st_perfile
 suffix:semicolon
-multiline_comment|/* file_hashtbl[]*/
-DECL|member|st_peropenstate
+DECL|member|st_perfilestate
 r_struct
 id|list_head
-id|st_peropenstate
+id|st_perfilestate
 suffix:semicolon
-multiline_comment|/* nfs4_stateowner-&gt;so_peropenstate */
 DECL|member|st_stateowner
 r_struct
 id|nfs4_stateowner
@@ -408,7 +405,7 @@ id|deny_type
 suffix:semicolon
 r_extern
 r_void
-id|nfsd4_lock_state
+id|nfs4_lock_state
 c_func
 (paren
 r_void
@@ -416,7 +413,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 r_void

@@ -1278,7 +1278,7 @@ id|OFFSET_MAX
 r_return
 id|nfserr_inval
 suffix:semicolon
-id|nfsd4_lock_state
+id|nfs4_lock_state
 c_func
 (paren
 )paren
@@ -1425,7 +1425,7 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 )paren
@@ -1777,7 +1777,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-id|nfsd4_lock_state
+id|nfs4_lock_state
 c_func
 (paren
 )paren
@@ -1839,7 +1839,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 )paren
@@ -1868,7 +1868,7 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 )paren
@@ -1932,7 +1932,7 @@ id|OFFSET_MAX
 r_return
 id|nfserr_inval
 suffix:semicolon
-id|nfsd4_lock_state
+id|nfs4_lock_state
 c_func
 (paren
 )paren
@@ -2047,7 +2047,7 @@ suffix:semicolon
 )brace
 id|zero_stateid
 suffix:colon
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 )paren
@@ -2104,7 +2104,7 @@ id|write-&gt;wr_how_written
 suffix:semicolon
 id|out
 suffix:colon
-id|nfsd4_unlock_state
+id|nfs4_unlock_state
 c_func
 (paren
 )paren
