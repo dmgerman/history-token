@@ -847,11 +847,6 @@ id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
 DECL|member|flags
 r_int
 r_int
