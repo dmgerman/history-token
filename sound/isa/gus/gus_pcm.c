@@ -5206,15 +5206,6 @@ c_func
 id|card
 comma
 id|kctl
-op_assign
-id|snd_ctl_new1
-c_func
-(paren
-op_amp
-id|snd_gf1_pcm_volume_control
-comma
-id|gus
-)paren
 )paren
 )paren
 OL
