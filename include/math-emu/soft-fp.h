@@ -107,11 +107,11 @@ DECL|macro|FP_CLS_NAN
 mdefine_line|#define FP_CLS_NAN&t;&t;3
 DECL|macro|_FP_CLS_COMBINE
 mdefine_line|#define _FP_CLS_COMBINE(x,y)&t;(((x) &lt;&lt; 2) | (y))
-macro_line|#include &quot;op-1.h&quot;
-macro_line|#include &quot;op-2.h&quot;
-macro_line|#include &quot;op-4.h&quot;
-macro_line|#include &quot;op-8.h&quot;
-macro_line|#include &quot;op-common.h&quot;
+macro_line|#include &lt;math-emu/op-1.h&gt;
+macro_line|#include &lt;math-emu/op-2.h&gt;
+macro_line|#include &lt;math-emu/op-4.h&gt;
+macro_line|#include &lt;math-emu/op-8.h&gt;
+macro_line|#include &lt;math-emu/op-common.h&gt;
 multiline_comment|/* Sigh.  Silly things longlong.h needs.  */
 DECL|macro|UWtype
 mdefine_line|#define UWtype&t;&t;_FP_W_TYPE

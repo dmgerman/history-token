@@ -639,6 +639,8 @@ r_int
 id|diff
 comma
 id|tag
+op_assign
+l_int|0
 comma
 id|expa
 comma

@@ -889,6 +889,8 @@ id|loaded_tag
 (brace
 r_int
 id|f
+op_assign
+l_int|0
 comma
 id|c
 suffix:semicolon
@@ -1036,6 +1038,8 @@ id|nr
 (brace
 r_int
 id|f
+op_assign
+l_int|0
 comma
 id|c
 suffix:semicolon
@@ -1254,6 +1258,8 @@ id|nr
 (brace
 r_int
 id|f
+op_assign
+l_int|0
 comma
 id|c
 suffix:semicolon

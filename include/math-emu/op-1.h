@@ -3,7 +3,7 @@ macro_line|#ifndef    __MATH_EMU_OP_1_H__
 DECL|macro|__MATH_EMU_OP_1_H__
 mdefine_line|#define    __MATH_EMU_OP_1_H__
 DECL|macro|_FP_FRAC_DECL_1
-mdefine_line|#define _FP_FRAC_DECL_1(X)&t;_FP_W_TYPE X##_f
+mdefine_line|#define _FP_FRAC_DECL_1(X)&t;_FP_W_TYPE X##_f=0
 DECL|macro|_FP_FRAC_COPY_1
 mdefine_line|#define _FP_FRAC_COPY_1(D,S)&t;(D##_f = S##_f)
 DECL|macro|_FP_FRAC_SET_1

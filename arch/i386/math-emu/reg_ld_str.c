@@ -2470,6 +2470,8 @@ id|single
 (brace
 r_int
 id|templ
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* This sets the pointer FPU_info to point to the argument part&n;   of the stack frame of math_emulate() */
 DECL|macro|SETUP_DATA_AREA
 mdefine_line|#define SETUP_DATA_AREA(arg)&t;FPU_info = (struct info *) &amp;arg
+multiline_comment|/* s is always from a cpu register, and the cpu does bounds checking&n; * during register load --&gt; no further bounds checks needed */
 DECL|macro|LDT_DESCRIPTOR
 mdefine_line|#define LDT_DESCRIPTOR(s)&t;(((struct desc_struct *)current-&gt;mm-&gt;context.ldt)[(s) &gt;&gt; 3])
 DECL|macro|SEG_D_SIZE
