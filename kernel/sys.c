@@ -733,6 +733,21 @@ c_func
 (paren
 id|compat_sys_mq_getsetattr
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys_mbind
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_get_mempolicy
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_set_mempolicy
+)paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
 c_func

@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -1492,6 +1493,17 @@ op_star
 id|last_siginfo
 suffix:semicolon
 multiline_comment|/* For ptrace use.  */
+DECL|member|mempolicy
+r_struct
+id|mempolicy
+op_star
+id|mempolicy
+suffix:semicolon
+DECL|member|il_next
+r_int
+id|il_next
+suffix:semicolon
+multiline_comment|/* could be shared with used_math */
 )brace
 suffix:semicolon
 DECL|function|process_group

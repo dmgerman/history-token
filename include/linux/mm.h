@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
 r_extern
 r_int
@@ -40,7 +41,7 @@ DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
 macro_line|#endif
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
-multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; *&n; * This structure is exactly 64 bytes on ia32.  Please think very, very hard&n; * before adding anything to it.&n; */
+multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; *&n; * This structure is exactly 64 bytes on ia32.  Please think very, very hard&n; * before adding anything to it.&n; * [Now 4 bytes more on 32bit NUMA machines. Sorry. -AK.&n; * But if you want to recover the 4 bytes justr remove vm_next. It is redundant&n; * with vm_rb. Will be a lot of editing work though. vm_rb.color is redundant&n; * too.]&n; */
 DECL|struct|vm_area_struct
 r_struct
 id|vm_area_struct
@@ -120,6 +121,15 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|vm_policy
+r_struct
+id|mempolicy
+op_star
+id|vm_policy
+suffix:semicolon
+multiline_comment|/* NUMA policy for the VMA */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * vm_flags..&n; */
@@ -284,6 +294,45 @@ r_int
 id|nonblock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|set_policy
+r_int
+(paren
+op_star
+id|set_policy
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|mempolicy
+op_star
+r_new
+)paren
+suffix:semicolon
+DECL|member|get_policy
+r_struct
+id|mempolicy
+op_star
+(paren
+op_star
+id|get_policy
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 r_struct
@@ -945,6 +994,37 @@ comma
 r_int
 op_star
 id|type
+)paren
+suffix:semicolon
+r_int
+id|shmem_set_policy
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|mempolicy
+op_star
+r_new
+)paren
+suffix:semicolon
+r_struct
+id|mempolicy
+op_star
+id|shmem_get_policy
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 r_struct
@@ -2363,6 +2443,30 @@ l_int|NULL
 suffix:semicolon
 r_return
 id|vma
+suffix:semicolon
+)brace
+DECL|function|vma_pages
+r_static
+r_inline
+r_int
+r_int
+id|vma_pages
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+(brace
+r_return
+(paren
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+)paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 )brace
 r_extern
