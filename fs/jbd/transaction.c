@@ -4989,6 +4989,20 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Now we have the locks, check again to see whether kjournald has&n;&t; * taken the buffer off the transaction.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer_jbd
+c_func
+(paren
+id|bh
+)paren
+)paren
+r_goto
+id|zap_buffer
+suffix:semicolon
 id|jh
 op_assign
 id|bh2jh
