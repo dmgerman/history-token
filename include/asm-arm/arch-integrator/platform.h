@@ -497,20 +497,6 @@ DECL|macro|mSEC_25
 mdefine_line|#define mSEC_25                         (mSEC_1 * 25)
 DECL|macro|SEC_1
 mdefine_line|#define SEC_1                           (mSEC_1 * 1000)
-macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_void
-id|integrator_time_init
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|INTEGRATOR_CSR_BASE
 mdefine_line|#define INTEGRATOR_CSR_BASE             0x10000000
 DECL|macro|INTEGRATOR_CSR_SIZE

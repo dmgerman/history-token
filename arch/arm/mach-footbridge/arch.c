@@ -10,30 +10,7 @@ macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
-r_extern
-r_void
-id|footbridge_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|footbridge_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|footbridge_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 DECL|variable|mem_fclk_21285
 r_int
 r_int
@@ -122,11 +99,12 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|footbridge_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|footbridge_timer
+comma
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_NETWINDER
@@ -229,11 +207,12 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|footbridge_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|isa_timer
+comma
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_CATS
@@ -321,11 +300,12 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|footbridge_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|isa_timer
+comma
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_CO285
@@ -441,11 +421,12 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|footbridge_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|footbridge_timer
+comma
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_PERSONAL_SERVER
@@ -485,11 +466,12 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|footbridge_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|footbridge_timer
+comma
 id|MACHINE_END
 macro_line|#endif
 eof

@@ -2875,9 +2875,9 @@ id|init_arch_irq
 op_assign
 id|mdesc-&gt;init_irq
 suffix:semicolon
-id|init_arch_time
+id|system_timer
 op_assign
-id|mdesc-&gt;init_time
+id|mdesc-&gt;timer
 suffix:semicolon
 id|init_machine
 op_assign
