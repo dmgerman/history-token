@@ -679,12 +679,6 @@ suffix:semicolon
 id|i
 OL
 id|IFNAMSIZ
-op_div
-r_sizeof
-(paren
-r_int
-r_int
-)paren
 suffix:semicolon
 id|i
 op_increment
