@@ -8428,6 +8428,11 @@ id|alloc_ok
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+id|npkts
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8771,6 +8776,9 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|npkts
+op_increment
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -8816,6 +8824,9 @@ id|skb
 comma
 id|pkt_len
 )paren
+suffix:semicolon
+id|npkts
+op_increment
 suffix:semicolon
 id|sp-&gt;rx_ringp
 (braket
@@ -8919,6 +8930,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|npkts
+)paren
 id|sp-&gt;last_rx_time
 op_assign
 id|jiffies
