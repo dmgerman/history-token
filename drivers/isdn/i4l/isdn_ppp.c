@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ppp-comp.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
@@ -13055,6 +13056,33 @@ suffix:semicolon
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+)brace
+DECL|function|isdn_ppp_setup_dev
+r_int
+id|isdn_ppp_setup_dev
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|p
+)paren
+(brace
+id|p-&gt;dev.type
+op_assign
+id|ARPHRD_PPP
+suffix:semicolon
+multiline_comment|/* change ARP type */
+id|p-&gt;dev.addr_len
+op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;dev.do_ioctl
+op_assign
+id|isdn_ppp_dev_ioctl
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof
