@@ -32,6 +32,36 @@ id|fat_default_iocharset
 op_assign
 id|CONFIG_FAT_DEFAULT_IOCHARSET
 suffix:semicolon
+r_static
+r_int
+id|fat_statfs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|kstatfs
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_static
+r_void
+id|fat_write_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * New FAT inode stuff. We do the following:&n; *&t;a) i_ino is constant and has nothing with on-disk location.&n; *&t;b) FAT manages its own cache of directory entries.&n; *&t;c) *This* cache is indexed by on-disk location.&n; *&t;d) inode has an associated directory entry, all right, but&n; *&t;&t;it may be unhashed.&n; *&t;e) currently entries are stored within struct inode. That should&n; *&t;&t;change.&n; *&t;f) we deal with races in the following way:&n; *&t;&t;1. readdir() and lookup() do FAT-dir-cache lookup.&n; *&t;&t;2. rename() unhashes the F-d-c entry and rehashes it in&n; *&t;&t;&t;a new place.&n; *&t;&t;3. unlink() and rmdir() unhash F-d-c entry.&n; *&t;&t;4. fat_write_inode() checks whether the thing is unhashed.&n; *&t;&t;&t;If it is we silently return. If it isn&squot;t we do bread(),&n; *&t;&t;&t;check if the location is still valid and retry if it&n; *&t;&t;&t;isn&squot;t. Otherwise we do changes.&n; *&t;&t;5. Spinlock is used to protect hash/unhash/location check/lookup&n; *&t;&t;6. fat_clear_inode() unhashes the F-d-c entry.&n; *&t;&t;7. lookup() and readdir() do igrab() if they find a F-d-c entry&n; *&t;&t;&t;and consider negative result as cache miss.&n; */
 DECL|macro|FAT_HASH_BITS
 mdefine_line|#define FAT_HASH_BITS&t;8
@@ -544,6 +574,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|fat_delete_inode
+r_static
 r_void
 id|fat_delete_inode
 c_func
@@ -584,6 +615,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|fat_clear_inode
+r_static
 r_void
 id|fat_clear_inode
 c_func
@@ -650,6 +682,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|fat_put_super
+r_static
 r_void
 id|fat_put_super
 c_func
@@ -5075,6 +5108,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|fat_statfs
+r_static
 r_int
 id|fat_statfs
 c_func

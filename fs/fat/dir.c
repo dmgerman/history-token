@@ -6,6 +6,48 @@ macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_static
+r_int
+id|fat_dir_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_static
+r_int
+id|fat_readdir
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_void
+op_star
+id|dirent
+comma
+id|filldir_t
+id|filldir
+)paren
+suffix:semicolon
 DECL|variable|fat_dir_operations
 r_struct
 id|file_operations
@@ -3400,6 +3442,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|fat_readdir
+r_static
 r_int
 id|fat_readdir
 c_func
@@ -3766,6 +3809,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 DECL|function|fat_dir_ioctl
+r_static
 r_int
 id|fat_dir_ioctl
 c_func
