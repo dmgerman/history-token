@@ -3715,6 +3715,7 @@ id|copied
 suffix:semicolon
 )brace
 DECL|function|netlink_data_ready
+r_static
 r_void
 id|netlink_data_ready
 c_func
@@ -5273,6 +5274,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|netlink_seq_ops
+r_static
 r_struct
 id|seq_operations
 id|netlink_seq_ops
@@ -5408,6 +5410,7 @@ id|nb
 suffix:semicolon
 )brace
 DECL|variable|netlink_ops
+r_static
 r_struct
 id|proto_ops
 id|netlink_ops
@@ -5506,6 +5509,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|netlink_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|netlink_family_ops
