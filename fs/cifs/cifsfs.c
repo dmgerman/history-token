@@ -2698,6 +2698,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|filemap_fdatawait
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
 id|invalidate_remote_inode
 c_func
 (paren
@@ -3146,6 +3152,13 @@ multiline_comment|/* combination of LGPL + GPL source behaves as GPL */
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;VFS to access servers complying with the SNIA CIFS Specification e.g. Samba and Windows&quot;
+)paren
+suffix:semicolon
+DECL|variable|CIFS_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|CIFS_VERSION
 )paren
 suffix:semicolon
 id|module_init

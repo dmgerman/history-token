@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.19 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.24 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -87,20 +87,13 @@ l_string|&quot;SOFTSETUP&bslash;n&quot;
 )paren
 suffix:semicolon
 r_case
-id|CARD_STATE_UP_LAN_OFFLINE
+id|CARD_STATE_UP
 suffix:colon
-r_return
-id|sprintf
-c_func
+r_if
+c_cond
 (paren
-id|buf
-comma
-l_string|&quot;UP (LAN OFFLINE)&bslash;n&quot;
+id|card-&gt;lan_online
 )paren
-suffix:semicolon
-r_case
-id|CARD_STATE_UP_LAN_ONLINE
-suffix:colon
 r_return
 id|sprintf
 c_func
@@ -108,6 +101,16 @@ c_func
 id|buf
 comma
 l_string|&quot;UP (LAN ONLINE)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;UP (LAN OFFLINE)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_case
@@ -1389,8 +1392,12 @@ op_star
 id|tmp
 suffix:semicolon
 r_int
-r_int
 id|cnt
+comma
+id|old_cnt
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 r_if
 c_cond
@@ -1421,6 +1428,10 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|old_cnt
+op_assign
+id|card-&gt;qdio.in_buf_pool.buf_count
+suffix:semicolon
 id|cnt
 op_assign
 id|simple_strtoul
@@ -1431,7 +1442,7 @@ comma
 op_amp
 id|tmp
 comma
-l_int|16
+l_int|10
 )paren
 suffix:semicolon
 id|cnt
@@ -1458,11 +1469,39 @@ suffix:colon
 id|cnt
 )paren
 suffix:semicolon
-id|card-&gt;qdio.in_buf_pool.buf_count
-op_assign
+r_if
+c_cond
+(paren
+id|old_cnt
+op_ne
 id|cnt
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
+id|qeth_realloc_buffer_pool
+c_func
+(paren
+id|card
+comma
+id|cnt
+)paren
+)paren
+)paren
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;Error (%d) while setting &quot;
+l_string|&quot;buffer count.&bslash;n&quot;
+comma
+id|rc
+)paren
 suffix:semicolon
-multiline_comment|/* TODO: steel/add buffers from/to a running card&squot;s buffer pool (?) */
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -1708,18 +1747,8 @@ id|route-&gt;type
 op_assign
 id|NO_ROUTER
 suffix:semicolon
-r_goto
-id|check_reset
-suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|card-&gt;info.type
-op_eq
-id|QETH_CARD_TYPE_IQD
-)paren
-(brace
+r_else
 r_if
 c_cond
 (paren
@@ -1777,12 +1806,6 @@ id|MULTICAST_ROUTER
 suffix:semicolon
 )brace
 r_else
-r_goto
-id|out_inval
-suffix:semicolon
-)brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -1834,41 +1857,48 @@ l_string|&quot;multicast_router&quot;
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|qeth_is_ipafunc_supported
-c_func
-(paren
-id|card
-comma
-id|prot
-comma
-id|IPA_OSA_MC_ROUTER
-)paren
-)paren
 id|route-&gt;type
 op_assign
 id|MULTICAST_ROUTER
 suffix:semicolon
-r_else
-r_goto
-id|out_inval
-suffix:semicolon
 )brace
 r_else
-r_goto
-id|out_inval
+(brace
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;Invalid routing type &squot;%s&squot;.&bslash;n&quot;
+comma
+id|tmp
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
-id|check_reset
-suffix:colon
 r_if
 c_cond
+(paren
+(paren
+(paren
+id|card-&gt;state
+op_eq
+id|CARD_STATE_SOFTSETUP
+)paren
+op_logical_or
+(paren
+id|card-&gt;state
+op_eq
+id|CARD_STATE_UP
+)paren
+)paren
+op_logical_and
 (paren
 id|old_route_type
 op_ne
 id|route-&gt;type
+)paren
 )paren
 (brace
 r_if
@@ -1905,23 +1935,6 @@ suffix:semicolon
 )brace
 r_return
 id|count
-suffix:semicolon
-id|out_inval
-suffix:colon
-id|PRINT_WARN
-c_func
-(paren
-l_string|&quot;Routing type &squot;%s&squot; not supported for interface %s.&bslash;n&quot;
-l_string|&quot;Router status not changed.&bslash;n&quot;
-comma
-id|tmp
-comma
-id|card-&gt;info.if_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 r_static
@@ -2720,17 +2733,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|card-&gt;state
 op_ne
-id|CARD_STATE_UP_LAN_ONLINE
-)paren
-op_logical_and
-(paren
-id|card-&gt;state
-op_ne
-id|CARD_STATE_UP_LAN_OFFLINE
-)paren
+id|CARD_STATE_UP
 )paren
 r_return
 op_minus
@@ -2779,7 +2784,6 @@ comma
 id|qeth_dev_recover_store
 )paren
 suffix:semicolon
-multiline_comment|/* TODO */
 r_static
 id|ssize_t
 DECL|function|qeth_dev_broadcast_mode_show
@@ -2861,7 +2865,6 @@ l_string|&quot;local&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* TODO */
 r_static
 id|ssize_t
 DECL|function|qeth_dev_broadcast_mode_store
@@ -3043,7 +3046,6 @@ comma
 id|qeth_dev_broadcast_mode_store
 )paren
 suffix:semicolon
-multiline_comment|/* TODO */
 r_static
 id|ssize_t
 DECL|function|qeth_dev_canonical_macaddr_show
@@ -3125,7 +3127,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* TODO */
 r_static
 id|ssize_t
 DECL|function|qeth_dev_canonical_macaddr_store

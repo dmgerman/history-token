@@ -8,5 +8,7 @@ DECL|macro|L1_CACHE_SHIFT
 mdefine_line|#define L1_CACHE_SHIFT     8
 DECL|macro|L1_CACHE_SHIFT_MAX
 mdefine_line|#define L1_CACHE_SHIFT_MAX 8&t;/* largest L1 which this arch supports */
+DECL|macro|ARCH_KMALLOC_MINALIGN
+mdefine_line|#define ARCH_KMALLOC_MINALIGN&t;8
 macro_line|#endif
 eof

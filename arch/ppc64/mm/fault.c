@@ -17,6 +17,155 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/*&n; * Check whether the instruction at regs-&gt;nip is a store using&n; * an update addressing form which will update r1.&n; */
+DECL|function|store_updates_sp
+r_static
+r_int
+id|store_updates_sp
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|inst
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|inst
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|regs-&gt;nip
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* check for 1 in the rA field */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|inst
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x1f
+)paren
+op_ne
+l_int|1
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* check major opcode */
+r_switch
+c_cond
+(paren
+id|inst
+op_rshift
+l_int|26
+)paren
+(brace
+r_case
+l_int|37
+suffix:colon
+multiline_comment|/* stwu */
+r_case
+l_int|39
+suffix:colon
+multiline_comment|/* stbu */
+r_case
+l_int|45
+suffix:colon
+multiline_comment|/* sthu */
+r_case
+l_int|53
+suffix:colon
+multiline_comment|/* stfsu */
+r_case
+l_int|55
+suffix:colon
+multiline_comment|/* stfdu */
+r_return
+l_int|1
+suffix:semicolon
+r_case
+l_int|62
+suffix:colon
+multiline_comment|/* std or stdu */
+r_return
+(paren
+id|inst
+op_amp
+l_int|3
+)paren
+op_eq
+l_int|1
+suffix:semicolon
+r_case
+l_int|31
+suffix:colon
+multiline_comment|/* check minor opcode */
+r_switch
+c_cond
+(paren
+(paren
+id|inst
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x3ff
+)paren
+(brace
+r_case
+l_int|181
+suffix:colon
+multiline_comment|/* stdux */
+r_case
+l_int|183
+suffix:colon
+multiline_comment|/* stwux */
+r_case
+l_int|247
+suffix:colon
+multiline_comment|/* stbux */
+r_case
+l_int|439
+suffix:colon
+multiline_comment|/* sthux */
+r_case
+l_int|695
+suffix:colon
+multiline_comment|/* stfsux */
+r_case
+l_int|759
+suffix:colon
+multiline_comment|/* stfdux */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The error_code parameter is&n; *  - DSISR for a non-SLB data access fault,&n; *  - SRR1 &amp; 0x08000000 for a non-SLB instruction access fault&n; *  - 0 any SLB fault.&n; */
 DECL|function|do_page_fault
 r_void
@@ -218,6 +367,68 @@ id|VM_GROWSDOWN
 r_goto
 id|bad_area
 suffix:semicolon
+multiline_comment|/*&n;&t; * N.B. The POWER/Open ABI allows programs to access up to&n;&t; * 288 bytes below the stack pointer.&n;&t; * The kernel signal delivery code writes up to about 1.5kB&n;&t; * below the stack pointer (r1) before decrementing it.&n;&t; * The exec code can write slightly over 640kB to the stack&n;&t; * before setting the user r1.  Thus we allow the stack to&n;&t; * expand to 1MB without further checks.&n;&t; */
+r_if
+c_cond
+(paren
+id|address
+op_plus
+l_int|0x100000
+OL
+id|vma-&gt;vm_end
+)paren
+(brace
+multiline_comment|/* get user regs even if this fault is in kernel mode */
+r_struct
+id|pt_regs
+op_star
+id|uregs
+op_assign
+id|current-&gt;thread.regs
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|uregs
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|bad_area
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * A user-mode access to an address a long way below&n;&t;&t; * the stack pointer is only valid if the instruction&n;&t;&t; * is one which would update the stack pointer to the&n;&t;&t; * address accessed if the instruction completed,&n;&t;&t; * i.e. either stwu rs,n(r1) or stwux rs,r1,rb&n;&t;&t; * (or the byte, halfword, float or double forms).&n;&t;&t; *&n;&t;&t; * If we don&squot;t check this then any write to the area&n;&t;&t; * between the last mapped region and the stack will&n;&t;&t; * expand the stack rather than segfaulting.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|address
+op_plus
+l_int|2048
+OL
+id|uregs-&gt;gpr
+(braket
+l_int|1
+)braket
+op_logical_and
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+op_logical_or
+op_logical_neg
+id|store_updates_sp
+c_func
+(paren
+id|regs
+)paren
+)paren
+)paren
+r_goto
+id|bad_area
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

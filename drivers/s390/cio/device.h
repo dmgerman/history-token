@@ -204,6 +204,12 @@ id|workqueue_struct
 op_star
 id|ccw_device_work
 suffix:semicolon
+r_extern
+r_struct
+id|workqueue_struct
+op_star
+id|ccw_device_notify_work
+suffix:semicolon
 r_void
 id|io_subchannel_recog_done
 c_func
@@ -234,6 +240,14 @@ op_star
 suffix:semicolon
 r_void
 id|ccw_device_do_unreg_rereg
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+r_void
+id|ccw_device_call_sch_unregister
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.58 2004/03/24 10:51:56 ptiedem Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.58 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.59 2004/04/21 17:10:13 ptiedem Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.59 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -517,7 +517,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.58 $&quot;
+l_string|&quot;$Revision: 1.59 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -8216,6 +8216,105 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|__ctc_check_irb_error
+id|__ctc_check_irb_error
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+r_struct
+id|irb
+op_star
+id|irb
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|irb
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|PTR_ERR
+c_func
+(paren
+id|irb
+)paren
+)paren
+(brace
+r_case
+op_minus
+id|EIO
+suffix:colon
+id|ctc_pr_warn
+c_func
+(paren
+l_string|&quot;i/o-error on device %s&bslash;n&quot;
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;CTC_DBF_TEXT(trace, 2, &quot;ckirberr&quot;);
+singleline_comment|//&t;&t;CTC_DBF_TEXT_(trace, 2, &quot;  rc%d&quot;, -EIO);
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+id|ctc_pr_warn
+c_func
+(paren
+l_string|&quot;timeout on device %s&bslash;n&quot;
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;CTC_DBF_TEXT(trace, 2, &quot;ckirberr&quot;);
+singleline_comment|//&t;&t;CTC_DBF_TEXT_(trace, 2, &quot;  rc%d&quot;, -ETIMEDOUT);
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ctc_pr_warn
+c_func
+(paren
+l_string|&quot;unknown error %ld on device %s&bslash;n&quot;
+comma
+id|PTR_ERR
+c_func
+(paren
+id|irb
+)paren
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;CTC_DBF_TEXT(trace, 2, &quot;ckirberr&quot;);
+singleline_comment|//&t;&t;CTC_DBF_TEXT(trace, 2, &quot;  rc???&quot;);
+)brace
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|irb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * Main IRQ handler.&n; *&n; * @param cdev    The ccw_device the interrupt is for.&n; * @param intparm interruption parameter.&n; * @param irb     interruption response block.&n; */
 r_static
 r_void
@@ -8252,6 +8351,19 @@ r_struct
 id|ctc_priv
 op_star
 id|priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__ctc_check_irb_error
+c_func
+(paren
+id|cdev
+comma
+id|irb
+)paren
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* Check for unsolicited interrupts. */
 r_if

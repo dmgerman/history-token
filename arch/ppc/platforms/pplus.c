@@ -2913,6 +2913,16 @@ c_func
 id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|openpic_get_irq

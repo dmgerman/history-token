@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.107 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.110 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -461,11 +461,11 @@ c_func
 l_int|0
 comma
 l_string|&quot;Strange subchannel type %d&quot;
-l_string|&quot; for sch %s&bslash;n&quot;
+l_string|&quot; for sch %04x&bslash;n&quot;
 comma
 id|ssd_area-&gt;st
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * There may have been a new subchannel type defined in the&n;&t;&t; * time since this code was written; since we don&squot;t know which&n;&t;&t; * fields have meaning and what to do with it we just jump out&n;&t;&t; */
@@ -498,9 +498,9 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;ssd: sch %s is %s subchannel&bslash;n&quot;
+l_string|&quot;ssd: sch %04x is %s subchannel&bslash;n&quot;
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|type
 (braket
@@ -3229,6 +3229,13 @@ r_struct
 id|schib
 id|schib
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_rescan
+)paren
+r_break
+suffix:semicolon
 id|sch
 op_assign
 id|get_subchannel_by_schid
@@ -3268,13 +3275,6 @@ id|schib
 multiline_comment|/* We&squot;re through */
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|need_rescan
-)paren
-r_continue
-suffix:semicolon
 multiline_comment|/* Put it on the slow path. */
 id|ret
 op_assign
@@ -3300,8 +3300,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_continue
-suffix:semicolon
 )brace
 r_if
 c_cond

@@ -27,7 +27,7 @@ DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE TASK31_SIZE
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;set_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;} while(0)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
@@ -46,7 +46,7 @@ multiline_comment|/* This yields a string that ld.so will use to load implementa
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM (NULL)
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)                                      &bslash;&n;&t;&t;set_personality(PER_SVR4);              &bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)   &bslash;&n;&t;&t;set_personality(PER_LINUX);             &bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)                                      &bslash;&n;&t;&t;set_personality(PER_SVR4);              &bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)   &bslash;&n;&t;&t;set_personality(PER_LINUX);             &bslash;&n;&t;set_thread_flag(TIF_31BIT);&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#include &quot;compat_linux.h&quot;
 DECL|typedef|elf_fpregset_t
 r_typedef
@@ -449,18 +449,7 @@ id|addr
 )paren
 id|addr
 op_assign
-l_int|0x40000000
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|prot
-op_amp
-id|PROT_READ
-)paren
-id|prot
-op_or_assign
-id|PROT_EXEC
+id|TASK_UNMAPPED_BASE
 suffix:semicolon
 id|down_write
 c_func

@@ -2716,7 +2716,26 @@ op_assign
 id|pSMBr-&gt;Fid
 suffix:semicolon
 multiline_comment|/* cifs fid stays in le */
-multiline_comment|/* Do we care about the CreateAction in any cases? */
+multiline_comment|/* Let caller know file was created so we can set the mode. */
+multiline_comment|/* Do we care about the CreateAction in any other cases? */
+r_if
+c_cond
+(paren
+id|cpu_to_le32
+c_func
+(paren
+id|FILE_CREATE
+)paren
+op_eq
+id|pSMBr-&gt;CreateAction
+)paren
+(brace
+op_star
+id|pOplock
+op_or_assign
+id|CIFS_CREATE_ACTION
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7708,6 +7727,8 @@ l_int|0
 suffix:semicolon
 r_int
 id|bytes_returned
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|name_len
@@ -8027,7 +8048,10 @@ c_cond
 (paren
 id|pSMBr-&gt;ByteCount
 OL
-l_int|40
+r_sizeof
+(paren
+id|FILE_UNIX_BASIC_INFO
+)paren
 )paren
 op_logical_or
 (paren
@@ -8035,13 +8059,42 @@ id|pSMBr-&gt;DataOffset
 OG
 l_int|512
 )paren
+op_logical_or
+(paren
+id|pSMBr-&gt;DataOffset
+OL
+r_sizeof
+(paren
+r_struct
+id|smb_hdr
 )paren
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;UnixQPathinfo invalid data offset %d bytes returned %d&quot;
+comma
+(paren
+r_int
+)paren
+id|pSMBr-&gt;DataOffset
+comma
+id|bytes_returned
+)paren
+)paren
+suffix:semicolon
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* bad smb */
+)brace
 r_else
 (brace
 id|memcpy
@@ -12677,6 +12730,10 @@ comma
 (paren
 l_string|&quot;SetFileSize (via SetFileInfo) %lld&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|size
 )paren
 )paren

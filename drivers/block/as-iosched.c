@@ -3178,6 +3178,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Gathers timings and resizes the write batch automatically&n; */
 DECL|function|update_write_batch
+r_static
 r_void
 id|update_write_batch
 c_func
@@ -7973,6 +7974,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|as_ktype
+r_static
 r_struct
 id|kobj_type
 id|as_ktype

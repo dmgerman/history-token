@@ -214,6 +214,8 @@ r_struct
 id|thread_struct
 id|thread_struct
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;8
 macro_line|#ifndef __s390x__
 DECL|macro|__SWAPPER_PG_DIR
 macro_line|# define __SWAPPER_PG_DIR __pa(&amp;swapper_pg_dir[0]) + _SEGMENT_TABLE

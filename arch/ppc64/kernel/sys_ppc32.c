@@ -8651,7 +8651,7 @@ c_func
 (paren
 id|first
 comma
-id|second
+id|second_parm
 comma
 id|third
 )paren

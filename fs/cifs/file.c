@@ -169,7 +169,7 @@ id|current-&gt;pid
 )paren
 )paren
 (brace
-multiline_comment|/* set mode ?? */
+multiline_comment|/* mode set in cifs_create */
 id|pCifsFile-&gt;pfile
 op_assign
 id|file
@@ -734,6 +734,27 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+(brace
+multiline_comment|/* BB no need to lock inode until after invalidate*/
+multiline_comment|/* since namei code should already have it locked?*/
+id|filemap_fdatawrite
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+suffix:semicolon
+)brace
 id|cFYI
 c_func
 (paren
@@ -792,7 +813,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_EXCLUSIVE
 )paren
@@ -822,7 +847,11 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_READ
 )paren
@@ -853,9 +882,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_flags
+id|oplock
 op_amp
-id|O_CREAT
+id|CIFS_CREATE_ACTION
 )paren
 (brace
 multiline_comment|/* time to set mode which we can not set earlier due&n;&t;&t;&t;&t; to problems creating new read-only files */
@@ -1398,7 +1427,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_EXCLUSIVE
 )paren
@@ -1428,7 +1461,11 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_READ
 )paren
@@ -2533,6 +2570,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|file-&gt;f_dentry-&gt;d_inode
+op_eq
+l_int|NULL
+)paren
+(brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBADF
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_star
 id|poffset
 OG
@@ -2581,6 +2637,25 @@ id|EAGAIN
 r_if
 c_cond
 (paren
+id|file-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* file has been closed on us */
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|total_written
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|open_file-&gt;invalidHandle
 )paren
@@ -2591,6 +2666,32 @@ id|open_file-&gt;closePend
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_dentry
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|total_written
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|cifs_reopen_file
@@ -2686,6 +2787,19 @@ id|FALSE
 suffix:semicolon
 multiline_comment|/* subsequent writes fast - 15 seconds is plenty */
 )brace
+multiline_comment|/* since the write may have blocked check these pointers again */
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
+(brace
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_ctime
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mtime
@@ -2724,6 +2838,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
+)brace
+)brace
 id|FreeXid
 c_func
 (paren
@@ -4662,7 +4778,7 @@ comma
 id|smb_read_data
 op_plus
 l_int|4
-multiline_comment|/* RFC1000 hdr */
+multiline_comment|/* RFC1001 hdr */
 op_plus
 id|le16_to_cpu
 c_func
@@ -5130,14 +5246,6 @@ id|cifsInfo-&gt;time
 op_assign
 id|jiffies
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|cifsInfo-&gt;inUse
-)paren
-suffix:semicolon
-multiline_comment|/* inc on every refresh of inode info */
 multiline_comment|/* Linux can not store file creation time unfortunately so ignore it */
 id|tmp_inode-&gt;i_atime
 op_assign
@@ -5178,6 +5286,19 @@ suffix:semicolon
 multiline_comment|/* treat dos attribute of read-only as read-only mode bit e.g. 555? */
 multiline_comment|/* 2767 perms - indicate mandatory locking */
 multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|tmp_inode-&gt;i_uid
 op_assign
 id|cifs_sb-&gt;mnt_uid
@@ -5191,6 +5312,7 @@ id|tmp_inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
+)brace
 id|cFYI
 c_func
 (paren
@@ -5237,10 +5359,24 @@ op_assign
 id|DT_DIR
 suffix:semicolon
 multiline_comment|/* override default perms since we do not lock dirs */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|tmp_inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_dir_mode
 suffix:semicolon
+)brace
 id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFDIR
@@ -5276,6 +5412,29 @@ suffix:semicolon
 )brace
 multiline_comment|/* could add code here - to validate if device or weird share type? */
 multiline_comment|/* can not fill in nlink here as in qpathinfo version and Unx search */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|i_size_write
 c_func
 (paren
@@ -5753,7 +5912,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; File inode &quot;
+l_string|&quot;File inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5790,7 +5949,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Directory inode&quot;
+l_string|&quot;Directory inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5822,7 +5981,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Symbolic Link inode &quot;
+l_string|&quot;Symbolic Link inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5842,7 +6001,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Init special inode &quot;
+l_string|&quot;Special inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -6179,6 +6338,29 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifsFile-&gt;search_resume_name
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;failed new resume key allocate, length %d&quot;
+comma
+id|cifsFile-&gt;resume_name_length
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8413,8 +8595,8 @@ id|pfindData-&gt;NextEntryOffset
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* works also for Unix find struct since this is the first field of both */
-multiline_comment|/* BB also should check to make sure that pointer is not beyond the end of the SMB */
+multiline_comment|/* works also for Unix find struct since first field of both */
+multiline_comment|/* BB also should check to ensure pointer not beyond end of SMB */
 )brace
 multiline_comment|/* end for loop */
 r_if
@@ -8441,7 +8623,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* unless parent directory disappeared - do not return error here (eg Access Denied or no more files) */
+multiline_comment|/* unless parent directory disappeared - do not&n;&t;&t;&t;&t;return error here (eg Access Denied or no more files) */
 )brace
 )brace
 )brace

@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.60 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.61 $&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
@@ -1106,7 +1106,10 @@ id|scpnt-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* save address of mid layer call back function */
+id|scpnt-&gt;host_scribble
+op_assign
+l_int|NULL
+suffix:semicolon
 id|scpnt-&gt;scsi_done
 op_assign
 id|done

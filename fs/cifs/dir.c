@@ -767,7 +767,58 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* BB for case of overwriting existing file can we use the inode that was&n;&t;&t; passed in rather than creating new one?? */
+multiline_comment|/* If Open reported that we actually created a file&n;&t;&t;then we now have to set the mode if possible */
+r_if
+c_cond
+(paren
+(paren
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
+op_amp
+id|CAP_UNIX
+)paren
+op_logical_and
+(paren
+id|oplock
+op_amp
+id|CIFS_CREATE_ACTION
+)paren
+)paren
+id|CIFSSMBUnixSetPerms
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|full_path
+comma
+id|mode
+comma
+(paren
+id|__u64
+)paren
+op_minus
+l_int|1
+comma
+(paren
+id|__u64
+)paren
+op_minus
+l_int|1
+comma
+l_int|0
+multiline_comment|/* dev */
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+r_else
+(brace
+multiline_comment|/* BB implement via Windows security descriptors */
+multiline_comment|/* eg CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,-1,-1,local_nls);*/
+multiline_comment|/* could set r/o dos attribute if mode &amp; 0222 == 0 */
+)brace
+multiline_comment|/* BB server might mask mode so we have to query for Unix case*/
 r_if
 c_cond
 (paren
@@ -789,6 +840,7 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_else
+(brace
 id|rc
 op_assign
 id|cifs_get_inode_info
@@ -804,6 +856,18 @@ comma
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|newinode
+)paren
+(brace
+id|newinode-&gt;i_mode
+op_assign
+id|mode
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -864,59 +928,6 @@ comma
 id|fileHandle
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|newinode
-)paren
-(brace
-id|newinode-&gt;i_mode
-op_assign
-id|mode
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
-op_amp
-id|CAP_UNIX
-)paren
-id|CIFSSMBUnixSetPerms
-c_func
-(paren
-id|xid
-comma
-id|pTcon
-comma
-id|full_path
-comma
-id|mode
-comma
-(paren
-id|__u64
-)paren
-op_minus
-l_int|1
-comma
-(paren
-id|__u64
-)paren
-op_minus
-l_int|1
-comma
-l_int|0
-multiline_comment|/* dev */
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
-r_else
-(brace
-multiline_comment|/* BB implement via Windows security descriptors */
-multiline_comment|/* eg CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,-1,-1,local_nls);*/
-multiline_comment|/* in the meantime could set r/o dos attribute when perms are eg:&n;                                        mode &amp; 0222 == 0 */
-)brace
 )brace
 r_else
 r_if
@@ -925,10 +936,6 @@ c_cond
 id|newinode
 )paren
 (brace
-id|newinode-&gt;i_mode
-op_assign
-id|mode
-suffix:semicolon
 id|pCifsFile
 op_assign
 (paren
@@ -1045,7 +1052,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_EXCLUSIVE
 )paren
@@ -1075,7 +1086,11 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|oplock
+op_amp
+l_int|0xF
+)paren
 op_eq
 id|OPLOCK_READ
 )paren
@@ -1093,48 +1108,6 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
-op_amp
-id|CAP_UNIX
-)paren
-id|CIFSSMBUnixSetPerms
-c_func
-(paren
-id|xid
-comma
-id|pTcon
-comma
-id|full_path
-comma
-id|inode-&gt;i_mode
-comma
-(paren
-id|__u64
-)paren
-op_minus
-l_int|1
-comma
-(paren
-id|__u64
-)paren
-op_minus
-l_int|1
-comma
-l_int|0
-multiline_comment|/* dev */
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
-r_else
-(brace
-multiline_comment|/* BB implement via Windows security descriptors */
-multiline_comment|/* eg CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,-1,-1,local_nls);*/
-multiline_comment|/* in the meantime could set r/o dos attribute when perms are eg:&n;&t;&t;&t;&t;&t;mode &amp; 0222 == 0 */
-)brace
 )brace
 )brace
 )brace

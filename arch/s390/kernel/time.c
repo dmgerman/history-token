@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -523,6 +524,134 @@ id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ARCH_S390X */
+macro_line|#ifdef CONFIG_PROFILING
+r_extern
+r_char
+id|_stext
+comma
+id|_etext
+suffix:semicolon
+multiline_comment|/*&n; * The profiling function is SMP safe. (nothing can mess&n; * around with &quot;current&quot;, and the profiling counters are&n; * updated with atomic operations). This is especially&n; * useful with a profiling multiplier != 1&n; */
+DECL|function|s390_do_profile
+r_static
+r_inline
+r_void
+id|s390_do_profile
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|eip
+suffix:semicolon
+r_extern
+id|cpumask_t
+id|prof_cpu_mask
+suffix:semicolon
+id|profile_hook
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|prof_buffer
+)paren
+r_return
+suffix:semicolon
+id|eip
+op_assign
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_isset
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|prof_cpu_mask
+)paren
+)paren
+r_return
+suffix:semicolon
+id|eip
+op_sub_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_stext
+suffix:semicolon
+id|eip
+op_rshift_assign
+id|prof_shift
+suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t ignore out-of-bounds EIP values silently,&n;&t; * put them into the last histogram slot, so if&n;&t; * present, they will show up as a sharp peak.&n;&t; */
+r_if
+c_cond
+(paren
+id|eip
+OG
+id|prof_len
+op_minus
+l_int|1
+)paren
+id|eip
+op_assign
+id|prof_len
+op_minus
+l_int|1
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+(paren
+id|atomic_t
+op_star
+)paren
+op_amp
+id|prof_buffer
+(braket
+id|eip
+)braket
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|s390_do_profile
+mdefine_line|#define s390_do_profile(regs)  do { ; } while(0)
+macro_line|#endif /* CONFIG_PROFILING */
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|account_ticks
 r_void
@@ -744,6 +873,12 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
+id|s390_do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_VIRT_TIMER
 DECL|function|start_cpu_timer

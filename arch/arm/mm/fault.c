@@ -1,34 +1,15 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/fault-common.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mm/fault.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2004 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;fault.h&quot;
-macro_line|#ifdef CONFIG_CPU_26
-DECL|macro|FAULT_CODE_WRITE
-mdefine_line|#define FAULT_CODE_WRITE&t;0x02
-DECL|macro|FAULT_CODE_FORCECOW
-mdefine_line|#define FAULT_CODE_FORCECOW&t;0x01
-DECL|macro|DO_COW
-mdefine_line|#define DO_COW(m)&t;&t;((m) &amp; (FAULT_CODE_WRITE|FAULT_CODE_FORCECOW))
-DECL|macro|READ_FAULT
-mdefine_line|#define READ_FAULT(m)&t;&t;(!((m) &amp; FAULT_CODE_WRITE))
-macro_line|#else
-multiline_comment|/*&n; * &quot;code&quot; is actually the FSR register.  Bit 11 set means the&n; * instruction was performing a write.&n; */
-DECL|macro|DO_COW
-mdefine_line|#define DO_COW(code)&t;&t;((code) &amp; (1 &lt;&lt; 11))
-DECL|macro|READ_FAULT
-mdefine_line|#define READ_FAULT(code)&t;(!DO_COW(code))
-macro_line|#endif
 multiline_comment|/*&n; * This is useful to dump out the page tables associated with&n; * &squot;addr&squot; in mm &squot;mm&squot;.&n; */
 DECL|function|show_pte
 r_void
@@ -616,23 +597,25 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|READ_FAULT
-c_func
-(paren
 id|fsr
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|11
 )paren
 )paren
-multiline_comment|/* read? */
+multiline_comment|/* write? */
+id|mask
+op_assign
+id|VM_WRITE
+suffix:semicolon
+r_else
 id|mask
 op_assign
 id|VM_READ
 op_or
 id|VM_EXEC
-suffix:semicolon
-r_else
-id|mask
-op_assign
-id|VM_WRITE
 suffix:semicolon
 id|fault
 op_assign
@@ -667,10 +650,12 @@ id|addr
 op_amp
 id|PAGE_MASK
 comma
-id|DO_COW
-c_func
-(paren
 id|fsr
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|11
 )paren
 )paren
 suffix:semicolon
@@ -749,8 +734,9 @@ r_return
 id|fault
 suffix:semicolon
 )brace
-DECL|function|do_page_fault
+r_static
 r_int
+DECL|function|do_page_fault
 id|do_page_fault
 c_func
 (paren
@@ -1001,8 +987,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * First Level Translation Fault Handler&n; *&n; * We enter here because the first level page table doesn&squot;t contain&n; * a valid entry for the address.&n; *&n; * If the address is in kernel space (&gt;= TASK_SIZE), then we are&n; * probably faulting in the vmalloc() area.&n; *&n; * If the init_task&squot;s first level page tables contains the relevant&n; * entry, we copy the it to this task.  If not, we send the process&n; * a signal, fixup the exception, or oops the kernel.&n; *&n; * NOTE! We MUST NOT take any locks for this case. We may be in an&n; * interrupt or a critical region, and should only copy the information&n; * from the master page table, nothing more.&n; */
-DECL|function|do_translation_fault
+r_static
 r_int
+DECL|function|do_translation_fault
 id|do_translation_fault
 c_func
 (paren
@@ -1185,6 +1172,596 @@ id|regs
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some section permission faults need to be handled gracefully.&n; * They can happen due to a __{get,put}_user during an oops.&n; */
+r_static
+r_int
+DECL|function|do_sect_fault
+id|do_sect_fault
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|fsr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
+id|do_bad_area
+c_func
+(paren
+id|tsk
+comma
+id|tsk-&gt;active_mm
+comma
+id|addr
+comma
+id|fsr
+comma
+id|regs
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This abort handler always returns &quot;fault&quot;.&n; */
+r_static
+r_int
+DECL|function|do_bad
+id|do_bad
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|fsr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|struct|fsr_info
+r_static
+r_struct
+id|fsr_info
+(brace
+DECL|member|fn
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|fsr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+DECL|member|sig
+r_int
+id|sig
+suffix:semicolon
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|variable|fsr_info
+)brace
+id|fsr_info
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/*&n;&t; * The following are the standard ARMv3 and ARMv4 aborts.  ARMv5&n;&t; * defines these to be &quot;precise&quot; aborts.&n;&t; */
+(brace
+id|do_bad
+comma
+id|SIGSEGV
+comma
+l_string|&quot;vector exception&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGILL
+comma
+l_string|&quot;alignment exception&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGKILL
+comma
+l_string|&quot;terminal exception&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGILL
+comma
+l_string|&quot;alignment exception&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on linefetch&quot;
+)brace
+comma
+(brace
+id|do_translation_fault
+comma
+id|SIGSEGV
+comma
+l_string|&quot;section translation fault&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on linefetch&quot;
+)brace
+comma
+(brace
+id|do_page_fault
+comma
+id|SIGSEGV
+comma
+l_string|&quot;page translation fault&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on non-linefetch&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGSEGV
+comma
+l_string|&quot;section domain fault&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on non-linefetch&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGSEGV
+comma
+l_string|&quot;page domain fault&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on translation&quot;
+)brace
+comma
+(brace
+id|do_sect_fault
+comma
+id|SIGSEGV
+comma
+l_string|&quot;section permission fault&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on translation&quot;
+)brace
+comma
+(brace
+id|do_page_fault
+comma
+id|SIGSEGV
+comma
+l_string|&quot;page permission fault&quot;
+)brace
+comma
+multiline_comment|/*&n;&t; * The following are &quot;imprecise&quot; aborts, which are signalled by bit&n;&t; * 10 of the FSR, and may not be recoverable.  These are only&n;&t; * supported if the CPU abort handler supports bit 10.&n;&t; */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 16&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 17&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 18&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 19&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;lock abort&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 21&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;imprecise external abort&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 23&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;dcache parity error&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 25&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 26&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 27&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 28&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 29&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 30&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 31&quot;
+)brace
+)brace
+suffix:semicolon
+r_void
+id|__init
+DECL|function|hook_fault_code
+id|hook_fault_code
+c_func
+(paren
+r_int
+id|nr
+comma
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+id|sig
+comma
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nr
+op_ge
+l_int|0
+op_logical_and
+id|nr
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|fsr_info
+)paren
+)paren
+(brace
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|fn
+op_assign
+id|fn
+suffix:semicolon
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|sig
+op_assign
+id|sig
+suffix:semicolon
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|name
+op_assign
+id|name
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * Dispatch a data abort to the relevant handler.&n; */
+id|asmlinkage
+r_void
+DECL|function|do_DataAbort
+id|do_DataAbort
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|fsr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_const
+r_struct
+id|fsr_info
+op_star
+id|inf
+op_assign
+id|fsr_info
+op_plus
+(paren
+id|fsr
+op_amp
+l_int|15
+)paren
+op_plus
+(paren
+(paren
+id|fsr
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|10
+)paren
+)paren
+op_rshift
+l_int|6
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inf
+op_member_access_from_pointer
+id|fn
+c_func
+(paren
+id|addr
+comma
+id|fsr
+comma
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;Unhandled fault: %s (0x%03x) at 0x%08lx&bslash;n&quot;
+comma
+id|inf-&gt;name
+comma
+id|fsr
+comma
+id|addr
+)paren
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|inf-&gt;sig
+comma
+id|current
+)paren
+suffix:semicolon
+id|show_pte
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|addr
+)paren
+suffix:semicolon
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;Oops&quot;
+comma
+id|regs
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|asmlinkage
+r_void
+DECL|function|do_PrefetchAbort
+id|do_PrefetchAbort
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|do_translation_fault
+c_func
+(paren
+id|addr
+comma
+l_int|0
+comma
+id|regs
+)paren
 suffix:semicolon
 )brace
 eof
