@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/crypto.h&gt;
 DECL|macro|BF_BLOCK_SIZE
 mdefine_line|#define BF_BLOCK_SIZE 8
 DECL|macro|BF_MIN_KEY_SIZE
-mdefine_line|#define BF_MIN_KEY_SIZE 8
+mdefine_line|#define BF_MIN_KEY_SIZE 4
 DECL|macro|BF_MAX_KEY_SIZE
 mdefine_line|#define BF_MAX_KEY_SIZE 56
 DECL|struct|bf_ctx
