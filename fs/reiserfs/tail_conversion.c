@@ -84,7 +84,13 @@ id|unfm_nodeinfo
 id|unfm_ptr
 suffix:semicolon
 multiline_comment|/* Handle on an unformatted node&n;&t;&t;&t;&t;       that will be inserted in the&n;&t;&t;&t;&t;       tree. */
-id|sb-&gt;u.reiserfs_sb.s_direct2indirect
+id|REISERFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_direct2indirect
 op_increment
 suffix:semicolon
 id|n_blk_size
@@ -775,7 +781,13 @@ r_struct
 id|cpu_key
 id|key
 suffix:semicolon
-id|p_s_sb-&gt;u.reiserfs_sb.s_indirect2direct
+id|REISERFS_SB
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|s_indirect2direct
 op_increment
 suffix:semicolon
 op_star

@@ -5348,11 +5348,15 @@ suffix:semicolon
 id|inode_generation
 op_assign
 op_amp
+id|REISERFS_SB
+c_func
+(paren
 id|th
 op_member_access_from_pointer
 id|t_super
+)paren
 op_member_access_from_pointer
-id|u.reiserfs_sb.s_rs
+id|s_rs
 op_member_access_from_pointer
 id|s_inode_generation
 suffix:semicolon
