@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-footbridge/cats-hw.c&n; *&n; * CATS machine fixup&n; *&n; * Copyright (C) 1998, 1999 Russell King, Phil Blundell&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
