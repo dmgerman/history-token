@@ -4,6 +4,7 @@ mdefine_line|#define _LINUX_TIMER_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 r_struct
 id|tvec_t_base_s
 suffix:semicolon
