@@ -2913,14 +2913,6 @@ comma
 r_int
 r_int
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_struct
@@ -2934,6 +2926,11 @@ id|sddr09_card_info
 op_star
 )paren
 id|us-&gt;extra
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_int
@@ -2961,17 +2958,8 @@ r_int
 id|result
 suffix:semicolon
 singleline_comment|// Since we only read in one block at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
-singleline_comment|// move the data a piece at a time between the bounce buffer and
-singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
-singleline_comment|// we can simply update the transfer buffer pointer to get the
-singleline_comment|// same effect.
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
+singleline_comment|// a bounce buffer and move the data a piece at a time between the
+singleline_comment|// bounce buffer and the actual transfer buffer.
 id|len
 op_assign
 id|min
@@ -3015,7 +3003,6 @@ suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 )brace
 singleline_comment|// Figure out the initial LBA and page
 id|lba
@@ -3210,12 +3197,7 @@ id|USB_STOR_TRANSPORT_GOOD
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Store the data in the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -3234,11 +3216,6 @@ comma
 id|TO_XFER_BUF
 )paren
 suffix:semicolon
-r_else
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|page
 op_assign
 l_int|0
@@ -3251,11 +3228,6 @@ op_sub_assign
 id|pages
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -4052,14 +4024,6 @@ comma
 r_int
 r_int
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_struct
@@ -4092,6 +4056,11 @@ r_int
 r_char
 op_star
 id|blockbuffer
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_int
@@ -4157,17 +4126,8 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 singleline_comment|// Since we don&squot;t write the user data directly to the device,
-singleline_comment|// we have to create a bounce buffer if the transfer uses
-singleline_comment|// scatter-gather.  We will move the data a piece at a time
-singleline_comment|// between the bounce buffer and the actual transfer buffer.
-singleline_comment|// If we&squot;re not using scatter-gather, we can simply update
-singleline_comment|// the transfer buffer pointer to get the same effect.
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
+singleline_comment|// we have to create a bounce buffer and move the data a piece
+singleline_comment|// at a time between the bounce buffer and the actual transfer buffer.
 id|len
 op_assign
 id|min
@@ -4217,7 +4177,6 @@ suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 )brace
 singleline_comment|// Figure out the initial LBA and page
 id|lba
@@ -4273,12 +4232,7 @@ op_lshift
 id|info-&gt;pageshift
 )paren
 suffix:semicolon
-singleline_comment|// Get the data from the transfer buffer (s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Get the data from the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -4324,17 +4278,6 @@ id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// Update the transfer buffer pointer (!s-g)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|use_sg
-)paren
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|page
 op_assign
 l_int|0
@@ -4347,11 +4290,6 @@ op_sub_assign
 id|pages
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -7015,10 +6953,6 @@ comma
 id|page
 comma
 id|pages
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
@@ -7104,10 +7038,6 @@ comma
 id|page
 comma
 id|pages
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace

@@ -228,14 +228,6 @@ id|sector
 comma
 id|u32
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_int
@@ -244,6 +236,11 @@ op_star
 id|command
 op_assign
 id|us-&gt;iobuf
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_char
@@ -291,11 +288,8 @@ op_star
 id|info-&gt;ssize
 suffix:semicolon
 singleline_comment|// Since we don&squot;t read more than 64 KB at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
-singleline_comment|// move the data a piece at a time between the bounce buffer and
-singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
-singleline_comment|// we can simply update the transfer buffer pointer to get the
-singleline_comment|// same effect.
+singleline_comment|// a bounce buffer and move the data a piece at a time between the
+singleline_comment|// bounce buffer and the actual transfer buffer.
 id|alloclen
 op_assign
 id|min
@@ -306,12 +300,6 @@ comma
 l_int|65536u
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
 id|buffer
 op_assign
 id|kmalloc
@@ -332,7 +320,6 @@ l_int|NULL
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 r_do
 (brace
 singleline_comment|// loop, never allocate or transfer more than 64k at once
@@ -494,12 +481,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Store the data in the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -518,11 +500,6 @@ comma
 id|TO_XFER_BUF
 )paren
 suffix:semicolon
-r_else
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|sector
 op_add_assign
 id|thistime
@@ -540,11 +517,6 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -556,11 +528,6 @@ id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 id|leave
 suffix:colon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -592,14 +559,6 @@ id|sector
 comma
 id|u32
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_int
@@ -608,6 +567,11 @@ op_star
 id|command
 op_assign
 id|us-&gt;iobuf
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_char
@@ -658,11 +622,8 @@ op_star
 id|info-&gt;ssize
 suffix:semicolon
 singleline_comment|// Since we don&squot;t write more than 64 KB at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
-singleline_comment|// move the data a piece at a time between the bounce buffer and
-singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
-singleline_comment|// we can simply update the transfer buffer pointer to get the
-singleline_comment|// same effect.
+singleline_comment|// a bounce buffer and move the data a piece at a time between the
+singleline_comment|// bounce buffer and the actual transfer buffer.
 id|alloclen
 op_assign
 id|min
@@ -673,12 +634,6 @@ comma
 l_int|65536u
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
 id|buffer
 op_assign
 id|kmalloc
@@ -699,7 +654,6 @@ l_int|NULL
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 r_do
 (brace
 singleline_comment|// loop, never allocate or transfer more than 64k at once
@@ -724,12 +678,7 @@ id|info-&gt;ssize
 op_amp
 l_int|0xff
 suffix:semicolon
-singleline_comment|// Get the data from the transfer buffer (s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Get the data from the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -941,17 +890,6 @@ c_func
 l_string|&quot;jumpshot_write_data:  Gah!  Waitcount = 10.  Bad write!?&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// Update the transfer buffer pointer (!s-g)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|use_sg
-)paren
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|sector
 op_add_assign
 id|thistime
@@ -969,11 +907,6 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -985,11 +918,6 @@ id|result
 suffix:semicolon
 id|leave
 suffix:colon
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -2498,10 +2426,6 @@ comma
 id|block
 comma
 id|blocks
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
@@ -2651,10 +2575,6 @@ comma
 id|block
 comma
 id|blocks
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
@@ -2774,10 +2694,6 @@ comma
 id|block
 comma
 id|blocks
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
@@ -2927,10 +2843,6 @@ comma
 id|block
 comma
 id|blocks
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace

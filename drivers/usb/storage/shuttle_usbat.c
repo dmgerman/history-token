@@ -1986,11 +1986,8 @@ id|srb-&gt;transfersize
 suffix:semicolon
 )brace
 singleline_comment|// Since we only read in one block at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
-singleline_comment|// move the data a piece at a time between the bounce buffer and
-singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
-singleline_comment|// we can simply update the transfer buffer pointer to get the
-singleline_comment|// same effect.
+singleline_comment|// a bounce buffer and move the data a piece at a time between the
+singleline_comment|// bounce buffer and the actual transfer buffer.
 id|len
 op_assign
 (paren
@@ -2019,12 +2016,6 @@ comma
 id|srb-&gt;request_bufflen
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;use_sg
-)paren
-(brace
 id|buffer
 op_assign
 id|kmalloc
@@ -2045,12 +2036,6 @@ l_int|NULL
 singleline_comment|// bloody hell!
 r_return
 id|USB_STOR_TRANSPORT_FAILED
-suffix:semicolon
-)brace
-r_else
-id|buffer
-op_assign
-id|srb-&gt;request_buffer
 suffix:semicolon
 id|sector
 op_assign
@@ -2315,12 +2300,7 @@ id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
-r_if
-c_cond
-(paren
-id|srb-&gt;use_sg
-)paren
+singleline_comment|// Store the data in the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -2339,11 +2319,6 @@ comma
 id|TO_XFER_BUF
 )paren
 suffix:semicolon
-r_else
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 singleline_comment|// Update the amount transferred and the sector number
 id|transferred
 op_add_assign
@@ -2357,11 +2332,6 @@ id|srb-&gt;transfersize
 suffix:semicolon
 )brace
 singleline_comment|// while transferred != srb-&gt;request_bufflen
-r_if
-c_cond
-(paren
-id|srb-&gt;use_sg
-)paren
 id|kfree
 c_func
 (paren
