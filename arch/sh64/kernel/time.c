@@ -28,6 +28,8 @@ DECL|macro|TMU0_TCR_INIT
 mdefine_line|#define TMU0_TCR_INIT&t;0x0020
 DECL|macro|TMU_TSTR_INIT
 mdefine_line|#define TMU_TSTR_INIT&t;1
+DECL|macro|TMU_TSTR_OFF
+mdefine_line|#define TMU_TSTR_OFF&t;0
 multiline_comment|/* RCR1 Bits */
 DECL|macro|RCR1_CF
 mdefine_line|#define RCR1_CF&t;&t;0x80&t;/* Carry Flag             */
@@ -1931,6 +1933,14 @@ op_assign
 id|module_clock
 suffix:semicolon
 multiline_comment|/* Start TMU0 */
+id|ctrl_outb
+c_func
+(paren
+id|TMU_TSTR_OFF
+comma
+id|TMU_TSTR
+)paren
+suffix:semicolon
 id|ctrl_outb
 c_func
 (paren
