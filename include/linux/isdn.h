@@ -793,45 +793,6 @@ suffix:semicolon
 multiline_comment|/* used to protect the xmit path of */
 multiline_comment|/* a particular channel (including  */
 multiline_comment|/* the frame_cnt                    */
-DECL|member|org_hhc
-r_int
-(paren
-op_star
-id|org_hhc
-)paren
-(paren
-r_struct
-id|neighbour
-op_star
-id|neigh
-comma
-r_struct
-id|hh_cache
-op_star
-id|hh
-)paren
-suffix:semicolon
-multiline_comment|/* Ptr to orig. header_cache_update */
-DECL|member|org_hcu
-r_void
-(paren
-op_star
-id|org_hcu
-)paren
-(paren
-r_struct
-id|hh_cache
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
 DECL|member|pppbind
 r_int
 id|pppbind
