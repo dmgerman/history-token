@@ -28,7 +28,7 @@ DECL|macro|NTLMSSP_NEGOTIATE_SEAL
 mdefine_line|#define NTLMSSP_NEGOTIATE_SEAL        0x0020&t;
 singleline_comment|// Request confidentiality
 DECL|macro|NTLMSSP_NEGOTIATE_DGRAM
-mdefine_line|#define NTLMSSP_NEGOTIATE_DGRAM       0x0040&#xfffd;
+mdefine_line|#define NTLMSSP_NEGOTIATE_DGRAM       0x0040
 DECL|macro|NTLMSSP_NEGOTIATE_LM_KEY
 mdefine_line|#define NTLMSSP_NEGOTIATE_LM_KEY      0x0080&t;
 singleline_comment|// Use LM session key for sign/seal
@@ -45,19 +45,28 @@ singleline_comment|// client/server on same machine
 DECL|macro|NTLMSSP_NEGOTIATE_ALWAYS_SIGN
 mdefine_line|#define NTLMSSP_NEGOTIATE_ALWAYS_SIGN 0x8000&t;
 singleline_comment|// Sign for all security levels
+DECL|macro|NTLMSSP_TARGET_TYPE_DOMAIN
+mdefine_line|#define NTLMSSP_TARGET_TYPE_DOMAIN   0x10000
+DECL|macro|NTLMSSP_TARGET_TYPE_SERVER
+mdefine_line|#define NTLMSSP_TARGET_TYPE_SERVER   0x20000
+DECL|macro|NTLMSSP_TARGET_TYPE_SHARE
+mdefine_line|#define NTLMSSP_TARGET_TYPE_SHARE    0x40000
 DECL|macro|NTLMSSP_NEGOTIATE_NTLMV2
-mdefine_line|#define NTLMSSP_NEGOTIATE_NTLMV2      0x80000
+mdefine_line|#define NTLMSSP_NEGOTIATE_NTLMV2     0x80000
+DECL|macro|NTLMSSP_REQUEST_INIT_RESP
+mdefine_line|#define NTLMSSP_REQUEST_INIT_RESP   0x100000
+DECL|macro|NTLMSSP_REQUEST_ACCEPT_RESP
+mdefine_line|#define NTLMSSP_REQUEST_ACCEPT_RESP 0x200000
+DECL|macro|NTLMSSP_REQUEST_NOT_NT_KEY
+mdefine_line|#define NTLMSSP_REQUEST_NOT_NT_KEY  0x400000
 DECL|macro|NTLMSSP_NEGOTIATE_TARGET_INFO
 mdefine_line|#define NTLMSSP_NEGOTIATE_TARGET_INFO 0x800000
 DECL|macro|NTLMSSP_NEGOTIATE_128
 mdefine_line|#define NTLMSSP_NEGOTIATE_128     0x20000000
 DECL|macro|NTLMSSP_NEGOTIATE_KEY_XCH
 mdefine_line|#define NTLMSSP_NEGOTIATE_KEY_XCH 0x40000000
-multiline_comment|/* server only negotiate flags */
-DECL|macro|NTLMSSP_TARGET_TYPE_DOMAIN
-mdefine_line|#define NTLMSSP_TARGET_TYPE_DOMAIN  0x10000&t;/* NEGOTIATE_DOMAIN 0x1000 ? */
-DECL|macro|NTLMSSP_TARGET_TYPE_SERVER
-mdefine_line|#define NTLMSSP_TARGET_TYPE_SERVER  0x20000&t;/* NEGOTIATE_WORKSTATION 0x2000 ? */
+DECL|macro|NTLMSSP_NEGOTIATE_56
+mdefine_line|#define NTLMSSP_NEGOTIATE_56      0x80000000
 multiline_comment|/* Although typedefs are not commonly used for structure definitions */
 multiline_comment|/* in the Linux kernel, in this particular case they are useful      */
 multiline_comment|/* to more closely match the standards document for NTLMSSP from     */
@@ -104,6 +113,7 @@ DECL|member|MessageType
 id|__u32
 id|MessageType
 suffix:semicolon
+multiline_comment|/* 1 */
 DECL|member|NegotiateFlags
 id|__u32
 id|NegotiateFlags
@@ -153,6 +163,7 @@ DECL|member|MessageType
 id|__u32
 id|MessageType
 suffix:semicolon
+multiline_comment|/* 2 */
 DECL|member|TargetName
 id|SECURITY_BUFFER
 id|TargetName
@@ -206,6 +217,7 @@ DECL|member|MessageType
 id|__u32
 id|MessageType
 suffix:semicolon
+multiline_comment|/* 3 */
 DECL|member|LmChallengeResponse
 id|SECURITY_BUFFER
 id|LmChallengeResponse

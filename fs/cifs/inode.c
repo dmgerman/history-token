@@ -69,6 +69,7 @@ r_char
 op_star
 id|tmp_path
 suffix:semicolon
+multiline_comment|/* BB add caching check so we do not go to server to overwrite inode info to cached file&n;&t;where the local file sizes are correct and the server info is stale  BB */
 id|xid
 op_assign
 id|GetXid
@@ -775,12 +776,63 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Getting info on %s &quot;
+l_string|&quot;Getting info on %s &quot;
 comma
 id|search_path
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pfindData
+op_eq
+l_int|NULL
+)paren
+op_logical_and
+(paren
+op_star
+id|pinode
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|CIFS_I
+c_func
+(paren
+op_star
+id|pinode
+)paren
+op_member_access_from_pointer
+id|clientCanCacheRead
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;No need to revalidate inode sizes on cached file &quot;
+)paren
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* if file info not passed in then get it from server */
 r_if
 c_cond

@@ -551,7 +551,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In create nd flags = 0x%x for %s&quot;
+l_string|&quot;In create for inode %p dentry-&gt;inode %p nd flags = 0x%x for %s&quot;
+comma
+id|inode
+comma
+id|direntry-&gt;d_inode
 comma
 id|nd-&gt;flags
 comma
@@ -679,6 +683,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* BB for case of overwriting existing file can we use the inode that was&n;&t;&t; passed in rather than creating new one?? */
 r_if
 c_cond
 (paren
@@ -860,6 +865,49 @@ op_amp
 id|pCifsInode-&gt;openFileList
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|oplock
+op_eq
+id|OPLOCK_EXCLUSIVE
+)paren
+(brace
+id|pCifsInode-&gt;clientCanCacheAll
+op_assign
+id|TRUE
+suffix:semicolon
+id|pCifsInode-&gt;clientCanCacheRead
+op_assign
+id|TRUE
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Exclusive Oplock granted on inode %p&quot;
+comma
+id|newinode
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|oplock
+op_eq
+id|OPLOCK_READ
+)paren
+(brace
+id|pCifsInode-&gt;clientCanCacheRead
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
 )brace
 id|write_unlock
 c_func

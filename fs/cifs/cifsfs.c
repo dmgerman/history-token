@@ -732,21 +732,15 @@ id|cifs_inode-&gt;time
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|oplockEnabled
-)paren
-(brace
+multiline_comment|/* Until the file is open and we have gotten oplock&n;&t;info back from the server, can not assume caching of&n;&t;file data or metadata */
 id|cifs_inode-&gt;clientCanCacheRead
 op_assign
-l_int|1
+id|FALSE
 suffix:semicolon
 id|cifs_inode-&gt;clientCanCacheAll
 op_assign
-l_int|1
+id|FALSE
 suffix:semicolon
-)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
