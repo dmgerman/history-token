@@ -579,6 +579,7 @@ suffix:semicolon
 )brace
 id|next2
 suffix:colon
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1135,6 +1136,7 @@ id|inode
 suffix:semicolon
 id|next
 suffix:colon
+suffix:semicolon
 )brace
 r_if
 c_cond

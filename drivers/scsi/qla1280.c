@@ -2400,6 +2400,24 @@ id|scsi_qla_host_t
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;qla1280: Failed to register host, aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|ha
 op_assign
 (paren
@@ -3536,7 +3554,7 @@ id|sp-&gt;r_start
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* time the request was recieved */
+multiline_comment|/* time the request was received */
 id|sp-&gt;u_start
 op_assign
 l_int|0

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: asi.h,v 1.1 1996/11/20 12:59:45 davem Exp $ */
+multiline_comment|/* $Id: asi.h,v 1.2 2001/03/01 21:28:37 davem Exp $ */
 macro_line|#ifndef _SPARC64_ASI_H
 DECL|macro|_SPARC64_ASI_H
 mdefine_line|#define _SPARC64_ASI_H
@@ -32,7 +32,7 @@ DECL|macro|ASI_PNFL
 mdefine_line|#define ASI_PNFL&t;&t;0x8a /* Primary, no fault, little endian&t;*/
 DECL|macro|ASI_SNFL
 mdefine_line|#define ASI_SNFL&t;&t;0x8b /* Secondary, no fault, little endian&t;*/
-multiline_comment|/* SpitFire extended ASIs. */
+multiline_comment|/* SpitFire and later extended ASIs.  The &quot;(III)&quot; marker designates&n; * UltraSparc-III specific ASIs.&n; */
 DECL|macro|ASI_PHYS_USE_EC
 mdefine_line|#define ASI_PHYS_USE_EC&t;&t;0x14 /* PADDR, E-cachable&t;&t;&t;*/
 DECL|macro|ASI_PHYS_BYPASS_EC_E
@@ -45,8 +45,32 @@ DECL|macro|ASI_NUCLEUS_QUAD_LDD
 mdefine_line|#define ASI_NUCLEUS_QUAD_LDD&t;0x24 /* Cachable, qword load&t;&t;&t;*/
 DECL|macro|ASI_NUCLEUS_QUAD_LDD_L
 mdefine_line|#define ASI_NUCLEUS_QUAD_LDD_L&t;0x2c /* Cachable, qword load, little endian &t;*/
+DECL|macro|ASI_PCACHE_DATA_STATUS
+mdefine_line|#define ASI_PCACHE_DATA_STATUS&t;0x30 /* (III) PCache data status RAM diag&t;*/
+DECL|macro|ASI_PCACHE_DATA
+mdefine_line|#define ASI_PCACHE_DATA&t;&t;0x31 /* (III) PCache data RAM diag&t;&t;*/
+DECL|macro|ASI_PCACHE_TAG
+mdefine_line|#define ASI_PCACHE_TAG&t;&t;0x32 /* (III) PCache tag RAM diag&t;&t;*/
+DECL|macro|ASI_PCACHE_SNOOP_TAG
+mdefine_line|#define ASI_PCACHE_SNOOP_TAG&t;0x33 /* (III) PCache snoop tag RAM diag&t;&t;*/
+DECL|macro|ASI_WCACHE_VALID_BITS
+mdefine_line|#define ASI_WCACHE_VALID_BITS&t;0x38 /* (III) WCache Valid Bits diag&t;&t;*/
+DECL|macro|ASI_WCACHE_DATA
+mdefine_line|#define ASI_WCACHE_DATA&t;&t;0x39 /* (III) WCache data RAM diag&t;&t;*/
+DECL|macro|ASI_WCACHE_TAG
+mdefine_line|#define ASI_WCACHE_TAG&t;&t;0x3a /* (III) WCache tag RAM diag&t;&t;*/
+DECL|macro|ASI_WCACHE_SNOOP_TAG
+mdefine_line|#define ASI_WCACHE_SNOOP_TAG&t;0x3b /* (III) WCache snoop tag RAM diag&t;&t;*/
+DECL|macro|ASI_DCACHE_INVALIDATE
+mdefine_line|#define ASI_DCACHE_INVALIDATE&t;0x42 /* (III) DCache Invalidate diag&t;&t;*/
+DECL|macro|ASI_DCACHE_UTAG
+mdefine_line|#define ASI_DCACHE_UTAG&t;&t;0x43 /* (III) DCache uTag diag&t;&t;&t;*/
+DECL|macro|ASI_DCACHE_SNOOP_TAG
+mdefine_line|#define ASI_DCACHE_SNOOP_TAG&t;0x44 /* (III) DCache snoop tag RAM diag&t;&t;*/
 DECL|macro|ASI_LSU_CONTROL
 mdefine_line|#define ASI_LSU_CONTROL&t;&t;0x45 /* Load-store control unit&t;&t;&t;*/
+DECL|macro|ASI_DCU_CONTROL_REG
+mdefine_line|#define ASI_DCU_CONTROL_REG&t;0x45 /* (III) DCache Unit Control Register&t;*/
 DECL|macro|ASI_DCACHE_DATA
 mdefine_line|#define ASI_DCACHE_DATA&t;&t;0x46 /* Data cache data-ram diag access&t;&t;*/
 DECL|macro|ASI_DCACHE_TAG
@@ -57,6 +81,10 @@ DECL|macro|ASI_INTR_RECEIVE
 mdefine_line|#define ASI_INTR_RECEIVE&t;0x49 /* IRQ vector receive status&t;&t;*/
 DECL|macro|ASI_UPA_CONFIG
 mdefine_line|#define ASI_UPA_CONFIG&t;&t;0x4a /* UPA config space&t;&t;&t;*/
+DECL|macro|ASI_SAFARI_CONFIG
+mdefine_line|#define ASI_SAFARI_CONFIG&t;0x4a /* (III) Safari Config Register&t;&t;*/
+DECL|macro|ASI_SAFARI_ADDRESS
+mdefine_line|#define ASI_SAFARI_ADDRESS&t;0x4a /* (III) Safari Address Register&t;&t;*/
 DECL|macro|ASI_ESTATE_ERROR_EN
 mdefine_line|#define ASI_ESTATE_ERROR_EN&t;0x4b /* E-cache error enable space&t;&t;*/
 DECL|macro|ASI_AFSR
@@ -95,18 +123,28 @@ DECL|macro|ASI_DTLB_TAG_READ
 mdefine_line|#define ASI_DTLB_TAG_READ&t;0x5e /* Data-MMU TLB tag read register&t;&t;*/
 DECL|macro|ASI_DMMU_DEMAP
 mdefine_line|#define ASI_DMMU_DEMAP&t;&t;0x5f /* Data-MMU TLB demap&t;&t;&t;*/
+DECL|macro|ASI_IIU_INST_TRAP
+mdefine_line|#define ASI_IIU_INST_TRAP&t;0x60 /* (III) Instruction Breakpoint register&t;*/
 DECL|macro|ASI_IC_INSTR
 mdefine_line|#define ASI_IC_INSTR&t;&t;0x66 /* Insn cache instrucion ram diag access&t;*/
 DECL|macro|ASI_IC_TAG
 mdefine_line|#define ASI_IC_TAG&t;&t;0x67 /* Insn cache tag/valid ram diag access&t;*/
+DECL|macro|ASI_IC_STAG
+mdefine_line|#define ASI_IC_STAG&t;&t;0x68 /* (III) Insn cache snoop tag ram diag&t;*/
 DECL|macro|ASI_IC_PRE_DECODE
 mdefine_line|#define ASI_IC_PRE_DECODE&t;0x6e /* Insn cache pre-decode ram diag access&t;*/
 DECL|macro|ASI_IC_NEXT_FIELD
 mdefine_line|#define ASI_IC_NEXT_FIELD&t;0x6f /* Insn cache next-field ram diag access&t;*/
+DECL|macro|ASI_BRPRED_ARRAY
+mdefine_line|#define ASI_BRPRED_ARRAY&t;0x6f /* (III) Branch Prediction RAM diag&t;*/
 DECL|macro|ASI_BLK_AIUP
 mdefine_line|#define ASI_BLK_AIUP&t;&t;0x70 /* Primary, user, block load/store&t;&t;*/
 DECL|macro|ASI_BLK_AIUS
 mdefine_line|#define ASI_BLK_AIUS&t;&t;0x71 /* Secondary, user, block load/store&t;*/
+DECL|macro|ASI_EC_DATA
+mdefine_line|#define ASI_EC_DATA&t;&t;0x74 /* (III) E-cache data staging register&t;*/
+DECL|macro|ASI_EC_CTRL
+mdefine_line|#define ASI_EC_CTRL&t;&t;0x75 /* (III) E-cache control register&t;&t;*/
 DECL|macro|ASI_EC_W
 mdefine_line|#define ASI_EC_W&t;&t;0x76 /* E-cache diag write access&t;&t;*/
 DECL|macro|ASI_UDB_ERROR_W
@@ -115,6 +153,10 @@ DECL|macro|ASI_UDB_CONTROL_W
 mdefine_line|#define ASI_UDB_CONTROL_W&t;0x77 /* External UDB control registers write&t;*/
 DECL|macro|ASI_UDB_INTR_W
 mdefine_line|#define ASI_UDB_INTR_W&t;&t;0x77 /* External UDB IRQ vector dispatch write&t;*/
+DECL|macro|ASI_INTR_DATAN_W
+mdefine_line|#define ASI_INTR_DATAN_W&t;0x77 /* (III) Outgoing irq vector data reg N&t;*/
+DECL|macro|ASI_INTR_DISPATCH_W
+mdefine_line|#define ASI_INTR_DISPATCH_W&t;0x77 /* (III) Interrupt vector dispatch&t;&t;*/
 DECL|macro|ASI_BLK_AIUPL
 mdefine_line|#define ASI_BLK_AIUPL&t;&t;0x78 /* Primary, user, little, blk ld/st&t;*/
 DECL|macro|ASI_BLK_AIUSL
@@ -131,6 +173,8 @@ DECL|macro|ASI_UDBL_CONTROL_R
 mdefine_line|#define ASI_UDBL_CONTROL_R&t;0x7f /* External UDB control registers read low&t;*/
 DECL|macro|ASI_UDB_INTR_R
 mdefine_line|#define ASI_UDB_INTR_R&t;&t;0x7f /* External UDB IRQ vector dispatch read&t;*/
+DECL|macro|ASI_INTR_DATAN_R
+mdefine_line|#define ASI_INTR_DATAN_R&t;0x7f /* (III) Incoming irq vector data reg N&t;*/
 DECL|macro|ASI_PST8_P
 mdefine_line|#define ASI_PST8_P&t;&t;0xc0 /* Primary, 8 8-bit, partial&t;&t;*/
 DECL|macro|ASI_PST8_S

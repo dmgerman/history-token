@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.14 2000/12/09 04:15:24 anton Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.15 2001/03/04 18:31:00 davem Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -223,9 +223,10 @@ mdefine_line|#define flush_tlb_range(mm, start, end) &bslash;&n;&t;smp_flush_tlb
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
 macro_line|#endif /* ! CONFIG_SMP */
-multiline_comment|/* This will change for Cheetah and later chips. */
-DECL|macro|VPTE_BASE
-mdefine_line|#define VPTE_BASE&t;0xfffffffe00000000
+DECL|macro|VPTE_BASE_SPITFIRE
+mdefine_line|#define VPTE_BASE_SPITFIRE&t;0xfffffffe00000000
+DECL|macro|VPTE_BASE_CHEETAH
+mdefine_line|#define VPTE_BASE_CHEETAH&t;0xffe0000000000000
 DECL|function|flush_tlb_pgtables
 r_extern
 id|__inline__
@@ -256,6 +257,8 @@ comma
 id|e
 op_assign
 id|end
+comma
+id|vpte_base
 suffix:semicolon
 r_if
 c_cond
@@ -289,12 +292,25 @@ op_amp
 id|PMD_MASK
 suffix:semicolon
 macro_line|#endif
+id|vpte_base
+op_assign
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+ques
+c_cond
+id|VPTE_BASE_SPITFIRE
+suffix:colon
+id|VPTE_BASE_CHEETAH
+)paren
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
 id|mm
 comma
-id|VPTE_BASE
+id|vpte_base
 op_plus
 (paren
 id|s
@@ -306,7 +322,7 @@ l_int|3
 )paren
 )paren
 comma
-id|VPTE_BASE
+id|vpte_base
 op_plus
 (paren
 id|e

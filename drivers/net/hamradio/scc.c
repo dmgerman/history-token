@@ -2315,7 +2315,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* This looks wierd and it is. At least the BayCom USCC doesn&squot;t&n;&t;&t; * use the Interrupt Daisy Chain, thus we&squot;ll have to start&n;&t;&t; * all over again to be sure not to miss an interrupt from &n;&t;&t; * (any of) the other chip(s)...&n;&t;&t; * Honestly, the situation *is* braindamaged...&n;&t;&t; */
+multiline_comment|/* This looks weird and it is. At least the BayCom USCC doesn&squot;t&n;&t;&t; * use the Interrupt Daisy Chain, thus we&squot;ll have to start&n;&t;&t; * all over again to be sure not to miss an interrupt from &n;&t;&t; * (any of) the other chip(s)...&n;&t;&t; * Honestly, the situation *is* braindamaged...&n;&t;&t; */
 r_if
 c_cond
 (paren

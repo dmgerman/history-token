@@ -1,8 +1,13 @@
 multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 3.2 2000/11/06 22:34:38 paul Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
+macro_line|#if defined(__i386__)
 DECL|macro|BREAKPOINT
-mdefine_line|#define BREAKPOINT() asm(&quot;   int $3&quot;);
+macro_line|#  define BREAKPOINT() asm(&quot;   int $3&quot;);
+macro_line|#else
+DECL|macro|BREAKPOINT
+macro_line|#  define BREAKPOINT() { }
+macro_line|#endif
 DECL|macro|MAX_ISA_DEVICES
 mdefine_line|#define MAX_ISA_DEVICES 10
 DECL|macro|MAX_PCI_DEVICES
@@ -47,7 +52,7 @@ DECL|macro|CONFIG_SYNCLINK_SYNCPPP
 mdefine_line|#define CONFIG_SYNCLINK_SYNCPPP 1
 macro_line|#endif
 macro_line|#ifdef CONFIG_SYNCLINK_SYNCPPP
-macro_line|#include &quot;../net/wan/syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/segment.h&gt;
 DECL|macro|GET_USER
@@ -23778,7 +23783,7 @@ id|BIT1
 )paren
 )paren
 (brace
-multiline_comment|/* receive error has occured */
+multiline_comment|/* receive error has occurred */
 id|rc
 op_assign
 id|FALSE

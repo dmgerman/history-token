@@ -1496,24 +1496,6 @@ id|len
 suffix:semicolon
 r_static
 r_void
-id|de4x5_us_delay
-c_func
-(paren
-id|u32
-id|usec
-)paren
-suffix:semicolon
-r_static
-r_void
-id|de4x5_ms_delay
-c_func
-(paren
-id|u32
-id|msec
-)paren
-suffix:semicolon
-r_static
-r_void
 id|load_packet
 c_func
 (paren
@@ -3138,7 +3120,7 @@ DECL|macro|COMPACT
 mdefine_line|#define COMPACT (sizeof(dc_infoblock)/sizeof(int *) - 1)
 multiline_comment|/*&n;** Miscellaneous defines...&n;*/
 DECL|macro|RESET_DE4X5
-mdefine_line|#define RESET_DE4X5 {&bslash;&n;    int i;&bslash;&n;    i=inl(DE4X5_BMR);&bslash;&n;    de4x5_ms_delay(1);&bslash;&n;    outl(i | BMR_SWR, DE4X5_BMR);&bslash;&n;    de4x5_ms_delay(1);&bslash;&n;    outl(i, DE4X5_BMR);&bslash;&n;    de4x5_ms_delay(1);&bslash;&n;    for (i=0;i&lt;5;i++) {inl(DE4X5_BMR); de4x5_ms_delay(1);}&bslash;&n;    de4x5_ms_delay(1);&bslash;&n;}
+mdefine_line|#define RESET_DE4X5 {&bslash;&n;    int i;&bslash;&n;    i=inl(DE4X5_BMR);&bslash;&n;    mdelay(1);&bslash;&n;    outl(i | BMR_SWR, DE4X5_BMR);&bslash;&n;    mdelay(1);&bslash;&n;    outl(i, DE4X5_BMR);&bslash;&n;    mdelay(1);&bslash;&n;    for (i=0;i&lt;5;i++) {inl(DE4X5_BMR); mdelay(1);}&bslash;&n;    mdelay(1);&bslash;&n;}
 DECL|macro|PHY_HARD_RESET
 mdefine_line|#define PHY_HARD_RESET {&bslash;&n;    outl(GEP_HRST, DE4X5_GEP);           /* Hard RESET the PHY dev. */&bslash;&n;    mdelay(1);                           /* Assert for 1ms */&bslash;&n;    outl(0x00, DE4X5_GEP);&bslash;&n;    mdelay(2);                           /* Wait for 2ms */&bslash;&n;}
 "&f;"
@@ -3286,7 +3268,7 @@ id|WAKEUP
 )paren
 suffix:semicolon
 )brace
-id|de4x5_ms_delay
+id|mdelay
 c_func
 (paren
 l_int|10
@@ -6184,6 +6166,16 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|de4x5_local_stats
+c_func
+(paren
+id|dev
+comma
+id|skb-&gt;data
+comma
+id|pkt_len
+)paren
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -6201,16 +6193,6 @@ suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
 id|pkt_len
-suffix:semicolon
-id|de4x5_local_stats
-c_func
-(paren
-id|dev
-comma
-id|skb-&gt;data
-comma
-id|pkt_len
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -9107,6 +9089,25 @@ c_func
 (paren
 id|walk
 )paren
+suffix:semicolon
+multiline_comment|/* Skip the pci_bus list entry */
+r_if
+c_cond
+(paren
+id|list_entry
+c_func
+(paren
+id|walk
+comma
+r_struct
+id|pci_bus
+comma
+id|devices
+)paren
+op_eq
+id|dev-&gt;bus
+)paren
+r_continue
 suffix:semicolon
 id|pb
 op_assign
@@ -17301,7 +17302,7 @@ comma
 id|DE4X5_SICR
 )paren
 suffix:semicolon
-id|de4x5_ms_delay
+id|mdelay
 c_func
 (paren
 l_int|10
@@ -17404,65 +17405,6 @@ op_increment
 op_assign
 l_int|1
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/*&n;** Known delay in microseconds&n;*/
-r_static
-r_void
-DECL|function|de4x5_us_delay
-id|de4x5_us_delay
-c_func
-(paren
-id|u32
-id|usec
-)paren
-(brace
-id|udelay
-c_func
-(paren
-id|usec
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/*&n;** Known delay in milliseconds, in millisecond steps.&n;*/
-r_static
-r_void
-DECL|function|de4x5_ms_delay
-id|de4x5_ms_delay
-c_func
-(paren
-id|u32
-id|msec
-)paren
-(brace
-id|u_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|msec
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|de4x5_us_delay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -19824,7 +19766,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-id|de4x5_us_delay
+id|udelay
 c_func
 (paren
 l_int|1
@@ -19945,7 +19887,7 @@ r_return
 id|word
 suffix:semicolon
 )brace
-multiline_comment|/*&n;static void&n;srom_busy(u_int command, u_long addr)&n;{&n;   sendto_srom((command &amp; 0x0000ff00) | DT_CS, addr);&n;   &n;   while (!((getfrom_srom(addr) &gt;&gt; 3) &amp; 0x01)) {&n;       de4x5_ms_delay(1);&n;   }&n;   &n;   sendto_srom(command &amp; 0x0000ff00, addr);&n;   &n;   return;&n;}&n;*/
+multiline_comment|/*&n;static void&n;srom_busy(u_int command, u_long addr)&n;{&n;   sendto_srom((command &amp; 0x0000ff00) | DT_CS, addr);&n;   &n;   while (!((getfrom_srom(addr) &gt;&gt; 3) &amp; 0x01)) {&n;       mdelay(1);&n;   }&n;   &n;   sendto_srom(command &amp; 0x0000ff00, addr);&n;   &n;   return;&n;}&n;*/
 r_static
 r_void
 DECL|function|sendto_srom
@@ -25034,7 +24976,7 @@ comma
 id|PCI_CFPM
 )paren
 suffix:semicolon
-id|de4x5_ms_delay
+id|mdelay
 c_func
 (paren
 l_int|10
@@ -25103,7 +25045,7 @@ comma
 id|WAKEUP
 )paren
 suffix:semicolon
-id|de4x5_ms_delay
+id|mdelay
 c_func
 (paren
 l_int|10

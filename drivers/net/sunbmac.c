@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunbmac.c,v 1.23 2001/01/20 03:36:40 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunbmac.c,v 1.25 2001/02/18 08:10:21 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4418,11 +4418,10 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 r_int
-id|res
+id|ret
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|request_irq
 c_func
 (paren
@@ -4433,14 +4432,15 @@ id|bigmac_interrupt
 comma
 id|SA_SHIRQ
 comma
-l_string|&quot;BIG MAC&quot;
+id|dev-&gt;name
 comma
-(paren
-r_void
-op_star
-)paren
 id|bp
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -4453,8 +4453,7 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EAGAIN
+id|ret
 suffix:semicolon
 )brace
 id|init_timer
@@ -4464,8 +4463,7 @@ op_amp
 id|bp-&gt;bigmac_timer
 )paren
 suffix:semicolon
-id|res
-op_assign
+r_return
 id|bigmac_init
 c_func
 (paren
@@ -4473,19 +4471,6 @@ id|bp
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|res
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-r_return
-id|res
 suffix:semicolon
 )brace
 DECL|function|bigmac_close
@@ -4550,8 +4535,6 @@ op_star
 )paren
 id|bp
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -5298,13 +5281,29 @@ op_assign
 id|init_etherdev
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 r_sizeof
 (paren
 r_struct
 id|bigmac
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -5399,11 +5398,6 @@ suffix:semicolon
 multiline_comment|/* Setup softc, with backpointers to QEC and BigMAC SBUS device structs. */
 id|bp
 op_assign
-(paren
-r_struct
-id|bigmac
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|bp-&gt;qec_sdev

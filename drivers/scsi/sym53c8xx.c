@@ -1,12 +1,8 @@
 multiline_comment|/******************************************************************************&n;**  High Performance device driver for the Symbios 53C896 controller.&n;**&n;**  Copyright (C) 1998-2000  Gerard Roudier &lt;groudier@club-internet.fr&gt;&n;**&n;**  This driver also supports all the Symbios 53C8XX controller family, &n;**  except 53C810 revisions &lt; 16, 53C825 revisions &lt; 16 and all &n;**  revisions of 53C815 controllers.&n;**&n;**  This driver is based on the Linux port of the FreeBSD ncr driver.&n;** &n;**  Copyright (C) 1994  Wolfgang Stanglmeier&n;**  &n;**-----------------------------------------------------------------------------&n;**  &n;**  This program is free software; you can redistribute it and/or modify&n;**  it under the terms of the GNU General Public License as published by&n;**  the Free Software Foundation; either version 2 of the License, or&n;**  (at your option) any later version.&n;**&n;**  This program is distributed in the hope that it will be useful,&n;**  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**  GNU General Public License for more details.&n;**&n;**  You should have received a copy of the GNU General Public License&n;**  along with this program; if not, write to the Free Software&n;**  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;**-----------------------------------------------------------------------------&n;**&n;**  The Linux port of the FreeBSD ncr driver has been achieved in &n;**  november 1995 by:&n;**&n;**          Gerard Roudier              &lt;groudier@club-internet.fr&gt;&n;**&n;**  Being given that this driver originates from the FreeBSD version, and&n;**  in order to keep synergy on both, any suggested enhancements and corrections&n;**  received on Linux are automatically a potential candidate for the FreeBSD &n;**  version.&n;**&n;**  The original driver has been written for 386bsd and FreeBSD by&n;**          Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n;**          Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n;**&n;**-----------------------------------------------------------------------------&n;**&n;**  Major contributions:&n;**  --------------------&n;**&n;**  NVRAM detection and reading.&n;**    Copyright (C) 1997 Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;&n;**&n;*******************************************************************************&n;*/
-multiline_comment|/*&n;**&t;May 11 2000, sym53c8xx 1.6b&n;**&n;**&t;Supported SCSI features:&n;**&t;    Synchronous data transfers&n;**&t;    Wide16 SCSI BUS&n;**&t;    Disconnection/Reselection&n;**&t;    Tagged command queuing&n;**&t;    SCSI Parity checking&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C810A&t;  (8 bits, Fast 10,&t; no rom BIOS) &n;**&t;&t;53C825A&t;  (Wide,   Fast 10,&t; on-board rom BIOS)&n;**&t;&t;53C860&t;  (8 bits, Fast 20,&t; no rom BIOS)&n;**&t;&t;53C875&t;  (Wide,   Fast 20,&t; on-board rom BIOS)&n;**&t;&t;53C876&t;  (Wide,   Fast 20 Dual, on-board rom BIOS)&n;**&t;&t;53C895&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C895A&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C896&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C897&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1510D  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1010&t;  (Wide,   Fast 80 Dual, on-board rom BIOS)&n;**&t;&t;53C1010_66(Wide,   Fast 80 Dual, on-board rom BIOS, 33/66MHz PCI)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO&n;**&t;&t;Module&n;**&t;&t;Shared IRQ&n;*/
+multiline_comment|/*&n;**&t;Supported SCSI features:&n;**&t;    Synchronous data transfers&n;**&t;    Wide16 SCSI BUS&n;**&t;    Disconnection/Reselection&n;**&t;    Tagged command queuing&n;**&t;    SCSI Parity checking&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C810A&t;  (8 bits, Fast 10,&t; no rom BIOS) &n;**&t;&t;53C825A&t;  (Wide,   Fast 10,&t; on-board rom BIOS)&n;**&t;&t;53C860&t;  (8 bits, Fast 20,&t; no rom BIOS)&n;**&t;&t;53C875&t;  (Wide,   Fast 20,&t; on-board rom BIOS)&n;**&t;&t;53C876&t;  (Wide,   Fast 20 Dual, on-board rom BIOS)&n;**&t;&t;53C895&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C895A&t;  (Wide,   Fast 40,&t; on-board rom BIOS)&n;**&t;&t;53C896&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C897&t;  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1510D  (Wide,   Fast 40 Dual, on-board rom BIOS)&n;**&t;&t;53C1010&t;  (Wide,   Fast 80 Dual, on-board rom BIOS)&n;**&t;&t;53C1010_66(Wide,   Fast 80 Dual, on-board rom BIOS, 33/66MHz PCI)&n;**&n;**&t;Other features:&n;**&t;&t;Memory mapped IO&n;**&t;&t;Module&n;**&t;&t;Shared IRQ&n;*/
 multiline_comment|/*&n;**&t;Name and version of the driver&n;*/
 DECL|macro|SCSI_NCR_DRIVER_NAME
-mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;sym53c8xx - version 1.6b&quot;
-multiline_comment|/* #define DEBUG_896R1 */
-DECL|macro|SCSI_NCR_OPTIMIZE_896
-mdefine_line|#define SCSI_NCR_OPTIMIZE_896
-multiline_comment|/* #define SCSI_NCR_OPTIMIZE_896_1 */
+mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;sym53c8xx-1.7.3a-20010304&quot;
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 DECL|macro|NAME53C
@@ -16,7 +12,6 @@ mdefine_line|#define NAME53C8XX&t;&quot;sym53c8xx&quot;
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
 DECL|macro|LinuxVersionCode
 mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif
@@ -34,7 +29,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -84,8 +78,8 @@ id|u_int64
 suffix:semicolon
 macro_line|#include &quot;sym53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,0)
-DECL|macro|SCSI_NCR_INTEGRITY_CHECKING
+multiline_comment|/* #if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,0) */
+macro_line|#if 0
 mdefine_line|#define&t;SCSI_NCR_INTEGRITY_CHECKING
 macro_line|#endif
 DECL|macro|MIN
@@ -380,22 +374,6 @@ r_return
 id|elem
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&t;On x86 architecture, write buffers management does &n;**&t;not reorder writes to memory. So, using compiler &n;**&t;optimization barriers is enough to guarantee some &n;**&t;ordering when the CPU is writing data accessed by &n;**&t;the NCR.&n;**&t;On Alpha architecture, explicit memory barriers have &n;**&t;to be used.&n;**&t;Other architectures are defaulted to mb() macro if  &n;**&t;defined, otherwise use compiler barrier.&n;**&n;**==========================================================&n;*/
-macro_line|#if defined(__i386__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;barrier()
-macro_line|#elif defined(__alpha__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;mb()
-macro_line|#else
-macro_line|#  ifdef mb
-DECL|macro|MEMORY_BARRIER
-macro_line|#  define MEMORY_BARRIER()&t;mb()
-macro_line|#  else
-DECL|macro|MEMORY_BARRIER
-macro_line|#  define MEMORY_BARRIER()&t;barrier()
-macro_line|#  endif
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Configuration and Debugging&n;**&n;**==========================================================&n;*/
 multiline_comment|/*&n;**    SCSI address of this device.&n;**    The boot routines should have set it.&n;**    If not, use this.&n;*/
 macro_line|#ifndef SCSI_NCR_MYADDR
@@ -470,11 +448,6 @@ DECL|macro|MAX_SCATTER
 mdefine_line|#define MAX_SCATTER (SCSI_NCR_MAX_SCATTER)
 DECL|macro|SCR_SG_SIZE
 mdefine_line|#define&t;SCR_SG_SIZE&t;(2)
-multiline_comment|/*&n;**    Io mapped or memory mapped.&n;*/
-macro_line|#if defined(SCSI_NCR_IOMAPPED) || defined(SCSI_NCR_PCI_MEM_NOT_SUPPORTED)
-DECL|macro|NCR_IOMAPPED
-mdefine_line|#define NCR_IOMAPPED
-macro_line|#endif
 multiline_comment|/*&n;**&t;other&n;*/
 DECL|macro|NCR_SNOOP_TIMEOUT
 mdefine_line|#define NCR_SNOOP_TIMEOUT (1000000)
@@ -520,12 +493,11 @@ DECL|macro|PciDeviceId
 mdefine_line|#define PciDeviceId(d)&t;&t;(d)-&gt;device
 DECL|macro|PciIrqLine
 mdefine_line|#define PciIrqLine(d)&t;&t;(d)-&gt;irq
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
 r_static
-r_int
+id|u_long
 id|__init
-DECL|function|pci_get_base_address
-id|pci_get_base_address
+DECL|function|pci_get_base_cookie
+id|pci_get_base_cookie
 c_func
 (paren
 r_struct
@@ -535,13 +507,12 @@ id|pdev
 comma
 r_int
 id|index
-comma
-id|u_long
-op_star
-id|base
 )paren
 (brace
-op_star
+id|u_long
+id|base
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
 id|base
 op_assign
 id|pdev-&gt;resource
@@ -551,65 +522,19 @@ id|index
 dot
 id|start
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|pdev-&gt;resource
-(braket
-id|index
-)braket
-dot
-id|flags
-op_amp
-l_int|0x7
-)paren
-op_eq
-l_int|0x4
-)paren
-op_increment
-id|index
-suffix:semicolon
-r_return
-op_increment
-id|index
-suffix:semicolon
-)brace
 macro_line|#else
-r_static
-r_int
-id|__init
-DECL|function|pci_get_base_address
-id|pci_get_base_address
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_int
-id|index
-comma
-id|u_long
-op_star
-id|base
-)paren
-(brace
-op_star
 id|base
 op_assign
 id|pdev-&gt;base_address
 (braket
 id|index
-op_increment
 )braket
 suffix:semicolon
+macro_line|#if BITS_PER_LONG &gt; 32
 r_if
 c_cond
 (paren
 (paren
-op_star
 id|base
 op_amp
 l_int|0x7
@@ -617,8 +542,6 @@ l_int|0x7
 op_eq
 l_int|0x4
 )paren
-(brace
-macro_line|#if BITS_PER_LONG &gt; 32
 op_star
 id|base
 op_or_assign
@@ -629,8 +552,110 @@ id|u_long
 )paren
 id|pdev-&gt;base_address
 (braket
+op_increment
 id|index
 )braket
+)paren
+op_lshift
+l_int|32
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+r_return
+(paren
+id|base
+op_amp
+op_complement
+l_int|0x7ul
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+id|__init
+DECL|function|pci_get_base_address
+id|pci_get_base_address
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+id|index
+comma
+id|u_long
+op_star
+id|base
+)paren
+(brace
+id|u32
+id|tmp
+suffix:semicolon
+DECL|macro|PCI_BAR_OFFSET
+mdefine_line|#define PCI_BAR_OFFSET(index) (PCI_BASE_ADDRESS_0 + (index&lt;&lt;2))
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|PCI_BAR_OFFSET
+c_func
+(paren
+id|index
+)paren
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+op_star
+id|base
+op_assign
+id|tmp
+suffix:semicolon
+op_increment
+id|index
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+l_int|0x7
+)paren
+op_eq
+l_int|0x4
+)paren
+(brace
+macro_line|#if BITS_PER_LONG &gt; 32
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|PCI_BAR_OFFSET
+c_func
+(paren
+id|index
+)paren
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+op_star
+id|base
+op_or_assign
+(paren
+(paren
+(paren
+id|u_long
+)paren
+id|tmp
 )paren
 op_lshift
 l_int|32
@@ -644,8 +669,9 @@ suffix:semicolon
 r_return
 id|index
 suffix:semicolon
+DECL|macro|PCI_BAR_OFFSET
+macro_line|#undef PCI_BAR_OFFSET
 )brace
-macro_line|#endif
 macro_line|#else&t;/* Incomplete emulation of current PCI code for pre-2.2 kernels */
 DECL|typedef|pcidev_t
 r_typedef
@@ -941,7 +967,49 @@ r_return
 id|offset
 suffix:semicolon
 )brace
+r_static
+id|u_long
+id|__init
+DECL|function|pci_get_base_cookie
+id|pci_get_base_cookie
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+id|offset
+)paren
+(brace
+id|u_long
+id|base
+suffix:semicolon
+(paren
+r_void
+)paren
+id|pci_get_base_address
+c_func
+(paren
+id|dev
+comma
+id|offset
+comma
+op_amp
+id|base
+)paren
+suffix:semicolon
+r_return
+id|base
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0) */
+multiline_comment|/* Does not make sense in earlier kernels */
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
+DECL|macro|pci_enable_device
+mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
+macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Debugging tags&n;**&n;**==========================================================&n;*/
 DECL|macro|DEBUG_ALLOC
 mdefine_line|#define DEBUG_ALLOC    (0x0001)
@@ -1027,23 +1095,12 @@ mdefine_line|#define iounmap vfree
 macro_line|#endif
 macro_line|#ifdef __sparc__
 macro_line|#  include &lt;asm/irq.h&gt;
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;bus_dvma_to_mem(p)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#elif defined(__alpha__)
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;((p) &amp; 0xfffffffful)
-DECL|macro|memcpy_to_pci
-macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
-macro_line|#elif defined(CONFIG_PPC)
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;phys_to_bus(p)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#else&t;/* others */
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;(p)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#endif
@@ -3614,6 +3671,14 @@ DECL|member|io_port
 id|u_long
 id|io_port
 suffix:semicolon
+DECL|member|base_c
+id|u_long
+id|base_c
+suffix:semicolon
+DECL|member|base_2_c
+id|u_long
+id|base_2_c
+suffix:semicolon
 DECL|member|irq
 r_int
 id|irq
@@ -3707,132 +3772,6 @@ suffix:semicolon
 multiline_comment|/*==========================================================&n;**&n;**&t;assert ()&n;**&n;**==========================================================&n;**&n;**&t;modified copy from 386bsd:/usr/include/sys/assert.h&n;**&n;**----------------------------------------------------------&n;*/
 DECL|macro|assert
 mdefine_line|#define&t;assert(expression) { &bslash;&n;&t;if (!(expression)) { &bslash;&n;&t;&t;(void)panic( &bslash;&n;&t;&t;&t;&quot;assertion &bslash;&quot;%s&bslash;&quot; failed: file &bslash;&quot;%s&bslash;&quot;, line %d&bslash;n&quot;, &bslash;&n;&t;&t;&t;#expression, &bslash;&n;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;} &bslash;&n;}
-multiline_comment|/*==========================================================&n;**&n;**&t;Big/Little endian support.&n;**&n;**==========================================================&n;*/
-multiline_comment|/*&n;**&t;If the NCR uses big endian addressing mode over the &n;**&t;PCI, actual io register addresses for byte and word &n;**&t;accesses must be changed according to lane routing.&n;**&t;Btw, ncr_offb() and ncr_offw() macros only apply to &n;**&t;constants and so donnot generate bloated code.&n;*/
-macro_line|#if&t;defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|ncr_offb
-mdefine_line|#define ncr_offb(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;3))
-DECL|macro|ncr_offw
-mdefine_line|#define ncr_offw(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;2))
-macro_line|#else
-DECL|macro|ncr_offb
-mdefine_line|#define ncr_offb(o)&t;(o)
-DECL|macro|ncr_offw
-mdefine_line|#define ncr_offw(o)&t;(o)
-macro_line|#endif
-multiline_comment|/*&n;**&t;If the CPU and the NCR use same endian-ness adressing,&n;**&t;no byte reordering is needed for script patching.&n;**&t;Macro cpu_to_scr() is to be used for script patching.&n;**&t;Macro scr_to_cpu() is to be used for getting a DWORD &n;**&t;from the script.&n;*/
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_le32(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;le32_to_cpu(dw)
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_be32(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;be32_to_cpu(dw)
-macro_line|#else
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;(dw)
-macro_line|#endif
-multiline_comment|/*==========================================================&n;**&n;**&t;Access to the controller chip.&n;**&n;**&t;If NCR_IOMAPPED is defined, the driver will use &n;**&t;normal IOs instead of the MEMORY MAPPED IO method  &n;**&t;recommended by PCI specifications.&n;**&t;If all PCI bridges, host brigdes and architectures &n;**&t;would have been correctly designed for PCI, this &n;**&t;option would be useless.&n;**&n;**==========================================================&n;*/
-multiline_comment|/*&n;**&t;If the CPU and the NCR use same endian-ness adressing,&n;**&t;no byte reordering is needed for accessing chip io &n;**&t;registers. Functions suffixed by &squot;_raw&squot; are assumed &n;**&t;to access the chip over the PCI without doing byte &n;**&t;reordering. Functions suffixed by &squot;_l2b&squot; are &n;**&t;assumed to perform little-endian to big-endian byte &n;**&t;reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n;**&t;blah, ...&n;*/
-macro_line|#if defined(NCR_IOMAPPED)
-multiline_comment|/*&n;**&t;IO mapped only input / ouput&n;*/
-DECL|macro|INB_OFF
-mdefine_line|#define&t;INB_OFF(o)&t;&t;inb (np-&gt;base_io + ncr_offb(o))
-DECL|macro|OUTB_OFF
-mdefine_line|#define&t;OUTB_OFF(o, val)&t;outb ((val), np-&gt;base_io + ncr_offb(o))
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_l2b (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_l2b (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_b2l ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_b2l ((val), np-&gt;base_io + (o))
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_b2l (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_b2l (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_l2b ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_l2b ((val), np-&gt;base_io + (o))
-macro_line|#else
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_raw (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_raw (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_raw ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_raw ((val), np-&gt;base_io + (o))
-macro_line|#endif&t;/* ENDIANs */
-macro_line|#else&t;/* defined NCR_IOMAPPED */
-multiline_comment|/*&n;**&t;MEMORY mapped IO input / output&n;*/
-DECL|macro|INB_OFF
-mdefine_line|#define INB_OFF(o)&t;&t;readb((char *)np-&gt;reg + ncr_offb(o))
-DECL|macro|OUTB_OFF
-mdefine_line|#define OUTB_OFF(o, val)&t;writeb((val), (char *)np-&gt;reg + ncr_offb(o))
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_l2b((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_l2b((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_b2l((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_b2l((val), (char *)np-&gt;reg + (o))
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_b2l((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_b2l((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_l2b((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_l2b((val), (char *)np-&gt;reg + (o))
-macro_line|#else
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_raw((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_raw((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_raw((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_raw((val), (char *)np-&gt;reg + (o))
-macro_line|#endif
-macro_line|#endif&t;/* defined NCR_IOMAPPED */
-DECL|macro|INB
-mdefine_line|#define INB(r)&t;&t;INB_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|INW
-mdefine_line|#define INW(r)&t;&t;INW_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|INL
-mdefine_line|#define INL(r)&t;&t;INL_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|OUTB
-mdefine_line|#define OUTB(r, val)&t;OUTB_OFF (offsetof(struct ncr_reg,r), (val))
-DECL|macro|OUTW
-mdefine_line|#define OUTW(r, val)&t;OUTW_OFF (offsetof(struct ncr_reg,r), (val))
-DECL|macro|OUTL
-mdefine_line|#define OUTL(r, val)&t;OUTL_OFF (offsetof(struct ncr_reg,r), (val))
-multiline_comment|/*&n;**&t;Set bit field ON, OFF &n;*/
-DECL|macro|OUTONB
-mdefine_line|#define OUTONB(r, m)&t;OUTB(r, INB(r) | (m))
-DECL|macro|OUTOFFB
-mdefine_line|#define OUTOFFB(r, m)&t;OUTB(r, INB(r) &amp; ~(m))
-DECL|macro|OUTONW
-mdefine_line|#define OUTONW(r, m)&t;OUTW(r, INW(r) | (m))
-DECL|macro|OUTOFFW
-mdefine_line|#define OUTOFFW(r, m)&t;OUTW(r, INW(r) &amp; ~(m))
-DECL|macro|OUTONL
-mdefine_line|#define OUTONL(r, m)&t;OUTL(r, INL(r) | (m))
-DECL|macro|OUTOFFL
-mdefine_line|#define OUTOFFL(r, m)&t;OUTL(r, INL(r) &amp; ~(m))
 multiline_comment|/*==========================================================&n;**&n;**&t;Command control block states.&n;**&n;**==========================================================&n;*/
 DECL|macro|HS_IDLE
 mdefine_line|#define HS_IDLE&t;&t;(0)
@@ -3903,8 +3842,12 @@ DECL|macro|SIR_AUTO_SENSE_DONE
 mdefine_line|#define&t;SIR_AUTO_SENSE_DONE&t;(20)
 DECL|macro|SIR_DUMMY_INTERRUPT
 mdefine_line|#define&t;SIR_DUMMY_INTERRUPT&t;(21)
+DECL|macro|SIR_DATA_OVERRUN
+mdefine_line|#define&t;SIR_DATA_OVERRUN&t;(22)
+DECL|macro|SIR_BAD_PHASE
+mdefine_line|#define&t;SIR_BAD_PHASE&t;&t;(23)
 DECL|macro|SIR_MAX
-mdefine_line|#define&t;SIR_MAX&t;&t;&t;(21)
+mdefine_line|#define&t;SIR_MAX&t;&t;&t;(23)
 multiline_comment|/*==========================================================&n;**&n;**&t;Extended error bits.&n;**&t;xerr_status field of struct ccb.&n;**&n;**==========================================================&n;*/
 DECL|macro|XE_EXTRA_DATA
 mdefine_line|#define&t;XE_EXTRA_DATA&t;(1)&t;/* unexpected data phase&t; */
@@ -4036,8 +3979,6 @@ DECL|macro|UC_SETWIDE
 mdefine_line|#define UC_SETWIDE&t;14
 DECL|macro|UC_SETFLAG
 mdefine_line|#define UC_SETFLAG&t;15
-DECL|macro|UC_CLEARPROF
-mdefine_line|#define UC_CLEARPROF&t;16
 DECL|macro|UC_SETVERBOSE
 mdefine_line|#define UC_SETVERBOSE&t;17
 DECL|macro|UC_RESETDEV
@@ -4050,60 +3991,6 @@ DECL|macro|UF_NODISC
 mdefine_line|#define&t;UF_NODISC&t;(0x02)
 DECL|macro|UF_NOSCAN
 mdefine_line|#define&t;UF_NOSCAN&t;(0x04)
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-multiline_comment|/*&n;**&t;profiling data (per host)&n;*/
-DECL|struct|profile
-r_struct
-id|profile
-(brace
-DECL|member|num_trans
-id|u_long
-id|num_trans
-suffix:semicolon
-DECL|member|num_disc
-id|u_long
-id|num_disc
-suffix:semicolon
-DECL|member|num_disc0
-id|u_long
-id|num_disc0
-suffix:semicolon
-DECL|member|num_break
-id|u_long
-id|num_break
-suffix:semicolon
-DECL|member|num_int
-id|u_long
-id|num_int
-suffix:semicolon
-DECL|member|num_fly
-id|u_long
-id|num_fly
-suffix:semicolon
-DECL|member|num_kbytes
-id|u_long
-id|num_kbytes
-suffix:semicolon
-macro_line|#if 000
-id|u_long
-id|num_br1k
-suffix:semicolon
-id|u_long
-id|num_br2k
-suffix:semicolon
-id|u_long
-id|num_br4k
-suffix:semicolon
-id|u_long
-id|num_br8k
-suffix:semicolon
-id|u_long
-id|num_brnk
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*========================================================================&n;**&n;**&t;Declaration of structs:&t;&t;target control block&n;**&n;**========================================================================&n;*/
 DECL|struct|tcb
 r_struct
@@ -4161,55 +4048,46 @@ DECL|member|nego_cp
 id|ccb_p
 id|nego_cp
 suffix:semicolon
-multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;statistical data&n;&t;**----------------------------------------------------------------&n;&t;*/
-DECL|member|transfers
-id|u_long
-id|transfers
-suffix:semicolon
-DECL|member|bytes
-id|u_long
-id|bytes
-suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;negotiation of wide and synch transfer and device quirks.&n;&t;**&t;sval, wval and uval are read from SCRIPTS and so have alignment &n;&t;**&t;constraints.&n;&t;**----------------------------------------------------------------&n;&t;*/
-DECL|member|minsync
+DECL|member|uval
 multiline_comment|/*0*/
 id|u_char
-id|minsync
+id|uval
 suffix:semicolon
 DECL|member|sval
 multiline_comment|/*1*/
 id|u_char
 id|sval
 suffix:semicolon
-DECL|member|period
-multiline_comment|/*2*/
-id|u_short
-id|period
-suffix:semicolon
-DECL|member|maxoffs
-multiline_comment|/*0*/
-id|u_char
-id|maxoffs
-suffix:semicolon
-DECL|member|quirks
-multiline_comment|/*1*/
-id|u_char
-id|quirks
-suffix:semicolon
-DECL|member|widedone
+DECL|member|filler2
 multiline_comment|/*2*/
 id|u_char
-id|widedone
+id|filler2
 suffix:semicolon
 DECL|member|wval
 multiline_comment|/*3*/
 id|u_char
 id|wval
 suffix:semicolon
-DECL|member|uval
-multiline_comment|/*0*/
+DECL|member|period
+id|u_short
+id|period
+suffix:semicolon
+DECL|member|minsync
 id|u_char
-id|uval
+id|minsync
+suffix:semicolon
+DECL|member|maxoffs
+id|u_char
+id|maxoffs
+suffix:semicolon
+DECL|member|quirks
+id|u_char
+id|quirks
+suffix:semicolon
+DECL|member|widedone
+id|u_char
+id|widedone
 suffix:semicolon
 macro_line|#ifdef&t;SCSI_NCR_INTEGRITY_CHECKING
 DECL|member|ic_min_sync
@@ -4449,14 +4327,6 @@ id|u_int32
 id|wgoalp
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Status fields.&n;&t;**----------------------------------------------------------------&n;&t;*/
-DECL|member|scr_st
-id|u_char
-id|scr_st
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* script status&t;&t;*/
 DECL|member|status
 id|u_char
 id|status
@@ -4475,7 +4345,7 @@ macro_line|#else
 DECL|macro|ncr_lp
 mdefine_line|#define ncr_lp(np, tp, lun) &bslash;&n;&t;(!lun) ? (tp)-&gt;l0p : (tp)-&gt;lmp ? (tp)-&gt;lmp[(lun)] : 0
 macro_line|#endif
-multiline_comment|/*&n;**&t;The status bytes are used by the host and the script processor.&n;**&n;**&t;The last four bytes (status[4]) are copied to the scratchb register&n;**&t;(declared as scr0..scr3 in ncr_reg.h) just after the select/reselect,&n;**&t;and copied back just after disconnecting.&n;**&t;Inside the script the XX_REG are used.&n;**&n;**&t;The first four bytes (scr_st[4]) are used inside the script by &n;**&t;&quot;LOAD/STORE&quot; commands.&n;**&t;Because source and destination must have the same alignment&n;**&t;in a DWORD, the fields HAVE to be at the choosen offsets.&n;**&t;&t;xerr_st&t;&t;0&t;(0x34)&t;scratcha&n;**&t;&t;sync_st&t;&t;1&t;(0x05)&t;sxfer&n;**&t;&t;wide_st&t;&t;3&t;(0x03)&t;scntl3&n;*/
+multiline_comment|/*&n;**&t;The status bytes are used by the host and the script processor.&n;**&n;**&t;The four bytes (status[4]) are copied to the scratchb register&n;**&t;(declared as scr0..scr3 in ncr_reg.h) just after the select/reselect,&n;**&t;and copied back just after disconnecting.&n;**&t;Inside the script the XX_REG are used.&n;*/
 multiline_comment|/*&n;**&t;Last four bytes (script)&n;*/
 DECL|macro|QU_REG
 mdefine_line|#define  QU_REG&t;scr0
@@ -4524,20 +4394,6 @@ macro_line|#endif
 multiline_comment|/*&n;**&t;This one is stolen from QU_REG.:)&n;*/
 DECL|macro|HF_DATA_ST
 mdefine_line|#define HF_DATA_ST&t;(1u&lt;&lt;7)
-multiline_comment|/*&n;**&t;First four bytes (script)&n;*/
-DECL|macro|xerr_st
-mdefine_line|#define  xerr_st       header.scr_st[0]
-DECL|macro|sync_st
-mdefine_line|#define  sync_st       header.scr_st[1]
-DECL|macro|nego_st
-mdefine_line|#define  nego_st       header.scr_st[2]
-DECL|macro|wide_st
-mdefine_line|#define  wide_st       header.scr_st[3]
-multiline_comment|/*&n;**&t;First four bytes (host)&n;*/
-DECL|macro|xerr_status
-mdefine_line|#define  xerr_status   phys.xerr_st
-DECL|macro|nego_status
-mdefine_line|#define  nego_status   phys.nego_st
 multiline_comment|/*==========================================================&n;**&n;**      Declaration of structs:     Data structure block&n;**&n;**==========================================================&n;**&n;**&t;During execution of a ccb by the script processor,&n;**&t;the DSA (data structure address) register points&n;**&t;to this substructure of the ccb.&n;**&t;This substructure contains the header with&n;**&t;the script-processor-changable data and&n;**&t;data blocks for the indirect move commands.&n;**&n;**----------------------------------------------------------&n;*/
 DECL|struct|dsb
 r_struct
@@ -4599,18 +4455,6 @@ r_struct
 id|pm_ctx
 id|pm1
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Extra bytes count transferred &n;&t;**&t;in case of data overrun.&n;&t;*/
-DECL|member|extra_bytes
-id|u_int32
-id|extra_bytes
-suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-multiline_comment|/*&n;&t;**&t;Disconnection counter&n;&t;*/
-DECL|member|num_disc
-id|u_int32
-id|num_disc
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*========================================================================&n;**&n;**      Declaration of structs:     Command control block.&n;**&n;**========================================================================&n;*/
@@ -4661,16 +4505,32 @@ DECL|member|scsi_smsg
 id|u_char
 id|scsi_smsg
 (braket
-l_int|8
+l_int|12
 )braket
 suffix:semicolon
 DECL|member|scsi_smsg2
 id|u_char
 id|scsi_smsg2
 (braket
-l_int|8
+l_int|12
 )braket
 suffix:semicolon
+multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Miscellaneous status&squot;.&n;&t;**----------------------------------------------------------------&n;&t;*/
+DECL|member|nego_status
+id|u_char
+id|nego_status
+suffix:semicolon
+multiline_comment|/* Negotiation status&t;&t;*/
+DECL|member|xerr_status
+id|u_char
+id|xerr_status
+suffix:semicolon
+multiline_comment|/* Extended error flags&t;&t;*/
+DECL|member|extra_bytes
+id|u_int32
+id|extra_bytes
+suffix:semicolon
+multiline_comment|/* Extraneous bytes transferred&t;*/
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Saved info for auto-sense&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|sv_scsi_status
 id|u_char
@@ -5091,6 +4951,11 @@ id|u_char
 id|maxoffs
 suffix:semicolon
 multiline_comment|/* Max scsi offset&t;&t;*/
+DECL|member|maxoffs_st
+id|u_char
+id|maxoffs_st
+suffix:semicolon
+multiline_comment|/* Max scsi offset in ST mode&t;*/
 DECL|member|multiplier
 id|u_char
 id|multiplier
@@ -5187,14 +5052,6 @@ id|u_long
 id|regtime
 suffix:semicolon
 multiline_comment|/* Time it has been done&t;*/
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-DECL|member|profile
-r_struct
-id|profile
-id|profile
-suffix:semicolon
-multiline_comment|/* Profiling data&t;&t;*/
-macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Miscellaneous buffers accessed by the scripts-processor.&n;&t;**&t;They shall be DWORD aligned, because they may be read or &n;&t;**&t;written with a script command.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|msgout
 id|u_char
@@ -5344,6 +5201,7 @@ id|user
 suffix:semicolon
 multiline_comment|/* Command from user&t;&t;*/
 DECL|member|release_stage
+r_volatile
 id|u_char
 id|release_stage
 suffix:semicolon
@@ -5449,7 +5307,7 @@ DECL|member|dispatch
 id|ncrcmd
 id|dispatch
 (braket
-l_int|30
+l_int|28
 )braket
 suffix:semicolon
 DECL|member|sel_no_cmd
@@ -5501,15 +5359,6 @@ id|ign_i_w_r_msg
 l_int|4
 )braket
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-DECL|member|datai_phase
-id|ncrcmd
-id|datai_phase
-(braket
-l_int|4
-)braket
-suffix:semicolon
-macro_line|#else
 DECL|member|datai_phase
 id|ncrcmd
 id|datai_phase
@@ -5517,7 +5366,6 @@ id|datai_phase
 l_int|2
 )braket
 suffix:semicolon
-macro_line|#endif
 DECL|member|datao_phase
 id|ncrcmd
 id|datao_phase
@@ -5618,15 +5466,6 @@ id|restore_dp
 l_int|4
 )braket
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-DECL|member|disconnect
-id|ncrcmd
-id|disconnect
-(braket
-l_int|32
-)braket
-suffix:semicolon
-macro_line|#else
 DECL|member|disconnect
 id|ncrcmd
 id|disconnect
@@ -5634,7 +5473,6 @@ id|disconnect
 l_int|20
 )braket
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SCSI_NCR_IARB_SUPPORT
 DECL|member|idle
 id|ncrcmd
@@ -5975,14 +5813,21 @@ DECL|member|data_ovrun
 id|ncrcmd
 id|data_ovrun
 (braket
-l_int|18
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|data_ovrun1
 id|ncrcmd
 id|data_ovrun1
 (braket
-l_int|20
+l_int|22
+)braket
+suffix:semicolon
+DECL|member|data_ovrun2
+id|ncrcmd
+id|data_ovrun2
+(braket
+l_int|8
 )braket
 suffix:semicolon
 DECL|member|abort_resel
@@ -6521,19 +6366,6 @@ comma
 id|u_char
 op_star
 id|msgptr
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-r_static
-r_void
-id|ncb_profile
-(paren
-id|ncb_p
-id|np
-comma
-id|ccb_p
-id|cp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7445,71 +7277,18 @@ id|PADDRH
 id|msg_out
 )paren
 comma
-multiline_comment|/*&n;&t; *  Set the extended error flag.&n;&t; */
-id|SCR_REG_REG
-(paren
-id|HF_REG
-comma
-id|SCR_OR
-comma
-id|HF_EXT_ERR
-)paren
-comma
-l_int|0
-comma
-multiline_comment|/*&n;&t;**      Discard one illegal phase byte, if required.&n;&t;*/
-id|SCR_LOAD_REL
-(paren
-id|scratcha
-comma
-l_int|1
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|xerr_status
-)paren
-comma
-id|SCR_REG_REG
-(paren
-id|scratcha
-comma
-id|SCR_OR
-comma
-id|XE_BAD_PHASE
-)paren
-comma
-l_int|0
-comma
-id|SCR_STORE_REL
-(paren
-id|scratcha
-comma
-l_int|1
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|xerr_status
-)paren
-comma
+multiline_comment|/*&n;&t; *  Discard as many illegal phases as &n;&t; *  required and tell the C code about.&n;&t; */
 id|SCR_JUMPR
 op_xor
 id|IFFALSE
 (paren
-id|IF
+id|WHEN
 (paren
 id|SCR_ILG_OUT
 )paren
 )paren
 comma
-l_int|8
+l_int|16
 comma
 id|SCR_MOVE_ABS
 (paren
@@ -7525,15 +7304,28 @@ id|scratch
 comma
 id|SCR_JUMPR
 op_xor
+id|IFTRUE
+(paren
+id|WHEN
+(paren
+id|SCR_ILG_OUT
+)paren
+)paren
+comma
+op_minus
+l_int|16
+comma
+id|SCR_JUMPR
+op_xor
 id|IFFALSE
 (paren
-id|IF
+id|WHEN
 (paren
 id|SCR_ILG_IN
 )paren
 )paren
 comma
-l_int|8
+l_int|16
 comma
 id|SCR_MOVE_ABS
 (paren
@@ -7546,6 +7338,23 @@ id|NADDR
 (paren
 id|scratch
 )paren
+comma
+id|SCR_JUMPR
+op_xor
+id|IFTRUE
+(paren
+id|WHEN
+(paren
+id|SCR_ILG_IN
+)paren
+)paren
+comma
+op_minus
+l_int|16
+comma
+id|SCR_INT
+comma
+id|SIR_BAD_PHASE
 comma
 id|SCR_JUMP
 comma
@@ -7960,19 +7769,6 @@ comma
 multiline_comment|/*-------------------------&lt; DATAI_PHASE &gt;------------------*/
 comma
 (brace
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-id|SCR_REG_REG
-(paren
-id|QU_REG
-comma
-id|SCR_OR
-comma
-id|HF_DATA_ST
-)paren
-comma
-l_int|0
-comma
-macro_line|#endif
 id|SCR_RETURN
 comma
 l_int|0
@@ -8513,82 +8309,6 @@ id|SCR_WAIT_DISC
 comma
 l_int|0
 comma
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-multiline_comment|/*&n;&t;**&t;Count the disconnects.&n;&t;**&t;Disconnect without DATA PHASE having been &n;&t;**&t;entered are counted in bits 8..15.&n;&t;*/
-id|SCR_LOAD_REL
-(paren
-id|scratcha
-comma
-l_int|4
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|phys.num_disc
-)paren
-comma
-id|SCR_FROM_REG
-(paren
-id|QU_REG
-)paren
-comma
-l_int|0
-comma
-id|SCR_JUMPR
-op_xor
-id|IFTRUE
-(paren
-id|MASK
-(paren
-id|HF_DATA_ST
-comma
-id|HF_DATA_ST
-)paren
-)paren
-comma
-l_int|8
-comma
-id|SCR_REG_REG
-(paren
-id|scratcha1
-comma
-id|SCR_ADD
-comma
-l_int|0x01
-)paren
-comma
-l_int|0
-comma
-id|SCR_REG_REG
-(paren
-id|scratcha
-comma
-id|SCR_ADD
-comma
-l_int|0x01
-)paren
-comma
-l_int|0
-comma
-id|SCR_STORE_REL
-(paren
-id|scratcha
-comma
-l_int|4
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|phys.num_disc
-)paren
-comma
-macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Status is: DISCONNECTED.&n;&t;*/
 id|SCR_LOAD_REG
 (paren
@@ -10436,7 +10156,24 @@ id|dispatch
 )paren
 comma
 )brace
-multiline_comment|/*-------------------------&lt; DATA_OVRUN &gt;--------------------*/
+multiline_comment|/*-------------------------&lt; DATA_OVRUN &gt;-----------------------*/
+comma
+(brace
+multiline_comment|/*&n;&t; *  Use scratcha to count the extra bytes.&n;&t; */
+id|SCR_LOAD_ABS
+(paren
+id|scratcha
+comma
+l_int|4
+)paren
+comma
+id|PADDRH
+(paren
+id|zero
+)paren
+comma
+)brace
+multiline_comment|/*-------------------------&lt; DATA_OVRUN1 &gt;----------------------*/
 comma
 (brace
 multiline_comment|/*&n;&t; *  The target may want to transfer too much data.&n;&t; *&n;&t; *  If phase is DATA OUT write 1 byte and count it.&n;&t; */
@@ -10468,7 +10205,7 @@ id|SCR_JUMP
 comma
 id|PADDRH
 (paren
-id|data_ovrun1
+id|data_ovrun2
 )paren
 comma
 multiline_comment|/*&n;&t; *  If WSR is set, clear this condition, and &n;&t; *  count this byte.&n;&t; */
@@ -10508,19 +10245,27 @@ id|SCR_JUMP
 comma
 id|PADDRH
 (paren
-id|data_ovrun1
+id|data_ovrun2
 )paren
 comma
-multiline_comment|/*&n;&t; *  Finally check against DATA IN phase.&n;&t; *  Jump to dispatcher if not so.&n;&t; *  Read 1 byte otherwise and count it.&n;&t; */
-id|SCR_JUMP
+multiline_comment|/*&n;&t; *  Finally check against DATA IN phase.&n;&t; *  Signal data overrun to the C code &n;&t; *  and jump to dispatcher if not so.&n;&t; *  Read 1 byte otherwise and count it.&n;&t; */
+id|SCR_JUMPR
 op_xor
-id|IFFALSE
+id|IFTRUE
 (paren
-id|IF
+id|WHEN
 (paren
 id|SCR_DATA_IN
 )paren
 )paren
+comma
+l_int|16
+comma
+id|SCR_INT
+comma
+id|SIR_DATA_OVERRUN
+comma
+id|SCR_JUMP
 comma
 id|PADDR
 (paren
@@ -10540,78 +10285,10 @@ id|scratch
 )paren
 comma
 )brace
-multiline_comment|/*-------------------------&lt; DATA_OVRUN1 &gt;--------------------*/
+multiline_comment|/*-------------------------&lt; DATA_OVRUN2 &gt;----------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t; *  Set the extended error flag.&n;&t; */
-id|SCR_REG_REG
-(paren
-id|HF_REG
-comma
-id|SCR_OR
-comma
-id|HF_EXT_ERR
-)paren
-comma
-l_int|0
-comma
-id|SCR_LOAD_REL
-(paren
-id|scratcha
-comma
-l_int|1
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|xerr_status
-)paren
-comma
-id|SCR_REG_REG
-(paren
-id|scratcha
-comma
-id|SCR_OR
-comma
-id|XE_EXTRA_DATA
-)paren
-comma
-l_int|0
-comma
-id|SCR_STORE_REL
-(paren
-id|scratcha
-comma
-l_int|1
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|xerr_status
-)paren
-comma
 multiline_comment|/*&n;&t; *  Count this byte.&n;&t; *  This will allow to return a negative &n;&t; *  residual to user.&n;&t; */
-id|SCR_LOAD_REL
-(paren
-id|scratcha
-comma
-l_int|4
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|phys.extra_bytes
-)paren
-comma
 id|SCR_REG_REG
 (paren
 id|scratcha
@@ -10645,27 +10322,12 @@ l_int|0
 comma
 l_int|0
 comma
-id|SCR_STORE_REL
-(paren
-id|scratcha
-comma
-l_int|4
-)paren
-comma
-m_offsetof
-(paren
-r_struct
-id|ccb
-comma
-id|phys.extra_bytes
-)paren
-comma
 multiline_comment|/*&n;&t; *  .. and repeat as required.&n;&t; */
 id|SCR_JUMP
 comma
 id|PADDRH
 (paren
-id|data_ovrun
+id|data_ovrun1
 )paren
 comma
 )brace
@@ -12714,11 +12376,7 @@ op_complement
 id|RELOC_MASK
 )paren
 op_plus
-id|pcivtobus
-c_func
-(paren
 id|np-&gt;base_ba
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -13542,7 +13200,40 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Get the frequency of the chip&squot;s clock.&n;&t;**&t;Find the right value for scntl3.&n;&t;*/
+multiline_comment|/*&n;&t; *  Guess the frequency of the chip&squot;s clock.&n;&t; */
+r_if
+c_cond
+(paren
+id|np-&gt;features
+op_amp
+(paren
+id|FE_ULTRA3
+op_or
+id|FE_ULTRA2
+)paren
+)paren
+id|np-&gt;clock_khz
+op_assign
+l_int|160000
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|np-&gt;features
+op_amp
+id|FE_ULTRA
+)paren
+id|np-&gt;clock_khz
+op_assign
+l_int|80000
+suffix:semicolon
+r_else
+id|np-&gt;clock_khz
+op_assign
+l_int|40000
+suffix:semicolon
+multiline_comment|/*&n;&t; *  Get the clock multiplier factor.&n; &t; */
 r_if
 c_cond
 (paren
@@ -13571,29 +13262,13 @@ id|np-&gt;multiplier
 op_assign
 l_int|1
 suffix:semicolon
-id|np-&gt;clock_khz
-op_assign
-(paren
-id|np-&gt;features
-op_amp
-id|FE_CLK80
-)paren
-ques
-c_cond
-l_int|80000
-suffix:colon
-l_int|40000
-suffix:semicolon
-id|np-&gt;clock_khz
-op_mul_assign
-id|np-&gt;multiplier
-suffix:semicolon
+multiline_comment|/*&n;&t; *  Measure SCSI clock frequency for chips &n;&t; *  it may vary from assumed one.&n;&t; */
 r_if
 c_cond
 (paren
-id|np-&gt;clock_khz
-op_ne
-l_int|40000
+id|np-&gt;features
+op_amp
+id|FE_VARCLK
 )paren
 id|ncr_getclock
 c_func
@@ -13742,25 +13417,35 @@ l_int|1
 op_div
 l_int|40
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fix up. If sync. factor is 10 (160000Khz clock) and chip&n;&t; * supports ultra3, then min. sync. period 12.5ns and the factor is 9 &n;&t; */
+multiline_comment|/*&n;&t; * Fix up. If sync. factor is 10 (160000Khz clock) and chip&n;&t; * supports ultra3, then min. sync. period 12.5ns and the factor is 9 &n;&t; * Also keep track of the maximum offset in ST mode which may differ  &n;&t; * from the maximum offset in DT mode. For now hardcoded to 31. &n;&t; */
 r_if
 c_cond
-(paren
-(paren
-id|np-&gt;minsync
-op_eq
-l_int|10
-)paren
-op_logical_and
 (paren
 id|np-&gt;features
 op_amp
 id|FE_ULTRA3
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|np-&gt;minsync
+op_eq
+l_int|10
 )paren
 id|np-&gt;minsync
 op_assign
 l_int|9
+suffix:semicolon
+id|np-&gt;maxoffs_st
+op_assign
+l_int|31
+suffix:semicolon
+)brace
+r_else
+id|np-&gt;maxoffs_st
+op_assign
+id|np-&gt;maxoffs
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check against chip SCSI standard support (SCSI-2,ULTRA,ULTRA2).&n;&t; *&n;&t; * Transfer period minimums: SCSI-1 200 (50); Fast 100 (25)&n;&t; *&t;&t;&t;Ultra 50 (12); Ultra2 (6); Ultra3 (3)&t;&t;&n;&t; */
 r_if
@@ -13880,7 +13565,7 @@ c_cond
 (paren
 id|np-&gt;features
 op_amp
-id|FE_64BIT
+id|FE_DAC
 )paren
 macro_line|#ifdef SCSI_NCR_USE_64BIT_DAC
 id|np-&gt;rv_ccntl1
@@ -14102,7 +13787,7 @@ op_or_assign
 id|ERMP
 suffix:semicolon
 multiline_comment|/* Enable Read Multiple */
-macro_line|#ifdef SCSI_NCR_OPTIMIZE_896
+macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -15865,13 +15550,13 @@ id|device-&gt;slot.base_2
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 id|np-&gt;base_va
 op_assign
 id|remap_pci_mem
 c_func
 (paren
-id|np-&gt;base_ba
+id|device-&gt;slot.base_c
 comma
 id|np-&gt;base_ws
 )paren
@@ -15931,7 +15616,7 @@ op_star
 )paren
 id|np-&gt;base_va
 suffix:semicolon
-macro_line|#endif /* !defined NCR_IOMAPPED */
+macro_line|#endif /* !defined SCSI_NCR_IOMAPPED */
 multiline_comment|/*&n;&t;**&t;If on-chip RAM is used, make sure SCRIPTS isn&squot;t too large.&n;&t;*/
 r_if
 c_cond
@@ -16167,11 +15852,7 @@ id|np-&gt;base2_ba
 (brace
 id|np-&gt;p_script
 op_assign
-id|pcivtobus
-c_func
-(paren
 id|np-&gt;base2_ba
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16215,7 +15896,7 @@ op_assign
 id|remap_pci_mem
 c_func
 (paren
-id|np-&gt;base2_ba
+id|device-&gt;slot.base_2_c
 comma
 id|np-&gt;base2_ws
 )paren
@@ -16804,13 +16485,17 @@ l_int|0xfe
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;**&t;Patch the script to provide an extra clock cycle on&n;&t;**&t;data out phase - 53C1010_66MHz part only.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Patch the script to provide an extra clock cycle on&n;&t;**&t;data out phase - 53C1010_66MHz part only.&n;&t;**&t;(Fixed in rev. 1 of the chip)&n;&t;*/
 r_if
 c_cond
 (paren
 id|np-&gt;device_id
 op_eq
 id|PCI_DEVICE_ID_LSI_53C1010_66
+op_logical_and
+id|np-&gt;revision_id
+OL
+l_int|1
 )paren
 (brace
 id|np-&gt;script0-&gt;datao_phase
@@ -16889,15 +16574,9 @@ id|np-&gt;scatter
 op_assign
 id|ncr_scatter_896R1
 suffix:semicolon
-macro_line|#ifndef SCSI_NCR_PROFILE_SUPPORT
-DECL|macro|XXX
-mdefine_line|#define XXX&t;0
-macro_line|#else
-mdefine_line|#define XXX&t;2
-macro_line|#endif
 id|np-&gt;script0-&gt;datai_phase
 (braket
-id|XXX
+l_int|0
 )braket
 op_assign
 id|cpu_to_scr
@@ -16908,8 +16587,6 @@ id|SCR_JUMP
 suffix:semicolon
 id|np-&gt;script0-&gt;datai_phase
 (braket
-id|XXX
-op_plus
 l_int|1
 )braket
 op_assign
@@ -16951,8 +16628,6 @@ id|tweak_pmj
 )paren
 )paren
 suffix:semicolon
-DECL|macro|XXX
-macro_line|#undef XXX
 )brace
 r_else
 macro_line|#ifdef DEBUG_896R1
@@ -17218,7 +16893,7 @@ id|instance-&gt;max_lun
 op_assign
 id|MAX_LUN
 suffix:semicolon
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,29)
 id|instance-&gt;base
 op_assign
@@ -18453,23 +18128,21 @@ id|new_width
 op_assign
 l_int|1
 suffix:semicolon
-id|new_offset
-op_and_assign
-l_int|0x1f
-suffix:semicolon
 )brace
 )brace
-r_else
 r_if
 c_cond
 (paren
-id|new_period
+op_logical_neg
+id|options_byte
+op_logical_and
+id|new_offset
 OG
-l_int|0x09
+id|np-&gt;maxoffs_st
 )paren
 id|new_offset
-op_and_assign
-l_int|0x1f
+op_assign
+id|np-&gt;maxoffs_st
 suffix:semicolon
 id|nego
 op_assign
@@ -18639,6 +18312,17 @@ op_assign
 l_int|0x0A
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|new_offset
+OG
+id|np-&gt;maxoffs_st
+)paren
+id|new_offset
+op_assign
+id|np-&gt;maxoffs_st
+suffix:semicolon
 id|nego
 op_assign
 id|NS_SYNC
@@ -18682,8 +18366,6 @@ op_increment
 )braket
 op_assign
 id|new_offset
-op_amp
-l_int|0x1f
 suffix:semicolon
 )brace
 r_else
@@ -19112,10 +18794,6 @@ id|factor
 op_assign
 l_int|0x0A
 suffix:semicolon
-id|offset
-op_and_assign
-l_int|0x1f
-suffix:semicolon
 )brace
 r_else
 id|last_byte
@@ -19123,17 +18801,19 @@ op_assign
 l_int|0x02
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
-id|factor
+op_logical_neg
+id|last_byte
+op_logical_and
+id|offset
 OG
-l_int|0x09
+id|np-&gt;maxoffs_st
 )paren
 id|offset
-op_and_assign
-l_int|0x1f
+op_assign
+id|np-&gt;maxoffs_st
 suffix:semicolon
 id|msgptr
 (braket
@@ -19226,6 +18906,17 @@ op_assign
 l_int|0x0A
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|offset
+OG
+id|np-&gt;maxoffs_st
+)paren
+id|offset
+op_assign
+id|np-&gt;maxoffs_st
+suffix:semicolon
 id|msgptr
 (braket
 id|msglen
@@ -19265,8 +18956,6 @@ op_increment
 )braket
 op_assign
 id|offset
-op_amp
-l_int|0x1f
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -19453,12 +19142,21 @@ multiline_comment|/*---------------------------------------------&n;&t;**&n;&t;*
 r_if
 c_cond
 (paren
+(paren
 id|cmd-&gt;cmnd
 (braket
 l_int|0
 )braket
 op_eq
 l_int|0
+op_logical_or
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0x12
+)paren
 op_logical_and
 (paren
 id|tp-&gt;usrflag
@@ -19606,12 +19304,6 @@ id|cp-&gt;lun
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-id|cp-&gt;phys.num_disc
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*----------------------------------------------------&n;&t;**&n;&t;**&t;Build the identify / tag / sdtr message&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
 id|idmsg
@@ -20540,7 +20232,7 @@ id|cp-&gt;xerr_status
 op_assign
 l_int|0
 suffix:semicolon
-id|cp-&gt;phys.extra_bytes
+id|cp-&gt;extra_bytes
 op_assign
 l_int|0
 suffix:semicolon
@@ -21793,16 +21485,7 @@ id|cp-&gt;cmd
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Gather profiling data&n;&t;*/
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-id|ncb_profile
-(paren
-id|np
-comma
-id|cp
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n;&t;**&t;Print some debugging info.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -21907,6 +21590,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cp-&gt;xerr_status
+op_logical_or
 id|cp-&gt;phys.header.lastp
 op_ne
 id|cp-&gt;phys.header.goalp
@@ -22090,12 +21775,18 @@ id|cp-&gt;scsi_status
 comma
 id|cp-&gt;data_len
 comma
-op_minus
 id|cp-&gt;resid
 )paren
 suffix:semicolon
 )brace
 )brace
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,99)
+multiline_comment|/*&n;&t;**&t;Move residual byte count to user structure.&n;&t;*/
+id|cmd-&gt;resid
+op_assign
+id|cp-&gt;resid
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Check the status.&n;&t;*/
 r_if
 c_cond
@@ -22201,13 +21892,6 @@ id|cmd-&gt;request_buffer
 )paren
 suffix:semicolon
 )brace
-id|tp-&gt;bytes
-op_add_assign
-id|cp-&gt;data_len
-suffix:semicolon
-id|tp-&gt;transfers
-op_increment
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;If tags was reduced due to queue full,&n;&t;&t;**&t;increase tags if 1000 good status received.&n;&t;&t;*/
 r_if
 c_cond
@@ -22643,7 +22327,7 @@ id|cmd
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Signal all (or one) control block done.&n;**&n;**&n;**==========================================================&n;*/
-multiline_comment|/*&n;**&t;The NCR has completed CCBs.&n;**&t;Look at the DONE QUEUE.&n;*/
+multiline_comment|/*&n;**&t;The NCR has completed CCBs.&n;**&t;Look at the DONE QUEUE.&n;**&n;**&t;On architectures that may reorder LOAD/STORE operations, &n;**&t;a memory barrier may be needed after the reading of the &n;**&t;so-called `flag&squot; and prior to dealing with the data.&n;*/
 DECL|function|ncr_wakeup_done
 r_int
 id|ncr_wakeup_done
@@ -22738,6 +22422,11 @@ c_cond
 id|cp
 )paren
 (brace
+id|MEMORY_BARRIER
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ncr_complete
 (paren
 id|np
@@ -23300,13 +22989,17 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;If 64 bit (895A/896/1010/1010_66) write the CCNTL1 register to &n;&t;**&t;enable 40 bit address table indirect addressing for MOVE.&n;&t;**&t;Also write CCNTL0 if 64 bit chip, since this register seems &n;&t;**&t;to only be used by 64 bit cores.&n;&t;*/
+multiline_comment|/*&n;&t;**  Write CCNTL0/CCNTL1 for chips capable of 64 bit addressing &n;&t;**  and/or hardware phase mismatch, since only such chips &n;&t;**  seem to support those IO registers.&n;&t;*/
 r_if
 c_cond
 (paren
 id|np-&gt;features
 op_amp
-id|FE_64BIT
+(paren
+id|FE_DAC
+op_or
+id|FE_NOPM
+)paren
 )paren
 (brace
 id|OUTB
@@ -23588,11 +23281,6 @@ id|tp
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;**    Download SCSI SCRIPTS to on-chip RAM if present,&n;&t;**    and start script processor.&n;&t;**    We do the download preferently from the CPU.&n;&t;**    For platforms that may not support PCI memory mapping,&n;&t;**    we use a simple SCRIPTS that performs MEMORY MOVEs.&n;&t;*/
-id|MEMORY_BARRIER
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23745,10 +23433,8 @@ comma
 id|np-&gt;p_ncb
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|phys
 )paren
 suffix:semicolon
@@ -24991,7 +24677,7 @@ l_string|&quot;FAST-5&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s %sSCSI %d.%d MB/s (%d ns, offset %d)&bslash;n&quot;
+l_string|&quot;%s %sSCSI %d.%d MB/s (%d.%d ns, offset %d)&bslash;n&quot;
 comma
 id|scsi
 comma
@@ -25014,6 +24700,10 @@ l_int|10
 comma
 id|tp-&gt;period
 op_div
+l_int|10
+comma
+id|tp-&gt;period
+op_mod
 l_int|10
 comma
 id|offset
@@ -25682,7 +25372,7 @@ l_string|&quot;FAST-5&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s %sSCSI %d.%d MB/s (%d ns, offset %d)&bslash;n&quot;
+l_string|&quot;%s %sSCSI %d.%d MB/s (%d.%d ns, offset %d)&bslash;n&quot;
 comma
 id|scsi
 comma
@@ -25705,6 +25395,10 @@ l_int|10
 comma
 id|tp-&gt;period
 op_div
+l_int|10
+comma
+id|tp-&gt;period
+op_mod
 l_int|10
 comma
 id|offset
@@ -26094,25 +25788,6 @@ id|np-&gt;user.data
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-r_case
-id|UC_CLEARPROF
-suffix:colon
-id|bzero
-c_func
-(paren
-op_amp
-id|np-&gt;profile
-comma
-r_sizeof
-(paren
-id|np-&gt;profile
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 (brace
@@ -26923,50 +26598,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_OPTIMIZE_896_1
-multiline_comment|/*&n;&t;**&t;This optimization when used with a 896 that handles &n;&t;**&t;phase mismatch from the SCRIPTS allows to only do &n;&t;**&t;PCI memory writes transactions from the CPU and so to &n;&t;**&t;take advantage of PCI posted writes.&n;&t;**&t;Who wants his 500 MHz CPU to wait several micro-seconds &n;&t;**&t;for the PCI BUS to be granted when this can be avoided?&n;&t;**&t;I don&squot;t, even for my slow 233 MHz PII. :-)&n;&t;**&n;&t;**&t;We assume we have been called for command completion.&n;&t;**&t;If no completion found, go with normal handling.&n;&t;**&t;Ordering is ensured by the SCRIPTS performing a read &n;&t;**&t;from main memory prior to raising INTFLY.&n;&t;**&t;We have to raise SIGP since the chip may be currently &n;&t;**&t;going to a wait reselect instruction. IMO, SIGP should &n;&t;**&t;not be clearable in ISTAT since it can be polled and &n;&t;**&t;cleared by reading CTEST2. This tiny chip misdesign is a &n;&t;**&t;penalty here.&n;&t;**&n;&t;**&t;The MA interrupt and interrupt sharing may also have &n;&t;**&t;adverse effects on this optimization, so we only want &n;&t;**&t;to use it if it is enabled by user.&n;&t;**&t;(BTW, this optimization seems to even have some goodness &n;&t;**&t;with my 895 that unfortunately suffers of the MA int.).&n;&t;*/
-r_if
-c_cond
-(paren
-id|driver_setup.optimize
-op_amp
-l_int|1
-)paren
-(brace
-id|OUTB
-c_func
-(paren
-id|nc_istat
-comma
-(paren
-id|INTF
-op_or
-id|SIGP
-op_or
-id|np-&gt;istat_sem
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ncr_wakeup_done
-(paren
-id|np
-)paren
-)paren
-(brace
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-op_increment
-id|np-&gt;profile.num_fly
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* SCSI_NCR_OPTIMIZE_896_1 */
-multiline_comment|/*&n;&t;**&t;interrupt on the fly ?&n;&t;**&n;&t;**&t;For bridges that donnot flush posted writes &n;&t;**&t;in the reverse direction on read, a dummy read &n;&t;**&t;may help not to miss completions.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;interrupt on the fly ?&n;&t;**&n;&t;**&t;A `dummy read&squot; is needed to ensure that the &n;&t;**&t;clear of the INTF flag reaches the device &n;&t;**&t;before the scanning of the DONE queue.&n;&t;*/
 id|istat
 op_assign
 id|INB
@@ -26997,7 +26629,6 @@ op_or
 id|np-&gt;istat_sem
 )paren
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PCIQ_MAY_NOT_FLUSH_PW_UPSTREAM
 id|istat
 op_assign
 id|INB
@@ -27006,7 +26637,6 @@ id|nc_istat
 )paren
 suffix:semicolon
 multiline_comment|/* DUMMY READ */
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -27027,11 +26657,6 @@ id|ncr_wakeup_done
 id|np
 )paren
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-op_increment
-id|np-&gt;profile.num_fly
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_if
@@ -27050,11 +26675,6 @@ id|DIP
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-op_increment
-id|np-&gt;profile.num_int
-suffix:semicolon
-macro_line|#endif
 macro_line|#if 0&t;/* We should never get this one */
 r_if
 c_cond
@@ -27182,6 +26802,12 @@ id|nc_dbc
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;**&t;On paper, a memory barrier may be needed here.&n;&t;**&t;And since we are paranoid ... :)&n;&t;*/
+id|MEMORY_BARRIER
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*========================================================&n;&t;**&t;First, interrupts we want to service cleanly.&n;&t;**&n;&t;**&t;Phase mismatch (MA) is the most frequent interrupt &n;&t;**&t;for chip earlier than the 896 and so we have to service &n;&t;**&t;it as quickly as possible.&n;&t;**&t;A SCSI parity error (PAR) may be combined with a phase &n;&t;**&t;mismatch condition (MA).&n;&t;**&t;Programmed interrupts (SIR) are used to call the C code &n;&t;**&t;from SCRIPTS.&n;&t;**&t;The single step interrupt (SSI) is not used in this &n;&t;**&t;driver.&n;&t;**=========================================================&n;&t;*/
 r_if
 c_cond
@@ -27271,15 +26897,8 @@ id|dstat
 op_amp
 id|SSI
 )paren
-id|OUTONB
+id|OUTONB_STD
 (paren
-id|nc_dcntl
-comma
-(paren
-id|STD
-op_or
-id|NOCOM
-)paren
 )paren
 suffix:semicolon
 r_else
@@ -27834,10 +27453,8 @@ id|CSF
 )paren
 suffix:semicolon
 multiline_comment|/* clear scsi fifo */
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -27956,6 +27573,13 @@ comma
 id|dsa
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
+r_if
+c_cond
+(paren
+id|cp
+)paren
+(brace
 id|tcb_p
 id|tp
 op_assign
@@ -27965,7 +27589,6 @@ id|np-&gt;target
 id|cp-&gt;target
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
 r_if
 c_cond
 (paren
@@ -27977,6 +27600,7 @@ id|tp-&gt;ppr_negotiation
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|printk
 (paren
 l_string|&quot;%s: unexpected disconnect&bslash;n&quot;
@@ -28313,10 +27937,8 @@ comma
 id|pm_handle
 )paren
 )paren
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|dsp
 )paren
 suffix:semicolon
@@ -28344,10 +27966,8 @@ comma
 id|dsp
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -28359,10 +27979,8 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -28444,11 +28062,6 @@ suffix:semicolon
 id|ccb_p
 id|cp
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-op_increment
-id|np-&gt;profile.num_break
-suffix:semicolon
-macro_line|#endif
 id|dsp
 op_assign
 id|INL
@@ -28544,28 +28157,21 @@ multiline_comment|/*&n;&t;**&t;Donnot take into account dma fifo and various buf
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
 (paren
 id|cmd
 op_amp
 l_int|7
 )paren
-op_eq
+op_ne
 l_int|1
-)paren
-op_logical_or
-(paren
+op_logical_and
 (paren
 id|cmd
 op_amp
 l_int|7
 )paren
-op_eq
+op_ne
 l_int|5
-)paren
-)paren
 )paren
 (brace
 id|u_int32
@@ -29131,11 +28737,27 @@ id|oadr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;check cmd against assumed interrupted script command.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;check cmd against assumed interrupted script command.&n;&t;**&t;If dt data phase, the MOVE instruction hasn&squot;t bit 4 of &n;&t;**&t;the phase.&n;&t;*/
 r_if
 c_cond
 (paren
+(paren
+(paren
 id|cmd
+op_amp
+l_int|2
+)paren
+ques
+c_cond
+id|cmd
+suffix:colon
+(paren
+id|cmd
+op_amp
+op_complement
+l_int|4
+)paren
+)paren
 op_ne
 (paren
 id|scr_to_cpu
@@ -29623,10 +29245,8 @@ comma
 id|newcmd
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|nxtdsp
 )paren
 suffix:semicolon
@@ -29817,10 +29437,8 @@ c_cond
 id|nxtdsp
 )paren
 (brace
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|nxtdsp
 )paren
 suffix:semicolon
@@ -30140,15 +29758,8 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Now we can restart the SCRIPTS processor safely.&n;&t;*/
-id|MEMORY_BARRIER
-c_func
+id|OUTL_DSP
 (paren
-)paren
-suffix:semicolon
-id|OUTL
-(paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -30274,7 +29885,7 @@ id|cp-&gt;xerr_status
 op_assign
 l_int|0
 suffix:semicolon
-id|cp-&gt;phys.extra_bytes
+id|cp-&gt;extra_bytes
 op_assign
 l_int|0
 suffix:semicolon
@@ -31144,10 +30755,8 @@ comma
 id|np-&gt;p_ncb
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -31422,10 +31031,14 @@ id|target
 suffix:semicolon
 id|np-&gt;abrt_tbl.addr
 op_assign
+id|cpu_to_scr
+c_func
+(paren
 id|vtobus
 c_func
 (paren
 id|np-&gt;abrt_msg
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;If the target is to be reset, prepare a &n;&t;&t;**&t;M_RESET message and clear the to_reset flag &n;&t;&t;**&t;since we donnot expect this operation to fail.&n;&t;&t;*/
@@ -31967,15 +31580,8 @@ id|np-&gt;abrt_tbl.size
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;**&t;Let the SCRIPTS processor continue.&n;&t;*/
-id|OUTONB
+id|OUTONB_STD
 (paren
-id|nc_dcntl
-comma
-(paren
-id|STD
-op_or
-id|NOCOM
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -32614,10 +32220,8 @@ comma
 id|dp_scr
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -32630,10 +32234,8 @@ r_return
 suffix:semicolon
 id|out_reject
 suffix:colon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -32698,11 +32300,7 @@ id|XE_EXTRA_DATA
 )paren
 id|resid
 op_sub_assign
-id|scr_to_cpu
-c_func
-(paren
-id|cp-&gt;phys.extra_bytes
-)paren
+id|cp-&gt;extra_bytes
 suffix:semicolon
 r_if
 c_cond
@@ -32725,7 +32323,7 @@ op_decrement
 id|resid
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;**&t;If all data has been transferred,&n;&t;**&t;there is no residual.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;If SCRIPTS reaches its goal point, then &n;&t;**&t;there is no additionnal residual.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -32734,7 +32332,7 @@ op_eq
 id|cp-&gt;phys.header.goalp
 )paren
 r_return
-l_int|0
+id|resid
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;If the last data pointer is data_io (direction &n;&t;**&t;unknown), then no data transfer should have &n;&t;**&t;taken place.&n;&t;*/
 r_if
@@ -32750,34 +32348,16 @@ id|data_io
 )paren
 )paren
 r_return
-op_minus
 id|cp-&gt;data_len
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;If the device asked for more data than available, &n;&t;**&t;return a positive residual value.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;If no data transfer occurs, or if the data&n;&t;**&t;pointer is weird, return full residual.&n;&t;*/
 r_if
 c_cond
 (paren
-id|cp-&gt;phys.extra_bytes
-)paren
-r_return
-id|scr_to_cpu
-c_func
-(paren
-id|cp-&gt;phys.extra_bytes
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Evaluate the pointer saved on message COMPLETE.&n;&t;**&t;According to our alchemy:), the extreme data &n;&t;**&t;pointer will also be updated if needed.&n;&t;**&t;On error, assume no data transferred (this may &n;&t;**&t;happen if the data direction is unknown).&n;&t;*/
-id|tmp
-op_assign
-id|cpu_to_scr
-c_func
-(paren
+id|cp-&gt;startp
+op_eq
 id|cp-&gt;phys.header.lastp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|ncr_evaluate_dp
 c_func
 (paren
@@ -32785,7 +32365,11 @@ id|np
 comma
 id|cp
 comma
-id|tmp
+id|scr_to_cpu
+c_func
+(paren
+id|cp-&gt;phys.header.lastp
+)paren
 comma
 op_amp
 id|dp_ofs
@@ -32793,10 +32377,11 @@ id|dp_ofs
 OL
 l_int|0
 )paren
+(brace
 r_return
-op_minus
 id|cp-&gt;data_len
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;**&t;We are now full comfortable in the computation &n;&t;**&t;of the data residual (2&squot;s complement).&n;&t;*/
 id|dp_sgmin
 op_assign
@@ -32806,6 +32391,7 @@ id|cp-&gt;segments
 suffix:semicolon
 id|resid
 op_assign
+op_minus
 id|cp-&gt;ext_ofs
 suffix:semicolon
 r_for
@@ -32837,7 +32423,7 @@ id|size
 )paren
 suffix:semicolon
 id|resid
-op_sub_assign
+op_add_assign
 (paren
 id|tmp
 op_amp
@@ -33154,6 +32740,23 @@ c_cond
 (paren
 id|ofs
 OG
+id|np-&gt;maxoffs_st
+)paren
+(brace
+id|chg
+op_assign
+l_int|1
+suffix:semicolon
+id|ofs
+op_assign
+id|np-&gt;maxoffs_st
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ofs
+OG
 id|tp-&gt;maxoffs
 )paren
 (brace
@@ -33328,10 +32931,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -33392,10 +32993,8 @@ comma
 id|scntl4
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -33548,10 +33147,8 @@ c_cond
 op_logical_neg
 id|ofs
 )paren
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -33561,10 +33158,8 @@ id|msg_bad
 )paren
 suffix:semicolon
 r_else
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -33727,10 +33322,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -33754,10 +33347,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -33862,10 +33453,8 @@ id|np-&gt;msgout
 )paren
 suffix:semicolon
 )brace
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -34196,6 +33785,27 @@ id|chg
 op_assign
 l_int|2
 suffix:semicolon
+multiline_comment|/* Not acceptable since beyond controller limit */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dt
+op_logical_and
+id|ofs
+OG
+id|np-&gt;maxoffs_st
+)paren
+(brace
+id|chg
+op_assign
+l_int|2
+suffix:semicolon
+id|ofs
+op_assign
+id|np-&gt;maxoffs_st
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -34302,10 +33912,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -34370,10 +33978,8 @@ comma
 id|wth
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -34453,10 +34059,6 @@ id|dt
 op_assign
 l_int|0
 suffix:semicolon
-id|ofs
-op_and_assign
-l_int|0x1f
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -34475,11 +34077,21 @@ id|dt
 op_assign
 l_int|0
 suffix:semicolon
-id|ofs
-op_and_assign
-l_int|0x1f
-suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dt
+op_logical_and
+id|ofs
+OG
+id|np-&gt;maxoffs_st
+)paren
+id|ofs
+op_assign
+id|np-&gt;maxoffs_st
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -34624,10 +34236,8 @@ c_cond
 op_logical_neg
 id|ofs
 )paren
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -34637,10 +34247,8 @@ id|msg_bad
 )paren
 suffix:semicolon
 r_else
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -35036,10 +34644,8 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -35282,6 +34888,63 @@ suffix:semicolon
 id|cp-&gt;xerr_status
 op_or_assign
 id|XE_SODL_UNRUN
+suffix:semicolon
+)brace
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/*&n;&t;**&t;The device wants us to tranfer more data than &n;&t;**&t;expected or in the wrong direction.&n;&t;**&t;The number of extra bytes is in scratcha.&n;&t;**&t;It is a data overrun condition.&n;&t;*/
+r_case
+id|SIR_DATA_OVERRUN
+suffix:colon
+r_if
+c_cond
+(paren
+id|cp
+)paren
+(brace
+id|OUTONB
+(paren
+id|HF_PRT
+comma
+id|HF_EXT_ERR
+)paren
+suffix:semicolon
+id|cp-&gt;xerr_status
+op_or_assign
+id|XE_EXTRA_DATA
+suffix:semicolon
+id|cp-&gt;extra_bytes
+op_add_assign
+id|INL
+(paren
+id|nc_scratcha
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/*&n;&t;**&t;The device switched to an illegal phase (4/5).&n;&t;*/
+r_case
+id|SIR_BAD_PHASE
+suffix:colon
+r_if
+c_cond
+(paren
+id|cp
+)paren
+(brace
+id|OUTONB
+(paren
+id|HF_PRT
+comma
+id|HF_EXT_ERR
+)paren
+suffix:semicolon
+id|cp-&gt;xerr_status
+op_or_assign
+id|XE_BAD_PHASE
 suffix:semicolon
 )brace
 r_goto
@@ -35556,10 +35219,8 @@ comma
 id|np-&gt;msgin
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -35602,25 +35263,16 @@ suffix:semicolon
 suffix:semicolon
 id|out
 suffix:colon
-id|OUTONB
+id|OUTONB_STD
 (paren
-id|nc_dcntl
-comma
-(paren
-id|STD
-op_or
-id|NOCOM
-)paren
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 id|out_reject
 suffix:colon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPTH_PHYS
 (paren
 id|np
@@ -35633,10 +35285,8 @@ r_return
 suffix:semicolon
 id|out_clrack
 suffix:colon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|NCB_SCRIPT_PHYS
 (paren
 id|np
@@ -35649,7 +35299,6 @@ r_return
 suffix:semicolon
 id|out_stuck
 suffix:colon
-suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Aquire a control block&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_get_ccb
@@ -37684,7 +37333,7 @@ id|segment
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Test the pci bus snoop logic :-(&n;**&n;**&t;Has to be called with interrupts disabled.&n;**&n;**&n;**==========================================================&n;*/
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 DECL|function|ncr_regtest
 r_static
 r_int
@@ -37814,7 +37463,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 r_if
 c_cond
 (paren
@@ -37882,10 +37531,8 @@ comma
 id|np-&gt;p_ncb
 )paren
 suffix:semicolon
-id|OUTL
+id|OUTL_DSP
 (paren
-id|nc_dsp
-comma
 id|pc
 )paren
 suffix:semicolon
@@ -38129,142 +37776,6 @@ id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Profiling the drivers and targets performance.&n;**&n;**&n;**==========================================================&n;*/
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-DECL|function|ncb_profile
-r_static
-r_void
-id|ncb_profile
-(paren
-id|ncb_p
-id|np
-comma
-id|ccb_p
-id|cp
-)paren
-(brace
-r_int
-id|num_disc
-op_assign
-(paren
-id|cp-&gt;phys.num_disc
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-r_int
-id|num_disc0
-op_assign
-(paren
-id|cp-&gt;phys.num_disc
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-op_increment
-id|np-&gt;profile.num_trans
-suffix:semicolon
-id|np-&gt;profile.num_disc
-op_add_assign
-id|num_disc
-suffix:semicolon
-id|np-&gt;profile.num_disc0
-op_add_assign
-id|num_disc0
-suffix:semicolon
-id|np-&gt;profile.num_kbytes
-op_add_assign
-(paren
-id|cp-&gt;data_len
-op_rshift
-l_int|10
-)paren
-suffix:semicolon
-macro_line|#if 000
-r_if
-c_cond
-(paren
-id|num_disc
-OG
-id|num_disc0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cp-&gt;data_len
-op_le
-l_int|1024
-)paren
-id|np-&gt;profile.num_br1k
-op_add_assign
-(paren
-id|num_disc
-op_minus
-id|num_disc0
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|cp-&gt;data_len
-op_le
-l_int|2048
-)paren
-id|np-&gt;profile.num_br2k
-op_add_assign
-(paren
-id|num_disc
-op_minus
-id|num_disc0
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|cp-&gt;data_len
-op_le
-l_int|4096
-)paren
-id|np-&gt;profile.num_br4k
-op_add_assign
-(paren
-id|num_disc
-op_minus
-id|num_disc0
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|cp-&gt;data_len
-op_le
-l_int|8192
-)paren
-id|np-&gt;profile.num_br8k
-op_add_assign
-(paren
-id|num_disc
-op_minus
-id|num_disc0
-)paren
-suffix:semicolon
-r_else
-id|np-&gt;profile.num_brnk
-op_add_assign
-(paren
-id|num_disc
-op_minus
-id|num_disc0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
-macro_line|#endif /* SCSI_NCR_PROFILE_SUPPORT */
 multiline_comment|/*==========================================================&n;**&n;**&t;Determine the ncr&squot;s clock frequency.&n;**&t;This is essential for the negotiation&n;**&t;of the synchronous transfer rate.&n;**&n;**==========================================================&n;**&n;**&t;Note: we have to return the correct value.&n;**&t;THERE IS NO SAFE DEFAULT VALUE.&n;**&n;**&t;Most NCR/SYMBIOS boards are delivered with a 40 Mhz clock.&n;**&t;53C860 and 53C875 rev. 1 support fast20 transfers but &n;**&t;do not have a clock doubler and so are provided with a &n;**&t;80 MHz clock. All other fast20 boards incorporate a doubler &n;**&t;and so should be delivered with a 40 MHz clock.&n;**&t;The recent fast40 chips  (895/896/895A) and the&n;**&t;fast80 chip (C1010) use a 40 Mhz base clock &n;**&t;and provide a clock quadrupler (160 Mhz). The code below &n;**&t;tries to deal as cleverly as possible with all this stuff.&n;**&n;**----------------------------------------------------------&n;*/
 multiline_comment|/*&n; *&t;Select NCR SCSI clock frequency&n; */
 DECL|function|ncr_selectclock
@@ -38589,36 +38100,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n; &t; * adjust for prescaler, and convert into KHz &n;&t; * scale values derived empirically. C1010 uses&n;&t; * different dividers&n;  &t; */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|np-&gt;device_id
-op_eq
-id|PCI_DEVICE_ID_LSI_53C1010
-)paren
-id|f
-op_assign
-id|ms
-ques
-c_cond
-(paren
-(paren
-l_int|1
-op_lshift
-id|gen
-)paren
-op_star
-l_int|2866
-)paren
-op_div
-id|ms
-suffix:colon
-l_int|0
-suffix:semicolon
-r_else
-macro_line|#endif
+multiline_comment|/*&n; &t; * adjust for prescaler, and convert into KHz &n;&t; * scale values derived empirically.&n;  &t; */
 id|f
 op_assign
 id|ms
@@ -38814,51 +38296,7 @@ op_assign
 id|mult
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;**&t;If multiplier not found but a C1010, assume a mult of 4.&n;&t;**&t;If multiplier not found or scntl3 not 7,5,3,&n;&t;**&t;reset chip and get frequency from general purpose timer.&n;&t;**&t;Otherwise trust scntl3 BIOS setting.&n;&t;*/
-r_if
-c_cond
-(paren
-(paren
-id|np-&gt;device_id
-op_eq
-id|PCI_DEVICE_ID_LSI_53C1010
-)paren
-op_logical_or
-(paren
-id|np-&gt;device_id
-op_eq
-id|PCI_DEVICE_ID_LSI_53C1010_66
-)paren
-)paren
-(brace
-id|f1
-op_assign
-l_int|40000
-suffix:semicolon
-id|np-&gt;multiplier
-op_assign
-id|mult
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bootverbose
-op_ge
-l_int|2
-)paren
-id|printk
-(paren
-l_string|&quot;%s: clock multiplier assumed&bslash;n&quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
+multiline_comment|/*&n;&t;**&t;If multiplier not found or scntl3 not 7,5,3,&n;&t;**&t;reset chip and get frequency from general purpose timer.&n;&t;**&t;Otherwise trust scntl3 BIOS setting.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -39153,8 +38591,8 @@ DECL|macro|OPT_DISCONNECTION
 mdefine_line|#define OPT_DISCONNECTION&t;4
 DECL|macro|OPT_SPECIAL_FEATURES
 mdefine_line|#define OPT_SPECIAL_FEATURES&t;5
-DECL|macro|OPT_ULTRA_SCSI
-mdefine_line|#define OPT_ULTRA_SCSI&t;&t;6
+DECL|macro|OPT_RESERVED_1
+mdefine_line|#define OPT_RESERVED_1&t;&t;6
 DECL|macro|OPT_FORCE_SYNC_NEGO
 mdefine_line|#define OPT_FORCE_SYNC_NEGO&t;7
 DECL|macro|OPT_REVERSE_PROBE
@@ -39210,7 +38648,7 @@ l_string|&quot;mpar:&quot;
 l_string|&quot;spar:&quot;
 l_string|&quot;disc:&quot;
 l_string|&quot;specf:&quot;
-l_string|&quot;ultra:&quot;
+l_string|&quot;_rsvd1:&quot;
 l_string|&quot;fsn:&quot;
 l_string|&quot;revprob:&quot;
 l_string|&quot;sync:&quot;
@@ -39555,15 +38993,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPT_ULTRA_SCSI
-suffix:colon
-id|driver_setup.ultra_scsi
-op_assign
-id|val
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|OPT_FORCE_SYNC_NEGO
 suffix:colon
 id|driver_setup.force_sync_nego
@@ -39867,7 +39296,7 @@ mdefine_line|#define YesNo(y)&t;y ? &squot;y&squot; : &squot;n&squot;
 id|printk
 (paren
 id|NAME53C8XX
-l_string|&quot;: setup=disc:%c,specf:%d,ultra:%d,tags:%d,sync:%d,&quot;
+l_string|&quot;: setup=disc:%c,specf:%d,tags:%d,sync:%d,&quot;
 l_string|&quot;burst:%d,wide:%c,diff:%d,revprob:%c,buschk:0x%x&bslash;n&quot;
 comma
 id|YesNo
@@ -39877,8 +39306,6 @@ id|driver_setup.disconnection
 )paren
 comma
 id|driver_setup.special_features
-comma
-id|driver_setup.ultra_scsi
 comma
 id|driver_setup.default_tags
 comma
@@ -40399,6 +39826,18 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pcidev
+)paren
+)paren
+multiline_comment|/* @!*!$&amp;*!%-*#;! */
+r_continue
+suffix:semicolon
 multiline_comment|/* Some HW as the HP LH4 may report twice PCI devices */
 r_for
 c_loop
@@ -40846,7 +40285,11 @@ suffix:semicolon
 id|u_long
 id|base
 comma
+id|base_c
+comma
 id|base_2
+comma
+id|base_2_c
 comma
 id|io_port
 suffix:semicolon
@@ -40959,19 +40402,35 @@ id|pdev
 suffix:semicolon
 id|i
 op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_assign
 id|pci_get_base_address
 c_func
 (paren
 id|pdev
 comma
-id|i
+l_int|0
 comma
 op_amp
 id|io_port
+)paren
+suffix:semicolon
+id|io_port
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|base_c
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+id|i
 )paren
 suffix:semicolon
 id|i
@@ -40985,6 +40444,16 @@ id|i
 comma
 op_amp
 id|base
+)paren
+suffix:semicolon
+id|base_2_c
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+id|i
 )paren
 suffix:semicolon
 (paren
@@ -41272,7 +40741,7 @@ c_cond
 id|chip
 op_logical_and
 (paren
-id|base_2
+id|base_2_c
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 )paren
@@ -41308,7 +40777,7 @@ op_assign
 id|remap_pci_mem
 c_func
 (paren
-id|base_2
+id|base_2_c
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 comma
@@ -41624,7 +41093,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* __i386__ */
 multiline_comment|/*&n;&t;**    Check availability of IO space, memory space.&n;&t;**    Enable master capability if not yet.&n;&t;**&n;&t;**    We shouldn&squot;t have to care about the IO region when &n;&t;**    we are using MMIO. But calling check_region() from &n;&t;**    both the ncr53c8xx and the sym53c8xx drivers prevents &n;&t;**    from attaching devices from the both drivers.&n;&t;**    If you have a better idea, let me know.&n;&t;*/
-multiline_comment|/* #ifdef NCR_IOMAPPED */
+multiline_comment|/* #ifdef SCSI_NCR_IOMAPPED */
 macro_line|#if 1
 r_if
 c_cond
@@ -41694,7 +41163,7 @@ id|base_2
 op_and_assign
 id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
-multiline_comment|/* #ifdef NCR_IOMAPPED */
+multiline_comment|/* #ifdef SCSI_NCR_IOMAPPED */
 macro_line|#if 1
 r_if
 c_cond
@@ -41737,7 +41206,7 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 r_if
 c_cond
 (paren
@@ -41931,101 +41400,6 @@ id|status_reg
 )paren
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|driver_setup.ultra_scsi
-OL
-l_int|3
-op_logical_and
-(paren
-id|chip-&gt;features
-op_amp
-id|FE_ULTRA3
-)paren
-)paren
-(brace
-id|chip-&gt;features
-op_or_assign
-id|FE_ULTRA2
-suffix:semicolon
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_ULTRA3
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|driver_setup.ultra_scsi
-OL
-l_int|2
-op_logical_and
-(paren
-id|chip-&gt;features
-op_amp
-id|FE_ULTRA2
-)paren
-)paren
-(brace
-id|chip-&gt;features
-op_or_assign
-id|FE_ULTRA
-suffix:semicolon
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_ULTRA2
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|driver_setup.ultra_scsi
-OL
-l_int|1
-)paren
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_ULTRA
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver_setup.max_wide
-)paren
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_WIDE
-suffix:semicolon
-multiline_comment|/*&n;&t; * C1010 Ultra3 support requires 16 bit data transfers.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver_setup.max_wide
-op_logical_and
-(paren
-id|chip-&gt;features
-op_amp
-id|FE_ULTRA3
-)paren
-)paren
-(brace
-id|chip-&gt;features
-op_or_assign
-id|FE_ULTRA2
-suffix:semicolon
-id|chip-&gt;features
-op_or_assign
-op_complement
-id|FE_ULTRA3
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;**&t;Some features are required to be enabled in order to &n;&t;**&t;work around some chip problems. :) ;)&n;&t;**&t;(ITEM 12 of a DEL about the 896 I haven&squot;t yet).&n;&t;**&t;We must ensure the chip will use WRITE AND INVALIDATE.&n;&t;**&t;The revision number limit is for now arbitrary.&n;&t;*/
 r_if
@@ -42251,6 +41625,14 @@ id|device-&gt;slot.base_2
 op_assign
 id|base_2
 suffix:semicolon
+id|device-&gt;slot.base_c
+op_assign
+id|base_c
+suffix:semicolon
+id|device-&gt;slot.base_2_c
+op_assign
+id|base_2_c
+suffix:semicolon
 id|device-&gt;slot.io_port
 op_assign
 id|io_port
@@ -42298,7 +41680,7 @@ id|nvp
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t;**    Get access to chip IO registers&n;&t;*/
-macro_line|#ifdef NCR_IOMAPPED
+macro_line|#ifdef SCSI_NCR_IOMAPPED
 id|request_region
 c_func
 (paren
@@ -42324,7 +41706,7 @@ op_star
 id|remap_pci_mem
 c_func
 (paren
-id|devp-&gt;slot.base
+id|devp-&gt;slot.base_c
 comma
 l_int|128
 )paren
@@ -42390,7 +41772,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;** Release access to chip IO registers&n;&t;*/
-macro_line|#ifdef NCR_IOMAPPED
+macro_line|#ifdef SCSI_NCR_IOMAPPED
 id|release_region
 c_func
 (paren
@@ -43945,7 +43327,7 @@ suffix:semicolon
 DECL|macro|next_wcmd
 macro_line|#undef next_wcmd
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-multiline_comment|/*=========================================================================&n;**&t;Proc file system stuff&n;**&n;**&t;A read operation returns profile information.&n;**&t;A write operation is a control command.&n;**&t;The string is parsed in the driver code and the command is passed &n;**&t;to the ncr_usercmd() function.&n;**=========================================================================&n;*/
+multiline_comment|/*=========================================================================&n;**&t;Proc file system stuff&n;**&n;**&t;A read operation returns adapter information.&n;**&t;A write operation is a control command.&n;**&t;The string is parsed in the driver code and the command is passed &n;**&t;to the ncr_usercmd() function.&n;**=========================================================================&n;*/
 macro_line|#ifdef SCSI_NCR_USER_COMMAND_SUPPORT
 DECL|macro|is_digit
 mdefine_line|#define is_digit(c)&t;((c) &gt;= &squot;0&squot; &amp;&amp; (c) &lt;= &squot;9&squot;)
@@ -44451,32 +43833,6 @@ id|uc-&gt;cmd
 op_assign
 id|UC_CLEARDEV
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|arg_len
-op_assign
-id|is_keyword
-c_func
-(paren
-id|ptr
-comma
-id|len
-comma
-l_string|&quot;clearprof&quot;
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-id|uc-&gt;cmd
-op_assign
-id|UC_CLEARPROF
-suffix:semicolon
-macro_line|#endif
 r_else
 id|arg_len
 op_assign
@@ -45311,9 +44667,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/*&n;**&t;Copy formatted profile information into the input buffer.&n;*/
-DECL|macro|to_ms
-mdefine_line|#define to_ms(t) ((t) * 1000 / HZ)
+multiline_comment|/*&n;**&t;Copy formatted information into the input buffer.&n;*/
 DECL|function|ncr_host_info
 r_static
 r_int
@@ -45466,175 +44820,6 @@ id|driver_setup.verbose
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SCSI_NCR_PROFILE_SUPPORT
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;Profiling information:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_fly&quot;
-comma
-id|np-&gt;profile.num_fly
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_trans&quot;
-comma
-id|np-&gt;profile.num_trans
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_disc&quot;
-comma
-id|np-&gt;profile.num_disc
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_disc0&quot;
-comma
-id|np-&gt;profile.num_disc0
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_break&quot;
-comma
-id|np-&gt;profile.num_break
-)paren
-suffix:semicolon
-macro_line|#if 000
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_br1k&quot;
-comma
-id|np-&gt;profile.num_br1k
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_br2k&quot;
-comma
-id|np-&gt;profile.num_br2k
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_br4k&quot;
-comma
-id|np-&gt;profile.num_br4k
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_br8k&quot;
-comma
-id|np-&gt;profile.num_br8k
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_brnk&quot;
-comma
-id|np-&gt;profile.num_brnk
-)paren
-suffix:semicolon
-macro_line|#endif
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_int&quot;
-comma
-id|np-&gt;profile.num_int
-)paren
-suffix:semicolon
-id|copy_info
-c_func
-(paren
-op_amp
-id|info
-comma
-l_string|&quot;  %-12s = %lu&bslash;n&quot;
-comma
-l_string|&quot;num_kbytes&quot;
-comma
-id|np-&gt;profile.num_kbytes
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|info.pos
 OG
@@ -45649,7 +44834,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* SCSI_NCR_USER_INFO_SUPPORT */
-multiline_comment|/*&n;**&t;Entry point of the scsi proc fs of the driver.&n;**&t;- func = 0 means read  (returns profile data)&n;**&t;- func = 1 means write (parse user control command)&n;*/
+multiline_comment|/*&n;**&t;Entry point of the scsi proc fs of the driver.&n;**&t;- func = 0 means read  (returns adapter infos)&n;**&t;- func = 1 means write (parse user control command)&n;*/
 DECL|function|sym53c8xx_proc_info
 r_static
 r_int
@@ -46764,13 +45949,13 @@ id|retv
 suffix:semicolon
 )brace
 DECL|macro|SET_BIT
-macro_line|#undef SET_BIT /* 0 */
+macro_line|#undef SET_BIT
 DECL|macro|CLR_BIT
-macro_line|#undef CLR_BIT /* 1 */
+macro_line|#undef CLR_BIT
 DECL|macro|SET_CLK
-macro_line|#undef SET_CLK /* 2 */
+macro_line|#undef SET_CLK
 DECL|macro|CLR_CLK
-macro_line|#undef CLR_CLK /* 3 */
+macro_line|#undef CLR_CLK
 multiline_comment|/*&n; *  Try reading Symbios NVRAM.&n; *  Return 0 if OK.&n; */
 DECL|function|sym_read_Symbios_nvram
 r_static
@@ -47684,6 +46869,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* SCSI_NCR_NVRAM_SUPPORT */
 multiline_comment|/*&n;**&t;Module stuff&n;*/
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -47692,4 +46878,13 @@ op_assign
 id|SYM53C8XX
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#elif defined(MODULE)
+DECL|variable|driver_template
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+id|SYM53C8XX
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
 eof

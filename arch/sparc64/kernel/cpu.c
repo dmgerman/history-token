@@ -102,6 +102,16 @@ comma
 (brace
 l_int|0x17
 comma
+l_int|0x13
+comma
+l_int|0
+comma
+l_string|&quot;UltraSparc IIe integrated FPU&quot;
+)brace
+comma
+(brace
+l_int|0x17
+comma
 l_int|0x14
 comma
 l_int|0
@@ -156,12 +166,19 @@ comma
 (brace
 l_int|0x17
 comma
+l_int|0x13
+comma
+l_string|&quot;TI UltraSparc IIe&quot;
+)brace
+comma
+(brace
+l_int|0x3e
+comma
 l_int|0x14
 comma
 l_string|&quot;TI UltraSparc III (Cheetah)&quot;
 )brace
 comma
-multiline_comment|/* A guess... */
 )brace
 suffix:semicolon
 DECL|macro|NSPARCCHIPS

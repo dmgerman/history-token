@@ -228,7 +228,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_sci_count&n; *&n; * PARAMETERS:  Event       Event that generated an SCI.&n; *&n; * RETURN:      Number of SCI&squot;s for requested event since last time&n; *              Sci_occured() was called for this event.&n; *&n; * DESCRIPTION: Checks to see if SCI has been generated from requested source&n; *              since the last time this function was called.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_sci_count&n; *&n; * PARAMETERS:  Event       Event that generated an SCI.&n; *&n; * RETURN:      Number of SCI&squot;s for requested event since last time&n; *              Sci_occurred() was called for this event.&n; *&n; * DESCRIPTION: Checks to see if SCI has been generated from requested source&n; *              since the last time this function was called.&n; *&n; ******************************************************************************/
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_restore_acpi_state&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Restore the original ACPI state of the machine&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ev_restore_acpi_state

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pbm.h,v 1.23 2001/01/11 16:26:45 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pbm.h,v 1.25 2001/02/28 03:28:55 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_PBM_H
 DECL|macro|__SPARC64_PBM_H
 mdefine_line|#define __SPARC64_PBM_H
@@ -271,6 +271,12 @@ r_struct
 id|resource
 id|mem_space
 suffix:semicolon
+multiline_comment|/* Base of PCI Config space, can be per-PBM or shared. */
+DECL|member|config_space
+r_int
+r_int
+id|config_space
+suffix:semicolon
 multiline_comment|/* State of 66MHz capabilities on this PBM. */
 DECL|member|is_66mhz_capable
 r_int
@@ -323,16 +329,11 @@ id|pci_controller_info
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Physical address base of controller registers&n;&t; * and PCI config space.&n;&t; */
+multiline_comment|/* Physical address base of controller registers. */
 DECL|member|controller_regs
 r_int
 r_int
 id|controller_regs
-suffix:semicolon
-DECL|member|config_space
-r_int
-r_int
-id|config_space
 suffix:semicolon
 multiline_comment|/* Opaque 32-bit system bus Port ID. */
 DECL|member|portid
@@ -377,7 +378,7 @@ id|irq_build
 )paren
 (paren
 r_struct
-id|pci_controller_info
+id|pci_pbm_info
 op_star
 comma
 r_struct

@@ -78,17 +78,13 @@ mdefine_line|#define DMFE_100MFD     5
 DECL|macro|DMFE_AUTO
 mdefine_line|#define DMFE_AUTO       8
 DECL|macro|DMFE_TIMER_WUT
-mdefine_line|#define DMFE_TIMER_WUT  jiffies+(HZ*2)/2&t;/* timer wakeup time : 1 second */
+mdefine_line|#define DMFE_TIMER_WUT  (HZ)&t;/* timer wakeup time : 1 second */
 DECL|macro|DMFE_TX_TIMEOUT
 mdefine_line|#define DMFE_TX_TIMEOUT ((HZ*3)/2)&t;/* tx packet time-out time 1.5 s&quot; */
 DECL|macro|DMFE_DBUG
-mdefine_line|#define DMFE_DBUG(dbug_now, msg, vaule) if (dmfe_debug || dbug_now) printk(&quot;DBUG: %s %x&bslash;n&quot;, msg, vaule)
-DECL|macro|DELAY_5US
-mdefine_line|#define DELAY_5US udelay(5)&t;/* udelay scale 1 usec */
-DECL|macro|DELAY_1US
-mdefine_line|#define DELAY_1US udelay(1)&t;/* udelay scale 1 usec */
+mdefine_line|#define DMFE_DBUG(dbug_now, msg, vaule)&t;&bslash;&n;&t;if (dmfe_debug || dbug_now)&t;&bslash;&n;&t;&t;printk(&quot;DBUG: %s %x&bslash;n&quot;, msg, vaule)
 DECL|macro|SHOW_MEDIA_TYPE
-mdefine_line|#define SHOW_MEDIA_TYPE(mode) printk(KERN_WARNING &quot;dmfe: Change Speed to %sMhz %s duplex&bslash;n&quot;,mode &amp; 1 ?&quot;100&quot;:&quot;10&quot;, mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
+mdefine_line|#define SHOW_MEDIA_TYPE(mode) &bslash;&n; &t;printk(KERN_WARNING &quot;dmfe: Change Speed to %sMhz %s duplex&bslash;n&quot;,&t;&bslash;&n;&t;       mode &amp; 1 ? &quot;100&quot; : &quot;10&quot;,&t;&t;&t;&t;&t;&bslash;&n;&t;       mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
 multiline_comment|/* CR9 definition: SROM/MII */
 DECL|macro|CR9_SROM_READ
 mdefine_line|#define CR9_SROM_READ   0x4800
@@ -109,9 +105,9 @@ mdefine_line|#define PHY_DATA_0      0x00000
 DECL|macro|MDCLKH
 mdefine_line|#define MDCLKH          0x10000
 DECL|macro|SROM_CLK_WRITE
-mdefine_line|#define SROM_CLK_WRITE(data, ioaddr) outl(data|CR9_SROM_READ|CR9_SRCS,ioaddr);DELAY_5US;outl(data|CR9_SROM_READ|CR9_SRCS|CR9_SRCLK,ioaddr);DELAY_5US;outl(data|CR9_SROM_READ|CR9_SRCS,ioaddr);DELAY_5US;
+mdefine_line|#define SROM_CLK_WRITE(data, ioaddr) &bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS , ioaddr);&t;&t;&t;&bslash;&n;&t;udelay(5);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS | CR9_SRCLK, ioaddr);&t;&bslash;&n;&t;udelay(5);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS , ioaddr);&t;&t;&t;&bslash;&n;&t;udelay(5);
 DECL|macro|__CHK_IO_SIZE
-mdefine_line|#define __CHK_IO_SIZE(pci_id, dev_rev) ( ((pci_id)==PCI_DM9132_ID) || ((dev_rev) &gt;= 0x02000030) ) ? DM9102A_IO_SIZE: DM9102_IO_SIZE
+mdefine_line|#define __CHK_IO_SIZE(pci_id, dev_rev) &bslash;&n;&t;( ((pci_id)==PCI_DM9132_ID) || ((dev_rev) &gt;= 0x02000030) ) ? &bslash;&n;&t;&t;DM9102A_IO_SIZE : DM9102_IO_SIZE
 DECL|macro|CHK_IO_SIZE
 mdefine_line|#define CHK_IO_SIZE(pci_dev, dev_rev) &bslash;&n;&t;__CHK_IO_SIZE(((pci_dev)-&gt;device &lt;&lt; 16) | (pci_dev)-&gt;vendor, dev_rev)
 multiline_comment|/* Structure/enum declaration ------------------------------- */
@@ -1670,9 +1666,13 @@ id|db
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 id|db-&gt;chip_id
 op_assign
@@ -1830,7 +1830,11 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|dmfe_board_info
@@ -1878,6 +1882,14 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* free board information */
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|DMFE_DBUG
 c_func
 (paren
@@ -2187,6 +2199,8 @@ id|db-&gt;timer
 suffix:semicolon
 id|db-&gt;timer.expires
 op_assign
+id|jiffies
+op_plus
 id|DMFE_TIMER_WUT
 suffix:semicolon
 id|db-&gt;timer.data
@@ -2266,7 +2280,11 @@ id|DCR0
 )paren
 suffix:semicolon
 multiline_comment|/* RESET MAC */
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 id|outl
 c_func
@@ -2703,7 +2721,11 @@ op_plus
 id|DCR0
 )paren
 suffix:semicolon
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 multiline_comment|/* deleted timer */
 id|del_timer_sync
@@ -3895,6 +3917,8 @@ id|dev
 suffix:semicolon
 id|db-&gt;timer.expires
 op_assign
+id|jiffies
+op_plus
 id|DMFE_TIMER_WUT
 suffix:semicolon
 id|add_timer
@@ -4186,6 +4210,8 @@ suffix:semicolon
 multiline_comment|/* Timer active again */
 id|db-&gt;timer.expires
 op_assign
+id|jiffies
+op_plus
 id|DMFE_TIMER_WUT
 suffix:semicolon
 id|add_timer
@@ -4820,7 +4846,11 @@ op_plus
 id|DCR6
 )paren
 suffix:semicolon
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 id|outl
 c_func
@@ -5598,7 +5628,11 @@ comma
 id|cr9_ioaddr
 )paren
 suffix:semicolon
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 id|srom_data
 op_assign
@@ -5635,7 +5669,11 @@ comma
 id|cr9_ioaddr
 )paren
 suffix:semicolon
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 )brace
 id|outl
@@ -5668,6 +5706,8 @@ id|i
 suffix:semicolon
 id|u16
 id|phy_mode
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -5682,7 +5722,11 @@ id|i
 op_decrement
 )paren
 (brace
-id|DELAY_5US
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
 suffix:semicolon
 id|phy_mode
 op_assign
@@ -6545,7 +6589,11 @@ id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* MII Clock Low */
-id|DELAY_1US
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 id|outl
 c_func
@@ -6558,7 +6606,11 @@ id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* MII Clock High */
-id|DELAY_1US
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 id|outl
 c_func
@@ -6569,7 +6621,11 @@ id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* MII Clock Low */
-id|DELAY_1US
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;   Read one bit phy data from PHY controller&n; */
@@ -6594,7 +6650,11 @@ comma
 id|ioaddr
 )paren
 suffix:semicolon
-id|DELAY_1US
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 id|phy_data
 op_assign
@@ -6618,7 +6678,11 @@ comma
 id|ioaddr
 )paren
 suffix:semicolon
-id|DELAY_1US
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 r_return
 id|phy_data

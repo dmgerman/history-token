@@ -41,6 +41,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef EL3_DEBUG
 DECL|variable|el3_debug
+r_static
 r_int
 id|el3_debug
 op_assign
@@ -48,6 +49,7 @@ id|EL3_DEBUG
 suffix:semicolon
 macro_line|#else
 DECL|variable|el3_debug
+r_static
 r_int
 id|el3_debug
 op_assign
@@ -528,6 +530,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|el3_mca_adapters
+r_static
 r_struct
 id|el3_mca_adapters_struct
 id|el3_mca_adapters
@@ -573,37 +576,22 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __ISAPNP__
-DECL|struct|el3_isapnp_adapters_struct
-r_struct
-id|el3_isapnp_adapters_struct
-(brace
-DECL|member|vendor
-DECL|member|function
-r_int
-r_int
-id|vendor
-comma
-id|function
-suffix:semicolon
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#endif /* CONFIG_MCA */
+macro_line|#ifdef CONFIG_ISAPNP
 DECL|variable|el3_isapnp_adapters
 r_static
 r_struct
-id|el3_isapnp_adapters_struct
+id|isapnp_device_id
 id|el3_isapnp_adapters
 (braket
 )braket
 op_assign
 (brace
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -620,10 +608,17 @@ c_func
 l_int|0x5090
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III (TP)&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -640,10 +635,17 @@ c_func
 l_int|0x5091
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -660,10 +662,17 @@ c_func
 l_int|0x5094
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III (combo)&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -680,10 +689,17 @@ c_func
 l_int|0x5095
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III (TPO)&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -700,10 +716,17 @@ c_func
 l_int|0x5098
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III (TPC)&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -720,14 +743,24 @@ c_func
 l_int|0x80f8
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Etherlink III compatible&quot;
 )brace
 comma
 (brace
-l_int|0
+)brace
+multiline_comment|/* terminate list */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
 comma
-)brace
-)brace
+id|el3_isapnp_adapters
+)paren
 suffix:semicolon
 DECL|variable|el3_isapnp_phys_addr
 r_static
@@ -740,14 +773,12 @@ l_int|8
 l_int|3
 )braket
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP */
-macro_line|#ifdef __ISAPNP__
 DECL|variable|nopnp
 r_static
 r_int
 id|nopnp
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_ISAPNP */
 DECL|function|el3_probe
 r_int
 id|el3_probe
@@ -796,14 +827,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 r_static
 r_int
 id|pnp_cards
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* __ISAPNP__ */
+macro_line|#endif /* CONFIG_ISAPNP */
 r_if
 c_cond
 (paren
@@ -1232,7 +1263,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 r_if
 c_cond
 (paren
@@ -1480,7 +1511,7 @@ suffix:semicolon
 )brace
 id|no_pnp
 suffix:colon
-macro_line|#endif /* __ISAPNP__ */
+macro_line|#endif /* CONFIG_ISAPNP */
 multiline_comment|/* Select an open I/O location at 0x1*0 to do contention select. */
 r_for
 c_loop
@@ -1691,7 +1722,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 r_if
 c_cond
 (paren
@@ -1832,7 +1863,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* __ISAPNP__ */
+macro_line|#endif /* CONFIG_ISAPNP */
 (brace
 r_int
 r_int
@@ -4961,7 +4992,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 id|MODULE_PARM
 c_func
 (paren

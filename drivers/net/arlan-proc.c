@@ -447,7 +447,7 @@ l_string|&quot;type A672T&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|function|arlan_print_diagnostic_info
 r_static
 r_void
@@ -1309,7 +1309,7 @@ comma
 id|u_char
 )paren
 suffix:semicolon
-multiline_comment|/* issue nop command - no interupt */
+multiline_comment|/* issue nop command - no interrupt */
 id|arlan_command
 c_func
 (paren
@@ -3842,7 +3842,7 @@ suffix:semicolon
 multiline_comment|/* Place files in /proc/sys/dev/arlan */
 DECL|macro|CTBLN
 mdefine_line|#define CTBLN(num,card,nam) &bslash;&n;        {num , #nam, &amp;(arlan_conf[card].nam), &bslash;&n;         sizeof(int), 0600, NULL, &amp;proc_dointvec}
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|macro|ARLAN_PROC_DEBUG_ENTRIES
 mdefine_line|#define ARLAN_PROC_DEBUG_ENTRIES&t;{48, &quot;entry_exit_debug&quot;, &amp;arlan_entry_and_exit_debug, &bslash;&n;                sizeof(int), 0600, NULL, &amp;proc_dointvec},&bslash;&n;&t;{49, &quot;debug&quot;, &amp;arlan_debug, &bslash;&n;                sizeof(int), 0600, NULL, &amp;proc_dointvec},
 macro_line|#else 

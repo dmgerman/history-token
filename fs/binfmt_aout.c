@@ -1560,6 +1560,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|error
 OL
 l_int|0

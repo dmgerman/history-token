@@ -1666,7 +1666,7 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * promise_write() transfers a block of one or more sectors of data to a&n; * drive as part of a disk write operation. All but 4 sectors are transfered&n; * in the first attempt, then the interface is polled (nicely!) for completion&n; * before the final 4 sectors are transfered. There is no interrupt generated&n; * on writes (at least on the DC4030VL-2), we just have to poll for NOT BUSY.&n; */
+multiline_comment|/*&n; * promise_write() transfers a block of one or more sectors of data to a&n; * drive as part of a disk write operation. All but 4 sectors are transferred&n; * in the first attempt, then the interface is polled (nicely!) for completion&n; * before the final 4 sectors are transferred. There is no interrupt generated&n; * on writes (at least on the DC4030VL-2), we just have to poll for NOT BUSY.&n; */
 DECL|function|promise_write
 r_static
 id|ide_startstop_t

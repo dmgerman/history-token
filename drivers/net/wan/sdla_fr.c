@@ -5830,7 +5830,7 @@ suffix:semicolon
 r_case
 id|FR_INTR_DLC
 suffix:colon
-multiline_comment|/* Event interrupt occured */
+multiline_comment|/* Event interrupt occurred */
 id|mbox-&gt;cmd.command
 op_assign
 id|FR_READ_STATUS
@@ -5985,7 +5985,7 @@ id|card-&gt;wandev.critical
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*============================================================================&n; * Receive interrupt handler.&n; * When a receive interrupt occurs do the following:&n; *&t;1- Find the structure for the dlci that the interrupt occured on&n; *      2- If it doesn&squot;t exist then print appropriate msg and goto step 8. &n; * &t;3- If it exist then copy data to a skb.&n; * &t;4- If skb contains Sangoma UDP data then process them&n; *&t;5- If skb contains IPXWAN data then send IPXWAN reply packets&n; *&t;6- If skb contains Inverse Arp data then send Inv Arp replies&n; *&t;7- If skb contains any other data then decapsulate the packet and&n; *&t;   send it to the stack.&n; * &t;8- Release the receive element and update receive pointers on the board &n; */
+multiline_comment|/*============================================================================&n; * Receive interrupt handler.&n; * When a receive interrupt occurs do the following:&n; *&t;1- Find the structure for the dlci that the interrupt occurred on&n; *      2- If it doesn&squot;t exist then print appropriate msg and goto step 8. &n; * &t;3- If it exist then copy data to a skb.&n; * &t;4- If skb contains Sangoma UDP data then process them&n; *&t;5- If skb contains IPXWAN data then send IPXWAN reply packets&n; *&t;6- If skb contains Inverse Arp data then send Inv Arp replies&n; *&t;7- If skb contains any other data then decapsulate the packet and&n; *&t;   send it to the stack.&n; * &t;8- Release the receive element and update receive pointers on the board &n; */
 DECL|function|rx_intr
 r_static
 r_void

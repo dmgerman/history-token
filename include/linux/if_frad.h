@@ -500,7 +500,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
-DECL|variable|dlci_ioctl_hook
+r_extern
 r_int
 (paren
 op_star
@@ -514,7 +514,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif __KERNEL__
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* CONFIG_DLCI || CONFIG_DLCI_MODULE */
 macro_line|#endif
 eof

@@ -18,7 +18,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_32
 DECL|macro|CPU_INCLUDE_NAME
 macro_line|# define CPU_INCLUDE_NAME &quot;asm/cpu-multi32.h&quot;
-macro_line|# ifdef CONFIG_CPU_ARM6
+macro_line|# ifdef CONFIG_CPU_ARM610
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
 macro_line|#   undef  MULTI_CPU
@@ -29,7 +29,7 @@ DECL|macro|CPU_NAME
 macro_line|#   define CPU_NAME arm6
 macro_line|#  endif
 macro_line|# endif
-macro_line|# ifdef CONFIG_CPU_ARM7
+macro_line|# ifdef CONFIG_CPU_ARM710
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
 macro_line|#   undef  MULTI_CPU
@@ -40,7 +40,7 @@ DECL|macro|CPU_NAME
 macro_line|#   define CPU_NAME arm7
 macro_line|#  endif
 macro_line|# endif
-macro_line|# ifdef CONFIG_CPU_ARM720
+macro_line|# ifdef CONFIG_CPU_ARM720T
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
 macro_line|#   undef  MULTI_CPU
@@ -51,7 +51,7 @@ DECL|macro|CPU_NAME
 macro_line|#   define CPU_NAME arm720
 macro_line|#  endif
 macro_line|# endif
-macro_line|# ifdef CONFIG_CPU_ARM920
+macro_line|# ifdef CONFIG_CPU_ARM920T
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
 macro_line|#   undef  MULTI_CPU

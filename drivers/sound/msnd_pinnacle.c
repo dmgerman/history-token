@@ -13,8 +13,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sound_firmware.h&quot;
 macro_line|#ifdef MSND_CLASSIC
+macro_line|# ifndef __alpha__
 DECL|macro|SLOWIO
 macro_line|#  define SLOWIO
+macro_line|# endif
 macro_line|#endif
 macro_line|#include &quot;msnd.h&quot;
 macro_line|#ifdef MSND_CLASSIC
@@ -6765,7 +6767,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|unload_multisound
 r_static
 r_void
@@ -6813,7 +6814,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifndef MSND_CLASSIC
 multiline_comment|/* Pinnacle/Fiji Logical Device Configuration */
 DECL|function|msnd_write_cfg

@@ -71,24 +71,10 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|member|vendor
-DECL|member|function
-DECL|member|name
+DECL|variable|__initdata
 r_static
 r_struct
-(brace
-r_int
-r_int
-id|vendor
-comma
-id|function
-suffix:semicolon
-r_char
-op_star
-id|name
-suffix:semicolon
-)brace
-DECL|variable|__initdata
+id|isapnp_device_id
 id|isapnp_clone_list
 (braket
 )braket
@@ -96,6 +82,10 @@ id|__initdata
 op_assign
 (brace
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -112,10 +102,17 @@ c_func
 l_int|0x0216
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;NN NE2000&quot;
 )brace
 comma
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -132,14 +129,24 @@ c_func
 l_int|0x80d6
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;Generic PNP&quot;
 )brace
 comma
 (brace
-l_int|0
+)brace
+multiline_comment|/* terminate list */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
 comma
-)brace
-)brace
+id|isapnp_clone_list
+)paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_NE_BAD_CLONES
 multiline_comment|/* A list of bad clones that we none-the-less recognize. */
@@ -813,12 +820,16 @@ c_func
 id|KERN_INFO
 l_string|&quot;ne.c: ISAPnP reports %s at i/o %#lx, irq %d.&bslash;n&quot;
 comma
+(paren
+r_char
+op_star
+)paren
 id|isapnp_clone_list
 (braket
 id|i
 )braket
 dot
-id|name
+id|driver_data
 comma
 id|dev-&gt;base_addr
 comma

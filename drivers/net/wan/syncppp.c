@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
@@ -16,7 +17,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &quot;syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 DECL|macro|MAXALIVECNT
 mdefine_line|#define MAXALIVECNT     6               /* max. alive packets */
 DECL|macro|PPP_ALLSTATIONS
@@ -377,14 +378,6 @@ r_int
 id|debug
 op_assign
 l_int|0
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;1i&quot;
-)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Interface down stub&n; */
 DECL|function|if_down
@@ -5606,13 +5599,26 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|sync_ppp_init
-r_void
+r_static
+r_int
+id|__init
 id|sync_ppp_init
 c_func
 (paren
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debug
+)paren
+(brace
+id|debug
+op_assign
+id|PP_DEBUG
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -5649,39 +5655,15 @@ op_amp
 id|sppp_packet_type
 )paren
 suffix:semicolon
-)brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-(brace
-id|debug
-op_assign
-id|PP_DEBUG
-suffix:semicolon
-)brace
-id|sync_ppp_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|sync_ppp_cleanup
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|sync_ppp_cleanup
 c_func
 (paren
 r_void
@@ -5695,5 +5677,26 @@ id|sppp_packet_type
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|sync_ppp_init
+id|module_init
+c_func
+(paren
+id|sync_ppp_init
+)paren
+suffix:semicolon
+DECL|variable|sync_ppp_cleanup
+id|module_exit
+c_func
+(paren
+id|sync_ppp_cleanup
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;1i&quot;
+)paren
+suffix:semicolon
 eof

@@ -147,10 +147,6 @@ l_int|48
 )braket
 suffix:semicolon
 multiline_comment|/* for use by the filter modules */
-DECL|member|lo_blksize
-r_int
-id|lo_blksize
-suffix:semicolon
 DECL|member|old_gfp_mask
 r_int
 id|old_gfp_mask
@@ -285,9 +281,6 @@ id|rblock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * used to throttle loop_thread so bdflush/kswapd doesn&squot;t go nuts&n; */
-DECL|macro|LOOP_MAX_BUFFERS
-mdefine_line|#define LOOP_MAX_BUFFERS&t;2048
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Loop flags&n; */
 DECL|macro|LO_FLAGS_DO_BMAP

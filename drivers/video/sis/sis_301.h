@@ -53,10 +53,7 @@ id|RY3COE
 comma
 id|RY4COE
 suffix:semicolon
-DECL|variable|LCDResInfo
-DECL|variable|LCDTypeInfo
-DECL|variable|LCDInfo
-suffix:semicolon
+r_extern
 id|USHORT
 id|LCDResInfo
 comma

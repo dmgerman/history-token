@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &quot;../syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -111,6 +111,12 @@ id|async_struct
 op_star
 id|info
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|async_struct

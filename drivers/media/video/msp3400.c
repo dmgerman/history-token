@@ -6249,6 +6249,8 @@ r_int
 id|rev1
 comma
 id|rev2
+op_assign
+l_int|0
 comma
 id|i
 suffix:semicolon
@@ -7792,8 +7794,7 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/* nothing */
 )brace
 r_return

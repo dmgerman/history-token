@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.2 2000/11/06 22:34:38 paul Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; * &n; * Redistribution of this file is permitted under &n; * the terms of the GNU Public License (GPL)&n; */
+multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.2 2000/11/06 22:34:38 paul Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; * &n; * Redistribution of this file is permitted under &n; * the terms of the GNU General Public License (GPL)&n; */
 macro_line|#ifndef _SYNCLINK_H_
 DECL|macro|_SYNCLINK_H_
 mdefine_line|#define _SYNCLINK_H_

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; *&n; *&n; *  To Do:&n; *&n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
+multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; * 12/23/00 - Added minimal Cardbus support (Thanks Donald).&n; *&n; *  To Do:&n; *           Complete full Cardbus / hot-swap support.&n; * &n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
 multiline_comment|/* Change OLYMPIC_DEBUG to 1 to get verbose, and I mean really verbose, messages */
 DECL|macro|OLYMPIC_DEBUG
 mdefine_line|#define OLYMPIC_DEBUG 0
@@ -37,7 +37,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;Olympic.c v0.5.0 3/10/00 - Peter De Schrijver &amp; Mike Phillips&quot;
+l_string|&quot;Olympic.c v0.5.C 12/23/00 - Peter De Schrijver &amp; Mike Phillips&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -517,7 +517,7 @@ id|pci_device
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* These lines are needed by the PowerPC, it appears&n;that these flags&n;&t;&t;&t; * are not being set properly for the PPC, this may&n;well be fixed with&n;&t;&t;&t; * the new PCI code */
+multiline_comment|/* These lines are needed by the PowerPC, it appears that these flags&n;&t;&t;&t; * are not being set properly for the PPC, this may well be fixed with&n;&t;&t;&t; * the new PCI code */
 id|pci_read_config_word
 c_func
 (paren
@@ -680,6 +680,7 @@ op_assign
 op_amp
 id|olympic_init
 suffix:semicolon
+multiline_comment|/* AKPM: Not needed */
 id|olympic_priv-&gt;olympic_card_name
 op_assign
 (paren
@@ -785,12 +786,6 @@ op_minus
 l_int|1
 )paren
 (brace
-id|unregister_netdevice
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1021,6 +1016,43 @@ op_amp
 id|olympic_priv-&gt;olympic_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Needed for cardbus */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|readl
+c_func
+(paren
+id|olympic_mmio
+op_plus
+id|BCTL
+)paren
+op_amp
+id|BCTL_MODE_INDICATOR
+)paren
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|olympic_priv-&gt;olympic_mmio
+op_plus
+id|FERMASK
+)paren
+op_or
+id|FERMASK_INT_BIT
+comma
+id|olympic_mmio
+op_plus
+id|FERMASK
+)paren
+suffix:semicolon
+)brace
 macro_line|#if OLYMPIC_DEBUG
 id|printk
 c_func

@@ -168,7 +168,7 @@ id|cmd_buffer
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* This is where all commands are put&n;&t;&t;&t;&t; * before they are transfered to the ESP chip&n;&t;&t;&t;&t; * via PIO.&n;&t;&t;&t;&t; */
+multiline_comment|/* This is where all commands are put&n;&t;&t;&t;&t; * before they are transferred to the ESP chip&n;&t;&t;&t;&t; * via PIO.&n;&t;&t;&t;&t; */
 multiline_comment|/***************************************************************** Detection */
 DECL|function|blz1230_esp_detect
 r_int
@@ -328,36 +328,9 @@ l_int|7
 )paren
 )paren
 (brace
-id|esp_deallocate
-c_func
-(paren
-id|esp
-)paren
+r_goto
+id|err_out
 suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|esp-&gt;ehost
-)paren
-suffix:semicolon
-id|release_mem_region
-c_func
-(paren
-id|board
-op_plus
-id|REAL_BLZ1230_ESP_ADDR
-comma
-r_sizeof
-(paren
-r_struct
-id|ESP_regs
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Bail out if address did not hold data */
 )brace
 multiline_comment|/* Do command transfer with programmed I/O */
 id|esp-&gt;do_pio_cmds
@@ -504,6 +477,9 @@ id|board
 op_plus
 id|REAL_BLZ1230_ESP_ADDR
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -517,6 +493,9 @@ l_string|&quot;Blizzard 1230 SCSI IV&quot;
 comma
 id|esp_intr
 )paren
+)paren
+r_goto
+id|err_out
 suffix:semicolon
 multiline_comment|/* Figure out our scsi ID on the bus */
 id|esp-&gt;scsi_id
@@ -553,6 +532,37 @@ id|esps_in_use
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
+id|err_out
+suffix:colon
+id|scsi_unregister
+c_func
+(paren
+id|esp-&gt;ehost
+)paren
+suffix:semicolon
+id|esp_deallocate
+c_func
+(paren
+id|esp
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|board
+op_plus
+id|REAL_BLZ1230_ESP_ADDR
+comma
+r_sizeof
+(paren
+r_struct
+id|ESP_regs
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -3150,7 +3150,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Critical in if_send: %x&bslash;n&quot;
+l_string|&quot;%s: Critical in if_send: %lx&bslash;n&quot;
 comma
 id|card-&gt;wandev.name
 comma
@@ -5162,7 +5162,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Critical while in ISR: %x&bslash;n&quot;
+l_string|&quot;%s: Critical while in ISR: %lx&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma

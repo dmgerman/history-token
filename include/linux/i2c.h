@@ -1231,7 +1231,7 @@ mdefine_line|#define I2C_SMBUS_I2C_BLOCK_DATA    6
 multiline_comment|/* ----- commands for the ioctl like i2c_command call:&n; * note that additional calls are defined in the algorithm and hw &n; *&t;dependent layers - these can be listed here, or see the &n; *&t;corresponding header files.&n; */
 multiline_comment|/* -&gt; bit-adapter specific ioctls&t;*/
 DECL|macro|I2C_RETRIES
-mdefine_line|#define I2C_RETRIES&t;0x0701&t;/* number times a device adress should&t;*/
+mdefine_line|#define I2C_RETRIES&t;0x0701&t;/* number times a device address should&t;*/
 multiline_comment|/* be polled when not acknowledging &t;*/
 DECL|macro|I2C_TIMEOUT
 mdefine_line|#define I2C_TIMEOUT&t;0x0702&t;/* set timeout - call with int &t;&t;*/
@@ -1251,7 +1251,7 @@ mdefine_line|#define I2C_FUNCS&t;0x0705&t;/* Get the adapter functionality */
 DECL|macro|I2C_RDWR
 mdefine_line|#define I2C_RDWR&t;0x0707&t;/* Combined R/W transfer (one stop only)*/
 macro_line|#if 0
-mdefine_line|#define I2C_ACK_TEST&t;0x0710&t;/* See if a slave is at a specific adress */
+mdefine_line|#define I2C_ACK_TEST&t;0x0710&t;/* See if a slave is at a specific address */
 macro_line|#endif
 DECL|macro|I2C_SMBUS
 mdefine_line|#define I2C_SMBUS&t;0x0720&t;/* SMBus-level access */

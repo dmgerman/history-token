@@ -140,6 +140,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
 r_static
@@ -1914,11 +1915,6 @@ r_if
 c_cond
 (paren
 id|dev-&gt;mem_start
-op_logical_and
-id|dev-&gt;mem_start
-op_ne
-op_complement
-l_int|0
 )paren
 id|option
 op_assign
@@ -2004,9 +2000,13 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4083,11 +4083,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -6661,7 +6656,11 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|netdev_private
@@ -6733,6 +6732,14 @@ id|kfree
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

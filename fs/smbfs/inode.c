@@ -514,6 +514,7 @@ op_amp
 id|S_IFMT
 )paren
 )paren
+(brace
 id|smb_set_inode_attr
 c_func
 (paren
@@ -523,6 +524,7 @@ op_amp
 id|fattr
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Big trouble! The inode has become a new object,&n;&t;&t;&t; * so any operations attempted on it are invalid.&n;&t;&t;&t; *&n;&t;&t;&t; * To limit damage, mark the inode as bad so that&n;&t;&t;&t; * subsequent lookup validations will fail.&n;&t;&t;&t; */
@@ -626,6 +628,9 @@ suffix:semicolon
 id|time_t
 id|last_time
 suffix:semicolon
+id|loff_t
+id|last_sz
+suffix:semicolon
 r_int
 id|error
 op_assign
@@ -637,39 +642,11 @@ c_func
 l_string|&quot;smb_revalidate_inode&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this is a file opened with write permissions,&n;&t; * the inode will be up-to-date.&n;&t; */
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|S_ISREG
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-op_logical_and
-id|smb_is_open
-c_func
-(paren
-id|inode
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|inode-&gt;u.smbfs_i.access
-op_ne
-id|SMB_O_RDONLY
-)paren
-r_goto
-id|out
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Check whether we&squot;ve recently refreshed the inode.&n;&t; */
 r_if
 c_cond
@@ -705,10 +682,14 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Save the last modified time, then refresh the inode.&n;&t; * (Note: a size change should have a different mtime.)&n;&t; */
+multiline_comment|/*&n;&t; * Save the last modified time, then refresh the inode.&n;&t; * (Note: a size change should have a different mtime,&n;&t; *  or same mtime but different size.)&n;&t; */
 id|last_time
 op_assign
 id|inode-&gt;i_mtime
+suffix:semicolon
+id|last_sz
+op_assign
+id|inode-&gt;i_size
 suffix:semicolon
 id|error
 op_assign
@@ -726,6 +707,10 @@ op_logical_or
 id|inode-&gt;i_mtime
 op_ne
 id|last_time
+op_logical_or
+id|inode-&gt;i_size
+op_ne
+id|last_sz
 )paren
 (brace
 id|VERBOSE

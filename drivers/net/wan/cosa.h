@@ -20,7 +20,7 @@ DECL|macro|SR_RX_INT_ENA
 mdefine_line|#define SR_RX_INT_ENA   0x80    /* receiver interrupt enable bit */
 multiline_comment|/* status register - input bits */
 DECL|macro|SR_USR_RQ
-mdefine_line|#define SR_USR_RQ       0x20    /* user interupt request pending */
+mdefine_line|#define SR_USR_RQ       0x20    /* user interrupt request pending */
 DECL|macro|SR_TX_RDY
 mdefine_line|#define SR_TX_RDY       0x40    /* transmitter empty (ready) */
 DECL|macro|SR_RX_RDY

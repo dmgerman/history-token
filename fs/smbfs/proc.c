@@ -3704,7 +3704,7 @@ op_assign
 id|read_only
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* FIXME: why is this code not in? below we fix it so that a caller&n;&t;   wanting RO doesn&squot;t get RW. smb_revalidate_inode does some &n;&t;   optimization based on access mode. tail -f needs it to be correct. */
+multiline_comment|/* FIXME: why is this code not in? below we fix it so that a caller&n;&t;   wanting RO doesn&squot;t get RW. smb_revalidate_inode does some &n;&t;   optimization based on access mode. tail -f needs it to be correct.&n;&n;&t;   We must open rw since we don&squot;t do the open if called a second time&n;&t;   with different &squot;wish&squot;. Is that not supported by smb servers? */
 r_if
 c_cond
 (paren
@@ -3927,24 +3927,6 @@ id|smb_vwv6
 op_amp
 id|SMB_ACCMASK
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|wish
-op_amp
-(paren
-id|O_WRONLY
-op_or
-id|O_RDWR
-)paren
-)paren
-)paren
-id|ino-&gt;u.smbfs_i.access
-op_assign
-id|SMB_O_RDONLY
 suffix:semicolon
 id|ino-&gt;u.smbfs_i.open
 op_assign

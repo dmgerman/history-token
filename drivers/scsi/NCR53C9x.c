@@ -7401,7 +7401,7 @@ op_amp
 id|ESP_STAT_PMASK
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * polled transfer; ugly, can we make this happen in a DRQ &n;&t;&t; * interrupt handler ??&n;&t;&t; * requires keeping track of state information in host or &n;&t;&t; * command struct!&n;&t;&t; * Problem: I&squot;ve never seen a DRQ happen on Mac, not even&n;&t;&t; * with ESP_CMD_DMA ...&n;&t;&t; */
-multiline_comment|/* figure out how much needs to be transfered */
+multiline_comment|/* figure out how much needs to be transferred */
 id|hmuch
 op_assign
 id|SCptr-&gt;SCp.this_residual
@@ -7929,7 +7929,7 @@ id|ESPDATA
 c_func
 (paren
 (paren
-l_string|&quot;disconnect; %d transfered ... &quot;
+l_string|&quot;disconnect; %d transferred ... &quot;
 comma
 id|i
 )paren
@@ -7952,7 +7952,7 @@ id|ESPDATA
 c_func
 (paren
 (paren
-l_string|&quot;function done; %d transfered ... &quot;
+l_string|&quot;function done; %d transferred ... &quot;
 comma
 id|i
 )paren
@@ -7975,7 +7975,7 @@ id|ESPDATA
 c_func
 (paren
 (paren
-l_string|&quot;fifo stall; %d transfered ... &quot;
+l_string|&quot;fifo stall; %d transferred ... &quot;
 comma
 id|i
 )paren
@@ -8006,7 +8006,7 @@ op_add_assign
 id|fifocnt
 suffix:semicolon
 multiline_comment|/* stuck?? adjust data pointer ...*/
-multiline_comment|/* tell do_data_finale how much was transfered */
+multiline_comment|/* tell do_data_finale how much was transferred */
 id|esp-&gt;current_transfer_size
 op_sub_assign
 id|hmuch

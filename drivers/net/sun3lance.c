@@ -307,7 +307,7 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-multiline_comment|/* These two must be ints for set_bit() */
+multiline_comment|/* These two must be longs for set_bit() */
 DECL|member|tx_full
 r_int
 id|tx_full
@@ -818,6 +818,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;priv
 )paren
+(brace
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -832,6 +833,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|lp
 op_assign
 (paren

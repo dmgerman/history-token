@@ -277,7 +277,7 @@ id|mackbd_sysrq_xlate
 l_int|128
 )braket
 suffix:semicolon
-DECL|variable|boot_dev
+r_extern
 id|kdev_t
 id|boot_dev
 suffix:semicolon

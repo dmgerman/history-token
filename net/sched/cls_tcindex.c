@@ -1750,6 +1750,9 @@ r_struct
 id|tcindex_filter
 op_star
 id|f
+comma
+op_star
+id|next
 suffix:semicolon
 r_int
 id|i
@@ -1884,9 +1887,13 @@ id|f
 suffix:semicolon
 id|f
 op_assign
-id|f-&gt;next
+id|next
 )paren
 (brace
+id|next
+op_assign
+id|f-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren

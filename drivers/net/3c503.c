@@ -35,6 +35,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
 r_int
 id|el2_pio_probe
 c_func
@@ -45,6 +46,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
 r_int
 id|el2_probe1
 c_func
@@ -374,6 +376,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*  Try all of the locations that aren&squot;t obviously empty.  This touches&n;    a lot of locations, and is much riskier than the code above. */
+r_static
 r_int
 id|__init
 DECL|function|el2_pio_probe
@@ -469,6 +472,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Probe for the Etherlink II card at I/O port base IOADDR,&n;   returning non-zero on success.  If found, set the station&n;   address and memory parameters in DEVICE. */
+r_static
 r_int
 id|__init
 DECL|function|el2_probe1
@@ -505,6 +509,7 @@ r_int
 r_int
 id|vendor_id
 suffix:semicolon
+multiline_comment|/* FIXME: code reads ioaddr + 0x400, we request ioaddr + 16 */
 r_if
 c_cond
 (paren
@@ -1092,6 +1097,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif  /* EL2MEMTEST */
+r_if
+c_cond
+(paren
+id|dev-&gt;mem_start
+)paren
 id|dev-&gt;mem_end
 op_assign
 id|dev-&gt;rmem_end

@@ -9,11 +9,6 @@ macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,47)
 DECL|macro|SCSI_NCR_DYNAMIC_DMA_MAPPING
 mdefine_line|#define SCSI_NCR_DYNAMIC_DMA_MAPPING
 macro_line|#endif
-multiline_comment|/*==========================================================&n;**&n;**    Io mapped versus memory mapped.&n;**&n;**==========================================================&n;*/
-macro_line|#if defined(SCSI_NCR_IOMAPPED) || defined(SCSI_NCR_PCI_MEM_NOT_SUPPORTED)
-DECL|macro|NCR_IOMAPPED
-mdefine_line|#define NCR_IOMAPPED
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Miscallaneous defines.&n;**&n;**==========================================================&n;*/
 DECL|macro|u_char
 mdefine_line|#define u_char&t;&t;unsigned char
@@ -365,22 +360,6 @@ r_return
 id|elem
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&t;On x86 architecture, write buffers management does &n;**&t;not reorder writes to memory. So, using compiler &n;**&t;optimization barriers is enough to guarantee some &n;**&t;ordering when the CPU is writing data accessed by &n;**&t;the NCR.&n;**&t;On Alpha architecture, explicit memory barriers have &n;**&t;to be used.&n;**&t;Other architectures are defaulted to mb() macro if  &n;**&t;defined, otherwise use compiler barrier.&n;**&n;**==========================================================&n;*/
-macro_line|#if defined(__i386__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;barrier()
-macro_line|#elif defined(__alpha__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;mb()
-macro_line|#else
-macro_line|#  ifdef mb
-DECL|macro|MEMORY_BARRIER
-macro_line|#  define MEMORY_BARRIER()&t;mb()
-macro_line|#  else
-DECL|macro|MEMORY_BARRIER
-macro_line|#  define MEMORY_BARRIER()&t;barrier()
-macro_line|#  endif
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Simple Wrapper to kernel PCI bus interface.&n;**&n;**&t;This wrapper allows to get rid of old kernel PCI &n;**&t;interface and still allows to preserve linux-2.0 &n;**&t;compatibilty. In fact, it is mostly an incomplete &n;**&t;emulation of the new PCI code for pre-2.2 kernels.&n;**&t;When kernel-2.0 support will be dropped, we will &n;**&t;just have to remove most of this code.&n;**&n;**==========================================================&n;*/
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0)
 DECL|typedef|pcidev_t
@@ -402,12 +381,11 @@ DECL|macro|PciDeviceId
 mdefine_line|#define PciDeviceId(d)&t;&t;(d)-&gt;device
 DECL|macro|PciIrqLine
 mdefine_line|#define PciIrqLine(d)&t;&t;(d)-&gt;irq
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
 r_static
-r_int
+id|u_long
 id|__init
-DECL|function|pci_get_base_address
-id|pci_get_base_address
+DECL|function|pci_get_base_cookie
+id|pci_get_base_cookie
 c_func
 (paren
 r_struct
@@ -417,13 +395,12 @@ id|pdev
 comma
 r_int
 id|index
-comma
-id|u_long
-op_star
-id|base
 )paren
 (brace
-op_star
+id|u_long
+id|base
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
 id|base
 op_assign
 id|pdev-&gt;resource
@@ -433,65 +410,19 @@ id|index
 dot
 id|start
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|pdev-&gt;resource
-(braket
-id|index
-)braket
-dot
-id|flags
-op_amp
-l_int|0x7
-)paren
-op_eq
-l_int|0x4
-)paren
-op_increment
-id|index
-suffix:semicolon
-r_return
-op_increment
-id|index
-suffix:semicolon
-)brace
 macro_line|#else
-r_static
-r_int
-id|__init
-DECL|function|pci_get_base_address
-id|pci_get_base_address
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_int
-id|index
-comma
-id|u_long
-op_star
-id|base
-)paren
-(brace
-op_star
 id|base
 op_assign
 id|pdev-&gt;base_address
 (braket
 id|index
-op_increment
 )braket
 suffix:semicolon
+macro_line|#if BITS_PER_LONG &gt; 32
 r_if
 c_cond
 (paren
 (paren
-op_star
 id|base
 op_amp
 l_int|0x7
@@ -499,8 +430,6 @@ l_int|0x7
 op_eq
 l_int|0x4
 )paren
-(brace
-macro_line|#if BITS_PER_LONG &gt; 32
 op_star
 id|base
 op_or_assign
@@ -511,8 +440,110 @@ id|u_long
 )paren
 id|pdev-&gt;base_address
 (braket
+op_increment
 id|index
 )braket
+)paren
+op_lshift
+l_int|32
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+r_return
+(paren
+id|base
+op_amp
+op_complement
+l_int|0x7ul
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+id|__init
+DECL|function|pci_get_base_address
+id|pci_get_base_address
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+id|index
+comma
+id|u_long
+op_star
+id|base
+)paren
+(brace
+id|u32
+id|tmp
+suffix:semicolon
+DECL|macro|PCI_BAR_OFFSET
+mdefine_line|#define PCI_BAR_OFFSET(index) (PCI_BASE_ADDRESS_0 + (index&lt;&lt;2))
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|PCI_BAR_OFFSET
+c_func
+(paren
+id|index
+)paren
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+op_star
+id|base
+op_assign
+id|tmp
+suffix:semicolon
+op_increment
+id|index
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+l_int|0x7
+)paren
+op_eq
+l_int|0x4
+)paren
+(brace
+macro_line|#if BITS_PER_LONG &gt; 32
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|PCI_BAR_OFFSET
+c_func
+(paren
+id|index
+)paren
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+op_star
+id|base
+op_or_assign
+(paren
+(paren
+(paren
+id|u_long
+)paren
+id|tmp
 )paren
 op_lshift
 l_int|32
@@ -526,8 +557,9 @@ suffix:semicolon
 r_return
 id|index
 suffix:semicolon
+DECL|macro|PCI_BAR_OFFSET
+macro_line|#undef PCI_BAR_OFFSET
 )brace
-macro_line|#endif
 macro_line|#else&t;/* Incomplete emulation of current PCI code for pre-2.2 kernels */
 DECL|typedef|pcidev_t
 r_typedef
@@ -823,7 +855,49 @@ r_return
 id|offset
 suffix:semicolon
 )brace
+r_static
+id|u_long
+id|__init
+DECL|function|pci_get_base_cookie
+id|pci_get_base_cookie
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+id|offset
+)paren
+(brace
+id|u_long
+id|base
+suffix:semicolon
+(paren
+r_void
+)paren
+id|pci_get_base_address
+c_func
+(paren
+id|dev
+comma
+id|offset
+comma
+op_amp
+id|base
+)paren
+suffix:semicolon
+r_return
+id|base
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0) */
+multiline_comment|/* Does not make sense in earlier kernels */
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
+DECL|macro|pci_enable_device
+mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
+macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;SMP threading.&n;**&n;**&t;Assuming that SMP systems are generally high end &n;**&t;systems and may use several SCSI adapters, we are &n;**&t;using one lock per controller instead of some global &n;**&t;one. For the moment (linux-2.1.95), driver&squot;s entry &n;**&t;points are called with the &squot;io_request_lock&squot; lock &n;**&t;held, so:&n;**&t;- We are uselessly loosing a couple of micro-seconds &n;**&t;  to lock the controller data structure.&n;**&t;- But the driver is not broken by design for SMP and &n;**&t;  so can be more resistant to bugs or bad changes in &n;**&t;  the IO sub-system code.&n;**&t;- A small advantage could be that the interrupt code &n;**&t;  is grained as wished (e.g.: by controller).&n;**&n;**==========================================================&n;*/
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
 DECL|variable|DRIVER_SMP_LOCK
@@ -871,22 +945,16 @@ mdefine_line|#define iounmap vfree
 macro_line|#endif
 macro_line|#ifdef __sparc__
 macro_line|#  include &lt;asm/irq.h&gt;
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;bus_dvma_to_mem(p)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#elif defined(__alpha__)
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;((p) &amp; 0xfffffffful)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#else&t;/* others */
-DECL|macro|pcivtobus
-macro_line|#  define pcivtobus(p)&t;&t;&t;(p)
 DECL|macro|memcpy_to_pci
 macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 macro_line|#endif
-macro_line|#if (defined(SCSI_NCR_NVRAM_SUPPORT) &amp;&amp; !defined(NCR_IOMAPPED)) || &bslash;&n;&t;(defined(__i386__) &amp;&amp; !defined(SCSI_NCR_PCI_MEM_NOT_SUPPORTED))
+macro_line|#ifndef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
 DECL|function|remap_pci_mem
 r_static
 id|u_long
@@ -3177,129 +3245,6 @@ DECL|macro|initverbose
 mdefine_line|#define initverbose (driver_setup.verbose)
 DECL|macro|bootverbose
 mdefine_line|#define bootverbose (np-&gt;verbose)
-multiline_comment|/*==========================================================&n;**&n;**&t;Big/Little endian support.&n;**&n;**&t;If the NCR uses big endian addressing mode over the &n;**&t;PCI, actual io register addresses for byte and word &n;**&t;accesses must be changed according to lane routing.&n;**&t;Btw, ncr_offb() and ncr_offw() macros only apply to &n;**&t;constants and so donnot generate bloated code.&n;**&n;**&t;If the CPU and the NCR use same endian-ness adressing,&n;**&t;no byte reordering is needed for script patching.&n;**&t;Macro cpu_to_scr() is to be used for script patching.&n;**&t;Macro scr_to_cpu() is to be used for getting a DWORD &n;**&t;from the script.&n;**&n;**==========================================================&n;*/
-macro_line|#if&t;defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|ncr_offb
-mdefine_line|#define ncr_offb(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;3))
-DECL|macro|ncr_offw
-mdefine_line|#define ncr_offw(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;2))
-macro_line|#else
-DECL|macro|ncr_offb
-mdefine_line|#define ncr_offb(o)&t;(o)
-DECL|macro|ncr_offw
-mdefine_line|#define ncr_offw(o)&t;(o)
-macro_line|#endif
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_le32(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;le32_to_cpu(dw)
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_be32(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;be32_to_cpu(dw)
-macro_line|#else
-DECL|macro|cpu_to_scr
-mdefine_line|#define cpu_to_scr(dw)&t;(dw)
-DECL|macro|scr_to_cpu
-mdefine_line|#define scr_to_cpu(dw)&t;(dw)
-macro_line|#endif
-multiline_comment|/*==========================================================&n;**&n;**&t;Access to the controller chip.&n;**&n;**&t;If NCR_IOMAPPED is defined, the driver will use &n;**&t;normal IOs instead of the MEMORY MAPPED IO method  &n;**&t;recommended by PCI specifications.&n;**&t;If all PCI bridges, host brigdes and architectures &n;**&t;would have been correctly designed for PCI, this &n;**&t;option would be useless.&n;**&n;**&t;If the CPU and the NCR use same endian-ness adressing,&n;**&t;no byte reordering is needed for accessing chip io &n;**&t;registers. Functions suffixed by &squot;_raw&squot; are assumed &n;**&t;to access the chip over the PCI without doing byte &n;**&t;reordering. Functions suffixed by &squot;_l2b&squot; are &n;**&t;assumed to perform little-endian to big-endian byte &n;**&t;reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n;**&t;blah, ...&n;**&n;**==========================================================&n;*/
-macro_line|#if defined(NCR_IOMAPPED)
-multiline_comment|/*&n;**&t;IO mapped only input / ouput&n;*/
-DECL|macro|INB_OFF
-mdefine_line|#define&t;INB_OFF(o)&t;&t;inb (np-&gt;base_io + ncr_offb(o))
-DECL|macro|OUTB_OFF
-mdefine_line|#define&t;OUTB_OFF(o, val)&t;outb ((val), np-&gt;base_io + ncr_offb(o))
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_l2b (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_l2b (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_b2l ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_b2l ((val), np-&gt;base_io + (o))
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_b2l (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_b2l (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_l2b ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_l2b ((val), np-&gt;base_io + (o))
-macro_line|#else
-DECL|macro|INW_OFF
-mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_raw (np-&gt;base_io + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_raw (np-&gt;base_io + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_raw ((val), np-&gt;base_io + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_raw ((val), np-&gt;base_io + (o))
-macro_line|#endif&t;/* ENDIANs */
-macro_line|#else&t;/* defined NCR_IOMAPPED */
-multiline_comment|/*&n;**&t;MEMORY mapped IO input / output&n;*/
-DECL|macro|INB_OFF
-mdefine_line|#define INB_OFF(o)&t;&t;readb((char *)np-&gt;reg + ncr_offb(o))
-DECL|macro|OUTB_OFF
-mdefine_line|#define OUTB_OFF(o, val)&t;writeb((val), (char *)np-&gt;reg + ncr_offb(o))
-macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_l2b((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_l2b((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_b2l((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_b2l((val), (char *)np-&gt;reg + (o))
-macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_b2l((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_b2l((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_l2b((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_l2b((val), (char *)np-&gt;reg + (o))
-macro_line|#else
-DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_raw((char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_raw((char *)np-&gt;reg + (o))
-DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_raw((val), (char *)np-&gt;reg + ncr_offw(o))
-DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_raw((val), (char *)np-&gt;reg + (o))
-macro_line|#endif
-macro_line|#endif&t;/* defined NCR_IOMAPPED */
-DECL|macro|INB
-mdefine_line|#define INB(r)&t;&t;INB_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|INW
-mdefine_line|#define INW(r)&t;&t;INW_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|INL
-mdefine_line|#define INL(r)&t;&t;INL_OFF (offsetof(struct ncr_reg,r))
-DECL|macro|OUTB
-mdefine_line|#define OUTB(r, val)&t;OUTB_OFF (offsetof(struct ncr_reg,r), (val))
-DECL|macro|OUTW
-mdefine_line|#define OUTW(r, val)&t;OUTW_OFF (offsetof(struct ncr_reg,r), (val))
-DECL|macro|OUTL
-mdefine_line|#define OUTL(r, val)&t;OUTL_OFF (offsetof(struct ncr_reg,r), (val))
-multiline_comment|/*&n;**&t;Set bit field ON, OFF &n;*/
-DECL|macro|OUTONB
-mdefine_line|#define OUTONB(r, m)&t;OUTB(r, INB(r) | (m))
-DECL|macro|OUTOFFB
-mdefine_line|#define OUTOFFB(r, m)&t;OUTB(r, INB(r) &amp; ~(m))
-DECL|macro|OUTONW
-mdefine_line|#define OUTONW(r, m)&t;OUTW(r, INW(r) | (m))
-DECL|macro|OUTOFFW
-mdefine_line|#define OUTOFFW(r, m)&t;OUTW(r, INW(r) &amp; ~(m))
-DECL|macro|OUTONL
-mdefine_line|#define OUTONL(r, m)&t;OUTL(r, INL(r) | (m))
-DECL|macro|OUTOFFL
-mdefine_line|#define OUTOFFL(r, m)&t;OUTL(r, INL(r) &amp; ~(m))
 multiline_comment|/*==========================================================&n;**&n;**&t;Structures used by the detection routine to transmit &n;**&t;device configuration to the attach function.&n;**&n;**==========================================================&n;*/
 r_typedef
 r_struct
@@ -3323,6 +3268,14 @@ suffix:semicolon
 DECL|member|io_port
 id|u_long
 id|io_port
+suffix:semicolon
+DECL|member|base_c
+id|u_long
+id|base_c
+suffix:semicolon
+DECL|member|base_2_c
+id|u_long
+id|base_2_c
 suffix:semicolon
 DECL|member|irq
 r_int
@@ -4362,13 +4315,13 @@ id|retv
 suffix:semicolon
 )brace
 DECL|macro|SET_BIT
-macro_line|#undef SET_BIT 
+macro_line|#undef SET_BIT
 DECL|macro|CLR_BIT
-macro_line|#undef CLR_BIT 
+macro_line|#undef CLR_BIT
 DECL|macro|SET_CLK
-macro_line|#undef SET_CLK 
+macro_line|#undef SET_CLK
 DECL|macro|CLR_CLK
-macro_line|#undef CLR_CLK 
+macro_line|#undef CLR_CLK
 multiline_comment|/*&n; *  Try reading Symbios NVRAM.&n; *  Return 0 if OK.&n; */
 DECL|function|sym_read_Symbios_nvram
 r_static
@@ -5312,7 +5265,7 @@ id|nvp
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t;**    Get access to chip IO registers&n;&t;*/
-macro_line|#ifdef NCR_IOMAPPED
+macro_line|#ifdef SCSI_NCR_IOMAPPED
 id|request_region
 c_func
 (paren
@@ -5338,7 +5291,7 @@ op_star
 id|remap_pci_mem
 c_func
 (paren
-id|devp-&gt;slot.base
+id|devp-&gt;slot.base_c
 comma
 l_int|128
 )paren
@@ -5404,7 +5357,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;** Release access to chip IO registers&n;&t;*/
-macro_line|#ifdef NCR_IOMAPPED
+macro_line|#ifdef SCSI_NCR_IOMAPPED
 id|release_region
 c_func
 (paren
@@ -6169,8 +6122,8 @@ DECL|macro|OPT_DISCONNECTION
 mdefine_line|#define OPT_DISCONNECTION&t;4
 DECL|macro|OPT_SPECIAL_FEATURES
 mdefine_line|#define OPT_SPECIAL_FEATURES&t;5
-DECL|macro|OPT_ULTRA_SCSI
-mdefine_line|#define OPT_ULTRA_SCSI&t;&t;6
+DECL|macro|OPT_UNUSED_1
+mdefine_line|#define OPT_UNUSED_1&t;&t;6
 DECL|macro|OPT_FORCE_SYNC_NEGO
 mdefine_line|#define OPT_FORCE_SYNC_NEGO&t;7
 DECL|macro|OPT_REVERSE_PROBE
@@ -6564,15 +6517,6 @@ r_case
 id|OPT_SPECIAL_FEATURES
 suffix:colon
 id|driver_setup.special_features
-op_assign
-id|val
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OPT_ULTRA_SCSI
-suffix:colon
-id|driver_setup.ultra_scsi
 op_assign
 id|val
 suffix:semicolon
@@ -7079,7 +7023,7 @@ mdefine_line|#define YesNo(y)&t;y ? &squot;y&squot; : &squot;n&squot;
 id|printk
 (paren
 id|NAME53C8XX
-l_string|&quot;: setup=disc:%c,specf:%d,ultra:%d,tags:%d,sync:%d,&quot;
+l_string|&quot;: setup=disc:%c,specf:%d,tags:%d,sync:%d,&quot;
 l_string|&quot;burst:%d,wide:%c,diff:%d,revprob:%c,buschk:0x%x&bslash;n&quot;
 comma
 id|YesNo
@@ -7089,8 +7033,6 @@ id|driver_setup.disconnection
 )paren
 comma
 id|driver_setup.special_features
-comma
-id|driver_setup.ultra_scsi
 comma
 id|driver_setup.default_tags
 comma
@@ -7387,7 +7329,11 @@ suffix:semicolon
 id|u_long
 id|base
 comma
+id|base_c
+comma
 id|base_2
+comma
+id|base_2_c
 comma
 id|io_port
 suffix:semicolon
@@ -7500,19 +7446,35 @@ id|pdev
 suffix:semicolon
 id|i
 op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_assign
 id|pci_get_base_address
 c_func
 (paren
 id|pdev
 comma
-id|i
+l_int|0
 comma
 op_amp
 id|io_port
+)paren
+suffix:semicolon
+id|io_port
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|base_c
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+id|i
 )paren
 suffix:semicolon
 id|i
@@ -7526,6 +7488,16 @@ id|i
 comma
 op_amp
 id|base
+)paren
+suffix:semicolon
+id|base_2_c
+op_assign
+id|pci_get_base_cookie
+c_func
+(paren
+id|pdev
+comma
+id|i
 )paren
 suffix:semicolon
 (paren
@@ -7813,7 +7785,7 @@ c_cond
 id|chip
 op_logical_and
 (paren
-id|base_2
+id|base_2_c
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 )paren
@@ -7849,7 +7821,7 @@ op_assign
 id|remap_pci_mem
 c_func
 (paren
-id|base_2
+id|base_2_c
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 comma
@@ -8165,7 +8137,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* __i386__ */
 multiline_comment|/*&n;&t;**    Check availability of IO space, memory space.&n;&t;**    Enable master capability if not yet.&n;&t;**&n;&t;**    We shouldn&squot;t have to care about the IO region when &n;&t;**    we are using MMIO. But calling check_region() from &n;&t;**    both the ncr53c8xx and the sym53c8xx drivers prevents &n;&t;**    from attaching devices from the both drivers.&n;&t;**    If you have a better idea, let me know.&n;&t;*/
-multiline_comment|/* #ifdef NCR_IOMAPPED */
+multiline_comment|/* #ifdef SCSI_NCR_IOMAPPED */
 macro_line|#if 1
 r_if
 c_cond
@@ -8235,7 +8207,7 @@ id|base_2
 op_and_assign
 id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
-multiline_comment|/* #ifdef NCR_IOMAPPED */
+multiline_comment|/* #ifdef SCSI_NCR_IOMAPPED */
 macro_line|#if 1
 r_if
 c_cond
@@ -8278,7 +8250,7 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef NCR_IOMAPPED
+macro_line|#ifndef SCSI_NCR_IOMAPPED
 r_if
 c_cond
 (paren
@@ -8454,53 +8426,6 @@ op_complement
 id|FE_NOPM
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|driver_setup.ultra_scsi
-OL
-l_int|2
-op_logical_and
-(paren
-id|chip-&gt;features
-op_amp
-id|FE_ULTRA2
-)paren
-)paren
-(brace
-id|chip-&gt;features
-op_or_assign
-id|FE_ULTRA
-suffix:semicolon
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_ULTRA2
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|driver_setup.ultra_scsi
-OL
-l_int|1
-)paren
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_ULTRA
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver_setup.max_wide
-)paren
-id|chip-&gt;features
-op_and_assign
-op_complement
-id|FE_WIDE
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Some features are required to be enabled in order to &n;&t;**&t;work around some chip problems. :) ;)&n;&t;**&t;(ITEM 12 of a DEL about the 896 I haven&squot;t yet).&n;&t;**&t;We must ensure the chip will use WRITE AND INVALIDATE.&n;&t;**&t;The revision number limit is for now arbitrary.&n;&t;*/
 r_if
 c_cond
@@ -8724,6 +8649,14 @@ suffix:semicolon
 id|device-&gt;slot.base_2
 op_assign
 id|base_2
+suffix:semicolon
+id|device-&gt;slot.base_c
+op_assign
+id|base_c
+suffix:semicolon
+id|device-&gt;slot.base_2_c
+op_assign
+id|base_2_c
 suffix:semicolon
 id|device-&gt;slot.io_port
 op_assign
@@ -8966,6 +8899,18 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pcidev
+)paren
+)paren
+multiline_comment|/* @!*!$&amp;*!%-*#;! */
+r_continue
+suffix:semicolon
 multiline_comment|/* Some HW as the HP LH4 may report twice PCI devices */
 r_for
 c_loop

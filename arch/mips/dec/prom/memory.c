@@ -65,7 +65,7 @@ id|mem_err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* So we know an error occured */
+multiline_comment|/* So we know an error occurred */
 r_extern
 r_char
 id|_end

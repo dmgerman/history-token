@@ -371,7 +371,7 @@ mdefine_line|#define STS_FD     0x00000800       /* Full-Duplex Short Frame Rece
 DECL|macro|STS_TM
 mdefine_line|#define STS_TM     0x00000800       /* Timer Expired (DC21041) */
 DECL|macro|STS_ETI
-mdefine_line|#define STS_ETI    0x00000400       /* Early Transmit Interupt */
+mdefine_line|#define STS_ETI    0x00000400       /* Early Transmit Interrupt */
 DECL|macro|STS_AT
 mdefine_line|#define STS_AT     0x00000400       /* AUI/TP Pin */
 DECL|macro|STS_RWT

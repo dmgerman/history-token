@@ -1550,8 +1550,6 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 id|de620_write_block
 c_func

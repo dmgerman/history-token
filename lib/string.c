@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#ifndef __HAVE_ARCH_STRNICMP
+multiline_comment|/**&n; * strnicmp - Case insensitive, length-limited string comparison&n; * @s1: One string&n; * @s2: The other string&n; * @len: the maximum number of characters to compare&n; */
 DECL|function|strnicmp
 r_int
 id|strnicmp
@@ -140,6 +141,7 @@ op_star
 id|___strtok
 suffix:semicolon
 macro_line|#ifndef __HAVE_ARCH_STRCPY
+multiline_comment|/**&n; * strcpy - Copy a %NUL terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; */
 DECL|function|strcpy
 r_char
 op_star
@@ -185,6 +187,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCPY
+multiline_comment|/**&n; * strncpy - Copy a length-limited, %NUL-terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @count: The maximum number of bytes to copy&n; *&n; * Note that unlike userspace strncpy, this does not %NUL-pad the buffer.&n; * However, the result is not %NUL-terminated if the source exceeds&n; * @count bytes.&n; */
 DECL|function|strncpy
 r_char
 op_star
@@ -236,6 +239,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCAT
+multiline_comment|/**&n; * strcat - Append one %NUL-terminated string to another&n; * @dest: The string to be appended to&n; * @src: The string to append to it&n; */
 DECL|function|strcat
 r_char
 op_star
@@ -289,6 +293,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCAT
+multiline_comment|/**&n; * strncat - Append a length-limited, %NUL-terminated string to another&n; * @dest: The string to be appended to&n; * @src: The string to append to it&n; * @count: The maximum numbers of bytes to copy&n; *&n; * Note that in contrast to strncpy, strncat ensures the result is&n; * terminated.&n; */
 DECL|function|strncat
 r_char
 op_star
@@ -368,6 +373,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCMP
+multiline_comment|/**&n; * strcmp - Compare two strings&n; * @cs: One string&n; * @ct: Another string&n; */
 DECL|function|strcmp
 r_int
 id|strcmp
@@ -425,6 +431,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCMP
+multiline_comment|/**&n; * strncmp - Compare two length-limited strings&n; * @cs: One string&n; * @ct: Another string&n; * @count: The maximum number of bytes to compare&n; */
 DECL|function|strncmp
 r_int
 id|strncmp
@@ -490,6 +497,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCHR
+multiline_comment|/**&n; * strchr - Find the first occurrence of a character in a string&n; * @s: The string to be searched&n; * @c: The character to search for&n; */
 DECL|function|strchr
 r_char
 op_star
@@ -541,6 +549,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRRCHR
+multiline_comment|/**&n; * strrchr - Find the last occurrence of a character in a string&n; * @s: The string to be searched&n; * @c: The character to search for&n; */
 DECL|function|strrchr
 r_char
 op_star
@@ -605,6 +614,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRLEN
+multiline_comment|/**&n; * strlen - Find the length of a string&n; * @s: The string to be sized&n; */
 DECL|function|strlen
 r_int
 id|strlen
@@ -646,6 +656,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNLEN
+multiline_comment|/**&n; * strnlen - Find the length of a length-limited string&n; * @s: The string to be sized&n; * @count: The maximum number of bytes to search&n; */
 DECL|function|strnlen
 r_int
 id|strnlen
@@ -693,6 +704,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSPN
+multiline_comment|/**&n; * strspn - Calculate the length of the initial substring of @s which only&n; * &t;contain letters in @accept&n; * @s: The string to be searched&n; * @accept: The string to search for&n; */
 DECL|function|strspn
 r_int
 id|strspn
@@ -789,6 +801,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRPBRK
+multiline_comment|/**&n; * strpbrk - Find the first occurrence of a set of characters&n; * @cs: The string to be searched&n; * @ct: The characters to search for&n; */
 DECL|function|strpbrk
 r_char
 op_star
@@ -870,6 +883,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRTOK
+multiline_comment|/**&n; * strtok - Split a string into tokens&n; * @s: The string to be searched&n; * @ct: The characters to search for&n; *&n; * WARNING: strtok is deprecated, use strsep instead.&n; */
 DECL|function|strtok
 r_char
 op_star
@@ -978,6 +992,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSEP
+multiline_comment|/**&n; * strsep - Split a string into tokens&n; * @s: The string to be searched&n; * @ct: The characters to search for&n; *&n; * strsep() updates @s to point after the token, ready for the next call.&n; */
 DECL|function|strsep
 r_char
 op_star
@@ -1072,6 +1087,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMSET
+multiline_comment|/**&n; * memset - Fill a region of memory with the given value&n; * @s: Pointer to the start of the area.&n; * @c: The byte to fill the area with&n; * @count: The size of the area.&n; */
 DECL|function|memset
 r_void
 op_star
@@ -1117,6 +1133,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_BCOPY
+multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @src: Where to copy from&n; * @dest: Where to copy to&n; * @count: The size of the area.&n; *&n; * When using copies for I/O remember that bcopy and memcpy are entitled&n; * to do out of order writes and may well exactly that.&n; *&n; * Note that this is the same as memcpy, with the arguments reversed. memcpy&n; * is the standard, bcopy is a legacy BSD function.&n; */
 DECL|function|bcopy
 r_char
 op_star
@@ -1162,6 +1179,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCPY
+multiline_comment|/**&n; * memcpy - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * When using copies for I/O remember that bcopy and memcpy are entitled&n; * to do out of order writes and may well exactly that.&n; */
 DECL|function|memcpy
 r_void
 op_star
@@ -1220,6 +1238,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMMOVE
+multiline_comment|/**&n; * memmove - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * memmove copes with overlapping areas.&n; */
 DECL|function|memmove
 r_void
 op_star
@@ -1328,6 +1347,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCMP
+multiline_comment|/**&n; * memmove - Compare two areas of memory&n; * @cs: One area of memory&n; * @ct: Another area of memory&n; * @count: The size of the area.&n; */
 DECL|function|memcmp
 r_int
 id|memcmp
@@ -1408,8 +1428,8 @@ id|res
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * find the first occurrence of byte &squot;c&squot;, or 1 past the area if none&n; */
 macro_line|#ifndef __HAVE_ARCH_MEMSCAN
+multiline_comment|/**&n; * memscan - Find a character in an area of memory.&n; * @addr: The memory area&n; * @c: The byte to search for&n; * @size: The size of the area.&n; *&n; * returns the address of the first occurrence of @c, or 1 byte past&n; * the area if @c is not found&n; */
 DECL|function|memscan
 r_void
 op_star
@@ -1477,6 +1497,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSTR
+multiline_comment|/**&n; * strstr - Find the first substring in a %NUL terminated string&n; * @s1: The string to be searched&n; * @s2: The string to search for&n; */
 DECL|function|strstr
 r_char
 op_star
@@ -1570,6 +1591,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCHR
+multiline_comment|/**&n; * memchr - Find a character in an area of memory.&n; * @s: The memory area&n; * @c: The byte to search for&n; * @n: The size of the area.&n; *&n; * returns the address of the first occurrence of @c, or %NULL&n; * if @c is not found&n; */
 DECL|function|memchr
 r_void
 op_star

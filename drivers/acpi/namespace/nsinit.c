@@ -442,7 +442,7 @@ multiline_comment|/* Ignore error and move on to next device */
 )brace
 r_else
 (brace
-multiline_comment|/* Count of successfull INIs */
+multiline_comment|/* Count of successful INIs */
 id|info-&gt;num_INI
 op_increment
 suffix:semicolon

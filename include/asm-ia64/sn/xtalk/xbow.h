@@ -1105,7 +1105,7 @@ id|mult_err
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Multiple error occured */
+multiline_comment|/* Multiple error occurred */
 DECL|member|connect_tout
 id|connect_tout
 suffix:colon
@@ -1228,7 +1228,7 @@ id|mult_err
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Multiple error occured */
+multiline_comment|/* Multiple error occurred */
 DECL|member|xbw0_stfield
 )brace
 id|xbw0_stfield

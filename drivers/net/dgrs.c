@@ -1,13 +1,4 @@
-multiline_comment|/*&n; *&t;Digi RightSwitch SE-X loadable device driver for Linux&n; *&n; *&t;The RightSwitch is a 4 (EISA) or 6 (PCI) port etherswitch and&n; *&t;a NIC on an internal board.&n; *&n; *&t;Author: Rick Richardson, rick@remotepoint.com&n; *&t;Derived from the SVR4.2 (UnixWare) driver for the same card.&n; *&n; *&t;Copyright 1995-1996 Digi International Inc.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; *&t;For information on purchasing a RightSwitch SE-4 or SE-6&n; *&t;board, please contact Digi&squot;s sales department at 1-612-912-3444&n; *&t;or 1-800-DIGIBRD.  Outside the U.S., please check our Web page&n; *&t;at http://www.dgii.com for sales offices worldwide.&n; *&n; *&t;OPERATION:&n; *&t;When compiled as a loadable module, this driver can operate&n; *&t;the board as either a 4/6 port switch with a 5th or 7th port&n; *&t;that is a conventional NIC interface as far as the host is&n; *&t;concerned, OR as 4/6 independent NICs.  To select multi-NIC&n; *&t;mode, add &quot;nicmode=1&quot; on the insmod load line for the driver.&n; *&n; *&t;This driver uses the &quot;dev&quot; common ethernet device structure&n; *&t;and a private &quot;priv&quot; (dev-&gt;priv) structure that contains&n; *&t;mostly DGRS-specific information and statistics.  To keep&n; *&t;the code for both the switch mode and the multi-NIC mode&n; *&t;as similar as possible, I have introduced the concept of&n; *&t;&quot;dev0&quot;/&quot;priv0&quot; and &quot;devN&quot;/&quot;privN&quot;  pointer pairs in subroutines&n; *&t;where needed.  The first pair of pointers points to the&n; *&t;&quot;dev&quot; and &quot;priv&quot; structures of the zeroth (0th) device&n; *&t;interface associated with a board.  The second pair of&n; *&t;pointers points to the current (Nth) device interface&n; *&t;for the board: the one for which we are processing data.&n; *&n; *&t;In switch mode, the pairs of pointers are always the same,&n; *&t;that is, dev0 == devN and priv0 == privN.  This is just&n; *&t;like previous releases of this driver which did not support&n; *&t;NIC mode.&n; *&n; *&t;In multi-NIC mode, the pairs of pointers may be different.&n; *&t;We use the devN and privN pointers to reference just the&n; *&t;name, port number, and statistics for the current interface.&n; *&t;We use the dev0 and priv0 pointers to access the variables&n; *&t;that control access to the board, such as board address&n; *&t;and simulated 82596 variables.  This is because there is&n; *&t;only one &quot;fake&quot; 82596 that serves as the interface to&n; *&t;the board.  We do not want to try to keep the variables&n; *&t;associated with this 82596 in sync across all devices.&n; *&n; *&t;This scheme works well.  As you will see, except for&n; *&t;initialization, there is very little difference between&n; *&t;the two modes as far as this driver is concerned.  On the&n; *&t;receive side in NIC mode, the interrupt *always* comes in on&n; *&t;the 0th interface (dev0/priv0).  We then figure out which&n; *&t;real 82596 port it came in on from looking at the &quot;chan&quot;&n; *&t;member that the board firmware adds at the end of each&n; *&t;RBD (a.k.a. TBD). We get the channel number like this:&n; *&t;&t;int chan = ((I596_RBD *) S2H(cbp-&gt;xmit.tbdp))-&gt;chan;&n; *&n; *&t;On the transmit side in multi-NIC mode, we specify the&n; *&t;output 82596 port by setting the new &quot;dstchan&quot; structure&n; *&t;member that is at the end of the RFD, like this:&n; *&t;&t;priv0-&gt;rfdp-&gt;dstchan = privN-&gt;chan;&n; *&n; *&t;TODO:&n; *&t;- Multi-NIC mode is not yet supported when the driver is linked&n; *&t;  into the kernel.&n; *&t;- Better handling of multicast addresses.&n; *&n; */
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;$Id: dgrs.c,v 1.13 2000/06/06 04:07:00 rick Exp $&quot;
-suffix:semicolon
-macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/*&n; *&t;Digi RightSwitch SE-X loadable device driver for Linux&n; *&n; *&t;The RightSwitch is a 4 (EISA) or 6 (PCI) port etherswitch and&n; *&t;a NIC on an internal board.&n; *&n; *&t;Author: Rick Richardson, rick@remotepoint.com&n; *&t;Derived from the SVR4.2 (UnixWare) driver for the same card.&n; *&n; *&t;Copyright 1995-1996 Digi International Inc.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; *&t;For information on purchasing a RightSwitch SE-4 or SE-6&n; *&t;board, please contact Digi&squot;s sales department at 1-612-912-3444&n; *&t;or 1-800-DIGIBRD.  Outside the U.S., please check our Web page&n; *&t;at http://www.dgii.com for sales offices worldwide.&n; *&n; *&t;OPERATION:&n; *&t;When compiled as a loadable module, this driver can operate&n; *&t;the board as either a 4/6 port switch with a 5th or 7th port&n; *&t;that is a conventional NIC interface as far as the host is&n; *&t;concerned, OR as 4/6 independent NICs.  To select multi-NIC&n; *&t;mode, add &quot;nicmode=1&quot; on the insmod load line for the driver.&n; *&n; *&t;This driver uses the &quot;dev&quot; common ethernet device structure&n; *&t;and a private &quot;priv&quot; (dev-&gt;priv) structure that contains&n; *&t;mostly DGRS-specific information and statistics.  To keep&n; *&t;the code for both the switch mode and the multi-NIC mode&n; *&t;as similar as possible, I have introduced the concept of&n; *&t;&quot;dev0&quot;/&quot;priv0&quot; and &quot;devN&quot;/&quot;privN&quot;  pointer pairs in subroutines&n; *&t;where needed.  The first pair of pointers points to the&n; *&t;&quot;dev&quot; and &quot;priv&quot; structures of the zeroth (0th) device&n; *&t;interface associated with a board.  The second pair of&n; *&t;pointers points to the current (Nth) device interface&n; *&t;for the board: the one for which we are processing data.&n; *&n; *&t;In switch mode, the pairs of pointers are always the same,&n; *&t;that is, dev0 == devN and priv0 == privN.  This is just&n; *&t;like previous releases of this driver which did not support&n; *&t;NIC mode.&n; *&n; *&t;In multi-NIC mode, the pairs of pointers may be different.&n; *&t;We use the devN and privN pointers to reference just the&n; *&t;name, port number, and statistics for the current interface.&n; *&t;We use the dev0 and priv0 pointers to access the variables&n; *&t;that control access to the board, such as board address&n; *&t;and simulated 82596 variables.  This is because there is&n; *&t;only one &quot;fake&quot; 82596 that serves as the interface to&n; *&t;the board.  We do not want to try to keep the variables&n; *&t;associated with this 82596 in sync across all devices.&n; *&n; *&t;This scheme works well.  As you will see, except for&n; *&t;initialization, there is very little difference between&n; *&t;the two modes as far as this driver is concerned.  On the&n; *&t;receive side in NIC mode, the interrupt *always* comes in on&n; *&t;the 0th interface (dev0/priv0).  We then figure out which&n; *&t;real 82596 port it came in on from looking at the &quot;chan&quot;&n; *&t;member that the board firmware adds at the end of each&n; *&t;RBD (a.k.a. TBD). We get the channel number like this:&n; *&t;&t;int chan = ((I596_RBD *) S2H(cbp-&gt;xmit.tbdp))-&gt;chan;&n; *&n; *&t;On the transmit side in multi-NIC mode, we specify the&n; *&t;output 82596 port by setting the new &quot;dstchan&quot; structure&n; *&t;member that is at the end of the RFD, like this:&n; *&t;&t;priv0-&gt;rfdp-&gt;dstchan = privN-&gt;chan;&n; *&n; *&t;TODO:&n; *&t;- Multi-NIC mode is not yet supported when the driver is linked&n; *&t;  into the kernel.&n; *&t;- Better handling of multicast addresses.&n; *&n; *&t;Fixes:&n; *&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 11/01/2001&n; *&t;- fix dgrs_found_device wrt checking kmalloc return and&n; *&t;rollbacking the partial steps of the whole process when&n; *&t;one of the devices can&squot;t be allocated. Fix SET_MODULE_OWNER&n; *&t;on the loop to use devN instead of repeated calls to dev.&n; *&n; *&t;davej &lt;davej@suse.de&gt; - 9/2/2001&n; *&t;- Enable PCI device before reading ioaddr/irq&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -15,39 +6,27 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; *&t;API changed at linux version 2.1.0&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20100
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|IOREMAP
-mdefine_line|#define IOREMAP(ADDR, LEN)&t;&t;ioremap(ADDR, LEN)
-DECL|macro|IOUNMAP
-mdefine_line|#define IOUNMAP(ADDR)&t;&t;&t;iounmap(ADDR)
-DECL|macro|COPY_FROM_USER
-mdefine_line|#define COPY_FROM_USER(DST,SRC,LEN)&t;copy_from_user(DST,SRC,LEN)
-DECL|macro|COPY_TO_USER
-mdefine_line|#define COPY_TO_USER(DST,SRC,LEN)&t;copy_to_user(DST,SRC,LEN)
-macro_line|#else
-macro_line|#include &lt;linux/bios32.h&gt;
-DECL|macro|IOREMAP
-mdefine_line|#define IOREMAP(ADDR, LEN)&t;&t;vremap(ADDR, LEN)
-DECL|macro|IOUNMAP
-mdefine_line|#define IOUNMAP(ADDR)&t;&t;&t;vfree(ADDR)
-DECL|macro|COPY_FROM_USER
-mdefine_line|#define COPY_FROM_USER(DST,SRC,LEN)&t;memcpy_fromfs(DST,SRC,LEN)
-DECL|macro|COPY_TO_USER
-mdefine_line|#define COPY_TO_USER(DST,SRC,LEN)&t;memcpy_tofs(DST,SRC,LEN)
-macro_line|#endif
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;$Id: dgrs.c,v 1.13 2000/06/06 04:07:00 rick Exp $&quot;
+suffix:semicolon
 multiline_comment|/*&n; *&t;DGRS include files&n; */
 DECL|typedef|uchar
 r_typedef
@@ -70,7 +49,6 @@ macro_line|#include &quot;dgrs_i82596.h&quot;
 macro_line|#include &quot;dgrs_ether.h&quot;
 macro_line|#include &quot;dgrs_asstruct.h&quot;
 macro_line|#include &quot;dgrs_bcomm.h&quot;
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20400
 DECL|variable|__initdata
 r_static
 r_struct
@@ -105,7 +83,6 @@ comma
 id|dgrs_pci_tbl
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_VERSION_CODE &gt;= 0x20400 */
 multiline_comment|/*&n; *&t;Firmware.  Compiled separately for local compilation,&n; *&t;but #included for Linux distribution.&n; */
 macro_line|#ifndef NOFW
 macro_line|#include &quot;dgrs_firmware.c&quot;
@@ -156,18 +133,21 @@ DECL|macro|S2DMA
 mdefine_line|#define&t;S2DMA(A)&t;( (unsigned long)(A) &amp; 0x00ffffff)
 multiline_comment|/*&n; *&t;&quot;Space.c&quot; variables, now settable from module interface&n; *&t;Use the name below, minus the &quot;dgrs_&quot; prefix.  See init_module().&n; */
 DECL|variable|dgrs_debug
+r_static
 r_int
 id|dgrs_debug
 op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|dgrs_dma
+r_static
 r_int
 id|dgrs_dma
 op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|dgrs_spantree
+r_static
 r_int
 id|dgrs_spantree
 op_assign
@@ -175,6 +155,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|dgrs_hashexpire
+r_static
 r_int
 id|dgrs_hashexpire
 op_assign
@@ -182,6 +163,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|dgrs_ipaddr
+r_static
 id|uchar
 id|dgrs_ipaddr
 (braket
@@ -199,6 +181,7 @@ l_int|0xff
 )brace
 suffix:semicolon
 DECL|variable|dgrs_iptrap
+r_static
 id|uchar
 id|dgrs_iptrap
 (braket
@@ -216,6 +199,7 @@ l_int|0xff
 )brace
 suffix:semicolon
 DECL|variable|dgrs_ipxnet
+r_static
 id|__u32
 id|dgrs_ipxnet
 op_assign
@@ -223,6 +207,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|dgrs_nicmode
+r_static
 r_int
 id|dgrs_nicmode
 op_assign
@@ -235,8 +220,6 @@ r_struct
 id|net_device
 op_star
 id|dgrs_root_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; *&t;Private per-board data structure (dev-&gt;priv)&n; */
 r_typedef
@@ -532,7 +515,7 @@ op_assign
 id|ulong
 op_star
 )paren
-id|IOREMAP
+id|ioremap
 (paren
 id|priv0-&gt;plxdma
 comma
@@ -2216,7 +2199,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|COPY_FROM_USER
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -2262,7 +2245,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|COPY_TO_USER
+id|copy_to_user
 c_func
 (paren
 id|ioc.data
@@ -2402,7 +2385,7 @@ id|ioc.len
 r_if
 c_cond
 (paren
-id|COPY_FROM_USER
+id|copy_from_user
 c_func
 (paren
 id|S2HN
@@ -2851,7 +2834,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Map in the dual port memory&n;&t; */
 id|priv0-&gt;vmem
 op_assign
-id|IOREMAP
+id|ioremap
 c_func
 (paren
 id|dev0-&gt;mem_start
@@ -3076,7 +3059,7 @@ id|dgrs_ncode
 )paren
 )paren
 (brace
-id|IOUNMAP
+id|iounmap
 c_func
 (paren
 id|priv0-&gt;vmem
@@ -3834,6 +3817,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+op_star
+id|aux
 suffix:semicolon
 multiline_comment|/* Allocate and fill new device structure. */
 r_int
@@ -3852,6 +3838,8 @@ id|DGRS_PRIV
 suffix:semicolon
 r_int
 id|i
+comma
+id|ret
 suffix:semicolon
 id|dev
 op_assign
@@ -3867,6 +3855,16 @@ id|dev_size
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -3963,14 +3961,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|priv-&gt;next_dev
-op_assign
-id|dgrs_root_dev
-suffix:semicolon
-id|dgrs_root_dev
-op_assign
-id|dev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3985,6 +3975,14 @@ l_int|0
 r_return
 op_minus
 id|EIO
+suffix:semicolon
+id|priv-&gt;next_dev
+op_assign
+id|dgrs_root_dev
+suffix:semicolon
+id|dgrs_root_dev
+op_assign
+id|dev
 suffix:semicolon
 r_if
 c_cond
@@ -4044,6 +4042,20 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* Make it an exact copy of dev[0]... */
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|devN
+)paren
+r_goto
+id|fail
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -4100,6 +4112,47 @@ l_int|5
 op_add_assign
 id|i
 suffix:semicolon
+id|devN-&gt;init
+op_assign
+id|dgrs_initclone
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|devN
+)paren
+suffix:semicolon
+id|ether_setup
+c_func
+(paren
+id|devN
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|devN
+)paren
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|devN
+)paren
+suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 id|privN-&gt;chan
 op_assign
 id|i
@@ -4113,22 +4166,6 @@ id|i
 op_assign
 id|devN
 suffix:semicolon
-id|devN-&gt;init
-op_assign
-id|dgrs_initclone
-suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|ether_setup
-c_func
-(paren
-id|devN
-)paren
-suffix:semicolon
 id|privN-&gt;next_dev
 op_assign
 id|dgrs_root_dev
@@ -4137,26 +4174,58 @@ id|dgrs_root_dev
 op_assign
 id|devN
 suffix:semicolon
-r_if
-c_cond
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|fail
+suffix:colon
+id|aux
+op_assign
+id|priv-&gt;next_dev
+suffix:semicolon
+r_while
+c_loop
 (paren
-id|register_netdev
+id|dgrs_root_dev
+op_ne
+id|aux
+)paren
+(brace
+r_struct
+id|net_device
+op_star
+id|d
+op_assign
+id|dgrs_root_dev
+suffix:semicolon
+id|dgrs_root_dev
+op_assign
+(paren
+(paren
+id|DGRS_PRIV
+op_star
+)paren
+id|d-&gt;priv
+)paren
+op_member_access_from_pointer
+id|next_dev
+suffix:semicolon
+id|unregister_netdev
 c_func
 (paren
-id|devN
+id|d
 )paren
-op_ne
-l_int|0
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|d
 )paren
-r_return
-op_minus
-id|EIO
 suffix:semicolon
 )brace
 r_return
-(paren
-l_int|0
-)paren
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Scan for all boards&n; */
@@ -4254,6 +4323,24 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Get and check the bus-master and latency values.&n;&t;&t;&t; * Some PCI BIOSes fail to set the master-enable bit,&n;&t;&t;&t; * and the latency timer must be set to the maximum&n;&t;&t;&t; * value to avoid data corruption that occurs when the&n;&t;&t;&t; * timer expires during a transfer.  Yes, it&squot;s a bug.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|plxreg
 op_assign
 id|pci_resource_start
@@ -4356,24 +4443,6 @@ id|plxdma
 op_and_assign
 op_complement
 l_int|15
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Get and check the bus-master and latency values.&n;&t;&t;&t; * Some PCI BIOSes fail to set the master-enable bit,&n;&t;&t;&t; * and the latency timer must be set to the maximum&n;&t;&t;&t; * value to avoid data corruption that occurs when the&n;&t;&t;&t; * timer expires during a transfer.  Yes, it&squot;s a bug.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-r_continue
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
 suffix:semicolon
 id|dgrs_found_device
 c_func
@@ -4840,13 +4909,16 @@ id|dgrs_debug
 id|printk
 c_func
 (paren
-l_string|&quot;dgrs: SW=%s FW=Build %d %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;dgrs: SW=%s FW=Build %d %s&bslash;nFW Version=%s&bslash;n&quot;
 comma
 id|version
 comma
 id|dgrs_firmnum
 comma
 id|dgrs_firmdate
+comma
+id|dgrs_firmver
 )paren
 suffix:semicolon
 )brace
@@ -4930,7 +5002,7 @@ c_cond
 (paren
 id|priv-&gt;vmem
 )paren
-id|IOUNMAP
+id|iounmap
 c_func
 (paren
 id|priv-&gt;vmem
@@ -4941,7 +5013,7 @@ c_cond
 (paren
 id|priv-&gt;vplxdma
 )paren
-id|IOUNMAP
+id|iounmap
 c_func
 (paren
 (paren

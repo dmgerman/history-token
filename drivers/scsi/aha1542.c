@@ -168,7 +168,7 @@ multiline_comment|/* The adaptec can be configured for quite a number of address
 DECL|macro|MAXBOARDS
 mdefine_line|#define MAXBOARDS 4&t;&t;/* Increase this and the sizes of the&n;&t;&t;&t;&t;   arrays below, if you need more.. */
 multiline_comment|/* Boards 3,4 slots are reserved for ISAPnP/MCA scans */
-DECL|variable|bases
+DECL|variable|__initdata
 r_static
 r_int
 r_int
@@ -176,6 +176,7 @@ id|bases
 (braket
 id|MAXBOARDS
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x330
@@ -187,7 +188,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/* set by aha1542_setup according to the command line */
+multiline_comment|/* set by aha1542_setup according to the command line; they also may&n;   be marked __initdata, but require zero initializers then */
 DECL|variable|setup_called
 r_static
 r_int
@@ -212,13 +213,14 @@ id|setup_busoff
 id|MAXBOARDS
 )braket
 suffix:semicolon
-DECL|variable|setup_dmaspeed
+DECL|variable|__initdata
 r_static
 r_int
 id|setup_dmaspeed
 (braket
 id|MAXBOARDS
 )braket
+id|__initdata
 op_assign
 (brace
 op_minus
@@ -234,7 +236,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|setup_str
+DECL|variable|__initdata
 r_static
 r_char
 op_star
@@ -242,6 +244,7 @@ id|setup_str
 (braket
 id|MAXBOARDS
 )braket
+id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * LILO/Module params:  aha1542=&lt;PORTBASE&gt;[,&lt;BUSON&gt;,&lt;BUSOFF&gt;[,&lt;DMASPEED&gt;]]&n; *&n; * Where:  &lt;PORTBASE&gt; is any of the valid AHA addresses:&n; *                      0x130, 0x134, 0x230, 0x234, 0x330, 0x334&n; *         &lt;BUSON&gt;  is the time (in microsecs) that AHA spends on the AT-bus&n; *                  when transferring data.  1542A power-on default is 11us,&n; *                  valid values are in range: 2..15 (decimal)&n; *         &lt;BUSOFF&gt; is the time that AHA spends OFF THE BUS after while&n; *                  it is transferring data (not to monopolize the bus).&n; *                  Power-on default is 4us, valid range: 1..64 microseconds.&n; *         &lt;DMASPEED&gt; Default is jumper selected (1542A: on the J1),&n; *                  but experimenter can alter it with this.&n; *                  Valid values: 5, 6, 7, 8, 10 (MB/s)&n; *                  Factory default is 5 MB/s.&n; */
 macro_line|#if defined(MODULE)
@@ -284,14 +287,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|__initdata
 r_static
 r_struct
 id|isapnp_device_id
 id|id_table
 (braket
 )braket
-id|__devinitdata
+id|__initdata
 op_assign
 (brace
 (brace
@@ -333,6 +336,7 @@ id|id_table
 suffix:semicolon
 macro_line|#else
 DECL|variable|isapnp
+r_static
 r_int
 id|isapnp
 op_assign
@@ -1025,6 +1029,7 @@ suffix:semicolon
 DECL|function|aha1542_test_port
 r_static
 r_int
+id|__init
 id|aha1542_test_port
 c_func
 (paren
@@ -2272,6 +2277,7 @@ suffix:semicolon
 suffix:semicolon
 )brace
 DECL|function|aha1542_queuecommand
+r_static
 r_int
 id|aha1542_queuecommand
 c_func
@@ -3590,6 +3596,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|aha1542_command
+r_static
 r_int
 id|aha1542_command
 c_func
@@ -3834,6 +3841,7 @@ suffix:semicolon
 DECL|function|aha1542_getconfig
 r_static
 r_int
+id|__init
 id|aha1542_getconfig
 c_func
 (paren
@@ -4353,6 +4361,7 @@ multiline_comment|/* Query the board to find out if it is a 1542 or a 1740, or w
 DECL|function|aha1542_query
 r_static
 r_int
+id|__init
 id|aha1542_query
 c_func
 (paren
@@ -4901,7 +4910,9 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* return non-zero on detection */
 DECL|function|aha1542_detect
+r_static
 r_int
+id|__init
 id|aha1542_detect
 c_func
 (paren
@@ -6567,6 +6578,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|aha1542_abort
+r_static
 r_int
 id|aha1542_abort
 c_func
@@ -6592,6 +6604,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is a device reset.  This is handled by sending a special command&n; * to the device.&n; */
 DECL|function|aha1542_dev_reset
+r_static
 r_int
 id|aha1542_dev_reset
 c_func
@@ -7071,6 +7084,7 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* ERIC_neverdef */
 )brace
 DECL|function|aha1542_bus_reset
+r_static
 r_int
 id|aha1542_bus_reset
 c_func
@@ -7273,6 +7287,7 @@ id|FAILED
 suffix:semicolon
 )brace
 DECL|function|aha1542_host_reset
+r_static
 r_int
 id|aha1542_host_reset
 c_func
@@ -7487,6 +7502,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are the old error handling routines.  They are only temporarily&n; * here while we play with the new error handling code.&n; */
 DECL|function|aha1542_old_abort
+r_static
 r_int
 id|aha1542_old_abort
 c_func
@@ -7882,6 +7898,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We do not implement a reset function here, but the upper level code&n;   assumes that it will get some kind of response for the command in&n;   SCpnt.  We must oblige, or the command will hang the scsi system.&n;   For a first go, we assume that the 1542 notifies us with all of the&n;   pending commands (it does implement soft reset, after all). */
 DECL|function|aha1542_old_reset
+r_static
 r_int
 id|aha1542_old_reset
 c_func
@@ -8342,6 +8359,7 @@ suffix:semicolon
 )brace
 macro_line|#include &quot;sd.h&quot;
 DECL|function|aha1542_biosparam
+r_static
 r_int
 id|aha1542_biosparam
 c_func

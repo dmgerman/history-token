@@ -549,7 +549,7 @@ id|semaphore
 id|us_list_semaphore
 suffix:semicolon
 multiline_comment|/* The structure which defines our driver */
-DECL|variable|usb_storage_driver
+r_extern
 r_struct
 id|usb_driver
 id|usb_storage_driver

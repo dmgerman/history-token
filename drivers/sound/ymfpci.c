@@ -8438,6 +8438,8 @@ suffix:semicolon
 id|ymfpci_t
 op_star
 id|unit
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|minor

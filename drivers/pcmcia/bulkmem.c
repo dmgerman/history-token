@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|IN_CARD_SERVICES
 mdefine_line|#define IN_CARD_SERVICES
 macro_line|#include &lt;pcmcia/cs_types.h&gt;

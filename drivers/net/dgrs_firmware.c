@@ -1,10 +1,12 @@
 DECL|variable|dgrs_firmnum
+r_static
 r_int
 id|dgrs_firmnum
 op_assign
 l_int|550
 suffix:semicolon
 DECL|variable|dgrs_firmver
+r_static
 r_char
 id|dgrs_firmver
 (braket
@@ -13,6 +15,7 @@ op_assign
 l_string|&quot;$Version$&quot;
 suffix:semicolon
 DECL|variable|dgrs_firmdate
+r_static
 r_char
 id|dgrs_firmdate
 (braket
@@ -21,6 +24,7 @@ op_assign
 l_string|&quot;11/16/96 03:45:15&quot;
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|dgrs_code
@@ -239071,6 +239075,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|dgrs_ncode
+r_static
 r_int
 id|dgrs_ncode
 op_assign

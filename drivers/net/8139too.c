@@ -2965,9 +2965,13 @@ op_amp
 id|tp-&gt;thr_exited
 )paren
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|dev
+)paren
 suffix:semicolon
 id|printk
 (paren
@@ -3409,7 +3413,10 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|rtl8139_private
@@ -3490,9 +3497,12 @@ id|kfree
 id|dev
 )paren
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+(paren
+id|pdev
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 id|DPRINTK
 (paren
@@ -7541,9 +7551,8 @@ r_int
 id|link_changed
 )paren
 (brace
-id|printk
+id|DPRINTK
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Abnormal interrupt, status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9057,7 +9066,10 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|rtl8139_private
@@ -9151,7 +9163,10 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|netif_device_attach
 (paren

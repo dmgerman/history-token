@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * sound/gus2_midi.c&n; *&n; * The low level driver for the GUS Midi Interface.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; * Changes:&n; * 11-10-2000&t;Bartlomiej Zolnierkiewicz &lt;bkz@linux-ide.org&gt;&n; *&t;&t;Added __init to gus_midi_init()&n; */
-macro_line|#include &quot;linux/init.h&quot;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;gus.h&quot;
 macro_line|#include &quot;gus_hw.h&quot;

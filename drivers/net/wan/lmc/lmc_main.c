@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &quot;../syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -35,17 +35,7 @@ macro_line|#else&t;&t;&t;&t;/* 2.0 kernel */
 DECL|macro|ARPHRD_HDLC
 mdefine_line|#define ARPHRD_HDLC 513
 macro_line|#endif
-macro_line|#ifdef MODULE
-macro_line|#ifdef MODVERSIONS
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#else
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT
-macro_line|#endif
 DECL|macro|DRIVER_MAJOR_VERSION
 mdefine_line|#define DRIVER_MAJOR_VERSION     1
 DECL|macro|DRIVER_MINOR_VERSION
@@ -460,7 +450,7 @@ comma
 l_string|&quot;lmc_ioctl in&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Most functions mess with the structure&n;     * Disable interupts while we do the polling&n;     */
+multiline_comment|/*&n;     * Most functions mess with the structure&n;     * Disable interrupts while we do the polling&n;     */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1839,7 +1829,7 @@ c_func
 l_int|50
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                     * Clear reset and activate programing lines&n;                     * Reset: Input&n;                     * DP:    Input&n;                     * Clock: Output&n;                     * Data:  Output&n;                     * Mode:  Output&n;                     */
+multiline_comment|/*&n;                     * Clear reset and activate programming lines&n;                     * Reset: Input&n;                     * DP:    Input&n;                     * Clock: Output&n;                     * Data:  Output&n;                     * Mode:  Output&n;                     */
 id|lmc_gpio_mkinput
 c_func
 (paren
@@ -1981,7 +1971,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s Bad data in xilinx programing data at %d, got %d wanted 0 or 1&bslash;n&quot;
+l_string|&quot;%s Bad data in xilinx programming data at %d, got %d wanted 0 or 1&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2073,7 +2063,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Reprograming FAILED. Needs to be reprogramed. (corrupted data)&bslash;n&quot;
+l_string|&quot;%s: Reprogramming FAILED. Needs to be reprogrammed. (corrupted data)&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -2102,7 +2092,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Reprograming FAILED. Needs to be reprogramed. (done)&bslash;n&quot;
+l_string|&quot;%s: Reprogramming FAILED. Needs to be reprogrammed. (done)&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -2114,7 +2104,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Done reprograming Xilinx, %d bits, good luck!&bslash;n&quot;
+l_string|&quot;%s: Done reprogramming Xilinx, %d bits, good luck!&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2311,10 +2301,19 @@ c_func
 l_string|&quot;LMC: Corrupt net_device stuct, breaking out&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sc-&gt;lmc_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure the tx jabber and rx watchdog are off,&n;     * and the transmit and recieve processes are running.&n;     */
+multiline_comment|/* Make sure the tx jabber and rx watchdog are off,&n;     * and the transmit and receive processes are running.&n;     */
 id|LMC_CSR_WRITE
 (paren
 id|sc
@@ -2642,7 +2641,7 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;         * We failed to alloc mem in the&n;         * interupt halder, go through the rings&n;         * and rebuild them&n;         */
+multiline_comment|/*&n;         * We failed to alloc mem in the&n;         * interrupt handler, go through the rings&n;         * and rebuild them&n;         */
 id|sc-&gt;failed_recv_alloc
 op_assign
 l_int|0
@@ -4448,7 +4447,7 @@ op_and_assign
 op_complement
 id|LMC_DEC_SR
 suffix:semicolon
-multiline_comment|/* Turn off the Recieve bit */
+multiline_comment|/* Turn off the Receive bit */
 id|LMC_CSR_WRITE
 (paren
 id|sc
@@ -4732,7 +4731,7 @@ op_amp
 id|sc-&gt;lmc_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Read the csr to find what interupts we have (if any)&n;     */
+multiline_comment|/*&n;     * Read the csr to find what interrupts we have (if any)&n;     */
 id|csr
 op_assign
 id|LMC_CSR_READ
@@ -4771,7 +4770,7 @@ op_amp
 id|sc-&gt;lmc_intrmask
 )paren
 (brace
-multiline_comment|/*&n;         * Clear interupt bits, we handle all case below&n;         */
+multiline_comment|/*&n;         * Clear interrupt bits, we handle all case below&n;         */
 id|LMC_CSR_WRITE
 (paren
 id|sc
@@ -4811,7 +4810,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;rx interupt&quot;
+l_string|&quot;rx interrupt&quot;
 )paren
 suffix:semicolon
 id|lmc_rx
@@ -5244,7 +5243,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         * Get current csr status to make sure&n;         * we&squot;ve cleared all interupts&n;         */
+multiline_comment|/*&n;         * Get current csr status to make sure&n;         * we&squot;ve cleared all interrupts&n;         */
 id|csr
 op_assign
 id|LMC_CSR_READ
@@ -5282,8 +5281,6 @@ id|dev
 comma
 l_string|&quot;lmc_interrupt out&quot;
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|lmc_start_xmit
@@ -6249,11 +6246,11 @@ id|virt_to_bus
 id|nsb-&gt;tail
 )paren
 suffix:semicolon
-multiline_comment|/* Transfered to 21140 below */
+multiline_comment|/* Transferred to 21140 below */
 )brace
 r_else
 (brace
-multiline_comment|/*&n;                 * We&squot;ve run out of memory, stop trying to allocate&n;                 * memory and exit the interupt handler&n;                 *&n;                 * The chip may run out of receivers and stop&n;                 * in which care we&squot;ll try to allocate the buffer&n;                 * again.  (once a second)&n;                 */
+multiline_comment|/*&n;                 * We&squot;ve run out of memory, stop trying to allocate&n;                 * memory and exit the interrupt handler&n;                 *&n;                 * The chip may run out of receivers and stop&n;                 * in which care we&squot;ll try to allocate the buffer&n;                 * again.  (once a second)&n;                 */
 id|sc-&gt;stats.rx_BuffAllocErr
 op_increment
 suffix:semicolon
@@ -7156,7 +7153,7 @@ comma
 l_string|&quot;lmc_softreset in&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the recieve rings and buffers. */
+multiline_comment|/* Initialize the receive rings and buffers. */
 id|sc-&gt;lmc_txfull
 op_assign
 l_int|0
@@ -7177,7 +7174,7 @@ id|sc-&gt;lmc_taint_tx
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * Setup each one of the receiver buffers&n;     * allocate an skbuff for each one, setup the the descriptor table&n;     * and point each buffer at the next one&n;     */
+multiline_comment|/*&n;     * Setup each one of the receiver buffers&n;     * allocate an skbuff for each one, setup the descriptor table&n;     * and point each buffer at the next one&n;     */
 r_for
 c_loop
 (paren

@@ -306,8 +306,6 @@ multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is ar
 multiline_comment|/* FIXME: this is not correct */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
-DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range&t;remap_page_range
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASMARM_PGTABLE_H */

@@ -365,7 +365,7 @@ suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* exported by bttv-if.c                                      */
 multiline_comment|/* interface for gpio access by other modules                 */
-multiline_comment|/* returns card type + card ID (for bt878-based ones)&n;   for possible values see lines below beginning with #define BTTV_UNKNOWN&n;   returns negative value if error ocurred &n;*/
+multiline_comment|/* returns card type + card ID (for bt878-based ones)&n;   for possible values see lines below beginning with #define BTTV_UNKNOWN&n;   returns negative value if error occurred &n;*/
 r_extern
 r_int
 id|bttv_get_cardinfo
@@ -395,7 +395,7 @@ r_int
 id|card
 )paren
 suffix:semicolon
-multiline_comment|/* sets GPOE register (BT848_GPIO_OUT_EN) to new value:&n;   data | (current_GPOE_value &amp; ~mask)&n;   returns negative value if error ocurred&n;*/
+multiline_comment|/* sets GPOE register (BT848_GPIO_OUT_EN) to new value:&n;   data | (current_GPOE_value &amp; ~mask)&n;   returns negative value if error occurred&n;*/
 r_extern
 r_int
 id|bttv_gpio_enable
@@ -414,7 +414,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* fills data with GPDATA register contents&n;   returns negative value if error ocurred&n;*/
+multiline_comment|/* fills data with GPDATA register contents&n;   returns negative value if error occurred&n;*/
 r_extern
 r_int
 id|bttv_read_gpio
@@ -430,7 +430,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* sets GPDATA register to new value:&n;  (data &amp; mask) | (current_GPDATA_value &amp; ~mask)&n;  returns negative value if error ocurred &n;*/
+multiline_comment|/* sets GPDATA register to new value:&n;  (data &amp; mask) | (current_GPDATA_value &amp; ~mask)&n;  returns negative value if error occurred &n;*/
 r_extern
 r_int
 id|bttv_write_gpio
@@ -449,7 +449,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* returns pointer to task queue which can be used as parameter to &n;   interruptible_sleep_on&n;   in interrupt handler if BT848_INT_GPINT bit is set - this queue is activated&n;   (wake_up_interruptible) and following call to the function bttv_read_gpio &n;   should return new value of GPDATA,&n;   returns NULL value if error ocurred or queue is not available&n;   WARNING: because there is no buffer for GPIO data, one MUST &n;   process data ASAP&n;*/
+multiline_comment|/* returns pointer to task queue which can be used as parameter to &n;   interruptible_sleep_on&n;   in interrupt handler if BT848_INT_GPINT bit is set - this queue is activated&n;   (wake_up_interruptible) and following call to the function bttv_read_gpio &n;   should return new value of GPDATA,&n;   returns NULL value if error occurred or queue is not available&n;   WARNING: because there is no buffer for GPIO data, one MUST &n;   process data ASAP&n;*/
 r_extern
 id|wait_queue_head_t
 op_star
@@ -464,6 +464,21 @@ suffix:semicolon
 multiline_comment|/* i2c */
 DECL|macro|I2C_CLIENTS_MAX
 mdefine_line|#define I2C_CLIENTS_MAX 8
+r_extern
+r_struct
+id|i2c_algo_bit_data
+id|bttv_i2c_algo_template
+suffix:semicolon
+r_extern
+r_struct
+id|i2c_adapter
+id|bttv_i2c_adap_template
+suffix:semicolon
+r_extern
+r_struct
+id|i2c_client
+id|bttv_i2c_client_template
+suffix:semicolon
 r_extern
 r_void
 id|bttv_bit_setscl

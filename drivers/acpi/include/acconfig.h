@@ -34,7 +34,7 @@ mdefine_line|#define MAX_REFERENCE_COUNT         0x200
 multiline_comment|/* Size of cached memory mapping for system memory operation region */
 DECL|macro|SYSMEM_REGION_WINDOW_SIZE
 mdefine_line|#define SYSMEM_REGION_WINDOW_SIZE   4096
-multiline_comment|/*&n; * Debugger threading model&n; * Use single threaded if the entire subsystem is contained in an application&n; * Use multiple threaded when the the subsystem is running in the kernel.&n; *&n; * By default the model is single threaded if ACPI_APPLICATION is set,&n; * multi-threaded if ACPI_APPLICATION is not set.&n; */
+multiline_comment|/*&n; * Debugger threading model&n; * Use single threaded if the entire subsystem is contained in an application&n; * Use multiple threaded when the subsystem is running in the kernel.&n; *&n; * By default the model is single threaded if ACPI_APPLICATION is set,&n; * multi-threaded if ACPI_APPLICATION is not set.&n; */
 DECL|macro|DEBUGGER_SINGLE_THREADED
 mdefine_line|#define DEBUGGER_SINGLE_THREADED    0
 DECL|macro|DEBUGGER_MULTI_THREADED

@@ -1320,13 +1320,13 @@ mdefine_line|#define TULIP_STS_NORMALINTR    0x00010000L /* (RW)  Normal Interru
 DECL|macro|TULIP_STS_ABNRMLINTR
 mdefine_line|#define TULIP_STS_ABNRMLINTR    0x00008000L /* (RW)  Abnormal Interrupt */
 DECL|macro|TULIP_STS_ERI
-mdefine_line|#define TULIP_STS_ERI           0x00004000L /* (RW)  Early Receive Interupt */
+mdefine_line|#define TULIP_STS_ERI           0x00004000L /* (RW)  Early Receive Interrupt */
 DECL|macro|TULIP_STS_SYSERROR
 mdefine_line|#define TULIP_STS_SYSERROR      0x00002000L /* (RW)  System Error */
 DECL|macro|TULIP_STS_GTE
 mdefine_line|#define TULIP_STS_GTE           0x00000800L /* (RW)  General Pupose Timer Exp */
 DECL|macro|TULIP_STS_ETI
-mdefine_line|#define TULIP_STS_ETI           0x00000400L /* (RW)  Early Transmit Interupt */
+mdefine_line|#define TULIP_STS_ETI           0x00000400L /* (RW)  Early Transmit Interrupt */
 DECL|macro|TULIP_STS_RXWT
 mdefine_line|#define TULIP_STS_RXWT          0x00000200L /* (RW)  Receiver Watchdog Timeout */
 DECL|macro|TULIP_STS_RXSTOPPED

@@ -144,7 +144,7 @@ r_int
 r_int
 id|aln_errs
 suffix:semicolon
-multiline_comment|/* allignmenterror counter */
+multiline_comment|/* alignmenterror counter */
 DECL|member|rsc_errs
 r_int
 r_int

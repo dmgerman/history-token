@@ -11070,7 +11070,7 @@ c_func
 (paren
 id|tsk-&gt;comm
 comma
-l_string|&quot;kupdate&quot;
+l_string|&quot;kupdated&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* sigstop and sigcont will stop and wakeup kupdate */

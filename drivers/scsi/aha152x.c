@@ -12424,7 +12424,7 @@ c_func
 id|debug_datao
 comma
 id|DEBUG_LEAD
-l_string|&quot;datao: %d bytes to resend (%d written, %d transfered)&bslash;n&quot;
+l_string|&quot;datao: %d bytes to resend (%d written, %d transferred)&bslash;n&quot;
 comma
 id|CMDINFO
 c_func

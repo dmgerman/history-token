@@ -511,7 +511,7 @@ op_or
 id|SGINT_TCWORD_MSWST
 )paren
 suffix:semicolon
-multiline_comment|/* Return the difference, this is how far the r4k counter increments&n;         * for every 1/HZ seconds. We round off the the nearest 1 MHz of&n;&t; * master clock (= 1000000 / 100 / 2 = 5000 count).&n;         */
+multiline_comment|/* Return the difference, this is how far the r4k counter increments&n;         * for every 1/HZ seconds. We round off the nearest 1 MHz of&n;&t; * master clock (= 1000000 / 100 / 2 = 5000 count).&n;         */
 r_return
 (paren
 (paren

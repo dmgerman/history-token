@@ -4285,7 +4285,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|agp_frontend_cleanup
-r_static
 r_void
 id|__exit
 id|agp_frontend_cleanup

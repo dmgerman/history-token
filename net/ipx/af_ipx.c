@@ -1372,6 +1372,7 @@ id|i-&gt;if_dev
 op_eq
 id|dev
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1392,6 +1393,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
+)brace
 id|i
 op_assign
 id|tmp

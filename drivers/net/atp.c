@@ -2243,8 +2243,6 @@ suffix:semicolon
 id|np-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|atp_send_packet
 r_static

@@ -58,7 +58,7 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
-DECL|variable|br_fdb_get_hook
+r_extern
 r_struct
 id|net_bridge_fdb_entry
 op_star
@@ -78,7 +78,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|variable|br_fdb_put_hook
+r_extern
 r_void
 (paren
 op_star

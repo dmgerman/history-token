@@ -102,8 +102,9 @@ comma
 id|PU32
 id|BufferContext
 comma
-id|U16
-id|AdaterID
+r_struct
+id|net_device
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* &n; ** type PFNRXCALLBACK &n; **&n; ** Pointer to user&squot;s receive callback function.  This user function&n; ** is called from RCProcI2OMsgQ() when packets have been received into&n; ** previously posted packet buffers throught the RCPostRecvBuffers() function.&n; ** The received callback function should process the Packet Descriptor Block&n; ** pointed to by PacketDescBlock. See Packet Decription Block below.&n; */

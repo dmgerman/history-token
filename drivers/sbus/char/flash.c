@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: flash.c,v 1.22 2001/02/13 01:17:00 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: flash.c,v 1.23 2001/03/02 06:32:40 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -406,6 +406,9 @@ id|p
 op_assign
 id|file-&gt;f_pos
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -421,27 +424,53 @@ id|flash.read_size
 op_minus
 id|p
 suffix:semicolon
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|copy_to_user
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|u8
+id|data
+op_assign
+id|readb
 c_func
 (paren
-id|buf
-comma
 id|flash.read_base
 op_plus
 id|p
-comma
-id|count
+op_plus
+id|i
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|put_user
+c_func
+(paren
+id|data
+comma
+id|buf
+)paren
 )paren
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|buf
+op_increment
+suffix:semicolon
+)brace
 id|file-&gt;f_pos
 op_add_assign
 id|count

@@ -1797,11 +1797,6 @@ r_if
 c_cond
 (paren
 id|dev-&gt;mem_start
-op_logical_and
-id|dev-&gt;mem_start
-op_ne
-op_complement
-l_int|0
 )paren
 id|option
 op_assign

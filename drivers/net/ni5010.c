@@ -2094,7 +2094,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: DMA complete (???)&bslash;n&quot;
+l_string|&quot;%s: DMA complete (?)&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

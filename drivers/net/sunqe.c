@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunqe.c,v 1.47 2000/10/22 16:08:38 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunqe.c,v 1.50 2001/02/18 08:10:21 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
 DECL|variable|version
 r_static
 r_char
@@ -1927,7 +1927,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;last_rx
+id|qep-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -2234,9 +2234,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_int
-id|res
-suffix:semicolon
 id|qep-&gt;mconfig
 op_assign
 (paren
@@ -2247,8 +2244,7 @@ op_or
 id|MREGS_MCONFIG_MBAENAB
 )paren
 suffix:semicolon
-id|res
-op_assign
+r_return
 id|qe_init
 c_func
 (paren
@@ -2256,17 +2252,6 @@ id|qep
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|res
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_return
-id|res
 suffix:semicolon
 )brace
 DECL|function|qe_close
@@ -2298,8 +2283,6 @@ c_func
 (paren
 id|qep
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -4330,6 +4313,15 @@ id|i
 op_increment
 )paren
 (brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|qe_devs
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 id|qe_devs
 (braket
 id|i

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.54 2001/02/13 01:16:44 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ebus.c,v 1.57 2001/02/28 03:28:55 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -802,7 +802,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|dev-&gt;bus-&gt;self
 comma
@@ -1245,7 +1245,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|dev-&gt;bus-&gt;self
 comma

@@ -131,7 +131,7 @@ DECL|member|fpswa
 id|__u64
 id|fpswa
 suffix:semicolon
-multiline_comment|/* physical address of the the fpswa interface */
+multiline_comment|/* physical address of the fpswa interface */
 DECL|member|initrd_start
 id|__u64
 id|initrd_start

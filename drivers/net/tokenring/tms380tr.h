@@ -428,7 +428,7 @@ DECL|macro|DISABLE_EARLY_TOKEN_RELEASE
 mdefine_line|#define DISABLE_EARLY_TOKEN_RELEASE &t;0x1000
 multiline_comment|/* OPEN Options (high-low) */
 DECL|macro|WRAP_INTERFACE
-mdefine_line|#define WRAP_INTERFACE&t;&t;0x0080&t;/* Inserting omitted for test&n;&t;&t;&t;&t;&t; * purposes; transmit data appears&n;&t;&t;&t;&t;&t; * as receive data. (usefull for&n;&t;&t;&t;&t;&t; * testing; change: CLOSE necessary)&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define WRAP_INTERFACE&t;&t;0x0080&t;/* Inserting omitted for test&n;&t;&t;&t;&t;&t; * purposes; transmit data appears&n;&t;&t;&t;&t;&t; * as receive data. (useful for&n;&t;&t;&t;&t;&t; * testing; change: CLOSE necessary)&n;&t;&t;&t;&t;&t; */
 DECL|macro|DISABLE_HARD_ERROR
 mdefine_line|#define DISABLE_HARD_ERROR&t;0x0040&t;/* On HARD_ERROR &amp; TRANSMIT_BEACON&n;&t;&t;&t;&t;&t; * no RING.STATUS interrupt.&n;&t;&t;&t;&t;&t; */
 DECL|macro|DISABLE_SOFT_ERROR

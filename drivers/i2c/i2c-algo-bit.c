@@ -402,7 +402,7 @@ id|adap
 suffix:semicolon
 )brace
 multiline_comment|/* send a byte without start cond., look for arbitration, &n;   check ackn. from slave */
-multiline_comment|/* returns:&n; * 1 if the device acknowledged&n; * 0 if the device did not ack&n; * -ETIMEDOUT if an error occured (while raising the scl line)&n; */
+multiline_comment|/* returns:&n; * 1 if the device acknowledged&n; * 0 if the device did not ack&n; * -ETIMEDOUT if an error occurred (while raising the scl line)&n; */
 DECL|function|i2c_outb
 r_static
 r_int
@@ -1688,7 +1688,7 @@ r_return
 id|rdcount
 suffix:semicolon
 )brace
-multiline_comment|/* doAddress initiates the transfer by generating the start condition (in&n; * try_address) and transmits the address in the necessary format to handle&n; * reads, writes as well as 10bit-addresses.&n; * returns:&n; *  0 everything went okay, the chip ack&squot;ed&n; * -x an error occured (like: -EREMOTEIO if the device did not answer, or&n; *&t;-ETIMEDOUT, for example if the lines are stuck...) &n; */
+multiline_comment|/* doAddress initiates the transfer by generating the start condition (in&n; * try_address) and transmits the address in the necessary format to handle&n; * reads, writes as well as 10bit-addresses.&n; * returns:&n; *  0 everything went okay, the chip ack&squot;ed&n; * -x an error occurred (like: -EREMOTEIO if the device did not answer, or&n; *&t;-ETIMEDOUT, for example if the lines are stuck...) &n; */
 DECL|function|bit_doAddress
 r_static
 r_inline
@@ -1820,7 +1820,7 @@ op_ne
 l_int|1
 )paren
 (brace
-multiline_comment|/* the chip did not ack / xmission error occured */
+multiline_comment|/* the chip did not ack / xmission error occurred */
 id|printk
 c_func
 (paren

@@ -2095,7 +2095,7 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/****** Driver IOCTL Handlers ***********************************************/
-multiline_comment|/*============================================================================&n; * Dump adapter memory to user buffer.&n; * o verify request structure&n; * o copy request structure to kernel data space&n; * o verify length/offset&n; * o verify user buffer&n; * o copy adapter memory image to user buffer&n; *&n; * Note: when dumping memory, this routine switches curent dual-port memory&n; *&t; vector, so care must be taken to avoid racing conditions.&n; */
+multiline_comment|/*============================================================================&n; * Dump adapter memory to user buffer.&n; * o verify request structure&n; * o copy request structure to kernel data space&n; * o verify length/offset&n; * o verify user buffer&n; * o copy adapter memory image to user buffer&n; *&n; * Note: when dumping memory, this routine switches current dual-port memory&n; *&t; vector, so care must be taken to avoid racing conditions.&n; */
 DECL|function|ioctl_dump
 r_static
 r_int

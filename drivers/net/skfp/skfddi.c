@@ -852,28 +852,56 @@ op_star
 id|smc
 )paren
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|pci_device_id
+id|skfddi_pci_tbl
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_SK
+comma
+id|PCI_DEVICE_ID_SK_FP
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|skfddi_pci_tbl
+)paren
+suffix:semicolon
 singleline_comment|// Define module-wide (static) variables
 DECL|variable|num_boards
 r_static
 r_int
 id|num_boards
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* total number of adapters configured */
 DECL|variable|num_fddi
 r_static
 r_int
 id|num_fddi
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|autoprobed
 r_static
 r_int
 id|autoprobed
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE
 r_int
@@ -915,8 +943,6 @@ DECL|variable|loading_module
 r_static
 r_int
 id|loading_module
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|// MODULE
@@ -5643,7 +5669,7 @@ id|virt
 suffix:semicolon
 )brace
 singleline_comment|// mac_drv_get_space
-multiline_comment|/************************&n; *&n; *&t;mac_drv_get_desc_mem&n; *&n; *&t;This function is called by the hardware dependent module.&n; *&t;It allocates the memory for the RxD and TxD descriptors.&n; *&n; *&t;This memory must be non-cached, non-movable and non-swapable.&n; *&t;This memory should start at a physical page boundary.&n; * Args&n; *&t;smc - A pointer to the SMT context struct.&n; *&n; *&t;size - Size of memory in bytes to allocate.&n; * Out&n; *&t;!= 0&t;A pointer to the virtual address of the allocated memory.&n; *&t;== 0&t;Allocation error.&n; *&n; ************************/
+multiline_comment|/************************&n; *&n; *&t;mac_drv_get_desc_mem&n; *&n; *&t;This function is called by the hardware dependent module.&n; *&t;It allocates the memory for the RxD and TxD descriptors.&n; *&n; *&t;This memory must be non-cached, non-movable and non-swappable.&n; *&t;This memory should start at a physical page boundary.&n; * Args&n; *&t;smc - A pointer to the SMT context struct.&n; *&n; *&t;size - Size of memory in bytes to allocate.&n; * Out&n; *&t;!= 0&t;A pointer to the virtual address of the allocated memory.&n; *&t;== 0&t;Allocation error.&n; *&n; ************************/
 DECL|function|mac_drv_get_desc_mem
 r_void
 op_star

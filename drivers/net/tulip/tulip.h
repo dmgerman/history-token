@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* undefine, or define to various debugging levels (&gt;4 == obscene levels) */
 DECL|macro|TULIP_DEBUG
 macro_line|#undef TULIP_DEBUG

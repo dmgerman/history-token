@@ -1294,7 +1294,7 @@ id|bus-&gt;next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * int pcibios_assign_resource(struct pci_dev *dev, int i)&n; *&n; * Assign a new address to a PCI resource.&n; *&n; * Parameters:&n; *&n; * dev&t;- device.&n; * i&t;- resource.&n; *&n; * Result: 0 if successfull.&n; */
+multiline_comment|/*&n; * int pcibios_assign_resource(struct pci_dev *dev, int i)&n; *&n; * Assign a new address to a PCI resource.&n; *&n; * Parameters:&n; *&n; * dev&t;- device.&n; * i&t;- resource.&n; *&n; * Result: 0 if successful.&n; */
 DECL|function|pcibios_assign_resource
 r_int
 id|__init

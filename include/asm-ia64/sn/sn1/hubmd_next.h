@@ -1358,7 +1358,7 @@ DECL|macro|MD_PDIR_MASK
 mdefine_line|#define MD_PDIR_MASK            0xffffffffffffffff
 DECL|macro|MD_SDIR_MASK
 mdefine_line|#define MD_SDIR_MASK            0xffffffff
-multiline_comment|/* When premium mode is on for probing but standard directory memory&n;   is installed, the vaild directory bits depend on the phys. bank */
+multiline_comment|/* When premium mode is on for probing but standard directory memory&n;   is installed, the valid directory bits depend on the phys. bank */
 DECL|macro|MD_PDIR_PROBE_MASK
 mdefine_line|#define MD_PDIR_PROBE_MASK(pb)  0xffffffffffffffff
 DECL|macro|MD_SDIR_PROBE_MASK

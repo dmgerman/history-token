@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  olympic.h (c) 1999 Peter De Schrijver All Rights Reserved&n; *                1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the olympic and the PIT/PHY chipset.&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/*&n; *  olympic.h (c) 1999 Peter De Schrijver All Rights Reserved&n; *                1999 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the olympic and the PIT/PHY chipset.&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|CID
 mdefine_line|#define CID 0x4e
 DECL|macro|BCTL
@@ -7,6 +7,8 @@ DECL|macro|BCTL_SOFTRESET
 mdefine_line|#define BCTL_SOFTRESET (1&lt;&lt;15)
 DECL|macro|BCTL_MIMREB
 mdefine_line|#define BCTL_MIMREB (1&lt;&lt;6)
+DECL|macro|BCTL_MODE_INDICATOR
+mdefine_line|#define BCTL_MODE_INDICATOR (1&lt;&lt;5)
 DECL|macro|GPR
 mdefine_line|#define GPR 0x4a
 DECL|macro|GPR_OPTI_BF
@@ -187,6 +189,11 @@ DECL|macro|TXCSA_1
 mdefine_line|#define TXCSA_1 0xc8
 DECL|macro|TXCSA_2
 mdefine_line|#define TXCSA_2 0xe8
+multiline_comment|/* Cardbus */
+DECL|macro|FERMASK
+mdefine_line|#define FERMASK 0xf4
+DECL|macro|FERMASK_INT_BIT
+mdefine_line|#define FERMASK_INT_BIT (1&lt;&lt;15)
 DECL|macro|OLYMPIC_IO_SPACE
 mdefine_line|#define OLYMPIC_IO_SPACE 256
 DECL|macro|SRB_COMMAND_SIZE

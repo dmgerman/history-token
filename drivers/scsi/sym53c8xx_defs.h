@@ -30,10 +30,6 @@ mdefine_line|#define SCSI_NCR_DEBUG_INFO_SUPPORT
 DECL|macro|SCSI_NCR_PCI_FIX_UP_SUPPORT
 mdefine_line|#define SCSI_NCR_PCI_FIX_UP_SUPPORT
 macro_line|#ifdef&t;SCSI_NCR_PROC_INFO_SUPPORT
-macro_line|#&t;ifdef&t;CONFIG_SCSI_NCR53C8XX_PROFILE
-DECL|macro|SCSI_NCR_PROFILE_SUPPORT
-macro_line|#&t;&t;define&t;SCSI_NCR_PROFILE_SUPPORT
-macro_line|#&t;endif
 DECL|macro|SCSI_NCR_USER_COMMAND_SUPPORT
 macro_line|#&t;define&t;SCSI_NCR_USER_COMMAND_SUPPORT
 DECL|macro|SCSI_NCR_USER_INFO_SUPPORT
@@ -54,9 +50,6 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*&n; * For Ultra2 and Ultra3 SCSI support option, use special features. &n; *&n; * Value (default) means:&n; *&t;bit 0 : all features enabled, except:&n; *&t;&t;bit 1 : PCI Write And Invalidate.&n; *&t;&t;bit 2 : Data Phase Mismatch handling from SCRIPTS.&n; *&n; * Use boot options ncr53c8xx=specf:1 if you want all chip features to be &n; * enabled by the driver.&n; */
 DECL|macro|SCSI_NCR_SETUP_SPECIAL_FEATURES
 mdefine_line|#define&t;SCSI_NCR_SETUP_SPECIAL_FEATURES&t;&t;(3)
-multiline_comment|/*&n; * For Ultra2 and Ultra3 SCSI support allow 80Mhz synchronous data transfers.&n; * Value means:&n; *  0 - Ultra speeds disabled&n; *  1 - Ultra enabled  (Maximum 20Mtrans/sec)&n; *  2 - Ultra2 enabled (Maximum 40Mtrans/sec)&n; *  3 - Ultra3 enabled (Maximum 80Mtrans/sec)&n; *&n; * Use boot options sym53c8xx=ultra:3 to enable Ultra3 support.&n; */
-DECL|macro|SCSI_NCR_SETUP_ULTRA_SCSI
-mdefine_line|#define SCSI_NCR_SETUP_ULTRA_SCSI&t;&t;(3)
 DECL|macro|SCSI_NCR_MAX_SYNC
 mdefine_line|#define SCSI_NCR_MAX_SYNC&t;&t;&t;(80)
 multiline_comment|/*&n; * Allow tags from 2 to 256, default 8&n; */
@@ -86,16 +79,31 @@ macro_line|#else
 DECL|macro|SCSI_NCR_SETUP_DEFAULT_TAGS
 mdefine_line|#define&t;SCSI_NCR_SETUP_DEFAULT_TAGS&t;(0)
 macro_line|#endif
-multiline_comment|/*&n; * Use normal IO if configured. Forced for alpha and ppc.&n; */
+multiline_comment|/*&n; * Use normal IO if configured. Forced for alpha and powerpc.&n; * Powerpc fails copying to on-chip RAM using memcpy_toio().&n; */
 macro_line|#if defined(CONFIG_SCSI_NCR53C8XX_IOMAPPED)
 DECL|macro|SCSI_NCR_IOMAPPED
 mdefine_line|#define&t;SCSI_NCR_IOMAPPED
-macro_line|#elif defined(__alpha__) || defined(__powerpc__)
+macro_line|#elif defined(__alpha__)
 DECL|macro|SCSI_NCR_IOMAPPED
 mdefine_line|#define&t;SCSI_NCR_IOMAPPED
+macro_line|#elif defined(__powerpc__)
+DECL|macro|SCSI_NCR_IOMAPPED
+mdefine_line|#define&t;SCSI_NCR_IOMAPPED
+DECL|macro|SCSI_NCR_PCI_MEM_NOT_SUPPORTED
+mdefine_line|#define SCSI_NCR_PCI_MEM_NOT_SUPPORTED
 macro_line|#elif defined(__sparc__)
 DECL|macro|SCSI_NCR_IOMAPPED
 macro_line|#undef SCSI_NCR_IOMAPPED
+macro_line|#endif
+multiline_comment|/*&n; * Should we enable DAC cycles on Sparc64 platform?&n; * Until further investigation we do not enable it&n; * at the moment.&n; * We may want to enable it for __ia64__ (untested)&n; */
+macro_line|#if defined(__ia64__)
+macro_line|#    if !defined(SCSI_NCR_USE_64BIT_DAC)
+DECL|macro|SCSI_NCR_USE_64BIT_DAC
+macro_line|#        define SCSI_NCR_USE_64BIT_DAC
+macro_line|#    endif
+macro_line|#else
+DECL|macro|SCSI_NCR_USE_64BIT_DAC
+macro_line|#    undef SCSI_NCR_USE_64BIT_DAC
 macro_line|#endif
 multiline_comment|/*&n; * Immediate arbitration&n; */
 macro_line|#if defined(CONFIG_SCSI_NCR53C8XX_IARB)
@@ -245,12 +253,11 @@ DECL|macro|ktime_add
 mdefine_line|#define ktime_add(a, o)&t;&t;((a) + (u_long)(o))
 DECL|macro|ktime_sub
 mdefine_line|#define ktime_sub(a, o)&t;&t;((a) - (u_long)(o))
-multiline_comment|/*&n;**&t;IO functions definition for big/little endian support.&n;**&t;For now, the NCR is only supported in little endian addressing mode, &n;**&t;and big endian byte ordering is only supported for the PPC.&n;**&t;MMIO is not used on PPC.&n;*/
+multiline_comment|/*&n; *  IO functions definition for big/little endian CPU support.&n; *  For now, the NCR is only supported in little endian addressing mode, &n; */
 macro_line|#ifdef&t;__BIG_ENDIAN
 macro_line|#if&t;LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
 macro_line|#error&t;&quot;BIG ENDIAN byte ordering needs kernel version &gt;= 2.1.0&quot;
 macro_line|#endif
-macro_line|#if defined(__powerpc__)
 DECL|macro|inw_l2b
 mdefine_line|#define&t;inw_l2b&t;&t;inw
 DECL|macro|inl_l2b
@@ -259,7 +266,20 @@ DECL|macro|outw_b2l
 mdefine_line|#define&t;outw_b2l&t;outw
 DECL|macro|outl_b2l
 mdefine_line|#define&t;outl_b2l&t;outl
-macro_line|#elif defined(__sparc__)
+DECL|macro|readb_raw
+mdefine_line|#define&t;readb_raw&t;readb
+DECL|macro|writeb_raw
+mdefine_line|#define&t;writeb_raw&t;writeb
+macro_line|#if defined(__hppa__)
+DECL|macro|readw_l2b
+mdefine_line|#define&t;readw_l2b(a)&t;le16_to_cpu(readw(a))
+DECL|macro|readl_l2b
+mdefine_line|#define&t;readl_l2b(a)&t;le32_to_cpu(readl(a))
+DECL|macro|writew_b2l
+mdefine_line|#define&t;writew_b2l(v,a)&t;writew(cpu_to_le16(v),a)
+DECL|macro|writel_b2l
+mdefine_line|#define&t;writel_b2l(v,a)&t;writel(cpu_to_le32(v),a)
+macro_line|#else&t;/* Other bid-endian */
 DECL|macro|readw_l2b
 mdefine_line|#define&t;readw_l2b&t;readw
 DECL|macro|readl_l2b
@@ -268,11 +288,8 @@ DECL|macro|writew_b2l
 mdefine_line|#define&t;writew_b2l&t;writew
 DECL|macro|writel_b2l
 mdefine_line|#define&t;writel_b2l&t;writel
-macro_line|#else
-macro_line|#error&t;&quot;Support for BIG ENDIAN is only available for PowerPC and SPARC&quot;
 macro_line|#endif
 macro_line|#else&t;/* little endian */
-macro_line|#if defined(__i386__)&t;/* i386 implements full FLAT memory/MMIO model */
 DECL|macro|inw_raw
 mdefine_line|#define&t;inw_raw&t;&t;inw
 DECL|macro|inl_raw
@@ -281,6 +298,7 @@ DECL|macro|outw_raw
 mdefine_line|#define&t;outw_raw&t;outw
 DECL|macro|outl_raw
 mdefine_line|#define&t;outl_raw&t;outl
+macro_line|#if defined(__i386__)&t;/* i386 implements full FLAT memory/MMIO model */
 DECL|macro|readb_raw
 mdefine_line|#define readb_raw(a)&t;(*(volatile unsigned char *) (a))
 DECL|macro|readw_raw
@@ -293,19 +311,15 @@ DECL|macro|writew_raw
 mdefine_line|#define writew_raw(b,a)&t;((*(volatile unsigned short *) (a)) = (b))
 DECL|macro|writel_raw
 mdefine_line|#define writel_raw(b,a)&t;((*(volatile unsigned int *) (a)) = (b))
-macro_line|#else&t;/* Other little-endian (for now alpha) */
-DECL|macro|inw_raw
-mdefine_line|#define&t;inw_raw&t;&t;inw
-DECL|macro|inl_raw
-mdefine_line|#define&t;inl_raw&t;&t;inl
-DECL|macro|outw_raw
-mdefine_line|#define&t;outw_raw&t;outw
-DECL|macro|outl_raw
-mdefine_line|#define&t;outl_raw&t;outl
+macro_line|#else&t;/* Other little-endian */
+DECL|macro|readb_raw
+mdefine_line|#define&t;readb_raw&t;readb
 DECL|macro|readw_raw
 mdefine_line|#define&t;readw_raw&t;readw
 DECL|macro|readl_raw
 mdefine_line|#define&t;readl_raw&t;readl
+DECL|macro|writeb_raw
+mdefine_line|#define&t;writeb_raw&t;writeb
 DECL|macro|writew_raw
 mdefine_line|#define&t;writew_raw&t;writew
 DECL|macro|writel_raw
@@ -315,6 +329,149 @@ macro_line|#endif
 macro_line|#ifdef&t;SCSI_NCR_BIG_ENDIAN
 macro_line|#error&t;&quot;The NCR in BIG ENDIAN addressing mode is not (yet) supported&quot;
 macro_line|#endif
+multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; *  We want to be paranoid for ppc and ia64. :)&n; */
+macro_line|#if&t;defined&t;__i386__
+DECL|macro|MEMORY_BARRIER
+mdefine_line|#define MEMORY_BARRIER()&t;do { ; } while(0)
+macro_line|#elif&t;defined&t;__powerpc__
+DECL|macro|MEMORY_BARRIER
+mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;eieio; sync&quot; : : : &quot;memory&quot;)
+macro_line|#elif&t;defined&t;__ia64__
+DECL|macro|MEMORY_BARRIER
+mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;mf.a; mf&quot; : : : &quot;memory&quot;)
+macro_line|#else
+DECL|macro|MEMORY_BARRIER
+mdefine_line|#define MEMORY_BARRIER()&t;mb()
+macro_line|#endif
+multiline_comment|/*&n; *  If the NCR uses big endian addressing mode over the &n; *  PCI, actual io register addresses for byte and word &n; *  accesses must be changed according to lane routing.&n; *  Btw, ncr_offb() and ncr_offw() macros only apply to &n; *  constants and so donnot generate bloated code.&n; */
+macro_line|#if&t;defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|ncr_offb
+mdefine_line|#define ncr_offb(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;3))
+DECL|macro|ncr_offw
+mdefine_line|#define ncr_offw(o)&t;(((o)&amp;~3)+((~((o)&amp;3))&amp;2))
+macro_line|#else
+DECL|macro|ncr_offb
+mdefine_line|#define ncr_offb(o)&t;(o)
+DECL|macro|ncr_offw
+mdefine_line|#define ncr_offw(o)&t;(o)
+macro_line|#endif
+multiline_comment|/*&n; *  If the CPU and the NCR use same endian-ness adressing,&n; *  no byte reordering is needed for script patching.&n; *  Macro cpu_to_scr() is to be used for script patching.&n; *  Macro scr_to_cpu() is to be used for getting a DWORD &n; *  from the script.&n; */
+macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|cpu_to_scr
+mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_le32(dw)
+DECL|macro|scr_to_cpu
+mdefine_line|#define scr_to_cpu(dw)&t;le32_to_cpu(dw)
+macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|cpu_to_scr
+mdefine_line|#define cpu_to_scr(dw)&t;cpu_to_be32(dw)
+DECL|macro|scr_to_cpu
+mdefine_line|#define scr_to_cpu(dw)&t;be32_to_cpu(dw)
+macro_line|#else
+DECL|macro|cpu_to_scr
+mdefine_line|#define cpu_to_scr(dw)&t;(dw)
+DECL|macro|scr_to_cpu
+mdefine_line|#define scr_to_cpu(dw)&t;(dw)
+macro_line|#endif
+multiline_comment|/*&n; *  Access to the controller chip.&n; *&n; *  If SCSI_NCR_IOMAPPED is defined, the driver will use &n; *  normal IOs instead of the MEMORY MAPPED IO method  &n; *  recommended by PCI specifications.&n; *  If all PCI bridges, host brigdes and architectures &n; *  would have been correctly designed for PCI, this &n; *  option would be useless.&n; *&n; *  If the CPU and the NCR use same endian-ness adressing,&n; *  no byte reordering is needed for accessing chip io &n; *  registers. Functions suffixed by &squot;_raw&squot; are assumed &n; *  to access the chip over the PCI without doing byte &n; *  reordering. Functions suffixed by &squot;_l2b&squot; are &n; *  assumed to perform little-endian to big-endian byte &n; *  reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n; *  blah, ...&n; */
+macro_line|#if defined(SCSI_NCR_IOMAPPED)
+multiline_comment|/*&n; *  IO mapped only input / ouput&n; */
+DECL|macro|INB_OFF
+mdefine_line|#define&t;INB_OFF(o)&t;&t;inb (np-&gt;base_io + ncr_offb(o))
+DECL|macro|OUTB_OFF
+mdefine_line|#define&t;OUTB_OFF(o, val)&t;outb ((val), np-&gt;base_io + ncr_offb(o))
+macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|INW_OFF
+mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_l2b (np-&gt;base_io + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_l2b (np-&gt;base_io + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_b2l ((val), np-&gt;base_io + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_b2l ((val), np-&gt;base_io + (o))
+macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|INW_OFF
+mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_b2l (np-&gt;base_io + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_b2l (np-&gt;base_io + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_l2b ((val), np-&gt;base_io + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_l2b ((val), np-&gt;base_io + (o))
+macro_line|#else
+DECL|macro|INW_OFF
+mdefine_line|#define&t;INW_OFF(o)&t;&t;inw_raw (np-&gt;base_io + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define&t;INL_OFF(o)&t;&t;inl_raw (np-&gt;base_io + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define&t;OUTW_OFF(o, val)&t;outw_raw ((val), np-&gt;base_io + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define&t;OUTL_OFF(o, val)&t;outl_raw ((val), np-&gt;base_io + (o))
+macro_line|#endif&t;/* ENDIANs */
+macro_line|#else&t;/* defined SCSI_NCR_IOMAPPED */
+multiline_comment|/*&n; *  MEMORY mapped IO input / output&n; */
+DECL|macro|INB_OFF
+mdefine_line|#define INB_OFF(o)&t;&t;readb_raw((char *)np-&gt;reg + ncr_offb(o))
+DECL|macro|OUTB_OFF
+mdefine_line|#define OUTB_OFF(o, val)&t;writeb_raw((val), (char *)np-&gt;reg + ncr_offb(o))
+macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|INW_OFF
+mdefine_line|#define INW_OFF(o)&t;&t;readw_l2b((char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define INL_OFF(o)&t;&t;readl_l2b((char *)np-&gt;reg + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_b2l((val), (char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_b2l((val), (char *)np-&gt;reg + (o))
+macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
+DECL|macro|INW_OFF
+mdefine_line|#define INW_OFF(o)&t;&t;readw_b2l((char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define INL_OFF(o)&t;&t;readl_b2l((char *)np-&gt;reg + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_l2b((val), (char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_l2b((val), (char *)np-&gt;reg + (o))
+macro_line|#else
+DECL|macro|INW_OFF
+mdefine_line|#define INW_OFF(o)&t;&t;readw_raw((char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|INL_OFF
+mdefine_line|#define INL_OFF(o)&t;&t;readl_raw((char *)np-&gt;reg + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_raw((val), (char *)np-&gt;reg + ncr_offw(o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_raw((val), (char *)np-&gt;reg + (o))
+macro_line|#endif
+macro_line|#endif&t;/* defined SCSI_NCR_IOMAPPED */
+DECL|macro|INB
+mdefine_line|#define INB(r)&t;&t;INB_OFF (offsetof(struct ncr_reg,r))
+DECL|macro|INW
+mdefine_line|#define INW(r)&t;&t;INW_OFF (offsetof(struct ncr_reg,r))
+DECL|macro|INL
+mdefine_line|#define INL(r)&t;&t;INL_OFF (offsetof(struct ncr_reg,r))
+DECL|macro|OUTB
+mdefine_line|#define OUTB(r, val)&t;OUTB_OFF (offsetof(struct ncr_reg,r), (val))
+DECL|macro|OUTW
+mdefine_line|#define OUTW(r, val)&t;OUTW_OFF (offsetof(struct ncr_reg,r), (val))
+DECL|macro|OUTL
+mdefine_line|#define OUTL(r, val)&t;OUTL_OFF (offsetof(struct ncr_reg,r), (val))
+multiline_comment|/*&n; *  Set bit field ON, OFF &n; */
+DECL|macro|OUTONB
+mdefine_line|#define OUTONB(r, m)&t;OUTB(r, INB(r) | (m))
+DECL|macro|OUTOFFB
+mdefine_line|#define OUTOFFB(r, m)&t;OUTB(r, INB(r) &amp; ~(m))
+DECL|macro|OUTONW
+mdefine_line|#define OUTONW(r, m)&t;OUTW(r, INW(r) | (m))
+DECL|macro|OUTOFFW
+mdefine_line|#define OUTOFFW(r, m)&t;OUTW(r, INW(r) &amp; ~(m))
+DECL|macro|OUTONL
+mdefine_line|#define OUTONL(r, m)&t;OUTL(r, INL(r) | (m))
+DECL|macro|OUTOFFL
+mdefine_line|#define OUTOFFL(r, m)&t;OUTL(r, INL(r) &amp; ~(m))
+multiline_comment|/*&n; *  We normally want the chip to have a consistent view&n; *  of driver internal data structures when we restart it.&n; *  Thus these macros.&n; */
+DECL|macro|OUTL_DSP
+mdefine_line|#define OUTL_DSP(v)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTL (nc_dsp, (v));&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|OUTONB_STD
+mdefine_line|#define OUTONB_STD()&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTONB (nc_dcntl, (STD|NOCOM));&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n;**&t;NCR53C8XX Device Ids&n;*/
 macro_line|#ifndef PCI_DEVICE_ID_NCR_53C810
 DECL|macro|PCI_DEVICE_ID_NCR_53C810
@@ -363,6 +520,10 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NCR_53C895A
 DECL|macro|PCI_DEVICE_ID_NCR_53C895A
 mdefine_line|#define PCI_DEVICE_ID_NCR_53C895A 0x12
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NCR_53C875A
+DECL|macro|PCI_DEVICE_ID_NCR_53C875A
+mdefine_line|#define PCI_DEVICE_ID_NCR_53C875A 0x13
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NCR_53C1510D
 DECL|macro|PCI_DEVICE_ID_NCR_53C1510D
@@ -446,12 +607,12 @@ DECL|macro|FE_LDSTR
 mdefine_line|#define FE_LDSTR&t;(1&lt;&lt;13)   /* Load/Store supported */
 DECL|macro|FE_RAM
 mdefine_line|#define FE_RAM&t;&t;(1&lt;&lt;14)   /* On chip RAM present */
-DECL|macro|FE_CLK80
-mdefine_line|#define FE_CLK80&t;(1&lt;&lt;15)   /* Board clock is 80 MHz */
+DECL|macro|FE_VARCLK
+mdefine_line|#define FE_VARCLK&t;(1&lt;&lt;15)   /* SCSI lock may vary */
 DECL|macro|FE_RAM8K
 mdefine_line|#define FE_RAM8K&t;(1&lt;&lt;16)   /* On chip RAM sized 8Kb */
 DECL|macro|FE_64BIT
-mdefine_line|#define FE_64BIT&t;(1&lt;&lt;17)   /* Supports 64-bit addressing */
+mdefine_line|#define FE_64BIT&t;(1&lt;&lt;17)   /* Have a 64-bit PCI interface */
 DECL|macro|FE_IO256
 mdefine_line|#define FE_IO256&t;(1&lt;&lt;18)   /* Requires full 256 bytes in PCI space */
 DECL|macro|FE_NOPM
@@ -464,6 +625,8 @@ DECL|macro|FE_ULTRA3
 mdefine_line|#define FE_ULTRA3&t;(1&lt;&lt;22)   /* Ultra-3 80Mtrans/sec */
 DECL|macro|FE_66MHZ
 mdefine_line|#define FE_66MHZ &t;(1&lt;&lt;23)   /* 66MHz PCI Support */
+DECL|macro|FE_DAC
+mdefine_line|#define FE_DAC&t; &t;(1&lt;&lt;24)   /* Support DAC cycles (64 bit addressing) */
 DECL|macro|FE_CACHE_SET
 mdefine_line|#define FE_CACHE_SET&t;(FE_ERL|FE_CLSE|FE_WRIE|FE_ERMP)
 DECL|macro|FE_SCSI_SET
@@ -479,7 +642,7 @@ DECL|macro|FE_CACHE0_SET
 mdefine_line|#define FE_CACHE0_SET&t;(FE_CACHE_SET &amp; ~FE_ERL)
 multiline_comment|/*&n;**&t;DEL 397 - 53C875 Rev 3 - Part Number 609-0392410 - ITEM 5.&n;**&t;On paper, this errata is harmless. But it is a good reason for &n;**&t;using a shorter programmed burst length (64 DWORDS instead of 128).&n;*/
 DECL|macro|SCSI_NCR_CHIP_TABLE
-mdefine_line|#define SCSI_NCR_CHIP_TABLE&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C810, 0x0f, &quot;810&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_ERL}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C810, 0xff, &quot;810a&quot;, 4,  8, 4,&t;&t;&t;&bslash;&n; FE_CACHE_SET|FE_LDSTR|FE_PFEN|FE_BOF}&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C815, 0xff, &quot;815&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_ERL|FE_BOF}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C820, 0xff, &quot;820&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ERL}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C825, 0x0f, &quot;825&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ERL|FE_BOF|FE_DIFF}&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C825, 0xff, &quot;825a&quot;, 6,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|FE_RAM|FE_DIFF}&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C860, 0xff, &quot;860&quot;,  4,  8, 5,&t;&t;&t;&bslash;&n; FE_ULTRA|FE_CLK80|FE_CACHE_SET|FE_BOF|FE_LDSTR|FE_PFEN}&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0x01, &quot;875&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_CLK80|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0x0f, &quot;875&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0x1f, &quot;876&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0x2f, &quot;875E&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0xff, &quot;876&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875J,0xff, &quot;875J&quot;, 6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C885, 0xff, &quot;885&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C895, 0xff, &quot;895&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C896, 0xff, &quot;896&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_IO256|FE_NOPM|FE_LEDC}&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C895A, 0xff, &quot;895a&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_IO256|FE_NOPM|FE_LEDC}&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C1510D, 0xff, &quot;1510D&quot;,  7, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_IO256}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_LSI_53C1010, 0xff, &quot;1010&quot;,  6, 62, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_IO256|FE_NOPM|FE_LEDC|FE_ULTRA3}&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_LSI_53C1010_66, 0xff, &quot;1010_66&quot;,  6, 62, 7,&t;&t;&bslash;&n; FE_WIDE|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_IO256|FE_NOPM|FE_LEDC|FE_ULTRA3|FE_66MHZ}&t;&bslash;&n;}
+mdefine_line|#define SCSI_NCR_CHIP_TABLE&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C810, 0x0f, &quot;810&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_ERL}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C810, 0xff, &quot;810a&quot;, 4,  8, 4,&t;&t;&t;&bslash;&n; FE_CACHE_SET|FE_LDSTR|FE_PFEN|FE_BOF}&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C815, 0xff, &quot;815&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_ERL|FE_BOF}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C820, 0xff, &quot;820&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ERL}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C825, 0x0f, &quot;825&quot;,  4,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ERL|FE_BOF|FE_DIFF}&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C825, 0xff, &quot;825a&quot;, 6,  8, 4,&t;&t;&t;&bslash;&n; FE_WIDE|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|FE_RAM|FE_DIFF}&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C860, 0xff, &quot;860&quot;,  4,  8, 5,&t;&t;&t;&bslash;&n; FE_ULTRA|FE_CACHE_SET|FE_BOF|FE_LDSTR|FE_PFEN}&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0x01, &quot;875&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&t;&bslash;&n; FE_RAM|FE_DIFF|FE_VARCLK}&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875, 0xff, &quot;875&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF|FE_VARCLK}&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875J,0xff, &quot;875J&quot;, 6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_VARCLK}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C885, 0xff, &quot;885&quot;,  6, 16, 5,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_DBLR|FE_CACHE0_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DIFF|FE_VARCLK}&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C895, 0xff, &quot;895&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C896, 0xff, &quot;896&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_DAC|FE_IO256|FE_NOPM|FE_LEDC}&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C895A, 0xff, &quot;895a&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_DAC|FE_IO256|FE_NOPM|FE_LEDC}&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C875A, 0xff, &quot;875a&quot;,  6, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_DAC|FE_IO256|FE_NOPM|FE_LEDC}&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_NCR_53C1510D, 0xff, &quot;1510D&quot;,  7, 31, 7,&t;&t;&t;&bslash;&n; FE_WIDE|FE_ULTRA2|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&bslash;&n; FE_RAM|FE_IO256}&t;&t;&t;&t;&t;&t;&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_LSI_53C1010, 0xff, &quot;1010-33&quot;,  6, 62, 7,&t;&t;&bslash;&n; FE_WIDE|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_DAC|FE_IO256|FE_NOPM|FE_LEDC|FE_ULTRA3}&t;&bslash;&n; ,&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; {PCI_DEVICE_ID_LSI_53C1010_66, 0xff, &quot;1010-66&quot;,  6, 62, 7,&t;&t;&bslash;&n; FE_WIDE|FE_QUAD|FE_CACHE_SET|FE_BOF|FE_DFS|FE_LDSTR|FE_PFEN|&t;&t;&bslash;&n; FE_RAM|FE_RAM8K|FE_64BIT|FE_DAC|FE_IO256|FE_NOPM|FE_LEDC|FE_ULTRA3|&t;&bslash;&n; FE_66MHZ}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * List of supported NCR chip ids&n; */
 DECL|macro|SCSI_NCR_CHIP_IDS
 mdefine_line|#define SCSI_NCR_CHIP_IDS&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C810,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C815,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C820,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C825,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C860,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C875,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C875J,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C885,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C895,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C896,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C895A,&t;&bslash;&n;&t;PCI_DEVICE_ID_NCR_53C1510D,&t;&bslash;&n; &t;PCI_DEVICE_ID_LSI_53C1010,&t;&bslash;&n; &t;PCI_DEVICE_ID_LSI_53C1010_66&t;&bslash;&n;}
@@ -505,10 +668,6 @@ suffix:semicolon
 DECL|member|special_features
 id|u_char
 id|special_features
-suffix:semicolon
-DECL|member|ultra_scsi
-id|u_char
-id|ultra_scsi
 suffix:semicolon
 DECL|member|force_sync_nego
 id|u_char
@@ -604,10 +763,10 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n;**&t;Initial setup.&n;**&t;Can be overriden at startup by a command line.&n;*/
 DECL|macro|SCSI_NCR_DRIVER_SETUP
-mdefine_line|#define SCSI_NCR_DRIVER_SETUP&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_MASTER_PARITY,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SCSI_PARITY,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DISCONNECTION,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SPECIAL_FEATURES,&t;&bslash;&n;&t;SCSI_NCR_SETUP_ULTRA_SCSI,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_FORCE_SYNC_NEGO,&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DEFAULT_TAGS,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DEFAULT_SYNC,&t;&t;&bslash;&n;&t;0x0200,&t;&t;&t;&t;&t;&bslash;&n;&t;7,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_LED_PIN,&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SETTLE_TIME,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DIFF_SUPPORT,&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0x00&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_NCR_DRIVER_SETUP&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_MASTER_PARITY,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SCSI_PARITY,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DISCONNECTION,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SPECIAL_FEATURES,&t;&bslash;&n;&t;SCSI_NCR_SETUP_FORCE_SYNC_NEGO,&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DEFAULT_TAGS,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DEFAULT_SYNC,&t;&t;&bslash;&n;&t;0x00,&t;&t;&t;&t;&t;&bslash;&n;&t;7,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_LED_PIN,&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_SETTLE_TIME,&t;&t;&bslash;&n;&t;SCSI_NCR_SETUP_DIFF_SUPPORT,&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0x00&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n;**&t;Boot fail safe setup.&n;**&t;Override initial setup from boot command line:&n;**&t;ncr53c8xx=safe:y&n;*/
 DECL|macro|SCSI_NCR_DRIVER_SAFE_SETUP
-mdefine_line|#define SCSI_NCR_DRIVER_SAFE_SETUP&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;2,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0x00,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;10,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_NCR_DRIVER_SAFE_SETUP&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;2,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0x00,&t;&t;&t;&t;&t;&bslash;&n;&t;255,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;10,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&bslash;&n;&t;255&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifdef SCSI_NCR_NVRAM_SUPPORT
 multiline_comment|/*&n;**&t;Symbios NvRAM data format&n;*/
 DECL|macro|SYMBIOS_NVRAM_SIZE

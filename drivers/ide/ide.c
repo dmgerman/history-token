@@ -5912,7 +5912,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Either a marginal timeout occured&n;&t;&t; * (got the interrupt just as timer expired),&n;&t;&t; * or we were &quot;sleeping&quot; to give other devices a chance.&n;&t;&t; * Either way, we don&squot;t really want to complain about anything.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Either a marginal timeout occurred&n;&t;&t; * (got the interrupt just as timer expired),&n;&t;&t; * or we were &quot;sleeping&quot; to give other devices a chance.&n;&t;&t; * Either way, we don&squot;t really want to complain about anything.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11193,38 +11193,10 @@ r_void
 )paren
 (brace
 macro_line|#ifndef CONFIG_BLK_DEV_IDECS
-r_int
-r_int
-id|timeout
-op_assign
-id|jiffies
-op_plus
+id|mdelay
+c_func
 (paren
-(paren
-id|HZ
-op_plus
-l_int|19
-)paren
-op_div
-l_int|20
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|0
-OL
-(paren
-r_int
-r_int
-)paren
-(paren
-id|timeout
-op_minus
-id|jiffies
-)paren
+l_int|50
 )paren
 suffix:semicolon
 macro_line|#else

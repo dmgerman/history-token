@@ -774,7 +774,7 @@ id|irq
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Do we need these probe functions on the m68k?&n; *&n; *  ... may be usefull with ISA devices&n; */
+multiline_comment|/*&n; * Do we need these probe functions on the m68k?&n; *&n; *  ... may be useful with ISA devices&n; */
 DECL|function|probe_irq_on
 r_int
 r_int

@@ -42,9 +42,6 @@ l_string|&quot;Specify the userids associated with iucv0-iucv9:&bslash;n&quot;
 l_string|&quot;iucv=userid1,userid2,...,userid10&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODVERSIONS
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#else
 DECL|macro|MOD_INC_USE_COUNT
 mdefine_line|#define MOD_INC_USE_COUNT

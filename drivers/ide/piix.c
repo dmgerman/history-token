@@ -1059,7 +1059,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; (CONFIG_PIIX_TUNING) */
-multiline_comment|/*&n; *  Based on settings done by AMI BIOS&n; *  (might be usefull if drive is not registered in CMOS for any reason).&n; */
+multiline_comment|/*&n; *  Based on settings done by AMI BIOS&n; *  (might be useful if drive is not registered in CMOS for any reason).&n; */
 DECL|function|piix_tune_drive
 r_static
 r_void

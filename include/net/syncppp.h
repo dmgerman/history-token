@@ -283,12 +283,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
-id|sync_ppp_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|macro|SPPPIOCCISCO
 mdefine_line|#define SPPPIOCCISCO&t;(SIOCDEVPRIVATE)

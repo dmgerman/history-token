@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.59 2001/02/13 01:16:44 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.62 2001/03/03 10:34:45 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -601,13 +601,36 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Locked down tlb entry 63.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Locked down tlb entry.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
 id|tte
 op_assign
 id|spitfire_get_dtlb_data
 c_func
 (paren
-l_int|63
+id|SPITFIRE_HIGHEST_LOCKED_TLBENT
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+id|tte
+op_assign
+id|cheetah_get_ldtlb_data
+c_func
+(paren
+id|CHEETAH_HIGHEST_LOCKED_TLBENT
 )paren
 suffix:semicolon
 id|res
@@ -1047,7 +1070,7 @@ comma
 (paren
 id|tte
 op_amp
-id|_PAGE_SOFT2
+l_int|0x07FC000000000000
 )paren
 op_rshift
 l_int|50

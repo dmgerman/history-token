@@ -171,6 +171,7 @@ DECL|macro|CORKSCREW_TOTAL_SIZE
 mdefine_line|#define CORKSCREW_TOTAL_SIZE 0x20
 macro_line|#ifdef DRIVER_DEBUG
 DECL|variable|corkscrew_debug
+r_static
 r_int
 id|corkscrew_debug
 op_assign
@@ -178,6 +179,7 @@ id|DRIVER_DEBUG
 suffix:semicolon
 macro_line|#else
 DECL|variable|corkscrew_debug
+r_static
 r_int
 id|corkscrew_debug
 op_assign
@@ -1312,35 +1314,21 @@ l_int|10000
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
-DECL|struct|corkscrew_isapnp_adapters_struct
-r_struct
-id|corkscrew_isapnp_adapters_struct
-(brace
-DECL|member|vendor
-DECL|member|function
-r_int
-r_int
-id|vendor
-comma
-id|function
-suffix:semicolon
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#ifdef CONFIG_ISAPNP
 DECL|variable|corkscrew_isapnp_adapters
+r_static
 r_struct
-id|corkscrew_isapnp_adapters_struct
+id|isapnp_device_id
 id|corkscrew_isapnp_adapters
 (braket
 )braket
 op_assign
 (brace
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -1357,36 +1345,39 @@ c_func
 l_int|0x5051
 )paren
 comma
+(paren
+r_int
+)paren
 l_string|&quot;3Com Fast EtherLink ISA&quot;
 )brace
 comma
 (brace
-l_int|0
-comma
 )brace
+multiline_comment|/* terminate list */
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
+comma
+id|corkscrew_isapnp_adapters
+)paren
+suffix:semicolon
 DECL|variable|corkscrew_isapnp_phys_addr
+r_static
 r_int
 id|corkscrew_isapnp_phys_addr
 (braket
 l_int|3
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|nopnp
 r_static
 r_int
 id|nopnp
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_ISAPNP */
 r_static
 r_int
 id|corkscrew_scan
@@ -1762,7 +1753,7 @@ r_static
 r_int
 id|ioaddr
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 r_int
 id|i
 suffix:semicolon
@@ -1773,7 +1764,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 r_if
 c_cond
 (paren
@@ -2157,7 +2148,7 @@ suffix:semicolon
 )brace
 id|no_pnp
 suffix:colon
-macro_line|#endif /* not __ISAPNP__ */
+macro_line|#endif /* CONFIG_ISAPNP */
 multiline_comment|/* Check all locations on the ISA bus -- evil! */
 r_for
 c_loop
@@ -2178,7 +2169,7 @@ l_int|0x20
 r_int
 id|irq
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_ISAPNP
 multiline_comment|/* Make sure this was not already picked up by isapnp */
 r_if
 c_cond
@@ -2222,7 +2213,7 @@ l_int|2
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_ISAPNP */
 r_if
 c_cond
 (paren
@@ -6292,7 +6283,7 @@ c_func
 id|lp-&gt;tx_skb
 )paren
 suffix:semicolon
-multiline_comment|/* Release the transfered buffer */
+multiline_comment|/* Release the transferred buffer */
 id|netif_wake_queue
 c_func
 (paren

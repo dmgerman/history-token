@@ -1341,6 +1341,8 @@ op_eq
 id|REQUEST_SENSE
 )paren
 (brace
+macro_line|#if 0
+multiline_comment|/* scsi_request_sense() provides a buffer of size 256,&n;&t;   so there is no reason to expect equality */
 r_if
 c_cond
 (paren
@@ -1361,6 +1363,7 @@ id|bufflen
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;
 id|SCpnt-&gt;result
 op_assign
 l_int|0
@@ -2530,12 +2533,15 @@ multiline_comment|/*&n;&t; * The ioports for eisa boards are generally beyond th
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|slotbase
 comma
 id|SLOTSIZE
+comma
+l_string|&quot;aha1740&quot;
 )paren
 )paren
 multiline_comment|/* See if in use */
@@ -2551,7 +2557,8 @@ c_func
 id|slotbase
 )paren
 )paren
-r_continue
+r_goto
+id|err_release
 suffix:semicolon
 id|aha1740_getconfig
 c_func
@@ -2674,7 +2681,8 @@ c_func
 l_string|&quot;Unable to allocate IRQ for adaptec controller.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_continue
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 id|shpnt
@@ -2699,27 +2707,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|free_irq
-c_func
-(paren
-id|irq_level
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|slotbase
-comma
-id|SLOTSIZE
-comma
-l_string|&quot;aha1740&quot;
-)paren
-suffix:semicolon
 id|shpnt-&gt;base
 op_assign
 l_int|0
@@ -2767,6 +2758,28 @@ id|shpnt
 suffix:semicolon
 id|count
 op_increment
+suffix:semicolon
+r_continue
+suffix:semicolon
+id|err_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|irq_level
+comma
+id|aha1740_intr_handle
+)paren
+suffix:semicolon
+id|err_release
+suffix:colon
+id|release_region
+c_func
+(paren
+id|slotbase
+comma
+id|SLOTSIZE
+)paren
 suffix:semicolon
 )brace
 r_return

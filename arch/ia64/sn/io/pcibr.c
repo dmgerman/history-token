@@ -14263,7 +14263,7 @@ op_rshift
 id|BRIDGE_DIRMAP_W_ID_SHFT
 suffix:semicolon
 )brace
-multiline_comment|/* pcibr sources an error interrupt;&n;     * figure out where to send it.&n;     *&n;     * If any interrupts are enabled in bridge,&n;     * then the prom set us up and our interrupt&n;     * has already been reconnected in mlreset&n;     * above.&n;     *&n;     * Need to set the D_INTR_ISERR flag&n;     * in the dev_desc used for alocating the&n;     * error interrupt, so our interrupt will&n;     * be properly routed and prioritized.&n;     *&n;     * If our crosstalk provider wants to&n;     * fix widget error interrupts to specific&n;     * destinations, D_INTR_ISERR is how it&n;     * knows to do this.&n;     */
+multiline_comment|/* pcibr sources an error interrupt;&n;     * figure out where to send it.&n;     *&n;     * If any interrupts are enabled in bridge,&n;     * then the prom set us up and our interrupt&n;     * has already been reconnected in mlreset&n;     * above.&n;     *&n;     * Need to set the D_INTR_ISERR flag&n;     * in the dev_desc used for allocating the&n;     * error interrupt, so our interrupt will&n;     * be properly routed and prioritized.&n;     *&n;     * If our crosstalk provider wants to&n;     * fix widget error interrupts to specific&n;     * destinations, D_INTR_ISERR is how it&n;     * knows to do this.&n;     */
 id|dev_desc
 op_assign
 id|device_desc_dup
@@ -19662,7 +19662,7 @@ id|xio_port
 op_assign
 id|pcibr_dmamap-&gt;bd_xio_port
 suffix:semicolon
-multiline_comment|/* If this DMA is to an addres that&n;     * refers back to this Bridge chip,&n;     * reduce it back to the correct&n;     * PCI MEM address.&n;     */
+multiline_comment|/* If this DMA is to an address that&n;     * refers back to this Bridge chip,&n;     * reduce it back to the correct&n;     * PCI MEM address.&n;     */
 r_if
 c_cond
 (paren
@@ -29082,7 +29082,7 @@ suffix:semicolon
 macro_line|#if !DEBUG || defined(FORCE_ERRORS)
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Since error could not be handled at lower level,&n;&t; * error data logged has not  been cleared.&n;&t; * Clean up errors, and&n;&t; * re-enable bridge to interrupt on error conditions.&n;&t; * NOTE: Wheather we get the interrupt on PCI_ABORT or not is&n;&t; * dependent on INT_ENABLE register. This write just makes sure&n;&t; * that if the interrupt was enabled, we do get the interrupt.&n;&t; *&n;&t; * CAUTION: Resetting bit BRIDGE_IRR_PCI_GRP_CLR, acknowledges&n;&t; *      a group of interrupts. If while handling this error,&n;&t; *      some other error has occured, that would be&n;&t; *      implicitly cleared by this write.&n;&t; *      Need a way to ensure we don&squot;t inadvertently clear some&n;&t; *      other errors.&n;&t; */
+multiline_comment|/*&n;&t; * Since error could not be handled at lower level,&n;&t; * error data logged has not  been cleared.&n;&t; * Clean up errors, and&n;&t; * re-enable bridge to interrupt on error conditions.&n;&t; * NOTE: Wheather we get the interrupt on PCI_ABORT or not is&n;&t; * dependent on INT_ENABLE register. This write just makes sure&n;&t; * that if the interrupt was enabled, we do get the interrupt.&n;&t; *&n;&t; * CAUTION: Resetting bit BRIDGE_IRR_PCI_GRP_CLR, acknowledges&n;&t; *      a group of interrupts. If while handling this error,&n;&t; *      some other error has occurred, that would be&n;&t; *      implicitly cleared by this write.&n;&t; *      Need a way to ensure we don&squot;t inadvertently clear some&n;&t; *      other errors.&n;&t; */
 macro_line|#ifdef IRIX
 r_if
 c_cond

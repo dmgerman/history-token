@@ -179,9 +179,9 @@ multiline_comment|/*&n; * These register definitions are for the 16C950&n; */
 DECL|macro|UART_ASR
 mdefine_line|#define UART_ASR&t;0x01&t;/* Additional Status Register */
 DECL|macro|UART_RFL
-mdefine_line|#define UART_RFL&t;0x03&t;/* Transmitter FIFO level */
+mdefine_line|#define UART_RFL&t;0x03&t;/* Receiver FIFO level */
 DECL|macro|UART_TFL
-mdefine_line|#define UART_TFL &t;0x04&t;/* Receiver FIFO level */
+mdefine_line|#define UART_TFL &t;0x04&t;/* Transmitter FIFO level */
 DECL|macro|UART_ICR
 mdefine_line|#define UART_ICR&t;0x05&t;/* Index Control Register */
 multiline_comment|/* The 16950 ICR registers */

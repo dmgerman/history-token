@@ -1078,7 +1078,7 @@ id|error
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Error occured  */
+multiline_comment|/* Error occurred  */
 DECL|member|barr
 id|barr
 suffix:colon
@@ -2116,7 +2116,7 @@ mdefine_line|#define BRIDGE_INT_ADDR(x)&t;(BRIDGE_INT_ADDR0+(x)*BRIDGE_INT_ADDR_
 DECL|macro|BRIDGE_INT_VIEW
 mdefine_line|#define BRIDGE_INT_VIEW&t;&t;0x000174&t;/* Interrupt view */
 DECL|macro|BRIDGE_MULTIPLE_INT
-mdefine_line|#define BRIDGE_MULTIPLE_INT&t;0x00017c&t;/* Multiple interrupt occured */
+mdefine_line|#define BRIDGE_MULTIPLE_INT&t;0x00017c&t;/* Multiple interrupt occurred */
 DECL|macro|BRIDGE_FORCE_ALWAYS0
 mdefine_line|#define BRIDGE_FORCE_ALWAYS0&t;0x000184&t;/* Force an interrupt (always)*/
 DECL|macro|BRIDGE_FORCE_ALWAYS_OFF

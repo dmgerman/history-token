@@ -19,5 +19,9 @@ macro_line|#endif
 multiline_comment|/* max length of hostname */
 DECL|macro|MAXHOSTNAMELEN
 mdefine_line|#define MAXHOSTNAMELEN  64
+macro_line|#ifdef __KERNEL__
+DECL|macro|CLOCKS_PER_SEC
+macro_line|# define CLOCKS_PER_SEC&t;HZ
+macro_line|#endif
 macro_line|#endif
 eof

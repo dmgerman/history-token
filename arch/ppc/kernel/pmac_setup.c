@@ -1658,7 +1658,7 @@ DECL|variable|boot_part
 r_int
 id|boot_part
 suffix:semicolon
-DECL|variable|boot_dev
+r_extern
 id|kdev_t
 id|boot_dev
 suffix:semicolon

@@ -1,5 +1,3 @@
-DECL|macro|MAX_KMALLOC_MEM
-mdefine_line|#define MAX_KMALLOC_MEM (512*1024)
 multiline_comment|/*&n;   buz - Iomega Buz driver version 1.0&n;&n;   Copyright (C) 1999 Rainer Johanni &lt;Rainer@Johanni.de&gt;&n;&n;   based on&n;&n;   buz.0.0.3 Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;   and&n;&n;   bttv - Bt848 frame grabber driver&n;&n;   Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;   &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -51,27 +49,21 @@ r_static
 r_int
 r_int
 id|vidmem
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* Video memory base address */
+multiline_comment|/* Video memory base address (default 0) */
 multiline_comment|/* Special purposes only: */
 DECL|variable|triton
 r_static
 r_int
 id|triton
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* 0=no, 1=yes */
+multiline_comment|/* 0=no (default), 1=yes */
 DECL|variable|natoma
 r_static
 r_int
 id|natoma
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* 0=no, 1=yes */
+multiline_comment|/* 0=no (default), 1=yes */
 multiline_comment|/*&n;   Number and size of grab buffers for Video 4 Linux&n;   The vast majority of applications should not need more than 2,&n;   the very popular BTTV driver actually does ONLY have 2.&n;   Time sensitive applications might need more, the maximum&n;   is VIDEO_MAX_FRAME (defined in &lt;linux/videodev.h&gt;).&n;&n;   The size is set so that the maximum possible request&n;   can be satisfied. Decrease  it, if bigphys_area alloc&squot;d&n;   memory is low. If you don&squot;t have the bigphys_area patch,&n;   set it to 128 KB. Will you allow only to grab small&n;   images with V4L, but that&squot;s better than nothing.&n;&n;   v4l_bufsize has to be given in KB !&n;&n; */
 DECL|variable|v4l_nbufs
 r_static
@@ -93,18 +85,14 @@ DECL|variable|default_input
 r_static
 r_int
 id|default_input
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* 0=Composite, 1=S-VHS */
+multiline_comment|/* 0=Composite (default), 1=S-VHS */
 DECL|variable|default_norm
 r_static
 r_int
 id|default_norm
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* 0=PAL, 1=NTSC */
+multiline_comment|/* 0=PAL (default), 1=NTSC */
 id|MODULE_PARM
 c_func
 (paren
@@ -213,7 +201,7 @@ op_star
 id|zr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *   Allocate the V4L grab buffers&n; *&n; *   These have to be pysically contiguous.&n; *   If v4l_bufsize &lt;= MAX_KMALLOC_MEM we use kmalloc&n; */
+multiline_comment|/*&n; *   Allocate the V4L grab buffers&n; *&n; *   These have to be pysically contiguous.&n; *   If v4l_bufsize &lt;= KMALLOC_MAXSIZE we use kmalloc&n; */
 DECL|function|v4l_fbuffer_alloc
 r_static
 r_int
@@ -277,7 +265,7 @@ c_cond
 (paren
 id|v4l_bufsize
 op_le
-id|MAX_KMALLOC_MEM
+id|KMALLOC_MAXSIZE
 )paren
 (brace
 multiline_comment|/* Use kmalloc */
@@ -545,7 +533,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than MAX_KMALLOC_MEM,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_free_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to MAX_KMALLOC_MEM in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_free_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; */
+multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than KMALLOC_MAXSIZE,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_free_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to KMALLOC_MAXSIZE in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_free_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; */
 DECL|function|jpg_fbuffer_alloc
 r_static
 r_int
@@ -578,7 +566,7 @@ op_assign
 (paren
 id|zr-&gt;jpg_bufsize
 OL
-id|MAX_KMALLOC_MEM
+id|KMALLOC_MAXSIZE
 )paren
 suffix:semicolon
 r_for
@@ -989,7 +977,7 @@ op_assign
 (paren
 id|zr-&gt;jpg_bufsize
 OL
-id|MAX_KMALLOC_MEM
+id|KMALLOC_MAXSIZE
 )paren
 suffix:semicolon
 r_for
@@ -1472,25 +1460,33 @@ id|i2c_bus
 id|zoran_i2c_bus_template
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;zr36057&quot;
 comma
+id|id
+suffix:colon
 id|I2C_BUSID_BT848
 comma
-l_int|NULL
-comma
+id|bus_lock
+suffix:colon
 id|SPIN_LOCK_UNLOCKED
 comma
 id|attach_inform
+suffix:colon
+id|attach_inform
 comma
+id|detach_inform
+suffix:colon
 id|detach_inform
 comma
 id|i2c_setlines
+suffix:colon
+id|i2c_setlines
 comma
 id|i2c_getdataline
-comma
-l_int|NULL
-comma
-l_int|NULL
+suffix:colon
+id|i2c_getdataline
 comma
 )brace
 suffix:semicolon
@@ -10300,8 +10296,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10413,8 +10407,6 @@ suffix:semicolon
 id|zr-&gt;jpg_nbufs
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|DEBUG
 c_func
@@ -11569,7 +11561,7 @@ id|vw.y
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/* Check for vaild parameters */
+multiline_comment|/* Check for valid parameters */
 r_if
 c_cond
 (paren
@@ -12680,11 +12672,11 @@ id|zr-&gt;need_contiguous
 op_logical_and
 id|br.size
 OG
-id|MAX_KMALLOC_MEM
+id|KMALLOC_MAXSIZE
 )paren
 id|br.size
 op_assign
-id|MAX_KMALLOC_MEM
+id|KMALLOC_MAXSIZE
 suffix:semicolon
 id|zr-&gt;jpg_nbufs
 op_assign
@@ -13596,6 +13588,10 @@ id|video_device
 id|zoran_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 id|BUZ_NAME
@@ -15089,7 +15085,8 @@ comma
 id|zr-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* XXX handle error */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* set PCI latency timer */
 id|pci_read_config_byte

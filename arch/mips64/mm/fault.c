@@ -125,7 +125,7 @@ id|console_lock
 comma
 id|timerlist_lock
 suffix:semicolon
-multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is aquired through the&n; * console unblank code)&n; */
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks

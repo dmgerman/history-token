@@ -1171,6 +1171,10 @@ macro_line|#undef mb
 macro_line|#endif
 DECL|macro|mb
 mdefine_line|#define mb() &bslash;&n;&t;__asm__ __volatile__(&quot;mb&quot;: : :&quot;memory&quot;)
+macro_line|#elif defined(__sparc__)
+DECL|macro|MMAPIO
+mdefine_line|#define MMAPIO
+multiline_comment|/* The default mb() define does what this driver wants. -DaveM */
 macro_line|#endif
 r_static
 id|__inline

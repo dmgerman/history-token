@@ -26,7 +26,7 @@ macro_line|#undef REALLY_SLOW_IO
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &quot;syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;cosa.h&quot;
 multiline_comment|/* Linux version stuff */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
@@ -383,11 +383,14 @@ mdefine_line|#define IRQBIT 2
 DECL|macro|COSA_MTU
 mdefine_line|#define COSA_MTU 2000&t;/* FIXME: I don&squot;t know this exactly */
 DECL|macro|DEBUG_DATA
-macro_line|#undef DEBUG_DATA 1&t;/* Dump the data read or written to the channel */
+macro_line|#undef DEBUG_DATA 
+singleline_comment|//1&t;/* Dump the data read or written to the channel */
 DECL|macro|DEBUG_IRQS
-macro_line|#undef DEBUG_IRQS 1&t;/* Print the message when the IRQ is received */
+macro_line|#undef DEBUG_IRQS 
+singleline_comment|//1&t;/* Print the message when the IRQ is received */
 DECL|macro|DEBUG_IO
-macro_line|#undef DEBUG_IO 1&t;/* Dump the I/O traffic */
+macro_line|#undef DEBUG_IO   
+singleline_comment|//1&t;/* Dump the I/O traffic */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;(5*HZ)
 multiline_comment|/* Maybe the following should be allocated dynamically */
@@ -3229,7 +3232,7 @@ id|chan-&gt;rx_skb
 op_assign
 l_int|0
 suffix:semicolon
-id|chan-&gt;pppdev.dev-&gt;trans_start
+id|chan-&gt;pppdev.dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -3695,7 +3698,7 @@ id|count
 id|kfree
 c_func
 (paren
-id|buf
+id|kbuf
 )paren
 suffix:semicolon
 r_return
@@ -9586,7 +9589,7 @@ macro_line|#endif
 )brace
 "&f;"
 multiline_comment|/* ---------- I/O debugging routines ---------- */
-multiline_comment|/*&n; * These routines can be used to monitor COSA/SRP I/O and to printk()&n; * the data being transfered on the data and status I/O port in a&n; * readable way.&n; */
+multiline_comment|/*&n; * These routines can be used to monitor COSA/SRP I/O and to printk()&n; * the data being transferred on the data and status I/O port in a&n; * readable way.&n; */
 macro_line|#ifdef DEBUG_IO
 DECL|function|debug_status_in
 r_static

@@ -4,6 +4,7 @@ DECL|macro|SYM53C8XX_H
 mdefine_line|#define SYM53C8XX_H
 macro_line|#include &quot;sym53c8xx_defs.h&quot;
 multiline_comment|/*&n;**&t;Define Scsi_Host_Template parameters&n;**&n;**&t;Used by hosts.c and sym53c8xx.c with module configuration.&n;*/
+macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020400) || defined(HOSTS_C) || defined(MODULE)
 macro_line|#include &lt;scsi/scsicam.h&gt;
 r_int
 id|sym53c8xx_abort
@@ -84,5 +85,6 @@ macro_line|#else
 DECL|macro|SYM53C8XX
 mdefine_line|#define SYM53C8XX {&t;NULL, NULL, NULL, NULL,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;NULL,&t;&t;&t;sym53c8xx_detect,&t;&bslash;&n;&t;&t;&t;sym53c8xx_release,&t;sym53c8xx_info,&t;NULL,&t;&bslash;&n;&t;&t;&t;sym53c8xx_queue_command,sym53c8xx_abort,&t;&bslash;&n;&t;&t;&t;sym53c8xx_reset, NULL,&t;scsicam_bios_param,&t;&bslash;&n;&t;&t;&t;SCSI_NCR_CAN_QUEUE,&t;7,&t;&t;&t;&bslash;&n;&t;&t;&t;SCSI_NCR_SG_TABLESIZE,&t;SCSI_NCR_CMD_PER_LUN,&t;&bslash;&n;&t;&t;&t;0,&t;0,&t;DISABLE_CLUSTERING} 
 macro_line|#endif /* LINUX_VERSION_CODE */
+macro_line|#endif /* defined(HOSTS_C) || defined(MODULE) */ 
 macro_line|#endif /* SYM53C8XX_H */
 eof

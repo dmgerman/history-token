@@ -332,6 +332,19 @@ id|dma_addr_t
 id|mask
 )paren
 (brace
+multiline_comment|/*&n;         * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;         * so we can&squot;t guarantee allocations that must be&n;         * within a tighter range than GFP_DMA..&n;         */
+r_if
+c_cond
+(paren
+id|mask
+OL
+l_int|0x00ffffff
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon

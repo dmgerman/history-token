@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.23 2001/02/13 01:16:44 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.25 2001/02/28 03:28:55 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -337,7 +337,7 @@ DECL|macro|SABRE_MEMSPACE_SIZE
 mdefine_line|#define SABRE_MEMSPACE_SIZE&t;0x07fffffffUL
 multiline_comment|/* UltraSparc-IIi Programmer&squot;s Manual, page 325, PCI&n; * configuration space address format:&n; * &n; *  32             24 23 16 15    11 10       8 7   2  1 0&n; * ---------------------------------------------------------&n; * |0 0 0 0 0 0 0 0 1| bus | device | function | reg | 0 0 |&n; * ---------------------------------------------------------&n; */
 DECL|macro|SABRE_CONFIG_BASE
-mdefine_line|#define SABRE_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;parent-&gt;config_space | (1UL &lt;&lt; 24))
+mdefine_line|#define SABRE_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;config_space | (1UL &lt;&lt; 24))
 DECL|macro|SABRE_CONFIG_ENCODE
 mdefine_line|#define SABRE_CONFIG_ENCODE(BUS, DEVFN, REG)&t;&bslash;&n;&t;(((unsigned long)(BUS)   &lt;&lt; 16) |&t;&bslash;&n;&t; ((unsigned long)(DEVFN) &lt;&lt; 8)  |&t;&bslash;&n;&t; ((unsigned long)(REG)))
 DECL|function|sabre_pci_config_mkaddr
@@ -2291,9 +2291,9 @@ id|sabre_irq_build
 c_func
 (paren
 r_struct
-id|pci_controller_info
+id|pci_pbm_info
 op_star
-id|p
+id|pbm
 comma
 r_struct
 id|pci_dev
@@ -2305,6 +2305,13 @@ r_int
 id|ino
 )paren
 (brace
+r_struct
+id|pci_controller_info
+op_star
+id|p
+op_assign
+id|pbm-&gt;parent
+suffix:semicolon
 r_struct
 id|ino_bucket
 op_star
@@ -3971,6 +3978,15 @@ op_star
 id|p
 )paren
 (brace
+r_struct
+id|pci_pbm_info
+op_star
+id|pbm
+op_assign
+op_amp
+id|p-&gt;pbm_A
+suffix:semicolon
+multiline_comment|/* arbitrary */
 r_int
 r_int
 id|base
@@ -4016,7 +4032,7 @@ op_assign
 id|sabre_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -4086,7 +4102,7 @@ op_assign
 id|sabre_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -4138,7 +4154,7 @@ op_assign
 id|sabre_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -6393,18 +6409,22 @@ id|SABRE_PCICTRL_AEN
 )paren
 suffix:semicolon
 multiline_comment|/* Now map in PCI config space for entire SABRE. */
-id|p-&gt;config_space
+id|p-&gt;pbm_A.config_space
 op_assign
+id|p-&gt;pbm_B.config_space
+op_assign
+(paren
 id|p-&gt;controller_regs
 op_plus
 id|SABRE_CONFIGSPACE
+)paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SABRE: PCI config space at %016lx&bslash;n&quot;
+l_string|&quot;SABRE: Shared PCI config space at %016lx&bslash;n&quot;
 comma
-id|p-&gt;config_space
+id|p-&gt;pbm_A.config_space
 )paren
 suffix:semicolon
 id|err

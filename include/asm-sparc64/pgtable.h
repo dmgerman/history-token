@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.135 2000/11/08 04:49:24 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.137 2001/03/02 03:12:01 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -63,7 +63,7 @@ mdefine_line|#define pmd_ERROR(e)&t;__builtin_trap()
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e)&t;__builtin_trap()
 macro_line|#endif /* !(__ASSEMBLY__) */
-multiline_comment|/* SpitFire TTE bits. */
+multiline_comment|/* Spitfire/Cheetah TTE bits. */
 DECL|macro|_PAGE_VALID
 mdefine_line|#define _PAGE_VALID&t;0x8000000000000000&t;/* Valid TTE                          */
 DECL|macro|_PAGE_R
@@ -80,14 +80,14 @@ DECL|macro|_PAGE_NFO
 mdefine_line|#define _PAGE_NFO&t;0x1000000000000000&t;/* No Fault Only                      */
 DECL|macro|_PAGE_IE
 mdefine_line|#define _PAGE_IE&t;0x0800000000000000&t;/* Invert Endianness                  */
-DECL|macro|_PAGE_SOFT2
-mdefine_line|#define _PAGE_SOFT2&t;0x07FC000000000000&t;/* Second set of software bits        */
-DECL|macro|_PAGE_DIAG
-mdefine_line|#define _PAGE_DIAG&t;0x0003FE0000000000&t;/* Diagnostic TTE bits                */
+DECL|macro|_PAGE_SN
+mdefine_line|#define _PAGE_SN&t;0x0000800000000000&t;/* Snoop                              */
+DECL|macro|_PAGE_PADDR_SF
+mdefine_line|#define _PAGE_PADDR_SF&t;0x000001FFFFFFE000&t;/* (Spitfire) Phys Address [40:13]    */
 DECL|macro|_PAGE_PADDR
-mdefine_line|#define _PAGE_PADDR&t;0x000001FFFFFFE000&t;/* Physical Address bits [40:13]      */
+mdefine_line|#define _PAGE_PADDR&t;0x000007FFFFFFE000&t;/* (Cheetah) Phys Address [42:13]     */
 DECL|macro|_PAGE_SOFT
-mdefine_line|#define _PAGE_SOFT&t;0x0000000000001F80&t;/* First set of software bits         */
+mdefine_line|#define _PAGE_SOFT&t;0x0000000000001F80&t;/* Software bits                      */
 DECL|macro|_PAGE_L
 mdefine_line|#define _PAGE_L&t;&t;0x0000000000000040&t;/* Locked TTE                         */
 DECL|macro|_PAGE_CP

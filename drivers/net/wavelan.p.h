@@ -102,7 +102,7 @@ macro_line|#undef DEBUG_RX_FAIL&t;&t;/* Normal failure conditions */
 DECL|macro|DEBUG_RX_ERROR
 mdefine_line|#define DEBUG_RX_ERROR&t;&t;/* Unexpected conditions */
 DECL|macro|DEBUG_PACKET_DUMP
-macro_line|#undef DEBUG_PACKET_DUMP&t;32&t;/* Dump packet on the screen. */
+macro_line|#undef DEBUG_PACKET_DUMP&t;/* Dump packet on the screen if defined to 32. */
 DECL|macro|DEBUG_IOCTL_TRACE
 macro_line|#undef DEBUG_IOCTL_TRACE&t;/* misc. call by Linux */
 DECL|macro|DEBUG_IOCTL_INFO

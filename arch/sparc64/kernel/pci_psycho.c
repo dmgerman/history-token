@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.19 2001/02/13 01:16:44 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.21 2001/02/28 03:28:55 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -65,7 +65,7 @@ DECL|macro|PSYCHO_PCICTRL_AEN
 mdefine_line|#define  PSYCHO_PCICTRL_AEN&t; 0x000000000000003f /* PCI DVMA Arbitration Enable  */
 multiline_comment|/* U2P Programmer&squot;s Manual, page 13-55, configuration space&n; * address format:&n; * &n; *  32             24 23 16 15    11 10       8 7   2  1 0&n; * ---------------------------------------------------------&n; * |0 0 0 0 0 0 0 0 1| bus | device | function | reg | 0 0 |&n; * ---------------------------------------------------------&n; */
 DECL|macro|PSYCHO_CONFIG_BASE
-mdefine_line|#define PSYCHO_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;parent-&gt;config_space | (1UL &lt;&lt; 24))
+mdefine_line|#define PSYCHO_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;config_space | (1UL &lt;&lt; 24))
 DECL|macro|PSYCHO_CONFIG_ENCODE
 mdefine_line|#define PSYCHO_CONFIG_ENCODE(BUS, DEVFN, REG)&t;&bslash;&n;&t;(((unsigned long)(BUS)   &lt;&lt; 16) |&t;&bslash;&n;&t; ((unsigned long)(DEVFN) &lt;&lt; 8)  |&t;&bslash;&n;&t; ((unsigned long)(REG)))
 DECL|function|psycho_pci_config_mkaddr
@@ -1370,9 +1370,9 @@ id|psycho_irq_build
 c_func
 (paren
 r_struct
-id|pci_controller_info
+id|pci_pbm_info
 op_star
-id|p
+id|pbm
 comma
 r_struct
 id|pci_dev
@@ -1384,6 +1384,13 @@ r_int
 id|ino
 )paren
 (brace
+r_struct
+id|pci_controller_info
+op_star
+id|p
+op_assign
+id|pbm-&gt;parent
+suffix:semicolon
 r_struct
 id|ino_bucket
 op_star
@@ -4041,6 +4048,15 @@ op_star
 id|p
 )paren
 (brace
+r_struct
+id|pci_pbm_info
+op_star
+id|pbm
+op_assign
+op_amp
+id|p-&gt;pbm_A
+suffix:semicolon
+multiline_comment|/* arbitrary */
 r_int
 r_int
 id|base
@@ -4064,7 +4080,7 @@ op_assign
 id|psycho_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -4116,7 +4132,7 @@ op_assign
 id|psycho_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -4168,7 +4184,7 @@ op_assign
 id|psycho_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -4221,7 +4237,7 @@ op_assign
 id|psycho_irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 l_int|NULL
 comma
@@ -6722,8 +6738,11 @@ comma
 id|p-&gt;controller_regs
 )paren
 suffix:semicolon
-id|p-&gt;config_space
+id|p-&gt;pbm_A.config_space
 op_assign
+id|p-&gt;pbm_B.config_space
+op_assign
+(paren
 id|pr_regs
 (braket
 l_int|2
@@ -6732,13 +6751,14 @@ dot
 id|phys_addr
 op_plus
 id|PSYCHO_CONFIGSPACE
+)paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PSYCHO: PCI config space at %016lx&bslash;n&quot;
+l_string|&quot;PSYCHO: Shared PCI config space at %016lx&bslash;n&quot;
 comma
-id|p-&gt;config_space
+id|p-&gt;pbm_A.config_space
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Psycho&squot;s PCI MEM space is mapped to a 2GB aligned area, so&n;&t; * we need to adjust our MEM space mask.&n;&t; */

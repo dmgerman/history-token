@@ -2279,7 +2279,7 @@ id|cur
 comma
 id|count
 suffix:semicolon
-multiline_comment|/* Go the the start of the ELF symbol table... */
+multiline_comment|/* Go to the start of the ELF symbol table... */
 r_if
 c_cond
 (paren

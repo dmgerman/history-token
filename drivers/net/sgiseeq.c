@@ -370,7 +370,7 @@ DECL|macro|RCNTINFO_INIT
 mdefine_line|#define RCNTINFO_INIT (RCNTCFG_INIT | (PKT_BUF_SZ &amp; HPCDMA_BCNT))
 DECL|function|seeq_init_ring
 r_static
-r_void
+r_int
 id|seeq_init_ring
 c_func
 (paren
@@ -481,6 +481,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|ib-&gt;tx_desc
 (braket
 id|i
@@ -567,6 +577,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|ib-&gt;rx_desc
 (braket
 id|i
@@ -619,6 +639,9 @@ op_or_assign
 (paren
 id|HPCDMA_EOR
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG
@@ -929,7 +952,7 @@ DECL|macro|RDMACFG_INIT
 mdefine_line|#define RDMACFG_INIT    (HPC3_ERXDCFG_FRXDC | HPC3_ERXDCFG_FEOP | HPC3_ERXDCFG_FIRQ)
 DECL|function|init_seeq
 r_static
-r_void
+r_int
 id|init_seeq
 c_func
 (paren
@@ -958,6 +981,9 @@ id|hregs
 op_assign
 id|sp-&gt;hregs
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|reset_hpc3_and_seeq
 c_func
 (paren
@@ -966,11 +992,21 @@ comma
 id|sregs
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|seeq_init_ring
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* Setup to field the proper interrupt types. */
 r_if
@@ -1040,6 +1076,9 @@ id|hregs
 comma
 id|sregs
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|record_rx_errors
@@ -1929,6 +1968,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|save_flags
 c_func
 (paren
@@ -1981,6 +2023,8 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+id|err
+op_assign
 id|init_seeq
 c_func
 (paren
@@ -1990,6 +2034,14 @@ id|sp
 comma
 id|sregs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|netif_start_queue
 c_func
@@ -2099,6 +2151,11 @@ id|sregs
 op_assign
 id|sp-&gt;sregs
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|init_seeq
 c_func
 (paren
@@ -2108,6 +2165,14 @@ id|sp
 comma
 id|sregs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|dev-&gt;trans_start
 op_assign

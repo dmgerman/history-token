@@ -274,8 +274,8 @@ DECL|macro|ASYNC_CHECK_CD
 mdefine_line|#define ASYNC_CHECK_CD&t;&t;0x02000000 /* i.e., CLOCAL */
 DECL|macro|ASYNC_SHARE_IRQ
 mdefine_line|#define ASYNC_SHARE_IRQ&t;&t;0x01000000 /* for multifunction cards&n;&t;&t;&t;&t;&t;     --- no longer used */
-DECL|macro|ASYNC_NO_FLOW
-mdefine_line|#define ASYNC_NO_FLOW&t;&t;0x00800000 /* No flow control serial console */
+DECL|macro|ASYNC_CONS_FLOW
+mdefine_line|#define ASYNC_CONS_FLOW&t;&t;0x00800000 /* flow control for console  */
 DECL|macro|ASYNC_INTERNAL_FLAGS
 mdefine_line|#define ASYNC_INTERNAL_FLAGS&t;0xFF800000 /* Internal flags */
 multiline_comment|/*&n; * Multiport serial configuration structure --- external structure&n; */

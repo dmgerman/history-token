@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|RT_LOCK
@@ -15,8 +16,8 @@ mdefine_line|#define RT_LOCK
 DECL|macro|RT_UNLOCK
 mdefine_line|#define RT_UNLOCK
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;z85230.h&quot;
-macro_line|#include &quot;syncppp.h&quot;
 DECL|variable|z8530_buffer_lock
 r_static
 id|spinlock_t
@@ -26,8 +27,8 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/**&n; *&t;z8530_read_port - Architecture specific interface function&n; *&t;@p: port to read&n; *&n; *&t;Provided port access methods. The Comtrol SV11 requires no delays&n; *&t;between accesses and uses PC I/O. Some drivers may need a 5uS delay&n; *&t;&n; *&t;In the longer term this should become an architecture specific&n; *&t;section so that this can become a generic driver interface for all&n; *&t;platforms. For now we only handle PC I/O ports with or without the&n; *&t;dread 5uS sanity delay.&n; *&n; *&t;The caller must hold sufficient locks to avoid violating the horrible&n; *&t;5uS delay rule.&n; */
 DECL|function|z8530_read_port
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|z8530_read_port
 c_func
@@ -72,8 +73,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;z8530_write_port - Architecture specific interface function&n; *&t;@p: port to write&n; *&t;@d: value to write&n; *&n; *&t;Write a value to a port with delays if need be. Note that the&n; *&t;caller must hold locks to avoid read/writes from other contexts&n; *&t;violating the 5uS rule&n; *&n; *&t;In the longer term this should become an architecture specific&n; *&t;section so that this can become a generic driver interface for all&n; *&t;platforms. For now we only handle PC I/O ports with or without the&n; *&t;dread 5uS sanity delay.&n; */
 DECL|function|z8530_write_port
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|z8530_write_port
 c_func
@@ -138,7 +139,7 @@ id|c
 suffix:semicolon
 multiline_comment|/**&n; *&t;read_zsreg - Read a register from a Z85230 &n; *&t;@c: Z8530 channel to read from (2 per chip)&n; *&t;@reg: Register to read&n; *&t;FIXME: Use a spinlock.&n; *&t;&n; *&t;Most of the Z8530 registers are indexed off the control registers.&n; *&t;A read is done by writing to the control register and reading the&n; *&t;register back. We do the locking needed to protect this &n; *&t;operation.&n; */
 DECL|function|read_zsreg
-r_extern
+r_static
 r_inline
 id|u8
 id|read_zsreg
@@ -206,7 +207,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;read_zsdata - Read the data port of a Z8530 channel&n; *&t;@c: The Z8530 channel to read the data port from&n; *&n; *&t;The data port provides fast access to some things. We still&n; *&t;have all the 5uS delays to worry about.&n; */
 DECL|function|read_zsdata
-r_extern
+r_static
 r_inline
 id|u8
 id|read_zsdata
@@ -235,7 +236,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_zsreg - Write to a Z8530 channel register&n; *&t;@c: The Z8530 channel&n; *&t;@reg: Register number&n; *&t;@val: Value to write&n; *&n; *&t;Write a value to an indexed register. Perform the locking needed&n; *&t;to honour the irritating delay rules. We know about register 0&n; *&t;being fast to access.&n; */
 DECL|function|write_zsreg
-r_extern
+r_static
 r_inline
 r_void
 id|write_zsreg
@@ -300,7 +301,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_zsctrl - Write to a Z8530 control register&n; *&t;@c: The Z8530 channel&n; *&t;@val: Value to write&n; *&n; *&t;Write directly to the control register on the Z8530&n; */
 DECL|function|write_zsctrl
-r_extern
+r_static
 r_inline
 r_void
 id|write_zsctrl
@@ -326,7 +327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_zsdata - Write to a Z8530 control register&n; *&t;@c: The Z8530 channel&n; *&t;@val: Value to write&n; *&n; *&t;Write directly to the data register on the Z8530&n; */
 DECL|function|write_zsdata
-r_extern
+r_static
 r_inline
 r_void
 id|write_zsdata
@@ -1064,7 +1065,7 @@ id|RES_H_IUS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;z8530_status - Handle a PIO status exception&n; *&t;@chan: Z8530 channel to process&n; *&n; *&t;A status event occured in PIO synchronous mode. There are several&n; *&t;reasons the chip will bother us here. A transmit underrun means we&n; *&t;failed to feed the chip fast enough and just broke a packet. A DCD&n; *&t;change is a line up or down. We communicate that back to the protocol&n; *&t;layer for synchronous PPP to renegotiate.&n; */
+multiline_comment|/**&n; *&t;z8530_status - Handle a PIO status exception&n; *&t;@chan: Z8530 channel to process&n; *&n; *&t;A status event occurred in PIO synchronous mode. There are several&n; *&t;reasons the chip will bother us here. A transmit underrun means we&n; *&t;failed to feed the chip fast enough and just broke a packet. A DCD&n; *&t;change is a line up or down. We communicate that back to the protocol&n; *&t;layer for synchronous PPP to renegotiate.&n; */
 DECL|function|z8530_status
 r_static
 r_void
@@ -1410,7 +1411,7 @@ id|chan
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;z8530_dma_status - Handle a DMA status exception&n; *&t;@chan: Z8530 channel to process&n; *&t;&n; *&t;A status event occured on the Z8530. We receive these for two reasons&n; *&t;when in DMA mode. Firstly if we finished a packet transfer we get one&n; *&t;and kick the next packet out. Secondly we may see a DCD change and&n; *&t;have to poke the protocol layer.&n; *&n; */
+multiline_comment|/**&n; *&t;z8530_dma_status - Handle a DMA status exception&n; *&t;@chan: Z8530 channel to process&n; *&t;&n; *&t;A status event occurred on the Z8530. We receive these for two reasons&n; *&t;when in DMA mode. Firstly if we finished a packet transfer we get one&n; *&t;and kick the next packet out. Secondly we may see a DCD change and&n; *&t;have to poke the protocol layer.&n; *&n; */
 DECL|function|z8530_dma_status
 r_static
 r_void
@@ -4933,7 +4934,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;spans_boundary - Check a packet can be ISA DMA&squot;d&n; *&t;@skb: The buffer to check&n; *&n; *&t;Returns true if the buffer cross a DMA boundary on a PC. The poor&n; *&t;thing can only DMA within a 64K block not across the edges of it.&n; */
 DECL|function|spans_boundary
-r_extern
+r_static
 r_inline
 r_int
 id|spans_boundary
@@ -5157,11 +5158,24 @@ c_func
 id|z8530_get_stats
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Module support&n; */
-DECL|function|init_module
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Generic Z85C30/Z85230 interface driver v0.02&bslash;n&quot;
+suffix:semicolon
+DECL|function|z85230_init_driver
+r_static
 r_int
-id|init_module
+id|__init
+id|z85230_init_driver
 c_func
 (paren
 r_void
@@ -5170,22 +5184,36 @@ r_void
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Generic Z85C30/Z85230 interface driver v0.02&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|variable|z85230_init_driver
+id|module_init
+c_func
+(paren
+id|z85230_init_driver
+)paren
+suffix:semicolon
+DECL|function|z85230_cleanup_driver
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|z85230_cleanup_driver
 c_func
 (paren
 r_void
 )paren
 (brace
 )brace
-macro_line|#endif
+DECL|variable|z85230_cleanup_driver
+id|module_exit
+c_func
+(paren
+id|z85230_cleanup_driver
+)paren
+suffix:semicolon
 eof

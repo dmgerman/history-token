@@ -3,7 +3,7 @@ multiline_comment|/****************/
 multiline_comment|/* error values */
 multiline_comment|/****************/
 DECL|macro|ERR_NONE
-mdefine_line|#define ERR_NONE             0 /* no error occured */
+mdefine_line|#define ERR_NONE             0 /* no error occurred */
 DECL|macro|ERR_ALREADY_BOOT
 mdefine_line|#define ERR_ALREADY_BOOT  1000 /* we are already booting */
 DECL|macro|EPOF_BAD_MAGIC

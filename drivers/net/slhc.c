@@ -28,10 +28,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-DECL|variable|last_retran
-r_int
-id|last_retran
-suffix:semicolon
 r_static
 r_int
 r_char
@@ -828,13 +824,7 @@ c_func
 id|ip-&gt;frag_off
 )paren
 op_amp
-l_int|0x1fff
-)paren
-op_logical_or
-(paren
-id|ip-&gt;frag_off
-op_amp
-l_int|32
+l_int|0x3fff
 )paren
 )paren
 (brace
@@ -1039,8 +1029,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|last_retran
-op_logical_or
 id|ip-&gt;version
 op_ne
 id|cs-&gt;cs_ip.version
@@ -1056,13 +1044,21 @@ op_logical_or
 (paren
 id|ip-&gt;frag_off
 op_amp
-l_int|64
+id|htons
+c_func
+(paren
+l_int|0x4000
+)paren
 )paren
 op_ne
 (paren
 id|cs-&gt;cs_ip.frag_off
 op_amp
-l_int|64
+id|htons
+c_func
+(paren
+l_int|0x4000
+)paren
 )paren
 op_logical_or
 id|ip-&gt;ttl

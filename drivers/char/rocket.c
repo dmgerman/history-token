@@ -9,20 +9,6 @@ mdefine_line|#define ENABLE_PCI
 macro_line|#endif
 DECL|macro|NEW_MODULES
 mdefine_line|#define NEW_MODULES
-macro_line|#ifdef LOCAL_ROCKET_H&t;&t;/* We&squot;re building standalone */
-DECL|macro|MODULE
-mdefine_line|#define MODULE
-macro_line|#endif
-macro_line|#if defined(NEW_MODULES) &amp;&amp; defined(LOCAL_ROCKET_H)
-macro_line|#ifdef MODVERSIONS
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
-macro_line|#else /* !NEW_MODULES */
-macro_line|#ifdef MODVERSIONS
-DECL|macro|MODULE
-mdefine_line|#define MODULE
-macro_line|#endif
-macro_line|#endif /* NEW_MODULES */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;

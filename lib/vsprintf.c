@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
+multiline_comment|/**&n; * simple_strtoul - convert a string to an unsigned long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtoul
 r_int
 r_int
@@ -163,6 +164,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * simple_strtol - convert a string to a signed long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtol
 r_int
 id|simple_strtol
@@ -219,6 +221,7 @@ id|base
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * simple_strtoull - convert a string to an unsigned long long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtoull
 r_int
 r_int
@@ -391,6 +394,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * simple_strtoll - convert a string to a signed long long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtoll
 r_int
 r_int
@@ -925,25 +929,7 @@ r_return
 id|str
 suffix:semicolon
 )brace
-multiline_comment|/* Forward decl. needed for IP address printing stuff... */
-r_int
-id|sprintf
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
+multiline_comment|/**&n; * vsprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want sprintf instead.&n; */
 DECL|function|vsprintf
 r_int
 id|vsprintf
@@ -1855,6 +1841,7 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; */
 DECL|function|sprintf
 r_int
 id|sprintf

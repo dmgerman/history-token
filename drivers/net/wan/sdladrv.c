@@ -391,6 +391,40 @@ id|len
 )paren
 suffix:semicolon
 multiline_comment|/****** Global Data **********************************************************&n; * Note: All data must be explicitly initialized!!!&n; */
+DECL|variable|__initdata
+r_static
+r_struct
+id|pci_device_id
+id|sdladrv_pci_tbl
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|V3_VENDOR_ID
+comma
+id|V3_DEVICE_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|sdladrv_pci_tbl
+)paren
+suffix:semicolon
 multiline_comment|/* private data */
 DECL|variable|modname
 r_static

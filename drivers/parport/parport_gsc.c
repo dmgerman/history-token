@@ -1,4 +1,6 @@
 multiline_comment|/*&n; *      Low-level parallel-support for PC-style hardware integrated in the &n; *&t;LASI-Controller (on GSC-Bus) for HP-PARISC Workstations&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *&t;by Helge Deller &lt;deller@gmx.de&gt;&n; *&n; * &n; * based on parport_pc.c by &n; * &t;    Grant Guenther &lt;grant@torque.net&gt;&n; * &t;    Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG&t;/* undef for production */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,15 +20,24 @@ macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/parport_gsc.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG&t;/* undef for production */
-macro_line|#ifdef DEBUG
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK  printk
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(stuff...)
-macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Helge Deller &lt;deller@gmx.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;HP-PARISC PC-style parallel port driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_SUPPORTED_DEVICE
+c_func
+(paren
+l_string|&quot;integrated PC-style parallel port&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Clear TIMEOUT BIT in EPP MODE&n; *&n; * This is also used in SPP detection.&n; */
 DECL|function|clear_epp_timeout
 r_static
@@ -139,13 +150,6 @@ op_star
 id|regs
 )paren
 (brace
-id|DPRINTK
-c_func
-(paren
-id|__FILE__
-l_string|&quot;: got IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
 id|parport_generic_irq
 c_func
 (paren
@@ -177,17 +181,6 @@ r_char
 id|d
 )paren
 (brace
-id|DPRINTK
-c_func
-(paren
-id|__FILE__
-l_string|&quot;: write (0x%02x) %c &bslash;n&quot;
-comma
-id|d
-comma
-id|d
-)paren
-suffix:semicolon
 id|parport_writeb
 (paren
 id|d
@@ -211,7 +204,6 @@ op_star
 id|p
 )paren
 (brace
-macro_line|#ifdef DEBUG
 r_int
 r_char
 id|c
@@ -224,31 +216,9 @@ id|p
 )paren
 )paren
 suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-id|__FILE__
-l_string|&quot;: read (0x%02x) %c&bslash;n&quot;
-comma
-id|c
-comma
-id|c
-)paren
-suffix:semicolon
 r_return
 id|c
 suffix:semicolon
-macro_line|#else
-r_return
-id|parport_readb
-(paren
-id|DATA
-(paren
-id|p
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|parport_gsc_write_control
 r_void
@@ -289,9 +259,9 @@ op_amp
 l_int|0x20
 )paren
 (brace
-id|printk
+id|pr_debug
+c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s (%s): use data_reverse for this!&bslash;n&quot;
 comma
 id|p-&gt;name
@@ -402,9 +372,9 @@ op_amp
 l_int|0x20
 )paren
 (brace
-id|printk
+id|pr_debug
+c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s (%s): use data_%s for this!&bslash;n&quot;
 comma
 id|p-&gt;name
@@ -658,10 +628,8 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|parport_gsc_dec_use_count
 r_void
@@ -671,10 +639,8 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|parport_gsc_ops
 r_struct
@@ -1120,6 +1086,9 @@ op_assign
 op_amp
 id|tmp
 suffix:semicolon
+macro_line|#if 1
+macro_line|#warning Take this out when region handling works again, &lt;deller@gmx,de&gt;
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -1134,6 +1103,7 @@ l_int|3
 r_return
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 id|priv
 op_assign
 id|kmalloc
@@ -1603,10 +1573,10 @@ r_int
 id|__initdata
 id|parport_count
 suffix:semicolon
+DECL|function|parport_init_chip
 r_static
 r_int
 id|__init
-DECL|function|parport_init_chip
 id|parport_init_chip
 c_func
 (paren
@@ -1791,10 +1761,11 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+DECL|function|parport_gsc_init
 r_int
 id|__init
-DECL|function|parport_gsc_init
 id|parport_gsc_init
+c_func
 (paren
 r_void
 )paren
@@ -1810,34 +1781,14 @@ id|parport_drivers_for
 )paren
 suffix:semicolon
 r_return
-id|parport_count
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Exported symbols. */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Helge Deller &lt;deller@gmx.de&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;HP-PARISC PC-style parallel port driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
-c_func
-(paren
-l_string|&quot;integrated PC-style parallel port&quot;
-)paren
-suffix:semicolon
-DECL|function|init_module
+DECL|function|parport_gsc_init_module
+r_static
 r_int
-id|init_module
+id|__init
+id|parport_gsc_init_module
 c_func
 (paren
 r_void
@@ -1846,13 +1797,16 @@ r_void
 r_return
 op_logical_neg
 id|parport_gsc_init
+c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|parport_gsc_exit_module
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|parport_gsc_exit_module
 c_func
 (paren
 r_void
@@ -2020,5 +1974,20 @@ id|tmp
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+DECL|variable|parport_gsc_init_module
+id|module_init
+c_func
+(paren
+id|parport_gsc_init_module
+)paren
+suffix:semicolon
+DECL|variable|parport_gsc_exit_module
+id|module_exit
+c_func
+(paren
+id|parport_gsc_exit_module
+)paren
+suffix:semicolon
 eof

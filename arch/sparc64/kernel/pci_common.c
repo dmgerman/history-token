@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_common.c,v 1.13 2001/02/13 01:16:44 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.14 2001/02/28 03:28:55 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2422,7 +2422,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|pdev
 comma
@@ -2453,7 +2453,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|pdev
 comma
@@ -2491,7 +2491,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|pdev
 comma
@@ -2676,7 +2676,7 @@ op_member_access_from_pointer
 id|irq_build
 c_func
 (paren
-id|p
+id|pbm
 comma
 id|pdev
 comma
@@ -2800,8 +2800,6 @@ id|walk
 )paren
 suffix:semicolon
 )brace
-DECL|macro|DEBUG_BUSMASTERING
-macro_line|#undef DEBUG_BUSMASTERING
 DECL|function|pdev_setup_busmastering
 r_static
 r_void
@@ -2827,16 +2825,6 @@ id|min_gnt
 comma
 id|ltimer
 suffix:semicolon
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Checking DEV(%s), &quot;
-comma
-id|pdev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pci_read_config_word
 c_func
 (paren
@@ -2885,27 +2873,9 @@ id|PCI_COMMAND_MASTER
 op_eq
 l_int|0
 )paren
-(brace
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;no bus mastering...&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* Set correct cache line size, 64-byte on all&n;&t; * Sparc64 PCI systems.  Note that the value is&n;&t; * measured in 32-bit words.&n;&t; */
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;set cachelinesize, &quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pci_write_config_byte
 c_func
 (paren
@@ -2944,20 +2914,8 @@ id|hdr_type
 op_ne
 id|PCI_HEADER_TYPE_NORMAL
 )paren
-(brace
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;hdr_type=%x, exit&bslash;n&quot;
-comma
-id|hdr_type
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* If the latency timer is already programmed with a non-zero&n;&t; * value, assume whoever set it (OBP or whoever) knows what&n;&t; * they are doing.&n;&t; */
 id|pci_read_config_byte
 c_func
@@ -2977,20 +2935,8 @@ id|ltimer
 op_ne
 l_int|0
 )paren
-(brace
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;ltimer was %x, exit&bslash;n&quot;
-comma
-id|ltimer
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* XXX Since I&squot;m tipping off the min grant value to&n;&t; * XXX choose a suitable latency timer value, I also&n;&t; * XXX considered making use of the max latency value&n;&t; * XXX as well.  Unfortunately I&squot;ve seen too many bogusly&n;&t; * XXX low settings for it to the point where it lacks&n;&t; * XXX any usefulness.  In one case, an ethernet card&n;&t; * XXX claimed a min grant of 10 and a max latency of 5.&n;&t; * XXX Now, if I had two such cards on the same bus I&n;&t; * XXX could not set the desired burst period (calculated&n;&t; * XXX from min grant) without violating the max latency&n;&t; * XXX bound.  Duh...&n;&t; * XXX&n;&t; * XXX I blame dumb PC bios implementors for stuff like&n;&t; * XXX this, most of them don&squot;t even try to do something&n;&t; * XXX sensible with latency timer values and just set some&n;&t; * XXX default value (usually 32) into every device.&n;&t; */
 id|pci_read_config_byte
 c_func
@@ -3102,16 +3048,6 @@ comma
 id|ltimer
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_BUSMASTERING
-id|printk
-c_func
-(paren
-l_string|&quot;set ltimer to %x&bslash;n&quot;
-comma
-id|ltimer
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|pci_determine_66mhz_disposition
 r_void

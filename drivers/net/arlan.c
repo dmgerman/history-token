@@ -169,12 +169,7 @@ r_static
 r_int
 id|arlan_EEPROM_bad
 suffix:semicolon
-DECL|variable|arlan_entry_and_exit_debug
-r_static
-r_int
-id|arlan_entry_and_exit_debug
-suffix:semicolon
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|variable|arlan_entry_debug
 r_static
 r_int
@@ -410,6 +405,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|arlan_device
+)paren
+suffix:semicolon
+DECL|variable|arlan_conf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|arlan_conf
 )paren
 suffix:semicolon
 DECL|variable|last_arlan
@@ -670,7 +672,7 @@ id|timev.tv_usec
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef ARLAN_ENTRY_EXIT_DEBUGING
+macro_line|#ifdef ARLAN_ENTRY_EXIT_DEBUGGING
 DECL|macro|ARLAN_DEBUG_ENTRY
 mdefine_line|#define ARLAN_DEBUG_ENTRY(name) &bslash;&n;&t;{&bslash;&n;&t;struct timeval timev;&bslash;&n;&t;do_gettimeofday(&amp;timev);&bslash;&n;&t;&t;if (arlan_entry_debug || arlan_entry_and_exit_debug)&bslash;&n;&t;&t;&t;printk(&quot;---&gt;&gt;&gt;&quot; name &quot; %ld &quot; &quot;&bslash;n&quot;,((long int) timev.tv_sec * 1000000 + timev.tv_usec));&bslash;&n;&t;}
 DECL|macro|ARLAN_DEBUG_EXIT
@@ -3129,7 +3131,7 @@ id|priv-&gt;timer
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|function|arlan_print_registers
 r_static
 r_void
@@ -8129,7 +8131,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* we reach here if multicast filtering is on and packet &n;&t;&t;&t;&t;&t; * is multicast and not for receive */
 r_goto
-id|end_of_interupt
+id|end_of_interrupt
 suffix:semicolon
 )brace
 )brace
@@ -8571,7 +8573,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arlan intr: recieved unknown status&bslash;n&quot;
+l_string|&quot;arlan intr: received unknown status&bslash;n&quot;
 )paren
 suffix:semicolon
 id|priv-&gt;stats.rx_crc_errors
@@ -9337,7 +9339,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|function|alignLong
 r_static
 r_int

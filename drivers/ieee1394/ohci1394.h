@@ -54,10 +54,6 @@ macro_line|#ifndef PCI_DEVICE_ID_NEC_UPD72871
 DECL|macro|PCI_DEVICE_ID_NEC_UPD72871
 mdefine_line|#define PCI_DEVICE_ID_NEC_UPD72871      0x00ce
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_APPLE_UNI_N_FW
-DECL|macro|PCI_DEVICE_ID_APPLE_UNI_N_FW
-mdefine_line|#define PCI_DEVICE_ID_APPLE_UNI_N_FW&t;0x0018
-macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_ALI_OHCI1394_M5251
 DECL|macro|PCI_DEVICE_ID_ALI_OHCI1394_M5251
 mdefine_line|#define PCI_DEVICE_ID_ALI_OHCI1394_M5251 0x5251

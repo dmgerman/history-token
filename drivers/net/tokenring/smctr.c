@@ -19691,7 +19691,7 @@ l_int|200
 )paren
 suffix:semicolon
 multiline_comment|/* ~2 ms */
-multiline_comment|/* Remove any latched interrupts that occured prior to reseting the&n;         * adapter or possibily caused by line glitches due to the reset.&n;         */
+multiline_comment|/* Remove any latched interrupts that occurred prior to reseting the&n;         * adapter or possibily caused by line glitches due to the reset.&n;         */
 id|outb
 c_func
 (paren

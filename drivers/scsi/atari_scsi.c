@@ -2023,6 +2023,9 @@ c_func
 )paren
 (brace
 multiline_comment|/* This int is actually &quot;pseudo-slow&quot;, i.e. it acts like a slow&n;&t;&t; * interrupt after having cleared the pending flag for the DMA&n;&t;&t; * interrupt. */
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -2036,7 +2039,37 @@ l_string|&quot;SCSI NCR5380&quot;
 comma
 id|scsi_tt_intr
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;atari_scsi_detect: cannot allocate irq %d, aborting&quot;
+comma
+id|IRQ_TT_MFP_SCSI
+)paren
 suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|atari_scsi_host
+)paren
+suffix:semicolon
+id|atari_stram_free
+c_func
+(paren
+id|atari_dma_buffer
+)paren
+suffix:semicolon
+id|atari_dma_buffer
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|tt_mfp.active_edge
 op_or_assign
 l_int|0x80
@@ -2051,8 +2084,6 @@ id|atari_dma_residual
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* REAL_DMA */
-macro_line|#ifdef REAL_DMA
 macro_line|#ifdef CONFIG_TT_DMA_EMUL
 r_if
 c_cond
@@ -2060,6 +2091,9 @@ c_cond
 id|MACH_IS_HADES
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -2073,7 +2107,45 @@ l_string|&quot;Hades DMA emulator&quot;
 comma
 id|hades_dma_emulator
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;atari_scsi_detect: cannot allocate irq %d, aborting (MACH_IS_HADES)&quot;
+comma
+id|IRQ_AUTO_2
+)paren
 suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|IRQ_TT_MFP_SCSI
+comma
+id|scsi_tt_intr
+)paren
+suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|atari_scsi_host
+)paren
+suffix:semicolon
+id|atari_stram_free
+c_func
+(paren
+id|atari_dma_buffer
+)paren
+suffix:semicolon
+id|atari_dma_buffer
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 r_if
@@ -2090,7 +2162,7 @@ op_assign
 l_int|4
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /*REAL_DMA*/
 )brace
 r_else
 (brace

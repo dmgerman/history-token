@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include&t;&quot;syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include&t;&quot;comx.h&quot;
 id|MODULE_AUTHOR
 c_func

@@ -3507,7 +3507,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*============================================================================&n; * Receive interrupt handler.&n; * This routine handles fragmented IP packets using M-bit according to the&n; * RFC1356.&n; * o map ligical channel number to network interface.&n; * o allocate socket buffer or append received packet to the existing one.&n; * o if M-bit is reset (i.e. it&squot;s the last packet in a sequence) then &n; *   decapsulate packet and pass socket buffer to the protocol stack.&n; *&n; * Notes:&n; * 1. When allocating a socket buffer, if M-bit is set then more data is&n; *    comming and we have to allocate buffer for the maximum IP packet size&n; *    expected on this channel.&n; * 2. If something goes wrong and X.25 packet has to be dropped (e.g. no&n; *    socket buffers available) the whole packet sequence must be discarded.&n; */
+multiline_comment|/*============================================================================&n; * Receive interrupt handler.&n; * This routine handles fragmented IP packets using M-bit according to the&n; * RFC1356.&n; * o map ligical channel number to network interface.&n; * o allocate socket buffer or append received packet to the existing one.&n; * o if M-bit is reset (i.e. it&squot;s the last packet in a sequence) then &n; *   decapsulate packet and pass socket buffer to the protocol stack.&n; *&n; * Notes:&n; * 1. When allocating a socket buffer, if M-bit is set then more data is&n; *    coming and we have to allocate buffer for the maximum IP packet size&n; *    expected on this channel.&n; * 2. If something goes wrong and X.25 packet has to be dropped (e.g. no&n; *    socket buffers available) the whole packet sequence must be discarded.&n; */
 DECL|function|rx_intr
 r_static
 r_void
@@ -3793,7 +3793,7 @@ l_int|0x01
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* more data is comming */
+multiline_comment|/* more data is coming */
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -4220,7 +4220,7 @@ op_and_assign
 op_complement
 l_int|0x2
 suffix:semicolon
-multiline_comment|/* mask Tx interupts */
+multiline_comment|/* mask Tx interrupts */
 )brace
 r_else
 r_if

@@ -9131,7 +9131,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* some error occured */
+multiline_comment|/* some error occurred */
 r_return
 id|r
 suffix:semicolon

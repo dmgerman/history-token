@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
@@ -989,6 +990,8 @@ r_for
 c_loop
 (paren
 id|i
+op_assign
+id|j
 op_assign
 id|base
 suffix:semicolon

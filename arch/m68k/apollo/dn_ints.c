@@ -124,7 +124,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;spurious irq %d occured&bslash;n&quot;
+l_string|&quot;spurious irq %d occurred&bslash;n&quot;
 comma
 id|irq
 )paren

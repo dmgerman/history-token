@@ -21,7 +21,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-singleline_comment|//#define ARLAN_DEBUGING 1
+singleline_comment|//#define ARLAN_DEBUGGING 1
 DECL|macro|ARLAN_PROC_INTERFACE
 mdefine_line|#define ARLAN_PROC_INTERFACE
 DECL|macro|MAX_ARLANS
@@ -71,10 +71,6 @@ suffix:semicolon
 r_extern
 r_int
 id|arlan_exit_debug
-suffix:semicolon
-r_extern
-r_int
-id|arlan_entry_and_exit_debug
 suffix:semicolon
 r_extern
 r_int
@@ -134,11 +130,11 @@ DECL|macro|IFDEBUG
 mdefine_line|#define IFDEBUG( L ) if ( (L) &amp; arlan_debug ) 
 DECL|macro|ARLAN_FAKE_HDR_LEN
 mdefine_line|#define ARLAN_FAKE_HDR_LEN 12 
-macro_line|#ifdef ARLAN_DEBUGING
+macro_line|#ifdef ARLAN_DEBUGGING
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
-DECL|macro|ARLAN_ENTRY_EXIT_DEBUGING
-mdefine_line|#define ARLAN_ENTRY_EXIT_DEBUGING 1
+DECL|macro|ARLAN_ENTRY_EXIT_DEBUGGING
+mdefine_line|#define ARLAN_ENTRY_EXIT_DEBUGGING 1
 DECL|macro|ARLAN_DEBUG
 mdefine_line|#define ARLAN_DEBUG(a,b) printk(KERN_DEBUG a, b)
 macro_line|#else
@@ -1339,7 +1335,7 @@ id|tx_queue_len
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|arlan_conf
+r_extern
 r_struct
 id|arlan_conf_stru
 id|arlan_conf

@@ -1,14 +1,5 @@
 multiline_comment|/* 82596.c: A generic 82596 ethernet driver for linux. */
 multiline_comment|/*&n;   Based on Apricot.c&n;   Written 1994 by Mark Evans.&n;   This driver is for the Apricot 82596 bus-master interface&n;&n;   Modularised 12/94 Mark Evans&n;&n;&n;   Modified to support the 82596 ethernet chips on 680x0 VME boards.&n;   by Richard Hirst &lt;richard@sleepie.demon.co.uk&gt;&n;   Renamed to be 82596.c&n;&n;   980825:  Changed to receive directly in to sk_buffs which are&n;   allocated at open() time.  Eliminates copy on incoming frames&n;   (small ones are still copied).  Shared data now held in a&n;   non-cached page, so we can run on 68060 in copyback mode.&n;&n;   TBD:&n;   * look at deferring rx frames rather than discarding (as per tulip)&n;   * handle tx ring full as per tulip&n;   * performace test to tune rx_copybreak&n;&n;   Most of my modifications relate to the braindead big-endian&n;   implementation by Intel.  When the i596 is operating in&n;   &squot;big-endian&squot; mode, it thinks a 32 bit value of 0x12345678&n;   should be stored as 0x56781234.  This is a real pain, when&n;   you have linked lists which are shared by the 680x0 and the&n;   i596.&n;&n;   Driver skeleton&n;   Written 1993 by Donald Becker.&n;   Copyright 1993 United States Government as represented by the Director,&n;   National Security Agency. This software may only be used and distributed&n;   according to the terms of the GNU General Public License as modified by SRC,&n;   incorporated herein by reference.&n;&n;   The author may be reached as becker@super.org or&n;   C/O Supercomputing Research Ctr., 17100 Science Dr., Bowie MD 20715&n;&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;82596.c $Revision: 1.4 $&bslash;n&quot;
-suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -29,6 +20,16 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;82596.c $Revision: 1.4 $&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
 mdefine_line|#define DEB_INIT&t;0x0001
@@ -828,6 +829,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|init_setup
+r_static
 r_char
 id|init_setup
 (braket
@@ -4704,12 +4706,15 @@ multiline_comment|/* first check nothing is already registered here */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ioaddr
 comma
 id|I596_TOTAL_SIZE
+comma
+id|dev-&gt;name
 )paren
 )paren
 (brace
@@ -4723,7 +4728,7 @@ id|ioaddr
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|EBUSY
 suffix:semicolon
 )brace
 r_for
@@ -4764,21 +4769,16 @@ id|i
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* checksum is a multiple of 0x100, got this wrong first time&n;&t;&t;   some machines have 0x100, some 0x200. The DOS driver doesn&squot;t&n;&t;&t;   even bother with the checksum */
+multiline_comment|/* checksum is a multiple of 0x100, got this wrong first time&n;&t;&t;   some machines have 0x100, some 0x200. The DOS driver doesn&squot;t&n;&t;&t;   even bother with the checksum.&n;&t;&t;   Some other boards trip the checksum.. but then appear as&n;&t;&t;   ether address 0. Trap these - AC */
 r_if
 c_cond
+(paren
 (paren
 id|checksum
 op_mod
 l_int|0x100
 )paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-multiline_comment|/* Some other boards trip the checksum.. but then appear as&n;&t;&t; * ether address 0. Trap these - AC */
-r_if
-c_cond
+op_logical_or
 (paren
 id|memcmp
 c_func
@@ -4792,28 +4792,21 @@ l_int|3
 op_ne
 l_int|0
 )paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
+)paren
+(brace
+id|release_region
 c_func
 (paren
 id|ioaddr
 comma
 id|I596_TOTAL_SIZE
-comma
-l_string|&quot;i596&quot;
 )paren
-)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|dev-&gt;base_addr
 op_assign
 id|ioaddr

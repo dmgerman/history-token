@@ -221,6 +221,7 @@ multiline_comment|/* SCSI Command Descriptor Block */
 multiline_comment|/* REQUEST SENSE */
 )brace
 suffix:semicolon
+r_static
 r_int
 id|aha1542_detect
 c_func
@@ -229,6 +230,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_command
 c_func
@@ -237,6 +239,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_queuecommand
 c_func
@@ -255,6 +258,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_abort
 c_func
@@ -264,6 +268,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_bus_reset
 c_func
@@ -273,6 +278,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_dev_reset
 c_func
@@ -282,6 +288,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_host_reset
 c_func
@@ -291,7 +298,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|aha1542_old_abort
 c_func
@@ -301,6 +308,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_old_reset
 c_func
@@ -312,6 +320,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1542_biosparam
 c_func

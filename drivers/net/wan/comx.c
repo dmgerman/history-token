@@ -17,8 +17,8 @@ macro_line|#endif
 macro_line|#ifndef CONFIG_PROC_FS
 macro_line|#error For now, COMX really needs the /proc filesystem
 macro_line|#endif
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;comx.h&quot;
-macro_line|#include &quot;syncppp.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren

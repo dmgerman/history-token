@@ -14,7 +14,7 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &quot;syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;z85230.h&quot;
 DECL|variable|dma
 r_static
@@ -75,7 +75,7 @@ l_int|2
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|__constant_htons
 c_func
 (paren
 id|ETH_P_WAN_PPP
@@ -95,6 +95,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|c-&gt;netdevice-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;We&squot;ve been placed in the UP state&n; */

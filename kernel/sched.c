@@ -955,6 +955,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * schedule_timeout - sleep until timeout&n; * @timeout: timeout value in jiffies&n; *&n; * Make the current task sleep until @timeout jiffies have&n; * elapsed. The routine will return immediately unless&n; * the current task state has been set (see set_current_state()).&n; *&n; * You can set the task state as follows -&n; *&n; * %TASK_UNINTERRUPTIBLE - at least @timeout jiffies are guaranteed to&n; * pass before the routine returns. The routine will return 0&n; *&n; * %TASK_INTERRUPTIBLE - the routine may return early if a signal is&n; * delivered to the current task. In this case the remaining time&n; * in jiffies will be returned, or 0 if the timer expired in time&n; *&n; * The current task state is guaranteed to be TASK_RUNNING when this &n; * routine returns.&n; *&n; * Specifying a @timeout value of %MAX_SCHEDULE_TIMEOUT will schedule&n; * the CPU away without a bound on the timeout. In this case the return&n; * value will be %MAX_SCHEDULE_TIMEOUT.&n; *&n; * In all cases the return value is guaranteed to be non-negative.&n; */
 DECL|function|schedule_timeout
 r_int
 r_int
@@ -1434,6 +1435,7 @@ suffix:semicolon
 r_case
 id|TASK_RUNNING
 suffix:colon
+suffix:semicolon
 )brace
 id|prev-&gt;need_resched
 op_assign

@@ -2970,7 +2970,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Critical in if_send: %x&bslash;n&quot;
+l_string|&quot;%s: Critical in if_send: %lx&bslash;n&quot;
 comma
 id|card-&gt;wandev.name
 comma
@@ -6194,12 +6194,6 @@ suffix:semicolon
 op_increment
 id|ppp_priv_area-&gt;rx_intr_stat.rx_intr_no_socket
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 )brace
 r_else
@@ -9337,8 +9331,6 @@ id|ppp_priv_area-&gt;udp_pkt_lgth
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*=============================================================================&n; * Initial the ppp_private_area structure.&n; */
 DECL|function|init_ppp_priv_struct
@@ -9956,7 +9948,7 @@ r_else
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PPP Deleting dynamic route %s successfuly&bslash;n&quot;
+l_string|&quot;%s: PPP Deleting dynamic route %s successfully&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma

@@ -256,17 +256,17 @@ mdefine_line|#define TCREG_CRCI       0x2000&t;/* inhibit CRC generation        
 DECL|macro|TCREG_EXDIS
 mdefine_line|#define TCREG_EXDIS      0x1000&t;/* disable excessive deferral timer */
 DECL|macro|TCREG_EXD
-mdefine_line|#define TCREG_EXD        0x0400&t;/* excessive deferral occured       */
+mdefine_line|#define TCREG_EXD        0x0400&t;/* excessive deferral occurred       */
 DECL|macro|TCREG_DEF
-mdefine_line|#define TCREG_DEF        0x0200&t;/* single deferral occured          */
+mdefine_line|#define TCREG_DEF        0x0200&t;/* single deferral occurred          */
 DECL|macro|TCREG_NCRS
 mdefine_line|#define TCREG_NCRS       0x0100&t;/* no carrier detected              */
 DECL|macro|TCREG_CRSL
 mdefine_line|#define TCREG_CRSL       0x0080&t;/* carrier lost                     */
 DECL|macro|TCREG_EXC
-mdefine_line|#define TCREG_EXC        0x0040&t;/* excessive collisions occured     */
+mdefine_line|#define TCREG_EXC        0x0040&t;/* excessive collisions occurred     */
 DECL|macro|TCREG_OWC
-mdefine_line|#define TCREG_OWC        0x0020&t;/* out of window collision occured  */
+mdefine_line|#define TCREG_OWC        0x0020&t;/* out of window collision occurred  */
 DECL|macro|TCREG_PMB
 mdefine_line|#define TCREG_PMB        0x0008&t;/* packet monitored bad             */
 DECL|macro|TCREG_FU
@@ -279,7 +279,7 @@ multiline_comment|/* Interrupt Mask Register */
 DECL|macro|SONIC_IMREG
 mdefine_line|#define SONIC_IMREG      0x08
 DECL|macro|IMREG_BREN
-mdefine_line|#define IMREG_BREN       0x4000&t;/* interrupt when bus retry occured */
+mdefine_line|#define IMREG_BREN       0x4000&t;/* interrupt when bus retry occurred */
 DECL|macro|IMREG_HBLEN
 mdefine_line|#define IMREG_HBLEN      0x2000&t;/* interrupt when heartbeat lost    */
 DECL|macro|IMREG_LCDEN
@@ -312,7 +312,7 @@ multiline_comment|/* Interrupt Status Register */
 DECL|macro|SONIC_ISREG
 mdefine_line|#define SONIC_ISREG      0x0a
 DECL|macro|ISREG_BR
-mdefine_line|#define ISREG_BR         0x4000&t;/* bus retry occured                */
+mdefine_line|#define ISREG_BR         0x4000&t;/* bus retry occurred                */
 DECL|macro|ISREG_HBL
 mdefine_line|#define ISREG_HBL        0x2000&t;/* heartbeat lost                   */
 DECL|macro|ISREG_LCD

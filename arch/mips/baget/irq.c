@@ -876,7 +876,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;do_IRQ: Unregistered IRQ (0x%X) occured&bslash;n&quot;
+l_string|&quot;do_IRQ: Unregistered IRQ (0x%X) occurred&bslash;n&quot;
 comma
 id|irq
 )paren

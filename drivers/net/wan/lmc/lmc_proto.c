@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &quot;../syncppp.h&quot;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -34,8 +34,6 @@ macro_line|#include &quot;lmc_proto.h&quot;
 singleline_comment|//#include &quot;lmc_proto_raw.h&quot;
 multiline_comment|/*&n; * The compile-time variable SPPPSTUP causes the module to be&n; * compiled without referencing any of the sync ppp routines.&n; */
 macro_line|#ifdef SPPPSTUB
-DECL|macro|SYNC_PPP_init
-mdefine_line|#define SYNC_PPP_init() (void)0
 DECL|macro|SPPP_detach
 mdefine_line|#define SPPP_detach(d)&t;(void)0
 DECL|macro|SPPP_open
@@ -50,8 +48,6 @@ DECL|macro|SPPP_do_ioctl
 mdefine_line|#define SPPP_do_ioctl(d,i,c)&t;-EOPNOTSUPP
 macro_line|#else
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20363
-DECL|macro|SYNC_PPP_init
-mdefine_line|#define SYNC_PPP_init&t;sync_ppp_init
 DECL|macro|SPPP_attach
 mdefine_line|#define SPPP_attach(x)&t;sppp_attach((struct ppp_device *)(x)-&gt;lmc_device)
 DECL|macro|SPPP_detach
@@ -65,8 +61,6 @@ mdefine_line|#define SPPP_close(x)&t;sppp_close((x)-&gt;lmc_device)
 DECL|macro|SPPP_do_ioctl
 mdefine_line|#define SPPP_do_ioctl(x, y, z)&t;sppp_do_ioctl((x)-&gt;lmc_device, (y), (z))
 macro_line|#else
-DECL|macro|SYNC_PPP_init
-mdefine_line|#define SYNC_PPP_init&t;sync_ppp_init
 DECL|macro|SPPP_attach
 mdefine_line|#define SPPP_attach(x)&t;sppp_attach((x)-&gt;pd)
 DECL|macro|SPPP_detach
@@ -81,13 +75,6 @@ DECL|macro|SPPP_do_ioctl
 mdefine_line|#define SPPP_do_ioctl(x, y, z)&t;sppp_do_ioctl((x)-&gt;pd-&gt;dev, (y), (z))
 macro_line|#endif
 macro_line|#endif
-DECL|variable|lmc_first_ppp_load
-r_static
-r_int
-id|lmc_first_ppp_load
-op_assign
-l_int|0
-suffix:semicolon
 singleline_comment|// init
 DECL|function|lmc_proto_init
 r_void
@@ -117,22 +104,6 @@ id|sc-&gt;if_type
 r_case
 id|LMC_PPP
 suffix:colon
-r_if
-c_cond
-(paren
-id|lmc_first_ppp_load
-op_eq
-l_int|0
-)paren
-(brace
-macro_line|#ifndef MODULE
-id|SYNC_PPP_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 id|sc-&gt;pd
 op_assign
@@ -148,6 +119,22 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sc-&gt;pd
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;lmc_proto_init(): kmalloc failure!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|sc-&gt;pd-&gt;dev
 op_assign
 id|sc-&gt;lmc_device

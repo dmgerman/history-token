@@ -617,6 +617,7 @@ suffix:semicolon
 id|u_long
 id|base
 suffix:semicolon
+macro_line|#ifdef MMAPIO
 id|u_long
 id|start
 suffix:semicolon
@@ -626,6 +627,7 @@ suffix:semicolon
 id|u_long
 id|base_offset
 suffix:semicolon
+macro_line|#endif
 r_uint8
 op_star
 id|maddr
