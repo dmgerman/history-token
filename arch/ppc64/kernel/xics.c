@@ -156,7 +156,7 @@ op_assign
 id|RADIX_TREE_INIT
 c_func
 (paren
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 DECL|macro|XICS_IPI
