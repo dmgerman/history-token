@@ -2323,7 +2323,7 @@ comma
 id|flist
 )paren
 suffix:semicolon
-multiline_comment|/* We could check if file is open for writing first */
+multiline_comment|/* We check if file is open for writing first */
 r_if
 c_cond
 (paren
@@ -5235,6 +5235,34 @@ op_assign
 id|tmp_dentry-&gt;d_inode
 suffix:semicolon
 multiline_comment|/* BB overwrite the old name? i.e. tmp_dentry-&gt;d_name and tmp_dentry-&gt;d_name.len ?? */
+r_if
+c_cond
+(paren
+op_star
+id|ptmp_inode
+op_eq
+l_int|NULL
+)paren
+(brace
+op_star
+id|ptmp_inode
+op_assign
+id|new_inode
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_sb
+)paren
+suffix:semicolon
+id|d_instantiate
+c_func
+(paren
+id|tmp_dentry
+comma
+op_star
+id|ptmp_inode
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace

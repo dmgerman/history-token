@@ -1705,6 +1705,14 @@ id|cifsTconInfo
 op_star
 id|pTcon
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
+id|__u16
+id|netfid
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -1782,6 +1790,14 @@ id|pTcon
 op_assign
 id|oplock_item-&gt;tcon
 suffix:semicolon
+id|inode
+op_assign
+id|oplock_item-&gt;pinode
+suffix:semicolon
+id|netfid
+op_assign
+id|oplock_item-&gt;netfid
+suffix:semicolon
 id|DeleteOplockQEntry
 c_func
 (paren
@@ -1800,7 +1816,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|oplock_item-&gt;pinode-&gt;i_mapping
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if
@@ -1812,7 +1828,7 @@ id|rc
 id|CIFS_I
 c_func
 (paren
-id|oplock_item-&gt;pinode
+id|inode
 )paren
 op_member_access_from_pointer
 id|write_behind_rc
@@ -1828,7 +1844,7 @@ comma
 (paren
 l_string|&quot;Oplock flush inode %p rc %d&quot;
 comma
-id|oplock_item-&gt;pinode
+id|inode
 comma
 id|rc
 )paren
@@ -1843,7 +1859,7 @@ l_int|0
 comma
 id|pTcon
 comma
-id|oplock_item-&gt;netfid
+id|netfid
 comma
 l_int|0
 multiline_comment|/* len */

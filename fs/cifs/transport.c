@@ -913,10 +913,11 @@ l_int|1
 )paren
 id|timeout
 op_assign
-l_int|60
+l_int|45
 op_star
 id|HZ
 suffix:semicolon
+multiline_comment|/* should be greater than &n;&t;&t;&t;servers oplock break timeout (about 43 seconds) */
 r_else
 id|timeout
 op_assign
@@ -989,6 +990,16 @@ id|midQ-&gt;resp_buf-&gt;smb_buf_length
 suffix:semicolon
 r_else
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;No response buffer&quot;
+)paren
+)paren
+suffix:semicolon
 id|DeleteMidQEntry
 c_func
 (paren
@@ -1255,11 +1266,23 @@ id|out_buf
 suffix:semicolon
 )brace
 r_else
+(brace
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Bad MID state? &quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|cifs_no_response_exit
 suffix:colon

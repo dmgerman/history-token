@@ -2311,6 +2311,7 @@ c_func
 id|pSMB-&gt;ByteCount
 )paren
 suffix:semicolon
+multiline_comment|/* long_op set to 1 to allow for oplock break timeouts */
 id|rc
 op_assign
 id|SendReceive
@@ -2337,7 +2338,7 @@ comma
 op_amp
 id|bytes_returned
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 r_if
