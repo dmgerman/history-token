@@ -18,13 +18,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Prototypes of local functions.&n; */
 multiline_comment|/* 28-Jun-1994 sw - Note: hwt_restart() is also used in module &squot;drvfbi.c&squot;. */
-multiline_comment|/*static*/
-r_void
-id|hwt_restart
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*static void hwt_restart() ; */
 multiline_comment|/************************&n; *&n; *&t;hwt_start&n; *&n; *&t;Start hardware timer (clock ticks are 16us).&n; *&n; *&t;void hwt_start(&n; *&t;&t;struct s_smc *smc,&n; *&t;&t;u_long time) ;&n; * In&n; *&t;smc - A pointer to the SMT Context structure.&n; *&n; *&t;time - The time in units of 16us to load the timer with.&n; * Out&n; *&t;Nothing.&n; *&n; ************************/
 DECL|macro|HWT_MAX
 mdefine_line|#define&t;HWT_MAX&t;(65000)
@@ -33,18 +27,14 @@ r_void
 id|hwt_start
 c_func
 (paren
-id|smc
-comma
-id|time
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+comma
 id|u_long
 id|time
-suffix:semicolon
+)paren
 (brace
 id|u_short
 id|cnt
@@ -214,13 +204,11 @@ r_void
 id|hwt_stop
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 macro_line|#ifndef PCI
 multiline_comment|/* stop counter 0 by switching to mode 0 */
@@ -298,13 +286,11 @@ r_void
 id|hwt_init
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 id|smc-&gt;hw.t_start
 op_assign
@@ -331,13 +317,11 @@ r_void
 id|hwt_restart
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 id|hwt_stop
 c_func
@@ -391,13 +375,11 @@ id|u_long
 id|hwt_read
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 id|u_short
 id|tr
@@ -540,13 +522,11 @@ id|u_long
 id|hwt_quick_read
 c_func
 (paren
-id|smc
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+)paren
 (brace
 id|u_long
 id|interval
@@ -638,23 +618,18 @@ r_void
 id|hwt_wait_time
 c_func
 (paren
-id|smc
-comma
-id|start
-comma
-id|duration
-)paren
 r_struct
 id|s_smc
 op_star
 id|smc
-suffix:semicolon
+comma
 id|u_long
 id|start
-suffix:semicolon
+comma
+r_int
 r_int
 id|duration
-suffix:semicolon
+)paren
 (brace
 r_int
 id|diff

@@ -1,4 +1,7 @@
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+macro_line|#ifndef _SKFP_H_SMTSTATE_H_
+DECL|macro|_SKFP_H_SMTSTATE_H_
+mdefine_line|#define _SKFP_H_SMTSTATE_H_
 multiline_comment|/*&n; *&t;SMT state definitions&n; */
 macro_line|#ifndef&t;KERNEL
 multiline_comment|/*&n; * PCM states&n; */
@@ -167,4 +170,5 @@ suffix:semicolon
 multiline_comment|/* port A &amp; port B */
 )brace
 suffix:semicolon
+macro_line|#endif
 eof
