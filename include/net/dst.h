@@ -59,6 +59,10 @@ id|flags
 suffix:semicolon
 DECL|macro|DST_HOST
 mdefine_line|#define DST_HOST&t;&t;1
+DECL|macro|DST_NOXFRM
+mdefine_line|#define DST_NOXFRM&t;&t;2
+DECL|macro|DST_NOPOLICY
+mdefine_line|#define DST_NOPOLICY&t;&t;4
 DECL|member|lastuse
 r_int
 r_int
