@@ -3583,12 +3583,6 @@ id|cmd
 op_assign
 l_int|0x0
 suffix:semicolon
-r_const
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
 r_struct
 id|pci_dev
 op_star
@@ -3791,29 +3785,9 @@ suffix:semicolon
 r_case
 id|BUS_SPEED_133
 suffix:colon
-multiline_comment|/* This is to take care of the bug in CIOBX chip*/
-id|list_for_each
-(paren
-id|tmp
-comma
-op_amp
-id|pci_devices
-)paren
-(brace
-id|dev
-op_assign
-(paren
-r_struct
-id|pci_dev
-op_star
-)paren
-id|pci_dev_g
-(paren
-id|tmp
-)paren
-suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* This is to take care of the bug in CIOBX chip */
+id|pci_for_each_dev
+c_func
 (paren
 id|dev
 )paren
@@ -3824,7 +3798,7 @@ c_cond
 (paren
 id|dev-&gt;vendor
 op_eq
-l_int|0x1166
+id|PCI_VENDOR_ID_SERVERWORKS
 )paren
 op_logical_and
 (paren
@@ -3840,7 +3814,6 @@ comma
 id|HPC_BUS_100PCIXMODE
 )paren
 suffix:semicolon
-)brace
 )brace
 id|cmd
 op_assign
