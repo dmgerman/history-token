@@ -139,6 +139,16 @@ id|sb
 )paren
 suffix:semicolon
 r_void
+id|nfs_handle_cb_pathdown
+c_func
+(paren
+r_struct
+id|nfs4_client
+op_star
+id|clp
+)paren
+suffix:semicolon
+r_void
 id|nfs_delegation_mark_reclaim
 c_func
 (paren
