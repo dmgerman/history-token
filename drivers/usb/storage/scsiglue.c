@@ -612,6 +612,16 @@ id|srb-&gt;device-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
+multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t;   a device&squot;s several drivers. Therefore we reset only devices&n;&t;   with one interface which we of course own.&n;&t;*/
+singleline_comment|//FIXME: needs locking against config changes
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
+op_eq
+l_int|1
+)paren
+(brace
 multiline_comment|/* attempt to reset the port */
 id|result
 op_assign
@@ -629,89 +639,13 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+)brace
+r_else
+(brace
 id|result
-OL
-l_int|0
-)paren
-(brace
-id|scsi_lock
-c_func
-(paren
-id|srb-&gt;device-&gt;host
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* FIXME: This needs to lock out driver probing while it&squot;s working&n;&t; * or we can have race conditions */
-multiline_comment|/* This functionality really should be provided by the khubd thread */
-r_for
-c_loop
-(paren
-id|i
 op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_struct
-id|usb_interface
-op_star
-id|intf
-op_assign
-op_amp
-id|us-&gt;pusb_dev-&gt;actconfig-&gt;interface
-(braket
-id|i
-)braket
-suffix:semicolon
-multiline_comment|/* if this is an unclaimed interface, skip it */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|intf-&gt;driver
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Examining driver %s...&quot;
-comma
-id|intf-&gt;driver-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* simulate a disconnect and reconnect for all interfaces */
-id|US_DEBUGPX
-c_func
-(paren
-l_string|&quot;simulating disconnect/reconnect.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|usb_device_remove
-(paren
-op_amp
-id|intf-&gt;dev
-)paren
-suffix:semicolon
-id|usb_device_probe
-(paren
-op_amp
-id|intf-&gt;dev
-)paren
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -727,6 +661,13 @@ id|srb-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
+id|result
+OL
+l_int|0
+ques
+c_cond
+id|FAILED
+suffix:colon
 id|SUCCESS
 suffix:semicolon
 )brace
