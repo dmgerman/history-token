@@ -35,8 +35,13 @@ DECL|macro|PREEMPT_BITS
 mdefine_line|#define PREEMPT_BITS&t;8
 DECL|macro|SOFTIRQ_BITS
 mdefine_line|#define SOFTIRQ_BITS&t;8
+macro_line|#if NR_IRQS &gt; 256
+DECL|macro|HARDIRQ_BITS
+mdefine_line|#define HARDIRQ_BITS&t;9
+macro_line|#else
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS&t;8
+macro_line|#endif
 DECL|macro|PREEMPT_SHIFT
 mdefine_line|#define PREEMPT_SHIFT&t;0
 DECL|macro|SOFTIRQ_SHIFT
@@ -47,50 +52,13 @@ multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * s
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
-multiline_comment|/*&n; * Are we doing bottom half or hardware interrupt processing?&n; * Are we in a softirq context? Interrupt context?&n; */
-DECL|macro|in_irq
-mdefine_line|#define in_irq()&t;&t;(hardirq_count())
-DECL|macro|in_softirq
-mdefine_line|#define in_softirq()&t;&t;(softirq_count())
-DECL|macro|in_interrupt
-mdefine_line|#define in_interrupt()&t;&t;(irq_count())
-DECL|macro|hardirq_trylock
-mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
-DECL|macro|hardirq_endlock
-mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 DECL|macro|nmi_enter
 mdefine_line|#define nmi_enter()&t;&t;(irq_enter())
 DECL|macro|nmi_exit
 mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
-DECL|macro|IRQ_EXIT_OFFSET
-macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
-macro_line|#else
-DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != 0)
-DECL|macro|IRQ_EXIT_OFFSET
-macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
-macro_line|#endif
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;do_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|synchronize_irq
-macro_line|# define synchronize_irq(irq)&t;barrier()
-macro_line|#else
-r_extern
-r_void
-id|synchronize_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof
