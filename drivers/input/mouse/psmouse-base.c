@@ -168,6 +168,36 @@ comma
 l_string|&quot;Reset Synaptics Touchpad after so many bad packets (0 = never).&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;psmouse_noext&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;psmouse_resolution=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;psmouse_smartscroll=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;psmouse_resetafter=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;psmouse_rate=&quot;
+)paren
+suffix:semicolon
 DECL|variable|psmouse_protocols
 r_static
 r_char
@@ -1910,9 +1940,14 @@ comma
 id|PSMOUSE_CMD_RESET_DIS
 )paren
 )paren
-r_return
-op_minus
-l_int|1
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;psmouse.c: Failed to reset mouse on %s&bslash;n&quot;
+comma
+id|psmouse-&gt;serio-&gt;phys
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * And here we try to determine if it has any extensions over the&n; * basic PS/2 3-button mouse.&n; */
 r_return

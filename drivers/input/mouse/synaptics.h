@@ -133,6 +133,15 @@ DECL|macro|SYN_PS_SET_MODE2
 mdefine_line|#define SYN_PS_SET_MODE2&t;&t;0x14
 DECL|macro|SYN_PS_CLIENT_CMD
 mdefine_line|#define SYN_PS_CLIENT_CMD&t;&t;0x28
+multiline_comment|/* synaptics packet types */
+DECL|macro|SYN_NEWABS
+mdefine_line|#define SYN_NEWABS&t;&t;&t;0
+DECL|macro|SYN_NEWABS_STRICT
+mdefine_line|#define SYN_NEWABS_STRICT&t;&t;1
+DECL|macro|SYN_NEWABS_RELAXED
+mdefine_line|#define SYN_NEWABS_RELAXED&t;&t;2
+DECL|macro|SYN_OLDABS
+mdefine_line|#define SYN_OLDABS&t;&t;&t;3
 multiline_comment|/*&n; * A structure to describe the state of the touchpad hardware (buttons and pad)&n; */
 DECL|struct|synaptics_hw_state
 r_struct
@@ -249,6 +258,12 @@ r_int
 id|old_w
 suffix:semicolon
 multiline_comment|/* Previous w value */
+DECL|member|pkt_type
+r_int
+r_char
+id|pkt_type
+suffix:semicolon
+multiline_comment|/* packet type - old, new, etc */
 )brace
 suffix:semicolon
 macro_line|#endif /* _SYNAPTICS_H */

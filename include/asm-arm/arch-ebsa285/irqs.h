@@ -138,10 +138,10 @@ DECL|macro|RTC_IRQ
 macro_line|#undef RTC_IRQ
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ&t;&t;IRQ_ISA_RTC_ALARM
-DECL|macro|AUX_IRQ
-macro_line|#undef AUX_IRQ
-DECL|macro|AUX_IRQ
-mdefine_line|#define AUX_IRQ&t;&t;(machine_is_netwinder() ? IRQ_NETWINDER_PS2MOUSE : IRQ_ISA_PS2MOUSE)
+DECL|macro|I8042_KBD_IRQ
+mdefine_line|#define I8042_KBD_IRQ&t;IRQ_ISA_KEYBOARD
+DECL|macro|I8042_AUX_IRQ
+mdefine_line|#define I8042_AUX_IRQ&t;(machine_is_netwinder() ? IRQ_NETWINDER_PS2MOUSE : IRQ_ISA_PS2MOUSE)
 DECL|macro|IRQ_FLOPPYDISK
 mdefine_line|#define IRQ_FLOPPYDISK&t;IRQ_ISA_FLOPPY
 DECL|macro|irq_canonicalize
