@@ -1669,6 +1669,16 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
+singleline_comment|// flush those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*&n; * TD handling functions&n; *-------------------------------------------------------------------------*/

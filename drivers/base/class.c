@@ -195,6 +195,7 @@ id|class_sysfs_ops
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Classes can&squot;t use the kobject hotplug logic, as&n; * they do not add new kobjects to the system */
 DECL|variable|decl_subsys
 r_static
 id|decl_subsys
@@ -204,6 +205,8 @@ r_class
 comma
 op_amp
 id|ktype_devclass
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|function|devclass_dev_link
