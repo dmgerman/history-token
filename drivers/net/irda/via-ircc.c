@@ -562,6 +562,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Function via_ircc_init ()&n; *&n; *    Initialize chip. Just find out chip type and resource.&n; */
 DECL|function|via_ircc_init
+r_static
 r_int
 id|__init
 id|via_ircc_init

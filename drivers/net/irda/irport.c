@@ -312,6 +312,7 @@ id|irport_net_close
 )paren
 suffix:semicolon
 DECL|function|irport_init
+r_static
 r_int
 id|__init
 id|irport_init
