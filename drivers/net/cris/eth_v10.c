@@ -174,7 +174,7 @@ DECL|macro|MIN_PACKET_LEN
 mdefine_line|#define MIN_PACKET_LEN      46
 DECL|macro|ETHER_HEAD_LEN
 mdefine_line|#define ETHER_HEAD_LEN      14
-multiline_comment|/* &n;** MDIO constants.&n;*/
+multiline_comment|/*&n;** MDIO constants.&n;*/
 DECL|macro|MDIO_START
 mdefine_line|#define MDIO_START                          0x1
 DECL|macro|MDIO_READ
@@ -5056,7 +5056,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Large packet, send directly to upper layers and allocate new &n;&t;&t; * memory (aligned to cache line boundary to avoid bug).&n;&t;&t; * Before sending the skb to upper layers we must make sure that &n;&t;&t; * skb-&gt;data points to the aligned start of the packet. &n;&t;&t; */
+multiline_comment|/* Large packet, send directly to upper layers and allocate new&n;&t;&t; * memory (aligned to cache line boundary to avoid bug).&n;&t;&t; * Before sending the skb to upper layers we must make sure that&n;&t;&t; * skb-&gt;data points to the aligned start of the packet.&n;&t;&t; */
 r_int
 id|align
 suffix:semicolon

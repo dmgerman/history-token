@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: serial.c,v 1.25 2004/09/29 10:33:49 starvik Exp $&n; *&n; * Serial port driver for the ETRAX 100LX chip&n; *&n; *    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003  Axis Communications AB&n; *&n; *    Many, many authors. Based once upon a time on serial.c for 16x50.&n; *&n; * $Log: serial.c,v $&n; * Revision 1.25  2004/09/29 10:33:49  starvik&n; * Resolved a dealock when printing debug from kernel.&n; *&n; * Revision 1.24  2004/08/27 23:25:59  johana&n; * rs_set_termios() must call change_speed() if c_iflag has changed or&n; * automatic XOFF handling will be enabled and transmitter will stop&n; * if 0x13 is received.&n; *&n; * Revision 1.23  2004/08/24 06:57:13  starvik&n; * More whitespace cleanup&n; *&n; * Revision 1.22  2004/08/24 06:12:20  starvik&n; * Whitespace cleanup&n; *&n; * Revision 1.20  2004/05/24 12:00:20  starvik&n; * Big merge of stuff from Linux 2.4 (e.g. manual mode for the serial port).&n; *&n; * Revision 1.19  2004/05/17 13:12:15  starvik&n; * Kernel console hook&n; * Big merge from Linux 2.4 still pending.&n; *&n; * Revision 1.18  2003/10/28 07:18:30  starvik&n; * Compiles with debug info&n; *&n; * Revision 1.17  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.16  2003/06/13 10:05:19  johana&n; * Help the user to avoid trouble by:&n; * Forcing mixed mode for status/control lines if not all pins are used.&n; *&n; * Revision 1.15  2003/06/13 09:43:01  johana&n; * Merged in the following changes from os/linux/arch/cris/drivers/serial.c&n; * + some minor changes to reduce diff.&n; *&n; * Revision 1.49  2003/05/30 11:31:54  johana&n; * Merged in change-branch--serial9bit that adds CMSPAR support for sticky&n; * parity (mark/space)&n; *&n; * Revision 1.48  2003/05/30 11:03:57  johana&n; * Implemented rs_send_xchar() by disabling the DMA and writing manually.&n; * Added e100_disable_txdma_channel() and e100_enable_txdma_channel().&n; * Fixed rs_throttle() and rs_unthrottle() to properly call rs_send_xchar&n; * instead of setting info-&gt;x_char and check the CRTSCTS flag before&n; * controlling the rts pin.&n; *&n; * Revision 1.14  2003/04/09 08:12:44  pkj&n; * Corrected typo changes made upstream.&n; *&n; * Revision 1.13  2003/04/09 05:20:47  starvik&n; * Merge of Linux 2.5.67&n; *&n; * Revision 1.11  2003/01/22 06:48:37  starvik&n; * Fixed warnings issued by GCC 3.2.1&n; *&n; * Revision 1.9  2002/12/13 09:07:47  starvik&n; * Alert user that RX_TIMEOUT_TICKS==0 doesn&squot;t work&n; *&n; * Revision 1.8  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.7  2002/12/06 07:13:57  starvik&n; * Corrected work queue stuff&n; * Removed CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST&n; *&n; * Revision 1.6  2002/11/21 07:17:46  starvik&n; * Change static inline to extern inline where otherwise outlined with gcc-3.2&n; *&n; * Revision 1.5  2002/11/14 15:59:49  starvik&n; * Linux 2.5 port of the latest serial driver from 2.4. The work queue stuff&n; * probably doesn&squot;t work yet.&n; *&n; * Revision 1.42  2002/11/05 09:08:47  johana&n; * Better implementation of rs_stop() and rs_start() that uses the XOFF&n; * register to start/stop transmission.&n; * change_speed() also initilises XOFF register correctly so that&n; * auto_xoff is enabled when IXON flag is set by user.&n; * This gives fast XOFF response times.&n; *&n; * Revision 1.41  2002/11/04 18:40:57  johana&n; * Implemented rs_stop() and rs_start().&n; * Simple tests using hwtestserial indicates that this should be enough&n; * to make it work.&n; *&n; * Revision 1.40  2002/10/14 05:33:18  starvik&n; * RS-485 uses fast timers even if SERIAL_FAST_TIMER is disabled&n; *&n; * Revision 1.39  2002/09/30 21:00:57  johana&n; * Support for CONFIG_ETRAX_SERx_DTR_RI_DSR_CD_MIXED where the status and&n; * control pins can be mixed between PA and PB.&n; * If no serial port uses MIXED old solution is used&n; * (saves a few bytes and cycles).&n; * control_pins struct uses masks instead of bit numbers.&n; * Corrected dummy values and polarity in line_info() so&n; * /proc/tty/driver/serial is now correct.&n; * (the E100_xxx_GET() macros is really active low - perhaps not obvious)&n; *&n; * Revision 1.38  2002/08/23 11:01:36  starvik&n; * Check that serial port is enabled in all interrupt handlers to avoid&n; * restarts of DMA channels not assigned to serial ports&n; *&n; * Revision 1.37  2002/08/13 13:02:37  bjornw&n; * Removed some warnings because of unused code&n; *&n; * Revision 1.36  2002/08/08 12:50:01  starvik&n; * Serial interrupt is shared with synchronous serial port driver&n; *&n; * Revision 1.35  2002/06/03 10:40:49  starvik&n; * Increased RS-485 RTS toggle timer to 2 characters&n; *&n; * Revision 1.34  2002/05/28 18:59:36  johana&n; * Whitespace and comment fixing to be more like etrax100ser.c 1.71.&n; *&n; * Revision 1.33  2002/05/28 17:55:43  johana&n; * RS-485 uses FAST_TIMER if enabled, and starts a short (one char time)&n; * timer from tranismit_chars (interrupt context).&n; * The timer toggles RTS in interrupt context when expired giving minimum&n; * latencies.&n; *&n; * Revision 1.32  2002/05/22 13:58:00  johana&n; * Renamed rs_write() to raw_write() and made it inline.&n; * New rs_write() handles RS-485 if configured and enabled&n; * (moved code from e100_write_rs485()).&n; * RS-485 ioctl&squot;s uses copy_from_user() instead of verify_area().&n; *&n; * Revision 1.31  2002/04/22 11:20:03  johana&n; * Updated copyright years.&n; *&n; * Revision 1.30  2002/04/22 09:39:12  johana&n; * RS-485 support compiles.&n; *&n; * Revision 1.29  2002/01/14 16:10:01  pkj&n; * Allocate the receive buffers dynamically. The static 4kB buffer was&n; * too small for the peaks. This means that we can get rid of the extra&n; * buffer and the copying to it. It also means we require less memory&n; * under normal operations, but can use more when needed (there is a&n; * cap at 64kB for safety reasons). If there is no memory available&n; * we panic(), and die a horrible death...&n; *&n; * Revision 1.28  2001/12/18 15:04:53  johana&n; * Cleaned up write_rs485() - now it works correctly without padding extra&n; * char.&n; * Added sane default initialisation of rs485.&n; * Added #ifdef around dummy variables.&n; *&n; * Revision 1.27  2001/11/29 17:00:41  pkj&n; * 2kB seems to be too small a buffer when using 921600 bps,&n; * so increase it to 4kB (this was already done for the elinux&n; * version of the serial driver).&n; *&n; * Revision 1.26  2001/11/19 14:20:41  pkj&n; * Minor changes to comments and unused code.&n; *&n; * Revision 1.25  2001/11/12 20:03:43  pkj&n; * Fixed compiler warnings.&n; *&n; * Revision 1.24  2001/11/12 15:10:05  pkj&n; * Total redesign of the receiving part of the serial driver.&n; * Uses eight chained descriptors to write to a 4kB buffer.&n; * This data is then serialised into a 2kB buffer. From there it&n; * is copied into the TTY&squot;s flip buffers when they become available.&n; * A lot of copying, and the sizes of the buffers might need to be&n; * tweaked, but all in all it should work better than the previous&n; * version, without the need to modify the TTY code in any way.&n; * Also note that erroneous bytes are now correctly marked in the&n; * flag buffers (instead of always marking the first byte).&n; *&n; * Revision 1.23  2001/10/30 17:53:26  pkj&n; * * Set info-&gt;uses_dma to 0 when a port is closed.&n; * * Mark the timer1 interrupt as a fast one (SA_INTERRUPT).&n; * * Call start_flush_timer() in start_receive() if&n; *   CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST is defined.&n; *&n; * Revision 1.22  2001/10/30 17:44:03  pkj&n; * Use %lu for received and transmitted counters in line_info().&n; *&n; * Revision 1.21  2001/10/30 17:40:34  pkj&n; * Clean-up. The only change to functionality is that&n; * CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS(=5) is used instead of&n; * MAX_FLUSH_TIME(=8).&n; *&n; * Revision 1.20  2001/10/30 15:24:49  johana&n; * Added char_time stuff from 2.0 driver.&n; *&n; * Revision 1.19  2001/10/30 15:23:03  johana&n; * Merged with 1.13.2 branch + fixed indentation&n; * and changed CONFIG_ETRAX100_XYS to CONFIG_ETRAX_XYZ&n; *&n; * Revision 1.18  2001/09/24 09:27:22  pkj&n; * Completed ext_baud_table[] in cflag_to_baud() and cflag_to_etrax_baud().&n; *&n; * Revision 1.17  2001/08/24 11:32:49  ronny&n; * More fixes for the CONFIG_ETRAX_SERIAL_PORT0 define.&n; *&n; * Revision 1.16  2001/08/24 07:56:22  ronny&n; * Added config ifdefs around ser0 irq requests.&n; *&n; * Revision 1.15  2001/08/16 09:10:31  bjarne&n; * serial.c - corrected the initialization of rs_table, the wrong defines&n; *            where used.&n; *            Corrected a test in timed_flush_handler.&n; *            Changed configured to enabled.&n; * serial.h - Changed configured to enabled.&n; *&n; * Revision 1.14  2001/08/15 07:31:23  bjarne&n; * Introduced two new members to the e100_serial struct.&n; * configured - Will be set to 1 if the port has been configured in .config&n; * uses_dma   - Should be set to 1 if the port uses DMA. Currently it is set &n; *              to 1&n; *              when a port is opened. This is used to limit the DMA interrupt&n; *              routines to only manipulate DMA channels actually used by the&n; *              serial driver.&n; *&n; * Revision 1.13.2.2  2001/10/17 13:57:13  starvik&n; * Receiver was broken by the break fixes&n; *&n; * Revision 1.13.2.1  2001/07/20 13:57:39  ronny&n; * Merge with new stuff from etrax100ser.c. Works but haven&squot;t checked stuff&n; * like break handling.&n; *&n; * Revision 1.13  2001/05/09 12:40:31  johana&n; * Use DMA_NBR and IRQ_NBR defines from dma.h and irq.h&n; *&n; * Revision 1.12  2001/04/19 12:23:07  bjornw&n; * CONFIG_RS485 -&gt; CONFIG_ETRAX_RS485&n; *&n; * Revision 1.11  2001/04/05 14:29:48  markusl&n; * Updated according to review remarks i.e.&n; * -Use correct types in port structure to avoid compiler warnings&n; * -Try to use IO_* macros whenever possible&n; * -Open should never return -EBUSY&n; *&n; * Revision 1.10  2001/03/05 13:14:07  bjornw&n; * Another spelling fix&n; *&n; * Revision 1.9  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.8  2001/01/23 14:56:35  markusl&n; * Made use of ser1 optional&n; * Needed by USB&n; *&n; * Revision 1.7  2001/01/19 16:14:48  perf&n; * Added kernel options for serial ports 234.&n; * Changed option names from CONFIG_ETRAX100_XYZ to CONFIG_ETRAX_XYZ.&n; *&n; * Revision 1.6  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.5  2000/11/21 16:43:37  bjornw&n; * Fixed so it compiles under CONFIG_SVINTO_SIM&n; *&n; * Revision 1.4  2000/11/15 17:34:12  bjornw&n; * Added a timeout timer for flushing input channels. The interrupt-based&n; * fast flush system should be easy to merge with this later (works the same&n; * way, only with an irq instead of a system timer_list)&n; *&n; * Revision 1.3  2000/11/13 17:19:57  bjornw&n; * * Incredibly, this almost complete rewrite of serial.c worked (at least&n; *   for output) the first time.&n; *&n; *   Items worth noticing:&n; *&n; *      No Etrax100 port 1 workarounds (does only compile on 2.4 anyway now)&n; *      RS485 is not ported (why can&squot;t it be done in userspace as on x86 ?)&n; *      Statistics done through async_icount - if any more stats are needed,&n; *      that&squot;s the place to put them or in an arch-dep version of it.&n; *      timeout_interrupt and the other fast timeout stuff not ported yet&n; *      There be dragons in this 3k+ line driver&n; *&n; * Revision 1.2  2000/11/10 16:50:28  bjornw&n; * First shot at a 2.4 port, does not compile totally yet&n; *&n; * Revision 1.1  2000/11/10 16:47:32  bjornw&n; * Added verbatim copy of rev 1.49 etrax100ser.c from elinux&n; *&n; * Revision 1.49  2000/10/30 15:47:14  tobiasa&n; * Changed version number.&n; *&n; * Revision 1.48  2000/10/25 11:02:43  johana&n; * Changed %ul to %lu in printf&squot;s&n; *&n; * Revision 1.47  2000/10/18 15:06:53  pkj&n; * Compile correctly with CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST and&n; * CONFIG_ETRAX_SERIAL_PROC_ENTRY together.&n; * Some clean-up of the /proc/serial file.&n; *&n; * Revision 1.46  2000/10/16 12:59:40  johana&n; * Added CONFIG_ETRAX_SERIAL_PROC_ENTRY for statistics and debug info.&n; *&n; * Revision 1.45  2000/10/13 17:10:59  pkj&n; * Do not flush DMAs while flipping TTY buffers.&n; *&n; * Revision 1.44  2000/10/13 16:34:29  pkj&n; * Added a delay in ser_interrupt() for 2.3ms when an error is detected.&n; * We do not know why this delay is required yet, but without it the&n; * irmaflash program does not work (this was the program that needed&n; * the ser_interrupt() to be needed in the first place). This should not&n; * affect normal use of the serial ports.&n; *&n; * Revision 1.43  2000/10/13 16:30:44  pkj&n; * New version of the fast flush of serial buffers code. This time&n; * it is localized to the serial driver and uses a fast timer to&n; * do the work.&n; *&n; * Revision 1.42  2000/10/13 14:54:26  bennyo&n; * Fix for switching RTS when using rs485&n; *&n; * Revision 1.41  2000/10/12 11:43:44  pkj&n; * Cleaned up a number of comments.&n; *&n; * Revision 1.40  2000/10/10 11:58:39  johana&n; * Made RS485 support generic for all ports.&n; * Toggle rts in interrupt if no delay wanted.&n; * WARNING: No true transmitter empty check??&n; * Set d_wait bit when sending data so interrupt is delayed until&n; * fifo flushed. (Fix tcdrain() problem)&n; *&n; * Revision 1.39  2000/10/04 16:08:02  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed CONFIG_FLUSH_DMA_FAST hacks&n; * * Indentation fix&n; *&n; * Revision 1.38  2000/10/02 12:27:10  mattias&n; * * added variable used when using fast flush on serial dma.&n; *   (CONFIG_FLUSH_DMA_FAST)&n; *&n; * Revision 1.37  2000/09/27 09:44:24  pkj&n; * Uncomment definition of SERIAL_HANDLE_EARLY_ERRORS.&n; *&n; * Revision 1.36  2000/09/20 13:12:52  johana&n; * Support for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS:&n; *   Number of timer ticks between flush of receive fifo (1 tick = 10ms).&n; *   Try 0-3 for low latency applications. Approx 5 for high load&n; *   applications (e.g. PPP). Maybe this should be more adaptive some day...&n; *&n; * Revision 1.35  2000/09/20 10:36:08  johana&n; * Typo in get_lsr_info()&n; *&n; * Revision 1.34  2000/09/20 10:29:59  johana&n; * Let rs_chars_in_buffer() check fifo content as well.&n; * get_lsr_info() might work now (not tested).&n; * Easier to change the port to debug.&n; *&n; * Revision 1.33  2000/09/13 07:52:11  torbjore&n; * Support RS485&n; *&n; * Revision 1.32  2000/08/31 14:45:37  bjornw&n; * After sending a break we need to reset the transmit DMA channel&n; *&n; * Revision 1.31  2000/06/21 12:13:29  johana&n; * Fixed wait for all chars sent when closing port.&n; * (Used to always take 1 second!)&n; * Added shadows for directions of status/ctrl signals.&n; *&n; * Revision 1.30  2000/05/29 16:27:55  bjornw&n; * Simulator ifdef moved a bit&n; *&n; * Revision 1.29  2000/05/09 09:40:30  mattias&n; * * Added description of dma registers used in timeout_interrupt&n; * * Removed old code&n; *&n; * Revision 1.28  2000/05/08 16:38:58  mattias&n; * * Bugfix for flushing fifo in timeout_interrupt&n; *   Problem occurs when bluetooth stack waits for a small number of bytes&n; *   containing an event acknowledging free buffers in bluetooth HW&n; *   As before, data was stuck in fifo until more data came on uart and&n; *   flushed it up to the stack.&n; *&n; * Revision 1.27  2000/05/02 09:52:28  jonasd&n; * Added fix for peculiar etrax behaviour when eop is forced on an empty&n; * fifo. This is used when flashing the IRMA chip. Disabled by default.&n; *&n; * Revision 1.26  2000/03/29 15:32:02  bjornw&n; * 2.0.34 updates&n; *&n; * Revision 1.25  2000/02/16 16:59:36  bjornw&n; * * Receive DMA directly into the flip-buffer, eliminating an intermediary&n; *   receive buffer and a memcpy. Will avoid some overruns.&n; * * Error message on debug port if an overrun or flip buffer overrun occurs.&n; * * Just use the first byte in the flag flip buffer for errors.&n; * * Check for timeout on the serial ports only each 5/100 s, not 1/100.&n; *&n; * Revision 1.24  2000/02/09 18:02:28  bjornw&n; * * Clear serial errors (overrun, framing, parity) correctly. Before, the&n; *   receiver would get stuck if an error occurred and we did not restart&n; *   the input DMA.&n; * * Cosmetics (indentation, some code made into inlines)&n; * * Some more debug options&n; * * Actually shut down the serial port (DMA irq, DMA reset, receiver stop)&n; *   when the last open is closed. Corresponding fixes in startup().&n; * * rs_close() &quot;tx FIFO wait&quot; code moved into right place, bug &amp; -&gt; &amp;&amp; fixed&n; *   and make a special case out of port 1 (R_DMA_CHx_STATUS is broken for that)&n; * * e100_disable_rx/enable_rx just disables/enables the receiver, not RTS&n; *&n; * Revision 1.23  2000/01/24 17:46:19  johana&n; * Wait for flush of DMA/FIFO when closing port.&n; *&n; * Revision 1.22  2000/01/20 18:10:23  johana&n; * Added TIOCMGET ioctl to return modem status.&n; * Implemented modem status/control that works with the extra signals&n; * (DTR, DSR, RI,CD) as well.&n; * 3 different modes supported:&n; * ser0 on PB (Bundy), ser1 on PB (Lisa) and ser2 on PA (Bundy)&n; * Fixed DEF_TX value that caused the serial transmitter pin (txd) to go to 0 when&n; * closing the last filehandle, NASTY!.&n; * Added break generation, not tested though!&n; * Use SA_SHIRQ when request_irq() for ser2 and ser3 (shared with) par0 and par1.&n; * You can&squot;t use them at the same time (yet..), but you can hopefully switch&n; * between ser2/par0, ser3/par1 with the same kernel config.&n; * Replaced some magic constants with defines&n; *&n; *&n; */
+multiline_comment|/* $Id: serial.c,v 1.25 2004/09/29 10:33:49 starvik Exp $&n; *&n; * Serial port driver for the ETRAX 100LX chip&n; *&n; *    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003  Axis Communications AB&n; *&n; *    Many, many authors. Based once upon a time on serial.c for 16x50.&n; *&n; * $Log: serial.c,v $&n; * Revision 1.25  2004/09/29 10:33:49  starvik&n; * Resolved a dealock when printing debug from kernel.&n; *&n; * Revision 1.24  2004/08/27 23:25:59  johana&n; * rs_set_termios() must call change_speed() if c_iflag has changed or&n; * automatic XOFF handling will be enabled and transmitter will stop&n; * if 0x13 is received.&n; *&n; * Revision 1.23  2004/08/24 06:57:13  starvik&n; * More whitespace cleanup&n; *&n; * Revision 1.22  2004/08/24 06:12:20  starvik&n; * Whitespace cleanup&n; *&n; * Revision 1.20  2004/05/24 12:00:20  starvik&n; * Big merge of stuff from Linux 2.4 (e.g. manual mode for the serial port).&n; *&n; * Revision 1.19  2004/05/17 13:12:15  starvik&n; * Kernel console hook&n; * Big merge from Linux 2.4 still pending.&n; *&n; * Revision 1.18  2003/10/28 07:18:30  starvik&n; * Compiles with debug info&n; *&n; * Revision 1.17  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.16  2003/06/13 10:05:19  johana&n; * Help the user to avoid trouble by:&n; * Forcing mixed mode for status/control lines if not all pins are used.&n; *&n; * Revision 1.15  2003/06/13 09:43:01  johana&n; * Merged in the following changes from os/linux/arch/cris/drivers/serial.c&n; * + some minor changes to reduce diff.&n; *&n; * Revision 1.49  2003/05/30 11:31:54  johana&n; * Merged in change-branch--serial9bit that adds CMSPAR support for sticky&n; * parity (mark/space)&n; *&n; * Revision 1.48  2003/05/30 11:03:57  johana&n; * Implemented rs_send_xchar() by disabling the DMA and writing manually.&n; * Added e100_disable_txdma_channel() and e100_enable_txdma_channel().&n; * Fixed rs_throttle() and rs_unthrottle() to properly call rs_send_xchar&n; * instead of setting info-&gt;x_char and check the CRTSCTS flag before&n; * controlling the rts pin.&n; *&n; * Revision 1.14  2003/04/09 08:12:44  pkj&n; * Corrected typo changes made upstream.&n; *&n; * Revision 1.13  2003/04/09 05:20:47  starvik&n; * Merge of Linux 2.5.67&n; *&n; * Revision 1.11  2003/01/22 06:48:37  starvik&n; * Fixed warnings issued by GCC 3.2.1&n; *&n; * Revision 1.9  2002/12/13 09:07:47  starvik&n; * Alert user that RX_TIMEOUT_TICKS==0 doesn&squot;t work&n; *&n; * Revision 1.8  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.7  2002/12/06 07:13:57  starvik&n; * Corrected work queue stuff&n; * Removed CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST&n; *&n; * Revision 1.6  2002/11/21 07:17:46  starvik&n; * Change static inline to extern inline where otherwise outlined with gcc-3.2&n; *&n; * Revision 1.5  2002/11/14 15:59:49  starvik&n; * Linux 2.5 port of the latest serial driver from 2.4. The work queue stuff&n; * probably doesn&squot;t work yet.&n; *&n; * Revision 1.42  2002/11/05 09:08:47  johana&n; * Better implementation of rs_stop() and rs_start() that uses the XOFF&n; * register to start/stop transmission.&n; * change_speed() also initilises XOFF register correctly so that&n; * auto_xoff is enabled when IXON flag is set by user.&n; * This gives fast XOFF response times.&n; *&n; * Revision 1.41  2002/11/04 18:40:57  johana&n; * Implemented rs_stop() and rs_start().&n; * Simple tests using hwtestserial indicates that this should be enough&n; * to make it work.&n; *&n; * Revision 1.40  2002/10/14 05:33:18  starvik&n; * RS-485 uses fast timers even if SERIAL_FAST_TIMER is disabled&n; *&n; * Revision 1.39  2002/09/30 21:00:57  johana&n; * Support for CONFIG_ETRAX_SERx_DTR_RI_DSR_CD_MIXED where the status and&n; * control pins can be mixed between PA and PB.&n; * If no serial port uses MIXED old solution is used&n; * (saves a few bytes and cycles).&n; * control_pins struct uses masks instead of bit numbers.&n; * Corrected dummy values and polarity in line_info() so&n; * /proc/tty/driver/serial is now correct.&n; * (the E100_xxx_GET() macros is really active low - perhaps not obvious)&n; *&n; * Revision 1.38  2002/08/23 11:01:36  starvik&n; * Check that serial port is enabled in all interrupt handlers to avoid&n; * restarts of DMA channels not assigned to serial ports&n; *&n; * Revision 1.37  2002/08/13 13:02:37  bjornw&n; * Removed some warnings because of unused code&n; *&n; * Revision 1.36  2002/08/08 12:50:01  starvik&n; * Serial interrupt is shared with synchronous serial port driver&n; *&n; * Revision 1.35  2002/06/03 10:40:49  starvik&n; * Increased RS-485 RTS toggle timer to 2 characters&n; *&n; * Revision 1.34  2002/05/28 18:59:36  johana&n; * Whitespace and comment fixing to be more like etrax100ser.c 1.71.&n; *&n; * Revision 1.33  2002/05/28 17:55:43  johana&n; * RS-485 uses FAST_TIMER if enabled, and starts a short (one char time)&n; * timer from tranismit_chars (interrupt context).&n; * The timer toggles RTS in interrupt context when expired giving minimum&n; * latencies.&n; *&n; * Revision 1.32  2002/05/22 13:58:00  johana&n; * Renamed rs_write() to raw_write() and made it inline.&n; * New rs_write() handles RS-485 if configured and enabled&n; * (moved code from e100_write_rs485()).&n; * RS-485 ioctl&squot;s uses copy_from_user() instead of verify_area().&n; *&n; * Revision 1.31  2002/04/22 11:20:03  johana&n; * Updated copyright years.&n; *&n; * Revision 1.30  2002/04/22 09:39:12  johana&n; * RS-485 support compiles.&n; *&n; * Revision 1.29  2002/01/14 16:10:01  pkj&n; * Allocate the receive buffers dynamically. The static 4kB buffer was&n; * too small for the peaks. This means that we can get rid of the extra&n; * buffer and the copying to it. It also means we require less memory&n; * under normal operations, but can use more when needed (there is a&n; * cap at 64kB for safety reasons). If there is no memory available&n; * we panic(), and die a horrible death...&n; *&n; * Revision 1.28  2001/12/18 15:04:53  johana&n; * Cleaned up write_rs485() - now it works correctly without padding extra&n; * char.&n; * Added sane default initialisation of rs485.&n; * Added #ifdef around dummy variables.&n; *&n; * Revision 1.27  2001/11/29 17:00:41  pkj&n; * 2kB seems to be too small a buffer when using 921600 bps,&n; * so increase it to 4kB (this was already done for the elinux&n; * version of the serial driver).&n; *&n; * Revision 1.26  2001/11/19 14:20:41  pkj&n; * Minor changes to comments and unused code.&n; *&n; * Revision 1.25  2001/11/12 20:03:43  pkj&n; * Fixed compiler warnings.&n; *&n; * Revision 1.24  2001/11/12 15:10:05  pkj&n; * Total redesign of the receiving part of the serial driver.&n; * Uses eight chained descriptors to write to a 4kB buffer.&n; * This data is then serialised into a 2kB buffer. From there it&n; * is copied into the TTY&squot;s flip buffers when they become available.&n; * A lot of copying, and the sizes of the buffers might need to be&n; * tweaked, but all in all it should work better than the previous&n; * version, without the need to modify the TTY code in any way.&n; * Also note that erroneous bytes are now correctly marked in the&n; * flag buffers (instead of always marking the first byte).&n; *&n; * Revision 1.23  2001/10/30 17:53:26  pkj&n; * * Set info-&gt;uses_dma to 0 when a port is closed.&n; * * Mark the timer1 interrupt as a fast one (SA_INTERRUPT).&n; * * Call start_flush_timer() in start_receive() if&n; *   CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST is defined.&n; *&n; * Revision 1.22  2001/10/30 17:44:03  pkj&n; * Use %lu for received and transmitted counters in line_info().&n; *&n; * Revision 1.21  2001/10/30 17:40:34  pkj&n; * Clean-up. The only change to functionality is that&n; * CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS(=5) is used instead of&n; * MAX_FLUSH_TIME(=8).&n; *&n; * Revision 1.20  2001/10/30 15:24:49  johana&n; * Added char_time stuff from 2.0 driver.&n; *&n; * Revision 1.19  2001/10/30 15:23:03  johana&n; * Merged with 1.13.2 branch + fixed indentation&n; * and changed CONFIG_ETRAX100_XYS to CONFIG_ETRAX_XYZ&n; *&n; * Revision 1.18  2001/09/24 09:27:22  pkj&n; * Completed ext_baud_table[] in cflag_to_baud() and cflag_to_etrax_baud().&n; *&n; * Revision 1.17  2001/08/24 11:32:49  ronny&n; * More fixes for the CONFIG_ETRAX_SERIAL_PORT0 define.&n; *&n; * Revision 1.16  2001/08/24 07:56:22  ronny&n; * Added config ifdefs around ser0 irq requests.&n; *&n; * Revision 1.15  2001/08/16 09:10:31  bjarne&n; * serial.c - corrected the initialization of rs_table, the wrong defines&n; *            where used.&n; *            Corrected a test in timed_flush_handler.&n; *            Changed configured to enabled.&n; * serial.h - Changed configured to enabled.&n; *&n; * Revision 1.14  2001/08/15 07:31:23  bjarne&n; * Introduced two new members to the e100_serial struct.&n; * configured - Will be set to 1 if the port has been configured in .config&n; * uses_dma   - Should be set to 1 if the port uses DMA. Currently it is set&n; *              to 1&n; *              when a port is opened. This is used to limit the DMA interrupt&n; *              routines to only manipulate DMA channels actually used by the&n; *              serial driver.&n; *&n; * Revision 1.13.2.2  2001/10/17 13:57:13  starvik&n; * Receiver was broken by the break fixes&n; *&n; * Revision 1.13.2.1  2001/07/20 13:57:39  ronny&n; * Merge with new stuff from etrax100ser.c. Works but haven&squot;t checked stuff&n; * like break handling.&n; *&n; * Revision 1.13  2001/05/09 12:40:31  johana&n; * Use DMA_NBR and IRQ_NBR defines from dma.h and irq.h&n; *&n; * Revision 1.12  2001/04/19 12:23:07  bjornw&n; * CONFIG_RS485 -&gt; CONFIG_ETRAX_RS485&n; *&n; * Revision 1.11  2001/04/05 14:29:48  markusl&n; * Updated according to review remarks i.e.&n; * -Use correct types in port structure to avoid compiler warnings&n; * -Try to use IO_* macros whenever possible&n; * -Open should never return -EBUSY&n; *&n; * Revision 1.10  2001/03/05 13:14:07  bjornw&n; * Another spelling fix&n; *&n; * Revision 1.9  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.8  2001/01/23 14:56:35  markusl&n; * Made use of ser1 optional&n; * Needed by USB&n; *&n; * Revision 1.7  2001/01/19 16:14:48  perf&n; * Added kernel options for serial ports 234.&n; * Changed option names from CONFIG_ETRAX100_XYZ to CONFIG_ETRAX_XYZ.&n; *&n; * Revision 1.6  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.5  2000/11/21 16:43:37  bjornw&n; * Fixed so it compiles under CONFIG_SVINTO_SIM&n; *&n; * Revision 1.4  2000/11/15 17:34:12  bjornw&n; * Added a timeout timer for flushing input channels. The interrupt-based&n; * fast flush system should be easy to merge with this later (works the same&n; * way, only with an irq instead of a system timer_list)&n; *&n; * Revision 1.3  2000/11/13 17:19:57  bjornw&n; * * Incredibly, this almost complete rewrite of serial.c worked (at least&n; *   for output) the first time.&n; *&n; *   Items worth noticing:&n; *&n; *      No Etrax100 port 1 workarounds (does only compile on 2.4 anyway now)&n; *      RS485 is not ported (why can&squot;t it be done in userspace as on x86 ?)&n; *      Statistics done through async_icount - if any more stats are needed,&n; *      that&squot;s the place to put them or in an arch-dep version of it.&n; *      timeout_interrupt and the other fast timeout stuff not ported yet&n; *      There be dragons in this 3k+ line driver&n; *&n; * Revision 1.2  2000/11/10 16:50:28  bjornw&n; * First shot at a 2.4 port, does not compile totally yet&n; *&n; * Revision 1.1  2000/11/10 16:47:32  bjornw&n; * Added verbatim copy of rev 1.49 etrax100ser.c from elinux&n; *&n; * Revision 1.49  2000/10/30 15:47:14  tobiasa&n; * Changed version number.&n; *&n; * Revision 1.48  2000/10/25 11:02:43  johana&n; * Changed %ul to %lu in printf&squot;s&n; *&n; * Revision 1.47  2000/10/18 15:06:53  pkj&n; * Compile correctly with CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST and&n; * CONFIG_ETRAX_SERIAL_PROC_ENTRY together.&n; * Some clean-up of the /proc/serial file.&n; *&n; * Revision 1.46  2000/10/16 12:59:40  johana&n; * Added CONFIG_ETRAX_SERIAL_PROC_ENTRY for statistics and debug info.&n; *&n; * Revision 1.45  2000/10/13 17:10:59  pkj&n; * Do not flush DMAs while flipping TTY buffers.&n; *&n; * Revision 1.44  2000/10/13 16:34:29  pkj&n; * Added a delay in ser_interrupt() for 2.3ms when an error is detected.&n; * We do not know why this delay is required yet, but without it the&n; * irmaflash program does not work (this was the program that needed&n; * the ser_interrupt() to be needed in the first place). This should not&n; * affect normal use of the serial ports.&n; *&n; * Revision 1.43  2000/10/13 16:30:44  pkj&n; * New version of the fast flush of serial buffers code. This time&n; * it is localized to the serial driver and uses a fast timer to&n; * do the work.&n; *&n; * Revision 1.42  2000/10/13 14:54:26  bennyo&n; * Fix for switching RTS when using rs485&n; *&n; * Revision 1.41  2000/10/12 11:43:44  pkj&n; * Cleaned up a number of comments.&n; *&n; * Revision 1.40  2000/10/10 11:58:39  johana&n; * Made RS485 support generic for all ports.&n; * Toggle rts in interrupt if no delay wanted.&n; * WARNING: No true transmitter empty check??&n; * Set d_wait bit when sending data so interrupt is delayed until&n; * fifo flushed. (Fix tcdrain() problem)&n; *&n; * Revision 1.39  2000/10/04 16:08:02  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed CONFIG_FLUSH_DMA_FAST hacks&n; * * Indentation fix&n; *&n; * Revision 1.38  2000/10/02 12:27:10  mattias&n; * * added variable used when using fast flush on serial dma.&n; *   (CONFIG_FLUSH_DMA_FAST)&n; *&n; * Revision 1.37  2000/09/27 09:44:24  pkj&n; * Uncomment definition of SERIAL_HANDLE_EARLY_ERRORS.&n; *&n; * Revision 1.36  2000/09/20 13:12:52  johana&n; * Support for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS:&n; *   Number of timer ticks between flush of receive fifo (1 tick = 10ms).&n; *   Try 0-3 for low latency applications. Approx 5 for high load&n; *   applications (e.g. PPP). Maybe this should be more adaptive some day...&n; *&n; * Revision 1.35  2000/09/20 10:36:08  johana&n; * Typo in get_lsr_info()&n; *&n; * Revision 1.34  2000/09/20 10:29:59  johana&n; * Let rs_chars_in_buffer() check fifo content as well.&n; * get_lsr_info() might work now (not tested).&n; * Easier to change the port to debug.&n; *&n; * Revision 1.33  2000/09/13 07:52:11  torbjore&n; * Support RS485&n; *&n; * Revision 1.32  2000/08/31 14:45:37  bjornw&n; * After sending a break we need to reset the transmit DMA channel&n; *&n; * Revision 1.31  2000/06/21 12:13:29  johana&n; * Fixed wait for all chars sent when closing port.&n; * (Used to always take 1 second!)&n; * Added shadows for directions of status/ctrl signals.&n; *&n; * Revision 1.30  2000/05/29 16:27:55  bjornw&n; * Simulator ifdef moved a bit&n; *&n; * Revision 1.29  2000/05/09 09:40:30  mattias&n; * * Added description of dma registers used in timeout_interrupt&n; * * Removed old code&n; *&n; * Revision 1.28  2000/05/08 16:38:58  mattias&n; * * Bugfix for flushing fifo in timeout_interrupt&n; *   Problem occurs when bluetooth stack waits for a small number of bytes&n; *   containing an event acknowledging free buffers in bluetooth HW&n; *   As before, data was stuck in fifo until more data came on uart and&n; *   flushed it up to the stack.&n; *&n; * Revision 1.27  2000/05/02 09:52:28  jonasd&n; * Added fix for peculiar etrax behaviour when eop is forced on an empty&n; * fifo. This is used when flashing the IRMA chip. Disabled by default.&n; *&n; * Revision 1.26  2000/03/29 15:32:02  bjornw&n; * 2.0.34 updates&n; *&n; * Revision 1.25  2000/02/16 16:59:36  bjornw&n; * * Receive DMA directly into the flip-buffer, eliminating an intermediary&n; *   receive buffer and a memcpy. Will avoid some overruns.&n; * * Error message on debug port if an overrun or flip buffer overrun occurs.&n; * * Just use the first byte in the flag flip buffer for errors.&n; * * Check for timeout on the serial ports only each 5/100 s, not 1/100.&n; *&n; * Revision 1.24  2000/02/09 18:02:28  bjornw&n; * * Clear serial errors (overrun, framing, parity) correctly. Before, the&n; *   receiver would get stuck if an error occurred and we did not restart&n; *   the input DMA.&n; * * Cosmetics (indentation, some code made into inlines)&n; * * Some more debug options&n; * * Actually shut down the serial port (DMA irq, DMA reset, receiver stop)&n; *   when the last open is closed. Corresponding fixes in startup().&n; * * rs_close() &quot;tx FIFO wait&quot; code moved into right place, bug &amp; -&gt; &amp;&amp; fixed&n; *   and make a special case out of port 1 (R_DMA_CHx_STATUS is broken for that)&n; * * e100_disable_rx/enable_rx just disables/enables the receiver, not RTS&n; *&n; * Revision 1.23  2000/01/24 17:46:19  johana&n; * Wait for flush of DMA/FIFO when closing port.&n; *&n; * Revision 1.22  2000/01/20 18:10:23  johana&n; * Added TIOCMGET ioctl to return modem status.&n; * Implemented modem status/control that works with the extra signals&n; * (DTR, DSR, RI,CD) as well.&n; * 3 different modes supported:&n; * ser0 on PB (Bundy), ser1 on PB (Lisa) and ser2 on PA (Bundy)&n; * Fixed DEF_TX value that caused the serial transmitter pin (txd) to go to 0 when&n; * closing the last filehandle, NASTY!.&n; * Added break generation, not tested though!&n; * Use SA_SHIRQ when request_irq() for ser2 and ser3 (shared with) par0 and par1.&n; * You can&squot;t use them at the same time (yet..), but you can hopefully switch&n; * between ser2/par0, ser3/par1 with the same kernel config.&n; * Replaced some magic constants with defines&n; *&n; *&n; */
 DECL|variable|serial_version
 r_static
 r_char
@@ -69,7 +69,7 @@ multiline_comment|/* number of characters left in xmit buffer before we ask for 
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
 singleline_comment|//#define SERIAL_DEBUG_INTR
-singleline_comment|//#define SERIAL_DEBUG_OPEN 
+singleline_comment|//#define SERIAL_DEBUG_OPEN
 singleline_comment|//#define SERIAL_DEBUG_FLOW
 singleline_comment|//#define SERIAL_DEBUG_DATA
 singleline_comment|//#define SERIAL_DEBUG_THROTTLE
@@ -231,9 +231,9 @@ multiline_comment|/*printk(string, value);*/
 )brace
 macro_line|#endif
 macro_line|#ifndef CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS
-multiline_comment|/* Default number of timer ticks before flushing rx fifo &n; * When using &quot;little data, low latency applications: use 0&n; * When using &quot;much data applications (PPP)&quot; use ~5&n; */
+multiline_comment|/* Default number of timer ticks before flushing rx fifo&n; * When using &quot;little data, low latency applications: use 0&n; * When using &quot;much data applications (PPP)&quot; use ~5&n; */
 DECL|macro|CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS
-mdefine_line|#define CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS 5 
+mdefine_line|#define CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS 5
 macro_line|#endif
 r_int
 r_int
@@ -417,7 +417,7 @@ DECL|macro|ERRCODE_INSERT_BREAK
 mdefine_line|#define ERRCODE_INSERT_BREAK (ERRCODE_INSERT | TTY_BREAK)
 DECL|macro|FORCE_EOP
 mdefine_line|#define FORCE_EOP(info)  *R_SET_EOP = 1U &lt;&lt; info-&gt;iseteop;
-multiline_comment|/*&n; * General note regarding the use of IO_* macros in this file: &n; *&n; * We will use the bits defined for DMA channel 6 when using various&n; * IO_* macros (e.g. IO_STATE, IO_MASK, IO_EXTRACT) and _assume_ they are&n; * the same for all channels (which of course they are).&n; *&n; * We will also use the bits defined for serial port 0 when writing commands&n; * to the different ports, as these bits too are the same for all ports.&n; */
+multiline_comment|/*&n; * General note regarding the use of IO_* macros in this file:&n; *&n; * We will use the bits defined for DMA channel 6 when using various&n; * IO_* macros (e.g. IO_STATE, IO_MASK, IO_EXTRACT) and _assume_ they are&n; * the same for all channels (which of course they are).&n; *&n; * We will also use the bits defined for serial port 0 when writing commands&n; * to the different ports, as these bits too are the same for all ports.&n; */
 multiline_comment|/* Mask for the irqs possibly enabled in R_IRQ_MASK1_RD etc. */
 DECL|variable|e100_ser_int_mask
 r_static
@@ -1576,12 +1576,12 @@ c_func
 (paren
 l_int|0
 )paren
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 1 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -1683,12 +1683,12 @@ c_func
 (paren
 l_int|1
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 2 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -1790,12 +1790,12 @@ c_func
 (paren
 l_int|2
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 3 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -1897,7 +1897,7 @@ c_func
 (paren
 l_int|3
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 )brace
 suffix:semicolon
@@ -2010,12 +2010,12 @@ c_func
 (paren
 l_int|0
 )paren
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 1 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -2069,12 +2069,12 @@ c_func
 (paren
 l_int|1
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 2 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -2128,12 +2128,12 @@ c_func
 (paren
 l_int|2
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Ser 3 */
 (brace
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3&t;  
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
 id|E100_STRUCT_PORT
 c_func
 (paren
@@ -2187,7 +2187,7 @@ c_func
 (paren
 l_int|3
 )paren
-macro_line|#endif&t;&t;
+macro_line|#endif
 )brace
 )brace
 suffix:semicolon
@@ -2656,7 +2656,7 @@ id|info-&gt;line
 dot
 id|dtr_mask
 suffix:semicolon
-macro_line|#ifdef SERIAL_DEBUG_IO  
+macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
@@ -2786,7 +2786,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-multiline_comment|/* set = 0 means 3.3V on the pin, bitvalue: 0=active, 1=inactive  &n; *                                          0=0V    , 1=3.3V&n; */
+multiline_comment|/* set = 0 means 3.3V on the pin, bitvalue: 0=active, 1=inactive&n; *                                          0=0V    , 1=3.3V&n; */
 r_static
 r_inline
 r_void
@@ -2848,7 +2848,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef SERIAL_DEBUG_IO  
+macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
@@ -4605,7 +4605,7 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PA)&t;
+macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PA)
 op_star
 id|R_PORT_PA_DATA
 op_assign
@@ -4735,7 +4735,7 @@ id|old_enabled
 op_assign
 id|info-&gt;rs485.enabled
 suffix:semicolon
-multiline_comment|/* rs485 is always implicitly enabled if we&squot;re using the ioctl() &n;&t; * but it doesn&squot;t have to be set in the rs485_control&n;&t; * (to be backward compatible with old apps)&n;&t; * So we store, set and restore it.&n;&t; */
+multiline_comment|/* rs485 is always implicitly enabled if we&squot;re using the ioctl()&n;&t; * but it doesn&squot;t have to be set in the rs485_control&n;&t; * (to be backward compatible with old apps)&n;&t; * So we store, set and restore it.&n;&t; */
 id|info-&gt;rs485.enabled
 op_assign
 l_int|1
@@ -5126,7 +5126,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * ----------------------------------------------------------------------&n; *&n; * Here starts the interrupt handling routines.  All of the following&n; * subroutines are declared as inline and are folded into&n; * rs_interrupt().  They were separated out for readability&squot;s sake.&n; *&n; * Note: rs_interrupt() is a &quot;fast&quot; interrupt, which means that it&n; * runs with interrupts turned off.  People who may want to modify&n; * rs_interrupt() should try to keep the interrupt handler as fast as&n; * possible.  After you are done making modifications, it is not a bad&n; * idea to do:&n; * &n; * gcc -S -DKERNEL -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer serial.c&n; *&n; * and look at the resulting assemble code in serial.s.&n; *&n; * &t;&t;&t;&t;- Ted Ts&squot;o (tytso@mit.edu), 7-Mar-93&n; * -----------------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ----------------------------------------------------------------------&n; *&n; * Here starts the interrupt handling routines.  All of the following&n; * subroutines are declared as inline and are folded into&n; * rs_interrupt().  They were separated out for readability&squot;s sake.&n; *&n; * Note: rs_interrupt() is a &quot;fast&quot; interrupt, which means that it&n; * runs with interrupts turned off.  People who may want to modify&n; * rs_interrupt() should try to keep the interrupt handler as fast as&n; * possible.  After you are done making modifications, it is not a bad&n; * idea to do:&n; *&n; * gcc -S -DKERNEL -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer serial.c&n; *&n; * and look at the resulting assemble code in serial.s.&n; *&n; * &t;&t;&t;&t;- Ted Ts&squot;o (tytso@mit.edu), 7-Mar-93&n; * -----------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule&n; * processing in the software interrupt portion of the driver.&n; */
 r_static
 id|_INLINE_
@@ -5170,7 +5170,7 @@ id|info-&gt;work
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The output DMA channel is free - use it to send as many chars as possible&n; * NOTES:&n; *   We don&squot;t pay attention to info-&gt;x_char, which means if the TTY wants to&n; *   use XON/XOFF it will set info-&gt;x_char but we won&squot;t send any X char!&n; * &n; *   To implement this, we&squot;d just start a DMA send of 1 byte pointing at a&n; *   buffer containing the X char, and skip updating xmit. We&squot;d also have to&n; *   check if the last sent char was the X char when we enter this function&n; *   the next time, to avoid updating xmit with the sent X value.&n; */
+multiline_comment|/* The output DMA channel is free - use it to send as many chars as possible&n; * NOTES:&n; *   We don&squot;t pay attention to info-&gt;x_char, which means if the TTY wants to&n; *   use XON/XOFF it will set info-&gt;x_char but we won&squot;t send any X char!&n; *&n; *   To implement this, we&squot;d just start a DMA send of 1 byte pointing at a&n; *   buffer containing the X char, and skip updating xmit. We&squot;d also have to&n; *   check if the last sent char was the X char when we enter this function&n; *   the next time, to avoid updating xmit with the sent X value.&n; */
 r_static
 r_void
 id|transmit_chars_dma
@@ -6256,7 +6256,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6856,7 +6856,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Read jiffies_usec first, &n;&t;&t;&t; * we want this time to be as late as possible&n;&t;&t;&t; */
+multiline_comment|/* Read jiffies_usec first,&n;&t;&t;&t; * we want this time to be as late as possible&n;&t;&t;&t; */
 id|PROCSTAT
 c_func
 (paren
@@ -7056,7 +7056,7 @@ op_star
 id|info
 )paren
 (brace
-multiline_comment|/* We check data_avail bit to determine if data has &n;&t; * arrived since last time&n;&t; */
+multiline_comment|/* We check data_avail bit to determine if data has&n;&t; * arrived since last time&n;&t; */
 r_int
 r_char
 id|rstat
@@ -7822,7 +7822,7 @@ id|info
 suffix:semicolon
 )brace
 macro_line|#else
-multiline_comment|/* dma fifo/buffer timeout handler&n;   forces an end-of-packet for the dma input channel if no chars &n;   have been received for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS/100 s.&n;*/
+multiline_comment|/* dma fifo/buffer timeout handler&n;   forces an end-of-packet for the dma input channel if no chars&n;   have been received for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS/100 s.&n;*/
 r_static
 r_struct
 id|timer_list
@@ -7899,7 +7899,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
 multiline_comment|/* If there is an error (ie break) when the DMA is running and&n; * there are no bytes in the fifo the DMA is stopped and we get no&n; * eop interrupt. Thus we have to monitor the first bytes on a DMA&n; * transfer, and if it is without error we can turn the serial&n; * interrupts off.&n; */
-multiline_comment|/*&n;BREAK handling on ETRAX 100:&n;ETRAX will generate interrupt although there is no stop bit between the&n;characters.&n;&n;Depending on how long the break sequence is, the end of the breaksequence&n;will look differently:&n;| indicates start/end of a character.&n;&n;B= Break character (0x00) with framing error.&n;E= Error byte with parity error received after B characters.&n;F= &quot;Faked&quot; valid byte received immediately after B characters.&n;V= Valid byte&n;&n;1.&n;    B          BL         ___________________________ V&n;.._|__________|__________|                           |valid data |&n;&n;Multiple frame errors with data == 0x00 (B),&n;the timing matches up &quot;perfectly&quot; so no extra ending char is detected.&n;The RXD pin is 1 in the last interrupt, in that case&n;we set info-&gt;errorcode = ERRCODE_INSERT_BREAK, but we can&squot;t really&n;know if another byte will come and this really is case 2. below &n;(e.g F=0xFF or 0xFE)&n;If RXD pin is 0 we can expect another character (see 2. below).&n;&n;&n;2.&n;&n;    B          B          E or F__________________..__ V&n;.._|__________|__________|______    |                 |valid data&n;                          &quot;valid&quot; or &n;                          parity error&n;&n;Multiple frame errors with data == 0x00 (B),&n;but the part of the break trigs is interpreted as a start bit (and possibly&n;some 0 bits followed by a number of 1 bits and a stop bit).&n;Depending on parity settings etc. this last character can be either&n;a fake &quot;valid&quot; char (F) or have a parity error (E).&n;&n;If the character is valid it will be put in the buffer,&n;we set info-&gt;errorcode = ERRCODE_SET_BREAK so the receive interrupt&n;will set the flags so the tty will handle it,&n;if it&squot;s an error byte it will not be put in the buffer&n;and we set info-&gt;errorcode = ERRCODE_INSERT_BREAK.&n;&n;To distinguish a V byte in 1. from an F byte in 2. we keep a timestamp&n;of the last faulty char (B) and compares it with the current time:&n;If the time elapsed time is less then 2*char_time_usec we will assume&n;it&squot;s a faked F char and not a Valid char and set &n;info-&gt;errorcode = ERRCODE_SET_BREAK. &n;&n;Flaws in the above solution:&n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n;We use the timer to distinguish a F character from a V character,&n;if a V character is to close after the break we might make the wrong decision.&n;&n;TODO: The break will be delayed until an F or V character is received.&n;&n;*/
+multiline_comment|/*&n;BREAK handling on ETRAX 100:&n;ETRAX will generate interrupt although there is no stop bit between the&n;characters.&n;&n;Depending on how long the break sequence is, the end of the breaksequence&n;will look differently:&n;| indicates start/end of a character.&n;&n;B= Break character (0x00) with framing error.&n;E= Error byte with parity error received after B characters.&n;F= &quot;Faked&quot; valid byte received immediately after B characters.&n;V= Valid byte&n;&n;1.&n;    B          BL         ___________________________ V&n;.._|__________|__________|                           |valid data |&n;&n;Multiple frame errors with data == 0x00 (B),&n;the timing matches up &quot;perfectly&quot; so no extra ending char is detected.&n;The RXD pin is 1 in the last interrupt, in that case&n;we set info-&gt;errorcode = ERRCODE_INSERT_BREAK, but we can&squot;t really&n;know if another byte will come and this really is case 2. below&n;(e.g F=0xFF or 0xFE)&n;If RXD pin is 0 we can expect another character (see 2. below).&n;&n;&n;2.&n;&n;    B          B          E or F__________________..__ V&n;.._|__________|__________|______    |                 |valid data&n;                          &quot;valid&quot; or&n;                          parity error&n;&n;Multiple frame errors with data == 0x00 (B),&n;but the part of the break trigs is interpreted as a start bit (and possibly&n;some 0 bits followed by a number of 1 bits and a stop bit).&n;Depending on parity settings etc. this last character can be either&n;a fake &quot;valid&quot; char (F) or have a parity error (E).&n;&n;If the character is valid it will be put in the buffer,&n;we set info-&gt;errorcode = ERRCODE_SET_BREAK so the receive interrupt&n;will set the flags so the tty will handle it,&n;if it&squot;s an error byte it will not be put in the buffer&n;and we set info-&gt;errorcode = ERRCODE_INSERT_BREAK.&n;&n;To distinguish a V byte in 1. from an F byte in 2. we keep a timestamp&n;of the last faulty char (B) and compares it with the current time:&n;If the time elapsed time is less then 2*char_time_usec we will assume&n;it&squot;s a faked F char and not a Valid char and set&n;info-&gt;errorcode = ERRCODE_SET_BREAK.&n;&n;Flaws in the above solution:&n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n;We use the timer to distinguish a F character from a V character,&n;if a V character is to close after the break we might make the wrong decision.&n;&n;TODO: The break will be delayed until an F or V character is received.&n;&n;*/
 r_extern
 id|_INLINE_
 r_struct
@@ -8783,7 +8783,7 @@ op_amp
 id|SER_RXD_MASK
 )paren
 (brace
-multiline_comment|/* The RX pin is high now, so the break&n;&t;&t;&t;&t; * must be over, but....&n;&t;&t;&t;&t; * we can&squot;t really know if we will get another&n;&t;&t;&t;&t; * last byte ending the break or not. &n;&t;&t;&t;&t; * And we don&squot;t know if the byte (if any) will &n;&t;&t;&t;&t; * have an error or look valid.&n;&t;&t;&t;&t; */
+multiline_comment|/* The RX pin is high now, so the break&n;&t;&t;&t;&t; * must be over, but....&n;&t;&t;&t;&t; * we can&squot;t really know if we will get another&n;&t;&t;&t;&t; * last byte ending the break or not.&n;&t;&t;&t;&t; * And we don&squot;t know if the byte (if any) will&n;&t;&t;&t;&t; * have an error or look valid.&n;&t;&t;&t;&t; */
 id|DEBUG_LOG
 c_func
 (paren
@@ -10480,7 +10480,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 id|change_speed
 c_func
 (paren
@@ -10602,7 +10602,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef CONFIG_SVINTO_SIM&t;
+macro_line|#ifndef CONFIG_SVINTO_SIM
 multiline_comment|/* shut down the transmitter and receiver */
 id|DFLOW
 c_func
@@ -12738,7 +12738,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_throttle()&n; * &n; * This routine is called by the upper-layer tty layer to signal that&n; * incoming characters should be throttled.&n; * ------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_throttle()&n; *&n; * This routine is called by the upper-layer tty layer to signal that&n; * incoming characters should be throttled.&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
 id|rs_throttle
@@ -13326,7 +13326,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; * &t;    is emptied.  On bus types like RS485, the transmitter must&n; * &t;    release the bus after transmitting. This must be done when&n; * &t;    the transmit shift register is empty, not be done when the&n; * &t;    transmit holding register is empty.  This functionality&n; * &t;    allows an RS485 driver to be written in user space. &n; */
+multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; * &t;    is emptied.  On bus types like RS485, the transmitter must&n; * &t;    release the bus after transmitting. This must be done when&n; * &t;    the transmit shift register is empty, not be done when the&n; * &t;    transmit holding register is empty.  This functionality&n; * &t;    allows an RS485 driver to be written in user space.&n; */
 r_static
 r_int
 id|get_lsr_info
@@ -13428,7 +13428,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef SERIAL_DEBUG_IO 
+macro_line|#ifdef SERIAL_DEBUG_IO
 r_struct
 id|state_str
 (brace
@@ -13750,7 +13750,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef SERIAL_DEBUG_IO 
+macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
@@ -13785,7 +13785,7 @@ id|s
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif  
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -14750,7 +14750,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_close()&n; * &n; * This routine is called when the serial port gets closed.  First, we&n; * wait for the last remaining data to be sent.  Then, we unlink its&n; * S structure from the interrupt chain if necessary, and we free&n; * that IRQ if nothing is left in the chain.&n; * ------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_close()&n; *&n; * This routine is called when the serial port gets closed.  First, we&n; * wait for the last remaining data to be sent.  Then, we unlink its&n; * S structure from the interrupt chain if necessary, and we free&n; * that IRQ if nothing is left in the chain.&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
 id|rs_close
@@ -14925,7 +14925,7 @@ op_assign
 op_star
 id|tty-&gt;termios
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
+multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify&n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
 l_int|1
@@ -14946,7 +14946,7 @@ id|info-&gt;closing_wait
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * At this point we stop accepting input.  To do this, we&n;&t; * disable the serial receiver and the DMA receive interrupt.&n;&t; */
-macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS 
+macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
 id|e100_disable_serial_data_irq
 c_func
 (paren
@@ -15792,7 +15792,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is called whenever a serial port is opened. &n; * It performs the serial-specific initialization for the tty structure.&n; */
+multiline_comment|/*&n; * This routine is called whenever a serial port is opened.&n; * It performs the serial-specific initialization for the tty structure.&n; */
 r_static
 r_int
 id|rs_open
