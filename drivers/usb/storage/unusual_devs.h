@@ -2038,6 +2038,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/*&n; * Entry for Jenoptik JD 5200z3&n; *&n; * email: car.busse@gmx.de&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0d96
+comma
+l_int|0x5200
+comma
+l_int|0x0001
+comma
+l_int|0x0200
+comma
+l_string|&quot;Jenoptik&quot;
+comma
+l_string|&quot;JD 5200 z3&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
 id|UNUSUAL_DEV
 c_func
