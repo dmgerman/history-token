@@ -1151,7 +1151,7 @@ id|xfrm_state_lookup
 c_func
 (paren
 op_amp
-id|x-&gt;props.saddr
+id|x-&gt;id.daddr
 comma
 id|x-&gt;id.spi
 comma
