@@ -4038,6 +4038,7 @@ id|mode
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -5087,6 +5088,7 @@ id|mode
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
