@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * namei.c - NTFS kernel directory inode operations. Part of the Linux-NTFS&n; * &t;     project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * namei.c - NTFS kernel directory inode operations. Part of the Linux-NTFS&n; * &t;     project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
-multiline_comment|/**&n; * ntfs_lookup - find the inode represented by a dentry in a directory inode&n; * @dir_ino:&t;directory inode in which to look for the inode&n; * @dent:&t;dentry representing the inode to look for&n; * @nd:&t;&t;lookup nameidata&n; *&n; * In short, ntfs_lookup() looks for the inode represented by the dentry @dent&n; * in the directory inode @dir_ino and if found attaches the inode to the&n; * dentry @dent.&n; *&n; * In more detail, the dentry @dent specifies which inode to look for by&n; * supplying the name of the inode in @dent-&gt;d_name.name. ntfs_lookup()&n; * converts the name to Unicode and walks the contents of the directory inode&n; * @dir_ino looking for the converted Unicode name. If the name is found in the&n; * directory, the corresponding inode is loaded by calling ntfs_iget() on its&n; * inode number and the inode is associated with the dentry @dent via a call to&n; * d_add().&n; *&n; * If the name is not found in the directory, a NULL inode is inserted into the&n; * dentry @dent. The dentry is then termed a negative dentry.&n; *&n; * Only if an actual error occurs, do we return an error via ERR_PTR().&n; *&n; * In order to handle the case insensitivity issues of NTFS with regards to the&n; * dcache and the dcache requiring only one dentry per directory, we deal with&n; * dentry aliases that only differ in case in -&gt;ntfs_lookup() while maintining&n; * a case sensitive dcache. This means that we get the full benefit of dcache&n; * speed when the file/directory is looked up with the same case as returned by&n; * -&gt;ntfs_readdir() but that a lookup for any other case (or for the short file&n; * name) will not find anything in dcache and will enter -&gt;ntfs_lookup()&n; * instead, where we search the directory for a fully matching file name&n; * (including case) and if that is not found, we search for a file name that&n; * matches with different case and if that has non-POSIX semantics we return&n; * that. We actually do only one search (case sensitive) and keep tabs on&n; * whether we have found a case insensitive match in the process.&n; *&n; * To simplify matters for us, we do not treat the short vs long filenames as&n; * two hard links but instead if the lookup matches a short filename, we&n; * return the dentry for the corresponding long filename instead.&n; *&n; * There are three cases we need to distinguish here:&n; *&n; * 1) @dent perfectly matches (i.e. including case) a directory entry with a&n; *    file name in the WIN32 or POSIX namespaces. In this case&n; *    ntfs_lookup_inode_by_name() will return with name set to NULL and we&n; *    just d_add() @dent.&n; * 2) @dent matches (not including case) a directory entry with a file name in&n; *    the WIN32 namespace. In this case ntfs_lookup_inode_by_name() will return&n; *    with name set to point to a kmalloc()ed ntfs_name structure containing&n; *    the properly cased little endian Unicode name. We convert the name to the&n; *    current NLS code page, search if a dentry with this name already exists&n; *    and if so return that instead of @dent. The VFS will then destroy the old&n; *    @dent and use the one we returned. If a dentry is not found, we allocate&n; *    a new one, d_add() it, and return it as above.&n; * 3) @dent matches either perfectly or not (i.e. we don&squot;t care about case) a&n; *    directory entry with a file name in the DOS namespace. In this case&n; *    ntfs_lookup_inode_by_name() will return with name set to point to a&n; *    kmalloc()ed ntfs_name structure containing the mft reference (cpu endian)&n; *    of the inode. We use the mft reference to read the inode and to find the&n; *    file name in the WIN32 namespace corresponding to the matched short file&n; *    name. We then convert the name to the current NLS code page, and proceed&n; *    searching for a dentry with this name, etc, as in case 2), above.&n; */
+multiline_comment|/**&n; * ntfs_lookup - find the inode represented by a dentry in a directory inode&n; * @dir_ino:&t;directory inode in which to look for the inode&n; * @dent:&t;dentry representing the inode to look for&n; * @nd:&t;&t;lookup nameidata&n; *&n; * In short, ntfs_lookup() looks for the inode represented by the dentry @dent&n; * in the directory inode @dir_ino and if found attaches the inode to the&n; * dentry @dent.&n; *&n; * In more detail, the dentry @dent specifies which inode to look for by&n; * supplying the name of the inode in @dent-&gt;d_name.name. ntfs_lookup()&n; * converts the name to Unicode and walks the contents of the directory inode&n; * @dir_ino looking for the converted Unicode name. If the name is found in the&n; * directory, the corresponding inode is loaded by calling ntfs_iget() on its&n; * inode number and the inode is associated with the dentry @dent via a call to&n; * d_splice_alias().&n; *&n; * If the name is not found in the directory, a NULL inode is inserted into the&n; * dentry @dent via a call to d_add(). The dentry is then termed a negative&n; * dentry.&n; *&n; * Only if an actual error occurs, do we return an error via ERR_PTR().&n; *&n; * In order to handle the case insensitivity issues of NTFS with regards to the&n; * dcache and the dcache requiring only one dentry per directory, we deal with&n; * dentry aliases that only differ in case in -&gt;ntfs_lookup() while maintaining&n; * a case sensitive dcache. This means that we get the full benefit of dcache&n; * speed when the file/directory is looked up with the same case as returned by&n; * -&gt;ntfs_readdir() but that a lookup for any other case (or for the short file&n; * name) will not find anything in dcache and will enter -&gt;ntfs_lookup()&n; * instead, where we search the directory for a fully matching file name&n; * (including case) and if that is not found, we search for a file name that&n; * matches with different case and if that has non-POSIX semantics we return&n; * that. We actually do only one search (case sensitive) and keep tabs on&n; * whether we have found a case insensitive match in the process.&n; *&n; * To simplify matters for us, we do not treat the short vs long filenames as&n; * two hard links but instead if the lookup matches a short filename, we&n; * return the dentry for the corresponding long filename instead.&n; *&n; * There are three cases we need to distinguish here:&n; *&n; * 1) @dent perfectly matches (i.e. including case) a directory entry with a&n; *    file name in the WIN32 or POSIX namespaces. In this case&n; *    ntfs_lookup_inode_by_name() will return with name set to NULL and we&n; *    just d_splice_alias() @dent.&n; * 2) @dent matches (not including case) a directory entry with a file name in&n; *    the WIN32 namespace. In this case ntfs_lookup_inode_by_name() will return&n; *    with name set to point to a kmalloc()ed ntfs_name structure containing&n; *    the properly cased little endian Unicode name. We convert the name to the&n; *    current NLS code page, search if a dentry with this name already exists&n; *    and if so return that instead of @dent.  At this point things are&n; *    complicated by the possibility of &squot;disconnected&squot; dentries due to NFS&n; *    which we deal with appropriately (see the code comments).  The VFS will&n; *    then destroy the old @dent and use the one we returned.  If a dentry is&n; *    not found, we allocate a new one, d_splice_alias() it, and return it as&n; *    above.&n; * 3) @dent matches either perfectly or not (i.e. we don&squot;t care about case) a&n; *    directory entry with a file name in the DOS namespace. In this case&n; *    ntfs_lookup_inode_by_name() will return with name set to point to a&n; *    kmalloc()ed ntfs_name structure containing the mft reference (cpu endian)&n; *    of the inode. We use the mft reference to read the inode and to find the&n; *    file name in the WIN32 namespace corresponding to the matched short file&n; *    name. We then convert the name to the current NLS code page, and proceed&n; *    searching for a dentry with this name, etc, as in case 2), above.&n; */
 DECL|function|ntfs_lookup
 r_static
 r_struct
@@ -222,12 +223,12 @@ op_logical_neg
 id|name
 )paren
 (brace
-id|d_add
+id|d_splice_alias
 c_func
 (paren
-id|dent
-comma
 id|dent_inode
+comma
+id|dent
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -252,7 +253,7 @@ id|vol-&gt;sb
 comma
 l_string|&quot;Found stale reference to inode &quot;
 l_string|&quot;0x%lx (reference sequence number = &quot;
-l_string|&quot;0x%x, inode sequence number = 0x%x, &quot;
+l_string|&quot;0x%x, inode sequence number = 0x%x), &quot;
 l_string|&quot;returning -EIO. Run chkdsk.&quot;
 comma
 id|dent_ino
@@ -401,6 +402,9 @@ r_struct
 id|dentry
 op_star
 id|real_dent
+comma
+op_star
+id|new_dent
 suffix:semicolon
 id|MFT_RECORD
 op_star
@@ -468,11 +472,7 @@ op_star
 op_amp
 id|nls_name.name
 comma
-id|name-&gt;len
-op_star
-l_int|3
-op_plus
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|kfree
@@ -748,11 +748,7 @@ op_star
 op_amp
 id|nls_name.name
 comma
-id|fn-&gt;file_name_length
-op_star
-l_int|3
-op_plus
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|put_attr_search_ctx
@@ -863,12 +859,12 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-id|d_add
+id|d_splice_alias
 c_func
 (paren
-id|real_dent
-comma
 id|dent_inode
+comma
+id|real_dent
 )paren
 suffix:semicolon
 r_return
@@ -896,7 +892,7 @@ op_ne
 id|dent_inode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Already have the inode and the dentry attached, decrement&n;&t;&t; * the reference count to balance the ntfs_iget() we did&n;&t;&t; * earlier on.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Already have the inode and the dentry attached, decrement&n;&t;&t; * the reference count to balance the ntfs_iget() we did&n;&t;&t; * earlier on.  We found the dentry using d_lookup() so it&n;&t;&t; * cannot be disconnected and thus we do not need to worry&n;&t;&t; * about any NFS/disconnectedness issues here.&n;&t;&t; */
 id|iput
 c_func
 (paren
@@ -907,7 +903,19 @@ r_return
 id|real_dent
 suffix:semicolon
 )brace
-multiline_comment|/* Negative dentry: instantiate it. */
+multiline_comment|/*&n;&t; * Negative dentry: instantiate it unless the inode is a directory and&n;&t; * has a &squot;disconnected&squot; dentry (i.e. IS_ROOT and DCACHE_DISCONNECTED),&n;&t; * in which case d_move() that in place of the found dentry.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|S_ISDIR
+c_func
+(paren
+id|dent_inode-&gt;i_mode
+)paren
+)paren
+(brace
+multiline_comment|/* Not a directory; everything is easy. */
 id|d_instantiate
 c_func
 (paren
@@ -918,6 +926,122 @@ id|dent_inode
 suffix:semicolon
 r_return
 id|real_dent
+suffix:semicolon
+)brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|dent_inode-&gt;i_dentry
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Directory without a &squot;disconnected&squot; dentry; we need to do&n;&t;&t; * d_instantiate() by hand because it takes dcache_lock which&n;&t;&t; * we already hold.&n;&t;&t; */
+id|list_add
+c_func
+(paren
+op_amp
+id|real_dent-&gt;d_alias
+comma
+op_amp
+id|dent_inode-&gt;i_dentry
+)paren
+suffix:semicolon
+id|real_dent-&gt;d_inode
+op_assign
+id|dent_inode
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
+id|security_d_instantiate
+c_func
+(paren
+id|real_dent
+comma
+id|dent_inode
+)paren
+suffix:semicolon
+r_return
+id|real_dent
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Directory with a &squot;disconnected&squot; dentry; get a reference to the&n;&t; * &squot;disconnected&squot; dentry.&n;&t; */
+id|new_dent
+op_assign
+id|list_entry
+c_func
+(paren
+id|dent_inode-&gt;i_dentry.next
+comma
+r_struct
+id|dentry
+comma
+id|d_alias
+)paren
+suffix:semicolon
+id|dget_locked
+c_func
+(paren
+id|new_dent
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Do security vodoo. */
+id|security_d_instantiate
+c_func
+(paren
+id|real_dent
+comma
+id|dent_inode
+)paren
+suffix:semicolon
+multiline_comment|/* Move new_dent in place of real_dent. */
+id|d_move
+c_func
+(paren
+id|new_dent
+comma
+id|real_dent
+)paren
+suffix:semicolon
+multiline_comment|/* Balance the ntfs_iget() we did above. */
+id|iput
+c_func
+(paren
+id|dent_inode
+)paren
+suffix:semicolon
+multiline_comment|/* Throw away real_dent. */
+id|dput
+c_func
+(paren
+id|real_dent
+)paren
+suffix:semicolon
+multiline_comment|/* Use new_dent as the actual dentry. */
+r_return
+id|new_dent
 suffix:semicolon
 id|eio_err_out
 suffix:colon
