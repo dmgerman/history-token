@@ -9677,7 +9677,7 @@ c_func
 id|kuid
 comma
 (paren
-id|compat_pid_t
+id|compat_uid_t
 op_star
 )paren
 id|arg
@@ -17776,7 +17776,7 @@ id|do_video_ioctl
 )paren
 multiline_comment|/* One SMB ioctl needs translations. */
 DECL|macro|SMB_IOC_GETMOUNTUID_32
-mdefine_line|#define SMB_IOC_GETMOUNTUID_32 _IOR(&squot;u&squot;, 1, compat_pid_t)
+mdefine_line|#define SMB_IOC_GETMOUNTUID_32 _IOR(&squot;u&squot;, 1, compat_uid_t)
 id|HANDLE_IOCTL
 c_func
 (paren

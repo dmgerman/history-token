@@ -1028,6 +1028,11 @@ id|ret
 op_eq
 l_int|0
 )paren
+r_if
+c_cond
+(paren
+id|oset
+)paren
 id|ret
 op_assign
 id|put_user
