@@ -613,15 +613,9 @@ id|USB_TIMEOUT_KILLED
 )paren
 )paren
 (brace
-multiline_comment|/* asynchron with callback */
-id|list_del
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
+multiline_comment|/* asynchronous with callback */
 multiline_comment|/* relink the urb to the del list */
-id|list_add
+id|list_move
 (paren
 op_amp
 id|urb-&gt;urb_list
@@ -641,7 +635,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* synchron without callback */
+multiline_comment|/* synchronous without callback */
 id|add_wait_queue
 (paren
 op_amp
@@ -664,14 +658,9 @@ id|urb-&gt;complete
 op_assign
 l_int|NULL
 suffix:semicolon
-id|list_del
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
 multiline_comment|/* relink the urb to the del list */
-id|list_add
+id|list_move
+c_func
 (paren
 op_amp
 id|urb-&gt;urb_list
@@ -1511,13 +1500,8 @@ id|DBGFUNC
 l_string|&quot;enter qu_next_urb&bslash;n&quot;
 )paren
 suffix:semicolon
-id|list_del
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
+c_func
 (paren
 op_amp
 id|urb-&gt;urb_list
@@ -1579,13 +1563,7 @@ comma
 id|urb_list
 )paren
 suffix:semicolon
-id|list_del
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 (paren
 op_amp
 id|urb-&gt;urb_list
@@ -2174,13 +2152,7 @@ id|lh
 op_assign
 id|hci-&gt;bulk_list.next
 suffix:semicolon
-id|list_del
-(paren
-op_amp
-id|hci-&gt;bulk_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 (paren
 op_amp
 id|hci-&gt;bulk_list

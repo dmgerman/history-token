@@ -116,12 +116,7 @@ id|tmp
 op_assign
 id|src-&gt;next
 suffix:semicolon
-id|list_del
-(paren
-id|tmp
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 (paren
 id|tmp
 comma
