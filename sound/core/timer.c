@@ -5289,7 +5289,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|tu-&gt;queue
+id|tu-&gt;tqueue
 (braket
 id|tu-&gt;qtail
 op_increment
@@ -5303,6 +5303,10 @@ op_star
 id|tread
 )paren
 )paren
+suffix:semicolon
+id|tu-&gt;qtail
+op_mod_assign
+id|tu-&gt;queue_size
 suffix:semicolon
 id|tu-&gt;qused
 op_increment
