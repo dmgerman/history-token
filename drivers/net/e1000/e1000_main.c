@@ -7779,12 +7779,6 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-id|netif_device_detach
-c_func
-(paren
-id|netdev
-)paren
-suffix:semicolon
 id|e1000_down
 c_func
 (paren
@@ -7795,12 +7789,6 @@ id|e1000_up
 c_func
 (paren
 id|adapter
-)paren
-suffix:semicolon
-id|netif_device_attach
-c_func
-(paren
-id|netdev
 )paren
 suffix:semicolon
 )brace
