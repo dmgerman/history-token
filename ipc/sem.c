@@ -1620,6 +1620,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|semctl_nolock
+r_static
 r_int
 id|semctl_nolock
 c_func
@@ -1958,6 +1959,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|semctl_main
+r_static
 r_int
 id|semctl_main
 c_func
@@ -2878,6 +2880,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|semctl_down
+r_static
 r_int
 id|semctl_down
 c_func

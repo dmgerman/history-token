@@ -438,6 +438,8 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// FIXME:  much of this switch should be generic, move to hcd code ...
+singleline_comment|// ... and what&squot;s not generic can&squot;t really be handled this way.
+singleline_comment|// need to consider periodicity for both types!
 multiline_comment|/* allocate and claim bandwidth if needed; ISO&n;&t; * needs start frame index if it was&squot;t provided.&n;&t; */
 r_switch
 c_cond
@@ -589,7 +591,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * decouple the URB from the HC queues (TDs, urb_priv); it&squot;s&n; * already marked for deletion.  reporting is always done&n; * asynchronously, and we might be dealing with an urb that&squot;s&n; * almost completed anyway...&n; */
+multiline_comment|/*&n; * decouple the URB from the HC queues (TDs, urb_priv); it&squot;s&n; * already marked using urb-&gt;status.  reporting is always done&n; * asynchronously, and we might be dealing with an urb that&squot;s&n; * partially transferred, or an ED with other urbs being unlinked.&n; */
 DECL|function|ohci_urb_dequeue
 r_static
 r_int

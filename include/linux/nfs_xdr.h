@@ -1,16 +1,6 @@
 macro_line|#ifndef _LINUX_NFS_XDR_H
 DECL|macro|_LINUX_NFS_XDR_H
 mdefine_line|#define _LINUX_NFS_XDR_H
-r_extern
-r_struct
-id|rpc_program
-id|nfs_program
-suffix:semicolon
-r_extern
-r_struct
-id|rpc_stat
-id|nfs_rpcstat
-suffix:semicolon
 DECL|struct|nfs_fattr
 r_struct
 id|nfs_fattr
@@ -1631,6 +1621,11 @@ r_extern
 r_struct
 id|rpc_program
 id|nfs_program
+suffix:semicolon
+r_extern
+r_struct
+id|rpc_stat
+id|nfs_rpcstat
 suffix:semicolon
 macro_line|#endif
 eof

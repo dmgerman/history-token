@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;6522 Versatile Interface Adapter (VIA)&n; *&n; *&t;There are two of these on the Mac II. Some IRQ&squot;s are vectored&n; *&t;via them as are assorted bits and bobs - eg rtc, adb. The picture&n; *&t;is a bit incomplete as the Mac documentation doesnt cover this well&n; */
+multiline_comment|/*&n; *&t;6522 Versatile Interface Adapter (VIA)&n; *&n; *&t;There are two of these on the Mac II. Some IRQ&squot;s are vectored&n; *&t;via them as are assorted bits and bobs - eg rtc, adb. The picture&n; *&t;is a bit incomplete as the Mac documentation doesn&squot;t cover this well&n; */
 macro_line|#ifndef _ASM_MAC_VIA_H_
 DECL|macro|_ASM_MAC_VIA_H_
 mdefine_line|#define _ASM_MAC_VIA_H_

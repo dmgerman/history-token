@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci.h,v 1.6 2002/03/22 16:04:54 dbrownell Exp $&n; */
-multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; */
+multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; *&n; * This is a &quot;Queue Head&quot; for those transfers, which is why&n; * both EHCI and UHCI call similar structures a &quot;QH&quot;.&n; */
 DECL|struct|ed
 r_struct
 id|ed
@@ -162,9 +162,10 @@ mdefine_line|#define TD_DI       0x00E00000&t;&t;&t;/* frames before interrupt *
 DECL|macro|TD_DI_SET
 mdefine_line|#define TD_DI_SET(X) (((X) &amp; 0x07)&lt;&lt; 21)
 multiline_comment|/* these two bits are available for definition/use by HCDs in both&n;&t; * general and iso tds ... others are available for only one type&n;&t; */
-singleline_comment|//#define TD____&t;    0x00020000
+DECL|macro|TD_DONE
+mdefine_line|#define TD_DONE     0x00020000&t;&t;&t;/* retired to donelist */
 DECL|macro|TD_ISO
-mdefine_line|#define TD_ISO&t;    0x00010000&t;&t;&t;/* copy of ED_ISO */
+mdefine_line|#define TD_ISO      0x00010000&t;&t;&t;/* copy of ED_ISO */
 multiline_comment|/* hwINFO bits for general tds: */
 DECL|macro|TD_EC
 mdefine_line|#define TD_EC       0x0C000000&t;&t;&t;/* error count */
@@ -777,14 +778,14 @@ id|device
 op_star
 id|parent_dev
 suffix:semicolon
-multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (uncached);&n;&t; */
+multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (dma-consistent)&n;&t; */
 DECL|member|regs
 r_struct
 id|ohci_regs
 op_star
 id|regs
 suffix:semicolon
-multiline_comment|/*&n;&t; * main memory used to communicate with the HC (uncached)&n;&t; */
+multiline_comment|/*&n;&t; * main memory used to communicate with the HC (dma-consistent).&n;&t; * hcd adds to schedule for a live hc any time, but removals finish&n;&t; * only at the start of the next frame.&n;&t; */
 DECL|member|hcca
 r_struct
 id|ohci_hcca
@@ -823,6 +824,7 @@ op_star
 id|ed_isotail
 suffix:semicolon
 multiline_comment|/* last in iso list */
+multiline_comment|/*&n;&t; * memory management for queue data structures&n;&t; */
 DECL|member|td_cache
 r_struct
 id|pci_pool
@@ -881,6 +883,7 @@ suffix:semicolon
 multiline_comment|/* for HC bugs */
 DECL|macro|OHCI_QUIRK_AMD756
 mdefine_line|#define&t;OHCI_QUIRK_AMD756&t;0x01&t;&t;&t;/* erratum #4 */
+singleline_comment|// there are also chip quirks/bugs in init logic
 multiline_comment|/*&n;&t; * framework state&n;&t; */
 DECL|member|hcd
 r_struct

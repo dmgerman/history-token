@@ -4699,7 +4699,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|S_ISDIR
+op_logical_neg
+id|S_ISREG
 c_func
 (paren
 id|inode-&gt;i_mode

@@ -202,7 +202,7 @@ l_string|&quot;$3&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The DS500/2x0 doesnt need to write back the WB.&n; */
+multiline_comment|/*&n; * The DS500/2x0 doesn&squot;t need to write back the WB.&n; */
 DECL|function|wbflush_kn03
 r_static
 r_void

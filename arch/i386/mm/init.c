@@ -1240,7 +1240,7 @@ id|swapper_pg_dir
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_X86_PAE
-multiline_comment|/*&n;&t; * We will bail out later - printk doesnt work right now so&n;&t; * the user would just see a hanging kernel.&n;&t; */
+multiline_comment|/*&n;&t; * We will bail out later - printk doesn&squot;t work right now so&n;&t; * the user would just see a hanging kernel.&n;&t; */
 r_if
 c_cond
 (paren

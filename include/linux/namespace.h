@@ -40,6 +40,16 @@ op_star
 id|mnt
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|umount_tree
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+)paren
+suffix:semicolon
 DECL|function|put_namespace
 r_static
 r_inline

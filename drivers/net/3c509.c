@@ -6121,19 +6121,19 @@ comma
 l_string|&quot;disable ISA PnP support (0-1)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* __ISAPNP__ */
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;3Com Etherlink III (3c509, 3c509B) ISA/PnP ethernet driver&quot;
-)paren
-suffix:semicolon
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
 id|isapnp
 comma
 id|el3_isapnp_adapters
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* __ISAPNP__ */
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;3Com Etherlink III (3c509, 3c509B) ISA/PnP ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -1,8 +1,10 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.4 2002/03/27 20:40:40 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef DEBUG
+DECL|macro|edstring
+mdefine_line|#define edstring(ed_type) ({ char *temp; &bslash;&n;&t;switch (ed_type) { &bslash;&n;&t;case PIPE_CONTROL:&t;temp = &quot;CTRL&quot;; break; &bslash;&n;&t;case PIPE_BULK:&t;&t;temp = &quot;BULK&quot;; break; &bslash;&n;&t;case PIPE_INTERRUPT:&t;temp = &quot;INTR&quot;; break; &bslash;&n;&t;default: &t;&t;temp = &quot;ISOC&quot;; break; &bslash;&n;&t;}; temp;})
 DECL|macro|pipestring
-mdefine_line|#define pipestring(pipe) ({ char *temp; &bslash;&n;&t;switch (usb_pipetype (pipe)) { &bslash;&n;&t;case PIPE_CONTROL:&t;temp = &quot;CTRL&quot;; break; &bslash;&n;&t;case PIPE_BULK:&t;&t;temp = &quot;BULK&quot;; break; &bslash;&n;&t;case PIPE_INTERRUPT:&t;temp = &quot;INTR&quot;; break; &bslash;&n;&t;default: &t;&t;temp = &quot;ISOC&quot;; break; &bslash;&n;&t;}; temp;})
+mdefine_line|#define pipestring(pipe) edstring(usb_pipetype(pipe))
 multiline_comment|/* debug| print the main components of an URB     &n; * small: 0) header + data packets 1) just header&n; */
 DECL|function|urb_print
 r_static
@@ -61,14 +63,11 @@ macro_line|#endif
 id|dbg
 c_func
 (paren
-l_string|&quot;%s:[%4x] dev:%d,ep=%d-%c,%s,flags:%4x,len:%d/%d,stat:%d&quot;
+l_string|&quot;%s %p dev:%d,ep=%d-%c,%s,flags:%x,len:%d/%d,stat:%d&quot;
 comma
 id|str
 comma
-id|usb_get_current_frame_number
-(paren
-id|urb-&gt;dev
-)paren
+id|urb
 comma
 id|usb_pipedevice
 (paren
@@ -1280,6 +1279,26 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|data0
+r_static
+r_const
+r_char
+id|data0
+(braket
+)braket
+op_assign
+l_string|&quot;DATA0&quot;
+suffix:semicolon
+DECL|variable|data1
+r_static
+r_const
+r_char
+id|data1
+(braket
+)braket
+op_assign
+l_string|&quot;DATA1&quot;
+suffix:semicolon
 DECL|function|ohci_dump_td
 r_static
 r_void
@@ -1306,11 +1325,22 @@ id|td-&gt;hwINFO
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;%s td %p; urb %p index %d; hw next td %08x&quot;
+l_string|&quot;%s td %p%s; urb %p index %d; hw next td %08x&quot;
 comma
 id|label
 comma
 id|td
+comma
+(paren
+id|tmp
+op_amp
+id|TD_DONE
+)paren
+ques
+c_cond
+l_string|&quot; (DONE)&quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|td-&gt;urb
 comma
@@ -1335,6 +1365,7 @@ op_eq
 l_int|0
 )paren
 (brace
+r_const
 r_char
 op_star
 id|toggle
@@ -1360,7 +1391,7 @@ id|TD_T_DATA0
 suffix:colon
 id|toggle
 op_assign
-l_string|&quot;DATA0&quot;
+id|data0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1369,7 +1400,7 @@ id|TD_T_DATA1
 suffix:colon
 id|toggle
 op_assign
-l_string|&quot;DATA1&quot;
+id|data1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1639,7 +1670,7 @@ l_string|&quot;&quot;
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;%s: %s, ed %p state 0x%x type %d; next ed %08x&quot;
+l_string|&quot;%s: %s, ed %p state 0x%x type %s; next ed %08x&quot;
 comma
 id|ohci-&gt;hcd.self.bus_name
 comma
@@ -1649,7 +1680,10 @@ id|ed
 comma
 id|ed-&gt;state
 comma
+id|edstring
+(paren
 id|ed-&gt;type
+)paren
 comma
 id|le32_to_cpup
 (paren
@@ -1766,7 +1800,7 @@ id|tmp
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;  tds: head %08x%s%s tail %08x%s&quot;
+l_string|&quot;  tds: head %08x %s%s tail %08x%s&quot;
 comma
 id|tmp
 op_assign
@@ -1779,22 +1813,22 @@ comma
 (paren
 id|ed-&gt;hwHeadP
 op_amp
+id|ED_C
+)paren
+ques
+c_cond
+id|data1
+suffix:colon
+id|data0
+comma
+(paren
+id|ed-&gt;hwHeadP
+op_amp
 id|ED_H
 )paren
 ques
 c_cond
 l_string|&quot; HALT&quot;
-suffix:colon
-l_string|&quot;&quot;
-comma
-(paren
-id|ed-&gt;hwHeadP
-op_amp
-id|ED_C
-)paren
-ques
-c_cond
-l_string|&quot; CARRY&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma

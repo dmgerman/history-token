@@ -1351,18 +1351,6 @@ r_return
 id|child
 suffix:semicolon
 )brace
-r_int
-r_int
-id|__devinit
-id|pci_do_scan_bus
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * If it&squot;s a bridge, configure it and scan the bus behind it.&n; * For CardBus bridges, we don&squot;t scan behind as the devices will&n; * be handled by the bridge driver itself.&n; *&n; * We need to process bridges in two passes -- first we scan those&n; * already configured by the BIOS and after we are done with all of&n; * them, we proceed to assigning numbers to the remaining buses in&n; * order to avoid overlaps between old and new bus numbers.&n; */
 DECL|function|pci_scan_bridge
 r_static
