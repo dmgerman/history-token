@@ -1399,6 +1399,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|rtnetlink_dump_all
+r_static
 r_int
 id|rtnetlink_dump_all
 c_func
@@ -2729,6 +2730,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|rtnetlink_dev_notifier
+r_static
 r_struct
 id|notifier_block
 id|rtnetlink_dev_notifier
