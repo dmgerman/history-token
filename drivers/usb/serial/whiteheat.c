@@ -2884,14 +2884,7 @@ c_func
 id|port-&gt;tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;tty-&gt;ldisc.flush_buffer
-)paren
-id|port-&gt;tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|port-&gt;tty

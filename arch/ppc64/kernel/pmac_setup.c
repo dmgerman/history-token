@@ -1650,6 +1650,12 @@ id|PLATFORM_POWERMAC
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * On U3, the DART (iommu) must be allocated now since it&n;&t; * has an impact on htab_initialize (due to the large page it&n;&t; * occupies having to be broken up so the DART itself is not&n;&t; * part of the cacheable linar mapping&n;&t; */
+id|alloc_u3_dart_table
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

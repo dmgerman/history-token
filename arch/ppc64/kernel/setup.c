@@ -180,6 +180,12 @@ id|have_of
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
@@ -1117,14 +1123,6 @@ c_func
 l_string|&quot;Found, Initializing memory management...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_U3_DART
-multiline_comment|/*&n;&t; * On U3, the DART (iommu) must be allocated now since it&n;&t; * has an impact on htab_initialize (due to the large page it&n;&t; * occupies having to be broken up so the DART itself is not&n;&t; * part of the cacheable linar mapping&n;&t; */
-id|alloc_u3_dart_table
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_U3_DART */
 multiline_comment|/*&n;&t; * Initialize stab / SLB management&n;&t; */
 id|stab_initialize
 c_func
@@ -2192,10 +2190,10 @@ suffix:semicolon
 macro_line|#else
 id|pvr
 op_assign
-id|mfpvr
+id|mfspr
 c_func
 (paren
-id|PSRN_PVR
+id|SPRN_PVR
 )paren
 suffix:semicolon
 macro_line|#endif

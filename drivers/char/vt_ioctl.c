@@ -2334,14 +2334,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty

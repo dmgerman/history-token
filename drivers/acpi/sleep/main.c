@@ -698,7 +698,6 @@ op_assign
 id|PM_DISK_FIRMWARE
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren

@@ -19,6 +19,10 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &quot;pci.h&quot;
+r_extern
+r_int
+id|iommu_force_on
+suffix:semicolon
 multiline_comment|/* physical base of DART registers */
 DECL|macro|DART_BASE
 mdefine_line|#define DART_BASE        0xf8033000UL
@@ -905,17 +909,8 @@ c_func
 op_le
 l_int|0x80000000ull
 op_logical_and
-id|get_property
-c_func
-(paren
-id|of_chosen
-comma
-l_string|&quot;linux,iommu-force-on&quot;
-comma
-l_int|NULL
-)paren
-op_eq
-l_int|NULL
+op_logical_neg
+id|iommu_force_on
 )paren
 r_return
 suffix:semicolon

@@ -3054,8 +3054,6 @@ multiline_comment|/*&n;&t; * /ht node doesn&squot;t expose a &quot;ranges&quot; 
 id|hose-&gt;io_base_phys
 op_assign
 l_int|0xf4000000
-op_plus
-l_int|0x00400000
 suffix:semicolon
 id|hose-&gt;io_base_virt
 op_assign

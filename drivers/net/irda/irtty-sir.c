@@ -1629,7 +1629,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-multiline_comment|/* from old irtty - but what is it good for?&n; * we _are_ the ldisc and we _don&squot;t_ implement flush_buffer!&n; *&n; *&t;if (tty-&gt;ldisc.flush_buffer)&n; *&t;&t;tty-&gt;ldisc.flush_buffer(tty);&n; */
 multiline_comment|/* apply mtt override */
 id|sir_tty_drv.qos_mtt_bits
 op_assign

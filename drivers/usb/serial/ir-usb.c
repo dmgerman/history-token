@@ -1703,6 +1703,7 @@ id|tty
 op_assign
 id|port-&gt;tty
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; *&t;FIXME: must not do this in IRQ context,&n;&t;&t;&t; *&t;must honour TTY_DONT_FLIP&n;&t;&t;&t; */
 id|tty-&gt;ldisc
 dot
 id|receive_buf

@@ -1295,39 +1295,12 @@ id|port-&gt;write_wait
 )paren
 suffix:semicolon
 multiline_comment|/* wake up line discipline */
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(brace
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* wake up other tty processes */
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|tty-&gt;write_wait
-)paren
-suffix:semicolon
-multiline_comment|/* For 2.2.16 backport -- wake_up_interruptible( &amp;tty-&gt;poll_wait ); */
 )brace
 multiline_comment|/*&n;*  Digi Write OOB Command&n;*&n;*  Write commands on the out of band port.  Commands are 4&n;*  bytes each, multiple commands can be sent at once, and&n;*  no command will be split across USB packets.  Returns 0&n;*  if successful, -EINTR if interrupted while sleeping and&n;*  the interruptible flag is true, or a negative error&n;*  returned by usb_submit_urb.&n;*/
 DECL|function|digi_write_oob_command
@@ -5385,21 +5358,12 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-(brace
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

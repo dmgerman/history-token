@@ -135,6 +135,11 @@ r_int
 id|__initdata
 id|iommu_is_off
 suffix:semicolon
+DECL|variable|iommu_force_on
+r_int
+id|__initdata
+id|iommu_force_on
+suffix:semicolon
 DECL|typedef|cell_t
 r_typedef
 id|u32
@@ -4576,7 +4581,7 @@ op_assign
 op_star
 id|prop
 suffix:semicolon
-multiline_comment|/* check if iommu is forced off */
+multiline_comment|/* check if iommu is forced on or off */
 r_if
 c_cond
 (paren
@@ -4593,6 +4598,25 @@ op_ne
 l_int|NULL
 )paren
 id|iommu_is_off
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_flat_dt_prop
+c_func
+(paren
+id|node
+comma
+l_string|&quot;linux,iommu-force-on&quot;
+comma
+l_int|NULL
+)paren
+op_ne
+l_int|NULL
+)paren
+id|iommu_force_on
 op_assign
 l_int|1
 suffix:semicolon

@@ -5597,14 +5597,16 @@ id|SCHIZO_PCICTRL_SBH_ERR
 op_or
 id|SCHIZO_PCICTRL_SERR
 op_or
-id|SCHIZO_PCICTRL_SBH_INT
-op_or
 id|SCHIZO_PCICTRL_EEN
 )paren
 suffix:semicolon
 id|err_no_mask
 op_assign
+(paren
 id|SCHIZO_PCICTRL_DTO_ERR
+op_or
+id|SCHIZO_PCICTRL_SBH_INT
+)paren
 suffix:semicolon
 multiline_comment|/* Enable PCI Error interrupts and clear error&n;&t; * bits for each PBM.&n;&t; */
 id|tmp
