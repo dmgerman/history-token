@@ -1211,6 +1211,12 @@ op_amp
 id|task_size
 )paren
 suffix:semicolon
+multiline_comment|/* Need to check this early because mmapping happens before the&n;&t; * kernel is running.&n;&t; */
+id|check_tmpexec
+c_func
+(paren
+)paren
+suffix:semicolon
 id|brk_start
 op_assign
 (paren
