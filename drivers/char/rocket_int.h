@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * rocket_int.h --- internal header file for rocket.c&n; *&n; * Written by Theodore Ts&squot;o, Copyright 1997.&n; *&n; * Copyright 1994, 1997, 2003 Comtrol Corporation.    All Rights Reserved.&n; * &n; * The following source code is subject to Comtrol Corporation&squot;s&n; * Developer&squot;s License Agreement.&n; * &n; * This source code is protected by United States copyright law and &n; * international copyright treaties.&n; * &n; * This source code may only be used to develop software products that&n; * will operate with Comtrol brand hardware.&n; * &n; * You may not reproduce nor distribute this source code in its original&n; * form but must produce a derivative work which includes portions of&n; * this source code only.&n; * &n; * The portions of this source code which you use in your derivative&n; * work must bear Comtrol&squot;s copyright notice:&n; * &n; * &t;&t;Copyright 1994 Comtrol Corporation.&n; * &n; */
+multiline_comment|/*&n; * rocket_int.h --- internal header file for rocket.c&n; *&n; * Written by Theodore Ts&squot;o, Copyright 1997.&n; * Copyright 1997 Comtrol Corporation.  &n; * &n; */
 multiline_comment|/*&n; * Definition of the types in rcktpt_type&n; */
 DECL|macro|ROCKET_TYPE_NORMAL
 mdefine_line|#define ROCKET_TYPE_NORMAL&t;0
@@ -219,18 +219,11 @@ mdefine_line|#define sInB(a) (inb_p(a))
 DECL|macro|sInW
 mdefine_line|#define sInW(a) (inw_p(a))
 macro_line|#endif&t;&t;&t;&t;/* ROCKET_DEBUG_IO */
-multiline_comment|/* This is used to move arrays of bytes so byte swapping isn&squot;t&n; * appropriate.  On Linux 2.3 and above outsw is the same as&n; * outsw_ns, but we use the old form for compatibility with&n; * old kernels. */
-macro_line|#if  defined(__BIG_ENDIAN) &amp;&amp; (LINUX_VERSION_CODE &lt; VERSION_CODE(2,3,0))
-DECL|macro|sOutStrW
-mdefine_line|#define sOutStrW(port, addr, count) if (count) outsw_ns(port, addr, count)
-DECL|macro|sInStrW
-mdefine_line|#define sInStrW(port, addr, count) if (count) insw_ns(port, addr, count)
-macro_line|#else
+multiline_comment|/* This is used to move arrays of bytes so byte swapping isn&squot;t appropriate. */
 DECL|macro|sOutStrW
 mdefine_line|#define sOutStrW(port, addr, count) if (count) outsw(port, addr, count)
 DECL|macro|sInStrW
 mdefine_line|#define sInStrW(port, addr, count) if (count) insw(port, addr, count)
-macro_line|#endif
 DECL|macro|CTL_SIZE
 mdefine_line|#define CTL_SIZE 8
 DECL|macro|AIOP_CTL_SIZE
@@ -1523,8 +1516,6 @@ mdefine_line|#define PCI_DEVICE_ID_UPCI_RM3_4PORT    0x080D&t;/* Rocketmodem III
 multiline_comment|/* Compact PCI device */
 DECL|macro|PCI_DEVICE_ID_CRP16INTF
 mdefine_line|#define PCI_DEVICE_ID_CRP16INTF&t;&t;0x0903&t;/* Rocketport Compact PCI 16 port w/external I/F */
-multiline_comment|/*  Taking care of some kernel incompatibilities... */
-macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,68)
 DECL|macro|TTY_GET_LINE
 mdefine_line|#define TTY_GET_LINE(t) t-&gt;index
 DECL|macro|TTY_DRIVER_MINOR_START
@@ -1539,20 +1530,4 @@ DECL|macro|TTY_DRIVER_FLUSH_BUFFER_EXISTS
 mdefine_line|#define TTY_DRIVER_FLUSH_BUFFER_EXISTS(t) t-&gt;driver-&gt;flush_buffer
 DECL|macro|TTY_DRIVER_FLUSH_BUFFER
 mdefine_line|#define TTY_DRIVER_FLUSH_BUFFER(t) t-&gt;driver-&gt;flush_buffer(t)
-macro_line|#else
-DECL|macro|TTY_GET_LINE
-mdefine_line|#define TTY_GET_LINE(t) minor(t-&gt;device) - TTY_DRIVER_MINOR_START(t)
-DECL|macro|TTY_DRIVER_MINOR_START
-mdefine_line|#define TTY_DRIVER_MINOR_START(t) t-&gt;driver.minor_start
-DECL|macro|TTY_DRIVER_SUBTYPE
-mdefine_line|#define TTY_DRIVER_SUBTYPE(t) t-&gt;driver.subtype
-DECL|macro|TTY_DRIVER_NAME
-mdefine_line|#define TTY_DRIVER_NAME(t) t-&gt;driver.name
-DECL|macro|TTY_DRIVER_NAME_BASE
-mdefine_line|#define TTY_DRIVER_NAME_BASE(t) t-&gt;driver.name_base
-DECL|macro|TTY_DRIVER_FLUSH_BUFFER_EXISTS
-mdefine_line|#define TTY_DRIVER_FLUSH_BUFFER_EXISTS(t) t-&gt;driver.flush_buffer
-DECL|macro|TTY_DRIVER_FLUSH_BUFFER
-mdefine_line|#define TTY_DRIVER_FLUSH_BUFFER(t) t-&gt;driver.flush_buffer(t)
-macro_line|#endif
 eof
