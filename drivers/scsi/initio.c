@@ -900,6 +900,7 @@ r_void
 id|tul_se2_wait
 c_func
 (paren
+r_void
 )paren
 (brace
 macro_line|#if 1
@@ -3355,7 +3356,7 @@ id|flags
 suffix:semicolon
 id|scbp-&gt;SCB_Srb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|scbp-&gt;SCB_Status
 op_assign
@@ -5183,7 +5184,7 @@ l_int|0
 suffix:semicolon
 id|pScb-&gt;SCB_Srb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -12019,11 +12020,11 @@ id|i
 suffix:semicolon
 id|pCurHcb-&gt;HCS_ActScb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pCurHcb-&gt;HCS_ActTcs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pCurHcb-&gt;HCS_Flags
 op_assign
