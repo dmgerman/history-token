@@ -893,10 +893,7 @@ id|ACPI_PATHNAME_MAX
 suffix:semicolon
 id|buffer.length
 op_assign
-r_sizeof
-(paren
-id|pathname
-)paren
+id|ACPI_PATHNAME_MAX
 suffix:semicolon
 id|buffer.pointer
 op_assign
