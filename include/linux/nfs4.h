@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  include/linux/nfs4.h&n; *&n; *  NFSv4 protocol defini
 macro_line|#ifndef _LINUX_NFS4_H
 DECL|macro|_LINUX_NFS4_H
 mdefine_line|#define _LINUX_NFS4_H
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|NFS4_VERIFIER_SIZE
 mdefine_line|#define NFS4_VERIFIER_SIZE&t;8
 DECL|macro|NFS4_FHSIZE
@@ -64,6 +66,134 @@ DECL|macro|ACL4_SUPPORT_AUDIT_ACL
 mdefine_line|#define ACL4_SUPPORT_AUDIT_ACL 0x04
 DECL|macro|ACL4_SUPPORT_ALARM_ACL
 mdefine_line|#define ACL4_SUPPORT_ALARM_ACL 0x08
+DECL|macro|NFS4_ACE_FILE_INHERIT_ACE
+mdefine_line|#define NFS4_ACE_FILE_INHERIT_ACE             0x00000001
+DECL|macro|NFS4_ACE_DIRECTORY_INHERIT_ACE
+mdefine_line|#define NFS4_ACE_DIRECTORY_INHERIT_ACE        0x00000002
+DECL|macro|NFS4_ACE_NO_PROPAGATE_INHERIT_ACE
+mdefine_line|#define NFS4_ACE_NO_PROPAGATE_INHERIT_ACE     0x00000004
+DECL|macro|NFS4_ACE_INHERIT_ONLY_ACE
+mdefine_line|#define NFS4_ACE_INHERIT_ONLY_ACE             0x00000008
+DECL|macro|NFS4_ACE_SUCCESSFUL_ACCESS_ACE_FLAG
+mdefine_line|#define NFS4_ACE_SUCCESSFUL_ACCESS_ACE_FLAG   0x00000010
+DECL|macro|NFS4_ACE_FAILED_ACCESS_ACE_FLAG
+mdefine_line|#define NFS4_ACE_FAILED_ACCESS_ACE_FLAG       0x00000020
+DECL|macro|NFS4_ACE_IDENTIFIER_GROUP
+mdefine_line|#define NFS4_ACE_IDENTIFIER_GROUP             0x00000040
+DECL|macro|NFS4_ACE_OWNER
+mdefine_line|#define NFS4_ACE_OWNER                        0x00000080
+DECL|macro|NFS4_ACE_GROUP
+mdefine_line|#define NFS4_ACE_GROUP                        0x00000100
+DECL|macro|NFS4_ACE_EVERYONE
+mdefine_line|#define NFS4_ACE_EVERYONE                     0x00000200
+DECL|macro|NFS4_ACE_READ_DATA
+mdefine_line|#define NFS4_ACE_READ_DATA                    0x00000001
+DECL|macro|NFS4_ACE_LIST_DIRECTORY
+mdefine_line|#define NFS4_ACE_LIST_DIRECTORY               0x00000001
+DECL|macro|NFS4_ACE_WRITE_DATA
+mdefine_line|#define NFS4_ACE_WRITE_DATA                   0x00000002
+DECL|macro|NFS4_ACE_ADD_FILE
+mdefine_line|#define NFS4_ACE_ADD_FILE                     0x00000002
+DECL|macro|NFS4_ACE_APPEND_DATA
+mdefine_line|#define NFS4_ACE_APPEND_DATA                  0x00000004
+DECL|macro|NFS4_ACE_ADD_SUBDIRECTORY
+mdefine_line|#define NFS4_ACE_ADD_SUBDIRECTORY             0x00000004
+DECL|macro|NFS4_ACE_READ_NAMED_ATTRS
+mdefine_line|#define NFS4_ACE_READ_NAMED_ATTRS             0x00000008
+DECL|macro|NFS4_ACE_WRITE_NAMED_ATTRS
+mdefine_line|#define NFS4_ACE_WRITE_NAMED_ATTRS            0x00000010
+DECL|macro|NFS4_ACE_EXECUTE
+mdefine_line|#define NFS4_ACE_EXECUTE                      0x00000020
+DECL|macro|NFS4_ACE_DELETE_CHILD
+mdefine_line|#define NFS4_ACE_DELETE_CHILD                 0x00000040
+DECL|macro|NFS4_ACE_READ_ATTRIBUTES
+mdefine_line|#define NFS4_ACE_READ_ATTRIBUTES              0x00000080
+DECL|macro|NFS4_ACE_WRITE_ATTRIBUTES
+mdefine_line|#define NFS4_ACE_WRITE_ATTRIBUTES             0x00000100
+DECL|macro|NFS4_ACE_DELETE
+mdefine_line|#define NFS4_ACE_DELETE                       0x00010000
+DECL|macro|NFS4_ACE_READ_ACL
+mdefine_line|#define NFS4_ACE_READ_ACL                     0x00020000
+DECL|macro|NFS4_ACE_WRITE_ACL
+mdefine_line|#define NFS4_ACE_WRITE_ACL                    0x00040000
+DECL|macro|NFS4_ACE_WRITE_OWNER
+mdefine_line|#define NFS4_ACE_WRITE_OWNER                  0x00080000
+DECL|macro|NFS4_ACE_SYNCHRONIZE
+mdefine_line|#define NFS4_ACE_SYNCHRONIZE                  0x00100000
+DECL|macro|NFS4_ACE_GENERIC_READ
+mdefine_line|#define NFS4_ACE_GENERIC_READ                 0x00120081
+DECL|macro|NFS4_ACE_GENERIC_WRITE
+mdefine_line|#define NFS4_ACE_GENERIC_WRITE                0x00160106
+DECL|macro|NFS4_ACE_GENERIC_EXECUTE
+mdefine_line|#define NFS4_ACE_GENERIC_EXECUTE              0x001200A0
+DECL|macro|NFS4_ACE_MASK_ALL
+mdefine_line|#define NFS4_ACE_MASK_ALL                     0x001F01FF
+DECL|enum|nfs4_acl_whotype
+r_enum
+id|nfs4_acl_whotype
+(brace
+DECL|enumerator|NFS4_ACL_WHO_NAMED
+id|NFS4_ACL_WHO_NAMED
+op_assign
+l_int|0
+comma
+DECL|enumerator|NFS4_ACL_WHO_OWNER
+id|NFS4_ACL_WHO_OWNER
+comma
+DECL|enumerator|NFS4_ACL_WHO_GROUP
+id|NFS4_ACL_WHO_GROUP
+comma
+DECL|enumerator|NFS4_ACL_WHO_EVERYONE
+id|NFS4_ACL_WHO_EVERYONE
+comma
+)brace
+suffix:semicolon
+DECL|struct|nfs4_ace
+r_struct
+id|nfs4_ace
+(brace
+DECL|member|type
+r_uint32
+id|type
+suffix:semicolon
+DECL|member|flag
+r_uint32
+id|flag
+suffix:semicolon
+DECL|member|access_mask
+r_uint32
+id|access_mask
+suffix:semicolon
+DECL|member|whotype
+r_int
+id|whotype
+suffix:semicolon
+DECL|member|who
+id|uid_t
+id|who
+suffix:semicolon
+DECL|member|l_ace
+r_struct
+id|list_head
+id|l_ace
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_acl
+r_struct
+id|nfs4_acl
+(brace
+DECL|member|naces
+r_uint32
+id|naces
+suffix:semicolon
+DECL|member|ace_head
+r_struct
+id|list_head
+id|ace_head
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|member|data
 DECL|typedef|nfs4_verifier
 r_typedef
