@@ -7511,8 +7511,8 @@ id|hose-&gt;pci_mem_offset
 suffix:semicolon
 )brace
 multiline_comment|/* Provide information on locations of various I/O regions in physical&n; * memory.  Do this on a per-card basis so that we choose the right&n; * root bridge.&n; * Note that the returned IO or memory base is a physical address&n; */
-r_int
 DECL|function|sys_pciconfig_iobase
+r_int
 id|sys_pciconfig_iobase
 c_func
 (paren
@@ -7532,18 +7532,47 @@ r_struct
 id|pci_controller
 op_star
 id|hose
-op_assign
-id|pci_bus_to_hose
-c_func
-(paren
-id|bus
-)paren
 suffix:semicolon
 r_int
 id|result
 op_assign
 op_minus
 id|EOPNOTSUPP
+suffix:semicolon
+multiline_comment|/* Argh ! Please forgive me for that hack, but that&squot;s the&n;&t; * simplest way to get existing XFree to not lockup on some&n;&t; * G5 machines... So when something asks for bus 0 io base&n;&t; * (bus 0 is HT root), we return the AGP one instead.&n;&t; */
+macro_line|#ifdef CONFIG_PPC_PMAC
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+op_logical_and
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;MacRISC4&quot;
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|bus
+op_eq
+l_int|0
+)paren
+id|bus
+op_assign
+l_int|0xf0
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PMAC */
+id|hose
+op_assign
+id|pci_bus_to_hose
+c_func
+(paren
+id|bus
+)paren
 suffix:semicolon
 r_if
 c_cond
