@@ -204,6 +204,9 @@ suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 macro_line|#endif /* !(__ASSEMBLY__) */
+macro_line|#else
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;(1)
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF

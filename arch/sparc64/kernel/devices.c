@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 multiline_comment|/* Used to synchronize acceses to NatSemi SUPER I/O chip configure&n; * operations in asm/ns87303.h&n; */
 DECL|variable|ns87303_lock
 id|spinlock_t
