@@ -54,7 +54,7 @@ c_cond
 (paren
 id|urb_compl_count
 op_mod
-l_int|500
+l_int|1000
 op_eq
 l_int|0
 )paren
@@ -101,13 +101,15 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* error */
-id|warn
+id|deb_ts
 c_func
 (paren
 l_string|&quot;urb completition error %d.&quot;
 comma
 id|urb-&gt;status
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -260,7 +262,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * stop feed before setting a new pid if there will be no pid anymore &n;&t; */
-singleline_comment|//&t;if ((dib-&gt;dibdev-&gt;parm-&gt;firmware_bug &amp;&amp; dib-&gt;feedcount) || 
 r_if
 c_cond
 (paren
@@ -330,8 +331,7 @@ comma
 id|onoff
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * start the feed, either if there is the firmware bug or &n;&t; * if this was the first pid to set and there is still a pid for &n;&t; * reception.&n;&t; */
-singleline_comment|//&t;if ((dib-&gt;dibdev-&gt;parm-&gt;firmware_bug)
+multiline_comment|/* &n;&t; * start the feed if this was the first pid to set and there is still a pid&n;&t; * for reception.&n;&t; */
 r_if
 c_cond
 (paren

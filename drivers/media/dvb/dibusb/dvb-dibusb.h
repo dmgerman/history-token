@@ -31,7 +31,7 @@ multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.3&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;Driver for DiBcom based USB Budget DVB-T device&quot;
+mdefine_line|#define DRIVER_DESC &quot;DiBcom based USB Budget DVB-T device&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
 DECL|macro|deb_info
@@ -48,11 +48,17 @@ DECL|macro|deb_rc
 mdefine_line|#define deb_rc(args...)   dprintk(0x20,args)
 multiline_comment|/* generic log methods - taken from usb.h */
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef err
+DECL|macro|err
+mdefine_line|#define err(format, arg...)  printk(KERN_ERR     &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef info
+DECL|macro|info
+mdefine_line|#define info(format, arg...) printk(KERN_INFO    &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef warn
+DECL|macro|warn
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|struct|dibusb_usb_controller
 r_struct
 id|dibusb_usb_controller

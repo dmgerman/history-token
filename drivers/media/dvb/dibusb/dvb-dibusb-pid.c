@@ -334,6 +334,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|dpid-&gt;index
+suffix:semicolon
 id|dpid-&gt;pid
 op_assign
 l_int|0
@@ -342,13 +346,9 @@ id|dpid-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
-id|ret
-op_assign
-id|dpid-&gt;index
-suffix:semicolon
 )brace
 multiline_comment|/* a free pid from the list */
-id|deb_info
+id|deb_xfer
 c_func
 (paren
 l_string|&quot;setting pid: %5d %04x at index %d &squot;%s&squot;&bslash;n&quot;
