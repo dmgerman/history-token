@@ -2375,8 +2375,11 @@ c_func
 id|i
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Node load is always divided by nr_cpus_node to normalise &n;&t;&t; * load values in case cpu count differs from node to node.&n;&t;&t; * We first multiply node_nr_running by 10 to get a little&n;&t;&t; * better resolution.   &n;&t;&t; */
 id|load
 op_assign
+l_int|10
+op_star
 id|atomic_read
 c_func
 (paren
@@ -2385,6 +2388,12 @@ id|node_nr_running
 (braket
 id|i
 )braket
+)paren
+op_div
+id|nr_cpus_node
+c_func
+(paren
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -2529,7 +2538,7 @@ id|new_cpu
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; */
+multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; * Node load is divided by nr_cpus_node() in order to compare nodes&n; * of different cpu count but also [first] multiplied by 10 to &n; * provide better resolution.&n; */
 DECL|function|find_busiest_node
 r_static
 r_int
@@ -2554,6 +2563,19 @@ id|this_load
 comma
 id|maxload
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nr_cpus_node
+c_func
+(paren
+id|this_node
+)paren
+)paren
+r_return
+id|node
+suffix:semicolon
 id|this_load
 op_assign
 id|maxload
@@ -2572,6 +2594,9 @@ op_rshift
 l_int|1
 )paren
 op_plus
+(paren
+l_int|10
+op_star
 id|atomic_read
 c_func
 (paren
@@ -2580,6 +2605,13 @@ id|node_nr_running
 (braket
 id|this_node
 )braket
+)paren
+op_div
+id|nr_cpus_node
+c_func
+(paren
+id|this_node
+)paren
 )paren
 suffix:semicolon
 id|this_rq
@@ -2594,19 +2626,10 @@ id|this_node
 op_assign
 id|this_load
 suffix:semicolon
-r_for
-c_loop
+id|for_each_node_with_cpus
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 r_if
@@ -2634,6 +2657,9 @@ op_rshift
 l_int|1
 )paren
 op_plus
+(paren
+l_int|10
+op_star
 id|atomic_read
 c_func
 (paren
@@ -2642,6 +2668,13 @@ id|node_nr_running
 (braket
 id|i
 )braket
+)paren
+op_div
+id|nr_cpus_node
+c_func
+(paren
+id|i
+)paren
 )paren
 suffix:semicolon
 id|this_rq
