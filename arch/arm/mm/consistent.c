@@ -83,68 +83,6 @@ id|CONSISTENT_END
 comma
 )brace
 suffix:semicolon
-macro_line|#if 0
-r_static
-r_void
-id|vm_region_dump
-c_func
-(paren
-r_struct
-id|vm_region
-op_star
-id|head
-comma
-r_char
-op_star
-id|fn
-)paren
-(brace
-r_struct
-id|vm_region
-op_star
-id|c
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Consistent Allocation Map (%s):&bslash;n&quot;
-comma
-id|fn
-)paren
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|c
-comma
-op_amp
-id|head-&gt;vm_list
-comma
-id|vm_list
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; %p:  %08lx - %08lx   (0x%08x)&bslash;n&quot;
-comma
-id|c
-comma
-id|c-&gt;vm_start
-comma
-id|c-&gt;vm_end
-comma
-id|c-&gt;vm_end
-op_minus
-id|c-&gt;vm_start
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
-DECL|macro|vm_region_dump
-mdefine_line|#define vm_region_dump(head,fn)&t;do { } while(0)
-macro_line|#endif
 DECL|function|vm_region_alloc
 r_static
 r_int
@@ -503,15 +441,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|vm_region_dump
-c_func
-(paren
-op_amp
-id|consistent_head
-comma
-l_string|&quot;before alloc&quot;
-)paren
-suffix:semicolon
 id|res
 op_assign
 id|vm_region_alloc
@@ -523,15 +452,6 @@ comma
 id|c
 comma
 id|size
-)paren
-suffix:semicolon
-id|vm_region_dump
-c_func
-(paren
-op_amp
-id|consistent_head
-comma
-l_string|&quot;after alloc&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -840,15 +760,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|vm_region_dump
-c_func
-(paren
-op_amp
-id|consistent_head
-comma
-l_string|&quot;before free&quot;
-)paren
-suffix:semicolon
 id|c
 op_assign
 id|vm_region_find
@@ -1030,15 +941,6 @@ c_func
 (paren
 op_amp
 id|c-&gt;vm_list
-)paren
-suffix:semicolon
-id|vm_region_dump
-c_func
-(paren
-op_amp
-id|consistent_head
-comma
-l_string|&quot;after free&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
