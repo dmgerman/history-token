@@ -9323,9 +9323,11 @@ id|drive
 )braket
 comma
 l_string|&quot;fd%d&quot;
+comma
+id|drive
 )paren
 suffix:semicolon
-id|disk-&gt;name
+id|disk-&gt;major_name
 op_assign
 id|names
 (braket
