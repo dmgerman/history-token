@@ -513,7 +513,8 @@ DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;254
 DECL|macro|__NR_rtas
 mdefine_line|#define __NR_rtas&t;&t;255
-multiline_comment|/* Number 256 is reserved for sys_debug_setcontext */
+DECL|macro|__NR_sys_debug_setcontext
+mdefine_line|#define __NR_sys_debug_setcontext 256
 multiline_comment|/* Number 257 is reserved for vserver */
 multiline_comment|/* Number 258 is reserved for new sys_remap_file_pages */
 multiline_comment|/* Number 259 is reserved for new sys_mbind */

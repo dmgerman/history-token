@@ -2205,9 +2205,13 @@ id|regs
 id|regs-&gt;msr
 op_and_assign
 op_complement
+(paren
 id|MSR_SE
+op_or
+id|MSR_BE
+)paren
 suffix:semicolon
-multiline_comment|/* Turn off &squot;trace&squot; bit */
+multiline_comment|/* Turn off &squot;trace&squot; bits */
 r_if
 c_cond
 (paren
