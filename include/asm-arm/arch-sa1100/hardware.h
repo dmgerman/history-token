@@ -118,6 +118,7 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SA1100_ADSBITSY)
 macro_line|#include &quot;adsbitsy.h&quot;
 macro_line|#endif
+macro_line|#include &quot;stork.h&quot;
 macro_line|#include &quot;system3.h&quot;
 macro_line|#ifdef CONFIG_SA1101
 multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */
