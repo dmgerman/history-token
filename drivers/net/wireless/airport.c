@@ -1,4 +1,8 @@
-multiline_comment|/* airport.c 0.13e&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
+multiline_comment|/* airport.c&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;airport&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX DRIVER_NAME &quot;: &quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -80,7 +84,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -225,7 +233,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -404,7 +416,11 @@ id|orinoco_private
 op_star
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|airport
@@ -687,7 +703,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;airport: wrong interrupt/addresses in OF tree&bslash;n&quot;
+id|PFX
+l_string|&quot;wrong interrupt/addresses in OF tree&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -721,7 +738,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;airport: can&squot;t allocate device datas&bslash;n&quot;
+id|PFX
+l_string|&quot;can&squot;t allocate device datas&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -731,7 +749,11 @@ suffix:semicolon
 )brace
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|card
 op_assign
@@ -764,7 +786,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;airport: can&squot;t request IO resource !&bslash;n&quot;
+id|PFX
+l_string|&quot;can&squot;t request IO resource !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_netdev
@@ -827,6 +850,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+id|PFX
 l_string|&quot;Airport at physical address %lx&bslash;n&quot;
 comma
 id|phys_addr
@@ -856,7 +880,8 @@ id|card-&gt;vaddr
 id|printk
 c_func
 (paren
-l_string|&quot;airport: ioremap() failed&bslash;n&quot;
+id|PFX
+l_string|&quot;ioremap() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -936,7 +961,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;airport: Couldn&squot;t get IRQ %d&bslash;n&quot;
+id|PFX
+l_string|&quot;Couldn&squot;t get IRQ %d&bslash;n&quot;
 comma
 id|dev-&gt;irq
 )paren
@@ -966,7 +992,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;airport: register_netdev() failed&bslash;n&quot;
+id|PFX
+l_string|&quot;register_netdev() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -977,7 +1004,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;airport: card registered for interface %s&bslash;n&quot;
+id|PFX
+l_string|&quot;card registered for interface %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1011,7 +1039,10 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;airport.c 0.13e (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
+id|DRIVER_NAME
+l_string|&quot; &quot;
+id|DRIVER_VERSION
+l_string|&quot; (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -1072,7 +1103,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;airport&quot;
+id|DRIVER_NAME
 comma
 dot
 id|match_table
