@@ -2907,7 +2907,7 @@ id|sk
 op_member_access_from_pointer
 id|conn-&gt;mtu
 suffix:semicolon
-id|BT_INFO
+id|BT_DBG
 c_func
 (paren
 l_string|&quot;mtu %d&quot;

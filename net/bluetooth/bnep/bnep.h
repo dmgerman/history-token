@@ -209,6 +209,15 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* BNEP ioctl defines */
+DECL|macro|BNEPCONNADD
+mdefine_line|#define BNEPCONNADD&t;_IOW(&squot;B&squot;, 200, int)
+DECL|macro|BNEPCONNDEL
+mdefine_line|#define BNEPCONNDEL&t;_IOW(&squot;B&squot;, 201, int)
+DECL|macro|BNEPGETCONNLIST
+mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
+DECL|macro|BNEPGETCONNINFO
+mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
 singleline_comment|// Ioctl interface
 DECL|macro|BNEPCONADD
 mdefine_line|#define BNEPCONADD      1
@@ -218,9 +227,9 @@ DECL|macro|BNEPGETCONLIST
 mdefine_line|#define BNEPGETCONLIST  3
 DECL|macro|BNEPGETCONINFO
 mdefine_line|#define BNEPGETCONINFO  4
-DECL|struct|bnep_conadd_req
+DECL|struct|bnep_connadd_req
 r_struct
-id|bnep_conadd_req
+id|bnep_connadd_req
 (brace
 DECL|member|sock
 r_int
@@ -245,9 +254,9 @@ suffix:semicolon
 singleline_comment|// Name of the Ethernet device
 )brace
 suffix:semicolon
-DECL|struct|bnep_condel_req
+DECL|struct|bnep_conndel_req
 r_struct
-id|bnep_condel_req
+id|bnep_conndel_req
 (brace
 DECL|member|flags
 id|__u32
@@ -262,9 +271,9 @@ id|ETH_ALEN
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|bnep_coninfo
+DECL|struct|bnep_conninfo
 r_struct
-id|bnep_coninfo
+id|bnep_conninfo
 (brace
 DECL|member|flags
 id|__u32
@@ -294,9 +303,9 @@ l_int|16
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|bnep_conlist_req
+DECL|struct|bnep_connlist_req
 r_struct
-id|bnep_conlist_req
+id|bnep_connlist_req
 (brace
 DECL|member|cnum
 id|__u32
@@ -304,7 +313,7 @@ id|cnum
 suffix:semicolon
 DECL|member|ci
 r_struct
-id|bnep_coninfo
+id|bnep_conninfo
 op_star
 id|ci
 suffix:semicolon
@@ -329,7 +338,7 @@ id|bnep_add_connection
 c_func
 (paren
 r_struct
-id|bnep_conadd_req
+id|bnep_connadd_req
 op_star
 id|req
 comma
@@ -344,27 +353,27 @@ id|bnep_del_connection
 c_func
 (paren
 r_struct
-id|bnep_condel_req
+id|bnep_conndel_req
 op_star
 id|req
 )paren
 suffix:semicolon
 r_int
-id|bnep_get_conlist
+id|bnep_get_connlist
 c_func
 (paren
 r_struct
-id|bnep_conlist_req
+id|bnep_connlist_req
 op_star
 id|req
 )paren
 suffix:semicolon
 r_int
-id|bnep_get_coninfo
+id|bnep_get_conninfo
 c_func
 (paren
 r_struct
-id|bnep_coninfo
+id|bnep_conninfo
 op_star
 id|ci
 )paren

@@ -86,6 +86,7 @@ macro_line|#include &lt;linux/atm_suni.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
+macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/nbd.h&gt;
@@ -23098,6 +23099,18 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+DECL|macro|HCIUARTSETPROTO
+mdefine_line|#define HCIUARTSETPROTO&t;_IOW(&squot;U&squot;, 200, int)
+DECL|macro|HCIUARTGETPROTO
+mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
+DECL|macro|BNEPCONNADD
+mdefine_line|#define BNEPCONNADD&t;_IOW(&squot;B&squot;, 200, int)
+DECL|macro|BNEPCONNDEL
+mdefine_line|#define BNEPCONNDEL&t;_IOW(&squot;B&squot;, 201, int)
+DECL|macro|BNEPGETCONNLIST
+mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
+DECL|macro|BNEPGETCONNINFO
+mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
 DECL|struct|usbdevfs_ctrltransfer32
 r_struct
 id|usbdevfs_ctrltransfer32
@@ -28530,6 +28543,61 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|HCIINQUIRY
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTSETPROTO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTGETPROTO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMCREATEDEV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMRELEASEDEV
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVINFO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMSTEALDLC
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNADD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNDEL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNINFO
 )paren
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL
