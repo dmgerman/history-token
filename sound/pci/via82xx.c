@@ -9455,6 +9455,24 @@ multiline_comment|/* ASRock K7VT2 */
 dot
 id|vendor
 op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
+l_int|0xaa01
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* EPIA MII */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1297
 comma
 dot
