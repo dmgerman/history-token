@@ -37,10 +37,6 @@ DECL|typedef|boolean_t
 )brace
 id|boolean_t
 suffix:semicolon
-DECL|macro|ASSERT
-macro_line|#undef ASSERT
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(x)&t;if(!(x)) BUG()
 DECL|macro|MSGOUT
 mdefine_line|#define MSGOUT(S, A, B)&t;printk(KERN_DEBUG S &quot;&bslash;n&quot;, A, B)
 macro_line|#if DBG
