@@ -52,7 +52,13 @@ c_func
 (paren
 id|timeout
 comma
-l_string|&quot;Watchdog timeout in seconds. (1&lt;=timeout&lt;=3600, default=WATCHDOG_TIMEOUT)&quot;
+l_string|&quot;Watchdog timeout in seconds. (1&lt;=timeout&lt;=3600, default=&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|WATCHDOG_TIMEOUT
+)paren
+l_string|&quot;)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
