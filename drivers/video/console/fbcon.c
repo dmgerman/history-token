@@ -3516,8 +3516,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|init
+id|logo
 )paren
 (brace
 r_if
@@ -3630,13 +3629,6 @@ id|save
 )paren
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|logo
-)paren
-(brace
 r_if
 c_cond
 (paren
