@@ -88,7 +88,11 @@ comma
 macro_line|#elif defined(__sparc__)
 id|PROC_ULTRASPARC
 comma
+id|PROC_ULTRASPARC
+comma
 macro_line|#elif defined(__alpha__)
+id|PROC_ALPHA
+comma
 id|PROC_ALPHA
 comma
 macro_line|#else
