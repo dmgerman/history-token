@@ -240,7 +240,7 @@ suffix:semicolon
 r_int
 id|chunk_size
 op_assign
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 suffix:semicolon
 id|lv_block_exception_t
 op_star
@@ -396,7 +396,7 @@ suffix:semicolon
 r_int
 id|chunk_size
 op_assign
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 suffix:semicolon
 id|hash_table
 op_assign
@@ -466,7 +466,7 @@ suffix:semicolon
 r_int
 id|chunk_size
 op_assign
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 suffix:semicolon
 id|lv_block_exception_t
 op_star
@@ -573,7 +573,7 @@ multiline_comment|/* no exception storage space available for this snapshot&n;&t
 id|invalidate_buffers
 c_func
 (paren
-id|lv_snap-&gt;lv_dev
+id|lv_snap-&gt;u.lv_dev
 )paren
 suffix:semicolon
 multiline_comment|/* wipe the snapshot since it&squot;s inconsistent now */
@@ -598,7 +598,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 suffix:semicolon
 id|i
 op_increment
@@ -611,7 +611,7 @@ op_logical_neg
 id|kdev_same
 c_func
 (paren
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|i
 )braket
@@ -624,7 +624,7 @@ id|last_dev
 (brace
 id|last_dev
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|i
 )braket
@@ -645,7 +645,7 @@ c_func
 id|lv_snap
 )paren
 suffix:semicolon
-id|lv_snap-&gt;lv_status
+id|lv_snap-&gt;u.lv_status
 op_and_assign
 op_complement
 id|LV_ACTIVE
@@ -658,9 +658,9 @@ l_string|&quot;%s -- giving up to snapshot %s on %s: %s&bslash;n&quot;
 comma
 id|lvm_name
 comma
-id|lv_snap-&gt;lv_snapshot_org-&gt;lv_name
+id|lv_snap-&gt;u.lv_snapshot_org-&gt;u.lv_name
 comma
-id|lv_snap-&gt;lv_name
+id|lv_snap-&gt;u.lv_name
 comma
 id|reason
 )paren
@@ -883,7 +883,7 @@ l_int|0
 comma
 id|is
 op_assign
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 suffix:semicolon
 id|ulong
 id|blksize_snap
@@ -923,7 +923,7 @@ op_assign
 id|block_size
 c_func
 (paren
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|is
 )braket
@@ -960,7 +960,7 @@ c_loop
 suffix:semicolon
 id|is
 OL
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 suffix:semicolon
 id|is
 op_increment
@@ -974,7 +974,7 @@ id|lv_block_exception_t
 op_star
 id|be
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 op_plus
 id|is
 suffix:semicolon
@@ -1124,7 +1124,7 @@ id|vg
 comma
 id|lv_snap
 comma
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 op_minus
 l_int|1
 comma
@@ -1200,11 +1200,11 @@ suffix:semicolon
 r_int
 id|idx
 op_assign
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 comma
 id|chunk_size
 op_assign
-id|lv_snap-&gt;lv_chunk_size
+id|lv_snap-&gt;u.lv_chunk_size
 suffix:semicolon
 r_struct
 id|kiobuf
@@ -1231,7 +1231,7 @@ c_cond
 (paren
 id|idx
 op_ge
-id|lv_snap-&gt;lv_remap_end
+id|lv_snap-&gt;u.lv_remap_end
 )paren
 r_goto
 id|fail_out_of_space
@@ -1270,7 +1270,7 @@ suffix:semicolon
 multiline_comment|/* calculate physical boundaries of destination chunk */
 id|snap_phys_dev
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -1279,7 +1279,7 @@ id|rdev_new
 suffix:semicolon
 id|snap_start
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -1523,14 +1523,14 @@ c_func
 (paren
 id|virt_start
 comma
-id|lv_snap-&gt;lv_chunk_size
+id|lv_snap-&gt;u.lv_chunk_size
 comma
-id|lv_snap-&gt;lv_dev
+id|lv_snap-&gt;u.lv_dev
 )paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* the original chunk is now stored on the snapshot volume&n;&t;   so update the execption table */
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -1539,7 +1539,7 @@ id|rdev_org
 op_assign
 id|org_phys_dev
 suffix:semicolon
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -1551,7 +1551,7 @@ suffix:semicolon
 id|lvm_hash_link
 c_func
 (paren
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 op_plus
 id|idx
 comma
@@ -1562,7 +1562,7 @@ comma
 id|lv_snap
 )paren
 suffix:semicolon
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 op_assign
 id|idx
 op_plus
@@ -1579,11 +1579,11 @@ l_int|0
 r_if
 c_cond
 (paren
-id|lv_snap-&gt;lv_remap_ptr
+id|lv_snap-&gt;u.lv_remap_ptr
 op_star
 l_int|100
 op_div
-id|lv_snap-&gt;lv_remap_end
+id|lv_snap-&gt;u.lv_remap_end
 op_ge
 id|lv_snap-&gt;lv_snapshot_use_rate
 )paren
@@ -1867,7 +1867,7 @@ id|hash
 suffix:semicolon
 id|buckets
 op_assign
-id|lv-&gt;lv_remap_end
+id|lv-&gt;u.lv_remap_end
 suffix:semicolon
 id|max_buckets
 op_assign
@@ -2175,16 +2175,16 @@ id|lv
 r_if
 c_cond
 (paren
-id|lv-&gt;lv_block_exception
+id|lv-&gt;u.lv_block_exception
 )paren
 (brace
 id|vfree
 c_func
 (paren
-id|lv-&gt;lv_block_exception
+id|lv-&gt;u.lv_block_exception
 )paren
 suffix:semicolon
-id|lv-&gt;lv_block_exception
+id|lv-&gt;u.lv_block_exception
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2382,7 +2382,7 @@ suffix:semicolon
 multiline_comment|/* get physical addresse of destination chunk */
 id|snap_phys_dev
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -2391,7 +2391,7 @@ id|rdev_new
 suffix:semicolon
 id|snap_pe_start
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 op_minus
@@ -2404,7 +2404,7 @@ id|COW_entries_per_pe
 dot
 id|rsector_new
 op_minus
-id|lv_snap-&gt;lv_chunk_size
+id|lv_snap-&gt;u.lv_chunk_size
 suffix:semicolon
 id|blksize_snap
 op_assign
@@ -2487,7 +2487,7 @@ suffix:semicolon
 multiline_comment|/* store new COW_table entry */
 id|be
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 op_plus
 id|idx
 suffix:semicolon
@@ -2643,7 +2643,7 @@ id|idx
 op_plus
 l_int|1
 op_ge
-id|lv_snap-&gt;lv_remap_end
+id|lv_snap-&gt;u.lv_remap_end
 )paren
 r_goto
 id|out
@@ -2669,7 +2669,7 @@ op_increment
 suffix:semicolon
 id|snap_phys_dev
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 )braket
@@ -2678,7 +2678,7 @@ id|rdev_new
 suffix:semicolon
 id|snap_pe_start
 op_assign
-id|lv_snap-&gt;lv_block_exception
+id|lv_snap-&gt;u.lv_block_exception
 (braket
 id|idx
 op_minus
@@ -2691,7 +2691,7 @@ id|COW_entries_per_pe
 dot
 id|rsector_new
 op_minus
-id|lv_snap-&gt;lv_chunk_size
+id|lv_snap-&gt;u.lv_chunk_size
 suffix:semicolon
 id|blksize_snap
 op_assign
@@ -2795,7 +2795,7 @@ r_char
 op_star
 id|err
 suffix:semicolon
-id|lv-&gt;lv_block_exception
+id|lv-&gt;u.lv_block_exception
 (braket
 l_int|0
 )braket
