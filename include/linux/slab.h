@@ -150,6 +150,8 @@ id|kmem_cache_t
 op_star
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
@@ -252,6 +254,8 @@ c_func
 r_int
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 DECL|function|kmalloc
@@ -266,6 +270,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -356,6 +362,8 @@ comma
 r_int
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 r_extern

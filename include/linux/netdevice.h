@@ -21,6 +21,9 @@ suffix:semicolon
 r_struct
 id|ethtool_ops
 suffix:semicolon
+r_struct
+id|netpoll
+suffix:semicolon
 multiline_comment|/* source back-compat hooks */
 DECL|macro|SET_ETHTOOL_OPS
 mdefine_line|#define SET_ETHTOOL_OPS(netdev,ops) &bslash;&n;&t;( (netdev)-&gt;ethtool_ops = (ops) )
@@ -1309,9 +1312,11 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETPOLL
-DECL|member|netpoll_rx
-r_int
-id|netpoll_rx
+DECL|member|np
+r_struct
+id|netpoll
+op_star
+id|np
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER

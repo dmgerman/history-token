@@ -258,22 +258,32 @@ op_increment
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *  Check for the possibility of tx buffer overflow. We use&n;&t;&t; *  bufsize-5 since the maximum number of bytes that can be&n;&t;&t; *  transmitted after this point is 5.&n;&t;&t; */
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
 id|n
-OL
+op_ge
 (paren
 id|buffsize
 op_minus
 l_int|5
 )paren
+)paren
+(brace
+id|IRDA_ERROR
+c_func
+(paren
+l_string|&quot;%s(), tx buffer overflow (n=%d)&bslash;n&quot;
 comma
+id|__FUNCTION__
+comma
+id|n
+)paren
+suffix:semicolon
 r_return
 id|n
 suffix:semicolon
-)paren
-suffix:semicolon
+)brace
 id|n
 op_add_assign
 id|stuff_byte
@@ -895,7 +905,7 @@ suffix:semicolon
 r_case
 id|LINK_ESCAPE
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: state not defined&bslash;n&quot;

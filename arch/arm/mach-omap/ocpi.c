@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-omap/ocpi.c&n; *&n; * Minimal OCP bus support for OMAP-1610 and OMAP-5912&n; *&n; * Copyright (C) 2003 - 2004 Nokia Corporation&n; * Written by Tony Lindgren &lt;tony@atomide.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-omap/ocpi.c&n; *&n; * Minimal OCP bus support for omap16xx&n; *&n; * Copyright (C) 2003 - 2005 Nokia Corporation&n; * Written by Tony Lindgren &lt;tony@atomide.com&gt;&n; *&n; * Modified for clock framework by Paul Mundt &lt;paul.mundt@nokia.com&gt;.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -7,7 +7,9 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 DECL|macro|OCPI_BASE
 mdefine_line|#define OCPI_BASE&t;&t;0xfffec320
@@ -25,15 +27,18 @@ DECL|macro|OCPI_PROT
 mdefine_line|#define OCPI_PROT&t;&t;(OCPI_BASE + 0x14)
 DECL|macro|OCPI_SEC
 mdefine_line|#define OCPI_SEC&t;&t;(OCPI_BASE + 0x18)
-DECL|macro|EN_OCPI_CK
-mdefine_line|#define EN_OCPI_CK&t;&t;(1 &lt;&lt; 0)
-DECL|macro|IDLOCPI_ARM
-mdefine_line|#define IDLOCPI_ARM&t;&t;(1 &lt;&lt; 1)
 multiline_comment|/* USB OHCI OCPI access error registers */
 DECL|macro|HOSTUEADDR
 mdefine_line|#define HOSTUEADDR&t;0xfffba0e0
 DECL|macro|HOSTUESTATUS
 mdefine_line|#define HOSTUESTATUS&t;0xfffba0e4
+DECL|variable|ocpi_ck
+r_static
+r_struct
+id|clk
+op_star
+id|ocpi_ck
+suffix:semicolon
 multiline_comment|/*&n; * Enables device access to OMAP buses via the OCPI bridge&n; * FIXME: Add locking&n; */
 DECL|function|ocpi_enable
 r_int
@@ -47,49 +52,26 @@ r_int
 r_int
 id|val
 suffix:semicolon
-multiline_comment|/* Make sure there&squot;s clock for OCPI */
-macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 r_if
 c_cond
 (paren
-id|cpu_is_omap1610
-c_func
-(paren
-)paren
-op_logical_or
-id|cpu_is_omap1710
+op_logical_neg
+id|cpu_is_omap16xx
 c_func
 (paren
 )paren
 )paren
-(brace
-id|val
-op_assign
-id|omap_readl
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Make sure there&squot;s clock for OCPI */
+id|clk_enable
 c_func
 (paren
-id|OMAP16XX_ARM_IDLECT3
+id|ocpi_ck
 )paren
 suffix:semicolon
-id|val
-op_or_assign
-id|EN_OCPI_CK
-suffix:semicolon
-id|val
-op_and_assign
-op_complement
-id|IDLOCPI_ARM
-suffix:semicolon
-id|omap_writel
-c_func
-(paren
-id|val
-comma
-id|OMAP16XX_ARM_IDLECT3
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Enable access for OHCI in OCPI */
 id|val
 op_assign
@@ -145,56 +127,6 @@ c_func
 id|ocpi_enable
 )paren
 suffix:semicolon
-DECL|function|ocpi_status
-r_int
-id|ocpi_status
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;OCPI: addr: 0x%08x cmd: 0x%08x&bslash;n&quot;
-l_string|&quot;      ohci-addr: 0x%08x ohci-status: 0x%08x&bslash;n&quot;
-comma
-id|omap_readl
-c_func
-(paren
-id|OCPI_FAULT
-)paren
-comma
-id|omap_readl
-c_func
-(paren
-id|OCPI_CMD_FAULT
-)paren
-comma
-id|omap_readl
-c_func
-(paren
-id|HOSTUEADDR
-)paren
-comma
-id|omap_readl
-c_func
-(paren
-id|HOSTUESTATUS
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|variable|ocpi_status
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ocpi_status
-)paren
-suffix:semicolon
 DECL|function|omap_ocpi_init
 r_static
 r_int
@@ -205,6 +137,51 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_is_omap16xx
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|ocpi_ck
+op_assign
+id|clk_get
+c_func
+(paren
+l_int|NULL
+comma
+l_string|&quot;l3_ocpi_ck&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|ocpi_ck
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|ocpi_ck
+)paren
+suffix:semicolon
+id|clk_use
+c_func
+(paren
+id|ocpi_ck
+)paren
+suffix:semicolon
 id|ocpi_enable
 c_func
 (paren
@@ -230,7 +207,30 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* FIXME: Disable OCPI */
+multiline_comment|/* REVISIT: Disable OCPI */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_is_omap16xx
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+id|clk_unuse
+c_func
+(paren
+id|ocpi_ck
+)paren
+suffix:semicolon
+id|clk_put
+c_func
+(paren
+id|ocpi_ck
+)paren
+suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 c_func

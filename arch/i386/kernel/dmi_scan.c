@@ -10,12 +10,6 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|variable|es7000_plat
-r_int
-id|es7000_plat
-op_assign
-l_int|0
-suffix:semicolon
 DECL|struct|dmi_header
 r_struct
 id|dmi_header

@@ -1132,6 +1132,17 @@ multiline_comment|/* &n; * Function declarations for the journaling transaction 
 multiline_comment|/* Filing buffers */
 r_extern
 r_void
+id|__journal_temp_unlink_buffer
+c_func
+(paren
+r_struct
+id|journal_head
+op_star
+id|jh
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|journal_unfile_buffer
 c_func
 (paren
@@ -1831,6 +1842,8 @@ id|jbd_alloc_handle
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 )paren
 (brace

@@ -316,7 +316,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* Check for main structure */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -327,7 +327,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp-&gt;magic
@@ -436,7 +436,7 @@ id|lsap_cb
 op_star
 id|self
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|notify
@@ -448,7 +448,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -460,7 +460,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp-&gt;magic
@@ -472,7 +472,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|notify-&gt;instance
@@ -546,7 +546,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: can&squot;t allocate memory&bslash;n&quot;
@@ -676,7 +676,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -687,7 +687,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -753,7 +753,7 @@ id|lsap
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -764,7 +764,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -786,7 +786,7 @@ c_cond
 id|lap
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lap-&gt;magic
@@ -930,7 +930,7 @@ id|lap_cb
 op_star
 id|lap
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -941,7 +941,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp-&gt;magic
@@ -952,7 +952,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|notify
@@ -986,7 +986,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: unable to kmalloc&bslash;n&quot;
@@ -1049,7 +1049,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), unable to kmalloc lsaps&bslash;n&quot;
@@ -1150,7 +1150,7 @@ c_cond
 id|link
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|link-&gt;magic
@@ -1262,7 +1262,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1275,7 +1275,7 @@ id|EBADR
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1382,7 +1382,7 @@ id|LMP_MAX_HEADER
 suffix:semicolon
 )brace
 multiline_comment|/* Make room for MUX control header (3 bytes) */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -1646,7 +1646,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap
@@ -1659,7 +1659,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap-&gt;magic
@@ -1672,7 +1672,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap-&gt;lap
@@ -1685,7 +1685,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap-&gt;lap-&gt;magic
@@ -1811,7 +1811,7 @@ suffix:semicolon
 r_int
 id|max_header_size
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1822,7 +1822,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1833,7 +1833,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -1844,7 +1844,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap
@@ -1955,7 +1955,7 @@ op_star
 id|userdata
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1968,7 +1968,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1981,7 +1981,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|userdata
@@ -2010,7 +2010,7 @@ id|self-&gt;dlsap_sel
 )paren
 suffix:semicolon
 multiline_comment|/* Make room for MUX control header (3 bytes) */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -2099,7 +2099,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -2110,7 +2110,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2121,7 +2121,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2132,7 +2132,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap
@@ -2473,7 +2473,7 @@ id|lsap_cb
 op_star
 id|lsap
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2486,7 +2486,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2499,7 +2499,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|userdata
@@ -2575,7 +2575,7 @@ id|userdata
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Remove LSAP from list of connected LSAPs for the particular link&n;&t; *  and insert it into the list of unconnected LSAPs&n;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap
@@ -2588,7 +2588,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap-&gt;magic
@@ -2601,7 +2601,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap-&gt;lsaps
@@ -2635,7 +2635,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 macro_line|#endif
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap
@@ -2648,7 +2648,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap-&gt;magic
@@ -2661,7 +2661,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap
@@ -2753,7 +2753,7 @@ id|reason
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2764,7 +2764,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2818,7 +2818,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Remove association between this LSAP and the link it used&n;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap
@@ -2829,7 +2829,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;lap-&gt;lsaps
@@ -2861,7 +2861,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 macro_line|#endif
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap
@@ -2872,7 +2872,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lsap
@@ -2996,7 +2996,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lap-&gt;magic
@@ -3086,7 +3086,7 @@ l_int|16
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: invalid value for number of slots!&bslash;n&quot;
@@ -3159,7 +3159,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lap-&gt;magic
@@ -3488,7 +3488,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|log
@@ -3604,7 +3604,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|expiries
@@ -3741,7 +3741,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -3809,7 +3809,7 @@ id|userdata
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3822,7 +3822,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3836,7 +3836,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Make room for MUX header */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -3974,7 +3974,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|userdata
@@ -3988,7 +3988,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Make room for MUX header */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -4063,7 +4063,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4074,7 +4074,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4085,7 +4085,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4173,7 +4173,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|userdata
@@ -4187,7 +4187,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Make room for MUX and PID header */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -4282,7 +4282,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lap-&gt;magic
@@ -4385,7 +4385,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4396,7 +4396,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4407,7 +4407,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4525,7 +4525,7 @@ id|next
 )paren
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|curr-&gt;magic
@@ -4601,7 +4601,7 @@ suffix:semicolon
 r_int
 id|lsap_todo
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4612,7 +4612,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|flow
@@ -5601,7 +5601,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -5939,7 +5939,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -5951,7 +5951,7 @@ id|TRUE
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp-&gt;magic
@@ -5963,7 +5963,7 @@ id|TRUE
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|slsap_sel
@@ -6040,7 +6040,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|lap-&gt;magic
@@ -6082,7 +6082,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -6194,7 +6194,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -6266,8 +6266,12 @@ op_amp
 id|lap-&gt;lsaps-&gt;hb_spinlock
 )paren
 suffix:semicolon
+id|IRDA_ASSERT_LABEL
+c_func
+(paren
 id|errlap
 suffix:colon
+)paren
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -6314,7 +6318,7 @@ id|wrapped
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp
@@ -6327,7 +6331,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp-&gt;magic
@@ -6369,7 +6373,7 @@ id|wrapped
 op_increment
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: no more free LSAPs !&bslash;n&quot;
@@ -6995,7 +6999,7 @@ id|self
 op_assign
 id|v
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -7165,14 +7169,15 @@ id|lap-&gt;lsaps
 )paren
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
 op_eq
 id|LMP_LSAP_MAGIC
 comma
-r_break
+r_goto
+id|outloop
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -7220,6 +7225,12 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
+id|IRDA_ASSERT_LABEL
+c_func
+(paren
+id|outloop
+suffix:colon
+)paren
 id|spin_unlock
 c_func
 (paren
@@ -7307,7 +7318,7 @@ id|irlmp_iter_state
 op_star
 id|s
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp

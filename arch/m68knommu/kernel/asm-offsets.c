@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -456,6 +457,25 @@ id|sr
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_COLDFIRE
+multiline_comment|/* bitfields are a bit difficult */
+id|DEFINE
+c_func
+(paren
+id|PT_FORMATVEC
+comma
+m_offsetof
+(paren
+r_struct
+id|pt_regs
+comma
+id|sr
+)paren
+op_minus
+l_int|2
+)paren
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* bitfields are a bit difficult */
 id|DEFINE
 c_func
@@ -473,7 +493,6 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_COLDFIRE
 multiline_comment|/* offsets into the irq_handler struct */
 id|DEFINE
 c_func
@@ -580,6 +599,71 @@ c_func
 id|PT_DTRACE
 comma
 id|PT_DTRACE
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|THREAD_SIZE
+comma
+id|THREAD_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* Offsets in thread_info structure */
+id|DEFINE
+c_func
+(paren
+id|TI_TASK
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|task
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|TI_EXECDOMAIN
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|exec_domain
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|TI_FLAGS
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|TI_CPU
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|cpu
+)paren
 )paren
 suffix:semicolon
 r_return

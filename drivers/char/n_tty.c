@@ -2200,6 +2200,14 @@ id|jiffies
 op_minus
 id|HZ
 )paren
+op_logical_or
+id|time_after
+c_func
+(paren
+id|tty-&gt;overrun_time
+comma
+id|jiffies
+)paren
 )paren
 (brace
 id|printk

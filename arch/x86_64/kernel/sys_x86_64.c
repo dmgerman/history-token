@@ -82,6 +82,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|sys_mmap
+id|asmlinkage
 r_int
 id|sys_mmap
 c_func

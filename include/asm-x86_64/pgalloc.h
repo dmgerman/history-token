@@ -1,7 +1,6 @@
 macro_line|#ifndef _X86_64_PGALLOC_H
 DECL|macro|_X86_64_PGALLOC_H
 mdefine_line|#define _X86_64_PGALLOC_H
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -499,8 +498,8 @@ suffix:semicolon
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
 DECL|macro|__pmd_free_tlb
-mdefine_line|#define __pmd_free_tlb(tlb,x)   pmd_free(x)
+mdefine_line|#define __pmd_free_tlb(tlb,x)   tlb_remove_page((tlb),virt_to_page(x))
 DECL|macro|__pud_free_tlb
-mdefine_line|#define __pud_free_tlb(tlb,x)   pud_free(x)
+mdefine_line|#define __pud_free_tlb(tlb,x)   tlb_remove_page((tlb),virt_to_page(x))
 macro_line|#endif /* _X86_64_PGALLOC_H */
 eof

@@ -272,6 +272,8 @@ id|mempool_alloc_page
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_void

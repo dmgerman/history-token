@@ -576,7 +576,7 @@ id|p.pl
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: buffer to short for insertion!&bslash;n&quot;
@@ -734,7 +734,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: length %d not supported&bslash;n&quot;
@@ -836,7 +836,7 @@ id|p.pl
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: buffer to short for parsing! &quot;
@@ -879,7 +879,7 @@ id|p.pl
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: invalid parameter length! &quot;
@@ -1053,7 +1053,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: length %d not supported&bslash;n&quot;
@@ -1209,7 +1209,7 @@ id|p.pl
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: buffer to short for parsing! &quot;
@@ -1371,7 +1371,7 @@ id|p.pl
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: buffer to short for parsing! &quot;
@@ -1922,7 +1922,7 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|buf
@@ -1934,7 +1934,7 @@ id|ret
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -2029,7 +2029,7 @@ op_logical_neg
 id|pi_minor_info-&gt;func
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: no handler for pi=%#x&bslash;n&quot;
@@ -2131,7 +2131,7 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|buf
@@ -2143,7 +2143,7 @@ id|ret
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -2270,7 +2270,7 @@ op_logical_neg
 id|pi_minor_info-&gt;func
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: no handler for pi=%#x&bslash;n&quot;
@@ -2364,7 +2364,7 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|buf
@@ -2376,7 +2376,7 @@ id|ret
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info

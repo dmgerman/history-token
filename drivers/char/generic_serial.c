@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -40,7 +41,9 @@ DECL|macro|func_enter
 mdefine_line|#define func_enter() gs_dprintk (GS_DEBUG_FLOW, &quot;gs: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
 mdefine_line|#define func_exit()  gs_dprintk (GS_DEBUG_FLOW, &quot;gs: exit  %s&bslash;n&quot;, __FUNCTION__)
-macro_line|#ifdef NEW_WRITE_LOCKING
+DECL|macro|NEW_WRITE_LOCKING
+mdefine_line|#define NEW_WRITE_LOCKING 1
+macro_line|#if NEW_WRITE_LOCKING
 DECL|macro|DECL
 mdefine_line|#define DECL      /* Nothing */
 DECL|macro|LOCKIT
@@ -495,7 +498,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -565,7 +568,7 @@ op_le
 l_int|0
 )paren
 (brace
-id|restore_flags
+id|local_restore_flags
 c_func
 (paren
 id|flags
@@ -606,7 +609,7 @@ id|port-&gt;xmit_cnt
 op_add_assign
 id|c
 suffix:semicolon
-id|restore_flags
+id|local_restore_flags
 c_func
 (paren
 id|flags
@@ -1180,15 +1183,12 @@ id|port
 r_return
 suffix:semicolon
 multiline_comment|/* XXX Would the write semaphore do? */
-id|save_flags
-c_func
+id|spin_lock_irqsave
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|port-&gt;xmit_cnt
@@ -1199,9 +1199,11 @@ id|port-&gt;xmit_tail
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
-c_func
+id|spin_unlock_irqrestore
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1476,13 +1478,13 @@ id|ASYNC_INITIALIZED
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1530,8 +1532,12 @@ op_and_assign
 op_complement
 id|ASYNC_INITIALIZED
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1664,6 +1670,10 @@ r_struct
 id|tty_struct
 op_star
 id|tty
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|func_enter
 (paren
@@ -1815,9 +1825,13 @@ comma
 l_string|&quot;after add waitq.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1830,12 +1844,18 @@ c_func
 id|filp
 )paren
 )paren
+(brace
 id|port-&gt;count
 op_decrement
 suffix:semicolon
-id|sti
+)brace
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|port-&gt;blocked_open
@@ -2007,9 +2027,11 @@ c_func
 id|filp
 )paren
 )paren
+(brace
 id|port-&gt;count
 op_increment
 suffix:semicolon
+)brace
 id|port-&gt;blocked_open
 op_decrement
 suffix:semicolon
@@ -2107,15 +2129,13 @@ op_assign
 id|tty
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2128,12 +2148,20 @@ id|filp
 )paren
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|port-&gt;rd-&gt;hungup
+)paren
 id|port-&gt;rd-&gt;hungup
 (paren
 id|port
@@ -2166,8 +2194,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;gs: gs_close: bad port count;&quot;
+l_string|&quot;gs: gs_close port %p: bad port count;&quot;
 l_string|&quot; tty-&gt;count is 1, port count is %d&bslash;n&quot;
+comma
+id|port
 comma
 id|port-&gt;count
 )paren
@@ -2190,7 +2220,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;gs: gs_close: bad port count: %d&bslash;n&quot;
+l_string|&quot;gs: gs_close port %p: bad port count: %d&bslash;n&quot;
+comma
+id|port
 comma
 id|port-&gt;count
 )paren
@@ -2211,14 +2243,19 @@ c_func
 (paren
 id|GS_DEBUG_CLOSE
 comma
-l_string|&quot;gs_close: count: %d&bslash;n&quot;
+l_string|&quot;gs_close port %p: count: %d&bslash;n&quot;
+comma
+id|port
 comma
 id|port-&gt;count
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2243,6 +2280,15 @@ multiline_comment|/*&n;&t; * At this point we stop accepting input.  To do this,
 id|port-&gt;rd-&gt;disable_rx_interrupts
 (paren
 id|port
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* close has no way of returning &quot;EINTR&quot;, so discard return value */
@@ -2318,6 +2364,15 @@ c_cond
 id|port-&gt;close_delay
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|msleep_interruptible
 c_func
 (paren
@@ -2326,6 +2381,15 @@ c_func
 (paren
 id|port-&gt;close_delay
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2353,12 +2417,6 @@ c_func
 (paren
 op_amp
 id|port-&gt;close_wait
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|func_exit
@@ -2475,6 +2533,26 @@ id|port
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;tty
+)paren
+(brace
+multiline_comment|/* This seems to happen when this is called after gs_close. */
+id|gs_dprintk
+(paren
+id|GS_DEBUG_TERMIOS
+comma
+l_string|&quot;gs: Odd: port-&gt;tty is NULL&bslash;n&quot;
+)paren
+suffix:semicolon
+id|port-&gt;tty
+op_assign
+id|tty
+suffix:semicolon
+)brace
 id|tiosp
 op_assign
 id|tty-&gt;termios
@@ -2978,7 +3056,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|info-&gt;open_wait
+id|port-&gt;gs.open_wait
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3011,9 +3089,8 @@ r_int
 r_int
 id|page
 suffix:semicolon
-id|save_flags
+id|func_enter
 (paren
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3031,8 +3108,12 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t expect this to make a difference. */
@@ -3057,8 +3138,11 @@ op_star
 )paren
 id|page
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3069,6 +3153,10 @@ op_logical_neg
 id|tmp_buf
 )paren
 (brace
+id|func_exit
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -3082,9 +3170,15 @@ id|port-&gt;flags
 op_amp
 id|ASYNC_INITIALIZED
 )paren
+(brace
+id|func_exit
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3105,9 +3199,12 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/* Spinlock? */
-id|cli
+id|spin_lock_irqsave
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3130,8 +3227,12 @@ op_star
 )paren
 id|tmp
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3141,14 +3242,23 @@ c_cond
 op_logical_neg
 id|port-&gt;xmit_buf
 )paren
+(brace
+id|func_exit
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|cli
-c_func
+)brace
+id|spin_lock_irqsave
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3165,6 +3275,13 @@ op_amp
 id|port-&gt;tty-&gt;flags
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|port-&gt;port_write_sem
+)paren
+suffix:semicolon
 id|port-&gt;xmit_cnt
 op_assign
 id|port-&gt;xmit_head
@@ -3173,12 +3290,29 @@ id|port-&gt;xmit_tail
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|gs_set_termios
 c_func
 (paren
 id|port-&gt;tty
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|port-&gt;driver_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|port-&gt;flags
@@ -3190,10 +3324,17 @@ op_and_assign
 op_complement
 id|GS_TX_INTEN
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|port-&gt;driver_lock
+comma
 id|flags
+)paren
+suffix:semicolon
+id|func_exit
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -3469,6 +3610,26 @@ op_star
 id|port
 )paren
 (brace
+id|func_enter
+(paren
+)paren
+suffix:semicolon
+id|tty_insert_flip_char
+c_func
+(paren
+id|port-&gt;tty
+comma
+l_int|0
+comma
+id|TTY_BREAK
+)paren
+suffix:semicolon
+id|tty_schedule_flip
+c_func
+(paren
+id|port-&gt;tty
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3483,21 +3644,9 @@ id|port-&gt;tty
 )paren
 suffix:semicolon
 )brace
-op_star
+id|func_exit
 (paren
-id|port-&gt;tty-&gt;flip.flag_buf_ptr
 )paren
-op_assign
-id|TTY_BREAK
-suffix:semicolon
-id|port-&gt;tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|port-&gt;tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|port-&gt;tty-&gt;flip.count
-op_increment
 suffix:semicolon
 )brace
 DECL|variable|gs_put_char

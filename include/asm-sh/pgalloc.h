@@ -1,7 +1,6 @@
 macro_line|#ifndef __ASM_SH_PGALLOC_H
 DECL|macro|__ASM_SH_PGALLOC_H
 mdefine_line|#define __ASM_SH_PGALLOC_H
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

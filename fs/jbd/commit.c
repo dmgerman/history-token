@@ -1071,7 +1071,7 @@ id|bh
 r_goto
 id|write_out_data
 suffix:semicolon
-id|__journal_unfile_buffer
+id|__journal_temp_unlink_buffer
 c_func
 (paren
 id|jh

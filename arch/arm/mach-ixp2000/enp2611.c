@@ -705,7 +705,6 @@ id|enp2611_devices
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ARCH_ENP2611
 id|MACHINE_START
 c_func
 (paren
@@ -754,5 +753,4 @@ c_func
 id|enp2611_init_machine
 )paren
 id|MACHINE_END
-macro_line|#endif
 eof

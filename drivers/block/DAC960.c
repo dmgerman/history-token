@@ -10440,17 +10440,9 @@ c_func
 id|PCI_Device
 )paren
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|Controller
-)paren
-suffix:semicolon
 r_goto
 id|Failure
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren

@@ -643,6 +643,13 @@ c_func
 id|io_remap_page_range
 )paren
 suffix:semicolon
+DECL|variable|io_remap_pfn_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_remap_pfn_range
+)paren
+suffix:semicolon
 multiline_comment|/* P3: iounit_xxx may be needed, sun4d users */
 multiline_comment|/* EXPORT_SYMBOL(iounit_map_dma_init); */
 multiline_comment|/* EXPORT_SYMBOL(iounit_map_dma_page); */

@@ -2816,7 +2816,7 @@ id|vma-&gt;vm_page_prot
 )paren
 suffix:semicolon
 r_return
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -2824,6 +2824,8 @@ comma
 id|vma-&gt;vm_start
 comma
 id|off
+op_rshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_end
 op_minus

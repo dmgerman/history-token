@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/pSeries_reconfig.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Traverse_func that inits the PCI fields of the device node.&n; * NOTE: this *must* be done before read/write config to the device.&n; */
 DECL|function|update_dn_pci_info
@@ -520,6 +521,84 @@ c_func
 id|fetch_dev_dn
 )paren
 suffix:semicolon
+DECL|function|pci_dn_reconfig_notifier
+r_static
+r_int
+id|pci_dn_reconfig_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|node
+)paren
+(brace
+r_struct
+id|device_node
+op_star
+id|np
+op_assign
+id|node
+suffix:semicolon
+r_int
+id|err
+op_assign
+id|NOTIFY_OK
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|action
+)paren
+(brace
+r_case
+id|PSERIES_RECONFIG_ADD
+suffix:colon
+id|update_dn_pci_info
+c_func
+(paren
+id|np
+comma
+id|np-&gt;parent-&gt;phb
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|err
+op_assign
+id|NOTIFY_DONE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|err
+suffix:semicolon
+)brace
+DECL|variable|pci_dn_reconfig_nb
+r_static
+r_struct
+id|notifier_block
+id|pci_dn_reconfig_nb
+op_assign
+(brace
+dot
+id|notifier_call
+op_assign
+id|pci_dn_reconfig_notifier
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Actually initialize the phbs.&n; * The buswalk on this phb has not happened yet.&n; */
 DECL|function|pci_devs_phb_init
 r_void
@@ -555,6 +634,13 @@ id|pci_devs_phb_init_dynamic
 c_func
 (paren
 id|phb
+)paren
+suffix:semicolon
+id|pSeries_reconfig_notifier_register
+c_func
+(paren
+op_amp
+id|pci_dn_reconfig_nb
 )paren
 suffix:semicolon
 )brace

@@ -399,6 +399,7 @@ comma
 l_int|64
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 id|eit_vector
 (braket
 l_int|68
@@ -425,6 +426,7 @@ comma
 l_int|72
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_MMU */
 macro_line|#ifdef CONFIG_SMP
 id|eit_vector
 (braket

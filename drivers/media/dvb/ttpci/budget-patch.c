@@ -2159,6 +2159,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|grundig_29504_451_config
+r_static
 r_struct
 id|tda8083_config
 id|grundig_29504_451_config

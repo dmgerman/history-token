@@ -151,25 +151,6 @@ DECL|macro|__pgd
 mdefine_line|#define __pgd(x) ((pgd_t) { (x) } )
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
-r_extern
-r_int
-r_int
-id|vm_stack_flags
-comma
-id|vm_stack_flags32
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|vm_data_default_flags
-comma
-id|vm_data_default_flags32
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|vm_force_exec32
-suffix:semicolon
 DECL|macro|__START_KERNEL
 mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000UL
 DECL|macro|__START_KERNEL_map

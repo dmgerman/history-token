@@ -451,6 +451,56 @@ l_string|&quot;mtrr: corrected configuration.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Doesn&squot;t attempt to pass an error out to MTRR users&n;   because it&squot;s quite complicated in some cases and probably not&n;   worth it because the best error handling is to ignore it. */
+DECL|function|mtrr_wrmsr
+r_void
+id|mtrr_wrmsr
+c_func
+(paren
+r_int
+id|msr
+comma
+r_int
+id|a
+comma
+r_int
+id|b
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|wrmsr_safe
+c_func
+(paren
+id|msr
+comma
+id|a
+comma
+id|b
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;MTRR: CPU %u: Writing MSR %x to %x:%x failed&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|msr
+comma
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+)brace
 DECL|function|generic_get_free_region
 r_int
 id|generic_get_free_region
@@ -738,7 +788,7 @@ op_ne
 id|hi
 )paren
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRfix64K_00000_MSR
@@ -812,7 +862,7 @@ op_ne
 id|hi
 )paren
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRfix16K_80000_MSR
@@ -897,7 +947,7 @@ op_ne
 id|hi
 )paren
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRfix4K_C0000_MSR
@@ -1003,7 +1053,7 @@ l_int|0xfUL
 )paren
 )paren
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRphysBase_MSR
@@ -1064,7 +1114,7 @@ l_int|0xfUL
 )paren
 )paren
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRphysMask_MSR
@@ -1311,7 +1361,7 @@ id|deftype_hi
 )paren
 suffix:semicolon
 multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRdefType_MSR
@@ -1340,7 +1390,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Intel (P6) standard MTRRs */
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRdefType_MSR
@@ -1522,7 +1572,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* The invalid bit is kept in the mask, so we simply clear the&n;&t;&t;   relevant mask register to disable a range. */
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRphysMask_MSR
@@ -1539,7 +1589,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRphysBase_MSR
@@ -1567,7 +1617,7 @@ id|PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRphysMask_MSR

@@ -390,7 +390,7 @@ c_func
 (paren
 (paren
 (paren
-id|u64
+id|__be64
 op_star
 )paren
 (paren

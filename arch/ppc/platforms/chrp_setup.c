@@ -2264,6 +2264,10 @@ id|ppc_md.init
 op_assign
 id|chrp_init2
 suffix:semicolon
+id|ppc_md.phys_mem_access_prot
+op_assign
+id|pci_phys_mem_access_prot
+suffix:semicolon
 id|ppc_md.restart
 op_assign
 id|chrp_restart

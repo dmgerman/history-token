@@ -2530,7 +2530,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|third
+id|fifth
 )paren
 multiline_comment|/* sign extend semid */
 r_return
@@ -2553,7 +2553,7 @@ comma
 id|compat_ptr
 c_func
 (paren
-id|third
+id|fifth
 )paren
 )paren
 suffix:semicolon

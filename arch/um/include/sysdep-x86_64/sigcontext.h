@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright 2003 PathScale, Inc.&n; *&n; * Licensed unde
 macro_line|#ifndef __SYSDEP_X86_64_SIGCONTEXT_H
 DECL|macro|__SYSDEP_X86_64_SIGCONTEXT_H
 mdefine_line|#define __SYSDEP_X86_64_SIGCONTEXT_H
-macro_line|#include &quot;sc.h&quot;
+macro_line|#include &lt;sysdep/sc.h&gt;
 DECL|macro|IP_RESTART_SYSCALL
 mdefine_line|#define IP_RESTART_SYSCALL(ip) ((ip) -= 2)
 DECL|macro|SC_RESTART_SYSCALL

@@ -643,6 +643,7 @@ mdefine_line|#define ULE_TEST&t;0
 DECL|macro|ULE_BRIDGED
 mdefine_line|#define ULE_BRIDGED&t;1
 DECL|function|ule_test_sndu
+r_static
 r_int
 id|ule_test_sndu
 c_func
@@ -659,6 +660,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ule_bridged_sndu
+r_static
 r_int
 id|ule_bridged_sndu
 c_func

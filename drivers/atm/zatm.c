@@ -2052,7 +2052,7 @@ c_func
 (paren
 (paren
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 id|skb-&gt;data

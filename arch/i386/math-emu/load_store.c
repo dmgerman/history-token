@@ -997,7 +997,7 @@ suffix:colon
 multiline_comment|/* fldcw */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1206,7 +1206,7 @@ suffix:colon
 multiline_comment|/* fstcw m16int */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1277,7 +1277,7 @@ suffix:colon
 multiline_comment|/* fstsw m2byte */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE

@@ -1571,7 +1571,7 @@ op_amp
 id|INST_STRING_MASK
 )paren
 op_eq
-id|INST_LSWX
+id|INST_LSWI
 )paren
 r_if
 c_cond

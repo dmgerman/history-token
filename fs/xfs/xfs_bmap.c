@@ -14574,13 +14574,9 @@ comma
 id|XFS_BMAP_MAGIC
 )paren
 suffix:semicolon
-id|INT_ZERO
-c_func
-(paren
 id|ablock-&gt;bb_level
-comma
-id|ARCH_CONVERT
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|INT_SET
 c_func

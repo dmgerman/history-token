@@ -2301,14 +2301,10 @@ id|dp-&gt;di_u.di_dirsf
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_GET_DIR_INO_ARCH
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sf-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_if
@@ -2412,14 +2408,10 @@ op_decrement
 (brace
 id|ino
 op_assign
-id|XFS_GET_DIR_INO_ARCH
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sfe-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_dir_ino_validate
@@ -3089,7 +3081,7 @@ id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/* XXX - replace assert? */
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -3097,8 +3089,6 @@ id|inum
 comma
 op_amp
 id|namest-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_da_log_buf
@@ -4586,7 +4576,7 @@ id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/* XXX - replace assert ? */
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -4594,8 +4584,6 @@ id|inum
 comma
 op_amp
 id|namest-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_da_log_buf

@@ -42,10 +42,6 @@ suffix:semicolon
 )brace
 id|xfs_dir2_ino8_t
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_INO8_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO8_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO_GET_ARCH(&amp;di,arch))
-DECL|macro|XFS_DIR2_SF_GET_INO8
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO8(di)&t;        &bslash;&n;&t;XFS_DIR2_SF_GET_INO8_ARCH(di,ARCH_NOCONVERT)
 multiline_comment|/*&n; * Inode number stored as 4 8-bit values.&n; * Works a lot of the time, when all the inode numbers in a directory&n; * fit in 32 bits.&n; */
 DECL|member|i
 DECL|typedef|xfs_dir2_ino4_t
@@ -61,10 +57,6 @@ suffix:semicolon
 )brace
 id|xfs_dir2_ino4_t
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_INO4_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO4_ARCH(di,arch)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO4_GET_ARCH(&amp;di,arch))
-DECL|macro|XFS_DIR2_SF_GET_INO4
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO4(di)&t;        &bslash;&n;&t;XFS_DIR2_SF_GET_INO4_ARCH(di,ARCH_NOCONVERT)
 r_typedef
 r_union
 (brace
@@ -210,7 +202,7 @@ mdefine_line|#define&t;XFS_DIR2_SF_INUMBERP(sfep)&t;&bslash;&n;&t;((xfs_dir2_ino
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_GET_INUMBER)
 id|xfs_intino_t
-id|xfs_dir2_sf_get_inumber_arch
+id|xfs_dir2_sf_get_inumber
 c_func
 (paren
 id|xfs_dir2_sf_t
@@ -220,20 +212,17 @@ comma
 id|xfs_dir2_inou_t
 op_star
 id|from
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_INUMBER_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_inumber_arch(sfp, from, arch)
+DECL|macro|XFS_DIR2_SF_GET_INUMBER
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER(sfp, from)&t;&bslash;&n;&t;xfs_dir2_sf_get_inumber(sfp, from)
 macro_line|#else
-DECL|macro|XFS_DIR2_SF_GET_INUMBER_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER_ARCH(sfp, from, arch)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO4_ARCH(*(from), arch) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO8_ARCH(*(from), arch))
+DECL|macro|XFS_DIR2_SF_GET_INUMBER
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER(sfp, from)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_GET_DIR_INO4((from)-&gt;i4) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_GET_DIR_INO8((from)-&gt;i8))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_PUT_INUMBER)
 r_void
-id|xfs_dir2_sf_put_inumber_arch
+id|xfs_dir2_sf_put_inumber
 c_func
 (paren
 id|xfs_dir2_sf_t
@@ -247,30 +236,15 @@ comma
 id|xfs_dir2_inou_t
 op_star
 id|to
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_PUT_INUMBER_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;xfs_dir2_sf_put_inumber_arch(sfp,from,to,arch)
+DECL|macro|XFS_DIR2_SF_PUT_INUMBER
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER(sfp,from,to)&t;&bslash;&n;&t;xfs_dir2_sf_put_inumber(sfp,from,to)
 macro_line|#else
-DECL|macro|XFS_DIR2_SF_PUT_INUMBER_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER_ARCH(sfp,from,to,arch)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;    DIRINO4_COPY_ARCH(from,to,arch); &bslash;&n;&t;} else { &bslash;&n;&t;    DIRINO_COPY_ARCH(from,to,arch); &bslash;&n;&t;}
+DECL|macro|XFS_DIR2_SF_PUT_INUMBER
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER(sfp,from,to)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;&t;XFS_PUT_DIR_INO4(*(from), (to)-&gt;i4); &bslash;&n;&t;} else { &bslash;&n;&t;&t;XFS_PUT_DIR_INO8(*(from), (to)-&gt;i8); &bslash;&n;&t;}
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_GET_OFFSET)
-id|xfs_dir2_data_aoff_t
-id|xfs_dir2_sf_get_offset_arch
-c_func
-(paren
-id|xfs_dir2_sf_entry_t
-op_star
-id|sfep
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 id|xfs_dir2_data_aoff_t
 id|xfs_dir2_sf_get_offset
 c_func
@@ -280,15 +254,15 @@ op_star
 id|sfep
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_OFFSET_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;xfs_dir2_sf_get_offset_arch(sfep,arch)
+DECL|macro|XFS_DIR2_SF_GET_OFFSET
+mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET(sfep)&t;&bslash;&n;&t;xfs_dir2_sf_get_offset(sfep)
 macro_line|#else
-DECL|macro|XFS_DIR2_SF_GET_OFFSET_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET_ARCH(sfep,arch)&t;&bslash;&n;&t;INT_GET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,arch)
+DECL|macro|XFS_DIR2_SF_GET_OFFSET
+mdefine_line|#define&t;XFS_DIR2_SF_GET_OFFSET(sfep)&t;&bslash;&n;&t;INT_GET_UNALIGNED_16_BE(&amp;(sfep)-&gt;offset.i)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_PUT_OFFSET)
 r_void
-id|xfs_dir2_sf_put_offset_arch
+id|xfs_dir2_sf_put_offset
 c_func
 (paren
 id|xfs_dir2_sf_entry_t
@@ -297,16 +271,13 @@ id|sfep
 comma
 id|xfs_dir2_data_aoff_t
 id|off
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_PUT_OFFSET_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch) &bslash;&n;&t;xfs_dir2_sf_put_offset_arch(sfep,off,arch)
+DECL|macro|XFS_DIR2_SF_PUT_OFFSET
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET(sfep,off) &bslash;&n;&t;xfs_dir2_sf_put_offset(sfep,off)
 macro_line|#else
-DECL|macro|XFS_DIR2_SF_PUT_OFFSET_ARCH
-mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET_ARCH(sfep,off,arch)&t;&bslash;&n;&t;INT_SET_UNALIGNED_16_ARCH(&amp;(sfep)-&gt;offset.i,off,arch)
+DECL|macro|XFS_DIR2_SF_PUT_OFFSET
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_OFFSET(sfep,off)&t;&bslash;&n;&t;INT_SET_UNALIGNED_16_BE(&amp;(sfep)-&gt;offset.i,off)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_ENTSIZE_BYNAME)
 r_int

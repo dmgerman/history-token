@@ -43,6 +43,8 @@ r_int
 id|i
 comma
 id|j
+comma
+id|printed
 suffix:semicolon
 id|u32
 id|ldtbus
@@ -187,6 +189,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* quick sanity check */
+id|printed
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -215,21 +221,30 @@ id|i
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;k8-bus.c: bus %i has empty cpu mask&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 id|pci_bus_to_cpumask
 (braket
 id|i
 )braket
 op_assign
 id|CPU_MASK_ALL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|printed
+)paren
+r_continue
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;k8-bus.c: some busses have empty cpu mask&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printed
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 )brace

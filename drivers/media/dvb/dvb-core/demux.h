@@ -924,31 +924,5 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * DMX_DIR_ENTRY(): Casts elements in the list of registered&n; * demuxes from the generic type struct list_head* to the type struct dmx_demux&n; *.&n; */
 DECL|macro|DMX_DIR_ENTRY
 mdefine_line|#define DMX_DIR_ENTRY(list) list_entry(list, struct dmx_demux, reg_list)
-r_int
-id|dmx_register_demux
-(paren
-r_struct
-id|dmx_demux
-op_star
-id|demux
-)paren
-suffix:semicolon
-r_int
-id|dmx_unregister_demux
-(paren
-r_struct
-id|dmx_demux
-op_star
-id|demux
-)paren
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|dmx_get_demuxes
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* #ifndef __DEMUX_H */
 eof

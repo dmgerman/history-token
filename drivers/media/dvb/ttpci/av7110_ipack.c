@@ -153,11 +153,6 @@ op_star
 id|p
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|p-&gt;buf
-)paren
 id|vfree
 c_func
 (paren

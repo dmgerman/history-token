@@ -54,6 +54,9 @@ id|hi
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* wrmsr with exception handling */
+DECL|macro|wrmsr_safe
+mdefine_line|#define wrmsr_safe(msr,a,b) ({ int ret__;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;2: wrmsr ; xorl %0,%0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;3:  movl %4,%0 ; jmp 1b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;     &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .align 4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .long &t;2b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;=a&quot; (ret__)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;c&quot; (msr), &quot;0&quot; (a), &quot;d&quot; (b), &quot;i&quot; (-EFAULT));&bslash;&n;&t;ret__; })
 DECL|macro|rdtsc
 mdefine_line|#define rdtsc(low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdtsc&quot; : &quot;=a&quot; (low), &quot;=d&quot; (high))
 DECL|macro|rdtscl

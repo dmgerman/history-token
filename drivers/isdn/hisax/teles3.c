@@ -1133,14 +1133,14 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef __ISAPNP__
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|isapnp_device_id
 id|teles_ids
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1269,13 +1269,13 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|isapnp_device_id
 op_star
 id|ipid
-id|__initdata
+id|__devinitdata
 op_assign
 op_amp
 id|teles_ids

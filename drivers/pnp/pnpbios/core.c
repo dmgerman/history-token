@@ -461,6 +461,17 @@ id|current
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|try_to_freeze
+c_func
+(paren
+id|PF_FREEZE
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

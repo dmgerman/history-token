@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Since we effect priority and affinity (both of which are visible&n; * to, and settable by outside processes) we do indirection via a&n; * kthread. */
 multiline_comment|/* Thread to stop each CPU in user context. */
 DECL|enum|stopmachine_state
@@ -320,7 +321,21 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+id|mm_segment_t
+id|old_fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* One high-prio thread per cpu.  We&squot;ll do this one. */
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 id|sys_sched_setscheduler
 c_func
 (paren
@@ -328,8 +343,20 @@ id|current-&gt;pid
 comma
 id|SCHED_FIFO
 comma
+(paren
+r_struct
+id|sched_param
+id|__user
+op_star
+)paren
 op_amp
 id|param
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|old_fs
 )paren
 suffix:semicolon
 id|atomic_set

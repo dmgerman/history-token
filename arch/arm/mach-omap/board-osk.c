@@ -6,10 +6,10 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
-macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
+macro_line|#include &lt;asm/arch/mux.h&gt;
+macro_line|#include &lt;asm/arch/tc.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|variable|__initdata
 r_static
@@ -75,7 +75,7 @@ id|end
 op_assign
 id|OMAP_OSK_ETHR_START
 op_plus
-id|SZ_4K
+l_int|0xf
 comma
 dot
 id|flags
@@ -131,7 +131,8 @@ comma
 dot
 id|id
 op_assign
-l_int|0
+op_minus
+l_int|1
 comma
 dot
 id|num_resources
@@ -149,6 +150,97 @@ id|osk5912_smc91x_resources
 comma
 )brace
 suffix:semicolon
+DECL|variable|osk5912_cf_resources
+r_static
+r_struct
+id|resource
+id|osk5912_cf_resources
+(braket
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|OMAP_GPIO_IRQ
+c_func
+(paren
+l_int|62
+)paren
+comma
+dot
+id|end
+op_assign
+id|OMAP_GPIO_IRQ
+c_func
+(paren
+l_int|62
+)paren
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_IRQ
+comma
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|osk5912_cf_device
+r_static
+r_struct
+id|platform_device
+id|osk5912_cf_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;omap_cf&quot;
+comma
+dot
+id|id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|platform_data
+op_assign
+(paren
+r_void
+op_star
+)paren
+l_int|2
+multiline_comment|/* CS2 */
+comma
+)brace
+comma
+dot
+id|num_resources
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|osk5912_cf_resources
+)paren
+comma
+dot
+id|resource
+op_assign
+id|osk5912_cf_resources
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -162,6 +254,9 @@ op_assign
 (brace
 op_amp
 id|osk5912_smc91x_device
+comma
+op_amp
+id|osk5912_cf_device
 comma
 )brace
 suffix:semicolon
@@ -206,6 +301,64 @@ comma
 id|OMAP_GPIO_RISING_EDGE
 )paren
 suffix:semicolon
+multiline_comment|/* Check EMIFS wait states to fix errors with SMC_GET_PKT_HDR */
+id|EMIFS_CCS
+c_func
+(paren
+l_int|1
+)paren
+op_or_assign
+l_int|0x2
+suffix:semicolon
+)brace
+DECL|function|osk_init_cf
+r_static
+r_void
+id|__init
+id|osk_init_cf
+c_func
+(paren
+r_void
+)paren
+(brace
+id|omap_cfg_reg
+c_func
+(paren
+id|M7_1610_GPIO62
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|omap_request_gpio
+c_func
+(paren
+l_int|62
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Error requesting gpio 62 for CF irq&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* it&squot;s really active-low */
+id|omap_set_gpio_edge_ctrl
+c_func
+(paren
+l_int|62
+comma
+id|OMAP_GPIO_FALLING_EDGE
+)paren
+suffix:semicolon
 )brace
 DECL|function|osk_init_irq
 r_void
@@ -230,6 +383,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|osk_init_cf
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|__initdata
 r_static
@@ -239,7 +397,19 @@ id|osk_usb_config
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* has usb host and device, but no Mini-AB port */
+multiline_comment|/* has usb host connector (A) ... for development it can also&n;&t; * be used, with a NONSTANDARD gender-bending cable/dongle, as&n;&t; * a peripheral.&n;&t; */
+macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
+dot
+id|register_dev
+op_assign
+l_int|1
+comma
+dot
+id|hmc_mode
+op_assign
+l_int|0
+comma
+macro_line|#else
 dot
 id|register_host
 op_assign
@@ -250,6 +420,12 @@ id|hmc_mode
 op_assign
 l_int|16
 comma
+dot
+id|rwc
+op_assign
+l_int|1
+comma
+macro_line|#endif
 dot
 id|pins
 (braket
@@ -310,6 +486,14 @@ id|ARRAY_SIZE
 c_func
 (paren
 id|osk_config
+)paren
+suffix:semicolon
+id|USB_TRANSCEIVER_CTRL_REG
+op_or_assign
+(paren
+l_int|3
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
 )brace

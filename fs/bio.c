@@ -138,6 +138,8 @@ id|bvec_alloc_bs
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -447,6 +449,8 @@ id|bio_alloc_bioset
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -593,6 +597,8 @@ id|bio_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -931,6 +937,8 @@ op_star
 id|bio
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 )paren
 (brace
@@ -3350,6 +3358,8 @@ id|bio_pair_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 comma
 r_void

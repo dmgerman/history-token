@@ -16,6 +16,8 @@ id|get_swap_bio
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 comma
 id|pgoff_t

@@ -711,7 +711,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), URB still in use!&bslash;n&quot;
@@ -788,7 +788,7 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), failed Speed URB&bslash;n&quot;
@@ -835,7 +835,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* We should always have a context */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -847,7 +847,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* We should always be called for the speed URB */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|urb
@@ -1112,7 +1112,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), URB still in use!&bslash;n&quot;
@@ -1159,7 +1159,7 @@ id|USB_IRDA_HEADER
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), failed skb_cow() !!!&bslash;n&quot;
@@ -1355,7 +1355,7 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), failed Tx URB&bslash;n&quot;
@@ -1476,7 +1476,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* We should always have a context */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1488,7 +1488,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* We should always be called for the speed URB */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|urb
@@ -1729,7 +1729,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1758,7 +1758,7 @@ op_logical_neg
 id|self-&gt;present
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), device not present!&bslash;n&quot;
@@ -2094,7 +2094,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* This should never happen */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -2105,7 +2105,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|urb
@@ -2178,7 +2178,7 @@ id|ret
 )paren
 (brace
 multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t; * Basically, the Rx path will stop... */
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), Failed to submit Rx URB %d&bslash;n&quot;
@@ -2266,7 +2266,7 @@ op_star
 )paren
 id|skb-&gt;cb
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|cb
@@ -2286,7 +2286,7 @@ op_star
 )paren
 id|cb-&gt;context
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2405,7 +2405,7 @@ op_le
 id|USB_IRDA_HEADER
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), empty frame!&bslash;n&quot;
@@ -2640,7 +2640,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|netdev
@@ -2662,7 +2662,7 @@ op_star
 )paren
 id|netdev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2683,7 +2683,7 @@ op_logical_neg
 id|self-&gt;present
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), device not present!&bslash;n&quot;
@@ -2746,7 +2746,7 @@ comma
 id|hwname
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;irlap
@@ -2813,7 +2813,7 @@ id|skb
 )paren
 (brace
 multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t;&t; * Basically, we can&squot;t start the Rx path... */
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), Failed to allocate Rx skb&bslash;n&quot;
@@ -2878,7 +2878,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|netdev
@@ -2900,7 +2900,7 @@ op_star
 )paren
 id|netdev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3080,7 +3080,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -3097,7 +3097,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3770,7 +3770,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), Unrecognised endpoint %02X.&bslash;n&quot;
@@ -3802,7 +3802,7 @@ id|self-&gt;bulk_int_ep
 )paren
 suffix:semicolon
 multiline_comment|/* Should be 8, 16, 32 or 64 bytes */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;bulk_out_mtu
@@ -4069,7 +4069,7 @@ id|desc
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;usb-irda: class_descriptor read %s (%d)&bslash;n&quot;
@@ -4098,7 +4098,7 @@ op_ne
 id|USB_DT_IRDA
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;usb-irda: bad class_descriptor type&bslash;n&quot;
@@ -4195,7 +4195,7 @@ id|i
 suffix:semicolon
 multiline_comment|/* Driver instance index / Rx URB index */
 multiline_comment|/* Note : the probe make sure to call us only for devices that&n;&t; * matches the list of dongle (top of the file). So, we&n;&t; * don&squot;t need to check if the dongle is really ours.&n;&t; * Jean II */
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IRDA-USB found at address %d, Vendor: %x, Product: %x&bslash;n&quot;
@@ -4477,7 +4477,7 @@ id|interface-&gt;desc.bNumEndpoints
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), Bogus endpoints...&bslash;n&quot;
@@ -4594,7 +4594,7 @@ id|ret
 r_goto
 id|err_out_4
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s&bslash;n&quot;
@@ -4980,7 +4980,7 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;USB IrDA support registered&bslash;n&quot;

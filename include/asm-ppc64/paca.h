@@ -7,13 +7,6 @@ macro_line|#include&t;&lt;asm/types.h&gt;
 macro_line|#include&t;&lt;asm/lppaca.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpRegSave.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
-r_extern
-r_struct
-id|paca_struct
-id|paca
-(braket
-)braket
-suffix:semicolon
 r_register
 r_struct
 id|paca_struct
@@ -237,6 +230,13 @@ id|reg_save
 suffix:semicolon
 macro_line|#endif
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|paca_struct
+id|paca
+(braket
+)braket
 suffix:semicolon
 macro_line|#endif /* _PPC64_PACA_H */
 eof

@@ -4,6 +4,7 @@ macro_line|#ifdef HAVE_CONFIG_H
 macro_line|#  include &lt;config.h&gt;
 macro_line|#endif
 macro_line|#include &quot;lkc.h&quot;
+macro_line|#include &quot;images.c&quot;
 macro_line|#include &lt;glade/glade.h&gt;
 macro_line|#include &lt;gtk/gtk.h&gt;
 macro_line|#include &lt;glib.h&gt;
@@ -902,6 +903,14 @@ id|title
 l_int|256
 )braket
 suffix:semicolon
+id|GdkPixmap
+op_star
+id|pixmap
+suffix:semicolon
+id|GdkBitmap
+op_star
+id|mask
+suffix:semicolon
 id|GtkStyle
 op_star
 id|style
@@ -1096,6 +1105,189 @@ c_func
 id|xml
 comma
 l_string|&quot;toolbar1&quot;
+)paren
+suffix:semicolon
+id|pixmap
+op_assign
+id|gdk_pixmap_create_from_xpm_d
+c_func
+(paren
+id|main_wnd-&gt;window
+comma
+op_amp
+id|mask
+comma
+op_amp
+id|style-&gt;bg
+(braket
+id|GTK_STATE_NORMAL
+)braket
+comma
+(paren
+id|gchar
+op_star
+op_star
+)paren
+id|xpm_single_view
+)paren
+suffix:semicolon
+id|gtk_image_set_from_pixmap
+c_func
+(paren
+id|GTK_IMAGE
+(paren
+(paren
+(paren
+id|GtkToolbarChild
+op_star
+)paren
+(paren
+id|g_list_nth
+c_func
+(paren
+id|GTK_TOOLBAR
+c_func
+(paren
+id|widget
+)paren
+op_member_access_from_pointer
+id|children
+comma
+l_int|5
+)paren
+op_member_access_from_pointer
+id|data
+)paren
+)paren
+op_member_access_from_pointer
+id|icon
+)paren
+comma
+id|pixmap
+comma
+id|mask
+)paren
+suffix:semicolon
+id|pixmap
+op_assign
+id|gdk_pixmap_create_from_xpm_d
+c_func
+(paren
+id|main_wnd-&gt;window
+comma
+op_amp
+id|mask
+comma
+op_amp
+id|style-&gt;bg
+(braket
+id|GTK_STATE_NORMAL
+)braket
+comma
+(paren
+id|gchar
+op_star
+op_star
+)paren
+id|xpm_split_view
+)paren
+suffix:semicolon
+id|gtk_image_set_from_pixmap
+c_func
+(paren
+id|GTK_IMAGE
+(paren
+(paren
+(paren
+id|GtkToolbarChild
+op_star
+)paren
+(paren
+id|g_list_nth
+c_func
+(paren
+id|GTK_TOOLBAR
+c_func
+(paren
+id|widget
+)paren
+op_member_access_from_pointer
+id|children
+comma
+l_int|6
+)paren
+op_member_access_from_pointer
+id|data
+)paren
+)paren
+op_member_access_from_pointer
+id|icon
+)paren
+comma
+id|pixmap
+comma
+id|mask
+)paren
+suffix:semicolon
+id|pixmap
+op_assign
+id|gdk_pixmap_create_from_xpm_d
+c_func
+(paren
+id|main_wnd-&gt;window
+comma
+op_amp
+id|mask
+comma
+op_amp
+id|style-&gt;bg
+(braket
+id|GTK_STATE_NORMAL
+)braket
+comma
+(paren
+id|gchar
+op_star
+op_star
+)paren
+id|xpm_tree_view
+)paren
+suffix:semicolon
+id|gtk_image_set_from_pixmap
+c_func
+(paren
+id|GTK_IMAGE
+(paren
+(paren
+(paren
+id|GtkToolbarChild
+op_star
+)paren
+(paren
+id|g_list_nth
+c_func
+(paren
+id|GTK_TOOLBAR
+c_func
+(paren
+id|widget
+)paren
+op_member_access_from_pointer
+id|children
+comma
+l_int|7
+)paren
+op_member_access_from_pointer
+id|data
+)paren
+)paren
+op_member_access_from_pointer
+id|icon
+)paren
+comma
+id|pixmap
+comma
+id|mask
 )paren
 suffix:semicolon
 r_switch
@@ -5601,89 +5793,6 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* Conf management */
-DECL|variable|xpm_menu
-r_static
-r_const
-r_char
-op_star
-id|xpm_menu
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;12 12 2 1&quot;
-comma
-l_string|&quot;  c white&quot;
-comma
-l_string|&quot;. c black&quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;  .         &quot;
-comma
-l_string|&quot;  ..        &quot;
-comma
-l_string|&quot;  ...       &quot;
-comma
-l_string|&quot;  ....      &quot;
-comma
-l_string|&quot;  .....     &quot;
-comma
-l_string|&quot;  ....      &quot;
-comma
-l_string|&quot;  ...       &quot;
-comma
-l_string|&quot;  ..        &quot;
-comma
-l_string|&quot;  .         &quot;
-comma
-l_string|&quot;            &quot;
-)brace
-suffix:semicolon
-DECL|variable|xpm_void
-r_static
-r_const
-r_char
-op_star
-id|xpm_void
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;12 12 2 1&quot;
-comma
-l_string|&quot;  c white&quot;
-comma
-l_string|&quot;. c black&quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-comma
-l_string|&quot;            &quot;
-)brace
-suffix:semicolon
 multiline_comment|/* Fill a row of strings */
 DECL|function|fill_row
 r_static

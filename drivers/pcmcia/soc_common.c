@@ -581,9 +581,6 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|debug
 c_func
 (paren
@@ -594,24 +591,6 @@ comma
 l_string|&quot;suspending socket&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|soc_common_pcmcia_config_skt
-c_func
-(paren
-id|skt
-comma
-op_amp
-id|dead_socket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-l_int|0
-)paren
 id|skt-&gt;ops
 op_member_access_from_pointer
 id|socket_suspend
@@ -621,7 +600,7 @@ id|skt
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 r_static

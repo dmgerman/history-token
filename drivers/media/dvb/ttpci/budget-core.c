@@ -21,7 +21,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|budget_debug
+id|debug
 comma
 l_string|&quot;Turn on/off budget debugging (default:off).&quot;
 )paren
@@ -2018,11 +2018,6 @@ op_amp
 id|budget-&gt;i2c_adap
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|budget-&gt;grabbing
-)paren
 id|vfree
 c_func
 (paren

@@ -247,6 +247,10 @@ DECL|macro|CHIPREV_5704_AX
 mdefine_line|#define   CHIPREV_5704_AX&t;&t; 0x20
 DECL|macro|CHIPREV_5704_BX
 mdefine_line|#define   CHIPREV_5704_BX&t;&t; 0x21
+DECL|macro|CHIPREV_5750_AX
+mdefine_line|#define   CHIPREV_5750_AX&t;&t; 0x40
+DECL|macro|CHIPREV_5750_BX
+mdefine_line|#define   CHIPREV_5750_BX&t;&t; 0x41
 DECL|macro|GET_METAL_REV
 mdefine_line|#define  GET_METAL_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &amp; 0xff)
 DECL|macro|METAL_REV_A0
@@ -2824,6 +2828,8 @@ DECL|macro|MII_TG3_CTRL_ENABLE_AS_MASTER
 mdefine_line|#define  MII_TG3_CTRL_ENABLE_AS_MASTER&t;0x1000
 DECL|macro|MII_TG3_EXT_CTRL
 mdefine_line|#define MII_TG3_EXT_CTRL&t;&t;0x10 /* Extended control register */
+DECL|macro|MII_TG3_EXT_CTRL_FIFO_ELASTIC
+mdefine_line|#define  MII_TG3_EXT_CTRL_FIFO_ELASTIC&t;0x0001
 DECL|macro|MII_TG3_EXT_CTRL_LNK3_LED_MODE
 mdefine_line|#define  MII_TG3_EXT_CTRL_LNK3_LED_MODE&t;0x0002
 DECL|macro|MII_TG3_EXT_CTRL_TBI
@@ -4318,6 +4324,8 @@ DECL|macro|TG3_FLG2_HW_TSO
 mdefine_line|#define TG3_FLG2_HW_TSO&t;&t;&t;0x00010000
 DECL|macro|TG3_FLG2_SERDES_PREEMPHASIS
 mdefine_line|#define TG3_FLG2_SERDES_PREEMPHASIS&t;0x00020000
+DECL|macro|TG3_FLG2_5705_PLUS
+mdefine_line|#define TG3_FLG2_5705_PLUS&t;&t;0x00040000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs

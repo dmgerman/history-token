@@ -22,6 +22,8 @@ id|r10bio_pool_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 comma
 r_void
@@ -130,6 +132,8 @@ id|r10buf_pool_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 comma
 r_void

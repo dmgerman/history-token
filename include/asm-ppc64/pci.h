@@ -343,6 +343,31 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
+r_extern
+id|pgprot_t
+id|pci_phys_mem_access_prot
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif /* __PPC64_PCI_H */
 eof

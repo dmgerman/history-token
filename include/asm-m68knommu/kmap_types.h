@@ -1,6 +1,6 @@
-macro_line|#ifndef _ASM_KMAP_TYPES_H
-DECL|macro|_ASM_KMAP_TYPES_H
-mdefine_line|#define _ASM_KMAP_TYPES_H
+macro_line|#ifndef __ASM_M68K_KMAP_TYPES_H
+DECL|macro|__ASM_M68K_KMAP_TYPES_H
+mdefine_line|#define __ASM_M68K_KMAP_TYPES_H
 DECL|enum|km_type
 r_enum
 id|km_type
@@ -37,6 +37,12 @@ id|KM_IRQ0
 comma
 DECL|enumerator|KM_IRQ1
 id|KM_IRQ1
+comma
+DECL|enumerator|KM_SOFTIRQ0
+id|KM_SOFTIRQ0
+comma
+DECL|enumerator|KM_SOFTIRQ1
+id|KM_SOFTIRQ1
 comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR

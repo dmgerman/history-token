@@ -18,6 +18,8 @@ DECL|function|mapping_gfp_mask
 r_static
 r_inline
 r_int
+r_int
+id|__nocast
 id|mapping_gfp_mask
 c_func
 (paren

@@ -548,6 +548,32 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do. */
 )brace
+multiline_comment|/* TODO: integrate with include/asm-generic/pci.h ? */
+DECL|function|pci_get_legacy_ide_irq
+r_static
+r_inline
+r_int
+id|pci_get_legacy_ide_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|channel
+)paren
+(brace
+r_return
+id|channel
+ques
+c_cond
+l_int|15
+suffix:colon
+l_int|14
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|pcibios_resource_to_bus

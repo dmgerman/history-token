@@ -67,9 +67,9 @@ r_int
 r_char
 id|irq
 suffix:semicolon
+singleline_comment|//signed   char&t;count;
 DECL|member|count
 r_int
-r_char
 id|count
 suffix:semicolon
 DECL|member|DTR
@@ -80,6 +80,10 @@ suffix:semicolon
 DECL|member|reg
 r_int
 id|reg
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -204,14 +208,11 @@ r_int
 r_char
 id|COR2
 suffix:semicolon
-macro_line|#ifdef SX_REPORT_OVERRUN
 DECL|member|overrun
 r_int
 r_int
 id|overrun
 suffix:semicolon
-macro_line|#endif&t;
-macro_line|#ifdef SX_REPORT_FIFO
 DECL|member|hits
 r_int
 r_int
@@ -220,7 +221,10 @@ id|hits
 l_int|10
 )braket
 suffix:semicolon
-macro_line|#endif
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

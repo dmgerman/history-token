@@ -8,6 +8,10 @@ mdefine_line|#define do_signal do_signal_renamed
 macro_line|#include &quot;asm/arch/signal.h&quot;
 DECL|macro|do_signal
 macro_line|#undef do_signal
+DECL|macro|ptrace_signal_deliver
+macro_line|#undef ptrace_signal_deliver
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do {} while(0)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

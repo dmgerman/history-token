@@ -490,13 +490,13 @@ id|cpu
 suffix:semicolon
 r_int
 r_int
-id|end
+id|start
 op_assign
 id|tss-&gt;ist
 (braket
 id|k
 )braket
-op_plus
+op_minus
 id|EXCEPTION_STKSZ
 suffix:semicolon
 r_if
@@ -504,14 +504,14 @@ c_cond
 (paren
 id|stack
 op_ge
+id|start
+op_logical_and
+id|stack
+OL
 id|tss-&gt;ist
 (braket
 id|k
 )braket
-op_logical_and
-id|stack
-op_le
-id|end
 )paren
 r_return
 (paren
@@ -519,7 +519,10 @@ r_int
 r_int
 op_star
 )paren
-id|end
+id|tss-&gt;ist
+(braket
+id|k
+)braket
 suffix:semicolon
 )brace
 r_return
@@ -1600,12 +1603,6 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* make sure back scroll still works */
 r_if
 c_cond
 (paren
@@ -2807,37 +2804,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reassert NMI in case it became active meanwhile&n;&t; * as it&squot;s edge-triggered.&n;&t; */
-id|outb
-c_func
-(paren
-l_int|0x8f
-comma
-l_int|0x70
-)paren
-suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
-id|outb
-c_func
-(paren
-l_int|0x0f
-comma
-l_int|0x70
-)paren
-suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
 )brace
 DECL|function|do_int3
 id|asmlinkage

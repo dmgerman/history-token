@@ -215,18 +215,9 @@ c_func
 suffix:semicolon
 )brace
 r_void
-DECL|function|update_mmu_cache
-id|update_mmu_cache
+DECL|function|lazy_mmu_prot_update
+id|lazy_mmu_prot_update
 (paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|vaddr
-comma
 id|pte_t
 id|pte
 )paren
@@ -261,7 +252,6 @@ c_func
 id|pte
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t use VADDR: it may not be mapped on this CPU (or may have just been flushed): */
 id|addr
 op_assign
 (paren

@@ -413,6 +413,8 @@ id|bio_alloc
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 comma
 r_int
 )paren
@@ -425,6 +427,8 @@ id|bio_alloc_bioset
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 comma
 r_int
 comma
@@ -515,6 +519,8 @@ id|bio
 op_star
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 r_extern

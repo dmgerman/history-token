@@ -532,7 +532,7 @@ mdefine_line|#define&t;MV64360_SRAM_ERR_DATA_HI&t;&t;0x03a0
 DECL|macro|MV64360_SRAM_ERR_PARITY
 mdefine_line|#define&t;MV64360_SRAM_ERR_PARITY&t;&t;&t;0x03a8
 DECL|macro|MV64360_SRAM_SIZE
-mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00200000 /* 2 MB of SRAM */
+mdefine_line|#define&t;MV64360_SRAM_SIZE&t;&t;&t;0x00040000 /* 2Mb/256KB SRAM */
 multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;SDRAM/MEM Cotnroller Registers&n; *&n; *****************************************************************************&n; */
 multiline_comment|/* SDRAM Config Registers (64260) */
 DECL|macro|GT64260_SDRAM_CONFIG

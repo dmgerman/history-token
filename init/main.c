@@ -237,9 +237,9 @@ id|system_state
 suffix:semicolon
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
-mdefine_line|#define MAX_INIT_ARGS 32
+mdefine_line|#define MAX_INIT_ARGS CONFIG_INIT_ENV_ARG_LIMIT
 DECL|macro|MAX_INIT_ENVS
-mdefine_line|#define MAX_INIT_ENVS 32
+mdefine_line|#define MAX_INIT_ENVS CONFIG_INIT_ENV_ARG_LIMIT
 r_extern
 r_void
 id|time_init

@@ -321,7 +321,7 @@ id|u32
 id|data
 )paren
 (brace
-id|u32
+id|__be32
 id|be
 op_assign
 id|cpu_to_be32
@@ -385,7 +385,7 @@ id|addr
 )paren
 (brace
 macro_line|#ifdef AMB_MMIO
-id|u32
+id|__be32
 id|be
 op_assign
 id|dev-&gt;membase
@@ -399,7 +399,7 @@ id|u32
 )braket
 suffix:semicolon
 macro_line|#else
-id|u32
+id|__be32
 id|be
 op_assign
 id|inl
@@ -7714,7 +7714,7 @@ multiline_comment|/********** give adapter parameters **********/
 DECL|function|bus_addr
 r_static
 r_inline
-id|u32
+id|__be32
 id|bus_addr
 c_func
 (paren

@@ -76,6 +76,8 @@ r_int
 id|count
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -149,6 +151,8 @@ op_star
 id|acl
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -679,6 +683,8 @@ id|mode_t
 id|mode
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace

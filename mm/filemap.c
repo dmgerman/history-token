@@ -2202,6 +2202,7 @@ id|index
 )paren
 suffix:semicolon
 r_int
+r_int
 id|gfp_mask
 suffix:semicolon
 r_if
@@ -4371,8 +4372,6 @@ r_int
 id|size
 comma
 id|pgoff
-comma
-id|endoff
 suffix:semicolon
 r_int
 id|did_readaround
@@ -4388,20 +4387,6 @@ op_assign
 (paren
 (paren
 id|address
-op_minus
-id|area-&gt;vm_start
-)paren
-op_rshift
-id|PAGE_CACHE_SHIFT
-)paren
-op_plus
-id|area-&gt;vm_pgoff
-suffix:semicolon
-id|endoff
-op_assign
-(paren
-(paren
-id|area-&gt;vm_end
 op_minus
 id|area-&gt;vm_start
 )paren
@@ -4451,18 +4436,6 @@ id|area
 )paren
 r_goto
 id|no_cached_page
-suffix:semicolon
-multiline_comment|/*&n;&t; * The &quot;size&quot; of the file, as far as mmap is concerned, isn&squot;t bigger&n;&t; * than the mapping&n;&t; */
-r_if
-c_cond
-(paren
-id|size
-OG
-id|endoff
-)paren
-id|size
-op_assign
-id|endoff
 suffix:semicolon
 multiline_comment|/*&n;&t; * The readahead code wants to be told about each and every page&n;&t; * so it can build and shrink its windows appropriately&n;&t; *&n;&t; * For sequential accesses, we use the generic readahead logic.&n;&t; */
 r_if

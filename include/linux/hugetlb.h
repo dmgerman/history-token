@@ -275,7 +275,7 @@ id|sysctl_hugetlb_shm_group
 suffix:semicolon
 macro_line|#ifndef ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
+mdefine_line|#define is_hugepage_only_range(mm, addr, len)&t;0
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables(tlb, prev, start, end) do { } while (0)
 macro_line|#endif
@@ -357,7 +357,7 @@ mdefine_line|#define prepare_hugepage_range(addr, len)&t;(-EINVAL)
 DECL|macro|pmd_huge
 mdefine_line|#define pmd_huge(x)&t;0
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
+mdefine_line|#define is_hugepage_only_range(mm, addr, len)&t;0
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables(tlb, prev, start, end) do { } while (0)
 DECL|macro|alloc_huge_page

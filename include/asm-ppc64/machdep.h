@@ -23,6 +23,9 @@ suffix:semicolon
 r_struct
 id|rtc_time
 suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|struct|smp_ops_t
 r_struct
@@ -747,6 +750,31 @@ id|dev
 comma
 r_int
 id|channel
+)paren
+suffix:semicolon
+multiline_comment|/* Get access protection for /dev/mem */
+DECL|member|phys_mem_access_prot
+id|pgprot_t
+(paren
+op_star
+id|phys_mem_access_prot
+)paren
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|vma_prot
 )paren
 suffix:semicolon
 )brace

@@ -145,6 +145,9 @@ id|MT_DEVICE
 comma
 multiline_comment|/* VRAM&t;&t;*/
 (brace
+(paren
+id|u32
+)paren
 id|IO_BASE
 comma
 id|IO_START

@@ -2682,11 +2682,16 @@ id|memcell_buf
 suffix:semicolon
 id|numa_domain
 op_assign
+id|numa_enabled
+ques
+c_cond
 id|of_node_numa_domain
 c_func
 (paren
 id|memory
 )paren
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2697,15 +2702,6 @@ id|nid
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem_start
-template_param
-id|start_paddr
-)paren
-(brace
-multiline_comment|/* should be no overlaps ! */
 id|dbg
 c_func
 (paren
@@ -2730,7 +2726,6 @@ comma
 id|mem_size
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -211,6 +211,7 @@ suffix:semicolon
 multiline_comment|/* Flag indicating when thread should exit */
 DECL|member|exit
 r_int
+r_int
 m_exit
 suffix:colon
 l_int|1
@@ -218,12 +219,14 @@ suffix:semicolon
 multiline_comment|/* Flag indicating if the CA device is open */
 DECL|member|open
 r_int
+r_int
 id|open
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Flag indicating the thread should wake up now */
 DECL|member|wakeup
+r_int
 r_int
 id|wakeup
 suffix:colon
@@ -3238,16 +3241,6 @@ id|slot_state
 op_assign
 id|DVB_CA_SLOTSTATE_NONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|rx_buffer.data
-)paren
 id|vfree
 c_func
 (paren
@@ -3837,7 +3830,7 @@ id|delay
 op_assign
 id|HZ
 op_div
-l_int|100
+l_int|10
 suffix:semicolon
 )brace
 )brace
@@ -7204,13 +7197,6 @@ c_func
 id|ca-&gt;dvbdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ca-&gt;slot_info
-op_ne
-l_int|NULL
-)paren
 id|kfree
 c_func
 (paren

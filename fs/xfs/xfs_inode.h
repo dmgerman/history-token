@@ -1394,8 +1394,15 @@ id|xfs_dinode_core
 op_star
 comma
 r_int
-comma
-id|xfs_arch_t
+)paren
+suffix:semicolon
+id|uint
+id|xfs_ip2xflags
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
 )paren
 suffix:semicolon
 id|uint
@@ -1405,8 +1412,6 @@ c_func
 r_struct
 id|xfs_dinode_core
 op_star
-comma
-id|xfs_arch_t
 )paren
 suffix:semicolon
 r_int

@@ -52,8 +52,6 @@ DECL|macro|for_each_pb_page
 mdefine_line|#define for_each_pb_page(pbe, pblist) &bslash;&n;&t;for (pbe = pblist ; pbe ; pbe = (pbe+PB_PAGE_SKIP)-&gt;next)
 DECL|macro|SWAP_FILENAME_MAXLENGTH
 mdefine_line|#define SWAP_FILENAME_MAXLENGTH&t;32
-DECL|macro|SUSPEND_PD_PAGES
-mdefine_line|#define SUSPEND_PD_PAGES(x)     (((x)*sizeof(struct pbe))/PAGE_SIZE+1)
 r_extern
 id|dev_t
 id|swsusp_resume_device

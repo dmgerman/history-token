@@ -1040,9 +1040,15 @@ id|current-&gt;mm-&gt;start_stack
 op_assign
 id|bprm-&gt;p
 suffix:semicolon
-id|current-&gt;mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 macro_line|#if 0
 id|printk

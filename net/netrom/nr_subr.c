@@ -33,7 +33,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -88,7 +89,8 @@ r_int
 id|nr
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nrom
 op_assign
@@ -249,7 +251,8 @@ r_int
 id|nr
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nrom
 op_assign
@@ -316,7 +319,8 @@ r_int
 id|ns
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -392,7 +396,8 @@ r_int
 id|frametype
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign

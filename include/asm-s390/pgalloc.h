@@ -3,7 +3,6 @@ macro_line|#ifndef _S390_PGALLOC_H
 DECL|macro|_S390_PGALLOC_H
 mdefine_line|#define _S390_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

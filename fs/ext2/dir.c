@@ -3077,6 +3077,16 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
+comma
+l_int|0
+comma
+id|chunk_size
+)paren
+suffix:semicolon
 id|de
 op_assign
 (paren

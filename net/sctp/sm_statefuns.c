@@ -589,10 +589,10 @@ comma
 id|TCP
 )paren
 op_logical_and
+id|sk_acceptq_is_full
+c_func
 (paren
-id|sk-&gt;sk_ack_backlog
-op_ge
-id|sk-&gt;sk_max_ack_backlog
+id|sk
 )paren
 )paren
 )paren

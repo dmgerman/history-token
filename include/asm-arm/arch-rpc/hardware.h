@@ -3,6 +3,13 @@ macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
 macro_line|#include &lt;asm/arch/memory.h&gt;
+macro_line|#ifndef __ASSEMBLY__
+DECL|macro|IOMEM
+mdefine_line|#define IOMEM(x) ((void __iomem *)(x))
+macro_line|#else
+DECL|macro|IOMEM
+mdefine_line|#define IOMEM(x) x
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * What hardware must be present&n; */
 DECL|macro|HAS_IOMD
 mdefine_line|#define HAS_IOMD
@@ -24,7 +31,7 @@ mdefine_line|#define IO_START&t;&t;0x03000000&t;/* I/O */
 DECL|macro|IO_SIZE
 mdefine_line|#define IO_SIZE&t;&t;&t;0x01000000
 DECL|macro|IO_BASE
-mdefine_line|#define IO_BASE&t;&t;&t;0xe0000000
+mdefine_line|#define IO_BASE&t;&t;&t;IOMEM(0xe0000000)
 DECL|macro|SCREEN_START
 mdefine_line|#define SCREEN_START&t;&t;0x02000000&t;/* VRAM */
 DECL|macro|SCREEN_END
@@ -41,13 +48,13 @@ mdefine_line|#define VIDC_BASE&t;&t;(void __iomem *)0xe0400000
 DECL|macro|EXPMASK_BASE
 mdefine_line|#define EXPMASK_BASE&t;&t;0xe0360000
 DECL|macro|IOMD_BASE
-mdefine_line|#define IOMD_BASE&t;&t;0xe0200000
+mdefine_line|#define IOMD_BASE&t;&t;IOMEM(0xe0200000)
 DECL|macro|IOC_BASE
-mdefine_line|#define IOC_BASE&t;&t;0xe0200000
+mdefine_line|#define IOC_BASE&t;&t;IOMEM(0xe0200000)
 DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t;&t;0xe0010000
+mdefine_line|#define PCIO_BASE&t;&t;IOMEM(0xe0010000)
 DECL|macro|FLOPPYDMA_BASE
-mdefine_line|#define FLOPPYDMA_BASE&t;&t;0xe002a000
+mdefine_line|#define FLOPPYDMA_BASE&t;&t;IOMEM(0xe002a000)
 DECL|macro|FLUSH_BASE_PHYS
 mdefine_line|#define FLUSH_BASE_PHYS&t;&t;0x00000000&t;/* ROM */
 DECL|macro|vidc_writel

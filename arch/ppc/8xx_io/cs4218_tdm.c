@@ -83,12 +83,12 @@ id|sound_read_buffers
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|cs4218_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cs4218_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Local copies of things we put in the control register.  Output&n; * volume, like most codecs is really attenuation.&n; */
 DECL|variable|cs4218_rate_index

@@ -16,29 +16,29 @@ DECL|macro|__GFP_HIGHMEM
 mdefine_line|#define __GFP_HIGHMEM&t;0x02
 multiline_comment|/*&n; * Action modifiers - doesn&squot;t change the zoning&n; *&n; * __GFP_REPEAT: Try hard to allocate the memory, but the allocation attempt&n; * _might_ fail.  This depends upon the particular VM implementation.&n; *&n; * __GFP_NOFAIL: The VM implementation _must_ retry infinitely: the caller&n; * cannot handle allocation failures.&n; *&n; * __GFP_NORETRY: The VM implementation must not retry indefinitely.&n; */
 DECL|macro|__GFP_WAIT
-mdefine_line|#define __GFP_WAIT&t;0x10&t;/* Can wait and reschedule? */
+mdefine_line|#define __GFP_WAIT&t;0x10u&t;/* Can wait and reschedule? */
 DECL|macro|__GFP_HIGH
-mdefine_line|#define __GFP_HIGH&t;0x20&t;/* Should access emergency pools? */
+mdefine_line|#define __GFP_HIGH&t;0x20u&t;/* Should access emergency pools? */
 DECL|macro|__GFP_IO
-mdefine_line|#define __GFP_IO&t;0x40&t;/* Can start physical IO? */
+mdefine_line|#define __GFP_IO&t;0x40u&t;/* Can start physical IO? */
 DECL|macro|__GFP_FS
-mdefine_line|#define __GFP_FS&t;0x80&t;/* Can call down to low-level FS? */
+mdefine_line|#define __GFP_FS&t;0x80u&t;/* Can call down to low-level FS? */
 DECL|macro|__GFP_COLD
-mdefine_line|#define __GFP_COLD&t;0x100&t;/* Cache-cold page required */
+mdefine_line|#define __GFP_COLD&t;0x100u&t;/* Cache-cold page required */
 DECL|macro|__GFP_NOWARN
-mdefine_line|#define __GFP_NOWARN&t;0x200&t;/* Suppress page allocation failure warning */
+mdefine_line|#define __GFP_NOWARN&t;0x200u&t;/* Suppress page allocation failure warning */
 DECL|macro|__GFP_REPEAT
-mdefine_line|#define __GFP_REPEAT&t;0x400&t;/* Retry the allocation.  Might fail */
+mdefine_line|#define __GFP_REPEAT&t;0x400u&t;/* Retry the allocation.  Might fail */
 DECL|macro|__GFP_NOFAIL
-mdefine_line|#define __GFP_NOFAIL&t;0x800&t;/* Retry for ever.  Cannot fail */
+mdefine_line|#define __GFP_NOFAIL&t;0x800u&t;/* Retry for ever.  Cannot fail */
 DECL|macro|__GFP_NORETRY
-mdefine_line|#define __GFP_NORETRY&t;0x1000&t;/* Do not retry.  Might fail */
+mdefine_line|#define __GFP_NORETRY&t;0x1000u&t;/* Do not retry.  Might fail */
 DECL|macro|__GFP_NO_GROW
-mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
+mdefine_line|#define __GFP_NO_GROW&t;0x2000u&t;/* Slab internal usage */
 DECL|macro|__GFP_COMP
-mdefine_line|#define __GFP_COMP&t;0x4000&t;/* Add compound page metadata */
+mdefine_line|#define __GFP_COMP&t;0x4000u&t;/* Add compound page metadata */
 DECL|macro|__GFP_ZERO
-mdefine_line|#define __GFP_ZERO&t;0x8000&t;/* Return zeroed page on success */
+mdefine_line|#define __GFP_ZERO&t;0x8000u&t;/* Return zeroed page on success */
 DECL|macro|__GFP_BITS_SHIFT
 mdefine_line|#define __GFP_BITS_SHIFT 16&t;/* Room for 16 __GFP_FOO bits */
 DECL|macro|__GFP_BITS_MASK
@@ -118,6 +118,7 @@ id|nid
 comma
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -172,6 +173,8 @@ id|alloc_pages_current
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -189,6 +192,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -228,6 +232,7 @@ id|alloc_page_vma
 c_func
 (paren
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_struct
@@ -259,6 +264,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -278,6 +284,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 )paren
 )paren

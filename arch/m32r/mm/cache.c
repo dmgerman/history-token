@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m32r/mm/cache.c&n; *&n; *  Copyright (C) 2002  Hirokazu Takata&n; */
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|macro|MCCR
@@ -30,9 +29,9 @@ DECL|macro|CHECK_MCCR
 mdefine_line|#define CHECK_MCCR(mccr)&t;(mccr = *MCCR)
 macro_line|#elif defined(CONFIG_CHIP_M32102)
 DECL|macro|MCCR
-mdefine_line|#define MCCR&t;&t;((volatile unsigned long*)0xfffffffc)
+mdefine_line|#define MCCR&t;&t;((volatile unsigned char*)0xfffffffe)
 DECL|macro|MCCR_IIV
-mdefine_line|#define MCCR_IIV&t;(1UL &lt;&lt; 8)&t;/* I-cache invalidate */
+mdefine_line|#define MCCR_IIV&t;(1UL &lt;&lt; 0)&t;/* I-cache invalidate */
 DECL|macro|MCCR_ICACHE_INV
 mdefine_line|#define MCCR_ICACHE_INV&t;&t;MCCR_IIV
 macro_line|#endif /* CONFIG_CHIP_XNUX2 || CONFIG_CHIP_M32700 */

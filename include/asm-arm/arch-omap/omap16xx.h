@@ -112,6 +112,9 @@ DECL|macro|OMAP16XX_CONF_VOLTAGE_VDDSHV9
 mdefine_line|#define OMAP16XX_CONF_VOLTAGE_VDDSHV9&t;(1 &lt;&lt; 11)
 DECL|macro|OMAP16XX_SUBLVDS_CONF_VALID
 mdefine_line|#define OMAP16XX_SUBLVDS_CONF_VALID&t;(1 &lt;&lt; 13)
+multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * System control registers&n; * ----------------------------------------------------------------------------&n; */
+DECL|macro|OMAP1610_RESET_CONTROL
+mdefine_line|#define OMAP1610_RESET_CONTROL  0xfffe1140
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * TIPB bus interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TIPB_SWITCH_BASE
 mdefine_line|#define TIPB_SWITCH_BASE&t;&t; (0xfffbc800)

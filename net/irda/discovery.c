@@ -343,7 +343,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* How many we expired */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|log
@@ -597,7 +597,7 @@ id|discovery_t
 op_star
 id|discovery
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|log
@@ -737,7 +737,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* How many we picked */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|pn
@@ -749,7 +749,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|log
@@ -1451,7 +1451,7 @@ op_star
 id|file
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irlmp

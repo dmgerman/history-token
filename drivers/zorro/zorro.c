@@ -438,7 +438,7 @@ id|ZORRO
 r_return
 l_int|0
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
 l_string|&quot;Zorro: Probing AutoConfig expansion devices: %d device%s&bslash;n&quot;

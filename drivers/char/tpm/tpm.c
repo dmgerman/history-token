@@ -23,12 +23,12 @@ c_func
 id|tpm_chip_list
 )paren
 suffix:semicolon
-DECL|variable|driver_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|driver_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dev_mask
 r_static

@@ -1105,12 +1105,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Only exists on P-series. */
-DECL|variable|ppc_rtas
-id|cond_syscall
-c_func
-(paren
-id|ppc_rtas
-)paren
-suffix:semicolon
 eof

@@ -102,6 +102,10 @@ macro_line|#ifndef __HAVE_ARCH_PGD_OFFSET_GATE
 DECL|macro|pgd_offset_gate
 mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset(mm, addr)
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_LAZY_MMU_PROT_UPDATE
+DECL|macro|lazy_mmu_prot_update
+mdefine_line|#define lazy_mmu_prot_update(pte)&t;do { } while (0)
+macro_line|#endif
 multiline_comment|/*&n; * When walking page tables, get the address of the next boundary, or&n; * the end address of the range if that comes earlier.  Although end might&n; * wrap to 0 only in clear_page_range, __boundary may wrap to 0 throughout.&n; */
 macro_line|#ifndef pgd_addr_end
 DECL|macro|pgd_addr_end

@@ -1154,9 +1154,15 @@ id|current-&gt;mm-&gt;start_brk
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* do this so that we can load the interpreter, if need be&n;&t; * - we will change some of these later&n;&t; */
-id|current-&gt;mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
 id|retval

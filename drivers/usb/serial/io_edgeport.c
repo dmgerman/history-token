@@ -11672,7 +11672,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|debug
+id|low_latency
 comma
 l_string|&quot;Low latency enabled or not&quot;
 )paren

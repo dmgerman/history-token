@@ -62,25 +62,6 @@ r_return
 id|head-&gt;ebp
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_4G
-multiline_comment|/* With a 4G kernel/user split, user pages are not directly&n; * accessible from the kernel, so don&squot;t try&n; */
-DECL|function|pages_present
-r_static
-r_int
-id|pages_present
-c_func
-(paren
-r_struct
-id|frame_head
-op_star
-id|head
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#else
 multiline_comment|/* check that the page(s) containing the frame head are present */
 DECL|function|pages_present
 r_static
@@ -139,7 +120,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_X86_4G */
 multiline_comment|/*&n; * |             | /&bslash; Higher addresses&n; * |             |&n; * --------------- stack base (address of current_thread_info)&n; * | thread info |&n; * .             .&n; * |    stack    |&n; * --------------- saved regs-&gt;ebp value if valid (frame_head address)&n; * .             .&n; * --------------- struct pt_regs stored on stack (struct pt_regs *)&n; * |             |&n; * .             .&n; * |             |&n; * --------------- %esp&n; * |             |&n; * |             | &bslash;/ Lower addresses&n; *&n; * Thus, &amp;pt_regs &lt;-&gt; stack base restricts the valid(ish) ebp values&n; */
 macro_line|#ifdef CONFIG_FRAME_POINTER
 DECL|function|valid_kernel_stack

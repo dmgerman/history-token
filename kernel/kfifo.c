@@ -22,6 +22,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 id|spinlock_t
@@ -117,6 +119,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 id|spinlock_t

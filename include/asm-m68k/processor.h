@@ -120,12 +120,18 @@ r_char
 id|syscall_trace
 suffix:semicolon
 multiline_comment|/* count of syscall interceptors */
+DECL|member|memdie
+r_int
+r_char
+id|memdie
+suffix:semicolon
+multiline_comment|/* task was selected to be killed */
 DECL|member|pad
 r_int
 r_char
 id|pad
 (braket
-l_int|3
+l_int|2
 )braket
 suffix:semicolon
 )brace

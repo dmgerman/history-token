@@ -557,7 +557,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|task
@@ -672,7 +672,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), unknown state %d&bslash;n&quot;

@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
+DECL|macro|SERIAL_DEBUG_PCI
+macro_line|#undef SERIAL_DEBUG_PCI
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|FL_BASE_MASK
 mdefine_line|#define FL_BASE_MASK&t;&t;0x0007
@@ -2133,6 +2135,43 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pci_netmos_init
+r_static
+r_int
+id|__devinit
+id|pci_netmos_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* subdevice 0x00PS means &lt;P&gt; parallel, &lt;S&gt; serial */
+r_int
+r_int
+id|num_serial
+op_assign
+id|dev-&gt;subsystem_device
+op_amp
+l_int|0xf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_serial
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_return
+id|num_serial
+suffix:semicolon
+)brace
 r_static
 r_int
 DECL|function|pci_default_setup
@@ -3448,6 +3487,40 @@ dot
 id|init
 op_assign
 id|pci_xircom_init
+comma
+dot
+id|setup
+op_assign
+id|pci_default_setup
+comma
+)brace
+comma
+multiline_comment|/*&n;&t; * Netmos cards&n;&t; */
+(brace
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_NETMOS
+comma
+dot
+id|device
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|init
+op_assign
+id|pci_netmos_init
 comma
 dot
 id|setup
@@ -7124,6 +7197,22 @@ id|pbn_b2_8_115200
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_SEALEVEL
+comma
+id|PCI_DEVICE_ID_SEALEVEL_UCOMM8
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b2_8_115200
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_PLX
 comma
 id|PCI_DEVICE_ID_PLX_GTEK_SERIAL2
@@ -8371,6 +8460,22 @@ id|pbn_sgi_ioc3
 )brace
 comma
 multiline_comment|/*&n;&t; * HP Diva card&n;&t; */
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA
+comma
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA_RMP3
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b1_1_115200
+)brace
+comma
 (brace
 id|PCI_VENDOR_ID_HP
 comma

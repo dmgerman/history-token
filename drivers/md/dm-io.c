@@ -63,6 +63,8 @@ id|alloc_io
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_void

@@ -9,6 +9,31 @@ id|arch_thread
 (brace
 )brace
 suffix:semicolon
+multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
+DECL|function|rep_nop
+r_extern
+r_inline
+r_void
+id|rep_nop
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rep;nop&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()   rep_nop()
 DECL|macro|INIT_ARCH_THREAD
 mdefine_line|#define INIT_ARCH_THREAD { }
 DECL|macro|current_text_addr

@@ -21,6 +21,7 @@ macro_line|#include &quot;asm/elf.h&quot;
 macro_line|#include &quot;asm/user.h&quot;
 macro_line|#include &quot;ubd_user.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
+macro_line|#include &quot;asm/setup.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;kern.h&quot;
@@ -35,6 +36,90 @@ macro_line|#include &quot;mode_kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
 DECL|macro|DEFAULT_COMMAND_LINE
 mdefine_line|#define DEFAULT_COMMAND_LINE &quot;root=98:0&quot;
+multiline_comment|/* Changed in linux_main and setup_arch, which run before SMP is started */
+DECL|variable|command_line
+r_char
+id|command_line
+(braket
+id|COMMAND_LINE_SIZE
+)braket
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
+DECL|function|add_arg
+r_void
+id|add_arg
+c_func
+(paren
+r_char
+op_star
+id|arg
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|command_line
+)paren
+op_plus
+id|strlen
+c_func
+(paren
+id|arg
+)paren
+op_plus
+l_int|1
+OG
+id|COMMAND_LINE_SIZE
+)paren
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;add_arg: Too much command line!&bslash;n&quot;
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|strlen
+c_func
+(paren
+id|command_line
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|strcat
+c_func
+(paren
+id|command_line
+comma
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+)brace
+id|strcat
+c_func
+(paren
+id|command_line
+comma
+id|arg
+)paren
+suffix:semicolon
+)brace
 DECL|variable|boot_cpu_data
 r_struct
 id|cpuinfo_um
@@ -1158,19 +1243,15 @@ c_cond
 (paren
 id|add
 )paren
-(brace
 id|add_arg
 c_func
 (paren
-id|saved_command_line
-comma
 id|argv
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1183,8 +1264,6 @@ l_int|0
 id|add_arg
 c_func
 (paren
-id|saved_command_line
-comma
 id|DEFAULT_COMMAND_LINE
 )paren
 suffix:semicolon
@@ -1718,12 +1797,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|strcpy
+id|strlcpy
 c_func
 (paren
+id|saved_command_line
+comma
 id|command_line
 comma
-id|saved_command_line
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 op_star
@@ -1782,5 +1863,4 @@ id|end
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

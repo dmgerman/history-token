@@ -1753,7 +1753,13 @@ id|tsk-&gt;acct_rss_mem1
 op_add_assign
 id|delta
 op_star
-id|tsk-&gt;mm-&gt;rss
+id|get_mm_counter
+c_func
+(paren
+id|tsk-&gt;mm
+comma
+id|rss
+)paren
 suffix:semicolon
 id|tsk-&gt;acct_vm_mem1
 op_add_assign

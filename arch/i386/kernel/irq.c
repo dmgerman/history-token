@@ -4,6 +4,22 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|irq_cpustat_t
+comma
+id|irq_stat
+)paren
+id|____cacheline_maxaligned_in_smp
+suffix:semicolon
+DECL|variable|irq_stat
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|irq_stat
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves.&n; */
 DECL|function|ack_bad_irq
@@ -1028,10 +1044,13 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
+id|per_cpu
+c_func
+(paren
 id|irq_stat
-(braket
+comma
 id|j
-)braket
+)paren
 dot
 id|apic_timer_irqs
 )paren

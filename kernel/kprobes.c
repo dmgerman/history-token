@@ -193,7 +193,7 @@ l_int|0
 )paren
 (brace
 r_goto
-id|out
+id|rm_kprobe
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -298,6 +298,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|rm_kprobe
+suffix:colon
 r_if
 c_cond
 (paren
