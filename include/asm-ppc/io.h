@@ -389,7 +389,6 @@ DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
 r_void
@@ -671,7 +670,6 @@ DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|page_to_bus
 mdefine_line|#define page_to_bus(page)&t;(page_to_phys(page) + PCI_DRAM_OFFSET)
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Enforce In-order Execution of I/O:&n; * Acts as a barrier to ensure all previous I/O accesses have&n; * completed before any further ones are issued.&n; */
 DECL|function|eieio
 r_extern

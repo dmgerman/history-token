@@ -151,7 +151,7 @@ DECL|macro|SA_SAMPLE_RANDOM
 mdefine_line|#define SA_SAMPLE_RANDOM&t;SA_RESTART
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;&t;0x04000000
-macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 DECL|macro|SIG_BLOCK
 mdefine_line|#define SIG_BLOCK          0&t;/* for blocking signals */
 DECL|macro|SIG_UNBLOCK
@@ -270,6 +270,6 @@ id|stack_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
-macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
