@@ -4260,8 +4260,6 @@ id|t-&gt;afc
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
-op_assign
 id|mxb-&gt;tda9840-&gt;driver
 op_member_access_from_pointer
 id|command
@@ -4271,7 +4269,8 @@ id|mxb-&gt;tda9840
 comma
 id|TDA9840_DETECT
 comma
-l_int|NULL
+op_amp
+id|byte
 )paren
 suffix:semicolon
 id|t-&gt;audmode
