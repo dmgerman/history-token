@@ -32,6 +32,12 @@ id|LIST_HEAD
 id|usb_bus_list
 )paren
 suffix:semicolon
+DECL|variable|usb_bus_list
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_bus_list
+)paren
+suffix:semicolon
 multiline_comment|/* used when allocating bus numbers */
 DECL|macro|USB_MAXBUS
 mdefine_line|#define USB_MAXBUS&t;&t;64
@@ -73,6 +79,12 @@ id|usb_bus_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
+DECL|variable|usb_bus_list_lock
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 multiline_comment|/* used when updating hcd data */
 r_static
 id|DEFINE_SPINLOCK
@@ -2392,6 +2404,11 @@ id|usbfs_add_bus
 id|bus
 )paren
 suffix:semicolon
+id|usbmon_notify_bus_add
+(paren
+id|bus
+)paren
+suffix:semicolon
 id|dev_info
 (paren
 id|bus-&gt;controller
@@ -2448,6 +2465,11 @@ id|up
 (paren
 op_amp
 id|usb_bus_list_lock
+)paren
+suffix:semicolon
+id|usbmon_notify_bus_remove
+(paren
+id|bus
 )paren
 suffix:semicolon
 id|usbfs_remove_bus
@@ -3330,9 +3352,15 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME:  make urb timeouts be generic, keeping the HCD cores&n;&t; * as simple as possible.&n;&t; */
-singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
-singleline_comment|// hcd_monitor_hook(MONITOR_URB_SUBMIT, urb)
-singleline_comment|// It would catch submission paths for all urbs.
+id|usbmon_urb_submit
+c_func
+(paren
+op_amp
+id|hcd-&gt;self
+comma
+id|urb
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Atomically queue the urb,  first to our records, then to the HCD.&n;&t; * Access to urb-&gt;status is controlled by urb-&gt;lock ... changes on&n;&t; * i/o completion (normal or fault) or unlinking.&n;&t; */
 singleline_comment|// FIXME:  verify that quiescing hc works right (RH cleans up)
 id|spin_lock_irqsave
@@ -3419,6 +3447,17 @@ op_amp
 id|urb-&gt;urb_list
 )paren
 suffix:semicolon
+id|usbmon_urb_submit_error
+c_func
+(paren
+op_amp
+id|hcd-&gt;self
+comma
+id|urb
+comma
+id|status
+)paren
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -3446,14 +3485,6 @@ id|hcd-&gt;self.root_hub
 )paren
 (brace
 multiline_comment|/* NOTE:  requirement on hub callers (usbfs and the hub&n;&t;&t; * driver, for now) that URBs&squot; urb-&gt;transfer_buffer be&n;&t;&t; * valid and usb_buffer_{sync,unmap}() not be needed, since&n;&t;&t; * they could clobber root hub response data.&n;&t;&t; */
-id|urb-&gt;transfer_flags
-op_or_assign
-(paren
-id|URB_NO_TRANSFER_DMA_MAP
-op_or
-id|URB_NO_SETUP_DMA_MAP
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|rh_urb_enqueue
@@ -3591,6 +3622,17 @@ suffix:semicolon
 id|usb_put_urb
 (paren
 id|urb
+)paren
+suffix:semicolon
+id|usbmon_urb_submit_error
+c_func
+(paren
+op_amp
+id|hcd-&gt;self
+comma
+id|urb
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -4570,19 +4612,30 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|at_root_hub
+suffix:semicolon
+id|at_root_hub
+op_assign
+(paren
+id|urb-&gt;dev
+op_eq
+id|hcd-&gt;self.root_hub
+)paren
+suffix:semicolon
 id|urb_unlink
 (paren
 id|urb
 )paren
 suffix:semicolon
-singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
-singleline_comment|// hcd_monitor_hook(MONITOR_URB_FINISH, urb, dev)
-singleline_comment|// It would catch exit/unlink paths for all urbs.
 multiline_comment|/* lower level hcd code should use *_dma exclusively */
 r_if
 c_cond
 (paren
 id|hcd-&gt;self.controller-&gt;dma_mask
+op_logical_and
+op_logical_neg
+id|at_root_hub
 )paren
 (brace
 r_if
@@ -4649,6 +4702,14 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
+id|usbmon_urb_complete
+(paren
+op_amp
+id|hcd-&gt;self
+comma
+id|urb
+)paren
+suffix:semicolon
 multiline_comment|/* pass ownership to the completion handler */
 id|urb-&gt;complete
 (paren
@@ -4977,4 +5038,93 @@ id|EXPORT_SYMBOL
 id|usb_put_hcd
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#if defined(CONFIG_USB_MON) || defined(CONFIG_USB_MON_MODULE)
+DECL|variable|mon_ops
+r_struct
+id|usb_mon_operations
+op_star
+id|mon_ops
+suffix:semicolon
+multiline_comment|/*&n; * The registration is unlocked.&n; * We do it this way because we do not want to lock in hot paths.&n; *&n; * Notice that the code is minimally error-proof. Because usbmon needs&n; * symbols from usbcore, usbcore gets referenced and cannot be unloaded first.&n; */
+DECL|function|usb_mon_register
+r_int
+id|usb_mon_register
+(paren
+r_struct
+id|usb_mon_operations
+op_star
+id|ops
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mon_ops
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|mon_ops
+op_assign
+id|ops
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|usb_mon_register
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_mon_register
+)paren
+suffix:semicolon
+DECL|function|usb_mon_deregister
+r_void
+id|usb_mon_deregister
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mon_ops
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;USB: monitor was not registered&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|mon_ops
+op_assign
+l_int|NULL
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|usb_mon_deregister
+id|EXPORT_SYMBOL_GPL
+(paren
+id|usb_mon_deregister
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_USB_MON */
 eof

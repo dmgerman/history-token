@@ -479,6 +479,20 @@ id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* function to destroy this bus&squot;s memory */
+macro_line|#if defined(CONFIG_USB_MON) || defined(CONFIG_USB_MON_MODULE)
+DECL|member|mon_bus
+r_struct
+id|mon_bus
+op_star
+id|mon_bus
+suffix:semicolon
+multiline_comment|/* non-null when associated */
+DECL|member|monitored
+r_int
+id|monitored
+suffix:semicolon
+multiline_comment|/* non-zero when monitored */
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|to_usb_bus
