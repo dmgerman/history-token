@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/tgafb.c -- DEC 21030 TGA frame buffer device&n; *&n; *&t;Copyright (C) 1999,2000 Martin Lucina, Tom Zerucha&n; *&n; *  $Id: tgafb.c,v 1.12.2.3 2000/04/04 06:44:56 mato Exp $&n; *&n; *  This driver is partly based on the original TGA framebuffer device, which&n; *  was partly based on the original TGA console driver, which are&n; *&n; *&t;Copyright (C) 1997 Geert Uytterhoeven&n; *&t;Copyright (C) 1995 Jay Estabrook&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
-multiline_comment|/* KNOWN PROBLEMS/TO DO ===================================================== *&n; *&n; *&t;- How to set a single color register on 24-plane cards?&n; *&n; *&t;- Hardware cursor/other text acceleration methods&n; *&n; *&t;- Some redraws can stall kernel for several seconds&n; *&t;  [This should now be solved by the fast memmove() patch in 2.3.6]&n; *&n; * KNOWN PROBLEMS/TO DO ==================================================== */
+multiline_comment|/*&n; *  linux/drivers/video/tgafb.c -- DEC 21030 TGA frame buffer device&n; *&n; *&t;Copyright (C) 1995 Jay Estabrook&n; *&t;Copyright (C) 1997 Geert Uytterhoeven&n; *&t;Copyright (C) 1999,2000 Martin Lucina, Tom Zerucha&n; *&t;Copyright (C) 2002 Richard Henderson&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -177,6 +176,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
 comma
 )brace
 suffix:semicolon
@@ -2299,7 +2303,46 @@ id|TGA_RAMDAC_REG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* How to set a single color register on 24-plane cards?? */
+r_else
+r_if
+c_cond
+(paren
+id|regno
+OL
+l_int|16
+)paren
+(brace
+id|u32
+id|value
+op_assign
+(paren
+id|red
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+id|green
+op_lshift
+l_int|8
+)paren
+op_or
+id|blue
+suffix:semicolon
+(paren
+(paren
+id|u32
+op_star
+)paren
+id|info-&gt;pseudo_palette
+)paren
+(braket
+id|regno
+)braket
+op_assign
+id|value
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2915,6 +2958,14 @@ id|all
 )paren
 )paren
 suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|all
+)paren
+suffix:semicolon
 multiline_comment|/* Request the mem regions.  */
 id|bar0_start
 op_assign
@@ -3048,15 +3099,6 @@ op_amp
 id|all-&gt;par.tga_chip_rev
 )paren
 suffix:semicolon
-id|pci_set_drvdata
-c_func
-(paren
-id|pdev
-comma
-op_amp
-id|all-&gt;info
-)paren
-suffix:semicolon
 multiline_comment|/* Setup framebuffer.  */
 id|all-&gt;info.node
 op_assign
@@ -3070,6 +3112,14 @@ id|all-&gt;info.fbops
 op_assign
 op_amp
 id|tgafb_ops
+suffix:semicolon
+id|all-&gt;info.screen_base
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|all-&gt;par.tga_fb_base
 suffix:semicolon
 id|all-&gt;info.currcon
 op_assign
