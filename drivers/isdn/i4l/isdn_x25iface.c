@@ -162,7 +162,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface: firstbyte %x illegal in&quot;
+l_string|&quot;isdn_x25iface: firstbyte %x invalid in&quot;
 l_string|&quot;current state %d&bslash;n&quot;
 comma
 id|firstbyte
@@ -204,7 +204,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface_xxx: illegal pointer to proto data&bslash;n&quot;
+l_string|&quot;isdn_x25iface_xxx: invalid pointer to proto data&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1479,7 +1479,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface_xmit: frame with illegal&quot;
+l_string|&quot;isdn_x25iface_xmit: frame with invalid&quot;
 l_string|&quot; first byte %x ignored:&bslash;n&quot;
 comma
 id|firstbyte
