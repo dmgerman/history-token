@@ -24,6 +24,7 @@ macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;

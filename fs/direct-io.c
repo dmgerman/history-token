@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * How many user pages to map in one call to get_user_pages().  This determines&n; * the size of a structure on the stack.&n; */
 DECL|macro|DIO_PAGES

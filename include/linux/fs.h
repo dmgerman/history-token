@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -24,7 +23,13 @@ r_struct
 id|poll_table_struct
 suffix:semicolon
 r_struct
+id|iovec
+suffix:semicolon
+r_struct
 id|nameidata
+suffix:semicolon
+r_struct
+id|vm_area_struct
 suffix:semicolon
 r_struct
 id|vfsmount
@@ -1144,84 +1149,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|socket_alloc
-r_struct
-id|socket_alloc
-(brace
-DECL|member|socket
-r_struct
-id|socket
-id|socket
-suffix:semicolon
-DECL|member|vfs_inode
-r_struct
-id|inode
-id|vfs_inode
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|SOCKET_I
-r_static
-r_inline
-r_struct
-id|socket
-op_star
-id|SOCKET_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-op_amp
-id|container_of
-c_func
-(paren
-id|inode
-comma
-r_struct
-id|socket_alloc
-comma
-id|vfs_inode
-)paren
-op_member_access_from_pointer
-id|socket
-suffix:semicolon
-)brace
-DECL|function|SOCK_INODE
-r_static
-r_inline
-r_struct
-id|inode
-op_star
-id|SOCK_INODE
-c_func
-(paren
-r_struct
-id|socket
-op_star
-id|socket
-)paren
-(brace
-r_return
-op_amp
-id|container_of
-c_func
-(paren
-id|socket
-comma
-r_struct
-id|socket_alloc
-comma
-id|socket
-)paren
-op_member_access_from_pointer
-id|vfs_inode
-suffix:semicolon
-)brace
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/ext3_fs_i.h&gt;

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|max_block
 r_static
