@@ -7143,7 +7143,7 @@ id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device, using %ldK of &quot;
 l_string|&quot;video memory&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info-&gt;node
