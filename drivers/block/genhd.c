@@ -1379,7 +1379,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|device_init
-id|__initcall
+id|subsys_initcall
 c_func
 (paren
 id|device_init
