@@ -1587,7 +1587,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * In-memory filesystems have to fail their&n; * writepage function - and this has to be&n; * worked around in the VM layer..&n; *&n; * We&n; *  - mark the page dirty again (but do NOT&n; *    add it back to the inode dirty list, as&n; *    that would livelock in fdatasync)&n; *  - activate the page so that the page stealer&n; *    doesn&squot;t try to write it out over and over&n; *    again.&n; */
+multiline_comment|/*&n; * In-memory filesystems have to fail their&n; * writepage function - and this has to be&n; * worked around in the VM layer..&n; *&n; * We&n; *  - mark the page dirty again (but do NOT&n; *    add it back to the inode dirty list, as&n; *    that would livelock in fdatasync)&n; *  - activate the page so that the page stealer&n; *    doesn&squot;t try to write it out over and over&n; *    again.&n; *&n; * NOTE!  The livelock in fdatasync went away, due to io_pages.&n; * So this function can now call set_page_dirty().&n; */
 DECL|function|fail_writepage
 r_int
 id|fail_writepage

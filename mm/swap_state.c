@@ -851,6 +851,7 @@ op_lshift
 id|PG_checked
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * ___add_to_page_cache puts the page on -&gt;clean_pages,&n;&t;&t; * but it&squot;s dirty.  If it&squot;s on -&gt;clean_pages, it will basically&n;&t;&t; * never get written out.&n;&t;&t; */
 id|SetPageDirty
 c_func
 (paren
@@ -865,6 +866,24 @@ comma
 id|mapping
 comma
 id|index
+)paren
+suffix:semicolon
+multiline_comment|/* fix that up */
+id|list_del
+c_func
+(paren
+op_amp
+id|page-&gt;list
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|page-&gt;list
+comma
+op_amp
+id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 )brace

@@ -4590,7 +4590,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
