@@ -619,7 +619,7 @@ c_func
 (paren
 id|sdkp
 comma
-id|dev
+id|inode-&gt;i_bdev
 comma
 op_amp
 id|diskinfo
@@ -635,7 +635,7 @@ c_func
 (paren
 id|sdkp
 comma
-id|dev
+id|inode-&gt;i_bdev
 comma
 op_amp
 id|diskinfo

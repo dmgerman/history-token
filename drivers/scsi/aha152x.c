@@ -7892,8 +7892,10 @@ id|Scsi_Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
@@ -7962,7 +7964,7 @@ c_func
 (paren
 id|disk
 comma
-id|dev
+id|bdev
 comma
 id|info
 )paren

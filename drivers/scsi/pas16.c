@@ -1342,7 +1342,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : int pas16_biosparam(Disk *disk, kdev_t dev, int *ip)&n; *&n; * Purpose : Generates a BIOS / DOS compatible H-C-S mapping for &n; *&t;the specified device / size.&n; * &n; * Inputs : size = size of device in sectors (512 bytes), dev = block device&n; *&t;major / minor, ip[] = {heads, sectors, cylinders}  &n; *&n; * Returns : always 0 (success), initializes ip&n; *&t;&n; */
+multiline_comment|/*&n; * Function : int pas16_biosparam(Disk *disk, struct block_device *dev, int *ip)&n; *&n; * Purpose : Generates a BIOS / DOS compatible H-C-S mapping for &n; *&t;the specified device / size.&n; * &n; * Inputs : size = size of device in sectors (512 bytes), dev = block device&n; *&t;major / minor, ip[] = {heads, sectors, cylinders}  &n; *&n; * Returns : always 0 (success), initializes ip&n; *&t;&n; */
 multiline_comment|/* &n; * XXX Most SCSI boards use this mapping, I could be incorrect.  Some one&n; * using hard disks on a trantor should verify that this mapping corresponds&n; * to that used by the BIOS / ASPI driver by running the linux fdisk program&n; * and matching the H_C_S coordinates to what DOS uses.&n; */
 DECL|function|pas16_biosparam
 r_int
@@ -1353,7 +1353,9 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|dev
 comma
 r_int
