@@ -2261,7 +2261,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;thread.mode.tt.singlestep_syscall
+id|task-&gt;thread.singlestep_syscall
 )paren
 (brace
 r_return

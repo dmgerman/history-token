@@ -750,10 +750,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;thread.mode.tt.singlestep_syscall
+id|current-&gt;thread.singlestep_syscall
 )paren
 (brace
-id|current-&gt;thread.mode.tt.singlestep_syscall
+id|current-&gt;thread.singlestep_syscall
 op_assign
 l_int|0
 suffix:semicolon
