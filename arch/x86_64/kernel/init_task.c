@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &lt;asm/thread_info.h&gt;
 DECL|variable|init_fs
 r_static
 r_struct
@@ -42,7 +41,7 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
+multiline_comment|/*&n; * Initial task structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
 DECL|variable|init_thread_union
 r_union
 id|thread_union
@@ -88,19 +87,15 @@ id|init_tss
 id|NR_CPUS
 )braket
 id|__cacheline_aligned
-op_assign
-(brace
+suffix:semicolon
+DECL|macro|ALIGN_TO_4K
+mdefine_line|#define ALIGN_TO_4K __attribute__((section(&quot;.data.init_task&quot;)))
+DECL|variable|ALIGN_TO_4K
+id|pgd_t
+id|boot_vmalloc_pgt
 (braket
-l_int|0
-dot
-dot
-dot
-id|NR_CPUS
-op_minus
-l_int|1
+l_int|512
 )braket
-op_assign
-id|INIT_TSS
-)brace
+id|ALIGN_TO_4K
 suffix:semicolon
 eof

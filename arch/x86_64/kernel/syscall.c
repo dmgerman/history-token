@@ -2,6 +2,13 @@ multiline_comment|/* System call table for x86-64. */
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/sys.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* No comment. */
+macro_line|#if defined(CONFIG_NFSD) || defined(CONFIG_NFSD_MODULE)
+macro_line|#else
+DECL|macro|sys_nfsservctl
+mdefine_line|#define sys_nfsservctl&t;&t;sys_ni_syscall
+macro_line|#endif
 DECL|macro|__NO_STUBS
 mdefine_line|#define __NO_STUBS
 DECL|macro|__SYSCALL

@@ -19,15 +19,11 @@ DECL|macro|CURRENT_MASK
 mdefine_line|#define CURRENT_MASK (~(THREAD_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_X86_USE_3DNOW
+macro_line|#if 0 
 macro_line|#include &lt;asm/mmx.h&gt;
-DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t;mmx_clear_page((void *)(page))
-DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from)&t;mmx_copy_page(to,from)
 macro_line|#else
-multiline_comment|/*&n; *&t;On older X86 processors its not a win to use MMX here it seems.&n; *&t;Maybe the K6-III ?&n; */
 DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t;memset((void *)(page), 0, PAGE_SIZE)
 DECL|macro|copy_page
@@ -74,17 +70,17 @@ suffix:semicolon
 )brace
 id|pgd_t
 suffix:semicolon
-DECL|member|level4
-DECL|typedef|level4_t
+DECL|member|pml4
+DECL|typedef|pml4_t
 r_typedef
 r_struct
 (brace
 r_int
 r_int
-id|level4
+id|pml4
 suffix:semicolon
 )brace
-id|level4_t
+id|pml4_t
 suffix:semicolon
 DECL|macro|PTE_MASK
 mdefine_line|#define PTE_MASK&t;PAGE_MASK
@@ -106,8 +102,8 @@ DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pgd)
-DECL|macro|level4_val
-mdefine_line|#define level4_val(x)&t;((x).level4)
+DECL|macro|pml4_val
+mdefine_line|#define pml4_val(x)&t;((x).pml4)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
 DECL|macro|__pte
@@ -124,22 +120,26 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
+multiline_comment|/* See Documentation/x86_64/mm.txt for a description of the layout. */
 DECL|macro|__START_KERNEL
 mdefine_line|#define __START_KERNEL&t;&t;0xffffffff80100000
 DECL|macro|__START_KERNEL_map
 mdefine_line|#define __START_KERNEL_map&t;0xffffffff80000000
 DECL|macro|__PAGE_OFFSET
-mdefine_line|#define __PAGE_OFFSET           0xffff800000000000
+mdefine_line|#define __PAGE_OFFSET           0x0000010000000000
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Tell the user there is some problem.&n; */
+multiline_comment|/*&n; * Tell the user there is some problem.  The exception handler decodes this frame.&n; */
 DECL|struct|bug_frame
 r_struct
 id|bug_frame
 (brace
 DECL|member|ud2
 r_int
-r_int
+r_char
 id|ud2
+(braket
+l_int|2
+)braket
 suffix:semicolon
 DECL|member|filename
 r_char
@@ -164,7 +164,14 @@ suffix:semicolon
 DECL|macro|BUG
 mdefine_line|#define BUG() asm volatile(&quot;ud2 ; .quad %c1 ; .short %c0&quot; :: &quot;i&quot;(__LINE__), &quot;i&quot; (__FILE__))
 DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) BUG(); 
+mdefine_line|#define PAGE_BUG(page) BUG()
+r_void
+id|out_of_line_bug
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern
@@ -220,27 +227,15 @@ r_return
 id|order
 suffix:semicolon
 )brace
-DECL|variable|start_kernel_map
-r_static
-r_int
-r_int
-id|start_kernel_map
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
-op_assign
-id|__START_KERNEL_map
-suffix:semicolon
-multiline_comment|/* FIXME: workaround gcc bug */
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;((unsigned long)__PAGE_OFFSET)
+multiline_comment|/* Note: __pa(&amp;symbol_visible_to_c) should be always replaced with __pa_symbol.&n;   Otherwise you risk miscompilation. */
 DECL|macro|__pa
-mdefine_line|#define __pa(x)&t;&t;&t;(((unsigned long)(x)&gt;=start_kernel_map)?(unsigned long)(x) - (unsigned long)start_kernel_map:(unsigned long)(x) - PAGE_OFFSET)
+mdefine_line|#define __pa(x)&t;&t;&t;(((unsigned long)(x)&gt;=__START_KERNEL_map)?(unsigned long)(x) - (unsigned long)__START_KERNEL_map:(unsigned long)(x) - PAGE_OFFSET)
+multiline_comment|/* __pa_symbol should be used for C visible symbols.&n;   This seems to be the official gcc blessed way to do such arithmetic. */
+DECL|macro|__pa_symbol
+mdefine_line|#define __pa_symbol(x)&t;&t;&bslash;&n;&t;({unsigned long v;  &bslash;&n;&t;  asm(&quot;&quot; : &quot;=r&quot; (v) : &quot;0&quot; (x)); &bslash;&n;&t;  __pa(v); })
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
 DECL|macro|virt_to_page

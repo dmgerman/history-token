@@ -1,6 +1,7 @@
 macro_line|#ifndef _X86_64_CHECKSUM_H
 DECL|macro|_X86_64_CHECKSUM_H
 mdefine_line|#define _X86_64_CHECKSUM_H
+macro_line|#include &lt;linux/in6.h&gt;
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; *&t;By Jorge Cwik &lt;jorge@laser.satlink.net&gt;, adapted for linux by&n; *&t;Arnt Gulbrandsen.&n; */
 DECL|function|ip_fast_csum
 r_static

@@ -5620,20 +5620,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-id|ide_startstop_t
-id|ide_check_service
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|ide_check_service
-mdefine_line|#define ide_check_service(drive)&t;(ide_stopped)
-macro_line|#endif
 multiline_comment|/*&n; * feed commands to a drive until it barfs. used to be part of ide_do_request.&n; * called with ide_lock/DRIVE_LOCK held and busy hwgroup&n; */
 DECL|function|ide_queue_commands
 r_static
@@ -5669,11 +5655,6 @@ r_struct
 id|request
 op_star
 id|rq
-suffix:semicolon
-r_int
-id|do_service
-op_assign
-l_int|0
 suffix:semicolon
 r_do
 (brace
@@ -5853,8 +5834,6 @@ id|hwgroup-&gt;rq
 op_assign
 id|rq
 suffix:semicolon
-id|service
-suffix:colon
 multiline_comment|/*&n;&t;&t; * Some systems have trouble with IDE IRQs arriving while&n;&t;&t; * the driver is still setting things up.  So, here we disable&n;&t;&t; * the IRQ used by this interface while the request is being&n;&t;&t; * started.  This may look bad at first, but pretty much the&n;&t;&t; * same thing happens anyway when any interrupt comes in, IDE&n;&t;&t; * or otherwise -- the kernel masks the IRQ while it is being&n;&t;&t; * handled.&n;&t;&t; */
 r_if
 c_cond
@@ -5896,12 +5875,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* allow other IRQs while we start this request */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|do_service
-)paren
 id|startstop
 op_assign
 id|start_request
@@ -5910,15 +5883,6 @@ c_func
 id|drive
 comma
 id|rq
-)paren
-suffix:semicolon
-r_else
-id|startstop
-op_assign
-id|ide_check_service
-c_func
-(paren
-id|drive
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -5999,18 +5963,6 @@ op_eq
 id|ide_started
 )paren
 r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|do_service
-op_assign
-id|drive-&gt;service_pending
-)paren
-)paren
-r_goto
-id|service
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Issue a new request to a drive from hwgroup&n; * Caller must have already done spin_lock_irqsave(&amp;ide_lock, ...)&n; *&n; * A hwgroup is a serialized group of IDE interfaces.  Usually there is&n; * exactly one hwif (interface) per hwgroup, but buggy controllers (eg. CMD640)&n; * may have both interfaces in a single hwgroup to &quot;serialize&quot; access.&n; * Or possibly multiple ISA interfaces can share a common IRQ by being grouped&n; * together into one hwgroup for serialized access.&n; *&n; * Note also that several hwgroups can end up sharing a single IRQ,&n; * possibly along with many other devices.  This is especially common in&n; * PCI-based systems with off-board IDE controller cards.&n; *&n; * The IDE driver uses the queue spinlock to protect access to the request&n; * queues.&n; *&n; * The first thread into the driver for a particular hwgroup sets the&n; * hwgroup-&gt;flags IDE_BUSY flag to indicate that this hwgroup is now active,&n; * and then initiates processing of the top request from the request queue.&n; *&n; * Other threads attempting entry notice the busy setting, and will simply&n; * queue their new requests and exit immediately.  Note that hwgroup-&gt;flags&n; * remains busy even when the driver is merely awaiting the next interrupt.&n; * Thus, the meaning is &quot;this hwgroup is busy processing a request&quot;.&n; *&n; * When processing of a request completes, the completing thread or IRQ-handler&n; * will start the next request from the queue.  If no more work remains,&n; * the driver will clear the hwgroup-&gt;flags IDE_BUSY flag and exit.&n; */

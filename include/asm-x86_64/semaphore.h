@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/rwlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 DECL|struct|semaphore
 r_struct
 id|semaphore
@@ -251,10 +252,14 @@ l_string|&quot;decl %0&bslash;n&bslash;t&quot;
 multiline_comment|/* --sem-&gt;count */
 l_string|&quot;js 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;tcall __down_failed&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -306,10 +311,14 @@ multiline_comment|/* --sem-&gt;count */
 l_string|&quot;js 2f&bslash;n&bslash;t&quot;
 l_string|&quot;xorl %0,%0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;tcall __down_failed_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=a&quot;
 (paren
@@ -369,10 +378,14 @@ multiline_comment|/* --sem-&gt;count */
 l_string|&quot;js 2f&bslash;n&bslash;t&quot;
 l_string|&quot;xorl %0,%0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;tcall __down_failed_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=a&quot;
 (paren
@@ -390,6 +403,8 @@ id|sem
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -428,10 +443,14 @@ l_string|&quot;incl %0&bslash;n&bslash;t&quot;
 multiline_comment|/* ++sem-&gt;count */
 l_string|&quot;jle 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;tcall __up_wakeup&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
