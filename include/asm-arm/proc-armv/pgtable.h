@@ -88,6 +88,8 @@ mdefine_line|#define PTE_AP_WRITE&t;&t;PTE_SMALL_AP_UNO_SRW
 multiline_comment|/*&n; * &quot;Linux&quot; PTE definitions.&n; *&n; * We keep two sets of PTEs - the hardware and the linux version.&n; * This allows greater flexibility in the way we map the Linux bits&n; * onto the hardware tables, and allows us to have YOUNG and DIRTY&n; * bits.&n; *&n; * The PTE table pointer refers to the hardware entries; the &quot;Linux&quot;&n; * entries are stored 1024 bytes below.&n; */
 DECL|macro|L_PTE_PRESENT
 mdefine_line|#define L_PTE_PRESENT&t;&t;(1 &lt;&lt; 0)
+DECL|macro|L_PTE_FILE
+mdefine_line|#define L_PTE_FILE&t;&t;(1 &lt;&lt; 1)&t;/* only when !PRESENT */
 DECL|macro|L_PTE_YOUNG
 mdefine_line|#define L_PTE_YOUNG&t;&t;(1 &lt;&lt; 1)
 DECL|macro|L_PTE_BUFFERABLE
@@ -252,6 +254,8 @@ DECL|macro|pte_dirty
 mdefine_line|#define pte_dirty(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_DIRTY)
 DECL|macro|pte_young
 mdefine_line|#define pte_young(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_YOUNG)
+DECL|macro|pte_file
+mdefine_line|#define pte_file(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_FILE)
 DECL|macro|PTE_BIT_FUNC
 mdefine_line|#define PTE_BIT_FUNC(fn,op)&t;&t;&t;&bslash;&n;static inline pte_t pte_##fn(pte_t pte) { pte_val(pte) op; return pte; }
 multiline_comment|/*PTE_BIT_FUNC(rdprotect, &amp;= ~L_PTE_USER);*/
@@ -339,6 +343,12 @@ DECL|macro|pgprot_writecombine
 mdefine_line|#define pgprot_writecombine(prot) __pgprot(pgprot_val(prot) &amp; ~L_PTE_CACHEABLE)
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init() do { } while (0)
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(x)&t;(pte_val(x) &gt;&gt; 2)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(x)&t;__pte(((x) &lt;&lt; 2) | L_PTE_FILE)
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;30
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof
