@@ -1725,6 +1725,21 @@ op_or_assign
 id|AGPSTAT2_1X
 suffix:semicolon
 )brace
+multiline_comment|/* If we&squot;ve dropped down to 1X, disable fast writes. */
+r_if
+c_cond
+(paren
+op_star
+id|bridge_agpstat
+op_amp
+id|AGPSTAT2_1X
+)paren
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+id|AGPSTAT_FW
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * requested_mode = Mode requested by (typically) X.&n; * bridge_agpstat = PCI_AGP_STATUS from agp bridge.&n; * vga_agpstat = PCI_AGP_STATUS from graphic card.&n; */
 DECL|function|agp_v3_parse_one
