@@ -5703,6 +5703,7 @@ id|req-&gt;ki_buf
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren

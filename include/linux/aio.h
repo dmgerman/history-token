@@ -169,6 +169,7 @@ suffix:semicolon
 multiline_comment|/* copy of iocb-&gt;aio_nbytes */
 DECL|member|ki_buf
 r_char
+id|__user
 op_star
 id|ki_buf
 suffix:semicolon
