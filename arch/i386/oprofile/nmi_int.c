@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
