@@ -6938,12 +6938,6 @@ c_cond
 id|pb_daemon
 )paren
 (brace
-id|flush_workqueue
-c_func
-(paren
-id|pagebuf_workqueue
-)paren
-suffix:semicolon
 id|destroy_workqueue
 c_func
 (paren
