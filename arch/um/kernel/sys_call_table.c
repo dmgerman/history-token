@@ -851,6 +851,30 @@ r_extern
 id|syscall_handler_t
 id|sys_sched_getaffinity
 suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_io_setup
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_io_destroy
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_io_getevents
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_io_submit
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_io_cancel
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_exit_group
+suffix:semicolon
 macro_line|#if CONFIG_NFSD
 DECL|macro|NFSSERVCTL
 mdefine_line|#define NFSSERVCTL sys_nfsserctl
@@ -871,7 +895,7 @@ id|syscall_handler_t
 id|um_stime
 suffix:semicolon
 DECL|macro|LAST_GENERIC_SYSCALL
-mdefine_line|#define LAST_GENERIC_SYSCALL __NR_sched_getaffinity
+mdefine_line|#define LAST_GENERIC_SYSCALL __NR_exit_group
 macro_line|#if LAST_GENERIC_SYSCALL &gt; LAST_ARCH_SYSCALL
 DECL|macro|LAST_SYSCALL
 mdefine_line|#define LAST_SYSCALL LAST_GENERIC_SYSCALL
@@ -2245,6 +2269,54 @@ id|__NR_sched_getaffinity
 )braket
 op_assign
 id|sys_sched_getaffinity
+comma
+(braket
+id|__NR_io_setup
+)braket
+op_assign
+id|sys_io_setup
+comma
+(braket
+id|__NR_io_destroy
+)braket
+op_assign
+id|sys_io_destroy
+comma
+(braket
+id|__NR_io_getevents
+)braket
+op_assign
+id|sys_io_getevents
+comma
+(braket
+id|__NR_io_submit
+)braket
+op_assign
+id|sys_io_submit
+comma
+(braket
+id|__NR_io_cancel
+)braket
+op_assign
+id|sys_io_cancel
+comma
+(braket
+id|__NR_alloc_hugepages
+)braket
+op_assign
+id|sys_ni_syscall
+comma
+(braket
+id|__NR_free_hugepages
+)braket
+op_assign
+id|sys_ni_syscall
+comma
+(braket
+id|__NR_exit_group
+)braket
+op_assign
+id|sys_exit_group
 comma
 id|ARCH_SYSCALLS
 (braket
