@@ -93,91 +93,6 @@ l_int|256
 multiline_comment|/* 256 colors for 16 bit palette */
 )brace
 suffix:semicolon
-DECL|enum|av7110_window_display_type
-r_enum
-id|av7110_window_display_type
-(brace
-DECL|enumerator|BITMAP1
-id|BITMAP1
-comma
-multiline_comment|/* 1 bit bitmap */
-DECL|enumerator|BITMAP2
-id|BITMAP2
-comma
-multiline_comment|/* 2 bit bitmap */
-DECL|enumerator|BITMAP4
-id|BITMAP4
-comma
-multiline_comment|/* 4 bit bitmap */
-DECL|enumerator|BITMAP8
-id|BITMAP8
-comma
-multiline_comment|/* 8 bit bitmap */
-DECL|enumerator|BITMAP1HR
-id|BITMAP1HR
-comma
-multiline_comment|/* 1 Bit bitmap half resolution */
-DECL|enumerator|BITMAP2HR
-id|BITMAP2HR
-comma
-multiline_comment|/* 2 bit bitmap half resolution */
-DECL|enumerator|BITMAP4HR
-id|BITMAP4HR
-comma
-multiline_comment|/* 4 bit bitmap half resolution */
-DECL|enumerator|BITMAP8HR
-id|BITMAP8HR
-comma
-multiline_comment|/* 8 bit bitmap half resolution */
-DECL|enumerator|YCRCB422
-id|YCRCB422
-comma
-multiline_comment|/* 4:2:2 YCRCB Graphic Display */
-DECL|enumerator|YCRCB444
-id|YCRCB444
-comma
-multiline_comment|/* 4:4:4 YCRCB Graphic Display */
-DECL|enumerator|YCRCB444HR
-id|YCRCB444HR
-comma
-multiline_comment|/* 4:4:4 YCRCB graphic half resolution */
-DECL|enumerator|VIDEOTSIZE
-id|VIDEOTSIZE
-comma
-multiline_comment|/* True Size Normal MPEG Video Display */
-DECL|enumerator|VIDEOHSIZE
-id|VIDEOHSIZE
-comma
-multiline_comment|/* MPEG Video Display Half Resolution */
-DECL|enumerator|VIDEOQSIZE
-id|VIDEOQSIZE
-comma
-multiline_comment|/* MPEG Video Display Quarter Resolution */
-DECL|enumerator|VIDEODSIZE
-id|VIDEODSIZE
-comma
-multiline_comment|/* MPEG Video Display Double Resolution */
-DECL|enumerator|VIDEOTHSIZE
-id|VIDEOTHSIZE
-comma
-multiline_comment|/* True Size MPEG Video Display Half Resolution */
-DECL|enumerator|VIDEOTQSIZE
-id|VIDEOTQSIZE
-comma
-multiline_comment|/* True Size MPEG Video Display Quarter Resolution*/
-DECL|enumerator|VIDEOTDSIZE
-id|VIDEOTDSIZE
-comma
-multiline_comment|/* True Size MPEG Video Display Double Resolution */
-DECL|enumerator|VIDEONSIZE
-id|VIDEONSIZE
-comma
-multiline_comment|/* Full Size MPEG Video Display */
-DECL|enumerator|CURSOR
-id|CURSOR
-multiline_comment|/* Cursor */
-)brace
-suffix:semicolon
 multiline_comment|/* switch defines */
 DECL|macro|SB_GPIO
 mdefine_line|#define SB_GPIO 3
@@ -858,6 +773,8 @@ id|av7110
 suffix:semicolon
 DECL|macro|FW_CI_LL_SUPPORT
 mdefine_line|#define FW_CI_LL_SUPPORT(arm_app) ((arm_app) &amp; 0x80000000)
+DECL|macro|FW_4M_SDRAM
+mdefine_line|#define FW_4M_SDRAM(arm_app)      ((arm_app) &amp; 0x40000000)
 DECL|macro|FW_VERSION
 mdefine_line|#define FW_VERSION(arm_app)&t;  ((arm_app) &amp; 0x0000FFFF)
 r_extern
@@ -1595,7 +1512,7 @@ id|COMTYPE_MISC
 comma
 id|AV7110_FW_AUDIO_COMMAND
 comma
-l_int|4
+l_int|2
 comma
 (paren
 id|com
@@ -1683,6 +1600,21 @@ comma
 id|osd_cmd_t
 op_star
 id|dc
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|av7110_osd_capability
+c_func
+(paren
+r_struct
+id|av7110
+op_star
+id|av7110
+comma
+id|osd_cap_t
+op_star
+id|cap
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_DVB_AV7110_OSD */

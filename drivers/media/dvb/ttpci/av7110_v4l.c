@@ -8,17 +8,9 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-DECL|macro|DEBUG_VARIABLE
-mdefine_line|#define DEBUG_VARIABLE av7110_debug
-r_extern
-r_int
-id|av7110_debug
-suffix:semicolon
-macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;av7110.h&quot;
 macro_line|#include &quot;av7110_hw.h&quot;
 macro_line|#include &quot;av7110_av.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 DECL|function|msp_writereg
 r_int
 id|msp_writereg
@@ -66,13 +58,6 @@ l_int|0xff
 )brace
 suffix:semicolon
 r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c
-op_assign
-id|av7110-&gt;i2c_bus
-suffix:semicolon
-r_struct
 id|i2c_msg
 id|msgs
 op_assign
@@ -101,12 +86,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
-id|i2c
+op_amp
+id|av7110-&gt;i2c_adap
 comma
 op_amp
 id|msgs
@@ -186,13 +170,6 @@ l_int|2
 )braket
 suffix:semicolon
 r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c
-op_assign
-id|av7110-&gt;i2c_bus
-suffix:semicolon
-r_struct
 id|i2c_msg
 id|msgs
 (braket
@@ -248,14 +225,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
-id|i2c
+op_amp
+id|av7110-&gt;i2c_adap
 comma
+op_amp
 id|msgs
+(braket
+l_int|0
+)braket
 comma
 l_int|2
 )paren
@@ -2467,7 +2447,7 @@ id|av7110-&gt;adac_type
 op_assign
 id|DVB_ADAC_MSP
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|100

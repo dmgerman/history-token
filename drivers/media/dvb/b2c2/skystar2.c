@@ -9819,6 +9819,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|client_register
+r_static
 r_int
 id|client_register
 c_func
@@ -9874,6 +9875,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|client_unregister
+r_static
 r_int
 id|client_unregister
 c_func

@@ -1,21 +1,37 @@
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;av7110.h&quot;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-macro_line|#include &quot;input_fake.h&quot;
-macro_line|#endif
 DECL|macro|UP_TIMEOUT
 mdefine_line|#define UP_TIMEOUT (HZ/4)
 DECL|variable|av7110_ir_debug
 r_static
 r_int
 id|av7110_ir_debug
-op_assign
-l_int|0
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|debug_ir
+comma
+id|av7110_ir_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|av7110_ir_debug
+comma
+l_string|&quot;Turn on/off IR debugging (default:off).&quot;
+)paren
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)  do { if (av7110_ir_debug) printk (x); } while (0)
@@ -1239,6 +1255,13 @@ id|av7110_ir_exit
 r_void
 )paren
 (brace
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|keyup_timer
+)paren
+suffix:semicolon
 id|remove_proc_entry
 (paren
 l_string|&quot;av7110_ir&quot;
@@ -1261,20 +1284,4 @@ suffix:semicolon
 )brace
 singleline_comment|//MODULE_AUTHOR(&quot;Holger Waechtler &lt;holger@convergence.de&gt;&quot;);
 singleline_comment|//MODULE_LICENSE(&quot;GPL&quot;);
-id|MODULE_PARM
-c_func
-(paren
-id|av7110_ir_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|av7110_ir_debug
-comma
-l_string|&quot;enable AV7110 IR receiver debug messages&quot;
-)paren
-suffix:semicolon
 eof

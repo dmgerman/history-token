@@ -2,10 +2,12 @@ multiline_comment|/*&n; * TTUSB DEC Driver&n; *&n; * Copyright (C) 2003-2004 Ale
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#if defined(CONFIG_CRC32) || defined(CONFIG_CRC32_MODULE)
@@ -16,7 +18,6 @@ macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
-macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
@@ -24,15 +25,47 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|output_pva
 r_static
 r_int
 id|output_pva
-op_assign
-l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn on/off debugging (default:off).&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|output_pva
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|output_pva
+comma
+l_string|&quot;Output PVA from dvr device (default:off)&quot;
+)paren
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
@@ -148,11 +181,6 @@ DECL|member|frontend
 r_struct
 id|dmx_frontend
 id|frontend
-suffix:semicolon
-DECL|member|i2c_bus
-r_struct
-id|dvb_i2c_bus
-id|i2c_bus
 suffix:semicolon
 DECL|member|dvb_net
 r_struct
@@ -4897,15 +4925,12 @@ id|dec-&gt;iso_buffer
 comma
 l_int|0
 comma
-r_sizeof
-(paren
 id|ISO_FRAME_SIZE
 op_star
 (paren
 id|FRAMES_PER_ISO_BUF
 op_star
 id|ISO_BUF_COUNT
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -7296,8 +7321,6 @@ id|htonl
 c_func
 (paren
 id|p-&gt;frequency
-op_star
-l_int|1000
 op_plus
 (paren
 id|dec-&gt;hi_band
@@ -7478,6 +7501,55 @@ suffix:semicolon
 r_case
 id|FE_DISEQC_SEND_MASTER_CMD
 suffix:colon
+(brace
+id|u8
+id|b
+(braket
+)braket
+op_assign
+(brace
+l_int|0x00
+comma
+l_int|0xff
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+suffix:semicolon
+r_struct
+id|dvb_diseqc_master_cmd
+op_star
+id|cmd
+op_assign
+id|arg
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|b
+(braket
+l_int|4
+)braket
+comma
+id|cmd-&gt;msg
+comma
+id|cmd-&gt;msg_len
+)paren
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -7486,8 +7558,34 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|ttusb_dec_send_command
+c_func
+(paren
+id|dec
+comma
+l_int|0x72
+comma
+r_sizeof
+(paren
+id|b
+)paren
+op_minus
+(paren
+l_int|6
+op_minus
+id|cmd-&gt;msg_len
+)paren
+comma
+id|b
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 r_case
 id|FE_DISEQC_SEND_BURST
 suffix:colon
@@ -7614,25 +7712,23 @@ op_star
 id|dec
 )paren
 (brace
-id|dec-&gt;i2c_bus.adapter
-op_assign
-id|dec-&gt;adapter
+r_int
+id|ret
 suffix:semicolon
+id|ret
+op_assign
 id|dvb_register_frontend
 c_func
 (paren
 id|dec-&gt;frontend_ioctl
 comma
-op_amp
-id|dec-&gt;i2c_bus
+id|dec-&gt;adapter
 comma
-(paren
-r_void
-op_star
-)paren
 id|dec
 comma
 id|dec-&gt;frontend_info
+comma
+id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
@@ -7648,13 +7744,12 @@ op_star
 id|dec
 )paren
 (brace
-id|dvb_unregister_frontend
+id|dvb_unregister_frontend_new
 c_func
 (paren
 id|dec-&gt;frontend_ioctl
 comma
-op_amp
-id|dec-&gt;i2c_bus
+id|dec-&gt;adapter
 )paren
 suffix:semicolon
 )brace
@@ -8329,38 +8424,6 @@ c_func
 id|usb
 comma
 id|ttusb_dec_table
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;Debug level&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|output_pva
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|output_pva
-comma
-l_string|&quot;Output PVA from dvr device&quot;
 )paren
 suffix:semicolon
 eof

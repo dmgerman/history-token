@@ -2,16 +2,21 @@ multiline_comment|/*&n;    Retrieve encoded MAC address from ATMEL ttpci_eeprom 
 macro_line|#ifndef __TTPCI_EEPROM_H__
 DECL|macro|__TTPCI_EEPROM_H__
 mdefine_line|#define __TTPCI_EEPROM_H__
-macro_line|#include &quot;dvb_i2c.h&quot;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/i2c.h&gt;
 r_extern
 r_int
 id|ttpci_eeprom_parse_mac
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
-id|i2c
+id|adapter
+comma
+id|u8
+op_star
+id|propsed_mac
 )paren
 suffix:semicolon
 macro_line|#endif

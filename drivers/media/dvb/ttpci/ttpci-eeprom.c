@@ -3,8 +3,7 @@ macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &quot;dvb_i2c.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
+macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#if 1
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...) do { printk(x); } while (0)
@@ -379,9 +378,9 @@ id|ttpci_eeprom_read_encodedMAC
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
-id|i2c
+id|adapter
 comma
 id|u8
 op_star
@@ -455,12 +454,10 @@ suffix:semicolon
 multiline_comment|/* dprintk(&quot;%s&bslash;n&quot;, __FUNCTION__); */
 id|ret
 op_assign
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
-id|i2c
+id|adapter
 comma
 id|msg
 comma
@@ -491,9 +488,13 @@ id|ttpci_eeprom_parse_mac
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
-id|i2c
+id|adapter
+comma
+id|u8
+op_star
+id|proposed_mac
 )paren
 (brace
 r_int
@@ -518,7 +519,7 @@ op_assign
 id|ttpci_eeprom_read_encodedMAC
 c_func
 (paren
-id|i2c
+id|adapter
 comma
 id|encodedMAC
 )paren
@@ -541,7 +542,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|i2c-&gt;adapter-&gt;proposed_mac
+id|proposed_mac
 comma
 l_int|0
 comma
@@ -573,11 +574,7 @@ l_int|0
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s adapter %i failed MAC signature check&bslash;n&quot;
-comma
-id|i2c-&gt;adapter-&gt;name
-comma
-id|i2c-&gt;adapter-&gt;num
+l_string|&quot;adapter failed MAC signature check&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
@@ -627,7 +624,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|i2c-&gt;adapter-&gt;proposed_mac
+id|proposed_mac
 comma
 l_int|0
 comma
@@ -641,7 +638,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|i2c-&gt;adapter-&gt;proposed_mac
+id|proposed_mac
 comma
 id|decodedMAC
 comma
@@ -651,11 +648,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s adapter %i has MAC addr = %.2x:%.2x:%.2x:%.2x:%.2x:%.2x&bslash;n&quot;
-comma
-id|i2c-&gt;adapter-&gt;name
-comma
-id|i2c-&gt;adapter-&gt;num
+l_string|&quot;adapter has MAC addr = %.2x:%.2x:%.2x:%.2x:%.2x:%.2x&bslash;n&quot;
 comma
 id|decodedMAC
 (braket
