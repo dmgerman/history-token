@@ -3642,11 +3642,6 @@ suffix:semicolon
 singleline_comment|//
 singleline_comment|// ok, reiserfs signature (old or new) found in at the given offset
 singleline_comment|//    
-id|brelse
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|sb_set_blocksize
 (paren
 id|s
@@ -3656,6 +3651,11 @@ c_func
 (paren
 id|rs
 )paren
+)paren
+suffix:semicolon
+id|brelse
+(paren
+id|bh
 )paren
 suffix:semicolon
 id|bh
