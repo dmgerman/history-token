@@ -34736,8 +34736,11 @@ c_func
 (paren
 id|tmp_stats
 comma
-op_amp
-id|tp-&gt;estats
+id|tg3_get_estats
+c_func
+(paren
+id|tp
+)paren
 comma
 r_sizeof
 (paren
