@@ -138,6 +138,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|skb-&gt;mac.raw
+op_assign
+id|skb-&gt;data
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
