@@ -166,12 +166,6 @@ id|inode-&gt;i_op
 op_logical_and
 id|inode-&gt;i_op-&gt;truncate
 )paren
-(brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_op
 op_member_access_from_pointer
 id|truncate
@@ -180,12 +174,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

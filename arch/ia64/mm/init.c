@@ -814,7 +814,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 suffix:semicolon
 id|i
 op_increment
@@ -879,7 +879,7 @@ c_func
 (paren
 l_string|&quot;&bslash;t%d pages of RAM&bslash;n&quot;
 comma
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 )paren
 suffix:semicolon
 id|printk

@@ -268,7 +268,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 suffix:semicolon
 id|i
 op_increment
@@ -2393,7 +2393,7 @@ id|node_data
 id|nid
 )braket
 dot
-id|node_size
+id|node_spanned_pages
 op_ne
 l_int|0
 )paren

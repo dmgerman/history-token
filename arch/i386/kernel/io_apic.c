@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 DECL|macro|APIC_LOCKUP_DEBUG
@@ -8722,10 +8723,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|timer_ack
-suffix:semicolon
 r_int
 id|pin1
 comma
