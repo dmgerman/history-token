@@ -169,10 +169,11 @@ op_star
 id|np
 )paren
 (brace
+multiline_comment|/*&n;&t; * In cases where there is bi-directional communications, reading&n;&t; * only one message at a time can lead to packets being dropped by&n;&t; * the network adapter, forcing superfluous retries and possibly&n;&t; * timeouts.  Thus, we set our budget to a more reasonable value.&n;&t; */
 r_int
 id|budget
 op_assign
-l_int|1
+l_int|16
 suffix:semicolon
 r_if
 c_cond
