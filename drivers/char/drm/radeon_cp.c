@@ -6670,9 +6670,14 @@ l_int|10
 )paren
 op_or
 (paren
-l_int|1
-op_lshift
-l_int|15
+id|dev_priv-&gt;microcode_version
+op_eq
+id|UCODE_R100
+ques
+c_cond
+id|RADEON_ZBLOCK16
+suffix:colon
+l_int|0
 )paren
 )paren
 suffix:semicolon

@@ -10,12 +10,12 @@ mdefine_line|#define DRIVER_NAME&t;&t;&quot;radeon&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Radeon&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE&t;&t;&quot;20020828&quot;
-multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; */
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20041207&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;12
+mdefine_line|#define DRIVER_MINOR&t;&t;13
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
@@ -1314,8 +1314,12 @@ DECL|macro|RADEON_STENCIL_ENABLE
 macro_line|#&t;define RADEON_STENCIL_ENABLE&t;&t;(1 &lt;&lt; 7)
 DECL|macro|RADEON_Z_ENABLE
 macro_line|#&t;define RADEON_Z_ENABLE&t;&t;&t;(1 &lt;&lt; 8)
+DECL|macro|RADEON_ZBLOCK16
+macro_line|#&t;define RADEON_ZBLOCK16&t;&t;&t;(1 &lt;&lt; 15)
 DECL|macro|RADEON_RB3D_DEPTHOFFSET
 mdefine_line|#define RADEON_RB3D_DEPTHOFFSET&t;&t;0x1c24
+DECL|macro|RADEON_RB3D_DEPTHCLEARVALUE
+mdefine_line|#define RADEON_RB3D_DEPTHCLEARVALUE&t;0x3230
 DECL|macro|RADEON_RB3D_DEPTHPITCH
 mdefine_line|#define RADEON_RB3D_DEPTHPITCH&t;&t;0x1c28
 DECL|macro|RADEON_RB3D_PLANEMASK
@@ -1340,6 +1344,8 @@ DECL|macro|RADEON_Z_TEST_MASK
 macro_line|#&t;define RADEON_Z_TEST_MASK&t;&t;(7 &lt;&lt; 4)
 DECL|macro|RADEON_Z_TEST_ALWAYS
 macro_line|#&t;define RADEON_Z_TEST_ALWAYS&t;&t;(7 &lt;&lt; 4)
+DECL|macro|RADEON_Z_HIERARCHY_ENABLE
+macro_line|#&t;define RADEON_Z_HIERARCHY_ENABLE&t;(1 &lt;&lt; 8)
 DECL|macro|RADEON_STENCIL_TEST_ALWAYS
 macro_line|#&t;define RADEON_STENCIL_TEST_ALWAYS&t;(7 &lt;&lt; 12)
 DECL|macro|RADEON_STENCIL_S_FAIL_REPLACE
@@ -1348,8 +1354,14 @@ DECL|macro|RADEON_STENCIL_ZPASS_REPLACE
 macro_line|#&t;define RADEON_STENCIL_ZPASS_REPLACE&t;(2 &lt;&lt; 20)
 DECL|macro|RADEON_STENCIL_ZFAIL_REPLACE
 macro_line|#&t;define RADEON_STENCIL_ZFAIL_REPLACE&t;(2 &lt;&lt; 24)
+DECL|macro|RADEON_Z_COMPRESSION_ENABLE
+macro_line|#&t;define RADEON_Z_COMPRESSION_ENABLE&t;(1 &lt;&lt; 28)
+DECL|macro|RADEON_FORCE_Z_DIRTY
+macro_line|#&t;define RADEON_FORCE_Z_DIRTY&t;&t;(1 &lt;&lt; 29)
 DECL|macro|RADEON_Z_WRITE_ENABLE
 macro_line|#&t;define RADEON_Z_WRITE_ENABLE&t;&t;(1 &lt;&lt; 30)
+DECL|macro|RADEON_Z_DECOMPRESSION_ENABLE
+macro_line|#&t;define RADEON_Z_DECOMPRESSION_ENABLE&t;(1 &lt;&lt; 31)
 DECL|macro|RADEON_RBBM_SOFT_RESET
 mdefine_line|#define RADEON_RBBM_SOFT_RESET&t;&t;0x00f0
 DECL|macro|RADEON_SOFT_RESET_CP
@@ -1559,7 +1571,7 @@ macro_line|#&t;define RADEON_WAIT_3D_IDLECLEAN&t;&t;(1 &lt;&lt; 17)
 DECL|macro|RADEON_WAIT_HOST_IDLECLEAN
 macro_line|#&t;define RADEON_WAIT_HOST_IDLECLEAN&t;(1 &lt;&lt; 18)
 DECL|macro|RADEON_RB3D_ZMASKOFFSET
-mdefine_line|#define RADEON_RB3D_ZMASKOFFSET&t;&t;0x1c34
+mdefine_line|#define RADEON_RB3D_ZMASKOFFSET&t;&t;0x3234
 DECL|macro|RADEON_RB3D_ZSTENCILCNTL
 mdefine_line|#define RADEON_RB3D_ZSTENCILCNTL&t;0x1c2c
 DECL|macro|RADEON_DEPTH_FORMAT_16BIT_INT_Z
@@ -1650,6 +1662,10 @@ DECL|macro|RADEON_3D_DRAW_INDX
 macro_line|#&t;define RADEON_3D_DRAW_INDX&t;&t;0x00002A00
 DECL|macro|RADEON_3D_LOAD_VBPNTR
 macro_line|#&t;define RADEON_3D_LOAD_VBPNTR&t;&t;0x00002F00
+DECL|macro|RADEON_3D_CLEAR_ZMASK
+macro_line|#&t;define RADEON_3D_CLEAR_ZMASK&t;&t;0x00003200
+DECL|macro|RADEON_3D_CLEAR_HIZ
+macro_line|#&t;define RADEON_3D_CLEAR_HIZ&t;&t;0x00003700
 DECL|macro|RADEON_CNTL_HOSTDATA_BLT
 macro_line|#&t;define RADEON_CNTL_HOSTDATA_BLT&t;&t;0x00009400
 DECL|macro|RADEON_CNTL_PAINT_MULTI

@@ -365,7 +365,13 @@ mdefine_line|#define RADEON_BACK&t;&t;&t;0x2
 DECL|macro|RADEON_DEPTH
 mdefine_line|#define RADEON_DEPTH&t;&t;&t;0x4
 DECL|macro|RADEON_STENCIL
-mdefine_line|#define RADEON_STENCIL                  0x8
+mdefine_line|#define RADEON_STENCIL&t;&t;&t;0x8
+DECL|macro|RADEON_CLEAR_FASTZ
+mdefine_line|#define RADEON_CLEAR_FASTZ&t;&t;0x80000000
+DECL|macro|RADEON_USE_HIERZ
+mdefine_line|#define RADEON_USE_HIERZ&t;&t;0x40000000
+DECL|macro|RADEON_USE_COMP_ZBUF
+mdefine_line|#define RADEON_USE_COMP_ZBUF&t;&t;0x20000000
 multiline_comment|/* Primitive types&n; */
 DECL|macro|RADEON_POINTS
 mdefine_line|#define RADEON_POINTS&t;&t;&t;0x1
