@@ -818,9 +818,9 @@ id|max
 )paren
 suffix:semicolon
 DECL|macro|sysfs_in_offset
-mdefine_line|#define sysfs_in_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_in_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;        return show_in(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_regs_in_##offset, NULL);
+mdefine_line|#define sysfs_in_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_in_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;        return show_in(dev, buf, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_regs_in_##offset, NULL);
 DECL|macro|sysfs_in_reg_offset
-mdefine_line|#define sysfs_in_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_in_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_in_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_in_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_in_##reg##offset, store_regs_in_##reg##offset);
+mdefine_line|#define sysfs_in_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_in_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_##reg (dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_in_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_in_##reg (dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_in_##reg##offset, store_regs_in_##reg##offset);
 DECL|macro|sysfs_in_offsets
 mdefine_line|#define sysfs_in_offsets(offset) &bslash;&n;sysfs_in_offset(offset); &bslash;&n;sysfs_in_reg_offset(min, offset); &bslash;&n;sysfs_in_reg_offset(max, offset);
 id|sysfs_in_offsets
@@ -1003,9 +1003,9 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_fan_offset
-mdefine_line|#define sysfs_fan_offset(offset) &bslash;&n;static ssize_t show_regs_fan_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, show_regs_fan_##offset, NULL);
+mdefine_line|#define sysfs_fan_offset(offset) &bslash;&n;static ssize_t show_regs_fan_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan(dev, buf, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, show_regs_fan_##offset, NULL);
 DECL|macro|sysfs_fan_min_offset
-mdefine_line|#define sysfs_fan_min_offset(offset) &bslash;&n;static ssize_t show_regs_fan_min##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_min(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_min##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_min(dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR, show_regs_fan_min##offset, store_regs_fan_min##offset);
+mdefine_line|#define sysfs_fan_min_offset(offset) &bslash;&n;static ssize_t show_regs_fan_min##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_min(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_min##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_min(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR, show_regs_fan_min##offset, store_regs_fan_min##offset);
 id|sysfs_fan_offset
 c_func
 (paren
@@ -1086,9 +1086,9 @@ id|max_hyst
 )paren
 suffix:semicolon
 DECL|macro|sysfs_temp_offset
-mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_temp_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_input, S_IRUGO, show_regs_temp_##offset, NULL);
+mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_temp_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_input, S_IRUGO, show_regs_temp_##offset, NULL);
 DECL|macro|sysfs_temp_reg_offset
-mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset);
+mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset);
 DECL|macro|sysfs_temp_offsets
 mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(max, offset); &bslash;&n;sysfs_temp_reg_offset(max_hyst, offset);
 id|sysfs_temp_offsets
@@ -2362,9 +2362,9 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_pwm
-mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_pwm, S_IRUGO | S_IWUSR, show_regs_pwm_##offset, store_regs_pwm_##offset);
+mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwm_##offset (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_regs_pwm_##offset, store_regs_pwm_##offset);
 DECL|macro|sysfs_pwmenable
-mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_pwm_enable, S_IRUGO | S_IWUSR, show_regs_pwmenable_##offset, store_regs_pwmenable_##offset);
+mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, &bslash;&n;&t;&t;const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset##_enable, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_regs_pwmenable_##offset, store_regs_pwmenable_##offset);
 id|sysfs_pwm
 c_func
 (paren
@@ -2397,9 +2397,9 @@ l_int|4
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm
-mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;} while (0)
 DECL|macro|device_create_file_pwmenable
-mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm_enable); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset##_enable); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_sensor_reg
@@ -3909,6 +3909,24 @@ l_string|&quot;w83781d&quot;
 )paren
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Request of region &quot;
+l_string|&quot;0x%x-0x%x for w83781d failed&bslash;n&quot;
+comma
+id|address
+comma
+id|address
+op_plus
+id|W83781D_EXTENT
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -3958,20 +3976,7 @@ l_int|2
 )paren
 op_ne
 id|i
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -3981,20 +3986,7 @@ l_int|3
 )paren
 op_ne
 id|i
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -4006,6 +3998,16 @@ op_ne
 id|i
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Detection of w83781d &quot;
+l_string|&quot;chip failed at step 1&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4043,10 +4045,8 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+id|val2
+op_assign
 id|inb_p
 c_func
 (paren
@@ -4056,7 +4056,11 @@ l_int|5
 )paren
 op_amp
 l_int|0x7f
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val2
 op_ne
 (paren
 op_complement
@@ -4070,6 +4074,28 @@ id|outb_p
 c_func
 (paren
 id|i
+comma
+id|address
+op_plus
+l_int|5
+)paren
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Detection of w83781d &quot;
+l_string|&quot;chip failed at step 2 (0x%x != &quot;
+l_string|&quot;0x%x at 0x%x)&bslash;n&quot;
+comma
+id|val2
+comma
+op_complement
+id|i
+op_amp
+l_int|0x7f
 comma
 id|address
 op_plus
@@ -4193,6 +4219,16 @@ op_amp
 l_int|0x80
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed at step &quot;
+l_string|&quot;3&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4281,6 +4317,16 @@ l_int|0x12
 )paren
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed at step &quot;
+l_string|&quot;4&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4346,6 +4392,16 @@ op_ne
 id|address
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Detection failed &quot;
+l_string|&quot;at step 5&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4425,6 +4481,16 @@ id|asus
 suffix:semicolon
 r_else
 (brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+l_string|&quot;Chip was made by neither &quot;
+l_string|&quot;Winbond nor Asus?&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4578,7 +4644,8 @@ c_func
 op_amp
 id|new_client-&gt;dev
 comma
-l_string|&quot;Ignoring &squot;force&squot; parameter for unknown chip at&quot;
+l_string|&quot;Ignoring &squot;force&squot; &quot;
+l_string|&quot;parameter for unknown chip at &quot;
 l_string|&quot;adapter %d, address 0x%02x&bslash;n&quot;
 comma
 id|i2c_adapter_id

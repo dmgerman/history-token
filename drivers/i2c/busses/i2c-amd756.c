@@ -127,7 +127,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Transaction (pre): GS=%04x, GE=%04x, ADD=%04x, &quot;
+l_string|&quot;Transaction (pre): GS=%04x, GE=%04x, ADD=%04x, &quot;
 l_string|&quot;DAT=%04x&bslash;n&quot;
 comma
 id|inw_p
@@ -182,7 +182,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: SMBus busy (%04x). Waiting... &bslash;n&quot;
+l_string|&quot;SMBus busy (%04x). Waiting...&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -240,7 +240,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Busy wait timeout (%04x)&bslash;n&quot;
+l_string|&quot;Busy wait timeout (%04x)&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -319,7 +319,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Completion timeout!&bslash;n&quot;
+l_string|&quot;Completion timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -345,7 +345,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: SMBus Protocol error (no response)!&bslash;n&quot;
+l_string|&quot;SMBus Protocol error (no response)!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -368,7 +368,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot; SMBus collision!&bslash;n&quot;
+l_string|&quot;SMBus collision!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -391,7 +391,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: SMBus protocol timeout!&bslash;n&quot;
+l_string|&quot;SMBus protocol timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -408,7 +408,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot; SMBus protocol success!&bslash;n&quot;
+l_string|&quot;SMBus protocol success!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outw_p
@@ -446,7 +446,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Failed reset at end of transaction (%04x)&bslash;n&quot;
+l_string|&quot;Failed reset at end of transaction (%04x)&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -459,7 +459,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Transaction (post): GS=%04x, GE=%04x, ADD=%04x, DAT=%04x&bslash;n&quot;
+l_string|&quot;Transaction (post): GS=%04x, GE=%04x, ADD=%04x, DAT=%04x&bslash;n&quot;
 comma
 id|inw_p
 c_func
@@ -497,7 +497,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: Sending abort.&bslash;n&quot;
+l_string|&quot;Sending abort&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outw_p
@@ -588,7 +588,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;: I2C_SMBUS_PROC_CALL not supported!&bslash;n&quot;
+l_string|&quot;I2C_SMBUS_PROC_CALL not supported!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* TODO: Well... It is supported, I&squot;m just not sure what to do here... */
@@ -1159,6 +1159,28 @@ comma
 id|AMD8111
 )brace
 suffix:semicolon
+DECL|variable|chipname
+r_static
+r_const
+r_char
+op_star
+id|chipname
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;AMD756&quot;
+comma
+l_string|&quot;AMD766&quot;
+comma
+l_string|&quot;AMD768&quot;
+comma
+l_string|&quot;nVidia nForce&quot;
+comma
+l_string|&quot;AMD8111&quot;
+comma
+)brace
+suffix:semicolon
 DECL|variable|amd756_ids
 r_static
 r_struct
@@ -1254,6 +1276,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|amd756_ids
+)paren
+suffix:semicolon
 DECL|function|amd756_probe
 r_static
 r_int
@@ -1300,8 +1329,8 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: Only one device supported. &quot;
-l_string|&quot;(you have a strange motherboard, btw..)&bslash;n&quot;
+l_string|&quot;Only one device supported &quot;
+l_string|&quot;(you have a strange motherboard, btw)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1393,7 +1422,7 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: Error: SMBus controller I/O not enabled!&bslash;n&quot;
+l_string|&quot;Error: SMBus controller I/O not enabled!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1444,7 +1473,7 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: SMB region 0x%x already in use!&bslash;n&quot;
+l_string|&quot;SMB region 0x%x already in use!&bslash;n&quot;
 comma
 id|amd756_ioport
 )paren
@@ -1471,7 +1500,7 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: SMBREV = 0x%X&bslash;n&quot;
+l_string|&quot;SMBREV = 0x%X&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -1482,7 +1511,7 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: AMD756_smba = 0x%X&bslash;n&quot;
+l_string|&quot;AMD756_smba = 0x%X&bslash;n&quot;
 comma
 id|amd756_ioport
 )paren
@@ -1493,14 +1522,17 @@ op_assign
 op_amp
 id|pdev-&gt;dev
 suffix:semicolon
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|amd756_adapter.name
 comma
-id|I2C_NAME_SIZE
+l_string|&quot;SMBus %s adapter at %04x&quot;
 comma
-l_string|&quot;SMBus AMD756 adapter at %04x&quot;
+id|chipname
+(braket
+id|id-&gt;driver_data
+)braket
 comma
 id|amd756_ioport
 )paren
@@ -1526,7 +1558,7 @@ c_func
 op_amp
 id|pdev-&gt;dev
 comma
-l_string|&quot;: Adapter registration failed, module not inserted.&bslash;n&quot;
+l_string|&quot;Adapter registration failed, module not inserted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1623,7 +1655,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
