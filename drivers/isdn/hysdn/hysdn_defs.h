@@ -21,9 +21,9 @@ mdefine_line|#define word unsigned short
 macro_line|#include &quot;ince1pc.h&quot;
 macro_line|#ifdef CONFIG_HYSDN_CAPI
 macro_line|#include &lt;linux/capi.h&gt;
-macro_line|#include &quot;../avmb1/capicmd.h&quot;
-macro_line|#include &quot;../avmb1/capiutil.h&quot;
-macro_line|#include &quot;../avmb1/capilli.h&quot;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
+macro_line|#include &lt;linux/isdn/capilli.h&gt;
 multiline_comment|/***************************/
 multiline_comment|/*   CAPI-Profile values.  */
 multiline_comment|/***************************/
