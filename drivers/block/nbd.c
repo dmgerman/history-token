@@ -3114,12 +3114,14 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef NDEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debugflags
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

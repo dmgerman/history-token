@@ -28,12 +28,14 @@ id|videomemorysize
 op_assign
 id|VIDEOMEMSIZE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|videomemorysize
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|__initdata
@@ -215,12 +217,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* disabled by default */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vfb_enable
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     *  Interface used by the world&n;     */

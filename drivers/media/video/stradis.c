@@ -60,12 +60,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|video_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

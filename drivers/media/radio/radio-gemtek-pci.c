@@ -966,7 +966,7 @@ id|gemtek_pci_id
 suffix:semicolon
 DECL|variable|mx
 r_static
-id|u8
+r_int
 id|mx
 op_assign
 l_int|1
@@ -1490,12 +1490,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mx
 comma
-l_string|&quot;b&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1506,12 +1508,14 @@ comma
 l_string|&quot;single digit: 1 - turn off the turner upon module exit (default), 0 - do not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nr_radio
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

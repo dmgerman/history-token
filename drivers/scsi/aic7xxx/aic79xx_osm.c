@@ -477,12 +477,14 @@ c_func
 id|AIC79XX_DRIVER_VERSION
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|aic79xx
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -45,12 +45,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 1 will use digital path in capture&n;&t;&t;&t;&t; * mode instead of analog. It can be&n;&t;&t;&t;&t; * used for picture adjustments using&n;&t;&t;&t;&t; * tool like xawtv while watching image&n;&t;&t;&t;&t; * on TV monitor connected to the output.&n;&t;&t;&t;&t; * However, due to absence of 75 Ohm&n;&t;&t;&t;&t; * load on Bt819 input, there will be&n;&t;&t;&t;&t; * some image imperfections */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lml33dpath
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1514,12 +1514,16 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|eisa
 comma
-l_string|&quot;1-8i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* This is a bit of a hack,&n; * necessary to support both eisa and pci&n; */

@@ -52,12 +52,14 @@ id|orinoco_debug
 op_assign
 id|ORINOCO_DEBUG
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|orinoco_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|orinoco_debug
@@ -74,12 +76,14 @@ r_int
 id|suppress_linkstatus
 suffix:semicolon
 multiline_comment|/* = 0 */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|suppress_linkstatus
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/********************************************************************/

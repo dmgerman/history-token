@@ -127,12 +127,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* levels range from 1-9 */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debuglevel
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|variable|cs_debugmask
@@ -146,12 +148,14 @@ op_or
 id|CS_ERROR
 suffix:semicolon
 multiline_comment|/* use CS_DBGOUT with various mask values */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debugmask
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -162,12 +166,14 @@ r_int
 id|hercules_egpio_disable
 suffix:semicolon
 multiline_comment|/* if non-zero set all EGPIO to 0 */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hercules_egpio_disable
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|initdelay
@@ -179,12 +185,14 @@ op_assign
 l_int|700
 suffix:semicolon
 multiline_comment|/* PM delay in millisecs */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|initdelay
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|powerdown
@@ -197,12 +205,14 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* turn on/off powerdown processing in driver */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|powerdown
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|DMABUF_DEFAULTORDER
@@ -215,12 +225,14 @@ id|defaultorder
 op_assign
 id|DMABUF_DEFAULTORDER
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|defaultorder
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|external_amp
@@ -228,12 +240,14 @@ r_static
 r_int
 id|external_amp
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|external_amp
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|thinkpad
@@ -241,12 +255,14 @@ r_static
 r_int
 id|thinkpad
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|thinkpad
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;* set the powerdown module parm to 0 to disable all &n;* powerdown. also set thinkpad to 1 to disable powerdown, &n;* but also to enable the clkrun functionality.&n;*/

@@ -122,12 +122,16 @@ c_func
 l_string|&quot;Emulate an MTD using a block device&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|device
 comma
-l_string|&quot;1-4s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -138,12 +142,16 @@ comma
 l_string|&quot;block device to use&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|erasesz
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -154,12 +162,16 @@ comma
 l_string|&quot;optional erase size to use in KiB. eg 4=4KiB.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ro
 comma
-l_string|&quot;1-4i&quot;
+r_bool
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -170,12 +182,14 @@ comma
 l_string|&quot;1=Read only, writes and erases cause errors&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
