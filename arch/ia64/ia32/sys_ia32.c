@@ -6252,8 +6252,6 @@ r_sizeof
 r_struct
 id|msgbuf
 )paren
-op_plus
-l_int|4
 comma
 id|GFP_USER
 )paren
@@ -6501,8 +6499,6 @@ r_sizeof
 r_struct
 id|msgbuf
 )paren
-op_plus
-l_int|4
 comma
 id|GFP_USER
 )paren
@@ -6539,8 +6535,6 @@ comma
 id|p
 comma
 id|second
-op_plus
-l_int|4
 comma
 id|msgtyp
 comma
