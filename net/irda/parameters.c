@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      parameters.c&n; * Version:       1.0&n; * Description:   A more general way to handle (pi,pl,pv) parameters&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Jun  7 10:25:11 1999&n; * Modified at:   Sun Jan 30 14:08:39 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      parameters.c&n; * Version:       1.0&n; * Description:   A more general way to handle (pi,pl,pv) parameters&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Jun  7 10:25:11 1999&n; * Modified at:   Sun Jan 30 14:08:39 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -221,7 +221,7 @@ id|irda_insert_no_value
 multiline_comment|/* Handler for no value parameters */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function irda_insert_no_value (self, buf, len, pi, type, func)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_insert_no_value (self, buf, len, pi, type, func)&n; */
 DECL|function|irda_insert_no_value
 r_static
 r_int
@@ -387,7 +387,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Extracted pl+2 bytes */
 )brace
-multiline_comment|/*&n; * Function irda_insert_integer (self, buf, len, pi, type, func)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_insert_integer (self, buf, len, pi, type, func)&n; */
 DECL|function|irda_insert_integer
 r_static
 r_int
@@ -469,7 +469,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* &n;&t; * If parameter lenght is still 0, then (1) this is an any length &n;&t; * integer, and (2) the handler function does not care which length&n;&t; * we choose to use, so we pick the one the gives the fewest bytes.&n;&t; */
+multiline_comment|/*&n;&t; * If parameter lenght is still 0, then (1) this is an any length&n;&t; * integer, and (2) the handler function does not care which length&n;&t; * we choose to use, so we pick the one the gives the fewest bytes.&n;&t; */
 r_if
 c_cond
 (paren
@@ -557,8 +557,9 @@ id|p.pl
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: buffer to short for insertion!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), buffer to short for insertion!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -713,8 +714,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: length %d not supported&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() length %d not supported&bslash;n&quot;
 comma
 id|p.pl
 )paren
@@ -732,7 +734,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Inserted pl+2 bytes */
 )brace
-multiline_comment|/*&n; * Function irda_extract integer (self, buf, len, pi, type, func)&n; *&n; *    Extract a possibly variable length integer from buffer, and call &n; *    handler for processing of the parameter&n; */
+multiline_comment|/*&n; * Function irda_extract integer (self, buf, len, pi, type, func)&n; *&n; *    Extract a possibly variable length integer from buffer, and call&n; *    handler for processing of the parameter&n; */
 DECL|function|irda_extract_integer
 r_static
 r_int
@@ -805,9 +807,10 @@ id|p.pl
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), buffer to short for parsing! &quot;
+l_string|&quot;%s: buffer to short for parsing! &quot;
 l_string|&quot;Need %d bytes, but len is only %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|p.pl
 comma
@@ -819,7 +822,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Check that the integer length is what we expect it to be. If the&n;&t; * handler want a 16 bits integer then a 32 bits is not good enough&n;&t; */
+multiline_comment|/*&n;&t; * Check that the integer length is what we expect it to be. If the&n;&t; * handler want a 16 bits integer then a 32 bits is not good enough&n;&t; */
 r_if
 c_cond
 (paren
@@ -847,9 +850,10 @@ id|p.pl
 id|ERROR
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), invalid parameter length! &quot;
+l_string|&quot;%s: invalid parameter length! &quot;
 l_string|&quot;Expected %d bytes, but value had %d bytes!&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|type
 op_amp
@@ -988,8 +992,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: length %d not supported&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() length %d not supported&bslash;n&quot;
 comma
 id|p.pl
 )paren
@@ -1049,7 +1054,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Extracted pl+2 bytes */
 )brace
-multiline_comment|/*&n; * Function irda_extract_string (self, buf, len, type, func)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_extract_string (self, buf, len, type, func)&n; */
 DECL|function|irda_extract_string
 r_static
 r_int
@@ -1140,9 +1145,10 @@ id|p.pl
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), buffer to short for parsing! &quot;
+l_string|&quot;%s: buffer to short for parsing! &quot;
 l_string|&quot;Need %d bytes, but len is only %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|p.pl
 comma
@@ -1154,7 +1160,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Should be safe to copy string like this since we have already &n;&t; * checked that the buffer is long enough */
+multiline_comment|/* Should be safe to copy string like this since we have already&n;&t; * checked that the buffer is long enough */
 id|strncpy
 c_func
 (paren
@@ -1240,7 +1246,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Extracted pl+2 bytes */
 )brace
-multiline_comment|/*&n; * Function irda_extract_octseq (self, buf, len, type, func)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_extract_octseq (self, buf, len, type, func)&n; */
 DECL|function|irda_extract_octseq
 r_static
 r_int
@@ -1300,9 +1306,10 @@ id|p.pl
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), buffer to short for parsing! &quot;
+l_string|&quot;%s: buffer to short for parsing! &quot;
 l_string|&quot;Need %d bytes, but len is only %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|p.pl
 comma
@@ -1559,7 +1566,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_param_unpack (skb, fmt, ...)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_param_unpack (skb, fmt, ...)&n; */
 DECL|function|irda_param_unpack
 r_int
 id|irda_param_unpack
@@ -1947,8 +1954,9 @@ id|pi_minor_info-&gt;func
 id|MESSAGE
 c_func
 (paren
+l_string|&quot;%s: no handler for pi=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler for pi=%#x&bslash;n&quot;
 comma
 id|pi
 )paren
@@ -2177,8 +2185,9 @@ id|pi_minor_info-&gt;func
 id|MESSAGE
 c_func
 (paren
+l_string|&quot;%s: no handler for pi=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler for pi=%#x&bslash;n&quot;
 comma
 id|buf
 (braket
