@@ -954,7 +954,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|SCpnt-&gt;request.flags
+id|SCpnt-&gt;request-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
@@ -967,7 +967,7 @@ op_assign
 id|SD_PARTITION
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|dsk_nr
@@ -975,12 +975,12 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|block
 op_assign
-id|SCpnt-&gt;request.sector
+id|SCpnt-&gt;request-&gt;sector
 suffix:semicolon
 id|this_count
 op_assign
@@ -1038,7 +1038,7 @@ id|sdp-&gt;online
 op_logical_or
 id|block
 op_plus
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 OG
 id|sd
 (braket
@@ -1058,7 +1058,7 @@ c_func
 (paren
 l_string|&quot;Finishing %ld sectors&bslash;n&quot;
 comma
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -1143,7 +1143,7 @@ l_int|1
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 op_amp
 l_int|1
 )paren
@@ -1194,7 +1194,7 @@ l_int|3
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 op_amp
 l_int|3
 )paren
@@ -1245,7 +1245,7 @@ l_int|7
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 op_amp
 l_int|7
 )paren
@@ -1284,7 +1284,6 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1321,7 +1320,6 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1348,10 +1346,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;sd: Unknown command %lx&bslash;n&quot;
 comma
-id|SCpnt-&gt;request.flags
+id|SCpnt-&gt;request-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* overkill &t;panic(&quot;Unknown sd command %lx&bslash;n&quot;, SCpnt-&gt;request.flags); */
+multiline_comment|/* overkill &t;panic(&quot;Unknown sd command %lx&bslash;n&quot;, SCpnt-&gt;request-&gt;flags); */
 r_return
 l_int|0
 suffix:semicolon
@@ -1372,7 +1370,6 @@ comma
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1386,7 +1383,7 @@ l_string|&quot;reading&quot;
 comma
 id|this_count
 comma
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -2286,7 +2283,7 @@ c_func
 id|DEVICE_NR
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 comma
 id|nbuff
@@ -2424,7 +2421,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;request.bio
+id|SCpnt-&gt;request-&gt;bio
 op_ne
 l_int|NULL
 )paren
@@ -2433,7 +2430,7 @@ op_assign
 id|bio_sectors
 c_func
 (paren
-id|SCpnt-&gt;request.bio
+id|SCpnt-&gt;request-&gt;bio
 )paren
 suffix:semicolon
 r_switch
@@ -2529,7 +2526,7 @@ id|good_sectors
 op_assign
 id|error_sector
 op_minus
-id|SCpnt-&gt;request.sector
+id|SCpnt-&gt;request-&gt;sector
 suffix:semicolon
 r_if
 c_cond

@@ -15759,7 +15759,7 @@ id|seg_cnt
 (brace
 multiline_comment|/* Set transfer direction (READ and WRITE) */
 multiline_comment|/* Linux doesn&squot;t tell us                   */
-multiline_comment|/*&n;&t;&t;&t;&t; * For block devices, cmd-&gt;request.cmd has the operation&n;&t;&t;&t;&t; * For character devices, this isn&squot;t always set properly, so&n;&t;&t;&t;&t; * we need to check data_cmnd[0].  This catches the conditions&n;&t;&t;&t;&t; * for st.c, but not sg. Generic commands are pass down to us.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * For block devices, cmd-&gt;request-&gt;cmd has the operation&n;&t;&t;&t;&t; * For character devices, this isn&squot;t always set properly, so&n;&t;&t;&t;&t; * we need to check data_cmnd[0].  This catches the conditions&n;&t;&t;&t;&t; * for st.c, but not sg. Generic commands are pass down to us.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -23202,7 +23202,7 @@ id|cmd-&gt;underflow
 comma
 id|sp-&gt;dir
 comma
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 )paren
 suffix:semicolon
 )brace
