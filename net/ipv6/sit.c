@@ -2237,10 +2237,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|skb-&gt;h.raw
-op_assign
-id|skb-&gt;nh.raw
-suffix:semicolon
 multiline_comment|/*&n;&t; * Okay, now see if we can stuff it in the buffer as-is.&n;&t; */
 id|max_headroom
 op_assign
@@ -2350,6 +2346,10 @@ op_assign
 id|skb-&gt;nh.ipv6h
 suffix:semicolon
 )brace
+id|skb-&gt;h.raw
+op_assign
+id|skb-&gt;nh.raw
+suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
 id|skb_push

@@ -149,6 +149,9 @@ op_star
 id|nb
 )paren
 suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 multiline_comment|/* profiling hook activated on each timer interrupt */
 r_void
 id|profile_hook

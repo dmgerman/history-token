@@ -6,7 +6,6 @@ multiline_comment|/* [Feb 1997 T. Schoebel-Theuer] Complete rewrite of the pathn
 multiline_comment|/** end of namei.c copyright **/
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;

@@ -1589,11 +1589,6 @@ id|func
 op_assign
 id|pppoe_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|pppoed_ptype
@@ -1616,11 +1611,6 @@ dot
 id|func
 op_assign
 id|pppoe_disc_rcv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon

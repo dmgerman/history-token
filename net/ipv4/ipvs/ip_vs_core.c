@@ -2482,11 +2482,7 @@ c_func
 id|IP_OFFSET
 )paren
 op_logical_and
-(paren
-id|pp-&gt;minhlen
-op_logical_or
 id|pp-&gt;dont_defrag
-)paren
 )paren
 )paren
 r_return
@@ -3572,11 +3568,7 @@ c_func
 id|IP_OFFSET
 )paren
 op_logical_and
-(paren
-id|pp-&gt;minhlen
-op_logical_or
 id|pp-&gt;dont_defrag
-)paren
 )paren
 )paren
 r_return

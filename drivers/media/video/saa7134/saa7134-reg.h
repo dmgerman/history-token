@@ -162,6 +162,20 @@ DECL|macro|SAA7134_IRQ1_INTE_RA0_0
 mdefine_line|#define   SAA7134_IRQ1_INTE_RA0_0               (1 &lt;&lt;  0)
 DECL|macro|SAA7134_IRQ2
 mdefine_line|#define SAA7134_IRQ2                            (0x2c8 &gt;&gt; 2)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO23A
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO23A             (1 &lt;&lt; 17)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO23
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO23              (1 &lt;&lt; 16)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO22A
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO22A             (1 &lt;&lt; 15)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO22
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO22              (1 &lt;&lt; 14)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO18A
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO18A             (1 &lt;&lt; 13)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO18
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO18              (1 &lt;&lt; 12)
+DECL|macro|SAA7134_IRQ2_INTE_GPIO16
+mdefine_line|#define   SAA7134_IRQ2_INTE_GPIO16              (1 &lt;&lt; 11) /* not certain */
 DECL|macro|SAA7134_IRQ2_INTE_SC2
 mdefine_line|#define   SAA7134_IRQ2_INTE_SC2                 (1 &lt;&lt; 10)
 DECL|macro|SAA7134_IRQ2_INTE_SC1
@@ -186,6 +200,14 @@ DECL|macro|SAA7134_IRQ2_INTE_AR
 mdefine_line|#define   SAA7134_IRQ2_INTE_AR                  (1 &lt;&lt;  0)
 DECL|macro|SAA7134_IRQ_REPORT
 mdefine_line|#define SAA7134_IRQ_REPORT                      (0x2cc &gt;&gt; 2)
+DECL|macro|SAA7134_IRQ_REPORT_GPIO23
+mdefine_line|#define   SAA7134_IRQ_REPORT_GPIO23             (1 &lt;&lt; 17)
+DECL|macro|SAA7134_IRQ_REPORT_GPIO22
+mdefine_line|#define   SAA7134_IRQ_REPORT_GPIO22             (1 &lt;&lt; 16)
+DECL|macro|SAA7134_IRQ_REPORT_GPIO18
+mdefine_line|#define   SAA7134_IRQ_REPORT_GPIO18             (1 &lt;&lt; 15)
+DECL|macro|SAA7134_IRQ_REPORT_GPIO16
+mdefine_line|#define   SAA7134_IRQ_REPORT_GPIO16             (1 &lt;&lt; 14) /* not certain */
 DECL|macro|SAA7134_IRQ_REPORT_LOAD_ERR
 mdefine_line|#define   SAA7134_IRQ_REPORT_LOAD_ERR           (1 &lt;&lt; 13)
 DECL|macro|SAA7134_IRQ_REPORT_CONF_ERR

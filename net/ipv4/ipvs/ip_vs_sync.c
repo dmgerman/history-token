@@ -2512,12 +2512,6 @@ c_func
 id|HZ
 )paren
 suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* clean up the sync_buff queue */
 r_while
@@ -2733,12 +2727,6 @@ id|schedule_timeout
 c_func
 (paren
 id|HZ
-)paren
-suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 )brace

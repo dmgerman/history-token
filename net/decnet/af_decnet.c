@@ -9179,11 +9179,6 @@ id|func
 op_assign
 id|dn_route_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

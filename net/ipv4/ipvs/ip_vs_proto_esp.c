@@ -120,7 +120,7 @@ op_logical_neg
 id|cp
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We are not sure if the packet is from our&n;&t;&t; * service, so the caller should check skip_nonexisting&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We are not sure if the packet is from our&n;&t;&t; * service, so our conn_schedule hook should return NF_ACCEPT&n;&t;&t; */
 id|IP_VS_DBG
 c_func
 (paren
@@ -264,7 +264,6 @@ op_logical_neg
 id|cp
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We are not sure if the packet is from our&n;&t;&t; * service, so the caller should check skip_nonexisting&n;&t;&t; * or our conn_schedule hook should return NF_ACCEPT&n;&t;&t; */
 id|IP_VS_DBG
 c_func
 (paren
@@ -484,27 +483,7 @@ op_assign
 id|IPPROTO_ESP
 comma
 dot
-id|minhlen
-op_assign
-l_int|0
-comma
-dot
-id|minhlen_icmp
-op_assign
-l_int|0
-comma
-dot
 id|dont_defrag
-op_assign
-l_int|1
-comma
-dot
-id|skip_nonexisting
-op_assign
-l_int|1
-comma
-dot
-id|slave
 op_assign
 l_int|1
 comma

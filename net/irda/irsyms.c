@@ -832,23 +832,11 @@ id|ETH_P_IRDA
 )paren
 comma
 dot
-id|dev
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* Wildcard : All devices */
-dot
 id|func
 op_assign
 id|irlap_driver_rcv
 comma
 multiline_comment|/* Packet type handler irlap_frame.c */
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
-singleline_comment|//.next&t;= NULL,
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
@@ -1129,14 +1117,6 @@ c_func
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Remove IrDA packet type (stop receiving packets) */
-id|irda_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_IRDA
-)paren
-suffix:semicolon
 id|dev_remove_pack
 c_func
 (paren

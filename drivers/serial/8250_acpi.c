@@ -64,9 +64,11 @@ l_string|&quot;%s: couldn&squot;t ioremap 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|addr-&gt;min_address_range
+id|req-&gt;iomap_base
 comma
-id|addr-&gt;max_address_range
+id|req-&gt;iomap_base
+op_plus
+id|size
 )paren
 suffix:semicolon
 r_return
