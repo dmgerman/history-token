@@ -40,6 +40,11 @@ id|sig
 id|EISA_SIG_LEN
 )braket
 suffix:semicolon
+DECL|member|driver_data
+r_int
+r_int
+id|driver_data
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. */
