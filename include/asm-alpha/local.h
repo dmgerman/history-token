@@ -1,6 +1,6 @@
-macro_line|#ifndef _ARCH_SPARC64_LOCAL_H
-DECL|macro|_ARCH_SPARC64_LOCAL_H
-mdefine_line|#define _ARCH_SPARC64_LOCAL_H
+macro_line|#ifndef _ALPHA_LOCAL_H
+DECL|macro|_ALPHA_LOCAL_H
+mdefine_line|#define _ALPHA_LOCAL_H
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|typedef|local_t
@@ -51,5 +51,5 @@ DECL|macro|__cpu_local_add
 mdefine_line|#define __cpu_local_add(i, v)&t;__local_add((i), &amp;__get_cpu_var(v))
 DECL|macro|__cpu_local_sub
 mdefine_line|#define __cpu_local_sub(i, v)&t;__local_sub((i), &amp;__get_cpu_var(v))
-macro_line|#endif /* _ARCH_SPARC64_LOCAL_H */
+macro_line|#endif /* _ALPHA_LOCAL_H */
 eof
