@@ -739,7 +739,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|ATA_DMA_MASK
 )paren
 suffix:semicolon
 r_if
@@ -757,7 +757,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|ATA_DMA_MASK
 )paren
 suffix:semicolon
 r_if
