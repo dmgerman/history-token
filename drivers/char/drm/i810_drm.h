@@ -352,6 +352,20 @@ DECL|member|vertex_prim
 r_int
 id|vertex_prim
 suffix:semicolon
+DECL|member|pf_enabled
+r_int
+id|pf_enabled
+suffix:semicolon
+multiline_comment|/* is pageflipping allowed? */
+DECL|member|pf_active
+r_int
+id|pf_active
+suffix:semicolon
+DECL|member|pf_current_page
+r_int
+id|pf_current_page
+suffix:semicolon
+multiline_comment|/* which buffer is being displayed? */
 DECL|typedef|drm_i810_sarea_t
 )brace
 id|drm_i810_sarea_t
@@ -386,6 +400,8 @@ DECL|macro|DRM_IOCTL_I810_MC
 mdefine_line|#define DRM_IOCTL_I810_MC&t;&t;DRM_IOW( 0x4c, drm_i810_mc_t)
 DECL|macro|DRM_IOCTL_I810_RSTATUS
 mdefine_line|#define DRM_IOCTL_I810_RSTATUS&t;&t;DRM_IO ( 0x4d )
+DECL|macro|DRM_IOCTL_I810_FLIP
+mdefine_line|#define DRM_IOCTL_I810_FLIP             DRM_IO ( 0x4e )
 DECL|struct|_drm_i810_clear
 r_typedef
 r_struct
