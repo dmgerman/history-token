@@ -21,7 +21,7 @@ macro_line|#include &lt;platforms/prpmc750_serial.h&gt;
 macro_line|#elif defined(CONFIG_PRPMC800)
 macro_line|#include &lt;platforms/prpmc800_serial.h&gt;
 macro_line|#elif defined(CONFIG_SANDPOINT)
-macro_line|#include &lt;platforms/sandpoint_serial.h&gt;
+macro_line|#include &lt;platforms/sandpoint.h&gt;
 macro_line|#elif defined(CONFIG_SPRUCE)
 macro_line|#include &lt;platforms/spruce_serial.h&gt;
 macro_line|#elif defined(CONFIG_40x)
