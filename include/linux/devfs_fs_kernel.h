@@ -11,8 +11,6 @@ DECL|macro|DEVFS_SUPER_MAGIC
 mdefine_line|#define DEVFS_SUPER_MAGIC                0x1373
 DECL|macro|DEVFS_FL_NONE
 mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;       */
-DECL|macro|DEVFS_FL_AUTO_DEVNUM
-mdefine_line|#define DEVFS_FL_AUTO_DEVNUM    0x002 /* Automatically generate device number&n;&t;&t;&t;&t;       */
 DECL|macro|DEVFS_FL_REMOVABLE
 mdefine_line|#define DEVFS_FL_REMOVABLE      0x008 /* This is a removable media device    */
 DECL|macro|DEVFS_FL_WAIT
@@ -222,13 +220,6 @@ comma
 r_int
 r_int
 id|size
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|devfs_only
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
@@ -475,19 +466,6 @@ id|size
 r_return
 op_minus
 id|ENOSYS
-suffix:semicolon
-)brace
-DECL|function|devfs_only
-r_static
-r_inline
-r_int
-id|devfs_only
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|devfs_register_tape

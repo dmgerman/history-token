@@ -97,8 +97,6 @@ DECL|macro|OPTION_NONE
 mdefine_line|#define OPTION_NONE             0x00
 DECL|macro|OPTION_MOUNT
 mdefine_line|#define OPTION_MOUNT            0x01
-DECL|macro|OPTION_ONLY
-mdefine_line|#define OPTION_ONLY             0x02
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(format, args...) &bslash;&n;   {printk (KERN_ERR &quot;%s&quot; format, __FUNCTION__ , ## args);}
 DECL|macro|OOPS
@@ -184,13 +182,6 @@ suffix:semicolon
 DECL|member|dev
 id|dev_t
 id|dev
-suffix:semicolon
-DECL|member|autogen
-r_int
-r_char
-id|autogen
-suffix:colon
-l_int|1
 suffix:semicolon
 DECL|member|removable
 r_int
@@ -914,23 +905,6 @@ id|devfs_dealloc_devnum
 id|de-&gt;mode
 comma
 id|de-&gt;u.cdev.dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|S_ISBLK
-(paren
-id|de-&gt;mode
-)paren
-op_logical_and
-id|de-&gt;u.bdev.autogen
-)paren
-id|devfs_dealloc_devnum
-(paren
-id|de-&gt;mode
-comma
-id|de-&gt;u.bdev.dev
 )paren
 suffix:semicolon
 id|WRITE_ENTRY_MAGIC
@@ -3212,68 +3186,6 @@ r_if
 c_cond
 (paren
 (paren
-id|S_ISCHR
-(paren
-id|mode
-)paren
-op_logical_or
-id|S_ISBLK
-(paren
-id|mode
-)paren
-)paren
-op_logical_and
-(paren
-id|flags
-op_amp
-id|DEVFS_FL_AUTO_DEVNUM
-)paren
-)paren
-(brace
-id|devnum
-op_assign
-id|devfs_alloc_devnum
-(paren
-id|mode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|devnum
-)paren
-(brace
-id|PRINTK
-(paren
-l_string|&quot;(%s): exhausted %s device numbers&bslash;n&quot;
-comma
-id|name
-comma
-id|S_ISCHR
-(paren
-id|mode
-)paren
-ques
-c_cond
-l_string|&quot;char&quot;
-suffix:colon
-l_string|&quot;block&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|dev
-op_assign
-id|devnum
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
 id|de
 op_assign
 id|_devfs_prepare_leaf
@@ -4846,28 +4758,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_set_file_size  */
-multiline_comment|/**&n; *&t;devfs_only - returns true if &quot;devfs=only&quot; is a boot option&n; *&n; *&t;If &quot;devfs=only&quot; this function will return 1, otherwise 0 is returned.&n; */
-DECL|function|devfs_only
-r_int
-id|devfs_only
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|boot_options
-op_amp
-id|OPTION_ONLY
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*  End Function devfs_only  */
 multiline_comment|/**&n; *&t;devfs_setup - Process kernel boot options.&n; *&t;@str: The boot options after the &quot;devfs=&quot;.&n; */
 DECL|function|devfs_setup
 r_static
@@ -5013,15 +4903,6 @@ id|devfs_debug_init
 )brace
 comma
 macro_line|#endif  /*  CONFIG_DEVFS_DEBUG  */
-(brace
-l_string|&quot;only&quot;
-comma
-id|OPTION_ONLY
-comma
-op_amp
-id|boot_options
-)brace
-comma
 (brace
 l_string|&quot;mount&quot;
 comma
