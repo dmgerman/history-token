@@ -6588,28 +6588,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PKT_TASK_IOCTL
-r_case
-id|ide_cdrom
-suffix:colon
-r_case
-id|ide_tape
-suffix:colon
-r_case
-id|ide_floppy
-suffix:colon
-r_return
-id|pkt_taskfile_ioctl
-c_func
-(paren
-id|drive
-comma
-id|cmd
-comma
-id|arg
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PKT_TASK_IOCTL */
 r_default
 suffix:colon
 r_return
