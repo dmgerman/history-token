@@ -1000,6 +1000,27 @@ r_int
 id|part
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|gendisk
+op_star
+id|alloc_disk
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|put_disk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
+suffix:semicolon
 multiline_comment|/* will go away */
 r_extern
 r_void

@@ -4859,16 +4859,6 @@ r_int
 id|iflags
 suffix:semicolon
 r_struct
-(brace
-r_struct
-id|gendisk
-id|disk
-suffix:semicolon
-)brace
-op_star
-id|p
-suffix:semicolon
-r_struct
 id|gendisk
 op_star
 id|gd
@@ -4901,16 +4891,9 @@ l_int|0
 suffix:semicolon
 id|gd
 op_assign
-id|kmalloc
+id|alloc_disk
 c_func
 (paren
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -4921,20 +4904,6 @@ id|gd
 )paren
 r_return
 l_int|1
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|gd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
 suffix:semicolon
 id|SCSI_LOG_HLQUEUE
 c_func
@@ -4974,7 +4943,7 @@ id|KERN_ERR
 l_string|&quot;sd_init: no more room for device&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|put_disk
 c_func
 (paren
 id|gd
@@ -5070,7 +5039,7 @@ id|KERN_ERR
 l_string|&quot;sd_init: sd_dsk_arr corrupted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|put_disk
 c_func
 (paren
 id|gd
@@ -5436,7 +5405,7 @@ suffix:semicolon
 id|sd_template.nr_dev
 op_decrement
 suffix:semicolon
-id|kfree
+id|put_disk
 c_func
 (paren
 id|sd_disks
