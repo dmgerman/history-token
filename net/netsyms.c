@@ -2682,6 +2682,13 @@ c_func
 id|unregister_netdevice
 )paren
 suffix:semicolon
+DECL|variable|synchronize_net
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_net
+)paren
+suffix:semicolon
 DECL|variable|netdev_state_change
 id|EXPORT_SYMBOL
 c_func

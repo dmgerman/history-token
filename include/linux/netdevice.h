@@ -1573,6 +1573,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|synchronize_net
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|register_netdevice_notifier
 c_func
