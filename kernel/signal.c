@@ -6620,6 +6620,13 @@ c_func
 id|flush_signals
 )paren
 suffix:semicolon
+DECL|variable|force_sig
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|force_sig
+)paren
+suffix:semicolon
 DECL|variable|kill_pg
 id|EXPORT_SYMBOL
 c_func
