@@ -1184,6 +1184,63 @@ comma
 id|opt
 )paren
 suffix:semicolon
+macro_line|#ifndef NTFS_RW
+multiline_comment|/* For read-only compiled driver, enforce all read-only flags. */
+op_star
+id|flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there aren&squot;t any volume errors.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+op_logical_and
+op_logical_neg
+(paren
+op_star
+id|flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|NVolErrors
+c_func
+(paren
+id|vol
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Volume has errors and is read-only.&quot;
+l_string|&quot;Cannot remount read-write.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
 singleline_comment|// ro-&gt;rw, as well as with sync-&gt;async and vice versa remounts.
 singleline_comment|// Note: The VFS already checks that there are no pending deletes and
@@ -1212,17 +1269,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifndef NTFS_RW
-op_star
-id|flags
-op_or_assign
-id|MS_RDONLY
-op_or
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3567,8 +3613,6 @@ op_assign
 id|map_mft_record
 c_func
 (paren
-id|READ
-comma
 id|NTFS_I
 c_func
 (paren
@@ -3673,8 +3717,6 @@ suffix:colon
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|NTFS_I
 c_func
 (paren
@@ -3759,8 +3801,6 @@ suffix:semicolon
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|NTFS_I
 c_func
 (paren
