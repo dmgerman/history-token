@@ -2153,12 +2153,12 @@ id|zone-&gt;inactive_clean_pages
 op_plus
 id|zone-&gt;free_pages
 OL
-id|zone-&gt;pages_min
+id|zone-&gt;pages_high
 )paren
 (brace
 id|sum
 op_add_assign
-id|zone-&gt;pages_min
+id|zone-&gt;pages_high
 suffix:semicolon
 id|sum
 op_sub_assign

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_SUCCESS
@@ -749,6 +750,13 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* switch EFI to virtual mode, if possible */
+r_extern
+id|u64
+id|efi_get_iobase
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Variable Attributes&n; */
 DECL|macro|EFI_VARIABLE_NON_VOLATILE
 mdefine_line|#define EFI_VARIABLE_NON_VOLATILE       0x0000000000000001
@@ -756,5 +764,14 @@ DECL|macro|EFI_VARIABLE_BOOTSERVICE_ACCESS
 mdefine_line|#define EFI_VARIABLE_BOOTSERVICE_ACCESS 0x0000000000000002
 DECL|macro|EFI_VARIABLE_RUNTIME_ACCESS
 mdefine_line|#define EFI_VARIABLE_RUNTIME_ACCESS     0x0000000000000004
+multiline_comment|/*&n; * efi_dir is allocated in arch/ia64/kernel/efi.c.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|efi_dir
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ASM_IA64_EFI_H */
 eof

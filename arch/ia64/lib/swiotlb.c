@@ -923,6 +923,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|hwdev
+op_logical_and
 (paren
 id|pci_addr
 op_amp

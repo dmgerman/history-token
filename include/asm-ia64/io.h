@@ -1163,7 +1163,7 @@ mdefine_line|#define readw(a)&t;__readw((void *)(a))
 DECL|macro|readl
 mdefine_line|#define readl(a)&t;__readl((void *)(a))
 DECL|macro|readq
-mdefine_line|#define readq(a)&t;__readqq((void *)(a))
+mdefine_line|#define readq(a)&t;__readq((void *)(a))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb&t;readb
 DECL|macro|__raw_readw

@@ -25,7 +25,7 @@ suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;&t;&t;(spinlock_t) { 0 }
 DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;&t;&t;((x)-&gt;lock = 0) 
+mdefine_line|#define spin_lock_init(x)&t;&t;&t;((x)-&gt;lock = 0)
 multiline_comment|/*&n; * Streamlined test_and_set_bit(0, (x)).  We use test-and-test-and-set&n; * rather than a simple xchg to avoid writing the cache-line when&n; * there is contention.&n; */
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(x)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register char *addr __asm__ (&quot;r31&quot;) = (char *) &amp;(x)-&gt;lock;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;mov r30=1&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;mov ar.ccv=r0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;IA64_SEMFIX&quot;cmpxchg4.acq r30=[%0],r30,ar.ccv&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;cmp.ne p15,p0=r30,r0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;(p15) br.call.spnt.few b7=ia64_spinlock_contention&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;/* force a new bundle */&t;&t;&bslash;&n;&t;&t;:: &quot;r&quot;(addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;ar.ccv&quot;, &quot;ar.pfs&quot;, &quot;b7&quot;, &quot;p15&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;memory&quot;);&t;&bslash;&n;}
@@ -34,9 +34,9 @@ mdefine_line|#define spin_trylock(x)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(x)&t;&t;do {((spinlock_t *) x)-&gt;lock = 0;} while (0)
+mdefine_line|#define spin_unlock(x)&t;&t;do { barrier(); ((spinlock_t *) x)-&gt;lock = 0;} while (0)
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)&t;do {} while ((x)-&gt;lock)
+mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while ((x)-&gt;lock)
 macro_line|#else /* !NEW_LOCK */
 r_typedef
 r_struct
@@ -61,7 +61,7 @@ mdefine_line|#define spin_lock(x) __asm__ __volatile__ (&t;&t;&t;&bslash;&n;&t;&
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(x)&t;&t;do {((spinlock_t *) x)-&gt;lock = 0; barrier(); } while (0)
+mdefine_line|#define spin_unlock(x)&t;&t;do { barrier(); ((spinlock_t *) x)-&gt;lock = 0; } while (0)
 DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(x)&t;&t;(cmpxchg_acq(&amp;(x)-&gt;lock, 0, 1) == 0)
 DECL|macro|spin_unlock_wait

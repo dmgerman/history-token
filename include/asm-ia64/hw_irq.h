@@ -39,6 +39,8 @@ DECL|macro|IA64_TIMER_VECTOR
 mdefine_line|#define IA64_TIMER_VECTOR&t;&t;0xef&t;/* use highest-prio group 15 interrupt for timer */
 DECL|macro|IA64_MCA_WAKEUP_VECTOR
 mdefine_line|#define&t;IA64_MCA_WAKEUP_VECTOR&t;&t;0xf0&t;/* MCA wakeup (must be &gt;MCA_RENDEZ_VECTOR) */
+DECL|macro|IA64_IPI_RESCHEDULE
+mdefine_line|#define IA64_IPI_RESCHEDULE&t;&t;0xfd&t;/* SMP reschedule */
 DECL|macro|IA64_IPI_VECTOR
 mdefine_line|#define IA64_IPI_VECTOR&t;&t;&t;0xfe&t;/* inter-processor interrupt vector */
 multiline_comment|/* IA64 inter-cpu interrupt related definitions */
@@ -96,7 +98,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|hw_interrupt_type
-id|irq_type_ia64_sapic
+id|irq_type_ia64_lsapic
 suffix:semicolon
 multiline_comment|/* CPU-internal interrupt controller */
 r_extern

@@ -67,6 +67,9 @@ comma
 r_int
 r_int
 id|base_irq
+comma
+r_int
+id|pcat_compat
 )paren
 suffix:semicolon
 r_extern

@@ -606,7 +606,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|ia64_get_user_bsp
+id|ia64_get_user_rbs_end
 (paren
 r_struct
 id|task_struct
@@ -614,6 +614,10 @@ op_star
 comma
 r_struct
 id|pt_regs
+op_star
+comma
+r_int
+r_int
 op_star
 )paren
 suffix:semicolon
@@ -623,6 +627,10 @@ id|ia64_peek
 (paren
 r_struct
 id|task_struct
+op_star
+comma
+r_struct
+id|switch_stack
 op_star
 comma
 r_int
@@ -641,6 +649,10 @@ id|ia64_poke
 (paren
 r_struct
 id|task_struct
+op_star
+comma
+r_struct
+id|switch_stack
 op_star
 comma
 r_int
@@ -668,6 +680,25 @@ id|ia64_sync_fph
 r_struct
 id|task_struct
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ia64_sync_user_rbs
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_struct
+id|switch_stack
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* get nat bits for scratch registers such that bit N==1 iff scratch register rN is a NaT */

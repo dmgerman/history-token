@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems &n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SMP_H
 DECL|macro|_ASM_IA64_SMP_H
 mdefine_line|#define _ASM_IA64_SMP_H
@@ -44,11 +44,7 @@ id|no_int_routing
 id|__initdata
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|cpu_present_map
-suffix:semicolon
-r_extern
+r_volatile
 r_int
 r_int
 id|cpu_online_map
@@ -60,13 +56,6 @@ id|ipi_base_addr
 suffix:semicolon
 r_extern
 r_int
-id|__cpu_physical_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
 r_char
 id|smp_int_redirect
 suffix:semicolon
@@ -74,8 +63,15 @@ r_extern
 r_int
 id|smp_num_cpus
 suffix:semicolon
+r_extern
+r_volatile
+r_int
+id|ia64_cpu_to_sapicid
+(braket
+)braket
+suffix:semicolon
 DECL|macro|cpu_physical_id
-mdefine_line|#define cpu_physical_id(i)&t;__cpu_physical_id[i]
+mdefine_line|#define cpu_physical_id(i)&t;ia64_cpu_to_sapicid[i]
 DECL|macro|cpu_number_map
 mdefine_line|#define cpu_number_map(i)&t;(i)
 DECL|macro|cpu_logical_map

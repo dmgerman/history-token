@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Kernel exception handling table support.  Derived from arch/alpha/mm/extable.c.&n; *&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/module.h&gt;
 r_extern
 r_const
 r_struct
@@ -41,24 +41,13 @@ id|last
 comma
 r_int
 r_int
-id|value
+id|ip
+comma
+r_int
+r_int
+id|gp
 )paren
 (brace
-multiline_comment|/* Abort early if the search value is out of range.  */
-r_if
-c_cond
-(paren
-id|value
-op_ne
-(paren
-r_int
-r_int
-)paren
-id|value
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -76,50 +65,29 @@ suffix:semicolon
 r_int
 id|diff
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We know that first and last are both kernel virtual&n;&t;&t; * pointers (region 7) so first+last will cause an&n;&t;&t; * overflow.  We fix that by calling __va() on the&n;&t;&t; * result, which will ensure that the top two bits get&n;&t;&t; * set again.&n;&t;&t; */
 id|mid
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|__va
-c_func
-(paren
-(paren
-(paren
-(paren
-id|__u64
-)paren
+op_amp
 id|first
-op_plus
+(braket
 (paren
-id|__u64
-)paren
 id|last
+op_minus
+id|first
 )paren
 op_div
 l_int|2
-op_div
-r_sizeof
-(paren
-op_star
-id|mid
-)paren
-)paren
-op_star
-r_sizeof
-(paren
-op_star
-id|mid
-)paren
-)paren
+)braket
 suffix:semicolon
 id|diff
 op_assign
+(paren
 id|mid-&gt;addr
+op_plus
+id|gp
+)paren
 op_minus
-id|value
+id|ip
 suffix:semicolon
 r_if
 c_cond
@@ -157,7 +125,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_MODULE
+macro_line|#ifndef CONFIG_MODULES
 r_register
 r_int
 r_int
@@ -193,7 +161,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_MODULE
+macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
 id|entry
 op_assign
@@ -207,7 +175,7 @@ op_minus
 l_int|1
 comma
 id|addr
-op_minus
+comma
 id|main_gp
 )paren
 suffix:semicolon
@@ -227,16 +195,16 @@ id|fix
 suffix:semicolon
 macro_line|#else
 r_struct
-id|exception_table_entry
+id|archdata
 op_star
-id|ret
+id|archdata
 suffix:semicolon
-multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special. */
 r_struct
 id|module
 op_star
 id|mp
 suffix:semicolon
+multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special. */
 r_for
 c_loop
 (paren
@@ -259,6 +227,15 @@ id|mp-&gt;ex_table_start
 )paren
 r_continue
 suffix:semicolon
+id|archdata
+op_assign
+(paren
+r_struct
+id|archdata
+op_star
+)paren
+id|mp-&gt;archdata_start
+suffix:semicolon
 id|entry
 op_assign
 id|search_one_table
@@ -271,8 +248,12 @@ op_minus
 l_int|1
 comma
 id|addr
-op_minus
-id|mp-&gt;gp
+comma
+(paren
+r_int
+r_int
+)paren
+id|archdata-&gt;gp
 )paren
 suffix:semicolon
 r_if
@@ -285,7 +266,11 @@ id|fix.cont
 op_assign
 id|entry-&gt;cont
 op_plus
-id|mp-&gt;gp
+(paren
+r_int
+r_int
+)paren
+id|archdata-&gt;gp
 suffix:semicolon
 r_return
 id|fix

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ACPI_EXT_H
 DECL|macro|_ASM_IA64_ACPI_EXT_H
 mdefine_line|#define _ASM_IA64_ACPI_EXT_H
-multiline_comment|/*&n; * Advanced Configuration and Power Infterface&n; * Based on &squot;ACPI Specification 1.0b&squot; Febryary 2, 1999&n; * and &squot;IA-64 Extensions to the ACPI Specification&squot; Rev 0.6&n; * &n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *&t;ACPI 2.0 specification &n; */
+multiline_comment|/*&n; * Advanced Configuration and Power Infterface&n; * Based on &squot;ACPI Specification 1.0b&squot; Febryary 2, 1999&n; * and &squot;IA-64 Extensions to the ACPI Specification&squot; Rev 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *&t;ACPI 2.0 specification&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#pragma&t;pack(1)
 DECL|macro|ACPI_RSDP_SIG
@@ -457,6 +457,9 @@ DECL|typedef|acpi_madt_t
 )brace
 id|acpi_madt_t
 suffix:semicolon
+multiline_comment|/* acpi 2.0 MADT flags */
+DECL|macro|MADT_PCAT_COMPAT
+mdefine_line|#define MADT_PCAT_COMPAT&t;(1&lt;&lt;0)
 multiline_comment|/* acpi 2.0 MADT structure types */
 DECL|macro|ACPI20_ENTRY_LOCAL_APIC
 mdefine_line|#define ACPI20_ENTRY_LOCAL_APIC                 0

@@ -227,6 +227,7 @@ r_int
 id|end
 suffix:semicolon
 DECL|member|array
+r_const
 r_struct
 id|unw_table_entry
 op_star

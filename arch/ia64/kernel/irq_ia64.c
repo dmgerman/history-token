@@ -143,6 +143,12 @@ r_int
 r_int
 id|saved_tpr
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|IS_RESCHEDULE
+macro_line|#&t;define IS_RESCHEDULE(vec)&t;(vec == IA64_IPI_RESCHEDULE)
+macro_line|#else
+macro_line|#&t;define IS_RESCHEDULE(vec)&t;(0)
+macro_line|#endif
 macro_line|#if IRQ_DEBUG
 (brace
 r_int
@@ -250,7 +256,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_do
+r_while
+c_loop
+(paren
+id|vector
+op_ne
+id|IA64_SPURIOUS_INT_VECTOR
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_RESCHEDULE
+c_func
+(paren
+id|vector
+)paren
+)paren
 (brace
 id|ia64_set_tpr
 c_func
@@ -275,7 +298,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable interrupts and send EOI:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Disable interrupts and send EOI:&n;&t;&t;&t; */
 id|local_irq_disable
 c_func
 (paren
@@ -287,6 +310,7 @@ c_func
 id|saved_tpr
 )paren
 suffix:semicolon
+)brace
 id|ia64_eoi
 c_func
 (paren
@@ -300,14 +324,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|vector
-op_ne
-id|IA64_SPURIOUS_INT_VECTOR
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 r_extern
@@ -410,7 +426,7 @@ suffix:semicolon
 id|desc-&gt;handler
 op_assign
 op_amp
-id|irq_type_ia64_sapic
+id|irq_type_ia64_lsapic
 suffix:semicolon
 r_if
 c_cond

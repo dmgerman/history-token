@@ -209,7 +209,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Fold down to 32-bits so we don&squot;t loose in the typedef-less &n;&t;   network stack.  */
+multiline_comment|/* Fold down to 32-bits so we don&squot;t loose in the typedef-less network stack.  */
 multiline_comment|/* 64 to 33 */
 id|result
 op_assign
@@ -248,35 +248,12 @@ r_extern
 r_int
 r_int
 id|do_csum
-c_func
 (paren
 r_const
 r_int
 r_char
 op_star
 comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|do_csum_c
-c_func
-(paren
-r_const
-r_int
-r_char
-op_star
-comma
-r_int
-r_int
-comma
-r_int
 r_int
 )paren
 suffix:semicolon
@@ -307,8 +284,6 @@ comma
 id|ihl
 op_star
 l_int|4
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -343,8 +318,6 @@ c_func
 id|buff
 comma
 id|len
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* add in old sum, and carry.. */
@@ -395,8 +368,6 @@ c_func
 id|buff
 comma
 id|len
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; * &n; * Derived from bios32.c of i386 tree.&n; */
+multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -53,7 +53,7 @@ macro_line|# include &lt;asm/page.h&gt;
 DECL|macro|STACK_TOP
 macro_line|# define STACK_TOP&t;(0x8000000000000000UL + (1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)
 DECL|macro|IA64_RBS_BOT
-macro_line|# define IA64_RBS_BOT&t;(STACK_TOP - 0x80000000L)&t;/* bottom of register backing store */
+macro_line|# define IA64_RBS_BOT&t;(STACK_TOP - 0x80000000L + PAGE_SIZE)&t;/* bottom of reg. backing store */
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_A_OUT_H */
 eof

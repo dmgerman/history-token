@@ -9,6 +9,13 @@ c_func
 id|memset
 )paren
 suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 DECL|variable|memcmp
 id|EXPORT_SYMBOL
 c_func
@@ -150,6 +157,14 @@ c_func
 id|disable_irq_nosync
 )paren
 suffix:semicolon
+macro_line|#include &lt;linux/interrupt.h&gt;
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 multiline_comment|/* not coded yet?? EXPORT_SYMBOL(csum_ipv6_magic); */
@@ -232,27 +247,6 @@ c_func
 id|__up
 )paren
 suffix:semicolon
-DECL|variable|__down_read_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_read_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_write_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_write_failed
-)paren
-suffix:semicolon
-DECL|variable|__rwsem_wake
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__rwsem_wake
-)paren
-suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;
 DECL|variable|clear_page
 id|EXPORT_SYMBOL
@@ -262,13 +256,15 @@ id|clear_page
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/processor.h&gt;
-DECL|variable|cpu_data
+macro_line|# ifndef CONFIG_NUMA
+DECL|variable|_cpu_data
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_data
+id|_cpu_data
 )paren
 suffix:semicolon
+macro_line|# endif
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -324,6 +320,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpu_online_map
+)paren
+suffix:semicolon
+DECL|variable|ia64_cpu_to_sapicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_cpu_to_sapicid
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/smp.h&gt;
@@ -596,6 +599,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|efi
+)paren
+suffix:semicolon
+macro_line|#include &lt;linux/proc_fs.h&gt;
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|efi_dir
+suffix:semicolon
+DECL|variable|efi_dir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi_dir
 )paren
 suffix:semicolon
 eof

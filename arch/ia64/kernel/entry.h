@@ -1,6 +1,6 @@
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* XXX fixme */
-macro_line|#if defined(CONFIG_ITANIUM_ASTEP_SPECIFIC) || defined(CONFIG_ITANIUM_B1_SPECIFIC)
+macro_line|#if defined(CONFIG_ITANIUM_B1_SPECIFIC)
 DECL|macro|MOVBR
 macro_line|# define MOVBR(type,br,gr,lbl)&t;mov br=gr
 macro_line|#else

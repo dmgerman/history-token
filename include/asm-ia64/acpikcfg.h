@@ -1,5 +1,6 @@
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef&t;CONFIG_ACPI_KERNEL_CONFIG
+macro_line|#ifndef _ASM_IA64_ACPIKCFG_H
+DECL|macro|_ASM_IA64_ACPIKCFG_H
+mdefine_line|#define _ASM_IA64_ACPIKCFG_H
 multiline_comment|/*&n; *  acpikcfg.h - ACPI based Kernel Configuration Manager External Interfaces&n; *&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000 J.I. Lee  &lt;jung-ik.lee@intel.com&gt;&n; */
 id|u32
 id|__init
@@ -47,5 +48,5 @@ id|num_pci_vectors
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif&t;/* CONFIG_ACPI_KERNEL_CONFIG */
+macro_line|#endif /* _ASM_IA64_ACPIKCFG_H */
 eof

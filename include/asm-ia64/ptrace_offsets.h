@@ -295,7 +295,7 @@ mdefine_line|#define PT_PR&t;&t;&t;0x0870
 DECL|macro|PT_B6
 mdefine_line|#define PT_B6&t;&t;&t;0x0878
 DECL|macro|PT_AR_BSP
-mdefine_line|#define PT_AR_BSP&t;&t;0x0880
+mdefine_line|#define PT_AR_BSP&t;&t;0x0880&t;/* note: this points to the *end* of the backing store! */
 DECL|macro|PT_R1
 mdefine_line|#define PT_R1&t;&t;&t;0x0888
 DECL|macro|PT_R2

@@ -7,22 +7,22 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * No irq_cpustat_t for IA-64.  The data is held in the per-CPU data structure.&n; */
-DECL|macro|softirq_active
-mdefine_line|#define softirq_active(cpu)&t;&t;(cpu_data[cpu].softirq.active)
-DECL|macro|softirq_mask
-mdefine_line|#define softirq_mask(cpu)&t;&t;(cpu_data[cpu].softirq.mask)
+DECL|macro|softirq_pending
+mdefine_line|#define softirq_pending(cpu)&t;&t;(cpu_data(cpu)-&gt;softirq_pending)
+DECL|macro|ksoftirqd_task
+mdefine_line|#define ksoftirqd_task(cpu)&t;&t;(cpu_data(cpu)-&gt;ksoftirqd)
 DECL|macro|irq_count
-mdefine_line|#define irq_count(cpu)&t;&t;&t;(cpu_data[cpu].irq_stat.f.irq_count)
+mdefine_line|#define irq_count(cpu)&t;&t;&t;(cpu_data(cpu)-&gt;irq_stat.f.irq_count)
 DECL|macro|bh_count
-mdefine_line|#define bh_count(cpu)&t;&t;&t;(cpu_data[cpu].irq_stat.f.bh_count)
+mdefine_line|#define bh_count(cpu)&t;&t;&t;(cpu_data(cpu)-&gt;irq_stat.f.bh_count)
 DECL|macro|syscall_count
 mdefine_line|#define syscall_count(cpu)&t;&t;/* unused on IA-64 */
 DECL|macro|nmi_count
 mdefine_line|#define nmi_count(cpu)&t;&t;&t;0
-DECL|macro|local_softirq_active
-mdefine_line|#define local_softirq_active()&t;&t;(local_cpu_data-&gt;softirq.active)
-DECL|macro|local_softirq_mask
-mdefine_line|#define local_softirq_mask()&t;&t;(local_cpu_data-&gt;softirq.mask)
+DECL|macro|local_softirq_pending
+mdefine_line|#define local_softirq_pending()&t;&t;(local_cpu_data-&gt;softirq_pending)
+DECL|macro|local_ksoftirqd_task
+mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
 DECL|macro|local_irq_count
 mdefine_line|#define local_irq_count()&t;&t;(local_cpu_data-&gt;irq_stat.f.irq_count)
 DECL|macro|local_bh_count

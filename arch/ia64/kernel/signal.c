@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
+macro_line|#include &quot;sigframe.h&quot;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG&t;0
 DECL|macro|STACK_ALIGN
@@ -51,22 +52,6 @@ DECL|member|pt
 r_struct
 id|pt_regs
 id|pt
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|sigframe
-r_struct
-id|sigframe
-(brace
-DECL|member|info
-r_struct
-id|siginfo
-id|info
-suffix:semicolon
-DECL|member|sc
-r_struct
-id|sigcontext
-id|sc
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1931,6 +1916,63 @@ id|give_sigsegv
 suffix:semicolon
 id|err
 op_assign
+id|__put_user
+c_func
+(paren
+id|sig
+comma
+op_amp
+id|frame-&gt;arg0
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+op_amp
+id|frame-&gt;info
+comma
+op_amp
+id|frame-&gt;arg1
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+op_amp
+id|frame-&gt;sc
+comma
+op_amp
+id|frame-&gt;arg2
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|new_rbs
+comma
+op_amp
+id|frame-&gt;rbs_base
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|ka-&gt;sa.sa_handler
+comma
+op_amp
+id|frame-&gt;handler
+)paren
+suffix:semicolon
+id|err
+op_or_assign
 id|copy_siginfo_to_user
 c_func
 (paren
@@ -2009,24 +2051,6 @@ op_minus
 l_int|16
 suffix:semicolon
 multiline_comment|/* new stack pointer */
-id|scr-&gt;pt.r2
-op_assign
-id|sig
-suffix:semicolon
-multiline_comment|/* signal number */
-id|scr-&gt;pt.r3
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ka-&gt;sa.sa_handler
-suffix:semicolon
-multiline_comment|/* addr. of handler&squot;s proc desc */
-id|scr-&gt;pt.r15
-op_assign
-id|new_rbs
-suffix:semicolon
 id|scr-&gt;pt.ar_fpsr
 op_assign
 id|FPSR_DEFAULT
@@ -2048,12 +2072,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* start executing in first slot */
-multiline_comment|/*&n;&t; * Note: this affects only the NaT bits of the scratch regs&n;&t; * (the ones saved in pt_regs), which is exactly what we want.&n;&t; */
+multiline_comment|/*&n;&t; * Note: this affects only the NaT bits of the scratch regs (the ones saved in&n;&t; * pt_regs), which is exactly what we want.&n;&t; */
 id|scr-&gt;scratch_unat
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* ensure NaT bits of at least r2, r3, r12, and r15 are clear */
+multiline_comment|/* ensure NaT bits of r12 is clear */
 macro_line|#if DEBUG_SIG
 id|printk
 c_func

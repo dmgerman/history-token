@@ -20,6 +20,11 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|last_time_offset
+suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
 DECL|variable|last_cli_ip
 r_int
@@ -86,7 +91,7 @@ id|ip
 op_rshift_assign
 id|prof_shift
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Don&squot;t ignore out-of-bounds IP values silently,&n;&t;&t; * put them into the last histogram slot, so if&n;&t;&t; * present, they will show up as a sharp peak.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Don&squot;t ignore out-of-bounds IP values silently, put them into the last&n;&t;&t; * histogram slot, so if present, they will show up as a sharp peak.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -118,7 +123,7 @@ id|ip
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Return the number of micro-seconds that elapsed since the last&n; * update to jiffy.  The xtime_lock must be at least read-locked when&n; * calling this routine.&n; */
+multiline_comment|/*&n; * Return the number of micro-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_static
 r_inline
 r_int
@@ -129,23 +134,6 @@ id|gettimeoffset
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n;&t; * The code below doesn&squot;t work for SMP because only CPU 0&n;&t; * keeps track of the time.&n;&t; */
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|now
-op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
-comma
-id|last_tick
-suffix:semicolon
 r_int
 r_int
 id|elapsed_cycles
@@ -156,10 +144,24 @@ id|jiffies
 op_minus
 id|wall_jiffies
 suffix:semicolon
+r_int
+r_int
+id|now
+comma
+id|last_tick
+suffix:semicolon
+DECL|macro|time_keeper_id
+macro_line|#&t;define time_keeper_id&t;0&t;/* smp_processor_id() of time-keeper */
 id|last_tick
 op_assign
 (paren
-id|local_cpu_data-&gt;itm_next
+id|cpu_data
+c_func
+(paren
+id|time_keeper_id
+)paren
+op_member_access_from_pointer
+id|itm_next
 op_minus
 (paren
 id|lost
@@ -167,10 +169,22 @@ op_plus
 l_int|1
 )paren
 op_star
-id|local_cpu_data-&gt;itm_delta
+id|cpu_data
+c_func
+(paren
+id|time_keeper_id
+)paren
+op_member_access_from_pointer
+id|itm_delta
 )paren
 suffix:semicolon
-macro_line|# if 1
+id|now
+op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -186,21 +200,27 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|# if 1
 id|printk
 c_func
 (paren
-l_string|&quot;Yikes: now &lt; last_tick (now=0x%lx,last_tick=%lx)!  No can do.&bslash;n&quot;
+l_string|&quot;CPU %d: now &lt; last_tick (now=0x%lx,last_tick=0x%lx)!&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|now
 comma
 id|last_tick
 )paren
 suffix:semicolon
+macro_line|# endif
 r_return
-l_int|0
+id|last_time_offset
 suffix:semicolon
 )brace
-macro_line|# endif
 id|elapsed_cycles
 op_assign
 id|now
@@ -216,7 +236,6 @@ id|local_cpu_data-&gt;usec_per_cyc
 op_rshift
 id|IA64_USEC_PER_CYC_SHIFT
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|do_settimeofday
@@ -236,7 +255,7 @@ id|xtime_lock
 )paren
 suffix:semicolon
 (brace
-multiline_comment|/*&n;&t;&t; * This is revolting. We need to set &quot;xtime&quot;&n;&t;&t; * correctly. However, the value in this location is&n;&t;&t; * the value at the most recent update of wall time.&n;&t;&t; * Discover what correction gettimeofday would have&n;&t;&t; * done, and then undo it!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the value&n;&t;&t; * in this location is the value at the most recent update of wall time.&n;&t;&t; * Discover what correction gettimeofday would have done, and then undo&n;&t;&t; * it!&n;&t;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|gettimeoffset
@@ -322,6 +341,8 @@ comma
 id|usec
 comma
 id|sec
+comma
+id|old
 suffix:semicolon
 id|read_lock_irqsave
 c_func
@@ -338,6 +359,46 @@ op_assign
 id|gettimeoffset
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Ensure time never goes backwards, even when ITC on different CPUs are&n;&t;&t; * not perfectly synchronized.&n;&t;&t; */
+r_do
+(brace
+id|old
+op_assign
+id|last_time_offset
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usec
+op_le
+id|old
+)paren
+(brace
+id|usec
+op_assign
+id|old
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_while
+c_loop
+(paren
+id|cmpxchg
+c_func
+(paren
+op_amp
+id|last_time_offset
+comma
+id|old
+comma
+id|usec
+)paren
+op_ne
+id|old
 )paren
 suffix:semicolon
 id|sec
@@ -479,6 +540,10 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
+id|new_itm
+op_add_assign
+id|local_cpu_data-&gt;itm_delta
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -504,6 +569,10 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+id|local_cpu_data-&gt;itm_next
+op_assign
+id|new_itm
+suffix:semicolon
 id|write_unlock
 c_func
 (paren
@@ -512,10 +581,7 @@ id|xtime_lock
 )paren
 suffix:semicolon
 )brace
-id|new_itm
-op_add_assign
-id|local_cpu_data-&gt;itm_delta
-suffix:semicolon
+r_else
 id|local_cpu_data-&gt;itm_next
 op_assign
 id|new_itm
@@ -706,7 +772,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/*&n;&t; * According to SAL v2.6, we need to use a SAL call to determine the&n;&t; * platform base frequency and then a PAL call to determine the&n;&t; * frequency ratio between the ITC and the base frequency.&n;&t; */
+multiline_comment|/*&n;&t; * According to SAL v2.6, we need to use a SAL call to determine the platform base&n;&t; * frequency and then a PAL call to determine the frequency ratio between the ITC&n;&t; * and the base frequency.&n;&t; */
 id|status
 op_assign
 id|ia64_sal_freq_base
@@ -993,6 +1059,11 @@ suffix:semicolon
 id|efi_gettimeofday
 c_func
 (paren
+(paren
+r_struct
+id|timeval
+op_star
+)paren
 op_amp
 id|xtime
 )paren

@@ -1,33 +1,58 @@
-multiline_comment|/*&n; * Exported procedures for the ATI/mach64 display driver on PowerMacs.&n; *&n; * Copyright (C) 1997 Michael AK Tesch&n; *  written with much help from Jon Howell&n; *&n; * Updated for 3D RAGE PRO by Geert Uytterhoeven&n; *&t;&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * ATI Mach64 Register Definitions&n; *&n; * Copyright (C) 1997 Michael AK Tesch&n; *  written with much help from Jon Howell&n; *&n; * Updated for 3D RAGE PRO and 3D RAGE Mobility by Geert Uytterhoeven&n; *&t;&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; * most of the rest of this file comes from ATI sample code&n; */
 macro_line|#ifndef REGMACH64_H
 DECL|macro|REGMACH64_H
 mdefine_line|#define REGMACH64_H
 multiline_comment|/* NON-GUI MEMORY MAPPED Registers - expressed in BYTE offsets */
+multiline_comment|/* Accelerator CRTC */
 DECL|macro|CRTC_H_TOTAL_DISP
 mdefine_line|#define CRTC_H_TOTAL_DISP&t;0x0000&t;/* Dword offset 0_00 */
+DECL|macro|CRTC2_H_TOTAL_DISP
+mdefine_line|#define CRTC2_H_TOTAL_DISP&t;0x0000&t;/* Dword offset 0_00 */
 DECL|macro|CRTC_H_SYNC_STRT_WID
 mdefine_line|#define CRTC_H_SYNC_STRT_WID&t;0x0004&t;/* Dword offset 0_01 */
+DECL|macro|CRTC2_H_SYNC_STRT_WID
+mdefine_line|#define CRTC2_H_SYNC_STRT_WID&t;0x0004&t;/* Dword offset 0_01 */
 DECL|macro|CRTC_H_SYNC_STRT
 mdefine_line|#define CRTC_H_SYNC_STRT&t;0x0004
+DECL|macro|CRTC2_H_SYNC_STRT
+mdefine_line|#define CRTC2_H_SYNC_STRT&t;0x0004
 DECL|macro|CRTC_H_SYNC_DLY
 mdefine_line|#define CRTC_H_SYNC_DLY&t;&t;0x0005
+DECL|macro|CRTC2_H_SYNC_DLY
+mdefine_line|#define CRTC2_H_SYNC_DLY&t;0x0005
 DECL|macro|CRTC_H_SYNC_WID
 mdefine_line|#define CRTC_H_SYNC_WID&t;&t;0x0006
+DECL|macro|CRTC2_H_SYNC_WID
+mdefine_line|#define CRTC2_H_SYNC_WID&t;0x0006
 DECL|macro|CRTC_V_TOTAL_DISP
 mdefine_line|#define CRTC_V_TOTAL_DISP&t;0x0008&t;/* Dword offset 0_02 */
+DECL|macro|CRTC2_V_TOTAL_DISP
+mdefine_line|#define CRTC2_V_TOTAL_DISP&t;0x0008&t;/* Dword offset 0_02 */
 DECL|macro|CRTC_V_TOTAL
 mdefine_line|#define CRTC_V_TOTAL&t;&t;0x0008
+DECL|macro|CRTC2_V_TOTAL
+mdefine_line|#define CRTC2_V_TOTAL&t;&t;0x0008
 DECL|macro|CRTC_V_DISP
 mdefine_line|#define CRTC_V_DISP&t;&t;0x000A
+DECL|macro|CRTC2_V_DISP
+mdefine_line|#define CRTC2_V_DISP&t;&t;0x000A
 DECL|macro|CRTC_V_SYNC_STRT_WID
 mdefine_line|#define CRTC_V_SYNC_STRT_WID&t;0x000C&t;/* Dword offset 0_03 */
+DECL|macro|CRTC2_V_SYNC_STRT_WID
+mdefine_line|#define CRTC2_V_SYNC_STRT_WID&t;0x000C&t;/* Dword offset 0_03 */
 DECL|macro|CRTC_V_SYNC_STRT
 mdefine_line|#define CRTC_V_SYNC_STRT&t;0x000C
+DECL|macro|CRTC2_V_SYNC_STRT
+mdefine_line|#define CRTC2_V_SYNC_STRT&t;0x000C
 DECL|macro|CRTC_V_SYNC_WID
 mdefine_line|#define CRTC_V_SYNC_WID&t;&t;0x000E
+DECL|macro|CRTC2_V_SYNC_WID
+mdefine_line|#define CRTC2_V_SYNC_WID&t;0x000E
 DECL|macro|CRTC_VLINE_CRNT_VLINE
 mdefine_line|#define CRTC_VLINE_CRNT_VLINE&t;0x0010&t;/* Dword offset 0_04 */
+DECL|macro|CRTC2_VLINE_CRNT_VLINE
+mdefine_line|#define CRTC2_VLINE_CRNT_VLINE&t;0x0010&t;/* Dword offset 0_04 */
 DECL|macro|CRTC_OFF_PITCH
 mdefine_line|#define CRTC_OFF_PITCH&t;&t;0x0014&t;/* Dword offset 0_05 */
 DECL|macro|CRTC_OFFSET
@@ -44,64 +69,115 @@ DECL|macro|CRTC_FIFO
 mdefine_line|#define CRTC_FIFO&t;&t;0x001E
 DECL|macro|CRTC_EXT_DISP
 mdefine_line|#define CRTC_EXT_DISP&t;&t;0x001F
+multiline_comment|/* Memory Buffer Control */
 DECL|macro|DSP_CONFIG
 mdefine_line|#define DSP_CONFIG&t;&t;0x0020&t;/* Dword offset 0_08 */
+DECL|macro|PM_DSP_CONFIG
+mdefine_line|#define PM_DSP_CONFIG&t;&t;0x0020&t;/* Dword offset 0_08 (Mobility Only) */
 DECL|macro|DSP_ON_OFF
 mdefine_line|#define DSP_ON_OFF&t;&t;0x0024&t;/* Dword offset 0_09 */
+DECL|macro|PM_DSP_ON_OFF
+mdefine_line|#define PM_DSP_ON_OFF&t;&t;0x0024&t;/* Dword offset 0_09 (Mobility Only) */
 DECL|macro|TIMER_CONFIG
 mdefine_line|#define TIMER_CONFIG&t;&t;0x0028&t;/* Dword offset 0_0A */
 DECL|macro|MEM_BUF_CNTL
 mdefine_line|#define MEM_BUF_CNTL&t;&t;0x002C&t;/* Dword offset 0_0B */
 DECL|macro|MEM_ADDR_CONFIG
 mdefine_line|#define MEM_ADDR_CONFIG&t;&t;0x0034&t;/* Dword offset 0_0D */
+multiline_comment|/* Accelerator CRTC */
 DECL|macro|CRT_TRAP
 mdefine_line|#define CRT_TRAP&t;&t;0x0038&t;/* Dword offset 0_0E */
 DECL|macro|I2C_CNTL_0
 mdefine_line|#define I2C_CNTL_0&t;&t;0x003C&t;/* Dword offset 0_0F */
+multiline_comment|/* Overscan */
 DECL|macro|OVR_CLR
 mdefine_line|#define OVR_CLR&t;&t;&t;0x0040&t;/* Dword offset 0_10 */
+DECL|macro|OVR2_CLR
+mdefine_line|#define OVR2_CLR&t;&t;0x0040&t;/* Dword offset 0_10 */
 DECL|macro|OVR_WID_LEFT_RIGHT
 mdefine_line|#define OVR_WID_LEFT_RIGHT&t;0x0044&t;/* Dword offset 0_11 */
+DECL|macro|OVR2_WID_LEFT_RIGHT
+mdefine_line|#define OVR2_WID_LEFT_RIGHT&t;0x0044&t;/* Dword offset 0_11 */
 DECL|macro|OVR_WID_TOP_BOTTOM
 mdefine_line|#define OVR_WID_TOP_BOTTOM&t;0x0048&t;/* Dword offset 0_12 */
+DECL|macro|OVR2_WID_TOP_BOTTOM
+mdefine_line|#define OVR2_WID_TOP_BOTTOM&t;0x0048&t;/* Dword offset 0_12 */
+multiline_comment|/* Memory Buffer Control */
 DECL|macro|VGA_DSP_CONFIG
 mdefine_line|#define VGA_DSP_CONFIG&t;&t;0x004C&t;/* Dword offset 0_13 */
+DECL|macro|PM_VGA_DSP_CONFIG
+mdefine_line|#define PM_VGA_DSP_CONFIG&t;0x004C&t;/* Dword offset 0_13 (Mobility Only) */
 DECL|macro|VGA_DSP_ON_OFF
 mdefine_line|#define VGA_DSP_ON_OFF&t;&t;0x0050&t;/* Dword offset 0_14 */
+DECL|macro|PM_VGA_DSP_ON_OFF
+mdefine_line|#define PM_VGA_DSP_ON_OFF&t;0x0050&t;/* Dword offset 0_14 (Mobility Only) */
+DECL|macro|DSP2_CONFIG
+mdefine_line|#define DSP2_CONFIG&t;&t;0x0054&t;/* Dword offset 0_15 */
+DECL|macro|PM_DSP2_CONFIG
+mdefine_line|#define PM_DSP2_CONFIG&t;&t;0x0054&t;/* Dword offset 0_15 (Mobility Only) */
+DECL|macro|DSP2_ON_OFF
+mdefine_line|#define DSP2_ON_OFF&t;&t;0x0058&t;/* Dword offset 0_16 */
+DECL|macro|PM_DSP2_ON_OFF
+mdefine_line|#define PM_DSP2_ON_OFF&t;&t;0x0058&t;/* Dword offset 0_16 (Mobility Only) */
+multiline_comment|/* Accelerator CRTC */
+DECL|macro|CRTC2_OFF_PITCH
+mdefine_line|#define CRTC2_OFF_PITCH&t;&t;0x005C&t;/* Dword offset 0_17 */
+multiline_comment|/* Hardware Cursor */
 DECL|macro|CUR_CLR0
 mdefine_line|#define CUR_CLR0&t;&t;0x0060&t;/* Dword offset 0_18 */
+DECL|macro|CUR2_CLR0
+mdefine_line|#define CUR2_CLR0&t;&t;0x0060&t;/* Dword offset 0_18 */
 DECL|macro|CUR_CLR1
 mdefine_line|#define CUR_CLR1&t;&t;0x0064&t;/* Dword offset 0_19 */
+DECL|macro|CUR2_CLR1
+mdefine_line|#define CUR2_CLR1&t;&t;0x0064&t;/* Dword offset 0_19 */
 DECL|macro|CUR_OFFSET
 mdefine_line|#define CUR_OFFSET&t;&t;0x0068&t;/* Dword offset 0_1A */
+DECL|macro|CUR2_OFFSET
+mdefine_line|#define CUR2_OFFSET&t;&t;0x0068&t;/* Dword offset 0_1A */
 DECL|macro|CUR_HORZ_VERT_POSN
 mdefine_line|#define CUR_HORZ_VERT_POSN&t;0x006C&t;/* Dword offset 0_1B */
+DECL|macro|CUR2_HORZ_VERT_POSN
+mdefine_line|#define CUR2_HORZ_VERT_POSN&t;0x006C&t;/* Dword offset 0_1B */
 DECL|macro|CUR_HORZ_VERT_OFF
 mdefine_line|#define CUR_HORZ_VERT_OFF&t;0x0070&t;/* Dword offset 0_1C */
+DECL|macro|CUR2_HORZ_VERT_OFF
+mdefine_line|#define CUR2_HORZ_VERT_OFF&t;0x0070&t;/* Dword offset 0_1C */
 DECL|macro|CONFIG_PANEL_LG
 mdefine_line|#define CONFIG_PANEL_LG&t;&t;0x0074&t;/* Dword offset 0_1D */
+multiline_comment|/* General I/O Control */
 DECL|macro|GP_IO
 mdefine_line|#define GP_IO&t;&t;&t;0x0078&t;/* Dword offset 0_1E */
+multiline_comment|/* Test and Debug */
 DECL|macro|HW_DEBUG
 mdefine_line|#define HW_DEBUG&t;&t;0x007C&t;/* Dword offset 0_1F */
+multiline_comment|/* Scratch Pad and Test */
 DECL|macro|SCRATCH_REG0
 mdefine_line|#define SCRATCH_REG0&t;&t;0x0080&t;/* Dword offset 0_20 */
 DECL|macro|SCRATCH_REG1
 mdefine_line|#define SCRATCH_REG1&t;&t;0x0084&t;/* Dword offset 0_21 */
+DECL|macro|SCRATCH_REG2
+mdefine_line|#define SCRATCH_REG2&t;&t;0x0088&t;/* Dword offset 0_22 */
+DECL|macro|SCRATCH_REG3
+mdefine_line|#define SCRATCH_REG3&t;&t;0x008C&t;/* Dword offset 0_23 */
+multiline_comment|/* Clock Control */
 DECL|macro|CLOCK_CNTL
 mdefine_line|#define CLOCK_CNTL&t;&t;0x0090&t;/* Dword offset 0_24 */
 DECL|macro|CLOCK_SEL_CNTL
 mdefine_line|#define CLOCK_SEL_CNTL&t;&t;0x0090&t;/* Dword offset 0_24 */
+multiline_comment|/* Configuration */
 DECL|macro|CONFIG_STAT1
 mdefine_line|#define CONFIG_STAT1&t;&t;0x0094&t;/* Dword offset 0_25 */
 DECL|macro|CONFIG_STAT2
 mdefine_line|#define CONFIG_STAT2&t;&t;0x0098&t;/* Dword offset 0_26 */
+multiline_comment|/* Bus Control */
 DECL|macro|BUS_CNTL
 mdefine_line|#define BUS_CNTL&t;&t;0x00A0&t;/* Dword offset 0_28 */
 DECL|macro|LCD_INDEX
 mdefine_line|#define LCD_INDEX&t;&t;0x00A4&t;/* Dword offset 0_29 */
 DECL|macro|LCD_DATA
 mdefine_line|#define LCD_DATA&t;&t;0x00A8&t;/* Dword offset 0_2A */
+multiline_comment|/* Memory Control */
 DECL|macro|EXT_MEM_CNTL
 mdefine_line|#define EXT_MEM_CNTL&t;&t;0x00AC&t;/* Dword offset 0_2B */
 DECL|macro|MEM_CNTL
@@ -112,6 +188,7 @@ DECL|macro|MEM_VGA_RP_SEL
 mdefine_line|#define MEM_VGA_RP_SEL&t;&t;0x00B8&t;/* Dword offset 0_2E */
 DECL|macro|I2C_CNTL_1
 mdefine_line|#define I2C_CNTL_1&t;&t;0x00BC&t;/* Dword offset 0_2F */
+multiline_comment|/* DAC Control */
 DECL|macro|DAC_REGS
 mdefine_line|#define DAC_REGS&t;&t;0x00C0&t;/* Dword offset 0_30 */
 DECL|macro|DAC_W_INDEX
@@ -126,23 +203,30 @@ DECL|macro|DAC_CNTL
 mdefine_line|#define DAC_CNTL&t;&t;0x00C4&t;/* Dword offset 0_31 */
 DECL|macro|EXT_DAC_REGS
 mdefine_line|#define EXT_DAC_REGS&t;&t;0x00C8&t;/* Dword offset 0_32 */
+multiline_comment|/* Test and Debug */
 DECL|macro|GEN_TEST_CNTL
 mdefine_line|#define GEN_TEST_CNTL&t;&t;0x00D0&t;/* Dword offset 0_34 */
+multiline_comment|/* Custom Macros */
 DECL|macro|CUSTOM_MACRO_CNTL
 mdefine_line|#define CUSTOM_MACRO_CNTL&t;0x00D4&t;/* Dword offset 0_35 */
 DECL|macro|LCD_GEN_CNTL_LG
 mdefine_line|#define LCD_GEN_CNTL_LG&t;&t;0x00D4&t;/* Dword offset 0_35 */
 DECL|macro|POWER_MANAGEMENT_LG
 mdefine_line|#define POWER_MANAGEMENT_LG&t;0x00D8&t;/* Dword offset 0_36 (LG) */
+multiline_comment|/* Configuration */
 DECL|macro|CONFIG_CNTL
 mdefine_line|#define CONFIG_CNTL&t;&t;0x00DC&t;/* Dword offset 0_37 (CT, ET, VT) */
 DECL|macro|CONFIG_CHIP_ID
 mdefine_line|#define CONFIG_CHIP_ID&t;&t;0x00E0&t;/* Dword offset 0_38 */
 DECL|macro|CONFIG_STAT0
 mdefine_line|#define CONFIG_STAT0&t;&t;0x00E4&t;/* Dword offset 0_39 */
+multiline_comment|/* Test and Debug */
 DECL|macro|CRC_SIG
 mdefine_line|#define CRC_SIG&t;&t;&t;0x00E8&t;/* Dword offset 0_3A */
+DECL|macro|CRC2_SIG
+mdefine_line|#define CRC2_SIG&t;&t;0x00E8&t;/* Dword offset 0_3A */
 multiline_comment|/* GUI MEMORY MAPPED Registers */
+multiline_comment|/* Draw Engine Destination Trajectory */
 DECL|macro|DST_OFF_PITCH
 mdefine_line|#define DST_OFF_PITCH&t;&t;0x0100&t;/* Dword offset 0_40 */
 DECL|macro|DST_X
@@ -205,6 +289,7 @@ DECL|macro|SECONDARY_T_Y_INC
 mdefine_line|#define SECONDARY_T_Y_INC&t;0x0178&t;/* Dword offset 0_5E */
 DECL|macro|SECONDARY_T_START
 mdefine_line|#define SECONDARY_T_START&t;0x017C&t;/* Dword offset 0_5F */
+multiline_comment|/* Draw Engine Source Trajectory */
 DECL|macro|SRC_OFF_PITCH
 mdefine_line|#define SRC_OFF_PITCH&t;&t;0x0180&t;/* Dword offset 0_60 */
 DECL|macro|SRC_X
@@ -279,6 +364,7 @@ DECL|macro|SCALE_VACC
 mdefine_line|#define SCALE_VACC&t;&t;0x01F8&t;/* Dword offset 0_7E */
 DECL|macro|SCALE_3D_CNTL
 mdefine_line|#define SCALE_3D_CNTL&t;&t;0x01FC&t;/* Dword offset 0_7F */
+multiline_comment|/* Host Data */
 DECL|macro|HOST_DATA0
 mdefine_line|#define HOST_DATA0&t;&t;0x0200&t;/* Dword offset 0_80 */
 DECL|macro|HOST_DATA1
@@ -313,6 +399,7 @@ DECL|macro|HOST_DATAF
 mdefine_line|#define HOST_DATAF&t;&t;0x023C&t;/* Dword offset 0_8F */
 DECL|macro|HOST_CNTL
 mdefine_line|#define HOST_CNTL&t;&t;0x0240&t;/* Dword offset 0_90 */
+multiline_comment|/* GUI Bus Mastering */
 DECL|macro|BM_HOSTDATA
 mdefine_line|#define BM_HOSTDATA&t;&t;0x0244&t;/* Dword offset 0_91 */
 DECL|macro|BM_ADDR
@@ -321,12 +408,14 @@ DECL|macro|BM_DATA
 mdefine_line|#define BM_DATA&t;&t;&t;0x0248&t;/* Dword offset 0_92 */
 DECL|macro|BM_GUI_TABLE_CMD
 mdefine_line|#define BM_GUI_TABLE_CMD&t;0x024C&t;/* Dword offset 0_93 */
+multiline_comment|/* Pattern */
 DECL|macro|PAT_REG0
 mdefine_line|#define PAT_REG0&t;&t;0x0280&t;/* Dword offset 0_A0 */
 DECL|macro|PAT_REG1
 mdefine_line|#define PAT_REG1&t;&t;0x0284&t;/* Dword offset 0_A1 */
 DECL|macro|PAT_CNTL
 mdefine_line|#define PAT_CNTL&t;&t;0x0288&t;/* Dword offset 0_A2 */
+multiline_comment|/* Scissors */
 DECL|macro|SC_LEFT
 mdefine_line|#define SC_LEFT&t;&t;&t;0x02A0&t;/* Dword offset 0_A8 */
 DECL|macro|SC_RIGHT
@@ -339,6 +428,11 @@ DECL|macro|SC_BOTTOM
 mdefine_line|#define SC_BOTTOM&t;&t;0x02B0&t;/* Dword offset 0_AC */
 DECL|macro|SC_TOP_BOTTOM
 mdefine_line|#define SC_TOP_BOTTOM&t;&t;0x02B4&t;/* Dword offset 0_AD */
+multiline_comment|/* Data Path */
+DECL|macro|USR1_DST_OFF_PITCH
+mdefine_line|#define USR1_DST_OFF_PITCH&t;0x02B8&t;/* Dword offset 0_AE */
+DECL|macro|USR2_DST_OFF_PITCH
+mdefine_line|#define USR2_DST_OFF_PITCH&t;0x02BC&t;/* Dword offset 0_AF */
 DECL|macro|DP_BKGD_CLR
 mdefine_line|#define DP_BKGD_CLR&t;&t;0x02C0&t;/* Dword offset 0_B0 */
 DECL|macro|DP_FOG_CLR
@@ -357,32 +451,38 @@ DECL|macro|DP_SRC
 mdefine_line|#define DP_SRC&t;&t;&t;0x02D8&t;/* Dword offset 0_B6 */
 DECL|macro|DP_FRGD_CLR_MIX
 mdefine_line|#define DP_FRGD_CLR_MIX&t;&t;0x02DC&t;/* Dword offset 0_B7 */
-DECL|macro|DP_FRGD_BLGD_CLR
-mdefine_line|#define DP_FRGD_BLGD_CLR&t;0x02E0&t;/* Dword offset 0_B8 */
+DECL|macro|DP_FRGD_BKGD_CLR
+mdefine_line|#define DP_FRGD_BKGD_CLR&t;0x02E0&t;/* Dword offset 0_B8 */
+multiline_comment|/* Draw Engine Destination Trajectory */
 DECL|macro|DST_X_Y
 mdefine_line|#define DST_X_Y&t;&t;&t;0x02E8&t;/* Dword offset 0_BA */
 DECL|macro|DST_WIDTH_HEIGHT
 mdefine_line|#define DST_WIDTH_HEIGHT&t;0x02EC&t;/* Dword offset 0_BB */
+multiline_comment|/* Data Path */
 DECL|macro|USR_DST_PICTH
 mdefine_line|#define USR_DST_PICTH&t;&t;0x02F0&t;/* Dword offset 0_BC */
 DECL|macro|DP_SET_GUI_ENGINE2
 mdefine_line|#define DP_SET_GUI_ENGINE2&t;0x02F8&t;/* Dword offset 0_BE */
 DECL|macro|DP_SET_GUI_ENGINE
 mdefine_line|#define DP_SET_GUI_ENGINE&t;0x02FC&t;/* Dword offset 0_BF */
+multiline_comment|/* Color Compare */
 DECL|macro|CLR_CMP_CLR
 mdefine_line|#define CLR_CMP_CLR&t;&t;0x0300&t;/* Dword offset 0_C0 */
 DECL|macro|CLR_CMP_MASK
 mdefine_line|#define CLR_CMP_MASK&t;&t;0x0304&t;/* Dword offset 0_C1 */
 DECL|macro|CLR_CMP_CNTL
 mdefine_line|#define CLR_CMP_CNTL&t;&t;0x0308&t;/* Dword offset 0_C2 */
+multiline_comment|/* Command FIFO */
 DECL|macro|FIFO_STAT
 mdefine_line|#define FIFO_STAT&t;&t;0x0310&t;/* Dword offset 0_C4 */
 DECL|macro|CONTEXT_MASK
 mdefine_line|#define CONTEXT_MASK&t;&t;0x0320&t;/* Dword offset 0_C8 */
 DECL|macro|CONTEXT_LOAD_CNTL
 mdefine_line|#define CONTEXT_LOAD_CNTL&t;0x032C&t;/* Dword offset 0_CB */
+multiline_comment|/* Engine Control */
 DECL|macro|GUI_TRAJ_CNTL
 mdefine_line|#define GUI_TRAJ_CNTL&t;&t;0x0330&t;/* Dword offset 0_CC */
+multiline_comment|/* Engine Status/FIFO */
 DECL|macro|GUI_STAT
 mdefine_line|#define GUI_STAT&t;&t;0x0338&t;/* Dword offset 0_CE */
 DECL|macro|TEX_PALETTE_INDEX
@@ -429,6 +529,7 @@ DECL|macro|SCALE_OFF_ACC
 mdefine_line|#define SCALE_OFF_ACC&t;&t;0x0388&t;/* Dword offset 0_E2 */
 DECL|macro|SCALE_DST_Y_X
 mdefine_line|#define SCALE_DST_Y_X&t;&t;0x038C&t;/* Dword offset 0_E3 */
+multiline_comment|/* Draw Engine Destination Trajectory */
 DECL|macro|COMPOSITE_SHADOW_ID
 mdefine_line|#define COMPOSITE_SHADOW_ID&t;0x0398&t;/* Dword offset 0_E6 */
 DECL|macro|SECONDARY_SCALE_X_INC
@@ -549,6 +650,7 @@ DECL|macro|CAPTURE_DEBUG
 mdefine_line|#define CAPTURE_DEBUG&t;&t;0x0464&t;/* Dword offset 1_19 */
 DECL|macro|VIDEO_SYNC_TEST
 mdefine_line|#define VIDEO_SYNC_TEST&t;&t;0x0468&t;/* Dword offset 1_1A */
+multiline_comment|/* GenLocking */
 DECL|macro|SNAPSHOT_VH_COUNTS
 mdefine_line|#define SNAPSHOT_VH_COUNTS&t;0x0470&t;/* Dword offset 1_1C */
 DECL|macro|SNAPSHOT_F_COUNT
@@ -563,6 +665,15 @@ DECL|macro|CAPTURE_BUF1_OFFSET
 mdefine_line|#define CAPTURE_BUF1_OFFSET&t;0x0484&t;/* Dword offset 1_21 */
 DECL|macro|CAPTURE_BUF_PITCH
 mdefine_line|#define CAPTURE_BUF_PITCH&t;0x0488&t;/* Dword offset 1_22 */
+multiline_comment|/* GenLocking */
+DECL|macro|SNAPSHOT2_VH_COUNTS
+mdefine_line|#define SNAPSHOT2_VH_COUNTS&t;0x04B0&t;/* Dword offset 1_2C */
+DECL|macro|SNAPSHOT2_F_COUNT
+mdefine_line|#define SNAPSHOT2_F_COUNT&t;0x04B4&t;/* Dword offset 1_2D */
+DECL|macro|N_VIF2_COUNT
+mdefine_line|#define N_VIF2_COUNT&t;&t;0x04B8&t;/* Dword offset 1_2E */
+DECL|macro|SNAPSHOT2_VIF_COUNT
+mdefine_line|#define SNAPSHOT2_VIF_COUNT&t;0x04BC&t;/* Dword offset 1_2F */
 DECL|macro|MPP_CONFIG
 mdefine_line|#define MPP_CONFIG&t;&t;0x04C0&t;/* Dword offset 1_30 */
 DECL|macro|MPP_STROBE_SEQ
@@ -573,8 +684,10 @@ DECL|macro|MPP_DATA
 mdefine_line|#define MPP_DATA&t;&t;0x04CC&t;/* Dword offset 1_33 */
 DECL|macro|TVO_CNTL
 mdefine_line|#define TVO_CNTL&t;&t;0x0500&t;/* Dword offset 1_40 */
+multiline_comment|/* Test and Debug */
 DECL|macro|CRT_HORZ_VERT_LOAD
 mdefine_line|#define CRT_HORZ_VERT_LOAD&t;0x0544&t;/* Dword offset 1_51 */
+multiline_comment|/* AGP */
 DECL|macro|AGP_BASE
 mdefine_line|#define AGP_BASE&t;&t;0x0548&t;/* Dword offset 1_52 */
 DECL|macro|AGP_CNTL
@@ -591,8 +704,14 @@ DECL|macro|SCALER_H_COEFF3
 mdefine_line|#define SCALER_H_COEFF3&t;&t;0x0560&t;/* Dword offset 1_58 */
 DECL|macro|SCALER_H_COEFF4
 mdefine_line|#define SCALER_H_COEFF4&t;&t;0x0564&t;/* Dword offset 1_59 */
+multiline_comment|/* Command FIFO */
+DECL|macro|GUI_CMDFIFO_DEBUG
+mdefine_line|#define GUI_CMDFIFO_DEBUG&t;0x0570&t;/* Dword offset 1_5C */
+DECL|macro|GUI_CMDFIFO_DATA
+mdefine_line|#define GUI_CMDFIFO_DATA&t;0x0574&t;/* Dword offset 1_5D */
 DECL|macro|GUI_CNTL
 mdefine_line|#define GUI_CNTL&t;&t;0x0578&t;/* Dword offset 1_5E */
+multiline_comment|/* Bus Mastering */
 DECL|macro|BM_FRAME_BUF_OFFSET
 mdefine_line|#define BM_FRAME_BUF_OFFSET&t;0x0580&t;/* Dword offset 1_60 */
 DECL|macro|BM_SYSTEM_MEM_ADDR
@@ -613,6 +732,7 @@ DECL|macro|SCALER_BUF1_OFFSET_U
 mdefine_line|#define SCALER_BUF1_OFFSET_U&t;0x05DC&t;/* Dword offset 1_77 */
 DECL|macro|SCALER_BUF1_OFFSET_V
 mdefine_line|#define SCALER_BUF1_OFFSET_V&t;0x05E0&t;/* Dword offset 1_78 */
+multiline_comment|/* Setup Engine */
 DECL|macro|VERTEX_1_S
 mdefine_line|#define VERTEX_1_S&t;&t;0x0640&t;/* Dword offset 1_90 */
 DECL|macro|VERTEX_1_T
@@ -905,7 +1025,7 @@ DECL|macro|CLOCK_STROBE
 mdefine_line|#define CLOCK_STROBE&t;&t;0x40
 DECL|macro|PLL_WR_EN
 mdefine_line|#define PLL_WR_EN&t;&t;0x02
-multiline_comment|/* PLL registers */
+multiline_comment|/* PLL register indices */
 DECL|macro|MPLL_CNTL
 mdefine_line|#define MPLL_CNTL&t;&t;0x00
 DECL|macro|VPLL_CNTL
@@ -932,12 +1052,68 @@ DECL|macro|PLL_EXT_CNTL
 mdefine_line|#define PLL_EXT_CNTL&t;&t;0x0B
 DECL|macro|DLL_CNTL
 mdefine_line|#define DLL_CNTL&t;&t;0x0C
+DECL|macro|DLL1_CNTL
+mdefine_line|#define DLL1_CNTL&t;&t;0x0C
 DECL|macro|VFC_CNTL
 mdefine_line|#define VFC_CNTL&t;&t;0x0D
-DECL|macro|PLL_TEST_CTRL
-mdefine_line|#define PLL_TEST_CTRL&t;&t;0x0E
+DECL|macro|PLL_TEST_CNTL
+mdefine_line|#define PLL_TEST_CNTL&t;&t;0x0E
 DECL|macro|PLL_TEST_COUNT
 mdefine_line|#define PLL_TEST_COUNT&t;&t;0x0F
+DECL|macro|LVDS_CNTL0
+mdefine_line|#define LVDS_CNTL0&t;&t;0x10
+DECL|macro|LVDS_CNTL1
+mdefine_line|#define LVDS_CNTL1&t;&t;0x11
+DECL|macro|AGP1_CNTL
+mdefine_line|#define AGP1_CNTL&t;&t;0x12
+DECL|macro|AGP2_CNTL
+mdefine_line|#define AGP2_CNTL&t;&t;0x13
+DECL|macro|DLL2_CNTL
+mdefine_line|#define DLL2_CNTL&t;&t;0x14
+DECL|macro|SCLK_FB_DIV
+mdefine_line|#define SCLK_FB_DIV&t;&t;0x15
+DECL|macro|SPLL_CNTL1
+mdefine_line|#define SPLL_CNTL1&t;&t;0x16
+DECL|macro|SPLL_CNTL2
+mdefine_line|#define SPLL_CNTL2&t;&t;0x17
+DECL|macro|APLL_STRAPS
+mdefine_line|#define APLL_STRAPS&t;&t;0x18
+DECL|macro|EXT_VPLL_CNTL
+mdefine_line|#define EXT_VPLL_CNTL&t;&t;0x19
+DECL|macro|EXT_VPLL_REF_DIV
+mdefine_line|#define EXT_VPLL_REF_DIV&t;0x1A
+DECL|macro|EXT_VPLL_FB_DIV
+mdefine_line|#define EXT_VPLL_FB_DIV&t;&t;0x1B
+DECL|macro|EXT_VPLL_MSB
+mdefine_line|#define EXT_VPLL_MSB&t;&t;0x1C
+DECL|macro|HTOTAL_CNTL
+mdefine_line|#define HTOTAL_CNTL&t;&t;0x1D
+DECL|macro|BYTE_CLK_CNTL
+mdefine_line|#define BYTE_CLK_CNTL&t;&t;0x1E
+DECL|macro|TV_PLL_CNTL1
+mdefine_line|#define TV_PLL_CNTL1&t;&t;0x1F
+DECL|macro|TV_PLL_CNTL2
+mdefine_line|#define TV_PLL_CNTL2&t;&t;0x20
+DECL|macro|TV_PLL_CNTL
+mdefine_line|#define TV_PLL_CNTL&t;&t;0x21
+DECL|macro|EXT_TV_PLL
+mdefine_line|#define EXT_TV_PLL&t;&t;0x22
+DECL|macro|V2PLL_CNTL
+mdefine_line|#define V2PLL_CNTL&t;&t;0x23
+DECL|macro|PLL_V2CLK_CNTL
+mdefine_line|#define PLL_V2CLK_CNTL&t;&t;0x24
+DECL|macro|EXT_V2PLL_REF_DIV
+mdefine_line|#define EXT_V2PLL_REF_DIV&t;0x25
+DECL|macro|EXT_V2PLL_FB_DIV
+mdefine_line|#define EXT_V2PLL_FB_DIV&t;0x26
+DECL|macro|EXT_V2PLL_MSB
+mdefine_line|#define EXT_V2PLL_MSB&t;&t;0x27
+DECL|macro|HTOTAL2_CNTL
+mdefine_line|#define HTOTAL2_CNTL&t;&t;0x28
+DECL|macro|PLL_YCLK_CNTL
+mdefine_line|#define PLL_YCLK_CNTL&t;&t;0x29
+DECL|macro|PM_DYN_CLK_CNTL
+mdefine_line|#define PM_DYN_CLK_CNTL&t;&t;0x2A
 multiline_comment|/* Fields in PLL registers */
 DECL|macro|PLL_PC_GAIN
 mdefine_line|#define PLL_PC_GAIN&t;&t;0x07
@@ -1591,28 +1767,96 @@ mdefine_line|#define LCD_SRC_SEL&t;&t;0x00000200
 DECL|macro|CRTC2_DISPLAY_DIS
 mdefine_line|#define CRTC2_DISPLAY_DIS&t;0x00000400
 multiline_comment|/* LCD register indices */
-DECL|macro|LCD_CONFIG_PANEL
-mdefine_line|#define LCD_CONFIG_PANEL&t;0x00
+DECL|macro|CONFIG_PANEL
+mdefine_line|#define CONFIG_PANEL&t;&t;0x00
 DECL|macro|LCD_GEN_CTRL
 mdefine_line|#define LCD_GEN_CTRL&t;&t;0x01
-DECL|macro|LCD_DSTN_CONTROL
-mdefine_line|#define LCD_DSTN_CONTROL&t;0x02
-DECL|macro|LCD_HFB_PITCH_ADDR
-mdefine_line|#define LCD_HFB_PITCH_ADDR&t;0x03
-DECL|macro|LCD_HORZ_STRETCHING
-mdefine_line|#define LCD_HORZ_STRETCHING&t;0x04
-DECL|macro|LCD_VERT_STRETCHING
-mdefine_line|#define LCD_VERT_STRETCHING&t;0x05
-DECL|macro|LCD_EXT_VERT_STRETCH
-mdefine_line|#define LCD_EXT_VERT_STRETCH&t;0x06
-DECL|macro|LCD_LT_GIO
-mdefine_line|#define LCD_LT_GIO&t;&t;0x07
-DECL|macro|LCD_POWER_MANAGEMENT
-mdefine_line|#define LCD_POWER_MANAGEMENT&t;0x08
-DECL|macro|LCD_ZVGPIO
-mdefine_line|#define LCD_ZVGPIO&t;&t;0x09
+DECL|macro|DSTN_CONTROL
+mdefine_line|#define DSTN_CONTROL&t;&t;0x02
+DECL|macro|HFB_PITCH_ADDR
+mdefine_line|#define HFB_PITCH_ADDR&t;&t;0x03
+DECL|macro|HORZ_STRETCHING
+mdefine_line|#define HORZ_STRETCHING&t;&t;0x04
+DECL|macro|VERT_STRETCHING
+mdefine_line|#define VERT_STRETCHING&t;&t;0x05
+DECL|macro|EXT_VERT_STRETCH
+mdefine_line|#define EXT_VERT_STRETCH&t;0x06
+DECL|macro|LT_GIO
+mdefine_line|#define LT_GIO&t;&t;&t;0x07
+DECL|macro|POWER_MANAGEMENT
+mdefine_line|#define POWER_MANAGEMENT&t;0x08
+DECL|macro|ZVGPIO
+mdefine_line|#define ZVGPIO&t;&t;&t;0x09
+DECL|macro|ICON_CLR0
+mdefine_line|#define ICON_CLR0&t;&t;0x0A
+DECL|macro|ICON_CLR1
+mdefine_line|#define ICON_CLR1&t;&t;0x0B
+DECL|macro|ICON_OFFSET
+mdefine_line|#define ICON_OFFSET&t;&t;0x0C
+DECL|macro|ICON_HORZ_VERT_POSN
+mdefine_line|#define ICON_HORZ_VERT_POSN&t;0x0D
+DECL|macro|ICON_HORZ_VERT_OFF
+mdefine_line|#define ICON_HORZ_VERT_OFF&t;0x0E
+DECL|macro|ICON2_CLR0
+mdefine_line|#define ICON2_CLR0&t;&t;0x0F
+DECL|macro|ICON2_CLR1
+mdefine_line|#define ICON2_CLR1&t;&t;0x10
+DECL|macro|ICON2_OFFSET
+mdefine_line|#define ICON2_OFFSET&t;&t;0x11
+DECL|macro|ICON2_HORZ_VERT_POSN
+mdefine_line|#define ICON2_HORZ_VERT_POSN&t;0x12
+DECL|macro|ICON2_HORZ_VERT_OFF
+mdefine_line|#define ICON2_HORZ_VERT_OFF&t;0x13
 DECL|macro|LCD_MISC_CNTL
 mdefine_line|#define LCD_MISC_CNTL&t;&t;0x14
+DECL|macro|APC_CNTL
+mdefine_line|#define APC_CNTL&t;&t;0x1C
+DECL|macro|POWER_MANAGEMENT_2
+mdefine_line|#define POWER_MANAGEMENT_2&t;0x1D
+DECL|macro|ALPHA_BLENDING
+mdefine_line|#define ALPHA_BLENDING&t;&t;0x25
+DECL|macro|PORTRAIT_GEN_CNTL
+mdefine_line|#define PORTRAIT_GEN_CNTL&t;0x26
+DECL|macro|APC_CTRL_IO
+mdefine_line|#define APC_CTRL_IO&t;&t;0x27
+DECL|macro|TEST_IO
+mdefine_line|#define TEST_IO&t;&t;&t;0x28
+DECL|macro|TEST_OUTPUTS
+mdefine_line|#define TEST_OUTPUTS&t;&t;0x29
+DECL|macro|DP1_MEM_ACCESS
+mdefine_line|#define DP1_MEM_ACCESS&t;&t;0x2A
+DECL|macro|DP0_MEM_ACCESS
+mdefine_line|#define DP0_MEM_ACCESS&t;&t;0x2B
+DECL|macro|DP0_DEBUG_A
+mdefine_line|#define DP0_DEBUG_A&t;&t;0x2C
+DECL|macro|DP0_DEBUG_B
+mdefine_line|#define DP0_DEBUG_B&t;&t;0x2D
+DECL|macro|DP1_DEBUG_A
+mdefine_line|#define DP1_DEBUG_A&t;&t;0x2E
+DECL|macro|DP1_DEBUG_B
+mdefine_line|#define DP1_DEBUG_B&t;&t;0x2F
+DECL|macro|DPCTRL_DEBUG_A
+mdefine_line|#define DPCTRL_DEBUG_A&t;&t;0x30
+DECL|macro|DPCTRL_DEBUG_B
+mdefine_line|#define DPCTRL_DEBUG_B&t;&t;0x31
+DECL|macro|MEMBLK_DEBUG
+mdefine_line|#define MEMBLK_DEBUG&t;&t;0x32
+DECL|macro|APC_LUT_AB
+mdefine_line|#define APC_LUT_AB&t;&t;0x33
+DECL|macro|APC_LUT_CD
+mdefine_line|#define APC_LUT_CD&t;&t;0x34
+DECL|macro|APC_LUT_EF
+mdefine_line|#define APC_LUT_EF&t;&t;0x35
+DECL|macro|APC_LUT_GH
+mdefine_line|#define APC_LUT_GH&t;&t;0x36
+DECL|macro|APC_LUT_IJ
+mdefine_line|#define APC_LUT_IJ&t;&t;0x37
+DECL|macro|APC_LUT_KL
+mdefine_line|#define APC_LUT_KL&t;&t;0x38
+DECL|macro|APC_LUT_MN
+mdefine_line|#define APC_LUT_MN&t;&t;0x39
+DECL|macro|APC_LUT_OP
+mdefine_line|#define APC_LUT_OP&t;&t;0x3A
 multiline_comment|/* Values in LCD_MISC_CNTL */
 DECL|macro|BIAS_MOD_LEVEL_MASK
 mdefine_line|#define BIAS_MOD_LEVEL_MASK&t;0x0000ff00

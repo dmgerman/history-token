@@ -2260,6 +2260,8 @@ c_func
 (paren
 id|current
 comma
+id|sw
+comma
 (paren
 r_int
 r_int
@@ -2287,6 +2289,8 @@ id|ia64_peek
 c_func
 (paren
 id|current
+comma
+id|sw
 comma
 (paren
 r_int
@@ -2361,6 +2365,8 @@ id|ia64_poke
 c_func
 (paren
 id|current
+comma
+id|sw
 comma
 (paren
 r_int
@@ -2726,6 +2732,8 @@ c_func
 (paren
 id|current
 comma
+id|sw
+comma
 (paren
 r_int
 r_int
@@ -2783,6 +2791,8 @@ id|ia64_peek
 c_func
 (paren
 id|current
+comma
+id|sw
 comma
 (paren
 r_int
@@ -5675,6 +5685,16 @@ op_plus
 id|ipsr-&gt;ri
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Don&squot;t call tty_write_message() if we&squot;re in the kernel; we might&n;&t;&t;&t; * be holding locks...&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
 id|tty_write_message
 c_func
 (paren

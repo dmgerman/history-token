@@ -93,6 +93,7 @@ r_int
 id|pgd_alloc_one_fast
 c_func
 (paren
+l_int|0
 )paren
 )paren
 comma
@@ -352,7 +353,7 @@ r_int
 id|end
 )paren
 (brace
-multiline_comment|/*&n;&t; * EFI uses 4KB pages while the kernel can use 4KB  or bigger.&n;&t; * Thus EFI and the kernel may have different page sizes. It is&n;&t; * therefore possible to have the initrd share the same page as&n;&t; * the end of the kernel (given current setup).&n;&t; *&n;&t; * To avoid freeing/using the wrong page (kernel sized) we:&n;&t; *&t;- align up the beginning of initrd&n;&t; *&t;- keep the end untouched&n;&t; *&n;&t; *  |             |&n;&t; *  |=============| a000&n;&t; *  |             |&n;&t; *  |             |&n;&t; *  |             | 9000&n;&t; *  |/////////////|&n;&t; *  |/////////////|&n;&t; *  |=============| 8000&n;&t; *  |///INITRD////|&n;&t; *  |/////////////|&n;&t; *  |/////////////| 7000&n;&t; *  |             |&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |=============| 6000&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  K=kernel using 8KB pages&n;&t; *&n;&t; * In this example, we must free page 8000 ONLY. So we must align up&n;&t; * initrd_start and keep initrd_end as is.&n;&t; */
+multiline_comment|/*&n;&t; * EFI uses 4KB pages while the kernel can use 4KB  or bigger.&n;&t; * Thus EFI and the kernel may have different page sizes. It is&n;&t; * therefore possible to have the initrd share the same page as&n;&t; * the end of the kernel (given current setup).&n;&t; *&n;&t; * To avoid freeing/using the wrong page (kernel sized) we:&n;&t; *&t;- align up the beginning of initrd&n;&t; *&t;- align down the end of initrd&n;&t; *&n;&t; *  |             |&n;&t; *  |=============| a000&n;&t; *  |             |&n;&t; *  |             |&n;&t; *  |             | 9000&n;&t; *  |/////////////|&n;&t; *  |/////////////|&n;&t; *  |=============| 8000&n;&t; *  |///INITRD////|&n;&t; *  |/////////////|&n;&t; *  |/////////////| 7000&n;&t; *  |             |&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |=============| 6000&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  K=kernel using 8KB pages&n;&t; *&n;&t; * In this example, we must free page 8000 ONLY. So we must align up&n;&t; * initrd_start and keep initrd_end as is.&n;&t; */
 id|start
 op_assign
 id|PAGE_ALIGN
@@ -360,6 +361,12 @@ c_func
 (paren
 id|start
 )paren
+suffix:semicolon
+id|end
+op_assign
+id|end
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -394,6 +401,22 @@ op_add_assign
 id|PAGE_SIZE
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|VALID_PAGE
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|start
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -825,6 +848,8 @@ DECL|function|ia64_mmu_init
 id|ia64_mmu_init
 (paren
 r_void
+op_star
+id|my_cpu_data
 )paren
 (brace
 r_int
@@ -880,7 +905,7 @@ l_int|8
 )paren
 op_or
 (paren
-id|_PAGE_SIZE_64M
+id|KERNEL_PG_SHIFT
 op_lshift
 l_int|2
 )paren
@@ -940,14 +965,7 @@ c_func
 id|__pa
 c_func
 (paren
-op_amp
-id|cpu_data
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
+id|my_cpu_data
 )paren
 comma
 id|PAGE_KERNEL
@@ -1304,6 +1322,10 @@ id|datasize
 comma
 id|initsize
 suffix:semicolon
+r_int
+r_int
+id|num_pgt_pages
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * This needs to be called _after_ the command line has been parsed but _before_&n;&t; * any drivers that may need the PCI DMA interface are initialized or bootmem has&n;&t; * been freed.&n;&t; */
 id|platform_pci_dma_init
@@ -1466,6 +1488,58 @@ id|initsize
 op_rshift
 l_int|10
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Allow for enough (cached) page table pages so that we can map the entire memory&n;&t; * at least once.  Each task also needs a couple of page tables pages, so add in a&n;&t; * fudge factor for that (don&squot;t use &quot;threads-max&quot; here; that would be wrong!).&n;&t; * Don&squot;t allow the cache to be more than 10% of total memory, though.&n;&t; */
+DECL|macro|NUM_TASKS
+macro_line|#&t;define NUM_TASKS&t;500&t;/* typical number of tasks */
+id|num_pgt_pages
+op_assign
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_div
+id|PTRS_PER_PGD
+op_plus
+id|NUM_TASKS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_pgt_pages
+OG
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_div
+l_int|10
+)paren
+id|num_pgt_pages
+op_assign
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_div
+l_int|10
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_pgt_pages
+OG
+id|pgt_cache_water
+(braket
+l_int|1
+)braket
+)paren
+id|pgt_cache_water
+(braket
+l_int|1
+)braket
+op_assign
+id|num_pgt_pages
 suffix:semicolon
 multiline_comment|/* install the gate page in the global page table: */
 id|put_gate_page

@@ -481,21 +481,7 @@ DECL|struct|cpuinfo_ia64
 r_struct
 id|cpuinfo_ia64
 (brace
-multiline_comment|/* irq_stat and softirq should be 64-bit aligned */
-r_struct
-(brace
-DECL|member|active
-id|__u32
-id|active
-suffix:semicolon
-DECL|member|mask
-id|__u32
-id|mask
-suffix:semicolon
-DECL|member|softirq
-)brace
-id|softirq
-suffix:semicolon
+multiline_comment|/* irq_stat must be 64-bit aligned */
 r_union
 (brace
 r_struct
@@ -520,15 +506,15 @@ DECL|member|irq_stat
 )brace
 id|irq_stat
 suffix:semicolon
+DECL|member|softirq_pending
+id|__u32
+id|softirq_pending
+suffix:semicolon
 DECL|member|phys_stacked_size_p8
 id|__u32
 id|phys_stacked_size_p8
 suffix:semicolon
 multiline_comment|/* size of physical stacked registers + 8 */
-DECL|member|pad0
-id|__u32
-id|pad0
-suffix:semicolon
 DECL|member|itm_delta
 id|__u64
 id|itm_delta
@@ -642,6 +628,13 @@ id|ptce_stride
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|ksoftirqd
+r_struct
+id|task_struct
+op_star
+id|ksoftirqd
+suffix:semicolon
+multiline_comment|/* kernel softirq daemon for this CPU */
 macro_line|#ifdef CONFIG_SMP
 DECL|member|loops_per_jiffy
 id|__u64
@@ -664,6 +657,17 @@ id|__u64
 id|ipi_operation
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|cpu_data
+r_struct
+id|cpuinfo_ia64
+op_star
+id|cpu_data
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 id|__attribute__
 (paren
@@ -678,14 +682,22 @@ suffix:semicolon
 multiline_comment|/*&n; * The &quot;local&quot; data pointer.  It points to the per-CPU data of the currently executing&n; * CPU, much like &quot;current&quot; points to the per-task data of the currently executing task.&n; */
 DECL|macro|local_cpu_data
 mdefine_line|#define local_cpu_data&t;&t;((struct cpuinfo_ia64 *) PERCPU_ADDR)
+multiline_comment|/*&n; * On NUMA systems, cpu_data for each cpu is allocated during cpu_init() &amp; is allocated on&n; * the node that contains the cpu. This minimizes off-node memory references.  cpu_data&n; * for each cpu contains an array of pointers to the cpu_data structures of each of the&n; * other cpus.&n; *&n; * On non-NUMA systems, cpu_data is a static array allocated at compile time.  References&n; * to the cpu_data of another cpu is done by direct references to the appropriate entry of&n; * the array.&n; */
+macro_line|#ifdef CONFIG_NUMA
+DECL|macro|cpu_data
+macro_line|# define cpu_data(cpu)&t;&t;local_cpu_data-&gt;cpu_data_ptrs[cpu]
+macro_line|#else
 r_extern
 r_struct
 id|cpuinfo_ia64
-id|cpu_data
+id|_cpu_data
 (braket
 id|NR_CPUS
 )braket
 suffix:semicolon
+DECL|macro|cpu_data
+macro_line|# define cpu_data(cpu)&t;&t;(&amp;_cpu_data[cpu])
+macro_line|#endif
 r_extern
 r_void
 id|identify_cpu
@@ -738,62 +750,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* various flags */
-DECL|member|fph
-r_struct
-id|ia64_fpreg
-id|fph
-(braket
-l_int|96
-)braket
-suffix:semicolon
-multiline_comment|/* saved/loaded on demand */
-DECL|member|dbr
-id|__u64
-id|dbr
-(braket
-id|IA64_NUM_DBG_REGS
-)braket
-suffix:semicolon
-DECL|member|ibr
-id|__u64
-id|ibr
-(braket
-id|IA64_NUM_DBG_REGS
-)braket
-suffix:semicolon
-macro_line|#ifdef CONFIG_PERFMON
-DECL|member|pmc
-id|__u64
-id|pmc
-(braket
-id|IA64_NUM_PMC_REGS
-)braket
-suffix:semicolon
-DECL|member|pmd
-id|__u64
-id|pmd
-(braket
-id|IA64_NUM_PMD_REGS
-)braket
-suffix:semicolon
-DECL|member|pfm_pend_notify
-r_int
-r_int
-id|pfm_pend_notify
-suffix:semicolon
-multiline_comment|/* non-zero if we need to notify and block */
-DECL|member|pfm_context
-r_void
-op_star
-id|pfm_context
-suffix:semicolon
-multiline_comment|/* pointer to detailed PMU context */
-DECL|macro|INIT_THREAD_PM
-macro_line|# define INIT_THREAD_PM&t;&t;{0, }, {0, }, 0, 0,
-macro_line|#else
-DECL|macro|INIT_THREAD_PM
-macro_line|# define INIT_THREAD_PM
-macro_line|#endif
 DECL|member|map_base
 id|__u64
 id|map_base
@@ -804,6 +760,13 @@ id|__u64
 id|task_size
 suffix:semicolon
 multiline_comment|/* limit for task size */
+DECL|member|siginfo
+r_struct
+id|siginfo
+op_star
+id|siginfo
+suffix:semicolon
+multiline_comment|/* current siginfo struct for ptrace() */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|member|eflag
 id|__u64
@@ -867,19 +830,68 @@ macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
 macro_line|#endif /* CONFIG_IA32_SUPPORT */
-DECL|member|siginfo
-r_struct
-id|siginfo
-op_star
-id|siginfo
+macro_line|#ifdef CONFIG_PERFMON
+DECL|member|pmc
+id|__u64
+id|pmc
+(braket
+id|IA64_NUM_PMC_REGS
+)braket
 suffix:semicolon
-multiline_comment|/* current siginfo struct for ptrace() */
+DECL|member|pmd
+id|__u64
+id|pmd
+(braket
+id|IA64_NUM_PMD_REGS
+)braket
+suffix:semicolon
+DECL|member|pfm_pend_notify
+r_int
+r_int
+id|pfm_pend_notify
+suffix:semicolon
+multiline_comment|/* non-zero if we need to notify and block */
+DECL|member|pfm_context
+r_void
+op_star
+id|pfm_context
+suffix:semicolon
+multiline_comment|/* pointer to detailed PMU context */
+DECL|macro|INIT_THREAD_PM
+macro_line|# define INIT_THREAD_PM&t;&t;{0, }, {0, }, 0, 0,
+macro_line|#else
+DECL|macro|INIT_THREAD_PM
+macro_line|# define INIT_THREAD_PM
+macro_line|#endif
+DECL|member|dbr
+id|__u64
+id|dbr
+(braket
+id|IA64_NUM_DBG_REGS
+)braket
+suffix:semicolon
+DECL|member|ibr
+id|__u64
+id|ibr
+(braket
+id|IA64_NUM_DBG_REGS
+)braket
+suffix:semicolon
+DECL|member|fph
+r_struct
+id|ia64_fpreg
+id|fph
+(braket
+l_int|96
+)braket
+suffix:semicolon
+multiline_comment|/* saved/loaded on demand */
 )brace
 suffix:semicolon
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&amp;init_mm, PAGE_OFFSET, PAGE_OFFSET + 0x10000000, NULL, PAGE_SHARED,&t;&bslash;&n;        VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* ksp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* flags */&t;&bslash;&n;&t;{{{{0}}}, },&t;&t;&t;/* fph */&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* dbr */&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* ibr */&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&t;&bslash;&n;&t;DEFAULT_MAP_BASE,&t;&t;/* map_base */&t;&bslash;&n;&t;DEFAULT_TASK_SIZE,&t;&t;/* task_size */&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&t;&bslash;&n;&t;0&t;&t;&t;&t;/* siginfo */&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* ksp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* flags */&t;&bslash;&n;&t;DEFAULT_MAP_BASE,&t;&t;/* map_base */&t;&bslash;&n;&t;DEFAULT_TASK_SIZE,&t;&t;/* task_size */&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* siginfo */&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* dbr */&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* ibr */&t;&bslash;&n;&t;{{{{0}}}, }&t;&t;&t;/* fph */&t;&bslash;&n;}
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;dfh = 1;&t;/* disable fph */&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;mfh = 0;&t;/* clear mfh */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;cpl = 3;&t;/* set user mode */&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;ri = 0;&t;&t;/* clear return slot number */&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;is = 0;&t;&t;/* IA-64 instruction set */&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xf;&t;&t;/* eager mode, privilege level 3 */&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_bspstore = IA64_RBS_BOT;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_fpsr = FPSR_DEFAULT;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r8 = current-&gt;mm-&gt;dumpable;&t;/* set &quot;don&squot;t zap registers&quot; flag */&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp - 16;&t;/* allocate 16 byte scratch area */&t;&t;&t;&bslash;&n;&t;if (!__builtin_expect (current-&gt;mm-&gt;dumpable, 1)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * Zap scratch regs to avoid leaking bits between processes with different&t;&bslash;&n;&t;&t; * uid/privileges.&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_pfs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;pr = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * XXX fix me: everything below can go away once we stop preserving scratch&t;&bslash;&n;&t;&t; * regs on a system call.&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;b6 = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r1 = 0; regs-&gt;r2 = 0; regs-&gt;r3 = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r13 = 0; regs-&gt;r14 = 0; regs-&gt;r15 = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r9  = 0; regs-&gt;r11 = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r16 = 0; regs-&gt;r17 = 0; regs-&gt;r18 = 0; regs-&gt;r19 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r20 = 0; regs-&gt;r21 = 0; regs-&gt;r22 = 0; regs-&gt;r23 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r24 = 0; regs-&gt;r25 = 0; regs-&gt;r26 = 0; regs-&gt;r27 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r28 = 0; regs-&gt;r29 = 0; regs-&gt;r30 = 0; regs-&gt;r31 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_ccv = 0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;b0 = 0; regs-&gt;b7 = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f6.u.bits[0] = 0; regs-&gt;f6.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f7.u.bits[0] = 0; regs-&gt;f7.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f8.u.bits[0] = 0; regs-&gt;f8.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f9.u.bits[0] = 0; regs-&gt;f9.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Forward declarations, a strange C thing... */
@@ -889,7 +901,7 @@ suffix:semicolon
 r_struct
 id|task_struct
 suffix:semicolon
-multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exist status of the task via&n; * wait().  This is a no-op on IA-64.&n; */
+multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exist status of the task via&n; * wait().&n; */
 macro_line|#ifdef CONFIG_PERFMON
 r_extern
 r_void
@@ -1362,9 +1374,9 @@ r_void
 id|ia32_save_state
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|thread
+id|task
 )paren
 suffix:semicolon
 r_extern
@@ -1372,9 +1384,9 @@ r_void
 id|ia32_load_state
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|thread
+id|task
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -83,13 +83,6 @@ DECL|macro|BE32
 mdefine_line|#define BE32(x)&t;&t;&t;((u32)be32_to_cpu(get_unaligned((u32*)(x))))
 DECL|macro|BE64
 mdefine_line|#define BE64(x)&t;&t;&t;((u64)be64_to_cpu(get_unaligned((u64*)(x))))
-multiline_comment|/* Borrowed from msdos.c. */
-DECL|macro|SYS_IND
-mdefine_line|#define SYS_IND(p)&t;&t;(get_unaligned(&amp;(p)-&gt;sys_ind))
-DECL|macro|NR_SECTS
-mdefine_line|#define NR_SECTS(p)&t;&t;({ __typeof__((p)-&gt;nr_sects) __a =&t;&bslash;&n;&t;&t;&t;&t;&t;get_unaligned(&amp;(p)-&gt;nr_sects);&t;&bslash;&n;&t;&t;&t;&t;&t;le32_to_cpu(__a);&t;&t;&bslash;&n;&t;&t;&t;&t;})
-DECL|macro|START_SECT
-mdefine_line|#define START_SECT(p)&t;&t;({ __typeof__((p)-&gt;start_sect) __a =&t;&bslash;&n;&t;&t;&t;&t;&t;get_unaligned(&amp;(p)-&gt;start_sect);&bslash;&n;&t;&t;&t;&t;&t;le32_to_cpu(__a);&t;&t;&bslash;&n;&t;&t;&t;&t;})
 multiline_comment|/* In memory LDM database structures. */
 DECL|macro|DISK_ID_SIZE
 mdefine_line|#define DISK_ID_SIZE&t;&t;64&t;/* Size in bytes. */

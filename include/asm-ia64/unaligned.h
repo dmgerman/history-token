@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNALIGNED_H
 DECL|macro|_ASM_IA64_UNALIGNED_H
 mdefine_line|#define _ASM_IA64_UNALIGNED_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * The main single-value unaligned transfer routines.  Derived from&n; * the Linux/Alpha version.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|get_unaligned
 mdefine_line|#define get_unaligned(ptr) &bslash;&n;&t;((__typeof__(*(ptr)))ia64_get_unaligned((ptr), sizeof(*(ptr))))

@@ -310,6 +310,13 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|unw_create_gate_table
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 op_star
 id|unw_add_unwind_table
 (paren
@@ -326,10 +333,12 @@ r_int
 r_int
 id|gp
 comma
+r_const
 r_void
 op_star
 id|table_start
 comma
+r_const
 r_void
 op_star
 id|table_end

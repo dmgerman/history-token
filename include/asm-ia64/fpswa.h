@@ -2,10 +2,6 @@ macro_line|#ifndef _ASM_IA64_FPSWA_H
 DECL|macro|_ASM_IA64_FPSWA_H
 mdefine_line|#define _ASM_IA64_FPSWA_H
 multiline_comment|/*&n; * Floating-point Software Assist&n; *&n; * Copyright (C) 1999 Intel Corporation.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Goutham Rao &lt;goutham.rao@intel.com&gt;&n; */
-macro_line|#if 1
-DECL|macro|FPSWA_BUG
-mdefine_line|#define FPSWA_BUG
-macro_line|#endif
 r_typedef
 r_struct
 (brace

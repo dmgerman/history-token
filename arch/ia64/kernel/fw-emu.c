@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/sal.h&gt;
 DECL|macro|MB
 mdefine_line|#define MB&t;(1024*1024UL)
 DECL|macro|NUM_MEM_DESCS
-mdefine_line|#define NUM_MEM_DESCS&t;2
+mdefine_line|#define NUM_MEM_DESCS&t;3
 DECL|variable|fw_mem
 r_static
 r_char
@@ -476,254 +476,62 @@ r_void
 suffix:semicolon
 id|asm
 (paren
-"&quot;"
-dot
-id|proc
-id|pal_emulator_static
-id|pal_emulator_static
-suffix:colon
-id|mov
-id|r8
-op_assign
-op_minus
-l_int|1
-id|mov
-id|r9
-op_assign
-l_int|256
-suffix:semicolon
-suffix:semicolon
-id|cmp.gtu
-id|p6
-comma
-id|p7
-op_assign
-id|r9
-comma
-id|r28
-multiline_comment|/* r28 &lt;= 255? */
-(paren
-id|p6
-)paren
-id|br.cond.sptk.few
-r_static
-suffix:semicolon
-suffix:semicolon
-id|mov
-id|r9
-op_assign
-l_int|512
-suffix:semicolon
-suffix:semicolon
-id|cmp.gtu
-id|p6
-comma
-id|p7
-op_assign
-id|r9
-comma
-id|r28
-(paren
-id|p6
-)paren
-id|br.cond.sptk.few
-id|stacked
-suffix:semicolon
-suffix:semicolon
-r_static
-suffix:colon
-id|cmp.eq
-id|p6
-comma
-id|p7
-op_assign
-l_int|6
-comma
-id|r28
-multiline_comment|/* PAL_PTCE_INFO */
-(paren
-id|p7
-)paren
-id|br.cond.sptk.few
-l_float|1f
-suffix:semicolon
-suffix:semicolon
-id|mov
-id|r8
-op_assign
-l_int|0
-multiline_comment|/* status = 0 */
-id|movl
-id|r9
-op_assign
-l_int|0x100000000
-multiline_comment|/* tc.base */
-id|movl
-id|r10
-op_assign
-l_int|0x0000000200000003
-multiline_comment|/* count[0], count[1] */
-id|movl
-id|r11
-op_assign
-l_int|0x1000000000002000
-multiline_comment|/* stride[0], stride[1] */
-id|br.cond.sptk.few
-id|rp
-l_int|1
-suffix:colon
-id|cmp.eq
-id|p6
-comma
-id|p7
-op_assign
-l_int|14
-comma
-id|r28
-multiline_comment|/* PAL_FREQ_RATIOS */
-(paren
-id|p7
-)paren
-id|br.cond.sptk.few
-l_float|1f
-id|mov
-id|r8
-op_assign
-l_int|0
-multiline_comment|/* status = 0 */
-id|movl
-id|r9
-op_assign
-l_int|0x100000064
-multiline_comment|/* proc_ratio (1/100) */
-id|movl
-id|r10
-op_assign
-l_int|0x100000100
-multiline_comment|/* bus_ratio&lt;&lt;32 (1/256) */
-id|movl
-id|r11
-op_assign
-l_int|0x100000064
-multiline_comment|/* itc_ratio&lt;&lt;32 (1/100) */
-suffix:semicolon
-suffix:semicolon
-l_int|1
-suffix:colon
-id|cmp.eq
-id|p6
-comma
-id|p7
-op_assign
-l_int|19
-comma
-id|r28
-multiline_comment|/* PAL_RSE_INFO */
-(paren
-id|p7
-)paren
-id|br.cond.sptk.few
-l_float|1f
-id|mov
-id|r8
-op_assign
-l_int|0
-multiline_comment|/* status = 0 */
-id|mov
-id|r9
-op_assign
-l_int|96
-multiline_comment|/* num phys stacked */
-id|mov
-id|r10
-op_assign
-l_int|0
-multiline_comment|/* hints */
-id|mov
-id|r11
-op_assign
-l_int|0
-id|br.cond.sptk.few
-id|rp
-l_int|1
-suffix:colon
-id|cmp.eq
-id|p6
-comma
-id|p7
-op_assign
-l_int|1
-comma
-id|r28
-multiline_comment|/* PAL_CACHE_FLUSH */
-(paren
-id|p7
-)paren
-id|br.cond.sptk.few
-l_float|1f
-id|mov
-id|r9
-op_assign
-id|ar.lc
-id|movl
-id|r8
-op_assign
-l_int|524288
-multiline_comment|/* flush 512k million cache lines (16MB) */
-suffix:semicolon
-suffix:semicolon
-id|mov
-id|ar.lc
-op_assign
-id|r8
-id|movl
-id|r8
-op_assign
-l_int|0xe000000000000000
-suffix:semicolon
-suffix:semicolon
-dot
-id|loop
-suffix:colon
-id|fc
-id|r8
-id|add
-id|r8
-op_assign
-l_int|32
-comma
-id|r8
-id|br.cloop.sptk.few
-dot
-id|loop
-id|sync.i
-suffix:semicolon
-suffix:semicolon
-id|srlz.i
-suffix:semicolon
-suffix:semicolon
-id|mov
-id|ar.lc
-op_assign
-id|r9
-id|mov
-id|r8
-op_assign
-id|r0
-l_int|1
-suffix:colon
-id|br.cond.sptk.few
-id|rp
-id|stacked
-suffix:colon
-id|br.ret.sptk.few
-id|rp
-dot
-id|endp
-id|pal_emulator_static
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&t;.proc pal_emulator_static&bslash;n&quot;
+l_string|&quot;pal_emulator_static:&quot;
+l_string|&quot;&t;mov r8=-1&bslash;n&quot;
+l_string|&quot;&t;mov r9=256&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;cmp.gtu p6,p7=r9,r28&t;&t;/* r28 &lt;= 255? */&bslash;n&quot;
+l_string|&quot;(p6)&t;br.cond.sptk.few static&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;mov r9=512&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;cmp.gtu p6,p7=r9,r28&bslash;n&quot;
+l_string|&quot;(p6)&t;br.cond.sptk.few stacked&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;static:&t;cmp.eq p6,p7=6,r28&t;&t;/* PAL_PTCE_INFO */&bslash;n&quot;
+l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
+l_string|&quot;&t;movl r9=0x100000000&t;&t;/* tc.base */&bslash;n&quot;
+l_string|&quot;&t;movl r10=0x0000000200000003&t;/* count[0], count[1] */&bslash;n&quot;
+l_string|&quot;&t;movl r11=0x1000000000002000&t;/* stride[0], stride[1] */&bslash;n&quot;
+l_string|&quot;&t;br.cond.sptk.few rp&bslash;n&quot;
+l_string|&quot;1:&t;cmp.eq p6,p7=14,r28&t;&t;/* PAL_FREQ_RATIOS */&bslash;n&quot;
+l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
+l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
+l_string|&quot;&t;movl r9 =0x100000064&t;&t;/* proc_ratio (1/100) */&bslash;n&quot;
+l_string|&quot;&t;movl r10=0x100000100&t;&t;/* bus_ratio&lt;&lt;32 (1/256) */&bslash;n&quot;
+l_string|&quot;&t;movl r11=0x100000064&t;&t;/* itc_ratio&lt;&lt;32 (1/100) */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;1:&t;cmp.eq p6,p7=19,r28&t;&t;/* PAL_RSE_INFO */&bslash;n&quot;
+l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
+l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
+l_string|&quot;&t;mov r9=96&t;&t;&t;/* num phys stacked */&bslash;n&quot;
+l_string|&quot;&t;mov r10=0&t;&t;&t;/* hints */&bslash;n&quot;
+l_string|&quot;&t;mov r11=0&bslash;n&quot;
+l_string|&quot;&t;br.cond.sptk.few rp&bslash;n&quot;
+l_string|&quot;1:&t;cmp.eq p6,p7=1,r28&t;&t;/* PAL_CACHE_FLUSH */&bslash;n&quot;
+l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
+l_string|&quot;&t;mov r9=ar.lc&bslash;n&quot;
+l_string|&quot;&t;movl r8=524288&t;&t;&t;/* flush 512k million cache lines (16MB) */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;mov ar.lc=r8&bslash;n&quot;
+l_string|&quot;&t;movl r8=0xe000000000000000&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;.loop:&t;fc r8&bslash;n&quot;
+l_string|&quot;&t;add r8=32,r8&bslash;n&quot;
+l_string|&quot;&t;br.cloop.sptk.few .loop&bslash;n&quot;
+l_string|&quot;&t;sync.i&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;srlz.i&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;mov ar.lc=r9&bslash;n&quot;
+l_string|&quot;&t;mov r8=r0&bslash;n&quot;
+l_string|&quot;1:&t;br.cond.sptk.few rp&bslash;n&quot;
+l_string|&quot;stacked:&bslash;n&quot;
+l_string|&quot;&t;br.ret.sptk.few rp&bslash;n&quot;
+l_string|&quot;&t;.endp pal_emulator_static&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Macro to emulate SAL call using legacy IN and OUT calls to CF8, CFC etc.. */
@@ -1969,13 +1777,55 @@ op_assign
 op_minus
 id|checksum
 suffix:semicolon
-multiline_comment|/* fill in a memory descriptor: */
+multiline_comment|/* simulate free memory at physical address zero */
 id|md
 op_assign
 op_amp
 id|efi_memmap
 (braket
 l_int|0
+)braket
+suffix:semicolon
+id|md-&gt;type
+op_assign
+id|EFI_BOOT_SERVICES_DATA
+suffix:semicolon
+id|md-&gt;pad
+op_assign
+l_int|0
+suffix:semicolon
+id|md-&gt;phys_addr
+op_assign
+l_int|0
+op_star
+id|MB
+suffix:semicolon
+id|md-&gt;virt_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|md-&gt;num_pages
+op_assign
+(paren
+l_int|1
+op_star
+id|MB
+)paren
+op_rshift
+l_int|12
+suffix:semicolon
+multiline_comment|/* 1MB (in 4KB pages) */
+id|md-&gt;attribute
+op_assign
+id|EFI_MEMORY_WB
+suffix:semicolon
+multiline_comment|/* fill in a memory descriptor: */
+id|md
+op_assign
+op_amp
+id|efi_memmap
+(braket
+l_int|1
 )braket
 suffix:semicolon
 id|md-&gt;type
@@ -2017,7 +1867,7 @@ op_assign
 op_amp
 id|efi_memmap
 (braket
-l_int|1
+l_int|2
 )braket
 suffix:semicolon
 id|md-&gt;type
@@ -2063,7 +1913,7 @@ op_assign
 op_amp
 id|efi_memmap
 (braket
-l_int|2
+l_int|3
 )braket
 suffix:semicolon
 id|md-&gt;type

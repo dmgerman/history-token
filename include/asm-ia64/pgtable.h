@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|IA64_MAX_PHYS_BITS
 mdefine_line|#define IA64_MAX_PHYS_BITS&t;50&t;/* max. number of physical address bits (architected) */
@@ -141,7 +142,7 @@ mdefine_line|#define PAGE_KERNEL&t;__pgprot(__DIRTY_BITS  | _PAGE_PL_0 | _PAGE_A
 macro_line|# ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Next come the mappings that determine how mmap() protection bits&n; * (PROT_EXEC, PROT_READ, PROT_WRITE, PROT_NONE) get implemented.  The&n; * _P version gets used for a private shared memory segment, the _S&n; * version gets used for a shared memory segment with MAP_SHARED on.&n; * In a private shared memory segment, we do a copy-on-write if a task&n; * attempts to write to the page.&n; */
 multiline_comment|/* xwr */
 DECL|macro|__P000
@@ -821,7 +822,7 @@ mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xf
 DECL|macro|SWP_OFFSET
 mdefine_line|#define SWP_OFFSET(entry)&t;&t;(((entry).val &lt;&lt; 1) &gt;&gt; 10)
 DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type,offset)&t;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 9) })
+mdefine_line|#define SWP_ENTRY(type,offset)&t;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((long) (offset) &lt;&lt; 9) })
 DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
@@ -852,5 +853,12 @@ multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes 
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|# endif /* !__ASSEMBLY__ */
+multiline_comment|/*&n; * Identity-mapped regions use a large page size.  KERNEL_PG_NUM is the&n; * number of the (large) page frame that mapps the kernel.&n; */
+DECL|macro|KERNEL_PG_SHIFT
+mdefine_line|#define KERNEL_PG_SHIFT&t;&t;_PAGE_SIZE_64M
+DECL|macro|KERNEL_PG_SIZE
+mdefine_line|#define KERNEL_PG_SIZE&t;&t;(1 &lt;&lt; KERNEL_PG_SHIFT)
+DECL|macro|KERNEL_PG_NUM
+mdefine_line|#define KERNEL_PG_NUM&t;&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_PG_SIZE)
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

@@ -374,7 +374,7 @@ r_int
 r_int
 id|sa_handler
 suffix:semicolon
-multiline_comment|/* Really a pointer, but need to deal &n;&t;&t;&t;&t;&t;     with 32 bits */
+multiline_comment|/* Really a pointer, but need to deal&n;&t;&t;&t;&t;&t;     with 32 bits */
 DECL|member|sa_flags
 r_int
 r_int
@@ -409,7 +409,7 @@ r_int
 r_int
 id|sa_handler
 suffix:semicolon
-multiline_comment|/* Really a pointer, but need to deal &n;&t;&t;&t;&t;&t;     with 32 bits */
+multiline_comment|/* Really a pointer, but need to deal&n;&t;&t;&t;&t;&t;     with 32 bits */
 DECL|member|sa_mask
 id|old_sigset32_t
 id|sa_mask
@@ -837,6 +837,15 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_386
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET&t;0xc0000000
+DECL|macro|IA32_STACK_TOP
+mdefine_line|#define IA32_STACK_TOP&t;&t;((IA32_PAGE_OFFSET/3) * 2)
+multiline_comment|/*&n; * The system segments (GDT, TSS, LDT) have to be mapped below 4GB so the IA-32 engine can&n; * access them.&n; */
+DECL|macro|IA32_GDT_OFFSET
+mdefine_line|#define IA32_GDT_OFFSET&t;&t;(IA32_PAGE_OFFSET)
+DECL|macro|IA32_TSS_OFFSET
+mdefine_line|#define IA32_TSS_OFFSET&t;&t;(IA32_PAGE_OFFSET + PAGE_SIZE)
+DECL|macro|IA32_LDT_OFFSET
+mdefine_line|#define IA32_LDT_OFFSET&t;&t;(IA32_PAGE_OFFSET + 2*PAGE_SIZE)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
@@ -906,7 +915,7 @@ id|ELF_NFPREG
 suffix:semicolon
 multiline_comment|/* This macro yields a bitmask that programs can use to figure out&n;   what instruction set this CPU supports.  */
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP &t;0
+mdefine_line|#define ELF_HWCAP&t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;0
@@ -921,20 +930,6 @@ DECL|macro|__USER_CS
 mdefine_line|#define __USER_CS      0x23
 DECL|macro|__USER_DS
 mdefine_line|#define __USER_DS      0x2B
-DECL|macro|SEG_LIM
-mdefine_line|#define SEG_LIM     32
-DECL|macro|SEG_TYPE
-mdefine_line|#define SEG_TYPE    52
-DECL|macro|SEG_SYS
-mdefine_line|#define SEG_SYS     56
-DECL|macro|SEG_DPL
-mdefine_line|#define SEG_DPL     57
-DECL|macro|SEG_P
-mdefine_line|#define SEG_P       59
-DECL|macro|SEG_DB
-mdefine_line|#define SEG_DB      62
-DECL|macro|SEG_G
-mdefine_line|#define SEG_G       63
 DECL|macro|FIRST_TSS_ENTRY
 mdefine_line|#define FIRST_TSS_ENTRY 6
 DECL|macro|FIRST_LDT_ENTRY
@@ -943,36 +938,53 @@ DECL|macro|_TSS
 mdefine_line|#define _TSS(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_TSS_ENTRY&lt;&lt;3))
 DECL|macro|_LDT
 mdefine_line|#define _LDT(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_LDT_ENTRY&lt;&lt;3))
-DECL|macro|IA64_SEG_DESCRIPTOR
-mdefine_line|#define IA64_SEG_DESCRIPTOR(base, limit, segtype, nonsysseg, dpl, segpresent, segdb, granularity) &bslash;&n;&t;       ((base)&t;&t;&t;       |       &bslash;&n;&t;&t;(limit &lt;&lt; SEG_LIM)&t;       |       &bslash;&n;&t;&t;(segtype &lt;&lt; SEG_TYPE)&t;       |       &bslash;&n;&t;&t;(nonsysseg &lt;&lt; SEG_SYS)&t;       |       &bslash;&n;&t;&t;(dpl &lt;&lt; SEG_DPL)&t;       |       &bslash;&n;&t;&t;(segpresent &lt;&lt; SEG_P)&t;       |       &bslash;&n;&t;&t;(segdb &lt;&lt; SEG_DB)&t;       |       &bslash;&n;&t;&t;(granularity &lt;&lt; SEG_G))
 DECL|macro|IA32_SEG_BASE
-mdefine_line|#define IA32_SEG_BASE 16
+mdefine_line|#define IA32_SEG_BASE&t;&t;16
 DECL|macro|IA32_SEG_TYPE
-mdefine_line|#define IA32_SEG_TYPE 40
+mdefine_line|#define IA32_SEG_TYPE&t;&t;40
 DECL|macro|IA32_SEG_SYS
-mdefine_line|#define IA32_SEG_SYS  44
+mdefine_line|#define IA32_SEG_SYS&t;&t;44
 DECL|macro|IA32_SEG_DPL
-mdefine_line|#define IA32_SEG_DPL  45
+mdefine_line|#define IA32_SEG_DPL&t;&t;45
 DECL|macro|IA32_SEG_P
-mdefine_line|#define IA32_SEG_P    47
+mdefine_line|#define IA32_SEG_P&t;&t;47
 DECL|macro|IA32_SEG_HIGH_LIMIT
-mdefine_line|#define IA32_SEG_HIGH_LIMIT    48
+mdefine_line|#define IA32_SEG_HIGH_LIMIT&t;48
 DECL|macro|IA32_SEG_AVL
-mdefine_line|#define IA32_SEG_AVL   52
+mdefine_line|#define IA32_SEG_AVL&t;&t;52
 DECL|macro|IA32_SEG_DB
-mdefine_line|#define IA32_SEG_DB    54
+mdefine_line|#define IA32_SEG_DB&t;&t;54
 DECL|macro|IA32_SEG_G
-mdefine_line|#define IA32_SEG_G     55
+mdefine_line|#define IA32_SEG_G&t;&t;55
 DECL|macro|IA32_SEG_HIGH_BASE
-mdefine_line|#define IA32_SEG_HIGH_BASE 56
+mdefine_line|#define IA32_SEG_HIGH_BASE&t;56
 DECL|macro|IA32_SEG_DESCRIPTOR
-mdefine_line|#define IA32_SEG_DESCRIPTOR(base, limit, segtype, nonsysseg, dpl, segpresent, avl, segdb, granularity) &bslash;&n;&t;       ((limit &amp; 0xFFFF)&t;&t;&t;       |       &bslash;&n;&t;&t; (base &amp; 0xFFFFFF &lt;&lt; IA32_SEG_BASE)&t;       |       &bslash;&n;&t;&t;(segtype &lt;&lt; IA32_SEG_TYPE)&t;&t;       |       &bslash;&n;&t;&t;(nonsysseg &lt;&lt; IA32_SEG_SYS)&t;&t;       |       &bslash;&n;&t;&t;(dpl &lt;&lt; IA32_SEG_DPL)&t;&t;&t;       |       &bslash;&n;&t;&t;(segpresent &lt;&lt; IA32_SEG_P)&t;&t;       |       &bslash;&n;&t;&t;(((limit &gt;&gt; 16) &amp; 0xF) &lt;&lt; IA32_SEG_HIGH_LIMIT) |       &bslash;&n;&t;&t;(avl &lt;&lt; IA32_SEG_AVL)&t;&t;&t;       |       &bslash;&n;&t;&t;(segdb &lt;&lt; IA32_SEG_DB)&t;&t;&t;       |       &bslash;&n;&t;&t;(granularity &lt;&lt; IA32_SEG_G)&t;&t;       |       &bslash;&n;&t;&t;(((base &gt;&gt; 24) &amp; 0xFF) &lt;&lt; IA32_SEG_HIGH_BASE)) 
+mdefine_line|#define IA32_SEG_DESCRIPTOR(base, limit, segtype, nonsysseg, dpl, segpresent, avl, segdb, gran)&t;&bslash;&n;&t;       (((limit) &amp; 0xffff)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| (((unsigned long) (base) &amp; 0xffffff) &lt;&lt; IA32_SEG_BASE)&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (segtype) &lt;&lt; IA32_SEG_TYPE)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (nonsysseg) &lt;&lt; IA32_SEG_SYS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (dpl) &lt;&lt; IA32_SEG_DPL)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (segpresent) &lt;&lt; IA32_SEG_P)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((((unsigned long) (limit) &gt;&gt; 16) &amp; 0xf) &lt;&lt; IA32_SEG_HIGH_LIMIT)&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (avl) &lt;&lt; IA32_SEG_AVL)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (segdb) &lt;&lt; IA32_SEG_DB)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((unsigned long) (gran) &lt;&lt; IA32_SEG_G)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;| ((((unsigned long) (base) &gt;&gt; 24) &amp; 0xff) &lt;&lt; IA32_SEG_HIGH_BASE))
+DECL|macro|SEG_LIM
+mdefine_line|#define SEG_LIM&t;&t;32
+DECL|macro|SEG_TYPE
+mdefine_line|#define SEG_TYPE&t;52
+DECL|macro|SEG_SYS
+mdefine_line|#define SEG_SYS&t;&t;56
+DECL|macro|SEG_DPL
+mdefine_line|#define SEG_DPL&t;&t;57
+DECL|macro|SEG_P
+mdefine_line|#define SEG_P&t;&t;59
+DECL|macro|SEG_AVL
+mdefine_line|#define SEG_AVL&t;&t;60
+DECL|macro|SEG_DB
+mdefine_line|#define SEG_DB&t;&t;62
+DECL|macro|SEG_G
+mdefine_line|#define SEG_G&t;&t;63
+multiline_comment|/* Unscramble an IA-32 segment descriptor into the IA-64 format.  */
+DECL|macro|IA32_SEG_UNSCRAMBLE
+mdefine_line|#define IA32_SEG_UNSCRAMBLE(sd)&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(   (((sd) &gt;&gt; IA32_SEG_BASE) &amp; 0xffffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_BASE) &amp; 0xff) &lt;&lt; 24) &bslash;&n;&t; | ((((sd) &amp; 0xffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_LIMIT) &amp; 0xf) &lt;&lt; 16)) &lt;&lt; SEG_LIM)&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_TYPE) &amp; 0xf) &lt;&lt; SEG_TYPE)&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_SYS) &amp; 0x1) &lt;&lt; SEG_SYS)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DPL) &amp; 0x3) &lt;&lt; SEG_DPL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_P) &amp; 0x1) &lt;&lt; SEG_P)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_AVL) &amp; 0x1) &lt;&lt; SEG_AVL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DB) &amp; 0x1) &lt;&lt; SEG_DB)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_G) &amp; 0x1) &lt;&lt; SEG_G))
 DECL|macro|IA32_IOBASE
-mdefine_line|#define IA32_IOBASE    0x2000000000000000 /* Virtual address for I/O space */
+mdefine_line|#define IA32_IOBASE&t;0x2000000000000000 /* Virtual address for I/O space */
 DECL|macro|IA32_CR0
-mdefine_line|#define IA32_CR0       0x80000001      /* Enable PG and PE bits */
+mdefine_line|#define IA32_CR0&t;0x80000001&t;/* Enable PG and PE bits */
 DECL|macro|IA32_CR4
-mdefine_line|#define IA32_CR4       0&t;       /* No architectural extensions */
+mdefine_line|#define IA32_CR4&t;0x600&t;&t;/* MMXEX and FXSR on */
 multiline_comment|/*&n; *  IA32 floating point control registers starting values&n; */
 DECL|macro|IA32_FSR_DEFAULT
 mdefine_line|#define IA32_FSR_DEFAULT&t;0x55550000&t;&t;/* set all tag bits */
@@ -988,6 +1000,74 @@ DECL|macro|IA32_PTRACE_SETFPREGS
 mdefine_line|#define IA32_PTRACE_SETFPREGS&t;15
 DECL|macro|ia32_start_thread
 mdefine_line|#define ia32_start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;cpl = 3;&t;/* set user mode */&t;&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;ri = 0;&t;&t;/* clear return slot number */&t;&t;&bslash;&n;&t;ia64_psr(regs)-&gt;is = 1;&t;&t;/* IA-32 instruction set */&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xc;&t;&t;/* enforced lazy mode, priv. level 3 */&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * Local Descriptor Table (LDT) related declarations.&n; */
+DECL|macro|IA32_LDT_ENTRIES
+mdefine_line|#define IA32_LDT_ENTRIES&t;8192&t;&t;/* Maximum number of LDT entries supported. */
+DECL|macro|IA32_LDT_ENTRY_SIZE
+mdefine_line|#define IA32_LDT_ENTRY_SIZE&t;8&t;&t;/* The size of each LDT entry. */
+DECL|struct|ia32_modify_ldt_ldt_s
+r_struct
+id|ia32_modify_ldt_ldt_s
+(brace
+DECL|member|entry_number
+r_int
+r_int
+id|entry_number
+suffix:semicolon
+DECL|member|base_addr
+r_int
+r_int
+id|base_addr
+suffix:semicolon
+DECL|member|limit
+r_int
+r_int
+id|limit
+suffix:semicolon
+DECL|member|seg_32bit
+r_int
+r_int
+id|seg_32bit
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|contents
+r_int
+r_int
+id|contents
+suffix:colon
+l_int|2
+suffix:semicolon
+DECL|member|read_exec_only
+r_int
+r_int
+id|read_exec_only
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|limit_in_pages
+r_int
+r_int
+id|limit_in_pages
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|seg_not_present
+r_int
+r_int
+id|seg_not_present
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|useable
+r_int
+r_int
+id|useable
+suffix:colon
+l_int|1
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_void
 id|ia32_gdt_init

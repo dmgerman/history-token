@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 DECL|struct|ia64_fptr
 r_typedef
 r_struct

@@ -23,7 +23,10 @@ op_star
 DECL|function|pgd_alloc_one_fast
 id|pgd_alloc_one_fast
 (paren
-r_void
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 (brace
 r_int
@@ -104,6 +107,7 @@ op_assign
 id|pgd_alloc_one_fast
 c_func
 (paren
+id|mm
 )paren
 suffix:semicolon
 r_if

@@ -77,7 +77,7 @@ DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN&t;32
 DECL|macro|SIGRTMAX
 mdefine_line|#define SIGRTMAX&t;(_NSIG-1)
-multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK indicates that a registered stack_t will be used.&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.&n; * SA_RESETHAND clears the handler when the signal is delivered.&n; * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.&n; * SA_NODEFER prevents the current signal from being masked in the handler.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
+multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK indicates that a registered stack_t will be used.&n; * SA_INTERRUPT is a no-op, but left due to historical reasons.&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.&n; * SA_RESETHAND clears the handler when the signal is delivered.&n; * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.&n; * SA_NODEFER prevents the current signal from being masked in the handler.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
 DECL|macro|SA_NOCLDWAIT
@@ -123,8 +123,6 @@ DECL|macro|SA_SAMPLE_RANDOM
 mdefine_line|#define SA_SAMPLE_RANDOM&t;SA_RESTART
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;&t;0x04000000
-DECL|macro|SA_LEGACY
-mdefine_line|#define SA_LEGACY&t;&t;0x02000000&t;/* installed via a legacy irq? */
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|SIG_BLOCK
 mdefine_line|#define SIG_BLOCK          0&t;/* for blocking signals */

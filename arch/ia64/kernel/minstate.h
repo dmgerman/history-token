@@ -54,17 +54,10 @@ mdefine_line|#define DO_SAVE_MIN(COVER,SAVE_IFS,EXTRA)&t;&t;&t;&t;&t;&t;&t;  &bs
 multiline_comment|/*&n; * SAVE_REST saves the remainder of pt_regs (with psr.ic on).  This&n; * macro guarantees to preserve all predicate registers, r8, r9, r10,&n; * r11, r14, and r15.&n; *&n; * Assumed state upon entry:&n; *&t;psr.ic: on&n; *&t;psr.dt: on&n; *&t;r2:&t;points to &amp;pt_regs.r16&n; *&t;r3:&t;points to &amp;pt_regs.r17&n; */
 DECL|macro|SAVE_REST
 mdefine_line|#define SAVE_REST&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r16,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r17,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r18,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r19,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;mov r16=ar.ccv;&t;&t;/* M-unit */&t;&bslash;&n;&t;movl r18=FPSR_DEFAULT&t;/* L-unit */&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;mov r17=ar.fpsr;&t;/* M-unit */&t;&bslash;&n;&t;mov ar.fpsr=r18;&t;/* M-unit */&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r20,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r21,16;&t;&bslash;&n;&t;mov r18=b0;&t;&t;&t;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r22,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r23,16;&t;&bslash;&n;&t;mov r19=b7;&t;&t;&t;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r24,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r25,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r26,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r27,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r28,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r29,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;.mem.offset 0,0;&t;st8.spill [r2]=r30,16;&t;&bslash;&n;.mem.offset 8,0;&t;st8.spill [r3]=r31,16;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;st8 [r2]=r16,16;&t;/* ar.ccv */&t;&bslash;&n;&t;st8 [r3]=r17,16;&t;/* ar.fpsr */&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;st8 [r2]=r18,16;&t;/* b0 */&t;&bslash;&n;&t;st8 [r3]=r19,16+8;&t;/* b7 */&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;stf.spill [r2]=f6,32;&t;&t;&t;&bslash;&n;&t;stf.spill [r3]=f7,32;&t;&t;&t;&bslash;&n;&t;;;&t;&t;&t;&t;&t;&bslash;&n;&t;stf.spill [r2]=f8,32;&t;&t;&t;&bslash;&n;&t;stf.spill [r3]=f9,32
-macro_line|#ifdef CONFIG_ITANIUM_ASTEP_SPECIFIC
-DECL|macro|STOPS
-macro_line|# define STOPS&t;nop.i 0x0;; nop.i 0x0;; nop.i 0x0;;
-macro_line|#else
-DECL|macro|STOPS
-macro_line|# define STOPS
-macro_line|#endif
 DECL|macro|SAVE_MIN_WITH_COVER
-mdefine_line|#define SAVE_MIN_WITH_COVER&t;DO_SAVE_MIN(cover, mov rCRIFS=cr.ifs,) STOPS
+mdefine_line|#define SAVE_MIN_WITH_COVER&t;DO_SAVE_MIN(cover, mov rCRIFS=cr.ifs,)
 DECL|macro|SAVE_MIN_WITH_COVER_R19
-mdefine_line|#define SAVE_MIN_WITH_COVER_R19&t;DO_SAVE_MIN(cover, mov rCRIFS=cr.ifs, mov r15=r19) STOPS
+mdefine_line|#define SAVE_MIN_WITH_COVER_R19&t;DO_SAVE_MIN(cover, mov rCRIFS=cr.ifs, mov r15=r19)
 DECL|macro|SAVE_MIN
-mdefine_line|#define SAVE_MIN&t;&t;DO_SAVE_MIN(     , mov rCRIFS=r0, ) STOPS
+mdefine_line|#define SAVE_MIN&t;&t;DO_SAVE_MIN(     , mov rCRIFS=r0, )
 eof

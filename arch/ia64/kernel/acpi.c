@@ -8,14 +8,12 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/acpi-ext.h&gt;
+macro_line|#include &lt;asm/acpikcfg.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iosapic.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
-macro_line|# include &lt;asm/acpikcfg.h&gt;
-macro_line|#endif
 DECL|macro|ACPI_DEBUG
 macro_line|#undef ACPI_DEBUG&t;&t;/* Guess what this does? */
 multiline_comment|/* These are ugly but will be reclaimed by the kernel */
@@ -34,6 +32,16 @@ r_void
 (paren
 op_star
 id|pm_idle
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|pm_power_off
+r_void
+(paren
+op_star
+id|pm_power_off
 )paren
 (paren
 r_void
@@ -627,12 +635,24 @@ c_cond
 (paren
 id|iosapic_init
 )paren
+multiline_comment|/*&n;&t;&t;&t;&t; * The PCAT_COMPAT flag indicates that the system has a&n;&t;&t;&t;&t; * dual-8259 compatible setup.&n;&t;&t;&t;&t; */
 id|iosapic_init
 c_func
 (paren
 id|iosapic-&gt;address
 comma
 id|iosapic-&gt;irq_base
+comma
+macro_line|#ifdef CONFIG_ITANIUM
+l_int|1
+multiline_comment|/* fw on some Itanium systems is broken... */
+macro_line|#else
+(paren
+id|madt-&gt;flags
+op_amp
+id|MADT_PCAT_COMPAT
+)paren
+macro_line|#endif
 )paren
 suffix:semicolon
 r_break
@@ -643,7 +663,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;ACPI 2.0 MADT: PLATFORM INT SOUCE&bslash;n&quot;
+l_string|&quot;ACPI 2.0 MADT: PLATFORM INT SOURCE&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi20_platform
@@ -816,6 +836,7 @@ op_star
 id|rsdp20
 )paren
 (brace
+macro_line|# ifdef CONFIG_ACPI
 id|acpi_xsdt_t
 op_star
 id|xsdt
@@ -945,7 +966,6 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_init
 c_func
 (paren
@@ -956,7 +976,6 @@ op_star
 id|rsdp20
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tables
 op_assign
 (paren
@@ -1042,14 +1061,12 @@ id|hdrp
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_terminate
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
+macro_line|#  ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -1074,7 +1091,8 @@ id|smp_boot_data.cpu_count
 op_assign
 id|total_cpus
 suffix:semicolon
-macro_line|#endif
+macro_line|#  endif
+macro_line|# endif /* CONFIG_ACPI */
 r_return
 l_int|1
 suffix:semicolon
@@ -1362,12 +1380,15 @@ c_cond
 (paren
 id|iosapic_init
 )paren
+multiline_comment|/*&n;&t;&t;&t;&t; * The ACPI I/O SAPIC table doesn&squot;t have a PCAT_COMPAT&n;&t;&t;&t;&t; * flag like the MADT table, but we can safely assume that&n;&t;&t;&t;&t; * ACPI 1.0b systems have a dual-8259 setup.&n;&t;&t;&t;&t; */
 id|iosapic_init
 c_func
 (paren
 id|iosapic-&gt;address
 comma
 id|iosapic-&gt;irq_base
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -1430,6 +1451,7 @@ op_star
 id|rsdp
 )paren
 (brace
+macro_line|# ifdef CONFIG_ACPI
 id|acpi_rsdt_t
 op_star
 id|rsdt
@@ -1517,14 +1539,12 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_init
 c_func
 (paren
 id|rsdp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tables
 op_assign
 (paren
@@ -1597,14 +1617,12 @@ id|hdrp
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_terminate
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
+macro_line|#  ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -1629,7 +1647,8 @@ id|smp_boot_data.cpu_count
 op_assign
 id|total_cpus
 suffix:semicolon
-macro_line|#endif
+macro_line|#  endif
+macro_line|# endif /* CONFIG_ACPI */
 r_return
 l_int|1
 suffix:semicolon

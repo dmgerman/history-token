@@ -548,7 +548,7 @@ id|zone_struct
 suffix:semicolon
 multiline_comment|/* dcache memory management */
 r_extern
-r_void
+r_int
 id|shrink_dcache_memory
 c_func
 (paren
@@ -568,7 +568,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* icache memory management (defined in linux/fs/inode.c) */
 r_extern
-r_void
+r_int
 id|shrink_icache_memory
 c_func
 (paren

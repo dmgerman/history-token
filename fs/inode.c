@@ -2471,7 +2471,7 @@ id|free_unused
 suffix:semicolon
 )brace
 DECL|function|shrink_icache_memory
-r_void
+r_int
 id|shrink_icache_memory
 c_func
 (paren
@@ -2499,16 +2499,12 @@ id|__GFP_FS
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|priority
-)paren
 id|count
 op_assign
 id|inodes_stat.nr_unused
-op_div
+op_rshift
 id|priority
 suffix:semicolon
 id|prune_icache
@@ -2522,6 +2518,9 @@ c_func
 (paren
 id|inode_cachep
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called with the inode lock held.&n; * NOTE: we are not increasing the inode-refcount, you must call __iget()&n; * by hand after calling find_inode now! This simplifies iunique and won&squot;t&n; * add any additional branch in the common code.&n; */

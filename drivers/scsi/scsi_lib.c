@@ -1473,7 +1473,41 @@ l_int|0x7f
 )paren
 op_eq
 l_int|0x70
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * If the device is in the process of becoming ready,&n;&t;&t;&t; * retry.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x04
 op_logical_and
+id|SCpnt-&gt;sense_buffer
+(braket
+l_int|13
+)braket
+op_eq
+l_int|0x01
+)paren
+(brace
+id|scsi_queue_next_request
+c_func
+(paren
+id|q
+comma
+id|SCpnt
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|SCpnt-&gt;sense_buffer
 (braket
@@ -1492,7 +1526,7 @@ c_cond
 id|SCpnt-&gt;device-&gt;removable
 )paren
 (brace
-multiline_comment|/* detected disc change.  set a bit and quietly refuse&n;&t;&t;&t;&t; * further access.&n;&t;&t;&t;&t; */
+multiline_comment|/* detected disc change.  set a bit &n;&t;&t;&t;&t;&t; * and quietly refuse further access.&n;&t;&t; &t;&t;&t; */
 id|SCpnt-&gt;device-&gt;changed
 op_assign
 l_int|1
@@ -1514,7 +1548,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Must have been a power glitch, or a&n;&t;&t;&t;&t; * bus reset.  Could not have been a&n;&t;&t;&t;&t; * media change, so we just retry the&n;&t;&t;&t;&t; * request and see what happens.  &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; &t;* Must have been a power glitch, or a&n;&t;&t;&t;&t; &t;* bus reset.  Could not have been a&n;&t;&t;&t;&t; &t;* media change, so we just retry the&n;&t;&t;&t;&t; &t;* request and see what happens.  &n;&t;&t;&t;&t; &t;*/
 id|scsi_queue_next_request
 c_func
 (paren
@@ -1525,6 +1559,7 @@ id|SCpnt
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* If we had an ILLEGAL REQUEST returned, then we may have&n;&t;&t; * performed an unsupported command.  The only thing this should be&n;&t;&t; * would be a ten byte read where only a six byte read was supported.&n;&t;&t; * Also, on a system where READ CAPACITY failed, we have have read&n;&t;&t; * past the end of the disk.&n;&t;&t; */

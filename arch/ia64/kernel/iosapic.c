@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999-2000 Hewlett-Packard Co.&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; */
-multiline_comment|/*&n; * Here is what the interrupt logic between a PCI device and the CPU looks like:&n; *&n; * (1) A PCI device raises one of the four interrupt pins (INTA, INTB, INTC, INTD).  The&n; *     device is uniquely identified by its bus-, device-, and slot-number (the function&n; *     number does not matter here because all functions share the same interrupt&n; *     lines).&n; *&n; * (2) The motherboard routes the interrupt line to a pin on a IOSAPIC controller.&n; *     Multiple interrupt lines may have to share the same IOSAPIC pin (if they&squot;re level&n; *     triggered and use the same polarity).  Each interrupt line has a unique IOSAPIC&n; *     irq number which can be calculated as the sum of the controller&squot;s base irq number&n; *     and the IOSAPIC pin number to which the line connects.&n; *&n; * (3) The IOSAPIC uses an internal table to map the IOSAPIC pin into the IA-64 interrupt&n; *     vector.  This interrupt vector is then sent to the CPU.&n; *&n; * In other words, there are two levels of indirections involved:&n; *&n; *&t;pci pin -&gt; iosapic irq -&gt; IA-64 vector&n; *&n; * Note: outside this module, IA-64 vectors are called &quot;irqs&quot;.  This is because that&squot;s&n; * the traditional name Linux uses for interrupt vectors.&n; */
+multiline_comment|/*&n; * Here is what the interrupt logic between a PCI device and the CPU looks like:&n; *&n; * (1) A PCI device raises one of the four interrupt pins (INTA, INTB, INTC, INTD).  The&n; *     device is uniquely identified by its bus--, and slot-number (the function&n; *     number does not matter here because all functions share the same interrupt&n; *     lines).&n; *&n; * (2) The motherboard routes the interrupt line to a pin on a IOSAPIC controller.&n; *     Multiple interrupt lines may have to share the same IOSAPIC pin (if they&squot;re level&n; *     triggered and use the same polarity).  Each interrupt line has a unique IOSAPIC&n; *     irq number which can be calculated as the sum of the controller&squot;s base irq number&n; *     and the IOSAPIC pin number to which the line connects.&n; *&n; * (3) The IOSAPIC uses an internal table to map the IOSAPIC pin into the IA-64 interrupt&n; *     vector.  This interrupt vector is then sent to the CPU.&n; *&n; * In other words, there are two levels of indirections involved:&n; *&n; *&t;pci pin -&gt; iosapic irq -&gt; IA-64 vector&n; *&n; * Note: outside this module, IA-64 vectors are called &quot;irqs&quot;.  This is because that&squot;s&n; * the traditional name Linux uses for interrupt vectors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/acpi-ext.h&gt;
+macro_line|#include &lt;asm/acpikcfg.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iosapic.h&gt;
@@ -16,9 +17,6 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef&t;CONFIG_ACPI_KERNEL_CONFIG
-macro_line|# include &lt;asm/acpikcfg.h&gt;
-macro_line|#endif
 DECL|macro|DEBUG_IRQ_ROUTING
 macro_line|#undef DEBUG_IRQ_ROUTING
 DECL|variable|iosapic_lock
@@ -670,12 +668,207 @@ r_int
 id|mask
 )paren
 (brace
-id|printk
+macro_line|#ifdef CONFIG_SMP
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|u32
+id|high32
+comma
+id|low32
+suffix:semicolon
+r_int
+id|dest
+comma
+id|pin
+suffix:semicolon
+r_char
+op_star
+id|addr
+suffix:semicolon
+id|mask
+op_and_assign
+(paren
+l_int|1UL
+op_lshift
+id|smp_num_cpus
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mask
+op_logical_or
+id|irq
+op_ge
+id|IA64_NUM_VECTORS
+)paren
+r_return
+suffix:semicolon
+id|dest
+op_assign
+id|cpu_physical_id
 c_func
 (paren
-l_string|&quot;iosapic_set_affinity: not implemented yet&bslash;n&quot;
+id|ffz
+c_func
+(paren
+op_complement
+id|mask
+)paren
 )paren
 suffix:semicolon
+id|pin
+op_assign
+id|iosapic_irq
+(braket
+id|irq
+)braket
+dot
+id|pin
+suffix:semicolon
+id|addr
+op_assign
+id|iosapic_irq
+(braket
+id|irq
+)braket
+dot
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pin
+OL
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* not an IOSAPIC interrupt */
+multiline_comment|/* dest contains both id and eid */
+id|high32
+op_assign
+id|dest
+op_lshift
+id|IOSAPIC_DEST_SHIFT
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|iosapic_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+(brace
+multiline_comment|/* get current delivery mode by reading the low32 */
+id|writel
+c_func
+(paren
+id|IOSAPIC_RTE_LOW
+c_func
+(paren
+id|pin
+)paren
+comma
+id|addr
+op_plus
+id|IOSAPIC_REG_SELECT
+)paren
+suffix:semicolon
+id|low32
+op_assign
+id|readl
+c_func
+(paren
+id|addr
+op_plus
+id|IOSAPIC_WINDOW
+)paren
+suffix:semicolon
+multiline_comment|/* change delivery mode to fixed */
+id|low32
+op_and_assign
+op_complement
+(paren
+l_int|7
+op_lshift
+id|IOSAPIC_DELIVERY_SHIFT
+)paren
+suffix:semicolon
+id|low32
+op_or_assign
+(paren
+id|IOSAPIC_FIXED
+op_lshift
+id|IOSAPIC_DELIVERY_SHIFT
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|IOSAPIC_RTE_HIGH
+c_func
+(paren
+id|pin
+)paren
+comma
+id|addr
+op_plus
+id|IOSAPIC_REG_SELECT
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|high32
+comma
+id|addr
+op_plus
+id|IOSAPIC_WINDOW
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|IOSAPIC_RTE_LOW
+c_func
+(paren
+id|pin
+)paren
+comma
+id|addr
+op_plus
+id|IOSAPIC_REG_SELECT
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|low32
+comma
+id|addr
+op_plus
+id|IOSAPIC_WINDOW
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|iosapic_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Handlers for level-triggered interrupts.&n; */
 r_static
@@ -1053,6 +1246,9 @@ comma
 r_int
 r_int
 id|base_irq
+comma
+r_int
+id|pcat_compat
 )paren
 (brace
 r_struct
@@ -1123,7 +1319,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* mark as unused */
 multiline_comment|/*&n;&t;&t; * Fetch the PCI interrupt routing table:&n;&t;&t; */
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_get_pci_vectors
 c_func
 (paren
@@ -1134,25 +1329,6 @@ op_amp
 id|pci_irq.num_routes
 )paren
 suffix:semicolon
-macro_line|#else
-id|pci_irq.route
-op_assign
-(paren
-r_struct
-id|pci_vector_struct
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|ia64_boot_param-&gt;pci_vectors
-)paren
-suffix:semicolon
-id|pci_irq.num_routes
-op_assign
-id|ia64_boot_param-&gt;num_pci_vectors
-suffix:semicolon
-macro_line|#endif
 )brace
 id|addr
 op_assign
@@ -1213,9 +1389,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|base_irq
 op_eq
 l_int|0
+)paren
+op_logical_and
+id|pcat_compat
 )paren
 multiline_comment|/*&n;&t;&t; * Map the legacy ISA devices into the IOSAPIC data.  Some of these may&n;&t;&t; * get reprogrammed later on with data from the ACPI Interrupt Source&n;&t;&t; * Override table.&n;&t;&t; */
 r_for

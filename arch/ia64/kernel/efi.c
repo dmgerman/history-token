@@ -1,8 +1,10 @@
 multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999-2001 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
@@ -33,6 +35,17 @@ id|efi_runtime_services_t
 op_star
 id|runtime
 suffix:semicolon
+multiline_comment|/*&n; * efi_dir is allocated here, but the directory isn&squot;t created&n; * here, as proc_mkdir() doesn&squot;t work this early in the bootup&n; * process.  Therefore, each module, like efivars, must test for&n; *    if (!efi_dir)  efi_dir = proc_mkdir(&quot;efi&quot;, NULL);&n; * prior to creating their own entries under /proc/efi.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|efi_dir
+r_struct
+id|proc_dir_entry
+op_star
+id|efi_dir
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 DECL|variable|mem_limit
 r_static
 r_int
@@ -944,7 +957,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * The only ITLB entry in region 7 that is used is the one installed by&n;&t;&t; * __start().  That entry covers a 64MB range.&n;&t;&t; *&n;&t;&t; * XXX Fixme: should be dynamic here (for page size)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The only ITLB entry in region 7 that is used is the one installed by&n;&t;&t; * __start().  That entry covers a 64MB range.&n;&t;&t; */
 id|mask
 op_assign
 op_complement
@@ -952,7 +965,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|_PAGE_SIZE_64M
+id|KERNEL_PG_SHIFT
 )paren
 op_minus
 l_int|1
@@ -1021,11 +1034,7 @@ op_amp
 id|mask
 )paren
 op_plus
-l_int|64
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|KERNEL_PG_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Cannot write to CRx with PSR.ic=1&n;&t;&t; */
@@ -1058,7 +1067,7 @@ id|PAGE_KERNEL
 )paren
 )paren
 comma
-id|_PAGE_SIZE_64M
+id|KERNEL_PG_SHIFT
 )paren
 suffix:semicolon
 id|local_irq_restore
@@ -2112,6 +2121,117 @@ id|__va
 c_func
 (paren
 id|runtime-&gt;reset_system
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Walk the EFI memory map looking for the I/O port range.  There can only be one entry of&n; * this type, other I/O port ranges should be described via ACPI.&n; */
+id|u64
+DECL|function|efi_get_iobase
+id|efi_get_iobase
+(paren
+r_void
+)paren
+(brace
+r_void
+op_star
+id|efi_map_start
+comma
+op_star
+id|efi_map_end
+comma
+op_star
+id|p
+suffix:semicolon
+id|efi_memory_desc_t
+op_star
+id|md
+suffix:semicolon
+id|u64
+id|efi_desc_size
+suffix:semicolon
+id|efi_map_start
+op_assign
+id|__va
+c_func
+(paren
+id|ia64_boot_param-&gt;efi_memmap
+)paren
+suffix:semicolon
+id|efi_map_end
+op_assign
+id|efi_map_start
+op_plus
+id|ia64_boot_param-&gt;efi_memmap_size
+suffix:semicolon
+id|efi_desc_size
+op_assign
+id|ia64_boot_param-&gt;efi_memdesc_size
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|p
+op_assign
+id|efi_map_start
+suffix:semicolon
+id|p
+OL
+id|efi_map_end
+suffix:semicolon
+id|p
+op_add_assign
+id|efi_desc_size
+)paren
+(brace
+id|md
+op_assign
+id|p
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|md-&gt;type
+op_eq
+id|EFI_MEMORY_MAPPED_IO_PORT_SPACE
+)paren
+(brace
+multiline_comment|/* paranoia attribute checking */
+r_if
+c_cond
+(paren
+id|md-&gt;attribute
+op_eq
+(paren
+id|EFI_MEMORY_UC
+op_or
+id|EFI_MEMORY_RUNTIME
+)paren
+)paren
+r_return
+id|md-&gt;phys_addr
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__exit
+DECL|function|efivars_exit
+id|efivars_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|remove_proc_entry
+c_func
+(paren
+id|efi_dir-&gt;name
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -132,7 +132,7 @@ mdefine_line|#define SIOCADDDLCI&t;0x8980&t;&t;/* Create new DLCI device&t;*/
 DECL|macro|SIOCDELDLCI
 mdefine_line|#define SIOCDELDLCI&t;0x8981&t;&t;/* Delete DLCI device&t;&t;*/
 multiline_comment|/* Device private ioctl calls */
-multiline_comment|/*&n; *&t;These 16 ioctls are available to devices via the do_ioctl() device&n; *&t;vector. Each device should include this file and redefine these names&n; *&t;as their own. Because these are device dependent it is a good idea&n; *&t;_NOT_ to issue them to random objects and hope.&n; */
+multiline_comment|/*&n; *&t;These 16 ioctls are available to devices via the do_ioctl() device&n; *&t;vector. Each device should include this file and redefine these names&n; *&t;as their own. Because these are device dependent it is a good idea&n; *&t;_NOT_ to issue them to random objects and hope.&n; *&n; *&t;THESE IOCTLS ARE _DEPRECATED_ AND WILL DISAPPEAR IN 2.5.X -DaveM&n; */
 DECL|macro|SIOCDEVPRIVATE
 mdefine_line|#define SIOCDEVPRIVATE&t;0x89F0&t;/* to 89FF */
 multiline_comment|/*&n; *&t;These 16 ioctl calls are protocol private&n; */

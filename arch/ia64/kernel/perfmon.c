@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt; /* for ia64_get_itc() */
 macro_line|#ifdef CONFIG_PERFMON
@@ -1482,7 +1483,7 @@ id|size
 comma
 l_int|0
 comma
-l_int|0
+id|MAP_PRIVATE
 )paren
 suffix:semicolon
 r_if
@@ -1940,28 +1941,6 @@ op_logical_or
 id|pfx-&gt;notify_pid
 op_eq
 l_int|1
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* asked for sampling, but nothing to record ! */
-r_if
-c_cond
-(paren
-id|pfx-&gt;smpl_entries
-OG
-l_int|0
-op_logical_and
-id|pfm_smpl_entry_size
-c_func
-(paren
-op_amp
-id|pfx-&gt;smpl_regs
-comma
-l_int|1
-)paren
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -2910,9 +2889,6 @@ id|req
 op_increment
 )paren
 (brace
-r_int
-id|k
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2948,12 +2924,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|k
-op_assign
-id|tmp.pfr_reg.reg_num
-op_minus
-id|PMU_FIRST_COUNTER
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2987,7 +2957,7 @@ id|val
 op_assign
 id|th-&gt;pmd
 (braket
-id|k
+id|tmp.pfr_reg.reg_num
 )braket
 suffix:semicolon
 )brace
@@ -3000,7 +2970,9 @@ id|val
 op_add_assign
 id|ctx-&gt;ctx_pmds
 (braket
-id|k
+id|tmp.pfr_reg.reg_num
+op_minus
+id|PMU_FIRST_COUNTER
 )braket
 dot
 id|val
@@ -6348,9 +6320,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: version %s&bslash;n&quot;
+l_string|&quot;perfmon: version %s (sampling format v%d)&bslash;n&quot;
 comma
 id|PFM_VERSION
+comma
+id|PFM_SMPL_HDR_VERSION
 )paren
 suffix:semicolon
 id|printk
@@ -6428,15 +6402,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: Counters are %d bits&bslash;n&quot;
+l_string|&quot;perfmon: %d bits counters (max value 0x%lx)&bslash;n&quot;
 comma
 id|pm_info.pal_perf_mon_info_s.width
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: Maximum counter value 0x%lx&bslash;n&quot;
 comma
 id|pmu_conf.perf_ovfl_val
 )paren
@@ -6444,27 +6412,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: %ld PMC/PMD pairs&bslash;n&quot;
+l_string|&quot;perfmon: %ld PMC/PMD pairs, %ld PMCs, %ld PMDs&bslash;n&quot;
 comma
 id|pmu_conf.max_counters
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: %ld PMCs, %ld PMDs&bslash;n&quot;
 comma
 id|pmu_conf.num_pmcs
 comma
 id|pmu_conf.num_pmds
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: Sampling format v%d&bslash;n&quot;
-comma
-id|PFM_SMPL_HDR_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/* sanity check */

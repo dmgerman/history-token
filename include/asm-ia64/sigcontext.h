@@ -137,6 +137,15 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* floating-point registers */
+DECL|member|sc_rsvd
+r_int
+r_int
+id|sc_rsvd
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* reserved for future use */
 multiline_comment|/*&n;&t; * The mask must come last so we can increase _NSIG_WORDS&n;&t; * without breaking binary compatibility.&n;&t; */
 DECL|member|sc_mask
 id|sigset_t

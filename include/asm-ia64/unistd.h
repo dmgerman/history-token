@@ -386,6 +386,8 @@ DECL|macro|__NR_clone2
 mdefine_line|#define __NR_clone2&t;&t;&t;1213
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;1214
+DECL|macro|__NR_getunwind
+mdefine_line|#define __NR_getunwind&t;&t;&t;1215
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

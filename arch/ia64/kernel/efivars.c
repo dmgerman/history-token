@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * EFI Variables - efivars.c&n; *&n; * Copyright (C) 2001 Dell Computer Corporation &lt;Matt_Domsch@dell.com&gt;&n; *&n; * This code takes all variables accessible from EFI runtime and&n; *  exports them via /proc&n; *&n; * Reads to /proc/efi/varname return an efi_variable_t structure.&n; * Writes to /proc/efi/varname must be an efi_variable_t structure.&n; * Writes with DataSize = 0 or Attributes = 0 deletes the variable.&n; * Writes with a new value in VariableName+VendorGuid creates&n; * a new variable.&n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *  12 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Feedback received from Stephane Eranian incorporated.&n; *   efivar_write() checks copy_from_user() return value.&n; *   efivar_read/write() returns proper errno.&n; *   v0.02 release to linux-ia64@linuxia64.org&n; *&n; *  26 February 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   v0.01 release to linux-ia64@linuxia64.org&n; */
+multiline_comment|/*&n; * EFI Variables - efivars.c&n; *&n; * Copyright (C) 2001 Dell Computer Corporation &lt;Matt_Domsch@dell.com&gt;&n; *&n; * This code takes all variables accessible from EFI runtime and&n; *  exports them via /proc&n; *&n; * Reads to /proc/efi/vars/varname return an efi_variable_t structure.&n; * Writes to /proc/efi/vars/varname must be an efi_variable_t structure.&n; * Writes with DataSize = 0 or Attributes = 0 deletes the variable.&n; * Writes with a new value in VariableName+VendorGuid creates&n; * a new variable.&n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *  20 April 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Moved vars from /proc/efi to /proc/efi/vars, and made&n; *   efi.c own the /proc/efi directory.&n; *   v0.03 release to linux-ia64@linuxia64.org&n; *&n; *  26 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   At the request of Stephane, moved ownership of /proc/efi&n; *   to efi.c, and now efivars lives under /proc/efi/vars.&n; *&n; *  12 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Feedback received from Stephane Eranian incorporated.&n; *   efivar_write() checks copy_from_user() return value.&n; *   efivar_read/write() returns proper errno.&n; *   v0.02 release to linux-ia64@linuxia64.org&n; *&n; *  26 February 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   v0.01 release to linux-ia64@linuxia64.org&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -25,7 +25,7 @@ l_string|&quot;/proc interface to EFI Variables&quot;
 )paren
 suffix:semicolon
 DECL|macro|EFIVARS_VERSION
-mdefine_line|#define EFIVARS_VERSION &quot;0.02 2001-Mar-12&quot;
+mdefine_line|#define EFIVARS_VERSION &quot;0.03 2001-Apr-20&quot;
 r_static
 r_int
 id|efivar_read
@@ -169,12 +169,12 @@ c_func
 id|efivar_list
 )paren
 suffix:semicolon
-DECL|variable|efi_dir
+DECL|variable|efi_vars_dir
 r_static
 r_struct
 id|proc_dir_entry
 op_star
-id|efi_dir
+id|efi_vars_dir
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -634,7 +634,7 @@ id|short_name
 comma
 l_int|0600
 comma
-id|efi_dir
+id|efi_vars_dir
 )paren
 suffix:semicolon
 id|kfree
@@ -998,7 +998,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/* Since the data ptr we&squot;ve currently got is probably for&n;&t;   a different variable find the right variable.&n;&t;   This allows any properly formatted data structure to&n;&t;   be written to any of the files in /proc/efi and it will work.&n;&t;*/
+multiline_comment|/* Since the data ptr we&squot;ve currently got is probably for&n;&t;   a different variable find the right variable.&n;&t;   This allows any properly formatted data structure to&n;&t;   be written to any of the files in /proc/efi/vars and it will work.&n;&t;*/
 id|list_for_each
 c_func
 (paren
@@ -1156,7 +1156,7 @@ c_func
 (paren
 id|efivar-&gt;entry-&gt;name
 comma
-id|efi_dir
+id|efi_vars_dir
 )paren
 suffix:semicolon
 id|list_del
@@ -1268,7 +1268,13 @@ comma
 id|EFIVARS_VERSION
 )paren
 suffix:semicolon
-multiline_comment|/* Per EFI spec, the maximum storage allocated for both&n;&t;   the variable name and variable data is 1024 bytes.&n;&t;*/
+multiline_comment|/* Since efi.c happens before procfs is available,&n;           we create the directory here if it doesn&squot;t&n;           already exist.  There&squot;s probably a better way&n;           to do this.&n;        */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|efi_dir
+)paren
 id|efi_dir
 op_assign
 id|proc_mkdir
@@ -1279,6 +1285,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|efi_vars_dir
+op_assign
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;vars&quot;
+comma
+id|efi_dir
+)paren
+suffix:semicolon
+multiline_comment|/* Per EFI spec, the maximum storage allocated for both&n;&t;   the variable name and variable data is 1024 bytes.&n;&t;*/
 id|memset
 c_func
 (paren
@@ -1430,7 +1447,7 @@ c_func
 (paren
 id|efivar-&gt;entry-&gt;name
 comma
-id|efi_dir
+id|efi_vars_dir
 )paren
 suffix:semicolon
 id|list_del
@@ -1450,9 +1467,9 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-id|efi_dir-&gt;name
+id|efi_vars_dir-&gt;name
 comma
-l_int|NULL
+id|efi_dir
 )paren
 suffix:semicolon
 id|spin_unlock

@@ -251,7 +251,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
 multiline_comment|/*&n;&t; * Wait for other CPUs to finish purging entries.&n;&t; */
-macro_line|#if defined(CONFIG_ITANIUM_ASTEP_SPECIFIC) || defined(CONFIG_ITANIUM_BSTEP_SPECIFIC)
+macro_line|#if defined(CONFIG_ITANIUM_BSTEP_SPECIFIC)
 (brace
 r_extern
 r_void

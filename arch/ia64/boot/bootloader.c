@@ -260,14 +260,6 @@ r_volatile
 l_string|&quot;bsw.1;;&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ITANIUM_ASTEP_SPECIFIC
-id|asm
-id|volative
-(paren
-l_string|&quot;nop 0;; nop 0;; nop 0;;&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_ITANIUM_ASTEP_SPECIFIC */
 id|ssc
 c_func
 (paren
