@@ -264,6 +264,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pmu_wait_complete
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
+)paren
+suffix:semicolon
 multiline_comment|/* For use before switching interrupts off for a long time;&n; * warning: not stackable&n; */
 r_extern
 r_void
@@ -301,6 +312,14 @@ suffix:semicolon
 r_extern
 r_void
 id|pmu_shutdown
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmu_unlock
 c_func
 (paren
 r_void
