@@ -424,11 +424,6 @@ c_cond
 id|status
 op_eq
 op_minus
-id|ENODEV
-op_logical_or
-id|status
-op_eq
-op_minus
 id|EILSEQ
 op_logical_or
 id|status
