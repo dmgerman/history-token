@@ -16,10 +16,9 @@ id|files_stat_struct
 id|files_stat
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|max_files
+op_assign
 id|NR_FILE
 )brace
 suffix:semicolon
