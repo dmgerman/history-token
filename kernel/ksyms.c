@@ -2313,13 +2313,6 @@ id|del_timer_sync
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|add_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_timer
-)paren
-suffix:semicolon
 DECL|variable|del_timer
 id|EXPORT_SYMBOL
 c_func
