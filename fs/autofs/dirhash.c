@@ -1,6 +1,4 @@
 multiline_comment|/* -*- linux-c -*- --------------------------------------------------------- *&n; *&n; * linux/fs/autofs/dirhash.c&n; *&n; *  Copyright 1997-1998 Transmeta Corporation -- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
-macro_line|#include &lt;linux/dcache.h&gt;
-macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;autofs_i.h&quot;
 multiline_comment|/* Functions for maintenance of expiry queue */
 DECL|function|autofs_init_usage
