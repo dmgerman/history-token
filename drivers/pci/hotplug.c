@@ -598,6 +598,7 @@ multiline_comment|/**&n; * pci_visit_dev - scans the pci buses.&n; * Every bus a
 DECL|function|pci_visit_dev
 r_int
 id|pci_visit_dev
+c_func
 (paren
 r_struct
 id|pci_visit

@@ -1,10 +1,15 @@
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;&t;&t;/* Needed for i386 to build */
+macro_line|#include &lt;asm/scatterlist.h&gt;&t;/* Needed for i386 to build */
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-multiline_comment|/*&n; * Pool allocator ... wraps the pci_alloc_consistent page allocator, so&n; * small blocks are easily used by drivers for bus mastering controllers.&n; * This should probably be sharing the guts of the slab allocator.&n; */
-DECL|struct|pci_pool
+multiline_comment|/*&n; * Pool allocator ... wraps the dma_alloc_coherent page allocator, so&n; * small blocks are easily used by drivers for bus mastering controllers.&n; * This should probably be sharing the guts of the slab allocator.&n; */
+DECL|struct|dma_pool
 r_struct
-id|pci_pool
+id|dma_pool
 (brace
 multiline_comment|/* the pool */
 DECL|member|page_list
@@ -26,7 +31,7 @@ id|size
 suffix:semicolon
 DECL|member|dev
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 suffix:semicolon
@@ -52,9 +57,9 @@ id|pools
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|pci_page
+DECL|struct|dma_page
 r_struct
-id|pci_page
+id|dma_page
 (brace
 multiline_comment|/* cacheable header for &squot;allocation&squot; bytes */
 DECL|member|page_list
@@ -112,11 +117,6 @@ op_star
 id|buf
 )paren
 (brace
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
 r_int
 id|temp
 comma
@@ -133,18 +133,6 @@ id|i
 comma
 op_star
 id|j
-suffix:semicolon
-id|pdev
-op_assign
-id|container_of
-(paren
-id|dev
-comma
-r_struct
-id|pci_dev
-comma
-id|dev
-)paren
 suffix:semicolon
 id|next
 op_assign
@@ -184,11 +172,11 @@ id|list_for_each
 id|i
 comma
 op_amp
-id|pdev-&gt;pools
+id|dev-&gt;dma_pools
 )paren
 (brace
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 suffix:semicolon
@@ -208,7 +196,7 @@ id|list_entry
 id|i
 comma
 r_struct
-id|pci_pool
+id|dma_pool
 comma
 id|pools
 )paren
@@ -222,7 +210,7 @@ id|pool-&gt;page_list
 )paren
 (brace
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -233,7 +221,7 @@ id|list_entry
 id|j
 comma
 r_struct
-id|pci_page
+id|dma_page
 comma
 id|page_list
 )paren
@@ -303,12 +291,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * Context: !in_interrupt()&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
+multiline_comment|/**&n; * dma_pool_create - Creates a pool of consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @dev: device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * Context: !in_interrupt()&n; *&n; * Returns a dma allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, dma_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from dma_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
-DECL|function|pci_pool_create
-id|pci_pool_create
+DECL|function|dma_pool_create
+id|dma_pool_create
 (paren
 r_const
 r_char
@@ -316,9 +304,9 @@ op_star
 id|name
 comma
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pdev
+id|dev
 comma
 r_int
 id|size
@@ -331,7 +319,7 @@ id|allocation
 )paren
 (brace
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|retval
 suffix:semicolon
@@ -466,7 +454,7 @@ id|retval-&gt;name
 suffix:semicolon
 id|retval-&gt;dev
 op_assign
-id|pdev
+id|dev
 suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
@@ -503,7 +491,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev
+id|dev
 )paren
 (brace
 id|down
@@ -518,13 +506,12 @@ c_cond
 id|list_empty
 (paren
 op_amp
-id|pdev-&gt;pools
+id|dev-&gt;dma_pools
 )paren
 )paren
 id|device_create_file
 (paren
-op_amp
-id|pdev-&gt;dev
+id|dev
 comma
 op_amp
 id|dev_attr_pools
@@ -537,7 +524,7 @@ op_amp
 id|retval-&gt;pools
 comma
 op_amp
-id|pdev-&gt;pools
+id|dev-&gt;dma_pools
 )paren
 suffix:semicolon
 id|up
@@ -560,13 +547,13 @@ suffix:semicolon
 )brace
 r_static
 r_struct
-id|pci_page
+id|dma_page
 op_star
 DECL|function|pool_alloc_page
 id|pool_alloc_page
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 comma
@@ -575,7 +562,7 @@ id|mem_flags
 )paren
 (brace
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -609,7 +596,7 @@ id|page
 op_assign
 (paren
 r_struct
-id|pci_page
+id|dma_page
 op_star
 )paren
 id|kmalloc
@@ -634,7 +621,7 @@ l_int|0
 suffix:semicolon
 id|page-&gt;vaddr
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 (paren
 id|pool-&gt;dev
 comma
@@ -642,6 +629,8 @@ id|pool-&gt;allocation
 comma
 op_amp
 id|page-&gt;dma
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -752,12 +741,12 @@ DECL|function|pool_free_page
 id|pool_free_page
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 comma
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 )paren
@@ -778,7 +767,7 @@ id|pool-&gt;allocation
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pci_free_consistent
+id|dma_free_coherent
 (paren
 id|pool-&gt;dev
 comma
@@ -801,13 +790,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_pool_destroy - destroys a pool of pci memory blocks.&n; * @pool: pci pool that will be destroyed&n; * Context: !in_interrupt()&n; *&n; * Caller guarantees that no more memory from the pool is in use,&n; * and that nothing will try to use the pool after this call.&n; */
+multiline_comment|/**&n; * dma_pool_destroy - destroys a pool of dma memory blocks.&n; * @pool: dma pool that will be destroyed&n; * Context: !in_interrupt()&n; *&n; * Caller guarantees that no more memory from the pool is in use,&n; * and that nothing will try to use the pool after this call.&n; */
 r_void
-DECL|function|pci_pool_destroy
-id|pci_pool_destroy
+DECL|function|dma_pool_destroy
+id|dma_pool_destroy
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 )paren
@@ -832,13 +821,12 @@ op_logical_and
 id|list_empty
 (paren
 op_amp
-id|pool-&gt;dev-&gt;pools
+id|pool-&gt;dev-&gt;dma_pools
 )paren
 )paren
 id|device_remove_file
 (paren
-op_amp
-id|pool-&gt;dev-&gt;dev
+id|pool-&gt;dev
 comma
 op_amp
 id|dev_attr_pools
@@ -862,7 +850,7 @@ id|pool-&gt;page_list
 )paren
 (brace
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -873,7 +861,7 @@ id|list_entry
 id|pool-&gt;page_list.next
 comma
 r_struct
-id|pci_page
+id|dma_page
 comma
 id|page_list
 )paren
@@ -889,21 +877,28 @@ id|page-&gt;bitmap
 )paren
 )paren
 (brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;pci_pool_destroy %s/%s, %p busy&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
+r_if
 c_cond
-id|pci_name
-c_func
 (paren
 id|pool-&gt;dev
 )paren
-suffix:colon
-l_int|NULL
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_destroy %s, %p busy&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|page-&gt;vaddr
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;dma_pool_destroy %s, %p busy&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -938,14 +933,14 @@ id|pool
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_pool_alloc - get a block of consistent memory&n; * @pool: pci pool that will produce the block&n; * @mem_flags: SLAB_KERNEL or SLAB_ATOMIC&n; * @handle: pointer to dma address of block&n; *&n; * This returns the kernel virtual address of a currently unused block,&n; * and reports its dma address through the handle.&n; * If such a memory block can&squot;t be allocated, null is returned.&n; */
+multiline_comment|/**&n; * dma_pool_alloc - get a block of consistent memory&n; * @pool: dma pool that will produce the block&n; * @mem_flags: GFP_* bitmask&n; * @handle: pointer to dma address of block&n; *&n; * This returns the kernel virtual address of a currently unused block,&n; * and reports its dma address through the handle.&n; * If such a memory block can&squot;t be allocated, null is returned.&n; */
 r_void
 op_star
-DECL|function|pci_pool_alloc
-id|pci_pool_alloc
+DECL|function|dma_pool_alloc
+id|dma_pool_alloc
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 comma
@@ -967,7 +962,7 @@ op_star
 id|entry
 suffix:semicolon
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -1011,7 +1006,7 @@ id|list_entry
 id|entry
 comma
 r_struct
-id|pci_page
+id|dma_page
 comma
 id|page_list
 )paren
@@ -1126,8 +1121,8 @@ r_if
 c_cond
 (paren
 id|mem_flags
-op_eq
-id|SLAB_KERNEL
+op_amp
+id|__GFP_WAIT
 )paren
 (brace
 id|DECLARE_WAITQUEUE
@@ -1244,13 +1239,13 @@ suffix:semicolon
 )brace
 r_static
 r_struct
-id|pci_page
+id|dma_page
 op_star
 DECL|function|pool_find_page
 id|pool_find_page
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 comma
@@ -1268,7 +1263,7 @@ op_star
 id|entry
 suffix:semicolon
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -1295,7 +1290,7 @@ id|list_entry
 id|entry
 comma
 r_struct
-id|pci_page
+id|dma_page
 comma
 id|page_list
 )paren
@@ -1342,13 +1337,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_pool_free - put block back into pci pool&n; * @pool: the pci pool holding the block&n; * @vaddr: virtual address of block&n; * @dma: dma address of block&n; *&n; * Caller promises neither device nor driver will again touch this block&n; * unless it is first re-allocated.&n; */
+multiline_comment|/**&n; * dma_pool_free - put block back into dma pool&n; * @pool: the dma pool holding the block&n; * @vaddr: virtual address of block&n; * @dma: dma address of block&n; *&n; * Caller promises neither device nor driver will again touch this block&n; * unless it is first re-allocated.&n; */
 r_void
-DECL|function|pci_pool_free
-id|pci_pool_free
+DECL|function|dma_pool_free
+id|dma_pool_free
 (paren
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 comma
@@ -1361,7 +1356,7 @@ id|dma
 )paren
 (brace
 r_struct
-id|pci_page
+id|dma_page
 op_star
 id|page
 suffix:semicolon
@@ -1391,21 +1386,34 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p/%lx (bad dma)&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
+r_if
 c_cond
-id|pci_name
-c_func
 (paren
 id|pool-&gt;dev
 )paren
-suffix:colon
-l_int|NULL
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, %p/%lx (bad dma)&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|vaddr
+comma
+(paren
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;dma_pool_free %s, %p/%lx (bad dma)&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1462,21 +1470,35 @@ op_ne
 id|vaddr
 )paren
 (brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%Lx&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
+r_if
 c_cond
-id|pci_name
-c_func
 (paren
 id|pool-&gt;dev
 )paren
-suffix:colon
-l_int|NULL
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, %p (bad vaddr)/%Lx&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+id|vaddr
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;dma_pool_free %s, %p (bad vaddr)/%Lx&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1508,21 +1530,33 @@ id|block
 )paren
 )paren
 (brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, dma %Lx already free&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
+r_if
 c_cond
-id|pci_name
-c_func
 (paren
 id|pool-&gt;dev
 )paren
-suffix:colon
-l_int|NULL
+id|dev_err
+c_func
+(paren
+id|pool-&gt;dev
+comma
+l_string|&quot;dma_pool_free %s, dma %Lx already free&bslash;n&quot;
+comma
+id|pool-&gt;name
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|dma
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;dma_pool_free %s, dma %Lx already free&bslash;n&quot;
 comma
 id|pool-&gt;name
 comma
@@ -1584,7 +1618,7 @@ op_amp
 id|pool-&gt;waitq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Resist a temptation to do&n;&t; *    if (!is_page_busy(bpp, page-&gt;bitmap)) pool_free_page(pool, page);&n;&t; * it is not interrupt safe. Better have empty pages hang around.&n;&t; */
+multiline_comment|/*&n;&t; * Resist a temptation to do&n;&t; *    if (!is_page_busy(bpp, page-&gt;bitmap)) pool_free_page(pool, page);&n;&t; * Better have a few empty pages hang around.&n;&t; */
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -1594,28 +1628,28 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pci_pool_create
+DECL|variable|dma_pool_create
 id|EXPORT_SYMBOL
 (paren
-id|pci_pool_create
+id|dma_pool_create
 )paren
 suffix:semicolon
-DECL|variable|pci_pool_destroy
+DECL|variable|dma_pool_destroy
 id|EXPORT_SYMBOL
 (paren
-id|pci_pool_destroy
+id|dma_pool_destroy
 )paren
 suffix:semicolon
-DECL|variable|pci_pool_alloc
+DECL|variable|dma_pool_alloc
 id|EXPORT_SYMBOL
 (paren
-id|pci_pool_alloc
+id|dma_pool_alloc
 )paren
 suffix:semicolon
-DECL|variable|pci_pool_free
+DECL|variable|dma_pool_free
 id|EXPORT_SYMBOL
 (paren
-id|pci_pool_free
+id|dma_pool_free
 )paren
 suffix:semicolon
 eof
