@@ -20,8 +20,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|CONFIG_NFS_SNAPSHOT
-mdefine_line|#define CONFIG_NFS_SNAPSHOT 1
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_VFS
 DECL|macro|NFS_PARANOIA
