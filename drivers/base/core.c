@@ -151,8 +151,6 @@ id|drv
 (brace
 r_int
 id|error
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -207,9 +205,11 @@ suffix:semicolon
 )brace
 r_return
 id|error
+op_eq
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * device_attach - try to associated device with a driver&n; * @drv:&t;current driver to try&n; * @data:&t;device in disguise&n; *&n; * This function is used as a callback to bus_for_each_drv.&n; * It calls the bus&squot;s match callback to check if the driver supports&n; * the device. If so, it calls the found_match() function above to &n; * take care of all the details.&n; */
+multiline_comment|/**&n; * device_attach - try to associated device with a driver&n; * @drv:&t;current driver to try&n; * @data:&t;device in disguise&n; *&n; * This function is used as a callback to bus_for_each_drv.&n; * It calls the bus&squot;s match callback to check if the driver supports&n; * the device. If so, it calls the found_match() function above to &n; * try taking care of all the details.&n; *&n; * Returns zero (to continue the scan) if the driver didn&squot;t attach.&n; */
 DECL|function|do_device_attach
 r_static
 r_int
