@@ -803,25 +803,21 @@ suffix:semicolon
 r_case
 id|PCI_VENDOR_ID_NVIDIA
 suffix:colon
-macro_line|#ifndef CONFIG_SMP
+macro_line|#ifdef CONFIG_ACPI
+multiline_comment|/* All timer overrides on Nvidia&n;&t;&t;&t;&t;           seem to be wrong. Skip them. */
+id|acpi_skip_timer_override
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI bridge %02x:%02x from %x found. Setting &bslash;&quot;noapic&bslash;&quot;. Overwrite with &bslash;&quot;apic&bslash;&quot;&bslash;n&quot;
-comma
-id|num
-comma
-id|slot
-comma
-id|vendor
+l_string|&quot;Nvidia board detected. Ignoring ACPI timer override.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|skip_ioapic_setup
-op_assign
-l_int|1
-suffix:semicolon
 macro_line|#endif
+multiline_comment|/* RED-PEN skip them on mptables too? */
 r_return
 suffix:semicolon
 )brace
