@@ -1864,13 +1864,6 @@ c_func
 id|stop_a_enabled
 )paren
 suffix:semicolon
-DECL|variable|kbd_pt_regs
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kbd_pt_regs
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 DECL|variable|do_BUG
 id|EXPORT_SYMBOL
