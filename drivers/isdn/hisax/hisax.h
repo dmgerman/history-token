@@ -675,7 +675,7 @@ r_int
 id|sap
 suffix:semicolon
 DECL|member|maxlen
-r_int
+id|u_int
 id|maxlen
 suffix:semicolon
 DECL|member|flag

@@ -1516,11 +1516,11 @@ op_assign
 id|bcs-&gt;cs
 suffix:semicolon
 r_int
-id|idx
-comma
 id|fcnt
 suffix:semicolon
-r_int
+id|u_int
+id|idx
+comma
 id|count
 suffix:semicolon
 r_int

@@ -14,6 +14,7 @@ singleline_comment|// debugging cruft
 DECL|macro|__debug_variable
 mdefine_line|#define __debug_variable debug
 macro_line|#include &quot;hisax_debug.h&quot;
+singleline_comment|// #define CONFIG_PNP_CARD&t;1
 macro_line|#ifdef CONFIG_HISAX_DEBUG
 DECL|variable|debug
 r_static
@@ -1603,10 +1604,10 @@ id|skb
 op_assign
 id|bcs-&gt;tx_skb
 suffix:semicolon
-r_int
+id|u_int
 id|count
 suffix:semicolon
-r_int
+id|u_int
 id|fifo_size
 op_assign
 l_int|32

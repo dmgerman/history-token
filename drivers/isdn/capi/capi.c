@@ -1702,7 +1702,6 @@ op_star
 id|nskb
 suffix:semicolon
 r_int
-r_int
 id|datalen
 suffix:semicolon
 id|u16
@@ -2411,7 +2410,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CAPIMSG_COMMAND
+id|CAPIMSG_CMD
 c_func
 (paren
 id|skb-&gt;data
@@ -2455,7 +2454,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CAPIMSG_COMMAND
+id|CAPIMSG_CMD
 c_func
 (paren
 id|skb-&gt;data
@@ -3153,12 +3152,17 @@ id|CAPI_DATA_B3_REQ
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
+(paren
 id|mlen
 op_plus
 id|CAPIMSG_DATALEN
 c_func
 (paren
 id|skb-&gt;data
+)paren
 )paren
 op_ne
 id|count
@@ -3209,7 +3213,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CAPIMSG_COMMAND
+id|CAPIMSG_CMD
 c_func
 (paren
 id|skb-&gt;data

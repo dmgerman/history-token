@@ -513,7 +513,7 @@ r_char
 op_star
 id|dp
 suffix:semicolon
-r_int
+id|u_int
 id|left
 suffix:semicolon
 id|u32
@@ -3344,7 +3344,7 @@ op_amp
 id|DBELL_RESET_HOST
 )paren
 (brace
-r_int
+id|u_int
 id|i
 suffix:semicolon
 id|c4outmeml
@@ -4104,9 +4104,10 @@ r_char
 op_star
 id|dp
 suffix:semicolon
-r_int
+id|u_int
 id|left
-comma
+suffix:semicolon
+r_int
 id|retval
 suffix:semicolon
 r_if
@@ -4609,7 +4610,7 @@ id|avmctrl_info
 op_star
 id|cinfo
 suffix:semicolon
-r_int
+id|u_int
 id|i
 suffix:semicolon
 id|c4_reset
@@ -4693,7 +4694,7 @@ id|avmctrl_info
 op_star
 id|cinfo
 suffix:semicolon
-r_int
+id|u_int
 id|i
 suffix:semicolon
 id|c4_reset

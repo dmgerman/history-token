@@ -661,7 +661,7 @@ id|transcount
 suffix:semicolon
 multiline_comment|/* byte-counter for cps-calculation */
 DECL|member|last_jiffies
-r_int
+id|u_long
 id|last_jiffies
 suffix:semicolon
 multiline_comment|/* when transcount was reset        */
@@ -671,7 +671,7 @@ id|sqfull
 suffix:semicolon
 multiline_comment|/* Flag: netdev-queue overloaded    */
 DECL|member|sqfull_stamp
-id|ulong
+id|u_long
 id|sqfull_stamp
 suffix:semicolon
 multiline_comment|/* Start-Time of overload           */
@@ -691,8 +691,7 @@ id|charge_state
 suffix:semicolon
 multiline_comment|/* ChargeInfo state machine         */
 DECL|member|chargetime
-r_int
-r_int
+id|u_long
 id|chargetime
 suffix:semicolon
 multiline_comment|/* Timer for Charging info          */
@@ -761,7 +760,7 @@ r_void
 op_star
 id|ind_priv
 suffix:semicolon
-multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;  private data here                */
+multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;   private data here                */
 )brace
 suffix:semicolon
 multiline_comment|/* ====================================================================== */

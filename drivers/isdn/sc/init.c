@@ -519,7 +519,8 @@ op_increment
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|io
@@ -532,6 +533,8 @@ op_star
 l_int|0x400
 comma
 l_int|1
+comma
+l_string|&quot;sc test&quot;
 )paren
 )paren
 (brace
@@ -560,6 +563,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_else
+id|release_region
+c_func
+(paren
+id|io
+(braket
+id|b
+)braket
+op_plus
+id|i
+op_star
+l_int|0x400
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * Confirm the I/O Address with a test&n;&t;&t;&t; */
 r_if
@@ -725,7 +744,8 @@ op_increment
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|i
@@ -735,6 +755,8 @@ op_star
 l_int|0x400
 comma
 l_int|1
+comma
+l_string|&quot;sc test&quot;
 )paren
 )paren
 (brace
@@ -751,6 +773,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_else
+id|release_region
+c_func
+(paren
+id|i
+op_plus
+id|j
+op_star
+l_int|0x400
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -909,8 +944,7 @@ multiline_comment|/*&n;&t;&t;&t; * No, the RAM base has been provided&n;&t;&t;&t
 r_if
 c_cond
 (paren
-op_logical_neg
-id|check_region
+id|request_region
 c_func
 (paren
 id|ram
@@ -919,13 +953,15 @@ id|b
 )braket
 comma
 id|SRAM_PAGESIZE
+comma
+l_string|&quot;sc test&quot;
 )paren
 )paren
 (brace
 id|pr_debug
 c_func
 (paren
-l_string|&quot;check_region for RAM base 0x%x succeeded&bslash;n&quot;
+l_string|&quot;request_region for RAM base 0x%x succeeded&bslash;n&quot;
 comma
 id|ram
 (braket
@@ -947,6 +983,17 @@ id|io
 (braket
 id|b
 )braket
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|ram
+(braket
+id|b
+)braket
+comma
+id|SRAM_PAGESIZE
 )paren
 suffix:semicolon
 )brace
@@ -981,13 +1028,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|check_region
+id|request_region
 c_func
 (paren
 id|i
 comma
 id|SRAM_PAGESIZE
+comma
+l_string|&quot;sc test&quot;
 )paren
 )paren
 (brace
@@ -1008,6 +1056,14 @@ id|io
 (braket
 id|b
 )braket
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|i
+comma
+id|SRAM_PAGESIZE
 )paren
 suffix:semicolon
 r_if
@@ -1051,7 +1107,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;  check_region failed&bslash;n&quot;
+l_string|&quot;  request failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1397,6 +1453,18 @@ r_sizeof
 (paren
 id|board
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|adapter
+(braket
+id|cinst
+)braket
+op_member_access_from_pointer
+id|lock
 )paren
 suffix:semicolon
 r_if

@@ -241,6 +241,11 @@ r_int
 id|trace_mode
 suffix:semicolon
 multiline_comment|/* Indicate if tracing is on */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* local lock */
 DECL|typedef|board
 )brace
 id|board

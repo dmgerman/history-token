@@ -851,6 +851,9 @@ r_return
 (paren
 id|actual
 op_ge
+(paren
+r_int
+)paren
 id|size
 )paren
 ques
