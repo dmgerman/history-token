@@ -1,5 +1,6 @@
 multiline_comment|/* linux/drivers/char/scx200_gpio.c &n;&n;   National Semiconductor SCx200 GPIO driver.  Allows a user space&n;   process to play with the GPIO pins.&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
