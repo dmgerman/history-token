@@ -1183,6 +1183,7 @@ id|oid2len
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if
