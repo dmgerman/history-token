@@ -88,6 +88,12 @@ comma
 l_string|&quot;IRQ number (13=default)&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;pc98bm_irq=&quot;
+)paren
+suffix:semicolon
 DECL|variable|pc98bm_used
 r_static
 r_int
