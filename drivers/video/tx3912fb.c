@@ -1185,7 +1185,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tx3912fb_setup
-r_void
+r_int
 id|__init
 id|tx3912fb_setup
 c_func
@@ -1258,6 +1258,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

@@ -24,7 +24,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_AMIGA
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
-macro_line|#endif /* CONFIG_AMIGA */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_AMIGA */
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#endif
@@ -902,7 +902,7 @@ id|display-&gt;dispsw_data
 op_assign
 id|info-&gt;pseudo_palette
 suffix:semicolon
-multiline_comment|/*&n;         * If we are setting all the virtual consoles, also set&n;         * the defaults used to create new consoles.&n;         *&n;        if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;                int unit;&n;&n;                for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;        &t;&t;if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == minor(info-&gt;node))&n;                                fb_display[unit].var = info-&gt;var;&n;        }&n;        */
+multiline_comment|/*&n;&t; * If we are setting all the virtual consoles, also set&n;&t; * the defaults used to create new consoles.&n;&t; *&n;&t; if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;&t; int unit;&n;&n;&t; for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;&t; if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == minor(info-&gt;node))&n;&t; fb_display[unit].var = info-&gt;var;&n;&t; }&n;&t; */
 id|display-&gt;can_soft_blank
 op_assign
 id|info-&gt;fbops-&gt;fb_blank
@@ -1296,7 +1296,7 @@ id|done
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     *  If num_registered_fb is zero, this is a call for the dummy part.&n;     *  The frame buffer devices weren&squot;t initialized yet.&n;     */
+multiline_comment|/*&n;&t; *  If num_registered_fb is zero, this is a call for the dummy part.&n;&t; *  The frame buffer devices weren&squot;t initialized yet.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1340,7 +1340,7 @@ id|fbcon_vbl_handler
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_AMIGA */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_AMIGA */
 macro_line|#ifdef CONFIG_ATARI
 r_if
 c_cond
@@ -1369,9 +1369,9 @@ id|fbcon_vbl_handler
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ATARI */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_ATARI */
 macro_line|#ifdef CONFIG_MAC
-multiline_comment|/*&n;     * On a Macintoy, the VBL interrupt may or may not be active. &n;     * As interrupt based cursor is more reliable and race free, we &n;     * probe for VBL interrupts.&n;     */
+multiline_comment|/*&n;&t; * On a Macintoy, the VBL interrupt may or may not be active. &n;&t; * As interrupt based cursor is more reliable and race free, we &n;&t; * probe for VBL interrupts.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1383,7 +1383,7 @@ id|ct
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Probe for VBL: set temp. handler ...&n;&t; */
+multiline_comment|/*&n;&t;&t; * Probe for VBL: set temp. handler ...&n;&t;&t; */
 id|irqres
 op_assign
 id|request_irq
@@ -1404,7 +1404,7 @@ id|vbl_detected
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * ... and spin for 20 ms ...&n;&t; */
+multiline_comment|/*&n;&t;&t; * ... and spin for 20 ms ...&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -1429,14 +1429,11 @@ id|ct
 op_eq
 l_int|1000
 )paren
-(brace
 id|printk
-c_func
 (paren
 l_string|&quot;fbcon_startup: No VBL detected, using timer based cursor.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|free_irq
 c_func
 (paren
@@ -1451,7 +1448,7 @@ c_cond
 id|vbl_detected
 )paren
 (brace
-multiline_comment|/*&n;&t;     * interrupt based cursor ok&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * interrupt based cursor ok&n;&t;&t;&t; */
 id|cursor_blink_rate
 op_assign
 id|MAC_CURSOR_BLINK_RATE
@@ -1475,14 +1472,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;     * VBL not detected: fall through, use timer based cursor&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * VBL not detected: fall through, use timer based cursor&n;&t;&t;&t; */
 id|irqres
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_MAC */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_MAC */
 macro_line|#if defined(__arm__) &amp;&amp; defined(IRQ_VSYNCPULSE)
 id|cursor_blink_rate
 op_assign
@@ -2274,7 +2271,7 @@ id|q
 )paren
 )paren
 (brace
-multiline_comment|/* If we are not the first console on this&n;               fb, copy the font from that console */
+multiline_comment|/* If we are not the first console on this&n;&t;&t;&t;   fb, copy the font from that console */
 id|p-&gt;_fontwidth
 op_assign
 id|q-&gt;_fontwidth
@@ -2762,7 +2759,7 @@ id|logo_lines
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  ++guenther: console.c:vc_allocate() relies on initializing&n;     *  vc_{cols,rows}, but we must not set those if we are only&n;     *  resizing the console.&n;     */
+multiline_comment|/*&n;&t; *  ++guenther: console.c:vc_allocate() relies on initializing&n;&t; *  vc_{cols,rows}, but we must not set those if we are only&n;&t; *  resizing the console.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3140,7 +3137,7 @@ id|vc-&gt;vc_size_row
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;    &t;       the operation totally */
+multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;&t;&t;&t;   the operation totally */
 id|softback_top
 op_assign
 l_int|0
@@ -6059,7 +6056,7 @@ comma
 id|CM_ERASE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * ++Geert: Only use ywrap/ypan if the console is in text mode&n;     * ++Andrew: Only use ypan on hardware text mode when scrolling the&n;     *           whole screen (prevents flicker).&n;     */
+multiline_comment|/*&n;&t; * ++Geert: Only use ywrap/ypan if the console is in text mode&n;&t; * ++Andrew: Only use ypan on hardware text mode when scrolling the&n;&t; *           whole screen (prevents flicker).&n;&t; */
 r_switch
 c_cond
 (paren
@@ -7175,7 +7172,7 @@ op_or
 id|CM_SOFTBACK
 )paren
 suffix:semicolon
-multiline_comment|/*  Split blits that cross physical y_wrap case.&n;     *  Pathological case involves 4 blits, better to use recursive&n;     *  code rather than unrolled case&n;     *&n;     *  Recursive invocations don&squot;t need to erase the cursor over and&n;     *  over again, so we use fbcon_bmove_rec()&n;     */
+multiline_comment|/*  Split blits that cross physical y_wrap case.&n;&t; *  Pathological case involves 4 blits, better to use recursive&n;&t; *  code rather than unrolled case&n;&t; *&n;&t; *  Recursive invocations don&squot;t need to erase the cursor over and&n;&t; *  over again, so we use fbcon_bmove_rec()&n;&t; */
 id|fbcon_bmove_rec
 c_func
 (paren
@@ -7600,7 +7597,7 @@ id|vc-&gt;vc_size_row
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;&t;       the operation totally */
+multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;&t;&t;&t;   the operation totally */
 id|softback_top
 op_assign
 l_int|0
@@ -7880,7 +7877,7 @@ op_eq
 id|FB_VISUAL_MONO01
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;if (info-&gt;screen_base)&n;&t;&t;    fb_memset255(info-&gt;screen_base,&n;&t;&t;&t;&t; info-&gt;var.xres_virtual*info-&gt;var.yres_virtual*&n;&t;&t;&t;&t; info-&gt;var.bits_per_pixel&gt;&gt;3);&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;   if (info-&gt;screen_base)&n;&t;&t;&t;&t;   fb_memset255(info-&gt;screen_base,&n;&t;&t;&t;&t;   info-&gt;var.xres_virtual*info-&gt;var.yres_virtual*&n;&t;&t;&t;&t;   info-&gt;var.bits_per_pixel&gt;&gt;3);&n;&t;&t;&t;&t; */
 )brace
 r_else
 (brace
@@ -9118,7 +9115,7 @@ id|vc-&gt;vc_size_row
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;&t;&t;   the operation totally */
+multiline_comment|/* Smaller scrollback makes no sense, and 0 would screw&n;&t;&t;&t;&t;   the operation totally */
 id|softback_top
 op_assign
 l_int|0
@@ -9717,7 +9714,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/* we can do it in u32 chunks because of charcount is 256 or 512, so&n;       font length must be multiple of 256, at least. And 256 is multiple&n;       of 4 */
+multiline_comment|/* we can do it in u32 chunks because of charcount is 256 or 512, so&n;&t;   font length must be multiple of 256, at least. And 256 is multiple&n;&t;   of 4 */
 id|k
 op_assign
 l_int|0
@@ -11361,7 +11358,7 @@ id|info
 op_assign
 id|p-&gt;fb_info
 suffix:semicolon
-macro_line|#ifdef CONFIG_FBCON_ACCEL    
+macro_line|#ifdef CONFIG_FBCON_ACCEL
 r_struct
 id|fb_image
 id|image
@@ -11438,7 +11435,7 @@ id|fb
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * Set colors if visual is PSEUDOCOLOR and we have enough colors, or for&n;     * DIRECTCOLOR&n;     * We don&squot;t have to set the colors for the 16-color logo, since that logo&n;     * uses the standard VGA text console palette&n;     */
+multiline_comment|/*&n;&t; * Set colors if visual is PSEUDOCOLOR and we have enough colors, or for&n;&t; * DIRECTCOLOR&n;&t; * We don&squot;t have to set the colors for the 16-color logo, since that logo&n;&t; * uses the standard VGA text console palette&n;&t; */
 r_if
 c_cond
 (paren
@@ -11773,7 +11770,7 @@ op_minus
 id|info-&gt;var.blue.length
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; &t; * We have to create a temporary palette since console palette is only&n;&t;&t; * 16 colors long.&n;&t; &t; */
+multiline_comment|/*&n;&t;&t; * We have to create a temporary palette since console palette is only&n;&t;&t; * 16 colors long.&n;&t;&t; */
 id|palette
 op_assign
 id|kmalloc
@@ -11836,7 +11833,6 @@ l_int|32
 op_assign
 (paren
 id|safe_shift
-c_func
 (paren
 (paren
 id|linux_logo_red
@@ -12123,7 +12119,6 @@ r_if
 c_cond
 (paren
 id|BIT
-c_func
 (paren
 id|src
 comma
@@ -12228,13 +12223,11 @@ id|dst
 op_add_assign
 id|plane
 )paren
-(brace
 op_star
 id|dst
 op_assign
 l_int|0x00
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -12379,7 +12372,6 @@ suffix:semicolon
 op_increment
 id|x1
 )paren
-(brace
 id|fb_writeb
 c_func
 (paren
@@ -12393,7 +12385,6 @@ id|dst
 op_increment
 )paren
 suffix:semicolon
-)brace
 )brace
 id|done
 op_assign
@@ -12560,11 +12551,13 @@ l_int|0x3cf
 )paren
 suffix:semicolon
 id|fb_readb
+c_func
 (paren
 id|dst
 )paren
 suffix:semicolon
 id|fb_writeb
+c_func
 (paren
 l_int|0
 comma
@@ -12621,11 +12614,13 @@ l_int|0x3cf
 )paren
 suffix:semicolon
 id|fb_readb
+c_func
 (paren
 id|dst
 )paren
 suffix:semicolon
 id|fb_writeb
+c_func
 (paren
 l_int|0
 comma
@@ -12670,7 +12665,7 @@ op_assign
 id|saved_palette
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Modes not yet supported: packed pixels with depth != 8 (does such a&n;     * thing exist in reality?) */
+multiline_comment|/* Modes not yet supported: packed pixels with depth != 8 (does such a&n;&t; * thing exist in reality?) */
 r_return
 id|done
 ques

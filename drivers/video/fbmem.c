@@ -722,7 +722,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|maxinefb_init
 c_func
 (paren
@@ -738,7 +738,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|tx3912fb_setup
 c_func
 (paren
