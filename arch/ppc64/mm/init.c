@@ -2785,6 +2785,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 (brace
 id|clear_page
@@ -2810,6 +2815,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 (brace
 id|copy_page
