@@ -1037,6 +1037,12 @@ id|infop
 comma
 r_int
 id|options
+comma
+r_struct
+id|rusage
+id|__user
+op_star
+id|ru
 )paren
 suffix:semicolon
 id|asmlinkage
