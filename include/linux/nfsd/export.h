@@ -33,8 +33,8 @@ DECL|macro|NFSEXP_KERBEROS
 mdefine_line|#define NFSEXP_KERBEROS&t;&t;0x0080&t;&t;/* not available */
 DECL|macro|NFSEXP_SUNSECURE
 mdefine_line|#define NFSEXP_SUNSECURE&t;0x0100
-DECL|macro|NFSEXP_CROSSMNT
-mdefine_line|#define NFSEXP_CROSSMNT&t;&t;0x0200
+DECL|macro|NFSEXP_NOHIDE
+mdefine_line|#define NFSEXP_NOHIDE&t;&t;0x0200
 DECL|macro|NFSEXP_NOSUBTREECHECK
 mdefine_line|#define NFSEXP_NOSUBTREECHECK&t;0x0400
 DECL|macro|NFSEXP_NOAUTHNLM
@@ -43,8 +43,10 @@ DECL|macro|NFSEXP_MSNFS
 mdefine_line|#define NFSEXP_MSNFS&t;&t;0x1000&t;/* do silly things that MS clients expect */
 DECL|macro|NFSEXP_FSID
 mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
+DECL|macro|NFSEXP_CROSSMNT
+mdefine_line|#define&t;NFSEXP_CROSSMNT&t;&t;0x4000
 DECL|macro|NFSEXP_ALLFLAGS
-mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x3FFF
+mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x7FFF
 macro_line|#ifdef __KERNEL__
 DECL|struct|svc_export
 r_struct
@@ -132,8 +134,8 @@ DECL|macro|EX_ISSYNC
 mdefine_line|#define EX_ISSYNC(exp)&t;&t;(!((exp)-&gt;ex_flags &amp; NFSEXP_ASYNC))
 DECL|macro|EX_RDONLY
 mdefine_line|#define EX_RDONLY(exp)&t;&t;((exp)-&gt;ex_flags &amp; NFSEXP_READONLY)
-DECL|macro|EX_CROSSMNT
-mdefine_line|#define EX_CROSSMNT(exp)&t;((exp)-&gt;ex_flags &amp; NFSEXP_CROSSMNT)
+DECL|macro|EX_NOHIDE
+mdefine_line|#define EX_NOHIDE(exp)&t;((exp)-&gt;ex_flags &amp; NFSEXP_NOHIDE)
 DECL|macro|EX_SUNSECURE
 mdefine_line|#define EX_SUNSECURE(exp)&t;((exp)-&gt;ex_flags &amp; NFSEXP_SUNSECURE)
 DECL|macro|EX_WGATHER
