@@ -3027,9 +3027,11 @@ c_func
 id|server-&gt;rcv.buf.type
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NCPFS_PACKET_SIGNING&t;&t;&t;&t;
 id|cont
 suffix:colon
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -285,10 +285,18 @@ op_increment
 (brace
 id|addr
 op_assign
+id|agp_bridge
+dot
+id|mask_memory
+c_func
+(paren
 id|mem-&gt;memory
 (braket
 id|i
 )braket
+comma
+id|mem-&gt;type
+)paren
 suffix:semicolon
 id|tmp
 op_assign
@@ -2013,10 +2021,6 @@ id|agp_bridge.masks
 op_assign
 id|amd_8151_masks
 suffix:semicolon
-id|agp_bridge.num_of_masks
-op_assign
-l_int|1
-suffix:semicolon
 id|agp_bridge.aperture_sizes
 op_assign
 (paren
@@ -2284,6 +2288,7 @@ id|agp_amdk8_probe
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Not static due to IOMMU code calling it early. */
 DECL|function|agp_amdk8_init
 r_int
 id|__init

@@ -12555,12 +12555,12 @@ c_cond
 (paren
 id|info-&gt;cursor
 op_logical_and
-id|info-&gt;cursor-&gt;ram
+id|par-&gt;cursor-&gt;ram
 )paren
 id|iounmap
 c_func
 (paren
-id|info-&gt;cursor-&gt;ram
+id|par-&gt;cursor-&gt;ram
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#include &lt;video/font.h&gt;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n#define &quot; #sym &quot; %c0&quot; : : &quot;i&quot; (val))
 DECL|function|main

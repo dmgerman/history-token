@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -321,9 +322,9 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|function|copy_one_pte
 r_static
 r_int
+DECL|function|copy_one_pte
 id|copy_one_pte
 c_func
 (paren
@@ -339,6 +340,12 @@ comma
 id|pte_t
 op_star
 id|dst
+comma
+r_struct
+id|pte_chain
+op_star
+op_star
+id|pte_chainp
 )paren
 (brace
 r_int
@@ -437,12 +444,18 @@ c_cond
 (paren
 id|page
 )paren
+op_star
+id|pte_chainp
+op_assign
 id|page_add_rmap
 c_func
 (paren
 id|page
 comma
 id|dst
+comma
+op_star
+id|pte_chainp
 )paren
 suffix:semicolon
 )brace
@@ -450,9 +463,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|move_one_page
 r_static
 r_int
+DECL|function|move_one_page
 id|move_one_page
 c_func
 (paren
@@ -489,6 +502,35 @@ comma
 op_star
 id|dst
 suffix:semicolon
+r_struct
+id|pte_chain
+op_star
+id|pte_chain
+suffix:semicolon
+id|pte_chain
+op_assign
+id|pte_chain_alloc
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_chain
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -574,6 +616,9 @@ comma
 id|src
 comma
 id|dst
+comma
+op_amp
+id|pte_chain
 )paren
 suffix:semicolon
 id|pte_unmap_nested
@@ -604,6 +649,14 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|error
 suffix:semicolon

@@ -243,8 +243,9 @@ id|sti_conf_flags
 id|default_conf_flags
 op_assign
 (brace
+dot
 id|wait
-suffix:colon
+op_assign
 id|STI_WAIT
 comma
 )brace
@@ -341,12 +342,14 @@ id|sti_font_flags
 id|default_font_flags
 op_assign
 (brace
+dot
 id|wait
-suffix:colon
+op_assign
 id|STI_WAIT
 comma
+dot
 id|non_text
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace

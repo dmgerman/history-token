@@ -1573,6 +1573,10 @@ id|palette_cmap.blue
 op_assign
 id|palette_blue
 suffix:semicolon
+id|palette_cmap.transp
+op_assign
+l_int|NULL
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3467,6 +3471,7 @@ op_star
 id|info
 )paren
 (brace
+multiline_comment|/* ??? Varible sized stack allocation.  */
 id|u16
 id|black
 (braket
@@ -3525,14 +3530,14 @@ id|cmap.blue
 op_assign
 id|black
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;cmap.transp
-)paren
 id|cmap.transp
 op_assign
+id|info-&gt;cmap.transp
+ques
+c_cond
 id|black
+suffix:colon
+l_int|NULL
 suffix:semicolon
 id|cmap.start
 op_assign
@@ -5464,6 +5469,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|fb_blank
+)paren
+suffix:semicolon
+DECL|variable|fb_pan_display
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fb_pan_display
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -288,6 +288,8 @@ op_amp
 id|swapper_space
 comma
 id|entry.val
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Anon pages are already on the LRU, we don&squot;t run lru_cache_add here.&n;&t; */
@@ -501,6 +503,8 @@ op_amp
 id|swapper_space
 comma
 id|entry.val
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

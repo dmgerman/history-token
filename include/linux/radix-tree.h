@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2001 Momchil Velikov&n; * Portions Copyr
 macro_line|#ifndef _LINUX_RADIX_TREE_H
 DECL|macro|_LINUX_RADIX_TREE_H
 mdefine_line|#define _LINUX_RADIX_TREE_H
+macro_line|#include &lt;linux/preempt.h&gt;
 r_struct
 id|radix_tree_node
 suffix:semicolon
@@ -100,5 +101,29 @@ r_int
 id|max_items
 )paren
 suffix:semicolon
+r_int
+id|radix_tree_preload
+c_func
+(paren
+r_int
+id|gfp_mask
+)paren
+suffix:semicolon
+DECL|function|radix_tree_preload_end
+r_static
+r_inline
+r_void
+id|radix_tree_preload_end
+c_func
+(paren
+r_void
+)paren
+(brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_RADIX_TREE_H */
 eof

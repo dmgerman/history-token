@@ -1029,6 +1029,8 @@ comma
 id|mapping
 comma
 id|page-&gt;index
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace

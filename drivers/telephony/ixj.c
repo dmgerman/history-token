@@ -36156,12 +36156,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|j-&gt;XILINXbase
 comma
 l_int|4
+comma
+l_string|&quot;ixj control&quot;
 )paren
 )paren
 (brace
@@ -36179,16 +36182,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|j-&gt;XILINXbase
-comma
-l_int|4
-comma
-l_string|&quot;ixj control&quot;
-)paren
-suffix:semicolon
 id|j-&gt;pld_slicw.pcib.e1
 op_assign
 l_int|1
@@ -36211,12 +36204,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|j-&gt;XILINXbase
 comma
 l_int|8
+comma
+l_string|&quot;ixj control&quot;
 )paren
 )paren
 (brace
@@ -36234,16 +36230,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|j-&gt;XILINXbase
-comma
-l_int|8
-comma
-l_string|&quot;ixj control&quot;
-)paren
-suffix:semicolon
 )brace
 )brace
 r_else
@@ -36341,12 +36327,15 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|j-&gt;XILINXbase
 comma
 l_int|8
+comma
+l_string|&quot;ixj control&quot;
 )paren
 )paren
 (brace
@@ -36364,16 +36353,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|j-&gt;XILINXbase
-comma
-l_int|8
-comma
-l_string|&quot;ixj control&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -36385,12 +36364,15 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|j-&gt;XILINXbase
 comma
 l_int|4
+comma
+l_string|&quot;ixj control&quot;
 )paren
 )paren
 (brace
@@ -36408,16 +36390,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|j-&gt;XILINXbase
-comma
-l_int|4
-comma
-l_string|&quot;ixj control&quot;
-)paren
-suffix:semicolon
 id|j-&gt;pld_slicw.pcib.e1
 op_assign
 l_int|1

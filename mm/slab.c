@@ -449,10 +449,10 @@ mdefine_line|#define STATS_INC_FREEMISS(x)&t;do { } while (0)
 macro_line|#endif
 macro_line|#if DEBUG
 multiline_comment|/* Magic nums for obj red zoning.&n; * Placed in the first word before and the first word after an obj.&n; */
-DECL|macro|RED_MAGIC1
-mdefine_line|#define&t;RED_MAGIC1&t;0x5A2CF071UL&t;/* when obj is active */
-DECL|macro|RED_MAGIC2
-mdefine_line|#define&t;RED_MAGIC2&t;0x170FC2A5UL&t;/* when obj is inactive */
+DECL|macro|RED_INACTIVE
+mdefine_line|#define&t;RED_INACTIVE&t;0x5A2CF071UL&t;/* when obj is inactive */
+DECL|macro|RED_ACTIVE
+mdefine_line|#define&t;RED_ACTIVE&t;0x170FC2A5UL&t;/* when obj is active */
 multiline_comment|/* ...and for poisoning */
 DECL|macro|POISON_BEFORE
 mdefine_line|#define&t;POISON_BEFORE&t;0x5a&t;/* for use-uninitialised poisoning */
@@ -1091,6 +1091,48 @@ op_assign
 id|wastage
 suffix:semicolon
 )brace
+macro_line|#if DEBUG
+DECL|macro|slab_error
+mdefine_line|#define slab_error(cachep, msg) __slab_error(__FUNCTION__, cachep, msg)
+DECL|function|__slab_error
+r_static
+r_void
+id|__slab_error
+c_func
+(paren
+r_char
+op_star
+id|function
+comma
+id|kmem_cache_t
+op_star
+id|cachep
+comma
+r_char
+op_star
+id|msg
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;slab error in %s(): cache `%s&squot;: %s&bslash;n&quot;
+comma
+id|function
+comma
+id|cachep-&gt;name
+comma
+id|msg
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Start the reap timer running on the target CPU.  We run at around 1 to 2Hz.&n; * Add the CPU number into the expiry time to minimize the possibility of the&n; * CPUs getting into lockstep and contending for the global cache chain lock.&n; */
 DECL|function|start_cpu_timer
 r_static
@@ -2335,11 +2377,15 @@ id|objp
 )paren
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;start of a freed object &quot;
+l_string|&quot;was overwritten&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2361,11 +2407,15 @@ id|BYTES_PER_WORD
 )paren
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;end of a freed object &quot;
+l_string|&quot;was overwritten&quot;
 )paren
 suffix:semicolon
 id|objp
@@ -4247,7 +4297,7 @@ id|objp
 )paren
 )paren
 op_assign
-id|RED_MAGIC1
+id|RED_INACTIVE
 suffix:semicolon
 op_star
 (paren
@@ -4265,7 +4315,7 @@ id|BYTES_PER_WORD
 )paren
 )paren
 op_assign
-id|RED_MAGIC1
+id|RED_INACTIVE
 suffix:semicolon
 id|objp
 op_add_assign
@@ -4324,11 +4374,15 @@ id|objp
 )paren
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;constructor overwrote the&quot;
+l_string|&quot; start of an object&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4350,11 +4404,15 @@ id|BYTES_PER_WORD
 )paren
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;constructor overwrote the&quot;
+l_string|&quot; end of an object&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5000,15 +5058,18 @@ op_star
 )paren
 id|objp
 comma
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
 op_ne
-id|RED_MAGIC2
+id|RED_ACTIVE
 )paren
-multiline_comment|/* Either write before start, or a double free. */
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;double free, or memory before&quot;
+l_string|&quot; object was overwritten&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5030,15 +5091,18 @@ op_minus
 id|BYTES_PER_WORD
 )paren
 comma
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
 op_ne
-id|RED_MAGIC2
+id|RED_ACTIVE
 )paren
-multiline_comment|/* Either write past end, or a double free. */
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;double free, or memory after &quot;
+l_string|&quot; object was overwritten&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5808,14 +5872,18 @@ op_star
 )paren
 id|objp
 comma
-id|RED_MAGIC2
+id|RED_ACTIVE
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;memory before object was &quot;
+l_string|&quot;overwritten&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5837,14 +5905,18 @@ op_minus
 id|BYTES_PER_WORD
 )paren
 comma
-id|RED_MAGIC2
+id|RED_ACTIVE
 )paren
 op_ne
-id|RED_MAGIC1
+id|RED_INACTIVE
 )paren
-id|BUG
+id|slab_error
 c_func
 (paren
+id|cachep
+comma
+l_string|&quot;memory after object was &quot;
+l_string|&quot;overwritten&quot;
 )paren
 suffix:semicolon
 id|objp

@@ -15,8 +15,6 @@ macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Not Yet Implemented */
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(name)
 DECL|macro|MODULE_AUTHOR
 mdefine_line|#define MODULE_AUTHOR(name)
 DECL|macro|MODULE_DESCRIPTION
@@ -69,17 +67,47 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Archs provide a method of finding the correct exception table. */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_extable
+c_func
+(paren
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|first
+comma
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|last
+comma
+r_int
+r_int
+id|value
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
+multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;))) = license
 macro_line|#else  /* !MODULE */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
@@ -100,6 +128,11 @@ id|module
 op_star
 id|owner
 suffix:semicolon
+multiline_comment|/* Are we internal use only? */
+DECL|member|gplonly
+r_int
+id|gplonly
+suffix:semicolon
 DECL|member|num_syms
 r_int
 r_int
@@ -113,6 +146,19 @@ op_star
 id|syms
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* Given an address, look for it in the exception tables */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_exception_tables
+c_func
+(paren
+r_int
+r_int
+id|add
+)paren
 suffix:semicolon
 DECL|struct|exception_table
 r_struct
@@ -169,7 +215,7 @@ mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct ke
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -226,6 +272,12 @@ r_struct
 id|kernel_symbol_group
 id|symbols
 suffix:semicolon
+multiline_comment|/* GPL-only exported symbols. */
+DECL|member|gpl_symbols
+r_struct
+id|kernel_symbol_group
+id|gpl_symbols
+suffix:semicolon
 multiline_comment|/* Exception tables */
 DECL|member|extable
 r_struct
@@ -274,6 +326,11 @@ multiline_comment|/* Am I unsafe to unload? */
 DECL|member|unsafe
 r_int
 id|unsafe
+suffix:semicolon
+multiline_comment|/* Am I GPL-compatible */
+DECL|member|license_gplok
+r_int
+id|license_gplok
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 multiline_comment|/* Reference counts */
@@ -356,6 +413,16 @@ op_ne
 id|MODULE_STATE_GOING
 suffix:semicolon
 )brace
+multiline_comment|/* Is this address in a module? */
+r_int
+id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_void
 id|__symbol_put
@@ -602,6 +669,19 @@ op_star
 id|modname
 )paren
 suffix:semicolon
+multiline_comment|/* For extable.c to search modules&squot; exception tables. */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_module_extables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -609,6 +689,42 @@ DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym)
+multiline_comment|/* Given an address, look for it in the exception tables. */
+r_static
+r_inline
+r_const
+r_struct
+id|exception_table_entry
+op_star
+DECL|function|search_module_extables
+id|search_module_extables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Is this address in a module? */
+DECL|function|module_text_address
+r_static
+r_int
+id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
 DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) (&amp;(x))
@@ -616,10 +732,37 @@ DECL|macro|symbol_put
 mdefine_line|#define symbol_put(x) do { } while(0)
 DECL|macro|symbol_put_addr
 mdefine_line|#define symbol_put_addr(x) do { } while(0)
-DECL|macro|try_module_get
-mdefine_line|#define try_module_get(module) 1
-DECL|macro|module_put
-mdefine_line|#define module_put(module) do { } while(0)
+DECL|function|try_module_get
+r_static
+r_inline
+r_int
+id|try_module_get
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|module_put
+r_static
+r_inline
+r_void
+id|module_put
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+)brace
 DECL|macro|module_name
 mdefine_line|#define module_name(mod) &quot;kernel&quot;
 DECL|macro|__unsafe
@@ -705,6 +848,22 @@ id|__this_module
 )brace
 comma
 dot
+id|gpl_symbols
+op_assign
+(brace
+dot
+id|owner
+op_assign
+op_amp
+id|__this_module
+comma
+dot
+id|gplonly
+op_assign
+l_int|1
+)brace
+comma
+dot
 id|init
 op_assign
 id|init_module
@@ -720,16 +879,6 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#endif /* KBUILD_MODNAME */
 macro_line|#endif /* MODULE */
-multiline_comment|/* For archs to search exception tables */
-r_extern
-r_struct
-id|list_head
-id|extables
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|modlist_lock
-suffix:semicolon
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
@@ -890,10 +1039,6 @@ DECL|macro|MOD_IN_USE
 mdefine_line|#define MOD_IN_USE 0
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
-DECL|macro|__mod_between
-mdefine_line|#define __mod_between(a_start, a_len, b_start, b_len)&t;&t;&bslash;&n;(((a_start) &gt;= (b_start) &amp;&amp; (a_start) &lt;= (b_start)+(b_len))&t;&bslash;&n; || ((a_start)+(a_len) &gt;= (b_start)&t;&t;&t;&t;&bslash;&n;     &amp;&amp; (a_start)+(a_len) &lt;= (b_start)+(b_len)))
-DECL|macro|mod_bound
-mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
 multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
 r_extern
 id|spinlock_t

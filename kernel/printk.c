@@ -12,19 +12,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(CONFIG_X86_NUMAQ) || defined(CONFIG_IA64)
 DECL|macro|LOG_BUF_LEN
-mdefine_line|#define LOG_BUF_LEN&t;(65536)
-macro_line|#elif defined(CONFIG_ARCH_S390)
-DECL|macro|LOG_BUF_LEN
-mdefine_line|#define LOG_BUF_LEN&t;(131072)
-macro_line|#elif defined(CONFIG_SMP)
-DECL|macro|LOG_BUF_LEN
-mdefine_line|#define LOG_BUF_LEN&t;(32768)
-macro_line|#else&t;
-DECL|macro|LOG_BUF_LEN
-mdefine_line|#define LOG_BUF_LEN&t;(16384)&t;&t;&t;/* This must be a power of two */
-macro_line|#endif
+mdefine_line|#define LOG_BUF_LEN&t;(1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)
 DECL|macro|LOG_BUF_MASK
 mdefine_line|#define LOG_BUF_MASK&t;(LOG_BUF_LEN-1)
 multiline_comment|/* printk&squot;s without a loglevel use this.. */

@@ -1697,6 +1697,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 multiline_comment|/* are we running on a Toshiba laptop */
 r_if
 c_cond
@@ -1735,6 +1738,8 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* register the device file */
+id|retval
+op_assign
 id|misc_register
 c_func
 (paren
@@ -1742,7 +1747,23 @@ op_amp
 id|tosh_device
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+r_return
+id|retval
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* register the proc entry */
+r_if
+c_cond
+(paren
 id|create_proc_info_entry
 c_func
 (paren
@@ -1754,7 +1775,23 @@ l_int|NULL
 comma
 id|tosh_get_info
 )paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|tosh_device
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
