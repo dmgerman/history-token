@@ -185,13 +185,18 @@ c_cond
 (paren
 id|rv
 )paren
+(brace
 id|printk
+c_func
 (paren
-l_string|&quot;WARNING: init_hcl: Failed to create hwgraph_root. Error = %d.&bslash;n&quot;
-comma
-id|rv
+l_string|&quot;init_hcl: Failed to create hwgraph_root.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Initialize the HCL string table.&n;&t; */
 id|string_table_init
 c_func
@@ -222,7 +227,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;HCL: Unable to create %s&bslash;n&quot;
@@ -231,7 +236,8 @@ id|EDGE_LBL_LINUX_BUS
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|pci_bus_cvlink_init
