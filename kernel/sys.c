@@ -2274,11 +2274,11 @@ id|current-&gt;euid
 op_assign
 id|euid
 suffix:semicolon
+)brace
 id|current-&gt;fsuid
 op_assign
-id|euid
+id|current-&gt;euid
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2553,11 +2553,11 @@ id|current-&gt;egid
 op_assign
 id|egid
 suffix:semicolon
+)brace
 id|current-&gt;fsgid
 op_assign
-id|egid
+id|current-&gt;egid
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
