@@ -30,8 +30,10 @@ DECL|macro|PORT_RSA
 mdefine_line|#define PORT_RSA&t;13
 DECL|macro|PORT_NS16550A
 mdefine_line|#define PORT_NS16550A&t;14
+DECL|macro|PORT_XSCALE
+mdefine_line|#define PORT_XSCALE&t;15
 DECL|macro|PORT_MAX_8250
-mdefine_line|#define PORT_MAX_8250&t;14&t;/* max port ID */
+mdefine_line|#define PORT_MAX_8250&t;15&t;/* max port ID */
 multiline_comment|/*&n; * ARM specific type numbers.  These are not currently guaranteed&n; * to be implemented, and will change in the future.  These are&n; * separate so any additions to the old serial.c that occur before&n; * we are merged can be easily merged here.&n; */
 DECL|macro|PORT_PXA
 mdefine_line|#define PORT_PXA&t;31

@@ -167,7 +167,7 @@ DECL|macro|UART_MSR_DCTS
 mdefine_line|#define UART_MSR_DCTS&t;0x01&t;/* Delta CTS */
 DECL|macro|UART_MSR_ANY_DELTA
 mdefine_line|#define UART_MSR_ANY_DELTA 0x0F&t;/* Any of the delta bits! */
-multiline_comment|/*&n; * The Intel PXA2xx chip defines those bits&n; */
+multiline_comment|/*&n; * The Intel XScale on-chip UARTs define these bits&n; */
 DECL|macro|UART_IER_DMAE
 mdefine_line|#define UART_IER_DMAE&t;0x80&t;/* DMA Requests Enable */
 DECL|macro|UART_IER_UUE
