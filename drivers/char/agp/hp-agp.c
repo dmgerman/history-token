@@ -19,7 +19,7 @@ mdefine_line|#define HP_ZX1_SBA_IOMMU_COOKIE&t;0x0000badbadc0ffeeUL
 DECL|macro|HP_ZX1_PDIR_VALID_BIT
 mdefine_line|#define HP_ZX1_PDIR_VALID_BIT&t;0x8000000000000000UL
 DECL|macro|HP_ZX1_IOVA_TO_PDIR
-mdefine_line|#define HP_ZX1_IOVA_TO_PDIR(va)&t;((va - hp_private.iova_base) &gt;&gt; &bslash;&n;&t;&t;&t;&t;&t;hp_private.io_tlb_shift)
+mdefine_line|#define HP_ZX1_IOVA_TO_PDIR(va)&t;((va - hp_private.iova_base) &gt;&gt; hp_private.io_tlb_shift)
 DECL|variable|hp_zx1_sizes
 r_static
 r_struct
@@ -1471,27 +1471,6 @@ op_or
 id|addr
 suffix:semicolon
 )brace
-DECL|function|hp_zx1_unmask_memory
-r_static
-r_int
-r_int
-id|hp_zx1_unmask_memory
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|addr
-op_amp
-op_complement
-(paren
-id|HP_ZX1_PDIR_VALID_BIT
-)paren
-suffix:semicolon
-)brace
 DECL|function|hp_zx1_setup
 r_int
 id|__init
@@ -1501,6 +1480,13 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 )paren
 (brace
 id|agp_bridge.masks
@@ -1542,10 +1528,6 @@ suffix:semicolon
 id|agp_bridge.mask_memory
 op_assign
 id|hp_zx1_mask_memory
-suffix:semicolon
-id|agp_bridge.unmask_memory
-op_assign
-id|hp_zx1_unmask_memory
 suffix:semicolon
 id|agp_bridge.agp_enable
 op_assign
@@ -1658,8 +1640,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
-DECL|function|agp_hp_probe
 r_static
 r_int
 id|agp_hp_probe
@@ -1703,7 +1683,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|variable|__initdata
 r_static
 r_struct
 id|pci_device_id
@@ -1763,7 +1742,6 @@ comma
 id|agp_pci_table
 )paren
 suffix:semicolon
-DECL|variable|agp_hp_pci_driver
 r_static
 r_struct
 id|pci_driver
@@ -1787,7 +1765,6 @@ id|agp_hp_probe
 comma
 )brace
 suffix:semicolon
-DECL|function|agp_hp_init
 r_static
 r_int
 id|__init
@@ -1822,7 +1799,6 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
-DECL|function|agp_hp_cleanup
 r_static
 r_void
 id|__exit
@@ -1845,14 +1821,12 @@ id|agp_pci_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|agp_hp_init
 id|module_init
 c_func
 (paren
 id|agp_hp_init
 )paren
 suffix:semicolon
-DECL|variable|agp_hp_cleanup
 id|module_exit
 c_func
 (paren

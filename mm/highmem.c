@@ -1667,17 +1667,6 @@ suffix:semicolon
 r_int
 id|bio_gfp
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-(paren
-op_star
-id|bio_orig
-)paren
-op_member_access_from_pointer
-id|bi_idx
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * for non-isa bounce case, just check if the bounce pfn is equal&n;&t; * to or bigger than the highest pfn in the system -- in that case,&n;&t; * don&squot;t waste time iterating over bio segments&n;&t; */
 r_if
 c_cond
