@@ -1,28 +1,77 @@
 multiline_comment|/*&n; * eeh.c&n; * Copyright (C) 2001 Dave Engebretsen &amp; Todd Inglett IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/paca.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+multiline_comment|/** Overview:&n; *  EEH, or &quot;Extended Error Handling&quot; is a PCI bridge technology for&n; *  dealing with PCI bus errors that can&squot;t be dealt with within the&n; *  usual PCI framework, except by check-stopping the CPU.  Systems&n; *  that are designed for high-availability/reliability cannot afford&n; *  to crash due to a &quot;mere&quot; PCI error, thus the need for EEH.&n; *  An EEH-capable bridge operates by converting a detected error&n; *  into a &quot;slot freeze&quot;, taking the PCI adapter off-line, making&n; *  the slot behave, from the OS&squot;es point of view, as if the slot&n; *  were &quot;empty&quot;: all reads return 0xff&squot;s and all writes are silently&n; *  ignored.  EEH slot isolation events can be triggered by parity&n; *  errors on the address or data busses (e.g. during posted writes),&n; *  which in turn might be caused by dust, vibration, humidity,&n; *  radioactivity or plain-old failed hardware.&n; *&n; *  Note, however, that one of the leading causes of EEH slot&n; *  freeze events are buggy device drivers, buggy device microcode,&n; *  or buggy device hardware.  This is because any attempt by the&n; *  device to bus-master data to a memory address that is not&n; *  assigned to the device will trigger a slot freeze.   (The idea&n; *  is to prevent devices-gone-wild from corrupting system memory).&n; *  Buggy hardware/drivers will have a miserable time co-existing&n; *  with EEH.&n; *&n; *  Ideally, a PCI device driver, when suspecting that an isolation&n; *  event has occured (e.g. by reading 0xff&squot;s), will then ask EEH&n; *  whether this is the case, and then take appropriate steps to&n; *  reset the PCI slot, the PCI device, and then resume operations.&n; *  However, until that day,  the checking is done here, with the&n; *  eeh_check_failure() routine embedded in the MMIO macros.  If&n; *  the slot is found to be isolated, an &quot;EEH Event&quot; is synthesized&n; *  and sent out for processing.&n; */
+multiline_comment|/** Bus Unit ID macros; get low and hi 32-bits of the 64-bit BUID */
 DECL|macro|BUID_HI
 mdefine_line|#define BUID_HI(buid) ((buid) &gt;&gt; 32)
 DECL|macro|BUID_LO
 mdefine_line|#define BUID_LO(buid) ((buid) &amp; 0xffffffff)
-DECL|macro|CONFIG_ADDR
-mdefine_line|#define CONFIG_ADDR(busno, devfn) &bslash;&n;&t;&t;(((((busno) &amp; 0xff) &lt;&lt; 8) | ((devfn) &amp; 0xf8)) &lt;&lt; 8)
+multiline_comment|/* EEH event workqueue setup. */
+DECL|variable|eeh_eventlist_lock
+r_static
+id|spinlock_t
+id|eeh_eventlist_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|eeh_eventlist
+id|LIST_HEAD
+c_func
+(paren
+id|eeh_eventlist
+)paren
+suffix:semicolon
+r_static
+r_void
+id|eeh_event_handler
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+id|DECLARE_WORK
+c_func
+(paren
+id|eeh_event_wq
+comma
+id|eeh_event_handler
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+DECL|variable|eeh_notifier_chain
+r_static
+r_struct
+id|notifier_block
+op_star
+id|eeh_notifier_chain
+suffix:semicolon
+multiline_comment|/*&n; * If a device driver keeps reading an MMIO register in an interrupt&n; * handler after a slot isolation event has occurred, we assume it&n; * is broken and panic.  This sets the threshold for how many read&n; * attempts we allow before panicking.&n; */
+DECL|macro|EEH_MAX_FAILS
+mdefine_line|#define EEH_MAX_FAILS&t;1000
+DECL|variable|eeh_fail_count
+r_static
+id|atomic_t
+id|eeh_fail_count
+suffix:semicolon
 multiline_comment|/* RTAS tokens */
 DECL|variable|ibm_set_eeh_option
 r_static
@@ -102,7 +151,17 @@ comma
 id|ignored_failures
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * The pci address cache subsystem.  This subsystem places&n; * PCI device address resources into a red-black tree, sorted&n; * according to the address range, so that given only an i/o&n; * address, the corresponding PCI device can be **quickly**&n; * found.&n; *&n; * Currently, the only customer of this code is the EEH subsystem;&n; * thus, this code has been somewhat tailored to suit EEH better.&n; * In particular, the cache does *not* hold the addresses of devices&n; * for which EEH is not enabled.&n; *&n; * (Implementation Note: The RB tree seems to be better/faster&n; * than any hash algo I could think of for this problem, even&n; * with the penalty of slow pointer chases for d-cache misses).&n; */
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+r_int
+comma
+id|slot_resets
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * The pci address cache subsystem.  This subsystem places&n; * PCI device address resources into a red-black tree, sorted&n; * according to the address range, so that given only an i/o&n; * address, the corresponding PCI device can be **quickly**&n; * found. It is safe to perform an address lookup in an interrupt&n; * context; this ability is an important feature.&n; *&n; * Currently, the only customer of this code is the EEH subsystem;&n; * thus, this code has been somewhat tailored to suit EEH better.&n; * In particular, the cache does *not* hold the addresses of devices&n; * for which EEH is not enabled.&n; *&n; * (Implementation Note: The RB tree seems to be better/faster&n; * than any hash algo I could think of for this problem, even&n; * with the penalty of slow pointer chases for d-cache misses).&n; */
 DECL|struct|pci_io_addr_range
 r_struct
 id|pci_io_addr_range
@@ -1113,6 +1172,281 @@ id|pci_io_addr_cache_root
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* --------------------------------------------------------------- */
+multiline_comment|/* Above lies the PCI Address Cache. Below lies the EEH event infrastructure */
+multiline_comment|/**&n; * eeh_register_notifier - Register to find out about EEH events.&n; * @nb: notifier block to callback on events&n; */
+DECL|function|eeh_register_notifier
+r_int
+id|eeh_register_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|eeh_notifier_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * eeh_unregister_notifier - Unregister to an EEH event notifier.&n; * @nb: notifier block to callback on events&n; */
+DECL|function|eeh_unregister_notifier
+r_int
+id|eeh_unregister_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_unregister
+c_func
+(paren
+op_amp
+id|eeh_notifier_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * eeh_panic - call panic() for an eeh event that cannot be handled.&n; * The philosophy of this routine is that it is better to panic and&n; * halt the OS than it is to risk possible data corruption by&n; * oblivious device drivers that don&squot;t know better.&n; *&n; * @dev pci device that had an eeh event&n; * @reset_state current reset state of the device slot&n; */
+DECL|function|eeh_panic
+r_static
+r_void
+id|eeh_panic
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|reset_state
+)paren
+(brace
+multiline_comment|/*&n;&t; * XXX We should create a separate sysctl for this.&n;&t; *&n;&t; * Since the panic_on_oops sysctl is used to halt the system&n;&t; * in light of potential corruption, we can use it here.&n;&t; */
+r_if
+c_cond
+(paren
+id|panic_on_oops
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
+comma
+id|reset_state
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
+comma
+id|pci_pretty_name
+c_func
+(paren
+id|dev
+)paren
+)paren
+suffix:semicolon
+r_else
+(brace
+id|__get_cpu_var
+c_func
+(paren
+id|ignored_failures
+)paren
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;EEH: Ignored MMIO failure (%d) on device:%s %s&bslash;n&quot;
+comma
+id|reset_state
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
+comma
+id|pci_pretty_name
+c_func
+(paren
+id|dev
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/**&n; * eeh_event_handler - dispatch EEH events.  The detection of a frozen&n; * slot can occur inside an interrupt, where it can be hard to do&n; * anything about it.  The goal of this routine is to pull these&n; * detection events out of the context of the interrupt handler, and&n; * re-dispatch them for processing at a later time in a normal context.&n; *&n; * @dummy - unused&n; */
+DECL|function|eeh_event_handler
+r_static
+r_void
+id|eeh_event_handler
+c_func
+(paren
+r_void
+op_star
+id|dummy
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|eeh_event
+op_star
+id|event
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|eeh_eventlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|event
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|eeh_eventlist
+)paren
+)paren
+(brace
+id|event
+op_assign
+id|list_entry
+c_func
+(paren
+id|eeh_eventlist.next
+comma
+r_struct
+id|eeh_event
+comma
+id|list
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|event-&gt;list
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|eeh_eventlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|event
+op_eq
+l_int|NULL
+)paren
+r_break
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;EEH: MMIO failure (%d), notifiying device &quot;
+l_string|&quot;%s %s&bslash;n&quot;
+comma
+id|event-&gt;reset_state
+comma
+id|pci_name
+c_func
+(paren
+id|event-&gt;dev
+)paren
+comma
+id|pci_pretty_name
+c_func
+(paren
+id|event-&gt;dev
+)paren
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|eeh_fail_count
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|notifier_call_chain
+(paren
+op_amp
+id|eeh_notifier_chain
+comma
+id|EEH_NOTIFY_FREEZE
+comma
+id|event
+)paren
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|slot_resets
+)paren
+op_increment
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|event-&gt;dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**&n; * eeh_token_to_phys - convert EEH address token to phys address&n; * @token i/o token, should be address in the form 0xE....&n; */
 DECL|function|eeh_token_to_phys
 r_static
@@ -1179,7 +1513,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * eeh_dn_check_failure - check if all 1&squot;s data is due to EEH slot freeze&n; * @dn device node&n; * @dev pci device, if known&n; *&n; * Check for an EEH failure for the given device node.  Call this&n; * routine if the result of a read was all 0xff&squot;s and you want to&n; * find out if this is due to an EEH slot freeze event.  This routine&n; * will query firmware for the EEH status.&n; *&n; * Returns 0 if there has not been an EEH error; otherwise returns&n; * an error code.&n; *&n; * It is safe to call this routine in an interrupt context.&n; */
+multiline_comment|/**&n; * eeh_dn_check_failure - check if all 1&squot;s data is due to EEH slot freeze&n; * @dn device node&n; * @dev pci device, if known&n; *&n; * Check for an EEH failure for the given device node.  Call this&n; * routine if the result of a read was all 0xff&squot;s and you want to&n; * find out if this is due to an EEH slot freeze.  This routine&n; * will query firmware for the EEH status.&n; *&n; * Returns 0 if there has not been an EEH error; otherwise returns&n; * a non-zero value and queues up a solt isolation event notification.&n; *&n; * It is safe to call this routine in an interrupt context.&n; */
 DECL|function|eeh_dn_check_failure
 r_int
 id|eeh_dn_check_failure
@@ -1208,6 +1542,16 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|rc
+comma
+id|reset_state
+suffix:semicolon
+r_struct
+id|eeh_event
+op_star
+id|event
 suffix:semicolon
 id|__get_cpu_var
 c_func
@@ -1265,6 +1609,86 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If we already have a pending isolation event for this&n;&t; * slot, we know it&squot;s bad already, we don&squot;t need to check...&n;&t; */
+r_if
+c_cond
+(paren
+id|dn-&gt;eeh_mode
+op_amp
+id|EEH_MODE_ISOLATED
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|eeh_fail_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|eeh_fail_count
+)paren
+op_ge
+id|EEH_MAX_FAILS
+)paren
+(brace
+multiline_comment|/* re-read the slot reset state */
+id|rets
+(braket
+l_int|0
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|rtas_call
+c_func
+(paren
+id|ibm_read_slot_reset_state
+comma
+l_int|3
+comma
+l_int|3
+comma
+id|rets
+comma
+id|dn-&gt;eeh_config_addr
+comma
+id|BUID_HI
+c_func
+(paren
+id|dn-&gt;phb-&gt;buid
+)paren
+comma
+id|BUID_LO
+c_func
+(paren
+id|dn-&gt;phb-&gt;buid
+)paren
+)paren
+suffix:semicolon
+id|eeh_panic
+c_func
+(paren
+id|dev
+comma
+id|rets
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now test for an EEH failure.  This is VERY expensive.&n;&t; * Note that the eeh_config_addr may be a parent device&n;&t; * in the case of a device behind a bridge, or it may be&n;&t; * function zero of a multi-function device.&n;&t; * In any case they must share a common PHB.&n;&t; */
 id|ret
 op_assign
@@ -1297,6 +1721,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|ret
 op_eq
 l_int|0
@@ -1324,9 +1750,30 @@ op_eq
 l_int|4
 )paren
 )paren
+)paren
 (brace
-r_int
-id|log_event
+id|__get_cpu_var
+c_func
+(paren
+id|false_positives
+)paren
+op_increment
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* prevent repeated reports of this failure */
+id|dn-&gt;eeh_mode
+op_or_assign
+id|EEH_MODE_ISOLATED
+suffix:semicolon
+id|reset_state
+op_assign
+id|rets
+(braket
+l_int|0
+)braket
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1347,7 +1794,7 @@ comma
 id|eeh_error_buf_size
 )paren
 suffix:semicolon
-id|log_event
+id|rc
 op_assign
 id|rtas_call
 c_func
@@ -1393,7 +1840,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|log_event
+id|rc
 op_eq
 l_int|0
 )paren
@@ -1404,8 +1851,7 @@ id|slot_errbuf
 comma
 id|ERR_TYPE_RTAS_LOG
 comma
-l_int|1
-multiline_comment|/* Fatal */
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1433,56 +1879,94 @@ comma
 id|dn-&gt;full_name
 )paren
 suffix:semicolon
-id|WARN_ON
+id|event
+op_assign
+id|kmalloc
 c_func
 (paren
-l_int|1
+r_sizeof
+(paren
+op_star
+id|event
+)paren
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * XXX We should create a separate sysctl for this.&n;&t;&t; *&n;&t;&t; * Since the panic_on_oops sysctl is used to halt&n;&t;&t; * the system in light of potential corruption, we&n;&t;&t; * can use it here.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|panic_on_oops
+id|event
+op_eq
+l_int|NULL
 )paren
 (brace
-id|panic
+id|eeh_panic
 c_func
 (paren
-l_string|&quot;EEH: MMIO failure (%d) on device: %s %s&bslash;n&quot;
+id|dev
 comma
-id|rets
-(braket
-l_int|0
-)braket
-comma
-id|dn-&gt;name
-comma
-id|dn-&gt;full_name
+id|reset_state
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-r_else
-(brace
-id|__get_cpu_var
+id|event-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
+id|event-&gt;dn
+op_assign
+id|dn
+suffix:semicolon
+id|event-&gt;reset_state
+op_assign
+id|reset_state
+suffix:semicolon
+multiline_comment|/* We may or may not be called in an interrupt context */
+id|spin_lock_irqsave
 c_func
 (paren
-id|ignored_failures
+op_amp
+id|eeh_eventlist_lock
+comma
+id|flags
 )paren
-op_increment
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|__get_cpu_var
+id|list_add
 c_func
 (paren
-id|false_positives
+op_amp
+id|event-&gt;list
+comma
+op_amp
+id|eeh_eventlist
 )paren
-op_increment
 suffix:semicolon
-)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|eeh_eventlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Most EEH events are due to device driver bugs.  Having&n;&t; * a stack trace will help the device-driver authors figure&n;&t; * out what happened.  So print that out. */
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|schedule_work
+c_func
+(paren
+op_amp
+id|eeh_event_wq
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2404,6 +2888,12 @@ id|failures
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|resets
+op_assign
+l_int|0
+suffix:semicolon
 id|for_each_cpu
 c_func
 (paren
@@ -2436,6 +2926,16 @@ id|per_cpu
 c_func
 (paren
 id|ignored_failures
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|resets
+op_add_assign
+id|per_cpu
+c_func
+(paren
+id|slot_resets
 comma
 id|cpu
 )paren
@@ -2486,12 +2986,18 @@ comma
 l_string|&quot;eeh_total_mmio_ffs=%ld&bslash;n&quot;
 l_string|&quot;eeh_false_positives=%ld&bslash;n&quot;
 l_string|&quot;eeh_ignored_failures=%ld&bslash;n&quot;
+l_string|&quot;eeh_slot_resets=%ld&bslash;n&quot;
+l_string|&quot;eeh_fail_count=%d&bslash;n&quot;
 comma
 id|ffs
 comma
 id|positives
 comma
 id|failures
+comma
+id|resets
+comma
+id|eeh_fail_count.counter
 )paren
 suffix:semicolon
 )brace

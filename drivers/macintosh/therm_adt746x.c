@@ -176,7 +176,8 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for ADT746x thermostat in iBook G4 and Powerbook G4 Alu&quot;
+l_string|&quot;Driver for ADT746x thermostat in iBook G4 and &quot;
+l_string|&quot;Powerbook G4 Alu&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -198,7 +199,8 @@ c_func
 (paren
 id|limit_adjust
 comma
-l_string|&quot;Adjust maximum temperatures (50 cpu, 70 gpu) by N degrees.&quot;
+l_string|&quot;Adjust maximum temperatures (50 cpu, 70 gpu) &quot;
+l_string|&quot;by N degrees.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -214,7 +216,8 @@ c_func
 (paren
 id|fan_speed
 comma
-l_string|&quot;Specify fan speed (0-255) when lim &lt; temp &lt; lim+8 (default 128)&quot;
+l_string|&quot;Specify fan speed (0-255) when lim &lt; temp &lt; lim+8 &quot;
+l_string|&quot;(default 128)&quot;
 )paren
 suffix:semicolon
 DECL|struct|thermostat
@@ -225,6 +228,13 @@ DECL|member|clt
 r_struct
 id|i2c_client
 id|clt
+suffix:semicolon
+DECL|member|temps
+id|u8
+id|temps
+(braket
+l_int|3
+)braket
 suffix:semicolon
 DECL|member|cached_temp
 id|u8
@@ -658,8 +668,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Putting max temperatures back from %d, %d, %d,&quot;
-l_string|&quot; to %d, %d, %d&bslash;n&quot;
+l_string|&quot;adt746x: Putting max temperatures back from &quot;
+l_string|&quot;%d, %d, %d to %d, %d, %d&bslash;n&quot;
 comma
 id|th-&gt;limits
 (braket
@@ -1001,7 +1011,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Setting speed to: automatic for %s fan.&bslash;n&quot;
+l_string|&quot;adt746x: Setting speed to automatic &quot;
+l_string|&quot;for %s fan.&bslash;n&quot;
 comma
 id|fan
 ques
@@ -1016,7 +1027,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Setting speed to: %d for %s fan.&bslash;n&quot;
+l_string|&quot;adt746x: Setting speed to %d &quot;
+l_string|&quot;for %s fan.&bslash;n&quot;
 comma
 id|speed
 comma
@@ -1173,88 +1185,23 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-DECL|function|monitor_task
+DECL|function|read_sensors
 r_static
-r_int
-id|monitor_task
+r_void
+id|read_sensors
 c_func
 (paren
-r_void
-op_star
-id|arg
-)paren
-(brace
 r_struct
 id|thermostat
 op_star
 id|th
-op_assign
-id|arg
-suffix:semicolon
-id|u8
-id|temps
-(braket
-l_int|3
-)braket
-suffix:semicolon
-id|u8
-id|lims
-(braket
-l_int|3
-)braket
-suffix:semicolon
+)paren
+(brace
 r_int
 id|i
+op_assign
+l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_int
-id|mfan_speed
-suffix:semicolon
-macro_line|#endif
-r_while
-c_loop
-(paren
-op_logical_neg
-id|kthread_should_stop
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
-c_func
-(paren
-id|PF_FREEZE
-)paren
-suffix:semicolon
-id|msleep_interruptible
-c_func
-(paren
-l_int|2000
-)paren
-suffix:semicolon
-multiline_comment|/* Check status */
-multiline_comment|/* local   : chip */
-multiline_comment|/* remote 1: CPU ?*/
-multiline_comment|/* remote 2: GPU ?*/
-macro_line|#ifndef DEBUG
-r_if
-c_cond
-(paren
-id|fan_speed
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1269,8 +1216,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|temps
+id|th-&gt;temps
 (braket
 id|i
 )braket
@@ -1286,27 +1232,147 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|lims
-(braket
-id|i
-)braket
-op_assign
-id|th-&gt;limits
-(braket
-id|i
-)braket
-suffix:semicolon
 )brace
-macro_line|#ifndef DEBUG
-)brace
-macro_line|#endif&t;&t;
+macro_line|#ifdef DEBUG
+DECL|function|display_stats
+r_static
+r_void
+id|display_stats
+c_func
+(paren
+r_struct
+id|thermostat
+op_star
+id|th
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|fan_speed
+id|th-&gt;temps
+(braket
+l_int|0
+)braket
 op_ne
-op_minus
+id|th-&gt;cached_temp
+(braket
+l_int|0
+)braket
+op_logical_or
+id|th-&gt;temps
+(braket
 l_int|1
+)braket
+op_ne
+id|th-&gt;cached_temp
+(braket
+l_int|1
+)braket
+op_logical_or
+id|th-&gt;temps
+(braket
+l_int|2
+)braket
+op_ne
+id|th-&gt;cached_temp
+(braket
+l_int|2
+)braket
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;adt746x: Temperature infos:&quot;
+l_string|&quot; thermostats: %d,%d,%d;&quot;
+l_string|&quot; limits: %d,%d,%d;&quot;
+l_string|&quot; fan speed: %d RPM&bslash;n&quot;
+comma
+id|th-&gt;temps
+(braket
+l_int|0
+)braket
+comma
+id|th-&gt;temps
+(braket
+l_int|1
+)braket
+comma
+id|th-&gt;temps
+(braket
+l_int|2
+)braket
+comma
+id|th-&gt;limits
+(braket
+l_int|0
+)braket
+comma
+id|th-&gt;limits
+(braket
+l_int|1
+)braket
+comma
+id|th-&gt;limits
+(braket
+l_int|2
+)braket
+comma
+id|read_fan_speed
+c_func
+(paren
+id|th
+comma
+id|FAN_SPEED
+(braket
+l_int|0
+)braket
+)paren
+)paren
+suffix:semicolon
+)brace
+id|th-&gt;cached_temp
+(braket
+l_int|0
+)braket
+op_assign
+id|th-&gt;temps
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|th-&gt;cached_temp
+(braket
+l_int|1
+)braket
+op_assign
+id|th-&gt;temps
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|th-&gt;cached_temp
+(braket
+l_int|2
+)braket
+op_assign
+id|th-&gt;temps
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+macro_line|#endif
+DECL|function|update_fans_speed
+r_static
+r_void
+id|update_fans_speed
+(paren
+r_struct
+id|thermostat
+op_star
+id|th
 )paren
 (brace
 r_int
@@ -1314,7 +1380,13 @@ id|lastvar
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* for iBook */
+multiline_comment|/* last variation, for iBook */
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* we don&squot;t care about local sensor, so we start at sensor 1 */
 r_for
 c_loop
 (paren
@@ -1330,7 +1402,6 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* we don&squot;t care about local sensor */
 r_int
 id|started
 op_assign
@@ -1352,12 +1423,12 @@ suffix:semicolon
 r_int
 id|var
 op_assign
-id|temps
+id|th-&gt;temps
 (braket
 id|i
 )braket
 op_minus
-id|lims
+id|th-&gt;limits
 (braket
 id|i
 )braket
@@ -1384,7 +1455,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Limit exceeded by %d, overriding specified fan speed for %s.&bslash;n&quot;
+l_string|&quot;adt746x: Limit exceeded by &quot;
+l_string|&quot;%d, overriding specified fan speed &quot;
+l_string|&quot;for %s.&bslash;n&quot;
 comma
 id|var
 comma
@@ -1453,7 +1526,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Limit exceeded by %d, setting speed to specified for %s.&bslash;n&quot;
+l_string|&quot;adt746x: Limit exceeded by &quot;
+l_string|&quot;%d, setting speed to specified &quot;
+l_string|&quot;for %s.&bslash;n&quot;
 comma
 id|var
 comma
@@ -1497,7 +1572,7 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/* don&squot;t stop iBook fan if GPU is cold and CPU is not&n;&t;&t;&t;&t;&t; * so cold (lastvar &gt;= -1) */
+multiline_comment|/* don&squot;t stop iBook fan if GPU is cold and CPU is not&n;&t;&t;&t; * so cold (lastvar &gt;= -1) */
 r_if
 c_cond
 (paren
@@ -1529,7 +1604,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Stopping %s fan.&bslash;n&quot;
+l_string|&quot;adt746x: Stopping %s &quot;
+l_string|&quot;fan.&bslash;n&quot;
 comma
 id|fan_number
 ques
@@ -1564,142 +1640,111 @@ id|therm_type
 op_eq
 id|ADT7467
 )paren
-r_break
+r_return
 suffix:semicolon
-multiline_comment|/* we don&squot;t want to re-stop the fan&n;&t;&t;&t;&t;&t;&t;* if CPU is heating and GPU is not */
+multiline_comment|/* we don&squot;t want to re-stop the fan&n;&t;&t;&t;&t;* if CPU is heating and GPU is not */
 )brace
 )brace
-macro_line|#ifdef DEBUG
-id|mfan_speed
-op_assign
-id|read_fan_speed
+DECL|function|monitor_task
+r_static
+r_int
+id|monitor_task
 c_func
 (paren
-id|th
-comma
-id|FAN_SPEED
-(braket
-l_int|0
-)braket
+r_void
+op_star
+id|arg
 )paren
+(brace
+r_struct
+id|thermostat
+op_star
+id|th
+op_assign
+id|arg
 suffix:semicolon
-multiline_comment|/* only one fan in the iBook G4 */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|kthread_should_stop
+c_func
+(paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|temps
-(braket
-l_int|0
-)braket
-op_ne
-id|th-&gt;cached_temp
-(braket
-l_int|0
-)braket
-op_logical_or
-id|temps
-(braket
-l_int|1
-)braket
-op_ne
-id|th-&gt;cached_temp
-(braket
-l_int|1
-)braket
-op_logical_or
-id|temps
-(braket
-l_int|2
-)braket
-op_ne
-id|th-&gt;cached_temp
-(braket
-l_int|2
-)braket
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
 )paren
-(brace
-id|printk
+id|refrigerator
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;adt746x: Temperature infos:&quot;
-l_string|&quot; thermostats: %d,%d,%d;&quot;
-l_string|&quot; limits: %d,%d,%d;&quot;
-l_string|&quot; fan speed: %d RPM&bslash;n&quot;
-comma
-id|temps
-(braket
-l_int|0
-)braket
-comma
-id|temps
-(braket
-l_int|1
-)braket
-comma
-id|temps
-(braket
-l_int|2
-)braket
-comma
-id|lims
-(braket
-l_int|0
-)braket
-comma
-id|lims
-(braket
-l_int|1
-)braket
-comma
-id|lims
-(braket
-l_int|2
-)braket
-comma
-id|mfan_speed
+id|PF_FREEZE
 )paren
 suffix:semicolon
-)brace
-id|th-&gt;cached_temp
-(braket
-l_int|0
-)braket
-op_assign
-id|temps
-(braket
-l_int|0
-)braket
+id|msleep_interruptible
+c_func
+(paren
+l_int|2000
+)paren
 suffix:semicolon
-id|th-&gt;cached_temp
-(braket
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+id|fan_speed
+op_ne
+op_minus
 l_int|1
-)braket
-op_assign
-id|temps
-(braket
-l_int|1
-)braket
+)paren
+id|read_sensors
+c_func
+(paren
+id|th
+)paren
 suffix:semicolon
-id|th-&gt;cached_temp
-(braket
-l_int|2
-)braket
-op_assign
-id|temps
-(braket
-l_int|2
-)braket
+macro_line|#else
+id|read_sensors
+c_func
+(paren
+id|th
+)paren
 suffix:semicolon
 macro_line|#endif&t;&t;
+r_if
+c_cond
+(paren
+id|fan_speed
+op_ne
+op_minus
+l_int|1
+)paren
+id|update_fans_speed
+c_func
+(paren
+id|th
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|display_stats
+c_func
+(paren
+id|th
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|set_limit
 r_static
 r_void
-DECL|function|set_limit
 id|set_limit
 c_func
 (paren
@@ -1755,9 +1800,9 @@ op_plus
 id|limit_adjust
 suffix:semicolon
 )brace
+DECL|function|attach_one_thermostat
 r_static
 r_int
-DECL|function|attach_one_thermostat
 id|attach_one_thermostat
 c_func
 (paren
@@ -1882,7 +1927,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;adt746x: Thermostat failed to read config from bus %d !&bslash;n&quot;
+l_string|&quot;adt746x: Thermostat failed to read config &quot;
+l_string|&quot;from bus %d !&bslash;n&quot;
 comma
 id|busno
 )paren
@@ -2043,7 +2089,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Thermostat failed to attach client !&bslash;n&quot;
+l_string|&quot;adt746x: Thermostat failed to attach &quot;
+l_string|&quot;client !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|thermostat
@@ -2087,6 +2134,7 @@ op_minus
 l_int|1
 )paren
 (brace
+multiline_comment|/* manual mode, stop fans */
 id|write_both_fan_speed
 c_func
 (paren
@@ -2098,6 +2146,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* automatic mode */
 id|write_both_fan_speed
 c_func
 (paren
@@ -2507,7 +2556,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Thermostat bus: %d, address: 0x%02x, limit_adjust: %d, fan_speed: %d&bslash;n&quot;
+l_string|&quot;adt746x: Thermostat bus: %d, address: 0x%02x, &quot;
+l_string|&quot;limit_adjust: %d, fan_speed: %d&bslash;n&quot;
 comma
 id|therm_bus
 comma

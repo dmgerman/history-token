@@ -1260,8 +1260,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|err
 suffix:semicolon

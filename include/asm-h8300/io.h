@@ -900,6 +900,8 @@ DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 DECL|macro|inb
 mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readw((addr) &amp; ~1) &amp; 0xff:readb(addr))
 DECL|macro|inw

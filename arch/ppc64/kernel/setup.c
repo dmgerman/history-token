@@ -2509,22 +2509,22 @@ r_struct
 id|device_node
 op_star
 id|prom_stdout
+op_assign
+l_int|NULL
 suffix:semicolon
 r_char
 op_star
 id|name
+suffix:semicolon
+id|u32
+op_star
+id|spd
 suffix:semicolon
 r_int
 id|offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if  0
-id|phandle
-op_star
-id|stdout_ph
-suffix:semicolon
-macro_line|#endif
 id|DBG
 c_func
 (paren
@@ -2574,75 +2574,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* We are getting a weird phandle from OF ... */
-macro_line|#if 0
-id|stdout_ph
-op_assign
-(paren
-id|phandle
-op_star
-)paren
-id|get_property
-c_func
-(paren
-id|of_chosen
-comma
-l_string|&quot;linux,stdout-package&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|stdout_ph
-op_eq
-l_int|NULL
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_string|&quot; no linux,stdout-package !&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|prom_stdout
-op_assign
-id|of_find_node_by_phandle
-c_func
-(paren
-op_star
-id|stdout_ph
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prom_stdout
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_string|&quot; can&squot;t find stdout package for phandle 0x%x !&bslash;n&quot;
-comma
-op_star
-id|stdout_ph
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* ... So use the full path instead */
-macro_line|#if 1
 id|name
 op_assign
 (paren
@@ -2706,7 +2638,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#endif
 id|DBG
 c_func
 (paren
@@ -2748,6 +2679,30 @@ r_goto
 id|not_found
 suffix:semicolon
 )brace
+id|spd
+op_assign
+(paren
+id|u32
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|prom_stdout
+comma
+l_string|&quot;current-speed&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+r_else
 r_if
 c_cond
 (paren
@@ -2846,6 +2801,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif /* CONFIG_SERIAL_8250_CONSOLE */
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
@@ -3010,6 +2966,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_SERIAL_PMACZILOG_CONSOLE
 r_else
 r_if
 c_cond
@@ -3046,6 +3003,7 @@ id|offset
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif /* CONFIG_SERIAL_PMACZILOG_CONSOLE */
 r_else
 r_goto
 id|not_found
@@ -3064,6 +3022,42 @@ comma
 id|offset
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|spd
+)paren
+(brace
+r_char
+id|opt
+(braket
+l_int|16
+)braket
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|opt
+comma
+l_string|&quot;%d&quot;
+comma
+op_star
+id|spd
+)paren
+suffix:semicolon
+r_return
+id|add_preferred_console
+c_func
+(paren
+l_string|&quot;ttyS&quot;
+comma
+id|offset
+comma
+id|opt
+)paren
+suffix:semicolon
+)brace
+r_else
 r_return
 id|add_preferred_console
 c_func
@@ -4841,7 +4835,7 @@ suffix:semicolon
 id|debugger
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

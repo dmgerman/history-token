@@ -2091,6 +2091,8 @@ DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) __raw_readl(addr)
 DECL|macro|readq_relaxed
 mdefine_line|#define readq_relaxed(addr) __raw_readq(addr)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * String version of IO memory access ops:&n; */
 r_extern
 r_void

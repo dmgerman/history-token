@@ -738,6 +738,10 @@ DECL|member|count
 id|atomic_t
 id|count
 suffix:semicolon
+DECL|member|live
+id|atomic_t
+id|live
+suffix:semicolon
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
 id|task_t

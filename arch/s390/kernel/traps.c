@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/mathemu.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
 multiline_comment|/* Called from entry.S only */
 r_extern
 r_void
@@ -1450,6 +1451,11 @@ id|err
 r_static
 r_int
 id|die_counter
+suffix:semicolon
+id|debug_stop_all
+c_func
+(paren
+)paren
 suffix:semicolon
 id|console_verbose
 c_func
@@ -3504,6 +3510,73 @@ id|info
 suffix:semicolon
 )brace
 )brace
+DECL|function|space_switch_exception
+id|asmlinkage
+r_void
+id|space_switch_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|int_code
+)paren
+(brace
+id|siginfo_t
+id|info
+suffix:semicolon
+multiline_comment|/* Set user psw back to home space mode. */
+r_if
+c_cond
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_MASK_PSTATE
+)paren
+id|regs-&gt;psw.mask
+op_or_assign
+id|PSW_ASC_HOME
+suffix:semicolon
+multiline_comment|/* Send SIGILL. */
+id|info.si_signo
+op_assign
+id|SIGILL
+suffix:semicolon
+id|info.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|info.si_code
+op_assign
+id|ILL_PRVOPC
+suffix:semicolon
+id|info.si_addr
+op_assign
+id|get_check_address
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|do_trap
+c_func
+(paren
+id|int_code
+comma
+id|SIGILL
+comma
+l_string|&quot;space switch event&quot;
+comma
+id|regs
+comma
+op_amp
+id|info
+)paren
+suffix:semicolon
+)brace
 DECL|function|kernel_stack_overflow
 id|asmlinkage
 r_void
@@ -3777,7 +3850,7 @@ l_int|0x1C
 )braket
 op_assign
 op_amp
-id|privileged_op
+id|space_switch_exception
 suffix:semicolon
 id|pgm_check_table
 (braket

@@ -580,6 +580,8 @@ r_int
 id|nl
 )paren
 suffix:semicolon
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; * output pause versions need a delay at least for the&n; * w83c105 ide controller in a p610.&n; */
 DECL|macro|inb_p
 mdefine_line|#define inb_p(port)             inb(port)
@@ -797,9 +799,11 @@ r_int
 id|in_8
 c_func
 (paren
+r_const
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|addr
 )paren
@@ -839,6 +843,7 @@ c_func
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|addr
 comma
@@ -872,9 +877,11 @@ r_int
 id|in_le16
 c_func
 (paren
+r_const
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -916,9 +923,11 @@ r_int
 id|in_be16
 c_func
 (paren
+r_const
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -958,6 +967,7 @@ c_func
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -999,6 +1009,7 @@ c_func
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -1032,8 +1043,10 @@ r_int
 id|in_le32
 c_func
 (paren
+r_const
 r_volatile
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1075,8 +1088,10 @@ r_int
 id|in_be32
 c_func
 (paren
+r_const
 r_volatile
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1115,6 +1130,7 @@ c_func
 (paren
 r_volatile
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -1155,6 +1171,7 @@ c_func
 (paren
 r_volatile
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -1189,9 +1206,11 @@ r_int
 id|in_le64
 c_func
 (paren
+r_const
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1251,9 +1270,11 @@ r_int
 id|in_be64
 c_func
 (paren
+r_const
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1294,6 +1315,7 @@ c_func
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -1358,6 +1380,7 @@ c_func
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|addr
 comma

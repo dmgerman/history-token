@@ -326,6 +326,8 @@ DECL|macro|ioremap_writethrough
 mdefine_line|#define ioremap_writethrough(physaddr, size)&t;(physaddr)
 DECL|macro|ioremap_fullcache
 mdefine_line|#define ioremap_fullcache(physaddr, size)&t;(physaddr)
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)      ((page - mem_map) &lt;&lt; PAGE_SHIFT)
 macro_line|#if 0

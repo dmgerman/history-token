@@ -2580,7 +2580,7 @@ r_return
 id|bp
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|in_breakpoint_table
@@ -7713,6 +7713,7 @@ DECL|function|super_regs
 id|super_regs
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -8755,6 +8756,7 @@ DECL|function|memex
 id|memex
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9529,6 +9531,7 @@ DECL|function|bsesc
 id|bsesc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9595,6 +9598,7 @@ DECL|function|dump
 id|dump
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -10599,6 +10603,7 @@ DECL|function|memlocate
 id|memlocate
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -10803,6 +10808,7 @@ DECL|function|memzcan
 id|memzcan
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -10974,6 +10980,7 @@ DECL|function|skipbl
 id|skipbl
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -11134,13 +11141,11 @@ DECL|function|scanhex
 id|scanhex
 c_func
 (paren
-id|vp
-)paren
 r_int
 r_int
 op_star
 id|vp
-suffix:semicolon
+)paren
 (brace
 r_int
 id|c
@@ -11567,6 +11572,7 @@ DECL|function|scannl
 id|scannl
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -11770,6 +11776,7 @@ DECL|function|flush_input
 id|flush_input
 c_func
 (paren
+r_void
 )paren
 (brace
 id|lineptr
@@ -11782,6 +11789,7 @@ DECL|function|inchar
 id|inchar
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -11840,12 +11848,10 @@ DECL|function|take_input
 id|take_input
 c_func
 (paren
-id|str
-)paren
 r_char
 op_star
 id|str
-suffix:semicolon
+)paren
 (brace
 id|lineptr
 op_assign

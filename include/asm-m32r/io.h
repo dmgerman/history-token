@@ -558,6 +558,12 @@ DECL|macro|__raw_readw
 mdefine_line|#define __raw_readw readw
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl readl
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed readb
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed readw
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed readl
 DECL|macro|writeb
 mdefine_line|#define writeb(val, addr)  _writeb((val), (unsigned long)(addr))
 DECL|macro|writew
@@ -570,6 +576,8 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 DECL|macro|flush_write_buffers
 mdefine_line|#define flush_write_buffers() do { } while (0)  /* M32R_FIXME */
 multiline_comment|/**&n; *&t;isa_check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check&n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */

@@ -2324,6 +2324,7 @@ id|args_buf
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* The matching atomic_inc was in rtas_excl_open() */
 id|atomic_dec
 c_func
 (paren
@@ -2366,12 +2367,16 @@ c_func
 id|dp-&gt;data
 )paren
 suffix:semicolon
+id|dp-&gt;owner
+op_assign
+l_int|NULL
+suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
 id|dp-&gt;name
 comma
-l_int|NULL
+id|dp-&gt;parent
 )paren
 suffix:semicolon
 )brace

@@ -189,6 +189,10 @@ DECL|member|bus
 r_int
 id|bus
 suffix:semicolon
+DECL|member|cursor_reset
+r_int
+id|cursor_reset
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
 DECL|member|vram_valid

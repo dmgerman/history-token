@@ -167,10 +167,10 @@ c_func
 id|sn_io_addr
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * sn_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to &n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction.  For other platforms, mmiob() may have to read&n; * a chipset register to ensure ordering.&n; *&n; * On SN2, we wait for the PIO_WRITE_STATUS SHub register to clear.&n; * See PV 871084 for details about the WAR about zero value.&n; *&n; */
-DECL|function|sn_mmiob
+multiline_comment|/**&n; * __sn_mmiowb - I/O space memory barrier&n; *&n; * See include/asm-ia64/io.h and Documentation/DocBook/deviceiobook.tmpl&n; * for details.&n; *&n; * On SN2, we wait for the PIO_WRITE_STATUS SHub register to clear.&n; * See PV 871084 for details about the WAR about zero value.&n; *&n; */
+DECL|function|__sn_mmiowb
 r_void
-id|sn_mmiob
+id|__sn_mmiowb
 c_func
 (paren
 r_void
@@ -203,11 +203,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sn_mmiob
+DECL|variable|__sn_mmiowb
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sn_mmiob
+id|__sn_mmiowb
 )paren
 suffix:semicolon
 eof

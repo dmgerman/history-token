@@ -61,6 +61,71 @@ id|MODULE_NAME_LEN
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
+DECL|struct|module_attribute
+r_struct
+id|module_attribute
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|show
+id|ssize_t
+(paren
+op_star
+id|show
+)paren
+(paren
+r_struct
+id|module
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|store
+id|ssize_t
+(paren
+op_star
+id|store
+)paren
+(paren
+r_struct
+id|module
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|module_kobject
+r_struct
+id|module_kobject
+(brace
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
+DECL|member|mod
+r_struct
+id|module
+op_star
+id|mod
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* These are either module local, or the kernel&squot;s dummy ones. */
 r_extern
 r_int
@@ -127,6 +192,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|subsystem
+id|module_subsys
 suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|macro|___module_cat
@@ -264,50 +334,6 @@ id|MODULE_STATE_GOING
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* sysfs stuff */
-DECL|struct|module_attribute
-r_struct
-id|module_attribute
-(brace
-DECL|member|attr
-r_struct
-id|attribute
-id|attr
-suffix:semicolon
-DECL|member|param
-r_struct
-id|kernel_param
-op_star
-id|param
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|module_kobject
-r_struct
-id|module_kobject
-(brace
-multiline_comment|/* Everyone should have one of these. */
-DECL|member|kobj
-r_struct
-id|kobject
-id|kobj
-suffix:semicolon
-multiline_comment|/* We always have refcnt, we may have others from module_param(). */
-DECL|member|num_attributes
-r_int
-r_int
-id|num_attributes
-suffix:semicolon
-DECL|member|attr
-r_struct
-id|module_attribute
-id|attr
-(braket
-l_int|0
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Similar stuff for section attributes. */
 DECL|macro|MODULE_SECT_NAME_LEN
 mdefine_line|#define MODULE_SECT_NAME_LEN 32
@@ -353,6 +379,9 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|param_kobject
+suffix:semicolon
 DECL|struct|module
 r_struct
 id|module
@@ -382,6 +411,12 @@ r_struct
 id|module_kobject
 op_star
 id|mkobj
+suffix:semicolon
+DECL|member|params_kobject
+r_struct
+id|param_kobject
+op_star
+id|params_kobject
 suffix:semicolon
 multiline_comment|/* Exported symbols */
 DECL|member|syms
@@ -526,12 +561,6 @@ m_exit
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* Fake kernel param for refcnt. */
-DECL|member|refcnt_param
-r_struct
-id|kernel_param
-id|refcnt_param
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KALLSYMS
@@ -1429,13 +1458,25 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|MODULE_PARM_
+r_static
+r_inline
+r_void
+id|__deprecated
+id|MODULE_PARM_
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#ifdef MODULE
 multiline_comment|/* DEPRECATED: Do not use. */
 DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type };
+mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type, &amp;MODULE_PARM_ };
 macro_line|#else
 DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)
+mdefine_line|#define MODULE_PARM(var,type) static void __attribute__((__unused__)) *__parm_##var = &amp;MODULE_PARM_;
 macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)

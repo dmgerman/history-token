@@ -1320,7 +1320,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|page
+id|buf
 comma
 id|KM_BIO_SRC_IRQ
 )paren

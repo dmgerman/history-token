@@ -8497,12 +8497,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8513,12 +8515,14 @@ comma
 l_string|&quot;Enable debug mode&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|power_off
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8529,12 +8533,14 @@ comma
 l_string|&quot;Enable power off&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|bounce_interval
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8545,12 +8551,14 @@ comma
 l_string|&quot;Set the number of ticks to ignore suspend bounces&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|allow_ints
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8561,12 +8569,14 @@ comma
 l_string|&quot;Allow interrupts during BIOS calls&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|broken_psr
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8577,12 +8587,14 @@ comma
 l_string|&quot;BIOS has a broken GetPowerStatus call&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|realmode_power_off
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8593,12 +8605,14 @@ comma
 l_string|&quot;Switch to real mode before powering off&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|idle_threshold
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8609,12 +8623,14 @@ comma
 l_string|&quot;System idle percentage above which to make APM BIOS idle calls&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|idle_period
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8625,12 +8641,14 @@ comma
 l_string|&quot;Period (in sec/100) over which to caculate the idle percentage&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|smp
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

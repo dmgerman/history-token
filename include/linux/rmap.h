@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Declarations for Reverse Mapping functions in mm/rmap.
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * The anon_vma heads a list of private &quot;related&quot; vmas, to scan if&n; * an anonymous page pointing to this anon_vma needs to be unmapped:&n; * the vmas on the list will be related by forking, or by splitting.&n; *&n; * Since vmas come and go as they are split and merged (particularly&n; * in mprotect), the mapping field of an anonymous page cannot point&n; * directly to a vma: instead it points to an anon_vma, on whose list&n; * the related vmas can be easily linked or unlinked.&n; *&n; * After unlinking the last vma on the list, we must garbage collect&n; * the anon_vma object itself: we&squot;re guaranteed no page can be&n; * pointing to this anon_vma once its vma list is empty.&n; */
 DECL|struct|anon_vma

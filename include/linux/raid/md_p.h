@@ -455,7 +455,7 @@ id|pad1
 (braket
 l_int|128
 op_minus
-l_int|92
+l_int|96
 )braket
 suffix:semicolon
 multiline_comment|/* set to 0 when written */
@@ -540,7 +540,7 @@ id|pad3
 (braket
 l_int|64
 op_minus
-l_int|40
+l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* set to 0 when writing */

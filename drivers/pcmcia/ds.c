@@ -4549,6 +4549,10 @@ id|cmd
 op_amp
 id|IOC_OUT
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -4563,7 +4567,13 @@ id|buf
 comma
 id|size
 )paren
+)paren
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon

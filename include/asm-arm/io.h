@@ -249,6 +249,8 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb()
 multiline_comment|/*&n; *  Memory access primitives&n; *  ------------------------&n; *&n; * These perform PCI memory accesses via an ioremap region.  They don&squot;t&n; * take an address as such, but a cookie.&n; *&n; * Again, this are defined to perform little endian accesses.  See the&n; * IO port primitives for more information.&n; */
 macro_line|#ifdef __mem_pci
 DECL|macro|readb

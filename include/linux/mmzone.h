@@ -46,8 +46,11 @@ r_struct
 id|zone_padding
 (brace
 DECL|member|x
-r_int
+r_char
 id|x
+(braket
+l_int|0
+)braket
 suffix:semicolon
 DECL|variable|____cacheline_maxaligned_in_smp
 )brace
@@ -169,11 +172,7 @@ DECL|struct|zone
 r_struct
 id|zone
 (brace
-multiline_comment|/*&n;&t; * Commonly accessed fields:&n;&t; */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
+multiline_comment|/* Fields commonly accessed by the page allocator */
 DECL|member|free_pages
 r_int
 r_int
@@ -199,11 +198,33 @@ id|protection
 id|MAX_NR_ZONES
 )braket
 suffix:semicolon
+DECL|member|pageset
+r_struct
+id|per_cpu_pageset
+id|pageset
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|free_area
+r_struct
+id|free_area
+id|free_area
+(braket
+id|MAX_ORDER
+)braket
+suffix:semicolon
 id|ZONE_PADDING
 c_func
 (paren
 id|_pad1_
 )paren
+multiline_comment|/* Fields commonly accessed by the page reclaim scanner */
 id|spinlock_t
 id|lru_lock
 suffix:semicolon
@@ -237,23 +258,19 @@ r_int
 r_int
 id|nr_inactive
 suffix:semicolon
-DECL|member|all_unreclaimable
-r_int
-id|all_unreclaimable
-suffix:semicolon
-multiline_comment|/* All pages pinned */
 DECL|member|pages_scanned
 r_int
 r_int
 id|pages_scanned
 suffix:semicolon
 multiline_comment|/* since last reclaim */
-id|ZONE_PADDING
-c_func
-(paren
-id|_pad2_
-)paren
+DECL|member|all_unreclaimable
+r_int
+id|all_unreclaimable
+suffix:semicolon
+multiline_comment|/* All pages pinned */
 multiline_comment|/*&n;&t; * prev_priority holds the scanning priority for this zone.  It is&n;&t; * defined as the scanning priority at which we achieved our reclaim&n;&t; * target at the previous try_to_free_pages() or balance_pgdat()&n;&t; * invokation.&n;&t; *&n;&t; * We use prev_priority as a measure of how much stress page reclaim is&n;&t; * under - it drives the swappiness decision: whether to unmap mapped&n;&t; * pages.&n;&t; *&n;&t; * temp_priority is used to remember the scanning priority at which&n;&t; * this zone was successfully refilled to free_pages == pages_high.&n;&t; *&n;&t; * Access to both these fields is quite racy even on uniprocessor.  But&n;&t; * it is expected to average out OK.&n;&t; */
+DECL|member|temp_priority
 r_int
 id|temp_priority
 suffix:semicolon
@@ -261,17 +278,13 @@ DECL|member|prev_priority
 r_int
 id|prev_priority
 suffix:semicolon
-multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-DECL|member|free_area
-r_struct
-id|free_area
-id|free_area
-(braket
-id|MAX_ORDER
-)braket
-suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad2_
+)paren
+multiline_comment|/* Rarely used or read-mostly fields */
 multiline_comment|/*&n;&t; * wait_table&t;&t;-- the array holding the hash table&n;&t; * wait_table_size&t;-- the size of the hash table array&n;&t; * wait_table_bits&t;-- wait_table_size == (1 &lt;&lt; wait_table_bits)&n;&t; *&n;&t; * The purpose of all these is to keep track of the people&n;&t; * waiting for a page to become available and make them&n;&t; * runnable again when possible. The trouble is that this&n;&t; * consumes a lot of space, especially when so few things&n;&t; * wait on pages at a given time. So instead of using&n;&t; * per-page waitqueues, we use a waitqueue hash table.&n;&t; *&n;&t; * The bucket discipline is to sleep on the same queue when&n;&t; * colliding and wake all in that wait queue when removing.&n;&t; * When something wakes, it must check to be sure its page is&n;&t; * truly available, a la thundering herd. The cost of a&n;&t; * collision is great, but given the expected load of the&n;&t; * table, they should be so rare as to be outweighed by the&n;&t; * benefits from the saved space.&n;&t; *&n;&t; * __wait_on_page_locked() and unlock_page() in mm/filemap.c, are the&n;&t; * primary users of these fields, and in mm/page_alloc.c&n;&t; * free_area_init_core() performs the initialization of them.&n;&t; */
-DECL|member|wait_table
 id|wait_queue_head_t
 op_star
 id|wait_table
@@ -285,18 +298,6 @@ DECL|member|wait_table_bits
 r_int
 r_int
 id|wait_table_bits
-suffix:semicolon
-id|ZONE_PADDING
-c_func
-(paren
-id|_pad3_
-)paren
-r_struct
-id|per_cpu_pageset
-id|pageset
-(braket
-id|NR_CPUS
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Discontig memory support fields.&n;&t; */
 DECL|member|zone_pgdat
@@ -317,12 +318,6 @@ r_int
 r_int
 id|zone_start_pfn
 suffix:semicolon
-multiline_comment|/*&n;&t; * rarely used fields:&n;&t; */
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
 DECL|member|spanned_pages
 r_int
 r_int
@@ -335,6 +330,12 @@ r_int
 id|present_pages
 suffix:semicolon
 multiline_comment|/* amount of memory (excluding holes) */
+multiline_comment|/*&n;&t; * rarely used fields:&n;&t; */
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
 DECL|variable|____cacheline_maxaligned_in_smp
 )brace
 id|____cacheline_maxaligned_in_smp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/ctcdbug.h ($Revision: 1.3 $)&n; *&n; * CTC / ESCON network driver - s390 dbf exploit.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Peter Tiedemann (ptiedem@de.ibm.com)&n; *&n; *    $Revision: 1.3 $&t; $Date: 2004/07/28 12:27:54 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/ctcdbug.h ($Revision: 1.4 $)&n; *&n; * CTC / ESCON network driver - s390 dbf exploit.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Peter Tiedemann (ptiedem@de.ibm.com)&n; *&n; *    $Revision: 1.4 $&t; $Date: 2004/10/15 09:26:58 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;asm/debug.h&gt;
 multiline_comment|/**&n; * Debug Facility stuff&n; */
 DECL|macro|CTC_DBF_SETUP_NAME
@@ -35,8 +35,7 @@ DECL|macro|DBF_TEXT
 mdefine_line|#define DBF_TEXT(name,level,text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(ctc_dbf_##name,level,text); &bslash;&n;&t;} while (0)
 DECL|macro|DBF_HEX
 mdefine_line|#define DBF_HEX(name,level,addr,len) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_event(ctc_dbf_##name,level,(void*)(addr),len); &bslash;&n;&t;} while (0)
-r_extern
-id|DEFINE_PER_CPU
+id|DECLARE_PER_CPU
 c_func
 (paren
 r_char
