@@ -17,15 +17,6 @@ DECL|macro|AES_EXTENDED_KEY_SIZE
 mdefine_line|#define AES_EXTENDED_KEY_SIZE&t;64&t;/* in uint32_t units */
 DECL|macro|AES_EXTENDED_KEY_SIZE_B
 mdefine_line|#define AES_EXTENDED_KEY_SIZE_B&t;(AES_EXTENDED_KEY_SIZE * sizeof(uint32_t))
-r_static
-r_inline
-r_int
-id|aes_hw_extkey_available
-(paren
-r_uint8
-id|key_len
-)paren
-suffix:semicolon
 DECL|struct|aes_ctx
 r_struct
 id|aes_ctx
@@ -935,6 +926,33 @@ DECL|macro|loop6
 mdefine_line|#define loop6(i)                                    &bslash;&n;{   t = rotr(t,  8); t = ls_box(t) ^ rco_tab[i];    &bslash;&n;    t ^= E_KEY[6 * i];     E_KEY[6 * i + 6] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 1]; E_KEY[6 * i + 7] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 2]; E_KEY[6 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 3]; E_KEY[6 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[6 * i + 4]; E_KEY[6 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[6 * i + 5]; E_KEY[6 * i + 11] = t;   &bslash;&n;}
 DECL|macro|loop8
 mdefine_line|#define loop8(i)                                    &bslash;&n;{   t = rotr(t,  8); ; t = ls_box(t) ^ rco_tab[i];  &bslash;&n;    t ^= E_KEY[8 * i];     E_KEY[8 * i + 8] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 1]; E_KEY[8 * i + 9] = t;    &bslash;&n;    t ^= E_KEY[8 * i + 2]; E_KEY[8 * i + 10] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 3]; E_KEY[8 * i + 11] = t;   &bslash;&n;    t  = E_KEY[8 * i + 4] ^ ls_box(t);    &bslash;&n;    E_KEY[8 * i + 12] = t;                &bslash;&n;    t ^= E_KEY[8 * i + 5]; E_KEY[8 * i + 13] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 6]; E_KEY[8 * i + 14] = t;   &bslash;&n;    t ^= E_KEY[8 * i + 7]; E_KEY[8 * i + 15] = t;   &bslash;&n;}
+multiline_comment|/* Tells whether the ACE is capable to generate&n;   the extended key for a given key_len. */
+r_static
+r_inline
+r_int
+DECL|function|aes_hw_extkey_available
+id|aes_hw_extkey_available
+c_func
+(paren
+r_uint8
+id|key_len
+)paren
+(brace
+multiline_comment|/* TODO: We should check the actual CPU model/stepping&n;&t;         as it&squot;s possible that the capability will be&n;&t;         added in the next CPU revisions. */
+r_if
+c_cond
+(paren
+id|key_len
+op_eq
+l_int|16
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_static
 r_int
 DECL|function|aes_set_key
@@ -1626,33 +1644,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Tells whether the ACE is capable to generate&n;   the extended key for a given key_len. */
-r_static
-r_inline
-r_int
-DECL|function|aes_hw_extkey_available
-id|aes_hw_extkey_available
-c_func
-(paren
-r_uint8
-id|key_len
-)paren
-(brace
-multiline_comment|/* TODO: We should check the actual CPU model/stepping&n;&t;         as it&squot;s possible that the capability will be&n;&t;         added in the next CPU revisions. */
-r_if
-c_cond
-(paren
-id|key_len
-op_eq
-l_int|16
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* ====== Encryption/decryption routines ====== */
 multiline_comment|/* This is the real call to PadLock. */
 r_static
@@ -1695,12 +1686,6 @@ r_volatile
 l_string|&quot;.byte 0xf3,0x0f,0xa7,0xc8&quot;
 multiline_comment|/* rep xcryptecb */
 suffix:colon
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|output
-)paren
-comma
 l_string|&quot;+S&quot;
 (paren
 id|input
