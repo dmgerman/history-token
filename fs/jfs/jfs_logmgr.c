@@ -2870,6 +2870,10 @@ op_assign
 id|sb
 suffix:semicolon
 multiline_comment|/* This should be a list */
+id|log-&gt;bdev
+op_assign
+id|sb-&gt;s_bdev
+suffix:semicolon
 id|log-&gt;flag
 op_assign
 id|JFS_INLINELOG
