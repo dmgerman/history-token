@@ -2,6 +2,22 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef __QLA_DEF_H
 DECL|macro|__QLA_DEF_H
 mdefine_line|#define __QLA_DEF_H
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 multiline_comment|/* XXX(hch): move to pci_ids.h */
 macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP2300
 DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP2300
@@ -5939,5 +5955,22 @@ macro_line|#include &quot;qla_gbl.h&quot;
 macro_line|#include &quot;qla_dbg.h&quot;
 macro_line|#include &quot;qla_inline.h&quot;
 macro_line|#include &quot;qla_listops.h&quot;
+multiline_comment|/*&n;* String arrays&n;*/
+DECL|macro|LINESIZE
+mdefine_line|#define LINESIZE    256
+DECL|macro|MAXARGS
+mdefine_line|#define MAXARGS      26
+DECL|macro|CMD_SP
+mdefine_line|#define CMD_SP(Cmnd)&t;&t;((Cmnd)-&gt;SCp.ptr)
+DECL|macro|CMD_COMPL_STATUS
+mdefine_line|#define CMD_COMPL_STATUS(Cmnd)  ((Cmnd)-&gt;SCp.this_residual)
+DECL|macro|CMD_RESID_LEN
+mdefine_line|#define CMD_RESID_LEN(Cmnd)&t;((Cmnd)-&gt;SCp.buffers_residual)
+DECL|macro|CMD_SCSI_STATUS
+mdefine_line|#define CMD_SCSI_STATUS(Cmnd)&t;((Cmnd)-&gt;SCp.Status)
+DECL|macro|CMD_ACTUAL_SNSLEN
+mdefine_line|#define CMD_ACTUAL_SNSLEN(Cmnd)&t;((Cmnd)-&gt;SCp.Message)
+DECL|macro|CMD_ENTRY_STATUS
+mdefine_line|#define CMD_ENTRY_STATUS(Cmnd)&t;((Cmnd)-&gt;SCp.have_data_in)
 macro_line|#endif
 eof

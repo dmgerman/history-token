@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef __QLA_GBL_H
 DECL|macro|__QLA_GBL_H
 mdefine_line|#define&t;__QLA_GBL_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_extern
 r_void
 id|qla2x00_remove_one
