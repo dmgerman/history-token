@@ -26,6 +26,8 @@ DECL|macro|UFS_SUPER_DEBUG
 macro_line|#undef UFS_SUPER_DEBUG
 DECL|macro|UFS_SUPER_DEBUG_MORE
 macro_line|#undef UFS_SUPER_DEBUG_MORE
+DECL|macro|UFS_SUPER_DEBUG_MORE
+macro_line|#undef UFS_SUPER_DEBUG_MORE
 macro_line|#ifdef UFS_SUPER_DEBUG
 DECL|macro|UFSD
 mdefine_line|#define UFSD(x) printk(&quot;(%s, %d), %s: &quot;, __FILE__, __LINE__, __FUNCTION__); printk x;
@@ -610,6 +612,34 @@ c_func
 id|sb
 comma
 id|usb-&gt;fs_u11.fs_u2.fs_dsize
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;  bsize:         %u&bslash;n&quot;
+comma
+id|fs32_to_cpu
+c_func
+(paren
+id|usb
+comma
+id|usb-&gt;fs_bsize
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;  fsize:         %u&bslash;n&quot;
+comma
+id|fs32_to_cpu
+c_func
+(paren
+id|usb
+comma
+id|usb-&gt;fs_fsize
 )paren
 )paren
 suffix:semicolon
@@ -4759,6 +4789,18 @@ comma
 id|usb1-&gt;fs_fshift
 )paren
 suffix:semicolon
+id|UFSD
+c_func
+(paren
+(paren
+l_string|&quot;uspi-&gt;s_bshift = %d,uspi-&gt;s_fshift = %d&quot;
+comma
+id|uspi-&gt;s_bshift
+comma
+id|uspi-&gt;s_fshift
+)paren
+)paren
+suffix:semicolon
 id|uspi-&gt;s_fpbshift
 op_assign
 id|fs32_to_cpu
@@ -5029,12 +5071,34 @@ id|uspi-&gt;s_fpb
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|UFS_TYPE_MASK
+)paren
+op_eq
+id|UFS_TYPE_UFS2
+)paren
+(brace
+id|uspi-&gt;s_apbshift
+op_assign
+id|uspi-&gt;s_bshift
+op_minus
+l_int|3
+suffix:semicolon
+)brace
+r_else
+(brace
 id|uspi-&gt;s_apbshift
 op_assign
 id|uspi-&gt;s_bshift
 op_minus
 l_int|2
 suffix:semicolon
+)brace
 id|uspi-&gt;s_2apbshift
 op_assign
 id|uspi-&gt;s_apbshift

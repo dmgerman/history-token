@@ -118,8 +118,6 @@ r_int
 id|offset
 comma
 id|lblk
-comma
-id|blk
 suffix:semicolon
 r_int
 id|i
@@ -146,6 +144,11 @@ id|de_reclen
 suffix:semicolon
 r_int
 id|flags
+suffix:semicolon
+id|u64
+id|blk
+op_assign
+l_int|0L
 suffix:semicolon
 id|lock_kernel
 c_func
