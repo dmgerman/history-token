@@ -12474,6 +12474,13 @@ id|rt_periodic_timer.function
 op_assign
 id|rt_check_expire
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|rt_secret_timer
+)paren
+suffix:semicolon
 id|rt_secret_timer.function
 op_assign
 id|rt_secret_rebuild
