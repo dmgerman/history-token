@@ -343,6 +343,11 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|do_gettimeofday
