@@ -13,11 +13,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|variable|pnp_skip_pci_scan
+r_static
 r_int
 id|pnp_skip_pci_scan
 suffix:semicolon
 multiline_comment|/* skip PCI resource scanning */
 DECL|variable|pnp_reserve_irq
+r_static
 r_int
 id|pnp_reserve_irq
 (braket
@@ -39,6 +41,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* reserve (don&squot;t use) some IRQ */
 DECL|variable|pnp_reserve_dma
+r_static
 r_int
 id|pnp_reserve_dma
 (braket
@@ -60,6 +63,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* reserve (don&squot;t use) some DMA */
 DECL|variable|pnp_reserve_io
+r_static
 r_int
 id|pnp_reserve_io
 (braket
@@ -81,6 +85,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* reserve (don&squot;t use) some I/O region */
 DECL|variable|pnp_reserve_mem
+r_static
 r_int
 id|pnp_reserve_mem
 (braket

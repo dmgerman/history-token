@@ -56,6 +56,7 @@ id|pnp_info_buffer
 id|pnp_info_buffer_t
 suffix:semicolon
 DECL|function|pnp_printf
+r_static
 r_int
 id|pnp_printf
 c_func

@@ -1533,6 +1533,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_assign_resources - assigns resources to the device based on the specified dependent number&n; * @dev: pointer to the desired device&n; * @depnum: the dependent function number&n; *&n; * Only set depnum to 0 if the device does not have dependent options.&n; */
 DECL|function|pnp_assign_resources
+r_static
 r_int
 id|pnp_assign_resources
 c_func
@@ -2686,13 +2687,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|pnp_assign_resources
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pnp_assign_resources
-)paren
-suffix:semicolon
 DECL|variable|pnp_manual_config_dev
 id|EXPORT_SYMBOL
 c_func

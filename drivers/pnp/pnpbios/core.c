@@ -1825,6 +1825,7 @@ multiline_comment|/* PnP BIOS signature: &quot;$PnP&quot; */
 DECL|macro|PNP_SIGNATURE
 mdefine_line|#define PNP_SIGNATURE   ((&squot;$&squot; &lt;&lt; 0) + (&squot;P&squot; &lt;&lt; 8) + (&squot;n&squot; &lt;&lt; 16) + (&squot;P&squot; &lt;&lt; 24))
 DECL|function|pnpbios_probe_system
+r_static
 r_int
 id|__init
 id|pnpbios_probe_system
@@ -2168,6 +2169,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pnpbios_init
+r_static
 r_int
 id|__init
 id|pnpbios_init
