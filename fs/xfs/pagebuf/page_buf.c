@@ -4876,12 +4876,6 @@ id|pb-&gt;pb_bn
 suffix:semicolon
 r_int
 r_int
-id|sectorshift
-op_assign
-id|pb-&gt;pb_target-&gt;pbr_sshift
-suffix:semicolon
-r_int
-r_int
 id|blocksize
 op_assign
 id|pb-&gt;pb_target-&gt;pbr_bsize
