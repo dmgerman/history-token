@@ -156,8 +156,6 @@ DECL|macro|user_termios_to_kernel_termios
 mdefine_line|#define user_termios_to_kernel_termios(k, u) copy_from_user(k, u, sizeof(struct termios))
 DECL|macro|kernel_termios_to_user_termios
 mdefine_line|#define kernel_termios_to_user_termios(u, k) copy_to_user(u, k, sizeof(struct termios))
-DECL|macro|MODULE_ALIAS_LDISC
-mdefine_line|#define MODULE_ALIAS_LDISC(ldisc) &bslash;&n;&t;MODULE_ALIAS(&quot;tty-ldisc-&quot; __stringify(ldisc))
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _I386_TERMIOS_H */
 eof

@@ -5106,9 +5106,9 @@ id|wait
 )paren
 suffix:semicolon
 r_int
-id|insert_end
+id|where
 op_assign
-l_int|1
+id|ELEVATOR_INSERT_BACK
 comma
 id|err
 suffix:semicolon
@@ -5203,9 +5203,9 @@ id|hwgroup-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
-id|insert_end
+id|where
 op_assign
-l_int|0
+id|ELEVATOR_INSERT_FRONT
 suffix:semicolon
 id|rq-&gt;flags
 op_or_assign
@@ -5219,7 +5219,7 @@ id|drive-&gt;queue
 comma
 id|rq
 comma
-id|insert_end
+id|where
 comma
 l_int|0
 )paren
