@@ -195,14 +195,12 @@ r_return
 op_minus
 id|ESRCH
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|wait_task_inactive
 c_func
 (paren
 id|child
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
 )brace
 multiline_comment|/* All systems go.. */
 r_return

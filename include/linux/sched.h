@@ -2831,6 +2831,7 @@ id|wait
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|wait_task_inactive
@@ -2841,6 +2842,10 @@ op_star
 id|p
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|wait_task_inactive
+mdefine_line|#define wait_task_inactive(p)&t;do { } while (0)
+macro_line|#endif
 r_extern
 r_void
 id|kick_if_running
