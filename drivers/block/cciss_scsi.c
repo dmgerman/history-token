@@ -837,12 +837,8 @@ singleline_comment|// BUG();
 id|printk
 c_func
 (paren
-l_string|&quot;WE HAVE A BUG HERE!!! stk=0x%08x&bslash;n&quot;
+l_string|&quot;WE HAVE A BUG HERE!!! stk=0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|stk
 )paren
 suffix:semicolon
