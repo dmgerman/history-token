@@ -184,11 +184,6 @@ id|svc_client
 op_star
 id|clients
 suffix:semicolon
-DECL|variable|initialized
-r_static
-r_int
-id|initialized
-suffix:semicolon
 DECL|variable|hash_lock
 r_static
 r_int
@@ -1938,15 +1933,6 @@ r_int
 id|addr
 op_assign
 id|sin-&gt;sin_addr.s_addr
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 id|head
 op_assign
@@ -3976,13 +3962,6 @@ c_func
 l_string|&quot;nfsd: initializing export module.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|initialized
-)paren
-r_return
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4008,10 +3987,6 @@ id|clients
 op_assign
 l_int|NULL
 suffix:semicolon
-id|initialized
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Shutdown the exports module.&n; */
 r_void
@@ -4030,14 +4005,6 @@ c_func
 (paren
 l_string|&quot;nfsd: shutting down export module.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-r_return
 suffix:semicolon
 r_if
 c_cond
