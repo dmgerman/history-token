@@ -12978,9 +12978,12 @@ op_amp
 id|sfp-&gt;read_wait
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|sfp-&gt;rq_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|sfp-&gt;timeout
 op_assign
