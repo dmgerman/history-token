@@ -4385,6 +4385,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|con_set_default_unimap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|con_set_default_unimap
+)paren
+suffix:semicolon
 r_int
 DECL|function|con_copy_unimap
 id|con_copy_unimap
