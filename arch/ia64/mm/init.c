@@ -2242,7 +2242,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* setup gate pages before we free up boot memory... */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
-id|ia32_gdt_init
+id|ia32_boot_gdt_init
 c_func
 (paren
 )paren

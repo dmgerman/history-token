@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -961,6 +962,13 @@ id|local_cpu_data-&gt;loops_per_jiffy
 op_assign
 id|loops_per_jiffy
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+id|ia32_gdt_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -525,6 +525,34 @@ DECL|macro|SET_FPEMU_CTL
 mdefine_line|#define SET_FPEMU_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_FPEMU_MASK)&t;&t;&bslash;&n;&t;&t;&t;  | (((value) &lt;&lt; IA64_THREAD_FPEMU_SHIFT) &amp; IA64_THREAD_FPEMU_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_FPEMU_CTL
 mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+DECL|struct|desc_struct
+r_struct
+id|desc_struct
+(brace
+DECL|member|a
+DECL|member|b
+r_int
+r_int
+id|a
+comma
+id|b
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|desc_empty
+mdefine_line|#define desc_empty(desc)&t;&t;(!((desc)-&gt;a + (desc)-&gt;b))
+DECL|macro|desc_equal
+mdefine_line|#define desc_equal(desc1, desc2)&t;(((desc1)-&gt;a == (desc2)-&gt;a) &amp;&amp; ((desc1)-&gt;b == (desc2)-&gt;b))
+DECL|macro|GDT_ENTRY_TLS_ENTRIES
+mdefine_line|#define GDT_ENTRY_TLS_ENTRIES&t;3
+DECL|macro|GDT_ENTRY_TLS_MIN
+mdefine_line|#define GDT_ENTRY_TLS_MIN&t;6
+DECL|macro|GDT_ENTRY_TLS_MAX
+mdefine_line|#define GDT_ENTRY_TLS_MAX &t;(GDT_ENTRY_TLS_MIN + GDT_ENTRY_TLS_ENTRIES - 1)
+DECL|macro|TLS_SIZE
+mdefine_line|#define TLS_SIZE (GDT_ENTRY_TLS_ENTRIES * 8)
+macro_line|#endif
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -608,6 +636,15 @@ id|__u64
 id|old_iob
 suffix:semicolon
 multiline_comment|/* old IOBase value */
+multiline_comment|/* cached TLS descriptors. */
+DECL|member|tls_array
+r_struct
+id|desc_struct
+id|tls_array
+(braket
+id|GDT_ENTRY_TLS_ENTRIES
+)braket
+suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,
 macro_line|#else

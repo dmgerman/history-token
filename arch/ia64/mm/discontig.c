@@ -561,7 +561,11 @@ id|nid
 id|memcpy
 c_func
 (paren
+id|__va
+c_func
+(paren
 id|cpu_data
+)paren
 comma
 id|__phys_per_cpu_start
 comma

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -1357,9 +1358,18 @@ id|child_ptregs
 r_if
 c_cond
 (paren
+(paren
 id|clone_flags
 op_amp
 id|CLONE_SETTLS
+)paren
+op_logical_and
+op_logical_neg
+id|IS_IA32_PROCESS
+c_func
+(paren
+id|regs
+)paren
 )paren
 id|child_ptregs-&gt;r13
 op_assign
@@ -1519,12 +1529,31 @@ id|current
 )paren
 )paren
 )paren
+(brace
 id|ia32_save_state
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+)paren
+id|retval
+op_assign
+id|ia32_clone_tls
+c_func
+(paren
+id|p
+comma
+id|child_ptregs
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 r_if
