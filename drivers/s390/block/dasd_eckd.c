@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.51 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.53 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -5629,7 +5629,7 @@ l_int|0
 suffix:semicolon
 id|cqr-&gt;expires
 op_assign
-l_int|10
+l_int|2
 op_star
 id|HZ
 suffix:semicolon
@@ -5794,7 +5794,7 @@ l_int|0
 suffix:semicolon
 id|cqr-&gt;expires
 op_assign
-l_int|10
+l_int|2
 op_star
 id|HZ
 suffix:semicolon
@@ -5959,7 +5959,7 @@ l_int|0
 suffix:semicolon
 id|cqr-&gt;expires
 op_assign
-l_int|10
+l_int|2
 op_star
 id|HZ
 suffix:semicolon
@@ -6221,6 +6221,9 @@ r_struct
 id|dasd_rssd_perf_stats_t
 )paren
 )paren
+suffix:semicolon
+id|ccw
+op_increment
 suffix:semicolon
 id|ccw-&gt;cmd_code
 op_assign

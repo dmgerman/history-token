@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * gendisk related functions for the dasd driver.&n; *&n; * $Revision: 1.44 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * gendisk related functions for the dasd driver.&n; *&n; * $Revision: 1.46 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -234,7 +234,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device-&gt;ro_flag
+id|test_bit
+c_func
+(paren
+id|DASD_FLAG_RO
+comma
+op_amp
+id|device-&gt;flags
+)paren
 )paren
 id|set_disk_ro
 c_func
@@ -308,7 +315,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Trigger a partition detection.&n; */
-r_void
+r_int
 DECL|function|dasd_scan_partitions
 id|dasd_scan_partitions
 c_func
@@ -335,7 +342,6 @@ op_lshift
 id|device-&gt;s2b_shift
 )paren
 suffix:semicolon
-multiline_comment|/* See fs/partition/check.c:register_disk,rescan_partitions */
 id|bdev
 op_assign
 id|bdget_disk
@@ -349,12 +355,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bdev
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|blkdev_get
 c_func
 (paren
@@ -364,11 +367,14 @@ id|FMODE_READ
 comma
 l_int|1
 )paren
-op_ge
+OL
 l_int|0
 )paren
-(brace
-multiline_comment|/* Can&squot;t call rescan_partitions directly. Use ioctl. */
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/*&n;&t; * See fs/partition/check.c:register_disk,rescan_partitions&n;&t; * Can&squot;t call rescan_partitions directly. Use ioctl.&n;&t; */
 id|ioctl_by_bdev
 c_func
 (paren
@@ -379,14 +385,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|blkdev_put
-c_func
-(paren
+multiline_comment|/*&n;&t; * Since the matching blkdev_put call to the blkdev_get in&n;&t; * this function is not called before dasd_destroy_partitions&n;&t; * the offline open_count limit needs to be increased from&n;&t; * 0 to 1. This is done by setting device-&gt;bdev (see&n;&t; * dasd_generic_set_offline). As long as the partition&n;&t; * detection is running no offline should be allowed. That&n;&t; * is why the assignment to device-&gt;bdev is done AFTER&n;&t; * the BLKRRPART ioctl.&n;&t; */
+id|device-&gt;bdev
+op_assign
 id|bdev
-)paren
 suffix:semicolon
-)brace
-)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Remove all inodes in the system for a device, delete the&n; * partitions and make device unusable by setting its size to zero.&n; */
 r_void
@@ -400,49 +406,109 @@ op_star
 id|device
 )paren
 (brace
-r_int
-id|p
+multiline_comment|/* The two structs have 168/176 byte on 31/64 bit. */
+r_struct
+id|blkpg_partition
+id|bpart
+suffix:semicolon
+r_struct
+id|blkpg_ioctl_arg
+id|barg
+suffix:semicolon
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+multiline_comment|/*&n;&t; * Get the bdev pointer from the device structure and clear&n;&t; * device-&gt;bdev to lower the offline open_count limit again.&n;&t; */
+id|bdev
+op_assign
+id|device-&gt;bdev
+suffix:semicolon
+id|device-&gt;bdev
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * See fs/partition/check.c:delete_partition&n;&t; * Can&squot;t call delete_partitions directly. Use ioctl.&n;&t; * The ioctl also does locking and invalidation.&n;&t; */
+id|memset
+c_func
+(paren
+op_amp
+id|bpart
+comma
+r_sizeof
+(paren
+r_struct
+id|blkpg_partition
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|barg
+comma
+r_sizeof
+(paren
+r_struct
+id|blkpg_ioctl_arg
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|barg.data
+op_assign
+op_amp
+id|bpart
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|p
+id|bpart.pno
 op_assign
 id|device-&gt;gdp-&gt;minors
 op_minus
 l_int|1
 suffix:semicolon
-id|p
+id|bpart.pno
 OG
 l_int|0
 suffix:semicolon
-id|p
+id|bpart.pno
 op_decrement
 )paren
-(brace
-id|invalidate_partition
+id|ioctl_by_bdev
 c_func
 (paren
-id|device-&gt;gdp
+id|bdev
 comma
-id|p
-)paren
-suffix:semicolon
-id|delete_partition
-c_func
+id|BLKPG_DEL_PARTITION
+comma
 (paren
-id|device-&gt;gdp
-comma
-id|p
+r_int
+r_int
+)paren
+op_amp
+id|barg
 )paren
 suffix:semicolon
-)brace
 id|invalidate_partition
 c_func
 (paren
 id|device-&gt;gdp
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Matching blkdev_put to the blkdev_get in dasd_scan_partitions. */
+id|blkdev_put
+c_func
+(paren
+id|bdev
 )paren
 suffix:semicolon
 id|set_capacity
