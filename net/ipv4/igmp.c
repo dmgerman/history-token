@@ -49,9 +49,9 @@ DECL|macro|IGMP_Initial_Report_Delay
 mdefine_line|#define IGMP_Initial_Report_Delay&t;&t;(1)
 multiline_comment|/* IGMP_Initial_Report_Delay is not from IGMP specs!&n; * IGMP specs require to report membership immediately after&n; * joining a group, but we delay the first report by a&n; * small interval. It seems more natural and still does not&n; * contradict to specs provided this delay is small enough.&n; */
 DECL|macro|IGMP_V1_SEEN
-mdefine_line|#define IGMP_V1_SEEN(in_dev) ((in_dev)-&gt;mr_v1_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v1_seen))
+mdefine_line|#define IGMP_V1_SEEN(in_dev) (ipv4_devconf.force_igmp_version == 1 || &bslash;&n;&t;&t;(in_dev)-&gt;cnf.force_igmp_version == 1 || &bslash;&n;&t;&t;((in_dev)-&gt;mr_v1_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v1_seen)))
 DECL|macro|IGMP_V2_SEEN
-mdefine_line|#define IGMP_V2_SEEN(in_dev) ((in_dev)-&gt;mr_v2_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v2_seen))
+mdefine_line|#define IGMP_V2_SEEN(in_dev) (ipv4_devconf.force_igmp_version == 2 || &bslash;&n;&t;&t;(in_dev)-&gt;cnf.force_igmp_version == 2 || &bslash;&n;&t;&t;((in_dev)-&gt;mr_v2_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v2_seen)))
 r_static
 r_void
 id|igmpv3_add_delrec

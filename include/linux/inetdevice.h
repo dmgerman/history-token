@@ -70,6 +70,10 @@ DECL|member|no_policy
 r_int
 id|no_policy
 suffix:semicolon
+DECL|member|force_igmp_version
+r_int
+id|force_igmp_version
+suffix:semicolon
 DECL|member|sysctl
 r_void
 op_star
