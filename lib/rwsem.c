@@ -83,7 +83,7 @@ id|sem-&gt;count
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here, then:&n; *   - the &squot;active part&squot; of the count (&amp;0x0000ffff) reached zero but has been re-incremented&n; *   - the &squot;waiting part&squot; of the count (&amp;0xffff0000) is negative (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if wakewrite is non-zero&n; */
+multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here from up_xxxx(), then:&n; *   - the &squot;active part&squot; of the count (&amp;0x0000ffff) had reached zero (but may have changed)&n; *   - the &squot;waiting part&squot; of the count (&amp;0xffff0000) is negative (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if downgrading is false&n; */
 DECL|function|__rwsem_do_wake
 r_static
 r_inline
@@ -99,7 +99,7 @@ op_star
 id|sem
 comma
 r_int
-id|wakewrite
+id|downgrading
 )paren
 (brace
 r_struct
@@ -136,13 +136,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|wakewrite
+id|downgrading
 )paren
 r_goto
 id|dont_wake_writers
 suffix:semicolon
-multiline_comment|/* only wake someone up if we can transition the active part of the count from 0 -&gt; 1 */
+multiline_comment|/* if we came through an up_xxxx() call, we only only wake someone up&n;&t; * if we can transition the active part of the count from 0 -&gt; 1&n;&t; */
 id|try_again
 suffix:colon
 id|oldcount
@@ -255,7 +254,7 @@ id|RWSEM_WAITING_FOR_WRITE
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* grant an infinite number of read locks to the readers at the front of the queue&n;&t; * - note we increment the &squot;active part&squot; of the count by the number of readers (less one&n;&t; *   for the activity decrement we&squot;ve already done) before waking any processes up&n;&t; */
+multiline_comment|/* grant an infinite number of read locks to the readers at the front&n;&t; * of the queue&n;&t; * - note we increment the &squot;active part&squot; of the count by the number of&n;&t; *   readers before waking any processes up&n;&t; */
 id|readers_only
 suffix:colon
 id|woken
@@ -309,10 +308,17 @@ id|RWSEM_ACTIVE_BIAS
 op_minus
 id|RWSEM_WAITING_BIAS
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|downgrading
+)paren
 id|woken
 op_sub_assign
 id|RWSEM_ACTIVE_BIAS
 suffix:semicolon
+multiline_comment|/* we&squot;d already done one increment&n;&t;&t;&t;&t;&t;     * earlier */
 id|rwsem_atomic_add
 c_func
 (paren
@@ -527,7 +533,7 @@ c_func
 (paren
 id|sem
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -688,7 +694,7 @@ r_return
 id|sem
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * handle waking up a waiter on the semaphore&n; * - up_read has decremented the active part of the count if we come here&n; */
+multiline_comment|/*&n; * handle waking up a waiter on the semaphore&n; * - up_read/up_write has decremented the active part of the count if we come here&n; */
 DECL|function|rwsem_wake
 r_struct
 id|rw_semaphore
@@ -737,7 +743,7 @@ c_func
 (paren
 id|sem
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -808,7 +814,7 @@ c_func
 (paren
 id|sem
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock
