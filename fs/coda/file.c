@@ -324,7 +324,7 @@ id|coda_inode-&gt;i_mtime
 op_assign
 id|coda_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|up
 c_func

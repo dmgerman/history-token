@@ -1617,8 +1617,6 @@ DECL|macro|__ARCH_WANT_SYS_PAUSE
 mdefine_line|#define __ARCH_WANT_SYS_PAUSE
 DECL|macro|__ARCH_WANT_SYS_SGETMASK
 mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
-DECL|macro|__ARCH_WANT_SYS_TIME
-mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_WAITPID
@@ -1646,6 +1644,14 @@ mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|# ifndef __mips64
 DECL|macro|__ARCH_WANT_STAT64
 macro_line|#  define __ARCH_WANT_STAT64
+macro_line|# endif
+macro_line|# ifdef CONFIG_MIPS32
+DECL|macro|__ARCH_WANT_SYS_TIME
+macro_line|#  define __ARCH_WANT_SYS_TIME
+macro_line|# endif
+macro_line|# ifdef CONFIG_MIPS32_O32
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+macro_line|#  define __ARCH_WANT_COMPAT_SYS_TIME
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__

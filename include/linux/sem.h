@@ -362,6 +362,11 @@ r_int
 id|nsops
 suffix:semicolon
 multiline_comment|/* number of operations */
+DECL|member|alter
+r_int
+id|alter
+suffix:semicolon
+multiline_comment|/* does the operation alter the array? */
 )brace
 suffix:semicolon
 multiline_comment|/* Each task has a list of undo requests. They are executed automatically&n; * when the process exits.&n; */

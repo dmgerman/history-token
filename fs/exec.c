@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
@@ -1329,6 +1330,10 @@ op_star
 id|bprm
 comma
 r_int
+r_int
+id|stack_top
+comma
+r_int
 id|executable_stack
 )paren
 (brace
@@ -1562,7 +1567,7 @@ op_assign
 id|PAGE_ALIGN
 c_func
 (paren
-id|STACK_TOP
+id|stack_top
 op_minus
 id|stack_base
 )paren
@@ -1607,7 +1612,7 @@ suffix:semicolon
 macro_line|#else
 id|stack_base
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 id|MAX_ARG_PAGES
 op_star
@@ -1623,7 +1628,7 @@ id|bprm-&gt;p
 suffix:semicolon
 id|arg_size
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 (paren
 id|PAGE_MASK
@@ -1740,7 +1745,7 @@ suffix:semicolon
 macro_line|#else
 id|mpnt-&gt;vm_end
 op_assign
-id|STACK_TOP
+id|stack_top
 suffix:semicolon
 id|mpnt-&gt;vm_start
 op_assign
@@ -2530,7 +2535,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Another group action in progress, just&n;&t;&t; * return so that the signal is processed.&n;&t;&t; */
@@ -2560,10 +2567,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|sig-&gt;group_exit
-op_assign
-l_int|1
-suffix:semicolon
 id|zap_other_threads
 c_func
 (paren
@@ -2933,7 +2936,7 @@ id|leader
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now there are really no other threads at all,&n;&t; * so it&squot;s safe to stop telling them to kill themselves.&n;&t; */
-id|sig-&gt;group_exit
+id|sig-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -4928,6 +4931,16 @@ c_func
 id|bprm
 )paren
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5884,9 +5897,9 @@ op_amp
 id|mm-&gt;core_done
 )paren
 suffix:semicolon
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_GROUP_EXIT
 suffix:semicolon
 id|current-&gt;signal-&gt;group_exit_code
 op_assign

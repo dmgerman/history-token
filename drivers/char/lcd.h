@@ -88,6 +88,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|LCD_DRIVER
 mdefine_line|#define LCD_DRIVER&t;&quot;Cobalt LCD Driver v2.10&quot;
+DECL|macro|LCD
+mdefine_line|#define LCD&t;&t;&quot;lcd: &quot;
 DECL|macro|kLCD_IR
 mdefine_line|#define kLCD_IR&t;&t;0x0F000000
 DECL|macro|kLCD_DR

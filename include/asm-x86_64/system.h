@@ -703,6 +703,13 @@ mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x) &t;do { warn_if_not_ulong(x); __asm__ __volatile__(&quot;# local_irq_save &bslash;n&bslash;t pushfq ; popq %0 ; cli&quot;:&quot;=g&quot; (x): /* no input */ :&quot;memory&quot;); } while (0)
+r_void
+id|cpu_idle_wait
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * disable hlt during certain critical i/o operations&n; */
 DECL|macro|HAVE_DISABLE_HLT
 mdefine_line|#define HAVE_DISABLE_HLT

@@ -1027,13 +1027,6 @@ op_star
 id|unused
 )paren
 (brace
-r_extern
-r_int
-id|cpu_idle
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Early console may use I/O ports */
 id|ia64_set_kr
 c_func
@@ -1073,11 +1066,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|idle_regs

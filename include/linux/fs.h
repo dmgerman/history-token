@@ -202,8 +202,6 @@ DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
 DECL|macro|MS_POSIXACL
 mdefine_line|#define MS_POSIXACL&t;(1&lt;&lt;16)&t;/* VFS does not apply the umask */
-DECL|macro|MS_ONE_SECOND
-mdefine_line|#define MS_ONE_SECOND&t;(1&lt;&lt;17)&t;/* fs has 1 sec a/m/ctime resolution */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -258,8 +256,6 @@ DECL|macro|IS_NODIRATIME
 mdefine_line|#define IS_NODIRATIME(inode)&t;__IS_FLG(inode, MS_NODIRATIME)
 DECL|macro|IS_POSIXACL
 mdefine_line|#define IS_POSIXACL(inode)&t;__IS_FLG(inode, MS_POSIXACL)
-DECL|macro|IS_ONE_SECOND
-mdefine_line|#define IS_ONE_SECOND(inode)&t;__IS_FLG(inode, MS_ONE_SECOND)
 DECL|macro|IS_DEADDIR
 mdefine_line|#define IS_DEADDIR(inode)&t;((inode)-&gt;i_flags &amp; S_DEAD)
 DECL|macro|IS_NOCMTIME
@@ -1076,6 +1072,11 @@ DECL|member|i_list
 r_struct
 id|list_head
 id|i_list
+suffix:semicolon
+DECL|member|i_sb_list
+r_struct
+id|list_head
+id|i_sb_list
 suffix:semicolon
 DECL|member|i_dentry
 r_struct
@@ -2635,6 +2636,12 @@ op_star
 op_star
 id|s_xattr
 suffix:semicolon
+DECL|member|s_inodes
+r_struct
+id|list_head
+id|s_inodes
+suffix:semicolon
+multiline_comment|/* all inodes */
 DECL|member|s_dirty
 r_struct
 id|list_head
@@ -2704,7 +2711,24 @@ id|semaphore
 id|s_vfs_rename_sem
 suffix:semicolon
 multiline_comment|/* Kludge */
+multiline_comment|/* Granuality of c/m/atime in ns.&n;&t;   Cannot be worse than a second */
+DECL|member|s_time_gran
+id|u32
+id|s_time_gran
+suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|timespec
+id|current_fs_time
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Snapshotting support.&n; */
 r_enum
@@ -5105,9 +5129,6 @@ id|kstatfs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Return value for VFS lock functions - tells locks.c to lock conventionally&n; * REALLY kosha for root NFS and nfs_lock&n; */
-DECL|macro|LOCK_USE_CLNT
-mdefine_line|#define LOCK_USE_CLNT 1
 DECL|macro|FLOCK_VERIFY_READ
 mdefine_line|#define FLOCK_VERIFY_READ  1
 DECL|macro|FLOCK_VERIFY_WRITE

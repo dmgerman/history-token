@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|function|tce_build_pSeries
 r_static

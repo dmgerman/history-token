@@ -85,7 +85,7 @@ DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;_ALIGN(addr, PAGE_SIZE)
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|STRICT_MM_TYPECHECKS
 macro_line|#undef STRICT_MM_TYPECHECKS
 DECL|macro|REGION_SIZE
@@ -116,11 +116,11 @@ id|line_size
 suffix:semicolon
 id|line_size
 op_assign
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|lines
 op_assign
-id|naca-&gt;dCacheL1LinesPerPage
+id|ppc64_caches.dlines_per_page
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -389,6 +389,11 @@ r_int
 id|pfn
 )paren
 suffix:semicolon
+r_extern
+id|u64
+id|ppc64_pft_size
+suffix:semicolon
+multiline_comment|/* Log 2 of page table size */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef MODULE
 DECL|macro|__page_aligned

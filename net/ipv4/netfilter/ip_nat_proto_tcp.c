@@ -379,10 +379,18 @@ id|iph-&gt;ihl
 op_star
 l_int|4
 suffix:semicolon
-id|u_int32_t
+id|u32
 id|oldip
+comma
+id|oldsrc
+op_assign
+id|iph-&gt;saddr
+comma
+id|olddst
+op_assign
+id|iph-&gt;daddr
 suffix:semicolon
-id|u_int16_t
+id|u16
 op_star
 id|portptr
 comma
@@ -464,7 +472,7 @@ id|IP_NAT_MANIP_SRC
 multiline_comment|/* Get rid of src ip and src pt */
 id|oldip
 op_assign
-id|iph-&gt;saddr
+id|oldsrc
 suffix:semicolon
 id|portptr
 op_assign
@@ -477,7 +485,7 @@ r_else
 multiline_comment|/* Get rid of dst ip and dst pt */
 id|oldip
 op_assign
-id|iph-&gt;daddr
+id|olddst
 suffix:semicolon
 id|portptr
 op_assign

@@ -273,6 +273,47 @@ id|VStart
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|jpeg_com_marker
+r_struct
+id|jpeg_com_marker
+(brace
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+multiline_comment|/* number of usable bytes in data */
+DECL|member|data
+r_char
+id|data
+(braket
+l_int|60
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|jpeg_app_marker
+r_struct
+id|jpeg_app_marker
+(brace
+DECL|member|appn
+r_int
+id|appn
+suffix:semicolon
+multiline_comment|/* number app segment */
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+multiline_comment|/* number of usable bytes in data */
+DECL|member|data
+r_char
+id|data
+(braket
+l_int|60
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|videocodec
 r_struct
 id|videocodec

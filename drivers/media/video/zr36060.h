@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Zoran ZR36060 basic configuration functions - header f
 macro_line|#ifndef ZR36060_H
 DECL|macro|ZR36060_H
 mdefine_line|#define ZR36060_H
+macro_line|#include &quot;videocodec.h&quot;
 multiline_comment|/* data stored for each zoran jpeg codec chip */
 DECL|struct|zr36060
 r_struct
@@ -80,6 +81,17 @@ suffix:semicolon
 DECL|member|dri
 id|__u16
 id|dri
+suffix:semicolon
+multiline_comment|/* app/com marker data */
+DECL|member|app
+r_struct
+id|jpeg_app_marker
+id|app
+suffix:semicolon
+DECL|member|com
+r_struct
+id|jpeg_com_marker
+id|com
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -82,7 +82,7 @@ id|pgd_t
 op_star
 id|pgd
 suffix:semicolon
-id|pgd_t
+id|pud_t
 op_star
 id|pud
 suffix:semicolon

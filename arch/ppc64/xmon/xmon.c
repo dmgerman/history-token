@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -75,6 +74,8 @@ id|size
 op_assign
 l_int|1
 suffix:semicolon
+DECL|macro|MAX_DUMP
+mdefine_line|#define MAX_DUMP (128 * 1024)
 DECL|variable|ndump
 r_static
 r_int
@@ -767,21 +768,6 @@ r_int
 r_int
 id|_ASR
 suffix:semicolon
-id|pte_t
-op_star
-id|find_linux_pte
-c_func
-(paren
-id|pgd_t
-op_star
-id|pgdir
-comma
-r_int
-r_int
-id|va
-)paren
-suffix:semicolon
-multiline_comment|/* from htab.c */
 DECL|macro|GETWORD
 mdefine_line|#define GETWORD(v)&t;(((v)[0] &lt;&lt; 24) + ((v)[1] &lt;&lt; 16) + ((v)[2] &lt;&lt; 8) + (v)[3])
 DECL|macro|isxdigit
@@ -7027,6 +7013,26 @@ r_void
 )paren
 id|opd
 suffix:semicolon
+r_if
+c_cond
+(paren
+m_setjmp
+(paren
+id|bus_error_jmp
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|catch_memory_errors
+op_assign
+l_int|1
+suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|code
@@ -7034,6 +7040,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* wait a little while to see if we get a machine check */
+id|__delay
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+id|n
+op_assign
+id|size
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -7164,12 +7187,49 @@ r_int
 )paren
 id|opd
 suffix:semicolon
+r_if
+c_cond
+(paren
+m_setjmp
+(paren
+id|bus_error_jmp
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|catch_memory_errors
+op_assign
+l_int|1
+suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|code
 c_func
 (paren
 id|val
 )paren
 suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* wait a little while to see if we get a machine check */
+id|__delay
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+id|n
+op_assign
+id|size
+suffix:semicolon
+)brace
 )brace
 DECL|variable|regno
 r_static
@@ -7209,7 +7269,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|ItLpPaca
+id|lppaca
 op_star
 id|ptrLpPaca
 op_assign
@@ -7388,9 +7448,9 @@ c_func
 (paren
 l_string|&quot;    Saved Srr0=%.16lx  Saved Srr1=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedSrr0
+id|ptrLpPaca-&gt;saved_srr0
 comma
-id|ptrLpPaca-&gt;xSavedSrr1
+id|ptrLpPaca-&gt;saved_srr1
 )paren
 suffix:semicolon
 id|printf
@@ -7398,9 +7458,9 @@ c_func
 (paren
 l_string|&quot;    Saved Gpr3=%.16lx  Saved Gpr4=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedGpr3
+id|ptrLpPaca-&gt;saved_gpr3
 comma
-id|ptrLpPaca-&gt;xSavedGpr4
+id|ptrLpPaca-&gt;saved_gpr4
 )paren
 suffix:semicolon
 id|printf
@@ -7408,7 +7468,7 @@ c_func
 (paren
 l_string|&quot;    Saved Gpr5=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedGpr5
+id|ptrLpPaca-&gt;saved_gpr5
 )paren
 suffix:semicolon
 id|printf
@@ -9133,12 +9193,10 @@ id|termch
 op_ne
 l_char|&squot;&bslash;n&squot;
 )paren
-(brace
 id|termch
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9161,12 +9219,22 @@ id|nidump
 op_eq
 l_int|0
 )paren
-(brace
 id|nidump
 op_assign
 l_int|16
 suffix:semicolon
-)brace
+r_else
+r_if
+c_cond
+(paren
+id|nidump
+OG
+id|MAX_DUMP
+)paren
+id|nidump
+op_assign
+id|MAX_DUMP
+suffix:semicolon
 id|adrs
 op_add_assign
 id|ppc_inst_dump
@@ -9200,12 +9268,22 @@ id|ndump
 op_eq
 l_int|0
 )paren
-(brace
 id|ndump
 op_assign
 l_int|64
 suffix:semicolon
-)brace
+r_else
+r_if
+c_cond
+(paren
+id|ndump
+OG
+id|MAX_DUMP
+)paren
+id|ndump
+op_assign
+id|MAX_DUMP
+suffix:semicolon
 id|prdump
 c_func
 (paren
@@ -11665,9 +11743,9 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;naca-&gt;debug_switch = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_debug_switch = 0x%lx&bslash;n&quot;
 comma
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 )paren
 suffix:semicolon
 r_for
@@ -11693,7 +11771,7 @@ c_func
 id|i
 )paren
 op_amp
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 suffix:semicolon
 id|printf
 c_func
@@ -11807,7 +11885,7 @@ l_char|&squot;&bslash;n&squot;
 )paren
 (brace
 multiline_comment|/* Turn on or off based on + or - */
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_assign
 id|on
 ques
@@ -11894,7 +11972,7 @@ c_cond
 id|on
 )paren
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_or_assign
 id|PPCDBG_BITVAL
 c_func
@@ -11926,7 +12004,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_and_assign
 op_complement
 id|PPCDBG_BITVAL

@@ -30,7 +30,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
@@ -557,7 +556,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP

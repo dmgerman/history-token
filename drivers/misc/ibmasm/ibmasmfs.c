@@ -208,6 +208,10 @@ op_assign
 op_amp
 id|ibmasmfs_s_ops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|root
 op_assign
 id|ibmasmfs_make_inode

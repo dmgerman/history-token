@@ -15,7 +15,7 @@ DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;&t;2048
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page table can map&n; * PGDIR_SHIFT determines what a third-level page table entry can map&n; */
 DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;&t;20
+mdefine_line|#define PMD_SHIFT&t;&t;21
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;&t;21
 DECL|macro|LIBRARY_TEXT_START

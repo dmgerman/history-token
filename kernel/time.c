@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */
@@ -22,20 +23,20 @@ id|sys_tz
 )paren
 suffix:semicolon
 macro_line|#ifdef __ARCH_WANT_SYS_TIME
-multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; *&n; * XXX This function is NOT 64-bit clean!&n; */
+multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; */
 DECL|function|sys_time
 id|asmlinkage
 r_int
 id|sys_time
 c_func
 (paren
-r_int
+id|time_t
 id|__user
 op_star
 id|tloc
 )paren
 (brace
-r_int
+id|time_t
 id|i
 suffix:semicolon
 r_struct
@@ -1503,6 +1504,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|current_kernel_time
+r_inline
 r_struct
 id|timespec
 id|current_kernel_time
@@ -1557,6 +1559,111 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|current_kernel_time
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * current_fs_time - Return FS time&n; * @sb: Superblock.&n; *&n; * Return the current time truncated to the time granuality supported by&n; * the fs.&n; */
+DECL|function|current_fs_time
+r_struct
+id|timespec
+id|current_fs_time
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_struct
+id|timespec
+id|now
+op_assign
+id|current_kernel_time
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|timespec_trunc
+c_func
+(paren
+id|now
+comma
+id|sb-&gt;s_time_gran
+)paren
+suffix:semicolon
+)brace
+DECL|variable|current_fs_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|current_fs_time
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * timespec_trunc - Truncate timespec to a granuality&n; * @t: Timespec&n; * @gran: Granuality in ns.&n; *&n; * Truncate a timespec to a granuality. gran must be smaller than a second.&n; * Always rounds down.&n; *&n; * This function should be only used for timestamps returned by&n; * current_kernel_time() or CURRENT_TIME, not with do_gettimeofday() because&n; * it doesn&squot;t handle the better resolution of the later.&n; */
+DECL|function|timespec_trunc
+r_struct
+id|timespec
+id|timespec_trunc
+c_func
+(paren
+r_struct
+id|timespec
+id|t
+comma
+r_int
+id|gran
+)paren
+(brace
+multiline_comment|/*&n;&t; * Division is pretty slow so avoid it for common cases.&n;&t; * Currently current_kernel_time() never returns better than&n;&t; * jiffies resolution. Exploit that.&n;&t; */
+r_if
+c_cond
+(paren
+id|gran
+op_le
+id|jiffies_to_usecs
+c_func
+(paren
+l_int|1
+)paren
+op_star
+l_int|1000
+)paren
+(brace
+multiline_comment|/* nothing */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gran
+op_eq
+l_int|1000000000
+)paren
+(brace
+id|t.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|t.tv_nsec
+op_sub_assign
+id|t.tv_nsec
+op_mod
+id|gran
+suffix:semicolon
+)brace
+r_return
+id|t
+suffix:semicolon
+)brace
+DECL|variable|timespec_trunc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|timespec_trunc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_TIME_INTERPOLATION

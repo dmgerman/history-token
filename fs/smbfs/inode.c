@@ -2080,6 +2080,10 @@ op_assign
 op_amp
 id|smb_sops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|100
+suffix:semicolon
 id|server
 op_assign
 id|smb_kmalloc
@@ -2487,6 +2491,8 @@ id|server
 comma
 op_amp
 id|root
+comma
+id|sb
 )paren
 suffix:semicolon
 id|root_inode

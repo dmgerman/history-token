@@ -125,6 +125,10 @@ op_assign
 op_amp
 id|sysfs_ops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|sysfs_sb
 op_assign
 id|sb

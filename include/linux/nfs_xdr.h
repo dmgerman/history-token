@@ -2675,7 +2675,7 @@ id|inode
 op_star
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
 comma
 r_struct

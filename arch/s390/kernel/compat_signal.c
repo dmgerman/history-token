@@ -74,8 +74,7 @@ id|S390_SYSCALL_SIZE
 )braket
 suffix:semicolon
 DECL|member|info
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 id|info
 suffix:semicolon
 DECL|member|uc
@@ -111,7 +110,7 @@ r_int
 id|copy_siginfo_to_user32
 c_func
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 id|__user
 op_star
 id|to
@@ -136,7 +135,7 @@ id|to
 comma
 r_sizeof
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 )paren
 )paren
 )paren
@@ -401,7 +400,7 @@ id|siginfo_t
 op_star
 id|to
 comma
-id|siginfo_t32
+id|compat_siginfo_t
 id|__user
 op_star
 id|from
@@ -425,7 +424,7 @@ id|from
 comma
 r_sizeof
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 )paren
 )paren
 )paren

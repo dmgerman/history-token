@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &quot;internal.h&quot;
 DECL|variable|node_online_map
 id|nodemask_t
 id|node_online_map
@@ -1087,6 +1088,41 @@ op_lshift
 id|order
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_MMU
+r_if
+c_cond
+(paren
+id|order
+OG
+l_int|0
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+OL
+(paren
+l_int|1
+op_lshift
+id|order
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|__put_page
+c_func
+(paren
+id|page
+op_plus
+id|i
+)paren
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1271,8 +1307,6 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|set_page_refs
-r_static
-r_inline
 r_void
 id|set_page_refs
 c_func
@@ -1299,7 +1333,7 @@ macro_line|#else
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to reference all the pages for this order, otherwise if&n;&t; * anyone accesses one of the pages with (get/put) it will be freed.&n;&t; */
+multiline_comment|/*&n;&t; * We need to reference all the pages for this order, otherwise if&n;&t; * anyone accesses one of the pages with (get/put) it will be freed.&n;&t; * - eg: access_process_vm()&n;&t; */
 r_for
 c_loop
 (paren

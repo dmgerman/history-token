@@ -108,10 +108,11 @@ op_star
 id|check_ctrs
 )paren
 (paren
-r_int
-r_int
+r_struct
+id|pt_regs
+op_star
 r_const
-id|cpu
+id|regs
 comma
 r_struct
 id|op_msrs
@@ -119,12 +120,6 @@ r_const
 op_star
 r_const
 id|msrs
-comma
-r_struct
-id|pt_regs
-op_star
-r_const
-id|regs
 )paren
 suffix:semicolon
 DECL|member|start

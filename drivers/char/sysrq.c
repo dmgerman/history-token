@@ -272,6 +272,11 @@ op_star
 id|tty
 )paren
 (brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_restart
 c_func
 (paren

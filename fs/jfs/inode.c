@@ -238,13 +238,9 @@ multiline_comment|/*&n;&t; * Don&squot;t commit if inode has been committed sinc
 r_if
 c_cond
 (paren
-id|test_cflag
-c_func
-(paren
-id|COMMIT_Nolink
-comma
-id|inode
-)paren
+id|inode-&gt;i_nlink
+op_eq
+l_int|0
 op_logical_or
 op_logical_neg
 id|test_cflag
@@ -328,6 +324,20 @@ op_member_access_from_pointer
 id|commit_sem
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Retest inode state after taking commit_sem&n;&t; */
+r_if
+c_cond
+(paren
+id|inode-&gt;i_nlink
+op_logical_and
+id|test_cflag
+c_func
+(paren
+id|COMMIT_Dirty
+comma
+id|inode
+)paren
+)paren
 id|rc
 op_assign
 id|txCommit

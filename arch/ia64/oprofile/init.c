@@ -11,7 +11,6 @@ c_func
 r_struct
 id|oprofile_operations
 op_star
-op_star
 id|ops
 )paren
 suffix:semicolon
@@ -23,8 +22,24 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|oprofile_arch_init
+r_extern
+r_void
+id|ia64_backtrace
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+r_const
+id|regs
+comma
 r_int
+r_int
+id|depth
+)paren
+suffix:semicolon
+DECL|function|oprofile_arch_init
+r_void
 id|__init
 id|oprofile_arch_init
 c_func
@@ -32,12 +47,11 @@ c_func
 r_struct
 id|oprofile_operations
 op_star
-op_star
 id|ops
 )paren
 (brace
 macro_line|#ifdef CONFIG_PERFMON
-r_return
+multiline_comment|/* perfmon_init() can fail, but we have no way to report it */
 id|perfmon_init
 c_func
 (paren
@@ -45,9 +59,9 @@ id|ops
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-op_minus
-id|ENODEV
+id|ops-&gt;backtrace
+op_assign
+id|ia64_backtrace
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

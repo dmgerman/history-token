@@ -93,12 +93,5 @@ id|__end_unwind
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_char
-id|_end
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* end of kernel image */
 macro_line|#endif /* _ASM_IA64_SECTIONS_H */
 eof

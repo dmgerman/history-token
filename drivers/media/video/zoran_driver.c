@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/byteorder/generic.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
@@ -1483,7 +1484,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than MAX_KMALLOC_MEM,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_zeroed_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to MAX_KMALLOC_MEM in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_zeroed_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; */
+multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than MAX_KMALLOC_MEM,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_zeroed_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to MAX_KMALLOC_MEM in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_zeroed_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; *   Ben Capper:&n; *       On big-endian architectures (such as ppc) some extra steps&n; *       are needed. When reading and writing to the stat_com array&n; *       and fragment buffers, the device expects to see little-&n; *       endian values. The use of cpu_to_le32() and le32_to_cpu()&n; *       in this function (and one or two others in zoran_device.c)&n; *       ensure that these values are always stored in little-endian&n; *       form, regardless of architecture. The zr36057 does Very Bad&n; *       Things on big endian architectures if the stat_com array&n; *       and fragment buffers are not little-endian.&n; */
 r_static
 r_int
 DECL|function|jpg_fbuffer_alloc
@@ -1734,6 +1735,9 @@ id|frag_tab
 l_int|0
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|virt_to_bus
 c_func
 (paren
@@ -1742,6 +1746,7 @@ r_void
 op_star
 )paren
 id|mem
+)paren
 )paren
 suffix:semicolon
 id|fh-&gt;jpg_buffers.buffer
@@ -1754,6 +1759,9 @@ id|frag_tab
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 (paren
 (paren
 id|fh-&gt;jpg_buffers.buffer_size
@@ -1765,6 +1773,7 @@ l_int|1
 )paren
 op_or
 l_int|1
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1870,6 +1879,9 @@ op_star
 id|j
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|virt_to_bus
 c_func
 (paren
@@ -1878,6 +1890,7 @@ r_void
 op_star
 )paren
 id|mem
+)paren
 )paren
 suffix:semicolon
 id|fh-&gt;jpg_buffers.buffer
@@ -1894,6 +1907,9 @@ op_plus
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 (paren
 id|PAGE_SIZE
 op_div
@@ -1901,6 +1917,7 @@ l_int|4
 )paren
 op_lshift
 l_int|1
+)paren
 suffix:semicolon
 id|SetPageReserved
 c_func
@@ -1927,7 +1944,11 @@ op_minus
 l_int|1
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2074,11 +2095,10 @@ op_star
 id|bus_to_virt
 c_func
 (paren
-id|fh
-op_member_access_from_pointer
-id|jpg_buffers
-dot
-id|buffer
+id|le32_to_cpu
+c_func
+(paren
+id|fh-&gt;jpg_buffers.buffer
 (braket
 id|i
 )braket
@@ -2087,6 +2107,7 @@ id|frag_tab
 (braket
 l_int|0
 )braket
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -2195,6 +2216,8 @@ id|MAP_NR
 (paren
 id|bus_to_virt
 (paren
+id|le32_to_cpu
+(paren
 id|fh-&gt;jpg_buffers
 dot
 id|buffer
@@ -2208,6 +2231,7 @@ l_int|2
 op_star
 id|j
 )braket
+)paren
 )paren
 )paren
 )paren
@@ -2220,7 +2244,8 @@ r_int
 r_int
 )paren
 id|bus_to_virt
-c_func
+(paren
+id|le32_to_cpu
 (paren
 id|fh-&gt;jpg_buffers
 dot
@@ -2235,6 +2260,7 @@ l_int|2
 op_star
 id|j
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -7403,6 +7429,11 @@ id|zr
 op_assign
 id|fh-&gt;zr
 suffix:semicolon
+multiline_comment|/* CAREFUL: used in multiple places here */
+r_struct
+id|zoran_jpg_settings
+id|settings
+suffix:semicolon
 multiline_comment|/* we might have older buffers lying around... We don&squot;t want&n;&t; * to wait, but we do want to try cleaning them up ASAP. So&n;&t; * we try to obtain the lock and free them. If that fails, we&n;&t; * don&squot;t do anything and wait for the next turn. In the end,&n;&t; * zoran_close() or a new allocation will still free them...&n;&t; * This is just a &squot;the sooner the better&squot; extra &squot;feature&squot;&n;&t; *&n;&t; * We don&squot;t free the buffers right on munmap() because that&n;&t; * causes oopses (kfree() inside munmap() oopses for no&n;&t; * apparent reason - it&squot;s also not reproduceable in any way,&n;&t; * but moving the free code outside the munmap() handler fixes&n;&t; * all this... If someone knows why, please explain me (Ronald)&n;&t; */
 r_if
 c_cond
@@ -9046,10 +9077,6 @@ op_star
 id|bparams
 op_assign
 id|arg
-suffix:semicolon
-r_struct
-id|zoran_jpg_settings
-id|settings
 suffix:semicolon
 r_int
 id|res
@@ -10749,10 +10776,6 @@ op_eq
 id|V4L2_PIX_FMT_MJPEG
 )paren
 (brace
-r_struct
-id|zoran_jpg_settings
-id|settings
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -14725,8 +14748,6 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|zoran_jpg_settings
 id|settings
 op_assign
 id|fh-&gt;jpg_settings
@@ -15005,16 +15026,14 @@ id|params
 op_assign
 id|arg
 suffix:semicolon
-r_struct
-id|zoran_jpg_settings
-id|settings
-op_assign
-id|fh-&gt;jpg_settings
-suffix:semicolon
 r_int
 id|res
 op_assign
 l_int|0
+suffix:semicolon
+id|settings
+op_assign
+id|fh-&gt;jpg_settings
 suffix:semicolon
 id|dprintk
 c_func
@@ -15347,8 +15366,6 @@ op_eq
 id|V4L2_PIX_FMT_MJPEG
 )paren
 (brace
-r_struct
-id|zoran_jpg_settings
 id|settings
 op_assign
 id|fh-&gt;jpg_settings
@@ -16874,6 +16891,9 @@ op_increment
 id|fraglen
 op_assign
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|fh-&gt;jpg_buffers.buffer
 (braket
 id|i
@@ -16887,6 +16907,7 @@ id|j
 op_plus
 l_int|1
 )braket
+)paren
 op_amp
 op_complement
 l_int|1
@@ -16911,6 +16932,9 @@ id|fraglen
 suffix:semicolon
 id|pos
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 (paren
 r_int
 r_int
@@ -16928,6 +16952,7 @@ l_int|2
 op_star
 id|j
 )braket
+)paren
 suffix:semicolon
 multiline_comment|/* should just be pos on i386 */
 id|page
@@ -17006,6 +17031,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|fh-&gt;jpg_buffers.buffer
 (braket
 id|i
@@ -17019,6 +17047,7 @@ id|j
 op_plus
 l_int|1
 )braket
+)paren
 op_amp
 l_int|1
 )paren

@@ -1,13 +1,6 @@
 multiline_comment|/* $XFree86$ */
 multiline_comment|/* $XdotOrg$ */
-multiline_comment|/*&n; * General structure definitions for universal mode switching modules&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESSED OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
-macro_line|#ifdef _INIT_
-DECL|macro|EXTERN
-mdefine_line|#define EXTERN
-macro_line|#else
-DECL|macro|EXTERN
-mdefine_line|#define EXTERN extern
-macro_line|#endif /* _INIT_ */
+multiline_comment|/*&n; * General structure definitions for universal mode switching modules&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _VSTRUCT_
 DECL|macro|_VSTRUCT_
 mdefine_line|#define _VSTRUCT_
@@ -756,7 +749,7 @@ DECL|member|SiS_VGAINFO
 id|UCHAR
 id|SiS_VGAINFO
 suffix:semicolon
-macro_line|#ifndef LINUX_KERNEL
+macro_line|#ifdef LINUX_XF86
 DECL|member|SiS_CP1
 DECL|member|SiS_CP2
 DECL|member|SiS_CP3
@@ -839,6 +832,10 @@ comma
 id|EMI_32
 comma
 id|EMI_33
+suffix:semicolon
+DECL|member|SiS_EMIOffset
+id|USHORT
+id|SiS_EMIOffset
 suffix:semicolon
 DECL|member|PDC
 DECL|member|PDCA
@@ -1054,6 +1051,7 @@ op_star
 id|SiS_SModeIDTable
 suffix:semicolon
 DECL|member|SiS_StandTable
+r_const
 id|SiS_StandTableStruct
 op_star
 id|SiS_StandTable
@@ -1135,7 +1133,7 @@ op_star
 id|SiS_SR15
 suffix:semicolon
 multiline_comment|/* pointer : point to array */
-macro_line|#ifndef LINUX_XF86
+macro_line|#ifdef LINUX_KERNEL
 DECL|member|pSiS_SR07
 id|UCHAR
 op_star
@@ -1364,17 +1362,17 @@ id|SiS_LCDDataStruct
 op_star
 id|SiS_ExtLCD1280x768_2Data
 suffix:semicolon
-DECL|member|SiS_LCD1280x768_3Data
-r_const
-id|SiS_LCDDataStruct
-op_star
-id|SiS_LCD1280x768_3Data
-suffix:semicolon
 DECL|member|SiS_LCD1280x800Data
 r_const
 id|SiS_LCDDataStruct
 op_star
 id|SiS_LCD1280x800Data
+suffix:semicolon
+DECL|member|SiS_LCD1280x800_2Data
+r_const
+id|SiS_LCDDataStruct
+op_star
+id|SiS_LCD1280x800_2Data
 suffix:semicolon
 DECL|member|SiS_LCD1280x960Data
 r_const
@@ -2658,6 +2656,17 @@ comma
 id|CP_MaxY
 comma
 id|CP_MaxClock
+suffix:semicolon
+DECL|member|CP_PrefSR2B
+DECL|member|CP_PrefSR2C
+id|UCHAR
+id|CP_PrefSR2B
+comma
+id|CP_PrefSR2C
+suffix:semicolon
+DECL|member|CP_PrefClock
+id|USHORT
+id|CP_PrefClock
 suffix:semicolon
 DECL|member|CP_Supports64048075
 id|BOOLEAN

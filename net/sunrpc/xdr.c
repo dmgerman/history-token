@@ -1743,6 +1743,13 @@ op_eq
 l_int|0
 )paren
 (brace
+id|flush_dcache_page
+c_func
+(paren
+op_star
+id|pgto
+)paren
+suffix:semicolon
 id|pgto_base
 op_assign
 id|PAGE_CACHE_SIZE
@@ -1866,6 +1873,13 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+op_star
+id|pgto
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * _copy_to_pages&n; * @pages: array of pages&n; * @pgbase: page vector address of destination&n; * @p: pointer to source data&n; * @len: length&n; *&n; * Copies data from an arbitrary memory location into an array of pages&n; * The copy is assumed to be non-overlapping.&n; */
 r_static
@@ -1982,6 +1996,13 @@ op_eq
 id|PAGE_CACHE_SIZE
 )paren
 (brace
+id|flush_dcache_page
+c_func
+(paren
+op_star
+id|pgto
+)paren
+suffix:semicolon
 id|pgbase
 op_assign
 l_int|0
@@ -2005,6 +2026,13 @@ id|copy
 )paren
 op_ne
 l_int|0
+)paren
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+op_star
+id|pgto
 )paren
 suffix:semicolon
 )brace

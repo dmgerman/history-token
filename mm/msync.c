@@ -914,13 +914,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|mapping-&gt;host-&gt;i_sem
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|filemap_fdatawrite
@@ -937,6 +930,7 @@ op_logical_and
 id|file-&gt;f_op-&gt;fsync
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We don&squot;t take i_sem here because mmap_sem&n;&t;&t;&t;&t; * is already held.&n;&t;&t;&t;&t; */
 id|err
 op_assign
 id|file-&gt;f_op
@@ -982,13 +976,6 @@ id|ret
 op_assign
 id|err
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|mapping-&gt;host-&gt;i_sem
-)paren
-suffix:semicolon
 )brace
 )brace
 r_return
@@ -1028,6 +1015,17 @@ id|error
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MS_SYNC
+)paren
+id|current-&gt;flags
+op_or_assign
+id|PF_SYNCWRITE
 suffix:semicolon
 id|down_read
 c_func
@@ -1272,6 +1270,11 @@ c_func
 op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SYNCWRITE
 suffix:semicolon
 r_return
 id|error

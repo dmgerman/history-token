@@ -849,7 +849,7 @@ id|EMLINK
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext2_inc_count
 c_func
@@ -1455,7 +1455,7 @@ id|old_inode
 suffix:semicolon
 id|new_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 r_if
 c_cond
@@ -1543,7 +1543,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Like most other Unix systems, set the ctime for inodes on a&n; &t; * rename.&n;&t; * ext2_dec_count() will mark the inode dirty.&n;&t; */
 id|old_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext2_delete_entry
 (paren

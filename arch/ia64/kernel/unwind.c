@@ -10071,6 +10071,13 @@ id|info
 )paren
 suffix:semicolon
 )brace
+DECL|variable|unw_init_frame_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_init_frame_info
+)paren
+suffix:semicolon
 r_void
 DECL|function|unw_init_from_blocked_task
 id|unw_init_from_blocked_task

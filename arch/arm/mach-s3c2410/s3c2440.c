@@ -81,6 +81,12 @@ c_func
 id|ADC
 )paren
 comma
+id|IODESC_ENT
+c_func
+(paren
+id|WATCHDOG
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|variable|s3c_uart0_resource
@@ -799,7 +805,7 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* print brieft summary of clocks, etc */
+multiline_comment|/* print brief summary of clocks, etc */
 id|printk
 c_func
 (paren

@@ -54,14 +54,22 @@ suffix:semicolon
 r_extern
 id|initcall_t
 id|__con_initcall_start
+(braket
+)braket
 comma
 id|__con_initcall_end
+(braket
+)braket
 suffix:semicolon
 r_extern
 id|initcall_t
 id|__security_initcall_start
+(braket
+)braket
 comma
 id|__security_initcall_end
+(braket
+)braket
 suffix:semicolon
 multiline_comment|/* Defined in init/main.c */
 r_extern

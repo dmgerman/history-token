@@ -4563,7 +4563,7 @@ c_cond
 (paren
 id|gsd-&gt;body_start
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_goto
 id|out

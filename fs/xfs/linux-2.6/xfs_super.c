@@ -3207,6 +3207,10 @@ c_func
 id|sb-&gt;s_blocksize_bits
 )paren
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|set_posix_acl_flag
 c_func
 (paren

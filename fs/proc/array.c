@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &quot;internal.h&quot;
 multiline_comment|/* Gcc optimizes away &quot;strlen(x)&quot; for constant x */
 DECL|macro|ADDBUF
 mdefine_line|#define ADDBUF(buffer, string) &bslash;&n;do { memcpy(buffer, string, strlen(string)); &bslash;&n;     buffer += strlen(string); } while (0)

@@ -3,12 +3,6 @@ DECL|macro|_SYSTEMCFG_H
 mdefine_line|#define _SYSTEMCFG_H
 multiline_comment|/* &n; * Copyright (C) 2002 Peter Bergner &lt;bergner@vnet.ibm.com&gt;, IBM&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Change Activity:&n; * 2002/09/30 : bergner  : Created&n; * End Change Activity &n; */
-macro_line|#ifndef __KERNEL__
-macro_line|#include &lt;unistd.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
-macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * If the major version changes we are incompatible.&n; * Minor version changes are a hint.&n; */
 DECL|macro|SYSTEMCFG_MAJOR
 mdefine_line|#define SYSTEMCFG_MAJOR 1
@@ -99,24 +93,25 @@ id|__u32
 id|tz_dsttime
 suffix:semicolon
 multiline_comment|/* Type of dst correction&t;0x5C */
-DECL|member|dCacheL1Size
+multiline_comment|/* next four are no longer used except to be exported to /proc */
+DECL|member|dcache_size
 id|__u32
-id|dCacheL1Size
+id|dcache_size
 suffix:semicolon
 multiline_comment|/* L1 d-cache size&t;&t;0x60 */
-DECL|member|dCacheL1LineSize
+DECL|member|dcache_line_size
 id|__u32
-id|dCacheL1LineSize
+id|dcache_line_size
 suffix:semicolon
 multiline_comment|/* L1 d-cache line size&t;&t;0x64 */
-DECL|member|iCacheL1Size
+DECL|member|icache_size
 id|__u32
-id|iCacheL1Size
+id|icache_size
 suffix:semicolon
 multiline_comment|/* L1 i-cache size&t;&t;0x68 */
-DECL|member|iCacheL1LineSize
+DECL|member|icache_line_size
 id|__u32
-id|iCacheL1LineSize
+id|icache_line_size
 suffix:semicolon
 multiline_comment|/* L1 i-cache line size&t;&t;0x6C */
 DECL|member|reserved0

@@ -970,10 +970,13 @@ l_int|1
 op_minus
 l_int|2
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Check if the caller-allocated buffer is large enough&n;&t;&t; * otherwise bail out or there will be an at least off by one.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|idlen
+op_plus
+l_int|1
 OL
 id|len
 )paren
@@ -981,6 +984,17 @@ id|len
 op_assign
 id|idlen
 suffix:semicolon
+r_else
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|retval
 op_assign
 id|parport_read
@@ -1102,11 +1116,6 @@ id|IEEE1284_MODE_COMPAT
 )paren
 suffix:semicolon
 )brace
-id|parport_release
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1121,6 +1130,13 @@ comma
 id|dev-&gt;daisy
 comma
 id|buffer
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|parport_release
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|parport_close

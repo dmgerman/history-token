@@ -9118,6 +9118,16 @@ c_func
 id|ONES
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Invalidate the page after writing and syncing it.&n;&t;&t; * After it&squot;s initialized, we access it in a different&n;&t;&t; * address space&n;&t;&t; */
+id|set_bit
+c_func
+(paren
+id|META_discard
+comma
+op_amp
+id|mp-&gt;flag
+)paren
+suffix:semicolon
 id|flush_metapage
 c_func
 (paren

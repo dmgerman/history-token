@@ -586,10 +586,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 r_char
 op_star
 id|argptr

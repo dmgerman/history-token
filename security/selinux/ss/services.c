@@ -943,7 +943,11 @@ op_logical_and
 (paren
 id|avd-&gt;allowed
 op_amp
+(paren
 id|PROCESS__TRANSITION
+op_or
+id|PROCESS__DYNTRANSITION
+)paren
 )paren
 op_logical_and
 id|scontext-&gt;role
@@ -994,6 +998,8 @@ op_amp
 op_complement
 (paren
 id|PROCESS__TRANSITION
+op_or
+id|PROCESS__DYNTRANSITION
 )paren
 suffix:semicolon
 )brace

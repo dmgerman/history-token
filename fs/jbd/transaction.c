@@ -3322,9 +3322,8 @@ suffix:semicolon
 )brace
 multiline_comment|/** &n; * void journal_forget() - bforget() for potentially-journaled buffers.&n; * @handle: transaction handle&n; * @bh:     bh to &squot;forget&squot;&n; *&n; * We can only do the bforget if there are no commits pending against the&n; * buffer.  If the buffer is dirty in the current running transaction we&n; * can safely unlink it. &n; *&n; * bh may not be a journalled buffer at all - it may be a non-JBD&n; * buffer which came off the hashtable.  Check for this.&n; *&n; * Decrements bh-&gt;b_count by one.&n; * &n; * Allow this call even if the handle has aborted --- it may be part of&n; * the caller&squot;s cleanup after an abort.&n; */
 DECL|function|journal_forget
-r_void
+r_int
 id|journal_forget
-c_func
 (paren
 id|handle_t
 op_star
@@ -3352,6 +3351,11 @@ r_struct
 id|journal_head
 op_star
 id|jh
+suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|BUFFER_TRACE
 c_func
@@ -3395,6 +3399,32 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+multiline_comment|/* Critical error: attempting to delete a bitmap buffer, maybe?&n;&t; * Don&squot;t do any jbd operations, and return an error. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|J_EXPECT_JH
+c_func
+(paren
+id|jh
+comma
+op_logical_neg
+id|jh-&gt;b_committed_data
+comma
+l_string|&quot;inconsistent data on disk&quot;
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|not_jbd
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3431,15 +3461,6 @@ c_func
 id|jh
 comma
 l_string|&quot;belongs to current transaction: unfile&quot;
-)paren
-suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-op_logical_neg
-id|jh-&gt;b_committed_data
 )paren
 suffix:semicolon
 id|__journal_unfile_buffer
@@ -3511,6 +3532,7 @@ id|bh
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -3586,6 +3608,7 @@ id|bh
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * int journal_stop() - complete a transaction&n; * @handle: tranaction to complete.&n; * &n; * All done for a particular handle.&n; *&n; * There is not much action needed here.  We just return any remaining&n; * buffer credits to the transaction and remove the handle.  The only&n; * complication is that we need to start a commit operation if the&n; * filesystem is marked for synchronous update.&n; *&n; * journal_stop itself will not usually return an error, but it may&n; * do so in unusual circumstances.  In particular, expect it to &n; * return -EIO if a journal_abort has been executed since the&n; * transaction began.&n; */

@@ -14,6 +14,9 @@ suffix:semicolon
 r_struct
 id|file_operations
 suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 multiline_comment|/* Operations structure to be filled in */
 DECL|struct|oprofile_operations
 r_struct
@@ -82,6 +85,25 @@ id|stop
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Initiate a stack backtrace. Optional. */
+DECL|member|backtrace
+r_void
+(paren
+op_star
+id|backtrace
+)paren
+(paren
+r_struct
+id|pt_regs
+op_star
+r_const
+id|regs
+comma
+r_int
+r_int
+id|depth
+)paren
+suffix:semicolon
 multiline_comment|/* CPU identification string. */
 DECL|member|cpu_type
 r_char
@@ -90,14 +112,13 @@ id|cpu_type
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure. This is called even in timer interrupt&n; * mode.&n; *&n; * Return 0 on success.&n; */
-r_int
+multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure. This is called even in timer interrupt&n; * mode so an arch can set a backtrace callback.&n; *&n; * If an error occurs, the fields should be left untouched.&n; */
+r_void
 id|oprofile_arch_init
 c_func
 (paren
 r_struct
 id|oprofile_operations
-op_star
 op_star
 id|ops
 )paren
@@ -111,25 +132,46 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Add a sample. This may be called from any context. Pass&n; * smp_processor_id() as cpu.&n; */
-r_extern
 r_void
 id|oprofile_add_sample
 c_func
 (paren
-r_int
-r_int
-id|eip
+r_struct
+id|pt_regs
+op_star
+r_const
+id|regs
 comma
 r_int
+r_int
+id|event
+)paren
+suffix:semicolon
+multiline_comment|/* Use this instead when the PC value is not from the regs. Doesn&squot;t&n; * backtrace. */
+r_void
+id|oprofile_add_pc
+c_func
+(paren
+r_int
+r_int
+id|pc
+comma
 r_int
 id|is_kernel
 comma
 r_int
 r_int
 id|event
-comma
+)paren
+suffix:semicolon
+multiline_comment|/* add a backtrace entry, to be called from the -&gt;backtrace callback */
+r_void
+id|oprofile_add_trace
+c_func
+(paren
 r_int
-id|cpu
+r_int
+id|eip
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Create a file of the given name as a child of the given root, with&n; * the specified file operations.&n; */

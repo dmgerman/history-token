@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
@@ -61,91 +60,13 @@ op_star
 id|nfs_rdata_cachep
 suffix:semicolon
 DECL|variable|nfs_rdata_mempool
-r_static
 id|mempool_t
 op_star
 id|nfs_rdata_mempool
 suffix:semicolon
 DECL|macro|MIN_POOL_READ
 mdefine_line|#define MIN_POOL_READ&t;(32)
-DECL|function|nfs_readdata_alloc
-r_static
-r_struct
-id|nfs_read_data
-op_star
-id|nfs_readdata_alloc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|nfs_read_data
-op_star
-id|p
-suffix:semicolon
-id|p
-op_assign
-(paren
-r_struct
-id|nfs_read_data
-op_star
-)paren
-id|mempool_alloc
-c_func
-(paren
-id|nfs_rdata_mempool
-comma
-id|SLAB_NOFS
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-)paren
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
-suffix:semicolon
-r_return
-id|p
-suffix:semicolon
-)brace
-DECL|function|nfs_readdata_free
-r_static
-id|__inline__
-r_void
-id|nfs_readdata_free
-c_func
-(paren
-r_struct
-id|nfs_read_data
-op_star
-id|p
-)paren
-(brace
-id|mempool_free
-c_func
-(paren
-id|p
-comma
-id|nfs_rdata_mempool
-)paren
-suffix:semicolon
-)brace
 DECL|function|nfs_readdata_release
-r_static
 r_void
 id|nfs_readdata_release
 c_func

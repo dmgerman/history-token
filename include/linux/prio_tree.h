@@ -1,6 +1,31 @@
 macro_line|#ifndef _LINUX_PRIO_TREE_H
 DECL|macro|_LINUX_PRIO_TREE_H
 mdefine_line|#define _LINUX_PRIO_TREE_H
+multiline_comment|/*&n; * K&amp;R 2nd ed. A8.3 somewhat obliquely hints that initial sequences of struct&n; * fields with identical types should end up at the same location. We&squot;ll use&n; * this until we can scrap struct raw_prio_tree_node.&n; *&n; * Note: all this could be done more elegantly by using unnamed union/struct&n; * fields. However, gcc 2.95.3 and apparently also gcc 3.0.4 don&squot;t support this&n; * language extension.&n; */
+DECL|struct|raw_prio_tree_node
+r_struct
+id|raw_prio_tree_node
+(brace
+DECL|member|left
+r_struct
+id|prio_tree_node
+op_star
+id|left
+suffix:semicolon
+DECL|member|right
+r_struct
+id|prio_tree_node
+op_star
+id|right
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|prio_tree_node
+op_star
+id|parent
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|prio_tree_node
 r_struct
 id|prio_tree_node
@@ -23,6 +48,17 @@ id|prio_tree_node
 op_star
 id|parent
 suffix:semicolon
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+DECL|member|last
+r_int
+r_int
+id|last
+suffix:semicolon
+multiline_comment|/* last location _in_ interval */
 )brace
 suffix:semicolon
 DECL|struct|prio_tree_root
@@ -40,6 +76,12 @@ r_int
 r_int
 id|index_bits
 suffix:semicolon
+DECL|member|raw
+r_int
+r_int
+id|raw
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * 0: nodes are of type struct prio_tree_node&n;&t;&t; * 1: nodes are of type raw_prio_tree_node&n;&t;&t; */
 )brace
 suffix:semicolon
 DECL|struct|prio_tree_iter
@@ -118,9 +160,17 @@ id|iter-&gt;h_index
 op_assign
 id|h_index
 suffix:semicolon
+id|iter-&gt;cur
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
+DECL|macro|__INIT_PRIO_TREE_ROOT
+mdefine_line|#define __INIT_PRIO_TREE_ROOT(ptr, _raw)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&bslash;&n;&t;(ptr)-&gt;prio_tree_node = NULL;&t;&bslash;&n;&t;(ptr)-&gt;index_bits = 1;&t;&t;&bslash;&n;&t;(ptr)-&gt;raw = (_raw);&t;&t;&bslash;&n;} while (0)
 DECL|macro|INIT_PRIO_TREE_ROOT
-mdefine_line|#define INIT_PRIO_TREE_ROOT(ptr)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&bslash;&n;&t;(ptr)-&gt;prio_tree_node = NULL;&t;&bslash;&n;&t;(ptr)-&gt;index_bits = 1;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define INIT_PRIO_TREE_ROOT(ptr)&t;__INIT_PRIO_TREE_ROOT(ptr, 0)
+DECL|macro|INIT_RAW_PRIO_TREE_ROOT
+mdefine_line|#define INIT_RAW_PRIO_TREE_ROOT(ptr)&t;__INIT_PRIO_TREE_ROOT(ptr, 1)
 DECL|macro|INIT_PRIO_TREE_NODE
 mdefine_line|#define INIT_PRIO_TREE_NODE(ptr)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(ptr)-&gt;left = (ptr)-&gt;right = (ptr)-&gt;parent = (ptr);&t;&bslash;&n;} while (0)
 DECL|macro|INIT_PRIO_TREE_ITER
@@ -207,5 +257,77 @@ op_eq
 id|node
 suffix:semicolon
 )brace
+r_struct
+id|prio_tree_node
+op_star
+id|prio_tree_replace
+c_func
+(paren
+r_struct
+id|prio_tree_root
+op_star
+id|root
+comma
+r_struct
+id|prio_tree_node
+op_star
+id|old
+comma
+r_struct
+id|prio_tree_node
+op_star
+id|node
+)paren
+suffix:semicolon
+r_struct
+id|prio_tree_node
+op_star
+id|prio_tree_insert
+c_func
+(paren
+r_struct
+id|prio_tree_root
+op_star
+id|root
+comma
+r_struct
+id|prio_tree_node
+op_star
+id|node
+)paren
+suffix:semicolon
+r_void
+id|prio_tree_remove
+c_func
+(paren
+r_struct
+id|prio_tree_root
+op_star
+id|root
+comma
+r_struct
+id|prio_tree_node
+op_star
+id|node
+)paren
+suffix:semicolon
+r_struct
+id|prio_tree_node
+op_star
+id|prio_tree_next
+c_func
+(paren
+r_struct
+id|prio_tree_iter
+op_star
+id|iter
+)paren
+suffix:semicolon
+DECL|macro|raw_prio_tree_replace
+mdefine_line|#define raw_prio_tree_replace(root, old, node) &bslash;&n;&t;prio_tree_replace(root, (struct prio_tree_node *) (old), &bslash;&n;&t;    (struct prio_tree_node *) (node))
+DECL|macro|raw_prio_tree_insert
+mdefine_line|#define raw_prio_tree_insert(root, node) &bslash;&n;&t;prio_tree_insert(root, (struct prio_tree_node *) (node))
+DECL|macro|raw_prio_tree_remove
+mdefine_line|#define raw_prio_tree_remove(root, node) &bslash;&n;&t;prio_tree_remove(root, (struct prio_tree_node *) (node))
 macro_line|#endif /* _LINUX_PRIO_TREE_H */
 eof

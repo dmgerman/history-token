@@ -1366,7 +1366,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func

@@ -32,6 +32,12 @@ DECL|macro|EDD_MBR_SIG_MAX
 mdefine_line|#define EDD_MBR_SIG_MAX 16        /* max number of signatures to store */
 DECL|macro|EDD_MBR_SIG_NR_BUF
 mdefine_line|#define EDD_MBR_SIG_NR_BUF 0x1ea  /* addr of number of MBR signtaures at EDD_MBR_SIG_BUF&n;&t;&t;&t;&t;     in boot_params - treat this as 1 byte  */
+DECL|macro|EDD_CL_EQUALS
+mdefine_line|#define EDD_CL_EQUALS   0x3d646465     /* &quot;edd=&quot; */
+DECL|macro|EDD_CL_OFF
+mdefine_line|#define EDD_CL_OFF      0x666f         /* &quot;of&quot; for off  */
+DECL|macro|EDD_CL_SKIP
+mdefine_line|#define EDD_CL_SKIP     0x6b73         /* &quot;sk&quot; for skipmbr */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|EDD_EXT_FIXED_DISK_ACCESS
 mdefine_line|#define EDD_EXT_FIXED_DISK_ACCESS           (1 &lt;&lt; 0)

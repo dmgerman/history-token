@@ -171,9 +171,10 @@ id|fpu_state
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|siginfo32
+DECL|struct|compat_siginfo
+r_typedef
 r_struct
-id|siginfo32
+id|compat_siginfo
 (brace
 DECL|member|si_signo
 r_int
@@ -330,7 +331,9 @@ DECL|member|_sifields
 )brace
 id|_sifields
 suffix:semicolon
+DECL|typedef|compat_siginfo_t
 )brace
+id|compat_siginfo_t
 suffix:semicolon
 DECL|struct|rt_signal_frame32
 r_struct
@@ -342,8 +345,7 @@ id|sparc_stackf32
 id|ss
 suffix:semicolon
 DECL|member|info
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 id|info
 suffix:semicolon
 DECL|member|regs
@@ -401,8 +403,7 @@ r_int
 id|copy_siginfo_to_user32
 c_func
 (paren
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 id|__user
 op_star
 id|to
@@ -428,8 +429,7 @@ id|to
 comma
 r_sizeof
 (paren
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 )paren
 )paren
 )paren
@@ -699,17 +699,16 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* CAUTION: This is just a very minimalist implementation for the&n; *          sake of compat_sys_rt_sigqueueinfo()&n; */
-DECL|function|copy_siginfo_to_kernel32
+DECL|function|copy_siginfo_from_user32
 r_int
-id|copy_siginfo_to_kernel32
+id|copy_siginfo_from_user32
 c_func
 (paren
 id|siginfo_t
 op_star
 id|to
 comma
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 id|__user
 op_star
 id|from
@@ -728,8 +727,7 @@ id|from
 comma
 r_sizeof
 (paren
-r_struct
-id|siginfo32
+id|compat_siginfo_t
 )paren
 )paren
 )paren

@@ -242,6 +242,11 @@ r_struct
 id|smb_fattr
 op_star
 id|fattr
+comma
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern

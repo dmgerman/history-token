@@ -60,5 +60,11 @@ id|_einittext
 (braket
 )braket
 suffix:semicolon
+r_extern
+r_char
+id|_end
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /* _ASM_GENERIC_SECTIONS_H_ */
 eof

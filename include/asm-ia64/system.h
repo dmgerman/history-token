@@ -291,6 +291,13 @@ DECL|macro|task_running
 mdefine_line|#define task_running(rq, p) &t;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
 DECL|macro|ia64_platform_is
 mdefine_line|#define ia64_platform_is(x) (strcmp(x, platform_name) == 0)
+r_void
+id|cpu_idle_wait
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SYSTEM_H */

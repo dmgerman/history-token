@@ -36,7 +36,7 @@ DECL|typedef|sigval_t32
 id|sigval_t32
 suffix:semicolon
 r_struct
-id|siginfo32
+id|compat_siginfo
 suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* __KERNEL__ */
@@ -97,38 +97,6 @@ suffix:semicolon
 DECL|typedef|sigevent_t32
 )brace
 id|sigevent_t32
-suffix:semicolon
-r_extern
-r_int
-id|copy_siginfo_to_user32
-c_func
-(paren
-r_struct
-id|siginfo32
-id|__user
-op_star
-id|to
-comma
-id|siginfo_t
-op_star
-id|from
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|copy_siginfo_to_kernel32
-c_func
-(paren
-id|siginfo_t
-op_star
-id|to
-comma
-r_struct
-id|siginfo32
-id|__user
-op_star
-id|from
-)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* __KERNEL__ */

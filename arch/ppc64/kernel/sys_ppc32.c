@@ -56,6 +56,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* readdir &amp; getdents */
 DECL|macro|NAME_OFFSET
@@ -5116,63 +5117,6 @@ suffix:semicolon
 )brace
 r_return
 id|error
-suffix:semicolon
-)brace
-DECL|function|sys32_time
-id|asmlinkage
-r_int
-id|sys32_time
-c_func
-(paren
-id|compat_time_t
-id|__user
-op_star
-id|tloc
-)paren
-(brace
-id|compat_time_t
-id|secs
-suffix:semicolon
-r_struct
-id|timeval
-id|tv
-suffix:semicolon
-id|do_gettimeofday
-c_func
-(paren
-op_amp
-id|tv
-)paren
-suffix:semicolon
-id|secs
-op_assign
-id|tv.tv_sec
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tloc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-id|secs
-comma
-id|tloc
-)paren
-)paren
-id|secs
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-id|secs
 suffix:semicolon
 )brace
 DECL|function|sys32_olduname

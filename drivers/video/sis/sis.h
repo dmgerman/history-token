@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SiS 300/630/730/540/315/550/650/651/M650/661FX/M661FX/740/741/330/760&n; * frame buffer driver for Linux kernels &gt;=2.4.14 and &gt;=2.6.3&n; *&n; * Copyright (C) 2001-2004 Thomas Winischhofer, Vienna, Austria.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the named License,&n; * or any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; */
+multiline_comment|/*&n; * SiS 300/630/730/540/315/550/[M]650/651/[M]661[FM]X/740/[M]741[GX]/330/[M]760[GX]&n; * frame buffer driver for Linux kernels &gt;=2.4.14 and &gt;=2.6.3&n; *&n; * Copyright (C) 2001-2004 Thomas Winischhofer, Vienna, Austria.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the named License,&n; * or any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; */
 macro_line|#ifndef _SIS_H
 DECL|macro|_SIS_H
 mdefine_line|#define _SIS_H
@@ -17,7 +17,7 @@ mdefine_line|#define VER_MAJOR                 1
 DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR                 7
 DECL|macro|VER_LEVEL
-mdefine_line|#define VER_LEVEL                 12
+mdefine_line|#define VER_LEVEL                 17
 DECL|macro|SIS_CONFIG_COMPAT
 macro_line|#undef SIS_CONFIG_COMPAT
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
@@ -34,6 +34,21 @@ macro_line|#include &lt;asm/ioctl32.h&gt;
 DECL|macro|SIS_CONFIG_COMPAT
 mdefine_line|#define SIS_CONFIG_COMPAT
 macro_line|#endif
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,6,8)
+DECL|macro|SIS_IOTYPE1
+mdefine_line|#define SIS_IOTYPE1 void __iomem
+DECL|macro|SIS_IOTYPE2
+mdefine_line|#define SIS_IOTYPE2 __iomem
+DECL|macro|SISINITSTATIC
+mdefine_line|#define SISINITSTATIC static
+macro_line|#else
+DECL|macro|SIS_IOTYPE1
+mdefine_line|#define SIS_IOTYPE1 unsigned char
+DECL|macro|SIS_IOTYPE2
+mdefine_line|#define SIS_IOTYPE2
+DECL|macro|SISINITSTATIC
+mdefine_line|#define SISINITSTATIC
 macro_line|#endif
 DECL|macro|SISFBDEBUG
 macro_line|#undef SISFBDEBUG
@@ -317,25 +332,25 @@ DECL|macro|HW_DEVICE_EXTENSION
 mdefine_line|#define HW_DEVICE_EXTENSION&t;  SIS_HW_INFO
 DECL|macro|PHW_DEVICE_EXTENSION
 mdefine_line|#define PHW_DEVICE_EXTENSION      PSIS_HW_INFO
-multiline_comment|/* Useful macros */
+multiline_comment|/* I/O port access macros */
 DECL|macro|inSISREG
 mdefine_line|#define inSISREG(base)          inb(base)
 DECL|macro|outSISREG
 mdefine_line|#define outSISREG(base,val)     outb(val,base)
 DECL|macro|orSISREG
-mdefine_line|#define orSISREG(base,val)      do { &bslash;&n;                                  u8 __Temp = inb(base); &bslash;&n;                                  outSISREG(base, __Temp | (val)); &bslash;&n;                                } while (0)
+mdefine_line|#define orSISREG(base,val)      &t;&t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&t;&bslash;&n;                      u8 __Temp = inSISREG(base); &t;&bslash;&n;                      outSISREG(base, __Temp | (val)); &t;&bslash;&n;                    } while (0)
 DECL|macro|andSISREG
-mdefine_line|#define andSISREG(base,val)     do { &bslash;&n;                                  u8 __Temp = inb(base); &bslash;&n;                                  outSISREG(base, __Temp &amp; (val)); &bslash;&n;                                } while (0)
+mdefine_line|#define andSISREG(base,val)     &t;&t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&t;&bslash;&n;                      u8 __Temp = inSISREG(base); &t;&bslash;&n;                      outSISREG(base, __Temp &amp; (val)); &t;&bslash;&n;                    } while (0)
 DECL|macro|inSISIDXREG
-mdefine_line|#define inSISIDXREG(base,idx,var)   do { &bslash;&n;                                      outb(idx,base); var=inb((base)+1); &bslash;&n;                                    } while (0)
+mdefine_line|#define inSISIDXREG(base,idx,var)   &t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&bslash;&n;                      outSISREG(base, idx); &t;&bslash;&n;&t;&t;      var = inSISREG((base)+1);&t;&bslash;&n;                    } while (0)
 DECL|macro|outSISIDXREG
-mdefine_line|#define outSISIDXREG(base,idx,val)  do { &bslash;&n;                                      outb(idx,base); outb((val),(base)+1); &bslash;&n;                                    } while (0)
+mdefine_line|#define outSISIDXREG(base,idx,val)  &t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&bslash;&n;                      outSISREG(base, idx); &t;&bslash;&n;&t;&t;      outSISREG((base)+1, val); &bslash;&n;                    } while (0)
 DECL|macro|orSISIDXREG
-mdefine_line|#define orSISIDXREG(base,idx,val)   do { &bslash;&n;                                      u8 __Temp; &bslash;&n;                                      outb(idx,base);   &bslash;&n;                                      __Temp = inb((base)+1)|(val); &bslash;&n;                                      outSISIDXREG(base,idx,__Temp); &bslash;&n;                                    } while (0)
+mdefine_line|#define orSISIDXREG(base,idx,val)   &t;&t;&t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&t;&t;&bslash;&n;                      u8 __Temp; &t;&t;&t;&t;&bslash;&n;                      outSISREG(base, idx);   &t;&t;&t;&bslash;&n;                      __Temp = inSISREG((base)+1) | (val); &t;&bslash;&n;&t;&t;      outSISREG((base)+1, __Temp);&t;&t;&bslash;&n;                    } while (0)
 DECL|macro|andSISIDXREG
-mdefine_line|#define andSISIDXREG(base,idx,and)  do { &bslash;&n;                                      u8 __Temp; &bslash;&n;                                      outb(idx,base);   &bslash;&n;                                      __Temp = inb((base)+1)&amp;(and); &bslash;&n;                                      outSISIDXREG(base,idx,__Temp); &bslash;&n;                                    } while (0)
+mdefine_line|#define andSISIDXREG(base,idx,and)  &t;&t;&t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&t;&t;&bslash;&n;                      u8 __Temp; &t;&t;&t;&t;&bslash;&n;                      outSISREG(base, idx);   &t;&t;&t;&bslash;&n;                      __Temp = inSISREG((base)+1) &amp; (and); &t;&bslash;&n;&t;&t;      outSISREG((base)+1, __Temp);&t;&t;&bslash;&n;                    } while (0)
 DECL|macro|setSISIDXREG
-mdefine_line|#define setSISIDXREG(base,idx,and,or)   do { &bslash;&n;                                          u8 __Temp; &bslash;&n;                                          outb(idx,base);   &bslash;&n;                                          __Temp = (inb((base)+1)&amp;(and))|(or); &bslash;&n;                                          outSISIDXREG(base,idx,__Temp); &bslash;&n;                                        } while (0)
+mdefine_line|#define setSISIDXREG(base,idx,and,or)   &t;&t;   &t;&t;&bslash;&n;&t;&t;    do { &t;&t;&t;&t;   &t;&t;&bslash;&n;                      u8 __Temp; &t;&t;   &t;&t;&t;&bslash;&n;                      outSISREG(base, idx);   &t;&t;   &t;&t;&bslash;&n;                      __Temp = (inSISREG((base)+1) &amp; (and)) | (or); &t;&bslash;&n;&t;&t;      outSISREG((base)+1, __Temp);&t;&t;&t;&bslash;&n;                    } while (0)
 multiline_comment|/* MMIO access macros */
 DECL|macro|MMIO_IN8
 mdefine_line|#define MMIO_IN8(base, offset)  readb((base+offset))
@@ -364,6 +379,105 @@ DECL|macro|MMIO_QUEUE_WRITEPORT
 mdefine_line|#define MMIO_QUEUE_WRITEPORT    Q_WRITE_PTR
 DECL|macro|MMIO_QUEUE_READPORT
 mdefine_line|#define MMIO_QUEUE_READPORT     Q_READ_PTR
+macro_line|#ifndef FB_BLANK_UNBLANK
+DECL|macro|FB_BLANK_UNBLANK
+mdefine_line|#define FB_BLANK_UNBLANK &t;0
+macro_line|#endif
+macro_line|#ifndef FB_BLANK_NORMAL
+DECL|macro|FB_BLANK_NORMAL
+mdefine_line|#define FB_BLANK_NORMAL  &t;1
+macro_line|#endif
+macro_line|#ifndef FB_BLANK_VSYNC_SUSPEND
+DECL|macro|FB_BLANK_VSYNC_SUSPEND
+mdefine_line|#define FB_BLANK_VSYNC_SUSPEND &t;2
+macro_line|#endif
+macro_line|#ifndef FB_BLANK_HSYNC_SUSPEND
+DECL|macro|FB_BLANK_HSYNC_SUSPEND
+mdefine_line|#define FB_BLANK_HSYNC_SUSPEND &t;3
+macro_line|#endif
+macro_line|#ifndef FB_BLANK_POWERDOWN
+DECL|macro|FB_BLANK_POWERDOWN
+mdefine_line|#define FB_BLANK_POWERDOWN &t;4
+macro_line|#endif
+DECL|enum|_SIS_LCD_TYPE
+r_enum
+id|_SIS_LCD_TYPE
+(brace
+DECL|enumerator|LCD_INVALID
+id|LCD_INVALID
+op_assign
+l_int|0
+comma
+DECL|enumerator|LCD_800x600
+id|LCD_800x600
+comma
+DECL|enumerator|LCD_1024x768
+id|LCD_1024x768
+comma
+DECL|enumerator|LCD_1280x1024
+id|LCD_1280x1024
+comma
+DECL|enumerator|LCD_1280x960
+id|LCD_1280x960
+comma
+DECL|enumerator|LCD_640x480
+id|LCD_640x480
+comma
+DECL|enumerator|LCD_1600x1200
+id|LCD_1600x1200
+comma
+DECL|enumerator|LCD_1920x1440
+id|LCD_1920x1440
+comma
+DECL|enumerator|LCD_2048x1536
+id|LCD_2048x1536
+comma
+DECL|enumerator|LCD_320x480
+id|LCD_320x480
+comma
+multiline_comment|/* FSTN */
+DECL|enumerator|LCD_1400x1050
+id|LCD_1400x1050
+comma
+DECL|enumerator|LCD_1152x864
+id|LCD_1152x864
+comma
+DECL|enumerator|LCD_1152x768
+id|LCD_1152x768
+comma
+DECL|enumerator|LCD_1280x768
+id|LCD_1280x768
+comma
+DECL|enumerator|LCD_1024x600
+id|LCD_1024x600
+comma
+DECL|enumerator|LCD_640x480_2
+id|LCD_640x480_2
+comma
+multiline_comment|/* DSTN */
+DECL|enumerator|LCD_640x480_3
+id|LCD_640x480_3
+comma
+multiline_comment|/* DSTN */
+DECL|enumerator|LCD_848x480
+id|LCD_848x480
+comma
+DECL|enumerator|LCD_1280x800
+id|LCD_1280x800
+comma
+DECL|enumerator|LCD_1680x1050
+id|LCD_1680x1050
+comma
+DECL|enumerator|LCD_1280x720
+id|LCD_1280x720
+comma
+DECL|enumerator|LCD_CUSTOM
+id|LCD_CUSTOM
+comma
+DECL|enumerator|LCD_UNKNOWN
+id|LCD_UNKNOWN
+)brace
+suffix:semicolon
 DECL|enum|_SIS_CMDTYPE
 r_enum
 id|_SIS_CMDTYPE
@@ -582,25 +696,18 @@ r_int
 id|vga_base
 suffix:semicolon
 DECL|member|video_vbase
-r_void
-id|__iomem
+id|SIS_IOTYPE1
 op_star
 id|video_vbase
 suffix:semicolon
 DECL|member|mmio_vbase
-r_void
-id|__iomem
+id|SIS_IOTYPE1
 op_star
 id|mmio_vbase
 suffix:semicolon
-DECL|member|bios_vbase
-r_void
-id|__iomem
-op_star
-id|bios_vbase
-suffix:semicolon
 DECL|member|bios_abase
-r_void
+r_int
+r_char
 op_star
 id|bios_abase
 suffix:semicolon
@@ -696,15 +803,13 @@ id|heapstart
 suffix:semicolon
 multiline_comment|/* offset  */
 DECL|member|sisfb_heap_start
-r_void
-id|__iomem
+id|SIS_IOTYPE1
 op_star
 id|sisfb_heap_start
 suffix:semicolon
 multiline_comment|/* address */
 DECL|member|sisfb_heap_end
-r_void
-id|__iomem
+id|SIS_IOTYPE1
 op_star
 id|sisfb_heap_end
 suffix:semicolon
@@ -837,6 +942,11 @@ id|tvdefmodeidx
 comma
 id|defmodeidx
 suffix:semicolon
+DECL|member|CRT2LCDType
+id|u32
+id|CRT2LCDType
+suffix:semicolon
+multiline_comment|/* defined in &quot;SIS_LCD_TYPE&quot; */
 DECL|member|current_bpp
 r_int
 id|current_bpp
@@ -903,6 +1013,10 @@ DECL|member|registered
 r_int
 id|registered
 suffix:semicolon
+DECL|member|warncount
+r_int
+id|warncount
+suffix:semicolon
 macro_line|#ifdef SIS_CONFIG_COMPAT
 DECL|member|ioctl32registered
 r_int
@@ -942,8 +1056,7 @@ id|u8
 id|detectedlcda
 suffix:semicolon
 DECL|member|hwcursor_vbase
-r_void
-id|__iomem
+id|SIS_IOTYPE1
 op_star
 id|hwcursor_vbase
 suffix:semicolon

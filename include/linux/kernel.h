@@ -11,6 +11,13 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
+r_extern
+r_const
+r_char
+id|linux_banner
+(braket
+)braket
+suffix:semicolon
 DECL|macro|INT_MAX
 mdefine_line|#define INT_MAX&t;&t;((int)(~0U&gt;&gt;1))
 DECL|macro|INT_MIN
@@ -706,6 +713,10 @@ r_int
 id|oops_in_progress
 suffix:semicolon
 multiline_comment|/* If set, an oops, panic(), BUG() or die() is in progress */
+r_extern
+r_int
+id|panic_timeout
+suffix:semicolon
 r_extern
 r_int
 id|panic_on_oops

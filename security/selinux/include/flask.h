@@ -105,6 +105,10 @@ DECL|macro|SECCLASS_NETLINK_IP6FW_SOCKET
 mdefine_line|#define SECCLASS_NETLINK_IP6FW_SOCKET                    50
 DECL|macro|SECCLASS_NETLINK_DNRT_SOCKET
 mdefine_line|#define SECCLASS_NETLINK_DNRT_SOCKET                     51
+DECL|macro|SECCLASS_DBUS
+mdefine_line|#define SECCLASS_DBUS                                    52
+DECL|macro|SECCLASS_NSCD
+mdefine_line|#define SECCLASS_NSCD                                    53
 multiline_comment|/*&n; * Security identifier indices for initial entities&n; */
 DECL|macro|SECINITSID_KERNEL
 mdefine_line|#define SECINITSID_KERNEL                               1

@@ -2388,7 +2388,7 @@ id|inode-&gt;i_hash
 (brace
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 (paren
@@ -3147,7 +3147,7 @@ id|err
 (brace
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 (paren
@@ -4279,7 +4279,7 @@ id|name
 suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 (paren

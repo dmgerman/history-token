@@ -697,8 +697,6 @@ DECL|macro|__ARCH_WANT_SYS_PAUSE
 mdefine_line|#define __ARCH_WANT_SYS_PAUSE
 DECL|macro|__ARCH_WANT_SYS_SIGNAL
 mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
-DECL|macro|__ARCH_WANT_SYS_TIME
-mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
@@ -721,10 +719,14 @@ DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
 DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
 mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
-macro_line|# ifndef CONFIG_ARCH_S390X
+macro_line|# ifdef CONFIG_ARCH_S390_31
 DECL|macro|__ARCH_WANT_STAT64
 macro_line|#   define __ARCH_WANT_STAT64
+DECL|macro|__ARCH_WANT_SYS_TIME
+macro_line|#   define __ARCH_WANT_SYS_TIME
 macro_line|# endif
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+macro_line|# define __ARCH_WANT_COMPAT_SYS_TIME
 macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;

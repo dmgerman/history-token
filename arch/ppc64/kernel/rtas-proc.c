@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt; /* for ppc_md */
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 multiline_comment|/* Token for Sensors */
 DECL|macro|KEY_SWITCH
 mdefine_line|#define KEY_SWITCH&t;&t;0x0001

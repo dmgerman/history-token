@@ -324,6 +324,7 @@ mdefine_line|#define HASHDIST_DEFAULT 0
 macro_line|#endif
 r_extern
 r_int
+id|__initdata
 id|hashdist
 suffix:semicolon
 multiline_comment|/* Distribute hashes across NUMA nodes? */

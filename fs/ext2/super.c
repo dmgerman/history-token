@@ -2808,10 +2808,6 @@ c_func
 id|es-&gt;s_magic
 )paren
 suffix:semicolon
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_ONE_SECOND
-suffix:semicolon
 r_if
 c_cond
 (paren

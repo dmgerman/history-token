@@ -53,10 +53,6 @@ l_string|&quot;ep&quot;
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
-r_extern
 id|u32
 id|_intv_end
 comma

@@ -39,6 +39,10 @@ op_star
 id|bprm
 comma
 r_int
+r_int
+id|stack_top
+comma
+r_int
 id|exec_stack
 )paren
 suffix:semicolon
@@ -1913,6 +1917,8 @@ id|ia32_setup_arg_pages
 c_func
 (paren
 id|bprm
+comma
+id|IA32_STACK_TOP
 comma
 id|EXSTACK_DEFAULT
 )paren

@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* This is true if we are using the firmware NMI handler (typically LPAR) */
 r_extern
@@ -1801,6 +1802,17 @@ op_star
 id|regs
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debugger_fault_handler
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren

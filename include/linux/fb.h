@@ -1293,6 +1293,9 @@ mdefine_line|#define FB_EVENT_GET_CONSOLE_MAP        0x06
 multiline_comment|/*      set console to framebuffer mapping */
 DECL|macro|FB_EVENT_SET_CONSOLE_MAP
 mdefine_line|#define FB_EVENT_SET_CONSOLE_MAP        0x07
+multiline_comment|/*      A display blank is requested       */
+DECL|macro|FB_EVENT_BLANK
+mdefine_line|#define FB_EVENT_BLANK                  0x08
 DECL|struct|fb_event
 r_struct
 id|fb_event
@@ -2130,8 +2133,8 @@ DECL|macro|FBINFO_HWACCEL_YPAN
 mdefine_line|#define FBINFO_HWACCEL_YPAN&t;&t;0x2000 /* optional */
 DECL|macro|FBINFO_HWACCEL_YWRAP
 mdefine_line|#define FBINFO_HWACCEL_YWRAP&t;&t;0x4000 /* optional */
-DECL|macro|FBINFO_MISC_MODECHANGEUSER
-mdefine_line|#define FBINFO_MISC_MODECHANGEUSER     0x10000 /* mode change request&n;&t;&t;&t;&t;&t;&t;  from userspace */
+DECL|macro|FBINFO_MISC_USEREVENT
+mdefine_line|#define FBINFO_MISC_USEREVENT          0x10000 /* event request&n;&t;&t;&t;&t;&t;&t;  from userspace */
 DECL|macro|FBINFO_MISC_MODESWITCH
 mdefine_line|#define FBINFO_MISC_MODESWITCH         0x20000 /* mode switch */
 DECL|macro|FBINFO_MISC_MODESWITCHLATE

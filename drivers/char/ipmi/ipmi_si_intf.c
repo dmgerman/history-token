@@ -5207,6 +5207,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* For GPE-type interrupts. */
 DECL|function|ipmi_acpi_gpe
+r_static
 id|u32
 id|ipmi_acpi_gpe
 c_func
@@ -9196,6 +9197,7 @@ id|init_ipmi_si
 )paren
 suffix:semicolon
 DECL|function|cleanup_one_si
+r_static
 r_void
 id|__exit
 id|cleanup_one_si

@@ -4,7 +4,9 @@ DECL|macro|_LINUX_SUNRPC_SCHED_H_
 mdefine_line|#define _LINUX_SUNRPC_SCHED_H_
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 multiline_comment|/*&n; * This is the actual RPC procedure call info.&n; */
 r_struct
@@ -42,17 +44,44 @@ suffix:semicolon
 multiline_comment|/* Credentials */
 )brace
 suffix:semicolon
+r_struct
+id|rpc_wait_queue
+suffix:semicolon
+DECL|struct|rpc_wait
+r_struct
+id|rpc_wait
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* wait queue links */
+DECL|member|links
+r_struct
+id|list_head
+id|links
+suffix:semicolon
+multiline_comment|/* Links to related tasks */
+DECL|member|waitq
+id|wait_queue_head_t
+id|waitq
+suffix:semicolon
+multiline_comment|/* sync: sleep on this q */
+DECL|member|rpc_waitq
+r_struct
+id|rpc_wait_queue
+op_star
+id|rpc_waitq
+suffix:semicolon
+multiline_comment|/* RPC wait queue we&squot;re on */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * This is the RPC task struct&n; */
 DECL|struct|rpc_task
 r_struct
 id|rpc_task
 (brace
-DECL|member|tk_list
-r_struct
-id|list_head
-id|tk_list
-suffix:semicolon
-multiline_comment|/* wait queue links */
 macro_line|#ifdef RPC_DEBUG
 DECL|member|tk_magic
 r_int
@@ -86,13 +115,6 @@ r_int
 id|tk_status
 suffix:semicolon
 multiline_comment|/* result of last operation */
-DECL|member|tk_rpcwait
-r_struct
-id|rpc_wait_queue
-op_star
-id|tk_rpcwait
-suffix:semicolon
-multiline_comment|/* RPC wait queue we&squot;re on */
 multiline_comment|/*&n;&t; * RPC call state&n;&t; */
 DECL|member|tk_msg
 r_struct
@@ -199,11 +221,6 @@ id|timer_list
 id|tk_timer
 suffix:semicolon
 multiline_comment|/* kernel timer */
-DECL|member|tk_wait
-id|wait_queue_head_t
-id|tk_wait
-suffix:semicolon
-multiline_comment|/* sync: sleep on this q */
 DECL|member|tk_timeout
 r_int
 r_int
@@ -238,12 +255,31 @@ r_int
 id|tk_runstate
 suffix:semicolon
 multiline_comment|/* Task run status */
-DECL|member|tk_links
+DECL|member|tk_workqueue
 r_struct
-id|list_head
-id|tk_links
+id|workqueue_struct
+op_star
+id|tk_workqueue
 suffix:semicolon
-multiline_comment|/* links to related tasks */
+multiline_comment|/* Normally rpciod, but could&n;&t;&t;&t;&t;&t;&t; * be any workqueue&n;&t;&t;&t;&t;&t;&t; */
+r_union
+(brace
+DECL|member|tk_work
+r_struct
+id|work_struct
+id|tk_work
+suffix:semicolon
+multiline_comment|/* Async task work queue */
+DECL|member|tk_wait
+r_struct
+id|rpc_wait
+id|tk_wait
+suffix:semicolon
+multiline_comment|/* RPC wait */
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 DECL|member|tk_pid
 r_int
@@ -260,9 +296,9 @@ DECL|macro|tk_xprt
 mdefine_line|#define tk_xprt&t;&t;&t;tk_client-&gt;cl_xprt
 multiline_comment|/* support walking a list of tasks on a wait queue */
 DECL|macro|task_for_each
-mdefine_line|#define&t;task_for_each(task, pos, head) &bslash;&n;&t;list_for_each(pos, head) &bslash;&n;&t;&t;if ((task=list_entry(pos, struct rpc_task, tk_list)),1)
+mdefine_line|#define&t;task_for_each(task, pos, head) &bslash;&n;&t;list_for_each(pos, head) &bslash;&n;&t;&t;if ((task=list_entry(pos, struct rpc_task, u.tk_wait.list)),1)
 DECL|macro|task_for_first
-mdefine_line|#define&t;task_for_first(task, head) &bslash;&n;&t;if (!list_empty(head) &amp;&amp;  &bslash;&n;&t;    ((task=list_entry((head)-&gt;next, struct rpc_task, tk_list)),1))
+mdefine_line|#define&t;task_for_first(task, head) &bslash;&n;&t;if (!list_empty(head) &amp;&amp;  &bslash;&n;&t;    ((task=list_entry((head)-&gt;next, struct rpc_task, u.tk_wait.list)),1))
 multiline_comment|/* .. and walking list of all tasks */
 DECL|macro|alltask_for_each
 mdefine_line|#define&t;alltask_for_each(task, pos, head) &bslash;&n;&t;list_for_each(pos, head) &bslash;&n;&t;&t;if ((task=list_entry(pos, struct rpc_task, tk_task)),1)
@@ -322,22 +358,32 @@ DECL|macro|RPC_IS_SOFT
 mdefine_line|#define RPC_IS_SOFT(t)&t;&t;((t)-&gt;tk_flags &amp; RPC_TASK_SOFT)
 DECL|macro|RPC_TASK_UNINTERRUPTIBLE
 mdefine_line|#define RPC_TASK_UNINTERRUPTIBLE(t) ((t)-&gt;tk_flags &amp; RPC_TASK_NOINTR)
-DECL|macro|RPC_TASK_SLEEPING
-mdefine_line|#define RPC_TASK_SLEEPING&t;0
 DECL|macro|RPC_TASK_RUNNING
-mdefine_line|#define RPC_TASK_RUNNING&t;1
-DECL|macro|RPC_IS_SLEEPING
-mdefine_line|#define RPC_IS_SLEEPING(t)&t;(test_bit(RPC_TASK_SLEEPING, &amp;(t)-&gt;tk_runstate))
+mdefine_line|#define RPC_TASK_RUNNING&t;0
+DECL|macro|RPC_TASK_QUEUED
+mdefine_line|#define RPC_TASK_QUEUED&t;&t;1
+DECL|macro|RPC_TASK_WAKEUP
+mdefine_line|#define RPC_TASK_WAKEUP&t;&t;2
+DECL|macro|RPC_TASK_HAS_TIMER
+mdefine_line|#define RPC_TASK_HAS_TIMER&t;3
 DECL|macro|RPC_IS_RUNNING
 mdefine_line|#define RPC_IS_RUNNING(t)&t;(test_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate))
 DECL|macro|rpc_set_running
 mdefine_line|#define rpc_set_running(t)&t;(set_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate))
+DECL|macro|rpc_test_and_set_running
+mdefine_line|#define rpc_test_and_set_running(t) &bslash;&n;&t;&t;&t;&t;(test_and_set_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate))
 DECL|macro|rpc_clear_running
-mdefine_line|#define rpc_clear_running(t)&t;(clear_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate))
-DECL|macro|rpc_set_sleeping
-mdefine_line|#define rpc_set_sleeping(t)&t;(set_bit(RPC_TASK_SLEEPING, &amp;(t)-&gt;tk_runstate))
-DECL|macro|rpc_clear_sleeping
-mdefine_line|#define rpc_clear_sleeping(t) &bslash;&n;&t;do { &bslash;&n;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;clear_bit(RPC_TASK_SLEEPING, &amp;(t)-&gt;tk_runstate); &bslash;&n;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;} while(0)
+mdefine_line|#define rpc_clear_running(t)&t;&bslash;&n;&t;do { &bslash;&n;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;clear_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate); &bslash;&n;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;} while (0)
+DECL|macro|RPC_IS_QUEUED
+mdefine_line|#define RPC_IS_QUEUED(t)&t;(test_bit(RPC_TASK_QUEUED, &amp;(t)-&gt;tk_runstate))
+DECL|macro|rpc_set_queued
+mdefine_line|#define rpc_set_queued(t)&t;(set_bit(RPC_TASK_QUEUED, &amp;(t)-&gt;tk_runstate))
+DECL|macro|rpc_clear_queued
+mdefine_line|#define rpc_clear_queued(t)&t;&bslash;&n;&t;do { &bslash;&n;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;clear_bit(RPC_TASK_QUEUED, &amp;(t)-&gt;tk_runstate); &bslash;&n;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;} while (0)
+DECL|macro|rpc_start_wakeup
+mdefine_line|#define rpc_start_wakeup(t) &bslash;&n;&t;(test_and_set_bit(RPC_TASK_WAKEUP, &amp;(t)-&gt;tk_runstate) == 0)
+DECL|macro|rpc_finish_wakeup
+mdefine_line|#define rpc_finish_wakeup(t) &bslash;&n;&t;do { &bslash;&n;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;clear_bit(RPC_TASK_WAKEUP, &amp;(t)-&gt;tk_runstate); &bslash;&n;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Task priorities.&n; * Note: if you change these, you must also change&n; * the task initialization definitions below.&n; */
 DECL|macro|RPC_PRIORITY_LOW
 mdefine_line|#define RPC_PRIORITY_LOW&t;0
@@ -352,6 +398,10 @@ DECL|struct|rpc_wait_queue
 r_struct
 id|rpc_wait_queue
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|tasks
 r_struct
 id|list_head
@@ -406,10 +456,10 @@ DECL|macro|RPC_BATCH_COUNT
 mdefine_line|#define RPC_BATCH_COUNT&t;&t;&t;16
 macro_line|#ifndef RPC_DEBUG
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;}
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED, &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;}
 macro_line|#else
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;&t;.name = qname, &bslash;&n;&t;}
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED, &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;&t;.name = qname, &bslash;&n;&t;}
 macro_line|#endif
 DECL|macro|RPC_WAITQ
 macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var,qname)
@@ -512,28 +562,6 @@ id|rpc_action
 id|action
 )paren
 suffix:semicolon
-r_int
-id|rpc_add_wait_queue
-c_func
-(paren
-r_struct
-id|rpc_wait_queue
-op_star
-comma
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
-r_void
-id|rpc_remove_wait_queue
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
 r_void
 id|rpc_init_priority_wait_queue
 c_func
@@ -577,17 +605,6 @@ id|action
 comma
 id|rpc_action
 id|timer
-)paren
-suffix:semicolon
-r_void
-id|rpc_add_timer
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-comma
-id|rpc_action
 )paren
 suffix:semicolon
 r_void

@@ -19,14 +19,6 @@ DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
 macro_line|#endif
 r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 id|cpumask_t
 id|cpu_initialized
 suffix:semicolon
@@ -1326,11 +1318,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*&n; * Name:         smp_callin&n; *&n; * Description:  This routine activate a secondary processor.&n; *&n; * Born on Date: 2002.02.05&n; *&n; * Arguments:    NONE&n; *&n; * Returns:      void (cannot fail)&n; *&n; * Modification log:&n; * Date       Who Description&n; * ---------- --- --------------------------------------------------------&n; * 2003-06-24 hy  modify for linux-2.5.69&n; *&n; *==========================================================================*/

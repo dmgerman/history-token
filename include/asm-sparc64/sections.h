@@ -5,10 +5,6 @@ multiline_comment|/* nothing to see, move along */
 macro_line|#include &lt;asm-generic/sections.h&gt;
 r_extern
 r_char
-id|_end
-(braket
-)braket
-comma
 id|_start
 (braket
 )braket

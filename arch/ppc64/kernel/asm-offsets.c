@@ -13,13 +13,13 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -268,21 +268,6 @@ id|mm
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* naca */
-id|DEFINE
-c_func
-(paren
-id|PACA
-comma
-m_offsetof
-(paren
-r_struct
-id|naca_struct
-comma
-id|paca
-)paren
-)paren
-suffix:semicolon
 id|DEFINE
 c_func
 (paren
@@ -291,9 +276,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|systemcfg
+id|ppc64_caches
 comma
-id|dCacheL1LineSize
+id|dline_size
 )paren
 )paren
 suffix:semicolon
@@ -305,9 +290,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|dCacheL1LogLineSize
+id|log_dline_size
 )paren
 )paren
 suffix:semicolon
@@ -319,9 +304,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|dCacheL1LinesPerPage
+id|dlines_per_page
 )paren
 )paren
 suffix:semicolon
@@ -333,9 +318,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|systemcfg
+id|ppc64_caches
 comma
-id|iCacheL1LineSize
+id|iline_size
 )paren
 )paren
 suffix:semicolon
@@ -347,9 +332,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|iCacheL1LogLineSize
+id|log_iline_size
 )paren
 )paren
 suffix:semicolon
@@ -361,9 +346,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|iCacheL1LinesPerPage
+id|ilines_per_page
 )paren
 )paren
 suffix:semicolon
@@ -726,9 +711,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xSavedSrr0
+id|saved_srr0
 )paren
 )paren
 suffix:semicolon
@@ -740,9 +725,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xSavedSrr1
+id|saved_srr1
 )paren
 )paren
 suffix:semicolon
@@ -754,9 +739,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xIntDword.xAnyInt
+id|int_dword.any_int
 )paren
 )paren
 suffix:semicolon
@@ -768,9 +753,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xIntDword.xFields.xDecrInt
+id|int_dword.fields.decr_int
 )paren
 )paren
 suffix:semicolon

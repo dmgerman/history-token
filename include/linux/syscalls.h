@@ -135,7 +135,7 @@ r_int
 id|sys_time
 c_func
 (paren
-r_int
+id|time_t
 id|__user
 op_star
 id|tloc

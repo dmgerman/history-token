@@ -168,13 +168,6 @@ c_func
 id|__up
 )paren
 suffix:semicolon
-DECL|variable|naca
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
 DECL|variable|__down
 id|EXPORT_SYMBOL
 c_func
@@ -182,15 +175,6 @@ c_func
 id|__down
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|variable|itLpNaca
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|itLpNaca
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|csum_partial
 id|EXPORT_SYMBOL
 c_func
@@ -656,13 +640,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cur_cpu_spec
-)paren
-suffix:semicolon
-DECL|variable|systemcfg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|systemcfg
 )paren
 suffix:semicolon
 eof

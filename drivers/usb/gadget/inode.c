@@ -7769,6 +7769,10 @@ op_assign
 op_amp
 id|gadget_fs_operations
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* root inode */
 id|inode
 op_assign

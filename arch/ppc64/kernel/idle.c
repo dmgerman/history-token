@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 r_extern
 r_void
 id|power4_idle
@@ -135,7 +136,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lppaca.xIntDword.xFields.xDecrInt
+id|lppaca.int_dword.fields.decr_int
 op_assign
 l_int|1
 suffix:semicolon
@@ -210,7 +211,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xSharedProc
+id|lpaca-&gt;lppaca.shared_proc
 )paren
 (brace
 r_if
@@ -538,7 +539,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Indicate to the HV that we are idle. Now would be&n;&t;&t; * a good time to find other work to dispatch.&n;&t;&t; */
-id|lpaca-&gt;lppaca.xIdle
+id|lpaca-&gt;lppaca.idle
 op_assign
 l_int|1
 suffix:semicolon
@@ -630,7 +631,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|ppaca-&gt;lppaca.xIdle
+id|ppaca-&gt;lppaca.idle
 )paren
 )paren
 (brace
@@ -698,7 +699,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;lppaca.xIdle
+id|lpaca-&gt;lppaca.idle
 op_assign
 l_int|0
 suffix:semicolon
@@ -765,7 +766,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Indicate to the HV that we are idle. Now would be&n;&t;&t; * a good time to find other work to dispatch.&n;&t;&t; */
-id|lpaca-&gt;lppaca.xIdle
+id|lpaca-&gt;lppaca.idle
 op_assign
 l_int|1
 suffix:semicolon
@@ -818,7 +819,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;lppaca.xIdle
+id|lpaca-&gt;lppaca.idle
 op_assign
 l_int|0
 suffix:semicolon
@@ -904,7 +905,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -915,9 +916,6 @@ id|idle_loop
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|powersave_nap
@@ -1043,7 +1041,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lppaca.xSharedProc
+id|lppaca.shared_proc
 )paren
 (brace
 id|printk

@@ -281,6 +281,10 @@ op_star
 id|bprm
 comma
 r_int
+r_int
+id|stack_top
+comma
+r_int
 id|executable_stack
 )paren
 suffix:semicolon

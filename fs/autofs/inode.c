@@ -708,6 +708,10 @@ op_assign
 op_amp
 id|autofs_sops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|root_inode
 op_assign
 id|iget

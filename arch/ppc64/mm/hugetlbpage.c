@@ -3819,7 +3819,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -3921,7 +3921,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -4005,7 +4005,7 @@ op_assign
 op_complement
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -4061,7 +4061,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP

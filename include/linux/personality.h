@@ -40,6 +40,12 @@ suffix:semicolon
 multiline_comment|/*&n; * Flags for bug emulation.&n; *&n; * These occupy the top three bytes.&n; */
 r_enum
 (brace
+DECL|enumerator|FDPIC_FUNCPTRS
+id|FDPIC_FUNCPTRS
+op_assign
+l_int|0x0080000
+comma
+multiline_comment|/* userspace function ptrs point to descriptors&n;&t;&t;&t;&t;&t;&t; * (signal handling)&n;&t;&t;&t;&t;&t;&t; */
 DECL|enumerator|MMAP_PAGE_ZERO
 id|MMAP_PAGE_ZERO
 op_assign
@@ -99,6 +105,13 @@ op_assign
 l_int|0x0000
 op_or
 id|ADDR_LIMIT_32BIT
+comma
+DECL|enumerator|PER_LINUX_FDPIC
+id|PER_LINUX_FDPIC
+op_assign
+l_int|0x0000
+op_or
+id|FDPIC_FUNCPTRS
 comma
 DECL|enumerator|PER_SVR4
 id|PER_SVR4

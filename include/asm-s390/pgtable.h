@@ -1443,7 +1443,7 @@ DECL|macro|pgd_page_kernel
 mdefine_line|#define pgd_page_kernel(pgd) (pgd_val(pgd) &amp; PAGE_MASK)
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */

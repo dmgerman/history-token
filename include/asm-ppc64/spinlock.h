@@ -71,7 +71,7 @@ multiline_comment|/*&n; * On a system with shared processors (that is, where a p
 macro_line|#if defined(CONFIG_PPC_SPLPAR) || defined(CONFIG_PPC_ISERIES)
 multiline_comment|/* We only yield to the hypervisor if we are in shared processor mode */
 DECL|macro|SHARED_PROCESSOR
-mdefine_line|#define SHARED_PROCESSOR (get_paca()-&gt;lppaca.xSharedProc)
+mdefine_line|#define SHARED_PROCESSOR (get_paca()-&gt;lppaca.shared_proc)
 r_extern
 r_void
 id|__spin_yield

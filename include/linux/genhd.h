@@ -703,6 +703,15 @@ id|disk
 suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
 r_extern
+r_int
+id|get_blkdev_list
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|add_disk
 c_func

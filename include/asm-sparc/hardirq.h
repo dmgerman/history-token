@@ -24,9 +24,5 @@ suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS    8
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()             (preempt_count() += HARDIRQ_OFFSET)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()                                                      &bslash;&n;do {                                                                    &bslash;&n;                preempt_count() -= IRQ_EXIT_OFFSET;                     &bslash;&n;                if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;                        do_softirq();                                   &bslash;&n;                preempt_enable_no_resched();                            &bslash;&n;} while (0)
 macro_line|#endif /* __SPARC_HARDIRQ_H */
 eof

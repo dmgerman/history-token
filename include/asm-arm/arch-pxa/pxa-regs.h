@@ -2609,6 +2609,8 @@ mdefine_line|#define SSCR0_NCS&t;&t;(1 &lt;&lt; 21)&t;/* Network Clock Select */
 DECL|macro|SSCR0_EDSS
 mdefine_line|#define SSCR0_EDSS&t;&t;(1 &lt;&lt; 20)&t;/* Extended Data Size Select */
 multiline_comment|/* extra bits in PXA255, PXA26x and PXA27x SSP ports */
+DECL|macro|SSCR0_PSP
+mdefine_line|#define SSCR0_PSP&t;&t;(3 &lt;&lt; 4)&t;/* PSP - Programmable Serial Protocol */
 DECL|macro|SSCR1_TTELP
 mdefine_line|#define SSCR1_TTELP&t;&t;(1 &lt;&lt; 31)&t;/* TXD Tristate Enable Last Phase */
 DECL|macro|SSCR1_TTE

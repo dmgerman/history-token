@@ -774,5 +774,12 @@ r_extern
 r_int
 id|es7000_plat
 suffix:semicolon
+r_void
+id|cpu_idle_wait
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

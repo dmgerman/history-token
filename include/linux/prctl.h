@@ -70,5 +70,7 @@ DECL|macro|PR_TIMING_TIMESTAMP
 macro_line|# define PR_TIMING_TIMESTAMP    1       /* Accurate timestamp based&n;                                                   process timing */
 DECL|macro|PR_SET_NAME
 mdefine_line|#define PR_SET_NAME    15&t;&t;/* Set process name */
+DECL|macro|PR_GET_NAME
+mdefine_line|#define PR_GET_NAME    16&t;&t;/* Get process name */
 macro_line|#endif /* _LINUX_PRCTL_H */
 eof

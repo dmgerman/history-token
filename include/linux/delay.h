@@ -25,6 +25,13 @@ DECL|macro|ndelay
 mdefine_line|#define ndelay(x)&t;udelay(((x)+999)/1000)
 macro_line|#endif
 r_void
+id|calibrate_delay
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|msleep
 c_func
 (paren

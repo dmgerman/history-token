@@ -17,6 +17,13 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;lcd.h&quot;
+DECL|variable|lcd_lock
+r_static
+id|spinlock_t
+id|lcd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 r_int
 id|lcd_ioctl
@@ -44,10 +51,12 @@ suffix:semicolon
 DECL|variable|lcd_present
 r_static
 r_int
+r_int
 id|lcd_present
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* used in arch/mips/cobalt/reset.c */
 DECL|variable|led_state
 r_int
 id|led_state
@@ -169,9 +178,6 @@ r_int
 id|address
 comma
 id|a
-suffix:semicolon
-r_int
-id|index
 suffix:semicolon
 r_switch
 c_cond
@@ -770,6 +776,10 @@ r_struct
 id|lcd_display
 id|display
 suffix:semicolon
+r_int
+r_int
+id|index
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1166,6 +1176,7 @@ id|LED_Bit_Set
 suffix:colon
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 r_int
@@ -1248,6 +1259,7 @@ r_case
 id|LED_Bit_Clear
 suffix:colon
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -1528,6 +1540,27 @@ id|ctr
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+id|pr_info
+c_func
+(paren
+id|LCD
+l_string|&quot;Erasing Flash&bslash;n&quot;
+)paren
+suffix:semicolon
 singleline_comment|// Chip Erase Sequence
 id|WRITE_FLASH
 c_func
@@ -1577,12 +1610,6 @@ comma
 id|kFlash_Erase6
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Erasing Flash.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1611,24 +1638,6 @@ id|ctr
 op_increment
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1641,10 +1650,11 @@ op_eq
 l_int|0xFF
 )paren
 (brace
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;Erase Successful&bslash;r&bslash;n&quot;
+id|LCD
+l_string|&quot;Erase Successful&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1655,10 +1665,11 @@ c_cond
 id|timeout
 )paren
 (brace
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;Erase Timed Out&bslash;r&bslash;n&quot;
+id|LCD
+l_string|&quot;Erase Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1680,7 +1691,10 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+r_int
 id|i
+comma
+id|index
 suffix:semicolon
 r_int
 r_char
@@ -1690,6 +1704,20 @@ suffix:semicolon
 r_struct
 id|lcd_display
 id|display
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
 suffix:semicolon
 r_if
 c_cond
@@ -1745,23 +1773,23 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;broken&bslash;n&quot;
+id|KERN_ERR
+id|LCD
+l_string|&quot;kmalloc() failed in %s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;Churning and Burning -&quot;
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
+id|LCD
+l_string|&quot;Starting Flash burn&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1796,19 +1824,31 @@ comma
 l_int|128
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|rom
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 id|burn_addr
 op_assign
 id|kFlashBase
 op_plus
 id|i
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lcd_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_for
@@ -1909,9 +1949,12 @@ id|burn_addr
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lcd_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1954,10 +1997,11 @@ c_cond
 id|timeout
 )paren
 (brace
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;Program timed out&bslash;r&bslash;n&quot;
+id|LCD
+l_string|&quot;Flash burn timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1966,6 +2010,13 @@ id|kfree
 c_func
 (paren
 id|rom
+)paren
+suffix:semicolon
+id|pr_info
+c_func
+(paren
+id|LCD
+l_string|&quot;Flash successfully burned&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1986,6 +2037,7 @@ r_int
 r_int
 id|read_addr
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -2025,9 +2077,10 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
+id|LCD
 l_string|&quot;Reading Flash&quot;
 )paren
 suffix:semicolon
@@ -2095,9 +2148,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|0
-suffix:semicolon
-r_break
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_return
@@ -2340,7 +2392,7 @@ r_int
 r_int
 id|data
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
@@ -2385,9 +2437,10 @@ id|lcd_present
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
+id|LCD
 l_string|&quot;LCD Not Present&bslash;n&quot;
 )paren
 suffix:semicolon

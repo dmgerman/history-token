@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/* Taken over from the old code... */
 multiline_comment|/* POSIX UID/GID verification for setting inode attributes. */
 DECL|function|inode_change_ok
@@ -343,7 +344,13 @@ id|ATTR_ATIME
 )paren
 id|inode-&gt;i_atime
 op_assign
+id|timespec_trunc
+c_func
+(paren
 id|attr-&gt;ia_atime
+comma
+id|inode-&gt;i_sb-&gt;s_time_gran
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -354,7 +361,13 @@ id|ATTR_MTIME
 )paren
 id|inode-&gt;i_mtime
 op_assign
+id|timespec_trunc
+c_func
+(paren
 id|attr-&gt;ia_mtime
+comma
+id|inode-&gt;i_sb-&gt;s_time_gran
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -365,7 +378,13 @@ id|ATTR_CTIME
 )paren
 id|inode-&gt;i_ctime
 op_assign
+id|timespec_trunc
+c_func
+(paren
 id|attr-&gt;ia_ctime
+comma
+id|inode-&gt;i_sb-&gt;s_time_gran
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -573,7 +592,11 @@ r_struct
 id|timespec
 id|now
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 r_int
 r_int

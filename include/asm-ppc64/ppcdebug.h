@@ -3,11 +3,12 @@ DECL|macro|__PPCDEBUG_H
 mdefine_line|#define __PPCDEBUG_H
 multiline_comment|/********************************************************************&n; * Author: Adam Litke, IBM Corp&n; * (c) 2001&n; *&n; * This file contains definitions and macros for a runtime debugging&n; * system for ppc64 (This should also work on 32 bit with a few    &n; * adjustments.                                                   &n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 DECL|macro|PPCDBG_BITVAL
 mdefine_line|#define PPCDBG_BITVAL(X)     ((1UL)&lt;&lt;((unsigned long)(X)))
-multiline_comment|/* Defined below are the bit positions of various debug flags in the&n; * debug_switch variable (defined in naca.h).&n; * -- When adding new values, please enter them into trace names below -- &n; *&n; * Values 62 &amp; 63 can be used to stress the hardware page table management&n; * code.  They must be set statically, any attempt to change them dynamically&n; * would be a very bad idea.&n; */
+multiline_comment|/* Defined below are the bit positions of various debug flags in the&n; * ppc64_debug_switch variable.&n; * -- When adding new values, please enter them into trace names below -- &n; *&n; * Values 62 &amp; 63 can be used to stress the hardware page table management&n; * code.  They must be set statically, any attempt to change them dynamically&n; * would be a very bad idea.&n; */
 DECL|macro|PPCDBG_MMINIT
 mdefine_line|#define PPCDBG_MMINIT        PPCDBG_BITVAL(0)
 DECL|macro|PPCDBG_MM
@@ -70,6 +71,10 @@ mdefine_line|#define PPC_DEBUG_DEFAULT    0
 multiline_comment|/* #define PPC_DEBUG_DEFAULT    PPCDBG_ALL        */
 DECL|macro|PPCDBG_NUM_FLAGS
 mdefine_line|#define PPCDBG_NUM_FLAGS     64
+r_extern
+id|u64
+id|ppc64_debug_switch
+suffix:semicolon
 macro_line|#ifdef WANT_PPCDBG_TAB
 multiline_comment|/* A table of debug switch names to allow name lookup in xmon &n; * (and whoever else wants it.&n; */
 DECL|variable|trace_names

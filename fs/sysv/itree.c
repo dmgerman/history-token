@@ -1036,7 +1036,7 @@ id|pointers_lock
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 multiline_comment|/* had we spliced it onto indirect block? */
 r_if
@@ -2283,7 +2283,7 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 r_if
 c_cond

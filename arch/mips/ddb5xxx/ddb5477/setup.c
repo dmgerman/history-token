@@ -638,10 +638,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 multiline_comment|/* initialize board - we don&squot;t trust the loader */
 id|ddb5477_board_init
 c_func

@@ -391,7 +391,7 @@ id|fake_counter
 dot
 id|enabled
 )paren
-id|oprofile_add_sample
+id|oprofile_add_pc
 c_func
 (paren
 id|pc
@@ -399,11 +399,6 @@ comma
 id|kern
 comma
 id|fake_counter
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -599,7 +594,7 @@ r_case
 id|TRAP_INVALID3
 suffix:colon
 multiline_comment|/* Pipeline redirection ocurred. PMPC points&n;&t;&t;&t;   to PALcode. Recognize ITB miss by PALcode&n;&t;&t;&t;   offset address, and get actual PC from&n;&t;&t;&t;   EXC_ADDR.  */
-id|oprofile_add_sample
+id|oprofile_add_pc
 c_func
 (paren
 id|regs-&gt;pc
@@ -607,11 +602,6 @@ comma
 id|kern
 comma
 id|which
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -774,7 +764,7 @@ id|PM_MISPREDICT
 suffix:semicolon
 )brace
 )brace
-id|oprofile_add_sample
+id|oprofile_add_pc
 c_func
 (paren
 id|pmpc
@@ -782,11 +772,6 @@ comma
 id|kern
 comma
 id|which
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|pctr_ctl

@@ -181,14 +181,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|calibrate_delay
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|send_IPI_mask_phys

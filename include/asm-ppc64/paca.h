@@ -4,7 +4,7 @@ mdefine_line|#define _PPC64_PACA_H
 multiline_comment|/*&n; * include/asm-ppc64/paca.h&n; *&n; * This control block defines the PACA which defines the processor &n; * specific data for each logical processor on the system.  &n; * There are some pointers defined that are utilized by PLIC.&n; *&n; * C 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include&t;&lt;linux/config.h&gt;
 macro_line|#include&t;&lt;asm/types.h&gt;
-macro_line|#include&t;&lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include&t;&lt;asm/lppaca.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpRegSave.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
 r_extern
@@ -33,7 +33,7 @@ suffix:semicolon
 r_struct
 id|ItLpQueue
 suffix:semicolon
-multiline_comment|/*&n; * Defines the layout of the paca.&n; *&n; * This structure is not directly accessed by firmware or the service&n; * processor except for the first two pointers that point to the&n; * ItLpPaca area and the ItLpRegSave area for this CPU.  Both the&n; * ItLpPaca and ItLpRegSave objects are currently contained within the&n; * PACA but they do not need to be.&n; */
+multiline_comment|/*&n; * Defines the layout of the paca.&n; *&n; * This structure is not directly accessed by firmware or the service&n; * processor except for the first two pointers that point to the&n; * lppaca area and the ItLpRegSave area for this CPU.  Both the&n; * lppaca and ItLpRegSave objects are currently contained within the&n; * PACA but they do not need to be.&n; */
 DECL|struct|paca_struct
 r_struct
 id|paca_struct
@@ -42,7 +42,7 @@ multiline_comment|/*&n;&t; * Because hw_cpu_id, unlike other paca fields, is acc
 multiline_comment|/*&n;&t; * MAGIC: These first two pointers can&squot;t be moved - they&squot;re&n;&t; * accessed by the firmware&n;&t; */
 DECL|member|lppaca_ptr
 r_struct
-id|ItLpPaca
+id|lppaca
 op_star
 id|lppaca_ptr
 suffix:semicolon
@@ -215,7 +215,7 @@ multiline_comment|/* used for linear mapping hash table misses */
 multiline_comment|/*&n;&t; * iSeries structure which the hypervisor knows about -&n;&t; * this structure should not cross a page boundary.&n;&t; * The vpa_init/register_vpa call is now known to fail if the&n;&t; * lppaca structure crosses a page boundary.&n;&t; * The lppaca is also used on POWER5 pSeries boxes.&n;&t; * The lppaca is 640 bytes long, and cannot readily change&n;&t; * since the hypervisor knows its layout, so a 1kB&n;&t; * alignment will suffice to ensure that it doesn&squot;t&n;&t; * cross a page boundary.&n;&t; */
 DECL|member|lppaca
 r_struct
-id|ItLpPaca
+id|lppaca
 id|lppaca
 id|__attribute__
 c_func

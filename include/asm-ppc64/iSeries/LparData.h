@@ -5,11 +5,8 @@ mdefine_line|#define _LPARDATA_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpNaca.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpRegSave.h&gt;
-macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/HvReleaseData.h&gt;
 macro_line|#include &lt;asm/iSeries/LparMap.h&gt;
 macro_line|#include &lt;asm/iSeries/ItVpdAreas.h&gt;

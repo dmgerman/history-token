@@ -40,7 +40,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm,exec)&t;&t;ia32_setup_arg_pages(bprm,exec)
+mdefine_line|#define setup_arg_pages(bprm,tos,exec)&t;&t;ia32_setup_arg_pages(bprm,exec)
 DECL|macro|elf_map
 mdefine_line|#define elf_map&t;&t;&t;&t;elf32_map
 DECL|macro|SET_PERSONALITY

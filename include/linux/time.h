@@ -256,6 +256,8 @@ r_void
 suffix:semicolon
 DECL|macro|CURRENT_TIME
 mdefine_line|#define CURRENT_TIME (current_kernel_time())
+DECL|macro|CURRENT_TIME_SEC
+mdefine_line|#define CURRENT_TIME_SEC ((struct timespec) { xtime.tv_sec, 0 })
 r_extern
 r_void
 id|do_gettimeofday
@@ -385,6 +387,20 @@ r_struct
 id|timespec
 op_star
 id|tv
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|timespec
+id|timespec_trunc
+c_func
+(paren
+r_struct
+id|timespec
+id|t
+comma
+r_int
+id|gran
 )paren
 suffix:semicolon
 r_static

@@ -365,6 +365,54 @@ c_func
 id|local_bh_enable
 )paren
 suffix:semicolon
+macro_line|#ifdef __ARCH_IRQ_EXIT_IRQS_DISABLED
+DECL|macro|invoke_softirq
+macro_line|# define invoke_softirq()&t;__do_softirq()
+macro_line|#else
+DECL|macro|invoke_softirq
+macro_line|# define invoke_softirq()&t;do_softirq()
+macro_line|#endif
+multiline_comment|/*&n; * Exit an interrupt context. Process softirqs if needed and possible:&n; */
+DECL|function|irq_exit
+r_void
+id|irq_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|preempt_count
+c_func
+(paren
+)paren
+op_sub_assign
+id|IRQ_EXIT_OFFSET
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+op_logical_and
+id|local_softirq_pending
+c_func
+(paren
+)paren
+)paren
+id|invoke_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This function must run with irqs disabled!&n; */
 DECL|function|raise_softirq_irqoff
 r_inline

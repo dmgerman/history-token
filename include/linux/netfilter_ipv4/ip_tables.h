@@ -101,7 +101,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 DECL|member|user
 )brace
@@ -161,7 +167,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 DECL|member|user
 )brace
@@ -313,11 +325,15 @@ mdefine_line|#define IPT_SO_SET_ADD_COUNTERS&t;(IPT_BASE_CTL + 1)
 DECL|macro|IPT_SO_SET_MAX
 mdefine_line|#define IPT_SO_SET_MAX&t;&t;IPT_SO_SET_ADD_COUNTERS
 DECL|macro|IPT_SO_GET_INFO
-mdefine_line|#define IPT_SO_GET_INFO&t;&t;(IPT_BASE_CTL)
+mdefine_line|#define IPT_SO_GET_INFO&t;&t;&t;(IPT_BASE_CTL)
 DECL|macro|IPT_SO_GET_ENTRIES
-mdefine_line|#define IPT_SO_GET_ENTRIES&t;(IPT_BASE_CTL + 1)
+mdefine_line|#define IPT_SO_GET_ENTRIES&t;&t;(IPT_BASE_CTL + 1)
+DECL|macro|IPT_SO_GET_REVISION_MATCH
+mdefine_line|#define IPT_SO_GET_REVISION_MATCH&t;(IPT_BASE_CTL + 2)
+DECL|macro|IPT_SO_GET_REVISION_TARGET
+mdefine_line|#define IPT_SO_GET_REVISION_TARGET&t;(IPT_BASE_CTL + 3)
 DECL|macro|IPT_SO_GET_MAX
-mdefine_line|#define IPT_SO_GET_MAX&t;&t;IPT_SO_GET_ENTRIES
+mdefine_line|#define IPT_SO_GET_MAX&t;&t;&t;IPT_SO_GET_REVISION_TARGET
 multiline_comment|/* CONTINUE verdict for targets */
 DECL|macro|IPT_CONTINUE
 mdefine_line|#define IPT_CONTINUE 0xFFFFFFFF
@@ -627,6 +643,26 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* The argument to IPT_SO_GET_REVISION_*.  Returns highest revision&n; * kernel supports, if &gt;= revision. */
+DECL|struct|ipt_get_revision
+r_struct
+id|ipt_get_revision
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Standard return verdict, or do jump. */
 DECL|macro|IPT_STANDARD_TARGET
 mdefine_line|#define IPT_STANDARD_TARGET &quot;&quot;
@@ -692,7 +728,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 multiline_comment|/* Return true or false: return FALSE and set *hotdrop = 1 to&n;           force immediate packet drop. */
 multiline_comment|/* Arguments changed since 2.4, as this must now handle&n;           non-linear skbs, using skb_copy_bits and&n;           skb_ip_make_writable. */
@@ -809,7 +851,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 multiline_comment|/* Called when user tries to insert an entry of this type:&n;           hook_mask is a bitmask of hooks from which it can be&n;           called. */
 multiline_comment|/* Should return true or false. */
@@ -953,31 +1001,6 @@ r_struct
 id|ipt_match
 op_star
 id|match
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|ipt_target
-op_star
-id|__ipt_find_target_lock
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-comma
-r_int
-op_star
-id|error
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__ipt_mutex_up
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Furniture shopping... */

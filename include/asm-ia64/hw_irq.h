@@ -39,6 +39,8 @@ DECL|macro|IA64_FIRST_DEVICE_VECTOR
 mdefine_line|#define IA64_FIRST_DEVICE_VECTOR&t;0x30
 DECL|macro|IA64_LAST_DEVICE_VECTOR
 mdefine_line|#define IA64_LAST_DEVICE_VECTOR&t;&t;0xe7
+DECL|macro|IA64_NUM_DEVICE_VECTORS
+mdefine_line|#define IA64_NUM_DEVICE_VECTORS&t;&t;(IA64_LAST_DEVICE_VECTOR - IA64_FIRST_DEVICE_VECTOR + 1)
 DECL|macro|IA64_MCA_RENDEZ_VECTOR
 mdefine_line|#define IA64_MCA_RENDEZ_VECTOR&t;&t;0xe8&t;/* MCA rendez interrupt */
 DECL|macro|IA64_PERFMON_VECTOR
@@ -116,6 +118,14 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* allocate a free vector */
+r_extern
+r_void
+id|free_irq_vector
+(paren
+r_int
+id|vector
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|ia64_send_ipi

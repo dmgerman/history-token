@@ -3648,7 +3648,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -3677,6 +3677,10 @@ id|de
 op_member_access_from_pointer
 id|date
 )paren
+suffix:semicolon
+id|dir-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 (paren
 op_star
@@ -4308,7 +4312,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -4385,7 +4389,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|dir-&gt;i_version
 op_increment
@@ -4582,7 +4586,7 @@ id|dentry-&gt;d_inode-&gt;i_mtime
 op_assign
 id|dentry-&gt;d_inode-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|fat_detach
 c_func
@@ -4703,7 +4707,7 @@ id|dentry-&gt;d_inode-&gt;i_mtime
 op_assign
 id|dentry-&gt;d_inode-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|fat_detach
 c_func
@@ -4862,7 +4866,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -4946,7 +4950,7 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|fat_detach
 c_func
@@ -5325,7 +5329,7 @@ id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -5344,7 +5348,7 @@ op_decrement
 suffix:semicolon
 id|new_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 r_if

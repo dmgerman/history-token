@@ -29,11 +29,13 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;power.h&quot;
 multiline_comment|/* References to section boundaries */
 r_extern
-r_char
+r_const
+r_void
 id|__nosave_begin
 comma
 id|__nosave_end

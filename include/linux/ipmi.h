@@ -300,15 +300,6 @@ id|msg
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|ipmi_recv_msg
-op_star
-id|ipmi_alloc_recv_msg
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|struct|ipmi_user_hndl
 r_struct
 id|ipmi_user_hndl
@@ -440,35 +431,6 @@ id|ipmi_user_t
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Send a command request from the given user.  The address is the&n; * proper address for the channel type.  If this is a command, then&n; * the message response comes back, the receive handler for this user&n; * will be called with the given msgid value in the recv msg.  If this&n; * is a response to a command, then the msgid will be used as the&n; * sequence number for the response (truncated if necessary), so when&n; * sending a response you should use the sequence number you received&n; * in the msgid field of the received command.  If the priority is &gt;&n; * 0, the message will go into a high-priority queue and be sent&n; * first.  Otherwise, it goes into a normal-priority queue.&n; * The user_msg_data field will be returned in any response to this&n; * message.&n; *&n; * Note that if you send a response (with the netfn lower bit set),&n; * you *will* get back a SEND_MSG response telling you what happened&n; * when the response was sent.  You will not get back a response to&n; * the message itself.&n; */
-r_int
-id|ipmi_request
-c_func
-(paren
-id|ipmi_user_t
-id|user
-comma
-r_struct
-id|ipmi_addr
-op_star
-id|addr
-comma
-r_int
-id|msgid
-comma
-r_struct
-id|kernel_ipmi_msg
-op_star
-id|msg
-comma
-r_void
-op_star
-id|user_msg_data
-comma
-r_int
-id|priority
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Like ipmi_request, but lets you specify the number of retries and&n; * the retry time.  The retries is the number of times the message&n; * will be resent if no reply is received.  If set to -1, the default&n; * value will be used.  The retry time is the time in milliseconds&n; * between retries.  If set to zero, the default value will be&n; * used.&n; *&n; * Don&squot;t use this unless you *really* have to.  It&squot;s primarily for the&n; * IPMI over LAN converter; since the LAN stuff does its own retries,&n; * it makes no sense to do it here.  However, this can be used if you&n; * have unusual requirements.&n; */
 r_int
 id|ipmi_request_settime
@@ -503,43 +465,6 @@ comma
 r_int
 r_int
 id|retry_time_ms
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Like ipmi_request, but lets you specify the slave return address.&n; */
-r_int
-id|ipmi_request_with_source
-c_func
-(paren
-id|ipmi_user_t
-id|user
-comma
-r_struct
-id|ipmi_addr
-op_star
-id|addr
-comma
-r_int
-id|msgid
-comma
-r_struct
-id|kernel_ipmi_msg
-op_star
-id|msg
-comma
-r_void
-op_star
-id|user_msg_data
-comma
-r_int
-id|priority
-comma
-r_int
-r_char
-id|source_address
-comma
-r_int
-r_char
-id|source_lun
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Like ipmi_request, but with messages supplied.  This will not&n; * allocate any memory, and the messages may be statically allocated&n; * (just make sure to do the &quot;done&quot; handling on them).  Note that this&n; * is primarily for the watchdog timer, since it should be able to&n; * send messages even if no memory is available.  This is subject to&n; * change as the system changes, so don&squot;t use it unless you REALLY&n; * have to.&n; */
@@ -578,15 +503,6 @@ id|supplied_recv
 comma
 r_int
 id|priority
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Do polling on the IPMI interface the user is attached to.  This&n; * causes the IPMI code to do an immediate check for information from&n; * the driver and handle anything that is immediately pending.  This&n; * will not block in anyway.  This is useful if you need to implement&n; * polling from the user like you need to send periodic watchdog pings&n; * from a crash dump, or something like that.&n; */
-r_void
-id|ipmi_poll_interface
-c_func
-(paren
-id|ipmi_user_t
-id|user
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * When commands come in to the SMS, the user can register to receive&n; * them.  Only one user can be listening on a specific netfn/cmd pair&n; * at a time, you will get an EBUSY error if the command is already&n; * registered.  If a command is received that does not have a user&n; * registered, the driver will automatically return the proper&n; * error.&n; */
@@ -644,23 +560,6 @@ id|user
 comma
 r_int
 id|val
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Register the given user to handle all received IPMI commands.  This&n; * will fail if anyone is registered as a command receiver or if&n; * another is already registered to receive all commands.  NOTE THAT&n; * THIS IS FOR EMULATION USERS ONLY, DO NOT USER THIS FOR NORMAL&n; * STUFF.&n; */
-r_int
-id|ipmi_register_all_cmd_rcvr
-c_func
-(paren
-id|ipmi_user_t
-id|user
-)paren
-suffix:semicolon
-r_int
-id|ipmi_unregister_all_cmd_rcvr
-c_func
-(paren
-id|ipmi_user_t
-id|user
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Called when a new SMI is registered.  This will also be called on&n; * every existing interface when a new watcher is registered with&n; * ipmi_smi_watcher_register().&n; */
@@ -748,22 +647,6 @@ id|addr
 comma
 r_int
 id|len
-)paren
-suffix:semicolon
-multiline_comment|/* Return 1 if the given addresses are equal, 0 if not. */
-r_int
-id|ipmi_addr_equal
-c_func
-(paren
-r_struct
-id|ipmi_addr
-op_star
-id|addr1
-comma
-r_struct
-id|ipmi_addr
-op_star
-id|addr2
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

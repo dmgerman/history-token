@@ -3691,6 +3691,10 @@ op_assign
 op_amp
 id|s_ops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|inode
 op_assign
 id|rpc_get_inode

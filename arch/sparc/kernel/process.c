@@ -113,19 +113,13 @@ DECL|macro|SUN4C_FAULT_HIGH
 mdefine_line|#define SUN4C_FAULT_HIGH 100
 multiline_comment|/*&n; * the idle loop on a Sparc... ;)&n; */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|ret
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -317,20 +311,15 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|out
 suffix:colon
 r_return
-id|ret
 suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* This is being executed in task 0 &squot;user space&squot;. */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren

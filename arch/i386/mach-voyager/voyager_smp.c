@@ -1666,7 +1666,8 @@ id|trampoline_base
 suffix:semicolon
 )brace
 multiline_comment|/* Routine initially called when a non-boot CPU is brought online */
-r_int
+r_static
+r_void
 id|__init
 DECL|function|start_secondary
 id|start_secondary
@@ -1689,14 +1690,6 @@ multiline_comment|/* external functions not defined in the headers */
 r_extern
 r_void
 id|calibrate_delay
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
 c_func
 (paren
 r_void
@@ -1870,7 +1863,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren

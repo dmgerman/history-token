@@ -6313,7 +6313,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_update_dx_flag
 c_func
@@ -10548,7 +10548,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -10775,7 +10775,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_update_dx_flag
 c_func
@@ -11240,7 +11240,7 @@ l_int|1
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_inc_count
 c_func
@@ -11714,7 +11714,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Like most other Unix systems, set the ctime for inodes on a&n;&t; * rename.&n;&t; */
 id|old_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func
@@ -11854,14 +11854,14 @@ op_decrement
 suffix:semicolon
 id|new_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_update_dx_flag
 c_func

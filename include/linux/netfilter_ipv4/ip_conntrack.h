@@ -434,9 +434,9 @@ suffix:semicolon
 multiline_comment|/* get master conntrack via master expectation */
 DECL|macro|master_ct
 mdefine_line|#define master_ct(conntr) (conntr-&gt;master ? conntr-&gt;master-&gt;expectant : NULL)
-multiline_comment|/* Alter reply tuple (maybe alter helper).  If it&squot;s already taken,&n;   return 0 and don&squot;t do alteration. */
+multiline_comment|/* Alter reply tuple (maybe alter helper). */
 r_extern
-r_int
+r_void
 id|ip_conntrack_alter_reply
 c_func
 (paren

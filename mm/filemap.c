@@ -8619,7 +8619,7 @@ id|inode-&gt;i_sem
 suffix:semicolon
 id|ret
 op_assign
-id|generic_file_aio_write_nolock
+id|__generic_file_aio_write_nolock
 c_func
 (paren
 id|iocb

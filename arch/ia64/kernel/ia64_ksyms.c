@@ -511,4 +511,17 @@ suffix:semicolon
 macro_line|#  endif
 macro_line|# endif
 macro_line|#endif
+r_extern
+r_char
+id|ia64_ivt
+(braket
+)braket
+suffix:semicolon
+DECL|variable|ia64_ivt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_ivt
+)paren
+suffix:semicolon
 eof
