@@ -3915,17 +3915,17 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*&t;hd64465_io_debug = 0; */
+id|hd64465_device.dev.class_data
+op_assign
+op_amp
+id|hd64465_data
+suffix:semicolon
 id|platform_device_register
 c_func
 (paren
 op_amp
 id|hd64465_device
 )paren
-suffix:semicolon
-id|hd64465_device.dev.class_data
-op_assign
-op_amp
-id|hd64465_data
 suffix:semicolon
 r_return
 l_int|0

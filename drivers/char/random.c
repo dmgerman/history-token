@@ -6614,14 +6614,12 @@ id|r
 comma
 r_int
 id|nbytes
+comma
+id|__u32
+op_star
+id|tmp
 )paren
 (brace
-id|__u32
-id|tmp
-(braket
-id|TMP_BUF_SIZE
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6855,6 +6853,8 @@ c_func
 id|r
 comma
 id|nbytes
+comma
+id|tmp
 )paren
 suffix:semicolon
 id|DEBUG_ENT

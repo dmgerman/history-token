@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_POSIX_TYPES_H
 DECL|macro|_ASM_IA64_POSIX_TYPES_H
 mdefine_line|#define _ASM_IA64_POSIX_TYPES_H
-multiline_comment|/*&n; * This file is generally used by user-level software, so you need to&n; * be a little careful about namespace pollution etc.  Also, we cannot&n; * assume GCC is being used.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file is generally used by user-level software, so you need to&n; * be a little careful about namespace pollution etc.  Also, we cannot&n; * assume GCC is being used.&n; *&n; * Copyright (C) 1998-2000, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|typedef|__kernel_dev_t
 r_typedef
 r_int
@@ -89,6 +89,16 @@ DECL|typedef|__kernel_clock_t
 r_typedef
 r_int
 id|__kernel_clock_t
+suffix:semicolon
+DECL|typedef|__kernel_timer_t
+r_typedef
+r_int
+id|__kernel_timer_t
+suffix:semicolon
+DECL|typedef|__kernel_clockid_t
+r_typedef
+r_int
+id|__kernel_clockid_t
 suffix:semicolon
 DECL|typedef|__kernel_daddr_t
 r_typedef

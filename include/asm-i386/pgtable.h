@@ -52,8 +52,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|__beep
-mdefine_line|#define __beep() asm(&quot;movb $0x3,%al; outb %al,$0x61&quot;)
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
@@ -703,32 +701,30 @@ mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PS
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-DECL|macro|__pgd_offset
-mdefine_line|#define __pgd_offset(address) pgd_index(address)
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
-DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+DECL|macro|pmd_index
+mdefine_line|#define pmd_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
+mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  pte_index(address))
 macro_line|#if defined(CONFIG_HIGHPTE)
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + __pte_offset(address))
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + pte_index(address))
 DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + __pte_offset(address))
+mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + pte_index(address))
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic(pte, KM_PTE1)
 macro_line|#else
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)page_address(pmd_page(*(dir))) + __pte_offset(address))
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)page_address(pmd_page(*(dir))) + pte_index(address))
 DECL|macro|pte_offset_map_nested
 mdefine_line|#define pte_offset_map_nested(dir, address) pte_offset_map(dir, address)
 DECL|macro|pte_unmap

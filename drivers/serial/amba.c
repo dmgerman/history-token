@@ -2726,6 +2726,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|ambauart_console_init
+r_static
 r_void
 id|__init
 id|ambauart_console_init
@@ -2742,6 +2743,13 @@ id|amba_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ambauart_console_init
+id|console_initcall
+c_func
+(paren
+id|ambauart_console_init
+)paren
+suffix:semicolon
 DECL|macro|AMBA_CONSOLE
 mdefine_line|#define AMBA_CONSOLE&t;&amp;amba_console
 macro_line|#else

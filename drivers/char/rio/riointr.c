@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;linux_compat.h&quot;

@@ -3,6 +3,12 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
+macro_line|#include &lt;net/ah.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
+macro_line|#include &lt;net/esp.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n; * Algorithms supported by IPsec.  These entries contain properties which&n; * are used in key negotiation and xfrm processing, and are used to verify&n; * that instantiated crypto transforms have correct parameters for IPsec&n; * purposes.&n; */
 DECL|variable|aalg_list

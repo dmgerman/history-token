@@ -34,7 +34,6 @@ op_or
 id|MS_VERBOSE
 suffix:semicolon
 DECL|variable|root_device_name
-r_static
 r_char
 op_star
 id|__initdata

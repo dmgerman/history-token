@@ -12552,6 +12552,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|au1000_serial_console_init
+r_static
 r_void
 id|__init
 id|au1000_serial_console_init
@@ -12568,6 +12569,13 @@ id|sercons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|au1000_serial_console_init
+id|console_initcall
+c_func
+(paren
+id|au1000_serial_console_init
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;  Local variables:&n;  compile-command: &quot;gcc -D__KERNEL__ -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -fno-strict-aliasing -pipe -fno-strength-reduce -march=i586 -DMODULE -DMODVERSIONS -include ../../include/linux/modversions.h   -DEXPORT_SYMTAB -c serial.c&quot;&n;  End:&n;*/
 eof

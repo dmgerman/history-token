@@ -622,9 +622,6 @@ c_func
 (paren
 id|speed
 comma
-(paren
-id|u8
-)paren
 id|XFER_PIO_4
 )paren
 suffix:semicolon

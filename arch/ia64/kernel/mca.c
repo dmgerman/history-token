@@ -1818,7 +1818,13 @@ id|ia64_process_min_state_save
 c_func
 (paren
 op_amp
-id|proc_ptr-&gt;processor_static_info.min_state_area
+id|SAL_LPI_PSI_INFO
+c_func
+(paren
+id|proc_ptr
+)paren
+op_member_access_from_pointer
+id|min_state_area
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the INIT SAL logs now that they have been saved in the OS buffer */
@@ -4771,7 +4777,7 @@ multiline_comment|/*&n;&t; *  Note: March 2001 SAL spec states that if the numbe
 id|p_data
 op_assign
 op_amp
-id|slpi-&gt;cache_check_info
+id|slpi-&gt;info
 (braket
 l_int|0
 )braket

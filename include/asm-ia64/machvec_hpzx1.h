@@ -6,14 +6,6 @@ id|ia64_mv_setup_t
 id|dig_setup
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_fixup_t
-id|hpzx1_pci_fixup
-suffix:semicolon
-r_extern
-id|ia64_mv_map_nr_t
-id|map_nr_dense
-suffix:semicolon
-r_extern
 id|ia64_mv_pci_alloc_consistent
 id|sba_alloc_consistent
 suffix:semicolon

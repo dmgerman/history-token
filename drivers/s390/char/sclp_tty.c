@@ -3156,4 +3156,11 @@ l_string|&quot;Couldn&squot;t register sclp_tty driver&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sclp_tty_init
+id|console_initcall
+c_func
+(paren
+id|sclp_tty_init
+)paren
+suffix:semicolon
 eof

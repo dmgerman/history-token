@@ -1234,6 +1234,7 @@ id|port
 suffix:semicolon
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|serial_unthrottle
 r_static
@@ -1323,6 +1324,7 @@ id|port
 suffix:semicolon
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|serial_ioctl
 r_static
@@ -1547,6 +1549,7 @@ id|old
 suffix:semicolon
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|serial_break
 r_static
@@ -1641,6 +1644,7 @@ id|break_state
 suffix:semicolon
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|serial_shutdown
 r_static

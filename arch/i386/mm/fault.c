@@ -1226,9 +1226,9 @@ suffix:colon
 (brace
 multiline_comment|/*&n;&t;&t; * Synchronize this task&squot;s top level page-table&n;&t;&t; * with the &squot;reference&squot; page table.&n;&t;&t; *&n;&t;&t; * Do _not_ use &quot;tsk&quot; here. We might be inside&n;&t;&t; * an interrupt in the middle of a task switch..&n;&t;&t; */
 r_int
-id|offset
+id|index
 op_assign
-id|__pgd_offset
+id|pgd_index
 c_func
 (paren
 id|address
@@ -1265,7 +1265,7 @@ id|pgd
 suffix:semicolon
 id|pgd
 op_assign
-id|offset
+id|index
 op_plus
 (paren
 id|pgd_t
@@ -1281,7 +1281,7 @@ id|pgd_k
 op_assign
 id|init_mm.pgd
 op_plus
-id|offset
+id|index
 suffix:semicolon
 r_if
 c_cond

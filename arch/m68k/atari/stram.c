@@ -3708,21 +3708,9 @@ c_func
 id|STRAM_MAJOR
 comma
 l_string|&quot;stram&quot;
-comma
-op_amp
-id|stram_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;stram: Unable to get major %d&bslash;n&quot;
-comma
-id|STRAM_MAJOR
-)paren
-suffix:semicolon
 id|put_disk
 c_func
 (paren

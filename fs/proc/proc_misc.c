@@ -1975,8 +1975,15 @@ r_int
 id|size
 op_assign
 id|PAGE_SIZE
+op_star
+(paren
+l_int|1
+op_plus
+id|NR_CPUS
+op_div
+l_int|8
+)paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * probably should depend on NR_CPUS, but that&squot;s only rough estimate;&n;&t; * if we&squot;ll need more it will be given,&n;&t; */
 r_char
 op_star
 id|buf

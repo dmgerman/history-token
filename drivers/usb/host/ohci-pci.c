@@ -3,6 +3,7 @@ macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#ifndef CONFIG_PM
 DECL|macro|CONFIG_PM
 macro_line|#&t;define CONFIG_PM

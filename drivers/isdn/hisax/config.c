@@ -1347,7 +1347,6 @@ id|HiSax_setup
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULES */
-macro_line|#if CARD_TELES0
 r_extern
 r_int
 id|setup_teles0
@@ -1359,8 +1358,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELES3
 r_extern
 r_int
 id|setup_teles3
@@ -1372,8 +1369,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_S0BOX
 r_extern
 r_int
 id|setup_s0box
@@ -1385,8 +1380,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELESPCI
 r_extern
 r_int
 id|setup_telespci
@@ -1398,8 +1391,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AVM_A1
 r_extern
 r_int
 id|setup_avm_a1
@@ -1411,8 +1402,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AVM_A1_PCMCIA
 r_extern
 r_int
 id|setup_avm_a1_pcmcia
@@ -1424,8 +1413,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_FRITZPCI
 r_extern
 r_int
 id|setup_avm_pcipnp
@@ -1437,8 +1424,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ELSA
 r_extern
 r_int
 id|setup_elsa
@@ -1450,8 +1435,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_IX1MICROR2
 r_extern
 r_int
 id|setup_ix1micro
@@ -1463,8 +1446,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_DIEHLDIVA
 r_extern
 r_int
 id|setup_diva
@@ -1476,8 +1457,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ASUSCOM
 r_extern
 r_int
 id|setup_asuscom
@@ -1489,8 +1468,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TELEINT
 r_extern
 r_int
 id|setup_TeleInt
@@ -1502,8 +1479,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SEDLBAUER
 r_extern
 r_int
 id|setup_sedlbauer
@@ -1515,8 +1490,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SPORTSTER
 r_extern
 r_int
 id|setup_sportster
@@ -1528,8 +1501,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_MIC
 r_extern
 r_int
 id|setup_mic
@@ -1541,8 +1512,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NETJET_S
 r_extern
 r_int
 id|setup_netjet_s
@@ -1554,8 +1523,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFCS
 r_extern
 r_int
 id|setup_hfcs
@@ -1567,8 +1534,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFC_PCI
 r_extern
 r_int
 id|setup_hfcpci
@@ -1580,8 +1545,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HFC_SX
 r_extern
 r_int
 id|setup_hfcsx
@@ -1593,8 +1556,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_AMD7930
 r_extern
 r_int
 id|setup_amd7930
@@ -1606,8 +1567,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NICCY
 r_extern
 r_int
 id|setup_niccy
@@ -1619,8 +1578,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_ISURF
 r_extern
 r_int
 id|setup_isurf
@@ -1632,8 +1589,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_HSTSAPHIR
 r_extern
 r_int
 id|setup_saphir
@@ -1645,8 +1600,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_TESTEMU
 r_extern
 r_int
 id|setup_testemu
@@ -1658,8 +1611,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_BKM_A4T
 r_extern
 r_int
 id|setup_bkm_a4t
@@ -1671,8 +1622,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_SCT_QUADRO
 r_extern
 r_int
 id|setup_sct_quadro
@@ -1684,8 +1633,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_GAZEL
 r_extern
 r_int
 id|setup_gazel
@@ -1697,8 +1644,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_W6692
 r_extern
 r_int
 id|setup_w6692
@@ -1710,8 +1655,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_NETJET_U
 r_extern
 r_int
 id|setup_netjet_u
@@ -1723,8 +1666,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if CARD_FN_ENTERNOW_PCI
 r_extern
 r_int
 id|setup_enternow_pci
@@ -1736,7 +1677,6 @@ op_star
 id|card
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Find card with given driverId&n; */
 DECL|function|hisax_findcard
 r_static
@@ -2216,7 +2156,7 @@ suffix:semicolon
 )brace
 DECL|variable|tmpbuf
 r_static
-id|u8
+r_char
 id|tmpbuf
 (braket
 id|HISAX_STATUS_BUFSIZE
@@ -2236,6 +2176,7 @@ r_char
 op_star
 id|head
 comma
+r_const
 r_char
 op_star
 id|fmt
@@ -2254,7 +2195,7 @@ id|count
 comma
 id|i
 suffix:semicolon
-id|u8
+r_char
 op_star
 id|p
 suffix:semicolon
@@ -2343,6 +2284,10 @@ r_else
 (brace
 id|p
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|fmt
 suffix:semicolon
 id|len
@@ -2766,35 +2711,6 @@ op_amp
 id|ic
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;status_buf
-)paren
-id|kfree
-c_func
-(paren
-id|cs-&gt;status_buf
-)paren
-suffix:semicolon
-id|cs-&gt;status_read
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;status_write
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;status_end
-op_assign
-l_int|NULL
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|cs-&gt;dlog
-)paren
-suffix:semicolon
 )brace
 DECL|function|closecard
 r_static
@@ -3169,6 +3085,264 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
+r_static
+r_struct
+id|IsdnCardState
+op_star
+DECL|function|alloc_IsdnCardState
+id|alloc_IsdnCardState
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+suffix:semicolon
+id|cs
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|cs
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+singleline_comment|// FIXME
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cs
+)paren
+r_goto
+id|err
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|cs
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|cs
+)paren
+)paren
+suffix:semicolon
+id|cs-&gt;dlog
+op_assign
+id|kmalloc
+c_func
+(paren
+id|MAX_DLOG_SPACE
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cs-&gt;dlog
+)paren
+r_goto
+id|err_cs
+suffix:semicolon
+id|cs-&gt;status_buf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|HISAX_STATUS_BUFSIZE
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cs-&gt;status_buf
+)paren
+r_goto
+id|err_dlog
+suffix:semicolon
+id|cs-&gt;rcvbuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|MAX_DFRAME_LEN_L1
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cs-&gt;rcvbuf
+)paren
+r_goto
+id|err_status_buf
+suffix:semicolon
+id|cs-&gt;chanlimit
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* maximum B-channel number */
+id|cs-&gt;debug
+op_assign
+id|L1_DEB_WARN
+suffix:semicolon
+id|cs-&gt;irq_flags
+op_assign
+id|I4L_IRQ_FLAG
+suffix:semicolon
+id|cs-&gt;stlist
+op_assign
+l_int|NULL
+suffix:semicolon
+id|cs-&gt;status_read
+op_assign
+id|cs-&gt;status_buf
+suffix:semicolon
+id|cs-&gt;status_write
+op_assign
+id|cs-&gt;status_buf
+suffix:semicolon
+id|cs-&gt;status_end
+op_assign
+id|cs-&gt;status_buf
+op_plus
+id|HISAX_STATUS_BUFSIZE
+op_minus
+l_int|1
+suffix:semicolon
+id|cs-&gt;rcvidx
+op_assign
+l_int|0
+suffix:semicolon
+id|cs-&gt;tx_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|cs-&gt;tx_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cs-&gt;event
+op_assign
+l_int|0
+suffix:semicolon
+id|skb_queue_head_init
+c_func
+(paren
+op_amp
+id|cs-&gt;rq
+)paren
+suffix:semicolon
+id|skb_queue_head_init
+c_func
+(paren
+op_amp
+id|cs-&gt;sq
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|cs-&gt;lock
+)paren
+suffix:semicolon
+id|resources_init
+c_func
+(paren
+op_amp
+id|cs-&gt;rs
+)paren
+suffix:semicolon
+r_return
+id|cs
+suffix:semicolon
+id|err_status_buf
+suffix:colon
+id|kfree
+c_func
+(paren
+id|cs-&gt;status_buf
+)paren
+suffix:semicolon
+id|err_dlog
+suffix:colon
+id|kfree
+c_func
+(paren
+id|cs-&gt;dlog
+)paren
+suffix:semicolon
+id|err_cs
+suffix:colon
+id|kfree
+c_func
+(paren
+id|cs
+)paren
+suffix:semicolon
+id|err
+suffix:colon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|free_IsdnCardState
+id|free_IsdnCardState
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|cs-&gt;rcvbuf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cs-&gt;status_buf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cs-&gt;dlog
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cs
+)paren
+suffix:semicolon
+)brace
 DECL|function|checkcard
 r_static
 r_int
@@ -3209,16 +3383,9 @@ id|cs
 suffix:semicolon
 id|cs
 op_assign
-id|kmalloc
+id|alloc_IsdnCardState
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|IsdnCardState
-)paren
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3243,53 +3410,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|cs
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|IsdnCardState
-)paren
-)paren
-suffix:semicolon
 id|card-&gt;cs
 op_assign
 id|cs
-suffix:semicolon
-id|cs-&gt;chanlimit
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* maximum B-channel number */
-id|cs-&gt;logecho
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* No echo logging */
-id|cs-&gt;cardnr
-op_assign
-id|cardnr
-suffix:semicolon
-id|cs-&gt;debug
-op_assign
-id|L1_DEB_WARN
-suffix:semicolon
-id|cs-&gt;HW_Flags
-op_assign
-l_int|0
-suffix:semicolon
-id|cs-&gt;busy_flag
-op_assign
-id|busy_flag
-suffix:semicolon
-id|cs-&gt;irq_flags
-op_assign
-id|I4L_IRQ_FLAG
 suffix:semicolon
 macro_line|#if TEI_PER_CARD
 r_if
@@ -3319,9 +3442,21 @@ id|cs-&gt;HW_Flags
 )paren
 suffix:semicolon
 macro_line|#endif
+id|cs-&gt;cardnr
+op_assign
+id|cardnr
+suffix:semicolon
 id|cs-&gt;protocol
 op_assign
 id|card-&gt;protocol
+suffix:semicolon
+id|cs-&gt;typ
+op_assign
+id|card-&gt;typ
+suffix:semicolon
+id|cs-&gt;busy_flag
+op_assign
+id|busy_flag
 suffix:semicolon
 r_if
 c_cond
@@ -3348,108 +3483,6 @@ r_goto
 id|outf_cs
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cs-&gt;dlog
-op_assign
-id|kmalloc
-c_func
-(paren
-id|MAX_DLOG_SPACE
-comma
-id|GFP_ATOMIC
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: No memory for dlog(card %d)&bslash;n&quot;
-comma
-id|cardnr
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-r_goto
-id|outf_cs
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cs-&gt;status_buf
-op_assign
-id|kmalloc
-c_func
-(paren
-id|HISAX_STATUS_BUFSIZE
-comma
-id|GFP_ATOMIC
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: No memory for status_buf(card %d)&bslash;n&quot;
-comma
-id|cardnr
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-r_goto
-id|outf_dlog
-suffix:semicolon
-)brace
-id|cs-&gt;stlist
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;status_read
-op_assign
-id|cs-&gt;status_buf
-suffix:semicolon
-id|cs-&gt;status_write
-op_assign
-id|cs-&gt;status_buf
-suffix:semicolon
-id|cs-&gt;status_end
-op_assign
-id|cs-&gt;status_buf
-op_plus
-id|HISAX_STATUS_BUFSIZE
-op_minus
-l_int|1
-suffix:semicolon
-id|cs-&gt;typ
-op_assign
-id|card-&gt;typ
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
-id|resources_init
-c_func
-(paren
-op_amp
-id|cs-&gt;rs
-)paren
-suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -3589,7 +3622,7 @@ c_cond
 id|card-&gt;typ
 )paren
 (brace
-macro_line|#if CARD_TELES0
+macro_line|#ifdef CONFIG_HISAX_16_0
 r_case
 id|ISDN_CTYPE_16_0
 suffix:colon
@@ -3607,7 +3640,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELES3
+macro_line|#ifdef CONFIG_HISAX_16_3
 r_case
 id|ISDN_CTYPE_16_3
 suffix:colon
@@ -3631,7 +3664,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_S0BOX
+macro_line|#ifdef CONFIG_HISAX_S0BOX
 r_case
 id|ISDN_CTYPE_S0BOX
 suffix:colon
@@ -3646,7 +3679,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELESPCI
+macro_line|#ifdef CONFIG_HISAX_TELESPCI
 r_case
 id|ISDN_CTYPE_TELESPCI
 suffix:colon
@@ -3661,7 +3694,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AVM_A1
+macro_line|#ifdef CONFIG_HISAX_AVM_A1
 r_case
 id|ISDN_CTYPE_A1
 suffix:colon
@@ -3676,7 +3709,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AVM_A1_PCMCIA
+macro_line|#ifdef CONFIG_HISAX_AVM_A1_PCMCIA
 r_case
 id|ISDN_CTYPE_A1_PCMCIA
 suffix:colon
@@ -3691,7 +3724,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_FRITZPCI
+macro_line|#ifdef CONFIG_HISAX_FRITZPCI
 r_case
 id|ISDN_CTYPE_FRITZPCI
 suffix:colon
@@ -3706,7 +3739,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ELSA
+macro_line|#ifdef CONFIG_HISAX_ELSA
 r_case
 id|ISDN_CTYPE_ELSA
 suffix:colon
@@ -3730,7 +3763,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_IX1MICROR2
+macro_line|#ifdef CONFIG_HISAX_IX1MICROR2
 r_case
 id|ISDN_CTYPE_IX1MICROR2
 suffix:colon
@@ -3745,7 +3778,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_DIEHLDIVA
+macro_line|#ifdef CONFIG_HISAX_DIEHLDIVA
 r_case
 id|ISDN_CTYPE_DIEHLDIVA
 suffix:colon
@@ -3760,7 +3793,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ASUSCOM
+macro_line|#ifdef CONFIG_HISAX_ASUSCOM
 r_case
 id|ISDN_CTYPE_ASUSCOM
 suffix:colon
@@ -3775,7 +3808,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TELEINT
+macro_line|#ifdef CONFIG_HISAX_TELEINT
 r_case
 id|ISDN_CTYPE_TELEINT
 suffix:colon
@@ -3790,7 +3823,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_SEDLBAUER
+macro_line|#ifdef CONFIG_HISAX_SEDLBAUER
 r_case
 id|ISDN_CTYPE_SEDLBAUER
 suffix:colon
@@ -3811,7 +3844,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_SPORTSTER
+macro_line|#ifdef CONFIG_HISAX_SPORTSTER
 r_case
 id|ISDN_CTYPE_SPORTSTER
 suffix:colon
@@ -3826,7 +3859,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_MIC
+macro_line|#ifdef CONFIG_HISAX_MIC
 r_case
 id|ISDN_CTYPE_MIC
 suffix:colon
@@ -3841,7 +3874,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NETJET_S
+macro_line|#ifdef CONFIG_HISAX_NETJET
 r_case
 id|ISDN_CTYPE_NETJET_S
 suffix:colon
@@ -3856,7 +3889,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFCS
+macro_line|#ifdef CONFIG_HISAX_HFCS
 r_case
 id|ISDN_CTYPE_TELES3C
 suffix:colon
@@ -3874,7 +3907,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFC_PCI
+macro_line|#ifdef CONFIG_HISAX_HFC_PCI
 r_case
 id|ISDN_CTYPE_HFC_PCI
 suffix:colon
@@ -3889,7 +3922,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HFC_SX
+macro_line|#ifdef CONFIG_HISAX_HFC_SX
 r_case
 id|ISDN_CTYPE_HFC_SX
 suffix:colon
@@ -3904,7 +3937,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NICCY
+macro_line|#ifdef CONFIG_HISAX_NICCY
 r_case
 id|ISDN_CTYPE_NICCY
 suffix:colon
@@ -3919,7 +3952,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_AMD7930
+macro_line|#ifdef CONFIG_HISAX_AMD7930
 r_case
 id|ISDN_CTYPE_AMD7930
 suffix:colon
@@ -3934,7 +3967,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_ISURF
+macro_line|#ifdef CONFIG_HISAX_ISURF
 r_case
 id|ISDN_CTYPE_ISURF
 suffix:colon
@@ -3949,7 +3982,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_HSTSAPHIR
+macro_line|#ifdef CONFIG_HISAX_HSTSAPHIR
 r_case
 id|ISDN_CTYPE_HSTSAPHIR
 suffix:colon
@@ -3964,7 +3997,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_TESTEMU
+macro_line|#ifdef CONFIG_HISAX_TESTEMU
 r_case
 id|ISDN_CTYPE_TESTEMU
 suffix:colon
@@ -3979,7 +4012,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if&t;CARD_BKM_A4T
+macro_line|#ifdef CONFIG_HISAX_BKM_A4T
 r_case
 id|ISDN_CTYPE_BKM_A4T
 suffix:colon
@@ -3994,7 +4027,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if&t;CARD_SCT_QUADRO
+macro_line|#ifdef CONFIG_HISAX_SCT_QUADRO
 r_case
 id|ISDN_CTYPE_SCT_QUADRO
 suffix:colon
@@ -4009,7 +4042,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_GAZEL
+macro_line|#ifdef CONFIG_HISAX_GAZEL
 r_case
 id|ISDN_CTYPE_GAZEL
 suffix:colon
@@ -4024,7 +4057,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_W6692
+macro_line|#ifdef CONFIG_HISAX_W6692
 r_case
 id|ISDN_CTYPE_W6692
 suffix:colon
@@ -4039,7 +4072,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_NETJET_U
+macro_line|#ifdef CONFIG_HISAX_NETJET_U
 r_case
 id|ISDN_CTYPE_NETJET_U
 suffix:colon
@@ -4054,7 +4087,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CARD_FN_ENTERNOW_PCI
+macro_line|#ifdef CONFIG_HISAX_ENTERNOW_PCI
 r_case
 id|ISDN_CTYPE_ENTERNOW
 suffix:colon
@@ -4119,70 +4152,6 @@ r_goto
 id|outf_cs
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cs-&gt;rcvbuf
-op_assign
-id|kmalloc
-c_func
-(paren
-id|MAX_DFRAME_LEN_L1
-comma
-id|GFP_ATOMIC
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: No memory for isac rcvbuf&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ll_unload
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-r_goto
-id|outf_cs
-suffix:semicolon
-)brace
-id|cs-&gt;rcvidx
-op_assign
-l_int|0
-suffix:semicolon
-id|cs-&gt;tx_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;tx_cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|cs-&gt;event
-op_assign
-l_int|0
-suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|cs-&gt;rq
-)paren
-suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|cs-&gt;sq
-)paren
-suffix:semicolon
 id|init_bcstate
 c_func
 (paren
@@ -4314,17 +4283,9 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-id|outf_dlog
-suffix:colon
-id|kfree
-c_func
-(paren
-id|cs-&gt;dlog
-)paren
-suffix:semicolon
 id|outf_cs
 suffix:colon
-id|kfree
+id|free_IsdnCardState
 c_func
 (paren
 id|cs
@@ -4601,17 +4562,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: Card %s not installed !&bslash;n&quot;
+l_string|&quot;HiSax: Card type %d not installed !&bslash;n&quot;
 comma
-id|CardType
-(braket
 id|cards
 (braket
 id|i
 )braket
 dot
 id|typ
-)braket
 )paren
 suffix:semicolon
 id|HiSax_shiftcards

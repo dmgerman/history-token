@@ -2511,23 +2511,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|min_t
-c_func
-(paren
-r_const
-r_int
-r_int
-comma
 id|count
-comma
-(paren
-id|tcon-&gt;ses-&gt;server-&gt;maxBuf
-op_minus
-id|MAX_CIFS_HDR_SIZE
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
 )paren
 suffix:semicolon
 id|pSMB-&gt;MaxCountHigh
@@ -3600,7 +3584,7 @@ id|pSMB-&gt;OldFileName
 id|name_len
 )braket
 op_assign
-l_int|0
+l_int|0x04
 suffix:semicolon
 multiline_comment|/* pad */
 multiline_comment|/* protocol requires ASCII signature byte on Unicode string */
@@ -3611,7 +3595,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0x04
+l_int|0x00
 suffix:semicolon
 id|name_len2
 op_assign

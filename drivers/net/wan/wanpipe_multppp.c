@@ -19,17 +19,9 @@ macro_line|#include &lt;linux/sdla_chdlc.h&gt;&t;&t;/* CHDLC firmware API defini
 macro_line|#include &lt;linux/sdla_asy.h&gt;           &t;/* CHDLC (async) API definitions */
 macro_line|#include &lt;linux/if_wanpipe_common.h&gt;    /* Socket Driver common area */
 macro_line|#include &lt;linux/if_wanpipe.h&gt;&t;&t;
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 macro_line|#include &lt;net/syncppp.h&gt;
-macro_line|#else
-macro_line|#include &quot;syncppp.h&quot;
-macro_line|#endif
-macro_line|#else
-macro_line|#include &lt;net/route.h&gt;          /* Adding new route entries */
-macro_line|#endif
 multiline_comment|/****** Defines &amp; Macros ****************************************************/
 macro_line|#ifdef&t;_DEBUG_
 DECL|macro|STATIC
@@ -315,7 +307,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_static
 r_struct
 id|net_device_stats
@@ -327,20 +318,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_struct
-id|enet_statistics
-op_star
-id|if_stats
-(paren
-id|netdevice_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LINUX_2_4
 r_static
 r_void
 id|if_tx_timeout
@@ -350,7 +327,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* CHDLC Firmware interface functions */
 r_static
 r_int
@@ -2026,7 +2002,6 @@ op_assign
 id|pppdev
 suffix:semicolon
 multiline_comment|/* prepare network device data space for registration */
-macro_line|#ifdef LINUX_2_4
 id|strcpy
 c_func
 (paren
@@ -2035,57 +2010,6 @@ comma
 id|card-&gt;u.c.if_name
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;name
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-id|strlen
-c_func
-(paren
-id|card-&gt;u.c.if_name
-)paren
-op_plus
-l_int|2
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;name
-op_eq
-l_int|NULL
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|chdlc_priv_area
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|sprintf
-c_func
-(paren
-id|dev-&gt;name
-comma
-l_string|&quot;%s&quot;
-comma
-id|card-&gt;u.c.if_name
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Attach PPP protocol layer to pppdev&n;&t; * The sppp_attach() will initilize the dev structure&n;         * and setup ppp layer protocols.&n;         * All we have to do is to bind in:&n;         *        if_open(), if_close(), if_send() and get_stats() functions.&n;         */
 id|sppp_attach
 c_func
@@ -2093,18 +2017,10 @@ c_func
 id|pppdev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,16)
 id|dev
 op_assign
 id|pppdev-&gt;dev
 suffix:semicolon
-macro_line|#else
-id|dev
-op_assign
-op_amp
-id|pppdev-&gt;dev
-suffix:semicolon
-macro_line|#endif
 id|sp
 op_assign
 op_amp
@@ -2266,11 +2182,6 @@ op_assign
 op_amp
 id|card-&gt;wandev
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* NOTE: Most of the dev initialization was&n;         *       done in sppp_attach(), called by new_if() &n;         *       function. All we have to do here is&n;         *       to link four major routines below. &n;         */
 multiline_comment|/* Initialize device driver entry points */
 id|dev-&gt;open
@@ -2293,7 +2204,6 @@ op_assign
 op_amp
 id|if_stats
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;tx_timeout
 op_assign
 op_amp
@@ -2303,13 +2213,6 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LINUX_2_0
-id|dev-&gt;family
-op_assign
-id|AF_INET
-suffix:semicolon
-macro_line|#endif&t;
 multiline_comment|/* Initialize hardware parameters */
 id|dev-&gt;irq
 op_assign
@@ -2340,38 +2243,10 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/* Initialize socket buffers */
-macro_line|#if !defined(LINUX_2_1) &amp;&amp; !defined(LINUX_2_4)
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|DEV_NUMBUFFS
-suffix:semicolon
-op_increment
-id|i
-)paren
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|dev-&gt;buffs
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 multiline_comment|/*============================================================================&n; * Handle transmit timeout event from netif watchdog&n; */
 DECL|function|if_tx_timeout
 r_static
@@ -2415,7 +2290,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*============================================================================&n; * Open network interface.&n; * o enable communications and interrupts.&n; * o prevent module from unloading by incrementing use count&n; *&n; * Return 0 if O.k. or errno.&n; */
 DECL|function|if_open
 r_static
@@ -2450,7 +2324,6 @@ op_assign
 id|card-&gt;u.c.flags
 suffix:semicolon
 multiline_comment|/* Only one open per interface is allowed */
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -2464,18 +2337,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|dev-&gt;start
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-multiline_comment|/* only one open is allowed */
-macro_line|#endif
 multiline_comment|/* Start PPP Layer */
 r_if
 c_cond
@@ -2503,27 +2364,12 @@ id|chdlc_priv_area-&gt;router_start_time
 op_assign
 id|tv.tv_sec
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|wanpipe_open
 c_func
 (paren
@@ -2572,18 +2418,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|dev-&gt;start
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|wanpipe_close
 c_func
 (paren
@@ -2649,14 +2489,12 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2677,7 +2515,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -2687,52 +2525,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_4
-r_if
-c_cond
-(paren
-id|dev-&gt;tbusy
-)paren
-(brace
-multiline_comment|/* If our device stays busy for at least 5 seconds then we will&n;&t;&t; * kick start the device by making dev-&gt;tbusy = 0.  We expect &n;&t;&t; * that our device never stays busy more than 5 seconds. So this&n;&t;&t; * is only used as a last resort. &n;&t;&t; */
-op_increment
-id|card-&gt;wandev.stats.collisions
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|chdlc_priv_area-&gt;tick_counter
-)paren
-OL
-(paren
-l_int|5
-op_star
-id|HZ
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Transmit (tbusy) timeout !&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-multiline_comment|/* unbusy the interface */
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2791,7 +2583,7 @@ op_or_assign
 id|APP_INT_ON_TIMER
 suffix:semicolon
 )brace
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -2852,7 +2644,7 @@ suffix:semicolon
 op_increment
 id|card-&gt;wandev.stats.tx_dropped
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -2873,7 +2665,7 @@ id|WAN_CONNECTED
 op_increment
 id|card-&gt;wandev.stats.tx_dropped
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -2897,7 +2689,7 @@ id|skb-&gt;len
 )paren
 )paren
 (brace
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -2909,19 +2701,15 @@ r_else
 op_increment
 id|card-&gt;wandev.stats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|card-&gt;wandev.stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -2937,7 +2725,7 @@ op_logical_neg
 (paren
 id|err
 op_assign
-id|is_queue_stopped
+id|netif_queue_stopped
 c_func
 (paren
 id|dev
@@ -2945,12 +2733,10 @@ id|dev
 )paren
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 )brace
@@ -3416,7 +3202,6 @@ id|temp
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Get ethernet-style interface statistics.&n; * Return a pointer to struct enet_statistics.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|function|if_stats
 r_static
 r_struct
@@ -3461,54 +3246,6 @@ op_amp
 id|my_card-&gt;wandev.stats
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|if_stats
-r_static
-r_struct
-id|enet_statistics
-op_star
-id|if_stats
-(paren
-id|netdevice_t
-op_star
-id|dev
-)paren
-(brace
-id|sdla_t
-op_star
-id|my_card
-suffix:semicolon
-id|chdlc_private_area_t
-op_star
-id|chdlc_priv_area
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
-multiline_comment|/* Shutdown bug fix. In del_if() we kill&n;         * dev-&gt;priv pointer. This function, gets&n;         * called after del_if(), thus check&n;         * if pointer has been deleted */
-r_if
-c_cond
-(paren
-(paren
-id|chdlc_priv_area
-op_assign
-id|dev-&gt;priv
-)paren
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|my_card
-op_assign
-id|chdlc_priv_area-&gt;card
-suffix:semicolon
-r_return
-op_amp
-id|my_card-&gt;wandev.stats
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/****** Cisco HDLC Firmware Interface Functions *******************************/
 multiline_comment|/*============================================================================&n; * Read firmware code version.&n; *&t;Put code version as ASCII string in str. &n; */
 DECL|function|chdlc_read_version
@@ -4539,7 +4276,7 @@ op_and_assign
 op_complement
 id|APP_INT_ON_TX_FRAME
 suffix:semicolon
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -4891,7 +4628,6 @@ r_goto
 id|rx_exit
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -4907,19 +4643,6 @@ r_goto
 id|rx_exit
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;start
-)paren
-(brace
-r_goto
-id|rx_exit
-suffix:semicolon
-)brace
-macro_line|#endif
 id|chdlc_priv_area
 op_assign
 id|dev-&gt;priv
@@ -5086,12 +4809,10 @@ suffix:semicolon
 id|card-&gt;wandev.stats.rx_packets
 op_increment
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|card-&gt;wandev.stats.rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
 id|udp_type
 op_assign
 id|udp_pkt_type
@@ -5893,22 +5614,18 @@ op_eq
 id|UDP_PKT_FRM_STACK
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 )brace
 r_else
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 r_return
@@ -7105,12 +6822,10 @@ id|len
 op_increment
 id|card-&gt;wandev.stats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|card-&gt;wandev.stats.tx_bytes
 op_add_assign
 id|len
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -7856,7 +7571,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#if defined(__SMP__) || defined(LINUX_2_4)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7882,14 +7596,6 @@ id|card-&gt;next-&gt;wandev.lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|disable_irq
-c_func
-(paren
-id|card-&gt;hw.irq
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|s508_unlock
 r_void
@@ -7905,7 +7611,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#if defined(__SMP__) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -7930,14 +7635,6 @@ op_star
 id|smp_flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|enable_irq
-c_func
-(paren
-id|card-&gt;hw.irq
-)paren
-suffix:semicolon
-macro_line|#endif           
 )brace
 multiline_comment|/*===========================================================================&n; * config_chdlc&n; *&n; *&t;Configure the chdlc protocol and enable communications.&t;&t;&n; *&n; *   &t;The if_open() function binds this function to the poll routine.&n; *      Therefore, this function will run every time the chdlc interface&n; *      is brought up. We cannot run this function from the if_open &n; *      because if_open does not have access to the remote IP address.&n; *      &n; *&t;If the communications are not enabled, proceed to configure&n; *      the card and enable communications.&n; *&n; *      If the communications are enabled, it means that the interface&n; *      was shutdown by ether the user or driver. In this case, we &n; *      have to check that the IP addresses have not changed.  If&n; *      the IP addresses have changed, we have to reconfigure the firmware&n; *      and update the changed IP addresses.  Otherwise, just exit.&n; *&n; */
 DECL|function|config_chdlc

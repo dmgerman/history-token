@@ -2666,8 +2666,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|cp
+op_logical_and
+id|configuration
+op_ne
+l_int|0
+)paren
+op_logical_or
+(paren
+id|cp
+op_logical_and
+id|configuration
+op_eq
+l_int|0
+)paren
 )paren
 (brace
 id|warn
@@ -2682,6 +2696,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
+multiline_comment|/* if it&squot;s already configured, clear out old state first. */
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_ne
+id|USB_STATE_ADDRESS
+)paren
+(brace
+multiline_comment|/* FIXME unbind drivers from all &quot;old&quot; interfaces.&n;&t;&t; * handshake with hcd to reset cached hc endpoint state.&n;&t;&t; */
 )brace
 r_if
 c_cond
@@ -2725,10 +2750,25 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|configuration
+)paren
+id|dev-&gt;state
+op_assign
+id|USB_STATE_CONFIGURED
+suffix:semicolon
+r_else
+id|dev-&gt;state
+op_assign
+id|USB_STATE_ADDRESS
+suffix:semicolon
 id|dev-&gt;actconfig
 op_assign
 id|cp
 suffix:semicolon
+multiline_comment|/* reset more hc/hcd endpoint state */
 id|dev-&gt;toggle
 (braket
 l_int|0

@@ -3651,6 +3651,10 @@ id|port
 op_assign
 id|dev
 suffix:semicolon
+id|dev-&gt;state
+op_assign
+id|USB_STATE_POWERED
+suffix:semicolon
 multiline_comment|/* Reset the device, and detect its speed */
 r_if
 c_cond

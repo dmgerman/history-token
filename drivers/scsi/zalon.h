@@ -58,7 +58,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_int
 id|zalon7xx_release
 c_func
@@ -68,10 +67,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|zalon7xx_release
-mdefine_line|#define zalon7xx_release NULL
-macro_line|#endif
 DECL|macro|GSC_SCSI_ZALON_OFFSET
 mdefine_line|#define GSC_SCSI_ZALON_OFFSET 0x800
 DECL|macro|IO_MODULE_EIM

@@ -5649,7 +5649,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20115) 
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -5752,7 +5751,6 @@ comma
 l_string|&quot;eth16i debug level (0-6)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|init_module
 r_int
 id|init_module

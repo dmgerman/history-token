@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;  Linux Driver for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID Controllers&n;&n;  Copyright 1998-2001 by Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n;&n;  This program is free software; you may redistribute and/or modify it under&n;  the terms of the GNU General Public License Version 2 as published by the&n;  Free Software Foundation.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY&n;  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n;  for complete details.&n;&n;  The author respectfully requests that any modifications to this software be&n;  sent directly to him for evaluation and testing.&n;&n;*/
+multiline_comment|/*&n;&n;  Linux Driver for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID Controllers&n;&n;  Copyright 1998-2001 by Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n;&n;  This program is free software; you may redistribute and/or modify it under&n;  the terms of the GNU General Public License Version 2 as published by the&n;  Free Software Foundation.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY&n;  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n;  for complete details.&n;&n;*/
 DECL|macro|DAC960_DriverVersion
 mdefine_line|#define DAC960_DriverVersion&t;&t;&t;&quot;2.5.47&quot;
 DECL|macro|DAC960_DriverDate
@@ -9080,28 +9080,13 @@ c_func
 id|MajorNumber
 comma
 l_string|&quot;dac960&quot;
-comma
-op_amp
-id|DAC960_BlockDeviceOperations
 )paren
 OL
 l_int|0
 )paren
-(brace
-id|DAC960_Error
-c_func
-(paren
-l_string|&quot;UNABLE TO ACQUIRE MAJOR NUMBER %d - DETACHING&bslash;n&quot;
-comma
-id|Controller
-comma
-id|MajorNumber
-)paren
-suffix:semicolon
 r_return
 l_bool|false
 suffix:semicolon
-)brace
 multiline_comment|/*&n;    Initialize the I/O Request Queue.&n;  */
 id|RequestQueue
 op_assign

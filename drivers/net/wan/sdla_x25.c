@@ -13,12 +13,7 @@ macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definit
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* Experimental delay */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;net/route.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/sdla_x25.h&gt;&t;/* X.25 firmware API definitions */
@@ -237,20 +232,12 @@ r_int
 r_int
 id|network_number
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|member|ifstats
 r_struct
 id|net_device_stats
 id|ifstats
 suffix:semicolon
 multiline_comment|/* interface statistics */
-macro_line|#else
-DECL|member|ifstats
-r_struct
-id|enet_statistics
-id|ifstats
-suffix:semicolon
-macro_line|#endif&t;
 DECL|member|transmit_length
 r_int
 r_int
@@ -652,7 +639,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 r_static
 r_void
 id|if_tx_timeout
@@ -662,7 +648,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*=================================================  &n; * &t;Interrupt handlers &n; */
 r_static
 r_void
@@ -2749,12 +2734,6 @@ c_func
 id|card
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|card-&gt;u.x.x25_poll_task.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 id|card-&gt;u.x.x25_poll_task.sync
 op_assign
 l_int|0
@@ -3421,7 +3400,6 @@ op_assign
 l_int|0xDEADBEEF
 suffix:semicolon
 multiline_comment|/* prepare network device data space for registration */
-macro_line|#ifdef LINUX_2_4
 id|strcpy
 c_func
 (paren
@@ -3430,61 +3408,6 @@ comma
 id|chan-&gt;name
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;name
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-id|strlen
-c_func
-(paren
-id|chan-&gt;name
-)paren
-op_plus
-l_int|2
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;name
-op_eq
-l_int|NULL
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|chan
-)paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|sprintf
-c_func
-(paren
-id|dev-&gt;name
-comma
-l_string|&quot;%s&quot;
-comma
-id|chan-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;init
 op_assign
 op_amp
@@ -3603,11 +3526,6 @@ op_assign
 op_amp
 id|card-&gt;wandev
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Initialize device driver entry points */
 id|dev-&gt;open
 op_assign
@@ -3639,7 +3557,6 @@ op_assign
 op_amp
 id|if_stats
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;tx_timeout
 op_assign
 op_amp
@@ -3649,26 +3566,12 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Initialize media-specific parameters */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|dev-&gt;type
 op_assign
 id|ARPHRD_PPP
 suffix:semicolon
 multiline_comment|/* ARP h/w type */
-macro_line|#else
-id|dev-&gt;family
-op_assign
-id|AF_INET
-suffix:semicolon
-multiline_comment|/* address family */
-id|dev-&gt;type
-op_assign
-id|ARPHRD_PPP
-suffix:semicolon
-multiline_comment|/* no x25 type */
-macro_line|#endif
 id|dev-&gt;flags
 op_or_assign
 id|IFF_POINTOPOINT
@@ -3768,33 +3671,6 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/* Initialize socket buffers */
-macro_line|#if !defined(LINUX_2_1) &amp;&amp; !defined(LINUX_2_4)
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|DEV_NUMBUFFS
-suffix:semicolon
-op_increment
-id|i
-)paren
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|dev-&gt;buffs
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME Why are we doing this */
 id|set_chan_state
 c_func
@@ -3842,7 +3718,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_dev_running
+id|netif_running
 c_func
 (paren
 id|dev
@@ -3857,12 +3733,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Initialize the task queue */
-macro_line|#ifndef LINUX_2_4
-id|chan-&gt;common.wanpipe_task.next
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 id|chan-&gt;common.wanpipe_task.sync
 op_assign
 l_int|0
@@ -4093,27 +3963,12 @@ id|chan-&gt;router_start_time
 op_assign
 id|tv.tv_sec
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else&t;
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -4145,18 +4000,12 @@ r_int
 r_int
 id|smp_flags
 suffix:semicolon
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|dev-&gt;start
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4270,12 +4119,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 )brace
@@ -4489,7 +4336,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 multiline_comment|/*============================================================================&n; * Handle transmit timeout event from netif watchdog&n; */
 DECL|function|if_tx_timeout
 r_static
@@ -4533,7 +4379,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*=========================================================================&n; * &t;Send a packet on a network interface.&n; * &t;o set tbusy flag (marks start of the transmission).&n; * &t;o check link state. If link is not up, then drop the packet.&n; * &t;o check channel status. If it&squot;s down then initiate a call.&n; * &t;o pass a packet to corresponding WAN device.&n; * &t;o free socket buffer&n; *&n; * &t;Return:&t;0&t;complete (socket buffer must be freed)&n; *&t;&t;non-0&t;packet may be re-transmitted (tbusy must be set)&n; *&n; * &t;Notes:&n; * &t;1. This routine is called either by the protocol stack or by the &quot;net&n; *    &t;bottom half&quot; (with interrupts enabled).&n; * &t;2. Setting tbusy flag will inhibit further transmit requests from the&n; *    &t;protocol stack and can be used for flow control with protocol layer.&n; *&n; *========================================================================*/
 DECL|function|if_send
 r_static
@@ -4580,92 +4425,13 @@ suffix:semicolon
 op_increment
 id|chan-&gt;if_send_stat.if_send_entry
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* No need to check frame length, since socket code&n;         * will perform the check for us */
-macro_line|#ifndef LINUX_2_4
-r_if
-c_cond
-(paren
-id|dev-&gt;tbusy
-)paren
-(brace
-id|netdevice_t
-op_star
-id|dev2
-suffix:semicolon
-op_increment
-id|chan-&gt;if_send_stat.if_send_tbusy
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|chan-&gt;tick_counter
-)paren
-OL
-(paren
-l_int|5
-op_star
-id|HZ
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Transmit time out %s!&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|dev2
-op_assign
-id|card-&gt;wandev.dev
-suffix:semicolon
-id|dev2
-suffix:semicolon
-id|dev2
-op_assign
-op_star
-(paren
-(paren
-id|netdevice_t
-op_star
-op_star
-)paren
-id|dev2-&gt;priv
-)paren
-)paren
-(brace
-id|dev2-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-op_increment
-id|chan-&gt;if_send_stat.if_send_tbusy_timeout
-suffix:semicolon
-)brace
-macro_line|#endif
 id|chan-&gt;tick_counter
 op_assign
 id|jiffies
@@ -4765,7 +4531,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -4828,7 +4594,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -5071,15 +4837,13 @@ suffix:semicolon
 )brace
 id|if_send_crit_exit
 suffix:colon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -5630,12 +5394,10 @@ suffix:semicolon
 op_increment
 id|chan-&gt;rx_intr_stat.rx_intr_bfr_not_passed_to_stack
 suffix:semicolon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 r_return
@@ -5644,12 +5406,10 @@ suffix:semicolon
 op_increment
 id|chan-&gt;ifstats.rx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|chan-&gt;ifstats.rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
 id|chan-&gt;rx_skb
 op_assign
 l_int|NULL
@@ -5708,12 +5468,10 @@ id|dev
 )paren
 (brace
 multiline_comment|/* can&squot;t decapsulate packet */
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 op_increment
@@ -5778,12 +5536,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 op_increment
@@ -5808,12 +5564,10 @@ id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|chan-&gt;ifstats.rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
 op_increment
 id|chan-&gt;ifstats.rx_packets
 suffix:semicolon
@@ -6031,12 +5785,10 @@ id|len
 )paren
 (brace
 multiline_comment|/* No room for the packet. Call off the whole thing! */
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|new_skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 r_if
@@ -6322,7 +6074,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_queue_stopped
+id|netif_queue_stopped
 c_func
 (paren
 id|dev
@@ -6337,7 +6089,7 @@ op_eq
 id|API
 )paren
 (brace
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -6352,7 +6104,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -6649,7 +6401,7 @@ multiline_comment|/* If we are in API mode, wakeup the &n;         * sock BH han
 r_if
 c_cond
 (paren
-id|is_queue_stopped
+id|netif_queue_stopped
 c_func
 (paren
 id|dev
@@ -6664,7 +6416,7 @@ op_eq
 id|API
 )paren
 (brace
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -6679,7 +6431,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -7467,7 +7219,6 @@ op_star
 id|card
 )paren
 (brace
-macro_line|#ifdef LINUX_2_4
 id|schedule_task
 c_func
 (paren
@@ -7475,18 +7226,6 @@ op_amp
 id|card-&gt;u.x.x25_poll_task
 )paren
 suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|card-&gt;u.x.x25_poll_task
-comma
-op_amp
-id|tq_scheduler
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*====================================================================&n; * &t;Handle physical link establishment phase.&n; * &t;o if connection timed out, disconnect the link.&n; *===================================================================*/
 DECL|function|poll_connecting
@@ -12464,14 +12203,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_queue_stopped
+id|netif_queue_stopped
 c_func
 (paren
 id|dev
 )paren
 )paren
 (brace
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -12815,12 +12554,10 @@ id|chan-&gt;i_timeout_sofar
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12849,12 +12586,10 @@ suffix:semicolon
 op_increment
 id|chan-&gt;ifstats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|chan-&gt;ifstats.tx_bytes
 op_add_assign
 id|len
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12884,12 +12619,10 @@ multiline_comment|/* We are already in tx_inter, thus data is already&n;        
 op_increment
 id|chan-&gt;ifstats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|chan-&gt;ifstats.tx_bytes
 op_add_assign
 id|len
 suffix:semicolon
-macro_line|#endif
 op_increment
 id|chan-&gt;if_send_stat.if_send_bfr_passed_to_adptr
 suffix:semicolon
@@ -12925,12 +12658,10 @@ r_else
 op_increment
 id|chan-&gt;ifstats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|chan-&gt;ifstats.tx_bytes
 op_add_assign
 id|len
 suffix:semicolon
-macro_line|#endif
 op_increment
 id|chan-&gt;if_send_stat.if_send_bfr_passed_to_adptr
 suffix:semicolon
@@ -15042,12 +14773,10 @@ comma
 id|card-&gt;devname
 )paren
 suffix:semicolon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 id|x25api_bh_cleanup
@@ -16530,12 +16259,10 @@ comma
 id|card-&gt;devname
 )paren
 suffix:semicolon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 r_return
@@ -17172,12 +16899,10 @@ comma
 id|card-&gt;devname
 )paren
 suffix:semicolon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 )brace
@@ -17268,12 +16993,10 @@ id|len
 )paren
 (brace
 multiline_comment|/* No room for the packet. Call off the whole thing! */
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|new_skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 id|printk
@@ -19105,23 +18828,19 @@ op_eq
 id|UDP_PKT_FRM_STACK
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 )brace

@@ -28,16 +28,6 @@ r_int
 r_int
 id|mem_fclk_21285
 suffix:semicolon
-multiline_comment|/*&n; * This tells us if we have an ISA bridge&n; * present in a PCI system.&n; */
-macro_line|#ifdef CONFIG_PCI
-r_extern
-r_int
-id|have_isa_bridge
-suffix:semicolon
-macro_line|#else
-DECL|macro|have_isa_bridge
-mdefine_line|#define have_isa_bridge&t;&t;(0)
-macro_line|#endif
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -177,7 +167,7 @@ id|thread_info
 suffix:semicolon
 r_extern
 r_struct
-id|task_struct
+id|thread_info
 op_star
 id|__switch_to
 c_func

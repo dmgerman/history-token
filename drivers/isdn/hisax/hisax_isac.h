@@ -165,7 +165,7 @@ id|arg
 )paren
 suffix:semicolon
 r_void
-id|isac_setup
+id|hisax_isac_setup
 c_func
 (paren
 r_struct

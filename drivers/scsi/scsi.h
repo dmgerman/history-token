@@ -318,7 +318,7 @@ DECL|macro|SCSI_SET_HLCOMPLETE_LOGGING
 mdefine_line|#define SCSI_SET_HLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL);
 DECL|macro|SCSI_SET_IOCTL_LOGGING
 mdefine_line|#define SCSI_SET_IOCTL_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL);
-multiline_comment|/*&n; *  the return of the status word will be in the following format :&n; *  The low byte is the status returned by the SCSI command, &n; *  with vendor specific bits masked.&n; *  &n; *  The next byte is the message which followed the SCSI status.&n; *  This allows a stos to be used, since the Intel is a little&n; *  endian machine.&n; *  &n; *  The final byte is a host return code, which is one of the following.&n; *  &n; *  IE &n; *  lsb     msb&n; *  status  msg host code   &n; *  &n; *  Our errors returned by OUR driver, NOT SCSI message.  Or&squot;d with&n; *  SCSI message passed back to driver &lt;IF any&gt;.&n; */
+multiline_comment|/* host byte codes */
 DECL|macro|DID_OK
 mdefine_line|#define DID_OK          0x00&t;/* NO error                                */
 DECL|macro|DID_NO_CONNECT

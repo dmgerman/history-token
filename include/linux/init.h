@@ -50,6 +50,12 @@ id|exitcall_t
 r_void
 )paren
 suffix:semicolon
+r_extern
+id|initcall_t
+id|__con_initcall_start
+comma
+id|__con_initcall_end
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef MODULE
 macro_line|#ifndef __ASSEMBLY__
@@ -74,6 +80,8 @@ DECL|macro|__initcall
 mdefine_line|#define __initcall(fn) device_initcall(fn)
 DECL|macro|__exitcall
 mdefine_line|#define __exitcall(fn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static exitcall_t __exitcall_##fn __exit_call = fn
+DECL|macro|console_initcall
+mdefine_line|#define console_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.con_initcall.init&quot;)))=fn
 DECL|struct|obs_kernel_param
 r_struct
 id|obs_kernel_param
