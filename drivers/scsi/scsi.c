@@ -7322,6 +7322,9 @@ id|SCpnt-&gt;request.sector
 comma
 id|SCpnt-&gt;request.nr_sectors
 comma
+(paren
+r_int
+)paren
 id|SCpnt-&gt;request.current_nr_sectors
 comma
 id|SCpnt-&gt;request.rq_status

@@ -1461,7 +1461,12 @@ comma
 id|nbuff
 comma
 (paren
-id|SCpnt-&gt;request.cmd
+id|rq_data_dir
+c_func
+(paren
+op_amp
+id|SCpnt-&gt;request
+)paren
 op_eq
 id|WRITE
 )paren
