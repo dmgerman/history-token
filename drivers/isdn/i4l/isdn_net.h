@@ -164,14 +164,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|isdn_net_dial
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|isdn_net_autohup
 c_func
 (paren

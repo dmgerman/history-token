@@ -179,7 +179,7 @@ suffix:semicolon
 multiline_comment|/* = NULL */
 macro_line|#else
 DECL|macro|divert_if
-mdefine_line|#define divert_if (0)
+mdefine_line|#define divert_if ((isdn_divert_if *) NULL)
 macro_line|#endif
 r_static
 r_void
@@ -1418,6 +1418,19 @@ op_star
 id|cmd
 )paren
 (brace
+r_int
+id|idx
+op_assign
+id|isdn_dc2minor
+c_func
+(paren
+id|cmd-&gt;driver
+comma
+id|cmd-&gt;arg
+op_amp
+l_int|255
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1448,19 +1461,6 @@ op_eq
 id|ISDN_CMD_SETL2
 )paren
 (brace
-r_int
-id|idx
-op_assign
-id|isdn_dc2minor
-c_func
-(paren
-id|cmd-&gt;driver
-comma
-id|cmd-&gt;arg
-op_amp
-l_int|255
-)paren
-suffix:semicolon
 r_int
 r_int
 id|l2prot
@@ -1563,6 +1563,140 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef ISDN_DEBUG_COMMAND
+r_switch
+c_cond
+(paren
+id|cmd-&gt;command
+)paren
+(brace
+r_case
+id|ISDN_CMD_SETL2
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_SETL2 %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_SETL3
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_SETL3 %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_DIAL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_DIAL %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_ACCEPTD
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_ACCEPTD %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_ACCEPTB
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_ACCEPTB %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_HANGUP
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_HANGUP %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_CLREAZ
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_CLREAZ %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_CMD_SETEAZ
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ISDN_CMD_SETEAZ %d&bslash;n&quot;
+comma
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: cmd = %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|cmd-&gt;command
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 id|dev-&gt;drv
 (braket
@@ -1918,7 +2052,9 @@ suffix:semicolon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;ICALL: %d %ld %s&bslash;n&quot;
+l_string|&quot;ICALL: %d (%d,%ld) %s&bslash;n&quot;
+comma
+id|i
 comma
 id|di
 comma
@@ -2097,12 +2233,6 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-multiline_comment|/* Schedule connection-setup */
-id|isdn_net_dial
-c_func
-(paren
-)paren
-suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -2131,13 +2261,7 @@ c_cond
 (paren
 id|p-&gt;local.isdn_slot
 op_eq
-id|isdn_dc2minor
-c_func
-(paren
-id|di
-comma
-id|cmd.arg
-)paren
+id|i
 )paren
 (brace
 id|strcpy
@@ -2151,7 +2275,7 @@ suffix:semicolon
 id|isdn_slot_command
 c_func
 (paren
-id|p-&gt;local.isdn_slot
+id|i
 comma
 id|ISDN_CMD_ACCEPTD
 comma
@@ -2221,11 +2345,6 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* ... then start callback. */
-id|isdn_net_dial
-c_func
-(paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2269,9 +2388,9 @@ suffix:semicolon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;CINF: %ld %s&bslash;n&quot;
+l_string|&quot;CINF: %d %s&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 comma
 id|c-&gt;parm.num
 )paren
@@ -2321,9 +2440,9 @@ suffix:colon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;CAUSE: %ld %s&bslash;n&quot;
+l_string|&quot;CAUSE: %d %s&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 comma
 id|c-&gt;parm.num
 )paren
@@ -2373,9 +2492,9 @@ suffix:colon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;DISPLAY: %ld %s&bslash;n&quot;
+l_string|&quot;DISPLAY: %d %s&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 comma
 id|c-&gt;parm.display
 )paren
@@ -2420,9 +2539,9 @@ suffix:semicolon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;DCONN: %ld&bslash;n&quot;
+l_string|&quot;DCONN: %d&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -2517,9 +2636,9 @@ suffix:semicolon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;DHUP: %ld&bslash;n&quot;
+l_string|&quot;DHUP: %d&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -2721,9 +2840,9 @@ suffix:semicolon
 id|dbg_statcallb
 c_func
 (paren
-l_string|&quot;BHUP: %ld&bslash;n&quot;
+l_string|&quot;BHUP: %d&bslash;n&quot;
 comma
-id|c-&gt;arg
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -10847,8 +10966,24 @@ c_func
 id|sl
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|ISDN_CMD_SETL2
+suffix:colon
+r_case
+id|ISDN_CMD_SETL3
+suffix:colon
+r_case
+id|ISDN_CMD_PROT_IO
+suffix:colon
 id|ctrl-&gt;arg
 op_and_assign
+op_complement
 l_int|0xff
 suffix:semicolon
 id|ctrl-&gt;arg
@@ -10859,6 +10994,21 @@ c_func
 id|sl
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ctrl-&gt;arg
+op_assign
+id|isdn_slot_channel
+c_func
+(paren
+id|sl
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_return
 id|isdn_command
 c_func
@@ -11205,6 +11355,89 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|isdn_slot_m_idx
+id|isdn_slot_m_idx
+c_func
+(paren
+r_int
+id|sl
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|sl
+OL
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|slot
+(braket
+id|sl
+)braket
+dot
+id|m_idx
+suffix:semicolon
+)brace
+r_void
+DECL|function|isdn_slot_set_m_idx
+id|isdn_slot_set_m_idx
+c_func
+(paren
+r_int
+id|sl
+comma
+r_int
+id|midx
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|sl
+OL
+l_int|0
+)paren
+suffix:semicolon
+id|slot
+(braket
+id|sl
+)braket
+dot
+id|m_idx
+op_assign
+id|midx
+suffix:semicolon
+)brace
+r_char
+op_star
+DECL|function|isdn_slot_num
+id|isdn_slot_num
+c_func
+(paren
+r_int
+id|sl
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|sl
+OL
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|slot
+(braket
+id|sl
+)braket
+dot
+id|num
+suffix:semicolon
+)brace
 r_void
 DECL|function|isdn_slot_set_rx_netdev
 id|isdn_slot_set_rx_netdev
@@ -11289,7 +11522,7 @@ id|slot
 id|sl
 )braket
 dot
-id|rx_netdev
+id|st_netdev
 op_assign
 id|nd
 suffix:semicolon
