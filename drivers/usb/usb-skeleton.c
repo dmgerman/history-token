@@ -873,6 +873,9 @@ c_cond
 (paren
 op_logical_neg
 id|dev-&gt;present
+op_logical_and
+op_logical_neg
+id|dev-&gt;open
 )paren
 (brace
 multiline_comment|/* the device was unplugged before the file was released */
